@@ -2,263 +2,730 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 126C22189F0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 16:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14B19218B84
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 17:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729469AbgGHORa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jul 2020 10:17:30 -0400
-Received: from mga02.intel.com ([134.134.136.20]:30495 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729468AbgGHOR3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 Jul 2020 10:17:29 -0400
-IronPort-SDR: Gjfwlfx5t2TIgJrQXy1WJ9+WTnYerUKKMc9ize17v/KGY/+n3muA4xp1fmHT3NRks2Xm380cmY
- MOjtnLcgbX5w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9675"; a="136028944"
-X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
-   d="scan'208";a="136028944"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2020 07:17:26 -0700
-IronPort-SDR: xahbChJVmbzcjKFJ3xSPSQWzqZ3zFyuWDv9nDLDbAarsfXdk23CNMxQTv9h34EpV34LgKn5hMV
- Qi/VzTomsjbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
-   d="scan'208";a="314647535"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga008.jf.intel.com with ESMTP; 08 Jul 2020 07:17:26 -0700
-Received: from fmsmsx607.amr.corp.intel.com (10.18.126.87) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 8 Jul 2020 07:17:25 -0700
-Received: from FMSEDG001.ED.cps.intel.com (10.1.192.133) by
- fmsmsx607.amr.corp.intel.com (10.18.126.87) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Wed, 8 Jul 2020 07:17:25 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Wed, 8 Jul 2020 07:17:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YPh4iW9qj+WyEGZj2qAp6pO5iRkVMQbYk4LUCNKcV6GR2sk1lXu/BXnsK2VII7BeZLyU/OdFt3b2g6UNxLp0KvHLImWT7rb90EeKjP8+q8ufK8w6/pZzD5475LiXM4Uflf3fIZG4MEJO9SGUK3Mqzr8lat/E9wpZv26Xo1QCvlat4sfUvADCEXHNv3UTmvGcs0nCTmDwaKwBJ4pzENiazrrzUEiJ6V/8Fiel7Q8mAnocQw9Pzakma+ouzR8JuJUT8DTkLFKr+HSDe1UFl6KMSx+IQ7kG599/cLDSli8fBFFE4R+G+NiLMaTyaNON1z/rK5t/3NF1iPZ6yud0p0qDig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gYtYxdCen/JRczIGDDwL8lRWxTU7rv+MEPeVWpJ7Ndw=;
- b=Art2Qw6GMAhsXme+CKTvWgC8KNFgSKE0QMRkf/roxIOY4zWNMHRtk578/7kHzsIXFyRQ9CiSAAkf9pM+5ms3jqXZwDMrCTe0a2gvZdWYubs2i5MWtG+H3mb9AGnEBeMxBkpMJCzzqzPgHnWWLPCouvr1WF+5xrGM5R7S209czevaUQaujbJMBibNfCTjzelpYdRzISW0DT2bY4G7WDAIUGD1eF6ZPPuC7EJXM6GYvmMpTKvOC2k7aNGAov55A4M57/sU7+Jn+hjpbJpYuBvsdEn0+6hMZ5Vu96skoDP3xW7TJs3s0i5m3jY7M2Wikn/jrIxO+rbaVA4+4GtTWYuL8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gYtYxdCen/JRczIGDDwL8lRWxTU7rv+MEPeVWpJ7Ndw=;
- b=dqKjRU1uMLjaGlbWD0iTHJd4KOpGxdYhQnXjLw3PPXEgrgce46gjGJI3cUtIv8u4VwrAvPTpBIw492Xri6vgoty3vnK57Sb2jzyjmWYgP/p/lRObXbuov8wVicoKEQkGlSvj9hq5wiyof4Uz7uBZ9UOWvg8ZoDdGZanK8dja9G0=
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
- by BY5PR11MB3976.namprd11.prod.outlook.com (2603:10b6:a03:187::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Wed, 8 Jul
- 2020 14:17:20 +0000
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::4ca7:fbfa:78bf:173c]) by BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::4ca7:fbfa:78bf:173c%4]) with mapi id 15.20.3174.021; Wed, 8 Jul 2020
- 14:17:20 +0000
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-CC:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
-Thread-Topic: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
-Thread-Index: AQHWVJmBbAsk81nWN025VkK0Ud6o36j9hEsAgAA3CfA=
-Date:   Wed, 8 Jul 2020 14:17:20 +0000
-Message-ID: <BYAPR11MB325602EDA2D2ACC2B28EAF4687670@BYAPR11MB3256.namprd11.prod.outlook.com>
-References: <20200707200716.GA4920@embeddedor>
- <CAJZ5v0iDz_EsrpdMQQDfaVC2orMQkEcubmR6-J6mvtrXmKXbRg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iDz_EsrpdMQQDfaVC2orMQkEcubmR6-J6mvtrXmKXbRg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.2.0.6
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [134.134.136.194]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d0994710-c8fd-473a-64c9-08d82349a08c
-x-ms-traffictypediagnostic: BY5PR11MB3976:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BY5PR11MB39765745365701DB3390A1CD87670@BY5PR11MB3976.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4714;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: rFjIGec/oz2PdqwXGQP7VseElVnOIrEndbE7YamBjrq37jdu10V4YCTIFJoB3smtXVUHrr9aBVRECbr8dZLGFcvdcrWzSE6r1zehbY8Q053zHPC+b78o/Dwp/+MjHaSQyMVr9xWRWa5uoRtSN2WpFWtUCDurzC3Ldt3OD75XI+f6WtMnIKib7Agp3LnPIqH0ZDKeaSl8ko9vK4+5+y1OBr3hCl62ie6vyL8Qbdx3jtBITGy97+5i+ys7/cxm+v6wpET/niDov3QliP8eNZM5d0yfpG1lUGNdTZwNQCVmnm6Dn/Y3zYnQtppwPF+4vRpWwpwCLAE/fhe27FCMaLM73PDZSXamvTVyFhEKIQDap5OEOxhi0Exdm/OIGNzBFfzY56qbID7FDZ0Gxikp0b9aLQaY2gcMTb2bCQ/n6vEuTCTM19H6QvXuyMWyjzrlCpPkexRy+n/Z885Ghp0vkn2bog==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(366004)(396003)(136003)(39860400002)(9686003)(8936002)(33656002)(55016002)(110136005)(316002)(66446008)(64756008)(66476007)(66556008)(76116006)(66946007)(52536014)(186003)(4326008)(966005)(26005)(478600001)(54906003)(86362001)(2906002)(5660300002)(7696005)(83380400001)(71200400001)(6506007)(8676002)(53546011)(14701465002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: GovK5vvulzMURfXjh5/7ArDdTeeIqOmuIvEUWRvWvRTtXaItLyw+CBFLA08ukuF11BhCCZYJ9KzvX8cbsWbyW/5AxWsXAPOm1rukPmpR2I7q7NH/bK8K4SGfj+vZ+AyD+7H6m4yUhCp07yfwNFaBsLNoPQ1Eg9D8GXV9rCCreMv1795ZTtPOzmk5Y+uyiv8leLQLR4ti4heovHcrnrgtysXybJBxllJuioSmKBcdnAY0XAldfdgM8lYKnzcKpEeP5TGKLdys98yFIRiyeh4a3VJXc1y2gwsYmzaIWqYW7hb+AOLPZlOq/61x+Z13OEZLETJW6RdJShJbN4Suahb6CRkafp0cQB287UY8t8PdUx6VeYYhpEDtAZYWILrFhmDDsBNEMTqHSnSuiWE51QskmniiE4KQLfNTePsitI31+Jx+1towhmUY+yAHo2XggOV6pUxChy8pS1KCFu6SBy5jtbqfYSOZqlN1AmZ3LIO4TjCGen9tt0xwoSwHZEicrmvY
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1730317AbgGHPkf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 8 Jul 2020 11:40:35 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2445 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729858AbgGHPke (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Jul 2020 11:40:34 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 5913D71F1BE5E45C19F5;
+        Wed,  8 Jul 2020 16:40:31 +0100 (IST)
+Received: from localhost (10.52.126.65) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Wed, 8 Jul 2020
+ 16:40:30 +0100
+Date:   Wed, 8 Jul 2020 16:39:24 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Sean V Kelley <sean.v.kelley@linux.intel.com>
+CC:     <linux-pci@vger.kernel.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
+        James Morse <james.morse@arm.com>
+Subject: Re: [PATCH v2] PCI/AER: Add support for reset of RCiEPs for
+ APEI/Firmware first reporting only
+Message-ID: <20200708163924.00007006@Huawei.com>
+In-Reply-To: <431b4d136e5e2ba158640c0ef6eb7dc09351a992.camel@linux.intel.com>
+References: <20200622114402.892798-1-Jonathan.Cameron@huawei.com>
+        <02999929-39F5-4A11-AACA-84490F12E12B@linux.intel.com>
+        <20200626194126.00007190@Huawei.com>
+        <6CAFE871-36CC-44DD-B4E0-D0BB5ABF3947@linux.intel.com>
+        <20200703092351.00004981@Huawei.com>
+        <431b4d136e5e2ba158640c0ef6eb7dc09351a992.camel@linux.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0994710-c8fd-473a-64c9-08d82349a08c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jul 2020 14:17:20.5132
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +rd+AunrhllR9IpgfOjB58FINmPVWLS9L8ccCJvNiik7/E6TqQ6GKVS6Yl0oj7LT4G7xyY7PJr+F8eFDSvLlgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB3976
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.52.126.65]
+X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SXQgbG9va3MgbGlrZSB0aGlzIGF0dHJpYnV0ZSBpcyBub3Qgc3VwcG9ydGVkIGJ5IG1zdmMgMjAx
-NyAoYW5kIHBlcmhhcHMgb3RoZXIgY29tcGlsZXJzKSAtLSBpdCBpcyBhcHBhcmVudGx5IGEgR0ND
-IGV4dGVuc2lvbiAtLSBtZWFuaW5nIHRoYXQgaXQgY2Fubm90IGJlIHVzZWQgaW4gdGhlIEFDUElD
-QSBjb21waWxlci1pbmRlcGVuZGVudCBjb2RlLg0KDQpCb2INCg0KDQotLS0tLU9yaWdpbmFsIE1l
-c3NhZ2UtLS0tLQ0KRnJvbTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPiAN
-ClNlbnQ6IFdlZG5lc2RheSwgSnVseSAwOCwgMjAyMCAzOjU5IEFNDQpUbzogR3VzdGF2byBBLiBS
-LiBTaWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3JnPg0KQ2M6IE1vb3JlLCBSb2JlcnQgPHJvYmVy
-dC5tb29yZUBpbnRlbC5jb20+OyBLYW5lZGEsIEVyaWsgPGVyaWsua2FuZWRhQGludGVsLmNvbT47
-IFd5c29ja2ksIFJhZmFlbCBKIDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT47IExlbiBCcm93
-biA8bGVuYkBrZXJuZWwub3JnPjsgQUNQSSBEZXZlbCBNYWxpbmcgTGlzdCA8bGludXgtYWNwaUB2
-Z2VyLmtlcm5lbC5vcmc+OyBvcGVuIGxpc3Q6QUNQSSBDT01QT05FTlQgQVJDSElURUNUVVJFIChB
-Q1BJQ0EpIDxkZXZlbEBhY3BpY2Eub3JnPjsgTGludXggS2VybmVsIE1haWxpbmcgTGlzdCA8bGlu
-dXgta2VybmVsQHZnZXIua2VybmVsLm9yZz4NClN1YmplY3Q6IFJlOiBbUEFUQ0hdW25leHRdIEFD
-UElDQTogVXNlIGZhbGx0aHJvdWdoIHBzZXVkby1rZXl3b3JkDQoNCk9uIFR1ZSwgSnVsIDcsIDIw
-MjAgYXQgMTA6MDEgUE0gR3VzdGF2byBBLiBSLiBTaWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3Jn
-PiB3cm90ZToNCj4NCj4gUmVwbGFjZSB0aGUgZXhpc3RpbmcgLyogZmFsbCB0aHJvdWdoICovIGNv
-bW1lbnRzIGFuZCBpdHMgdmFyaWFudHMgd2l0aCANCj4gdGhlIG5ldyBwc2V1ZG8ta2V5d29yZCBt
-YWNybyBmYWxsdGhyb3VnaFsxXS4gQWxzbywgcmVtb3ZlIHVubmVjZXNzYXJ5IA0KPiBmYWxsLXRo
-cm91Z2ggbWFya2luZ3Mgd2hlbiBpdCBpcyB0aGUgY2FzZS4NCj4NCj4gWzFdIA0KPiBodHRwczov
-L3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9jZXNzL2RlcHJlY2F0ZWQuaHRtbD9o
-aWdobGlnDQo+IGh0PWZhbGx0aHJvdWdoI2ltcGxpY2l0LXN3aXRjaC1jYXNlLWZhbGwtdGhyb3Vn
-aA0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBHdXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvYXJzQGtl
-cm5lbC5vcmc+DQoNCkkgbmVlZCB0byB0YWxrIHRvIEVyaWsgYW5kIEJvYiBhYm91dCB0aGlzIG9u
-ZS4NCg0KPiAtLS0NCj4gIGRyaXZlcnMvYWNwaS9hY3BpY2EvZHNjb250cm9sLmMgfCAgICAyICst
-DQo+ICBkcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2V4ZWMuYyAgIHwgICAgMyArLS0NCj4gIGRyaXZl
-cnMvYWNwaS9hY3BpY2EvZHN3bG9hZC5jICAgfCAgICAyICstDQo+ICBkcml2ZXJzL2FjcGkvYWNw
-aWNhL2Rzd2xvYWQyLmMgIHwgICAgNCArLS0tDQo+ICBkcml2ZXJzL2FjcGkvYWNwaWNhL2V4Zmxk
-aW8uYyAgIHwgICAgMiArLQ0KPiAgZHJpdmVycy9hY3BpL2FjcGljYS9leHJlc29wLmMgICB8ICAg
-IDQgKystLQ0KPiAgZHJpdmVycy9hY3BpL2FjcGljYS9leHN0b3JlLmMgICB8ICAgIDQgKystLQ0K
-PiAgZHJpdmVycy9hY3BpL2FjcGljYS9od2dwZS5jICAgICB8ICAgIDMgKy0tDQo+ICBkcml2ZXJz
-L2FjcGkvYWNwaWNhL3V0ZGVsZXRlLmMgIHwgICAgMyArLS0NCj4gIGRyaXZlcnMvYWNwaS9hY3Bp
-Y2EvdXRwcmludC5jICAgfCAgICAyICstDQo+ICAxMCBmaWxlcyBjaGFuZ2VkLCAxMiBpbnNlcnRp
-b25zKCspLCAxNyBkZWxldGlvbnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9h
-Y3BpY2EvZHNjb250cm9sLmMgDQo+IGIvZHJpdmVycy9hY3BpL2FjcGljYS9kc2NvbnRyb2wuYyBp
-bmRleCA0YjViNmU4NTlmNjIuLjEzNGQ1MzM4MDY2MyANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
-cnMvYWNwaS9hY3BpY2EvZHNjb250cm9sLmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS9k
-c2NvbnRyb2wuYw0KPiBAQCAtNjIsNyArNjIsNyBAQCBhY3BpX2RzX2V4ZWNfYmVnaW5fY29udHJv
-bF9vcChzdHJ1Y3QgYWNwaV93YWxrX3N0YXRlICp3YWxrX3N0YXRlLA0KPiAgICAgICAgICAgICAg
-ICAgICAgICAgICB9DQo+ICAgICAgICAgICAgICAgICB9DQo+DQo+IC0gICAgICAgICAgICAgICAv
-KmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4N
-Cj4gICAgICAgICBjYXNlIEFNTF9JRl9PUDoNCj4gICAgICAgICAgICAgICAgIC8qDQo+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2V4ZWMuYyANCj4gYi9kcml2ZXJzL2FjcGkv
-YWNwaWNhL2Rzd2V4ZWMuYyBpbmRleCAxZDRmOGM4MTAyOGMuLjQxZjZjYjYxNzc4YSANCj4gMTAw
-NjQ0DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3ZXhlYy5jDQo+ICsrKyBiL2RyaXZl
-cnMvYWNwaS9hY3BpY2EvZHN3ZXhlYy5jDQo+IEBAIC01OTgsOCArNTk4LDcgQEAgYWNwaV9zdGF0
-dXMgYWNwaV9kc19leGVjX2VuZF9vcChzdHJ1Y3QgYWNwaV93YWxrX3N0YXRlICp3YWxrX3N0YXRl
-KQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KPg0KPiAtICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIC8qIEZhbGwgdGhyb3VnaCAqLw0KPiAtICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgY2Fz
-ZSBBTUxfSU5UX0VWQUxfU1VCVFJFRV9PUDoNCj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNw
-aS9hY3BpY2EvZHN3bG9hZC5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3bG9hZC5jIGlu
-ZGV4IDI3MDY5MzI1YjZkZS4uMWQ4Nzg5ODY5ZGRhIA0KPiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVy
-cy9hY3BpL2FjcGljYS9kc3dsb2FkLmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS9kc3ds
-b2FkLmMNCj4gQEAgLTIyNCw3ICsyMjQsNyBAQCBhY3BpX2RzX2xvYWQxX2JlZ2luX29wKHN0cnVj
-dCBhY3BpX3dhbGtfc3RhdGUgKndhbGtfc3RhdGUsDQo+ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4NCj4gLSAgICAg
-ICAgICAgICAgICAgICAgICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiArICAgICAgICAgICAg
-ICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgIGRlZmF1bHQ6DQo+
-DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2xvYWQyLmMgDQo+IGIvZHJp
-dmVycy9hY3BpL2FjcGljYS9kc3dsb2FkMi5jIGluZGV4IGVkYWRiZTE0NjUwNi4uZGUzNjdlOGU0
-Y2Y0IA0KPiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9hY3BpL2FjcGljYS9kc3dsb2FkMi5jDQo+
-ICsrKyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3bG9hZDIuYw0KPiBAQCAtMjEzLDkgKzIxMyw3
-IEBAIGFjcGlfZHNfbG9hZDJfYmVnaW5fb3Aoc3RydWN0IGFjcGlfd2Fsa19zdGF0ZSAqd2Fsa19z
-dGF0ZSwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYXJzZV9mbGFncyAmIEFDUElf
-UEFSU0VfTU9EVUxFX0xFVkVMKSkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IGJyZWFrOw0KPiAgICAgICAgICAgICAgICAgICAgICAgICB9DQo+IC0NCj4gLSAgICAgICAgICAg
-ICAgICAgICAgICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiAtDQo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgIGZhbGx0aHJvdWdoOw0KPiAgICAgICAgICAgICAgICAgZGVmYXVsdDoNCj4NCj4g
-ICAgICAgICAgICAgICAgICAgICAgICAgLyogQWxsIG90aGVyIHR5cGVzIGFyZSBhbiBlcnJvciAq
-LyBkaWZmIC0tZ2l0IA0KPiBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhmbGRpby5jIGIvZHJpdmVy
-cy9hY3BpL2FjcGljYS9leGZsZGlvLmMgaW5kZXggDQo+IGFkZTM1ZmYxYzdiYS4uNjc3YmEzYWIx
-NDgyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4ZmxkaW8uYw0KPiArKysg
-Yi9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4ZmxkaW8uYw0KPiBAQCAtNDM0LDcgKzQzNCw3IEBAIGFj
-cGlfZXhfZmllbGRfZGF0dW1faW8odW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqb2JqX2Rlc2Ms
-DQo+ICAgICAgICAgICAgICAgICAgKiByZWdpb25fZmllbGQgY2FzZSBhbmQgd3JpdGUgdGhlIGRh
-dHVtIHRvIHRoZSBPcGVyYXRpb24gUmVnaW9uDQo+ICAgICAgICAgICAgICAgICAgKi8NCj4NCj4g
-LSAgICAgICAgICAgICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAg
-IGZhbGx0aHJvdWdoOw0KPg0KPiAgICAgICAgIGNhc2UgQUNQSV9UWVBFX0xPQ0FMX1JFR0lPTl9G
-SUVMRDoNCj4gICAgICAgICAgICAgICAgIC8qDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkv
-YWNwaWNhL2V4cmVzb3AuYyANCj4gYi9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4cmVzb3AuYyBpbmRl
-eCA0ZDFiMjI5NzFkNTguLjdjODY3NmFkY2Y0MyANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
-YWNwaS9hY3BpY2EvZXhyZXNvcC5jDQo+ICsrKyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhyZXNv
-cC5jDQo+IEBAIC0xOTgsNyArMTk4LDcgQEAgYWNwaV9leF9yZXNvbHZlX29wZXJhbmRzKHUxNiBv
-cGNvZGUsDQo+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0YXJn
-ZXRfb3AgPSBBTUxfREVCVUdfT1A7DQo+DQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBjYXNlIEFDUElfUkVGQ0xBU1NfQVJHOg0KPiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIGNhc2UgQUNQSV9SRUZDTEFTU19MT0NBTDoNCj4gQEAgLTI2NCw3ICsy
-NjQsNyBAQCBhY3BpX2V4X3Jlc29sdmVfb3BlcmFuZHModTE2IG9wY29kZSwNCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICogRWxzZSBub3QgYSBzdHJpbmcgLSBmYWxsIHRocm91Z2ggdG8gdGhl
-IG5vcm1hbCBSZWZlcmVuY2UNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICogY2FzZSBiZWxv
-dw0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgKi8NCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiArICAgICAgICAgICAgICAgICAgICAgICBmYWxs
-dGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgIGNhc2UgQVJHSV9SRUZFUkVOQ0U6ICAgIC8q
-IFJlZmVyZW5jZXM6ICovDQo+ICAgICAgICAgICAgICAgICBjYXNlIEFSR0lfSU5URUdFUl9SRUY6
-DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4c3RvcmUuYyANCj4gYi9kcml2
-ZXJzL2FjcGkvYWNwaWNhL2V4c3RvcmUuYyBpbmRleCAzYWRjMGEyOWQ4OTAuLmZjZjhkZmY1NmM1
-YiANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhzdG9yZS5jDQo+ICsr
-KyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhzdG9yZS5jDQo+IEBAIC05Niw3ICs5Niw3IEBAIGFj
-cGlfZXhfc3RvcmUodW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqc291cmNlX2Rlc2MsDQo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgIHJldHVybl9BQ1BJX1NUQVRVUyhBRV9PSyk7DQo+ICAgICAg
-ICAgICAgICAgICB9DQo+DQo+IC0gICAgICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICov
-DQo+ICsgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICBkZWZhdWx0Og0K
-Pg0KPiBAQCAtNDIyLDcgKzQyMiw3IEBAIGFjcGlfZXhfc3RvcmVfb2JqZWN0X3RvX25vZGUodW5p
-b24gYWNwaV9vcGVyYW5kX29iamVjdCAqc291cmNlX2Rlc2MsDQo+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4NCj4g
-LSAgICAgICAgICAgICAgICAgICAgICAgLyogRmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgZmFsbHRocm91Z2g7DQo+DQo+ICAgICAgICAgICAgICAgICBjYXNlIEFDUElf
-VFlQRV9ERVZJQ0U6DQo+ICAgICAgICAgICAgICAgICBjYXNlIEFDUElfVFlQRV9FVkVOVDoNCj4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvaHdncGUuYyBiL2RyaXZlcnMvYWNwaS9h
-Y3BpY2EvaHdncGUuYyANCj4gaW5kZXggNDljNDZkNGRkMDcwLi4xOWQ1NzRmNjRjNzggMTAwNjQ0
-DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvaHdncGUuYw0KPiArKysgYi9kcml2ZXJzL2Fj
-cGkvYWNwaWNhL2h3Z3BlLmMNCj4gQEAgLTk1LDggKzk1LDcgQEAgYWNwaV9od19sb3dfc2V0X2dw
-ZShzdHJ1Y3QgYWNwaV9ncGVfZXZlbnRfaW5mbyAqZ3BlX2V2ZW50X2luZm8sIHUzMiBhY3Rpb24p
-DQo+ICAgICAgICAgICAgICAgICBpZiAoIShyZWdpc3Rlcl9iaXQgJiBncGVfcmVnaXN0ZXJfaW5m
-by0+ZW5hYmxlX21hc2spKSB7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAoQUVf
-QkFEX1BBUkFNRVRFUik7DQo+ICAgICAgICAgICAgICAgICB9DQo+IC0NCj4gLSAgICAgICAgICAg
-ICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAgIGZhbGx0aHJvdWdo
-Ow0KPg0KPiAgICAgICAgIGNhc2UgQUNQSV9HUEVfRU5BQkxFOg0KPg0KPiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9hY3BpL2FjcGljYS91dGRlbGV0ZS5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2Ev
-dXRkZWxldGUuYyBpbmRleCBjMzY1ZmFmNGU2Y2QuLjZkYjA5ZWI5ZDI1NyANCj4gMTAwNjQ0DQo+
-IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvdXRkZWxldGUuYw0KPiArKysgYi9kcml2ZXJzL2Fj
-cGkvYWNwaWNhL3V0ZGVsZXRlLmMNCj4gQEAgLTExMSw4ICsxMTEsNyBAQCBzdGF0aWMgdm9pZCBh
-Y3BpX3V0X2RlbGV0ZV9pbnRlcm5hbF9vYmoodW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqb2Jq
-ZWN0KQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAodm9pZClhY3BpX2V2X2RlbGV0ZV9ncGVf
-YmxvY2sob2JqZWN0LT5kZXZpY2UuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBncGVfYmxvY2spOw0KPiAgICAgICAgICAgICAgICAgfQ0K
-PiAtDQo+IC0gICAgICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAg
-ICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICBjYXNlIEFDUElfVFlQRV9QUk9DRVNT
-T1I6DQo+ICAgICAgICAgY2FzZSBBQ1BJX1RZUEVfVEhFUk1BTDoNCj4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvYWNwaS9hY3BpY2EvdXRwcmludC5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvdXRw
-cmludC5jIGluZGV4IDY4MWMxMWY0YWY0ZS4uZjdlNDNiYWY1ZmYyIA0KPiAxMDA2NDQNCj4gLS0t
-IGEvZHJpdmVycy9hY3BpL2FjcGljYS91dHByaW50LmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2Fj
-cGljYS91dHByaW50LmMNCj4gQEAgLTQ3NSw3ICs0NzUsNyBAQCBpbnQgdnNucHJpbnRmKGNoYXIg
-KnN0cmluZywgYWNwaV9zaXplIHNpemUsIGNvbnN0IGNoYXIgKmZvcm1hdCwgdmFfbGlzdCBhcmdz
-KQ0KPiAgICAgICAgICAgICAgICAgY2FzZSAnWCc6DQo+DQo+ICAgICAgICAgICAgICAgICAgICAg
-ICAgIHR5cGUgfD0gQUNQSV9GT1JNQVRfVVBQRVI7DQo+IC0gICAgICAgICAgICAgICAgICAgICAg
-IC8qIEZBTExUSFJPVUdIICovDQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGZhbGx0aHJvdWdo
-Ow0KPg0KPiAgICAgICAgICAgICAgICAgY2FzZSAneCc6DQo+DQo+DQo=
+On Tue, 7 Jul 2020 09:56:26 -0700
+Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+
+> On 3 Jul 2020, at 1:23, Jonathan Cameron wrote:
+> 
+> > On Thu, 2 Jul 2020 11:06:26 -0700
+> > Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+> >   
+> > > On 26 Jun 2020, at 11:41, Jonathan Cameron wrote:
+> > >   
+> > > > On Fri, 26 Jun 2020 09:29:34 -0700
+> > > > Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+> > > >   
+> > > > > Hi,  
+> > > > Hi,
+> > > > 
+> > > > Thanks for taking a look.
+> > > >   
+> > > > > 
+> > > > > On 22 Jun 2020, at 4:44, Jonathan Cameron wrote:
+> > > > >   
+> > > > > > Was previously: PCI/AER: Add partial initial supprot for
+> > > > > > RCiEPs
+> > > > > > using
+> > > > > > RCEC or
+> > > > > > firmware first.
+> > > > > > 
+> > > > > > Currently the kernel does not handle AER errors for Root
+> > > > > > Complex
+> > > > > > integrated
+> > > > > > End Points (RCiEPs)[0].  These devices sit on a root bus
+> > > > > > within 
+> > > > > > the
+> > > > > > Root Complex
+> > > > > > (RC).  AER handling is performed by a Root Complex Event
+> > > > > > Collector
+> > > > > > (RCEC) [1]
+> > > > > > which is a effectively a type of RCiEP on the same root bus.
+> > > > > > 
+> > > > > > This code will only perform the correct reset flow for the
+> > > > > > case
+> > > > > > where
+> > > > > > there
+> > > > > > is no need to take any actions on the RCEC because the
+> > > > > > firmware is
+> > > > > > responsible for them.   This is true where APEI [2] is used
+> > > > > > to
+> > > > > > report
+> > > > > > the AER
+> > > > > > errors via a GHES[v2] HEST entry [3] and relevant AER CPER
+> > > > > > record
+> > > > > > [4]
+> > > > > > and Firmware
+> > > > > > First handling is in use.  
+> > > > > 
+> > > > > Right, in the case of the RCEC one identifies the RCiEPs by
+> > > > > the 
+> > > > > RCiEP
+> > > > > bitmap as a part of the RCEC Associated Endpoint Extended
+> > > > > Capabilities.
+> > > > > This ‘search’ so to speak would make use also of the RCEC
+> > > > > Associated
+> > > > > Bus Numbers Register to associate the devices with an RCEC when
+> > > > > not
+> > > > > on
+> > > > > the same bus.  
+> > > > 
+> > > > Ah. I'm afraid my access to recent specs is a bit limited at the
+> > > > moment.
+> > > > I do have a draft 5.0 spec which has that in though so I now see 
+> > > > what
+> > > > you mean.
+> > > > 
+> > > > Was introduced in Root Complex Event Collector Endpoint
+> > > > Association
+> > > > Extended
+> > > > Capability version 2 in PCIe 5.0 I think.
+> > > >   
+> > > 
+> > > Correct.
+> > >   
+> > > > > > As there is no current RCEC driver support, it should not be
+> > > > > > possible
+> > > > > > to get
+> > > > > > to this code via any routes other than the one above. Hence
+> > > > > > appropriate RCEC
+> > > > > > handling can be added when the RCEC driver support is ready.
+> > > > > > The error handling is different from a normal PCIe End Point
+> > > > > > because:
+> > > > > > 
+> > > > > > 1) There is no downstream port above an RCiEP as these
+> > > > > > devices sit
+> > > > > > on
+> > > > > > a root
+> > > > > >    bus.
+> > > > > > 
+> > > > > > 2) In general, it makes little sense to reset other devices
+> > > > > > on on
+> > > > > > the
+> > > > > > same
+> > > > > >    root bus.  For error handling outside the of the root
+> > > > > > complex
+> > > > > > (RC)
+> > > > > > an AER
+> > > > > >    error will indicate that all the topology below the
+> > > > > > physical
+> > > > > > link,
+> > > > > > which
+> > > > > >    the error is related to, will need to be reset as they
+> > > > > > share a
+> > > > > > common
+> > > > > >    path to the host.  For an RCiEP there is no such defined
+> > > > > > shared
+> > > > > > path
+> > > > > >    relationship with other elements on the root bus.
+> > > > > > 
+> > > > > > A new walk function, similar to pci_bus_walk is provided
+> > > > > > that 
+> > > > > > takes
+> > > > > > a
+> > > > > > pci_dev
+> > > > > > instead of a bus.  If that dev corresponds to a downstream
+> > > > > > port it
+> > > > > > will walk
+> > > > > > the subordinate bus of that downstream port.  If the dev does
+> > > > > > not
+> > > > > > then
+> > > > > > it
+> > > > > > will call the function on that device alone.   This function 
+> > > > > > allows
+> > > > > > us
+> > > > > > to
+> > > > > > avoid adding special cases to the majority of the error
+> > > > > > handling.  
+> > > > > 
+> > > > > Then in that case the callback could add the additional checks
+> > > > > specific
+> > > > > to identifying the associated RCiEPs.  
+> > > > 
+> > > > I am afraid I don't follow what you mean here.  Could you give
+> > > > more
+> > > > info?  
+> > > 
+> > > Sure, a given RCEC can be associated with multiple RCiEPs.  As a
+> > > part 
+> > > of
+> > > the Extended Association Cap it is possible to obtain a bitmap of
+> > > the
+> > > RCiEP device ids on the same bus number as the RCEC device itself.
+> > > (5.0-1.0 sec 7.9.10.2).  With a Cap version of 2h or higher, it is 
+> > > also
+> > > possible to get an additional range of bus numbers containing
+> > > RCiEPs
+> > > also associated with this RCEC.
+> > > 
+> > > So I’m wondering if this function could be used in which passing a
+> > > dev, in this case the RCEC, triggers the call back which makes use
+> > > of
+> > > the RCiEP bitmap and associated bus ranges to return all identified
+> > > devices in use cases such as in AER for finding sources, etc.  
+> > 
+> > Ah understood.
+> > 
+> > If we do this we effectively end up with 3 different types of walk
+> > and
+> > the meaning of the walk function gets more complex again.
+> > 
+> > 1) Normal bus walk - we pass the downstream port above a bus to which
+> > the device is attached and it walks everthing below that point.
+> > 
+> > 2) Case I care about RCiEP with no visible association with an RCEC
+> > as
+> > I don't need to walk devices.  In that case just calls the callbacks 
+> > for
+> > the actual device.
+> > 
+> > 3) Pass in RCiEP with RCEC asociated with it (or do a dance at the 
+> > caller
+> > to pass in the RCEC itself). Need to walk the devices that the RCEC
+> > is
+> > handling errors for.  For handling, I'm not all the calls will be 
+> > generally
+> > applicable to other devices associated with the RCEC as some only
+> > make
+> > sense if there is an actual PCIe bus involved and hence we need to 
+> > reset
+> > other devices on that bus.  For RCEC I don't think there is an 
+> > particular
+> > reason to assume an AER error reported at one RCiEP will have any 
+> > impact
+> > on other devices associated with the particular RCEC.
+> > I've not found anything in the spec addressing this question but 
+> > perhaps
+> > I've missed something?  
+> 
+> Correct.  There should be no impact to the RCEC or its associated
+> RCiEPs which may not happen to reside on the same bus as the collector at all.
+> 
+> > However, if the RCEC doesn't support multiple error records, you may 
+> > need
+> > to walk the bus to identify multiple simultaneous issues, very 
+> > carefully
+> > avoiding (or least minimizing) race conditions.
+> >   
+> > > The alternative is to have a separate walk for RCECs that loops 
+> > > through
+> > > the bitmap / ranges (if supported) triggering the callback for each
+> > > device found.  
+> 
+> I’ve been testing the Associated Endpoint Bitmap and Bus Range 
+> handling and using my pciutils patches to help to confirm some of the 
+> association. This overlaps with my CXL work and CXL 1.1 based RCiEPs
+> are good test cards:
+> 
+> (Decode via:  
+> https://lore.kernel.org/linux-pci/20200624223940.240463-1-sean.v.kelley@linux.intel.com/
+>  )
+> 
+> Test card at 6b:00.0
+> 
+> Capabilities: [e00 v1] Designated Vendor-Specific: Vendor=1e98 ID=0000
+> Rev=0 Len=56: CXL
+> CXLCap: Cache- IO+ Mem+ Mem HW Init+ HDMCount 1 Viral-
+> CXLCtl: Cache- IO+ Mem- Cache SF Cov 0 Cache SF Gran 0 Cache Clean-
+> Viral-
+> CXLSta: Viral-
+> Capabilities: [e38 v1] Device Serial Number 30-91-11-78-10-00-00-00
+> 
+> RCEC assocated to RCiEP at 6b while residing at 6a:
+> 
+> Capabilities: [160 v2] Root Complex Event Collector Endpoint
+> Association
+> RCiEPBitmap: 00000000 [none]
+> AssociatedBusNumbers: 6b-6b
+> Kernel driver in use: pcieport
+> 
+> with dmesg:
+> 
+> [ 10.502543] pcieport 0000:6a:00.4: AER: enabled with IRQ 34
+> 
+> The trick is the walk, which is not compact.  Currently working on
+> error injection to test:
+> 
+> void pcie_walk_rcec(struct pci_dev *rcec, int (*cb)(struct pci_dev *,
+> void *),
+> +                   void *userdata)
+> +{
+> +       u32 pos, bitmap, hdr, busn;
+> +       u8 ver, nextbusn, lastbusn;
+> +       unsigned int dev, fn, bnr;
+> +       struct pci_bus *pbus=NULL;
+> +       struct pci_dev *pdev;
+> +       int retval;
+> +
+> +       pos = pci_find_ext_capability(rcec, PCI_EXT_CAP_ID_RCEC);
+> +       if (!pos)
+> +               return;
+> +
+> +       pci_read_config_dword(rcec, pos + PCI_RCEC_RCIEP_BITMAP,
+> &bitmap);
+> +
+> +       for (dev = 0; dev < 32; dev++) {
+
+for_each_bit_set perhaps?
+
+> +               if (!(bitmap & (1 << dev)))
+> +                       continue;
+> +
+> +               for (fn = 0; fn < 8; fn++) {
+> +                       pdev =
+> pci_get_domain_bus_and_slot(pci_domain_nr(rcec->bus),
+> +                                                          rcec->bus-
+> >number,  
+> +                                                          PCI_DEVFN(de
+> v, fn));
+> +                       if (!pdev)
+> +                               continue;
+> +
+> +                       retval = cb(pdev, userdata);
+> +                       if (retval)
+> +                               return;
+> +               }
+> +       }
+> 
+> Then continuing in the same function above, I need to also consider the
+> case for the Bus ranges (still wip, not tested):
+> 
+> +       pci_read_config_dword(rcec, pos, &hdr);
+> +       ver = PCI_RCEC_EP_CAP_VER(hdr);
+> +       if (ver < PCI_RCEC_BUSN_REG_VER)
+> +               return;
+> +
+> +       pci_read_config_dword(rcec, pos + PCI_RCEC_BUSN, &busn);
+> +       nextbusn = PCI_RCEC_BUSN_NEXT(busn);
+> +       lastbusn = PCI_RCEC_BUSN_LAST(busn);
+> +
+> +       if ((nextbusn == 0xff) && (lastbusn == 0x00))
+> +               return;
+> +
+> +       for (bnr = nextbusn; bnr < (lastbusn + 1); bnr++) {
+> +               pbus = pci_find_bus(pci_domain_nr(rcec->bus), bnr);
+> +               if (pbus) {
+> +                       /* find RCiEP devices on the given bus */
+> +                       for (dev = 0; dev < 32; dev++) {
+> + etc...
+> +                       }
+> +               }
+> +       }
+> +}
+
+Makes sense.
+
+> 
+> Currently this lives in aer.c and it's large enough that I wonder if
+> due to the specifity of the assoicated spec requirments if that should
+> be fine?
+
+Seems fine to me.
+
+> 
+> > Agreed. We would end up with the same splitting of handling paths
+> > that
+> > wasn't liked in my v1 patch.   Perhaps we need  single 
+> > pci_walk_aer_affected
+> > function with a pile of documentation for what it is actually doing?  
+> 
+> Perhaps this would be a good start?  I tend to agree.  I can also
+> submit more of the patches as RFC for further comment.
+
+When you are ready that would be great.
+
+> 
+> > 
+> > Even then we may need to have a parameter to indicate a particular 
+> > callback
+> > should be restricted to devices that share a 'real bus' or not.  
+> 
+> In my case 'walk' through the spec options of either just bitmap or if
+> of sufficient version (2h), I walk through the bus ranges, calling the
+> callback at each encounter.
+
+That wasn't what I meant.  When doing some of the actual handling once
+we have a walk function it will get a bit fiddly.
+I 'think' we need to first identify which devices associated with the RCEC
+have reported an AER error and then we need to only call the callback for
+those.
+
+In a case with a real bus and EP, the assumption is that the whole bus
+is going down so you have to issue it to everyone.
+
+> 
+> > 
+> > I guess the proof will as ever be in what the code looks like.  
+> 
+> Agreed.
+> 
+> > 
+> > Hmm. It increasingly feels like we may need to have a go at drawing 
+> > together
+> > some coherent documentation for the different ways of handling
+> > AER errors and specifications / assumptions for each.  Would be 
+> > 'interesting'
+> > to do given I'm fairly sure very few people actually understands all 
+> > the options and
+> > nasty corner cases!
+> > 
+> > +CC Lorenzo and James who may also be interested in this topic in 
+> > general.  
+> 
+> Let's do.
+
+Great.  Whilst we only care about this particular corner for now it may
+be worth working out some more comprehensive docs covering standard topology
+as well. CXL may bring its own additions, but I'm not sure we actually
+have a clear description of what 'should' happen on normal PCIe.
+
+Jonathan
+
+> 
+> Best regards,
+> 
+> Sean
+> 
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> >   
+> > > Thanks,
+> > > 
+> > > Sean
+> > >   
+> > > > > > Open questions:
+> > > > > > 
+> > > > > > 1. Are we better protecting against link reset for an RCiEP
+> > > > > > in 
+> > > > > > here
+> > > > > > or
+> > > > > >    should we put the check in the link reset functions?
+> > > > > > 
+> > > > > > 2. If we were to get a stupid firmware record with the
+> > > > > > relevant
+> > > > > > reset
+> > > > > > flag
+> > > > > >    set to trigger a link reset, what is the correct
+> > > > > > response?  For
+> > > > > > now
+> > > > > > I
+> > > > > >    try to report that we haven't done anything and print a 
+> > > > > > warning.
+> > > > > > 
+> > > > > > 3. Naming of pci_walk_below_dev is rather unsatisfying. Any
+> > > > > > better
+> > > > > > ideas?
+> > > > > > 
+> > > > > > 4. pci_walk_below_dev is perhaps not of general utility.
+> > > > > > Shall I
+> > > > > > make
+> > > > > > it local
+> > > > > >    in err.c?  If not would a precursor patch for that be
+> > > > > > preferred?’  
+> > > > > 
+> > > > > It depends.  Is it intended as a drop in replacement where
+> > > > > needed 
+> > > > > for
+> > > > > pci_walk_bus()? So in that case you are now passing the dev 
+> > > > > structure
+> > > > > and do the check for subordinate or is it intended as being 
+> > > > > specific
+> > > > > to
+> > > > > say RCEC? With AER, one could either first check for RC_EC type
+> > > > > before
+> > > > > using this one.  Or one could just drop in replace (passing the
+> > > > > dev
+> > > > > structure instead) and the call back performs the RCEC specific
+> > > > > checks
+> > > > > when a device is encountered.  
+> > > > 
+> > > > If it is useful in aer.c that's great.   Just seemed such a weird
+> > > > beast
+> > > > I wasn't sure it would be of use anywhere else.
+> > > >   
+> > > > > > Testing has been performed via error injection on a QEMU
+> > > > > > platform 
+> > > > > > as
+> > > > > > that lets
+> > > > > > me create a wide range of topologies and report errors at
+> > > > > > any 
+> > > > > > chosen
+> > > > > > location.
+> > > > > > Currently I have no plans to upstream this injection support,
+> > > > > > but 
+> > > > > > am
+> > > > > > happy to
+> > > > > > share if useful to others.  
+> > > > > 
+> > > > > I’m experimenting with it in my RCEC code in AER and will give 
+> > > > > you
+> > > > > additional feedback.  
+> > > > 
+> > > > Great, thanks
+> > > > 
+> > > > Jonathan
+> > > >   
+> > > > > Thanks,
+> > > > > 
+> > > > > Sean
+> > > > > 
+> > > > >   
+> > > > > > [0] ACPI PCI Express Base Specification 4.0 1.3.2.3 Root
+> > > > > > Complex
+> > > > > > Integrated
+> > > > > >     Endpoint Rules.
+> > > > > > [1] ACPI PCI Express Base Specification 4.0 6.2 Error
+> > > > > > Signalling 
+> > > > > > and
+> > > > > > Logging
+> > > > > > [2] ACPI Specification 6.3 Chapter 18 ACPI Platform Error 
+> > > > > > Interface
+> > > > > > (APEI)
+> > > > > > [3] ACPI Sepcification 6.3 18.2.3.7 Generic Hardware Error
+> > > > > > Source
+> > > > > > [4] UEFI Specification 2.8, N.2.7 PCI Express Error Section
+> > > > > > 
+> > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > > ---
+> > > > > > Changes since v1:
+> > > > > > * Separated from the largely unrelated fix so the two can
+> > > > > > move
+> > > > > > forwards separately.
+> > > > > > * Instead of separate path for RCiEP handling use the method
+> > > > > > suggested
+> > > > > > by Bjorn
+> > > > > >   and Sathyanarayanan with an adjusted pci_bus_walk.
+> > > > > > 
+> > > > > > Thanks all for reviews of V1.
+> > > > > > 
+> > > > > >  drivers/pci/bus.c      | 28 ++++++++++++++++++++++++++++
+> > > > > >  drivers/pci/pcie/err.c | 29 +++++++++++++++++++----------
+> > > > > >  include/linux/pci.h    |  2 ++
+> > > > > >  3 files changed, 49 insertions(+), 10 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+> > > > > > index 8e40b3e6da77..7cbe1ed2db3d 100644
+> > > > > > --- a/drivers/pci/bus.c
+> > > > > > +++ b/drivers/pci/bus.c
+> > > > > > @@ -411,6 +411,34 @@ void pci_walk_bus(struct pci_bus *top,
+> > > > > > int
+> > > > > > (*cb)(struct pci_dev *, void *),
+> > > > > >  }
+> > > > > >  EXPORT_SYMBOL_GPL(pci_walk_bus);
+> > > > > > 
+> > > > > > +/** pci_walk_below_dev - walk devices below (or on) another 
+> > > > > > device
+> > > > > > + *  @dev      device for which we should walk below,
+> > > > > > include 
+> > > > > > device
+> > > > > > when not a port.
+> > > > > > + *  @cb       callback to be called for each device found
+> > > > > > + *  @userdata arbitrary pointer to be passed to callback.
+> > > > > > + *
+> > > > > > + *  If the device provided is a port,
+> > > > > > + *  walk the subordinate bus, including any bridged devices
+> > > > > > + *  on buses under this bus.  Call the provided callback
+> > > > > > + *  on each device found.
+> > > > > > + *
+> > > > > > + *  If the device provided hs no subordinate bus, call the 
+> > > > > > provided
+> > > > > > + *  callback on the device itself.
+> > > > > > + *
+> > > > > > + */
+> > > > > > +void pci_walk_below_dev(struct pci_dev *dev, int
+> > > > > > (*cb)(struct
+> > > > > > pci_dev
+> > > > > > *, void *),
+> > > > > > +			void *userdata)
+> > > > > > +{
+> > > > > > +	struct pci_bus *bus;
+> > > > > > +
+> > > > > > +	if (dev->subordinate) {
+> > > > > > +		bus = dev->subordinate;
+> > > > > > +		pci_walk_bus(bus, cb, userdata);
+> > > > > > +	} else {
+> > > > > > +		cb(dev, userdata);
+> > > > > > +	}
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(pci_walk_below_dev);
+> > > > > > +
+> > > > > >  struct pci_bus *pci_bus_get(struct pci_bus *bus)
+> > > > > >  {
+> > > > > >  	if (bus)
+> > > > > > diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+> > > > > > index 14bb8f54723e..fa08b1cc3d96 100644
+> > > > > > --- a/drivers/pci/pcie/err.c
+> > > > > > +++ b/drivers/pci/pcie/err.c
+> > > > > > @@ -151,33 +151,39 @@ pci_ers_result_t
+> > > > > > pcie_do_recovery(struct
+> > > > > > pci_dev
+> > > > > > *dev,
+> > > > > >  			pci_ers_result_t (*reset_link)(struct
+> > > > > > pci_dev *pdev))
+> > > > > >  {
+> > > > > >  	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+> > > > > > -	struct pci_bus *bus;
+> > > > > > 
+> > > > > >  	/*
+> > > > > >  	 * Error recovery runs on all subordinates of the
+> > > > > > first 
+> > > > > > downstream
+> > > > > > port.
+> > > > > >  	 * If the downstream port detected the error, it is
+> > > > > > cleared at 
+> > > > > > the
+> > > > > > end.
+> > > > > > +	 * For RCiEPs we should reset just the RCiEP itself.
+> > > > > >  	 */
+> > > > > >  	if (!(pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
+> > > > > > -	      pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM))
+> > > > > > +	      pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM ||
+> > > > > > +	      pci_pcie_type(dev) == PCI_EXP_TYPE_RC_END))
+> > > > > >  		dev = dev->bus->self;
+> > > > > > -	bus = dev->subordinate;
+> > > > > > 
+> > > > > >  	pci_dbg(dev, "broadcast error_detected message\n");
+> > > > > >  	if (state == pci_channel_io_frozen) {
+> > > > > > -		pci_walk_bus(bus, report_frozen_detected,
+> > > > > > &status);
+> > > > > > +		pci_walk_below_dev(dev, report_frozen_detected,
+> > > > > > &status);
+> > > > > > +		if (pci_pcie_type(dev) == PCI_EXP_TYPE_RC_END)
+> > > > > > {
+> > > > > > +			pci_warn(dev, "link reset not possible
+> > > > > > for RCiEP\n");
+> > > > > > +			status = PCI_ERS_RESULT_NONE;
+> > > > > > +			goto failed;
+> > > > > > +		}
+> > > > > > +
+> > > > > >  		status = reset_link(dev);
+> > > > > >  		if (status != PCI_ERS_RESULT_RECOVERED) {
+> > > > > >  			pci_warn(dev, "link reset failed\n");
+> > > > > >  			goto failed;
+> > > > > >  		}
+> > > > > >  	} else {
+> > > > > > -		pci_walk_bus(bus, report_normal_detected,
+> > > > > > &status);
+> > > > > > +		pci_walk_below_dev(dev, report_normal_detected,
+> > > > > > &status);
+> > > > > >  	}
+> > > > > > 
+> > > > > >  	if (status == PCI_ERS_RESULT_CAN_RECOVER) {
+> > > > > >  		status = PCI_ERS_RESULT_RECOVERED;
+> > > > > >  		pci_dbg(dev, "broadcast mmio_enabled
+> > > > > > message\n");
+> > > > > > -		pci_walk_bus(bus, report_mmio_enabled,
+> > > > > > &status);
+> > > > > > +		pci_walk_below_dev(dev, report_mmio_enabled,
+> > > > > > &status);
+> > > > > >  	}
+> > > > > > 
+> > > > > >  	if (status == PCI_ERS_RESULT_NEED_RESET) {
+> > > > > > @@ -188,17 +194,20 @@ pci_ers_result_t
+> > > > > > pcie_do_recovery(struct
+> > > > > > pci_dev
+> > > > > > *dev,
+> > > > > >  		 */
+> > > > > >  		status = PCI_ERS_RESULT_RECOVERED;
+> > > > > >  		pci_dbg(dev, "broadcast slot_reset message\n");
+> > > > > > -		pci_walk_bus(bus, report_slot_reset, &status);
+> > > > > > +		pci_walk_below_dev(dev, report_slot_reset,
+> > > > > > &status);
+> > > > > >  	}
+> > > > > > 
+> > > > > >  	if (status != PCI_ERS_RESULT_RECOVERED)
+> > > > > >  		goto failed;
+> > > > > > 
+> > > > > >  	pci_dbg(dev, "broadcast resume message\n");
+> > > > > > -	pci_walk_bus(bus, report_resume, &status);
+> > > > > > +	pci_walk_below_dev(dev, report_resume, &status);
+> > > > > > 
+> > > > > > -	pci_aer_clear_device_status(dev);
+> > > > > > -	pci_aer_clear_nonfatal_status(dev);
+> > > > > > +	if ((pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
+> > > > > > +	     pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM)) {
+> > > > > > +		pci_aer_clear_device_status(dev);
+> > > > > > +		pci_aer_clear_nonfatal_status(dev);
+> > > > > > +	}
+> > > > > >  	pci_info(dev, "device recovery successful\n");
+> > > > > >  	return status;
+> > > > > > 
+> > > > > > diff --git a/include/linux/pci.h b/include/linux/pci.h
+> > > > > > index c79d83304e52..538bf0a76d33 100644
+> > > > > > --- a/include/linux/pci.h
+> > > > > > +++ b/include/linux/pci.h
+> > > > > > @@ -1411,6 +1411,8 @@ int pci_scan_bridge(struct pci_bus
+> > > > > > *bus,
+> > > > > > struct
+> > > > > > pci_dev *dev, int max,
+> > > > > > 
+> > > > > >  void pci_walk_bus(struct pci_bus *top, int (*cb)(struct
+> > > > > > pci_dev 
+> > > > > > *,
+> > > > > > void *),
+> > > > > >  		  void *userdata);
+> > > > > > +void pci_walk_below_dev(struct pci_dev *dev, int
+> > > > > > (*cb)(struct
+> > > > > > pci_dev
+> > > > > > *, void *),
+> > > > > > +			void *userdata);
+> > > > > >  int pci_cfg_space_size(struct pci_dev *dev);
+> > > > > >  unsigned char pci_bus_max_busnr(struct pci_bus *bus);
+> > > > > >  void pci_setup_bridge(struct pci_bus *bus);
+> > > > > > -- 
+> > > > > > 2.19.1  
+> 
+
+
