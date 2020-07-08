@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF6C2190E1
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 21:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F152190E8
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 21:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725848AbgGHTjL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jul 2020 15:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41760 "EHLO
+        id S1726100AbgGHTmV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Jul 2020 15:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgGHTjL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jul 2020 15:39:11 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E7AC061A0B;
-        Wed,  8 Jul 2020 12:39:11 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id p3so22154037pgh.3;
-        Wed, 08 Jul 2020 12:39:11 -0700 (PDT)
+        with ESMTP id S1725787AbgGHTmU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jul 2020 15:42:20 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC870C061A0B;
+        Wed,  8 Jul 2020 12:42:20 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id d194so18785396pga.13;
+        Wed, 08 Jul 2020 12:42:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WTMxuhF4PjD0nlzQ2RlEoSU3DISq4JMFhiXOc2dhut8=;
-        b=DKkGr6fBQ8dPpagkVIHS48tG8TgWYJZvhQtNOb7rE7EmDsx++o/fD7HCyzTiLGjQ6F
-         JyAVKI1hIsIlVOWXmwVNUkor0MdgGqZcSrhKSk09XOLQKCQTWvsuT9NY+J9JiKN3YI1U
-         yi5AUuMzfgocgULfIntC8pE/WXuVS9ADB0F66zN6g/osj8W0Svzr0WRZP/K+68kubfC6
-         Bg/0V6hPhq96RctZx9AgluCNsf6CFcPy9B9lzhoSoTGQW4mJlaNpNAa/+KQoLxG7J3tP
-         rpJx2uFbZLavBpv+5/4PNV8UGUw24CX5sXnO4juPfCjtk0CII7gv6oSsxuoic8WHHVj/
-         L/Jg==
+        bh=7G6ltnJN94V5vFco4LVG4XJeVPwmY/sgRzhDSq0hmSM=;
+        b=CBVChNL8SeoesTmrNwCj1CJczMw9dZnf0WyTEsmUH5uSRSQEA457tGStj7Rqg3vy3C
+         Jwu7teDNr9avBPOwVACWgZhAn+/BAqkYHqRCMbHAtoniUr62GkBa3EPSsl4Ot593Vcpi
+         QKy1H7MjM6+oPCFgbzFdRvyrCDTZxxy/jUtxlXr/Eats87/l+Eqh/ib3IyiHpMTlkja9
+         SP3+ax5cmUocaRXIhFvjiKJN88152AE1tIRu/2rg+0WeIvjlZMIosu3Bwy3GfAqy4GWO
+         /r3Nh/AOHzEr2ZchPJj6+f1RE26ttITzTwSQGXWMI61MmxBSLYdsi33YgKtX/MNrxwJO
+         FuIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WTMxuhF4PjD0nlzQ2RlEoSU3DISq4JMFhiXOc2dhut8=;
-        b=YOpEnRV5Ev9pI9wD+GvNa9khtQuNCLcTJ827bBbZs/8CKorciDJtvl5x8oYvaJVC8O
-         XHRbpbpVuqdqPJfy08VVRJ2KObcD5Xn3Q9/BgpUjCGpKG33Trlm4DcKAcoeS+335XQ2K
-         tKlvWR0gQkHAMaai0A3X5y9QQ2obifKr39o3tKp+M38sXMGb8vh/GqC2ywsavJxS0x9j
-         //Tsn78vpFqeqgRSDSmI8kwjXfnzSSfQd8JI6KQBheI1ve9DulTfp9c9qSf70ulfDq7s
-         2uAvX7B9/CHQdPdyWJOq/EwkWlVb5kL4HMUDJ+jFvWr4ddMZQ5QJxr9J8cl4vkyb6U9K
-         99Qg==
-X-Gm-Message-State: AOAM533j4L86A2t9gVeTq4nfnxtlICwGY8As6t39UtzXrQVidxBD4/Ly
-        xj9jOiqzTlj7oAAudLb//jVqIKPrAgCLak9ddYofW4PB
-X-Google-Smtp-Source: ABdhPJzJdg/FqcNBNSOJ8kS6Db1fKWu8wt49NKNdbKwuqObjdU+bRYMXAGB9iIFEIxwpCU8ECm7a9oVt9jERJuUDdTM=
-X-Received: by 2002:a63:924b:: with SMTP id s11mr49294907pgn.74.1594237150622;
- Wed, 08 Jul 2020 12:39:10 -0700 (PDT)
+        bh=7G6ltnJN94V5vFco4LVG4XJeVPwmY/sgRzhDSq0hmSM=;
+        b=Z8GdFljEP6QaS0P27L+QUtHsT8QCe/SKAXRzE06H1lE9kTcWg0d5eKHfbs2RJPtvi9
+         55X1BKbkatKXus3sqxyBnoesYYYPQ5A7JcsOj3MZeiL2rGYTRvK4Xh776aS7Hq2IWz7J
+         A49WYmk8ISuJOvr91CNdUWDeYC5HcheGq837DQ2WSTYz0YBF7vIe35T+PtGXpsLYcAML
+         CQS38PS0+txp34lBfs6mR4sezAzoKaVkyo291ud1Y2OLhztdbumHd5TzNL3jYVNbA+m0
+         p5DNji4noodwryagFCEOfda5F+rX5WVUUJWGSNvmUIMzjuNu8e1BgJNL/NfdBdJ+5bY6
+         PdcQ==
+X-Gm-Message-State: AOAM533L9pSv6/kv4Dzp0f61PMXMn570j+31/kMrtw3R53Ndv5++eHoP
+        gNVPp+aTSYmv9MUiXGBZ4+9oI3nFBqrcOYDyKno=
+X-Google-Smtp-Source: ABdhPJzbYIQ8iQ2iLlWYW3vwdC1mmBXa82AUFn/616J+D0YWLZFNacN4CnBVDsN9DefXTh16fr5do6OTFq+zb29tihI=
+X-Received: by 2002:a05:6a00:790:: with SMTP id g16mr19309617pfu.36.1594237340372;
+ Wed, 08 Jul 2020 12:42:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200708173435.16256-1-calvin.johnson@oss.nxp.com> <20200708173435.16256-3-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20200708173435.16256-3-calvin.johnson@oss.nxp.com>
+References: <20200708173435.16256-1-calvin.johnson@oss.nxp.com> <20200708173435.16256-4-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200708173435.16256-4-calvin.johnson@oss.nxp.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 8 Jul 2020 22:38:54 +0300
-Message-ID: <CAHp75VfcmctOquXGRRi-cfvaUVtSeQK0xeTh0HYtPcmzhv-8gQ@mail.gmail.com>
-Subject: Re: [net-next PATCH v3 2/5] net/fsl: store mdiobus fwnode
+Date:   Wed, 8 Jul 2020 22:42:04 +0300
+Message-ID: <CAHp75Vd05RCbuVF8rtWjZnaDxSG+X+uQ=wLWYwy_g=jFZfHGSQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 3/5] net: phy: introduce phy_find_by_fwnode()
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
 Cc:     Jeremy Linton <jeremy.linton@arm.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
@@ -70,20 +70,25 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Wed, Jul 8, 2020 at 8:35 PM Calvin Johnson
 <calvin.johnson@oss.nxp.com> wrote:
 >
-> Store fwnode for mdiobus in the bus structure so that it can
-> later be retrieved and used whenever mdiobus fwnode information
-> is required.
+> The PHYs on an mdiobus are probed and registered using mdiobus_register().
+> Later, for connecting these PHYs to MAC, the PHYs registered on the
+> mdiobus have to be referenced.
+>
+> For each MAC node, a property "mdio-handle" is used to reference the
+> MDIO bus on which the PHYs are registered. On getting hold of the MDIO
+> bus, use phy_find_by_fwnode() to get the PHY connected to the MAC.
+>
+> Introduce fwnode_mdio_find_bus() to find the mii_bus that corresponds
+> to given mii_bus fwnode.
 
 ...
 
-> +       if (pdev->dev.fwnode)
+> +       err = fwnode_property_read_u32(fwnode, "phy-channel", &addr);
+> +       if (err < 0 || addr < 0 || addr >= PHY_MAX_ADDR)
+> +               return NULL;
 
-But do you need this check?
-
-> +               bus->dev.fwnode = pdev->dev.fwnode;
-
-Shouldn't be rather something like dev_fwnode().
-And maybe set_primary_fwnode()? I'm not sure about the latter, though.
+Just wondering if we can return an error pointer here (sorry if it has
+been discussed already).
 
 -- 
 With Best Regards,
