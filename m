@@ -2,150 +2,263 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D2A92189EF
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 16:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 126C22189F0
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 16:17:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729540AbgGHORW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jul 2020 10:17:22 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:52594 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729468AbgGHORV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jul 2020 10:17:21 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 068E2pkQ169935;
-        Wed, 8 Jul 2020 10:17:20 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 325bew9240-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Jul 2020 10:17:19 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068EAQ7B030139;
-        Wed, 8 Jul 2020 14:17:18 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma05wdc.us.ibm.com with ESMTP id 324yf9xa1m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Jul 2020 14:17:18 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 068EHIaf14877592
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 8 Jul 2020 14:17:18 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2843EAC05B;
-        Wed,  8 Jul 2020 14:17:18 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 15779AC059;
-        Wed,  8 Jul 2020 14:17:18 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed,  8 Jul 2020 14:17:18 +0000 (GMT)
-Subject: Re: [PATCH v9 2/2] tpm: Add support for event log pointer found in
- TPM2 ACPI table
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20200706181953.3592084-1-stefanb@linux.vnet.ibm.com>
- <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
- <20200706230914.GC20770@linux.intel.com>
- <78ec872f-89b3-6464-6ede-bd0a46fe5c4c@linux.ibm.com>
- <20200707022416.GC112019@linux.intel.com>
- <f3e0fb50-8617-da40-1456-158531a070cb@linux.ibm.com>
- <20200707040325.GB143804@linux.intel.com>
- <85c27199-df55-eecc-855c-dedcea64f89e@linux.ibm.com>
- <20200708140753.GC538949@linux.intel.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <e42cb59d-6a3d-12be-bb51-88aa8c5dba23@linux.ibm.com>
-Date:   Wed, 8 Jul 2020 10:17:17 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200708140753.GC538949@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        id S1729469AbgGHORa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Jul 2020 10:17:30 -0400
+Received: from mga02.intel.com ([134.134.136.20]:30495 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729468AbgGHOR3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Jul 2020 10:17:29 -0400
+IronPort-SDR: Gjfwlfx5t2TIgJrQXy1WJ9+WTnYerUKKMc9ize17v/KGY/+n3muA4xp1fmHT3NRks2Xm380cmY
+ MOjtnLcgbX5w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9675"; a="136028944"
+X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
+   d="scan'208";a="136028944"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2020 07:17:26 -0700
+IronPort-SDR: xahbChJVmbzcjKFJ3xSPSQWzqZ3zFyuWDv9nDLDbAarsfXdk23CNMxQTv9h34EpV34LgKn5hMV
+ Qi/VzTomsjbQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
+   d="scan'208";a="314647535"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga008.jf.intel.com with ESMTP; 08 Jul 2020 07:17:26 -0700
+Received: from fmsmsx607.amr.corp.intel.com (10.18.126.87) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 8 Jul 2020 07:17:25 -0700
+Received: from FMSEDG001.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx607.amr.corp.intel.com (10.18.126.87) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Wed, 8 Jul 2020 07:17:25 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Wed, 8 Jul 2020 07:17:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YPh4iW9qj+WyEGZj2qAp6pO5iRkVMQbYk4LUCNKcV6GR2sk1lXu/BXnsK2VII7BeZLyU/OdFt3b2g6UNxLp0KvHLImWT7rb90EeKjP8+q8ufK8w6/pZzD5475LiXM4Uflf3fIZG4MEJO9SGUK3Mqzr8lat/E9wpZv26Xo1QCvlat4sfUvADCEXHNv3UTmvGcs0nCTmDwaKwBJ4pzENiazrrzUEiJ6V/8Fiel7Q8mAnocQw9Pzakma+ouzR8JuJUT8DTkLFKr+HSDe1UFl6KMSx+IQ7kG599/cLDSli8fBFFE4R+G+NiLMaTyaNON1z/rK5t/3NF1iPZ6yud0p0qDig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gYtYxdCen/JRczIGDDwL8lRWxTU7rv+MEPeVWpJ7Ndw=;
+ b=Art2Qw6GMAhsXme+CKTvWgC8KNFgSKE0QMRkf/roxIOY4zWNMHRtk578/7kHzsIXFyRQ9CiSAAkf9pM+5ms3jqXZwDMrCTe0a2gvZdWYubs2i5MWtG+H3mb9AGnEBeMxBkpMJCzzqzPgHnWWLPCouvr1WF+5xrGM5R7S209czevaUQaujbJMBibNfCTjzelpYdRzISW0DT2bY4G7WDAIUGD1eF6ZPPuC7EJXM6GYvmMpTKvOC2k7aNGAov55A4M57/sU7+Jn+hjpbJpYuBvsdEn0+6hMZ5Vu96skoDP3xW7TJs3s0i5m3jY7M2Wikn/jrIxO+rbaVA4+4GtTWYuL8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gYtYxdCen/JRczIGDDwL8lRWxTU7rv+MEPeVWpJ7Ndw=;
+ b=dqKjRU1uMLjaGlbWD0iTHJd4KOpGxdYhQnXjLw3PPXEgrgce46gjGJI3cUtIv8u4VwrAvPTpBIw492Xri6vgoty3vnK57Sb2jzyjmWYgP/p/lRObXbuov8wVicoKEQkGlSvj9hq5wiyof4Uz7uBZ9UOWvg8ZoDdGZanK8dja9G0=
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
+ by BY5PR11MB3976.namprd11.prod.outlook.com (2603:10b6:a03:187::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Wed, 8 Jul
+ 2020 14:17:20 +0000
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c]) by BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c%4]) with mapi id 15.20.3174.021; Wed, 8 Jul 2020
+ 14:17:20 +0000
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+CC:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
+Thread-Topic: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
+Thread-Index: AQHWVJmBbAsk81nWN025VkK0Ud6o36j9hEsAgAA3CfA=
+Date:   Wed, 8 Jul 2020 14:17:20 +0000
+Message-ID: <BYAPR11MB325602EDA2D2ACC2B28EAF4687670@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <20200707200716.GA4920@embeddedor>
+ <CAJZ5v0iDz_EsrpdMQQDfaVC2orMQkEcubmR6-J6mvtrXmKXbRg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iDz_EsrpdMQQDfaVC2orMQkEcubmR6-J6mvtrXmKXbRg@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-08_11:2020-07-08,2020-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- priorityscore=1501 cotscore=-2147483648 lowpriorityscore=0 suspectscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0 spamscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007080099
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.136.194]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d0994710-c8fd-473a-64c9-08d82349a08c
+x-ms-traffictypediagnostic: BY5PR11MB3976:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BY5PR11MB39765745365701DB3390A1CD87670@BY5PR11MB3976.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: rFjIGec/oz2PdqwXGQP7VseElVnOIrEndbE7YamBjrq37jdu10V4YCTIFJoB3smtXVUHrr9aBVRECbr8dZLGFcvdcrWzSE6r1zehbY8Q053zHPC+b78o/Dwp/+MjHaSQyMVr9xWRWa5uoRtSN2WpFWtUCDurzC3Ldt3OD75XI+f6WtMnIKib7Agp3LnPIqH0ZDKeaSl8ko9vK4+5+y1OBr3hCl62ie6vyL8Qbdx3jtBITGy97+5i+ys7/cxm+v6wpET/niDov3QliP8eNZM5d0yfpG1lUGNdTZwNQCVmnm6Dn/Y3zYnQtppwPF+4vRpWwpwCLAE/fhe27FCMaLM73PDZSXamvTVyFhEKIQDap5OEOxhi0Exdm/OIGNzBFfzY56qbID7FDZ0Gxikp0b9aLQaY2gcMTb2bCQ/n6vEuTCTM19H6QvXuyMWyjzrlCpPkexRy+n/Z885Ghp0vkn2bog==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(366004)(396003)(136003)(39860400002)(9686003)(8936002)(33656002)(55016002)(110136005)(316002)(66446008)(64756008)(66476007)(66556008)(76116006)(66946007)(52536014)(186003)(4326008)(966005)(26005)(478600001)(54906003)(86362001)(2906002)(5660300002)(7696005)(83380400001)(71200400001)(6506007)(8676002)(53546011)(14701465002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: GovK5vvulzMURfXjh5/7ArDdTeeIqOmuIvEUWRvWvRTtXaItLyw+CBFLA08ukuF11BhCCZYJ9KzvX8cbsWbyW/5AxWsXAPOm1rukPmpR2I7q7NH/bK8K4SGfj+vZ+AyD+7H6m4yUhCp07yfwNFaBsLNoPQ1Eg9D8GXV9rCCreMv1795ZTtPOzmk5Y+uyiv8leLQLR4ti4heovHcrnrgtysXybJBxllJuioSmKBcdnAY0XAldfdgM8lYKnzcKpEeP5TGKLdys98yFIRiyeh4a3VJXc1y2gwsYmzaIWqYW7hb+AOLPZlOq/61x+Z13OEZLETJW6RdJShJbN4Suahb6CRkafp0cQB287UY8t8PdUx6VeYYhpEDtAZYWILrFhmDDsBNEMTqHSnSuiWE51QskmniiE4KQLfNTePsitI31+Jx+1towhmUY+yAHo2XggOV6pUxChy8pS1KCFu6SBy5jtbqfYSOZqlN1AmZ3LIO4TjCGen9tt0xwoSwHZEicrmvY
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0994710-c8fd-473a-64c9-08d82349a08c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jul 2020 14:17:20.5132
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +rd+AunrhllR9IpgfOjB58FINmPVWLS9L8ccCJvNiik7/E6TqQ6GKVS6Yl0oj7LT4G7xyY7PJr+F8eFDSvLlgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB3976
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/8/20 10:07 AM, Jarkko Sakkinen wrote:
-> On Tue, Jul 07, 2020 at 12:09:11AM -0400, Stefan Berger wrote:
->> On 7/7/20 12:03 AM, Jarkko Sakkinen wrote:
->>> On Mon, Jul 06, 2020 at 11:08:12PM -0400, Stefan Berger wrote:
->>>> On 7/6/20 10:24 PM, Jarkko Sakkinen wrote:
->>>>> On Mon, Jul 06, 2020 at 07:55:26PM -0400, Stefan Berger wrote:
->>>>>> On 7/6/20 7:09 PM, Jarkko Sakkinen wrote:
->>>>>>> On Mon, Jul 06, 2020 at 02:19:53PM -0400, Stefan Berger wrote:
->>>>>>>> From: Stefan Berger <stefanb@linux.ibm.com>
->>>>>>>>
->>>>>>>> In case a TPM2 is attached, search for a TPM2 ACPI table when trying
->>>>>>>> to get the event log from ACPI. If one is found, use it to get the
->>>>>>>> start and length of the log area. This allows non-UEFI systems, such
->>>>>>>> as SeaBIOS, to pass an event log when using a TPM2.
->>>>>>>>
->>>>>>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>>>>> Do you think that QEMU with TPM 1.2 emulator turned on would be a viable
->>>>>>> way to test this?
->>>>>> Yes.
->>>>> Is the emulator bundled with QEMU or does it have to be installed
->>>>> separately?
->>>> It has to be installed separately. On Fedora 31 it would just be a `sudo dnf
->>>> -y install swtpm-tools` and you should be good to go with libvirt /
->>>> virt-manager.
->>> Is there some packaging for Debian/Ubuntu available?
->>
->> So far may not be available yet. I had *experimented* with a PPA once:
->> https://launchpad.net/~stefanberger/+archive/ubuntu/swtpm-focal
-> There is a snap available:
->
-> name:      swtpm-mvo
-> summary:   Libtpms-based TPM emulator
-> publisher: Michael Vogt (mvo)
-> store-url: https://snapcraft.io/swtpm-mvo
-> license:   unset
-> description: |
->    Libtpms-based TPM emulator with socket, character device, and Linux
->    CUSE interface.
-> commands:
->    - swtpm-mvo.swtpm
-> services:
->    swtpm-mvo.swtpm-sock: simple, enabled, active
-> snap-id:      HNl1TwHRBk3OtXQ8OriRB93FDZ6vman7
-> tracking:     latest/edge
-> refresh-date: today at 02:05 EEST
-> channels:
->    latest/stable:    –
->    latest/candidate: –
->    latest/beta:      0.1.0 2019-07-26 (11) 3MB -
->    latest/edge:      0.1.0 2020-07-08 (75) 3MB -
-> installed:          0.1.0            (74) 3MB -
->
-> This is the version information:
->
-> ❯ swtpm-mvo.swtpm --version
-> TPM emulator version 0.4.0, Copyright (c) 2014 IBM Corp.
->
-> However, if I try to run the first example from [*], I get:
->
-> ❯ swtpm-mvo.swtpm socket --tpmstate dir=/tmp/mytpm1 \
->    --ctrl type=unixio,path=/tmp/mytpm1/swtpm-sock \
->    --log level=20
-> swtpm: Could not open UnixIO socket: No such file or directory
-
-
-Did you create the directory '/tmp/mytpm1' ?
-
-
-> [*] https://www.qemu.org/docs/master/specs/tpm.html
->
-> /Jarkko
-
-
+SXQgbG9va3MgbGlrZSB0aGlzIGF0dHJpYnV0ZSBpcyBub3Qgc3VwcG9ydGVkIGJ5IG1zdmMgMjAx
+NyAoYW5kIHBlcmhhcHMgb3RoZXIgY29tcGlsZXJzKSAtLSBpdCBpcyBhcHBhcmVudGx5IGEgR0ND
+IGV4dGVuc2lvbiAtLSBtZWFuaW5nIHRoYXQgaXQgY2Fubm90IGJlIHVzZWQgaW4gdGhlIEFDUElD
+QSBjb21waWxlci1pbmRlcGVuZGVudCBjb2RlLg0KDQpCb2INCg0KDQotLS0tLU9yaWdpbmFsIE1l
+c3NhZ2UtLS0tLQ0KRnJvbTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPiAN
+ClNlbnQ6IFdlZG5lc2RheSwgSnVseSAwOCwgMjAyMCAzOjU5IEFNDQpUbzogR3VzdGF2byBBLiBS
+LiBTaWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3JnPg0KQ2M6IE1vb3JlLCBSb2JlcnQgPHJvYmVy
+dC5tb29yZUBpbnRlbC5jb20+OyBLYW5lZGEsIEVyaWsgPGVyaWsua2FuZWRhQGludGVsLmNvbT47
+IFd5c29ja2ksIFJhZmFlbCBKIDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT47IExlbiBCcm93
+biA8bGVuYkBrZXJuZWwub3JnPjsgQUNQSSBEZXZlbCBNYWxpbmcgTGlzdCA8bGludXgtYWNwaUB2
+Z2VyLmtlcm5lbC5vcmc+OyBvcGVuIGxpc3Q6QUNQSSBDT01QT05FTlQgQVJDSElURUNUVVJFIChB
+Q1BJQ0EpIDxkZXZlbEBhY3BpY2Eub3JnPjsgTGludXggS2VybmVsIE1haWxpbmcgTGlzdCA8bGlu
+dXgta2VybmVsQHZnZXIua2VybmVsLm9yZz4NClN1YmplY3Q6IFJlOiBbUEFUQ0hdW25leHRdIEFD
+UElDQTogVXNlIGZhbGx0aHJvdWdoIHBzZXVkby1rZXl3b3JkDQoNCk9uIFR1ZSwgSnVsIDcsIDIw
+MjAgYXQgMTA6MDEgUE0gR3VzdGF2byBBLiBSLiBTaWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3Jn
+PiB3cm90ZToNCj4NCj4gUmVwbGFjZSB0aGUgZXhpc3RpbmcgLyogZmFsbCB0aHJvdWdoICovIGNv
+bW1lbnRzIGFuZCBpdHMgdmFyaWFudHMgd2l0aCANCj4gdGhlIG5ldyBwc2V1ZG8ta2V5d29yZCBt
+YWNybyBmYWxsdGhyb3VnaFsxXS4gQWxzbywgcmVtb3ZlIHVubmVjZXNzYXJ5IA0KPiBmYWxsLXRo
+cm91Z2ggbWFya2luZ3Mgd2hlbiBpdCBpcyB0aGUgY2FzZS4NCj4NCj4gWzFdIA0KPiBodHRwczov
+L3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9jZXNzL2RlcHJlY2F0ZWQuaHRtbD9o
+aWdobGlnDQo+IGh0PWZhbGx0aHJvdWdoI2ltcGxpY2l0LXN3aXRjaC1jYXNlLWZhbGwtdGhyb3Vn
+aA0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBHdXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvYXJzQGtl
+cm5lbC5vcmc+DQoNCkkgbmVlZCB0byB0YWxrIHRvIEVyaWsgYW5kIEJvYiBhYm91dCB0aGlzIG9u
+ZS4NCg0KPiAtLS0NCj4gIGRyaXZlcnMvYWNwaS9hY3BpY2EvZHNjb250cm9sLmMgfCAgICAyICst
+DQo+ICBkcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2V4ZWMuYyAgIHwgICAgMyArLS0NCj4gIGRyaXZl
+cnMvYWNwaS9hY3BpY2EvZHN3bG9hZC5jICAgfCAgICAyICstDQo+ICBkcml2ZXJzL2FjcGkvYWNw
+aWNhL2Rzd2xvYWQyLmMgIHwgICAgNCArLS0tDQo+ICBkcml2ZXJzL2FjcGkvYWNwaWNhL2V4Zmxk
+aW8uYyAgIHwgICAgMiArLQ0KPiAgZHJpdmVycy9hY3BpL2FjcGljYS9leHJlc29wLmMgICB8ICAg
+IDQgKystLQ0KPiAgZHJpdmVycy9hY3BpL2FjcGljYS9leHN0b3JlLmMgICB8ICAgIDQgKystLQ0K
+PiAgZHJpdmVycy9hY3BpL2FjcGljYS9od2dwZS5jICAgICB8ICAgIDMgKy0tDQo+ICBkcml2ZXJz
+L2FjcGkvYWNwaWNhL3V0ZGVsZXRlLmMgIHwgICAgMyArLS0NCj4gIGRyaXZlcnMvYWNwaS9hY3Bp
+Y2EvdXRwcmludC5jICAgfCAgICAyICstDQo+ICAxMCBmaWxlcyBjaGFuZ2VkLCAxMiBpbnNlcnRp
+b25zKCspLCAxNyBkZWxldGlvbnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9h
+Y3BpY2EvZHNjb250cm9sLmMgDQo+IGIvZHJpdmVycy9hY3BpL2FjcGljYS9kc2NvbnRyb2wuYyBp
+bmRleCA0YjViNmU4NTlmNjIuLjEzNGQ1MzM4MDY2MyANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
+cnMvYWNwaS9hY3BpY2EvZHNjb250cm9sLmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS9k
+c2NvbnRyb2wuYw0KPiBAQCAtNjIsNyArNjIsNyBAQCBhY3BpX2RzX2V4ZWNfYmVnaW5fY29udHJv
+bF9vcChzdHJ1Y3QgYWNwaV93YWxrX3N0YXRlICp3YWxrX3N0YXRlLA0KPiAgICAgICAgICAgICAg
+ICAgICAgICAgICB9DQo+ICAgICAgICAgICAgICAgICB9DQo+DQo+IC0gICAgICAgICAgICAgICAv
+KmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4N
+Cj4gICAgICAgICBjYXNlIEFNTF9JRl9PUDoNCj4gICAgICAgICAgICAgICAgIC8qDQo+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2V4ZWMuYyANCj4gYi9kcml2ZXJzL2FjcGkv
+YWNwaWNhL2Rzd2V4ZWMuYyBpbmRleCAxZDRmOGM4MTAyOGMuLjQxZjZjYjYxNzc4YSANCj4gMTAw
+NjQ0DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3ZXhlYy5jDQo+ICsrKyBiL2RyaXZl
+cnMvYWNwaS9hY3BpY2EvZHN3ZXhlYy5jDQo+IEBAIC01OTgsOCArNTk4LDcgQEAgYWNwaV9zdGF0
+dXMgYWNwaV9kc19leGVjX2VuZF9vcChzdHJ1Y3QgYWNwaV93YWxrX3N0YXRlICp3YWxrX3N0YXRl
+KQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KPg0KPiAtICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIC8qIEZhbGwgdGhyb3VnaCAqLw0KPiAtICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgY2Fz
+ZSBBTUxfSU5UX0VWQUxfU1VCVFJFRV9PUDoNCj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNw
+aS9hY3BpY2EvZHN3bG9hZC5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3bG9hZC5jIGlu
+ZGV4IDI3MDY5MzI1YjZkZS4uMWQ4Nzg5ODY5ZGRhIA0KPiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVy
+cy9hY3BpL2FjcGljYS9kc3dsb2FkLmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS9kc3ds
+b2FkLmMNCj4gQEAgLTIyNCw3ICsyMjQsNyBAQCBhY3BpX2RzX2xvYWQxX2JlZ2luX29wKHN0cnVj
+dCBhY3BpX3dhbGtfc3RhdGUgKndhbGtfc3RhdGUsDQo+ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4NCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiArICAgICAgICAgICAg
+ICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgIGRlZmF1bHQ6DQo+
+DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2Rzd2xvYWQyLmMgDQo+IGIvZHJp
+dmVycy9hY3BpL2FjcGljYS9kc3dsb2FkMi5jIGluZGV4IGVkYWRiZTE0NjUwNi4uZGUzNjdlOGU0
+Y2Y0IA0KPiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9hY3BpL2FjcGljYS9kc3dsb2FkMi5jDQo+
+ICsrKyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZHN3bG9hZDIuYw0KPiBAQCAtMjEzLDkgKzIxMyw3
+IEBAIGFjcGlfZHNfbG9hZDJfYmVnaW5fb3Aoc3RydWN0IGFjcGlfd2Fsa19zdGF0ZSAqd2Fsa19z
+dGF0ZSwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYXJzZV9mbGFncyAmIEFDUElf
+UEFSU0VfTU9EVUxFX0xFVkVMKSkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGJyZWFrOw0KPiAgICAgICAgICAgICAgICAgICAgICAgICB9DQo+IC0NCj4gLSAgICAgICAgICAg
+ICAgICAgICAgICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiAtDQo+ICsgICAgICAgICAgICAg
+ICAgICAgICAgIGZhbGx0aHJvdWdoOw0KPiAgICAgICAgICAgICAgICAgZGVmYXVsdDoNCj4NCj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgLyogQWxsIG90aGVyIHR5cGVzIGFyZSBhbiBlcnJvciAq
+LyBkaWZmIC0tZ2l0IA0KPiBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhmbGRpby5jIGIvZHJpdmVy
+cy9hY3BpL2FjcGljYS9leGZsZGlvLmMgaW5kZXggDQo+IGFkZTM1ZmYxYzdiYS4uNjc3YmEzYWIx
+NDgyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4ZmxkaW8uYw0KPiArKysg
+Yi9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4ZmxkaW8uYw0KPiBAQCAtNDM0LDcgKzQzNCw3IEBAIGFj
+cGlfZXhfZmllbGRfZGF0dW1faW8odW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqb2JqX2Rlc2Ms
+DQo+ICAgICAgICAgICAgICAgICAgKiByZWdpb25fZmllbGQgY2FzZSBhbmQgd3JpdGUgdGhlIGRh
+dHVtIHRvIHRoZSBPcGVyYXRpb24gUmVnaW9uDQo+ICAgICAgICAgICAgICAgICAgKi8NCj4NCj4g
+LSAgICAgICAgICAgICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAg
+IGZhbGx0aHJvdWdoOw0KPg0KPiAgICAgICAgIGNhc2UgQUNQSV9UWVBFX0xPQ0FMX1JFR0lPTl9G
+SUVMRDoNCj4gICAgICAgICAgICAgICAgIC8qDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkv
+YWNwaWNhL2V4cmVzb3AuYyANCj4gYi9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4cmVzb3AuYyBpbmRl
+eCA0ZDFiMjI5NzFkNTguLjdjODY3NmFkY2Y0MyANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
+YWNwaS9hY3BpY2EvZXhyZXNvcC5jDQo+ICsrKyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhyZXNv
+cC5jDQo+IEBAIC0xOTgsNyArMTk4LDcgQEAgYWNwaV9leF9yZXNvbHZlX29wZXJhbmRzKHUxNiBv
+cGNvZGUsDQo+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0YXJn
+ZXRfb3AgPSBBTUxfREVCVUdfT1A7DQo+DQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBjYXNlIEFDUElfUkVGQ0xBU1NfQVJHOg0KPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIGNhc2UgQUNQSV9SRUZDTEFTU19MT0NBTDoNCj4gQEAgLTI2NCw3ICsy
+NjQsNyBAQCBhY3BpX2V4X3Jlc29sdmVfb3BlcmFuZHModTE2IG9wY29kZSwNCj4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICogRWxzZSBub3QgYSBzdHJpbmcgLSBmYWxsIHRocm91Z2ggdG8gdGhl
+IG5vcm1hbCBSZWZlcmVuY2UNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICogY2FzZSBiZWxv
+dw0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgKi8NCj4gLSAgICAgICAgICAgICAgICAgICAg
+ICAgLypsaW50IC1mYWxsdGhyb3VnaCAqLw0KPiArICAgICAgICAgICAgICAgICAgICAgICBmYWxs
+dGhyb3VnaDsNCj4NCj4gICAgICAgICAgICAgICAgIGNhc2UgQVJHSV9SRUZFUkVOQ0U6ICAgIC8q
+IFJlZmVyZW5jZXM6ICovDQo+ICAgICAgICAgICAgICAgICBjYXNlIEFSR0lfSU5URUdFUl9SRUY6
+DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V4c3RvcmUuYyANCj4gYi9kcml2
+ZXJzL2FjcGkvYWNwaWNhL2V4c3RvcmUuYyBpbmRleCAzYWRjMGEyOWQ4OTAuLmZjZjhkZmY1NmM1
+YiANCj4gMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhzdG9yZS5jDQo+ICsr
+KyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvZXhzdG9yZS5jDQo+IEBAIC05Niw3ICs5Niw3IEBAIGFj
+cGlfZXhfc3RvcmUodW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqc291cmNlX2Rlc2MsDQo+ICAg
+ICAgICAgICAgICAgICAgICAgICAgIHJldHVybl9BQ1BJX1NUQVRVUyhBRV9PSyk7DQo+ICAgICAg
+ICAgICAgICAgICB9DQo+DQo+IC0gICAgICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICov
+DQo+ICsgICAgICAgICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICBkZWZhdWx0Og0K
+Pg0KPiBAQCAtNDIyLDcgKzQyMiw3IEBAIGFjcGlfZXhfc3RvcmVfb2JqZWN0X3RvX25vZGUodW5p
+b24gYWNwaV9vcGVyYW5kX29iamVjdCAqc291cmNlX2Rlc2MsDQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4NCj4g
+LSAgICAgICAgICAgICAgICAgICAgICAgLyogRmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgZmFsbHRocm91Z2g7DQo+DQo+ICAgICAgICAgICAgICAgICBjYXNlIEFDUElf
+VFlQRV9ERVZJQ0U6DQo+ICAgICAgICAgICAgICAgICBjYXNlIEFDUElfVFlQRV9FVkVOVDoNCj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvaHdncGUuYyBiL2RyaXZlcnMvYWNwaS9h
+Y3BpY2EvaHdncGUuYyANCj4gaW5kZXggNDljNDZkNGRkMDcwLi4xOWQ1NzRmNjRjNzggMTAwNjQ0
+DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvaHdncGUuYw0KPiArKysgYi9kcml2ZXJzL2Fj
+cGkvYWNwaWNhL2h3Z3BlLmMNCj4gQEAgLTk1LDggKzk1LDcgQEAgYWNwaV9od19sb3dfc2V0X2dw
+ZShzdHJ1Y3QgYWNwaV9ncGVfZXZlbnRfaW5mbyAqZ3BlX2V2ZW50X2luZm8sIHUzMiBhY3Rpb24p
+DQo+ICAgICAgICAgICAgICAgICBpZiAoIShyZWdpc3Rlcl9iaXQgJiBncGVfcmVnaXN0ZXJfaW5m
+by0+ZW5hYmxlX21hc2spKSB7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAoQUVf
+QkFEX1BBUkFNRVRFUik7DQo+ICAgICAgICAgICAgICAgICB9DQo+IC0NCj4gLSAgICAgICAgICAg
+ICAgIC8qbGludCAtZmFsbHRocm91Z2ggKi8NCj4gKyAgICAgICAgICAgICAgIGZhbGx0aHJvdWdo
+Ow0KPg0KPiAgICAgICAgIGNhc2UgQUNQSV9HUEVfRU5BQkxFOg0KPg0KPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9hY3BpL2FjcGljYS91dGRlbGV0ZS5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2Ev
+dXRkZWxldGUuYyBpbmRleCBjMzY1ZmFmNGU2Y2QuLjZkYjA5ZWI5ZDI1NyANCj4gMTAwNjQ0DQo+
+IC0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvdXRkZWxldGUuYw0KPiArKysgYi9kcml2ZXJzL2Fj
+cGkvYWNwaWNhL3V0ZGVsZXRlLmMNCj4gQEAgLTExMSw4ICsxMTEsNyBAQCBzdGF0aWMgdm9pZCBh
+Y3BpX3V0X2RlbGV0ZV9pbnRlcm5hbF9vYmoodW5pb24gYWNwaV9vcGVyYW5kX29iamVjdCAqb2Jq
+ZWN0KQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAodm9pZClhY3BpX2V2X2RlbGV0ZV9ncGVf
+YmxvY2sob2JqZWN0LT5kZXZpY2UuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBncGVfYmxvY2spOw0KPiAgICAgICAgICAgICAgICAgfQ0K
+PiAtDQo+IC0gICAgICAgICAgICAgICAvKmxpbnQgLWZhbGx0aHJvdWdoICovDQo+ICsgICAgICAg
+ICAgICAgICBmYWxsdGhyb3VnaDsNCj4NCj4gICAgICAgICBjYXNlIEFDUElfVFlQRV9QUk9DRVNT
+T1I6DQo+ICAgICAgICAgY2FzZSBBQ1BJX1RZUEVfVEhFUk1BTDoNCj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvYWNwaS9hY3BpY2EvdXRwcmludC5jIA0KPiBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvdXRw
+cmludC5jIGluZGV4IDY4MWMxMWY0YWY0ZS4uZjdlNDNiYWY1ZmYyIA0KPiAxMDA2NDQNCj4gLS0t
+IGEvZHJpdmVycy9hY3BpL2FjcGljYS91dHByaW50LmMNCj4gKysrIGIvZHJpdmVycy9hY3BpL2Fj
+cGljYS91dHByaW50LmMNCj4gQEAgLTQ3NSw3ICs0NzUsNyBAQCBpbnQgdnNucHJpbnRmKGNoYXIg
+KnN0cmluZywgYWNwaV9zaXplIHNpemUsIGNvbnN0IGNoYXIgKmZvcm1hdCwgdmFfbGlzdCBhcmdz
+KQ0KPiAgICAgICAgICAgICAgICAgY2FzZSAnWCc6DQo+DQo+ICAgICAgICAgICAgICAgICAgICAg
+ICAgIHR5cGUgfD0gQUNQSV9GT1JNQVRfVVBQRVI7DQo+IC0gICAgICAgICAgICAgICAgICAgICAg
+IC8qIEZBTExUSFJPVUdIICovDQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGZhbGx0aHJvdWdo
+Ow0KPg0KPiAgICAgICAgICAgICAgICAgY2FzZSAneCc6DQo+DQo+DQo=
