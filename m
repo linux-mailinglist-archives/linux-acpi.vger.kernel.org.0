@@ -2,194 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9716E219FDF
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 14:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0446321A00D
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 14:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbgGIMS0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 08:18:26 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:43278 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726327AbgGIMS0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 08:18:26 -0400
-Received: by mail-oi1-f194.google.com with SMTP id x83so1671643oif.10;
-        Thu, 09 Jul 2020 05:18:25 -0700 (PDT)
+        id S1726340AbgGIMbk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jul 2020 08:31:40 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:27795 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726327AbgGIMbj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 08:31:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594297897;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3Vo20j4iMPqrhoCqwlLsKel/ltj0qPrKZtzlPUStUTw=;
+        b=gkuhtYvCf19Txj/FFPYg6dCvnmN+gnupfHmnz4qldLqhk7ZB6mEWeLu8OuUqv1GR9VkYNV
+        oxqkeGAnXq2kpR8uTwGEfuw+YAcqe2za+gOUoAouX6RgFKoR/Xusj1t/NHeA9f/vaht+4R
+        EYxxyAT7PlRhXAwzqR/pTN4/HMATQhM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-166-isAUDcAbMtuGzhyq_djLYg-1; Thu, 09 Jul 2020 08:31:36 -0400
+X-MC-Unique: isAUDcAbMtuGzhyq_djLYg-1
+Received: by mail-wm1-f72.google.com with SMTP id q20so2012276wme.3
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jul 2020 05:31:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BHVNxL+/4Dut3OSZTR+rYs7XqFLN3i0nnfmN8u7+xOA=;
-        b=HsPvqGX/GQ4OR4PD8qcCtxVGfclDRun1lAmESdkuU5btq7AutoGcvN2+yohnLpnadd
-         tO60+9ABX4LJe7VCGmwf3pMI0Wt1N8tamr/dvrWsGebqc3FP3mb9sonTbgnWOl2SQJlL
-         XrMcCPoWHbBo1ReQEkC5cDiVhkDhg/amdZE7fFBqo6gU3bkQKQ/Af52flG6sJY2c8EI7
-         d8f/IOU/hs3D5OqeNUDtC5WOWMs620lKXhe0IQgsWQZWUMi/uGVUYieMxucFV7xyzYcs
-         EzH+gn1USAQ2/QGft1FL1b4AIs4vs8pz6/nhGibMmQkjTqmyS7KOxkq3mjRBGnsYvNiJ
-         HYeQ==
-X-Gm-Message-State: AOAM532wTK2f2HpwOkCilCgt7dQ/Nsva5wPIK2qVvOttSL6JD3fYtrE9
-        5NR/R1T7hZM+PT3ikdyQUQB0WiT8/B8serd8Okc=
-X-Google-Smtp-Source: ABdhPJxtj1vjB44EgNVrKbINxMf3MLBQQVOimbtqX57PoimFmHD9A3C9Fv4wq87LSAfsDKch7XlhTuenX5e7j0W2xjI=
-X-Received: by 2002:aca:4a89:: with SMTP id x131mr11420648oia.103.1594297104569;
- Thu, 09 Jul 2020 05:18:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com> <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
-In-Reply-To: <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jul 2020 14:18:13 +0200
-Message-ID: <CAJZ5v0ihB5AJwSRpjaOnXAmciregzxARL5xfudu1h+=_LXaE_w@mail.gmail.com>
-Subject: Re: [PATCH v2] cpuidle: change enter_s2idle() prototype
-To:     Neal Liu <neal.liu@mediatek.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3Vo20j4iMPqrhoCqwlLsKel/ltj0qPrKZtzlPUStUTw=;
+        b=mEdXtSW04I8PDqckQSLxYl+Bw7KqgbBG5wAnNiB/mv6nQON7EXvpvkDd8OvwW8S+PB
+         sQEd81CRoN0NXgCvPJ5ehLfo69n7yJ7yCpK5J5lrVvfVVLpjdjhKENrJPB4hQgR+2QLN
+         4DsIcII6RDMneDAWsU3gjyyiLWnWC+nT5KrVBZc7AYshlBDn6tWpcNVeFEbwGBJDGSp6
+         guZbQrZZ/HOghvoo3l047I2esbAgjcIHgOztFFt6M/CwRd4LvuKL2/qFoQUfWP5GkYbS
+         /Wh6bbzeHpTdz7SuQOBAFV9diwE0xbkdK3jEcMI4KzNjRId5Tt9sa1U4lVhTPdfSKc50
+         ZNtg==
+X-Gm-Message-State: AOAM531j/SqEsLU1A3u/2eZCW9szC1WQBy61vN55GtgJNxg5zho+HuUV
+        nlrWQJ4vfzkDr6Qr6cwVI5dq38ilKWdbNkwlZ1EGypCFJT/DmbgseaSUDOvbDUpuom+fhWDhpfc
+        Wv6KomzaUu+aflBNToI0Hew==
+X-Received: by 2002:a5d:4603:: with SMTP id t3mr68008322wrq.38.1594297895025;
+        Thu, 09 Jul 2020 05:31:35 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyhE3xnq9hkLPcgI4Y01gRttHJDRLv5NUTk2EJrnU3U0buw0nCVfRWQuBAQIn/0DuJG0skEOQ==
+X-Received: by 2002:a5d:4603:: with SMTP id t3mr68008299wrq.38.1594297894756;
+        Thu, 09 Jul 2020 05:31:34 -0700 (PDT)
+Received: from x1.localdomain ([2a0e:5700:4:11:334c:7e36:8d57:40cb])
+        by smtp.gmail.com with ESMTPSA id k126sm4748329wmf.3.2020.07.09.05.31.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jul 2020 05:31:34 -0700 (PDT)
+Subject: Re: [Bug 1854502] New: Noticeably Increased CPU temperature
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, wsd_upstream@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-acpi <linux-acpi@vger.kernel.org>
+References: <bug-1854502-8448@https.bugzilla.redhat.com/>
+ <9b3d85b5-b562-631f-adfd-6460bc6c4179@redhat.com>
+ <CAJZ5v0gO7b8X6MMDO_UvGBc-PNH-o=U47+MuS1uk4E_tSF-Ogg@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <db2b75b7-afc9-7a44-762f-2a4ebd63b4ee@redhat.com>
+Date:   Thu, 9 Jul 2020 14:31:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAJZ5v0gO7b8X6MMDO_UvGBc-PNH-o=U47+MuS1uk4E_tSF-Ogg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 6, 2020 at 5:13 AM Neal Liu <neal.liu@mediatek.com> wrote:
->
-> Control Flow Integrity(CFI) is a security mechanism that disallows
-> changes to the original control flow graph of a compiled binary,
-> making it significantly harder to perform such attacks.
->
-> init_state_node() assign same function callback to different
-> function pointer declarations.
->
-> static int init_state_node(struct cpuidle_state *idle_state,
->                            const struct of_device_id *matches,
->                            struct device_node *state_node) { ...
->         idle_state->enter = match_id->data; ...
->         idle_state->enter_s2idle = match_id->data; }
->
-> Function declarations:
->
-> struct cpuidle_state { ...
->         int (*enter) (struct cpuidle_device *dev,
->                       struct cpuidle_driver *drv,
->                       int index);
->
->         void (*enter_s2idle) (struct cpuidle_device *dev,
->                               struct cpuidle_driver *drv,
->                               int index); };
->
-> In this case, either enter() or enter_s2idle() would cause CFI check
-> failed since they use same callee.
+Hi,
 
-Can you please explain this in a bit more detail?
+On 7/7/20 5:43 PM, Rafael J. Wysocki wrote:
+> Hi Hans,
+> 
+> On Tue, Jul 7, 2020 at 5:32 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi Rafael,
+>>
+>> I got a copy of the below bugreport in my mailbox and I
+>> was wondering if this rings any bells.
+>>
+>> Are there any relevant power-management / scheduler
+>> changes in 5.7 (vs 5.6) which might be related?
+> 
+> There were a few, but I'm not sure how they can cause thermal issues to happen.
+> 
+>> And is there any quick way for the reporter to test this
+>> (by e.g. picking a different scheduler / cpufreq-governor).
+> 
+> Well, as usual, I would recommend looking for possible configuration
+> differences between the good and bad cases, ie. different default
+> governors, different cpufreq/cpuidle drivers etc.
+> 
+> Also, if the system is Intel-based, run turbostat to collect CPU PM
+> information for both the good and bad cases.
 
-As it stands, I don't understand the problem statement enough to apply
-the patch.
+Ok I've asked the user to run some tests and provide powertop
+and turbostat outputs for both the cold and hot cases.
 
-> Align function prototype of enter() since it needs return value for
-> some use cases. The return value of enter_s2idle() is no
-> need currently.
+I will follow-up on this when I know more.
 
-So last time I requested you to document why ->enter_s2idle needs to
-return an int in the code, which has not been done.  Please do that.
+Regards,
 
-> Signed-off-by: Neal Liu <neal.liu@mediatek.com>
-> ---
->  drivers/acpi/processor_idle.c   |    6 ++++--
->  drivers/cpuidle/cpuidle-tegra.c |    8 +++++---
->  drivers/idle/intel_idle.c       |    6 ++++--
->  include/linux/cpuidle.h         |    6 +++---
->  4 files changed, 16 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 75534c5..6ffb6c9 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -655,8 +655,8 @@ static int acpi_idle_enter(struct cpuidle_device *dev,
->         return index;
->  }
->
-> -static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
-> -                                  struct cpuidle_driver *drv, int index)
-> +static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
-> +                                 struct cpuidle_driver *drv, int index)
->  {
->         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
->
-> @@ -674,6 +674,8 @@ static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
->                 }
->         }
->         acpi_idle_do_entry(cx);
-> +
-> +       return 0;
->  }
->
->  static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
-> diff --git a/drivers/cpuidle/cpuidle-tegra.c b/drivers/cpuidle/cpuidle-tegra.c
-> index 1500458..a12fb14 100644
-> --- a/drivers/cpuidle/cpuidle-tegra.c
-> +++ b/drivers/cpuidle/cpuidle-tegra.c
-> @@ -253,11 +253,13 @@ static int tegra_cpuidle_enter(struct cpuidle_device *dev,
->         return err ? -1 : index;
->  }
->
-> -static void tegra114_enter_s2idle(struct cpuidle_device *dev,
-> -                                 struct cpuidle_driver *drv,
-> -                                 int index)
-> +static int tegra114_enter_s2idle(struct cpuidle_device *dev,
-> +                                struct cpuidle_driver *drv,
-> +                                int index)
->  {
->         tegra_cpuidle_enter(dev, drv, index);
-> +
-> +       return 0;
->  }
->
->  /*
-> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-> index f449584..b178da3 100644
-> --- a/drivers/idle/intel_idle.c
-> +++ b/drivers/idle/intel_idle.c
-> @@ -175,13 +175,15 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
->   * Invoked as a suspend-to-idle callback routine with frozen user space, frozen
->   * scheduler tick and suspended scheduler clock on the target CPU.
->   */
-> -static __cpuidle void intel_idle_s2idle(struct cpuidle_device *dev,
-> -                                       struct cpuidle_driver *drv, int index)
-> +static __cpuidle int intel_idle_s2idle(struct cpuidle_device *dev,
-> +                                      struct cpuidle_driver *drv, int index)
->  {
->         unsigned long eax = flg2MWAIT(drv->states[index].flags);
->         unsigned long ecx = 1; /* break on interrupt flag */
->
->         mwait_idle_with_hints(eax, ecx);
-> +
-> +       return 0;
->  }
->
->  /*
-> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-> index ec2ef63..bee10c0 100644
-> --- a/include/linux/cpuidle.h
-> +++ b/include/linux/cpuidle.h
-> @@ -66,9 +66,9 @@ struct cpuidle_state {
->          * suspended, so it must not re-enable interrupts at any point (even
->          * temporarily) or attempt to change states of clock event devices.
->          */
-> -       void (*enter_s2idle) (struct cpuidle_device *dev,
-> -                             struct cpuidle_driver *drv,
-> -                             int index);
-> +       int (*enter_s2idle)(struct cpuidle_device *dev,
-> +                           struct cpuidle_driver *drv,
-> +                           int index);
->  };
->
->  /* Idle State Flags */
-> --
-> 1.7.9.5
+Hans
+
+
+>> -------- Forwarded Message --------
+>> Subject: [Bug 1854502] New: Noticeably Increased CPU temperature
+>> Date: Tue, 07 Jul 2020 15:23:38 +0000
+>> From: bugzilla@redhat.com
+>> To: hdegoede@redhat.com
+>>
+>> https://bugzilla.redhat.com/show_bug.cgi?id=1854502
+>>
+>>               Bug ID: 1854502
+>>              Summary: Noticeably Increased CPU temperature
+>>              Product: Fedora
+>>              Version: 32
+>>             Hardware: x86_64
+>>                   OS: Linux
+>>               Status: NEW
+>>            Component: kernel
+>>             Severity: medium
+>>             Assignee: kernel-maint@redhat.com
+>>             Reporter: aria.aghazade@gmail.com
+>>           QA Contact: extras-qa@fedoraproject.org
+>>                   CC: acaringi@redhat.com, airlied@redhat.com,
+>>                       bskeggs@redhat.com, hdegoede@redhat.com,
+>>                       ichavero@redhat.com, itamar@ispbrasil.com.br,
+>>                       jarodwilson@gmail.com, jeremy@jcline.org,
+>>                       jglisse@redhat.com, john.j5live@gmail.com,
+>>                       jonathan@jonmasters.org, josef@toxicpanda.com,
+>>                       kernel-maint@redhat.com, lgoncalv@redhat.com,
+>>                       linville@redhat.com, masami256@gmail.com,
+>>                       mchehab@infradead.org, mjg59@srcf.ucam.org,
+>>                       steved@redhat.com
+>>     Target Milestone: ---
+>>       Classification: Fedora
+>>
+>>
+>>
+>> First things first, I'm running Fedora 32 with latest packages on intel 6700hq.
+>> With latest kernel-5.7, cpu temperatures are noticeably higher.
+>> Using kernel-5.6 my idle cpu temperature is around 35-40°C, but with kernel-5.7
+>> its around 50-55. Htop and KDE System Monitor don't show anything using cpu and
+>> idle cpu usage on both kernels is 0-2%.
+>>
+>> I first noticed this issue on kernel-5.7.6-201.fc32.x86_64, and it is also
+>> there with kernel-5.7.7-200.fc32.x86_64.
+>>
+>> Booting with kernel-5.6.19-300.fc32.x86_64 fixes the issue.
+>>
+>>
+>> Are you running any modules that not shipped with directly Fedora's kernel? No.
+> 
+
