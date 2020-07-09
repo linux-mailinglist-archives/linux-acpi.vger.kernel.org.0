@@ -2,214 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B29219FB4
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 14:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9716E219FDF
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 14:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbgGIMKz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 08:10:55 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43453 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726599AbgGIMKz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 08:10:55 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 95so1497874otw.10;
-        Thu, 09 Jul 2020 05:10:54 -0700 (PDT)
+        id S1726836AbgGIMS0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jul 2020 08:18:26 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:43278 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726327AbgGIMS0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 08:18:26 -0400
+Received: by mail-oi1-f194.google.com with SMTP id x83so1671643oif.10;
+        Thu, 09 Jul 2020 05:18:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YOjL0UML2dSKlLSP/sqPvKmua2zfxEU3z20Tax7E+dU=;
-        b=Ycmt5KN1TlQ92MyNOHAfWi9PllW2dIhKvgxhzggdU4bznyc5v+Z3rY0RcnxCC4gS/p
-         X2MTr/juJKDsz9P3DNEaZhNfsxazLxGSadLX1NlnyuP4yjYG3fTm9MoxYxFrV9yVy8hK
-         x3g7pEAPMHoQc/tK+AAWPBpKOIAzJZ1AIDAmXvCBmb4g243I3FJJBTEriZreS/NFHqdS
-         jryxS07CEXF9hFr8oWBLAefKwXPAZy+SrvVTa4kP38p8T9ujNzH/yyHl9HzOhMJp7Xlp
-         WTAkJ5TTeqeT8VPqiBf+P5lu9c3JRxBrNBniFxsGNDZ0+uxllQtlFE23JVWwYaQrWo9t
-         zffw==
-X-Gm-Message-State: AOAM5329nuxqcoMscbRHC8oC2v4QQ/jeSOAA/3ixqjiMIL4uQnG7tjOh
-        42MfTpxeBtF8PAfuGIXBzPDB3XU4w/Qc4wUWkD8=
-X-Google-Smtp-Source: ABdhPJzrdCIXJtWpQ57B//JafGA2Ik24qTnJZ4xpWpyPvoIKWIHmwlPcOqcrf6uegkz7DGv/y4jHGoguZ6n44qDt5Cw=
-X-Received: by 2002:a9d:590a:: with SMTP id t10mr17147901oth.262.1594296653915;
- Thu, 09 Jul 2020 05:10:53 -0700 (PDT)
+        bh=BHVNxL+/4Dut3OSZTR+rYs7XqFLN3i0nnfmN8u7+xOA=;
+        b=HsPvqGX/GQ4OR4PD8qcCtxVGfclDRun1lAmESdkuU5btq7AutoGcvN2+yohnLpnadd
+         tO60+9ABX4LJe7VCGmwf3pMI0Wt1N8tamr/dvrWsGebqc3FP3mb9sonTbgnWOl2SQJlL
+         XrMcCPoWHbBo1ReQEkC5cDiVhkDhg/amdZE7fFBqo6gU3bkQKQ/Af52flG6sJY2c8EI7
+         d8f/IOU/hs3D5OqeNUDtC5WOWMs620lKXhe0IQgsWQZWUMi/uGVUYieMxucFV7xyzYcs
+         EzH+gn1USAQ2/QGft1FL1b4AIs4vs8pz6/nhGibMmQkjTqmyS7KOxkq3mjRBGnsYvNiJ
+         HYeQ==
+X-Gm-Message-State: AOAM532wTK2f2HpwOkCilCgt7dQ/Nsva5wPIK2qVvOttSL6JD3fYtrE9
+        5NR/R1T7hZM+PT3ikdyQUQB0WiT8/B8serd8Okc=
+X-Google-Smtp-Source: ABdhPJxtj1vjB44EgNVrKbINxMf3MLBQQVOimbtqX57PoimFmHD9A3C9Fv4wq87LSAfsDKch7XlhTuenX5e7j0W2xjI=
+X-Received: by 2002:aca:4a89:: with SMTP id x131mr11420648oia.103.1594297104569;
+ Thu, 09 Jul 2020 05:18:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200707200937.GA5056@embeddedor>
-In-Reply-To: <20200707200937.GA5056@embeddedor>
+References: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com> <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
+In-Reply-To: <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jul 2020 14:10:41 +0200
-Message-ID: <CAJZ5v0jv-or+gTy2u4hS3Zv6T6XwEqXuifygy5ZoXe8mMEZzbw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Use fallthrough pseudo-keyword
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Date:   Thu, 9 Jul 2020 14:18:13 +0200
+Message-ID: <CAJZ5v0ihB5AJwSRpjaOnXAmciregzxARL5xfudu1h+=_LXaE_w@mail.gmail.com>
+Subject: Re: [PATCH v2] cpuidle: change enter_s2idle() prototype
+To:     Neal Liu <neal.liu@mediatek.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>, wsd_upstream@mediatek.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 7, 2020 at 10:04 PM Gustavo A. R. Silva
-<gustavoars@kernel.org> wrote:
+On Mon, Jul 6, 2020 at 5:13 AM Neal Liu <neal.liu@mediatek.com> wrote:
 >
-> Replace the existing /* fall through */ comments and its variants with
-> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-> fall-through markings when it is the case.
+> Control Flow Integrity(CFI) is a security mechanism that disallows
+> changes to the original control flow graph of a compiled binary,
+> making it significantly harder to perform such attacks.
 >
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+> init_state_node() assign same function callback to different
+> function pointer declarations.
 >
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> static int init_state_node(struct cpuidle_state *idle_state,
+>                            const struct of_device_id *matches,
+>                            struct device_node *state_node) { ...
+>         idle_state->enter = match_id->data; ...
+>         idle_state->enter_s2idle = match_id->data; }
+>
+> Function declarations:
+>
+> struct cpuidle_state { ...
+>         int (*enter) (struct cpuidle_device *dev,
+>                       struct cpuidle_driver *drv,
+>                       int index);
+>
+>         void (*enter_s2idle) (struct cpuidle_device *dev,
+>                               struct cpuidle_driver *drv,
+>                               int index); };
+>
+> In this case, either enter() or enter_s2idle() would cause CFI check
+> failed since they use same callee.
 
-Applied as 5.9 material, thanks!
+Can you please explain this in a bit more detail?
 
+As it stands, I don't understand the problem statement enough to apply
+the patch.
+
+> Align function prototype of enter() since it needs return value for
+> some use cases. The return value of enter_s2idle() is no
+> need currently.
+
+So last time I requested you to document why ->enter_s2idle needs to
+return an int in the code, which has not been done.  Please do that.
+
+> Signed-off-by: Neal Liu <neal.liu@mediatek.com>
 > ---
->  drivers/acpi/ac.c             |    2 +-
->  drivers/acpi/acpi_processor.c |    2 +-
->  drivers/acpi/button.c         |    2 +-
->  drivers/acpi/dock.c           |    2 +-
->  drivers/acpi/evged.c          |    2 +-
->  drivers/acpi/processor_idle.c |    3 +--
->  drivers/acpi/resource.c       |    2 +-
->  drivers/acpi/spcr.c           |    4 ++--
->  drivers/pci/pci-acpi.c        |    6 +++---
->  9 files changed, 12 insertions(+), 13 deletions(-)
+>  drivers/acpi/processor_idle.c   |    6 ++++--
+>  drivers/cpuidle/cpuidle-tegra.c |    8 +++++---
+>  drivers/idle/intel_idle.c       |    6 ++++--
+>  include/linux/cpuidle.h         |    6 +++---
+>  4 files changed, 16 insertions(+), 10 deletions(-)
 >
-> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> index 69d2db13886b..2dfa08f939c6 100644
-> --- a/drivers/acpi/ac.c
-> +++ b/drivers/acpi/ac.c
-> @@ -236,7 +236,7 @@ static void acpi_ac_notify(struct acpi_device *device, u32 event)
->         default:
->                 ACPI_DEBUG_PRINT((ACPI_DB_INFO,
->                                   "Unsupported event [0x%x]\n", event));
-> -       /* fall through */
-> +               fallthrough;
->         case ACPI_AC_NOTIFY_STATUS:
->         case ACPI_NOTIFY_BUS_CHECK:
->         case ACPI_NOTIFY_DEVICE_CHECK:
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> index 5379bc3f275d..b51ddf3bb616 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -79,7 +79,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
->                  * PIIX4 models.
->                  */
->                 errata.piix4.throttle = 1;
-> -               /* fall through*/
-> +               fallthrough;
->
->         case 2:         /* PIIX4E */
->         case 3:         /* PIIX4M */
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 3c35e57dd854..a4eda7fe50d3 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -405,7 +405,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
->         switch (event) {
->         case ACPI_FIXED_HARDWARE_EVENT:
->                 event = ACPI_BUTTON_NOTIFY_STATUS;
-> -               /* fall through */
-> +               fallthrough;
->         case ACPI_BUTTON_NOTIFY_STATUS:
->                 input = button->input;
->                 if (button->type == ACPI_BUTTON_TYPE_LID) {
-> diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-> index e3414131bfca..9bd72c26ef46 100644
-> --- a/drivers/acpi/dock.c
-> +++ b/drivers/acpi/dock.c
-> @@ -469,7 +469,7 @@ int dock_notify(struct acpi_device *adev, u32 event)
->                 surprise_removal = 1;
->                 event = ACPI_NOTIFY_EJECT_REQUEST;
->                 /* Fall back */
-> -               /* fall through */
-> +               fallthrough;
->         case ACPI_NOTIFY_EJECT_REQUEST:
->                 begin_undock(ds);
->                 if ((immediate_undock && !(ds->flags & DOCK_IS_ATA))
-> diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-> index ccd900690b6f..b1a7f8d6965e 100644
-> --- a/drivers/acpi/evged.c
-> +++ b/drivers/acpi/evged.c
-> @@ -106,7 +106,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
->
->                 if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
->                         break;
-> -               /* fall through */
-> +               fallthrough;
->         default:
->                 if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
->                         break;
 > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 75534c5b5433..9325feaac5f8 100644
+> index 75534c5..6ffb6c9 100644
 > --- a/drivers/acpi/processor_idle.c
 > +++ b/drivers/acpi/processor_idle.c
-> @@ -203,8 +203,7 @@ static void tsc_check_state(int state)
->                  */
->                 if (boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
->                         return;
-> -
-> -               /*FALL THROUGH*/
-> +               fallthrough;
->         default:
->                 /* TSC could halt in idle, so notify users */
->                 if (state > ACPI_STATE_C1)
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 3b4448972374..ad04824ca3ba 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -373,7 +373,7 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
->         case ACPI_ACTIVE_BOTH:
->                 if (triggering == ACPI_EDGE_SENSITIVE)
->                         return IRQ_TYPE_EDGE_BOTH;
-> -               /* fall through */
-> +               fallthrough;
->         default:
->                 return IRQ_TYPE_NONE;
->         }
-> diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-> index d73b4535e79d..88460bacd5ae 100644
-> --- a/drivers/acpi/spcr.c
-> +++ b/drivers/acpi/spcr.c
-> @@ -111,7 +111,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
->                         table->serial_port.access_width))) {
->                 default:
->                         pr_err("Unexpected SPCR Access Width.  Defaulting to byte size\n");
-> -                       /* fall through */
-> +                       fallthrough;
->                 case 8:
->                         iotype = "mmio";
->                         break;
-> @@ -128,7 +128,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
->         switch (table->interface_type) {
->         case ACPI_DBG2_ARM_SBSA_32BIT:
->                 iotype = "mmio32";
-> -               /* fall through */
-> +               fallthrough;
->         case ACPI_DBG2_ARM_PL011:
->         case ACPI_DBG2_ARM_SBSA_GENERIC:
->         case ACPI_DBG2_BCM2835:
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 7224b1e5f2a8..0d85025c55fd 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -527,8 +527,8 @@ static void program_hpx_type3_register(struct pci_dev *dev,
->                         return;
+> @@ -655,8 +655,8 @@ static int acpi_idle_enter(struct cpuidle_device *dev,
+>         return index;
+>  }
 >
->                 break;
-> -       case HPX_CFG_VEND_CAP:  /* Fall through */
-> -       case HPX_CFG_DVSEC:     /* Fall through */
-> +       case HPX_CFG_VEND_CAP:
-> +       case HPX_CFG_DVSEC:
->         default:
->                 pci_warn(dev, "Encountered _HPX type 3 with unsupported config space location");
->                 return;
-> @@ -1001,7 +1001,7 @@ static int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
->                         error = -EBUSY;
->                         break;
+> -static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
+> -                                  struct cpuidle_driver *drv, int index)
+> +static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
+> +                                 struct cpuidle_driver *drv, int index)
+>  {
+>         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+>
+> @@ -674,6 +674,8 @@ static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
 >                 }
-> -               /* Fall through */
-> +               fallthrough;
->         case PCI_D0:
->         case PCI_D1:
->         case PCI_D2:
+>         }
+>         acpi_idle_do_entry(cx);
+> +
+> +       return 0;
+>  }
 >
+>  static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
+> diff --git a/drivers/cpuidle/cpuidle-tegra.c b/drivers/cpuidle/cpuidle-tegra.c
+> index 1500458..a12fb14 100644
+> --- a/drivers/cpuidle/cpuidle-tegra.c
+> +++ b/drivers/cpuidle/cpuidle-tegra.c
+> @@ -253,11 +253,13 @@ static int tegra_cpuidle_enter(struct cpuidle_device *dev,
+>         return err ? -1 : index;
+>  }
+>
+> -static void tegra114_enter_s2idle(struct cpuidle_device *dev,
+> -                                 struct cpuidle_driver *drv,
+> -                                 int index)
+> +static int tegra114_enter_s2idle(struct cpuidle_device *dev,
+> +                                struct cpuidle_driver *drv,
+> +                                int index)
+>  {
+>         tegra_cpuidle_enter(dev, drv, index);
+> +
+> +       return 0;
+>  }
+>
+>  /*
+> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+> index f449584..b178da3 100644
+> --- a/drivers/idle/intel_idle.c
+> +++ b/drivers/idle/intel_idle.c
+> @@ -175,13 +175,15 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
+>   * Invoked as a suspend-to-idle callback routine with frozen user space, frozen
+>   * scheduler tick and suspended scheduler clock on the target CPU.
+>   */
+> -static __cpuidle void intel_idle_s2idle(struct cpuidle_device *dev,
+> -                                       struct cpuidle_driver *drv, int index)
+> +static __cpuidle int intel_idle_s2idle(struct cpuidle_device *dev,
+> +                                      struct cpuidle_driver *drv, int index)
+>  {
+>         unsigned long eax = flg2MWAIT(drv->states[index].flags);
+>         unsigned long ecx = 1; /* break on interrupt flag */
+>
+>         mwait_idle_with_hints(eax, ecx);
+> +
+> +       return 0;
+>  }
+>
+>  /*
+> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
+> index ec2ef63..bee10c0 100644
+> --- a/include/linux/cpuidle.h
+> +++ b/include/linux/cpuidle.h
+> @@ -66,9 +66,9 @@ struct cpuidle_state {
+>          * suspended, so it must not re-enable interrupts at any point (even
+>          * temporarily) or attempt to change states of clock event devices.
+>          */
+> -       void (*enter_s2idle) (struct cpuidle_device *dev,
+> -                             struct cpuidle_driver *drv,
+> -                             int index);
+> +       int (*enter_s2idle)(struct cpuidle_device *dev,
+> +                           struct cpuidle_driver *drv,
+> +                           int index);
+>  };
+>
+>  /* Idle State Flags */
+> --
+> 1.7.9.5
