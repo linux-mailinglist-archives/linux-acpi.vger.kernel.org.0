@@ -2,195 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53DC621A250
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 16:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4DB21A270
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 16:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgGIOlR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 10:41:17 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:28443 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727092AbgGIOlR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 10:41:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594305675;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xtGo37WFcbzrM1ZvQh+IMQbh1Z4M0Wk13pfOcRFcm88=;
-        b=Lirb8rDVcKNobS4w4IbFl6IOfhOSIuhZrrnws97gUaVwrDc0DjuRsxtS7bQWofSIZ4gltk
-        v3D+HA3ELocn3+mMvjZuCnfDwmUhfMLShMdiqmM1AQt+MqxiqfJ8tWY33aP0YD1Zra+buc
-        UpR82zONPfdfmiUOjl6lOvUJct46lAE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-311-q3MHViCTPYWIaPnal0TCag-1; Thu, 09 Jul 2020 10:41:01 -0400
-X-MC-Unique: q3MHViCTPYWIaPnal0TCag-1
-Received: by mail-wm1-f69.google.com with SMTP id g6so2347902wmk.4
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Jul 2020 07:41:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xtGo37WFcbzrM1ZvQh+IMQbh1Z4M0Wk13pfOcRFcm88=;
-        b=ZxMW8EYjBE/kE0YIOeftbt4YYJFcA1+JbHP4TFOP4xWc9XqmuFFmmm3kmG7oEVm40L
-         uaSuPURYHmhcNbmdOYd2LKoUSiZ25AIK/PxEESaOkvmfCblAKkqTwel5gYaNc0+oCiSp
-         ZgpWFAJcX1v/5WnCd204smYFV+DpbsJ2lJw+Oh4NobfSiZuhWYe3hI7iA/VD2OGwfLrU
-         XFFD5Mnci3LSYmmFep8Pb0oaDqVvRsZ+8ZnQx6aSKjCKH02kt6nqMPWlKomWuLbhED/p
-         UH7Je0rT5GJMF9T5gnWo4nv8HTcqltH5AE/X+rUPEpYXKmMnU3xJimi+eQ6nsapgqeXe
-         LyJQ==
-X-Gm-Message-State: AOAM532E6U7LVFbf/BE5/vATKZccSXy1DTIkCrXPV7P8LoUPlyRF1EU2
-        G+v8dUgUoDkJVgWwlwEpVy1bmvawOStt7Fb4ArIJqb6tYON7awR+prmqM/4VUgCC44xamkdQptY
-        uTUETbzSHFD9Zku3khqthSg==
-X-Received: by 2002:adf:82a1:: with SMTP id 30mr68204935wrc.210.1594305659640;
-        Thu, 09 Jul 2020 07:40:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyC8Qx1lqmqv5eBOWYGriOdRymqExqIMuGFeC+1LPMcpYaZ1AsqSB9SUbO9rPu7uEL1sgHSQQ==
-X-Received: by 2002:adf:82a1:: with SMTP id 30mr68204858wrc.210.1594305658678;
-        Thu, 09 Jul 2020 07:40:58 -0700 (PDT)
-Received: from x1.localdomain ([2a0e:5700:4:11:334c:7e36:8d57:40cb])
-        by smtp.gmail.com with ESMTPSA id j6sm5217876wma.25.2020.07.09.07.40.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2020 07:40:57 -0700 (PDT)
-Subject: Re: [PATCH v4 00/15] acpi/pwm/i915: Convert pwm-crc and i915 driver's
- PWM code to use the atomic PWM API
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <20200708211432.28612-1-hdegoede@redhat.com>
- <20200709141407.GA226971@ravnborg.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <fb370663-9efe-a820-2e57-d43d3af7828c@redhat.com>
-Date:   Thu, 9 Jul 2020 16:40:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200709141407.GA226971@ravnborg.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1726722AbgGIOtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jul 2020 10:49:25 -0400
+Received: from mga11.intel.com ([192.55.52.93]:8705 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726517AbgGIOtZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Jul 2020 10:49:25 -0400
+IronPort-SDR: hj+yBzppA/STumwnkDCJMcKInNzVkrKiHey0mn7nj6YXnc0CXCKrC/gqttuzNg7ZNFPfHMfjzT
+ 2I99T9/fbOoA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9677"; a="146092301"
+X-IronPort-AV: E=Sophos;i="5.75,331,1589266800"; 
+   d="scan'208";a="146092301"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2020 07:49:22 -0700
+IronPort-SDR: lxdIzXj9YnhWi3X5lr9/yNT/LdwZHedoQWVxV5oF67eZ6OIUwOXCQaYZFDYwcPvtFpcFhRkYTV
+ bJveNgpJdykQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,331,1589266800"; 
+   d="scan'208";a="324243209"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+  by orsmga007.jf.intel.com with ESMTP; 09 Jul 2020 07:49:21 -0700
+Received: from fmsmsx112.amr.corp.intel.com (10.18.116.6) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 9 Jul 2020 07:49:21 -0700
+Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
+ FMSMSX112.amr.corp.intel.com (10.18.116.6) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 9 Jul 2020 07:49:21 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.109)
+ by edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Thu, 9 Jul 2020 07:49:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jHWqk1CWflXmbM3XkubB1C5cRopgJEdGNu8O+s/V1KTOvA5S8ayH5NUpnIkhUUd9FKL9YhppIKm9E6GtSkuK9qahPX+cUljSciOVSeVYv0p+TnGYXFD4ET904mnwbLWwEO7ABc1NGyAzbbP8XM3anOWqks2QFEHw1k18RGBBc/PVCAfSF+Fs1LDDJAcqqh36d+EKHQWMBHOTRQ7yafgSlidU7+FWPKxBw45/5ccDlj5n1fn3mEnOG4y3tXDZSU7kJ/jxUSmcfYsPtR7Z7N2y1LG5LickBmRsMY8Zu2vbalMVKoiUOb0mpaUy0GpIRDDCMLCNw1kmN8ngZ+7b9juHRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3olccjvRSAKD60SinJG/NJIaLCxpIzptIzOcaRIBwL4=;
+ b=dRZyNiXVr1160QDkQZXvr0KMh7XF64XZVF8yHbBsfaiftdLRjQSiWFn+juASqaBCmeKVwJlPEszKoSDDllgZKEarSjGRTlM7jaG+eClHuFqoC6FVgwbsW3+IfzleqDf8MLr7J1PviwrxMUxQ1omP4p9WTnD5/qEjfeyWr4oJFe8r70CtYzLeSEGBgfyWooKk7zqOBtuYbSBZjydvt0nIvuvTP+JGsQUgl7lDP0I3toZ5KlVTdblSTosJYaZ6zlJbESUXC0CMIdJHUiULowTbVhQDkmHEOTt/NN54rMhh2LhcVMmY9OJqLZH0Qdk0h8Vc0grofC/SP8O8WjAMkXJMzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3olccjvRSAKD60SinJG/NJIaLCxpIzptIzOcaRIBwL4=;
+ b=zx/RNYiRqTzICUJ9yiDz22/mEuVxL2txZZAkfeZuP9IVw9dgg6UbjvFOVL5Zz2GPa1A/DjHwKqdLNr8qFe67rWUnlWxSRaLsGvmo9XKoHugf/p31BAqLDKMsYPHEEHTGQ0OoTytVBovNmMpSw734bx1wjqf1xW+rmjbtVcC5Ip8=
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
+ by BY5PR11MB4226.namprd11.prod.outlook.com (2603:10b6:a03:1bf::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Thu, 9 Jul
+ 2020 14:49:18 +0000
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c]) by BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c%4]) with mapi id 15.20.3174.021; Thu, 9 Jul 2020
+ 14:49:18 +0000
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     Xu Wang <vulab@iscas.ac.cn>,
+        "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] service_layers: osunixmap: Remove unnecessary brackets in
+ acpi_os_map_memory()
+Thread-Topic: [PATCH] service_layers: osunixmap: Remove unnecessary brackets
+ in acpi_os_map_memory()
+Thread-Index: AQHWVcgik7eppFgSsk2P33P93bkikKj/VH9g
+Date:   Thu, 9 Jul 2020 14:49:17 +0000
+Message-ID: <BYAPR11MB3256999B714C7F5598E3213687640@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <20200709080806.14328-1-vulab@iscas.ac.cn>
+In-Reply-To: <20200709080806.14328-1-vulab@iscas.ac.cn>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: iscas.ac.cn; dkim=none (message not signed)
+ header.d=none;iscas.ac.cn; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.136.194]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1a90b89b-2804-463a-e887-08d8241741e0
+x-ms-traffictypediagnostic: BY5PR11MB4226:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BY5PR11MB422603A578C748BE8A494FE887640@BY5PR11MB4226.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:226;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: cnkkquuKdL2DidiZNAKx6SfiVtolNIYTO+nBjWHS65tfL0PzCJQGC8lffz6mZdp/0L6+3KbjnmmXoqnDzpR62z0D6r2weHXeuYzFO2C6i+tbWcA8w/+pA4wdmjdvpSs2xu/GM4VtX7SgMXaCOmdLQ9hJxe8m7+P3aHUiXaWROuR4GeRHu8RetW59bVw2g+yzIFQz9MGpm4WnD4a4t6N4APkLLI5BLRt/V9hcNq0HbWNNc1qtLuBTTR5X6gz1sSGSkbEVpv+gwLl0DlPLwiSfa/V0zy0y0wU1w0QbRXytPXt6/TpH9TDwpjpMWP0lEuK7FgkfWF/ciUQbYww1eRQPVA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(396003)(39860400002)(346002)(366004)(136003)(66556008)(7696005)(55016002)(53546011)(6506007)(83380400001)(71200400001)(76116006)(66946007)(8936002)(66476007)(66446008)(64756008)(52536014)(186003)(9686003)(26005)(86362001)(316002)(8676002)(110136005)(5660300002)(4326008)(33656002)(478600001)(2906002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: pEFN4lx0BHc6r8UnsXZCn7BC03Wo4LIM3cd5q/JE9J3fL6TAVJytHX+yhKJJPgaDSewbfxOKaMfhWhMm9CplXSALeCMtwzfTXwSrLNBZHvATC8z9T9inNQ8W2fbSteU5KZMqHG0G+BQnk4PeKLjY1Oui4D6Ne7ODRM0shDGN6ngy2t0Fs/NV6MTlMDLG5Unb/z9jqVtcAACAxNdDeA94kqpZuU/buu6rRuu0VLcrplQ6lfRdBLMSKCQU2SHGFgSCxxBs4obPIkINnBjPH2AhOf1aUA+DFPs5RoyD0cJTszB6MUdZ0mS0awBr2t5Dt4aNGVdQ0Xcwq0Vp4LaqhFvkKSK9uHA0Neibz2Q6zmvDrkLj8x9rY2iqjRo0eSnywXgD23N4hgfKZVvHxyEq8hSWdOUJFHj9TKewTpmg2ma24m6vqhugng42neTC62WXw1SZUUOlsFN1RXhLBAtpVmXJoAbQuLSruGBI5rTP09jDC9qbyLV0P4LnYXNYJhppbDBZ
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a90b89b-2804-463a-e887-08d8241741e0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2020 14:49:17.9150
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /P2XI8ZSd8eJwQ6jOikF1ACRzSEjy9ceIh/scGWvJ8yIy6CZGaFUWpOvIgsZLa9ljjIl9WuVqA7i5e6E6xTaCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB4226
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+-		return (NULL);
++		return NULL;
 
-On 7/9/20 4:14 PM, Sam Ravnborg wrote:
-> Hi Hans.
-> 
-> On Wed, Jul 08, 2020 at 11:14:16PM +0200, Hans de Goede wrote:
->> Hi All,
->>
->> Here is v4 of my patch series converting the i915 driver's code for
->> controlling the panel's backlight with an external PWM controller to
->> use the atomic PWM API. See below for the changelog.
-> 
-> Why is it that i915 cannot use the pwm_bl driver for backlight?
-> I have not studied the code - just wondering.
+This is the ACPICA coding standard, and it does not affect anything.
+Bob
 
-The intel_panel.c code deals with 7 different types of PWM controllers
-which are built into the GPU + support for external PWM controllers
-through the kernel's PWM subsystem.
+-----Original Message-----
+From: Xu Wang <vulab@iscas.ac.cn>=20
+Sent: Thursday, July 09, 2020 1:08 AM
+To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel=
+.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org; vul=
+ab@iscas.ac.cn; linux-acpi@vger.kernel.org; devel@acpica.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH] service_layers: osunixmap: Remove unnecessary brackets in =
+acpi_os_map_memory()
 
-pwm_bl will work for the external PWM controller case, but not for
-the others. On top of that the intel_panel code integrates which
-the video BIOS, getting things like frequency, minimum value
-and if the range is inverted (0% duty == backlight brightness max).
-I'm not even sure if pwm_bl supports all of this, but even if it
-does the intel_panel code handles this in a unified manner for
-all supported PWM controllers, including the ones which are
-an integral part of the GPU.
+Remove extra brackets.
 
-Regards,
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ tools/power/acpi/os_specific/service_layers/osunixmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hans
-
-
-
->> Initially the plan was for this series to consist of 2 parts:
->> 1. convert the pwm-crc driver to support the atomic PWM API and
->> 2. convert the i915 driver's PWM code to use the atomic PWM API.
->>
->> But during testing I've found a number of bugs in the pwm-lpss and I
->> found that the acpi_lpss code needs some special handling because of
->> some ugliness found in most Cherry Trail DSDTs.
->>
->> So now this series has grown somewhat large and consists of 4 parts:
->>
->> 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
->> 2. various fixes to the pwm-lpss driver
->> 3. convert the pwm-crc driver to support the atomic PWM API and
->> 4. convert the i915 driver's PWM code to use the atomic PWM API
->>
->> The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
->> so the plan is to merge this all through drm-intel-next-queued (dinq)
->> once all the patches are reviewed / have acks.
->>
->> In v4 the ACPI patches have been Acked by Rafael and the i915 patches
->> have been acked by Jani. So that just leaves the PWM patches.
->>
->> Uwe can I get your ok / ack for merging this through the dinq branch
->> once you have acked al the PWM patches ?
->>
->> This series has been tested (and re-tested after adding various bug-fixes)
->> extensively. It has been tested on the following devices:
->>
->> -Asus T100TA  BYT + CRC-PMIC PWM
->> -Toshiba WT8-A  BYT + CRC-PMIC PWM
->> -Thundersoft TS178 BYT + CRC-PMIC PWM, inverse PWM
->> -Asus T100HA  CHT + CRC-PMIC PWM
->> -Terra Pad 1061  BYT + LPSS PWM
->> -Trekstor Twin 10.1 BYT + LPSS PWM
->> -Asus T101HA  CHT + CRC-PMIC PWM
->> -GPD Pocket  CHT + CRC-PMIC PWM
->>
->> Changelog:
->>
->> Changes in v2:
->> - Fix coverletter subject
->> - Drop accidentally included debugging patch
->> - "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
->>    - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
->>
->> Changes in v3:
->> - "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
->>    - Use base_unit_range - 1 as maximum value for the clamp()
->> - "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
->>    - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
->>      patch from previous versions of this patch-set, which really was a hack
->>      working around the resume issue which this patch fixes properly.
->> - PATCH v3 6 - 11 pwm-crc changes:
->>    - Various small changes resulting from the reviews by Andy and Uwe,
->>      including some refactoring of the patches to reduce the amount of churn
->>      in the patch-set
->>
->> Changes in v4:
->> - "[PATCH v4 06/16] pwm: lpss: Correct get_state result for base_unit == 0"
->>    - This is a new patch in v4 of this patchset
->> - "[PATCH v4 12/16] pwm: crc: Implement get_state() method"
->>    - Use DIV_ROUND_UP when calculating the period and duty_cycle values
->> - "[PATCH v4 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller"
->>    - Add a note to the commit message about the changes in pwm_disable_backlight()
->>    - Use the pwm_set/get_relative_duty_cycle() helpers
->>
->> Regards,
->>
->> Hans
->>
->> _______________________________________________
->> dri-devel mailing list
->> dri-devel@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> 
+diff --git a/tools/power/acpi/os_specific/service_layers/osunixmap.c b/tool=
+s/power/acpi/os_specific/service_layers/osunixmap.c
+index c565546e85bc..52f3e70b5c81 100644
+--- a/tools/power/acpi/os_specific/service_layers/osunixmap.c
++++ b/tools/power/acpi/os_specific/service_layers/osunixmap.c
+@@ -70,7 +70,7 @@ void *acpi_os_map_memory(acpi_physical_address where, acp=
+i_size length)
+ 	fd =3D open(SYSTEM_MEMORY, O_RDONLY | O_BINARY);
+ 	if (fd < 0) {
+ 		fprintf(stderr, "Cannot open %s\n", SYSTEM_MEMORY);
+-		return (NULL);
++		return NULL;
+ 	}
+=20
+ 	/* Align the offset to use mmap */
+@@ -85,7 +85,7 @@ void *acpi_os_map_memory(acpi_physical_address where, acp=
+i_size length)
+ 	if (mapped_memory =3D=3D MAP_FAILED) {
+ 		fprintf(stderr, "Cannot map %s\n", SYSTEM_MEMORY);
+ 		close(fd);
+-		return (NULL);
++		return NULL;
+ 	}
+=20
+ 	close(fd);
+--=20
+2.17.1
 
