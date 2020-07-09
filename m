@@ -2,74 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AEEC21A2E8
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 17:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2305C21A391
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 17:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726575AbgGIPBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 11:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726371AbgGIPBH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 11:01:07 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C4DC08C5CE;
-        Thu,  9 Jul 2020 08:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=d6Fy1Ff8XKWJW7cdhpnfoPEQT8m7nn2QugrKA2y4BTE=; b=sXjsW/W8stofL0fSqv1devL9iA
-        NF8pTtSu1pmMI2cx2Ezm5BoeofYSnPN6/rZYmpD+i2SwKMs8rbtY2EPcBcEn7LmzBMlRLH+HYv4ou
-        IIiSGFJU8JQLbSCfDquQtv8nlD8xpYOQ1F33SWeREt+m+MKW2AS9lsim693P8pOA6Vn81rDU4U0pQ
-        5CL7N1SiSxz2S6PRS4eEqvntN+bK6HeL9i5oI+CCBxoYMsT/JAjCwF5JHINgYNRZxp7hyfyhsJm5A
-        TrgN6ANkFqMOJfU2KX4+HzhiTpzqnYh8wY/zml3sRidyoIzqKYX3E/qQYPkqN/E1WGtoJpXZ0IVyl
-        KCO5FDkg==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jtY2d-0004br-7k; Thu, 09 Jul 2020 15:00:51 +0000
-Date:   Thu, 9 Jul 2020 16:00:51 +0100
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-nvdimm@lists.01.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@mellanox.com>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 11/12] PM, libnvdimm: Add 'mem-quiet' state and
- callback for firmware activation
-Message-ID: <20200709150051.GA17342@infradead.org>
-References: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159408717289.2385045.14094866475168644020.stgit@dwillia2-desk3.amr.corp.intel.com>
+        id S1728002AbgGIPXU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jul 2020 11:23:20 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:53626 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727925AbgGIPXU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 11:23:20 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 65A69804C8;
+        Thu,  9 Jul 2020 17:23:16 +0200 (CEST)
+Date:   Thu, 9 Jul 2020 17:23:14 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v4 00/15] acpi/pwm/i915: Convert pwm-crc and i915
+ driver's PWM code to use the atomic PWM API
+Message-ID: <20200709152314.GA233132@ravnborg.org>
+References: <20200708211432.28612-1-hdegoede@redhat.com>
+ <20200709141407.GA226971@ravnborg.org>
+ <fb370663-9efe-a820-2e57-d43d3af7828c@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <159408717289.2385045.14094866475168644020.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <fb370663-9efe-a820-2e57-d43d3af7828c@redhat.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=e5mUnYsNAAAA:8 a=ISncdtaFCDb5yrYJnEIA:9
+        a=U5XkNeA9I98Y5_jT:21 a=nvJk_VNiUKGhWGwL:21 a=CjuIK1q_8ugA:10
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 06, 2020 at 06:59:32PM -0700, Dan Williams wrote:
-> The runtime firmware activation capability of Intel NVDIMM devices
-> requires memory transactions to be disabled for 100s of microseconds.
-> This timeout is large enough to cause in-flight DMA to fail and other
-> application detectable timeouts. Arrange for firmware activation to be
-> executed while the system is "quiesced", all processes and device-DMA
-> frozen.
+Hi,
+On Thu, Jul 09, 2020 at 04:40:56PM +0200, Hans de Goede wrote:
+> Hi,
 > 
-> It is already required that invoking device ->freeze() callbacks is
-> sufficient to cease DMA. A device that continues memory writes outside
-> of user-direction violates expectations of the PM core to be to
-> establish a coherent hibernation image.
+> On 7/9/20 4:14 PM, Sam Ravnborg wrote:
+> > Hi Hans.
+> > 
+> > On Wed, Jul 08, 2020 at 11:14:16PM +0200, Hans de Goede wrote:
+> > > Hi All,
+> > > 
+> > > Here is v4 of my patch series converting the i915 driver's code for
+> > > controlling the panel's backlight with an external PWM controller to
+> > > use the atomic PWM API. See below for the changelog.
+> > 
+> > Why is it that i915 cannot use the pwm_bl driver for backlight?
+> > I have not studied the code - just wondering.
 > 
-> That said, RDMA devices are an example of a device that access memory
-> outside of user process direction. RDMA drivers also typically assume
-> the system they are operating in will never be hibernated. A solution
-> for RDMA collisions with firmware activation is outside the scope of
-> this change and may need to rely on being able to survive the platform
-> imposed memory controller quiesce period.
+> The intel_panel.c code deals with 7 different types of PWM controllers
+> which are built into the GPU + support for external PWM controllers
+> through the kernel's PWM subsystem.
+> 
+> pwm_bl will work for the external PWM controller case, but not for
+> the others. On top of that the intel_panel code integrates which
+> the video BIOS, getting things like frequency, minimum value
+> and if the range is inverted (0% duty == backlight brightness max).
+> I'm not even sure if pwm_bl supports all of this, but even if it
+> does the intel_panel code handles this in a unified manner for
+> all supported PWM controllers, including the ones which are
+> an integral part of the GPU.
 
-Yikes.  I don't think we should support such a broken runtime firmware
-activation.
+Thanks for the explanation.
+This is a more complicated world than the usual embedded case with a
+single pwm, no BIOS etc. So it makes sense.
+
+	Sam
+
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
+> > > Initially the plan was for this series to consist of 2 parts:
+> > > 1. convert the pwm-crc driver to support the atomic PWM API and
+> > > 2. convert the i915 driver's PWM code to use the atomic PWM API.
+> > > 
+> > > But during testing I've found a number of bugs in the pwm-lpss and I
+> > > found that the acpi_lpss code needs some special handling because of
+> > > some ugliness found in most Cherry Trail DSDTs.
+> > > 
+> > > So now this series has grown somewhat large and consists of 4 parts:
+> > > 
+> > > 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
+> > > 2. various fixes to the pwm-lpss driver
+> > > 3. convert the pwm-crc driver to support the atomic PWM API and
+> > > 4. convert the i915 driver's PWM code to use the atomic PWM API
+> > > 
+> > > The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
+> > > so the plan is to merge this all through drm-intel-next-queued (dinq)
+> > > once all the patches are reviewed / have acks.
+> > > 
+> > > In v4 the ACPI patches have been Acked by Rafael and the i915 patches
+> > > have been acked by Jani. So that just leaves the PWM patches.
+> > > 
+> > > Uwe can I get your ok / ack for merging this through the dinq branch
+> > > once you have acked al the PWM patches ?
+> > > 
+> > > This series has been tested (and re-tested after adding various bug-fixes)
+> > > extensively. It has been tested on the following devices:
+> > > 
+> > > -Asus T100TA  BYT + CRC-PMIC PWM
+> > > -Toshiba WT8-A  BYT + CRC-PMIC PWM
+> > > -Thundersoft TS178 BYT + CRC-PMIC PWM, inverse PWM
+> > > -Asus T100HA  CHT + CRC-PMIC PWM
+> > > -Terra Pad 1061  BYT + LPSS PWM
+> > > -Trekstor Twin 10.1 BYT + LPSS PWM
+> > > -Asus T101HA  CHT + CRC-PMIC PWM
+> > > -GPD Pocket  CHT + CRC-PMIC PWM
+> > > 
+> > > Changelog:
+> > > 
+> > > Changes in v2:
+> > > - Fix coverletter subject
+> > > - Drop accidentally included debugging patch
+> > > - "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
+> > >    - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
+> > > 
+> > > Changes in v3:
+> > > - "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
+> > >    - Use base_unit_range - 1 as maximum value for the clamp()
+> > > - "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
+> > >    - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
+> > >      patch from previous versions of this patch-set, which really was a hack
+> > >      working around the resume issue which this patch fixes properly.
+> > > - PATCH v3 6 - 11 pwm-crc changes:
+> > >    - Various small changes resulting from the reviews by Andy and Uwe,
+> > >      including some refactoring of the patches to reduce the amount of churn
+> > >      in the patch-set
+> > > 
+> > > Changes in v4:
+> > > - "[PATCH v4 06/16] pwm: lpss: Correct get_state result for base_unit == 0"
+> > >    - This is a new patch in v4 of this patchset
+> > > - "[PATCH v4 12/16] pwm: crc: Implement get_state() method"
+> > >    - Use DIV_ROUND_UP when calculating the period and duty_cycle values
+> > > - "[PATCH v4 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller"
+> > >    - Add a note to the commit message about the changes in pwm_disable_backlight()
+> > >    - Use the pwm_set/get_relative_duty_cycle() helpers
+> > > 
+> > > Regards,
+> > > 
+> > > Hans
+> > > 
+> > > _______________________________________________
+> > > dri-devel mailing list
+> > > dri-devel@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> > 
