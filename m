@@ -2,133 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A0621A4EA
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 18:35:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 229EE21A662
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jul 2020 19:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbgGIQfC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 12:35:02 -0400
-Received: from mail-eopbgr50076.outbound.protection.outlook.com ([40.107.5.76]:6020
-        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
+        id S1727091AbgGIR5s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jul 2020 13:57:48 -0400
+Received: from mail-db8eur05on2077.outbound.protection.outlook.com ([40.107.20.77]:27872
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726497AbgGIQfC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Jul 2020 12:35:02 -0400
+        id S1726758AbgGIR5r (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Jul 2020 13:57:47 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AYG5juHvfkz1//BFgMW7K7ByZywRZGd48A9mCHXRt4ICGrzeCp4ZSNHRIjvsJGwh2xjPAhEe/Yruz89u0a9fBNs5HUJJe37TM2bz1xu4+jVe8hWSeLwtpUX5d+PaeTDNRb/HLWzjtfalq3fPrNGYVAxJwrSHlCfnGLnEGDzQ0IjtFaWLt8s/9gqssOQTmCRlrSZH/3gOhaYHQ7bIuVWLdN8tKouvtKjPglR4x5HkzScYHmulJnLjtCqTyAuWaxOTZF+FXyLl0P8tpGbtjS1tdoZs1WyH14qg8s5h8oPfFz+5pTQ9RbtjAezVOvHqosL29tMD34EiA5uGqxhEHndG6g==
+ b=QQjJ43D3JvSO/kF4Rkgni3OdE19iwhUGoYlOlFlWaAdIGVt2cODM+UoAAjka23aLcab4b0Zpx4ykYnmHjqs65P27SVkGfQkD2sEcIFaU176vWI0qmjbPrrc5ooeaC3emylzxJ6uhT/BCLIxOZESZCzhQFhvRDBkYTy3yuhAvIBoWloUXS3pDbIMy7KO6zrfsZlpyapbhlYMthyTR0TxUDD01OXbw4/DN7/TYRtcSWBodgIP+fdqANUIJWXlsGrJQk9JmMCxv6RFtyKfXCuP/ipxaS6yHvTahnKPoZX9IGUA0c/J08LpGLgHzRFpWiSxjQ6+/TNnnozCuLEk5e8dT4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9I3JKPOR1zH8nOihF2OFtOlnTKklEl6kb3lCDua/N98=;
- b=n83zH4Nzr85Rq0OknGDQnHQtIX3VU+hI5OK2xnfIFQBBE0b7uGiXiFz7RetX8IgrDnz6PxsP66o601kGe8ayao/nPgBCvTsG42UE0QZhTEUaS78oLnlG4S0OrhAmaou3ADpY/9nEuGuGuZkg82pK811FXNIWxhTJTSLMXymt4X6vW8i8s6xHCpMeaXdpqFfab/jB2ck7wWtlPrrKXmQki70UIf/BpYYB7u+1vk23la3YHQ+Vh4ffPuSp08BIvshnTCC079acsezv4hP/JvRa+fFtUjRg1e8JgMVtonRTyVfw+XJAFVXy9k65Q9xUZtfwhwL8QTKnmRouaOfKLVKiWA==
+ bh=JUwxSjxBq/06pyuvRS/5DMt25T+vR8XAtPfPUpykfAc=;
+ b=le319PwTTr9UfwZpmrg3lixhir0gh096ftu1UDwdOloz6SSLpaupSmsPsF4ZgyuigP/uII99F5+sMJCQzbi8gYyfXprNxDCzNwaRbltX2WLSy3UnmK/4epUkeVLyAt6ehgzsDJj7tLPNLmLpiVEageylMScQmwn6I9IZ3XJwQxXb4/hnFIZ6LtZMY80DymYlhf6xZ2iGMOQdwQElpcyC4mqnJdjj4/k4+wZrR+h0l71qPVIozgau0NEeBG8mZoY3+9+ZOs+MFhqaEXT/mpldGYTKcv9sOR9b6CW2OslqZyH/QqSit/bP9mrY+gFb6rV6njFfSUdzi7S2L/k26vWkww==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9I3JKPOR1zH8nOihF2OFtOlnTKklEl6kb3lCDua/N98=;
- b=ciEH7ddfB0Kuzb93S62xe/iF4y0pBcy37RHmM8urS2phiFj2zAHxPDgDvcVKpfZ6oqTDBpkRiZMFo9AH3W6UrAd0jn+v5EYBKw4AotneszZx1a7ixDv9GaKHdjALiX7mosP9tfAKMN6CAqkDkqrJSm8UULQLFF0CuQkuPzQKVxg=
-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=mellanox.com;
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (2603:10a6:803:44::15)
- by VI1PR05MB5982.eurprd05.prod.outlook.com (2603:10a6:803:e4::28) with
+ bh=JUwxSjxBq/06pyuvRS/5DMt25T+vR8XAtPfPUpykfAc=;
+ b=fL/lySnAsOJkDsNNUzVsMNm3/z9Jlk6kaMLfHi5BhlCl33dpwUoqjepTFLtC7fa6y2rwaxc/GlF79/iBoZV8sPv7wXP/McoASJydoXUi2AhvuYXyL6rtd82uvsqMotds7zKMDxpS0mBGDnp6iLmKGt+41/H51edl3a9LVqixFa8=
+Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB6898.eurprd04.prod.outlook.com (2603:10a6:208:185::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Thu, 9 Jul
- 2020 16:34:58 +0000
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::848b:fcd0:efe3:189e]) by VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::848b:fcd0:efe3:189e%7]) with mapi id 15.20.3174.022; Thu, 9 Jul 2020
- 16:34:58 +0000
-Date:   Thu, 9 Jul 2020 13:34:55 -0300
-From:   Jason Gunthorpe <jgg@mellanox.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 11/12] PM, libnvdimm: Add 'mem-quiet' state and
- callback for firmware activation
-Message-ID: <20200709163455.GA23821@mellanox.com>
-References: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159408717289.2385045.14094866475168644020.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20200709150051.GA17342@infradead.org>
- <20200709153854.GY23821@mellanox.com>
- <CAPcyv4hSPWEUih=we5QM_rdk7fLemi8phyk8_0tOd8ieL_=vPg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4hSPWEUih=we5QM_rdk7fLemi8phyk8_0tOd8ieL_=vPg@mail.gmail.com>
-X-ClientProxiedBy: MN2PR20CA0013.namprd20.prod.outlook.com
- (2603:10b6:208:e8::26) To VI1PR05MB4141.eurprd05.prod.outlook.com
- (2603:10a6:803:44::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Thu, 9 Jul
+ 2020 17:57:43 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3174.021; Thu, 9 Jul 2020
+ 17:57:43 +0000
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>
+Cc:     linux-acpi@vger.kernel.org, linux.cj@gmail.com,
+        netdev@vger.kernel.org, Calvin Johnson <calvin.johnson@oss.nxp.com>
+Subject: [net-next PATCH v4 0/6]  ACPI support for dpaa2 MAC driver.
+Date:   Thu,  9 Jul 2020 23:27:16 +0530
+Message-Id: <20200709175722.5228-1-calvin.johnson@oss.nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0151.apcprd04.prod.outlook.com (2603:1096:4::13)
+ To AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR20CA0013.namprd20.prod.outlook.com (2603:10b6:208:e8::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22 via Frontend Transport; Thu, 9 Jul 2020 16:34:58 +0000
-Received: from jgg by mlx with local (Exim 4.93)        (envelope-from <jgg@mellanox.com>)      id 1jtZVf-007eRH-2H; Thu, 09 Jul 2020 13:34:55 -0300
-X-Originating-IP: [156.34.48.30]
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR04CA0151.apcprd04.prod.outlook.com (2603:1096:4::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20 via Frontend Transport; Thu, 9 Jul 2020 17:57:40 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [14.142.151.118]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 13597d3d-58ed-45b5-3833-08d8242604ee
-X-MS-TrafficTypeDiagnostic: VI1PR05MB5982:
-X-Microsoft-Antispam-PRVS: <VI1PR05MB59824D538C077C58E3B5652CCF640@VI1PR05MB5982.eurprd05.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: a5acfdb2-fc8a-4f80-2527-08d824319447
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6898:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB6898AE496AAFBEEB255D2ADBD2640@AM0PR04MB6898.eurprd04.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZTKcz6ux2JcsNyzBPY0WgsFBEsbfrKkkma2JNmuvSuBaefYs9/9AJpT6gkdBXb73O1s3VI65CC09vikqNMHE+9f9noU90K8RgjpwAd993NOr10Jic8AgK7qKIQvvJpAJAXRR+GRTBPGngGTqJ7MwjvPYbQngnXMoNUzFmDBhKo78l5+gNLe76YJT0TNtlfek4ebvq29tyl/BS+1rZ7R8XQsm90KvAG7yQBkknDdqH/J1V2HQ8/GcNlsNEwgOHUyU8okTFhmqq78o9WfHavDeNHoRygnHcKkEomZ1wG71CVuBNgDbA9Y/JZlRrFVab56AMTanxvpejL81tNacrL8vMw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR05MB4141.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(366004)(376002)(396003)(346002)(136003)(2906002)(36756003)(66946007)(478600001)(8676002)(8936002)(316002)(2616005)(66556008)(7416002)(426003)(1076003)(186003)(4326008)(66476007)(9786002)(53546011)(9746002)(33656002)(54906003)(83380400001)(26005)(86362001)(5660300002)(6916009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: U2J8laW2GtYJ+Hew9rjmv1wblmff+YannsBw1Mjz+JND8M8ZbMOzE4SnodcCfjohtsP6BK5OuExVfqfEt1aULoOQ3Dh9UD+Nkp2tiewhTr/OlsYrkPDcEB8lIIgZHiXv4p2BM8hxNqjdz7dAvuwtaO18wIWZb+X/pWtWO+I7Pp/7LI57OqOnpXq49WAs8LVSX29M8B1ZySWsceL0xD69/SzGAQRaEpzx2g9fZF7mUx8azHelgspW+AkZLm0R6p0rXjimG/HzF2mgbne/eRq7Q0PX6LK1/ODqKvO4jjTHc52QlcQ228w0bLGN8QtNtKWMvKEFU/HZrnVeCk768E98zJuwBoHdyx0CukyggoahoeE6oUgEDotF8zWwZt2FF88wO5wO29DGMKaFMae3qyQ1rknmek4sXApvPzC0VKNEhzEBA6WUwI9lRHG+4aNaC8n2sNoOvL30bHCupRLhQbh6IQep49Qu5wllJdXRQcmJfsI=
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13597d3d-58ed-45b5-3833-08d8242604ee
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR05MB4141.eurprd05.prod.outlook.com
+X-Microsoft-Antispam-Message-Info: sAtdqzmZQjswfftvADMUkYZZ42jSGC4xuTXdJ4xallIz9adkmiLXNwlsG2T+c7THUZiGe/oA6IdGa5QcemT35uFM0XWgIKV+SlhY5Ytvzic6Q2P5G4mk8rVKgvCSxzg0gMdrgNGreag+e2tzg031feFd7bD6BamxN3s1lQ0LNnUK4KA+JweVrM4GLiXJiRx1jxo2FArvhFLOQmdWyShlvp6um/D7K2UbJFXbnnu65/A5CvIWYs8Aetds+ujo2cXs8GWvv1D6OL2wOou2XI+N9xICAKA+l5amj3gidA58Fi+izqNdQTQ2hPBbp2YSLVKP2Xran79RGQaEqBEtNbSLGMFBFgZyR4VftqqiCxdYzxYHZ6+xKVh7et/aXYPVkS++TdafrE1xc9dsIAuz4bNEx8CpqchNOyZkHzZfGBVpSWh2gn0e/hmsSxt6lqERjVHueGRPH2KY+0uwvrrabNL6eg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(346002)(376002)(366004)(136003)(39860400002)(83380400001)(6666004)(44832011)(1006002)(8936002)(2906002)(52116002)(2616005)(956004)(110136005)(4326008)(316002)(6512007)(66476007)(8676002)(66946007)(86362001)(66556008)(6636002)(16526019)(26005)(5660300002)(966005)(478600001)(55236004)(6506007)(6486002)(186003)(1076003)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: nnlXw9sAtaQxuhaaipSqjoK+qM6CNk5V6o1LCtSD1jMpmTAatgS5BjefT2ZuoextwTSC80d92O8islJilT8JD8Wlhi9hFS+eLrmfmicEt8jZf9tyfyZbZzpfLZGfeLhZ3DTwvbZ6BNu3DLHnxdGWAdygVZplAMhQUesMT72+VtMSu+jewYK5nuUuuDjKqPDBFw4kULl/RcfanrTft3nbUFvDDYqVaJsHtj2DA4W91dDrOQpJWpVxfMkQJvbAJkxsW0XBwOF11/3dl/H3Ikcf/SxdrSOe16sSjAOmEdnvC0iAHJiLbA99SF7eQpjW57bBwsrOMtVEi6PXMehDPdM4JAgVhqy4+In+l6lHFf7oyxehvq1OPj3va3M50+5LeEQC4/ZmzOBD20/1U42PXcACdd0LW55b7FgO33CHONfmNlmyEQiAoPRBQRZo0RzeHUonLXRZ3PiZlqge5oC8euf2NrPchbHexI/Fdo5AliXLbCY=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5acfdb2-fc8a-4f80-2527-08d824319447
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2020 16:34:58.4352
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2020 17:57:43.5301
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qFH47HJlU74F/iO57gR8k0uCA7etsM0zYxq2gyTF9WhuoYUZuzWuhDQxx+gyCfrVQpm2MnxXO/oEQvUXgv4gjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB5982
+X-MS-Exchange-CrossTenant-UserPrincipalName: /Vt7Hilu3f7e54PwikFADRIfDJeGx9Kpe0sNIe1qeejsFt8cYUyr/cLYRlziYUSBwI/H/jD0MRrbkc97/BSAmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6898
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 09, 2020 at 09:10:06AM -0700, Dan Williams wrote:
-> On Thu, Jul 9, 2020 at 8:39 AM Jason Gunthorpe <jgg@mellanox.com> wrote:
-> >
-> > On Thu, Jul 09, 2020 at 04:00:51PM +0100, Christoph Hellwig wrote:
-> > > On Mon, Jul 06, 2020 at 06:59:32PM -0700, Dan Williams wrote:
-> > > > The runtime firmware activation capability of Intel NVDIMM devices
-> > > > requires memory transactions to be disabled for 100s of microseconds.
-> > > > This timeout is large enough to cause in-flight DMA to fail and other
-> > > > application detectable timeouts. Arrange for firmware activation to be
-> > > > executed while the system is "quiesced", all processes and device-DMA
-> > > > frozen.
-> > > >
-> > > > It is already required that invoking device ->freeze() callbacks is
-> > > > sufficient to cease DMA. A device that continues memory writes outside
-> > > > of user-direction violates expectations of the PM core to be to
-> > > > establish a coherent hibernation image.
-> > > >
-> > > > That said, RDMA devices are an example of a device that access memory
-> > > > outside of user process direction.
-> >
-> > Are you saying freeze doesn't work for some RDMA drivers? That would
-> > be a driver bug, I think.
-> 
-> Right, it's more my hunch than a known bug at this point, but in my
-> experience with testing server class hardware when I've reported a
-> power management bugs I've sometimes got the incredulous response "who
-> suspends / hibernates servers!?". I can drop that comment.
-> 
-> Are there protocol timeouts that might need to be adjusted for a 100s
-> of microseconds blip in memory controller response?
+ This patch series provides ACPI support for dpaa2 MAC driver.
+ This also introduces ACPI mechanism to get PHYs registered on a
+ MDIO bus and provide them to be connected to MAC.
 
-Survivability depends alot on HW support, it has to suspend, not
-discard DMAs that it needs to issue. Most likely things are as you
-say, and HW doesn't support safe short time suspend. The usual use of
-PM stuff here is to make the machine ready for kexec
+ This patchset is dependent on the review patches available on:
+https://git.kernel.org/pub/scm/linux/kernel/git/lpieralisi/linux.git/log/?h=for-review/acpi-iort-id-rework
 
-Jason
+ Device Tree can be tested with the below change which is also available in
+the above referenced review patches:
+
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -931,6 +931,7 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
+        if (error < 0)
+                goto error_cleanup_mc_io;
+
++       mc_bus_dev->dev.fwnode = pdev->dev.fwnode;
+        mc->root_mc_bus_dev = mc_bus_dev;
+        return 0;
+
+
+Changes in v4:
+- release fwnode_mdio after use
+- return ERR_PTR instead of NULL
+- introduce device_mdiobus_register()
+
+Changes in v3:
+- cleanup based on v2 comments
+- Added description for more properties
+- Added MDIO node DSDT entry
+- introduce fwnode_mdio_find_bus()
+- renamed and improved phy_find_by_fwnode()
+- cleanup based on v2 comments
+- move code into phylink_fwnode_phy_connect()
+
+Changes in v2:
+- clean up dpaa2_mac_get_node()
+- introduce find_phy_device()
+- use acpi_find_child_device()
+
+Calvin Johnson (6):
+  Documentation: ACPI: DSD: Document MDIO PHY
+  net: phy: introduce device_mdiobus_register()
+  net/fsl: use device_mdiobus_register()
+  net: phy: introduce phy_find_by_fwnode()
+  phylink: introduce phylink_fwnode_phy_connect()
+  net: dpaa2-mac: Add ACPI support for DPAA2 MAC driver
+
+ Documentation/firmware-guide/acpi/dsd/phy.rst | 90 +++++++++++++++++++
+ .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  | 70 ++++++++-------
+ drivers/net/ethernet/freescale/xgmac_mdio.c   |  3 +-
+ drivers/net/phy/mdio_bus.c                    | 47 ++++++++++
+ drivers/net/phy/phy_device.c                  | 22 +++++
+ drivers/net/phy/phylink.c                     | 33 +++++++
+ include/linux/mdio.h                          |  1 +
+ include/linux/phy.h                           |  2 +
+ include/linux/phylink.h                       |  3 +
+ 9 files changed, 239 insertions(+), 32 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+
+-- 
+2.17.1
+
