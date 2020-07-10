@@ -2,134 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F70321B7D0
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 16:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FF221BAF9
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 18:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727090AbgGJOIW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jul 2020 10:08:22 -0400
-Received: from mail-db8eur05on2070.outbound.protection.outlook.com ([40.107.20.70]:45409
-        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        id S1727844AbgGJQbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jul 2020 12:31:49 -0400
+Received: from mail-eopbgr70050.outbound.protection.outlook.com ([40.107.7.50]:20800
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727031AbgGJOIW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 Jul 2020 10:08:22 -0400
+        id S1726942AbgGJQbs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 10 Jul 2020 12:31:48 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Vr5AVRxoNlIjD3U4yZbI2GBeQx/y3ILU+qUSYA+hZ5sz7AgChc+zYIPh99ZwqlzGG4GXhKwm3oBjO+v/OHokwXDV/wPi8OuYuuiblElKx7u74Hn5w377yj1g3NsIbKlx3tdLkFh1ChsZZSwj0P9jAGyX65khOMvx8vTtR1rXLE5a9cRnld1cIWqjZm0We9BJs8KBXtkDNgyP7mlGwAEuEfU/VU8yrikC0Lu2A5QdICyLqXDKEXTJzgJuxnJXjDgdIGGJ4r4s1a6GDgsZNjSQKBlHkltfuQ/jY8FAX+mFQ1I+EtSp538EDvoPMsY0/iR1B0Y1EBEmTFPDAXZ3NVIBvA==
+ b=IaLWMUHq+wzu6BtzwhhX4CRKN3hZ+xC8/+QqA+yq1/KLyxupEJD1MkgKFxfx59n9CDWmKpKsHiv7T3HvlnLTrqYdtpukQy9fW7b3nQBzCWsQMRz/1Xu9eKX8tiDd/ZkqDkvc1RVy6vgV8oVQSRo8HCNhrQmWvYmWILdW3HMZW8ftbCRZogj2+8b4J2wpfhUlcrJR/rsFiMe53Hj8rKWey9u6auQL1TGRqmWT+yBBQ2pBX9v/6tVngBGEARwtvI3pc1p70M19E3pEPZSZrU34nJXqIVN7ElKlUZtARjIDl6l/e8CHhcd8Rg4861PNCsP8Hkwew0Ip6LInnB5opzBjBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PyhrvK15la7mJdtXGs8wsbcadxLx9LZ+P3OJWeMusac=;
- b=jwH7rpH0uSY2ixLiiilykZby0bH3S1nuUXdlzBtrWV7S4FFALR6cWWNpWTVmT33eehOhQH3IpaBMuP0kCTafNUa3ywpijDNLpObwFnDp1czBSywlhF4QZHykCZtufATK5d1SQqCTrp5ph47O0rE7w4s+5Aq0jtthCvKl+F69zvD77BjVuxGPDxcDuNxh2pOoFP6LXxrduqFNE0eS0AdOtbzKYXgUBo/pDo1ZunRqwnJP1QiFCwykc8UIKxnchlBYdElK67GfzgJ6VS6sCMj3T/0rmjBj0oaARfvIwW4r81Yp5rAmYjdWNwDnuy28nPS1kgs7Is7KN2sb7p/i/ke1bQ==
+ bh=2isuM1FwbYz4YVC4JpjisebF6RP2POmmiDIZVVd2xTU=;
+ b=RToOltSYaOvWeB5+J9XT+v8VH6ViGqHOzRbj8UKcIiF64k6SCsW9hqnYS1z5Cemmmvcbb2APMnhXFMfrVXTdmhIM5BLHYqiqNuTGf3+6/qroGH9bPIjEOEVLpCgYX9AGfJcq8LRdKFawiXdN95OdjFaddOtSvpeO2gCW2/sl4HXmwmyP7ruR7NaQ7an+0WwlGxwFeF3jmGn5rJMYGqW2AfR/TAuzz46DIkgyErvotRuveRgWtei8I0NBhQuxQEkl1aWBNH67XeT4h8+8cpBWRCyht7LLg9rJMlguc/dBUlv2FOd7rOpAgCduB7bU+RFaLuBe062xlTN6k1henW0maA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PyhrvK15la7mJdtXGs8wsbcadxLx9LZ+P3OJWeMusac=;
- b=mSRtj85P8lWmKaHJkaDM/h4j3fKzO2sdejjKvfapeNsjhElDEAnjtBytq8/5I2EPpPQDI8zW4hZBN6o29848vbCIujCAyW8yBPoEewWe0k8CMwPOOCP/vEeBm9reyHbKY6x1LI5iY0tVwrsgtN6rdMOieiLdCOQ5haHuPgxZeTc=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+ bh=2isuM1FwbYz4YVC4JpjisebF6RP2POmmiDIZVVd2xTU=;
+ b=LwN77xK6/OXhpWZSA2cGEWR6vDaIOMGpuPTdXfl5tMfaci+JRKbWMaROnDJ81Os1xwslG5k7TVkQAEv9LrC2htkGjAZIQpf0EDPGFctfOKcmXl5CuA6BE61LyuZc3Kdn8vlYrwFnOkGfqjQIqeSWT5xw9La4b/x8CCH9CZZlPFY=
+Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB4387.eurprd04.prod.outlook.com (2603:10a6:208:73::33) with
+ by AM0PR0402MB3908.eurprd04.prod.outlook.com (2603:10a6:208:f::28) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Fri, 10 Jul
- 2020 14:08:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20; Fri, 10 Jul
+ 2020 16:31:44 +0000
 Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
  ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
  ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3174.023; Fri, 10 Jul 2020
- 14:08:18 +0000
-Date:   Fri, 10 Jul 2020 19:38:08 +0530
+ 16:31:44 +0000
 From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jeremy Linton <jeremy.linton@arm.com>,
+To:     Jeremy Linton <jeremy.linton@arm.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jon <jon@solid-run.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux.cj@gmail.com, netdev <netdev@vger.kernel.org>
-Subject: Re: [net-next PATCH v4 5/6] phylink: introduce
- phylink_fwnode_phy_connect()
-Message-ID: <20200710140808.GA26486@lsv03152.swis.in-blr01.nxp.com>
-References: <20200709175722.5228-1-calvin.johnson@oss.nxp.com>
- <20200709175722.5228-6-calvin.johnson@oss.nxp.com>
- <CAHp75VdOF2qXFQOAyYVFLY-_JbGUAZ-6Cq-q_LRzKeV69RrJgg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdOF2qXFQOAyYVFLY-_JbGUAZ-6Cq-q_LRzKeV69RrJgg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: SG2PR02CA0105.apcprd02.prod.outlook.com
- (2603:1096:4:92::21) To AM0PR04MB5636.eurprd04.prod.outlook.com
+        Madalin Bucur <madalin.bucur@oss.nxp.com>
+Cc:     netdev@vger.kernel.org, linux.cj@gmail.com,
+        linux-acpi@vger.kernel.org,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>
+Subject: [net-next PATCH v5 0/6]  ACPI support for dpaa2 MAC driver.
+Date:   Fri, 10 Jul 2020 22:01:09 +0530
+Message-Id: <20200710163115.2740-1-calvin.johnson@oss.nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0137.apcprd06.prod.outlook.com
+ (2603:1096:1:1f::15) To AM0PR04MB5636.eurprd04.prod.outlook.com
  (2603:10a6:208:130::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR02CA0105.apcprd02.prod.outlook.com (2603:1096:4:92::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.21 via Frontend Transport; Fri, 10 Jul 2020 14:08:15 +0000
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0137.apcprd06.prod.outlook.com (2603:1096:1:1f::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20 via Frontend Transport; Fri, 10 Jul 2020 16:31:40 +0000
+X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [14.142.151.118]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: d6027a6e-97a0-44e3-351a-08d824dab22f
-X-MS-TrafficTypeDiagnostic: AM0PR04MB4387:
+X-MS-Office365-Filtering-Correlation-Id: 82478577-b51d-4593-f412-08d824eebb70
+X-MS-TrafficTypeDiagnostic: AM0PR0402MB3908:
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB438739B4BE775C9635FD6D4ED2650@AM0PR04MB4387.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Microsoft-Antispam-PRVS: <AM0PR0402MB39081E59533A26CA9CB47778D2650@AM0PR0402MB3908.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YKvwEcaS/JiWtYdIG1P0I1Zwig6fvsKVd72FgHvCfARu5/62NTFjI1+DefM30aqzNGxe85px+h0BzyWyOfWp+4q00T091I2XO7+2GOKgh8myi7nsCdKV9xYqYrteyf9Ic1Vh6UksFErnbNYsL97u3AuYOnzTGTyn2PbmJN9A9RzVPAe8XwVvJigvzonsxcml9NV7SvMqOJEb+toVmLXgV/D1DxfFKvepOMpC2UnznDs1q3sVvCH8NSP7QPNU5czF8SwqVxL8p20gp6OtE2XZXn9M5jorFZphdyPujNJ62Ywbvr+DkjHW+85oLCQ+3pLTvSEpX4nFlhMcJMcXBeTQYhF/IzYmfznHheh28DJhcuqS2y6UEh/M+GyDfaRkG670
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(136003)(39860400002)(366004)(396003)(346002)(478600001)(26005)(4326008)(86362001)(52116002)(6916009)(956004)(7696005)(2906002)(186003)(55236004)(16526019)(53546011)(6506007)(9686003)(5660300002)(8676002)(8936002)(66556008)(54906003)(6666004)(1076003)(66946007)(316002)(66476007)(1006002)(44832011)(33656002)(55016002)(110426005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 5pWhmLm3s44bdxOw9exgs7R2IVfuCIKC0H+RLBzBFpq4tp824HyuEWBf1nnJWcBBEQti4uOPP345LhZy/RthFPl3xHI5Uj9UGKhIAvAvXyQX/zWTSlnA5U0FP8MJj6bUm8zNOuDu1vFxfDX+La5os3dP6TaNNhxZPlv/DJiAvhXOG7fN3Hdn0K9FQyNnFnNsnE3H6qNzCRPjVY7wB2dNjw5ixcIWQMDwdzAg/ghsipgAs7Vy3bSCd8pQbo87yOvcyOL9TOWEdt+VTkqZJIp6VsNGMdY4xStauufw5nxJjD8XYTGTtzKgsF+C6rnDQjeVqZZJxwY6xxd3oC2QiS5FQEGNKqFjNRdVQvulu3UsrLKN8V9I9GGZ6RcpkoO4YXYA5oSVr4tuo0LVSAfG/Aczr9g+2Cq0/Fncg2VFEV2QHMZI6ZnwgWNm7GXRIXuMgpTodPoPT4c7kyDbRtbG85w+LpBxvLPnWl0wZwIK+7rNOJQPGI0IjWcu2Zi/0AcybM0O
+X-Microsoft-Antispam-Message-Info: 7Bu0ePlfq7HK0k0mRioEUj9ACmozrRh41QcRZ5ZhR49xMnJ5f1BKG5PsuHwXtByboZH9ge25n+CymL2yV+C3A7nulnkviYmWmqLFE4yXF+1Qagwv4qyQz0y5mGvZzdqIVH/rQxR5SyFZxrZowbmjQH4dlETxJtyY6OA2l/UUWr0Yp7o2fibFy5Nk5WoMIPkuTStGiVHGpqJ0ydg3BScP3M1SFzbojFLeVict6hYqMOyIp2cSH4sqIZ0OZPbx/Zqxdu21pTlwhPEeajXMF6B00bG4/a8n/caahi3gsG8CUJH4EqTUYIYmlBv2rnlK/z3L8DXZHqoYi4fZXkRwMaDkGVNII2OeE/y0md8Ct5xyLipqyEaF7DINf1LB3ClCqck1XJ6vT/JpuhYtBggV40MWYJQ6qj2UoIkoBwDrAVKQTRsetAvYl5wR71Is4BTuj3QeOmG89lE6aqO9ap5iWmk+LQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(346002)(39860400002)(136003)(376002)(396003)(4326008)(8676002)(2906002)(8936002)(86362001)(26005)(6512007)(52116002)(83380400001)(1076003)(6486002)(316002)(16526019)(110136005)(1006002)(66476007)(66556008)(6666004)(478600001)(956004)(66946007)(44832011)(5660300002)(186003)(966005)(6506007)(6636002)(55236004)(2616005)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: P/n8UEdP5cg03i0xg8H2ddCjde5v9nv+YKolFaa0whI+N9i8Rr4T6fLRm1wwDuuWFSQaI6CmpoqxVFTaKYOePGTtS3nTCzZ9YnOVJ+hFPpltjWasCBtPrzDNBP0n1nkE5n0+jG2eA2mECr5Ow8zsdtbcy5zhWSzWguplpTWo67INTxC8SE/f4bYKg0J+eEsxlghOc5PGYDxbuxsIdGkrvlcP3pxoz/Cr/vvvBSJbGeRR5c5uTBhNl77V6Dqy8xcS2+SsswiRX3ESSGIS0piKhPndes6uT5cTDftUc8PZ6zufn6KzkMfMmD5g3OJN5J4dxAgGYyKlIadNt6C+cvrwqolmc8RubwKbbDZxigfayMIVL9HGY3IwktnT9/FDMivLmxRMpfCjn1c0GBR/pgeldgYrMj+gacsnMGku5RVkmf8LgLm3cfM+XGgUP24Bg/00CLq/ekzDAaVV2y8aQz5IbXn5hM+6kr8TyhjW0xYQS1fmgAVy+SO2d2/w+whvERV/
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6027a6e-97a0-44e3-351a-08d824dab22f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82478577-b51d-4593-f412-08d824eebb70
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2020 14:08:18.7072
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2020 16:31:44.0512
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3l9KNayyOCy2GNU3Xj/7IsPd7r1lkHHo74LjY4WjW2Oi0r1Gq2AkqOBlbmQMKMTniLfWMy1ieAgFmuPN7BoFmg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4387
+X-MS-Exchange-CrossTenant-UserPrincipalName: BqzuAC+AdzTkgJN0WD9jVIBqqV8xK6RlbjwLt9XoW39cTMHLPjDIXIzVKJZ7fqvjeBNmP1lcwb1hsAElh7hbDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3908
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 09, 2020 at 11:48:03PM +0300, Andy Shevchenko wrote:
-> On Thu, Jul 9, 2020 at 8:58 PM Calvin Johnson
-> <calvin.johnson@oss.nxp.com> wrote:
-> >
-> > Define phylink_fwnode_phy_connect() to connect phy specified by
-> > a fwnode to a phylink instance.
-> 
-> ...
-> 
-> > +       if (is_of_node(fwnode)) {
-> > +               ret = phylink_of_phy_connect(pl, to_of_node(fwnode), flags);
-> > +       } else if (is_acpi_device_node(fwnode)) {
-> > +               phy_dev = phy_find_by_fwnode(fwnode);
-> > +               if (!phy_dev)
-> > +                       return -ENODEV;
-> > +               ret = phylink_connect_phy(pl, phy_dev);
-> > +       }
-> 
-> Looking at this more I really don't like how this if-else-if looks like.
-> 
-> I would rather expect something like
-> 
->                phy_dev = phy_find_by_fwnode(fwnode);
->                if (!phy_dev)
->                        return -ENODEV;
->                ret = phylink_connect_phy(pl, phy_dev);
-> 
-> Where phy_find_by_fwnode() will take care about OF or any other
-> possible fwnode cases.
+ This patch series provides ACPI support for dpaa2 MAC driver.
+ This also introduces ACPI mechanism to get PHYs registered on a
+ MDIO bus and provide them to be connected to MAC.
 
-phy_find_by_fwnode() has a different purpose from that of
-phylink_fwnode_phy_connect(). Current implementation looks good to me as it
-clearly takes different paths for DT and ACPI cases.
+ This patchset is dependent on the review patches available on:
+https://git.kernel.org/pub/scm/linux/kernel/git/lpieralisi/linux.git/log/?h=for-review/acpi-iort-id-rework
 
-Thanks
-Calvin
+ Device Tree can be tested with the below change which is also available in
+the above referenced review patches:
+
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -931,6 +931,7 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
+        if (error < 0)
+                goto error_cleanup_mc_io;
+
++       mc_bus_dev->dev.fwnode = pdev->dev.fwnode;
+        mc->root_mc_bus_dev = mc_bus_dev;
+        return 0;
+
+
+Changes in v5:
+- add description
+- clean up if else
+- rename phy_find_by_fwnode() to phy_find_by_mdio_handle()
+- add docment for phy_find_by_mdio_handle()
+- error out DT in phy_find_by_mdio_handle()
+- clean up err return
+- return -EINVAL for invalid fwnode
+
+Changes in v4:
+- release fwnode_mdio after use
+- return ERR_PTR instead of NULL
+- introduce device_mdiobus_register()
+
+Changes in v3:
+- cleanup based on v2 comments
+- Added description for more properties
+- Added MDIO node DSDT entry
+- introduce fwnode_mdio_find_bus()
+- renamed and improved phy_find_by_fwnode()
+- cleanup based on v2 comments
+- move code into phylink_fwnode_phy_connect()
+
+Changes in v2:
+- clean up dpaa2_mac_get_node()
+- introduce find_phy_device()
+- use acpi_find_child_device()
+
+Calvin Johnson (6):
+  Documentation: ACPI: DSD: Document MDIO PHY
+  net: phy: introduce device_mdiobus_register()
+  net/fsl: use device_mdiobus_register()
+  net: phy: introduce phy_find_by_mdio_handle()
+  phylink: introduce phylink_fwnode_phy_connect()
+  net: dpaa2-mac: Add ACPI support for DPAA2 MAC driver
+
+ Documentation/firmware-guide/acpi/dsd/phy.rst | 90 +++++++++++++++++++
+ .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  | 70 ++++++++-------
+ drivers/net/ethernet/freescale/xgmac_mdio.c   |  3 +-
+ drivers/net/phy/mdio_bus.c                    | 52 +++++++++++
+ drivers/net/phy/phy_device.c                  | 40 +++++++++
+ drivers/net/phy/phylink.c                     | 35 ++++++++
+ include/linux/mdio.h                          |  1 +
+ include/linux/phy.h                           |  2 +
+ include/linux/phylink.h                       |  3 +
+ 9 files changed, 264 insertions(+), 32 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+
+-- 
+2.17.1
+
