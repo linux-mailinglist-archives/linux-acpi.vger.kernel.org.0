@@ -2,201 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DB9021B525
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 14:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F70321B7D0
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 16:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbgGJMfk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jul 2020 08:35:40 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25202 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726828AbgGJMfj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jul 2020 08:35:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594384537;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2RMR1q5ma/qlcL/rWzZWtUeYlByUhZI934Q15lRAwoA=;
-        b=MxvpTzgEPwbZOKFSFEPVz9kY93yORk01Kt9nLPCBpFz8lR1CnKovUtLn4yitiUcwqY/GAm
-        AGUbV/97nkLvTd6jdlUKcdXXgoXdci1U5uYg+o9wskaCPeZ4FQLSTKiIUQYQIDUjRuL6OI
-        AHGupfrW4aC//9bYBfLSKJj5g3dtsbw=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-217-mQYqg-jlND-3bUWSTEFx8g-1; Fri, 10 Jul 2020 08:35:34 -0400
-X-MC-Unique: mQYqg-jlND-3bUWSTEFx8g-1
-Received: by mail-ej1-f69.google.com with SMTP id cf15so6301154ejb.6
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jul 2020 05:35:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2RMR1q5ma/qlcL/rWzZWtUeYlByUhZI934Q15lRAwoA=;
-        b=ld65DIEQ6PiWfbufJ/dwqn7Aak4K/FMtitGAwAJLY3Lmo3SxaPyq+i8iN92cwujM0n
-         KiSUmRTSpMIIjnpYpT3AX6iyvL2JVPd+eQJ4Jl4rZNl5PJKv85NWFGSlQeAwu/Sbzp7Q
-         PEcq7BpkCIFAYGuojxP4E+VPE1RdkG7FIL3Q2sADsToqZZHhBdMxCsZvy0h6LuW2D+9E
-         m63Yo3fRUCVkmiN63ryKoKJCyRHMg7vBizHq4iiHnSTCeDbKILy5xvUc4j4szU4i4hwa
-         9FBIITl/DpJCLNubdPR5A6BDiZmfd3OAXtISnYGUTy56EPF99LT4yQhFtSbxy7r9CSV8
-         4+Jg==
-X-Gm-Message-State: AOAM530G8LAK1LoErUd+Ox/Y77jroSNEmIv4mVy2rPXvF/y97TQAhwL9
-        m10sTqJTkRNKSDTd/gB2eR2fKOghmI/8Y9TU8++naFkfpdbDCuZZA60m4o5dcY5fPPZelKcfUJc
-        6CtcOMjsHfPNgrAZi6ZUang==
-X-Received: by 2002:a17:906:824c:: with SMTP id f12mr59883847ejx.443.1594384532982;
-        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyJSdz5iXaT7LBc+SfW2UuC98xoejhyGgvRs6n/WSO6R6iCQrT1lQg+fIVEx6s1Ln1cXR3huA==
-X-Received: by 2002:a17:906:824c:: with SMTP id f12mr59883830ejx.443.1594384532753;
-        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id v19sm4309167eda.70.2020.07.10.05.35.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
-Subject: Re: [Bug 1854502] New: Noticeably Increased CPU temperature
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-References: <bug-1854502-8448@https.bugzilla.redhat.com/>
- <9b3d85b5-b562-631f-adfd-6460bc6c4179@redhat.com>
- <CAJZ5v0gO7b8X6MMDO_UvGBc-PNH-o=U47+MuS1uk4E_tSF-Ogg@mail.gmail.com>
- <db2b75b7-afc9-7a44-762f-2a4ebd63b4ee@redhat.com>
-Message-ID: <e330796c-fbad-c8d9-f334-c2e5bf156d3f@redhat.com>
-Date:   Fri, 10 Jul 2020 14:35:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1727090AbgGJOIW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jul 2020 10:08:22 -0400
+Received: from mail-db8eur05on2070.outbound.protection.outlook.com ([40.107.20.70]:45409
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727031AbgGJOIW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 10 Jul 2020 10:08:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Vr5AVRxoNlIjD3U4yZbI2GBeQx/y3ILU+qUSYA+hZ5sz7AgChc+zYIPh99ZwqlzGG4GXhKwm3oBjO+v/OHokwXDV/wPi8OuYuuiblElKx7u74Hn5w377yj1g3NsIbKlx3tdLkFh1ChsZZSwj0P9jAGyX65khOMvx8vTtR1rXLE5a9cRnld1cIWqjZm0We9BJs8KBXtkDNgyP7mlGwAEuEfU/VU8yrikC0Lu2A5QdICyLqXDKEXTJzgJuxnJXjDgdIGGJ4r4s1a6GDgsZNjSQKBlHkltfuQ/jY8FAX+mFQ1I+EtSp538EDvoPMsY0/iR1B0Y1EBEmTFPDAXZ3NVIBvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PyhrvK15la7mJdtXGs8wsbcadxLx9LZ+P3OJWeMusac=;
+ b=jwH7rpH0uSY2ixLiiilykZby0bH3S1nuUXdlzBtrWV7S4FFALR6cWWNpWTVmT33eehOhQH3IpaBMuP0kCTafNUa3ywpijDNLpObwFnDp1czBSywlhF4QZHykCZtufATK5d1SQqCTrp5ph47O0rE7w4s+5Aq0jtthCvKl+F69zvD77BjVuxGPDxcDuNxh2pOoFP6LXxrduqFNE0eS0AdOtbzKYXgUBo/pDo1ZunRqwnJP1QiFCwykc8UIKxnchlBYdElK67GfzgJ6VS6sCMj3T/0rmjBj0oaARfvIwW4r81Yp5rAmYjdWNwDnuy28nPS1kgs7Is7KN2sb7p/i/ke1bQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PyhrvK15la7mJdtXGs8wsbcadxLx9LZ+P3OJWeMusac=;
+ b=mSRtj85P8lWmKaHJkaDM/h4j3fKzO2sdejjKvfapeNsjhElDEAnjtBytq8/5I2EPpPQDI8zW4hZBN6o29848vbCIujCAyW8yBPoEewWe0k8CMwPOOCP/vEeBm9reyHbKY6x1LI5iY0tVwrsgtN6rdMOieiLdCOQ5haHuPgxZeTc=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB4387.eurprd04.prod.outlook.com (2603:10a6:208:73::33) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Fri, 10 Jul
+ 2020 14:08:18 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3174.023; Fri, 10 Jul 2020
+ 14:08:18 +0000
+Date:   Fri, 10 Jul 2020 19:38:08 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux.cj@gmail.com, netdev <netdev@vger.kernel.org>
+Subject: Re: [net-next PATCH v4 5/6] phylink: introduce
+ phylink_fwnode_phy_connect()
+Message-ID: <20200710140808.GA26486@lsv03152.swis.in-blr01.nxp.com>
+References: <20200709175722.5228-1-calvin.johnson@oss.nxp.com>
+ <20200709175722.5228-6-calvin.johnson@oss.nxp.com>
+ <CAHp75VdOF2qXFQOAyYVFLY-_JbGUAZ-6Cq-q_LRzKeV69RrJgg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdOF2qXFQOAyYVFLY-_JbGUAZ-6Cq-q_LRzKeV69RrJgg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR02CA0105.apcprd02.prod.outlook.com
+ (2603:1096:4:92::21) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <db2b75b7-afc9-7a44-762f-2a4ebd63b4ee@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR02CA0105.apcprd02.prod.outlook.com (2603:1096:4:92::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.21 via Frontend Transport; Fri, 10 Jul 2020 14:08:15 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: d6027a6e-97a0-44e3-351a-08d824dab22f
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4387:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB438739B4BE775C9635FD6D4ED2650@AM0PR04MB4387.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: YKvwEcaS/JiWtYdIG1P0I1Zwig6fvsKVd72FgHvCfARu5/62NTFjI1+DefM30aqzNGxe85px+h0BzyWyOfWp+4q00T091I2XO7+2GOKgh8myi7nsCdKV9xYqYrteyf9Ic1Vh6UksFErnbNYsL97u3AuYOnzTGTyn2PbmJN9A9RzVPAe8XwVvJigvzonsxcml9NV7SvMqOJEb+toVmLXgV/D1DxfFKvepOMpC2UnznDs1q3sVvCH8NSP7QPNU5czF8SwqVxL8p20gp6OtE2XZXn9M5jorFZphdyPujNJ62Ywbvr+DkjHW+85oLCQ+3pLTvSEpX4nFlhMcJMcXBeTQYhF/IzYmfznHheh28DJhcuqS2y6UEh/M+GyDfaRkG670
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(136003)(39860400002)(366004)(396003)(346002)(478600001)(26005)(4326008)(86362001)(52116002)(6916009)(956004)(7696005)(2906002)(186003)(55236004)(16526019)(53546011)(6506007)(9686003)(5660300002)(8676002)(8936002)(66556008)(54906003)(6666004)(1076003)(66946007)(316002)(66476007)(1006002)(44832011)(33656002)(55016002)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 5pWhmLm3s44bdxOw9exgs7R2IVfuCIKC0H+RLBzBFpq4tp824HyuEWBf1nnJWcBBEQti4uOPP345LhZy/RthFPl3xHI5Uj9UGKhIAvAvXyQX/zWTSlnA5U0FP8MJj6bUm8zNOuDu1vFxfDX+La5os3dP6TaNNhxZPlv/DJiAvhXOG7fN3Hdn0K9FQyNnFnNsnE3H6qNzCRPjVY7wB2dNjw5ixcIWQMDwdzAg/ghsipgAs7Vy3bSCd8pQbo87yOvcyOL9TOWEdt+VTkqZJIp6VsNGMdY4xStauufw5nxJjD8XYTGTtzKgsF+C6rnDQjeVqZZJxwY6xxd3oC2QiS5FQEGNKqFjNRdVQvulu3UsrLKN8V9I9GGZ6RcpkoO4YXYA5oSVr4tuo0LVSAfG/Aczr9g+2Cq0/Fncg2VFEV2QHMZI6ZnwgWNm7GXRIXuMgpTodPoPT4c7kyDbRtbG85w+LpBxvLPnWl0wZwIK+7rNOJQPGI0IjWcu2Zi/0AcybM0O
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6027a6e-97a0-44e3-351a-08d824dab22f
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2020 14:08:18.7072
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3l9KNayyOCy2GNU3Xj/7IsPd7r1lkHHo74LjY4WjW2Oi0r1Gq2AkqOBlbmQMKMTniLfWMy1ieAgFmuPN7BoFmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4387
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 7/9/20 2:31 PM, Hans de Goede wrote:
-> Hi,
+On Thu, Jul 09, 2020 at 11:48:03PM +0300, Andy Shevchenko wrote:
+> On Thu, Jul 9, 2020 at 8:58 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Define phylink_fwnode_phy_connect() to connect phy specified by
+> > a fwnode to a phylink instance.
 > 
-> On 7/7/20 5:43 PM, Rafael J. Wysocki wrote:
->> Hi Hans,
->>
->> On Tue, Jul 7, 2020 at 5:32 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>>
->>> Hi Rafael,
->>>
->>> I got a copy of the below bugreport in my mailbox and I
->>> was wondering if this rings any bells.
->>>
->>> Are there any relevant power-management / scheduler
->>> changes in 5.7 (vs 5.6) which might be related?
->>
->> There were a few, but I'm not sure how they can cause thermal issues to happen.
->>
->>> And is there any quick way for the reporter to test this
->>> (by e.g. picking a different scheduler / cpufreq-governor).
->>
->> Well, as usual, I would recommend looking for possible configuration
->> differences between the good and bad cases, ie. different default
->> governors, different cpufreq/cpuidle drivers etc.
->>
->> Also, if the system is Intel-based, run turbostat to collect CPU PM
->> information for both the good and bad cases.
+> ...
 > 
-> Ok I've asked the user to run some tests and provide powertop
-> and turbostat outputs for both the cold and hot cases.
+> > +       if (is_of_node(fwnode)) {
+> > +               ret = phylink_of_phy_connect(pl, to_of_node(fwnode), flags);
+> > +       } else if (is_acpi_device_node(fwnode)) {
+> > +               phy_dev = phy_find_by_fwnode(fwnode);
+> > +               if (!phy_dev)
+> > +                       return -ENODEV;
+> > +               ret = phylink_connect_phy(pl, phy_dev);
+> > +       }
 > 
-> I will follow-up on this when I know more.
+> Looking at this more I really don't like how this if-else-if looks like.
+> 
+> I would rather expect something like
+> 
+>                phy_dev = phy_find_by_fwnode(fwnode);
+>                if (!phy_dev)
+>                        return -ENODEV;
+>                ret = phylink_connect_phy(pl, phy_dev);
+> 
+> Where phy_find_by_fwnode() will take care about OF or any other
+> possible fwnode cases.
 
-Ok, I've asked the user to gather the necessary info. He has collected
-screenshots from both powertop and turbostat under both 5.6 (with the
-CPU staying cool) and with 5.7 (where the CPU runs a bit hot) both with
-the system fully idle.
+phy_find_by_fwnode() has a different purpose from that of
+phylink_fwnode_phy_connect(). Current implementation looks good to me as it
+clearly takes different paths for DT and ACPI cases.
 
-The screenshots are attached to the bug as a tarbal:
-
-https://bugzilla.redhat.com/show_bug.cgi?id=1854502
-
-I've never looked at turbostat output before so I do not know what
-I'm looking for there. But the powertop output does show a significant
-difference.
-
-On the powertop overview page we can see that 5.7 has slightly less
-wakeup then 5.6 (probably just normal variation) but despite this,
-the "idle stats" page shows that under 5.6 we get 90/91% C7 residency,
-where as 5.7 only reaches 85%, that seems like a significant difference
-to me. IOW the CPU is in a higher powerstae (consuming more power) for
-15% of the time with 5.6, vs 10% with 5.7.
-
-Note that this users system is somewhat customized, he is using
-bumblebee with the nvidia binary driver to run games, while
-using the i915 gfx for his normal desktop stuff. Doing his
-tests no apps are running using the nvidia GPU and in both
-cases the nvidia GPU is powered-down (according to the /proc/...
-info).
-
-He is also using TLP and some utility to undervolt the GPU. None
-of this seems to explain the C7 residency difference though, so
-despite his non-standard setup it would be good (IMHO) to still
-see if we can try to root-cause that.
-
-Regards,
-
-Hans
-
-
-
-
-
-
->>> -------- Forwarded Message --------
->>> Subject: [Bug 1854502] New: Noticeably Increased CPU temperature
->>> Date: Tue, 07 Jul 2020 15:23:38 +0000
->>> From: bugzilla@redhat.com
->>> To: hdegoede@redhat.com
->>>
->>> https://bugzilla.redhat.com/show_bug.cgi?id=1854502
->>>
->>>               Bug ID: 1854502
->>>              Summary: Noticeably Increased CPU temperature
->>>              Product: Fedora
->>>              Version: 32
->>>             Hardware: x86_64
->>>                   OS: Linux
->>>               Status: NEW
->>>            Component: kernel
->>>             Severity: medium
->>>             Assignee: kernel-maint@redhat.com
->>>             Reporter: aria.aghazade@gmail.com
->>>           QA Contact: extras-qa@fedoraproject.org
->>>                   CC: acaringi@redhat.com, airlied@redhat.com,
->>>                       bskeggs@redhat.com, hdegoede@redhat.com,
->>>                       ichavero@redhat.com, itamar@ispbrasil.com.br,
->>>                       jarodwilson@gmail.com, jeremy@jcline.org,
->>>                       jglisse@redhat.com, john.j5live@gmail.com,
->>>                       jonathan@jonmasters.org, josef@toxicpanda.com,
->>>                       kernel-maint@redhat.com, lgoncalv@redhat.com,
->>>                       linville@redhat.com, masami256@gmail.com,
->>>                       mchehab@infradead.org, mjg59@srcf.ucam.org,
->>>                       steved@redhat.com
->>>     Target Milestone: ---
->>>       Classification: Fedora
->>>
->>>
->>>
->>> First things first, I'm running Fedora 32 with latest packages on intel 6700hq.
->>> With latest kernel-5.7, cpu temperatures are noticeably higher.
->>> Using kernel-5.6 my idle cpu temperature is around 35-40°C, but with kernel-5.7
->>> its around 50-55. Htop and KDE System Monitor don't show anything using cpu and
->>> idle cpu usage on both kernels is 0-2%.
->>>
->>> I first noticed this issue on kernel-5.7.6-201.fc32.x86_64, and it is also
->>> there with kernel-5.7.7-200.fc32.x86_64.
->>>
->>> Booting with kernel-5.6.19-300.fc32.x86_64 fixes the issue.
->>>
->>>
->>> Are you running any modules that not shipped with directly Fedora's kernel? No.
->>
-
+Thanks
+Calvin
