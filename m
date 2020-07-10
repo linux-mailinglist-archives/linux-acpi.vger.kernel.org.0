@@ -2,113 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E2C21BEE7
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 23:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE10421BFA1
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Jul 2020 00:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbgGJVBi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jul 2020 17:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
+        id S1726482AbgGJWUM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jul 2020 18:20:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726374AbgGJVBh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jul 2020 17:01:37 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680BDC08C5DC;
-        Fri, 10 Jul 2020 14:01:37 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id o22so3124137pjw.2;
-        Fri, 10 Jul 2020 14:01:37 -0700 (PDT)
+        with ESMTP id S1726319AbgGJWUL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jul 2020 18:20:11 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B1EC08C5DC;
+        Fri, 10 Jul 2020 15:20:11 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id z2so7351704wrp.2;
+        Fri, 10 Jul 2020 15:20:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/jfpD0ajn/lo+yQ7m4BQ4OdyYnJ6P/bgDedKUHu37Rg=;
-        b=Nh2jdHe8x8WAdYeG1ogXcvH7phd+VinXTyA7S5Gxz1BC6d2jphp6exKnhyPFvMCXMz
-         3LNVv5cFPZWCV+FySLNCU6VsEFzeuXsAztYnVrWB+Bt63Zo3W/b0WasXuEwREyLCqFvk
-         HOUFyeZIVJyknIQ+mhrH3WJzTrQOwzCBj9ZiRK2Rx9iHvV6Fqq8y+/DRbcc9pD90njWH
-         YTdcMC6Vj+uFMnY8fUD7ruyWPXh0BAtxlnZv8MKLgezy54AGp+o8nTERzIRIXXaWPQhJ
-         hs4/rXrh5aGTvAnxUw4b8//GsuAEp7zMDcq8E/k25ZLkenHRNbG+mchLUNIQDTm6rJJ0
-         neiw==
+        h=from:to:cc:subject:date:message-id;
+        bh=sQSNR/BugIoJc6hRmCvyOY2T/BtHesGbyrXiTgar9dI=;
+        b=E/WvXIbdBLzBijEIrHjy3ROSLzxYB5kRcgXlTWV5s6nTjk0sIxLxLV8dtFIH5vEf/H
+         U3eWv/xfzqF2tIQrGPbwIRR+9fsr3gC+Af8kb4EapkgW9zT1y/O6QsdJtedCfC+yuMe/
+         KhighYvpRyQnvVu4JLLuQojc1o28CCTGSLa/Vc7qo5GY/zFYL/85uWjW98zmkPmndBES
+         mAL7VvNIpEqvxJ1y9qrWHkQw7gdl6GJkw3mcT+pmgsizutcBpX00cH6+jfPFxCmME6bi
+         I2ZMDOM7hADKIDhEsG+aR5z3LW8kLVbqkzK9d8Ey3Xa9e5RkgEjZbSXxXl+6egvtEr7E
+         enFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/jfpD0ajn/lo+yQ7m4BQ4OdyYnJ6P/bgDedKUHu37Rg=;
-        b=Ytm4K7C7zD85TLToXr96HJmdNSq4uzj6IWOxNfrFU7UhDFz2XmQWJw4/zSg8yFonGR
-         WEwBLXOWjDf75koB2KyD5WUpGBOKGxsm9N4bgaVQt0J5BbcGlX9pBuZstJiiIYOiRzAw
-         aFspU3O5T1gMeRzqh3hbiM+r3XYSf0aE5mdnTOXr7uL9uhybZwm2XQOClXaHcu8DJs7O
-         tVws2ToWrLao9XLQM0aYY332atN1jpQ7Ac7N5OUKrw6Ms/T2Ws+7x5jjnMfI9n1vNPFt
-         J3E/jJ2DzYBH771S9NqmtdECxhR0oYXnnWwtL5A6+tLEUuiWvNF5J1Lcwet5kIuDH4cW
-         eAZQ==
-X-Gm-Message-State: AOAM5332OikDGjBKROko8KU3pI6Qwc0JawVdj80pT86WwS+3o64GYxXQ
-        CfCPXioFmlhGqFBJb99r1+XTgG9MdO58g7ac0Yw=
-X-Google-Smtp-Source: ABdhPJwEZP8egV/8/yQnw/9a5Zl4LuAEBel0j+SiDz2X/bnShsXn8zIk39uq7W+hVirXcL9wKaaqDliFTW9Pqo5GurU=
-X-Received: by 2002:a17:90b:3547:: with SMTP id lt7mr7528756pjb.181.1594414896952;
- Fri, 10 Jul 2020 14:01:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200710163115.2740-1-calvin.johnson@oss.nxp.com> <20200710163115.2740-6-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20200710163115.2740-6-calvin.johnson@oss.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 11 Jul 2020 00:01:20 +0300
-Message-ID: <CAHp75Vef0wTJj775PFwXs3XhbXqZBmOQ_E9qdHFYPPCegW4rfA@mail.gmail.com>
-Subject: Re: [net-next PATCH v5 5/6] phylink: introduce phylink_fwnode_phy_connect()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Jeremy Linton <jeremy.linton@arm.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev <netdev@vger.kernel.org>, linux.cj@gmail.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=sQSNR/BugIoJc6hRmCvyOY2T/BtHesGbyrXiTgar9dI=;
+        b=NWjnB7x1qLoeEAwuCZ8FziB5NmWpP255Qkg5QSm43J9pQ8337MUeMASzfTeiB01wYo
+         edZ2mahnv6jHoCbgox8yIew4l2YMnX2V0Sgh316SNH0cqqqVm2QDG0SV6yBMMRDquWoK
+         ZWpUuxeq6PAE6PRMJ2YIGHQQFTP/SIMUKeYVP8vhcZ+Z1A8/ulDIKF/jYufT0B+dRYyn
+         CDbIdHrvHQWm80TOvNszuqOFfQN1NlLx4W48yfemfIi4444AK0nKCVjbBl9Hf+Xc1TMo
+         E8HTGdR8mN9WUsbMamoj+ytUXlcCXbREONkmwm3DzMr8HDFuLQnfDUW1CerTWAmUlfHi
+         U3mw==
+X-Gm-Message-State: AOAM531NHqKYLsqRGBpnHKdZgNeDXA8k3xw/nNzO4sHvtCaKXARR1Ibd
+        izLvHuCU0uXw1xr12BJmjzs=
+X-Google-Smtp-Source: ABdhPJzS+uPpTiLsWNHg6xiOAW9CUTiS8ft4sXtfvWRv8joGH8d+W+t6FJyQoDufDDsZv9lKN31XXA==
+X-Received: by 2002:adf:ef4d:: with SMTP id c13mr67998573wrp.315.1594419608520;
+        Fri, 10 Jul 2020 15:20:08 -0700 (PDT)
+Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
+        by smtp.gmail.com with ESMTPSA id l18sm12170281wrm.52.2020.07.10.15.20.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2020 15:20:07 -0700 (PDT)
+From:   Saheed Olayemi Bolarinwa <refactormyself@gmail.com>
+To:     helgaas@kernel.org
+Cc:     Bolarinwa Olayemi Saheed <refactormyself@gmail.com>,
+        bjorn@helgaas.com, skhan@linuxfoundation.org,
+        linux-pci@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org, Russell Currey <ruscur@russell.cc>,
+        Sam Bobroff <sbobroff@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        linux-acpi@vger.kernel.org,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Stanislaw Gruszka <stf_xl@wp.pl>
+Subject: [PATCH 0/14 v3] PCI: Remove '*val = 0' from pcie_capability_read_*()
+Date:   Fri, 10 Jul 2020 23:20:12 +0200
+Message-Id: <20200710212026.27136-1-refactormyself@gmail.com>
+X-Mailer: git-send-email 2.18.2
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 10, 2020 at 7:32 PM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
->
-> Define phylink_fwnode_phy_connect() to connect phy specified by
-> a fwnode to a phylink instance.
+From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
 
-...
+v3 CHANGES:
+- Split previous PATCH 6/13 into two : PATCH 6/14 and PATCH 7/14
+- Fix commit message of PATCH 5/14
+- Update Patch numbering and Commit messages
+- Add 'Acked by Greg KH' to PATCH 2/14
+- Add PATCH version
 
-> +int phylink_fwnode_phy_connect(struct phylink *pl,
-> +                              struct fwnode_handle *fwnode,
-> +                              u32 flags)
-> +{
-> +       struct phy_device *phy_dev;
+v2 CHANGES:
+- Fix missing comma, causing the email cc error
+- Fix typos and numbering errors in commit messages
+- Add commit message to 13/13
+- Add two more patches: PATCH 3/13 and PATCH 4/13
 
-> +       int ret = 0;
+MERGING:
+Patch 7/14 depends on Patch 6/14. However Patch 6/14 has no dependency.
+Please, merge PATCH 7/14 only after Patch 6/14.
+Patch 14/14 depend on all preceeding patchs. Except for Patch 6/14 and
+Patch 7/14, all other patches are independent of one another. Hence,
+please merge Patch 14/14 only after other patches in this series have
+been merged.
 
-This assignment is redundant and actually entire var is not needed.
 
-> +       if (is_of_node(fwnode)) {
-> +               ret = phylink_of_phy_connect(pl, to_of_node(fwnode), flags);
-> +       } else if (is_acpi_device_node(fwnode)) {
-> +               phy_dev = phy_find_by_mdio_handle(fwnode);
-> +               if (!phy_dev)
-> +                       return -ENODEV;
-> +               ret = phylink_connect_phy(pl, phy_dev);
-> +       } else {
-> +               ret = -EINVAL;
-> +       }
-> +
-> +       return ret;
+PATCH 6/14:
+Make the function set status to "Power On" by default and only set to
+Set "Power Off" only if pcie_capability_read_word() is successful and
+(slot_ctrl & PCI_EXP_SLTCTL_PCC) == PCI_EXP_SLTCTL_PWR_OFF. 
 
-You may refactor in the similar way, i.e.
+PATCH 1/14 to 13/14:
+Check the return value of pcie_capability_read_*() to ensure success or
+confirm failure. While maintaining these functions, this ensures that the
+changes in PATCH 14/14 does not introduce any bug. 
 
-if (is_of_node(...))
-  return phy...
-if (is_acpi_device_node(...)) {
-  ... return phylink_connect_phy();
-}
-return -EINVAL;
+PATCH 14/14:
+There are several reasons why a PCI capability read may fail whether the
+device is present or not. If this happens, pcie_capability_read_*() will
+return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
+and *val is set to 0.
 
-> +}
+This behaviour if further ensured by this code inside
+pcie_capability_read_*()
+
+ ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
+ /*
+  * Reset *val to 0 if pci_read_config_dword() fails, it may
+  * have been written as 0xFFFFFFFF if hardware error happens
+  * during pci_read_config_dword().
+  */
+ if (ret)
+	 *val = 0;
+ return ret;
+
+a) Since all pci_generic_config_read() does is read a register value,
+it may return success after reading a ~0 which *may* have been fabricated
+by the PCI host bridge due to a read timeout. Hence pci_read_config_*() 
+will return success with a fabricated ~0 in *val, indicating a problem.
+In this case, the assumed behaviour of  pcie_capability_read_*() will be
+wrong. To avoid error slipping through, more checks are necessary.
+
+b) pci_read_config_*() will return PCIBIOS_DEVICE_NOT_FOUND only if 
+dev->error_state = pci_channel_io_perm_failure (i.e. 
+pci_dev_is_disconnected()) or if pci_generic_config_read() can't find the
+device. In both cases *val is initially set to ~0 but as shown in the code
+above pcie_capability_read_*() resets it back to 0. Even with this effort,
+drivers still have to perform validation checks more so if 0 is a valid
+value.
+
+Most drivers only consider the case (b) and in some cases, there is the 
+expectation that on timeout *val has a fabricated value of ~0, which *may*
+not always be true as explained in (a).
+
+In any case, checks need to be done to validate the value read and maybe
+confirm which error has occurred. It is better left to the drivers to do.
+
+Check the return value of pcie_capability_read_dword() to ensure success
+and avoid bug as a result of Patch 14/14.
+Remove the reset of *val to 0 when pci_read_config_*() fails.
+
+
+Bolarinwa Olayemi Saheed (14):
+  IB/hfi1: Check the return value of pcie_capability_read_*()
+  misc: rtsx: Check the return value of pcie_capability_read_*()
+  ath9k: Check the return value of pcie_capability_read_*()
+  iwlegacy: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Make "Power On" the default 
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI/ACPI: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI: Check the return value of pcie_capability_read_*()
+  PCI/PM: Check return value of pcie_capability_read_*()
+  PCI/AER: Check the return value of pcie_capability_read_*()
+  PCI/ASPM: Check the return value of pcie_capability_read_*()
+  PCI: Remove '*val = 0' from pcie_capability_read_*()
+
+ drivers/net/wireless/ath/ath9k/pci.c         | 5 +++--
+ drivers/net/wireless/intel/iwlegacy/common.c | 4 ++--
+ drivers/infiniband/hw/hfi1/aspm.c | 7 ++++---
+ drivers/misc/cardreader/rts5227.c | 5 +++--
+ drivers/misc/cardreader/rts5249.c | 5 +++--
+ drivers/misc/cardreader/rts5260.c | 5 +++--
+ drivers/misc/cardreader/rts5261.c | 5 +++--
+ drivers/pci/pcie/aer.c  |  5 +++--
+ drivers/pci/pcie/aspm.c | 33 +++++++++++++++++----------------
+ drivers/pci/hotplug/pciehp_hpc.c | 47 ++++++++++++++++----------------
+ drivers/pci/pci-acpi.c           | 10 ++++---
+ drivers/pci/probe.c              | 29 ++++++++++++--------
+ drivers/pci/access.c | 14 --------------
+ 13 files changed, 87 insertions(+), 87 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.18.2
+
