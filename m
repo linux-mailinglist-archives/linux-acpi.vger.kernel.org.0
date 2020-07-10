@@ -2,179 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0193521AD48
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 05:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB9021B525
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jul 2020 14:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726774AbgGJDJC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jul 2020 23:09:02 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:10871 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726495AbgGJDJB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jul 2020 23:09:01 -0400
-X-UUID: 9e0d82b26dea417ba92dc81e6cb20e8c-20200710
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=ZFtOqU4dl/32ounTIhT+b9wwRW4JvgTVX7I6mCXa/UU=;
-        b=PXSZk+SYrkUrJROytn5Mvnmqzf+fNO/RgaGhQfLg7AFJB4hNS2vTXKIswG8yN/a8BwMIlJK3bzEjNh59kZeLY9Ok9M6ibjIPspeIne7nriVZscx8JmBDmUUU5AVIvWcdFR8n4Mn+jP5Xnbb/HpdkM4zKHhEBKvnma5hl0cQmE/w=;
-X-UUID: 9e0d82b26dea417ba92dc81e6cb20e8c-20200710
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <neal.liu@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 916390051; Fri, 10 Jul 2020 11:08:57 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 10 Jul 2020 11:08:54 +0800
-Received: from [172.21.77.33] (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 10 Jul 2020 11:08:55 +0800
-Message-ID: <1594350535.4670.13.camel@mtkswgap22>
-Subject: Re: [PATCH v2] cpuidle: change enter_s2idle() prototype
-From:   Neal Liu <neal.liu@mediatek.com>
+        id S1726496AbgGJMfk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jul 2020 08:35:40 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25202 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726828AbgGJMfj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jul 2020 08:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594384537;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2RMR1q5ma/qlcL/rWzZWtUeYlByUhZI934Q15lRAwoA=;
+        b=MxvpTzgEPwbZOKFSFEPVz9kY93yORk01Kt9nLPCBpFz8lR1CnKovUtLn4yitiUcwqY/GAm
+        AGUbV/97nkLvTd6jdlUKcdXXgoXdci1U5uYg+o9wskaCPeZ4FQLSTKiIUQYQIDUjRuL6OI
+        AHGupfrW4aC//9bYBfLSKJj5g3dtsbw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-217-mQYqg-jlND-3bUWSTEFx8g-1; Fri, 10 Jul 2020 08:35:34 -0400
+X-MC-Unique: mQYqg-jlND-3bUWSTEFx8g-1
+Received: by mail-ej1-f69.google.com with SMTP id cf15so6301154ejb.6
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jul 2020 05:35:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=2RMR1q5ma/qlcL/rWzZWtUeYlByUhZI934Q15lRAwoA=;
+        b=ld65DIEQ6PiWfbufJ/dwqn7Aak4K/FMtitGAwAJLY3Lmo3SxaPyq+i8iN92cwujM0n
+         KiSUmRTSpMIIjnpYpT3AX6iyvL2JVPd+eQJ4Jl4rZNl5PJKv85NWFGSlQeAwu/Sbzp7Q
+         PEcq7BpkCIFAYGuojxP4E+VPE1RdkG7FIL3Q2sADsToqZZHhBdMxCsZvy0h6LuW2D+9E
+         m63Yo3fRUCVkmiN63ryKoKJCyRHMg7vBizHq4iiHnSTCeDbKILy5xvUc4j4szU4i4hwa
+         9FBIITl/DpJCLNubdPR5A6BDiZmfd3OAXtISnYGUTy56EPF99LT4yQhFtSbxy7r9CSV8
+         4+Jg==
+X-Gm-Message-State: AOAM530G8LAK1LoErUd+Ox/Y77jroSNEmIv4mVy2rPXvF/y97TQAhwL9
+        m10sTqJTkRNKSDTd/gB2eR2fKOghmI/8Y9TU8++naFkfpdbDCuZZA60m4o5dcY5fPPZelKcfUJc
+        6CtcOMjsHfPNgrAZi6ZUang==
+X-Received: by 2002:a17:906:824c:: with SMTP id f12mr59883847ejx.443.1594384532982;
+        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyJSdz5iXaT7LBc+SfW2UuC98xoejhyGgvRs6n/WSO6R6iCQrT1lQg+fIVEx6s1Ln1cXR3huA==
+X-Received: by 2002:a17:906:824c:: with SMTP id f12mr59883830ejx.443.1594384532753;
+        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id v19sm4309167eda.70.2020.07.10.05.35.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2020 05:35:32 -0700 (PDT)
+Subject: Re: [Bug 1854502] New: Noticeably Increased CPU temperature
+From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Neal Liu <neal.liu@mediatek.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>
-Date:   Fri, 10 Jul 2020 11:08:55 +0800
-In-Reply-To: <CAJZ5v0ihB5AJwSRpjaOnXAmciregzxARL5xfudu1h+=_LXaE_w@mail.gmail.com>
-References: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com>
-         <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
-         <CAJZ5v0ihB5AJwSRpjaOnXAmciregzxARL5xfudu1h+=_LXaE_w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+References: <bug-1854502-8448@https.bugzilla.redhat.com/>
+ <9b3d85b5-b562-631f-adfd-6460bc6c4179@redhat.com>
+ <CAJZ5v0gO7b8X6MMDO_UvGBc-PNH-o=U47+MuS1uk4E_tSF-Ogg@mail.gmail.com>
+ <db2b75b7-afc9-7a44-762f-2a4ebd63b4ee@redhat.com>
+Message-ID: <e330796c-fbad-c8d9-f334-c2e5bf156d3f@redhat.com>
+Date:   Fri, 10 Jul 2020 14:35:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 967F8FBDB13B401C9F61D19FEDCEA86A89133194AAE8170C5FFDE56D1C0B79A12000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+In-Reply-To: <db2b75b7-afc9-7a44-762f-2a4ebd63b4ee@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTA3LTA5IGF0IDE0OjE4ICswMjAwLCBSYWZhZWwgSi4gV3lzb2NraSB3cm90
-ZToNCj4gT24gTW9uLCBKdWwgNiwgMjAyMCBhdCA1OjEzIEFNIE5lYWwgTGl1IDxuZWFsLmxpdUBt
-ZWRpYXRlay5jb20+IHdyb3RlOg0KPiA+DQo+ID4gQ29udHJvbCBGbG93IEludGVncml0eShDRkkp
-IGlzIGEgc2VjdXJpdHkgbWVjaGFuaXNtIHRoYXQgZGlzYWxsb3dzDQo+ID4gY2hhbmdlcyB0byB0
-aGUgb3JpZ2luYWwgY29udHJvbCBmbG93IGdyYXBoIG9mIGEgY29tcGlsZWQgYmluYXJ5LA0KPiA+
-IG1ha2luZyBpdCBzaWduaWZpY2FudGx5IGhhcmRlciB0byBwZXJmb3JtIHN1Y2ggYXR0YWNrcy4N
-Cj4gPg0KPiA+IGluaXRfc3RhdGVfbm9kZSgpIGFzc2lnbiBzYW1lIGZ1bmN0aW9uIGNhbGxiYWNr
-IHRvIGRpZmZlcmVudA0KPiA+IGZ1bmN0aW9uIHBvaW50ZXIgZGVjbGFyYXRpb25zLg0KPiA+DQo+
-ID4gc3RhdGljIGludCBpbml0X3N0YXRlX25vZGUoc3RydWN0IGNwdWlkbGVfc3RhdGUgKmlkbGVf
-c3RhdGUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IG9mX2Rl
-dmljZV9pZCAqbWF0Y2hlcywNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3Qg
-ZGV2aWNlX25vZGUgKnN0YXRlX25vZGUpIHsgLi4uDQo+ID4gICAgICAgICBpZGxlX3N0YXRlLT5l
-bnRlciA9IG1hdGNoX2lkLT5kYXRhOyAuLi4NCj4gPiAgICAgICAgIGlkbGVfc3RhdGUtPmVudGVy
-X3MyaWRsZSA9IG1hdGNoX2lkLT5kYXRhOyB9DQo+ID4NCj4gPiBGdW5jdGlvbiBkZWNsYXJhdGlv
-bnM6DQo+ID4NCj4gPiBzdHJ1Y3QgY3B1aWRsZV9zdGF0ZSB7IC4uLg0KPiA+ICAgICAgICAgaW50
-ICgqZW50ZXIpIChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCj4gPiAgICAgICAgICAgICAg
-ICAgICAgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsDQo+ID4gICAgICAgICAgICAgICAg
-ICAgICAgIGludCBpbmRleCk7DQo+ID4NCj4gPiAgICAgICAgIHZvaWQgKCplbnRlcl9zMmlkbGUp
-IChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCj4gPiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCj4gPiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBpbnQgaW5kZXgpOyB9Ow0KPiA+DQo+ID4gSW4gdGhpcyBjYXNlLCBlaXRo
-ZXIgZW50ZXIoKSBvciBlbnRlcl9zMmlkbGUoKSB3b3VsZCBjYXVzZSBDRkkgY2hlY2sNCj4gPiBm
-YWlsZWQgc2luY2UgdGhleSB1c2Ugc2FtZSBjYWxsZWUuDQo+IA0KPiBDYW4geW91IHBsZWFzZSBl
-eHBsYWluIHRoaXMgaW4gYSBiaXQgbW9yZSBkZXRhaWw/DQo+IA0KPiBBcyBpdCBzdGFuZHMsIEkg
-ZG9uJ3QgdW5kZXJzdGFuZCB0aGUgcHJvYmxlbSBzdGF0ZW1lbnQgZW5vdWdoIHRvIGFwcGx5DQo+
-IHRoZSBwYXRjaC4NCj4gDQoNCk9rYXksIExldCdzIG1lIHRyeSB0byBleHBsYWluIG1vcmUgZGV0
-YWlscy4NCkNvbnRyb2wgRmxvdyBJbnRlZ3JpdHkoQ0ZJKSBpcyBhIHNlY3VyaXR5IG1lY2hhbmlz
-bSB0aGF0IGRpc2FsbG93cw0KY2hhbmdlcyB0byB0aGUgb3JpZ2luYWwgY29udHJvbCBmbG93IGdy
-YXBoIG9mIGEgY29tcGlsZWQgYmluYXJ5LCBtYWtpbmcNCml0IHNpZ25pZmljYW50bHkgaGFyZGVy
-IHRvIHBlcmZvcm0gc3VjaCBhdHRhY2tzLg0KDQpUaGVyZSBhcmUgbXVsdGlwbGUgY29udHJvbCBm
-bG93IGluc3RydWN0aW9ucyB0aGF0IGNvdWxkIGJlIG1hbmlwdWxhdGVkDQpieSB0aGUgYXR0YWNr
-ZXIgYW5kIHN1YnZlcnQgY29udHJvbCBmbG93LiBUaGUgdGFyZ2V0IGluc3RydWN0aW9ucyB0aGF0
-DQp1c2UgZGF0YSB0byBkZXRlcm1pbmUgdGhlIGFjdHVhbCBkZXN0aW5hdGlvbi4NCi0gaW5kaXJl
-Y3QganVtcA0KLSBpbmRpcmVjdCBjYWxsDQotIHJldHVybg0KDQpJbiB0aGlzIGNhc2UsIGZ1bmN0
-aW9uIHByb3RvdHlwZSBiZXR3ZWVuIGNhbGxlciBhbmQgY2FsbGVlIGFyZSBtaXNtYXRjaC4NCkNh
-bGxlcjogKHR5cGUgQSlmdW5jQQ0KQ2FsbGVlOiAodHlwZSBBKWZ1bmNCDQpDYWxsZWU6ICh0eXBl
-IEMpZnVuY0MNCg0KZnVuY0EgY2FsbHMgZnVuY0IgLT4gbm8gcHJvYmxlbQ0KZnVuY0EgY2FsbHMg
-ZnVuY0MgLT4gQ0ZJIGNoZWNrIGZhaWxlZA0KDQpUaGF0J3Mgd2h5IHdlIHRyeSB0byBhbGlnbiBm
-dW5jdGlvbiBwcm90b3R5cGUuDQpQbGVhc2UgZmVlbCBmcmVlIHRvIGZlZWRiYWNrIGlmIHlvdSBo
-YXZlIGFueSBxdWVzdGlvbnMuDQoNCj4gPiBBbGlnbiBmdW5jdGlvbiBwcm90b3R5cGUgb2YgZW50
-ZXIoKSBzaW5jZSBpdCBuZWVkcyByZXR1cm4gdmFsdWUgZm9yDQo+ID4gc29tZSB1c2UgY2FzZXMu
-IFRoZSByZXR1cm4gdmFsdWUgb2YgZW50ZXJfczJpZGxlKCkgaXMgbm8NCj4gPiBuZWVkIGN1cnJl
-bnRseS4NCj4gDQo+IFNvIGxhc3QgdGltZSBJIHJlcXVlc3RlZCB5b3UgdG8gZG9jdW1lbnQgd2h5
-IC0+ZW50ZXJfczJpZGxlIG5lZWRzIHRvDQo+IHJldHVybiBhbiBpbnQgaW4gdGhlIGNvZGUsIHdo
-aWNoIGhhcyBub3QgYmVlbiBkb25lLiAgUGxlYXNlIGRvIHRoYXQuDQo+IA0KPiA+IFNpZ25lZC1v
-ZmYtYnk6IE5lYWwgTGl1IDxuZWFsLmxpdUBtZWRpYXRlay5jb20+DQo+ID4gLS0tDQo+ID4gIGRy
-aXZlcnMvYWNwaS9wcm9jZXNzb3JfaWRsZS5jICAgfCAgICA2ICsrKystLQ0KPiA+ICBkcml2ZXJz
-L2NwdWlkbGUvY3B1aWRsZS10ZWdyYS5jIHwgICAgOCArKysrKy0tLQ0KPiA+ICBkcml2ZXJzL2lk
-bGUvaW50ZWxfaWRsZS5jICAgICAgIHwgICAgNiArKysrLS0NCj4gPiAgaW5jbHVkZS9saW51eC9j
-cHVpZGxlLmggICAgICAgICB8ICAgIDYgKysrLS0tDQo+ID4gIDQgZmlsZXMgY2hhbmdlZCwgMTYg
-aW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUu
-Yw0KPiA+IGluZGV4IDc1NTM0YzUuLjZmZmI2YzkgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9h
-Y3BpL3Byb2Nlc3Nvcl9pZGxlLmMNCj4gPiArKysgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lk
-bGUuYw0KPiA+IEBAIC02NTUsOCArNjU1LDggQEAgc3RhdGljIGludCBhY3BpX2lkbGVfZW50ZXIo
-c3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+ID4gICAgICAgICByZXR1cm4gaW5kZXg7DQo+
-ID4gIH0NCj4gPg0KPiA+IC1zdGF0aWMgdm9pZCBhY3BpX2lkbGVfZW50ZXJfczJpZGxlKHN0cnVj
-dCBjcHVpZGxlX2RldmljZSAqZGV2LA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsIGludCBpbmRleCkNCj4gPiArc3RhdGlj
-IGludCBhY3BpX2lkbGVfZW50ZXJfczJpZGxlKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2
-ZXIgKmRydiwgaW50IGluZGV4KQ0KPiA+ICB7DQo+ID4gICAgICAgICBzdHJ1Y3QgYWNwaV9wcm9j
-ZXNzb3JfY3ggKmN4ID0gcGVyX2NwdShhY3BpX2NzdGF0ZVtpbmRleF0sIGRldi0+Y3B1KTsNCj4g
-Pg0KPiA+IEBAIC02NzQsNiArNjc0LDggQEAgc3RhdGljIHZvaWQgYWNwaV9pZGxlX2VudGVyX3My
-aWRsZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCj4gPiAgICAgICAgICAgICAgICAgfQ0K
-PiA+ICAgICAgICAgfQ0KPiA+ICAgICAgICAgYWNwaV9pZGxlX2RvX2VudHJ5KGN4KTsNCj4gPiAr
-DQo+ID4gKyAgICAgICByZXR1cm4gMDsNCj4gPiAgfQ0KPiA+DQo+ID4gIHN0YXRpYyBpbnQgYWNw
-aV9wcm9jZXNzb3Jfc2V0dXBfY3B1aWRsZV9jeChzdHJ1Y3QgYWNwaV9wcm9jZXNzb3IgKnByLA0K
-PiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2NwdWlkbGUvY3B1aWRsZS10ZWdyYS5jIGIvZHJpdmVy
-cy9jcHVpZGxlL2NwdWlkbGUtdGVncmEuYw0KPiA+IGluZGV4IDE1MDA0NTguLmExMmZiMTQgMTAw
-NjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9jcHVpZGxlL2NwdWlkbGUtdGVncmEuYw0KPiA+ICsrKyBi
-L2RyaXZlcnMvY3B1aWRsZS9jcHVpZGxlLXRlZ3JhLmMNCj4gPiBAQCAtMjUzLDExICsyNTMsMTMg
-QEAgc3RhdGljIGludCB0ZWdyYV9jcHVpZGxlX2VudGVyKHN0cnVjdCBjcHVpZGxlX2RldmljZSAq
-ZGV2LA0KPiA+ICAgICAgICAgcmV0dXJuIGVyciA/IC0xIDogaW5kZXg7DQo+ID4gIH0NCj4gPg0K
-PiA+IC1zdGF0aWMgdm9pZCB0ZWdyYTExNF9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2
-aWNlICpkZXYsDQo+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBj
-cHVpZGxlX2RyaXZlciAqZHJ2LA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBpbnQgaW5kZXgpDQo+ID4gK3N0YXRpYyBpbnQgdGVncmExMTRfZW50ZXJfczJpZGxlKHN0cnVj
-dCBjcHVpZGxlX2RldmljZSAqZGV2LA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LA0KPiA+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGludCBpbmRleCkNCj4gPiAgew0KPiA+ICAgICAgICAgdGVncmFfY3B1aWRs
-ZV9lbnRlcihkZXYsIGRydiwgaW5kZXgpOw0KPiA+ICsNCj4gPiArICAgICAgIHJldHVybiAwOw0K
-PiA+ICB9DQo+ID4NCj4gPiAgLyoNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pZGxlL2ludGVs
-X2lkbGUuYyBiL2RyaXZlcnMvaWRsZS9pbnRlbF9pZGxlLmMNCj4gPiBpbmRleCBmNDQ5NTg0Li5i
-MTc4ZGEzIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWRsZS9pbnRlbF9pZGxlLmMNCj4gPiAr
-KysgYi9kcml2ZXJzL2lkbGUvaW50ZWxfaWRsZS5jDQo+ID4gQEAgLTE3NSwxMyArMTc1LDE1IEBA
-IHN0YXRpYyBfX2NwdWlkbGUgaW50IGludGVsX2lkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpk
-ZXYsDQo+ID4gICAqIEludm9rZWQgYXMgYSBzdXNwZW5kLXRvLWlkbGUgY2FsbGJhY2sgcm91dGlu
-ZSB3aXRoIGZyb3plbiB1c2VyIHNwYWNlLCBmcm96ZW4NCj4gPiAgICogc2NoZWR1bGVyIHRpY2sg
-YW5kIHN1c3BlbmRlZCBzY2hlZHVsZXIgY2xvY2sgb24gdGhlIHRhcmdldCBDUFUuDQo+ID4gICAq
-Lw0KPiA+IC1zdGF0aWMgX19jcHVpZGxlIHZvaWQgaW50ZWxfaWRsZV9zMmlkbGUoc3RydWN0IGNw
-dWlkbGVfZGV2aWNlICpkZXYsDQo+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LCBpbnQgaW5kZXgpDQo+ID4gK3N0YXRp
-YyBfX2NwdWlkbGUgaW50IGludGVsX2lkbGVfczJpZGxlKHN0cnVjdCBjcHVpZGxlX2RldmljZSAq
-ZGV2LA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBj
-cHVpZGxlX2RyaXZlciAqZHJ2LCBpbnQgaW5kZXgpDQo+ID4gIHsNCj4gPiAgICAgICAgIHVuc2ln
-bmVkIGxvbmcgZWF4ID0gZmxnMk1XQUlUKGRydi0+c3RhdGVzW2luZGV4XS5mbGFncyk7DQo+ID4g
-ICAgICAgICB1bnNpZ25lZCBsb25nIGVjeCA9IDE7IC8qIGJyZWFrIG9uIGludGVycnVwdCBmbGFn
-ICovDQo+ID4NCj4gPiAgICAgICAgIG13YWl0X2lkbGVfd2l0aF9oaW50cyhlYXgsIGVjeCk7DQo+
-ID4gKw0KPiA+ICsgICAgICAgcmV0dXJuIDA7DQo+ID4gIH0NCj4gPg0KPiA+ICAvKg0KPiA+IGRp
-ZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2NwdWlkbGUuaCBiL2luY2x1ZGUvbGludXgvY3B1aWRs
-ZS5oDQo+ID4gaW5kZXggZWMyZWY2My4uYmVlMTBjMCAxMDA2NDQNCj4gPiAtLS0gYS9pbmNsdWRl
-L2xpbnV4L2NwdWlkbGUuaA0KPiA+ICsrKyBiL2luY2x1ZGUvbGludXgvY3B1aWRsZS5oDQo+ID4g
-QEAgLTY2LDkgKzY2LDkgQEAgc3RydWN0IGNwdWlkbGVfc3RhdGUgew0KPiA+ICAgICAgICAgICog
-c3VzcGVuZGVkLCBzbyBpdCBtdXN0IG5vdCByZS1lbmFibGUgaW50ZXJydXB0cyBhdCBhbnkgcG9p
-bnQgKGV2ZW4NCj4gPiAgICAgICAgICAqIHRlbXBvcmFyaWx5KSBvciBhdHRlbXB0IHRvIGNoYW5n
-ZSBzdGF0ZXMgb2YgY2xvY2sgZXZlbnQgZGV2aWNlcy4NCj4gPiAgICAgICAgICAqLw0KPiA+IC0g
-ICAgICAgdm9pZCAoKmVudGVyX3MyaWRsZSkgKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0K
-PiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAq
-ZHJ2LA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludCBpbmRleCk7DQo+ID4g
-KyAgICAgICBpbnQgKCplbnRlcl9zMmlkbGUpKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRy
-diwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgaW50IGluZGV4KTsNCj4gPiAgfTsN
-Cj4gPg0KPiA+ICAvKiBJZGxlIFN0YXRlIEZsYWdzICovDQo+ID4gLS0NCj4gPiAxLjcuOS41DQoN
-Cg==
+Hi,
+
+On 7/9/20 2:31 PM, Hans de Goede wrote:
+> Hi,
+> 
+> On 7/7/20 5:43 PM, Rafael J. Wysocki wrote:
+>> Hi Hans,
+>>
+>> On Tue, Jul 7, 2020 at 5:32 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi Rafael,
+>>>
+>>> I got a copy of the below bugreport in my mailbox and I
+>>> was wondering if this rings any bells.
+>>>
+>>> Are there any relevant power-management / scheduler
+>>> changes in 5.7 (vs 5.6) which might be related?
+>>
+>> There were a few, but I'm not sure how they can cause thermal issues to happen.
+>>
+>>> And is there any quick way for the reporter to test this
+>>> (by e.g. picking a different scheduler / cpufreq-governor).
+>>
+>> Well, as usual, I would recommend looking for possible configuration
+>> differences between the good and bad cases, ie. different default
+>> governors, different cpufreq/cpuidle drivers etc.
+>>
+>> Also, if the system is Intel-based, run turbostat to collect CPU PM
+>> information for both the good and bad cases.
+> 
+> Ok I've asked the user to run some tests and provide powertop
+> and turbostat outputs for both the cold and hot cases.
+> 
+> I will follow-up on this when I know more.
+
+Ok, I've asked the user to gather the necessary info. He has collected
+screenshots from both powertop and turbostat under both 5.6 (with the
+CPU staying cool) and with 5.7 (where the CPU runs a bit hot) both with
+the system fully idle.
+
+The screenshots are attached to the bug as a tarbal:
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1854502
+
+I've never looked at turbostat output before so I do not know what
+I'm looking for there. But the powertop output does show a significant
+difference.
+
+On the powertop overview page we can see that 5.7 has slightly less
+wakeup then 5.6 (probably just normal variation) but despite this,
+the "idle stats" page shows that under 5.6 we get 90/91% C7 residency,
+where as 5.7 only reaches 85%, that seems like a significant difference
+to me. IOW the CPU is in a higher powerstae (consuming more power) for
+15% of the time with 5.6, vs 10% with 5.7.
+
+Note that this users system is somewhat customized, he is using
+bumblebee with the nvidia binary driver to run games, while
+using the i915 gfx for his normal desktop stuff. Doing his
+tests no apps are running using the nvidia GPU and in both
+cases the nvidia GPU is powered-down (according to the /proc/...
+info).
+
+He is also using TLP and some utility to undervolt the GPU. None
+of this seems to explain the C7 residency difference though, so
+despite his non-standard setup it would be good (IMHO) to still
+see if we can try to root-cause that.
+
+Regards,
+
+Hans
+
+
+
+
+
+
+>>> -------- Forwarded Message --------
+>>> Subject: [Bug 1854502] New: Noticeably Increased CPU temperature
+>>> Date: Tue, 07 Jul 2020 15:23:38 +0000
+>>> From: bugzilla@redhat.com
+>>> To: hdegoede@redhat.com
+>>>
+>>> https://bugzilla.redhat.com/show_bug.cgi?id=1854502
+>>>
+>>>               Bug ID: 1854502
+>>>              Summary: Noticeably Increased CPU temperature
+>>>              Product: Fedora
+>>>              Version: 32
+>>>             Hardware: x86_64
+>>>                   OS: Linux
+>>>               Status: NEW
+>>>            Component: kernel
+>>>             Severity: medium
+>>>             Assignee: kernel-maint@redhat.com
+>>>             Reporter: aria.aghazade@gmail.com
+>>>           QA Contact: extras-qa@fedoraproject.org
+>>>                   CC: acaringi@redhat.com, airlied@redhat.com,
+>>>                       bskeggs@redhat.com, hdegoede@redhat.com,
+>>>                       ichavero@redhat.com, itamar@ispbrasil.com.br,
+>>>                       jarodwilson@gmail.com, jeremy@jcline.org,
+>>>                       jglisse@redhat.com, john.j5live@gmail.com,
+>>>                       jonathan@jonmasters.org, josef@toxicpanda.com,
+>>>                       kernel-maint@redhat.com, lgoncalv@redhat.com,
+>>>                       linville@redhat.com, masami256@gmail.com,
+>>>                       mchehab@infradead.org, mjg59@srcf.ucam.org,
+>>>                       steved@redhat.com
+>>>     Target Milestone: ---
+>>>       Classification: Fedora
+>>>
+>>>
+>>>
+>>> First things first, I'm running Fedora 32 with latest packages on intel 6700hq.
+>>> With latest kernel-5.7, cpu temperatures are noticeably higher.
+>>> Using kernel-5.6 my idle cpu temperature is around 35-40°C, but with kernel-5.7
+>>> its around 50-55. Htop and KDE System Monitor don't show anything using cpu and
+>>> idle cpu usage on both kernels is 0-2%.
+>>>
+>>> I first noticed this issue on kernel-5.7.6-201.fc32.x86_64, and it is also
+>>> there with kernel-5.7.7-200.fc32.x86_64.
+>>>
+>>> Booting with kernel-5.6.19-300.fc32.x86_64 fixes the issue.
+>>>
+>>>
+>>> Are you running any modules that not shipped with directly Fedora's kernel? No.
+>>
 
