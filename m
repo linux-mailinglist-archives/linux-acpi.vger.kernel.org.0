@@ -2,46 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6FD521CA3C
-	for <lists+linux-acpi@lfdr.de>; Sun, 12 Jul 2020 18:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B3A21CA48
+	for <lists+linux-acpi@lfdr.de>; Sun, 12 Jul 2020 18:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729193AbgGLQm6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 12 Jul 2020 12:42:58 -0400
-Received: from mga03.intel.com ([134.134.136.65]:8207 "EHLO mga03.intel.com"
+        id S1729204AbgGLQnD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 12 Jul 2020 12:43:03 -0400
+Received: from mga04.intel.com ([192.55.52.120]:7753 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729180AbgGLQmz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 12 Jul 2020 12:42:55 -0400
-IronPort-SDR: y2Td2U52xkrxERanYeAknI3tpX8Gc/Dfcum8DECz5OhjAlPUlt9HkU2QqnGTRvp57n9xR1h/md
- NpJavus13m0g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9680"; a="148511448"
+        id S1729199AbgGLQnA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 12 Jul 2020 12:43:00 -0400
+IronPort-SDR: vkQA7bbzumS73cBCu5qTbjMk6ysD1bVNyBUK32xBdwXTsYzGGtYEjaYddK3889uGy/hzgbttUV
+ WXX5bBIl3lGQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9680"; a="145998863"
 X-IronPort-AV: E=Sophos;i="5.75,344,1589266800"; 
-   d="scan'208";a="148511448"
+   d="scan'208";a="145998863"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2020 09:42:54 -0700
-IronPort-SDR: dHWrCRJ+HxfA5mS5m5a07vIUByQdHXhRhyHku++9gHnv8GIa0fupPpqzL860YfYMPw+fVAcKlc
- zgjvtM21YP5Q==
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2020 09:42:59 -0700
+IronPort-SDR: wKh/mkWpfbLzS/7XA/a+hOZMMV8DFeGdi9/Hom+z8d2kEX+RFAYAHlZYGDznOwJngG0SVv6zF8
+ 30sN3xvpN09g==
 X-IronPort-AV: E=Sophos;i="5.75,344,1589266800"; 
-   d="scan'208";a="429128322"
+   d="scan'208";a="485205254"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2020 09:42:54 -0700
-Subject: [PATCH v2 06/22] x86: Move NUMA_KEEP_MEMINFO and related definition
- to x86-internals
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2020 09:42:59 -0700
+Subject: [PATCH v2 07/22] numa: Introduce a generic
+ memory_add_physaddr_to_nid()
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-nvdimm@lists.01.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+Cc:     Mike Rapoport <rppt@linux.ibm.com>, Jia He <justin.he@arm.com>,
+        Will Deacon <will@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        vishal.l.verma@intel.com, ard.biesheuvel@linaro.org,
+        peterz@infradead.org, vishal.l.verma@intel.com,
+        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, hch@lst.de, joao.m.martins@oracle.com
-Date:   Sun, 12 Jul 2020 09:26:38 -0700
-Message-ID: <159457119816.754248.17444705191598115716.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Sun, 12 Jul 2020 09:26:43 -0700
+Message-ID: <159457120334.754248.12908401960465408733.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -53,125 +51,101 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-x86 is the lone architecture that uses numa_meminfo. Move and rename
-NUMA_KEEP_MEMINFO from the core mm/Kconfig to X86_NUMA_KEEP_MEMINFO in
-arch/x86/mm/Kconfig. This is in preparation for defining a generic
-memblock based implementation of memory_add_physaddr_to_nid() and
-phys_to_target_node().
+For architectures that opt into storing their numa data in memblock
+(only ARM64 currently), add a memblock generic way to interrogate that
+data for memory_add_physaddr_to_nid(). This requires ARCH_KEEP_MEMBLOCK
+to keep memblock text and data around after boot.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Jia He <justin.he@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/Kconfig            |    7 ++++++-
- arch/x86/mm/numa.c          |    2 +-
- arch/x86/mm/numa_internal.h |    7 +++++++
- include/linux/numa.h        |    7 -------
- mm/Kconfig                  |    5 -----
- 5 files changed, 14 insertions(+), 14 deletions(-)
+ include/linux/mm.h |   11 +++++++++++
+ mm/Kconfig         |    6 ++++++
+ mm/page_alloc.c    |   23 ++++++++++++++++++++++-
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 6a0cc524882d..fc9264ea4041 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1560,6 +1560,11 @@ config NUMA
- 
- 	  Otherwise, you should say N.
- 
-+# Keep NUMA mapping infrastructure post-init.
-+config X86_NUMA_KEEP_MEMINFO
-+	def_bool MEMORY_HOTPLUG
-+	depends on NUMA
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index dc7b87310c10..1e76ee5da20b 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2425,6 +2425,17 @@ unsigned long __absent_pages_in_range(int nid, unsigned long start_pfn,
+ 						unsigned long end_pfn);
+ extern unsigned long absent_pages_in_range(unsigned long start_pfn,
+ 						unsigned long end_pfn);
 +
- config AMD_NUMA
- 	def_bool y
- 	prompt "Old style AMD Opteron NUMA detection"
-@@ -1640,7 +1645,7 @@ config X86_PMEM_LEGACY
- 	depends on PHYS_ADDR_T_64BIT
- 	depends on BLK_DEV
- 	select X86_PMEM_LEGACY_DEVICE
--	select NUMA_KEEP_MEMINFO if NUMA
-+	select X86_NUMA_KEEP_MEMINFO if NUMA
- 	select LIBNVDIMM
- 	help
- 	  Treat memory marked using the non-standard e820 type of 12 as used
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 44fdf06d497e..311d22cf8ac2 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -893,7 +893,7 @@ EXPORT_SYMBOL(cpumask_of_node);
- 
- #endif	/* !CONFIG_DEBUG_PER_CPU_MAPS */
- 
--#ifdef CONFIG_NUMA_KEEP_MEMINFO
-+#ifdef CONFIG_X86_NUMA_KEEP_MEMINFO
- static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- {
- 	int i;
-diff --git a/arch/x86/mm/numa_internal.h b/arch/x86/mm/numa_internal.h
-index 86860f279662..7b843414335f 100644
---- a/arch/x86/mm/numa_internal.h
-+++ b/arch/x86/mm/numa_internal.h
-@@ -11,6 +11,13 @@ struct numa_memblk {
- 	int			nid;
- };
- 
-+/* optionally keep NUMA memory info available post init */
-+#ifdef CONFIG_X86_NUMA_KEEP_MEMINFO
-+#define __initdata_or_meminfo
++/*
++ * Allow archs to opt-in to keeping get_pfn_range_for_nid() available
++ * after boot.
++ */
++#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
++#define __init_or_memblock
 +#else
-+#define __initdata_or_meminfo __initdata
++#define __init_or_memblock __init
 +#endif
 +
- struct numa_meminfo {
- 	int			nr_blks;
- 	struct numa_memblk	blk[NR_NODE_MEMBLKS];
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index a42df804679e..5d25c5de1322 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -13,13 +13,6 @@
- 
- #define	NUMA_NO_NODE	(-1)
- 
--/* optionally keep NUMA memory info available post init */
--#ifdef CONFIG_NUMA_KEEP_MEMINFO
--#define __initdata_or_meminfo
--#else
--#define __initdata_or_meminfo __initdata
--#endif
--
- #ifdef CONFIG_NUMA
- /* Generic implementation available */
- int numa_map_to_online_node(int node);
+ extern void get_pfn_range_for_nid(unsigned int nid,
+ 			unsigned long *start_pfn, unsigned long *end_pfn);
+ extern unsigned long find_min_pfn_with_active_regions(void);
 diff --git a/mm/Kconfig b/mm/Kconfig
-index f2104cc0d35c..0051f735ad98 100644
+index 0051f735ad98..178ed76cae1b 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -139,10 +139,6 @@ config HAVE_FAST_GUP
+@@ -139,6 +139,12 @@ config HAVE_FAST_GUP
  config ARCH_KEEP_MEMBLOCK
  	bool
  
--# Keep arch NUMA mapping infrastructure post-init.
--config NUMA_KEEP_MEMINFO
--	bool
--
++# If the arch populates numa data into memblock, it can use memblock
++# apis to interrogate that data at runtime.
++config MEMBLOCK_NUMA_INFO
++	bool
++	depends on ARCH_KEEP_MEMBLOCK
++
  config MEMORY_ISOLATION
  	bool
  
-@@ -159,7 +155,6 @@ config MEMORY_HOTPLUG
- 	depends on SPARSEMEM || X86_64_ACPI_NUMA
- 	depends on ARCH_ENABLE_MEMORY_HOTPLUG
- 	depends on 64BIT || BROKEN
--	select NUMA_KEEP_MEMINFO if NUMA
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 48eb0f1410d4..df8bd169dbb4 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6351,7 +6351,7 @@ void __init sparse_memory_present_with_active_regions(int nid)
+  * with no available memory, a warning is printed and the start and end
+  * PFNs will be 0.
+  */
+-void __init get_pfn_range_for_nid(unsigned int nid,
++void __init_or_memblock get_pfn_range_for_nid(unsigned int nid,
+ 			unsigned long *start_pfn, unsigned long *end_pfn)
+ {
+ 	unsigned long this_start_pfn, this_end_pfn;
+@@ -6369,6 +6369,27 @@ void __init get_pfn_range_for_nid(unsigned int nid,
+ 		*start_pfn = 0;
+ }
  
- config MEMORY_HOTPLUG_SPARSE
- 	def_bool y
++/*
++ * Generic implementation of memory_add_physaddr_to_nid() depends on
++ * architecture using memblock data for numa information.
++ */
++#ifdef CONFIG_MEMBLOCK_NUMA_INFO
++int __init_or_memblock memory_add_physaddr_to_nid(u64 addr)
++{
++	unsigned long start_pfn, end_pfn, pfn = PHYS_PFN(addr);
++	int nid;
++
++	for_each_online_node(nid) {
++		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
++		if (pfn >= start_pfn && pfn <= end_pfn)
++			return nid;
++	}
++	/* Default to node0 as not all callers are prepared for this to fail */
++	return 0;
++}
++EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
++#endif /* CONFIG_MEMBLOCK_NUMA_INFO */
++
+ /*
+  * This finds a zone that can be used for ZONE_MOVABLE pages. The
+  * assumption is made that zones within a node are ordered in monotonic
 
