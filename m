@@ -2,94 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF71A21D472
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 13:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A11E521D483
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 13:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728714AbgGMLEu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jul 2020 07:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52716 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727035AbgGMLEu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jul 2020 07:04:50 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E29C061755;
-        Mon, 13 Jul 2020 04:04:49 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id q17so5362204pls.9;
-        Mon, 13 Jul 2020 04:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hSMlBgpefQn/5IJ0QNgfZUmGiBsaBmqcHOKu/c2Jtek=;
-        b=S5gJpXnDOHLnveGaXQG5oUz+dfYuYFgP4j5WHzrqDnTEV8nD64pDRyBUyDnjZStJ0P
-         o4BzZvlyGJ7cO//Onmb5sE0kpRHSK4YG0/tOm3xEOvG6f1LuIZAiaml3Tlwoj/8JsKBx
-         ME7Xs0YTCDn7n/+WG9qRKcsuxm8L92jMyqL8RkRyoWYDv5ozripXmkQK8dHBNcZPPU/B
-         dSUyAiCT08WQYXNjoYRNIscDgou/T4YKzXdYMq/BpfuBp0NeAtRre9NLmHmnBNLJLNDo
-         RwDU9uTMbI+kSG2YTVDn3BT+MLR9B0DlMcBB8csCvIln4y4NaNQcMrAVSXVgQP1/nuB+
-         YUnA==
+        id S1729706AbgGMLGI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jul 2020 07:06:08 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:38469 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729737AbgGMLGI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jul 2020 07:06:08 -0400
+Received: by mail-oi1-f193.google.com with SMTP id r8so10622902oij.5;
+        Mon, 13 Jul 2020 04:06:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hSMlBgpefQn/5IJ0QNgfZUmGiBsaBmqcHOKu/c2Jtek=;
-        b=qJ9cKpifU24DX2YGxt7Oc1coQ5Ba+1fXOf9TuKzo4YUymt98t3WZ/f+EsloriELk/C
-         7ol0tXyOe0ezVY+DWSiNJdsHVet3DIDGXmy6zcTUgXBiGPjiipebUJDbJAOdCJkYAyGp
-         YC3C6DzhKL5lfGOhJSTjlERtu/LSxX11+NFZla132FTHjFI+oR4YA7JBeHbg/HwNUPQl
-         Xcc6+iLMTE9kQreAX0lb8O1lr8jCjZcKWeGCvnBc0xMy1GjKQqIo8x8MEzvhN31lrnkE
-         VdLE3Stg67A0XvmC6enM75xH0Q1BYM3A//YC/D2pjnNB4OLw8BNl1stDOTZxUZW8Bp+n
-         VWyw==
-X-Gm-Message-State: AOAM533RqD4ac+5vI0QOn5g9peaNni+M0JFfX8LmZYgxd22ITngX+1WF
-        3chLA5p6q05D0WT0lOW9P4b6GWV2nJ5Il6MQ0ho=
-X-Google-Smtp-Source: ABdhPJyohLCtRqYdOM93T0P+SKcg6qAqmo8iHjm3j/tTRl+M5hGxOPYOdaBg+gj7Py9adhD9CIGRmPX0w+JyS9N7Zis=
-X-Received: by 2002:a17:902:7288:: with SMTP id d8mr71388162pll.18.1594638289446;
- Mon, 13 Jul 2020 04:04:49 -0700 (PDT)
+        bh=Xq0Xpj14H2RAfHIcz6O1rzdZKTYQ6stUGUnZp3snUe0=;
+        b=iVYSe7Us9wDPxyFvo0pgk4rajJsRChRRD3hiC6voLQvFGFVIcAkMW9r4FymxEMC5iK
+         qExrqkvlouFNVApMlsR4771pxDCDhHAfEawzXtwJYjsBpuyb+/4fI2UfEwKY9j+lGL8a
+         GjQbtnYap6mOB36iDEbns6Qoczx6O098ZHEfCjZ8/hC+B+2RuCOVBFC0o/AUyl2Qt9Lv
+         7mcPdyAALQDHBmXwrs9QA+p+vK4CY8q59mP0L6wNW5NQGyJELymylci5XIPRrG4986Vp
+         gxK/4H25miGQGAwWTlwLB97onFU1IrWS8tUmqKQqyYzFXXPnlFeTNKo5BtWjrm3JGM9R
+         /ohw==
+X-Gm-Message-State: AOAM533bERfIskueIrd96dk3cQKxfyng/8AP42EBQQADALImmL8gPHvg
+        WkXcmzT/L7Yz9Vj0jePcIRV1KTNe85+ma3r1Bsg=
+X-Google-Smtp-Source: ABdhPJxuUGgC2576RXR5fqSCHur+PTLt9ehNfGPdTtWn5K6sa2wMiG5IebMDbeR/EJoDO++pbbUzgVbpU7JFKksBRPA=
+X-Received: by 2002:aca:f58a:: with SMTP id t132mr12958541oih.68.1594638366777;
+ Mon, 13 Jul 2020 04:06:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200711065600.9448-1-calvin.johnson@oss.nxp.com>
- <20200711065600.9448-5-calvin.johnson@oss.nxp.com> <931b7557-fefb-52c5-61dd-6ab13f7b5396@gmail.com>
- <20200713060416.GB2540@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20200713060416.GB2540@lsv03152.swis.in-blr01.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 13 Jul 2020 14:04:33 +0300
-Message-ID: <CAHp75VdhhADSatLyBm+F+aV8J280LVjwCJZh7YzAPk8xW_vzXg@mail.gmail.com>
-Subject: Re: [net-next PATCH v6 4/6] net: phy: introduce phy_find_by_mdio_handle()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev <netdev@vger.kernel.org>, linux.cj@gmail.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20200710213753.83420-1-helgaas@kernel.org>
+In-Reply-To: <20200710213753.83420-1-helgaas@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 13 Jul 2020 13:05:50 +0200
+Message-ID: <CAJZ5v0hy+B7wTuJoXzC_7Gnm2KBUPFS0XR3TH=p5twX3oajspw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] PCI/ACPI: Unexport pci_root.c functions
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Sean V Kelley <sean.v.kelley@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 13, 2020 at 9:04 AM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
-> On Sat, Jul 11, 2020 at 02:41:12PM -0700, Florian Fainelli wrote:
-> > On 7/10/2020 11:55 PM, Calvin Johnson wrote:
-
-...
-
-> > > +   err = fwnode_property_read_u32(fwnode, "phy-channel", &addr);
-> > > +   if (err)
-> > > +           return ERR_PTR(err);
-> > > +   if (addr < 0 || addr >= PHY_MAX_ADDR)
-> >
-> > Can an u32 ever be < 0?
+On Fri, Jul 10, 2020 at 11:38 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
-> Will remove it.
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Unexport a couple functions that are no longer needed by modules.
+>
+> Bjorn Helgaas (2):
+>   PCI/ACPI: Unexport acpi_pci_osc_control_set()
+>   PCI/ACPI: Unexport acpi_pci_find_root()
 
-Since it's harmless and we have a fix to shut the compiler up on this
-kind of checks and Linus actually in favour of _seeing_ range checks
-explicitly I think no need to drop, but it's up to you.
+For both:
 
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+>  drivers/acpi/pci_root.c | 5 ++---
+>  include/linux/acpi.h    | 3 ---
+>  2 files changed, 2 insertions(+), 6 deletions(-)
+>
+>
+> base-commit: b3a9e3b9622ae10064826dccb4f7a52bd88c7407
