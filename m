@@ -2,44 +2,28 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE03C21D4A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 13:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 065D521D741
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 15:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbgGMLRt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jul 2020 07:17:49 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37691 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729027AbgGMLRt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jul 2020 07:17:49 -0400
-Received: by mail-oi1-f195.google.com with SMTP id 12so10656097oir.4;
-        Mon, 13 Jul 2020 04:17:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BxHZ+WJ7gl/kfFuw5mZWEwR5qtLWbkNAErzAGlqlI+M=;
-        b=XXIg+d9Nu26xRIcZvGf/WkvVP9EmZ/uo6l2+DkL9UPyAiacOuX35vvjV1TXPYr/LtQ
-         iAchSaUvETOZVE/1ZRtpiGsH0/mw9vaNv7tCmFRnmeRK9Zdm9ZPGL/A2Eyudw7aOJfBC
-         P4t1e/KS9qhYE/aaFHONal2rdKe4JwtlmGd8ME6hZ1hcoeHPWRwgZJPOkV9uGFrwf2cR
-         x+Mn6TAcIP+lznSx8X8vGHrUklA+ZIviwco5vzuRZ265WsYUdwh2MrsKrZRXRKMx/OBC
-         rE2qKvqEgCLDoIEgYM9a6WdlMkwabl1mcs+lQoGb85jD8QFl+ZqiAK92/SF9p5CUSnS4
-         Z3lQ==
-X-Gm-Message-State: AOAM532dU4700m4FhqJ2Mv71oH1qJ3n0UMrSQ5uZr6CGcC7Qz2OxHSxm
-        eDyuR2Ufpe8OU8PX8QX1DBVXGFS6Fy1FdtEEVhw=
-X-Google-Smtp-Source: ABdhPJyoLEUbgUanvggbAuiWxx6tG0pbvTKcqE019Cf4J51+OoImh2nW2kLi3Y6TzKoBvHUOr7Wm7P7xrszUfxIFw6w=
-X-Received: by 2002:a54:4e87:: with SMTP id c7mr13870224oiy.110.1594639068426;
- Mon, 13 Jul 2020 04:17:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200622120527.690-1-shiju.jose@huawei.com> <20200622120527.690-2-shiju.jose@huawei.com>
- <05c8916f4f85421f871e9cbff112512b@huawei.com>
-In-Reply-To: <05c8916f4f85421f871e9cbff112512b@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Jul 2020 13:17:31 +0200
-Message-ID: <CAJZ5v0gfpsejvNAOso2ODqLdSBCZFe=mV32BtTr6aZ2-C=X-BA@mail.gmail.com>
-Subject: Re: [PATCH v11 1/2] ACPI / APEI: Add a notifier chain for unknown
- (vendor) CPER records
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        id S1729822AbgGMNdh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jul 2020 09:33:37 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2457 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729564AbgGMNdg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 13 Jul 2020 09:33:36 -0400
+Received: from lhreml714-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id AAD3E441B1BF1BE1EE13;
+        Mon, 13 Jul 2020 14:33:34 +0100 (IST)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml714-chm.china.huawei.com (10.201.108.65) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Mon, 13 Jul 2020 14:33:34 +0100
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
+ Mon, 13 Jul 2020 14:33:34 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
@@ -58,26 +42,59 @@ Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         yangyicong <yangyicong@huawei.com>,
         Jonathan Cameron <jonathan.cameron@huawei.com>,
         tanxiaofei <tanxiaofei@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v11 1/2] ACPI / APEI: Add a notifier chain for unknown
+ (vendor) CPER records
+Thread-Topic: [PATCH v11 1/2] ACPI / APEI: Add a notifier chain for unknown
+ (vendor) CPER records
+Thread-Index: AQHWSI3SBRG6MT5ZnEeiXXWtP5HqWakFTx6ggAAdaICAADIgMA==
+Date:   Mon, 13 Jul 2020 13:33:33 +0000
+Message-ID: <9a5b81441f7149f8bfc4e65a4309a2c5@huawei.com>
+References: <20200622120527.690-1-shiju.jose@huawei.com>
+ <20200622120527.690-2-shiju.jose@huawei.com>
+ <05c8916f4f85421f871e9cbff112512b@huawei.com>
+ <CAJZ5v0gfpsejvNAOso2ODqLdSBCZFe=mV32BtTr6aZ2-C=X-BA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gfpsejvNAOso2ODqLdSBCZFe=mV32BtTr6aZ2-C=X-BA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.82.58]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 13, 2020 at 10:35 AM Shiju Jose <shiju.jose@huawei.com> wrote:
->
-> Hi Rafael, Hi James,
->
-> Can you help to merge this patch because I added and tested all the suggestions from James.
-
-I could apply the [1/2] in principle, but I need an ACK for the [2/2]
-from the PCI side.
-
-That said, it looks like the [1/2] is a James' patch that you are
-sending with some changes made by you.
-
-In that case the ordering of the S-o-b tags under it should be
-different (the S-o-b from James, the what-you-have-change line and the
-S-o-b from you) and also the From: tag should point to James.
-
-Thanks!
+SGkgUmFmYWVsLA0KDQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBSYWZhZWwg
+Si4gV3lzb2NraSBbbWFpbHRvOnJhZmFlbEBrZXJuZWwub3JnXQ0KPlNlbnQ6IDEzIEp1bHkgMjAy
+MCAxMjoxOA0KPlRvOiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxp
+bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC0NCj5rZXJuZWxAdmdlci5rZXJuZWwub3JnOyByandAcmp3eXNvY2tpLm5ldDsgaGVsZ2Fhc0Br
+ZXJuZWwub3JnOw0KPmJwQGFsaWVuOC5kZTsgamFtZXMubW9yc2VAYXJtLmNvbTsgbGVuYkBrZXJu
+ZWwub3JnOw0KPnRvbnkubHVja0BpbnRlbC5jb207IGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNvbTsN
+Cj56aGFuZ2xpZ3VhbmdAbGludXguYWxpYmFiYS5jb207IGFuZHJpeS5zaGV2Y2hlbmtvQGxpbnV4
+LmludGVsLmNvbTsNCj5XYW5na2VmZW5nIChPUyBLZXJuZWwgTGFiKSA8d2FuZ2tlZmVuZy53YW5n
+QGh1YXdlaS5jb20+Ow0KPmpyb2VkZWxAc3VzZS5kZTsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdl
+aS5jb20+OyB5YW5neWljb25nDQo+PHlhbmd5aWNvbmdAaHVhd2VpLmNvbT47IEpvbmF0aGFuIENh
+bWVyb24NCj48am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgdGFueGlhb2ZlaSA8dGFueGlh
+b2ZlaUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjExIDEvMl0gQUNQSSAvIEFQ
+RUk6IEFkZCBhIG5vdGlmaWVyIGNoYWluIGZvciB1bmtub3duDQo+KHZlbmRvcikgQ1BFUiByZWNv
+cmRzDQo+DQo+T24gTW9uLCBKdWwgMTMsIDIwMjAgYXQgMTA6MzUgQU0gU2hpanUgSm9zZSA8c2hp
+anUuam9zZUBodWF3ZWkuY29tPg0KPndyb3RlOg0KPj4NCj4+IEhpIFJhZmFlbCwgSGkgSmFtZXMs
+DQo+Pg0KPj4gQ2FuIHlvdSBoZWxwIHRvIG1lcmdlIHRoaXMgcGF0Y2ggYmVjYXVzZSBJIGFkZGVk
+IGFuZCB0ZXN0ZWQgYWxsIHRoZQ0KPnN1Z2dlc3Rpb25zIGZyb20gSmFtZXMuDQo+DQo+SSBjb3Vs
+ZCBhcHBseSB0aGUgWzEvMl0gaW4gcHJpbmNpcGxlLCBidXQgSSBuZWVkIGFuIEFDSyBmb3IgdGhl
+IFsyLzJdIGZyb20gdGhlDQo+UENJIHNpZGUuDQo+DQo+VGhhdCBzYWlkLCBpdCBsb29rcyBsaWtl
+IHRoZSBbMS8yXSBpcyBhIEphbWVzJyBwYXRjaCB0aGF0IHlvdSBhcmUgc2VuZGluZyB3aXRoDQo+
+c29tZSBjaGFuZ2VzIG1hZGUgYnkgeW91Lg0KSmFtZXMgYWRkZWQgZm9sbG93aW5nIGNoYW5nZXMg
+b24gdG9wIG9mIHRoZSBvcmlnaW5hbCBwYXRjaChWMTApIGJ5IG1lLCANClsgUmVtb3ZlZCBrZmlm
+byBhbmQgZ2hlc19nZGF0YV9wb29sLiBFeHBhbmRlZCBjb21taXQgbWVzc2FnZSBdDQpJIGhhZCBj
+b25mdXNpb24gaG93IHRoZSBTLW8tYiB0YWcgdG8gYmUgYWRkZWQgZm9yIEphbWVzJ3MgY2hhbmdl
+cyBpbiB0aGUgVjExIHBhdGNoIHBvc3RlZC4NCg0KPg0KPkluIHRoYXQgY2FzZSB0aGUgb3JkZXJp
+bmcgb2YgdGhlIFMtby1iIHRhZ3MgdW5kZXIgaXQgc2hvdWxkIGJlIGRpZmZlcmVudCAodGhlIFMt
+DQo+by1iIGZyb20gSmFtZXMsIHRoZSB3aGF0LXlvdS1oYXZlLWNoYW5nZSBsaW5lIGFuZCB0aGUg
+Uy1vLWIgZnJvbSB5b3UpIGFuZA0KPmFsc28gdGhlIEZyb206IHRhZyBzaG91bGQgcG9pbnQgdG8g
+SmFtZXMuDQo+DQo+VGhhbmtzIQ0KDQpUaGFua3MsDQpTaGlqdQ0K
