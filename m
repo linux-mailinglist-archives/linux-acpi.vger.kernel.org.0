@@ -2,140 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E1221DDE8
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 18:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5EAB21DDF0
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 18:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729764AbgGMQzC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jul 2020 12:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52224 "EHLO
+        id S1730340AbgGMQzR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jul 2020 12:55:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729747AbgGMQzC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jul 2020 12:55:02 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC32C061794
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Jul 2020 09:55:01 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id d16so14266966edz.12
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Jul 2020 09:55:01 -0700 (PDT)
+        with ESMTP id S1730325AbgGMQzQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jul 2020 12:55:16 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A1CC061755;
+        Mon, 13 Jul 2020 09:55:15 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id d18so14277287edv.6;
+        Mon, 13 Jul 2020 09:55:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HgOXhDZaQ0Vm8QAO9SEojO+HqYa4R2CkQWkXTg5E7NY=;
-        b=gtc+M+tWYcQvh1sK797pkjo7WfNXIE8olCSzxehn9iEfDXPy4UnYyp2+rSeemkOHd9
-         3YCD1bGiwRH6cQssBiZxingdGDUwZDouqVsreN1+gJuIGG6p5wdMSWJUxTsfZgJsaSP/
-         EKUruPSgSi5imDehnJ0OoKNYarRo4grmHiicSB3YKJASTXyGDOGVaFs1Xtu7/0rRGn5l
-         W9+vrC+x0eOE026JlZDzAPRS9I7c7ZrINzB0baTS0Fv4LSjRTfPGrURIPHkOUcVtnaEy
-         84Ykd5bPtW/7cJhsDtttHYS1i4aFielTGd+j2sm60fnPvc5Fai51ccDG/VbXOrStWecV
-         ncaw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=iiHt01yExxr+UGjzI6XflZ+uDY4MKkRXHZbIPXDUuRY=;
+        b=HmmxQ/aEsuwnYmu7uvp6iPKhOMZAIHMXP42//F908Nkqa4MLYdR6vM0f8CaAYqWowF
+         cmLlcXg6JpO6pxfq/D/zt1YR+ZwGTV4syUfrH+YTz6B1Fs4vVUcsGP19zyzOASXLQlmZ
+         qTKgzZNYZoquze0LtCBNYu9CdDrzkE2u3ekNQis8W69z1bxrl9hJzhzv1GepBQWS873d
+         gw2++hMdnjYAB3HOhDaTO0eEJ/h40zjf9peBORLPHgXxyloTyKyiPqbw9YGSUU9NprrK
+         bMu4dxYW7BLe+/eTe3hwCtah6QY+qHfien1FLHGr9zVADP/vvGBpx56b4RcfHUG+cyQ5
+         6/bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HgOXhDZaQ0Vm8QAO9SEojO+HqYa4R2CkQWkXTg5E7NY=;
-        b=twukl4+0cjLmvmAC0mHxPA2a1xUC6pYoDX2jGovP2JKdYq6lqzlzWKm5DT/9ryBoso
-         I0lqzGLIzmU+4oHVED2yrg5N+sdviLDdJxFliPgHlo/njuAnnZtUZ9yGXC5MeQY6Dw1j
-         M6+8mMo2RX1qd5Yojf7NhUsbz36mB6nSicn/ktvIxLGVMq1+QjnQgjrfNVSPm6kgjfY1
-         8VVsdNg9ABVxgVV9K6y44Xtwkce197zgl56PeTTn59qL0QW5W27xOTeJ18YdMv1hiqZb
-         H0J9j8GZ3MqT+kUa4IYmSkdVwVS7r+WW8tS2Wj/CR7KX54SG4g7HRMJjSZvgej0fo8t0
-         VAIw==
-X-Gm-Message-State: AOAM5318lz9PYAid48ICTWBynxXGbklc55eqYeBmO04C+SM7a/RBS7Vr
-        HQgJi4/PWnELTsHYeXIDaSd6mhAVhwxEJByyv/fO5Q==
-X-Google-Smtp-Source: ABdhPJy2i/ttAyiKjR1qbX0QvV/QhWFNtJPFDiAHrxVvIXYFYUkb5Tgr0e/mIqA9cSxtejueFDTinGXoBIyHGcdsgj8=
-X-Received: by 2002:a50:d9cb:: with SMTP id x11mr299675edj.93.1594659300586;
- Mon, 13 Jul 2020 09:55:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159457126779.754248.3575056680831729751.stgit@dwillia2-desk3.amr.corp.intel.com>
- <52e00a67-b686-8554-8b92-a172ba9f34b6@nvidia.com>
-In-Reply-To: <52e00a67-b686-8554-8b92-a172ba9f34b6@nvidia.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 13 Jul 2020 09:54:49 -0700
-Message-ID: <CAPcyv4gQpAjkQ2j9D0pU-0UrmJzf9eLqtFsmqd8v5=+kyR3ZSg@mail.gmail.com>
-Subject: Re: [PATCH v2 19/22] mm/memremap_pages: Convert to 'struct range'
-To:     Ralph Campbell <rcampbell@nvidia.com>
-Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jason Gunthorpe <jgg@mellanox.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Joao Martins <joao.m.martins@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=iiHt01yExxr+UGjzI6XflZ+uDY4MKkRXHZbIPXDUuRY=;
+        b=Ih8UPvzzHNrcy17DJmaMUJ1Y3SxO8ttDv/THiPQE7VeOvZoBZ7iZeoXNnzU6BPo+O0
+         VJ1dm28QyoRMCu7B/h3E9QqZYUWWaK/5RRpvuJJRiwXI1468LvqszfFhsqs+oYx31gRS
+         xd/m58vmpZAL8q567UndpK+siXMaiFb1C3MYQ1vF58uB/ugRBrV0ynsLTKre+Zi+YioI
+         7b27SxgKp4Plh5DcirZgFMoe18N2/EvD2ehCZRHLR1uFFoGDys7CmK7ol7WXjz+OlIFn
+         EvaOcDW8SO/5TJf5fix0hvGExqQvBiDF+Oq7nXjJ+0gxPHhAgp62EdaS7VJmSqMBTvOh
+         Twcw==
+X-Gm-Message-State: AOAM532/+1xQokP3L/X4qqZiT1TTe8WWaK+HO5/e1vuF2cqtova3JNVx
+        p3JOpYZsaMBhCYGSR3MMFI+JCLUeZr+TPA==
+X-Google-Smtp-Source: ABdhPJz2hbS/YAxk7ynpXEBxv0L7UVNCdcghPyy01UrXKtCfUacUfQIn8EVUfGf1smzuZiWEtLdarg==
+X-Received: by 2002:a05:6402:3099:: with SMTP id de25mr348700edb.228.1594659314697;
+        Mon, 13 Jul 2020 09:55:14 -0700 (PDT)
+Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
+        by smtp.gmail.com with ESMTPSA id w3sm11838938edq.65.2020.07.13.09.55.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2020 09:55:14 -0700 (PDT)
+From:   "Saheed O. Bolarinwa" <refactormyself@gmail.com>
+To:     skhan@linuxfoundation.org, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org
+Cc:     Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+Subject: [PATCH 8/14 v3] PCI/ACPI: Check the return value of pcie_capability_read_*()
+Date:   Mon, 13 Jul 2020 19:55:28 +0200
+Message-Id: <20200713175529.29715-4-refactormyself@gmail.com>
+X-Mailer: git-send-email 2.18.2
+In-Reply-To: <20200713175529.29715-1-refactormyself@gmail.com>
+References: <20200713175529.29715-1-refactormyself@gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 13, 2020 at 9:36 AM Ralph Campbell <rcampbell@nvidia.com> wrote:
->
->
-> On 7/12/20 9:27 AM, Dan Williams wrote:
-> > The 'struct resource' in 'struct dev_pagemap' is only used for holding
-> > resource span information. The other fields, 'name', 'flags', 'desc',
-> > 'parent', 'sibling', and 'child' are all unused wasted space.
-> >
-> > This is in preparation for introducing a multi-range extension of
-> > devm_memremap_pages().
-> >
-> > The bulk of this change is unwinding all the places internal to
-> > libnvdimm that used 'struct resource' unnecessarily.
-> >
-> > P2PDMA had a minor usage of the flags field, but only to report failures
-> > with "%pR". That is replaced with an open coded print of the range.
-> >
-> > Cc: Paul Mackerras <paulus@ozlabs.org>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Dan Williams <dan.j.williams@intel.com>
-> > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > Cc: Dave Jiang <dave.jiang@intel.com>
-> > Cc: Ben Skeggs <bskeggs@redhat.com>
-> > Cc: David Airlie <airlied@linux.ie>
-> > Cc: Daniel Vetter <daniel@ffwll.ch>
-> > Cc: Ira Weiny <ira.weiny@intel.com>
-> > Cc: Jason Gunthorpe <jgg@mellanox.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >   arch/powerpc/kvm/book3s_hv_uvmem.c     |   13 +++--
-> >   drivers/dax/bus.c                      |   10 ++--
-> >   drivers/dax/bus.h                      |    2 -
-> >   drivers/dax/dax-private.h              |    5 --
-> >   drivers/dax/device.c                   |    3 -
-> >   drivers/dax/hmem/hmem.c                |    5 ++
-> >   drivers/dax/pmem/core.c                |   12 ++---
-> >   drivers/gpu/drm/nouveau/nouveau_dmem.c |    3 +
-> >   drivers/nvdimm/badrange.c              |   26 +++++------
-> >   drivers/nvdimm/claim.c                 |   13 +++--
-> >   drivers/nvdimm/nd.h                    |    3 +
-> >   drivers/nvdimm/pfn_devs.c              |   12 ++---
-> >   drivers/nvdimm/pmem.c                  |   26 ++++++-----
-> >   drivers/nvdimm/region.c                |   21 +++++----
-> >   drivers/pci/p2pdma.c                   |   11 ++---
-> >   include/linux/memremap.h               |    5 +-
-> >   include/linux/range.h                  |    6 ++
-> >   mm/memremap.c                          |   77 ++++++++++++++++----------------
-> >   tools/testing/nvdimm/test/iomap.c      |    2 -
-> >   19 files changed, 135 insertions(+), 120 deletions(-)
->
-> I think you are missing a call to memremap_pages() in lib/test_hmm.c
-> and a call to release_mem_region() that need to be converted too.
-> Try setting CONFIG_TEST_HMM=m.
+From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
 
-Thanks Ralph, looks like I overlooked these changes since the rebase.
+On failure pcie_capability_read_dword() sets it's last parameter,
+val to 0.
+However, with Patch 14/14, it is possible that val is set to ~0 on
+failure. This would introduce a bug because (x & x) == (~0 & x). 
 
-> Also, what about the call to release_mem_region() in
-> drivers/gpu/drm/nouveau/nouveau_dmem.c? Doesn't that need a small change too?
+This bug can be avoided if the return value of pcie_capability_read_word
+is checked to confirm success.
 
-I'll double check my config, that one should have been flagged at build time.
+Check the return value of pcie_capability_read_word() to ensure success.
+
+Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
+Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+---
+ drivers/pci/pci-acpi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 7224b1e5f2a8..39eb816bc3b8 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -248,12 +248,13 @@ static bool pcie_root_rcb_set(struct pci_dev *dev)
+ {
+ 	struct pci_dev *rp = pcie_find_root_port(dev);
+ 	u16 lnkctl;
++	int ret;
+ 
+ 	if (!rp)
+ 		return false;
+ 
+-	pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
+-	if (lnkctl & PCI_EXP_LNKCTL_RCB)
++	ret = pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
++	if (!ret && (lnkctl & PCI_EXP_LNKCTL_RCB))
+ 		return true;
+ 
+ 	return false;
+@@ -792,12 +793,13 @@ bool pciehp_is_native(struct pci_dev *bridge)
+ {
+ 	const struct pci_host_bridge *host;
+ 	u32 slot_cap;
++	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
+ 		return false;
+ 
+-	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
+-	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
++	ret = pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
++	if (ret || !(slot_cap & PCI_EXP_SLTCAP_HPC))
+ 		return false;
+ 
+ 	if (pcie_ports_native)
+-- 
+2.18.2
+
