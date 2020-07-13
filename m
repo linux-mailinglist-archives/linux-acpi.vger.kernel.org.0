@@ -2,446 +2,392 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F8A21D801
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 16:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C326F21D9DE
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jul 2020 17:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729806AbgGMOMp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jul 2020 10:12:45 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2461 "EHLO huawei.com"
+        id S1729979AbgGMPLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jul 2020 11:11:31 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2462 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729649AbgGMOMp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 13 Jul 2020 10:12:45 -0400
-Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id C37D157152239309710F;
-        Mon, 13 Jul 2020 15:12:43 +0100 (IST)
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.82.58) by
- lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+        id S1729308AbgGMPLa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 13 Jul 2020 11:11:30 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id A47418D06EA995A5DDF2;
+        Mon, 13 Jul 2020 16:11:27 +0100 (IST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Mon, 13 Jul 2020 15:12:43 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
-        <helgaas@kernel.org>, <bp@alien8.de>, <james.morse@arm.com>,
-        <lenb@kernel.org>, <tony.luck@intel.com>,
-        <dan.carpenter@oracle.com>, <zhangliguang@linux.alibaba.com>,
-        <andriy.shevchenko@linux.intel.com>, <wangkefeng.wang@huawei.com>,
-        <jroedel@suse.de>
-CC:     <linuxarm@huawei.com>, <yangyicong@hisilicon.com>,
-        <jonathan.cameron@huawei.com>, <tanxiaofei@huawei.com>
-Subject: [PATCH v12 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe controller errors
-Date:   Mon, 13 Jul 2020 15:10:19 +0100
-Message-ID: <20200713141019.904-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+ 15.1.1913.5; Mon, 13 Jul 2020 16:11:27 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
+CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <martin@geanix.com>, Ingo Molnar <mingo@redhat.com>,
+        <linux-ia64@vger.kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH] ACPI: Only create numa nodes from entries in SRAT or SRAT emulation.
+Date:   Mon, 13 Jul 2020 23:10:18 +0800
+Message-ID: <20200713151018.2267079-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.47.82.58]
-X-ClientProxiedBy: lhreml742-chm.china.huawei.com (10.201.108.192) To
- lhreml715-chm.china.huawei.com (10.201.108.66)
+X-Originating-IP: [10.123.41.22]
+X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+Here, I will use the term Proximity Domains for the ACPI description and
+Numa Nodes for the in kernel representation.
 
-The HiSilicon HIP PCIe controller is capable of handling errors
-on root port and perform port reset separately at each root port.
+Until ACPI 6.3 it was arguably possible to interpret the specification as
+allowing _PXM in DSDT and similar to define additional Proximity Domains.
 
-Add error handling driver for HIP PCIe controller to log
-and report recoverable errors. Perform root port reset and restore
-link status after the recovery.
+The reality was that was never the intent, and a 'clarification' was added
+in ACPI 6.3 [1].  In practice I think the kernel has never allowed any other
+interpretaion, except possibly on adhoc base within some out of tree driver
+(using it very very carefully given potential to crash when using various
+standard calls such as devm_kzalloc).
 
-Following are some of the PCIe controller's recoverable errors
-1. completion transmission timeout error.
-2. CRS retry counter over the threshold error.
-3. ECC 2 bit errors
-4. AXI bresponse/rresponse errors etc.
+Proximity Domains are always defined in SRAT.  In ACPI, there are methods
+defined in ACPI to allow their characteristics to be tweaked later but
+Proximity Domains have to be referenced in this table at boot, thus
+allowing Linux to instantiate relevant Numa Node data structures.
 
-The driver placed in the drivers/pci/controller/ because the
-HIP PCIe controller does not use DWC ip.
+We ran into a problem when enabling _PXM handling for PCI devices and found
+there were boards out there advertising devices in proximity domains that
+didn't exist [2].
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
---
-drivers/pci/controller/Kconfig           |   8 +
-drivers/pci/controller/Makefile          |   1 +
-drivers/pci/controller/pcie-hisi-error.c | 336 +++++++++++++++++++++++++++++++
-3 files changed, 345 insertions(+)
-create mode 100644 drivers/pci/controller/pcie-hisi-error.c
+The fix suggested here is to modfiy the function acpi_map_pxm_to_node.
+This function is both used to create and lookup proximity domains.
+A parameter is added to specify whether it should create a new
+proximity domain when it encounters a Proximity Domain ID that it
+hasn't seen before.
+
+Naturally there is a quirk.  For SRAT ITS entries on ARM64 the handling is
+done with an additional pass of SRAT, potentially later in the boot. We
+could modify that behaviour so we could identify the existence of Proximity
+Domains unique to the ITS structures, and handle them as a special case
+of a Genric Initiator (once support for those merges) however...
+
+Currently (5.8-rc2) setting the Proximity Domain of an ITS to one that hasn't
+been instantiated by being specified in another type of SRAT resource entry
+results in:
+
+ITS [mem 0x202100000-0x20211ffff]
+ITS@0x0000000202100000: Using ITS number 0
+Unable to handle kernel paging request at virtual address 0000000000001a08
+Mem abort info:
+ESR = 0x96000004
+EC = 0x25: DABT (current EL), IL = 32 bits
+SET = 0, FnV = 0
+EA = 0, S1PTW = 0
+Data abort info:
+ISV = 0, ISS = 0x00000004
+CM = 0, WnR = 0
+[0000000000001a08] user address but active_mm is swapper
+Internal error: Oops: 96000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper/0 Tainted: G       A          5.8.0-rc2 #483
+pstate: 80000089 (Nzcv daIf -PAN -UAO BTYPE=--)
+pc : __alloc_pages_nodemask+0xe8/0x338
+lr : __alloc_pages_nodemask+0xc0/0x338
+sp : ffffa81540c139b0
+x29: ffffa81540c139b0 x28: 0000000000000001
+x27: 0000000000000100 x26: ffffa81540c1ad38
+x25: 0000000000000000 x24: 0000000000000000
+x23: ffffa81540c23c00 x22: 0000000000000004
+x21: 0000000000000002 x20: 0000000000001a00
+x19: 0000000000000100 x18: 0000000000000010
+x17: 000000000001f000 x16: 000000000000007f
+x15: ffffa81540c24070 x14: ffffffffffffffff
+x13: ffffa815c0c137d7 x12: ffffa81540c137e4
+x11: ffffa81540c3e000 x10: ffffa81540ecee68
+x9 : ffffa8153f0f61d8 x8 : ffffa81540ecf000
+x7 : 0000000000000141 x6 : ffffa81540ecf401
+x5 : 0000000000000000 x4 : 0000000000000000
+x3 : 0000000000000000 x2 : 0000000000000000
+x1 : 0000000000000081 x0 : 0000000000001a00
+Call trace:
+ __alloc_pages_nodemask+0xe8/0x338
+ alloc_pages_node.constprop.0+0x34/0x40
+ its_probe_one+0x2f8/0xb18
+ gic_acpi_parse_madt_its+0x108/0x150
+ acpi_table_parse_entries_array+0x17c/0x264
+ acpi_table_parse_entries+0x48/0x6c
+ acpi_table_parse_madt+0x30/0x3c
+ its_init+0x1c4/0x644
+ gic_init_bases+0x4b8/0x4ec
+ gic_acpi_init+0x134/0x264
+ acpi_match_madt+0x4c/0x84
+ acpi_table_parse_entries_array+0x17c/0x264
+ acpi_table_parse_entries+0x48/0x6c
+ acpi_table_parse_madt+0x30/0x3c
+ __acpi_probe_device_table+0x8c/0xe8
+ irqchip_init+0x3c/0x48
+ init_IRQ+0xcc/0x100
+ start_kernel+0x33c/0x548
+
+As we die in this case in existing kernels, we can be fairly sure that no one
+actually has such a firmware in production.  As such this patch avoids the
+complexity that would be needed to handle this corner case, and simply does
+not allow the ITS entry parsing code to instantiate new Numa Nodes.  If one
+is encountered that does not already exist, then NO_NUMA_NODE is assigned
+and a warning printed just as if the value had been greater than allowed
+Numa Nodes.
+
+"SRAT: Invalid NUMA node -1 in ITS affinity"
+
+I have only tested this for now on our ARM64 Kunpeng920 servers and
+a range of qemu x86 and arm64 configurations.
+
+Note minor merge issue with Dan William's series [3].  Merge fixes should be
+straight forward.
+
+[1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
+[2] https://patchwork.kernel.org/patch/10597777/
+[3] https://lore.kernel.org/patchwork/cover/1271398/
+
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/pci/controller/Kconfig           |   8 +
- drivers/pci/controller/Makefile          |   1 +
- drivers/pci/controller/pcie-hisi-error.c | 327 +++++++++++++++++++++++
- 3 files changed, 336 insertions(+)
- create mode 100644 drivers/pci/controller/pcie-hisi-error.c
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index adddf21fa381..b7949b37c029 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -286,6 +286,14 @@ config PCI_LOONGSON
- 	  Say Y here if you want to enable PCI controller support on
- 	  Loongson systems.
+Possible open questions:
+* should we warn about a broken firmware trying to assign any device
+  to a non existent Proximity Domain?
+* previously an smmuv3 in IORT with a Proximity Domain set to a non existent
+  value would have resulted in a failure to add the device. After this change
+  it will be added to the default node.  Is that a problem?
+* for the smmuv3 we print that we have successfully mapped to a node even if
+  we have not.  Would making this clear be useful?
+  Perhaps this is a topic for a separate patch.
+
+ Changes since RFC
+ * Fixed missing parameter in dmar.c
+ * Tested on some Qemu x86 models so confident enough to drop the RFC.
+
+ arch/arm64/kernel/acpi_numa.c    | 2 +-
+ arch/ia64/kernel/acpi.c          | 2 +-
+ arch/x86/mm/srat.c               | 4 ++--
+ drivers/acpi/arm64/iort.c        | 2 +-
+ drivers/acpi/nfit/core.c         | 2 +-
+ drivers/acpi/numa/hmat.c         | 2 +-
+ drivers/acpi/numa/srat.c         | 8 ++++----
+ drivers/iommu/intel/dmar.c       | 2 +-
+ drivers/irqchip/irq-gic-v3-its.c | 7 ++++++-
+ include/acpi/acpi_numa.h         | 2 +-
+ include/linux/acpi.h             | 6 +++---
+ 11 files changed, 22 insertions(+), 17 deletions(-)
+
+diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
+index 7ff800045434..6ed47b058d76 100644
+--- a/arch/arm64/kernel/acpi_numa.c
++++ b/arch/arm64/kernel/acpi_numa.c
+@@ -107,7 +107,7 @@ void __init acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa)
+ 		return;
  
-+config PCIE_HISI_ERR
-+	depends on ARM64 || COMPILE_TEST
-+	depends on ACPI
-+	bool "HiSilicon HIP PCIe controller error handling driver"
-+	help
-+	  Say Y here if you want error handling support
-+	  for the PCIe controller's errors on HiSilicon HIP SoCs
-+
- source "drivers/pci/controller/dwc/Kconfig"
- source "drivers/pci/controller/mobiveil/Kconfig"
- source "drivers/pci/controller/cadence/Kconfig"
-diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index efd9733ead26..90afd865bf6b 100644
---- a/drivers/pci/controller/Makefile
-+++ b/drivers/pci/controller/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
- obj-$(CONFIG_VMD) += vmd.o
- obj-$(CONFIG_PCIE_BRCMSTB) += pcie-brcmstb.o
- obj-$(CONFIG_PCI_LOONGSON) += pci-loongson.o
-+obj-$(CONFIG_PCIE_HISI_ERR) += pcie-hisi-error.o
- # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
- obj-y				+= dwc/
- obj-y				+= mobiveil/
-diff --git a/drivers/pci/controller/pcie-hisi-error.c b/drivers/pci/controller/pcie-hisi-error.c
-new file mode 100644
-index 000000000000..9bd050cadb31
---- /dev/null
-+++ b/drivers/pci/controller/pcie-hisi-error.c
-@@ -0,0 +1,327 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for handling the PCIe controller errors on
-+ * HiSilicon HIP SoCs.
-+ *
-+ * Copyright (c) 2020 HiSilicon Limited.
-+ */
-+
-+#include <linux/acpi.h>
-+#include <acpi/ghes.h>
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/pci.h>
-+#include <linux/platform_device.h>
-+#include <linux/kfifo.h>
-+#include <linux/spinlock.h>
-+
-+/* HISI PCIe controller error definitions */
-+#define HISI_PCIE_ERR_MISC_REGS	33
-+
-+#define HISI_PCIE_LOCAL_VALID_VERSION		BIT(0)
-+#define HISI_PCIE_LOCAL_VALID_SOC_ID		BIT(1)
-+#define HISI_PCIE_LOCAL_VALID_SOCKET_ID		BIT(2)
-+#define HISI_PCIE_LOCAL_VALID_NIMBUS_ID		BIT(3)
-+#define HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID	BIT(4)
-+#define HISI_PCIE_LOCAL_VALID_CORE_ID		BIT(5)
-+#define HISI_PCIE_LOCAL_VALID_PORT_ID		BIT(6)
-+#define HISI_PCIE_LOCAL_VALID_ERR_TYPE		BIT(7)
-+#define HISI_PCIE_LOCAL_VALID_ERR_SEVERITY	BIT(8)
-+#define HISI_PCIE_LOCAL_VALID_ERR_MISC		9
-+
-+static guid_t hisi_pcie_sec_guid =
-+	GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
-+		  0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
-+
-+/*
-+ * We pass core id and core port id to the ACPI reset method to identify
-+ * certain root port to reset, while the firmware reports sockets port
-+ * id which occurs an error. Use the macros here to do the conversion
-+ */
-+#define HISI_PCIE_CORE_ID(v)             ((v) >> 3)
-+#define HISI_PCIE_PORT_ID(core, v)       (((v) >> 1) + ((core) << 3))
-+#define HISI_PCIE_CORE_PORT_ID(v)        (((v) & 7) << 1)
-+
-+struct hisi_pcie_error_data {
-+	u64	val_bits;
-+	u8	version;
-+	u8	soc_id;
-+	u8	socket_id;
-+	u8	nimbus_id;
-+	u8	sub_module_id;
-+	u8	core_id;
-+	u8	port_id;
-+	u8	err_severity;
-+	u16	err_type;
-+	u8	reserv[2];
-+	u32	err_misc[HISI_PCIE_ERR_MISC_REGS];
-+};
-+
-+struct hisi_pcie_error_private {
-+	struct notifier_block	nb;
-+	struct device *dev;
-+};
-+
-+enum hisi_pcie_submodule_id {
-+	HISI_PCIE_SUB_MODULE_ID_AP,
-+	HISI_PCIE_SUB_MODULE_ID_TL,
-+	HISI_PCIE_SUB_MODULE_ID_MAC,
-+	HISI_PCIE_SUB_MODULE_ID_DL,
-+	HISI_PCIE_SUB_MODULE_ID_SDI,
-+};
-+
-+static const char * const hisi_pcie_sub_module[] = {
-+	[HISI_PCIE_SUB_MODULE_ID_AP]	= "AP Layer",
-+	[HISI_PCIE_SUB_MODULE_ID_TL]	= "TL Layer",
-+	[HISI_PCIE_SUB_MODULE_ID_MAC]	= "MAC Layer",
-+	[HISI_PCIE_SUB_MODULE_ID_DL]	= "DL Layer",
-+	[HISI_PCIE_SUB_MODULE_ID_SDI]	= "SDI Layer",
-+};
-+
-+enum hisi_pcie_err_severity {
-+	HISI_PCIE_ERR_SEV_RECOVERABLE,
-+	HISI_PCIE_ERR_SEV_FATAL,
-+	HISI_PCIE_ERR_SEV_CORRECTED,
-+	HISI_PCIE_ERR_SEV_NONE,
-+};
-+
-+static const char * const hisi_pcie_error_sev[] = {
-+	[HISI_PCIE_ERR_SEV_RECOVERABLE]	= "recoverable",
-+	[HISI_PCIE_ERR_SEV_FATAL]	= "fatal",
-+	[HISI_PCIE_ERR_SEV_CORRECTED]	= "corrected",
-+	[HISI_PCIE_ERR_SEV_NONE]	= "none",
-+};
-+
-+static const char *hisi_pcie_get_string(const char * const *array,
-+					size_t n, u32 id)
-+{
-+	u32 index;
-+
-+	for (index = 0; index < n; index++) {
-+		if (index == id && array[index])
-+			return array[index];
-+	}
-+
-+	return "unknown";
-+}
-+
-+static int hisi_pcie_port_reset(struct platform_device *pdev,
-+				u32 chip_id, u32 port_id)
-+{
-+	struct device *dev = &pdev->dev;
-+	acpi_handle handle = ACPI_HANDLE(dev);
-+	union acpi_object arg[3];
-+	struct acpi_object_list arg_list;
-+	acpi_status s;
-+	unsigned long long data = 0;
-+
-+	arg[0].type = ACPI_TYPE_INTEGER;
-+	arg[0].integer.value = chip_id;
-+	arg[1].type = ACPI_TYPE_INTEGER;
-+	arg[1].integer.value = HISI_PCIE_CORE_ID(port_id);
-+	arg[2].type = ACPI_TYPE_INTEGER;
-+	arg[2].integer.value = HISI_PCIE_CORE_PORT_ID(port_id);
-+
-+	arg_list.count = 3;
-+	arg_list.pointer = arg;
-+
-+	s = acpi_evaluate_integer(handle, "RST", &arg_list, &data);
-+	if (ACPI_FAILURE(s)) {
-+		dev_err(dev, "No RST method\n");
-+		return -EIO;
-+	}
-+
-+	if (data) {
-+		dev_err(dev, "Failed to Reset\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hisi_pcie_port_do_recovery(struct platform_device *dev,
-+				      u32 chip_id, u32 port_id)
-+{
-+	acpi_status s;
-+	struct device *device = &dev->dev;
-+	acpi_handle root_handle = ACPI_HANDLE(device);
-+	struct acpi_pci_root *pci_root;
-+	struct pci_bus *root_bus;
-+	struct pci_dev *pdev;
-+	u32 domain, busnr, devfn;
-+
-+	s = acpi_get_parent(root_handle, &root_handle);
-+	if (ACPI_FAILURE(s))
-+		return -ENODEV;
-+	pci_root = acpi_pci_find_root(root_handle);
-+	if (!pci_root)
-+		return -ENODEV;
-+	root_bus = pci_root->bus;
-+	domain = pci_root->segment;
-+
-+	busnr = root_bus->number;
-+	devfn = PCI_DEVFN(port_id, 0);
-+	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
-+	if (!pdev) {
-+		dev_info(device, "Fail to get root port %04x:%02x:%02x.%d device\n",
-+			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
-+		return -ENODEV;
-+	}
-+
-+	pci_stop_and_remove_bus_device_locked(pdev);
-+	pci_dev_put(pdev);
-+
-+	if (hisi_pcie_port_reset(dev, chip_id, port_id))
-+		return -EIO;
-+
+ 	pxm = pa->proximity_domain;
+-	node = acpi_map_pxm_to_node(pxm);
++	node = acpi_map_pxm_to_node(pxm, true);
+ 
+ 	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
+ 		pr_err("SRAT: Too many proximity domains %d\n", pxm);
+diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
+index a5636524af76..760a468864b7 100644
+--- a/arch/ia64/kernel/acpi.c
++++ b/arch/ia64/kernel/acpi.c
+@@ -456,7 +456,7 @@ void __init acpi_numa_fixup(void)
+ 	nodes_clear(node_online_map);
+ 	for (i = 0; i < MAX_PXM_DOMAINS; i++) {
+ 		if (pxm_bit_test(i)) {
+-			int nid = acpi_map_pxm_to_node(i);
++			int nid = acpi_map_pxm_to_node(i, true);
+ 			node_set_online(nid);
+ 		}
+ 	}
+diff --git a/arch/x86/mm/srat.c b/arch/x86/mm/srat.c
+index dac07e4f5834..6497d7c241ec 100644
+--- a/arch/x86/mm/srat.c
++++ b/arch/x86/mm/srat.c
+@@ -45,7 +45,7 @@ acpi_numa_x2apic_affinity_init(struct acpi_srat_x2apic_cpu_affinity *pa)
+ 			 pxm, apic_id);
+ 		return;
+ 	}
+-	node = acpi_map_pxm_to_node(pxm);
++	node = acpi_map_pxm_to_node(pxm, true);
+ 	if (node < 0) {
+ 		printk(KERN_ERR "SRAT: Too many proximity domains %x\n", pxm);
+ 		bad_srat();
+@@ -80,7 +80,7 @@ acpi_numa_processor_affinity_init(struct acpi_srat_cpu_affinity *pa)
+ 	pxm = pa->proximity_domain_lo;
+ 	if (acpi_srat_revision >= 2)
+ 		pxm |= *((unsigned int*)pa->proximity_domain_hi) << 8;
+-	node = acpi_map_pxm_to_node(pxm);
++	node = acpi_map_pxm_to_node(pxm, true);
+ 	if (node < 0) {
+ 		printk(KERN_ERR "SRAT: Too many proximity domains %x\n", pxm);
+ 		bad_srat();
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 28a6b387e80e..8133e7e6f9e3 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1293,7 +1293,7 @@ static int  __init arm_smmu_v3_set_proximity(struct device *dev,
+ 
+ 	smmu = (struct acpi_iort_smmu_v3 *)node->node_data;
+ 	if (smmu->flags & ACPI_IORT_SMMU_V3_PXM_VALID) {
+-		int dev_node = acpi_map_pxm_to_node(smmu->pxm);
++		int dev_node = acpi_map_pxm_to_node(smmu->pxm, false);
+ 
+ 		if (dev_node != NUMA_NO_NODE && !node_online(dev_node))
+ 			return -EINVAL;
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 7c138a4edc03..6cb44bbaa71f 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2948,7 +2948,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+ 		ndr_desc->numa_node = acpi_map_pxm_to_online_node(
+ 						spa->proximity_domain);
+ 		ndr_desc->target_node = acpi_map_pxm_to_node(
+-				spa->proximity_domain);
++				spa->proximity_domain, false);
+ 	} else {
+ 		ndr_desc->numa_node = NUMA_NO_NODE;
+ 		ndr_desc->target_node = NUMA_NO_NODE;
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 2c32cfb72370..3c0414816772 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -666,7 +666,7 @@ static void hmat_register_target_device(struct memory_target *target,
+ 
+ 	pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
+ 	info = (struct memregion_info) {
+-		.target_node = acpi_map_pxm_to_node(target->memory_pxm),
++		.target_node = acpi_map_pxm_to_node(target->memory_pxm, false),
+ 	};
+ 	rc = platform_device_add_data(pdev, &info, sizeof(info));
+ 	if (rc < 0) {
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 5be5a977da1b..ed7d31795f4d 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -52,7 +52,7 @@ static void __acpi_map_pxm_to_node(int pxm, int node)
+ 		node_to_pxm_map[node] = pxm;
+ }
+ 
+-int acpi_map_pxm_to_node(int pxm)
++int acpi_map_pxm_to_node(int pxm, bool create)
+ {
+ 	int node;
+ 
+@@ -62,7 +62,7 @@ int acpi_map_pxm_to_node(int pxm)
+ 	node = pxm_to_node_map[pxm];
+ 
+ 	if (node == NUMA_NO_NODE) {
+-		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES)
++		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES || !create)
+ 			return NUMA_NO_NODE;
+ 		node = first_unset_node(nodes_found_map);
+ 		__acpi_map_pxm_to_node(pxm, node);
+@@ -229,7 +229,7 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+ 	if (acpi_srat_revision <= 1)
+ 		pxm &= 0xff;
+ 
+-	node = acpi_map_pxm_to_node(pxm);
++	node = acpi_map_pxm_to_node(pxm, true);
+ 	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
+ 		pr_err("SRAT: Too many proximity domains.\n");
+ 		goto out_err_bad_srat;
+@@ -444,6 +444,6 @@ int acpi_get_node(acpi_handle handle)
+ 
+ 	pxm = acpi_get_pxm(handle);
+ 
+-	return acpi_map_pxm_to_node(pxm);
++	return acpi_map_pxm_to_node(pxm, false);
+ }
+ EXPORT_SYMBOL(acpi_get_node);
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index 683b812c5c47..fec90800381e 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -473,7 +473,7 @@ static int dmar_parse_one_rhsa(struct acpi_dmar_header *header, void *arg)
+ 	rhsa = (struct acpi_dmar_rhsa *)header;
+ 	for_each_drhd_unit(drhd) {
+ 		if (drhd->reg_base_addr == rhsa->base_address) {
+-			int node = acpi_map_pxm_to_node(rhsa->proximity_domain);
++			int node = acpi_map_pxm_to_node(rhsa->proximity_domain, false);
+ 
+ 			if (!node_online(node))
+ 				node = NUMA_NO_NODE;
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 6a5a87fc4601..44cb53fa6afe 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -5248,7 +5248,12 @@ static int __init gic_acpi_parse_srat_its(union acpi_subtable_headers *header,
+ 		return -EINVAL;
+ 	}
+ 
+-	node = acpi_map_pxm_to_node(its_affinity->proximity_domain);
 +	/*
-+	 * The initialization time of subordinate devices after
-+	 * hot reset is no more than 1s, which is required by
-+	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
-+	 * if Readiness Notifications mechanisms are used. But
-+	 * wait 1s here to adapt any conditions.
++	 * Note that in theory a new proximity node could be created by this
++	 * entry as it is an SRAT resource allocation structure.
++	 * We do not currently support doing so.
 +	 */
-+	ssleep(1UL);
-+
-+	/* add root port and downstream devices */
-+	pci_lock_rescan_remove();
-+	pci_rescan_bus(root_bus);
-+	pci_unlock_rescan_remove();
-+
-+	return 0;
-+}
-+
-+static void hisi_pcie_handle_error(struct platform_device *pdev,
-+				   const struct hisi_pcie_error_data *edata)
-+{
-+	struct device *dev = &pdev->dev;
-+	int idx, rc;
-+	const unsigned long valid_bits[] = {BITMAP_FROM_U64(edata->val_bits)};
-+
-+	if (edata->val_bits == 0) {
-+		dev_warn(dev, "%s: no valid error information\n", __func__);
-+		return;
-+	}
-+
-+	dev_info(dev, "\nHISI : HIP : PCIe controller error\n");
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOC_ID)
-+		dev_info(dev, "Table version = %d\n", edata->version);
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOCKET_ID)
-+		dev_info(dev, "Socket ID = %d\n", edata->socket_id);
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_NIMBUS_ID)
-+		dev_info(dev, "Nimbus ID = %d\n", edata->nimbus_id);
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID)
-+		dev_info(dev, "Sub Module = %s\n",
-+			 hisi_pcie_get_string(hisi_pcie_sub_module,
-+					      ARRAY_SIZE(hisi_pcie_sub_module),
-+					      edata->sub_module_id));
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_CORE_ID)
-+		dev_info(dev, "Core ID = core%d\n", edata->core_id);
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_PORT_ID)
-+		dev_info(dev, "Port ID = port%d\n", edata->port_id);
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_SEVERITY)
-+		dev_info(dev, "Error severity = %s\n",
-+			 hisi_pcie_get_string(hisi_pcie_error_sev,
-+					      ARRAY_SIZE(hisi_pcie_error_sev),
-+					      edata->err_severity));
-+	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_TYPE)
-+		dev_info(dev, "Error type = 0x%x\n", edata->err_type);
-+
-+	dev_info(dev, "Reg Dump:\n");
-+	idx = HISI_PCIE_LOCAL_VALID_ERR_MISC;
-+	for_each_set_bit_from(idx, valid_bits,
-+			      HISI_PCIE_LOCAL_VALID_ERR_MISC + HISI_PCIE_ERR_MISC_REGS)
-+		dev_info(dev, "ERR_MISC_%d = 0x%x\n", idx - HISI_PCIE_LOCAL_VALID_ERR_MISC,
-+			 edata->err_misc[idx]);
-+
-+	if (edata->err_severity != HISI_PCIE_ERR_SEV_RECOVERABLE)
-+		return;
-+
-+	/* Recovery for the PCIe controller errors, try reset
-+	 * PCI port for the error recovery
-+	 */
-+	rc = hisi_pcie_port_do_recovery(pdev, edata->socket_id,
-+			HISI_PCIE_PORT_ID(edata->core_id, edata->port_id));
-+	if (rc)
-+		dev_info(dev, "fail to do hisi pcie port reset\n");
-+}
-+
-+static int hisi_pcie_notify_error(struct notifier_block *nb,
-+				  unsigned long event, void *data)
-+{
-+	struct acpi_hest_generic_data *gdata = data;
-+	const struct hisi_pcie_error_data *error_data = acpi_hest_get_payload(gdata);
-+	struct hisi_pcie_error_private *priv;
-+	struct device *dev;
-+	struct platform_device *pdev;
-+	guid_t err_sec_guid;
-+	u8 socket;
-+
-+	import_guid(&err_sec_guid, gdata->section_type);
-+	if (!guid_equal(&err_sec_guid, &hisi_pcie_sec_guid))
-+		return NOTIFY_DONE;
-+
-+	priv = container_of(nb, struct hisi_pcie_error_private, nb);
-+	dev = priv->dev;
-+
-+	if (device_property_read_u8(dev, "socket", &socket))
-+		return NOTIFY_DONE;
-+
-+	if (error_data->socket_id != socket)
-+		return NOTIFY_DONE;
-+
-+	pdev = container_of(dev, struct platform_device, dev);
-+	hisi_pcie_handle_error(pdev, error_data);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int hisi_pcie_error_handler_probe(struct platform_device *pdev)
-+{
-+	struct hisi_pcie_error_private *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->nb.notifier_call = hisi_pcie_notify_error;
-+	priv->dev = &pdev->dev;
-+	ret = ghes_register_vendor_record_notifier(&priv->nb);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"Failed to register hisi pcie controller error handler with apei\n");
-+		return ret;
-+	}
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	return 0;
-+}
-+
-+static int hisi_pcie_error_handler_remove(struct platform_device *pdev)
-+{
-+	struct hisi_pcie_error_private *priv = platform_get_drvdata(pdev);
-+
-+	ghes_unregister_vendor_record_notifier(&priv->nb);
-+
-+	return 0;
-+}
-+
-+static const struct acpi_device_id hisi_pcie_acpi_match[] = {
-+	{ "HISI0361", 0 },
-+	{ }
-+};
-+
-+static struct platform_driver hisi_pcie_error_handler_driver = {
-+	.driver = {
-+		.name	= "hisi-pcie-error-handler",
-+		.acpi_match_table = hisi_pcie_acpi_match,
-+	},
-+	.probe		= hisi_pcie_error_handler_probe,
-+	.remove		= hisi_pcie_error_handler_remove,
-+};
-+module_platform_driver(hisi_pcie_error_handler_driver);
-+
-+MODULE_DESCRIPTION("HiSilicon HIP PCIe controller error handling driver");
-+MODULE_LICENSE("GPL v2");
++	node = acpi_map_pxm_to_node(its_affinity->proximity_domain, false);
+ 
+ 	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
+ 		pr_err("SRAT: Invalid NUMA node %d in ITS affinity\n", node);
+diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
+index fdebcfc6c8df..6935c7516262 100644
+--- a/include/acpi/acpi_numa.h
++++ b/include/acpi/acpi_numa.h
+@@ -15,7 +15,7 @@
+ 
+ extern int pxm_to_node(int);
+ extern int node_to_pxm(int);
+-extern int acpi_map_pxm_to_node(int);
++extern int acpi_map_pxm_to_node(int, bool);
+ extern unsigned char acpi_srat_revision;
+ extern int acpi_numa __initdata;
+ 
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index d661cd0ee64d..1414b7e0a486 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -416,7 +416,7 @@ extern void acpi_osi_setup(char *str);
+ extern bool acpi_osi_is_win8(void);
+ 
+ #ifdef CONFIG_ACPI_NUMA
+-int acpi_map_pxm_to_node(int pxm);
++int acpi_map_pxm_to_node(int pxm, bool create);
+ int acpi_get_node(acpi_handle handle);
+ 
+ /**
+@@ -436,7 +436,7 @@ int acpi_get_node(acpi_handle handle);
+  */
+ static inline int acpi_map_pxm_to_online_node(int pxm)
+ {
+-	int node = acpi_map_pxm_to_node(pxm);
++	int node = acpi_map_pxm_to_node(pxm, false);
+ 
+ 	return numa_map_to_online_node(node);
+ }
+@@ -445,7 +445,7 @@ static inline int acpi_map_pxm_to_online_node(int pxm)
+ {
+ 	return 0;
+ }
+-static inline int acpi_map_pxm_to_node(int pxm)
++static inline int acpi_map_pxm_to_node(int pxm, bool create)
+ {
+ 	return 0;
+ }
 -- 
-2.17.1
-
+2.19.1
 
