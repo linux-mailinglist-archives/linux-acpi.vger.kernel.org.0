@@ -2,99 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 037C821F015
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jul 2020 14:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60DAD21F27D
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jul 2020 15:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728075AbgGNMJH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jul 2020 08:09:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:47828 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726748AbgGNMJH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Jul 2020 08:09:07 -0400
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06EC30Te095417;
-        Tue, 14 Jul 2020 08:09:05 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 327tna8dxx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jul 2020 08:09:04 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06EC11QX017939;
-        Tue, 14 Jul 2020 12:09:04 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-        by ppma05wdc.us.ibm.com with ESMTP id 327528r30g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jul 2020 12:09:04 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 06EC93ZS48300510
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jul 2020 12:09:03 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D985AAC059;
-        Tue, 14 Jul 2020 12:09:03 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B0DB9AC05B;
-        Tue, 14 Jul 2020 12:09:03 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 14 Jul 2020 12:09:03 +0000 (GMT)
-Subject: Re: [PATCH v9 2/2] tpm: Add support for event log pointer found in
- TPM2 ACPI table
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20200706181953.3592084-1-stefanb@linux.vnet.ibm.com>
- <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
- <20200706230914.GC20770@linux.intel.com>
- <78ec872f-89b3-6464-6ede-bd0a46fe5c4c@linux.ibm.com>
- <20200707022416.GC112019@linux.intel.com>
- <f3e0fb50-8617-da40-1456-158531a070cb@linux.ibm.com>
- <20200707040325.GB143804@linux.intel.com>
- <85c27199-df55-eecc-855c-dedcea64f89e@linux.ibm.com>
- <20200708140753.GC538949@linux.intel.com>
- <e42cb59d-6a3d-12be-bb51-88aa8c5dba23@linux.ibm.com>
- <20200714112030.GA1448526@linux.intel.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <69907c30-62c2-b4bd-e84f-11612bba9c95@linux.ibm.com>
-Date:   Tue, 14 Jul 2020 08:09:03 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1727810AbgGNN1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jul 2020 09:27:52 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:42115 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726766AbgGNN1v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jul 2020 09:27:51 -0400
+Received: by mail-oi1-f194.google.com with SMTP id t4so13892886oij.9;
+        Tue, 14 Jul 2020 06:27:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Co+8zho8E5dTiD8cmg9/ZPavIQVoRg7kJl84C1fgX4o=;
+        b=Ak9rNiX58SVp3TwDXHkgLVMlvgVRokwbqMW6fzzw5RNsaFtIHKYJCHapp+PhKvXx5q
+         c+tyQf6H3zW3IU7YIGzxoSspg1ZMNrvhPr8VvlcJrmPyfV/w3w1KXHD9ebDk/sTIij/X
+         /foWTxlOrHmpPODKPrjxMTzRsXYttF2kvT80OV4cyjzyn2H9a/OHC6bKrmyjffJ8bXRU
+         XMBYJpa1FubjV3wB5RsI2MRHh15bpznOoeLuPB5BwrNXHYnRkBMjx6ZiRuKGawmANhiQ
+         oXYGnGr72PODH5NtfHBVvy7xExgD1+Q8e3CVWkJOIq1JK36G6X2GfxT1KRJFeutH8Zw4
+         J5pg==
+X-Gm-Message-State: AOAM533sZufFYQ/PG1NgUlIttecXG7r6ttGXBXgWEsA4WC2G/XzxBjeM
+        7qXENwWJSmZJCvlgDAQk3e6z2ZKMulTqvubMOa0=
+X-Google-Smtp-Source: ABdhPJzZCW5CAcdX22oZWNLapJZK91sy3IBs2TtUsKH0mXhc58jY+otLhQKYqyJqpqYGmfziPk7jXv4Of2khk72Y9k0=
+X-Received: by 2002:aca:4a89:: with SMTP id x131mr3775944oia.103.1594733270598;
+ Tue, 14 Jul 2020 06:27:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200714112030.GA1448526@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-14_03:2020-07-14,2020-07-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- impostorscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007140085
+References: <20200713175529.29715-1-refactormyself@gmail.com> <20200713175529.29715-4-refactormyself@gmail.com>
+In-Reply-To: <20200713175529.29715-4-refactormyself@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Jul 2020 15:27:38 +0200
+Message-ID: <CAJZ5v0gDwtZ+oYSrj_Ta56QPSeW3OSq4XHkiubOHr4xki7muPw@mail.gmail.com>
+Subject: Re: [PATCH 8/14 v3] PCI/ACPI: Check the return value of pcie_capability_read_*()
+To:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/14/20 7:20 AM, Jarkko Sakkinen wrote:
-> On Wed, Jul 08, 2020 at 10:17:17AM -0400, Stefan Berger wrote:
->>> ❯ swtpm-mvo.swtpm socket --tpmstate dir=/tmp/mytpm1 \
->>>     --ctrl type=unixio,path=/tmp/mytpm1/swtpm-sock \
->>>     --log level=20
->>> swtpm: Could not open UnixIO socket: No such file or directory
->>
->> Did you create the directory '/tmp/mytpm1' ?
-> Yes. It's the socket file that it is complain because it does
-> not exist beforehand.
-
-
-The socket file is created by the swtpm program.
-
-
+On Mon, Jul 13, 2020 at 6:55 PM Saheed O. Bolarinwa
+<refactormyself@gmail.com> wrote:
 >
-> /Jarkko
+> From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+>
+> On failure pcie_capability_read_dword() sets it's last parameter,
+> val to 0.
+> However, with Patch 14/14, it is possible that val is set to ~0 on
+> failure. This would introduce a bug because (x & x) == (~0 & x).
+>
+> This bug can be avoided if the return value of pcie_capability_read_word
+> is checked to confirm success.
+>
+> Check the return value of pcie_capability_read_word() to ensure success.
+>
+> Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
+> Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
 
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
+> ---
+>  drivers/pci/pci-acpi.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 7224b1e5f2a8..39eb816bc3b8 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -248,12 +248,13 @@ static bool pcie_root_rcb_set(struct pci_dev *dev)
+>  {
+>         struct pci_dev *rp = pcie_find_root_port(dev);
+>         u16 lnkctl;
+> +       int ret;
+>
+>         if (!rp)
+>                 return false;
+>
+> -       pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
+> -       if (lnkctl & PCI_EXP_LNKCTL_RCB)
+> +       ret = pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
+> +       if (!ret && (lnkctl & PCI_EXP_LNKCTL_RCB))
+>                 return true;
+>
+>         return false;
+> @@ -792,12 +793,13 @@ bool pciehp_is_native(struct pci_dev *bridge)
+>  {
+>         const struct pci_host_bridge *host;
+>         u32 slot_cap;
+> +       int ret;
+>
+>         if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
+>                 return false;
+>
+> -       pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
+> -       if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
+> +       ret = pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
+> +       if (ret || !(slot_cap & PCI_EXP_SLTCAP_HPC))
+>                 return false;
+>
+>         if (pcie_ports_native)
+> --
+> 2.18.2
+>
