@@ -2,98 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF07D221A86
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jul 2020 05:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FA3221A9B
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jul 2020 05:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726998AbgGPDGS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jul 2020 23:06:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726770AbgGPDGR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jul 2020 23:06:17 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E50C061755;
-        Wed, 15 Jul 2020 20:06:15 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id n22so1955618ejy.3;
-        Wed, 15 Jul 2020 20:06:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yQDsOYz1dvFgi775kGKyitJeopMyY0R0FVXEBIxbvLk=;
-        b=MkBY8UQ/2RfDFsP+/15qNt/vl5jl4/VAISyY4B7FVuUv0djI+jd8WY2bhsQ88oS6W8
-         I54Y9TofPGLt7wo4xjFL82LNBE0pGok/Is4fv04nJOhmjPs4jo8nm9RyyaPTRMgWR/8Q
-         dSSuDtCa+sUMCQGhftpkIdvPjezmOKzmvRE4xyLX84iOB5Ri1+RuQH6VAzsZliUBPExI
-         Z1ZynN3a4Jow1eW9o2Ehg8m7bE7+n+e9Qi5PfV7CfVq2rJ1UuqZIpI/mK2SpfqzPL0/4
-         LytujLrmCm3Ui80yJD0MgqE+a99tUjGlvayYSL3gzHlRiC8iOlpTQlu6K9C+77D1g+lv
-         pcgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yQDsOYz1dvFgi775kGKyitJeopMyY0R0FVXEBIxbvLk=;
-        b=gTynI6Zj6rDk7mXjp6MmKchxfh56RxBIK1sYohqAtjHPVOEzYpqq24h+C2q4RGxFO1
-         vFcttwUXZop0gB8JD0tlxwD/lyF025YCWNnXSNkA/YmfMvZlnXSS6zhpfnngCideTuOl
-         8Z7LMzcasEIdGhrB8FijdVQOU/PodIzA2qyWNdvfXWDu8JCz7BU4DuwZb7sIm2kV4CZy
-         NCBd2EDdnsVc8HthzQOXQ79MbmNyPudn5VCLD+HevrbMs5xwF72uYgea62RcmCy3fS/J
-         Grv+vJhzhRQf06j7nXYuV9s5QT+Tz1tGMEm1fhsZN9PRe2yda5EkxinDl9fP8Z9DWYGJ
-         cIww==
-X-Gm-Message-State: AOAM531a4Ib+UHkX7dZdeJmOhuiOtzttxRMEGttIZWX7fAjBUHwbNOaC
-        WW1vo4MpTLn2OPWF3hobHhZyxqW+
-X-Google-Smtp-Source: ABdhPJxNJi7ZFagWNLSMaFWAXrZ4Bb+vx1dUgF/4uhN68rNo4HCj8iUCXgWlOMBoqtlqmlHAagqL2A==
-X-Received: by 2002:a17:906:1c05:: with SMTP id k5mr1810965ejg.320.1594868774206;
-        Wed, 15 Jul 2020 20:06:14 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
-        by smtp.gmail.com with ESMTPSA id v11sm3730242eja.113.2020.07.15.20.06.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jul 2020 20:06:13 -0700 (PDT)
-Subject: Re: [net-next PATCH v7 4/6] net: phy: introduce
- phy_find_by_mdio_handle()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        id S1728105AbgGPDLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jul 2020 23:11:37 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:37972 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726770AbgGPDLh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Jul 2020 23:11:37 -0400
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+        (envelope-from <andrew@lunn.ch>)
+        id 1jvuIx-005LJ2-MX; Thu, 16 Jul 2020 05:11:27 +0200
+Date:   Thu, 16 Jul 2020 05:11:27 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Jeremy Linton <jeremy.linton@arm.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jon <jon@solid-run.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>
-Cc:     netdev@vger.kernel.org, linux.cj@gmail.com,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        netdev@vger.kernel.org, linux.cj@gmail.com,
         linux-acpi@vger.kernel.org
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
+ PHY
+Message-ID: <20200716031127.GH1211629@lunn.ch>
 References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
- <20200715090400.4733-5-calvin.johnson@oss.nxp.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <0a40b93a-3bbc-2936-75e0-9006067a176a@gmail.com>
-Date:   Wed, 15 Jul 2020 20:06:09 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Firefox/68.0 Thunderbird/68.10.0
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+ <633212c6-8cb4-9599-0086-8a8de5c45172@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200715090400.4733-5-calvin.johnson@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <633212c6-8cb4-9599-0086-8a8de5c45172@gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 7/15/2020 2:03 AM, Calvin Johnson wrote:
-> The PHYs on an mdiobus are probed and registered using mdiobus_register().
-> Later, for connecting these PHYs to MAC, the PHYs registered on the
-> mdiobus have to be referenced.
+On Wed, Jul 15, 2020 at 08:04:36PM -0700, Florian Fainelli wrote:
 > 
-> For each MAC node, a property "mdio-handle" is used to reference the
-> MDIO bus on which the PHYs are registered. On getting hold of the MDIO
-> bus, use phy_find_by_fwnode() to get the PHY connected to the MAC.
 > 
-> Introduce fwnode_mdio_find_bus() to find the mii_bus that corresponds
-> to given mii_bus fwnode.
+> On 7/15/2020 2:03 AM, Calvin Johnson wrote:
+> > Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> > provide them to be connected to MAC.
+> > 
+> > An ACPI node property "mdio-handle" is introduced to reference the
+> > MDIO bus on which PHYs are registered with autoprobing method used
+> > by mdiobus_register().
+> > 
+> > Describe properties "phy-channel" and "phy-mode"
+> > 
+> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
 > 
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+I really would like to see an ACPI maintainer ACK this before it gets
+merged. I'm not sure the current reviewers have deep enough knowledge
+of ACPI to know if this is going against parts of the standard, or
+philosophy of ACPI. And we are setting an ABI here, so we need to be
+particularly careful.
+
+	     Andrew
