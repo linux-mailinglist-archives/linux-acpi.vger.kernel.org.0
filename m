@@ -2,137 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F07A82242D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 20:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F1DD224314
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 20:25:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbgGQSDs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Jul 2020 14:03:48 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2503 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727903AbgGQSDs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Jul 2020 14:03:48 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id BB0A8F4BF11DF7754B29;
-        Fri, 17 Jul 2020 19:03:46 +0100 (IST)
-Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.1913.5; Fri, 17 Jul 2020 19:03:46 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
-CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
-        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Song Bao Hua <song.bao.hua@hisilicon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 6/6] irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without processor or memory
-Date:   Sat, 18 Jul 2020 01:59:59 +0800
-Message-ID: <20200717175959.899775-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
-References: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
+        id S1727903AbgGQSYz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Jul 2020 14:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726104AbgGQSYz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jul 2020 14:24:55 -0400
+Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFC13C0619D2;
+        Fri, 17 Jul 2020 11:24:54 -0700 (PDT)
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 120AEBC070;
+        Fri, 17 Jul 2020 18:24:44 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     rjw@rjwysocki.net, lenb@kernel.org, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, sakari.ailus@linux.intel.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nvdimm@lists.01.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] ACPI: Replace HTTP links with HTTPS ones
+Date:   Fri, 17 Jul 2020 20:24:36 +0200
+Message-Id: <20200717182436.75214-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.123.41.22]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
+X-Spamd-Bar: /
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Note this crash is present before any of the patches in this series, but
-as explained below it is highly unlikely anyone is shipping a firmware that
-causes it. Tests were done using an overriden SRAT.
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-On ARM64, the gic-v3 driver directly parses SRAT to locate GIC Interrupt
-Translation Service (ITS) Affinity Structures. This is done much later
-in the boot than the parses of SRAT which identify proximity domains.
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
 
-As a result, an ITS placed in a proximity domain that is not defined by
-another SRAT structure will result in a NUMA node that is not completely
-configured and a crash.
-
-ITS [mem 0x202100000-0x20211ffff]
-ITS@0x0000000202100000: Using ITS number 0
-Unable to handle kernel paging request at virtual address 0000000000001a08
-...
-
-Call trace:
-  __alloc_pages_nodemask+0xe8/0x338
-  alloc_pages_node.constprop.0+0x34/0x40
-  its_probe_one+0x2f8/0xb18
-  gic_acpi_parse_madt_its+0x108/0x150
-  acpi_table_parse_entries_array+0x17c/0x264
-  acpi_table_parse_entries+0x48/0x6c
-  acpi_table_parse_madt+0x30/0x3c
-  its_init+0x1c4/0x644
-  gic_init_bases+0x4b8/0x4ec
-  gic_acpi_init+0x134/0x264
-  acpi_match_madt+0x4c/0x84
-  acpi_table_parse_entries_array+0x17c/0x264
-  acpi_table_parse_entries+0x48/0x6c
-  acpi_table_parse_madt+0x30/0x3c
-  __acpi_probe_device_table+0x8c/0xe8
-  irqchip_init+0x3c/0x48
-  init_IRQ+0xcc/0x100
-  start_kernel+0x33c/0x548
-
-ACPI 6.3 allows any set of Affinity Structures in SRAT to define a proximity
-domain.  However, as we do not see this crash, we can conclude that no
-firmware is currently placing an ITS in a node that is separate from
-those containing memory and / or processors.
-
-We could modify the SRAT parsing behavior to identify the existence
-of Proximity Domains unique to the ITS structures, and handle them as
-a special case of a generic initiator (once support for those merges).
-
-This patch avoids the complexity that would be needed to handle this corner
-case, by not allowing the ITS entry parsing code to instantiate new NUMA
-Nodes.  If one is encountered that does not already exist, then NO_NUMA_NODE
-is assigned and a warning printed just as if the value had been greater than
-allowed NUMA Nodes.
-
-"SRAT: Invalid NUMA node -1 in ITS affinity"
-
-Whilst this does not provide the full flexibility allowed by ACPI,
-it does fix the problem.  We can revisit a more sophisticated solution if
-needed by future platforms.
-
-Change is simply to replace acpi_map_pxm_to_node with pxm_to_node reflecting
-the fact a new mapping is not created.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 6a5a87fc4601..c26862a074da 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5248,7 +5248,12 @@ static int __init gic_acpi_parse_srat_its(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	}
+ If there are any URLs to be removed completely or at least not just HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
+
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
+
+ Sorry again to all maintainers who complained about subject lines.
+ Now I realized that you want an actually perfect prefixes,
+ not just subsystem ones.
+ I tried my best...
+ And yes, *I could* (at least half-)automate it.
+ Impossible is nothing! :)
+
+
+ .../firmware-guide/acpi/DSD-properties-rules.rst       |  4 ++--
+ .../firmware-guide/acpi/dsd/data-node-references.rst   |  4 ++--
+ Documentation/firmware-guide/acpi/dsd/graph.rst        | 10 +++++-----
+ Documentation/firmware-guide/acpi/dsd/leds.rst         |  6 +++---
+ Documentation/firmware-guide/acpi/lpit.rst             |  2 +-
+ drivers/acpi/Kconfig                                   |  2 +-
+ drivers/acpi/nfit/nfit.h                               |  2 +-
+ 7 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
+index 4306f29b6103..8b2d8d0864c2 100644
+--- a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
++++ b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
+@@ -96,5 +96,5 @@ contents.
+ References
+ ==========
  
--	node = acpi_map_pxm_to_node(its_affinity->proximity_domain);
-+	/*
-+	 * Note that in theory a new proximity node could be created by this
-+	 * entry as it is an SRAT resource allocation structure.
-+	 * We do not currently support doing so.
-+	 */
-+	node = pxm_to_node(its_affinity->proximity_domain);
+-.. [1] http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
+-.. [2] http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf
++.. [1] https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
++.. [2] https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf
+diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+index febccbc5689d..9b17dc77d18c 100644
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -85,9 +85,9 @@ References
+ ==========
  
- 	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
- 		pr_err("SRAT: Invalid NUMA node %d in ITS affinity\n", node);
+ [1] Hierarchical Data Extension UUID For _DSD.
+-<http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf>,
++<https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf>,
+ referenced 2018-07-17.
+ 
+ [2] Device Properties UUID For _DSD.
+-<http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf>,
++<https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf>,
+ referenced 2016-10-04.
+diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+index 1a6ce7afba5e..7072db801aeb 100644
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -154,23 +154,23 @@ References
+ ==========
+ 
+ [1] _DSD (Device Specific Data) Implementation Guide.
+-    http://www.uefi.org/sites/default/files/resources/_DSD-implementation-guide-toplevel-1_1.htm,
++    https://www.uefi.org/sites/default/files/resources/_DSD-implementation-guide-toplevel-1_1.htm,
+     referenced 2016-10-03.
+ 
+-[2] Devicetree. http://www.devicetree.org, referenced 2016-10-03.
++[2] Devicetree. https://www.devicetree.org, referenced 2016-10-03.
+ 
+ [3] Documentation/devicetree/bindings/graph.txt
+ 
+ [4] Device Properties UUID For _DSD.
+-    http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf,
++    https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf,
+     referenced 2016-10-04.
+ 
+ [5] Hierarchical Data Extension UUID For _DSD.
+-    http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf,
++    https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf,
+     referenced 2016-10-04.
+ 
+ [6] Advanced Configuration and Power Interface Specification.
+-    http://www.uefi.org/sites/default/files/resources/ACPI_6_1.pdf,
++    https://www.uefi.org/sites/default/files/resources/ACPI_6_1.pdf,
+     referenced 2016-10-04.
+ 
+ [7] _DSD Device Properties Usage Rules.
+diff --git a/Documentation/firmware-guide/acpi/dsd/leds.rst b/Documentation/firmware-guide/acpi/dsd/leds.rst
+index 946efe2b2936..aba1e9abfeeb 100644
+--- a/Documentation/firmware-guide/acpi/dsd/leds.rst
++++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
+@@ -90,7 +90,7 @@ where
+ References
+ ==========
+ 
+-[1] Device tree. <URL:http://www.devicetree.org>, referenced 2019-02-21.
++[1] Device tree. <URL:https://www.devicetree.org>, referenced 2019-02-21.
+ 
+ [2] Advanced Configuration and Power Interface Specification.
+     <URL:https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf>,
+@@ -101,11 +101,11 @@ References
+ [4] Documentation/devicetree/bindings/media/video-interfaces.txt
+ 
+ [5] Device Properties UUID For _DSD.
+-    <URL:http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf>,
++    <URL:https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf>,
+     referenced 2019-02-21.
+ 
+ [6] Hierarchical Data Extension UUID For _DSD.
+-    <URL:http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf>,
++    <URL:https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf>,
+     referenced 2019-02-21.
+ 
+ [7] Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+diff --git a/Documentation/firmware-guide/acpi/lpit.rst b/Documentation/firmware-guide/acpi/lpit.rst
+index aca928fab027..37922a903573 100644
+--- a/Documentation/firmware-guide/acpi/lpit.rst
++++ b/Documentation/firmware-guide/acpi/lpit.rst
+@@ -7,7 +7,7 @@ Low Power Idle Table (LPIT)
+ To enumerate platform Low Power Idle states, Intel platforms are using
+ “Low Power Idle Table” (LPIT). More details about this table can be
+ downloaded from:
+-http://www.uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf
++https://www.uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf
+ 
+ Residencies for each low power state can be read via FFH
+ (Function fixed hardware) or a memory mapped interface.
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ce2730d61a8f..16d7ca99ddbe 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -32,7 +32,7 @@ menuconfig ACPI
+ 	  Linux support for ACPI is based on Intel Corporation's ACPI
+ 	  Component Architecture (ACPI CA).  For more information on the
+ 	  ACPI CA, see:
+-	  <http://acpica.org/>
++	  <https://acpica.org/>
+ 
+ 	  ACPI is an open industry specification originally co-developed by
+ 	  Hewlett-Packard, Intel, Microsoft, Phoenix, and Toshiba. Currently,
+diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+index f5525f8bb770..a303f0123394 100644
+--- a/drivers/acpi/nfit/nfit.h
++++ b/drivers/acpi/nfit/nfit.h
+@@ -16,7 +16,7 @@
+ /* ACPI 6.1 */
+ #define UUID_NFIT_BUS "2f10e7a4-9e91-11e4-89d3-123b93f75cba"
+ 
+-/* http://pmem.io/documents/NVDIMM_DSM_Interface-V1.6.pdf */
++/* https://pmem.io/documents/NVDIMM_DSM_Interface-V1.6.pdf */
+ #define UUID_NFIT_DIMM "4309ac30-0d11-11e4-9191-0800200c9a66"
+ 
+ /* https://github.com/HewlettPackard/hpe-nvm/blob/master/Documentation/ */
 -- 
-2.19.1
+2.27.0
 
