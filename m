@@ -2,244 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 423D2223D38
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 15:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA942242B2
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 20:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbgGQNoq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Jul 2020 09:44:46 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:50882 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726846AbgGQNon (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jul 2020 09:44:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594993481;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TvTZhPSdzExaa3NqVT5lrZowcWZbA2nAdgDfnfLh550=;
-        b=NclRUgPxzsHSuHNrFVbQgWlEfBK1FlX/WyplcUWAxbPB7JMpmUpGrnyfTl7jD+6/YQn6RS
-        MVLEdTDT90vIE9XiJ6vbEulOHV9b2AEarCib92+yUPUPVB/KdjNPp72HFnp6KoUaVQx/Lm
-        xHzjB4NGPh3jVhhftFk6DsXbVQXyX7k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-10-Qz7nQif4PPGmfrt5J-VdiQ-1; Fri, 17 Jul 2020 09:44:39 -0400
-X-MC-Unique: Qz7nQif4PPGmfrt5J-VdiQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E8436800463;
-        Fri, 17 Jul 2020 13:44:36 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-112-162.ams2.redhat.com [10.36.112.162])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4053E10013C0;
-        Fri, 17 Jul 2020 13:44:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH v5 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller
-Date:   Fri, 17 Jul 2020 15:44:30 +0200
-Message-Id: <20200717134430.127575-2-hdegoede@redhat.com>
-In-Reply-To: <20200717134430.127575-1-hdegoede@redhat.com>
-References: <20200717133753.127282-1-hdegoede@redhat.com>
- <20200717134430.127575-1-hdegoede@redhat.com>
+        id S1727021AbgGQSAr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Jul 2020 14:00:47 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2497 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726232AbgGQSAq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Jul 2020 14:00:46 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id A95D0E120BD21A2B8C95;
+        Fri, 17 Jul 2020 19:00:44 +0100 (IST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.1913.5; Fri, 17 Jul 2020 19:00:44 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
+CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
+        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Song Bao Hua <song.bao.hua@hisilicon.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 0/6] ACPI: Only create NUMA nodes from entries in SRAT or SRAT emulation.
+Date:   Sat, 18 Jul 2020 01:59:53 +0800
+Message-ID: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.123.41.22]
+X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that the PWM drivers which we use have been converted to the atomic
-PWM API, we can move the i915 panel code over to using the atomic PWM API.
+Here, I will use the term Proximity Domains for the ACPI description and
+NUMA Nodes for the in kernel representation.
 
-The removes a long standing FIXME and this removes a flicker where
-the backlight brightness would jump to 100% when i915 loads even if
-using the fastset path.
+ACPI 6.3 included a clarification that only Static Resource Allocation
+Structures in SRAT may define the existence of proximity domains
+(sec 5.2.16). This clarification closed a possible interpretation that
+other parts of ACPI (e.g. DSDT _PXM, NFIT etc) could define new proximity
+domains that were not also mentioned in SRAT structures.
 
-Note that this commit also simplifies pwm_disable_backlight(), by dropping
-the intel_panel_actually_set_backlight(..., 0) call. This call sets the
-PWM to 0% duty-cycle. I believe that this call was only present as a
-workaround for a bug in the pwm-crc.c driver where it failed to clear the
-PWM_OUTPUT_ENABLE bit. This is fixed by an earlier patch in this series.
+In practice the kernel has never allowed this alternative interpretation as
+such nodes are only partially initialized. This is architecture specific
+but to take an example, on x86 alloc_node_data has not been called.
+Any use of them for node specific allocation, will result in a crash as the
+infrastructure to fallback to a node with memory is not setup.
 
-After the dropping of this workaround, the usleep call, which seems
-unnecessary to begin with, has no useful effect anymore, so drop that too.
+We ran into a problem when enabling _PXM handling for PCI devices and found
+there were boards out there advertising devices in proximity domains that
+didn't exist [2].
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v4:
-- Add a note to the commit message about the dropping of the
-  intel_panel_actually_set_backlight() and usleep() calls from
-  pwm_disable_backlight()
-- Use the pwm_set/get_relative_duty_cycle() helpers instead of using DIY code
-  for this
----
- .../drm/i915/display/intel_display_types.h    |  3 +-
- drivers/gpu/drm/i915/display/intel_panel.c    | 71 +++++++++----------
- 2 files changed, 34 insertions(+), 40 deletions(-)
+The fix suggested in this series is to replace instances that should not
+'create' new nodes with pxm_to_node.  This function needs a some additional
+hardening against invalid inputs to make sure it is safe for use in these
+new callers.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index de32f9efb120..4bd9981e70a1 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -28,6 +28,7 @@
- 
- #include <linux/async.h>
- #include <linux/i2c.h>
-+#include <linux/pwm.h>
- #include <linux/sched/clock.h>
- 
- #include <drm/drm_atomic.h>
-@@ -223,7 +224,7 @@ struct intel_panel {
- 		bool util_pin_active_low;	/* bxt+ */
- 		u8 controller;		/* bxt+ only */
- 		struct pwm_device *pwm;
--		int pwm_period_ns;
-+		struct pwm_state pwm_state;
- 
- 		/* DPCD backlight */
- 		u8 pwmgen_bit_count;
-diff --git a/drivers/gpu/drm/i915/display/intel_panel.c b/drivers/gpu/drm/i915/display/intel_panel.c
-index cb28b9908ca4..3d97267c8238 100644
---- a/drivers/gpu/drm/i915/display/intel_panel.c
-+++ b/drivers/gpu/drm/i915/display/intel_panel.c
-@@ -592,10 +592,10 @@ static u32 bxt_get_backlight(struct intel_connector *connector)
- static u32 pwm_get_backlight(struct intel_connector *connector)
- {
- 	struct intel_panel *panel = &connector->panel;
--	int duty_ns;
-+	struct pwm_state state;
- 
--	duty_ns = pwm_get_duty_cycle(panel->backlight.pwm);
--	return DIV_ROUND_UP(duty_ns * 100, panel->backlight.pwm_period_ns);
-+	pwm_get_state(panel->backlight.pwm, &state);
-+	return pwm_get_relative_duty_cycle(&state, 100);
- }
- 
- static void lpt_set_backlight(const struct drm_connector_state *conn_state, u32 level)
-@@ -669,10 +669,9 @@ static void bxt_set_backlight(const struct drm_connector_state *conn_state, u32
- static void pwm_set_backlight(const struct drm_connector_state *conn_state, u32 level)
- {
- 	struct intel_panel *panel = &to_intel_connector(conn_state->connector)->panel;
--	int duty_ns = DIV_ROUND_UP(level * panel->backlight.pwm_period_ns, 100);
- 
--	pwm_config(panel->backlight.pwm, duty_ns,
--		   panel->backlight.pwm_period_ns);
-+	pwm_set_relative_duty_cycle(&panel->backlight.pwm_state, level, 100);
-+	pwm_apply_state(panel->backlight.pwm, &panel->backlight.pwm_state);
- }
- 
- static void
-@@ -841,10 +840,8 @@ static void pwm_disable_backlight(const struct drm_connector_state *old_conn_sta
- 	struct intel_connector *connector = to_intel_connector(old_conn_state->connector);
- 	struct intel_panel *panel = &connector->panel;
- 
--	/* Disable the backlight */
--	intel_panel_actually_set_backlight(old_conn_state, 0);
--	usleep_range(2000, 3000);
--	pwm_disable(panel->backlight.pwm);
-+	panel->backlight.pwm_state.enabled = false;
-+	pwm_apply_state(panel->backlight.pwm, &panel->backlight.pwm_state);
- }
- 
- void intel_panel_disable_backlight(const struct drm_connector_state *old_conn_state)
-@@ -1176,9 +1173,12 @@ static void pwm_enable_backlight(const struct intel_crtc_state *crtc_state,
- {
- 	struct intel_connector *connector = to_intel_connector(conn_state->connector);
- 	struct intel_panel *panel = &connector->panel;
-+	int level = panel->backlight.level;
- 
--	pwm_enable(panel->backlight.pwm);
--	intel_panel_actually_set_backlight(conn_state, panel->backlight.level);
-+	level = intel_panel_compute_brightness(connector, level);
-+	pwm_set_relative_duty_cycle(&panel->backlight.pwm_state, level, 100);
-+	panel->backlight.pwm_state.enabled = true;
-+	pwm_apply_state(panel->backlight.pwm, &panel->backlight.pwm_state);
- }
- 
- static void __intel_panel_enable_backlight(const struct intel_crtc_state *crtc_state,
-@@ -1897,8 +1897,7 @@ static int pwm_setup_backlight(struct intel_connector *connector,
- 	struct drm_i915_private *dev_priv = to_i915(dev);
- 	struct intel_panel *panel = &connector->panel;
- 	const char *desc;
--	u32 level, ns;
--	int retval;
-+	u32 level;
- 
- 	/* Get the right PWM chip for DSI backlight according to VBT */
- 	if (dev_priv->vbt.dsi.config->pwm_blc == PPS_BLC_PMIC) {
-@@ -1916,36 +1915,30 @@ static int pwm_setup_backlight(struct intel_connector *connector,
- 		return -ENODEV;
- 	}
- 
--	panel->backlight.pwm_period_ns = NSEC_PER_SEC /
--					 get_vbt_pwm_freq(dev_priv);
--
--	/*
--	 * FIXME: pwm_apply_args() should be removed when switching to
--	 * the atomic PWM API.
--	 */
--	pwm_apply_args(panel->backlight.pwm);
--
- 	panel->backlight.max = 100; /* 100% */
- 	panel->backlight.min = get_backlight_min_vbt(connector);
--	level = intel_panel_compute_brightness(connector, 100);
--	ns = DIV_ROUND_UP(level * panel->backlight.pwm_period_ns, 100);
- 
--	retval = pwm_config(panel->backlight.pwm, ns,
--			    panel->backlight.pwm_period_ns);
--	if (retval < 0) {
--		drm_err(&dev_priv->drm, "Failed to configure the pwm chip\n");
--		pwm_put(panel->backlight.pwm);
--		panel->backlight.pwm = NULL;
--		return retval;
-+	if (pwm_is_enabled(panel->backlight.pwm) &&
-+	    pwm_get_period(panel->backlight.pwm)) {
-+		/* PWM is already enabled, use existing settings */
-+		pwm_get_state(panel->backlight.pwm, &panel->backlight.pwm_state);
-+
-+		level = pwm_get_relative_duty_cycle(&panel->backlight.pwm_state,
-+						    100);
-+		level = intel_panel_compute_brightness(connector, level);
-+		panel->backlight.level = clamp(level, panel->backlight.min,
-+					       panel->backlight.max);
-+		panel->backlight.enabled = true;
-+
-+		drm_dbg_kms(&dev_priv->drm, "PWM already enabled at freq %ld, VBT freq %d, level %d\n",
-+			    NSEC_PER_SEC / panel->backlight.pwm_state.period,
-+			    get_vbt_pwm_freq(dev_priv), level);
-+	} else {
-+		/* Set period from VBT frequency, leave other settings at 0. */
-+		panel->backlight.pwm_state.period =
-+			NSEC_PER_SEC / get_vbt_pwm_freq(dev_priv);
- 	}
- 
--	level = DIV_ROUND_UP(pwm_get_duty_cycle(panel->backlight.pwm) * 100,
--			     panel->backlight.pwm_period_ns);
--	level = intel_panel_compute_brightness(connector, level);
--	panel->backlight.level = clamp(level, panel->backlight.min,
--				       panel->backlight.max);
--	panel->backlight.enabled = panel->backlight.level != 0;
--
- 	drm_info(&dev_priv->drm, "Using %s PWM for LCD backlight control\n",
- 		 desc);
- 	return 0;
+Patch 1 Hardens pxm_to_node() against numa_off, and pxm entry being too large.
+
+Patch 2-4 change the various callers not related to SRAT entries so that they
+set this parameter to false, so do not attempt to initialize a new NUMA node
+if the relevant one does not already exist.
+
+Patch 5 is a function rename to reflect change in functionality of
+acpi_map_pxm_to_online_node() as it no longer creates a new map, but just does a
+lookup of existing maps.
+
+Patch 6 covers the one place we do not allow the full flexibility defined
+in the ACPI spec.  For SRAT GIC Interrupt Translation Service (ITS) Affinity
+Structures, on ARM64, the driver currently makes an additional pass of SRAT
+later in the boot than the one used to identify NUMA domains.
+Note, this currently means that an ITS placed in a proximity domain that is
+not defined by another SRAT structure will result in the a crash.
+
+To avoid this crash with minimal changes we do not create new NUMA nodes based
+on this particular entry type.  Any current platform trying to do this will not
+boot, so this is an improvement, if perhaps not a perfect solution.
+
+[1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
+[2] https://patchwork.kernel.org/patch/10597777/
+
+Thanks to Bjorn Helgaas for review of v1 and Barry Song for internal reviews that
+lead to a slightly different approach for this v2.
+
+Changes since v1.
+* Use pxm_to_node for what was previously the path using acpi_map_pxm_to_node
+  with create==false. (Barry)
+* Broke patch up into an initial noop stage followed by patches (Bjorn)
+  to update each type of case in which partial creation of NUMA nodes is prevented.
+* Added patch 5 to rename function to reflect change of functionality.
+* Updated descriptions (now mostly in individual patches) inline with Bjorn's comments.
+
+Jonathan Cameron (6):
+  ACPI: Add out of bounds and numa_off protections to pxm_to_node
+  ACPI: Do not create new NUMA domains from ACPI static tables that are
+    not SRAT
+  ACPI: Remove side effect of partly creating a node in
+    acpi_map_pxm_to_online_node
+  ACPI: rename acpi_map_pxm_to_online_node to pxm_to_online_node
+  ACPI: Remove side effect of partly creating a node in acpi_get_node
+  irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without
+    processor or memory
+
+ drivers/acpi/arm64/iort.c        |  2 +-
+ drivers/acpi/nfit/core.c         |  6 ++----
+ drivers/acpi/numa/hmat.c         |  4 ++--
+ drivers/acpi/numa/srat.c         |  4 ++--
+ drivers/iommu/intel/dmar.c       |  2 +-
+ drivers/irqchip/irq-gic-v3-its.c |  7 ++++++-
+ include/linux/acpi.h             | 15 +++++++--------
+ 7 files changed, 21 insertions(+), 19 deletions(-)
+
 -- 
-2.26.2
+2.19.1
 
