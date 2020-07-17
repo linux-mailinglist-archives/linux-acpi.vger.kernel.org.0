@@ -2,111 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23946223658
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 09:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA309223CDB
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jul 2020 15:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgGQH5j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Jul 2020 03:57:39 -0400
-Received: from retiisi.org.uk ([95.216.213.190]:45750 "EHLO
-        hillosipuli.retiisi.org.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726101AbgGQH5i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Jul 2020 03:57:38 -0400
-Received: from valkosipuli.localdomain (valkosipuli.retiisi.org.uk [IPv6:2a01:4f9:c010:4572::80:2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1726635AbgGQNiF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Jul 2020 09:38:05 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:38807 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726113AbgGQNiE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jul 2020 09:38:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594993083;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=rkMZSQba86giMjUJYDHSci638nlcSpXyRKRn/y8AUNM=;
+        b=AC3TMdcobbjdEvKw4gq/jrCI/gx6OINSNzEVVjYJ59AXMASpGRLuPzxLvBzMmTJA2k9KxA
+        czSuXKX0TXVkxNqsaQU9TBt0J/LA9nj1VGC2EZgDL2sbB3G4SmlSmfFNvJuqdpfz2cj8iO
+        roFW/+gN8u0KOB0Ekt7l7aqn3NOCtzo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-28-glvKm1WQP0S1InhgB9-oQQ-1; Fri, 17 Jul 2020 09:37:59 -0400
+X-MC-Unique: glvKm1WQP0S1InhgB9-oQQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by hillosipuli.retiisi.org.uk (Postfix) with ESMTPS id AACC9634C89;
-        Fri, 17 Jul 2020 10:56:12 +0300 (EEST)
-Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
-        (envelope-from <sakari.ailus@retiisi.org.uk>)
-        id 1jwLE4-0003Kf-PQ; Fri, 17 Jul 2020 10:56:12 +0300
-Date:   Fri, 17 Jul 2020 10:56:12 +0300
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        linux-media@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Lad Prabhakar <prabhakar.csengg@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v4 1/4] device property: Add a function to test is a
- fwnode is a graph endpoint
-Message-ID: <20200717075612.GI836@valkosipuli.retiisi.org.uk>
-References: <20200701062140.12953-1-laurent.pinchart+renesas@ideasonboard.com>
- <20200701062140.12953-2-laurent.pinchart+renesas@ideasonboard.com>
- <20200701073405.GB836@valkosipuli.retiisi.org.uk>
- <CAJZ5v0iSpC=67p++vyH0WjcsuPG5SMtJJamit2T9vOQPb9jm0w@mail.gmail.com>
- <20200715205717.GF836@valkosipuli.retiisi.org.uk>
- <20200717021916.GA387@pendragon.ideasonboard.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 67A401081;
+        Fri, 17 Jul 2020 13:37:57 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-162.ams2.redhat.com [10.36.112.162])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9895E8FA27;
+        Fri, 17 Jul 2020 13:37:54 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v5 00/16] acpi/pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
+Date:   Fri, 17 Jul 2020 15:37:37 +0200
+Message-Id: <20200717133753.127282-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200717021916.GA387@pendragon.ideasonboard.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 17, 2020 at 05:19:16AM +0300, Laurent Pinchart wrote:
-> Hi Sakari,
-> 
-> On Wed, Jul 15, 2020 at 11:57:17PM +0300, Sakari Ailus wrote:
-> > On Wed, Jul 01, 2020 at 02:19:21PM +0200, Rafael J. Wysocki wrote:
-> > > On Wed, Jul 1, 2020 at 9:34 AM Sakari Ailus <sakari.ailus@iki.fi> wrote:
-> > > > On Wed, Jul 01, 2020 at 09:21:37AM +0300, Laurent Pinchart wrote:
-> > > > > Drivers may need to test if a fwnode is a graph endpoint. To avoid
-> > > > > hand-written solutions that wouldn't work for all fwnode types, add a
-> > > > > new fwnode_graph_is_endpoint() function for this purpose. We don't need
-> > > > > to wire it up to different backends for OF and ACPI for now, as the
-> > > > > implementation can simply be based on checkout the presence of a
-> > > > > remote-endpoint property.
-> > > > >
-> > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> > > > > ---
-> > > > >  include/linux/property.h | 5 +++++
-> > > > >  1 file changed, 5 insertions(+)
-> > > > >
-> > > > > diff --git a/include/linux/property.h b/include/linux/property.h
-> > > > > index 10d03572f52e..9f805c442819 100644
-> > > > > --- a/include/linux/property.h
-> > > > > +++ b/include/linux/property.h
-> > > > > @@ -389,6 +389,11 @@ struct fwnode_handle *
-> > > > >  fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port,
-> > > > >                            u32 endpoint);
-> > > > >
-> > > > > +static inline bool fwnode_graph_is_endpoint(struct fwnode_handle *fwnode)
-> > > > > +{
-> > > > > +     return fwnode_property_present(fwnode, "remote-endpoint");
-> > > > > +}
-> > > > > +
-> > > > >  /*
-> > > > >   * Fwnode lookup flags
-> > > > >   *
-> > > >
-> > > > Thanks for the patch. I've bounced it to devicetree and linux-acpi lists
-> > > > (now cc'd) --- hope that works.
-> > > >
-> > > > Rafael: do you think this simple patch could go though the media tree,
-> > > > assuming that folks are generally fine with the patch as such?
-> > > 
-> > > Yes, it could.
-> > 
-> > Thanks! I've applied this to my tree.
-> 
-> Do you mean the whole series ? :-) Do you intend to send a pull request
-> for v5.9 ?
+Hi All,
 
-It's here:
+Here is v5 of my patch series converting the i915 driver's code for
+controlling the panel's backlight with an external PWM controller to
+use the atomic PWM API. See below for the changelog.
 
-<URL:https://patchwork.linuxtv.org/project/linux-media/patch/20200715222030.GG836@valkosipuli.retiisi.org.uk/>
+This series consists of 4 parts:
 
--- 
-Sakari Ailus
+1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
+2. various fixes to the pwm-lpss driver
+3. convert the pwm-crc driver to support the atomic PWM API and
+4. convert the i915 driver's PWM code to use the atomic PWM API
+
+The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
+so the plan is to merge this all through drm-intel-next-queued (dinq)
+once all the patches are reviewed / have acks.
+
+Specifically patches 5-9, 11 still need an Acked- / Reviewed-by
+
+Andy, can you please take a look at the unreviewed patches? Specifically
+patches 5-6 should address your review remarks from v4 of this set
+and I've addressed your review remarks on patches 7-9 in v3 already.
+A review of patch 11 would also be welcome
+
+Uwe, can you please take a look at the unreviewed patches?
+
+Uwe, may I have your Acked-by for merging this series through the
+drm-intel-next-queued branch once all PWM patches have an Acked- or
+Reviewed-by ?
+
+This series has been tested (and re-tested after adding various bug-fixes)
+extensively. It has been tested on the following devices:
+
+-Asus T100TA  BYT + CRC-PMIC PWM
+-Toshiba WT8-A  BYT + CRC-PMIC PWM
+-Thundersoft TS178 BYT + CRC-PMIC PWM, inverse PWM
+-Asus T100HA  CHT + CRC-PMIC PWM
+-Terra Pad 1061  BYT + LPSS PWM
+-Trekstor Twin 10.1 BYT + LPSS PWM
+-Asus T101HA  CHT + CRC-PMIC PWM
+-GPD Pocket  CHT + CRC-PMIC PWM
+
+Changelog:
+Changes in v5:
+- Dropped the "pwm: lpss: Correct get_state result for base_unit == 0"
+  patch. The base_unit == 0 condition should never happen and sofar it is
+  unclear what the proper behavior / correct values to store in the
+  pwm_state should be when this does happen.  Since this patch was added as
+  an extra pwm-lpss fix in v4 of this patch-set and otherwise is orthogonal
+  to the of this patch-set just drop it (again).
+- "[PATCH 04/16] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use clamp_val(... instead of clam_t(unsigned long long, ...
+- "[PATCH 05/16] pwm: lpss: Add pwm_lpss_prepare_enable() helper"
+  - This is a new patch in v5 of this patchset
+- [PATCH 06/16] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume
+  - Use the new pwm_lpss_prepare_enable() helper
+
+Changes in v4:
+- "[PATCH v4 06/16] pwm: lpss: Correct get_state result for base_unit == 0"
+  - This is a new patch in v4 of this patchset
+- "[PATCH v4 12/16] pwm: crc: Implement get_state() method"
+  - Use DIV_ROUND_UP when calculating the period and duty_cycle values
+- "[PATCH v4 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller"
+  - Add a note to the commit message about the changes in pwm_disable_backlight()
+  - Use the pwm_set/get_relative_duty_cycle() helpers
+
+Changes in v3:
+- "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use base_unit_range - 1 as maximum value for the clamp()
+- "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
+  - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
+    patch from previous versions of this patch-set, which really was a hack
+    working around the resume issue which this patch fixes properly.
+- PATCH v3 6 - 11 pwm-crc changes:
+  - Various small changes resulting from the reviews by Andy and Uwe,
+    including some refactoring of the patches to reduce the amount of churn
+    in the patch-set
+
+Changes in v2:
+- Fix coverletter subject
+- Drop accidentally included debugging patch
+- "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
+  - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
+
+Regards,
+
+Hans
+
