@@ -2,114 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC8E32248ED
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Jul 2020 07:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6D3224E52
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Jul 2020 02:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726242AbgGRFRl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 18 Jul 2020 01:17:41 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:2581 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726087AbgGRFRl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 18 Jul 2020 01:17:41 -0400
-Received: from dggemi402-hub.china.huawei.com (unknown [172.30.72.55])
-        by Forcepoint Email with ESMTP id 82573EA0382B11CA0321;
-        Sat, 18 Jul 2020 13:17:35 +0800 (CST)
-Received: from DGGEMI525-MBS.china.huawei.com ([169.254.6.52]) by
- dggemi402-hub.china.huawei.com ([10.3.17.135]) with mapi id 14.03.0487.000;
- Sat, 18 Jul 2020 13:17:28 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>
-CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "martin@geanix.com" <martin@geanix.com>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linuxarm <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: RE: [PATCH v2 5/6] ACPI: Remove side effect of partly creating a
- node in acpi_get_node
-Thread-Topic: [PATCH v2 5/6] ACPI: Remove side effect of partly creating a
- node in acpi_get_node
-Thread-Index: AQHWXGSNF+e0kQICqE2z4MI85n/Qt6kMy9pQ
-Date:   Sat, 18 Jul 2020 05:17:27 +0000
-Message-ID: <B926444035E5E2439431908E3842AFD2593D5E@DGGEMI525-MBS.china.huawei.com>
-References: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
- <20200717175959.899775-6-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20200717175959.899775-6-Jonathan.Cameron@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.200.103]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726248AbgGSA1D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Jul 2020 20:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbgGSA1D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Jul 2020 20:27:03 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDFAC0619D2;
+        Sat, 18 Jul 2020 17:27:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=MKnRSn9ikggE7UY557Wd06+HvUOU7pMMUIJgzPPPakE=; b=Xd/xfXfEpCib5FjYLFIKtdmNeN
+        FPqt78GL88bzKCk0QExzVcvGoYw7jazk08V9OHPR+qInKRdMEqxRKFnJFq5cqmsjMpf7c1NTWvEmb
+        79ulqK7rL5ezpIa3b5bqnbsvG7Fh9CV4eJvMWFVYAv4SP8tZO4OqBmITGOn1ZEBidy2IzKpEzE8kO
+        Q4TK8BbcSUHlafDChsKfMsS2VG0kF2f3lFpIoqQC7rW5lYxM8qHb20x0U/MVihAyEHLdNhz30Rzsb
+        eE5EdjSlY0vo2sSNBFAWANRtMyCvrerxIxgzPEKNlvuFDtKUbmzCLALI5xDuyivL8vaCzKtxHJCD3
+        u9GiiNug==;
+Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jwxAQ-0002TO-Bo; Sun, 19 Jul 2020 00:27:00 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: actypes.h: drop a duplicated word
+Date:   Sat, 18 Jul 2020 17:26:52 -0700
+Message-Id: <20200719002652.20155-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Drop the repeated word "an" in a comment.
 
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+---
+ include/acpi/actypes.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> -----Original Message-----
-> From: Jonathan Cameron
-> Sent: Saturday, July 18, 2020 6:00 AM
-> To: linux-mm@kvack.org; linux-acpi@vger.kernel.org;
-> linux-arm-kernel@lists.infradead.org; x86@kernel.org
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Bjorn Helgaas
-> <bhelgaas@google.com>; linux-pci@vger.kernel.org; martin@geanix.com; Ingo
-> Molnar <mingo@redhat.com>; linux-ia64@vger.kernel.org; Tony Luck
-> <tony.luck@intel.com>; Fenghua Yu <fenghua.yu@intel.com>; Thomas
-> Gleixner <tglx@linutronix.de>; Linuxarm <linuxarm@huawei.com>; Dan
-> Williams <dan.j.williams@intel.com>; Song Bao Hua (Barry Song)
-> <song.bao.hua@hisilicon.com>; Jonathan Cameron
-> <jonathan.cameron@huawei.com>
-> Subject: [PATCH v2 5/6] ACPI: Remove side effect of partly creating a node in
-> acpi_get_node
-> 
-> acpi_get_node calls acpi_get_pxm to evaluate the _PXM AML method for
-> entries found in DSDT/SSDT. ACPI 6.3 sec 6.2.14 states
-> "_PXM evaluates to an integer that identifies a device as belonging to
->  a Proximity Domain defined in the System Resource Affinity Table (SRAT)."
-> 
-> Hence a _PXM method should not result in creation of a new NUMA node.
-> Before this patch, _PXM could result in partial instantiation of
-> NUMA node, missing elements such as zone lists.  A call to devm_kzalloc
-> for example results in a null pointer dereference.
-> 
-> This patch therefore replaces the acpi_map_pxm_to_node with a call
-> to pxm_to_node.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Reviewed-by: Barry Song <song.bao.hua@hisilicon.com>
-
-> ---
->  drivers/acpi/numa/srat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 8ef44ee0d76b..697a5c9e2eb5 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -444,6 +444,6 @@ int acpi_get_node(acpi_handle handle)
-> 
->  	pxm = acpi_get_pxm(handle);
-> 
-> -	return acpi_map_pxm_to_node(pxm);
-> +	return pxm_to_node(pxm);
->  }
->  EXPORT_SYMBOL(acpi_get_node);
-> --
-> 2.19.1
-
+--- linux-next-20200717.orig/include/acpi/actypes.h
++++ linux-next-20200717/include/acpi/actypes.h
+@@ -824,7 +824,7 @@ typedef u8 acpi_adr_space_type;
+  *
+  * Note: A Data Table region is a special type of operation region
+  * that has its own AML opcode. However, internally, the AML
+- * interpreter simply creates an operation region with an an address
++ * interpreter simply creates an operation region with an address
+  * space type of ACPI_ADR_SPACE_DATA_TABLE.
+  */
+ #define ACPI_ADR_SPACE_DATA_TABLE       (acpi_adr_space_type) 0x7E	/* Internal to ACPICA only */
