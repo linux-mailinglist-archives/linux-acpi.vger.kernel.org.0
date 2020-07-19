@@ -2,123 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC652253A2
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Jul 2020 21:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C23D2253CA
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Jul 2020 21:51:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbgGSTOg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Jul 2020 15:14:36 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:36158 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726073AbgGSTOg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Jul 2020 15:14:36 -0400
-Received: by mail-ot1-f68.google.com with SMTP id 72so10595020otc.3;
-        Sun, 19 Jul 2020 12:14:35 -0700 (PDT)
+        id S1726073AbgGSTvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Jul 2020 15:51:12 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:42293 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726009AbgGSTvL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 19 Jul 2020 15:51:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595188269;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=5+W4juhVWCiEA3fhSp7PQYC8FiX7DnbLymUoDvTE4gg=;
+        b=hmaF0854vEaDyXo3jhOu1rLfdEDINnMjQwwvYvuWrrDi9xSzynTTDKGgnPsKZCRArOx072
+        CtOKQYAEajORhXDeYeOEPwi7bYP+1AhiOjwR1dueArMVck36Hzm641JYR10sXH+55NE+Wc
+        Kdgv2LVQJKlgo/RvOBaQggAhFGpgDnY=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-311-YgKi1HBrO_yyYbGAoZyAKg-1; Sun, 19 Jul 2020 15:51:08 -0400
+X-MC-Unique: YgKi1HBrO_yyYbGAoZyAKg-1
+Received: by mail-qt1-f199.google.com with SMTP id 94so10531245qtb.21
+        for <linux-acpi@vger.kernel.org>; Sun, 19 Jul 2020 12:51:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/vgePeYsDGdOfYJ+zrhF6ulRCJSEh7r7GG7PhUNcyLQ=;
-        b=cBPB3z4dag6pgFqrJXBC/hcQZaACsU6016ZinRNn55vEqaKeS/em8tpvzsSULv7/S+
-         CLY71dJJh6+QId5HH7ZwDXc1tbjGam+uWlwpKAoucwCsYNjQ46YPoP29GfDqvC8oXzfR
-         D7lnRDc4+KsPlITqkUj7Y0hHX+w1f3KExKmI9Svxh7oDyNvYN54WdCyrfI3+KT3YH1FI
-         t1uhep0MNmypgel+MhPzTvvs0xfZH31hkmQ9/7ywE8oed1c/zY470nZPvnapub+i1Nhg
-         bbl5SuW7P21DNGMjF9Qwasf7Rqe0rG8OYANKAhwXN2KV/k52QFO4Oeg36S2JgETH6hiw
-         njww==
-X-Gm-Message-State: AOAM531cA74inAKeXmOdD/T45aHHj235ZODMpyjGB4PQW1oRFvv8p+Uh
-        x/5N7SJsf2qjgHDZUS2qv6Cp/+EJY0YRJrgQkVw=
-X-Google-Smtp-Source: ABdhPJwNclm9vK0RlcGozdCrMYwS4qEdXErvuUT3XWaBD09UNJEHHHmrT266kjioUmRdyYj0HIAkNxsHHJ4QFXCh6OE=
-X-Received: by 2002:a9d:590a:: with SMTP id t10mr17201578oth.262.1595186075072;
- Sun, 19 Jul 2020 12:14:35 -0700 (PDT)
+        bh=5+W4juhVWCiEA3fhSp7PQYC8FiX7DnbLymUoDvTE4gg=;
+        b=XTBl72mcxhIlp66L8hC8KeF3vhKUqrNtgtle+y90yfDpRmnSLJtK8paV4LH9+4/KYF
+         EkgH9HoT6oXXpGOiP6vHFp7/Injm/71l+LXn01+fUTnT3UWC8eQGQYhcimiUUoeIvyOr
+         Tkf6v4ZrlJs4LvKK+eAYzhwdQzGEC44jmB4V0UrhjHMzY4qGo+c1t5cD/sSC7Zyzw9r0
+         OBpsgGrjBBPS+O0PKHMymiF7xE2So2i2iGFEOxW4ufRLJGJYiaagEdHBGYk2sV68QCQH
+         924wnKN/HfloDE7cUKsVbBTscMPnst/P5Ah0GRAfX2w/b9uZ4ZCtpL3rSLa3NwpK2+K8
+         wFvQ==
+X-Gm-Message-State: AOAM530CY+lPMeMvX0OjeDSIh4wnqLIQ0jkqiYRKI0K116u8IqMGMAKP
+        LZCcwErJusPkzMQF6kbosihDfpuNDE80yxtnBmO039QpQmPH73XBVhDR27F89+8dm4hqmLvHR57
+        +h2BlqeUtA1seyvU7q5HPnBMBYXU47YcOhIwy3Q==
+X-Received: by 2002:ac8:4250:: with SMTP id r16mr20990798qtm.378.1595188267463;
+        Sun, 19 Jul 2020 12:51:07 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw9yVJg1QjyL9ivv5A6w+hu0GivIVSEEJqorLOC5n0j8PWQVDcfmYvz9E5//ryrqzbOSjwmCLlGhUm5y3yGbRs=
+X-Received: by 2002:ac8:4250:: with SMTP id r16mr20990785qtm.378.1595188267211;
+ Sun, 19 Jul 2020 12:51:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2788992.3K7huLjdjL@kreacher> <1666722.UopIai5n7p@kreacher>
- <1794490.F2OrUDcHQn@kreacher> <1738949fd49e9804722bf82d790e3022fc714677.camel@intel.com>
-In-Reply-To: <1738949fd49e9804722bf82d790e3022fc714677.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 19 Jul 2020 21:14:23 +0200
-Message-ID: <CAJZ5v0ga+j4iK7oTbkFPDmN=UpUMHfbmQMyBnP-LvG-xSj50kQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] ACPICA: Preserve memory opregion mappings
-To:     "Verma, Vishal L" <vishal.l.verma@intel.com>
-Cc:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "myron.stowe@redhat.com" <myron.stowe@redhat.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "Weiny, Ira" <ira.weiny@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+References: <20200717190547.648604-1-kherbst@redhat.com> <e7a8cb3a-e9f8-b78a-93f0-c09e5eb5ed10@canonical.com>
+In-Reply-To: <e7a8cb3a-e9f8-b78a-93f0-c09e5eb5ed10@canonical.com>
+From:   Karol Herbst <kherbst@redhat.com>
+Date:   Sun, 19 Jul 2020 21:50:56 +0200
+Message-ID: <CACO55tvLCrqeV8MsVDbTaWP2EPAeZtfU08Kb2fVGCD6X+g3-rg@mail.gmail.com>
+Subject: Re: [PATCH] RFC: ACPI / OSI: remove workarounds for hybrid graphics laptops
+To:     Alex Hung <alex.hung@canonical.com>
+Cc:     Linux ACPI Mailing List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lyude Paul <lyude@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau <nouveau@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 16, 2020 at 9:22 PM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
+On Fri, Jul 17, 2020 at 9:52 PM Alex Hung <alex.hung@canonical.com> wrote:
 >
-> On Mon, 2020-06-29 at 18:33 +0200, Rafael J. Wysocki wrote:
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> On 2020-07-17 1:05 p.m., Karol Herbst wrote:
+> > It's hard to figure out what systems are actually affected and right now I
+> > don't see a good way of removing those...
 > >
-> > The ACPICA's strategy with respect to the handling of memory mappings
-> > associated with memory operation regions is to avoid mapping the
-> > entire region at once which may be problematic at least in principle
-> > (for example, it may lead to conflicts with overlapping mappings
-> > having different attributes created by drivers).  It may also be
-> > wasteful, because memory opregions on some systems take up vast
-> > chunks of address space while the fields in those regions actually
-> > accessed by AML are sparsely distributed.
+> > But I'd like to see thos getting removed and drivers fixed instead (which
+> > happened at least for nouveau).
 > >
-> > For this reason, a one-page "window" is mapped for a given opregion
-> > on the first memory access through it and if that "window" does not
-> > cover an address range accessed through that opregion subsequently,
-> > it is unmapped and a new "window" is mapped to replace it.  Next,
-> > if the new "window" is not sufficient to acess memory through the
-> > opregion in question in the future, it will be replaced with yet
-> > another "window" and so on.  That may lead to a suboptimal sequence
-> > of memory mapping and unmapping operations, for example if two fields
-> > in one opregion separated from each other by a sufficiently wide
-> > chunk of unused address space are accessed in an alternating pattern.
+> > And as mentioned before, I prefer people working on fixing issues instead
+> > of spending time to add firmware level workarounds which are hard to know
+> > to which systems they apply to, hard to remove and basically a big huge
+> > pain to work with.> In the end I have no idea how to even figure out what systems are affected
+> > and which not by this, so I have no idea how to even verify we can safely
+> > remove this (which just means those are impossible to remove unless we risk
+> > breaking systems, which again makes those supper annoying to deal with).
 > >
-> > The situation may still be suboptimal if the deferred unmapping
-> > introduced previously is supported by the OS layer.  For instance,
-> > the alternating memory access pattern mentioned above may produce
-> > a relatively long list of mappings to release with substantial
-> > duplication among the entries in it, which could be avoided if
-> > acpi_ex_system_memory_space_handler() did not release the mapping
-> > used by it previously as soon as the current access was not covered
-> > by it.
+> > Also from the comments it's hard to get what those bits really do. Are they
+> > just preventing runtime pm or do the devices are powered down when booting?
+> > I am sure it's the former, still...
 > >
-> > In order to improve that, modify acpi_ex_system_memory_space_handler()
-> > to preserve all of the memory mappings created by it until the memory
-> > regions associated with them go away.
+> > Please, don't do this again.
 > >
-> > Accordingly, update acpi_ev_system_memory_region_setup() to unmap all
-> > memory associated with memory opregions that go away.
+> > For now, those workaround prevent power savings on systems those workaround
+> > applies to, which might be any so those should get removed asap and if
+> > new issues arrise removing those please do a proper bug report and we can
+> > look into it and come up with a proper fix (and keep this patch out until
+> > we resolve all of those).
 > >
-> > Reported-by: Dan Williams <dan.j.williams@intel.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Signed-off-by: Karol Herbst <kherbst@redhat.com>
+> > CC: Alex Hung <alex.hung@canonical.com>
+> > CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> > CC: Len Brown <lenb@kernel.org>
+> > CC: Lyude Paul <lyude@redhat.com>
+> > CC: linux-kernel@vger.kernel.org
+> > CC: dri-devel@lists.freedesktop.org
+> > CC: nouveau@lists.freedesktop.org
 > > ---
-> >  drivers/acpi/acpica/evrgnini.c | 14 ++++----
-> >  drivers/acpi/acpica/exregion.c | 65 ++++++++++++++++++++++++----------
-> >  include/acpi/actypes.h         | 12 +++++--
-> >  3 files changed, 64 insertions(+), 27 deletions(-)
+> >  drivers/acpi/osi.c | 24 ------------------------
+> >  1 file changed, 24 deletions(-)
+> >
+> > diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+> > index 9f68538091384..d4405e1ca9b97 100644
+> > --- a/drivers/acpi/osi.c
+> > +++ b/drivers/acpi/osi.c
+> > @@ -44,30 +44,6 @@ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
+> >       {"Processor Device", true},
+> >       {"3.0 _SCP Extensions", true},
+> >       {"Processor Aggregator Device", true},
+> > -     /*
+> > -      * Linux-Dell-Video is used by BIOS to disable RTD3 for NVidia graphics
+> > -      * cards as RTD3 is not supported by drivers now.  Systems with NVidia
+> > -      * cards will hang without RTD3 disabled.
+> > -      *
+> > -      * Once NVidia drivers officially support RTD3, this _OSI strings can
+> > -      * be removed if both new and old graphics cards are supported.
+> > -      */
+> > -     {"Linux-Dell-Video", true},
+> > -     /*
+> > -      * Linux-Lenovo-NV-HDMI-Audio is used by BIOS to power on NVidia's HDMI
+> > -      * audio device which is turned off for power-saving in Windows OS.
+> > -      * This power management feature observed on some Lenovo Thinkpad
+> > -      * systems which will not be able to output audio via HDMI without
+> > -      * a BIOS workaround.
+> > -      */
+> > -     {"Linux-Lenovo-NV-HDMI-Audio", true},
+> > -     /*
+> > -      * Linux-HPI-Hybrid-Graphics is used by BIOS to enable dGPU to
+> > -      * output video directly to external monitors on HP Inc. mobile
+> > -      * workstations as Nvidia and AMD VGA drivers provide limited
+> > -      * hybrid graphics supports.
+> > -      */
+> > -     {"Linux-HPI-Hybrid-Graphics", true},
+> >  };
+> >
+> >  static u32 acpi_osi_handler(acpi_string interface, u32 supported)
 > >
 >
-> Hi Rafael,
+> The changes were discussed and tested a while ago, and no crashes were
+> observed. Thanks for solving PM issues in nouveau.
 >
-> Picking up from Dan while he's out - I had these patches tested by the
-> original reporter, and they work fine. I see you had them staged in the
-> acpica-osl branch. Is that slated to go in during the 5.9 merge window?
+> Acked-by: Alex Hung <alex.hung@canonical.com>
+>
 
-Yes, it is.
+By any chance, do you have a list of systems implementing those workarounds?
 
-> You can add:
-> Tested-by: Xiang Li <xiang.z.li@intel.com>
-
-Thank you!
