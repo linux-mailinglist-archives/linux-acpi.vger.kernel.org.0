@@ -2,681 +2,365 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F649227258
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jul 2020 00:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DC12272D9
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jul 2020 01:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727771AbgGTWYo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jul 2020 18:24:44 -0400
-Received: from mga03.intel.com ([134.134.136.65]:59924 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728248AbgGTWYn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 20 Jul 2020 18:24:43 -0400
-IronPort-SDR: wi6urOKSg7WFkJj7uK3ArbZ//xwXV/3XGYE6kLB3whNn+4U5ir69pxYXd/s/oBQr8N12JV5FmZ
- ZEwXXaEzr2Ug==
-X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="150005188"
-X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
-   d="scan'208";a="150005188"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:41 -0700
-IronPort-SDR: /Fdp0Xg/vBzvsdDuIUsc7rCP5bzkTY5iirBFtsh6TV6J9kITBMNxkq5mLzhHx4mSClFaW34tLm
- qmJRbUfKZPQw==
-X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
-   d="scan'208";a="310005296"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:41 -0700
-Subject: [PATCH v3 11/11] ACPI: NFIT: Add runtime firmware activate support
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     linux-nvdimm@lists.01.org
-Cc:     Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 20 Jul 2020 15:08:24 -0700
-Message-ID: <159528290402.993790.3577202283737004887.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+        id S1726988AbgGTX2N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jul 2020 19:28:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54522 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726021AbgGTX2M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jul 2020 19:28:12 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F300C061794;
+        Mon, 20 Jul 2020 16:28:12 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id a14so4543918wra.5;
+        Mon, 20 Jul 2020 16:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fALmHikCwdjyueFwfhicDSDPKSqtvisQ5e0TXQMf40k=;
+        b=Pxpqz/mKMQrC/SefCwPUQFhpJMGbpMICDdu6+tKvoaGSIa6fZ7D2Tffemx8fPJ7sWC
+         LYanf/0jhKzrDKywqduf61MhL5JflMFJZB2iM0S5iDYWxKqoplVKnIERsydku4ORuWQA
+         fPOzJH7DK1fETCpubVgHcWIiefyi4QX264VzbfbxxWV44lKz5cHJc6yg/J1BQkoGl6TY
+         S4N1ZuSTUTdng/5eoB8lN/6Bbibzm+oOZWEE8lW3xBHnO+6gxXQw747UpTxEcPBwyF+9
+         nInOOHGj8P9MeUAizU8P8lo9eWOGogGmD/y+lR0AFAA61aqb8p0bqlRo0DLtyqjPWpaW
+         q3cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=fALmHikCwdjyueFwfhicDSDPKSqtvisQ5e0TXQMf40k=;
+        b=bYhzdr67BfIOpk7Fb8ZGHnDnapyZeYedJcVuPxyDHaYFe+cVjgOUY4D1UHR+f8Ga4G
+         m8rZIAzyGc/w7ZIlM6INBnmWipq8wi8vcHpA9eFc6GHef5+wTLurbx7jiBX0bS5R7YOh
+         mooeMiHn+MuNyZlVg+1p0TPyRHyEMRkYX/3rSazLlVvKdUTPGvq/1djABRJ2jEM371UV
+         wTu9RAzq+hsL4iSPRVhdEZI2NJCnxeDZWlCc5icxaBc2Y323qsRyarZKYvcxgrl6SAXm
+         YHo/ptDIMgIFsZusEXRYu6bPK2Igpym6zRBPo+/+O+j/iRmghewF7xxaAUsixbHjcLkD
+         Z0qA==
+X-Gm-Message-State: AOAM533w9wLxtedY6xpRSy7puNO0gPfNcnAzdZUVvLKq0nA8eiZquDxQ
+        3SmkRkLAW+9aWXEaE3y1xpE=
+X-Google-Smtp-Source: ABdhPJxoH03f8ZKKGZXRmnkhvID0cBIeVpRiroc+WTY3/KAECr9u8O6tpwd5dVhoyEO2dZ6RWQJIVQ==
+X-Received: by 2002:a5d:400b:: with SMTP id n11mr23429848wrp.74.1595287690898;
+        Mon, 20 Jul 2020 16:28:10 -0700 (PDT)
+Received: from [10.67.50.75] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id 31sm17243890wrj.94.2020.07.20.16.28.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2020 16:28:09 -0700 (PDT)
+Subject: Re: [PATCH v8 00/12] PCI: brcmstb: enable PCIe for STB chips
+To:     Jim Quinlan <james.quinlan@broadcom.com>,
+        linux-pci@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Christoph Hellwig <hch@lst.de>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Robin Murphy <robin.murphy@arm.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
+        <devicetree@vger.kernel.org>,
+        "open list:DRM DRIVERS FOR ALLWINNER A10" 
+        <dri-devel@lists.freedesktop.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <jroedel@suse.de>,
+        Julien Grall <julien.grall@arm.com>,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:ALLWINNER A10 CSI DRIVER" <linux-media@vger.kernel.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+        Oliver Neukum <oneukum@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>
+References: <20200715143530.9702-1-james.quinlan@broadcom.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCVF/S8QUJHlwd3wAKCRBhV5kVtWN2DvCVAJ4u4/bPF4P3jxb4qEY8I2gS
+ 6hG0gACffNWlqJ2T4wSSn+3o7CCZNd7SLSDOwU0EVxvH8AEQAOqv6agYuT4x3DgFIJNv9i0e
+ S443rCudGwmg+CbjXGA4RUe1bNdPHYgbbIaN8PFkXfb4jqg64SyU66FXJJJO+DmPK/t7dRNA
+ 3eMB1h0GbAHlLzsAzD0DKk1ARbjIusnc02aRQNsAUfceqH5fAMfs2hgXBa0ZUJ4bLly5zNbr
+ r0t/fqZsyI2rGQT9h1D5OYn4oF3KXpSpo+orJD93PEDeseho1EpmMfsVH7PxjVUlNVzmZ+tc
+ IDw24CDSXf0xxnaojoicQi7kzKpUrJodfhNXUnX2JAm/d0f9GR7zClpQMezJ2hYAX7BvBajb
+ Wbtzwi34s8lWGI121VjtQNt64mSqsK0iQAE6OYk0uuQbmMaxbBTT63+04rTPBO+gRAWZNDmQ
+ b2cTLjrOmdaiPGClSlKx1RhatzW7j1gnUbpfUl91Xzrp6/Rr9BgAZydBE/iu57KWsdMaqu84
+ JzO9UBGomh9eyBWBkrBt+Fe1qN78kM7JO6i3/QI56NA4SflV+N4PPgI8TjDVaxgrfUTV0gVa
+ cr9gDE5VgnSeSiOleChM1jOByZu0JTShOkT6AcSVW0kCz3fUrd4e5sS3J3uJezSvXjYDZ53k
+ +0GS/Hy//7PSvDbNVretLkDWL24Sgxu/v8i3JiYIxe+F5Br8QpkwNa1tm7FK4jOd95xvYADl
+ BUI1EZMCPI7zABEBAAHCwagEGBECAAkFAlcbx/ACGwICKQkQYVeZFbVjdg7BXSAEGQECAAYF
+ Alcbx/AACgkQh9CWnEQHBwSJBw//Z5n6IO19mVzMy/ZLU/vu8flv0Aa0kwk5qvDyvuvfiDTd
+ WQzq2PLs+obX0y1ffntluhvP+8yLzg7h5O6/skOfOV26ZYD9FeV3PIgR3QYF26p2Ocwa3B/k
+ P6ENkk2pRL2hh6jaA1Bsi0P34iqC2UzzLq+exctXPa07ioknTIJ09BT31lQ36Udg7NIKalnj
+ 5UbkRjqApZ+Rp0RAP9jFtq1n/gjvZGyEfuuo/G+EVCaiCt3Vp/cWxDYf2qsX6JxkwmUNswuL
+ C3duQ0AOMNYrT6Pn+Vf0kMboZ5UJEzgnSe2/5m8v6TUc9ZbC5I517niyC4+4DY8E2m2V2LS9
+ es9uKpA0yNcd4PfEf8bp29/30MEfBWOf80b1yaubrP5y7yLzplcGRZMF3PgBfi0iGo6kM/V2
+ 13iD/wQ45QTV0WTXaHVbklOdRDXDHIpT69hFJ6hAKnnM7AhqZ70Qi31UHkma9i/TeLLzYYXz
+ zhLHGIYaR04dFT8sSKTwTSqvm8rmDzMpN54/NeDSoSJitDuIE8givW/oGQFb0HGAF70qLgp0
+ 2XiUazRyRU4E4LuhNHGsUxoHOc80B3l+u3jM6xqJht2ZyMZndbAG4LyVA2g9hq2JbpX8BlsF
+ skzW1kbzIoIVXT5EhelxYEGqLFsZFdDhCy8tjePOWK069lKuuFSssaZ3C4edHtkZ8gCfWWtA
+ 8dMsqeOIg9Trx7ZBCDOZGNAAnjYQmSb2eYOAti3PX3Ex7vI8ZhJCzsNNBEjPuBIQEAC/6NPW
+ 6EfQ91ZNU7e/oKWK91kOoYGFTjfdOatp3RKANidHUMSTUcN7J2mxww80AQHKjr3Yu2InXwVX
+ SotMMR4UrkQX7jqabqXV5G+88bj0Lkr3gi6qmVkUPgnNkIBe0gaoM523ujYKLreal2OQ3GoJ
+ PS6hTRoSUM1BhwLCLIWqdX9AdT6FMlDXhCJ1ffA/F3f3nTN5oTvZ0aVF0SvQb7eIhGVFxrlb
+ WS0+dpyulr9hGdU4kzoqmZX9T/r8WCwcfXipmmz3Zt8o2pYWPMq9Utby9IEgPwultaP06MHY
+ nhda1jfzGB5ZKco/XEaXNvNYADtAD91dRtNGMwRHWMotIGiWwhEJ6vFc9bw1xcR88oYBs+7p
+ gbFSpmMGYAPA66wdDKGj9+cLhkd0SXGht9AJyaRA5AWB85yNmqcXXLkzzh2chIpSEawRsw8B
+ rQIZXc5QaAcBN2dzGN9UzqQArtWaTTjMrGesYhN+aVpMHNCmJuISQORhX5lkjeg54oplt6Zn
+ QyIsOCH3MfG95ha0TgWwyFtdxOdY/UY2zv5wGivZ3WeS0TtQf/BcGre2y85rAohFziWOzTaS
+ BKZKDaBFHwnGcJi61Pnjkz82hena8OmsnsBIucsz4N0wE+hVd6AbDYN8ZcFNIDyt7+oGD1+c
+ PfqLz2df6qjXzq27BBUboklbGUObNwADBQ//V45Z51Q4fRl/6/+oY5q+FPbRLDPlUF2lV6mb
+ hymkpqIzi1Aj/2FUKOyImGjbLAkuBQj3uMqy+BSSXyQLG3sg8pDDe8AJwXDpG2fQTyTzQm6l
+ OnaMCzosvALk2EOPJryMkOCI52+hk67cSFA0HjgTbkAv4Mssd52y/5VZR28a+LW+mJIZDurI
+ Y14UIe50G99xYxjuD1lNdTa/Yv6qFfEAqNdjEBKNuOEUQOlTLndOsvxOOPa1mRUk8Bqm9BUt
+ LHk3GDb8bfDwdos1/h2QPEi+eI+O/bm8YX7qE7uZ13bRWBY+S4+cd+Cyj8ezKYAJo9B+0g4a
+ RVhdhc3AtW44lvZo1h2iml9twMLfewKkGV3oG35CcF9mOd7n6vDad3teeNpYd/5qYhkopQrG
+ k2oRBqxyvpSLrJepsyaIpfrt5NNaH7yTCtGXcxlGf2jzGdei6H4xQPjDcVq2Ra5GJohnb/ix
+ uOc0pWciL80ohtpSspLlWoPiIowiKJu/D/Y0bQdatUOZcGadkywCZc/dg5hcAYNYchc8AwA4
+ 2dp6w8SlIsm1yIGafWlNnfvqbRBglSTnxFuKqVggiz2zk+1wa/oP+B96lm7N4/3Aw6uy7lWC
+ HvsHIcv4lxCWkFXkwsuWqzEKK6kxVpRDoEQPDj+Oy/ZJ5fYuMbkdHrlegwoQ64LrqdmiVVPC
+ TwQYEQIADwIbDAUCVF/S8QUJHlwd3wAKCRBhV5kVtWN2Do+FAJ956xSz2XpDHql+Wg/2qv3b
+ G10n8gCguORqNGMsVRxrlLs7/himep7MrCc=
+Message-ID: <8e5be265-6029-3c43-989c-4a046dd60c50@gmail.com>
+Date:   Mon, 20 Jul 2020 16:27:53 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20200715143530.9702-1-james.quinlan@broadcom.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Plumb the platform specific backend for the generic libnvdimm firmware
-activate interface. Register dimm level operations to arm/disarm
-activation, and register bus level operations to report the dynamic
-platform-quiesce time relative to the number of dimms armed for firmware
-activation.
+On 7/15/20 7:35 AM, Jim Quinlan wrote:
+> Patchset Summary:
+>   Enhance a PCIe host controller driver.  Because of its unusual design
+>   we are foced to change dev->dma_pfn_offset into a more general role
+>   allowing multiple offsets.  See the 'v1' notes below for more info.
 
-A new nfit-specific bus attribute "firmware_activate_noidle" is added to
-allow the activation to switch between platform enforced, and OS
-opportunistic device quiesce. In other words, let the hibernate cycle
-handle in-flight device-dma rather than the platform attempting to
-increase PCI-E timeouts and the like.
+Christoph, Robin, are you happy with this version?
 
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/ABI/testing/sysfs-bus-nfit |   19 +
- drivers/acpi/nfit/core.c                 |   41 +++
- drivers/acpi/nfit/intel.c                |  386 ++++++++++++++++++++++++++++++
- drivers/acpi/nfit/intel.h                |    3 
- drivers/acpi/nfit/nfit.h                 |   10 +
- drivers/nvdimm/dimm_devs.c               |    4 
- include/linux/libnvdimm.h                |    5 
- 7 files changed, 461 insertions(+), 7 deletions(-)
+> 
+> v8:
+>   Commit: "device core: Introduce DMA range map, supplanting ..."
+>   -- To satisfy a specific m68 compile configuration, I moved the 'struct
+>      bus_dma_region; definition out of #ifdef CONFIG_HAS_DMA and also defined
+>      three inline functions for !CONFIG_HAS_DMA (kernel test robot).
+>   -- The sunXi drivers -- suc4i_csi, sun6i_csi, cedrus_hw -- set
+>      a pfn_offset outside of_dma_configure() but the code offers no 
+>      insight on the size of the translation window.  V7 had me using
+>      SIZE_MAX as the size.  I have since contacted the sunXi maintainer and
+>      he said that using a size of SZ_4G would cover sunXi configurations.
+> 
+> v7:
+>   Commit: "device core: Introduce DMA range map, supplanting ..."
+>   -- remove second kcalloc/copy in device.c (AndyS)
+>   -- use PTR_ERR_OR_ZERO() and PHYS_PFN() (AndyS)
+>   -- indentation, sizeof(struct ...) => sizeof(*r) (AndyS)
+>   -- add pfn.h definitions: PFN_DMA_ADDR(), DMA_ADDR_PFN() (AndyS)
+>   -- Fixed compile error in "sun6i_csi.c" (kernel test robot)
+>   Commit "ata: ahci_brcm: Fix use of BCM7216 reset controller"
+>   -- correct name of function in the commit msg (SergeiS)
+>   
+> v6:
+>   Commit "device core: Introduce DMA range map":
+>   -- of_dma_get_range() now takes a single argument and returns either
+>      NULL, a valid map, or an ERR_PTR. (Robin)
+>   -- offsets are no longer a PFN value but an actual address. (Robin)
+>   -- the bus_dma_region struct stores the range size instead of
+>      the cpu_end and pci_end values. (Robin)
+>   -- devices that were setting a single offset with no boundaries
+>      have been modified to have boundaries; in a few places
+>      where this informatino was unavilable a /* FIXME: ... */
+>      comment was added. (Robin)
+>   -- dma_attach_offset_range() can be called when an offset
+>      map already exists; if it's range is already present
+>      nothing is done and success is returned. (Robin)
+>   All commits:
+>   -- Man name/style/corrections/etc changed (Bjorn)
+>   -- rebase to Torvalds master
+> 
+> v5:
+>   Commit "device core: Introduce multiple dma pfn offsets"
+>   -- in of/address.c: "map_size = 0" => "*map_size = 0"
+>   -- use kcalloc instead of kzalloc (AndyS)
+>   -- use PHYS_ADDR_MAX instead of "~(phys_addr_t)0"
+>   Commit "PCI: brcmstb: Set internal memory viewport sizes"
+>   -- now gives error on missing dma-ranges property.
+>   Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+>   -- removed "Allof:" from brcm,scb-sizes definition (RobH)
+>   All Commits:
+>   -- indentation style, use max chars 100 (AndyS)
+>   -- rebased to torvalds master
+> 
+> v4:
+>   Commit "device core: Introduce multiple dma pfn offsets"
+>   -- of_dma_get_range() does not take a dev param but instead
+>      takes two "out" params: map and map_size.  We do this so
+>      that the code that parses dma-ranges is separate from
+>      the code that modifies 'dev'.   (Nicolas)
+>   -- the separate case of having a single pfn offset has
+>      been removed and is now processed by going through the
+>      map array. (Nicolas)
+>   -- move attach_uniform_dma_pfn_offset() from of/address.c to
+>      dma/mapping.c so that it does not depend on CONFIG_OF. (Nicolas)
+>   -- devm_kcalloc => devm_kzalloc (DanC)
+>   -- add/fix assignment to dev->dma_pfn_offset_map for func
+>      attach_uniform_dma_pfn_offset() (DanC, Nicolas)
+>   -- s/struct dma_pfn_offset_region/struct bus_dma_region/ (Nicolas)
+>   -- s/attach_uniform_dma_pfn_offset/dma_attach_uniform_pfn_offset/
+>   -- s/attach_dma_pfn_offset_map/dma_attach_pfn_offset_map/
+>   -- More use of PFN_{PHYS,DOWN,UP}. (AndyS)
+>   Commit "of: Include a dev param in of_dma_get_range()"
+>   -- this commit was sqaushed with "device core: Introduce ..."
+> 
+> v3:
+>   Commit "device core: Introduce multiple dma pfn offsets"
+>   Commit "arm: dma-mapping: Invoke dma offset func if needed"
+>   -- The above two commits have been squashed.  More importantly,
+>      the code has been modified so that the functionality for
+>      multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
+>      In fact, dma_pfn_offset is removed and supplanted by
+>      dma_pfn_offset_map, which is a pointer to an array.  The
+>      more common case of a uniform offset is now handled as
+>      a map with a single entry, while cases requiring multiple
+>      pfn offsets use a map with multiple entries.  Code paths
+>      that used to do this:
+> 
+>          dev->dma_pfn_offset = mydrivers_pfn_offset;
+> 
+>      have been changed to do this:
+> 
+>          attach_uniform_dma_pfn_offset(dev, pfn_offset);
+> 
+>   Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+>   -- Add if/then clause for required props: resets, reset-names (RobH)
+>   -- Change compatible list from const to enum (RobH)
+>   -- Change list of u32-tuples to u64 (RobH)
+> 
+>   Commit "of: Include a dev param in of_dma_get_range()"
+>   -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
+> 
+>   Commit "device core: Add ability to handle multiple dma offsets"
+>   -- align comment in device.h (AndyS).
+>   -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
+>      dma_pfn_offset_region (AndyS).
+> 
+> v2:
+> Commit: "device core: Add ability to handle multiple dma offsets"
+>   o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
+>   o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
+>   o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
+>   o dev->dma_pfn_map => dev->dma_pfn_offset_map
+>   o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
+>   o In device.h: s/const void */const struct dma_pfn_offset_region */
+>   o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
+>     guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
+>   o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
+>     dev->dma_pfn_offset_map is copied as well.
+>   o Merged two of the DMA commits into one (Christoph).
+> 
+> Commit "arm: dma-mapping: Invoke dma offset func if needed":
+>   o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
+> 
+> Other commits' changes:
+>   o Removed need for carrying of_id var in priv (Nicolas)
+>   o Commit message rewordings (Bjorn)
+>   o Commit log messages filled to 75 chars (Bjorn)
+>   o devm_reset_control_get_shared())
+>     => devm_reset_control_get_optional_shared (Philipp)
+>   o Add call to reset_control_assert() in PCIe remove routines (Philipp)
+> 
+> v1:
+> This patchset expands the usefulness of the Broadcom Settop Box PCIe
+> controller by building upon the PCIe driver used currently by the
+> Raspbery Pi.  Other forms of this patchset were submitted by me years
+> ago and not accepted; the major sticking point was the code required
+> for the DMA remapping needed for the PCIe driver to work [1].
+> 
+> There have been many changes to the DMA and OF subsystems since that
+> time, making a cleaner and less intrusive patchset possible.  This
+> patchset implements a generalization of "dev->dma_pfn_offset", except
+> that instead of a single scalar offset it provides for multiple
+> offsets via a function which depends upon the "dma-ranges" property of
+> the PCIe host controller.  This is required for proper functionality
+> of the BrcmSTB PCIe controller and possibly some other devices.
+> 
+> [1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
+> 
+> Jim Quinlan (12):
+>   PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
+>   ata: ahci_brcm: Fix use of BCM7216 reset controller
+>   dt-bindings: PCI: Add bindings for more Brcmstb chips
+>   PCI: brcmstb: Add bcm7278 register info
+>   PCI: brcmstb: Add suspend and resume pm_ops
+>   PCI: brcmstb: Add bcm7278 PERST# support
+>   PCI: brcmstb: Add control of rescal reset
+>   device core: Introduce DMA range map, supplanting dma_pfn_offset
+>   PCI: brcmstb: Set additional internal memory DMA viewport sizes
+>   PCI: brcmstb: Accommodate MSI for older chips
+>   PCI: brcmstb: Set bus max burst size by chip type
+>   PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
+> 
+>  .../bindings/pci/brcm,stb-pcie.yaml           |  56 ++-
+>  arch/arm/include/asm/dma-mapping.h            |   9 +-
+>  arch/arm/mach-keystone/keystone.c             |  17 +-
+>  arch/sh/drivers/pci/pcie-sh7786.c             |   9 +-
+>  arch/sh/kernel/dma-coherent.c                 |  16 +-
+>  arch/x86/pci/sta2x11-fixup.c                  |   7 +-
+>  drivers/acpi/arm64/iort.c                     |   5 +-
+>  drivers/ata/ahci_brcm.c                       |  11 +-
+>  drivers/gpu/drm/sun4i/sun4i_backend.c         |   5 +-
+>  drivers/iommu/io-pgtable-arm.c                |   2 +-
+>  .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
+>  .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   4 +-
+>  drivers/of/address.c                          |  95 ++--
+>  drivers/of/device.c                           |  47 +-
+>  drivers/of/of_private.h                       |   9 +-
+>  drivers/of/unittest.c                         |  35 +-
+>  drivers/pci/controller/Kconfig                |   3 +-
+>  drivers/pci/controller/pcie-brcmstb.c         | 408 +++++++++++++++---
+>  drivers/remoteproc/remoteproc_core.c          |   2 +-
+>  .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
+>  drivers/usb/core/message.c                    |   4 +-
+>  drivers/usb/core/usb.c                        |   2 +-
+>  include/linux/device.h                        |   4 +-
+>  include/linux/dma-direct.h                    |  10 +-
+>  include/linux/dma-mapping.h                   |  43 ++
+>  include/linux/pfn.h                           |   2 +
+>  kernel/dma/coherent.c                         |  10 +-
+>  kernel/dma/mapping.c                          |  53 +++
+>  28 files changed, 683 insertions(+), 197 deletions(-)
+> 
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-nfit b/Documentation/ABI/testing/sysfs-bus-nfit
-index a1cb44dcb908..e4f76e7eab93 100644
---- a/Documentation/ABI/testing/sysfs-bus-nfit
-+++ b/Documentation/ABI/testing/sysfs-bus-nfit
-@@ -202,6 +202,25 @@ Description:
- 		functions. See the section named 'NVDIMM Root Device _DSMs' in
- 		the ACPI specification.
- 
-+What:		/sys/bus/nd/devices/ndbusX/nfit/firmware_activate_noidle
-+Date:		Apr, 2020
-+KernelVersion:	v5.8
-+Contact:	linux-nvdimm@lists.01.org
-+Description:
-+		(RW) The Intel platform implementation of firmware activate
-+		support exposes an option let the platform force idle devices in
-+		the system over the activation event, or trust that the OS will
-+		do it. The safe default is to let the platform force idle
-+		devices since the kernel is already in a suspend state, and on
-+		the chance that a driver does not properly quiesce bus-mastering
-+		after a suspend callback the platform will handle it.  However,
-+		the activation might abort if, for example, platform firmware
-+		determines that the activation time exceeds the max PCI-E
-+		completion timeout. Since the platform does not know whether the
-+		OS is running the activation from a suspend context it aborts,
-+		but if the system owner trusts driver suspend callback to be
-+		sufficient then 'firmware_activation_noidle' can be
-+		enabled to bypass the activation abort.
- 
- What:		/sys/bus/nd/devices/regionX/nfit/range_index
- Date:		Jun, 2015
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 78cc9e2d2aa3..fb775b967c52 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -1392,8 +1392,12 @@ static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
- 	struct device *dev = container_of(kobj, struct device, kobj);
- 	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
- 
--	if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
--		return 0;
-+	if (a == &dev_attr_scrub.attr)
-+		return ars_supported(nvdimm_bus) ? a->mode : 0;
-+
-+	if (a == &dev_attr_firmware_activate_noidle.attr)
-+		return intel_fwa_supported(nvdimm_bus) ? a->mode : 0;
-+
- 	return a->mode;
- }
- 
-@@ -1402,6 +1406,7 @@ static struct attribute *acpi_nfit_attributes[] = {
- 	&dev_attr_scrub.attr,
- 	&dev_attr_hw_error_scrub.attr,
- 	&dev_attr_bus_dsm_mask.attr,
-+	&dev_attr_firmware_activate_noidle.attr,
- 	NULL,
- };
- 
-@@ -2019,6 +2024,26 @@ static const struct nvdimm_security_ops *acpi_nfit_get_security_ops(int family)
- 	}
- }
- 
-+static const struct nvdimm_fw_ops *acpi_nfit_get_fw_ops(
-+		struct nfit_mem *nfit_mem)
-+{
-+	unsigned long mask;
-+	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
-+	struct nvdimm_bus_descriptor *nd_desc = &acpi_desc->nd_desc;
-+
-+	if (!nd_desc->fw_ops)
-+		return NULL;
-+
-+	if (nfit_mem->family != NVDIMM_FAMILY_INTEL)
-+		return NULL;
-+
-+	mask = nfit_mem->dsm_mask & NVDIMM_INTEL_FW_ACTIVATE_CMDMASK;
-+	if (mask != NVDIMM_INTEL_FW_ACTIVATE_CMDMASK)
-+		return NULL;
-+
-+	return intel_fw_ops;
-+}
-+
- static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
- {
- 	struct nfit_mem *nfit_mem;
-@@ -2095,7 +2120,8 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
- 				acpi_nfit_dimm_attribute_groups,
- 				flags, cmd_mask, flush ? flush->hint_count : 0,
- 				nfit_mem->flush_wpq, &nfit_mem->id[0],
--				acpi_nfit_get_security_ops(nfit_mem->family));
-+				acpi_nfit_get_security_ops(nfit_mem->family),
-+				acpi_nfit_get_fw_ops(nfit_mem));
- 		if (!nvdimm)
- 			return -ENOMEM;
- 
-@@ -2170,8 +2196,10 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
- 	if (acpi_desc->bus_cmd_force_en) {
- 		nd_desc->cmd_mask = acpi_desc->bus_cmd_force_en;
- 		mask = &nd_desc->bus_family_mask;
--		if (acpi_desc->family_dsm_mask[NVDIMM_BUS_FAMILY_INTEL])
-+		if (acpi_desc->family_dsm_mask[NVDIMM_BUS_FAMILY_INTEL]) {
- 			set_bit(NVDIMM_BUS_FAMILY_INTEL, mask);
-+			nd_desc->fw_ops = intel_bus_fw_ops;
-+		}
- 	}
- 
- 	adev = to_acpi_dev(acpi_desc);
-@@ -2202,6 +2230,11 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
- 	for_each_set_bit(i, &dsm_mask, BITS_PER_LONG)
- 		if (acpi_check_dsm(adev->handle, guid, 1, 1ULL << i))
- 			set_bit(i, mask);
-+
-+	if (*mask == dsm_mask) {
-+		set_bit(NVDIMM_BUS_FAMILY_INTEL, &nd_desc->bus_family_mask);
-+		nd_desc->fw_ops = intel_bus_fw_ops;
-+	}
- }
- 
- static ssize_t range_index_show(struct device *dev,
-diff --git a/drivers/acpi/nfit/intel.c b/drivers/acpi/nfit/intel.c
-index 1113b679cd7b..8dd792a55730 100644
---- a/drivers/acpi/nfit/intel.c
-+++ b/drivers/acpi/nfit/intel.c
-@@ -7,6 +7,48 @@
- #include "intel.h"
- #include "nfit.h"
- 
-+static ssize_t firmware_activate_noidle_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-+	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+
-+	return sprintf(buf, "%s\n", acpi_desc->fwa_noidle ? "Y" : "N");
-+}
-+
-+static ssize_t firmware_activate_noidle_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t size)
-+{
-+	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-+	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+	ssize_t rc;
-+	bool val;
-+
-+	rc = kstrtobool(buf, &val);
-+	if (rc)
-+		return rc;
-+	if (val != acpi_desc->fwa_noidle)
-+		acpi_desc->fwa_cap = NVDIMM_FWA_CAP_INVALID;
-+	acpi_desc->fwa_noidle = val;
-+	return size;
-+}
-+DEVICE_ATTR_RW(firmware_activate_noidle);
-+
-+bool intel_fwa_supported(struct nvdimm_bus *nvdimm_bus)
-+{
-+	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+	unsigned long *mask;
-+
-+	if (!test_bit(NVDIMM_BUS_FAMILY_INTEL, &nd_desc->bus_family_mask))
-+		return false;
-+
-+	mask = &acpi_desc->family_dsm_mask[NVDIMM_BUS_FAMILY_INTEL];
-+	return *mask == NVDIMM_BUS_INTEL_FW_ACTIVATE_CMDMASK;
-+}
-+
- static unsigned long intel_security_flags(struct nvdimm *nvdimm,
- 		enum nvdimm_passphrase_type ptype)
- {
-@@ -389,3 +431,347 @@ static const struct nvdimm_security_ops __intel_security_ops = {
- };
- 
- const struct nvdimm_security_ops *intel_security_ops = &__intel_security_ops;
-+
-+static int intel_bus_fwa_businfo(struct nvdimm_bus_descriptor *nd_desc,
-+		struct nd_intel_bus_fw_activate_businfo *info)
-+{
-+	struct {
-+		struct nd_cmd_pkg pkg;
-+		struct nd_intel_bus_fw_activate_businfo cmd;
-+	} nd_cmd = {
-+		.pkg = {
-+			.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE_BUSINFO,
-+			.nd_family = NVDIMM_BUS_FAMILY_INTEL,
-+			.nd_size_out =
-+				sizeof(struct nd_intel_bus_fw_activate_businfo),
-+			.nd_fw_size =
-+				sizeof(struct nd_intel_bus_fw_activate_businfo),
-+		},
-+	};
-+	int rc;
-+
-+	rc = nd_desc->ndctl(nd_desc, NULL, ND_CMD_CALL, &nd_cmd, sizeof(nd_cmd),
-+			NULL);
-+	*info = nd_cmd.cmd;
-+	return rc;
-+}
-+
-+/* The fw_ops expect to be called with the nvdimm_bus_lock() held */
-+static enum nvdimm_fwa_state intel_bus_fwa_state(
-+		struct nvdimm_bus_descriptor *nd_desc)
-+{
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+	struct nd_intel_bus_fw_activate_businfo info;
-+	struct device *dev = acpi_desc->dev;
-+	enum nvdimm_fwa_state state;
-+	int rc;
-+
-+	/*
-+	 * It should not be possible for platform firmware to return
-+	 * busy because activate is a synchronous operation. Treat it
-+	 * similar to invalid, i.e. always refresh / poll the status.
-+	 */
-+	switch (acpi_desc->fwa_state) {
-+	case NVDIMM_FWA_INVALID:
-+	case NVDIMM_FWA_BUSY:
-+		break;
-+	default:
-+		/* check if capability needs to be refreshed */
-+		if (acpi_desc->fwa_cap == NVDIMM_FWA_CAP_INVALID)
-+			break;
-+		return acpi_desc->fwa_state;
-+	}
-+
-+	/* Refresh with platform firmware */
-+	rc = intel_bus_fwa_businfo(nd_desc, &info);
-+	if (rc)
-+		return NVDIMM_FWA_INVALID;
-+
-+	switch (info.state) {
-+	case ND_INTEL_FWA_IDLE:
-+		state = NVDIMM_FWA_IDLE;
-+		break;
-+	case ND_INTEL_FWA_BUSY:
-+		state = NVDIMM_FWA_BUSY;
-+		break;
-+	case ND_INTEL_FWA_ARMED:
-+		if (info.activate_tmo > info.max_quiesce_tmo)
-+			state = NVDIMM_FWA_ARM_OVERFLOW;
-+		else
-+			state = NVDIMM_FWA_ARMED;
-+		break;
-+	default:
-+		dev_err_once(dev, "invalid firmware activate state %d\n",
-+				info.state);
-+		return NVDIMM_FWA_INVALID;
-+	}
-+
-+	/*
-+	 * Capability data is available in the same payload as state. It
-+	 * is expected to be static.
-+	 */
-+	if (acpi_desc->fwa_cap == NVDIMM_FWA_CAP_INVALID) {
-+		if (info.capability & ND_INTEL_BUS_FWA_CAP_FWQUIESCE)
-+			acpi_desc->fwa_cap = NVDIMM_FWA_CAP_QUIESCE;
-+		else if (info.capability & ND_INTEL_BUS_FWA_CAP_OSQUIESCE) {
-+			/*
-+			 * Skip hibernate cycle by default if platform
-+			 * indicates that it does not need devices to be
-+			 * quiesced.
-+			 */
-+			acpi_desc->fwa_cap = NVDIMM_FWA_CAP_LIVE;
-+		} else
-+			acpi_desc->fwa_cap = NVDIMM_FWA_CAP_NONE;
-+	}
-+
-+	acpi_desc->fwa_state = state;
-+
-+	return state;
-+}
-+
-+static enum nvdimm_fwa_capability intel_bus_fwa_capability(
-+		struct nvdimm_bus_descriptor *nd_desc)
-+{
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+
-+	if (acpi_desc->fwa_cap > NVDIMM_FWA_CAP_INVALID)
-+		return acpi_desc->fwa_cap;
-+
-+	if (intel_bus_fwa_state(nd_desc) > NVDIMM_FWA_INVALID)
-+		return acpi_desc->fwa_cap;
-+
-+	return NVDIMM_FWA_CAP_INVALID;
-+}
-+
-+static int intel_bus_fwa_activate(struct nvdimm_bus_descriptor *nd_desc)
-+{
-+	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-+	struct {
-+		struct nd_cmd_pkg pkg;
-+		struct nd_intel_bus_fw_activate cmd;
-+	} nd_cmd = {
-+		.pkg = {
-+			.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE,
-+			.nd_family = NVDIMM_BUS_FAMILY_INTEL,
-+			.nd_size_in = sizeof(nd_cmd.cmd.iodev_state),
-+			.nd_size_out =
-+				sizeof(struct nd_intel_bus_fw_activate),
-+			.nd_fw_size =
-+				sizeof(struct nd_intel_bus_fw_activate),
-+		},
-+		/*
-+		 * Even though activate is run from a suspended context,
-+		 * for safety, still ask platform firmware to force
-+		 * quiesce devices by default. Let a module
-+		 * parameter override that policy.
-+		 */
-+		.cmd = {
-+			.iodev_state = acpi_desc->fwa_noidle
-+				? ND_INTEL_BUS_FWA_IODEV_OS_IDLE
-+				: ND_INTEL_BUS_FWA_IODEV_FORCE_IDLE,
-+		},
-+	};
-+	int rc;
-+
-+	switch (intel_bus_fwa_state(nd_desc)) {
-+	case NVDIMM_FWA_ARMED:
-+	case NVDIMM_FWA_ARM_OVERFLOW:
-+		break;
-+	default:
-+		return -ENXIO;
-+	}
-+
-+	rc = nd_desc->ndctl(nd_desc, NULL, ND_CMD_CALL, &nd_cmd, sizeof(nd_cmd),
-+			NULL);
-+
-+	/*
-+	 * Whether the command succeeded, or failed, the agent checking
-+	 * for the result needs to query the DIMMs individually.
-+	 * Increment the activation count to invalidate all the DIMM
-+	 * states at once (it's otherwise not possible to take
-+	 * acpi_desc->init_mutex in this context)
-+	 */
-+	acpi_desc->fwa_state = NVDIMM_FWA_INVALID;
-+	acpi_desc->fwa_count++;
-+
-+	dev_dbg(acpi_desc->dev, "result: %d\n", rc);
-+
-+	return rc;
-+}
-+
-+static const struct nvdimm_bus_fw_ops __intel_bus_fw_ops = {
-+	.activate_state = intel_bus_fwa_state,
-+	.capability = intel_bus_fwa_capability,
-+	.activate = intel_bus_fwa_activate,
-+};
-+
-+const struct nvdimm_bus_fw_ops *intel_bus_fw_ops = &__intel_bus_fw_ops;
-+
-+static int intel_fwa_dimminfo(struct nvdimm *nvdimm,
-+		struct nd_intel_fw_activate_dimminfo *info)
-+{
-+	struct {
-+		struct nd_cmd_pkg pkg;
-+		struct nd_intel_fw_activate_dimminfo cmd;
-+	} nd_cmd = {
-+		.pkg = {
-+			.nd_command = NVDIMM_INTEL_FW_ACTIVATE_DIMMINFO,
-+			.nd_family = NVDIMM_FAMILY_INTEL,
-+			.nd_size_out =
-+				sizeof(struct nd_intel_fw_activate_dimminfo),
-+			.nd_fw_size =
-+				sizeof(struct nd_intel_fw_activate_dimminfo),
-+		},
-+	};
-+	int rc;
-+
-+	rc = nvdimm_ctl(nvdimm, ND_CMD_CALL, &nd_cmd, sizeof(nd_cmd), NULL);
-+	*info = nd_cmd.cmd;
-+	return rc;
-+}
-+
-+static enum nvdimm_fwa_state intel_fwa_state(struct nvdimm *nvdimm)
-+{
-+	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-+	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
-+	struct nd_intel_fw_activate_dimminfo info;
-+	int rc;
-+
-+	/*
-+	 * Similar to the bus state, since activate is synchronous the
-+	 * busy state should resolve within the context of 'activate'.
-+	 */
-+	switch (nfit_mem->fwa_state) {
-+	case NVDIMM_FWA_INVALID:
-+	case NVDIMM_FWA_BUSY:
-+		break;
-+	default:
-+		/* If no activations occurred the old state is still valid */
-+		if (nfit_mem->fwa_count == acpi_desc->fwa_count)
-+			return nfit_mem->fwa_state;
-+	}
-+
-+	rc = intel_fwa_dimminfo(nvdimm, &info);
-+	if (rc)
-+		return NVDIMM_FWA_INVALID;
-+
-+	switch (info.state) {
-+	case ND_INTEL_FWA_IDLE:
-+		nfit_mem->fwa_state = NVDIMM_FWA_IDLE;
-+		break;
-+	case ND_INTEL_FWA_BUSY:
-+		nfit_mem->fwa_state = NVDIMM_FWA_BUSY;
-+		break;
-+	case ND_INTEL_FWA_ARMED:
-+		nfit_mem->fwa_state = NVDIMM_FWA_ARMED;
-+		break;
-+	default:
-+		nfit_mem->fwa_state = NVDIMM_FWA_INVALID;
-+		break;
-+	}
-+
-+	switch (info.result) {
-+	case ND_INTEL_DIMM_FWA_NONE:
-+		nfit_mem->fwa_result = NVDIMM_FWA_RESULT_NONE;
-+		break;
-+	case ND_INTEL_DIMM_FWA_SUCCESS:
-+		nfit_mem->fwa_result = NVDIMM_FWA_RESULT_SUCCESS;
-+		break;
-+	case ND_INTEL_DIMM_FWA_NOTSTAGED:
-+		nfit_mem->fwa_result = NVDIMM_FWA_RESULT_NOTSTAGED;
-+		break;
-+	case ND_INTEL_DIMM_FWA_NEEDRESET:
-+		nfit_mem->fwa_result = NVDIMM_FWA_RESULT_NEEDRESET;
-+		break;
-+	case ND_INTEL_DIMM_FWA_MEDIAFAILED:
-+	case ND_INTEL_DIMM_FWA_ABORT:
-+	case ND_INTEL_DIMM_FWA_NOTSUPP:
-+	case ND_INTEL_DIMM_FWA_ERROR:
-+	default:
-+		nfit_mem->fwa_result = NVDIMM_FWA_RESULT_FAIL;
-+		break;
-+	}
-+
-+	nfit_mem->fwa_count = acpi_desc->fwa_count;
-+
-+	return nfit_mem->fwa_state;
-+}
-+
-+static enum nvdimm_fwa_result intel_fwa_result(struct nvdimm *nvdimm)
-+{
-+	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-+	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
-+
-+	if (nfit_mem->fwa_count == acpi_desc->fwa_count
-+			&& nfit_mem->fwa_result > NVDIMM_FWA_RESULT_INVALID)
-+		return nfit_mem->fwa_result;
-+
-+	if (intel_fwa_state(nvdimm) > NVDIMM_FWA_INVALID)
-+		return nfit_mem->fwa_result;
-+
-+	return NVDIMM_FWA_RESULT_INVALID;
-+}
-+
-+static int intel_fwa_arm(struct nvdimm *nvdimm, enum nvdimm_fwa_trigger arm)
-+{
-+	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-+	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
-+	struct {
-+		struct nd_cmd_pkg pkg;
-+		struct nd_intel_fw_activate_arm cmd;
-+	} nd_cmd = {
-+		.pkg = {
-+			.nd_command = NVDIMM_INTEL_FW_ACTIVATE_ARM,
-+			.nd_family = NVDIMM_FAMILY_INTEL,
-+			.nd_size_in = sizeof(nd_cmd.cmd.activate_arm),
-+			.nd_size_out =
-+				sizeof(struct nd_intel_fw_activate_arm),
-+			.nd_fw_size =
-+				sizeof(struct nd_intel_fw_activate_arm),
-+		},
-+		.cmd = {
-+			.activate_arm = arm == NVDIMM_FWA_ARM
-+				? ND_INTEL_DIMM_FWA_ARM
-+				: ND_INTEL_DIMM_FWA_DISARM,
-+		},
-+	};
-+	int rc;
-+
-+	switch (intel_fwa_state(nvdimm)) {
-+	case NVDIMM_FWA_INVALID:
-+		return -ENXIO;
-+	case NVDIMM_FWA_BUSY:
-+		return -EBUSY;
-+	case NVDIMM_FWA_IDLE:
-+		if (arm == NVDIMM_FWA_DISARM)
-+			return 0;
-+		break;
-+	case NVDIMM_FWA_ARMED:
-+		if (arm == NVDIMM_FWA_ARM)
-+			return 0;
-+		break;
-+	default:
-+		return -ENXIO;
-+	}
-+
-+	/*
-+	 * Invalidate the bus-level state, now that we're committed to
-+	 * changing the 'arm' state.
-+	 */
-+	acpi_desc->fwa_state = NVDIMM_FWA_INVALID;
-+	nfit_mem->fwa_state = NVDIMM_FWA_INVALID;
-+
-+	rc = nvdimm_ctl(nvdimm, ND_CMD_CALL, &nd_cmd, sizeof(nd_cmd), NULL);
-+
-+	dev_dbg(acpi_desc->dev, "%s result: %d\n", arm == NVDIMM_FWA_ARM
-+			? "arm" : "disarm", rc);
-+	return rc;
-+}
-+
-+static const struct nvdimm_fw_ops __intel_fw_ops = {
-+	.activate_state = intel_fwa_state,
-+	.activate_result = intel_fwa_result,
-+	.arm = intel_fwa_arm,
-+};
-+
-+const struct nvdimm_fw_ops *intel_fw_ops = &__intel_fw_ops;
-diff --git a/drivers/acpi/nfit/intel.h b/drivers/acpi/nfit/intel.h
-index 49a598623024..b768234ccebc 100644
---- a/drivers/acpi/nfit/intel.h
-+++ b/drivers/acpi/nfit/intel.h
-@@ -169,4 +169,7 @@ struct nd_intel_bus_fw_activate {
- 	u8 iodev_state;
- 	u32 status;
- } __packed;
-+
-+extern const struct nvdimm_fw_ops *intel_fw_ops;
-+extern const struct nvdimm_bus_fw_ops *intel_bus_fw_ops;
- #endif
-diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-index 97c122628975..67b7807ed200 100644
---- a/drivers/acpi/nfit/nfit.h
-+++ b/drivers/acpi/nfit/nfit.h
-@@ -220,6 +220,9 @@ struct nfit_mem {
- 	struct list_head list;
- 	struct acpi_device *adev;
- 	struct acpi_nfit_desc *acpi_desc;
-+	enum nvdimm_fwa_state fwa_state;
-+	enum nvdimm_fwa_result fwa_result;
-+	int fwa_count;
- 	char id[NFIT_DIMM_ID_LEN+1];
- 	struct resource *flush_wpq;
- 	unsigned long dsm_mask;
-@@ -265,6 +268,11 @@ struct acpi_nfit_desc {
- 	unsigned int scrub_tmo;
- 	int (*blk_do_io)(struct nd_blk_region *ndbr, resource_size_t dpa,
- 			void *iobuf, u64 len, int rw);
-+	enum nvdimm_fwa_state fwa_state;
-+	enum nvdimm_fwa_capability fwa_cap;
-+	int fwa_count;
-+	bool fwa_noidle;
-+	bool fwa_nosuspend;
- };
- 
- enum scrub_mode {
-@@ -367,4 +375,6 @@ void __acpi_nvdimm_notify(struct device *dev, u32 event);
- int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 		unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc);
- void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev);
-+bool intel_fwa_supported(struct nvdimm_bus *nvdimm_bus);
-+extern struct device_attribute dev_attr_firmware_activate_noidle;
- #endif /* __NFIT_H__ */
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index 85b53a7f44f2..2f0815e15986 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -582,7 +582,8 @@ struct nvdimm *__nvdimm_create(struct nvdimm_bus *nvdimm_bus,
- 		void *provider_data, const struct attribute_group **groups,
- 		unsigned long flags, unsigned long cmd_mask, int num_flush,
- 		struct resource *flush_wpq, const char *dimm_id,
--		const struct nvdimm_security_ops *sec_ops)
-+		const struct nvdimm_security_ops *sec_ops,
-+		const struct nvdimm_fw_ops *fw_ops)
- {
- 	struct nvdimm *nvdimm = kzalloc(sizeof(*nvdimm), GFP_KERNEL);
- 	struct device *dev;
-@@ -612,6 +613,7 @@ struct nvdimm *__nvdimm_create(struct nvdimm_bus *nvdimm_bus,
- 	dev->devt = MKDEV(nvdimm_major, nvdimm->id);
- 	dev->groups = groups;
- 	nvdimm->sec.ops = sec_ops;
-+	nvdimm->fw_ops = fw_ops;
- 	nvdimm->sec.overwrite_tmo = 0;
- 	INIT_DELAYED_WORK(&nvdimm->dwork, nvdimm_security_overwrite_query);
- 	/*
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index 15dbcb718316..01f251b6e36c 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -269,14 +269,15 @@ struct nvdimm *__nvdimm_create(struct nvdimm_bus *nvdimm_bus,
- 		void *provider_data, const struct attribute_group **groups,
- 		unsigned long flags, unsigned long cmd_mask, int num_flush,
- 		struct resource *flush_wpq, const char *dimm_id,
--		const struct nvdimm_security_ops *sec_ops);
-+		const struct nvdimm_security_ops *sec_ops,
-+		const struct nvdimm_fw_ops *fw_ops);
- static inline struct nvdimm *nvdimm_create(struct nvdimm_bus *nvdimm_bus,
- 		void *provider_data, const struct attribute_group **groups,
- 		unsigned long flags, unsigned long cmd_mask, int num_flush,
- 		struct resource *flush_wpq)
- {
- 	return __nvdimm_create(nvdimm_bus, provider_data, groups, flags,
--			cmd_mask, num_flush, flush_wpq, NULL, NULL);
-+			cmd_mask, num_flush, flush_wpq, NULL, NULL, NULL);
- }
- 
- const struct nd_cmd_desc *nd_cmd_dimm_desc(int cmd);
 
+-- 
+Florian
