@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D9122724F
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jul 2020 00:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DCF9227251
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jul 2020 00:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbgGTWYZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jul 2020 18:24:25 -0400
-Received: from mga11.intel.com ([192.55.52.93]:33768 "EHLO mga11.intel.com"
+        id S1727942AbgGTWYb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jul 2020 18:24:31 -0400
+Received: from mga07.intel.com ([134.134.136.100]:35411 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726821AbgGTWYZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 20 Jul 2020 18:24:25 -0400
-IronPort-SDR: o6TgkDfu2QLyI10ecnrGTMCAC58rCrVrPIjsJm1aR4yuEzg5ctE4W1X6XU6XGNeIeWGSfA2kR0
- PA2a8YHzzsJw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="147966589"
+        id S1726821AbgGTWYb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 20 Jul 2020 18:24:31 -0400
+IronPort-SDR: pjuYd2KYqd1oAG0IHpNtv+rfH39yvGeNs6ni16Fszl7aKv24jmvHLzwuUu8YkyBZ4mZ+oKCt98
+ Cmbjyu+QkoDQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="214686921"
 X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
-   d="scan'208";a="147966589"
+   d="scan'208";a="214686921"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:24 -0700
-IronPort-SDR: 6FBNJWGcBCpI6Zitti5qkNj5ViUANRiDp9dki/pzUJ2cDoPQlHm56Ujj6bdgEFw/GG5LoCZKHw
- 9QAL2uhUPbXw==
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:30 -0700
+IronPort-SDR: n8jZBCRHGNfmR59Qc6dDKF+uKAuHRK0edJ5jQaqNW/Eo3XX2H5HvMOshCHhC9jzZvlppv96pHO
+ yt9n9GU13X+g==
 X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
-   d="scan'208";a="271553180"
+   d="scan'208";a="461851455"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:24 -0700
-Subject: [PATCH v3 08/11] driver-core: Introduce DEVICE_ATTR_ADMIN_{RO,RW}
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:24:30 -0700
+Subject: [PATCH v3 09/11] libnvdimm: Convert to DEVICE_ATTR_ADMIN_RO()
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-nvdimm@lists.01.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        vishal.l.verma@intel.com, linux-acpi@vger.kernel.org,
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Mon, 20 Jul 2020 15:08:07 -0700
-Message-ID: <159528288766.993790.5647904882591265970.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Mon, 20 Jul 2020 15:08:13 -0700
+Message-ID: <159528289333.993790.15029366071987801760.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -46,56 +46,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-A common pattern for using plain DEVICE_ATTR() instead of
-DEVICE_ATTR_RO() and DEVICE_ATTR_RW() is for attributes that want to
-limit read to only root.  I.e. many users of DEVICE_ATTR() are
-specifying 0400 or 0600 for permissions.
+Move libnvdimm sysfs attributes that currently use an open coded
+DEVICE_ATTR() to hide sensitive root-only information (physical memory
+layout) to the new DEVICE_ATTR_ADMIN_RO() helper.
 
-Given the expectation that CAP_SYS_ADMIN is needed to access these
-sensitive attributes add an explicit helper with the _ADMIN_ identifier
-for DEVICE_ATTR_ADMIN_{RO,RW}.
-
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/device.h |    4 ++++
- include/linux/sysfs.h  |    7 +++++++
- 2 files changed, 11 insertions(+)
+ drivers/nvdimm/namespace_devs.c |    2 +-
+ drivers/nvdimm/pfn_devs.c       |    2 +-
+ drivers/nvdimm/region_devs.c    |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 15460a5ac024..d7c2570368fa 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -128,8 +128,12 @@ ssize_t device_store_bool(struct device *dev, struct device_attribute *attr,
- 		__ATTR_PREALLOC(_name, _mode, _show, _store)
- #define DEVICE_ATTR_RW(_name) \
- 	struct device_attribute dev_attr_##_name = __ATTR_RW(_name)
-+#define DEVICE_ATTR_ADMIN_RW(_name) \
-+	struct device_attribute dev_attr_##_name = __ATTR_RW_MODE(_name, 0600)
- #define DEVICE_ATTR_RO(_name) \
- 	struct device_attribute dev_attr_##_name = __ATTR_RO(_name)
-+#define DEVICE_ATTR_ADMIN_RO(_name) \
-+	struct device_attribute dev_attr_##_name = __ATTR_RO_MODE(_name, 0400)
- #define DEVICE_ATTR_WO(_name) \
- 	struct device_attribute dev_attr_##_name = __ATTR_WO(_name)
- #define DEVICE_ULONG_ATTR(_name, _mode, _var) \
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index 86067dbe7745..34e84122f635 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -123,6 +123,13 @@ struct attribute_group {
- 	.show	= _name##_show,						\
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index ae155e860fdc..6da67f4d641a 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1309,7 +1309,7 @@ static ssize_t resource_show(struct device *dev,
+ 		return -ENXIO;
+ 	return sprintf(buf, "%#llx\n", (unsigned long long) res->start);
  }
+-static DEVICE_ATTR(resource, 0400, resource_show, NULL);
++static DEVICE_ATTR_ADMIN_RO(resource);
  
-+#define __ATTR_RW_MODE(_name, _mode) {					\
-+	.attr	= { .name = __stringify(_name),				\
-+		    .mode = VERIFY_OCTAL_PERMISSIONS(_mode) },		\
-+	.show	= _name##_show,						\
-+	.store	= _name##_store,					\
-+}
-+
- #define __ATTR_WO(_name) {						\
- 	.attr	= { .name = __stringify(_name), .mode = 0200 },		\
- 	.store	= _name##_store,					\
+ static const unsigned long blk_lbasize_supported[] = { 512, 520, 528,
+ 	4096, 4104, 4160, 4224, 0 };
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 34db557dbad1..3e11ef8d3f5b 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -218,7 +218,7 @@ static ssize_t resource_show(struct device *dev,
+ 
+ 	return rc;
+ }
+-static DEVICE_ATTR(resource, 0400, resource_show, NULL);
++static DEVICE_ATTR_ADMIN_RO(resource);
+ 
+ static ssize_t size_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index 4502f9c4708d..20ff30c2ab93 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -605,7 +605,7 @@ static ssize_t resource_show(struct device *dev,
+ 
+ 	return sprintf(buf, "%#llx\n", nd_region->ndr_start);
+ }
+-static DEVICE_ATTR(resource, 0400, resource_show, NULL);
++static DEVICE_ATTR_ADMIN_RO(resource);
+ 
+ static ssize_t persistence_domain_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
 
