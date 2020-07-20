@@ -2,152 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D30226C7B
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jul 2020 18:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCC3226D9D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jul 2020 19:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729177AbgGTQyv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jul 2020 12:54:51 -0400
-Received: from foss.arm.com ([217.140.110.172]:34966 "EHLO foss.arm.com"
+        id S1726437AbgGTRzA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jul 2020 13:55:00 -0400
+Received: from mga18.intel.com ([134.134.136.126]:29589 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728932AbgGTQyv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 20 Jul 2020 12:54:51 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 612EC106F;
-        Mon, 20 Jul 2020 09:54:50 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FBB73F66E;
-        Mon, 20 Jul 2020 09:54:48 -0700 (PDT)
-Date:   Mon, 20 Jul 2020 17:54:42 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, joro@8bytes.org
-Cc:     Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Subject: Re: [PATCH v2 00/12] ACPI/OF: Upgrade MSI/IOMMU ID mapping APIs
-Message-ID: <20200720165442.GA19658@e121166-lin.cambridge.arm.com>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
+        id S1728571AbgGTRzA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 20 Jul 2020 13:55:00 -0400
+IronPort-SDR: Tgybqp1Pol1apO510ZwsvOBTTP+UImRe1CQaKJ6raANrIvViij8i8fx2xtFSaeuft1dm4WRWGg
+ 33WitOeIeOwA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="137463851"
+X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
+   d="scan'208";a="137463851"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 10:54:54 -0700
+IronPort-SDR: wXppVZgJRmRH1EKLqPF4uFTs/GqEYeh8JYskNKLnU4GlhP7Z3hqQUCPhgsbrJbMsKD/PYa0bPn
+ pSdAfaLe/UvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,375,1589266800"; 
+   d="scan'208";a="392105225"
+Received: from sibelius.jf.intel.com ([10.54.75.172])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Jul 2020 10:54:53 -0700
+From:   Erik Kaneda <erik.kaneda@intel.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org
+Cc:     Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 0/3] ACPICA release 20200717
+Date:   Mon, 20 Jul 2020 10:31:18 -0700
+Message-Id: <20200720173121.2580755-1-erik.kaneda@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 09:20:01AM +0100, Lorenzo Pieralisi wrote:
-> This series is a v2 of a previous posting:
-> 
-> v1 -> v2
-> 
-> - Removed _rid() wrappers
-> - Fixed !CONFIG_ACPI compilation issue
-> - Converted of_pci_iommu_init() to use of_iommu_configure_dev_id()
-> 
-> v1: https://lore.kernel.org/linux-arm-kernel/20200521130008.8266-1-lorenzo.pieralisi@arm.com/
-> 
-> Original cover letter
-> ---------------------
-> 
-> Firmware bindings provided in the ACPI IORT table[1] and device tree
-> bindings define rules to carry out input/output ID mappings - ie
-> retrieving an IOMMU/MSI controller input ID for a device with a given
-> ID.
-> 
-> At the moment these firmware bindings are used exclusively for PCI
-> devices and their requester ID to IOMMU/MSI id mapping but there is
-> nothing PCI specific in the ACPI and devicetree bindings that prevent
-> the firmware and kernel from using the firmware bindings to traslate
-> device IDs for any bus that requires its devices to carry out
-> input/output id translations.
-> 
-> The Freescale FSL bus is an example whereby the input/output ID
-> translation kernel code put in place for PCI can be reused for devices
-> attached to the bus that are not PCI devices.
-> 
-> This series updates the kernel code to make the MSI/IOMMU input/output
-> ID translation PCI agnostic and apply the resulting changes to the
-> device ID space provided by the Freescale FSL bus.
-> 
-> [1] http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-> 
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: "Joerg Roedel <joro@8bytes.org>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Robin Murphy <robin.murphy@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Marc Zyngier <maz@kernel.org>
-> 
-> Diana Craciun (2):
->   of/irq: make of_msi_map_get_device_domain() bus agnostic
->   bus/fsl-mc: Refactor the MSI domain creation in the DPRC driver
-> 
-> Laurentiu Tudor (1):
->   dt-bindings: arm: fsl: Add msi-map device-tree binding for fsl-mc bus
-> 
-> Lorenzo Pieralisi (8):
->   ACPI/IORT: Make iort_match_node_callback walk the ACPI namespace for
->     NC
->   ACPI/IORT: Make iort_get_device_domain IRQ domain agnostic
->   ACPI/IORT: Make iort_msi_map_rid() PCI agnostic
->   ACPI/IORT: Remove useless PCI bus walk
->   ACPI/IORT: Add an input ID to acpi_dma_configure()
->   of/iommu: Make of_map_rid() PCI agnostic
->   of/device: Add input id to of_dma_configure()
->   of/irq: Make of_msi_map_rid() PCI bus agnostic
-> 
-> Makarand Pawagi (1):
->   bus: fsl-mc: Add ACPI support for fsl-mc
-> 
->  .../devicetree/bindings/misc/fsl,qoriq-mc.txt |  50 +++++++-
->  drivers/acpi/arm64/iort.c                     | 108 ++++++++++++------
->  drivers/acpi/scan.c                           |   8 +-
->  drivers/bus/fsl-mc/dprc-driver.c              |  31 ++---
->  drivers/bus/fsl-mc/fsl-mc-bus.c               |  79 +++++++++----
->  drivers/bus/fsl-mc/fsl-mc-msi.c               |  36 ++++--
->  drivers/bus/fsl-mc/fsl-mc-private.h           |   6 +-
->  drivers/iommu/of_iommu.c                      |  81 +++++++------
->  drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c   | 105 ++++++++++++++---
->  drivers/of/base.c                             |  42 +++----
->  drivers/of/device.c                           |   8 +-
->  drivers/of/irq.c                              |  34 +++---
->  drivers/pci/msi.c                             |   9 +-
->  include/acpi/acpi_bus.h                       |   9 +-
->  include/linux/acpi.h                          |   7 ++
->  include/linux/acpi_iort.h                     |  20 ++--
->  include/linux/of.h                            |   4 +-
->  include/linux/of_device.h                     |  16 ++-
->  include/linux/of_iommu.h                      |   6 +-
->  include/linux/of_irq.h                        |  13 ++-
->  20 files changed, 451 insertions(+), 221 deletions(-)
+This series contains patches relevant to linux kernel from ACPICA's
+20200717 release. This ACPICA release contains a change in the ACPI
+object reference counting mechanism to allow firmware to declare a
+large amount of OperationRegion field units without overflowing the
+reference count.
 
-Hi guys,
+Bob Moore (1):
+  ACPICA: Update version to 20200717 Version 20200717.
 
-I think this series is ready for upstream (there are two ACKs missing
-from Rafael on patch (5) and Bjorn on patch (3) - I asked for them), it
-touches lots of subsystems so I am not really sure what's the best way
-to pull it, more so given that it is also late in the cycle (I do think
-it is best to merge it via a single tree, it does not make sense to
-split it up in my opinion).
+Erik Kaneda (1):
+  ACPICA: Do not increment operation_region reference counts for field
+    units
 
-Please let me know.
+Gustavo A. R. Silva (1):
+  ACPICA: Replace one-element array with flexible-array
 
-Thanks,
-Lorenzo
+ drivers/acpi/acpica/exprep.c   | 4 ----
+ drivers/acpi/acpica/utdelete.c | 6 +-----
+ drivers/acpi/acpica/utids.c    | 3 +--
+ include/acpi/acpixf.h          | 2 +-
+ include/acpi/actypes.h         | 2 +-
+ 5 files changed, 4 insertions(+), 13 deletions(-)
+
+-- 
+2.25.1
+
