@@ -2,80 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4996A22BA30
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 01:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A3222BA35
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 01:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbgGWXXE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jul 2020 19:23:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35016 "EHLO mail.kernel.org"
+        id S1726697AbgGWX1A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jul 2020 19:27:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:53008 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726723AbgGWXXE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Jul 2020 19:23:04 -0400
-Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11DDF2080D;
-        Thu, 23 Jul 2020 23:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595546583;
-        bh=LpBa7WC+PmUuvju8pxnLc0G1tsZpO642XLjDjk2e2t4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=X6o9ceMGv+6QFquvn2TvPUVx/zu/mVWGEEU5pf4oh4Wgllo8B2E5tlVVO7LTPHkUY
-         vz0BD9uuKTVDQ5v9CUpFPDMx+YAboz9sTAgKqWl9xkpr6EbsU/q4IJqYAvqDYb1TQX
-         CRixz1EWv7+K81kyoOJtGumwMEuGHYTp0h0tF/YU=
-Date:   Thu, 23 Jul 2020 18:23:01 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, bp@alien8.de,
-        james.morse@arm.com, lenb@kernel.org, tony.luck@intel.com,
-        dan.carpenter@oracle.com, zhangliguang@linux.alibaba.com,
-        andriy.shevchenko@linux.intel.com, wangkefeng.wang@huawei.com,
-        jroedel@suse.de, linuxarm@huawei.com, yangyicong@hisilicon.com,
-        jonathan.cameron@huawei.com, tanxiaofei@huawei.com
-Subject: Re: [PATCH v13 0/2] ACPI / APEI: Add support to notify the vendor
- specific HW errors
-Message-ID: <20200723232301.GA1468407@bjorn-Precision-5520>
+        id S1726657AbgGWX07 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Jul 2020 19:26:59 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C619830E;
+        Thu, 23 Jul 2020 16:26:58 -0700 (PDT)
+Received: from [192.168.122.166] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B7223F718;
+        Thu, 23 Jul 2020 16:26:58 -0700 (PDT)
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
+ PHY
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>
+Cc:     netdev@vger.kernel.org, linux.cj@gmail.com,
+        linux-acpi@vger.kernel.org
+References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
+Date:   Thu, 23 Jul 2020 18:26:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200722104245.1060-1-shiju.jose@huawei.com>
+In-Reply-To: <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 11:42:43AM +0100, Shiju Jose wrote:
-> CPER records describing a firmware-first error are identified by GUID.
-> The ghes driver currently logs, but ignores any unknown CPER records.
-> This prevents describing errors that can't be represented by a standard
-> entry, that would otherwise allow a driver to recover from an error.
-> The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
-> version 2.8).
+Hi,
+
+On 7/15/20 4:03 AM, Calvin Johnson wrote:
+> Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> provide them to be connected to MAC.
 > 
-> patch set
-> 1. add a notifier chain for these non-standard/vendor-records
->    in the ghes driver.
+> An ACPI node property "mdio-handle" is introduced to reference the
+> MDIO bus on which PHYs are registered with autoprobing method used
+> by mdiobus_register().
 > 
-> 2. add a driver to handle HiSilicon HIP PCIe controller's errors.
->    
-> Changes:
+> Describe properties "phy-channel" and "phy-mode"
 > 
-> V13:
-> 1. Following changes in the HIP PCIe error handling driver.
-> 1.1 Add Bjorn's acked-by.
-> 1.2. Address the comments and macros order Bjorn mentioned.
->      Fix the words in the commit.
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> 
+> ---
+> 
+> Changes in v7: None
+> Changes in v6: None
+> Changes in v5: None
+> Changes in v4: None
+> Changes in v3:
+> - cleanup based on v2 comments
+> - Added description for more properties
+> - Added MDIO node DSDT entry
+> 
+> Changes in v2: None
+> 
+>   Documentation/firmware-guide/acpi/dsd/phy.rst | 90 +++++++++++++++++++
+>   1 file changed, 90 insertions(+)
+>   create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+> 
+> diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> new file mode 100644
+> index 000000000000..0132fee10b45
+> --- /dev/null
+> +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> @@ -0,0 +1,90 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=========================
+> +MDIO bus and PHYs in ACPI
+> +=========================
+> +
+> +The PHYs on an mdiobus are probed and registered using mdiobus_register().
+> +Later, for connecting these PHYs to MAC, the PHYs registered on the
+> +mdiobus have to be referenced.
 
-This series is ill-formed:
+First, this is all perfectly compatible with my literal interpretation 
+and understanding of the ACPI spec. The use of _DSD is there to provide 
+a way to "extend" if you will the specification for device specific edge 
+cases that aren't directly covered by the spec.
 
-  - Jul 22  5:39 Shiju Jose      [PATCH v13 0/2] ACPI / APEI: Add support to not
-  - Jul 22  5:39 Shiju Jose      └─>[PATCH v13 1/2] ACPI / APEI: Add a notifier
-  - Jul 22  5:42 Shiju Jose      [PATCH v13 0/2] ACPI / APEI: Add support to not
-  - Jul 22  5:42 Shiju Jose      └─>[PATCH v13 2/2] PCI: hip: Add handling of Hi
+OTOH, it may be my lack of knowledge here, but IMHO this is a bit of a 
+difficult pill for all arm/sbsa systems though. Primary because I don't 
+see how one is expected to use the generic ACPI power states on the 
+parent device here. I also have some questions about how one might 
+import such a device into a VM. Further AFAIK arm's current 
+recommendations for SBSA/ACPI systems point in the direction of RCiEP's.
 
-Patches 1/2 and 2/2 never appear in the same thread.  Both should be
-replies to 0/2.  And should be only *one* v13 0/2, not two :)
+IMHO what should be clarified in this document is something to the 
+effect that the "mdio-handle" is used for systems which have multiple 
+nic/mac's sharing a single MDIO bus. Otherwise the MDIO bus and its phy 
+should be a child of the nic/mac using it, with standardized 
+behaviors/etc left up to the OSPM when it comes to MDIO bus 
+enumeration/etc.
 
-Bjorn
+Thanks,
+
+
+> +
+> +mdio-handle
+> +-----------
+> +For each MAC node, a property "mdio-handle" is used to reference the
+> +MDIO bus on which the PHYs are registered. On getting hold of the MDIO
+> +bus, use find_phy_device() to get the PHY connected to the MAC.
+> +
+> +phy-channel
+> +-----------
+> +Property "phy-channel" defines the address of the PHY on the mdiobus.
+> +
+> +phy-mode
+> +--------
+> +Property "phy-mode" defines the type of PHY interface.
+> +
+> +An example of this is shown below::
+> +
+> +DSDT entry for MAC where MDIO node is referenced
+> +------------------------------------------------
+> +	Scope(\_SB.MCE0.PR17) // 1G
+> +	{
+> +	  Name (_DSD, Package () {
+> +	     ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +		 Package () {
+> +		     Package () {"phy-channel", 1},
+> +		     Package () {"phy-mode", "rgmii-id"},
+> +		     Package () {"mdio-handle", Package (){\_SB.MDI0}}
+> +	      }
+> +	   })
+> +	}
+> +
+> +	Scope(\_SB.MCE0.PR18) // 1G
+> +	{
+> +	  Name (_DSD, Package () {
+> +	    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +		Package () {
+> +		    Package () {"phy-channel", 2},
+> +		    Package () {"phy-mode", "rgmii-id"},
+> +		    Package () {"mdio-handle", Package (){\_SB.MDI0}}
+> +	    }
+> +	  })
+> +	}
+> +
+> +DSDT entry for MDIO node
+> +------------------------
+> +a) Silicon Component
+> +--------------------
+> +	Scope(_SB)
+> +	{
+> +	  Device(MDI0) {
+> +	    Name(_HID, "NXP0006")
+> +	    Name(_CCA, 1)
+> +	    Name(_UID, 0)
+> +	    Name(_CRS, ResourceTemplate() {
+> +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
+> +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
+> +	       {
+> +		 MDI0_IT
+> +	       }
+> +	    }) // end of _CRS for MDI0
+> +	    Name (_DSD, Package () {
+> +	      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +	      Package () {
+> +		 Package () {"little-endian", 1},
+> +	      }
+> +	    })
+> +	  } // end of MDI0
+> +	}
+> +
+> +b) Platform Component
+> +---------------------
+> +	Scope(\_SB.MDI0)
+> +	{
+> +	  Device(PHY1) {
+> +	    Name (_ADR, 0x1)
+> +	  } // end of PHY1
+> +
+> +	  Device(PHY2) {
+> +	    Name (_ADR, 0x2)
+> +	  } // end of PHY2
+> +	}
+> 
+
