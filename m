@@ -2,200 +2,624 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45C7D22CC2A
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 19:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4CD22CC31
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 19:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbgGXR0a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Jul 2020 13:26:30 -0400
-Received: from foss.arm.com ([217.140.110.172]:37468 "EHLO foss.arm.com"
+        id S1726821AbgGXR3i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Jul 2020 13:29:38 -0400
+Received: from mga06.intel.com ([134.134.136.31]:53039 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726639AbgGXR02 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Jul 2020 13:26:28 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B18D431B;
-        Fri, 24 Jul 2020 10:26:27 -0700 (PDT)
-Received: from [192.168.122.166] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5186D3F66F;
-        Fri, 24 Jul 2020 10:26:27 -0700 (PDT)
-Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
- PHY
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, linux.cj@gmail.com,
-        linux-acpi@vger.kernel.org
-References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
- <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
- <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
- <20200724133931.GF1472201@lunn.ch>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <97973095-5458-8ac2-890c-667f4ea6cd0e@arm.com>
-Date:   Fri, 24 Jul 2020 12:26:26 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726366AbgGXR3h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 Jul 2020 13:29:37 -0400
+IronPort-SDR: Hu/tW/aoZ3CxDv8vNY4gkN5+dHaPOqjMQIAIPlOyRWaeCn9xJD2909cTxYiVMORLDwvBvXEBoP
+ Rt0moM7cIOUA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9692"; a="212293900"
+X-IronPort-AV: E=Sophos;i="5.75,391,1589266800"; 
+   d="scan'208";a="212293900"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2020 10:29:36 -0700
+IronPort-SDR: deXYC6ycbU5NEDDJCdldKH/n6fNc7ijDCsGKYQ3EwXdv+YgwekW+taAHwFibPxG+6V+X1HAi5D
+ PlHAz0aOR2AA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,391,1589266800"; 
+   d="scan'208";a="289054381"
+Received: from seokjaeb-mobl1.amr.corp.intel.com (HELO arch-ashland-svkelley) ([10.254.24.239])
+  by orsmga006.jf.intel.com with ESMTP; 24 Jul 2020 10:29:36 -0700
+Message-ID: <f75fd57d8c1611ab5b07bcdc0a5e758b25123ffb.camel@linux.intel.com>
+Subject: Re: [PATCH v2] PCI/AER: Add support for reset of RCiEPs for
+ APEI/Firmware first reporting only
+From:   Sean V Kelley <sean.v.kelley@linux.intel.com>
+Reply-To: sean.v.kelley@linux.intel.com
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-pci@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linuxarm@huawei.com, linux-acpi@vger.kernel.org,
+        James Morse <james.morse@arm.com>
+Date:   Fri, 24 Jul 2020 10:29:31 -0700
+In-Reply-To: <20200708173213.00001852@Huawei.com>
+References: <20200622114402.892798-1-Jonathan.Cameron@huawei.com>
+         <02999929-39F5-4A11-AACA-84490F12E12B@linux.intel.com>
+         <20200626194126.00007190@Huawei.com>
+         <6CAFE871-36CC-44DD-B4E0-D0BB5ABF3947@linux.intel.com>
+         <20200703092351.00004981@Huawei.com>
+         <431b4d136e5e2ba158640c0ef6eb7dc09351a992.camel@linux.intel.com>
+         <20200708163924.00007006@Huawei.com>
+         <EC08D16A-5434-4021-A28B-D7121DDF98B7@linux.intel.com>
+         <20200708173213.00001852@Huawei.com>
+Organization: Intel Corporation
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4 
 MIME-Version: 1.0
-In-Reply-To: <20200724133931.GF1472201@lunn.ch>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 7/24/20 8:39 AM, Andrew Lunn wrote:
->> Otherwise the MDIO bus and its phy should be a
->> child of the nic/mac using it, with standardized behaviors/etc left up to
->> the OSPM when it comes to MDIO bus enumeration/etc.
+On Wed, 2020-07-08 at 17:32 +0100, Jonathan Cameron wrote:
+> On Wed, 8 Jul 2020 09:01:13 -0700
+> Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
 > 
-> Hi Jeremy
+> > On 8 Jul 2020, at 8:39, Jonathan Cameron wrote:
+> > 
+> > > On Tue, 7 Jul 2020 09:56:26 -0700
+> > > Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+> > >  
+> > > > On 3 Jul 2020, at 1:23, Jonathan Cameron wrote:
+> > > >  
+> > > > > On Thu, 2 Jul 2020 11:06:26 -0700
+> > > > > Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+> > > > >  
+> > > > > > On 26 Jun 2020, at 11:41, Jonathan Cameron wrote:
+> > > > > >  
+> > > > > > > On Fri, 26 Jun 2020 09:29:34 -0700
+> > > > > > > Sean V Kelley <sean.v.kelley@linux.intel.com> wrote:
+> > > > > > >  
+> > > > > > > > Hi,  
+> > > > > > > Hi,
+> > > > > > > 
+> > > > > > > Thanks for taking a look.
+> > > > > > >  
+> > > > > > > > On 22 Jun 2020, at 4:44, Jonathan Cameron wrote:
+> > > > > > > >  
+> > > > > > > > > Was previously: PCI/AER: Add partial initial supprot
+> > > > > > > > > for
+> > > > > > > > > RCiEPs
+> > > > > > > > > using
+> > > > > > > > > RCEC or
+> > > > > > > > > firmware first.
+> > > > > > > > > 
+> > > > > > > > > Currently the kernel does not handle AER errors for
+> > > > > > > > > Root
+> > > > > > > > > Complex
+> > > > > > > > > integrated
+> > > > > > > > > End Points (RCiEPs)[0].  These devices sit on a root
+> > > > > > > > > bus
+> > > > > > > > > within
+> > > > > > > > > the
+> > > > > > > > > Root Complex
+> > > > > > > > > (RC).  AER handling is performed by a Root Complex
+> > > > > > > > > Event
+> > > > > > > > > Collector
+> > > > > > > > > (RCEC) [1]
+> > > > > > > > > which is a effectively a type of RCiEP on the same
+> > > > > > > > > root bus.
+> > > > > > > > > 
+> > > > > > > > > This code will only perform the correct reset flow
+> > > > > > > > > for the
+> > > > > > > > > case
+> > > > > > > > > where
+> > > > > > > > > there
+> > > > > > > > > is no need to take any actions on the RCEC because
+> > > > > > > > > the
+> > > > > > > > > firmware is
+> > > > > > > > > responsible for them.   This is true where APEI [2]
+> > > > > > > > > is used
+> > > > > > > > > to
+> > > > > > > > > report
+> > > > > > > > > the AER
+> > > > > > > > > errors via a GHES[v2] HEST entry [3] and relevant AER
+> > > > > > > > > CPER
+> > > > > > > > > record
+> > > > > > > > > [4]
+> > > > > > > > > and Firmware
+> > > > > > > > > First handling is in use.  
+> > > > > > > > 
+> > > > > > > > Right, in the case of the RCEC one identifies the
+> > > > > > > > RCiEPs by
+> > > > > > > > the
+> > > > > > > > RCiEP
+> > > > > > > > bitmap as a part of the RCEC Associated Endpoint
+> > > > > > > > Extended
+> > > > > > > > Capabilities.
+> > > > > > > > This ‘search’ so to speak would make use also of the
+> > > > > > > > RCEC
+> > > > > > > > Associated
+> > > > > > > > Bus Numbers Register to associate the devices with an
+> > > > > > > > RCEC when
+> > > > > > > > not
+> > > > > > > > on
+> > > > > > > > the same bus.  
+> > > > > > > 
+> > > > > > > Ah. I'm afraid my access to recent specs is a bit limited
+> > > > > > > at the
+> > > > > > > moment.
+> > > > > > > I do have a draft 5.0 spec which has that in though so I
+> > > > > > > now see
+> > > > > > > what
+> > > > > > > you mean.
+> > > > > > > 
+> > > > > > > Was introduced in Root Complex Event Collector Endpoint
+> > > > > > > Association
+> > > > > > > Extended
+> > > > > > > Capability version 2 in PCIe 5.0 I think.
+> > > > > > >  
+> > > > > > 
+> > > > > > Correct.
+> > > > > >  
+> > > > > > > > > As there is no current RCEC driver support, it should
+> > > > > > > > > not be
+> > > > > > > > > possible
+> > > > > > > > > to get
+> > > > > > > > > to this code via any routes other than the one above.
+> > > > > > > > > Hence
+> > > > > > > > > appropriate RCEC
+> > > > > > > > > handling can be added when the RCEC driver support is
+> > > > > > > > > ready.
+> > > > > > > > > The error handling is different from a normal PCIe
+> > > > > > > > > End Point
+> > > > > > > > > On Wed, 8 Jul 2020 09:01:13 -0700
+> > > > > > > > > > Sean V Kelley <sean.v.kelley@linux.intel.com>
+> > > > > > > > > wrote:
+> > > > > > > > > > 
+> > > > > > > > > > > On 8 Jul 2020, at 8:39, Jonathan Cameron wrote:
+> > > > > > > > > > > 
+> > > > > > > > > > > > On Tue, 7 Jul 2020 09:56:26 -0700
+> > > > > > > > > > > > Sean V Kelley <sean.v.kelley@linux.intel.com>
+> > > > > > > > > wrote:
+> > > > > > > > > > > >  
+> > > > > > > > > > > > > On 3 Jul 2020, at 1:23, Jonathan Cameron
+> > > > > > > > > wrote:
+> > > > > > > > > > > > >  
+> > > > > > > > > > > > > > On Thu, 2 Jul 2020 11:06:26 -0700
+> > > > > > > > > > > > > > Sean V Kelley <
+> > > > > > > > > sean.v.kelley@linux.intel.com> wrote:
+> > > > > > > > > > > > > >  
+> > > > > > > > > > > > > > > On 26 Jun 2020, at 11:41, Jonathan
+> > > > > > > > > Cameron wrote:
+> > > > > > > > > > > > > > >  
+> > > > > > > > > > > > > > > > On Fri, 26 Jun 2020 09:29:34 -0700
+> > > > > > > > > > > > > > > > Sean V Kelley <
+> > > > > > > > > sean.v.kelley@linux.intel.com> wrote:
+> > > > > > > > > > > > > > > >  
+> > > > > > > > > > > > > > > > > Hi,  
+> > > > > > > > > > > > > > > > Hi,
+> > > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > > Thanks for taking a look.
+> > > > > > > > > > > > > > > >  
+> > > > > > > > > > > > > > > > > On 22 Jun 2020, at 4:44, Jonathan
+> > > > > > > > > Cameron wrote:
+> > > > > > > > > > > > > > > > >  
+> > > > > > > > > > > > > > > > > > Was previously: PCI/AER: Add
+> > > > > > > > > partial initial supprot
+> > > > > > > > > > > > > > > > > > for
+> > > > > > > > > > > > > > > > > > RCiEPs
+> > > > > > > > > > > > > > > > > > using
+> > > > > > > > > > > > > > > > > > RCEC or
+> > > > > > > > > > > > > > > > > > firmware first.
+> > > > > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > > > > Currently the kernel does not
+> > > > > > > > > handle AER errors for
+> > > > > > > > > > > > > > > > > > Root
+> > > > > > > > > > > > > > > > > > Complex
+> > > > > > > > > > > > > > > > > > integrated
+> > > > > > > > > > > > > > > > > > End Points (RCiEPs)[0].  These
+> > > > > > > > > devices sit on a root
+> > > > > > > > > > > > > > > > > > bus
+> > > > > > > > > > > > > > > > > > within
+> > > > > > > > > > > > > > > > > > the
+> > > > > > > > > > > > > > > > > > Root Complex
+> > > > > > > > > > > > > > > > > > (RC).  AER handling is performed by
+> > > > > > > > > a Root Complex
+> > > > > > > > > > > > > > > > > > Event
+> > > > > > > > > > > > > > > > > > Collector
+> > > > > > > > > > > > > > > > > > (RCEC) [1]
+> > > > > > > > > > > > > > > > > > which is a effectively a type of
+> > > > > > > > > RCiEP on the same
+> > > > > > > > > > > > > > > > > > root bus.
+> > > > > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > > > > This code will only perform the
+> > > > > > > > > correct reset flow
+> > > > > > > > > > > > > > > > > > for the
+> > > > > > > > > > > > > > > > > > case
+> > > > > > > > > > > > > > > > > > where
+> > > > > > > > > > > > > > > > > > there
+> > > > > > > > > > > > > > > > > > is no need to take any actions on
+> > > > > > > > > the RCEC because
+> > > > > > > > > > > > > > > > > > the
+> > > > > > > > > > > > > > > > > > firmware is
+> > > > > > > > > > > > > > > > > > responsible for them.   This is
+> > > > > > > > > true where APEI [2]
+> > > > > > > > > > > > > > > > > > is used
+> > > > > > > > > > > > > > > > > > to
+> > > > > > > > > > > > > > > > > > report
+> > > > > > > > > > > > > > > > > > the AER
+> > > > > > > > > > > > > > > > > > errors via a GHES[v2] HEST entry
+> > > > > > > > > [3] and relevant AER
+> > > > > > > > > > > > > > > > > > CPER
+> > > > > > > > > > > > > > > > > > record
+> > > > > > > > > > > > > > > > > > [4]
+> > > > > > > > > > > > > > > > > > and Firmware
+> > > > > > > > > > > > > > > > > > First handling is in use.  
+> > > > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > > > Right, in the case of the RCEC one
+> > > > > > > > > identifies the
+> > > > > > > > > > > > > > > > > RCiEPs by
+> > > > > > > > > > > > > > > > > the
+> > > > > > > > > > > > > > > > > RCiEP
+> > > > > > > > > > > > > > > > > bitmap as a part of the RCEC
+> > > > > > > > > Associated Endpoint
+> > > > > > > > > > > > > > > > > Extended
+> > > > > > > > > > > > > > > > > because:
+> > > > > > > > > 
+> > > > > > > > > 1) There is no downstream port above an RCiEP as
+> > > > > > > > > these
+> > > > > > > > > devices sit
+> > > > > > > > > on
+> > > > > > > > > a root
+> > > > > > > > >    bus.
+> > > > > > > > > 
+> > > > > > > > > 2) In general, it makes little sense to reset other
+> > > > > > > > > devices
+> > > > > > > > > on on
+> > > > > > > > > the
+> > > > > > > > > same
+> > > > > > > > >    root bus.  For error handling outside the of the
+> > > > > > > > > root
+> > > > > > > > > complex
+> > > > > > > > > (RC)
+> > > > > > > > > an AER
+> > > > > > > > >    error will indicate that all the topology below
+> > > > > > > > > the
+> > > > > > > > > physical
+> > > > > > > > > link,
+> > > > > > > > > which
+> > > > > > > > >    the error is related to, will need to be reset as
+> > > > > > > > > they
+> > > > > > > > > share a
+> > > > > > > > > common
+> > > > > > > > >    path to the host.  For an RCiEP there is no such
+> > > > > > > > > defined
+> > > > > > > > > shared
+> > > > > > > > > path
+> > > > > > > > >    relationship with other elements on the root bus.
+> > > > > > > > > 
+> > > > > > > > > A new walk function, similar to pci_bus_walk is
+> > > > > > > > > provided
+> > > > > > > > > that
+> > > > > > > > > takes
+> > > > > > > > > a
+> > > > > > > > > pci_dev
+> > > > > > > > > instead of a bus.  If that dev corresponds to a
+> > > > > > > > > downstream
+> > > > > > > > > port it
+> > > > > > > > > will walk
+> > > > > > > > > the subordinate bus of that downstream port.  If the
+> > > > > > > > > dev does
+> > > > > > > > > not
+> > > > > > > > > then
+> > > > > > > > > it
+> > > > > > > > > will call the function on that device alone.   This
+> > > > > > > > > function
+> > > > > > > > > allows
+> > > > > > > > > us
+> > > > > > > > > to
+> > > > > > > > > avoid adding special cases to the majority of the
+> > > > > > > > > error
+> > > > > > > > > handling.  
+> > > > > > > > 
+> > > > > > > > Then in that case the callback could add the additional
+> > > > > > > > checks
+> > > > > > > > specific
+> > > > > > > > to identifying the associated RCiEPs.  
+> > > > > > > 
+> > > > > > > I am afraid I don't follow what you mean here.  Could you
+> > > > > > > give
+> > > > > > > more
+> > > > > > > info?  
+> > > > > > 
+> > > > > > Sure, a given RCEC can be associated with multiple
+> > > > > > RCiEPs.  As a
+> > > > > > part
+> > > > > > of
+> > > > > > the Extended Association Cap it is possible to obtain a
+> > > > > > bitmap of
+> > > > > > the
+> > > > > > RCiEP device ids on the same bus number as the RCEC device
+> > > > > > itself.
+> > > > > > (5.0-1.0 sec 7.9.10.2).  With a Cap version of 2h or
+> > > > > > higher, it is
+> > > > > > also
+> > > > > > possible to get an additional range of bus numbers
+> > > > > > containing
+> > > > > > RCiEPs
+> > > > > > also associated with this RCEC.
+> > > > > > 
+> > > > > > So I’m wondering if this function could be used in which
+> > > > > > passing 
+> > > > > > a
+> > > > > > dev, in this case the RCEC, triggers the call back which
+> > > > > > makes use
+> > > > > > of
+> > > > > > the RCiEP bitmap and associated bus ranges to return all
+> > > > > > identified
+> > > > > > devices in use cases such as in AER for finding sources,
+> > > > > > etc.  
+> > > > > 
+> > > > > Ah understood.
+> > > > > 
+> > > > > If we do this we effectively end up with 3 different types of
+> > > > > walk
+> > > > > and
+> > > > > the meaning of the walk function gets more complex again.
+> > > > > 
+> > > > > 1) Normal bus walk - we pass the downstream port above a bus
+> > > > > to 
+> > > > > which
+> > > > > the device is attached and it walks everthing below that
+> > > > > point.
+> > > > > 
+> > > > > 2) Case I care about RCiEP with no visible association with
+> > > > > an RCEC
+> > > > > as
+> > > > > I don't need to walk devices.  In that case just calls the
+> > > > > callbacks
+> > > > > for
+> > > > > the actual device.
+> > > > > 
+> > > > > 3) Pass in RCiEP with RCEC asociated with it (or do a dance
+> > > > > at the
+> > > > > caller
+> > > > > to pass in the RCEC itself). Need to walk the devices that
+> > > > > the RCEC
+> > > > > is
+> > > > > handling errors for.  For handling, I'm not all the calls
+> > > > > will be
+> > > > > generally
+> > > > > applicable to other devices associated with the RCEC as some
+> > > > > only
+> > > > > make
+> > > > > sense if there is an actual PCIe bus involved and hence we
+> > > > > need to
+> > > > > reset
+> > > > > other devices on that bus.  For RCEC I don't think there is
+> > > > > an
+> > > > > particular
+> > > > > reason to assume an AER error reported at one RCiEP will have
+> > > > > any
+> > > > > impact
+> > > > > on other devices associated with the particular RCEC.
+> > > > > I've not found anything in the spec addressing this question
+> > > > > but
+> > > > > perhaps
+> > > > > I've missed something?  
+> > > > 
+> > > > Correct.  There should be no impact to the RCEC or its
+> > > > associated
+> > > > RCiEPs which may not happen to reside on the same bus as the 
+> > > > collector at all.
+> > > >  
+> > > > > However, if the RCEC doesn't support multiple error records,
+> > > > > you may
+> > > > > need
+> > > > > to walk the bus to identify multiple simultaneous issues,
+> > > > > very
+> > > > > carefully
+> > > > > avoiding (or least minimizing) race conditions.
+> > > > >  
+> > > > > > The alternative is to have a separate walk for RCECs that
+> > > > > > loops
+> > > > > > through
+> > > > > > the bitmap / ranges (if supported) triggering the callback
+> > > > > > for each
+> > > > > > device found.  
+> > > > 
+> > > > I’ve been testing the Associated Endpoint Bitmap and Bus Range
+> > > > handling and using my pciutils patches to help to confirm some
+> > > > of the
+> > > > association. This overlaps with my CXL work and CXL 1.1 based
+> > > > RCiEPs
+> > > > are good test cards:
+> > > > 
+> > > > (Decode via:
+> > > > https://lore.kernel.org/linux-pci/20200624223940.240463-1-sean.v.kelley@linux.intel.com/
+> > > >  )
+> > > > 
+> > > > Test card at 6b:00.0
+> > > > 
+> > > > Capabilities: [e00 v1] Designated Vendor-Specific: Vendor=1e98 
+> > > > ID=0000
+> > > > Rev=0 Len=56: CXL
+> > > > CXLCap: Cache- IO+ Mem+ Mem HW Init+ HDMCount 1 Viral-
+> > > > CXLCtl: Cache- IO+ Mem- Cache SF Cov 0 Cache SF Gran 0 Cache
+> > > > Clean-
+> > > > Viral-
+> > > > CXLSta: Viral-
+> > > > Capabilities: [e38 v1] Device Serial Number 30-91-11-78-10-00-
+> > > > 00-00
+> > > > 
+> > > > RCEC assocated to RCiEP at 6b while residing at 6a:
+> > > > 
+> > > > Capabilities: [160 v2] Root Complex Event Collector Endpoint
+> > > > Association
+> > > > RCiEPBitmap: 00000000 [none]
+> > > > AssociatedBusNumbers: 6b-6b
+> > > > Kernel driver in use: pcieport
+> > > > 
+> > > > with dmesg:
+> > > > 
+> > > > [ 10.502543] pcieport 0000:6a:00.4: AER: enabled with IRQ 34
+> > > > 
+> > > > The trick is the walk, which is not compact.  Currently working
+> > > > on
+> > > > error injection to test:
+> > > > 
+> > > > void pcie_walk_rcec(struct pci_dev *rcec, int (*cb)(struct
+> > > > pci_dev *,
+> > > > void *),
+> > > > +                   void *userdata)
+> > > > +{
+> > > > +       u32 pos, bitmap, hdr, busn;
+> > > > +       u8 ver, nextbusn, lastbusn;
+> > > > +       unsigned int dev, fn, bnr;
+> > > > +       struct pci_bus *pbus=NULL;
+> > > > +       struct pci_dev *pdev;
+> > > > +       int retval;
+> > > > +
+> > > > +       pos = pci_find_ext_capability(rcec,
+> > > > PCI_EXT_CAP_ID_RCEC);
+> > > > +       if (!pos)
+> > > > +               return;
+> > > > +
+> > > > +       pci_read_config_dword(rcec, pos +
+> > > > PCI_RCEC_RCIEP_BITMAP,
+> > > > &bitmap);
+> > > > +
+> > > > +       for (dev = 0; dev < 32; dev++) {  
+> > > 
+> > > for_each_bit_set perhaps?
+> > >  
+> > > > +               if (!(bitmap & (1 << dev)))
+> > > > +                       continue;
+> > > > +
+> > > > +               for (fn = 0; fn < 8; fn++) {
+> > > > +                       pdev =
+> > > > pci_get_domain_bus_and_slot(pci_domain_nr(rcec->bus),
+> > > > +                                                          rcec
+> > > > ->bus-  
+> > > > > number,  
+> > > > +                                                          
+> > > > PCI_DEVFN(de
+> > > > v, fn));
+> > > > +                       if (!pdev)
+> > > > +                               continue;
+> > > > +
+> > > > +                       retval = cb(pdev, userdata);
+> > > > +                       if (retval)
+> > > > +                               return;
+> > > > +               }
+> > > > +       }
+> > > > 
+> > > > Then continuing in the same function above, I need to also
+> > > > consider 
+> > > > the
+> > > > case for the Bus ranges (still wip, not tested):
+> > > > 
+> > > > +       pci_read_config_dword(rcec, pos, &hdr);
+> > > > +       ver = PCI_RCEC_EP_CAP_VER(hdr);
+> > > > +       if (ver < PCI_RCEC_BUSN_REG_VER)
+> > > > +               return;
+> > > > +
+> > > > +       pci_read_config_dword(rcec, pos + PCI_RCEC_BUSN,
+> > > > &busn);
+> > > > +       nextbusn = PCI_RCEC_BUSN_NEXT(busn);
+> > > > +       lastbusn = PCI_RCEC_BUSN_LAST(busn);
+> > > > +
+> > > > +       if ((nextbusn == 0xff) && (lastbusn == 0x00))
+> > > > +               return;
+> > > > +
+> > > > +       for (bnr = nextbusn; bnr < (lastbusn + 1); bnr++) {
+> > > > +               pbus = pci_find_bus(pci_domain_nr(rcec->bus),
+> > > > bnr);
+> > > > +               if (pbus) {
+> > > > +                       /* find RCiEP devices on the given bus
+> > > > */
+> > > > +                       for (dev = 0; dev < 32; dev++) {
+> > > > + etc...
+> > > > +                       }
+> > > > +               }
+> > > > +       }
+> > > > +}  
+> > > 
+> > > Makes sense.
+> > >  
+> > > > Currently this lives in aer.c and it's large enough that I
+> > > > wonder if
+> > > > due to the specifity of the assoicated spec requirments if
+> > > > that 
+> > > > should
+> > > > be fine?  
+> > > 
+> > > Seems fine to me.
+> > >  
+> > > >  
+> > > > > Agreed. We would end up with the same splitting of handling
+> > > > > paths
+> > > > > that
+> > > > > wasn't liked in my v1 patch.   Perhaps we need  single
+> > > > > pci_walk_aer_affected
+> > > > > function with a pile of documentation for what it is actually
+> > > > > doing?  
+> > > > 
+> > > > Perhaps this would be a good start?  I tend to agree.  I can
+> > > > also
+> > > > submit more of the patches as RFC for further comment.  
+> > > 
+> > > When you are ready that would be great.  
+> > 
+> > Sounds good.
+> > 
+> > >  
+> > > >  
+> > > > > Even then we may need to have a parameter to indicate a
+> > > > > particular
+> > > > > callback
+> > > > > should be restricted to devices that share a 'real bus' or
+> > > > > not.  
+> > > > 
+> > > > In my case 'walk' through the spec options of either just
+> > > > bitmap or 
+> > > > if
+> > > > of sufficient version (2h), I walk through the bus ranges,
+> > > > calling 
+> > > > the
+> > > > callback at each encounter.  
+> > > 
+> > > That wasn't what I meant.  When doing some of the actual handling
+> > > once
+> > > we have a walk function it will get a bit fiddly.
+> > > I 'think' we need to first identify which devices associated with
+> > > the 
+> > > RCEC
+> > > have reported an AER error and then we need to only call the
+> > > callback 
+> > > for
+> > > those.  
+> > 
+> > Right, I was going to do that decision making in the call back
+> > rather 
+> > than include those details in the walk. That way the call back
+> > simply 
+> > reports what associated devices it finds and makes no assumptions
+> > on 
+> > which device needs to be acted upon.  I’ll experiment with 
+> > alternatives to placement of identification code.
 > 
-> Could you be a bit more specific here please.
+> That may work.  Will need the existing callbacks to be a bit more
+> clever
+> perhaps. Will be interesting to see what you get to work!
 > 
-> DT allows
-> 
->          macb0: ethernet@fffc4000 {
->                  compatible = "cdns,at32ap7000-macb";
->                  reg = <0xfffc4000 0x4000>;
->                  interrupts = <21>;
->                  phy-mode = "rmii";
->                  local-mac-address = [3a 0e 03 04 05 06];
->                  clock-names = "pclk", "hclk", "tx_clk";
->                  clocks = <&clkc 30>, <&clkc 30>, <&clkc 13>;
->                  ethernet-phy@1 {
->                          reg = <0x1>;
->                          reset-gpios = <&pioE 6 1>;
->                  };
->          };
-> 
-> So the PHY is a direct child of the MAC. The MDIO bus is not modelled
-> at all. Although this is allowed, it is deprecated, because it results > in problems with advanced systems which have multiple different
-> children, and the need to differentiate them. So drivers are slowly
 
-I don't think i'm suggesting that, because AFAIK in ACPI you would have 
-to specify the DEVICE() for mdio, in order to nest a further set of 
-phy's via _ADR(). I think in general what I was describing would look 
-more like what you have below. But..
+Patches are out today, please take a look:
 
-> migrating to always modelling the MDIO bus. In that case, the
-> phy-handle is always used to point to the PHY:
-> 
->          eth0: ethernet@522d0000 {
->                  compatible = "socionext,synquacer-netsec";
->                  reg = <0 0x522d0000 0x0 0x10000>, <0 0x10000000 0x0 0x10000>;
->                  interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
->                  clocks = <&clk_netsec>;
->                  clock-names = "phy_ref_clk";
->                  phy-mode = "rgmii";
->                  max-speed = <1000>;
->                  max-frame-size = <9000>;
->                  phy-handle = <&phy1>;
-> 
->                  mdio {
->                          #address-cells = <1>;
->                          #size-cells = <0>;
->                          phy1: ethernet-phy@1 {
->                                  compatible = "ethernet-phy-ieee802.3-c22";
->                                  reg = <1>;
->                          };
->                  };
-> 
-> "mdio-handle" is just half of phy-handle.
-> 
-> What you seem to be say is that although we have defined a generic
-> solution for ACPI which should work in all cases, it is suggested to
-> not use it? What exactly are you suggesting in its place?
-
-When you put it that way, what i'm saying sounds crazy.
-
-In this case what are are doing isn't as clean as what you have 
-described above, its more like:
-
-mdio: {
-   phy1: {}
-   phy2: {}
-}
-...
-// somewhere else
-dmac1: {
-     phy-handle = <&phy1>;
-}
-
-... //somewhere else
-eth0: {
-    //another device talking to the mgmt controller
-}
-
-
-Which is special in a couple ways.
-
-Lets rewind for a moment and say for ARM/ACPI, what we are talking about 
-are "edge/server class" devices (with RAS statements/etc) where the 
-expectation is that they will be running virtualized workloads using LTS 
-distros, or non linux OSes. DT/etc remains an option for networking 
-devices which are more "embedded", aren't SBSA, etc. So an Arm 
-based/ACPI machine should be more regular and share more in the way of 
-system architecture with other SBSA/SBBR/ACPI/etc machines than has been 
-the case for DT machines.
-
-A concern is then how we punch networking devices into an arbitrary VM 
-in a standardized way using libvirt/whatever. If the networking device 
-doesn't look like a simple self contained memory mapped resource with an 
-IOMMU domain, I think everything becomes more complicated and you have 
-to start going down the path of special caseing the VM firmware beyond 
-how its done for self contained PCIe/SRIOV devices. The latter manage to 
-pull this all off with a PCIe id, and a couple BARs fed into the VM.
-
-So, I would hope an ACPI nic representation is closer to just a minimal 
-resource list like:
-
-eth0: {
-       compatible = "cdns,at32ap7000-macb";
-       reg = <0xfffc4000 0x4000>;
-       interrupts = <21>;
-}
-or in ACPI speak:
-Device (ETH0)
-{
-       Name (_HID, "CDNSXXX")
-       Method (_CRS, 0x0, Serialized)
-       {
-         Name (RBUF, ResourceTemplate ()
-         {
-           Memory32Fixed (ReadWrite, 0xfffc4000, 0x4000, )
-           Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive)
-           {
-             21
-           }
-         })
-         Return (RBUF)
-       }
-}
-
-(Plus methods for pwr mgmt/etc as needed, the iommu info comes from 
-another table).
-
-Returning to the NXP part. They avoid the entirety of the above 
-discussion because all this MDIO/PHY mgmt is just feeding the data into 
-the mgmt controller, and the bits that are punched into the VM are 
-fairly standalone.
-
-Anyway, I think this set is generally fine, I would like to see this 
-part working well with ACPI given its what we have available today. For 
-the future, we also need to continue pushing everyone towards common 
-hardware standards. One of the ways of doing this is having hardware 
-which can be automatically enumerated/configured. Suggesting that the 
-kernel has a recommended way of doing this which aids fragmentation 
-isn't what we are trying to achieve with ACPI. Hence my previous comment 
-that we should consider this an escape hatch rather than the last word 
-in how to describe networking on ACPI/SBSA platforms.
+https://lore.kernel.org/linux-pci/20200724172223.145608-1-sean.v.kelley@intel.com/
 
 Thanks,
+Sean
+
+
