@@ -2,156 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0328122C67C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 15:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D4322C6D7
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 15:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbgGXNcz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Jul 2020 09:32:55 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2524 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726235AbgGXNcy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Jul 2020 09:32:54 -0400
-Received: from lhreml720-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 8578F17D3DDB922F41EF;
-        Fri, 24 Jul 2020 14:32:52 +0100 (IST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml720-chm.china.huawei.com (10.201.108.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Fri, 24 Jul 2020 14:32:52 +0100
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Fri, 24 Jul 2020 14:32:52 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>,
-        "jroedel@suse.de" <jroedel@suse.de>,
-        Linuxarm <linuxarm@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>
-Subject: RE: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for unknown
- (vendor) CPER records
-Thread-Topic: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for unknown
- (vendor) CPER records
-Thread-Index: AQHWYUfqroZbmVDLlEO3jLbzt/fllakWZmIggAA5R4CAABpXQA==
-Date:   Fri, 24 Jul 2020 13:32:52 +0000
-Message-ID: <bb7c23fae649486aa0720c619fef2e8b@huawei.com>
-References: <b76444fed0a2468983b2a2c45d7d31b2@huawei.com>
- <20200724125357.GA1510118@bjorn-Precision-5520>
-In-Reply-To: <20200724125357.GA1510118@bjorn-Precision-5520>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.85.142]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726455AbgGXNjj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Jul 2020 09:39:39 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:53624 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726366AbgGXNjj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 Jul 2020 09:39:39 -0400
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+        (envelope-from <andrew@lunn.ch>)
+        id 1jyxv9-006gDH-Hp; Fri, 24 Jul 2020 15:39:31 +0200
+Date:   Fri, 24 Jul 2020 15:39:31 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        netdev@vger.kernel.org, linux.cj@gmail.com,
+        linux-acpi@vger.kernel.org
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
+ PHY
+Message-ID: <20200724133931.GF1472201@lunn.ch>
+References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+ <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->-----Original Message-----
->From: Bjorn Helgaas [mailto:helgaas@kernel.org]
->Sent: 24 July 2020 13:54
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->kernel@vger.kernel.org; rjw@rjwysocki.net; bp@alien8.de;
->james.morse@arm.com; lenb@kernel.org; tony.luck@intel.com;
->dan.carpenter@oracle.com; zhangliguang@linux.alibaba.com;
->andriy.shevchenko@linux.intel.com; Wangkefeng (OS Kernel Lab)
-><wangkefeng.wang@huawei.com>; jroedel@suse.de; Linuxarm
-><linuxarm@huawei.com>; yangyicong <yangyicong@huawei.com>; Jonathan
->Cameron <jonathan.cameron@huawei.com>; tanxiaofei
-><tanxiaofei@huawei.com>
->Subject: Re: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for unknown
->(vendor) CPER records
->
->On Fri, Jul 24, 2020 at 09:00:41AM +0000, Shiju Jose wrote:
->> >-----Original Message-----
->> >From: Bjorn Helgaas [mailto:helgaas@kernel.org]
->> >Sent: 24 July 2020 00:21
->> >To: Shiju Jose <shiju.jose@huawei.com>
->> >Cc: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->> >kernel@vger.kernel.org; rjw@rjwysocki.net; bp@alien8.de;
->> >james.morse@arm.com; lenb@kernel.org; tony.luck@intel.com;
->> >dan.carpenter@oracle.com; zhangliguang@linux.alibaba.com;
->> >andriy.shevchenko@linux.intel.com; Wangkefeng (OS Kernel Lab)
->> ><wangkefeng.wang@huawei.com>; jroedel@suse.de; Linuxarm
->> ><linuxarm@huawei.com>; yangyicong <yangyicong@huawei.com>;
->Jonathan
->> >Cameron <jonathan.cameron@huawei.com>; tanxiaofei
->> ><tanxiaofei@huawei.com>
->> >Subject: Re: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for
->> >unknown
->> >(vendor) CPER records
->> >
->> >On Wed, Jul 22, 2020 at 11:39:51AM +0100, Shiju Jose wrote:
->> >> CPER records describing a firmware-first error are identified by GUID.
->> >> The ghes driver currently logs, but ignores any unknown CPER records.
->> >> This prevents describing errors that can't be represented by a
->> >> standard entry, that would otherwise allow a driver to recover from
->> >> an
->> >error.
->> >> The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
->> >> version 2.8).
->> >
->> >> +#ifdef CONFIG_ACPI_APEI_GHES
->> >> +/**
->> >> + * ghes_register_vendor_record_notifier - register a notifier for
->> >> +vendor
->> >> + * records that the kernel would otherwise ignore.
->> >> + * @nb: pointer to the notifier_block structure of the event handler.
->> >> + *
->> >> + * return 0 : SUCCESS, non-zero : FAIL  */ int
->> >> +ghes_register_vendor_record_notifier(struct notifier_block *nb);
->> >> +
->> >> +/**
->> >> + * ghes_unregister_vendor_record_notifier - unregister the
->> >> +previously
->> >> + * registered vendor record notifier.
->> >> + * @nb: pointer to the notifier_block structure of the vendor
->> >> +record
->> >handler.
->> >> + */
->> >> +void ghes_unregister_vendor_record_notifier(struct notifier_block
->> >> +*nb); #else static inline int
->> >> +ghes_register_vendor_record_notifier(struct notifier_block *nb) {
->> >> +	return -ENODEV;
->> >> +}
->> >> +
->> >> +static inline void ghes_unregister_vendor_record_notifier(struct
->> >> +notifier_block *nb) { }
->> >
->> >If you made CONFIG_PCIE_HISI_ERR depend on CONFIG_ACPI_APEI_GHES,
->> >you'd be able to get rid of these stubs, wouldn't you?  It doesn't
->> >look like there's any point in building pcie-hisi-error.c at all
->> >unless CONFIG_ACPI_APEI_GHES is enabled.
->>
->> The stub is added because this interface is expected to use by the
->> other drivers as well.  Some drivers may not want add the build depend
->> on the CONFIG_ACPI_APEI_GHES if the error reporting has less priority
->> in the driver.  However we can add dependency on
->CONFIG_ACPI_APEI_GHES
->> for building pcie-hisi-error.c.
->
->The usual route is to add stubs when they're needed, not just in anticipation
->of some need that may never materialize.
-ok. I will change in the next version.
+> Otherwise the MDIO bus and its phy should be a
+> child of the nic/mac using it, with standardized behaviors/etc left up to
+> the OSPM when it comes to MDIO bus enumeration/etc.
 
-Thanks,
-Shiju
+Hi Jeremy 
+
+Could you be a bit more specific here please.
+
+DT allows
+
+        macb0: ethernet@fffc4000 {
+                compatible = "cdns,at32ap7000-macb";
+                reg = <0xfffc4000 0x4000>;
+                interrupts = <21>;
+                phy-mode = "rmii";
+                local-mac-address = [3a 0e 03 04 05 06];
+                clock-names = "pclk", "hclk", "tx_clk";
+                clocks = <&clkc 30>, <&clkc 30>, <&clkc 13>;
+                ethernet-phy@1 {
+                        reg = <0x1>;
+                        reset-gpios = <&pioE 6 1>;
+                };
+        };
+
+So the PHY is a direct child of the MAC. The MDIO bus is not modelled
+at all. Although this is allowed, it is deprecated, because it results
+in problems with advanced systems which have multiple different
+children, and the need to differentiate them. So drivers are slowly
+migrating to always modelling the MDIO bus. In that case, the
+phy-handle is always used to point to the PHY:
+
+        eth0: ethernet@522d0000 {
+                compatible = "socionext,synquacer-netsec";
+                reg = <0 0x522d0000 0x0 0x10000>, <0 0x10000000 0x0 0x10000>;
+                interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
+                clocks = <&clk_netsec>;
+                clock-names = "phy_ref_clk";
+                phy-mode = "rgmii";
+                max-speed = <1000>;
+                max-frame-size = <9000>;
+                phy-handle = <&phy1>;
+
+                mdio {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        phy1: ethernet-phy@1 {
+                                compatible = "ethernet-phy-ieee802.3-c22";
+                                reg = <1>;
+                        };
+                };
+
+"mdio-handle" is just half of phy-handle.
+
+What you seem to be say is that although we have defined a generic
+solution for ACPI which should work in all cases, it is suggested to
+not use it? What exactly are you suggesting in its place?
+
+	Andrew
