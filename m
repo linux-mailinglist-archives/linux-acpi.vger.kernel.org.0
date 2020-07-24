@@ -2,101 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D4322C6D7
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 15:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D23C422C8F9
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jul 2020 17:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbgGXNjj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Jul 2020 09:39:39 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:53624 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726366AbgGXNjj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Jul 2020 09:39:39 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1jyxv9-006gDH-Hp; Fri, 24 Jul 2020 15:39:31 +0200
-Date:   Fri, 24 Jul 2020 15:39:31 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, linux.cj@gmail.com,
-        linux-acpi@vger.kernel.org
-Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
- PHY
-Message-ID: <20200724133931.GF1472201@lunn.ch>
-References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
- <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
- <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
+        id S1726731AbgGXP3Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Jul 2020 11:29:24 -0400
+Received: from [125.140.134.231] ([125.140.134.231]:53505 "EHLO
+        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726643AbgGXP3Y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Jul 2020 11:29:24 -0400
+Received: from User ([66.154.113.229]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
+         Sat, 25 Jul 2020 00:23:22 +0900
+Reply-To: <christopherwang36@gmail.com>
+From:   "CHRISTOPHER WANG" <christopherwang36@gmail.com>
+Subject: INVESTMENT
+Date:   Fri, 24 Jul 2020 08:23:40 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <WIN-DAONO245HJF1sXi008ef8fb@WIN-DAONO245HJF>
+X-OriginalArrivalTime: 24 Jul 2020 15:23:23.0176 (UTC) FILETIME=[5E918280:01D661CE]
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> Otherwise the MDIO bus and its phy should be a
-> child of the nic/mac using it, with standardized behaviors/etc left up to
-> the OSPM when it comes to MDIO bus enumeration/etc.
 
-Hi Jeremy 
 
-Could you be a bit more specific here please.
+Good day,
 
-DT allows
+You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. 
 
-        macb0: ethernet@fffc4000 {
-                compatible = "cdns,at32ap7000-macb";
-                reg = <0xfffc4000 0x4000>;
-                interrupts = <21>;
-                phy-mode = "rmii";
-                local-mac-address = [3a 0e 03 04 05 06];
-                clock-names = "pclk", "hclk", "tx_clk";
-                clocks = <&clkc 30>, <&clkc 30>, <&clkc 13>;
-                ethernet-phy@1 {
-                        reg = <0x1>;
-                        reset-gpios = <&pioE 6 1>;
-                };
-        };
-
-So the PHY is a direct child of the MAC. The MDIO bus is not modelled
-at all. Although this is allowed, it is deprecated, because it results
-in problems with advanced systems which have multiple different
-children, and the need to differentiate them. So drivers are slowly
-migrating to always modelling the MDIO bus. In that case, the
-phy-handle is always used to point to the PHY:
-
-        eth0: ethernet@522d0000 {
-                compatible = "socionext,synquacer-netsec";
-                reg = <0 0x522d0000 0x0 0x10000>, <0 0x10000000 0x0 0x10000>;
-                interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-                clocks = <&clk_netsec>;
-                clock-names = "phy_ref_clk";
-                phy-mode = "rgmii";
-                max-speed = <1000>;
-                max-frame-size = <9000>;
-                phy-handle = <&phy1>;
-
-                mdio {
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-                        phy1: ethernet-phy@1 {
-                                compatible = "ethernet-phy-ieee802.3-c22";
-                                reg = <1>;
-                        };
-                };
-
-"mdio-handle" is just half of phy-handle.
-
-What you seem to be say is that although we have defined a generic
-solution for ACPI which should work in all cases, it is suggested to
-not use it? What exactly are you suggesting in its place?
-
-	Andrew
+       The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days.
+      
+       The total value of the bond is 100million pounds sterling, in a million pound denominations.
+      
+        If you can handle this, do contact me at your earliest convenience via my email christopherwang36@gmail.com
+So we can discuss the final details Thank you.
+ 
+Mr CHRISTOPHER WANG
