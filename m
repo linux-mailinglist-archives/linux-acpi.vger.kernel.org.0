@@ -2,68 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9721522ED0C
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jul 2020 15:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E5522ED27
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jul 2020 15:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727935AbgG0NUp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jul 2020 09:20:45 -0400
-Received: from mail-oo1-f65.google.com ([209.85.161.65]:41046 "EHLO
-        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726222AbgG0NUp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jul 2020 09:20:45 -0400
-Received: by mail-oo1-f65.google.com with SMTP id z23so3137362ood.8
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jul 2020 06:20:44 -0700 (PDT)
+        id S1728156AbgG0NYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jul 2020 09:24:16 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:43802 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726139AbgG0NYQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jul 2020 09:24:16 -0400
+Received: by mail-oi1-f195.google.com with SMTP id l84so1751593oig.10;
+        Mon, 27 Jul 2020 06:24:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=d28RhC5d1nJKDEVRoGOssHvzGZOdQJnjXeVf62R8D88=;
-        b=DN3wEVyQrw73bSsAbzHlALtGz+LZPfKq6oRk2R/GHDCrEN57cLhfdi+p5qbrHlNx3N
-         lJj8m4aMRhbYVPn7m85+U7Z3t0GwXBzwGkHipQSU64sdntlANcwNH5rOjoQ7gBB/EFau
-         1Id4QZu/JFB6jgGTb64RvzmOrhMTFwKsQlsbSxEtfpWzPDzOR83RGmhssUZOb3eJNsiD
-         EGtmlgWVJH4K8oeMmhwjwaUf47LR9zKKaZVQlHnBNR7IQ3XR/2EwTC2rPBXDR89/3F9C
-         O6efVu0Kt/VeXqoLL+Le1MVb2byKmSu295syidxZ3ceaHDUv4pJq/dWWGXkglaAhe7Pj
-         HWrw==
-X-Gm-Message-State: AOAM530xtqdQ5SoV9uJqSeYoz28zG+BWJyNvyOIvj6HrTeeY3dVTi0C5
-        ziuXSYUeTbDeceOFalCZiuF8hRIysa1+aUOBZJM=
-X-Google-Smtp-Source: ABdhPJzdgNMZnB1P0I+XUJxBOeXPXbq8Z3k9MH1V6UxFEnRgwYejer/QrnYA7XxtroyogOjjlu2ijSYctPRb2pnodIw=
-X-Received: by 2002:a4a:e618:: with SMTP id f24mr4597543oot.75.1595856044471;
- Mon, 27 Jul 2020 06:20:44 -0700 (PDT)
+        bh=vPijsWsA86ncuQ4YsaqIM+LvW4eENySIZkL8qr7mFnI=;
+        b=ui8f+KUTdFarHw/52QqxxNiqpgJdfqXJPxZfP95AoXINyirlI7aroyaPg7OE1OthuO
+         zs5LwuOZuJb1rk1016pERxHMmuP7yHwBNpcoH+yH8FimzhJOqKP+XVPQqOK+vyLlv1kT
+         1s180zaY1YQiQpFa//RwpgKmq/XUJx4LfpKcEjPFbdBsBIRu3ne+WvdOr9taY3UqCej4
+         h2ZXRioNPNzOP5hRQakte/Y+OzU5eSF/7+xl2hqxVXZ/HzZDpxu3MSVETuU0jCsqk3DN
+         3Dxf2BYMlNcm+sarer0muwIkPGdXxrdHrDQq4EyF/ODIk2vvghnh5Uu3Qp/i5eopj7bE
+         4kqA==
+X-Gm-Message-State: AOAM533hiMKsdDxHuzIQ+WXHTAC8cw+u0CpoXo3mnlnGvR7RONk1rMt6
+        C+KWH3Y8C2hNF/fUVaT7DBgIg9uNis27Fj96AkeI+Q==
+X-Google-Smtp-Source: ABdhPJwxgeTfu25/fNqV/Yp7m4UiuLztNmLGBCv6sgMQ/dSVqrERZH1ePjwzvqq5MtdHN4jGfHFnB4USsnISOTsaoQw=
+X-Received: by 2002:aca:4a89:: with SMTP id x131mr18906467oia.103.1595856255175;
+ Mon, 27 Jul 2020 06:24:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <1595325546-63774-1-git-send-email-guohanjun@huawei.com>
-In-Reply-To: <1595325546-63774-1-git-send-email-guohanjun@huawei.com>
+References: <20200722170608.960983-1-colin.king@canonical.com>
+In-Reply-To: <20200722170608.960983-1-colin.king@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Jul 2020 15:20:33 +0200
-Message-ID: <CAJZ5v0gYYDr+QNUpDqPgBQrWaN8h3oanRh8_osCkTSQRrpHHSQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Minor cleanups
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Mon, 27 Jul 2020 15:24:04 +0200
+Message-ID: <CAJZ5v0gPLp2FdP15-g6G=RksmcqyF4v1a01=2jhoXj0P9ii0Tg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: remove redundant assignment to variable rc
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 21, 2020 at 12:06 PM Hanjun Guo <guohanjun@huawei.com> wrote:
+On Wed, Jul 22, 2020 at 7:06 PM Colin King <colin.king@canonical.com> wrote:
 >
-> When reviewing patchset "[PATCH v2 0/6] ACPI: Only create NUMA nodes
-> from entries in SRAT or SRAT emulation." [0] from Jonathan, I found some
-> code can be improved, here are some cleanup patches.
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> [0]: https://www.spinics.net/lists/linux-mm/msg220777.html
+> The variable rc is being initialized with a value that is
+> never read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
 >
-> Hanjun Guo (3):
->   ACPI: tables: Remove the duplicated checks for
->     acpi_parse_entries_array()
->   ACPI: NUMA: Remove the useless sub table pointer check
->   ACPI: NUMA: Remove the useless 'node >= MAX_NUMNODES' check
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/acpi/apei/hest.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  drivers/acpi/numa/srat.c | 10 +---------
->  drivers/acpi/tables.c    | 17 +++--------------
->  2 files changed, 4 insertions(+), 23 deletions(-)
+> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+> index 953a2fae8b15..6e980fe16772 100644
+> --- a/drivers/acpi/apei/hest.c
+> +++ b/drivers/acpi/apei/hest.c
+> @@ -227,7 +227,7 @@ __setup("hest_disable", setup_hest_disable);
+>  void __init acpi_hest_init(void)
+>  {
+>         acpi_status status;
+> -       int rc = -ENODEV;
+> +       int rc;
+>         unsigned int ghes_count = 0;
 >
+>         if (hest_disable) {
 > --
 
-All three patches applied as 5.9 material, thanks!
+Applied as 5.9 material, thanks!
