@@ -2,139 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F91C22E467
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jul 2020 05:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEDB522E5B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jul 2020 08:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726992AbgG0DZy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Jul 2020 23:25:54 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34566 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726817AbgG0DZy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Jul 2020 23:25:54 -0400
-X-UUID: b5aec717104440f5817f9b1245681e01-20200727
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=ts2TbemboXTjPLm3syKaYD/dvm0+IAdQpXqli+IsEmE=;
-        b=Q1oTugg20XjTN70cWrd9vhCDy6XdAgHFPySEZJiOVK058MKVnbRiFXQp+634LJBUdbzvy41lhfYSWLfQBGfbjF6W7N0r0JBq4BFf8hlto9iShD2aYxTPC4J1G2TTQKMpd94UHfI7yYv47nBBSbLPRWX0ia0VVSlz+8y/xNMTn48=;
-X-UUID: b5aec717104440f5817f9b1245681e01-20200727
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <neal.liu@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1411802195; Mon, 27 Jul 2020 11:25:49 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 27 Jul 2020 11:25:47 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 27 Jul 2020 11:25:47 +0800
-From:   Neal Liu <neal.liu@mediatek.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>
-CC:     Neal Liu <neal.liu@mediatek.com>, <linux-acpi@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        id S1726140AbgG0GGr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jul 2020 02:06:47 -0400
+Received: from mail-eopbgr140047.outbound.protection.outlook.com ([40.107.14.47]:26819
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726006AbgG0GGr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 27 Jul 2020 02:06:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nXd3gZsZKCGrA5CfMe9T3BSQeOVtPzH4Q7zsZuIsDP+bMOHNzg9MBIXPELO6tMa6FOybNFqxhECia85C4yEpESjp0IrIcETSG8lo6bYyAz2IhEd+scCHiN8Izqa1tKfImk6vtpweb7wd2yxwAwb6T8U5OdOozuBgWTf/U11Vj6/FDzwtrMcorWxHNyHOJhHOzuWejxo2QsiwxPjcHiFXR6hxH3N3B94wi5rzZQXPXA64hhr2BFXWMI1s67Jqiqx5kf6OHtBhKqYlC82xF6EIpK7eMhpB+ELxT0D9oVNmX/YYhhriFkjCvGs6UJ3em04xCpqF3fzMkeDMkQESEk32Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jNvW2qTuF4aE4LkQCQ2hJfXnIVgc8asWAPzIS9/P7zk=;
+ b=LFHSD/xRJ2S92R/x7vlQ59loL246LFByw+/KspXgYg19v5P1+y3Bhb/XCpV7lc2wH9ZjdPn28UpZShTYx3z+4snXKQ1gDvEOfxifUNe/7yDRF7Mtm8vaj2dUE3V9BMqHyLvXS+PzSuMFBLRXfEEAUf5bfwEdvvaujO/IT0U+ILhFdDTHaf9Mu+k24WZsfcE9xZysOZYDXnAsvV8AU6EH57GT1Ivxspuob8X7oyhCP+Y56GI+iLdrwcpBH3CayTbzSa9YDKg0GilsL73jsR+/pvTnh6RRLZCBPoV1/OeCD0UOPbAiSoU73MNU/stcVJwfjYFh/VMvH0hJMqvPtoYQLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jNvW2qTuF4aE4LkQCQ2hJfXnIVgc8asWAPzIS9/P7zk=;
+ b=cVauxZpUAT2LFk/Er4V1k280r2EMpv00CO4iR+CtOPpsNWuMawoY4TkMrHl8Ai+surtN53/RZrJjB5FujSbx7wQw+q3bq7o0rPla7wjd9sHGofLIfiOVlOwVHLpUceRU/O7Ywq4sFq8W94nlzMq+2m1mbWHKfne2HntVZ9WE4+k=
+Received: from DB7PR04MB4986.eurprd04.prod.outlook.com (20.176.232.217) by
+ DB8PR04MB5915.eurprd04.prod.outlook.com (20.179.8.206) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3216.27; Mon, 27 Jul 2020 06:06:42 +0000
+Received: from DB7PR04MB4986.eurprd04.prod.outlook.com
+ ([fe80::d133:55be:7303:108e]) by DB7PR04MB4986.eurprd04.prod.outlook.com
+ ([fe80::d133:55be:7303:108e%6]) with mapi id 15.20.3216.033; Mon, 27 Jul 2020
+ 06:06:42 +0000
+From:   Makarand Pawagi <makarand.pawagi@nxp.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>
-Subject: [PATCH v3] cpuidle: change enter_s2idle() prototype
-Date:   Mon, 27 Jul 2020 11:25:46 +0800
-Message-ID: <1595820346-4361-2-git-send-email-neal.liu@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1595820346-4361-1-git-send-email-neal.liu@mediatek.com>
-References: <1595820346-4361-1-git-send-email-neal.liu@mediatek.com>
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
+        "Diana Madalina Craciun (OSS)" <diana.craciun@oss.nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v2 03/12] ACPI/IORT: Make iort_msi_map_rid() PCI
+ agnostic
+Thread-Topic: [EXT] Re: [PATCH v2 03/12] ACPI/IORT: Make iort_msi_map_rid()
+ PCI agnostic
+Thread-Index: AQHWX298bSg8yHsFOE2/uTwYuRCOF6ka+P4w
+Date:   Mon, 27 Jul 2020 06:06:42 +0000
+Message-ID: <DB7PR04MB49860EBCE5D8917C94030A76EB720@DB7PR04MB4986.eurprd04.prod.outlook.com>
+References: <20200619082013.13661-4-lorenzo.pieralisi@arm.com>
+ <20200721145903.GA1117934@bjorn-Precision-5520>
+In-Reply-To: <20200721145903.GA1117934@bjorn-Precision-5520>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [122.169.218.242]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 14fa8626-098c-4fc9-9e93-08d831f33be1
+x-ms-traffictypediagnostic: DB8PR04MB5915:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB8PR04MB5915E998E339BF2482F76523EB720@DB8PR04MB5915.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3826;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: a+junAj7+5ZMFMjakO18mQv4ofJfdSq3LPyXrg8SbrxbJ4VOZVjyt4UaMH8l+ou1Atf2CThVG2ELNLkrLi/N0A1iUI2Om9sfSIcIIOIkwHwkGYE03BJwy66SWkbPFZOLMOpKLaAi1i5uSWC3CAR0jqbFJy3ZJqA57RiJdDeKyuD7otCnyNF+ROJLGvJ56wXF35Aw3z+vbq/9ottmd3LS4PWr5LfdqDD5LsyCJg4DkAs6j9j9RbxNqO5kt6oxHe5Xth/o6S+y+DjtnUiZvL1DRuzagw4JHEPcO1zoeGBFwInS5R3WoLvqVi4wrNfPBVTAXlQFdusDW1+TK6Mnxlgg+w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4986.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(39860400002)(396003)(346002)(136003)(376002)(66476007)(7416002)(8936002)(66446008)(64756008)(66556008)(66946007)(26005)(9686003)(186003)(55016002)(76116006)(8676002)(52536014)(83380400001)(316002)(54906003)(6506007)(110136005)(53546011)(33656002)(71200400001)(44832011)(5660300002)(478600001)(7696005)(2906002)(86362001)(4326008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: K2I9U87w65oILDkjhzIH5X4VQ+OUnBjHo+4QFxlt64wwzQFs/4w27zPWdoaqF1DJzgZ6/7lpCy6tJfZUu4t1pqZQBVFmKBgMLzyy/Oct8cprJ+AGR6BctGTql5rNLTuOxiIFo/Zzv2D8mm9sF53IFHgEQjucJ5z2zJBVwPZeclFIF94PWgmT0bgm/WUiR2LQW9hJmbo72wwr26N9NaolDPxRKe6BRNcNgNmE/WNHV9zAXGpwY4TWKlQBmJcbkrZcVcQDjCg0q67h+uJN3UjcgBiyrVEdXC8rGHcdPei4p+ynTHNo2Is/yBXEdW65Qbo/feGsDoUqLrw2DDvM4ZcbYMK47gg87vSR2ddCtw73vQMzSvpTak/XchABgjmd0kJb+h7BF81lVanDmvAaNEaTtvsXAhc1nBkX+Da+/EcleTeGqRbIjzPT5LM7r8l2iDmC46EJapaUCyiCqOrd5ccVzf5zJ1lmyc/r2OgF2+nr+sgiCQiSvwl8dQM2RIDoA8zK
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4986.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14fa8626-098c-4fc9-9e93-08d831f33be1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2020 06:06:42.3051
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: V6rquBw+A2Jtwcq3oXcjw79bU2Y92lMTtO6m7Lm0ZALjlvLXiLcfjVllefi16LvpuVw98oumP/Iwt9pCFC7nEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB5915
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Q29udHJvbCBGbG93IEludGVncml0eShDRkkpIGlzIGEgc2VjdXJpdHkgbWVjaGFuaXNtIHRoYXQg
-ZGlzYWxsb3dzDQpjaGFuZ2VzIHRvIHRoZSBvcmlnaW5hbCBjb250cm9sIGZsb3cgZ3JhcGggb2Yg
-YSBjb21waWxlZCBiaW5hcnksDQptYWtpbmcgaXQgc2lnbmlmaWNhbnRseSBoYXJkZXIgdG8gcGVy
-Zm9ybSBzdWNoIGF0dGFja3MuDQoNCmluaXRfc3RhdGVfbm9kZSgpIGFzc2lnbiBzYW1lIGZ1bmN0
-aW9uIGNhbGxiYWNrIHRvIGRpZmZlcmVudA0KZnVuY3Rpb24gcG9pbnRlciBkZWNsYXJhdGlvbnMu
-DQoNCnN0YXRpYyBpbnQgaW5pdF9zdGF0ZV9ub2RlKHN0cnVjdCBjcHVpZGxlX3N0YXRlICppZGxl
-X3N0YXRlLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IG9mX2Rldmlj
-ZV9pZCAqbWF0Y2hlcywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBkZXZpY2Vf
-bm9kZSAqc3RhdGVfbm9kZSkgeyAuLi4NCiAgICAgICAgaWRsZV9zdGF0ZS0+ZW50ZXIgPSBtYXRj
-aF9pZC0+ZGF0YTsgLi4uDQogICAgICAgIGlkbGVfc3RhdGUtPmVudGVyX3MyaWRsZSA9IG1hdGNo
-X2lkLT5kYXRhOyB9DQoNCkZ1bmN0aW9uIGRlY2xhcmF0aW9uczoNCg0Kc3RydWN0IGNwdWlkbGVf
-c3RhdGUgeyAuLi4NCiAgICAgICAgaW50ICgqZW50ZXIpIChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2Ug
-KmRldiwNCiAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwN
-CiAgICAgICAgICAgICAgICAgICAgICBpbnQgaW5kZXgpOw0KDQogICAgICAgIHZvaWQgKCplbnRl
-cl9zMmlkbGUpIChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LA0KICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgaW50IGluZGV4KTsgfTsNCg0KSW4gdGhpcyBjYXNlLCBlaXRoZXIgZW50
-ZXIoKSBvciBlbnRlcl9zMmlkbGUoKSB3b3VsZCBjYXVzZSBDRkkgY2hlY2sNCmZhaWxlZCBzaW5j
-ZSB0aGV5IHVzZSBzYW1lIGNhbGxlZS4NCg0KQWxpZ24gZnVuY3Rpb24gcHJvdG90eXBlIG9mIGVu
-dGVyKCkgc2luY2UgaXQgbmVlZHMgcmV0dXJuIHZhbHVlIGZvcg0Kc29tZSB1c2UgY2FzZXMuIFRo
-ZSByZXR1cm4gdmFsdWUgb2YgZW50ZXJfczJpZGxlKCkgaXMgbm8NCm5lZWQgY3VycmVudGx5Lg0K
-DQpTaWduZWQtb2ZmLWJ5OiBOZWFsIExpdSA8bmVhbC5saXVAbWVkaWF0ZWsuY29tPg0KUmV2aWV3
-ZWQtYnk6IFNhbWkgVG9sdmFuZW4gPHNhbWl0b2x2YW5lbkBnb29nbGUuY29tPg0KLS0tDQogZHJp
-dmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgICB8ICAgIDYgKysrKy0tDQogZHJpdmVycy9jcHVp
-ZGxlL2NwdWlkbGUtdGVncmEuYyB8ICAgIDggKysrKystLS0NCiBkcml2ZXJzL2lkbGUvaW50ZWxf
-aWRsZS5jICAgICAgIHwgICAgNiArKysrLS0NCiBpbmNsdWRlL2xpbnV4L2NwdWlkbGUuaCAgICAg
-ICAgIHwgICAgOSArKysrKystLS0NCiA0IGZpbGVzIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyks
-IDEwIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9p
-ZGxlLmMgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KaW5kZXggNzU1MzRjNS4uNmZm
-YjZjOSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvYWNwaS9wcm9jZXNzb3JfaWRsZS5jDQorKysgYi9k
-cml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KQEAgLTY1NSw4ICs2NTUsOCBAQCBzdGF0aWMg
-aW50IGFjcGlfaWRsZV9lbnRlcihzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAJcmV0dXJu
-IGluZGV4Ow0KIH0NCiANCi1zdGF0aWMgdm9pZCBhY3BpX2lkbGVfZW50ZXJfczJpZGxlKHN0cnVj
-dCBjcHVpZGxlX2RldmljZSAqZGV2LA0KLQkJCQkgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRy
-diwgaW50IGluZGV4KQ0KK3N0YXRpYyBpbnQgYWNwaV9pZGxlX2VudGVyX3MyaWRsZShzdHJ1Y3Qg
-Y3B1aWRsZV9kZXZpY2UgKmRldiwNCisJCQkJICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwg
-aW50IGluZGV4KQ0KIHsNCiAJc3RydWN0IGFjcGlfcHJvY2Vzc29yX2N4ICpjeCA9IHBlcl9jcHUo
-YWNwaV9jc3RhdGVbaW5kZXhdLCBkZXYtPmNwdSk7DQogDQpAQCAtNjc0LDYgKzY3NCw4IEBAIHN0
-YXRpYyB2b2lkIGFjcGlfaWRsZV9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpk
-ZXYsDQogCQl9DQogCX0NCiAJYWNwaV9pZGxlX2RvX2VudHJ5KGN4KTsNCisNCisJcmV0dXJuIDA7
-DQogfQ0KIA0KIHN0YXRpYyBpbnQgYWNwaV9wcm9jZXNzb3Jfc2V0dXBfY3B1aWRsZV9jeChzdHJ1
-Y3QgYWNwaV9wcm9jZXNzb3IgKnByLA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvY3B1aWRsZS9jcHVp
-ZGxlLXRlZ3JhLmMgYi9kcml2ZXJzL2NwdWlkbGUvY3B1aWRsZS10ZWdyYS5jDQppbmRleCAxNTAw
-NDU4Li5hMTJmYjE0IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9jcHVpZGxlL2NwdWlkbGUtdGVncmEu
-Yw0KKysrIGIvZHJpdmVycy9jcHVpZGxlL2NwdWlkbGUtdGVncmEuYw0KQEAgLTI1MywxMSArMjUz
-LDEzIEBAIHN0YXRpYyBpbnQgdGVncmFfY3B1aWRsZV9lbnRlcihzdHJ1Y3QgY3B1aWRsZV9kZXZp
-Y2UgKmRldiwNCiAJcmV0dXJuIGVyciA/IC0xIDogaW5kZXg7DQogfQ0KIA0KLXN0YXRpYyB2b2lk
-IHRlZ3JhMTE0X2VudGVyX3MyaWRsZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCi0JCQkJ
-ICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCi0JCQkJICBpbnQgaW5kZXgpDQorc3RhdGlj
-IGludCB0ZWdyYTExNF9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQor
-CQkJCSBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCisJCQkJIGludCBpbmRleCkNCiB7DQog
-CXRlZ3JhX2NwdWlkbGVfZW50ZXIoZGV2LCBkcnYsIGluZGV4KTsNCisNCisJcmV0dXJuIDA7DQog
-fQ0KIA0KIC8qDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pZGxlL2ludGVsX2lkbGUuYyBiL2RyaXZl
-cnMvaWRsZS9pbnRlbF9pZGxlLmMNCmluZGV4IGY0NDk1ODQuLmIxNzhkYTMgMTAwNjQ0DQotLS0g
-YS9kcml2ZXJzL2lkbGUvaW50ZWxfaWRsZS5jDQorKysgYi9kcml2ZXJzL2lkbGUvaW50ZWxfaWRs
-ZS5jDQpAQCAtMTc1LDEzICsxNzUsMTUgQEAgc3RhdGljIF9fY3B1aWRsZSBpbnQgaW50ZWxfaWRs
-ZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAgKiBJbnZva2VkIGFzIGEgc3VzcGVuZC10
-by1pZGxlIGNhbGxiYWNrIHJvdXRpbmUgd2l0aCBmcm96ZW4gdXNlciBzcGFjZSwgZnJvemVuDQog
-ICogc2NoZWR1bGVyIHRpY2sgYW5kIHN1c3BlbmRlZCBzY2hlZHVsZXIgY2xvY2sgb24gdGhlIHRh
-cmdldCBDUFUuDQogICovDQotc3RhdGljIF9fY3B1aWRsZSB2b2lkIGludGVsX2lkbGVfczJpZGxl
-KHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0KLQkJCQkJc3RydWN0IGNwdWlkbGVfZHJpdmVy
-ICpkcnYsIGludCBpbmRleCkNCitzdGF0aWMgX19jcHVpZGxlIGludCBpbnRlbF9pZGxlX3MyaWRs
-ZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCisJCQkJICAgICAgIHN0cnVjdCBjcHVpZGxl
-X2RyaXZlciAqZHJ2LCBpbnQgaW5kZXgpDQogew0KIAl1bnNpZ25lZCBsb25nIGVheCA9IGZsZzJN
-V0FJVChkcnYtPnN0YXRlc1tpbmRleF0uZmxhZ3MpOw0KIAl1bnNpZ25lZCBsb25nIGVjeCA9IDE7
-IC8qIGJyZWFrIG9uIGludGVycnVwdCBmbGFnICovDQogDQogCW13YWl0X2lkbGVfd2l0aF9oaW50
-cyhlYXgsIGVjeCk7DQorDQorCXJldHVybiAwOw0KIH0NCiANCiAvKg0KZGlmZiAtLWdpdCBhL2lu
-Y2x1ZGUvbGludXgvY3B1aWRsZS5oIGIvaW5jbHVkZS9saW51eC9jcHVpZGxlLmgNCmluZGV4IGVj
-MmVmNjMuLmI2NTkwOWEgMTAwNjQ0DQotLS0gYS9pbmNsdWRlL2xpbnV4L2NwdWlkbGUuaA0KKysr
-IGIvaW5jbHVkZS9saW51eC9jcHVpZGxlLmgNCkBAIC02NSwxMCArNjUsMTMgQEAgc3RydWN0IGNw
-dWlkbGVfc3RhdGUgew0KIAkgKiBDUFVzIGV4ZWN1dGUgLT5lbnRlcl9zMmlkbGUgd2l0aCB0aGUg
-bG9jYWwgdGljayBvciBlbnRpcmUgdGltZWtlZXBpbmcNCiAJICogc3VzcGVuZGVkLCBzbyBpdCBt
-dXN0IG5vdCByZS1lbmFibGUgaW50ZXJydXB0cyBhdCBhbnkgcG9pbnQgKGV2ZW4NCiAJICogdGVt
-cG9yYXJpbHkpIG9yIGF0dGVtcHQgdG8gY2hhbmdlIHN0YXRlcyBvZiBjbG9jayBldmVudCBkZXZp
-Y2VzLg0KKwkgKg0KKwkgKiBUaGlzIGNhbGxiYWNrIG1heSBwb2ludCB0byB0aGUgc2FtZSBmdW5j
-dGlvbiBhcyAtPmVudGVyIGlmIGFsbCBvZg0KKwkgKiB0aGUgYWJvdmUgcmVxdWlyZW1lbnRzIGFy
-ZSBtZXQgYnkgaXQuDQogCSAqLw0KLQl2b2lkICgqZW50ZXJfczJpZGxlKSAoc3RydWN0IGNwdWlk
-bGVfZGV2aWNlICpkZXYsDQotCQkJICAgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsDQot
-CQkJICAgICAgaW50IGluZGV4KTsNCisJaW50ICgqZW50ZXJfczJpZGxlKShzdHJ1Y3QgY3B1aWRs
-ZV9kZXZpY2UgKmRldiwNCisJCQkgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsDQorCQkJ
-ICAgIGludCBpbmRleCk7DQogfTsNCiANCiAvKiBJZGxlIFN0YXRlIEZsYWdzICovDQotLSANCjEu
-Ny45LjUNCg==
 
+
+> -----Original Message-----
+> From: Bjorn Helgaas <helgaas@kernel.org>
+> Sent: Tuesday, July 21, 2020 8:29 PM
+> To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org; Will Deacon <will@kernel.org>;
+> Hanjun Guo <guohanjun@huawei.com>; Bjorn Helgaas
+> <bhelgaas@google.com>; Sudeep Holla <sudeep.holla@arm.com>; Catalin
+> Marinas <catalin.marinas@arm.com>; Robin Murphy <robin.murphy@arm.com>;
+> Rafael J. Wysocki <rjw@rjwysocki.net>; iommu@lists.linux-foundation.org;
+> linux-acpi@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> pci@vger.kernel.org; Rob Herring <robh+dt@kernel.org>; Joerg Roedel
+> <joro@8bytes.org>; Marc Zyngier <maz@kernel.org>; Makarand Pawagi
+> <makarand.pawagi@nxp.com>; Diana Madalina Craciun (OSS)
+> <diana.craciun@oss.nxp.com>; Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> Subject: [EXT] Re: [PATCH v2 03/12] ACPI/IORT: Make iort_msi_map_rid() PC=
+I
+> agnostic
+>=20
+> Caution: EXT Email
+>=20
+> On Fri, Jun 19, 2020 at 09:20:04AM +0100, Lorenzo Pieralisi wrote:
+> > There is nothing PCI specific in iort_msi_map_rid().
+> >
+> > Rename the function using a bus protocol agnostic name,
+> > iort_msi_map_id(), and convert current callers to it.
+> >
+> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Hanjun Guo <guohanjun@huawei.com>
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Robin Murphy <robin.murphy@arm.com>
+> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>=20
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+>=20
+> Sorry I missed this!
+[Makarand Pawagi]=20
+Thanks Bjorn, Hi Rafael can you also finalize your review?
+>=20
+> > ---
+> >  drivers/acpi/arm64/iort.c | 12 ++++++------
+> >  drivers/pci/msi.c         |  2 +-
+> >  include/linux/acpi_iort.h |  6 +++---
+> >  3 files changed, 10 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> > index 902e2aaca946..53f9ef515089 100644
+> > --- a/drivers/acpi/arm64/iort.c
+> > +++ b/drivers/acpi/arm64/iort.c
+> > @@ -568,22 +568,22 @@ static struct acpi_iort_node
+> > *iort_find_dev_node(struct device *dev)  }
+> >
+> >  /**
+> > - * iort_msi_map_rid() - Map a MSI requester ID for a device
+> > + * iort_msi_map_id() - Map a MSI input ID for a device
+> >   * @dev: The device for which the mapping is to be done.
+> > - * @req_id: The device requester ID.
+> > + * @input_id: The device input ID.
+> >   *
+> > - * Returns: mapped MSI RID on success, input requester ID otherwise
+> > + * Returns: mapped MSI ID on success, input ID otherwise
+> >   */
+> > -u32 iort_msi_map_rid(struct device *dev, u32 req_id)
+> > +u32 iort_msi_map_id(struct device *dev, u32 input_id)
+> >  {
+> >       struct acpi_iort_node *node;
+> >       u32 dev_id;
+> >
+> >       node =3D iort_find_dev_node(dev);
+> >       if (!node)
+> > -             return req_id;
+> > +             return input_id;
+> >
+> > -     iort_node_map_id(node, req_id, &dev_id, IORT_MSI_TYPE);
+> > +     iort_node_map_id(node, input_id, &dev_id, IORT_MSI_TYPE);
+> >       return dev_id;
+> >  }
+> >
+> > diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c index
+> > 74a91f52ecc0..77f48b95e277 100644
+> > --- a/drivers/pci/msi.c
+> > +++ b/drivers/pci/msi.c
+> > @@ -1536,7 +1536,7 @@ u32 pci_msi_domain_get_msi_rid(struct irq_domain
+> > *domain, struct pci_dev *pdev)
+> >
+> >       of_node =3D irq_domain_get_of_node(domain);
+> >       rid =3D of_node ? of_msi_map_rid(&pdev->dev, of_node, rid) :
+> > -                     iort_msi_map_rid(&pdev->dev, rid);
+> > +                     iort_msi_map_id(&pdev->dev, rid);
+> >
+> >       return rid;
+> >  }
+> > diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+> > index 08ec6bd2297f..e51425e083da 100644
+> > --- a/include/linux/acpi_iort.h
+> > +++ b/include/linux/acpi_iort.h
+> > @@ -28,7 +28,7 @@ void iort_deregister_domain_token(int trans_id);
+> > struct fwnode_handle *iort_find_domain_token(int trans_id);  #ifdef
+> > CONFIG_ACPI_IORT  void acpi_iort_init(void);
+> > -u32 iort_msi_map_rid(struct device *dev, u32 req_id);
+> > +u32 iort_msi_map_id(struct device *dev, u32 id);
+> >  struct irq_domain *iort_get_device_domain(struct device *dev, u32 id,
+> >                                         enum irq_domain_bus_token
+> > bus_token);  void acpi_configure_pmsi_domain(struct device *dev); @@
+> > -39,8 +39,8 @@ const struct iommu_ops *iort_iommu_configure(struct
+> > device *dev);  int iort_iommu_msi_get_resv_regions(struct device *dev,
+> > struct list_head *head);  #else  static inline void
+> > acpi_iort_init(void) { } -static inline u32 iort_msi_map_rid(struct
+> > device *dev, u32 req_id) -{ return req_id; }
+> > +static inline u32 iort_msi_map_id(struct device *dev, u32 id) {
+> > +return id; }
+> >  static inline struct irq_domain *iort_get_device_domain(
+> >       struct device *dev, u32 id, enum irq_domain_bus_token bus_token)
+> > { return NULL; }
+> > --
+> > 2.26.1
+> >
