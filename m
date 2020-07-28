@@ -2,180 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6FF6231359
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 22:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A6F231371
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 22:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729174AbgG1UAb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jul 2020 16:00:31 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:28614 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729088AbgG1UAa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jul 2020 16:00:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1595966428;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hSzFFDyUfAnXvkkVJ84iprpsx2ZHjX86onKI2woEOHU=;
-        b=JT+cQAp16ySm64D8+q0dpumTjO0h7krXE/2E/P5htJcdl+3980qiHyc2HVuWDFX1gWTvPs
-        r9aXIzD2jvanJ4fb7q1LvqhL9Nr3Vhxhbx2ZWZBrhnyo0Qt1TO7L8CFmO6II666vbrUl/p
-        +KJezjLygeuHnUC1QU5LtH9xGaWri8M=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-364-3hf_LDtpM7ek8fozFkb4Tw-1; Tue, 28 Jul 2020 16:00:26 -0400
-X-MC-Unique: 3hf_LDtpM7ek8fozFkb4Tw-1
-Received: by mail-ed1-f70.google.com with SMTP id t9so5970781edw.22
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jul 2020 13:00:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=hSzFFDyUfAnXvkkVJ84iprpsx2ZHjX86onKI2woEOHU=;
-        b=YNKvITCcrd9bKTKpIKLDVMrjpBmIEL5KD4iAzjdPSkBL1fcjBfbDlNMEGS3ZhR6THA
-         JgnrjtVt/Ldc8BNCCZzseCtvXxsaCDM6Q4r0wjJIDYOZ5Mujp7odOpwyzNg8OCEAn5OC
-         KkbcCaDID7hIksXkdL27LZ2/dJH2Vo4QQ0OFUnMKyGiAvd6jxTLkmMNwJ9oPoOZfgGC5
-         D9jKrh+I4EKJLckvuFtNElOA25txTSKSsDneBAAH3/NqBGyGqmalCcCc2olKhX0iasGh
-         4dv+BpKzBBg+QTFW+5KXAG8E7fCGWuAZrVFnue2y98EHPX7n4c/EChVqksjh6Ja0bW6c
-         ugYg==
-X-Gm-Message-State: AOAM530L5ELcIbgq0WNgDxrd5+YK0/J9kLZ5JJx78cg8YYNIFY2tGO3A
-        8MvDIxg45a9M+uSocK3fktdiXBZiErfYgHLryxu447DGrYL+EtZpkpemJ6NbApgYFvEEMDCf9Sv
-        Ueg/2SjVjQ1g4l1NvGO+UEQ==
-X-Received: by 2002:a17:906:e46:: with SMTP id q6mr25991248eji.234.1595966425332;
-        Tue, 28 Jul 2020 13:00:25 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzV14O9arRYB6XE8+8IFKAQO6S/91DQBaJNDTc1IjVEOlhbwsAm5kcJXeUo4rgsWkPdUP3wYw==
-X-Received: by 2002:a17:906:e46:: with SMTP id q6mr25991222eji.234.1595966425063;
-        Tue, 28 Jul 2020 13:00:25 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id y22sm9846217ejf.108.2020.07.28.13.00.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2020 13:00:24 -0700 (PDT)
-Subject: Re: [PATCH v5 07/16] pwm: crc: Fix period / duty_cycle times being
- off by a factor of 256
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20200717133753.127282-1-hdegoede@redhat.com>
- <20200717133753.127282-8-hdegoede@redhat.com>
- <20200728193634.GD3703480@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <a05f24ec-3be5-42c7-38b8-69e8a3a2b330@redhat.com>
-Date:   Tue, 28 Jul 2020 22:00:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200728193634.GD3703480@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1728285AbgG1UEE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jul 2020 16:04:04 -0400
+Received: from mga14.intel.com ([192.55.52.115]:38581 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728050AbgG1UEE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jul 2020 16:04:04 -0400
+IronPort-SDR: iHGkTGEYJBqdcLFKo+Vipls5s4FbMobh80awlvGzlOQNZZWTOPf4XMO32G6q86qTCoaeA3f8PZ
+ ZIY9k5SDFasQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9696"; a="150475400"
+X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
+   d="scan'208";a="150475400"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2020 13:04:02 -0700
+IronPort-SDR: ZCEh/MZGwMLr7N8b91imaZoRF4XG5KNs4qHYr+Tj6Xp3jyWJMHvmRGsi6NgVfLc+/K4FXaa8vn
+ l9JHalz1w1eA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,407,1589266800"; 
+   d="scan'208";a="312755529"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by fmsmga004.fm.intel.com with ESMTP; 28 Jul 2020 13:04:02 -0700
+Received: from fmsmsx151.amr.corp.intel.com (10.18.125.4) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 28 Jul 2020 13:04:02 -0700
+Received: from FMSEDG001.ED.cps.intel.com (10.1.192.133) by
+ FMSMSX151.amr.corp.intel.com (10.18.125.4) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 28 Jul 2020 13:04:01 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.107)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Tue, 28 Jul 2020 13:04:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JARjguBYlqYWQHrbF1JR6Gl7OieV+/pi0xRxDjm2XFskNxgBHMZXKSu45l7MnWEOSqZTXpIUuaVX1PkniBdQnOlUFP89DbUwX/ljnRj4zSeMtTf2hOVJ37u3qnqy/h5SsAEnPtrHfwEEju/ppY0PnIDibm/Jgwb3zRvDZDGZ9OCBOKoG3PatE8c3Fw5CiFC4TRUwcGaio1Ou2NpG3IBTIC+i0V5WUkMztHSCRebp5G5MbrU7Al867WUhQr8RCtsppNoyGW2dflXgfU1GvIhYNqtAPhIPmir6vzbxxmHL2toZw1ZpYs6joqFBNX6poTd21+7KkqUUuda8KqWWiiTlgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6iAxcPjGWNxlGWEI998ED765q8Hz3UF3Lo0FMtU6HhU=;
+ b=Y7gAKWioFdPfDX1SQjTn0RlwdjKIctSYJhjd5/D28N7K3t1QUpcfPVOjYqP78+1/75OH7LxRRolfAkvq8E8Q25xWoHVbFKdQAF6KqgNtXfxxyMBS+ij4qK33sIfhR2wHwaaNA32O86JfczxTkovPU2XEuYnCf3t0R+rHGmpaPRdc7M8T0o9OWmeaXtb2NTYkWucxEKJiN4sH0uj8lCjclU7ByFr6z+NBPUNK3Hq1cvoJDnWd0mnAFqFB6TUz6Ui3Qrt5iNRMe8QrfymHc4Zkz5Cm3zhRQ+5ILqr4H9StGPDcYsuoBmgAlzFSUccttEbTNCliLaeHaxrwQjY/Uk7MKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6iAxcPjGWNxlGWEI998ED765q8Hz3UF3Lo0FMtU6HhU=;
+ b=xDd16hwheQT7qbSIs9ElstGLOmcibYrXy0lyYsO2zQUCbgqLBs6oMAtmWwz93hKDxsn/X5AjjffQwETX1Nijaargwhf0/mj4na8PDJ0NbB3Lpx+BaPepXL0uBFtqMT5YG6wG7/WUFxW5Q7esPRg748koK2q2hoZL3BYhAtWC1aQ=
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
+ by BYAPR11MB3254.namprd11.prod.outlook.com (2603:10b6:a03:7c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.23; Tue, 28 Jul
+ 2020 20:03:50 +0000
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c]) by BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::4ca7:fbfa:78bf:173c%4]) with mapi id 15.20.3216.033; Tue, 28 Jul 2020
+ 20:03:50 +0000
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     Garrit Franke <garritfranke@gmail.com>
+CC:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "trivial@kernel.org" <trivial@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] trivial: acpi: replace some bitshifts with BIT macro
+Thread-Topic: [PATCH] trivial: acpi: replace some bitshifts with BIT macro
+Thread-Index: AQHWYdZ+JdA88oPRJEuxGV8RX7TGgakW62CggAAFOQCABn/TEA==
+Date:   Tue, 28 Jul 2020 20:03:49 +0000
+Message-ID: <BYAPR11MB3256507B360E486810400D7487730@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <alpine.DEB.2.21.2007241814450.2834@hadrien>
+        <20200724162050.18077-2-garritfranke@gmail.com>
+        <BYAPR11MB325604ACC5F3BCCEB89A58AA87770@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <20200724184738.ce10d8db0bbe138e2b24f7a6@gmail.com>
+In-Reply-To: <20200724184738.ce10d8db0bbe138e2b24f7a6@gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.136.194]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 82f0ab8b-e752-48c8-3720-08d83331586a
+x-ms-traffictypediagnostic: BYAPR11MB3254:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR11MB32548DAE5B437F8CFE2E20DF87730@BYAPR11MB3254.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: z2cw6YHbDC04U+5Z8zjDKLNGvYoQjP/VRvQbrAw7Tz3+tS4kW9GGsPJ4t3/SBoKvdW5P2fd3X21E4YXy4crXK5z8cUVbL/VuzDJwSRhk6TfclcuS1VDu5C6fDxwHjtG2PnFzgbWoP3DMGwXye2nch5J09hsQHbHFHl3AdiC8ryIzY1RtimAIeb1EsVbz+6qEm69fqrQEduyZOTWeXwkZ8OghauIeNs3bftRbSKZ/McSfTdmbk3CWW99w7VtACft+2GUf6BAuUPo8ZSAoQIxIvZBoGFVqF/V8zpHp5qMruv1TtK1L6L5i9Y3UQ4XXc25GdhDoTZB6HFlK93RMlqyrsQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(39860400002)(346002)(396003)(136003)(376002)(52536014)(66446008)(86362001)(66556008)(64756008)(4744005)(66476007)(66946007)(478600001)(76116006)(2906002)(6916009)(83380400001)(33656002)(8676002)(26005)(316002)(6506007)(53546011)(8936002)(7696005)(54906003)(186003)(5660300002)(71200400001)(4326008)(55016002)(9686003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: APHRkVcTHZ0iZ3KgS8nc5FUW8Z715/vBiLafIi91D3mrXQ48x5+5TDMRizP3XfRAeGXerEE72PFBckApgEVcQ8RGcbhk64s4lJ5MuVgkIHfX+9L2EfX+eYl1BlQGmN1oSninYhTylrfENgMd/P3Y1kVPZYcOkn7knR8VAy34ve7u4O7g+31UDYL3q5EpnlV40cJxrbwU4t8Jn4k8J27A1WBisnYufbkL8DTX2UuQqNLwczWfvDtbaUqSf8wY47MVkTkNs3cvMM9N2GEX+eyfsY0DR+RzHPCYVV64GGbyy4bD6Uh8xSKTWW8td4PLaeUJRUDLVx0A45PDroOdU49IGEVJMd5XY1HYhkVLaRWPvKctSWU+ykXzMxYJbnhprj6Rd0ZqgZJ49JxQ5G+wt1h8E2AJ9tvXlbrh6OLeOlYydx2FoR1pVcAMUhAqPa1rc404BcJEY5Sd47NrrLDB/a4Z3mStYYEIsaiaV0KZB+emfNWk6PXbnyWwi4cQZtPODOvO
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82f0ab8b-e752-48c8-3720-08d83331586a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2020 20:03:50.0576
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: g1LmU503LUZ457rcuR/J9nKEGWfBnXFTCSSzIrGgr2QgWBZznc0BIOOblCTYsYyCCntAVGtiMwxdMtBUue2GGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3254
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 7/28/20 9:36 PM, Andy Shevchenko wrote:
-> On Fri, Jul 17, 2020 at 03:37:44PM +0200, Hans de Goede wrote:
->> While looking into adding atomic-pwm support to the pwm-crc driver I
->> noticed something odd, there is a PWM_BASE_CLK define of 6 MHz and
->> there is a clock-divider which divides this with a value between 1-128,
->> and there are 256 duty-cycle steps.
->>
->> The pwm-crc code before this commit assumed that a clock-divider
->> setting of 1 means that the PWM output is running at 6 MHZ, if that
->> is true, where do these 256 duty-cycle steps come from?
->>
->> This would require an internal frequency of 256 * 6 MHz = 1.5 GHz, that
->> seems unlikely for a PMIC which is using a silicon process optimized for
->> power-switching transistors. It is way more likely that there is an 8
->> bit counter for the duty cycle which acts as an extra fixed divider
->> wrt the PWM output frequency.
->>
->> The main user of the pwm-crc driver is the i915 GPU driver which uses it
->> for backlight control. Lets compare the PWM register values set by the
->> video-BIOS (the GOP), assuming the extra fixed divider is present versus
->> the PWM frequency specified in the Video-BIOS-Tables:
->>
->> Device:		PWM Hz set by BIOS	PWM Hz specified in VBT
->> Asus T100TA 	200			200
->> Asus T100HA 	200			200
->> Lenovo Miix 2 8	23437			20000
->> Toshiba WT8-A	23437			20000
->>
->> So as we can see if we assume the extra division by 256 then the register
->> values set by the GOP are an exact match for the VBT values, where as
->> otherwise the values would be of by a factor of 256.
->>
->> This commit fixes the period / duty_cycle calculations to take the
->> extra division by 256 into account.
-> 
-> So, base clock is 6MHz, then 7 bit divisor. That's what original values
-> were for. On top of that there is 8-bit duty cycle control ("divide by 256"
-> whatever it means) with the output range 23.437kHz..183Hz.
-
-Right, so that range matches with a clock div of 1*256 (6 MHz/256 = 23437.5KHz)
-to 128*256 (6 MHz/(128*256) = 183.1Hz) IOW this patch is correct.
-
-Before this patch the code assumed a clkdiv of 1-128 (*), which leads to a
-very different output frequency range.
-
-Regards,
-
-Hans
 
 
-*) 0-127 really, that is fixed in a followup patch
+-----Original Message-----
+From: Garrit Franke <garritfranke@gmail.com>=20
+Sent: Friday, July 24, 2020 9:48 AM
+To: Moore, Robert <robert.moore@intel.com>
+Cc: Wysocki, Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org; trivia=
+l@kernel.org; linux-acpi@vger.kernel.org; devel@acpica.org; kernel-janitors=
+@vger.kernel.org
+Subject: Re: [PATCH] trivial: acpi: replace some bitshifts with BIT macro
+
+On Fri, 24 Jul 2020 16:29:14 +0000
+"Moore, Robert" <robert.moore@intel.com> wrote:
+
+> Where is "BIT" defined?
+
+It is defined in multiple places (see include/vdso/bits.h for example), the=
+refore I blatently assumed that it would be defined. I'm quite new to kerne=
+l development, and I'm learning along the way. Thank you for pointing this =
+out.
+
+Would it make sense to copy this file to this drivers root, or is it not wo=
+rth the effort?
+
+I'm not sure that it is worth the effort. Linux is not the only OS supporte=
+d (and GCC is not the only compiler supported) by ACPICA.
 
 
-
-> 
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> Changes in v3:
->> - Use NSEC_PER_USEC instead of adding a new (non-sensical) NSEC_PER_MHZ define
->> ---
->>   drivers/pwm/pwm-crc.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/pwm/pwm-crc.c b/drivers/pwm/pwm-crc.c
->> index 272eeb071147..c056eb9b858c 100644
->> --- a/drivers/pwm/pwm-crc.c
->> +++ b/drivers/pwm/pwm-crc.c
->> @@ -21,8 +21,8 @@
->>   
->>   #define PWM_MAX_LEVEL		0xFF
->>   
->> -#define PWM_BASE_CLK		6000000  /* 6 MHz */
->> -#define PWM_MAX_PERIOD_NS	21333    /* 46.875KHz */
->> +#define PWM_BASE_CLK_MHZ	6	/* 6 MHz */
->> +#define PWM_MAX_PERIOD_NS	5461333	/* 183 Hz */
->>   
->>   /**
->>    * struct crystalcove_pwm - Crystal Cove PWM controller
->> @@ -72,7 +72,7 @@ static int crc_pwm_config(struct pwm_chip *c, struct pwm_device *pwm,
->>   
->>   		/* changing the clk divisor, need to disable fisrt */
->>   		crc_pwm_disable(c, pwm);
->> -		clk_div = PWM_BASE_CLK * period_ns / NSEC_PER_SEC;
->> +		clk_div = PWM_BASE_CLK_MHZ * period_ns / (256 * NSEC_PER_USEC);
->>   
->>   		regmap_write(crc_pwm->regmap, PWM0_CLK_DIV,
->>   					clk_div | PWM_OUTPUT_ENABLE);
->> -- 
->> 2.26.2
->>
-> 
-
+Thanks for your time
+Garrit
