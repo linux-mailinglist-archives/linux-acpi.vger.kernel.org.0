@@ -2,148 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43EF6230F1B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 18:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7705C231055
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 19:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731233AbgG1QWV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jul 2020 12:22:21 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2545 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730679AbgG1QWV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Jul 2020 12:22:21 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 1F0292967315FFD4EDF5;
-        Tue, 28 Jul 2020 17:22:17 +0100 (IST)
-Received: from localhost (10.52.121.35) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Tue, 28 Jul
- 2020 17:22:16 +0100
-Date:   Tue, 28 Jul 2020 17:20:52 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
-CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
-        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Song Bao Hua <song.bao.hua@hisilicon.com>
-Subject: Re: [PATCH v2 0/6] ACPI: Only create NUMA nodes from entries in
- SRAT or SRAT emulation.
-Message-ID: <20200728172052.00007848@Huawei.com>
-In-Reply-To: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
-References: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1731638AbgG1RBj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jul 2020 13:01:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731478AbgG1RBj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jul 2020 13:01:39 -0400
+Received: from localhost.localdomain (unknown [95.146.230.158])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6971C2053B;
+        Tue, 28 Jul 2020 17:01:35 +0000 (UTC)
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        Diana Craciun <diana.craciun@oss.nxp.com>,
+        iommu@lists.linux-foundation.org,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-pci@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Joerg Roedel <joro@8bytes.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 00/12] ACPI/OF: Upgrade MSI/IOMMU ID mapping APIs
+Date:   Tue, 28 Jul 2020 18:01:33 +0100
+Message-Id: <159595564192.31263.3059824977932788766.b4-ty@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
+References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com> <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.35]
-X-ClientProxiedBy: lhreml716-chm.china.huawei.com (10.201.108.67) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 18 Jul 2020 01:59:53 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Fri, 19 Jun 2020 09:20:01 +0100, Lorenzo Pieralisi wrote:
+> This series is a v2 of a previous posting:
+> 
+> v1 -> v2
+> 
+> - Removed _rid() wrappers
+> - Fixed !CONFIG_ACPI compilation issue
+> - Converted of_pci_iommu_init() to use of_iommu_configure_dev_id()
+> 
+> [...]
 
-> Here, I will use the term Proximity Domains for the ACPI description and
-> NUMA Nodes for the in kernel representation.
-> 
-> ACPI 6.3 included a clarification that only Static Resource Allocation
-> Structures in SRAT may define the existence of proximity domains
-> (sec 5.2.16). This clarification closed a possible interpretation that
-> other parts of ACPI (e.g. DSDT _PXM, NFIT etc) could define new proximity
-> domains that were not also mentioned in SRAT structures.
-> 
-> In practice the kernel has never allowed this alternative interpretation as
-> such nodes are only partially initialized. This is architecture specific
-> but to take an example, on x86 alloc_node_data has not been called.
-> Any use of them for node specific allocation, will result in a crash as the
-> infrastructure to fallback to a node with memory is not setup.
-> 
-> We ran into a problem when enabling _PXM handling for PCI devices and found
-> there were boards out there advertising devices in proximity domains that
-> didn't exist [2].
-> 
-> The fix suggested in this series is to replace instances that should not
-> 'create' new nodes with pxm_to_node.  This function needs a some additional
-> hardening against invalid inputs to make sure it is safe for use in these
-> new callers.
-> 
-> Patch 1 Hardens pxm_to_node() against numa_off, and pxm entry being too large.
-> 
-> Patch 2-4 change the various callers not related to SRAT entries so that they
-> set this parameter to false, so do not attempt to initialize a new NUMA node
-> if the relevant one does not already exist.
-> 
-> Patch 5 is a function rename to reflect change in functionality of
-> acpi_map_pxm_to_online_node() as it no longer creates a new map, but just does a
-> lookup of existing maps.
-> 
-> Patch 6 covers the one place we do not allow the full flexibility defined
-> in the ACPI spec.  For SRAT GIC Interrupt Translation Service (ITS) Affinity
-> Structures, on ARM64, the driver currently makes an additional pass of SRAT
-> later in the boot than the one used to identify NUMA domains.
-> Note, this currently means that an ITS placed in a proximity domain that is
-> not defined by another SRAT structure will result in the a crash.
-> 
-> To avoid this crash with minimal changes we do not create new NUMA nodes based
-> on this particular entry type.  Any current platform trying to do this will not
-> boot, so this is an improvement, if perhaps not a perfect solution.
-> 
-> [1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
-> [2] https://patchwork.kernel.org/patch/10597777/
-> 
-> Thanks to Bjorn Helgaas for review of v1 and Barry Song for internal reviews that
-> lead to a slightly different approach for this v2.
+Applied to arm64 (for-next/msi-iommu), thanks!
 
-Thanks Barry / Hanjun,
+[01/12] ACPI/IORT: Make iort_match_node_callback walk the ACPI namespace for NC
+        https://git.kernel.org/arm64/c/07d2e59f27cd
+[02/12] ACPI/IORT: Make iort_get_device_domain IRQ domain agnostic
+        https://git.kernel.org/arm64/c/d1718a1b7a86
+[03/12] ACPI/IORT: Make iort_msi_map_rid() PCI agnostic
+        https://git.kernel.org/arm64/c/39c3cf566cea
+[04/12] ACPI/IORT: Remove useless PCI bus walk
+        https://git.kernel.org/arm64/c/3a3d208beede
+[05/12] ACPI/IORT: Add an input ID to acpi_dma_configure()
+        https://git.kernel.org/arm64/c/b8e069a2a8da
+[06/12] of/iommu: Make of_map_rid() PCI agnostic
+        https://git.kernel.org/arm64/c/746a71d02b5d
+[07/12] of/device: Add input id to of_dma_configure()
+        https://git.kernel.org/arm64/c/a081bd4af4ce
+[08/12] dt-bindings: arm: fsl: Add msi-map device-tree binding for fsl-mc bus
+        https://git.kernel.org/arm64/c/5bda70c6162d
+[09/12] of/irq: make of_msi_map_get_device_domain() bus agnostic
+        https://git.kernel.org/arm64/c/6f881aba0110
+[10/12] of/irq: Make of_msi_map_rid() PCI bus agnostic
+        https://git.kernel.org/arm64/c/2bcdd8f2c07f
+[11/12] bus/fsl-mc: Refactor the MSI domain creation in the DPRC driver
+        https://git.kernel.org/arm64/c/998fb7badf03
+[12/12] bus: fsl-mc: Add ACPI support for fsl-mc
+        https://git.kernel.org/arm64/c/6305166c8771
 
-Anyone else have time to take a look?
-
-I'm happy to bring it back after the merge window closes, but would like to know
-if people are happy with the general approach.  I'm keen to finally be able to
-resolve that issue with _PXM and PCI. 
-
-Thanks,
-
-Jonathan
-
-> 
-> Changes since v1.
-> * Use pxm_to_node for what was previously the path using acpi_map_pxm_to_node
->   with create==false. (Barry)
-> * Broke patch up into an initial noop stage followed by patches (Bjorn)
->   to update each type of case in which partial creation of NUMA nodes is prevented.
-> * Added patch 5 to rename function to reflect change of functionality.
-> * Updated descriptions (now mostly in individual patches) inline with Bjorn's comments.
-> 
-> Jonathan Cameron (6):
->   ACPI: Add out of bounds and numa_off protections to pxm_to_node
->   ACPI: Do not create new NUMA domains from ACPI static tables that are
->     not SRAT
->   ACPI: Remove side effect of partly creating a node in
->     acpi_map_pxm_to_online_node
->   ACPI: rename acpi_map_pxm_to_online_node to pxm_to_online_node
->   ACPI: Remove side effect of partly creating a node in acpi_get_node
->   irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without
->     processor or memory
-> 
->  drivers/acpi/arm64/iort.c        |  2 +-
->  drivers/acpi/nfit/core.c         |  6 ++----
->  drivers/acpi/numa/hmat.c         |  4 ++--
->  drivers/acpi/numa/srat.c         |  4 ++--
->  drivers/iommu/intel/dmar.c       |  2 +-
->  drivers/irqchip/irq-gic-v3-its.c |  7 ++++++-
->  include/linux/acpi.h             | 15 +++++++--------
->  7 files changed, 21 insertions(+), 19 deletions(-)
-> 
-
+-- 
+Catalin
 
