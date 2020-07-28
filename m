@@ -2,182 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7DE5230876
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 13:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE814230A98
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jul 2020 14:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728985AbgG1LRg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jul 2020 07:17:36 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:35490 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728934AbgG1LRf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jul 2020 07:17:35 -0400
-Received: by mail-ot1-f68.google.com with SMTP id 93so4434479otx.2;
-        Tue, 28 Jul 2020 04:17:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KnPUjAu22SOUCOm6g1IeFJhvhpLRbJ0m88Fl/eGEXik=;
-        b=KvgW/E8Bzg1+rRhX/jTEV9Feu1A3rhdwSxBJus3+70/TvQ8PwSpN7L7SZrGBpvU6ar
-         tjfTZNcAdjMmuitjkO+V52PuMaxCiNKGdp8/FaneARReHU5S++r3q8ddMYIsom+A+caE
-         hy5ycunBwiXbnTO3La4lrd6dxjzjN77U3vM9SeZ8OxBbGiDHgI70L7y557e87sbW0EZ7
-         7JUINhzG5lsUOgVBV1ZW30egf8oHZQjTVGRAxvfq1T9rXRYm+Fl6LXzSoEVTQLX9CUwM
-         tOMqGZZ34Tl3b0cFzMk7RM1v2osphAJXDT1f+fk+A4FWP7UMYMHqdWitkXo/bRJJCVAP
-         gzOg==
-X-Gm-Message-State: AOAM530Nr/0mA/ZMPnt72omT4DtHHfuPXDHZ7+cXeZvEeTO8KkB6PDa9
-        voHbgiKqtm2DvEoJIsztd0kEf7kYXDBgGBAkgBQ=
-X-Google-Smtp-Source: ABdhPJwEafv59CVs5A2UJPEZNyJdT+8/NxOgu+3o+fqap2JowBj1l35GlCM4GXeZmBxNQU4lwA/8MSL1J5CW83FJF2c=
-X-Received: by 2002:a05:6830:1e5c:: with SMTP id e28mr5693951otj.118.1595935053275;
- Tue, 28 Jul 2020 04:17:33 -0700 (PDT)
+        id S1729908AbgG1Msr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jul 2020 08:48:47 -0400
+Received: from foss.arm.com ([217.140.110.172]:34550 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729379AbgG1Msp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jul 2020 08:48:45 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5ED431FB;
+        Tue, 28 Jul 2020 05:48:44 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DD4A3F718;
+        Tue, 28 Jul 2020 05:48:42 -0700 (PDT)
+Date:   Tue, 28 Jul 2020 13:48:35 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Will Deacon <will@kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        Diana Craciun <diana.craciun@oss.nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH v2 05/12] ACPI/IORT: Add an input ID to
+ acpi_dma_configure()
+Message-ID: <20200728124835.GA14596@e121166-lin.cambridge.arm.com>
+References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
+ <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
+ <20200619082013.13661-6-lorenzo.pieralisi@arm.com>
+ <20200709093514.GC18149@e121166-lin.cambridge.arm.com>
+ <20200715091326.GA30074@e121166-lin.cambridge.arm.com>
 MIME-Version: 1.0
-References: <20200720050500.23357-1-akshu.agrawal@amd.com> <20200720050500.23357-2-akshu.agrawal@amd.com>
- <CAJZ5v0j264hcr0AbwXou240K73xfQ5Q0pF4TEP11SAOT2nuOjA@mail.gmail.com> <27966cc7-cb5a-fd18-2244-5106d8853ea1@amd.com>
-In-Reply-To: <27966cc7-cb5a-fd18-2244-5106d8853ea1@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Jul 2020 13:17:20 +0200
-Message-ID: <CAJZ5v0jh6SUK=8Px4+=9OSt8PDF=UvzOejhbjVU-7G69Pj9SVA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ACPI: APD: Change name from ST to FCH
-To:     "Agrawal, Akshu" <aagrawal2@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Akshu Agrawal <akshu.agrawal@amd.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200715091326.GA30074@e121166-lin.cambridge.arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 7:50 AM Agrawal, Akshu <aagrawal2@amd.com> wrote:
->
->
-> On 7/27/2020 6:58 PM, Rafael J. Wysocki wrote:
-> > On Mon, Jul 20, 2020 at 7:06 AM Akshu Agrawal <akshu.agrawal@amd.com> wrote:
-> >> AMD SoC general pupose clk is present in new platforms with
-> >> same MMIO mappings. We can reuse the same clk handler support
-> >> for other platforms. Hence, changing name from ST(SoC) to FCH(IP)
-> >>
-> >> Signed-off-by: Akshu Agrawal <akshu.agrawal@amd.com>
-> > This patch and the [3/4] appear to be part of a larger series which
-> > isn't visible to me as a whole.
->
-> Link to other patches:
->
-> https://patchwork.kernel.org/patch/11672857/
->
-> https://patchwork.kernel.org/patch/11672861/
->
-> >
-> > Do you want me to apply them nevertheless?
->
-> This patch on its own will cause compilation error as we need the second
-> patch.
->
-> Since, there is dependency we need them to be merged together. Can you
-> or Stephen please suggest a way forward.
+On Wed, Jul 15, 2020 at 10:13:26AM +0100, Lorenzo Pieralisi wrote:
+> On Thu, Jul 09, 2020 at 10:35:14AM +0100, Lorenzo Pieralisi wrote:
+> > On Fri, Jun 19, 2020 at 09:20:06AM +0100, Lorenzo Pieralisi wrote:
+> > > Some HW devices are created as child devices of proprietary busses,
+> > > that have a bus specific policy defining how the child devices
+> > > wires representing the devices ID are translated into IOMMU and
+> > > IRQ controllers device IDs.
+> > > 
+> > > Current IORT code provides translations for:
+> > > 
+> > > - PCI devices, where the device ID is well identified at bus level
+> > >   as the requester ID (RID)
+> > > - Platform devices that are endpoint devices where the device ID is
+> > >   retrieved from the ACPI object IORT mappings (Named components single
+> > >   mappings). A platform device is represented in IORT as a named
+> > >   component node
+> > > 
+> > > For devices that are child devices of proprietary busses the IORT
+> > > firmware represents the bus node as a named component node in IORT
+> > > and it is up to that named component node to define in/out bus
+> > > specific ID translations for the bus child devices that are
+> > > allocated and created in a bus specific manner.
+> > > 
+> > > In order to make IORT ID translations available for proprietary
+> > > bus child devices, the current ACPI (and IORT) code must be
+> > > augmented to provide an additional ID parameter to acpi_dma_configure()
+> > > representing the child devices input ID. This ID is bus specific
+> > > and it is retrieved in bus specific code.
+> > > 
+> > > By adding an ID parameter to acpi_dma_configure(), the IORT
+> > > code can map the child device ID to an IOMMU stream ID through
+> > > the IORT named component representing the bus in/out ID mappings.
+> > > 
+> > > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Hanjun Guo <guohanjun@huawei.com>
+> > > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> > > ---
+> > >  drivers/acpi/arm64/iort.c | 59 +++++++++++++++++++++++++++++----------
+> > >  drivers/acpi/scan.c       |  8 ++++--
+> > >  include/acpi/acpi_bus.h   |  9 ++++--
+> > >  include/linux/acpi.h      |  7 +++++
+> > >  include/linux/acpi_iort.h |  7 +++--
+> > >  5 files changed, 67 insertions(+), 23 deletions(-)
+> > 
+> > Hi Rafael,
+> > 
+> > just to ask if the ACPI core changes in this patch are OK with you,
+> > thank you very much.
+> 
+> Hi Rafael,
+> 
+> are you OK with ACPI core changes in this patch ?
+> 
+> Please let me know, thanks.
 
-I would prefer it to be routed through the clock tree.
+Hi Rafael,
 
-The APD changes are simple enough and I don't have any issues with them.
+gentle ping, I think we are missing v5.9, we would need your feedback
+on this please.
 
-Thanks!
-
-
-> >> ---
-> >>   drivers/acpi/acpi_apd.c                            | 14 +++++++-------
-> >>   .../linux/platform_data/{clk-st.h => clk-fch.h}    | 10 +++++-----
-> >>   2 files changed, 12 insertions(+), 12 deletions(-)
-> >>   rename include/linux/platform_data/{clk-st.h => clk-fch.h} (53%)
-> >>
-> >> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-> >> index ba2612e9a0eb..2d99e46add1a 100644
-> >> --- a/drivers/acpi/acpi_apd.c
-> >> +++ b/drivers/acpi/acpi_apd.c
-> >> @@ -8,7 +8,7 @@
-> >>    */
-> >>
-> >>   #include <linux/clk-provider.h>
-> >> -#include <linux/platform_data/clk-st.h>
-> >> +#include <linux/platform_data/clk-fch.h>
-> >>   #include <linux/platform_device.h>
-> >>   #include <linux/pm_domain.h>
-> >>   #include <linux/clkdev.h>
-> >> @@ -79,11 +79,11 @@ static int misc_check_res(struct acpi_resource *ares, void *data)
-> >>          return !acpi_dev_resource_memory(ares, &res);
-> >>   }
-> >>
-> >> -static int st_misc_setup(struct apd_private_data *pdata)
-> >> +static int fch_misc_setup(struct apd_private_data *pdata)
-> >>   {
-> >>          struct acpi_device *adev = pdata->adev;
-> >>          struct platform_device *clkdev;
-> >> -       struct st_clk_data *clk_data;
-> >> +       struct fch_clk_data *clk_data;
-> >>          struct resource_entry *rentry;
-> >>          struct list_head resource_list;
-> >>          int ret;
-> >> @@ -106,7 +106,7 @@ static int st_misc_setup(struct apd_private_data *pdata)
-> >>
-> >>          acpi_dev_free_resource_list(&resource_list);
-> >>
-> >> -       clkdev = platform_device_register_data(&adev->dev, "clk-st",
-> >> +       clkdev = platform_device_register_data(&adev->dev, "clk-fch",
-> >>                                                 PLATFORM_DEVID_NONE, clk_data,
-> >>                                                 sizeof(*clk_data));
-> >>          return PTR_ERR_OR_ZERO(clkdev);
-> >> @@ -135,8 +135,8 @@ static const struct apd_device_desc cz_uart_desc = {
-> >>          .properties = uart_properties,
-> >>   };
-> >>
-> >> -static const struct apd_device_desc st_misc_desc = {
-> >> -       .setup = st_misc_setup,
-> >> +static const struct apd_device_desc fch_misc_desc = {
-> >> +       .setup = fch_misc_setup,
-> >>   };
-> >>   #endif
-> >>
-> >> @@ -239,7 +239,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
-> >>          { "AMD0020", APD_ADDR(cz_uart_desc) },
-> >>          { "AMDI0020", APD_ADDR(cz_uart_desc) },
-> >>          { "AMD0030", },
-> >> -       { "AMD0040", APD_ADDR(st_misc_desc)},
-> >> +       { "AMD0040", APD_ADDR(fch_misc_desc)},
-> >>   #endif
-> >>   #ifdef CONFIG_ARM64
-> >>          { "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
-> >> diff --git a/include/linux/platform_data/clk-st.h b/include/linux/platform_data/clk-fch.h
-> >> similarity index 53%
-> >> rename from include/linux/platform_data/clk-st.h
-> >> rename to include/linux/platform_data/clk-fch.h
-> >> index 7cdb6a402b35..850ca776156d 100644
-> >> --- a/include/linux/platform_data/clk-st.h
-> >> +++ b/include/linux/platform_data/clk-fch.h
-> >> @@ -1,17 +1,17 @@
-> >>   /* SPDX-License-Identifier: MIT */
-> >>   /*
-> >> - * clock framework for AMD Stoney based clock
-> >> + * clock framework for AMD misc clocks
-> >>    *
-> >>    * Copyright 2018 Advanced Micro Devices, Inc.
-> >>    */
-> >>
-> >> -#ifndef __CLK_ST_H
-> >> -#define __CLK_ST_H
-> >> +#ifndef __CLK_FCH_H
-> >> +#define __CLK_FCH_H
-> >>
-> >>   #include <linux/compiler.h>
-> >>
-> >> -struct st_clk_data {
-> >> +struct fch_clk_data {
-> >>          void __iomem *base;
-> >>   };
-> >>
-> >> -#endif /* __CLK_ST_H */
-> >> +#endif /* __CLK_FCH_H */
-> >> --
-> >> 2.20.1
-> >>
+Thanks,
+Lorenzo
