@@ -2,102 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BF42316DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jul 2020 02:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C2023174B
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jul 2020 03:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730782AbgG2AmS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jul 2020 20:42:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45860 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730507AbgG2AmR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jul 2020 20:42:17 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C550CC061794;
-        Tue, 28 Jul 2020 17:42:17 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id w126so11836810pfw.8;
-        Tue, 28 Jul 2020 17:42:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=pQaiWRnOg2U3wniBNdLn9eHoMlUxqnrXd5V4+BRB/CY=;
-        b=RpGU+Mei/engts5h8MouqvCWVDz34aRh2DPvpmniDB/n4eqpuuoA6/bwtKarGd3lWT
-         HSSYkuuEhg3/JYeKhWkYEWB5Tn71LBUNKw9k5W4AHFZAapZPXYDEtkVXMF/6aeYOrWYx
-         DokAermqnk4WkCTnfIfDnsWQaCi3peP9aLWNb0E4xzWHeeKjcMphsPAfbHpmJ2/RuOp2
-         HDvUibZOENKu74R+gRgwt0XL8pUlh+GVrr8rve2AYqXtoNG420YNKj/fLlDJK23eEtVF
-         Tjn/pV49kIy2PhDx51bCri7uZqEIDAIfKaKRzemC9JjNQIC4DFqwchzq53lx5UN79fxw
-         CCDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pQaiWRnOg2U3wniBNdLn9eHoMlUxqnrXd5V4+BRB/CY=;
-        b=NygP5tZ0bs7vCg0SK1byzM8DOnxn9mKXeLL/FDhg0NbqEj0/HwED3CLt9ad0rFDNn5
-         SiMGBuA5/w88L0NK6QaKEkb/L4VS36ZkARajIrDY4T+7dHlj2w4X3gpJEFtft+cDZ6Ca
-         mfiwuNnH04B9rxZIx53w57X3AfVLWp1VgeEnzN9U2AL0LoEDGlM4tc418eb/TUemuIIm
-         JUO2/guAv1w0KGptBxVx5VwQLHvV44F9LbrHf5BI1jAXpIRqmQ26RfWILIp4BHuueajx
-         Yg1cvTSL98Mmk2fAjywCUfRK3ARIiWbzPxhK5OByREr32mf//IROCTH3zrqSDP305qwt
-         OOQQ==
-X-Gm-Message-State: AOAM531Jhs7dyAVhbtSu0MADuZhREd0C5jU07oqGW+bCdHzzBCBiCQ3d
-        o/pIy8aUHY6jzUPDj4rAARg=
-X-Google-Smtp-Source: ABdhPJy3+gNRxf68LqN9TyA1VL3XQ71uc3syyud8ighvdATMLOr8IpjS/aIqVWwwKb2KHFGWL+aLNg==
-X-Received: by 2002:a63:564e:: with SMTP id g14mr26522852pgm.326.1595983337353;
-        Tue, 28 Jul 2020 17:42:17 -0700 (PDT)
-Received: from [10.230.30.107] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a2sm202775pgf.53.2020.07.28.17.42.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2020 17:42:16 -0700 (PDT)
-Subject: Re: [net-next PATCH v7 0/6] ACPI support for dpaa2 MAC driver.
-To:     David Miller <davem@davemloft.net>, calvin.johnson@oss.nxp.com
-Cc:     rafael@kernel.org, lenb@kernel.org, Lorenzo.Pieralisi@arm.com,
-        guohanjun@huawei.com, sudeep.holla@arm.com, ahs3@redhat.com,
-        jeremy.linton@arm.com, linux@armlinux.org.uk, jon@solid-run.com,
-        cristian.sovaiala@nxp.com, ioana.ciornei@nxp.com, andrew@lunn.ch,
-        andy.shevchenko@gmail.com, madalin.bucur@oss.nxp.com,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        linux.cj@gmail.com, Paul.Yang@arm.com
-References: <20200725142404.30634-1-calvin.johnson@oss.nxp.com>
- <20200728.173951.1166639369727479900.davem@davemloft.net>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <c5691684-c666-7a6e-8442-b4b558df9c8b@gmail.com>
-Date:   Tue, 28 Jul 2020 17:42:06 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Firefox/68.0 Thunderbird/68.10.0
+        id S1730278AbgG2BfT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jul 2020 21:35:19 -0400
+Received: from mga14.intel.com ([192.55.52.115]:6431 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730117AbgG2BfT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jul 2020 21:35:19 -0400
+IronPort-SDR: J6nrg5ZV2i6tp/dHjEMSSHNElqWo7VGGnMQhLFr63+4a7knAxY8SZsTdLqaEpE9rjypcNQUqHf
+ oWvzaH2YXCPQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9696"; a="150512010"
+X-IronPort-AV: E=Sophos;i="5.75,408,1589266800"; 
+   d="scan'208";a="150512010"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2020 18:35:11 -0700
+IronPort-SDR: YNsFNSmhqfBBgmI35x/2O7/pNXoR+a/bwag1n6Mwd4MKRcnT4XpSjxN7jGO6jeRF7/XLdB/SmJ
+ NIW6+0gsiTZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,408,1589266800"; 
+   d="scan'208";a="364700282"
+Received: from vverma7-mobl4.lm.intel.com (HELO localhost6.localdomain6) ([10.254.21.148])
+  by orsmga001.jf.intel.com with ESMTP; 28 Jul 2020 18:35:09 -0700
+Message-ID: <25cb1c0c35d2ea2aa233c1db726abd86dadc54c0.camel@intel.com>
+Subject: Re: [PATCH v3 10/11] PM, libnvdimm: Add runtime firmware activation
+ support
+From:   Vishal Verma <vishal.l.verma@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+        Pavel Machek <pavel@ucw.cz>, Ira Weiny <ira.weiny@intel.com>,
+        Len Brown <len.brown@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 28 Jul 2020 19:35:09 -0600
+In-Reply-To: <CAJZ5v0jb87PnwVXKuvgFeP=c-BGstc4YmANGpbOOnXi-b1oL8w@mail.gmail.com>
+References: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
+         <159528289856.993790.11787167534159675987.stgit@dwillia2-desk3.amr.corp.intel.com>
+         <CAJZ5v0jb87PnwVXKuvgFeP=c-BGstc4YmANGpbOOnXi-b1oL8w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <20200728.173951.1166639369727479900.davem@davemloft.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 7/28/2020 5:39 PM, David Miller wrote:
-> From: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> Date: Sat, 25 Jul 2020 19:53:58 +0530
+On Mon, 2020-07-27 at 14:37 +0200, Rafael J. Wysocki wrote:
+> On Tue, Jul 21, 2020 at 12:24 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > Abstract platform specific mechanics for nvdimm firmware activation
+> > behind a handful of generic ops. At the bus level ->activate_state()
+> > indicates the unified state (idle, busy, armed) of all DIMMs on the bus,
+> > and ->capability() indicates the system state expectations for activate.
+> > At the DIMM level ->activate_state() indicates the per-DIMM state,
+> > ->activate_result() indicates the outcome of the last activation
+> > attempt, and ->arm() attempts to transition the DIMM from 'idle' to
+> > 'armed'.
+> > 
+> > A new hibernate_quiet_exec() facility is added to support firmware
+> > activation in an OS defined system quiesce state. It leverages the fact
+> > that the hibernate-freeze state wants to assert that a memory
+> > hibernation snapshot can be taken. This is in contrast to a platform
+> > firmware defined quiesce state that may forcefully quiet the memory
+> > controller independent of whether an individual device-driver properly
+> > supports hibernate-freeze.
+> > 
+> > The libnvdimm sysfs interface is extended to support detection of a
+> > firmware activate capability. The mechanism supports enumeration and
+> > triggering of firmware activate, optionally in the
+> > hibernate_quiet_exec() context.
+> > 
+> > Cc: Pavel Machek <pavel@ucw.cz>
+> > Cc: Ira Weiny <ira.weiny@intel.com>
+> > Cc: Len Brown <len.brown@intel.com>
+> > Cc: Jonathan Corbet <corbet@lwn.net>
+> > Cc: Dave Jiang <dave.jiang@intel.com>
+> > Cc: Vishal Verma <vishal.l.verma@intel.com>
+> > [rafael: hibernate_quiet_exec() proposal]
+> > Co-developed-by: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 > 
->>  This patch series provides ACPI support for dpaa2 MAC driver.
->>  This also introduces ACPI mechanism to get PHYs registered on a
->>  MDIO bus and provide them to be connected to MAC.
->>
->>  Previous discussions on this patchset is available at:
->>  https://lore.kernel.org/linux-acpi/20200715090400.4733-1-calvin.johnson@oss.nxp.com/T/#t
->>
->>  Patch "net: dpaa2-mac: Add ACPI support for DPAA2 MAC driver" depends on
->>  https://git.kernel.org/pub/scm/linux/kernel/git/lpieralisi/linux.git/commit/?h=acpi/for-next&id=c279c4cf5bcd3c55b4fb9709d9036cd1bfe3beb8
->>  Remaining patches are independent of the above patch and can be applied without
->>  any issues.
+> IMO it's better to change this to
 > 
-> This really needs to be reviewed by phy/phylink people.
+> Co-developed-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> 
+> and please to add
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> to it as per the development process documentation.
 
-Oh it has been reviewed! We just have stalled for various reasons. There
-is another email thread with the same subject which is still being
-discussed:
+Thanks Rafael, I've fixed this up in the branch I've prepared for the pull
+request:
 
-https://lore.kernel.org/netdev/20200715090400.4733-1-calvin.johnson@oss.nxp.com/T/#t
--- 
-Florian
+https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/log/?h=libnvdimm-for-next
+
+> 
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-nvdimm         |    2
+> >  .../driver-api/nvdimm/firmware-activate.rst        |   86 ++++++++++++
+> >  drivers/nvdimm/core.c                              |  149 ++++++++++++++++++++
+> >  drivers/nvdimm/dimm_devs.c                         |  115 +++++++++++++++
+> >  drivers/nvdimm/nd-core.h                           |    1
+> >  include/linux/libnvdimm.h                          |   44 ++++++
+> >  include/linux/suspend.h                            |    6 +
+> >  kernel/power/hibernate.c                           |   97 +++++++++++++
+> >  8 files changed, 500 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-nvdimm
+> >  create mode 100644 Documentation/driver-api/nvdimm/firmware-activate.rst
+> > 
+
+[..]
+
+> > @@ -464,6 +466,10 @@ static inline void hibernation_set_ops(const struct platform_hibernation_ops *op
+> >  static inline int hibernate(void) { return -ENOSYS; }
+> >  static inline bool system_entering_hibernation(void) { return false; }
+> >  static inline bool hibernation_available(void) { return false; }
+> > +
+> > +static inline hibernate_quiet_exec(int (*func)(void *data), void *data) {
+> 
+> This needs to be "static inline int".
+> 
+Yep I got a build warning for this and also fixed it up.
+
+Thanks,
+-Vishal
+
+
