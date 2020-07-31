@@ -2,120 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E58E1234732
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2342B234755
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 16:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730769AbgGaNtx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 09:49:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54456 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727851AbgGaNtx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 09:49:53 -0400
-Received: from localhost (router.4pisysteme.de [80.79.225.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0694C208E4;
-        Fri, 31 Jul 2020 13:49:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596203392;
-        bh=IXwFqQHjP2sDj/CKwA+w73Rr9wgrcjVyVnpFMoC7OjU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UBriO0JOczpijNoQcc6SIWS7AffbF+7ldQJy+zYnulcMLP8iwwdjPVVMcChn/guKy
-         F0oJ95Rwx8ArimT40TgjCIAGGNEf9lj8jsaCOBs1UDCZRbrDoSU9W4peFokXG1XMDw
-         0jsXfWF8aCKUM9PYHIfbiZ/10bvc4F0YjrtZyaYA=
-Date:   Fri, 31 Jul 2020 15:49:50 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Pu Wen <puwen@hygon.cn>
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, jarkko.nikula@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH] i2c: designware: Add device HID for Hygon I2C controller
-Message-ID: <20200731134950.GB1679@kunai>
-References: <20200731084845.24459-1-puwen@hygon.cn>
+        id S1730799AbgGaOHQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 10:07:16 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2551 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730766AbgGaOHQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 10:07:16 -0400
+Received: from lhreml718-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 2158DCE1B436D3FEB019;
+        Fri, 31 Jul 2020 15:07:14 +0100 (IST)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml718-chm.china.huawei.com (10.201.108.69) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Fri, 31 Jul 2020 15:07:13 +0100
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
+ Fri, 31 Jul 2020 15:07:13 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     James Morse <james.morse@arm.com>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>, "lenb@kernel.org" <lenb@kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>,
+        "jroedel@suse.de" <jroedel@suse.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>
+Subject: RE: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for unknown
+ (vendor) CPER records
+Thread-Topic: [PATCH v13 1/2] ACPI / APEI: Add a notifier chain for unknown
+ (vendor) CPER records
+Thread-Index: AQHWYBeNEuC2snlLPEu+XBWu+0jruKkTg3ww///49wCADjUBgIAAES8A
+Date:   Fri, 31 Jul 2020 14:07:13 +0000
+Message-ID: <9b7f58f2d60549ad91bde2db4e4455ae@huawei.com>
+References: <20200722103952.1009-1-shiju.jose@huawei.com>
+ <20200722103952.1009-2-shiju.jose@huawei.com>
+ <20200722110146.GW3703480@smile.fi.intel.com>
+ <eb8336f0357f447baf5c37309d320f57@huawei.com>
+ <20200722125038.GZ3703480@smile.fi.intel.com>
+ <185f69dd-bfec-20ce-01d6-76947f553e45@arm.com>
+In-Reply-To: <185f69dd-bfec-20ce-01d6-76947f553e45@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.82.38]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="K8nIJk4ghYZn606h"
-Content-Disposition: inline
-In-Reply-To: <20200731084845.24459-1-puwen@hygon.cn>
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
---K8nIJk4ghYZn606h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jul 31, 2020 at 04:48:45PM +0800, Pu Wen wrote:
-> Add device HID HYGO0010 to match the Hygon ACPI Vendor ID (HYGO) that
-> was registered in http://www.uefi.org/acpi_id_list, and the I2C
-> controller on Hygon paltform will use the HID.
->=20
-> Signed-off-by: Pu Wen <puwen@hygon.cn>
-
-I can take this via I2C, but I'd need an ack from Rafael or Len.
-
-Or it can go via ACPI, fine with me
-
-Acked-by: Wolfram Sang <wsa@kernel.org>
-
-> ---
->  drivers/acpi/acpi_apd.c                     | 1 +
->  drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
->  2 files changed, 2 insertions(+)
->=20
-> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-> index ba2612e9a0eb..f24f6d3f1fa5 100644
-> --- a/drivers/acpi/acpi_apd.c
-> +++ b/drivers/acpi/acpi_apd.c
-> @@ -240,6 +240,7 @@ static const struct acpi_device_id acpi_apd_device_id=
-s[] =3D {
->  	{ "AMDI0020", APD_ADDR(cz_uart_desc) },
->  	{ "AMD0030", },
->  	{ "AMD0040", APD_ADDR(st_misc_desc)},
-> +	{ "HYGO0010", APD_ADDR(wt_i2c_desc) },
->  #endif
->  #ifdef CONFIG_ARM64
->  	{ "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
-> diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/bu=
-sses/i2c-designware-platdrv.c
-> index a71bc58fc03c..0dfeb2d11603 100644
-> --- a/drivers/i2c/busses/i2c-designware-platdrv.c
-> +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-> @@ -55,6 +55,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] =
-=3D {
->  	{ "HISI02A1", 0 },
->  	{ "HISI02A2", 0 },
->  	{ "HISI02A3", 0 },
-> +	{ "HYGO0010", ACCESS_INTR_MASK },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(acpi, dw_i2c_acpi_match);
-> --=20
-> 2.23.0
->=20
-
---K8nIJk4ghYZn606h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8kIX4ACgkQFA3kzBSg
-Kbapvg//XojrXKWxAnwxZ4yM08TGa5ZO4BFLsrF2TAc/GlLtSahmH5JO7t9fkYOB
-jn5HbtxIGEqYEP6uQLVMgT+WGdAdCu1kXI9BbzZNYG2Gm7J8EI7ui1CWrdXkXm8/
-R1yQ/AhszXe1BUm9Y3UWaioqpyTqN8bB5fgsgWTFEjuxneLNoA0T+kduXPiRsyTA
-nUqL/7rl/8BWCvpVd26aPGIUgQFXftFBXhjMBzyPRrBEZUcDITAdhYG5LoATQjz1
-O6kcRszY3wcNFtxiC84oI4KbMErnExHSvcugI7x7jIAFGyEeQBUubdRychckMLEN
-Oma3uXCDWt/AfkUc67fWAF75sToFV830StjoKmT+pqMQiLI7c8Nv4FjHdz/p/Quv
-UyrYhh2hynaq0+4UQATEqvCMulGdw5tchPhOVIMkNFGyw24iQkTh7guFkmA5jAwB
-/i7sPVt3AzyJ/u/JyG/aFPkHa3xAVD4RZd0EPwMNisL+tBnUQlTedaMkUMPuBEFU
-5/OymFfNhKYMjTAn/EHsVJtEZir3dT9bQyeCPyulOpo0SHHlBY87CbY0b74wMRNj
-m5J+TCn0xtiiILXe1+p6iwbj6vdALpsbQcLHx96JQxy9gfgUMmlx8MNZm4V3pucg
-KtlfyUfaUkw+/eSbCPm0U3iQWSVZTLCR7wscP6dlje+98+tz8Q8=
-=gqTO
------END PGP SIGNATURE-----
-
---K8nIJk4ghYZn606h--
+SGkgSmFtZXMsIA0KDQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBsaW51eC1h
+Y3BpLW93bmVyQHZnZXIua2VybmVsLm9yZyBbbWFpbHRvOmxpbnV4LWFjcGktDQo+b3duZXJAdmdl
+ci5rZXJuZWwub3JnXSBPbiBCZWhhbGYgT2YgSmFtZXMgTW9yc2UNCj5TZW50OiAzMSBKdWx5IDIw
+MjAgMTQ6NDgNCj5UbzogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiBB
+bmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtvQGxpbnV4LmludGVsLmNvbT47IGxpbnV4
+LQ0KPmFjcGlAdmdlci5rZXJuZWwub3JnOyBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC0NCj5rZXJuZWxAdmdlci5rZXJuZWwub3JnOyByandAcmp3eXNvY2tpLm5ldDsgaGVsZ2Fhc0Br
+ZXJuZWwub3JnOw0KPmJwQGFsaWVuOC5kZTsgbGVuYkBrZXJuZWwub3JnOyB0b255Lmx1Y2tAaW50
+ZWwuY29tOw0KPmRhbi5jYXJwZW50ZXJAb3JhY2xlLmNvbTsgemhhbmdsaWd1YW5nQGxpbnV4LmFs
+aWJhYmEuY29tOyBXYW5na2VmZW5nDQo+KE9TIEtlcm5lbCBMYWIpIDx3YW5na2VmZW5nLndhbmdA
+aHVhd2VpLmNvbT47IGpyb2VkZWxAc3VzZS5kZTsNCj5MaW51eGFybSA8bGludXhhcm1AaHVhd2Vp
+LmNvbT47IHlhbmd5aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT47DQo+Sm9uYXRoYW4gQ2Ft
+ZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgdGFueGlhb2ZlaQ0KPjx0YW54aWFv
+ZmVpQGh1YXdlaS5jb20+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MTMgMS8yXSBBQ1BJIC8gQVBF
+STogQWRkIGEgbm90aWZpZXIgY2hhaW4gZm9yIHVua25vd24NCj4odmVuZG9yKSBDUEVSIHJlY29y
+ZHMNCj4NCj5IaSBTaGlqdSwNCj4NCj5PbiAyMi8wNy8yMDIwIDEzOjUwLCBBbmR5IFNoZXZjaGVu
+a28gd3JvdGU6DQo+PiBPbiBXZWQsIEp1bCAyMiwgMjAyMCBhdCAxMjozNDoyM1BNICswMDAwLCBT
+aGlqdSBKb3NlIHdyb3RlOg0KPg0KPj4+Pj4gQ28tZGV2ZWxvcGVkLWJ5OiBKYW1lcyBNb3JzZSA8
+amFtZXMubW9yc2VAYXJtLmNvbT4NCj4+Pj4NCj4+Pj4gQ28tZGV2ZWxvcGVkLWJ5OiBpcyBnb2lu
+ZyBfaW4gY29uanVuY3Rpb24gd2l0aF8gU29CIHRhZyB3aGljaCBpcw0KPj4+PiBtaXNzaW5nIGhl
+cmUuDQo+Pj4gVGhpcyB0YWcgd2FzIGFkZGVkIGFzIHBlciBpbnN0cnVjdGlvbiBmcm9tIFJhZmFl
+bC4NCj4+PiBJIHdhcyB0b2xkIHRoYXQgSSBjYW5ub3QgYWRkIFNvQiB0YWcgZm9yIG90aGVycyB1
+bmxlc3Mgc3BlY2lmaWNhbGx5IGdpdmVuLg0KPj4+IFByb2JhYmx5IEkgd2lsbCBsZWF2ZSBpdCB3
+aXRoIFJhZmFlbC9KYW1lcyB0byBoZWxwIG9uIHRoaXMgU29CIHRhZyBhcw0KPj4+IFJhZmFlbCB3
+YXMgb2sgdG8gbWVyZ2UgdGhpcyBwYXRjaC4NCj4+DQo+PiBJIHRoaW5rIGl0J3MgYSBtaXN1bmRl
+cnN0YW5kaW5nIHNvbWV3aGVyZS4gQWNjb3JkaW5nIHRvIFsxXToNCj4+ICJTaW5jZSBDby1kZXZl
+bG9wZWQtYnk6IGRlbm90ZXMgYXV0aG9yc2hpcCwgZXZlcnkgQ28tZGV2ZWxvcGVkLWJ5Og0KPj4g
+bXVzdCBiZSBpbW1lZGlhdGVseSBmb2xsb3dlZCBieSBhIFNpZ25lZC1vZmYtYnk6IG9mIHRoZSBh
+c3NvY2lhdGVkIGNvLQ0KPmF1dGhvci4iDQo+Pg0KPj4gSXQgbWVhbnMgZWl0aGVyIGJvdGggb3Ig
+bm9uZS4NCj4+DQo+PiBbMV06DQo+PiBodHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xh
+dGVzdC9wcm9jZXNzL3N1Ym1pdHRpbmctcGF0Y2hlcy5odG1sDQo+DQo+U29ycnkgZm9yIHRoaXMg
+bWVzcyEgTXkgaW50ZW50aW9uIHdhcyB0byBzdW1tYXJpc2UgbXkgc3VnZ2VzdGlvbiBpbiB0aGUN
+Cj5mb3JtIG9mIGEgcGF0Y2gsIEkgd2Fzbid0IGV4cGVjdGluZyB5b3UgdG8gcGljayBpdCB1cC4g
+KGFuZCBJIGRpZG4ndCBwb3N0IGl0DQo+YmVjYXVzZSB0aGVyZSB3YXMgb25nb2luZyBkaXNjdXNz
+aW9uIG9uIHRoZSBzZWNvbmQgcGFydCkNCj4NCj5JJ2xsIHJlcG9zdCB0aGlzIHdpdGggdGhlIENv
+LURldmVsb3BlZC1ieSBzdHVmZi4gWW91J2xsIG5lZWQgdG8gcmUtcG9zdCBpdCB3aXRoDQo+dGhl
+IHNlcmllcywgeW91J2xsIG5lZWQgdG8gbW92ZSB5b3VyIFNpZ25lZC1PZmYtQnkgdG8gYmUgbGFz
+dCB3aGVuIHlvdSBkbw0KPnRoYXQuDQoNClN1cmUuIFRoYW5rcy4NCkFsc28gcGxlYXNlIGNvbnNp
+ZGVyIG1ha2UgeW91IGFzIHRoZSBhdXRob3Igb2YgdGhpcyBwYXRjaCANCmJlY2F1c2UgaXQgaGFz
+IG1vcmUgY2hhbmdlcyBmcm9tIHlvdS4NCg0KPg0KPg0KPlRoYW5rcywNCj4NCj5KYW1lcw0KDQpU
+aGFua3MsDQpTaGlqdQ0K
