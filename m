@@ -2,198 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF7C23472B
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B12B23472F
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732402AbgGaNsS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 09:48:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:59516 "EHLO foss.arm.com"
+        id S1730733AbgGaNtH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 09:49:07 -0400
+Received: from foss.arm.com ([217.140.110.172]:59558 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732397AbgGaNsS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 09:48:18 -0400
+        id S1727851AbgGaNtH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 09:49:07 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57911101E;
-        Fri, 31 Jul 2020 06:48:17 -0700 (PDT)
-Received: from [192.168.0.57] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC2563F66E;
-        Fri, 31 Jul 2020 06:48:15 -0700 (PDT)
-Subject: Re: [PATCH] ACPI / APEI: do memory failure on the physical address
- reported by ARM processor error section
-To:     Xiaofei Tan <tanxiaofei@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, linuxarm@huawei.com, shiju.jose@huawei.com,
-        jonathan.cameron@huawei.com
-References: <1596094348-10230-1-git-send-email-tanxiaofei@huawei.com>
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B7F431B;
+        Fri, 31 Jul 2020 06:49:06 -0700 (PDT)
+Received: from merodach.members.linode.com (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF2E23F66E;
+        Fri, 31 Jul 2020 06:49:05 -0700 (PDT)
 From:   James Morse <james.morse@arm.com>
-Message-ID: <9b340947-4fcf-30f3-f7e4-68a2753864c6@arm.com>
-Date:   Fri, 31 Jul 2020 14:48:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     linux-acpi@vger.kernel.org
+Subject: [RESEND PATCH v13] ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records
+Date:   Fri, 31 Jul 2020 13:48:42 +0000
+Message-Id: <20200731134842.4832-1-james.morse@arm.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <1596094348-10230-1-git-send-email-tanxiaofei@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tan,
+From: Shiju Jose <shiju.jose@huawei.com>
 
-On 30/07/2020 08:32, Xiaofei Tan wrote:
-> After the following commit applied, user-mode SEA is preferentially
-> processed by APEI. Do memory failure to recover.
-> 
-> But there are some problems:
-> 1) The function apei_claim_sea() has processed an CPER, does not
-> mean that memory failure handling has done. Because the firmware-first
-> RAS error is reported by both producer and consumer. Mostly SEA uses
-> ARM processor error section to report as a consumer. (The producer could
-> be DDRC and cache, and use memory error section and other error section
-> to report). But memory failure handling for ARM processor error section
-> has not been supported. We should add it.
+CPER records describing a firmware-first error are identified by GUID.
+The ghes driver currently logs, but ignores any unknown CPER records.
+This prevents describing errors that can't be represented by a standard
+entry, that would otherwise allow a driver to recover from an error.
+The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
+version 2.8).
 
-I can't follow what you are saying here.
+Add a notifier chain for these non-standard/vendor-records. Callers
+must identify their type of records by GUID.
 
-APEI doesn't parse the Processor Error records. This has always been true, its not a
-regression introduced by that commit.
+Record data is copied to memory from the ghes_estatus_pool to allow
+us to keep it until after the notifier has run.
 
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Co-developed-by: James Morse <james.morse@arm.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+---
+ drivers/acpi/apei/ghes.c | 63 ++++++++++++++++++++++++++++++++++++++++
+ include/acpi/ghes.h      | 27 +++++++++++++++++
+ 2 files changed, 90 insertions(+)
 
-> 2) Some hardware platforms can't record physical address each time. But
-> they could always have reported a firmware-first RAS error using ARM
-> processor error section. Such platform should update firmware. Don't
-> report the RAS error when physical address is not recorded.
-
-Eh? If firmware fails to describe the error, we should carry on and pretend nothing happened?
-
-I think if the APEI code gets CPER records that have the fields linux needs to handle the
-error, (for memory: that's the physical address), it should return an error to the caller,
-as the work hasn't been done.
-
-In the case of arm64's synchronous external abort, the response should be the
-apei_claim_sea() code not claiming the abort, as there is a problem with the records.
-Certainly the current behaviour can be improved.
-
-
-> Fixes: 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work")
-
-I don't see how parsing this extra record fixes a bug in this commit.
-Presumably you were depending on the arch code killing the thread regardless of whether
-APEI found work to do ... which masked the fact it finds work, but doesn't know what to do
-with it.
-
-
-I'm assuming your platform describes errors it detects in the cache as processor errors
-for the cache, instead of memory errors.
-
-
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 81bf71b..07bfa28 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -466,6 +466,44 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->  	return false;
->  }
->  
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	struct cper_arm_err_info *err_info;
-> +	bool queued = false;
-> +	int sec_sev, i;
-> +
-> +	log_arm_hw_error(err);
-> +
-> +	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
-> +		return false;
-
-> +	sec_sev = ghes_severity(gdata->error_severity);
-> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> +		return false;
-
-This is to filter out corrected errors? What if this section is fatal?
-The panic on fatal code only looks as the severity in the Generic Error Status Block.
-
-I think the right thing to do is to explicitly test each "Cache error structure"'s bits
-for corrected/uncorrected instead.
-
-These top-level severities describe a group of records. You may have a corrected error
-event that still has latent faults left in the system.
-
-
-This thing has multiple variable length entries in it.
-Could we sanity test that 'err->err_info_num' doesn't take us outside err->section_length?
-(we already do this sort of thing in the probe code)
-
-
-> +	err_info = (struct cper_arm_err_info *) (err + 1);
-> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
-> +		unsigned long pfn;
-
-Please check the type of this error, and only invoke memory_failure_queue() for caches.
-(does your firmware generate the other types too?)
-
-
-For a bus error, why are we complaining that this isn't memory?
-If this were a TLB error, what does the physical address mean? Is it part of the page
-tables or the final output address? (Who knows what the physical address means for a
-micro-architectural error!)
-
-I think these other types should print a ratelimited warning that this type isn't
-understood. We shouldn't pretend they are memory and hope for the best.
-
-
-Please check the corrected or uncorrected bit in the type-specific u64 for caches.
-
-
-> +		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
-> +			continue;
-
-
-> +		pfn = PHYS_PFN(err_info->physical_fault_addr);
-> +		if (!pfn_valid(pfn)) {
-
-> +			pr_warn(FW_WARN GHES_PFX
-
-ratelimit!
-
-> +				"Invalid address in generic error data: 0x%#llx\n",
-> +				err_info->physical_fault_addr);
-> +			continue;
-> +		}
-> +
-> +		memory_failure_queue(pfn, 0);
-> +		queued = true;
-
-This bit is almost the same as part of ghes_handle_memory_failure(), please pull that out
-to a common helper. I think you'll need to pass the flags for memory_failure_queue() in.
-
-
-
-Thanks,
-
-James
-
-> +	}
-> +
-> +	return queued;
-> +}
-> +
->  /*
->   * PCIe AER errors need to be sent to the AER driver for reporting and
->   * recovery. The GHES severities map to the following AER severities and
-> @@ -543,9 +581,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->  			ghes_handle_aer(gdata);
->  		}
->  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> -
-> -			log_arm_hw_error(err);
-> +			queued = ghes_handle_arm_hw_error(gdata, sev);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->  
-> 
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 81bf71b10d44..99df00f64306 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -79,6 +79,12 @@
+ 	((struct acpi_hest_generic_status *)				\
+ 	 ((struct ghes_estatus_node *)(estatus_node) + 1))
+ 
++#define GHES_VENDOR_ENTRY_LEN(gdata_len)                               \
++	(sizeof(struct ghes_vendor_record_entry) + (gdata_len))
++#define GHES_GDATA_FROM_VENDOR_ENTRY(vendor_entry)                     \
++	((struct acpi_hest_generic_data *)                              \
++	((struct ghes_vendor_record_entry *)(vendor_entry) + 1))
++
+ /*
+  *  NMI-like notifications vary by architecture, before the compiler can prune
+  *  unused static functions it needs a value for these enums.
+@@ -123,6 +129,12 @@ static DEFINE_MUTEX(ghes_list_mutex);
+  */
+ static DEFINE_SPINLOCK(ghes_notify_lock_irq);
+ 
++struct ghes_vendor_record_entry {
++	struct work_struct work;
++	int error_severity;
++	char vendor_record[];
++};
++
+ static struct gen_pool *ghes_estatus_pool;
+ static unsigned long ghes_estatus_pool_size_request;
+ 
+@@ -511,6 +523,56 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ #endif
+ }
+ 
++static BLOCKING_NOTIFIER_HEAD(vendor_record_notify_list);
++
++int ghes_register_vendor_record_notifier(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_register(&vendor_record_notify_list, nb);
++}
++EXPORT_SYMBOL_GPL(ghes_register_vendor_record_notifier);
++
++void ghes_unregister_vendor_record_notifier(struct notifier_block *nb)
++{
++	blocking_notifier_chain_unregister(&vendor_record_notify_list, nb);
++}
++EXPORT_SYMBOL_GPL(ghes_unregister_vendor_record_notifier);
++
++static void ghes_vendor_record_work_func(struct work_struct *work)
++{
++	struct ghes_vendor_record_entry *entry;
++	struct acpi_hest_generic_data *gdata;
++	u32 len;
++
++	entry = container_of(work, struct ghes_vendor_record_entry, work);
++	gdata = GHES_GDATA_FROM_VENDOR_ENTRY(entry);
++
++	blocking_notifier_call_chain(&vendor_record_notify_list,
++				     entry->error_severity, gdata);
++
++	len = GHES_VENDOR_ENTRY_LEN(acpi_hest_get_record_size(gdata));
++	gen_pool_free(ghes_estatus_pool, (unsigned long)entry, len);
++}
++
++static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
++					  int sev)
++{
++	struct acpi_hest_generic_data *copied_gdata;
++	struct ghes_vendor_record_entry *entry;
++	u32 len;
++
++	len = GHES_VENDOR_ENTRY_LEN(acpi_hest_get_record_size(gdata));
++	entry = (void *)gen_pool_alloc(ghes_estatus_pool, len);
++	if (!entry)
++		return;
++
++	copied_gdata = GHES_GDATA_FROM_VENDOR_ENTRY(entry);
++	memcpy(copied_gdata, gdata, acpi_hest_get_record_size(gdata));
++	entry->error_severity = sev;
++
++	INIT_WORK(&entry->work, ghes_vendor_record_work_func);
++	schedule_work(&entry->work);
++}
++
+ static bool ghes_do_proc(struct ghes *ghes,
+ 			 const struct acpi_hest_generic_status *estatus)
+ {
+@@ -549,6 +611,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		} else {
+ 			void *err = acpi_hest_get_payload(gdata);
+ 
++			ghes_defer_non_standard_event(gdata, sev);
+ 			log_non_standard_event(sec_type, fru_id, fru_text,
+ 					       sec_sev, err,
+ 					       gdata->error_data_length);
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 517a5231cc1b..491bd8c6d600 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -53,6 +53,33 @@ enum {
+ 	GHES_SEV_PANIC = 0x3,
+ };
+ 
++#ifdef CONFIG_ACPI_APEI_GHES
++/**
++ * ghes_register_vendor_record_notifier - register a notifier for vendor
++ * records that the kernel would otherwise ignore.
++ * @nb: pointer to the notifier_block structure of the event handler.
++ *
++ * return 0 : SUCCESS, non-zero : FAIL
++ */
++int ghes_register_vendor_record_notifier(struct notifier_block *nb);
++
++/**
++ * ghes_unregister_vendor_record_notifier - unregister the previously
++ * registered vendor record notifier.
++ * @nb: pointer to the notifier_block structure of the vendor record handler.
++ */
++void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
++#else
++static inline int ghes_register_vendor_record_notifier(struct notifier_block *nb)
++{
++	return -ENODEV;
++}
++
++static inline void ghes_unregister_vendor_record_notifier(struct notifier_block *nb)
++{
++}
++#endif
++
+ int ghes_estatus_pool_init(int num_ghes);
+ 
+ /* From drivers/edac/ghes_edac.c */
+-- 
+2.27.0
 
