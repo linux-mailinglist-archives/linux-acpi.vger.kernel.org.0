@@ -2,72 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E79233DC2
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 05:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8432A233FFC
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 09:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731272AbgGaDjL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Jul 2020 23:39:11 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:20282 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731199AbgGaDjJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jul 2020 23:39:09 -0400
-X-UUID: 900d5a9cec694ea3b38005d46e34a007-20200731
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=1ERRm3aXwOnbFAuF3CGICnm9rLGKEtIUDiGMxxFg0OM=;
-        b=YM3g9zUhNE4RO4twTYyzLRvTU/yLXrKX82OY6uk5FyK3tNtzp0YKC5b9c4KEOEsTMQj6J2gsRsRjyf2ZWL0S1onBr08e1UN5VtOTBGn0aGpXvFhsD7iCFWsk/E58zse21Sssboaj2JHdLJdyJ8XuIB5WKn4TqRdkU6vWV2Fzlwk=;
-X-UUID: 900d5a9cec694ea3b38005d46e34a007-20200731
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <neal.liu@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1071401226; Fri, 31 Jul 2020 11:39:06 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 31 Jul 2020 11:39:04 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 31 Jul 2020 11:39:06 +0800
-From:   Neal Liu <neal.liu@mediatek.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>
-CC:     Neal Liu <neal.liu@mediatek.com>, <linux-acpi@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>
-Subject: [PATCH] acpi: fix 'return' with no value build warning
-Date:   Fri, 31 Jul 2020 11:39:04 +0800
-Message-ID: <1596166744-2954-2-git-send-email-neal.liu@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1596166744-2954-1-git-send-email-neal.liu@mediatek.com>
-References: <1596166744-2954-1-git-send-email-neal.liu@mediatek.com>
+        id S1731629AbgGaHcR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 03:32:17 -0400
+Received: from mga11.intel.com ([192.55.52.93]:54108 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731560AbgGaHcR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 03:32:17 -0400
+IronPort-SDR: 4+TuDbzBxczJI9veoqDDgXioF/dlaHw2gHqZeWb/HIYH+lnFzZcreSPr6CDoj7UxsGFKU5sAwe
+ 5GzH5Ar19uFQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="149569575"
+X-IronPort-AV: E=Sophos;i="5.75,417,1589266800"; 
+   d="scan'208";a="149569575"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 00:32:15 -0700
+IronPort-SDR: +nUl9EM4FpqMaXI9kosk4hQ5eO8b4A/7exNMNeS/Ko6sPoId+ajjntrO3gzlmsw3RppFhNDo6Y
+ 6zoSi7kuTWVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,417,1589266800"; 
+   d="scan'208";a="304864548"
+Received: from lkp-server02.sh.intel.com (HELO d4d86dd808e0) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 31 Jul 2020 00:32:13 -0700
+Received: from kbuild by d4d86dd808e0 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k1PWX-0000TR-0E; Fri, 31 Jul 2020 07:32:13 +0000
+Date:   Fri, 31 Jul 2020 15:31:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ 97987ea7f86a35284fd54efc7412db246f178666
+Message-ID: <5f23c8ea.PWJ3lFt9FGpnoBxp%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rml4aW5nIENGSSBpc3N1ZSB3aGljaCBpbnRyb2R1Y2VkIGJ5IGNvbW1pdCBlZmU5NzExMjE0ZTYg
-aXMNCmluY29tcGxldGUuDQpBZGQgcmV0dXJuIHZhbHVlIHRvIGZpeCByZXR1cm4tdHlwZSBidWls
-ZCB3YXJuaW5nLg0KDQpTaWduZWQtb2ZmLWJ5OiBOZWFsIExpdSA8bmVhbC5saXVAbWVkaWF0ZWsu
-Y29tPg0KLS0tDQogZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgfCAgICA0ICsrLS0NCiAx
-IGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgYi9kcml2ZXJzL2FjcGkvcHJvY2Vz
-c29yX2lkbGUuYw0KaW5kZXggNmZmYjZjOS4uNjg3MDAyMCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
-YWNwaS9wcm9jZXNzb3JfaWRsZS5jDQorKysgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUu
-Yw0KQEAgLTY2NCwxMSArNjY0LDExIEBAIHN0YXRpYyBpbnQgYWNwaV9pZGxlX2VudGVyX3MyaWRs
-ZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAJCXN0cnVjdCBhY3BpX3Byb2Nlc3NvciAq
-cHIgPSBfX3RoaXNfY3B1X3JlYWQocHJvY2Vzc29ycyk7DQogDQogCQlpZiAodW5saWtlbHkoIXBy
-KSkNCi0JCQlyZXR1cm47DQorCQkJcmV0dXJuIC1FRkFVTFQ7DQogDQogCQlpZiAocHItPmZsYWdz
-LmJtX2NoZWNrKSB7DQogCQkJYWNwaV9pZGxlX2VudGVyX2JtKHByLCBjeCwgZmFsc2UpOw0KLQkJ
-CXJldHVybjsNCisJCQlyZXR1cm4gMDsNCiAJCX0gZWxzZSB7DQogCQkJQUNQSV9GTFVTSF9DUFVf
-Q0FDSEUoKTsNCiAJCX0NCi0tIA0KMS43LjkuNQ0K
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 97987ea7f86a35284fd54efc7412db246f178666  Merge branch 'pm-devfreq' into linux-next
 
+Warning in current branch:
+
+drivers/acpi/processor_idle.c:666:4: warning: 'return' with no value, in function returning non-void [-Wreturn-type]
+
+Warning ids grouped by kconfigs:
+
+recent_errors
+|-- i386-allyesconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-defconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a011-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a012-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a013-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a014-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a015-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-a016-20200731
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-c001-20200730
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- i386-randconfig-r003-20200730
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- ia64-allmodconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- ia64-allyesconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- ia64-defconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- ia64-randconfig-r025-20200730
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-allmodconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-allyesconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-defconfig
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-kexec
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-rhel
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+|-- x86_64-rhel-7.6-kselftests
+|   `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+`-- x86_64-rhel-8.3
+    `-- drivers-acpi-processor_idle.c:warning:return-with-no-value-in-function-returning-non-void
+
+elapsed time: 840m
+
+configs tested: 66
+configs skipped: 1
+
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20200731
+i386                 randconfig-a004-20200731
+i386                 randconfig-a006-20200731
+i386                 randconfig-a002-20200731
+i386                 randconfig-a001-20200731
+i386                 randconfig-a003-20200731
+x86_64               randconfig-a015-20200731
+x86_64               randconfig-a014-20200731
+x86_64               randconfig-a016-20200731
+x86_64               randconfig-a012-20200731
+x86_64               randconfig-a013-20200731
+x86_64               randconfig-a011-20200731
+i386                 randconfig-a016-20200731
+i386                 randconfig-a012-20200731
+i386                 randconfig-a014-20200731
+i386                 randconfig-a015-20200731
+i386                 randconfig-a011-20200731
+i386                 randconfig-a013-20200731
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
