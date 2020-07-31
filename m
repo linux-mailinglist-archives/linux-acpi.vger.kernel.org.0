@@ -2,164 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B70EB234601
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 14:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F882346FA
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733264AbgGaMnR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 08:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733294AbgGaMnQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jul 2020 08:43:16 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39046C061574;
-        Fri, 31 Jul 2020 05:43:16 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id a26so5480429ejc.2;
-        Fri, 31 Jul 2020 05:43:16 -0700 (PDT)
+        id S1731750AbgGaNdo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 09:33:44 -0400
+Received: from mail-co1nam11on2072.outbound.protection.outlook.com ([40.107.220.72]:37089
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728607AbgGaNdo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 09:33:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YzX254ET4hAAxZ0RSo8DsQAB1y1EGcFPM4TYZr/n0VBuHGEvzQZcMncei/YDoDPNUDMf3tw6KCllZjfDlnrxV/IaZVi2pwdcNRW7pq3Fz1reayUzbD6eKbm4jygaUq9FkvIkMdVRMiMG2onGHiiOcweeWrWNnAGWROl0zxuSvtSnEPbjD7i5jYnuiWmGkt3DPFCheJWzSTpVk5EwhDjzGy+owfNSVdc69GBNIR6bjh3y2hQMWHsOt9fXnqrWu00ALnqZ0f4yrZv0LN9D23TUNzzi3aMkJAts9pI3rY5mWfaUJraEYpYgnWqezESbcWmkGhW6rmyE/D1zinGWJis3Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PF0QhOB+ffp4nsvVOQTKzKVYuk4vkMVUgn55nCJOK9g=;
+ b=KCiPZyrm4X6P/MS7JYxu8bsS/mIzZwePae9Bd+TDSPka+cG/a91JrZ2mg1e0HuevcIUHzjSqBjcCd0riqgAZ89hue0dEhxOdTlEGt08GG/5PLUY7EdA6S2RPk2OQVoeSLGVxGNJSVn+OgXa+GqHTaP19PtA0GSrHjZEbInANH962AOC7PH7c72qENYrEW7bEVbniXvvrRJlnqAS+TrXzBTsGVj4Hix4Pm/mO5G67s/Ch2zjBFTuhQie62qM/yeqnLOrUsQjEgwKolFOudvqUP1F3JYOjkfO5yUOxsT1Ri6A92LkiItQYN+a0WMv/wsIv2Gv9RUjtUIUGh7MLK0xhVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Z7WaVDyC31Xqp9aG4vaiaHbvwp6b775oA7lj7CzrKBo=;
-        b=Boub8lNC8OOZzaDP7HakRmCigQ9s+TmAZKT/FvTXISovow+eY1+3iv9s7tVr5dADQb
-         tIF5zqqI08ULoL0yyrXmhoapYfXxmRW0lyX2RCJXcewDU1EB9xdyPBrZABXn08aJJ28c
-         Ix6TlonWfWSChmEA3cZnWfApy3SwFu1s8TocFkM7yBDwtH78cBXTAF1xTDgYs+VIg8UE
-         kcTAWODekL0CEEpa/XJHHc7Z1xM6Zm5QjgRxMYhQQz3mO4eSz2plfe9QNw1SAJHLLj1J
-         ZA6BNEbFTnFQK6vaB1h+hfyveE/uv2QDJ4RmDfBaoT3ERtSvXRg9SGL9BruBwod71w3x
-         jyzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Z7WaVDyC31Xqp9aG4vaiaHbvwp6b775oA7lj7CzrKBo=;
-        b=odC0C2Z8qjc/R3Sxg0m4I69+a65FMfT2PdfWwCtNsIWoRrbgPdA+xt0zGud2eEx0/5
-         ngabfGy3s7C4W9vCCQ0o1gmzVhzDwrJHa+wrLnWQIZayyjumBn8lNQRm3lYMXBMtA584
-         LBXgkCEGQh2jyKGcN9NghACKAH4M7awzVYg1VpZs3kayTb10Qn+5lo/f00IJ9C41ipul
-         jiZdEfgvwsirvdJvFev6GW5oGPl5s3uN+oJbhsoXzVbvVl5nWXJL4eBGM0NZvzTv44zI
-         FPZvuIULjyCzNbGLSbnhZq93NPV4mixtQKviRH9hWBdcgs9bLaB4sAdkYnqQYEs/cU9h
-         8+Vg==
-X-Gm-Message-State: AOAM532XKTpbopjI5UTUXS/eMRcU41K8ehA6w8GKqZdSMzL3D1mGOAqk
-        tM+vhD+Xftju+LX5tijJ6sc=
-X-Google-Smtp-Source: ABdhPJz2I4wMlXEMP6P1KRM4mmo8+jpv64fXNEUIP720yCcVBp2o7uTyVYR6ab20bRx5VLVhSw6mFA==
-X-Received: by 2002:a17:906:3281:: with SMTP id 1mr3932259ejw.132.1596199394967;
-        Fri, 31 Jul 2020 05:43:14 -0700 (PDT)
-Received: from net.saheed (95C84E0A.dsl.pool.telekom.hu. [149.200.78.10])
-        by smtp.gmail.com with ESMTPSA id g23sm8668514ejb.24.2020.07.31.05.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 05:43:14 -0700 (PDT)
-From:   "Saheed O. Bolarinwa" <refactormyself@gmail.com>
-To:     helgaas@kernel.org
-Cc:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        bjorn@helgaas.com, skhan@linuxfoundation.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PF0QhOB+ffp4nsvVOQTKzKVYuk4vkMVUgn55nCJOK9g=;
+ b=Cr1EGk1Px54tV67i9VanHgus3rM8mIA8iFdYXqkIuIwoHIG9UXSe7ZR42iMhWNcqR5AulWkSYvxGC16jC8EFpvt6OGOlqJs6Ca6wBAPSKi0OFETiqkBX/hM82xXTxbxT3KEGsHpo3X2E9tX/8XCwiPIdbaIY6j1egHNrXg4qyNk=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from DM5PR1201MB0188.namprd12.prod.outlook.com (2603:10b6:4:56::12)
+ by DM6PR12MB3257.namprd12.prod.outlook.com (2603:10b6:5:184::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.20; Fri, 31 Jul
+ 2020 13:33:41 +0000
+Received: from DM5PR1201MB0188.namprd12.prod.outlook.com
+ ([fe80::4df1:4ad8:38cd:128c]) by DM5PR1201MB0188.namprd12.prod.outlook.com
+ ([fe80::4df1:4ad8:38cd:128c%7]) with mapi id 15.20.3239.020; Fri, 31 Jul 2020
+ 13:33:41 +0000
+Subject: Re: [v2 1/4] ACPI: APD: Change name from ST to FCH
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Stephen Boyd <sboyd@kernel.org>,
+        "Agrawal, Akshu" <akshu.agrawal@amd.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Russell Currey <ruscur@russell.cc>,
-        Sam Bobroff <sbobroff@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>
-Subject: [PATCH v4 12/12] PCI: Remove '*val = 0' from pcie_capability_read_*()
-Date:   Fri, 31 Jul 2020 13:43:29 +0200
-Message-Id: <20200731114329.100848-5-refactormyself@gmail.com>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <20200731114329.100848-1-refactormyself@gmail.com>
-References: <20200731114329.100848-1-refactormyself@gmail.com>
+        Michael Turquette <mturquette@baylibre.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>
+References: <20200728082857.10829-1-akshu.agrawal@amd.com>
+ <20200728082857.10829-2-akshu.agrawal@amd.com>
+ <159598596077.1360974.483730969007254506@swboyd.mtv.corp.google.com>
+ <c5041407-1bbb-82b3-e5a5-c6de0ab16861@amd.com>
+ <CAJZ5v0hk+kNrHo1VmBRC=VF-dhdRP2143BxeHOGyY==1Cj+Qrg@mail.gmail.com>
+From:   "Agrawal, Akshu" <aagrawal2@amd.com>
+Message-ID: <94ecbc3d-23d6-cbf7-57c2-5450a2c8952a@amd.com>
+Date:   Fri, 31 Jul 2020 19:03:29 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+In-Reply-To: <CAJZ5v0hk+kNrHo1VmBRC=VF-dhdRP2143BxeHOGyY==1Cj+Qrg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-ClientProxiedBy: MAXPR01CA0084.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:49::26) To DM5PR1201MB0188.namprd12.prod.outlook.com
+ (2603:10b6:4:56::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.0.101] (122.179.42.211) by MAXPR01CA0084.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:49::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.16 via Frontend Transport; Fri, 31 Jul 2020 13:33:38 +0000
+X-Originating-IP: [122.179.42.211]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 0d7cb819-11dd-46ed-52d2-08d8355656d6
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3257:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR12MB3257F100453C08C69BDA82C7F84E0@DM6PR12MB3257.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jFUI2fW94Uz1SBciPpMyLrYiQFX+241V6A13kGV/wKadQJ04DXdgvf/Ha1FER5hexVVwZgZ65pQVmVvMl1INtzcv80Y2rOenNkk5gFmJ2yE4iB8VrRNh7IO6Wh+F/gbjojwZ96Pjtms/QfxtenOKRbUsma+ADY3OIREpdBFFuWkH2D6tXX0BzJumSADXPC2HpcZt45gDttR3Ue4OhECKii00NjTc/QaXIPeUgg4UBL/82n7lIg3NmOYnsrlby5+lGcRtc4Zakxfwm7no7LSko6C9CVQqy8vHUWaB4yGC1U3SBx5152lNPYeUzZMu/hkkqbDpnRLYDD/LGQYQ9Bt9KQ8+bLqIT26l4eO9GJb7r9WLuBadBIWfFhDrWxIGlMP1
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR1201MB0188.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(366004)(376002)(396003)(39860400002)(136003)(2906002)(8676002)(5660300002)(31686004)(6486002)(6666004)(478600001)(8936002)(31696002)(6916009)(52116002)(36756003)(53546011)(66476007)(66556008)(66946007)(4326008)(316002)(54906003)(16576012)(956004)(186003)(26005)(16526019)(2616005)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 5GaDaFh5dGS/8kYzQmgYaikX8PAeuVYpai6MamkIc5kXkrO5PMYNVU9JJKf4i7+yJQ8Ag42kYNB/KtI0qWIctSQKQn9CnfSkolcRi8/y1DnEM07PWJzs68Bk3hANH8nvvUq8JbEpJMWt4w8gh4aN6pmA2q/avIay47g76J51Dq5kApiKErqtkfp5FWEoStq+IqdfRchTX2MrO4MC1Sen9PoUnTnqHMldUQRbqac3Y18WDU4xA20k6+khkLORUOgNQmWttg39rlQte+ujdBUROW77ikrxUAndDDpy0SIw0vBDhtzw5PX8A3z5g0+Zk2a2y0PCExWUJK+575zXwfumg1Je7q+pMetpEz4TN/yu3CtmO5G6mx6c/Iq3fQgTfT7E6m17Vnsm6nX2t1uNkYacutU5pol5+T7g091eQ692u+eZeU6X7leEcl1YCU421GuGNbQvsOZab8dZxbMhRjU8W4YMd34Echv3vwjwezz369EqGeawMo+UMWfYALUaP8JFb0brnmhv8P7GVb5jIyPI0ekEVDUGzxaRzsv5V+sZ0dXzACxVaexxMUEbK4HVcfLukvuwr7SRBk//r2614x3ZV/ZGuVd+Mx3wNbJe2PwzEIGBIBLCMsYCyqLL2AGZO3AXIwt9HBGWeZF3JErXCs8Dog==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d7cb819-11dd-46ed-52d2-08d8355656d6
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR1201MB0188.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2020 13:33:41.7019
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vq1GFcJIS1LZuVh9gYPY415n+vMROmXECJJnCGDVUb3FjzHVz3eO1bVl74P0zYgQ0yPNYAqWxTxJhpMNbN9kJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3257
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are several reasons why a PCI capability read may fail whether the
-device is present or not. If this happens, pcie_capability_read_*() will
-return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
-and *val is set to 0.
 
-This behaviour if further ensured by this code inside
-pcie_capability_read_*()
+On 7/31/2020 4:44 PM, Rafael J. Wysocki wrote:
+> On Fri, Jul 31, 2020 at 2:44 AM Agrawal, Akshu <aagrawal2@amd.com> wrote:
+>>
+>> On 7/29/2020 6:56 AM, Stephen Boyd wrote:
+>>> Quoting Akshu Agrawal (2020-07-28 01:28:53)
+>>>> AMD SoC general pupose clk is present in new platforms with
+>>>> same MMIO mappings. We can reuse the same clk handler support
+>>>> for other platforms. Hence, changing name from ST(SoC) to FCH(IP)
+>>>>
+>>>> Signed-off-by: Akshu Agrawal <akshu.agrawal@amd.com>
+>>>> ---
+>>> Acked-by: Stephen Boyd <sboyd@kernel.org>
+>> Hi Rafael,
+>> I see the status of these patches as Not Applicable in patchwork, is
+>> there any pending action for me?
+> Yes, there is.
+>
+> You need to let me know if you want me to apply them (and I mean the
+> whole series). :-)
+Yes, please apply the whole series.
+>
+> Besides, I only can see 3 out of 4 patches, so if you want me to apply
+> them, can you please resend the whole series with CCs to linux-acpi?
 
- ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
- /*
-  * Reset *val to 0 if pci_read_config_dword() fails, it may
-  * have been written as 0xFFFFFFFF if hardware error happens
-  * during pci_read_config_dword().
-  */
- if (ret)
-	 *val = 0;
- return ret;
+Sending them again with cc to linux-acpi.
 
-a) Since all pci_generic_config_read() does is read a register value,
-it may return success after reading a ~0 which *may* have been fabricated
-by the PCI host bridge due to a read timeout. Hence pci_read_config_*()
-will return success with a fabricated ~0 in *val, indicating a problem.
-In this case, the assumed behaviour of  pcie_capability_read_*() will be
-wrong. To avoid error slipping through, more checks are necessary.
+Thanks,
 
-b) pci_read_config_*() will return PCIBIOS_DEVICE_NOT_FOUND only if
-dev->error_state = pci_channel_io_perm_failure (i.e.
-pci_dev_is_disconnected()) or if pci_generic_config_read() can't find the
-device. In both cases *val is initially set to ~0 but as shown in the code
-above pcie_capability_read_*() resets it back to 0. Even with this effort,
-drivers still have to perform validation checks more so if 0 is a valid
-value.
-
-Most drivers only consider the case (b) and in some cases, there is the
-expectation that on timeout *val has a fabricated value of ~0, which *may*
-not always be true as explained in (a).
-
-In any case, checks need to be done to validate the value read and maybe
-confirm which error has occurred. It is better left to the drivers to do.
-
-Remove the reset of *val to 0 when pci_read_config_*() fails.
-
-Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
-Signed-off-by: Saheed O. Bolarinwa <refactormyself@gmail.com>
----
- drivers/pci/access.c | 14 --------------
- 1 file changed, 14 deletions(-)
-
-diff --git a/drivers/pci/access.c b/drivers/pci/access.c
-index 79c4a2ef269a..ec95edbb1ac8 100644
---- a/drivers/pci/access.c
-+++ b/drivers/pci/access.c
-@@ -413,13 +413,6 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val)
- 
- 	if (pcie_capability_reg_implemented(dev, pos)) {
- 		ret = pci_read_config_word(dev, pci_pcie_cap(dev) + pos, val);
--		/*
--		 * Reset *val to 0 if pci_read_config_word() fails, it may
--		 * have been written as 0xFFFF if hardware error happens
--		 * during pci_read_config_word().
--		 */
--		if (ret)
--			*val = 0;
- 		return ret;
- 	}
- 
-@@ -448,13 +441,6 @@ int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val)
- 
- 	if (pcie_capability_reg_implemented(dev, pos)) {
- 		ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
--		/*
--		 * Reset *val to 0 if pci_read_config_dword() fails, it may
--		 * have been written as 0xFFFFFFFF if hardware error happens
--		 * during pci_read_config_dword().
--		 */
--		if (ret)
--			*val = 0;
- 		return ret;
- 	}
- 
--- 
-2.18.4
+Akshu
 
