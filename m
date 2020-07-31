@@ -2,80 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D00023446C
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 13:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C49234497
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 13:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732658AbgGaLOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 07:14:40 -0400
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:42299 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732508AbgGaLOk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jul 2020 07:14:40 -0400
-Received: by mail-ot1-f45.google.com with SMTP id v21so15083663otj.9;
-        Fri, 31 Jul 2020 04:14:39 -0700 (PDT)
+        id S1732249AbgGaLdi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 07:33:38 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:40075 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732104AbgGaLdi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jul 2020 07:33:38 -0400
+Received: by mail-oi1-f195.google.com with SMTP id u24so16553690oiv.7;
+        Fri, 31 Jul 2020 04:33:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Wrhl52ipoO7lVMpYyYY2X0TUE7l7BgQK1+7/W1Sak/E=;
-        b=e8Mf+I+WQ8zZDzTqlM4MFyWH4fWqyDDcS0mXzVUh/UQOfw0B8O1jYrjjXN0Clr3YQV
-         fb8oDU48LVz7ioNY0IyavkluCYoh1N2ldM+rPh4DDE1PseIQPc8cYWm9TaDcBa/zDErU
-         KMTHDf7LxsSZCuV9nsf5qtq6HKt55mrUfHxxDd/r8Z8QJdj5WwYZEOt2BS2zhbEFWSKh
-         SjErkMi+1gmnfQ/zCfb6LjFlk8uF41Erwz2xCDwjzxlI5+vXpqth3TyjlvodiJinCKIi
-         W3BsyzAZWkFuRQL4hmN8eYRHkxt2TEDNAgGxuSRJMNcPzvb1lUbBwm/3zItx7ION+xni
-         HWrQ==
-X-Gm-Message-State: AOAM530X075n3R3ihnyU7Ip7eSqZUI96oAvKAquZhlTw1FQjAzRzlStZ
-        1Tgno80ZpOmQhDA8YsN+bktkG4gQwd/AbQewFXo=
-X-Google-Smtp-Source: ABdhPJwTgm2RTlfE3PfQw+B3a/e5hImLl3RaslOLRm7NlipEADyPDJaaJa0xVKwSiLmbETPnhGvqZ/WsvQDFktbKX1w=
-X-Received: by 2002:a05:6830:1e5c:: with SMTP id e28mr2391298otj.118.1596194079335;
- Fri, 31 Jul 2020 04:14:39 -0700 (PDT)
+        bh=mpZwL9ptFKxq7FoZCH1xjumTWQNcssejfeTwP6RoxpQ=;
+        b=diuHMLwFGE03iB6FycWL3gzVKV7vJzuDP40K9hGRPOQcLzQIi9LpAbE+bb+iu1Zva7
+         b7hj6RtcnDvzlg7h3eYbSZvJLmYlNeNiRCKL900jpKHwv5KXYbY7L3g/VaYc1GjEyoJz
+         EE8UibbNHAQ2xvP8l3MH4L5l0FT4XlCfQzCJza6pD2tBjS5oTSksRX8gkBKX5BTHbyAj
+         SNrwrRNcYA3QhnfE9ylEFohlC84WnJz2erwTT4CWf6vKCMDutiNwj6fk+z3+F0SBtbNO
+         EugJdjKvoeNHJYWBqakqrimVl0NheHFYPhWy6JR2X2uYm3YS8xkhOyZaGfRIrMZeD5Ah
+         eHbA==
+X-Gm-Message-State: AOAM530dUNDrNfQUhFqddHrZ4wxeJDT4smiaX9qYbSJjy0kPyRTht2Sh
+        oStEZMDE27hETN8WPbTTQSjTqHdUHemGtOqXmik=
+X-Google-Smtp-Source: ABdhPJwjnTZ4vCcK+PJMw9f0cgXjEhaXp88nRbYUPJxc2xho6yL2W9vIsfi0PJ+loYFbKG0KfjHoOo6H/h7XzI4Nqoc=
+X-Received: by 2002:aca:a88e:: with SMTP id r136mr2704600oie.110.1596195217368;
+ Fri, 31 Jul 2020 04:33:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200728082857.10829-1-akshu.agrawal@amd.com> <20200728082857.10829-2-akshu.agrawal@amd.com>
- <159598596077.1360974.483730969007254506@swboyd.mtv.corp.google.com> <c5041407-1bbb-82b3-e5a5-c6de0ab16861@amd.com>
-In-Reply-To: <c5041407-1bbb-82b3-e5a5-c6de0ab16861@amd.com>
+References: <1596166744-2954-1-git-send-email-neal.liu@mediatek.com> <1596166744-2954-2-git-send-email-neal.liu@mediatek.com>
+In-Reply-To: <1596166744-2954-2-git-send-email-neal.liu@mediatek.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 31 Jul 2020 13:14:26 +0200
-Message-ID: <CAJZ5v0hk+kNrHo1VmBRC=VF-dhdRP2143BxeHOGyY==1Cj+Qrg@mail.gmail.com>
-Subject: Re: [v2 1/4] ACPI: APD: Change name from ST to FCH
-To:     "Agrawal, Akshu" <aagrawal2@amd.com>
-Cc:     Stephen Boyd <sboyd@kernel.org>,
-        "Agrawal, Akshu" <akshu.agrawal@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Fri, 31 Jul 2020 13:33:24 +0200
+Message-ID: <CAJZ5v0gk9a-PVr4+zerNWdBORyC563K8XgUdgxENAQ+Y5-85tg@mail.gmail.com>
+Subject: Re: [PATCH] acpi: fix 'return' with no value build warning
+To:     Neal Liu <neal.liu@mediatek.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        wsd_upstream <wsd_upstream@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 31, 2020 at 2:44 AM Agrawal, Akshu <aagrawal2@amd.com> wrote:
+On Fri, Jul 31, 2020 at 5:39 AM Neal Liu <neal.liu@mediatek.com> wrote:
 >
+> Fixing CFI issue which introduced by commit efe9711214e6 is
+> incomplete.
+> Add return value to fix return-type build warning.
 >
-> On 7/29/2020 6:56 AM, Stephen Boyd wrote:
-> > Quoting Akshu Agrawal (2020-07-28 01:28:53)
-> >> AMD SoC general pupose clk is present in new platforms with
-> >> same MMIO mappings. We can reuse the same clk handler support
-> >> for other platforms. Hence, changing name from ST(SoC) to FCH(IP)
-> >>
-> >> Signed-off-by: Akshu Agrawal <akshu.agrawal@amd.com>
-> >> ---
-> > Acked-by: Stephen Boyd <sboyd@kernel.org>
+> Signed-off-by: Neal Liu <neal.liu@mediatek.com>
+
+Applied with edited subject and changelog, but ->
+
+> ---
+>  drivers/acpi/processor_idle.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> Hi Rafael,
-> I see the status of these patches as Not Applicable in patchwork, is
-> there any pending action for me?
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 6ffb6c9..6870020 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -664,11 +664,11 @@ static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
+>                 struct acpi_processor *pr = __this_cpu_read(processors);
+>
+>                 if (unlikely(!pr))
+> -                       return;
+> +                       return -EFAULT;
 
-Yes, there is.
+-> there is no point returning an error code here, so I've made it
+just return 0.
 
-You need to let me know if you want me to apply them (and I mean the
-whole series). :-)
-
-Besides, I only can see 3 out of 4 patches, so if you want me to apply
-them, can you please resend the whole series with CCs to linux-acpi?
-
-Thanks!
+>
+>                 if (pr->flags.bm_check) {
+>                         acpi_idle_enter_bm(pr, cx, false);
+> -                       return;
+> +                       return 0;
+>                 } else {
+>                         ACPI_FLUSH_CPU_CACHE();
+>                 }
+> --
