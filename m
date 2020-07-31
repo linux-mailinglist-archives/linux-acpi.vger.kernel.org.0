@@ -2,191 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B12B23472F
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E58E1234732
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jul 2020 15:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730733AbgGaNtH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 09:49:07 -0400
-Received: from foss.arm.com ([217.140.110.172]:59558 "EHLO foss.arm.com"
+        id S1730769AbgGaNtx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 09:49:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54456 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727851AbgGaNtH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 09:49:07 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B7F431B;
-        Fri, 31 Jul 2020 06:49:06 -0700 (PDT)
-Received: from merodach.members.linode.com (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF2E23F66E;
-        Fri, 31 Jul 2020 06:49:05 -0700 (PDT)
-From:   James Morse <james.morse@arm.com>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-acpi@vger.kernel.org
-Subject: [RESEND PATCH v13] ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records
-Date:   Fri, 31 Jul 2020 13:48:42 +0000
-Message-Id: <20200731134842.4832-1-james.morse@arm.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727851AbgGaNtx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 09:49:53 -0400
+Received: from localhost (router.4pisysteme.de [80.79.225.122])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0694C208E4;
+        Fri, 31 Jul 2020 13:49:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596203392;
+        bh=IXwFqQHjP2sDj/CKwA+w73Rr9wgrcjVyVnpFMoC7OjU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UBriO0JOczpijNoQcc6SIWS7AffbF+7ldQJy+zYnulcMLP8iwwdjPVVMcChn/guKy
+         F0oJ95Rwx8ArimT40TgjCIAGGNEf9lj8jsaCOBs1UDCZRbrDoSU9W4peFokXG1XMDw
+         0jsXfWF8aCKUM9PYHIfbiZ/10bvc4F0YjrtZyaYA=
+Date:   Fri, 31 Jul 2020 15:49:50 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Pu Wen <puwen@hygon.cn>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, jarkko.nikula@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH] i2c: designware: Add device HID for Hygon I2C controller
+Message-ID: <20200731134950.GB1679@kunai>
+References: <20200731084845.24459-1-puwen@hygon.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="K8nIJk4ghYZn606h"
+Content-Disposition: inline
+In-Reply-To: <20200731084845.24459-1-puwen@hygon.cn>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
 
-CPER records describing a firmware-first error are identified by GUID.
-The ghes driver currently logs, but ignores any unknown CPER records.
-This prevents describing errors that can't be represented by a standard
-entry, that would otherwise allow a driver to recover from an error.
-The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
-version 2.8).
+--K8nIJk4ghYZn606h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add a notifier chain for these non-standard/vendor-records. Callers
-must identify their type of records by GUID.
+On Fri, Jul 31, 2020 at 04:48:45PM +0800, Pu Wen wrote:
+> Add device HID HYGO0010 to match the Hygon ACPI Vendor ID (HYGO) that
+> was registered in http://www.uefi.org/acpi_id_list, and the I2C
+> controller on Hygon paltform will use the HID.
+>=20
+> Signed-off-by: Pu Wen <puwen@hygon.cn>
 
-Record data is copied to memory from the ghes_estatus_pool to allow
-us to keep it until after the notifier has run.
+I can take this via I2C, but I'd need an ack from Rafael or Len.
 
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-Co-developed-by: James Morse <james.morse@arm.com>
-Signed-off-by: James Morse <james.morse@arm.com>
----
- drivers/acpi/apei/ghes.c | 63 ++++++++++++++++++++++++++++++++++++++++
- include/acpi/ghes.h      | 27 +++++++++++++++++
- 2 files changed, 90 insertions(+)
+Or it can go via ACPI, fine with me
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 81bf71b10d44..99df00f64306 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -79,6 +79,12 @@
- 	((struct acpi_hest_generic_status *)				\
- 	 ((struct ghes_estatus_node *)(estatus_node) + 1))
- 
-+#define GHES_VENDOR_ENTRY_LEN(gdata_len)                               \
-+	(sizeof(struct ghes_vendor_record_entry) + (gdata_len))
-+#define GHES_GDATA_FROM_VENDOR_ENTRY(vendor_entry)                     \
-+	((struct acpi_hest_generic_data *)                              \
-+	((struct ghes_vendor_record_entry *)(vendor_entry) + 1))
-+
- /*
-  *  NMI-like notifications vary by architecture, before the compiler can prune
-  *  unused static functions it needs a value for these enums.
-@@ -123,6 +129,12 @@ static DEFINE_MUTEX(ghes_list_mutex);
-  */
- static DEFINE_SPINLOCK(ghes_notify_lock_irq);
- 
-+struct ghes_vendor_record_entry {
-+	struct work_struct work;
-+	int error_severity;
-+	char vendor_record[];
-+};
-+
- static struct gen_pool *ghes_estatus_pool;
- static unsigned long ghes_estatus_pool_size_request;
- 
-@@ -511,6 +523,56 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- #endif
- }
- 
-+static BLOCKING_NOTIFIER_HEAD(vendor_record_notify_list);
-+
-+int ghes_register_vendor_record_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&vendor_record_notify_list, nb);
-+}
-+EXPORT_SYMBOL_GPL(ghes_register_vendor_record_notifier);
-+
-+void ghes_unregister_vendor_record_notifier(struct notifier_block *nb)
-+{
-+	blocking_notifier_chain_unregister(&vendor_record_notify_list, nb);
-+}
-+EXPORT_SYMBOL_GPL(ghes_unregister_vendor_record_notifier);
-+
-+static void ghes_vendor_record_work_func(struct work_struct *work)
-+{
-+	struct ghes_vendor_record_entry *entry;
-+	struct acpi_hest_generic_data *gdata;
-+	u32 len;
-+
-+	entry = container_of(work, struct ghes_vendor_record_entry, work);
-+	gdata = GHES_GDATA_FROM_VENDOR_ENTRY(entry);
-+
-+	blocking_notifier_call_chain(&vendor_record_notify_list,
-+				     entry->error_severity, gdata);
-+
-+	len = GHES_VENDOR_ENTRY_LEN(acpi_hest_get_record_size(gdata));
-+	gen_pool_free(ghes_estatus_pool, (unsigned long)entry, len);
-+}
-+
-+static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
-+					  int sev)
-+{
-+	struct acpi_hest_generic_data *copied_gdata;
-+	struct ghes_vendor_record_entry *entry;
-+	u32 len;
-+
-+	len = GHES_VENDOR_ENTRY_LEN(acpi_hest_get_record_size(gdata));
-+	entry = (void *)gen_pool_alloc(ghes_estatus_pool, len);
-+	if (!entry)
-+		return;
-+
-+	copied_gdata = GHES_GDATA_FROM_VENDOR_ENTRY(entry);
-+	memcpy(copied_gdata, gdata, acpi_hest_get_record_size(gdata));
-+	entry->error_severity = sev;
-+
-+	INIT_WORK(&entry->work, ghes_vendor_record_work_func);
-+	schedule_work(&entry->work);
-+}
-+
- static bool ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
- {
-@@ -549,6 +611,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-+			ghes_defer_non_standard_event(gdata, sev);
- 			log_non_standard_event(sec_type, fru_id, fru_text,
- 					       sec_sev, err,
- 					       gdata->error_data_length);
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 517a5231cc1b..491bd8c6d600 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -53,6 +53,33 @@ enum {
- 	GHES_SEV_PANIC = 0x3,
- };
- 
-+#ifdef CONFIG_ACPI_APEI_GHES
-+/**
-+ * ghes_register_vendor_record_notifier - register a notifier for vendor
-+ * records that the kernel would otherwise ignore.
-+ * @nb: pointer to the notifier_block structure of the event handler.
-+ *
-+ * return 0 : SUCCESS, non-zero : FAIL
-+ */
-+int ghes_register_vendor_record_notifier(struct notifier_block *nb);
-+
-+/**
-+ * ghes_unregister_vendor_record_notifier - unregister the previously
-+ * registered vendor record notifier.
-+ * @nb: pointer to the notifier_block structure of the vendor record handler.
-+ */
-+void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
-+#else
-+static inline int ghes_register_vendor_record_notifier(struct notifier_block *nb)
-+{
-+	return -ENODEV;
-+}
-+
-+static inline void ghes_unregister_vendor_record_notifier(struct notifier_block *nb)
-+{
-+}
-+#endif
-+
- int ghes_estatus_pool_init(int num_ghes);
- 
- /* From drivers/edac/ghes_edac.c */
--- 
-2.27.0
+Acked-by: Wolfram Sang <wsa@kernel.org>
 
+> ---
+>  drivers/acpi/acpi_apd.c                     | 1 +
+>  drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
+>  2 files changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+> index ba2612e9a0eb..f24f6d3f1fa5 100644
+> --- a/drivers/acpi/acpi_apd.c
+> +++ b/drivers/acpi/acpi_apd.c
+> @@ -240,6 +240,7 @@ static const struct acpi_device_id acpi_apd_device_id=
+s[] =3D {
+>  	{ "AMDI0020", APD_ADDR(cz_uart_desc) },
+>  	{ "AMD0030", },
+>  	{ "AMD0040", APD_ADDR(st_misc_desc)},
+> +	{ "HYGO0010", APD_ADDR(wt_i2c_desc) },
+>  #endif
+>  #ifdef CONFIG_ARM64
+>  	{ "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
+> diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/bu=
+sses/i2c-designware-platdrv.c
+> index a71bc58fc03c..0dfeb2d11603 100644
+> --- a/drivers/i2c/busses/i2c-designware-platdrv.c
+> +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+> @@ -55,6 +55,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] =
+=3D {
+>  	{ "HISI02A1", 0 },
+>  	{ "HISI02A2", 0 },
+>  	{ "HISI02A3", 0 },
+> +	{ "HYGO0010", ACCESS_INTR_MASK },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, dw_i2c_acpi_match);
+> --=20
+> 2.23.0
+>=20
+
+--K8nIJk4ghYZn606h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8kIX4ACgkQFA3kzBSg
+Kbapvg//XojrXKWxAnwxZ4yM08TGa5ZO4BFLsrF2TAc/GlLtSahmH5JO7t9fkYOB
+jn5HbtxIGEqYEP6uQLVMgT+WGdAdCu1kXI9BbzZNYG2Gm7J8EI7ui1CWrdXkXm8/
+R1yQ/AhszXe1BUm9Y3UWaioqpyTqN8bB5fgsgWTFEjuxneLNoA0T+kduXPiRsyTA
+nUqL/7rl/8BWCvpVd26aPGIUgQFXftFBXhjMBzyPRrBEZUcDITAdhYG5LoATQjz1
+O6kcRszY3wcNFtxiC84oI4KbMErnExHSvcugI7x7jIAFGyEeQBUubdRychckMLEN
+Oma3uXCDWt/AfkUc67fWAF75sToFV830StjoKmT+pqMQiLI7c8Nv4FjHdz/p/Quv
+UyrYhh2hynaq0+4UQATEqvCMulGdw5tchPhOVIMkNFGyw24iQkTh7guFkmA5jAwB
+/i7sPVt3AzyJ/u/JyG/aFPkHa3xAVD4RZd0EPwMNisL+tBnUQlTedaMkUMPuBEFU
+5/OymFfNhKYMjTAn/EHsVJtEZir3dT9bQyeCPyulOpo0SHHlBY87CbY0b74wMRNj
+m5J+TCn0xtiiILXe1+p6iwbj6vdALpsbQcLHx96JQxy9gfgUMmlx8MNZm4V3pucg
+KtlfyUfaUkw+/eSbCPm0U3iQWSVZTLCR7wscP6dlje+98+tz8Q8=
+=gqTO
+-----END PGP SIGNATURE-----
+
+--K8nIJk4ghYZn606h--
