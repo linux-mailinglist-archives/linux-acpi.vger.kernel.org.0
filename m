@@ -2,46 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7878D234FE6
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F72234FE8
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728528AbgHADlb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 23:41:31 -0400
-Received: from mga06.intel.com ([134.134.136.31]:44736 "EHLO mga06.intel.com"
+        id S1728557AbgHADlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 23:41:37 -0400
+Received: from mga12.intel.com ([192.55.52.136]:47954 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727978AbgHADlb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 23:41:31 -0400
-IronPort-SDR: vwEVzkfcfqT+h0+Rno05Wlv4HJph1ckkC7xnazX9+Mi/fsVMiQcS9hXm5F6hBQWZIjn/Dtodnm
- kWi7Skf+0sCQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="213438722"
+        id S1727978AbgHADlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 23:41:36 -0400
+IronPort-SDR: od5A5c/RkbEpVp6JeWtRmFYeWjsaa//yx5FyUGiok5uOZuN3cCk8BuYu3cGni6zWkNQvrTteBB
+ jUaIPeMkWVwg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="131470778"
 X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="213438722"
+   d="scan'208";a="131470778"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:30 -0700
-IronPort-SDR: ACjauyPXTAtRnuGjFD+kfUp9GQXfxCZ+bkUw//4tufW1ljNVSx6Bk1froCEMY6X3U9XXyfmlwB
- YPQG2AiZldaQ==
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:36 -0700
+IronPort-SDR: G8c5guRR8LeOP2swzcWsPlPUeVPP4jj1ULXz8yClVEj1fNfgxb6m/aXAd0SWagzDzkJNdaUTat
+ ujZ2gFOfWxpA==
 X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="305244426"
+   d="scan'208";a="273434900"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:30 -0700
-Subject: [PATCH v3 02/23] x86/numa: Add 'nohmat' option
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:36 -0700
+Subject: [PATCH v3 03/23] efi/fake_mem: Arrange for a resource entry per
+ efi_fake_mem instance
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     akpm@linux-foundation.org
-Cc:     x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, vishal.l.verma@intel.com,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>, peterz@infradead.org,
+        vishal.l.verma@intel.com, dave.hansen@linux.intel.com,
         ard.biesheuvel@linaro.org, vishal.l.verma@intel.com,
         linux-mm@kvack.org, linux-nvdimm@lists.01.org,
         joao.m.martins@oracle.com, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date:   Fri, 31 Jul 2020 20:25:12 -0700
-Message-ID: <159625231266.3040297.2759117253481288037.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Fri, 31 Jul 2020 20:25:17 -0700
+Message-ID: <159625231789.3040297.11578515658095829859.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -53,79 +52,87 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Disable parsing of the HMAT for debug, to workaround broken platform
-instances, or cases where it is otherwise not wanted.
+In preparation for attaching a platform device per iomem resource teach
+the efi_fake_mem code to create an e820 entry per instance. Similar to
+E820_TYPE_PRAM, bypass merging resource when the e820 map is sanitized.
 
-Cc: x86@kernel.org
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: x86@kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/mm/numa.c       |    2 ++
- drivers/acpi/numa/hmat.c |    8 +++++++-
- include/acpi/acpi_numa.h |    8 ++++++++
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/kernel/e820.c              |   16 +++++++++++++++-
+ drivers/firmware/efi/x86_fake_mem.c |   12 +++++++++---
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 87c52822cc44..f3805bbaa784 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -41,6 +41,8 @@ static __init int numa_setup(char *opt)
- 		return numa_emu_cmdline(opt + 5);
- 	if (!strncmp(opt, "noacpi", 6))
- 		disable_srat();
-+	if (!strncmp(opt, "nohmat", 6))
-+		disable_hmat();
- 	return 0;
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 983cd53ed4c9..22aad412f965 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -305,6 +305,20 @@ static int __init cpcompare(const void *a, const void *b)
+ 	return (ap->addr != ap->entry->addr) - (bp->addr != bp->entry->addr);
  }
- early_param("numa", numa_setup);
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 2c32cfb72370..a12e36a12618 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -26,6 +26,12 @@
- #include <linux/sysfs.h>
  
- static u8 hmat_revision;
-+static int hmat_disable __initdata;
-+
-+void __init disable_hmat(void)
++static bool e820_nomerge(enum e820_type type)
 +{
-+	hmat_disable = 1;
++	/*
++	 * These types may indicate distinct platform ranges aligned to
++	 * numa node, protection domain, performance domain, or other
++	 * boundaries. Do not merge them.
++	 */
++	if (type == E820_TYPE_PRAM)
++		return true;
++	if (type == E820_TYPE_SOFT_RESERVED)
++		return true;
++	return false;
 +}
- 
- static LIST_HEAD(targets);
- static LIST_HEAD(initiators);
-@@ -814,7 +820,7 @@ static __init int hmat_init(void)
- 	enum acpi_hmat_type i;
- 	acpi_status status;
- 
--	if (srat_disabled())
-+	if (srat_disabled() || hmat_disable)
- 		return 0;
- 
- 	status = acpi_get_table(ACPI_SIG_SRAT, 0, &tbl);
-diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
-index 8784183b2204..0e9302285f14 100644
---- a/include/acpi/acpi_numa.h
-+++ b/include/acpi/acpi_numa.h
-@@ -27,4 +27,12 @@ static inline void disable_srat(void)
++
+ int __init e820__update_table(struct e820_table *table)
  {
- }
- #endif				/* CONFIG_ACPI_NUMA */
+ 	struct e820_entry *entries = table->entries;
+@@ -380,7 +394,7 @@ int __init e820__update_table(struct e820_table *table)
+ 		}
+ 
+ 		/* Continue building up new map based on this information: */
+-		if (current_type != last_type || current_type == E820_TYPE_PRAM) {
++		if (current_type != last_type || e820_nomerge(current_type)) {
+ 			if (last_type != 0)	 {
+ 				new_entries[new_nr_entries].size = change_point[chg_idx]->addr - last_addr;
+ 				/* Move forward only if the new size was non-zero: */
+diff --git a/drivers/firmware/efi/x86_fake_mem.c b/drivers/firmware/efi/x86_fake_mem.c
+index e5d6d5a1b240..0bafcc1bb0f6 100644
+--- a/drivers/firmware/efi/x86_fake_mem.c
++++ b/drivers/firmware/efi/x86_fake_mem.c
+@@ -38,7 +38,7 @@ void __init efi_fake_memmap_early(void)
+ 		m_start = mem->range.start;
+ 		m_end = mem->range.end;
+ 		for_each_efi_memory_desc(md) {
+-			u64 start, end;
++			u64 start, end, size;
+ 
+ 			if (md->type != EFI_CONVENTIONAL_MEMORY)
+ 				continue;
+@@ -58,11 +58,17 @@ void __init efi_fake_memmap_early(void)
+ 			 */
+ 			start = max(start, m_start);
+ 			end = min(end, m_end);
++			size = end - start + 1;
+ 
+ 			if (end <= start)
+ 				continue;
+-			e820__range_update(start, end - start + 1, E820_TYPE_RAM,
+-					E820_TYPE_SOFT_RESERVED);
 +
-+#ifdef CONFIG_ACPI_HMAT
-+extern void disable_hmat(void);
-+#else				/* CONFIG_ACPI_HMAT */
-+static inline void disable_hmat(void)
-+{
-+}
-+#endif				/* CONFIG_ACPI_HMAT */
- #endif				/* __ACP_NUMA_H */
++			/*
++			 * Ensure each efi_fake_mem instance results in
++			 * a unique e820 resource
++			 */
++			e820__range_remove(start, size, E820_TYPE_RAM, 1);
++			e820__range_add(start, size, E820_TYPE_SOFT_RESERVED);
+ 			e820__update_table(e820_table);
+ 		}
+ 	}
 
