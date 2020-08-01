@@ -2,168 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE834235016
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0906123501F
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728923AbgHADn0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 23:43:26 -0400
-Received: from mga06.intel.com ([134.134.136.31]:44951 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728853AbgHADn0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 23:43:26 -0400
-IronPort-SDR: kQL6HD1pNp0WW7OMWUHJDq2aPRhbvoa7u5QHgQSb13ejdBl/6DgtpJZHABmRWZ1NFMwYge/0aS
- pWyLlEIdn7kQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="213438824"
-X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="213438824"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:43:25 -0700
-IronPort-SDR: 3tc/gl+Ukhwb9k/89dnYCY1jX8bmF0P6xAPx5J16Wse/Ii4OkO5eOj/7spk8hjCUuDHr53hy7+
- 2RDkF1VglSSg==
-X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="395520056"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:43:24 -0700
-Subject: [PATCH v3 23/23] device-dax: Add a range mapping allocation
- attribute
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     akpm@linux-foundation.org
-Cc:     Joao Martins <joao.m.martins@oracle.com>, peterz@infradead.org,
-        vishal.l.verma@intel.com, dave.hansen@linux.intel.com,
-        ard.biesheuvel@linaro.org, vishal.l.verma@intel.com,
-        linux-mm@kvack.org, linux-nvdimm@lists.01.org,
-        joao.m.martins@oracle.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date:   Fri, 31 Jul 2020 20:27:06 -0700
-Message-ID: <159625242681.3040297.14551750051856153463.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
+        id S1728475AbgHADvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 23:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728461AbgHADvU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jul 2020 23:51:20 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C1A5C06174A;
+        Fri, 31 Jul 2020 20:51:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=D0ZAEeULLhO0dRSJEKdMB4o06gOWrXsNB6Gpl1foU8s=; b=pQTyMwSyTafkhb+jmPKcsik00L
+        3yiCd+U6Dsxcu/6ZwkRbRshAcdqWfIKRKl7V92jF1sKArZQrBcQftbTUoZyeV19ifYFQ1vtvgvhVS
+        65t1agBt63lSovRXk/ENK5dil2ddKJq3fA5MFWRwtpRdpmklsW8CoN6lSLJnyydg3O5UZXxshVSc9
+        NXyJI5tzTsbS5RFXKI4vzwStTz+nVDQ1eE0K4ffhg5HxcDI3q3hxfN9zpE6bOWoavDyKQmlWxGpB2
+        3fRjrdzxtEQYXXbQLgzGCFFJZOs/8GQPFm17WxmCqZpAbE7YZlchM/5Z8godf4cjZ6PMLCWzAsc1B
+        2U9qZGRA==;
+Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k1iYC-00057S-O2; Sat, 01 Aug 2020 03:51:14 +0000
+Subject: Re: [PATCH v3 02/23] x86/numa: Add 'nohmat' option
+To:     Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
+Cc:     x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, vishal.l.verma@intel.com,
+        ard.biesheuvel@linaro.org, linux-mm@kvack.org,
+        linux-nvdimm@lists.01.org, joao.m.martins@oracle.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
 References: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+ <159625231266.3040297.2759117253481288037.stgit@dwillia2-desk3.amr.corp.intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <545078f8-d6d3-5db7-02f6-648218513752@infradead.org>
+Date:   Fri, 31 Jul 2020 20:51:06 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <159625231266.3040297.2759117253481288037.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+On 7/31/20 8:25 PM, Dan Williams wrote:
+> Disable parsing of the HMAT for debug, to workaround broken platform
+> instances, or cases where it is otherwise not wanted.
+> 
+> ---
+>  arch/x86/mm/numa.c       |    2 ++
+>  drivers/acpi/numa/hmat.c |    8 +++++++-
+>  include/acpi/acpi_numa.h |    8 ++++++++
+>  3 files changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 87c52822cc44..f3805bbaa784 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -41,6 +41,8 @@ static __init int numa_setup(char *opt)
+>  		return numa_emu_cmdline(opt + 5);
+>  	if (!strncmp(opt, "noacpi", 6))
+>  		disable_srat();
+> +	if (!strncmp(opt, "nohmat", 6))
+> +		disable_hmat();
 
-Add a sysfs attribute which denotes a range from the dax region
-to be allocated. It's an write only @mapping sysfs attribute in
-the format of '<start>-<end>' to allocate a range. @start and
-@end use hexadecimal values and the @pgoff is implicitly ordered
-wrt to previous writes to @mapping sysfs e.g. a write of a range
-of length 1G the pgoff is 0..1G(-4K), a second write will use
-@pgoff for 1G+4K..<size>.
+Hopefully that will be documented in
+Documentation/x86/x86_64/boot-options.rst.
 
-This range mapping interface is useful for:
+>  	return 0;
+>  }
+>  early_param("numa", numa_setup);
 
- 1) Application which want to implement its own allocation logic,
- and thus pick the desired ranges from dax_region.
-
- 2) For use cases like VMM fast restart[0] where after kexec we
- want to the same gpa<->phys mappings (as originally created
- before kexec).
-
-[0] https://static.sched.com/hosted_files/kvmforum2019/66/VMM-fast-restart_kvmforum2019.pdf
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20200716172913.19658-5-joao.m.martins@oracle.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/dax/bus.c |   64 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
-
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 7a9439132573..aa67555ba183 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -1040,6 +1040,67 @@ static ssize_t size_store(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RW(size);
- 
-+static ssize_t range_parse(const char *opt, size_t len, struct range *range)
-+{
-+	unsigned long long addr = 0;
-+	char *start, *end, *str;
-+	ssize_t rc = EINVAL;
-+
-+	str = kstrdup(opt, GFP_KERNEL);
-+	if (!str)
-+		return rc;
-+
-+	end = str;
-+	start = strsep(&end, "-");
-+	if (!start || !end)
-+		goto err;
-+
-+	rc = kstrtoull(start, 16, &addr);
-+	if (rc)
-+		goto err;
-+	range->start = addr;
-+
-+	rc = kstrtoull(end, 16, &addr);
-+	if (rc)
-+		goto err;
-+	range->end = addr;
-+
-+err:
-+	kfree(str);
-+	return rc;
-+}
-+
-+static ssize_t mapping_store(struct device *dev, struct device_attribute *attr,
-+		const char *buf, size_t len)
-+{
-+	struct dev_dax *dev_dax = to_dev_dax(dev);
-+	struct dax_region *dax_region = dev_dax->region;
-+	size_t to_alloc;
-+	struct range r;
-+	ssize_t rc;
-+
-+	rc = range_parse(buf, len, &r);
-+	if (rc)
-+		return rc;
-+
-+	rc = -ENXIO;
-+	device_lock(dax_region->dev);
-+	if (!dax_region->dev->driver) {
-+		device_unlock(dax_region->dev);
-+		return rc;
-+	}
-+	device_lock(dev);
-+
-+	to_alloc = range_len(&r);
-+	if (alloc_is_aligned(dev_dax, to_alloc))
-+		rc = alloc_dev_dax_range(dev_dax, r.start, to_alloc);
-+	device_unlock(dev);
-+	device_unlock(dax_region->dev);
-+
-+	return rc == 0 ? len : rc;
-+}
-+static DEVICE_ATTR_WO(mapping);
-+
- static ssize_t align_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
-@@ -1181,6 +1242,8 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
- 		return 0;
- 	if (a == &dev_attr_numa_node.attr && !IS_ENABLED(CONFIG_NUMA))
- 		return 0;
-+	if (a == &dev_attr_mapping.attr && is_static(dax_region))
-+		return 0;
- 	if ((a == &dev_attr_align.attr ||
- 	     a == &dev_attr_size.attr) && is_static(dax_region))
- 		return 0444;
-@@ -1190,6 +1253,7 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
- static struct attribute *dev_dax_attributes[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_size.attr,
-+	&dev_attr_mapping.attr,
- 	&dev_attr_target_node.attr,
- 	&dev_attr_align.attr,
- 	&dev_attr_resource.attr,
+thanks.
+-- 
+~Randy
 
