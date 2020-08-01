@@ -2,49 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AD2E234FF2
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27646234FF4
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 05:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728669AbgHADl7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jul 2020 23:41:59 -0400
-Received: from mga18.intel.com ([134.134.136.126]:9389 "EHLO mga18.intel.com"
+        id S1728688AbgHADmG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jul 2020 23:42:06 -0400
+Received: from mga14.intel.com ([192.55.52.115]:4839 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727978AbgHADl6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jul 2020 23:41:58 -0400
-IronPort-SDR: fw+doFts8qEt0qAcyfQuN2yg9moXAYtEV2oOxJnN5wU+PPoQ8eiDyXH5ch0MfWhLC9vCl6Bx2B
- 81S1gVEiHycA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="139464194"
+        id S1727978AbgHADmE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jul 2020 23:42:04 -0400
+IronPort-SDR: rcmoe7Um615Z14ryPMCfWeQ8oigpcR7JWLqlYzpvKqcgkVE+mfqGWMI7g5HaRS3Ql/7uh2qsVA
+ RF7+zkU6qHsg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="151106214"
 X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="139464194"
+   d="scan'208";a="151106214"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:58 -0700
-IronPort-SDR: IP/TkpGeFfA97QpWiU3jPgwPL0sH2KoqCPvSCgl1N8zc6ekPOyiKrwEY8326/lPHLg5CgAS0Gq
- ZZZbGLTTFTbA==
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:42:03 -0700
+IronPort-SDR: gvSWD4po1MXcnSxZhFsb+3Hqk3JtHf0N4Wqs6hhPu35FEClVNUI7bgEJVUbmpfx4XKMh42Mnk+
+ 21SJMjUKjiow==
 X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="395519913"
+   d="scan'208";a="274700310"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:41:57 -0700
-Subject: [PATCH v3 07/23] ACPI: HMAT: Attach a device for each soft-reserved
- range
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 20:42:03 -0700
+Subject: [PATCH v3 08/23] device-dax: Drop the dax_region.pfn_flags attribute
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     akpm@linux-foundation.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Joao Martins <joao.m.martins@oracle.com>, peterz@infradead.org,
-        vishal.l.verma@intel.com, dave.hansen@linux.intel.com,
+Cc:     Vishal Verma <vishal.l.verma@intel.com>, peterz@infradead.org,
+        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
         vishal.l.verma@intel.com, linux-mm@kvack.org,
         linux-nvdimm@lists.01.org, joao.m.martins@oracle.com,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         dri-devel@lists.freedesktop.org
-Date:   Fri, 31 Jul 2020 20:25:39 -0700
-Message-ID: <159625233946.3040297.14289523802580847523.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Fri, 31 Jul 2020 20:25:45 -0700
+Message-ID: <159625234510.3040297.18298408420119859041.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -56,108 +48,175 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
-"soft reserved" memory as an "hmem" device")' only registered ranges to
-the hmem driver for each soft-reservation that also appeared in the
-HMAT. While this is meant to encourage platform firmware to "do the
-right thing" and publish an HMAT, the corollary is that platforms that
-fail to publish an accurate HMAT will strand memory from Linux usage.
-Additionally, the "efi_fake_mem" kernel command line option enabling
-will strand memory by default without an HMAT.
+All callers specify the same flags to alloc_dax_region(), so there is no
+need to allow for anything other than PFN_DEV|PFN_MAP, or carry a
+->pfn_flags around on the region. Device-dax instances are always page
+backed.
 
-Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
-to be published as raw resource ranges for the hmem driver to consume.
-
-Include a module parameter to disable either this fallback behavior, or
-the hmat enabling from creating hmem devices. The module parameter
-requires the hmem device enabling to have unique name in the module
-namespace: "device_hmem".
-
-The driver depends on the architecture providing phys_to_target_node()
-which is only x86 via numa_meminfo() and arm64 via a generic memblock
-implementation.
-
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Brice Goglin <Brice.Goglin@inria.fr>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Jeff Moyer <jmoyer@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/hmem/Makefile |    3 ++-
- drivers/dax/hmem/device.c |   35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 1 deletion(-)
+ drivers/dax/bus.c         |    4 +---
+ drivers/dax/bus.h         |    3 +--
+ drivers/dax/dax-private.h |    2 --
+ drivers/dax/device.c      |   26 +++-----------------------
+ drivers/dax/hmem/hmem.c   |    2 +-
+ drivers/dax/pmem/core.c   |    3 +--
+ 6 files changed, 7 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/dax/hmem/Makefile b/drivers/dax/hmem/Makefile
-index a9d353d0c9ed..57377b4c3d47 100644
---- a/drivers/dax/hmem/Makefile
-+++ b/drivers/dax/hmem/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
--obj-$(CONFIG_DEV_DAX_HMEM_DEVICES) += device.o
-+obj-$(CONFIG_DEV_DAX_HMEM_DEVICES) += device_hmem.o
- 
-+device_hmem-y := device.o
- dax_hmem-y := hmem.o
-diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
-index b9dd6b27745c..cb6401c9e9a4 100644
---- a/drivers/dax/hmem/device.c
-+++ b/drivers/dax/hmem/device.c
-@@ -5,6 +5,9 @@
- #include <linux/dax.h>
- #include <linux/mm.h>
- 
-+static bool nohmem;
-+module_param_named(disable, nohmem, bool, 0444);
-+
- void hmem_register_device(int target_nid, struct resource *r)
- {
- 	/* define a clean / non-busy resource for the platform device */
-@@ -17,6 +20,9 @@ void hmem_register_device(int target_nid, struct resource *r)
- 	struct memregion_info info;
- 	int rc, id;
- 
-+	if (nohmem)
-+		return;
-+
- 	rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
- 			IORES_DESC_SOFT_RESERVED);
- 	if (rc != REGION_INTERSECTS)
-@@ -63,3 +69,32 @@ void hmem_register_device(int target_nid, struct resource *r)
- out_pdev:
- 	memregion_free(id);
+diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
+index df238c8b6ef2..f06ffa66cd78 100644
+--- a/drivers/dax/bus.c
++++ b/drivers/dax/bus.c
+@@ -226,8 +226,7 @@ static void dax_region_unregister(void *region)
  }
-+
-+static __init int hmem_register_one(struct resource *res, void *data)
-+{
-+	/*
-+	 * If the resource is not a top-level resource it was already
-+	 * assigned to a device by the HMAT parsing.
-+	 */
-+	if (res->parent != &iomem_resource) {
-+		pr_info("HMEM: skip %pr, already claimed\n", res);
-+		return 0;
-+	}
-+
-+	hmem_register_device(phys_to_target_node(res->start), res);
-+
-+	return 0;
-+}
-+
-+static __init int hmem_init(void)
-+{
-+	walk_iomem_res_desc(IORES_DESC_SOFT_RESERVED,
-+			IORESOURCE_MEM, 0, -1, NULL, hmem_register_one);
-+	return 0;
-+}
-+
-+/*
-+ * As this is a fallback for address ranges unclaimed by the ACPI HMAT
-+ * parsing it must be at an initcall level greater than hmat_init().
-+ */
-+late_initcall(hmem_init);
+ 
+ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
+-		struct resource *res, int target_node, unsigned int align,
+-		unsigned long long pfn_flags)
++		struct resource *res, int target_node, unsigned int align)
+ {
+ 	struct dax_region *dax_region;
+ 
+@@ -251,7 +250,6 @@ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
+ 
+ 	dev_set_drvdata(parent, dax_region);
+ 	memcpy(&dax_region->res, res, sizeof(*res));
+-	dax_region->pfn_flags = pfn_flags;
+ 	kref_init(&dax_region->kref);
+ 	dax_region->id = region_id;
+ 	dax_region->align = align;
+diff --git a/drivers/dax/bus.h b/drivers/dax/bus.h
+index 9e4eba67e8b9..55577e9791da 100644
+--- a/drivers/dax/bus.h
++++ b/drivers/dax/bus.h
+@@ -10,8 +10,7 @@ struct dax_device;
+ struct dax_region;
+ void dax_region_put(struct dax_region *dax_region);
+ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
+-		struct resource *res, int target_node, unsigned int align,
+-		unsigned long long flags);
++		struct resource *res, int target_node, unsigned int align);
+ 
+ enum dev_dax_subsys {
+ 	DEV_DAX_BUS,
+diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
+index 16850d5388ab..8a4c40ccd2ef 100644
+--- a/drivers/dax/dax-private.h
++++ b/drivers/dax/dax-private.h
+@@ -23,7 +23,6 @@ void dax_bus_exit(void);
+  * @dev: parent device backing this region
+  * @align: allocation and mapping alignment for child dax devices
+  * @res: physical address range of the region
+- * @pfn_flags: identify whether the pfns are paged back or not
+  */
+ struct dax_region {
+ 	int id;
+@@ -32,7 +31,6 @@ struct dax_region {
+ 	struct device *dev;
+ 	unsigned int align;
+ 	struct resource res;
+-	unsigned long long pfn_flags;
+ };
+ 
+ /**
+diff --git a/drivers/dax/device.c b/drivers/dax/device.c
+index 4c0af2eb7e19..bffef1b21144 100644
+--- a/drivers/dax/device.c
++++ b/drivers/dax/device.c
+@@ -41,14 +41,6 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
+ 		return -EINVAL;
+ 	}
+ 
+-	if ((dax_region->pfn_flags & (PFN_DEV|PFN_MAP)) == PFN_DEV
+-			&& (vma->vm_flags & VM_DONTCOPY) == 0) {
+-		dev_info_ratelimited(dev,
+-				"%s: %s: fail, dax range requires MADV_DONTFORK\n",
+-				current->comm, func);
+-		return -EINVAL;
+-	}
+-
+ 	if (!vma_is_dax(vma)) {
+ 		dev_info_ratelimited(dev,
+ 				"%s: %s: fail, vma is not DAX capable\n",
+@@ -102,7 +94,7 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-	*pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
++	*pfn = phys_to_pfn_t(phys, PFN_DEV|PFN_MAP);
+ 
+ 	return vmf_insert_mixed(vmf->vma, vmf->address, *pfn);
+ }
+@@ -127,12 +119,6 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-	/* dax pmd mappings require pfn_t_devmap() */
+-	if ((dax_region->pfn_flags & (PFN_DEV|PFN_MAP)) != (PFN_DEV|PFN_MAP)) {
+-		dev_dbg(dev, "region lacks devmap flags\n");
+-		return VM_FAULT_SIGBUS;
+-	}
+-
+ 	if (fault_size < dax_region->align)
+ 		return VM_FAULT_SIGBUS;
+ 	else if (fault_size > dax_region->align)
+@@ -150,7 +136,7 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-	*pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
++	*pfn = phys_to_pfn_t(phys, PFN_DEV|PFN_MAP);
+ 
+ 	return vmf_insert_pfn_pmd(vmf, *pfn, vmf->flags & FAULT_FLAG_WRITE);
+ }
+@@ -177,12 +163,6 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-	/* dax pud mappings require pfn_t_devmap() */
+-	if ((dax_region->pfn_flags & (PFN_DEV|PFN_MAP)) != (PFN_DEV|PFN_MAP)) {
+-		dev_dbg(dev, "region lacks devmap flags\n");
+-		return VM_FAULT_SIGBUS;
+-	}
+-
+ 	if (fault_size < dax_region->align)
+ 		return VM_FAULT_SIGBUS;
+ 	else if (fault_size > dax_region->align)
+@@ -200,7 +180,7 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-	*pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
++	*pfn = phys_to_pfn_t(phys, PFN_DEV|PFN_MAP);
+ 
+ 	return vmf_insert_pfn_pud(vmf, *pfn, vmf->flags & FAULT_FLAG_WRITE);
+ }
+diff --git a/drivers/dax/hmem/hmem.c b/drivers/dax/hmem/hmem.c
+index 29ceb5795297..506893861253 100644
+--- a/drivers/dax/hmem/hmem.c
++++ b/drivers/dax/hmem/hmem.c
+@@ -22,7 +22,7 @@ static int dax_hmem_probe(struct platform_device *pdev)
+ 	memcpy(&pgmap.res, res, sizeof(*res));
+ 
+ 	dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
+-			PMD_SIZE, PFN_DEV|PFN_MAP);
++			PMD_SIZE);
+ 	if (!dax_region)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/dax/pmem/core.c b/drivers/dax/pmem/core.c
+index 2bedf8414fff..ea52bb77a294 100644
+--- a/drivers/dax/pmem/core.c
++++ b/drivers/dax/pmem/core.c
+@@ -53,8 +53,7 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
+ 	memcpy(&res, &pgmap.res, sizeof(res));
+ 	res.start += offset;
+ 	dax_region = alloc_dax_region(dev, region_id, &res,
+-			nd_region->target_node, le32_to_cpu(pfn_sb->align),
+-			PFN_DEV|PFN_MAP);
++			nd_region->target_node, le32_to_cpu(pfn_sb->align));
+ 	if (!dax_region)
+ 		return ERR_PTR(-ENOMEM);
+ 
 
