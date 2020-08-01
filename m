@@ -2,137 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08AF22352C6
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 16:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A8B23536E
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 18:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725778AbgHAOiZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Aug 2020 10:38:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:36273 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725280AbgHAOiY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Aug 2020 10:38:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596292702;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rPMJouJ664IpIpYWMWyBiWUEHfHruXWhEFW6i4OWc6U=;
-        b=FeJ3Xm2gkjHQYWHqkYt1paF+/2NAQZI8ekmuMWZdhsi1odwET8gxDphM9xx1mjleN3ta0j
-        sLdUt0RTtxo2JRYzVXLLv3dXGDWos7+mYsjcGCL2EXsOkyw76fa6bqreK6Pk3zNhGHwV0U
-        K4f8iLDXCXwpAkp9uDtzmSYncBeJwbw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-349-DYV-uXywPg-lXCP9PuPpxw-1; Sat, 01 Aug 2020 10:38:21 -0400
-X-MC-Unique: DYV-uXywPg-lXCP9PuPpxw-1
-Received: by mail-ed1-f69.google.com with SMTP id t9so10200125edw.22
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Aug 2020 07:38:21 -0700 (PDT)
+        id S1726456AbgHAQhC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Aug 2020 12:37:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726300AbgHAQhC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Aug 2020 12:37:02 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8BFC061756
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Aug 2020 09:37:01 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id o23so6978475ejr.1
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Aug 2020 09:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7nWoFZS16KHN7ELInZM3NkAqbsw8HmgfQtV5PkaAdOs=;
+        b=sLJ2YymDgCE2aYqkgcFgGI6naddEomHT1AI/LblO1I2CIpKzR/X4HC0D8kFfsN6b+L
+         XCYiypkgq9U/ws9p617+waX57F8r3r9xw2IEJINKnzTBI1kuSBY9ijEvHwlcNtuSjqeZ
+         Hc2tgLSldiumX+1XnZPsDgJMdf1x61SK6XNyMc3TiFxkjVUQDHk06pK8LV6TXULby89E
+         Q+sc+6B4I8vfJLc3o9x4Nzoa4qysw9eANsa9JKWVrWyM3DFMjubaz5YpI0uzS2O4ob16
+         LSXsaZKRopTp92npa1jce/IFsU1kV5YolRnKSOBrqMK/vKjOiSQ1Nztp40qAyj1R/fd9
+         WV0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rPMJouJ664IpIpYWMWyBiWUEHfHruXWhEFW6i4OWc6U=;
-        b=kSQ+Exqb7kHemW8W/02opJs3kr53rFpI+CmSiNMj+GMZMQxNVlZtFNyAROScOa3QFb
-         Grd+BPfF899pLjZPoUpxAE1U4LGtXmnAoDHrPKFSQtAv7mGjvjXMBYkJ9x4sqUy9UMl4
-         kvV5YzUt5yp78boWMg0/taGIWbqjjq0D826mXyoZFuweo3B2CyCrF8M1hDAycF6XigAY
-         JAJZbR9eBFn/EFQSNgUna+4v81WFk8vwf44sIcpnbvkyHneFOomg30vYQhXxrUCxOHZF
-         0ibMY2TYBV9Xtl2vdu9C2SnAU51pXtOArsIpx82bO1CoIcLL2h2CzBS/rtqmI0258xBu
-         Cfdg==
-X-Gm-Message-State: AOAM532IksR4iGqJNeTDe9EzfQl9m92m4L2CCyxhTnFvIo/jAPDh0/mp
-        n8FoSWO0YxOqBfzg7uk6euOShOohWA9WoxLGULAnZxgOyVo9TACDrHpN7tu8i+pOh1IRlaBwX0k
-        W1uYE4KfIbd8O9rAJXVl4Kw==
-X-Received: by 2002:a17:906:25c4:: with SMTP id n4mr8776590ejb.3.1596292699673;
-        Sat, 01 Aug 2020 07:38:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxjPcX/bFiAUHtXwuAaF05a6ZsFXjiF7gt7+jMKXpyprGcBXZ8zklO4Fxg9U+zmr2eCv0rfuA==
-X-Received: by 2002:a17:906:25c4:: with SMTP id n4mr8776564ejb.3.1596292699441;
-        Sat, 01 Aug 2020 07:38:19 -0700 (PDT)
-Received: from x1.localdomain ([109.38.137.213])
-        by smtp.gmail.com with ESMTPSA id o9sm11813057edz.81.2020.08.01.07.38.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Aug 2020 07:38:18 -0700 (PDT)
-Subject: Re: [PATCH v5 00/16] acpi/pwm/i915: Convert pwm-crc and i915 driver's
- PWM code to use the atomic PWM API
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20200717133753.127282-1-hdegoede@redhat.com>
- <20200729105436.GT3703480@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <e8f93474-1775-b20c-f9f2-e33592a02028@redhat.com>
-Date:   Sat, 1 Aug 2020 16:38:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7nWoFZS16KHN7ELInZM3NkAqbsw8HmgfQtV5PkaAdOs=;
+        b=lDARlK/PXHeH9Q4vI+6k3wao4ItbmCMspxpdBjOoULfBCrgA0QQtv20zRMnpX0hNam
+         zNKppVR70JtDDysg9tvqFCkd1znxKesFExkMhMJ1YtYEx04ZHchjivBTdFL7MrnkDDuf
+         lIrvjKFDtdJxbBV4DoCwMsOC9XhO5+Lxc9fHopLgwoA3Z03HCVSdWPBEpVFL+aultKnR
+         zMDLXqjHmQQpvDeSzVMHKAsB6XFyaYo7YBOeV+IoQoZr8Y2SvrSODvumbLZx2ATqV3m0
+         qgREY1Y0SnZsWXwP5RHchu/BdP9x+wziBU6cs2PGl69JFJw8FRqHefEdQ6tZwweR8QKo
+         wqSA==
+X-Gm-Message-State: AOAM532gab4fFjNlfnjprh8u3eCP3VAGn6YbotHlzbTTRnVhDcz8BVA0
+        0trivZPtwlq1Gn3o74PKzPztkHMRzNlWVOQTjQ9Z1w==
+X-Google-Smtp-Source: ABdhPJxOFGsY8qnjWmioIMQMzSoQMpAmcXHTZevYKI2hHLGadP9/WqNGAW9biPUhi7/KRXBONqPTrbpeIRc4H0g10M8=
+X-Received: by 2002:a17:907:72c8:: with SMTP id du8mr9038155ejc.237.1596299819131;
+ Sat, 01 Aug 2020 09:36:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200729105436.GT3703480@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159625231266.3040297.2759117253481288037.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <545078f8-d6d3-5db7-02f6-648218513752@infradead.org>
+In-Reply-To: <545078f8-d6d3-5db7-02f6-648218513752@infradead.org>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Sat, 1 Aug 2020 09:36:48 -0700
+Message-ID: <CAPcyv4iUtQ1Edau5e7GQumu1MxcAvorSNwnw9HGhzFDNuBS7=Q@mail.gmail.com>
+Subject: Re: [PATCH v3 02/23] x86/numa: Add 'nohmat' option
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, X86 ML <x86@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Linux MM <linux-mm@kvack.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Fri, Jul 31, 2020 at 8:51 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> On 7/31/20 8:25 PM, Dan Williams wrote:
+> > Disable parsing of the HMAT for debug, to workaround broken platform
+> > instances, or cases where it is otherwise not wanted.
+> >
+> > ---
+> >  arch/x86/mm/numa.c       |    2 ++
+> >  drivers/acpi/numa/hmat.c |    8 +++++++-
+> >  include/acpi/acpi_numa.h |    8 ++++++++
+> >  3 files changed, 17 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index 87c52822cc44..f3805bbaa784 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -41,6 +41,8 @@ static __init int numa_setup(char *opt)
+> >               return numa_emu_cmdline(opt + 5);
+> >       if (!strncmp(opt, "noacpi", 6))
+> >               disable_srat();
+> > +     if (!strncmp(opt, "nohmat", 6))
+> > +             disable_hmat();
+>
+> Hopefully that will be documented in
+> Documentation/x86/x86_64/boot-options.rst.
 
-On 7/29/20 12:54 PM, Andy Shevchenko wrote:
-> On Fri, Jul 17, 2020 at 03:37:37PM +0200, Hans de Goede wrote:
->> Hi All,
->>
->> Here is v5 of my patch series converting the i915 driver's code for
->> controlling the panel's backlight with an external PWM controller to
->> use the atomic PWM API. See below for the changelog.
->>
->> This series consists of 4 parts:
->>
->> 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
->> 2. various fixes to the pwm-lpss driver
->> 3. convert the pwm-crc driver to support the atomic PWM API and
->> 4. convert the i915 driver's PWM code to use the atomic PWM API
->>
->> The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
->> so the plan is to merge this all through drm-intel-next-queued (dinq)
->> once all the patches are reviewed / have acks.
->>
->> Specifically patches 5-9, 11 still need an Acked- / Reviewed-by
->>
->> Andy, can you please take a look at the unreviewed patches? Specifically
->> patches 5-6 should address your review remarks from v4 of this set
->> and I've addressed your review remarks on patches 7-9 in v3 already.
->> A review of patch 11 would also be welcome
-> 
-> Done. Sorry for a delay.
-> 
-> One comment to consider, though. There are three channels in that PWM AFAIU.
-> One of them is backlight control, another one can be attached to haptics. The
-> concern is how this series may (or may not?) affect haptics behaviour.
-
-When you say "in that PWM" do you mean the LPSS one or the CRC one ?
-
-The LPSS patches are all fixes, they don't change behavior, so those
-should be fine for the haptics.
-
-The CRC PWM driver patches do make it honor the requested output frequency,
-where before, because of a bug, it would stick with the out frequency
-setup by the firmware (or the power-on-reset value if no value is set
-by the firmware). This fix causing this is very clearly correct, but
-it could have unexpected side-effects.
-
-However I guess that you are talking about the LPSS PWM controllers
-and there I expect no impact on haptic or other non backlight users
-from these changes.
-
-Regards,
-
-Hans
-
+Sorry, yes, you gave that feedback before. I can do a quick respin
+with this and the kbuild-robot compile fixups.
