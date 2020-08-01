@@ -2,129 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B245235193
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 11:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D747D2352BD
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Aug 2020 16:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgHAJ6L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Aug 2020 05:58:11 -0400
-Received: from mga14.intel.com ([192.55.52.115]:62517 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725931AbgHAJ6L (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 1 Aug 2020 05:58:11 -0400
-IronPort-SDR: UnwnbRlA+ItkqMGZk9r/G1k4HJQy99aUzIYp0LoUwBqRXqa/M3llsjtNWS+GExX3cE111mxU6C
- 7zO684amoiPQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9699"; a="151124690"
-X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="151124690"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2020 02:58:10 -0700
-IronPort-SDR: ZDfrZn0QjnUvJT/F2KL9TKKXAfrJ2U2lSt0oSGdxz+07/cPJk4sQM/LeozycpnDUboLRG4Ajkx
- aQPPVvgKQ83g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,420,1589266800"; 
-   d="scan'208";a="365827366"
-Received: from lkp-server01.sh.intel.com (HELO e21119890065) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 01 Aug 2020 02:58:08 -0700
-Received: from kbuild by e21119890065 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1k1oHI-0000PD-1q; Sat, 01 Aug 2020 09:58:08 +0000
-Date:   Sat, 01 Aug 2020 17:57:28 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        id S1726305AbgHAOde (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Aug 2020 10:33:34 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20367 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725804AbgHAOde (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Aug 2020 10:33:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596292412;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2AffMbTZZ0aELZ/3Ad5ZjJ2PXQeVzg4uG2LtDDO4mtY=;
+        b=hxYDiAwhEt+XENd//q8AvuCUzkiKO76gX2xfwB8k17kor/xpkbZQu+WF8VQjQNhdMcm33t
+        VSa4ojS9L65UkXrvxwPHuPhl9YUbEwfANNVD20D1+jqXbVFDL3lT+r0YCRtKl19uTBmizj
+        0BKeHrVy+0o4N+zUgHiEPyYlHfAanFY=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-71-nkW7l3ofNxOoSZSs0gkmMQ-1; Sat, 01 Aug 2020 10:33:31 -0400
+X-MC-Unique: nkW7l3ofNxOoSZSs0gkmMQ-1
+Received: by mail-ed1-f69.google.com with SMTP id x12so2096124eds.4
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Aug 2020 07:33:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=2AffMbTZZ0aELZ/3Ad5ZjJ2PXQeVzg4uG2LtDDO4mtY=;
+        b=JmRaHbYoFd6/s85kynTLcQVuqay2o86Qe0FPjBzBNCaLYigcov+4KiM0wcdq455SyM
+         EEVVxT8kU6yoairzub5eyD5n218vU1SLWl//3BZSgdzA2EuuNHEoy3N0ArMB4fZZLY2E
+         OWk7iwpgEN63/6RlyUj1PTaooH0ia4gJXIzG170viU+GJ3GTnocVByTknlbvjvtYp0dA
+         KLuMXhfAHQ0eub6vON9Kj2rlR363zSutPpMkF6jEvmDw2kp63Td1BnssaxmKomvsCmx3
+         Zx7Qn7EVbrLeMUTRrZaONEZ5nWSmjPq8ak498uTA3gltq64jPgcYhOeiUKJvhlXF1A2m
+         +uDQ==
+X-Gm-Message-State: AOAM531x2lEU3gJlF3ijkBf/vjGBdUF6JSHL4fy7B6rov/hJmKTw0WZd
+        LF1gTFwCn825iLjF+ki2lKTKgEurjEhqef7/trAiCXs0kUJ9mGxF9wwLEatx7Udp7UHB2EDSKa3
+        LQzIg+p0HwrMiNeL+GiShHA==
+X-Received: by 2002:a50:935a:: with SMTP id n26mr8506293eda.107.1596292409565;
+        Sat, 01 Aug 2020 07:33:29 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzIr5NWOJG+AluNDTd4Hf+xtn0Jb6y6EJa9qUrFaYzrqWOWWUlJfVdGJJvxCEXcVp1kWgRzbA==
+X-Received: by 2002:a50:935a:: with SMTP id n26mr8506264eda.107.1596292409213;
+        Sat, 01 Aug 2020 07:33:29 -0700 (PDT)
+Received: from x1.localdomain ([109.38.137.213])
+        by smtp.gmail.com with ESMTPSA id ce12sm11849828edb.4.2020.08.01.07.33.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 01 Aug 2020 07:33:28 -0700 (PDT)
+Subject: Re: [PATCH v5 00/16] acpi/pwm/i915: Convert pwm-crc and i915 driver's
+ PWM code to use the atomic PWM API
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 86ed8b05f59717b20b75cd2a4a17cbd26788183a
-Message-ID: <5f253c88.I1tbN4ApJNdJ1Hl3%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+References: <20200717133753.127282-1-hdegoede@redhat.com>
+ <20200727074120.GB2781612@ulmo> <20200729082305.GK3703480@smile.fi.intel.com>
+ <b87c535a-022f-2894-1e38-5be035c6fbfc@redhat.com>
+ <20200730092650.GA4077384@ulmo>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <36891235-95ef-5ac7-cb56-77b548d77778@redhat.com>
+Date:   Sat, 1 Aug 2020 16:33:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200730092650.GA4077384@ulmo>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 86ed8b05f59717b20b75cd2a4a17cbd26788183a  Merge branch 'pm-cpuidle' into linux-next
+Hi Thierry,
 
-elapsed time: 1261m
+On 7/30/20 11:26 AM, Thierry Reding wrote:
+> On Wed, Jul 29, 2020 at 11:32:28AM +0200, Hans de Goede wrote:
+>> cHi,
+>>
+>> On 7/29/20 10:23 AM, Andy Shevchenko wrote:
+>>> On Mon, Jul 27, 2020 at 09:41:20AM +0200, Thierry Reding wrote:
+>>>> On Fri, Jul 17, 2020 at 03:37:37PM +0200, Hans de Goede wrote:
+>>>
+>>>> I've applied patches 3 through 12 to the PWM tree. I thought it was a
+>>>> bit odd that only a handful of these patches had been reviewed and there
+>>>> were no Tested-bys, but I'm going to trust that you know what you're
+>>>> doing. =) If this breaks things for anyone I'm sure they'll complain.
+>>
+>> Thank you for picking up these patches, but ...
+>>
+>>> Can we postpone a bit?
+>>
+>> I have to agree with Andy here, as mentioned my plan was to push the
+>> entire series through drm-intel-next-queued once the last few PWM
+>> patches are reviewed.
+>>
+>> There are some fixes, to the pwm-crc driver which change behavior in
+>> a possibly undesirable way, unless combined with the i915 changes.
+>>
+>> E.g. there is a fix which makes the pwm-crc driver actually honor
+>> the requested output frequency (it was not doing this due to a bug)
+>> and before the i915 changes, the i915 driver was hardcoding an output
+>> freq, rather then looking at the video-bios-tables as it should.
+>>
+>> So having just the pwm-crc fix, will change the output frequency
+>> which some LCD panels might not like.
+>>
+>> Note things are probably fine with the hardcoded output freq, but I
+>> would like to play it safe here.
+>>
+>> Also Andy was still reviewing some of the PWM patches, and has requested
+>> changes to 1 patch, nothing functional just some code-reshuffling for
+>> cleaner code, so we could alternatively fix this up with a follow-up patch.
+>>
+>> Either way please let us know how you want to proceed.
+> 
+> Okay, that's fine, I'll drop them again.
 
-configs tested: 66
-configs skipped: 1
+Great, thank you.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+>>>> That said I see that Rafael has acked patches 1-2 and Jani did so for
+>>>> patches 13-16. I'm not sure if you expect me to pick those patches up as
+>>>> well. As far as I can tell the ACPI, PWM and DRM parts are all
+>>>> independent, so these patches could be applied to the corresponding
+>>>> subsystem trees.
+>>>>
+>>>> Anyway, if you want me to pick those all up into the PWM tree, I suppose
+>>>> that's something I can do as well.
+>>
+>> drm-intel-next-queued is usually seeing quite a bit of churn, so the i915
+>> patches really should go upstream through that branch.
+> 
+> During my build tests I ran into a small issue caused by this series
+> interacting with the conversion of period and duty-cycle to u64 that
+> I've queued for v5.9. This causes a build failure on x86.
+> 
+> I have this local diff to fix that:
+> 
+> --- >8 ---
+> diff --git a/drivers/pwm/pwm-crc.c b/drivers/pwm/pwm-crc.c
+> index 370ab826a20b..92e838797733 100644
+> --- a/drivers/pwm/pwm-crc.c
+> +++ b/drivers/pwm/pwm-crc.c
+> @@ -76,7 +76,9 @@ static int crc_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>   
+>   	if (pwm_get_duty_cycle(pwm) != state->duty_cycle ||
+>   	    pwm_get_period(pwm) != state->period) {
+> -		int level = state->duty_cycle * PWM_MAX_LEVEL / state->period;
+> +		u64 level = state->duty_cycle * PWM_MAX_LEVEL;
+> +
+> +		do_div(level, state->period);
+>   
+>   		err = regmap_write(crc_pwm->regmap, PWM0_DUTY_CYCLE, level);
+>   		if (err) {
+> @@ -141,10 +143,9 @@ static void crc_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+>   
+>   	clk_div = (clk_div_reg & ~PWM_OUTPUT_ENABLE) + 1;
+>   
+> -	state->period =
+> -		DIV_ROUND_UP(clk_div * NSEC_PER_USEC * 256, PWM_BASE_CLK_MHZ);
+> -	state->duty_cycle =
+> -		DIV_ROUND_UP(duty_cycle_reg * state->period, PWM_MAX_LEVEL);
+> +	state->period = DIV_ROUND_UP(clk_div * NSEC_PER_USEC * 256, PWM_BASE_CLK_MHZ);
+> +	state->duty_cycle = duty_cycle_reg * state->period + PWM_MAX_LEVEL - 1;
+> +	do_div(state->duty_cycle, PWM_MAX_LEVEL);
+>   	state->polarity = PWM_POLARITY_NORMAL;
+>   	state->enabled = !!(clk_div_reg & PWM_OUTPUT_ENABLE);
+>   }
+> --- >8 ---
+> 
+> So perhaps you want to integrate that or something equivalent into your
+> series.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20200731
-i386                 randconfig-a004-20200731
-i386                 randconfig-a006-20200731
-i386                 randconfig-a002-20200731
-i386                 randconfig-a001-20200731
-i386                 randconfig-a003-20200731
-x86_64               randconfig-a015-20200731
-x86_64               randconfig-a014-20200731
-x86_64               randconfig-a016-20200731
-x86_64               randconfig-a012-20200731
-x86_64               randconfig-a013-20200731
-x86_64               randconfig-a011-20200731
-i386                 randconfig-a016-20200731
-i386                 randconfig-a012-20200731
-i386                 randconfig-a014-20200731
-i386                 randconfig-a015-20200731
-i386                 randconfig-a013-20200731
-i386                 randconfig-a011-20200731
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Ack, thank you for letting me know.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> Also this could result in a tricky dependency between PWM and drm-misc,
+> although if you're targetting drm-misc it's too late for v5.9 anyway. In
+> that case you should be able to rebase your series on v5.9-rc1 when it's
+> out and then you'll get the prerequisite PWM changes for the u64
+> conversion as part of that. No need to track the dependency explicitly.
+
+Right, I agree that this is too late for this cycle, so I will rebase it
+on top of v5.9-rc1 once that is out, making sure to take the u64 changes
+into account.
+
+As said my plan is to merge this all through the drm tree, the assumption
+there was that the pwm-crc and pwm-lpss drivers normally do not see a whole
+lot of chsnges. Rebasing on top of 5.9-rc1 should take care of the u64
+changes. So unless there are more pwm-core changes planned for the 5.10
+cycle, I would like to queue this in the drm-intel tree for 5.10.
+By thta time Andy and I should have also wrapped up the review process
+(it is as good as wrapped up now already).
+
+Thierry, is merging these through the drm-intel tree for 5.10 ok with
+you? And if this is ok with you may I add your Acked-by to the PWM
+patches to indicate this ?
+
+Regards,
+
+Hans
+
+
