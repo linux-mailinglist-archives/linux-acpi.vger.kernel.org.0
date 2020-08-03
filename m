@@ -2,210 +2,292 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1432323AAE9
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Aug 2020 18:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 172ED23ADA3
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Aug 2020 21:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbgHCQwU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Aug 2020 12:52:20 -0400
-Received: from mail-oi1-f175.google.com ([209.85.167.175]:42798 "EHLO
-        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726744AbgHCQwT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Aug 2020 12:52:19 -0400
-Received: by mail-oi1-f175.google.com with SMTP id j7so17433575oij.9;
-        Mon, 03 Aug 2020 09:52:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=1HtX47GmTYniPJZ3GPCTfnJ6ByP+EBJwfpXB9Su3tkE=;
-        b=ru46td6IKSdm3eKzef/UWG9ywXjUeEWF+LI0Z121BTqoGBlyhzrjRc1SX37fIzghEP
-         1wGA3vNqf/JxArj+BeltC7cOmOvluD+Qxz+xlTChj4GBLXblePOJF1ErJzyyDBQYNw7B
-         KcaNWI2aZ/Q6uuN5t7KuipFYMaPSBBOlqanG+yN7pzFF3iY+vm6dRQXXi/1UuyL7K7oh
-         yRROUA5cGyGR9EJ27mM5EhG6/95xTq7hCJHNWhF4t5WMQgMMp2RMDMsEOlpXOVlVuVPA
-         OHzPFjyED6n715mM/9z1JmuE99PzysyGi4nFD2QbbbUO4zWfIjZ1UMGDfYwOv6UUkQVy
-         aLmA==
-X-Gm-Message-State: AOAM532quS94nUUy27sbCT26fEGFWX6fERIe6J+14Ymwa23MmbUToFwj
-        mOewZ9GdydApGcQ+xrjuGAzYszQ7FhPE9Re/Z9Q6lgRf
-X-Google-Smtp-Source: ABdhPJw5e+kIbOpUWqDIfnRPqkThHBCNmpzqXOv8BKQn0nnrVd/wmeLBw9ovV/eTsJpeNJNu08mcT2P+2JSrehzz6PU=
-X-Received: by 2002:aca:110a:: with SMTP id 10mr224330oir.68.1596473538005;
- Mon, 03 Aug 2020 09:52:18 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 3 Aug 2020 18:52:07 +0200
-Message-ID: <CAJZ5v0hNz4ai_wmrGJzwRe179=swhG9iFMQRzRuyv4NVer2Erg@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v5.9-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1728546AbgHCTph (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Aug 2020 15:45:37 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:39642 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728069AbgHCTph (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Aug 2020 15:45:37 -0400
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 6D5F830C15B;
+        Mon,  3 Aug 2020 12:44:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 6D5F830C15B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1596483847;
+        bh=ubBMJ940rYl92I/Jyrk5HpYWcSFbpmpmT4Ss/yrNXcU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ku+tqSwASsGFdgieBT8jrbc4sLRby6dY5opPBa8bY9xfP/72Ba544yNrCOeo5Tf//
+         avHQiccM2pKJojeOepB+yZS1rLT6D1KQEu0HDJemS5JOPrN07STQ4Zukn/E3A0qDri
+         qLiITS/hje8FPBBLdm9f3PGtY3R2/eLNRDm+qkLM=
+Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 94581140069;
+        Mon,  3 Aug 2020 12:45:31 -0700 (PDT)
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+To:     linux-pci@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
+        A10), Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Julien Grall <julien.grall@arm.com>,
+        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-kernel@vger.kernel.org (open list),
+        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
+        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
+        (REMOTEPROC) SUBSYSTEM),
+        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
+        BCM2711/BCM2835 ARM ARCHITECTURE),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
+        Oliver Neukum <oneukum@suse.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v10 00/11] PCI: brcmstb: enable PCIe for STB chips
+Date:   Mon,  3 Aug 2020 15:45:05 -0400
+Message-Id: <20200803194529.32357-1-james.quinlan@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Patchset Summary:
+  Enhance a PCIe host controller driver.  Because of its unusual design
+  we are foced to change dev->dma_pfn_offset into a more general role
+  allowing multiple offsets.  See the 'v1' notes below for more info.
 
-Please pull from the tag
+v10: 
+  Commit: "device-mapping: Introduce DMA range map, supplanting ..."
+  -- change title of commit; "bus core:" => "device-mapping:"
+  -- instead of allocating the DMA map with devm, use kcalloc
+     and call kfree() during device_release().  (RobH) Also,
+     for three cases that want to use the same DMA map, copy
+     the dma_range_map using a helper function.
+  -- added a missing 'return = 0;' to of_dma_get_range().  (Nicolas)
+  -- removed dma_range_overlaps(); instead return error if there
+     is an existing DMA map. (Christoph).
+  Commit: "PCI: brcmstb: Set additional internal memory DMA ..."
+  -- Changed constant 1 to 1ULL. (Nicolas)
+  Commit: "ata: ahci_brcm: Fix use of BCM7216 reset controller"
+     This commit has been removed from this patchset and will be
+     submitted on its own.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.9-rc1
+v9:
+  Commit: "device core: Introduce DMA range map, supplanting ..."
+  -- A number of code improvements were implemented as suggested by
+     ChristophH.  Unfortunately, some of these changes reversed the
+     implemented suggestions of other reviewers; for example, the new
+     macros PFN_DMA_ADDR(), DMA_ADDR_PFN() have been pulled.
 
-with top-most commit db1da2f52ea5477e917957dd80c1da63affa60e6
+v8:
+  Commit: "device core: Introduce DMA range map, supplanting ..."
+  -- To satisfy a specific m68 compile configuration, I moved the 'struct
+     bus_dma_region; definition out of #ifdef CONFIG_HAS_DMA and also defined
+     three inline functions for !CONFIG_HAS_DMA (kernel test robot).
+  -- The sunXi drivers -- suc4i_csi, sun6i_csi, cedrus_hw -- set
+     a pfn_offset outside of_dma_configure() but the code offers no 
+     insight on the size of the translation window.  V7 had me using
+     SIZE_MAX as the size.  I have since contacted the sunXi maintainer and
+     he said that using a size of SZ_4G would cover sunXi configurations.
 
- Merge branches 'acpi-mm', 'acpi-tables', 'acpi-apei' and 'acpi-misc'
+v7:
+  Commit: "device core: Introduce DMA range map, supplanting ..."
+  -- remove second kcalloc/copy in device.c (AndyS)
+  -- use PTR_ERR_OR_ZERO() and PHYS_PFN() (AndyS)
+  -- indentation, sizeof(struct ...) => sizeof(*r) (AndyS)
+  -- add pfn.h definitions: PFN_DMA_ADDR(), DMA_ADDR_PFN() (AndyS)
+  -- Fixed compile error in "sun6i_csi.c" (kernel test robot)
+  Commit "ata: ahci_brcm: Fix use of BCM7216 reset controller"
+  -- correct name of function in the commit msg (SergeiS)
+  
+v6:
+  Commit "device core: Introduce DMA range map":
+  -- of_dma_get_range() now takes a single argument and returns either
+     NULL, a valid map, or an ERR_PTR. (Robin)
+  -- offsets are no longer a PFN value but an actual address. (Robin)
+  -- the bus_dma_region struct stores the range size instead of
+     the cpu_end and pci_end values. (Robin)
+  -- devices that were setting a single offset with no boundaries
+     have been modified to have boundaries; in a few places
+     where this information was unavilable a /* FIXME: ... */
+     comment was added. (Robin)
+  -- dma_attach_offset_range() can be called when an offset
+     map already exists; if it's range is already present
+     nothing is done and success is returned. (Robin)
+  All commits:
+  -- Man name/style/corrections/etc changed (Bjorn)
+  -- rebase to Torvalds master
 
-on top of commit 92ed301919932f777713b9172e525674157e983d
+v5:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- in of/address.c: "map_size = 0" => "*map_size = 0"
+  -- use kcalloc instead of kzalloc (AndyS)
+  -- use PHYS_ADDR_MAX instead of "~(phys_addr_t)0"
+  Commit "PCI: brcmstb: Set internal memory viewport sizes"
+  -- now gives error on missing dma-ranges property.
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- removed "Allof:" from brcm,scb-sizes definition (RobH)
+  All Commits:
+  -- indentation style, use max chars 100 (AndyS)
+  -- rebased to torvalds master
 
- Linux 5.8-rc7
+v4:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- of_dma_get_range() does not take a dev param but instead
+     takes two "out" params: map and map_size.  We do this so
+     that the code that parses dma-ranges is separate from
+     the code that modifies 'dev'.   (Nicolas)
+  -- the separate case of having a single pfn offset has
+     been removed and is now processed by going through the
+     map array. (Nicolas)
+  -- move attach_uniform_dma_pfn_offset() from of/address.c to
+     dma/mapping.c so that it does not depend on CONFIG_OF. (Nicolas)
+  -- devm_kcalloc => devm_kzalloc (DanC)
+  -- add/fix assignment to dev->dma_pfn_offset_map for func
+     attach_uniform_dma_pfn_offset() (DanC, Nicolas)
+  -- s/struct dma_pfn_offset_region/struct bus_dma_region/ (Nicolas)
+  -- s/attach_uniform_dma_pfn_offset/dma_attach_uniform_pfn_offset/
+  -- s/attach_dma_pfn_offset_map/dma_attach_pfn_offset_map/
+  -- More use of PFN_{PHYS,DOWN,UP}. (AndyS)
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- this commit was sqaushed with "device core: Introduce ..."
 
-to receive ACPI updates for 5.9-rc1.
+v3:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  Commit "arm: dma-mapping: Invoke dma offset func if needed"
+  -- The above two commits have been squashed.  More importantly,
+     the code has been modified so that the functionality for
+     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
+     In fact, dma_pfn_offset is removed and supplanted by
+     dma_pfn_offset_map, which is a pointer to an array.  The
+     more common case of a uniform offset is now handled as
+     a map with a single entry, while cases requiring multiple
+     pfn offsets use a map with multiple entries.  Code paths
+     that used to do this:
 
-These eliminate significant AML processing overhead related to using
-operation regions in system memory, update the ACPICA code in the
-kernel to upstream revision 20200717 (including a fix to prevent
-operation region reference counts from overflowing in some cases),
-remove the last bits of the (long deprecated) ACPI procfs interface
-and do some assorted cleanups.
+         dev->dma_pfn_offset = mydrivers_pfn_offset;
 
-Specifics:
+     have been changed to do this:
 
- - Eliminate significant AML processing overhead related to using
-   operation regions in system memory by reworking the management
-   of memory mappings in the ACPI code to defer unmap operations
-   (to do them outside of the ACPICA locks, among other things) and
-   making the memory operation reagion handler avoid releasing memory
-   mappings created by it too early (Rafael Wysocki).
+         attach_uniform_dma_pfn_offset(dev, pfn_offset);
 
- - Update the ACPICA code in the kernel to upstream revision
-   20200717:
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- Add if/then clause for required props: resets, reset-names (RobH)
+  -- Change compatible list from const to enum (RobH)
+  -- Change list of u32-tuples to u64 (RobH)
 
-   * Prevent operation region reference counts from overflowing in
-     some cases (Erik Kaneda).
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
 
-   * Replace one-element array with flexible-array (Gustavo A. R.
-     Silva).
+  Commit "device core: Add ability to handle multiple dma offsets"
+  -- align comment in device.h (AndyS).
+  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
+     dma_pfn_offset_region (AndyS).
 
- - Fix ACPI PCI hotplug reference counting (Rafael Wysocki).
+v2:
+Commit: "device core: Add ability to handle multiple dma offsets"
+  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
+  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
+  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
+  o dev->dma_pfn_map => dev->dma_pfn_offset_map
+  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
+  o In device.h: s/const void */const struct dma_pfn_offset_region */
+  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
+    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
+  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
+    dev->dma_pfn_offset_map is copied as well.
+  o Merged two of the DMA commits into one (Christoph).
 
- - Drop last bits of the ACPI procfs interface (Thomas Renninger).
+Commit "arm: dma-mapping: Invoke dma offset func if needed":
+  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
 
- - Drop some redundant checks from the code parsing ACPI tables
-   related to NUMA (Hanjun Guo).
+Other commits' changes:
+  o Removed need for carrying of_id var in priv (Nicolas)
+  o Commit message rewordings (Bjorn)
+  o Commit log messages filled to 75 chars (Bjorn)
+  o devm_reset_control_get_shared())
+    => devm_reset_control_get_optional_shared (Philipp)
+  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
 
- - Avoid redundant object evaluation in the ACPI device properties
-   handling code (Heikki Krogerus).
+v1:
+This patchset expands the usefulness of the Broadcom Settop Box PCIe
+controller by building upon the PCIe driver used currently by the
+Raspbery Pi.  Other forms of this patchset were submitted by me years
+ago and not accepted; the major sticking point was the code required
+for the DMA remapping needed for the PCIe driver to work [1].
 
- - Avoid unecessary memory overhead related to storing the signatures
-   of the ACPI tables recognized by the kernel (Ard Biesheuvel).
+There have been many changes to the DMA and OF subsystems since that
+time, making a cleaner and less intrusive patchset possible.  This
+patchset implements a generalization of "dev->dma_pfn_offset", except
+that instead of a single scalar offset it provides for multiple
+offsets via a function which depends upon the "dma-ranges" property of
+the PCIe host controller.  This is required for proper functionality
+of the BrcmSTB PCIe controller and possibly some other devices.
 
- - Add missing newline characters when printing module parameter
-   values in some places (Xiongfeng Wang).
-
- - Update the link to the ACPI specifications in some places (Tiezhu
-   Yang).
-
- - Use the fallthrough pseudo-keyword in the ACPI code (Gustavo A. R.
-   Silva).
-
- - Drop redundant variable initialization from the APEI code (Colin
-   Ian King).
-
- - Drop uninitialized_var() from the ACPI PAD driver (Jason Yan).
-
- - Replace HTTP links with HTTPS ones in the ACPI code (Alexander A.
-   Klimov).
-
-Thanks!
+[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
 
 
----------------
+Jim Quinlan (11):
+  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
+  dt-bindings: PCI: Add bindings for more Brcmstb chips
+  PCI: brcmstb: Add bcm7278 register info
+  PCI: brcmstb: Add suspend and resume pm_ops
+  PCI: brcmstb: Add bcm7278 PERST# support
+  PCI: brcmstb: Add control of rescal reset
+  device-mapping: Introduce DMA range map, supplanting dma_pfn_offset
+  PCI: brcmstb: Set additional internal memory DMA viewport sizes
+  PCI: brcmstb: Accommodate MSI for older chips
+  PCI: brcmstb: Set bus max burst size by chip type
+  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
 
-Alexander A. Klimov (1):
-      ACPI: Replace HTTP links with HTTPS ones
+ .../bindings/pci/brcm,stb-pcie.yaml           |  56 ++-
+ arch/arm/include/asm/dma-mapping.h            |  10 +-
+ arch/arm/mach-keystone/keystone.c             |  17 +-
+ arch/sh/drivers/pci/pcie-sh7786.c             |   9 +-
+ arch/sh/kernel/dma-coherent.c                 |  15 +-
+ arch/x86/pci/sta2x11-fixup.c                  |   7 +-
+ drivers/acpi/arm64/iort.c                     |   5 +-
+ drivers/base/core.c                           |   2 +
+ drivers/gpu/drm/sun4i/sun4i_backend.c         |   5 +-
+ drivers/iommu/io-pgtable-arm.c                |   2 +-
+ .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
+ .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   4 +-
+ drivers/of/address.c                          |  72 ++-
+ drivers/of/device.c                           |  43 +-
+ drivers/of/of_private.h                       |  10 +-
+ drivers/of/unittest.c                         |  31 +-
+ drivers/pci/controller/Kconfig                |   3 +-
+ drivers/pci/controller/pcie-brcmstb.c         | 409 +++++++++++++++---
+ drivers/remoteproc/remoteproc_core.c          |   8 +-
+ .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
+ drivers/usb/core/message.c                    |   9 +-
+ drivers/usb/core/usb.c                        |   7 +-
+ include/linux/device.h                        |   4 +-
+ include/linux/dma-direct.h                    |   8 +-
+ include/linux/dma-mapping.h                   |  36 ++
+ kernel/dma/coherent.c                         |  10 +-
+ kernel/dma/mapping.c                          |  65 +++
+ 27 files changed, 672 insertions(+), 187 deletions(-)
 
-Ard Biesheuvel (1):
-      ACPI: tables: avoid relocations for table signature array
+-- 
+2.17.1
 
-Bob Moore (1):
-      ACPICA: Update version to 20200717
-
-Colin Ian King (1):
-      ACPI: APEI: remove redundant assignment to variable rc
-
-Erik Kaneda (1):
-      ACPICA: Do not increment operation_region reference counts for field units
-
-Gustavo A. R. Silva (2):
-      ACPI: Use fallthrough pseudo-keyword
-      ACPICA: Replace one-element array with flexible-array
-
-Hanjun Guo (3):
-      ACPI: tables: Remove the duplicated checks for acpi_parse_entries_array()
-      ACPI: NUMA: Remove the useless sub table pointer check
-      ACPI: NUMA: Remove the useless 'node >= MAX_NUMNODES' check
-
-Heikki Krogerus (1):
-      ACPI: property: use cached name in acpi_fwnode_get_named_child_node()
-
-Jason Yan (1):
-      ACPI: PAD: Eliminate usage of uninitialized_var() macro
-
-Rafael J. Wysocki (6):
-      PCI: hotplug: ACPI: Fix context refcounting in acpiphp_grab_context()
-      ACPI: OSL: Implement deferred unmapping of ACPI memory
-      ACPICA: Preserve memory opregion mappings
-      ACPI: OSL: Use deferred unmapping in acpi_os_unmap_generic_address()
-      ACPI: OSL: Use deferred unmapping in acpi_os_unmap_iomem()
-      ACPI: OSL: Clean up the removal of unused memory mappings
-
-Thomas Renninger (1):
-      ACPI: procfs: Remove last dirs after being marked deprecated for a decade
-
-Tiezhu Yang (1):
-      ACPI: Use valid link to the ACPI specification
-
-Xiongfeng Wang (2):
-      ACPI: EC: add newline when printing 'ec_event_clearing' module parameter
-      ACPI: sysfs: add newlines when printing module parameters
-
----------------
-
- .../firmware-guide/acpi/DSD-properties-rules.rst   |   4 +-
- .../acpi/dsd/data-node-references.rst              |   4 +-
- Documentation/firmware-guide/acpi/dsd/graph.rst    |  10 +-
- Documentation/firmware-guide/acpi/dsd/leds.rst     |   6 +-
- Documentation/firmware-guide/acpi/lpit.rst         |   2 +-
- Documentation/hwmon/acpi_power_meter.rst           |   2 +-
- drivers/acpi/Kconfig                               |  22 +-
- drivers/acpi/Makefile                              |   1 -
- drivers/acpi/ac.c                                  | 108 +--------
- drivers/acpi/acpi_pad.c                            |   2 +-
- drivers/acpi/acpi_processor.c                      |   2 +-
- drivers/acpi/acpica/evrgnini.c                     |  14 +-
- drivers/acpi/acpica/exprep.c                       |   4 -
- drivers/acpi/acpica/exregion.c                     |  64 ++++--
- drivers/acpi/acpica/utdelete.c                     |   6 +-
- drivers/acpi/acpica/utids.c                        |   3 +-
- drivers/acpi/apei/hest.c                           |   2 +-
- drivers/acpi/battery.c                             | 255 ---------------------
- drivers/acpi/button.c                              |   2 +-
- drivers/acpi/cm_sbs.c                              |  87 -------
- drivers/acpi/dock.c                                |   2 +-
- drivers/acpi/ec.c                                  |   8 +-
- drivers/acpi/evged.c                               |   2 +-
- drivers/acpi/nfit/nfit.h                           |   2 +-
- drivers/acpi/numa/srat.c                           |  10 +-
- drivers/acpi/osl.c                                 |  63 ++---
- drivers/acpi/processor_idle.c                      |   3 +-
- drivers/acpi/property.c                            |  14 +-
- drivers/acpi/resource.c                            |   2 +-
- drivers/acpi/spcr.c                                |   4 +-
- drivers/acpi/sysfs.c                               |  12 +-
- drivers/acpi/tables.c                              |  25 +-
- drivers/pci/hotplug/acpiphp_glue.c                 |  14 +-
- drivers/pci/pci-acpi.c                             |   6 +-
- include/acpi/acpixf.h                              |   2 +-
- include/acpi/actypes.h                             |  14 +-
- include/linux/tboot.h                              |   2 +-
- tools/power/cpupower/man/cpupower-idle-info.1      |   2 +-
- 38 files changed, 167 insertions(+), 620 deletions(-)
