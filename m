@@ -2,273 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7040723A1A6
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Aug 2020 11:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6887B23A6B4
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Aug 2020 14:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725965AbgHCJOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Aug 2020 05:14:49 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8750 "EHLO huawei.com"
+        id S1728833AbgHCMvn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Aug 2020 08:51:43 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2554 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726370AbgHCJOt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 3 Aug 2020 05:14:49 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 01B976B9CC15A1BF2CD4;
-        Mon,  3 Aug 2020 17:14:44 +0800 (CST)
-Received: from [127.0.0.1] (10.74.185.4) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Mon, 3 Aug 2020
- 17:14:35 +0800
-Subject: Re: [PATCH] ACPI / APEI: do memory failure on the physical address
- reported by ARM processor error section
-To:     James Morse <james.morse@arm.com>
-References: <1596094348-10230-1-git-send-email-tanxiaofei@huawei.com>
- <9b340947-4fcf-30f3-f7e4-68a2753864c6@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <linuxarm@huawei.com>, <shiju.jose@huawei.com>,
-        <jonathan.cameron@huawei.com>
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-Message-ID: <5F27D57B.6000608@huawei.com>
-Date:   Mon, 3 Aug 2020 17:14:35 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1728641AbgHCMvY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 3 Aug 2020 08:51:24 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id C6B88C09F0444F75199B;
+        Mon,  3 Aug 2020 13:49:49 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.95.125) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Mon, 3 Aug 2020 13:49:49 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <helgaas@kernel.org>, <bp@alien8.de>, <james.morse@arm.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>, <lenb@kernel.org>,
+        <tony.luck@intel.com>, <dan.carpenter@oracle.com>,
+        <andriy.shevchenko@linux.intel.com>
+CC:     <linuxarm@huawei.com>, <yangyicong@hisilicon.com>,
+        <jonathan.cameron@huawei.com>, <tanxiaofei@huawei.com>
+Subject: [PATCH v14 0/2] ACPI / APEI: Add support to notify the vendor specific HW errors
+Date:   Mon, 3 Aug 2020 13:45:04 +0100
+Message-ID: <20200803124506.1260-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <9b340947-4fcf-30f3-f7e4-68a2753864c6@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.74.185.4]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.95.125]
+X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi James，
+CPER records describing a firmware-first error are identified by GUID.
+The ghes driver currently logs, but ignores any unknown CPER records.
+This prevents describing errors that can't be represented by a standard
+entry, that would otherwise allow a driver to recover from an error.
+The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
+version 2.8).
 
-On 2020/7/31 21:48, James Morse wrote:
-> Hi Tan,
-> 
-> On 30/07/2020 08:32, Xiaofei Tan wrote:
->> After the following commit applied, user-mode SEA is preferentially
->> processed by APEI. Do memory failure to recover.
->>
->> But there are some problems:
->> 1) The function apei_claim_sea() has processed an CPER, does not
->> mean that memory failure handling has done. Because the firmware-first
->> RAS error is reported by both producer and consumer. Mostly SEA uses
->> ARM processor error section to report as a consumer. (The producer could
->> be DDRC and cache, and use memory error section and other error section
->> to report). But memory failure handling for ARM processor error section
->> has not been supported. We should add it.
-> 
-> I can't follow what you are saying here.
-> 
-> APEI doesn't parse the Processor Error records. This has always been true, its not a
-> regression introduced by that commit.
-> 
+patch set
+1. add the notifier chain for these non-standard/vendor-records
+   in the ghes driver.
 
-The APEI parsing error didn't affect the SEA processing flow before. After that commit, it is changed.
+2. add the driver to handle HiSilicon HIP PCIe controller's errors.
+   
+Changes:
 
-> 
->> 2) Some hardware platforms can't record physical address each time. But
->> they could always have reported a firmware-first RAS error using ARM
->> processor error section. Such platform should update firmware. Don't
->> report the RAS error when physical address is not recorded.
-> 
-> Eh? If firmware fails to describe the error, we should carry on and pretend nothing happened?
-> 
+V14:
+1. Add patch[1] posted by James to the series.
+   
+2. Following changes made for Bjorn's comments,
+2.1 Deleted stub code from ghes.h
+2.2 Made CONFIG_PCIE_HISI_ERR depend on CONFIG_ACPI_APEI_GHES.
 
-I mean firmware don't report RAS error in SEA process if physical address is not recorded.
-The producer RAS node can still report the error.
+V13:
+1. Following changes in the HIP PCIe error handling driver.
+1.1 Add Bjorn's acked-by.
+1.2. Address the comments and macros order Bjorn mentioned.
+     Fix the words in the commit.
 
+V12:
+1. Changed the Signed-off-by tag to Co-developed-by tag in the patch
+   "ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records"
 
-> I think if the APEI code gets CPER records that have the fields linux needs to handle the
-> error, (for memory: that's the physical address), it should return an error to the caller,
-> as the work hasn't been done.
-> 
-> In the case of arm64's synchronous external abort, the response should be the
-> apei_claim_sea() code not claiming the abort, as there is a problem with the records.
-> Certainly the current behaviour can be improved.
-> 
+V11:
+1. Following modifications made by James Morse in the APEI patch
+   for the vendor error record.
+   - Removed kfifo and ghes_gdata_pool. Expanded commit message.
+   
+2. Changes in the HIP PCIe error handling driver
+   for the comments by Andy Shevchenko.
 
-Agree.
+V10:
+1. Changes for Bjorn's comments on HIP PCIe error handler driver
+   and APEI patch.
+   
+2. Changes in the HIP PCIe error handler driver
+   for the feedbacks by Andy Shevchenko.
+   
+V9:
+1. Fixed 2 improvements suggested by the kbuild test robot. 
+1.1 Change ghes_gdata_pool_init() as static function.
+1.2. Removed using buffer to store the error data for
+     logging in the hisi_pcie_handle_error()
 
+V8:
+1. Removed reporting the standard errors through the interface
+   because of the conflict with the recent patches in the
+   memory error handling path.
+2. Fix comments by Dan Carpenter.
+   
+V7:
+1. Add changes in the APEI driver suggested by Borislav Petkov, for
+   queuing up all the non-fatal HW errors to the work queue and
+   notify the registered kernel drivers from the bottom half using
+   blocking notifier, common interface for both standard and
+   vendor-spcific errors.
+2. Fix for further feedbacks in v5 HIP PCIe error handler driver
+   by Bjorn Helgaas.
 
-> 
->> Fixes: 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work")
-> 
-> I don't see how parsing this extra record fixes a bug in this commit.
-> Presumably you were depending on the arch code killing the thread regardless of whether
-> APEI found work to do ... which masked the fact it finds work, but doesn't know what to do
-> with it.
-> 
+V6:
+1. Fix few changes in the patch subject line suggested by Bjorn Helgaas.
 
-Hmm,it's a little far-fetched. But i don't know how to describe the relationship with that commit.
-Any idea?
+V5:
+1. Fix comments from James Morse.
+1.1 Changed the notification method to use the atomic_notifier_chain.
+1.2 Add the error handled status for the user space.  
 
-> 
-> I'm assuming your platform describes errors it detects in the cache as processor errors
-> for the cache, instead of memory errors.
-> 
+V4:
+1. Fix for the following smatch warning in the PCIe error driver,
+   reported by kbuild test robot<lkp@intel.com>:
+   warn: should '((((1))) << (9 + i))' be a 64 bit type?
+   if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
 
-Yes.
+V3:
+1. Fix the comments from Bjorn Helgaas.
 
-> 
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 81bf71b..07bfa28 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -466,6 +466,44 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>  	return false;
->>  }
->>  
->> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
->> +{
->> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->> +	struct cper_arm_err_info *err_info;
->> +	bool queued = false;
->> +	int sec_sev, i;
->> +
->> +	log_arm_hw_error(err);
->> +
->> +	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->> +		return false;
-> 
->> +	sec_sev = ghes_severity(gdata->error_severity);
->> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
->> +		return false;
-> 
-> This is to filter out corrected errors? 
+V2:
+1. Changes in the HiSilicon PCIe controller's error handling driver
+   for the comments from Bjorn Helgaas.
+   
+2. Changes in the APEI interface to support reporting the vendor error
+   for module with multiple devices, but use the same section type.
+   In the error handler will use socket id/sub module id etc to distinguish
+   the device.
 
-Yes.
+V1:  
+1. Fix comments from James Morse.
 
-What if this section is fatal?
+2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+   which is an application of the above interface.
 
-Fatal errors won't come here.
+Shiju Jose (1):
+  ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records
 
-> The panic on fatal code only looks as the severity in the Generic Error Status Block.
-> 
+Yicong Yang (1):
+  PCI: hip: Add handling of HiSilicon HIP PCIe controller errors
 
-Yes.
-
-> I think the right thing to do is to explicitly test each "Cache error structure"'s bits
-> for corrected/uncorrected instead.
-> 
-
-Do you mean skip TLB/Bus/Micro-architectural Error？
-
-> These top-level severities describe a group of records. You may have a corrected error
-> event that still has latent faults left in the system.
-> 
-
-Yes
-
-> 
-> This thing has multiple variable length entries in it.
-> Could we sanity test that 'err->err_info_num' doesn't take us outside err->section_length?
-> (we already do this sort of thing in the probe code)
-> 
-
-I think firmware should ensure the data is valid.
-
-> 
->> +	err_info = (struct cper_arm_err_info *) (err + 1);
->> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
->> +		unsigned long pfn;
-> 
-> Please check the type of this error, and only invoke memory_failure_queue() for caches.
-> (does your firmware generate the other types too?)
-> 
-
-Our firmware only generate two types: cache error and TLB error.
-The type of TLB error is only for MMU, and it can't record physical address, but only VA.
-
-> 
-> For a bus error, why are we complaining that this isn't memory?
-
-There are two types of errors from the memory: bus error and poison error.
-CPU core RAS nodes can't record bus errors.
-It can record poison errors in some scenarios, but will be taken as cache errors with a flag "PN".
-
-> If this were a TLB error, what does the physical address mean? Is it part of the page
-> tables or the final output address? (Who knows what the physical address means for a
-> micro-architectural error!)
-
-You are right, we can't record a physical address for error types other than cache error.
-
-> 
-> I think these other types should print a ratelimited warning that this type isn't
-> understood. We shouldn't pretend they are memory and hope for the best.
-> 
-
-OK. I will add a ratelimited warning for other types here.
-
-> 
-> Please check the corrected or uncorrected bit in the type-specific u64 for caches.
-> 
-
-OK
-
-> 
->> +		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
->> +			continue;
-> 
-> 
->> +		pfn = PHYS_PFN(err_info->physical_fault_addr);
->> +		if (!pfn_valid(pfn)) {
-> 
->> +			pr_warn(FW_WARN GHES_PFX
-> 
-> ratelimit!
-> 
-
-OK
-
->> +				"Invalid address in generic error data: 0x%#llx\n",
->> +				err_info->physical_fault_addr);
->> +			continue;
->> +		}
->> +
->> +		memory_failure_queue(pfn, 0);
->> +		queued = true;
-> 
-> This bit is almost the same as part of ghes_handle_memory_failure(), please pull that out
-> to a common helper. I think you'll need to pass the flags for memory_failure_queue() in.
-> 
-> 
-
-OK.
-
-> 
-> Thanks,
-> 
-> James
-> 
->> +	}
->> +
->> +	return queued;
->> +}
->> +
->>  /*
->>   * PCIe AER errors need to be sent to the AER driver for reporting and
->>   * recovery. The GHES severities map to the following AER severities and
->> @@ -543,9 +581,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->>  			ghes_handle_aer(gdata);
->>  		}
->>  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
->> -			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->> -
->> -			log_arm_hw_error(err);
->> +			queued = ghes_handle_arm_hw_error(gdata, sev);
->>  		} else {
->>  			void *err = acpi_hest_get_payload(gdata);
->>  
->>
-> 
-> 
-> .
-> 
+ drivers/acpi/apei/ghes.c                 |  63 +++++
+ drivers/pci/controller/Kconfig           |   8 +
+ drivers/pci/controller/Makefile          |   1 +
+ drivers/pci/controller/pcie-hisi-error.c | 327 +++++++++++++++++++++++
+ include/acpi/ghes.h                      |  18 ++
+ 5 files changed, 417 insertions(+)
+ create mode 100644 drivers/pci/controller/pcie-hisi-error.c
 
 -- 
- thanks
-tanxiaofei
+2.17.1
+
 
