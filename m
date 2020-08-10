@@ -2,160 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 524EC24035C
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 10:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4EF224078C
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 16:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726089AbgHJI0W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Aug 2020 04:26:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbgHJI0V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Aug 2020 04:26:21 -0400
-Received: from hillosipuli.retiisi.org.uk (hillosipuli.retiisi.org.uk [IPv6:2a01:4f9:c010:4572::81:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23072C061756;
-        Mon, 10 Aug 2020 01:26:21 -0700 (PDT)
-Received: from valkosipuli.localdomain (valkosipuli.retiisi.org.uk [IPv6:2a01:4f9:c010:4572::80:2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hillosipuli.retiisi.org.uk (Postfix) with ESMTPS id EEE2F634C87;
-        Mon, 10 Aug 2020 11:25:49 +0300 (EEST)
-Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
-        (envelope-from <sakari.ailus@retiisi.org.uk>)
-        id 1k537t-0001CF-PM; Mon, 10 Aug 2020 11:25:49 +0300
-Date:   Mon, 10 Aug 2020 11:25:49 +0300
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        id S1727787AbgHJOZm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Aug 2020 10:25:42 -0400
+Received: from mga11.intel.com ([192.55.52.93]:6985 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726499AbgHJOYs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Aug 2020 10:24:48 -0400
+IronPort-SDR: +NnfU9i/Srsl3qSsYz5oRAdfJxrgqbqiB87kghA8bUtF8FYD09pyDzcIK1KHT21+GJohpqewOb
+ 2l9DJ7xnQeww==
+X-IronPort-AV: E=McAfee;i="6000,8403,9708"; a="151226132"
+X-IronPort-AV: E=Sophos;i="5.75,457,1589266800"; 
+   d="scan'208";a="151226132"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 07:24:47 -0700
+IronPort-SDR: ISl6OiKHJsgCyCE/fF7o80n+7pdzNsHq5+65kEHYRejKZwR96IhEOjtBNT4WGpkoSJSNAPRjpt
+ hh7SvuksRo8Q==
+X-IronPort-AV: E=Sophos;i="5.75,457,1589266800"; 
+   d="scan'208";a="398239634"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 07:24:43 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 9CBE2204B4;
+        Mon, 10 Aug 2020 17:24:41 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1k58mC-0003Ep-3j; Mon, 10 Aug 2020 17:27:48 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media@vger.kernel.org,
         Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
         Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
-Subject: Re: [PATCH v4 5/6] at24: Support probing while off
-Message-ID: <20200810082549.GD840@valkosipuli.retiisi.org.uk>
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
- <20200121134157.20396-6-sakari.ailus@linux.intel.com>
- <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
- <20200311085555.GH5379@paasikivi.fi.intel.com>
- <CAMpxmJVPTKW+sYSJ3dnfF8nLAOKEa4Ob7bpxG0KD3Tkdm+rtYw@mail.gmail.com>
- <20200323213101.GB21174@kekkonen.localdomain>
- <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>
+Subject: [PATCH v5 0/6] Support running driver's probe for a device powered off
+Date:   Mon, 10 Aug 2020 17:27:41 +0300
+Message-Id: <20200810142747.12400-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bartosz,
+Hi all,
 
-Apologies for the late reply --- I was expecting more discussion which
-never happened...
+These patches enable calling (and finishing) a driver's probe function
+without powering on the respective device on busses where the practice is
+to power on the device for probe. While it generally is a driver's job to
+check the that the device is there, there are cases where it might be
+undesirable. (In this case it stems from a combination of hardware design
+and user expectations; see below.) The downside with this change is that
+if there is something wrong with the device, it will only be found at the
+time the device is used. In this case (the camera sensors + EEPROM in a
+sensor) I don't see any tangible harm from that though.
 
-On Wed, Mar 25, 2020 at 02:48:47PM +0100, Bartosz Golaszewski wrote:
-> pon., 23 mar 2020 o 22:31 Sakari Ailus <sakari.ailus@linux.intel.com>
-> napisał(a):
-> >
-> > Bartosz,
-> >
-> > On Thu, Mar 12, 2020 at 02:10:32PM +0100, Bartosz Golaszewski wrote:
-> > > śr., 11 mar 2020 o 09:56 Sakari Ailus <sakari.ailus@linux.intel.com> napisał(a):
-> > > >
-> > > > Hi Bartosz,
-> > > >
-> > > > Thanks for the reply.
-> > > >
-> > > > On Wed, Jan 29, 2020 at 02:36:17PM +0100, Bartosz Golaszewski wrote:
-> > > > > wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisał(a):
-> > > > > >
-> > > > > > In certain use cases (where the chip is part of a camera module, and the
-> > > > > > camera module is wired together with a camera privacy LED), powering on
-> > > > > > the device during probe is undesirable. Add support for the at24 to
-> > > > > > execute probe while being powered off. For this to happen, a hint in form
-> > > > > > of a device property is required from the firmware.
-> > > > > >
-> > > > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > > > ---
-> > > > > >  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
-> > >
-> > > [snip!]
-> > >
-> > > > > >
-> > > > > >  static int at24_remove(struct i2c_client *client)
-> > > > > >  {
-> > > > > > +       bool low_power;
-> > > > > > +
-> > > > > >         pm_runtime_disable(&client->dev);
-> > > > > > -       pm_runtime_set_suspended(&client->dev);
-> > > > > > +       low_power = acpi_dev_state_low_power(&client->dev);
-> > > > >
-> > > > > This is inconsistent. You define the low_power field in the context
-> > > > > structure (BTW the name low_power is a bit vague here - without
-> > > > > looking at its assignment it would make me think it's about something
-> > > > > battery-related, how about 'off_at_probe'?) and instead of reusing
-> > > >
-> > > > The field was called probe_powered_off in v1, but I changed it to
-> > > > probe_low_power (and renamed related functions etc.) based on review
-> > > > comments --- for the device may not be powered off actually.
-> > > >
-> > >
-> > > But is it actually ever low-power? What are the possible logical
-> > > states of the device? If I understood correctly: it's either off or on
-> > > at probe - not actually low-power. Am I missing something? In your
-> > > cover letter you're writing: "These patches enable calling (and
-> > > finishing) a driver's probe function without powering on the
-> > > respective device on busses where the practice is to power on the
-> > > device for probe." To me there's no mention of a low-power state,
-> > > which makes the name 'probe_low_power' seem completely unrelated.
-> >
-> > See <URL:https://patchwork.kernel.org/patch/10938483/>
-> >
-> > I've updated the patches according to the comments but did not update the
-> > cover page accordingly.
-> >
-> 
-> I see.
-> 
-> Rafael: I think that there are two issues with patch 1/5:
-> 1. It adds a very specific boolean flag to a structure that's meant to
-> be very general. As I pointed out in the i2c patch: at the very least
-> this could be made into an int storing flag values, instead of a
-> boolean field. But rather than that - it looks to me more like a
-> device (or bus) feature than a driver feature. Is there any ACPI flag
-> we could use to pass this information to the driver model without
-> changing the driver structure?
+An indication both from the driver and the firmware is required to allow
+the device's power state to remain off during probe (see the first patch).
 
-To my knowledge there isn't. The fact that I²C devices are powered on for
-probe in ACPI based systems is specific to Linux kernel and not ACPI as
-such.
 
-The reason this needs to be in a generic struct is that the device's power
-state will be changed before any interaction with the driver takes place as
-it's the I²C framework that powers on the device.
+The use case is such that there is a privacy LED next to an integrated
+user-facing laptop camera, and this LED is there to signal the user that
+the camera is recording a video or capturing images. That LED also happens
+to be wired to one of the power supplies of the camera, so whenever you
+power on the camera, the LED will be lit, whether images are captured from
+the camera --- or not. There's no way to implement this differently
+without additional software control (allowing of which is itself a
+hardware design decision) on most CSI-2-connected camera sensors as they
+simply have no pin to signal the camera streaming state.
 
-The firmware hint is there in order to make sure as this is intended, as
-this could have unwanted effects if it were just up to driver support.
-Think of the at24 driver, for instance: we probably want probe to fail if
-the device isn't accessible in most cases.
+This is also what happens during driver probe: the camera will be powered
+on by the I²C subsystem calling dev_pm_domain_attach() and the device is
+already powered on when the driver's own probe function is called. To the
+user this visible during the boot process as a blink of the privacy LED,
+suggesting that the camera is recording without the user having used an
+application to do that. From the end user's point of view the behaviour is
+not expected and for someone unfamiliar with internal workings of a
+computer surely seems quite suspicious --- even if images are not being
+actually captured.
 
-> 2. The name is still misleading: probe_low_power doesn't correspond
-> with what it actually does at all (neither did power_off). I'd go with
-> something like probe_allow_low_power.
+I've tested these on linux-next master. They also apply to Wolfram's
+i2c/for-next branch, there's a patch that affects the I²C core changes
+here (see below). The patches apart from that apply to Bartosz's
+at24/for-next as well as Mauro's linux-media master branch.
 
-I agree. I'll rename the property accrodingly as well, for that's what it
-really suggests.
+since v4 <URL:https://lore.kernel.org/linux-acpi/20200121134157.20396-1-sakari.ailus@linux.intel.com/>:
+
+- Rename "probe-low-power" property as "allow-low-power-probe". This is
+  taken into account in function and file naming, too.
+
+- Turn probe_low_power field in struct i2c_driver into flags field.
+
+- Rebase on Wolfram's i2c/for-next branch that contains the removal of the
+  support for disabling I²C core IRQ mappings (commit
+  0c2a34937f7e4c4776bb261114c475392da2355c).
+
+- Change wording for "allow-low-power-probe" property in ACPI
+  documentation.
+
+since v3 <URL:https://lore.kernel.org/linux-acpi/20200109154529.19484-1-sakari.ailus@linux.intel.com/T/#t>:
+
+- Rework the 2nd patch based on Rafael's comments
+
+	- Rework description of the ACPI low power state helper function,
+	  according to Rafael's text.
+
+	- Rename and rework the same function as
+	  acpi_dev_state_low_power().
+
+	- Reflect the changes in commit message as well.
+
+- Added a patch to document the probe-low-power _DSD property.
+
+since v2 <URL:https://patchwork.kernel.org/cover/11114255/>:
+
+- Remove extra CONFIG_PM ifdefs; these are not needed.
+
+- Move the checks for power state hints from drivers/base/dd.c to
+  drivers/i2c/i2c-base-core.c; these are I²C devices anyway.
+
+- Move the probe_low_power field from struct device_driver to struct
+  i2c_driver.
+
+since v1:
+
+- Rename probe_powered_off struct device field as probe_low_power and
+  reflect the similar naming to the patches overall.
+
+- Work with CONFIG_PM disabled, too.
+
+Rajmohan Mani (1):
+  media: i2c: imx319: Support probe while the device is off
+
+Sakari Ailus (5):
+  i2c: Allow driver to manage the device's power state during probe
+  ACPI: Add a convenience function to tell a device is in low power
+    state
+  ov5670: Support probe whilst the device is in a low power state
+  at24: Support probing while off
+  Documentation: ACPI: Document allow-low-power-probe _DSD property
+
+ .../acpi/dsd/allow-low-power-probe.rst        | 28 +++++++++++++
+ Documentation/firmware-guide/acpi/index.rst   |  1 +
+ drivers/acpi/device_pm.c                      | 31 ++++++++++++++
+ drivers/i2c/i2c-core-base.c                   | 17 ++++++--
+ drivers/media/i2c/imx319.c                    | 23 ++++++-----
+ drivers/media/i2c/ov5670.c                    | 23 ++++++-----
+ drivers/misc/eeprom/at24.c                    | 40 ++++++++++++-------
+ include/linux/acpi.h                          |  5 +++
+ include/linux/i2c.h                           | 14 +++++++
+ 9 files changed, 146 insertions(+), 36 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/allow-low-power-probe.rst
 
 -- 
-Sakari Ailus
+2.20.1
+
