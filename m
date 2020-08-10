@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E3B240FF3
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 21:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E407A240E5B
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 21:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729659AbgHJT03 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Aug 2020 15:26:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40572 "EHLO mail.kernel.org"
+        id S1729669AbgHJTM6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Aug 2020 15:12:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43266 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729398AbgHJTLr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:11:47 -0400
+        id S1729665AbgHJTM5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:12:57 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3053F2078D;
-        Mon, 10 Aug 2020 19:11:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 296C3207FF;
+        Mon, 10 Aug 2020 19:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086706;
-        bh=g+Wy7iCnNpmyB5BLU7r9saNvxQus1BUEvV7pAy8bNcg=;
+        s=default; t=1597086776;
+        bh=Xm7k/rfsVU4aoUK+qtA/nGXD2T8CnXqPvO0bzlr/AQQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gTwovJ3XtEUAvrFZ/kAPuMPKGOcHlCy5nPn3bH2MU0F9wd8J9Y8poAVJnhVUQbgI9
-         pXJ0VvmTHo4/Gf25oBdQkNItDzRSxEN187LJ/qeC8uxbl4RytFKZiHuSx8uHacviWI
-         eSZ/gwi5Xnf3cxkL3/2WVlNjGI/9XDb69fhGdHvs=
+        b=olITgM3NP0aPyrC7RSkLGVRazNpml4HtTklgIpEDiCVshL0Q+PDlJmy9JXxixEOe1
+         Aavf4W/KjAoRmik08tFdfFaYrfDxuHVnyep6XGlm376YBUDwk1RQEwha2T6SqJDmaq
+         siINOQ48nzpr235EKADhdqlCZuDsGg+j+VnX9+mI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Erik Kaneda <erik.kaneda@intel.com>,
@@ -30,12 +30,12 @@ Cc:     Erik Kaneda <erik.kaneda@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.7 56/60] ACPICA: Do not increment operation_region reference counts for field units
-Date:   Mon, 10 Aug 2020 15:10:24 -0400
-Message-Id: <20200810191028.3793884-56-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 44/45] ACPICA: Do not increment operation_region reference counts for field units
+Date:   Mon, 10 Aug 2020 15:11:52 -0400
+Message-Id: <20200810191153.3794446-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810191028.3793884-1-sashal@kernel.org>
-References: <20200810191028.3793884-1-sashal@kernel.org>
+In-Reply-To: <20200810191153.3794446-1-sashal@kernel.org>
+References: <20200810191153.3794446-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,7 +79,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 1 insertion(+), 9 deletions(-)
 
 diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
-index a4e306690a21b..4a0f03157e082 100644
+index 728d752f7adcd..85f799c9c25c4 100644
 --- a/drivers/acpi/acpica/exprep.c
 +++ b/drivers/acpi/acpica/exprep.c
 @@ -473,10 +473,6 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
