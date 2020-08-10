@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E49E240E8F
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 21:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0705E240ECD
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 21:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729983AbgHJTOS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Aug 2020 15:14:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46262 "EHLO mail.kernel.org"
+        id S1729753AbgHJTQY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Aug 2020 15:16:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47176 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729264AbgHJTOR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:14:17 -0400
+        id S1730043AbgHJTOo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:14:44 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BF0B922CA1;
-        Mon, 10 Aug 2020 19:14:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03DB522D71;
+        Mon, 10 Aug 2020 19:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086856;
-        bh=pxd0E58xEB4rCRxoOo1iwUKlzaG7Rk6Psxh5cGCreKg=;
+        s=default; t=1597086883;
+        bh=DgRfjOAL99Bcig5Syjy1M8Hb2R8D2sQIhGar/tiO4I0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hPJSNyD+of/cqeZdhgTSC7/t3y8I7HNYJDOW5Skt1HJxqQnGhRJoWN3OhYLhBhZwL
-         1IJ2p9L+8ZsG4Eh/HZCn87iGgXEG4yg7Whq8wwFDHHvMPGUzzCTypubYc2dP0xqTpG
-         HseUkMogPmwihQrR+IFGcJY8cQqO3EPyJbc3164s=
+        b=XIpP/qKabKzn3P+x5kr6eWoP3izo/+C/hhPO/XhI2+/FActFz3p0vUooWXVaSvBBe
+         SRDRZtf2gyaYdX8RhNree/XlSfbFNuvevW4YGRYq4HFFE6m0t7rpIPyDBNoduvomG9
+         v7lzaR2u3/K/EJNWK35uF+80VrPliXzjXKzaDfQY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Erik Kaneda <erik.kaneda@intel.com>,
@@ -30,12 +30,12 @@ Cc:     Erik Kaneda <erik.kaneda@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 4.14 22/22] ACPICA: Do not increment operation_region reference counts for field units
-Date:   Mon, 10 Aug 2020 15:13:44 -0400
-Message-Id: <20200810191345.3795166-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 17/17] ACPICA: Do not increment operation_region reference counts for field units
+Date:   Mon, 10 Aug 2020 15:14:18 -0400
+Message-Id: <20200810191418.3795394-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810191345.3795166-1-sashal@kernel.org>
-References: <20200810191345.3795166-1-sashal@kernel.org>
+In-Reply-To: <20200810191418.3795394-1-sashal@kernel.org>
+References: <20200810191418.3795394-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,7 +79,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 1 insertion(+), 9 deletions(-)
 
 diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
-index 8de060664204e..e23f3d54bb31c 100644
+index aed8d34592209..c2c391d5c5a1c 100644
 --- a/drivers/acpi/acpica/exprep.c
 +++ b/drivers/acpi/acpica/exprep.c
 @@ -507,10 +507,6 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
@@ -94,10 +94,10 @@ index 8de060664204e..e23f3d54bb31c 100644
  				  "RegionField: BitOff %X, Off %X, Gran %X, Region %p\n",
  				  obj_desc->field.start_field_bit_offset,
 diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-index c6eb9fae70f9a..61a979d0fbc5a 100644
+index 529d6c38ea7ce..03a2282ceb9ca 100644
 --- a/drivers/acpi/acpica/utdelete.c
 +++ b/drivers/acpi/acpica/utdelete.c
-@@ -593,11 +593,6 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
+@@ -591,11 +591,6 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
  			next_object = object->buffer_field.buffer_obj;
  			break;
  
@@ -109,7 +109,7 @@ index c6eb9fae70f9a..61a979d0fbc5a 100644
  		case ACPI_TYPE_LOCAL_BANK_FIELD:
  
  			next_object = object->bank_field.bank_obj;
-@@ -638,6 +633,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
+@@ -636,6 +631,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
  			}
  			break;
  
