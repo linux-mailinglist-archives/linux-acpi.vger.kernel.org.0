@@ -2,125 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D58952418A1
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 10:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DBB2419B6
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 12:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728430AbgHKI5v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Aug 2020 04:57:51 -0400
-Received: from mga07.intel.com ([134.134.136.100]:33872 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728336AbgHKI5v (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 11 Aug 2020 04:57:51 -0400
-IronPort-SDR: hhrZbCcZRh0Sdybu/vfzBM6qAONDK1+1j3R6DppUJ3gqgUZ8YF3rjl//Jh+07QQcW8Qu2DnN4i
- bT7tXicfI20g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9709"; a="218030568"
-X-IronPort-AV: E=Sophos;i="5.75,460,1589266800"; 
-   d="scan'208";a="218030568"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2020 01:57:49 -0700
-IronPort-SDR: EmAtZuRpcdtRFUCT8R9mvEDeG40/XSjZz7NwrbIXaM72Jbh4UNwML1IGy6XVooLEowvXfWqy3P
- Zit6SPImqfOg==
-X-IronPort-AV: E=Sophos;i="5.75,460,1589266800"; 
-   d="scan'208";a="277522857"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2020 01:57:46 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 391D8206E3; Tue, 11 Aug 2020 11:57:44 +0300 (EEST)
-Date:   Tue, 11 Aug 2020 11:57:44 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media@vger.kernel.org,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 1/6] i2c: Allow driver to manage the device's power
- state during probe
-Message-ID: <20200811085744.GK16270@paasikivi.fi.intel.com>
-References: <20200810142747.12400-1-sakari.ailus@linux.intel.com>
- <20200810142747.12400-2-sakari.ailus@linux.intel.com>
- <20200810144148.GD31434@bogus>
+        id S1728456AbgHKK1o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Aug 2020 06:27:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57080 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728660AbgHKK1j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Aug 2020 06:27:39 -0400
+Date:   Tue, 11 Aug 2020 12:27:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1597141657;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jp00Rr/a4cDX95tUyF9kFZf8y43Q4hOeQjwY+IySvJE=;
+        b=zkqeyvORSehZ1011o/jDBzYfgqEUWc7nSPhc+cuBiFnjrp59giKDvUWCHYXLdYT7f+2dVD
+        +KtbUyoVte8z13xRz83p3Ps1FtHWO4nwlx+h9OMbbm24O7q/lEl7/FfX9Fat05KIlNDyD7
+        vvw580NH77BBXxuB/MQfAPfSlwcyPaAE3xF/IKRKt333j05+15uH0YYwMga9s3u+9zE14E
+        cXb9TfhLjljNhI6L+MiD6qnx8yXP21r6LxEIuFU8pw17GYR1MGgV8skNP1aB/GT5ne/4oG
+        r7qri2wm18w7p53BsGT1LM0AKtS8Tqa78TDqvhlMZK7YcT6gGMu2GZGiEvEWqQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1597141657;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jp00Rr/a4cDX95tUyF9kFZf8y43Q4hOeQjwY+IySvJE=;
+        b=uRP3HjIjqKMTFF8Zk9/NrdRmUpb/WYsuP90kV8dQfAPvbaKiVMr614nI4JvggAfYdBb5PF
+        90QeXgwmEsUE0ZAQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Stephen Berman <stephen.berman@gmx.net>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20200811102735.yifejbx62ewzpfcs@linutronix.de>
+References: <20200616155501.psduxnisltitodme@linutronix.de>
+ <871rmesqkk.fsf@gmx.net>
+ <20200617142734.mxwfoblufmo6li5e@linutronix.de>
+ <87ftatqu07.fsf@gmx.net>
+ <20200624201156.xu6hel3drnhno6c3@linutronix.de>
+ <87ftak2kxr.fsf@rub.de>
+ <20200714134410.3odqfvjq6rndjjf6@linutronix.de>
+ <CAJZ5v0hZSUkEMCszDADGWk-v0xNEiDE45B3CHLi05BX6rPfm6g@mail.gmail.com>
+ <20200714141135.47adndrsdgpiqfy4@linutronix.de>
+ <CAJZ5v0iogereapmhcFi=iXHsjnzmC26mewUSTY3+5O3ei5kfDQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200810144148.GD31434@bogus>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJZ5v0iogereapmhcFi=iXHsjnzmC26mewUSTY3+5O3ei5kfDQ@mail.gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sudeep,
+On 2020-07-14 17:53:15 [+0200], Rafael J. Wysocki wrote:
+> acpi_evaluate_integer() doesn't show up in the trace, though, AFAICS.
+>=20
+> > I assumed acpi_ex_opcode_2A_0T_0R() since the other
+> > candidate was acpi_ev_asynch_execute_gpe_method().
+>=20
+> Which probably is the case.  Specifically
+>=20
+> acpi_ev_asynch_execute_gpe_method: Evaluate _L66
+>=20
+> is likely to cause the Notify() to be dispatched.
+=E2=80=A6
+> > Rafael, are you also interested in an ACPI dump?
+>=20
+> That might help a bit.
+>=20
+> So what probably happens is that poking at the TZ causes a GPE to
+> trigger and a Notify() to be dispatched which then goes into the
+> workqueue for execution.
+>=20
+> Now, I'm not sure what happens to those Notify() items, though.  They
+> each should cause a handler (in the thermal driver) to be executed,
+> but does that happen?
 
-Thanks for the review.
+Stephen's trace contains a few backtraces, all of them look like this:
 
-On Mon, Aug 10, 2020 at 03:41:48PM +0100, Sudeep Holla wrote:
-> On Mon, Aug 10, 2020 at 05:27:42PM +0300, Sakari Ailus wrote:
-> > Enable drivers to tell ACPI that there's no need to power on a device for
-> > probe. Drivers should still perform this by themselves if there's a need
-> > to. In some cases powering on the device during probe is undesirable, and
-> > this change enables a driver to choose what fits best for it.
-> >
-> > Add a field called "flags" into struct i2c_driver for driver flags, and a
-> > flag I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to tell a driver supports probe in
-> > low power state.
-> >
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > ---
-> >  drivers/i2c/i2c-core-base.c | 17 ++++++++++++++---
-> >  include/linux/i2c.h         | 14 ++++++++++++++
-> >  2 files changed, 28 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index 34a9609f256da..cde9cf49a07e6 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -436,6 +436,14 @@ static int i2c_smbus_host_notify_to_irq(const struct i2c_client *client)
-> >  	return irq > 0 ? irq : -ENXIO;
-> >  }
-> >
-> > +static bool allow_low_power_probe(struct device *dev)
-> > +{
-> > +	struct i2c_driver *driver = to_i2c_driver(dev->driver);
-> > +
-> > +	return driver->flags & I2C_DRV_FL_ALLOW_LOW_POWER_PROBE &&
-> > +		device_property_present(dev, "allow-low-power-probe");
-> 
-> I assume this change makes even the DT property "allow-low-power-probe"
-> work in the same way. Should we have proper DT binding for that ?
-> 
-> This comment applies for any property using device_property_* but has
-> no explicit DT binding ? Just asking the question to know the strategy
-> followed. Sorry if this is redundant question, feel free to point me
-> to the past discussions.
+| Call Trace:
+|  acpi_ex_opcode_2A_0T_0R+0x93/0xdf
+|  acpi_ds_exec_end_op+0x10d/0x701
+|  acpi_ps_parse_loop+0x7f2/0x8c3
+|  acpi_ps_parse_aml+0x1a5/0x540
+|  acpi_ps_execute_method+0x1fe/0x2ba
+|  acpi_ns_evaluate+0x345/0x4e2
+|  acpi_evaluate_object+0x177/0x39f
+|  acpi_evaluate_integer+0x4f/0x110
+|  acpi_thermal_get_temperature.part.0+0x45/0xc4
+|  thermal_get_temp.cold+0xc/0x2e
+|  thermal_zone_get_temp+0x4c/0x70
+|  thermal_zone_device_update.part.0+0x2a/0x110
+|  acpi_thermal_notify+0xcf/0x140
+|  acpi_ev_notify_dispatch+0x45/0x5a
+|  acpi_os_execute_deferred_notify+0x34/0x60
+|  process_one_work+0x1d2/0x3a0
+|  worker_thread+0x45/0x3c0
+|  kthread+0xf6/0x130
+|  ret_from_fork+0x35/0x40
 
-It's not a redundant question, no.
+so no GPE and it comes the notify callback while parsing the ACPI table.
+Any ideas? I guess acpi_ex_opcode_2A_0T_0R() uses the workqueue because
+it may sleep and it might be invoked from non-preemptible context.
 
-I²C drivers on OF are responsible for controlling device's power state
-already (using runtime PM or without) so I think the drivers could use the
-property directly on OF systems (and document the property in DT bindings
-first) if there's a need to. IOW this code isn't needed on OF.
-
-Note that the power_on or power_off arguments are not used by
-genpd_dev_pm_attach() or genpd_dev_pm_detach() so this patch only affects
-ACPI. I think I should check the device is an ACPI device above, for
-clarity.
-
-Cc also DT list. The entire set is here:
-
-<URL:https://lore.kernel.org/linux-acpi/20200810142747.12400-1-sakari.ailus@linux.intel.com/>
-
--- 
-Kind regards,
-
-Sakari Ailus
+Sebastian
