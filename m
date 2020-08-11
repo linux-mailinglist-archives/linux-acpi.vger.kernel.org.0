@@ -2,135 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2BE241EA9
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 18:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2576B241FE8
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 20:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729047AbgHKQva (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Aug 2020 12:51:30 -0400
-Received: from mga03.intel.com ([134.134.136.65]:13475 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729011AbgHKQva (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 11 Aug 2020 12:51:30 -0400
-IronPort-SDR: 95JEgdDuObkhRC8yQPI23IqdX44DRescn6b4DiJ4Df7BS4pEXlDzVjkKOFQ5e7iXUo1YYuyd2h
- 2VuiWt13tqxw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9710"; a="153747263"
-X-IronPort-AV: E=Sophos;i="5.76,301,1592895600"; 
-   d="scan'208";a="153747263"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2020 09:51:29 -0700
-IronPort-SDR: Magi6xytkpCSqYJ8I7LFXk/ZjSl9yak3iJmWs+Nmvqf2RDA/IIA4uDSj8ZfQQvKOhwYJlQxm6R
- r8qknJ9fWkyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,301,1592895600"; 
-   d="scan'208";a="334642462"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 11 Aug 2020 09:51:27 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id ECFB2FC; Tue, 11 Aug 2020 19:51:26 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] ACPI / PMIC: Move TPS68470 OpRegion driver to drivers/acpi/pmic/
-Date:   Tue, 11 Aug 2020 19:51:26 +0300
-Message-Id: <20200811165126.45307-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200811165126.45307-1-andriy.shevchenko@linux.intel.com>
-References: <20200811165126.45307-1-andriy.shevchenko@linux.intel.com>
+        id S1725987AbgHKStH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Aug 2020 14:49:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60896 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725889AbgHKStG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Aug 2020 14:49:06 -0400
+Date:   Tue, 11 Aug 2020 20:49:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1597171744;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RwCD0bfL2AO9ImN2u7oI41Ra7cPPPpKJOGgaL2jx1Hs=;
+        b=PsJbheuLB+TB0qz3bco9sz/QmSvo6EAMMxbttJ/tIDnUitgm9vn4EI3XyivAKL0Tv4lM2E
+        M+sVD2rs5XINF7tFbA0a4Q9IJnBWUiVxa+lpKtathfONCaqGnFGyl5dHDRZJi75MMrQkOT
+        FNklLUkIdCij6W1B7jxgUx+ammke8172oRcgv8AZ18lx7SMpspxvoV3KxDrGSX7q6AAHA3
+        K2HfO5TiZJMOFlNdt+iimniyGfhIvkvyHhh6lWQKyfID9QSYY90Q2l/5u4AA4wqR3FjMm4
+        9Fzz27sfQA4fE1mwQUlXy1BzMt8lOdhpOISXK5rYMETXzw7JXPsF8/kWn3GQ7Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1597171744;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RwCD0bfL2AO9ImN2u7oI41Ra7cPPPpKJOGgaL2jx1Hs=;
+        b=OgiItwsr/YUIAS8bO43cL5thnZ1bNYRQRZpkt0u7i6JfF7f4dyeXuHcB2BXS8ok+oPUo7h
+        I4rXhsWeULTTVpDQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Stephen Berman <stephen.berman@gmx.net>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20200811184902.2fm4eyprmpkfon2j@linutronix.de>
+References: <87ftak2kxr.fsf@rub.de>
+ <20200714134410.3odqfvjq6rndjjf6@linutronix.de>
+ <CAJZ5v0hZSUkEMCszDADGWk-v0xNEiDE45B3CHLi05BX6rPfm6g@mail.gmail.com>
+ <20200714141135.47adndrsdgpiqfy4@linutronix.de>
+ <87blkbx1gt.fsf@gmx.net>
+ <87imdp5r80.fsf@rub.de>
+ <20200811132955.wbt55ns7bu5mxouq@linutronix.de>
+ <CAJZ5v0h+n9VCz5=VixVbe_b=ZbTU3D=46stGhE9z7Y7yaUMJzw@mail.gmail.com>
+ <20200811152551.dmfw46urecbmeklr@linutronix.de>
+ <87ft8tayic.fsf@gmx.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87ft8tayic.fsf@gmx.net>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It is revealed now that TPS68470 OpRegion driver has been added
-in slightly different scope. Let's move it to the drivers/acpi/pmic/
-folder for sake of the unification.
+On 2020-08-11 19:22:19 [+0200], Stephen Berman wrote:
+> Attached.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/Kconfig       | 16 ----------------
- drivers/acpi/Makefile      |  1 -
- drivers/acpi/pmic/Kconfig  | 16 ++++++++++++++++
- drivers/acpi/pmic/Makefile |  1 +
- 4 files changed, 17 insertions(+), 17 deletions(-)
+ssdt6.dsl:
+|  ThermalZone (TZ10)
+|  {
+=E2=80=A6
+|      Method (_TSP, 0, Serialized)  // _TSP: Thermal Sampling Period
+|      {
+|          Return (0x0A)
+|      }
+|
+|      Method (_TZP, 0, Serialized)  // _TZP: Thermal Zone Polling
+|      {
+|          Return (0x0A)
+|      }
+|
+|      Method (_TMP, 0, Serialized)  // _TMP: Temperature
+|      {
+|          \GSA1.ZRC3 ()
+|          Sleep (0x03E8)
+|          Notify (\_TZ.TZ10, 0x81) // Thermal Trip Point Change
+|          Return (0x0B54)
+|      }
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 6fb9453396dc..edf1558c1105 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -521,22 +521,6 @@ endif
- 
- source "drivers/acpi/pmic/Kconfig"
- 
--config TPS68470_PMIC_OPREGION
--	bool "ACPI operation region support for TPS68470 PMIC"
--	depends on MFD_TPS68470
--	help
--	  This config adds ACPI operation region support for TI TPS68470 PMIC.
--	  TPS68470 device is an advanced power management unit that powers
--	  a Compact Camera Module (CCM), generates clocks for image sensors,
--	  drives a dual LED for flash and incorporates two LED drivers for
--	  general purpose indicators.
--	  This driver enables ACPI operation region support control voltage
--	  regulators and clocks.
--
--	  This option is a bool as it provides an ACPI operation
--	  region, which must be available before any of the devices
--	  using this, are probed.
--
- endif	# ACPI
- 
- config X86_PM_TIMER
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 44929d248bfa..44e412506317 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -110,7 +110,6 @@ obj-$(CONFIG_ACPI_EXTLOG)	+= acpi_extlog.o
- obj-$(CONFIG_ACPI_CONFIGFS)	+= acpi_configfs.o
- 
- obj-y				+= pmic/
--obj-$(CONFIG_TPS68470_PMIC_OPREGION)	+= pmic/tps68470_pmic.o
- 
- video-objs			+= acpi_video.o video_detect.o
- obj-y				+= dptf/
-diff --git a/drivers/acpi/pmic/Kconfig b/drivers/acpi/pmic/Kconfig
-index fbf52271d6cb..30552ccb4680 100644
---- a/drivers/acpi/pmic/Kconfig
-+++ b/drivers/acpi/pmic/Kconfig
-@@ -47,3 +47,19 @@ config CHT_DC_TI_PMIC_OPREGION
- 	  This config adds ACPI operation region support for Dollar Cove TI PMIC.
- 
- endif	# PMIC_OPREGION
-+
-+config TPS68470_PMIC_OPREGION
-+	bool "ACPI operation region support for TPS68470 PMIC"
-+	depends on MFD_TPS68470
-+	help
-+	  This config adds ACPI operation region support for TI TPS68470 PMIC.
-+	  TPS68470 device is an advanced power management unit that powers
-+	  a Compact Camera Module (CCM), generates clocks for image sensors,
-+	  drives a dual LED for flash and incorporates two LED drivers for
-+	  general purpose indicators.
-+	  This driver enables ACPI operation region support control voltage
-+	  regulators and clocks.
-+
-+	  This option is a bool as it provides an ACPI operation
-+	  region, which must be available before any of the devices
-+	  using this, are probed.
-diff --git a/drivers/acpi/pmic/Makefile b/drivers/acpi/pmic/Makefile
-index 1433f2befca6..6d3f9c971668 100644
---- a/drivers/acpi/pmic/Makefile
-+++ b/drivers/acpi/pmic/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_XPOWER_PMIC_OPREGION)	+= pmic/intel_pmic_xpower.o
- obj-$(CONFIG_BXT_WC_PMIC_OPREGION)	+= pmic/intel_pmic_bxtwc.o
- obj-$(CONFIG_CHT_WC_PMIC_OPREGION)	+= pmic/intel_pmic_chtwc.o
- obj-$(CONFIG_CHT_DC_TI_PMIC_OPREGION)	+= pmic/intel_pmic_chtdc_ti.o
-+obj-$(CONFIG_TPS68470_PMIC_OPREGION)	+= pmic/tps68470_pmic.o
--- 
-2.28.0
+So if I read this correctly then TZ10 should be polled every second
+(check) and the temperature function contains a `sleep(1 second)' (which
+explains the mysteries delay) followed by the Notify() (which schedules
+the worker).
 
+Now I'm curious if Windows has the same ACPI tables and if so how they
+behave here. And what the actual plan here was. And where is the border
+when one is actual allowed to make fun of someone. So many questions.=20
+
+> Done as Bug 208877.
+
+Thank you.
+
+> Steve Berman
+
+Sebastian
