@@ -2,121 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B8F241081
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Aug 2020 21:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72543241473
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 03:15:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729196AbgHJTap (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Aug 2020 15:30:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37592 "EHLO mail.kernel.org"
+        id S1727094AbgHKBPD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Aug 2020 21:15:03 -0400
+Received: from mga02.intel.com ([134.134.136.20]:28511 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728919AbgHJTKW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:10:22 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8FA35221E2;
-        Mon, 10 Aug 2020 19:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086621;
-        bh=g+Wy7iCnNpmyB5BLU7r9saNvxQus1BUEvV7pAy8bNcg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kFyZIsme+pivG0gpoJrDv1XKz84wsoTP7w3BYW0zyV7TRMiKDdjln88kHQsgeNKoj
-         JpnipQjZnqtpuxuBELvB30YfjJaNDrLGUqppPHdNtqAyQqo5pKxzyBxh5BwByNH1YN
-         1LCnwk4CYfCP0OZX/5WDtZXfYRL6R3vwb4cdM0IY=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Erik Kaneda <erik.kaneda@intel.com>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.8 60/64] ACPICA: Do not increment operation_region reference counts for field units
-Date:   Mon, 10 Aug 2020 15:08:55 -0400
-Message-Id: <20200810190859.3793319-60-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810190859.3793319-1-sashal@kernel.org>
-References: <20200810190859.3793319-1-sashal@kernel.org>
+        id S1727049AbgHKBPD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Aug 2020 21:15:03 -0400
+IronPort-SDR: w8i/IoDHWhjyRdcPP6RtaAhC4pgg9wyYW0zLkxVwmX417b5ifV2Nupl+6+Ht++Dz8F+leL56uE
+ OabhhFjgNhsQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9709"; a="141505476"
+X-IronPort-AV: E=Sophos;i="5.75,458,1589266800"; 
+   d="scan'208";a="141505476"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 18:15:02 -0700
+IronPort-SDR: 0CIfP7TD2K4trAC0Kbgml7/6PWtJoRmZCwDt06U/E1Yw7e8o5A1Tsnpe9rWl/oRfXUVtS2rWwE
+ bUZdmY3oypag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,458,1589266800"; 
+   d="scan'208";a="290538784"
+Received: from lkp-server01.sh.intel.com (HELO 71729f5ca340) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 10 Aug 2020 18:15:00 -0700
+Received: from kbuild by 71729f5ca340 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k5IsW-0000IG-2V; Tue, 11 Aug 2020 01:15:00 +0000
+Date:   Tue, 11 Aug 2020 09:14:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 7cd29e47553a773f54727d0756a57d0a3dcb3ab0
+Message-ID: <5f31f0e1.beJga6jjAQLhVagJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Erik Kaneda <erik.kaneda@intel.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 7cd29e47553a773f54727d0756a57d0a3dcb3ab0  Merge branches 'pm-cpufreq' and 'acpi-soc' into linux-next
 
-[ Upstream commit 6a54ebae6d047c988a31f5ac5a64ab5cf83797a2 ]
+elapsed time: 722m
 
-ACPICA commit e17b28cfcc31918d0db9547b6b274b09c413eb70
+configs tested: 70
+configs skipped: 2
 
-Object reference counts are used as a part of ACPICA's garbage
-collection mechanism. This mechanism keeps track of references to
-heap-allocated structures such as the ACPI operand objects.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Recent server firmware has revealed that this reference count can
-overflow on large servers that declare many field units under the
-same operation_region. This occurs because each field unit declaration
-will add a reference count to the source operation_region.
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                          r7780mp_defconfig
+arm                           stm32_defconfig
+arm                             ezx_defconfig
+arm                        multi_v7_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20200810
+i386                 randconfig-a001-20200810
+i386                 randconfig-a002-20200810
+i386                 randconfig-a003-20200810
+i386                 randconfig-a006-20200810
+i386                 randconfig-a004-20200810
+x86_64               randconfig-a013-20200810
+x86_64               randconfig-a012-20200810
+x86_64               randconfig-a016-20200810
+x86_64               randconfig-a011-20200810
+x86_64               randconfig-a014-20200810
+x86_64               randconfig-a015-20200810
+i386                 randconfig-a011-20200810
+i386                 randconfig-a013-20200810
+i386                 randconfig-a012-20200810
+i386                 randconfig-a016-20200810
+i386                 randconfig-a015-20200810
+i386                 randconfig-a014-20200810
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-This change solves the reference count overflow for operation_regions
-objects by preventing fieldunits from incrementing their
-operation_region's reference count. Each operation_region's reference
-count will not be changed by named objects declared under the Field
-operator. During namespace deletion, the operation_region namespace
-node will be deleted and each fieldunit will be deleted without
-touching the deleted operation_region object.
-
-Link: https://github.com/acpica/acpica/commit/e17b28cf
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/exprep.c   | 4 ----
- drivers/acpi/acpica/utdelete.c | 6 +-----
- 2 files changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
-index a4e306690a21b..4a0f03157e082 100644
---- a/drivers/acpi/acpica/exprep.c
-+++ b/drivers/acpi/acpica/exprep.c
-@@ -473,10 +473,6 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
- 				    (u8)access_byte_width;
- 			}
- 		}
--		/* An additional reference for the container */
--
--		acpi_ut_add_reference(obj_desc->field.region_obj);
--
- 		ACPI_DEBUG_PRINT((ACPI_DB_BFIELD,
- 				  "RegionField: BitOff %X, Off %X, Gran %X, Region %p\n",
- 				  obj_desc->field.start_field_bit_offset,
-diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-index c365faf4e6cd4..4c0d4e4341961 100644
---- a/drivers/acpi/acpica/utdelete.c
-+++ b/drivers/acpi/acpica/utdelete.c
-@@ -568,11 +568,6 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
- 			next_object = object->buffer_field.buffer_obj;
- 			break;
- 
--		case ACPI_TYPE_LOCAL_REGION_FIELD:
--
--			next_object = object->field.region_obj;
--			break;
--
- 		case ACPI_TYPE_LOCAL_BANK_FIELD:
- 
- 			next_object = object->bank_field.bank_obj;
-@@ -613,6 +608,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
- 			}
- 			break;
- 
-+		case ACPI_TYPE_LOCAL_REGION_FIELD:
- 		case ACPI_TYPE_REGION:
- 		default:
- 
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
