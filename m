@@ -2,133 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72543241473
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 03:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A512417C0
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Aug 2020 10:00:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbgHKBPD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Aug 2020 21:15:03 -0400
-Received: from mga02.intel.com ([134.134.136.20]:28511 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727049AbgHKBPD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Aug 2020 21:15:03 -0400
-IronPort-SDR: w8i/IoDHWhjyRdcPP6RtaAhC4pgg9wyYW0zLkxVwmX417b5ifV2Nupl+6+Ht++Dz8F+leL56uE
- OabhhFjgNhsQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9709"; a="141505476"
-X-IronPort-AV: E=Sophos;i="5.75,458,1589266800"; 
-   d="scan'208";a="141505476"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 18:15:02 -0700
-IronPort-SDR: 0CIfP7TD2K4trAC0Kbgml7/6PWtJoRmZCwDt06U/E1Yw7e8o5A1Tsnpe9rWl/oRfXUVtS2rWwE
- bUZdmY3oypag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,458,1589266800"; 
-   d="scan'208";a="290538784"
-Received: from lkp-server01.sh.intel.com (HELO 71729f5ca340) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 10 Aug 2020 18:15:00 -0700
-Received: from kbuild by 71729f5ca340 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1k5IsW-0000IG-2V; Tue, 11 Aug 2020 01:15:00 +0000
-Date:   Tue, 11 Aug 2020 09:14:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 7cd29e47553a773f54727d0756a57d0a3dcb3ab0
-Message-ID: <5f31f0e1.beJga6jjAQLhVagJ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728204AbgHKIAo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Aug 2020 04:00:44 -0400
+Received: from retiisi.org.uk ([95.216.213.190]:45760 "EHLO
+        hillosipuli.retiisi.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726397AbgHKIAn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 11 Aug 2020 04:00:43 -0400
+Received: from valkosipuli.localdomain (valkosipuli.retiisi.org.uk [IPv6:2a01:4f9:c010:4572::80:2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.org.uk (Postfix) with ESMTPS id 256DC634C87;
+        Tue, 11 Aug 2020 11:00:10 +0300 (EEST)
+Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@retiisi.org.uk>)
+        id 1k5PCb-0001ID-Uo; Tue, 11 Aug 2020 11:00:09 +0300
+Date:   Tue, 11 Aug 2020 11:00:09 +0300
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media <linux-media@vger.kernel.org>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>
+Subject: Re: [PATCH v4 5/6] at24: Support probing while off
+Message-ID: <20200811080009.GE840@valkosipuli.retiisi.org.uk>
+References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
+ <20200121134157.20396-6-sakari.ailus@linux.intel.com>
+ <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
+ <20200311085555.GH5379@paasikivi.fi.intel.com>
+ <CAMpxmJVPTKW+sYSJ3dnfF8nLAOKEa4Ob7bpxG0KD3Tkdm+rtYw@mail.gmail.com>
+ <20200323213101.GB21174@kekkonen.localdomain>
+ <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
+ <20200810082549.GD840@valkosipuli.retiisi.org.uk>
+ <CAMpxmJUKSR-oCGnV1E5XiAMA2nYBy5f_f8=VSoMn0zf+qF39vg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMpxmJUKSR-oCGnV1E5XiAMA2nYBy5f_f8=VSoMn0zf+qF39vg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 7cd29e47553a773f54727d0756a57d0a3dcb3ab0  Merge branches 'pm-cpufreq' and 'acpi-soc' into linux-next
+Hi Bartosz,
 
-elapsed time: 722m
+On Mon, Aug 10, 2020 at 08:12:00PM +0200, Bartosz Golaszewski wrote:
+> On Mon, Aug 10, 2020 at 10:26 AM Sakari Ailus <sakari.ailus@iki.fi> wrote:
+> >
+> 
+> [snip]
+> 
+> > >
+> > > Rafael: I think that there are two issues with patch 1/5:
+> > > 1. It adds a very specific boolean flag to a structure that's meant to
+> > > be very general. As I pointed out in the i2c patch: at the very least
+> > > this could be made into an int storing flag values, instead of a
+> > > boolean field. But rather than that - it looks to me more like a
+> > > device (or bus) feature than a driver feature. Is there any ACPI flag
+> > > we could use to pass this information to the driver model without
+> > > changing the driver structure?
+> >
+> > To my knowledge there isn't. The fact that I²C devices are powered on for
+> > probe in ACPI based systems is specific to Linux kernel and not ACPI as
+> > such.
+> >
+> > The reason this needs to be in a generic struct is that the device's power
+> > state will be changed before any interaction with the driver takes place as
+> > it's the I²C framework that powers on the device.
+> >
+> 
+> I'm not sure I'm following. Looking at patch 1/6 struct device already
+> exists so why can't this information be conveyed "per device" as
+> opposed to "per driver"?
 
-configs tested: 70
-configs skipped: 2
+It's both driver and device.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Suppose there's no indication of driver support. If you add the property
+telling the device shouldn't be powered on for probe, it won't be. And if
+the driver doesn't support that, probe will fail. That could happen e.g.
+when running an older kernel on a system that happens to specify this
+property for a given device.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                          r7780mp_defconfig
-arm                           stm32_defconfig
-arm                             ezx_defconfig
-arm                        multi_v7_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20200810
-i386                 randconfig-a001-20200810
-i386                 randconfig-a002-20200810
-i386                 randconfig-a003-20200810
-i386                 randconfig-a006-20200810
-i386                 randconfig-a004-20200810
-x86_64               randconfig-a013-20200810
-x86_64               randconfig-a012-20200810
-x86_64               randconfig-a016-20200810
-x86_64               randconfig-a011-20200810
-x86_64               randconfig-a014-20200810
-x86_64               randconfig-a015-20200810
-i386                 randconfig-a011-20200810
-i386                 randconfig-a013-20200810
-i386                 randconfig-a012-20200810
-i386                 randconfig-a016-20200810
-i386                 randconfig-a015-20200810
-i386                 randconfig-a014-20200810
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+You could view this as a driver bug of course. I still think it's better to
+make driver support for this explicit, and avoid making this a practical
+problem anywhere.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Kind regards,
+
+Sakari Ailus
