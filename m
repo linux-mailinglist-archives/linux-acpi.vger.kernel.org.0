@@ -2,93 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3CF5242F62
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Aug 2020 21:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E372431D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Aug 2020 02:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbgHLTeM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Aug 2020 15:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726651AbgHLTeM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Aug 2020 15:34:12 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DDA5C061383
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Aug 2020 12:34:12 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id b79so3119148qkg.9
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Aug 2020 12:34:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UNDeeEu8OInqbqByJ2ZOXoAVRjNpv1vP3OHX17fDEvU=;
-        b=r4+HnsvgN0jJa837wtb65Cs7IAk9eOD6BOLmmqils8rqCozIQk8nMQH4UjLdQUceV9
-         FutaSFNF12VW1gYyIbe9bMf24E28UUKNTS6f63KvHph8c2/tf63EykMrCPjZt/rJMKyP
-         RaxNrHoQT9E7OaopVveRyAoLL6QVJf8wAhmhWB49gk6BoX+rXwkafWX5Zoulv8q6dL/B
-         xny5ju9y/uT9f5/nEsCGNUHC4HaGW+7DSeISwT/u9ENEk9nejSi2Y632D2xk/CzWEONt
-         +drlx/CsAIZPzWnSKOZ4LRiye5IwLqLGQ2YeCoSyTtxbIUcxoNsZP0gyIY7/VnO1F5dI
-         JR7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UNDeeEu8OInqbqByJ2ZOXoAVRjNpv1vP3OHX17fDEvU=;
-        b=WF2agqikQwwAxzGm4lvBObrOfc6x8Fp80AVkxQ2OsDXXiYmgYi+oP4bAIVFic4HAwH
-         g/SsFSaGsDh9ntXkRAOvYCisOnUP+VlFl2+Dh8WJ65m3v7Kd3HMOvcMuf5Sx6dlOHXpd
-         jKMyvVt2Q2ctGLnMliL5cgOVPFh2t31eEe3PP7tQT6WVAaVOlF/W4qa1wD1lRE+Iga8C
-         cJbwGbpaf8aAC2MIhxGJk+YAZm7oX9ubmTcUbYycGycaB1Emsx8hGOtjFv61AzsuF+YE
-         /RyHCb0RMrBM96a2RpVmZLhCol28DFe10FXaGlezkNvJEe1PZdHjafEu4b1BzpjrplTp
-         4nAw==
-X-Gm-Message-State: AOAM532DLxXUMjf9eqIyXbTXG8Viq1u/64anVu/nkCcsgghW3ycdqaOD
-        Zrc6u48U5bqJYeVpFdYmkeW0MD4oA55wYLchBis+yA==
-X-Google-Smtp-Source: ABdhPJxPajgg+Gh2SZMQyrFoBo5ccaZiV7aSQ1OH1I03oez0nz6bNWlF+MeK2Mit08rZfVypEhouZhxdPgfg4YTfPjI=
-X-Received: by 2002:a37:a5c1:: with SMTP id o184mr1415589qke.323.1597260850654;
- Wed, 12 Aug 2020 12:34:10 -0700 (PDT)
+        id S1726605AbgHMA5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Aug 2020 20:57:06 -0400
+Received: from mga09.intel.com ([134.134.136.24]:41031 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726126AbgHMA5G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Aug 2020 20:57:06 -0400
+IronPort-SDR: NCuod2S6bSThmGeLoC6h9hcDHhOuUjs55lw8u6zB478IH5KgvDW8607u7E0WYYhERDPGza9Fum
+ Ha+B6EtBgwkw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9711"; a="155260395"
+X-IronPort-AV: E=Sophos;i="5.76,306,1592895600"; 
+   d="scan'208";a="155260395"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2020 17:57:05 -0700
+IronPort-SDR: d2IqxA7DPdzjHj7eRpAIFYkBVUysVrnxUHGAi94A268K5wmcLCe1wtj9jJg8L0F8a8I9QHnojn
+ DZnhX0azhe3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,306,1592895600"; 
+   d="scan'208";a="495693428"
+Received: from lkp-server01.sh.intel.com (HELO 7f1ebb311643) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 12 Aug 2020 17:57:03 -0700
+Received: from kbuild by 7f1ebb311643 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k61YF-0000LS-73; Thu, 13 Aug 2020 00:57:03 +0000
+Date:   Thu, 13 Aug 2020 08:56:06 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Denis Efremov <efremov@linux.com>
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH] coccinelle: api: fix device_attr_show.cocci warnings
+Message-ID: <20200813005606.GA84871@8851f5375e5a>
+References: <202008130840.TWLDLwLA%lkp@intel.com>
 MIME-Version: 1.0
-References: <20200121134157.20396-6-sakari.ailus@linux.intel.com>
- <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
- <20200311085555.GH5379@paasikivi.fi.intel.com> <CAMpxmJVPTKW+sYSJ3dnfF8nLAOKEa4Ob7bpxG0KD3Tkdm+rtYw@mail.gmail.com>
- <20200323213101.GB21174@kekkonen.localdomain> <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
- <20200810082549.GD840@valkosipuli.retiisi.org.uk> <CAMpxmJUKSR-oCGnV1E5XiAMA2nYBy5f_f8=VSoMn0zf+qF39vg@mail.gmail.com>
- <20200811080009.GE840@valkosipuli.retiisi.org.uk> <CAMpxmJWziqW-PiJPSm6aH5aXbYktMJfVjJfvfGxv8fdbWKydqg@mail.gmail.com>
- <20200812192500.GA8942@ninjato>
-In-Reply-To: <20200812192500.GA8942@ninjato>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 12 Aug 2020 21:33:59 +0200
-Message-ID: <CAMpxmJXzaA7M94D7O5RB1WMVPz5dK61aVO_SOsu-TGTLtBZU6Q@mail.gmail.com>
-Subject: Re: [PATCH v4 5/6] at24: Support probing while off
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Sakari Ailus <sakari.ailus@iki.fi>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202008130840.TWLDLwLA%lkp@intel.com>
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 12, 2020 at 9:25 PM Wolfram Sang <wsa@the-dreams.de> wrote:
->
->
-> > Wolfram says. From my side: I'd prefer to see the
-> > disable_i2c_core_irq_mapping converted to flags first and then the
-> > flags extended with whatever you need. disable_i2c_core_irq_mapping
-> > could also be removed AFAICT - nobody uses it.
->
-> I haven't read the details here, just saying that
-> 'disable_i2c_core_irq_mapping' is already removed in -next and also
-> within the next days in Linus' tree.
->
+From: kernel test robot <lkp@intel.com>
 
-Ok, then nevermind my previous comment.
+drivers/acpi/dock.c:563:8-16: WARNING: use scnprintf or sprintf
+drivers/acpi/dock.c:544:8-16: WARNING: use scnprintf or sprintf
+drivers/acpi/dock.c:495:8-16: WARNING: use scnprintf or sprintf
+drivers/acpi/dock.c:506:8-16: WARNING: use scnprintf or sprintf
 
-Bart
+
+ From Documentation/filesystems/sysfs.txt:
+  show() must not use snprintf() when formatting the value to be
+  returned to user space. If you can guarantee that an overflow
+  will never happen you can use sprintf() otherwise you must use
+  scnprintf().
+
+Generated by: scripts/coccinelle/api/device_attr_show.cocci
+
+Fixes: abfc19ff202d ("coccinelle: api: add device_attr_show script")
+CC: Denis Efremov <efremov@linux.com>
+Signed-off-by: kernel test robot <lkp@intel.com>
+---
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   7c2a69f610e64c8dec6a06a66e721f4ce1dd783a
+commit: abfc19ff202d287742483e15fd478ddd6ada2187 coccinelle: api: add device_attr_show script
+
+Please take the patch only if it's a positive warning. Thanks!
+
+ dock.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+--- a/drivers/acpi/dock.c
++++ b/drivers/acpi/dock.c
+@@ -492,7 +492,7 @@ static ssize_t show_docked(struct device
+ 	struct acpi_device *adev = NULL;
+ 
+ 	acpi_bus_get_device(dock_station->handle, &adev);
+-	return snprintf(buf, PAGE_SIZE, "%u\n", acpi_device_enumerated(adev));
++	return scnprintf(buf, PAGE_SIZE, "%u\n", acpi_device_enumerated(adev));
+ }
+ static DEVICE_ATTR(docked, S_IRUGO, show_docked, NULL);
+ 
+@@ -503,7 +503,7 @@ static ssize_t show_flags(struct device
+ 			  struct device_attribute *attr, char *buf)
+ {
+ 	struct dock_station *dock_station = dev->platform_data;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", dock_station->flags);
++	return scnprintf(buf, PAGE_SIZE, "%d\n", dock_station->flags);
+ 
+ }
+ static DEVICE_ATTR(flags, S_IRUGO, show_flags, NULL);
+@@ -541,7 +541,7 @@ static ssize_t show_dock_uid(struct devi
+ 	if (ACPI_FAILURE(status))
+ 	    return 0;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%llx\n", lbuf);
++	return scnprintf(buf, PAGE_SIZE, "%llx\n", lbuf);
+ }
+ static DEVICE_ATTR(uid, S_IRUGO, show_dock_uid, NULL);
+ 
+@@ -560,7 +560,7 @@ static ssize_t show_dock_type(struct dev
+ 	else
+ 		type = "unknown";
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", type);
++	return scnprintf(buf, PAGE_SIZE, "%s\n", type);
+ }
+ static DEVICE_ATTR(type, S_IRUGO, show_dock_type, NULL);
+ 
