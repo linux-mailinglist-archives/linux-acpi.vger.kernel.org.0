@@ -2,120 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E372431D2
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Aug 2020 02:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CE7243293
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Aug 2020 04:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgHMA5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Aug 2020 20:57:06 -0400
-Received: from mga09.intel.com ([134.134.136.24]:41031 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726126AbgHMA5G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Aug 2020 20:57:06 -0400
-IronPort-SDR: NCuod2S6bSThmGeLoC6h9hcDHhOuUjs55lw8u6zB478IH5KgvDW8607u7E0WYYhERDPGza9Fum
- Ha+B6EtBgwkw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9711"; a="155260395"
-X-IronPort-AV: E=Sophos;i="5.76,306,1592895600"; 
-   d="scan'208";a="155260395"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2020 17:57:05 -0700
-IronPort-SDR: d2IqxA7DPdzjHj7eRpAIFYkBVUysVrnxUHGAi94A268K5wmcLCe1wtj9jJg8L0F8a8I9QHnojn
- DZnhX0azhe3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,306,1592895600"; 
-   d="scan'208";a="495693428"
-Received: from lkp-server01.sh.intel.com (HELO 7f1ebb311643) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 12 Aug 2020 17:57:03 -0700
-Received: from kbuild by 7f1ebb311643 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1k61YF-0000LS-73; Thu, 13 Aug 2020 00:57:03 +0000
-Date:   Thu, 13 Aug 2020 08:56:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Denis Efremov <efremov@linux.com>
-Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
+        id S1726284AbgHMCyr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Aug 2020 22:54:47 -0400
+Received: from m17618.mail.qiye.163.com ([59.111.176.18]:31978 "EHLO
+        m17618.mail.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726201AbgHMCyr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Aug 2020 22:54:47 -0400
+X-Greylist: delayed 319 seconds by postgrey-1.27 at vger.kernel.org; Wed, 12 Aug 2020 22:54:46 EDT
+Received: from vivo-HP-ProDesk-680-G4-PCI-MT.vivo.xyz (unknown [58.251.74.226])
+        by m17618.mail.qiye.163.com (Hmail) with ESMTPA id B1D5E4E1586;
+        Thu, 13 Aug 2020 10:49:24 +0800 (CST)
+From:   Wang Qing <wangqing@vivo.com>
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH] coccinelle: api: fix device_attr_show.cocci warnings
-Message-ID: <20200813005606.GA84871@8851f5375e5a>
-References: <202008130840.TWLDLwLA%lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202008130840.TWLDLwLA%lkp@intel.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Len Brown <lenb@kernel.org>, linux-nvdimm@lists.01.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Wang Qing <wangqing@vivo.com>
+Subject: [PATCH] acpi/nfit: Use kobj_to_dev() instead
+Date:   Thu, 13 Aug 2020 10:49:10 +0800
+Message-Id: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZT0xMHRoYSkkZQ01JVkpOQkxJQ01CTU5KQ0lVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS0hKTFVKS0tZBg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NVE6GSo4ST8tH0MvTDIJPDA#
+        MhcKFBZVSlVKTkJMSUNNQk1OTUhJVTMWGhIXVQwaFRwKEhUcOw0SDRRVGBQWRVlXWRILWUFZTkNV
+        SU5KVUxPVUlJTVlXWQgBWUFJSU9DNwY+
+X-HM-Tid: 0a73e5b8df529376kuwsb1d5e4e1586
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: kernel test robot <lkp@intel.com>
+Use kobj_to_dev() instead of container_of()
 
-drivers/acpi/dock.c:563:8-16: WARNING: use scnprintf or sprintf
-drivers/acpi/dock.c:544:8-16: WARNING: use scnprintf or sprintf
-drivers/acpi/dock.c:495:8-16: WARNING: use scnprintf or sprintf
-drivers/acpi/dock.c:506:8-16: WARNING: use scnprintf or sprintf
-
-
- From Documentation/filesystems/sysfs.txt:
-  show() must not use snprintf() when formatting the value to be
-  returned to user space. If you can guarantee that an overflow
-  will never happen you can use sprintf() otherwise you must use
-  scnprintf().
-
-Generated by: scripts/coccinelle/api/device_attr_show.cocci
-
-Fixes: abfc19ff202d ("coccinelle: api: add device_attr_show script")
-CC: Denis Efremov <efremov@linux.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Wang Qing <wangqing@vivo.com>
 ---
+ drivers/acpi/nfit/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   7c2a69f610e64c8dec6a06a66e721f4ce1dd783a
-commit: abfc19ff202d287742483e15fd478ddd6ada2187 coccinelle: api: add device_attr_show script
-
-Please take the patch only if it's a positive warning. Thanks!
-
- dock.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/drivers/acpi/dock.c
-+++ b/drivers/acpi/dock.c
-@@ -492,7 +492,7 @@ static ssize_t show_docked(struct device
- 	struct acpi_device *adev = NULL;
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index fa4500f..3bb350b
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
  
- 	acpi_bus_get_device(dock_station->handle, &adev);
--	return snprintf(buf, PAGE_SIZE, "%u\n", acpi_device_enumerated(adev));
-+	return scnprintf(buf, PAGE_SIZE, "%u\n", acpi_device_enumerated(adev));
- }
- static DEVICE_ATTR(docked, S_IRUGO, show_docked, NULL);
- 
-@@ -503,7 +503,7 @@ static ssize_t show_flags(struct device
- 			  struct device_attribute *attr, char *buf)
+ static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
  {
- 	struct dock_station *dock_station = dev->platform_data;
--	return snprintf(buf, PAGE_SIZE, "%d\n", dock_station->flags);
-+	return scnprintf(buf, PAGE_SIZE, "%d\n", dock_station->flags);
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
  
- }
- static DEVICE_ATTR(flags, S_IRUGO, show_flags, NULL);
-@@ -541,7 +541,7 @@ static ssize_t show_dock_uid(struct devi
- 	if (ACPI_FAILURE(status))
- 	    return 0;
+ 	if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
+@@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
+ static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
+ 		struct attribute *a, int n)
+ {
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ 	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
  
--	return snprintf(buf, PAGE_SIZE, "%llx\n", lbuf);
-+	return scnprintf(buf, PAGE_SIZE, "%llx\n", lbuf);
- }
- static DEVICE_ATTR(uid, S_IRUGO, show_dock_uid, NULL);
- 
-@@ -560,7 +560,7 @@ static ssize_t show_dock_type(struct dev
- 	else
- 		type = "unknown";
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n", type);
-+	return scnprintf(buf, PAGE_SIZE, "%s\n", type);
- }
- static DEVICE_ATTR(type, S_IRUGO, show_dock_type, NULL);
- 
+-- 
+2.7.4
+
