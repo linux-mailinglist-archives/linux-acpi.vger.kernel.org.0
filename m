@@ -2,100 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D60244E28
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 19:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCA2244E5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 20:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgHNRnz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Aug 2020 13:43:55 -0400
-Received: from mga12.intel.com ([192.55.52.136]:9833 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726229AbgHNRny (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Aug 2020 13:43:54 -0400
-IronPort-SDR: vGAXPZy8F/jTSBpYO21dEezlUmvM7E0rv+upMSLVgFF2ZX+eYQw0qgT1B7rFo3HedZON8+JgLQ
- 8IKP/B8aiPZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9713"; a="133981859"
-X-IronPort-AV: E=Sophos;i="5.76,313,1592895600"; 
-   d="scan'208";a="133981859"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2020 10:43:54 -0700
-IronPort-SDR: 56GZK3HCJ5S+NgciwhUxgyqs/MOQyUO14k8ZdUcbzmojtfxGJeDQuqsyeFFVvHEdkJiMjC7D9a
- cdgnbODvF9hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,313,1592895600"; 
-   d="scan'208";a="325784697"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2020 10:43:52 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1k6dk7-008hvQ-83; Fri, 14 Aug 2020 20:43:51 +0300
-Date:   Fri, 14 Aug 2020 20:43:51 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v1 3/7] resource: Introduce resource_union() for
- overlapping resources
-Message-ID: <20200814174351.GD1891694@smile.fi.intel.com>
-References: <20200813175729.15088-1-andriy.shevchenko@linux.intel.com>
- <20200813175729.15088-3-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0iDZ6UZK_WW6pvWCqsrUH3uqfjRXSoMDTsAcbXoBuMYqw@mail.gmail.com>
- <20200814153730.GQ1891694@smile.fi.intel.com>
- <CAJZ5v0jOA30iL6AQq3BEY=N3xQdvpC0BJEcLzz2Frv+CByKhPQ@mail.gmail.com>
- <20200814162105.GX1891694@smile.fi.intel.com>
- <CAJZ5v0j_tSuGrEmFb-WYLpjS+AviwQ2zJmHmN-u_MzVAkf7HrA@mail.gmail.com>
+        id S1728623AbgHNSJw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Aug 2020 14:09:52 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33373 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726297AbgHNSJw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 14:09:52 -0400
+Received: by mail-ot1-f67.google.com with SMTP id t7so8284498otp.0;
+        Fri, 14 Aug 2020 11:09:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=FWpki59Yt66zh3jh8q/OcbPj2ya0dDjDcuiyjVjlaFs=;
+        b=D+Li9jXvh/uUoE9O3gGJS1SMYm4CUGGGrMawk5O54GDADps3DTtcLfgFH83LGBYgLe
+         V7wVM2b7Nvqf9AVnfIL7zjaCGaRSyir34KudDRu3eIBVRf5SRPBgM/+v2/+uHJmZzMUK
+         CVBgm99+jSCj61SoteMAcNFt9+zZIj9GTS2RQ9WHmm83MD1KNtutVlkXfiYlWaMltzJt
+         UeObn/zwOqW0kzfnPYtexhelO1GXvTdZrmWlqkkgt+uoecxtSyed6WnjXOONJG8uLH9O
+         mnEwAsYaclTLV7fWozF38ZgZxCaZ4IeyfEu05D7zTszOuKBc+ON7sWXEOb8VOo/18RA8
+         NJTA==
+X-Gm-Message-State: AOAM531RwkM+G5JHFCXw6Zf8C7KDObQab5Rw0cTtYrWPeIHu1FUdxFHC
+        FqRAyKid+Qo0OheXFUb7hePQJrALhNv/00PpBnZ/bBiiyRE=
+X-Google-Smtp-Source: ABdhPJzZCUjOjz3+qUDbyYxT24ltsOM+ORo5EAMg7K5+43lWHZtaKlAF/HxuPOTFxNJGjVpIrlOdWqB9zE2LSfZmvQE=
+X-Received: by 2002:a9d:5c06:: with SMTP id o6mr1655235otk.262.1597428591566;
+ Fri, 14 Aug 2020 11:09:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j_tSuGrEmFb-WYLpjS+AviwQ2zJmHmN-u_MzVAkf7HrA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 14 Aug 2020 20:09:40 +0200
+Message-ID: <CAJZ5v0iA_PSMf9gpXsmymS8t2ctMeyJ3FJE_v1LqbFu+fF_R6g@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v5.9-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 14, 2020 at 07:17:18PM +0200, Rafael J. Wysocki wrote:
-> On Fri, Aug 14, 2020 at 6:23 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Fri, Aug 14, 2020 at 06:09:53PM +0200, Rafael J. Wysocki wrote:
-> > > On Fri, Aug 14, 2020 at 5:37 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Fri, Aug 14, 2020 at 05:23:07PM +0200, Rafael J. Wysocki wrote:
-> > > > > On Thu, Aug 13, 2020 at 7:57 PM Andy Shevchenko
-> > > > > <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > ...
-> >
-> > > > > Well, what about using min() and max() here?
-> > > >
-> > > > I devoted one paragraph in the commit message to answer this. The kernel.h
-> > > > (which I'm planning to split at some point) is a monster which brings more pain
-> > > > than solves here. Note, this is a header file and it's quite clean from
-> > > > dependencies perspective.
-> > >
-> > > But this is code duplication (even if really small) and it is not
-> > > entirely clean too.
-> > >
-> > > Maybe move the definitions of min() and max() to a separate header file?
-> >
-> > That is the plan in the kernel.h splitting project. But do you want me to do it
-> > here? I can try to bring that patch into this series.
-> 
-> Well, ostensibly the purpose of this series is to reduce code
-> duplication, but if it adds code duplication, that kind of defeats the
-> purpose IMO.
+Hi Linus,
 
-Okay, I will append minmax.h split in v2.
+Please pull from the tag
 
--- 
-With Best Regards,
-Andy Shevchenko
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.9-rc1-2
+
+with top-most commit 19fe87fd854a92c746ac73cb91a0bebac07a4618
+
+ clk: x86: Support RV architecture
+
+on top of commit 2baa85d6927d11b8d946da2e4ad00dddca5b8da2
+
+ Merge tag 'acpi-5.9-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive additional ACPI updates for 5.9-rc1.
+
+These add new hardware support to the ACPI driver for AMD SoCs,
+the x86 clk driver and the Designware i2c driver (changes from
+Akshu Agrawal and Pu Wen).
+
+Thanks!
 
 
+---------------
+
+Akshu Agrawal (4):
+      ACPI: APD: Change name from ST to FCH
+      clk: x86: Change name from ST to FCH
+      ACPI: APD: Add a fmw property is_raven
+      clk: x86: Support RV architecture
+
+Pu Wen (1):
+      i2c: designware: Add device HID for Hygon I2C controller
+
+---------------
+
+ drivers/acpi/acpi_apd.c                            |  19 ++--
+ drivers/clk/x86/Makefile                           |   2 +-
+ drivers/clk/x86/clk-fch.c                          | 101 +++++++++++++++++++++
+ drivers/clk/x86/clk-st.c                           |  78 ----------------
+ drivers/i2c/busses/i2c-designware-platdrv.c        |   1 +
+ .../linux/platform_data/{clk-st.h => clk-fch.h}    |  11 ++-
+ 6 files changed, 121 insertions(+), 91 deletions(-)
