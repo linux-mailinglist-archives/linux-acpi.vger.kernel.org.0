@@ -2,82 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9BC244C1B
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 17:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1598244C20
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 17:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbgHNP1p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Aug 2020 11:27:45 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45668 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726820AbgHNP1o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 11:27:44 -0400
-Received: by mail-oi1-f196.google.com with SMTP id o21so8421691oie.12
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Aug 2020 08:27:43 -0700 (PDT)
+        id S1726773AbgHNP3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Aug 2020 11:29:05 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:32910 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726652AbgHNP3E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 11:29:04 -0400
+Received: by mail-ot1-f67.google.com with SMTP id t7so7876482otp.0;
+        Fri, 14 Aug 2020 08:29:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=g2IXuSSnNhV0pFfNe3Ufyzp/VjDbHljBNbRNegiJEDI=;
-        b=iM+UA8DAV6iDD5WpUK6u7Z7dzSTrgEBwEut2Xxh8N7MeH5IqdExH2E1bdzgU/lowXK
-         CuLHGVwWBhApuUXlr2m/vq/yl0vT81F8zk6UGRBpi7Q7gr+5pxdLY5kgYoCgOcltH+es
-         IRbLF8Lhxk/GK6H9yfDSreQvizhIrAZU7M8fZUREL+hUtEa2ylbHJFJ91d8izdCgBUE3
-         h0/Dh/PO+xLF5q+iWoyBaRfXZtSc8cSxojwK05ZbFtpMVqMIbiPzTkQkXUyvS3UFWVKV
-         RScGMaxdrWHrSIzNYV91zI+HEJxqyWnHafD7S98q6lF2gyXJgWoA1LhAHQAqWGw/qXAc
-         HG+g==
-X-Gm-Message-State: AOAM533H7bDxK1HsyCVpuIIae6mTXznwldD5a4yc3w/sZmI/0ivqi3ub
-        +qXNSB6hdfaOLjnuflN3S0B9dYGCBDfMOqKDne0=
-X-Google-Smtp-Source: ABdhPJwP+zhH1hzyvIqkmcOmFXnh7Imdm3lgXjaQLPlQyXP3/6/eTkhgVEkrMikDYsnhP7HNHcoNpwOgPSxdMUTKwR8=
-X-Received: by 2002:aca:a88e:: with SMTP id r136mr1942126oie.110.1597418863408;
- Fri, 14 Aug 2020 08:27:43 -0700 (PDT)
+        bh=vBVBMvKKxks/kGkJ4ndBszEEsQk9CsCHA7aFPfw0OnY=;
+        b=ZiGghja38wB46vjSAhPbNDcDO67HuzxVsxaTnxsqrwYqpappI5vA74zYA8elDpnbHO
+         b6eolEASrnyrgCDCS+7HKZQtyNuFJQPEk0ITo5flWZb0FaE6R9qTkC+hIDScY7ODWr+V
+         Rtp7UVzhzmQOd0ZcdfTXEdIoCe/H5/m46pGNNci3+xQtZ4SU4R4lNeOCSFyUGCs/os9c
+         PYOraUS+bKHElG91GQF9qbMLfJDyZeymRRxyzNgvohqJL1GJ4bc9Ua1OT4xUNJ2u5qAV
+         4DeBr/p5w+s8t95VpFb5i9v8DDm4bFy1euWoKMt9loO+x83L4JVoY3k2aZ6/xhZeSVPP
+         4QCQ==
+X-Gm-Message-State: AOAM533fuZLW30hpxtL7P76Y1ruhROffX6yKCpvyiPPeIfu3gG2ouafR
+        qUOwRU61GgZjfshUY77aq62JKG5akJZgQiCrBbg=
+X-Google-Smtp-Source: ABdhPJz1T4tJ8ofzUGM0XQjCNBZ6PvK5Zq6i4UC8Y+eAkenmq/nx3KmnaWGeq6j/7fuAaFaAt8U6C3Dv5bPtU6dw8Nw=
+X-Received: by 2002:a05:6830:1c74:: with SMTP id s20mr2165582otg.167.1597418944007;
+ Fri, 14 Aug 2020 08:29:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200813175729.15088-1-andriy.shevchenko@linux.intel.com> <20200813175729.15088-7-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20200813175729.15088-7-andriy.shevchenko@linux.intel.com>
+References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
+In-Reply-To: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 14 Aug 2020 17:27:31 +0200
-Message-ID: <CAJZ5v0gwJBh3wFg9iKTOxEL-tovEys7QUsM_mvP6+Jkytf4xjQ@mail.gmail.com>
-Subject: Re: [PATCH v1 7/7] ACPI: watchdog: Replace open coded variant of resource_union()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Fri, 14 Aug 2020 17:28:52 +0200
+Message-ID: <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
+To:     Wang Qing <wangqing@vivo.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 13, 2020 at 7:57 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
 >
-> Since we have resource_union() helper, let's utilize it here.
+> Use kobj_to_dev() instead of container_of()
 >
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Wang Qing <wangqing@vivo.com>
 
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+LGTM
+
+Dan, any objections?
 
 > ---
->  drivers/acpi/acpi_watchdog.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+>  drivers/acpi/nfit/core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-> index 5c1e9ea43123..ca28183f4d13 100644
-> --- a/drivers/acpi/acpi_watchdog.c
-> +++ b/drivers/acpi/acpi_watchdog.c
-> @@ -151,11 +151,7 @@ void __init acpi_watchdog_init(void)
->                 found = false;
->                 resource_list_for_each_entry(rentry, &resource_list) {
->                         if (rentry->res->flags == res.flags &&
-> -                           resource_overlaps(rentry->res, &res)) {
-> -                               if (res.start < rentry->res->start)
-> -                                       rentry->res->start = res.start;
-> -                               if (res.end > rentry->res->end)
-> -                                       rentry->res->end = res.end;
-> +                           resource_union(rentry->res, &res, rentry->res)) {
->                                 found = true;
->                                 break;
->                         }
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index fa4500f..3bb350b
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
+>
+>  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
+>  {
+> -       struct device *dev = container_of(kobj, struct device, kobj);
+> +       struct device *dev = kobj_to_dev(kobj);
+>         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
+>
+>         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
+> @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
+>  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
+>                 struct attribute *a, int n)
+>  {
+> -       struct device *dev = container_of(kobj, struct device, kobj);
+> +       struct device *dev = kobj_to_dev(kobj);
+>         struct nvdimm *nvdimm = to_nvdimm(dev);
+>         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>
 > --
-> 2.28.0
+> 2.7.4
 >
