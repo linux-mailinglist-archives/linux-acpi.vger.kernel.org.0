@@ -2,107 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1EF244BC8
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 17:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF71E244BCA
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 17:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbgHNPSf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Aug 2020 11:18:35 -0400
-Received: from mga11.intel.com ([192.55.52.93]:20311 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726212AbgHNPSe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Aug 2020 11:18:34 -0400
-IronPort-SDR: cKMKG9U2lW+biuo9xDZMPpjh8q4ItoyvGGdBKdfqPsNVcVPcO84DWZAyzwYXFogj+wZTktPPRl
- /oGLLUwLryUg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9713"; a="152070815"
-X-IronPort-AV: E=Sophos;i="5.76,312,1592895600"; 
-   d="scan'208";a="152070815"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2020 08:18:33 -0700
-IronPort-SDR: 9KukKRZEbBE89Aa0i5lUa9PRn36Xj+MMGtpiNX/YHfMr/1mQq8mW8wLyTwVuVA266VPoNqlOS7
- lKgl5bn2T0uQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,312,1592895600"; 
-   d="scan'208";a="325750478"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2020 08:18:31 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1k6bTS-008fum-De; Fri, 14 Aug 2020 18:18:30 +0300
-Date:   Fri, 14 Aug 2020 18:18:30 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
+        id S1726699AbgHNPSp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Aug 2020 11:18:45 -0400
+Received: from mail-oo1-f66.google.com ([209.85.161.66]:41596 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726212AbgHNPSp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 11:18:45 -0400
+Received: by mail-oo1-f66.google.com with SMTP id x6so1975001ooe.8
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Aug 2020 08:18:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fUjdMZtIuiYbXdJE74Geizg/VhO0MCDx7FPHghZ5oEc=;
+        b=OT2ym1odC8ln+YYbyFAc5JkIMw2sAjpMrAbppYhKIP18ZCVgPXVwFE1YuFW6ICPEOJ
+         HbRQu8SS1NcT9lFcarndZnJdJW03U4WMBf7t/ltYmzMchrl96Xaku38FfGk83+uwHr/z
+         bhfV3Wsxh9FZJege82YjFBzcv3rQqmzUp714/N8Ze37pRq7h/+HeiYLsbeKPjEPnqwaF
+         Kxt5tQPJsjKKkxewXx/kqLtlpQj7Kf2/Vn2L3CfbviRYBeEjgB7KqmKJR2vf9uCAKHLS
+         efKtnNNLqQ9dLBhJbFQyquS9lGJEufhlgQQqrx0c3RithphEekLyiy0IztI9JN0OUmb8
+         xdVg==
+X-Gm-Message-State: AOAM532PGWOTr0kI3/L6IMj/yAvyuVnxptm8Wq/lbeFZC3qyvKNuhgS0
+        MEAk+8wozFRWZHSsJ9vWdLINSla7m4Uh6yhJpQ0rDuZD
+X-Google-Smtp-Source: ABdhPJz8Cj6Y2podbfsBjn6T//GrwYF0wmBYmDs1suBLjjYSfXRYkJ68c/r3Wph5S0FKFaFFXSUwqJ5gfRKDqE2do9g=
+X-Received: by 2002:a4a:4201:: with SMTP id h1mr2043238ooj.1.1597418324737;
+ Fri, 14 Aug 2020 08:18:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200813175729.15088-1-andriy.shevchenko@linux.intel.com> <20200813175729.15088-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20200813175729.15088-2-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 14 Aug 2020 17:18:33 +0200
+Message-ID: <CAJZ5v0gsE6fwdkZdmgucUD7mt=BWDh-C8LagDSCTm8Awz-ddfw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/7] resource: Group resource_overlaps() with other
+ inline helpers
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v1 6/7] PCI/ACPI: Fix description of @handle for
- acpi_is_root_bridge()
-Message-ID: <20200814151830.GP1891694@smile.fi.intel.com>
-References: <20200813175729.15088-1-andriy.shevchenko@linux.intel.com>
- <20200813175729.15088-6-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0jquT7TLLO4yJqyxgfJJ77hLQ+RtmLXVj6JATWXJxqkUQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jquT7TLLO4yJqyxgfJJ77hLQ+RtmLXVj6JATWXJxqkUQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 14, 2020 at 05:11:55PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Aug 13, 2020 at 7:57 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > Fix description of handle parameter in documentation of acpi_is_root_bridge().
-> > Otherwise we get the following warning:
-> >
-> >   CHECK   drivers/acpi/pci_root.c
-> >   drivers/acpi/pci_root.c:71: warning: Function parameter or member 'handle' not described in 'acpi_is_root_bridge'
-> 
-> I'm not sure why this patch doesn't go by itself.  It appears to be
-> immediately applicable.
+On Thu, Aug 13, 2020 at 7:57 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> For better maintenance group resource_overlaps() with other inline helpers.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  include/linux/ioport.h | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+> index 6c2b06fe8beb..0193987b9968 100644
+> --- a/include/linux/ioport.h
+> +++ b/include/linux/ioport.h
+> @@ -226,6 +226,11 @@ static inline bool resource_contains(struct resource *r1, struct resource *r2)
+>         return r1->start <= r2->start && r1->end >= r2->end;
+>  }
+>
+> +/* True if any part of r1 overlaps r2 */
+> +static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
+> +{
+> +       return (r1->start <= r2->end && r1->end >= r2->start);
 
-Just appears when I working on the rest of the series. Can be standalone if it
-makes more sense.
+The redundant parens can be dropped while at it.
 
-> I'll apply it next week if Bjorn doesn't object.
-
-At least fine with me, thanks!
-
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: linux-pci@vger.kernel.org
-> > ---
-> >  drivers/acpi/pci_root.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > index 2a6a741896de..f723679954d7 100644
-> > --- a/drivers/acpi/pci_root.c
-> > +++ b/drivers/acpi/pci_root.c
-> > @@ -62,7 +62,7 @@ static DEFINE_MUTEX(osc_lock);
-> >
-> >  /**
-> >   * acpi_is_root_bridge - determine whether an ACPI CA node is a PCI root bridge
-> > - * @handle - the ACPI CA node in question.
-> > + * @handle: the ACPI CA node in question.
-> >   *
-> >   * Note: we could make this API take a struct acpi_device * instead, but
-> >   * for now, it's more convenient to operate on an acpi_handle.
-> > --
-> > 2.28.0
-> >
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> +}
+>
+>  /* Convenience shorthand with allocation */
+>  #define request_region(start,n,name)           __request_region(&ioport_resource, (start), (n), (name), 0)
+> @@ -291,12 +296,6 @@ extern int
+>  walk_iomem_res_desc(unsigned long desc, unsigned long flags, u64 start, u64 end,
+>                     void *arg, int (*func)(struct resource *, void *));
+>
+> -/* True if any part of r1 overlaps r2 */
+> -static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
+> -{
+> -       return (r1->start <= r2->end && r1->end >= r2->start);
+> -}
+> -
+>  struct resource *devm_request_free_mem_region(struct device *dev,
+>                 struct resource *base, unsigned long size);
+>  struct resource *request_free_mem_region(struct resource *base,
+> --
+> 2.28.0
+>
