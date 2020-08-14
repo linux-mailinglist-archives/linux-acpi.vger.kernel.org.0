@@ -2,65 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A93A244AF3
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 15:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7C3244BAF
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Aug 2020 17:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728150AbgHNN62 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Aug 2020 09:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726196AbgHNN61 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 09:58:27 -0400
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCAE2C061384
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Aug 2020 06:58:26 -0700 (PDT)
-Received: by mail-yb1-xb43.google.com with SMTP id a34so5231752ybj.9
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Aug 2020 06:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ADSxHTiClFeEpnekIgxMm+4vNveMDrQOPCHPEgxRQmY=;
-        b=OuCR0lVGqzd5H5FQmJLbFMNQ+eyV0gzEwr4HY3cd3GF6Lnsu1xJVt3zglMz7Jw3m6g
-         6tlQS1f9t9BYgSgXfDaRlV7w8WD3il1PEMBvmswjf0OZgEHzc1jHtX67zkOtBSyBoxLc
-         xSp/eQJ4+Ex7HAoy43U5Nx1I2rFcFsarYX4GCS2LVaBXZjUMWYC5HD7BH4nlOsnKw5vX
-         zu9ygJ4Ak8kbLaUIR+Wg4wOkXpQbQFuB6AS3nSIngBGrfhH2iurIYvgHPK9vFRdVn4tn
-         No2wYXX7H+1SF39WsLEjuvUdeAfdZx1+eqojEu1sK7RLckN57Cb59z1zh3/DfitQjmxg
-         khiA==
+        id S1726311AbgHNPMH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Aug 2020 11:12:07 -0400
+Received: from mail-oo1-f65.google.com ([209.85.161.65]:42518 "EHLO
+        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726196AbgHNPMH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Aug 2020 11:12:07 -0400
+Received: by mail-oo1-f65.google.com with SMTP id a6so1981558oog.9;
+        Fri, 14 Aug 2020 08:12:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ADSxHTiClFeEpnekIgxMm+4vNveMDrQOPCHPEgxRQmY=;
-        b=DkYwROaKi+33SsmM/0/VDTHQ4Mlb6yRFsjv79XAnY2n8qNQTyG12BXLeDvnNYBwcN0
-         DEVaaAWJk62BvGZwZyXDw+d3O7oMDEqTPUdfobLpuPom3jkswe33MHuU68+qPlx59TGe
-         CbDdHWwDqzDrDg8+hmuli/Whkgeq7bUJQLH1KAuma6yv4ElvPwzAdzJi7G0NatP59bfr
-         3TaPXyQO6JF+3CZX+dA2kzoYUFP0o+o7OL33ZHyG78e9MK1YoII3+BSojk0ZgO29Hr5e
-         Yo0eHa/OlOYkW4lF4HEsl/Qd6T3x4tx7Z2D/BBTCIpuselPHtLh+368eMcq7X0M279O8
-         PvYg==
-X-Gm-Message-State: AOAM531CKCwGOdgZgOOnPylb6EGTQhfaWBlDHbOLJEhqeD1EAcm4/p7o
-        iQnAV5KLLxRh9vcHvP45fZbNT+eijxHL7HWE/u4=
-X-Google-Smtp-Source: ABdhPJxSW2CH4l3gAV3UQbiDhKcbIln2aHe6a5DgwtK9XXMnm22hlYpRVpHOZ1RfSDgnZMpqgrmaN7TH4tMfw5Vx2lE=
-X-Received: by 2002:a25:7c01:: with SMTP id x1mr782217ybc.357.1597413505967;
- Fri, 14 Aug 2020 06:58:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7xPEAyT242zCqpQsFiRlqT2H2KPu1pwTh4cJkknKvJo=;
+        b=TDfPqN6VEp41+6LRMTYu0gsknxFNgfWTO1u4d+DDNYPOinGgi1GqLCX5mShe/WKLC2
+         yODzDC1uVp/8jXTq3HpIoplvFDma9L+JlKrDod+/KHOKlXvDP1l5rCd8e17WMC9UKUza
+         XBImU/xN7NKdpkDl18LaLRB91BTvHYLSNZqYgwP3JQ5XVfhOmc5RtKlrQS/FhUxZxkhd
+         8MhWxT1pwT7Ql/pETP4QEt1wZQMgr6+ledd018GzwdZE+No7qA/5hxEfqG1BAK50/h+3
+         kcnt2ii4Tp3mhbezyQUfAmoAcKJzoQ6JlZPv3YpOVThcKvu63Nolf7Fsn1EkfZFDA7Pd
+         Wwzw==
+X-Gm-Message-State: AOAM530lXmUAMXtD5LffmuljeMCnx7VAdXs5+3Sn2CG+L3h1uucjobja
+        d1N+SrxqTQHAWTt4ixrwxeZBkxOqnDf23OHwLvSnZCe8
+X-Google-Smtp-Source: ABdhPJzUnUyMUuc78wHJRnppNRf7GRRhxiD8yRQWkcXfslxn48kqwUjq4RU5a8Hmj0iwneqjfluc9gw7xGk4gUKHlQk=
+X-Received: by 2002:a4a:4201:: with SMTP id h1mr2020303ooj.1.1597417926225;
+ Fri, 14 Aug 2020 08:12:06 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a25:ce42:0:0:0:0:0 with HTTP; Fri, 14 Aug 2020 06:58:25
- -0700 (PDT)
-Reply-To: alexanadi111@gmail.com
-From:   Alex Anadi <debtpaymentsettlementcenter201@gmail.com>
-Date:   Fri, 14 Aug 2020 14:58:25 +0100
-Message-ID: <CANm_i2ZZaffMNzbC+-T=vYbsmQZ-2aL-nGfz+G8fS=qjR86-6w@mail.gmail.com>
-Subject: OK.
-To:     undisclosed-recipients:;
+References: <20200813175729.15088-1-andriy.shevchenko@linux.intel.com> <20200813175729.15088-6-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20200813175729.15088-6-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 14 Aug 2020 17:11:55 +0200
+Message-ID: <CAJZ5v0jquT7TLLO4yJqyxgfJJ77hLQ+RtmLXVj6JATWXJxqkUQ@mail.gmail.com>
+Subject: Re: [PATCH v1 6/7] PCI/ACPI: Fix description of @handle for acpi_is_root_bridge()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Linux PCI <linux-pci@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Sir/Madam,
+On Thu, Aug 13, 2020 at 7:57 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Fix description of handle parameter in documentation of acpi_is_root_bridge().
+> Otherwise we get the following warning:
+>
+>   CHECK   drivers/acpi/pci_root.c
+>   drivers/acpi/pci_root.c:71: warning: Function parameter or member 'handle' not described in 'acpi_is_root_bridge'
 
-I want to know if you authorized Ms Diane Webb to put claims for your
-funds valued at $10.6M
+I'm not sure why this patch doesn't go by itself.  It appears to be
+immediately applicable.
 
-Regards,
-Alex Anadi.
+I'll apply it next week if Bjorn doesn't object.
+
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: linux-pci@vger.kernel.org
+> ---
+>  drivers/acpi/pci_root.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 2a6a741896de..f723679954d7 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -62,7 +62,7 @@ static DEFINE_MUTEX(osc_lock);
+>
+>  /**
+>   * acpi_is_root_bridge - determine whether an ACPI CA node is a PCI root bridge
+> - * @handle - the ACPI CA node in question.
+> + * @handle: the ACPI CA node in question.
+>   *
+>   * Note: we could make this API take a struct acpi_device * instead, but
+>   * for now, it's more convenient to operate on an acpi_handle.
+> --
+> 2.28.0
+>
