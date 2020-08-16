@@ -2,53 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 031792453CE
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Aug 2020 00:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 840C52457E6
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Aug 2020 16:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729483AbgHOWGC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 15 Aug 2020 18:06:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39104 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729970AbgHOWFd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 15 Aug 2020 18:05:33 -0400
-Subject: Re: [GIT PULL] More ACPI updates for v5.9-rc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597504961;
-        bh=qB0xXx971nEleFvxsOUVtbgMJHnqqf3l5odXYLbJync=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=xCS7GB8pV/jvBiio12ZiKCbaY9Yohuxl5LeEYz2sLMb7puMkmijeaT9iFfuVJWiQP
-         iNXfUio8VI8BKrHbyZHgzT5cz47vKQ+AhiB33UIYLd/zcDZFuJ7MCBZV68DHNxlFK0
-         YOjBQV3OdtFH8Aq+tEv9W9GdvILtu2/bp/Hl+klY=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0iA_PSMf9gpXsmymS8t2ctMeyJ3FJE_v1LqbFu+fF_R6g@mail.gmail.com>
-References: <CAJZ5v0iA_PSMf9gpXsmymS8t2ctMeyJ3FJE_v1LqbFu+fF_R6g@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0iA_PSMf9gpXsmymS8t2ctMeyJ3FJE_v1LqbFu+fF_R6g@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.9-rc1-2
-X-PR-Tracked-Commit-Id: 19fe87fd854a92c746ac73cb91a0bebac07a4618
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 341323fa0eed1b201130b7af84d40fa04725c832
-Message-Id: <159750496123.10263.2199274626689102962.pr-tracker-bot@kernel.org>
-Date:   Sat, 15 Aug 2020 15:22:41 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S1729432AbgHPO2d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Aug 2020 10:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57052 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728747AbgHPO21 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Aug 2020 10:28:27 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50D2C061388
+        for <linux-acpi@vger.kernel.org>; Sun, 16 Aug 2020 07:28:25 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id a5so12405183wrm.6
+        for <linux-acpi@vger.kernel.org>; Sun, 16 Aug 2020 07:28:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=WydAeewQhr1r/XNZpFH3zIH+szhFi1y3aL3E9C0t+/P/o9UraiFWbofR/CQ6sPEcpC
+         KyCeW8UEKHrP3ODzHNzRF0fXKVacBOmuLb8NECLyUFXYtyIqVUeYoDGst/1ZZTlDrSFg
+         UqSpOJ6dtUV1psB5nDXdq7xdyi/8gRNM1VbIFNZJZ/Jq19E7MYwhVDZIDPjgPqAXZhyn
+         GqeGT1PbpkDjLV3sLnwpKnct94lXuL+96hZmSmobGb3Qy2pozBmBDF2Jj9UT2J2RyTFf
+         8zkXh3Q26txE+QPN4s7K+eUJ2QneFKWjK5m2vP3HOTwJU8+CUBzlx8CYcMp2boJXkNFa
+         Q36Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=jPvmU073853YuBMyMhKehYN/gq4VRCcBMuy+kekvfdmVMnPVQ2kcSa1SdhxyymvFUq
+         peRqCZTnmxWwG12+XWCkWwsIMYnXmQTko1O6n3XozWdMipApvjkJTXMosnrO6qfc01VI
+         oSKu/ktxW6EqjK6yKyoWQOfXNNQkz56rSt9J0tII7GCsNGG8TuzNu1g1/GAo6JkvnAEZ
+         c+14gmUOfWFQqCkdkkRLL5z1iLVKHsRgz6R8V8oqbjVbDeHycBZ61T3Vat2/28/g+M0g
+         kFtcBTQ74NYsuy+pC9d0olfRkKq36VllQ45V0lvrzjgQU/lYzIAwUI9Cl4FJfP5pJu7p
+         xHhA==
+X-Gm-Message-State: AOAM531sVCYSAt9tsEL7Dk1wzt+C3cQBOB+rMoLIY2CXWjtReos2DqDs
+        rY4UImeYQt3QuZ7yaT52INcZPIT1UNbJhI40WkU=
+X-Google-Smtp-Source: ABdhPJwBhDgN8zDFv7Vp+6FwrySrd7+zBZF+4bgjNBXNpkwqG/RDbCaE/Q6+6wMIFZa1PWMJ+xJlLCn7iN4TuC23ED4=
+X-Received: by 2002:adf:97dc:: with SMTP id t28mr10205969wrb.291.1597588104107;
+ Sun, 16 Aug 2020 07:28:24 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:23
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
+Date:   Sun, 16 Aug 2020 07:28:23 -0700
+Message-ID: <CANrrfX4FE9qQHVqDqDeDgrqidfa8Ug7YqLDZJ5dm2fb1ExQM=w@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 14 Aug 2020 20:09:40 +0200:
+--=20
+Dear Friend,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.9-rc1-2
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/341323fa0eed1b201130b7af84d40fa04725c832
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
 
-Thank you!
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
+
+My Regards.
+
+Mr. Scott Donald
+CEO
