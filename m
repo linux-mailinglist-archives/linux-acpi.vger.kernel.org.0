@@ -2,142 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CFDC245848
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Aug 2020 17:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C6F245AC5
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Aug 2020 04:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728137AbgHPPMP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 16 Aug 2020 11:12:15 -0400
-Received: from mga03.intel.com ([134.134.136.65]:4504 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727973AbgHPPMN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 16 Aug 2020 11:12:13 -0400
-IronPort-SDR: tg36YUYzgBH+xqhuZDER4EoP1t21UA8E7bxrP+vZ652nJKYRDVsxWXfS5SvTo8dvfbSNQptFMr
- sqhgWcPrvxeA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9715"; a="154567680"
-X-IronPort-AV: E=Sophos;i="5.76,320,1592895600"; 
-   d="scan'208";a="154567680"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2020 08:12:12 -0700
-IronPort-SDR: Qyf5OJZh0AtfKvWuMk/nfhWJPKdM+cAv6sM///0y9mNYCl4z31e26uF3xnWfhYhj40TC2jCLyt
- 08+oNtPPZreQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,320,1592895600"; 
-   d="scan'208";a="296235914"
-Received: from chenyu-office.sh.intel.com ([10.239.158.173])
-  by orsmga006.jf.intel.com with ESMTP; 16 Aug 2020 08:12:10 -0700
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, rui.zhang@intel.com,
-        linux-kernel@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>
-Subject: [PATCH][RFC] ACPI: processor: Print more information when acpi_processor_evaluate_cst() failed
-Date:   Sun, 16 Aug 2020 23:12:30 +0800
-Message-Id: <20200816151230.14524-1-yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726718AbgHQCtq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Aug 2020 22:49:46 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:53446 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726697AbgHQCto (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 16 Aug 2020 22:49:44 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 2D5E051C329AE0683AE9;
+        Mon, 17 Aug 2020 10:49:40 +0800 (CST)
+Received: from [127.0.0.1] (10.74.185.4) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Mon, 17 Aug 2020
+ 10:49:30 +0800
+Subject: Re: [PATCH v2] ACPI / APEI: do memory failure on the physical address
+ reported by ARM processor error section
+To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <james.morse@arm.com>,
+        <tony.luck@intel.com>, <bp@alien8.de>
+References: <1596618731-37623-1-git-send-email-tanxiaofei@huawei.com>
+CC:     <linuxarm@huawei.com>, <shiju.jose@huawei.com>,
+        <jonathan.cameron@huawei.com>
+From:   Xiaofei Tan <tanxiaofei@huawei.com>
+Message-ID: <5F39F039.4060201@huawei.com>
+Date:   Mon, 17 Aug 2020 10:49:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <1596618731-37623-1-git-send-email-tanxiaofei@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.185.4]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some platforms have bogus _CST which might cause expectd behavior
-in the cpu idle driver. Some bogus _CST might be unable to be
-disassembled by acpica-tools due to broken format.
-Print extra log if the _CST extraction/verification failed.
-This can be used to help the user narrow down why the cpu
-idle driver fails to behave as expected.
+@James, Could you help to check if i have fixed your review comments? thanks.
 
-Suggested-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
- drivers/acpi/acpi_processor.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+On 2020/8/5 17:12, Xiaofei Tan wrote:
+> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
+> synchronise with APEI's irq work") applied, user-mode SEA is
+> preferentially processed by APEI. Do memory failure to recover.
+> 
+> But there are some problems:
+> 1) The function apei_claim_sea() has processed an CPER, does not
+> mean that memory failure handling has done. Because the firmware-first
+> RAS error is reported by both producer and consumer. Mostly SEA uses
+> ARM processor error section to report as a consumer. (The producer could
+> be DDRC and cache, and use memory error section and other error section
+> to report). But memory failure handling for ARM processor error section
+> has not been supported. This patch will add it.
+> 
+> 2) Some hardware platforms can't record physical address each time. But
+> they could always have reported a firmware-first RAS error using ARM
+> processor error section. Such platform should update firmware. Don't
+> report the RAS error in SEA processing flow when physical address is
+> not recorded.
+> 
+> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> ---
+>  drivers/acpi/apei/ghes.c | 70 ++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 53 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 81bf71b..aee7787 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -429,28 +429,35 @@ static void ghes_kick_task_work(struct callback_head *head)
+>  	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+>  }
+>  
+> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> -				       int sev)
+> +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>  {
+>  	unsigned long pfn;
+> -	int flags = -1;
+> -	int sec_sev = ghes_severity(gdata->error_severity);
+> -	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+>  
+>  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+>  		return false;
+>  
+> -	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+> -		return false;
+> -
+> -	pfn = mem_err->physical_addr >> PAGE_SHIFT;
+> +	pfn = PHYS_PFN(physical_addr);
+>  	if (!pfn_valid(pfn)) {
+>  		pr_warn_ratelimited(FW_WARN GHES_PFX
+>  		"Invalid address in generic error data: %#llx\n",
+> -		mem_err->physical_addr);
+> +		physical_addr);
+>  		return false;
+>  	}
+>  
+> +	memory_failure_queue(pfn, flags);
+> +	return true;
+> +}
+> +
+> +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> +				       int sev)
+> +{
+> +	int flags = -1;
+> +	int sec_sev = ghes_severity(gdata->error_severity);
+> +	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+> +
+> +	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+> +		return false;
+> +
+>  	/* iff following two events can be handled properly by now */
+>  	if (sec_sev == GHES_SEV_CORRECTED &&
+>  	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+> @@ -458,14 +465,45 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+>  		flags = 0;
+>  
+> -	if (flags != -1) {
+> -		memory_failure_queue(pfn, flags);
+> -		return true;
+> -	}
+> +	if (flags != -1)
+> +		return ghes_do_memory_failure(mem_err->physical_addr, flags);
+>  
+>  	return false;
+>  }
+>  
+> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
+> +{
+> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+> +	struct cper_arm_err_info *err_info;
+> +	bool queued = false;
+> +	int sec_sev, i;
+> +
+> +	log_arm_hw_error(err);
+> +
+> +	sec_sev = ghes_severity(gdata->error_severity);
+> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
+> +		return false;
+> +
+> +	err_info = (struct cper_arm_err_info *) (err + 1);
+> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
+> +		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
+> +			continue;
+> +
+> +		if (err_info->type != CPER_ARM_CACHE_ERROR) {
+> +			pr_warn_ratelimited(FW_WARN GHES_PFX
+> +			"Physical address should be invalid for %s\n",
+> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
+> +			cper_proc_error_type_strs[err_info->type] : "unknown error type");
+> +			continue;
+> +		}
+> +
+> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
+> +			queued = true;
+> +	}
+> +
+> +	return queued;
+> +}
+> +
+>  /*
+>   * PCIe AER errors need to be sent to the AER driver for reporting and
+>   * recovery. The GHES severities map to the following AER severities and
+> @@ -543,9 +581,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+>  			ghes_handle_aer(gdata);
+>  		}
+>  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+> -			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+> -
+> -			log_arm_hw_error(err);
+> +			queued = ghes_handle_arm_hw_error(gdata, sev);
+>  		} else {
+>  			void *err = acpi_hest_get_payload(gdata);
+>  
+> 
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index b51ddf3bb616..c1d34c448edb 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -798,22 +798,34 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
- 		memset(&cx, 0, sizeof(cx));
- 
- 		element = &cst->package.elements[i];
--		if (element->type != ACPI_TYPE_PACKAGE)
-+		if (element->type != ACPI_TYPE_PACKAGE) {
-+			acpi_handle_warn(handle, "_CST C%d type(%x) is not package, skip...\n",
-+					 i, element->type);
- 			continue;
-+		}
- 
--		if (element->package.count != 4)
-+		if (element->package.count != 4) {
-+			acpi_handle_warn(handle, "_CST C%d package count(%d) is not 4, skip...\n",
-+					 i, element->package.count);
- 			continue;
-+		}
- 
- 		obj = &element->package.elements[0];
- 
--		if (obj->type != ACPI_TYPE_BUFFER)
-+		if (obj->type != ACPI_TYPE_BUFFER) {
-+			acpi_handle_warn(handle, "_CST C%d package element[0] type(%x) is not buffer, skip...\n",
-+					 i, obj->type);
- 			continue;
-+		}
- 
- 		reg = (struct acpi_power_register *)obj->buffer.pointer;
- 
- 		obj = &element->package.elements[1];
--		if (obj->type != ACPI_TYPE_INTEGER)
-+		if (obj->type != ACPI_TYPE_INTEGER) {
-+			acpi_handle_warn(handle, "_CST C[%d] package element[1] type(%x) is not integer, skip...\n",
-+					 i, obj->type);
- 			continue;
-+		}
- 
- 		cx.type = obj->integer.value;
- 		/*
-@@ -850,6 +862,8 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
- 				cx.entry_method = ACPI_CSTATE_HALT;
- 				snprintf(cx.desc, ACPI_CX_DESC_LEN, "ACPI HLT");
- 			} else {
-+				acpi_handle_warn(handle, "_CST C%d declares FIXED_HARDWARE C-state but not supported in hardware, skip...\n",
-+						 i);
- 				continue;
- 			}
- 		} else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-@@ -857,6 +871,8 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
- 			snprintf(cx.desc, ACPI_CX_DESC_LEN, "ACPI IOPORT 0x%x",
- 				 cx.address);
- 		} else {
-+			acpi_handle_warn(handle, "_CST C%d space_id(%x) neither FIXED_HARDWARE nor SYSTEM_IO, skip...\n",
-+					 i, reg->space_id);
- 			continue;
- 		}
- 
-@@ -864,14 +880,20 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
- 			cx.valid = 1;
- 
- 		obj = &element->package.elements[2];
--		if (obj->type != ACPI_TYPE_INTEGER)
-+		if (obj->type != ACPI_TYPE_INTEGER) {
-+			acpi_handle_warn(handle, "_CST C%d package element[2] type(%x) not integer, skip...\n",
-+					 i, obj->type);
- 			continue;
-+		}
- 
- 		cx.latency = obj->integer.value;
- 
- 		obj = &element->package.elements[3];
--		if (obj->type != ACPI_TYPE_INTEGER)
-+		if (obj->type != ACPI_TYPE_INTEGER) {
-+			acpi_handle_warn(handle, "_CST C%d package element[3] type(%x) not integer, skip...\n",
-+					 i, obj->type);
- 			continue;
-+		}
- 
- 		memcpy(&info->states[++last_index], &cx, sizeof(cx));
- 	}
 -- 
-2.17.1
+ thanks
+tanxiaofei
 
