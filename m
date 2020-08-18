@@ -2,155 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F58C24834A
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Aug 2020 12:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78F6248384
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Aug 2020 13:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726640AbgHRKqc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Aug 2020 06:46:32 -0400
-Received: from mail-oo1-f66.google.com ([209.85.161.66]:41787 "EHLO
-        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726203AbgHRKqb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Aug 2020 06:46:31 -0400
-Received: by mail-oo1-f66.google.com with SMTP id x6so4036663ooe.8;
-        Tue, 18 Aug 2020 03:46:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pZBdcVXcJ4cNAeKQ+oZAhkzqjphlwK1WHq4Y5baWp/g=;
-        b=qH3LMyrs84bMEvMkbsC91a/dYMNX2P2Qpo4DSvX2jyRdmQ3ncrmwGsaExEZyffzPdt
-         Txs/1fBdQMHBvspW2EMAUeOcnYorb2rsGvRDtZrP60y3mgiHh2/nD0urE5FAZnWlKFy9
-         M+dwMbhjJ2lJPo94kzJmMQfyeYkK+N4yA4nCGqjMQzQCC/98qQfjswZX73iSHEUtyYNm
-         +/UoKcL8JbjVFoA/Exy8k5boGb+u5VXEwZk7uQBiA/rxw6d9J8GtOc7odZQPxrNCRvr5
-         GBcWBQFfrdHG8pxInLXpXaEoSkYS2gkPWBLmDyOSapfMxoaTysUgPtKBlAcp3v+vFsdd
-         1ugA==
-X-Gm-Message-State: AOAM530ZJn2b4DFwDR+/MaVtAS4bvVDHJk/ZPDIwZn1X7YsKZhuOEbdV
-        c69pWV02lGv2antyUMqfPI6ozcReY7pE2eScfE0=
-X-Google-Smtp-Source: ABdhPJzVgHXGjvNzZjI1fl2ditxhkUf5lLRlDdpy9udjfSiegzbCn9n+OlGtljOq+l37gURZoUcHYJDIRDuuSSr+99c=
-X-Received: by 2002:a4a:e618:: with SMTP id f24mr14305627oot.75.1597747590537;
- Tue, 18 Aug 2020 03:46:30 -0700 (PDT)
+        id S1726570AbgHRLFG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Aug 2020 07:05:06 -0400
+Received: from mga05.intel.com ([192.55.52.43]:29176 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726535AbgHRLFF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 18 Aug 2020 07:05:05 -0400
+IronPort-SDR: tgzYrrdWAWtAjZcyDV4E5ODOkcNxRSTPxEb6ST94KNqHLcinJdO5IBIvNJIRbh6KMA8BGTMndu
+ K8wSbfFJrnOA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9716"; a="239705243"
+X-IronPort-AV: E=Sophos;i="5.76,327,1592895600"; 
+   d="scan'208";a="239705243"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 04:05:04 -0700
+IronPort-SDR: Zyl1zkY136CnxKdCbyCD89FjESR6rtWsviP14MKhKzpsA2396TvId8tkG83uuM+d+03U/0/ztr
+ 7gO/W/YhD+Mw==
+X-IronPort-AV: E=Sophos;i="5.76,327,1592895600"; 
+   d="scan'208";a="278020960"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 04:05:01 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 461CE2064F; Tue, 18 Aug 2020 14:04:59 +0300 (EEST)
+Date:   Tue, 18 Aug 2020 14:04:59 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Bingbu Cao <bingbu.cao@linux.intel.com>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>
+Subject: Re: [PATCH v5 0/6] Support running driver's probe for a device
+ powered off
+Message-ID: <20200818110459.GR24582@paasikivi.fi.intel.com>
+References: <20200810142747.12400-1-sakari.ailus@linux.intel.com>
+ <5353041e-850f-05ad-3b20-35e91fc9501e@linux.intel.com>
+ <CAAFQd5DbMMsxkJAkLm4kQ+cQ0ePG4ME492MxM3vwXws3H_bsTQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200816151230.14524-1-yu.c.chen@intel.com>
-In-Reply-To: <20200816151230.14524-1-yu.c.chen@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 18 Aug 2020 12:46:12 +0200
-Message-ID: <CAJZ5v0jz5EH7bB5Goia=qd_P5eVLoONbscSvvEAqU7svodg_MA@mail.gmail.com>
-Subject: Re: [PATCH][RFC] ACPI: processor: Print more information when
- acpi_processor_evaluate_cst() failed
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAFQd5DbMMsxkJAkLm4kQ+cQ0ePG4ME492MxM3vwXws3H_bsTQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Aug 16, 2020 at 5:12 PM Chen Yu <yu.c.chen@intel.com> wrote:
->
-> Some platforms have bogus _CST which might cause expectd behavior
-> in the cpu idle driver. Some bogus _CST might be unable to be
-> disassembled by acpica-tools due to broken format.
-> Print extra log if the _CST extraction/verification failed.
-> This can be used to help the user narrow down why the cpu
-> idle driver fails to behave as expected.
->
-> Suggested-by: Zhang Rui <rui.zhang@intel.com>
-> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Hi Tomasz, Bingbu,
 
-This is fine by me as a general idea, but please change the log level to "info".
+On Fri, Aug 14, 2020 at 03:17:58PM +0200, Tomasz Figa wrote:
+> On Fri, Aug 14, 2020 at 6:12 AM Bingbu Cao <bingbu.cao@linux.intel.com> wrote:
+> >
+> >
+> >
+> > On 8/10/20 10:27 PM, Sakari Ailus wrote:
+> > > Hi all,
+> > >
+> > ...snip...
+> > >
+> > > The use case is such that there is a privacy LED next to an integrated
+> > > user-facing laptop camera, and this LED is there to signal the user that
+> > > the camera is recording a video or capturing images. That LED also happens
+> > > to be wired to one of the power supplies of the camera, so whenever you
+> > > power on the camera, the LED will be lit, whether images are captured from
+> > > the camera --- or not. There's no way to implement this differently
+> > > without additional software control (allowing of which is itself a
+> > > hardware design decision) on most CSI-2-connected camera sensors as they
+> > > simply have no pin to signal the camera streaming state.
+> > >
+> > > This is also what happens during driver probe: the camera will be powered
+> > > on by the I²C subsystem calling dev_pm_domain_attach() and the device is
+> > > already powered on when the driver's own probe function is called. To the
+> > > user this visible during the boot process as a blink of the privacy LED,
+> > > suggesting that the camera is recording without the user having used an
+> > > application to do that. From the end user's point of view the behaviour is
+> > > not expected and for someone unfamiliar with internal workings of a
+> > > computer surely seems quite suspicious --- even if images are not being
+> > > actually captured.
+> > >
+> > > I've tested these on linux-next master. They also apply to Wolfram's
+> > > i2c/for-next branch, there's a patch that affects the I²C core changes
+> > > here (see below). The patches apart from that apply to Bartosz's
+> > > at24/for-next as well as Mauro's linux-media master branch.
+> >
+> > Sakari, we meet one issue - once the vcm sub-device registered, the user space
+> > will try to open the VCM (I have not figure out who did that), it will also
+> > trigger the acpi pm resume/suspend, as the VCM always shares same power rail
+> > with camera sensor, so the privacy LED still has a blink.
+> 
+> It's not always the case, as on some designs there are multiple power
+> rails to the sensor and one drives the LED, while the other drives the
+> VCM. That said, it would be still good to solve it in either case.
+> 
+> Perhaps we need some more general discussion on the side effects of
+> simply opening and querying a device. Most of V4L2 drivers these days
+> are designed to avoid powering up the hardware until it's absolutely
+> needed to do so. However, for non-streaming subdevs that are directly
+> controlled by the userspace, like VCM, it's a common practice to power
+> up on open and down on release. This is because they don't have a
+> "streaming" state, so the driver has no way to determine when the
+> power is needed. I wonder if there is a way to improve this.
 
-> ---
->  drivers/acpi/acpi_processor.c | 34 ++++++++++++++++++++++++++++------
->  1 file changed, 28 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> index b51ddf3bb616..c1d34c448edb 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -798,22 +798,34 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
->                 memset(&cx, 0, sizeof(cx));
->
->                 element = &cst->package.elements[i];
-> -               if (element->type != ACPI_TYPE_PACKAGE)
-> +               if (element->type != ACPI_TYPE_PACKAGE) {
-> +                       acpi_handle_warn(handle, "_CST C%d type(%x) is not package, skip...\n",
-> +                                        i, element->type);
->                         continue;
-> +               }
->
-> -               if (element->package.count != 4)
-> +               if (element->package.count != 4) {
-> +                       acpi_handle_warn(handle, "_CST C%d package count(%d) is not 4, skip...\n",
-> +                                        i, element->package.count);
->                         continue;
-> +               }
->
->                 obj = &element->package.elements[0];
->
-> -               if (obj->type != ACPI_TYPE_BUFFER)
-> +               if (obj->type != ACPI_TYPE_BUFFER) {
-> +                       acpi_handle_warn(handle, "_CST C%d package element[0] type(%x) is not buffer, skip...\n",
-> +                                        i, obj->type);
->                         continue;
-> +               }
->
->                 reg = (struct acpi_power_register *)obj->buffer.pointer;
->
->                 obj = &element->package.elements[1];
-> -               if (obj->type != ACPI_TYPE_INTEGER)
-> +               if (obj->type != ACPI_TYPE_INTEGER) {
-> +                       acpi_handle_warn(handle, "_CST C[%d] package element[1] type(%x) is not integer, skip...\n",
-> +                                        i, obj->type);
->                         continue;
-> +               }
->
->                 cx.type = obj->integer.value;
->                 /*
-> @@ -850,6 +862,8 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
->                                 cx.entry_method = ACPI_CSTATE_HALT;
->                                 snprintf(cx.desc, ACPI_CX_DESC_LEN, "ACPI HLT");
->                         } else {
-> +                               acpi_handle_warn(handle, "_CST C%d declares FIXED_HARDWARE C-state but not supported in hardware, skip...\n",
-> +                                                i);
->                                 continue;
->                         }
->                 } else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-> @@ -857,6 +871,8 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
->                         snprintf(cx.desc, ACPI_CX_DESC_LEN, "ACPI IOPORT 0x%x",
->                                  cx.address);
->                 } else {
-> +                       acpi_handle_warn(handle, "_CST C%d space_id(%x) neither FIXED_HARDWARE nor SYSTEM_IO, skip...\n",
-> +                                        i, reg->space_id);
->                         continue;
->                 }
->
-> @@ -864,14 +880,20 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
->                         cx.valid = 1;
->
->                 obj = &element->package.elements[2];
-> -               if (obj->type != ACPI_TYPE_INTEGER)
-> +               if (obj->type != ACPI_TYPE_INTEGER) {
-> +                       acpi_handle_warn(handle, "_CST C%d package element[2] type(%x) not integer, skip...\n",
-> +                                        i, obj->type);
->                         continue;
-> +               }
->
->                 cx.latency = obj->integer.value;
->
->                 obj = &element->package.elements[3];
-> -               if (obj->type != ACPI_TYPE_INTEGER)
-> +               if (obj->type != ACPI_TYPE_INTEGER) {
-> +                       acpi_handle_warn(handle, "_CST C%d package element[3] type(%x) not integer, skip...\n",
-> +                                        i, obj->type);
->                         continue;
-> +               }
->
->                 memcpy(&info->states[++last_index], &cx, sizeof(cx));
->         }
-> --
-> 2.17.1
->
+Good question.
+
+I think in this particular case the device could be powered on only when
+there's an open file handle and current is applied on the coil (i.e. the
+control's value is non-zero).
+
+But in general case more IOCTLs would be needed. PM QoS framework could be
+used for the purpose based on wakeup latency. I guess no-one has needed it
+badly enough to implement the support? This would be actually a better
+approach. In any case in the case of the lens it requires that the current
+behaviour of powering on the device based on just open file handles would
+have to change.
+
+-- 
+Kind regards,
+
+Sakari Ailus
