@@ -2,397 +2,625 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63914249D23
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 14:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F1424A20F
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 16:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728254AbgHSMCA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Aug 2020 08:02:00 -0400
-Received: from mga05.intel.com ([192.55.52.43]:49555 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728320AbgHSMAa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:00:30 -0400
-IronPort-SDR: mE2Gm7E84XMjmpaqyfWYSPi1cbSQJPA1ML+Wc4uY4LRDJHdFSlCynpWm71NcBiNRDWyyPBe8/X
- KgsFMhl68iKQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="239922679"
-X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="239922679"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:17 -0700
-IronPort-SDR: lshPPTxGcuG/kQKHKMECxhlFh8ZAVwSYXqu6z99uVxRlcrVSwBAqXEwmbI+drxC0FL/cU8UkPb
- ls9M3s1iFjiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="329310790"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 19 Aug 2020 04:59:14 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 1228F8B7; Wed, 19 Aug 2020 14:59:07 +0300 (EEST)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     linux-usb@vger.kernel.org
-Cc:     Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Dana Alkattan <dana.alkattan@intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: [PATCH 19/19] thunderbolt: Add runtime PM for Software CM
-Date:   Wed, 19 Aug 2020 14:59:05 +0300
-Message-Id: <20200819115905.59834-20-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
-References: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
+        id S1728608AbgHSOwn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Aug 2020 10:52:43 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2667 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728477AbgHSOwm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Aug 2020 10:52:42 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 77FBE9E6FEB9C778C30B;
+        Wed, 19 Aug 2020 15:52:39 +0100 (IST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Wed, 19 Aug 2020 15:52:39 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
+CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, <rafael@kernel.org>,
+        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Sean V Kelley <sean.v.kelley@linux.intel.com>,
+        <linux-api@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v9 0/6] ACPI: Support Generic Initiator proximity domains
+Date:   Wed, 19 Aug 2020 22:51:05 +0800
+Message-ID: <20200819145111.1715026-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.123.41.22]
+X-ClientProxiedBy: lhreml741-chm.china.huawei.com (10.201.108.191) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This adds runtime PM support for the Software Connection Manager parts
-of the driver. This allows to save power when either there is no device
-attached at all or there is a device attached and all following
-conditions are true:
+It would be very nice to finally merge this support during this cycle,
+so please take a look.
 
-  - Tunneled PCIe root/downstream ports are runtime suspended
-  - Tunneled USB3 ports are runtime suspended
-  - No active DisplayPort stream
-  - No active XDomain connection
+I think we need acks covering x86, ARM and ACPI.  Rafael took a look back
+in November at v5 and was looking for x86 and ARM acks.  Whilst there is
+no ARM specific code left we probably still need an Ack.
 
-For the first two we take advantage of device links that were added in
-previous patch. Difference for the system sleep case is that we also
-enable wakes when something is geting plugged in/out of the Thunderbolt
-ports.
+Introduces a new type of NUMA node for cases where we want to represent
+the access characteristics of a non CPU initiator of memory requests,
+as these differ from all those for existing nodes containing CPUs and/or
+memory.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/thunderbolt/switch.c |  25 ++++++--
- drivers/thunderbolt/tb.c     | 116 ++++++++++++++++++++++++++++++++++-
- drivers/thunderbolt/tb.h     |   2 +-
- 3 files changed, 136 insertions(+), 7 deletions(-)
+These Generic Initiators are presented by the node access0 class in
+sysfs in the same way as a CPU.   It seems likely that there will be
+usecases in which the best 'CPU' is desired and Generic Initiators
+should be ignored.  The final few patches in this series introduced
+access1 which is a new performance class in the sysfs node description
+which presents only CPU to memory relationships.  Test cases for this
+are described below.
 
-diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-index a2ebf51ac389..db63b5eb9467 100644
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2679,23 +2679,40 @@ int tb_switch_resume(struct tb_switch *sw)
- 	return 0;
- }
- 
--void tb_switch_suspend(struct tb_switch *sw)
-+/**
-+ * tb_switch_suspend() - Put a switch to sleep
-+ * @sw: Switch to suspend
-+ * @runtime: Is this runtime suspend or system sleep
-+ *
-+ * Suspends router and all its children. Enables wakes according to
-+ * value of @runtime and then sets sleep bit for the router. If @sw is
-+ * host router the domain is ready to go to sleep once this function
-+ * returns.
-+ */
-+void tb_switch_suspend(struct tb_switch *sw, bool runtime)
- {
- 	unsigned int flags = 0;
- 	struct tb_port *port;
- 	int err;
- 
-+	tb_sw_dbg(sw, "suspending switch\n");
-+
- 	err = tb_plug_events_active(sw, false);
- 	if (err)
- 		return;
- 
- 	tb_switch_for_each_port(sw, port) {
- 		if (tb_port_has_remote(port))
--			tb_switch_suspend(port->remote->sw);
-+			tb_switch_suspend(port->remote->sw, runtime);
- 	}
- 
--	if (device_may_wakeup(&sw->dev))
--		flags = TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
-+	if (runtime) {
-+		/* Trigger wake when something is plugged in/out */
-+		flags |= TB_WAKE_ON_CONNECT | TB_WAKE_ON_DISCONNECT;
-+		flags |= TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
-+	} else if (device_may_wakeup(&sw->dev)) {
-+		flags |= TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
-+	}
- 
- 	tb_switch_set_wake(sw, flags);
- 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index 214e47656be6..170d1d846557 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -9,6 +9,7 @@
- #include <linux/slab.h>
- #include <linux/errno.h>
- #include <linux/delay.h>
-+#include <linux/pm_runtime.h>
- 
- #include "tb.h"
- #include "tb_regs.h"
-@@ -22,13 +23,21 @@
-  *		    events and exit if this is not set (it needs to
-  *		    acquire the lock one more time). Used to drain wq
-  *		    after cfg has been paused.
-+ * @remove_work: Work used to remove any unplugged routers after
-+ *		 runtime resume
-  */
- struct tb_cm {
- 	struct list_head tunnel_list;
- 	struct list_head dp_resources;
- 	bool hotplug_active;
-+	struct delayed_work remove_work;
- };
- 
-+static inline struct tb *tcm_to_tb(struct tb_cm *tcm)
-+{
-+	return ((void *)tcm - sizeof(struct tb));
-+}
-+
- struct tb_hotplug_event {
- 	struct work_struct work;
- 	struct tb *tb;
-@@ -526,8 +535,13 @@ static void tb_scan_switch(struct tb_switch *sw)
- {
- 	struct tb_port *port;
- 
-+	pm_runtime_get_sync(&sw->dev);
-+
- 	tb_switch_for_each_port(sw, port)
- 		tb_scan_port(port);
-+
-+	pm_runtime_mark_last_busy(&sw->dev);
-+	pm_runtime_put_autosuspend(&sw->dev);
- }
- 
- /**
-@@ -602,6 +616,12 @@ static void tb_scan_port(struct tb_port *port)
- 	if (!tcm->hotplug_active)
- 		dev_set_uevent_suppress(&sw->dev, true);
- 
-+	/*
-+	 * At the moment Thunderbolt 2 and beyond (devices with LC) we
-+	 * can support runtime PM.
-+	 */
-+	sw->rpm = sw->generation > 1;
-+
- 	if (tb_switch_add(sw)) {
- 		tb_switch_put(sw);
- 		return;
-@@ -662,6 +682,11 @@ static void tb_deactivate_and_free_tunnel(struct tb_tunnel *tunnel)
- 		 * deallocated properly.
- 		 */
- 		tb_switch_dealloc_dp_resource(src_port->sw, src_port);
-+		/* Now we can allow the domain to runtime suspend again */
-+		pm_runtime_mark_last_busy(&dst_port->sw->dev);
-+		pm_runtime_put_autosuspend(&dst_port->sw->dev);
-+		pm_runtime_mark_last_busy(&src_port->sw->dev);
-+		pm_runtime_put_autosuspend(&src_port->sw->dev);
- 		fallthrough;
- 
- 	case TB_TUNNEL_USB3:
-@@ -848,9 +873,20 @@ static void tb_tunnel_dp(struct tb *tb)
- 		return;
- 	}
- 
-+	/*
-+	 * DP stream needs the domain to be active so runtime resume
-+	 * both ends of the tunnel.
-+	 *
-+	 * This should bring the routers in the middle active as well
-+	 * and keeps the domain from runtime suspending while the DP
-+	 * tunnel is active.
-+	 */
-+	pm_runtime_get_sync(&in->sw->dev);
-+	pm_runtime_get_sync(&out->sw->dev);
-+
- 	if (tb_switch_alloc_dp_resource(in->sw, in)) {
- 		tb_port_dbg(in, "no resource available for DP IN, not tunneling\n");
--		return;
-+		goto err_rpm_put;
- 	}
- 
- 	/* Make all unused USB3 bandwidth available for the new DP tunnel */
-@@ -889,6 +925,11 @@ static void tb_tunnel_dp(struct tb *tb)
- 	tb_reclaim_usb3_bandwidth(tb, in, out);
- err_dealloc_dp:
- 	tb_switch_dealloc_dp_resource(in->sw, in);
-+err_rpm_put:
-+	pm_runtime_mark_last_busy(&out->sw->dev);
-+	pm_runtime_put_autosuspend(&out->sw->dev);
-+	pm_runtime_mark_last_busy(&in->sw->dev);
-+	pm_runtime_put_autosuspend(&in->sw->dev);
- }
- 
- static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
-@@ -1073,6 +1114,9 @@ static void tb_handle_hotplug(struct work_struct *work)
- 	struct tb_switch *sw;
- 	struct tb_port *port;
- 
-+	/* Bring the domain back from sleep if it was suspended */
-+	pm_runtime_get_sync(&tb->dev);
-+
- 	mutex_lock(&tb->lock);
- 	if (!tcm->hotplug_active)
- 		goto out; /* during init, suspend or shutdown */
-@@ -1096,6 +1140,9 @@ static void tb_handle_hotplug(struct work_struct *work)
- 		       ev->route, ev->port, ev->unplug);
- 		goto put_sw;
- 	}
-+
-+	pm_runtime_get_sync(&sw->dev);
-+
- 	if (ev->unplug) {
- 		tb_retimer_remove_all(port);
- 
-@@ -1149,10 +1196,17 @@ static void tb_handle_hotplug(struct work_struct *work)
- 		}
- 	}
- 
-+	pm_runtime_mark_last_busy(&sw->dev);
-+	pm_runtime_put_autosuspend(&sw->dev);
-+
- put_sw:
- 	tb_switch_put(sw);
- out:
- 	mutex_unlock(&tb->lock);
-+
-+	pm_runtime_mark_last_busy(&tb->dev);
-+	pm_runtime_put_autosuspend(&tb->dev);
-+
- 	kfree(ev);
- }
- 
-@@ -1188,6 +1242,7 @@ static void tb_stop(struct tb *tb)
- 	struct tb_tunnel *tunnel;
- 	struct tb_tunnel *n;
- 
-+	cancel_delayed_work(&tcm->remove_work);
- 	/* tunnels are only present after everything has been initialized */
- 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list) {
- 		/*
-@@ -1239,6 +1294,8 @@ static int tb_start(struct tb *tb)
- 	 * root switch.
- 	 */
- 	tb->root_switch->no_nvm_upgrade = true;
-+	/* All USB4 routers support runtime PM */
-+	tb->root_switch->rpm = tb_switch_is_usb4(tb->root_switch);
- 
- 	ret = tb_switch_configure(tb->root_switch);
- 	if (ret) {
-@@ -1281,7 +1338,7 @@ static int tb_suspend_noirq(struct tb *tb)
- 
- 	tb_dbg(tb, "suspending...\n");
- 	tb_disconnect_and_release_dp(tb);
--	tb_switch_suspend(tb->root_switch);
-+	tb_switch_suspend(tb->root_switch, false);
- 	tcm->hotplug_active = false; /* signal tb_handle_hotplug to quit */
- 	tb_dbg(tb, "suspend finished\n");
- 
-@@ -1292,6 +1349,10 @@ static void tb_restore_children(struct tb_switch *sw)
- {
- 	struct tb_port *port;
- 
-+	/* No need to restore if the router is already unplugged */
-+	if (sw->is_unplugged)
-+		return;
-+
- 	if (tb_enable_tmu(sw))
- 		tb_sw_warn(sw, "failed to restore TMU configuration\n");
- 
-@@ -1376,12 +1437,62 @@ static void tb_complete(struct tb *tb)
- 	mutex_unlock(&tb->lock);
- }
- 
-+static int tb_runtime_suspend(struct tb *tb)
-+{
-+	struct tb_cm *tcm = tb_priv(tb);
-+
-+	mutex_lock(&tb->lock);
-+	tb_switch_suspend(tb->root_switch, true);
-+	tcm->hotplug_active = false;
-+	mutex_unlock(&tb->lock);
-+
-+	return 0;
-+}
-+
-+static void tb_remove_work(struct work_struct *work)
-+{
-+	struct tb_cm *tcm = container_of(work, struct tb_cm, remove_work.work);
-+	struct tb *tb = tcm_to_tb(tcm);
-+
-+	mutex_lock(&tb->lock);
-+	if (tb->root_switch) {
-+		tb_free_unplugged_children(tb->root_switch);
-+		tb_free_unplugged_xdomains(tb->root_switch);
-+	}
-+	mutex_unlock(&tb->lock);
-+}
-+
-+static int tb_runtime_resume(struct tb *tb)
-+{
-+	struct tb_cm *tcm = tb_priv(tb);
-+	struct tb_tunnel *tunnel, *n;
-+
-+	mutex_lock(&tb->lock);
-+	tb_switch_resume(tb->root_switch);
-+	tb_free_invalid_tunnels(tb);
-+	tb_restore_children(tb->root_switch);
-+	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
-+		tb_tunnel_restart(tunnel);
-+	tcm->hotplug_active = true;
-+	mutex_unlock(&tb->lock);
-+
-+	/*
-+	 * Schedule cleanup of any unplugged devices. Run this in a
-+	 * separate thread to avoid possible deadlock if the device
-+	 * removal runtime resumes the unplugged device.
-+	 */
-+	queue_delayed_work(tb->wq, &tcm->remove_work, msecs_to_jiffies(50));
-+	return 0;
-+}
-+
- static const struct tb_cm_ops tb_cm_ops = {
- 	.start = tb_start,
- 	.stop = tb_stop,
- 	.suspend_noirq = tb_suspend_noirq,
- 	.resume_noirq = tb_resume_noirq,
- 	.complete = tb_complete,
-+	.runtime_suspend = tb_runtime_suspend,
-+	.runtime_resume = tb_runtime_resume,
- 	.handle_event = tb_handle_event,
- 	.approve_switch = tb_tunnel_pci,
- 	.approve_xdomain_paths = tb_approve_xdomain_paths,
-@@ -1403,6 +1514,7 @@ struct tb *tb_probe(struct tb_nhi *nhi)
- 	tcm = tb_priv(tb);
- 	INIT_LIST_HEAD(&tcm->tunnel_list);
- 	INIT_LIST_HEAD(&tcm->dp_resources);
-+	INIT_DELAYED_WORK(&tcm->remove_work, tb_remove_work);
- 
- 	return tb;
- }
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index dbcfa24caaf1..7c8f505e6818 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -639,7 +639,7 @@ struct tb_switch *tb_switch_alloc_safe_mode(struct tb *tb,
- int tb_switch_configure(struct tb_switch *sw);
- int tb_switch_add(struct tb_switch *sw);
- void tb_switch_remove(struct tb_switch *sw);
--void tb_switch_suspend(struct tb_switch *sw);
-+void tb_switch_suspend(struct tb_switch *sw, bool runtime);
- int tb_switch_resume(struct tb_switch *sw);
- int tb_switch_reset(struct tb_switch *sw);
- void tb_sw_set_unplugged(struct tb_switch *sw);
+Changes since v8:
+* ifdef protections and stubs to avoid a build error on ia64. I'm assuming
+  no one cares about Generic Initiators on IA64 (0-day)
+* Update OSC code to ensure we don't claim to support GIs except on x86 and
+  ARM64
+
+Changes since V7:
+
+* Now independent from
+  [PATCH v3 0/6]  ACPI: Only create NUMA nodes from entries in SRAT or SRAT emulation
+* Minor documentation tweak.
+* Rebase on v5.9-rc1
+
+Changes since V6:
+
+* Rebase on 5.8-rc4 + Dependency as above.
+* Drop the ARM64 specific code. No specific calls are needed on ARM64
+  as the generic node init is done for all nodes, whether or not they
+  have memory.  X86 does memoryless nodes separately from those with
+  memory and hence needs to specifically intialize GI only nodes.
+* Fix up an error in the docs reported by Brice Goglin who also did
+  quite a bit of testing of v5. Thanks!
+  
+Changes since V5:
+
+3 new patches:
+* A fix for a subtlety in how ACPI 6.3 changed part of the HMAT table.
+* Introduction of access1 class to represent characteristics between CPU
+  and memory, ingnoring GIs unlike access0 which includes them.
+* Docs to describe the new access0 class.
+
+Note that I ran a number of test cases for the new class which are
+described at the end of this email.
+
+Changes since V4:
+
+At Rafael's suggestion:
+
+Rebase on top of Dan William's Specific Purpose Memory series as that
+moves srat.c Original patches cherry-picked fine onto mmotm with Dan's
+patches applied.
+
+Applies to mmotm-2019-09-25 +
+https://lore.kernel.org/linux-acpi/156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com/
+[PATCH v4 00/10] EFI Specific Purpose Memory Support
+(note there are some trivial conflicts to deal with when applying
+the SPM series).
+
+Change since V3.
+* Rebase.
+
+Changes since RFC V2.
+* RFC dropped as now we have x86 support, so the lack of guards in in the
+  ACPI code etc should now be fine.
+  * Added x86 support.  Note this has only been tested on QEMU as I don't have
+    a convenient x86 NUMA machine to play with.  Note that this fitted together
+      rather differently from arm64 so I'm particularly interested in feedback
+        on the two solutions.
+
+Since RFC V1.
+* Fix incorrect interpretation of the ACPI entry noted by Keith Busch
+* Use the acpica headers definitions that are now in mmotm.
+
+It's worth noting that, to safely put a given device in a GI node, may
+require changes to the existing drivers as it's not unusual to assume
+you have local memory or processor core. There may be further constraints
+not yet covered by this patch.
+
+Original cover letter...
+
+ACPI 6.3 introduced a new entity that can be part of a NUMA proximity domain.
+It may share such a domain with the existing options (memory, CPU etc) but it
+may also exist on it's own.
+
+The intent is to allow the description of the NUMA properties (particularly
+via HMAT) of accelerators and other initiators of memory activity that are not
+the host processor running the operating system.
+
+This patch set introduces 'just enough' to make them work for arm64 and x86.
+It should be trivial to support other architectures, I just don't suitable
+NUMA systems readily available to test.
+
+There are a few quirks that need to be considered.
+
+1. Fall back nodes
+******************
+
+As pre ACPI 6.3 supporting operating systems do not have Generic Initiator
+Proximity Domains it is possible to specify, via _PXM in DSDT that another
+device is part of such a GI only node.  This currently blows up spectacularly.
+
+Whilst we can obviously 'now' protect against such a situation (see the related
+thread on PCI _PXM support and the  threadripper board identified there as
+also falling into the  problem of using non existent nodes
+https://patchwork.kernel.org/patch/10723311/ ), there is no way to  be sure
+we will never have legacy OSes that are not protected  against this.  It would
+also be 'non ideal' to fallback to  a default node as there may be a better
+(non GI) node to pick  if GI nodes aren't available.
+
+The work around is that we also have a new system wide OSC bit that allows
+an operating system to 'announce' that it supports Generic Initiators.  This
+allows, the firmware to us DSDT magic to 'move' devices between the nodes
+dependent on whether our new nodes are there or not.
+
+2. New ways of assigning a proximity domain for devices
+*******************************************************
+
+Until now, the only way firmware could indicate that a particular device
+(outside the 'special' set of cpus etc) was to be found in a particular
+Proximity Domain by the use of _PXM in DSDT.
+
+That is equally valid with GI domains, but we have new options. The SRAT
+affinity structure includes a handle (ACPI or PCI) to identify devices
+with the system and specify their proximity domain that way.  If both _PXM
+and this are provided, they should give the same answer.
+
+For now this patch set completely ignores that feature as we don't need
+it to start the discussion.  It will form a follow up set at some point
+(if no one else fancies doing it).
+
+Test cases for the access1 class
+********************************
+
+Test cases for Generic Initiator additions to HMAT.
+
+Setup
+
+PXM0 (node 0) - CPU0 CPU1, 2G memory
+PXM1 (node 1) - CPU2 CPU3, 2G memory
+PXM2 (node 2) - CPU4 CPU5, 2G memory
+PXM3 (node 4) - 2G memory (GI in one case below)
+PXM4 (node 3) - GI only.
+
+Config 1:  GI in PXM4 nearer to memory in PXM 3 than CPUs, not direct attached
+
+[    2.384064] acpi/hmat: HMAT: Locality: Flags:00 Type:Access Latency Initiator Domains:4 Target Domains:4 Base:256
+[    2.384913] acpi/hmat:   Initiator-Target[0-0]:1 nsec
+[    2.385190] acpi/hmat:   Initiator-Target[0-1]:9 nsec
+[    2.385736] acpi/hmat:   Initiator-Target[0-2]:9 nsec
+[    2.385984] acpi/hmat:   Initiator-Target[0-3]:9 nsec
+[    2.386447] acpi/hmat:   Initiator-Target[1-0]:9 nsec
+[    2.386740] acpi/hmat:   Initiator-Target[1-1]:1 nsec
+[    2.386964] acpi/hmat:   Initiator-Target[1-2]:9 nsec
+[    2.387174] acpi/hmat:   Initiator-Target[1-3]:9 nsec
+[    2.387624] acpi/hmat:   Initiator-Target[2-0]:9 nsec
+[    2.387953] acpi/hmat:   Initiator-Target[2-1]:9 nsec
+[    2.388155] acpi/hmat:   Initiator-Target[2-2]:1 nsec
+[    2.388607] acpi/hmat:   Initiator-Target[2-3]:9 nsec
+[    2.388861] acpi/hmat:   Initiator-Target[4-0]:13 nsec
+[    2.389126] acpi/hmat:   Initiator-Target[4-1]:13 nsec
+[    2.389574] acpi/hmat:   Initiator-Target[4-2]:13 nsec
+[    2.389805] acpi/hmat:   Initiator-Target[4-3]:5 nsec
+
+# Sysfs reads the same for nodes 0-2 for access0 and access1 as no GI involved.
+
+/sys/bus/node/devices/...
+    node0 #1 and 2 similar.
+        access0
+            initiators
+                node0
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node0
+            uevent
+        access1
+            initiators
+                node0
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node 0
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+    node3 # Note PXM 4, contains GI only
+        access0
+            initiators
+                *empty*
+            power
+            targets
+                node4
+            uevent
+        compact
+        ...
+    node4
+        access0
+            initiators
+                node3
+                read_bandwidth  0
+                read_latency    5
+                write_bandwidth 0
+                write_latency   5
+            power
+            targets
+                *empty*
+            uevent
+        access1
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty*
+            uevent
+        compact
+        ...
+
+Config 2:  GI in PXM4 further to memory in PXM 3 than CPUs, not direct attached
+
+[    4.073493] acpi/hmat: HMAT: Locality: Flags:00 Type:Access Latency Initiator Domains:4 Target Domains:4 Base:256
+[    4.074785] acpi/hmat:   Initiator-Target[0-0]:1 nsec
+[    4.075150] acpi/hmat:   Initiator-Target[0-1]:9 nsec
+[    4.075423] acpi/hmat:   Initiator-Target[0-2]:9 nsec
+[    4.076184] acpi/hmat:   Initiator-Target[0-3]:9 nsec
+[    4.077116] acpi/hmat:   Initiator-Target[1-0]:9 nsec
+[    4.077366] acpi/hmat:   Initiator-Target[1-1]:1 nsec
+[    4.077640] acpi/hmat:   Initiator-Target[1-2]:9 nsec
+[    4.078156] acpi/hmat:   Initiator-Target[1-3]:9 nsec
+[    4.078471] acpi/hmat:   Initiator-Target[2-0]:9 nsec
+[    4.078994] acpi/hmat:   Initiator-Target[2-1]:9 nsec
+[    4.079277] acpi/hmat:   Initiator-Target[2-2]:1 nsec
+[    4.079505] acpi/hmat:   Initiator-Target[2-3]:9 nsec
+[    4.080126] acpi/hmat:   Initiator-Target[4-0]:13 nsec
+[    4.080995] acpi/hmat:   Initiator-Target[4-1]:13 nsec
+[    4.081351] acpi/hmat:   Initiator-Target[4-2]:13 nsec
+[    4.082125] acpi/hmat:   Initiator-Target[4-3]:13 nsec
+
+/sys/bus/node/devices/...
+    node0 #1 and 2 similar.
+        access0
+            initiators
+                node0
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node0
+                node4
+            uevent
+        access1
+            initiators
+                node0
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node0
+                node4
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+    node3 # Note PXM 4, contains GI only
+        #No accessX directories.
+        compact
+        ...
+    node4
+        access0
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty*
+            uevent
+        access1
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty*
+            uevent
+        compact
+        ...
+
+
+case 3 - as per case 2 but now the memory in node 3 is direct attached to the
+GI but nearer the main nodes (not physically sensible :))
+
+/sys/bus/node/devices/...
+    node0 #1 and 2 similar.
+        access0
+            initiators
+                node0
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node0
+                node4
+            uevent
+        access1
+            initiators
+                node0
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node0
+                node4
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+    node3 # Note PXM 4, contains GI only
+        access0
+            initiators
+                *empty*
+            power
+            targets
+                node4
+            uevent
+        compact
+        ...
+    node4
+        access0
+            initiators
+                node3
+                read_bandwidth  0
+                read_latency    13
+                write_bandwidth 0
+                write_latency   13
+            power
+            targets
+                *empty*
+            uevent
+        access1
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty*
+            uevent
+        compact
+        ...
+
+Case 4 - nearer the GI, but direct attached to one of the CPUS.
+# Another bonkers one.
+
+/sys/bus/node/devices/...
+    node0 #1 similar.
+        access0
+            initiators
+                node0
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node0
+                node4
+            uevent
+        access1
+            initiators
+                node0
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node0
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+    node2 # Direct attached to memory in node 3
+        access0
+            initiators
+                node2
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node2
+                node4 #direct attached
+            uevent
+        access1
+            initiators
+                node2
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node2
+                node4 #direct attached
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+
+    node3 # Note PXM 4, contains GI only
+        #No accessX directories.
+        compact
+        ...
+    node4
+        access0
+            initiators
+                node3
+                read_bandwidth  0
+                read_latency    13
+                write_bandwidth 0
+                write_latency   13
+            power
+            targets
+                *empty*
+            uevent
+        access1
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty*
+            uevent
+        compact
+        ...
+
+case 5 memory and GI together in node 3 (added an extra GI to node 3)
+Note hmat should also reflect this extra initiator domain.
+
+/sys/bus/node/devices/...
+    node0 #1 and 2 similar.
+        access0
+            initiators
+                node0
+                read_bandwidth  0 #not specificed in hmat
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node0
+                node4
+            uevent
+        access1
+            initiators
+                node0
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                read_bandwidth  1   
+            power
+            targets
+                node0
+            uevent
+        compact
+        cpu0
+        cpu1
+        ...
+    node3 # Note PXM 3, contains GI only
+        #No accessX directories.
+        compact
+        ...
+    node4 # Now memory and GI.
+        access0
+            initiators
+                node4
+                read_bandwidth  0
+                read_latency    1
+                write_bandwidth 0
+                write_latency   1
+            power
+            targets
+                node4
+            uevent
+        access1
+            initiators
+                node0
+                node1
+                node2
+                read_bandwidth  0
+                read_latency    9
+                write_bandwidth 0
+                write_latency   9
+            power
+            targets
+                *empty* # as expected GI doesn't paticipate in access 1.
+            uevent
+        compact
+        ...
+	
+Jonathan Cameron (6):
+  ACPI: Support Generic Initiator only domains
+  x86: Support Generic Initiator only proximity domains
+  ACPI: Let ACPI know we support Generic Initiator Affinity Structures
+  ACPI: HMAT: Fix handling of changes from ACPI 6.2 to ACPI 6.3
+  node: Add access1 class to represent CPU to memory characteristics
+  docs: mm: numaperf.rst Add brief description for access class 1.
+
+ Documentation/admin-guide/mm/numaperf.rst |  8 ++
+ arch/x86/include/asm/numa.h               |  2 +
+ arch/x86/kernel/setup.c                   |  1 +
+ arch/x86/mm/numa.c                        | 14 ++++
+ drivers/acpi/bus.c                        |  4 +
+ drivers/acpi/numa/hmat.c                  | 89 ++++++++++++++++++-----
+ drivers/acpi/numa/srat.c                  | 69 +++++++++++++++++-
+ drivers/base/node.c                       |  3 +
+ include/linux/acpi.h                      |  1 +
+ include/linux/nodemask.h                  |  1 +
+ 10 files changed, 171 insertions(+), 21 deletions(-)
+
 -- 
-2.28.0
+2.19.1
 
