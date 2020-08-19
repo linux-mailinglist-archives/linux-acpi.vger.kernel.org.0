@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7227A249D4C
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 14:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5224249D13
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 14:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbgHSMD4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Aug 2020 08:03:56 -0400
-Received: from mga17.intel.com ([192.55.52.151]:31808 "EHLO mga17.intel.com"
+        id S1728070AbgHSMAB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Aug 2020 08:00:01 -0400
+Received: from mga02.intel.com ([134.134.136.20]:1227 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728428AbgHSL7R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1728412AbgHSL7R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 19 Aug 2020 07:59:17 -0400
-IronPort-SDR: l8/2vkKrendYAOY5dt55fAjIQeqs/iwsYwBxdysla/ruPmxw9GrDpDrDYqQsFOrpSHcd2ri7xN
- ySuyWS8f2ZtQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="135160286"
+IronPort-SDR: q9ccMLz+IN8zcluDn/ngIDYv3RgBrWlySZLIuANlmt4aTt3qUDI8XzLhffGQ6W0SvwwQN6SOD7
+ uRKOeg0SVTMg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="142904872"
 X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="135160286"
+   d="scan'208";a="142904872"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:10 -0700
-IronPort-SDR: lftiw1FH3jp+HE7eT6XXBSDQojVdz98HP+OoElTmQvNIk8KupFMrlo9xWfunLeWueYq633x+Kz
- g/Qr0DEnZvBg==
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:14 -0700
+IronPort-SDR: PpzLTw4aqqPu8zna03CGkb69bCaPxR9U+8TtLKzKzB/zNpD+XQlUHtZdXYMZiIcR6kRpn1Cmou
+ Ik7DN8K1GqLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="336938679"
+   d="scan'208";a="497724277"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 19 Aug 2020 04:59:07 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 19 Aug 2020 04:59:11 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 74B48374; Wed, 19 Aug 2020 14:59:06 +0300 (EEST)
+        id 7FB7B377; Wed, 19 Aug 2020 14:59:06 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     linux-usb@vger.kernel.org
 Cc:     Michael Jamet <michael.jamet@intel.com>,
@@ -43,9 +43,9 @@ Cc:     Michael Jamet <michael.jamet@intel.com>,
         Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: [PATCH 04/19] thunderbolt: Use bit 31 to check if Firmware CM is running in Tiger Lake
-Date:   Wed, 19 Aug 2020 14:58:50 +0300
-Message-Id: <20200819115905.59834-5-mika.westerberg@linux.intel.com>
+Subject: [PATCH 05/19] thunderbolt: Do not program NFC buffers for USB4 router protocol adapters
+Date:   Wed, 19 Aug 2020 14:58:51 +0300
+Message-Id: <20200819115905.59834-6-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
 References: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
@@ -56,35 +56,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In Tiger Lake the Firmware CM is always enabled (so bit 0 is always set)
-but it may be in "pass through" mode which means it requires Software CM
-instead. This can be determined by checking bit 31 instead.
+USB4 spec says that NFC buffers field is not used for protocol adapters,
+only for lane adapters so make tb_port_add_nfc_credits() skip non-lane
+adapters in order to follow the spec.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/icm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
-index ffcc8c3459e5..b51fc3f62b1f 100644
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -1635,11 +1635,14 @@ static void icm_icl_rtd3_veto(struct tb *tb, const struct icm_pkg_header *hdr)
+diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+index 698c52775eec..72756c8ceead 100644
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -601,6 +601,13 @@ int tb_port_add_nfc_credits(struct tb_port *port, int credits)
+ 	if (credits == 0 || port->sw->is_unplugged)
+ 		return 0;
  
- static bool icm_tgl_is_supported(struct tb *tb)
- {
-+	u32 val;
++	/*
++	 * USB4 restricts programming NFC buffers to lane adapters only
++	 * so skip other ports.
++	 */
++	if (tb_switch_is_usb4(port->sw) && !tb_port_is_null(port))
++		return 0;
 +
- 	/*
- 	 * If the firmware is not running use software CM. This platform
- 	 * should fully support both.
- 	 */
--	return icm_firmware_running(tb->nhi);
-+	val = ioread32(tb->nhi->iobase + REG_FW_STS);
-+	return !!(val & REG_FW_STS_NVM_AUTH_DONE);
- }
+ 	nfc_credits = port->config.nfc_credits & ADP_CS_4_NFC_BUFFERS_MASK;
+ 	nfc_credits += credits;
  
- static void icm_handle_notification(struct work_struct *work)
 -- 
 2.28.0
 
