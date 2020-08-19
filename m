@@ -2,248 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A45924998B
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 11:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C065249CFE
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 13:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725804AbgHSJmm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Aug 2020 05:42:42 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2665 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726634AbgHSJmk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Aug 2020 05:42:40 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id C1B492E673DAD2CF9D28;
-        Wed, 19 Aug 2020 10:42:37 +0100 (IST)
-Received: from localhost (10.52.124.201) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 19 Aug
- 2020 10:42:37 +0100
-Date:   Wed, 19 Aug 2020 10:41:06 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-CC:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>, <linuxarm@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] arm64: numa: rightsize the distance array
-Message-ID: <20200819104106.00002e01@Huawei.com>
-In-Reply-To: <31e0f1be-7dc5-3e5b-2e56-5cda569f2a55@arm.com>
-References: <20200708113825.1429671-1-Jonathan.Cameron@huawei.com>
-        <31e0f1be-7dc5-3e5b-2e56-5cda569f2a55@arm.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1728469AbgHSL7S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Aug 2020 07:59:18 -0400
+Received: from mga12.intel.com ([192.55.52.136]:34054 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728207AbgHSL7N (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Aug 2020 07:59:13 -0400
+IronPort-SDR: l/Vi+p/oYDFIQJwWbC5851F8JjEQnuFR0gtB1Y2dcbKHvvvjDDdn3MOvj/9K/deaTYGCWQ8nIn
+ QBF+QwcqC7Pg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="134610550"
+X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
+   d="scan'208";a="134610550"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:10 -0700
+IronPort-SDR: 0WeEkQrRE1815QZ5UKWM7RLitpA5/2/UWF8TiRGsVS+Dr5XU01lFBN42/NXfcjuBBt0n1uPYcK
+ myHhCWxaOYtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
+   d="scan'208";a="293095693"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 19 Aug 2020 04:59:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 493281FD; Wed, 19 Aug 2020 14:59:06 +0300 (EEST)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     linux-usb@vger.kernel.org
+Cc:     Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Dana Alkattan <dana.alkattan@intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: [PATCH 00/19] thunderbolt: Power Management improvements
+Date:   Wed, 19 Aug 2020 14:58:46 +0300
+Message-Id: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.124.201]
-X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Aug 2020 10:31:18 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+Hi all,
 
-> Hello Jonathan,
+This series improves power management in the Thunderbolt driver. We already
+have a quite complete power management on systems where Firmware based
+Connection Manager is used (this is pretty much all non-Apple systems out
+there) so this series adds a couple of optimizations to make certain power
+transitions slightly faster, hopefully improving user experience.
 
-Hi Anshuman,
+Rest of the patches improve power management in the Software Connection
+manager side of the driver. USB4 spec covers power management for USB4
+hosts and devices, and also TBT3 compatible devices so these patches
+implement that. We also switch to use device links instead of PCI quirk to
+make sure the Thunderbolt/USB4 host controller is resumed before tunneled
+PCIe and USB 3.x ports (so that it gets the chance to restore the tunnels
+properly before). Tiger Lake systems with Software Connection Manager
+enabled describe these relationships using a new ACPI _DSD property that we
+parse in the driver and populate device links accordingly.
 
-> 
-> On 07/08/2020 05:08 PM, Jonathan Cameron wrote:
-> > Unfortunately we are currently calling numa_alloc_distance well before we call
-> > setup_node_to_cpu_mask_map means that nr_node_ids is set to MAX_NUMNODES.
-> > This wastes a bit of memory and is confusing to the reader.  
-> 
-> With defconfig where CONFIG_NODES_SHIFT = 2 i.e MAX_NUMNODES = 4, the total
-> numa_distance size is 16 bytes (individual entries here are just u8). 
+Mika Westerberg (17):
+  thunderbolt: Software CM only should set force power in Tiger Lake
+  thunderbolt: Use bit 31 to check if Firmware CM is running in Tiger Lake
+  thunderbolt: Do not program NFC buffers for USB4 router protocol adapters
+  thunderbolt: No need to log an error if tb_switch_lane_bonding_enable() fails
+  thunderbolt: Send reset only to first generation routers
+  thunderbolt: Tear down DP tunnels when suspending
+  thunderbolt: Initialize TMU again on resume
+  thunderbolt: Do not change default USB4 router notification timeout
+  thunderbolt: Configure link after lane bonding is enabled
+  thunderbolt: Set port configured for both ends of the link
+  thunderbolt: Configure port for XDomain
+  thunderbolt: Disable lane 1 for XDomain connection
+  thunderbolt: Enable wakes from system suspend
+  PCI / thunderbolt: Switch to use device links instead of PCI quirk
+  ACPI: Export acpi_get_first_physical_node() to modules
+  thunderbolt: Create device links from ACPI description
+  thunderbolt: Add runtime PM for Software CM
 
-That's another issue to tidy up.  The current defconfig isn't big enough to
-support existing platforms (we are shipping 8 node systems),
-let alone next generation.  Bit of an open question on how far to push it up
-though. Perhaps 64?  Given CXL we are probably going to soon see systems with
-a lot more nodes.  I'll send a patch for that and we can argue the exact
-value then.
+Rajmohan Mani (2):
+  thunderbolt: Optimize Force Power logic
+  thunderbolt: Optimize NHI LC mailbox command processing
 
-> Even
-> with MAX_NUMNODES = 256, numa_distance is going to be just 64K. Hence there
-> might not be much space to be saved that would need optimizing this path.
-> Please correct me if I have missed something.
+ drivers/acpi/bus.c            |   1 +
+ drivers/pci/quirks.c          |  57 --------
+ drivers/thunderbolt/Makefile  |   2 +
+ drivers/thunderbolt/acpi.c    | 117 ++++++++++++++++
+ drivers/thunderbolt/domain.c  |   2 +
+ drivers/thunderbolt/icm.c     |   5 +-
+ drivers/thunderbolt/lc.c      | 151 ++++++++++++++++----
+ drivers/thunderbolt/nhi.c     |  69 ++++++++++
+ drivers/thunderbolt/nhi_ops.c |  31 +++--
+ drivers/thunderbolt/switch.c  | 209 +++++++++++++++++++++++-----
+ drivers/thunderbolt/tb.c      | 189 +++++++++++++++++++++++--
+ drivers/thunderbolt/tb.h      |  35 ++++-
+ drivers/thunderbolt/tb_regs.h |  16 +++
+ drivers/thunderbolt/usb4.c    | 251 ++++++++++++++++++++++++++--------
+ 14 files changed, 935 insertions(+), 200 deletions(-)
+ create mode 100644 drivers/thunderbolt/acpi.c
 
-Agreed.  The saving is small.  This was mostly about the code being misleading.
-It gives the impression of doing dynamic sizing but doesn't actually do so as it
-is using nr_node_ids before that value has been updated.  I would prefer
-to make the code 'obviously' correct.  The x86 path is one approach, simply
-hard coding the size as a constant is another.
-
-The secondary advantage would be to make it easy to unify this code across
-architectures.  Kind of inevitable riscv will be here soon and it would be nice
-not to have a third slight variation on the code.  I'd like to explore such
-possible unification but it wasn't the main aim of this patch.
-
-> 
-> > 
-> > Note we could just decide to hardcode it as MAX_NUMNODES but if so we should
-> > do so explicitly.  
-> 
-> nr_node_ids = MAX_NUMNODES which is set from mm/page_alloc.c, yes asserting
-> with an WARN_ON() that it is indeed MAX_NUMNODES would make sense.
-
-OK, a WARN_ON would at least make it apparent this is a constant, not a dynamic
-value as a reader of the code might assume (I did).
-
-Could we just go further and use MAX_NUMNODES directly and ignore nr_node_ids
-for this purpose?
-
-> 
-> > 
-> > Looking at what x86 does, they do a walk of nodes_parsed and locally
-> > establish the maximum node count seen.  We can't actually do that where we
-> > were previously calling it in numa_init because nodes_parsed isn't set up
-> > either yet.  So let us take a leaf entirely out of x86's book and make
-> > the true assumption that nodes_parsed will definitely be set up before
-> > we try to put a real value in this array.  Hence just do it on demand.  
-> 
-> So it is replacing one assumption i.e nr_node_ids = MAX_NUMNODES with another
-> i.e nodes_parsed has been initialized, while trying to populate an entry.
-
-Yes.  If we make it clearly a fixed value, then I'm happy with that solution
-to this particular problem.
-
-If not, I would argue that the use nodes_parsed makes it very much obvious that
-we are assuming it was initialized.  (Though on that argument we would have
-assumed nr_node_ids had it's final value in the existing code and it doesn't,
-I come back to my main argument being to make the code 'obviously' correct).
-
-> 
-> > 
-> > In order to avoid trying and failing to allocate the array multiple times
-> > we do the same thing as x86 and set numa_distance = 1. This requires a
-> > few small modifications elsewhere.  
-> 
-> Where ? Dont see numa_distance being set as 1.
-
-See below, I have highlighted the line.
-
-> 
-> > 
-> > Worth noting, that with one exception (which it appears can be removed [1])
-> > the x86 and arm numa distance code is now identical.  Worth factoring it
-> > out to some common location?
-> > 
-> > [1] https://lkml.kernel.org/r/20170406124459.dwn5zhpr2xqg3lqm@node.shutemov.name
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> > arch/arm64/mm/numa.c | 35 ++++++++++++++++++-----------------
-> >  1 file changed, 18 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-> > index aafcee3e3f7e..a2f549ef0a36 100644
-> > --- a/arch/arm64/mm/numa.c
-> > +++ b/arch/arm64/mm/numa.c
-> > @@ -255,13 +255,11 @@ void __init numa_free_distance(void)
-> >  {
-> >  	size_t size;
-> >  
-> > -	if (!numa_distance)
-> > -		return;
-> > -
-> >  	size = numa_distance_cnt * numa_distance_cnt *
-> >  		sizeof(numa_distance[0]);
-> > -
-> > -	memblock_free(__pa(numa_distance), size);
-> > +	/* numa_distance could be 1LU marking allocation failure, test cnt */
-> > +	if (numa_distance_cnt)
-> > +		memblock_free(__pa(numa_distance), size);
-> >  	numa_distance_cnt = 0;
-> >  	numa_distance = NULL;
-> >  }
-> > @@ -271,20 +269,29 @@ void __init numa_free_distance(void)
-> >   */
-> >  static int __init numa_alloc_distance(void)
-> >  {
-> > +	nodemask_t nodes_parsed;
-> >  	size_t size;
-> > +	int i, j, cnt = 0;
-> >  	u64 phys;
-> > -	int i, j;
-> >  
-> > -	size = nr_node_ids * nr_node_ids * sizeof(numa_distance[0]);
-> > +	/* size the new table and allocate it */
-> > +	nodes_parsed = numa_nodes_parsed;
-> > +	for_each_node_mask(i, nodes_parsed)
-> > +		cnt = i;  
-> 
-> There is no nodemask related helper to fetch the highest bit set ?
-
-Not that I can find.
-
-There is nodes_weight(), but I think we can currently end up with holes,
-and it definitely isn't obvious from the local code that we can't.
-
-
-> 
-> > +	cnt++;
-> > +	size = cnt * cnt * sizeof(numa_distance[0]);
-> >  	phys = memblock_find_in_range(0, PFN_PHYS(max_pfn),
-> >  				      size, PAGE_SIZE);
-> > -	if (WARN_ON(!phys))
-> > +	if (!phys) {
-> > +		pr_warn("Warning: can't allocate distance table!\n");
-> > +		/* don't retry until explicitly reset */
-> > +		numa_distance = (void *)1LU;
-
-Here is where we set numa_distance to 1 in the error path.
-
-> >  		return -ENOMEM;
-> > -
-> > +	}
-> >  	memblock_reserve(phys, size);
-> >  
-> >  	numa_distance = __va(phys);
-> > -	numa_distance_cnt = nr_node_ids;
-> > +	numa_distance_cnt = cnt;
-> >  
-> >  	/* fill with the default distances */
-> >  	for (i = 0; i < numa_distance_cnt; i++)
-> > @@ -311,10 +318,8 @@ static int __init numa_alloc_distance(void)
-> >   */
-> >  void __init numa_set_distance(int from, int to, int distance)
-> >  {
-> > -	if (!numa_distance) {
-> > -		pr_warn_once("Warning: distance table not allocated yet\n");
-> > +	if (!numa_distance && numa_alloc_distance() < 0)
-> >  		return;
-> > -	}
-> >  
-> >  	if (from >= numa_distance_cnt || to >= numa_distance_cnt ||
-> >  			from < 0 || to < 0) {
-> > @@ -384,10 +389,6 @@ static int __init numa_init(int (*init_func)(void))
-> >  	nodes_clear(node_possible_map);
-> >  	nodes_clear(node_online_map);
-> >  
-> > -	ret = numa_alloc_distance();
-> > -	if (ret < 0)
-> > -		return ret;
-> > -
-> >  	ret = init_func();
-> >  	if (ret < 0)
-> >  		goto out_free_distance;
-> >   
-> 
-> What is the primary objective here ? Reduce memory for numa_distance[]
-> or unifying arm64's numa_init() with that of x86's ?
-
-As mentioned above. The objective when I originally looked at this was
-to make the code do what it appeared to do.  The approach chosen was about
-the added benefit of unifying this part with x86 + riscv etc.
-Always good to not reinvent the wheel.
-
-Jonathan
+-- 
+2.28.0
 
