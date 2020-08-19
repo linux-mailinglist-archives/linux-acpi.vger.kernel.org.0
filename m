@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46C19249D01
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 13:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03F8249D0E
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Aug 2020 14:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728475AbgHSL7T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Aug 2020 07:59:19 -0400
-Received: from mga03.intel.com ([134.134.136.65]:50012 "EHLO mga03.intel.com"
+        id S1728503AbgHSL7b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Aug 2020 07:59:31 -0400
+Received: from mga11.intel.com ([192.55.52.93]:23197 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728357AbgHSL7N (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Aug 2020 07:59:13 -0400
-IronPort-SDR: DLQJhcqScln7J7x0Z09Qul6nInTS5H2qXfGnBmMEYrpJHEXAmi7wpc3Pruks6dHLC8EgBMo5nl
- E33YSXaHgW6g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="155060155"
+        id S1728453AbgHSL7R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Aug 2020 07:59:17 -0400
+IronPort-SDR: jkgx8MdRyBTdVo8Y2ycmSS9Y4UbPJ34a1ao272IYd1BELj3dJStEv+h8sDpYd62VbK5L0BTqQe
+ LkEU9aRZ785w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="152708174"
 X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="155060155"
+   d="scan'208";a="152708174"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:10 -0700
-IronPort-SDR: jlJ1sNCxmI3NEFOl3iykLMYBESZ9h6W1Un94eLawz7S9fIFbNuDcnWkTcDLVHNNVDlVlCDPQB8
- n30go2nRjGMg==
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2020 04:59:14 -0700
+IronPort-SDR: Nttxb4+YcF2yr3xWeLrmOtQkjZYMskIXL2yWeXYUHPXmATj3QmhtGB82UaaTpBcau3TsW3Cn1a
+ z8kRFV3xNz4Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,331,1592895600"; 
-   d="scan'208";a="279686688"
+   d="scan'208";a="400804657"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 19 Aug 2020 04:59:07 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 19 Aug 2020 04:59:11 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 69B84371; Wed, 19 Aug 2020 14:59:06 +0300 (EEST)
+        id 960A43DF; Wed, 19 Aug 2020 14:59:06 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     linux-usb@vger.kernel.org
 Cc:     Michael Jamet <michael.jamet@intel.com>,
@@ -43,9 +43,9 @@ Cc:     Michael Jamet <michael.jamet@intel.com>,
         Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: [PATCH 03/19] thunderbolt: Software CM only should set force power in Tiger Lake
-Date:   Wed, 19 Aug 2020 14:58:49 +0300
-Message-Id: <20200819115905.59834-4-mika.westerberg@linux.intel.com>
+Subject: [PATCH 07/19] thunderbolt: Send reset only to first generation routers
+Date:   Wed, 19 Aug 2020 14:58:53 +0300
+Message-Id: <20200819115905.59834-8-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
 References: <20200819115905.59834-1-mika.westerberg@linux.intel.com>
@@ -56,67 +56,81 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When Software CM is running it should not send any NHI mailbox command
-during PM flows. Only force power bit needs to be set and cleared so
-change Tiger Lake (well and Ice Lake) nhi_ops to take this into account.
+First generation routers may need the reset command upon resume but it
+is not supported by newer generations.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/nhi_ops.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/thunderbolt/switch.c | 21 +++++++++++----------
+ drivers/thunderbolt/tb.c     |  2 +-
+ drivers/thunderbolt/tb.h     |  2 +-
+ 3 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/thunderbolt/nhi_ops.c b/drivers/thunderbolt/nhi_ops.c
-index 28583f9faf46..96da07e88c52 100644
---- a/drivers/thunderbolt/nhi_ops.c
-+++ b/drivers/thunderbolt/nhi_ops.c
-@@ -121,31 +121,38 @@ static void icl_nhi_set_ltr(struct tb_nhi *nhi)
+diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+index 72756c8ceead..fb30ea1dfc31 100644
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1234,23 +1234,24 @@ static void tb_dump_switch(const struct tb *tb, const struct tb_switch *sw)
  
- static int icl_nhi_suspend(struct tb_nhi *nhi)
+ /**
+  * reset_switch() - reconfigure route, enable and send TB_CFG_PKG_RESET
++ * @sw: Switch to reset
+  *
+  * Return: Returns 0 on success or an error code on failure.
+  */
+-int tb_switch_reset(struct tb *tb, u64 route)
++int tb_switch_reset(struct tb_switch *sw)
  {
-+	struct tb *tb = pci_get_drvdata(nhi->pdev);
- 	int ret;
- 
- 	if (icl_nhi_is_device_connected(nhi))
- 		return 0;
- 
--	/*
--	 * If there is no device connected we need to perform both: a
--	 * handshake through LC mailbox and force power down before
--	 * entering D3.
--	 */
--	icl_nhi_lc_mailbox_cmd(nhi, ICL_LC_PREPARE_FOR_RESET);
--	ret = icl_nhi_lc_mailbox_cmd_complete(nhi, ICL_LC_MAILBOX_TIMEOUT);
--	if (ret)
--		return ret;
-+	if (tb_switch_is_icm(tb->root_switch)) {
-+		/*
-+		 * If there is no device connected we need to perform
-+		 * both: a handshake through LC mailbox and force power
-+		 * down before entering D3.
-+		 */
-+		icl_nhi_lc_mailbox_cmd(nhi, ICL_LC_PREPARE_FOR_RESET);
-+		ret = icl_nhi_lc_mailbox_cmd_complete(nhi, ICL_LC_MAILBOX_TIMEOUT);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	return icl_nhi_force_power(nhi, false);
- }
- 
- static int icl_nhi_suspend_noirq(struct tb_nhi *nhi, bool wakeup)
- {
-+	struct tb *tb = pci_get_drvdata(nhi->pdev);
- 	enum icl_lc_mailbox_cmd cmd;
- 
- 	if (!pm_suspend_via_firmware())
- 		return icl_nhi_suspend(nhi);
- 
-+	if (!tb_switch_is_icm(tb->root_switch))
+ 	struct tb_cfg_result res;
+-	struct tb_regs_switch_header header = {
+-		header.route_hi = route >> 32,
+-		header.route_lo = route,
+-		header.enabled = true,
+-	};
+-	tb_dbg(tb, "resetting switch at %llx\n", route);
+-	res.err = tb_cfg_write(tb->ctl, ((u32 *) &header) + 2, route,
+-			0, 2, 2, 2);
++
++	if (sw->generation > 1)
 +		return 0;
 +
- 	cmd = wakeup ? ICL_LC_GO2SX : ICL_LC_GO2SX_NO_WAKE;
- 	icl_nhi_lc_mailbox_cmd(nhi, cmd);
- 	return icl_nhi_lc_mailbox_cmd_complete(nhi, ICL_LC_MAILBOX_TIMEOUT);
++	tb_sw_dbg(sw, "resetting switch\n");
++
++	res.err = tb_sw_write(sw, ((u32 *) &sw->config) + 2,
++			      TB_CFG_SWITCH, 2, 2);
+ 	if (res.err)
+ 		return res.err;
+-	res = tb_cfg_reset(tb->ctl, route, TB_CFG_DEFAULT_TIMEOUT);
++	res = tb_cfg_reset(sw->tb->ctl, tb_route(sw), TB_CFG_DEFAULT_TIMEOUT);
+ 	if (res.err > 0)
+ 		return -EIO;
+ 	return res.err;
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index 98f268a818a0..a6da2d0567ae 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1258,7 +1258,7 @@ static int tb_resume_noirq(struct tb *tb)
+ 	tb_dbg(tb, "resuming...\n");
+ 
+ 	/* remove any pci devices the firmware might have setup */
+-	tb_switch_reset(tb, 0);
++	tb_switch_reset(tb->root_switch);
+ 
+ 	tb_switch_resume(tb->root_switch);
+ 	tb_free_invalid_tunnels(tb);
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index df08f6d7aaa0..69e78bbed53a 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -634,7 +634,7 @@ int tb_switch_add(struct tb_switch *sw);
+ void tb_switch_remove(struct tb_switch *sw);
+ void tb_switch_suspend(struct tb_switch *sw);
+ int tb_switch_resume(struct tb_switch *sw);
+-int tb_switch_reset(struct tb *tb, u64 route);
++int tb_switch_reset(struct tb_switch *sw);
+ void tb_sw_set_unplugged(struct tb_switch *sw);
+ struct tb_port *tb_switch_find_port(struct tb_switch *sw,
+ 				    enum tb_port_type type);
 -- 
 2.28.0
 
