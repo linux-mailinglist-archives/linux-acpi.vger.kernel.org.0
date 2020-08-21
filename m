@@ -2,121 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BACD424C7BC
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 00:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A84424CFE6
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 09:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbgHTWYh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Aug 2020 18:24:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40226 "EHLO mail.kernel.org"
+        id S1725908AbgHUHtG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Aug 2020 03:49:06 -0400
+Received: from mga12.intel.com ([192.55.52.136]:12792 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726919AbgHTWYg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Aug 2020 18:24:36 -0400
-Received: from localhost (104.sub-72-107-126.myvzw.com [72.107.126.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3233A2087D;
-        Thu, 20 Aug 2020 22:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597962275;
-        bh=EzkGTo7PwVoBMRVxTVmD/ln0ndYMvqUfYa99G7EdZrI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=eUI2xM5SYs5TOUjrABWD24q3qjsn1Z30MLU4mm5N+ZC+qbbocobQE2Dcl6rsjc/KE
-         mMc95BUGA7Eh5g8nUomJh2XAUbuqWwCbgx9nHq1KgS4wu6PqyC/kbHfaHCevgLMf2B
-         FCXP45ZKQS/nj7xCn3Vq7R5bxmxqlkpUsek+HeXs=
-Date:   Thu, 20 Aug 2020 17:24:33 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, rafael@kernel.org,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxarm@huawei.com,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Sean V Kelley <sean.v.kelley@linux.intel.com>,
-        linux-api@vger.kernel.org
-Subject: Re: [PATCH v9 2/6] x86: Support Generic Initiator only proximity
- domains
-Message-ID: <20200820222433.GA1571517@bjorn-Precision-5520>
+        id S1728141AbgHUHtE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 Aug 2020 03:49:04 -0400
+IronPort-SDR: M/aN9wnI5QX+pnkasq9Q6CiE5nEzxD166kcVK+CCuwepi6PAoXlvQhVG9cPfDWl1Wi3lOHn5qo
+ c8DpXLkYkOjA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="135019143"
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="135019143"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2020 00:48:59 -0700
+IronPort-SDR: h/mx5hUf4ZZ3uLR2tR8eg7IzjVOTFu5oRvs9O6EpIbUtMMTafXg7UylUe4jVeWiH9kbu2GSB8q
+ gjC14TTQmnyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="293754932"
+Received: from lkp-server01.sh.intel.com (HELO 91ed66e1ca04) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 21 Aug 2020 00:48:52 -0700
+Received: from kbuild by 91ed66e1ca04 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k91nA-0000nG-20; Fri, 21 Aug 2020 07:48:52 +0000
+Date:   Fri, 21 Aug 2020 15:47:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 0e2db525c08af6c8f0298ca8e35d3717cd5c4b23
+Message-ID: <5f3f7c2d.XKHUoIq6GBm6l3I1%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200819145111.1715026-3-Jonathan.Cameron@huawei.com>
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 10:51:07PM +0800, Jonathan Cameron wrote:
-> In common with memoryless domains we only register GI domains
-> if the proximity node is not online. If a domain is already
-> a memory containing domain, or a memoryless domain there is
-> nothing to do just because it also contains a Generic Initiator.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  arch/x86/include/asm/numa.h |  2 ++
->  arch/x86/kernel/setup.c     |  1 +
->  arch/x86/mm/numa.c          | 14 ++++++++++++++
->  3 files changed, 17 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-> index bbfde3d2662f..f631467272a3 100644
-> --- a/arch/x86/include/asm/numa.h
-> +++ b/arch/x86/include/asm/numa.h
-> @@ -62,12 +62,14 @@ extern void numa_clear_node(int cpu);
->  extern void __init init_cpu_to_node(void);
->  extern void numa_add_cpu(int cpu);
->  extern void numa_remove_cpu(int cpu);
-> +extern void init_gi_nodes(void);
->  #else	/* CONFIG_NUMA */
->  static inline void numa_set_node(int cpu, int node)	{ }
->  static inline void numa_clear_node(int cpu)		{ }
->  static inline void init_cpu_to_node(void)		{ }
->  static inline void numa_add_cpu(int cpu)		{ }
->  static inline void numa_remove_cpu(int cpu)		{ }
-> +static inline void init_gi_nodes(void)			{ }
->  #endif	/* CONFIG_NUMA */
->  
->  #ifdef CONFIG_DEBUG_PER_CPU_MAPS
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 3511736fbc74..9062c146f03a 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -1218,6 +1218,7 @@ void __init setup_arch(char **cmdline_p)
->  	prefill_possible_map();
->  
->  	init_cpu_to_node();
-> +	init_gi_nodes();
->  
->  	io_apic_init_mappings();
->  
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index aa76ec2d359b..fc630dc6764e 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -747,6 +747,20 @@ static void __init init_memory_less_node(int nid)
->  	 */
->  }
->  
-> +/*
-> + * Generic Initiator Nodes may have neither CPU nor Memory.
-> + * At this stage if either of the others were present we would
-> + * already be online.
-> + */
-> +void __init init_gi_nodes(void)
-> +{
-> +	int nid;
-> +
-> +	for_each_node_state(nid, N_GENERIC_INITIATOR)
-> +		if (!node_online(nid))
-> +			init_memory_less_node(nid);
-> +}
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 0e2db525c08af6c8f0298ca8e35d3717cd5c4b23  Merge branch 'intel_pstate-testing' into bleeding-edge
 
-This doesn't *look* very x86-specific, and apparently you don't need
-any arm64-specific changes?  Too bad this can't be unified a little
-bit to remove the arch #ifdefs completely.
+elapsed time: 722m
 
-I do see that init_memory_less_node() is only implemented on x86, but
-it just seems like all this might not be inherently be arch-specific.
+configs tested: 66
+configs skipped: 1
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200820
+i386                 randconfig-a004-20200820
+i386                 randconfig-a005-20200820
+i386                 randconfig-a003-20200820
+i386                 randconfig-a006-20200820
+i386                 randconfig-a001-20200820
+x86_64               randconfig-a015-20200820
+x86_64               randconfig-a012-20200820
+x86_64               randconfig-a016-20200820
+x86_64               randconfig-a014-20200820
+x86_64               randconfig-a011-20200820
+x86_64               randconfig-a013-20200820
+i386                 randconfig-a013-20200820
+i386                 randconfig-a012-20200820
+i386                 randconfig-a011-20200820
+i386                 randconfig-a016-20200820
+i386                 randconfig-a014-20200820
+i386                 randconfig-a015-20200820
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
