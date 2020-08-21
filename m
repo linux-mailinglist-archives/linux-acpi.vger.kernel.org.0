@@ -2,105 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCE724DF92
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 20:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A3324DF88
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 20:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbgHUS3R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Aug 2020 14:29:17 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:47008 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726461AbgHUS2T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Aug 2020 14:28:19 -0400
-Received: by mail-oi1-f193.google.com with SMTP id v13so2292587oiv.13;
-        Fri, 21 Aug 2020 11:28:18 -0700 (PDT)
+        id S1726794AbgHUS2y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Aug 2020 14:28:54 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45979 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726638AbgHUS2x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Aug 2020 14:28:53 -0400
+Received: by mail-oi1-f195.google.com with SMTP id o21so2298607oie.12;
+        Fri, 21 Aug 2020 11:28:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rrbEBmcM/knK8k8TI6aBXuX0Dz97eQ0LcBffz+HMJ5Y=;
-        b=QxJy92uRKnoR/QeQ+PhCUcynn3LCSvCGe7q9SUBwrnJ9UwtPHRYuXXIKa0b5ev+D1E
-         jUXihwl1j8PEPEXcN20INlkH7XskfW7Lcic4kWxjyJ/EcK6A/pTDdXGU5RT2EiWt+6Zu
-         Pq2txkGWzH3BN3uNJLl9KnU4ek362EKPD1y7d0vtDU/o66T9nM+0DcSmNhl4rp63vWo3
-         QqO1eZhXVqHCbO7/NIZd8lW4DYJMp8mZgOtSg5Em9fViEYY/cN7uD+gyWDNoWYb7tutf
-         m0squv7GhGenvazqC8qx1BT+SxThCEuD0T1vltXiQnM1qwMJw16Z1efhs/ih8xEZCXvJ
-         3mow==
-X-Gm-Message-State: AOAM532moCVDWBg4aPTMjGuvaXK7gTIw3lXaFnl0qhDB+Nzo+0xXw2Cl
-        D9Z30ESbX/BmEI8wReNJTaPQ8J6hk3abFsm7r6ccvULV
-X-Google-Smtp-Source: ABdhPJzNKD2ZAZ7mB6yq80T33UhaP85YEULyCQSgdRa/syBBH5JoPLZWFZe6IQ1DSoqX3Pw9f423tkgsOSvAQ2udgVQ=
-X-Received: by 2002:a54:4f14:: with SMTP id e20mr2701389oiy.103.1598034498198;
- Fri, 21 Aug 2020 11:28:18 -0700 (PDT)
+        bh=/zXZIgCAakjsdNMqDTQ9OdhUqc8aoLFT/Ev7IhMzMsk=;
+        b=CqNS/nixEAmTficKp/RL0Ks0o5uUl3ztZ6hnmvp4yxJUGCef9wr/LLJ7OcJdfZe9C0
+         nJUKLbK7oyHhM2RhLbQIuFPgpQDwKD23fvZ7anngUeV4NpbbMTq6I5mhpYUWWkqCOI7u
+         i5NKsp4CostSKgSmwqV0jaypGEaRtJmq3a4Er15ESYf5DFGP9EjRr4VQroPjF8XU9ro3
+         X42r/Yi4NhOE3i0T7XE3DD+o9jWKxcP1vHw6ndW5mEM0yo87O1Q8PEMMotqUosK0VxG8
+         F98WiHAKCUY2rruvcmJylcICBVWxUpG0j+jUcYImUyDSjo/jO6bZepi4iVgOEn9Mvqbu
+         +jBA==
+X-Gm-Message-State: AOAM530YgAUvem2Y55E0VASeDYYjGfd0q32GWGsRqFqSEe+T9+cl63a+
+        aMpmvQZqoVV23mcDpCLyX1esX3ixSmf953o0vGk=
+X-Google-Smtp-Source: ABdhPJwo4v+bahA41e9ZWtLtpBPogqz1x0/57tZqP3kKMwFe5aYH3e0vzQOOukfdhIBJZscikxIZrUISkTbm5IZp4AQ=
+X-Received: by 2002:aca:a88e:: with SMTP id r136mr2692389oie.110.1598034532187;
+ Fri, 21 Aug 2020 11:28:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200821105342.32368-1-heikki.krogerus@linux.intel.com>
-In-Reply-To: <20200821105342.32368-1-heikki.krogerus@linux.intel.com>
+References: <20200819171656.2650926-1-furquan@google.com>
+In-Reply-To: <20200819171656.2650926-1-furquan@google.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 Aug 2020 20:28:07 +0200
-Message-ID: <CAJZ5v0gfX4hqa7RREQX0+=CNCs=pt7bq1AZEMZwRAAzZfGbVsA@mail.gmail.com>
-Subject: Re: [PATCH] device property: Fix the secondary firmware node handling
- in set_primary_fwnode()
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 21 Aug 2020 20:28:41 +0200
+Message-ID: <CAJZ5v0h3vFLyY9AXYFvcJD3agYk7RFCyzkWefDk_9bvCE09RNg@mail.gmail.com>
+Subject: Re: [PATCH] drivers: acpi: apd: Check return value of acpi_dev_get_property
+To:     Furquan Shaikh <furquan@google.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Aaron Durbin <adurbin@google.com>,
+        "Agrawal, Akshu" <akshu.agrawal@amd.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 12:53 PM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
+On Wed, Aug 19, 2020 at 7:17 PM Furquan Shaikh <furquan@google.com> wrote:
 >
-> When the primary firmware node pointer is removed from a
-> device (set to NULL) the secondary firmware node pointer,
-> when it exists, is made the primary node for the device.
-> However, the secondary firmware node pointer of the original
-> primary firmware node is never cleared (set to NULL).
+> `fch_misc_setup()` uses `acpi_dev_get_property()` to read the value of
+> "is-rv" passed in by BIOS in ACPI tables. However, not all BIOSes
+> might pass in this property and hence it is important to first check
+> the return value of `acpi_dev_get_property()` before referencing the
+> object filled by it.
 >
-> To avoid situation where the secondary firmware node pointer
-> is pointing to a non-existing object, clearing it properly
-> when the primary node is removed from a device in
-> set_primary_fwnode().
->
-> Fixes: 97badf873ab6 ("device property: Make it possible to use secondary firmware nodes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Signed-off-by: Furquan Shaikh <furquan@google.com>
 > ---
->  drivers/base/core.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+>  drivers/acpi/acpi_apd.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index ac1046a382bc0..f6f620aa94086 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -4264,9 +4264,9 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
->   */
->  void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
->  {
-> -       if (fwnode) {
-> -               struct fwnode_handle *fn = dev->fwnode;
-> +       struct fwnode_handle *fn = dev->fwnode;
+> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+> index 4c348377a39d..806b8ce05624 100644
+> --- a/drivers/acpi/acpi_apd.c
+> +++ b/drivers/acpi/acpi_apd.c
+> @@ -99,8 +99,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+>         if (ret < 0)
+>                 return -ENOENT;
 >
-> +       if (fwnode) {
->                 if (fwnode_is_primary(fn))
->                         fn = fn->secondary;
+> -       acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj);
+> -       clk_data->is_rv = obj->integer.value;
+> +       if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
+> +               clk_data->is_rv = obj->integer.value;
 >
-> @@ -4276,8 +4276,12 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
->                 }
->                 dev->fwnode = fwnode;
->         } else {
-> -               dev->fwnode = fwnode_is_primary(dev->fwnode) ?
-> -                       dev->fwnode->secondary : NULL;
-> +               if (fwnode_is_primary(fn)) {
-> +                       dev->fwnode = fn->secondary;
-> +                       fn->secondary = NULL;
-> +               } else {
-> +                       dev->fwnode = NULL;
-> +               }
->         }
->  }
->  EXPORT_SYMBOL_GPL(set_primary_fwnode);
+>         list_for_each_entry(rentry, &resource_list, node) {
+>                 clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
 > --
 
-Applied as 5.9-rc material, thanks!
+Applied (with minor subject edits) as 5.9-rc material, thanks!
