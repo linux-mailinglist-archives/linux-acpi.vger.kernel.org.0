@@ -2,115 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9FAF24DFA0
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 20:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 635A524E0AE
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 21:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726897AbgHUSai (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Aug 2020 14:30:38 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:46102 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726759AbgHUSad (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Aug 2020 14:30:33 -0400
-Received: by mail-ot1-f65.google.com with SMTP id v6so2292641ota.13
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Aug 2020 11:30:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K1MxKkpVnvU7d5UWkGrBlz8uQLORh5UJqQAND9p37pU=;
-        b=jdXqenQHo0gN4kagYzuWFiwVSqjVYmayLh8uT9Ifiq9pa0IEeAu4Pe2c0PG/eJ5x6Z
-         GEgAqqitEphKyyjsYw4nN6KEpa2tZcfNVvSs2iflEXfLrvVVl5pUB+Phk5pBg0XzmopJ
-         x5XTuTSNCrIGi5MC7fkWg7UyXf9ScbhLE82Vxx1btfwsA9D2ft8TttArUSLUE9EWJRmF
-         tG42ucmyYul5fkrtNbm81pyUg2BaF4JOAVAMJy4gNvyUbKrIqgWUj0SYTzV593wx60u4
-         1e6/+h/KU8MEJ5SeDpPh4o+C/5ux64yXnbnJ2PP8nShIr9xWs4DXf5CKKW3fyuQo+Gmi
-         Ve0A==
-X-Gm-Message-State: AOAM532QbB60icXUCiYQcRHC5iLh/Ow3lcMAa2iYO4enl487GSPQ8aAK
-        RCmyPn6daBOqa7dennx3eZN/gbWYG9Mwv6bpj/E=
-X-Google-Smtp-Source: ABdhPJyMsaGoi2Sui5e/8V7fSM1j1I/QJXf475TP+CksiyYjMsM5SKWUWZNEk8JREAa+sg9kjBcbpG/MvNWVgvdA1uA=
-X-Received: by 2002:a9d:5c06:: with SMTP id o6mr2877167otk.262.1598034632409;
- Fri, 21 Aug 2020 11:30:32 -0700 (PDT)
+        id S1726215AbgHUTeo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Aug 2020 15:34:44 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:37845 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1725992AbgHUTeo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Aug 2020 15:34:44 -0400
+Received: (qmail 266418 invoked by uid 1000); 21 Aug 2020 15:34:42 -0400
+Date:   Fri, 21 Aug 2020 15:34:42 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH] PM: sleep: core: Fix the handling of pending runtime
+ resume requests
+Message-ID: <20200821193442.GA264863@rowland.harvard.edu>
+References: <7969920.MVx1BpXlEM@kreacher>
 MIME-Version: 1.0
-References: <20200818091353.20097-1-ardb@kernel.org>
-In-Reply-To: <20200818091353.20097-1-ardb@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 Aug 2020 20:30:21 +0200
-Message-ID: <CAJZ5v0i2+9thbzNTzWA2cUCSvm1JQRtV9XB8fGKQk34ybBfYdQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: ioremap: avoid redundant rounding to OS page size
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7969920.MVx1BpXlEM@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 18, 2020 at 11:14 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The arm64 implementation of acpi_os_ioremap() was recently updated to
-> tighten the checks around which parts of memory are permitted to be
-> mapped by ACPI code, which generally only needs access to memory regions
-> that are statically described by firmware, and any attempts to access
-> memory that is in active use by the OS is generally a bug or a hacking
-> attempt. This tightening is based on the EFI memory map, which describes
-> all memory in the system.
->
-> The AArch64 architecture permits page sizes of 16k and 64k in addition
-> to the EFI default, which is 4k, which means that the EFI memory map may
-> describe regions that cannot be mapped seamlessly if the OS page size is
-> greater than 4k. This is usually not a problem, given that the EFI spec
-> does not permit memory regions requiring different memory attributes to
-> share a 64k page frame, and so the usual rounding to page size performed
-> by ioremap() is sufficient to deal with this. However, this rounding does
-> complicate our EFI memory map permission check, due to the loss of
-> information that occurs when several small regions share a single 64k
-> page frame (where rounding each of them will result in the same 64k
-> single page region).
->
-> However, due to the fact that the region check occurs *before* the call
-> to ioremap() where the necessary rounding is performed, we can deal
-> with this issue simply by removing the redundant rounding performed by
-> acpi_os_map_iomem(), as it appears to be the only place where the
-> arguments to a call to acpi_os_ioremap() are rounded up. So omit the
-> rounding in the call, and instead, apply the necessary masking when
-> assigning the map->virt member.
->
-> Fixes: 1583052d111f ("arm64/acpi: disallow AML memory opregions to access kernel memory")
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On Fri, Aug 21, 2020 at 07:41:02PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> It has been reported that system-wide suspend may be aborted in the
+> absence of any wakeup events due to unforseen interactions of it with
+> the runtume PM framework.
+> 
+> One failing scenario is when there are multiple devices sharing an
+> ACPI power resource and runtime-resume needs to be carried out for
+> one of them during system-wide suspend (for example, because it needs
+> to be reconfigured before the whole system goes to sleep).  In that
+> case, the runtime-resume of that device involves turning the ACPI
+> power resource "on" which in turn causes runtime resume requests
+> to be queued up for all of the other devices sharing it.  Those
+> requests go to the runtime PM workqueue which is frozen during
+> system-wide suspend, so they are not actually taken care of until
+> the resume of the whole system, but the pm_runtime_barrier()
+> call in __device_suspend() sees them and triggers system wakeup
+> events for them which then cause the system-wide suspend to be
+> aborted if wakeup source objects are in active use.
+> 
+> Of course, the logic that leads to triggering those wakeup events is
+> questionable in the first place, because clearly there are cases in
+> which a pending runtime resume request for a device is not connected
+> to any real wakeup events in any way (like the one above).  Moreover,
+> if there is a pending runtime resume request for a device while
+> __device_suspend() is running for it, the physical state of the
+> device may not be in agreement with the "suspended" runtime PM status
+> of it (which may be the very reason for queuing up the runtime resume
+> request for it).
+> 
+> For these reasons, rework __device_suspend() to carry out synchronous
+> runtime-resume for devices with pending runtime resume requests before
+> attempting to invoke system-wide suspend callbacks for them with the
+> expectation that their drivers will trigger system-wide wakeup events
+> in the process of handling the runtime resume, if necessary.
+> 
+> Fixes: 1e2ef05bb8cf8 ("PM: Limit race conditions between runtime PM and system sleep (v2)")
+> Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
-> v2: return the correct virtual address for hits in the cached mappings array
->
->  drivers/acpi/osl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 6ad8cb05f672..acf6abc693a0 100644
-> --- a/drivers/acpi/osl.c
-> +++ b/drivers/acpi/osl.c
-> @@ -350,7 +350,7 @@ void __iomem __ref
->
->         pg_off = round_down(phys, PAGE_SIZE);
->         pg_sz = round_up(phys + size, PAGE_SIZE) - pg_off;
-> -       virt = acpi_map(pg_off, pg_sz);
-> +       virt = acpi_map(phys, size);
->         if (!virt) {
->                 mutex_unlock(&acpi_ioremap_lock);
->                 kfree(map);
-> @@ -358,7 +358,7 @@ void __iomem __ref
->         }
->
->         INIT_LIST_HEAD(&map->list);
-> -       map->virt = virt;
-> +       map->virt = (void __iomem __force *)((unsigned long)virt & PAGE_MASK);
->         map->phys = pg_off;
->         map->size = pg_sz;
->         map->track.refcount = 1;
-> --
+>  drivers/base/power/main.c |   12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> Index: linux-pm/drivers/base/power/main.c
+> ===================================================================
+> --- linux-pm.orig/drivers/base/power/main.c
+> +++ linux-pm/drivers/base/power/main.c
+> @@ -1606,13 +1606,13 @@ static int __device_suspend(struct devic
+>  	}
+>  
+>  	/*
+> -	 * If a device configured to wake up the system from sleep states
+> -	 * has been suspended at run time and there's a resume request pending
+> -	 * for it, this is equivalent to the device signaling wakeup, so the
+> -	 * system suspend operation should be aborted.
+> +	 * If there's a runtime resume request pending for the device, resume
+> +	 * it before proceeding with invoking the system-wide suspend callbacks
+> +	 * for it, because the physical state of the device may not reflect the
+> +	 * "suspended" runtime PM status already in that case.
+>  	 */
+> -	if (pm_runtime_barrier(dev) && device_may_wakeup(dev))
+> -		pm_wakeup_event(dev, 0);
+> +	if (pm_runtime_barrier(dev))
+> +		pm_runtime_resume(dev);
 
-Applied as 5.9-rc material, thanks!
+Is this really right?  Note that whenever pm_runtime_barrier() returns a 
+nonzero value, it already calls rpm_resume(dev, 0).  So the 
+pm_runtime_resume() call added here is redundant.
+
+Furthermore, by the logic used in this patch, the call to 
+pm_wakeup_event() in the original code is also redundant: Any required 
+wakeup event should have been generated when the runtime resume inside 
+pm_runtime_barrer() was carried out.  Removing a redundant function call 
+can't fix a bug!
+
+This means that the code could be simplified to just:
+
+	pm_runtime_barrier(dev);
+
+Will this fix the reported bug?  It seems likely to me that the actual 
+problem with the failure scenario in the patch description was that 
+turning on an ACPI power resource causes runtime-resume requests to be 
+queued for all devices sharing that resource.  Wouldn't it make more 
+sense to resume only the device that requested it and leave the others 
+in runtime suspend?
+
+Alan Stern
