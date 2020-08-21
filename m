@@ -2,96 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D9D24D346
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 12:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D9F24D4BC
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 14:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728328AbgHUKyC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Aug 2020 06:54:02 -0400
-Received: from mga03.intel.com ([134.134.136.65]:31401 "EHLO mga03.intel.com"
+        id S1727797AbgHUMOD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Aug 2020 08:14:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45540 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728375AbgHUKyA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 Aug 2020 06:54:00 -0400
-IronPort-SDR: Ie/8+Tswi6Rkljkvv5TD9WptbUI+Xf4DJv46I+JUvfQ2JOkzKOnT6EW470dnEiqvygfWl1y70/
- MZT276Ww3Ygw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="155494756"
-X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
-   d="scan'208";a="155494756"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2020 03:53:44 -0700
-IronPort-SDR: j+94MbSUQj15whe7im+QKZO8y7kzyfjS56Yuc9gPfReD1SP7JjhGcSRoaiXzUNaaUJEqY6bjj8
- izfp95Pyzz1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
-   d="scan'208";a="401438755"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Aug 2020 03:53:42 -0700
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] device property: Fix the secondary firmware node handling in set_primary_fwnode()
-Date:   Fri, 21 Aug 2020 13:53:42 +0300
-Message-Id: <20200821105342.32368-1-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
+        id S1727029AbgHUMN6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 Aug 2020 08:13:58 -0400
+Received: from localhost (104.sub-72-107-126.myvzw.com [72.107.126.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1E0D2078D;
+        Fri, 21 Aug 2020 12:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598012038;
+        bh=uVOgG9JFL4Fi6p0po8bQ65Th7wRBuNvR5zhzLTPFR5k=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ox5cTwPbjAUMDQ3PBaEQj29JiEe+7IH6AXVS6NxjULgL51ySfWOkFhBpDTJzVedaY
+         /UuJysTOHbBMdbgEM7N7gU5gumkTHskOHzhwVjf+hvwlVhTurv/GZKKfyOQ8zI5AmJ
+         zAPVwHcdFODduuOfyQXQDv1dwLqxCHq47/KNa/tk=
+Date:   Fri, 21 Aug 2020 07:13:56 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linuxarm@huawei.com,
+        Dan Williams <dan.j.williams@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Sean V Kelley <sean.v.kelley@linux.intel.com>,
+        linux-api@vger.kernel.org, Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH v9 4/6] ACPI: HMAT: Fix handling of changes from ACPI 6.2
+ to ACPI 6.3
+Message-ID: <20200821121356.GA1616281@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200821094258.00007925@Huawei.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When the primary firmware node pointer is removed from a
-device (set to NULL) the secondary firmware node pointer,
-when it exists, is made the primary node for the device.
-However, the secondary firmware node pointer of the original
-primary firmware node is never cleared (set to NULL).
+[+cc Keith, author of 3accf7ae37a9 ("acpi/hmat: Parse and report
+heterogeneous memory")]
 
-To avoid situation where the secondary firmware node pointer
-is pointing to a non-existing object, clearing it properly
-when the primary node is removed from a device in
-set_primary_fwnode().
+On Fri, Aug 21, 2020 at 09:42:58AM +0100, Jonathan Cameron wrote:
+> On Thu, 20 Aug 2020 17:21:29 -0500
+> Bjorn Helgaas <helgaas@kernel.org> wrote:
+> 
+> > On Wed, Aug 19, 2020 at 10:51:09PM +0800, Jonathan Cameron wrote:
+> > > In ACPI 6.3, the Memory Proximity Domain Attributes Structure
+> > > changed substantially.  One of those changes was that the flag
+> > > for "Memory Proximity Domain field is valid" was deprecated.
+> > > 
+> > > This was because the field "Proximity Domain for the Memory"
+> > > became a required field and hence having a validity flag makes
+> > > no sense.
+> > > 
+> > > So the correct logic is to always assume the field is there.
+> > > Current code assumes it never is.
+> > > 
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  drivers/acpi/numa/hmat.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> > > index 2c32cfb72370..07cfe50136e0 100644
+> > > --- a/drivers/acpi/numa/hmat.c
+> > > +++ b/drivers/acpi/numa/hmat.c
+> > > @@ -424,7 +424,7 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
+> > >  		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+> > >  			p->flags, p->processor_PD, p->memory_PD);
+> > >  
+> > > -	if (p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) {
+> > > +	if ((p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) || hmat_revision == 2) {  
+> > 
+> > I hope/assume the spec is written in such a way that p->memory_PD is
+> > required for any revision > 1?  So maybe this should be:
+> > 
+> >   if ((p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) ||
+> >       hmat_revision > 1) {
 
-Fixes: 97badf873ab6 ("device property: Make it possible to use secondary firmware nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/base/core.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+I should have said simply:
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index ac1046a382bc0..f6f620aa94086 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -4264,9 +4264,9 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
-  */
- void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
- {
--	if (fwnode) {
--		struct fwnode_handle *fn = dev->fwnode;
-+	struct fwnode_handle *fn = dev->fwnode;
- 
-+	if (fwnode) {
- 		if (fwnode_is_primary(fn))
- 			fn = fn->secondary;
- 
-@@ -4276,8 +4276,12 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
- 		}
- 		dev->fwnode = fwnode;
- 	} else {
--		dev->fwnode = fwnode_is_primary(dev->fwnode) ?
--			dev->fwnode->secondary : NULL;
-+		if (fwnode_is_primary(fn)) {
-+			dev->fwnode = fn->secondary;
-+			fn->secondary = NULL;
-+		} else {
-+			dev->fwnode = NULL;
-+		}
- 	}
- }
- EXPORT_SYMBOL_GPL(set_primary_fwnode);
--- 
-2.28.0
+  if (hmat_revision == 1 && p->flags & ACPI_HMAT_MEMORY_PD_VALID)
 
+We shouldn't even test p->flags for ACPI_HMAT_MEMORY_PD_VALID unless
+we already know it's revision 1.
+
+And unless there was a revision 0 of HMAT, there's no need to look for
+hmat_revison > 1.
+
+> Good point.  We have existing protections elsewhere against
+> hmat_revision being anything other than 1 or 2, so we should aim to
+> keep that in only one place.
+
+I think the "Ignoring HMAT: Unknown revision" test in hmat_init(),
+added by 3accf7ae37a9 ("acpi/hmat: Parse and report heterogeneous
+memory"), is a mistake.
+
+And I think hmat_normalize() has a similar mistake in that it tests
+explicitly for hmat_revision == 2 when it should accept 2 AND anything
+later.
+
+We should assume that future spec revisions will be backwards
+compatible.  Otherwise we're forced to make kernel changes when we
+otherwise would not have to.
+
+Bjorn
