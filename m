@@ -2,176 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FCDA24DC34
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 18:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47A5D24DC7C
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Aug 2020 19:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728442AbgHUQ4v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Aug 2020 12:56:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38320 "EHLO mail.kernel.org"
+        id S1728324AbgHURDq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Aug 2020 13:03:46 -0400
+Received: from mga04.intel.com ([192.55.52.120]:26212 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728009AbgHUQyn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:54:43 -0400
-Received: from localhost (104.sub-72-107-126.myvzw.com [72.107.126.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C7BA220732;
-        Fri, 21 Aug 2020 16:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598028882;
-        bh=zgdYKWhIWdTaV8L2k+Z7Jg6RQXaZxDZgYbEDHMVmddk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=0xPx/ylaJtMLaSx/oyCf273U5CvhJTeknl7jktEViwsKMlH781NH4huzDlKzzS6ti
-         0lBJya/8xlZ/TzPhZIbboV3eWyRdbhef748FRWdKYduhfgrDI3MyPk1ltqDmqP9OkY
-         2zsGJj7U5AU5qwrKpIfwCNqDTgPFOtDGNTkTXofM=
-Date:   Fri, 21 Aug 2020 11:54:40 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, rafael@kernel.org,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxarm@huawei.com,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Sean V Kelley <sean.v.kelley@linux.intel.com>,
-        linux-api@vger.kernel.org, Keith Busch <kbusch@kernel.org>
-Subject: Re: [PATCH v9 4/6] ACPI: HMAT: Fix handling of changes from ACPI 6.2
- to ACPI 6.3
-Message-ID: <20200821165440.GA1683523@bjorn-Precision-5520>
+        id S1728752AbgHURDi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 Aug 2020 13:03:38 -0400
+IronPort-SDR: qjspIAUN+RjUqsLB+933GLRFm8vCOUOdtGWtCRYe3UyxnXGaLedBwgJ60ZeDIhPWi5Jg7wI+Wt
+ s2kKuoCcXc7g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9720"; a="152997098"
+X-IronPort-AV: E=Sophos;i="5.76,337,1592895600"; 
+   d="scan'208";a="152997098"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2020 10:03:37 -0700
+IronPort-SDR: gT4eKFERZhAbbCt3E1i+7wPq5zRhNRH1RNKZlxg/MSffAJqd1PPefWyHsZ3zn6R24emE5f07Il
+ Jk3uj6ohH43w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,337,1592895600"; 
+   d="scan'208";a="321323667"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 21 Aug 2020 10:03:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 372321FD; Fri, 21 Aug 2020 20:03:35 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+        linux-i2c@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] i2c: core: Don't fail PRP0001 enumeration when no ID table exist
+Date:   Fri, 21 Aug 2020 20:03:33 +0300
+Message-Id: <20200821170334.43555-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200821173718.000028fc@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 05:37:18PM +0100, Jonathan Cameron wrote:
-> On Fri, 21 Aug 2020 08:46:22 -0500
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> 
-> > On Fri, Aug 21, 2020 at 01:59:01PM +0100, Jonathan Cameron wrote:
-> > > On Fri, 21 Aug 2020 07:13:56 -0500
-> > > Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > >   
-> > > > [+cc Keith, author of 3accf7ae37a9 ("acpi/hmat: Parse and report
-> > > > heterogeneous memory")]
-> > > > 
-> > > > On Fri, Aug 21, 2020 at 09:42:58AM +0100, Jonathan Cameron wrote:  
-> > > > > On Thu, 20 Aug 2020 17:21:29 -0500
-> > > > > Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > >     
-> > > > > > On Wed, Aug 19, 2020 at 10:51:09PM +0800, Jonathan Cameron wrote:    
-> > > > > > > In ACPI 6.3, the Memory Proximity Domain Attributes Structure
-> > > > > > > changed substantially.  One of those changes was that the flag
-> > > > > > > for "Memory Proximity Domain field is valid" was deprecated.
-> > > > > > > 
-> > > > > > > This was because the field "Proximity Domain for the Memory"
-> > > > > > > became a required field and hence having a validity flag makes
-> > > > > > > no sense.
-> > > > > > > 
-> > > > > > > So the correct logic is to always assume the field is there.
-> > > > > > > Current code assumes it never is.
-> > > > > > > 
-> > > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > > > > ---
-> > > > > > >  drivers/acpi/numa/hmat.c | 2 +-
-> > > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > > > 
-> > > > > > > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> > > > > > > index 2c32cfb72370..07cfe50136e0 100644
-> > > > > > > --- a/drivers/acpi/numa/hmat.c
-> > > > > > > +++ b/drivers/acpi/numa/hmat.c
-> > > > > > > @@ -424,7 +424,7 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
-> > > > > > >  		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
-> > > > > > >  			p->flags, p->processor_PD, p->memory_PD);
-> > > > > > >  
-> > > > > > > -	if (p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) {
-> > > > > > > +	if ((p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) || hmat_revision == 2) {      
-> > > > > > 
-> > > > > > I hope/assume the spec is written in such a way that p->memory_PD is
-> > > > > > required for any revision > 1?  So maybe this should be:
-> > > > > > 
-> > > > > >   if ((p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) ||
-> > > > > >       hmat_revision > 1) {    
-> > > > 
-> > > > I should have said simply:
-> > > > 
-> > > >   if (hmat_revision == 1 && p->flags & ACPI_HMAT_MEMORY_PD_VALID)
-> > > > 
-> > > > We shouldn't even test p->flags for ACPI_HMAT_MEMORY_PD_VALID unless
-> > > > we already know it's revision 1.
-> > > > 
-> > > > And unless there was a revision 0 of HMAT, there's no need to look for
-> > > > hmat_revison > 1.  
-> > > 
-> > > It needs to stay as an or statement as you had the first time.
-> > > The field is always valid for hmat_revision > 1, and valid for
-> > > hmat_revision == 1 with the flag set.  You could express it as
-> > > 
-> > > if ((p->flags & ACPI_HMAT_MEMORY_PD_VALID) || (hmat_revision != 1))
-> > > 
-> > > but that seems more confusing to me.  
-> > 
-> > Oh, you're right, sorry!  There are two questions here:
-> > 
-> > 1) In what order should we test "p->flags & ACPI_HMAT_MEMORY_PD_VALID"
-> >    and "hmat_revision == 1"?  ACPI_HMAT_MEMORY_PD_VALID is defined
-> >    only when "hmat_revision == 1", so I think we should test the
-> >    revision first.
-> > 
-> >    When "hmat_revision == 2", ACPI_HMAT_MEMORY_PD_VALID is reserved,
-> >    so we shouldn't test it, even if we later check the revision and
-> >    discard the result of the flag test.  This is a tiny thing,
-> >    admittedly, but I think it follows the spec more clearly.
-> 
-> Agreed.
-> 
-> > 
-> > 2) Do we need to test hmat_revision for anything other than 1?  Yes,
-> >    you're right, see below.
-> > 
-> > > > > Good point.  We have existing protections elsewhere against
-> > > > > hmat_revision being anything other than 1 or 2, so we should aim to
-> > > > > keep that in only one place.    
-> > > > 
-> > > > I think the "Ignoring HMAT: Unknown revision" test in hmat_init(),
-> > > > added by 3accf7ae37a9 ("acpi/hmat: Parse and report heterogeneous
-> > > > memory"), is a mistake.
-> > > > 
-> > > > And I think hmat_normalize() has a similar mistake in that it tests
-> > > > explicitly for hmat_revision == 2 when it should accept 2 AND anything
-> > > > later.
-> > > > 
-> > > > We should assume that future spec revisions will be backwards
-> > > > compatible.  Otherwise we're forced to make kernel changes when we
-> > > > otherwise would not have to.  
-> > > 
-> > > I disagree with this. There is no rule in ACPI about maintaining
-> > > backwards compatibility. The assumption is that the version number
-> > > will always be checked.  The meaning of fields changed between
-> > > version 1 and version 2 so it would be bold to assume that won't
-> > > happen in the future!  
-> > 
-> > There *is* a rule about maintaining backwards compatibility.  ACPI
-> > v6.3, sec 5.2.2, says:
-> > 
-> >   All versions of the ACPI tables must maintain backward
-> >   compatibility. To accomplish this, modifications of the tables
-> >   consist of redefinition of previously reserved fields and values
-> >   plus appending data to the 1.0 tables. Modifications of the ACPI
-> >   tables require that the version numbers of the modified tables be
-> >   incremented.
-> 
-> Fair point.  Unfortunately it's not true here...  The field we
-> are talking about here is probably fine, but the latency units
-> changed between v1 and v2.  
+When commit c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case
+as well") fixed the enumeration of I²C devices on ACPI enabled platforms
+when driver has no ID table, it missed the PRP0001 support.
 
-Oops.  Sounds like this should have been done in a way that didn't
-break old kernels reading new tables.  It's OK if old kernels can't
-use new features, but not OK if things that used to work are broken
-by new tables.
+i2c_device_match() and i2c_acpi_match_device() differently match
+driver against given device. Use acpi_driver_match_device(), that is used
+in the former, in i2c_device_probe() and don't fail PRP0001 enumeration
+when no ID table exist.
 
-Bjorn
+Fixes: c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case as well")
+BugLink: https://stackoverflow.com/q/63519678/2511795
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/i2c/i2c-core-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 34a9609f256d..5ec082e2039d 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -480,7 +480,7 @@ static int i2c_device_probe(struct device *dev)
+ 	 * or ACPI ID table is supplied for the probing device.
+ 	 */
+ 	if (!driver->id_table &&
+-	    !i2c_acpi_match_device(dev->driver->acpi_match_table, client) &&
++	    !acpi_driver_match_device(dev, dev->driver) &&
+ 	    !i2c_of_match_device(dev->driver->of_match_table, client)) {
+ 		status = -ENODEV;
+ 		goto put_sync_adapter;
+-- 
+2.28.0
+
