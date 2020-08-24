@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE9624FD4A
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Aug 2020 14:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362A924FD4B
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Aug 2020 14:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726986AbgHXMCO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1727047AbgHXMCO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Mon, 24 Aug 2020 08:02:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30469 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727047AbgHXMCM (ORCPT
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:23112 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727039AbgHXMCN (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 24 Aug 2020 08:02:12 -0400
+        Mon, 24 Aug 2020 08:02:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598270531;
+        s=mimecast20190719; t=1598270532;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X/u2P3rm/Mt8sbxumEdSG8Sz04qHhuY60Fsw4/vcSuw=;
-        b=IyX0MKquRhNfU3V17JNL5s/ZEEb0nQy3UL1I8Oa40CS2BMXuIvWTFx/4dOjUV8WJajUC6G
-        6kb5AdivMDGnUrl2S4VvjHDURY0sM4dah7mUVWKtZX4/9SH2BV2mZGhRar9qy+wm2mZlKN
-        t6Atrpix64nxC5njl/NPDgNj+LjYQgY=
+        bh=6zdMqI9djrIOSjSF+r36fsHrv2APK30XDs0lh8OJOjs=;
+        b=AKDEyJV+a+qEPK5wMaxQ2z4+eY12kTrwVzQ+o+30cpyuQqT7sCO679H6viIkI9kLqTAl56
+        OeD38gpTKKBT1V/AzHYSvawRjWiCtuHfTQJXmLlzBYZKI5qeSgEdM3UrkuddP8wR1IY3tM
+        LOy4ZyQw+YQybHQknQqrDGPsgEE26JA=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-239-oI_do7AkPrKD7RLO3zNc-A-1; Mon, 24 Aug 2020 08:02:07 -0400
-X-MC-Unique: oI_do7AkPrKD7RLO3zNc-A-1
+ us-mta-542-H0Iy9G3ANVKbNVL80gGOwA-1; Mon, 24 Aug 2020 08:02:11 -0400
+X-MC-Unique: H0Iy9G3ANVKbNVL80gGOwA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4163A1005E6E;
-        Mon, 24 Aug 2020 12:02:05 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0CAA31005E6D;
+        Mon, 24 Aug 2020 12:02:09 +0000 (UTC)
 Received: from x1.localdomain.com (ovpn-113-147.ams2.redhat.com [10.36.113.147])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 423F45D9DD;
-        Mon, 24 Aug 2020 12:02:02 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A31F85D9DD;
+        Mon, 24 Aug 2020 12:02:05 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
@@ -51,12 +51,13 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-Subject: [PATCH v6 09/16] pwm: crc: Fix period changes not having any effect
-Date:   Mon, 24 Aug 2020 14:01:19 +0200
-Message-Id: <20200824120126.7116-10-hdegoede@redhat.com>
+Subject: [PATCH v6 10/16] pwm: crc: Enable/disable PWM output on enable/disable
+Date:   Mon, 24 Aug 2020 14:01:20 +0200
+Message-Id: <20200824120126.7116-11-hdegoede@redhat.com>
 In-Reply-To: <20200824120126.7116-1-hdegoede@redhat.com>
 References: <20200824120126.7116-1-hdegoede@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-acpi-owner@vger.kernel.org
@@ -68,58 +69,46 @@ The pwm-crc code is using 2 different enable bits:
 1. bit 7 of the PWM0_CLK_DIV (PWM_OUTPUT_ENABLE)
 2. bit 0 of the BACKLIGHT_EN register
 
-The BACKLIGHT_EN register at address 0x51 really controls a separate
-output-only GPIO which is earmarked to be used as output connected to the
-backlight-enable pin for LCD panels, this GPO is part of the PMIC's
-"Display Panel Control Block." . This pin should probably be moved over
-to a GPIO provider driver (and consumers modified accordingly), but that
-is something for an(other) patch.
+So far we've kept the PWM_OUTPUT_ENABLE bit set when disabling the PWM,
+this commit makes crc_pwm_disable() clear it on disable and makes
+crc_pwm_enable() set it again on re-enable.
 
-Enabling / disabling the actual PWM output is controlled by the
-PWM_OUTPUT_ENABLE bit of the PWM0_CLK_DIV register.
-
-As the comment in the old code already indicates we must disable the PWM
-before we can change the clock divider. But the crc_pwm_disable() and
-crc_pwm_enable() calls the old code make for this only change the
-BACKLIGHT_EN register; and the value of that register does not matter for
-changing the period / the divider. What does matter is that the
-PWM_OUTPUT_ENABLE bit must be cleared before a new value can be written.
-
-This commit modifies crc_pwm_config() to clear PWM_OUTPUT_ENABLE instead
-when changing the period, so that period changes actually work.
-
-Note this fix will cause a significant behavior change on some devices
-using the CRC PWM output to drive their backlight. Before the PWM would
-always run with the output frequency configured by the BIOS at boot, now
-the period time specified by the i915 driver will actually be honored.
-
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/pwm/pwm-crc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+Changes in v3:
+- Remove paragraph about tri-stating the output from the commit message,
+  we don't have a datasheet so this was just an unfounded guess
+---
+ drivers/pwm/pwm-crc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/pwm/pwm-crc.c b/drivers/pwm/pwm-crc.c
-index 44ec7d5b63e1..81232da0c767 100644
+index 81232da0c767..b72008c9b072 100644
 --- a/drivers/pwm/pwm-crc.c
 +++ b/drivers/pwm/pwm-crc.c
-@@ -82,14 +82,11 @@ static int crc_pwm_config(struct pwm_chip *c, struct pwm_device *pwm,
- 	if (pwm_get_period(pwm) != period_ns) {
- 		int clk_div = crc_pwm_calc_clk_div(period_ns);
+@@ -54,7 +54,9 @@ static int crc_pwm_calc_clk_div(int period_ns)
+ static int crc_pwm_enable(struct pwm_chip *c, struct pwm_device *pwm)
+ {
+ 	struct crystalcove_pwm *crc_pwm = to_crc_pwm(c);
++	int div = crc_pwm_calc_clk_div(pwm_get_period(pwm));
  
--		/* changing the clk divisor, need to disable fisrt */
--		crc_pwm_disable(c, pwm);
-+		/* changing the clk divisor, clear PWM_OUTPUT_ENABLE first */
-+		regmap_write(crc_pwm->regmap, PWM0_CLK_DIV, 0);
++	regmap_write(crc_pwm->regmap, PWM0_CLK_DIV, div | PWM_OUTPUT_ENABLE);
+ 	regmap_write(crc_pwm->regmap, BACKLIGHT_EN, 1);
  
- 		regmap_write(crc_pwm->regmap, PWM0_CLK_DIV,
- 					clk_div | PWM_OUTPUT_ENABLE);
--
--		/* enable back */
--		crc_pwm_enable(c, pwm);
- 	}
+ 	return 0;
+@@ -63,8 +65,10 @@ static int crc_pwm_enable(struct pwm_chip *c, struct pwm_device *pwm)
+ static void crc_pwm_disable(struct pwm_chip *c, struct pwm_device *pwm)
+ {
+ 	struct crystalcove_pwm *crc_pwm = to_crc_pwm(c);
++	int div = crc_pwm_calc_clk_div(pwm_get_period(pwm));
  
- 	/* change the pwm duty cycle */
+ 	regmap_write(crc_pwm->regmap, BACKLIGHT_EN, 0);
++	regmap_write(crc_pwm->regmap, PWM0_CLK_DIV, div);
+ }
+ 
+ static int crc_pwm_config(struct pwm_chip *c, struct pwm_device *pwm,
 -- 
 2.28.0
 
