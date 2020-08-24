@@ -2,68 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F2C24FF83
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Aug 2020 16:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E30C250058
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Aug 2020 17:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727066AbgHXOGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Aug 2020 10:06:42 -0400
-Received: from mga07.intel.com ([134.134.136.100]:37576 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725780AbgHXOGk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 24 Aug 2020 10:06:40 -0400
-IronPort-SDR: a76nrZMX8q/VMZ5InxF4Xb7ZcyNtsDVbaKdBcZcJJD5mUcj3LPex07kzO280VJjTRmsvt9JLgT
- rvV9ocQPAblQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9722"; a="220172282"
-X-IronPort-AV: E=Sophos;i="5.76,348,1592895600"; 
-   d="scan'208";a="220172282"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 07:06:39 -0700
-IronPort-SDR: UBR208y2ztdF68uc9x4G9cEXpxmIXaqhRHB9iWgBhRLQTwUz19Vli6EmcDgV967+6uowTFo/es
- Ydleu/4Usebg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,348,1592895600"; 
-   d="scan'208";a="402362192"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 24 Aug 2020 07:06:36 -0700
-Received: by lahna (sSMTP sendmail emulation); Mon, 24 Aug 2020 17:06:35 +0300
-Date:   Mon, 24 Aug 2020 17:06:35 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+        id S1725973AbgHXPE0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Aug 2020 11:04:26 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:48593 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1725947AbgHXPEW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Aug 2020 11:04:22 -0400
+Received: (qmail 332615 invoked by uid 1000); 24 Aug 2020 11:04:21 -0400
+Date:   Mon, 24 Aug 2020 11:04:21 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        "Kenneth R. Crudup" <kenny@panix.com>
-Subject: Re: [PATCH] ACPI: OSL: Prevent acpi_release_memory() from returning
- too early
-Message-ID: <20200824140635.GN1375436@lahna.fi.intel.com>
-References: <6142241.0H6QnnlUA7@kreacher>
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH] PM: sleep: core: Fix the handling of pending runtime
+ resume requests
+Message-ID: <20200824150421.GD329866@rowland.harvard.edu>
+References: <7969920.MVx1BpXlEM@kreacher>
+ <20200821193442.GA264863@rowland.harvard.edu>
+ <4922509.6NPD9QEisq@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6142241.0H6QnnlUA7@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <4922509.6NPD9QEisq@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 07:42:55PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Aug 24, 2020 at 03:36:36PM +0200, Rafael J. Wysocki wrote:
+> > Furthermore, by the logic used in this patch, the call to 
+> > pm_wakeup_event() in the original code is also redundant: Any required 
+> > wakeup event should have been generated when the runtime resume inside 
+> > pm_runtime_barrer() was carried out.
 > 
-> After commit 1757659d022b ("ACPI: OSL: Implement deferred unmapping
-> of ACPI memory") in some cases acpi_release_memory() may return
-> before the target memory mappings actually go away, because they
-> are released asynchronously now.
+> It should be redundant in the real wakeup event cases, but it may cause
+> spurious suspend aborts to occur when there are no real system wakeup
+> events.
 > 
-> Prevent it from returning prematurely by making it wait for the next
-> RCU grace period to elapse, for all of the RCU callbacks to complete
-> and for all of the scheduled work items to be flushed before
-> returning.
-> 
-> Fixes: 1757659d022b ("ACPI: OSL: Implement deferred unmapping of ACPI memory")
-> Reported-by: Kenneth R. Crudup <kenny@panix.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Actually, the original code is racy with respect to system wakeup events,
+> because it depends on the exact time when the runtime-resume starts.  Namely,
+> if it manages to start before the freezing of pm_wq, the wakeup will be lost
+> unless the driver takes care of reporting it, which means that drivers really
+> need to do that anyway.  And if they do that (which hopefully is the case), the
+> pm_wakeup_event() call in the core may be dropped.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+In other words, wakeup events are supposed to be reported at the time 
+the wakeup request is first noticed, right?  We don't want to wait until 
+a resume or runtime_resume callback runs; thanks to this race the 
+callback might not run at all if the event isn't reported first.
+
+Therefore the reasoning behind the original code appears to have been 
+highly suspect.  If there already was a queued runtime-resume request 
+for the device and the device was wakeup-enabled, the wakeup event 
+should _already_ have been reported at the time the request was queued.  
+And we shouldn't rely on it being reported by the runtime-resume 
+callback routine.
+
+> > This means that the code could be simplified to just:
+> > 
+> > 	pm_runtime_barrier(dev);
+> 
+> Yes, it could, so I'm going to re-spin the patch with this code simplification
+> and updated changelog.
+> 
+> > Will this fix the reported bug?
+> 
+> I think so.
+
+Okay, we'll see!
+
+Alan Stern
