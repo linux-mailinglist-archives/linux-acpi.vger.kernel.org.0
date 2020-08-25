@@ -2,87 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7287D251652
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Aug 2020 12:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4788F251A75
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Aug 2020 16:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729716AbgHYKNF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Aug 2020 06:13:05 -0400
-Received: from mga05.intel.com ([192.55.52.43]:55684 "EHLO mga05.intel.com"
+        id S1726413AbgHYODc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Aug 2020 10:03:32 -0400
+Received: from mga06.intel.com ([134.134.136.31]:59244 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728117AbgHYKNF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 25 Aug 2020 06:13:05 -0400
-IronPort-SDR: mRfI0WzEaPJf3dX8NqxB9y2/MfDXNdnp1Cr3dw64YIILF8OEv/1iYfytHDsLpUYdp5NUdAqSsY
- sSn9NmdOSWNg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="240900001"
+        id S1726222AbgHYN74 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Aug 2020 09:59:56 -0400
+IronPort-SDR: BDxlDaRmHKGz4tx5aLvCkE3ForFS1ygc1frhDvW/bWCeac1jFrMrqnztBjDDuGDEa+LSscXpJW
+ wtRpSO4m4pDA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="217659379"
 X-IronPort-AV: E=Sophos;i="5.76,352,1592895600"; 
-   d="scan'208";a="240900001"
+   d="scan'208";a="217659379"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2020 03:13:02 -0700
-IronPort-SDR: pAgMYKba8fAQ2jnHsx3oty0pmFiBGyZ58Ze90jUe141Whyc2oS1JJt7Hdi6F52BcIgOS3CPv/X
- TVoE6ZsiIp1A==
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2020 06:59:54 -0700
+IronPort-SDR: hIX9GWXNsuutTILIgAn9Fwym76hrvk2/jJ0pmD/1uXZwPpFRLlF7KBUEHRORwv3S3XMjh5sVak
+ wUSSnTSChd/w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,352,1592895600"; 
-   d="scan'208";a="328818795"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 25 Aug 2020 03:12:55 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kAVwi-00BIcD-RN; Tue, 25 Aug 2020 13:12:52 +0300
-Date:   Tue, 25 Aug 2020 13:12:52 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] i2c: core: Don't fail PRP0001 enumeration when no
- ID table exist
-Message-ID: <20200825101252.GT1891694@smile.fi.intel.com>
-References: <20200821170334.43555-1-andriy.shevchenko@linux.intel.com>
- <20200825072314.GD1861@ninjato>
+   d="scan'208";a="402725549"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 25 Aug 2020 06:59:52 -0700
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 0/3] PM operations for software nodes
+Date:   Tue, 25 Aug 2020 16:59:48 +0300
+Message-Id: <20200825135951.53340-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200825072314.GD1861@ninjato>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 09:23:14AM +0200, Wolfram Sang wrote:
-> On Fri, Aug 21, 2020 at 08:03:33PM +0300, Andy Shevchenko wrote:
-> > When commit c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case
-> > as well") fixed the enumeration of I²C devices on ACPI enabled platforms
-> > when driver has no ID table, it missed the PRP0001 support.
-> > 
-> > i2c_device_match() and i2c_acpi_match_device() differently match
-> > driver against given device. Use acpi_driver_match_device(), that is used
-> > in the former, in i2c_device_probe() and don't fail PRP0001 enumeration
-> > when no ID table exist.
-> > 
-> > Fixes: c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case as well")
-> > BugLink: https://stackoverflow.com/q/63519678/2511795
-> 
-> You are monitoring SO? Nice.
+Hi guys,
 
-Monitoring is probably too strong word here, rather sometimes looking for
-interesting topics (mostly related to ACPI + Linux (kernel) and near to them).
+Unfortunately the last patch depends on this:
+https://lore.kernel.org/linux-usb/20200821131101.81915-1-heikki.krogerus@linux.intel.com/
 
-This makes me wonder how many commits are actually referring to SO.
-The 1st one I found is 8c88f87cb27a ("netfilter: nfnetlink_queue: add NAT TCP
-sequence adjustment if packet mangled"). Some of them referring stackexchange
-site, but not many (brief estimation like a couple of dozens at most).
+Would it be easiest that Felipe took care of these (assuming they are
+acceptable)?
 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> Applied to for-current, thanks!
+thanks,
 
-Thanks!
+Heikki Krogerus (3):
+  software node: Power management operations for software nodes
+  software node: Introduce device_add_software_node()
+  usb: dwc3: pci: Register a software node for the dwc3 platform device
+
+ drivers/base/power/common.c |   8 +-
+ drivers/base/swnode.c       | 569 +++++++++++++++++++++++++++++++++++-
+ drivers/usb/dwc3/dwc3-pci.c | 175 ++++++-----
+ include/linux/property.h    |  13 +
+ 4 files changed, 666 insertions(+), 99 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.28.0
 
