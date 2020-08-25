@@ -2,147 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1FD250BC7
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Aug 2020 00:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E90D251313
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Aug 2020 09:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726531AbgHXWnd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Aug 2020 18:43:33 -0400
-Received: from mga05.intel.com ([192.55.52.43]:8912 "EHLO mga05.intel.com"
+        id S1729396AbgHYHXS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Aug 2020 03:23:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56650 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726519AbgHXWnd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 24 Aug 2020 18:43:33 -0400
-IronPort-SDR: RUe4osnl3R3xgafqKqB2ls1fotA4n6WI/CTV8KOMJbpev2rfUSmBuQZWO2x0r6Gmrsd4GuxfON
- LpYIaC1cl08Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="240820237"
-X-IronPort-AV: E=Sophos;i="5.76,350,1592895600"; 
-   d="scan'208";a="240820237"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 15:43:31 -0700
-IronPort-SDR: u1z/xUe4j8gQH4MrgrR5Hjd0ZcbIll/5oUuA4A5mS3WiKExfjpS3DpTTBSZb9/kctskQ9hOfMj
- UUQ/JgpRM0XA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,350,1592895600"; 
-   d="scan'208";a="474102761"
-Received: from lkp-server01.sh.intel.com (HELO c420d4f0765f) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 24 Aug 2020 15:43:30 -0700
-Received: from kbuild by c420d4f0765f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kALBZ-0000Xs-Kp; Mon, 24 Aug 2020 22:43:29 +0000
-Date:   Tue, 25 Aug 2020 06:42:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- f5eba0ea1052daba08e3fcf50be669b13fd7953d
-Message-ID: <5f444257.SkK/XdWlJtDhiWH9%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1729363AbgHYHXS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Aug 2020 03:23:18 -0400
+Received: from localhost (p54b333df.dip0.t-ipconnect.de [84.179.51.223])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82CF720578;
+        Tue, 25 Aug 2020 07:23:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598340197;
+        bh=LF/riJpBXNMpway3mbGQoOMX5wOBY2xA9GK//UrXxgE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nbSVoNEVuA53O+cqj/7HUS+eazanlFJ9Vh+Mt83yv8USlUlrq4mBy8J1Ps20q2kjF
+         EZcs4vU9EsS0UJzV7rT6mzRmih1wV9XoWp5ngxgA2FKv8Ct5PJsvmG1HqI4N4jhOdK
+         7xQcK3IJfk/2GAJ3YFDb5lKlaMPrBS5VdKRiKWbw=
+Date:   Tue, 25 Aug 2020 09:23:14 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] i2c: core: Don't fail PRP0001 enumeration when no
+ ID table exist
+Message-ID: <20200825072314.GD1861@ninjato>
+References: <20200821170334.43555-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="g7w8+K/95kPelPD2"
+Content-Disposition: inline
+In-Reply-To: <20200821170334.43555-1-andriy.shevchenko@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: f5eba0ea1052daba08e3fcf50be669b13fd7953d  Merge branch 'pm-cpufreq' into linux-next
 
-elapsed time: 726m
+--g7w8+K/95kPelPD2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 84
-configs skipped: 3
+On Fri, Aug 21, 2020 at 08:03:33PM +0300, Andy Shevchenko wrote:
+> When commit c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case
+> as well") fixed the enumeration of I=C2=B2C devices on ACPI enabled platf=
+orms
+> when driver has no ID table, it missed the PRP0001 support.
+>=20
+> i2c_device_match() and i2c_acpi_match_device() differently match
+> driver against given device. Use acpi_driver_match_device(), that is used
+> in the former, in i2c_device_probe() and don't fail PRP0001 enumeration
+> when no ID table exist.
+>=20
+> Fixes: c64ffff7a9d1 ("i2c: core: Allow empty id_table in ACPI case as wel=
+l")
+> BugLink: https://stackoverflow.com/q/63519678/2511795
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+You are monitoring SO? Nice.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-xtensa                         virt_defconfig
-powerpc                      mgcoge_defconfig
-ia64                          tiger_defconfig
-sh                        dreamcast_defconfig
-xtensa                           alldefconfig
-xtensa                generic_kc705_defconfig
-powerpc                      ppc64e_defconfig
-arm                            xcep_defconfig
-mips                      pistachio_defconfig
-mips                        vocore2_defconfig
-h8300                     edosk2674_defconfig
-mips                            ar7_defconfig
-c6x                        evmc6472_defconfig
-c6x                        evmc6474_defconfig
-sh                          sdk7780_defconfig
-sh                          r7785rp_defconfig
-arm                             rpc_defconfig
-h8300                    h8300h-sim_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200824
-i386                 randconfig-a004-20200824
-i386                 randconfig-a005-20200824
-i386                 randconfig-a003-20200824
-i386                 randconfig-a006-20200824
-i386                 randconfig-a001-20200824
-x86_64               randconfig-a015-20200824
-x86_64               randconfig-a016-20200824
-x86_64               randconfig-a012-20200824
-x86_64               randconfig-a014-20200824
-x86_64               randconfig-a011-20200824
-x86_64               randconfig-a013-20200824
-i386                 randconfig-a013-20200824
-i386                 randconfig-a012-20200824
-i386                 randconfig-a011-20200824
-i386                 randconfig-a016-20200824
-i386                 randconfig-a015-20200824
-i386                 randconfig-a014-20200824
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Applied to for-current, thanks!
+
+
+--g7w8+K/95kPelPD2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9EvGIACgkQFA3kzBSg
+KbbH3A/+OFM+o/7X628hxhN9eGR3FR2mqggzlIBkNcrjEX1j4geyBho8FfUpxrzi
+vReyRYyFnDdquXnQ/oGL4Qj/JgLIF18dOC5oKR31N/dK4wpSGmEy5kGXSt7d3w9N
+Oh+vXhTYRfYclYnPUU2w2ti6yyQeLpcd0TG2cz+HiTKK9jCkjSJML+zCBOAszYKP
+zft5Rs4AeYpOBYbtj/sUh2pmhkuO7KYqB6WdM1ku4y2eoiwAkC3KGHRFDpEiEljs
+Ja88Eejciv/8goMxSRVlTeAc5jkHFkl6DBqvD+2X6GIUBcuCd5R9O3aWi8/oJX4e
+g/ptQOOnmZ+AuZlMuSom5aoJP6n7AYgt2ptCMbf24jsdEQmXBKhdovu0hJX/FTQI
+6SOJ8Ptfedm/tvQfp3QKSPKR6pnQB36CrisXXHcDfrpvH0eu1N/bpkSEbcmFbQzj
+Tqnob612Y1f8wpD23UCE6BOJ84ir7/mk/Ejuqy05AuZVO04BFFmNi3E1JvkFrHPk
+abJyrTo45z+Y8cbrtQSsNjg3GFshVioWQr5dIEo3+hhR0lUq+DjtVYdjxLh77Ps/
+44BGdwncMyvVuvGVqa9fGtY9xt7RTzl0Tv11NUwv9yXCuUA4m69Dk2lHI+b3EWI0
+nWEAv+SXVazFFr1I+eg9+vC6EPuVqDjhBZpvnW8cTvucJDZl70c=
+=wSZV
+-----END PGP SIGNATURE-----
+
+--g7w8+K/95kPelPD2--
