@@ -2,138 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9617F252B29
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 12:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89265252B53
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 12:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728078AbgHZKMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Aug 2020 06:12:47 -0400
-Received: from mga17.intel.com ([192.55.52.151]:15487 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728015AbgHZKMq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 26 Aug 2020 06:12:46 -0400
-IronPort-SDR: oF34jg9OiDXoOe7DUaWhXFBJhCBEuEyJTazrC0jHX5yzRlo03pXckxvu5RJ9MTAemhb9dKLAAo
- BH1XNb+JVkWA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9724"; a="136328149"
-X-IronPort-AV: E=Sophos;i="5.76,355,1592895600"; 
-   d="scan'208";a="136328149"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2020 03:12:45 -0700
-IronPort-SDR: RtEC8g9zf8RAbiGUrMMyNvXPDm6MvvrpEvtzOfgsZFBCb2z+5bhMy7KCNY9bf4fleiNpu4AMGZ
- uZ8BS9ac/fIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,355,1592895600"; 
-   d="scan'208";a="336793744"
-Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 26 Aug 2020 03:12:43 -0700
-Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kAsQ7-0001OF-1P; Wed, 26 Aug 2020 10:12:43 +0000
-Date:   Wed, 26 Aug 2020 18:12:36 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- a64f0b6a746f0133e361f4c99e4c17a1e481f6d8
-Message-ID: <5f463594.OY5tAiGY2Itzo0xd%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728191AbgHZKYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Aug 2020 06:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728106AbgHZKYP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Aug 2020 06:24:15 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91769C061574;
+        Wed, 26 Aug 2020 03:24:15 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id k13so680242plk.13;
+        Wed, 26 Aug 2020 03:24:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5/NpOs5u5tmfQLeBud9bsc+4lQGsVxxZ9VcmcytOVJQ=;
+        b=MgkjBV2adrvmv2cl0Xz8LrlYkGluR7lpPpea3uTiESMRc1CpgEii2Me2zoBqgi7yzc
+         TxGSuH6sqgED32Irh5ORThOvqlHLH8bqB6IfgNoEKFBrj+1jjr4UfZgBTipQMzumZQbl
+         EXIQLrb8ew+dWdHFyBvMBpxGhyHZz8oB+w31D8ZaiWwupHe7cXox12L+QRXCFaBCVvhE
+         nemAVyzWjNsuklgROPRRf4nggMZwLB7Tj/a0gUnAdcOPZJR5EtbmYSAgSYaYxdD4ibBy
+         N493zYSlm+19+EIRGEcB4DFHEkcZkDRUR3+CZRAMSnH5yfKN+qs1hjwrcg5aKiu0zgrL
+         zEfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5/NpOs5u5tmfQLeBud9bsc+4lQGsVxxZ9VcmcytOVJQ=;
+        b=tyyrMT5IVo6POfUt1+EFIlgdHPkavKEmzJXS8SnuJaCqd4siAMEMAtoS3UH8/Qhq0L
+         r41kjglkptiiexnQYDgRI7iREhsOo22eel+N5LrJRC1btreMeVZioDwyebFQM8uiH0jf
+         Rhf65AYYYX+tu6x0GQB4Ey51yS63DI+kcO39YCBnXJqfl+nbwHwa+zLZf/XhCoJce9H9
+         xP5pa3TF7mXxS09irwyALwV10LTZHOKwzK7iq9OX5hNgTo4q7yuF/hDH1U9vpx6SwDlT
+         sbSQZjvR2qiknNWqxV1WYM1S+UPsYelGFurEWYi+DuONSUEE6hQb1Egpq2RC3A7QoMmK
+         FZng==
+X-Gm-Message-State: AOAM5314JXhNkZWjVr54L8MmROavfJaEIv+vBMwvMygAmau+TTBkP3BA
+        ZVaVY1Veocm9WmI4FyFmYr02JjkMPUE=
+X-Google-Smtp-Source: ABdhPJz0uGq544B3rAB+RS/l5kz82GMKrc//WA2qREWsaEFzrypBkULzfCS//kDVVXF30Q4Q3bufqg==
+X-Received: by 2002:a17:90a:be11:: with SMTP id a17mr5254867pjs.167.1598437454883;
+        Wed, 26 Aug 2020 03:24:14 -0700 (PDT)
+Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
+        by smtp.gmail.com with ESMTPSA id x13sm2504102pfr.69.2020.08.26.03.24.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2020 03:24:14 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 19:24:11 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] i2c: consider devices with of_match_table during i2c
+ device probing
+Message-ID: <20200826102411.GC8849@jagdpanzerIV.localdomain>
+References: <20200826042938.3259-1-sergey.senozhatsky@gmail.com>
+ <20200826050851.GA1081@ninjato>
+ <20200826052544.GA500@jagdpanzerIV.localdomain>
+ <20200826095356.GG1891694@smile.fi.intel.com>
+ <20200826095617.GH1891694@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200826095617.GH1891694@smile.fi.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: a64f0b6a746f0133e361f4c99e4c17a1e481f6d8  Merge branch 'pm-sleep' into bleeding-edge
+On (20/08/26 12:56), Andy Shevchenko wrote:
+> > You probably meant simply:
+> > 
+> > 	if (!i2c_device_match(dev, dev->driver)) {
+> > 
+> > >                 status = -ENODEV;
+> > >                 goto put_sync_adapter;
+> > >         }
+> > 
+> > On the first glance it will work the same way but slightly longer in case of ID
+> > table matching.
+> > 
+> > Send a patch!
+> 
+> But then the question is why we have this code in the ->probe() at all?
+> ->match() is run before probe by bus core, no?
 
-elapsed time: 720m
+That's a good question.
 
-configs tested: 75
-configs skipped: 3
+There is also one more .id_table traversal done right before ->probe()
+call:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+	 driver->probe(client, i2c_match_id(driver->id_table, client))
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                      tct_hammer_defconfig
-mips                  maltasmvp_eva_defconfig
-arm                            dove_defconfig
-mips                          ath79_defconfig
-arm                           sunxi_defconfig
-arm                    vt8500_v6_v7_defconfig
-arc                        vdk_hs38_defconfig
-mips                         bigsur_defconfig
-arm                           omap1_defconfig
-arm                           h5000_defconfig
-arm                  colibri_pxa300_defconfig
-arm                          moxart_defconfig
-nios2                         3c120_defconfig
-powerpc                    amigaone_defconfig
-sh                             shx3_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a015-20200826
-x86_64               randconfig-a016-20200826
-x86_64               randconfig-a012-20200826
-x86_64               randconfig-a014-20200826
-x86_64               randconfig-a011-20200826
-x86_64               randconfig-a013-20200826
-i386                 randconfig-a013-20200826
-i386                 randconfig-a012-20200826
-i386                 randconfig-a011-20200826
-i386                 randconfig-a016-20200826
-i386                 randconfig-a015-20200826
-i386                 randconfig-a014-20200826
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+So in the worst case we can end up doing 3 .id_table lookups.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+	-ss
