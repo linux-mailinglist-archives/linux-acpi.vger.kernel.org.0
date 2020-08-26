@@ -2,87 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C644D2531F6
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 16:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 275BF253364
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 17:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727042AbgHZOus (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Aug 2020 10:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbgHZOun (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Aug 2020 10:50:43 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9A6C061574;
-        Wed, 26 Aug 2020 07:50:43 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id i10so1153653pgk.1;
-        Wed, 26 Aug 2020 07:50:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=LPGohmlezc7FaY8vrCO7jmNBwdri2cW9GxBu42JySH4=;
-        b=bgu+MIk7sVaYY18YDrHS4liMWptYDp3vwU72mFoSD+Z92gM2Vud+qs3d8CHhAhN9bK
-         TXvCV/4RpiN0zU/Dh3tY8TTScPy3LGeFXDlVnP3n1e1nY9+dZGsUM1X9Mium9IwqNurq
-         uL8zxXL2M1thm6hrndpAbbCVNKuiBmv8Y18BtHYEurghlSOKcXkknMAXLzmMNW96v5Nq
-         36EHx0WDWo2cm0oauJ8+71c5pcuQKqIMuEEpTj/Klli6cMtKNZtiy5Bb51L7GQJO7auW
-         MDYcP/JcIAOLutIT5vnxuobHN3xH90jCoaDbDVRjQJDG6vXnTNsP+lFIrwSm2ZxU3n79
-         U/zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=LPGohmlezc7FaY8vrCO7jmNBwdri2cW9GxBu42JySH4=;
-        b=NXchzmzllGWl1SNbhAupeJzlDMyNjj8WgalqhYypCjetk7WlaeBmeg727llMBw3y+Q
-         PN4SXWuhK40o+AUT7gkX53XS7gOLhtyOwWVNoS7CcXstdtY0f5eKJJvDX9NTB5N2rtQQ
-         gq1Ry5rvSwArhH/5zMW5jLK+6tb3nhQxMqcM4pRY3nlbPlWaoBuR3eu6bx0nTqdlw/6j
-         k79uCTWTFjooDeK8iGABF+9L07k1ywiZ9N9qzrhuq5MMqcb4jzTgCLVl5B1Ez09XbhaP
-         AszsxMcAhna+wb61XKNC53Edz2Pr6NniJaiduGEGIUsl4Ku5hOQ3CgJMENVkFVRpuBbS
-         /NDA==
-X-Gm-Message-State: AOAM532j0GteQhavdJClEomxbgVL3C+Pfxsuy7VZLA3Uqw1RHrezOwun
-        D8FRgYbVB01xgBhnQCXKgRw=
-X-Google-Smtp-Source: ABdhPJzmch+C8TjGkhJobxT3SCijRRO+lbKnTbN4hFrDId7YExRhhFBvl236MNUPwT6iB7iyy6i4tA==
-X-Received: by 2002:a63:fb4a:: with SMTP id w10mr10560088pgj.114.1598453442846;
-        Wed, 26 Aug 2020 07:50:42 -0700 (PDT)
-Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
-        by smtp.gmail.com with ESMTPSA id 124sm3359836pfb.19.2020.08.26.07.50.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 07:50:42 -0700 (PDT)
-Date:   Wed, 26 Aug 2020 23:50:40 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>,
+        id S1727992AbgHZPSq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Aug 2020 11:18:46 -0400
+Received: from mga04.intel.com ([192.55.52.120]:10523 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727883AbgHZPSp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 Aug 2020 11:18:45 -0400
+IronPort-SDR: sJR3OabF68OF93kicsNQIkyGv+qfkzmTQu234eocC/w8tKCQezOxiMXFnB0pdeV+TvTmaMvvgT
+ P8RPsjwpJqNQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9725"; a="153731861"
+X-IronPort-AV: E=Sophos;i="5.76,356,1592895600"; 
+   d="scan'208";a="153731861"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2020 08:18:44 -0700
+IronPort-SDR: LFOOq02faltDs2sF7gkQT/rBXsdGjaw5I+KcUpzLmZZ7XJ90mijCpdb1DfxpTxWkqP1M2jymH8
+ or4UJgSKhp6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,356,1592895600"; 
+   d="scan'208";a="329260583"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 26 Aug 2020 08:18:42 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kAxA5-00BatB-CF; Wed, 26 Aug 2020 18:16:29 +0300
+Date:   Wed, 26 Aug 2020 18:16:29 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc:     Wolfram Sang <wsa@kernel.org>, Jean Delvare <jdelvare@suse.de>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] i2c: consider devices with of_match_table during i2c
- device probing
-Message-ID: <20200826145040.GF8849@jagdpanzerIV.localdomain>
-References: <20200826050851.GA1081@ninjato>
- <20200826052544.GA500@jagdpanzerIV.localdomain>
- <20200826095356.GG1891694@smile.fi.intel.com>
- <20200826095617.GH1891694@smile.fi.intel.com>
- <20200826102411.GC8849@jagdpanzerIV.localdomain>
- <20200826103807.GD8849@jagdpanzerIV.localdomain>
- <20200826105426.GJ1891694@smile.fi.intel.com>
- <20200826112326.GC1081@ninjato>
- <20200826141810.GE8849@jagdpanzerIV.localdomain>
- <20200826143450.GQ1891694@smile.fi.intel.com>
+Subject: Re: [PATCH] i2c: do not acpi/of match device in i2c_device_probe()
+Message-ID: <20200826151629.GR1891694@smile.fi.intel.com>
+References: <20200826144920.110605-1-sergey.senozhatsky@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200826143450.GQ1891694@smile.fi.intel.com>
+In-Reply-To: <20200826144920.110605-1-sergey.senozhatsky@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On (20/08/26 17:34), Andy Shevchenko wrote:
-> > Oh, sure, will do. Is that OK if I'll base my patch on linux-next?
-> > I'm also going to test the patch on more devices here on my side.
+On Wed, Aug 26, 2020 at 11:49:20PM +0900, Sergey Senozhatsky wrote:
+> i2c, apparently, can match the same device twice - the first
+> time in ->match bus hook (i2c_device_match()), and the second
+> one in ->probe (i2c_device_probe()) bus hook.
 > 
-> Today's one includes above mentioned patches, I think it's okay.
+> To make things more complicated, the second matching does not
+> do exactly same checks as the first one. Namely, i2c_device_match()
+> calls acpi_driver_match_device() which considers devices that
+> provide of_match_table and performs of_compatible() matching for
+> such devices. One important thing to note here is that ACPI
+> of_compatible() matching (acpi_of_match_device()) is part of ACPI
+> and does not depend on CONFIG_OF.
+> 
+> i2c_device_probe(), on the other hand, calls acpi_match_device()
+> which does not perform of_compatible() matching, but instead
+> i2c_device_probe() relies on CONFIG_OF API to perform of_match_table
+> matching, IOW ->probe matching, unlike ->match matching, depends on
+> CONFIG_OF. This can break i2c device probing on !CONFIG_OF systems
+> if the device does not provide .id_table.
+> 
+>  i2c_device_probe()
+>  ...
+>    if (!driver->id_table &&
+>        !i2c_acpi_match_device(dev->driver->acpi_match_table, client) &&
+>        !i2c_of_match_device(dev->driver->of_match_table, client)) {
+>        status = -ENODEV;
+>        goto put_sync_adapter;
+>    }
+> 
+> i2c_of_match_device() on !CONFIG_OF systems is always false, so we never
+> perform of_match_table matching. i2c_acpi_match_device() does ACPI match
+> only, no of_compatible() matching takes place, even though the device
+> provides .of_match_table and ACPI is capable of matching such device.
+> 
+> It is not entirely clear why the device is matched again in bus
+> ->probe after successful and proper matching in bus ->match. Let's
+> remove ->probe matching.
 
-Right, just noticed that as well. Thanks.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+(assuming it's okay to go)
 
-	-ss
+> Signed-off-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/i2c/i2c-core-base.c | 11 -----------
+>  1 file changed, 11 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 5ec082e2039d..77eea5c0bc71 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -475,17 +475,6 @@ static int i2c_device_probe(struct device *dev)
+>  
+>  	driver = to_i2c_driver(dev->driver);
+>  
+> -	/*
+> -	 * An I2C ID table is not mandatory, if and only if, a suitable OF
+> -	 * or ACPI ID table is supplied for the probing device.
+> -	 */
+> -	if (!driver->id_table &&
+> -	    !acpi_driver_match_device(dev, dev->driver) &&
+> -	    !i2c_of_match_device(dev->driver->of_match_table, client)) {
+> -		status = -ENODEV;
+> -		goto put_sync_adapter;
+> -	}
+> -
+>  	if (client->flags & I2C_CLIENT_WAKE) {
+>  		int wakeirq;
+>  
+> -- 
+> 2.28.0
+> 
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
