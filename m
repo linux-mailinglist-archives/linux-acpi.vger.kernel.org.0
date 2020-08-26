@@ -2,117 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F53F252B24
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 12:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9617F252B29
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Aug 2020 12:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728105AbgHZKJt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Aug 2020 06:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46450 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728129AbgHZKJj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Aug 2020 06:09:39 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C21C061756;
-        Wed, 26 Aug 2020 03:09:38 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id 67so781371pgd.12;
-        Wed, 26 Aug 2020 03:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=iHEsWvvTMNlzi3UKismS4T0pMykRpFFyVU3jPbBAjYs=;
-        b=Q2uYkVQMXrVq3/6USoa/qReMoQU+pWI851jFMp3PhxTMaOZ/AbqKYQ154SAvyxNg9/
-         XggvOhhBsKFYX7+x8LORzg9JERAd4sWgR6SG+5FaVHBbey5H26EtxCWWVZtSCPj0Y7fw
-         Y+V5nl8lSbaC1L3YrC3pSHuyRUxbUqiydOaNUjLpKscWVyuqTpnm0jbO08o4adCrIc8G
-         VWp7iHLmMnNjGf4dfY0IgzvfnnhK4UUk/YAvQ48KlIMbLzdWtR1HpmQC/Cz/fgYnk+sZ
-         7mF/Vl3ebd1n0hPRapw8eBhlFglWhc9E9jOHiJe5qFOTEvE3WPKPDWu5RNKsCNHNI4PQ
-         9QBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=iHEsWvvTMNlzi3UKismS4T0pMykRpFFyVU3jPbBAjYs=;
-        b=s+ZoLm6kjSbkx+tVh81VKmsN+jOgy452nev5ryBI9FbnAdO6UBBMwU5hvhT3SDTzK7
-         TSQbV6a+MqY07vX0+qKAoUQX9nfWhJCbLaYnsJSa3Irt6aIl8ndI35fyVo2xwRFO13Of
-         y9IktMGfsH3O0gnnE7j4Xziezxktm0yOvrJPAXCC5ygcFmmcpFF0B5VpUbAoR4YQHJ7f
-         sqMAgra306ACTLv5u8xipHzM6pSKZgPPJTD5T/v9h4YZbNzbq+RV41u30k5Ccbp6WORZ
-         zXSRoJZjNmP4rqBoKHFIuZO4Gj9hbIOwLI7Fz9zwSvW3MWFqQwNO0Z39blUBEDDSzIaU
-         ucJw==
-X-Gm-Message-State: AOAM533ZFBVdKEW8wOvjSvJuuOUBrUi8bpqMYarJqdOCNrRkcM6HqKSi
-        0sANWoGjryXQX7OqZtBAENU=
-X-Google-Smtp-Source: ABdhPJxY4Ti6Jljfc0G99zFAUhrGJKBo7hdD07Nhq8XuH3Qh0im2jFzwYu+D7Ot8nE6GiTWt4XUm7A==
-X-Received: by 2002:aa7:96cf:: with SMTP id h15mr11590240pfq.294.1598436578235;
-        Wed, 26 Aug 2020 03:09:38 -0700 (PDT)
-Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
-        by smtp.gmail.com with ESMTPSA id u16sm2325227pfn.134.2020.08.26.03.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 03:09:37 -0700 (PDT)
-Date:   Wed, 26 Aug 2020 19:09:35 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] i2c: consider devices with of_match_table during i2c
- device probing
-Message-ID: <20200826100935.GB8849@jagdpanzerIV.localdomain>
-References: <20200826042938.3259-1-sergey.senozhatsky@gmail.com>
- <20200826050851.GA1081@ninjato>
- <20200826052544.GA500@jagdpanzerIV.localdomain>
- <20200826095356.GG1891694@smile.fi.intel.com>
+        id S1728078AbgHZKMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Aug 2020 06:12:47 -0400
+Received: from mga17.intel.com ([192.55.52.151]:15487 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728015AbgHZKMq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 Aug 2020 06:12:46 -0400
+IronPort-SDR: oF34jg9OiDXoOe7DUaWhXFBJhCBEuEyJTazrC0jHX5yzRlo03pXckxvu5RJ9MTAemhb9dKLAAo
+ BH1XNb+JVkWA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9724"; a="136328149"
+X-IronPort-AV: E=Sophos;i="5.76,355,1592895600"; 
+   d="scan'208";a="136328149"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2020 03:12:45 -0700
+IronPort-SDR: RtEC8g9zf8RAbiGUrMMyNvXPDm6MvvrpEvtzOfgsZFBCb2z+5bhMy7KCNY9bf4fleiNpu4AMGZ
+ uZ8BS9ac/fIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,355,1592895600"; 
+   d="scan'208";a="336793744"
+Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 26 Aug 2020 03:12:43 -0700
+Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kAsQ7-0001OF-1P; Wed, 26 Aug 2020 10:12:43 +0000
+Date:   Wed, 26 Aug 2020 18:12:36 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ a64f0b6a746f0133e361f4c99e4c17a1e481f6d8
+Message-ID: <5f463594.OY5tAiGY2Itzo0xd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200826095356.GG1891694@smile.fi.intel.com>
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On (20/08/26 12:53), Andy Shevchenko wrote:
-> On Wed, Aug 26, 2020 at 02:25:44PM +0900, Sergey Senozhatsky wrote:
-> > On (20/08/26 07:08), Wolfram Sang wrote:
-> > > On Wed, Aug 26, 2020 at 01:29:37PM +0900, Sergey Senozhatsky wrote:
-[..]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: a64f0b6a746f0133e361f4c99e4c17a1e481f6d8  Merge branch 'pm-sleep' into bleeding-edge
 
-> > > > i2c_of_match_device() depends on CONFIG_OF and, thus, is always false.
-> > > > i2c_acpi_match_device() does ACPI match only, no of_comtatible() matching
-> > > > takes place, even though the device provides .of_match_table and ACPI,
-> > > > technically, is capable of matching such device. The result is -ENODEV.
-> > > > Probing will succeed, however, if we'd use .of_match_table aware ACPI
-> > > > matching.
-> 
-> Looks like you read same StackOverflow question :-)
+elapsed time: 720m
 
-Nope :) Ran into actual media/i2c driver probing issue several days ago
+configs tested: 75
+configs skipped: 3
 
-[..]
-> >         if (!driver->id_table &&
-> > -           !i2c_acpi_match_device(dev->driver->acpi_match_table, client) &&
-> > -           !i2c_of_match_device(dev->driver->of_match_table, client)) {
-> > +           !(client && i2c_device_match(&client->dev, dev->driver))) {
-> 
-> You probably meant simply:
-> 
-> 	if (!i2c_device_match(dev, dev->driver)) {
-> 
-> >                 status = -ENODEV;
-> >                 goto put_sync_adapter;
-> >         }
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-That's shorter, yes. I wanted to keep the existing "workaround" in order
-to avoid extra id_table matching. Because it probably will take place
-earlier somewhere in
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                      tct_hammer_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                            dove_defconfig
+mips                          ath79_defconfig
+arm                           sunxi_defconfig
+arm                    vt8500_v6_v7_defconfig
+arc                        vdk_hs38_defconfig
+mips                         bigsur_defconfig
+arm                           omap1_defconfig
+arm                           h5000_defconfig
+arm                  colibri_pxa300_defconfig
+arm                          moxart_defconfig
+nios2                         3c120_defconfig
+powerpc                    amigaone_defconfig
+sh                             shx3_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a015-20200826
+x86_64               randconfig-a016-20200826
+x86_64               randconfig-a012-20200826
+x86_64               randconfig-a014-20200826
+x86_64               randconfig-a011-20200826
+x86_64               randconfig-a013-20200826
+i386                 randconfig-a013-20200826
+i386                 randconfig-a012-20200826
+i386                 randconfig-a011-20200826
+i386                 randconfig-a016-20200826
+i386                 randconfig-a015-20200826
+i386                 randconfig-a014-20200826
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-	bus_for_each_dev()
-	 __driver_attach()
-	  i2c_device_match()  // OF ACPI id_table match
-
-> On the first glance it will work the same way but slightly longer in case of ID
-> table matching.
-
-Right.
-
-	-ss
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
