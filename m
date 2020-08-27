@@ -2,118 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E82253D09
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Aug 2020 07:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FA8253DD2
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Aug 2020 08:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgH0FGK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Aug 2020 01:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725854AbgH0FGJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Aug 2020 01:06:09 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE45C061240;
-        Wed, 26 Aug 2020 22:06:09 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id d19so2483537pgl.10;
-        Wed, 26 Aug 2020 22:06:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7IhqloVaMibf2jlzA4WMOp2YL1jlSwNWW6bEUaEjE70=;
-        b=MM4m8VVL34hq0942VtiA6yVZWBnFE6qE2Nc4MymlFTZV67g9XvTBfU1MiU8HQlKQoS
-         Z2qEyLxFY6FUzNvUOQFeLPLruy6txqYKOIV0NXyKHST1ceZ96kzEEcor/EiirnEqvz9W
-         yC2d3AuWlQRyQ2PV490ityVLNiUUV+I+J4Cixc5ED6TqMy4yOn/lt1moJLqRMl1h5m9i
-         E1UasyiSxHGX2Hv5VKdth69XX9/O5beUehPugxZyjOUoaQTiWTskVb0E8SsHEenMIXi4
-         D8BK27J/FkVwkOLzrGq/j2sdagtYAvgPY8IRhbw06EvX1GVhAsZP2qSxO+GX+dqu4kIx
-         /6lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7IhqloVaMibf2jlzA4WMOp2YL1jlSwNWW6bEUaEjE70=;
-        b=PCeYqfnctwVa/ggu7IEv/ysA62Bq8K041vXkUkf29Qhk5fxDPrYSRNLeYIz1qyTyCZ
-         8w1h6qrWI2EYbP/UR6aSOXALXYwGesM0hIOw+ivn4qR5pzsM3hevaenvBS/WE/4MCWRV
-         LTi7K8VXw3QGgilDDT1h2FvsCWAQ15xGhHeLLpJayN9lBqZzPIMApJQ9ueXdRfFfVB11
-         s9COv/CpzzCmZ0F2dwpDuC1CuBo2PNktKe+ZQiAATDOFInz7B2ChOpRGtZin82+dwxZC
-         02ggpuVbiOTPEKvEfVh09u1WDOCZXqtruXxPX5Ru8ZcPMOLuJIUUSQzquFSv+kDAeITZ
-         aTQA==
-X-Gm-Message-State: AOAM531+T62M7QilmKqXyU2odM3FOQY3wX753qAXHZL5FhejKQlToRMo
-        ojkXEH/fkdYWKagcuGbv/30=
-X-Google-Smtp-Source: ABdhPJzjzzoY7Skt0zwRoFrIRfr0W5ogmgbRPGMxbAV7U8UUadv17Mke6ZwLr9hn9Sqv/G/bMGtLoA==
-X-Received: by 2002:a63:4cc:: with SMTP id 195mr10585879pge.376.1598504768573;
-        Wed, 26 Aug 2020 22:06:08 -0700 (PDT)
-Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
-        by smtp.gmail.com with ESMTPSA id w199sm933744pfc.191.2020.08.26.22.06.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 22:06:07 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 14:06:05 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Jean Delvare <jdelvare@suse.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: do not acpi/of match device in i2c_device_probe()
-Message-ID: <20200827050605.GA512@jagdpanzerIV.localdomain>
-References: <20200826144920.110605-1-sergey.senozhatsky@gmail.com>
- <20200826151629.GR1891694@smile.fi.intel.com>
+        id S1726882AbgH0GfW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Aug 2020 02:35:22 -0400
+Received: from verein.lst.de ([213.95.11.211]:36736 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726242AbgH0GfV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 27 Aug 2020 02:35:21 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 3FC7B68BFE; Thu, 27 Aug 2020 08:35:17 +0200 (CEST)
+Date:   Thu, 27 Aug 2020 08:35:17 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Jim Quinlan <james.quinlan@broadcom.com>,
+        linux-pci@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
+        <devicetree@vger.kernel.org>,
+        "open list:DRM DRIVERS FOR ALLWINNER A10" 
+        <dri-devel@lists.freedesktop.org>, Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Julien Grall <julien.grall@arm.com>,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:ALLWINNER A10 CSI DRIVER" <linux-media@vger.kernel.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>
+Subject: Re: [PATCH v11 00/11] PCI: brcmstb: enable PCIe for STB chips
+Message-ID: <20200827063517.GA4637@lst.de>
+References: <20200824193036.6033-1-james.quinlan@broadcom.com> <b19bc982-a0c4-c6ff-d8f5-650f2b3a83c8@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200826151629.GR1891694@smile.fi.intel.com>
+In-Reply-To: <b19bc982-a0c4-c6ff-d8f5-650f2b3a83c8@gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On (20/08/26 18:16), Andy Shevchenko wrote:
-> On Wed, Aug 26, 2020 at 11:49:20PM +0900, Sergey Senozhatsky wrote:
-> > i2c, apparently, can match the same device twice - the first
-> > time in ->match bus hook (i2c_device_match()), and the second
-> > one in ->probe (i2c_device_probe()) bus hook.
-> > 
-> > To make things more complicated, the second matching does not
-> > do exactly same checks as the first one. Namely, i2c_device_match()
-> > calls acpi_driver_match_device() which considers devices that
-> > provide of_match_table and performs of_compatible() matching for
-> > such devices. One important thing to note here is that ACPI
-> > of_compatible() matching (acpi_of_match_device()) is part of ACPI
-> > and does not depend on CONFIG_OF.
-> > 
-> > i2c_device_probe(), on the other hand, calls acpi_match_device()
-> > which does not perform of_compatible() matching, but instead
-> > i2c_device_probe() relies on CONFIG_OF API to perform of_match_table
-> > matching, IOW ->probe matching, unlike ->match matching, depends on
-> > CONFIG_OF. This can break i2c device probing on !CONFIG_OF systems
-> > if the device does not provide .id_table.
-> > 
-> >  i2c_device_probe()
-> >  ...
-> >    if (!driver->id_table &&
-> >        !i2c_acpi_match_device(dev->driver->acpi_match_table, client) &&
-> >        !i2c_of_match_device(dev->driver->of_match_table, client)) {
-> >        status = -ENODEV;
-> >        goto put_sync_adapter;
-> >    }
-> > 
-> > i2c_of_match_device() on !CONFIG_OF systems is always false, so we never
-> > perform of_match_table matching. i2c_acpi_match_device() does ACPI match
-> > only, no of_compatible() matching takes place, even though the device
-> > provides .of_match_table and ACPI is capable of matching such device.
-> > 
-> > It is not entirely clear why the device is matched again in bus
-> > ->probe after successful and proper matching in bus ->match. Let's
-> > remove ->probe matching.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> (assuming it's okay to go)
+On Tue, Aug 25, 2020 at 10:40:27AM -0700, Florian Fainelli wrote:
+> Hi,
+>
+> On 8/24/2020 12:30 PM, Jim Quinlan wrote:
+>>
+>> Patchset Summary:
+>>    Enhance a PCIe host controller driver.  Because of its unusual design
+>>    we are foced to change dev->dma_pfn_offset into a more general role
+>>    allowing multiple offsets.  See the 'v1' notes below for more info.
+>
+> We are version 11 and counting, and it is not clear to me whether there is 
+> any chance of getting these patches reviewed and hopefully merged for the 
+> 5.10 merge window.
+>
+> There are a lot of different files being touched, so what would be the 
+> ideal way of routing those changes towards inclusion?
 
-Thanks.
-
-I tested the patch on x86_64 (a mix of i2c devices with and without
-.id_table) and arm64 boards - didn't notice any difference, module
-probing wise.
-
-	-ss
+FYI, I offered to take the dma-mapping bits through the dma-mapping tree.
+I have a bit of a backlog, but plan to review and if Jim is ok with that
+apply the current version.
