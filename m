@@ -2,234 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5B2253B78
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Aug 2020 03:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E82253D09
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Aug 2020 07:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbgH0Bhg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Aug 2020 21:37:36 -0400
-Received: from mga12.intel.com ([192.55.52.136]:41677 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726784AbgH0Bhf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 26 Aug 2020 21:37:35 -0400
-IronPort-SDR: h48TaLE4d2+zniE4rq3go7DBy/qqQOgioP81jW4A+Y/5UvNOdS/yArCICIGFYLGz/+BrG91NcA
- PRSGKNSwSRug==
-X-IronPort-AV: E=McAfee;i="6000,8403,9725"; a="135956593"
-X-IronPort-AV: E=Sophos;i="5.76,358,1592895600"; 
-   d="scan'208";a="135956593"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2020 18:37:34 -0700
-IronPort-SDR: 5XFhXibLbpkIMpHcBNhIumgI44vHd78teNWOrHXR9SBkGjZKV8PLc/lfyrkmsvt1GmVYtyc/aB
- 9zaRozIYYY4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,358,1592895600"; 
-   d="scan'208";a="337009847"
-Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 26 Aug 2020 18:37:32 -0700
-Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kB6r6-0001o5-21; Thu, 27 Aug 2020 01:37:32 +0000
-Date:   Thu, 27 Aug 2020 09:36:55 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- fe784821d630f71eee1f431f10e08518db42dc02
-Message-ID: <5f470e37.8DkUgOSXArNPoJai%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726321AbgH0FGK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Aug 2020 01:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbgH0FGJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Aug 2020 01:06:09 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE45C061240;
+        Wed, 26 Aug 2020 22:06:09 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id d19so2483537pgl.10;
+        Wed, 26 Aug 2020 22:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7IhqloVaMibf2jlzA4WMOp2YL1jlSwNWW6bEUaEjE70=;
+        b=MM4m8VVL34hq0942VtiA6yVZWBnFE6qE2Nc4MymlFTZV67g9XvTBfU1MiU8HQlKQoS
+         Z2qEyLxFY6FUzNvUOQFeLPLruy6txqYKOIV0NXyKHST1ceZ96kzEEcor/EiirnEqvz9W
+         yC2d3AuWlQRyQ2PV490ityVLNiUUV+I+J4Cixc5ED6TqMy4yOn/lt1moJLqRMl1h5m9i
+         E1UasyiSxHGX2Hv5VKdth69XX9/O5beUehPugxZyjOUoaQTiWTskVb0E8SsHEenMIXi4
+         D8BK27J/FkVwkOLzrGq/j2sdagtYAvgPY8IRhbw06EvX1GVhAsZP2qSxO+GX+dqu4kIx
+         /6lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7IhqloVaMibf2jlzA4WMOp2YL1jlSwNWW6bEUaEjE70=;
+        b=PCeYqfnctwVa/ggu7IEv/ysA62Bq8K041vXkUkf29Qhk5fxDPrYSRNLeYIz1qyTyCZ
+         8w1h6qrWI2EYbP/UR6aSOXALXYwGesM0hIOw+ivn4qR5pzsM3hevaenvBS/WE/4MCWRV
+         LTi7K8VXw3QGgilDDT1h2FvsCWAQ15xGhHeLLpJayN9lBqZzPIMApJQ9ueXdRfFfVB11
+         s9COv/CpzzCmZ0F2dwpDuC1CuBo2PNktKe+ZQiAATDOFInz7B2ChOpRGtZin82+dwxZC
+         02ggpuVbiOTPEKvEfVh09u1WDOCZXqtruXxPX5Ru8ZcPMOLuJIUUSQzquFSv+kDAeITZ
+         aTQA==
+X-Gm-Message-State: AOAM531+T62M7QilmKqXyU2odM3FOQY3wX753qAXHZL5FhejKQlToRMo
+        ojkXEH/fkdYWKagcuGbv/30=
+X-Google-Smtp-Source: ABdhPJzjzzoY7Skt0zwRoFrIRfr0W5ogmgbRPGMxbAV7U8UUadv17Mke6ZwLr9hn9Sqv/G/bMGtLoA==
+X-Received: by 2002:a63:4cc:: with SMTP id 195mr10585879pge.376.1598504768573;
+        Wed, 26 Aug 2020 22:06:08 -0700 (PDT)
+Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
+        by smtp.gmail.com with ESMTPSA id w199sm933744pfc.191.2020.08.26.22.06.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2020 22:06:07 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 14:06:05 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>, Jean Delvare <jdelvare@suse.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: do not acpi/of match device in i2c_device_probe()
+Message-ID: <20200827050605.GA512@jagdpanzerIV.localdomain>
+References: <20200826144920.110605-1-sergey.senozhatsky@gmail.com>
+ <20200826151629.GR1891694@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200826151629.GR1891694@smile.fi.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: fe784821d630f71eee1f431f10e08518db42dc02  Merge branch 'pm-sleep' into linux-next
+On (20/08/26 18:16), Andy Shevchenko wrote:
+> On Wed, Aug 26, 2020 at 11:49:20PM +0900, Sergey Senozhatsky wrote:
+> > i2c, apparently, can match the same device twice - the first
+> > time in ->match bus hook (i2c_device_match()), and the second
+> > one in ->probe (i2c_device_probe()) bus hook.
+> > 
+> > To make things more complicated, the second matching does not
+> > do exactly same checks as the first one. Namely, i2c_device_match()
+> > calls acpi_driver_match_device() which considers devices that
+> > provide of_match_table and performs of_compatible() matching for
+> > such devices. One important thing to note here is that ACPI
+> > of_compatible() matching (acpi_of_match_device()) is part of ACPI
+> > and does not depend on CONFIG_OF.
+> > 
+> > i2c_device_probe(), on the other hand, calls acpi_match_device()
+> > which does not perform of_compatible() matching, but instead
+> > i2c_device_probe() relies on CONFIG_OF API to perform of_match_table
+> > matching, IOW ->probe matching, unlike ->match matching, depends on
+> > CONFIG_OF. This can break i2c device probing on !CONFIG_OF systems
+> > if the device does not provide .id_table.
+> > 
+> >  i2c_device_probe()
+> >  ...
+> >    if (!driver->id_table &&
+> >        !i2c_acpi_match_device(dev->driver->acpi_match_table, client) &&
+> >        !i2c_of_match_device(dev->driver->of_match_table, client)) {
+> >        status = -ENODEV;
+> >        goto put_sync_adapter;
+> >    }
+> > 
+> > i2c_of_match_device() on !CONFIG_OF systems is always false, so we never
+> > perform of_match_table matching. i2c_acpi_match_device() does ACPI match
+> > only, no of_compatible() matching takes place, even though the device
+> > provides .of_match_table and ACPI is capable of matching such device.
+> > 
+> > It is not entirely clear why the device is matched again in bus
+> > ->probe after successful and proper matching in bus ->match. Let's
+> > remove ->probe matching.
+> 
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> (assuming it's okay to go)
 
-elapsed time: 720m
+Thanks.
 
-configs tested: 171
-configs skipped: 9
+I tested the patch on x86_64 (a mix of i2c devices with and without
+.id_table) and arm64 boards - didn't notice any difference, module
+probing wise.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-mips                      fuloong2e_defconfig
-arm                          pxa910_defconfig
-arc                          axs103_defconfig
-mips                        workpad_defconfig
-mips                        maltaup_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                        oxnas_v6_defconfig
-sh                        edosk7705_defconfig
-arm                         ebsa110_defconfig
-m68k                          sun3x_defconfig
-mips                       capcella_defconfig
-openrisc                    or1ksim_defconfig
-mips                      maltaaprp_defconfig
-powerpc                     pseries_defconfig
-arm                        mvebu_v7_defconfig
-c6x                        evmc6472_defconfig
-arm                       multi_v4t_defconfig
-arm                          simpad_defconfig
-sh                          lboxre2_defconfig
-arm                            zeus_defconfig
-m68k                            q40_defconfig
-arm                              zx_defconfig
-mips                        jmr3927_defconfig
-sh                        sh7757lcr_defconfig
-mips                      malta_kvm_defconfig
-mips                           jazz_defconfig
-arm                        multi_v5_defconfig
-riscv                            allmodconfig
-m68k                         apollo_defconfig
-sh                ecovec24-romimage_defconfig
-sh                        apsh4ad0a_defconfig
-arm                       spear13xx_defconfig
-arm                        trizeps4_defconfig
-m68k                       m5249evb_defconfig
-arm                         palmz72_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-powerpc                    adder875_defconfig
-sh                           se7751_defconfig
-powerpc                          g5_defconfig
-mips                     loongson1c_defconfig
-ia64                          tiger_defconfig
-mips                         cobalt_defconfig
-sh                           se7722_defconfig
-sh                   sh7770_generic_defconfig
-mips                         tb0226_defconfig
-powerpc                     skiroot_defconfig
-x86_64                              defconfig
-c6x                        evmc6474_defconfig
-mips                malta_kvm_guest_defconfig
-sh                          sdk7780_defconfig
-sh                         apsh4a3a_defconfig
-mips                           mtx1_defconfig
-powerpc                          alldefconfig
-arm                         lpc18xx_defconfig
-sh                          urquell_defconfig
-mips                         bigsur_defconfig
-ia64                            zx1_defconfig
-arm                      integrator_defconfig
-powerpc                 mpc8272_ads_defconfig
-arm                          ixp4xx_defconfig
-sparc                       sparc64_defconfig
-arm                          iop32x_defconfig
-arm                           tegra_defconfig
-arm                            mps2_defconfig
-arm                            qcom_defconfig
-sh                          kfr2r09_defconfig
-mips                          rb532_defconfig
-arm                            dove_defconfig
-mips                          ath25_defconfig
-powerpc                         wii_defconfig
-m68k                        stmark2_defconfig
-sh                                  defconfig
-arc                    vdk_hs38_smp_defconfig
-arc                             nps_defconfig
-arm                  colibri_pxa270_defconfig
-mips                         rt305x_defconfig
-xtensa                generic_kc705_defconfig
-ia64                        generic_defconfig
-x86_64                           alldefconfig
-arm                          pxa3xx_defconfig
-sh                             sh03_defconfig
-mips                 decstation_r4k_defconfig
-arc                     nsimosci_hs_defconfig
-mips                malta_qemu_32r6_defconfig
-mips                         mpc30x_defconfig
-arm                          collie_defconfig
-arc                 nsimosci_hs_smp_defconfig
-xtensa                          iss_defconfig
-arm                         lubbock_defconfig
-powerpc                  storcenter_defconfig
-ia64                      gensparse_defconfig
-arm                           viper_defconfig
-mips                        bcm47xx_defconfig
-sh                            shmin_defconfig
-sh                     sh7710voipgw_defconfig
-mips                  cavium_octeon_defconfig
-nios2                         10m50_defconfig
-arm                            mmp2_defconfig
-m68k                       m5275evb_defconfig
-m68k                           sun3_defconfig
-sh                          sdk7786_defconfig
-mips                       rbtx49xx_defconfig
-sh                  sh7785lcr_32bit_defconfig
-arm                         orion5x_defconfig
-sh                           se7206_defconfig
-sh                          r7785rp_defconfig
-arm                           h5000_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200826
-i386                 randconfig-a004-20200826
-i386                 randconfig-a003-20200826
-i386                 randconfig-a005-20200826
-i386                 randconfig-a006-20200826
-i386                 randconfig-a001-20200826
-x86_64               randconfig-a015-20200826
-x86_64               randconfig-a016-20200826
-x86_64               randconfig-a012-20200826
-x86_64               randconfig-a014-20200826
-x86_64               randconfig-a011-20200826
-x86_64               randconfig-a013-20200826
-i386                 randconfig-a013-20200826
-i386                 randconfig-a012-20200826
-i386                 randconfig-a011-20200826
-i386                 randconfig-a016-20200826
-i386                 randconfig-a015-20200826
-i386                 randconfig-a014-20200826
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+	-ss
