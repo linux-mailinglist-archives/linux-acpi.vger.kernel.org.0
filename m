@@ -2,208 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8FB2551F9
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Aug 2020 02:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 501D4255694
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Aug 2020 10:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728148AbgH1AgI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Aug 2020 20:36:08 -0400
-Received: from mga07.intel.com ([134.134.136.100]:26668 "EHLO mga07.intel.com"
+        id S1728648AbgH1Iii (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Aug 2020 04:38:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37636 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727008AbgH1AgI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 27 Aug 2020 20:36:08 -0400
-IronPort-SDR: zxgz51pjckH0qndMaxxPGlTUwR6F49Nv4g5u07+HqXscJIUK4m1MAdr6QwVeAX9d2QuJeA44dG
- 7T7RtLh0Mgaw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="220834401"
-X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="220834401"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 17:36:07 -0700
-IronPort-SDR: x6L+k0cke8o7makoPwEUXXhr+4FrMe5vZek6LAlGyZJBZ8qJWN1D/wxR+hohkcdJMTP2WuM/RS
- A4rHV/GVh39Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="500312364"
-Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Aug 2020 17:36:05 -0700
-Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kBSNA-0002OM-TE; Fri, 28 Aug 2020 00:36:04 +0000
-Date:   Fri, 28 Aug 2020 08:36:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- dc37b29f6d3007e72ff3de80fcbeeed75843cfed
-Message-ID: <5f485170.xLHB2cTv+CiAHlVG%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726643AbgH1Iih (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 28 Aug 2020 04:38:37 -0400
+Received: from localhost (p54b3345c.dip0.t-ipconnect.de [84.179.52.92])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 611A420791;
+        Fri, 28 Aug 2020 08:38:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598603916;
+        bh=6oEXqOj80NX5g/6826zo8bC4f0TOwNYvOYDpH7fMHVY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FTxXcGpfAMqHochDPGltth9hM/fvyJgR8SSDrI/UnUFX7LuxVPnTP9ZtO+h0VbqYA
+         C+MWRipCxSq8kwe9mldzmP07cn7IZLAy1Hm/RijtO2/9G6nhDvW6TOaZwNCHm4HdC6
+         ZUgXSAESW6EoKuKSVqpLsjkzd/yJTEpJHQjY4nQM=
+Date:   Fri, 28 Aug 2020 10:38:32 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media@vger.kernel.org,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>
+Subject: Re: [PATCH v6 1/6] i2c: Allow an ACPI driver to manage the device's
+ power state during probe
+Message-ID: <20200828083832.GE1343@ninjato>
+References: <20200826115432.6103-1-sakari.ailus@linux.intel.com>
+ <20200826115432.6103-2-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5oH/S/bF6lOfqCQb"
+Content-Disposition: inline
+In-Reply-To: <20200826115432.6103-2-sakari.ailus@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: dc37b29f6d3007e72ff3de80fcbeeed75843cfed  Merge branch 'pm-cpufreq' into linux-next
 
-elapsed time: 724m
+--5oH/S/bF6lOfqCQb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 145
-configs skipped: 16
+Hi Sakari,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+On Wed, Aug 26, 2020 at 02:54:27PM +0300, Sakari Ailus wrote:
+> Enable drivers to tell ACPI that there's no need to power on a device for
+> probe. Drivers should still perform this by themselves if there's a need
+> to. In some cases powering on the device during probe is undesirable, and
+> this change enables a driver to choose what fits best for it.
+>=20
+> Add a field called "flags" into struct i2c_driver for driver flags, and a
+> flag I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to tell a driver supports probe in
+> low power state.
+>=20
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/i2c/i2c-core-base.c | 18 +++++++++++++++---
+>  include/linux/i2c.h         | 14 ++++++++++++++
+>  2 files changed, 29 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 34a9609f256da..f2683790eb0d2 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -436,6 +436,15 @@ static int i2c_smbus_host_notify_to_irq(const struct=
+ i2c_client *client)
+>  	return irq > 0 ? irq : -ENXIO;
+>  }
+> =20
+> +static bool allow_low_power_probe(struct device *dev)
+> +{
+> +	struct i2c_driver *driver =3D to_i2c_driver(dev->driver);
+> +
+> +	return driver->flags & I2C_DRV_FL_ALLOW_LOW_POWER_PROBE &&
+> +		is_acpi_node(dev_fwnode(dev)) &&
+> +		device_property_present(dev, "allow-low-power-probe");
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                     decstation_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                mpc7448_hpc2_defconfig
-sh                              ul2_defconfig
-powerpc                         ps3_defconfig
-arm                             rpc_defconfig
-sh                            shmin_defconfig
-arm                         s3c2410_defconfig
-m68k                        m5272c3_defconfig
-sh                            migor_defconfig
-arm                        multi_v7_defconfig
-sh                          sdk7780_defconfig
-arm                             ezx_defconfig
-mips                            e55_defconfig
-arm                          pxa910_defconfig
-sparc64                          alldefconfig
-arm                          pxa168_defconfig
-sh                        apsh4ad0a_defconfig
-mips                          ath25_defconfig
-ia64                             allmodconfig
-sh                        sh7763rdp_defconfig
-arm                         orion5x_defconfig
-mips                          malta_defconfig
-arm                           spitz_defconfig
-mips                       rbtx49xx_defconfig
-sh                           se7721_defconfig
-mips                         mpc30x_defconfig
-powerpc                      ppc40x_defconfig
-parisc                           allyesconfig
-mips                         rt305x_defconfig
-arm                         lpc32xx_defconfig
-powerpc                     mpc5200_defconfig
-arm                      pxa255-idp_defconfig
-mips                           ip22_defconfig
-arc                           tb10x_defconfig
-sh                        sh7757lcr_defconfig
-mips                      maltaaprp_defconfig
-arm                    vt8500_v6_v7_defconfig
-arc                              allyesconfig
-sh                             sh03_defconfig
-arm                         mv78xx0_defconfig
-sh                ecovec24-romimage_defconfig
-powerpc                      ppc44x_defconfig
-arm                       mainstone_defconfig
-m68k                             allmodconfig
-c6x                         dsk6455_defconfig
-powerpc                     powernv_defconfig
-mips                          rb532_defconfig
-ia64                         bigsur_defconfig
-arm                        multi_v5_defconfig
-sh                         ecovec24_defconfig
-arc                              alldefconfig
-arm                  colibri_pxa270_defconfig
-mips                       lemote2f_defconfig
-m68k                         apollo_defconfig
-sh                        edosk7760_defconfig
-sh                           sh2007_defconfig
-c6x                        evmc6678_defconfig
-sparc                               defconfig
-arc                    vdk_hs38_smp_defconfig
-arm                         at91_dt_defconfig
-sh                          kfr2r09_defconfig
-arm                          pcm027_defconfig
-powerpc                      ppc6xx_defconfig
-arm                         bcm2835_defconfig
-mips                     loongson1b_defconfig
-mips                            ar7_defconfig
-arc                            hsdk_defconfig
-alpha                               defconfig
-arm                          exynos_defconfig
-powerpc                      tqm8xx_defconfig
-arm                       aspeed_g4_defconfig
-riscv                    nommu_k210_defconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20200827
-x86_64               randconfig-a002-20200827
-x86_64               randconfig-a001-20200827
-x86_64               randconfig-a005-20200827
-x86_64               randconfig-a006-20200827
-x86_64               randconfig-a004-20200827
-i386                 randconfig-a002-20200827
-i386                 randconfig-a004-20200827
-i386                 randconfig-a003-20200827
-i386                 randconfig-a005-20200827
-i386                 randconfig-a006-20200827
-i386                 randconfig-a001-20200827
-i386                 randconfig-a002-20200828
-i386                 randconfig-a005-20200828
-i386                 randconfig-a003-20200828
-i386                 randconfig-a004-20200828
-i386                 randconfig-a001-20200828
-i386                 randconfig-a006-20200828
-i386                 randconfig-a013-20200827
-i386                 randconfig-a012-20200827
-i386                 randconfig-a011-20200827
-i386                 randconfig-a016-20200827
-i386                 randconfig-a015-20200827
-i386                 randconfig-a014-20200827
-i386                 randconfig-a013-20200828
-i386                 randconfig-a012-20200828
-i386                 randconfig-a011-20200828
-i386                 randconfig-a016-20200828
-i386                 randconfig-a014-20200828
-i386                 randconfig-a015-20200828
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+So, I wondered about potential DT usage and I read the discussion about
+that in v5 which concluded that for the DT case, the drivers can make
+use of the binding individually. I can agree to that, but then the name
+of the binding is probably problematic. 'allow-*' sounds like
+configuration but DT is for describing HW. So, I think something in the
+range of 'keep-low-power' or so might be better suited. Grepping shows
+there already is a generic binding "low-power-enable". Not sure, if it
+really fits, because here it is more about 'keeping' rather than
+enabling. Or?
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> +/**
+> + * enum i2c_driver_flags - Flags for an I2C device driver
+> + *
+> + * @I2C_DRV_FL_ALLOW_LOW_POWER_PROBE: Let the ACPI driver manage the dev=
+ice's
+> + *				      power state during probe and remove
+> + */
+> +enum i2c_driver_flags {
+> +	I2C_DRV_FL_ALLOW_LOW_POWER_PROBE =3D BIT(0),
+> +};
+> +
+>  /**
+>   * struct i2c_driver - represent an I2C device driver
+>   * @class: What kind of i2c device we instantiate (for detect)
+> @@ -231,6 +242,7 @@ enum i2c_alert_protocol {
+>   * @detect: Callback for device detection
+>   * @address_list: The I2C addresses to probe (for detect)
+>   * @clients: List of detected clients we created (for i2c-core use only)
+> + * @flags: A bitmask of flags defined in &enum i2c_driver_flags
+>   *
+>   * The driver.owner field should be set to the module owner of this driv=
+er.
+>   * The driver.name field should be set to the name of this driver.
+> @@ -289,6 +301,8 @@ struct i2c_driver {
+>  	int (*detect)(struct i2c_client *client, struct i2c_board_info *info);
+>  	const unsigned short *address_list;
+>  	struct list_head clients;
+> +
+> +	unsigned int flags;
+
+Here I wonder if all this is really I2C specific? I could imagine this
+being useful for other busses as well, so maybe 'struct device_driver'
+is a better place?
+
+Thanks for this work!
+
+All the best,
+
+   Wolfram
+
+
+--5oH/S/bF6lOfqCQb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9IwoQACgkQFA3kzBSg
+KbYFqA/+PgFHWc6sxcK2rs/URNTr2xkOqwl8fMvCWpGCQQ+XMGrmjyKOUvFvuDxr
+/U/TxKdfMkQLkX2G4TgVfqGagI6oZwl6QHyxelKSlceIOdGtKZDpvV6XHwsLFLcR
+9iXyy1IxLcLy9sYoXMkss/Leowzr63f+C9Hj9J/4nwrk+JLf5DCfZRU+xsrdrnr+
+CUakuhocOTnqofD+X84vmx3eenE3EaGEMZPoCFJ0tT1+GvqUOwzTf3C8jJwFTVMM
+eTLWXJE/Wvz/o9xti9KJnF4RlrbcseCkz+CbCxMtnOYb+yXEsD58n1ZctCHHujie
+jryWSKoca6ZrxR7AFkHJYotJsegxujw8I0VBeGxz2rontNohxLJoSoB4LGFL8Txc
+6I0WfASgE43pILBJB3SCUdQ4TC03kZKK0OQO88/AqQ58qFkjg3ku+8xkJg98l2LK
+5Fuyvhvhfl1TBdts2ng5Ticfx9XkOly6bjYU5b/dItmSwrbX6a9ItfJRz0B5MuZi
+clDduqd/mbNOE2yuBwKNMbC/8VqEw4qq6Kn+i3OA0SSrntqie1hhEFSnhH5HwaO0
+hRB3lBIeVh6fn+LTzNk3T2SRrTySFv35vAu8nUxudh9t7qliNpDQKIHeEVERPjya
+UMy+oRCu2mL+tl61dVJou/KKS64E2YSB5/hjfXuR0wUjxvpZl3Y=
+=kCUk
+-----END PGP SIGNATURE-----
+
+--5oH/S/bF6lOfqCQb--
