@@ -2,319 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FAD257FFB
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 19:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E65258386
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 23:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725993AbgHaR5j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Aug 2020 13:57:39 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:43997 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726174AbgHaR5i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Aug 2020 13:57:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598896655;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Fta6S09NuQr3NtP1v0gU8NpMcMvdjL+BAFEBhoAl3nw=;
-        b=KzhNwXKnVElvzYZZE6bpmiXxQJkGn6/f+9vN2N0zDb4TnYH6h2HjwnvYP1uRc+G+q9p/lR
-        RfgcPnwKqtD+pI+DD/xeAF57lzbpLWXPkU9oWnIoLihcNvYgFb1rxxCV80y0UplaI0Fxl9
-        vWVzRA5ym9HhKbPpvI1MKaLbv/Rasvg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-21-BCOK4dYTMUqASrTumsq7Fg-1; Mon, 31 Aug 2020 13:57:34 -0400
-X-MC-Unique: BCOK4dYTMUqASrTumsq7Fg-1
-Received: by mail-ej1-f70.google.com with SMTP id l7so801069ejr.7
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Aug 2020 10:57:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Fta6S09NuQr3NtP1v0gU8NpMcMvdjL+BAFEBhoAl3nw=;
-        b=a/+9jnPRThqRJr9odSLQy7DXhEdgCK166Dycr4wEHb8QA6f2uk/ggqUp2NljGI97J9
-         LmmFVBN9h0LDs5n+jJEd+n/GiMSFh5XL681n/mRzEi9aQsy+pbriQKpQOXABziN78AsK
-         oJ8TS+dlIFPjsei9h7j1nstHJrr/1qSeqz1iteoxctl9ue7oCv8fBo2SEX54uenajLQa
-         IG6ipgO8nPQ7PrTI/LGBptBTx/V5fYNKljcsAIyHXQZxwf5ElNubmvAtCFEP0Ss3HcNo
-         eXjy9Z3x2T+5D4kxGGXBu8XAeckisS1XHRQ0LhJ/Hdo9XxafTRo3Efsexyhsg891Fjfi
-         6GLQ==
-X-Gm-Message-State: AOAM530Ho3XTkeIjxqd5zr9BjqR2O2V0Ko1rLCbN7BmOV3wtAkzVpDi/
-        nzhRZv2yo9oLbjcmWGg7250uhQ0XGrYJQwMAa/SG8jIOhzxqRmwX58qAkzvudIYQvwkpEmy+G+3
-        GxsDJDlkXHZssOdkel5eTNA==
-X-Received: by 2002:a05:6402:1710:: with SMTP id y16mr2304645edu.197.1598896652441;
-        Mon, 31 Aug 2020 10:57:32 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwTNia0aR3ARSWP7er9341p7NKAJ9h4bBKpm7KmLb2FIjWe4rKAGXCJJRlp89QldRBCgqjSUw==
-X-Received: by 2002:a05:6402:1710:: with SMTP id y16mr2304604edu.197.1598896651988;
-        Mon, 31 Aug 2020 10:57:31 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id l23sm8703136eje.46.2020.08.31.10.57.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2020 10:57:31 -0700 (PDT)
-Subject: Re: [PATCH v8 06/17] pwm: lpss: Use pwm_lpss_restore() when restoring
- state on resume
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20200830125753.230420-1-hdegoede@redhat.com>
- <20200830125753.230420-7-hdegoede@redhat.com> <20200831111006.GD1688464@ulmo>
- <d63a89d2-84e5-ca05-aa96-a06291503c5f@redhat.com>
- <20200831131533.GI1689119@ulmo>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <84887293-11b3-82c9-1e62-bac39861e39e@redhat.com>
-Date:   Mon, 31 Aug 2020 19:57:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1730190AbgHaVaq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Aug 2020 17:30:46 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2713 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728352AbgHaVaq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 Aug 2020 17:30:46 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 3890025B913188A60635;
+        Mon, 31 Aug 2020 22:30:44 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.25.250) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Mon, 31 Aug 2020 22:30:43 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <helgaas@kernel.org>, <bp@alien8.de>, <james.morse@arm.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>, <lenb@kernel.org>,
+        <tony.luck@intel.com>, <dan.carpenter@oracle.com>,
+        <andriy.shevchenko@linux.intel.com>
+CC:     <yangyicong@hisilicon.com>, <jonathan.cameron@huawei.com>,
+        <tanxiaofei@huawei.com>, <linuxarm@huawei.com>
+Subject: [RESEND PATCH v14 0/2] ACPI / APEI: Add support to notify the vendor specific HW errors
+Date:   Mon, 31 Aug 2020 22:26:04 +0100
+Message-ID: <20200831212606.1718-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20200831131533.GI1689119@ulmo>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.25.250]
+X-ClientProxiedBy: lhreml737-chm.china.huawei.com (10.201.108.187) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+CPER records describing a firmware-first error are identified by GUID.
+The ghes driver currently logs, but ignores any unknown CPER records.
+This prevents describing errors that can't be represented by a standard
+entry, that would otherwise allow a driver to recover from an error.
+The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
+version 2.8).
 
-On 8/31/20 3:15 PM, Thierry Reding wrote:
-> On Mon, Aug 31, 2020 at 01:46:28PM +0200, Hans de Goede wrote:
->> Hi,
->>
->> On 8/31/20 1:10 PM, Thierry Reding wrote:
->>> On Sun, Aug 30, 2020 at 02:57:42PM +0200, Hans de Goede wrote:
->>>> Before this commit a suspend + resume of the LPSS PWM controller
->>>> would result in the controller being reset to its defaults of
->>>> output-freq = clock/256, duty-cycle=100%, until someone changes
->>>> to the output-freq and/or duty-cycle are made.
->>>>
->>>> This problem has been masked so far because the main consumer
->>>> (the i915 driver) was always making duty-cycle changes on resume.
->>>> With the conversion of the i915 driver to the atomic PWM API the
->>>> driver now only disables/enables the PWM on suspend/resume leaving
->>>> the output-freq and duty as is, triggering this problem.
->>>
->>> Doesn't this imply that there's another bug at play here? At the PWM API
->>> level you're applying a state and it's up to the driver to ensure that
->>> the hardware state after ->apply() is what the software has requested.
->>>
->>> If you only switch the enable state and that doesn't cause period and
->>> duty cycle to be updated it means that your driver isn't writing those
->>> registers when it should be.
->>
->> Right, the driver was not committing those as it should *on resume*,
->> that and it skips setting the update bit on the subsequent enable,
->> which is an optimization which gets removed in 7/17.
->>
->> Before switching the i915 driver over to atomic, when the LPSS-PWM
->> was used for the backlight we got the following order on suspend/resume
->>
->> 1. Set duty-cycle to 0%
->> 2. Set enabled to 0
->> 3. Save ctrl reg
->> 4. Power-off PWM controller, it now looses all its state
->> 5. Power-on PWM ctrl
->> 6. Restore ctrl reg (as a single reg write)
->> 7. Set enabled to 1, at this point one would expect the
->> duty/freq from the restored ctrl-reg to apply, but:
->> a) The resume code never sets the update bit (which this commit fixes); and
->> b) On applying the pwm_state with enabled=1 the code applying the
->> state does this (before setting the enabled bit in the ctrl reg):
->>
->> 	if (orig_ctrl != ctrl) {
->> 		pwm_lpss_write(pwm, ctrl);
->> 		pwm_lpss_write(pwm, ctrl | PWM_SW_UPDATE);
->> 	}
->> and since the restore of the ctrl reg set the old duty/freq the
->> writes are skipped, so the update bit never gets set.
->>
->> 8. Set duty-cycle to the pre-suspend value (which is not 0)
->> this does cause a change in the ctrl-reg, so now the update flag
->> does get set.
->>
->> Note that 1-2 and 7-8 are both done by the non atomic i915 code,
->> when moving the i915 code to atomic I decided that having these
->> 2 separate steps here is non-sense, so the new i915 code just
->> toggles the enable bit. So in essence the new atomic PWM
->> i915 code drops step 1 and 8.
->>
->> Dropping steps 8 means that the update bit never gets set and we
->> end up with the PWM running at its power-on-reset duty cycle.
->>
->> You are correct in your remark to patch 7/17 that since that removes
->> the if (orig_ctrl != ctrl) for the writes that now step 7 will be
->> sufficient to get the PWM to work again. But that only takes the i915
->> usage into account.
->>
->> What if the PWM is used through the sysfs userspace API?
->> Then only steps 3-6 will happen on suspend-resume and without
->> fixing step 6 to properly restore the PWM controller in its
->> pre-resume state (this patch) it will once again be running at
->> its power-on-reset defaults instead of the values from the
->> restored control register.
-> 
-> Actually PWM's sysfs code has suspend/resume callbacks that basically
-> make sysfs just a regular consumer of PWMs. So they do end up doing a
-> pwm_apply_state() on the PWM as well on suspend and restore the state
-> from before suspend on resume.
-> 
-> This was done very specifically because the suspend/resume order can be
-> unexpected under some circumstances, so for PWM we really want for the
-> consumer to always have ultimate control over when precisely the PWM is
-> restored on resume.
->
-> The reason why we did this was because people observed weird glitches on
-> suspend/resume with different severity. In some cases a backlight would
-> be resumed before the display controller had had a chance to start
-> sending frames, causing on-screen corruption in some cases (such as
-> smart displays) and in other cases a PWM-controller regulator would be
-> resumed too late or too early, which I think was causing some issue with
-> the CPUs not working properly on resume.
-> 
-> So I'd prefer not to have any PWM driver save and restore its own
-> context on suspend/resume, because that's inevitably going to cause
-> unexpected behaviour at some point. If it's absolutely necessary we can
-> of course still do that, but I think in that case we need to at least
-> add a comment in the code about why context save/restore is needed in
-> this particular case and make it clear that this is not something that
-> other drivers should copy because they most likely won't be needing it.
-> 
-> Given the above it also doesn't sound to me like there's a real problem,
-> or at least that the bug is somewhere else. A consumer should always be
-> responsible for applying the pre-suspend state upon resume and it sounds
-> like that would be true after patch 7. Since sysfs is just a regular
-> consumer, the same should apply for sysfs-controlled PWMs as well.
+patch set
+1. add the notifier chain for these non-standard/vendor-records
+   in the ghes driver.
 
-Ok, I was not aware that for PWM the consumer is supposed to always
-be the one to restore the state. If that is the rule then we should probably
-just drop the save/restore suspend/resume code from pwm-lpss.
+2. add the driver to handle HiSilicon HIP PCIe controller's errors.
+   
+Changes:
 
-It seems that I'm actually responsible for adding that suspend/resume
-code in the first place, see commit 1d375b58c12f ("pwm: lpss: platform:
-Save/restore the ctrl register over a suspend/resume") although the
-ctrl-register was already being saved/restored before that commit
-but then by the acpi/acpi_lpss.c code.
+V14:
+1. Rebase to v5.9-rc3
+2. Add patch[1] posted by James to the series.
+   
+3. Following changes made for Bjorn's comments,
+3.1 Deleted stub code from ghes.h
+3.2 Made CONFIG_PCIE_HISI_ERR depend on CONFIG_ACPI_APEI_GHES.
 
-One worry after dropping the suspend/resume save/restore code is what
-happens if the controller was enabled at the moment the system suspends
-and the consumers first post resume apply() call has pwm_state.enabled
-set too.
+V13:
+1. Following changes in the HIP PCIe error handling driver.
+1.1 Add Bjorn's acked-by.
+1.2. Address the comments and macros order Bjorn mentioned.
+     Fix the words in the commit.
 
-Currently pwm_lpss_apply() looks like this:
+V12:
+1. Changed the Signed-off-by tag to Co-developed-by tag in the patch
+   "ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records"
 
-         if (state->enabled) {
-                 if (!pwm_is_enabled(pwm)) {
-                         pm_runtime_get_sync(chip->dev);
-                         ret = pwm_lpss_prepare_enable(lpwm, pwm, state, true);
-                         if (ret)
-                                 pm_runtime_put(chip->dev);
-                 } else {
-                         ret = pwm_lpss_prepare_enable(lpwm, pwm, state, false);
-                 }
-         } else if (pwm_is_enabled(pwm)) {
+V11:
+1. Following modifications made by James Morse in the APEI patch
+   for the vendor error record.
+   - Removed kfifo and ghes_gdata_pool. Expanded commit message.
+   
+2. Changes in the HIP PCIe error handling driver
+   for the comments by Andy Shevchenko.
 
-Where the true / false parameter to pwm_lpss_prepare_enable()
-decides if pwm_lpss_prepare_enable() sets the enable bit in the controllers
-ctrl register, or if it skips that.
+V10:
+1. Changes for Bjorn's comments on HIP PCIe error handler driver
+   and APEI patch.
+   
+2. Changes in the HIP PCIe error handler driver
+   for the feedbacks by Andy Shevchenko.
+   
+V9:
+1. Fixed 2 improvements suggested by the kbuild test robot. 
+1.1 Change ghes_gdata_pool_init() as static function.
+1.2. Removed using buffer to store the error data for
+     logging in the hisi_pcie_handle_error()
 
-If we then come from a full system suspend (controller loses state,
-comes up with enable bit cleared) we will still enter the:
+V8:
+1. Removed reporting the standard errors through the interface
+   because of the conflict with the recent patches in the
+   memory error handling path.
+2. Fix comments by Dan Carpenter.
+   
+V7:
+1. Add changes in the APEI driver suggested by Borislav Petkov, for
+   queuing up all the non-fatal HW errors to the work queue and
+   notify the registered kernel drivers from the bottom half using
+   blocking notifier, common interface for both standard and
+   vendor-spcific errors.
+2. Fix for further feedbacks in v5 HIP PCIe error handler driver
+   by Bjorn Helgaas.
 
-                         ret = pwm_lpss_prepare_enable(lpwm, pwm, state, false);
+V6:
+1. Fix few changes in the patch subject line suggested by Bjorn Helgaas.
 
-Path since the !pwm_is_enabled(pwm) check checks the pwm_state struct,
-not the actual hw-enabled bit and then we do not (re)set the enabled after
-resume as we should when apply() is called with pwm_state.enabled set.
+V5:
+1. Fix comments from James Morse.
+1.1 Changed the notification method to use the atomic_notifier_chain.
+1.2 Add the error handled status for the user space.  
 
-Fixing this is easy though, we still need to check for the disabled ->
-enabled transition for runtime pm refcounting, but we can also tell
-pwm_lpss_prepare_enable() to set the enable bit in the other path, this
-will be a no-op in case it is already set.
+V4:
+1. Fix for the following smatch warning in the PCIe error driver,
+   reported by kbuild test robot<lkp@intel.com>:
+   warn: should '((((1))) << (9 + i))' be a 64 bit type?
+   if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
 
-So then the new apply() code would become:
+V3:
+1. Fix the comments from Bjorn Helgaas.
 
-         if (state->enabled) {
-                 if (!pwm_is_enabled(pwm)) {
-                         pm_runtime_get_sync(chip->dev);
-                         ret = pwm_lpss_prepare_enable(lpwm, pwm, state, true);
-                         if (ret)
-                                 pm_runtime_put(chip->dev);
-                 } else {
-                         ret = pwm_lpss_prepare_enable(lpwm, pwm, state, true);
-                 }
-         } else if (pwm_is_enabled(pwm)) {
+V2:
+1. Changes in the HiSilicon PCIe controller's error handling driver
+   for the comments from Bjorn Helgaas.
+   
+2. Changes in the APEI interface to support reporting the vendor error
+   for module with multiple devices, but use the same section type.
+   In the error handler will use socket id/sub module id etc to distinguish
+   the device.
 
-(and we can even optimize out the enable parameter to pwm_lpss_prepare_enable
-then and always make it set the enable bit).
+V1:  
+1. Fix comments from James Morse.
 
-Together with patch 07/16 will make apply() always work independent of
-the state the controller was in before it got called. Which in light of
-all the subtle issues we have seen surrounding this is likely a good thing.
+2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+   which is an application of the above interface.
 
-And with the fix to make apply() fully independent of the previous state
-of the controller, I'm all for dropping the suspend/resume state
-save/restore code.  Doing that makes things more KISS so I like it :)
+Shiju Jose (1):
+  ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records
 
->> So at step 6, if the PWM was enabled before, we must set the update
->> bit, and then wait for it to clear again so the controller is
->> ready for subsequent updates. The waiting for it to clear again
->> needs to happen before or after setting the enable bit depending
->> on the hw generation, which leads to this patch.
-> 
-> But all of that should be happening as part of the call to
-> pwm_apply_state(), right? That path should be taken for all consumers on
-> resume, including sysfs.
+Yicong Yang (1):
+  PCI: hip: Add handling of HiSilicon HIP PCIe controller errors
 
-Ack.
+ drivers/acpi/apei/ghes.c                 |  63 +++++
+ drivers/pci/controller/Kconfig           |   8 +
+ drivers/pci/controller/Makefile          |   1 +
+ drivers/pci/controller/pcie-hisi-error.c | 327 +++++++++++++++++++++++
+ include/acpi/ghes.h                      |  18 ++
+ 5 files changed, 417 insertions(+)
+ create mode 100644 drivers/pci/controller/pcie-hisi-error.c
 
-<snip>
+-- 
+2.17.1
 
->> See above, apply() was trying to be smart but the restore of ctrl
->> on resume without setting the update bit was tricking it. That
->> being too smart for its own good is removed in 7/16 as you
->> rightfully point out. But this patch is still necessary for the
->> PWM controller to be in the expected state between resume and the
->> first apply() after resume (which may be quite a long time in
->> the future when using e.g. the sysfs API).
-> 
-> Like I said, the sysfs code should be resuming any exported PWMs on
-> resume just like any other consumer.
-> 
-> Obviously it's always up to the consumer to call pwm_apply_state() at
-> the right time. If that's "too late" for some reason, then that's a bug
-> in the consumer driver. But as I explained above there are a number of
-> cases where restoring context in the PWM driver itself doesn't work
-> because it can cause sequencing issues.
-
-Ack, I was not aware that PWM consumers are responsible for restoring
-their own state on resume. If that is the case then:
-
-TL;DR:
-
-1. We (I) should make apply() work independent of the current
-hardware state, instead of having it make various assumptions
-about that state as it now does.
-
-2. We (I) should drop the suspend/resume save/restore state
-handlers from pwm-lpss completely.
-
-So I believe that I should prepare yet another version of this
-patch-set replacing 06/17 and 07/17 with 2 patches doing these
-2 things.
-
-Thierry, Andy, does that sound good to you ?
-
-Regards,
-
-Hans
 
