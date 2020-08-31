@@ -2,168 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B1A257535
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 10:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59A92575E6
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 10:57:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727910AbgHaIXQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Aug 2020 04:23:16 -0400
-Received: from mga06.intel.com ([134.134.136.31]:26543 "EHLO mga06.intel.com"
+        id S1726800AbgHaI47 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Aug 2020 04:56:59 -0400
+Received: from mga05.intel.com ([192.55.52.43]:5987 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725829AbgHaIXN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Aug 2020 04:23:13 -0400
-IronPort-SDR: VLriy6BcbVV1PLh9RbX6TR6XH5EIKHPczhihMmSSPBuRQyVF2fxu36SXMMBHmoQn2FP/oEVBBr
- smvnfNryFYrA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9729"; a="218477923"
+        id S1725978AbgHaI44 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 Aug 2020 04:56:56 -0400
+IronPort-SDR: 28Z6gUHx1DkRsYuybJS/tGT3eZgvj9GpbVwHcE5kWmoCQm9UHzKHNySOkSqjbVe4WLRcAGVnQo
+ 3VdMSSF7+Xjw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9729"; a="241745504"
 X-IronPort-AV: E=Sophos;i="5.76,375,1592895600"; 
-   d="scan'208";a="218477923"
+   d="scan'208";a="241745504"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 01:23:10 -0700
-IronPort-SDR: gLSHJrMEHOmN4CLQPUk1eUjfLzPJGAErURr6c0Qmd8Xpr1eB/Xud6G4u/50HaigYE43wSKZ5Yy
- dS4dNfDTBMlA==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 01:56:55 -0700
+IronPort-SDR: 9yN/1yUHqKELgGxgDMn4zYS+tfQ0H1S1gvVgEktTHAZNke7hmJJp9nZHec9rRoqP0OkxoPRziL
+ nwHRUbc8FLAA==
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,375,1592895600"; 
-   d="scan'208";a="338159064"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 01:23:07 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 4BD6F2071B; Mon, 31 Aug 2020 11:23:05 +0300 (EEST)
-Date:   Mon, 31 Aug 2020 11:23:05 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media@vger.kernel.org,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>
-Subject: Re: [PATCH v6 1/6] i2c: Allow an ACPI driver to manage the device's
- power state during probe
-Message-ID: <20200831082305.GD31019@paasikivi.fi.intel.com>
-References: <20200826115432.6103-1-sakari.ailus@linux.intel.com>
- <20200826115432.6103-2-sakari.ailus@linux.intel.com>
- <20200828083832.GE1343@ninjato>
+   d="scan'208";a="330626277"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 31 Aug 2020 01:56:52 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kCfcP-00CvS5-HF; Mon, 31 Aug 2020 11:56:49 +0300
+Date:   Mon, 31 Aug 2020 11:56:49 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v8 07/17] pwm: lpss: Always update state and set update
+ bit
+Message-ID: <20200831085649.GB1891694@smile.fi.intel.com>
+References: <20200830125753.230420-1-hdegoede@redhat.com>
+ <20200830125753.230420-8-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200828083832.GE1343@ninjato>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200830125753.230420-8-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Wolfram,
-
-Thank you for the review.
-
-On Fri, Aug 28, 2020 at 10:38:32AM +0200, Wolfram Sang wrote:
-> Hi Sakari,
+On Sun, Aug 30, 2020 at 02:57:43PM +0200, Hans de Goede wrote:
+> This commit removes a check where we would skip writing the ctrl register
+> and then setting the update bit in case the ctrl register already contains
+> the correct values.
 > 
-> On Wed, Aug 26, 2020 at 02:54:27PM +0300, Sakari Ailus wrote:
-> > Enable drivers to tell ACPI that there's no need to power on a device for
-> > probe. Drivers should still perform this by themselves if there's a need
-> > to. In some cases powering on the device during probe is undesirable, and
-> > this change enables a driver to choose what fits best for it.
-> > 
-> > Add a field called "flags" into struct i2c_driver for driver flags, and a
-> > flag I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to tell a driver supports probe in
-> > low power state.
-> > 
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > ---
-> >  drivers/i2c/i2c-core-base.c | 18 +++++++++++++++---
-> >  include/linux/i2c.h         | 14 ++++++++++++++
-> >  2 files changed, 29 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index 34a9609f256da..f2683790eb0d2 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -436,6 +436,15 @@ static int i2c_smbus_host_notify_to_irq(const struct i2c_client *client)
-> >  	return irq > 0 ? irq : -ENXIO;
-> >  }
-> >  
-> > +static bool allow_low_power_probe(struct device *dev)
-> > +{
-> > +	struct i2c_driver *driver = to_i2c_driver(dev->driver);
-> > +
-> > +	return driver->flags & I2C_DRV_FL_ALLOW_LOW_POWER_PROBE &&
-> > +		is_acpi_node(dev_fwnode(dev)) &&
-> > +		device_property_present(dev, "allow-low-power-probe");
+> In a perfect world skipping the update should be fine in these cases, but
+> on Cherry Trail devices the AML code in the GFX0 devices' PS0 and PS3
+> methods messes with the PWM controller.
 > 
-> So, I wondered about potential DT usage and I read the discussion about
-> that in v5 which concluded that for the DT case, the drivers can make
-> use of the binding individually. I can agree to that, but then the name
-> of the binding is probably problematic. 'allow-*' sounds like
-> configuration but DT is for describing HW. So, I think something in the
-> range of 'keep-low-power' or so might be better suited. Grepping shows
-> there already is a generic binding "low-power-enable". Not sure, if it
-> really fits, because here it is more about 'keeping' rather than
-> enabling. Or?
-
-The low-power-enable appears to be telling pinctrl drivers the pin can
-be configured for low power operation.
-
-This patchset is really about changing the default of ACPI powering up I²C
-devices. On OF the drivers are indeed responsible for that.
-
-Another approach in naming the property could related to the consequence
-that device accesses must be omitted during driver probe time, but the
-first device access takes place when the user actually needs it, e.g.
-"skip-device-probe". Due to that the device does not need to be powered on
-for probe, so powering it on can be omitted. I'd still keep the naming in
-the kernel as-is in that case.
-
+> The "ACPI / LPSS: Resume Cherry Trail PWM controller in no-irq phase" patch
+> earlier in this series stops the GFX0._PS0 method from messing with the PWM
+> controller and on the DSDT-s inspected sofar the _PS3 method only reads
+> from the PWM controller (and turns it off before we get a change to do so):
 > 
-> > +/**
-> > + * enum i2c_driver_flags - Flags for an I2C device driver
-> > + *
-> > + * @I2C_DRV_FL_ALLOW_LOW_POWER_PROBE: Let the ACPI driver manage the device's
-> > + *				      power state during probe and remove
-> > + */
-> > +enum i2c_driver_flags {
-> > +	I2C_DRV_FL_ALLOW_LOW_POWER_PROBE = BIT(0),
-> > +};
-> > +
-> >  /**
-> >   * struct i2c_driver - represent an I2C device driver
-> >   * @class: What kind of i2c device we instantiate (for detect)
-> > @@ -231,6 +242,7 @@ enum i2c_alert_protocol {
-> >   * @detect: Callback for device detection
-> >   * @address_list: The I2C addresses to probe (for detect)
-> >   * @clients: List of detected clients we created (for i2c-core use only)
-> > + * @flags: A bitmask of flags defined in &enum i2c_driver_flags
-> >   *
-> >   * The driver.owner field should be set to the module owner of this driver.
-> >   * The driver.name field should be set to the name of this driver.
-> > @@ -289,6 +301,8 @@ struct i2c_driver {
-> >  	int (*detect)(struct i2c_client *client, struct i2c_board_info *info);
-> >  	const unsigned short *address_list;
-> >  	struct list_head clients;
-> > +
-> > +	unsigned int flags;
+>     {
+>         PWMB = PWMC /* \_SB_.PCI0.GFX0.PWMC */
+>         PSAT |= 0x03
+>         Local0 = PSAT /* \_SB_.PCI0.GFX0.PSAT */
+>     }
 > 
-> Here I wonder if all this is really I2C specific? I could imagine this
-> being useful for other busses as well, so maybe 'struct device_driver'
-> is a better place?
+> The PWM controller getting turning off before we do this ourselves is
+> a bit annoying but not really an issue.
+> 
+> The problem this patch fixes comes from a new variant of the GFX0._PS3 code
+> messing with the PWM controller found on the Acer One 10 S1003 (1):
+> 
+>     {
+>         PWMB = PWMC /* \_SB_.PCI0.GFX0.PWMC */
+>         PWMT = PWMC /* \_SB_.PCI0.GFX0.PWMC */
+>         PWMT &= 0xFF0000FF
+>         PWMT |= 0xC0000000
+>         PWMC = PWMT /* \_SB_.PCI0.GFX0.PWMT */
+>         PWMT = PWMC /* \_SB_.PCI0.GFX0.PWMC */
+>         Sleep (0x64)
+>         PWMB &= 0x3FFFFFFF
+>         PWMC = PWMB /* \_SB_.PCI0.GFX0.PWMB */
+>         PSAT |= 0x03
+>         Local0 = PSAT /* \_SB_.PCI0.GFX0.PSAT */
+>     }
+> 
+> This "beautiful" piece of code clears the base-unit part of the ctrl-reg,
+> which effectively disables the controller, and it sets the update flag
+> to apply this change. Then after this it restores the original ctrl-reg
+> value, so we do not see it has mucked with the controller.
+> 
+> *But* it does not set the update flag when restoring the original value.
+> So the check to see if we can skip writing the ctrl register succeeds
+> but since the update flag was not set, the old base-unit value of 0 is
+> still in use and the PWM controller is effectively disabled.
+> 
+> IOW this PWM controller poking means that we cannot trust the base-unit /
+> on-time-div value we read back from the PWM controller since it may not
+> have been applied/committed. Thus we must always update the ctrl-register
+> and set the update bit.
+> 
+> 1) And once I knew what to look for also in a bunch of other devices
+> including the popular Lenovo Ideapad Miix 310 and 320 models and
+> various Medion models.
 
-The default power state appears to depend on the bus type on ACPI. I'd
-think it's unlikely this feature would be needed elsewhere, with the
-possible exception of I3C, if hardware design does not improve from the
-current I²C connected cameras.
+Despite the above mentioned issue I'm always in favour of not micro-optimizing I/O.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-My original series had a field in struct device_driver for this purpose but
-Greg K-H suggested moving it to I²C instead:
-
-<URL:https://lore.kernel.org/linux-acpi/20190826084343.GA1095@kroah.com/>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v8:
+> - New patch in v8 of this patch-set
+> ---
+>  drivers/pwm/pwm-lpss.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm-lpss.c b/drivers/pwm/pwm-lpss.c
+> index 9a7400c6fb6e..20f6b6d6f874 100644
+> --- a/drivers/pwm/pwm-lpss.c
+> +++ b/drivers/pwm/pwm-lpss.c
+> @@ -85,7 +85,7 @@ static void pwm_lpss_prepare(struct pwm_lpss_chip *lpwm, struct pwm_device *pwm,
+>  	unsigned long long on_time_div;
+>  	unsigned long c = lpwm->info->clk_rate, base_unit_range;
+>  	unsigned long long base_unit, freq = NSEC_PER_SEC;
+> -	u32 orig_ctrl, ctrl;
+> +	u32 ctrl;
+>  
+>  	do_div(freq, period_ns);
+>  
+> @@ -104,16 +104,14 @@ static void pwm_lpss_prepare(struct pwm_lpss_chip *lpwm, struct pwm_device *pwm,
+>  	do_div(on_time_div, period_ns);
+>  	on_time_div = 255ULL - on_time_div;
+>  
+> -	orig_ctrl = ctrl = pwm_lpss_read(pwm);
+> +	ctrl = pwm_lpss_read(pwm);
+>  	ctrl &= ~PWM_ON_TIME_DIV_MASK;
+>  	ctrl &= ~((base_unit_range - 1) << PWM_BASE_UNIT_SHIFT);
+>  	ctrl |= (u32) base_unit << PWM_BASE_UNIT_SHIFT;
+>  	ctrl |= on_time_div;
+>  
+> -	if (orig_ctrl != ctrl) {
+> -		pwm_lpss_write(pwm, ctrl);
+> -		pwm_lpss_write(pwm, ctrl | PWM_SW_UPDATE);
+> -	}
+> +	pwm_lpss_write(pwm, ctrl);
+> +	pwm_lpss_write(pwm, ctrl | PWM_SW_UPDATE);
+>  }
+>  
+>  static inline void pwm_lpss_cond_enable(struct pwm_device *pwm, bool cond)
+> -- 
+> 2.28.0
+> 
 
 -- 
-Kind regards,
+With Best Regards,
+Andy Shevchenko
 
-Sakari Ailus
+
