@@ -2,154 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C3C325734A
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 07:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B1A257535
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 10:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbgHaF2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Aug 2020 01:28:01 -0400
-Received: from mo-csw-fb1516.securemx.jp ([210.130.202.172]:36154 "EHLO
-        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgHaF2A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Aug 2020 01:28:00 -0400
-X-Greylist: delayed 1319 seconds by postgrey-1.27 at vger.kernel.org; Mon, 31 Aug 2020 01:27:58 EDT
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1516) id 07V55xjM028905; Mon, 31 Aug 2020 14:06:00 +0900
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 07V55N5u031198; Mon, 31 Aug 2020 14:05:24 +0900
-X-Iguazu-Qid: 34tMd2lTgy70XwD4cl
-X-Iguazu-QSIG: v=2; s=0; t=1598850323; q=34tMd2lTgy70XwD4cl; m=Eo+lI7ZGnqBRi8KYw8EQ/Q4YFSXKrGQSVifG045e3U8=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1511) id 07V55LQQ032861;
-        Mon, 31 Aug 2020 14:05:21 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 07V55K93009887;
-        Mon, 31 Aug 2020 14:05:20 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 07V55Krc022628;
-        Mon, 31 Aug 2020 14:05:20 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        "Ard Biesheuvel" <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v2 1/2] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
-        <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
-Date:   Mon, 31 Aug 2020 14:05:18 +0900
-In-Reply-To: <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
-        (Smita Koralahalli's message of "Fri, 28 Aug 2020 15:33:31 -0500")
-X-TSB-HOP: ON
-Message-ID: <878sdvv20h.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1727910AbgHaIXQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Aug 2020 04:23:16 -0400
+Received: from mga06.intel.com ([134.134.136.31]:26543 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725829AbgHaIXN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 Aug 2020 04:23:13 -0400
+IronPort-SDR: VLriy6BcbVV1PLh9RbX6TR6XH5EIKHPczhihMmSSPBuRQyVF2fxu36SXMMBHmoQn2FP/oEVBBr
+ smvnfNryFYrA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9729"; a="218477923"
+X-IronPort-AV: E=Sophos;i="5.76,375,1592895600"; 
+   d="scan'208";a="218477923"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 01:23:10 -0700
+IronPort-SDR: gLSHJrMEHOmN4CLQPUk1eUjfLzPJGAErURr6c0Qmd8Xpr1eB/Xud6G4u/50HaigYE43wSKZ5Yy
+ dS4dNfDTBMlA==
+X-IronPort-AV: E=Sophos;i="5.76,375,1592895600"; 
+   d="scan'208";a="338159064"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 01:23:07 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 4BD6F2071B; Mon, 31 Aug 2020 11:23:05 +0300 (EEST)
+Date:   Mon, 31 Aug 2020 11:23:05 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Wolfram Sang <wsa@kernel.org>
+Cc:     linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media@vger.kernel.org,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        "Qiu, Tian Shu" <tian.shu.qiu@intel.com>
+Subject: Re: [PATCH v6 1/6] i2c: Allow an ACPI driver to manage the device's
+ power state during probe
+Message-ID: <20200831082305.GD31019@paasikivi.fi.intel.com>
+References: <20200826115432.6103-1-sakari.ailus@linux.intel.com>
+ <20200826115432.6103-2-sakari.ailus@linux.intel.com>
+ <20200828083832.GE1343@ninjato>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200828083832.GE1343@ninjato>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Smita,
+Hi Wolfram,
 
-A couple of comments below -
+Thank you for the review.
 
-Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
+On Fri, Aug 28, 2020 at 10:38:32AM +0200, Wolfram Sang wrote:
+> Hi Sakari,
+> 
+> On Wed, Aug 26, 2020 at 02:54:27PM +0300, Sakari Ailus wrote:
+> > Enable drivers to tell ACPI that there's no need to power on a device for
+> > probe. Drivers should still perform this by themselves if there's a need
+> > to. In some cases powering on the device during probe is undesirable, and
+> > this change enables a driver to choose what fits best for it.
+> > 
+> > Add a field called "flags" into struct i2c_driver for driver flags, and a
+> > flag I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to tell a driver supports probe in
+> > low power state.
+> > 
+> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > ---
+> >  drivers/i2c/i2c-core-base.c | 18 +++++++++++++++---
+> >  include/linux/i2c.h         | 14 ++++++++++++++
+> >  2 files changed, 29 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> > index 34a9609f256da..f2683790eb0d2 100644
+> > --- a/drivers/i2c/i2c-core-base.c
+> > +++ b/drivers/i2c/i2c-core-base.c
+> > @@ -436,6 +436,15 @@ static int i2c_smbus_host_notify_to_irq(const struct i2c_client *client)
+> >  	return irq > 0 ? irq : -ENXIO;
+> >  }
+> >  
+> > +static bool allow_low_power_probe(struct device *dev)
+> > +{
+> > +	struct i2c_driver *driver = to_i2c_driver(dev->driver);
+> > +
+> > +	return driver->flags & I2C_DRV_FL_ALLOW_LOW_POWER_PROBE &&
+> > +		is_acpi_node(dev_fwnode(dev)) &&
+> > +		device_property_present(dev, "allow-low-power-probe");
+> 
+> So, I wondered about potential DT usage and I read the discussion about
+> that in v5 which concluded that for the DT case, the drivers can make
+> use of the binding individually. I can agree to that, but then the name
+> of the binding is probably problematic. 'allow-*' sounds like
+> configuration but DT is for describing HW. So, I think something in the
+> range of 'keep-low-power' or so might be better suited. Grepping shows
+> there already is a generic binding "low-power-enable". Not sure, if it
+> really fits, because here it is more about 'keeping' rather than
+> enabling. Or?
 
-> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
-> errors that occurred in a previous boot. The MCA errors in the BERT are
-> reported using the x86 Processor Error Common Platform Error Record (CPER)
-> format. Currently, the record prints out the raw MSR values and AMD relies
-> on the raw record to provide MCA information.
->
-> Extract the raw MSR values of MCA registers from the BERT and feed it into
-> the standard mce_log() function through the existing x86/MCA RAS
-> infrastructure. This will result in better decoding from the EDAC MCE
-> decoder or the default notifier.
->
-> The implementation is SMCA specific as the raw MCA register values are
-> given in the register offset order of the MCAX address space.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-> ---
+The low-power-enable appears to be telling pinctrl drivers the pin can
+be configured for low power operation.
 
-[...]
+This patchset is really about changing the default of ACPI powering up I²C
+devices. On OF the drivers are indeed responsible for that.
 
+Another approach in naming the property could related to the consequence
+that device accesses must be omitted during driver probe time, but the
+first device access takes place when the user actually needs it, e.g.
+"skip-device-probe". Due to that the device does not need to be powered on
+for probe, so powering it on can be omitted. I'd still keep the naming in
+the kernel as-is in that case.
 
-> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
-> index 2531de49f56c..374b8e18552a 100644
-> --- a/drivers/firmware/efi/cper-x86.c
-> +++ b/drivers/firmware/efi/cper-x86.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  // Copyright (C) 2018, Advanced Micro Devices, Inc.
->  
-> -#include <linux/cper.h>
+> 
+> > +/**
+> > + * enum i2c_driver_flags - Flags for an I2C device driver
+> > + *
+> > + * @I2C_DRV_FL_ALLOW_LOW_POWER_PROBE: Let the ACPI driver manage the device's
+> > + *				      power state during probe and remove
+> > + */
+> > +enum i2c_driver_flags {
+> > +	I2C_DRV_FL_ALLOW_LOW_POWER_PROBE = BIT(0),
+> > +};
+> > +
+> >  /**
+> >   * struct i2c_driver - represent an I2C device driver
+> >   * @class: What kind of i2c device we instantiate (for detect)
+> > @@ -231,6 +242,7 @@ enum i2c_alert_protocol {
+> >   * @detect: Callback for device detection
+> >   * @address_list: The I2C addresses to probe (for detect)
+> >   * @clients: List of detected clients we created (for i2c-core use only)
+> > + * @flags: A bitmask of flags defined in &enum i2c_driver_flags
+> >   *
+> >   * The driver.owner field should be set to the module owner of this driver.
+> >   * The driver.name field should be set to the name of this driver.
+> > @@ -289,6 +301,8 @@ struct i2c_driver {
+> >  	int (*detect)(struct i2c_client *client, struct i2c_board_info *info);
+> >  	const unsigned short *address_list;
+> >  	struct list_head clients;
+> > +
+> > +	unsigned int flags;
+> 
+> Here I wonder if all this is really I2C specific? I could imagine this
+> being useful for other busses as well, so maybe 'struct device_driver'
+> is a better place?
 
-Why is the include dropped? AFAICT, the definitions from there are still
-being used after this patch.
+The default power state appears to depend on the bus type on ACPI. I'd
+think it's unlikely this feature would be needed elsewhere, with the
+possible exception of I3C, if hardware design does not improve from the
+current I²C connected cameras.
 
-> +#include <acpi/apei.h>
->  
->  /*
->   * We don't need a "CPER_IA" prefix since these are all locally defined.
-> @@ -347,9 +347,11 @@ void cper_print_proc_ia(const char *pfx, const struct cper_sec_proc_ia *proc)
->  			       ctx_info->mm_reg_addr);
->  		}
->  
-> -		printk("%sRegister Array:\n", newpfx);
-> -		print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
-> -			       (ctx_info + 1), ctx_info->reg_arr_size, 0);
-> +		if (arch_apei_report_x86_error(ctx_info, proc->lapic_id)) {
-> +			printk("%sRegister Array:\n", newpfx);
-> +			print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
-> +				       (ctx_info + 1), ctx_info->reg_arr_size, 0);
-> +		}
->  
->  		ctx_info = (struct cper_ia_proc_ctx *)((long)ctx_info + size);
->  	}
-> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-> index 680f80960c3d..44d4d08acce0 100644
-> --- a/include/acpi/apei.h
-> +++ b/include/acpi/apei.h
-> @@ -33,8 +33,15 @@ extern bool ghes_disable;
->  
->  #ifdef CONFIG_ACPI_APEI
->  void __init acpi_hest_init(void);
-> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
-> +			       u64 lapic_id);
->  #else
->  static inline void acpi_hest_init(void) { return; }
-> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
-> +					     u64 lapic_id)
-> +{
-> +	return -EINVAL;
-> +}
->  #endif
+My original series had a field in struct device_driver for this purpose but
+Greg K-H suggested moving it to I²C instead:
 
-Adding the declaration to this include violates the separation of
-generic and architecture specific code.
+<URL:https://lore.kernel.org/linux-acpi/20190826084343.GA1095@kroah.com/>
 
-Can this be moved to the appropriate architecture specific header?
-Perhaps arch/x86/include/asm/apei.h.
+-- 
+Kind regards,
 
->  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
-> @@ -51,6 +58,8 @@ int erst_clear(u64 record_id);
->  
->  int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
->  void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
-> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
-> +			       u64 lapic_id);
-
-
-Why is the additional declaration needed?
-
-Thanks,
-Punit
-
->  
->  #endif
->  #endif
+Sakari Ailus
