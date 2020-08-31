@@ -2,187 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE43225718A
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 03:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3C325734A
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Aug 2020 07:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727065AbgHaB3B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 30 Aug 2020 21:29:01 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10734 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726878AbgHaB3A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 30 Aug 2020 21:29:00 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id F13BD67F86C3C6F2056F;
-        Mon, 31 Aug 2020 09:28:57 +0800 (CST)
-Received: from [127.0.0.1] (10.74.185.4) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Mon, 31 Aug 2020
- 09:28:48 +0800
-Subject: Re: [PATCH v2] ACPI / APEI: do memory failure on the physical address
- reported by ARM processor error section
-To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <bp@alien8.de>
-References: <1596618731-37623-1-git-send-email-tanxiaofei@huawei.com>
-CC:     <linuxarm@huawei.com>, <shiju.jose@huawei.com>,
-        <jonathan.cameron@huawei.com>
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-Message-ID: <5F4C5250.7000200@huawei.com>
-Date:   Mon, 31 Aug 2020 09:28:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1726224AbgHaF2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Aug 2020 01:28:01 -0400
+Received: from mo-csw-fb1516.securemx.jp ([210.130.202.172]:36154 "EHLO
+        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbgHaF2A (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Aug 2020 01:28:00 -0400
+X-Greylist: delayed 1319 seconds by postgrey-1.27 at vger.kernel.org; Mon, 31 Aug 2020 01:27:58 EDT
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1516) id 07V55xjM028905; Mon, 31 Aug 2020 14:06:00 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 07V55N5u031198; Mon, 31 Aug 2020 14:05:24 +0900
+X-Iguazu-Qid: 34tMd2lTgy70XwD4cl
+X-Iguazu-QSIG: v=2; s=0; t=1598850323; q=34tMd2lTgy70XwD4cl; m=Eo+lI7ZGnqBRi8KYw8EQ/Q4YFSXKrGQSVifG045e3U8=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1511) id 07V55LQQ032861;
+        Mon, 31 Aug 2020 14:05:21 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 07V55K93009887;
+        Mon, 31 Aug 2020 14:05:20 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 07V55Krc022628;
+        Mon, 31 Aug 2020 14:05:20 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v2 1/2] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
+        <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
+Date:   Mon, 31 Aug 2020 14:05:18 +0900
+In-Reply-To: <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
+        (Smita Koralahalli's message of "Fri, 28 Aug 2020 15:33:31 -0500")
+X-TSB-HOP: ON
+Message-ID: <878sdvv20h.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1596618731-37623-1-git-send-email-tanxiaofei@huawei.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.185.4]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Smita,
 
-ping...
+A couple of comments below -
 
-On 2020/8/5 17:12, Xiaofei Tan wrote:
-> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-> synchronise with APEI's irq work") applied, user-mode SEA is
-> preferentially processed by APEI. Do memory failure to recover.
-> 
-> But there are some problems:
-> 1) The function apei_claim_sea() has processed an CPER, does not
-> mean that memory failure handling has done. Because the firmware-first
-> RAS error is reported by both producer and consumer. Mostly SEA uses
-> ARM processor error section to report as a consumer. (The producer could
-> be DDRC and cache, and use memory error section and other error section
-> to report). But memory failure handling for ARM processor error section
-> has not been supported. This patch will add it.
-> 
-> 2) Some hardware platforms can't record physical address each time. But
-> they could always have reported a firmware-first RAS error using ARM
-> processor error section. Such platform should update firmware. Don't
-> report the RAS error in SEA processing flow when physical address is
-> not recorded.
-> 
-> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
+
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
+>
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
+>
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 > ---
->  drivers/acpi/apei/ghes.c | 70 ++++++++++++++++++++++++++++++++++++------------
->  1 file changed, 53 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 81bf71b..aee7787 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -429,28 +429,35 @@ static void ghes_kick_task_work(struct callback_head *head)
->  	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
->  }
+
+[...]
+
+
+> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+> index 2531de49f56c..374b8e18552a 100644
+> --- a/drivers/firmware/efi/cper-x86.c
+> +++ b/drivers/firmware/efi/cper-x86.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  // Copyright (C) 2018, Advanced Micro Devices, Inc.
 >  
-> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> -				       int sev)
-> +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->  {
->  	unsigned long pfn;
-> -	int flags = -1;
-> -	int sec_sev = ghes_severity(gdata->error_severity);
-> -	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+> -#include <linux/cper.h>
+
+Why is the include dropped? AFAICT, the definitions from there are still
+being used after this patch.
+
+> +#include <acpi/apei.h>
 >  
->  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->  		return false;
->  
-> -	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-> -		return false;
-> -
-> -	pfn = mem_err->physical_addr >> PAGE_SHIFT;
-> +	pfn = PHYS_PFN(physical_addr);
->  	if (!pfn_valid(pfn)) {
->  		pr_warn_ratelimited(FW_WARN GHES_PFX
->  		"Invalid address in generic error data: %#llx\n",
-> -		mem_err->physical_addr);
-> +		physical_addr);
->  		return false;
->  	}
->  
-> +	memory_failure_queue(pfn, flags);
-> +	return true;
-> +}
-> +
-> +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> +				       int sev)
-> +{
-> +	int flags = -1;
-> +	int sec_sev = ghes_severity(gdata->error_severity);
-> +	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
-> +
-> +	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-> +		return false;
-> +
->  	/* iff following two events can be handled properly by now */
->  	if (sec_sev == GHES_SEV_CORRECTED &&
->  	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-> @@ -458,14 +465,45 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->  		flags = 0;
->  
-> -	if (flags != -1) {
-> -		memory_failure_queue(pfn, flags);
-> -		return true;
-> -	}
-> +	if (flags != -1)
-> +		return ghes_do_memory_failure(mem_err->physical_addr, flags);
->  
->  	return false;
->  }
->  
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	struct cper_arm_err_info *err_info;
-> +	bool queued = false;
-> +	int sec_sev, i;
-> +
-> +	log_arm_hw_error(err);
-> +
-> +	sec_sev = ghes_severity(gdata->error_severity);
-> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> +		return false;
-> +
-> +	err_info = (struct cper_arm_err_info *) (err + 1);
-> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
-> +		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
-> +			continue;
-> +
-> +		if (err_info->type != CPER_ARM_CACHE_ERROR) {
-> +			pr_warn_ratelimited(FW_WARN GHES_PFX
-> +			"Physical address should be invalid for %s\n",
-> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> +			cper_proc_error_type_strs[err_info->type] : "unknown error type");
-> +			continue;
-> +		}
-> +
-> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-> +			queued = true;
-> +	}
-> +
-> +	return queued;
-> +}
-> +
 >  /*
->   * PCIe AER errors need to be sent to the AER driver for reporting and
->   * recovery. The GHES severities map to the following AER severities and
-> @@ -543,9 +581,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->  			ghes_handle_aer(gdata);
+>   * We don't need a "CPER_IA" prefix since these are all locally defined.
+> @@ -347,9 +347,11 @@ void cper_print_proc_ia(const char *pfx, const struct cper_sec_proc_ia *proc)
+>  			       ctx_info->mm_reg_addr);
 >  		}
->  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> -
-> -			log_arm_hw_error(err);
-> +			queued = ghes_handle_arm_hw_error(gdata, sev);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
 >  
-> 
+> -		printk("%sRegister Array:\n", newpfx);
+> -		print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> -			       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		if (arch_apei_report_x86_error(ctx_info, proc->lapic_id)) {
+> +			printk("%sRegister Array:\n", newpfx);
+> +			print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> +				       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		}
+>  
+>  		ctx_info = (struct cper_ia_proc_ctx *)((long)ctx_info + size);
+>  	}
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index 680f80960c3d..44d4d08acce0 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -33,8 +33,15 @@ extern bool ghes_disable;
+>  
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+>  #else
+>  static inline void acpi_hest_init(void) { return; }
+> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +					     u64 lapic_id)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
 
--- 
- thanks
-tanxiaofei
+Adding the declaration to this include violates the separation of
+generic and architecture specific code.
 
+Can this be moved to the appropriate architecture specific header?
+Perhaps arch/x86/include/asm/apei.h.
+
+>  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> @@ -51,6 +58,8 @@ int erst_clear(u64 record_id);
+>  
+>  int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
+>  void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+
+
+Why is the additional declaration needed?
+
+Thanks,
+Punit
+
+>  
+>  #endif
+>  #endif
