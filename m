@@ -2,472 +2,625 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC16E258A50
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Sep 2020 10:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 176A025907C
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Sep 2020 16:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726020AbgIAI0R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Sep 2020 04:26:17 -0400
-Received: from mga07.intel.com ([134.134.136.100]:26767 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725848AbgIAI0Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Sep 2020 04:26:16 -0400
-IronPort-SDR: hhMyNTQIt5oT423kKo4yrl80SMNSCJoKRtLgB/YbwWh6LjtQJsSWILet4dQ6n1GvqYgk8a8Ip1
- O3XhpmcQzaIg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="221355694"
-X-IronPort-AV: E=Sophos;i="5.76,378,1592895600"; 
-   d="scan'208";a="221355694"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2020 01:26:14 -0700
-IronPort-SDR: nnN1SG+wO2IAk6EwDP1u+JnG0FhGlEDPMCYXwkD2xzJLdwz01mnX4KHpzUlTOdj0/2RD96e7xK
- gQDqQLIdANFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,378,1592895600"; 
-   d="scan'208";a="330991494"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 01 Sep 2020 01:26:10 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kD1cF-00DFOj-Od; Tue, 01 Sep 2020 11:26:07 +0300
-Date:   Tue, 1 Sep 2020 11:26:07 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
-        helgaas@kernel.org, bp@alien8.de, james.morse@arm.com,
-        lorenzo.pieralisi@arm.com, robh@kernel.org, lenb@kernel.org,
-        tony.luck@intel.com, dan.carpenter@oracle.com,
-        yangyicong@hisilicon.com, jonathan.cameron@huawei.com,
-        tanxiaofei@huawei.com, linuxarm@huawei.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
- PCIe controller errors
-Message-ID: <20200901082607.GP1891694@smile.fi.intel.com>
-References: <20200831212606.1718-1-shiju.jose@huawei.com>
- <20200831212606.1718-3-shiju.jose@huawei.com>
+        id S1728012AbgIAOXx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Sep 2020 10:23:53 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2727 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728386AbgIAOXd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 1 Sep 2020 10:23:33 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 708B3A8D11F1BDFF4249;
+        Tue,  1 Sep 2020 15:05:20 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.85.84) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Tue, 1 Sep 2020 15:05:19 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+        <tony.luck@intel.com>, <rjw@rjwysocki.net>, <james.morse@arm.com>,
+        <lenb@kernel.org>
+CC:     <linuxarm@huawei.com>
+Subject: [PATCH 1/1] RAS: Add CPU Correctable Error Collector to isolate an erroneous CPU core
+Date:   Tue, 1 Sep 2020 15:01:40 +0100
+Message-ID: <20200901140140.1772-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200831212606.1718-3-shiju.jose@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.85.84]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 31, 2020 at 10:26:06PM +0100, Shiju Jose wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> The HiSilicon HIP PCIe controller is capable of handling errors
-> on root port and performing port reset separately at each root port.
-> 
-> Add error handling driver for HIP PCIe controller to log
-> and report recoverable errors. Perform root port reset and restore
-> link status after the recovery.
-> 
-> Following are some of the PCIe controller's recoverable errors
-> 1. completion transmission timeout error.
-> 2. CRS retry counter over the threshold error.
-> 3. ECC 2 bit errors
-> 4. AXI bresponse/rresponse errors etc.
-> 
-> The driver placed in the drivers/pci/controller/ because the
-> HIP PCIe controller does not use DWC IP.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> --
-> drivers/pci/controller/Kconfig           |   8 +
-> drivers/pci/controller/Makefile          |   1 +
-> drivers/pci/controller/pcie-hisi-error.c | 336 +++++++++++++++++++++++++++++++
-> 3 files changed, 345 insertions(+)
-> create mode 100644 drivers/pci/controller/pcie-hisi-error.c
-> ---
->  drivers/pci/controller/Kconfig           |   8 +
->  drivers/pci/controller/Makefile          |   1 +
->  drivers/pci/controller/pcie-hisi-error.c | 327 +++++++++++++++++++++++
->  3 files changed, 336 insertions(+)
->  create mode 100644 drivers/pci/controller/pcie-hisi-error.c
-> 
-> diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-> index f18c3725ef80..b1b8a8805dd8 100644
-> --- a/drivers/pci/controller/Kconfig
-> +++ b/drivers/pci/controller/Kconfig
-> @@ -294,6 +294,14 @@ config PCI_LOONGSON
->  	  Say Y here if you want to enable PCI controller support on
->  	  Loongson systems.
->  
-> +config PCIE_HISI_ERR
-> +	depends on ACPI_APEI_GHES && (ARM64 || COMPILE_TEST)
+When the CPU correctable errors reported on an ARM64 CPU core too often,
+it should be isolated. Add the CPU correctable error collector to
+store the CPU correctable error count.
 
-> +	depends on ACPI
+When the correctable error count for a CPU exceed the threshold
+value in a short time period, it will try to isolate the CPU core.
+The threshold value, time period etc are configurable.
 
-Isn't this implied by
-	drivers/acpi/Kconfig:45:if ACPI
-?
+Implementation details is added in the file.
 
-> +	bool "HiSilicon HIP PCIe controller error handling driver"
-> +	help
-> +	  Say Y here if you want error handling support
-> +	  for the PCIe controller's errors on HiSilicon HIP SoCs
-> +
->  source "drivers/pci/controller/dwc/Kconfig"
->  source "drivers/pci/controller/mobiveil/Kconfig"
->  source "drivers/pci/controller/cadence/Kconfig"
-> diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-> index bcdbf49ab1e4..04c6edc285c5 100644
-> --- a/drivers/pci/controller/Makefile
-> +++ b/drivers/pci/controller/Makefile
-> @@ -31,6 +31,7 @@ obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
->  obj-$(CONFIG_VMD) += vmd.o
->  obj-$(CONFIG_PCIE_BRCMSTB) += pcie-brcmstb.o
->  obj-$(CONFIG_PCI_LOONGSON) += pci-loongson.o
-> +obj-$(CONFIG_PCIE_HISI_ERR) += pcie-hisi-error.o
->  # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
->  obj-y				+= dwc/
->  obj-y				+= mobiveil/
-> diff --git a/drivers/pci/controller/pcie-hisi-error.c b/drivers/pci/controller/pcie-hisi-error.c
-> new file mode 100644
-> index 000000000000..7959c9c8d2bc
-> --- /dev/null
-> +++ b/drivers/pci/controller/pcie-hisi-error.c
-> @@ -0,0 +1,327 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Driver for handling the PCIe controller errors on
-> + * HiSilicon HIP SoCs.
-> + *
-> + * Copyright (c) 2020 HiSilicon Limited.
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <acpi/ghes.h>
-> +#include <linux/bitops.h>
-> +#include <linux/delay.h>
-> +#include <linux/pci.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/kfifo.h>
-> +#include <linux/spinlock.h>
-> +
-> +/* HISI PCIe controller error definitions */
-> +#define HISI_PCIE_ERR_MISC_REGS	33
-> +
-> +#define HISI_PCIE_LOCAL_VALID_VERSION		BIT(0)
-> +#define HISI_PCIE_LOCAL_VALID_SOC_ID		BIT(1)
-> +#define HISI_PCIE_LOCAL_VALID_SOCKET_ID		BIT(2)
-> +#define HISI_PCIE_LOCAL_VALID_NIMBUS_ID		BIT(3)
-> +#define HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID	BIT(4)
-> +#define HISI_PCIE_LOCAL_VALID_CORE_ID		BIT(5)
-> +#define HISI_PCIE_LOCAL_VALID_PORT_ID		BIT(6)
-> +#define HISI_PCIE_LOCAL_VALID_ERR_TYPE		BIT(7)
-> +#define HISI_PCIE_LOCAL_VALID_ERR_SEVERITY	BIT(8)
-> +#define HISI_PCIE_LOCAL_VALID_ERR_MISC		9
-> +
-> +static guid_t hisi_pcie_sec_guid =
-> +	GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
-> +		  0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
-> +
-> +/*
-> + * Firmware reports the socket port ID where the error occurred.  These
-> + * macros convert that to the core ID and core port ID required by the
-> + * ACPI reset method.
-> + */
-> +#define HISI_PCIE_PORT_ID(core, v)       (((v) >> 1) + ((core) << 3))
-> +#define HISI_PCIE_CORE_ID(v)             ((v) >> 3)
-> +#define HISI_PCIE_CORE_PORT_ID(v)        (((v) & 7) << 1)
-> +
-> +struct hisi_pcie_error_data {
-> +	u64	val_bits;
-> +	u8	version;
-> +	u8	soc_id;
-> +	u8	socket_id;
-> +	u8	nimbus_id;
-> +	u8	sub_module_id;
-> +	u8	core_id;
-> +	u8	port_id;
-> +	u8	err_severity;
-> +	u16	err_type;
-> +	u8	reserv[2];
-> +	u32	err_misc[HISI_PCIE_ERR_MISC_REGS];
-> +};
-> +
-> +struct hisi_pcie_error_private {
-> +	struct notifier_block	nb;
-> +	struct device *dev;
-> +};
-> +
-> +enum hisi_pcie_submodule_id {
-> +	HISI_PCIE_SUB_MODULE_ID_AP,
-> +	HISI_PCIE_SUB_MODULE_ID_TL,
-> +	HISI_PCIE_SUB_MODULE_ID_MAC,
-> +	HISI_PCIE_SUB_MODULE_ID_DL,
-> +	HISI_PCIE_SUB_MODULE_ID_SDI,
-> +};
-> +
-> +static const char * const hisi_pcie_sub_module[] = {
-> +	[HISI_PCIE_SUB_MODULE_ID_AP]	= "AP Layer",
-> +	[HISI_PCIE_SUB_MODULE_ID_TL]	= "TL Layer",
-> +	[HISI_PCIE_SUB_MODULE_ID_MAC]	= "MAC Layer",
-> +	[HISI_PCIE_SUB_MODULE_ID_DL]	= "DL Layer",
-> +	[HISI_PCIE_SUB_MODULE_ID_SDI]	= "SDI Layer",
-> +};
-> +
-> +enum hisi_pcie_err_severity {
-> +	HISI_PCIE_ERR_SEV_RECOVERABLE,
-> +	HISI_PCIE_ERR_SEV_FATAL,
-> +	HISI_PCIE_ERR_SEV_CORRECTED,
-> +	HISI_PCIE_ERR_SEV_NONE,
-> +};
-> +
-> +static const char * const hisi_pcie_error_sev[] = {
-> +	[HISI_PCIE_ERR_SEV_RECOVERABLE]	= "recoverable",
-> +	[HISI_PCIE_ERR_SEV_FATAL]	= "fatal",
-> +	[HISI_PCIE_ERR_SEV_CORRECTED]	= "corrected",
-> +	[HISI_PCIE_ERR_SEV_NONE]	= "none",
-> +};
-> +
-> +static const char *hisi_pcie_get_string(const char * const *array,
-> +					size_t n, u32 id)
-> +{
-> +	u32 index;
-> +
-> +	for (index = 0; index < n; index++) {
-> +		if (index == id && array[index])
-> +			return array[index];
-> +	}
-> +
-> +	return "unknown";
-> +}
-> +
-> +static int hisi_pcie_port_reset(struct platform_device *pdev,
-> +				u32 chip_id, u32 port_id)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	acpi_handle handle = ACPI_HANDLE(dev);
-> +	union acpi_object arg[3];
-> +	struct acpi_object_list arg_list;
-> +	acpi_status s;
-> +	unsigned long long data = 0;
-> +
-> +	arg[0].type = ACPI_TYPE_INTEGER;
-> +	arg[0].integer.value = chip_id;
-> +	arg[1].type = ACPI_TYPE_INTEGER;
-> +	arg[1].integer.value = HISI_PCIE_CORE_ID(port_id);
-> +	arg[2].type = ACPI_TYPE_INTEGER;
-> +	arg[2].integer.value = HISI_PCIE_CORE_PORT_ID(port_id);
-> +
-> +	arg_list.count = 3;
-> +	arg_list.pointer = arg;
-> +
-> +	s = acpi_evaluate_integer(handle, "RST", &arg_list, &data);
-> +	if (ACPI_FAILURE(s)) {
-> +		dev_err(dev, "No RST method\n");
-> +		return -EIO;
-> +	}
-> +
-> +	if (data) {
-> +		dev_err(dev, "Failed to Reset\n");
-> +		return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int hisi_pcie_port_do_recovery(struct platform_device *dev,
-> +				      u32 chip_id, u32 port_id)
-> +{
-> +	acpi_status s;
-> +	struct device *device = &dev->dev;
-> +	acpi_handle root_handle = ACPI_HANDLE(device);
-> +	struct acpi_pci_root *pci_root;
-> +	struct pci_bus *root_bus;
-> +	struct pci_dev *pdev;
-> +	u32 domain, busnr, devfn;
-> +
-> +	s = acpi_get_parent(root_handle, &root_handle);
-> +	if (ACPI_FAILURE(s))
-> +		return -ENODEV;
-> +	pci_root = acpi_pci_find_root(root_handle);
-> +	if (!pci_root)
-> +		return -ENODEV;
-> +	root_bus = pci_root->bus;
-> +	domain = pci_root->segment;
-> +
-> +	busnr = root_bus->number;
-> +	devfn = PCI_DEVFN(port_id, 0);
-> +	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
-> +	if (!pdev) {
-> +		dev_info(device, "Fail to get root port %04x:%02x:%02x.%d device\n",
-> +			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
-> +		return -ENODEV;
-> +	}
-> +
-> +	pci_stop_and_remove_bus_device_locked(pdev);
-> +	pci_dev_put(pdev);
-> +
-> +	if (hisi_pcie_port_reset(dev, chip_id, port_id))
-> +		return -EIO;
-> +
-> +	/*
-> +	 * The initialization time of subordinate devices after
-> +	 * hot reset is no more than 1s, which is required by
-> +	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
-> +	 * if Readiness Notifications mechanisms are used. But
-> +	 * wait 1s here to adapt any conditions.
-> +	 */
-> +	ssleep(1UL);
-> +
-> +	/* add root port and downstream devices */
-> +	pci_lock_rescan_remove();
-> +	pci_rescan_bus(root_bus);
-> +	pci_unlock_rescan_remove();
-> +
-> +	return 0;
-> +}
-> +
-> +static void hisi_pcie_handle_error(struct platform_device *pdev,
-> +				   const struct hisi_pcie_error_data *edata)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	int idx, rc;
-> +	const unsigned long valid_bits[] = {BITMAP_FROM_U64(edata->val_bits)};
-> +
-> +	if (edata->val_bits == 0) {
-> +		dev_warn(dev, "%s: no valid error information\n", __func__);
-> +		return;
-> +	}
-> +
-> +	dev_info(dev, "\nHISI : HIP : PCIe controller error\n");
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOC_ID)
-> +		dev_info(dev, "Table version = %d\n", edata->version);
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOCKET_ID)
-> +		dev_info(dev, "Socket ID = %d\n", edata->socket_id);
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_NIMBUS_ID)
-> +		dev_info(dev, "Nimbus ID = %d\n", edata->nimbus_id);
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID)
-> +		dev_info(dev, "Sub Module = %s\n",
-> +			 hisi_pcie_get_string(hisi_pcie_sub_module,
-> +					      ARRAY_SIZE(hisi_pcie_sub_module),
-> +					      edata->sub_module_id));
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_CORE_ID)
-> +		dev_info(dev, "Core ID = core%d\n", edata->core_id);
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_PORT_ID)
-> +		dev_info(dev, "Port ID = port%d\n", edata->port_id);
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_SEVERITY)
-> +		dev_info(dev, "Error severity = %s\n",
-> +			 hisi_pcie_get_string(hisi_pcie_error_sev,
-> +					      ARRAY_SIZE(hisi_pcie_error_sev),
-> +					      edata->err_severity));
-> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_TYPE)
-> +		dev_info(dev, "Error type = 0x%x\n", edata->err_type);
-> +
-> +	dev_info(dev, "Reg Dump:\n");
-> +	idx = HISI_PCIE_LOCAL_VALID_ERR_MISC;
-> +	for_each_set_bit_from(idx, valid_bits,
-> +			      HISI_PCIE_LOCAL_VALID_ERR_MISC + HISI_PCIE_ERR_MISC_REGS)
-> +		dev_info(dev, "ERR_MISC_%d = 0x%x\n", idx - HISI_PCIE_LOCAL_VALID_ERR_MISC,
-> +			 edata->err_misc[idx - HISI_PCIE_LOCAL_VALID_ERR_MISC]);
-> +
-> +	if (edata->err_severity != HISI_PCIE_ERR_SEV_RECOVERABLE)
-> +		return;
-> +
-> +	/* Recovery for the PCIe controller errors, try reset
-> +	 * PCI port for the error recovery
-> +	 */
-> +	rc = hisi_pcie_port_do_recovery(pdev, edata->socket_id,
-> +			HISI_PCIE_PORT_ID(edata->core_id, edata->port_id));
-> +	if (rc)
-> +		dev_info(dev, "fail to do hisi pcie port reset\n");
-> +}
-> +
-> +static int hisi_pcie_notify_error(struct notifier_block *nb,
-> +				  unsigned long event, void *data)
-> +{
-> +	struct acpi_hest_generic_data *gdata = data;
-> +	const struct hisi_pcie_error_data *error_data = acpi_hest_get_payload(gdata);
-> +	struct hisi_pcie_error_private *priv;
-> +	struct device *dev;
-> +	struct platform_device *pdev;
-> +	guid_t err_sec_guid;
-> +	u8 socket;
-> +
-> +	import_guid(&err_sec_guid, gdata->section_type);
-> +	if (!guid_equal(&err_sec_guid, &hisi_pcie_sec_guid))
-> +		return NOTIFY_DONE;
-> +
-> +	priv = container_of(nb, struct hisi_pcie_error_private, nb);
-> +	dev = priv->dev;
-> +
-> +	if (device_property_read_u8(dev, "socket", &socket))
-> +		return NOTIFY_DONE;
-> +
-> +	if (error_data->socket_id != socket)
-> +		return NOTIFY_DONE;
-> +
-> +	pdev = container_of(dev, struct platform_device, dev);
-> +	hisi_pcie_handle_error(pdev, error_data);
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static int hisi_pcie_error_handler_probe(struct platform_device *pdev)
-> +{
-> +	struct hisi_pcie_error_private *priv;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->nb.notifier_call = hisi_pcie_notify_error;
-> +	priv->dev = &pdev->dev;
-> +	ret = ghes_register_vendor_record_notifier(&priv->nb);
-> +	if (ret) {
-> +		dev_err(&pdev->dev,
-> +			"Failed to register hisi pcie controller error handler with apei\n");
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static int hisi_pcie_error_handler_remove(struct platform_device *pdev)
-> +{
-> +	struct hisi_pcie_error_private *priv = platform_get_drvdata(pdev);
-> +
-> +	ghes_unregister_vendor_record_notifier(&priv->nb);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct acpi_device_id hisi_pcie_acpi_match[] = {
-> +	{ "HISI0361", 0 },
-> +	{ }
-> +};
-> +
-> +static struct platform_driver hisi_pcie_error_handler_driver = {
-> +	.driver = {
-> +		.name	= "hisi-pcie-error-handler",
-> +		.acpi_match_table = hisi_pcie_acpi_match,
-> +	},
-> +	.probe		= hisi_pcie_error_handler_probe,
-> +	.remove		= hisi_pcie_error_handler_remove,
-> +};
-> +module_platform_driver(hisi_pcie_error_handler_driver);
-> +
-> +MODULE_DESCRIPTION("HiSilicon HIP PCIe controller error handling driver");
-> +MODULE_LICENSE("GPL v2");
-> -- 
-> 2.17.1
-> 
-> 
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+---
+ Documentation/ABI/testing/debugfs-cpu-cec |  22 ++
+ arch/arm64/ras/Kconfig                    |   8 +
+ drivers/acpi/apei/ghes.c                  |  30 +-
+ drivers/ras/Kconfig                       |   1 +
+ drivers/ras/Makefile                      |   1 +
+ drivers/ras/cpu_cec.c                     | 393 ++++++++++++++++++++++
+ drivers/ras/ras.c                         |   3 +
+ include/linux/ras.h                       |  16 +
+ 8 files changed, 471 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/ABI/testing/debugfs-cpu-cec
+ create mode 100644 arch/arm64/ras/Kconfig
+ create mode 100644 drivers/ras/cpu_cec.c
 
+diff --git a/Documentation/ABI/testing/debugfs-cpu-cec b/Documentation/ABI/testing/debugfs-cpu-cec
+new file mode 100644
+index 000000000000..31f4e8c902e4
+--- /dev/null
++++ b/Documentation/ABI/testing/debugfs-cpu-cec
+@@ -0,0 +1,22 @@
++What:           /sys/kernel/debug/ras/cpu_cec/threshold
++Date:           Aug 2020
++Contact:        linux-edac@vger.kernel.org
++Description:    Threshold value for the CPU corrected errors to
++		offline a CPU core. Default value is 5000.
++
++What:           /sys/kernel/debug/ras/cpu_cec/disable
++Date:           Aug 2020
++Contact:        linux-edac@vger.kernel.org
++Description:    Disable the RAS CPU corrected errors collector.
++		1:disable, 0:enable. Enabled by default.
++
++What:           /sys/kernel/debug/ras/cpu_cec/stats
++Date:           Aug 2020
++Contact:        linux-edac@vger.kernel.org
++Description:    Dump the stats of the CPU correctable errors.
++
++What:           /sys/kernel/debug/ras/cpu_cec/time_period
++Date:           Aug 2020
++Contact:        linux-edac@vger.kernel.org
++Description:    Time period, in seconds, for the CPU CEs count
++		threshold check. Default value is 24hrs.
+diff --git a/arch/arm64/ras/Kconfig b/arch/arm64/ras/Kconfig
+new file mode 100644
+index 000000000000..a892245193f0
+--- /dev/null
++++ b/arch/arm64/ras/Kconfig
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0
++config RAS_CPU_CEC
++	bool "RAS CPU Correctable Error Collector"
++	depends on ARM64 && HOTPLUG_CPU && DEBUG_FS
++	help
++	  Collects the CPU correctable errors. When the CEs count for
++	  a CPU exceeds the threshold, try to isolate the CPU core.
++
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 81bf71b10d44..b6ff4866ca32 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -511,6 +511,32 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ #endif
+ }
+ 
++static void ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata)
++{
++	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
++	struct cper_arm_err_info *err_info;
++	int sec_sev;
++	int cpu, i, ret;
++
++	log_arm_hw_error(err);
++
++	sec_sev = ghes_severity(gdata->error_severity);
++	if (sec_sev != GHES_SEV_CORRECTED)
++		return;
++
++	cpu = get_logical_index(err->mpidr);
++	if (cpu == -EINVAL)
++		return;
++
++	err_info = (struct cper_arm_err_info *)(err + 1);
++	for (i = 0; i < err->err_info_num; i++) {
++		ret = cpu_cec_add_ce(cpu, err_info->multiple_error + 1);
++		if (ret)
++			break;
++		err_info += 1;
++	}
++}
++
+ static bool ghes_do_proc(struct ghes *ghes,
+ 			 const struct acpi_hest_generic_status *estatus)
+ {
+@@ -543,9 +569,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 			ghes_handle_aer(gdata);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+-			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+-
+-			log_arm_hw_error(err);
++			ghes_handle_arm_hw_error(gdata);
+ 		} else {
+ 			void *err = acpi_hest_get_payload(gdata);
+ 
+diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
+index c2a236f2e846..d2f877e5f7ad 100644
+--- a/drivers/ras/Kconfig
++++ b/drivers/ras/Kconfig
+@@ -32,5 +32,6 @@ menuconfig RAS
+ if RAS
+ 
+ source "arch/x86/ras/Kconfig"
++source "arch/arm64/ras/Kconfig"
+ 
+ endif
+diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
+index 6f0404f50107..d6e8c38be3cb 100644
+--- a/drivers/ras/Makefile
++++ b/drivers/ras/Makefile
+@@ -2,3 +2,4 @@
+ obj-$(CONFIG_RAS)	+= ras.o
+ obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
+ obj-$(CONFIG_RAS_CEC)	+= cec.o
++obj-$(CONFIG_RAS_CPU_CEC)	+= cpu_cec.o
+diff --git a/drivers/ras/cpu_cec.c b/drivers/ras/cpu_cec.c
+new file mode 100644
+index 000000000000..7c4a566d7b30
+--- /dev/null
++++ b/drivers/ras/cpu_cec.c
+@@ -0,0 +1,393 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2020 HiSilicon Limited.
++ */
++#include <linux/ras.h>
++#include <linux/workqueue.h>
++#include <linux/cpu.h>
++#include <linux/slab.h>
++#include <linux/ratelimit.h>
++
++#include "debugfs.h"
++
++/*
++ * RAS CPU correctable error collector.
++ *
++ * Collects the count of CPU correctable errors.
++ *
++ * We need to isolate a CPU core when large number of correctable errors
++ * are reported on that CPU core too often. This is done by calling remove_cpu()
++ * when the CEs count is exceeded the threshold value in a short time period.
++ *
++ * The ce collector maintains the sliding time window with equal time slots and
++ * the ce counts corresponding to each time slot are stored in a circular buffer.
++ * A periodically scheduled work function advances the circular buffer for the
++ * time slots and the period of this work function is total time period/ number
++ * of time slots. When the new ce count for a cpu is added, the sum of the most
++ * recent ce counts stored in the buffer would be checked whether it exceeded the
++ * ce threshold value, if so, a flag would be set to offline the cpu, kick a
++ * dedicated work function and the cpu would be offlined by that work function.
++ *
++ * The CE count threshold value and time period are configurable through the
++ * cpu_cec interface provided in the RAS debugfs.
++ *
++ * CPU CEC interface in the /sys/kernel/debug/ras/cpu_cec/
++ * @disable: Disable the CPU CE collector.
++ * @time_period: Time period, in seconds, for the CPU CE count threshold check.
++ * @threshold: Threshold value for the CPU CEs to offline the CPU core.
++ * @stats: Statistics of the CPU correctable errors.
++ */
++
++#undef pr_fmt
++#define pr_fmt(fmt) "RAS: " fmt
++
++/* Time period for the CPU CEs count threshold check, is 24hrs by default. */
++#define RAS_CPU_CEC_DEFAULT_TIME_PERIOD	(24 * 60 * 60)	/* 24 hrs */
++#define RAS_CPU_CEC_MIN_TIME_PERIOD	(1 * 60 * 60)	/* 1h */
++#define RAS_CPU_CEC_MAX_TIME_PERIOD	(30 * 24 * 60 * 60)	/* one month */
++
++/* Threshold value of the CPU corrected errors for isolating the CPU. */
++#define RAS_CPU_CE_THRESHOLD	5000
++#define RAS_CPU_CE_MIN_THRESHOLD	200
++#define RAS_CPU_CE_MAX_THRESHOLD	100000
++
++/* Flags indicates a cpu core to offline and has been offlined
++ * due to the cpu CEs exceed threshold.
++ */
++#define RAS_CEC_OFFLINE_CPU	BIT(0)
++#define RAS_CEC_CPU_OFFLINED	BIT(1)
++
++/* sub divisions of the sliding time window */
++#define RAS_CPU_CEC_NUM_TIME_SLOTS	10
++
++/**
++ * cpu_cec_list - Per CPU corrected error collector storage
++ * @work:	work structure to offline the cpu.
++ * @ces_count:	total number of correctable errors collected.
++ * @flag:	CEC flag.
++ * @buf_ce_count:	buffer to store the most recent ce counts in each
++ *			time slots of the sliding time window.
++ * @buf_index:	buffer index corresponding to the current time slot.
++ * @cpu:	cpu logical index.
++ */
++static struct cpu_cec_list {
++	struct work_struct work;
++	u64 ces_count;
++	u64 flag;
++	u64 buf_ce_count[RAS_CPU_CEC_NUM_TIME_SLOTS];
++	u32 buf_index;
++	u32 cpu;
++} *cpu_cec_list;
++
++static DEFINE_SPINLOCK(cpu_cec_lock);
++
++/* Disable the CPU correctable error collector, enabled by default */
++static u64 cpu_cec_disable;
++
++/* Number of errors after which we offline the CPU. */
++static u64 cpu_ce_threshold = RAS_CPU_CE_THRESHOLD;
++
++/* Time period for the CPU CE count threshold check. */
++static u64 cpu_cec_time_period = RAS_CPU_CEC_DEFAULT_TIME_PERIOD;
++
++static struct delayed_work cpu_cec_work;
++
++/*
++ * cpu_cec_mod_work: modify delay of the delayed cpu_cec_work.
++ * delay = time period / number of time slots.
++ * @time_period: time period in seconds.
++ */
++static void cpu_cec_mod_work(unsigned long time_period)
++{
++	unsigned long delay;
++
++	if (cpu_cec_disable)
++		return;
++
++	delay = (time_period / RAS_CPU_CEC_NUM_TIME_SLOTS) * HZ;
++	mod_delayed_work(system_wq, &cpu_cec_work, round_jiffies(delay));
++}
++
++static void cpu_cec_work_fn(struct work_struct *work)
++{
++	int cpu;
++	unsigned long flags;
++	struct cpu_cec_list *cpu_cec;
++
++	if (cpu_cec_disable)
++		return;
++
++	for_each_present_cpu(cpu) {
++		cpu_cec = &cpu_cec_list[cpu];
++		/* continue update buf index and clear corresponding ce count here for all
++		 * the cpus present because a cpu could be offlined elsewhere and back online soon.
++		 */
++		spin_lock_irqsave(&cpu_cec_lock, flags);
++		cpu_cec->buf_index = (cpu_cec->buf_index + 1) % RAS_CPU_CEC_NUM_TIME_SLOTS;
++		cpu_cec->buf_ce_count[cpu_cec->buf_index] = 0;
++		spin_unlock_irqrestore(&cpu_cec_lock, flags);
++	}
++
++	cpu_cec_mod_work(cpu_cec_time_period);
++}
++
++/*
++ * Work function to offline a cpu because the offlining to be done
++ * in the process context.
++ */
++static void cpu_cec_offline_work_fn(struct work_struct *work)
++{
++	int rc, i;
++	unsigned long flags;
++	struct cpu_cec_list *cpu_cec;
++
++	if (cpu_cec_disable)
++		return;
++
++	cpu_cec = container_of(work, struct cpu_cec_list, work);
++	if (!(cpu_cec->flag & RAS_CEC_OFFLINE_CPU))
++		return;
++
++	rc = remove_cpu(cpu_cec->cpu);
++	if (!rc) {
++		spin_lock_irqsave(&cpu_cec_lock, flags);
++		cpu_cec->buf_index = 0;
++		for (i = 0; i < RAS_CPU_CEC_NUM_TIME_SLOTS; i++)
++			cpu_cec->buf_ce_count[i] = 0;
++		cpu_cec->flag &= ~RAS_CEC_OFFLINE_CPU;
++		cpu_cec->flag |= RAS_CEC_CPU_OFFLINED;
++		spin_unlock_irqrestore(&cpu_cec_lock, flags);
++	} else
++		pr_warn_ratelimited("Failed to offline CPU%d, error %d\n", cpu_cec->cpu, rc);
++}
++
++static void cpu_cec_check_threshold(int cpu)
++{
++	int i;
++	u64 sum_ce_counts = 0;
++	struct cpu_cec_list *cpu_cec;
++
++	cpu_cec = &cpu_cec_list[cpu];
++	for (i = 0; i < RAS_CPU_CEC_NUM_TIME_SLOTS; i++)
++		sum_ce_counts += cpu_cec->buf_ce_count[i];
++
++	if (sum_ce_counts >= cpu_ce_threshold) {
++		cpu_cec->flag |= RAS_CEC_OFFLINE_CPU;
++		cpu_cec->cpu = cpu;
++
++		/* kick the work function to offline the cpu */
++		schedule_work(&cpu_cec->work);
++	}
++}
++
++/*
++ * cpu_cec_add_ce: add CPU correctable error count to the CPU
++ * correctable error collector.
++ * @cpu: CPU index.
++ * @ce_count: CPU correctable error count.
++ */
++int cpu_cec_add_ce(int cpu, u64 ce_count)
++{
++	unsigned long flags;
++	struct cpu_cec_list *cpu_cec;
++
++	if (!cpu_cec_list || !cpu_online(cpu) || cpu_cec_disable)
++		return -ENODEV;
++
++	cpu_cec = &cpu_cec_list[cpu];
++	if (cpu_cec->flag & RAS_CEC_OFFLINE_CPU)
++		return 0;
++
++	/* reset the flag and ce counts for an offlined cpu, which is online now */
++	if (cpu_cec->flag & RAS_CEC_CPU_OFFLINED) {
++		cpu_cec->ces_count = 0;
++		cpu_cec->flag = 0;
++	}
++
++	spin_lock_irqsave(&cpu_cec_lock, flags);
++	cpu_cec->ces_count += ce_count;
++	cpu_cec->buf_ce_count[cpu_cec->buf_index] += ce_count;
++	spin_unlock_irqrestore(&cpu_cec_lock, flags);
++	cpu_cec_check_threshold(cpu);
++
++	return 0;
++}
++
++static int u64_get(void *data, u64 *val)
++{
++	*val = *(u64 *)data;
++
++	return 0;
++}
++
++static int cpu_cec_disable_set(void *data, u64 val)
++{
++	int cpu, i;
++	unsigned long flags;
++	struct cpu_cec_list *cpu_cec;
++
++	if (val < 0 || val > 1)
++		return -EINVAL;
++
++	if (cpu_cec_disable == val)
++		return 0;
++
++	*(u64 *)data = val;
++
++	spin_lock_irqsave(&cpu_cec_lock, flags);
++	for_each_present_cpu(cpu) {
++		cpu_cec = &cpu_cec_list[cpu];
++		cpu_cec->ces_count = 0;
++		cpu_cec->buf_index = 0;
++		cpu_cec->flag = 0;
++		for (i = 0; i < RAS_CPU_CEC_NUM_TIME_SLOTS; i++)
++			cpu_cec->buf_ce_count[i] = 0;
++	}
++	spin_unlock_irqrestore(&cpu_cec_lock, flags);
++	cpu_cec_mod_work(cpu_cec_time_period);
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(cpu_cec_disable_ops, u64_get,
++			 cpu_cec_disable_set, "%lld\n");
++
++static int cpu_cec_time_period_set(void *data, u64 val)
++{
++	if (val < RAS_CPU_CEC_MIN_TIME_PERIOD || val > RAS_CPU_CEC_MAX_TIME_PERIOD)
++		return -EINVAL;
++
++	*(u64 *)data   = val;
++
++	cpu_cec_mod_work(cpu_cec_time_period);
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(cpu_cec_time_period_ops, u64_get,
++			 cpu_cec_time_period_set, "%lld\n");
++
++static int cpu_ce_threshold_set(void *data, u64 val)
++{
++	*(u64 *)data = clamp_val(val, RAS_CPU_CE_MIN_THRESHOLD, RAS_CPU_CE_MAX_THRESHOLD);
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(cpu_ce_threshold_ops, u64_get,
++			 cpu_ce_threshold_set, "%lld\n");
++
++static int cpu_cec_stats_show(struct seq_file *seq, void *v)
++{
++	int cpu;
++	unsigned long flags;
++
++	spin_lock_irqsave(&cpu_cec_lock, flags);
++	seq_puts(seq, "CPU CEC Stats:\n");
++
++	for_each_present_cpu(cpu)
++		seq_printf(seq, " [cpu%d | ce_count = %08lld | %s]\n", cpu,
++			   cpu_cec_list[cpu].ces_count, cpu_online(cpu) ? "online" :
++			   (cpu_cec_list[cpu].flag & RAS_CEC_CPU_OFFLINED) ?
++			   "offlined-by-cec" : "offline");
++
++	seq_printf(seq, "Time period: %lld seconds\n", cpu_cec_time_period);
++	seq_printf(seq, "Threshold: %lld\n", cpu_ce_threshold);
++	spin_unlock_irqrestore(&cpu_cec_lock, flags);
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(cpu_cec_stats);
++
++static int __init create_debugfs_cpu_cec_nodes(void)
++{
++	struct dentry *dir, *off, *tp, *threshold, *stats;
++	int err;
++
++	dir = debugfs_create_dir("cpu_cec", ras_debugfs_dir);
++	if (IS_ERR_OR_NULL(dir)) {
++		err = dir ? PTR_ERR(dir) : -ENODEV;
++		pr_warn("Error creating RAS CPU CEC debugfs node, error %d\n", err);
++		return err;
++	}
++
++	off = debugfs_create_file("disable", 0600, dir, &cpu_cec_disable,
++				   &cpu_cec_disable_ops);
++	if (!off) {
++		pr_warn("Error creating cpu_cec_disable debugfs node.\n");
++		goto error;
++	}
++
++	tp = debugfs_create_file("time_period", 0600, dir, &cpu_cec_time_period,
++				 &cpu_cec_time_period_ops);
++	if (!tp) {
++		pr_warn("Error creating cpu_ce_time_period debugfs node.\n");
++		goto error;
++	}
++
++	threshold = debugfs_create_file("threshold",
++					0600, dir,
++					&cpu_ce_threshold,
++					&cpu_ce_threshold_ops);
++	if (!threshold) {
++		pr_warn("Error creating cpu_ce_threshold debugfs node.\n");
++		goto error;
++	}
++
++	stats = debugfs_create_file("stats", 0400, dir,
++				    NULL, &cpu_cec_stats_fops);
++	if (!stats) {
++		pr_warn("Error creating cpu cec stats debugfs node.\n");
++		goto error;
++	}
++
++	return 0;
++
++error:
++	debugfs_remove_recursive(dir);
++
++	return -ENODEV;
++}
++
++static int __init cpu_cec_init(void)
++{
++	int cpu;
++	int num_cpus = num_present_cpus();
++	unsigned long delay = (RAS_CPU_CEC_DEFAULT_TIME_PERIOD / RAS_CPU_CEC_NUM_TIME_SLOTS) * HZ;
++
++	cpu_cec_list = kcalloc(num_cpus, sizeof(*cpu_cec_list), GFP_KERNEL);
++	if (!cpu_cec_list) {
++		cpu_cec_disable = 1;
++		return -ENOMEM;
++	}
++
++	if (create_debugfs_cpu_cec_nodes()) {
++		kfree(cpu_cec_list);
++		cpu_cec_list = NULL;
++		return -ENODEV;
++	}
++
++	for_each_present_cpu(cpu)
++		INIT_WORK(&cpu_cec_list[cpu].work, cpu_cec_offline_work_fn);
++
++	INIT_DELAYED_WORK(&cpu_cec_work, cpu_cec_work_fn);
++	schedule_delayed_work(&cpu_cec_work, round_jiffies(delay));
++
++	return 0;
++}
++late_initcall(cpu_cec_init);
++
++int __init parse_cpu_cec_param(char *str)
++{
++	if (!str)
++		return 0;
++
++	if (*str == '=')
++		str++;
++
++	if (!strcmp(str, "cpu_cec_disable")) {
++		cpu_cec_disable = 1;
++		return 1;
++	} else {
++		return 0;
++	}
++}
++
+diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
+index 95540ea8dd9d..747bc6833b6b 100644
+--- a/drivers/ras/ras.c
++++ b/drivers/ras/ras.c
+@@ -49,6 +49,9 @@ static int __init parse_ras_param(char *str)
+ #ifdef CONFIG_RAS_CEC
+ 	parse_cec_param(str);
+ #endif
++#ifdef CONFIG_RAS_CPU_CEC
++	parse_cpu_cec_param(str);
++#endif
+ 
+ 	return 1;
+ }
+diff --git a/include/linux/ras.h b/include/linux/ras.h
+index 1f4048bf2674..6d74ffe6d5aa 100644
+--- a/include/linux/ras.h
++++ b/include/linux/ras.h
+@@ -20,6 +20,10 @@ static inline int ras_add_daemon_trace(void) { return 0; }
+ int __init parse_cec_param(char *str);
+ #endif
+ 
++#ifdef CONFIG_RAS_CPU_CEC
++int __init parse_cpu_cec_param(char *str);
++#endif
++
+ #ifdef CONFIG_RAS
+ void log_non_standard_event(const guid_t *sec_type,
+ 			    const guid_t *fru_id, const char *fru_text,
+@@ -35,4 +39,16 @@ static inline void
+ log_arm_hw_error(struct cper_sec_proc_arm *err) { return; }
+ #endif
+ 
++#ifdef CONFIG_RAS_CPU_CEC
++/**
++ * cpu_cec_add_ce - add the count of CPU correctable errors to the
++ * CPU correctable errors collector.
++ * @cpu: CPU index.
++ * @ce_count: CPU correctable errors count.
++ */
++int cpu_cec_add_ce(int cpu, u64 ce_count);
++#else
++static inline int cpu_cec_add_ce(int cpu, u64 ce_count) { return -ENODEV; }
++#endif
++
+ #endif /* __RAS_H__ */
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
 
 
