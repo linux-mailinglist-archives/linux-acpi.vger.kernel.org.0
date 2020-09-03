@@ -2,154 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA17725C00F
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A2F25C043
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727051AbgICLVn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 07:21:43 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:30329 "EHLO
+        id S1726025AbgICLZZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 07:25:25 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:37427 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728415AbgICLPh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:15:37 -0400
+        by vger.kernel.org with ESMTP id S1728513AbgICLYo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:24:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599131701;
+        s=mimecast20190719; t=1599132282;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=efREBgpIuAxc+bnBJ5R3S/pFsZS/Ey21En4F0jCEO9A=;
-        b=DkTuQfrXIjNzJobZILFiPZlFO8O60VfZFVCgROtNwecTFcgUk4LniK/oiyu7yQS4fT7Byy
-        6smTIMnOvUmwb+30ikT406egzOTQlU/GdD3hC/dZExusHccEhf5IBruFGD3XMPucBpYtwY
-        X+sFopp9c95+dRWx0ybCxkq+dSOGjjk=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-541-_vdtrHPiNIibqid-RCXg3Q-1; Thu, 03 Sep 2020 07:12:34 -0400
-X-MC-Unique: _vdtrHPiNIibqid-RCXg3Q-1
-Received: by mail-ed1-f71.google.com with SMTP id d13so1123281edz.18
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Sep 2020 04:12:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=efREBgpIuAxc+bnBJ5R3S/pFsZS/Ey21En4F0jCEO9A=;
-        b=CGf179XWZWVs6G5ScwdMANdXlAfwW/O1ACE0261yeuawRQwR++bJujmECoGiGH/oOe
-         5WV14hO9Bte3LFWklPjoq/yq+yMfQVEEpOkAQQ6AscWx0eM88RTWW3NNkBB1B43SEEs3
-         q5B28aPwX9DnZz85gTAI5uIymyFZrdHXI7CI9SWvzpOj2Ql8mwV2mU6lFpk/i5ZhjojQ
-         1k9ASaBKng02ZAsxQ/THVNIU1siSjuVd/aLZXV1xZc8EKwZChqFgpf6ipi9wADfboi3e
-         hku1M7KXIZQff+bpiykt8VWclOwbZ92W5HDySwPyn0XmIyGv7HbE4O3PXvDXPxNLFB/d
-         Q8nA==
-X-Gm-Message-State: AOAM530nNN6fgVg/k6pfgU5H+WL94xS8iINMMfYGxLXiccfUssZYJiNM
-        Nqed6esIG83iKpmp3Pmh36dbYOpmeT0L8DoCo8u+tSjp4QuBrZML/qvPlMepaFg/60ZkvHmJAxI
-        HXwr0/eP1fHgarvBNd8qDBQ==
-X-Received: by 2002:a17:906:c7da:: with SMTP id dc26mr1490813ejb.491.1599131553512;
-        Thu, 03 Sep 2020 04:12:33 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwz45IHe95vEABByf1/DSG38NFHvqU3XHec96U37Ufe0eGhD/vOjFiqWQ2lkLsAJDGyIGIi4Q==
-X-Received: by 2002:a17:906:c7da:: with SMTP id dc26mr1490775ejb.491.1599131553140;
-        Thu, 03 Sep 2020 04:12:33 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id r16sm2909233ejb.110.2020.09.03.04.12.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2020 04:12:32 -0700 (PDT)
-Subject: Re: [PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on
- existing hardware state
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        bh=BihA1BpHNAPbZmr7utm+7lcBoH9ReI2g/yHAfDzPOZk=;
+        b=OYQFpV4uJalEEn2AIyB5Gh9cWlkZFZYA3z1SclVSjAeyWD34QzQ8L90vch0l4B8KsYZ7Oz
+        onsl7sb07KdRFBXVgGy9V3tv3ikPEwRYKmBVHl70qLXtMNaTd7zP98mimFrmZu7RWSFC+o
+        jBmklVYktPaHwFbMlzDP90z3yWWRYu4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-86-EHjOs5jPN_eBJa0VFXdbgA-1; Thu, 03 Sep 2020 07:24:40 -0400
+X-MC-Unique: EHjOs5jPN_eBJa0VFXdbgA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D353910ABDD1;
+        Thu,  3 Sep 2020 11:24:35 +0000 (UTC)
+Received: from x1.localdomain (ovpn-113-3.ams2.redhat.com [10.36.113.3])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3B8FF5C1C2;
+        Thu,  3 Sep 2020 11:24:32 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-References: <20200903105114.9969-1-hdegoede@redhat.com>
- <20200903105114.9969-7-hdegoede@redhat.com> <20200903105909.GA3756465@ulmo>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <e342aee0-c7a6-62db-e4b7-9d72554fd55c@redhat.com>
-Date:   Thu, 3 Sep 2020 13:12:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Subject: [PATCH v10 13/17] pwm: crc: Implement get_state() method
+Date:   Thu,  3 Sep 2020 13:23:33 +0200
+Message-Id: <20200903112337.4113-14-hdegoede@redhat.com>
+In-Reply-To: <20200903112337.4113-1-hdegoede@redhat.com>
+References: <20200903112337.4113-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200903105909.GA3756465@ulmo>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Implement the pwm_ops.get_state() method to complete the support for the
+new atomic PWM API.
 
-On 9/3/20 12:59 PM, Thierry Reding wrote:
-> On Thu, Sep 03, 2020 at 12:51:03PM +0200, Hans de Goede wrote:
->> Before this commit pwm_lpss_apply() was making 2 assuming
->> 2 pre-conditions were met by the existing hardware state:
-> 
-> I think that "making 2" is too much.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v6:
+- Rebase on 5.9-rc1
+- Use DIV_ROUND_UP_ULL because pwm_state.period and .duty_cycle are now u64
 
-You're right at first the sentence had something about making
-2 assumptions, then I added pre-conditions in there for it
-to better describe the problem...
+Changes in v5:
+- Fix an indentation issue
 
->> 1. That the base-unit and on-time-div read back from the
->> control register are those actually in use, so that it
->> can skip setting the update bit if the read-back value
->> matches the desired values.
->>
->> 2. That the controller is enabled when the cached
->> pwm_state.enabled says that the controller is enabled.
->>
->> As the long history of fixes for subtle (often suspend/resume)
->> lpss-pwm issues shows, this assumptions are not necessary
->> always true.
->>
->> 1. Specifically is not true on some (*) Cherry Trail devices
->> with a nasty GFX0._PS3 method which: a. saves the ctrl reg value.
->> b. sets the base-unit to 0 and writes the update bit to apply/commit
->> c. restores the original ctrl value without setting the update bit,
->> so that the 0 base-unit value is still in use.
->>
->> 2. Assumption 2. currently is true, but only because of the code which
->> saves/restores the state on suspend/resume. By convention restoring the
->> PWM state should be done by the PWM consumer and the presence of this
->> code in the pmw-lpss driver is a bug. Therefor the save/restore code will
->> be dropped in the next patch in this series, after which this assumption
->> also is no longer true.
->>
->> This commit changes the pwm_lpss_apply() to make any assumptions about the
-> 
-> Did you mean to say "... to _not_ make any assumptions ..."?
+Changes in v4:
+- Use DIV_ROUND_UP when calculating the period and duty_cycle from the
+  controller's register values
 
-Yes, oops. That is a small but important difference.
+Changes in v3:
+- Add Andy's Reviewed-by tag
+- Remove extra whitespace to align some code after assignments (requested by
+  Uwe Kleine-König)
+---
+ drivers/pwm/pwm-crc.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-I'll do a v10 with your 2 Acked-by's added and both commit msg issues fixed.
-
-Hopefully that will be the last version.
-
->> state the hardware is in. Instead it makes pwm_lpss_apply() always fully
->> program the PWM controller, making it much less fragile.
->>
->> *) Seen on the Acer One 10 S1003, Lenovo Ideapad Miix 310 and 320 models
->> and various Medion models.
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/pwm/pwm-lpss.c | 21 +++++++++------------
->>   1 file changed, 9 insertions(+), 12 deletions(-)
-> 
-> Other than the two small nits, this looks much more idiomatic and true
-> to the atomic API, so:
-> 
-> Acked-by: Thierry Reding <thierry.reding@gmail.com>
-
-Thank you.
-
-Regards,
-
-Hans
+diff --git a/drivers/pwm/pwm-crc.c b/drivers/pwm/pwm-crc.c
+index 27dc30882424..ecfdfac0c2d9 100644
+--- a/drivers/pwm/pwm-crc.c
++++ b/drivers/pwm/pwm-crc.c
+@@ -121,8 +121,39 @@ static int crc_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	return 0;
+ }
+ 
++static void crc_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
++			      struct pwm_state *state)
++{
++	struct crystalcove_pwm *crc_pwm = to_crc_pwm(chip);
++	struct device *dev = crc_pwm->chip.dev;
++	unsigned int clk_div, clk_div_reg, duty_cycle_reg;
++	int error;
++
++	error = regmap_read(crc_pwm->regmap, PWM0_CLK_DIV, &clk_div_reg);
++	if (error) {
++		dev_err(dev, "Error reading PWM0_CLK_DIV %d\n", error);
++		return;
++	}
++
++	error = regmap_read(crc_pwm->regmap, PWM0_DUTY_CYCLE, &duty_cycle_reg);
++	if (error) {
++		dev_err(dev, "Error reading PWM0_DUTY_CYCLE %d\n", error);
++		return;
++	}
++
++	clk_div = (clk_div_reg & ~PWM_OUTPUT_ENABLE) + 1;
++
++	state->period =
++		DIV_ROUND_UP(clk_div * NSEC_PER_USEC * 256, PWM_BASE_CLK_MHZ);
++	state->duty_cycle =
++		DIV_ROUND_UP_ULL(duty_cycle_reg * state->period, PWM_MAX_LEVEL);
++	state->polarity = PWM_POLARITY_NORMAL;
++	state->enabled = !!(clk_div_reg & PWM_OUTPUT_ENABLE);
++}
++
+ static const struct pwm_ops crc_pwm_ops = {
+ 	.apply = crc_pwm_apply,
++	.get_state = crc_pwm_get_state,
+ };
+ 
+ static int crystalcove_pwm_probe(struct platform_device *pdev)
+-- 
+2.28.0
 
