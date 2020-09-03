@@ -2,90 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8214525C169
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 14:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD8A25C1E7
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 15:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728969AbgICM46 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 08:56:58 -0400
-Received: from mga14.intel.com ([192.55.52.115]:32386 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728409AbgICM4b (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 3 Sep 2020 08:56:31 -0400
-IronPort-SDR: 1z1MFP6C/hYgkBEkBTiIVyJPQxuGyy51v+qlIhq2dWKVH1zuh2EAVMjqhxb6Hp9R9l4g9akuFa
- 8+PnH2NhPkuQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9732"; a="156835077"
-X-IronPort-AV: E=Sophos;i="5.76,386,1592895600"; 
-   d="scan'208";a="156835077"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2020 05:56:31 -0700
-IronPort-SDR: ttfkhcEQ4M7plm0rWrzzUPBGVfW6Uok9NxDdMC0S+ahWiwZIRhDDv8NnrXXoPTkfMpoZavNT78
- BuD0ToeLnQmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,386,1592895600"; 
-   d="scan'208";a="331778180"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 03 Sep 2020 05:56:23 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kDomq-00E1xi-F2; Thu, 03 Sep 2020 15:56:20 +0300
-Date:   Thu, 3 Sep 2020 15:56:20 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v10 07/17] pwm: lpss: Remove suspend/resume handlers
-Message-ID: <20200903125620.GB1891694@smile.fi.intel.com>
-References: <20200903112337.4113-1-hdegoede@redhat.com>
- <20200903112337.4113-8-hdegoede@redhat.com>
- <20200903124816.GA1891694@smile.fi.intel.com>
+        id S1728902AbgICNw3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 09:52:29 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2748 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728886AbgICMj7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 3 Sep 2020 08:39:59 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 3F31945907B21A07F938;
+        Thu,  3 Sep 2020 13:39:57 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.93.187) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Thu, 3 Sep 2020 13:39:56 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <helgaas@kernel.org>, <bp@alien8.de>, <james.morse@arm.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>, <lenb@kernel.org>,
+        <tony.luck@intel.com>, <dan.carpenter@oracle.com>,
+        <andriy.shevchenko@linux.intel.com>
+CC:     <yangyicong@hisilicon.com>, <jonathan.cameron@huawei.com>,
+        <tanxiaofei@huawei.com>, <linuxarm@huawei.com>
+Subject: [PATCH v15 0/2] ACPI / APEI: Add support to notify the vendor specific HW errors
+Date:   Thu, 3 Sep 2020 13:34:54 +0100
+Message-ID: <20200903123456.1823-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200903124816.GA1891694@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.93.187]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 03, 2020 at 03:48:16PM +0300, Andy Shevchenko wrote:
-> On Thu, Sep 03, 2020 at 01:23:27PM +0200, Hans de Goede wrote:
+CPER records describing a firmware-first error are identified by GUID.
+The ghes driver currently logs, but ignores any unknown CPER records.
+This prevents describing errors that can't be represented by a standard
+entry, that would otherwise allow a driver to recover from an error.
+The UEFI spec calls these 'Non-standard Section Body' (N.2.3 of
+version 2.8).
 
-> the question is do we need to have similar in acpi_lpss.c?
-> For example,
-> 	static const struct lpss_device_desc byt_pwm_dev_desc = {
-> 		.flags = LPSS_SAVE_CTX,
-> 		^^^^^^^^^^^^^^
-> 		.prv_offset = 0x800,
-> 		.setup = byt_pwm_setup,
-> 	};
-> 
-> 	static const struct lpss_device_desc bsw_pwm_dev_desc = {
-> 		.flags = LPSS_SAVE_CTX | LPSS_NO_D3_DELAY,
-> 		^^^^^^^^^^^^^^
-> 		.prv_offset = 0x800,
-> 		.setup = bsw_pwm_setup,
-> 	};
+patch set
+1. add the notifier chain for these non-standard/vendor-records
+   in the ghes driver.
 
-Okay, it's a private space which has clock and reset gating, so means we still
-need to handle it.
+2. add the driver to handle HiSilicon HIP PCIe controller's errors.
+   
+Changes:
+
+V15:
+1. Change in the HIP PCIe error handling driver
+   for a comment by Andy Shevchenko.
+   Removed "depends on ACPI" as it already depends on
+   it through ACPI_APEI_GHES.
+
+V14:
+1. Add patch[1] posted by James to the series.
+   
+2. Following changes made for Bjorn's comments,
+2.1 Deleted stub code from ghes.h
+2.2 Made CONFIG_PCIE_HISI_ERR depend on CONFIG_ACPI_APEI_GHES.
+
+V13:
+1. Following changes in the HIP PCIe error handling driver.
+1.1 Add Bjorn's acked-by.
+1.2. Address the comments and macros order Bjorn mentioned.
+     Fix the words in the commit.
+
+V12:
+1. Changed the Signed-off-by tag to Co-developed-by tag in the patch
+   "ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records"
+
+V11:
+1. Following modifications made by James Morse in the APEI patch
+   for the vendor error record.
+   - Removed kfifo and ghes_gdata_pool. Expanded commit message.
+   
+2. Changes in the HIP PCIe error handling driver
+   for the comments by Andy Shevchenko.
+
+V10:
+1. Changes for Bjorn's comments on HIP PCIe error handler driver
+   and APEI patch.
+   
+2. Changes in the HIP PCIe error handler driver
+   for the feedbacks by Andy Shevchenko.
+   
+V9:
+1. Fixed 2 improvements suggested by the kbuild test robot. 
+1.1 Change ghes_gdata_pool_init() as static function.
+1.2. Removed using buffer to store the error data for
+     logging in the hisi_pcie_handle_error()
+
+V8:
+1. Removed reporting the standard errors through the interface
+   because of the conflict with the recent patches in the
+   memory error handling path.
+2. Fix comments by Dan Carpenter.
+   
+V7:
+1. Add changes in the APEI driver suggested by Borislav Petkov, for
+   queuing up all the non-fatal HW errors to the work queue and
+   notify the registered kernel drivers from the bottom half using
+   blocking notifier, common interface for both standard and
+   vendor-spcific errors.
+2. Fix for further feedbacks in v5 HIP PCIe error handler driver
+   by Bjorn Helgaas.
+
+V6:
+1. Fix few changes in the patch subject line suggested by Bjorn Helgaas.
+
+V5:
+1. Fix comments from James Morse.
+1.1 Changed the notification method to use the atomic_notifier_chain.
+1.2 Add the error handled status for the user space.  
+
+V4:
+1. Fix for the following smatch warning in the PCIe error driver,
+   reported by kbuild test robot<lkp@intel.com>:
+   warn: should '((((1))) << (9 + i))' be a 64 bit type?
+   if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
+
+V3:
+1. Fix the comments from Bjorn Helgaas.
+
+V2:
+1. Changes in the HiSilicon PCIe controller's error handling driver
+   for the comments from Bjorn Helgaas.
+   
+2. Changes in the APEI interface to support reporting the vendor error
+   for module with multiple devices, but use the same section type.
+   In the error handler will use socket id/sub module id etc to distinguish
+   the device.
+
+V1:  
+1. Fix comments from James Morse.
+
+2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+   which is an application of the above interface.
+
+Shiju Jose (1):
+  ACPI / APEI: Add a notifier chain for unknown (vendor) CPER records
+
+Yicong Yang (1):
+  PCI: hip: Add handling of HiSilicon HIP PCIe controller errors
+
+ drivers/acpi/apei/ghes.c                 |  63 +++++
+ drivers/pci/controller/Kconfig           |   7 +
+ drivers/pci/controller/Makefile          |   1 +
+ drivers/pci/controller/pcie-hisi-error.c | 327 +++++++++++++++++++++++
+ include/acpi/ghes.h                      |  18 ++
+ 5 files changed, 416 insertions(+)
+ create mode 100644 drivers/pci/controller/pcie-hisi-error.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
 
 
