@@ -2,517 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E444225BF2C
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 12:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3082B25BF68
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 12:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728294AbgICKii convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 3 Sep 2020 06:38:38 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2746 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728254AbgICKif (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 3 Sep 2020 06:38:35 -0400
-Received: from lhreml712-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 5E07ADACA0762EBB25E7;
-        Thu,  3 Sep 2020 11:38:33 +0100 (IST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml712-chm.china.huawei.com (10.201.108.63) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Thu, 3 Sep 2020 11:38:33 +0100
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Thu, 3 Sep 2020 11:38:32 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "helgaas@kernel.org" <helgaas@kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        yangyicong <yangyicong@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: RE: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
- PCIe controller errors
-Thread-Topic: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
- PCIe controller errors
-Thread-Index: AQHWf94KasrJoeNXUki5Ta1QT6sd6alTYpSAgANWdRA=
-Date:   Thu, 3 Sep 2020 10:38:32 +0000
-Message-ID: <7f5146dba8ac4ac0a258742551f204fb@huawei.com>
-References: <20200831212606.1718-1-shiju.jose@huawei.com>
- <20200831212606.1718-3-shiju.jose@huawei.com>
- <20200901082607.GP1891694@smile.fi.intel.com>
-In-Reply-To: <20200901082607.GP1891694@smile.fi.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.93.187]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726268AbgICKv0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 06:51:26 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:48891 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725984AbgICKv0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 06:51:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599130284;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2jfkitntswutOLQ1DY1OiWZZ+qzs7EZXcRyjoLVfEWI=;
+        b=DdmqP1jzF8gNfKRXqupdTQt0B0B1lCMKClfoqUH+/2ZlKXstDW9o1L+X+vmDbdGqpeFJ0j
+        DxWeelSPE5oPiRAKLVuba4xMJi80V+RwvTqXKoZ4yvAjwD/HWgoU3luTLxWeFPK1nE4RTw
+        FB9c74JRCEvQxkt8CiprsmokrUPVoqs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-487-EEOplwD-PNqAcZIQbpPObA-1; Thu, 03 Sep 2020 06:51:22 -0400
+X-MC-Unique: EEOplwD-PNqAcZIQbpPObA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A9F051091062;
+        Thu,  3 Sep 2020 10:51:19 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-115-4.ams2.redhat.com [10.36.115.4])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B8A2D7EEAE;
+        Thu,  3 Sep 2020 10:51:15 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v9 00/17] acpi/pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
+Date:   Thu,  3 Sep 2020 12:50:57 +0200
+Message-Id: <20200903105114.9969-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Hi All,
 
->-----Original Message-----
->From: Andy Shevchenko [mailto:andriy.shevchenko@linux.intel.com]
->Sent: 01 September 2020 09:26
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->kernel@vger.kernel.org; rjw@rjwysocki.net; helgaas@kernel.org;
->bp@alien8.de; james.morse@arm.com; lorenzo.pieralisi@arm.com;
->robh@kernel.org; lenb@kernel.org; tony.luck@intel.com;
->dan.carpenter@oracle.com; yangyicong <yangyicong@huawei.com>;
->Jonathan Cameron <jonathan.cameron@huawei.com>; tanxiaofei
-><tanxiaofei@huawei.com>; Linuxarm <linuxarm@huawei.com>; Bjorn
->Helgaas <bhelgaas@google.com>
->Subject: Re: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
->PCIe controller errors
->
->On Mon, Aug 31, 2020 at 10:26:06PM +0100, Shiju Jose wrote:
->> From: Yicong Yang <yangyicong@hisilicon.com>
->>
->> The HiSilicon HIP PCIe controller is capable of handling errors on
->> root port and performing port reset separately at each root port.
->>
->> Add error handling driver for HIP PCIe controller to log and report
->> recoverable errors. Perform root port reset and restore link status
->> after the recovery.
->>
->> Following are some of the PCIe controller's recoverable errors 1.
->> completion transmission timeout error.
->> 2. CRS retry counter over the threshold error.
->> 3. ECC 2 bit errors
->> 4. AXI bresponse/rresponse errors etc.
->>
->> The driver placed in the drivers/pci/controller/ because the HIP PCIe
->> controller does not use DWC IP.
->>
->> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
->> --
->> drivers/pci/controller/Kconfig           |   8 +
->> drivers/pci/controller/Makefile          |   1 +
->> drivers/pci/controller/pcie-hisi-error.c | 336
->> +++++++++++++++++++++++++++++++
->> 3 files changed, 345 insertions(+)
->> create mode 100644 drivers/pci/controller/pcie-hisi-error.c
->> ---
->>  drivers/pci/controller/Kconfig           |   8 +
->>  drivers/pci/controller/Makefile          |   1 +
->>  drivers/pci/controller/pcie-hisi-error.c | 327
->> +++++++++++++++++++++++
->>  3 files changed, 336 insertions(+)
->>  create mode 100644 drivers/pci/controller/pcie-hisi-error.c
->>
->> diff --git a/drivers/pci/controller/Kconfig
->> b/drivers/pci/controller/Kconfig index f18c3725ef80..b1b8a8805dd8
->> 100644
->> --- a/drivers/pci/controller/Kconfig
->> +++ b/drivers/pci/controller/Kconfig
->> @@ -294,6 +294,14 @@ config PCI_LOONGSON
->>  	  Say Y here if you want to enable PCI controller support on
->>  	  Loongson systems.
->>
->> +config PCIE_HISI_ERR
->> +	depends on ACPI_APEI_GHES && (ARM64 || COMPILE_TEST)
->
->> +	depends on ACPI
->
->Isn't this implied by
->	drivers/acpi/Kconfig:45:if ACPI
->?
+So the bug-fix which prompted v8, lead to some discussion about the pwm-lpss
+suspend/resume code. So as discussed this version drops the following 2
+patches:
 
-This can be removed as  ACPI_APEI_GHES depends on ACPI.
+[PATCH v8 06/17] pwm: lpss: Use pwm_lpss_restore() when restoring state on resume
+[PATCH v8 07/17] pwm: lpss: Always update state and set update bit
 
-Do you have any other comments on this patch?
+Replacing them with:
 
->
->> +	bool "HiSilicon HIP PCIe controller error handling driver"
->> +	help
->> +	  Say Y here if you want error handling support
->> +	  for the PCIe controller's errors on HiSilicon HIP SoCs
->> +
->>  source "drivers/pci/controller/dwc/Kconfig"
->>  source "drivers/pci/controller/mobiveil/Kconfig"
->>  source "drivers/pci/controller/cadence/Kconfig"
->> diff --git a/drivers/pci/controller/Makefile
->> b/drivers/pci/controller/Makefile index bcdbf49ab1e4..04c6edc285c5
->> 100644
->> --- a/drivers/pci/controller/Makefile
->> +++ b/drivers/pci/controller/Makefile
->> @@ -31,6 +31,7 @@ obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-
->tango.o
->>  obj-$(CONFIG_VMD) += vmd.o
->>  obj-$(CONFIG_PCIE_BRCMSTB) += pcie-brcmstb.o
->>  obj-$(CONFIG_PCI_LOONGSON) += pci-loongson.o
->> +obj-$(CONFIG_PCIE_HISI_ERR) += pcie-hisi-error.o
->>  # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
->>  obj-y				+= dwc/
->>  obj-y				+= mobiveil/
->> diff --git a/drivers/pci/controller/pcie-hisi-error.c
->> b/drivers/pci/controller/pcie-hisi-error.c
->> new file mode 100644
->> index 000000000000..7959c9c8d2bc
->> --- /dev/null
->> +++ b/drivers/pci/controller/pcie-hisi-error.c
->> @@ -0,0 +1,327 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Driver for handling the PCIe controller errors on
->> + * HiSilicon HIP SoCs.
->> + *
->> + * Copyright (c) 2020 HiSilicon Limited.
->> + */
->> +
->> +#include <linux/acpi.h>
->> +#include <acpi/ghes.h>
->> +#include <linux/bitops.h>
->> +#include <linux/delay.h>
->> +#include <linux/pci.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/kfifo.h>
->> +#include <linux/spinlock.h>
->> +
->> +/* HISI PCIe controller error definitions */
->> +#define HISI_PCIE_ERR_MISC_REGS	33
->> +
->> +#define HISI_PCIE_LOCAL_VALID_VERSION		BIT(0)
->> +#define HISI_PCIE_LOCAL_VALID_SOC_ID		BIT(1)
->> +#define HISI_PCIE_LOCAL_VALID_SOCKET_ID		BIT(2)
->> +#define HISI_PCIE_LOCAL_VALID_NIMBUS_ID		BIT(3)
->> +#define HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID	BIT(4)
->> +#define HISI_PCIE_LOCAL_VALID_CORE_ID		BIT(5)
->> +#define HISI_PCIE_LOCAL_VALID_PORT_ID		BIT(6)
->> +#define HISI_PCIE_LOCAL_VALID_ERR_TYPE		BIT(7)
->> +#define HISI_PCIE_LOCAL_VALID_ERR_SEVERITY	BIT(8)
->> +#define HISI_PCIE_LOCAL_VALID_ERR_MISC		9
->> +
->> +static guid_t hisi_pcie_sec_guid =
->> +	GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
->> +		  0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
->> +
->> +/*
->> + * Firmware reports the socket port ID where the error occurred.
->> +These
->> + * macros convert that to the core ID and core port ID required by
->> +the
->> + * ACPI reset method.
->> + */
->> +#define HISI_PCIE_PORT_ID(core, v)       (((v) >> 1) + ((core) << 3))
->> +#define HISI_PCIE_CORE_ID(v)             ((v) >> 3)
->> +#define HISI_PCIE_CORE_PORT_ID(v)        (((v) & 7) << 1)
->> +
->> +struct hisi_pcie_error_data {
->> +	u64	val_bits;
->> +	u8	version;
->> +	u8	soc_id;
->> +	u8	socket_id;
->> +	u8	nimbus_id;
->> +	u8	sub_module_id;
->> +	u8	core_id;
->> +	u8	port_id;
->> +	u8	err_severity;
->> +	u16	err_type;
->> +	u8	reserv[2];
->> +	u32	err_misc[HISI_PCIE_ERR_MISC_REGS];
->> +};
->> +
->> +struct hisi_pcie_error_private {
->> +	struct notifier_block	nb;
->> +	struct device *dev;
->> +};
->> +
->> +enum hisi_pcie_submodule_id {
->> +	HISI_PCIE_SUB_MODULE_ID_AP,
->> +	HISI_PCIE_SUB_MODULE_ID_TL,
->> +	HISI_PCIE_SUB_MODULE_ID_MAC,
->> +	HISI_PCIE_SUB_MODULE_ID_DL,
->> +	HISI_PCIE_SUB_MODULE_ID_SDI,
->> +};
->> +
->> +static const char * const hisi_pcie_sub_module[] = {
->> +	[HISI_PCIE_SUB_MODULE_ID_AP]	= "AP Layer",
->> +	[HISI_PCIE_SUB_MODULE_ID_TL]	= "TL Layer",
->> +	[HISI_PCIE_SUB_MODULE_ID_MAC]	= "MAC Layer",
->> +	[HISI_PCIE_SUB_MODULE_ID_DL]	= "DL Layer",
->> +	[HISI_PCIE_SUB_MODULE_ID_SDI]	= "SDI Layer",
->> +};
->> +
->> +enum hisi_pcie_err_severity {
->> +	HISI_PCIE_ERR_SEV_RECOVERABLE,
->> +	HISI_PCIE_ERR_SEV_FATAL,
->> +	HISI_PCIE_ERR_SEV_CORRECTED,
->> +	HISI_PCIE_ERR_SEV_NONE,
->> +};
->> +
->> +static const char * const hisi_pcie_error_sev[] = {
->> +	[HISI_PCIE_ERR_SEV_RECOVERABLE]	= "recoverable",
->> +	[HISI_PCIE_ERR_SEV_FATAL]	= "fatal",
->> +	[HISI_PCIE_ERR_SEV_CORRECTED]	= "corrected",
->> +	[HISI_PCIE_ERR_SEV_NONE]	= "none",
->> +};
->> +
->> +static const char *hisi_pcie_get_string(const char * const *array,
->> +					size_t n, u32 id)
->> +{
->> +	u32 index;
->> +
->> +	for (index = 0; index < n; index++) {
->> +		if (index == id && array[index])
->> +			return array[index];
->> +	}
->> +
->> +	return "unknown";
->> +}
->> +
->> +static int hisi_pcie_port_reset(struct platform_device *pdev,
->> +				u32 chip_id, u32 port_id)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	acpi_handle handle = ACPI_HANDLE(dev);
->> +	union acpi_object arg[3];
->> +	struct acpi_object_list arg_list;
->> +	acpi_status s;
->> +	unsigned long long data = 0;
->> +
->> +	arg[0].type = ACPI_TYPE_INTEGER;
->> +	arg[0].integer.value = chip_id;
->> +	arg[1].type = ACPI_TYPE_INTEGER;
->> +	arg[1].integer.value = HISI_PCIE_CORE_ID(port_id);
->> +	arg[2].type = ACPI_TYPE_INTEGER;
->> +	arg[2].integer.value = HISI_PCIE_CORE_PORT_ID(port_id);
->> +
->> +	arg_list.count = 3;
->> +	arg_list.pointer = arg;
->> +
->> +	s = acpi_evaluate_integer(handle, "RST", &arg_list, &data);
->> +	if (ACPI_FAILURE(s)) {
->> +		dev_err(dev, "No RST method\n");
->> +		return -EIO;
->> +	}
->> +
->> +	if (data) {
->> +		dev_err(dev, "Failed to Reset\n");
->> +		return -EIO;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int hisi_pcie_port_do_recovery(struct platform_device *dev,
->> +				      u32 chip_id, u32 port_id)
->> +{
->> +	acpi_status s;
->> +	struct device *device = &dev->dev;
->> +	acpi_handle root_handle = ACPI_HANDLE(device);
->> +	struct acpi_pci_root *pci_root;
->> +	struct pci_bus *root_bus;
->> +	struct pci_dev *pdev;
->> +	u32 domain, busnr, devfn;
->> +
->> +	s = acpi_get_parent(root_handle, &root_handle);
->> +	if (ACPI_FAILURE(s))
->> +		return -ENODEV;
->> +	pci_root = acpi_pci_find_root(root_handle);
->> +	if (!pci_root)
->> +		return -ENODEV;
->> +	root_bus = pci_root->bus;
->> +	domain = pci_root->segment;
->> +
->> +	busnr = root_bus->number;
->> +	devfn = PCI_DEVFN(port_id, 0);
->> +	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
->> +	if (!pdev) {
->> +		dev_info(device, "Fail to get root port %04x:%02x:%02x.%d
->device\n",
->> +			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
->> +		return -ENODEV;
->> +	}
->> +
->> +	pci_stop_and_remove_bus_device_locked(pdev);
->> +	pci_dev_put(pdev);
->> +
->> +	if (hisi_pcie_port_reset(dev, chip_id, port_id))
->> +		return -EIO;
->> +
->> +	/*
->> +	 * The initialization time of subordinate devices after
->> +	 * hot reset is no more than 1s, which is required by
->> +	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
->> +	 * if Readiness Notifications mechanisms are used. But
->> +	 * wait 1s here to adapt any conditions.
->> +	 */
->> +	ssleep(1UL);
->> +
->> +	/* add root port and downstream devices */
->> +	pci_lock_rescan_remove();
->> +	pci_rescan_bus(root_bus);
->> +	pci_unlock_rescan_remove();
->> +
->> +	return 0;
->> +}
->> +
->> +static void hisi_pcie_handle_error(struct platform_device *pdev,
->> +				   const struct hisi_pcie_error_data *edata) {
->> +	struct device *dev = &pdev->dev;
->> +	int idx, rc;
->> +	const unsigned long valid_bits[] =
->> +{BITMAP_FROM_U64(edata->val_bits)};
->> +
->> +	if (edata->val_bits == 0) {
->> +		dev_warn(dev, "%s: no valid error information\n", __func__);
->> +		return;
->> +	}
->> +
->> +	dev_info(dev, "\nHISI : HIP : PCIe controller error\n");
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOC_ID)
->> +		dev_info(dev, "Table version = %d\n", edata->version);
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SOCKET_ID)
->> +		dev_info(dev, "Socket ID = %d\n", edata->socket_id);
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_NIMBUS_ID)
->> +		dev_info(dev, "Nimbus ID = %d\n", edata->nimbus_id);
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID)
->> +		dev_info(dev, "Sub Module = %s\n",
->> +			 hisi_pcie_get_string(hisi_pcie_sub_module,
->> +
->ARRAY_SIZE(hisi_pcie_sub_module),
->> +					      edata->sub_module_id));
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_CORE_ID)
->> +		dev_info(dev, "Core ID = core%d\n", edata->core_id);
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_PORT_ID)
->> +		dev_info(dev, "Port ID = port%d\n", edata->port_id);
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_SEVERITY)
->> +		dev_info(dev, "Error severity = %s\n",
->> +			 hisi_pcie_get_string(hisi_pcie_error_sev,
->> +					      ARRAY_SIZE(hisi_pcie_error_sev),
->> +					      edata->err_severity));
->> +	if (edata->val_bits & HISI_PCIE_LOCAL_VALID_ERR_TYPE)
->> +		dev_info(dev, "Error type = 0x%x\n", edata->err_type);
->> +
->> +	dev_info(dev, "Reg Dump:\n");
->> +	idx = HISI_PCIE_LOCAL_VALID_ERR_MISC;
->> +	for_each_set_bit_from(idx, valid_bits,
->> +			      HISI_PCIE_LOCAL_VALID_ERR_MISC +
->HISI_PCIE_ERR_MISC_REGS)
->> +		dev_info(dev, "ERR_MISC_%d = 0x%x\n", idx -
->HISI_PCIE_LOCAL_VALID_ERR_MISC,
->> +			 edata->err_misc[idx -
->HISI_PCIE_LOCAL_VALID_ERR_MISC]);
->> +
->> +	if (edata->err_severity != HISI_PCIE_ERR_SEV_RECOVERABLE)
->> +		return;
->> +
->> +	/* Recovery for the PCIe controller errors, try reset
->> +	 * PCI port for the error recovery
->> +	 */
->> +	rc = hisi_pcie_port_do_recovery(pdev, edata->socket_id,
->> +			HISI_PCIE_PORT_ID(edata->core_id, edata->port_id));
->> +	if (rc)
->> +		dev_info(dev, "fail to do hisi pcie port reset\n"); }
->> +
->> +static int hisi_pcie_notify_error(struct notifier_block *nb,
->> +				  unsigned long event, void *data) {
->> +	struct acpi_hest_generic_data *gdata = data;
->> +	const struct hisi_pcie_error_data *error_data =
->acpi_hest_get_payload(gdata);
->> +	struct hisi_pcie_error_private *priv;
->> +	struct device *dev;
->> +	struct platform_device *pdev;
->> +	guid_t err_sec_guid;
->> +	u8 socket;
->> +
->> +	import_guid(&err_sec_guid, gdata->section_type);
->> +	if (!guid_equal(&err_sec_guid, &hisi_pcie_sec_guid))
->> +		return NOTIFY_DONE;
->> +
->> +	priv = container_of(nb, struct hisi_pcie_error_private, nb);
->> +	dev = priv->dev;
->> +
->> +	if (device_property_read_u8(dev, "socket", &socket))
->> +		return NOTIFY_DONE;
->> +
->> +	if (error_data->socket_id != socket)
->> +		return NOTIFY_DONE;
->> +
->> +	pdev = container_of(dev, struct platform_device, dev);
->> +	hisi_pcie_handle_error(pdev, error_data);
->> +
->> +	return NOTIFY_OK;
->> +}
->> +
->> +static int hisi_pcie_error_handler_probe(struct platform_device
->> +*pdev) {
->> +	struct hisi_pcie_error_private *priv;
->> +	int ret;
->> +
->> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
->> +	if (!priv)
->> +		return -ENOMEM;
->> +
->> +	priv->nb.notifier_call = hisi_pcie_notify_error;
->> +	priv->dev = &pdev->dev;
->> +	ret = ghes_register_vendor_record_notifier(&priv->nb);
->> +	if (ret) {
->> +		dev_err(&pdev->dev,
->> +			"Failed to register hisi pcie controller error handler
->with apei\n");
->> +		return ret;
->> +	}
->> +
->> +	platform_set_drvdata(pdev, priv);
->> +
->> +	return 0;
->> +}
->> +
->> +static int hisi_pcie_error_handler_remove(struct platform_device
->> +*pdev) {
->> +	struct hisi_pcie_error_private *priv = platform_get_drvdata(pdev);
->> +
->> +	ghes_unregister_vendor_record_notifier(&priv->nb);
->> +
->> +	return 0;
->> +}
->> +
->> +static const struct acpi_device_id hisi_pcie_acpi_match[] = {
->> +	{ "HISI0361", 0 },
->> +	{ }
->> +};
->> +
->> +static struct platform_driver hisi_pcie_error_handler_driver = {
->> +	.driver = {
->> +		.name	= "hisi-pcie-error-handler",
->> +		.acpi_match_table = hisi_pcie_acpi_match,
->> +	},
->> +	.probe		= hisi_pcie_error_handler_probe,
->> +	.remove		= hisi_pcie_error_handler_remove,
->> +};
->> +module_platform_driver(hisi_pcie_error_handler_driver);
->> +
->> +MODULE_DESCRIPTION("HiSilicon HIP PCIe controller error handling
->> +driver"); MODULE_LICENSE("GPL v2");
->> --
->> 2.17.1
->>
->>
->
->--
->With Best Regards,
->Andy Shevchenko
->
-Thanks,
-Shiju
+[PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on hardware state
+[PATCH v9 07/17] pwm: lpss: Remove suspend/resume handlers
+
+Andy, Thierry, can you review these 2 new patches please?
+
+The plan still is to push the entire series to drm-intel-next-queued
+(because of interdependencies) once the 2 new patches are reviewed and
+the series has passed CI.
+
+This series has been tested (and re-tested after adding various bug-fixes)
+extensively. It has been tested on the following devices:
+
+-Asus T100TA  BYT + CRC-PMIC PWM
+-Toshiba WT8-A  BYT + CRC-PMIC PWM
+-Thundersoft TS178  BYT + CRC-PMIC PWM, inverse PWM
+-Asus T100HA  CHT + CRC-PMIC PWM
+-Terra Pad 1061  BYT + LPSS PWM
+-Trekstor Twin 10.1  BYT + LPSS PWM
+-Asus T101HA  CHT + LPSS PWM
+-GPD Pocket  CHT + LPSS PWM
+-Acer One S1003  CHT + LPSS PWM
+
+Regards,
+
+Hans
+
+
+Changelog:
+
+Changes in v9:
+- Replace:
+  [PATCH v8 06/17] pwm: lpss: Use pwm_lpss_restore() when restoring state on resume
+  [PATCH v8 07/17] pwm: lpss: Always update state and set update bit
+  with:
+  [PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on hardware state
+  [PATCH v9 07/17] pwm: lpss: Remove suspend/resume handlers
+
+Changes in v8:
+- Add a new patch dealing with the ACPI/DSDT GFX0._PS3 code poking the PWM controller
+  in unexpected ways on some Cherry Trail devices
+
+Changes in v7:
+- Fix a u64 divide leading to undefined reference to `__udivdi3' errors on 32 bit
+  platforms by casting the divisor to an unsigned long
+
+Changes in v6:
+- Rebase on v5.9-rc1
+- Adjust pwm-crc patches for pwm_state.period and .duty_cycle now being u64
+
+Changes in v5:
+- Dropped the "pwm: lpss: Correct get_state result for base_unit == 0"
+  patch. The base_unit == 0 condition should never happen and sofar it is
+  unclear what the proper behavior / correct values to store in the
+  pwm_state should be when this does happen.  Since this patch was added as
+  an extra pwm-lpss fix in v4 of this patch-set and otherwise is orthogonal
+  to the of this patch-set just drop it (again).
+- "[PATCH 04/16] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use clamp_val(... instead of clam_t(unsigned long long, ...
+- "[PATCH 05/16] pwm: lpss: Add pwm_lpss_prepare_enable() helper"
+  - This is a new patch in v5 of this patchset
+- [PATCH 06/16] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume
+  - Use the new pwm_lpss_prepare_enable() helper
+
+Changes in v4:
+- "[PATCH v4 06/16] pwm: lpss: Correct get_state result for base_unit == 0"
+  - This is a new patch in v4 of this patchset
+- "[PATCH v4 12/16] pwm: crc: Implement get_state() method"
+  - Use DIV_ROUND_UP when calculating the period and duty_cycle values
+- "[PATCH v4 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller"
+  - Add a note to the commit message about the changes in pwm_disable_backlight()
+  - Use the pwm_set/get_relative_duty_cycle() helpers
+
+Changes in v3:
+- "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use base_unit_range - 1 as maximum value for the clamp()
+- "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
+  - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
+    patch from previous versions of this patch-set, which really was a hack
+    working around the resume issue which this patch fixes properly.
+- PATCH v3 6 - 11 pwm-crc changes:
+  - Various small changes resulting from the reviews by Andy and Uwe,
+    including some refactoring of the patches to reduce the amount of churn
+    in the patch-set
+
+Changes in v2:
+- Fix coverletter subject
+- Drop accidentally included debugging patch
+- "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
+  - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
+
