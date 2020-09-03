@@ -2,159 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F3325C52B
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 17:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5D4A25C51C
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 17:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728557AbgICPXn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 11:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728321AbgICLHg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:07:36 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B657C061247;
-        Thu,  3 Sep 2020 03:59:14 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id q21so2230031edv.1;
-        Thu, 03 Sep 2020 03:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=5WkgJ0UxrcTDSXHkc4L8uoxCzIf7bxTFKt8UaneBiRk=;
-        b=VN5ABvnSPO3JBWqCVBzuVDrdtbBS4cTdfDLq5oMYTr70VYewUC9snWrv1CvO6T90hX
-         aALzfiWkNSMDqX7/WAXqlvrVEbEhTpIKKspQpuTJ628QKx8PzttjUuWi6DZCXbhR2hfI
-         4uWT/TtvCeU0Ei5vMvMJzffGkf6xjHBaShp1yHKW9ops2wQpnfyN8XfJs+dx77bJSWVH
-         qDcUVYxcze6PiB9tv9TflcENHU7MrnS5zmdgOHKPbbIXfdfT26ziBW0Smk9DXHHaqnub
-         zcifV0K+hx6Q5eHZLWx3TD/jDPAXeaX18qgXI/+HRARz0CTKg599NAYpUFiwHtt4a4xT
-         eq1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=5WkgJ0UxrcTDSXHkc4L8uoxCzIf7bxTFKt8UaneBiRk=;
-        b=UmJlOPNAuoN1IJYbMqdKsrux0rfTSnqchJx+uK0gSYtz3lGkGFqEshnvCFF+FssDJU
-         l8c/xW6GZ5DQNo/NFl6qN39FeW2KEpMmkMntMVUfCrP/u6RtAmZR/S1O9vkaODF9BhsT
-         c/NnML1s+DKLjSCdEk9T69WhgNq6RngxlZxJqX9uT91kkx2T9zmF865C5omda5PeCeTp
-         qgbaaw+sYozU6SDe6UL0IHCCHnXTZIAJqlK2ZkXQCTU1gstq6K9GqVMERm9Mjd6V4AN7
-         PKfJE15OsjPtYOI3ZLuFCrPK5BxzdC60YIlClS2yoXjh/IfjeZoE9YTkUYklVQBR2oOP
-         U2iw==
-X-Gm-Message-State: AOAM5324bTyY0hSlGGXleDa04FU5iXcsCQ7wNCMYheuYHZva/ysEDOG8
-        8UCuw/hoBiyVTXTMHrqgnyI=
-X-Google-Smtp-Source: ABdhPJwdofunMJ6Amnv+OjRxLrWPoFpcW9kCbNYB+KAWKb2V6jllwRKlhYdb9tn9/Gv+Xi9iFed4eg==
-X-Received: by 2002:a50:ef15:: with SMTP id m21mr2452152eds.300.1599130753024;
-        Thu, 03 Sep 2020 03:59:13 -0700 (PDT)
-Received: from localhost ([62.96.65.119])
-        by smtp.gmail.com with ESMTPSA id sd17sm2978314ejb.93.2020.09.03.03.59.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2020 03:59:11 -0700 (PDT)
-Date:   Thu, 3 Sep 2020 12:59:09 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        id S1728759AbgICPWa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 11:22:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43811 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728254AbgICLXr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:23:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599132225;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=f9531/S5hjfYNJ4DKbRABJsPBCK3YC+tnLn6QLf6Uew=;
+        b=PkZZ9JxtrbQFS8Lteu/yiyuSvKH1G1K6MZTqpnShcGjw88+YOmD3RGgnUvBviBPyw73Aym
+        46T2DePGfqS9m0f0bXpu2CiIeKW+IzMA6HAZAqdl66gRUpcimNgCJA6Ay4K8nIMKnAfe24
+        nzEOca02CBM2Ne+6le/4ErDi+XiN3+0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-124-3_erkd7tMTaMtG1VOa_j3w-1; Thu, 03 Sep 2020 07:23:44 -0400
+X-MC-Unique: 3_erkd7tMTaMtG1VOa_j3w-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8DE5B10ABDB1;
+        Thu,  3 Sep 2020 11:23:42 +0000 (UTC)
+Received: from x1.localdomain (ovpn-113-3.ams2.redhat.com [10.36.113.3])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C4F0F5C1C2;
+        Thu,  3 Sep 2020 11:23:38 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on
- existing hardware state
-Message-ID: <20200903105909.GA3756465@ulmo>
-References: <20200903105114.9969-1-hdegoede@redhat.com>
- <20200903105114.9969-7-hdegoede@redhat.com>
+Subject: [PATCH v10 00/17] acpi/pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
+Date:   Thu,  3 Sep 2020 13:23:20 +0200
+Message-Id: <20200903112337.4113-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="envbJBWh7q8WU6mo"
-Content-Disposition: inline
-In-Reply-To: <20200903105114.9969-7-hdegoede@redhat.com>
-User-Agent: Mutt/1.14.6 (2020-07-11)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi All,
 
---envbJBWh7q8WU6mo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Here is hopefully the last version of this series, as everything seems
+to be ready for merging this now.
 
-On Thu, Sep 03, 2020 at 12:51:03PM +0200, Hans de Goede wrote:
-> Before this commit pwm_lpss_apply() was making 2 assuming
-> 2 pre-conditions were met by the existing hardware state:
+The only difference from v9 is correcting some mistakes in the commit-msg of:
+[PATCH v10 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on hardware state
 
-I think that "making 2" is too much.
+I plan is to push the entire series to drm-intel-next-queued
+(because of interdependencies) once the series has passed CI.
 
->=20
-> 1. That the base-unit and on-time-div read back from the
-> control register are those actually in use, so that it
-> can skip setting the update bit if the read-back value
-> matches the desired values.
->=20
-> 2. That the controller is enabled when the cached
-> pwm_state.enabled says that the controller is enabled.
->=20
-> As the long history of fixes for subtle (often suspend/resume)
-> lpss-pwm issues shows, this assumptions are not necessary
-> always true.
->=20
-> 1. Specifically is not true on some (*) Cherry Trail devices
-> with a nasty GFX0._PS3 method which: a. saves the ctrl reg value.
-> b. sets the base-unit to 0 and writes the update bit to apply/commit
-> c. restores the original ctrl value without setting the update bit,
-> so that the 0 base-unit value is still in use.
->=20
-> 2. Assumption 2. currently is true, but only because of the code which
-> saves/restores the state on suspend/resume. By convention restoring the
-> PWM state should be done by the PWM consumer and the presence of this
-> code in the pmw-lpss driver is a bug. Therefor the save/restore code will
-> be dropped in the next patch in this series, after which this assumption
-> also is no longer true.
->=20
-> This commit changes the pwm_lpss_apply() to make any assumptions about the
+This series has been tested (and re-tested after adding various bug-fixes)
+extensively. It has been tested on the following devices:
 
-Did you mean to say "... to _not_ make any assumptions ..."?
+-Asus T100TA  BYT + CRC-PMIC PWM
+-Toshiba WT8-A  BYT + CRC-PMIC PWM
+-Thundersoft TS178  BYT + CRC-PMIC PWM, inverse PWM
+-Asus T100HA  CHT + CRC-PMIC PWM
+-Terra Pad 1061  BYT + LPSS PWM
+-Trekstor Twin 10.1  BYT + LPSS PWM
+-Asus T101HA  CHT + LPSS PWM
+-GPD Pocket  CHT + LPSS PWM
+-Acer One S1003  CHT + LPSS PWM
 
-> state the hardware is in. Instead it makes pwm_lpss_apply() always fully
-> program the PWM controller, making it much less fragile.
->=20
-> *) Seen on the Acer One 10 S1003, Lenovo Ideapad Miix 310 and 320 models
-> and various Medion models.
->=20
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/pwm/pwm-lpss.c | 21 +++++++++------------
->  1 file changed, 9 insertions(+), 12 deletions(-)
+Regards,
 
-Other than the two small nits, this looks much more idiomatic and true
-to the atomic API, so:
+Hans
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
 
---envbJBWh7q8WU6mo
-Content-Type: application/pgp-signature; name="signature.asc"
+Changelog:
 
------BEGIN PGP SIGNATURE-----
+Changes in v10:
+- Fixup the commit msg of:
+  [PATCH v10 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on hardware state
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl9QzHoACgkQ3SOs138+
-s6ESpBAAojLI3n0J8ZLi86BrLI0Z86TKMHv7NEsGF6+k2vdFDAfUVBQfONZmQdDf
-+/6j3Z6xB7fE0VFOcui0c+jUcrC3bydlZx8oSr3PR1vh8F/IHp4mR7jROo2twyLA
-P0xEiqkP3zkBf03gRICaM+TZMyurEytONhSyVrn3cHegv2fz2ifOBnhG/M0OY/4/
-7298CjoudL4K59HZJW5D/FFR7+OjgP79umSGw16arD26gpM3GEWVyyT4kvxQ4vP/
-7DDNsHFHhaqL+J5F9UB+tJU3o53J5CF9swb0xNKSaf5cZjB48TLLoMB38uUgjahi
-0Wcd6PCVoJnlmM67qkGXTJfOMvZgfSdL1ArVIf6o8sRCPfbGCGqUt8pdJ9DxmNNQ
-RtTX+jTsZ/dQXDLVI+n6G5eGxaSiyJDZdRLsM0fEwUNXexeoKfKXBOUuejO+zO0g
-wctkpRc67HGTsJ2dVbut2x/oMfHUIbNm9tA9g6na3iX88bVczaMAivJg9sDygM9T
-q4cyjjICSOcKUYNQcSk0Mxl5txkT1MdYV6yMeVRzk+N4xSHuPfmQ19/d6iQh5VKV
-r2rcXsy7fftjRJU7xf46sqeWt92/0g437arMZDWQfrCVwGkCCoaTJbVGJvmzEMYy
-C21YOOEedRM/Rx0ZYMlfykVMhEC60qySz+ihCvlTobIatGr8ITA=
-=gIsS
------END PGP SIGNATURE-----
+Changes in v9:
+- Replace:
+  [PATCH v8 06/17] pwm: lpss: Use pwm_lpss_restore() when restoring state on resume
+  [PATCH v8 07/17] pwm: lpss: Always update state and set update bit
+  with:
+  [PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on hardware state
+  [PATCH v9 07/17] pwm: lpss: Remove suspend/resume handlers
 
---envbJBWh7q8WU6mo--
+Changes in v8:
+- Add a new patch dealing with the ACPI/DSDT GFX0._PS3 code poking the PWM controller
+  in unexpected ways on some Cherry Trail devices
+
+Changes in v7:
+- Fix a u64 divide leading to undefined reference to `__udivdi3' errors on 32 bit
+  platforms by casting the divisor to an unsigned long
+
+Changes in v6:
+- Rebase on v5.9-rc1
+- Adjust pwm-crc patches for pwm_state.period and .duty_cycle now being u64
+
+Changes in v5:
+- Dropped the "pwm: lpss: Correct get_state result for base_unit == 0"
+  patch. The base_unit == 0 condition should never happen and sofar it is
+  unclear what the proper behavior / correct values to store in the
+  pwm_state should be when this does happen.  Since this patch was added as
+  an extra pwm-lpss fix in v4 of this patch-set and otherwise is orthogonal
+  to the of this patch-set just drop it (again).
+- "[PATCH 04/16] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use clamp_val(... instead of clam_t(unsigned long long, ...
+- "[PATCH 05/16] pwm: lpss: Add pwm_lpss_prepare_enable() helper"
+  - This is a new patch in v5 of this patchset
+- [PATCH 06/16] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume
+  - Use the new pwm_lpss_prepare_enable() helper
+
+Changes in v4:
+- "[PATCH v4 06/16] pwm: lpss: Correct get_state result for base_unit == 0"
+  - This is a new patch in v4 of this patchset
+- "[PATCH v4 12/16] pwm: crc: Implement get_state() method"
+  - Use DIV_ROUND_UP when calculating the period and duty_cycle values
+- "[PATCH v4 16/16] drm/i915: panel: Use atomic PWM API for devs with an external PWM controller"
+  - Add a note to the commit message about the changes in pwm_disable_backlight()
+  - Use the pwm_set/get_relative_duty_cycle() helpers
+
+Changes in v3:
+- "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use base_unit_range - 1 as maximum value for the clamp()
+- "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
+  - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
+    patch from previous versions of this patch-set, which really was a hack
+    working around the resume issue which this patch fixes properly.
+- PATCH v3 6 - 11 pwm-crc changes:
+  - Various small changes resulting from the reviews by Andy and Uwe,
+    including some refactoring of the patches to reduce the amount of churn
+    in the patch-set
+
+Changes in v2:
+- Fix coverletter subject
+- Drop accidentally included debugging patch
+- "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
+  - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
+
