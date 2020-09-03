@@ -2,132 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B9C425BFF8
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9491C25BFFA
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:15:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728129AbgICLPi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 07:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33634 "EHLO
+        id S1726292AbgICLPQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 07:15:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728407AbgICLLx (ORCPT
+        with ESMTP id S1728409AbgICLLx (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:11:53 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4F0C061245;
-        Thu,  3 Sep 2020 04:00:16 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id i1so2074845edv.2;
-        Thu, 03 Sep 2020 04:00:16 -0700 (PDT)
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F5CC061249;
+        Thu,  3 Sep 2020 04:01:26 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id h12so1836308pgm.7;
+        Thu, 03 Sep 2020 04:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=yYnEhusLXt+hTyNwij80s+Gh0oRryAwxqx+BI6vUKbE=;
-        b=gTvX8FwXfFQlpDzzVsS3ip59h/XuerPrvVdnqrG5HcIi0cwxOp/w/0CGVCLZiXunDa
-         Si4JRPhN46mTAW0harbqSN0VL6x4uD/uUbpUahC0z9lIAn9G998blexk8fAo0McVyy2q
-         J7iMSvDdzMXtnMx3ZO3cK9AgTQF1qPFxtYxyEcrDlQTimYuw6VSjxjSwIohmVkPS0jZ7
-         UWyAoP+0ISccomDzz9ok/mpEuW6NAk5wgeSNurjfk2MLkTUQmFUuWZ4jpfKkfyJs5Ff2
-         /oIF3cC7+96yKk25gXRHoMvtIpYK7wy/zEsu2WUrhJqLd1/b5SMEsXneE4qoSShVejDt
-         PT8Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+DEgrL1WqdyDp96QHpOBjswHW12HsyAvByI+w5af+1I=;
+        b=DgUFp7W4BHAzcm7/LgTX2Fc1BO1sq9gKqpjsC2I/9qSrQExgNfPuGBXIRSxOWXozme
+         ySmh3YYVU5QFZ+VFFuwoxF+P/k05Jt9mgxmmSzEyV3mwl8+8ylfaSmCuw0YLLeYDRI32
+         9GdussqBn8kHj8gNLSZKL132p4vck8rhSER4R+KEFSlBzNv5ARgwyKd0oB8iBIT8eq+R
+         JzEDWHPbo8ar9HvrRF1xogLTK0hfmYFd1EBtgKuRVl2WexthE/y40zYBqrdoAK2sOZKG
+         C7Hkkp9W4d4CgY8K0MX8qvn77cDs5WBmHPfkB3ukSITD+gbjDKNZTWxCY/Q0FteWNhXz
+         cOfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=yYnEhusLXt+hTyNwij80s+Gh0oRryAwxqx+BI6vUKbE=;
-        b=GtYWgLI9im+Wvk8CDgDMtkfSTSxK5/jt3t4puZnW2jj1lZSayEGz7JYc0EBWBrKhgl
-         7idg2cTxv8ZqO7ulPN3NuXmTFNZIp/BMU4hsx7lES7PZ/Sf9JyuEHVAKRr+B7cgXRB7K
-         maXhCRUU8wAhe4j1Kjdx4ZLkJ7uk72/fDUcDOXoYQVU19/CSbT706HHgICK4X0ojFsP9
-         INWKAC4nX6Rryj5Jzz31CXslRv9owaF3sMmHHh3ztywcnDY4NylmG3D2l4A3zJyHSJP8
-         1WsTXijzaTe5cGPeh/HxyB6sHkZzfv0D7wYq4z99NRQyD7ViuLB/dEn00F0IoS5TeU02
-         MyZA==
-X-Gm-Message-State: AOAM5325OzmjtsD+UyLSoHHA8jw59QcUCHHu5NEztXCEAwg7LQP52aEc
-        vcB5XZRfrWxorfJMGwcqS+pauzZto95Osg==
-X-Google-Smtp-Source: ABdhPJwwigy71b9GHpZk/fZqbXWJuk42q2qwbW6hq0JrDrtGYE2aQTX2CZ9GJMutQVQv23fU0NgwLg==
-X-Received: by 2002:aa7:d417:: with SMTP id z23mr2362298edq.62.1599130815291;
-        Thu, 03 Sep 2020 04:00:15 -0700 (PDT)
-Received: from localhost ([62.96.65.119])
-        by smtp.gmail.com with ESMTPSA id c8sm2877359ejp.30.2020.09.03.04.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2020 04:00:14 -0700 (PDT)
-Date:   Thu, 3 Sep 2020 13:00:12 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v9 07/17] pwm: lpss: Remove suspend/resume handlers
-Message-ID: <20200903110012.GB3756465@ulmo>
-References: <20200903105114.9969-1-hdegoede@redhat.com>
- <20200903105114.9969-8-hdegoede@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+DEgrL1WqdyDp96QHpOBjswHW12HsyAvByI+w5af+1I=;
+        b=QjghZg8F4JHoa/rs4KQFwLC6mTbhIyZNXbbisCZuYdmAN9WR8tQrXRLbsvxkwJCk5z
+         mWk74A9+VzTnCAYGk3HposoYmK7A2USUMJGd4BKCs1pbhxjjIJrE07K3yyVRuIpe/rRb
+         adcdq2wVqY8n89REdnnNRvO6fmxk2WQ3zhBZU2b4ZFVNOzN1b2wLU4pCMsXvRkczzMuG
+         vX4BU7QZAcI9P/vF/dUO8hhjjhGSU108BRCvfPT1Lcen9pmBZmAA218xF8+PVe8Hqx95
+         wevBQ1VmaB/CuOq7Xk+8D6u+R+Kl56Lm9Wk7RI4NmW0l3gc/rHEUDvFrEZ3RsC8VCeMG
+         yK5A==
+X-Gm-Message-State: AOAM533Mw8xpwH3l9WFD5NnPo0rI4b6ndX43M4K+wqgqbvLbcFBgUCin
+        M5YpfhumBik2e4ZRAsriGpPpZI2vCvJoZ93Zfs4=
+X-Google-Smtp-Source: ABdhPJzWB8HoVy5iFsB5Op5vyLrnbRcI/Ap8Gp+5ZFJ0NzzhtqGslGDMIN9czc9ATfqg7sEcE+oUtEC2yQtpuLRRVv8=
+X-Received: by 2002:a63:d648:: with SMTP id d8mr2507713pgj.4.1599130885521;
+ Thu, 03 Sep 2020 04:01:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UHN/qo2QbUvPLonB"
-Content-Disposition: inline
-In-Reply-To: <20200903105114.9969-8-hdegoede@redhat.com>
-User-Agent: Mutt/1.14.6 (2020-07-11)
+References: <20200831212606.1718-1-shiju.jose@huawei.com> <20200831212606.1718-3-shiju.jose@huawei.com>
+ <20200901082607.GP1891694@smile.fi.intel.com> <7f5146dba8ac4ac0a258742551f204fb@huawei.com>
+In-Reply-To: <7f5146dba8ac4ac0a258742551f204fb@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 3 Sep 2020 14:01:08 +0300
+Message-ID: <CAHp75Vd3wjNHdYC_A1EVV+kzN=6SGqP2qQ0Wb6pdZWWt9qMMLw@mail.gmail.com>
+Subject: Re: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
+ PCIe controller errors
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        yangyicong <yangyicong@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Sep 3, 2020 at 1:43 PM Shiju Jose <shiju.jose@huawei.com> wrote:
+> >From: Andy Shevchenko [mailto:andriy.shevchenko@linux.intel.com]
+> >Sent: 01 September 2020 09:26
+> >On Mon, Aug 31, 2020 at 10:26:06PM +0100, Shiju Jose wrote:
+> >> From: Yicong Yang <yangyicong@hisilicon.com>
 
---UHN/qo2QbUvPLonB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Thu, Sep 03, 2020 at 12:51:04PM +0200, Hans de Goede wrote:
-> PWM controller drivers should not restore the PWM state on resume. The
-> convention is that PWM consumers do this by calling pwm_apply_state(),
-> so that it can be done at the exact moment when the consumer needs
-> the state to be stored, avoiding e.g. backlight flickering.
->=20
-> The only in kernel consumers of the pwm-lpss code, the i915 driver
-> and the pwm-class sysfs interface code both correctly restore the
-> state on resume, so there is no need to do this in the pwm-lpss code.
->=20
-> More-over the removed resume handler is buggy, since it blindly
-> restores the ctrl-register contents without setting the update
-> bit, which is necessary to get the controller to actually use/apply
-> the restored base-unit and on-time-div values.
->=20
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/pwm/pwm-lpss-platform.c |  1 -
->  drivers/pwm/pwm-lpss.c          | 24 ------------------------
->  drivers/pwm/pwm-lpss.h          |  3 ---
->  3 files changed, 28 deletions(-)
+> >> +config PCIE_HISI_ERR
+> >> +    depends on ACPI_APEI_GHES && (ARM64 || COMPILE_TEST)
+> >
+> >> +    depends on ACPI
+> >
+> >Isn't this implied by
+> >       drivers/acpi/Kconfig:45:if ACPI
+> >?
+>
+> This can be removed as  ACPI_APEI_GHES depends on ACPI.
+>
+> Do you have any other comments on this patch?
 
-Nice!
+Nope. The rest is fine to me.
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
+> >> +    bool "HiSilicon HIP PCIe controller error handling driver"
+> >> +    help
+> >> +      Say Y here if you want error handling support
+> >> +      for the PCIe controller's errors on HiSilicon HIP SoCs
 
---UHN/qo2QbUvPLonB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl9QzLwACgkQ3SOs138+
-s6HB4w/7BWTWBa37E/k/JCj9g8/G5zhz6bPtbVQvfjK9uo2SR3Cw9i8ICbGP4kBz
-Hws/izNzkiZT1xylqpMH29fNoLekSTTmA8xxMMwGwbxlqEWdGXgOzKR5cgJ25rCb
-VmEvNxXpITvKR7PeHDrUspOtpZl3CscbScJDA2vxE7W0SeTF2iO19fgF8B//u/tu
-DUQ7aEiORHBGwnIMefulW3bYO2yq8iFG18Iq+vVnPIcak/YqYxKlDaDs+5jY/Oqa
-Jqh250h+36HM0cSYvSMxIqDV1pP6HarcgRavj5daC1V/ymQqZFfmmiq+XVplJSxO
-+CPyioI2QcaRX2iQtOUFd5aAQSaj3E7sKCsv9APE2TqSushpoufrkwnKi1/1lIll
-YMzlXmVRivUg94dYeKWASJ5D9wWzCz5H67aBtu5V21oNcZc3L7Y1Xuztyxhp9ESH
-TDEIiFxqDyritfY+jqC4XXJiwtQYrI16310kEwi2wFA3PB4x2tRmWAi6BQuU5+tU
-y7hCBcSZZaOxbVlKG2dHsUawLT4pJ35G73YjsPzsJJLFfHN504aVSLIbZEogNt3r
-jq466Qm87cD0M6eqT8b338dmUffjZn+bJtp6b0i9FRny+i0Yy3z4KfaT7kh0EP79
-OsdzaUeoPDhyFupUt5Rai5wmOflTsqOupN4bA4OEKDwD8XM35f8=
-=hZTz
------END PGP SIGNATURE-----
-
---UHN/qo2QbUvPLonB--
+-- 
+With Best Regards,
+Andy Shevchenko
