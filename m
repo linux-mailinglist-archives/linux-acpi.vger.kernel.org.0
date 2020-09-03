@@ -2,138 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F272E25B4EF
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Sep 2020 21:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA52125BB1E
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 08:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbgIBT7q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Sep 2020 15:59:46 -0400
-Received: from mga11.intel.com ([192.55.52.93]:59337 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726285AbgIBT7p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Sep 2020 15:59:45 -0400
-IronPort-SDR: TNrL2OULHNquJpE5XtUKJwv069sSP6qfjhqmiHlDEtmnCg1MmvXd/XCQ68sQsTjZDidWlsk/Iq
- U22QHDu5hjFw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9732"; a="154979343"
-X-IronPort-AV: E=Sophos;i="5.76,384,1592895600"; 
-   d="scan'208";a="154979343"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2020 12:59:44 -0700
-IronPort-SDR: Qb+TmmiGe+/w1Cy++Hd5ueLANvX6LvRs9O5Xd2VRZ0PWeiY1F7Vzo41yM86iEqgd12BaxfuEJW
- /4BktnFHU+BA==
-X-IronPort-AV: E=Sophos;i="5.76,384,1592895600"; 
-   d="scan'208";a="477772867"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2020 12:59:41 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 502932071B; Wed,  2 Sep 2020 22:59:39 +0300 (EEST)
-Date:   Wed, 2 Sep 2020 22:59:39 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH v7 6/6] Documentation: ACPI: Document
- allow-low-power-probe _DSD property
-Message-ID: <20200902195939.GG32646@paasikivi.fi.intel.com>
-References: <20200901210333.8462-1-sakari.ailus@linux.intel.com>
- <20200901210333.8462-7-sakari.ailus@linux.intel.com>
- <CAJZ5v0jFceTFRTD55cz3ZHRZpuNRK_z9=_DxWexc8ArsGU3cog@mail.gmail.com>
- <20200902163121.GE32646@paasikivi.fi.intel.com>
- <CAJZ5v0jmetD2N0-ZrNh8C8oOCFwdwwH9s6FqHOQApMdFa_AZ1A@mail.gmail.com>
+        id S1726263AbgICGeW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 02:34:22 -0400
+Received: from mo-csw1114.securemx.jp ([210.130.202.156]:52200 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725986AbgICGeW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 02:34:22 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 0836XqkV026096; Thu, 3 Sep 2020 15:33:52 +0900
+X-Iguazu-Qid: 2wGqimZzpdodzp3qKb
+X-Iguazu-QSIG: v=2; s=0; t=1599114831; q=2wGqimZzpdodzp3qKb; m=3lD5yTuNA9UipE4IT4HqtHJpMosJZhyi/NRwtDEowSQ=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1111) id 0836Xnhn027327;
+        Thu, 3 Sep 2020 15:33:49 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 0836XnKm019408;
+        Thu, 3 Sep 2020 15:33:49 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 0836XmiJ027896;
+        Thu, 3 Sep 2020 15:33:48 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli Channabasappa <skoralah@amd.com>
+Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v2 1/2] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
+        <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
+        <878sdvv20h.fsf@kokedama.swc.toshiba.co.jp>
+        <102d0c75-d642-8f8b-68c7-792499c2a62a@amd.com>
+Date:   Thu, 03 Sep 2020 15:33:47 +0900
+In-Reply-To: <102d0c75-d642-8f8b-68c7-792499c2a62a@amd.com> (Smita Koralahalli
+        Channabasappa's message of "Wed, 2 Sep 2020 14:29:28 -0500")
+X-TSB-HOP: ON
+Message-ID: <87a6y7qshg.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0jmetD2N0-ZrNh8C8oOCFwdwwH9s6FqHOQApMdFa_AZ1A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 02, 2020 at 06:34:30PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Sep 2, 2020 at 6:31 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Rafael,
-> >
-> > Thank you for the review.
-> >
-> > On Wed, Sep 02, 2020 at 05:57:01PM +0200, Rafael J. Wysocki wrote:
-> > > On Tue, Sep 1, 2020 at 11:03 PM Sakari Ailus
-> > > <sakari.ailus@linux.intel.com> wrote:
-> > > >
-> > > > Document the probe-low-power _DSD property and how it is used with I²C
-> > > > drivers.
-> > >
-> > > I would reorder the series to make this go right after the [1/6] or
-> > > maybe even fold it into that patch.
-> > >
-> > > The point is that the changes in [1/6] clearly depend on the property
-> > > defined here.
-> >
-> > Ack.
-> >
-> > >
-> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > ---
-> > > >  .../acpi/dsd/allow-low-power-probe.rst        | 28 +++++++++++++++++++
-> > > >  Documentation/firmware-guide/acpi/index.rst   |  1 +
-> > > >  2 files changed, 29 insertions(+)
-> > > >  create mode 100644 Documentation/firmware-guide/acpi/dsd/allow-low-power-probe.rst
-> > > >
-> > > > diff --git a/Documentation/firmware-guide/acpi/dsd/allow-low-power-probe.rst b/Documentation/firmware-guide/acpi/dsd/allow-low-power-probe.rst
-> > > > new file mode 100644
-> > > > index 0000000000000..6fcc89162b898
-> > > > --- /dev/null
-> > > > +++ b/Documentation/firmware-guide/acpi/dsd/allow-low-power-probe.rst
-> > > > @@ -0,0 +1,28 @@
-> > > > +.. SPDX-License-Identifier: GPL-2.0
-> > > > +
-> > > > +======================================
-> > > > +Probing I²C devices in low power state
-> > > > +======================================
-> > > > +
-> > > > +Introduction
-> > > > +============
-> > > > +
-> > > > +In some cases it may be preferred to leave certain devices powered off for the
-> > > > +entire system bootup if powering on these devices has adverse side effects,
-> > > > +beyond just powering on the said device. Linux recognizes the _DSD property
-> > > > +"allow-low-power-probe" that can be used for this purpose.
-> > >
-> > > It would be good to refer to the document defining the generic _DSD
-> > > properties mechanism and the GUID used for that from here.
-> >
-> > I'll add a reference to the device properties UUID for _DSD spec.
-> >
-> > >
-> > > The meaning of  "_DSD property" may not be entirely clear to the
-> > > reader as it stands.
-> > >
-> > > And maybe call the property "i2c-allow-low-power-probe" or similar, to
-> > > indicate that it is specific to i2c.
-> >
-> > The bus determines that already, and it's only defined for I²C here. Should
-> > we need this in the future for e.g. I3C, there would be no need to think of
-> > renaming it, just changing the documentation and implementation.
-> >
-> > I don't have a strong opinion on that though.
-> 
-> The point is that the property is not going to be recognized beyond i2c.
+Hi Smita,
 
-Not right now, that is true. Sure, I can change it for v8.
+Smita Koralahalli Channabasappa <skoralah@amd.com> writes:
 
--- 
-Sakari Ailus
+> On 8/31/20 12:05 AM, Punit Agrawal wrote:
+>
+>> Hi Smita,
+>>
+>> A couple of comments below -
+>>
+>> Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
+>>
+>> [...]
+>>
+>>
+>>> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+>>> index 2531de49f56c..374b8e18552a 100644
+>>> --- a/drivers/firmware/efi/cper-x86.c
+>>> +++ b/drivers/firmware/efi/cper-x86.c
+>>> @@ -1,7 +1,7 @@
+>>>   // SPDX-License-Identifier: GPL-2.0
+>>>   // Copyright (C) 2018, Advanced Micro Devices, Inc.
+>>>   -#include <linux/cper.h>
+>> Why is the include dropped? AFAICT, the definitions from there are still
+>> being used after this patch.
+>
+> Dropped because <acpi/apei.h> already includes <linux/cper.h>
+
+Generally, you want to follow the rule that if a declaration from a
+header file is being used, it should show up in the includes. The same
+applies to both source as well as header files.
+
+It doesn't matter if another include in the source file in turn ends up
+including the same header again; the #ifdef guards are there to prevent
+duplicate declarations.
+
+The rationale is that if future changes remove the usage of
+<acpi/apei.h>, the C file can still be compiled after dropping the
+include; there should be no need to then re-introduce <linux/cper.h> at
+that point.
+
+Hope that makes sense.
+
+Thanks,
+Punit
+
+>>> +#include <acpi/apei.h>
+>
+> [...]
+>
+>>> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+>>> index 680f80960c3d..44d4d08acce0 100644
+>>> --- a/include/acpi/apei.h
+>>> +++ b/include/acpi/apei.h
+>>> @@ -33,8 +33,15 @@ extern bool ghes_disable;
+>>>     #ifdef CONFIG_ACPI_APEI
+>>>   void __init acpi_hest_init(void);
+>>> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+>>> +			       u64 lapic_id);
+>>>   #else
+>>>   static inline void acpi_hest_init(void) { return; }
+>>> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+>>> +					     u64 lapic_id)
+>>> +{
+>>> +	return -EINVAL;
+>>> +}
+>>>   #endif
+>> Adding the declaration to this include violates the separation of
+>> generic and architecture specific code.
+>>
+>> Can this be moved to the appropriate architecture specific header?
+>> Perhaps arch/x86/include/asm/apei.h.
+>
+> Yes, I have fixed this and moved into arch/x86/include/asm/acpi.h.
+>
+>>>   typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+>>> @@ -51,6 +58,8 @@ int erst_clear(u64 record_id);
+>>>     int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr,
+>>> void *data);
+>>>   void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
+>>> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+>>> +			       u64 lapic_id);
+>>
+>> Why is the additional declaration needed?
+>
+> Will fix in the next revision.
+>
+> Thanks,
+> Smita
+>
+> [...]
