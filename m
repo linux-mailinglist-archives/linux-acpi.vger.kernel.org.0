@@ -2,157 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE8F25C15E
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 14:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 119DC25C13D
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 14:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728870AbgICMyg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 08:54:36 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2751 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728790AbgICMwQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 3 Sep 2020 08:52:16 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 71392CDCF9CFF0BA78E7;
-        Thu,  3 Sep 2020 13:34:52 +0100 (IST)
-Received: from localhost (10.52.126.121) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Thu, 3 Sep 2020
- 13:34:51 +0100
-Date:   Thu, 3 Sep 2020 13:33:18 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
-CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
-        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Song Bao Hua <song.bao.hua@hisilicon.com>
-Subject: Re: [PATCH v3 0/6]  ACPI: Only create NUMA nodes from entries in
- SRAT or SRAT emulation.
-Message-ID: <20200903133318.000017f5@Huawei.com>
-In-Reply-To: <20200818142430.1156547-1-Jonathan.Cameron@huawei.com>
-References: <20200818142430.1156547-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1728969AbgICMp6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 08:45:58 -0400
+Received: from mga18.intel.com ([134.134.136.126]:34247 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728771AbgICMpg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 3 Sep 2020 08:45:36 -0400
+IronPort-SDR: FsCqo2lfqFd6T5Ux9fQqj2M1896awRgKlACqjakDr9ofjSw/xjDny1xHrf1256hUlM4bZ04IWj
+ 3FUh8Jb2mC9Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9732"; a="145259251"
+X-IronPort-AV: E=Sophos;i="5.76,386,1592895600"; 
+   d="scan'208";a="145259251"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2020 05:44:17 -0700
+IronPort-SDR: kZzwEjPFL76uAlYlWMeMwP4z7365CXK3tAGVLxNKwcYn4NWMzlwGRKUeewXpvnLxRLFf69q1Tl
+ MvJhirGWhRzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,386,1592895600"; 
+   d="scan'208";a="331776177"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 03 Sep 2020 05:44:14 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kDob5-00E1m7-CU; Thu, 03 Sep 2020 15:44:11 +0300
+Date:   Thu, 3 Sep 2020 15:44:11 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v10 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on
+ existing hardware state
+Message-ID: <20200903124411.GZ1891694@smile.fi.intel.com>
+References: <20200903112337.4113-1-hdegoede@redhat.com>
+ <20200903112337.4113-7-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.126.121]
-X-ClientProxiedBy: lhreml738-chm.china.huawei.com (10.201.108.188) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200903112337.4113-7-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Sep 03, 2020 at 01:23:26PM +0200, Hans de Goede wrote:
+> Before this commit pwm_lpss_apply() was assuming 2 pre-conditions
+> were met by the existing hardware state:
+> 
+> 1. That the base-unit and on-time-div read back from the
+> control register are those actually in use, so that it
+> can skip setting the update bit if the read-back value
+> matches the desired values.
+> 
+> 2. That the controller is enabled when the cached
+> pwm_state.enabled says that the controller is enabled.
+> 
+> As the long history of fixes for subtle (often suspend/resume)
+> lpss-pwm issues shows, these assumptions are not necessary
+> always true.
+> 
+> 1. Specifically is not true on some (*) Cherry Trail devices
+> with a nasty GFX0._PS3 method which: a. saves the ctrl reg value.
+> b. sets the base-unit to 0 and writes the update bit to apply/commit
+> c. restores the original ctrl value without setting the update bit,
+> so that the 0 base-unit value is still in use.
+> 
+> 2. Assumption 2. currently is true, but only because of the code which
+> saves/restores the state on suspend/resume. By convention restoring the
+> PWM state should be done by the PWM consumer and the presence of this
+> code in the pmw-lpss driver is a bug. Therefor the save/restore code will
+> be dropped in the next patch in this series, after which this assumption
+> also is no longer true.
+> 
+> This commit changes the pwm_lpss_apply() to not make any assumptions about
+> the state the hardware is in. Instead it makes pwm_lpss_apply() always
+> fully program the PWM controller, making it much less fragile.
+> 
+> *) Seen on the Acer One 10 S1003, Lenovo Ideapad Miix 310 and 320 models
+> and various Medion models.
 
-On Tue, 18 Aug 2020 22:24:24 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+Good one!
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> This is a trivial rebase and resend of V2 now the merge window has closed.
+> Acked-by: Thierry Reding <thierry.reding@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v10:
+> - Fixup some wording / mistakes in the commit message
 > 
-> Here, I will use the term Proximity Domains for the ACPI description and
-> NUMA Nodes for the in kernel representation.
+> Changes in v9:
+> - This is a new patch in v9 of this series
+> ---
+>  drivers/pwm/pwm-lpss.c | 21 +++++++++------------
+>  1 file changed, 9 insertions(+), 12 deletions(-)
 > 
-> ACPI 6.3 included a clarification that only Static Resource Allocation
-> Structures in SRAT may define the existence of proximity domains
-> (sec 5.2.16). This clarification closed a possible interpretation that
-> other parts of ACPI (e.g. DSDT _PXM, NFIT etc) could define new proximity
-> domains that were not also mentioned in SRAT structures.
+> diff --git a/drivers/pwm/pwm-lpss.c b/drivers/pwm/pwm-lpss.c
+> index 8a136ba2a583..9c5c7217c9b6 100644
+> --- a/drivers/pwm/pwm-lpss.c
+> +++ b/drivers/pwm/pwm-lpss.c
+> @@ -85,7 +85,7 @@ static void pwm_lpss_prepare(struct pwm_lpss_chip *lpwm, struct pwm_device *pwm,
+>  	unsigned long long on_time_div;
+>  	unsigned long c = lpwm->info->clk_rate, base_unit_range;
+>  	unsigned long long base_unit, freq = NSEC_PER_SEC;
+> -	u32 orig_ctrl, ctrl;
+> +	u32 ctrl;
+>  
+>  	do_div(freq, period_ns);
+>  
+> @@ -104,16 +104,14 @@ static void pwm_lpss_prepare(struct pwm_lpss_chip *lpwm, struct pwm_device *pwm,
+>  	do_div(on_time_div, period_ns);
+>  	on_time_div = 255ULL - on_time_div;
+>  
+> -	orig_ctrl = ctrl = pwm_lpss_read(pwm);
+> +	ctrl = pwm_lpss_read(pwm);
+>  	ctrl &= ~PWM_ON_TIME_DIV_MASK;
+>  	ctrl &= ~((base_unit_range - 1) << PWM_BASE_UNIT_SHIFT);
+>  	ctrl |= (u32) base_unit << PWM_BASE_UNIT_SHIFT;
+>  	ctrl |= on_time_div;
+>  
+> -	if (orig_ctrl != ctrl) {
+> -		pwm_lpss_write(pwm, ctrl);
+> -		pwm_lpss_write(pwm, ctrl | PWM_SW_UPDATE);
+> -	}
+> +	pwm_lpss_write(pwm, ctrl);
+> +	pwm_lpss_write(pwm, ctrl | PWM_SW_UPDATE);
+>  }
+>  
+>  static inline void pwm_lpss_cond_enable(struct pwm_device *pwm, bool cond)
+> @@ -124,8 +122,7 @@ static inline void pwm_lpss_cond_enable(struct pwm_device *pwm, bool cond)
+>  
+>  static int pwm_lpss_prepare_enable(struct pwm_lpss_chip *lpwm,
+>  				   struct pwm_device *pwm,
+> -				   const struct pwm_state *state,
+> -				   bool enable)
+> +				   const struct pwm_state *state)
+>  {
+>  	int ret;
+>  
+> @@ -134,12 +131,12 @@ static int pwm_lpss_prepare_enable(struct pwm_lpss_chip *lpwm,
+>  		return ret;
+>  
+>  	pwm_lpss_prepare(lpwm, pwm, state->duty_cycle, state->period);
+> -	pwm_lpss_cond_enable(pwm, enable && lpwm->info->bypass == false);
+> +	pwm_lpss_cond_enable(pwm, lpwm->info->bypass == false);
+>  	ret = pwm_lpss_wait_for_update(pwm);
+>  	if (ret)
+>  		return ret;
+>  
+> -	pwm_lpss_cond_enable(pwm, enable && lpwm->info->bypass == true);
+> +	pwm_lpss_cond_enable(pwm, lpwm->info->bypass == true);
+>  	return 0;
+>  }
+>  
+> @@ -152,11 +149,11 @@ static int pwm_lpss_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>  	if (state->enabled) {
+>  		if (!pwm_is_enabled(pwm)) {
+>  			pm_runtime_get_sync(chip->dev);
+> -			ret = pwm_lpss_prepare_enable(lpwm, pwm, state, true);
+> +			ret = pwm_lpss_prepare_enable(lpwm, pwm, state);
+>  			if (ret)
+>  				pm_runtime_put(chip->dev);
+>  		} else {
+> -			ret = pwm_lpss_prepare_enable(lpwm, pwm, state, false);
+> +			ret = pwm_lpss_prepare_enable(lpwm, pwm, state);
+>  		}
+>  	} else if (pwm_is_enabled(pwm)) {
+>  		pwm_lpss_write(pwm, pwm_lpss_read(pwm) & ~PWM_ENABLE);
+> -- 
+> 2.28.0
 > 
-> In practice the kernel has never allowed this alternative interpretation as
-> such nodes are only partially initialized. This is architecture specific
-> but to take an example, on x86 alloc_node_data has not been called.
-> Any use of them for node specific allocation, will result in a crash as the
-> infrastructure to fallback to a node with memory is not setup.
-> 
-> We ran into a problem when enabling _PXM handling for PCI devices and found
-> there were boards out there advertising devices in proximity domains that
-> didn't exist [2].
-> 
-> The fix suggested in this series is to replace instances that should not
-> 'create' new nodes with pxm_to_node.  This function needs a some additional
-> hardening against invalid inputs to make sure it is safe for use in these
-> new callers.
-> 
-> Patch 1 Hardens pxm_to_node() against numa_off, and pxm entry being too large.
-> 
-> Patch 2-4 change the various callers not related to SRAT entries so that they
-> set this parameter to false, so do not attempt to initialize a new NUMA node
-> if the relevant one does not already exist.
-> 
-> Patch 5 is a function rename to reflect change in functionality of
-> acpi_map_pxm_to_online_node() as it no longer creates a new map, but just does a
-> lookup of existing maps.
-> 
-> Patch 6 covers the one place we do not allow the full flexibility defined
-> in the ACPI spec.  For SRAT GIC Interrupt Translation Service (ITS) Affinity
-> Structures, on ARM64, the driver currently makes an additional pass of SRAT
-> later in the boot than the one used to identify NUMA domains.
-> Note, this currently means that an ITS placed in a proximity domain that is
-> not defined by another SRAT structure will result in the a crash.
-> 
-> To avoid this crash with minimal changes we do not create new NUMA nodes based
-> on this particular entry type.  Any current platform trying to do this will not
-> boot, so this is an improvement, if perhaps not a perfect solution.
-> 
-> [1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
-> [2] https://patchwork.kernel.org/patch/10597777/
 
-Looking for input from ARM (Lorenzo?), X86(not sure) and ACPI(Rafael?) people
-on this set. As it also touches NFIT handling perhaps someone who focuses on
-that as well. Please feel free to CC additional people who might be interested.
-
-I'm fairly confident that it should be uncontroversial (famous last words)
-and it closes down a problem that lead to issues with seemingly obvious
-changes in the past. (The whole PCI _PXM issue on some threadripper platforms).
-
-Thanks to Bjorn, Hanjun and Barry for feedback on earlier revisions.
-
-Thanks,
-
-Jonathan
-
-> 
-> Thanks to Bjorn Helgaas for review of v1 and Barry Song for internal reviews that
-> lead to a slightly different approach for this v2.
-> 
-> Changes since v2.
-> * Trivial rebase to v5.9-rc1
-> * Collect up tags.
-> 
-> Changes since v1.
-> * Use pxm_to_node for what was previously the path using acpi_map_pxm_to_node
->   with create==false. (Barry)
-> * Broke patch up into an initial noop stage followed by patches (Bjorn)
->   to update each type of case in which partial creation of NUMA nodes is prevented.
-> * Added patch 5 to rename function to reflect change of functionality.
-> * Updated descriptions (now mostly in individual patches) inline with Bjorn's comments.
-> 
-> Jonathan Cameron (6):
->   ACPI: Add out of bounds and numa_off protections to pxm_to_node
->   ACPI: Do not create new NUMA domains from ACPI static tables that are
->     not SRAT
->   ACPI: Remove side effect of partly creating a node in
->     acpi_map_pxm_to_online_node
->   ACPI: Rename acpi_map_pxm_to_online_node to pxm_to_online_node
->   ACPI: Remove side effect of partly creating a node in acpi_get_node
->   irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without
->     processor or memory
-> 
->  drivers/acpi/arm64/iort.c        |  2 +-
->  drivers/acpi/nfit/core.c         |  6 ++----
->  drivers/acpi/numa/hmat.c         |  4 ++--
->  drivers/acpi/numa/srat.c         |  4 ++--
->  drivers/iommu/intel/dmar.c       |  2 +-
->  drivers/irqchip/irq-gic-v3-its.c |  7 ++++++-
->  include/linux/acpi.h             | 15 +++++++--------
->  7 files changed, 21 insertions(+), 19 deletions(-)
-> 
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
