@@ -2,109 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9491C25BFFA
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA17725C00F
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Sep 2020 13:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbgICLPQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Sep 2020 07:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728409AbgICLLx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:11:53 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F5CC061249;
-        Thu,  3 Sep 2020 04:01:26 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id h12so1836308pgm.7;
-        Thu, 03 Sep 2020 04:01:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+DEgrL1WqdyDp96QHpOBjswHW12HsyAvByI+w5af+1I=;
-        b=DgUFp7W4BHAzcm7/LgTX2Fc1BO1sq9gKqpjsC2I/9qSrQExgNfPuGBXIRSxOWXozme
-         ySmh3YYVU5QFZ+VFFuwoxF+P/k05Jt9mgxmmSzEyV3mwl8+8ylfaSmCuw0YLLeYDRI32
-         9GdussqBn8kHj8gNLSZKL132p4vck8rhSER4R+KEFSlBzNv5ARgwyKd0oB8iBIT8eq+R
-         JzEDWHPbo8ar9HvrRF1xogLTK0hfmYFd1EBtgKuRVl2WexthE/y40zYBqrdoAK2sOZKG
-         C7Hkkp9W4d4CgY8K0MX8qvn77cDs5WBmHPfkB3ukSITD+gbjDKNZTWxCY/Q0FteWNhXz
-         cOfQ==
+        id S1727051AbgICLVn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Sep 2020 07:21:43 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:30329 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728415AbgICLPh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Sep 2020 07:15:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599131701;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=efREBgpIuAxc+bnBJ5R3S/pFsZS/Ey21En4F0jCEO9A=;
+        b=DkTuQfrXIjNzJobZILFiPZlFO8O60VfZFVCgROtNwecTFcgUk4LniK/oiyu7yQS4fT7Byy
+        6smTIMnOvUmwb+30ikT406egzOTQlU/GdD3hC/dZExusHccEhf5IBruFGD3XMPucBpYtwY
+        X+sFopp9c95+dRWx0ybCxkq+dSOGjjk=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-541-_vdtrHPiNIibqid-RCXg3Q-1; Thu, 03 Sep 2020 07:12:34 -0400
+X-MC-Unique: _vdtrHPiNIibqid-RCXg3Q-1
+Received: by mail-ed1-f71.google.com with SMTP id d13so1123281edz.18
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Sep 2020 04:12:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+DEgrL1WqdyDp96QHpOBjswHW12HsyAvByI+w5af+1I=;
-        b=QjghZg8F4JHoa/rs4KQFwLC6mTbhIyZNXbbisCZuYdmAN9WR8tQrXRLbsvxkwJCk5z
-         mWk74A9+VzTnCAYGk3HposoYmK7A2USUMJGd4BKCs1pbhxjjIJrE07K3yyVRuIpe/rRb
-         adcdq2wVqY8n89REdnnNRvO6fmxk2WQ3zhBZU2b4ZFVNOzN1b2wLU4pCMsXvRkczzMuG
-         vX4BU7QZAcI9P/vF/dUO8hhjjhGSU108BRCvfPT1Lcen9pmBZmAA218xF8+PVe8Hqx95
-         wevBQ1VmaB/CuOq7Xk+8D6u+R+Kl56Lm9Wk7RI4NmW0l3gc/rHEUDvFrEZ3RsC8VCeMG
-         yK5A==
-X-Gm-Message-State: AOAM533Mw8xpwH3l9WFD5NnPo0rI4b6ndX43M4K+wqgqbvLbcFBgUCin
-        M5YpfhumBik2e4ZRAsriGpPpZI2vCvJoZ93Zfs4=
-X-Google-Smtp-Source: ABdhPJzWB8HoVy5iFsB5Op5vyLrnbRcI/Ap8Gp+5ZFJ0NzzhtqGslGDMIN9czc9ATfqg7sEcE+oUtEC2yQtpuLRRVv8=
-X-Received: by 2002:a63:d648:: with SMTP id d8mr2507713pgj.4.1599130885521;
- Thu, 03 Sep 2020 04:01:25 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=efREBgpIuAxc+bnBJ5R3S/pFsZS/Ey21En4F0jCEO9A=;
+        b=CGf179XWZWVs6G5ScwdMANdXlAfwW/O1ACE0261yeuawRQwR++bJujmECoGiGH/oOe
+         5WV14hO9Bte3LFWklPjoq/yq+yMfQVEEpOkAQQ6AscWx0eM88RTWW3NNkBB1B43SEEs3
+         q5B28aPwX9DnZz85gTAI5uIymyFZrdHXI7CI9SWvzpOj2Ql8mwV2mU6lFpk/i5ZhjojQ
+         1k9ASaBKng02ZAsxQ/THVNIU1siSjuVd/aLZXV1xZc8EKwZChqFgpf6ipi9wADfboi3e
+         hku1M7KXIZQff+bpiykt8VWclOwbZ92W5HDySwPyn0XmIyGv7HbE4O3PXvDXPxNLFB/d
+         Q8nA==
+X-Gm-Message-State: AOAM530nNN6fgVg/k6pfgU5H+WL94xS8iINMMfYGxLXiccfUssZYJiNM
+        Nqed6esIG83iKpmp3Pmh36dbYOpmeT0L8DoCo8u+tSjp4QuBrZML/qvPlMepaFg/60ZkvHmJAxI
+        HXwr0/eP1fHgarvBNd8qDBQ==
+X-Received: by 2002:a17:906:c7da:: with SMTP id dc26mr1490813ejb.491.1599131553512;
+        Thu, 03 Sep 2020 04:12:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwz45IHe95vEABByf1/DSG38NFHvqU3XHec96U37Ufe0eGhD/vOjFiqWQ2lkLsAJDGyIGIi4Q==
+X-Received: by 2002:a17:906:c7da:: with SMTP id dc26mr1490775ejb.491.1599131553140;
+        Thu, 03 Sep 2020 04:12:33 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id r16sm2909233ejb.110.2020.09.03.04.12.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2020 04:12:32 -0700 (PDT)
+Subject: Re: [PATCH v9 06/17] pwm: lpss: Make pwm_lpss_apply() not rely on
+ existing hardware state
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+References: <20200903105114.9969-1-hdegoede@redhat.com>
+ <20200903105114.9969-7-hdegoede@redhat.com> <20200903105909.GA3756465@ulmo>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <e342aee0-c7a6-62db-e4b7-9d72554fd55c@redhat.com>
+Date:   Thu, 3 Sep 2020 13:12:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200831212606.1718-1-shiju.jose@huawei.com> <20200831212606.1718-3-shiju.jose@huawei.com>
- <20200901082607.GP1891694@smile.fi.intel.com> <7f5146dba8ac4ac0a258742551f204fb@huawei.com>
-In-Reply-To: <7f5146dba8ac4ac0a258742551f204fb@huawei.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 3 Sep 2020 14:01:08 +0300
-Message-ID: <CAHp75Vd3wjNHdYC_A1EVV+kzN=6SGqP2qQ0Wb6pdZWWt9qMMLw@mail.gmail.com>
-Subject: Re: [RESEND PATCH v14 2/2] PCI: hip: Add handling of HiSilicon HIP
- PCIe controller errors
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "helgaas@kernel.org" <helgaas@kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        yangyicong <yangyicong@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200903105909.GA3756465@ulmo>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 3, 2020 at 1:43 PM Shiju Jose <shiju.jose@huawei.com> wrote:
-> >From: Andy Shevchenko [mailto:andriy.shevchenko@linux.intel.com]
-> >Sent: 01 September 2020 09:26
-> >On Mon, Aug 31, 2020 at 10:26:06PM +0100, Shiju Jose wrote:
-> >> From: Yicong Yang <yangyicong@hisilicon.com>
+Hi,
 
-...
+On 9/3/20 12:59 PM, Thierry Reding wrote:
+> On Thu, Sep 03, 2020 at 12:51:03PM +0200, Hans de Goede wrote:
+>> Before this commit pwm_lpss_apply() was making 2 assuming
+>> 2 pre-conditions were met by the existing hardware state:
+> 
+> I think that "making 2" is too much.
 
-> >> +config PCIE_HISI_ERR
-> >> +    depends on ACPI_APEI_GHES && (ARM64 || COMPILE_TEST)
-> >
-> >> +    depends on ACPI
-> >
-> >Isn't this implied by
-> >       drivers/acpi/Kconfig:45:if ACPI
-> >?
->
-> This can be removed as  ACPI_APEI_GHES depends on ACPI.
->
-> Do you have any other comments on this patch?
+You're right at first the sentence had something about making
+2 assumptions, then I added pre-conditions in there for it
+to better describe the problem...
 
-Nope. The rest is fine to me.
+>> 1. That the base-unit and on-time-div read back from the
+>> control register are those actually in use, so that it
+>> can skip setting the update bit if the read-back value
+>> matches the desired values.
+>>
+>> 2. That the controller is enabled when the cached
+>> pwm_state.enabled says that the controller is enabled.
+>>
+>> As the long history of fixes for subtle (often suspend/resume)
+>> lpss-pwm issues shows, this assumptions are not necessary
+>> always true.
+>>
+>> 1. Specifically is not true on some (*) Cherry Trail devices
+>> with a nasty GFX0._PS3 method which: a. saves the ctrl reg value.
+>> b. sets the base-unit to 0 and writes the update bit to apply/commit
+>> c. restores the original ctrl value without setting the update bit,
+>> so that the 0 base-unit value is still in use.
+>>
+>> 2. Assumption 2. currently is true, but only because of the code which
+>> saves/restores the state on suspend/resume. By convention restoring the
+>> PWM state should be done by the PWM consumer and the presence of this
+>> code in the pmw-lpss driver is a bug. Therefor the save/restore code will
+>> be dropped in the next patch in this series, after which this assumption
+>> also is no longer true.
+>>
+>> This commit changes the pwm_lpss_apply() to make any assumptions about the
+> 
+> Did you mean to say "... to _not_ make any assumptions ..."?
 
-> >> +    bool "HiSilicon HIP PCIe controller error handling driver"
-> >> +    help
-> >> +      Say Y here if you want error handling support
-> >> +      for the PCIe controller's errors on HiSilicon HIP SoCs
+Yes, oops. That is a small but important difference.
 
--- 
-With Best Regards,
-Andy Shevchenko
+I'll do a v10 with your 2 Acked-by's added and both commit msg issues fixed.
+
+Hopefully that will be the last version.
+
+>> state the hardware is in. Instead it makes pwm_lpss_apply() always fully
+>> program the PWM controller, making it much less fragile.
+>>
+>> *) Seen on the Acer One 10 S1003, Lenovo Ideapad Miix 310 and 320 models
+>> and various Medion models.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/pwm/pwm-lpss.c | 21 +++++++++------------
+>>   1 file changed, 9 insertions(+), 12 deletions(-)
+> 
+> Other than the two small nits, this looks much more idiomatic and true
+> to the atomic API, so:
+> 
+> Acked-by: Thierry Reding <thierry.reding@gmail.com>
+
+Thank you.
+
+Regards,
+
+Hans
+
