@@ -2,26 +2,28 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5971025E0BB
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 19:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C2025E0B7
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 19:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727769AbgIDR0j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Sep 2020 13:26:39 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:53176 "EHLO
+        id S1727855AbgIDR0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Sep 2020 13:26:23 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:65168 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727797AbgIDR0U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Sep 2020 13:26:20 -0400
+        with ESMTP id S1727769AbgIDR0S (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Sep 2020 13:26:18 -0400
 Received: from 89-64-89-131.dynamic.chello.pl (89.64.89.131) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.468)
- id fdcf7f96b97809a9; Fri, 4 Sep 2020 19:26:17 +0200
+ id 83bc72f43659210a; Fri, 4 Sep 2020 19:26:16 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Erik Kaneda <erik.kaneda@intel.com>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 0/6] ACPICA / ACPI: OSL: Rework GPE registers access code
-Date:   Fri, 04 Sep 2020 19:19:26 +0200
-Message-ID: <1748021.N9i9sLPJ40@kreacher>
+Subject: [PATCH 1/6] ACPICA: Validate GPE blocks at init time
+Date:   Fri, 04 Sep 2020 19:21:17 +0200
+Message-ID: <22545488.GHJRr5m80a@kreacher>
+In-Reply-To: <1748021.N9i9sLPJ40@kreacher>
+References: <1748021.N9i9sLPJ40@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -30,41 +32,107 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-The underlying issue here is that in Linux calling
-acpi_os_read_memory() or acpi_os_write_memory() from an interrupt
-handler is generally invalid, because these functions may attempt
-to map memory on the fly.  It is only valid to call them from an
-interrupt handler if it is known that there is a memory mapping
-covering the physical address passed as the argument.
+Some of the checks done by acpi_hw_read() and acpi_hw_write(),
+which are used for accessing GPE registers, are redundant in the
+specific case of GPE registers and the ones that are not redundant
+can be done upfront at the initialization time so as to fail the
+initialization if they are not passed instead of failing every
+access to the affected GPE registers going forward (including
+accesses from the SCI interrupt handler).
 
-However, in that case using acpi_os_read_memory() or
-acpi_os_write_memory() for accessing memory is inefficient, because
-they need to look up the mapping in question every time in a global
-list, and it would be much more straightforward to use the (known
-already) logical address of the target memory region.
+Modify the GPE blocks initialization code accordingly.
 
-In ACPICA this problem affects GPE registers that are accessed
-with the help of acpi_hw_read() and acpi_hw_write() which is
-inefficient not just because they end up calling
-acpi_os_read_memory() or acpi_os_write_memory() if the GPE
-registers are located in system memory, but also because these
-functions check things that need not be checked for GPE registers
-in particular and they do that on every access.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/acpica/achware.h  |  2 ++
+ drivers/acpi/acpica/evgpeblk.c | 17 +++++++++++++++++
+ drivers/acpi/acpica/hwvalid.c  | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 49 insertions(+)
 
-This series of patches reworks the GPE register accesses in ACPICA
-to be more efficient by omitting the unnecessary checks and making it
-possible to use logical addresses directly if these registers are
-located in system memory.
+diff --git a/drivers/acpi/acpica/achware.h b/drivers/acpi/acpica/achware.h
+index ebf6453d0e21..f1f644b58b15 100644
+--- a/drivers/acpi/acpica/achware.h
++++ b/drivers/acpi/acpica/achware.h
+@@ -73,6 +73,8 @@ acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width);
+ 
+ acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width);
+ 
++acpi_status acpi_hw_validate_io_block(u64 address, u32 bit_width, u32 count);
++
+ /*
+  * hwgpe - GPE support
+  */
+diff --git a/drivers/acpi/acpica/evgpeblk.c b/drivers/acpi/acpica/evgpeblk.c
+index 132adff1e131..eb5d98757fdc 100644
+--- a/drivers/acpi/acpica/evgpeblk.c
++++ b/drivers/acpi/acpica/evgpeblk.c
+@@ -317,6 +317,23 @@ acpi_ev_create_gpe_block(struct acpi_namespace_node *gpe_device,
+ 		return_ACPI_STATUS(AE_OK);
+ 	}
+ 
++	/* Validate the space_ID */
++
++	if ((space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY) &&
++	    (space_id != ACPI_ADR_SPACE_SYSTEM_IO)) {
++		ACPI_ERROR((AE_INFO,
++			    "Unsupported address space: 0x%X", space_id));
++		return_ACPI_STATUS(AE_SUPPORT);
++	}
++
++	if (space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
++		status = acpi_hw_validate_io_block(address,
++						   ACPI_GPE_REGISTER_WIDTH,
++						   register_count);
++		if (ACPI_FAILURE(status))
++			return_ACPI_STATUS(status);
++	}
++
+ 	/* Allocate a new GPE block */
+ 
+ 	gpe_block = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_gpe_block_info));
+diff --git a/drivers/acpi/acpica/hwvalid.c b/drivers/acpi/acpica/hwvalid.c
+index 4d94861e6093..b2ca7dfd3fc9 100644
+--- a/drivers/acpi/acpica/hwvalid.c
++++ b/drivers/acpi/acpica/hwvalid.c
+@@ -292,3 +292,33 @@ acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width)
+ 
+ 	return (AE_OK);
+ }
++
++/******************************************************************************
++ *
++ * FUNCTION:    acpi_hw_validate_io_block
++ *
++ * PARAMETERS:  Address             Address of I/O port/register blobk
++ *              bit_width           Number of bits (8,16,32) in each register
++ *              count               Number of registers in the block
++ *
++ * RETURN:      Status
++ *
++ * DESCRIPTION: Validates a block of I/O ports/registers.
++ *
++ ******************************************************************************/
++
++acpi_status acpi_hw_validate_io_block(u64 address, u32 bit_width, u32 count)
++{
++	acpi_status status;
++
++	while (count--) {
++		status = acpi_hw_validate_io_request((acpi_io_address)address,
++						     bit_width);
++		if (ACPI_FAILURE(status))
++			return_ACPI_STATUS(status);
++
++		address += ACPI_DIV_8(bit_width);
++	}
++
++	return_ACPI_STATUS(AE_OK);
++}
+-- 
+2.26.2
 
-The first four patches modify ACPICA and the last two add the
-requisite OS support to Linux on top of that.
-
-Please refer to the changelogs of the patches for details.
-
-Thanks,
-Rafael
 
 
 
