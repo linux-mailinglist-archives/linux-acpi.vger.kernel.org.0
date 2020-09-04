@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0783325DE44
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 17:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4768C25DE3A
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 17:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbgIDPsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Sep 2020 11:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        id S1727859AbgIDPsJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Sep 2020 11:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727109AbgIDPrU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Sep 2020 11:47:20 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5EF7C06123B
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Sep 2020 08:46:55 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id z1so7244925wrt.3
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Sep 2020 08:46:55 -0700 (PDT)
+        with ESMTP id S1727116AbgIDPrb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Sep 2020 11:47:31 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12110C06123A
+        for <linux-acpi@vger.kernel.org>; Fri,  4 Sep 2020 08:46:57 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id c18so7184318wrm.9
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Sep 2020 08:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=tgjkBfCojYl8siMBzz1X6XLsrb4li1UKkVtYrxRpS88=;
-        b=v5An7xgobEzUsXohY/9CcZLrbXYebSARl253UlqT4OjDvpHs0nlnxnvVFgF6WcLkJS
-         xra4c5MT5F+bQ0Sdeb+WScl0S9QrtaP9RpDAKh3mJDHWFk33bq9NV0v8Ytnt5G8bJaoM
-         OvAxPx4OI31i2vwJMOX+Tg8jqlFX5asZiIFC1Y4O8bKM+sYbd3EZ0czWSDTgAtJrLHNB
-         MtQebZdcQwqp6H5y+8v8Y05PiwEQkAAhifAogt1PAgV4XK/XBEpRu2totaKRwM+U/wFj
-         X2js1Lpmq31ut70bi4SWrIjyzKhKpzyfIqYSNF823NrjP3k5wlRwA262C9vq4fEAfR9e
-         jCUw==
+        bh=grMpfwJBPKz8x8JwdVkKa3ogOmUgQ5L3HbriAAtXMOE=;
+        b=T29hggUBZSkRV9pQbFKSYoyB5ydrOKR+eklkTQqELriqTYpxPUnHKrAQ5JKk0Op74Q
+         DCxlFEGrV8egWnu5H/c03dcSHHYXjjtqm8rjAsFcvt8PJHS4qak+49XcjgQgBcjgMiI8
+         qIDpYQbwqZE2cgT0bB0aDZPqm12ei0JuBbnIxH43DhRDxfoh/lX2p3N0pYHOzXJyZ1Q/
+         Q4s6DClwAfE/qxdvNwJgGGMk1CJwX6CFhO4oRx/5G5B4T22zAxPoaWisGxGE1YFintKM
+         ACUm9cOFgKwYlDa0KUtbdHlwxYdxWEiIki7K6drA8WjMT3VnCj12hhleiJbWcgTF2y0N
+         lMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=tgjkBfCojYl8siMBzz1X6XLsrb4li1UKkVtYrxRpS88=;
-        b=LJzlP2haZK8A2j7KHKcN+2ndWROW8YUx02IQg4+0Lx5JxGL5HKH9iDcIZfKdd1yVIm
-         7LQ9fcSoYEIfqF6LN1mDTRgp4TTf98OVhmDAVjbwR+2A72CQigYRkS30akKqHRdwkj2L
-         hunXqGpf3ZcJChBdOqe6tJTmEnyn4Lj9QVaiL0/w0EnBOyo5odODWj5J9CsejLFwio6a
-         VHXVbyH7hF9LrmvBALJdZUvnJPHq8MAJ5c+OYdMigHPmDHu9z8U0DgDaYqUcysJK6FWH
-         0h9+D7P9cgGPqFpng9tCsgqFW6C0cujoGsBtMeJfFnYTp4lnR0vQWqT6qqHjOq7aav+I
-         +f9Q==
-X-Gm-Message-State: AOAM532GYAegdx74Dx5xt5+hwHoZ5y3spYt5Nj46tvjXqzCSEw5v8h1l
-        sPUwlDRTsDDBQCBYhuasTS5e+w==
-X-Google-Smtp-Source: ABdhPJxoEZmE7Lp6gNfO9fs5XvWgmx2zMirJWKxaSR6g8MfJUjKjK4YQqTkezGJLvB2fzJSBJYuHnQ==
-X-Received: by 2002:a5d:6a45:: with SMTP id t5mr8954332wrw.58.1599234414568;
-        Fri, 04 Sep 2020 08:46:54 -0700 (PDT)
+        bh=grMpfwJBPKz8x8JwdVkKa3ogOmUgQ5L3HbriAAtXMOE=;
+        b=sB+jrRuRaQUztLK/ed3ASGIrhz001Bx4WSoUJGZs63nIGzMwWa4OANL/v6zhzkQZoP
+         OvpVXU73DuOU1SB3FSp2rzamoy6q2OORHjJVT40blk7kUz7n4PwKGgS5dBNT0Yx7GNUK
+         1dEARXLqhvVTCwW4y9LMJPzJEA+2byZSzLKLoHT5eI9/CpB+RxDHts6yhEGXGKN+lSAG
+         nMZZFPQ0VWpTBRkldzJ1dzQwlkHA7dxZerNZ+gi3+S/YeRzoJUvL2f3hDXXKhLtYEOiK
+         B8zAA86C7v0rjxo1n2wZT2OutTMDjah4+VCHaFJwz9ftqjw3eKErcfJ0smxweuKgEh87
+         zIPw==
+X-Gm-Message-State: AOAM532AXdMcsKWAvu+xCg7UveICQZ9K7MJkOwH5nmM46zlptAzFwKLv
+        mw00R8UdrSjmPZsWtFzmiKbKR2qgMvwmkw==
+X-Google-Smtp-Source: ABdhPJwF/TdbSD80yVhLNOeAq70EYhl8a4L44K/4AYYY/Rbp36+YEs1GetDpBBcfGubtwwMDMcnZNA==
+X-Received: by 2002:adf:ed12:: with SMTP id a18mr8803147wro.178.1599234415760;
+        Fri, 04 Sep 2020 08:46:55 -0700 (PDT)
 Received: from debian-brgl.home (lfbn-nic-1-68-20.w2-15.abo.wanadoo.fr. [2.15.159.20])
-        by smtp.gmail.com with ESMTPSA id q4sm11983375wru.65.2020.09.04.08.46.53
+        by smtp.gmail.com with ESMTPSA id q4sm11983375wru.65.2020.09.04.08.46.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2020 08:46:54 -0700 (PDT)
+        Fri, 04 Sep 2020 08:46:55 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -56,9 +56,9 @@ To:     Linus Walleij <linus.walleij@linaro.org>,
 Cc:     linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 20/23] gpio: mockup: add a lock for dummy device list
-Date:   Fri,  4 Sep 2020 17:45:44 +0200
-Message-Id: <20200904154547.3836-21-brgl@bgdev.pl>
+Subject: [PATCH 21/23] gpio: mockup: provide a way to delete dummy chips
+Date:   Fri,  4 Sep 2020 17:45:45 +0200
+Message-Id: <20200904154547.3836-22-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200904154547.3836-1-brgl@bgdev.pl>
 References: <20200904154547.3836-1-brgl@bgdev.pl>
@@ -71,52 +71,109 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-We'll soon add the possibility to create chips dynamically over debugfs
-attributes. Since multiple threads will be able to create devices at
-once: add a mutex to protect the device list.
+Add a new debugfs attribute 'delete_device' to which the chip label can
+be written to dynamically remove the associated dummy device.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- drivers/gpio/gpio-mockup.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpio/gpio-mockup.c | 70 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpio-mockup.c b/drivers/gpio/gpio-mockup.c
-index bc4609e047ef..1353239dc315 100644
+index 1353239dc315..9d2de78a45c2 100644
 --- a/drivers/gpio/gpio-mockup.c
 +++ b/drivers/gpio/gpio-mockup.c
-@@ -517,6 +517,7 @@ struct gpio_mockup_device {
- };
+@@ -19,6 +19,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
+ #include <linux/string_helpers.h>
+ #include <linux/uaccess.h>
  
- static LIST_HEAD(gpio_mockup_devices);
-+static DEFINE_MUTEX(gpio_mockup_devices_lock);
- 
- static void gpio_mockup_unregister_one_device(struct gpio_mockup_device *dev)
- {
-@@ -534,10 +535,14 @@ static void gpio_mockup_unregister_devices(void)
- 	struct gpio_mockup_device *mockup_dev;
- 	struct list_head *curr, *next;
- 
-+	mutex_lock(&gpio_mockup_devices_lock);
-+
- 	list_for_each_safe(curr, next, &gpio_mockup_devices) {
- 		mockup_dev = list_entry(curr, struct gpio_mockup_device, list);
- 		gpio_mockup_unregister_one_device(mockup_dev);
- 	}
-+
-+	mutex_unlock(&gpio_mockup_devices_lock);
- }
- 
- static __init char **gpio_mockup_make_line_names(const char *label,
-@@ -588,7 +593,9 @@ static int __init gpio_mockup_register_device(struct property_entry *properties)
- 		return PTR_ERR(mockup_dev->pdev);
- 	}
- 
-+	mutex_lock(&gpio_mockup_devices_lock);
- 	list_add(&mockup_dev->list, &gpio_mockup_devices);
-+	mutex_unlock(&gpio_mockup_devices_lock);
- 
+@@ -668,14 +669,81 @@ static int __init gpio_mockup_register_chips_from_params(void)
  	return 0;
  }
+ 
+-static int __init gpio_mockup_init(void)
++static ssize_t gpio_mockup_debugfs_delete_device_write(struct file *file,
++						const char __user *usr_buf,
++						size_t size, loff_t *ppos)
+ {
++	struct gpio_mockup_device *mockup_dev;
++	char label[GPIO_MOCKUP_LABEL_SIZE];
++	struct list_head *curr;
++	struct device *dev;
++	const char *prop;
+ 	int ret;
+ 
++	if (*ppos != 0)
++		return -EINVAL;
++
++	ret = getline_from_user(label, sizeof(label), usr_buf, size);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&gpio_mockup_devices_lock);
++
++	list_for_each(curr, &gpio_mockup_devices) {
++		mockup_dev = list_entry(curr, struct gpio_mockup_device, list);
++		dev = &mockup_dev->pdev->dev;
++
++		ret = device_property_read_string(dev, "chip-label", &prop);
++		if (ret) {
++			mutex_unlock(&gpio_mockup_devices_lock);
++			return ret;
++		}
++
++		if (sysfs_streq(label, prop)) {
++			gpio_mockup_unregister_one_device(mockup_dev);
++			mutex_unlock(&gpio_mockup_devices_lock);
++			return size;
++		}
++	}
++
++	mutex_unlock(&gpio_mockup_devices_lock);
++	return -ENODEV;
++}
++
++static const struct file_operations gpio_mockup_debugfs_delete_device_ops = {
++	.owner = THIS_MODULE,
++	.open = gpio_mockup_debugfs_open,
++	.write = gpio_mockup_debugfs_delete_device_write,
++	.llseek = no_llseek,
++	.release = single_release,
++};
++
++static int __init gpio_mockup_debugfs_init(void)
++{
++	struct dentry *entry;
++
+ 	gpio_mockup_dbg_dir = debugfs_create_dir("gpio-mockup", NULL);
+ 	if (IS_ERR(gpio_mockup_dbg_dir))
+ 		return PTR_ERR(gpio_mockup_dbg_dir);
+ 
++	entry = debugfs_create_file("delete_device", 0200, gpio_mockup_dbg_dir,
++				NULL, &gpio_mockup_debugfs_delete_device_ops);
++	if (IS_ERR(entry)) {
++		debugfs_remove_recursive(gpio_mockup_dbg_dir);
++		return PTR_ERR(entry);
++	}
++
++	return 0;
++}
++
++static int __init gpio_mockup_init(void)
++{
++	int ret;
++
++	ret = gpio_mockup_debugfs_init();
++	if (ret)
++		return ret;
++
+ 	ret = platform_driver_register(&gpio_mockup_driver);
+ 	if (ret) {
+ 		pr_err("error registering platform driver\n");
 -- 
 2.26.1
 
