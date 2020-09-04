@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E18B25E013
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 18:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F37BE25DFF1
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 18:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726185AbgIDQpA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Sep 2020 12:45:00 -0400
-Received: from mga14.intel.com ([192.55.52.115]:38205 "EHLO mga14.intel.com"
+        id S1726127AbgIDQmd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Sep 2020 12:42:33 -0400
+Received: from mga09.intel.com ([134.134.136.24]:35198 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726063AbgIDQo6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Sep 2020 12:44:58 -0400
-IronPort-SDR: C0kOaKZJAzfpkUppuJsCOfhyFvUUC7bo254sl40DpHW+D5BsAKEu1E6qG0V/TkK8w+1zCHg+OX
- Ds1sycPYgfKA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9734"; a="157049423"
+        id S1726114AbgIDQmd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Sep 2020 12:42:33 -0400
+IronPort-SDR: zsHWpTHw76YhwTHIcTjrwD9t+M50yx/Ln3nl9fmidxTK4a8pPSrlTV62pP1Q8TpB+rjyfo112R
+ UGKE9BKVgZ0A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9734"; a="158761369"
 X-IronPort-AV: E=Sophos;i="5.76,390,1592895600"; 
-   d="scan'208";a="157049423"
+   d="scan'208";a="158761369"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2020 09:44:57 -0700
-IronPort-SDR: Oie5QzQ0tzzT+nQnAyakUiCrWWpi6nDRX9O5hX6yfVdrWgR8EUWaK6RXggI7xnmxgPq6M8pW+k
- dttV/muhL2dg==
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2020 09:42:32 -0700
+IronPort-SDR: PvX4LY7Nkb09b4U463u7BemUvFEmv3hgydh7vZ0e5/a+jfSg+tQKogm1YsrGJYUS6hJX0ql4/H
+ Zld0GyZTSX/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,390,1592895600"; 
-   d="scan'208";a="332217655"
+   d="scan'208";a="332217227"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 04 Sep 2020 09:44:54 -0700
+  by orsmga008.jf.intel.com with ESMTP; 04 Sep 2020 09:42:29 -0700
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kEEjE-00EKKi-H8; Fri, 04 Sep 2020 19:38:20 +0300
-Date:   Fri, 4 Sep 2020 19:38:20 +0300
+        id 1kEEl5-00EKLZ-Tu; Fri, 04 Sep 2020 19:40:15 +0300
+Date:   Fri, 4 Sep 2020 19:40:15 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
@@ -40,175 +40,195 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH 04/23] gpiolib: generalize devprop_gpiochip_set_names()
- for device properties
-Message-ID: <20200904163820.GX1891694@smile.fi.intel.com>
+Subject: Re: [PATCH 05/23] gpiolib: unexport devprop_gpiochip_set_names()
+Message-ID: <20200904164015.GY1891694@smile.fi.intel.com>
 References: <20200904154547.3836-1-brgl@bgdev.pl>
- <20200904154547.3836-5-brgl@bgdev.pl>
+ <20200904154547.3836-6-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200904154547.3836-5-brgl@bgdev.pl>
+In-Reply-To: <20200904154547.3836-6-brgl@bgdev.pl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 04, 2020 at 05:45:28PM +0200, Bartosz Golaszewski wrote:
+On Fri, Sep 04, 2020 at 05:45:29PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> devprop_gpiochip_set_names() is overly complicated with taking the
-> fwnode argument (which requires using dev_fwnode() & of_fwnode_handle()
-> in ACPI and OF GPIO code respectively). Let's just switch to using the
-> generic device properties.
-> 
-> This allows us to pull the code setting line names directly into
-> gpiochip_add_data_with_key() instead of handling it separately for
-> ACPI and OF.
-> 
+> Now that devprop_gpiochip_set_names() is only used in a single place
+> inside drivers/gpio/gpiolib.c, there's no need anymore for it to be
+> exported or to even live in its own source file. Pull this function into
+> the core source file for gpiolib.
+
+I have mixed feelings about this. We may simply unexport and attach object file
+to gpiolib.o. Would it be expected to see more functions in this file in the
+future?
+
 > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > ---
->  drivers/gpio/gpiolib-acpi.c    |  3 ---
->  drivers/gpio/gpiolib-devprop.c | 19 ++++++++++---------
->  drivers/gpio/gpiolib-of.c      |  5 -----
->  drivers/gpio/gpiolib.c         |  8 ++++----
->  include/linux/gpio/driver.h    |  3 +--
->  5 files changed, 15 insertions(+), 23 deletions(-)
+>  drivers/gpio/Makefile          |  1 -
+>  drivers/gpio/gpiolib-devprop.c | 64 ----------------------------------
+>  drivers/gpio/gpiolib.c         | 48 +++++++++++++++++++++++++
+>  include/linux/gpio/driver.h    |  2 --
+>  4 files changed, 48 insertions(+), 67 deletions(-)
+>  delete mode 100644 drivers/gpio/gpiolib-devprop.c
 > 
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 54ca3c18b291..834a12f3219e 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1221,9 +1221,6 @@ void acpi_gpiochip_add(struct gpio_chip *chip)
->  		return;
->  	}
->  
-> -	if (!chip->names)
-> -		devprop_gpiochip_set_names(chip, dev_fwnode(chip->parent));
-> -
->  	acpi_gpiochip_request_regions(acpi_gpio);
->  	acpi_gpiochip_scan_gpios(acpi_gpio);
->  	acpi_walk_dep_device_list(handle);
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index 4f9abff4f2dc..639275eb4e4d 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -6,7 +6,6 @@ ccflags-$(CONFIG_DEBUG_GPIO)	+= -DDEBUG
+>  obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
+>  obj-$(CONFIG_GPIOLIB)		+= gpiolib-devres.o
+>  obj-$(CONFIG_GPIOLIB)		+= gpiolib-legacy.o
+> -obj-$(CONFIG_GPIOLIB)		+= gpiolib-devprop.o
+>  obj-$(CONFIG_GPIOLIB)		+= gpiolib-cdev.o
+>  obj-$(CONFIG_OF_GPIO)		+= gpiolib-of.o
+>  obj-$(CONFIG_GPIO_SYSFS)	+= gpiolib-sysfs.o
 > diff --git a/drivers/gpio/gpiolib-devprop.c b/drivers/gpio/gpiolib-devprop.c
-> index 26741032fa9e..a28659b4f9c9 100644
+> deleted file mode 100644
+> index a28659b4f9c9..000000000000
 > --- a/drivers/gpio/gpiolib-devprop.c
-> +++ b/drivers/gpio/gpiolib-devprop.c
-> @@ -17,25 +17,24 @@
->  /**
->   * devprop_gpiochip_set_names - Set GPIO line names using device properties
->   * @chip: GPIO chip whose lines should be named, if possible
-> - * @fwnode: Property Node containing the gpio-line-names property
->   *
->   * Looks for device property "gpio-line-names" and if it exists assigns
->   * GPIO line names for the chip. The memory allocated for the assigned
-> - * names belong to the underlying firmware node and should not be released
-> + * names belong to the underlying software node and should not be released
->   * by the caller.
->   */
-> -void devprop_gpiochip_set_names(struct gpio_chip *chip,
-> -				const struct fwnode_handle *fwnode)
-> +int devprop_gpiochip_set_names(struct gpio_chip *chip)
->  {
->  	struct gpio_device *gdev = chip->gpiodev;
-> +	struct device *dev = chip->parent;
->  	const char **names;
->  	int ret, i;
->  	int count;
->  
-> -	count = fwnode_property_read_string_array(fwnode, "gpio-line-names",
-> +	count = device_property_read_string_array(dev, "gpio-line-names",
->  						  NULL, 0);
->  	if (count < 0)
-> -		return;
-> +		return 0;
-
-Can we introduce a followup to 33ee09cd59ce ("device property: Add helpers to
-count items in an array") for strings?
-
->  	if (count > gdev->ngpio) {
->  		dev_warn(&gdev->dev, "gpio-line-names is length %d but should be at most length %d",
-> @@ -45,19 +44,21 @@ void devprop_gpiochip_set_names(struct gpio_chip *chip,
->  
->  	names = kcalloc(count, sizeof(*names), GFP_KERNEL);
->  	if (!names)
-> -		return;
-> +		return -ENOMEM;
->  
-> -	ret = fwnode_property_read_string_array(fwnode, "gpio-line-names",
-> +	ret = device_property_read_string_array(dev, "gpio-line-names",
->  						names, count);
->  	if (ret < 0) {
->  		dev_warn(&gdev->dev, "failed to read GPIO line names\n");
->  		kfree(names);
-> -		return;
-> +		return ret;
->  	}
->  
->  	for (i = 0; i < count; i++)
->  		gdev->descs[i].name = names[i];
->  
->  	kfree(names);
-> +
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(devprop_gpiochip_set_names);
-> diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-> index bd31dd3b6a75..2f895a2b8411 100644
-> --- a/drivers/gpio/gpiolib-of.c
-> +++ b/drivers/gpio/gpiolib-of.c
-> @@ -1026,11 +1026,6 @@ int of_gpiochip_add(struct gpio_chip *chip)
->  	if (ret)
->  		return ret;
->  
-> -	/* If the chip defines names itself, these take precedence */
-> -	if (!chip->names)
-> -		devprop_gpiochip_set_names(chip,
-> -					   of_fwnode_handle(chip->of_node));
+> +++ /dev/null
+> @@ -1,64 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -/*
+> - * Device property helpers for GPIO chips.
+> - *
+> - * Copyright (C) 2016, Intel Corporation
+> - * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
+> - */
 > -
->  	of_node_get(chip->of_node);
->  
->  	ret = of_gpiochip_scan_gpios(chip);
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 80137c1b3cdc..0d390f0ec32c 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -340,9 +340,6 @@ static int gpiochip_set_desc_names(struct gpio_chip *gc)
->  	struct gpio_device *gdev = gc->gpiodev;
->  	int i;
->  
-> -	if (!gc->names)
+> -#include <linux/property.h>
+> -#include <linux/slab.h>
+> -#include <linux/gpio/consumer.h>
+> -#include <linux/gpio/driver.h>
+> -#include <linux/export.h>
+> -
+> -#include "gpiolib.h"
+> -
+> -/**
+> - * devprop_gpiochip_set_names - Set GPIO line names using device properties
+> - * @chip: GPIO chip whose lines should be named, if possible
+> - *
+> - * Looks for device property "gpio-line-names" and if it exists assigns
+> - * GPIO line names for the chip. The memory allocated for the assigned
+> - * names belong to the underlying software node and should not be released
+> - * by the caller.
+> - */
+> -int devprop_gpiochip_set_names(struct gpio_chip *chip)
+> -{
+> -	struct gpio_device *gdev = chip->gpiodev;
+> -	struct device *dev = chip->parent;
+> -	const char **names;
+> -	int ret, i;
+> -	int count;
+> -
+> -	count = device_property_read_string_array(dev, "gpio-line-names",
+> -						  NULL, 0);
+> -	if (count < 0)
 > -		return 0;
 > -
->  	/* First check all names if they are unique */
->  	for (i = 0; i != gc->ngpio; ++i) {
->  		struct gpio_desc *gpio;
-> @@ -621,7 +618,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
->  	INIT_LIST_HEAD(&gdev->pin_ranges);
->  #endif
+> -	if (count > gdev->ngpio) {
+> -		dev_warn(&gdev->dev, "gpio-line-names is length %d but should be at most length %d",
+> -			 count, gdev->ngpio);
+> -		count = gdev->ngpio;
+> -	}
+> -
+> -	names = kcalloc(count, sizeof(*names), GFP_KERNEL);
+> -	if (!names)
+> -		return -ENOMEM;
+> -
+> -	ret = device_property_read_string_array(dev, "gpio-line-names",
+> -						names, count);
+> -	if (ret < 0) {
+> -		dev_warn(&gdev->dev, "failed to read GPIO line names\n");
+> -		kfree(names);
+> -		return ret;
+> -	}
+> -
+> -	for (i = 0; i < count; i++)
+> -		gdev->descs[i].name = names[i];
+> -
+> -	kfree(names);
+> -
+> -	return 0;
+> -}
+> -EXPORT_SYMBOL_GPL(devprop_gpiochip_set_names);
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 0d390f0ec32c..15c99cf560ee 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -358,6 +358,54 @@ static int gpiochip_set_desc_names(struct gpio_chip *gc)
+>  	return 0;
+>  }
 >  
-> -	ret = gpiochip_set_desc_names(gc);
-> +	if (gc->names)
-> +		ret = gpiochip_set_desc_names(gc);
-> +	else
-> +		ret = devprop_gpiochip_set_names(gc);
->  	if (ret)
->  		goto err_remove_from_list;
->  
+> +/*
+> + * devprop_gpiochip_set_names - Set GPIO line names using device properties
+> + * @chip: GPIO chip whose lines should be named, if possible
+> + *
+> + * Looks for device property "gpio-line-names" and if it exists assigns
+> + * GPIO line names for the chip. The memory allocated for the assigned
+> + * names belong to the underlying software node and should not be released
+> + * by the caller.
+> + */
+> +static int devprop_gpiochip_set_names(struct gpio_chip *chip)
+> +{
+> +	struct gpio_device *gdev = chip->gpiodev;
+> +	struct device *dev = chip->parent;
+> +	const char **names;
+> +	int ret, i;
+> +	int count;
+> +
+> +	count = device_property_read_string_array(dev, "gpio-line-names",
+> +						  NULL, 0);
+> +	if (count < 0)
+> +		return 0;
+> +
+> +	if (count > gdev->ngpio) {
+> +		dev_warn(&gdev->dev, "gpio-line-names is length %d but should be at most length %d",
+> +			 count, gdev->ngpio);
+> +		count = gdev->ngpio;
+> +	}
+> +
+> +	names = kcalloc(count, sizeof(*names), GFP_KERNEL);
+> +	if (!names)
+> +		return -ENOMEM;
+> +
+> +	ret = device_property_read_string_array(dev, "gpio-line-names",
+> +						names, count);
+> +	if (ret < 0) {
+> +		dev_warn(&gdev->dev, "failed to read GPIO line names\n");
+> +		kfree(names);
+> +		return ret;
+> +	}
+> +
+> +	for (i = 0; i < count; i++)
+> +		gdev->descs[i].name = names[i];
+> +
+> +	kfree(names);
+> +
+> +	return 0;
+> +}
+> +
+>  static unsigned long *gpiochip_allocate_mask(struct gpio_chip *gc)
+>  {
+>  	unsigned long *p;
 > diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-> index d1cef5c2715c..56485a040b82 100644
+> index 56485a040b82..4a7e295c3640 100644
 > --- a/include/linux/gpio/driver.h
 > +++ b/include/linux/gpio/driver.h
-> @@ -756,8 +756,7 @@ struct gpio_desc *gpiochip_request_own_desc(struct gpio_chip *gc,
+> @@ -756,8 +756,6 @@ struct gpio_desc *gpiochip_request_own_desc(struct gpio_chip *gc,
 >  					    enum gpiod_flags dflags);
 >  void gpiochip_free_own_desc(struct gpio_desc *desc);
 >  
-> -void devprop_gpiochip_set_names(struct gpio_chip *gc,
-> -				const struct fwnode_handle *fwnode);
-> +int devprop_gpiochip_set_names(struct gpio_chip *gc);
->  
+> -int devprop_gpiochip_set_names(struct gpio_chip *gc);
+> -
 >  #ifdef CONFIG_GPIOLIB
 >  
+>  /* lock/unlock as IRQ */
 > -- 
 > 2.26.1
 > 
