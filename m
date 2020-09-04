@@ -2,98 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D846125E077
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 19:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE3125E08E
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Sep 2020 19:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726220AbgIDRAm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Sep 2020 13:00:42 -0400
-Received: from mga04.intel.com ([192.55.52.120]:53983 "EHLO mga04.intel.com"
+        id S1726658AbgIDRIq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Sep 2020 13:08:46 -0400
+Received: from foss.arm.com ([217.140.110.172]:54094 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725966AbgIDRAk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Sep 2020 13:00:40 -0400
-IronPort-SDR: 0f4189Bqs76H/HtoA8a7SQJYigg/cIqJzGCbf+0qsW4Nd9AphfxEuyVkrJG1du6ICq3dGafsFW
- 2CiJinTMFLOQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9734"; a="155190475"
-X-IronPort-AV: E=Sophos;i="5.76,390,1592895600"; 
-   d="scan'208";a="155190475"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2020 10:00:40 -0700
-IronPort-SDR: rejMaLGQY5hJ5pm1MW8zL5Nf/fl0eduSCfu+YhdKnsYihNxJm05y7VuBf7ivawSv6T+gsfB+ed
- ZN9/yeM38S8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,390,1592895600"; 
-   d="scan'208";a="332221735"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 04 Sep 2020 10:00:31 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kEF4e-00EKYW-Kj; Fri, 04 Sep 2020 20:00:28 +0300
-Date:   Fri, 4 Sep 2020 20:00:28 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH 10/23] gpio: mockup: fix resource leak in error path
-Message-ID: <20200904170028.GG1891694@smile.fi.intel.com>
-References: <20200904154547.3836-1-brgl@bgdev.pl>
- <20200904154547.3836-11-brgl@bgdev.pl>
+        id S1725966AbgIDRIp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Sep 2020 13:08:45 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCB621045;
+        Fri,  4 Sep 2020 10:08:44 -0700 (PDT)
+Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.28.62])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B9D393F66F;
+        Fri,  4 Sep 2020 10:08:44 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     tn@semihalf.com, bhelgaas@google.com, lorenzo.pieralisi@arm.com,
+        steven.price@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        sudeep.holla@arm.com, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH] PCI/ACPI: Suppress missing MCFG message
+Date:   Fri,  4 Sep 2020 12:08:29 -0500
+Message-Id: <20200904170829.431900-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200904154547.3836-11-brgl@bgdev.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 04, 2020 at 05:45:34PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> If the module init function fails after creating the debugs directory,
-> it's never removed. Add proper cleanup calls to avoid this resource
-> leak.
+MCFG is an optional ACPI table. Given there are machines
+without PCI(e) (or it is hidden) we have been receiving
+queries/complaints about what this message means given
+its being presented as an error.
 
-Does it fix existing bug?
+Lets only print an error if something is wrong with the
+the given table/etc. The ACPI table list printed at boot
+will continue to provide a way to detect when the table
+is missing.
 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> ---
->  drivers/gpio/gpio-mockup.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpio/gpio-mockup.c b/drivers/gpio/gpio-mockup.c
-> index 78c97f7b6893..19c092f814fd 100644
-> --- a/drivers/gpio/gpio-mockup.c
-> +++ b/drivers/gpio/gpio-mockup.c
-> @@ -550,6 +550,7 @@ static int __init gpio_mockup_init(void)
->  	err = platform_driver_register(&gpio_mockup_driver);
->  	if (err) {
->  		pr_err("error registering platform driver\n");
-> +		debugfs_remove_recursive(gpio_mockup_dbg_dir);
->  		return err;
->  	}
->  
-> @@ -580,6 +581,7 @@ static int __init gpio_mockup_init(void)
->  			pr_err("error registering device");
->  			platform_driver_unregister(&gpio_mockup_driver);
->  			gpio_mockup_unregister_pdevs();
-> +			debugfs_remove_recursive(gpio_mockup_dbg_dir);
->  			return PTR_ERR(pdev);
->  		}
->  
-> -- 
-> 2.26.1
-> 
+Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+---
+ drivers/acpi/pci_mcfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+index 54b36b7ad47d..0bc8c012f157 100644
+--- a/drivers/acpi/pci_mcfg.c
++++ b/drivers/acpi/pci_mcfg.c
+@@ -279,6 +279,6 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
+ void __init pci_mmcfg_late_init(void)
+ {
+ 	int err = acpi_table_parse(ACPI_SIG_MCFG, pci_mcfg_parse);
+-	if (err)
++	if (err && err != -ENODEV)
+ 		pr_err("Failed to parse MCFG (%d)\n", err);
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.4
 
