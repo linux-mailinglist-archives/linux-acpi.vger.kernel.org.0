@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9CE25E93F
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Sep 2020 19:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA3825E9BF
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Sep 2020 20:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726590AbgIERQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Sep 2020 13:16:33 -0400
-Received: from mga05.intel.com ([192.55.52.43]:21714 "EHLO mga05.intel.com"
+        id S1728393AbgIESkm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Sep 2020 14:40:42 -0400
+Received: from mga17.intel.com ([192.55.52.151]:60124 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726568AbgIERQb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 5 Sep 2020 13:16:31 -0400
-IronPort-SDR: t6OT2PH4HzCFBSwXNsmnX+7SC31Qex2nwJGWzfbFCWMGOMVHvS0VOPybrr3ZUySEDcgWvY/Mbu
- gcBNGndM83UA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9735"; a="242686992"
-X-IronPort-AV: E=Sophos;i="5.76,394,1592895600"; 
-   d="gz'50?scan'50,208,50";a="242686992"
+        id S1728423AbgIESkm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 5 Sep 2020 14:40:42 -0400
+IronPort-SDR: BvGM5cm0F9zxJ1DTnybSrDw20ZaubXBiIRAGnCL7GNvSYbIfJrGyXpXj7ikrxlI4pP9XMbMWEP
+ SdFYyqkAqFew==
+X-IronPort-AV: E=McAfee;i="6000,8403,9735"; a="137923387"
+X-IronPort-AV: E=Sophos;i="5.76,395,1592895600"; 
+   d="gz'50?scan'50,208,50";a="137923387"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2020 10:15:22 -0700
-IronPort-SDR: Mvti3ZBb1ZLV0A/0obn9kdDqyUGN/m1LQ+Cvx9Vz5kklBa7/Ej3PWOA7hXCfDpHppfPY81bUH3
- XY8fHUoIOjdw==
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2020 11:34:15 -0700
+IronPort-SDR: SV4qmeeLCPvQEgnuzSeLpMVpTGkBk00/CjlfONVWNMGX7LyAxwIz0xNUGWQu30Pe4/+8fizZ4V
+ X/Y6EJ7itqFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,394,1592895600"; 
-   d="gz'50?scan'50,208,50";a="503370157"
+X-IronPort-AV: E=Sophos;i="5.76,395,1592895600"; 
+   d="gz'50?scan'50,208,50";a="316324141"
 Received: from lkp-server01.sh.intel.com (HELO 4b5d6de90563) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 05 Sep 2020 10:15:20 -0700
+  by orsmga002.jf.intel.com with ESMTP; 05 Sep 2020 11:34:12 -0700
 Received: from kbuild by 4b5d6de90563 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1kEbmZ-00000P-Kn; Sat, 05 Sep 2020 17:15:19 +0000
-Date:   Sun, 6 Sep 2020 01:15:04 +0800
+        id 1kEd0t-000026-RN; Sat, 05 Sep 2020 18:34:11 +0000
+Date:   Sun, 6 Sep 2020 02:33:46 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
         devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [pm:acpica-osl 5/6] drivers/acpi/osl.c:1756:20: sparse: sparse:
+Subject: [pm:acpica-osl 6/6] drivers/acpi/osl.c:1748:46: sparse: sparse:
  incorrect type in assignment (different address spaces)
-Message-ID: <202009060155.IPQz8yCe%lkp@intel.com>
+Message-ID: <202009060245.jmydrp7B%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="KsGdsel6WgEHnImy"
+Content-Type: multipart/mixed; boundary="PNTmBPCT7hxwcZjr"
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
@@ -49,19 +49,19 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---KsGdsel6WgEHnImy
+--PNTmBPCT7hxwcZjr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpica-osl
 head:   c32c3c4079f8a62616413abbead45b6622fb7602
-commit: 39192732c7bbd4e54968acde6fb8dd999246aef9 [5/6] ACPI: OSL: Change the type of acpi_os_map_generic_address() return value
+commit: c32c3c4079f8a62616413abbead45b6622fb7602 [6/6] ACPI: OSL: Make ACPICA use logical addresses of GPE blocks
 config: x86_64-randconfig-s022-20200904 (attached as .config)
 compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
 reproduce:
         # apt-get install sparse
         # sparse version: v0.6.2-191-g10164920-dirty
-        git checkout 39192732c7bbd4e54968acde6fb8dd999246aef9
+        git checkout c32c3c4079f8a62616413abbead45b6622fb7602
         # save the attached .config to linux build tree
         make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=x86_64 
 
@@ -72,58 +72,62 @@ Reported-by: kernel test robot <lkp@intel.com>
 sparse warnings: (new ones prefixed by >>)
 
    drivers/acpi/osl.c:376:17: sparse: sparse: cast removes address space '__iomem' of expression
->> drivers/acpi/osl.c:1756:20: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void *rv @@     got void [noderef] __iomem * @@
->> drivers/acpi/osl.c:1756:20: sparse:     expected void *rv
->> drivers/acpi/osl.c:1756:20: sparse:     got void [noderef] __iomem *
+>> drivers/acpi/osl.c:1748:46: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void *extern [addressable] [toplevel] acpi_gbl_xgpe0_block_logical_address @@     got void [noderef] __iomem * @@
+>> drivers/acpi/osl.c:1748:46: sparse:     expected void *extern [addressable] [toplevel] acpi_gbl_xgpe0_block_logical_address
+   drivers/acpi/osl.c:1748:46: sparse:     got void [noderef] __iomem *
+>> drivers/acpi/osl.c:1750:46: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void *extern [addressable] [toplevel] acpi_gbl_xgpe1_block_logical_address @@     got void [noderef] __iomem * @@
+>> drivers/acpi/osl.c:1750:46: sparse:     expected void *extern [addressable] [toplevel] acpi_gbl_xgpe1_block_logical_address
+   drivers/acpi/osl.c:1750:46: sparse:     got void [noderef] __iomem *
+   drivers/acpi/osl.c:1760:20: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void *rv @@     got void [noderef] __iomem * @@
+   drivers/acpi/osl.c:1760:20: sparse:     expected void *rv
+   drivers/acpi/osl.c:1760:20: sparse:     got void [noderef] __iomem *
    drivers/acpi/osl.c:708:1: sparse: sparse: context imbalance in 'acpi_os_read_memory' - wrong count at exit
    drivers/acpi/osl.c:741:1: sparse: sparse: context imbalance in 'acpi_os_write_memory' - wrong count at exit
 
-# https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=39192732c7bbd4e54968acde6fb8dd999246aef9
+# https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=c32c3c4079f8a62616413abbead45b6622fb7602
 git remote add pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
 git fetch --no-tags pm acpica-osl
-git checkout 39192732c7bbd4e54968acde6fb8dd999246aef9
-vim +1756 drivers/acpi/osl.c
+git checkout c32c3c4079f8a62616413abbead45b6622fb7602
+vim +1748 drivers/acpi/osl.c
 
-4dde507fc19844 Lv Zheng          2014-02-11  1742  
-d362edaf5386ac Myron Stowe       2010-10-21  1743  acpi_status __init acpi_os_initialize(void)
-d362edaf5386ac Myron Stowe       2010-10-21  1744  {
-d362edaf5386ac Myron Stowe       2010-10-21  1745  	acpi_os_map_generic_address(&acpi_gbl_FADT.xpm1a_event_block);
-d362edaf5386ac Myron Stowe       2010-10-21  1746  	acpi_os_map_generic_address(&acpi_gbl_FADT.xpm1b_event_block);
-d362edaf5386ac Myron Stowe       2010-10-21  1747  	acpi_os_map_generic_address(&acpi_gbl_FADT.xgpe0_block);
-d362edaf5386ac Myron Stowe       2010-10-21  1748  	acpi_os_map_generic_address(&acpi_gbl_FADT.xgpe1_block);
-a4714a898e8520 Randy Wright      2014-06-04  1749  	if (acpi_gbl_FADT.flags & ACPI_FADT_RESET_REGISTER) {
-a4714a898e8520 Randy Wright      2014-06-04  1750  		/*
-a4714a898e8520 Randy Wright      2014-06-04  1751  		 * Use acpi_os_map_generic_address to pre-map the reset
-a4714a898e8520 Randy Wright      2014-06-04  1752  		 * register if it's in system memory.
-a4714a898e8520 Randy Wright      2014-06-04  1753  		 */
-39192732c7bbd4 Rafael J. Wysocki 2020-09-04  1754  		void *rv;
-a4714a898e8520 Randy Wright      2014-06-04  1755  
-a4714a898e8520 Randy Wright      2014-06-04 @1756  		rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
-39192732c7bbd4 Rafael J. Wysocki 2020-09-04  1757  		pr_debug(PREFIX "%s: map reset_reg %s\n", __func__,
-39192732c7bbd4 Rafael J. Wysocki 2020-09-04  1758  			 rv ? "successful" : "failed");
-a4714a898e8520 Randy Wright      2014-06-04  1759  	}
-7901a052a98169 Lv Zheng          2015-08-05  1760  	acpi_os_initialized = true;
-d362edaf5386ac Myron Stowe       2010-10-21  1761  
-d362edaf5386ac Myron Stowe       2010-10-21  1762  	return AE_OK;
-d362edaf5386ac Myron Stowe       2010-10-21  1763  }
-d362edaf5386ac Myron Stowe       2010-10-21  1764  
-
-:::::: The code at line 1756 was first introduced by commit
-:::::: a4714a898e85205e1118ec923cde43d88eb105f6 ACPI: Fix bug when ACPI reset register is implemented in system memory
-
-:::::: TO: Randy Wright <rwright@hp.com>
-:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  1742	
+  1743	acpi_status __init acpi_os_initialize(void)
+  1744	{
+  1745		acpi_os_map_generic_address(&acpi_gbl_FADT.xpm1a_event_block);
+  1746		acpi_os_map_generic_address(&acpi_gbl_FADT.xpm1b_event_block);
+  1747	
+> 1748		acpi_gbl_xgpe0_block_logical_address =
+  1749			acpi_os_map_generic_address(&acpi_gbl_FADT.xgpe0_block);
+> 1750		acpi_gbl_xgpe1_block_logical_address =
+  1751			acpi_os_map_generic_address(&acpi_gbl_FADT.xgpe1_block);
+  1752	
+  1753		if (acpi_gbl_FADT.flags & ACPI_FADT_RESET_REGISTER) {
+  1754			/*
+  1755			 * Use acpi_os_map_generic_address to pre-map the reset
+  1756			 * register if it's in system memory.
+  1757			 */
+  1758			void *rv;
+  1759	
+  1760			rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
+  1761			pr_debug(PREFIX "%s: map reset_reg %s\n", __func__,
+  1762				 rv ? "successful" : "failed");
+  1763		}
+  1764		acpi_os_initialized = true;
+  1765	
+  1766		return AE_OK;
+  1767	}
+  1768	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---KsGdsel6WgEHnImy
+--PNTmBPCT7hxwcZjr
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICM+qU18AAy5jb25maWcAjBzLctw28p6vmHIuycFZSbZVdm3pAJLgDDIkQQPgPHRhKfLY
+H4sICL/NU18AAy5jb25maWcAjBzLctw28p6vmHIuycFZSbZVdm3pAJLgDDIkQQPgPHRhKfLY
 q4oseUfSJv777Qb4AMDmxD4kmu7Gu99o8Oeffl6wl+fHrzfPd7c39/ffF18OD4fjzfPh0+Lz
 3f3h34tMLippFjwT5jcgLu4eXv7+19/vL9vLt4t3v3347ez18fbNYn04PhzuF+njw+e7Ly/Q
 /u7x4aeff0pllYtlm6bthistZNUavjNXr77c3r7+sPglO/xxd/Ow+PDbG+jm/N2v7q9XXjOh
@@ -912,4 +916,4 @@ n1LSRFb6wEwxlXh71veetNXpU2mqiefEM8v5nGGNsZK+ogxMBMDDGbaTq7jU+MtYflWWMYnG
 IDeQGUnQOCu7UjkCkzZaTSXPoVsp65UX34fvWArK0nskMFz8XoS7DFktep0STQEL8+XGg2sc
 hLfqryn/D3Ql2p4LnwIA
 
---KsGdsel6WgEHnImy--
+--PNTmBPCT7hxwcZjr--
