@@ -2,100 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F3B25FBC2
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 16:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F7825FBC7
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 16:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729686AbgIGN7X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 09:59:23 -0400
-Received: from mga17.intel.com ([192.55.52.151]:17440 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729737AbgIGN6j (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 09:58:39 -0400
-IronPort-SDR: SfXoc7dekxvqbu0+HKa/YE/cHnMBv5Sk6mkn8FdVSB0zXmRcOYzuiBgoQsLBxGmdQMI6fhf+TZ
- yeW3G5SjxCSQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="138056022"
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="138056022"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 06:57:46 -0700
-IronPort-SDR: 9lV4QN28J06vuCZM0JBOhn7poaup93Ol+rQNf4XopgMB8QmeR03NGNXT9I0t4pGhG4CdcQd/NS
- D34JYUodsZrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="406845165"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Sep 2020 06:57:44 -0700
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        linux-acpi@vger.kernel.org,
-        Utkarsh Patel <utkarsh.h.patel@intel.com>
-Subject: [PATCH 2/2] usb: typec: intel_pmc_mux: Do not configure SBU and HSL Orientation in Alternate modes
-Date:   Mon,  7 Sep 2020 16:57:40 +0300
-Message-Id: <20200907135740.19941-3-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200907135740.19941-1-heikki.krogerus@linux.intel.com>
-References: <20200907135740.19941-1-heikki.krogerus@linux.intel.com>
+        id S1729766AbgIGOFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 10:05:52 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:58586 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729596AbgIGOFS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Sep 2020 10:05:18 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 7246235698C99C02FCBB;
+        Mon,  7 Sep 2020 22:05:01 +0800 (CST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 7 Sep 2020 22:04:53 +0800
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        "Sean V Kelley" <sean.v.kelley@linux.intel.com>,
+        <linux-api@vger.kernel.org>, "Hanjun Guo" <guohanjun@huawei.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v10 1/6] ACPI: Support Generic Initiator only domains
+Date:   Mon, 7 Sep 2020 22:03:02 +0800
+Message-ID: <20200907140307.571932-2-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20200907140307.571932-1-Jonathan.Cameron@huawei.com>
+References: <20200907140307.571932-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.123.41.22]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Utkarsh Patel <utkarsh.h.patel@intel.com>
+Generic Initiators are a new ACPI concept that allows for the
+description of proximity domains that contain a device which
+performs memory access (such as a network card) but neither
+host CPU nor Memory.
 
-According to the PMC Type C Subsystem (TCSS) Mux programming guide rev
-0.7, bits 4 and 5 are reserved in Alternate modes.
-SBU Orientation and HSL Orientation needs to be configured only during
-initial cable detection in USB connect flow based on device property of
-"sbu-orientation" and "hsl-orientation".
-Configuring these reserved bits in the Alternate modes may result in delay
-in display link training or some unexpected behaviour.
-So do not configure them while issuing Alternate Mode requests.
+This patch has the parsing code and provides the infrastructure
+for an architecture to associate these new domains with their
+nearest memory processing node.
 
-Fixes: ff4a30d5e243 ("usb: typec: mux: intel_pmc_mux: Support for static SBU/HSL orientation")
-Signed-off-by: Utkarsh Patel <utkarsh.h.patel@intel.com>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/usb/typec/mux/intel_pmc_mux.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/acpi/numa/srat.c | 69 +++++++++++++++++++++++++++++++++++++++-
+ drivers/base/node.c      |  3 ++
+ include/linux/nodemask.h |  1 +
+ 3 files changed, 72 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
-index 802d443b367c6..3bc08847fb7f0 100644
---- a/drivers/usb/typec/mux/intel_pmc_mux.c
-+++ b/drivers/usb/typec/mux/intel_pmc_mux.c
-@@ -61,8 +61,6 @@ enum {
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 15bbaab8500b..d27e8585132d 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -130,6 +130,36 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
+ 		}
+ 		break;
  
- #define PMC_USB_ALTMODE_ORI_SHIFT	1
- #define PMC_USB_ALTMODE_UFP_SHIFT	3
--#define PMC_USB_ALTMODE_ORI_AUX_SHIFT	4
--#define PMC_USB_ALTMODE_ORI_HSL_SHIFT	5
++	case ACPI_SRAT_TYPE_GENERIC_AFFINITY:
++	{
++		struct acpi_srat_generic_affinity *p =
++			(struct acpi_srat_generic_affinity *)header;
++
++		if (p->device_handle_type == 0) {
++			/*
++			 * For pci devices this may be the only place they
++			 * are assigned a proximity domain
++			 */
++			pr_debug("SRAT Generic Initiator(Seg:%u BDF:%u) in proximity domain %d %s\n",
++				 *(u16 *)(&p->device_handle[0]),
++				 *(u16 *)(&p->device_handle[2]),
++				 p->proximity_domain,
++				 (p->flags & ACPI_SRAT_GENERIC_AFFINITY_ENABLED) ?
++				"enabled" : "disabled");
++		} else {
++			/*
++			 * In this case we can rely on the device having a
++			 * proximity domain reference
++			 */
++			pr_debug("SRAT Generic Initiator(HID=%.8s UID=%.4s) in proximity domain %d %s\n",
++				(char *)(&p->device_handle[0]),
++				(char *)(&p->device_handle[8]),
++				p->proximity_domain,
++				(p->flags & ACPI_SRAT_GENERIC_AFFINITY_ENABLED) ?
++				"enabled" : "disabled");
++		}
++	}
++	break;
+ 	default:
+ 		pr_warn("Found unsupported SRAT entry (type = 0x%x)\n",
+ 			header->type);
+@@ -332,6 +362,41 @@ acpi_parse_gicc_affinity(union acpi_subtable_headers *header,
+ 	return 0;
+ }
  
- /* DP specific Mode Data bits */
- #define PMC_USB_ALTMODE_DP_MODE_SHIFT	8
-@@ -178,9 +176,6 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
- 	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
- 	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
++#if defined(CONFIG_X86) || defined(CONFIG_ARM64)
++static int __init
++acpi_parse_gi_affinity(union acpi_subtable_headers *header,
++		       const unsigned long end)
++{
++	struct acpi_srat_generic_affinity *gi_affinity;
++	int node;
++
++	gi_affinity = (struct acpi_srat_generic_affinity *)header;
++	if (!gi_affinity)
++		return -EINVAL;
++	acpi_table_print_srat_entry(&header->common);
++
++	if (!(gi_affinity->flags & ACPI_SRAT_GENERIC_AFFINITY_ENABLED))
++		return -EINVAL;
++
++	node = acpi_map_pxm_to_node(gi_affinity->proximity_domain);
++	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
++		pr_err("SRAT: Too many proximity domains.\n");
++		return -EINVAL;
++	}
++	node_set(node, numa_nodes_parsed);
++	node_set_state(node, N_GENERIC_INITIATOR);
++
++	return 0;
++}
++#else
++static int __init
++acpi_parse_gi_affinity(union acpi_subtable_headers *header,
++		       const unsigned long end)
++{
++	return 0;
++}
++#endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
++
+ static int __initdata parsed_numa_memblks;
  
--	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
--	req.mode_data |= hsl_orientation(port) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
--
- 	req.mode_data |= (state->mode - TYPEC_STATE_MODAL) <<
- 			 PMC_USB_ALTMODE_DP_MODE_SHIFT;
+ static int __init
+@@ -385,7 +450,7 @@ int __init acpi_numa_init(void)
  
-@@ -208,9 +203,6 @@ pmc_usb_mux_tbt(struct pmc_usb_port *port, struct typec_mux_state *state)
- 	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
- 	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
+ 	/* SRAT: System Resource Affinity Table */
+ 	if (!acpi_table_parse(ACPI_SIG_SRAT, acpi_parse_srat)) {
+-		struct acpi_subtable_proc srat_proc[3];
++		struct acpi_subtable_proc srat_proc[4];
  
--	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
--	req.mode_data |= hsl_orientation(port) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
--
- 	if (TBT_ADAPTER(data->device_mode) == TBT_ADAPTER_TBT3)
- 		req.mode_data |= PMC_USB_ALTMODE_TBT_TYPE;
+ 		memset(srat_proc, 0, sizeof(srat_proc));
+ 		srat_proc[0].id = ACPI_SRAT_TYPE_CPU_AFFINITY;
+@@ -394,6 +459,8 @@ int __init acpi_numa_init(void)
+ 		srat_proc[1].handler = acpi_parse_x2apic_affinity;
+ 		srat_proc[2].id = ACPI_SRAT_TYPE_GICC_AFFINITY;
+ 		srat_proc[2].handler = acpi_parse_gicc_affinity;
++		srat_proc[3].id = ACPI_SRAT_TYPE_GENERIC_AFFINITY;
++		srat_proc[3].handler = acpi_parse_gi_affinity;
+ 
+ 		acpi_table_parse_entries_array(ACPI_SIG_SRAT,
+ 					sizeof(struct acpi_table_srat),
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 508b80f6329b..53383f1f683c 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -980,6 +980,8 @@ static struct node_attr node_state_attr[] = {
+ #endif
+ 	[N_MEMORY] = _NODE_ATTR(has_memory, N_MEMORY),
+ 	[N_CPU] = _NODE_ATTR(has_cpu, N_CPU),
++	[N_GENERIC_INITIATOR] = _NODE_ATTR(has_generic_initiator,
++					   N_GENERIC_INITIATOR),
+ };
+ 
+ static struct attribute *node_state_attrs[] = {
+@@ -991,6 +993,7 @@ static struct attribute *node_state_attrs[] = {
+ #endif
+ 	&node_state_attr[N_MEMORY].attr.attr,
+ 	&node_state_attr[N_CPU].attr.attr,
++	&node_state_attr[N_GENERIC_INITIATOR].attr.attr,
+ 	NULL
+ };
+ 
+diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+index 27e7fa36f707..3334ce056335 100644
+--- a/include/linux/nodemask.h
++++ b/include/linux/nodemask.h
+@@ -399,6 +399,7 @@ enum node_states {
+ #endif
+ 	N_MEMORY,		/* The node has memory(regular, high, movable) */
+ 	N_CPU,		/* The node has one or more cpus */
++	N_GENERIC_INITIATOR,	/* The node has one or more Generic Initiators */
+ 	NR_NODE_STATES
+ };
  
 -- 
-2.28.0
+2.19.1
 
