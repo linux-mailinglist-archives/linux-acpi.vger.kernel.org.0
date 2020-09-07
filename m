@@ -2,80 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB0625FBEF
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 16:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD04325FD1C
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 17:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729789AbgIGORZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 10:17:25 -0400
-Received: from mga11.intel.com ([192.55.52.93]:21425 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729766AbgIGOPX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 10:15:23 -0400
-IronPort-SDR: 80OO6qyAYlM07BBN9nVww29WgTZLQgaS5/U26qdFzZhOQQH+FHUddWIPOUjV+iViNqcFQ6w/Dx
- 1DW8FUNTSOAw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="155503772"
-X-IronPort-AV: E=Sophos;i="5.76,402,1592895600"; 
-   d="scan'208";a="155503772"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 07:15:22 -0700
-IronPort-SDR: 8fCr++0gNuXQBoqnbD7voikm+NUSjzSAx6hZgsxSHFKfQwiMaUNzp82a8X1/7DitaunNYteeQX
- vBGJ9T0HRo7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,402,1592895600"; 
-   d="scan'208";a="406849470"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 07 Sep 2020 07:15:20 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 07 Sep 2020 17:15:19 +0300
-Date:   Mon, 7 Sep 2020 17:15:19 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        linux-acpi@vger.kernel.org,
-        Utkarsh Patel <utkarsh.h.patel@intel.com>
-Subject: Re: [PATCH 2/2] usb: typec: intel_pmc_mux: Do not configure SBU and
- HSL Orientation in Alternate modes
-Message-ID: <20200907141519.GC3101050@kuha.fi.intel.com>
-References: <20200907135740.19941-1-heikki.krogerus@linux.intel.com>
- <20200907135740.19941-3-heikki.krogerus@linux.intel.com>
- <20200907141058.GA3720524@kroah.com>
+        id S1730193AbgIGP3D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 11:29:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730060AbgIGPPM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 11:15:12 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08740C0613ED
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 08:15:10 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id e23so18656271eja.3
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 08:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iCA0F/2SnnESSDI4EBT00k34dz77kYR2spCZaIF2uHY=;
+        b=su5o8fbyLOAaM8fgU+7htLf0ioeMDDxB5U7fu0pBeX1RsoTpb/1cOIek0DB/bkQsSe
+         OGOsu2MN9t/TvW2JalBS0/NCCta2ULcJbyAHpcv+hLGeiyMC9kZeGA+ZYT1ey2wBje4C
+         Fm4VCplStpeCef/cIw8oAeFLYSCR9RzsurKfZOw97nq1dSv43B1+AJ8U9WxP4U7YVRUZ
+         hgBPd5GG5Q1Epl0QxB2Ni8oYpQrTRMGHVa0lwQ4Wl/ZnBDU7GSYjG762YjRVvS7d9mNJ
+         CamhaXcst7pcZU/7wyB5C69hediUKLLRnHDNXSUs5EamIpEVI0J4UmUQ+TXPZIkcGoK6
+         f1iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iCA0F/2SnnESSDI4EBT00k34dz77kYR2spCZaIF2uHY=;
+        b=THKTnDO1ry/zQNDtEptOl9t6E0ls3rCj2TmY5VwXEa4/n+9Deii/n3tB+uG7HnP+8m
+         7pZP9ifi7Gtru2ikwzHyrxMqL1giZUadntUC7f+d1QczC4bu5INf768cB8myQ2KlQttW
+         5BeWHI2A70cLWfvy9+o4tW3+FlEAKNFJHECF140sacyZrmQMQQZnCdFOaKUMPhpg968a
+         w3pMkuvdnSJUsq7rWjNWg5StEV/FH9ik3ioZNfOSHuSlrwhuZSvBmYBWdRtDStMtShnA
+         ec4925pliPPI+HPqDBESIPl3PeYrYBoOfH2uugCoHlv/v/yGCcIfW24T/Hx7ppnWfWqZ
+         foZw==
+X-Gm-Message-State: AOAM531CxtY1ia6viJVOF6ARm1ttKHnlLrHsQqna11WwVoNXzqny7khY
+        miJnh6Qk5hyw3xROvLBKaKNJwS7w8pzcUT/mlv0dvQ==
+X-Google-Smtp-Source: ABdhPJwag5uFVbOznIRFD7hUBenCZZKrZmRn3jTCX4vHYpA4VymrG36hBOtB09F9smlRBodPgmoaNTlMD/ezmHNmkOk=
+X-Received: by 2002:a17:906:19db:: with SMTP id h27mr19818725ejd.154.1599491709642;
+ Mon, 07 Sep 2020 08:15:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200907141058.GA3720524@kroah.com>
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-24-brgl@bgdev.pl>
+ <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org> <20200907095932.GU1891694@smile.fi.intel.com>
+ <CAMpxmJXvhYOVkZY7LLf=v+o8E2xKTh1RYhLrdVsS9nN1XZ5QJQ@mail.gmail.com>
+ <20200907115310.GA1891694@smile.fi.intel.com> <CAMpxmJUfNkko4Rrb4N5CF_rdwRAWGhVr9DSOHfhYyTxYSH7dsQ@mail.gmail.com>
+ <20200907122238.GA1849893@kroah.com> <CAMpxmJXM=8oGoPSGg8G8XJ4HXJFrAQ2-_EXrz3rf3+ZmCSWB7g@mail.gmail.com>
+ <20200907140829.GL1891694@smile.fi.intel.com>
+In-Reply-To: <20200907140829.GL1891694@smile.fi.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Mon, 7 Sep 2020 17:14:58 +0200
+Message-ID: <CAMpxmJWvrW2H-QhJRACJ88MZ3uXWR2G-QKor+ZTHpiCkLgPqcg@mail.gmail.com>
+Subject: Re: [PATCH 23/23] Documentation: gpio: add documentation for gpio-mockup
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kent Gibson <warthog618@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 07, 2020 at 04:10:58PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, Sep 07, 2020 at 04:57:40PM +0300, Heikki Krogerus wrote:
-> > From: Utkarsh Patel <utkarsh.h.patel@intel.com>
-> > 
-> > According to the PMC Type C Subsystem (TCSS) Mux programming guide rev
-> > 0.7, bits 4 and 5 are reserved in Alternate modes.
-> > SBU Orientation and HSL Orientation needs to be configured only during
-> > initial cable detection in USB connect flow based on device property of
-> > "sbu-orientation" and "hsl-orientation".
-> > Configuring these reserved bits in the Alternate modes may result in delay
-> > in display link training or some unexpected behaviour.
-> > So do not configure them while issuing Alternate Mode requests.
-> > 
-> > Fixes: ff4a30d5e243 ("usb: typec: mux: intel_pmc_mux: Support for static SBU/HSL orientation")
-> > Signed-off-by: Utkarsh Patel <utkarsh.h.patel@intel.com>
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> 
-> Shouldn't this also need a cc:stable?
+On Mon, Sep 7, 2020 at 4:08 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Sep 07, 2020 at 03:49:23PM +0200, Bartosz Golaszewski wrote:
+> > On Mon, Sep 7, 2020 at 2:22 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > > On Mon, Sep 07, 2020 at 02:06:15PM +0200, Bartosz Golaszewski wrote:
+>
+> ...
+>
+> > > Yes it is.  Or at least until you fix all existing users so that if you
+> > > do change it, no one notices it happening :)
+> > >
+> >
+> > Then another question is: do we really want to commit to a stable ABI
+> > for a module we only use for testing purposes and which doesn't
+> > interact with any real hardware.
+> >
+> > Rewriting this module without any legacy cruft is tempting though. :)
+>
+> Another thought spoken loudly: maybe it can be unified with GPIO aggregator
+> code? In that case it makes sense.
+>
 
-This one fixes something in 5.8-rcx.
+Cc'ing Geert but I don't quite see how this would make sense. :)
 
-> And why not cc: the linux-usb list on these patches?
+Also one thing I'm not sure about re configfs is the interface we use
+to read values/set pull i.e. the line attributes in debugfs, do you
+think configfs allows this type of attributes?
 
-I guess "acpi" and "usb" are very similar strings to my brain... I'm
-sorry about the wrong list. I'll resend.
-
-thanks,
-
--- 
-heikki
+Bart
