@@ -2,85 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 475942601EF
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61B2F2603AC
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:53:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729794AbgIGOIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 10:08:39 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:11248 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729727AbgIGOIA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 10:08:00 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 20EE5185D0A4C595AE8E;
-        Mon,  7 Sep 2020 22:07:58 +0800 (CST)
-Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 7 Sep 2020 22:07:51 +0800
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        "Sean V Kelley" <sean.v.kelley@linux.intel.com>,
-        <linux-api@vger.kernel.org>, "Hanjun Guo" <guohanjun@huawei.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v10 6/6] docs: mm: numaperf.rst Add brief description for access class 1.
-Date:   Mon, 7 Sep 2020 22:03:07 +0800
-Message-ID: <20200907140307.571932-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20200907140307.571932-1-Jonathan.Cameron@huawei.com>
-References: <20200907140307.571932-1-Jonathan.Cameron@huawei.com>
+        id S1729562AbgIGRxG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 13:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728916AbgIGLW4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 07:22:56 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4216CC06179F
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 04:04:40 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id u20so3308080ilk.6
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 04:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1B/HAY7CQ2kgdOMuMSUPk6pREpiLHnIcgbAxblH2K1Y=;
+        b=W4qYrlMqsiKUO1IXIqKFB92tdgLj8OvcoC6QiZjOrJumIILg6kwYVZQVhMcjZZme8+
+         uTxaZ4A44RW2FvoscbbPCukSKqOxq4PhOFmeSKlRJA51HjdobE7qutUP6wAhawWJEOaY
+         NPRFM8tEqU1F7a1gwDoCcd+HxlFuRvxhsguq2aBVeoSm8Cz62KuDe09VU44giiaq+mQz
+         217j2HZ87eJjd2a5Cjyq6IOjXBJjAfmfyIao982fWhcLfXj4u7ouDub5WWTQrUPkNmZQ
+         sMkVEIqJp66qcey3Uy6vD5BmwWa2mQpn6BpQaryGEIBdxF2680B8qvfL8SPXXQfj9Ka3
+         r/Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1B/HAY7CQ2kgdOMuMSUPk6pREpiLHnIcgbAxblH2K1Y=;
+        b=eJvcgFdn6ErCebMfYARp7mgie4gdYFlsOHSy1nDz0JjjJZBoCj9/zoZM6bQTGBA4xW
+         HmeEn7lBCI3r1SnLz63DrS8iw4cp/vSEISWzaa+AXcjyX5sFziiTMdedSs+eAXjDugGr
+         w4LwVPkgMWfB2T0H3IkMKSvNtdO1gZ9iCzkuCk1osxyvOv4B0AVv4KfciClqPwPARcsM
+         ic10qvjviEkykwbVDJ2EXcpDiwMhXFl/6Nvg96Pw0fCjHDFcwyz8bJPhejF6uN+5REZF
+         XB7E/5jNoi49cu7qEHux1XY0b68IIpLrp+GiUMs/J3n/tHJGN8PsZua46IeM2BoJLQlX
+         mOMQ==
+X-Gm-Message-State: AOAM533Nytr9W6sfHJMcerOP7+nlY+baQUWcGW/htxa2dhbuSH73tjk5
+        LySVxhgMNbqa6PSvYK7Bn6iaRUXB/imrM/MDAQMhhw==
+X-Google-Smtp-Source: ABdhPJxCu1C6pdXbMZCPQ4I9idYD52QAe4Fl37C5i5Jt6npBXcV7EAl+4xXCL5VdCSbk4I7Fs4CQRXJ907+af8oRRr4=
+X-Received: by 2002:a92:cb4d:: with SMTP id f13mr15703244ilq.189.1599476679896;
+ Mon, 07 Sep 2020 04:04:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.123.41.22]
-X-CFilter-Loop: Reflected
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-16-brgl@bgdev.pl>
+ <20200904164917.GC1891694@smile.fi.intel.com>
+In-Reply-To: <20200904164917.GC1891694@smile.fi.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 7 Sep 2020 13:04:29 +0200
+Message-ID: <CAMRc=MeG8xuB0GNbMLi6+QZTphSN==77Hsw1fjVNU_+Z=Ky2qQ@mail.gmail.com>
+Subject: Re: [PATCH 15/23] gpio: mockup: use dynamic device IDs
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Kent Gibson <warthog618@gmail.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Try to make minimal changes to the document which already describes
-access class 0 in a generic fashion (including IO initiatiors that
-are not CPUs).
+On Fri, Sep 4, 2020 at 6:49 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Sep 04, 2020 at 05:45:39PM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > We're currently creating chips at module init time only so using a
+> > static index for dummy devices is fine. We want to support dynamically
+> > created chips however so we need to switch to dynamic device IDs.
+>
+> It misses ida_destroy().
+>
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- Documentation/admin-guide/mm/numaperf.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+No, we always call ida_free() for separate IDs when removing devices
+and we remove all devices at module exit so no need to call
+ida_destroy().
 
-diff --git a/Documentation/admin-guide/mm/numaperf.rst b/Documentation/admin-guide/mm/numaperf.rst
-index 4d69ef1de830..b89bb85eac75 100644
---- a/Documentation/admin-guide/mm/numaperf.rst
-+++ b/Documentation/admin-guide/mm/numaperf.rst
-@@ -56,6 +56,11 @@ nodes' access characteristics share the same performance relative to other
- linked initiator nodes. Each target within an initiator's access class,
- though, do not necessarily perform the same as each other.
- 
-+The access class "1" is used to allow differentiation between initiators
-+that are CPUs and hence suitable for generic task scheduling, and
-+IO initiators such as GPUs and NICs.  Unlike access class 0, only
-+nodes containing CPUs are considered.
-+
- ================
- NUMA Performance
- ================
-@@ -88,6 +93,9 @@ The latency attributes are provided in nanoseconds.
- The values reported here correspond to the rated latency and bandwidth
- for the platform.
- 
-+Access class 1, takes the same form, but only includes values for CPU to
-+memory activity.
-+
- ==========
- NUMA Cache
- ==========
--- 
-2.19.1
+> What about XArray API?
+>
 
+Answered that somewhere - xarray is already used internally by IDA.
+
+Bart
