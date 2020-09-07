@@ -2,309 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7645C260397
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82FEF260395
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729396AbgIGRv2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 13:51:28 -0400
-Received: from mga17.intel.com ([192.55.52.151]:8883 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729182AbgIGMFh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 08:05:37 -0400
-IronPort-SDR: TWaqynpRCw3eX+8dl9VL/GTfdBQenXZXX6GhVTccq2mAw5bPko9POSiOEoUAFSCu6bSDEJJ0/E
- k6lrtppseQfQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="138043153"
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="138043153"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 05:05:37 -0700
-IronPort-SDR: gpZ4on/2rlDNazBjbL8fzUNDAIahjCWmxd4bzpKL4oGCOrRVHSDqHYCoYMo0R6IkmQjv0i9AL9
- b2XJFtFXHPMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="406818235"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Sep 2020 05:05:35 -0700
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v2 1/2] device property: Move fwnode_connection_find_match() under drivers/base/property.c
-Date:   Mon,  7 Sep 2020 15:05:31 +0300
-Message-Id: <20200907120532.37611-2-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200907120532.37611-1-heikki.krogerus@linux.intel.com>
-References: <20200907120532.37611-1-heikki.krogerus@linux.intel.com>
+        id S1729184AbgIGRvY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 13:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729222AbgIGMGk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 08:06:40 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEDCC061755
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 05:06:27 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id i22so17908118eja.5
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 05:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Tw4f2wX8YqmmfCG4fLEsa1aDy9xcwa2clW6NhysDtyc=;
+        b=vXqecv/JD1j08x2l2xv8uMY2f5Yrx4K3HukAwUizDgeJSij+T75ajGmL1q9blQ9UrJ
+         qCvwj8FsbXkYLIOkfpnIyoCMd0YWDwu7jzDwuPBz5d/I0pvFV2rv2MaIlzwpB+L6BBvL
+         KLuAAE/uYoT21Qcb0Ek9uNjNv+Tc1kJZB6gBNZEqfR4K8F3owTI8UDBaBNdeerEXBRQf
+         svknQedIT00FvncGNd3SMt5eJGRvr9n1qI1k7jYBXFJTuIChik7GAJQR8GK7RuqOeYDV
+         6OpI9z0F1CVv5xPg/cyAf/YafdgiGJcwRMOp33wT+hcztaMEzFbH2LHAvgY5FPcU8BxK
+         qNyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Tw4f2wX8YqmmfCG4fLEsa1aDy9xcwa2clW6NhysDtyc=;
+        b=FDh657n+UoPBW45Wvixfcx4Nh697E1zhWOa050nLUle7KkFgjiwPiga5VTpIv0xvda
+         +Cgz1tXazkiQbcgonBljQbZftf/mZI3pCRhoRSklPo4eJwWaJWqgbdRWfh5OVctQYZts
+         f4KTyT3WkKi7iH3A7IZ7PgDQhkq1lDCzt14eieK2Me9oU6qV1kPlotb9QBRNPEsEQfIZ
+         SCvH09wZVwV4jFZzQ0Y/b6SXbEU8dPx08qPUPub3esvq1KakYg2rboPwzNdKqjbkxT3I
+         dsvDNCKZ5C8+Xvi/Tp3topEq/XEjSU3BZTDO7whAm2rtIDpne1I1oBwGw04SMkcoIkuw
+         0U3A==
+X-Gm-Message-State: AOAM533+Qq3qYRvzvn/RtQQVGYTOrnVvSaFUehjKJAlRLInTW0gmF8jY
+        Dd0qWEOF+JB60SNMMBZIQgIarEdx6q59zzTpXCl8dw==
+X-Google-Smtp-Source: ABdhPJw+GbBoK76Yk9oXUxiHnhTP8BrVOQx6dDXADdyKLjOSvFHDs9IyPG0ZhERjAUhRxXRKmTxwpbMibpY7sdicuFI=
+X-Received: by 2002:a17:906:f11:: with SMTP id z17mr2135074eji.88.1599480386425;
+ Mon, 07 Sep 2020 05:06:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-24-brgl@bgdev.pl>
+ <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org> <20200907095932.GU1891694@smile.fi.intel.com>
+ <CAMpxmJXvhYOVkZY7LLf=v+o8E2xKTh1RYhLrdVsS9nN1XZ5QJQ@mail.gmail.com> <20200907115310.GA1891694@smile.fi.intel.com>
+In-Reply-To: <20200907115310.GA1891694@smile.fi.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Mon, 7 Sep 2020 14:06:15 +0200
+Message-ID: <CAMpxmJUfNkko4Rrb4N5CF_rdwRAWGhVr9DSOHfhYyTxYSH7dsQ@mail.gmail.com>
+Subject: Re: [PATCH 23/23] Documentation: gpio: add documentation for gpio-mockup
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Kent Gibson <warthog618@gmail.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The function is now only a helper that searches the
-connection from device graph and then by checking if the
-supplied connection identifier matches a property that
-contains reference.
+On Mon, Sep 7, 2020 at 1:53 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Sep 07, 2020 at 12:26:34PM +0200, Bartosz Golaszewski wrote:
+> > On Mon, Sep 7, 2020 at 11:59 AM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > On Fri, Sep 04, 2020 at 08:15:59PM -0700, Randy Dunlap wrote:
+> > > > On 9/4/20 8:45 AM, Bartosz Golaszewski wrote:
+> > >
+> > > ...
+> > >
+> > > > > +GPIO Testing Driver
+> > > > > +===================
+> > > > > +
+> > > > > +The GPIO Testing Driver (gpio-mockup) provides a way to create simulated GPIO
+> > > > > +chips for testing purposes. There are two ways of configuring the chips exposed
+> > > > > +by the module. The lines can be accessed using the standard GPIO character
+> > > > > +device interface as well as manipulated using the dedicated debugfs directory
+> > > > > +structure.
+> > > >
+> > > > Could configfs be used for this instead of debugfs?
+> > > > debugfs is ad hoc.
+> > >
+> > > Actually sounds like a good idea.
+> > >
+> >
+> > Well, then we can go on and write an entirely new mockup driver
+> > (ditching module params and dropping any backwards compatibility)
+> > because we're already using debugfs for line values.
+> >
+> > How would we pass the device properties to configfs created GPIO chips
+> > anyway? Devices seem to only be created using mkdir. Am I missing
+> > something?
+>
+> Same way how USB composite works, no?
+>
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/base/Makefile    |   2 +-
- drivers/base/devcon.c    | 101 ---------------------------------------
- drivers/base/property.c  |  73 ++++++++++++++++++++++++++++
- include/linux/device.h   |   9 ----
- include/linux/property.h |  14 ++++++
- 5 files changed, 88 insertions(+), 111 deletions(-)
- delete mode 100644 drivers/base/devcon.c
+OK, so create a new chip directory in configfs, configure it using
+some defined configfs attributes and then finally instantiate it from
+sysfs?
 
-diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-index 157452080f3d7..41369fc7004fd 100644
---- a/drivers/base/Makefile
-+++ b/drivers/base/Makefile
-@@ -6,7 +6,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
- 			   cpu.o firmware.o init.o map.o devres.o \
- 			   attribute_container.o transport_class.o \
- 			   topology.o container.o property.o cacheinfo.o \
--			   devcon.o swnode.o
-+			   swnode.o
- obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
- obj-y			+= power/
- obj-$(CONFIG_ISA_BUS_API)	+= isa.o
-diff --git a/drivers/base/devcon.c b/drivers/base/devcon.c
-deleted file mode 100644
-index 1790e84dbe7c2..0000000000000
---- a/drivers/base/devcon.c
-+++ /dev/null
-@@ -1,101 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/**
-- * Device connections
-- *
-- * Copyright (C) 2018 Intel Corporation
-- * Author: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-- */
--
--#include <linux/device.h>
--#include <linux/property.h>
--
--static void *
--fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
--			  void *data, devcon_match_fn_t match)
--{
--	struct fwnode_handle *node;
--	struct fwnode_handle *ep;
--	void *ret;
--
--	fwnode_graph_for_each_endpoint(fwnode, ep) {
--		node = fwnode_graph_get_remote_port_parent(ep);
--		if (!fwnode_device_is_available(node))
--			continue;
--
--		ret = match(node, con_id, data);
--		fwnode_handle_put(node);
--		if (ret) {
--			fwnode_handle_put(ep);
--			return ret;
--		}
--	}
--	return NULL;
--}
--
--static void *
--fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
--		    void *data, devcon_match_fn_t match)
--{
--	struct fwnode_handle *node;
--	void *ret;
--	int i;
--
--	for (i = 0; ; i++) {
--		node = fwnode_find_reference(fwnode, con_id, i);
--		if (IS_ERR(node))
--			break;
--
--		ret = match(node, NULL, data);
--		fwnode_handle_put(node);
--		if (ret)
--			return ret;
--	}
--
--	return NULL;
--}
--
--/**
-- * fwnode_connection_find_match - Find connection from a device node
-- * @fwnode: Device node with the connection
-- * @con_id: Identifier for the connection
-- * @data: Data for the match function
-- * @match: Function to check and convert the connection description
-- *
-- * Find a connection with unique identifier @con_id between @fwnode and another
-- * device node. @match will be used to convert the connection description to
-- * data the caller is expecting to be returned.
-- */
--void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
--				   const char *con_id, void *data,
--				   devcon_match_fn_t match)
--{
--	void *ret;
--
--	if (!fwnode || !match)
--		return NULL;
--
--	ret = fwnode_graph_devcon_match(fwnode, con_id, data, match);
--	if (ret)
--		return ret;
--
--	return fwnode_devcon_match(fwnode, con_id, data, match);
--}
--EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
--
--/**
-- * device_connection_find_match - Find physical connection to a device
-- * @dev: Device with the connection
-- * @con_id: Identifier for the connection
-- * @data: Data for the match function
-- * @match: Function to check and convert the connection description
-- *
-- * Find a connection with unique identifier @con_id between @dev and another
-- * device. @match will be used to convert the connection description to data the
-- * caller is expecting to be returned.
-- */
--void *device_connection_find_match(struct device *dev, const char *con_id,
--				   void *data, devcon_match_fn_t match)
--{
--	return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
--}
--EXPORT_SYMBOL_GPL(device_connection_find_match);
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index d58aa98fe9645..4c43d30145c6b 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1184,3 +1184,76 @@ const void *device_get_match_data(struct device *dev)
- 	return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
- }
- EXPORT_SYMBOL_GPL(device_get_match_data);
-+
-+static void *
-+fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
-+			  void *data, devcon_match_fn_t match)
-+{
-+	struct fwnode_handle *node;
-+	struct fwnode_handle *ep;
-+	void *ret;
-+
-+	fwnode_graph_for_each_endpoint(fwnode, ep) {
-+		node = fwnode_graph_get_remote_port_parent(ep);
-+		if (!fwnode_device_is_available(node))
-+			continue;
-+
-+		ret = match(node, con_id, data);
-+		fwnode_handle_put(node);
-+		if (ret) {
-+			fwnode_handle_put(ep);
-+			return ret;
-+		}
-+	}
-+	return NULL;
-+}
-+
-+static void *
-+fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
-+		    void *data, devcon_match_fn_t match)
-+{
-+	struct fwnode_handle *node;
-+	void *ret;
-+	int i;
-+
-+	for (i = 0; ; i++) {
-+		node = fwnode_find_reference(fwnode, con_id, i);
-+		if (IS_ERR(node))
-+			break;
-+
-+		ret = match(node, NULL, data);
-+		fwnode_handle_put(node);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * fwnode_connection_find_match - Find connection from a device node
-+ * @fwnode: Device node with the connection
-+ * @con_id: Identifier for the connection
-+ * @data: Data for the match function
-+ * @match: Function to check and convert the connection description
-+ *
-+ * Find a connection with unique identifier @con_id between @fwnode and another
-+ * device node. @match will be used to convert the connection description to
-+ * data the caller is expecting to be returned.
-+ */
-+void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
-+				   const char *con_id, void *data,
-+				   devcon_match_fn_t match)
-+{
-+	void *ret;
-+
-+	if (!fwnode || !match)
-+		return NULL;
-+
-+	ret = fwnode_graph_devcon_match(fwnode, con_id, data, match);
-+	if (ret)
-+		return ret;
-+
-+	return fwnode_devcon_match(fwnode, con_id, data, match);
-+}
-+EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index c3ced17d91ee6..6f76c1f38e116 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -292,15 +292,6 @@ struct device_dma_parameters {
- 	unsigned long segment_boundary_mask;
- };
- 
--typedef void *(*devcon_match_fn_t)(struct fwnode_handle *fwnode, const char *id,
--				   void *data);
--
--void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
--				   const char *con_id, void *data,
--				   devcon_match_fn_t match);
--void *device_connection_find_match(struct device *dev, const char *con_id,
--				   void *data, devcon_match_fn_t match);
--
- /**
-  * enum device_link_state - Device link states.
-  * @DL_STATE_NONE: The presence of the drivers is not being tracked.
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 9f805c4428195..aedae94dcf41d 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -418,6 +418,20 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
- int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 				struct fwnode_endpoint *endpoint);
- 
-+typedef void *(*devcon_match_fn_t)(struct fwnode_handle *fwnode, const char *id,
-+				   void *data);
-+
-+void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
-+				   const char *con_id, void *data,
-+				   devcon_match_fn_t match);
-+
-+static inline void *device_connection_find_match(struct device *dev,
-+						 const char *con_id, void *data,
-+						 devcon_match_fn_t match)
-+{
-+	return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
-+}
-+
- /* -------------------------------------------------------------------------- */
- /* Software fwnode support - when HW description is incomplete or missing */
- 
--- 
-2.28.0
+Makes sense and is probably the right way to go. Now the question is:
+is it fine to just entirely remove the previous gpio-mockup? Should we
+keep some backwards compatibility? Should we introduce an entirely new
+module and have a transition period before removing previous
+gpio-mockup?
 
+Also: this is a testing module so to me debugfs is just fine. Is
+configfs considered stable ABI like sysfs?
+
+Bart
