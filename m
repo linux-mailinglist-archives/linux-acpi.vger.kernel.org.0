@@ -2,57 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 060AA25F81A
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 454FA25F848
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728581AbgIGK0w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 06:26:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33888 "EHLO
+        id S1728841AbgIGK3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 06:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728856AbgIGK0r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 06:26:47 -0400
+        with ESMTP id S1728950AbgIGK2T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 06:28:19 -0400
 Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324DDC061575
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 03:26:47 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id gr14so16426762ejb.1
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 03:26:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD64C0613ED
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 03:28:17 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id o8so4359034ejb.10
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 03:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HmvvDOBbOI3Ap25LolJkNiUzAqYW/BkylmIeV4YjRD8=;
-        b=QDdavu3QQmHCnnU4KwLOJr5Oqa+V9NiMQ1XwjqwN4Vf2/Yl3FamhFwkRnK9uYu0WMM
-         PSIo98ml3rL98H/MFyPHXu20UitXy3KZs6DuWoJyxF5RrbDa1aPfsa1zk2tKopjDf92t
-         oxo871xKdzsVRbGhOSWrfmLzWXP1g3/zK22U4SR+waK/pY8uV+I18/6oBOqI7kXsfGG+
-         lRPUidIYCyv/fl7hMJdze89IE3yiK8vG8YSPcuMTCt3puxMTRgbzm+XlUiKl6PSZAZFB
-         UrTltAyeJJ/5hiL9WET3bwgBk0tFhMnH+r3fxLY6lbC1V0A6JzZcriwY/wtmltFYV3GN
-         TqjA==
+        bh=E+6kvSO+kGtFqzwSOsHYLQdHmE8ihK39UIVQKLTGAlE=;
+        b=YKpxYuJtNjDEcMyhlLGRj0HX0hQkUXEqPjKuUoBXv/e3UDUS4Hln7rKvyvdJTkScwl
+         k1rXYkIZAbO2UsMaPTxTaUrbbBWUu4R8sdHC0L1BG0mGaX4xk380OjSevy0ECUxykK/F
+         W0r2qxkPzqjPoDdZ8gzABSBUnDIUQFXvKxYS4mab97WFlQCFfhbvkd4IVjnPhoWyKel2
+         XD9I7vu5rWTXsRIKY4qpSRmj1lEfs+bqL5eIbLSlZkr5OCsU1EbDHMwj00krDCJyqj4O
+         gmJBrn/Lyg7t/40d/iHFqrkkALM3z3AbVL2yVDPRt/STFncNY1w/mvM9VKLyly28uSNr
+         Y8vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HmvvDOBbOI3Ap25LolJkNiUzAqYW/BkylmIeV4YjRD8=;
-        b=PUYVXULbSuzSHWYl74xCW92ooxdhmLsJ0l/pQUkTiHOQsKH/rNBfLuTii3jlHzVfeR
-         l1q/HxyqqLr0ZjHarwGSCh/ylN8lkHd6n3Wny8Yunyks/QeuFGcL6/N32n/hULlZ52kG
-         Hx3wVuUYFF+oVdmBBbJczW8kzwKJNF9IoCd0jDl4AeV/XuuGqz5nnV0JeQz1i/iJgYxD
-         ZP/X8ShDv4yRsNxJW9Q71VeThlHNSd3PUEhHcIY5ceaDL/xbNfM3/Le8/NyCSeMTUfyx
-         pkn5dufvYIp6pp9kH8mBlXrwdZiRByl8onCJBpRsLB9pW9MXUQkSfD6U7dfvetavxC7n
-         ilow==
-X-Gm-Message-State: AOAM533JFgHHdaBbHOMFHvyB42Y0GTZaFPlBE9C2aGPzEu7fQrw38Afj
-        825XsdnDbeFg4hGHH4IwATj9IMj/iaxKvx8gdQsIhw==
-X-Google-Smtp-Source: ABdhPJzU3TRrxz7IZqvY6j9hu2ty43AjKwNnl8X1LKDXaPDRCwBiEKtxjLALYuvJMHAGMXF/jF07pg9xrPNCh4fKRnk=
-X-Received: by 2002:a17:907:20d9:: with SMTP id qq25mr15792481ejb.382.1599474405853;
- Mon, 07 Sep 2020 03:26:45 -0700 (PDT)
+        bh=E+6kvSO+kGtFqzwSOsHYLQdHmE8ihK39UIVQKLTGAlE=;
+        b=rEa4CTHUHlC0yZXCBtfqk3DBRM96laQ0iM6M5gbFx5nM9T7a81hPNk7hQmAHQ/GNMY
+         vIrxQN86SDYaWMTLjsniRMi/0yljNWtRGmxupDWTh7SnFqNSkAEU3Qhvtd62apcTo8W+
+         9jaUTvXZ7eetoDT3q5zATf7SVEk0G22+rqDBmd1YrQz0+u7l9FQjxNvuHytFntOH4yTu
+         070vRRkJkP1TZIHPpcxvBawvVBTB7kRfx+Ys+VNucTBMylVWCc5rGExhNPthI5LiuBVi
+         Z03PvqLvI0Jkatzvum7HOGW84uj7X0GYfUWE3gwVYUhakYC4tuZuRUPHEQyAhLle+7L7
+         AHkg==
+X-Gm-Message-State: AOAM533O4kUxQmkeVmuKOrQPseKXCo8lHArzDhZj3eY9BcW67wzOYVd5
+        Losg3MbArq2XQBSVhqYJ7LZi8omtkh6DPCjX5W4veQ==
+X-Google-Smtp-Source: ABdhPJwP4J3kM7zvzHGchdWRMUs1XHCPsNoozGebnZDrc/LmkHpUC8eNrTX90FFgDqlq6JBHy5dgtK4984ghibSDrvg=
+X-Received: by 2002:a17:906:941a:: with SMTP id q26mr20103973ejx.496.1599474496010;
+ Mon, 07 Sep 2020 03:28:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-24-brgl@bgdev.pl>
- <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org> <20200907095932.GU1891694@smile.fi.intel.com>
-In-Reply-To: <20200907095932.GU1891694@smile.fi.intel.com>
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-4-brgl@bgdev.pl>
+ <20200904163517.GW1891694@smile.fi.intel.com> <CAMpxmJWQsgV5WZrdPW3UUOVTEy1L6Y_rb7ThQK1QTRinmHSqWA@mail.gmail.com>
+ <CAHp75VdOWdwT-e5ufsZ8MEH=YtdBgm1=TDKn3f8fJxXY4YKh9A@mail.gmail.com>
+In-Reply-To: <CAHp75VdOWdwT-e5ufsZ8MEH=YtdBgm1=TDKn3f8fJxXY4YKh9A@mail.gmail.com>
 From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 7 Sep 2020 12:26:34 +0200
-Message-ID: <CAMpxmJXvhYOVkZY7LLf=v+o8E2xKTh1RYhLrdVsS9nN1XZ5QJQ@mail.gmail.com>
-Subject: Re: [PATCH 23/23] Documentation: gpio: add documentation for gpio-mockup
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+Date:   Mon, 7 Sep 2020 12:28:05 +0200
+Message-ID: <CAMpxmJXmY8oBpPue5v0wBvmjHkFGaUmzHScHoV-1pNEQ59am4w@mail.gmail.com>
+Subject: Re: [PATCH 03/23] lib: uaccess: provide getline_from_user()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -60,43 +61,41 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Kent Gibson <warthog618@gmail.com>,
         linux-gpio <linux-gpio@vger.kernel.org>,
         linux-doc <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 7, 2020 at 11:59 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Sep 7, 2020 at 12:19 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> On Fri, Sep 04, 2020 at 08:15:59PM -0700, Randy Dunlap wrote:
-> > On 9/4/20 8:45 AM, Bartosz Golaszewski wrote:
+> On Mon, Sep 7, 2020 at 1:05 PM Bartosz Golaszewski
+> <bgolaszewski@baylibre.com> wrote:
+> > On Fri, Sep 4, 2020 at 6:35 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > > On Fri, Sep 04, 2020 at 05:45:27PM +0200, Bartosz Golaszewski wrote:
+> > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 >
-> ...
->
-> > > +GPIO Testing Driver
-> > > +===================
-> > > +
-> > > +The GPIO Testing Driver (gpio-mockup) provides a way to create simulated GPIO
-> > > +chips for testing purposes. There are two ways of configuring the chips exposed
-> > > +by the module. The lines can be accessed using the standard GPIO character
-> > > +device interface as well as manipulated using the dedicated debugfs directory
-> > > +structure.
+> > > Doesn't mm/util.c provides us something like this?
+> > > strndup_user()?
+> > >
 > >
-> > Could configfs be used for this instead of debugfs?
-> > debugfs is ad hoc.
+> > Yes, there's both strndup_user() as well as strncpy_from_user(). The
+> > problem is that they rely on the strings being NULL-terminated. This
+> > is not guaranteed for debugfs file_operations write callbacks. We need
+> > some helper that takes the minimum of bytes provided by userspace and
+> > the buffer size and figure out how many bytes to actually copy IMO.
 >
-> Actually sounds like a good idea.
+> Wouldn't this [1] approach work?
+>
+> [1]: https://elixir.bootlin.com/linux/v5.9-rc3/source/arch/x86/kernel/cpu/mtrr/if.c#L93
 >
 
-Well, then we can go on and write an entirely new mockup driver
-(ditching module params and dropping any backwards compatibility)
-because we're already using debugfs for line values.
-
-How would we pass the device properties to configfs created GPIO chips
-anyway? Devices seem to only be created using mkdir. Am I missing
-something?
+Sure, but this is pretty much what I do in getline_from_user(). If
+anything we should port mtrr_write() to using getline_from_user() once
+it's available upstream, no?
 
 Bart
