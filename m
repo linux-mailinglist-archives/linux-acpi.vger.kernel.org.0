@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C97DE25F88D
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E8D25F88F
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728575AbgIGKh7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 06:37:59 -0400
-Received: from mga06.intel.com ([134.134.136.31]:32890 "EHLO mga06.intel.com"
+        id S1728659AbgIGKiC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 06:38:02 -0400
+Received: from mga06.intel.com ([134.134.136.31]:32891 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728453AbgIGKhz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 06:37:55 -0400
-IronPort-SDR: 8QznInhQvHdheVgqd8D7wzdtoSU/JKENITwmylQ49HAfi0PptRm+UM5IgW7UR3zl0ppZL8dgQ4
- ne4ElyEgmcIw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="219541982"
+        id S1728555AbgIGKh5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Sep 2020 06:37:57 -0400
+IronPort-SDR: mZeD8wls5F5S2Bi3ZWanrzBVDKRpcn/cs4d74C0lvU9NckviAtIAsEy0QENsW72Flf1e2JBYR6
+ FVhljztSfHJQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="219541987"
 X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="219541982"
+   d="scan'208";a="219541987"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 03:37:55 -0700
-IronPort-SDR: HZbfChcUMXAjtNiVK/ZLfi9KxYd8hCSRGFQqJEHAZ9lz5ps1ueiPx6BrDUwVI7WlEu4K5JX+K4
- KFw9sTWBcrhQ==
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 03:37:56 -0700
+IronPort-SDR: 2v0jBQexHQ1isO8h0VOFHpNc+pVLmUp3rTELXM7y3KUnzYbpWMUdZNmxwD4TVIr4bOn5Dqg/zd
+ 3Ip2RUA055Iw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="406801321"
+   d="scan'208";a="406801326"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Sep 2020 03:37:53 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 07 Sep 2020 03:37:55 -0700
 From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH 1/2] device property: Move fwnode_connection_find_match() under drivers/base/property.c
-Date:   Mon,  7 Sep 2020 13:37:49 +0300
-Message-Id: <20200907103750.9093-2-heikki.krogerus@linux.intel.com>
+Subject: [PATCH 2/2] Documentation: Remove device connection documentation
+Date:   Mon,  7 Sep 2020 13:37:50 +0300
+Message-Id: <20200907103750.9093-3-heikki.krogerus@linux.intel.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200907103750.9093-1-heikki.krogerus@linux.intel.com>
 References: <20200907103750.9093-1-heikki.krogerus@linux.intel.com>
@@ -44,267 +44,65 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The function is now only a helper that searches the
-connection from device graph and then by checking if the
-supplied connection identifier matches a property that
-contains reference.
+The API that allowed device connection descriptions to
+be added is now removed, so removing also the documentation
+for it.
 
 Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 ---
- drivers/base/Makefile    |   2 +-
- drivers/base/devcon.c    | 101 ---------------------------------------
- drivers/base/property.c  |  73 ++++++++++++++++++++++++++++
- include/linux/device.h   |   9 ----
- include/linux/property.h |  14 ++++++
- 5 files changed, 88 insertions(+), 111 deletions(-)
- delete mode 100644 drivers/base/devcon.c
+ .../driver-api/device_connection.rst          | 43 -------------------
+ 1 file changed, 43 deletions(-)
+ delete mode 100644 Documentation/driver-api/device_connection.rst
 
-diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-index 157452080f3d7..41369fc7004fd 100644
---- a/drivers/base/Makefile
-+++ b/drivers/base/Makefile
-@@ -6,7 +6,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
- 			   cpu.o firmware.o init.o map.o devres.o \
- 			   attribute_container.o transport_class.o \
- 			   topology.o container.o property.o cacheinfo.o \
--			   devcon.o swnode.o
-+			   swnode.o
- obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
- obj-y			+= power/
- obj-$(CONFIG_ISA_BUS_API)	+= isa.o
-diff --git a/drivers/base/devcon.c b/drivers/base/devcon.c
+diff --git a/Documentation/driver-api/device_connection.rst b/Documentation/driver-api/device_connection.rst
 deleted file mode 100644
-index 1790e84dbe7c2..0000000000000
---- a/drivers/base/devcon.c
+index ba364224c349b..0000000000000
+--- a/Documentation/driver-api/device_connection.rst
 +++ /dev/null
-@@ -1,101 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/**
-- * Device connections
-- *
-- * Copyright (C) 2018 Intel Corporation
-- * Author: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-- */
+@@ -1,43 +0,0 @@
+-==================
+-Device connections
+-==================
 -
--#include <linux/device.h>
--#include <linux/property.h>
+-Introduction
+-------------
 -
--static void *
--fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
--			  void *data, devcon_match_fn_t match)
--{
--	struct fwnode_handle *node;
--	struct fwnode_handle *ep;
--	void *ret;
+-Devices often have connections to other devices that are outside of the direct
+-child/parent relationship. A serial or network communication controller, which
+-could be a PCI device, may need to be able to get a reference to its PHY
+-component, which could be attached for example to the I2C bus. Some device
+-drivers need to be able to control the clocks or the GPIOs for their devices,
+-and so on.
 -
--	fwnode_graph_for_each_endpoint(fwnode, ep) {
--		node = fwnode_graph_get_remote_port_parent(ep);
--		if (!fwnode_device_is_available(node))
--			continue;
+-Device connections are generic descriptions of any type of connection between
+-two separate devices.
 -
--		ret = match(node, con_id, data);
--		fwnode_handle_put(node);
--		if (ret) {
--			fwnode_handle_put(ep);
--			return ret;
--		}
--	}
--	return NULL;
--}
+-Device connections alone do not create a dependency between the two devices.
+-They are only descriptions which are not tied to either of the devices directly.
+-A dependency between the two devices exists only if one of the two endpoint
+-devices requests a reference to the other. The descriptions themselves can be
+-defined in firmware (not yet supported) or they can be built-in.
 -
--static void *
--fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
--		    void *data, devcon_match_fn_t match)
--{
--	struct fwnode_handle *node;
--	void *ret;
--	int i;
+-Usage
+------
 -
--	for (i = 0; ; i++) {
--		node = fwnode_find_reference(fwnode, con_id, i);
--		if (IS_ERR(node))
--			break;
+-Device connections should exist before device ``->probe`` callback is called for
+-either endpoint device in the description. If the connections are defined in
+-firmware, this is not a problem. It should be considered if the connection
+-descriptions are "built-in", and need to be added separately.
 -
--		ret = match(node, NULL, data);
--		fwnode_handle_put(node);
--		if (ret)
--			return ret;
--	}
+-The connection description consists of the names of the two devices with the
+-connection, i.e. the endpoints, and unique identifier for the connection which
+-is needed if there are multiple connections between the two devices.
 -
--	return NULL;
--}
+-After a description exists, the devices in it can request reference to the other
+-endpoint device, or they can request the description itself.
 -
--/**
-- * fwnode_connection_find_match - Find connection from a device node
-- * @fwnode: Device node with the connection
-- * @con_id: Identifier for the connection
-- * @data: Data for the match function
-- * @match: Function to check and convert the connection description
-- *
-- * Find a connection with unique identifier @con_id between @fwnode and another
-- * device node. @match will be used to convert the connection description to
-- * data the caller is expecting to be returned.
-- */
--void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
--				   const char *con_id, void *data,
--				   devcon_match_fn_t match)
--{
--	void *ret;
+-API
+----
 -
--	if (!fwnode || !match)
--		return NULL;
--
--	ret = fwnode_graph_devcon_match(fwnode, con_id, data, match);
--	if (ret)
--		return ret;
--
--	return fwnode_devcon_match(fwnode, con_id, data, match);
--}
--EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
--
--/**
-- * device_connection_find_match - Find physical connection to a device
-- * @dev: Device with the connection
-- * @con_id: Identifier for the connection
-- * @data: Data for the match function
-- * @match: Function to check and convert the connection description
-- *
-- * Find a connection with unique identifier @con_id between @dev and another
-- * device. @match will be used to convert the connection description to data the
-- * caller is expecting to be returned.
-- */
--void *device_connection_find_match(struct device *dev, const char *con_id,
--				   void *data, devcon_match_fn_t match)
--{
--	return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
--}
--EXPORT_SYMBOL_GPL(device_connection_find_match);
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index d58aa98fe9645..4c43d30145c6b 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1184,3 +1184,76 @@ const void *device_get_match_data(struct device *dev)
- 	return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
- }
- EXPORT_SYMBOL_GPL(device_get_match_data);
-+
-+static void *
-+fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
-+			  void *data, devcon_match_fn_t match)
-+{
-+	struct fwnode_handle *node;
-+	struct fwnode_handle *ep;
-+	void *ret;
-+
-+	fwnode_graph_for_each_endpoint(fwnode, ep) {
-+		node = fwnode_graph_get_remote_port_parent(ep);
-+		if (!fwnode_device_is_available(node))
-+			continue;
-+
-+		ret = match(node, con_id, data);
-+		fwnode_handle_put(node);
-+		if (ret) {
-+			fwnode_handle_put(ep);
-+			return ret;
-+		}
-+	}
-+	return NULL;
-+}
-+
-+static void *
-+fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
-+		    void *data, devcon_match_fn_t match)
-+{
-+	struct fwnode_handle *node;
-+	void *ret;
-+	int i;
-+
-+	for (i = 0; ; i++) {
-+		node = fwnode_find_reference(fwnode, con_id, i);
-+		if (IS_ERR(node))
-+			break;
-+
-+		ret = match(node, NULL, data);
-+		fwnode_handle_put(node);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * fwnode_connection_find_match - Find connection from a device node
-+ * @fwnode: Device node with the connection
-+ * @con_id: Identifier for the connection
-+ * @data: Data for the match function
-+ * @match: Function to check and convert the connection description
-+ *
-+ * Find a connection with unique identifier @con_id between @fwnode and another
-+ * device node. @match will be used to convert the connection description to
-+ * data the caller is expecting to be returned.
-+ */
-+void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
-+				   const char *con_id, void *data,
-+				   devcon_match_fn_t match)
-+{
-+	void *ret;
-+
-+	if (!fwnode || !match)
-+		return NULL;
-+
-+	ret = fwnode_graph_devcon_match(fwnode, con_id, data, match);
-+	if (ret)
-+		return ret;
-+
-+	return fwnode_devcon_match(fwnode, con_id, data, match);
-+}
-+EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index c3ced17d91ee6..6f76c1f38e116 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -292,15 +292,6 @@ struct device_dma_parameters {
- 	unsigned long segment_boundary_mask;
- };
- 
--typedef void *(*devcon_match_fn_t)(struct fwnode_handle *fwnode, const char *id,
--				   void *data);
--
--void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
--				   const char *con_id, void *data,
--				   devcon_match_fn_t match);
--void *device_connection_find_match(struct device *dev, const char *con_id,
--				   void *data, devcon_match_fn_t match);
--
- /**
-  * enum device_link_state - Device link states.
-  * @DL_STATE_NONE: The presence of the drivers is not being tracked.
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 9f805c4428195..aedae94dcf41d 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -418,6 +418,20 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
- int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 				struct fwnode_endpoint *endpoint);
- 
-+typedef void *(*devcon_match_fn_t)(struct fwnode_handle *fwnode, const char *id,
-+				   void *data);
-+
-+void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
-+				   const char *con_id, void *data,
-+				   devcon_match_fn_t match);
-+
-+static inline void *device_connection_find_match(struct device *dev,
-+						 const char *con_id, void *data,
-+						 devcon_match_fn_t match)
-+{
-+	return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
-+}
-+
- /* -------------------------------------------------------------------------- */
- /* Software fwnode support - when HW description is incomplete or missing */
- 
+-.. kernel-doc:: drivers/base/devcon.c
+-   :functions: device_connection_find_match device_connection_find device_connection_add device_connection_remove
 -- 
 2.28.0
 
