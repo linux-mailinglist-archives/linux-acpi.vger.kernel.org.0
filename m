@@ -2,195 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4467D25F8BD
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2577C25F8D5
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 12:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728637AbgIGKqU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 06:46:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36880 "EHLO
+        id S1728870AbgIGKuS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 06:50:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728477AbgIGKqK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 06:46:10 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAFAEC061574
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 03:46:08 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id r25so2542352ioj.0
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 03:46:08 -0700 (PDT)
+        with ESMTP id S1728786AbgIGKuO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 06:50:14 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A80C061755
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 03:50:13 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id w5so4194251ilo.5
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 03:50:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3Cm3/iyepcYqpKZ6rltE2W8KEjZwGnNaTWPVuCOQ5Qg=;
-        b=T+t+Kc7icHKQwmPmJycGZ7/uULY35LFJjcaWVtrCwWckJlS/9Mvo3cJmYr1cnNq+Zw
-         RUzZJVxKUpVcG8BwfbcBYW182+wupDMxsgPCB54NQ3zo2un1/TAbT/X4yMEOcauVzdCx
-         PhFDQ0yn5mzyvdIZ2sWhI4QAm6gtcuRGZWJokSiBh8HLgqNIuscGlbNxTwKffizwwgkw
-         ai5RVJ9Bnc5qGED5cU4egn0aALRWsiPyUDOHPpTKPYNRDpz7tTyxyeQ04bKH9Itq9hpZ
-         Qcpnd2P3+rNkQwDPE1iQKcXDzfCwqmprvDn0Tp/23ExA/9wCzD0Ot9xaxO3rp+05lZmT
-         SWZQ==
+        bh=y2WbMMlWb+6LVnmTJRKV9M4FUT+m4Yhxko6TEmzZawo=;
+        b=DXXW4y3JIc13ePP4dZs0HPbsWLHy9Mn1p6wfUdlMGf8aqElDxpEmWg3aw+DqpO5ss5
+         foGGRIcNDCa/FPVCbUcEvaCUzHTCxoAMw2WYzPuFIY2s9jAQPmONVbR3BKFfH8sYdnsC
+         dHQf8ZVmgZZ09vKY3G2gGhvUFZaA4X2zKkdKWKuGjV37gNKiWVSYvcoCZ2xcdpqymaI2
+         Ki/4qC6smG9C5a2s0+BXm2TuolTZRs+pubuGVOK46JNqbGNqgWBJVxjQBZuuL0Z2NlQq
+         nl1YC4vskdLtvxYJFDRk+G0y4qVL0DYvBbgeYpKCAWy2NhWNlpqcEhF3cdA1L7D1mzrB
+         Rgqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3Cm3/iyepcYqpKZ6rltE2W8KEjZwGnNaTWPVuCOQ5Qg=;
-        b=dshd6psiiQVpv1Xzu2ykgLXhTHjQ6g1523iP1aDFOZYfCGcw8PW/ddVLvWEbyadefm
-         ud4upovNlthTw08UCBEHYuQR3xlX+eHAAPXoWmCF8iJkohHlzRCmjXdn1LePuH3x1O48
-         djmasLl9OKFZT8wb59kSoVFoIjHxYBprE1+DGEaYCBgEx5eLy/a+U1nkMnaPnN3YWldl
-         emZcvHGW2aYDT0bcWMggHwcgk9+WAaIf4t/+qiAHtAUK9f6Ei29On81RZaNI6M04CG5v
-         oihophfl3JIRAk4dN/MfufJMeURuoMlgseGZS4xhGkK83O6jtXh6THkuZ7vpF3L+zCHo
-         sqPw==
-X-Gm-Message-State: AOAM532bm+hxQRsNo3IBeUKg6af2+Phxz7lYzgUxXt7e3eXMkWQL1JEN
-        iJsa1F5QKvo1WM6oVkjLLbqOpGFvaFnpvghn96Osww==
-X-Google-Smtp-Source: ABdhPJxzStNgKxWLB0PwO83b0jsGUVNmRfL9NzKqyajZsYx8XATak9YS0nxMkzOSvcxRmp7wAE1BQUaM1NNOgR1xqro=
-X-Received: by 2002:a02:7817:: with SMTP id p23mr8086846jac.57.1599475567555;
- Mon, 07 Sep 2020 03:46:07 -0700 (PDT)
+        bh=y2WbMMlWb+6LVnmTJRKV9M4FUT+m4Yhxko6TEmzZawo=;
+        b=KJU9RDXO3qd8FVfi2IvFLqaiPGvC4nlhLMIhFvWxScGvjS8R0nUMLr5a/CGrda8uNw
+         /HjirKayTnPir1IDgCqJNMztovW5OZCb3bqUOWw4LUx4d/w6A1blkB4w5EqGxx8HdQ5T
+         pwU9bWd7Uj4EW6eXH0XwX8NIBDP6+DRPrkMrEteFQuU7qybGUoKT5Gnv4JhPRGf7SdQu
+         3IgICjtW8pBHGCSZruBUjiQvBrq8r0iHFNbff5tM4n/vota5R8B4Q4vcuGjRoYjSdcG9
+         jla8nHzMy6iaf2G9Lo2REg94S9bCt3mDUf111SkFDehI1QDH6qYIg+03iJIkCho266lz
+         t3UA==
+X-Gm-Message-State: AOAM532EDFgWAQo6Jd44+crYP12MXScKdTwvpyavQWYY42FE+qDc5txD
+        h35ffstRJyvrBsqq57jGyxXDu0ESj0GaUjkxaGZQUA==
+X-Google-Smtp-Source: ABdhPJynrTfkvCINR4dH6XcXpfLrT9viB5CqRNVONJhEUV5jYmiptH6QUEy6gzaqRlgTPWh+SDbiNtD7xbF8ZAG72hU=
+X-Received: by 2002:a92:189:: with SMTP id 131mr19144027ilb.40.1599475813063;
+ Mon, 07 Sep 2020 03:50:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-24-brgl@bgdev.pl>
- <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org>
-In-Reply-To: <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org>
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-7-brgl@bgdev.pl>
+ <20200904164128.GZ1891694@smile.fi.intel.com>
+In-Reply-To: <20200904164128.GZ1891694@smile.fi.intel.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 7 Sep 2020 12:45:56 +0200
-Message-ID: <CAMRc=MdsPna_pXv=9A=euX5eZXah9OeHha1CDTGBBc9fjVbNeA@mail.gmail.com>
-Subject: Re: [PATCH 23/23] Documentation: gpio: add documentation for gpio-mockup
-To:     Randy Dunlap <rdunlap@infradead.org>
+Date:   Mon, 7 Sep 2020 12:50:01 +0200
+Message-ID: <CAMRc=MeYw=tQABZ2ZGbFQC=yc-zzes6ohSzUJLOLBnEGHzeZhg@mail.gmail.com>
+Subject: Re: [PATCH 06/23] gpiolib: switch to simpler IDA interface
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Kent Gibson <warthog618@gmail.com>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         linux-doc <linux-doc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-acpi@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 5, 2020 at 5:16 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+On Fri, Sep 4, 2020 at 6:41 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Hi,
->
-> On 9/4/20 8:45 AM, Bartosz Golaszewski wrote:
+> On Fri, Sep 04, 2020 at 05:45:30PM +0200, Bartosz Golaszewski wrote:
 > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > >
-> > There's some documentation for gpio-mockup's debugfs interface in the
-> > driver's source but it's not much. Add proper documentation for this
-> > testing module.
+> > We don't need to specify any ranges when allocating IDs so we can switch
+> > to ida_alloc() and ida_free() instead of the ida_simple_ counterparts.
 > >
-> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > ---
-> >  .../admin-guide/gpio/gpio-mockup.rst          | 87 +++++++++++++++++++
-> >  1 file changed, 87 insertions(+)
-> >  create mode 100644 Documentation/admin-guide/gpio/gpio-mockup.rst
-> >
-> > diff --git a/Documentation/admin-guide/gpio/gpio-mockup.rst b/Documentation/admin-guide/gpio/gpio-mockup.rst
-> > new file mode 100644
-> > index 000000000000..1d452ee55f8d
-> > --- /dev/null
-> > +++ b/Documentation/admin-guide/gpio/gpio-mockup.rst
-> > @@ -0,0 +1,87 @@
-> > +.. SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +GPIO Testing Driver
-> > +===================
-> > +
-> > +The GPIO Testing Driver (gpio-mockup) provides a way to create simulated GPIO
-> > +chips for testing purposes. There are two ways of configuring the chips exposed
-> > +by the module. The lines can be accessed using the standard GPIO character
-> > +device interface as well as manipulated using the dedicated debugfs directory
-> > +structure.
+> > ida_simple_get(ida, 0, 0, gfp) is equivalent to
+> > ida_alloc_range(ida, 0, UINT_MAX, gfp) which is equivalent to
+> > ida_alloc(ida, gfp). Note: IDR will never actually allocate an ID
+> > larger than INT_MAX.
 >
-> Could configfs be used for this instead of debugfs?
-> debugfs is ad hoc.
->
-> > +
-> > +Creating simulated chips using debugfs
-> > +--------------------------------------
-> > +
-> > +When the gpio-mockup module is loaded (or builtin) it creates its own directory
-> > +in debugfs. Assuming debugfs is mounted at /sys/kernel/debug/, the directory
-> > +will be located at /sys/kernel/debug/gpio-mockup/. Inside this directory there
-> > +are two attributes: new_device and delete_device.
-> > +
-> > +New chips can be created by writing a single line containing a number of
-> > +options to "new_device". For example:
-> > +
-> > +.. code-block:: sh
-> > +
-> > +    $ echo "label=my-mockup num_lines=4 named_lines" > /sys/kernel/debug/gpio-mockup/new_device
-> > +
-> > +Supported options:
-> > +
-> > +    num_lines=<num_lines> - number of GPIO lines to expose
-> > +
-> > +    label=<label> - label of the dummy chip
-> > +
-> > +    named_lines - defines whether dummy lines should be named, the names are
-> > +                  of the form X-Y where X is the chip's label and Y is the
-> > +                  line's offset
-> > +
-> > +Note: only num_lines is mandatory.
-> > +
-> > +Chips can be dynamically removed by writing the chip's label to
-> > +"delete_device". For example:
-> > +
-> > +.. code-block:: sh
-> > +
-> > +    echo "gpio-mockup.0" > /sys/kernel/debug/gpio-mockup/delete_device
-> > +
-> > +Creating simulated chips using module params
-> > +--------------------------------------------
-> > +
-> > +Note: this is an older, now deprecated method kept for backward compatibility
-> > +for user-space tools.
-> > +
-> > +When loading the gpio-mockup driver a number of parameters can be passed to the
-> > +module.
-> > +
-> > +    gpio_mockup_ranges
-> > +
-> > +        This parameter takes an argument in the form of an array of integer
-> > +        pairs. Each pair defines the base GPIO number (if any) and the number
-> > +        of lines exposed by the chip. If the base GPIO is -1, the gpiolib
-> > +        will assign it automatically.
-> > +
-> > +        Example: gpio_mockup_ranges=-1,8,-1,16,405,4
-> > +
-> > +        The line above creates three chips. The first one will expose 8 lines,
-> > +        the second 16 and the third 4. The base GPIO for the third chip is set
-> > +        to 405 while for two first chips it will be assigned automatically.
-> > +
-> > +    gpio_named_lines
-> > +
-> > +        This parameter doesn't take any arguments. It lets the driver know that
-> > +        GPIO lines exposed by it should be named.
-> > +
-> > +        The name format is: gpio-mockup-X-Y where X is the letter associated
-> > +        with the mockup chip and Y is the line offset.
->
-> Where does this 'X' letter associated with the mockup chip come from?
->
-> > +
-> > +Manipulating simulated lines
-> > +----------------------------
-> > +
-> > +Each mockup chip creates its own subdirectory in /sys/kernel/debug/gpio-mockup/.
-> > +The directory is named after the chip's label. A symlink is also created, named
-> > +after the chip's name, which points to the label directory.
-> > +
-> > +Inside each subdirectory, there's a separate attribute for each GPIO line. The
-> > +name of the attribute represents the line's offset in the chip.
-> > +
-> > +Reading from a line attribute returns the current value. Writing to it (0 or 1)
-> > +changes its pull.
->
-> What does "pull" mean here?
+> Have you considered switching to XArray API?
 >
 
-Yeah I should probably clarify this. "Pull" here means a simulated
-pull-down/up resistor basically.
+IDA uses an xarray internally but wraps it in a more straightforward
+API. No need to use the low-level API IMO.
 
 Bart
