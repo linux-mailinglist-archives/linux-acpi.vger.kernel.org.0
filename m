@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C2F2603D9
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279162603C3
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 19:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729290AbgIGRze (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 13:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
+        id S1729048AbgIGRyZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 13:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728846AbgIGLWK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 07:22:10 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E15D9C0617A2
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 04:05:10 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id b6so13528840iof.6
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 04:05:10 -0700 (PDT)
+        with ESMTP id S1728877AbgIGLWc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 07:22:32 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C290C0617AA
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Sep 2020 04:06:05 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id r25so2590692ioj.0
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Sep 2020 04:06:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=D7L/Q4DJFDyy3wME7bzPuJcv0cvFqGwJhESn1U89F5s=;
-        b=nSd/soCN0apStHfecRk/s8TMfk39mqUYPzh0zB/X6CwR4xUJSFFU0FnKp+tCRk7Dxr
-         dxSOcRUml8zVB79Fm2ThAGwZhIwsZ9OPmOav7mp6gqCv2iIgBSeA1XcFFigkWUwrAK5g
-         9ndJPPydL6JRbTIBSOe3jO9NlRlqGqnPBFwmtIdWaVf0VLsqOiLVD+eqxcWPZTRO07W7
-         is0PyDyIhur30ZJJ3E4ZHzRu488xo7wU4cH2gwBwuSF1nT5thgx8mQqsqsWBwrJymYo4
-         fK3WRuZDjVxGovSSlKSdckuotXq/ExsbHzIplL+6mbf3IlXZbkQt1rlDd+5u09yoRPvf
-         zCdQ==
+        bh=og92g0L7hPgsl8mDF4E0oRjHENzkIz2/kCylVnn3aEQ=;
+        b=VSQj3CfqsFG0w0R6IxVFzdq16ii5bv8V7LWtx8mdfazpSH82uYeoie36r4Ix/aZNjm
+         rmVIDi989E2n1MmojSJDRlZiGBvVEppkRQQqi+m2pKrwISBsxj1Lyea4x+266sVik2qY
+         OA2+Cm2PT2j/75XX1RvwMBLLB+a1zyBDo/aP4SupJprcZ0fs8AlJMMAoFxNbUoXlo2Q/
+         cPLuCtWe3tFYJQWyLmkPdYjafhnQ3Ma9gOcMyXCU1Q+FffNcDNQpPq4dyoC3Qf+Glj82
+         PPSJeJjKB5BAqYlhuj7vUVP+okdpZmjCcraoI8gLNg5Ltv/AR8UzUnwVVaXtjr5r889n
+         9JmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=D7L/Q4DJFDyy3wME7bzPuJcv0cvFqGwJhESn1U89F5s=;
-        b=lq7BirdK2Z5SqZTy5kiCWVA1EE6rHqoi1ON2+3OeokK98S3pb1ybqixzxxeaDX4cnU
-         EBtUXpqkkN5sLkfmFxSm4P9Cok8joK1lQl98TxIJIF5dV6PppgmqxHNETlx9LuKLYpvs
-         yt78Zopevp7++wUELq+pNiobxG/vSghDKibOCPiYydUcVHvf9/iLw5QvK9RzsijK/MzU
-         7kfciD7oSleHbXElXwsmqafEKig2msTwpzP//Dm9EJkzBvrHS0HK7IQP1oAW52IjP6yC
-         HALzE2VphHqJHL+kwNPV8K2chQmcPjUPPIOXgF03xsQh2RlZ4LFsX8pS72Q6aqrm8CDM
-         uaSQ==
-X-Gm-Message-State: AOAM530KrCfceRhyKAkWOF1y0dtvKXISNLvo6RFqmf63kAFw8tCzbweM
-        DHvNLp+Pbnn/WHUNENZ5Jfzn23t2+Bv6khcT35g03Q==
-X-Google-Smtp-Source: ABdhPJz3NFAUNOM8h+eBu94NlN0+qbyZT3uPxFzJlrWhGBVdmuhRiYP3jSvAoS1qQWhXj2axsT/rlnUltkSo/hZcc5c=
-X-Received: by 2002:a02:7817:: with SMTP id p23mr8145520jac.57.1599476710278;
- Mon, 07 Sep 2020 04:05:10 -0700 (PDT)
+        bh=og92g0L7hPgsl8mDF4E0oRjHENzkIz2/kCylVnn3aEQ=;
+        b=okgnKCMPLZVd5/YsmPvo4Kz7U+B6JiptOzGUCwRly5IAKYpg9qtj7ObOl+494Gx3C0
+         zouVJglVB6DOWn7W8RgDGR35yCwd0wS0erhl5rHiQF3VLSJ2M4NyhXmEUxhwV6nE+N2t
+         5bND9WZz2NzSKFPr6nWIynFAC0FfS2xJrzBHIGCz6bBGx0/EOurwYS3/nO1wgXoYwckk
+         Nh6G1L5UXT5HEyUlLE/DFqJzMPvItCKNUrjfxEpVIpD2cvicL8QwjiCn0U9HiXoDUjXu
+         gKzYwFzRmA/F8Y0RrLlP2zyeCtolG6AwwTLvQfMQJFS763kwUMMXDSqx2+XlyG37j40h
+         l6Zg==
+X-Gm-Message-State: AOAM53041ax1uYuvcPrGSOrS7UQsv5hCyExjiQuq23hd1AbRyIvzbu80
+        9WnzK2zo6bAcMbsQ60rF6uLAyw/KLk5dwr4fjKSvjw==
+X-Google-Smtp-Source: ABdhPJyod5VJBi59vRhPy1AeFPICUDWH+c8TTmKc169CEOJtj3iVYBKBHtDG0vSqtP6YjcYurac6iPQb5KedcXxThBY=
+X-Received: by 2002:a5d:8352:: with SMTP id q18mr3579085ior.31.1599476765032;
+ Mon, 07 Sep 2020 04:06:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-11-brgl@bgdev.pl>
- <20200904170028.GG1891694@smile.fi.intel.com>
-In-Reply-To: <20200904170028.GG1891694@smile.fi.intel.com>
+References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-17-brgl@bgdev.pl>
+ <20200904165029.GD1891694@smile.fi.intel.com>
+In-Reply-To: <20200904165029.GD1891694@smile.fi.intel.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 7 Sep 2020 13:04:59 +0200
-Message-ID: <CAMRc=Mc3V_BJ88CrB_q0uTHjvqVf5XEkm6BJZwrVjnVhPjiYaQ@mail.gmail.com>
-Subject: Re: [PATCH 10/23] gpio: mockup: fix resource leak in error path
+Date:   Mon, 7 Sep 2020 13:05:54 +0200
+Message-ID: <CAMRc=MfrYJrkX2RfjXkCLtyzkM8MemTuUgEu_n-E+2mngk9mbA@mail.gmail.com>
+Subject: Re: [PATCH 16/23] gpio: mockup: refactor the module init function
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -67,19 +67,23 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 4, 2020 at 7:00 PM Andy Shevchenko
+On Fri, Sep 4, 2020 at 6:57 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Fri, Sep 04, 2020 at 05:45:34PM +0200, Bartosz Golaszewski wrote:
+> On Fri, Sep 04, 2020 at 05:45:40PM +0200, Bartosz Golaszewski wrote:
 > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > >
-> > If the module init function fails after creating the debugs directory,
-> > it's never removed. Add proper cleanup calls to avoid this resource
-> > leak.
+> > This is in preparation for dynamically created chips.
+> >
+> > Let's split out the code that can be reused when creating chips at
+> > run-time. Let's also move the code preparing the device properties into
+> > a separate routine. This has the advantage of simplifying the error
+> > handling.
 >
-> Does it fix existing bug?
+> Almost all contents of this patch should go to proposed helper as I mentioned
+> before. Will make this patch quite small and understandable.
+>
 
-You mean - should it go into stable? The bug is quite unlikely but
-yeah, probably.
+Sorry, I'm not sure what you're referring to.
 
 Bart
