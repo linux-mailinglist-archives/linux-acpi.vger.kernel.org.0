@@ -2,79 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D486E25F612
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 11:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 762B025F624
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 11:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbgIGJNM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 05:13:12 -0400
-Received: from mga14.intel.com ([192.55.52.115]:40067 "EHLO mga14.intel.com"
+        id S1728093AbgIGJRA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 05:17:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:58306 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727953AbgIGJNL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Sep 2020 05:13:11 -0400
-IronPort-SDR: VWpXt9nXXaR3NWac2WCA3HFMB9X99PxSN+K9Br223HBz6lmf4U/i4ldK9Vowa5wbod0mlAVBBV
- 6chxCEyXwAaA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9736"; a="157239934"
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="157239934"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2020 02:13:10 -0700
-IronPort-SDR: /eFKzWvQQ1MC7nTjKRmxR7AVgtHmA2+47L/kVt40vQWLOIC66fd2mu/ulOkEPgesu/YEf7AobO
- aCTXYAiB712Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,401,1592895600"; 
-   d="scan'208";a="406780353"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 07 Sep 2020 02:13:08 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 07 Sep 2020 12:13:07 +0300
-Date:   Mon, 7 Sep 2020 12:13:07 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 4/4] device property: Move fwnode_connection_find_match()
- under drivers/base/property.c
-Message-ID: <20200907091307.GA3042948@kuha.fi.intel.com>
-References: <20200904125123.83725-1-heikki.krogerus@linux.intel.com>
- <20200904125123.83725-5-heikki.krogerus@linux.intel.com>
- <20200907090414.GE1101646@kroah.com>
+        id S1727122AbgIGJRA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Sep 2020 05:17:00 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B82691FB;
+        Mon,  7 Sep 2020 02:16:58 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06F793F66E;
+        Mon,  7 Sep 2020 02:16:54 -0700 (PDT)
+Date:   Mon, 7 Sep 2020 10:16:49 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Jim Quinlan <james.quinlan@broadcom.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" 
+        <linux-pci@vger.kernel.org>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
+        <devicetree@vger.kernel.org>,
+        "open list:DRM DRIVERS FOR ALLWINNER A10" 
+        <dri-devel@lists.freedesktop.org>, Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Julien Grall <julien.grall@arm.com>,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:ALLWINNER A10 CSI DRIVER" <linux-media@vger.kernel.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>
+Subject: Re: [PATCH v11 00/11] PCI: brcmstb: enable PCIe for STB chips
+Message-ID: <20200907091649.GA6428@e121166-lin.cambridge.arm.com>
+References: <20200824193036.6033-1-james.quinlan@broadcom.com>
+ <b19bc982-a0c4-c6ff-d8f5-650f2b3a83c8@gmail.com>
+ <20200827063517.GA4637@lst.de>
+ <CA+-6iNy3U9pO0Bykzgvb9n9fcsBi6FiatLdpA1s0HgQNWZ49mg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200907090414.GE1101646@kroah.com>
+In-Reply-To: <CA+-6iNy3U9pO0Bykzgvb9n9fcsBi6FiatLdpA1s0HgQNWZ49mg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 07, 2020 at 11:04:14AM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Sep 04, 2020 at 03:51:23PM +0300, Heikki Krogerus wrote:
-> > The function is now only a helper that searches the
-> > connection from device graph and then by checking if the
-> > supplied connection identifier matches a property that
-> > contains reference.
-> > 
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > ---
-> >  .../driver-api/device_connection.rst          |  43 --------
-> >  drivers/base/Makefile                         |   2 +-
-> >  drivers/base/devcon.c                         | 101 ------------------
-> >  drivers/base/property.c                       |  73 +++++++++++++
-> >  include/linux/device.h                        |   9 --
-> >  include/linux/property.h                      |  14 +++
-> >  6 files changed, 88 insertions(+), 154 deletions(-)
-> >  delete mode 100644 Documentation/driver-api/device_connection.rst
-> 
-> You also removed the documentation in this patch, which would have been
-> fine if you had mentioned it in the changelog text :(
-> 
-> I'll go queue up the first 3 patches of this series, can you split this
-> up into two?
+On Thu, Aug 27, 2020 at 09:29:59AM -0400, Jim Quinlan wrote:
+> On Thu, Aug 27, 2020 at 2:35 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > On Tue, Aug 25, 2020 at 10:40:27AM -0700, Florian Fainelli wrote:
+> > > Hi,
+> > >
+> > > On 8/24/2020 12:30 PM, Jim Quinlan wrote:
+> > >>
+> > >> Patchset Summary:
+> > >>    Enhance a PCIe host controller driver.  Because of its unusual design
+> > >>    we are foced to change dev->dma_pfn_offset into a more general role
+> > >>    allowing multiple offsets.  See the 'v1' notes below for more info.
+> > >
+> > > We are version 11 and counting, and it is not clear to me whether there is
+> > > any chance of getting these patches reviewed and hopefully merged for the
+> > > 5.10 merge window.
+> > >
+> > > There are a lot of different files being touched, so what would be the
+> > > ideal way of routing those changes towards inclusion?
+> >
+> > FYI, I offered to take the dma-mapping bits through the dma-mapping tree.
+> > I have a bit of a backlog, but plan to review and if Jim is ok with that
+> > apply the current version.
+> Sounds good to me.
 
-Sure. I'll do that.
+Hi Jim,
 
-thanks,
+is the dependency now solved ? Should we review/take this series as
+is for v5.10 through the PCI tree ?
 
--- 
-heikki
+Thanks,
+Lorenzo
