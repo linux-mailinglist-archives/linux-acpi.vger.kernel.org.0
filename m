@@ -2,106 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7311B25FCF3
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 17:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89E725FE14
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Sep 2020 18:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730178AbgIGPYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Sep 2020 11:24:22 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37592 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730160AbgIGPXl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Sep 2020 11:23:41 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 37so12538859oto.4;
-        Mon, 07 Sep 2020 08:23:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Wvn2btk6OaWtKKqXcuwG3Mb/+3b+ZXDIOngM0aY6pjg=;
-        b=XaZEXWy8EsoZxu7hvbr+cnQ3Hin3RWQ1fuJLNPsMPjsPv6EDRziGnxqs2Fbr+dfjcG
-         Ox6fVe4oOT8VJsy84s/NkwPMzos2s5zuEvQ0QflC0o1nIpszoE5y+9fCNZEzfaAnud/D
-         zk6fV9oQPHhcvXleqvlXUamb99OtAr9zbImODajj5Msbtcl4hcv92KtrbsxGHV1FIdxe
-         EZprnfRxnnE0X5IDVr+PPM8CNc9JoEx+oo8/XQJcD0PG/SBTc2yK5z+o8ha5rrdrS1js
-         mQY3hkA0tPtBXeJiozZqeP/d9yNH2PhVQgryNLQkZK1flJTyZvq7iGLvoxVr+iTGAcIP
-         y95A==
-X-Gm-Message-State: AOAM532o2EfFivRcmR3froIablVXkmDiCsY3Nkir9h2m4UP2rDsSmTn6
-        jjjV5JveTvQ7CoJJlJirP3j/gBSAkUUbupDD4m8=
-X-Google-Smtp-Source: ABdhPJyDwgT+6M2sQy7tGvosk035vPyDVZyUNCPmIeCmF3kluyMlyIYL0NDIKleeHYd1wrhn0a3Lngnt0gBXEn3ic7M=
-X-Received: by 2002:a05:6830:1008:: with SMTP id a8mr13928569otp.107.1599492220372;
- Mon, 07 Sep 2020 08:23:40 -0700 (PDT)
+        id S1730292AbgIGQGM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Sep 2020 12:06:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58140 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730308AbgIGQGE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Sep 2020 12:06:04 -0400
+Received: from localhost.localdomain (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C379E2080A;
+        Mon,  7 Sep 2020 16:06:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599494763;
+        bh=YlOm7PO2xV5e/CZRpqTxMonNUO2cZ/+UjCy+doAEfAg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Xnbj6ZRhSgaPvGGBub3MrAyWTkZiPioVzI7sXjMEgkC+mgkV+C3dOytGiNhVEAO88
+         bi2AtxyVF2IW5r1V6GemH4n9KKxZEvkD1ifmxK2VlYG1emVseqakSUNJifyvsjiY15
+         7CU2ai/k6vBDXrw9BSYLs0zb9uMwkJRYq+tNmChw=
+From:   Will Deacon <will@kernel.org>
+To:     lorenzo.pieralisi@arm.com, sudeep.holla@arm.com,
+        Zenghui Yu <yuzenghui@huawei.com>, guohanjun@huawei.com
+Cc:     catalin.marinas@arm.com, kernel-team@android.com,
+        Will Deacon <will@kernel.org>, wanghaibin.wang@huawei.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] ACPI/IORT: Code cleanups
+Date:   Mon,  7 Sep 2020 17:05:39 +0100
+Message-Id: <159948518636.584310.6195489797624791903.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200818063625.980-1-yuzenghui@huawei.com>
+References: <20200818063625.980-1-yuzenghui@huawei.com>
 MIME-Version: 1.0
-References: <20200904154547.3836-1-brgl@bgdev.pl> <20200904154547.3836-24-brgl@bgdev.pl>
- <26ea1683-da8f-30e7-f004-3616e96d56b3@infradead.org> <20200907095932.GU1891694@smile.fi.intel.com>
- <CAMpxmJXvhYOVkZY7LLf=v+o8E2xKTh1RYhLrdVsS9nN1XZ5QJQ@mail.gmail.com>
- <20200907115310.GA1891694@smile.fi.intel.com> <CAMpxmJUfNkko4Rrb4N5CF_rdwRAWGhVr9DSOHfhYyTxYSH7dsQ@mail.gmail.com>
- <20200907122238.GA1849893@kroah.com> <CAMpxmJXM=8oGoPSGg8G8XJ4HXJFrAQ2-_EXrz3rf3+ZmCSWB7g@mail.gmail.com>
- <20200907140829.GL1891694@smile.fi.intel.com>
-In-Reply-To: <20200907140829.GL1891694@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 7 Sep 2020 17:23:28 +0200
-Message-ID: <CAMuHMdV42oUu=af_O=aUVED_Nxce0wnTKTMNNSskaSGT=p5ZMw@mail.gmail.com>
-Subject: Re: [PATCH 23/23] Documentation: gpio: add documentation for gpio-mockup
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kent Gibson <warthog618@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        linux-doc <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Tue, 18 Aug 2020 14:36:23 +0800, Zenghui Yu wrote:
+> * From v1 [1]:
+>   - As pointed out by Hanjun, remove two now unused inline functions.
+>     Compile tested with CONFIG_IOMMU_API is not selected.
+> 
+> [1] https://lore.kernel.org/r/20200817105946.1511-1-yuzenghui@huawei.com
+> 
+> Zenghui Yu (2):
+>   ACPI/IORT: Drop the unused @ops of iort_add_device_replay()
+>   ACPI/IORT: Remove the unused inline functions
+> 
+> [...]
 
-On Mon, Sep 7, 2020 at 4:14 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Mon, Sep 07, 2020 at 03:49:23PM +0200, Bartosz Golaszewski wrote:
-> > On Mon, Sep 7, 2020 at 2:22 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > > On Mon, Sep 07, 2020 at 02:06:15PM +0200, Bartosz Golaszewski wrote:
->
-> ...
->
-> > > Yes it is.  Or at least until you fix all existing users so that if you
-> > > do change it, no one notices it happening :)
-> > >
-> >
-> > Then another question is: do we really want to commit to a stable ABI
-> > for a module we only use for testing purposes and which doesn't
-> > interact with any real hardware.
-> >
-> > Rewriting this module without any legacy cruft is tempting though. :)
->
-> Another thought spoken loudly: maybe it can be unified with GPIO aggregator
-> code? In that case it makes sense.
+Applied to arm64 (for-next/acpi), thanks!
 
-You want to aggregate GPIOs out of thin air?
+[1/2] ACPI/IORT: Drop the unused @ops of iort_add_device_replay()
+      https://git.kernel.org/arm64/c/1ab64cf81489
+[2/2] ACPI/IORT: Remove the unused inline functions
+      https://git.kernel.org/arm64/c/c2bea7a1a1c0
 
-From DT, that would be something like
-
-    gpios = <&gpio1 2>, <0>, <0>, <&gpio2, 5>;
-
-?
-
-For writing into ".../new_device", we could agree on something like "0"
-means not backed by an existing GPIO?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Cheers,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Will
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
