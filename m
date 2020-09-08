@@ -2,168 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A92812618D6
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 20:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B40C7261AD4
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 20:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732177AbgIHSDq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Sep 2020 14:03:46 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44089 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732173AbgIHSDm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 14:03:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599588219;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=awIs+A5+b7iEX4BVYq2CIRQLbcuGHxZWlw3jP/Gsyu4=;
-        b=iE40HQ2eg3uB284gTK7yrJu2dvyxRDte+S1DMjCs16K1ejZM3rVbyvdljLAzBobRFwvdFd
-        Itbw+gCMxR7DQ3x+o7VCG0Zll3cHI1zhSdZHDMBzeLyVgTwaPDyJ+hCXBDVlBbRLaltQMK
-        h54km8QN5s0kaM7DSm4beCGVJ7Z8A/g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-349-eApXzjhRMXu9CMjhByTNBA-1; Tue, 08 Sep 2020 14:03:38 -0400
-X-MC-Unique: eApXzjhRMXu9CMjhByTNBA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A69698015F6;
-        Tue,  8 Sep 2020 18:03:35 +0000 (UTC)
-Received: from [10.36.115.46] (ovpn-115-46.ams2.redhat.com [10.36.115.46])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 695DF7A1F9;
-        Tue,  8 Sep 2020 18:03:32 +0000 (UTC)
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To:     Joao Martins <joao.m.martins@oracle.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     akpm@linux-foundation.org, Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        peterz@infradead.org, ard.biesheuvel@linaro.org,
-        linux-mm@kvack.org, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
- <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
- <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <25856e56-6afd-6efe-a396-f5a50b77f1f6@redhat.com>
-Date:   Tue, 8 Sep 2020 20:03:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1731211AbgIHSkz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Sep 2020 14:40:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731545AbgIHSkq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 14:40:46 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FEC1C061573;
+        Tue,  8 Sep 2020 11:40:46 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id j34so170803pgi.7;
+        Tue, 08 Sep 2020 11:40:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ncubfhN3Rgh8bRdqASDrtWtN1Ij2GRQGx0YQSulIwdg=;
+        b=u6QZQvi0lnx12bnpjbpbuCLvlmoAabUDpBpjlFY8mgWEy/EtCrDG52lGX5V+CGcoWq
+         wP5kZaMcdxLmTuL3hyxKhgRP/QH2i8ozfRJHD27QUCIfOEGF9/Y0XG/7uVfXzna8q96C
+         dv+Vd7GzgKpyCtJlkp0/qAV9XzgAbtaySfHpdsWdD0mMPvlbY6Dgx/m/I9ZNEn40yRe8
+         n4bHkeWIHH3J+hrHct3ddar7m7Q+xOfrF5eTqkUEK/zqFLbmDaFlUQf8lzcopSWZTtxn
+         O1MYQHDVjO/1Ey+p7dhRBFH3tQrtLj+9/+O0evhvP/D1FkT35wtY2MNi4oSj2Q+0//x7
+         ZyIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ncubfhN3Rgh8bRdqASDrtWtN1Ij2GRQGx0YQSulIwdg=;
+        b=pD8HL5R75NEJien2m3n2eUECMEgaSsgb7VokM7UO8nCEjftnZGJEJxm/hCS+dNrh74
+         cYSsvCju5DNsEZUjPOhb+KuMgJ57UUPwHwvbR9Se1IVefqtCekR8SK3Ij2wfd+2k+T0N
+         iZVgkqrnNXH/siaGm0RRN3cBMmKeNmyb13Q+7Syukctr/0vD06DIoO0kYROAgONDwE98
+         Qda4yQxy+bU5hYmLJIghTX1i7od9J9Fj9JT7dIYkLB4t6KTTbSUZOEa/93SR0WwwEIgO
+         E2igjHpBnPPikETRSsfH3O7p55+SY8eUg/drU1jNqmoVQnD/1yj7NAct8CI12UmDFIU9
+         P/KQ==
+X-Gm-Message-State: AOAM530Fdnfnj+3PI0VdIOq4OfmNoc7gFiEwa8FuIuyoRxoMr/8C+JR8
+        tEVSduF90uH5RxgSa633f5HWyBKC47H6a7n5MRo=
+X-Google-Smtp-Source: ABdhPJzY65qjbadQFRobtds2jaaACl/9kmkC9wPQqUtQ2kQgshvPRbqr6vV6keiz30dJy2nV9wgnZOMWApPPJtXzMEA=
+X-Received: by 2002:a05:6a00:22c5:: with SMTP id f5mr83596pfj.163.1599590445545;
+ Tue, 08 Sep 2020 11:40:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+References: <20200908171934.1661509-1-luzmaximilian@gmail.com>
+In-Reply-To: <20200908171934.1661509-1-luzmaximilian@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 8 Sep 2020 21:40:28 +0300
+Message-ID: <CAHp75VevrwKaba_FsZj-nPqJGR9fkmFPzvdCew0wCqF_L6QLbA@mail.gmail.com>
+Subject: Re: [PATCH] platform/x86: Add Driver to set up lid GPEs on MS Surface device
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->>> +		release_mem_region(range.start, range_len(&range));
->>
->> remove_memory() does a release_mem_region_adjustable(). Don't you
->> actually want to release the *unaligned* region you requested?
->>
-> Isn't it what we're doing here?
-> (The release_mem_region_adjustable() is using the same
-> dax_kmem-aligned range and there's no split/adjust)
+On Tue, Sep 8, 2020 at 8:20 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
+>
+> Conventionally, wake-up events for a specific device, in our case the
+> lid device, are managed via the ACPI _PRW field. While this does not
+> seem strictly necessary based on ACPI spec, the kernel disables GPE
+> wakeups to avoid non-wakeup interrupts preventing suspend by default and
+> only enables GPEs associated via the _PRW field with a wake-up capable
+> device. This behavior has been introduced in commit f941d3e41da7 ("ACPI:
+> EC / PM: Disable non-wakeup GPEs for suspend-to-idle") and is described
+> in more detail in its commit message.
+>
+> Unfortunately, on MS Surface devices, there is no _PRW field present on
+> the lid device, thus no GPE is associated with it, and therefore the GPE
+> responsible for sending the status-change notification to the lid gets
+> disabled during suspend, making it impossible to wake the device via the
+> lid.
+>
+> This patch introduces a pseudo-device and respective driver which, based
+> on some DMI matching, marks the corresponding GPE of the lid device for
+> wake and enables it during suspend. The behavior of this driver models
+> the behavior of the ACPI/PM core for normal wakeup GPEs, properly
+> declared via the _PRW field.
 
-Oh, I think I was messing up things (there is just too much going on in
-this patch).
+...
 
-Right, request_mem_region() and add_memory_driver_managed() are - and
-were - called with the exact same range. That would have been clearer if
-the patch would simply use range.start and range_len(&range) for both
-calls (similar in the original code).
+> +#include <linux/platform_device.h>
+> +
+> +
 
-So, also the release calls have to use the same range. Agreed.
+One blank line is enough.
 
-> 
-> Meaning right now (+ parent marked as !BUSY), and if I am understanding
-> this correctly:
-> 
-> request_mem_region(range.start, range_len)
->    __request_region(iomem_res, range.start, range_len) -> alloc @parent
-> add_memory_driver_managed(parent.start, resource_size(parent))
->    __request_region(parent.start, resource_size(parent)) -> alloc @child
-> 
-> [...]
-> 
-> remove_memory(range.start, range_len)
->  request_mem_region_adjustable(range.start, range_len)
->   __release_region(range.start, range_len) -> remove @child
-> 
-> release_mem_region(range.start, range_len)
->   __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
-> 
-> The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
-> unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
+...
 
-Interesting, I can only tell that virtio-mem expects that
-remove_memory() won't remove the parent resource (which is !BUSY). So it
-relies on the existing functionality.
+> +       .gpe_number = 0x17,
+> +       .gpe_number = 0x4D,
+> +       .gpe_number = 0x4F,
+> +       .gpe_number = 0x57,
 
-I do wonder how walk_system_ram_range() behaves if both the parent and
-the child are BUSY. Looking at it, I think it will detect the parent and
-skip to the next range (without visiting the child) - which is not what
-we want.
+From where these numbers come from? Can we get them from firmware (ACPI)?
 
-We could set the parent to BUSY just before doing the
-release_mem_region() call, but that feels like a hack.
+...
 
-Maybe it's just easier to keep dax_kmem_res around ...
+> +       { }
+> +};
+> +
+> +
+
+One is enough. Same for other places.
+
+...
+
+> +static int surface_gpe_suspend(struct device *dev)
+> +{
+> +       const struct surface_lid_device *lid;
+> +
+> +       lid = dev_get_platdata(dev);
+
+There is enough room to put this assignment directly into definition.
+
+> +       return surface_lid_enable_wakeup(dev, lid, true);
+> +}
+> +
+> +static int surface_gpe_resume(struct device *dev)
+> +{
+> +       const struct surface_lid_device *lid;
+> +
+> +       lid = dev_get_platdata(dev);
+
+Ditto.
+
+> +       return surface_lid_enable_wakeup(dev, lid, false);
+> +}
+
+...
+
+> +static int surface_gpe_probe(struct platform_device *pdev)
+> +{
+> +       const struct surface_lid_device *lid;
+> +       int status;
+> +
+
+> +       lid = dev_get_platdata(&pdev->dev);
+> +       if (!lid)
+> +               return -ENODEV;
+
+Can we use software nodes?
+
+> +       status = acpi_mark_gpe_for_wake(NULL, lid->gpe_number);
+> +       if (status) {
+> +               dev_err(&pdev->dev, "failed to mark GPE for wake: %d\n", status);
+> +               return -EINVAL;
+> +       }
+> +
+
+> +       status = acpi_enable_gpe(NULL, lid->gpe_number);
+
+Did I miss anything or all calls of enable / disable GPE are using
+NULL as a first parameter? What the point in such case?
+
+> +       if (status) {
+> +               dev_err(&pdev->dev, "failed to enable GPE: %d\n", status);
+> +               return -EINVAL;
+> +       }
+> +
+> +       status = surface_lid_enable_wakeup(&pdev->dev, lid, false);
+> +       if (status) {
+> +               acpi_disable_gpe(NULL, lid->gpe_number);
+> +               return status;
+> +       }
+> +
+> +       return 0;
+> +}
+
+...
+
+> +static void __exit surface_gpe_exit(void)
+> +{
+
+> +       if (!surface_gpe_device)
+> +               return;
+
+This is redundant check.
+
+> +       platform_device_unregister(surface_gpe_device);
+> +       platform_driver_unregister(&surface_gpe_driver);
+> +}
+> +
+
+> +module_init(surface_gpe_init);
+> +module_exit(surface_gpe_exit);
+
+Attach each to the corresponding method w/o blank line in between.
+
+...
+
+> +MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro:*");
+> +MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro4:*");
+
+Can simply
+
+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurface*:*");
+
+work?
 
 -- 
-Thanks,
-
-David / dhildenb
-
+With Best Regards,
+Andy Shevchenko
