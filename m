@@ -2,60 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FBB261C4B
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 21:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E3A261EE5
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 21:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731155AbgIHTRj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Sep 2020 15:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731156AbgIHQDg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 12:03:36 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16B06C061757
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Sep 2020 09:03:36 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id m17so17659467ioo.1
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Sep 2020 09:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=1MR7w5pXZSiUaRJ6XXYmBVR/BBCArAfXUnOrJ4PHyTw=;
-        b=MjXM83zLOXNKdHSp5IA8DiI39j+6GqvCCxSSGLeDVLAnp9aw1qy1rSY+g2Mo1hSYlI
-         5n3+mGvQXr8VfjwBBwuK3468iGR8pregKtr+YmfvjdAOLC0jX4V878xa7XCJebABJAKc
-         hZznkyHLJpEwaNSK3yDSXPQ7gGdvO4gcpv7Z3tIJ/K7/LFnQIkj9eTSM4Egq8YDcU2rm
-         0M0NsctVV+FhKjNzlknLplnTrBAwVZH64FOwtA+DFuJCmZUx5QlN1CVFZldKHOjC2Sq4
-         HgfX4qUBFkGLq4YldwKTdF97QaI+Ge0TBTVwzO7saDo0g7rlwdt1Cv1Ja6A9dFtmBdW1
-         MVEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=1MR7w5pXZSiUaRJ6XXYmBVR/BBCArAfXUnOrJ4PHyTw=;
-        b=eDxjhFa1dqjpVUQyz48OjPsSPjDEfUQoskF2mHVkb7HOAiSwPlbW5RSv3NtcuiCKAT
-         KbSCydVY5uCSoAed6MaTl0yWxvRbBZiWS7DL7VWBbosfkz0knwmRihb8kseHpkhtRF5L
-         8fwsT0VYG+nF4robDpXOzRpFcnzzT6DIbxomMs3+Ocq5O1JvkHRZ6V6ZMG2hCn7j/1az
-         bF2ASy2iTz2PWaJgIE/dgeJtFKam1cxlWo8RragNHVwNsFQ2SDmt8R0yk10+9Lr27F9K
-         4AaWEDEcKaa8CtBU/Sh9ppyyIL2gSVy6sVUltnrA4UBmOT0+ZnKm7KEKgEYCRBV6P+nh
-         r4WA==
-X-Gm-Message-State: AOAM533Q4B1xH5I3eTyOcrkEw1orCl3nOClj1hn52HzPHPs2O0ADd8jq
-        ksEjB4DRA54sNwd8EzUduVwkJWOxQXWt/q36GS4=
-X-Google-Smtp-Source: ABdhPJxn5ageiv0NMgyQA9QoFQHtaJX9u137Q2d3JlZfxknlh29kmCW/blff68kVnBAEKZ9j0sP57W5AJLorib4gIkw=
-X-Received: by 2002:a02:7785:: with SMTP id g127mr13960211jac.27.1599581015454;
- Tue, 08 Sep 2020 09:03:35 -0700 (PDT)
+        id S1730576AbgIHT4h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Sep 2020 15:56:37 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:60750 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730560AbgIHPgp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 11:36:45 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 088FYRJn136537;
+        Tue, 8 Sep 2020 15:35:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=15pWPW/Ca41cmRWLeuMPyWbmipPwtweDunpubNIoPPI=;
+ b=SVXTsDpSFwpPl2YQu4pQGURdmipzP4knX+vFsNr4Xf+nYLSlX4XYR3f5uayYcU6bwbQh
+ rcWTxvH+qvnR5sfSliFIEg2QsTwDOZNTnXCp34PVu8bDs8lF5qFuQHDBAgxTtE3hUiFm
+ EWHwEyXn4VAidUm5YyZA6h8Lnix8nXCgpJXSLuEMSUsz36PEPYCLv3TjVZDvzUt+/v8R
+ uK1J8X+kMM8nCHSLIkuXWdDSsCkesnZ0a3wwnjae04wdh9PSq3WECNNilly14CPKB0pA
+ zasqVOZyIhdi6ZesycNYUEZ7FmfAFl+ZwoK+c/Cv7TIn9f9n0wpdei+xbWpluqBLeeDC Mw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 33c2mkvaj2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 08 Sep 2020 15:35:32 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 088FTXks100262;
+        Tue, 8 Sep 2020 15:33:32 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 33dacj1nk1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Sep 2020 15:33:32 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 088FXTdr008498;
+        Tue, 8 Sep 2020 15:33:30 GMT
+Received: from [10.175.177.246] (/10.175.177.246)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 08 Sep 2020 08:33:29 -0700
+Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
+To:     David Hildenbrand <david@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     akpm@linux-foundation.org, Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        peterz@infradead.org, ard.biesheuvel@linaro.org,
+        linux-mm@kvack.org, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
+From:   Joao Martins <joao.m.martins@oracle.com>
+Message-ID: <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
+Date:   Tue, 8 Sep 2020 16:33:25 +0100
 MIME-Version: 1.0
-Received: by 2002:a02:cb45:0:0:0:0:0 with HTTP; Tue, 8 Sep 2020 09:03:35 -0700 (PDT)
-From:   Tricia Smith <triciatricia841@gmail.com>
-Date:   Tue, 8 Sep 2020 20:33:35 +0430
-X-Google-Sender-Auth: sla7VmIYmjc_f3kOK7Me2Mo49QQ
-Message-ID: <CAMx0FwUHsRvoanBQyium4wcru5wyhKFLxO9myj_c7jrh8=pwbQ@mail.gmail.com>
-Subject: Re: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ bulkscore=0 phishscore=0 adultscore=0 suspectscore=1 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080148
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 suspectscore=1 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080148
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dear, I am Miss Tricia Smith the only Daughter/Child of late Mr and
-Mrs William Smith. I am 18 years old. Please i have something very
-important and confidential to discuss with you.
+[Sorry for the late response]
+
+On 8/21/20 11:06 AM, David Hildenbrand wrote:
+> On 03.08.20 07:03, Dan Williams wrote:
+>> @@ -37,109 +45,94 @@ int dev_dax_kmem_probe(struct device *dev)
+>>  	 * could be mixed in a node with faster memory, causing
+>>  	 * unavoidable performance issues.
+>>  	 */
+>> -	numa_node = dev_dax->target_node;
+>>  	if (numa_node < 0) {
+>>  		dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
+>>  				numa_node);
+>>  		return -EINVAL;
+>>  	}
+>>  
+>> -	/* Hotplug starting at the beginning of the next block: */
+>> -	kmem_start = ALIGN(range->start, memory_block_size_bytes());
+>> -
+>> -	kmem_size = range_len(range);
+>> -	/* Adjust the size down to compensate for moving up kmem_start: */
+>> -	kmem_size -= kmem_start - range->start;
+>> -	/* Align the size down to cover only complete blocks: */
+>> -	kmem_size &= ~(memory_block_size_bytes() - 1);
+>> -	kmem_end = kmem_start + kmem_size;
+>> -
+>> -	new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
+>> -	if (!new_res_name)
+>> +	res_name = kstrdup(dev_name(dev), GFP_KERNEL);
+>> +	if (!res_name)
+>>  		return -ENOMEM;
+>>  
+>> -	/* Region is permanently reserved if hotremove fails. */
+>> -	new_res = request_mem_region(kmem_start, kmem_size, new_res_name);
+>> -	if (!new_res) {
+>> -		dev_warn(dev, "could not reserve region [%pa-%pa]\n",
+>> -			 &kmem_start, &kmem_end);
+>> -		kfree(new_res_name);
+>> +	res = request_mem_region(range.start, range_len(&range), res_name);
+> 
+> I think our range could be empty after aligning. I assume
+> request_mem_region() would check that, but maybe we could report a
+> better error/warning in that case.
+> 
+dax_kmem_range() already returns a memory-block-aligned @range but
+IIUC request_mem_region() isn't checking for that. Having said that
+the returned @res wouldn't be different from the passed range.start.
+
+>>  	/*
+>>  	 * Ensure that future kexec'd kernels will not treat this as RAM
+>>  	 * automatically.
+>>  	 */
+>> -	rc = add_memory_driver_managed(numa_node, new_res->start,
+>> -				       resource_size(new_res), kmem_name);
+>> +	rc = add_memory_driver_managed(numa_node, res->start,
+>> +				       resource_size(res), kmem_name);
+>> +
+>> +	res->flags |= IORESOURCE_BUSY;
+> 
+> Hm, I don't think that's correct. Any specific reason why to mark the
+> not-added, unaligned parts BUSY? E.g., walk_system_ram_range() could
+> suddenly stumble over it - and e.g., similarly kexec code when trying to
+> find memory for placing kexec images. I think we should leave this
+> !BUSY, just as it is right now.
+> 
+Agreed.
+
+>>  	if (rc) {
+>> -		release_resource(new_res);
+>> -		kfree(new_res);
+>> -		kfree(new_res_name);
+>> +		release_mem_region(range.start, range_len(&range));
+>> +		kfree(res_name);
+>>  		return rc;
+>>  	}
+>> -	dev_dax->dax_kmem_res = new_res;
+>> +
+>> +	dev_set_drvdata(dev, res_name);
+>>  
+>>  	return 0;
+>>  }
+>>  
+>>  #ifdef CONFIG_MEMORY_HOTREMOVE
+>> -static int dev_dax_kmem_remove(struct device *dev)
+>> +static void dax_kmem_release(struct dev_dax *dev_dax)
+>>  {
+>> -	struct dev_dax *dev_dax = to_dev_dax(dev);
+>> -	struct resource *res = dev_dax->dax_kmem_res;
+>> -	resource_size_t kmem_start = res->start;
+>> -	resource_size_t kmem_size = resource_size(res);
+>> -	const char *res_name = res->name;
+>>  	int rc;
+>> +	struct device *dev = &dev_dax->dev;
+>> +	const char *res_name = dev_get_drvdata(dev);
+>> +	struct range range = dax_kmem_range(dev_dax);
+>>  
+>>  	/*
+>>  	 * We have one shot for removing memory, if some memory blocks were not
+>>  	 * offline prior to calling this function remove_memory() will fail, and
+>>  	 * there is no way to hotremove this memory until reboot because device
+>> -	 * unbind will succeed even if we return failure.
+>> +	 * unbind will proceed regardless of the remove_memory result.
+>>  	 */
+>> -	rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
+>> -	if (rc) {
+>> -		any_hotremove_failed = true;
+>> -		dev_err(dev,
+>> -			"DAX region %pR cannot be hotremoved until the next reboot\n",
+>> -			res);
+>> -		return rc;
+>> +	rc = remove_memory(dev_dax->target_node, range.start, range_len(&range));
+>> +	if (rc == 0) {
+> 
+> if (!rc) ?
+> 
+Better off would be to keep the old order:
+
+	if (rc) {
+		any_hotremove_failed = true;
+		dev_err(dev, "%#llx-%#llx cannot be hotremoved until the next reboot\n",
+				range.start, range.end);
+	        return;
+	}
+
+	release_mem_region(range.start, range_len(&range));
+	dev_set_drvdata(dev, NULL);
+	kfree(res_name);
+	return;
+
+
+>> +		release_mem_region(range.start, range_len(&range));
+> 
+> remove_memory() does a release_mem_region_adjustable(). Don't you
+> actually want to release the *unaligned* region you requested?
+> 
+Isn't it what we're doing here?
+(The release_mem_region_adjustable() is using the same
+dax_kmem-aligned range and there's no split/adjust)
+
+Meaning right now (+ parent marked as !BUSY), and if I am understanding
+this correctly:
+
+request_mem_region(range.start, range_len)
+   __request_region(iomem_res, range.start, range_len) -> alloc @parent
+add_memory_driver_managed(parent.start, resource_size(parent))
+   __request_region(parent.start, resource_size(parent)) -> alloc @child
+
+[...]
+
+remove_memory(range.start, range_len)
+ request_mem_region_adjustable(range.start, range_len)
+  __release_region(range.start, range_len) -> remove @child
+
+release_mem_region(range.start, range_len)
+  __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
+
+The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
+unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
+
+	Joao
