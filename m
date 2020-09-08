@@ -2,465 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 401BF2616D3
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 19:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A92812618D6
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Sep 2020 20:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731436AbgIHRUW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Sep 2020 13:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731777AbgIHRUA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 13:20:00 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8362C061573;
-        Tue,  8 Sep 2020 10:19:59 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id lo4so23670788ejb.8;
-        Tue, 08 Sep 2020 10:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/G8U6qRbpYdxoFwEoIuRY1gkZwK1gUugIR3g5iQ6d2M=;
-        b=iyHE6Gq7oHcnkWzN6yPIAhIE5ulj0HkkFrm6ne5jzMsmLT1ET5uTQHZgkKM4Hz0W0S
-         BFyMLSiL1rZTBB1TUjlfvMIp01R9QwfSlHzP9tbSsE68sOtmX6un4SUnOf/R4tWOgujr
-         G+xjYVUENMuViHMI5X4VO/dN61wqI7DTCaj2Lcz76jEOHhWngiK42a9kj+qQAiLBIcHG
-         UT07c+03pIbl65TGeduuQOwfXCYsEIz8HnuqF1Lq6DNw91B7tr0agV5JOAF8/yq6zbF1
-         qdNqzqer0seVjbX4vq7+3cU3wh6OGJHCNXIfDQYWpVnD2O1pRsfZD98485S3BUTQkzbk
-         20Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/G8U6qRbpYdxoFwEoIuRY1gkZwK1gUugIR3g5iQ6d2M=;
-        b=Xo/iV9G0MlE+aOvuRzC07SjIEDnw1+/o30eJSPWBOlLlOpsSdF/dCwequc5sVpluBD
-         C73AKsNXqIQe/3kD5uf3IpsIEMxEoraQJy75pm67Hz3Im5BPii1793TLZVogn6NfQxp9
-         o/PIdUKyv5IsoxudmC0xEeZe48UIXz1bPwPBHj0Ewuc3kWtJA2ybaWws+mjJfgazq20/
-         i88f26qdtMYFk8+FvWiIVgkmoVVLnF991vGx39Bjm++co4al1AXa+6So0rMbrlS2aWQ3
-         EDa2b33gJCM1Kul1KTqjtBQCyp9t7IieU6kkby6Ex59LthZFGb/bD/a8DRemh/EpnQS2
-         jdrg==
-X-Gm-Message-State: AOAM531PtpSGH8r4DMSeyK6WA/vU23Ljc4Umf1g9VtBFpxH7/YEZEuHo
-        p4ft4I8rVN3LeSh319m2FSk=
-X-Google-Smtp-Source: ABdhPJyR1+YvlBMoQk+EucGm0hQhfGfXAXxe34Wt3bdPaiGIMjU13o5dvG+AD3HrqAh098QYi9nkWg==
-X-Received: by 2002:a17:906:a251:: with SMTP id bi17mr26655796ejb.526.1599585598219;
-        Tue, 08 Sep 2020 10:19:58 -0700 (PDT)
-Received: from xws.fritz.box (p5487bef6.dip0.t-ipconnect.de. [84.135.190.246])
-        by smtp.gmail.com with ESMTPSA id os15sm18751673ejb.61.2020.09.08.10.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2020 10:19:57 -0700 (PDT)
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>
-Subject: [PATCH] platform/x86: Add Driver to set up lid GPEs on MS Surface device
-Date:   Tue,  8 Sep 2020 19:19:34 +0200
-Message-Id: <20200908171934.1661509-1-luzmaximilian@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        id S1732177AbgIHSDq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Sep 2020 14:03:46 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44089 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1732173AbgIHSDm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Sep 2020 14:03:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599588219;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=awIs+A5+b7iEX4BVYq2CIRQLbcuGHxZWlw3jP/Gsyu4=;
+        b=iE40HQ2eg3uB284gTK7yrJu2dvyxRDte+S1DMjCs16K1ejZM3rVbyvdljLAzBobRFwvdFd
+        Itbw+gCMxR7DQ3x+o7VCG0Zll3cHI1zhSdZHDMBzeLyVgTwaPDyJ+hCXBDVlBbRLaltQMK
+        h54km8QN5s0kaM7DSm4beCGVJ7Z8A/g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-349-eApXzjhRMXu9CMjhByTNBA-1; Tue, 08 Sep 2020 14:03:38 -0400
+X-MC-Unique: eApXzjhRMXu9CMjhByTNBA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A69698015F6;
+        Tue,  8 Sep 2020 18:03:35 +0000 (UTC)
+Received: from [10.36.115.46] (ovpn-115-46.ams2.redhat.com [10.36.115.46])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 695DF7A1F9;
+        Tue,  8 Sep 2020 18:03:32 +0000 (UTC)
+Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
+To:     Joao Martins <joao.m.martins@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     akpm@linux-foundation.org, Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        peterz@infradead.org, ard.biesheuvel@linaro.org,
+        linux-mm@kvack.org, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
+ <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat GmbH
+Message-ID: <25856e56-6afd-6efe-a396-f5a50b77f1f6@redhat.com>
+Date:   Tue, 8 Sep 2020 20:03:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Conventionally, wake-up events for a specific device, in our case the
-lid device, are managed via the ACPI _PRW field. While this does not
-seem strictly necessary based on ACPI spec, the kernel disables GPE
-wakeups to avoid non-wakeup interrupts preventing suspend by default and
-only enables GPEs associated via the _PRW field with a wake-up capable
-device. This behavior has been introduced in commit f941d3e41da7 ("ACPI:
-EC / PM: Disable non-wakeup GPEs for suspend-to-idle") and is described
-in more detail in its commit message.
+>>> +		release_mem_region(range.start, range_len(&range));
+>>
+>> remove_memory() does a release_mem_region_adjustable(). Don't you
+>> actually want to release the *unaligned* region you requested?
+>>
+> Isn't it what we're doing here?
+> (The release_mem_region_adjustable() is using the same
+> dax_kmem-aligned range and there's no split/adjust)
 
-Unfortunately, on MS Surface devices, there is no _PRW field present on
-the lid device, thus no GPE is associated with it, and therefore the GPE
-responsible for sending the status-change notification to the lid gets
-disabled during suspend, making it impossible to wake the device via the
-lid.
+Oh, I think I was messing up things (there is just too much going on in
+this patch).
 
-This patch introduces a pseudo-device and respective driver which, based
-on some DMI matching, marks the corresponding GPE of the lid device for
-wake and enables it during suspend. The behavior of this driver models
-the behavior of the ACPI/PM core for normal wakeup GPEs, properly
-declared via the _PRW field.
+Right, request_mem_region() and add_memory_driver_managed() are - and
+were - called with the exact same range. That would have been clearer if
+the patch would simply use range.start and range_len(&range) for both
+calls (similar in the original code).
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
----
+So, also the release calls have to use the same range. Agreed.
 
-This driver has been tested (and is currently in use) on various Surface
-models via the linux-surface project [1].
+> 
+> Meaning right now (+ parent marked as !BUSY), and if I am understanding
+> this correctly:
+> 
+> request_mem_region(range.start, range_len)
+>    __request_region(iomem_res, range.start, range_len) -> alloc @parent
+> add_memory_driver_managed(parent.start, resource_size(parent))
+>    __request_region(parent.start, resource_size(parent)) -> alloc @child
+> 
+> [...]
+> 
+> remove_memory(range.start, range_len)
+>  request_mem_region_adjustable(range.start, range_len)
+>   __release_region(range.start, range_len) -> remove @child
+> 
+> release_mem_region(range.start, range_len)
+>   __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
+> 
+> The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
+> unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
 
-[1]: https://github.com/linux-surface/linux-surface
+Interesting, I can only tell that virtio-mem expects that
+remove_memory() won't remove the parent resource (which is !BUSY). So it
+relies on the existing functionality.
 
----
- MAINTAINERS                        |   6 +
- drivers/platform/x86/Kconfig       |  10 +
- drivers/platform/x86/Makefile      |   1 +
- drivers/platform/x86/surface_gpe.c | 298 +++++++++++++++++++++++++++++
- 4 files changed, 315 insertions(+)
- create mode 100644 drivers/platform/x86/surface_gpe.c
+I do wonder how walk_system_ram_range() behaves if both the parent and
+the child are BUSY. Looking at it, I think it will detect the parent and
+skip to the next range (without visiting the child) - which is not what
+we want.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b5cfab015bd61..a9f8400096e16 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11549,6 +11549,12 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
- F:	include/linux/cciss*.h
- F:	include/uapi/linux/cciss*.h
- 
-+MICROSOFT SURFACE GPE LID SUPPORT DRIVER
-+M:	Maximilian Luz <luzmaximilian@gmail.com>
-+L:	platform-driver-x86@vger.kernel.org
-+S:	Maintained
-+F:	drivers/platform/x86/surface_gpe.c
-+
- MICROSOFT SURFACE PRO 3 BUTTON DRIVER
- M:	Chen Yu <yu.c.chen@intel.com>
- L:	platform-driver-x86@vger.kernel.org
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 40219bba68011..cd29ab65f8b15 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -894,6 +894,16 @@ config SURFACE_3_POWER_OPREGION
- 	  This driver provides support for ACPI operation
- 	  region of the Surface 3 battery platform driver.
- 
-+config SURFACE_GPE
-+	tristate "Surface GPE/Lid Support Driver"
-+	depends on ACPI
-+	depends on DMI
-+	help
-+	  This driver marks the GPEs related to the ACPI lid device found on
-+	  Microsoft Surface devices as wakeup sources and prepares them
-+	  accordingly. It is required on those devices to allow wake-ups from
-+	  suspend by opening the lid.
-+
- config SURFACE_PRO3_BUTTON
- 	tristate "Power/home/volume buttons driver for Microsoft Surface Pro 3/4 tablet"
- 	depends on ACPI && INPUT
-diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
-index 5f823f7eff452..58c2a6f52e394 100644
---- a/drivers/platform/x86/Makefile
-+++ b/drivers/platform/x86/Makefile
-@@ -85,6 +85,7 @@ obj-$(CONFIG_INTEL_VBTN)		+= intel-vbtn.o
- obj-$(CONFIG_SURFACE3_WMI)		+= surface3-wmi.o
- obj-$(CONFIG_SURFACE_3_BUTTON)		+= surface3_button.o
- obj-$(CONFIG_SURFACE_3_POWER_OPREGION)	+= surface3_power.o
-+obj-$(CONFIG_SURFACE_GPE)		+= surface_gpe.o
- obj-$(CONFIG_SURFACE_PRO3_BUTTON)	+= surfacepro3_button.o
- 
- # MSI
-diff --git a/drivers/platform/x86/surface_gpe.c b/drivers/platform/x86/surface_gpe.c
-new file mode 100644
-index 0000000000000..b08fa66b948cb
---- /dev/null
-+++ b/drivers/platform/x86/surface_gpe.c
-@@ -0,0 +1,298 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Surface GPE/Lid driver to enable wakeup from suspend via the lid by
-+ * properly configuring the respective GPEs.
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/dmi.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+
-+
-+struct surface_lid_device {
-+	u32 gpe_number;
-+};
-+
-+static const struct surface_lid_device lid_device_l17 = {
-+	.gpe_number = 0x17,
-+};
-+
-+static const struct surface_lid_device lid_device_l4D = {
-+	.gpe_number = 0x4D,
-+};
-+
-+static const struct surface_lid_device lid_device_l4F = {
-+	.gpe_number = 0x4F,
-+};
-+
-+static const struct surface_lid_device lid_device_l57 = {
-+	.gpe_number = 0x57,
-+};
-+
-+// Note: When changing this don't forget to change the MODULE_ALIAS below.
-+static const struct dmi_system_id dmi_lid_device_table[] = {
-+	{
-+		.ident = "Surface Pro 4",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
-+		},
-+		.driver_data = (void *)&lid_device_l17,
-+	},
-+	{
-+		.ident = "Surface Pro 5",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to generic product name
-+			 * "Surface Pro".
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
-+		},
-+		.driver_data = (void *)&lid_device_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 5 (LTE)",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to generic product name
-+			 * "Surface Pro"
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
-+		},
-+		.driver_data = (void *)&lid_device_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 6",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
-+		},
-+		.driver_data = (void *)&lid_device_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 7",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 7"),
-+		},
-+		.driver_data = (void *)&lid_device_l4D,
-+	},
-+	{
-+		.ident = "Surface Book 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
-+		},
-+		.driver_data = (void *)&lid_device_l17,
-+	},
-+	{
-+		.ident = "Surface Book 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
-+		},
-+		.driver_data = (void *)&lid_device_l17,
-+	},
-+	{
-+		.ident = "Surface Book 3",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 3"),
-+		},
-+		.driver_data = (void *)&lid_device_l4D,
-+	},
-+	{
-+		.ident = "Surface Laptop 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
-+		},
-+		.driver_data = (void *)&lid_device_l57,
-+	},
-+	{
-+		.ident = "Surface Laptop 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
-+		},
-+		.driver_data = (void *)&lid_device_l57,
-+	},
-+	{
-+		.ident = "Surface Laptop 3 (Intel 13\")",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to different vairants: The
-+			 * AMD (15") version does not rely on GPEs.
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Laptop_3_1867:1868"),
-+		},
-+		.driver_data = (void *)&lid_device_l4D,
-+	},
-+	{ }
-+};
-+
-+
-+static int surface_lid_enable_wakeup(struct device *dev,
-+				     const struct surface_lid_device *lid,
-+				     bool enable)
-+{
-+	int action = enable ? ACPI_GPE_ENABLE : ACPI_GPE_DISABLE;
-+	acpi_status status;
-+
-+	status = acpi_set_gpe_wake_mask(NULL, lid->gpe_number, action);
-+	if (status) {
-+		dev_err(dev, "failed to set GPE wake mask: %d\n", status);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+
-+static int surface_gpe_suspend(struct device *dev)
-+{
-+	const struct surface_lid_device *lid;
-+
-+	lid = dev_get_platdata(dev);
-+	return surface_lid_enable_wakeup(dev, lid, true);
-+}
-+
-+static int surface_gpe_resume(struct device *dev)
-+{
-+	const struct surface_lid_device *lid;
-+
-+	lid = dev_get_platdata(dev);
-+	return surface_lid_enable_wakeup(dev, lid, false);
-+}
-+
-+static SIMPLE_DEV_PM_OPS(surface_gpe_pm, surface_gpe_suspend, surface_gpe_resume);
-+
-+
-+static int surface_gpe_probe(struct platform_device *pdev)
-+{
-+	const struct surface_lid_device *lid;
-+	int status;
-+
-+	lid = dev_get_platdata(&pdev->dev);
-+	if (!lid)
-+		return -ENODEV;
-+
-+	status = acpi_mark_gpe_for_wake(NULL, lid->gpe_number);
-+	if (status) {
-+		dev_err(&pdev->dev, "failed to mark GPE for wake: %d\n", status);
-+		return -EINVAL;
-+	}
-+
-+	status = acpi_enable_gpe(NULL, lid->gpe_number);
-+	if (status) {
-+		dev_err(&pdev->dev, "failed to enable GPE: %d\n", status);
-+		return -EINVAL;
-+	}
-+
-+	status = surface_lid_enable_wakeup(&pdev->dev, lid, false);
-+	if (status) {
-+		acpi_disable_gpe(NULL, lid->gpe_number);
-+		return status;
-+	}
-+
-+	return 0;
-+}
-+
-+static int surface_gpe_remove(struct platform_device *pdev)
-+{
-+	struct surface_lid_device *lid = dev_get_platdata(&pdev->dev);
-+
-+	/* restore default behavior without this module */
-+	surface_lid_enable_wakeup(&pdev->dev, lid, false);
-+	acpi_disable_gpe(NULL, lid->gpe_number);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver surface_gpe_driver = {
-+	.probe = surface_gpe_probe,
-+	.remove = surface_gpe_remove,
-+	.driver = {
-+		.name = "surface_gpe",
-+		.pm = &surface_gpe_pm,
-+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-+	},
-+};
-+
-+
-+static struct platform_device *surface_gpe_device;
-+
-+static int __init surface_gpe_init(void)
-+{
-+	const struct dmi_system_id *match;
-+	const struct surface_lid_device *lid;
-+	struct platform_device *pdev;
-+	int status;
-+
-+	match = dmi_first_match(dmi_lid_device_table);
-+	if (!match) {
-+		pr_info(KBUILD_MODNAME": no device detected, exiting\n");
-+		return 0;
-+	}
-+
-+	lid = match->driver_data;
-+
-+	status = platform_driver_register(&surface_gpe_driver);
-+	if (status)
-+		return status;
-+
-+	pdev = platform_device_alloc("surface_gpe", PLATFORM_DEVID_NONE);
-+	if (!pdev) {
-+		platform_driver_unregister(&surface_gpe_driver);
-+		return -ENOMEM;
-+	}
-+
-+	status = platform_device_add_data(pdev, lid, sizeof(*lid));
-+	if (status) {
-+		platform_device_put(pdev);
-+		platform_driver_unregister(&surface_gpe_driver);
-+		return status;
-+	}
-+
-+	status = platform_device_add(pdev);
-+	if (status) {
-+		platform_device_put(pdev);
-+		platform_driver_unregister(&surface_gpe_driver);
-+		return status;
-+	}
-+
-+	surface_gpe_device = pdev;
-+	return 0;
-+}
-+
-+static void __exit surface_gpe_exit(void)
-+{
-+	if (!surface_gpe_device)
-+		return;
-+
-+	platform_device_unregister(surface_gpe_device);
-+	platform_driver_unregister(&surface_gpe_driver);
-+}
-+
-+module_init(surface_gpe_init);
-+module_exit(surface_gpe_exit);
-+
-+MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
-+MODULE_DESCRIPTION("Surface GPE/Lid Driver");
-+MODULE_LICENSE("GPL");
-+
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro4:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro6:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfacePro7:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceBook:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceBook2:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceBook3:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceLaptop:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceLaptop2:*");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurfaceLaptop3:*");
+We could set the parent to BUSY just before doing the
+release_mem_region() call, but that feels like a hack.
+
+Maybe it's just easier to keep dax_kmem_res around ...
+
 -- 
-2.28.0
+Thanks,
+
+David / dhildenb
 
