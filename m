@@ -2,82 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DC7263025
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 17:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF8D263149
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 18:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729614AbgIIPEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 11:04:02 -0400
-Received: from mga06.intel.com ([134.134.136.31]:2359 "EHLO mga06.intel.com"
+        id S1730336AbgIIQFx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 12:05:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbgIIMSo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Sep 2020 08:18:44 -0400
-IronPort-SDR: Uo3eCdVbOKruVKp2lql8FH0+TBQqekgxkSi24YXUWnTEZLGtZbfSWTbBKmlyU+K447Fqc/snu5
- sBA8ZZK6BrLg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="219874839"
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="219874839"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 05:16:42 -0700
-IronPort-SDR: 700qIIIuvykqXE2gqCdKoiRkvZqgnZfWaFbrA1VXnX36kZp141OQRBjFeTaSAw3mJgI6JTqBQd
- qwfNlpoo2qpg==
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="480442307"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 05:16:39 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id AAA5C20765; Wed,  9 Sep 2020 15:16:07 +0300 (EEST)
-Date:   Wed, 9 Sep 2020 15:16:07 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH v8 6/6] at24: Support probing while off
-Message-ID: <20200909121607.GD6566@paasikivi.fi.intel.com>
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
- <20200903081550.6012-7-sakari.ailus@linux.intel.com>
- <CAMpxmJX40=iYYxL9Uvs1Pjj9c3NvZBGJ9Mh9-87T0c==FKEXRw@mail.gmail.com>
- <20200909111121.GJ2272@ninjato>
- <CAMpxmJXDrL92QH_Vb+P4LoQ-WGBMM42GvzXjquW2Lzotm5wggA@mail.gmail.com>
+        id S1730495AbgIIQFb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Sep 2020 12:05:31 -0400
+Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7F890221F0;
+        Wed,  9 Sep 2020 14:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599662522;
+        bh=7K2eO9jPx1PtH/qWBKEyBPB9rN9mQMh2Ofq/ElKKAOs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=iIVQ29xVqxgNUylRVXX0xccX137OyWmME3383P325tQavNGASGciGVho0t1XPdtJo
+         F3U1v953CNGmcmuLZy2xC37aogH7jCYuqLBfTIjO8UGWI1VNEa2hU+2ZPoxPb42ON2
+         NnzsYWhFMTlGDgN67nXKSh5BcioInPjSaomOrcc0=
+Date:   Wed, 9 Sep 2020 09:42:01 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-acpi@vger.kernel.org, tn@semihalf.com, bhelgaas@google.com,
+        lorenzo.pieralisi@arm.com, steven.price@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, sudeep.holla@arm.com, guohanjun@huawei.com,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] PCI/ACPI: Suppress missing MCFG message
+Message-ID: <20200909144201.GA705392@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMpxmJXDrL92QH_Vb+P4LoQ-WGBMM42GvzXjquW2Lzotm5wggA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200908210359.569294-1-jeremy.linton@arm.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 01:56:34PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Sep 9, 2020 at 1:11 PM Wolfram Sang <wsa@the-dreams.de> wrote:
-> >
-> >
-> > > This currently conflicts with the fix I queued for at24 for v5.9.
-> > > Which tree is going to take this series?
-> >
-> > I recall we agreed on I2C.
-> >
+On Tue, Sep 08, 2020 at 04:03:59PM -0500, Jeremy Linton wrote:
+> MCFG is an optional ACPI table. Given there are machines
+> without PCI(e) (or it is hidden) we have been receiving
+> queries/complaints about what this message means given
+> its being presented as an error.
 > 
-> Sakari,
+> Lets reduce the severity, the ACPI table list printed at
+> boot will continue to provide another way to detect when
+> the table is missing.
 > 
-> can you rebase the at24 driver patch on top of Wolfram's tree as soon
-> as he merges my PR with at24 fixes?
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
 
-Sure! This would be of course better than postponing this patch.
+Applied to pci/enumeration with Hanjun's reviewed-by, thanks!
 
--- 
-Regards,
-
-Sakari Ailus
+> ---
+>  drivers/acpi/pci_mcfg.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+> index 54b36b7ad47d..c8ef3bb5aa00 100644
+> --- a/drivers/acpi/pci_mcfg.c
+> +++ b/drivers/acpi/pci_mcfg.c
+> @@ -280,5 +280,5 @@ void __init pci_mmcfg_late_init(void)
+>  {
+>  	int err = acpi_table_parse(ACPI_SIG_MCFG, pci_mcfg_parse);
+>  	if (err)
+> -		pr_err("Failed to parse MCFG (%d)\n", err);
+> +		pr_debug("Failed to parse MCFG (%d)\n", err);
+>  }
+> -- 
+> 2.25.4
+> 
