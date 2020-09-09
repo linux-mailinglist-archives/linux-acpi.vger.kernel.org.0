@@ -2,72 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C640B262B42
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 11:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDCEB262C03
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 11:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgIIJDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 05:03:37 -0400
-Received: from mga11.intel.com ([192.55.52.93]:39217 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726169AbgIIJDh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Sep 2020 05:03:37 -0400
-IronPort-SDR: 4H6APNKFa5jSPQ0m6EGOFNjIB2xuyYKsRi2hVbg1h3OXu4MxSOyY13c3f5lOkWicXdDw1wGgOg
- Gok4UPyPOljQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="155772991"
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="155772991"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 02:03:37 -0700
-IronPort-SDR: AOfyUaHLr1O2qBJmTNelHYciWWPTM5B1h9YceWqrhR6+GLQMpVoQtduygzljnKaONgwIfXqeTD
- Bdts65VciNzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="407393247"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 09 Sep 2020 02:03:34 -0700
-Received: by lahna (sSMTP sendmail emulation); Wed, 09 Sep 2020 12:03:33 +0300
-Date:   Wed, 9 Sep 2020 12:03:33 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2 0/3] gpiolib: generalize GPIO line names property
-Message-ID: <20200909090333.GK2495@lahna.fi.intel.com>
-References: <20200909085426.19862-1-brgl@bgdev.pl>
+        id S1730128AbgIIJgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 05:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730127AbgIIJf6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 05:35:58 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E8AC061756
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Sep 2020 02:35:57 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id a12so1919387eds.13
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Sep 2020 02:35:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gEj+lZMiE2N3jtcmr4bdk2b4ihEa+T3DPwIHNq/FC0A=;
+        b=MnAYd8sc0uAXa4xqRVnzLJOadO+X8KmqyIdvburVZXxUL900xJEyapW1Ct9zaawwd8
+         kdze07iRXbco8NxlLs0ExiS6gTmQetCxZiIOmR9Yg+M8EawfaFn1iWYEgpGI0s42KylK
+         dgB2r/HBUaniUTEIOcju/3mYFv4TyrExxjQTEOV00ZCEmbREPRWjjF7D9qzN19ighwhP
+         0AsQKxChLAS+EvKvrfXgdsB0KUeINDtJ4IS3ZcAFQRpC/Muyg2qAxI6VwmuhLuXlBUFL
+         8Q/nrHAacTrDozB1be9KjpVvtf3rTEIi0Ockq4zC2UPya7XOiPu4h5bCZRpWpz52UZcQ
+         zWPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gEj+lZMiE2N3jtcmr4bdk2b4ihEa+T3DPwIHNq/FC0A=;
+        b=dtjgWs5z8bSwhxYbJsSM7tPi9Vc0/CwoR2POB+yfigpJ83TRbno6j4qzPayRzsQ4CY
+         0KN45hvFru3ebIsE58s8xCeZUV3twtIysDLrKLGVYeo2GqgnW6HGRfH9dd0RCtzXdZJU
+         9/zHvQH23b6hb6WxT5WQhgIKkp5mbm0QNpmHApmGWgoUeWv35WvlF0eytdZBJqTQWY0Q
+         ybPlWsc05Y57DTmc43Y4fPvjTq2esgijmhqQljxMlaiSCgH+rQ4YL0g2vKGH6gNHU5Dq
+         YXC8HRy60JKaonzl3nBIFerPFT6dh3l8Kjrw+Pejh+jRK967yYmGl3agnmzm5yiwCCLU
+         z7KQ==
+X-Gm-Message-State: AOAM531ux08Kwzjua89MoxJ7BegZ5AztGqtSAzM/OAm3lF0S/FcnS+SP
+        Zkabt38sev6ilxT1h2tn5YU0M0xwLbDI5NmsP1OmhQ==
+X-Google-Smtp-Source: ABdhPJwhn4migTaK4XUgkdD/7pGNuIDSlXbAnJe2m4X+uNc0EalSYsW9Z+emyP0Y7X4qKQ74oQEQGGD1thAkW+JQzkY=
+X-Received: by 2002:aa7:c9ce:: with SMTP id i14mr3328398edt.186.1599644156363;
+ Wed, 09 Sep 2020 02:35:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200909085426.19862-1-brgl@bgdev.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com> <20200903081550.6012-7-sakari.ailus@linux.intel.com>
+In-Reply-To: <20200903081550.6012-7-sakari.ailus@linux.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 9 Sep 2020 11:35:45 +0200
+Message-ID: <CAMpxmJX40=iYYxL9Uvs1Pjj9c3NvZBGJ9Mh9-87T0c==FKEXRw@mail.gmail.com>
+Subject: Re: [PATCH v8 6/6] at24: Support probing while off
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media <linux-media@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 10:54:23AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> I initially sent this as part of the gpio-mockup overhaul but since
-> these patches are indepentent and the work on gpio-mockup may become
-> more complicated - I'm sending these separately.
-> 
-> The only change is adding additional property helpers to count strings
-> in array.
-> 
-> v1 -> v2:
-> - actually remove the previous devprop source file in patch 3
-> - rename the string counting functions to something more explicit
-> 
-> Bartosz Golaszewski (3):
->   device: property: add helpers to count items in string arrays
->   gpiolib: generalize devprop_gpiochip_set_names() for device properties
->   gpiolib: unexport devprop_gpiochip_set_names()
+On Thu, Sep 3, 2020 at 10:15 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> In certain use cases (where the chip is part of a camera module, and the
+> camera module is wired together with a camera privacy LED), powering on
+> the device during probe is undesirable. Add support for the at24 to
+> execute probe while being powered off. For this to happen, a hint in form
+> of a device property is required from the firmware.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/misc/eeprom/at24.c | 43 +++++++++++++++++++++++---------------
+>  1 file changed, 26 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+> index 8f5de5f10bbea..2d24e33788d7d 100644
+> --- a/drivers/misc/eeprom/at24.c
+> +++ b/drivers/misc/eeprom/at24.c
+> @@ -595,6 +595,7 @@ static int at24_probe(struct i2c_client *client)
+>         bool i2c_fn_i2c, i2c_fn_block;
+>         unsigned int i, num_addresses;
+>         struct at24_data *at24;
+> +       bool low_power;
+>         struct regmap *regmap;
+>         bool writable;
+>         u8 test_byte;
+> @@ -733,25 +734,30 @@ static int at24_probe(struct i2c_client *client)
+>
+>         i2c_set_clientdata(client, at24);
+>
+> -       err = regulator_enable(at24->vcc_reg);
+> -       if (err) {
+> -               dev_err(dev, "Failed to enable vcc regulator\n");
+> -               return err;
+> -       }
+> +       low_power = acpi_dev_state_low_power(&client->dev);
+> +       if (!low_power) {
+> +               err = regulator_enable(at24->vcc_reg);
+> +               if (err) {
+> +                       dev_err(dev, "Failed to enable vcc regulator\n");
+> +                       return err;
+> +               }
+>
+> -       /* enable runtime pm */
+> -       pm_runtime_set_active(dev);
+> +               pm_runtime_set_active(dev);
+> +       }
+>         pm_runtime_enable(dev);
+>
+>         /*
+> -        * Perform a one-byte test read to verify that the
+> -        * chip is functional.
+> +        * Perform a one-byte test read to verify that the chip is functional,
+> +        * unless powering on the device is to be avoided during probe (i.e.
+> +        * it's powered off right now).
+>          */
+> -       err = at24_read(at24, 0, &test_byte, 1);
+> -       if (err) {
+> -               pm_runtime_disable(dev);
+> -               regulator_disable(at24->vcc_reg);
+> -               return -ENODEV;
+> +       if (!low_power) {
+> +               err = at24_read(at24, 0, &test_byte, 1);
+> +               if (err) {
+> +                       pm_runtime_disable(dev);
+> +                       regulator_disable(at24->vcc_reg);
+> +                       return -ENODEV;
+> +               }
+>         }
+>
+>         pm_runtime_idle(dev);
+> @@ -771,9 +777,11 @@ static int at24_remove(struct i2c_client *client)
+>         struct at24_data *at24 = i2c_get_clientdata(client);
+>
+>         pm_runtime_disable(&client->dev);
+> -       if (!pm_runtime_status_suspended(&client->dev))
+> -               regulator_disable(at24->vcc_reg);
+> -       pm_runtime_set_suspended(&client->dev);
+> +       if (!acpi_dev_state_low_power(&client->dev)) {
+> +               if (!pm_runtime_status_suspended(&client->dev))
+> +                       regulator_disable(at24->vcc_reg);
+> +               pm_runtime_set_suspended(&client->dev);
+> +       }
+>
+>         return 0;
+>  }
+> @@ -810,6 +818,7 @@ static struct i2c_driver at24_driver = {
+>         .probe_new = at24_probe,
+>         .remove = at24_remove,
+>         .id_table = at24_ids,
+> +       .flags = I2C_DRV_FL_ALLOW_LOW_POWER_PROBE,
+>  };
+>
+>  static int __init at24_init(void)
+> --
+> 2.20.1
+>
 
-The series looks good to me,
+This currently conflicts with the fix I queued for at24 for v5.9.
+Which tree is going to take this series?
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Bartosz
