@@ -2,85 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E04262D7F
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 12:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2C3262E06
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 13:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727893AbgIIK6e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 06:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727804AbgIIK6V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 06:58:21 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB09C061755
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Sep 2020 03:58:19 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id e23so2898297eja.3
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Sep 2020 03:58:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Hu65HGw7lD3rRilEx9VGlqvryu5AO8PpY3vy5bDHdp4=;
-        b=mZGcdKZt8qCyIVy8y24txARqimWW+2gYMnqdXTiD5UAlSCAt+BHUHixKl4PFE1zgTU
-         eLMeDFiCHpKz/ZIqAZPTuO4ZRz8fbu43K+AXAnUbzFJ4LbXuCK4fhWuZw0iQD+SDxweH
-         upyX2G3PA6KMABVK2FRR3xD3kxhfS7B7ZHxPHea5+k6+5gHF3VFqvanO7IBNqtxdJTiJ
-         zvXImRz1GeSPhtp+lrUW5Cp6mLBaFv2gMU9sGUl59W7JcmYMx33240ioJl26+8VHfQ60
-         mFmmI9CD0GGDcTNaNGR5+VvfbW6YbRBZEL4D2uEWQyPmgtC2tl0cDk06I9MWvExXeMiq
-         La0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Hu65HGw7lD3rRilEx9VGlqvryu5AO8PpY3vy5bDHdp4=;
-        b=Mxu+UsNQfrHazvxKIKYSri6nIEW9H0uWyYTvB3a+LsUakwlO/HqcuGKhx32LVO52Ya
-         uaBbXwbJ0H2whzW35YW//842eHrjD1sEG7HVvDyo3HHP44mTScDqdEuIppNtKtp17NjN
-         NZsiq4gVHqqrYhqmbX3zhYretOBFYrXGha1O7zqx4ZaDojbDkm2FTz5u2s/g51sT8ITu
-         tZ8VeVVOYyKwXkFOt7BOmzzS4iSxIYodO3FkugEVNB3Hm8qccySsQb2NmkWJI7weL7mF
-         HNXK+RddrZcWc5JR4Bte8X841E1jxypx5ZjelRl9I3cvJQ1rbJtQ414p6hocDG3uj/ud
-         IucQ==
-X-Gm-Message-State: AOAM530n250tSWKs2TdPRYpLmY8kudwwI3YdrLFuz4jhSqhYD5GzMqFN
-        HiVPy/i29jgfVZN01DJIEXnnQ1GW81xbxmiahCq/WQ==
-X-Google-Smtp-Source: ABdhPJzVrHGzQqV0LHArkKovVyu9MjaO3CeazQ+IrJy6Yj2B0/g6jByCwi3w6+KE/Fs6Ph4rtOC6BBunPbai0tsoNE0=
-X-Received: by 2002:a17:906:e4f:: with SMTP id q15mr3170587eji.155.1599649098390;
- Wed, 09 Sep 2020 03:58:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200909085426.19862-1-brgl@bgdev.pl> <20200909103440.GM1891694@smile.fi.intel.com>
-In-Reply-To: <20200909103440.GM1891694@smile.fi.intel.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 9 Sep 2020 12:58:07 +0200
-Message-ID: <CAMpxmJXsxqG1aJWp7Jwj9k1wiWJoPgWug2hUqCc+rZPoRwgojw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] gpiolib: generalize GPIO line names property
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kent Gibson <warthog618@gmail.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
+        id S1729738AbgIILm0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 07:42:26 -0400
+Received: from sauhun.de ([88.99.104.3]:48374 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726883AbgIILmO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Sep 2020 07:42:14 -0400
+Received: from localhost (p54b33098.dip0.t-ipconnect.de [84.179.48.152])
+        by pokefinder.org (Postfix) with ESMTPSA id 1B8B82C082B;
+        Wed,  9 Sep 2020 13:11:22 +0200 (CEST)
+Date:   Wed, 9 Sep 2020 13:11:21 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media <linux-media@vger.kernel.org>
+Subject: Re: [PATCH v8 6/6] at24: Support probing while off
+Message-ID: <20200909111121.GJ2272@ninjato>
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
+ <20200903081550.6012-7-sakari.ailus@linux.intel.com>
+ <CAMpxmJX40=iYYxL9Uvs1Pjj9c3NvZBGJ9Mh9-87T0c==FKEXRw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9Q2l3mYpK16UQ/iv"
+Content-Disposition: inline
+In-Reply-To: <CAMpxmJX40=iYYxL9Uvs1Pjj9c3NvZBGJ9Mh9-87T0c==FKEXRw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 9, 2020 at 12:34 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Sep 09, 2020 at 10:54:23AM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > I initially sent this as part of the gpio-mockup overhaul but since
-> > these patches are indepentent and the work on gpio-mockup may become
-> > more complicated - I'm sending these separately.
-> >
-> > The only change is adding additional property helpers to count strings
-> > in array.
->
-> Seems it lost my tag for patch 1/3, but in any case now I'm good with it
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
 
-I removed your tag from patch 1 because I changed the name of the helpers.
+--9Q2l3mYpK16UQ/iv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Bartosz
+
+> This currently conflicts with the fix I queued for at24 for v5.9.
+> Which tree is going to take this series?
+
+I recall we agreed on I2C.
+
+
+--9Q2l3mYpK16UQ/iv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9YuFUACgkQFA3kzBSg
+KbbPiA//bLpenFByrgOHGcnTs15I5XOFV265XepqY1gAEtxBftW1cz1Z9VXYs3tR
+p9RCBb+Lf6FcNah3nA4Nwksdl8SH/zWPJhWRTAcxgMx+s5PmfY4giXQyHblTNMtv
+xYNxJFpmFN01TE/Vi0KXqelssyNBwj2cvbfoMKJiINbn9sE8V9s08AxLxBAsJmlK
+qtKkuNzctQhbewUyVW5Z+S8MLuxYRSKibfGPEXFm9h6+NKhg50TCTRrhkVYPEzLe
+kt2ZFU2TjxVnY4yxL8igM4vktC/Cgy359PlWCe2mFoY3Iz70fEDoXMrIq4V1cTeD
+EyCqvjSRWeV8YTK0lPwJRQJQUbfYXrAiA9S+41Tch/NWVOpymBaMxeML9hbb33P4
+rxTKygGQVwKZan61IKw3paOou8CA5RSiask/4okabdVz6UJ1qGDEpBiuEeRxL7u0
+shdEHZBcT84zRHRQIpFc3z/LsgeXwxi2z0kwN2EBVt6NniuHCsvAzlEx1ZYMM2nY
+ykM/uta6gLbzfbI8agotN8TDRME7Eipv/+//oDFyoRETxzAqnph1R8LpjNOhOGoS
+8T/PHM4uB30sIA3JAE79S25txIPfNHvPUJeRIzud0Ec81R/m2WyOyyFUMAu5oVuz
+2Dzx7FtHclH3HFkqz2bFTd+gw0eY1ZL1FuEPJXkfxBwe7HN/3lA=
+=rCmE
+-----END PGP SIGNATURE-----
+
+--9Q2l3mYpK16UQ/iv--
