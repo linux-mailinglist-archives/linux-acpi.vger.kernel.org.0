@@ -2,117 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FDD262E4D
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 14:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61484263068
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 17:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729479AbgIIMG1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 08:06:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
+        id S1726683AbgIIL3O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 07:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730159AbgIIMEi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 08:04:38 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4471EC06179E;
-        Wed,  9 Sep 2020 05:02:10 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0ae7002c1f5e624f33a6aa.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:e700:2c1f:5e62:4f33:a6aa])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S1726415AbgIIL2a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 07:28:30 -0400
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27536C061796;
+        Wed,  9 Sep 2020 04:28:20 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C37D71EC0423;
-        Wed,  9 Sep 2020 14:02:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1599652928;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=kgJlGGMVRB9lfRXv2ieQ2H9t4e0tJoEqcTQEnRU5y84=;
-        b=sdE9CNICvAPqLe7kTQTgGYGJkizFSaRt2dUBWSb6pnR2OzMoqJf56x/jNz2O/vsE3teYJM
-        ThiWdxnHS8E1qmuroDI7eBWqkhdjVK8ezQljpp6rrrcQgDgMI3Fbe2gPasY7jp+p7hnUzx
-        jz9miS5VNff04z9hQ20V9IP+0z6IHq8=
-Date:   Wed, 9 Sep 2020 14:02:03 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>, Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH 1/1] RAS: Add CPU Correctable Error Collector to isolate
- an erroneous CPU core
-Message-ID: <20200909120203.GB12237@zn.tnic>
-References: <20200901140140.1772-1-shiju.jose@huawei.com>
- <20200901143539.GC8392@zn.tnic>
- <512b7b8e6cb846aabaf5a2191cd9b5d4@huawei.com>
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BmfmN3SGmz9sTd;
+        Wed,  9 Sep 2020 21:24:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1599650649;
+        bh=McxY0vGyvNVlrIIx6KzYtU4PcHnFzd9G9dek0Ykf36c=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=SmXDZKzAAkIskfZPfi7qrbi2STOAaRgkLgLUwpRIri563PnPrs5blw/OlSwl2MX5i
+         69HKj9JHLONl1Qz3CbYvZy/4cbddpiJHmROqXSbmg8WJh+BTuQXH9dKNRHILZpAo1t
+         hze5cgR0ZcFpNy/5f5QSzsCR/ywLKY3MFV1MB2evwZ2HPd+YxWui6TnWbMXUjz3bFE
+         Dflejkj7ciOj6dUGOWs0UizA/kfuOX43D8JH9M1T139ttlnt9G8+OPWPLzwt3iVOxx
+         uuXIzjXH4T67FDy3bvc2QCqjoeC0dD5axnVjQL4imxfeD2KhwwbuLyb1WJFKSm2qYS
+         /CHKbJLh3kYdA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     David Hildenbrand <david@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-s390@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Baoquan He <bhe@redhat.com>,
+        Wei Yang <richardw.yang@linux.intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Pingfan Liu <kernelfans@gmail.com>,
+        Nathan Lynch <nathanl@linux.ibm.com>,
+        Libor Pechacek <lpechacek@suse.cz>,
+        Anton Blanchard <anton@ozlabs.org>,
+        Leonardo Bras <leobras.c@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to add_memory() and friends
+In-Reply-To: <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
+References: <20200908201012.44168-1-david@redhat.com> <20200908201012.44168-4-david@redhat.com> <20200909071759.GD435421@kroah.com> <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
+Date:   Wed, 09 Sep 2020 21:24:02 +1000
+Message-ID: <87eenbry5p.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <512b7b8e6cb846aabaf5a2191cd9b5d4@huawei.com>
+Content-Type: text/plain
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 04:20:54PM +0000, Shiju Jose wrote:
-> CPU CEC derived the infrastructure of the CEC only and the logic
-> used in the CEC for CE count storage, CE count calculation and page
-> isolation is very unique for the memory pages, which seems cannot be
-> reusable for the CPU CEs.
+David Hildenbrand <david@redhat.com> writes:
+> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
+>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
+>>> We soon want to pass flags, e.g., to mark added System RAM resources.
+>>> mergeable. Prepare for that.
+>> 
+>> What are these random "flags", and how do we know what should be passed
+>> to them?
+>> 
+>> Why not make this an enumerated type so that we know it all works
+>> properly, like the GPF_* flags are?  Passing around a random unsigned
+>> long feels very odd/broken...
+>
+> Agreed, an enum (mhp_flags) seems to give a better hint what can
+> actually be passed. Thanks!
 
-Oh, because it saves the reported error's PFN and you want to save
+You probably know this but ...
 
-[CPU num | error count]
+Just using a C enum doesn't get you any type safety.
 
-?
+You can get some checking via sparse by using __bitwise, which is what
+gfp_t does. You don't actually have to use an enum for that, it works
+with #defines also.
 
-Well, you can easily change that by extending the existing CEC to have a
-different storage format for CPU errors, i.e., use a different ce_array
-which gets passed to the functions anyway.
+Or you can wrap the flag in a struct, the way atomic_t does, and then
+the compiler will prevent passing plain integers in place of your custom
+type.
 
-> Also the values set for the parameters such as threshold, time period
-> for the memory errors and CPU errors would be different.
-
-And your implementation with sliding windows is so totally different
-that it warrants the duplication of the code? I don't think so.
-
-You can use the current CEC to do exactly what you wanna do, with the
-decaying and so on.
-
-Because all you wanna do is count the errors a CPU triggered.
-
-However, a CPU can trigger a *lot* of different types of errors.
-You're putting them all in the same basket by doing:
-
-                else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM))
-			/* add to CEC */
-
-and only for correctable.
-
-What type of errors get reported in CPER_SEC_PROC_ARM?
-
-If they're all lumped together and if some functional unit generates a
-lot of errors, instead of disabling that unit only, you'll go and remove
-the whole CPU?
-
-Doesn't make a whole lot of sense to me.
-
-How about you define what exactly you're trying to solve, maybe give an
-example of a real issue someone is encountering and you're trying to
-address? Because there was never a necessity so far to disable CPUs on
-x86 due to correctable errors. Why is that needed on ARM?
-
-> Thus extending cec.c to support CPU CEs would include adding CPU CEC
-> specific code for storing error count, isolation etc which I thought
-> would result the code less tidy and less readable unless find more
-> reusable logic.
-
-Depends on how you design it.
-
-But with what I'm seeing so far, I'm still sceptical this is needed at
-all.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+cheers
