@@ -2,157 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF732628A9
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 09:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFD5262B05
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 10:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729529AbgIIH3U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 03:29:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:27144 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725922AbgIIH3T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 03:29:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599636557;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=beBy83xvdgGqw2410AVi6O0FaFwPJmePl3FfCXvsyA4=;
-        b=ZuL53MFfZotZ/M5oBvi7Y7S0W9YEvLieJOjj+WXnkOBzMyCjuhsY465Sw+p+ChGIAUO/WY
-        +2B8aXsDPQD6nsV7pxjdM33MlSxvtP+/It5PH7UwEybV7IxMLp1DHObmOe4jF1vHAFBZbs
-        6W7vkcNFyd1e1WTPUmTgbHRsocEuk4U=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-294-tiFs_KPBN7SjhzpsHthbFg-1; Wed, 09 Sep 2020 03:29:15 -0400
-X-MC-Unique: tiFs_KPBN7SjhzpsHthbFg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 16C2E873113;
-        Wed,  9 Sep 2020 07:29:11 +0000 (UTC)
-Received: from [10.36.113.90] (ovpn-113-90.ams2.redhat.com [10.36.113.90])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2232A83564;
-        Wed,  9 Sep 2020 07:28:55 +0000 (UTC)
-Subject: Re: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to
- add_memory() and friends
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-s390@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Baoquan He <bhe@redhat.com>,
-        Wei Yang <richardw.yang@linux.intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Pingfan Liu <kernelfans@gmail.com>,
-        Nathan Lynch <nathanl@linux.ibm.com>,
-        Libor Pechacek <lpechacek@suse.cz>,
-        Anton Blanchard <anton@ozlabs.org>,
-        Leonardo Bras <leobras.c@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20200908201012.44168-1-david@redhat.com>
- <20200908201012.44168-4-david@redhat.com> <20200909071759.GD435421@kroah.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
-Date:   Wed, 9 Sep 2020 09:28:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1726642AbgIIIyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 04:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42564 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbgIIIye (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 04:54:34 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C234DC061755
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Sep 2020 01:54:33 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id k15so2007096wrn.10
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Sep 2020 01:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9ge+LjYBvfrPR/6z1eGAAmD+KiWvreg+tXjIgUs0btU=;
+        b=q8tRc+rU8QeroDtIWNLDBOL7Agmfjh51hQKjf49eFv3+n5GlODrSJopzzbOq9DLd8c
+         CC3Q651wyFUH0A4OoOF/DyS8hzBbBOpGv52huurWK8FPRP8YHmvTcp5jA4FsmmZOZy5P
+         yb57ng9AXG1SlNsC7WiI8TcRkWW0+E6HmsJvap8jb4C73AnG/bXpTDXs6k/RG88ZieUc
+         VRKkf3YuSKSyZjW4mQt1aQXYSF0YhZv3W7N0KR/iHQ56C1bGZ+CkhvfUmMH97g2uNSaR
+         TYe3Lg6uz5Yjs96QMJi+/Fu2vDFWYS70UNXtZp4GhHfaB8LF+K9qNqGlBpzho/nnxVUq
+         AKSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9ge+LjYBvfrPR/6z1eGAAmD+KiWvreg+tXjIgUs0btU=;
+        b=Kjnyr89MN9+L8aBtMA02sRW382AJhrfn25NMtA5oC8i6baIjZCVtn7Qr5hbm7+RdEe
+         bIuhgHy5rk0fcycTdE33A23X615RgQrk/KCedC0YEkv4rqGcn2qahUda2Qq0/3v8r6eg
+         xclvLKnQeETGzcnpIzGOZhGpUnkPo3h+2PnUPiY9ijxX0mH0VfXjLIxvgUzhfRSTYL47
+         va5RKhZLvPnEx2lqlJV+yzlmfNjB2PDJhIEmNLpgkvifph5iQhS2fYBsb2zVqe/0089Q
+         hMY/Cy+iQFXoTivdLuPhWcmhHbJ0QYL3LveSl/5wksCam/9kPzUl2lrO2wOwiC1deW+/
+         mu9Q==
+X-Gm-Message-State: AOAM533HVlokCjwW5U2ALwFdyFJuWxCHp8ZIBbUclH28MKhpczhxJC+P
+        7TcKTldaLt/bqWNbeYmT0nLwspciKfXR1A==
+X-Google-Smtp-Source: ABdhPJwzDEHKLjOwS9evMvXAKBTZ65IQav9hZYJOaGRhp8jhiQvjJGKJ4Qp9YoxUuuDLlZGHFpXwzA==
+X-Received: by 2002:a5d:6404:: with SMTP id z4mr2860751wru.423.1599641672353;
+        Wed, 09 Sep 2020 01:54:32 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-657-1-17-60.w109-210.abo.wanadoo.fr. [109.210.64.60])
+        by smtp.gmail.com with ESMTPSA id n17sm3418812wrw.0.2020.09.09.01.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 01:54:31 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kent Gibson <warthog618@gmail.com>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v2 0/3] gpiolib: generalize GPIO line names property
+Date:   Wed,  9 Sep 2020 10:54:23 +0200
+Message-Id: <20200909085426.19862-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-In-Reply-To: <20200909071759.GD435421@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 09.09.20 09:17, Greg Kroah-Hartman wrote:
-> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
->> We soon want to pass flags, e.g., to mark added System RAM resources.
->> mergeable. Prepare for that.
-> 
-> What are these random "flags", and how do we know what should be passed
-> to them?
-> 
-> Why not make this an enumerated type so that we know it all works
-> properly, like the GPF_* flags are?  Passing around a random unsigned
-> long feels very odd/broken...
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Agreed, an enum (mhp_flags) seems to give a better hint what can
-actually be passed. Thanks!
+I initially sent this as part of the gpio-mockup overhaul but since
+these patches are indepentent and the work on gpio-mockup may become
+more complicated - I'm sending these separately.
+
+The only change is adding additional property helpers to count strings
+in array.
+
+v1 -> v2:
+- actually remove the previous devprop source file in patch 3
+- rename the string counting functions to something more explicit
+
+Bartosz Golaszewski (3):
+  device: property: add helpers to count items in string arrays
+  gpiolib: generalize devprop_gpiochip_set_names() for device properties
+  gpiolib: unexport devprop_gpiochip_set_names()
+
+ drivers/gpio/Makefile          |  1 -
+ drivers/gpio/gpiolib-acpi.c    |  3 --
+ drivers/gpio/gpiolib-devprop.c | 63 ----------------------------------
+ drivers/gpio/gpiolib-of.c      |  5 ---
+ drivers/gpio/gpiolib.c         | 55 ++++++++++++++++++++++++++---
+ include/linux/gpio/driver.h    |  3 --
+ include/linux/property.h       | 13 +++++++
+ 7 files changed, 64 insertions(+), 79 deletions(-)
+ delete mode 100644 drivers/gpio/gpiolib-devprop.c
 
 -- 
-Thanks,
-
-David / dhildenb
+2.26.1
 
