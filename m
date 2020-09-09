@@ -2,93 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC71262D4E
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 12:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E04262D7F
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Sep 2020 12:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbgIIKfI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Sep 2020 06:35:08 -0400
-Received: from mga11.intel.com ([192.55.52.93]:45989 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729129AbgIIKew (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Sep 2020 06:34:52 -0400
-IronPort-SDR: g/o0rrupzx140CJS7pDJtR1/Mh1pjHVrMxzBbBMR4E/jaI6Izbe79+Hi1IxGLiGkEy3uAzHWTw
- fC+KEjiaRp+A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="155781444"
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="155781444"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 03:34:45 -0700
-IronPort-SDR: 0tve1CYzhTsytisDy1TclHePtLyVjyq3/rDx/tErL8bdbcltl3BLKazn/LxTYXfTz+kvvbMY13
- 9vpMtXBxBTpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,409,1592895600"; 
-   d="scan'208";a="333775053"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 09 Sep 2020 03:34:43 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kFxR2-00FPx9-BJ; Wed, 09 Sep 2020 13:34:40 +0300
-Date:   Wed, 9 Sep 2020 13:34:40 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2 0/3] gpiolib: generalize GPIO line names property
-Message-ID: <20200909103440.GM1891694@smile.fi.intel.com>
-References: <20200909085426.19862-1-brgl@bgdev.pl>
+        id S1727893AbgIIK6e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Sep 2020 06:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727804AbgIIK6V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Sep 2020 06:58:21 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB09C061755
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Sep 2020 03:58:19 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id e23so2898297eja.3
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Sep 2020 03:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Hu65HGw7lD3rRilEx9VGlqvryu5AO8PpY3vy5bDHdp4=;
+        b=mZGcdKZt8qCyIVy8y24txARqimWW+2gYMnqdXTiD5UAlSCAt+BHUHixKl4PFE1zgTU
+         eLMeDFiCHpKz/ZIqAZPTuO4ZRz8fbu43K+AXAnUbzFJ4LbXuCK4fhWuZw0iQD+SDxweH
+         upyX2G3PA6KMABVK2FRR3xD3kxhfS7B7ZHxPHea5+k6+5gHF3VFqvanO7IBNqtxdJTiJ
+         zvXImRz1GeSPhtp+lrUW5Cp6mLBaFv2gMU9sGUl59W7JcmYMx33240ioJl26+8VHfQ60
+         mFmmI9CD0GGDcTNaNGR5+VvfbW6YbRBZEL4D2uEWQyPmgtC2tl0cDk06I9MWvExXeMiq
+         La0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Hu65HGw7lD3rRilEx9VGlqvryu5AO8PpY3vy5bDHdp4=;
+        b=Mxu+UsNQfrHazvxKIKYSri6nIEW9H0uWyYTvB3a+LsUakwlO/HqcuGKhx32LVO52Ya
+         uaBbXwbJ0H2whzW35YW//842eHrjD1sEG7HVvDyo3HHP44mTScDqdEuIppNtKtp17NjN
+         NZsiq4gVHqqrYhqmbX3zhYretOBFYrXGha1O7zqx4ZaDojbDkm2FTz5u2s/g51sT8ITu
+         tZ8VeVVOYyKwXkFOt7BOmzzS4iSxIYodO3FkugEVNB3Hm8qccySsQb2NmkWJI7weL7mF
+         HNXK+RddrZcWc5JR4Bte8X841E1jxypx5ZjelRl9I3cvJQ1rbJtQ414p6hocDG3uj/ud
+         IucQ==
+X-Gm-Message-State: AOAM530n250tSWKs2TdPRYpLmY8kudwwI3YdrLFuz4jhSqhYD5GzMqFN
+        HiVPy/i29jgfVZN01DJIEXnnQ1GW81xbxmiahCq/WQ==
+X-Google-Smtp-Source: ABdhPJzVrHGzQqV0LHArkKovVyu9MjaO3CeazQ+IrJy6Yj2B0/g6jByCwi3w6+KE/Fs6Ph4rtOC6BBunPbai0tsoNE0=
+X-Received: by 2002:a17:906:e4f:: with SMTP id q15mr3170587eji.155.1599649098390;
+ Wed, 09 Sep 2020 03:58:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200909085426.19862-1-brgl@bgdev.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200909085426.19862-1-brgl@bgdev.pl> <20200909103440.GM1891694@smile.fi.intel.com>
+In-Reply-To: <20200909103440.GM1891694@smile.fi.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 9 Sep 2020 12:58:07 +0200
+Message-ID: <CAMpxmJXsxqG1aJWp7Jwj9k1wiWJoPgWug2hUqCc+rZPoRwgojw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] gpiolib: generalize GPIO line names property
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Kent Gibson <warthog618@gmail.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 10:54:23AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> I initially sent this as part of the gpio-mockup overhaul but since
-> these patches are indepentent and the work on gpio-mockup may become
-> more complicated - I'm sending these separately.
-> 
-> The only change is adding additional property helpers to count strings
-> in array.
+On Wed, Sep 9, 2020 at 12:34 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Wed, Sep 09, 2020 at 10:54:23AM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > I initially sent this as part of the gpio-mockup overhaul but since
+> > these patches are indepentent and the work on gpio-mockup may become
+> > more complicated - I'm sending these separately.
+> >
+> > The only change is adding additional property helpers to count strings
+> > in array.
+>
+> Seems it lost my tag for patch 1/3, but in any case now I'm good with it
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>
 
-Seems it lost my tag for patch 1/3, but in any case now I'm good with it
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+I removed your tag from patch 1 because I changed the name of the helpers.
 
-> v1 -> v2:
-> - actually remove the previous devprop source file in patch 3
-> - rename the string counting functions to something more explicit
-> 
-> Bartosz Golaszewski (3):
->   device: property: add helpers to count items in string arrays
->   gpiolib: generalize devprop_gpiochip_set_names() for device properties
->   gpiolib: unexport devprop_gpiochip_set_names()
-> 
->  drivers/gpio/Makefile          |  1 -
->  drivers/gpio/gpiolib-acpi.c    |  3 --
->  drivers/gpio/gpiolib-devprop.c | 63 ----------------------------------
->  drivers/gpio/gpiolib-of.c      |  5 ---
->  drivers/gpio/gpiolib.c         | 55 ++++++++++++++++++++++++++---
->  include/linux/gpio/driver.h    |  3 --
->  include/linux/property.h       | 13 +++++++
->  7 files changed, 64 insertions(+), 79 deletions(-)
->  delete mode 100644 drivers/gpio/gpiolib-devprop.c
-> 
-> -- 
-> 2.26.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bartosz
