@@ -2,98 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 542C0264141
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 11:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D29226412F
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 11:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730324AbgIJJQh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Sep 2020 05:16:37 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:26127 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730287AbgIJJOx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:14:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599729291;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YsfsAQ2XAkLrSeK5gDaCbmO+kEOKaYFgY1Wng1dGBy0=;
-        b=Q69G4RFVHHK/W6Jrw+wNa65ycMJjAmBmaW3xOxkEpTGSl0xBiwjvm1OfIiVqeU2V7/fTqi
-        bu2SG5ZJ7kG5IcEuV76jf0YAixLfxzAJUlLd7nZdIz2EA+F/SWmu0yz6f2svtPyElxWJu6
-        JHtp/swa2vFmsY39t0x8vSJT5pGxWg0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-475-HBflxYiUOtC-j12zoJgTEQ-1; Thu, 10 Sep 2020 05:14:47 -0400
-X-MC-Unique: HBflxYiUOtC-j12zoJgTEQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A191D109106C;
-        Thu, 10 Sep 2020 09:14:45 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-88.ams2.redhat.com [10.36.113.88])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 445081A8EC;
-        Thu, 10 Sep 2020 09:14:42 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-s390@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Baoquan He <bhe@redhat.com>,
-        Wei Yang <richardw.yang@linux.intel.com>
-Subject: [PATCH v3 7/7] hv_balloon: try to merge system ram resources
-Date:   Thu, 10 Sep 2020 11:13:40 +0200
-Message-Id: <20200910091340.8654-8-david@redhat.com>
-In-Reply-To: <20200910091340.8654-1-david@redhat.com>
-References: <20200910091340.8654-1-david@redhat.com>
+        id S1730248AbgIJJOp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Sep 2020 05:14:45 -0400
+Received: from verein.lst.de ([213.95.11.211]:60117 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727090AbgIJJOC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 10 Sep 2020 05:14:02 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 7F59E6736F; Thu, 10 Sep 2020 11:13:51 +0200 (CEST)
+Date:   Thu, 10 Sep 2020 11:13:51 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Greg KH <greg@kroah.com>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 3/3] dma-mapping: introduce DMA range map, supplanting
+ dma_pfn_offset
+Message-ID: <20200910091351.GA25883@lst.de>
+References: <20200910054038.324517-1-hch@lst.de> <20200910054038.324517-4-hch@lst.de> <20200910075351.GA1092435@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910075351.GA1092435@kroah.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Let's try to merge system ram resources we add, to minimize the number
-of resources in /proc/iomem. We don't care about the boundaries of
-individual chunks we added.
+On Thu, Sep 10, 2020 at 09:53:51AM +0200, Greg KH wrote:
+> >  		/*
+> >  		 * Please refer to usb_alloc_dev() to see why we set
+> > -		 * dma_mask and dma_pfn_offset.
+> > +		 * dma_mask and dma_range_map.
+> >  		 */
+> >  		intf->dev.dma_mask = dev->dev.dma_mask;
+> > -		intf->dev.dma_pfn_offset = dev->dev.dma_pfn_offset;
+> > +		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
+> > +			dev_err(&dev->dev, "failed to copy DMA map\n");
+> 
+> We tell the user, but then just keep on running?  Is there anything that
+> we can do here?
+> 
+> If not, why not have dma_direct_copy_range_map() print out the error?
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Stephen Hemminger <sthemmin@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Wei Yang <richardw.yang@linux.intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+At least for USB I'm pretty sure this isn't required at all.  I've been
+running with the patch below on my desktop for two days now trying all
+the usb toys I have (in addition to grepping for obvious abuses in
+the drivers).  remoteproc is a different story, but the DMA handling
+seems there is sketchy to start with..
+
 ---
- drivers/hv/hv_balloon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+From 8bae3e6833f2ca431dcfcbc8f9cced7d5e972a01 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Wed, 9 Sep 2020 08:28:59 +0200
+Subject: usb: don't inherity DMA properties for USB devices
 
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 3c0d52e244520..b64d2efbefe71 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -726,7 +726,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
- 
- 		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
- 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
--				(HA_CHUNK << PAGE_SHIFT), MHP_NONE);
-+				(HA_CHUNK << PAGE_SHIFT), MEMHP_MERGE_RESOURCE);
- 
- 		if (ret) {
- 			pr_err("hot_add memory failed error is %d\n", ret);
+As the comment in usb_alloc_dev correctly states, drivers can't use
+the DMA API on usb device, and at least calling dma_set_mask on them
+is highly dangerous.  Unlike what the comment states upper level drivers
+also can't really use the presence of a dma mask to check for DMA
+support, as the dma_mask is set by default for most busses.
+
+Remove the copying over of DMA information, and remove the now unused
+dma_direct_copy_range_map export.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/usb/core/message.c |  7 -------
+ drivers/usb/core/usb.c     | 13 -------------
+ kernel/dma/direct.c        |  1 -
+ 3 files changed, 21 deletions(-)
+
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index 935ee98e049f65..9e45732dc1d1d1 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -1954,13 +1954,6 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 		intf->dev.bus = &usb_bus_type;
+ 		intf->dev.type = &usb_if_device_type;
+ 		intf->dev.groups = usb_interface_groups;
+-		/*
+-		 * Please refer to usb_alloc_dev() to see why we set
+-		 * dma_mask and dma_range_map.
+-		 */
+-		intf->dev.dma_mask = dev->dev.dma_mask;
+-		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
+-			dev_err(&dev->dev, "failed to copy DMA map\n");
+ 		INIT_WORK(&intf->reset_ws, __usb_queue_reset_device);
+ 		intf->minor = -1;
+ 		device_initialize(&intf->dev);
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 23d451f6894d70..9b4ac4415f1a47 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -599,19 +599,6 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 	dev->dev.bus = &usb_bus_type;
+ 	dev->dev.type = &usb_device_type;
+ 	dev->dev.groups = usb_device_groups;
+-	/*
+-	 * Fake a dma_mask/offset for the USB device:
+-	 * We cannot really use the dma-mapping API (dma_alloc_* and
+-	 * dma_map_*) for USB devices but instead need to use
+-	 * usb_alloc_coherent and pass data in 'urb's, but some subsystems
+-	 * manually look into the mask/offset pair to determine whether
+-	 * they need bounce buffers.
+-	 * Note: calling dma_set_mask() on a USB device would set the
+-	 * mask for the entire HCD, so don't do that.
+-	 */
+-	dev->dev.dma_mask = bus->sysdev->dma_mask;
+-	if (dma_direct_copy_range_map(&dev->dev, bus->sysdev))
+-		dev_err(&dev->dev, "failed to copy DMA map\n");
+ 	set_dev_node(&dev->dev, dev_to_node(bus->sysdev));
+ 	dev->state = USB_STATE_ATTACHED;
+ 	dev->lpm_disable_count = 1;
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index fc815f7375e282..3af257571a3b42 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -552,4 +552,3 @@ int dma_direct_copy_range_map(struct device *to, struct device *from)
+ 	to->dma_range_map = new_map;
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(dma_direct_copy_range_map);
 -- 
-2.26.2
+2.28.0
 
