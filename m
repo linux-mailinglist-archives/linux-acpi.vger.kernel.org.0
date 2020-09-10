@@ -2,121 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA962648C0
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 17:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCF42649D4
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 18:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731241AbgIJPav (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Sep 2020 11:30:51 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2804 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731307AbgIJPaD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:30:03 -0400
-Received: from lhreml720-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 2BA129CB13D474964D18;
-        Thu, 10 Sep 2020 16:29:57 +0100 (IST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml720-chm.china.huawei.com (10.201.108.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Thu, 10 Sep 2020 16:29:56 +0100
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Thu, 10 Sep 2020 16:29:56 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH 1/1] RAS: Add CPU Correctable Error Collector to isolate
- an erroneous CPU core
-Thread-Topic: [PATCH 1/1] RAS: Add CPU Correctable Error Collector to isolate
- an erroneous CPU core
-Thread-Index: AQHWgG1JK3/pxs0Hy0WMoA7NPJGN4qlT2awAgAxWxYCAAaMi4A==
-Date:   Thu, 10 Sep 2020 15:29:56 +0000
-Message-ID: <50714e083d55491a8ccf5ad847682d1e@huawei.com>
-References: <20200901140140.1772-1-shiju.jose@huawei.com>
- <20200901143539.GC8392@zn.tnic> <512b7b8e6cb846aabaf5a2191cd9b5d4@huawei.com>
- <20200909120203.GB12237@zn.tnic>
-In-Reply-To: <20200909120203.GB12237@zn.tnic>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.89.170]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726850AbgIJQ0T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Sep 2020 12:26:19 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:56935 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726515AbgIJQWV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 10 Sep 2020 12:22:21 -0400
+X-Greylist: delayed 523 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Sep 2020 12:21:22 EDT
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.nyi.internal (Postfix) with ESMTP id DEEB75804EB;
+        Thu, 10 Sep 2020 12:12:17 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 10 Sep 2020 12:12:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=ddCQbhjVBkl6UT3ElTu0s85KbX9
+        mRPCmsqjShRybr0o=; b=Vi/OvJeyKtEzr5Sj5JBFj8NJeJJrOTzt/N+lIK9fixb
+        u92kkSmR6AhNp3L9kacYP5yBtepWESQBjeqqV0Di4ONy3ZzUVRahN8j9whCQnMjp
+        HvKr+iv6572tLVTmqsZ+8Dq2mzw1tpGvZQA3ELum28+KTrBr331a10p5fEN2FKSa
+        3LPxaF1Bn2gxhfV2sP6sWSHEXRat5YuVNuoihMdyNOJwhADbYNBNRE5zxfMKO+KR
+        Mhw5OhrOMfOUf+HJBIUeYFd0Wh6A1y9ti90YgxTg1GkiOXyqEmyH4It8DQwDOImG
+        FiTHMVLmScf7n7HxyRF5TuAeemY7D6vsy0rvgP6rsYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=ddCQbh
+        jVBkl6UT3ElTu0s85KbX9mRPCmsqjShRybr0o=; b=XrDuY3hH3udTKgGXtmg53n
+        UHaVNYgKGc1EYk5uXkCQeQHadZ4IKNRUJeFomJVkkd5JJ3aJ+2/K9yU/ftkLmZRw
+        y/JKF34dPhOWW/xIfeSjqO9/5Rh+jB1COLpUmudzESzJg8k+yawjgTvok7VIJZwB
+        LP/eKkqibbuvf1MNKe0KnVjRyIWNE0MgDGu7TLYESpD8ZDDiDuJzUVLgYWp6j3ti
+        bSR1B2CvXaE0joEuOVzE2/yA/EPQenxEF0hZWWwvofHqjue70UufyWvWf5K4VA/f
+        ypxu7n1Ifllw6P2vTLA4jLWi6EQbeK/7p+0aOlhdw2KzN92wA9EW/F9NdW6bzTAA
+        ==
+X-ME-Sender: <xms:YFBaX9Kxld07E3KCj3VKRTDJcaG98PAIPsyt_rMmnVD_i4XaYx9WGg>
+    <xme:YFBaX5J-DSg5ojj5Dx81fvsHdEI8cscYaMOonv-3llSKauaKQlbuD4cj8Hvzy76Q4
+    cUBddGldPvyJg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrudehjedgledvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucfkphepkeef
+    rdekiedrjeegrdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:YFBaX1tobm8DWJZJ1nxeLKSLS2kZGZ8C-QdquIIFBQHJgGMDpRNBXw>
+    <xmx:YFBaX-aciwbr1RNJ-s6HnWDzBfYIfLD4yw-a6dTi0Y1XH8lg1fLxuA>
+    <xmx:YFBaX0Y2tIxe2nuzU3IHZU4zgd85FGy2ALAMCm_nDcVYtCCrE_2-iQ>
+    <xmx:YVBaX6xWH2rheFB58DBBXf9XZmPQn4LKAF_bXQTCSDi6cgPDmH-hZg>
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 371383280066;
+        Thu, 10 Sep 2020 12:12:16 -0400 (EDT)
+Date:   Thu, 10 Sep 2020 18:12:24 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 3/3] dma-mapping: introduce DMA range map, supplanting
+ dma_pfn_offset
+Message-ID: <20200910161224.GB1158578@kroah.com>
+References: <20200910054038.324517-1-hch@lst.de>
+ <20200910054038.324517-4-hch@lst.de>
+ <20200910075351.GA1092435@kroah.com>
+ <20200910091351.GA25883@lst.de>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910091351.GA25883@lst.de>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGVsbG8gQm9yaXMsDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEJvcmlz
-bGF2IFBldGtvdiBbbWFpbHRvOmJwQGFsaWVuOC5kZV0NCj5TZW50OiAwOSBTZXB0ZW1iZXIgMjAy
-MCAxMzowMg0KPlRvOiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxp
-bnV4LWVkYWNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsgbGlu
-dXgtDQo+a2VybmVsQHZnZXIua2VybmVsLm9yZzsgdG9ueS5sdWNrQGludGVsLmNvbTsgcmp3QHJq
-d3lzb2NraS5uZXQ7DQo+amFtZXMubW9yc2VAYXJtLmNvbTsgbGVuYkBrZXJuZWwub3JnOyBMaW51
-eGFybQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggMS8xXSBS
-QVM6IEFkZCBDUFUgQ29ycmVjdGFibGUgRXJyb3IgQ29sbGVjdG9yIHRvIGlzb2xhdGUNCj5hbiBl
-cnJvbmVvdXMgQ1BVIGNvcmUNCj4NCj5PbiBUdWUsIFNlcCAwMSwgMjAyMCBhdCAwNDoyMDo1NFBN
-ICswMDAwLCBTaGlqdSBKb3NlIHdyb3RlOg0KPj4gQ1BVIENFQyBkZXJpdmVkIHRoZSBpbmZyYXN0
-cnVjdHVyZSBvZiB0aGUgQ0VDIG9ubHkgYW5kIHRoZSBsb2dpYyB1c2VkDQo+PiBpbiB0aGUgQ0VD
-IGZvciBDRSBjb3VudCBzdG9yYWdlLCBDRSBjb3VudCBjYWxjdWxhdGlvbiBhbmQgcGFnZQ0KPj4g
-aXNvbGF0aW9uIGlzIHZlcnkgdW5pcXVlIGZvciB0aGUgbWVtb3J5IHBhZ2VzLCB3aGljaCBzZWVt
-cyBjYW5ub3QgYmUNCj4+IHJldXNhYmxlIGZvciB0aGUgQ1BVIENFcy4NCj4NCj5PaCwgYmVjYXVz
-ZSBpdCBzYXZlcyB0aGUgcmVwb3J0ZWQgZXJyb3IncyBQRk4gYW5kIHlvdSB3YW50IHRvIHNhdmUN
-Cj4NCj5bQ1BVIG51bSB8IGVycm9yIGNvdW50XQ0KPg0KPj8NClllcy4gDQoNCj4NCj5XZWxsLCB5
-b3UgY2FuIGVhc2lseSBjaGFuZ2UgdGhhdCBieSBleHRlbmRpbmcgdGhlIGV4aXN0aW5nIENFQyB0
-byBoYXZlIGENCj5kaWZmZXJlbnQgc3RvcmFnZSBmb3JtYXQgZm9yIENQVSBlcnJvcnMsIGkuZS4s
-IHVzZSBhIGRpZmZlcmVudCBjZV9hcnJheSB3aGljaA0KPmdldHMgcGFzc2VkIHRvIHRoZSBmdW5j
-dGlvbnMgYW55d2F5Lg0KT2suIEhvd2V2ZXIgdGhlIGZ1bmN0aW9ucyBzdWNoIGFzIF9fZmluZF9l
-bGVtKCkgdXNlDQptZW1vcnkgc3BlY2lmaWMgUEZOKCkgYW5kIFBBR0VfU0hJRlQuDQoNCj4NCj4+
-IEFsc28gdGhlIHZhbHVlcyBzZXQgZm9yIHRoZSBwYXJhbWV0ZXJzIHN1Y2ggYXMgdGhyZXNob2xk
-LCB0aW1lIHBlcmlvZA0KPj4gZm9yIHRoZSBtZW1vcnkgZXJyb3JzIGFuZCBDUFUgZXJyb3JzIHdv
-dWxkIGJlIGRpZmZlcmVudC4NCj4NCj5BbmQgeW91ciBpbXBsZW1lbnRhdGlvbiB3aXRoIHNsaWRp
-bmcgd2luZG93cyBpcyBzbyB0b3RhbGx5IGRpZmZlcmVudCB0aGF0IGl0DQo+d2FycmFudHMgdGhl
-IGR1cGxpY2F0aW9uIG9mIHRoZSBjb2RlPyBJIGRvbid0IHRoaW5rIHNvLg0KPg0KPllvdSBjYW4g
-dXNlIHRoZSBjdXJyZW50IENFQyB0byBkbyBleGFjdGx5IHdoYXQgeW91IHdhbm5hIGRvLCB3aXRo
-IHRoZQ0KPmRlY2F5aW5nIGFuZCBzbyBvbi4NCkkgd2lsbCBjaGVjayB0aGlzLg0KRm9yIENQVSwg
-dGhlIGNvcnJlY3RlZCBlcnJvcnMgY291bnQgZm9yIGEgc2hvcnQgdGltZSBwZXJpb2QgdG8gYmUg
-Y2hlY2tlZC4NClRodXMgb2xkIGVycm9ycyBvdXRzaWRlIHRoaXMgcGVyaW9kIHdvdWxkIG5vdCBi
-ZSBjb25zaWRlcmVkIGFuZCB3b3VsZCBiZSBjbGVhcmVkLiANCkl0IGlzIG5vdCBjbGVhciB0byBt
-ZSB3aGV0aGVyIGluIHRoZSBjdXJyZW50IENFQywgdGhlIGNvdW50IGZvciB0aGUgb2xkIGVycm9y
-cyBvdXRzaWRlDQphIHRpbWUgcGVyaW9kIHdvdWxkIGJlIGV4Y2x1ZGVkIGZvciB0aGUgdGhyZXNo
-b2xkIGNoZWNrIG9yIHJlbW92ZWQ/DQoNCj4NCj5CZWNhdXNlIGFsbCB5b3Ugd2FubmEgZG8gaXMg
-Y291bnQgdGhlIGVycm9ycyBhIENQVSB0cmlnZ2VyZWQuDQo+DQo+SG93ZXZlciwgYSBDUFUgY2Fu
-IHRyaWdnZXIgYSAqbG90KiBvZiBkaWZmZXJlbnQgdHlwZXMgb2YgZXJyb3JzLg0KPllvdSdyZSBw
-dXR0aW5nIHRoZW0gYWxsIGluIHRoZSBzYW1lIGJhc2tldCBieSBkb2luZzoNCj4NCj4gICAgICAg
-ICAgICAgICAgZWxzZSBpZiAoZ3VpZF9lcXVhbChzZWNfdHlwZSwgJkNQRVJfU0VDX1BST0NfQVJN
-KSkNCj4JCQkvKiBhZGQgdG8gQ0VDICovDQo+DQo+YW5kIG9ubHkgZm9yIGNvcnJlY3RhYmxlLg0K
-Pg0KPldoYXQgdHlwZSBvZiBlcnJvcnMgZ2V0IHJlcG9ydGVkIGluIENQRVJfU0VDX1BST0NfQVJN
-Pw0KQWNjb3JkaW5nIHRvIHRoZSBBUk0gUHJvY2Vzc29yIENQRVIgZGVmaW5pdGlvbiB0aGUgZXJy
-b3IgdHlwZXMgcmVwb3J0ZWQgYXJlDQpDYWNoZSBFcnJvciwgVExCIEVycm9yLCBCdXMgRXJyb3Ig
-YW5kIG1pY3JvLWFyY2hpdGVjdHVyYWwgRXJyb3IuDQoNCj4NCj5JZiB0aGV5J3JlIGFsbCBsdW1w
-ZWQgdG9nZXRoZXIgYW5kIGlmIHNvbWUgZnVuY3Rpb25hbCB1bml0IGdlbmVyYXRlcyBhIGxvdCBv
-Zg0KPmVycm9ycywgaW5zdGVhZCBvZiBkaXNhYmxpbmcgdGhhdCB1bml0IG9ubHksIHlvdSdsbCBn
-byBhbmQgcmVtb3ZlIHRoZSB3aG9sZQ0KPkNQVT8NCj4NCkZldyB0aG91Z2h0cyBvbiB0aGlzLA0K
-MS4gTm90IHN1cmUgd2lsbCBhIENQVSBjb3JlIHdvdWxkIHdvcmsvcGVyZm9ybSBhcyBub3JtYWwg
-YWZ0ZXIgZGlzYWJsaW5nDQphIGZ1bmN0aW9uYWwgdW5pdD8NCjIuIFN1cHBvcnQgaW4gdGhlIEhX
-IHRvIGRpc2FibGUgYSBmdW5jdGlvbiB1bml0IGFsb25lIG1heSBub3QgYXZhaWxhYmxlLg0KMy4g
-SWYgaXQgaXMgcmVxdWlyZSB0byBzdG9yZSBhbmQgcmV0cmlldmUgdGhlIGVycm9yIGNvdW50IGJh
-c2VkIG9uIGZ1bmN0aW9uYWwgdW5pdCwNCiAgICB0aGVuIENFQyB3aWxsIGJlY29tZSBtb3JlIGNv
-bXBsZXg/DQoNCj5Eb2Vzbid0IG1ha2UgYSB3aG9sZSBsb3Qgb2Ygc2Vuc2UgdG8gbWUuDQo+DQo+
-SG93IGFib3V0IHlvdSBkZWZpbmUgd2hhdCBleGFjdGx5IHlvdSdyZSB0cnlpbmcgdG8gc29sdmUs
-IG1heWJlIGdpdmUgYW4NCj5leGFtcGxlIG9mIGEgcmVhbCBpc3N1ZSBzb21lb25lIGlzIGVuY291
-bnRlcmluZyBhbmQgeW91J3JlIHRyeWluZyB0bw0KPmFkZHJlc3M/IEJlY2F1c2UgdGhlcmUgd2Fz
-IG5ldmVyIGEgbmVjZXNzaXR5IHNvIGZhciB0byBkaXNhYmxlIENQVXMgb24NCj54ODYgZHVlIHRv
-IGNvcnJlY3RhYmxlIGVycm9ycy4gV2h5IGlzIHRoYXQgbmVlZGVkIG9uIEFSTT8NCj4NClRoaXMg
-cmVxdWlyZW1lbnQgaXMgdGhlIHBhcnQgb2YgdGhlIGVhcmx5IGZhdWx0IHByZWRpY3Rpb24gYnkg
-dGFraW5nIGFjdGlvbg0Kd2hlbiBsYXJnZSBudW1iZXIgb2YgY29ycmVjdGVkIGVycm9ycyByZXBv
-cnRlZCBvbiBhIENQVSBjb3JlDQpiZWZvcmUgaXQgY2F1c2luZyBzZXJpb3VzIGZhdWx0cy4gDQpX
-ZSBhcmUgbWFpbmx5IGxvb2tpbmcgZm9yIGRpc2FibGUgQ1BVIGNvcmUgb24gbGFyZ2UgbnVtYmVy
-IG9mIEwxL0wyIGNhY2hlDQpjb3JyZWN0ZWQgZXJyb3JzICByZXBvcnRlZCBvbiBhIENQVSBjb3Jl
-LiBDYW4gd2UgYWRkIGF0bGVhc3QgcmVtb3ZpbmcgQ1BVIGNvcmUNCmZvciB0aGUgQ1BVIGNhY2hl
-IGNvcnJlY3RlZCBlcnJvcnMgZmlsdGVyaW5nIG91dCBvdGhlciBlcnJvciB0eXBlcz8NCiANClsu
-Li5dDQoNClRoYW5rcywNClNoaWp1DQoNCg==
+On Thu, Sep 10, 2020 at 11:13:51AM +0200, Christoph Hellwig wrote:
+> On Thu, Sep 10, 2020 at 09:53:51AM +0200, Greg KH wrote:
+> > >  		/*
+> > >  		 * Please refer to usb_alloc_dev() to see why we set
+> > > -		 * dma_mask and dma_pfn_offset.
+> > > +		 * dma_mask and dma_range_map.
+> > >  		 */
+> > >  		intf->dev.dma_mask = dev->dev.dma_mask;
+> > > -		intf->dev.dma_pfn_offset = dev->dev.dma_pfn_offset;
+> > > +		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
+> > > +			dev_err(&dev->dev, "failed to copy DMA map\n");
+> > 
+> > We tell the user, but then just keep on running?  Is there anything that
+> > we can do here?
+> > 
+> > If not, why not have dma_direct_copy_range_map() print out the error?
+> 
+> At least for USB I'm pretty sure this isn't required at all.  I've been
+> running with the patch below on my desktop for two days now trying all
+> the usb toys I have (in addition to grepping for obvious abuses in
+> the drivers).  remoteproc is a different story, but the DMA handling
+> seems there is sketchy to start with..
+> 
+> ---
+> >From 8bae3e6833f2ca431dcfcbc8f9cced7d5e972a01 Mon Sep 17 00:00:00 2001
+> From: Christoph Hellwig <hch@lst.de>
+> Date: Wed, 9 Sep 2020 08:28:59 +0200
+> Subject: usb: don't inherity DMA properties for USB devices
+> 
+> As the comment in usb_alloc_dev correctly states, drivers can't use
+> the DMA API on usb device, and at least calling dma_set_mask on them
+> is highly dangerous.  Unlike what the comment states upper level drivers
+> also can't really use the presence of a dma mask to check for DMA
+> support, as the dma_mask is set by default for most busses.
+> 
+> Remove the copying over of DMA information, and remove the now unused
+> dma_direct_copy_range_map export.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/usb/core/message.c |  7 -------
+>  drivers/usb/core/usb.c     | 13 -------------
+>  kernel/dma/direct.c        |  1 -
+>  3 files changed, 21 deletions(-)
+> 
+> diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+> index 935ee98e049f65..9e45732dc1d1d1 100644
+> --- a/drivers/usb/core/message.c
+> +++ b/drivers/usb/core/message.c
+> @@ -1954,13 +1954,6 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+>  		intf->dev.bus = &usb_bus_type;
+>  		intf->dev.type = &usb_if_device_type;
+>  		intf->dev.groups = usb_interface_groups;
+> -		/*
+> -		 * Please refer to usb_alloc_dev() to see why we set
+> -		 * dma_mask and dma_range_map.
+> -		 */
+> -		intf->dev.dma_mask = dev->dev.dma_mask;
+> -		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
+> -			dev_err(&dev->dev, "failed to copy DMA map\n");
+>  		INIT_WORK(&intf->reset_ws, __usb_queue_reset_device);
+>  		intf->minor = -1;
+>  		device_initialize(&intf->dev);
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index 23d451f6894d70..9b4ac4415f1a47 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -599,19 +599,6 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+>  	dev->dev.bus = &usb_bus_type;
+>  	dev->dev.type = &usb_device_type;
+>  	dev->dev.groups = usb_device_groups;
+> -	/*
+> -	 * Fake a dma_mask/offset for the USB device:
+> -	 * We cannot really use the dma-mapping API (dma_alloc_* and
+> -	 * dma_map_*) for USB devices but instead need to use
+> -	 * usb_alloc_coherent and pass data in 'urb's, but some subsystems
+> -	 * manually look into the mask/offset pair to determine whether
+> -	 * they need bounce buffers.
+> -	 * Note: calling dma_set_mask() on a USB device would set the
+> -	 * mask for the entire HCD, so don't do that.
+> -	 */
+> -	dev->dev.dma_mask = bus->sysdev->dma_mask;
+> -	if (dma_direct_copy_range_map(&dev->dev, bus->sysdev))
+> -		dev_err(&dev->dev, "failed to copy DMA map\n");
+>  	set_dev_node(&dev->dev, dev_to_node(bus->sysdev));
+>  	dev->state = USB_STATE_ATTACHED;
+>  	dev->lpm_disable_count = 1;
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index fc815f7375e282..3af257571a3b42 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -552,4 +552,3 @@ int dma_direct_copy_range_map(struct device *to, struct device *from)
+>  	to->dma_range_map = new_map;
+>  	return 0;
+>  }
+> -EXPORT_SYMBOL_GPL(dma_direct_copy_range_map);
+
+If you think this is safe to do, great, but for some reason I thought
+host controllers wanted this information, and that the scsi layer was
+the offending layer that also wanted this type of thing.  But it's been
+a really long time so I don't remember for sure, sorry.
+
+thanks,
+
+greg k-h
