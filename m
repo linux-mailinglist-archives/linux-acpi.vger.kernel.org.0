@@ -2,557 +2,471 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A73F264F6E
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 21:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963D5265271
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Sep 2020 23:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgIJTlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Sep 2020 15:41:42 -0400
-Received: from mga05.intel.com ([192.55.52.43]:62918 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731289AbgIJPfR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:35:17 -0400
-IronPort-SDR: 1WZODubuqXkAmxt3kGUuYnE8y1TODvmQtLT8ZI6Iq7DmwlCt95WNUI9zBluguTQAY1ItoFj6wi
- Eio6W5y9GY/A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="243381262"
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; 
-   d="scan'208";a="243381262"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2020 08:35:00 -0700
-IronPort-SDR: woEb2L4zufAPtC2C09arSbpf887dYcJdTMHl/Ha057Wnt7Y/7+YHxdDxFCjx7wKlsiF2+jof8l
- hdRZPaTribsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; 
-   d="scan'208";a="505162258"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 10 Sep 2020 08:34:58 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D66E11D7; Thu, 10 Sep 2020 18:34:56 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Joe Perches <joe@perches.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] kernel.h: Split out min()/max() et al. helpers
-Date:   Thu, 10 Sep 2020 18:34:56 +0300
-Message-Id: <20200910153456.27129-1-andriy.shevchenko@linux.intel.com>
+        id S1726980AbgIJVSG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Sep 2020 17:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35346 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728150AbgIJVSA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Sep 2020 17:18:00 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEA2C061573;
+        Thu, 10 Sep 2020 14:17:59 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id a12so7791288eds.13;
+        Thu, 10 Sep 2020 14:17:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SOacLxUwz2E1pG22XZZvHYu6NSqzm8KnGRzyal6TyFE=;
+        b=RGLgxAk6TapmHhDz1h0nohTC80gz/Ixp+pV6AuoSKvo8ziBPiex/gd2VvBYc8DQE5e
+         cLGE1zTV5shzCrgMkZxdrLL4OujjPWx94gDKC5ZhVj0nBnwiHN0kEkvnQX75jTdYJItP
+         sUrslr0NneeKucwFEyuIiCaYELzNfjz9//TbJm8HfUiaf2DhX6oZc2esb7ubL9g/b9b7
+         G+kyawDnLxH2QtJJ8z7RjQxOjMsJ0eCf3IxhFBOfQua/esbb3gMMpiCfo1+13uEfYhs3
+         Qqjz/gL6XsO0JHdhMVV26QwiK4P+0bCu/nH7mJVbcj+GwSZRmFbC/57BKdob6EPCDLX3
+         bpFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SOacLxUwz2E1pG22XZZvHYu6NSqzm8KnGRzyal6TyFE=;
+        b=P8A3Yu4Q0zHWRUO039q2d0FxK2ZT0cI1t1UjtNdOzEkBz5LiLsVaHB3D+datVUcBmh
+         eAV4An66skkVkcUeARlRNDskj9R51zXUwDo3Uf8TlSZfOfwHtoKswxuR+EJi/5zVq+Lq
+         jd8Qm9DRKa+QSEfJ3QO3r6lf+GLLihus+/ooTtWWrejQXPpcyTiG65MmjIqE6YrBaprU
+         LzgP3MjrAaeep6SLZITFyZfN677cGn2t9MbVsHedkPAsmkwYQJSnhgj79spp+7/B/4hz
+         KCpcXZbsFw9DxDekx1Epx8wvG/lnEmi3SCmFq8fgbxHyGd/V6xpK0o/j8GHryAe/+x76
+         uWRQ==
+X-Gm-Message-State: AOAM531I9TEQvuLvlvPAzbljquagPwbjxVdxKtvMe3msdKYX0GIJVmZN
+        zEsKz8ovzl/t+ReN8VILtJc=
+X-Google-Smtp-Source: ABdhPJxnHou/Y2x1hwqPEHpicnHljPL8SEkqLANzgD93WOOoD06v2W74HokrISm1G80W2wtx7ZIB1g==
+X-Received: by 2002:a05:6402:1386:: with SMTP id b6mr11410256edv.296.1599772677694;
+        Thu, 10 Sep 2020 14:17:57 -0700 (PDT)
+Received: from xws.fritz.box (pd9e5a079.dip0.t-ipconnect.de. [217.229.160.121])
+        by smtp.gmail.com with ESMTPSA id c5sm104429edt.24.2020.09.10.14.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2020 14:17:56 -0700 (PDT)
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>
+Subject: [PATCH v2] platform/x86: Add Driver to set up lid GPEs on MS Surface device
+Date:   Thu, 10 Sep 2020 23:15:20 +0200
+Message-Id: <20200910211520.1490626-1-luzmaximilian@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-kernel.h is being used as a dump for all kinds of stuff for a long time.
-Here is the attempt to start cleaning it up by splitting out min()/max()
-et al. helpers.
+Conventionally, wake-up events for a specific device, in our case the
+lid device, are managed via the ACPI _PRW field. While this does not
+seem strictly necessary based on ACPI spec, the kernel disables GPE
+wakeups to avoid non-wakeup interrupts preventing suspend by default and
+only enables GPEs associated via the _PRW field with a wake-up capable
+device. This behavior has been introduced in commit f941d3e41da7 ("ACPI:
+EC / PM: Disable non-wakeup GPEs for suspend-to-idle") and is described
+in more detail in its commit message.
 
-At the same time convert users in header and lib folder to use new header.
-Though for time being include new header back to kernel.h to avoid twisted
-indirected includes for other existing users.
+Unfortunately, on MS Surface devices, there is no _PRW field present on
+the lid device, thus no GPE is associated with it, and therefore the GPE
+responsible for sending the status-change notification to the lid gets
+disabled during suspend, making it impossible to wake the device via the
+lid.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+This patch introduces a pseudo-device and respective driver which, based
+on some DMI matching, marks the corresponding GPE of the lid device for
+wake and enables it during suspend. The behavior of this driver models
+the behavior of the ACPI/PM core for normal wakeup GPEs, properly
+declared via the _PRW field.
+
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
 
-This header being standalone makes possible to avoid unnecessary inclusion of
-kernel.h and its content to many places which would like to use min()/max()
-helpers and/or related without being poisoned like [1].
+Changes in v2:
+ - Use software nodes and device properties instead of platform data.
+ - Simplify module alias.
+ - Add comment regarding origin of GPE numbers.
+ - Fix style issues.
 
-I heard earlier opinions about this, like [2] or [3] and would like to see if
-this is a way to go.
+---
+ MAINTAINERS                        |   6 +
+ drivers/platform/x86/Kconfig       |  10 +
+ drivers/platform/x86/Makefile      |   1 +
+ drivers/platform/x86/surface_gpe.c | 303 +++++++++++++++++++++++++++++
+ 4 files changed, 320 insertions(+)
+ create mode 100644 drivers/platform/x86/surface_gpe.c
 
-I have Cc'ed parties gathered from all previous submissions of this + Linus.
-
-[1]: https://lore.kernel.org/linux-acpi/20200817163647.48982-4-andriy.shevchenko@linux.intel.com/
-[2]: https://lore.kernel.org/patchwork/patch/1189564/
-[3]: https://lore.kernel.org/lkml/94bec618-5e06-e72b-45a5-29318e09a29a@rasmusvillemoes.dk/
-
- include/linux/blkdev.h    |   1 +
- include/linux/bvec.h      |   6 +-
- include/linux/jiffies.h   |   3 +-
- include/linux/kernel.h    | 150 +------------------------------------
- include/linux/minmax.h    | 153 ++++++++++++++++++++++++++++++++++++++
- include/linux/nodemask.h  |   2 +-
- include/linux/uaccess.h   |   1 +
- kernel/range.c            |   3 +-
- lib/find_bit.c            |   1 +
- lib/hexdump.c             |   1 +
- lib/math/rational.c       |   2 +-
- lib/math/reciprocal_div.c |   1 +
- 12 files changed, 170 insertions(+), 154 deletions(-)
- create mode 100644 include/linux/minmax.h
-
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 37ec5a73d027..7d5dc329c41c 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -8,6 +8,7 @@
- #include <linux/genhd.h>
- #include <linux/list.h>
- #include <linux/llist.h>
-+#include <linux/minmax.h>
- #include <linux/timer.h>
- #include <linux/workqueue.h>
- #include <linux/pagemap.h>
-diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index dd74503f7e5e..2efec10bf792 100644
---- a/include/linux/bvec.h
-+++ b/include/linux/bvec.h
-@@ -7,10 +7,14 @@
- #ifndef __LINUX_BVEC_ITER_H
- #define __LINUX_BVEC_ITER_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b5cfab015bd61..a9f8400096e16 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11549,6 +11549,12 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
+ F:	include/linux/cciss*.h
+ F:	include/uapi/linux/cciss*.h
  
--#include <linux/kernel.h>
- #include <linux/bug.h>
- #include <linux/errno.h>
-+#include <linux/limits.h>
-+#include <linux/minmax.h>
- #include <linux/mm.h>
-+#include <linux/types.h>
++MICROSOFT SURFACE GPE LID SUPPORT DRIVER
++M:	Maximilian Luz <luzmaximilian@gmail.com>
++L:	platform-driver-x86@vger.kernel.org
++S:	Maintained
++F:	drivers/platform/x86/surface_gpe.c
 +
-+struct page;
+ MICROSOFT SURFACE PRO 3 BUTTON DRIVER
+ M:	Chen Yu <yu.c.chen@intel.com>
+ L:	platform-driver-x86@vger.kernel.org
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index 40219bba68011..cd29ab65f8b15 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -894,6 +894,16 @@ config SURFACE_3_POWER_OPREGION
+ 	  This driver provides support for ACPI operation
+ 	  region of the Surface 3 battery platform driver.
  
- /**
-  * struct bio_vec - a contiguous range of physical memory addresses
-diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-index fed6ba96c527..5e13f801c902 100644
---- a/include/linux/jiffies.h
-+++ b/include/linux/jiffies.h
-@@ -3,8 +3,9 @@
- #define _LINUX_JIFFIES_H
++config SURFACE_GPE
++	tristate "Surface GPE/Lid Support Driver"
++	depends on ACPI
++	depends on DMI
++	help
++	  This driver marks the GPEs related to the ACPI lid device found on
++	  Microsoft Surface devices as wakeup sources and prepares them
++	  accordingly. It is required on those devices to allow wake-ups from
++	  suspend by opening the lid.
++
+ config SURFACE_PRO3_BUTTON
+ 	tristate "Power/home/volume buttons driver for Microsoft Surface Pro 3/4 tablet"
+ 	depends on ACPI && INPUT
+diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
+index 5f823f7eff452..58c2a6f52e394 100644
+--- a/drivers/platform/x86/Makefile
++++ b/drivers/platform/x86/Makefile
+@@ -85,6 +85,7 @@ obj-$(CONFIG_INTEL_VBTN)		+= intel-vbtn.o
+ obj-$(CONFIG_SURFACE3_WMI)		+= surface3-wmi.o
+ obj-$(CONFIG_SURFACE_3_BUTTON)		+= surface3_button.o
+ obj-$(CONFIG_SURFACE_3_POWER_OPREGION)	+= surface3_power.o
++obj-$(CONFIG_SURFACE_GPE)		+= surface_gpe.o
+ obj-$(CONFIG_SURFACE_PRO3_BUTTON)	+= surfacepro3_button.o
  
- #include <linux/cache.h>
-+#include <linux/limits.h>
- #include <linux/math64.h>
--#include <linux/kernel.h>
-+#include <linux/minmax.h>
- #include <linux/types.h>
- #include <linux/time.h>
- #include <linux/timex.h>
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index 6a4e875f198e..d5bac994a5e4 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -11,6 +11,7 @@
- #include <linux/compiler.h>
- #include <linux/bitops.h>
- #include <linux/log2.h>
-+#include <linux/minmax.h>
- #include <linux/typecheck.h>
- #include <linux/printk.h>
- #include <linux/build_bug.h>
-@@ -835,155 +836,6 @@ ftrace_vprintk(const char *fmt, va_list ap)
- static inline void ftrace_dump(enum ftrace_dump_mode oops_dump_mode) { }
- #endif /* CONFIG_TRACING */
- 
--/*
-- * min()/max()/clamp() macros must accomplish three things:
-- *
-- * - avoid multiple evaluations of the arguments (so side-effects like
-- *   "x++" happen only once) when non-constant.
-- * - perform strict type-checking (to generate warnings instead of
-- *   nasty runtime surprises). See the "unnecessary" pointer comparison
-- *   in __typecheck().
-- * - retain result as a constant expressions when called with only
-- *   constant expressions (to avoid tripping VLA warnings in stack
-- *   allocation usage).
-- */
--#define __typecheck(x, y) \
--		(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
--
--/*
-- * This returns a constant expression while determining if an argument is
-- * a constant expression, most importantly without evaluating the argument.
-- * Glory to Martin Uecker <Martin.Uecker@med.uni-goettingen.de>
-- */
--#define __is_constexpr(x) \
--	(sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
--
--#define __no_side_effects(x, y) \
--		(__is_constexpr(x) && __is_constexpr(y))
--
--#define __safe_cmp(x, y) \
--		(__typecheck(x, y) && __no_side_effects(x, y))
--
--#define __cmp(x, y, op)	((x) op (y) ? (x) : (y))
--
--#define __cmp_once(x, y, unique_x, unique_y, op) ({	\
--		typeof(x) unique_x = (x);		\
--		typeof(y) unique_y = (y);		\
--		__cmp(unique_x, unique_y, op); })
--
--#define __careful_cmp(x, y, op) \
--	__builtin_choose_expr(__safe_cmp(x, y), \
--		__cmp(x, y, op), \
--		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
--
--/**
-- * min - return minimum of two values of the same or compatible types
-- * @x: first value
-- * @y: second value
-- */
--#define min(x, y)	__careful_cmp(x, y, <)
--
--/**
-- * max - return maximum of two values of the same or compatible types
-- * @x: first value
-- * @y: second value
-- */
--#define max(x, y)	__careful_cmp(x, y, >)
--
--/**
-- * min3 - return minimum of three values
-- * @x: first value
-- * @y: second value
-- * @z: third value
-- */
--#define min3(x, y, z) min((typeof(x))min(x, y), z)
--
--/**
-- * max3 - return maximum of three values
-- * @x: first value
-- * @y: second value
-- * @z: third value
-- */
--#define max3(x, y, z) max((typeof(x))max(x, y), z)
--
--/**
-- * min_not_zero - return the minimum that is _not_ zero, unless both are zero
-- * @x: value1
-- * @y: value2
-- */
--#define min_not_zero(x, y) ({			\
--	typeof(x) __x = (x);			\
--	typeof(y) __y = (y);			\
--	__x == 0 ? __y : ((__y == 0) ? __x : min(__x, __y)); })
--
--/**
-- * clamp - return a value clamped to a given range with strict typechecking
-- * @val: current value
-- * @lo: lowest allowable value
-- * @hi: highest allowable value
-- *
-- * This macro does strict typechecking of @lo/@hi to make sure they are of the
-- * same type as @val.  See the unnecessary pointer comparisons.
-- */
--#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
--
--/*
-- * ..and if you can't take the strict
-- * types, you can specify one yourself.
-- *
-- * Or not use min/max/clamp at all, of course.
-- */
--
--/**
-- * min_t - return minimum of two values, using the specified type
-- * @type: data type to use
-- * @x: first value
-- * @y: second value
-- */
--#define min_t(type, x, y)	__careful_cmp((type)(x), (type)(y), <)
--
--/**
-- * max_t - return maximum of two values, using the specified type
-- * @type: data type to use
-- * @x: first value
-- * @y: second value
-- */
--#define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
--
--/**
-- * clamp_t - return a value clamped to a given range using a given type
-- * @type: the type of variable to use
-- * @val: current value
-- * @lo: minimum allowable value
-- * @hi: maximum allowable value
-- *
-- * This macro does no typechecking and uses temporary variables of type
-- * @type to make all the comparisons.
-- */
--#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
--
--/**
-- * clamp_val - return a value clamped to a given range using val's type
-- * @val: current value
-- * @lo: minimum allowable value
-- * @hi: maximum allowable value
-- *
-- * This macro does no typechecking and uses temporary variables of whatever
-- * type the input argument @val is.  This is useful when @val is an unsigned
-- * type and @lo and @hi are literals that will otherwise be assigned a signed
-- * integer type.
-- */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
--
--
--/**
-- * swap - swap values of @a and @b
-- * @a: first value
-- * @b: second value
-- */
--#define swap(a, b) \
--	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
--
- /* This counts to 12. Any more, it will return 13th argument. */
- #define __COUNT_ARGS(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _n, X...) _n
- #define COUNT_ARGS(X...) __COUNT_ARGS(, ##X, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+ # MSI
+diff --git a/drivers/platform/x86/surface_gpe.c b/drivers/platform/x86/surface_gpe.c
 new file mode 100644
-index 000000000000..c0f57b0c64d9
+index 0000000000000..10e563f253b9e
 --- /dev/null
-+++ b/include/linux/minmax.h
-@@ -0,0 +1,153 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_MINMAX_H
-+#define _LINUX_MINMAX_H
++++ b/drivers/platform/x86/surface_gpe.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Surface GPE/Lid driver to enable wakeup from suspend via the lid by
++ * properly configuring the respective GPEs.
++ */
++
++#include <linux/acpi.h>
++#include <linux/dmi.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
 +
 +/*
-+ * min()/max()/clamp() macros must accomplish three things:
-+ *
-+ * - avoid multiple evaluations of the arguments (so side-effects like
-+ *   "x++" happen only once) when non-constant.
-+ * - perform strict type-checking (to generate warnings instead of
-+ *   nasty runtime surprises). See the "unnecessary" pointer comparison
-+ *   in __typecheck().
-+ * - retain result as a constant expressions when called with only
-+ *   constant expressions (to avoid tripping VLA warnings in stack
-+ *   allocation usage).
++ * Note: The GPE numbers for the lid devices found below have been obtained
++ *       from ACPI/the DSDT table, specifically from the GPE handler for the
++ *       lid.
 + */
-+#define __typecheck(x, y) \
-+	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
++
++static const struct property_entry lid_device_props_l17[] = {
++	PROPERTY_ENTRY_U32("gpe", 0x17),
++	{},
++};
++
++static const struct property_entry lid_device_props_l4D[] = {
++	PROPERTY_ENTRY_U32("gpe", 0x4D),
++	{},
++};
++
++static const struct property_entry lid_device_props_l4F[] = {
++	PROPERTY_ENTRY_U32("gpe", 0x4F),
++	{},
++};
++
++static const struct property_entry lid_device_props_l57[] = {
++	PROPERTY_ENTRY_U32("gpe", 0x57),
++	{},
++};
 +
 +/*
-+ * This returns a constant expression while determining if an argument is
-+ * a constant expression, most importantly without evaluating the argument.
-+ * Glory to Martin Uecker <Martin.Uecker@med.uni-goettingen.de>
++ * Note: When changing this, don't forget to check that the MODULE_ALIAS below
++ *       still fits.
 + */
-+#define __is_constexpr(x) \
-+	(sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
++static const struct dmi_system_id dmi_lid_device_table[] = {
++	{
++		.ident = "Surface Pro 4",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
++		},
++		.driver_data = (void *)lid_device_props_l17,
++	},
++	{
++		.ident = "Surface Pro 5",
++		.matches = {
++			/*
++			 * We match for SKU here due to generic product name
++			 * "Surface Pro".
++			 */
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
++		},
++		.driver_data = (void *)lid_device_props_l4F,
++	},
++	{
++		.ident = "Surface Pro 5 (LTE)",
++		.matches = {
++			/*
++			 * We match for SKU here due to generic product name
++			 * "Surface Pro"
++			 */
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
++		},
++		.driver_data = (void *)lid_device_props_l4F,
++	},
++	{
++		.ident = "Surface Pro 6",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
++		},
++		.driver_data = (void *)lid_device_props_l4F,
++	},
++	{
++		.ident = "Surface Pro 7",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 7"),
++		},
++		.driver_data = (void *)lid_device_props_l4D,
++	},
++	{
++		.ident = "Surface Book 1",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
++		},
++		.driver_data = (void *)lid_device_props_l17,
++	},
++	{
++		.ident = "Surface Book 2",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
++		},
++		.driver_data = (void *)lid_device_props_l17,
++	},
++	{
++		.ident = "Surface Book 3",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 3"),
++		},
++		.driver_data = (void *)lid_device_props_l4D,
++	},
++	{
++		.ident = "Surface Laptop 1",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
++		},
++		.driver_data = (void *)lid_device_props_l57,
++	},
++	{
++		.ident = "Surface Laptop 2",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
++		},
++		.driver_data = (void *)lid_device_props_l57,
++	},
++	{
++		.ident = "Surface Laptop 3 (Intel 13\")",
++		.matches = {
++			/*
++			 * We match for SKU here due to different vairants: The
++			 * AMD (15") version does not rely on GPEs.
++			 */
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Laptop_3_1867:1868"),
++		},
++		.driver_data = (void *)lid_device_props_l4D,
++	},
++	{ }
++};
 +
-+#define __no_side_effects(x, y) \
-+		(__is_constexpr(x) && __is_constexpr(y))
++struct surface_lid_device {
++	u32 gpe_number;
++};
 +
-+#define __safe_cmp(x, y) \
-+		(__typecheck(x, y) && __no_side_effects(x, y))
++static int surface_lid_enable_wakeup(struct device *dev, bool enable)
++{
++	const struct surface_lid_device *lid = dev_get_drvdata(dev);
++	int action = enable ? ACPI_GPE_ENABLE : ACPI_GPE_DISABLE;
++	acpi_status status;
 +
-+#define __cmp(x, y, op)	((x) op (y) ? (x) : (y))
++	status = acpi_set_gpe_wake_mask(NULL, lid->gpe_number, action);
++	if (status) {
++		dev_err(dev, "failed to set GPE wake mask: %d\n", status);
++		return -EINVAL;
++	}
 +
-+#define __cmp_once(x, y, unique_x, unique_y, op) ({	\
-+		typeof(x) unique_x = (x);		\
-+		typeof(y) unique_y = (y);		\
-+		__cmp(unique_x, unique_y, op); })
++	return 0;
++}
 +
-+#define __careful_cmp(x, y, op) \
-+	__builtin_choose_expr(__safe_cmp(x, y), \
-+		__cmp(x, y, op), \
-+		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
++static int surface_gpe_suspend(struct device *dev)
++{
++	return surface_lid_enable_wakeup(dev, true);
++}
 +
-+/**
-+ * min - return minimum of two values of the same or compatible types
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define min(x, y)	__careful_cmp(x, y, <)
++static int surface_gpe_resume(struct device *dev)
++{
++	return surface_lid_enable_wakeup(dev, false);
++}
 +
-+/**
-+ * max - return maximum of two values of the same or compatible types
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define max(x, y)	__careful_cmp(x, y, >)
++static SIMPLE_DEV_PM_OPS(surface_gpe_pm, surface_gpe_suspend, surface_gpe_resume);
 +
-+/**
-+ * min3 - return minimum of three values
-+ * @x: first value
-+ * @y: second value
-+ * @z: third value
-+ */
-+#define min3(x, y, z) min((typeof(x))min(x, y), z)
++static int surface_gpe_probe(struct platform_device *pdev)
++{
++	struct surface_lid_device *lid;
++	u32 gpe_number;
++	int status;
 +
-+/**
-+ * max3 - return maximum of three values
-+ * @x: first value
-+ * @y: second value
-+ * @z: third value
-+ */
-+#define max3(x, y, z) max((typeof(x))max(x, y), z)
++	status = device_property_read_u32(&pdev->dev, "gpe", &gpe_number);
++	if (status)
++		return -ENODEV;
 +
-+/**
-+ * min_not_zero - return the minimum that is _not_ zero, unless both are zero
-+ * @x: value1
-+ * @y: value2
-+ */
-+#define min_not_zero(x, y) ({			\
-+	typeof(x) __x = (x);			\
-+	typeof(y) __y = (y);			\
-+	__x == 0 ? __y : ((__y == 0) ? __x : min(__x, __y)); })
++	status = acpi_mark_gpe_for_wake(NULL, gpe_number);
++	if (status) {
++		dev_err(&pdev->dev, "failed to mark GPE for wake: %d\n", status);
++		return -EINVAL;
++	}
 +
-+/**
-+ * clamp - return a value clamped to a given range with strict typechecking
-+ * @val: current value
-+ * @lo: lowest allowable value
-+ * @hi: highest allowable value
-+ *
-+ * This macro does strict typechecking of @lo/@hi to make sure they are of the
-+ * same type as @val.  See the unnecessary pointer comparisons.
-+ */
-+#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
++	status = acpi_enable_gpe(NULL, gpe_number);
++	if (status) {
++		dev_err(&pdev->dev, "failed to enable GPE: %d\n", status);
++		return -EINVAL;
++	}
 +
-+/*
-+ * ..and if you can't take the strict
-+ * types, you can specify one yourself.
-+ *
-+ * Or not use min/max/clamp at all, of course.
-+ */
++	lid = devm_kzalloc(&pdev->dev, sizeof(struct surface_lid_device),
++			   GFP_KERNEL);
++	if (!lid)
++		return -ENOMEM;
 +
-+/**
-+ * min_t - return minimum of two values, using the specified type
-+ * @type: data type to use
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define min_t(type, x, y)	__careful_cmp((type)(x), (type)(y), <)
++	lid->gpe_number = gpe_number;
++	platform_set_drvdata(pdev, lid);
 +
-+/**
-+ * max_t - return maximum of two values, using the specified type
-+ * @type: data type to use
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
++	status = surface_lid_enable_wakeup(&pdev->dev, false);
++	if (status) {
++		acpi_disable_gpe(NULL, gpe_number);
++		platform_set_drvdata(pdev, NULL);
++		return status;
++	}
 +
-+/**
-+ * clamp_t - return a value clamped to a given range using a given type
-+ * @type: the type of variable to use
-+ * @val: current value
-+ * @lo: minimum allowable value
-+ * @hi: maximum allowable value
-+ *
-+ * This macro does no typechecking and uses temporary variables of type
-+ * @type to make all the comparisons.
-+ */
-+#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
++	return 0;
++}
 +
-+/**
-+ * clamp_val - return a value clamped to a given range using val's type
-+ * @val: current value
-+ * @lo: minimum allowable value
-+ * @hi: maximum allowable value
-+ *
-+ * This macro does no typechecking and uses temporary variables of whatever
-+ * type the input argument @val is.  This is useful when @val is an unsigned
-+ * type and @lo and @hi are literals that will otherwise be assigned a signed
-+ * integer type.
-+ */
-+#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
++static int surface_gpe_remove(struct platform_device *pdev)
++{
++	struct surface_lid_device *lid = dev_get_drvdata(&pdev->dev);
 +
-+/**
-+ * swap - swap values of @a and @b
-+ * @a: first value
-+ * @b: second value
-+ */
-+#define swap(a, b) \
-+	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
++	/* restore default behavior without this module */
++	surface_lid_enable_wakeup(&pdev->dev, false);
++	acpi_disable_gpe(NULL, lid->gpe_number);
 +
-+#endif	/* _LINUX_MINMAX_H */
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index 27e7fa36f707..7f38399cc9fe 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -90,9 +90,9 @@
-  * for such situations. See below and CPUMASK_ALLOC also.
-  */
- 
--#include <linux/kernel.h>
- #include <linux/threads.h>
- #include <linux/bitmap.h>
-+#include <linux/minmax.h>
- #include <linux/numa.h>
- 
- typedef struct { DECLARE_BITMAP(bits, MAX_NUMNODES); } nodemask_t;
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 8a004bcd6c20..6deff827dc9d 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/fault-inject-usercopy.h>
- #include <linux/instrumented.h>
-+#include <linux/minmax.h>
- #include <linux/sched.h>
- #include <linux/thread_info.h>
- 
-diff --git a/kernel/range.c b/kernel/range.c
-index d84de6766472..56435f96da73 100644
---- a/kernel/range.c
-+++ b/kernel/range.c
-@@ -2,8 +2,9 @@
- /*
-  * Range add and subtract
-  */
--#include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/minmax.h>
-+#include <linux/printk.h>
- #include <linux/sort.h>
- #include <linux/string.h>
- #include <linux/range.h>
-diff --git a/lib/find_bit.c b/lib/find_bit.c
-index 49f875f1baf7..4a8751010d59 100644
---- a/lib/find_bit.c
-+++ b/lib/find_bit.c
-@@ -16,6 +16,7 @@
- #include <linux/bitmap.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
-+#include <linux/minmax.h>
- 
- #if !defined(find_next_bit) || !defined(find_next_zero_bit) ||			\
- 	!defined(find_next_bit_le) || !defined(find_next_zero_bit_le) ||	\
-diff --git a/lib/hexdump.c b/lib/hexdump.c
-index 147133f8eb2f..9301578f98e8 100644
---- a/lib/hexdump.c
-+++ b/lib/hexdump.c
-@@ -7,6 +7,7 @@
- #include <linux/ctype.h>
- #include <linux/errno.h>
- #include <linux/kernel.h>
-+#include <linux/minmax.h>
- #include <linux/export.h>
- #include <asm/unaligned.h>
- 
-diff --git a/lib/math/rational.c b/lib/math/rational.c
-index df75c8809693..9781d521963d 100644
---- a/lib/math/rational.c
-+++ b/lib/math/rational.c
-@@ -11,7 +11,7 @@
- #include <linux/rational.h>
- #include <linux/compiler.h>
- #include <linux/export.h>
--#include <linux/kernel.h>
-+#include <linux/minmax.h>
- 
- /*
-  * calculate best rational approximation for a given fraction
-diff --git a/lib/math/reciprocal_div.c b/lib/math/reciprocal_div.c
-index bf043258fa00..32436dd4171e 100644
---- a/lib/math/reciprocal_div.c
-+++ b/lib/math/reciprocal_div.c
-@@ -4,6 +4,7 @@
- #include <asm/div64.h>
- #include <linux/reciprocal_div.h>
- #include <linux/export.h>
-+#include <linux/minmax.h>
- 
- /*
-  * For a description of the algorithm please have a look at
++	platform_set_drvdata(pdev, NULL);
++	return 0;
++}
++
++static struct platform_driver surface_gpe_driver = {
++	.probe = surface_gpe_probe,
++	.remove = surface_gpe_remove,
++	.driver = {
++		.name = "surface_gpe",
++		.pm = &surface_gpe_pm,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
++	},
++};
++
++static struct platform_device *surface_gpe_device;
++
++static int __init surface_gpe_init(void)
++{
++	const struct dmi_system_id *match;
++	const struct property_entry *props;
++	struct platform_device *pdev;
++	struct fwnode_handle *fwnode;
++	int status;
++
++	match = dmi_first_match(dmi_lid_device_table);
++	if (!match) {
++		pr_info(KBUILD_MODNAME": no device detected, exiting\n");
++		return 0;
++	}
++
++	props = match->driver_data;
++
++	status = platform_driver_register(&surface_gpe_driver);
++	if (status)
++		return status;
++
++	pdev = platform_device_alloc("surface_gpe", PLATFORM_DEVID_NONE);
++	if (!pdev) {
++		platform_driver_unregister(&surface_gpe_driver);
++		return -ENOMEM;
++	}
++
++	fwnode = fwnode_create_software_node(props, NULL);
++	if (IS_ERR(fwnode)) {
++		platform_device_put(pdev);
++		platform_driver_unregister(&surface_gpe_driver);
++		return PTR_ERR(fwnode);
++	}
++
++	pdev->dev.fwnode = fwnode;
++
++	status = platform_device_add(pdev);
++	if (status) {
++		platform_device_put(pdev);
++		platform_driver_unregister(&surface_gpe_driver);
++		return status;
++	}
++
++	surface_gpe_device = pdev;
++	return 0;
++}
++module_init(surface_gpe_init);
++
++static void __exit surface_gpe_exit(void)
++{
++	if (!surface_gpe_device)
++		return;
++
++	fwnode_remove_software_node(surface_gpe_device->dev.fwnode);
++	platform_device_unregister(surface_gpe_device);
++	platform_driver_unregister(&surface_gpe_driver);
++}
++module_exit(surface_gpe_exit);
++
++MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
++MODULE_DESCRIPTION("Surface GPE/Lid Driver");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurface*:*");
 -- 
 2.28.0
 
