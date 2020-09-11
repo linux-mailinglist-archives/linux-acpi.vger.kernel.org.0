@@ -2,128 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4214226671A
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 19:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9153E266802
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 20:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726542AbgIKRhN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 11 Sep 2020 13:37:13 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:40010 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725995AbgIKMte (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 11 Sep 2020 08:49:34 -0400
-Received: from [78.134.51.148] (port=34610 helo=[192.168.77.62])
-        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1kGiUZ-000Ei9-J2; Fri, 11 Sep 2020 14:49:27 +0200
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
- powered off
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
-Message-ID: <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net>
-Date:   Fri, 11 Sep 2020 14:49:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1725841AbgIKSBf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Sep 2020 14:01:35 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:46044 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725794AbgIKSBd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Sep 2020 14:01:33 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BHxNun136182;
+        Fri, 11 Sep 2020 18:01:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=K/lrGLKQLzPCde1LBeenvfV12lSqYozwSEeErGwFLx0=;
+ b=p3td48CvzFQw8bp+qotx7y2XNGDz349JG2L68Ognkw/J+TLmf6hry58o/0azGGJDmM3n
+ T2x07sp/D5YQGaD0JXWu/RuYc0P2QPMQfmCfhhZgy4tNbp7XB0MLpDIgzjNviZisFdwJ
+ tVRbf1BuYXl9BQ68SiM4IlLykbmhWv8/LD46cuyF6W3vMasF3dL496+iLWpZHe8/PWM7
+ 1CZZGbudcuqz2D48aVZZQx0LmiwLjLBM9yeRroGmg9ku5x9sA7JKbKkITdsE+m2iaNNh
+ dM+YXKKldp/6uh38YsMh0M8sBrZhq8oX68S7iURwWht61uYrEshzXXCL4PiUKt28MJ4p Xw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 33c23rfrhy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 11 Sep 2020 18:01:00 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BHximb049957;
+        Fri, 11 Sep 2020 18:00:59 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 33dacqayvf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Sep 2020 18:00:59 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08BI0t3G026796;
+        Fri, 11 Sep 2020 18:00:55 GMT
+Received: from [10.74.108.237] (/10.74.108.237)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 11 Sep 2020 11:00:55 -0700
+Subject: Re: [PATCH 2/3] ARM/keystone: move the DMA offset handling under
+ ifdef CONFIG_ARM_LPAE
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-usb@vger.kernel.org
+References: <20200910054038.324517-1-hch@lst.de>
+ <20200910054038.324517-3-hch@lst.de>
+ <20200911111551.GG1551@shell.armlinux.org.uk>
+From:   santosh.shilimkar@oracle.com
+Organization: Oracle Corporation
+Message-ID: <f13c72b9-9efa-7b9d-6c23-19f87b151bc4@oracle.com>
+Date:   Fri, 11 Sep 2020 11:00:52 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200911111551.GG1551@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9741 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009110145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9741 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009110145
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
-
-On 03/09/20 10:15, Sakari Ailus wrote:
+On 9/11/20 4:15 AM, Russell King - ARM Linux admin wrote:
+> On Thu, Sep 10, 2020 at 07:40:37AM +0200, Christoph Hellwig wrote:
+>> The DMA offset notifier can only be used if PHYS_OFFSET is at least
+>> KEYSTONE_HIGH_PHYS_START, which can't be represented by a 32-bit
+>> phys_addr_t.  Currently the code compiles fine despite that, a pending
+>> change to the DMA offset handling would create a compiler warning for
+>> this case.  Add an ifdef to not compile the code except for LPAE
+>> configs.
 > 
-> Hi all,
+> However, to have use of the high physical offset, LPAE needs to be
+> enabled, which ensures that phys_addr_t is 64-bit.
 > 
-> These patches enable calling (and finishing) a driver's probe function
-> without powering on the respective device on busses where the practice is
-> to power on the device for probe. While it generally is a driver's job to
-> check the that the device is there, there are cases where it might be
-> undesirable. (In this case it stems from a combination of hardware design
-> and user expectations; see below.) The downside with this change is that
-> if there is something wrong with the device, it will only be found at the
-> time the device is used. In this case (the camera sensors + EEPROM in a
-> sensor) I don't see any tangible harm from that though.
+> I believe that DMA is non-coherent on this platform unless the high
+> physical address is used. Or something like that.
 > 
-> An indication both from the driver and the firmware is required to allow
-> the device's power state to remain off during probe (see the first patch).
-> 
-> 
-> The use case is such that there is a privacy LED next to an integrated
-> user-facing laptop camera, and this LED is there to signal the user that
-> the camera is recording a video or capturing images. That LED also happens
-> to be wired to one of the power supplies of the camera, so whenever you
-> power on the camera, the LED will be lit, whether images are captured from
-> the camera --- or not. There's no way to implement this differently
-> without additional software control (allowing of which is itself a
-> hardware design decision) on most CSI-2-connected camera sensors as they
-> simply have no pin to signal the camera streaming state.
-> 
-> This is also what happens during driver probe: the camera will be powered
-> on by the I²C subsystem calling dev_pm_domain_attach() and the device is
-> already powered on when the driver's own probe function is called. To the
-> user this visible during the boot process as a blink of the privacy LED,
-> suggesting that the camera is recording without the user having used an
-> application to do that. From the end user's point of view the behaviour is
-> not expected and for someone unfamiliar with internal workings of a
-> computer surely seems quite suspicious --- even if images are not being
-> actually captured.
-> 
-> I've tested these on linux-next master. They also apply to Wolfram's
-> i2c/for-next branch, there's a patch that affects the I²C core changes
-> here (see below). The patches apart from that apply to Bartosz's
-> at24/for-next as well as Mauro's linux-media master branch.
+Exactly. Higher address ranges needs to be used for DMA coherency.
 
-Apologies for having joined this discussion this late.
-
-This patchset seems a good base to cover a different use case, where I
-also cannot access the physical device at probe time.
-
-I'm going to try these patches, but in my case there are a few
-differences that need a better understanding.
-
-First, I'm using device tree, not ACPI. In addition to adding OF support
-similar to the work you've done for ACPI, I think instead of
-acpi_dev_state_low_power() we should have a function that works for both
-ACPI and DT.
-
-Second, even though all the chips I'm interested in are connected via
-I2C, some of them (IIO sensors) can alternatively be connected via SPI
-and it would make perfectly sense to use SPI instead of I2C. The "i2c-"
-prefix added in v8 on the ACPI property looks like a limitation in that
-respect. The same reasoning applies to the implementation in the I2C
-core, but implementation could be generalized later.
-
-I'd love to know your opinion on the above points.
-
--- 
-Luca
-
+Regards,
+Santosh
