@@ -2,79 +2,252 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC09265C15
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 10:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36510265E46
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 12:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725793AbgIKI7V convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 11 Sep 2020 04:59:21 -0400
-Received: from mail.flex.co.jp ([211.8.82.123]:41714 "EHLO www.flex.co.jp"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725791AbgIKI7S (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 11 Sep 2020 04:59:18 -0400
-Received: from live.com.mx ([103.89.89.225])
-        (authenticated bits=0)
-        by www.flex.co.jp (MTA) with ESMTP id 0898ndvl009386
-        for <linux-acpi@vger.kernel.org>; Wed, 9 Sep 2020 17:49:45 +0900
-Reply-To: powerinthewords@yahoo.co.jp
-From:   piyin.crhe@live.com.mx
-To:     linux-acpi@vger.kernel.org
-Subject: =?utf-8?Q?=5BSpam=5D?=
- We are still waiting for your email...
-Date:   09 Sep 2020 01:49:44 -0700
-Message-ID: <20200909014943.970BF6DD517E9312@live.com.mx>
+        id S1726002AbgIKKiN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Sep 2020 06:38:13 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:54442 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725914AbgIKKfd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 11 Sep 2020 06:35:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599820529;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0L/VNlFzuDB/95oeV+NVSs6BIkKkE+sXG0xqekszlyk=;
+        b=JfR6jOYiw3UCOJU9euKxR5EoIJPTpfFLau8hy4H9NxkFdi30U6Xm4faJMfnAq0UHZZVc4x
+        rNGsN0dQCwBOuXy5crrwYdQpThJluYISwNcL6CwbBOSmT7/7Vd8oBwBzsQSZiyjmAnmcCe
+        XVlHorzCoRWWRBaJuT22gy84A4rXoWw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-228-_3yaQ7fkNFKX3yCvQmaZsw-1; Fri, 11 Sep 2020 06:35:25 -0400
+X-MC-Unique: _3yaQ7fkNFKX3yCvQmaZsw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BE71310082E6;
+        Fri, 11 Sep 2020 10:35:23 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-113-186.ams2.redhat.com [10.36.113.186])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 261DD81C4B;
+        Fri, 11 Sep 2020 10:35:19 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-s390@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Kees Cook <keescook@chromium.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Baoquan He <bhe@redhat.com>,
+        Wei Yang <richardw.yang@linux.intel.com>
+Subject: [PATCH v4 1/8] kernel/resource: make release_mem_region_adjustable() never fail
+Date:   Fri, 11 Sep 2020 12:34:52 +0200
+Message-Id: <20200911103459.10306-2-david@redhat.com>
+In-Reply-To: <20200911103459.10306-1-david@redhat.com>
+References: <20200911103459.10306-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-SpamInfo: FortiGuard-AntiSpam ip, connection black ip 103.89.89.225
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Beneficiary,
+Let's make sure splitting a resource on memory hotunplug will never fail.
+This will become more relevant once we merge selected System RAM
+resources - then, we'll trigger that case more often on memory hotunplug.
 
-We wish to inform you that a power of attorney was forwarded to 
-our office  by two gentlemen regarding your unclaimed fund of $56 
-Million Dollar. One of them is an American citizen named Mr. 
-Robert Porter and the other is Mr. Wilhelm Berg a Swedish 
-citizen.We have be waiting for you to contact us since last year.
+In general, this function is already unlikely to fail. When we remove
+memory, we free up quite a lot of metadata (memmap, page tables, memory
+block device, etc.). The only reason it could really fail would be when
+injecting allocation errors.
 
-The document claims these gentlemen to be your authorized 
-representatives, and the power of attorney states that you are 
-already deceased.  It further states that your death was due to 
-lung cancer, with your date of death being January 27th, 2020.
+All other error cases inside release_mem_region_adjustable() seem to be
+sanity checks if the function would be abused in different context -
+let's add WARN_ON_ONCE() in these cases so we can catch them.
 
-They have now submitted a new account to replace the receiving 
-account that was in the original claim of funds. These funds have 
-remained unclaimed for quite some time and the need for 
-resolution is pressing. Below is the new account they have 
-submitted.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Wei Yang <richardw.yang@linux.intel.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ include/linux/ioport.h |  4 ++--
+ kernel/resource.c      | 49 ++++++++++++++++++++++++------------------
+ mm/memory_hotplug.c    | 22 +------------------
+ 3 files changed, 31 insertions(+), 44 deletions(-)
 
-Account Name's :  Robert Porter /Wilhelm Berg
-Account: 5007-29 438 66
-IBAN-nr: SE4150000000050072943866
-Bic-kod: ESSESESS
-Skandinaviska Enskilda Banken. (SEB :)
-SWEDEN .
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 6c2b06fe8beb7..52a91f5fa1a36 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -248,8 +248,8 @@ extern struct resource * __request_region(struct resource *,
+ extern void __release_region(struct resource *, resource_size_t,
+ 				resource_size_t);
+ #ifdef CONFIG_MEMORY_HOTREMOVE
+-extern int release_mem_region_adjustable(struct resource *, resource_size_t,
+-				resource_size_t);
++extern void release_mem_region_adjustable(struct resource *, resource_size_t,
++					  resource_size_t);
+ #endif
+ 
+ /* Wrappers for managed devices */
+diff --git a/kernel/resource.c b/kernel/resource.c
+index f1175ce93a1d5..36b3552210120 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1258,21 +1258,28 @@ EXPORT_SYMBOL(__release_region);
+  *   assumes that all children remain in the lower address entry for
+  *   simplicity.  Enhance this logic when necessary.
+  */
+-int release_mem_region_adjustable(struct resource *parent,
+-				  resource_size_t start, resource_size_t size)
++void release_mem_region_adjustable(struct resource *parent,
++				   resource_size_t start, resource_size_t size)
+ {
++	struct resource *new_res = NULL;
++	bool alloc_nofail = false;
+ 	struct resource **p;
+ 	struct resource *res;
+-	struct resource *new_res;
+ 	resource_size_t end;
+-	int ret = -EINVAL;
+ 
+ 	end = start + size - 1;
+-	if ((start < parent->start) || (end > parent->end))
+-		return ret;
++	if (WARN_ON_ONCE((start < parent->start) || (end > parent->end)))
++		return;
+ 
+-	/* The alloc_resource() result gets checked later */
+-	new_res = alloc_resource(GFP_KERNEL);
++	/*
++	 * We free up quite a lot of memory on memory hotunplug (esp., memap),
++	 * just before releasing the region. This is highly unlikely to
++	 * fail - let's play save and make it never fail as the caller cannot
++	 * perform any error handling (e.g., trying to re-add memory will fail
++	 * similarly).
++	 */
++retry:
++	new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
+ 
+ 	p = &parent->child;
+ 	write_lock(&resource_lock);
+@@ -1298,7 +1305,6 @@ int release_mem_region_adjustable(struct resource *parent,
+ 		 * so if we are dealing with them, let us just back off here.
+ 		 */
+ 		if (!(res->flags & IORESOURCE_SYSRAM)) {
+-			ret = 0;
+ 			break;
+ 		}
+ 
+@@ -1315,20 +1321,23 @@ int release_mem_region_adjustable(struct resource *parent,
+ 			/* free the whole entry */
+ 			*p = res->sibling;
+ 			free_resource(res);
+-			ret = 0;
+ 		} else if (res->start == start && res->end != end) {
+ 			/* adjust the start */
+-			ret = __adjust_resource(res, end + 1,
+-						res->end - end);
++			WARN_ON_ONCE(__adjust_resource(res, end + 1,
++						       res->end - end));
+ 		} else if (res->start != start && res->end == end) {
+ 			/* adjust the end */
+-			ret = __adjust_resource(res, res->start,
+-						start - res->start);
++			WARN_ON_ONCE(__adjust_resource(res, res->start,
++						       start - res->start));
+ 		} else {
+-			/* split into two entries */
++			/* split into two entries - we need a new resource */
+ 			if (!new_res) {
+-				ret = -ENOMEM;
+-				break;
++				new_res = alloc_resource(GFP_ATOMIC);
++				if (!new_res) {
++					alloc_nofail = true;
++					write_unlock(&resource_lock);
++					goto retry;
++				}
+ 			}
+ 			new_res->name = res->name;
+ 			new_res->start = end + 1;
+@@ -1339,9 +1348,8 @@ int release_mem_region_adjustable(struct resource *parent,
+ 			new_res->sibling = res->sibling;
+ 			new_res->child = NULL;
+ 
+-			ret = __adjust_resource(res, res->start,
+-						start - res->start);
+-			if (ret)
++			if (WARN_ON_ONCE(__adjust_resource(res, res->start,
++							   start - res->start)))
+ 				break;
+ 			res->sibling = new_res;
+ 			new_res = NULL;
+@@ -1352,7 +1360,6 @@ int release_mem_region_adjustable(struct resource *parent,
+ 
+ 	write_unlock(&resource_lock);
+ 	free_resource(new_res);
+-	return ret;
+ }
+ #endif	/* CONFIG_MEMORY_HOTREMOVE */
+ 
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index baded53b9ff92..4c47b68a9f4b5 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1724,26 +1724,6 @@ void try_offline_node(int nid)
+ }
+ EXPORT_SYMBOL(try_offline_node);
+ 
+-static void __release_memory_resource(resource_size_t start,
+-				      resource_size_t size)
+-{
+-	int ret;
+-
+-	/*
+-	 * When removing memory in the same granularity as it was added,
+-	 * this function never fails. It might only fail if resources
+-	 * have to be adjusted or split. We'll ignore the error, as
+-	 * removing of memory cannot fail.
+-	 */
+-	ret = release_mem_region_adjustable(&iomem_resource, start, size);
+-	if (ret) {
+-		resource_size_t endres = start + size - 1;
+-
+-		pr_warn("Unable to release resource <%pa-%pa> (%d)\n",
+-			&start, &endres, ret);
+-	}
+-}
+-
+ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+ {
+ 	int rc = 0;
+@@ -1777,7 +1757,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+ 		memblock_remove(start, size);
+ 	}
+ 
+-	__release_memory_resource(start, size);
++	release_mem_region_adjustable(&iomem_resource, start, size);
+ 
+ 	try_offline_node(nid);
+ 
+-- 
+2.26.2
 
-In the event that you are in fact still alive, we ask that you 
-confirm your existence by responding to this email. You are to 
-view this as a matter requiring immediate attention and response. 
-We have 48 hr monitoring of all activities within Federal Reserve 
-Bank.On this regard,you will be directed to any of our office 
-center that you will go in person to sign the final papers,
-because we have our payment center in Europe,Asia,America and 
-Canada.You will go to any of the office that you will be directed 
-to with the copy of the documents of your fund.
-
-We have contacted the bank in the Sweden asking them to wait for 
-further directives from Federal Reserve Bank, prior to 
-authorizing any withdrawals in any form.  Our request is based 
-entirely on our attempt to verify that you are in fact deceased, 
-before money is wrongly disbursed.
-
-Your in Service,
-
-Robert Steven Kaplan
-2200 N Pearl St, Dallas, TX 75201, United States
