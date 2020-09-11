@@ -2,67 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B21C2675BD
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Sep 2020 00:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69B5A267620
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Sep 2020 00:46:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725884AbgIKWOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Sep 2020 18:14:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56345 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725864AbgIKWOj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Sep 2020 18:14:39 -0400
-Received: from 2.general.alexhung.us.vpn ([10.172.65.255] helo=canonical.com)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <alex.hung@canonical.com>)
-        id 1kGrJT-0002ET-LN; Fri, 11 Sep 2020 22:14:36 +0000
-From:   Alex Hung <alex.hung@canonical.com>
-To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        alex.hung@canonical.com
-Cc:     All applicable <stable@vger.kernel.org>
-Subject: [PATCH] ACPI: video: use ACPI backlight for HP 635 Notebook
-Date:   Fri, 11 Sep 2020 16:14:20 -0600
-Message-Id: <20200911221420.21692-1-alex.hung@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1725864AbgIKWqj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Sep 2020 18:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725835AbgIKWqg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Sep 2020 18:46:36 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7F4C061573;
+        Fri, 11 Sep 2020 15:46:34 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id e23so15732982eja.3;
+        Fri, 11 Sep 2020 15:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=gbxJusHa2ym32357/sjUgbn9JJl0P0vMCQtSAk0Gnio=;
+        b=cdlNGLvBwkeurTCdGiNOGiHltEFZihUT6VgLFi9uXhsR6x9Dx8u4ttJKSgLb2BBC+Q
+         5p+pkiHfB82ZkiMR8avAXWOgdJvZvRhBfn4gikdy+e1puDpb7O3r+RRJhB6vqWmSXuyC
+         r8H4NYwV73wTAul/X39Np79cwLxVsrMBzzdyibs619qPaQhPMkTFBP62auibLJVg58MI
+         ckyBqEjfVvmG0n3DFk04Eow2Rw6SaV4+D8w9vWs17UnGg8L/Lemlk34477gCrcXt0TJZ
+         0gI44XFiZ/LmFir93GyWnOJLDit6gnDQERmI9mBCr9J713FfmwiNaL7DoJx3MLOMwrDj
+         +AeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gbxJusHa2ym32357/sjUgbn9JJl0P0vMCQtSAk0Gnio=;
+        b=g7MethISIz7QSdPVUXMd+J0mKFLInxvCetl6IfpW7JQT83wODZ49pw6JP51Kbc4x9N
+         ysuflQdqnS011k1WPF9kmZXBHmYmR9Rf3qPx0GPjvDIi7RzdoEQEOHyN7LSr5dXw0DrT
+         dGRs9N1XhqrgxYCHEd+jZXohpNJFTvc4aW5eD/oNSmLaeBRHT9Dax/abHNb1uEttxbK6
+         LVkCD6LqjtQb8FdGZHyk2yQef73xRu2czXEFc6cj3P9AE6zWVdRSG7+BPfNr0BaSNADF
+         rPtzKmr5c/1ShukZ4en0qiQDoXc6OsQDv8eAiEQFMFRsYXcxk5hMc9o4hRwDsEXEoRPz
+         gU2Q==
+X-Gm-Message-State: AOAM532JcBCKBkrwU/2ZATNz1WSBTW8i7W/NZTGXkwZ+4ku8qIgQVYSl
+        M+EOiRn+OZfvuxZcOBg9c0vXE93GPRU=
+X-Google-Smtp-Source: ABdhPJzudBeaRIE3una4rTedZgekcU1R4Zmo6A6qfrjJ/Y6UEosPhy2ToP+s2KKrHujZyEkpOieQ5w==
+X-Received: by 2002:a17:906:1d08:: with SMTP id n8mr4244935ejh.236.1599864392562;
+        Fri, 11 Sep 2020 15:46:32 -0700 (PDT)
+Received: from [192.168.2.202] (pd9e5a3c2.dip0.t-ipconnect.de. [217.229.163.194])
+        by smtp.gmail.com with ESMTPSA id nm7sm2238957ejb.70.2020.09.11.15.46.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2020 15:46:31 -0700 (PDT)
+Subject: Re: [PATCH] platform/x86: Add Driver to set up lid GPEs on MS Surface
+ device
+To:     mgross@linux.intel.com
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200908171934.1661509-1-luzmaximilian@gmail.com>
+ <20200911221053.GF103884@mtg-dev.jf.intel.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <e6125bee-d42e-f485-295a-8b9ad6777d4a@gmail.com>
+Date:   Sat, 12 Sep 2020 00:46:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200911221053.GF103884@mtg-dev.jf.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Default backlight interface is AMD's radeon_bl0 which does not work on
-this system. As a result, let's for ACPI backlight interface for this
-system.
+On 9/12/20 12:10 AM, mark gross wrote:
+> Surface devices are tablets with detachable keyboards.  they don't really
+> have a "lid" as the tablet is the "lid".
 
-BugLink: https://bugs.launchpad.net/bugs/1894667
+The Surface Laptop series doesn't have a detachable keyboard, yet still
+requires this. Arguably, the Surface Books are also more laptop than
+tablet (at least that's the way I use mine...). Finally, on the actual
+tablets (Surface Pro series) the lid switch detects when the keyboard
+cover is opened (or at least that's what I have been told, I don't
+own/have access to a Pro series device).
 
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Alex Hung <alex.hung@canonical.com>
----
- drivers/acpi/video_detect.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Regardless of that, this patch is intended to provide the same behavior
+as found on Windows, for all devices included in this patch, which is:
+When you open the lid, or in case of the Pro series fold away the
+keyboard cover, the device wakes from suspend/s2idle. Without this
+patch, that doesn't work.
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 2499d7e..05047a3 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -282,6 +282,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "530U4E/540U4E"),
- 		},
- 	},
-+	/* https://bugs.launchpad.net/bugs/1894667 */
-+	{
-+	 .callback = video_detect_force_video,
-+	 .ident = "HP 635 Notebook",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "HP 635 Notebook PC"),
-+		},
-+	},
- 
- 	/* Non win8 machines which need native backlight nevertheless */
- 	{
--- 
-2.7.4
+> I'm just questioning if the creator of the device designed it the way they did
+> maybe we should think twice about doing this.
 
+As far as I can tell, the intended behavior is to wake the device when
+the lid is opened, which on the Laptops and Books is a more conventional
+lid and on the Pros constitutes opening the cover.
+
+I'm open for any alternative though.
+
+Also please note that I've already sent a v2 of this patch with Andy's
+comments addressed: https://lore.kernel.org/patchwork/patch/1303997/
+
+--
+Regards,
+Max
