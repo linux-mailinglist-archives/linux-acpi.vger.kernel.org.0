@@ -2,74 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C442265ECD
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 13:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D848E265F55
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Sep 2020 14:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbgIKL3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Sep 2020 07:29:47 -0400
-Received: from foss.arm.com ([217.140.110.172]:60404 "EHLO foss.arm.com"
+        id S1725824AbgIKMOg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Sep 2020 08:14:36 -0400
+Received: from mga06.intel.com ([134.134.136.31]:25316 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725730AbgIKL2v (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 11 Sep 2020 07:28:51 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECC2F113E;
-        Fri, 11 Sep 2020 04:27:24 -0700 (PDT)
-Received: from [10.57.40.122] (unknown [10.57.40.122])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59C303F68F;
-        Fri, 11 Sep 2020 04:27:22 -0700 (PDT)
-Subject: Re: [PATCH 2/3] ARM/keystone: move the DMA offset handling under
- ifdef CONFIG_ARM_LPAE
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-usb@vger.kernel.org
-References: <20200910054038.324517-1-hch@lst.de>
- <20200910054038.324517-3-hch@lst.de>
- <20200911111551.GG1551@shell.armlinux.org.uk>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <211af505-04fa-9cff-3178-1c8c24548485@arm.com>
-Date:   Fri, 11 Sep 2020 12:27:21 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1725859AbgIKMNi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 11 Sep 2020 08:13:38 -0400
+IronPort-SDR: 52XsU1LdFlkZo11C00j/BA6w8Evv9a3/V1tga02qrIBH411PCAbgMoy8tJjTThpeTLG8be7Ha9
+ 5ehFhfBBB7zQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9740"; a="220296942"
+X-IronPort-AV: E=Sophos;i="5.76,415,1592895600"; 
+   d="scan'208";a="220296942"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2020 05:11:14 -0700
+IronPort-SDR: IuXzKhmbK9o4Dul8zRwA1SN5tCnJAoObl17SRVCiaVvQEiTajzqaED83Ha3ZbUMZLcvrNFfzc5
+ QMuTtD5qV7mg==
+X-IronPort-AV: E=Sophos;i="5.76,415,1592895600"; 
+   d="scan'208";a="286879413"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2020 05:11:11 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 8CAC52079D; Fri, 11 Sep 2020 15:11:09 +0300 (EEST)
+Date:   Fri, 11 Sep 2020 15:11:09 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media <linux-media@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH v8 6/6] at24: Support probing while off
+Message-ID: <20200911121109.GE26842@paasikivi.fi.intel.com>
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
+ <20200903081550.6012-7-sakari.ailus@linux.intel.com>
+ <CAMpxmJX40=iYYxL9Uvs1Pjj9c3NvZBGJ9Mh9-87T0c==FKEXRw@mail.gmail.com>
+ <20200909111121.GJ2272@ninjato>
+ <CAMpxmJXDrL92QH_Vb+P4LoQ-WGBMM42GvzXjquW2Lzotm5wggA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200911111551.GG1551@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMpxmJXDrL92QH_Vb+P4LoQ-WGBMM42GvzXjquW2Lzotm5wggA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-09-11 12:15, Russell King - ARM Linux admin wrote:
-> On Thu, Sep 10, 2020 at 07:40:37AM +0200, Christoph Hellwig wrote:
->> The DMA offset notifier can only be used if PHYS_OFFSET is at least
->> KEYSTONE_HIGH_PHYS_START, which can't be represented by a 32-bit
->> phys_addr_t.  Currently the code compiles fine despite that, a pending
->> change to the DMA offset handling would create a compiler warning for
->> this case.  Add an ifdef to not compile the code except for LPAE
->> configs.
-> 
-> However, to have use of the high physical offset, LPAE needs to be
-> enabled, which ensures that phys_addr_t is 64-bit.
-> 
-> I believe that DMA is non-coherent on this platform unless the high
-> physical address is used. Or something like that.
+Bartosz, Wolfram,
 
-Yeah, it's probably not a configuration that anyone would actually want 
-to use in anger on Keystone itself, but as long as folks might have 
-ARCH_KEYSTONE selected in their non-LPAE multiplatform config we should 
-avoid build regressions. I did wonder if Keystone should simply have a 
-hard dependency on LPAE, but there does appear to be some explicit 
-support for running directly from the non-coherent low 2G alias :/
+On Wed, Sep 09, 2020 at 01:56:34PM +0200, Bartosz Golaszewski wrote:
+> On Wed, Sep 9, 2020 at 1:11 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+> >
+> >
+> > > This currently conflicts with the fix I queued for at24 for v5.9.
+> > > Which tree is going to take this series?
+> >
+> > I recall we agreed on I2C.
+> >
+> 
+> Sakari,
+> 
+> can you rebase the at24 driver patch on top of Wolfram's tree as soon
+> as he merges my PR with at24 fixes?
 
-Robin.
+I need some additional time with the set, and that may take it beyond
+v5.10. Either way, I'll keep you posted.
+
+Thanks.
+
+-- 
+Kind regards,
+
+Sakari Ailus
