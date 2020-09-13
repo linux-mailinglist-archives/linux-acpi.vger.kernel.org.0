@@ -2,66 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA34267B77
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Sep 2020 18:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4E52681B4
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 00:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725876AbgILQwt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 12 Sep 2020 12:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbgILQwn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Sep 2020 12:52:43 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CB8C061757
-        for <linux-acpi@vger.kernel.org>; Sat, 12 Sep 2020 09:52:41 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id z19so9389678pfn.8
-        for <linux-acpi@vger.kernel.org>; Sat, 12 Sep 2020 09:52:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:date:from:to:reply-to:content-transfer-encoding
-         :subject:message-id;
-        bh=z9cbGQzvCZGdv2stQ4JjJcY1G86CqEMBICg5YK+66dU=;
-        b=tq5TVoZlBhOE5vi8NspSGpvioI3vzDz9TCD2cuc8Ti0aKFjL1ZMeOR9vcT6b/9bSiy
-         eBE1jiCD84vJzAQ9FfKO9Ek1LpWjiDucR2E4MexVmmu23QZ+QzckuEOOEXLUeZOl46x7
-         Mq7riVRNv8ld/XHgHFiMjGZeOGROvsUvq36chTEyRnQuWjat8l05XfUMbVQa4lNrsW4e
-         mi48bWafyN+zwJfvMNraEiJVzFeiJRsnAgpD/vb7S9KG8MmzqeHJc1y3qyT3aHQOXbDD
-         f5wYeF0GQVYygjsYvPo/lniZW3YREZD2fijuXPFzkDxV6rqifqJqVFb7/S34/BW2XUAW
-         4t1w==
+        id S1725949AbgIMWdc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 13 Sep 2020 18:33:32 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41349 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725941AbgIMWd1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 13 Sep 2020 18:33:27 -0400
+Received: from mail-pj1-f69.google.com ([209.85.216.69])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <alex.hung@canonical.com>)
+        id 1kHaYm-0000Bt-Ct
+        for linux-acpi@vger.kernel.org; Sun, 13 Sep 2020 22:33:24 +0000
+Received: by mail-pj1-f69.google.com with SMTP id q12so1527487pjg.9
+        for <linux-acpi@vger.kernel.org>; Sun, 13 Sep 2020 15:33:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:from:to:reply-to
-         :content-transfer-encoding:subject:message-id;
-        bh=z9cbGQzvCZGdv2stQ4JjJcY1G86CqEMBICg5YK+66dU=;
-        b=gaLIOyIaM2oDDTVQEz7aijunDurUqeHxB2ZACcMlnijuwne6mjTtYZs8Nv3LgmoRSh
-         5kyH0TMaL23HBPD4QBYv+10PJ99iYMueT4U6Rusu+SOJCHEDeGw2ArQ4nevyAyqjqh4Q
-         +Jm9o2gLW9PGW6CXYr/uEv37kk7eao+galKs4Qr9SW6Q0QzRVb/KYmWynYeeMAUpiMaQ
-         7EipO+bkRW609CxfYnBEXEd/Am9Beuh3Q155pQuL/IWXn2wMKE4SvqgG4/DN+SznvsSw
-         yPgZf23s11pitItv4ouk0YDLumZZprruqQ/w7YPBCjvywXSm/PtL9m0Z5rLfQZrOP1Tn
-         KMBA==
-X-Gm-Message-State: AOAM530Cchus2f1GUNehCjo0heO/munEOzInIJ/xjNClHMCNUThdUhdb
-        B9Bvx1WaDc6TuivJjd56b9wIUBSXfLw=
-X-Google-Smtp-Source: ABdhPJzCl75Xnk55PMkvaVrSSXZcpPaRmu2TLGPv11hlnXXmV76Y643egFZu5RDoThnhO/Rg1ROuGQ==
-X-Received: by 2002:a62:ce4b:0:b029:13e:d13d:a100 with SMTP id y72-20020a62ce4b0000b029013ed13da100mr6528871pfg.28.1599929561124;
-        Sat, 12 Sep 2020 09:52:41 -0700 (PDT)
-Received: from WIN-25FFVSIPLS1 (149-255-36-142.static.hvvc.us. [149.255.36.142])
-        by smtp.gmail.com with ESMTPSA id c1sm5580058pfi.136.2020.09.12.09.52.40
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 12 Sep 2020 09:52:40 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rEKlKZmh/1YZMbvfsNtQ59gLQC9wICTVNrBlPswdPyM=;
+        b=ZMC8IEhi7O/+2En3YexD1kyaNRqc6OoxB+1w1yXkHJVv4RyEqHSApFQBzXSRDj24SP
+         PrZFcfjCwWOgWft6iQjbfrcGyii0XK9SlUt6VJJVlve5t3kuLBYVGnk9C0OgQpgQISRx
+         St6oZlMAObykGXIbAH3DgIsQ5JsSB5Wa84PmP/5uLky575+FQ9VIBuVDV/HhazLRKuSZ
+         JVI5eEjqW/qklWY5KKz3BCOet579wPx9bbeZ+/mMHlZc69ut1eZRUHA/I/cz3B2z86xp
+         hMUgCyn4IHS1kfmDAemw8kPZKsIR+JKybaXnwnPBYZ5C+F3p5PBtlcO9Xk89gEgNnw7D
+         6nQg==
+X-Gm-Message-State: AOAM530uwwgyF4pCbOg8cHLAp3IUWzFgvDtQTPD1EvRbSlisPoiKE7VM
+        ivELjFb8q9+BLiz7XIGzjuQkYCL0pX+QkAytV9NfaqXomYHou8s35nzuEbGo7oNOsE4NlWfzlCU
+        nj2B2kCZ82s+WDMzK+wBEsVhRtFXC/yfrOSqEsCo=
+X-Received: by 2002:a17:90a:2ec8:: with SMTP id h8mr11530599pjs.173.1600036402794;
+        Sun, 13 Sep 2020 15:33:22 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzosOtxUbpPgTZbDQitLsYRQmDKVbBLcnbz36bOMEnqd19xG9jTA7kwvfXHZfIm0tWP+W4A3w==
+X-Received: by 2002:a17:90a:2ec8:: with SMTP id h8mr11530584pjs.173.1600036402461;
+        Sun, 13 Sep 2020 15:33:22 -0700 (PDT)
+Received: from [192.168.0.119] (d66-222-144-129.abhsia.telus.net. [66.222.144.129])
+        by smtp.gmail.com with ESMTPSA id c3sm8428906pfo.120.2020.09.13.15.33.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Sep 2020 15:33:21 -0700 (PDT)
+Subject: Re: [PATCH] ACPI: video: use ACPI backlight for HP 635 Notebook
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        All applicable <stable@vger.kernel.org>
+References: <20200911221420.21692-1-alex.hung@canonical.com>
+ <20200912064900.GB558156@kroah.com>
+From:   Alex Hung <alex.hung@canonical.com>
+Message-ID: <dcd820c5-619c-bd18-4d38-4a4cab38a2f4@canonical.com>
+Date:   Sun, 13 Sep 2020 16:33:20 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Date:   Sat, 12 Sep 2020 09:52:28 -0700
-X-Priority: 3 (Normal)
-From:   sharigray1984@gmail.com
-To:     linux-acpi@vger.kernel.org
-Reply-To: sharigray1984@gmail.com
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-Subject: hey
-Message-ID: <94A8A370C206885311DD1D0D29C64A86C05F2246@WIN-25FFVSIPLS1>
+In-Reply-To: <20200912064900.GB558156@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Facebook sweepstake lottery notification, Click on this link to claim yo=
-ur winning payment https://zfrmz.com/Ps5t04H6zwHXI1u9RV8F
+On 2020-09-12 12:49 a.m., Greg KH wrote:
+> On Fri, Sep 11, 2020 at 04:14:20PM -0600, Alex Hung wrote:
+>> Default backlight interface is AMD's radeon_bl0 which does not work on
+>> this system. As a result, let's for ACPI backlight interface for this
+>> system.
+>>
+>> BugLink: https://bugs.launchpad.net/bugs/1894667
+>>
+>> Cc: All applicable <stable@vger.kernel.org>
+>> Signed-off-by: Alex Hung <alex.hung@canonical.com>
+>> ---
+>>  drivers/acpi/video_detect.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+>> index 2499d7e..05047a3 100644
+>> --- a/drivers/acpi/video_detect.c
+>> +++ b/drivers/acpi/video_detect.c
+>> @@ -282,6 +282,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+>>  		DMI_MATCH(DMI_PRODUCT_NAME, "530U4E/540U4E"),
+>>  		},
+>>  	},
+>> +	/* https://bugs.launchpad.net/bugs/1894667 */
+>> +	{
+>> +	 .callback = video_detect_force_video,
+>> +	 .ident = "HP 635 Notebook",
+>> +	 .matches = {
+>> +		DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
+>> +		DMI_MATCH(DMI_PRODUCT_NAME, "HP 635 Notebook PC"),
+>> +		},
+>> +	},
+>>  
+>>  	/* Non win8 machines which need native backlight nevertheless */
+>>  	{
+>> -- 
+>> 2.7.4
+>>
+> 
+> <formletter>
+> 
+> This is not the correct way to submit patches for inclusion in the
+> stable kernel tree.  Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> for how to do this properly.
+> 
+> </formletter>
+> 
+
+Sorry about this.
+
+I will send V2 to correct it to "Cc: stable@vger.kernel.org"
+
+
+-- 
+Cheers,
+Alex Hung
