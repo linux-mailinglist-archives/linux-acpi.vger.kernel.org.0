@@ -2,157 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82A682686A7
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 09:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CBB2686B0
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 10:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbgINH6c convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 14 Sep 2020 03:58:32 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:52653 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726068AbgINH6a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Sep 2020 03:58:30 -0400
-Received: from [78.134.51.148] (port=41494 helo=[192.168.77.62])
-        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1kHjNZ-000BOy-9w; Mon, 14 Sep 2020 09:58:25 +0200
-Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
- powered off
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
- <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net>
- <20200911130104.GF26842@paasikivi.fi.intel.com>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <6dea1206-cfaa-bfc5-d57e-4dcddadc03c7@lucaceresoli.net>
-Date:   Mon, 14 Sep 2020 09:58:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726024AbgINIAa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Sep 2020 04:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725989AbgINIA1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Sep 2020 04:00:27 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D79DC06174A;
+        Mon, 14 Sep 2020 01:00:26 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id d6so11932228pfn.9;
+        Mon, 14 Sep 2020 01:00:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uWtfnbUAIcfLNSjZEmB/DP0e8Ah3wqyuRKjVuAdbyU0=;
+        b=gQHcidFAXkKvHEwYzufedeiy9XCgNMpD51eJozBzqndBe9l3Pkghlr/MgVhSefaxbZ
+         BDZMMAsPdjM6Lm/p5q6L+6Lnuxws5bCHBwQ3xutqRPnsDQf5aIg9shwd0XpyTXiLEAZq
+         rOpxNzSDAAViZU38yHYgltZKr5mmPnkUWjSEivJVoFWP2agAmOSDmz4sM5JVzabNY8zf
+         RsOfBlMIdIsSJpAZsmkxgIPyL8b0q2qOrPV+DU5xYAOf9ZQVkByY+FvW5VMUebwdmoQ+
+         LwH3ghMD+9e6yAZXIxVvPKpCHOnepecsqrHR8yiJLzvHZty69FpK3h/aTLTc4LKYYnJd
+         BW5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uWtfnbUAIcfLNSjZEmB/DP0e8Ah3wqyuRKjVuAdbyU0=;
+        b=egqNvyqtyiiH/8M5DwM7LW2ha60/amrtFJUtCc/JkJruscCiJ0CaYjuSiYJfSK9MUe
+         +QhiHKIj+hYyVqaXz7V+XEk87GrZbkjAaThmlY5JVaH+2bZyAciB5FjbOPEAWdSRLSG5
+         VgBkv0q69m2zqIqHWHwM1wT+h+QWC9O/c5XRiXcR3mOStQ4PGsg0t6zaeMrCv62bo+CM
+         7BD7j5WHcn7PKftBXQZfe6lI1RAgapOND54odz/Be5VOJ7tIVodxsa98yhswsS/uFmoo
+         Ev3L4dt3qvo2pryNam6RTWjFl8kyVMM+30W4Ts3xxHI4hlculORlOhhOdotqD6Ii/TlY
+         oQZw==
+X-Gm-Message-State: AOAM531l5CNvMm+Cj+S2+WgigN6ZE8b8zyO70Bdic/REAPiVoqeH5qb4
+        MzIv0d+CwE+gnyjDjUwdaDpr4asQxtXJvAkndG6YqLeU+slF7w==
+X-Google-Smtp-Source: ABdhPJyRFTFkePHLp9vqrq4sbjxnHq0kWH3e3CTmsn3LuuF0tWCn03y/2Voh96TRRY8JHSy5O6XR+EGQJL/LqdZSzTE=
+X-Received: by 2002:a05:6a00:22c5:: with SMTP id f5mr12638836pfj.163.1600070426131;
+ Mon, 14 Sep 2020 01:00:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200911130104.GF26842@paasikivi.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20200906122016.4628-1-hdegoede@redhat.com> <20200914061246.GO1665100@dtor-ws>
+ <61dfb476-2d55-116c-21d6-bf5972929cd3@redhat.com>
+In-Reply-To: <61dfb476-2d55-116c-21d6-bf5972929cd3@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 14 Sep 2020 11:00:10 +0300
+Message-ID: <CAHp75VemDbswE9+yXMut1vbYvWwcTAd+b_Ry05_0QWbfnCSv9g@mail.gmail.com>
+Subject: Re: [PATCH 0/1] Input: soc_button_array - Work around DSDTs which
+ modify the irqflags
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-input <linux-input@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+On Mon, Sep 14, 2020 at 10:45 AM Hans de Goede <hdegoede@redhat.com> wrote:
+> On 9/14/20 8:12 AM, Dmitry Torokhov wrote:
+> > On Sun, Sep 06, 2020 at 02:20:15PM +0200, Hans de Goede wrote:
 
-On 11/09/20 15:01, Sakari Ailus wrote:
-> Hi Luca,
-> 
-> On Fri, Sep 11, 2020 at 02:49:26PM +0200, Luca Ceresoli wrote:
->> Hi Sakari,
->>
->> On 03/09/20 10:15, Sakari Ailus wrote:
->>>
->>> Hi all,
->>>
->>> These patches enable calling (and finishing) a driver's probe function
->>> without powering on the respective device on busses where the practice is
->>> to power on the device for probe. While it generally is a driver's job to
->>> check the that the device is there, there are cases where it might be
->>> undesirable. (In this case it stems from a combination of hardware design
->>> and user expectations; see below.) The downside with this change is that
->>> if there is something wrong with the device, it will only be found at the
->>> time the device is used. In this case (the camera sensors + EEPROM in a
->>> sensor) I don't see any tangible harm from that though.
->>>
->>> An indication both from the driver and the firmware is required to allow
->>> the device's power state to remain off during probe (see the first patch).
->>>
->>>
->>> The use case is such that there is a privacy LED next to an integrated
->>> user-facing laptop camera, and this LED is there to signal the user that
->>> the camera is recording a video or capturing images. That LED also happens
->>> to be wired to one of the power supplies of the camera, so whenever you
->>> power on the camera, the LED will be lit, whether images are captured from
->>> the camera --- or not. There's no way to implement this differently
->>> without additional software control (allowing of which is itself a
->>> hardware design decision) on most CSI-2-connected camera sensors as they
->>> simply have no pin to signal the camera streaming state.
->>>
->>> This is also what happens during driver probe: the camera will be powered
->>> on by the I²C subsystem calling dev_pm_domain_attach() and the device is
->>> already powered on when the driver's own probe function is called. To the
->>> user this visible during the boot process as a blink of the privacy LED,
->>> suggesting that the camera is recording without the user having used an
->>> application to do that. From the end user's point of view the behaviour is
->>> not expected and for someone unfamiliar with internal workings of a
->>> computer surely seems quite suspicious --- even if images are not being
->>> actually captured.
->>>
->>> I've tested these on linux-next master. They also apply to Wolfram's
->>> i2c/for-next branch, there's a patch that affects the I²C core changes
->>> here (see below). The patches apart from that apply to Bartosz's
->>> at24/for-next as well as Mauro's linux-media master branch.
->>
->> Apologies for having joined this discussion this late.
-> 
-> No worries. But thanks for the comments.
-> 
->>
->> This patchset seems a good base to cover a different use case, where I
->> also cannot access the physical device at probe time.
->>
->> I'm going to try these patches, but in my case there are a few
->> differences that need a better understanding.
->>
->> First, I'm using device tree, not ACPI. In addition to adding OF support
->> similar to the work you've done for ACPI, I think instead of
->> acpi_dev_state_low_power() we should have a function that works for both
->> ACPI and DT.
-> 
-> acpi_dev_state_low_power() is really ACPI specific: it does tell the ACPI
-> power state of the device during probe or remove. It is not needed on DT
-> since the power state of the device is controlled directly by the driver.
-> On I²C ACPI devices, it's the framework that powers them on for probe.
+...
 
-I see, thanks for clarifying. I'm not used to ACPI so I didn't get that.
+> >> The soc_button_array code really is x86 specific glue code to translate
+> >> various incarnations of gpio-keys in ACPI tables to gpio_keys_platform_data.
+> >> As such I wonder if it would not be better to move this driver to
+> >> drivers/platform/x86?
 
-> You could have a helper function on DT to tell a driver what to do in
-> probe, but the functionality in that case is unrelated.
+AFAIU the above is a justification why PDx86 suits better to host it.
 
-So in case of DT we might think of a function that just tells whether
-the device is marked to allow low-power probe, but it's just an info
-from DT:
+> >> I seem to be doing most if not all of the recent work on soc_button_array,
+> >> and soon I will be a co-maintainer of drivers/platform/x86. So having it
+> >> there and adding me in MAINTAINERS as maintaining it seems to be best?
+> >>
+> >> If you want I can do a patch moving soc_button_array to drivers/platform/x86
+> >> and then add the other 3 patches on top and then we can merge all of this
+> >> through drivers/platform/x86?
+> >
+> > Sorry, misread this first time through, so already merged the 3 patches,
+> > but I to not mind at all moving the driver to platform tree. If you send
+> > me such a patch I will apply it.
+>
+> Ok.
+>
+> Andy are you ok with moving the driver to the pdx86 tree too?
 
-int mydriver_probe(struct i2c_client *client)
-{
-	...
-	low_power = of_dev_state_low_power(&client->dev);
-	if (!low_power) {
-		mydriver_initialize(); /* power+clocks, write regs */
- 	}
-	...
-}
-
-...and, if (low_power), call mydriver_initialize() at first usage.
-
-I'm wondering whether this might make sense in mainline.
+Taking into consideration the above, if I read it correctly, I agree.
+Feel free to add my Ack.
 
 -- 
-Luca
-
+With Best Regards,
+Andy Shevchenko
