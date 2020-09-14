@@ -2,151 +2,216 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C892E268CEB
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 16:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E819B268FF0
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 17:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgINOId (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Sep 2020 10:08:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:60963 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726402AbgINOIZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Sep 2020 10:08:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600092504;
+        id S1726119AbgINPap (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Sep 2020 11:30:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgINPad (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Sep 2020 11:30:33 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A52FC061788;
+        Mon, 14 Sep 2020 08:30:32 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f09260028f4716b73cc78b7.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:2600:28f4:716b:73cc:78b7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4FF221EC058B;
+        Mon, 14 Sep 2020 17:30:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1600097430;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k0dgbRo+RDvZ3UA4+CQF8a3dBnr9tvYgpawTPvfNleQ=;
-        b=IQ0pUea4D3EQ7FPKhlZ1GsrtH7mV+Mei3+2tc9qglswgYvRaEF3A/2w3ihCq0zlQRW9uSb
-        ck1XAZ15WQBZnoeOr3B4JqvZpPsiO6C63SGOzbvG4umvFSILgxJlXWNoT2JSH52rmiXQ4e
-        /W72BuOurxaYnk8g7xUH982x55JT5Es=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-328-tvMSyi3vN6KmW327AqBdDA-1; Mon, 14 Sep 2020 10:08:12 -0400
-X-MC-Unique: tvMSyi3vN6KmW327AqBdDA-1
-Received: by mail-wm1-f70.google.com with SMTP id q205so1598968wme.0
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Sep 2020 07:08:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=k0dgbRo+RDvZ3UA4+CQF8a3dBnr9tvYgpawTPvfNleQ=;
-        b=mKg0jn5x5MSddoKGASn/UwxTIjVU7u1fz+5vaGy58Zrl420v+MK7H8leFilmaxK16r
-         B1L9+VO29XG7xy7kCtahrQnGHANyL2yt403kA6vBxKFW1oksdTXBfhPp18FyeIrXiaMv
-         tc8KjMhPnLJpLFUXR6hVd6iMLmF43Fi+iyhICRfhuUvP+07rOWPHMWPrNS64LeJ9WznQ
-         1eHzLkZMd6g6IFAyqynnSHbfhiPJ1/fKyE6j+lciUHeGH1AAOJDUyH95SEb5q3DjKGJ8
-         qs41sI+VQHtTM1NAWU+FRbx39bJrmj6UCmmNifQHvpL2u8CCBB5B48YBLZy0YOIy0yP2
-         4gNw==
-X-Gm-Message-State: AOAM531h32AzKTEDi3yttoXJPlJKjAq2V2WNvfhxIf21F4UpemcHg3H0
-        NkdrgMZ0xHLCcrHJJUFjIslPR85rGeY68e7BfrlUYlbF+u4/kSZ46vf99cQbuSiaS8nNOCQ9QWE
-        Tn22NG/rxzb7LAFO9PeMJog==
-X-Received: by 2002:a1c:9d07:: with SMTP id g7mr16116161wme.144.1600092490357;
-        Mon, 14 Sep 2020 07:08:10 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzZ27kSa58tJiiyuMmAIiHYwij6veZwR4h++7Q0qwgfWPIXQ2wHhOeRx22P6H/r1LA7F616zw==
-X-Received: by 2002:a1c:9d07:: with SMTP id g7mr16116137wme.144.1600092490142;
-        Mon, 14 Sep 2020 07:08:10 -0700 (PDT)
-Received: from x1.localdomain ([78.108.130.193])
-        by smtp.gmail.com with ESMTPSA id i6sm22688978wra.1.2020.09.14.07.08.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2020 07:08:09 -0700 (PDT)
-Subject: Re: [PATCH 0/1] Input: soc_button_array - Work around DSDTs which
- modify the irqflags
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-input <linux-input@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20200906122016.4628-1-hdegoede@redhat.com>
- <20200914061246.GO1665100@dtor-ws>
- <61dfb476-2d55-116c-21d6-bf5972929cd3@redhat.com>
- <CAHp75VemDbswE9+yXMut1vbYvWwcTAd+b_Ry05_0QWbfnCSv9g@mail.gmail.com>
- <897df830-4806-0118-6a27-0025268da1f5@redhat.com>
-Message-ID: <ead6b6f3-5fb7-d986-1bba-4f4a9350a369@redhat.com>
-Date:   Mon, 14 Sep 2020 16:08:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=IO3nJCxiAaLTozpIMPP+zcFAu5QWr1+m3yLnakXhZ/c=;
+        b=qdH3yHi18x7LvT7GDCEl2cq+OXEBSOlCfo/k+7Z4tyANVhlIri1j9CGyFZM/8Kl4GAlqY0
+        uhVStXSphAV1KQPDcmFuYz/SFHRMoZ1zmSJMlbrsqc5j2iSTmwu18Kzfz67/9DAFSk2M9f
+        W6viYl3K2oRHuas9qQ8EqtgGAMzJa9Y=
+Date:   Mon, 14 Sep 2020 17:30:24 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v3 1/2] cper, apei, mce: Pass x86 CPER through the MCA
+ handling chain
+Message-ID: <20200914153024.GC680@zn.tnic>
+References: <20200903234531.162484-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20200903234531.162484-2-Smita.KoralahalliChannabasappa@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <897df830-4806-0118-6a27-0025268da1f5@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200903234531.162484-2-Smita.KoralahalliChannabasappa@amd.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 9/14/20 3:52 PM, Hans de Goede wrote:
-> Hi,
+On Thu, Sep 03, 2020 at 06:45:30PM -0500, Smita Koralahalli wrote:
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
 > 
-> On 9/14/20 10:00 AM, Andy Shevchenko wrote:
->> On Mon, Sep 14, 2020 at 10:45 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>> On 9/14/20 8:12 AM, Dmitry Torokhov wrote:
->>>> On Sun, Sep 06, 2020 at 02:20:15PM +0200, Hans de Goede wrote:
->>
->> ...
->>
->>>>> The soc_button_array code really is x86 specific glue code to translate
->>>>> various incarnations of gpio-keys in ACPI tables to gpio_keys_platform_data.
->>>>> As such I wonder if it would not be better to move this driver to
->>>>> drivers/platform/x86?
->>
->> AFAIU the above is a justification why PDx86 suits better to host it.
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
 > 
-> Correct.
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
 > 
->>>>> I seem to be doing most if not all of the recent work on soc_button_array,
->>>>> and soon I will be a co-maintainer of drivers/platform/x86. So having it
->>>>> there and adding me in MAINTAINERS as maintaining it seems to be best?
->>>>>
->>>>> If you want I can do a patch moving soc_button_array to drivers/platform/x86
->>>>> and then add the other 3 patches on top and then we can merge all of this
->>>>> through drivers/platform/x86?
->>>>
->>>> Sorry, misread this first time through, so already merged the 3 patches,
->>>> but I to not mind at all moving the driver to platform tree. If you send
->>>> me such a patch I will apply it.
->>>
->>> Ok.
->>>
->>> Andy are you ok with moving the driver to the pdx86 tree too?
->>
->> Taking into consideration the above, if I read it correctly, I agree.
->> Feel free to add my Ack.
+> Reported-by: kernel test robot <lkp@intel.com>
+
+What's that Reported-by for?
+
+Pls put in [] brackets over it what the 0day robot has reported.
+
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> ---
+> Link:
+> https://lkml.kernel.org/r/20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com
 > 
-> Ok, since Dmitry's tree currently has some changes to soc_button_array.c,
-> the plan is to merge the patch through Dmitry's tree.
-> 
-> I will prepare a patch with your Acked-by and submit it.
+> v3:
+> 	Moved arch specific declarations from generic header file to arch
+> 	specific header file.
+> 	Cleaned additional declarations which are unnecessary.
+> 	Included the check for context type.
+> 	Added a check to verify for the first MSR address in the register
+> 	layout.
+> v2:
+> 	Fixed build error reported by kernel test robot.
+> 	Passed struct variable as function argument instead of entire struct
+> ---
+>  arch/x86/include/asm/acpi.h     | 11 +++++++++
+>  arch/x86/include/asm/mce.h      |  3 +++
+>  arch/x86/kernel/acpi/apei.c     |  9 +++++++
+>  arch/x86/kernel/cpu/mce/apei.c  | 42 +++++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper-x86.c | 10 +++++---
+>  5 files changed, 72 insertions(+), 3 deletions(-)
 
-So to make sure that there won't be any merge issues,
-I was comparing bases for
-{drivers/input/misc,drivers/platform/x86}/{Makefile,Kconfig}
-looking at the versions in:
-https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/log/?h=next
-http://git.infradead.org/linux-platform-drivers-x86.git/shortlog/refs/heads/for-next (which atm is just 5.9-rc1)
+...
 
-And the latter has a couple of commits to
-drivers/platform/x86/Kconfig which the input tree is missing;
-and these commits touch part of the file which moving the driver
-over will also be touching.
+> diff --git a/arch/x86/kernel/acpi/apei.c b/arch/x86/kernel/acpi/apei.c
+> index c22fb55abcfd..13d60a91eaa0 100644
+> --- a/arch/x86/kernel/acpi/apei.c
+> +++ b/arch/x86/kernel/acpi/apei.c
+> @@ -43,3 +43,12 @@ void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+>  	apei_mce_report_mem_error(sev, mem_err);
+>  #endif
+>  }
+> +
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	int err = -EINVAL;
+> +#ifdef CONFIG_X86_MCE
+> +	err = apei_mce_report_x86_error(ctx_info, lapic_id);
+> +#endif
+> +	return err;
+> +}
 
-Dmitry, it seems that your for next-tree is based on 5.7 + 2
-large merges and as such does not have all the commits from
-5.9-rc1 ?
+Add a stub for apei_mce_report_x86_error() in
+arch/x86/include/asm/mce.h, in one of the !CONFIG_X86_MCE ifdeffery
+which returns -EINVAL and get rid of this ifdeffery and simply do:
 
-Anyways this is not urgent, given the conflict I think it
-might be best if I send out the patch after 5.10-rc1, using
-5.10-rc1 as a base for it.
+	return apei_mce_report_x86_error(ctx_info, lapic_id);
 
-Regards,
+here.
 
-Hans
+If you wanna fix the above apei_mce_report_mem_error() too, you can do
+that in a separate patch.
 
+> diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+> index af8d37962586..65001d342302 100644
+> --- a/arch/x86/kernel/cpu/mce/apei.c
+> +++ b/arch/x86/kernel/cpu/mce/apei.c
+> @@ -26,6 +26,8 @@
+>  
+>  #include "internal.h"
+>  
+> +#define MASK_MCA_STATUS 0xC0002001
+
+What does that mask mean? Either here or where it is used needs a
+comment.
+
+>  void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+>  {
+>  	struct mce m;
+> @@ -51,6 +53,46 @@ void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+>  }
+>  EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
+>  
+> +int apei_mce_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	const u64 *i_mce = ((const void *) (ctx_info + 1));
+> +	unsigned int cpu;
+> +	struct mce m;
+> +
+> +	if (!boot_cpu_has(X86_FEATURE_SMCA))
+
+If this function you're adding is SMCA-specific, then its name cannot be
+as generic as it is now.
+
+> +		return -EINVAL;
+> +
+> +	if ((ctx_info->msr_addr & MASK_MCA_STATUS) != MASK_MCA_STATUS)
+> +		return -EINVAL;
+> +
+> +	mce_setup(&m);
+> +
+> +	m.extcpu = -1;
+> +	m.socketid = -1;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		if (cpu_data(cpu).initial_apicid == lapic_id) {
+
+I don't like that but I don't think we have a reverse mapping from LAPIC
+ID to logical CPU numbers in the kernel...
+
+> +			m.extcpu = cpu;
+> +			m.socketid = cpu_data(m.extcpu).phys_proc_id;
+
+			m.socketid = cpu_data(cpu).phys_proc_id;
+
+> +			break;
+> +		}
+> +	}
+> +
+> +	m.apicid = lapic_id;
+> +	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
+> +	m.status = *i_mce;
+> +	m.addr = *(i_mce + 1);
+> +	m.misc = *(i_mce + 2);
+> +	/* Skipping MCA_CONFIG */
+> +	m.ipid = *(i_mce + 4);
+> +	m.synd = *(i_mce + 5);
+
+Is that structure after cper_ia_proc_ctx defined somewhere in the UEFI
+spec so that you can cast to it directly instead of doing this ugly
+pointer arithmetic?
+
+> +
+> +	mce_log(&m);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(apei_mce_report_x86_error);
+
+Why is this function exported?
+
+If "no reason", you can fix the above one too, with a separate commit.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
