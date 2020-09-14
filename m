@@ -2,207 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98CDA269229
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 18:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6428E269456
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Sep 2020 20:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbgINQtu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 14 Sep 2020 12:49:50 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:35754 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726094AbgINQtt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Sep 2020 12:49:49 -0400
-Received: from [78.134.51.148] (port=46080 helo=[192.168.77.62])
-        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1kHrfX-0002jl-8u; Mon, 14 Sep 2020 18:49:31 +0200
-Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
- powered off
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
- <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net>
- <20200911130104.GF26842@paasikivi.fi.intel.com>
- <6dea1206-cfaa-bfc5-d57e-4dcddadc03c7@lucaceresoli.net>
- <20200914094727.GM26842@paasikivi.fi.intel.com>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <de017bfd-8908-f5ba-afa7-469a0059a5a7@lucaceresoli.net>
-Date:   Mon, 14 Sep 2020 18:49:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726067AbgINSFL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Sep 2020 14:05:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725964AbgINSFK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Sep 2020 14:05:10 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542DAC06174A;
+        Mon, 14 Sep 2020 11:05:10 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id mm21so258709pjb.4;
+        Mon, 14 Sep 2020 11:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=tR/WN80Bew5myqpapBdRqLOLmFrODb/ZsmRad6iDvWc=;
+        b=GLoRFWqt0K1bbBB4dMdgN8o53kG3rjKoQUoOnMRWOFWcfrL1oWoxNJ6K0nDP5Bxq2x
+         6bcPnwERWHKF7hSyVXnxZ++HJlipXdKEqvzOuyOPmjypP1u5tBMxqsEvyz91k8izuR6l
+         dNLsGe4v2QlSn0SjOh23mOt7CmREYpZ1PPuzbX2/Qc2G7zXZ15SR/EDyC7XXW7yjHIDe
+         ZV7PhJ150O8uonJP+t2TXxmbCnx1GqrAR8sBApjtMY3CCcmUW6UpU+K+pL8vtPWHx6FQ
+         BYhaJjSzw7B83C4qEZQPnvQgzXj/ALQUU9tmEB/YHFPwiN5a8ZXrimhzE5e7hA1jCwGU
+         MY9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tR/WN80Bew5myqpapBdRqLOLmFrODb/ZsmRad6iDvWc=;
+        b=gTB38VjiRdy2UFuHOMF+CbdfejP1c1fwswrf7PUE8jND4/DnmNoD2EnvWIJrCNzdpm
+         U67S7GAFePq85EmS4NcW8K73TSANa0SJIK5OL6Bua8fnQcih7xi8E6eAib7wmybXjUuf
+         3Rr/WCuoW4/qCNf99FRm/Pmv6ojQKmNkqm180PQPnajNa8ShZQH0FQ/2+HFD+e7Xe6U8
+         iq3i8DAfHWHI0kxjEp/7qhD2h9D4Rhy3nSj7uP7ctvcQRME0xSqV3zAVgSNLSdM4SnTK
+         2HNZYhZPAolWW6S/Rzm8NcQJepc7ud2necI6Fpj7+iHuEJa+ClI9+uIreE2QjjJKJkGa
+         dQfg==
+X-Gm-Message-State: AOAM5331txBPVf8Q08gyU9p5NRW6V284pPkfzGRwyRaXsnE3j8w718PT
+        StUwp8JsSUmvOuGGEV3A6sP5GBam+mg=
+X-Google-Smtp-Source: ABdhPJwOAx+5PEx1NfHyfvJ2Tr/z+yzqffu5BXiYCvNq2tEZwaPMYG1NuNBgPhPVy/1lB35hxlVziA==
+X-Received: by 2002:a17:90a:1905:: with SMTP id 5mr486525pjg.169.1600106709736;
+        Mon, 14 Sep 2020 11:05:09 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id s16sm9019458pgl.78.2020.09.14.11.05.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2020 11:05:09 -0700 (PDT)
+Date:   Mon, 14 Sep 2020 11:05:07 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-input <linux-input@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 0/1] Input: soc_button_array - Work around DSDTs which
+ modify the irqflags
+Message-ID: <20200914180507.GT1665100@dtor-ws>
+References: <20200906122016.4628-1-hdegoede@redhat.com>
+ <20200914061246.GO1665100@dtor-ws>
+ <61dfb476-2d55-116c-21d6-bf5972929cd3@redhat.com>
+ <CAHp75VemDbswE9+yXMut1vbYvWwcTAd+b_Ry05_0QWbfnCSv9g@mail.gmail.com>
+ <897df830-4806-0118-6a27-0025268da1f5@redhat.com>
+ <ead6b6f3-5fb7-d986-1bba-4f4a9350a369@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200914094727.GM26842@paasikivi.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ead6b6f3-5fb7-d986-1bba-4f4a9350a369@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+On Mon, Sep 14, 2020 at 04:08:09PM +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 9/14/20 3:52 PM, Hans de Goede wrote:
+> > Hi,
+> > 
+> > On 9/14/20 10:00 AM, Andy Shevchenko wrote:
+> > > On Mon, Sep 14, 2020 at 10:45 AM Hans de Goede <hdegoede@redhat.com> wrote:
+> > > > On 9/14/20 8:12 AM, Dmitry Torokhov wrote:
+> > > > > On Sun, Sep 06, 2020 at 02:20:15PM +0200, Hans de Goede wrote:
+> > > 
+> > > ...
+> > > 
+> > > > > > The soc_button_array code really is x86 specific glue code to translate
+> > > > > > various incarnations of gpio-keys in ACPI tables to gpio_keys_platform_data.
+> > > > > > As such I wonder if it would not be better to move this driver to
+> > > > > > drivers/platform/x86?
+> > > 
+> > > AFAIU the above is a justification why PDx86 suits better to host it.
+> > 
+> > Correct.
+> > 
+> > > > > > I seem to be doing most if not all of the recent work on soc_button_array,
+> > > > > > and soon I will be a co-maintainer of drivers/platform/x86. So having it
+> > > > > > there and adding me in MAINTAINERS as maintaining it seems to be best?
+> > > > > > 
+> > > > > > If you want I can do a patch moving soc_button_array to drivers/platform/x86
+> > > > > > and then add the other 3 patches on top and then we can merge all of this
+> > > > > > through drivers/platform/x86?
+> > > > > 
+> > > > > Sorry, misread this first time through, so already merged the 3 patches,
+> > > > > but I to not mind at all moving the driver to platform tree. If you send
+> > > > > me such a patch I will apply it.
+> > > > 
+> > > > Ok.
+> > > > 
+> > > > Andy are you ok with moving the driver to the pdx86 tree too?
+> > > 
+> > > Taking into consideration the above, if I read it correctly, I agree.
+> > > Feel free to add my Ack.
+> > 
+> > Ok, since Dmitry's tree currently has some changes to soc_button_array.c,
+> > the plan is to merge the patch through Dmitry's tree.
+> > 
+> > I will prepare a patch with your Acked-by and submit it.
+> 
+> So to make sure that there won't be any merge issues,
+> I was comparing bases for
+> {drivers/input/misc,drivers/platform/x86}/{Makefile,Kconfig}
+> looking at the versions in:
+> https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/log/?h=next
+> http://git.infradead.org/linux-platform-drivers-x86.git/shortlog/refs/heads/for-next (which atm is just 5.9-rc1)
+> 
+> And the latter has a couple of commits to
+> drivers/platform/x86/Kconfig which the input tree is missing;
+> and these commits touch part of the file which moving the driver
+> over will also be touching.
+> 
+> Dmitry, it seems that your for next-tree is based on 5.7 + 2
+> large merges and as such does not have all the commits from
+> 5.9-rc1 ?
 
-On 14/09/20 11:47, Sakari Ailus wrote:
-> Hi Luca,
-> 
-> On Mon, Sep 14, 2020 at 09:58:24AM +0200, Luca Ceresoli wrote:
->> Hi Sakari,
->>
->> On 11/09/20 15:01, Sakari Ailus wrote:
->>> Hi Luca,
->>>
->>> On Fri, Sep 11, 2020 at 02:49:26PM +0200, Luca Ceresoli wrote:
->>>> Hi Sakari,
->>>>
->>>> On 03/09/20 10:15, Sakari Ailus wrote:
->>>>>
->>>>> Hi all,
->>>>>
->>>>> These patches enable calling (and finishing) a driver's probe function
->>>>> without powering on the respective device on busses where the practice is
->>>>> to power on the device for probe. While it generally is a driver's job to
->>>>> check the that the device is there, there are cases where it might be
->>>>> undesirable. (In this case it stems from a combination of hardware design
->>>>> and user expectations; see below.) The downside with this change is that
->>>>> if there is something wrong with the device, it will only be found at the
->>>>> time the device is used. In this case (the camera sensors + EEPROM in a
->>>>> sensor) I don't see any tangible harm from that though.
->>>>>
->>>>> An indication both from the driver and the firmware is required to allow
->>>>> the device's power state to remain off during probe (see the first patch).
->>>>>
->>>>>
->>>>> The use case is such that there is a privacy LED next to an integrated
->>>>> user-facing laptop camera, and this LED is there to signal the user that
->>>>> the camera is recording a video or capturing images. That LED also happens
->>>>> to be wired to one of the power supplies of the camera, so whenever you
->>>>> power on the camera, the LED will be lit, whether images are captured from
->>>>> the camera --- or not. There's no way to implement this differently
->>>>> without additional software control (allowing of which is itself a
->>>>> hardware design decision) on most CSI-2-connected camera sensors as they
->>>>> simply have no pin to signal the camera streaming state.
->>>>>
->>>>> This is also what happens during driver probe: the camera will be powered
->>>>> on by the I²C subsystem calling dev_pm_domain_attach() and the device is
->>>>> already powered on when the driver's own probe function is called. To the
->>>>> user this visible during the boot process as a blink of the privacy LED,
->>>>> suggesting that the camera is recording without the user having used an
->>>>> application to do that. From the end user's point of view the behaviour is
->>>>> not expected and for someone unfamiliar with internal workings of a
->>>>> computer surely seems quite suspicious --- even if images are not being
->>>>> actually captured.
->>>>>
->>>>> I've tested these on linux-next master. They also apply to Wolfram's
->>>>> i2c/for-next branch, there's a patch that affects the I²C core changes
->>>>> here (see below). The patches apart from that apply to Bartosz's
->>>>> at24/for-next as well as Mauro's linux-media master branch.
->>>>
->>>> Apologies for having joined this discussion this late.
->>>
->>> No worries. But thanks for the comments.
->>>
->>>>
->>>> This patchset seems a good base to cover a different use case, where I
->>>> also cannot access the physical device at probe time.
->>>>
->>>> I'm going to try these patches, but in my case there are a few
->>>> differences that need a better understanding.
->>>>
->>>> First, I'm using device tree, not ACPI. In addition to adding OF support
->>>> similar to the work you've done for ACPI, I think instead of
->>>> acpi_dev_state_low_power() we should have a function that works for both
->>>> ACPI and DT.
->>>
->>> acpi_dev_state_low_power() is really ACPI specific: it does tell the ACPI
->>> power state of the device during probe or remove. It is not needed on DT
->>> since the power state of the device is controlled directly by the driver.
->>> On I²C ACPI devices, it's the framework that powers them on for probe.
->>
->> I see, thanks for clarifying. I'm not used to ACPI so I didn't get that.
->>
->>> You could have a helper function on DT to tell a driver what to do in
->>> probe, but the functionality in that case is unrelated.
->>
->> So in case of DT we might think of a function that just tells whether
->> the device is marked to allow low-power probe, but it's just an info
->> from DT:
->>
->> int mydriver_probe(struct i2c_client *client)
->> {
->> 	...
->> 	low_power = of_dev_state_low_power(&client->dev);
->> 	if (!low_power) {
->> 		mydriver_initialize(); /* power+clocks, write regs */
->>  	}
->> 	...
->> }
->>
->> ...and, if (low_power), call mydriver_initialize() at first usage.
->>
->> I'm wondering whether this might make sense in mainline.
-> 
-> Quite possibly, if there are drivers that would need it.
-> 
-> The function should probably be called differently though as what it does
-> is quite different after all.
-> 
-> Unless... we did the following:
-> 
-> - Redefine the I²C driver flag added by this patchset into what tells the
->   I²C framework whether the driver does its own power management
->   independently of the I²C framework. It could be called e.g.
->   I2C_DRV_FL_FULL_PM, to indicate the driver is responsible for all power
->   management of the device, and the I²C framework would not power on the
->   device for probe or remove.
-> 
-> - Add a firmware function to tell whether the device identification should
->   take place during probe or not. For this is what we're really doing here
->   from driver's point of view: lazy device probing.
+Yeah, I typically merge with mainline if I need new APIs or to sync up
+with shared stuff.
 
-Indeed my needs have nothing to do with power management. What I need is
-lazy device probing as the I2C bus may need time before it can be used.
-From the driver code point of view it looks similar (there's an if()
-around initializations in probe() and init is done later if needed), but
-the usage is different.
-
-Another approach would be to add a new I2C driver operation [say
-init_hw()], then move code for lazy init out of probe() into init_hw().
-probe() would still allocate resources. init_hw() would be called by the
-framework (or the controller driver?) when it knows eveything is ready.
-Just wild thoughts while I'm trying to focus the problem...
-
-> There are no dependencies between the two but they can be used together to
-> implement the same functionality as this patchset currently does. This way
-> also the differences between driver implementations for ACPI and DT can be
-> reduced as the logic is the same.
-> 
-> Further on, with this approach, if other busses happen to need this
-> functionality in the future, it would be straightforward to add support ---
-> it only takes to query whether it's indicated by the DT or ACPI property.
-> 
-> Thoughts, opinions?
-> 
+Thanks.
 
 -- 
-Luca
-
+Dmitry
