@@ -2,102 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C51F126AC26
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Sep 2020 20:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4D9626ABFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Sep 2020 20:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727898AbgIORkS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Sep 2020 13:40:18 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:39429 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727954AbgIORkD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Sep 2020 13:40:03 -0400
-Received: by mail-oi1-f194.google.com with SMTP id c13so4814319oiy.6;
-        Tue, 15 Sep 2020 10:39:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cgIuMsWuKwLw8HKrfM3Yi4VFysbOGkj72Chl+nIZli0=;
-        b=I9tjUnqnJuwKijvQsV126O8Mtx3BuNYcy5r3+lJ9rRdiiQHoEqCYscfd3KDXpjIjAD
-         O5Zjw95hY2LZAKugxI7+o8rnqebBh1Iakminxm6X6YM95Uu55rTMCk3XJIjHbDrdUL6m
-         Oa5SAICa78VmEZbwlQTVvqrpB6qDbMP66ihubjzwDNwmQ9P81PJ2KD8/cWCJ5X9WKwHC
-         2phe4nMNB1gSJP6MheOZexAVANsJnWE1oLQXGlaBU0U13k2fsCOY41rMpbhcDngllKgB
-         tz/MtHpqJ+7NHRtCHfom4ORx5JvchlWMMw5vi8zlYFwYcAINhCe1GzjgjA355gOoA+1X
-         priA==
-X-Gm-Message-State: AOAM533a5VaLsNskPO5ri5McgN+MkmmEWR93Hd4dEb7AWssLzcsO96/n
-        d38vGxV5LvvO5NsGm4Em4djykdD1RgbZybwNmwM=
-X-Google-Smtp-Source: ABdhPJxTm261fqP6s7VUyOJQXiMU4X0GOiKkSTJ3sNxgOmXbn0mO9MLalI7UITQ64YpedQWLzF8Gls774vUxN4TYflI=
-X-Received: by 2002:aca:fd95:: with SMTP id b143mr396668oii.68.1600191582446;
- Tue, 15 Sep 2020 10:39:42 -0700 (PDT)
+        id S1727864AbgIOSb7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Sep 2020 14:31:59 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:54364 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727895AbgIOSb4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Sep 2020 14:31:56 -0400
+Received: from zn.tnic (p200300ec2f0e42009474dca2b756bdd4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:4200:9474:dca2:b756:bdd4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7BE5F1EC0246;
+        Tue, 15 Sep 2020 20:31:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1600194711;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=x77o73At3Ov0p8rWibLOd93HG8JfU43QR0fdkYUjAlY=;
+        b=q1iyu72uhDBKtmTnRKZLZ0RxP6EayFjaqvzZFSqc1a7rEg3nUZNcp6RIGiT8W26l9gsh5M
+        TL3P9C5n0R2m3S3qbl1KPEI6+Ub9HKNvehduAfh+QyFWmBaD/+LoDnMq8Ke/8CVq8WL0hL
+        SPd5zN0s0XnSt1AzL6zkya810QZzvko=
+Date:   Tue, 15 Sep 2020 20:31:50 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     rjw@rjwysocki.net, x86@kernel.org, tony.luck@intel.com,
+        lenb@kernel.org, daniel.lezcano@linaro.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, ulf.hansson@linaro.org,
+        paulmck@kernel.org, tglx@linutronix.de, naresh.kamboju@linaro.org
+Subject: Re: [RFC][PATCH 0/4] Fix up ACPI processor idle vs RCU
+Message-ID: <20200915183150.GX14436@zn.tnic>
+References: <20200915103157.345404192@infradead.org>
 MIME-Version: 1.0
-References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
- <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com> <4e23dc722419e82d13772afc8e060d3203fd5a86.camel@intel.com>
-In-Reply-To: <4e23dc722419e82d13772afc8e060d3203fd5a86.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 15 Sep 2020 19:39:31 +0200
-Message-ID: <CAJZ5v0jG-8Cwi1TfVDfgu+=q1MT+aY+aG15cAuthK7AvS1vYuQ@mail.gmail.com>
-Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
-To:     "Verma, Vishal L" <vishal.l.verma@intel.com>,
-        "wangqing@vivo.com" <wangqing@vivo.com>
-Cc:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Jiang, Dave" <dave.jiang@intel.com>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Weiny, Ira" <ira.weiny@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200915103157.345404192@infradead.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Aug 15, 2020 at 12:52 AM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
->
-> On Fri, 2020-08-14 at 17:28 +0200, Rafael J. Wysocki wrote:
-> > On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
-> > > Use kobj_to_dev() instead of container_of()
-> > >
-> > > Signed-off-by: Wang Qing <wangqing@vivo.com>
-> >
-> > LGTM
-> >
-> > Dan, any objections?
->
-> Looks good to me - you can add:
-> Acked-by: Vishal Verma <vishal.l.verma@intel.com>
+On Tue, Sep 15, 2020 at 12:31:57PM +0200, Peter Zijlstra wrote:
+> Boris tested an earlier version of these patches and they worked for his
+> 32bit Atom board that was triggering complaints.
 
-Applied as 5.10 material, thanks!
+Want me to test them again?
 
-> > > ---
-> > >  drivers/acpi/nfit/core.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> > > index fa4500f..3bb350b
-> > > --- a/drivers/acpi/nfit/core.c
-> > > +++ b/drivers/acpi/nfit/core.c
-> > > @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
-> > >
-> > >  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
-> > >  {
-> > > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > > +       struct device *dev = kobj_to_dev(kobj);
-> > >         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-> > >
-> > >         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
-> > > @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
-> > >  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
-> > >                 struct attribute *a, int n)
-> > >  {
-> > > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > > +       struct device *dev = kobj_to_dev(kobj);
-> > >         struct nvdimm *nvdimm = to_nvdimm(dev);
-> > >         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> > >
-> > > --
-> > > 2.7.4
-> > >
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
