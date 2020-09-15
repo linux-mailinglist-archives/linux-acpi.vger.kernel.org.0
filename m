@@ -2,144 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C09A26AE60
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Sep 2020 22:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E6C26AF75
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Sep 2020 23:21:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgIOUEi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Sep 2020 16:04:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727824AbgIOTzF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Sep 2020 15:55:05 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 161ABC061788
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 12:55:05 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id md22so417928pjb.0
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 12:55:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ANJOfSdlpRaHSBBO4TQnqknbM6J+0XuYtQl6sOjOU6g=;
-        b=vbKyE1eGXl1ab37xPuCgN3XERmZgx8c72CmccznAaQT/qdPIFWgEvL2g7tdxHUje1+
-         uH3g5E43P/o9/UJXb7GQiTNIYyMi0BTbo9lWzld48up8d8Dpu5ogNRBAKeUa8TQgWld4
-         mXnM7bosw+BwFaU3OdjM3MkSleUZ0pAHWgLipyCpVaQWGWHMKkgE5EtkjCyhdPbfacRb
-         BF4zvVAEvnt46T2LrUiCt+Ej1O5VNJn4gCUeqdOMVp0NP959/LyLVZ2HbrBpysEqZZ7U
-         /glUHqltfoq9EtlZslQ0cG+F+Ocwp8nEhATulLHJinhygWWgTymGqXK7y09zkav+1GU6
-         8HAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ANJOfSdlpRaHSBBO4TQnqknbM6J+0XuYtQl6sOjOU6g=;
-        b=WZLNG/W+AHEktADdo5ldPc15ry3dFSnQEpCP6E29/xAEwW/Tp1Kw1J24F85BoBYrPs
-         wWBEtjUBAcrVTZsQTg7z3lPY7du+a5rjIVhNvJAK6es01cLD3ALU5d5Qbhh01Rlyj9b7
-         q6ibzBIMk62Sy85pu3OrJ2S0/WfY6gpTeiLVwcoevR7Nhjl+Fo0PrW4K+b6rlLqBlPwh
-         fekMn3OE6K8L28kcFCDdEUuLQtNnSFmNhcnxgHToaIUS3/cc8ItnB1UPP7W1iKxK8sm9
-         4HJtZLjXh0s4nPGqqaguGfUExNu0ZCJYy/3i5OrzMITe+AYPbniwipyVBavr5L8hEfzz
-         E5Gg==
-X-Gm-Message-State: AOAM531g4eVta7NVIEPfNZYAYJuVSIfNGhlpAdiDo5+X95S/AtD4QxcR
-        O6Z8QtL513VN7XtwYFzVBwyn2w==
-X-Google-Smtp-Source: ABdhPJypvLei95eAIfBf9YhOFqqQKZ1C34DJmEf5yt+0uB+ckb9ORNsADCaKLRMdqq9zVPIXlUuLOA==
-X-Received: by 2002:a17:902:9685:b029:d1:e5e7:be1b with SMTP id n5-20020a1709029685b02900d1e5e7be1bmr3266435plp.78.1600199704611;
-        Tue, 15 Sep 2020 12:55:04 -0700 (PDT)
-Received: from xps15 (S0106002369de4dac.cg.shawcable.net. [68.147.8.254])
-        by smtp.gmail.com with ESMTPSA id z4sm14594221pfr.197.2020.09.15.12.55.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 12:55:04 -0700 (PDT)
-Date:   Tue, 15 Sep 2020 13:55:01 -0600
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org,
-        Russell King <linux@armlinux.org.uk>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        arnaud.pouliquen@st.com, loic.pallardy.st.com@xps15
-Subject: Re: [PATCH 6/6] dma-mapping: introduce DMA range map, supplanting
- dma_pfn_offset
-Message-ID: <20200915195501.GA3666944@xps15>
-References: <20200914073343.1579578-1-hch@lst.de>
- <20200914073343.1579578-7-hch@lst.de>
- <20200914230147.GA3251212@xps15>
- <20200915054122.GA18079@lst.de>
+        id S1728041AbgIOVVl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Sep 2020 17:21:41 -0400
+Received: from mga09.intel.com ([134.134.136.24]:28756 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728021AbgIOVUf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Sep 2020 17:20:35 -0400
+IronPort-SDR: f8NHnWMX1O33VTm7sKyJB3aTB4FPR/+QAzPt4vKGb4+gcP9MLffjxtZRIlwwsQWfUMM4wSO60K
+ HDh2IQxULQyw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9745"; a="160283133"
+X-IronPort-AV: E=Sophos;i="5.76,430,1592895600"; 
+   d="scan'208";a="160283133"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 14:19:50 -0700
+IronPort-SDR: 5he6km/6lWMs12kwE0KT/d5duW+O2FupTX1dLWYbGaty065qvt2xskpcHAiYRRiIkkA+VXrVWY
+ UVbFx4sho3tQ==
+X-IronPort-AV: E=Sophos;i="5.76,430,1592895600"; 
+   d="scan'208";a="343657747"
+Received: from smtp.ostc.intel.com ([10.54.29.231])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 14:19:50 -0700
+Received: from localhost (mtg-dev.jf.intel.com [10.54.74.10])
+        by smtp.ostc.intel.com (Postfix) with ESMTP id 2BB536369;
+        Tue, 15 Sep 2020 14:19:50 -0700 (PDT)
+Date:   Tue, 15 Sep 2020 14:19:50 -0700
+From:   mark gross <mgross@linux.intel.com>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: Add Driver to set up lid GPEs on MS
+ Surface device
+Message-ID: <20200915211950.GL103884@mtg-dev.jf.intel.com>
+Reply-To: mgross@linux.intel.com
+References: <20200908171934.1661509-1-luzmaximilian@gmail.com>
+ <20200911221053.GF103884@mtg-dev.jf.intel.com>
+ <e6125bee-d42e-f485-295a-8b9ad6777d4a@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200915054122.GA18079@lst.de>
+In-Reply-To: <e6125bee-d42e-f485-295a-8b9ad6777d4a@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 07:41:22AM +0200, Christoph Hellwig wrote:
-> On Mon, Sep 14, 2020 at 05:01:47PM -0600, Mathieu Poirier wrote:
+On Sat, Sep 12, 2020 at 12:46:30AM +0200, Maximilian Luz wrote:
+> On 9/12/20 12:10 AM, mark gross wrote:
+> > Surface devices are tablets with detachable keyboards.  they don't really
+> > have a "lid" as the tablet is the "lid".
 > 
-> [700 lines of the fullquote deleted..]
+> The Surface Laptop series doesn't have a detachable keyboard, yet still
+> requires this. Arguably, the Surface Books are also more laptop than
+> tablet (at least that's the way I use mine...). Finally, on the actual
+> tablets (Surface Pro series) the lid switch detects when the keyboard
+> cover is opened (or at least that's what I have been told, I don't
+> own/have access to a Pro series device).
 > 
-> > > +	for (r = map; r->size; r++)
-> > > +		num_ranges++;
-> > > +
-> > > +	new_map = kmemdup(map, array_size(num_ranges + 1, sizeof(*map)),
-> > > +			  GFP_KERNEL);
-> > > +	if (!new_map)
-> > > +		return -ENOMEM;
-> > > +	to->dma_range_map = new_map;
-> > > +	return 0;
-> > > +}
-> > > +
-> > 
-> > This patch seemed Ok to me but it broke the stm32 remoteproc implementation.  When
-> > I tested things out function dma_coerce_mask_and_cohenrent() returns -5 and the
-> > rest of the initialisation fails.  I isolated things to function dma_to_pfn()
-> > [2].  In the original implementation __bus_to_pfn() returns 0xfffff and
-> > dev->dma_pfn_offset is equal to 0x38000.  As such the function returns 0x137fff
-> > and dma_supported() a non-zero value[3].
-> > 
-> > With this set function dma_to_pfn() received a face lift.  Function
-> > __bus_to_pfn() still returns 0xfffff but translate_dma_to_phys() returns 0,
-> > which forces dma_supported() to also return 0 and that is where the -5 (-EIO)
-> > comes from.
-> > 
-> > Taking a futher look at translate_dma_to_phy(), @dma_addr never falls within the
-> > bus_dma_region ranges and returns 0.
-> > 
-> > I'm suspecting an initialisation problem and if it occurred here, it will
-> > likely show up elsewhere.
+> Regardless of that, this patch is intended to provide the same behavior
+> as found on Windows, for all devices included in this patch, which is:
+> When you open the lid, or in case of the Pro series fold away the
+> keyboard cover, the device wakes from suspend/s2idle. Without this
+> patch, that doesn't work.
 > 
-> Can you try this incremental patch?
+> > I'm just questioning if the creator of the device designed it the way they did
+> > maybe we should think twice about doing this.
 > 
-> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-> index 088c97181ab146..c6b21acba7a459 100644
-> --- a/include/linux/dma-direct.h
-> +++ b/include/linux/dma-direct.h
-> @@ -46,7 +46,7 @@ static inline phys_addr_t translate_dma_to_phys(struct device *dev,
->  		if (dma_addr >= m->dma_start && dma_addr - m->dma_start < m->size)
->  			return (phys_addr_t)dma_addr + m->offset;
->  
-> -	return 0;
-> +	return (phys_addr_t)-1;
+> As far as I can tell, the intended behavior is to wake the device when
+> the lid is opened, which on the Laptops and Books is a more conventional
+> lid and on the Pros constitutes opening the cover.
+> 
+> I'm open for any alternative though.
+> 
+> Also please note that I've already sent a v2 of this patch with Andy's
+> comments addressed: https://lore.kernel.org/patchwork/patch/1303997/
+never mind then.
+--mark
 
-That did the trick - the stm32 platform driver's probe() function completes and
-the remote processor is operatinal. 
-
-That being said the value returned by function dma_to_pfn()
-is 0x137fff in the original code and 0xfffff with your patches applied.
-
-Thanks,
-Mathieu
-
->  }
->  
->  #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
