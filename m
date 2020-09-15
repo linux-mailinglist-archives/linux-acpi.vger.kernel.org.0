@@ -2,108 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0763826B0DA
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 00:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 028AA26B478
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 01:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727720AbgIOWUu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Sep 2020 18:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52852 "EHLO
+        id S1727378AbgIOXYk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Sep 2020 19:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727695AbgIOQ3P (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Sep 2020 12:29:15 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90A7C061223
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 09:03:18 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id o8so5816666ejb.10
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 09:03:18 -0700 (PDT)
+        with ESMTP id S1727184AbgIOOiA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Sep 2020 10:38:00 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23469C06178C
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 06:21:10 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id j12so1011047ual.7
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Sep 2020 06:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=c1lfPyfpR3MIdTzczk3F37y8kFkSG7QNcKC/F+53Umo=;
-        b=hYng2VdXUMalsQlpbxvEaolvVrPXjjO1dg1IBNOJpR5POkg+h+5dS3w6ALmjl43QBv
-         2kG3eFGBMkUjnyQkOgDNuJN6KiCSm2Xz+1UBa8swFgxPuWy5j8g7p8aPFbbzCNJUVgTi
-         XTq9x3K52I7ybf36Z2pMDOaEp0SObYccGT0njIzOFGqscUVXUzET+d+qdoa70XNgeuIq
-         ychiRQy9UO2BSe1I3ZkArwzDgmWXvpkEs/amhQ+IIrqVJ+u+TGU6vHxuH2Ocno64YMWW
-         lWGLtShJwmSH8u00qJQXoTlVRtckLrfdDBCybJTNP4Ck/xv44l9uzkdhrjP9gzNWDaBx
-         aRhQ==
+        bh=w/kdF94weVvZODB/AUs9f/NpmbxAQ75av/THK7S+FHo=;
+        b=kWSUr2pvfEBqdC0GJbcTw32LfLwQVJZ4Jurp7+Fl5teucDdSALr+lDkQJlg3AWmuxH
+         UHZRqZXxupGczvxbeJNyUoGu4lv3BgI0hU42Nqa9idhTcSYHE7EF9CsCouvsOGLyAWbJ
+         8BEwsRb9CjVil+Tzxz4mUya2EKWBH83lNdynQTFEvCtP94fOHwP552sMh89jskhaLXjV
+         A4xlOKV9VcFOi4aGbgHfqXeQOpDVRm4xZQfOWpOrLcgdtwpLBMXkKWIECKruXWFQiu7j
+         InN/xHzez2Q6xUALABBVn/FSLk5/6FtEy2Gje8nnPGCsdyff3do/3J8CBALMPbtLzdaG
+         WXTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=c1lfPyfpR3MIdTzczk3F37y8kFkSG7QNcKC/F+53Umo=;
-        b=H+Q18DfIZahrMwr1Oue0gVGVRnoQYwaXHTijIMcr09JN6P3IPA92OXSqUvsoyaNcxv
-         eeeBJKJ171v2Y0DTDTXLIS+A7T78oAC41d51YMK/63R13kST0WJEi2r6SCYWigS4oM12
-         Xc2JQLVFngFfSGitHepWiYHlSjaKXYBz+9AZvS+6iKgQ1dsy7+3nFl1Q/aQZEKkWbk2H
-         GiRzbE139T1qtVfdOyWP4CDbTfYYKQF4rkHIfnsPHSe3cxctfSmrnen8pbgBqgAH6vre
-         ClUsRdueqUfs2/4jMkwOp1l84H2SCJWX/5BDXABSSgYCFgACq1t+LaR7uJcvbA9IR2eP
-         UQIA==
-X-Gm-Message-State: AOAM531QFwHQoVv83SG2qdzrVNVxi0uj9LaGjtha3kZxEJXqbL00w8kU
-        okbYf7h8wXL0RhzsoAensnJzOTg5SxtSgYhpDztc4g==
-X-Google-Smtp-Source: ABdhPJxYCowJHvOnUFmc3bdVZqbBgmz4hRM4SON4OjzOoHFhBUb9Zqenf9cirxMo9cDeB/QVoD9ttHN6GESWUQ8YGig=
-X-Received: by 2002:a17:906:6007:: with SMTP id o7mr21824842ejj.550.1600185797421;
- Tue, 15 Sep 2020 09:03:17 -0700 (PDT)
+        bh=w/kdF94weVvZODB/AUs9f/NpmbxAQ75av/THK7S+FHo=;
+        b=qoMqrQ/i1wnkiQgooMDKXIBw3hbCPaSIJ4zsGbvC2SPHeyBVIGyB7y/sFhXN42JEzQ
+         30DsGTCAwR6J39YpHUAJh09Bw5NRtigLsxTqGsFAYURGDV2YVo/I526Uhr7XX9RF6nat
+         YpqI1HMn//tn1/c3bJFoOAZ2BBP2xSTm5J9bESqmdaHy5BBMTXOmjW6gaAvWEsN5e2CO
+         a65wq0wq8U82KL9jHeRt5+mOgGlUuuV8fnKboT8/l6CTlCpdPx8VsN7wAhiKbqmG/Ty8
+         h33KSeFADKJiB1jSreHfSyvqA9Pq1Qha+BSjSNYq8ONIZ+jYM6qJ63NKhy0a9Dl8rMXZ
+         LIYQ==
+X-Gm-Message-State: AOAM531BXIB0KfuX5INXAIq71Y4IZSRgb/HOMgkIPae6jw3VHV0y2veA
+        331qG2Wlq//dHZp2n6YHoN5SUawISuRSBGWEAOn+hQ==
+X-Google-Smtp-Source: ABdhPJw2tkkqzsTAYQBMAkSwdJ4a+/HWDG22i9K7BnBMNlT8KvEg3SRWxdng0aXuWW9caPvNIEDB06eAO3j9mhggOfk=
+X-Received: by 2002:ab0:130a:: with SMTP id g10mr10012968uae.100.1600176064842;
+ Tue, 15 Sep 2020 06:21:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200908125813.8809-1-brgl@bgdev.pl> <CADYN=9+3kHG0CexzZiMQoXdF2piN2ZhOTObhY=7VCKrnFVN0Kw@mail.gmail.com>
- <20200915131228.GX3956970@smile.fi.intel.com> <20200915131648.GY3956970@smile.fi.intel.com>
-In-Reply-To: <20200915131648.GY3956970@smile.fi.intel.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Tue, 15 Sep 2020 18:03:06 +0200
-Message-ID: <CAMpxmJUOhFjmFFq3sKZSh3QTjgZSGLhRRFt=iSzYAmXzNzupaw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] gpiolib: generalize GPIO line names property
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Anders Roxell <anders.roxell@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kent Gibson <warthog618@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+References: <20200915103157.345404192@infradead.org> <20200915103806.411374792@infradead.org>
+In-Reply-To: <20200915103806.411374792@infradead.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 15 Sep 2020 15:20:27 +0200
+Message-ID: <CAPDyKFpku8oybzyDpSBU0JEkdaEFkadA9P=QLcB-RkQtVhTe8A@mail.gmail.com>
+Subject: Re: [RFC][PATCH 3/4] cpuidle: Allow cpuidle drivers to take over RCU-idle
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        Tony Luck <tony.luck@intel.com>, Len Brown <lenb@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 3:16 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Tue, 15 Sep 2020 at 12:44, Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> On Tue, Sep 15, 2020 at 04:12:28PM +0300, Andy Shevchenko wrote:
-> > On Tue, Sep 15, 2020 at 02:01:56PM +0200, Anders Roxell wrote:
-> > > On Tue, 8 Sep 2020 at 18:40, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > >
-> > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > >
-> > > > I initially sent this as part of the gpio-mockup overhaul but since
-> > > > these patches are indepentent and the work on gpio-mockup may become
-> > > > more complicated - I'm sending these separately.
-> > > >
-> > > > The only change is adding additional property helpers to count strings
-> > > > in array.
-> > > >
-> > > > Bartosz Golaszewski (3):
-> > > >   device: property: add helpers to count items in string arrays
-> > > >   gpiolib: generalize devprop_gpiochip_set_names() for device properties
-> > > >   gpiolib: unexport devprop_gpiochip_set_names()
-> >
-> > Ha-ha, OF unittest is of_node centric. definitely there is no backed device.
-> >
-> > Bart, it seems we are stuck with fwnode interface.
+> Some drivers have to do significant work, some of which relies on RCU
+> still being active. Instead of using RCU_NONIDLE in the drivers and
+> flipping RCU back on, allow drivers to take over RCU-idle duty.
 >
-> Hmm... There is a platform device. So, it means that it fails along these
-> lines:
->   return IS_ENABLED(CONFIG_OF) && dev->of_node ? &dev->of_node->fwnode : dev->fwnode;
-> so, who should set fwnode for of_node?
->
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-It's strange because the device for this unittest is registered
-similarly to how we do it in gpio-mockup where this function works.
-I've not investigated the internals but somewhere someone sets the
-fwnode for these platform devices.
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Bartosz
+Kind regards
+Uffe
+
+> ---
+>  drivers/cpuidle/cpuidle.c |   15 ++++++++++-----
+>  include/linux/cpuidle.h   |    1 +
+>  2 files changed, 11 insertions(+), 5 deletions(-)
+>
+> --- a/drivers/cpuidle/cpuidle.c
+> +++ b/drivers/cpuidle/cpuidle.c
+> @@ -138,6 +138,7 @@ static void enter_s2idle_proper(struct c
+>                                 struct cpuidle_device *dev, int index)
+>  {
+>         ktime_t time_start, time_end;
+> +       struct cpuidle_state *target_state = &drv->states[index];
+>
+>         time_start = ns_to_ktime(local_clock());
+>
+> @@ -153,8 +154,9 @@ static void enter_s2idle_proper(struct c
+>          * suspended is generally unsafe.
+>          */
+>         stop_critical_timings();
+> -       rcu_idle_enter();
+> -       drv->states[index].enter_s2idle(dev, drv, index);
+> +       if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE))
+> +               rcu_idle_enter();
+> +       target_state->enter_s2idle(dev, drv, index);
+>         if (WARN_ON_ONCE(!irqs_disabled()))
+>                 local_irq_disable();
+>         /*
+> @@ -162,7 +164,8 @@ static void enter_s2idle_proper(struct c
+>          * first CPU executing it calls functions containing RCU read-side
+>          * critical sections, so tell RCU about that.
+>          */
+> -       rcu_idle_exit();
+> +       if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE))
+> +               rcu_idle_exit();
+>         tick_unfreeze();
+>         start_critical_timings();
+>
+> @@ -239,9 +242,11 @@ int cpuidle_enter_state(struct cpuidle_d
+>         time_start = ns_to_ktime(local_clock());
+>
+>         stop_critical_timings();
+> -       rcu_idle_enter();
+> +       if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE))
+> +               rcu_idle_enter();
+>         entered_state = target_state->enter(dev, drv, index);
+> -       rcu_idle_exit();
+> +       if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE))
+> +               rcu_idle_exit();
+>         start_critical_timings();
+>
+>         sched_clock_idle_wakeup_event();
+> --- a/include/linux/cpuidle.h
+> +++ b/include/linux/cpuidle.h
+> @@ -82,6 +82,7 @@ struct cpuidle_state {
+>  #define CPUIDLE_FLAG_UNUSABLE          BIT(3) /* avoid using this state */
+>  #define CPUIDLE_FLAG_OFF               BIT(4) /* disable this state by default */
+>  #define CPUIDLE_FLAG_TLB_FLUSHED       BIT(5) /* idle-state flushes TLBs */
+> +#define CPUIDLE_FLAG_RCU_IDLE          BIT(6) /* idle-state takes care of RCU */
+>
+>  struct cpuidle_device_kobj;
+>  struct cpuidle_state_kobj;
+>
+>
