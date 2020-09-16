@@ -2,246 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BDED26C3A8
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 16:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593D926C516
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 18:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbgIPOYK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Sep 2020 10:24:10 -0400
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:33210 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726876AbgIPNYu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Sep 2020 09:24:50 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0U97fhx1_1600260718;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U97fhx1_1600260718)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 16 Sep 2020 20:51:58 +0800
-Date:   Wed, 16 Sep 2020 20:51:58 +0800
-From:   Wei Yang <richard.weiyang@linux.alibaba.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-s390@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Kees Cook <keescook@chromium.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
-        Julien Grall <julien@xen.org>, Baoquan He <bhe@redhat.com>,
-        Wei Yang <richardw.yang@linux.intel.com>
-Subject: Re: [PATCH v4 5/8] mm/memory_hotplug: MEMHP_MERGE_RESOURCE to
- specify merging of System RAM resources
-Message-ID: <20200916125158.GA48039@L-31X9LVDL-1304.local>
-Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
-References: <20200911103459.10306-1-david@redhat.com>
- <20200911103459.10306-6-david@redhat.com>
+        id S1726417AbgIPQYP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Sep 2020 12:24:15 -0400
+Received: from mga05.intel.com ([192.55.52.43]:12090 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726565AbgIPQT5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Sep 2020 12:19:57 -0400
+IronPort-SDR: f+vCkeFwN8VU4L/Fp8u7htnbq5fIYPT1aNIHjryCZkRpAQC4p4UWDRfZnfQZj7VjrJCuC8NoOO
+ mLe5mdc7nyOg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9746"; a="244341074"
+X-IronPort-AV: E=Sophos;i="5.76,433,1592895600"; 
+   d="scan'208";a="244341074"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2020 09:04:16 -0700
+IronPort-SDR: WJwMTFCYi8C5JRn0Mzakz2t8JlumRf0nnL6CLz1u59KOrDF25xHJ6E/uWUM/tOriIi0FKtCB6D
+ CS/fLwkpi7HA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,433,1592895600"; 
+   d="scan'208";a="409607937"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 16 Sep 2020 09:04:14 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 16 Sep 2020 19:04:13 +0300
+Date:   Wed, 16 Sep 2020 19:04:13 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Kai Heng Feng <kai.heng.feng@canonical.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] i2c: core: Call i2c_acpi_install_space_handler() before
+ i2c_acpi_register_devices()
+Message-ID: <20200916160413.GQ2495@lahna.fi.intel.com>
+References: <20200909103233.58287-1-hdegoede@redhat.com>
+ <b1c0b39f-8115-5c27-614f-a31a2731111f@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200911103459.10306-6-david@redhat.com>
+In-Reply-To: <b1c0b39f-8115-5c27-614f-a31a2731111f@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 12:34:56PM +0200, David Hildenbrand wrote:
->Some add_memory*() users add memory in small, contiguous memory blocks.
->Examples include virtio-mem, hyper-v balloon, and the XEN balloon.
->
->This can quickly result in a lot of memory resources, whereby the actual
->resource boundaries are not of interest (e.g., it might be relevant for
->DIMMs, exposed via /proc/iomem to user space). We really want to merge
->added resources in this scenario where possible.
->
->Let's provide a flag (MEMHP_MERGE_RESOURCE) to specify that a resource
->either created within add_memory*() or passed via add_memory_resource()
->shall be marked mergeable and merged with applicable siblings.
->
->To implement that, we need a kernel/resource interface to mark selected
->System RAM resources mergeable (IORESOURCE_SYSRAM_MERGEABLE) and trigger
->merging.
->
->Note: We really want to merge after the whole operation succeeded, not
->directly when adding a resource to the resource tree (it would break
->add_memory_resource() and require splitting resources again when the
->operation failed - e.g., due to -ENOMEM).
->
->Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->Cc: Andrew Morton <akpm@linux-foundation.org>
->Cc: Michal Hocko <mhocko@suse.com>
->Cc: Dan Williams <dan.j.williams@intel.com>
->Cc: Jason Gunthorpe <jgg@ziepe.ca>
->Cc: Kees Cook <keescook@chromium.org>
->Cc: Ard Biesheuvel <ardb@kernel.org>
->Cc: Thomas Gleixner <tglx@linutronix.de>
->Cc: "K. Y. Srinivasan" <kys@microsoft.com>
->Cc: Haiyang Zhang <haiyangz@microsoft.com>
->Cc: Stephen Hemminger <sthemmin@microsoft.com>
->Cc: Wei Liu <wei.liu@kernel.org>
->Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
->Cc: Juergen Gross <jgross@suse.com>
->Cc: Stefano Stabellini <sstabellini@kernel.org>
->Cc: Roger Pau Monné <roger.pau@citrix.com>
->Cc: Julien Grall <julien@xen.org>
->Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->Cc: Baoquan He <bhe@redhat.com>
->Signed-off-by: David Hildenbrand <david@redhat.com>
+On Wed, Sep 16, 2020 at 05:56:54PM +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 9/9/20 12:32 PM, Hans de Goede wrote:
+> > Some ACPI i2c-devices _STA method (which is used to detect if the device
+> > is present) use autodetection code which probes which device is present
+> > over i2c. This requires the I2C ACPI OpRegion handler to be registered
+> > before we enumerate i2c-clients under the i2c-adapter.
+> > 
+> > This fixes the i2c touchpad on the Lenovo ThinkBook 14-IIL and
+> > ThinkBook 15 IIL not getting an i2c-client instantiated and thus not
+> > working.
+> > 
+> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1842039
+> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> Ping? This fixes a serious problem (non working touchpad on various
+> laptop models) and is a pretty straight-forward fix.
+> 
+> Arguably it should even go to stable, but I'm not 100% sure about that
+> because these sorta ACPI enumeration problems can sometimes by
+> tricky. With that said in this case the fix does seem to be
+> very straight forward and obviously correct.
+> 
+> Mika, since this deals with the ACPI bits of the i2c-core can
+> you review this one please?
 
-Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
+Sure, looks like the right thing to do:
 
->---
-> include/linux/ioport.h         |  4 +++
-> include/linux/memory_hotplug.h |  7 ++++
-> kernel/resource.c              | 60 ++++++++++++++++++++++++++++++++++
-> mm/memory_hotplug.c            |  7 ++++
-> 4 files changed, 78 insertions(+)
->
->diff --git a/include/linux/ioport.h b/include/linux/ioport.h
->index d7620d7c941a0..7e61389dcb017 100644
->--- a/include/linux/ioport.h
->+++ b/include/linux/ioport.h
->@@ -60,6 +60,7 @@ struct resource {
-> 
-> /* IORESOURCE_SYSRAM specific bits. */
-> #define IORESOURCE_SYSRAM_DRIVER_MANAGED	0x02000000 /* Always detected via a driver. */
->+#define IORESOURCE_SYSRAM_MERGEABLE		0x04000000 /* Resource can be merged. */
-> 
-> #define IORESOURCE_EXCLUSIVE	0x08000000	/* Userland may not map this resource */
-> 
->@@ -253,6 +254,9 @@ extern void __release_region(struct resource *, resource_size_t,
-> extern void release_mem_region_adjustable(struct resource *, resource_size_t,
-> 					  resource_size_t);
-> #endif
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+extern void merge_system_ram_resource(struct resource *res);
->+#endif
-> 
-> /* Wrappers for managed devices */
-> struct device;
->diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
->index 33eb80fdba22f..d65c6fdc5cfc3 100644
->--- a/include/linux/memory_hotplug.h
->+++ b/include/linux/memory_hotplug.h
->@@ -62,6 +62,13 @@ typedef int __bitwise mhp_t;
-> 
-> /* No special request */
-> #define MHP_NONE		((__force mhp_t)0)
->+/*
->+ * Allow merging of the added System RAM resource with adjacent,
->+ * mergeable resources. After a successful call to add_memory_resource()
->+ * with this flag set, the resource pointer must no longer be used as it
->+ * might be stale, or the resource might have changed.
->+ */
->+#define MEMHP_MERGE_RESOURCE	((__force mhp_t)BIT(0))
-> 
-> /*
->  * Extended parameters for memory hotplug:
->diff --git a/kernel/resource.c b/kernel/resource.c
->index 36b3552210120..7a91b935f4c20 100644
->--- a/kernel/resource.c
->+++ b/kernel/resource.c
->@@ -1363,6 +1363,66 @@ void release_mem_region_adjustable(struct resource *parent,
-> }
-> #endif	/* CONFIG_MEMORY_HOTREMOVE */
-> 
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+static bool system_ram_resources_mergeable(struct resource *r1,
->+					   struct resource *r2)
->+{
->+	/* We assume either r1 or r2 is IORESOURCE_SYSRAM_MERGEABLE. */
->+	return r1->flags == r2->flags && r1->end + 1 == r2->start &&
->+	       r1->name == r2->name && r1->desc == r2->desc &&
->+	       !r1->child && !r2->child;
->+}
->+
->+/*
->+ * merge_system_ram_resource - mark the System RAM resource mergeable and try to
->+ * merge it with adjacent, mergeable resources
->+ * @res: resource descriptor
->+ *
->+ * This interface is intended for memory hotplug, whereby lots of contiguous
->+ * system ram resources are added (e.g., via add_memory*()) by a driver, and
->+ * the actual resource boundaries are not of interest (e.g., it might be
->+ * relevant for DIMMs). Only resources that are marked mergeable, that have the
->+ * same parent, and that don't have any children are considered. All mergeable
->+ * resources must be immutable during the request.
->+ *
->+ * Note:
->+ * - The caller has to make sure that no pointers to resources that are
->+ *   marked mergeable are used anymore after this call - the resource might
->+ *   be freed and the pointer might be stale!
->+ * - release_mem_region_adjustable() will split on demand on memory hotunplug
->+ */
->+void merge_system_ram_resource(struct resource *res)
->+{
->+	const unsigned long flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->+	struct resource *cur;
->+
->+	if (WARN_ON_ONCE((res->flags & flags) != flags))
->+		return;
->+
->+	write_lock(&resource_lock);
->+	res->flags |= IORESOURCE_SYSRAM_MERGEABLE;
->+
->+	/* Try to merge with next item in the list. */
->+	cur = res->sibling;
->+	if (cur && system_ram_resources_mergeable(res, cur)) {
->+		res->end = cur->end;
->+		res->sibling = cur->sibling;
->+		free_resource(cur);
->+	}
->+
->+	/* Try to merge with previous item in the list. */
->+	cur = res->parent->child;
->+	while (cur && cur->sibling != res)
->+		cur = cur->sibling;
->+	if (cur && system_ram_resources_mergeable(cur, res)) {
->+		cur->end = res->end;
->+		cur->sibling = res->sibling;
->+		free_resource(res);
->+	}
->+	write_unlock(&resource_lock);
->+}
->+#endif	/* CONFIG_MEMORY_HOTPLUG */
->+
-> /*
->  * Managed region resource
->  */
->diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->index 8f0bd7c9a63a5..553c718226b3e 100644
->--- a/mm/memory_hotplug.c
->+++ b/mm/memory_hotplug.c
->@@ -1102,6 +1102,13 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
-> 	/* device_online() will take the lock when calling online_pages() */
-> 	mem_hotplug_done();
-> 
->+	/*
->+	 * In case we're allowed to merge the resource, flag it and trigger
->+	 * merging now that adding succeeded.
->+	 */
->+	if (mhp_flags & MEMHP_MERGE_RESOURCE)
->+		merge_system_ram_resource(res);
->+
-> 	/* online pages if requested */
-> 	if (memhp_default_online_type != MMOP_OFFLINE)
-> 		walk_memory_blocks(start, size, NULL, online_memory_block);
->-- 
->2.26.2
-
--- 
-Wei Yang
-Help you, Help me
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
