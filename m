@@ -2,170 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E9926CE9F
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 00:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E738426CE47
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 00:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726578AbgIPWXF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Sep 2020 18:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50372 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726426AbgIPWXC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Sep 2020 18:23:02 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E36C0698CA;
-        Wed, 16 Sep 2020 14:44:26 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id r9so10037727ioa.2;
-        Wed, 16 Sep 2020 14:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/6p2UL06xRCrtfganU+UNWFu+nueRBEvuh8BmgJZ8II=;
-        b=fTJMcutrq6igd5vYMabKNTl2pV3QLLIVga8eZVWB3Qo8LD5CuAU2xBCagWdvlNfz7Y
-         SdgLDHmtx+cP77RccgrN17Zpod+wgXnVDWU4BWCp8glD8TmR0CgYjIK7sLhk3gCv4jka
-         0gbLLTASvnEGY2kVqdeZEAAj+Xc+ag6xxs2n1cu0ypLrogcOS57JfDYiPaxg0LJA89D3
-         bES/LQ47vgte8onzKDnKVVIsfe4evM0ux9J7ojZJx4ruWYRLDpiMdRs++WmWMiRluaDE
-         RkpwwSpAnZ0yEClbYo3zllxy1Ya+SnHZx3iZ/1TrKJfNpfmg6ZilGkn/hSmOuJJfnWy3
-         zo8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/6p2UL06xRCrtfganU+UNWFu+nueRBEvuh8BmgJZ8II=;
-        b=NmvgBL/tm7ZQFfkp7AtW9keatgjkfW4KrlcBvy459hJnFLLAffwbrB61ju0Sp7az6g
-         T3mSBrb4bpwl7uW6/JXpaehLFdwsCIVLzglq1N5wGPV2SgwRTuuEqRro3zvYtkBQQ8oY
-         XIF+veh2aPGZi5vJQ/kchOsFaX7B0m8aX9WtAmRQ2ciVIHsVGH3HM5pG+AO/pW528bWF
-         LD+U/XZV1mjSgjFX4CjDuL8sDsj8Bk7aARdgSJ/mYuJEc0ByJ7q/aL+2MeX+vRKWZoPd
-         9j53uiUiQuYkg3TObev2ww/gWQPeMbu53aFUGIPVhXRVjhJhrpgaVQb9Yz/vfCZ/MuJM
-         Hs1Q==
-X-Gm-Message-State: AOAM530rCXwvZnEVZpn2i0GF79HkomyxqsJpx93bQbna7ZZWXN0nKcnn
-        zRRTDZ0IJt/zt/JVzv7t4WRCuI1tBk+A4qvBSNN3f5fDDXk=
-X-Google-Smtp-Source: ABdhPJxVIty+Dfq+gHcJafZBfiUeb8mqaNsz4GMGNLyLwU88OT1JilrdN5E6o4aMmGksSrwkrnrtPtD7su/aUhaQfzw=
-X-Received: by 2002:a6b:7a41:: with SMTP id k1mr21469290iop.187.1600292665347;
- Wed, 16 Sep 2020 14:44:25 -0700 (PDT)
+        id S1726205AbgIPWFc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Sep 2020 18:05:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35832 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725267AbgIPWFb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Sep 2020 18:05:31 -0400
+Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CBF7A21941;
+        Wed, 16 Sep 2020 21:46:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600292797;
+        bh=8YExeebFYjGD6iWEtSRHpDG9C6se09q+jMParqrrJs0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=FGlZ2APPc29PMaSjdWXxmhHR6wy7u+vpeNqYZVstAkzzvUGDCctx58RLy1mBGrjHV
+         Xeqmdo6DTNYOrM1j7nIe0dcmh+hibme00WoKWuuwGBBP+E90PpyVBZyxf5FUxSk2cI
+         fNWWIK2oCJdaIGnM8r/hxCC3max/XJjpg7/ieWJo=
+Date:   Wed, 16 Sep 2020 16:46:35 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Rajat Jain <rajatja@google.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Raj Ashok <ashok.raj@intel.com>,
+        lalithambika.krishnakumar@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        oohall@gmail.com, Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v4 4/4] PCI/ACS: Enable PCI_ACS_TB for
+ untrusted/external-facing devices
+Message-ID: <20200916214635.GA1586835@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20200916183411.64756-1-david@redhat.com> <20200916183411.64756-2-david@redhat.com>
-In-Reply-To: <20200916183411.64756-2-david@redhat.com>
-From:   Alexander Duyck <alexander.duyck@gmail.com>
-Date:   Wed, 16 Sep 2020 14:44:14 -0700
-Message-ID: <CAKgT0UfbnWoPOsaK5H_JtYbQdp-p+ngupO+6sq-_sy8Zetoanw@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/4] mm/page_alloc: convert "report" flag of
- __free_one_page() to a proper flag
-To:     David Hildenbrand <david@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200707224604.3737893-4-rajatja@google.com>
+Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 11:34 AM David Hildenbrand <david@redhat.com> wrote:
->
-> Let's prepare for additional flags and avoid long parameter lists of bools.
-> Follow-up patches will also make use of the flags in __free_pages_ok(),
-> however, I wasn't able to come up with a better name for the type - should
-> be good enough for internal purposes.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Tue, Jul 07, 2020 at 03:46:04PM -0700, Rajat Jain wrote:
+> When enabling ACS, enable translation blocking for external facing ports
+> and untrusted devices.
+> 
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+
+Applied (slightly modified) to pci/acs for v5.10, thanks!
+
+I think the warning is superfluous because every external_facing
+device is a Root Port or Switch Downstream Port, and if those support
+ACS at all, they are required to support Translation Blocking.  So we
+should only see the warning if the device is defective, and I don't
+think we need to go out of our way to look for those.
+
 > ---
->  mm/page_alloc.c | 28 ++++++++++++++++++++--------
->  1 file changed, 20 insertions(+), 8 deletions(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 6b699d273d6e..91cefb8157dd 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -77,6 +77,18 @@
->  #include "shuffle.h"
->  #include "page_reporting.h"
->
-> +/* Free One Page flags: for internal, non-pcp variants of free_pages(). */
-> +typedef int __bitwise fop_t;
+> v4: Add braces to avoid warning from kernel robot
+>     print warning for only external-facing devices.
+> v3: print warning if ACS_TB not supported on external-facing/untrusted ports.
+>     Minor code comments fixes.
+> v2: Commit log change
+> 
+>  drivers/pci/pci.c    |  8 ++++++++
+>  drivers/pci/quirks.c | 15 +++++++++++++++
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 73a8627822140..a5a6bea7af7ce 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -876,6 +876,14 @@ static void pci_std_enable_acs(struct pci_dev *dev)
+>  	/* Upstream Forwarding */
+>  	ctrl |= (cap & PCI_ACS_UF);
+>  
+> +	/* Enable Translation Blocking for external devices */
+> +	if (dev->external_facing || dev->untrusted) {
+> +		if (cap & PCI_ACS_TB)
+> +			ctrl |= PCI_ACS_TB;
+> +		else if (dev->external_facing)
+> +			pci_warn(dev, "ACS: No Translation Blocking on external-facing dev\n");
+> +	}
 > +
-> +/* No special request */
-> +#define FOP_NONE               ((__force fop_t)0)
-> +
+>  	pci_write_config_word(dev, pos + PCI_ACS_CTRL, ctrl);
+>  }
+>  
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index b341628e47527..bb22b46c1d719 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -4934,6 +4934,13 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
+>  	}
+>  }
+>  
 > +/*
-> + * Skip free page reporting notification after buddy merging (will *not* mark
-> + * the page reported, only skip the notification).
+> + * Currently this quirk does the equivalent of
+> + * PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF
+> + *
+> + * TODO: This quirk also needs to do equivalent of PCI_ACS_TB,
+> + * if dev->external_facing || dev->untrusted
 > + */
-> +#define FOP_SKIP_REPORT_NOTIFY ((__force fop_t)BIT(0))
-> +
->  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
->  static DEFINE_MUTEX(pcp_batch_high_lock);
->  #define MIN_PERCPU_PAGELIST_FRACTION   (8)
-> @@ -948,10 +960,9 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
->   * -- nyc
->   */
->
-> -static inline void __free_one_page(struct page *page,
-> -               unsigned long pfn,
-> -               struct zone *zone, unsigned int order,
-> -               int migratetype, bool report)
-> +static inline void __free_one_page(struct page *page, unsigned long pfn,
-> +                                  struct zone *zone, unsigned int order,
-> +                                  int migratetype, fop_t fop_flags)
+>  static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
 >  {
->         struct capture_control *capc = task_capc(zone);
->         unsigned long buddy_pfn;
-> @@ -1038,7 +1049,7 @@ static inline void __free_one_page(struct page *page,
->                 add_to_free_list(page, zone, order, migratetype);
->
->         /* Notify page reporting subsystem of freed page */
-> -       if (report)
-> +       if (!(fop_flags & FOP_SKIP_REPORT_NOTIFY))
->                 page_reporting_notify_free(order);
->  }
->
-> @@ -1368,7 +1379,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
->                 if (unlikely(isolated_pageblocks))
->                         mt = get_pageblock_migratetype(page);
->
-> -               __free_one_page(page, page_to_pfn(page), zone, 0, mt, true);
-> +               __free_one_page(page, page_to_pfn(page), zone, 0, mt, FOP_NONE);
->                 trace_mm_page_pcpu_drain(page, 0, mt);
->         }
->         spin_unlock(&zone->lock);
-> @@ -1384,7 +1395,7 @@ static void free_one_page(struct zone *zone,
->                 is_migrate_isolate(migratetype))) {
->                 migratetype = get_pfnblock_migratetype(page, pfn);
->         }
-> -       __free_one_page(page, pfn, zone, order, migratetype, true);
-> +       __free_one_page(page, pfn, zone, order, migratetype, FOP_NONE);
->         spin_unlock(&zone->lock);
->  }
->
-> @@ -3277,7 +3288,8 @@ void __putback_isolated_page(struct page *page, unsigned int order, int mt)
->         lockdep_assert_held(&zone->lock);
->
->         /* Return isolated page to tail of freelist. */
-> -       __free_one_page(page, page_to_pfn(page), zone, order, mt, false);
-> +       __free_one_page(page, page_to_pfn(page), zone, order, mt,
-> +                       FOP_SKIP_REPORT_NOTIFY);
->  }
->
->  /*
-
-Seems pretty straight forward. So we are basically flipping the logic
-and replacing !report with FOP_SKIP_REPORT_NOTIFY.
-
-Reviewed-by: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+>  	if (!pci_quirk_intel_pch_acs_match(dev))
+> @@ -4973,6 +4980,14 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
+>  	ctrl |= (cap & PCI_ACS_CR);
+>  	ctrl |= (cap & PCI_ACS_UF);
+>  
+> +	/* Enable Translation Blocking for external devices */
+> +	if (dev->external_facing || dev->untrusted) {
+> +		if (cap & PCI_ACS_TB)
+> +			ctrl |= PCI_ACS_TB;
+> +		else if (dev->external_facing)
+> +			pci_warn(dev, "ACS: No Translation Blocking on external-facing dev\n");
+> +	}
+> +
+>  	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
+>  
+>  	pci_info(dev, "Intel SPT PCH root port ACS workaround enabled\n");
+> -- 
+> 2.27.0.212.ge8ba1cc988-goog
+> 
