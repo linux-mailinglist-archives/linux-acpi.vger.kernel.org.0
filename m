@@ -2,221 +2,238 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E95E326C69C
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 19:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E1C026C7E2
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 20:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727502AbgIPRzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Sep 2020 13:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727676AbgIPRy3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Sep 2020 13:54:29 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49216C0612F2;
-        Wed, 16 Sep 2020 10:54:17 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id i1so7238433edv.2;
-        Wed, 16 Sep 2020 10:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=n6mrIADyrBQbnLtXXBKUK1oHgyD2rX/EbKv+Og9Z66w=;
-        b=MdWmtSxZ+/68Ef3OJpum0X3G5xJJrhYtIiumYYkzc+XTHdRp/DkXrsl3PvSQehD5pb
-         N1eMlGDqFrgXueip3v4h8gw+AnGOw6G27Z47a3AshPiEOWiLphhTX2DqrSRTuBHD7thd
-         1q9ZVSETqbF63QHQiFkjPiVKziaZF6pN9W3Xov4LtKt8xKa2z2mIOJDqobST5N/k6jDC
-         kubpg/9lhrVzCWBhlAP5QenZ6Ob2D/3efN7HFsbIlU+JdjtrsSuzSUyAiSNhhHv92Q+o
-         G3dY/aVazEzUZJh1XUkMhguw3XwrOFB6ikhTQ1KGwHfDMRifWW0qoeZcp967xj6HeOsb
-         WvWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=n6mrIADyrBQbnLtXXBKUK1oHgyD2rX/EbKv+Og9Z66w=;
-        b=psE2VmH+yK2oxmgRP4RjzwFYwJ76fD+FrjYfWGmdoPXFvCB/aYRzymzIa4NnSVzro5
-         FaULukMq2P7b8w427wg4jIiupGdKh3mUM4ix+oaOPe9RJmeTR3ha8l78y4Q7oDy5YFNO
-         LFhjBF4G0TETTCeWXAsN/VImY3Hvbm/ZuqPr9RQMBvzMPRfJQxCN7kkbqfgg9Vr/os27
-         cyc1Z+Zn+qSZtxnpAi2/clx6j4gH1xFeuO/iXEJYmQmu0IVM4hSyVJCakqoexveKBSAG
-         /6bEWduna0a7/0GoBk5anGO3xvjdLdEFsmioJrNhtC8KiVuob+EAgM3r4aVnG5zt0Gi3
-         T6gw==
-X-Gm-Message-State: AOAM5319H0zcBxf5jzXfbVzv5eyq8pkbqIzjUQdniqSZsUgEBRTJRKNO
-        RQ+iV1mQY//3G82Ma2OtSF2mYEZ5+yc=
-X-Google-Smtp-Source: ABdhPJz6K38IuTDuacte2yOGDB9aBjUsB2njf/w905tVCZsdCiBTMF524UByyDaDyC5CQtoHej56uA==
-X-Received: by 2002:aa7:cb44:: with SMTP id w4mr29216973edt.139.1600278855258;
-        Wed, 16 Sep 2020 10:54:15 -0700 (PDT)
-Received: from [192.168.2.202] (pd9e5a4ba.dip0.t-ipconnect.de. [217.229.164.186])
-        by smtp.gmail.com with ESMTPSA id si28sm13083691ejb.95.2020.09.16.10.54.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Sep 2020 10:54:14 -0700 (PDT)
-Subject: Re: [PATCH v2] platform/x86: Add Driver to set up lid GPEs on MS
- Surface device
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-Cc:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20200910211520.1490626-1-luzmaximilian@gmail.com>
- <EMZQgUl1xLN4o0hV9ZkCD563O85SuOYB5kNFZ5_hlxLQXbJCXpQfrM2afyFIr28h31tXMxD1mxE4DkA5Wy60A0Z2mDnstwF17tEdnX4IRas=@protonmail.com>
- <355dae14-2508-706b-53f8-48b78f84e7cc@gmail.com>
- <ID5eml6LsB6tCDrZwhbfin228LE3cor6ZEYbAHj6C3SZ9y0AcL40SWweP-iAjmEpCeEV5NZHJLKBpUo5qw1VR0Q7xOXAVSH7epRjTRkj64Y=@protonmail.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <5fe41f91-068e-9da8-8308-d71061d378bd@gmail.com>
-Date:   Wed, 16 Sep 2020 19:54:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1728069AbgIPSgA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Sep 2020 14:36:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:60762 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728139AbgIPSe3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Sep 2020 14:34:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1600281267;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=sLvJY4ddiVkXmrX1DSGtp9ToKTJ0eE0I5UImDHKq484=;
+        b=H20BSvxB4bYtW/U0UhZ3jng+SjwXA4mUeb+b3H0n2X7THrPoILFxCryFg9Tn1icVNslQiL
+        XH50pfj426Wvs9FWXhYmRIFi01XVIbxR4eZLIbbaKsom4spZWNkb7RCM4R2ZM0x27LykW1
+        jeGcZzJg8ihjPXCFIEevfA6OnYeP0Kg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-434-ZNEnBkKoOvCSBnNBYlwABA-1; Wed, 16 Sep 2020 14:34:23 -0400
+X-MC-Unique: ZNEnBkKoOvCSBnNBYlwABA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AD33B186DD27;
+        Wed, 16 Sep 2020 18:34:20 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-113-190.ams2.redhat.com [10.36.113.190])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EE34B19D61;
+        Wed, 16 Sep 2020 18:34:12 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>
+Subject: [PATCH RFC 0/4] mm: place pages to the freelist tail when onling and undoing isolation
+Date:   Wed, 16 Sep 2020 20:34:07 +0200
+Message-Id: <20200916183411.64756-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <ID5eml6LsB6tCDrZwhbfin228LE3cor6ZEYbAHj6C3SZ9y0AcL40SWweP-iAjmEpCeEV5NZHJLKBpUo5qw1VR0Q7xOXAVSH7epRjTRkj64Y=@protonmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/16/20 7:13 PM, Barnabás Pőcze wrote:
-...
->>>> +	}s
->>>> +
->>>> +	return 0;
->>>> +}
->>>> [...]
->>>> +static int surface_gpe_probe(struct platform_device *pdev)
->>>> +{
->>>> +	struct surface_lid_device *lid;
->>>> +	u32 gpe_number;
->>>> +	int status;
->>>> +
->>>> +	status = device_property_read_u32(&pdev->dev, "gpe", &gpe_number);
->>>> +	if (status)
->>>> +		return -ENODEV;
->>>
->>> 'device_property_read_u32()' returns an error code, you could simply return that
->>> instead of hiding it.
->>
->> My thought there was that if the "gpe" property isn't present or of a
->> different type, this is not a device that we want to/can handle. Thus
->> the -ENODEV. Although I think a debug print statement may be useful
->> here.
->>
-> 
-> I see, I just wanted to bring to your attention that 'device_property_read_u32()'
-> returns various standard error codes and you could simply return those.
+When adding separate memory blocks via add_memory*() and onlining them
+immediately, the metadata (especially the memmap) of the next block will be
+placed onto one of the just added+onlined block. This creates a chain
+of unmovable allocations: If the last memory block cannot get
+offlined+removed() so will all dependant ones. We directly have unmovable
+allocations all over the place.
 
-I think one could also argue that module-loading should have taken care
-of filtering out devices that we don't load on, so -ENODEV would be
-redundant here. At least if one neglects that a user could try to
-manually bind the driver to a device. Following that thought, I guess it
-makes more sense to return the actual value here.
+This can be observed quite easily using virtio-mem, however, it can also
+be observed when using DIMMs. The freshly onlined pages will usually be
+placed to the head of the freelists, meaning they will be allocated next,
+turning the just-added memory usually immediately un-removable. The
+fresh pages are cold, prefering to allocate others (that might be hot)
+also feels to be the natural thing to do.
 
->> [...]
->>>> +
->>>> +	lid->gpe_number = gpe_number;
->>>> +	platform_set_drvdata(pdev, lid);
->>>> +
->>>> +	status = surface_lid_enable_wakeup(&pdev->dev, false);
->>>> +	if (status) {
->>>> +		acpi_disable_gpe(NULL, gpe_number);
->>>> +		platform_set_drvdata(pdev, NULL);
->>>
->>> Why is 'platform_set_drvdata(pdev, NULL)' needed?
->>
->> Is this not required for clean-up once the driver data has been set? Or
->> does the driver-base take care of that for us when the driver is
->> removed/fails to probe? My reasoning was that I don't want to leave
->> stuff around for any other driver to trip on (and rather have that
->> driver oops on a NULL-pointer). If the driver-core already takes care of
->> NULL-ing that, that line is not needed. Unfortunately that behavior
->> doesn't seem to be explained in the documentation.
->>
-> 
-> I'm not aware that it would be required. As a matter of fact, only two x86
-> platform drivers (intel_pmc_core, ideapad-laptop) do any cleanup of driver data.
-> There are much more hits (536) for "set_drvdata(.* NULL" when scanning all drivers.
-> There are 4864 hits for "set_drvdata(.*" that have no 'NULL' in them.
-> 
-> There is drivers/base/dd.c:really_probe(), which seems to be the place where driver
-> probes are actually called. And it calls 'dev_set_drvdata(dev, NULL)' if the probe
-> fails. And it also sets the driver data to NULL in '__device_release_driver()',
-> so I'm pretty sure the driver core takes care of it.
+It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when
+adding separate, successive memory blocks, each memory block will have
+unmovable allocations on them - for example gigantic pages will fail to
+allocate.
 
-I see, thanks! Would make sense that the core takes care of that.
+While the ZONE_NORMAL doesn't provide any guarantees that memory can get
+offlined+removed again (any kind of fragmentation with unmovable
+allocations is possible), there are many scenarios (hotplugging a lot of
+memory, running workload, hotunplug some memory/as much as possible) where
+we can offline+remove quite a lot with this patchset.
 
->>>> +		return status;
->>>> +	}
->>>> +
->>>> +	return 0;
->>>> +}
->> [...]
->>>> +static int __init surface_gpe_init(void)
->>>> +{
->>>> +	const struct dmi_system_id *match;
->>>> +	const struct property_entry *props;
->>>> +	struct platform_device *pdev;
->>>> +	struct fwnode_handle *fwnode;
->>>> +	int status;
->>>> +
->>>> +	match = dmi_first_match(dmi_lid_device_table);
->>>> +	if (!match) {
->>>> +		pr_info(KBUILD_MODNAME": no device detected, exiting\n");
->>>
->>> If you put
->>>    #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->>> before including any headers, you can simply write 'pr_info("no device...")' and it'll
->>> be prefixed by the module name. This is the "usual" way of achieving what you want.
->>
->> Right, thanks!
->>
->>>> +		return 0;
->>>
->>> Shouldn't it return -ENODEV?
->>
->> How does module auto-loading behave with a -ENODEV return value in init?
->> I know that in the driver's probe callback it signals that the driver
->> isn't intended for the device. Is this the same for modules or would a
->> user get an error message in the kernel log? As I couldn't find any
->> documentation on this, I assumed it didn't behave the same and would
->> emit an error message.
->>
->> The reason I don't want to emit an error message here is that the module
->> can be loaded for devices that it's not intended (and that's not
->> something we can fix with a better MODULE_ALIAS as Microsoft cleverly
->> named their 5th generation Surface Pro "Surface Pro", without any
->> version number). Mainly, I don't want users to get a random error
->> message that doesn't indicate an actual error.
->>
-> 
-> I wasn't sure, so I tested it. It prints the "no device" message, but that's it,
-> no more indication of the -ENODEV error in the kernel log during automatic
-> module loading at boot.
-> 
-> You could print "no compatible Microsoft Surface device found, exitig" (or something
-> similar). I think this provides enough information for any user to decide if
-> they should be concerned or not.
+a) To visualize the problem, a very simple example:
 
-I ran the same test (with same results) earlier today and also did some
-digging: From what I can tell, udev is responsible for auto-loading and
-the code doing that can be found at [1]. This code seems to, by default,
-log any errors as debug output. Only in verbose mode it logs them as
-error, with the exception of -ENODEV, which then is specifically logged
-only as notice.
+Start a VM with 4GB and 8GB of virtio-mem memory:
 
-It also seems to be used by a couple of other modules this way. So I
-guess that's the expected use-case for -ENODEV in module-init and pretty
-much guarantees the behavior I've wanted.
+	[root@localhost ~]# lsmem
+	RANGE                                 SIZE  STATE REMOVABLE  BLOCK
+	0x0000000000000000-0x00000000bfffffff   3G online       yes   0-23
+	0x0000000100000000-0x000000033fffffff   9G online       yes 32-103
+	
+	Memory block size:       128M
+	Total online memory:      12G
+	Total offline memory:      0B
 
-[1]: https://github.com/systemd/systemd/blob/6d95e7d9b263c94e94704e3125cb790840b76ca2/src/shared/module-util.c#L58-L64
+Then try to unplug as much as possible using virtio-mem. Observe which
+memory blocks are still around. Without this patch set:
 
-Thanks again. If there are no other comments, I'll likely submit a v3
-addressing the issues tomorrow.
+	[root@localhost ~]# lsmem
+	RANGE                                  SIZE  STATE REMOVABLE   BLOCK
+	0x0000000000000000-0x00000000bfffffff    3G online       yes    0-23
+	0x0000000100000000-0x000000013fffffff    1G online       yes   32-39
+	0x0000000148000000-0x000000014fffffff  128M online       yes      41
+	0x0000000158000000-0x000000015fffffff  128M online       yes      43
+	0x0000000168000000-0x000000016fffffff  128M online       yes      45
+	0x0000000178000000-0x000000017fffffff  128M online       yes      47
+	0x0000000188000000-0x0000000197ffffff  256M online       yes   49-50
+	0x00000001a0000000-0x00000001a7ffffff  128M online       yes      52
+	0x00000001b0000000-0x00000001b7ffffff  128M online       yes      54
+	0x00000001c0000000-0x00000001c7ffffff  128M online       yes      56
+	0x00000001d0000000-0x00000001d7ffffff  128M online       yes      58
+	0x00000001e0000000-0x00000001e7ffffff  128M online       yes      60
+	0x00000001f0000000-0x00000001f7ffffff  128M online       yes      62
+	0x0000000200000000-0x0000000207ffffff  128M online       yes      64
+	0x0000000210000000-0x0000000217ffffff  128M online       yes      66
+	0x0000000220000000-0x0000000227ffffff  128M online       yes      68
+	0x0000000230000000-0x0000000237ffffff  128M online       yes      70
+	0x0000000240000000-0x0000000247ffffff  128M online       yes      72
+	0x0000000250000000-0x0000000257ffffff  128M online       yes      74
+	0x0000000260000000-0x0000000267ffffff  128M online       yes      76
+	0x0000000270000000-0x0000000277ffffff  128M online       yes      78
+	0x0000000280000000-0x0000000287ffffff  128M online       yes      80
+	0x0000000290000000-0x0000000297ffffff  128M online       yes      82
+	0x00000002a0000000-0x00000002a7ffffff  128M online       yes      84
+	0x00000002b0000000-0x00000002b7ffffff  128M online       yes      86
+	0x00000002c0000000-0x00000002c7ffffff  128M online       yes      88
+	0x00000002d0000000-0x00000002d7ffffff  128M online       yes      90
+	0x00000002e0000000-0x00000002e7ffffff  128M online       yes      92
+	0x00000002f0000000-0x00000002f7ffffff  128M online       yes      94
+	0x0000000300000000-0x0000000307ffffff  128M online       yes      96
+	0x0000000310000000-0x0000000317ffffff  128M online       yes      98
+	0x0000000320000000-0x0000000327ffffff  128M online       yes     100
+	0x0000000330000000-0x000000033fffffff  256M online       yes 102-103
+	
+	Memory block size:       128M
+	Total online memory:     8.1G
+	Total offline memory:      0B
 
-Regards,
-Max
+With this patch set:
+
+	[root@localhost ~]# lsmem
+	RANGE                                 SIZE  STATE REMOVABLE BLOCK
+	0x0000000000000000-0x00000000bfffffff   3G online       yes  0-23
+	0x0000000100000000-0x000000013fffffff   1G online       yes 32-39
+	
+	Memory block size:       128M
+	Total online memory:       4G
+	Total offline memory:      0B
+
+All memory can get unplugged, all memory block can get removed. Of course,
+no workload ran and the system was basically idle, but it highlights the
+issue - the fairly deterministic chain of unmovable allocations. When a
+huge page for the 2MB memmap is needed, a just-onlined 4MB page will
+be split. The remaining 2MB page will be used for the memmap of the next
+memory block. So one memory block will hold the memmap of the two following
+memory blocks. Finally the pages of the last-onlined memory block will get
+used for the next bigger allocations - if any allocation is unmovable,
+all dependent memory blocks cannot get unplugged and removed until that
+allocation is gone.
+
+Note that with bigger memory blocks (e.g., 256MB), *all* memory
+blocks are dependent and none can get unplugged again!
+
+b) Experiment with memory intensive workload
+
+I performed an experiment with an older version of this patch set
+(before we used undo_isolate_page_range() in online_pages():
+Hotplug 56GB to a VM with an initial 4GB, onlining all memory to
+ZONE_NORMAL right from the kernel when adding it. I then run various
+memory intensive workloads that consume most system memory for a total of
+45 minutes. Once finished, I try to unplug as much memory as possible.
+
+With this change, I am able to remove via virtio-mem (adding individual
+128MB memory blocks) 413 out of 448 added memory blocks. Via individual
+(256MB) DIMMs 380 out of 448 added memory blocks. (I don't have any numbers
+without this patchset, but looking at the above example, it's at most half
+of the 448 memory blocks for virtio-mem, and most probably none for DIMMs).
+
+Again, there are workloads that might behave very differently due to the
+nature of ZONE_NORMAL.
+
+c) Future work:
+- I'll be looking into avoiding reporting freshly onlined pages via the
+  free page reporting framework. They are unbacked in the hypervisor, so
+  reporting them isn't necessary (and might actually be bad for performance
+  in some future use cases in the hypervisor).
+- I'll be looking into being able to tell the OS that some pages are fresh
+  (e.g., via alloc_contig_range() in virito-mem, freeing balloon inflated
+  memory in a ballooning driver), such that we will skip reporting them
+  via free page reporting (marking them reported), and placing them to the
+  tail of the freelist.
+- virtio-mem will soon also support ZONE_MOVABLE, however, especially
+  when hotplugging a lot of memory (as in the experiment), a considerable
+  amount of memory will have to remain in ZONE_NORMAL - so this change
+  is relevant in any case.
+
+I'm sending this as RFC as it also in its current form for simplicity
+affects not only memory onlining but also
+- Other users of undo_isolate_page_range(): Pages are always placed to the
+  tail.
+-- When memory offlining fails
+-- When memory isolation fails after having isolated some pageblocks
+-- When alloc_contig_range() either succeeds or fails
+- Other users of __putback_isolated_page(): Pages are always placed to the
+  tail.
+-- Free page reporting
+- Other users of __free_pages_core()
+-- AFAIKs, any memory that is getting exposed to the buddy during boot.
+   IIUC we will now usually allocate memory from lower addresses within
+   a zone first (especially during boot).
+- Other users of generic_online_page()
+-- Hyper-V balloon
+
+Let's see if there are concerns for these users with this approach.
+
+David Hildenbrand (4):
+  mm/page_alloc: convert "report" flag of __free_one_page() to a proper
+    flag
+  mm/page_alloc: place pages to tail in __putback_isolated_page()
+  mm/page_alloc: always move pages to the tail of the freelist in
+    unset_migratetype_isolate()
+  mm/page_alloc: place pages to tail in __free_pages_core()
+
+ include/linux/page-isolation.h |   2 +
+ mm/page_alloc.c                | 102 +++++++++++++++++++++++++--------
+ mm/page_isolation.c            |   8 ++-
+ 3 files changed, 86 insertions(+), 26 deletions(-)
+
+-- 
+2.26.2
 
