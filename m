@@ -2,156 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6AE26C9DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 21:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A021F26CB31
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Sep 2020 22:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727283AbgIPTd5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Sep 2020 15:33:57 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:31783 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727589AbgIPTcF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Sep 2020 15:32:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600284687;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=H30dbXoNbzsTkPGiKpd2XjhJWXqjtA7dGp0dwpbyBQA=;
-        b=Q2TAjVK1i1o+4f4DqEWRYey6mLyFuPShulyNtZBkiUUbfOiZk63wvoOdeg11Iya2uQTrWc
-        d01hMvqoYOv8UiSuqQeR1EMd2EGC/9x1ZmySJymGhJ8fRmlWrWPmyRS3doUjSsdUFU1xAr
-        DSMxEW/wKHFSRjEQ7WSm//CKRM/zYSo=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-211-XF5SWKofOaKkx9rXMrO9cQ-1; Wed, 16 Sep 2020 15:31:25 -0400
-X-MC-Unique: XF5SWKofOaKkx9rXMrO9cQ-1
-Received: by mail-ej1-f71.google.com with SMTP id r14so3370001ejb.3
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Sep 2020 12:31:25 -0700 (PDT)
+        id S1728256AbgIPUX3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Sep 2020 16:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727099AbgIPR2k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Sep 2020 13:28:40 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239C4C008769
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Sep 2020 06:30:11 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id e14so4002808vsa.9
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Sep 2020 06:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2ZiMEy//1kayA505gPczbbN35iqby1CxZE5VK4t65mE=;
+        b=P+7V4bFUf/RvjRpWfeP0Q4K/T92HZyPjcVMWkmfGy57XXUfRJKnm1EGaEcP5cRrl7p
+         Vhi4lQHLZ1gtEfPyzRIkaQr7wrvN0paQCK7DUr4relNqRTPL0FBHzXIuSuVK7O7hhfjs
+         dAb9yJZAU+pLPFk5XCPwa0SeyGaNYVIb7hD2ism9V/CEklXP+joCcO4HTKedEr+eazu4
+         SgXo3wOlXCgn/qlBQVaMnCCgle7zOtPkF4/9FZWQRza3iwMHSPGXcd8N693DeGnFcVz0
+         CimWVVGuBiRlsBsUnlKtmIu/gj0nxYxqH4ZGwjnYvK9oBKmzHKrVFJQWKaFYY16dESS7
+         I1Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=H30dbXoNbzsTkPGiKpd2XjhJWXqjtA7dGp0dwpbyBQA=;
-        b=Tv81tIdAOg4BplxRS0B3JUmAe0XRq7ZcV1VRzGfQZrsAXfwhYDx45nZEEgd3oWwjPc
-         pw6iUR7CsU/klI7eik58+P+AKzU4Yw4C72MgVnUUItyoGxs9QNZmyjr+LPs5tSDgrGzQ
-         DMLYL5ij9mC8Dc1SnfObxOQhzbEBZPzziQegN0VPW4cpOoBRmK915UmeFoxGnZGfWf6p
-         tp6LzyVcPuAmKETwIrxoncg1lQOOPtSHsAuCEvewsybsnphhoCEdLrLTEMrGe7Ours5c
-         dQ/kkwDyJKo+lUlvD2YNLn+oGIsh+qA7r4yK2hh+sZ4+P7ruE3c4Lr0xmSia1ka1LWZb
-         pYYg==
-X-Gm-Message-State: AOAM5323vnJLHKU+Vgjt2YvsOWd8j5zIMiq7iW4P6MGijyqbTC2YqeKP
-        daQdfS8mDgIe7P9iQyjeePOPpfEM8Gh0Do+a6bKHqBSbW7C9gZtlOhVro24sFDhRepLIf61S2vS
-        c3WDCnAcwUcDxDogj/S9acg==
-X-Received: by 2002:aa7:c7c2:: with SMTP id o2mr30417833eds.366.1600284684124;
-        Wed, 16 Sep 2020 12:31:24 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwNf5C6IgWA4C90hz+1DV+boU+avbJN14GYmBM3jetRxVAOiNjdDaQK6JfCvz8qKCYsfBo/YA==
-X-Received: by 2002:aa7:c7c2:: with SMTP id o2mr30417797eds.366.1600284683833;
-        Wed, 16 Sep 2020 12:31:23 -0700 (PDT)
-Received: from [192.168.3.122] (p4ff23c30.dip0.t-ipconnect.de. [79.242.60.48])
-        by smtp.gmail.com with ESMTPSA id k25sm13202917ejk.3.2020.09.16.12.31.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Sep 2020 12:31:23 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   David Hildenbrand <david@redhat.com>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH RFC 0/4] mm: place pages to the freelist tail when onling and undoing isolation
-Date:   Wed, 16 Sep 2020 21:31:21 +0200
-Message-Id: <DAC9E747-BDDF-41B6-A89B-604880DD7543@redhat.com>
-References: <5c0910c2cd0d9d351e509392a45552fb@suse.de>
-Cc:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Wei Liu <wei.liu@kernel.org>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>
-In-Reply-To: <5c0910c2cd0d9d351e509392a45552fb@suse.de>
-To:     osalvador@suse.de
-X-Mailer: iPhone Mail (17H35)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2ZiMEy//1kayA505gPczbbN35iqby1CxZE5VK4t65mE=;
+        b=lCYkRRXt2cPSndF6ROwLH82ThpcLVkdwSlWMsyUUksyF11YhESxzBKlWoFo+yocAe/
+         24MJEOO4++8oegYlZQ/HZ76TBBf/jh8K7IcnZrq7LfJfSsXXOlIE0XCGY8urPuzpQqyu
+         hiPn9yyxNHqUiLWYszQTLkrCp4q3gfjb6kNLZ7pyIAD2WUyDWT15Y3PD+AESWkcyEv1J
+         JTDKDGoi4wJlgVaelsI7YdJOGVuRV0u7Zd2xEmzIWvECw3Zh83JDpmJUN98n9VCfzJbV
+         l+jORU0UNLKEI2/frUAVQ+qGHywCv3I7CNdZTm6vMrggoyBu2RXUleaSdPwKgO9axXpH
+         DJTg==
+X-Gm-Message-State: AOAM530C+PZkvghOMx/KnQ60RWl+LDhaAj/STxngbrrWbvltVQAmwAF3
+        uH7pes5FUqCbf+w+qtFcd/Oojsh90WdNl29jqey8Cw==
+X-Google-Smtp-Source: ABdhPJwGKLu0z/dTDqySAlqgfg7vIw00CAxMAF/n/hdDKH4w89Jgg8+PYleCXBvx1Bvv7Pek2lkAhCyQonJy7yX90Kg=
+X-Received: by 2002:a67:e290:: with SMTP id g16mr4591851vsf.56.1600263009036;
+ Wed, 16 Sep 2020 06:30:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200908125813.8809-1-brgl@bgdev.pl> <CADYN=9+3kHG0CexzZiMQoXdF2piN2ZhOTObhY=7VCKrnFVN0Kw@mail.gmail.com>
+In-Reply-To: <CADYN=9+3kHG0CexzZiMQoXdF2piN2ZhOTObhY=7VCKrnFVN0Kw@mail.gmail.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 16 Sep 2020 15:29:58 +0200
+Message-ID: <CAMRc=MdNxxAHQK5i4rZo3d4iy5JNco-f0V-UzVNTTJQyH6AZpA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] gpiolib: generalize GPIO line names property
+To:     Anders Roxell <anders.roxell@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kent Gibson <warthog618@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        lkft-triage@lists.linaro.org,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Sep 15, 2020 at 2:02 PM Anders Roxell <anders.roxell@linaro.org> wrote:
+>
+> On Tue, 8 Sep 2020 at 18:40, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> >
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > I initially sent this as part of the gpio-mockup overhaul but since
+> > these patches are indepentent and the work on gpio-mockup may become
+> > more complicated - I'm sending these separately.
+> >
+> > The only change is adding additional property helpers to count strings
+> > in array.
+> >
+> > Bartosz Golaszewski (3):
+> >   device: property: add helpers to count items in string arrays
+> >   gpiolib: generalize devprop_gpiochip_set_names() for device properties
+> >   gpiolib: unexport devprop_gpiochip_set_names()
+>
+> I do an arm64 allmodconfig build fron linux-next (tag: next-20200915) and
+> run that in qemu. When I run I see the following output (see full log [1]):
+> "BUG: KASAN: null-ptr-deref in device_property_read_string_array".
+>
+>
 
+FYI: this fails because someone passes a NULL struct device * to
+dev_fwnode() - this is probably caused by some ordering issues in this
+patch. I'm working on it.
 
-> Am 16.09.2020 um 20:50 schrieb osalvador@suse.de:
->=20
-> =EF=BB=BFOn 2020-09-16 20:34, David Hildenbrand wrote:
->> When adding separate memory blocks via add_memory*() and onlining them
->> immediately, the metadata (especially the memmap) of the next block will b=
-e
->> placed onto one of the just added+onlined block. This creates a chain
->> of unmovable allocations: If the last memory block cannot get
->> offlined+removed() so will all dependant ones. We directly have unmovable=
-
->> allocations all over the place.
->> This can be observed quite easily using virtio-mem, however, it can also
->> be observed when using DIMMs. The freshly onlined pages will usually be
->> placed to the head of the freelists, meaning they will be allocated next,=
-
->> turning the just-added memory usually immediately un-removable. The
->> fresh pages are cold, prefering to allocate others (that might be hot)
->> also feels to be the natural thing to do.
->> It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when=
-
->> adding separate, successive memory blocks, each memory block will have
->> unmovable allocations on them - for example gigantic pages will fail to
->> allocate.
->> While the ZONE_NORMAL doesn't provide any guarantees that memory can get
->> offlined+removed again (any kind of fragmentation with unmovable
->> allocations is possible), there are many scenarios (hotplugging a lot of
->> memory, running workload, hotunplug some memory/as much as possible) wher=
-e
->> we can offline+remove quite a lot with this patchset.
->=20
-> Hi David,
->=20
-
-Hi Oscar.
-
-> I did not read through the patchset yet, so sorry if the question is nonse=
-nse, but is this not trying to fix the same issue the vmemmap patches did? [=
-1]
-
-Not nonesense at all. It only helps to some degree, though. It solves the de=
-pendencies due to the memmap. However, it=E2=80=98s not completely ideal, es=
-pecially for single memory blocks.
-
-With single memory blocks (virtio-mem, xen-balloon, hv balloon, ppc dlpar) y=
-ou still have unmovable (vmemmap chunks) all over the physical address space=
-. Consider the gigantic page example after hotplug. You directly fragmented a=
-ll hotplugged memory.
-
-Of course, there might be (less extreme) dependencies due page tables for th=
-e identity mapping, extended struct pages and similar.
-
-Having that said, there are other benefits when preferring other memory over=
- just hotplugged memory. Think about adding+onlining memory during boot (dim=
-ms under QEMU, virtio-mem), once the system is up you will have most (all) o=
-f that memory completely untouched.
-
-So while vmemmap on hotplugged memory would tackle some part of the issue, t=
-here are cases where this approach is better, and there are even benefits wh=
-en combining both.
-
-Thanks!
-
-David
-
->=20
-> I was about to give it a new respin now that thw hwpoison stuff has been s=
-ettled.
->=20
-> [1] https://patchwork.kernel.org/cover/11059175/
->=20
-
+Bartosz
