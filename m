@@ -2,65 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1360B26E4AC
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 20:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE53426E438
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 20:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726441AbgIQSy3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 14:54:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37040 "EHLO mail.kernel.org"
+        id S1726325AbgIQSmk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 14:42:40 -0400
+Received: from verein.lst.de ([213.95.11.211]:57039 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728426AbgIQQU3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 12:20:29 -0400
-Received: from localhost (unknown [70.37.104.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7968020708;
-        Thu, 17 Sep 2020 15:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600358008;
-        bh=M2gFxqmtjjAWg/oGRYKTsRTZLNarF0mdV6aFeWm3RZ0=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=TEY4P/Z3V+4nyTHT7QFM+b9jJ808FfgkCUxfwlUjqmEkEUhNGePV4gKg62ZHv3pxI
-         ZKZebu2xtPd0qiW/5vzX39rvcBt9Uk4rv0A80HTwJ18DdzthDRzD6lWD7IHXI9l7vd
-         fn6nCdxi5LxPQ0prWjyyln4mK0fcMX3OyrNZ1Ndw=
-Date:   Thu, 17 Sep 2020 15:53:27 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     Alex Hung <alex.hung@canonical.com>
-To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH][V2] ACPI: video: use ACPI backlight for HP 635 Notebook
-In-Reply-To: <20200913223403.59175-1-alex.hung@canonical.com>
-References: <20200913223403.59175-1-alex.hung@canonical.com>
-Message-Id: <20200917155328.7968020708@mail.kernel.org>
+        id S1728715AbgIQQy6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 12:54:58 -0400
+X-Greylist: delayed 557 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 12:54:42 EDT
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 1B12468BEB; Thu, 17 Sep 2020 18:45:15 +0200 (CEST)
+Date:   Thu, 17 Sep 2020 18:45:14 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Ohad Ben-Cohen <ohad@wizery.com>, devicetree@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-sh@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+        linux-usb@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        linux-pci@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: support range based offsets in dma-direct v3
+Message-ID: <20200917164514.GA5982@lst.de>
+References: <20200916061500.1970090-1-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200916061500.1970090-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
-
-[This is an automated email]
-
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: all
-
-The bot has tested the following trees: v5.8.9, v5.4.65, v4.19.145, v4.14.198, v4.9.236, v4.4.236.
-
-v5.8.9: Build OK!
-v5.4.65: Build OK!
-v4.19.145: Build OK!
-v4.14.198: Build OK!
-v4.9.236: Build OK!
-v4.4.236: Failed to apply! Possible dependencies:
-    49eb5208220a ("ACPI / video: Add a quirk to force acpi-video backlight on SAMSUNG 530U4E/540U4E")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+I've pulled this into the dma-mapping for-next tree.  Thanks Jim and
+everyone helping out!
