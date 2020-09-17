@@ -2,120 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8EB726E27F
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 19:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1360B26E4AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 20:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbgIQRdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 13:33:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38684 "EHLO mail.kernel.org"
+        id S1726441AbgIQSy3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 14:54:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37040 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726574AbgIQRdN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 13:33:13 -0400
-Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
+        id S1728426AbgIQQU3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 12:20:29 -0400
+Received: from localhost (unknown [70.37.104.77])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB6CB20725;
-        Thu, 17 Sep 2020 17:33:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7968020708;
+        Thu, 17 Sep 2020 15:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600363992;
-        bh=nWMmHBbmbhvD0r3jch7hRRWF1Si4T12WC6cr5pBZNrg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=L3luejnWrrhIOPgufNxNcgkKfqMiqRm0e0ut9HolHPjqCnIUJDh/uwGOsXPs+m6SR
-         Tw8e53m+oxpIfW5L9CVoYtbvsKJ1F4DDagmY26li9FqW+LjtoJXn/eIyVritbDSTuX
-         CS9GkCeugNA6yt3l74Yb3KjZ/cu1jYfe7WJH9GBQ=
-Date:   Thu, 17 Sep 2020 12:33:10 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Tuan Phan <tuanphan@os.amperecomputing.com>
-Cc:     patches@amperecomputing.com, Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI/ACPI: Add Ampere Altra SOC MCFG quirk
-Message-ID: <20200917173310.GA1714144@bjorn-Precision-5520>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1596751055-12316-1-git-send-email-tuanphan@os.amperecomputing.com>
+        s=default; t=1600358008;
+        bh=M2gFxqmtjjAWg/oGRYKTsRTZLNarF0mdV6aFeWm3RZ0=;
+        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=TEY4P/Z3V+4nyTHT7QFM+b9jJ808FfgkCUxfwlUjqmEkEUhNGePV4gKg62ZHv3pxI
+         ZKZebu2xtPd0qiW/5vzX39rvcBt9Uk4rv0A80HTwJ18DdzthDRzD6lWD7IHXI9l7vd
+         fn6nCdxi5LxPQ0prWjyyln4mK0fcMX3OyrNZ1Ndw=
+Date:   Thu, 17 Sep 2020 15:53:27 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     Alex Hung <alex.hung@canonical.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH][V2] ACPI: video: use ACPI backlight for HP 635 Notebook
+In-Reply-To: <20200913223403.59175-1-alex.hung@canonical.com>
+References: <20200913223403.59175-1-alex.hung@canonical.com>
+Message-Id: <20200917155328.7968020708@mail.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 06, 2020 at 02:57:34PM -0700, Tuan Phan wrote:
-> Ampere Altra SOC supports only 32-bit ECAM reading. Therefore,
-> add an MCFG quirk for the platform.
-> 
-> Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
+Hi
 
-Applied to pci/enumeration for v5.10, thanks!
+[This is an automated email]
 
-> ---
->  drivers/acpi/pci_mcfg.c  | 20 ++++++++++++++++++++
->  drivers/pci/ecam.c       | 10 ++++++++++
->  include/linux/pci-ecam.h |  1 +
->  3 files changed, 31 insertions(+)
-> 
-> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-> index 54b36b7ad47d..e526571e0ebd 100644
-> --- a/drivers/acpi/pci_mcfg.c
-> +++ b/drivers/acpi/pci_mcfg.c
-> @@ -142,6 +142,26 @@ static struct mcfg_fixup mcfg_quirks[] = {
->  	XGENE_V2_ECAM_MCFG(4, 0),
->  	XGENE_V2_ECAM_MCFG(4, 1),
->  	XGENE_V2_ECAM_MCFG(4, 2),
-> +
-> +#define ALTRA_ECAM_QUIRK(rev, seg) \
-> +	{ "Ampere", "Altra   ", rev, seg, MCFG_BUS_ANY, &pci_32b_read_ops }
-> +
-> +	ALTRA_ECAM_QUIRK(1, 0),
-> +	ALTRA_ECAM_QUIRK(1, 1),
-> +	ALTRA_ECAM_QUIRK(1, 2),
-> +	ALTRA_ECAM_QUIRK(1, 3),
-> +	ALTRA_ECAM_QUIRK(1, 4),
-> +	ALTRA_ECAM_QUIRK(1, 5),
-> +	ALTRA_ECAM_QUIRK(1, 6),
-> +	ALTRA_ECAM_QUIRK(1, 7),
-> +	ALTRA_ECAM_QUIRK(1, 8),
-> +	ALTRA_ECAM_QUIRK(1, 9),
-> +	ALTRA_ECAM_QUIRK(1, 10),
-> +	ALTRA_ECAM_QUIRK(1, 11),
-> +	ALTRA_ECAM_QUIRK(1, 12),
-> +	ALTRA_ECAM_QUIRK(1, 13),
-> +	ALTRA_ECAM_QUIRK(1, 14),
-> +	ALTRA_ECAM_QUIRK(1, 15),
->  };
->  
->  static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
-> diff --git a/drivers/pci/ecam.c b/drivers/pci/ecam.c
-> index 8f065a42fc1a..b54d32a31669 100644
-> --- a/drivers/pci/ecam.c
-> +++ b/drivers/pci/ecam.c
-> @@ -168,4 +168,14 @@ const struct pci_ecam_ops pci_32b_ops = {
->  		.write		= pci_generic_config_write32,
->  	}
->  };
-> +
-> +/* ECAM ops for 32-bit read only (non-compliant) */
-> +const struct pci_ecam_ops pci_32b_read_ops = {
-> +	.bus_shift	= 20,
-> +	.pci_ops	= {
-> +		.map_bus	= pci_ecam_map_bus,
-> +		.read		= pci_generic_config_read32,
-> +		.write		= pci_generic_config_write,
-> +	}
-> +};
->  #endif
-> diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
-> index 1af5cb02ef7f..033ce74f02e8 100644
-> --- a/include/linux/pci-ecam.h
-> +++ b/include/linux/pci-ecam.h
-> @@ -51,6 +51,7 @@ extern const struct pci_ecam_ops pci_generic_ecam_ops;
->  
->  #if defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS)
->  extern const struct pci_ecam_ops pci_32b_ops;	/* 32-bit accesses only */
-> +extern const struct pci_ecam_ops pci_32b_read_ops; /* 32-bit read only */
->  extern const struct pci_ecam_ops hisi_pcie_ops;	/* HiSilicon */
->  extern const struct pci_ecam_ops thunder_pem_ecam_ops; /* Cavium ThunderX 1.x & 2.x */
->  extern const struct pci_ecam_ops pci_thunder_ecam_ops; /* Cavium ThunderX 1.x */
-> -- 
-> 2.18.4
-> 
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
+
+The bot has tested the following trees: v5.8.9, v5.4.65, v4.19.145, v4.14.198, v4.9.236, v4.4.236.
+
+v5.8.9: Build OK!
+v5.4.65: Build OK!
+v4.19.145: Build OK!
+v4.14.198: Build OK!
+v4.9.236: Build OK!
+v4.4.236: Failed to apply! Possible dependencies:
+    49eb5208220a ("ACPI / video: Add a quirk to force acpi-video backlight on SAMSUNG 530U4E/540U4E")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
