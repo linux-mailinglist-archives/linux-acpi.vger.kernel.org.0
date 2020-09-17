@@ -2,135 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7088226D6E6
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 10:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C42826DF3E
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Sep 2020 17:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbgIQIkx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 04:40:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726153AbgIQIkv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Sep 2020 04:40:51 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438C0C06174A;
-        Thu, 17 Sep 2020 01:40:50 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f1053007b81a97eebdb4df7.dip0.t-ipconnect.de [IPv6:2003:ec:2f10:5300:7b81:a97e:ebdb:4df7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 78CE61EC0286;
-        Thu, 17 Sep 2020 10:40:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1600332045;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=f45tA0/YC9IUsPdn38WrzVyT4ZLG9lSHJ1gA3ePCJkg=;
-        b=TcdhPTEuj1NDjJ2AFLwnVTMhPwn/tSVlSy9KZFNSRZrqnyvoi1u9j8iPYUhb7zMGRjmvwG
-        FcFbdbOuZIW783X0fnKeDqmtaqWBTTtpPwd6wvbxZe1AMi+V84iOMGx80LUwujzcZ4Lw9J
-        cBgPHOjWCIxE503ZE+764ZpSuDaxvRg=
-Date:   Thu, 17 Sep 2020 10:40:38 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>, Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH 1/1] RAS: Add CPU Correctable Error Collector to isolate
- an erroneous CPU core
-Message-ID: <20200917084038.GE31960@zn.tnic>
-References: <20200901140140.1772-1-shiju.jose@huawei.com>
- <20200901143539.GC8392@zn.tnic>
- <512b7b8e6cb846aabaf5a2191cd9b5d4@huawei.com>
- <20200909120203.GB12237@zn.tnic>
- <50714e083d55491a8ccf5ad847682d1e@huawei.com>
+        id S1727970AbgIQPL6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 11:11:58 -0400
+Received: from mail-oo1-f66.google.com ([209.85.161.66]:38894 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727948AbgIQPI5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Sep 2020 11:08:57 -0400
+Received: by mail-oo1-f66.google.com with SMTP id r10so633437oor.5
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Sep 2020 08:08:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dSsby7PK5iOChQOZVQAWZvV/HAyQi7aW/kE1FMkwCrU=;
+        b=J54f8/+nZhs0cor6p+KechywCRQWTbuJec2odZuUcenPkwZT83KvE0WorA0WY8vgBo
+         tZAchR1s9Ojn1cm+b3hmBi31crk0ZNQyEBcIyNY23dM702Lmhf20AbT+VbqmfRr56YGk
+         3Qrp8MyUes7JL6gRO24w6XsFBvD9IU5QM4cK1Vxr5+v48S+tH6APRoHe01VBFunGphjD
+         /iM2k1USNYyyxdwTjsASpXFDkMGi0tzCtPVyZthB0gDt+WrHdVN7p0F3A7HaJw4jE+HB
+         78YymZr1vs1dX1dHxze9PILMCbfnvJYn9AR0VEiSia0XZ8Doj4RMeih8INm0JsTb4Vu0
+         YA6Q==
+X-Gm-Message-State: AOAM531wZW5En40Xxdl90/gZhbIYByoLHGTzw/9Mk38b3ZLck0vNjnDr
+        q7zMU79jIfP4Tdeur/22VTn/2ICTMg2Fq11W3RTID85p
+X-Google-Smtp-Source: ABdhPJyBbwEubdEokLO7Ki9FthRsxQdjgu4EWUT45KkBuWRLoeNiDhKghT/OKv1FTWWw+hh92Je5Bu2eSHS274jAvzQ=
+X-Received: by 2002:a4a:dd0b:: with SMTP id m11mr21216467oou.75.1600355332175;
+ Thu, 17 Sep 2020 08:08:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <50714e083d55491a8ccf5ad847682d1e@huawei.com>
+References: <1600328345-27627-1-git-send-email-guohanjun@huawei.com>
+In-Reply-To: <1600328345-27627-1-git-send-email-guohanjun@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Sep 2020 17:08:41 +0200
+Message-ID: <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
+Subject: Re: [PATCH 00/25] ACPI: First step to decouple ACPICA debug
+ functionality from ACPI driver
+To:     Hanjun Guo <guohanjun@huawei.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 03:29:56PM +0000, Shiju Jose wrote:
-> Ok. However the functions such as __find_elem() use
-> memory specific PFN() and PAGE_SHIFT.
+Hi Hanjun,
 
-You can add your version find_elem_cpu() or so. You can do this with a
-set of function pointers which belong to the different type of storage
-the CEC needs, you can do all kinds of fun.
+On Thu, Sep 17, 2020 at 10:34 AM Hanjun Guo <guohanjun@huawei.com> wrote:
+>
+> For now, ACPI driver debug functionality is mixed of pr_* functions and
+> ACPI_DEBUG_PRINT() which is provided ACPICA core directly, ACPICA debug
+> functions are not friendly for users and also make ACPICA core deeply
+> coupled with ACPI drivers.
+>
+> With the evolution of the ACPI driver code, lots of the ACPICA debug
+> functions used in ACPI drivers were removed away, this makes the ACPICA
+> debug in ACPI driver to be fragile, for example, some of the COMPONENT
+> such as ACPI_CONTAINER_COMPONENT and ACPI_MEMORY_DEVICE_COMPONENT are not
+> used anymore, they leaved as dead code.
+>
+> From another aspert, removing the ACPICA debug functions didn't raise
+> concerns in the past, so I believe the ACPICA debug in ACPI driver can be
+> removed and replace with equivalent pr_* debug functions, then decouple
+> ACPICA debug functionality from ACPI driver.
 
-> I will check this. For CPU, the corrected errors count for a short
-> time period to be checked. Thus old errors outside this period would
-> not be considered and would be cleared. It is not clear to me whether
-> in the current CEC, the count for the old errors outside a time period
-> would be excluded for the threshold check or removed?
+This is a worthy goal, but the patch series appears to be a mixed bag
+of changes some of which are not directly related to this goal.
 
-Currently, the CEC decays the errors each time do_spring_cleaning()
-runs, by decrementing DECAY_BITS in the PFN record. Those which get
-DECAY_BITS of 0, get overwritten when the data structure is full.
+> In order to decouple ACPICA debug functionality from ACPI driver, I do it
+> in two steps:
+>  - Remove the dead ACPICA functionality code, and remove the not used
+>    COMPONENT;
+>  - Remove all the ACPICA debug code from ACPI drivers.
+>
+> This patch set is the first step to decouple ACPICA debug functionality
+> from ACPI driver, just remove the dead ACPICA functionality code and
+> some cleanups for ACPI drivers, should no functional change if you don't
+> apply the last two patches.
+>
+> Patch 1/25 ~ patch 23/25 are removing the dead code and cleanups;
+> Patch 24/25 ~ patch 25/25 are the actual ABI change.
+>
+> If the ABI change is making sense, I will go further to remove the
+> ACPICA debug functionality from ACPI driver, just keep it inside
+> the ACPICA core.
+>
+> Hanjun Guo (25):
+>   ACPI: cmos_rtc: Remove the ACPI_MODULE_NAME()
 
-You can do something similar by halving the error count or something
-more complex like save the error timestamp and eliminate...
+This, for example, should be a separate cleanup patch.
 
-You can't know what exactly you wanna do if you don't have a use case
-you're trying to address.
+>   ACPI: configfs: Decouple with ACPICA
+>   ACPI: configfs: Add the missing config_item_put()
 
-> According to the ARM Processor CPER definition the error types
-> reported are Cache Error, TLB Error, Bus Error and micro-architectural
-> Error.
+This appears to be a fix that should go in separate from the rest of the series.
 
-Bus error sounds like not even originating in the CPU but the CPU only
-reporting it. Imagine if that really were the case, and you go disable
-the CPU but the error source is still there. You've just disabled the
-reporting of the error only and now you don't even know anymore that
-you're getting errors.
+>   ACPI: debug: Remove the not used function
 
-> Few thoughts on this,
-> 1. Not sure will a CPU core would work/perform as normal after disabling
-> a functional unit?
+Another separate cleanup.
 
-You can disable parts of caches, etc, so that you can have a somewhat
-functioning CPU until the replacement maintenance can take place.
+>   ACPI: LPSS: Remove the ACPI_MODULE_NAME()
 
-> 2. Support in the HW to disable a function unit alone may not available.
+Yet another one.
 
-Yes.
+So can you please split up the patch set into several smaller and more
+manageable ones?
 
-> 3. If it is require to store and retrieve the error count based on
-> functional unit, then CEC will become more complex?
-
-Depends on how it is designed. That's why we're first talking about what
-needs to be done exactly before going off and doing something.
-
-> This requirement is the part of the early fault prediction by taking
-> action when large number of corrected errors reported on a CPU core
-> before it causing serious faults.
-
-And do you know of actual real-life examples where this is really the
-case? Do you have any users who report a large error count on ARM CPUs,
-originating from the caches and that something like that would really
-help?
-
-Because from my x86 CPUs limited experience, the cache arrays are mostly
-fine and errors reported there are not something that happens very
-frequently so we don't even need to collect and count those.
-
-So is this something which you need to have in order to check a box
-somewhere that there is some functionality or is there an actual
-real-life use case behind it which a customer has requested?
-
-> We are mainly looking for disable CPU core on large number of L1/L2
-> cache corrected errors reported on a CPU core. Can we add atleast
-> removing CPU core for the CPU cache corrected errors filtering out
-> other error types?
-
-See above.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
