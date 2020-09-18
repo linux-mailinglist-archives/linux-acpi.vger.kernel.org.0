@@ -2,37 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D12226EE76
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 04:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A9D626EDB1
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 04:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729214AbgIRC2n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 22:28:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44124 "EHLO mail.kernel.org"
+        id S1727091AbgIRCWz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 22:22:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729205AbgIRCPW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:15:22 -0400
+        id S1729482AbgIRCRC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:17:02 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8CEB823A03;
-        Fri, 18 Sep 2020 02:15:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 95CE6239D4;
+        Fri, 18 Sep 2020 02:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395321;
-        bh=zA3Vrt0z8gU9vN84bjsr48+OaxxhATuVfIAJFGDbVVA=;
+        s=default; t=1600395422;
+        bh=Bv4NdRNFNxCHZraeIsHJIIhSpe22g8VMRyLUvFVf5jY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pcMfhJgHV6sHdvN/pvk41qrZLgPIxDSC8Xq5AA2F9xJQxf/1NOTOE55EEWvE+wDkN
-         FrfSU20Xl7rkvTEDTzE70t5Ya8GH8Va38pbdi7cJGDcW+CGG2j53W2fcYGWTk00f/t
-         xlkjIOHuMGeHHXNvIFgQZbzFjwn12KDmkaB7hT3E=
+        b=pjj2jfaekm3oDXIsWsWP/iFPNFxxdp7UakFCMr9DuL4aKQDtQApInnSs8qSS7BHWH
+         f4360xUBSyJ4JYtkKieUQp+KrMlaHJ73z9n8xD4xDZ3e6TtyOIgMdrunkjQZ1cnzUY
+         nPs+PpvVnIxPBfXYcxmUGJXXbAV/T5B8rsj6xHhU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 22/90] ACPI: EC: Reference count query handlers under lock
-Date:   Thu, 17 Sep 2020 22:13:47 -0400
-Message-Id: <20200918021455.2067301-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 16/64] ACPI: EC: Reference count query handlers under lock
+Date:   Thu, 17 Sep 2020 22:15:55 -0400
+Message-Id: <20200918021643.2067895-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918021455.2067301-1-sashal@kernel.org>
-References: <20200918021455.2067301-1-sashal@kernel.org>
+In-Reply-To: <20200918021643.2067895-1-sashal@kernel.org>
+References: <20200918021643.2067895-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 307b3e28f34ce..8781b5dc97f1c 100644
+index 43f20328f830e..3096c087b7328 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
-@@ -1049,29 +1049,21 @@ void acpi_ec_unblock_transactions(void)
+@@ -943,29 +943,21 @@ void acpi_ec_unblock_transactions_early(void)
  /* --------------------------------------------------------------------------
                                  Event Management
     -------------------------------------------------------------------------- */
