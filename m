@@ -2,122 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 897A226EAB8
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 03:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D12226EE76
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 04:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726093AbgIRBzT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 21:55:19 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:36078 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726065AbgIRBzT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 21:55:19 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 1EE50BC3277EFEE3589E;
-        Fri, 18 Sep 2020 09:55:18 +0800 (CST)
-Received: from [10.174.179.33] (10.174.179.33) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Fri, 18 Sep 2020 09:55:15 +0800
-Subject: Re: [PATCH 00/25] ACPI: First step to decouple ACPICA debug
- functionality from ACPI driver
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-References: <1600328345-27627-1-git-send-email-guohanjun@huawei.com>
- <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <28154b60-b07b-24e7-748f-88359d5343cb@huawei.com>
-Date:   Fri, 18 Sep 2020 09:55:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1729214AbgIRC2n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 22:28:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44124 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729205AbgIRCPW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:15:22 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8CEB823A03;
+        Fri, 18 Sep 2020 02:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600395321;
+        bh=zA3Vrt0z8gU9vN84bjsr48+OaxxhATuVfIAJFGDbVVA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pcMfhJgHV6sHdvN/pvk41qrZLgPIxDSC8Xq5AA2F9xJQxf/1NOTOE55EEWvE+wDkN
+         FrfSU20Xl7rkvTEDTzE70t5Ya8GH8Va38pbdi7cJGDcW+CGG2j53W2fcYGWTk00f/t
+         xlkjIOHuMGeHHXNvIFgQZbzFjwn12KDmkaB7hT3E=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 22/90] ACPI: EC: Reference count query handlers under lock
+Date:   Thu, 17 Sep 2020 22:13:47 -0400
+Message-Id: <20200918021455.2067301-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200918021455.2067301-1-sashal@kernel.org>
+References: <20200918021455.2067301-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.33]
-X-CFilter-Loop: Reflected
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-On 2020/9/17 23:08, Rafael J. Wysocki wrote:
-> Hi Hanjun,
-> 
-> On Thu, Sep 17, 2020 at 10:34 AM Hanjun Guo <guohanjun@huawei.com> wrote:
->>
->> For now, ACPI driver debug functionality is mixed of pr_* functions and
->> ACPI_DEBUG_PRINT() which is provided ACPICA core directly, ACPICA debug
->> functions are not friendly for users and also make ACPICA core deeply
->> coupled with ACPI drivers.
->>
->> With the evolution of the ACPI driver code, lots of the ACPICA debug
->> functions used in ACPI drivers were removed away, this makes the ACPICA
->> debug in ACPI driver to be fragile, for example, some of the COMPONENT
->> such as ACPI_CONTAINER_COMPONENT and ACPI_MEMORY_DEVICE_COMPONENT are not
->> used anymore, they leaved as dead code.
->>
->>  From another aspert, removing the ACPICA debug functions didn't raise
->> concerns in the past, so I believe the ACPICA debug in ACPI driver can be
->> removed and replace with equivalent pr_* debug functions, then decouple
->> ACPICA debug functionality from ACPI driver.
-> 
-> This is a worthy goal, but the patch series appears to be a mixed bag
-> of changes some of which are not directly related to this goal.
+[ Upstream commit 3df663a147fe077a6ee8444ec626738946e65547 ]
 
-Sorry for that, I sent this patch set in a hurry, I will update
-as you suggested.
+There is a race condition in acpi_ec_get_query_handler()
+theoretically allowing query handlers to go away before refernce
+counting them.
 
-> 
->> In order to decouple ACPICA debug functionality from ACPI driver, I do it
->> in two steps:
->>   - Remove the dead ACPICA functionality code, and remove the not used
->>     COMPONENT;
->>   - Remove all the ACPICA debug code from ACPI drivers.
->>
->> This patch set is the first step to decouple ACPICA debug functionality
->> from ACPI driver, just remove the dead ACPICA functionality code and
->> some cleanups for ACPI drivers, should no functional change if you don't
->> apply the last two patches.
->>
->> Patch 1/25 ~ patch 23/25 are removing the dead code and cleanups;
->> Patch 24/25 ~ patch 25/25 are the actual ABI change.
->>
->> If the ABI change is making sense, I will go further to remove the
->> ACPICA debug functionality from ACPI driver, just keep it inside
->> the ACPICA core.
->>
->> Hanjun Guo (25):
->>    ACPI: cmos_rtc: Remove the ACPI_MODULE_NAME()
-> 
-> This, for example, should be a separate cleanup patch.
+In order to avoid it, call kref_get() on query handlers under
+ec->mutex.
 
-ACPI_MODULE_NAME() and _COMPONENT are both used for ACPICA
-debug functionality, so I will put them in the decouple
-patch set.
+Also simplify the code a bit while at it.
 
-> 
->>    ACPI: configfs: Decouple with ACPICA
->>    ACPI: configfs: Add the missing config_item_put()
-> 
-> This appears to be a fix that should go in separate from the rest of the series.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/ec.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-Will send a fix first!
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 307b3e28f34ce..8781b5dc97f1c 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1049,29 +1049,21 @@ void acpi_ec_unblock_transactions(void)
+ /* --------------------------------------------------------------------------
+                                 Event Management
+    -------------------------------------------------------------------------- */
+-static struct acpi_ec_query_handler *
+-acpi_ec_get_query_handler(struct acpi_ec_query_handler *handler)
+-{
+-	if (handler)
+-		kref_get(&handler->kref);
+-	return handler;
+-}
+-
+ static struct acpi_ec_query_handler *
+ acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
+ {
+ 	struct acpi_ec_query_handler *handler;
+-	bool found = false;
+ 
+ 	mutex_lock(&ec->mutex);
+ 	list_for_each_entry(handler, &ec->list, node) {
+ 		if (value == handler->query_bit) {
+-			found = true;
+-			break;
++			kref_get(&handler->kref);
++			mutex_unlock(&ec->mutex);
++			return handler;
+ 		}
+ 	}
+ 	mutex_unlock(&ec->mutex);
+-	return found ? acpi_ec_get_query_handler(handler) : NULL;
++	return NULL;
+ }
+ 
+ static void acpi_ec_query_handler_release(struct kref *kref)
+-- 
+2.25.1
 
-> 
->>    ACPI: debug: Remove the not used function
-> 
-> Another separate cleanup.
-> 
->>    ACPI: LPSS: Remove the ACPI_MODULE_NAME()
-> 
-> Yet another one.
-> 
-> So can you please split up the patch set into several smaller and more
-> manageable ones?
-
-Will do, thanks for your comments!
-
-Thanks
-Hanjun
