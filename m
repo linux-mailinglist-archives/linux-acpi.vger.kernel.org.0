@@ -2,151 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40F9426EAB1
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 03:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897A226EAB8
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 03:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbgIRBxb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 21:53:31 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:34080 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726040AbgIRBxb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 21:53:31 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0U9GXrdc_1600394005;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9GXrdc_1600394005)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 18 Sep 2020 09:53:26 +0800
-Date:   Fri, 18 Sep 2020 09:53:25 +0800
-From:   Wei Yang <richard.weiyang@linux.alibaba.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH RFC 1/4] mm/page_alloc: convert "report" flag of
- __free_one_page() to a proper flag
-Message-ID: <20200918015325.GA54754@L-31X9LVDL-1304.local>
-Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
-References: <20200916183411.64756-1-david@redhat.com>
- <20200916183411.64756-2-david@redhat.com>
+        id S1726093AbgIRBzT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 21:55:19 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:36078 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726065AbgIRBzT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 21:55:19 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 1EE50BC3277EFEE3589E;
+        Fri, 18 Sep 2020 09:55:18 +0800 (CST)
+Received: from [10.174.179.33] (10.174.179.33) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 18 Sep 2020 09:55:15 +0800
+Subject: Re: [PATCH 00/25] ACPI: First step to decouple ACPICA debug
+ functionality from ACPI driver
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+References: <1600328345-27627-1-git-send-email-guohanjun@huawei.com>
+ <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <28154b60-b07b-24e7-748f-88359d5343cb@huawei.com>
+Date:   Fri, 18 Sep 2020 09:55:15 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200916183411.64756-2-david@redhat.com>
+In-Reply-To: <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.33]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 08:34:08PM +0200, David Hildenbrand wrote:
->Let's prepare for additional flags and avoid long parameter lists of bools.
->Follow-up patches will also make use of the flags in __free_pages_ok(),
->however, I wasn't able to come up with a better name for the type - should
->be good enough for internal purposes.
->
->Cc: Andrew Morton <akpm@linux-foundation.org>
->Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
->Cc: Mel Gorman <mgorman@techsingularity.net>
->Cc: Michal Hocko <mhocko@kernel.org>
->Cc: Dave Hansen <dave.hansen@intel.com>
->Cc: Vlastimil Babka <vbabka@suse.cz>
->Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->Cc: Oscar Salvador <osalvador@suse.de>
->Cc: Mike Rapoport <rppt@kernel.org>
->Signed-off-by: David Hildenbrand <david@redhat.com>
->---
-> mm/page_alloc.c | 28 ++++++++++++++++++++--------
-> 1 file changed, 20 insertions(+), 8 deletions(-)
->
->diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->index 6b699d273d6e..91cefb8157dd 100644
->--- a/mm/page_alloc.c
->+++ b/mm/page_alloc.c
->@@ -77,6 +77,18 @@
-> #include "shuffle.h"
-> #include "page_reporting.h"
-> 
->+/* Free One Page flags: for internal, non-pcp variants of free_pages(). */
->+typedef int __bitwise fop_t;
->+
->+/* No special request */
->+#define FOP_NONE		((__force fop_t)0)
->+
->+/*
->+ * Skip free page reporting notification after buddy merging (will *not* mark
+Hi Rafael,
 
-__free_one_page() may not merge buddy when its buddy is not available.
+On 2020/9/17 23:08, Rafael J. Wysocki wrote:
+> Hi Hanjun,
+> 
+> On Thu, Sep 17, 2020 at 10:34 AM Hanjun Guo <guohanjun@huawei.com> wrote:
+>>
+>> For now, ACPI driver debug functionality is mixed of pr_* functions and
+>> ACPI_DEBUG_PRINT() which is provided ACPICA core directly, ACPICA debug
+>> functions are not friendly for users and also make ACPICA core deeply
+>> coupled with ACPI drivers.
+>>
+>> With the evolution of the ACPI driver code, lots of the ACPICA debug
+>> functions used in ACPI drivers were removed away, this makes the ACPICA
+>> debug in ACPI driver to be fragile, for example, some of the COMPONENT
+>> such as ACPI_CONTAINER_COMPONENT and ACPI_MEMORY_DEVICE_COMPONENT are not
+>> used anymore, they leaved as dead code.
+>>
+>>  From another aspert, removing the ACPICA debug functions didn't raise
+>> concerns in the past, so I believe the ACPICA debug in ACPI driver can be
+>> removed and replace with equivalent pr_* debug functions, then decouple
+>> ACPICA debug functionality from ACPI driver.
+> 
+> This is a worthy goal, but the patch series appears to be a mixed bag
+> of changes some of which are not directly related to this goal.
 
-Would this comment be a little confusing?
+Sorry for that, I sent this patch set in a hurry, I will update
+as you suggested.
 
->+ * the page reported, only skip the notification).
->+ */
->+#define FOP_SKIP_REPORT_NOTIFY	((__force fop_t)BIT(0))
->+
-> /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
-> static DEFINE_MUTEX(pcp_batch_high_lock);
-> #define MIN_PERCPU_PAGELIST_FRACTION	(8)
->@@ -948,10 +960,9 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
->  * -- nyc
->  */
 > 
->-static inline void __free_one_page(struct page *page,
->-		unsigned long pfn,
->-		struct zone *zone, unsigned int order,
->-		int migratetype, bool report)
->+static inline void __free_one_page(struct page *page, unsigned long pfn,
->+				   struct zone *zone, unsigned int order,
->+				   int migratetype, fop_t fop_flags)
-> {
-> 	struct capture_control *capc = task_capc(zone);
-> 	unsigned long buddy_pfn;
->@@ -1038,7 +1049,7 @@ static inline void __free_one_page(struct page *page,
-> 		add_to_free_list(page, zone, order, migratetype);
+>> In order to decouple ACPICA debug functionality from ACPI driver, I do it
+>> in two steps:
+>>   - Remove the dead ACPICA functionality code, and remove the not used
+>>     COMPONENT;
+>>   - Remove all the ACPICA debug code from ACPI drivers.
+>>
+>> This patch set is the first step to decouple ACPICA debug functionality
+>> from ACPI driver, just remove the dead ACPICA functionality code and
+>> some cleanups for ACPI drivers, should no functional change if you don't
+>> apply the last two patches.
+>>
+>> Patch 1/25 ~ patch 23/25 are removing the dead code and cleanups;
+>> Patch 24/25 ~ patch 25/25 are the actual ABI change.
+>>
+>> If the ABI change is making sense, I will go further to remove the
+>> ACPICA debug functionality from ACPI driver, just keep it inside
+>> the ACPICA core.
+>>
+>> Hanjun Guo (25):
+>>    ACPI: cmos_rtc: Remove the ACPI_MODULE_NAME()
 > 
-> 	/* Notify page reporting subsystem of freed page */
->-	if (report)
->+	if (!(fop_flags & FOP_SKIP_REPORT_NOTIFY))
-> 		page_reporting_notify_free(order);
-> }
-> 
->@@ -1368,7 +1379,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
-> 		if (unlikely(isolated_pageblocks))
-> 			mt = get_pageblock_migratetype(page);
-> 
->-		__free_one_page(page, page_to_pfn(page), zone, 0, mt, true);
->+		__free_one_page(page, page_to_pfn(page), zone, 0, mt, FOP_NONE);
-> 		trace_mm_page_pcpu_drain(page, 0, mt);
-> 	}
-> 	spin_unlock(&zone->lock);
->@@ -1384,7 +1395,7 @@ static void free_one_page(struct zone *zone,
-> 		is_migrate_isolate(migratetype))) {
-> 		migratetype = get_pfnblock_migratetype(page, pfn);
-> 	}
->-	__free_one_page(page, pfn, zone, order, migratetype, true);
->+	__free_one_page(page, pfn, zone, order, migratetype, FOP_NONE);
-> 	spin_unlock(&zone->lock);
-> }
-> 
->@@ -3277,7 +3288,8 @@ void __putback_isolated_page(struct page *page, unsigned int order, int mt)
-> 	lockdep_assert_held(&zone->lock);
-> 
-> 	/* Return isolated page to tail of freelist. */
->-	__free_one_page(page, page_to_pfn(page), zone, order, mt, false);
->+	__free_one_page(page, page_to_pfn(page), zone, order, mt,
->+			FOP_SKIP_REPORT_NOTIFY);
-> }
-> 
-> /*
->-- 
->2.26.2
+> This, for example, should be a separate cleanup patch.
 
--- 
-Wei Yang
-Help you, Help me
+ACPI_MODULE_NAME() and _COMPONENT are both used for ACPICA
+debug functionality, so I will put them in the decouple
+patch set.
+
+> 
+>>    ACPI: configfs: Decouple with ACPICA
+>>    ACPI: configfs: Add the missing config_item_put()
+> 
+> This appears to be a fix that should go in separate from the rest of the series.
+
+Will send a fix first!
+
+> 
+>>    ACPI: debug: Remove the not used function
+> 
+> Another separate cleanup.
+> 
+>>    ACPI: LPSS: Remove the ACPI_MODULE_NAME()
+> 
+> Yet another one.
+> 
+> So can you please split up the patch set into several smaller and more
+> manageable ones?
+
+Will do, thanks for your comments!
+
+Thanks
+Hanjun
