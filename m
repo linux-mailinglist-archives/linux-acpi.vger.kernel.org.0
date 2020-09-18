@@ -2,112 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 304B626EECE
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 04:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D65A26F3D2
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Sep 2020 05:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgIRCbL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Sep 2020 22:31:11 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:41739 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726445AbgIRCa7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:30:59 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0U9GuiaC_1600396252;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9GuiaC_1600396252)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 18 Sep 2020 10:30:52 +0800
-Date:   Fri, 18 Sep 2020 10:30:51 +0800
-From:   Wei Yang <richard.weiyang@linux.alibaba.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     osalvador@suse.de, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Wei Liu <wei.liu@kernel.org>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>
-Subject: Re: [PATCH RFC 0/4] mm: place pages to the freelist tail when onling
- and undoing isolation
-Message-ID: <20200918023051.GE54754@L-31X9LVDL-1304.local>
-Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
-References: <5c0910c2cd0d9d351e509392a45552fb@suse.de>
- <DAC9E747-BDDF-41B6-A89B-604880DD7543@redhat.com>
+        id S1727212AbgIRDJi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Sep 2020 23:09:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48838 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726824AbgIRCDA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:03:00 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AEE6322211;
+        Fri, 18 Sep 2020 02:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600394580;
+        bh=6In8Y7DkPN2i+MJDFsQhZPWyJqsgDZkvzAAX35ClLiI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=iNzxuLd0BC7K02/nUVJcccFg7wJfuYj07NYcr/ebBM+W9iXgeOeOqldVNImKSl6p/
+         HSshCx6xLUwtF5tdoreoI+RdbpS8Q1nbdFPFVCxepc2HJ9/DTM3ylM6EYk1m0B7ZvO
+         Vb7paBxCDhMx4HT09tqrc0qsvg4B3sonZkTwXD28=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 091/330] ACPI: EC: Reference count query handlers under lock
+Date:   Thu, 17 Sep 2020 21:57:11 -0400
+Message-Id: <20200918020110.2063155-91-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
+References: <20200918020110.2063155-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DAC9E747-BDDF-41B6-A89B-604880DD7543@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 09:31:21PM +0200, David Hildenbrand wrote:
->
->
->> Am 16.09.2020 um 20:50 schrieb osalvador@suse.de:
->> 
->> ﻿On 2020-09-16 20:34, David Hildenbrand wrote:
->>> When adding separate memory blocks via add_memory*() and onlining them
->>> immediately, the metadata (especially the memmap) of the next block will be
->>> placed onto one of the just added+onlined block. This creates a chain
->>> of unmovable allocations: If the last memory block cannot get
->>> offlined+removed() so will all dependant ones. We directly have unmovable
->>> allocations all over the place.
->>> This can be observed quite easily using virtio-mem, however, it can also
->>> be observed when using DIMMs. The freshly onlined pages will usually be
->>> placed to the head of the freelists, meaning they will be allocated next,
->>> turning the just-added memory usually immediately un-removable. The
->>> fresh pages are cold, prefering to allocate others (that might be hot)
->>> also feels to be the natural thing to do.
->>> It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when
->>> adding separate, successive memory blocks, each memory block will have
->>> unmovable allocations on them - for example gigantic pages will fail to
->>> allocate.
->>> While the ZONE_NORMAL doesn't provide any guarantees that memory can get
->>> offlined+removed again (any kind of fragmentation with unmovable
->>> allocations is possible), there are many scenarios (hotplugging a lot of
->>> memory, running workload, hotunplug some memory/as much as possible) where
->>> we can offline+remove quite a lot with this patchset.
->> 
->> Hi David,
->> 
->
->Hi Oscar.
->
->> I did not read through the patchset yet, so sorry if the question is nonsense, but is this not trying to fix the same issue the vmemmap patches did? [1]
->
->Not nonesense at all. It only helps to some degree, though. It solves the dependencies due to the memmap. However, it‘s not completely ideal, especially for single memory blocks.
->
->With single memory blocks (virtio-mem, xen-balloon, hv balloon, ppc dlpar) you still have unmovable (vmemmap chunks) all over the physical address space. Consider the gigantic page example after hotplug. You directly fragmented all hotplugged memory.
->
->Of course, there might be (less extreme) dependencies due page tables for the identity mapping, extended struct pages and similar.
->
->Having that said, there are other benefits when preferring other memory over just hotplugged memory. Think about adding+onlining memory during boot (dimms under QEMU, virtio-mem), once the system is up you will have most (all) of that memory completely untouched.
->
->So while vmemmap on hotplugged memory would tackle some part of the issue, there are cases where this approach is better, and there are even benefits when combining both.
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-While everything changes with shuffle.
+[ Upstream commit 3df663a147fe077a6ee8444ec626738946e65547 ]
 
->
->Thanks!
->
->David
->
->> 
->> I was about to give it a new respin now that thw hwpoison stuff has been settled.
->> 
->> [1] https://patchwork.kernel.org/cover/11059175/
->> 
+There is a race condition in acpi_ec_get_query_handler()
+theoretically allowing query handlers to go away before refernce
+counting them.
 
+In order to avoid it, call kref_get() on query handlers under
+ec->mutex.
+
+Also simplify the code a bit while at it.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/ec.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 57eacdcbf8208..1ec55345252b6 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1043,29 +1043,21 @@ void acpi_ec_unblock_transactions(void)
+ /* --------------------------------------------------------------------------
+                                 Event Management
+    -------------------------------------------------------------------------- */
+-static struct acpi_ec_query_handler *
+-acpi_ec_get_query_handler(struct acpi_ec_query_handler *handler)
+-{
+-	if (handler)
+-		kref_get(&handler->kref);
+-	return handler;
+-}
+-
+ static struct acpi_ec_query_handler *
+ acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
+ {
+ 	struct acpi_ec_query_handler *handler;
+-	bool found = false;
+ 
+ 	mutex_lock(&ec->mutex);
+ 	list_for_each_entry(handler, &ec->list, node) {
+ 		if (value == handler->query_bit) {
+-			found = true;
+-			break;
++			kref_get(&handler->kref);
++			mutex_unlock(&ec->mutex);
++			return handler;
+ 		}
+ 	}
+ 	mutex_unlock(&ec->mutex);
+-	return found ? acpi_ec_get_query_handler(handler) : NULL;
++	return NULL;
+ }
+ 
+ static void acpi_ec_query_handler_release(struct kref *kref)
 -- 
-Wei Yang
-Help you, Help me
+2.25.1
+
