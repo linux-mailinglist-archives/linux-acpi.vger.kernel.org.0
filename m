@@ -2,115 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F175270B65
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Sep 2020 09:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B08271911
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Sep 2020 03:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbgISHWe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 19 Sep 2020 03:22:34 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:13721 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726262AbgISHWe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 19 Sep 2020 03:22:34 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id F35F044B8B45F45EE860;
-        Sat, 19 Sep 2020 15:22:31 +0800 (CST)
-Received: from [10.174.179.33] (10.174.179.33) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 19 Sep 2020 15:22:28 +0800
-Subject: Re: [PATCH 00/25] ACPI: First step to decouple ACPICA debug
- functionality from ACPI driver
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-References: <1600328345-27627-1-git-send-email-guohanjun@huawei.com>
- <CAJZ5v0hukTBCyNO0Tj=FyOzh4uM=f8bLTToOT4zG3Tn_1KjO0g@mail.gmail.com>
- <28154b60-b07b-24e7-748f-88359d5343cb@huawei.com>
- <CAJZ5v0jfxESXKJDV_JimG-ao58GjfvX6ZT2Sch+qn24ptVOx4w@mail.gmail.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <a792f08d-1680-bfc6-fc8d-01e278a9627f@huawei.com>
-Date:   Sat, 19 Sep 2020 15:22:28 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726360AbgIUB5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Sep 2020 21:57:06 -0400
+Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:50964 "EHLO
+        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726244AbgIUB5G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 20 Sep 2020 21:57:06 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0U9XKMRq_1600653420;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9XKMRq_1600653420)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 21 Sep 2020 09:57:01 +0800
+Date:   Mon, 21 Sep 2020 09:57:00 +0800
+From:   Wei Yang <richard.weiyang@linux.alibaba.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Wei Yang <richard.weiyang@linux.alibaba.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Mike Rapoport <rppt@kernel.org>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH RFC 2/4] mm/page_alloc: place pages to tail in
+ __putback_isolated_page()
+Message-ID: <20200921015700.GA83969@L-31X9LVDL-1304.local>
+Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
+References: <20200916183411.64756-1-david@redhat.com>
+ <20200916183411.64756-3-david@redhat.com>
+ <20200918020758.GB54754@L-31X9LVDL-1304.local>
+ <e287e372-7b5d-9a0b-9e27-7de1e305fc3a@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jfxESXKJDV_JimG-ao58GjfvX6ZT2Sch+qn24ptVOx4w@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.33]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e287e372-7b5d-9a0b-9e27-7de1e305fc3a@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
-
-On 2020/9/18 21:34, Rafael J. Wysocki wrote:
-> On Fri, Sep 18, 2020 at 3:55 AM Hanjun Guo <guohanjun@huawei.com> wrote:
->>
->> Hi Rafael,
->>
->> On 2020/9/17 23:08, Rafael J. Wysocki wrote:
->>> Hi Hanjun,
+On Fri, Sep 18, 2020 at 09:27:23AM +0200, David Hildenbrand wrote:
+>On 18.09.20 04:07, Wei Yang wrote:
+>> On Wed, Sep 16, 2020 at 08:34:09PM +0200, David Hildenbrand wrote:
+>>> __putback_isolated_page() already documents that pages will be placed to
+>>> the tail of the freelist - this is, however, not the case for
+>>> "order >= MAX_ORDER - 2" (see buddy_merge_likely()) - which should be
+>>> the case for all existing users.
 >>>
->>> On Thu, Sep 17, 2020 at 10:34 AM Hanjun Guo <guohanjun@huawei.com> wrote:
->>>>
->>>> For now, ACPI driver debug functionality is mixed of pr_* functions and
->>>> ACPI_DEBUG_PRINT() which is provided ACPICA core directly, ACPICA debug
->>>> functions are not friendly for users and also make ACPICA core deeply
->>>> coupled with ACPI drivers.
->>>>
->>>> With the evolution of the ACPI driver code, lots of the ACPICA debug
->>>> functions used in ACPI drivers were removed away, this makes the ACPICA
->>>> debug in ACPI driver to be fragile, for example, some of the COMPONENT
->>>> such as ACPI_CONTAINER_COMPONENT and ACPI_MEMORY_DEVICE_COMPONENT are not
->>>> used anymore, they leaved as dead code.
->>>>
->>>>   From another aspert, removing the ACPICA debug functions didn't raise
->>>> concerns in the past, so I believe the ACPICA debug in ACPI driver can be
->>>> removed and replace with equivalent pr_* debug functions, then decouple
->>>> ACPICA debug functionality from ACPI driver.
+>>> This change affects two users:
+>>> - free page reporting
+>>> - page isolation, when undoing the isolation.
 >>>
->>> This is a worthy goal, but the patch series appears to be a mixed bag
->>> of changes some of which are not directly related to this goal.
->>
->> Sorry for that, I sent this patch set in a hurry, I will update
->> as you suggested.
->>>>
->>>> Hanjun Guo (25):
->>>>     ACPI: cmos_rtc: Remove the ACPI_MODULE_NAME()
+>>> This behavior is desireable for pages that haven't really been touched
+>>> lately, so exactly the two users that don't actually read/write page
+>>> content, but rather move untouched pages.
 >>>
->>> This, for example, should be a separate cleanup patch.
->>
->> ACPI_MODULE_NAME() and _COMPONENT are both used for ACPICA
->> debug functionality, so I will put them in the decouple
->> patch set.
-> 
-> So if the ACPICA debug functionality is not used in the given C file,
-> you can drop these macros from there right away without any side
-> effects.
-> 
-> Why don't you do that in a separate series of patches then?
+>>> The new behavior is especially desirable for memory onlining, where we
+>>> allow allocation of newly onlined pages via undo_isolate_page_range()
+>>> in online_pages(). Right now, we always place them to the head of the
+>> 
+>> The code looks good, while I don't fully understand the log here.
+>> 
+>> undo_isolate_page_range() is used in __offline_pages and alloc_contig_range. I
+>> don't connect them with online_pages(). Do I miss something?
+>
+>Yeah, please look at -mm / -next instead. See
+>
+>https://lkml.kernel.org/r/20200819175957.28465-11-david@redhat.com
+>
 
-Good point, so I will split this patch set into four parts:
+Thanks, I get the point.
 
-- The bugfix patch goes in separate from the rest of the series,
-   already sent out.
+>
+>-- 
+>Thanks,
+>
+>David / dhildenb
 
-- Cleanup patches which is not related to ACPICA debug,
-   - ACPI: debug: Remove the not used function
-   - ACPI: memhotplug: Remove the state for memory device
-   - ACPI: processor: Remove the duplicated ACPI_PROCESSOR_CLASS macro
-
-   - ACPI: SBS: Simplify the driver init code
-   - ACPI: SBS: Simplify the code using module_acpi_driver()
-   - ACPI: tiny-power-button: Simplify the code using module_acpi_driver()
-
-- A patch set removing all the leftover ACPICA debug functionality
-   which is not used in the C file, no functional change.
-
-- A patch set for actual ABI change (RFC).
-
-Do it make sense to you?
-
-Thanks
-Hanjun
+-- 
+Wei Yang
+Help you, Help me
