@@ -2,129 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D86A2748D3
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Sep 2020 21:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 919B5274B51
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Sep 2020 23:43:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgIVTKA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Sep 2020 15:10:00 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54314 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbgIVTKA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Sep 2020 15:10:00 -0400
-X-Greylist: delayed 401 seconds by postgrey-1.27 at vger.kernel.org; Tue, 22 Sep 2020 15:09:58 EDT
-Received: from 89-64-89-53.dynamic.chello.pl (89.64.89.53) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.468)
- id 1a302cbbceee2e3b; Tue, 22 Sep 2020 21:03:16 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Peter Zijlstra <peterz@infradead.org>, bp@alien8.de,
-        x86@kernel.org, tony.luck@intel.com, lenb@kernel.org,
-        daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        ulf.hansson@linaro.org, paulmck@kernel.org, tglx@linutronix.de,
-        naresh.kamboju@linaro.org
-Subject: Re: [RFC][PATCH 1/4] acpi: Use CPUIDLE_FLAG_TIMER_STOP
-Date:   Tue, 22 Sep 2020 21:03:15 +0200
-Message-ID: <5947336.4NNQoPcqAU@kreacher>
-In-Reply-To: <20200922032651.GA222679@roeck-us.net>
-References: <20200915103157.345404192@infradead.org> <20200915103806.280265587@infradead.org> <20200922032651.GA222679@roeck-us.net>
+        id S1726723AbgIVVno (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Sep 2020 17:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726703AbgIVVnn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Sep 2020 17:43:43 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB6FC061755;
+        Tue, 22 Sep 2020 14:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=E8yPXrmAmXC425PS/UGZAI8Xr/ohRxvzglQPHDRJMN4=; b=2/zRgyqxZ0fXPI21L8+RD4pVUU
+        c3vX5CgmMAPSgO1yLQqD7NV9XT4519pQjveIRwGMg3ArPZb7d6rhu/sk4UDhDdqnljoyi7wiucH0j
+        kRLb4+CvhPwsr73snZzcSpMclvzAJDwucleaBsQlbvMj1CrNwyJZAiiay+uUlDcwZWMEPphRcy+pz
+        9TaHlu6QvForEd/VdB9vly6emwFhBRXrIRMaSdZGGv8OIBdfkxLrdRrUWV8Z8phKcaivJOch6f6Kt
+        co7ht1dNL/xwlULwM5UX7qpF0xXhsCyioHX39bGL2CutAPakwEitdi8KAZ2VHyCs77x70cd/an2yS
+        J2e6muHg==;
+Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac] (helo=smtpauth.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kKq4X-0004fa-PC; Tue, 22 Sep 2020 21:43:38 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>, rcu@vger.kernel.org
+Subject: [PATCH] RCU: export rcu_idle_enter/_exit for loadable modules
+Date:   Tue, 22 Sep 2020 14:43:30 -0700
+Message-Id: <20200922214331.26608-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, September 22, 2020 5:26:51 AM CEST Guenter Roeck wrote:
-> On Tue, Sep 15, 2020 at 12:31:58PM +0200, Peter Zijlstra wrote:
-> > Make acpi_processor_idle use the common broadcast code, there's no
-> > reason not to. This also removes some RCU usage after
-> > rcu_idle_enter().
-> > 
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Reported-by: Borislav Petkov <bp@suse.de>
-> > Tested-by: Borislav Petkov <bp@suse.de>
-> > ---
-> >  drivers/acpi/processor_idle.c |   49 +++++++++++++-----------------------------
-> >  1 file changed, 16 insertions(+), 33 deletions(-)
-> > 
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -161,18 +161,10 @@ static void lapic_timer_propagate_broadc
-> >  }
-> >  
-> >  /* Power(C) State timer broadcast control */
-> > -static void lapic_timer_state_broadcast(struct acpi_processor *pr,
-> > -				       struct acpi_processor_cx *cx,
-> > -				       int broadcast)
-> > -{
-> > -	int state = cx - pr->power.states;
-> > -
-> > -	if (state >= pr->power.timer_broadcast_on_state) {
-> > -		if (broadcast)
-> > -			tick_broadcast_enter();
-> > -		else
-> > -			tick_broadcast_exit();
-> > -	}
-> > +static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
-> > +					struct acpi_processor_cx *cx)
-> > +{
-> > +	return cx - pr->power.states >= pr->power.timer_broadcast_on_state;
-> >  }
-> >  
-> >  #else
-> > @@ -180,9 +172,9 @@ static void lapic_timer_state_broadcast(
-> >  static void lapic_timer_check_state(int state, struct acpi_processor *pr,
-> >  				   struct acpi_processor_cx *cstate) { }
-> >  static void lapic_timer_propagate_broadcast(struct acpi_processor *pr) { }
-> > -static void lapic_timer_state_broadcast(struct acpi_processor *pr,
-> > -				       struct acpi_processor_cx *cx,
-> > -				       int broadcast)
-> > +
-> > +static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
-> > +					struct acpi_processor_cx *cx)
-> >  {
-> >  }
-> 
-> drivers/acpi/processor_idle.c: In function 'lapic_timer_needs_broadcast':
-> drivers/acpi/processor_idle.c:179:1: warning: no return statement in function returning non-void [-Wreturn-type]
-> 
-> Should this return true or false ?
+drivers/acpi/processor.ko uses rcu_idle_enter()/_exit() but
+they are not exported. This causes build errors on IA64,
+so export those 2 functions.
 
-false - if the lapic timer doesn't stop, it doesn't need broadcast.
+ERROR: modpost: "rcu_idle_enter" [drivers/acpi/processor.ko] undefined!
+ERROR: modpost: "rcu_idle_exit" [drivers/acpi/processor.ko] undefined!
 
-FWIW, patch appended.
-
-Cheers!
-
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: rcu@vger.kernel.org
 ---
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] ACPI: processor: Fix build for ARCH_APICTIMER_STOPS_ON_C3 unset
+Is there a problem with exporting these functions for use by
+loadable modules?  If so, this driver should be modified not
+to use rcu_idle_enter/exit.
 
-Fix the lapic_timer_needs_broadcast() stub for
-ARCH_APICTIMER_STOPS_ON_C3 unset to actually return
-a value.
+ kernel/rcu/tree.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-Fixes: aa6b43d57f99 ("ACPI: processor: Use CPUIDLE_FLAG_TIMER_STOP")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/processor_idle.c |    1 +
- 1 file changed, 1 insertion(+)
-
-Index: linux-pm/drivers/acpi/processor_idle.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_idle.c
-+++ linux-pm/drivers/acpi/processor_idle.c
-@@ -176,6 +176,7 @@ static void lapic_timer_propagate_broadc
- static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
- 					struct acpi_processor_cx *cx)
- {
-+	return false;
+--- lnx-59-rc6.orig/kernel/rcu/tree.c
++++ lnx-59-rc6/kernel/rcu/tree.c
+@@ -673,6 +673,7 @@ void rcu_idle_enter(void)
+ 	lockdep_assert_irqs_disabled();
+ 	rcu_eqs_enter(false);
  }
++EXPORT_SYMBOL_GPL(rcu_idle_enter);
  
- #endif
-
-
-
+ #ifdef CONFIG_NO_HZ_FULL
+ /**
+@@ -886,6 +887,7 @@ void rcu_idle_exit(void)
+ 	rcu_eqs_exit(false);
+ 	local_irq_restore(flags);
+ }
++EXPORT_SYMBOL_GPL(rcu_idle_exit);
+ 
+ #ifdef CONFIG_NO_HZ_FULL
+ /**
