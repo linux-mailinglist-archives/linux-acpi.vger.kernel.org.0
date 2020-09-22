@@ -2,60 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EEE273C2D
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Sep 2020 09:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D86A2748D3
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Sep 2020 21:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729906AbgIVHlQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Sep 2020 03:41:16 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13818 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729751AbgIVHlQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 22 Sep 2020 03:41:16 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 1D7E5767AB46DA20738D;
-        Tue, 22 Sep 2020 15:41:11 +0800 (CST)
-Received: from linux-lmwb.huawei.com (10.175.103.112) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 22 Sep 2020 15:41:00 +0800
-From:   Zou Wei <zou_wei@huawei.com>
-To:     <robert.moore@intel.com>, <erik.kaneda@intel.com>,
-        <rafael.j.wysocki@intel.com>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
-        <linux-kernel@vger.kernel.org>, Zou Wei <zou_wei@huawei.com>
-Subject: [PATCH -next] ACPICA: Remove unneeded semicolon
-Date:   Tue, 22 Sep 2020 15:48:49 +0800
-Message-ID: <1600760929-102547-1-git-send-email-zou_wei@huawei.com>
-X-Mailer: git-send-email 2.6.2
+        id S1726617AbgIVTKA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Sep 2020 15:10:00 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:54314 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726563AbgIVTKA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Sep 2020 15:10:00 -0400
+X-Greylist: delayed 401 seconds by postgrey-1.27 at vger.kernel.org; Tue, 22 Sep 2020 15:09:58 EDT
+Received: from 89-64-89-53.dynamic.chello.pl (89.64.89.53) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.468)
+ id 1a302cbbceee2e3b; Tue, 22 Sep 2020 21:03:16 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Peter Zijlstra <peterz@infradead.org>, bp@alien8.de,
+        x86@kernel.org, tony.luck@intel.com, lenb@kernel.org,
+        daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        ulf.hansson@linaro.org, paulmck@kernel.org, tglx@linutronix.de,
+        naresh.kamboju@linaro.org
+Subject: Re: [RFC][PATCH 1/4] acpi: Use CPUIDLE_FLAG_TIMER_STOP
+Date:   Tue, 22 Sep 2020 21:03:15 +0200
+Message-ID: <5947336.4NNQoPcqAU@kreacher>
+In-Reply-To: <20200922032651.GA222679@roeck-us.net>
+References: <20200915103157.345404192@infradead.org> <20200915103806.280265587@infradead.org> <20200922032651.GA222679@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.103.112]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fixes coccicheck warning:
+On Tuesday, September 22, 2020 5:26:51 AM CEST Guenter Roeck wrote:
+> On Tue, Sep 15, 2020 at 12:31:58PM +0200, Peter Zijlstra wrote:
+> > Make acpi_processor_idle use the common broadcast code, there's no
+> > reason not to. This also removes some RCU usage after
+> > rcu_idle_enter().
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Reported-by: Borislav Petkov <bp@suse.de>
+> > Tested-by: Borislav Petkov <bp@suse.de>
+> > ---
+> >  drivers/acpi/processor_idle.c |   49 +++++++++++++-----------------------------
+> >  1 file changed, 16 insertions(+), 33 deletions(-)
+> > 
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -161,18 +161,10 @@ static void lapic_timer_propagate_broadc
+> >  }
+> >  
+> >  /* Power(C) State timer broadcast control */
+> > -static void lapic_timer_state_broadcast(struct acpi_processor *pr,
+> > -				       struct acpi_processor_cx *cx,
+> > -				       int broadcast)
+> > -{
+> > -	int state = cx - pr->power.states;
+> > -
+> > -	if (state >= pr->power.timer_broadcast_on_state) {
+> > -		if (broadcast)
+> > -			tick_broadcast_enter();
+> > -		else
+> > -			tick_broadcast_exit();
+> > -	}
+> > +static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
+> > +					struct acpi_processor_cx *cx)
+> > +{
+> > +	return cx - pr->power.states >= pr->power.timer_broadcast_on_state;
+> >  }
+> >  
+> >  #else
+> > @@ -180,9 +172,9 @@ static void lapic_timer_state_broadcast(
+> >  static void lapic_timer_check_state(int state, struct acpi_processor *pr,
+> >  				   struct acpi_processor_cx *cstate) { }
+> >  static void lapic_timer_propagate_broadcast(struct acpi_processor *pr) { }
+> > -static void lapic_timer_state_broadcast(struct acpi_processor *pr,
+> > -				       struct acpi_processor_cx *cx,
+> > -				       int broadcast)
+> > +
+> > +static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
+> > +					struct acpi_processor_cx *cx)
+> >  {
+> >  }
+> 
+> drivers/acpi/processor_idle.c: In function 'lapic_timer_needs_broadcast':
+> drivers/acpi/processor_idle.c:179:1: warning: no return statement in function returning non-void [-Wreturn-type]
+> 
+> Should this return true or false ?
 
-./drivers/acpi/acpica/nsalloc.c:297:2-3: Unneeded semicolon
+false - if the lapic timer doesn't stop, it doesn't need broadcast.
 
-Signed-off-by: Zou Wei <zou_wei@huawei.com>
+FWIW, patch appended.
+
+Cheers!
+
 ---
- drivers/acpi/acpica/nsalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] ACPI: processor: Fix build for ARCH_APICTIMER_STOPS_ON_C3 unset
 
-diff --git a/drivers/acpi/acpica/nsalloc.c b/drivers/acpi/acpica/nsalloc.c
-index fe9b363..83d26ab 100644
---- a/drivers/acpi/acpica/nsalloc.c
-+++ b/drivers/acpi/acpica/nsalloc.c
-@@ -294,7 +294,7 @@ void acpi_ns_delete_children(struct acpi_namespace_node *parent_node)
- 		node_to_delete = next_node;
- 		next_node = next_node->peer;
- 		acpi_ns_delete_node(node_to_delete);
--	};
-+	}
+Fix the lapic_timer_needs_broadcast() stub for
+ARCH_APICTIMER_STOPS_ON_C3 unset to actually return
+a value.
+
+Fixes: aa6b43d57f99 ("ACPI: processor: Use CPUIDLE_FLAG_TIMER_STOP")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/processor_idle.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: linux-pm/drivers/acpi/processor_idle.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/processor_idle.c
++++ linux-pm/drivers/acpi/processor_idle.c
+@@ -176,6 +176,7 @@ static void lapic_timer_propagate_broadc
+ static bool lapic_timer_needs_broadcast(struct acpi_processor *pr,
+ 					struct acpi_processor_cx *cx)
+ {
++	return false;
+ }
  
- 	/* Clear the parent's child pointer */
- 
--- 
-2.6.2
+ #endif
+
+
 
