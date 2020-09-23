@@ -2,258 +2,197 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D62E2276344
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 23:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB5F276472
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 01:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgIWVl7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Sep 2020 17:41:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
+        id S1726572AbgIWX2W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Sep 2020 19:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726419AbgIWVl6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 17:41:58 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B1FC0613D1
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Sep 2020 14:41:58 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id gx22so1651762ejb.5
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Sep 2020 14:41:58 -0700 (PDT)
+        with ESMTP id S1726466AbgIWX2V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 19:28:21 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852CCC0613CE;
+        Wed, 23 Sep 2020 16:28:21 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id e23so1941449eja.3;
+        Wed, 23 Sep 2020 16:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4h/RkUUdwjIPqFz1gTT0y7JkCLow5mQtN0rQpacgcms=;
-        b=JCni4lxaiZYVrmErS1js3kV9RMqH+yMaUhmxSb2biXg+NxceGuRWwUcjOUYKvuk4EF
-         i7h8djcftPLdWtyW2ZCTbvztQ2QkGV6hyZuyfd+DrsvP0SavOfFcmzLqPgWjao/niJN8
-         xTPjeAdMq/cqzGM7k0A1RxUyzDcgH4Dl0C4KVxc3b7dANp170gJ0fxC5DutOMdDoe+nk
-         wbKwwsTK5gjqSxLEgy64cPvZzJgRmLx6s6uHvM2IFtebLaRY7B8kgLv0WAqOQj+ADboE
-         k/4GYgwXtFFHnQCLp+2XvzJUrtAsOR/+uhlobUfdAfpr9276v1bCYVoP8QbQQyb16alu
-         2x2g==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=jeYWQDJXV8H5QuyuDkRkggiTufUAIH25mJb6k8QmhrU=;
+        b=DBfH9ngGuFIRR3QB4z8OpgxF7di3bS/WA/WEHAaQRNOa6f2ZOTSnlklpYfYfZEtcD0
+         AhvyqmDJW3pEqJ7Htc4xfcx1cQtIXcd3QSz07iR+Y6w6rEs9M/ktbIhbmtI64E8FwDSG
+         PO0RHR2IRXqX0zJopFI5ZI7Sb+Icam8I4LUh3TXzH+3lxQl/fxjEnJjq6DROhN8Ka5MW
+         syBD570Ar/DltRRD4Wvk4e8CHz/CcbMMxKw4waO56NNAGq5lkEBidLUL99C6ibP9mDVr
+         qIfyTdVhDS9zdh1aZYqa69weLRnR5Ykrqo8JiQ+2PIs48TRsXskg0g5XevS0WbF0aOJ2
+         00bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4h/RkUUdwjIPqFz1gTT0y7JkCLow5mQtN0rQpacgcms=;
-        b=i+c4Ot2GNaItjLc4EVc/+A6COcbOiXw1ARY0DRwdjWsTXciy+nHV2ws9FWpSgMVt/q
-         nvjqb8oSppEmrUQEEWRHXZTkmVMgQp96Gu0MjHPEa+pWc8N9/z5bWHq0lEPjhiMNbfwC
-         8pg6tKXtVQJJKvV0tOKU/nnSAHllvZcOb2v7fwnrGhyjpnaaJSUzcCCSddyo0Eh05bQU
-         sOf7L6JGPf3sieQD8c1s3hJUysV7e2pIAjHh7aunY+0BWvL9TZ8qZyiWtoBkXbIJsdnQ
-         PoYQJoo15JfoWhLJ91SrmkeHesRAwFNHCf+f5liaM0o+QeasQ38IXUuVDlH3XHAEagVw
-         IipA==
-X-Gm-Message-State: AOAM533NVp4QVZLBQFgHXogvl0D4WsUrLncIDen519RN3f7xMVBJfJzt
-        x2aY2n54pYTeDkshhrN382xkC0qjh1lGHDBCz2WuPA==
-X-Google-Smtp-Source: ABdhPJwhmaJTy+DwDRpY4gTDZ5tj7/qFfAQYU5pGD1zHam4Ng3Y7EU7X2pGbjv+OHeoNHevly5P95IKLkFku3R9OLDU=
-X-Received: by 2002:a17:906:8289:: with SMTP id h9mr1597984ejx.45.1600897317154;
- Wed, 23 Sep 2020 14:41:57 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=jeYWQDJXV8H5QuyuDkRkggiTufUAIH25mJb6k8QmhrU=;
+        b=qDvDoGIpUH1UigKx6JEdcfBQVjI4H4u8RvmY9iphkR7+voxC1Myg48D0NSf/JJIANe
+         sNOvHcwxB0eph+0GgUPFns6ByUY28JitgGyGBNhBqOs8mHfNznfaFk393QZ0O9gEzjG3
+         f6fJNVRhS27EODVbbbBlg2YR+EixU+DPhePo1jJ8vUDA8ZCBTACibgL1YLkrIF9jLSIK
+         y7EsXvHHX5/HO81vLcXqWXr7JO7sOOcHWPYtOQmHN72HdXmSMt/jHPNKbwxUmusF7BT8
+         FA1B1mHiKzgTjzfwySj2JMQh3NqDeLswPtA01EvNoi5HoVKb9c0sjWwdIqmhX7VuD6fX
+         jkqQ==
+X-Gm-Message-State: AOAM532iErubpKkI0CMG3xZ+TeUOZhER9uI0webtoAEiQOHMRCOZyqZG
+        0cYzXMpIlYso+TJeQfpcpEEz3AoCqnE=
+X-Google-Smtp-Source: ABdhPJxgL/hVL4iUTg+GnmszuYpgI6Cyjpjt9j/S0fScufHmDcEyQ0KmKly/dStO5STNySBM5kDzWQ==
+X-Received: by 2002:a17:906:4685:: with SMTP id a5mr1954011ejr.446.1600903699957;
+        Wed, 23 Sep 2020 16:28:19 -0700 (PDT)
+Received: from [192.168.2.202] (pd9e5a9df.dip0.t-ipconnect.de. [217.229.169.223])
+        by smtp.gmail.com with ESMTPSA id w8sm923947ejo.117.2020.09.23.16.28.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2020 16:28:19 -0700 (PDT)
+Subject: Re: [RFC PATCH 0/9] Add support for Microsoft Surface System
+ Aggregator Module
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-serial@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
+        Dorian Stoll <dorian.stoll@tmsp.io>
+References: <20200923151511.3842150-1-luzmaximilian@gmail.com>
+ <CAK8P3a3Qie_CP1dA-ERqyDv=EnaQQPnNbFYrGr3ySiY4mO0=Uw@mail.gmail.com>
+ <dad42dce-15d0-245a-4d91-4733e54883a0@gmail.com>
+ <CAK8P3a2ryzmsrHHApT9O=dvsw+=z18Sjd4ygVxvFrrDetKA+rQ@mail.gmail.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <c4c1d999-9ab7-8988-906a-3cb6a70bc93d@gmail.com>
+Date:   Thu, 24 Sep 2020 01:28:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
- <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com> <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
- <9acc6148-72eb-7016-dba9-46fa87ded5a5@redhat.com>
-In-Reply-To: <9acc6148-72eb-7016-dba9-46fa87ded5a5@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 23 Sep 2020 14:41:45 -0700
-Message-ID: <CAPcyv4h5GGV3F-0rFY_pyv9Bj8LAkrwXruxGE=K2y9=dA8oDHw@mail.gmail.com>
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Joao Martins <joao.m.martins@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linux MM <linux-mm@kvack.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAK8P3a2ryzmsrHHApT9O=dvsw+=z18Sjd4ygVxvFrrDetKA+rQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 23, 2020 at 1:04 AM David Hildenbrand <david@redhat.com> wrote:
->
-> On 08.09.20 17:33, Joao Martins wrote:
-> > [Sorry for the late response]
-> >
-> > On 8/21/20 11:06 AM, David Hildenbrand wrote:
-> >> On 03.08.20 07:03, Dan Williams wrote:
-> >>> @@ -37,109 +45,94 @@ int dev_dax_kmem_probe(struct device *dev)
-> >>>      * could be mixed in a node with faster memory, causing
-> >>>      * unavoidable performance issues.
-> >>>      */
-> >>> -   numa_node = dev_dax->target_node;
-> >>>     if (numa_node < 0) {
-> >>>             dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
-> >>>                             numa_node);
-> >>>             return -EINVAL;
-> >>>     }
-> >>>
-> >>> -   /* Hotplug starting at the beginning of the next block: */
-> >>> -   kmem_start = ALIGN(range->start, memory_block_size_bytes());
-> >>> -
-> >>> -   kmem_size = range_len(range);
-> >>> -   /* Adjust the size down to compensate for moving up kmem_start: */
-> >>> -   kmem_size -= kmem_start - range->start;
-> >>> -   /* Align the size down to cover only complete blocks: */
-> >>> -   kmem_size &= ~(memory_block_size_bytes() - 1);
-> >>> -   kmem_end = kmem_start + kmem_size;
-> >>> -
-> >>> -   new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> >>> -   if (!new_res_name)
-> >>> +   res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> >>> +   if (!res_name)
-> >>>             return -ENOMEM;
-> >>>
-> >>> -   /* Region is permanently reserved if hotremove fails. */
-> >>> -   new_res = request_mem_region(kmem_start, kmem_size, new_res_name);
-> >>> -   if (!new_res) {
-> >>> -           dev_warn(dev, "could not reserve region [%pa-%pa]\n",
-> >>> -                    &kmem_start, &kmem_end);
-> >>> -           kfree(new_res_name);
-> >>> +   res = request_mem_region(range.start, range_len(&range), res_name);
-> >>
-> >> I think our range could be empty after aligning. I assume
-> >> request_mem_region() would check that, but maybe we could report a
-> >> better error/warning in that case.
-> >>
-> > dax_kmem_range() already returns a memory-block-aligned @range but
-> > IIUC request_mem_region() isn't checking for that. Having said that
-> > the returned @res wouldn't be different from the passed range.start.
-> >
-> >>>     /*
-> >>>      * Ensure that future kexec'd kernels will not treat this as RAM
-> >>>      * automatically.
-> >>>      */
-> >>> -   rc = add_memory_driver_managed(numa_node, new_res->start,
-> >>> -                                  resource_size(new_res), kmem_name);
-> >>> +   rc = add_memory_driver_managed(numa_node, res->start,
-> >>> +                                  resource_size(res), kmem_name);
-> >>> +
-> >>> +   res->flags |= IORESOURCE_BUSY;
-> >>
-> >> Hm, I don't think that's correct. Any specific reason why to mark the
-> >> not-added, unaligned parts BUSY? E.g., walk_system_ram_range() could
-> >> suddenly stumble over it - and e.g., similarly kexec code when trying to
-> >> find memory for placing kexec images. I think we should leave this
-> >> !BUSY, just as it is right now.
-> >>
-> > Agreed.
-> >
-> >>>     if (rc) {
-> >>> -           release_resource(new_res);
-> >>> -           kfree(new_res);
-> >>> -           kfree(new_res_name);
-> >>> +           release_mem_region(range.start, range_len(&range));
-> >>> +           kfree(res_name);
-> >>>             return rc;
-> >>>     }
-> >>> -   dev_dax->dax_kmem_res = new_res;
-> >>> +
-> >>> +   dev_set_drvdata(dev, res_name);
-> >>>
-> >>>     return 0;
-> >>>  }
-> >>>
-> >>>  #ifdef CONFIG_MEMORY_HOTREMOVE
-> >>> -static int dev_dax_kmem_remove(struct device *dev)
-> >>> +static void dax_kmem_release(struct dev_dax *dev_dax)
-> >>>  {
-> >>> -   struct dev_dax *dev_dax = to_dev_dax(dev);
-> >>> -   struct resource *res = dev_dax->dax_kmem_res;
-> >>> -   resource_size_t kmem_start = res->start;
-> >>> -   resource_size_t kmem_size = resource_size(res);
-> >>> -   const char *res_name = res->name;
-> >>>     int rc;
-> >>> +   struct device *dev = &dev_dax->dev;
-> >>> +   const char *res_name = dev_get_drvdata(dev);
-> >>> +   struct range range = dax_kmem_range(dev_dax);
-> >>>
-> >>>     /*
-> >>>      * We have one shot for removing memory, if some memory blocks were not
-> >>>      * offline prior to calling this function remove_memory() will fail, and
-> >>>      * there is no way to hotremove this memory until reboot because device
-> >>> -    * unbind will succeed even if we return failure.
-> >>> +    * unbind will proceed regardless of the remove_memory result.
-> >>>      */
-> >>> -   rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-> >>> -   if (rc) {
-> >>> -           any_hotremove_failed = true;
-> >>> -           dev_err(dev,
-> >>> -                   "DAX region %pR cannot be hotremoved until the next reboot\n",
-> >>> -                   res);
-> >>> -           return rc;
-> >>> +   rc = remove_memory(dev_dax->target_node, range.start, range_len(&range));
-> >>> +   if (rc == 0) {
-> >>
-> >> if (!rc) ?
-> >>
-> > Better off would be to keep the old order:
-> >
-> >       if (rc) {
-> >               any_hotremove_failed = true;
-> >               dev_err(dev, "%#llx-%#llx cannot be hotremoved until the next reboot\n",
-> >                               range.start, range.end);
-> >               return;
-> >       }
-> >
-> >       release_mem_region(range.start, range_len(&range));
-> >       dev_set_drvdata(dev, NULL);
-> >       kfree(res_name);
-> >       return;
-> >
-> >
-> >>> +           release_mem_region(range.start, range_len(&range));
-> >>
-> >> remove_memory() does a release_mem_region_adjustable(). Don't you
-> >> actually want to release the *unaligned* region you requested?
-> >>
-> > Isn't it what we're doing here?
-> > (The release_mem_region_adjustable() is using the same
-> > dax_kmem-aligned range and there's no split/adjust)
-> >
-> > Meaning right now (+ parent marked as !BUSY), and if I am understanding
-> > this correctly:
-> >
-> > request_mem_region(range.start, range_len)
-> >    __request_region(iomem_res, range.start, range_len) -> alloc @parent
-> > add_memory_driver_managed(parent.start, resource_size(parent))
-> >    __request_region(parent.start, resource_size(parent)) -> alloc @child
-> >
-> > [...]
-> >
-> > remove_memory(range.start, range_len)
-> >  request_mem_region_adjustable(range.start, range_len)
-> >   __release_region(range.start, range_len) -> remove @child
-> >
-> > release_mem_region(range.start, range_len)
-> >   __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
-> >
-> > The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
-> > unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
-> >
-> >       Joao
-> >
->
-> Thinking about it, if we don't set the parent resource BUSY (which is
-> what I think is the right way of doing things), and don't want to store
-> the parent resource pointer, we could add something like
-> lookup_resource() - e.g., lookup_mem_resource() - , however, searching
-> properly in the whole hierarchy (instead of only the first level), and
-> traversing down to the last hierarchy. Then it would be as simple as
->
-> remove_memory(range.start, range_len)
-> res = lookup_mem_resource(range.start);
-> release_resource(res);
+On 9/23/20 9:43 PM, Arnd Bergmann wrote:
+> On Wed, Sep 23, 2020 at 5:43 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
+>>
+>> On 9/23/20 5:30 PM, Arnd Bergmann wrote:
+>>> On Wed, Sep 23, 2020 at 5:15 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
+>>>>
+>>>> Hello,
+>>>>
+>>>> The Surface System Aggregator Module (we'll refer to it as Surface
+>>>> Aggregator or SAM below) is an embedded controller (EC) found on various
+>>>> Microsoft Surface devices. Specifically, all 4th and later generation
+>>>> Surface devices, i.e. Surface Pro 4, Surface Book 1 and later, with the
+>>>> exception of the Surface Go series and the Surface Duo. Notably, it
+>>>> seems like this EC can also be found on the ARM-based Surface Pro X [1].
+>>>
+>>> I think this should go to drivers/platform/x86 or drivers/platform/surface/
+>>> along with other laptop vendor specific code rather than drivers/misc/.
+>>
+>> I initially had this under drivers/platform/x86. There are two main
+>> reasons I changed that: First, I think it's a bit too big for
+>> platform/x86 given that it basically introduces a new subsystem. At this
+>> point it's really less of "a couple of odd devices here and there" and
+>> more of a bus-type thing. Second, with the possibility of future support
+>> for ARM devices (Pro X, Pro X 2 which is rumored to come out soon), I
+>> thought that platform/x86 would not be a good fit.
+> 
+> I don't see that as a strong reason against it. As you write yourself, the
+> driver won't work on the arm machines without major changes anyway,
+> and even if it does, it fits much better with the rest of it.
 
-Another thought... I notice that you've taught
-register_memory_resource() a IORESOURCE_MEM_DRIVER_MANAGED special
-case. Lets just make the assumption of add_memory_driver_managed()
-that it is the driver's responsibility to mark the range busy before
-calling, and the driver's responsibility to release the region. I.e.
-validate (rather than request) that the range is busy in
-register_memory_resource(), and teach release_memory_resource() to
-skip releasing the region when the memory is marked driver managed.
-That would let dax_kmem drop its manipulation of the 'busy' flag which
-is a layering violation no matter how many comments we put around it.
+Sorry, I should have written that a bit more clearly. I don't see any
+reason why these drivers would not work on an ARM device such as the Pro
+X right now, assuming that it boots via ACPI and the serial device it
+loads against is fully functional.
+
+The reason (at least as far as I know) it currently hasn't been tested
+is that a) there aren't a lot of people around attempting to run Linux
+on the currently only ARM device with that and b) it's currently blocked
+by a reason unrelated to this driver itself, specifically that the
+serial controller isn't being set up and thus the core driver doesn't
+have a device it can attach to. My information may be outdated though
+and is pretty much exclusively based on
+https://github.com/Sonicadvance1/linux/issues/7.
+
+> If you are worried about the size of the directory,
+> drivers/platform/x86/surface/
+> would also work.
+
+This was the alternative I'd have considered without ARM devices.
+
+>> I'd be happy to move this to platform/surface though, if that's
+>> considered a better fit and you're okay with me adding that. Would make
+>> sense given that there's already a platform/chrome, which, as far as I
+>> can tell, also seems to be mainly focused on EC support.
+> 
+> Yes, I think the main question is how much overlap you see functionally
+> between this driver and the others in drivers/platform/x86.
+
+I think that the Pro X likely won't be the last ARM Surface device with
+a SAM EC. Further, the subsystem is going to grow, and platform/x86
+seems more like a collection of, if at all, loosely connected drivers,
+which might give off the wrong impression. In my mind, this is just a
+bit more comparable to platform/chrome than the rest of platform/x86. I
+don't think I'm really qualified to make the decision on that though,
+that's just my opinion.
+
+Here's an overview of other drivers that I hopefully at some point get
+in good enough shape, which are part of this subsystem/dependent on the
+EC API introduced here:
+
+- A device registry / device hub for devices that are connected to the
+   EC but can't be detected via ACPI.
+
+- A dedicated battery driver for 7th generation devices (where the
+   battery isn't hanled via the ACPI shim).
+
+- A driver properly handling clipboard detachment on the Surface Books.
+
+- A driver for HID input/transport on the Surface Laptops and Surface
+   Book 3.
+
+- A driver for allowing users to set the performance/cooling mode via
+   sysfs.
+
+- Possibly a driver improving hot-plug handling of the discrete GPU in
+   the Surface Book base.
+
+And also some stuff that hasn't been written yet:
+
+- A dedicated driver for temperature sensors handled via the EC on 7th
+   generation devices (also handled via the ACPI shim on previous
+   generations).
+
+- Possibly a driver for real-time-clock access on 7th generation
+   devices (it has yet to be tested if that interface is still
+   around/required on those devices; that's also a thing handled via
+   the ACPI shim on previous generations).
+
+I doubt that those client drivers will be exclusive to x86, and I could
+see (current and future) ARM devices using SAM based battery,
+keyboard/HID, and performance mode drivers (which will likely also
+require the device registry, because for some reason MS doesn't want to
+describe those devices in ACPI on the newer generations any more...).
+All of those should work as-is on ARM (or at least after the
+corresponding device entries have been added to the device registry),
+modulo bugs of course.
+
+I hope this all gives a better overview of the form this may eventually
+take on and helps you in your decision. I'd be completely happy to move
+it to either, platform/surface or platform/x86/surface, whatever the
+consensus is. I'd very much like to keep the client drivers all
+contained to one sub-directory, though, and not scattered all over
+platform/x86/surface_*.c. Again that's more of a personal preference
+though :)
+
+Thanks,
+Max
