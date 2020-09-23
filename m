@@ -2,84 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A0D275C3C
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 17:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C98A275C1D
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 17:39:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgIWPnQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Sep 2020 11:43:16 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:55765 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgIWPnN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 11:43:13 -0400
-X-Greylist: delayed 759 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 11:43:11 EDT
-Received: from mail-qt1-f179.google.com ([209.85.160.179]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Ma1D8-1k07xz2jWG-00Vviz; Wed, 23 Sep 2020 17:30:31 +0200
-Received: by mail-qt1-f179.google.com with SMTP id n10so213106qtv.3;
-        Wed, 23 Sep 2020 08:30:31 -0700 (PDT)
-X-Gm-Message-State: AOAM5307kOwsmtZfQPw3FcRZVF6R9vw0L9GcCOy6LgUSOHuw5dyGgvU0
-        MjRygTZVbVOkdKQKjboSOZ6llH1lEfK+GAYpFRQ=
-X-Google-Smtp-Source: ABdhPJyx3khV9ouMU1lDxgVnLoI4g4YiXmj0IB5rW6IHWN5WF61DmY8GCOsbNySmlU3CqZ9ohZGbz8tecEaKsFKwVrg=
-X-Received: by 2002:aed:3825:: with SMTP id j34mr581207qte.7.1600875030304;
- Wed, 23 Sep 2020 08:30:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200923151511.3842150-1-luzmaximilian@gmail.com>
-In-Reply-To: <20200923151511.3842150-1-luzmaximilian@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 23 Sep 2020 17:30:14 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3Qie_CP1dA-ERqyDv=EnaQQPnNbFYrGr3ySiY4mO0=Uw@mail.gmail.com>
-Message-ID: <CAK8P3a3Qie_CP1dA-ERqyDv=EnaQQPnNbFYrGr3ySiY4mO0=Uw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/9] Add support for Microsoft Surface System
- Aggregator Module
-To:     Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
+        id S1726621AbgIWPjv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Sep 2020 11:39:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726504AbgIWPjv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 11:39:51 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 143DFC0613CE;
+        Wed, 23 Sep 2020 08:39:51 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0d130017aaf728a0fb4ec3.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:1300:17aa:f728:a0fb:4ec3])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AE2171EC0409;
+        Wed, 23 Sep 2020 17:39:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1600875587;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=w4olCSb8jT2RNv8xHUN26fhLNxYdkyB61t9MEo7mTLE=;
+        b=bq4WYVndAySAoDrcXMKE2j/v4xOD2eIjmidsATkH23MZkCe6wd2xyNQlmxzWR5LCLSl9D2
+        7+gK6lYDLVIOlVELUR2Kx24fmSYSDQkLBiJhOWpiel/I6b7WF2aS4IakPs4v0eqXCO8eRf
+        nTXxR4HWsYWYb1zVhkQi2nKk2Pw4EfY=
+Date:   Wed, 23 Sep 2020 17:39:41 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
+        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi <linux-efi@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>,
-        Dorian Stoll <dorian.stoll@tmsp.io>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:8N6geTkfnb188B0H6aGTVMbLl+suW/kEDmJPmYACXe0NZkdkx0T
- 0Iv2eSBTrpLTjcbWGFtPZHXyFUfmrt8b0CJkQJF2lY/YoKl0dQNRDrdi90q9vhoJ27ekbYP
- hnW2az5XXGHgmYbfrY84iNXFQOJz+JzUT0qfZRzG4VUP3VKySlOg44mLtJUbKQosYp1iOGO
- 3TMl/2A6NXe2AN8sMKM5g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Phmjv88EpoY=:qh7cV9XqbHbulKPMwD2F5s
- zHsyLfRN3Fh2puLdmoowscMMpUGiOvzzQo8bM2cCn/gBrqV0mjGWRHsHvFBb8VnOW0GigHUZo
- GUFe25jnD7JY6XyTlQKaxEUQzIcQEhqlvS06ClJR09pzNJvw4O0zL2AATkgI1dS5g4im+fwWb
- SWnPYsw7U9jlAUYIl90b3X2CfJzoh5nvy/VBDrvx4uvwoX4a7WAUmg5bYCquM2EFn5QXarVik
- KDq4dzSujWheHxy5zk0B1SueNbykdfSRVLh5DZopAb7qPScalHPnOooxftvoAUcAbDlsUlNu9
- oLq71PInBmAzV/mUrxBkiJ0n3Y/NUKmRXjt2JRzHv+hZLP81VYQDvibtpYWyAUIq1USGyV9Ez
- +RSQ/CZkrEuC5LpI5xnSiJCOmxvZe8WpTA1epGtg4bDl3wclyeMvO92F8mhnWsGBwS8g0J0LY
- k9NmpHaqkjHeCO8oBwOVz5+g15Fld5nADR1fVgka0SIBC5WPzfEWcR24KAiFdMhekUQPNFr56
- JKPRMf87ni+FQO8n3F3Wy9TJzL0NmrgvtVN0kbaLBNuSve86jkyvie8r4qydwLJ1Q+lwddk+Y
- ox24ozYlxLbERWa6didUOq6C9yqGoyVYjcD1A84LztqpymFS7LANPE1buQ7OSYX0vBUzYQ5Dy
- ZmndrBCCgjDhVDthRiMFj1kX9nOL6asV4NUl3PLEqxiY1BpYkLBmQLBDm9rdcETsvrszcW9By
- sGRI6jJHFb5WbWCBO9FPCIp3KS5eMMEJnYwKoHQYiYuWK+kbn8H1d/FH01bSqDj4gePvaL7xy
- 1V4ezojlyv8lBa+VGcS5HIOif9YNpaGFhJZ6BjIgJSRa1lWEG/W1s5gQHd/CBQw0p8nXPDg
+        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA
+ handling chain
+Message-ID: <20200923153941.GK28545@zn.tnic>
+References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
+ <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
+ <20200923140512.GJ28545@zn.tnic>
+ <CAMj1kXH2uWEfAxTf_+6YN-Sp2VNKtaGhqAx4jyvhW3xR=0Jaug@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXH2uWEfAxTf_+6YN-Sp2VNKtaGhqAx4jyvhW3xR=0Jaug@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 23, 2020 at 5:15 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->
-> Hello,
->
-> The Surface System Aggregator Module (we'll refer to it as Surface
-> Aggregator or SAM below) is an embedded controller (EC) found on various
-> Microsoft Surface devices. Specifically, all 4th and later generation
-> Surface devices, i.e. Surface Pro 4, Surface Book 1 and later, with the
-> exception of the Surface Go series and the Surface Duo. Notably, it
-> seems like this EC can also be found on the ARM-based Surface Pro X [1].
+On Wed, Sep 23, 2020 at 04:52:18PM +0200, Ard Biesheuvel wrote:
+> I think the question is why we are retaining this Reported-by header
+> to begin with. Even though the early feedback is appreciated,
+> crediting the bot for eternity for a version of the patch that never
+> got merged seems a bit excessive. Also, it may suggest that the bot
+> was involved in reporting an issue that the patch aims to fix but that
+> is not the case.
 
-I think this should go to drivers/platform/x86 or drivers/platform/surface/
-along with other laptop vendor specific code rather than drivers/misc/.
+That is supposed to be explained in [] properly so that there's no
+misreading of why that tag's there.
 
-I'll have a look at the code myself, but I'd prefer to have the maintainers
-for the other laptop drivers review this properly.
+> The last thing we want is Sasha's bot to jump on patches adding new
+> functionality just because it has a reported-by line.
 
-       Arnd
+It should jump on patches which have Fixes: tags. But Sasha's bot is
+nuts regardless. :-)
+
+> So I suggest dropping the Reported-by credit as well as the [] context
+> regarding v1
+
+So I don't mind having a Reported-by: tag with an explanation of what
+it reported. We slap all kinds of tags so having some attribution for
+the work the 0day bot does to catch such errors is reasonable. I presume
+they track this way how "useful" it is, by counting the Reported-by's or
+so, as they suggest one should add a Reported-by in their reports.
+
+And without any attribution what the 0day bot reported, it might decide
+not to report anything next time, I'd venture a guess.
+
+And the same argument can be had for Suggested-by: tags: one could
+decide not to add that tag and the person who's doing the suggesting
+might decide not to suggest anymore.
+
+So I think something like:
+
+ [ Fix a build breakage in an earlier version. ]
+Reported-by: 0day bot
+
+is fine as long as it makes it perfectly clear what Reported-by tag
+is for and as long as ts purpose for being present there is clear, I
+don't see an issue...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
