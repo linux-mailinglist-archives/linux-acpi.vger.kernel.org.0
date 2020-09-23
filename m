@@ -2,1162 +2,266 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF2D275B52
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 17:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE94275BC9
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 17:26:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbgIWPQS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Sep 2020 11:16:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726799AbgIWPQA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 11:16:00 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23FBC0613CE;
-        Wed, 23 Sep 2020 08:15:59 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id i1so193912edv.2;
-        Wed, 23 Sep 2020 08:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=hSd7LNSeLO71+UaDZL5yxIHjNV32xpfyaoFFC2dacek=;
-        b=XI4jI1wza9irJo+oXnCWygE8IwFJOHY42SiMvr4IwJhpDQDt/Jbv3lhyfrHWqCjeGe
-         OFvexrXVEjEJkq/Hq+i/plUaxQeAu8JRslI2tS1/2SULgD33Dd3UIrQxhLyZOkXX7gIf
-         RZM/c38gFMVajHEVDrZzdhSEiNdgZ7wtSYQcUBYKw4PE1bxJBw+z+FQawL0yWEZ0835R
-         7I1b2B96qa6aMWik4KzK02d/97Q+OQFp8k28SpJPSRSmqkl/030UMg29wYWur8X+YMSw
-         Y6kg11oSivfXbvUch2HCAyROorNRrJcDR+jdrEXZW51dQsTAxTEf7ozXJzRjayI44ocT
-         zPng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=hSd7LNSeLO71+UaDZL5yxIHjNV32xpfyaoFFC2dacek=;
-        b=bzXI5WSz9MwYhwkXSxc6KJCCCAS0wDAkC2PKhFBS6UKYkwAJH03OkrbZrJG7dwYCO3
-         rT14gm31jiGgL9vWyQzkWrn1LnOXUh6wtIJfWK9TpIcNkFQ37o3X+6rmeFBWX0BnxkL6
-         x+m4LwcnQItyApUt/Mo4JC63IieoKnMXjIgjoPFhtx34KqMMTQ2iOgGhT+Q65j+jFXaO
-         T9GUaQ8WUiDmyDbBFuwfSOmgirKO7gsljXIPVfcN9iPP9PDfBSUldI9zOm164JGJVPwW
-         asMdx+mZehNKOIqPrVWgNQSTu0nOE1CuKwTCRfSnDbgRJoDa1/81ai1Bl7NX8knRq6/4
-         FKNA==
-X-Gm-Message-State: AOAM531EjIPZVnQ195Azu2Gof+ixUj0RShFXOO8BhmOcl/G/g8866c9n
-        y+Z9embqvbYPT4P4G6N8zP6NGI+4teM=
-X-Google-Smtp-Source: ABdhPJwgHKnSXVYdOYVWD8A6mm+lvqDOPiXQM9zAeFP2dp6VFKHapFY3vwh1IrGO7xf5DpAb21W1TA==
-X-Received: by 2002:a50:f28b:: with SMTP id f11mr10144544edm.44.1600874157370;
-        Wed, 23 Sep 2020 08:15:57 -0700 (PDT)
-Received: from xws.fritz.box (pd9e5a9df.dip0.t-ipconnect.de. [217.229.169.223])
-        by smtp.gmail.com with ESMTPSA id ch29sm160707edb.74.2020.09.23.08.15.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2020 08:15:56 -0700 (PDT)
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        linux-acpi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?q?Bla=C5=BE=20Hrastnik?= <blaz@mxxn.io>,
-        Dorian Stoll <dorian.stoll@tmsp.io>
-Subject: [RFC PATCH 9/9] surface_aggregator: Add Surface ACPI Notify client driver
-Date:   Wed, 23 Sep 2020 17:15:11 +0200
-Message-Id: <20200923151511.3842150-10-luzmaximilian@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200923151511.3842150-1-luzmaximilian@gmail.com>
-References: <20200923151511.3842150-1-luzmaximilian@gmail.com>
+        id S1726643AbgIWP0U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Sep 2020 11:26:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:36241 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726184AbgIWP0T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 23 Sep 2020 11:26:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1600874777;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=TpOu0LQpxSmgKrorKRNPGs/CUcDdTq51lBoo6YwLZQU=;
+        b=SRpPaXFIOG4QJJNhlgdMeyy6o5FCDr7ArKxtgKmBfav0dli36XXpknns3kDGiSBYCzpeAe
+        yCdL0U+5w3G7l3p8q9/BuK7lv5WseTYRt5NkvVegUR1KF9wu1pm1JejeTrNIuJECrINt35
+        E2Xx3ND9snZuvyLay52FJyF3saFvPNI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-82-ohuB0gbdOfCPTqcziG7Twg-1; Wed, 23 Sep 2020 11:26:14 -0400
+X-MC-Unique: ohuB0gbdOfCPTqcziG7Twg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 552CD10BBED9;
+        Wed, 23 Sep 2020 15:26:11 +0000 (UTC)
+Received: from [10.36.112.54] (ovpn-112-54.ams2.redhat.com [10.36.112.54])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 321B57B7CF;
+        Wed, 23 Sep 2020 15:26:07 +0000 (UTC)
+Subject: Re: [PATCH RFC 0/4] mm: place pages to the freelist tail when onling
+ and undoing isolation
+To:     Vlastimil Babka <vbabka@suse.cz>, osalvador@suse.de
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>
+References: <5c0910c2cd0d9d351e509392a45552fb@suse.de>
+ <DAC9E747-BDDF-41B6-A89B-604880DD7543@redhat.com>
+ <67928cbd-950a-3279-bf9b-29b04c87728b@suse.cz>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat GmbH
+Message-ID: <fee562a3-9f8f-e9b4-68fe-09c5ea885b91@redhat.com>
+Date:   Wed, 23 Sep 2020 17:26:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <67928cbd-950a-3279-bf9b-29b04c87728b@suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Surface ACPI Notify (SAN) device provides an ACPI interface to the
-Surface Aggregator EC, specifically the Surface Serial Hub interface.
-This interface allows EC requests to be made from ACPI code and can
-convert a subset of EC events back to ACPI notifications.
+On 23.09.20 16:31, Vlastimil Babka wrote:
+> On 9/16/20 9:31 PM, David Hildenbrand wrote:
+>>
+>>
+>>> Am 16.09.2020 um 20:50 schrieb osalvador@suse.de:
+>>>
+>>> ﻿On 2020-09-16 20:34, David Hildenbrand wrote:
+>>>> When adding separate memory blocks via add_memory*() and onlining them
+>>>> immediately, the metadata (especially the memmap) of the next block will be
+>>>> placed onto one of the just added+onlined block. This creates a chain
+>>>> of unmovable allocations: If the last memory block cannot get
+>>>> offlined+removed() so will all dependant ones. We directly have unmovable
+>>>> allocations all over the place.
+>>>> This can be observed quite easily using virtio-mem, however, it can also
+>>>> be observed when using DIMMs. The freshly onlined pages will usually be
+>>>> placed to the head of the freelists, meaning they will be allocated next,
+>>>> turning the just-added memory usually immediately un-removable. The
+>>>> fresh pages are cold, prefering to allocate others (that might be hot)
+>>>> also feels to be the natural thing to do.
+>>>> It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when
+>>>> adding separate, successive memory blocks, each memory block will have
+>>>> unmovable allocations on them - for example gigantic pages will fail to
+>>>> allocate.
+>>>> While the ZONE_NORMAL doesn't provide any guarantees that memory can get
+>>>> offlined+removed again (any kind of fragmentation with unmovable
+>>>> allocations is possible), there are many scenarios (hotplugging a lot of
+>>>> memory, running workload, hotunplug some memory/as much as possible) where
+>>>> we can offline+remove quite a lot with this patchset.
+>>>
+>>> Hi David,
+>>>
+>>
+>> Hi Oscar.
+>>
+>>> I did not read through the patchset yet, so sorry if the question is nonsense, but is this not trying to fix the same issue the vmemmap patches did? [1]
+>>
+>> Not nonesense at all. It only helps to some degree, though. It solves the dependencies due to the memmap. However, it‘s not completely ideal, especially for single memory blocks.
+>>
+>> With single memory blocks (virtio-mem, xen-balloon, hv balloon, ppc dlpar) you still have unmovable (vmemmap chunks) all over the physical address space. Consider the gigantic page example after hotplug. You directly fragmented all hotplugged memory.
+>>
+>> Of course, there might be (less extreme) dependencies due page tables for the identity mapping, extended struct pages and similar.
+>>
+>> Having that said, there are other benefits when preferring other memory over just hotplugged memory. Think about adding+onlining memory during boot (dimms under QEMU, virtio-mem), once the system is up you will have most (all) of that memory completely untouched.
+>>
+>> So while vmemmap on hotplugged memory would tackle some part of the issue, there are cases where this approach is better, and there are even benefits when combining both.
+> 
 
-Specifically, this interface provides a GenericSerialBus operation
-region ACPI code can execute a request by writing the request command
-data and payload to this operation region and reading back the
-corresponding response via a write-then-read operation. Furthermore,
-this interface provides a _DSM method to be called when certain events
-from the EC have been received, essentially turning them into ACPI
-notifications.
+Hi Vlastimil,
 
-The driver provided in this commit essentially takes care of translating
-the request data written to the operation region, executing the request,
-waiting for it to finish, and finally writing and translating back the
-response (if the request has one). Furthermore, this driver takes care
-of enabling the events handled via ACPI _DSM calls. Lastly, this driver
-also exposes an interface providing discrete GPU (dGPU) power-on
-notifications on the Surface Book 2, which are also received via the
-operation region interface (but not handled by the SAN driver directly),
-making them accessible to other drivers (such as a dGPU hot-plug driver
-that may be added later on).
+> I see the point, but I don't think the head/tail mechanism is great for this. It
+> might sort of work, but with other interfering activity there are no guarantees
+> and it relies on a subtle implementation detail. There are better mechanisms
 
-On 5th and 6th generation Surface devices (Surface Pro 5/2017, Pro 6,
-Book 2, Laptop 1 and 2), the SAN interface provides full battery and
-thermal subsystem access, as well as other EC based functionality. On
-those models, battery and thermal sensor devices are implemented as
-standard ACPI devices of that type, however, forward ACPI calls to the
-corresponding Surface Aggregator EC request via the SAN interface and
-receive corresponding notifications (e.g. battery information change)
-from it. This interface is therefore required to provide said
-functionality on those devices.
+For the specified use case of adding+onlining a whole bunch of memory
+this works just fine. We don't care too much about "other interfering
+activity" as you mention here, or about guarantees - this is a pure
+optimization that seems to work just fine in practice.
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
----
- .../surface_aggregator/clients/index.rst      |   1 +
- .../surface_aggregator/clients/san.rst        |  44 +
- MAINTAINERS                                   |   1 +
- .../misc/surface_aggregator/clients/Kconfig   |  20 +
- .../misc/surface_aggregator/clients/Makefile  |   1 +
- .../clients/surface_acpi_notify.c             | 882 ++++++++++++++++++
- include/linux/surface_acpi_notify.h           |  37 +
- 7 files changed, 986 insertions(+)
- create mode 100644 Documentation/driver-api/surface_aggregator/clients/san.rst
- create mode 100644 drivers/misc/surface_aggregator/clients/surface_acpi_notify.c
- create mode 100644 include/linux/surface_acpi_notify.h
+I'm not sure about the "subtle implementation detail" - buddy merging,
+and head/tail of buddy lists are a basic concept of our page allocator.
+If that would ever change, the optimization here would be lost and we
+would have to think of something else. Nothing would actually break -
+and it's all kept directly in page_alloc.c
 
-diff --git a/Documentation/driver-api/surface_aggregator/clients/index.rst b/Documentation/driver-api/surface_aggregator/clients/index.rst
-index e47b752f298c..7cd91fc75e91 100644
---- a/Documentation/driver-api/surface_aggregator/clients/index.rst
-+++ b/Documentation/driver-api/surface_aggregator/clients/index.rst
-@@ -11,6 +11,7 @@ This is the documentation for client drivers themselves. Refer to
-    :maxdepth: 1
- 
-    dbgdev
-+   san
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/driver-api/surface_aggregator/clients/san.rst b/Documentation/driver-api/surface_aggregator/clients/san.rst
-new file mode 100644
-index 000000000000..f91c0a7ab884
---- /dev/null
-+++ b/Documentation/driver-api/surface_aggregator/clients/san.rst
-@@ -0,0 +1,44 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. |san_client_link| replace:: :c:func:`san_client_link`
-+.. |san_dgpu_notifier_register| replace:: :c:func:`san_dgpu_notifier_register`
-+.. |san_dgpu_notifier_unregister| replace:: :c:func:`san_dgpu_notifier_unregister`
-+
-+===================
-+Surface ACPI Notify
-+===================
-+
-+The Surface ACPI Notify (SAN) device provides the bridge between ACPI and
-+SAM controller. Specifically, ACPI code can execute requests and handle
-+battery and thermal events via this interface. In addition to this, events
-+relating to the discrete GPU (dGPU) of the Surface Book 2 can be sent from
-+ACPI code (note: the Surface Book 3 uses a different method for this). The
-+only currently known event sent via this interface is a dGPU power-on
-+notification. While this driver handles the former part internally, it only
-+relays the dGPU events to any other driver interested via its public API and
-+does not handle them.
-+
-+The public interface of this driver is split into two parts: Client
-+registration and notifier-block registration.
-+
-+A client to the SAN interface can be linked as consumer to the SAN device
-+via |san_client_link|. This can be used to ensure that the a client
-+receiving dGPU events does not miss any events due to the SAN interface not
-+being set up as this forces the client driver to unbind once the SAN driver
-+is unbound.
-+
-+Notifier-blocks can be registered by any device for as long as the module is
-+loaded, regardless of being linked as client or not. Registration is done
-+with |san_dgpu_notifier_register|. If the notifier is not needed any more, it
-+should be unregistered via |san_dgpu_notifier_unregister|.
-+
-+Consult the API documentation below for more details.
-+
-+
-+API Documentation
-+=================
-+
-+.. kernel-doc:: include/linux/surface_acpi_notify.h
-+
-+.. kernel-doc:: drivers/misc/surface_aggregator/clients/surface_acpi_notify.c
-+    :export:
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 74122a2a792d..b3550ef15333 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11570,6 +11570,7 @@ W:	https://github.com/linux-surface/surface-aggregator-module
- C:	irc://chat.freenode.net/##linux-surface
- F:	Documentation/driver-api/surface_aggregator/
- F:	drivers/misc/surface_aggregator/
-+F:	include/linux/surface_acpi_notify.h
- F:	include/linux/surface_aggregator/
- 
- MICROTEK X6 SCANNER
-diff --git a/drivers/misc/surface_aggregator/clients/Kconfig b/drivers/misc/surface_aggregator/clients/Kconfig
-index dcaa0706074e..e0f63011f079 100644
---- a/drivers/misc/surface_aggregator/clients/Kconfig
-+++ b/drivers/misc/surface_aggregator/clients/Kconfig
-@@ -16,3 +16,23 @@ config SURFACE_AGGREGATOR_DEBUGFS
- 
- 	  The provided interface is intended for debugging and development only,
- 	  and should not be used otherwise.
-+
-+config SURFACE_ACPI_NOTIFY
-+	tristate "Surface ACPI Notify Driver"
-+	depends on SURFACE_AGGREGATOR
-+	default m
-+	help
-+	  Surface ACPI Notify (SAN) driver for Microsoft Surface devices.
-+
-+	  This driver provides support for the ACPI interface (called SAN) of
-+	  the Surface System Aggregator Module (SSAM) EC. This interface is used
-+	  on 5th- and 6th-generation Microsoft Surface devices (including
-+	  Surface Pro 5 and 6, Surface Book 2, Surface Laptops 1 and 2, and in
-+	  reduced functionality on the Surface Laptop 3) to execute SSAM
-+	  requests directly from ACPI code, as well as receive SSAM events and
-+	  turn them into ACPI notifications. It essentially acts as a
-+	  translation layer between the SSAM controller and ACPI.
-+
-+	  Specifically, this driver may be needed for battery status reporting,
-+	  thermal sensor access, and real-time clock information, depending on
-+	  the Surface device in question.
-diff --git a/drivers/misc/surface_aggregator/clients/Makefile b/drivers/misc/surface_aggregator/clients/Makefile
-index c49b2a183d3d..98ed6fb05cf0 100644
---- a/drivers/misc/surface_aggregator/clients/Makefile
-+++ b/drivers/misc/surface_aggregator/clients/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
- obj-$(CONFIG_SURFACE_AGGREGATOR_DEBUGFS)	+= surface_aggregator_debugfs.o
-+obj-$(CONFIG_SURFACE_ACPI_NOTIFY)		+= surface_acpi_notify.o
-diff --git a/drivers/misc/surface_aggregator/clients/surface_acpi_notify.c b/drivers/misc/surface_aggregator/clients/surface_acpi_notify.c
-new file mode 100644
-index 000000000000..67617d9aab57
---- /dev/null
-+++ b/drivers/misc/surface_aggregator/clients/surface_acpi_notify.c
-@@ -0,0 +1,882 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Driver for the Surface ACPI Notify (SAN) interface/shim.
-+ *
-+ * Translates communication from ACPI to Surface System Aggregator Module
-+ * (SSAM/SAM) requests and back, specifically SAM-over-SSH. Translates SSAM
-+ * events back to ACPI notifications. Allows handling of discrete GPU
-+ * notifications sent from ACPI via the SAN interface by providing them to any
-+ * registered external driver.
-+ */
-+
-+#include <asm/unaligned.h>
-+#include <linux/acpi.h>
-+#include <linux/delay.h>
-+#include <linux/jiffies.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/notifier.h>
-+#include <linux/platform_device.h>
-+#include <linux/rwsem.h>
-+
-+#include <linux/surface_aggregator/controller.h>
-+#include <linux/surface_acpi_notify.h>
-+
-+
-+struct san_data {
-+	struct device *dev;
-+	struct ssam_controller *ctrl;
-+
-+	struct acpi_connection_info info;
-+
-+	struct ssam_event_notifier nf_bat;
-+	struct ssam_event_notifier nf_tmp;
-+};
-+
-+#define to_san_data(ptr, member) \
-+	container_of(ptr, struct san_data, member)
-+
-+
-+/* -- dGPU Notifier Interface. ---------------------------------------------- */
-+
-+struct san_rqsg_if {
-+	struct rw_semaphore lock;
-+	struct device *dev;
-+	struct blocking_notifier_head nh;
-+};
-+
-+static struct san_rqsg_if san_rqsg_if = {
-+	.lock = __RWSEM_INITIALIZER(san_rqsg_if.lock),
-+	.dev = NULL,
-+	.nh = BLOCKING_NOTIFIER_INIT(san_rqsg_if.nh),
-+};
-+
-+static int san_set_rqsg_interface_device(struct device *dev)
-+{
-+	int status = 0;
-+
-+	down_write(&san_rqsg_if.lock);
-+	if (!san_rqsg_if.dev && dev)
-+		san_rqsg_if.dev = dev;
-+	else
-+		status = -EBUSY;
-+	up_write(&san_rqsg_if.lock);
-+
-+	return status;
-+}
-+
-+/**
-+ * san_client_link() - Link client as consumer to SAN device.
-+ * @client: The client to link.
-+ *
-+ * Sets up a device link between the provided client device as consumer and
-+ * the SAN device as provider. This function can be used to ensure that the
-+ * SAN interface has been set up and will be set up for as long as the driver
-+ * of the client device is bound. This guarantees that, during that time, all
-+ * dGPU events will be received by any registered notifier.
-+ *
-+ * The link will be automatically removed once the client device's driver is
-+ * unbound.
-+ *
-+ * Return: Returns zero on succes, %-ENXIO if the SAN interface has not been
-+ * set up yet, and %-ENOMEM if device link creation failed.
-+ */
-+int san_client_link(struct device *client)
-+{
-+	const u32 flags = DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
-+	struct device_link *link;
-+
-+	down_read(&san_rqsg_if.lock);
-+
-+	if (!san_rqsg_if.dev) {
-+		up_read(&san_rqsg_if.lock);
-+		return -ENXIO;
-+	}
-+
-+	link = device_link_add(client, san_rqsg_if.dev, flags);
-+	if (!link) {
-+		up_read(&san_rqsg_if.lock);
-+		return -ENOMEM;
-+	}
-+
-+	if (READ_ONCE(link->status) == DL_STATE_SUPPLIER_UNBIND) {
-+		up_read(&san_rqsg_if.lock);
-+		return -ENXIO;
-+	}
-+
-+	up_read(&san_rqsg_if.lock);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(san_client_link);
-+
-+/**
-+ * san_dgpu_notifier_register() - Register a SAN dGPU notifier.
-+ * @nb: The notifier-block to register.
-+ *
-+ * Registers a SAN dGPU notifier, receiving any new SAN dGPU events sent from
-+ * ACPI. The registered notifier will be called with &struct san_dgpu_event
-+ * as notifier data and the command ID of that event as notifier action.
-+ */
-+int san_dgpu_notifier_register(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&san_rqsg_if.nh, nb);
-+}
-+EXPORT_SYMBOL_GPL(san_dgpu_notifier_register);
-+
-+/**
-+ * san_dgpu_notifier_unregister() - Unregister a SAN dGPU notifier.
-+ * @nb: The notifier-block to unregister.
-+ */
-+int san_dgpu_notifier_unregister(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&san_rqsg_if.nh, nb);
-+}
-+EXPORT_SYMBOL_GPL(san_dgpu_notifier_unregister);
-+
-+static int san_dgpu_notifier_call(struct san_dgpu_event *evt)
-+{
-+	int ret;
-+
-+	ret = blocking_notifier_call_chain(&san_rqsg_if.nh, evt->command, evt);
-+	return notifier_to_errno(ret);
-+}
-+
-+
-+/* -- ACPI _DSM event relay. ------------------------------------------------ */
-+
-+#define SAN_DSM_REVISION	0
-+
-+static const guid_t SAN_DSM_UUID =
-+	GUID_INIT(0x93b666c5, 0x70c6, 0x469f, 0xa2, 0x15, 0x3d,
-+		  0x48, 0x7c, 0x91, 0xab, 0x3c);
-+
-+enum san_dsm_event_fn {
-+	SAN_DSM_EVENT_FN_BAT1_STAT = 0x03,
-+	SAN_DSM_EVENT_FN_BAT1_INFO = 0x04,
-+	SAN_DSM_EVENT_FN_ADP1_STAT = 0x05,
-+	SAN_DSM_EVENT_FN_ADP1_INFO = 0x06,
-+	SAN_DSM_EVENT_FN_BAT2_STAT = 0x07,
-+	SAN_DSM_EVENT_FN_BAT2_INFO = 0x08,
-+	SAN_DSM_EVENT_FN_THERMAL   = 0x09,
-+	SAN_DSM_EVENT_FN_DPTF      = 0x0a,
-+};
-+
-+enum sam_event_cid_bat {
-+	SAM_EVENT_CID_BAT_BIX  = 0x15,
-+	SAM_EVENT_CID_BAT_BST  = 0x16,
-+	SAM_EVENT_CID_BAT_ADP  = 0x17,
-+	SAM_EVENT_CID_BAT_PROT = 0x18,
-+	SAM_EVENT_CID_BAT_DPTF = 0x4f,
-+};
-+
-+enum sam_event_cid_tmp {
-+	SAM_EVENT_CID_TMP_TRIP = 0x0b,
-+};
-+
-+struct san_event_work {
-+	struct delayed_work work;
-+	struct device *dev;
-+	struct ssam_event event;	// must be last
-+};
-+
-+static int san_acpi_notify_event(struct device *dev, u64 func,
-+				 union acpi_object *param)
-+{
-+	acpi_handle san = ACPI_HANDLE(dev);
-+	union acpi_object *obj;
-+	int status = 0;
-+
-+	if (!acpi_check_dsm(san, &SAN_DSM_UUID, SAN_DSM_REVISION, 1 << func))
-+		return 0;
-+
-+	dev_dbg(dev, "notify event 0x%02llx\n", func);
-+
-+	obj = acpi_evaluate_dsm_typed(san, &SAN_DSM_UUID, SAN_DSM_REVISION,
-+				      func, param, ACPI_TYPE_BUFFER);
-+	if (!obj)
-+		return -EFAULT;
-+
-+	if (obj->buffer.length != 1 || obj->buffer.pointer[0] != 0) {
-+		dev_err(dev, "got unexpected result from _DSM\n");
-+		status = -EPROTO;
-+	}
-+
-+	ACPI_FREE(obj);
-+	return status;
-+}
-+
-+static int san_evt_bat_adp(struct device *dev, const struct ssam_event *event)
-+{
-+	int status;
-+
-+	status = san_acpi_notify_event(dev, SAN_DSM_EVENT_FN_ADP1_STAT, NULL);
-+	if (status)
-+		return status;
-+
-+	/*
-+	 * Enusre that the battery states get updated correctly.
-+	 * When the battery is fully charged and an adapter is plugged in, it
-+	 * sometimes is not updated correctly, instead showing it as charging.
-+	 * Explicitly trigger battery updates to fix this.
-+	 */
-+
-+	status = san_acpi_notify_event(dev, SAN_DSM_EVENT_FN_BAT1_STAT, NULL);
-+	if (status)
-+		return status;
-+
-+	return san_acpi_notify_event(dev, SAN_DSM_EVENT_FN_BAT2_STAT, NULL);
-+}
-+
-+static int san_evt_bat_bix(struct device *dev, const struct ssam_event *event)
-+{
-+	enum san_dsm_event_fn fn;
-+
-+	if (event->instance_id == 0x02)
-+		fn = SAN_DSM_EVENT_FN_BAT2_INFO;
-+	else
-+		fn = SAN_DSM_EVENT_FN_BAT1_INFO;
-+
-+	return san_acpi_notify_event(dev, fn, NULL);
-+}
-+
-+static int san_evt_bat_bst(struct device *dev, const struct ssam_event *event)
-+{
-+	enum san_dsm_event_fn fn;
-+
-+	if (event->instance_id == 0x02)
-+		fn = SAN_DSM_EVENT_FN_BAT2_STAT;
-+	else
-+		fn = SAN_DSM_EVENT_FN_BAT1_STAT;
-+
-+	return san_acpi_notify_event(dev, fn, NULL);
-+}
-+
-+static int san_evt_bat_dptf(struct device *dev, const struct ssam_event *event)
-+{
-+	union acpi_object payload;
-+
-+	/*
-+	 * The Surface ACPI expects a buffer and not a package. It specifically
-+	 * checks for ObjectType (Arg3) == 0x03. This will cause a warning in
-+	 * acpica/nsarguments.c, but that warning can be safely ignored.
-+	 */
-+	payload.type = ACPI_TYPE_BUFFER;
-+	payload.buffer.length = event->length;
-+	payload.buffer.pointer = (u8 *)&event->data[0];
-+
-+	return san_acpi_notify_event(dev, SAN_DSM_EVENT_FN_DPTF, &payload);
-+}
-+
-+static unsigned long san_evt_bat_delay(u8 cid)
-+{
-+	switch (cid) {
-+	case SAM_EVENT_CID_BAT_ADP:
-+		/*
-+		 * Wait for battery state to update before signalling adapter
-+		 * change.
-+		 */
-+		return msecs_to_jiffies(5000);
-+
-+	case SAM_EVENT_CID_BAT_BST:
-+		/* Ensure we do not miss anything important due to caching. */
-+		return msecs_to_jiffies(2000);
-+
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static bool san_evt_bat(const struct ssam_event *event, struct device *dev)
-+{
-+	int status;
-+
-+	switch (event->command_id) {
-+	case SAM_EVENT_CID_BAT_BIX:
-+		status = san_evt_bat_bix(dev, event);
-+		break;
-+
-+	case SAM_EVENT_CID_BAT_BST:
-+		status = san_evt_bat_bst(dev, event);
-+		break;
-+
-+	case SAM_EVENT_CID_BAT_ADP:
-+		status = san_evt_bat_adp(dev, event);
-+		break;
-+
-+	case SAM_EVENT_CID_BAT_PROT:
-+		/*
-+		 * TODO: Implement support for battery protection status change
-+		 *       event.
-+		 */
-+		return true;
-+
-+	case SAM_EVENT_CID_BAT_DPTF:
-+		status = san_evt_bat_dptf(dev, event);
-+		break;
-+
-+	default:
-+		return false;
-+	}
-+
-+	if (status)
-+		dev_err(dev, "error handling power event (cid = %x)\n",
-+			event->command_id);
-+
-+	return true;
-+}
-+
-+static void san_evt_bat_workfn(struct work_struct *work)
-+{
-+	struct san_event_work *ev;
-+
-+	ev = container_of(work, struct san_event_work, work.work);
-+	san_evt_bat(&ev->event, ev->dev);
-+	kfree(ev);
-+}
-+
-+static u32 san_evt_bat_nf(struct ssam_event_notifier *nf,
-+			  const struct ssam_event *event)
-+{
-+	struct san_data *d = to_san_data(nf, nf_bat);
-+	struct san_event_work *work;
-+	unsigned long delay = san_evt_bat_delay(event->command_id);
-+
-+	if (delay == 0)
-+		return san_evt_bat(event, d->dev) ? SSAM_NOTIF_HANDLED : 0;
-+
-+	work = kzalloc(sizeof(*work) + event->length, GFP_KERNEL);
-+	if (!work)
-+		return ssam_notifier_from_errno(-ENOMEM);
-+
-+	INIT_DELAYED_WORK(&work->work, san_evt_bat_workfn);
-+	work->dev = d->dev;
-+
-+	memcpy(&work->event, event, sizeof(struct ssam_event) + event->length);
-+
-+	schedule_delayed_work(&work->work, delay);
-+	return SSAM_NOTIF_HANDLED;
-+}
-+
-+static int san_evt_tmp_trip(struct device *dev, const struct ssam_event *event)
-+{
-+	union acpi_object param;
-+
-+	/*
-+	 * The Surface ACPI expects an integer and not a package. This will
-+	 * cause a warning in acpica/nsarguments.c, but that warning can be
-+	 * safely ignored.
-+	 */
-+	param.type = ACPI_TYPE_INTEGER;
-+	param.integer.value = event->instance_id;
-+
-+	return san_acpi_notify_event(dev, SAN_DSM_EVENT_FN_THERMAL, &param);
-+}
-+
-+static bool san_evt_tmp(const struct ssam_event *event, struct device *dev)
-+{
-+	int status;
-+
-+	switch (event->command_id) {
-+	case SAM_EVENT_CID_TMP_TRIP:
-+		status = san_evt_tmp_trip(dev, event);
-+		break;
-+
-+	default:
-+		return false;
-+	}
-+
-+	if (status) {
-+		dev_err(dev, "error handling thermal event (cid = %x)\n",
-+			event->command_id);
-+	}
-+
-+	return true;
-+}
-+
-+static u32 san_evt_tmp_nf(struct ssam_event_notifier *nf,
-+			  const struct ssam_event *event)
-+{
-+	struct san_data *d = to_san_data(nf, nf_bat);
-+
-+	return san_evt_tmp(event, d->dev) ? SSAM_NOTIF_HANDLED : 0;
-+}
-+
-+
-+/* -- ACPI GSB OperationRegion Handler -------------------------------------- */
-+
-+struct gsb_data_in {
-+	u8 cv;
-+} __packed;
-+
-+struct gsb_data_rqsx {
-+	u8 cv;				// command value (san_gsb_request_cv)
-+	u8 tc;				// target category
-+	u8 tid;				// target ID
-+	u8 iid;				// instance ID
-+	u8 snc;				// expect-response-flag?
-+	u8 cid;				// command ID
-+	u16 cdl;			// payload length
-+	u8 pld[];			// payload
-+} __packed;
-+
-+struct gsb_data_etwl {
-+	u8 cv;				// command value (should be 0x02)
-+	u8 etw3;			// unknown
-+	u8 etw4;			// unknown
-+	u8 msg[];			// error message (ASCIIZ)
-+} __packed;
-+
-+struct gsb_data_out {
-+	u8 status;			// _SSH communication status
-+	u8 len;				// _SSH payload length
-+	u8 pld[];			// _SSH payload
-+} __packed;
-+
-+union gsb_buffer_data {
-+	struct gsb_data_in   in;	// common input
-+	struct gsb_data_rqsx rqsx;	// RQSX input
-+	struct gsb_data_etwl etwl;	// ETWL input
-+	struct gsb_data_out  out;	// output
-+};
-+
-+struct gsb_buffer {
-+	u8 status;			// GSB AttribRawProcess status
-+	u8 len;				// GSB AttribRawProcess length
-+	union gsb_buffer_data data;
-+} __packed;
-+
-+#define SAN_GSB_MAX_RQSX_PAYLOAD  (U8_MAX - 2 - sizeof(struct gsb_data_rqsx))
-+#define SAN_GSB_MAX_RESPONSE	  (U8_MAX - 2 - sizeof(struct gsb_data_out))
-+
-+#define SAN_GSB_COMMAND		0
-+
-+enum san_gsb_request_cv {
-+	SAN_GSB_REQUEST_CV_RQST = 0x01,
-+	SAN_GSB_REQUEST_CV_ETWL = 0x02,
-+	SAN_GSB_REQUEST_CV_RQSG = 0x03,
-+};
-+
-+#define SAN_REQUEST_NUM_TRIES	5
-+
-+static acpi_status san_etwl(struct san_data *d, struct gsb_buffer *b)
-+{
-+	struct gsb_data_etwl *etwl = &b->data.etwl;
-+
-+	if (b->len < sizeof(struct gsb_data_etwl)) {
-+		dev_err(d->dev, "invalid ETWL package (len = %d)\n", b->len);
-+		return AE_OK;
-+	}
-+
-+	dev_err(d->dev, "ETWL(0x%02x, 0x%02x): %.*s\n", etwl->etw3, etwl->etw4,
-+		(unsigned int)(b->len - sizeof(struct gsb_data_etwl)),
-+		(char *)etwl->msg);
-+
-+	// indicate success
-+	b->status = 0x00;
-+	b->len = 0x00;
-+
-+	return AE_OK;
-+}
-+
-+static struct gsb_data_rqsx *san_validate_rqsx(struct device *dev,
-+		const char *type, struct gsb_buffer *b)
-+{
-+	struct gsb_data_rqsx *rqsx = &b->data.rqsx;
-+
-+	if (b->len < sizeof(struct gsb_data_rqsx)) {
-+		dev_err(dev, "invalid %s package (len = %d)\n", type, b->len);
-+		return NULL;
-+	}
-+
-+	if (get_unaligned(&rqsx->cdl) != b->len - sizeof(struct gsb_data_rqsx)) {
-+		dev_err(dev, "bogus %s package (len = %d, cdl = %d)\n",
-+			type, b->len, get_unaligned(&rqsx->cdl));
-+		return NULL;
-+	}
-+
-+	if (get_unaligned(&rqsx->cdl) > SAN_GSB_MAX_RQSX_PAYLOAD) {
-+		dev_err(dev, "payload for %s package too large (cdl = %d)\n",
-+			type, get_unaligned(&rqsx->cdl));
-+		return NULL;
-+	}
-+
-+	return rqsx;
-+}
-+
-+static void gsb_rqsx_response_error(struct gsb_buffer *gsb, int status)
-+{
-+	gsb->status = 0x00;
-+	gsb->len = 0x02;
-+	gsb->data.out.status = (u8)(-status);
-+	gsb->data.out.len = 0x00;
-+}
-+
-+static void gsb_rqsx_response_success(struct gsb_buffer *gsb, u8 *ptr, size_t len)
-+{
-+	gsb->status = 0x00;
-+	gsb->len = len + 2;
-+	gsb->data.out.status = 0x00;
-+	gsb->data.out.len = len;
-+
-+	if (len)
-+		memcpy(&gsb->data.out.pld[0], ptr, len);
-+}
-+
-+static acpi_status san_rqst_fixup_suspended(struct san_data *d,
-+					    struct ssam_request *rqst,
-+					    struct gsb_buffer *gsb)
-+{
-+	if (rqst->target_category == SSAM_SSH_TC_BAS && rqst->command_id == 0x0D) {
-+		u8 base_state = 1;
-+
-+		/* Base state quirk:
-+		 * The base state may be queried from ACPI when the EC is still
-+		 * suspended. In this case it will return '-EPERM'. This query
-+		 * will only be triggered from the ACPI lid GPE interrupt, thus
-+		 * we are either in laptop or studio mode (base status 0x01 or
-+		 * 0x02). Furthermore, we will only get here if the device (and
-+		 * EC) have been suspended.
-+		 *
-+		 * We now assume that the device is in laptop mode (0x01). This
-+		 * has the drawback that it will wake the device when unfolding
-+		 * it in studio mode, but it also allows us to avoid actively
-+		 * waiting for the EC to wake up, which may incur a notable
-+		 * delay.
-+		 */
-+
-+		dev_dbg(d->dev, "rqst: fixup: base-state quirk\n");
-+
-+		gsb_rqsx_response_success(gsb, &base_state, sizeof(base_state));
-+		return AE_OK;
-+	}
-+
-+	gsb_rqsx_response_error(gsb, -ENXIO);
-+	return AE_OK;
-+}
-+
-+static acpi_status san_rqst(struct san_data *d, struct gsb_buffer *buffer)
-+{
-+	u8 rspbuf[SAN_GSB_MAX_RESPONSE];
-+	struct gsb_data_rqsx *gsb_rqst;
-+	struct ssam_request rqst;
-+	struct ssam_response rsp;
-+	int status = 0;
-+
-+	gsb_rqst = san_validate_rqsx(d->dev, "RQST", buffer);
-+	if (!gsb_rqst)
-+		return AE_OK;
-+
-+	rqst.target_category = gsb_rqst->tc;
-+	rqst.target_id = gsb_rqst->tid;
-+	rqst.command_id = gsb_rqst->cid;
-+	rqst.instance_id = gsb_rqst->iid;
-+	rqst.flags = gsb_rqst->snc ? SSAM_REQUEST_HAS_RESPONSE : 0;
-+	rqst.length = get_unaligned(&gsb_rqst->cdl);
-+	rqst.payload = &gsb_rqst->pld[0];
-+
-+	rsp.capacity = ARRAY_SIZE(rspbuf);
-+	rsp.length = 0;
-+	rsp.pointer = &rspbuf[0];
-+
-+	// handle suspended device
-+	if (d->dev->power.is_suspended) {
-+		dev_warn(d->dev, "rqst: device is suspended, not executing\n");
-+		return san_rqst_fixup_suspended(d, &rqst, buffer);
-+	}
-+
-+	status = ssam_retry(ssam_request_sync_onstack, SAN_REQUEST_NUM_TRIES,
-+			    d->ctrl, &rqst, &rsp, SAN_GSB_MAX_RQSX_PAYLOAD);
-+
-+	if (!status) {
-+		gsb_rqsx_response_success(buffer, rsp.pointer, rsp.length);
-+	} else {
-+		dev_err(d->dev, "rqst: failed with error %d\n", status);
-+		gsb_rqsx_response_error(buffer, status);
-+	}
-+
-+	return AE_OK;
-+}
-+
-+static acpi_status san_rqsg(struct san_data *d, struct gsb_buffer *buffer)
-+{
-+	struct gsb_data_rqsx *gsb_rqsg;
-+	struct san_dgpu_event evt;
-+	int status;
-+
-+	gsb_rqsg = san_validate_rqsx(d->dev, "RQSG", buffer);
-+	if (!gsb_rqsg)
-+		return AE_OK;
-+
-+	evt.category = gsb_rqsg->tc;
-+	evt.target = gsb_rqsg->tid;
-+	evt.command = gsb_rqsg->cid;
-+	evt.instance = gsb_rqsg->iid;
-+	evt.length = get_unaligned(&gsb_rqsg->cdl);
-+	evt.payload = &gsb_rqsg->pld[0];
-+
-+	status = san_dgpu_notifier_call(&evt);
-+	if (!status) {
-+		gsb_rqsx_response_success(buffer, NULL, 0);
-+	} else {
-+		dev_err(d->dev, "rqsg: failed with error %d\n", status);
-+		gsb_rqsx_response_error(buffer, status);
-+	}
-+
-+	return AE_OK;
-+}
-+
-+static acpi_status san_opreg_handler(u32 function,
-+		acpi_physical_address command, u32 bits, u64 *value64,
-+		void *opreg_context, void *region_context)
-+{
-+	struct san_data *d = to_san_data(opreg_context, info);
-+	struct gsb_buffer *buffer = (struct gsb_buffer *)value64;
-+	int accessor_type = (function & 0xFFFF0000) >> 16;
-+
-+	if (command != SAN_GSB_COMMAND) {
-+		dev_warn(d->dev, "unsupported command: 0x%02llx\n", command);
-+		return AE_OK;
-+	}
-+
-+	if (accessor_type != ACPI_GSB_ACCESS_ATTRIB_RAW_PROCESS) {
-+		dev_err(d->dev, "invalid access type: 0x%02x\n", accessor_type);
-+		return AE_OK;
-+	}
-+
-+	// buffer must have at least contain the command-value
-+	if (buffer->len == 0) {
-+		dev_err(d->dev, "request-package too small\n");
-+		return AE_OK;
-+	}
-+
-+	switch (buffer->data.in.cv) {
-+	case SAN_GSB_REQUEST_CV_RQST:
-+		return san_rqst(d, buffer);
-+
-+	case SAN_GSB_REQUEST_CV_ETWL:
-+		return san_etwl(d, buffer);
-+
-+	case SAN_GSB_REQUEST_CV_RQSG:
-+		return san_rqsg(d, buffer);
-+
-+	default:
-+		dev_warn(d->dev, "unsupported SAN0 request (cv: 0x%02x)\n",
-+			 buffer->data.in.cv);
-+		return AE_OK;
-+	}
-+}
-+
-+
-+/* -- Driver setup. --------------------------------------------------------- */
-+
-+static int san_events_register(struct platform_device *pdev)
-+{
-+	struct san_data *d = platform_get_drvdata(pdev);
-+	int status;
-+
-+	d->nf_bat.base.priority = 1;
-+	d->nf_bat.base.fn = san_evt_bat_nf;
-+	d->nf_bat.event.reg = SSAM_EVENT_REGISTRY_SAM;
-+	d->nf_bat.event.id.target_category = SSAM_SSH_TC_BAT;
-+	d->nf_bat.event.id.instance = 0;
-+	d->nf_bat.event.mask = SSAM_EVENT_MASK_TARGET;
-+	d->nf_bat.event.flags = SSAM_EVENT_SEQUENCED;
-+
-+	d->nf_tmp.base.priority = 1;
-+	d->nf_tmp.base.fn = san_evt_tmp_nf;
-+	d->nf_tmp.event.reg = SSAM_EVENT_REGISTRY_SAM;
-+	d->nf_tmp.event.id.target_category = SSAM_SSH_TC_TMP;
-+	d->nf_tmp.event.id.instance = 0;
-+	d->nf_tmp.event.mask = SSAM_EVENT_MASK_TARGET;
-+	d->nf_tmp.event.flags = SSAM_EVENT_SEQUENCED;
-+
-+	status = ssam_notifier_register(d->ctrl, &d->nf_bat);
-+	if (status)
-+		return status;
-+
-+	status = ssam_notifier_register(d->ctrl, &d->nf_tmp);
-+	if (status)
-+		ssam_notifier_unregister(d->ctrl, &d->nf_bat);
-+
-+	return status;
-+}
-+
-+static void san_events_unregister(struct platform_device *pdev)
-+{
-+	struct san_data *d = platform_get_drvdata(pdev);
-+
-+	ssam_notifier_unregister(d->ctrl, &d->nf_bat);
-+	ssam_notifier_unregister(d->ctrl, &d->nf_tmp);
-+}
-+
-+#define san_consumer_printk(level, dev, handle, fmt, ...)			\
-+do {										\
-+	char *path = "<error getting consumer path>";				\
-+	struct acpi_buffer buffer = {						\
-+		.length = ACPI_ALLOCATE_BUFFER,					\
-+		.pointer = NULL,						\
-+	};									\
-+										\
-+	if (ACPI_SUCCESS(acpi_get_name(handle, ACPI_FULL_PATHNAME, &buffer)))	\
-+		path = buffer.pointer;						\
-+										\
-+	dev_##level(dev, "[%s]: " fmt, path, ##__VA_ARGS__);			\
-+	kfree(buffer.pointer);							\
-+} while (0)
-+
-+#define san_consumer_dbg(dev, handle, fmt, ...) \
-+	san_consumer_printk(dbg, dev, handle, fmt, ##__VA_ARGS__)
-+
-+#define san_consumer_warn(dev, handle, fmt, ...) \
-+	san_consumer_printk(warn, dev, handle, fmt, ##__VA_ARGS__)
-+
-+static bool is_san_consumer(struct platform_device *pdev, acpi_handle handle)
-+{
-+	struct acpi_handle_list dep_devices;
-+	acpi_handle supplier = ACPI_HANDLE(&pdev->dev);
-+	acpi_status status;
-+	int i;
-+
-+	if (!acpi_has_method(handle, "_DEP"))
-+		return false;
-+
-+	status = acpi_evaluate_reference(handle, "_DEP", NULL, &dep_devices);
-+	if (ACPI_FAILURE(status)) {
-+		san_consumer_dbg(&pdev->dev, handle, "failed to evaluate _DEP\n");
-+		return false;
-+	}
-+
-+	for (i = 0; i < dep_devices.count; i++) {
-+		if (dep_devices.handles[i] == supplier)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static acpi_status san_consumer_setup(acpi_handle handle, u32 lvl,
-+				      void *context, void **rv)
-+{
-+	const u32 flags = DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_SUPPLIER;
-+	struct platform_device *pdev = context;
-+	struct acpi_device *adev;
-+	struct device_link *link;
-+
-+	if (!is_san_consumer(pdev, handle))
-+		return AE_OK;
-+
-+	// ignore ACPI devices that are not present
-+	if (acpi_bus_get_device(handle, &adev) != 0)
-+		return AE_OK;
-+
-+	san_consumer_dbg(&pdev->dev, handle, "creating device link\n");
-+
-+	// try to set up device links, ignore but log errors
-+	link = device_link_add(&adev->dev, &pdev->dev, flags);
-+	if (!link) {
-+		san_consumer_warn(&pdev->dev, handle,
-+				  "failed to create device link\n");
-+		return AE_OK;
-+	}
-+
-+	return AE_OK;
-+}
-+
-+static int san_consumer_links_setup(struct platform_device *pdev)
-+{
-+	acpi_status status;
-+
-+	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
-+				     ACPI_UINT32_MAX, san_consumer_setup, NULL,
-+				     pdev, NULL);
-+
-+	return status ? -EFAULT : 0;
-+}
-+
-+static int san_probe(struct platform_device *pdev)
-+{
-+	acpi_handle san = ACPI_HANDLE(&pdev->dev);
-+	struct ssam_controller *ctrl;
-+	struct san_data *data;
-+	acpi_status astatus;
-+	int status;
-+
-+	status = ssam_client_bind(&pdev->dev, &ctrl);
-+	if (status)
-+		return status == -ENXIO ? -EPROBE_DEFER : status;
-+
-+	status = san_consumer_links_setup(pdev);
-+	if (status)
-+		return status;
-+
-+	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->dev = &pdev->dev;
-+	data->ctrl = ctrl;
-+
-+	platform_set_drvdata(pdev, data);
-+
-+	astatus = acpi_install_address_space_handler(san, ACPI_ADR_SPACE_GSBUS,
-+			&san_opreg_handler, NULL, &data->info);
-+	if (ACPI_FAILURE(astatus))
-+		return -ENXIO;
-+
-+	status = san_events_register(pdev);
-+	if (status)
-+		goto err_enable_events;
-+
-+	status = san_set_rqsg_interface_device(&pdev->dev);
-+	if (status)
-+		goto err_install_dev;
-+
-+	acpi_walk_dep_device_list(san);
-+	return 0;
-+
-+err_install_dev:
-+	san_events_unregister(pdev);
-+err_enable_events:
-+	acpi_remove_address_space_handler(san, ACPI_ADR_SPACE_GSBUS,
-+					  &san_opreg_handler);
-+	return status;
-+}
-+
-+static int san_remove(struct platform_device *pdev)
-+{
-+	acpi_handle san = ACPI_HANDLE(&pdev->dev);
-+
-+	san_set_rqsg_interface_device(NULL);
-+	acpi_remove_address_space_handler(san, ACPI_ADR_SPACE_GSBUS,
-+					  &san_opreg_handler);
-+	san_events_unregister(pdev);
-+
-+	/*
-+	 * We have unregistered our event sources. Now we need to ensure that
-+	 * all delayed works they may have spawned are run to completion.
-+	 */
-+	flush_scheduled_work();
-+
-+	return 0;
-+}
-+
-+static const struct acpi_device_id san_match[] = {
-+	{ "MSHW0091" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(acpi, san_match);
-+
-+static struct platform_driver surface_acpi_notify = {
-+	.probe = san_probe,
-+	.remove = san_remove,
-+	.driver = {
-+		.name = "surface_acpi_notify",
-+		.acpi_match_table = san_match,
-+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-+	},
-+};
-+module_platform_driver(surface_acpi_notify);
-+
-+MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
-+MODULE_DESCRIPTION("Surface ACPI Notify driver for Surface System Aggregator Module");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/surface_acpi_notify.h b/include/linux/surface_acpi_notify.h
-new file mode 100644
-index 000000000000..ee5e04f2eb48
---- /dev/null
-+++ b/include/linux/surface_acpi_notify.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Interface for Surface ACPI Notify (SAN) driver.
-+ *
-+ * Provides access to discrete GPU notifications sent from ACPI via the SAN
-+ * driver, which are not handled by this driver directly.
-+ */
-+
-+#ifndef _LINUX_SURFACE_ACPI_NOTIFY_H
-+#define _LINUX_SURFACE_ACPI_NOTIFY_H
-+
-+#include <linux/notifier.h>
-+#include <linux/types.h>
-+
-+/**
-+ * struct san_dgpu_event - Discrete GPU ACPI event.
-+ * @category: Category of the event.
-+ * @target:   Target ID of the event source.
-+ * @command:  Command ID of the event.
-+ * @instance: Instance ID of the event source.
-+ * @length:   Length of the event's payload data (in bytes).
-+ * @payload:  Pointer to the event's payload data.
-+ */
-+struct san_dgpu_event {
-+	u8 category;
-+	u8 target;
-+	u8 command;
-+	u8 instance;
-+	u16 length;
-+	u8 *payload;
-+};
-+
-+int san_client_link(struct device *client);
-+int san_dgpu_notifier_register(struct notifier_block *nb);
-+int san_dgpu_notifier_unregister(struct notifier_block *nb);
-+
-+#endif /* _LINUX_SURFACE_ACPI_NOTIFY_H */
+I'd like to stress that what I propose here is both simple and powerful.
+
+> possible I think, such as preparing a larger MIGRATE_UNMOVABLE area in the
+> existing memory before we allocate those long-term management structures. Or
+> onlining a bunch of blocks as zone_movable first and only later convert to
+> zone_normal in a controlled way when existing normal zone becomes depeted?
+
+I see the following (more or less complicated) alternatives
+
+1) Having a larger MIGRATE_UNMOVABLE area
+
+a) Sizing it is difficult. I mean you would have to plan ahead for all
+memory you might eventually hotplug later - and that could even be
+impossible if you hotplug quite a lot of memory to a smaller machine.
+(I've seen people in the vm/container world trying to hotplug 128GB
+DIMMs to 2GB VMs ... and failing for obvious reasons)
+b) not really desired. You usually want to have most memory movable, not
+the opposite (just because you might hotplug memory in small chunks later).
+
+2) smarter onlining
+
+I have prototype patches for better auto-onlining (which I'll share at
+some point), where I balance between ZONE_NORMAL and ZONE_MOVABLE in a
+defined ratio. Assuming something very simple, adding separate memory
+blocks and onlining them based on the current zone ratio (assuming a 1:4
+normal:movable target ratio) would (without some other policies I have
+in place) result in something like this for hotplugged memory (via
+virtio-mem):
+
+[N][M][M][M][M][N][M][M][M][M][N][M][M][M][M]...
+
+(note: layout is suboptimal, just a simple example)
+
+But even here, all [N] memory blocks would immediately be use for
+allocations for the memmap of successive blocks. It doesn't solve the
+dependency issues.
+
+Now assume we would want to group [N] in a way to allow for gigantic
+pages, like
+
+[N][N][N][N][N][N][N][N][M][M][M][M] ....
+
+we would, once again, never be able to allocate a gigantic page because
+all [N] would contain a memmap.
+
+3) conversion from MOVABLE -> NORMAL
+
+While a conversion from MOVABLE to NORMAL would be interesting to see,
+it's going to be a challenging task to actually implement (people expect
+that page_zone() remains stable). Without any hacks, we'd have to
+
+1. offline the selected (MOVABLE) memory block/chunk
+2. online the selected memory block/chunk to the NORMAL zone
+
+This is not something we can do out of random context (for example, we
+need both, the device hotplug lock and the memory hotplug lock, as we
+might race with user space) - so there might still be a chance of
+corner-case OOMs.
+
+(I assume there could also be quite a negative performance impact when
+always relying on the conversion, and not properly planning ahead as in 2.)
+
+> 
+> I guess it's an issue that the e.g. 128M block onlines are so disconnected from
+> each other it's hard to employ a strategy that works best for e.g. a whole bunch
+> of GB onlined at once. But I noticed some effort towards new API, so maybe that
+> will be solved there too?
+
+While new interfaces might make it easier to identify boundaries of
+separate DIMMs (e.g., to online a single DIMM either movable or
+unmovable - which can partially be done right now when going via memory
+resource boundaries), it doesn't help for the use case of adding
+separate memory blocks.
+
+So while having an automatic conversion from MOVABLE -> NORMAL would be
+interesting, I doubt we'll see it in the foreseeable future. Are there
+any similarly simple alternatives to optimize this?
+
+Thanks!
+
 -- 
-2.28.0
+Thanks,
+
+David / dhildenb
 
