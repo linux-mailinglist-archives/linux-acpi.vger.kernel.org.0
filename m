@@ -2,287 +2,296 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 033D12752D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 10:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4D52756E8
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Sep 2020 13:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgIWIEv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Sep 2020 04:04:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:54553 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726130AbgIWIEs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 23 Sep 2020 04:04:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600848285;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=N48g0ejR7+vnU9zZ+7/ssBxVKHOZrfIs9xMj3k/315g=;
-        b=di9RU7yU1QC4mHS9bTsXTcgy470qzpleSkeu05q40alMyJkLxiqWN+zadBxPsPH0X3RVoY
-        TZ8mSRVkSBSzeJUvHTNKnbCC3e+8Vbr5aL0r/IcelZ7bJmcCCJTp4xcPC6ayx6QwpC8YYW
-        NI2xUg4/iRLTX6P6uEqTTdpNW6SI9F0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-366-ZcDCLb34Nnea1KP1GqBCnA-1; Wed, 23 Sep 2020 04:04:41 -0400
-X-MC-Unique: ZcDCLb34Nnea1KP1GqBCnA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5B6EA1018F64;
-        Wed, 23 Sep 2020 08:04:39 +0000 (UTC)
-Received: from [10.36.112.54] (ovpn-112-54.ams2.redhat.com [10.36.112.54])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A319C5C26B;
-        Wed, 23 Sep 2020 08:04:36 +0000 (UTC)
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To:     Joao Martins <joao.m.martins@oracle.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     akpm@linux-foundation.org, Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        peterz@infradead.org, ard.biesheuvel@linaro.org,
-        linux-mm@kvack.org, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
- <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
- <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <9acc6148-72eb-7016-dba9-46fa87ded5a5@redhat.com>
-Date:   Wed, 23 Sep 2020 10:04:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1726574AbgIWLMd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Sep 2020 07:12:33 -0400
+Received: from mo-csw-fb1115.securemx.jp ([210.130.202.174]:58902 "EHLO
+        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726332AbgIWLMc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 07:12:32 -0400
+X-Greylist: delayed 3877 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 07:12:30 EDT
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1115) id 08NA7t6X018693; Wed, 23 Sep 2020 19:07:56 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1115) id 08NA7M88029552; Wed, 23 Sep 2020 19:07:22 +0900
+X-Iguazu-Qid: 2wHHjJER8cR1uaLOcL
+X-Iguazu-QSIG: v=2; s=0; t=1600855641; q=2wHHjJER8cR1uaLOcL; m=em4N8ro/bqvmQjobQrvNWahNf98bQj6KJr+hhIewB/E=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1112) id 08NA7JYQ026085;
+        Wed, 23 Sep 2020 19:07:19 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 08NA7JCE014101;
+        Wed, 23 Sep 2020 19:07:19 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 08NA7Ik6017583;
+        Wed, 23 Sep 2020 19:07:18 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
+Date:   Wed, 23 Sep 2020 19:07:17 +0900
+In-Reply-To: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
+        (Smita Koralahalli's message of "Fri, 4 Sep 2020 09:04:44 -0500")
+X-TSB-HOP: ON
+Message-ID: <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 08.09.20 17:33, Joao Martins wrote:
-> [Sorry for the late response]
-> 
-> On 8/21/20 11:06 AM, David Hildenbrand wrote:
->> On 03.08.20 07:03, Dan Williams wrote:
->>> @@ -37,109 +45,94 @@ int dev_dax_kmem_probe(struct device *dev)
->>>  	 * could be mixed in a node with faster memory, causing
->>>  	 * unavoidable performance issues.
->>>  	 */
->>> -	numa_node = dev_dax->target_node;
->>>  	if (numa_node < 0) {
->>>  		dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
->>>  				numa_node);
->>>  		return -EINVAL;
->>>  	}
->>>  
->>> -	/* Hotplug starting at the beginning of the next block: */
->>> -	kmem_start = ALIGN(range->start, memory_block_size_bytes());
->>> -
->>> -	kmem_size = range_len(range);
->>> -	/* Adjust the size down to compensate for moving up kmem_start: */
->>> -	kmem_size -= kmem_start - range->start;
->>> -	/* Align the size down to cover only complete blocks: */
->>> -	kmem_size &= ~(memory_block_size_bytes() - 1);
->>> -	kmem_end = kmem_start + kmem_size;
->>> -
->>> -	new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
->>> -	if (!new_res_name)
->>> +	res_name = kstrdup(dev_name(dev), GFP_KERNEL);
->>> +	if (!res_name)
->>>  		return -ENOMEM;
->>>  
->>> -	/* Region is permanently reserved if hotremove fails. */
->>> -	new_res = request_mem_region(kmem_start, kmem_size, new_res_name);
->>> -	if (!new_res) {
->>> -		dev_warn(dev, "could not reserve region [%pa-%pa]\n",
->>> -			 &kmem_start, &kmem_end);
->>> -		kfree(new_res_name);
->>> +	res = request_mem_region(range.start, range_len(&range), res_name);
->>
->> I think our range could be empty after aligning. I assume
->> request_mem_region() would check that, but maybe we could report a
->> better error/warning in that case.
->>
-> dax_kmem_range() already returns a memory-block-aligned @range but
-> IIUC request_mem_region() isn't checking for that. Having said that
-> the returned @res wouldn't be different from the passed range.start.
-> 
->>>  	/*
->>>  	 * Ensure that future kexec'd kernels will not treat this as RAM
->>>  	 * automatically.
->>>  	 */
->>> -	rc = add_memory_driver_managed(numa_node, new_res->start,
->>> -				       resource_size(new_res), kmem_name);
->>> +	rc = add_memory_driver_managed(numa_node, res->start,
->>> +				       resource_size(res), kmem_name);
->>> +
->>> +	res->flags |= IORESOURCE_BUSY;
->>
->> Hm, I don't think that's correct. Any specific reason why to mark the
->> not-added, unaligned parts BUSY? E.g., walk_system_ram_range() could
->> suddenly stumble over it - and e.g., similarly kexec code when trying to
->> find memory for placing kexec images. I think we should leave this
->> !BUSY, just as it is right now.
->>
-> Agreed.
-> 
->>>  	if (rc) {
->>> -		release_resource(new_res);
->>> -		kfree(new_res);
->>> -		kfree(new_res_name);
->>> +		release_mem_region(range.start, range_len(&range));
->>> +		kfree(res_name);
->>>  		return rc;
->>>  	}
->>> -	dev_dax->dax_kmem_res = new_res;
->>> +
->>> +	dev_set_drvdata(dev, res_name);
->>>  
->>>  	return 0;
->>>  }
->>>  
->>>  #ifdef CONFIG_MEMORY_HOTREMOVE
->>> -static int dev_dax_kmem_remove(struct device *dev)
->>> +static void dax_kmem_release(struct dev_dax *dev_dax)
->>>  {
->>> -	struct dev_dax *dev_dax = to_dev_dax(dev);
->>> -	struct resource *res = dev_dax->dax_kmem_res;
->>> -	resource_size_t kmem_start = res->start;
->>> -	resource_size_t kmem_size = resource_size(res);
->>> -	const char *res_name = res->name;
->>>  	int rc;
->>> +	struct device *dev = &dev_dax->dev;
->>> +	const char *res_name = dev_get_drvdata(dev);
->>> +	struct range range = dax_kmem_range(dev_dax);
->>>  
->>>  	/*
->>>  	 * We have one shot for removing memory, if some memory blocks were not
->>>  	 * offline prior to calling this function remove_memory() will fail, and
->>>  	 * there is no way to hotremove this memory until reboot because device
->>> -	 * unbind will succeed even if we return failure.
->>> +	 * unbind will proceed regardless of the remove_memory result.
->>>  	 */
->>> -	rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
->>> -	if (rc) {
->>> -		any_hotremove_failed = true;
->>> -		dev_err(dev,
->>> -			"DAX region %pR cannot be hotremoved until the next reboot\n",
->>> -			res);
->>> -		return rc;
->>> +	rc = remove_memory(dev_dax->target_node, range.start, range_len(&range));
->>> +	if (rc == 0) {
->>
->> if (!rc) ?
->>
-> Better off would be to keep the old order:
-> 
-> 	if (rc) {
-> 		any_hotremove_failed = true;
-> 		dev_err(dev, "%#llx-%#llx cannot be hotremoved until the next reboot\n",
-> 				range.start, range.end);
-> 	        return;
-> 	}
-> 
-> 	release_mem_region(range.start, range_len(&range));
-> 	dev_set_drvdata(dev, NULL);
-> 	kfree(res_name);
-> 	return;
-> 
-> 
->>> +		release_mem_region(range.start, range_len(&range));
->>
->> remove_memory() does a release_mem_region_adjustable(). Don't you
->> actually want to release the *unaligned* region you requested?
->>
-> Isn't it what we're doing here?
-> (The release_mem_region_adjustable() is using the same
-> dax_kmem-aligned range and there's no split/adjust)
-> 
-> Meaning right now (+ parent marked as !BUSY), and if I am understanding
-> this correctly:
-> 
-> request_mem_region(range.start, range_len)
->    __request_region(iomem_res, range.start, range_len) -> alloc @parent
-> add_memory_driver_managed(parent.start, resource_size(parent))
->    __request_region(parent.start, resource_size(parent)) -> alloc @child
-> 
-> [...]
-> 
-> remove_memory(range.start, range_len)
->  request_mem_region_adjustable(range.start, range_len)
->   __release_region(range.start, range_len) -> remove @child
-> 
-> release_mem_region(range.start, range_len)
->   __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
-> 
-> The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
-> unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
-> 
-> 	Joao
-> 
+Hi Smita,
 
-Thinking about it, if we don't set the parent resource BUSY (which is
-what I think is the right way of doing things), and don't want to store
-the parent resource pointer, we could add something like
-lookup_resource() - e.g., lookup_mem_resource() - , however, searching
-properly in the whole hierarchy (instead of only the first level), and
-traversing down to the last hierarchy. Then it would be as simple as
+A few comments below.
 
-remove_memory(range.start, range_len)
-res = lookup_mem_resource(range.start);
-release_resource(res);
+Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
 
--- 
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
+>
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
+>
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
+>
+> [ Build error in patch v1. ]
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+
+I know Boris asked you to add the reason for the Reported-by, but
+usually we don't track version differences in the committed patch.
+
+Boris, can you confirm if you want the Reported-by to be retained?
+
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> ---
+> Link:
+> https://lkml.kernel.org/r/20200903234531.162484-2-Smita.KoralahalliChannabasappa@amd.com
+>
+> v4:
+> 	Included what kernel test robot reported.
+> 	Changed function name from apei_mce_report_x86_error ->
+> 	apei_smca_report_x86_error.
+> 	Added comment for MASK_MCA_STATUS definition.
+> 	Wrapped apei_smca_report_x86_error() with CONFIG_X86_MCE in
+> 	arch/x86/include/asm/mce.h
+> v3:
+> 	Moved arch specific declarations from generic headers to arch
+> 	specific headers.
+> 	Cleaned additional declarations which are unnecessary.
+> 	Included the check for context type.
+> 	Added additional check to verify for appropriate MSR address in
+> 	the register layout.
+> v2:
+> 	Fixed build error reported by kernel test robot.
+> 	Passed struct variable as function argument instead of entire struct.
+> ---
+>  arch/x86/include/asm/acpi.h     | 11 ++++++++
+>  arch/x86/include/asm/mce.h      |  5 ++++
+>  arch/x86/kernel/acpi/apei.c     |  5 ++++
+>  arch/x86/kernel/cpu/mce/apei.c  | 49 +++++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper-x86.c | 10 +++++--
+>  5 files changed, 77 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index 6d2df1ee427b..65064d9f7fa6 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -159,6 +159,8 @@ static inline u64 x86_default_get_root_pointer(void)
+>  extern int x86_acpi_numa_init(void);
+>  #endif /* CONFIG_ACPI_NUMA */
+>  
+> +struct cper_ia_proc_ctx;
+> +
+>  #ifdef CONFIG_ACPI_APEI
+>  static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
+>  {
+> @@ -177,6 +179,15 @@ static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
+>  	 */
+>  	return PAGE_KERNEL_NOENC;
+>  }
+> +
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+> +#else
+> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +					     u64 lapic_id)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+>  
+>  #define ACPI_TABLE_UPGRADE_MAX_PHYS (max_low_pfn_mapped << PAGE_SHIFT)
+> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+> index 109af5c7f515..d07bd635acfd 100644
+> --- a/arch/x86/include/asm/mce.h
+> +++ b/arch/x86/include/asm/mce.h
+> @@ -173,17 +173,22 @@ extern void mce_unregister_decode_chain(struct notifier_block *nb);
+>  #include <linux/atomic.h>
+>  
+>  extern int mce_p5_enabled;
+> +struct cper_ia_proc_ctx;
+>  
+>  #ifdef CONFIG_X86_MCE
+>  int mcheck_init(void);
+>  void mcheck_cpu_init(struct cpuinfo_x86 *c);
+>  void mcheck_cpu_clear(struct cpuinfo_x86 *c);
+>  void mcheck_vendor_init_severity(void);
+> +int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+>  #else
+>  static inline int mcheck_init(void) { return 0; }
+>  static inline void mcheck_cpu_init(struct cpuinfo_x86 *c) {}
+>  static inline void mcheck_cpu_clear(struct cpuinfo_x86 *c) {}
+>  static inline void mcheck_vendor_init_severity(void) {}
+> +static inline int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +					     u64 lapic_id) { return -EINVAL; }
+>  #endif
+>  
+>  #ifdef CONFIG_X86_ANCIENT_MCE
+> diff --git a/arch/x86/kernel/acpi/apei.c b/arch/x86/kernel/acpi/apei.c
+> index c22fb55abcfd..0916f00a992e 100644
+> --- a/arch/x86/kernel/acpi/apei.c
+> +++ b/arch/x86/kernel/acpi/apei.c
+> @@ -43,3 +43,8 @@ void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+>  	apei_mce_report_mem_error(sev, mem_err);
+>  #endif
+>  }
+> +
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	return apei_smca_report_x86_error(ctx_info, lapic_id);
+> +}
+> diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+> index af8d37962586..d4b3a2053eef 100644
+> --- a/arch/x86/kernel/cpu/mce/apei.c
+> +++ b/arch/x86/kernel/cpu/mce/apei.c
+> @@ -51,6 +51,55 @@ void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+>  }
+>  EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
+>  
+> +/*
+> + * The first expected register in the register layout of MCAX address space.
+> + * The address defined must match with the first MSR address extracted from
+> + * BERT which in SMCA systems is the bank's MCA_STATUS register.
+> + *
+> + * Note that the decoding of the raw MSR values in BERT is implementation
+> + * specific and follows register offset order of MCAX address space.
+> + */
+> +#define MASK_MCA_STATUS 0xC0002001
+
+The macro value is already defined in mce.h as
+MSR_AMD64_SMCA_MC0_STATUS.  Is there any reason to not use it?
+
+You can move the comment to where you check the status register.
+
+
+> +
+> +int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	const u64 *i_mce = ((const void *) (ctx_info + 1));
+
+This can directly be cast into (const u64 *).
+
+> +	unsigned int cpu;
+> +	struct mce m;
+> +
+> +	if (!boot_cpu_has(X86_FEATURE_SMCA))
+> +		return -EINVAL;
+> +
+> +	if ((ctx_info->msr_addr & MASK_MCA_STATUS) != MASK_MCA_STATUS)
+> +		return -EINVAL;
+> +
+> +	mce_setup(&m);
+> +
+> +	m.extcpu = -1;
+> +	m.socketid = -1;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		if (cpu_data(cpu).initial_apicid == lapic_id) {
+> +			m.extcpu = cpu;
+> +			m.socketid = cpu_data(m.extcpu).phys_proc_id;
+> +			break;
+> +		}
+> +	}
+> +
+> +	m.apicid = lapic_id;
+> +	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
+> +	m.status = *i_mce;
+> +	m.addr = *(i_mce + 1);
+> +	m.misc = *(i_mce + 2);
+> +	/* Skipping MCA_CONFIG */
+> +	m.ipid = *(i_mce + 4);
+> +	m.synd = *(i_mce + 5);
+
+Instead of using the raw pointer arithmetic, it is better to define a
+structure for the MCA registers? Something like -
+
+    struct {
+        u64 addr;
+        u64 misc;
+        u64 config;
+        u64 ipid;
+        ...
+    }
+
+Checking back, this was mentioned in the previous review comments as
+well. Please address all comments before posting a new version - either
+by following the suggestion or explaining why it is not a good idea.
+
 Thanks,
+Punit
 
-David / dhildenb
-
+> +
+> +	mce_log(&m);
+> +
+> +	return 0;
+> +}
+> +
+>  #define CPER_CREATOR_MCE						\
+>  	GUID_INIT(0x75a574e3, 0x5052, 0x4b29, 0x8a, 0x8e, 0xbe, 0x2c,	\
+>  		  0x64, 0x90, 0xb8, 0x9d)
+> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+> index 2531de49f56c..2f2b0c431c18 100644
+> --- a/drivers/firmware/efi/cper-x86.c
+> +++ b/drivers/firmware/efi/cper-x86.c
+> @@ -2,6 +2,7 @@
+>  // Copyright (C) 2018, Advanced Micro Devices, Inc.
+>  
+>  #include <linux/cper.h>
+> +#include <linux/acpi.h>
+>  
+>  /*
+>   * We don't need a "CPER_IA" prefix since these are all locally defined.
+> @@ -347,9 +348,12 @@ void cper_print_proc_ia(const char *pfx, const struct cper_sec_proc_ia *proc)
+>  			       ctx_info->mm_reg_addr);
+>  		}
+>  
+> -		printk("%sRegister Array:\n", newpfx);
+> -		print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> -			       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		if (ctx_info->reg_ctx_type != CTX_TYPE_MSR ||
+> +		    arch_apei_report_x86_error(ctx_info, proc->lapic_id)) {
+> +			printk("%sRegister Array:\n", newpfx);
+> +			print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> +				       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		}
+>  
+>  		ctx_info = (struct cper_ia_proc_ctx *)((long)ctx_info + size);
+>  	}
