@@ -2,65 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 771C8277B2F
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 23:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E929F277B41
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 23:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgIXVls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Sep 2020 17:41:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26738 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726448AbgIXVls (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 24 Sep 2020 17:41:48 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600983707;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=g/Xbd+gOY1D7k7S7s+pOd/hTecpIxif1KV3RUcYn5rQ=;
-        b=CORwb8PIeVtKETJHQITWzOlbIFhshZvaUAqTKLBdLXqKgfY0LKONKFbRw8I70agE0Eg7Li
-        ZiyAwMaEHal8xJ5GVJod5J2iK4z7l206r/vSlN/JKnFATwuczWZNga6VL5M5LYVQyBwnDI
-        3Wqq78QL3D6cQHVdDQKYukquWa3566A=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-325-TBFGaENKNbesjwwTv2IUcQ-1; Thu, 24 Sep 2020 17:41:44 -0400
-X-MC-Unique: TBFGaENKNbesjwwTv2IUcQ-1
-Received: by mail-wm1-f70.google.com with SMTP id b20so260317wmj.1
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Sep 2020 14:41:44 -0700 (PDT)
+        id S1726578AbgIXVuQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Sep 2020 17:50:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726487AbgIXVuQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 17:50:16 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03246C0613D3
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Sep 2020 14:50:16 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id n22so445126edt.4
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Sep 2020 14:50:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=VhJeuoj+rOPSJ4IEGV+fYVhmYT10xm972NsSejdMkBg=;
+        b=mpx4PkaUmFFwA1xtz/GJ0EVr677LvVWAywlSsSBXx0ShG6AZt57DEjUoyvLg2RGr7Z
+         XcGgHUDzZZ6KrvKq3epkk490qeNIFUZ7WVyzH3k2hV1MN72qalnnNSh1ZNSDRi2MLtBr
+         E72zTYmp0vKyrWmKXZxOsV3KnQVii0Sr3ANFsR+bCuFKdWlMgcIpCImgEkZKy8/R+I2s
+         sqwBTgWf3Vh9dt4g2rUdVd4/T2tJRyZNBbd2wGucpyMBqUgIUxJmtMstfGcJI553/ICm
+         BHqlmsbvM2Oar8F97gSEIPFqlW9TLbnrBzxk9NNJIwT7vjE1gUjc8bXNcqREFCuIjxEE
+         vIXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=g/Xbd+gOY1D7k7S7s+pOd/hTecpIxif1KV3RUcYn5rQ=;
-        b=Md3ocDKDzCrseYkga5fOh8ceUqaBHTbUmENOLzEppb19Y/wi6ehpj5P9d+4hOdpvDu
-         /3qq1CBIoH3f4c63MkAY95Z+hJrmY6sg27Z9MiC1/fBR1cMssBA5cBE0m02n75wH+d3V
-         iCm+J0ltjaKE5/SxdOnmQ9Y+uem5uxnyIYMoXKmC2uWwLp3qkAq5Br2bp5G3aT24EScI
-         4zeZJSthqI1Dw8UEzY/k7ngtMZFNCS6eDuZLt0avJ7gO8VctpvMucEgTdzSjYJ+MO5EP
-         TTWdIL8ddacd3IthwaTF0T8r0+46VQFv0wC1JuM3LzsXhtzSRPDhMpbnhqCq7B3s4lXL
-         UoxQ==
-X-Gm-Message-State: AOAM532wJE/UZ5iqcXWffFTDXAX0nXnQpnq3l5XzaXtHyU2j/6B/D+KM
-        6t10eZ3HGwlwBpWKMNN7IbEs5vkmY7Y4WB3SWU01ErhjZBvnTzKL7ASDieNj9sAkf4taIM1Amqg
-        ydcy7JQwaw+rhKxY5/3B3IQ==
-X-Received: by 2002:adf:ff90:: with SMTP id j16mr1019732wrr.105.1600983703565;
-        Thu, 24 Sep 2020 14:41:43 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwcmOcMLK9ieZTe6UE9SIsXG/tKkkWvHxZX+em+xkUyTPxjCgMj7blLOZyUvF+KwveIZvdq7w==
-X-Received: by 2002:adf:ff90:: with SMTP id j16mr1019712wrr.105.1600983703320;
-        Thu, 24 Sep 2020 14:41:43 -0700 (PDT)
-Received: from localhost.localdomain (p4ff23f51.dip0.t-ipconnect.de. [79.242.63.81])
-        by smtp.gmail.com with ESMTPSA id e13sm490886wre.60.2020.09.24.14.41.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2020 14:41:42 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   David Hildenbrand <david@redhat.com>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-Date:   Thu, 24 Sep 2020 23:41:41 +0200
-Message-Id: <79BEC711-C769-432B-9A50-63C6A3AEB0E3@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=VhJeuoj+rOPSJ4IEGV+fYVhmYT10xm972NsSejdMkBg=;
+        b=oqp58D0C/r25FhfZ+i6T1CtdSpVfwRe/qWPddZAbGHgtv2xCx4ysonVR8zuNXORs0u
+         mODoA2K/cPcOQqLVGkLBYKYISj57F73P2Tw8WzazllRi78Ov7IhuH/dA4Cc63EwgnmfZ
+         qfCSG2AynGL/CAYAWAjpTKDr4URyWdb100RIFPUNPUI3mJwFFOcdSsYTFUq+BdtnQ9qv
+         6bheqLJTwfggzWnJkQ8P1+DaZvTOqjuB920a+0xLyIwNe0R3AQnoHXpFeD3LU3g20QLI
+         urCWEzcIbVyb9HgCxZlyGQV6XrFlE62usCn++lqsN5eIcYWcNRAiewRxwJ9dCnmx4e9M
+         ENcg==
+X-Gm-Message-State: AOAM532l6iVnzZlikxPWXqHX/MtN1hGnyAi0HqNxgl5OXloRzDsNnwe6
+        sLreV5wN3RGkLv9PQ8vg74PwGEBDbQJIf9Qmg7elsw==
+X-Google-Smtp-Source: ABdhPJwxLNwMbKBfN2GZNfdh2odn88qLZ8Gba3MAPoetXp02KpOblT44U8/Ptt6lHHhBfbX75bgCKW+Q3RCxXi3Ppoc=
+X-Received: by 2002:aa7:c511:: with SMTP id o17mr884128edq.300.1600984214693;
+ Thu, 24 Sep 2020 14:50:14 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAPcyv4iQ4VnXMU0+_7rfXwPowgcdoABSFUH4WO_3P9vHtWAzPg@mail.gmail.com>
-Cc:     David Hildenbrand <david@redhat.com>,
-        Joao Martins <joao.m.martins@oracle.com>,
+ <79BEC711-C769-432B-9A50-63C6A3AEB0E3@redhat.com>
+In-Reply-To: <79BEC711-C769-432B-9A50-63C6A3AEB0E3@redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 24 Sep 2020 14:50:03 -0700
+Message-ID: <CAPcyv4jsUiXTqDtnh_fnm_p4NaX2=c3rrjFe6Efa-oWPkTe-fA@mail.gmail.com>
+Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Joao Martins <joao.m.martins@oracle.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Vishal Verma <vishal.l.verma@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -73,58 +65,66 @@ Cc:     David Hildenbrand <david@redhat.com>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>
-In-Reply-To: <CAPcyv4iQ4VnXMU0+_7rfXwPowgcdoABSFUH4WO_3P9vHtWAzPg@mail.gmail.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-X-Mailer: iPhone Mail (18A373)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Sep 24, 2020 at 2:42 PM David Hildenbrand <david@redhat.com> wrote:
+>
+>
+>
+> > Am 24.09.2020 um 23:26 schrieb Dan Williams <dan.j.williams@intel.com>:
+> >
+> > =EF=BB=BF[..]
+> >>> I'm not suggesting to busy the whole "virtio" range, just the portion
+> >>> that's about to be passed to add_memory_driver_managed().
+> >>
+> >> I'm afraid I don't get your point. For virtio-mem:
+> >>
+> >> Before:
+> >>
+> >> 1. Create virtio0 container resource
+> >>
+> >> 2. (somewhen in the future) add_memory_driver_managed()
+> >> - Create resource (System RAM (virtio_mem)), marking it busy/driver
+> >>   managed
+> >>
+> >> After:
+> >>
+> >> 1. Create virtio0 container resource
+> >>
+> >> 2. (somewhen in the future) Create resource (System RAM (virtio_mem)),
+> >>   marking it busy/driver managed
+> >> 3. add_memory_driver_managed()
+> >>
+> >> Not helpful or simpler IMHO.
+> >
+> > The concern I'm trying to address is the theoretical race window and
+> > layering violation in this sequence in the kmem driver:
+> >
+> > 1/ res =3D request_mem_region(...);
+> > 2/ res->flags =3D IORESOURCE_MEM;
+> > 3/ add_memory_driver_managed();
+> >
+> > Between 2/ and 3/ something can race and think that it owns the
+> > region. Do I think it will happen in practice, no, but it's still a
+> > pattern that deserves come cleanup.
+>
+> I think in that unlikely event (rather impossible), add_memory_driver_man=
+aged() should fail, detecting a conflicting (busy) resource. Not sure what =
+will happen next ( and did not double-check).
 
+add_memory_driver_managed() will fail, but the release_mem_region() in
+kmem to unwind on the error path will do the wrong thing because that
+other driver thinks it got ownership of the region.
 
-> Am 24.09.2020 um 23:26 schrieb Dan Williams <dan.j.williams@intel.com>:
->=20
-> =EF=BB=BF[..]
->>> I'm not suggesting to busy the whole "virtio" range, just the portion
->>> that's about to be passed to add_memory_driver_managed().
->>=20
->> I'm afraid I don't get your point. For virtio-mem:
->>=20
->> Before:
->>=20
->> 1. Create virtio0 container resource
->>=20
->> 2. (somewhen in the future) add_memory_driver_managed()
->> - Create resource (System RAM (virtio_mem)), marking it busy/driver
->>   managed
->>=20
->> After:
->>=20
->> 1. Create virtio0 container resource
->>=20
->> 2. (somewhen in the future) Create resource (System RAM (virtio_mem)),
->>   marking it busy/driver managed
->> 3. add_memory_driver_managed()
->>=20
->> Not helpful or simpler IMHO.
->=20
-> The concern I'm trying to address is the theoretical race window and
-> layering violation in this sequence in the kmem driver:
->=20
-> 1/ res =3D request_mem_region(...);
-> 2/ res->flags =3D IORESOURCE_MEM;
-> 3/ add_memory_driver_managed();
->=20
-> Between 2/ and 3/ something can race and think that it owns the
-> region. Do I think it will happen in practice, no, but it's still a
-> pattern that deserves come cleanup.
+> But yeah, the way the BUSY bit is cleared here is wrong - simply overwrit=
+ing other bits. And it would be even better if we could avoid manually mess=
+ing with flags here.
 
-I think in that unlikely event (rather impossible), add_memory_driver_manage=
-d() should fail, detecting a conflicting (busy) resource. Not sure what will=
- happen next ( and did not double-check).
-
-But yeah, the way the BUSY bit is cleared here is wrong - simply overwriting=
- other bits. And it would be even better if we could avoid manually messing w=
-ith flags here.
->=20
-
+I'm ok to leave it alone for now (hasn't been and likely never will be
+a problem in practice), but I think it was still worth grumbling
+about. I'll leave that part of kmem alone in the upcoming split of
+dax_kmem_res removal.
