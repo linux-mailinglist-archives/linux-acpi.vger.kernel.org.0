@@ -2,150 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8DA2764D5
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 02:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D571276619
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 03:57:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726572AbgIXADP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Sep 2020 20:03:15 -0400
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:44786 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726562AbgIXADP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Sep 2020 20:03:15 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 08O02lcW002993; Thu, 24 Sep 2020 09:02:47 +0900
-X-Iguazu-Qid: 34trYbPuXK3Y6WokyV
-X-Iguazu-QSIG: v=2; s=0; t=1600905766; q=34trYbPuXK3Y6WokyV; m=0KDuZXTtA84FWvgU79W3hotyFURS5UbU6LM7nkZ0KNg=
-Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
-        by relay.securemx.jp (mx-mr1511) id 08O02iHp036909;
-        Thu, 24 Sep 2020 09:02:44 +0900
-Received: from enc01.toshiba.co.jp ([106.186.93.100])
-        by imx2.toshiba.co.jp  with ESMTP id 08O02iOw020352;
-        Thu, 24 Sep 2020 09:02:44 +0900 (JST)
-Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.toshiba.co.jp  with ESMTP id 08O02h4O023471;
-        Thu, 24 Sep 2020 09:02:43 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
-        <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
-        <20200923140512.GJ28545@zn.tnic>
-Date:   Thu, 24 Sep 2020 09:02:42 +0900
-In-Reply-To: <20200923140512.GJ28545@zn.tnic> (Borislav Petkov's message of
-        "Wed, 23 Sep 2020 16:05:12 +0200")
-X-TSB-HOP: ON
-Message-ID: <87pn6chwil.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1726149AbgIXB4w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Sep 2020 21:56:52 -0400
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:37585 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725208AbgIXB4v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 23 Sep 2020 21:56:51 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0U9uuGE7_1600912620;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9uuGE7_1600912620)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 24 Sep 2020 09:57:01 +0800
+Date:   Thu, 24 Sep 2020 09:57:00 +0800
+From:   Wei Yang <richard.weiyang@linux.alibaba.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     David Hildenbrand <david@redhat.com>, osalvador@suse.de,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>
+Subject: Re: [PATCH RFC 0/4] mm: place pages to the freelist tail when onling
+ and undoing isolation
+Message-ID: <20200924015700.GA3145@L-31X9LVDL-1304.local>
+Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
+References: <5c0910c2cd0d9d351e509392a45552fb@suse.de>
+ <DAC9E747-BDDF-41B6-A89B-604880DD7543@redhat.com>
+ <67928cbd-950a-3279-bf9b-29b04c87728b@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <67928cbd-950a-3279-bf9b-29b04c87728b@suse.cz>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Borislav Petkov <bp@alien8.de> writes:
-
-> Smita,
->
-> pls sync the time of the box where you create the patch:
->
->  Date: Fri,  4 Sep 2020 09:04:44 -0500
->
-> but your mail headers have:
->
->  Received: from ... with mapi id 15.20.3370.019; Fri, 18 Sep 2020 14:49:12 +0000
->  						^^^^^^^^^^^^^^^^^^
->
-> On Wed, Sep 23, 2020 at 07:07:17PM +0900, Punit Agrawal wrote:
->> I know Boris asked you to add the reason for the Reported-by, but
->> usually we don't track version differences in the committed patch.
+On Wed, Sep 23, 2020 at 04:31:25PM +0200, Vlastimil Babka wrote:
+>On 9/16/20 9:31 PM, David Hildenbrand wrote:
 >> 
->> Boris, can you confirm if you want the Reported-by to be retained?
->
-> How else would you explain what the Reported-by: tag is for on a patch
-> which adds a feature?
-
-As Ard clarified, I was questioning the inclusion of the Reported-by:
-tag in the patch itself. But I also don't have enough of a strong
-opinion to obsess about it.
-
-[ Aside: One interesting consequence of this though is that by the same
-argument, changes resulting from comments on earlier versions are also
-legitimate content for the final patch. Not saying I agree. ]
-
->
->> > + * The first expected register in the register layout of MCAX address space.
->> > + * The address defined must match with the first MSR address extracted from
->> > + * BERT which in SMCA systems is the bank's MCA_STATUS register.
->> > + *
->> > + * Note that the decoding of the raw MSR values in BERT is implementation
->> > + * specific and follows register offset order of MCAX address space.
->> > + */
->> > +#define MASK_MCA_STATUS 0xC0002001
 >> 
->> The macro value is already defined in mce.h as
->> MSR_AMD64_SMCA_MC0_STATUS.  Is there any reason to not use it?
->
-> Good point.
->
->> You can move the comment to where you check the status register.
->
-> No need if he really wants to use the first MCi_STATUS address.
->
->> > +	m.apicid = lapic_id;
->> > +	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
->> > +	m.status = *i_mce;
->> > +	m.addr = *(i_mce + 1);
->> > +	m.misc = *(i_mce + 2);
->> > +	/* Skipping MCA_CONFIG */
->> > +	m.ipid = *(i_mce + 4);
->> > +	m.synd = *(i_mce + 5);
+>>> Am 16.09.2020 um 20:50 schrieb osalvador@suse.de:
+>>> 
+>>> ﻿On 2020-09-16 20:34, David Hildenbrand wrote:
+>>>> When adding separate memory blocks via add_memory*() and onlining them
+>>>> immediately, the metadata (especially the memmap) of the next block will be
+>>>> placed onto one of the just added+onlined block. This creates a chain
+>>>> of unmovable allocations: If the last memory block cannot get
+>>>> offlined+removed() so will all dependant ones. We directly have unmovable
+>>>> allocations all over the place.
+>>>> This can be observed quite easily using virtio-mem, however, it can also
+>>>> be observed when using DIMMs. The freshly onlined pages will usually be
+>>>> placed to the head of the freelists, meaning they will be allocated next,
+>>>> turning the just-added memory usually immediately un-removable. The
+>>>> fresh pages are cold, prefering to allocate others (that might be hot)
+>>>> also feels to be the natural thing to do.
+>>>> It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when
+>>>> adding separate, successive memory blocks, each memory block will have
+>>>> unmovable allocations on them - for example gigantic pages will fail to
+>>>> allocate.
+>>>> While the ZONE_NORMAL doesn't provide any guarantees that memory can get
+>>>> offlined+removed again (any kind of fragmentation with unmovable
+>>>> allocations is possible), there are many scenarios (hotplugging a lot of
+>>>> memory, running workload, hotunplug some memory/as much as possible) where
+>>>> we can offline+remove quite a lot with this patchset.
+>>> 
+>>> Hi David,
+>>> 
 >> 
->> Instead of using the raw pointer arithmetic, it is better to define a
->> structure for the MCA registers? Something like -
+>> Hi Oscar.
 >> 
->>     struct {
->>         u64 addr;
->>         u64 misc;
->>         u64 config;
->>         u64 ipid;
->>         ...
->>     }
+>>> I did not read through the patchset yet, so sorry if the question is nonsense, but is this not trying to fix the same issue the vmemmap patches did? [1]
 >> 
->> Checking back, this was mentioned in the previous review comments as
->> well. Please address all comments before posting a new version - either
->> by following the suggestion or explaining why it is not a good idea.
+>> Not nonesense at all. It only helps to some degree, though. It solves the dependencies due to the memmap. However, it‘s not completely ideal, especially for single memory blocks.
+>> 
+>> With single memory blocks (virtio-mem, xen-balloon, hv balloon, ppc dlpar) you still have unmovable (vmemmap chunks) all over the physical address space. Consider the gigantic page example after hotplug. You directly fragmented all hotplugged memory.
+>> 
+>> Of course, there might be (less extreme) dependencies due page tables for the identity mapping, extended struct pages and similar.
+>> 
+>> Having that said, there are other benefits when preferring other memory over just hotplugged memory. Think about adding+onlining memory during boot (dimms under QEMU, virtio-mem), once the system is up you will have most (all) of that memory completely untouched.
+>> 
+>> So while vmemmap on hotplugged memory would tackle some part of the issue, there are cases where this approach is better, and there are even benefits when combining both.
 >
-> Well, that was addressed in his reply last time:
+>I see the point, but I don't think the head/tail mechanism is great for this. It
+>might sort of work, but with other interfering activity there are no guarantees
+>and it relies on a subtle implementation detail. There are better mechanisms
+>possible I think, such as preparing a larger MIGRATE_UNMOVABLE area in the
+>existing memory before we allocate those long-term management structures. Or
+>onlining a bunch of blocks as zone_movable first and only later convert to
+>zone_normal in a controlled way when existing normal zone becomes depeted?
 >
-> https://lkml.kernel.org/r/a28aa613-8353-0052-31f6-34bc733abf59@amd.com
 
-Oops. My bad - sorry I missed the response.
+To be honest, David's approach is easy to understand for me.
 
-Copying the relevant comment here for discussion -
+And I don't see some negative effect.
 
->>> The registers here are implementation specific and applies only for
->>> SMCA systems. So I have used pointer arithmetic as it is not defined
->>> in the spec.
+>I guess it's an issue that the e.g. 128M block onlines are so disconnected from
+>each other it's hard to employ a strategy that works best for e.g. a whole bunch
+>of GB onlined at once. But I noticed some effort towards new API, so maybe that
+>will be solved there too?
+>
+>> Thanks!
+>> 
+>> David
+>> 
+>>> 
+>>> I was about to give it a new respin now that thw hwpoison stuff has been settled.
+>>> 
+>>> [1] https://patchwork.kernel.org/cover/11059175/
+>>> 
+>> 
 
-Even though it's not defined in the UEFI spec, it doesn't mean a
-structure definition cannot be created. After all, the patch is relying
-on some guarantee of the meaning of the values and their ordering.
-
-If the patch is relying on the definitions in the SMCA spec it is a good
-idea to reference it here - both for review and providing relevant
-context for future developers.
-
-> You might've missed it because you weren't CCed directly.
-
-Indeed, I missed it. Thanks for the pointer.
-
-Cheers,
-Punit
+-- 
+Wei Yang
+Help you, Help me
