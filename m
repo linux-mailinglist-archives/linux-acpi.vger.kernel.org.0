@@ -2,138 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FDB277906
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 21:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14466277982
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 21:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727992AbgIXTR0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Sep 2020 15:17:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726899AbgIXTR0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 15:17:26 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D1EC0613CE;
-        Thu, 24 Sep 2020 12:17:25 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id p9so308466ejf.6;
-        Thu, 24 Sep 2020 12:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=h1VoA7OKiH+cdit4mm4O2zd0Tw6zM3Q4V6K1zdq9FWE=;
-        b=CPfOOWs9sDvMAKby1idWrCOP94Wyr+ZMxegjP9019mHptZ1gGqwxihutuHjfoMsuWu
-         d/g8DjzsuHvSaU2JLwKD9PW5qk6iR5B20duSy3I/sYFK5fV5k6INIqZbstC31auUO3uP
-         Q9p9SaNYOXcZVqOFLnyYAKNldtneJa9Bg8Bt41B37GSDOoWyndfZRPpBxstO3cY5LajU
-         0jsbMpsz8bSyM3rIkIw/+KRJsPB9J70BXDl+xWhju4N3KtAcyOYU3GlhztDKSMtGP/s+
-         yoxxClmg/MJpviOFAeFsEIf4Do/u3zuvTBAu5alIPzQD+G0SBeKsdROEs9Rsil8saU4l
-         iSZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=h1VoA7OKiH+cdit4mm4O2zd0Tw6zM3Q4V6K1zdq9FWE=;
-        b=cK9Z3Hq+wXoZozB1VQ1JN5AZ0mExxfCfko4HH3l2EnDlZsZka4S6QJv73bRCc5h+zN
-         KbRNfCGMNcY0V529KBE9w4Vu1Rl1aXg6UHZJ+27JTO9qPSvk7pRmX3kOHc1sB1al8Q88
-         ZvazaPks5mCbGWRAOfy0OgtcgWBw6r4CbffVKoCYfzNXD37CqtMdO0POklJovEtDXKJN
-         5xe71GEN5fxSr4M09q9LVAncgSMLm8WHQ2b51v/emsgbzrAD+Gl2LY93LxfOxHsWoN4E
-         ix41p43jk7gSvAngSdpVECVfNeWh+p2mvogHYAyRuQqyEipuDFunqpHct/F90Ym4Yumo
-         TYIw==
-X-Gm-Message-State: AOAM5337xELiBGgv+WDQDl26vHX4WfQmlv964yJM//C1QFbut8Ywbj9Q
-        3MeJ2snXME/043c4/qpBkUEC4tYCRMSXWw==
-X-Google-Smtp-Source: ABdhPJwrBKBnTVa5b20K8m+aWXTOHq2v5qNn3QFPotN7Ymaw7mYIIboiThbnKAsqnhDA59dy/kqcAQ==
-X-Received: by 2002:a17:906:d7ab:: with SMTP id pk11mr138078ejb.472.1600975043995;
-        Thu, 24 Sep 2020 12:17:23 -0700 (PDT)
-Received: from [192.168.2.202] (pd9e5a9d2.dip0.t-ipconnect.de. [217.229.169.210])
-        by smtp.gmail.com with ESMTPSA id z17sm68129edi.90.2020.09.24.12.17.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2020 12:17:23 -0700 (PDT)
+        id S1726119AbgIXTin (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Sep 2020 15:38:43 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:43825 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725272AbgIXTin (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 15:38:43 -0400
+X-Greylist: delayed 40034 seconds by postgrey-1.27 at vger.kernel.org; Thu, 24 Sep 2020 15:38:42 EDT
+Received: from mail-qv1-f47.google.com ([209.85.219.47]) by
+ mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MxVbb-1kfODR2rKz-00xvac; Thu, 24 Sep 2020 21:38:40 +0200
+Received: by mail-qv1-f47.google.com with SMTP id ef16so122056qvb.8;
+        Thu, 24 Sep 2020 12:38:40 -0700 (PDT)
+X-Gm-Message-State: AOAM531kDPXkhiZYw7gvR8oXc2heYsLvEpV9mIKBjCPto49n89+ceUsI
+        l8ZvAVFamL2KGyu/TPyXdkbklxkhLbil8skWJ34=
+X-Google-Smtp-Source: ABdhPJwb2a07lzpQCrzg3jtFtJXS1gTYpcGBk/RGooNlixhivRVF08OHCGO55og0kHNqshgFEi2ogMfqzGxcRooZPQk=
+X-Received: by 2002:a05:6214:1873:: with SMTP id eh19mr870293qvb.16.1600976319259;
+ Thu, 24 Sep 2020 12:38:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200923151511.3842150-1-luzmaximilian@gmail.com>
+ <CAK8P3a3Qie_CP1dA-ERqyDv=EnaQQPnNbFYrGr3ySiY4mO0=Uw@mail.gmail.com>
+ <dad42dce-15d0-245a-4d91-4733e54883a0@gmail.com> <CAK8P3a2ryzmsrHHApT9O=dvsw+=z18Sjd4ygVxvFrrDetKA+rQ@mail.gmail.com>
+ <c4c1d999-9ab7-8988-906a-3cb6a70bc93d@gmail.com> <CAK8P3a2XegsP71yvd8Ku08_k6ecQfkU+V+t+QnjQBrJKF2MwCg@mail.gmail.com>
+ <d07adfb3-9f79-c00a-cb70-e044aa0b19f8@gmail.com>
+In-Reply-To: <d07adfb3-9f79-c00a-cb70-e044aa0b19f8@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 24 Sep 2020 21:38:23 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a23V8vug2U-9tXUOdO3DvQvEc5+GhZuQh7_HKtTavCqVQ@mail.gmail.com>
+Message-ID: <CAK8P3a23V8vug2U-9tXUOdO3DvQvEc5+GhZuQh7_HKtTavCqVQ@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/9] Add support for Microsoft Surface System
  Aggregator Module
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        linux-serial@vger.kernel.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
+        =?UTF-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>,
         Dorian Stoll <dorian.stoll@tmsp.io>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
         Darren Hart <dvhart@infradead.org>,
-        platform-driver-x86@vger.kernel.org
-References: <20200923151511.3842150-1-luzmaximilian@gmail.com>
- <CAK8P3a3Qie_CP1dA-ERqyDv=EnaQQPnNbFYrGr3ySiY4mO0=Uw@mail.gmail.com>
- <CAHp75Vfp86h38Rd-VEgER7ASADdmz5ymAkuHvD0Q6WPDqZBqHw@mail.gmail.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <95c2d02b-b8b1-59d9-1276-f2b1830fdac8@gmail.com>
-Date:   Thu, 24 Sep 2020 21:17:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <CAHp75Vfp86h38Rd-VEgER7ASADdmz5ymAkuHvD0Q6WPDqZBqHw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:3BIMiRbgQycvNucXKzcS5vkFqPEIq3DE+mg6SzlMWwm40f+ulB+
+ Nrj3ZhQEPewWAlItOhTfoo6fJX2dZNuRXreOKr256QJ+TZXb8DXiUB3zyEzbCQcjrG8bpA5
+ BpR0XJhxNl3gNe2MHCJV8KFKSNqujJy/XM7wNUmXctOkn0E/zBMS9jIblaXJuyM3qKWq51V
+ Os3pkhdAqZXrcikTGLZ8g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OLGtHSwCH/k=:V51WjINOskBmYYiF4aUWtl
+ 0nkM1XPgkorf7lcmMX+SQrvSi2HzsJXLxHs2Ebs5iiuGtV0fbXtWaNhBlvUvoMAjctODVDf7T
+ UJHRxgf80Gk+q8EssMsT5OgX7VxP6/1EApjda+uTC5i35PA9gOPEaU6A2/+bII4K5P77apX6i
+ OiTUxcJ4Du3CXJrZceOnE5+GgZS50B7RdTAQjd2Tohi9le8kcjdQcXqLMGwdN2fw/ULJmYPB1
+ X6L5wucGA5RukUe7V/sOSJbXcPWdKW+rVi0FVDvHbkuBLtnyceKKyBF9/ZoIx/qn2h/6ygHMm
+ fCjlXh7lgKZEB5OyXooEsHMjgDivugwdKORiSwQ1oArJhmCKbq1qT5CZK53qYSfBsQguPSaBI
+ Z7dlDwDYYjP8+g1/vtT/t8bY1u2pKIUyeaG1jXYC89gfRc/ou8mbZYGQpZMd5yZuPes3KY2Bw
+ JJfK0T2KSXC1SEVzILjwgyeOuhljg0VjXYFgWSgmmEJDrvcKTadd8XcwpOcvQKNQKT7WTBTr3
+ FPuD1MxZnmBTZwpA2QilhTwJcZFAmbuRxFeFI4+5atuc5Ra5qB1OXzVcSyo0b1UfneAHrqBI5
+ yXrmAYMSVtVTyzjnt4wrVhYu3Tj6Sj10XttrXK8Ml9nY4x9Ev/LyD15TX3nO7tfsPElmYUTph
+ YDj5vKdnoYeDmqpy3Ddbv16sjDn6443xXq9mkWjd/AX4V2mm6CF4H6Qx0YvVbATbTrSSCXe6R
+ rhJV0uTzjmSpPKFR+AhOA+QyDjoE5TzsTei2hV+FUFtQEw1xu932/E2/O0MZuvRWkUVsivVhK
+ WNQ9ls/8lQwFPvuJPu76XNw0cDCCgFb4B2M6EHeZ4IaN6tjEVtOSN5dC3ou432nfaYOqx21
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/24/20 10:30 AM, Andy Shevchenko wrote:
-> On Wed, Sep 23, 2020 at 6:32 PM Arnd Bergmann <arnd@arndb.de> wrote:
->>
->> On Wed, Sep 23, 2020 at 5:15 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->>>
->>> Hello,
->>>
->>> The Surface System Aggregator Module (we'll refer to it as Surface
->>> Aggregator or SAM below) is an embedded controller (EC) found on various
->>> Microsoft Surface devices. Specifically, all 4th and later generation
->>> Surface devices, i.e. Surface Pro 4, Surface Book 1 and later, with the
->>> exception of the Surface Go series and the Surface Duo. Notably, it
->>> seems like this EC can also be found on the ARM-based Surface Pro X [1].
->>
->> I think this should go to drivers/platform/x86 or drivers/platform/surface/
->> along with other laptop vendor specific code rather than drivers/misc/.
-> 
-> +1 here. drivers/platform/surface is a good place to start.
-> And you may begin with moving a few Surface drivers out of PDx86 to
-> the new folder.
+On Thu, Sep 24, 2020 at 8:59 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
+> On 9/24/20 10:26 AM, Arnd Bergmann wrote:
+> > On Thu, Sep 24, 2020 at 1:28 AM Maximilian Luz <luzmaximilian@gmail.com> wrote:
 
-Perfect, thanks! I'll draft up a patch series over the weekend.
+> > Note that drivers that connect to the bus typically don't live in the
+> > same subdirectory as the driver that operates the bus. E.g. the
+> > battery driver would go into drivers/power/supply and the input
+> > would go into drivers/input/ or drivers/hid.
+>
+> Right. I wonder if this also holds for devices that are directly
+> dependent on a special platform though? It could make sense to have them
+> under plaform/surface rather than in the individual subsystems as they
+> are only ever going to be used on this platform. On the other hand, one
+> could argue that having them in the subsystem directories is better for
+> maintainability.
 
-A couple questions regarding structure and maintenance:
+Yes, absolutely. The subsystem maintainers are the ones that are
+most qualified of reviewing code that uses their subsystem, regardless
+of which bus is used underneath the device, and having all drivers
+for a subsystem in one place makes it much easier to refactor them
+all at once in case the internal interfaces are changed or common bugs
+are found in multiple drivers.
 
-  - Should I CC the platform-driver-x86 list on future submissions to
-    drivers/platform/surface? I.e. is this something you would want to
-    review if it doesn't touch the drivers/platform/x86 directory?
-
-  - How would you want the layout to be, specifically regarding to the
-    surface-aggregator stuff? My suggestion would be simply:
-
-    drivers/platform/surface/
-        surface_aggregator/
-            Kconfig
-            Makefile
-            core.c
-            controller.c
-            ... (all core stuff built into the surface_aggregator module)
-        Kconfig
-        Makefile
-        surface_aggregator_debugfs.c
-        surface_acpi_notify.c
-        surface_*.c        (any other surface platform driver as well
-                            as drivers dependent on surface_aggregator)
-
-  - Regarding future things like HID transport driver, battery/AC driver:
-    Submit them to drivers/platform/surface or to their respective
-    subsystem directories?
-
-Thanks,
-Max
+       Arnd
