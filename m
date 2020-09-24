@@ -2,191 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED57276F3D
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 13:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9900276F99
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Sep 2020 13:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgIXLDu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Sep 2020 07:03:50 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:37266 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbgIXLDt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 07:03:49 -0400
-Received: by mail-oi1-f196.google.com with SMTP id a3so3234671oib.4;
-        Thu, 24 Sep 2020 04:03:48 -0700 (PDT)
+        id S1727433AbgIXLNh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Sep 2020 07:13:37 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:34671 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726415AbgIXLNd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 07:13:33 -0400
+Received: by mail-ot1-f67.google.com with SMTP id h17so2796648otr.1;
+        Thu, 24 Sep 2020 04:13:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pn+i27Dx8fEtrGXxMazmn/X4tGbmkIv7rNYd8W3GRss=;
-        b=ZQksqPbsOH5r5tthy8DtuUBuyGjBlwdntxObW9ZoDTW5IyrOf1lLyF65tMQOCiwo++
-         dE8CJeRrH2e3RfXn9kMAi6v4s/cKBGaSj0mh01+LsWY9zwxtxmJwr+34LbTVJQtWw5pj
-         2Lx0ht1UsRnSUw1cfUh6dXk4DOm4TyTtW7PtSXXT3wBlMAulMU48NaVocr6MYSyi2c76
-         nx0J7UzFPk96FmxvZ336w0jZA0Kw89C1wGT5R2h6+9ufy4HwF3jFsNpuGO7GATRU4Bty
-         8bTLRctseXcDj2XdHP8wC93TWb7/+QZqnD1YJYQBCZt6XcH7xdhswuBQsC0g4+J99qB4
-         57+Q==
-X-Gm-Message-State: AOAM533jbZW/VelROv/obcar38pD3AoIbOK/5KBwNylZfQ0kZPsDaDq/
-        9m6H1638WVUUfl2CW356Ys5sIvqokDeHEBZN2hI=
-X-Google-Smtp-Source: ABdhPJzDlpEJUA+Oq7l4adHVs9utovmT1K6AS39uuXbGtk7ZnfPxF0dnzHWkg5WoiVh0kzqj9RfrHNDZVceiVU+YuOc=
-X-Received: by 2002:aca:df84:: with SMTP id w126mr2207061oig.103.1600945428210;
- Thu, 24 Sep 2020 04:03:48 -0700 (PDT)
+        bh=9vw74ycCgBHC0q8oTAIx0tHNkNEToJ5HsGmMW3OjG2c=;
+        b=t9CiWyWXtJ77yoQQfZLVuqy+qNz14TntqXKYIZMk/H+IkjYk0LprSCpnaZyHSyLXBm
+         1BGCZlyG5bcuv/qb5WlDOHkaNmihfwT2rBgweRnUs+C3PaB5iy/UGbtAP4dTo+UKCwl4
+         Fwe8nFIjEk7lsFlsHs97ayLjmER6vz+N0u8SFvklNmgwrSTraXxcs47xXZMtG8mQ4jn+
+         l8z47A+x8CuakKZX+PikSiz6NN/LBFeaNjqMREw153q6SELBPUrNFCFxKBbqr1h5AMTY
+         n/Kiqwv8Tep0U8joFf2bVXC7loidVA9nrrn5g3LA/6uYcIFkEzhj/zAjRcd8O2L2+ZXM
+         XjnA==
+X-Gm-Message-State: AOAM533cgl0aId4NSf2idDoxO0+QxcAuoCx+Qf1h6t3yvYQ7TemOjZ5X
+        in8agg5EYs6NFxTIw1R4jB6i4hH9icz1NfZA/vw=
+X-Google-Smtp-Source: ABdhPJzE55Dn0VKs5nRnVqlMfMDK7flu5vsN32QgZuAP5WRxnUrOVaBdYpqp33AmOAAfA/kGrJWwq4bwCqLmDpOeVvg=
+X-Received: by 2002:a9d:718a:: with SMTP id o10mr595177otj.262.1600946012489;
+ Thu, 24 Sep 2020 04:13:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200818142430.1156547-1-Jonathan.Cameron@huawei.com>
- <20200903133318.000017f5@Huawei.com> <20200918131427.0000080f@Huawei.com>
-In-Reply-To: <20200918131427.0000080f@Huawei.com>
+References: <cover.1600816121.git.skhan@linuxfoundation.org> <9e2c6cccabc96fe1e5304e2fa2dfdad28ca5ac9c.1600816121.git.skhan@linuxfoundation.org>
+In-Reply-To: <9e2c6cccabc96fe1e5304e2fa2dfdad28ca5ac9c.1600816121.git.skhan@linuxfoundation.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 24 Sep 2020 13:03:37 +0200
-Message-ID: <CAJZ5v0h_X-zhTJ-9d9cTLTe6yaneqLV7FsLv90NA5UL8eg1ovw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] ACPI: Only create NUMA nodes from entries in SRAT
- or SRAT emulation.
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
+Date:   Thu, 24 Sep 2020 13:13:21 +0200
+Message-ID: <CAJZ5v0iS2wpvvJGLsEJSSdCJ0tf4DmJ9fQWVU3PzFuMB7Zbkjw@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/11] drivers/acpi: convert seqno counter_atomic
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kees Cook <keescook@chromium.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-ia64@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>, Ingo Molnar <mingo@redhat.com>,
-        martin@geanix.com, Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dan Williams <dan.j.williams@intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 18, 2020 at 2:16 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Wed, Sep 23, 2020 at 3:44 AM Shuah Khan <skhan@linuxfoundation.org> wrote:
 >
-> On Thu, 3 Sep 2020 13:33:18 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> counter_atomic is introduced to be used when a variable is used as
+> a simple counter and doesn't guard object lifetimes. This clearly
+> differentiates atomic_t usages that guard object lifetimes.
 >
-> > On Tue, 18 Aug 2020 22:24:24 +0800
-> > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > > This is a trivial rebase and resend of V2 now the merge window has closed.
-> > >
-> > > Here, I will use the term Proximity Domains for the ACPI description and
-> > > NUMA Nodes for the in kernel representation.
-> > >
-> > > ACPI 6.3 included a clarification that only Static Resource Allocation
-> > > Structures in SRAT may define the existence of proximity domains
-> > > (sec 5.2.16). This clarification closed a possible interpretation that
-> > > other parts of ACPI (e.g. DSDT _PXM, NFIT etc) could define new proximity
-> > > domains that were not also mentioned in SRAT structures.
-> > >
-> > > In practice the kernel has never allowed this alternative interpretation as
-> > > such nodes are only partially initialized. This is architecture specific
-> > > but to take an example, on x86 alloc_node_data has not been called.
-> > > Any use of them for node specific allocation, will result in a crash as the
-> > > infrastructure to fallback to a node with memory is not setup.
-> > >
-> > > We ran into a problem when enabling _PXM handling for PCI devices and found
-> > > there were boards out there advertising devices in proximity domains that
-> > > didn't exist [2].
-> > >
-> > > The fix suggested in this series is to replace instances that should not
-> > > 'create' new nodes with pxm_to_node.  This function needs a some additional
-> > > hardening against invalid inputs to make sure it is safe for use in these
-> > > new callers.
-> > >
-> > > Patch 1 Hardens pxm_to_node() against numa_off, and pxm entry being too large.
-> > >
-> > > Patch 2-4 change the various callers not related to SRAT entries so that they
-> > > set this parameter to false, so do not attempt to initialize a new NUMA node
-> > > if the relevant one does not already exist.
-> > >
-> > > Patch 5 is a function rename to reflect change in functionality of
-> > > acpi_map_pxm_to_online_node() as it no longer creates a new map, but just does a
-> > > lookup of existing maps.
-> > >
-> > > Patch 6 covers the one place we do not allow the full flexibility defined
-> > > in the ACPI spec.  For SRAT GIC Interrupt Translation Service (ITS) Affinity
-> > > Structures, on ARM64, the driver currently makes an additional pass of SRAT
-> > > later in the boot than the one used to identify NUMA domains.
-> > > Note, this currently means that an ITS placed in a proximity domain that is
-> > > not defined by another SRAT structure will result in the a crash.
-> > >
-> > > To avoid this crash with minimal changes we do not create new NUMA nodes based
-> > > on this particular entry type.  Any current platform trying to do this will not
-> > > boot, so this is an improvement, if perhaps not a perfect solution.
-> > >
-> > > [1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
-> > > [2] https://patchwork.kernel.org/patch/10597777/
-> >
-> > Looking for input from ARM (Lorenzo?), X86(not sure) and ACPI(Rafael?) people
-> > on this set. As it also touches NFIT handling perhaps someone who focuses on
-> > that as well. Please feel free to CC additional people who might be interested.
-> >
-> > I'm fairly confident that it should be uncontroversial (famous last words)
-> > and it closes down a problem that lead to issues with seemingly obvious
-> > changes in the past. (The whole PCI _PXM issue on some threadripper platforms).
-> >
-> > Thanks to Bjorn, Hanjun and Barry for feedback on earlier revisions.
-> >
+> counter_atomic variables will wrap around to 0 when it overflows and
+> should not be used to guard resource lifetimes, device usage and
+> open counts that control state changes, and pm states.
 >
-> Hi All,
+> seqno is a sequence number counter for logging. This counter gets
+> incremented. Unsure if there is a chance of this overflowing. It
+> doesn't look like overflowing causes any problems since it is used
+> to tag the log messages and nothing more.
 >
-> Still after reviews on this set. If anyone one would like me to resend please
-> let me know.  Also any corrections to my suggested set of people to review would
-> be welcome.
+> Convert it to use counter_atomic.
 >
-> +CC Rafael who I've managed to drop from this version which won't have helped.
+> This conversion doesn't change the oveflow wrap around behavior.
+>
+> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+
+Both this change and the next patch are fine by me.
 
 Thanks!
 
-I've just applied the series for 5.10 (with some minor edits in patch
-changelogs and subjects), so if anyone has any reservations regarding
-it, please let me know ASAP.
-
-In particular, I took the Hanjun's R-by on the last patch to be
-sufficient from the ARM64 perspective.
-
-Cheers!
-
-
-> > > Thanks to Bjorn Helgaas for review of v1 and Barry Song for internal reviews that
-> > > lead to a slightly different approach for this v2.
-> > >
-> > > Changes since v2.
-> > > * Trivial rebase to v5.9-rc1
-> > > * Collect up tags.
-> > >
-> > > Changes since v1.
-> > > * Use pxm_to_node for what was previously the path using acpi_map_pxm_to_node
-> > >   with create==false. (Barry)
-> > > * Broke patch up into an initial noop stage followed by patches (Bjorn)
-> > >   to update each type of case in which partial creation of NUMA nodes is prevented.
-> > > * Added patch 5 to rename function to reflect change of functionality.
-> > > * Updated descriptions (now mostly in individual patches) inline with Bjorn's comments.
-> > >
-> > > Jonathan Cameron (6):
-> > >   ACPI: Add out of bounds and numa_off protections to pxm_to_node
-> > >   ACPI: Do not create new NUMA domains from ACPI static tables that are
-> > >     not SRAT
-> > >   ACPI: Remove side effect of partly creating a node in
-> > >     acpi_map_pxm_to_online_node
-> > >   ACPI: Rename acpi_map_pxm_to_online_node to pxm_to_online_node
-> > >   ACPI: Remove side effect of partly creating a node in acpi_get_node
-> > >   irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without
-> > >     processor or memory
-> > >
-> > >  drivers/acpi/arm64/iort.c        |  2 +-
-> > >  drivers/acpi/nfit/core.c         |  6 ++----
-> > >  drivers/acpi/numa/hmat.c         |  4 ++--
-> > >  drivers/acpi/numa/srat.c         |  4 ++--
-> > >  drivers/iommu/intel/dmar.c       |  2 +-
-> > >  drivers/irqchip/irq-gic-v3-its.c |  7 ++++++-
-> > >  include/linux/acpi.h             | 15 +++++++--------
-> > >  7 files changed, 21 insertions(+), 19 deletions(-)
-> > >
-> >
-> >
-> > _______________________________________________
-> > Linuxarm mailing list
-> > Linuxarm@huawei.com
-> > http://hulk.huawei.com/mailman/listinfo/linuxarm
+> ---
+>  drivers/acpi/acpi_extlog.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index f138e12b7b82..23b696b7eb14 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/ratelimit.h>
+>  #include <linux/edac.h>
+>  #include <linux/ras.h>
+> +#include <linux/counters.h>
+>  #include <asm/cpu.h>
+>  #include <asm/mce.h>
+>
+> @@ -93,7 +94,7 @@ static struct acpi_hest_generic_status *extlog_elog_entry_check(int cpu, int ban
+>  static void __print_extlog_rcd(const char *pfx,
+>                                struct acpi_hest_generic_status *estatus, int cpu)
+>  {
+> -       static atomic_t seqno;
+> +       static struct counter_atomic seqno;
+>         unsigned int curr_seqno;
+>         char pfx_seq[64];
+>
+> @@ -103,7 +104,7 @@ static void __print_extlog_rcd(const char *pfx,
+>                 else
+>                         pfx = KERN_ERR;
+>         }
+> -       curr_seqno = atomic_inc_return(&seqno);
+> +       curr_seqno = counter_atomic_inc_return(&seqno);
+>         snprintf(pfx_seq, sizeof(pfx_seq), "%s{%u}", pfx, curr_seqno);
+>         printk("%s""Hardware error detected on CPU%d\n", pfx_seq, cpu);
+>         cper_estatus_print(pfx_seq, estatus);
+> --
+> 2.25.1
 >
