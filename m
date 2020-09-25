@@ -2,174 +2,294 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9725E278994
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 15:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FFC72789AF
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 15:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728695AbgIYNao (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Sep 2020 09:30:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31292 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728199AbgIYNao (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 25 Sep 2020 09:30:44 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601040642;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=w3KkCNemF8xof+DQCI+nzXwtMCQWrhDyX9mw5JymDnU=;
-        b=PShsNzFWkGfk+D35DlmPSWMnZr5Y1xA568CFp7N+B9mg1O6suUzcmLeTWQhO9ca74J9dBI
-        gb6NQK+33MdpPkDKxHolpHYg86gTz7eG4gj6TmWhf2yMkDwJvQRp4brWdsH0V0yj4lM+4b
-        7A4mcO+OLJ4D2J6v9qZ5dXj7/RPuCAU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-409-pCqwzDYeMUKB2J_7L1hvCw-1; Fri, 25 Sep 2020 09:30:38 -0400
-X-MC-Unique: pCqwzDYeMUKB2J_7L1hvCw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CE6458015FA;
-        Fri, 25 Sep 2020 13:30:35 +0000 (UTC)
-Received: from [10.36.112.211] (ovpn-112-211.ams2.redhat.com [10.36.112.211])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2483273667;
-        Fri, 25 Sep 2020 13:30:31 +0000 (UTC)
-Subject: Re: [PATCH RFC 2/4] mm/page_alloc: place pages to tail in
- __putback_isolated_page()
-To:     Oscar Salvador <osalvador@suse.de>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20200916183411.64756-1-david@redhat.com>
- <20200916183411.64756-3-david@redhat.com> <20200925131948.GB3910@linux>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <2b2998cb-37fc-8a4e-5dd7-5311b35941f5@redhat.com>
-Date:   Fri, 25 Sep 2020 15:30:31 +0200
+        id S1728199AbgIYNen (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 09:34:43 -0400
+Received: from mail-vi1eur05on2050.outbound.protection.outlook.com ([40.107.21.50]:64832
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728121AbgIYNel (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 25 Sep 2020 09:34:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UVAIF5rCdsmH2FMAOqSGNkN8EyoG7N8LAhBQ5/OXUgY=;
+ b=eCApkGV20jPycZgzG5gBz6rlMRfcroh9og5Yxv4RGK/8MPYBaKZjKA5wkXp70iwz6Ku1Fdx3yy87mNq2kyajxASr5nMtKCAxJxX77TnWzE7IEl1kCW/1A3LB/cyMrYVtDbit2I3QphjijMLNOBRmLGNhAtuAsuMquBCk/elWUVw=
+Received: from MR2P264CA0014.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:1::26) by
+ DB8PR08MB4076.eurprd08.prod.outlook.com (2603:10a6:10:b0::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3391.14; Fri, 25 Sep 2020 13:34:36 +0000
+Received: from VE1EUR03FT029.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:500:1:cafe::3a) by MR2P264CA0014.outlook.office365.com
+ (2603:10a6:500:1::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19 via Frontend
+ Transport; Fri, 25 Sep 2020 13:34:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=bestguesspass
+ action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ VE1EUR03FT029.mail.protection.outlook.com (10.152.18.107) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3412.21 via Frontend Transport; Fri, 25 Sep 2020 13:34:35 +0000
+Received: ("Tessian outbound 7fc8f57bdedc:v64"); Fri, 25 Sep 2020 13:34:35 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: d5dbce251bde2da2
+X-CR-MTA-TID: 64aa7808
+Received: from 0adaff684361.1
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id EFDAB44F-DD2F-4BCB-B494-37A612348CB0.1;
+        Fri, 25 Sep 2020 13:34:29 +0000
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 0adaff684361.1
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Fri, 25 Sep 2020 13:34:29 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ea8JLgV3CNyPTy4LU7qO8xZysA8hKtpJbKbSpqNrRc6INiNHCe0gVPaWJcwfdaR3K0wVB/RMz7MmGdgN3oPl2Wsd7oUTqYSE01Mj8sKXml+SBtdFMHnNJV1ipyHT9tAf/IWFz8VfEcwZomEPd14AoDQSLZiLFua8Z3koL3xTMFYpfUjPhJIc/qnOMZtmeu3CQAPOhWjUtnCva6UYlQ/hJVLS6KUuGtDlug8IlbXPC5QMIduLATXicO6s/nhgz+gS0eeL6q0nTxOUrhkmKj/Cf67BU8RwxIkijWPlf6r8yZlgsO8yDRegwoNc6XtPwibSW/AHpPVERMgjQHLprLj6Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UVAIF5rCdsmH2FMAOqSGNkN8EyoG7N8LAhBQ5/OXUgY=;
+ b=C/Zx0dXQj6h1AtTW39fOCwG8K4Havgv2Wv4kt6ffPxSh7nypL7lM75v+r/AUUEWjzdweYxViO5kehKzC3U0H/g69Ck6E1L1tIPGlQcoqDET3Pgzmh8Awon26Gwfr1HCkm4r2dV92Nt+7XDmwP1Ng9fxPGg1aXknHq20+pEUdSi743dfoB+miUCmufvXAWBtDzhQ2YSo+313UOcwvKDQwn5bht//JWwaVNEdxkvlk+Ml4YBTGnWe7yHSg/qrbBm6+Apt+/KptwDsdeVMzoL/1LkR/7DicWNZVgu9TIrz4JY70ucvywmPUpIvv6fmO9hcls9KsGbsxpBrw3xMc5WVsgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UVAIF5rCdsmH2FMAOqSGNkN8EyoG7N8LAhBQ5/OXUgY=;
+ b=eCApkGV20jPycZgzG5gBz6rlMRfcroh9og5Yxv4RGK/8MPYBaKZjKA5wkXp70iwz6Ku1Fdx3yy87mNq2kyajxASr5nMtKCAxJxX77TnWzE7IEl1kCW/1A3LB/cyMrYVtDbit2I3QphjijMLNOBRmLGNhAtuAsuMquBCk/elWUVw=
+Authentication-Results-Original: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+Received: from AM6PR08MB4007.eurprd08.prod.outlook.com (2603:10a6:20b:a1::29)
+ by AM5PR0801MB2052.eurprd08.prod.outlook.com (2603:10a6:203:4b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.11; Fri, 25 Sep
+ 2020 13:34:27 +0000
+Received: from AM6PR08MB4007.eurprd08.prod.outlook.com
+ ([fe80::9904:4b6c:dfa2:e49f]) by AM6PR08MB4007.eurprd08.prod.outlook.com
+ ([fe80::9904:4b6c:dfa2:e49f%6]) with mapi id 15.20.3412.022; Fri, 25 Sep 2020
+ 13:34:27 +0000
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
+ PHY
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>
+Cc:     netdev@vger.kernel.org, linux.cj@gmail.com,
+        linux-acpi@vger.kernel.org, nd <nd@arm.com>
+References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+From:   Grant Likely <grant.likely@arm.com>
+Message-ID: <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
+Date:   Fri, 25 Sep 2020 14:34:21 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <20200925131948.GB3910@linux>
-Content-Type: text/plain; charset=utf-8
+ Thunderbird/68.12.0
+In-Reply-To: <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO2P265CA0162.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9::30) To AM6PR08MB4007.eurprd08.prod.outlook.com
+ (2603:10a6:20b:a1::29)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.16.147] (188.28.154.24) by LO2P265CA0162.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:9::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21 via Frontend Transport; Fri, 25 Sep 2020 13:34:24 +0000
+X-Originating-IP: [188.28.154.24]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 4933e418-f3e9-461f-93a5-08d86157be9e
+X-MS-TrafficTypeDiagnostic: AM5PR0801MB2052:|DB8PR08MB4076:
+X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DB8PR08MB407626FD875341C51C211E0C95360@DB8PR08MB4076.eurprd08.prod.outlook.com>
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: mILYGDaQOasOdl7HFQsOCrn7F/gFvdX83EFwCuuJA+V72RSo5fP/xXeqVbc5WxfMnTCt7QDOWrDFNKShxrL++ovRxJrJSWpD209S5mDc2/Iv9UeLURC6uEL74O1rqHLVX/i3I2ftInKJtIsICVXezrfOksSz0zHSS4xaReos4D2skCO1PS8yCOvnry4naQ4a9JwJ0eKhUG8iK7j3cMaOchsUZoRF226bMUIi8KCtBWyMoOzJ3ncpXGYhe4xERdIfyv085xqSYOOdGyIC3vVvxtGuiHSG4caDvf6hswU1QV3CrF8JTeza3ADQse0Ho+S34fdbbwyjD+Hg3cFxNci2/kC06OmbmG5zJ17dF0TpLbzNElblroGpU6DMxTAjqEOH+ud4ZYT+9ePif3tU5ie1KVFiqEYD/hOy6s1SIggjYxXfv+qWcAkFLAKJ5MYO5C9V
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4007.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(366004)(396003)(39860400002)(346002)(376002)(53546011)(16576012)(36756003)(110136005)(4326008)(478600001)(52116002)(6666004)(31686004)(44832011)(86362001)(55236004)(8676002)(16526019)(31696002)(2906002)(186003)(26005)(8936002)(5660300002)(2616005)(7416002)(66946007)(6486002)(956004)(66556008)(316002)(66476007)(921003)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 1mNVBt5eYV59tXDUIObggu2vD9rMScycouqmE0j0NLO0zC7xxdmlfvqs6/KWs9lkOJc/SBV/RYqEJXm3mn96YLhNBGdxsyzyGyqY57xUpOd855d2jJ+MDWJUE+dVQEQ43trx5xjBhr1Rc1IWH5SwvNRYTHHhndbcsLHA/WO8ieWiL5GosIwuBkSZf/LZ0OFoFjl75kW2FARd1Cs19JqXKF5IdSBnOrZdplVJJHZDBDVnJ+02k0Kmvx0c4YjRnYrEzbKS7o7WqW4ktqTUrvU380ZVzzUjj8s/GTVwjiZAfHPgrpjdYvc1EoKv/jm/ANYUlkyEWVW7Qupo6swwSHKwY8jfpTwoqZNRQz7fUXRBpvWu7wx+IrnpecjWpAf0VUXYBzvN9bFfd6QSYm2rl6gKfsZhREjgumPB3tSvArtRxE+M4CCrHdeKKZrJHa4XKiyGWz7pOs6yJzKW4yvg4MOV0wxzTR0xDwKAoTFzTBQb35C1jKwGFkFkrojax0/2BRKGxSJATiKob205QwYsAKqXIn+XBi2vzsFq2EPWhpGGh2XA6VPy1gkak+/16rAgAdIPB/tUZOC/qpxfvkkBKU+rGbOVfYTfm8p4HSAXODJCs5KEZsy4mEDx0yjbjCPj6UToh2xqFnEBRMIq9TNGspeW9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0801MB2052
+Original-Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR03FT029.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: a74fa1ff-404c-43b3-bd58-08d86157b8f5
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: RjP3of4pEDll9aeoqTP5F+9ObosJwwIxtsDSEPyp+IYrM3KMCvwba6PNU0fnvv6PFldp/aiRrgRVOYkchdLCLF7I2qDknkWC0iJTjfWjRZZP5oYa8415fwJfMs/thNbrNZ2DKEj5gKEb5mEEI5fogvjsmLJcvzZACsy25Nc9OUQXS5/uDaPoXI7UKwtl5XuTwIQy45q4RD0V255lBoilApkgAo9ZiK0EVeiwPrtUkqw5l2CcYTWX5DajSpjwSOgkLpIMdSPK57LxER2lOfHXobpFtqLpf/2ebt9+SYORZ4Wh8LozOIxfoT21xjGulXxQrdwwsaxq95TfrOyAQVfyEEUPeeA84m3GFDSIWQh3dJU4jacI/PTBcvKM2wRi030PnYOBMsuPq1UgRFWRHX5+IDP7EWUa+jS9gfu8b+zYzpKy2yeXxvDJa1Yp6dZYtanE
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(346002)(136003)(39860400002)(376002)(396003)(46966005)(2906002)(44832011)(81166007)(47076004)(55236004)(8936002)(356005)(4326008)(53546011)(2616005)(16526019)(316002)(450100002)(6486002)(82740400003)(110136005)(956004)(36906005)(86362001)(70206006)(5660300002)(6666004)(336012)(36756003)(186003)(82310400003)(70586007)(478600001)(31686004)(26005)(16576012)(8676002)(31696002)(921003)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2020 13:34:35.9558
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4933e418-f3e9-461f-93a5-08d86157be9e
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR03FT029.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB4076
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 25.09.20 15:19, Oscar Salvador wrote:
-> On Wed, Sep 16, 2020 at 08:34:09PM +0200, David Hildenbrand wrote:
->> __putback_isolated_page() already documents that pages will be placed to
->> the tail of the freelist - this is, however, not the case for
->> "order >= MAX_ORDER - 2" (see buddy_merge_likely()) - which should be
->> the case for all existing users.
->>
->> This change affects two users:
->> - free page reporting
->> - page isolation, when undoing the isolation.
->>
->> This behavior is desireable for pages that haven't really been touched
->> lately, so exactly the two users that don't actually read/write page
->> content, but rather move untouched pages.
->>
->> The new behavior is especially desirable for memory onlining, where we
->> allow allocation of newly onlined pages via undo_isolate_page_range()
->> in online_pages(). Right now, we always place them to the head of the
->> free list, resulting in undesireable behavior: Assume we add
->> individual memory chunks via add_memory() and online them right away to
->> the NORMAL zone. We create a dependency chain of unmovable allocations
->> e.g., via the memmap. The memmap of the next chunk will be placed onto
->> previous chunks - if the last block cannot get offlined+removed, all
->> dependent ones cannot get offlined+removed. While this can already be
->> observed with individual DIMMs, it's more of an issue for virtio-mem
->> (and I suspect also ppc DLPAR).
->>
->> Note: If we observe a degradation due to the changed page isolation
->> behavior (which I doubt), we can always make this configurable by the
->> instance triggering undo of isolation (e.g., alloc_contig_range(),
->> memory onlining, memory offlining).
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
->> Cc: Mel Gorman <mgorman@techsingularity.net>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Dave Hansen <dave.hansen@intel.com>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Mike Rapoport <rppt@kernel.org>
->> Cc: Scott Cheloha <cheloha@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
+On 15/07/2020 10:03, Calvin Johnson wrote:
+> Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> provide them to be connected to MAC.
 > 
-> LGTM, the only thing is the shuffe_zone topic that Wei and Vlastimil rose.
-> Feels a bit odd that takes precedence over something we explicitily demanded.
->
-
-Thanks, yeah I'll be changing that.
-
-> With the comment Vlastimil suggested:
+> An ACPI node property "mdio-handle" is introduced to reference the
+> MDIO bus on which PHYs are registered with autoprobing method used
+> by mdiobus_register().
 > 
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Describe properties "phy-channel" and "phy-mode"
 > 
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> 
+> ---
+> 
+> Changes in v7: None
+> Changes in v6: None
+> Changes in v5: None
+> Changes in v4: None
+> Changes in v3:
+> - cleanup based on v2 comments
+> - Added description for more properties
+> - Added MDIO node DSDT entry
+> 
+> Changes in v2: None
+> 
+>   Documentation/firmware-guide/acpi/dsd/phy.rst | 90 +++++++++++++++++++
+>   1 file changed, 90 insertions(+)
+>   create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+> 
+> diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> new file mode 100644
+> index 000000000000..0132fee10b45
+> --- /dev/null
+> +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> @@ -0,0 +1,90 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=========================
+> +MDIO bus and PHYs in ACPI
+> +=========================
+> +
+> +The PHYs on an mdiobus are probed and registered using mdiobus_register().
+> +Later, for connecting these PHYs to MAC, the PHYs registered on the
+> +mdiobus have to be referenced.
+> +
+> +mdio-handle
+> +-----------
+> +For each MAC node, a property "mdio-handle" is used to reference the
+> +MDIO bus on which the PHYs are registered. On getting hold of the MDIO
+> +bus, use find_phy_device() to get the PHY connected to the MAC.
+> +
+> +phy-channel
+> +-----------
+> +Property "phy-channel" defines the address of the PHY on the mdiobus.
 
--- 
-Thanks,
+Hi Calvin,
 
-David / dhildenb
+As we discussed offline, using 'mdio-handle'+'phy-channel' doesn't make 
+a lot of sense. The MAC should be referencing the PHY it is attached to, 
+not the MDIO bus. Referencing the PHY makes assumptions about how the 
+PHY is wired into the system, which may not be via a traditional MDIO 
+bus. These two properties should be dropped, and replaced with a single 
+property reference to the PHY node.
 
+e.g.,
+     Package () {"phy-handle", Package (){\_SB.MDI0.PHY1}}
+​
+This is also future proof against any changes to how MDIO busses may get 
+modeled in the future. They can be modeled as normal devices now, but if 
+a future version of the ACPI spec adds an MDIO bus type, then the 
+reference to the PHY from the MAC doesn't need to change.
+
+> +
+> +phy-mode
+> +--------
+> +Property "phy-mode" defines the type of PHY interface.
+> +
+> +An example of this is shown below::
+> +
+> +DSDT entry for MAC where MDIO node is referenced
+> +------------------------------------------------
+> +	Scope(\_SB.MCE0.PR17) // 1G
+> +	{
+> +	  Name (_DSD, Package () {
+> +	     ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +		 Package () {
+> +		     Package () {"phy-channel", 1},
+> +		     Package () {"phy-mode", "rgmii-id"},
+> +		     Package () {"mdio-handle", Package (){\_SB.MDI0}}
+> +	      }
+> +	   })
+> +	}
+> +
+> +	Scope(\_SB.MCE0.PR18) // 1G
+> +	{
+> +	  Name (_DSD, Package () {
+> +	    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +		Package () {
+> +		    Package () {"phy-channel", 2},
+> +		    Package () {"phy-mode", "rgmii-id"},
+> +		    Package () {"mdio-handle", Package (){\_SB.MDI0}}
+> +	    }
+> +	  })
+> +	}
+> +
+> +DSDT entry for MDIO node
+> +------------------------
+> +a) Silicon Component
+> +--------------------
+> +	Scope(_SB)
+> +	{
+> +	  Device(MDI0) {
+> +	    Name(_HID, "NXP0006")
+> +	    Name(_CCA, 1)
+> +	    Name(_UID, 0)
+> +	    Name(_CRS, ResourceTemplate() {
+> +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
+> +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
+> +	       {
+> +		 MDI0_IT
+> +	       }
+> +	    }) // end of _CRS for MDI0
+> +	    Name (_DSD, Package () {
+> +	      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +	      Package () {
+> +		 Package () {"little-endian", 1},
+> +	      }
+
+Adopting the 'little-endian' property here makes little sense. This 
+looks like legacy from old PowerPC DT platforms that doesn't belong 
+here. I would drop this bit.
+
+> +	    })
+> +	  } // end of MDI0
+> +	}
+> +
+> +b) Platform Component
+> +---------------------
+> +	Scope(\_SB.MDI0)
+> +	{
+> +	  Device(PHY1) {
+> +	    Name (_ADR, 0x1)
+> +	  } // end of PHY1
+> +
+> +	  Device(PHY2) {
+> +	    Name (_ADR, 0x2)
+> +	  } // end of PHY2
+> +	}
+> 
