@@ -2,79 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C9FD278570
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 12:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D98A27857E
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 13:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728043AbgIYK4h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Sep 2020 06:56:37 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:46361 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726255AbgIYK4h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 06:56:37 -0400
-Received: by mail-oi1-f196.google.com with SMTP id u126so2302988oif.13
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Sep 2020 03:56:36 -0700 (PDT)
+        id S1727679AbgIYLAd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 07:00:33 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:37485 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727402AbgIYLAc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 07:00:32 -0400
+Received: by mail-ot1-f66.google.com with SMTP id o8so1892609otl.4;
+        Fri, 25 Sep 2020 04:00:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HYf6g0WKDng/oYAsjthkdyDlXSojOCXHD37klSbL6XA=;
-        b=EunZO+rTXv5IERpoEW00EKohz0mUfOB3QCXvaQDcFjU/EbTHGfMHGaj58iwsD7LiqJ
-         LnmkJC5FvFMlmxTdsZhuudB6EMmPWQmz/u9audp1GZs2JOkkR7K70FKoB+aHGSnQy6wq
-         lX19qmS0165J6D/jCd685kr5rJGiHOoOlngfl3Z6CD/leCCQreDUYoRmpeBkzTtgVI7+
-         leCUlA+HM/La8TORRP9Hg10Otg7io+KI5TV6zcKmr6y01CsGceBcNd/+QVGPGrsCwz4K
-         bEM7SLYTO12ONpknZnaTFgQfNB7npkpMow47LrJxZ/sKAzpXdqjmeZrX/PK5w0IQ0C90
-         7MUg==
-X-Gm-Message-State: AOAM531bQct4N0SEWUy6NTfjp7hH3uxrxn8Qg+YV0BDbDvnHgFwLBzcG
-        5DirUA5r8Ub/KEA8y3zKj3f93YbWrk2hu2+6DolCLXz9
-X-Google-Smtp-Source: ABdhPJyTbY0GVRjidy8Qu8N5aroKYGgD/lEh6Iuq5hjhq3XI1hCYMzUSo30oXDPdFJZgDnlGvRg8D2kbQIj3W7RHZ7g=
-X-Received: by 2002:aca:df84:: with SMTP id w126mr1208317oig.103.1601031396299;
- Fri, 25 Sep 2020 03:56:36 -0700 (PDT)
+        bh=c6a1lgzCizgypHaz6ViKZR7Okd3xqX1EIgWjVLFJSdI=;
+        b=BLnwAs8+q1kBgi00sC9RS+bu0DzRpB8JqNSBz2Kg/fzQ1qCQ0hFVZ72N1MfKJB/oJi
+         NWfgtLfaF09CehdCVIk0gOAkDz5QZnHyLXqC35t7cnJfgxAe09zyWT9rNw2bEgOa95I+
+         17f/wGFOHLCCoZqxLu7q8JiuJYlafFCdt8gIPIh/kih5OqV9EXOzwwqRFWXBefUnWQxc
+         DV/N1kyIR3OAH18v7XUnzUpUZYPaWFeQXfqmC28lvsjSoXrElyY8qJXHd4GauHyCkwLt
+         nfxe0oKHjqEo0Ozy2qcXfw7DIrA+dLnHoJfGMmRNurqqPuwZ4xArSsVk56A73SKgprm9
+         q6Wg==
+X-Gm-Message-State: AOAM530Cr2ZDyHooxv9Q0bfQOnVPCLebKkn5A2AVKZgXrYsiNgZiNI+u
+        DvZOsY/T5FTEEVnLsZmDPNGFXIm2V6TTsuSjQXRJsJdO
+X-Google-Smtp-Source: ABdhPJwoJMoYw5QP1bHK1gX/+M8dxaaaRmbUU6t31+WvNBVHnWkKECelMHMb1PaSIYFzdPpNULW1u3u0j0WspqIgIKc=
+X-Received: by 2002:a9d:718a:: with SMTP id o10mr2457303otj.262.1601031632042;
+ Fri, 25 Sep 2020 04:00:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200912033851.143311-1-yanaijie@huawei.com>
-In-Reply-To: <20200912033851.143311-1-yanaijie@huawei.com>
+References: <20200913223403.59175-1-alex.hung@canonical.com>
+In-Reply-To: <20200913223403.59175-1-alex.hung@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Sep 2020 12:56:25 +0200
-Message-ID: <CAJZ5v0h=6xC-n=DGk76AKBrQK4f3j3dxoTFQRN_KZZ9RRZLMYQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI, APEI: make apei_resources_all static
-To:     Jason Yan <yanaijie@huawei.com>
+Date:   Fri, 25 Sep 2020 13:00:21 +0200
+Message-ID: <CAJZ5v0jU_E5M0QmG-cr5zQxt99Tr562A8k1fLG=q=DpqmdB+_g@mail.gmail.com>
+Subject: Re: [PATCH][V2] ACPI: video: use ACPI backlight for HP 635 Notebook
+To:     Alex Hung <alex.hung@canonical.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
+        Stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 12, 2020 at 5:39 AM Jason Yan <yanaijie@huawei.com> wrote:
+On Mon, Sep 14, 2020 at 12:34 AM Alex Hung <alex.hung@canonical.com> wrote:
 >
-> This eliminates the following sparse warning:
+> Default backlight interface is AMD's radeon_bl0 which does not work on
+> this system. As a result, let's for ACPI backlight interface for this
+> system.
 >
-> drivers/acpi/apei/apei-base.c:290:23: warning: symbol
-> 'apei_resources_all' was not declared. Should it be static?
+> BugLink: https://bugs.launchpad.net/bugs/1894667
 >
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alex Hung <alex.hung@canonical.com>
 > ---
->  drivers/acpi/apei/apei-base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-> index e358d0046494..d3fbac58d91a 100644
-> --- a/drivers/acpi/apei/apei-base.c
-> +++ b/drivers/acpi/apei/apei-base.c
-> @@ -287,7 +287,7 @@ struct apei_res {
->  };
+> V2: correct Cc to stable
 >
->  /* Collect all resources requested, to avoid conflict */
-> -struct apei_resources apei_resources_all = {
-> +static struct apei_resources apei_resources_all = {
->         .iomem = LIST_HEAD_INIT(apei_resources_all.iomem),
->         .ioport = LIST_HEAD_INIT(apei_resources_all.ioport),
->  };
+>  drivers/acpi/video_detect.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index 2499d7e..05047a3 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -282,6 +282,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+>                 DMI_MATCH(DMI_PRODUCT_NAME, "530U4E/540U4E"),
+>                 },
+>         },
+> +       /* https://bugs.launchpad.net/bugs/1894667 */
+> +       {
+> +        .callback = video_detect_force_video,
+> +        .ident = "HP 635 Notebook",
+> +        .matches = {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "HP 635 Notebook PC"),
+> +               },
+> +       },
+>
+>         /* Non win8 machines which need native backlight nevertheless */
+>         {
 > --
 
-Applied as 5.10 material with the Boris' R-by, thanks!
+Applied as 5.10 material, thanks!
