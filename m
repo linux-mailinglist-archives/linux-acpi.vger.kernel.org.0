@@ -2,119 +2,212 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 842ED277D3E
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 02:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E0D6277E23
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 04:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgIYAyi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Sep 2020 20:54:38 -0400
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:34964 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726700AbgIYAyi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Sep 2020 20:54:38 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 08P0sBXU010109; Fri, 25 Sep 2020 09:54:11 +0900
-X-Iguazu-Qid: 34trJYZuoCRlJhwH8R
-X-Iguazu-QSIG: v=2; s=0; t=1600995250; q=34trJYZuoCRlJhwH8R; m=5x7FASoPHBhzBBc9o2Kptvc5cYFjVXPhl+ozBC+N1SU=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1511) id 08P0s84l004113;
-        Fri, 25 Sep 2020 09:54:08 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 08P0s72w005008;
-        Fri, 25 Sep 2020 09:54:07 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 08P0s7NM011090;
-        Fri, 25 Sep 2020 09:54:07 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Smita Koralahalli Channabasappa <skoralah@amd.com>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
-        <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
-        <20200923140512.GJ28545@zn.tnic>
-        <87pn6chwil.fsf@kokedama.swc.toshiba.co.jp>
-        <52c50f37-a86c-57ad-30e0-dac0857e4ef7@amd.com>
-        <20200924175023.GN5030@zn.tnic>
-Date:   Fri, 25 Sep 2020 09:54:06 +0900
-In-Reply-To: <20200924175023.GN5030@zn.tnic> (Borislav Petkov's message of
-        "Thu, 24 Sep 2020 19:50:23 +0200")
-X-TSB-HOP: ON
-Message-ID: <877dsiislt.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1726764AbgIYCp6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Sep 2020 22:45:58 -0400
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:38402 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726669AbgIYCp6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 24 Sep 2020 22:45:58 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0UA.F98P_1601001952;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0UA.F98P_1601001952)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 25 Sep 2020 10:45:52 +0800
+Date:   Fri, 25 Sep 2020 10:45:52 +0800
+From:   Wei Yang <richard.weiyang@linux.alibaba.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Mike Rapoport <rppt@kernel.org>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH RFC 3/4] mm/page_alloc: always move pages to the tail of
+ the freelist in unset_migratetype_isolate()
+Message-ID: <20200925024552.GA13540@L-31X9LVDL-1304.local>
+Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
+References: <20200916183411.64756-1-david@redhat.com>
+ <20200916183411.64756-4-david@redhat.com>
+ <9c6cc094-b02a-ac6c-e1ca-370ce7257881@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c6cc094-b02a-ac6c-e1ca-370ce7257881@suse.cz>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Borislav Petkov <bp@alien8.de> writes:
-
-> On Thu, Sep 24, 2020 at 12:23:27PM -0500, Smita Koralahalli Channabasappa wrote:
->> > Even though it's not defined in the UEFI spec, it doesn't mean a
->> > structure definition cannot be created.
->
-> Created for what? That structure better have a big fat comment above it, what
-> firmware generates its layout.
-
-Maybe I could've used a better choice of words - I meant to define a
-structure with meaningful member names to replace the *(ptr + i)
-accesses in the patch.
-
-The requirement for documenting the record layout doesn't change -
-whether using raw pointer arithmetic vs a structure definition.
-
->> > After all, the patch is relying on some guarantee of the meaning of
->> > the values and their ordering.
->
-> AFAICT, this looks like an ad-hoc definition and the moment they change
-> it in some future revision, that struct of yours becomes invalid so we'd
-> need to add another one.
-
-If there's no spec backing the current layout, then it'll indeed be an
-ad-hoc definition of a structure in the kernel. But considering that
-it's part of firmware / OS interface for an important part of the RAS
-story I would hope that the code is based on a spec - having that
-reference included would help maintainability.
-
-Incompatible changes will indeed break the assumptions in the kernel and
-code will need to be updated - regardless of the choice of kernel
-implementation; pointer arithmetic, structure definition - ad-hoc or
-spec provided.
-
-Having versioning will allow running older kernels on newer hardware and
-vice versa - but I don't see why that is important only when using a
-structure based access.
-
->
->> > If the patch is relying on the definitions in the SMCA spec it is a good
->
-> Yes, what SMCA spec is that?
->
->> > idea to reference it here - both for review and providing relevant
->> > context for future developers.
+On Thu, Sep 24, 2020 at 01:13:29PM +0200, Vlastimil Babka wrote:
+>On 9/16/20 8:34 PM, David Hildenbrand wrote:
+>> Page isolation doesn't actually touch the pages, it simply isolates
+>> pageblocks and moves all free pages to the MIGRATE_ISOLATE freelist.
 >> 
->> Okay, I agree the structure definition will make the code less arbitrary
->> and provides relevant context compared to pointer arithmetic. I did not
->> think this way. I can try this out if no objections.
+>> We already place pages to the tail of the freelists when undoing
+>> isolation via __putback_isolated_page(), let's do it in any case
+>> (e.g., if order == pageblock_order) and document the behavior.
+>> 
+>> This change results in all pages getting onlined via online_pages() to
+>> be placed to the tail of the freelist.
+>> 
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+>> Cc: Mel Gorman <mgorman@techsingularity.net>
+>> Cc: Michal Hocko <mhocko@kernel.org>
+>> Cc: Dave Hansen <dave.hansen@intel.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Mike Rapoport <rppt@kernel.org>
+>> Cc: Scott Cheloha <cheloha@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>  include/linux/page-isolation.h |  2 ++
+>>  mm/page_alloc.c                | 36 +++++++++++++++++++++++++++++-----
+>>  mm/page_isolation.c            |  8 ++++++--
+>>  3 files changed, 39 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
+>> index 572458016331..a36be2cf4dbb 100644
+>> --- a/include/linux/page-isolation.h
+>> +++ b/include/linux/page-isolation.h
+>> @@ -38,6 +38,8 @@ struct page *has_unmovable_pages(struct zone *zone, struct page *page,
+>>  void set_pageblock_migratetype(struct page *page, int migratetype);
+>>  int move_freepages_block(struct zone *zone, struct page *page,
+>>  				int migratetype, int *num_movable);
+>> +int move_freepages_block_tail(struct zone *zone, struct page *page,
+>> +			      int migratetype);
+>>  
+>>  /*
+>>   * Changes migrate type in [start_pfn, end_pfn) to be MIGRATE_ISOLATE.
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index bba9a0f60c70..75b0f49b4022 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -899,6 +899,15 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+>>  	list_move(&page->lru, &area->free_list[migratetype]);
+>>  }
+>>  
+>> +/* Used for pages which are on another list */
+>> +static inline void move_to_free_list_tail(struct page *page, struct zone *zone,
+>> +					  unsigned int order, int migratetype)
+>> +{
+>> +	struct free_area *area = &zone->free_area[order];
+>> +
+>> +	list_move_tail(&page->lru, &area->free_list[migratetype]);
+>> +}
 >
-> Again, this struct better have "versioning" info because the moment your
-> fw people change it in some future platform, this code needs touching
-> again.
+>There are just 3 callers of move_to_free_list() before this patch, I would just
+>add the to_tail parameter there instead of new wrapper. For callers with
+>constant parameter, the inline will eliminate it anyway.
+
+Got the same feeling :-)
+
 >
-> It probably would need touching even with the offsets if those offsets
-> change but at least not having it adhere to some slow-moving spec is
-> probably easier in case they wanna add/change fields.
+>>  static inline void del_page_from_free_list(struct page *page, struct zone *zone,
+>>  					   unsigned int order)
+>>  {
+>> @@ -2323,7 +2332,7 @@ static inline struct page *__rmqueue_cma_fallback(struct zone *zone,
+>>   */
+>>  static int move_freepages(struct zone *zone,
+>>  			  struct page *start_page, struct page *end_page,
+>> -			  int migratetype, int *num_movable)
+>> +			  int migratetype, int *num_movable, bool to_tail)
+>>  {
+>>  	struct page *page;
+>>  	unsigned int order;
+>> @@ -2354,7 +2363,10 @@ static int move_freepages(struct zone *zone,
+>>  		VM_BUG_ON_PAGE(page_zone(page) != zone, page);
+>>  
+>>  		order = page_order(page);
+>> -		move_to_free_list(page, zone, order, migratetype);
+>> +		if (to_tail)
+>> +			move_to_free_list_tail(page, zone, order, migratetype);
+>> +		else
+>> +			move_to_free_list(page, zone, order, migratetype);
+>>  		page += 1 << order;
+>>  		pages_moved += 1 << order;
+>>  	}
+>> @@ -2362,8 +2374,9 @@ static int move_freepages(struct zone *zone,
+>>  	return pages_moved;
+>>  }
+>>  
+>> -int move_freepages_block(struct zone *zone, struct page *page,
+>> -				int migratetype, int *num_movable)
+>> +static int __move_freepages_block(struct zone *zone, struct page *page,
+>> +				  int migratetype, int *num_movable,
+>> +				  bool to_tail)
+>>  {
+>>  	unsigned long start_pfn, end_pfn;
+>>  	struct page *start_page, *end_page;
+>> @@ -2384,7 +2397,20 @@ int move_freepages_block(struct zone *zone, struct page *page,
+>>  		return 0;
+>>  
+>>  	return move_freepages(zone, start_page, end_page, migratetype,
+>> -								num_movable);
+>> +			      num_movable, to_tail);
+>> +}
+>> +
+>> +int move_freepages_block(struct zone *zone, struct page *page,
+>> +			 int migratetype, int *num_movable)
+>> +{
+>> +	return __move_freepages_block(zone, page, migratetype, num_movable,
+>> +				      false);
+>> +}
+>> +
+>> +int move_freepages_block_tail(struct zone *zone, struct page *page,
+>> +			      int migratetype)
+>> +{
+>> +	return __move_freepages_block(zone, page, migratetype, NULL, true);
+>>  }
 >
-> So Smita, you probably should talk to fw people about how stable that
-> layout at ctx_info + 1 is going to be wrt future platforms so that
-> we make sure we only access the correct offsets, now and on future
-> platforms.
+>Likewise, just 5 callers of move_freepages_block(), all in the files you're
+>already changing, so no need for this wrappers IMHO.
 >
-> Thx.
+>Thanks,
+>Vlastimil
+>
+>>  static void change_pageblock_range(struct page *pageblock_page,
+>> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+>> index abfe26ad59fd..84aa1d14751d 100644
+>> --- a/mm/page_isolation.c
+>> +++ b/mm/page_isolation.c
+>> @@ -83,7 +83,7 @@ static void unset_migratetype_isolate(struct page *page, unsigned migratetype)
+>>  	 * Because freepage with more than pageblock_order on isolated
+>>  	 * pageblock is restricted to merge due to freepage counting problem,
+>>  	 * it is possible that there is free buddy page.
+>> -	 * move_freepages_block() doesn't care of merge so we need other
+>> +	 * move_freepages_block*() don't care about merging, so we need another
+>>  	 * approach in order to merge them. Isolation and free will make
+>>  	 * these pages to be merged.
+>>  	 */
+>> @@ -106,9 +106,13 @@ static void unset_migratetype_isolate(struct page *page, unsigned migratetype)
+>>  	 * If we isolate freepage with more than pageblock_order, there
+>>  	 * should be no freepage in the range, so we could avoid costly
+>>  	 * pageblock scanning for freepage moving.
+>> +	 *
+>> +	 * We didn't actually touch any of the isolated pages, so place them
+>> +	 * to the tail of the freelists. This is especially relevant during
+>> +	 * memory onlining.
+>>  	 */
+>>  	if (!isolated_page) {
+>> -		nr_pages = move_freepages_block(zone, page, migratetype, NULL);
+>> +		nr_pages = move_freepages_block_tail(zone, page, migratetype);
+>>  		__mod_zone_freepage_state(zone, nr_pages, migratetype);
+>>  	}
+>>  	set_pageblock_migratetype(page, migratetype);
+>> 
+
+-- 
+Wei Yang
+Help you, Help me
