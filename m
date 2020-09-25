@@ -2,74 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E2B278DC1
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 18:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A68B278DD7
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 18:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727521AbgIYQM5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 25 Sep 2020 12:12:57 -0400
-Received: from mail-oo1-f67.google.com ([209.85.161.67]:35569 "EHLO
-        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727201AbgIYQM5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 12:12:57 -0400
-Received: by mail-oo1-f67.google.com with SMTP id k13so886458oor.2
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Sep 2020 09:12:57 -0700 (PDT)
+        id S1729332AbgIYQPo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 12:15:44 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:40989 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727812AbgIYQPn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 12:15:43 -0400
+Received: by mail-oi1-f196.google.com with SMTP id x69so3313519oia.8;
+        Fri, 25 Sep 2020 09:15:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=p6r219c9DLO15OfEk2pcpu4mJh+Ck5oqlP09njsqxVs=;
-        b=jnILda1RZ9bQtWq6vSyNSD3uFOoQnnzAZFw5oO0VeLNwWwDYLy5HU8ESIKSpk5D2wy
-         BvC0TmSiAhUdhZTaL/c2gtH1/CWxarzM2JvTs+1vFl/sYEQkA6NvX6EeefvGQf99oU/y
-         Kan6W2qX/n6gG3yOODvFl8jOUDciBgzg4K2R7h3clu4tbP35uwT9/Q8QX+BaA7K5uq5v
-         Qx52Isff56PUtm4Lbdkb7vTEAahBUUe8ayvcklilhkfl3zTS9ng1vW69zoU2sq9VddHK
-         xC+Kgj8YiWYy7WYN96Mq6RDyzIjlAvWnuwNy/RNUyZuvlyy6C7tmEqal9LtjoFlJe3Fw
-         4wDw==
-X-Gm-Message-State: AOAM531kFolbCkAPmyARHeXDd9btNDTIAm0td9D6iKQQ5FywVxyHbPke
-        KwdAhwbBU+cwlw5WnHMMAMQ/V4LTMGhS4yql3qc=
-X-Google-Smtp-Source: ABdhPJw5q6U/vaL5/57hy3IELV2HABpyTZnIyM315Yw+PJ1SBggImfZjosb0LEgMK7gpRrPAzldM2aGtKfrKLLjB7VQ=
-X-Received: by 2002:a4a:e946:: with SMTP id v6mr1396439ood.38.1601050376969;
- Fri, 25 Sep 2020 09:12:56 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=lOXpo4MBWIKdAj2YTS1Md9BASeJ0w+Pyx3kKYD3oYVQ=;
+        b=oIBIWsKlvXr13iovSxmFyUothUNUKa+aN9mxZ8WdVu/DOcpRDCG0X2Jox8rTGmoOAi
+         cZDI4KHXpZF5X49SLNKv3KEfPZYEO46pyuFUPf390CakNXwYswpgiT+i8dSR6tLDd0pV
+         rQeqvTSLukpAVPCea4nQNh/LA2dcbHLsNbk4uLHoJrEWpYVu+41S+SSnSFps/BR4NQId
+         K17nhgRC4DYmkGYkszbGWxgj4j9Y1+piwxn0KdPy9RQSI0P95YmD3B+DMojk9+5+KCvl
+         U5zBQBYaJad5/oyeQtGQOBHKYUZMwKyH9cdjLzHo6MPlgBnhua1Mr8YvokkSGewt83Ta
+         gQiw==
+X-Gm-Message-State: AOAM533cRvHanJkmIEjDzLHsqYWTUv8qtDZfjp7YKcT2HBX6AokguDcJ
+        0Tid4JqopLKJC5LjXhVxCbnuA9CmMt4n0VdF+VY=
+X-Google-Smtp-Source: ABdhPJx5UX7kity3V2dBJf1+PFCSGCK75p12z6fHS8h4OPobc46h2wvFxrM4n5apwd0CUZgZ6ut5dIiUc75C7RxTtY8=
+X-Received: by 2002:aca:5b09:: with SMTP id p9mr68445oib.68.1601050542827;
+ Fri, 25 Sep 2020 09:15:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <1600740674-43727-1-git-send-email-tiantao6@hisilicon.com>
-In-Reply-To: <1600740674-43727-1-git-send-email-tiantao6@hisilicon.com>
+References: <1600741945-38474-1-git-send-email-tiantao6@hisilicon.com>
+In-Reply-To: <1600741945-38474-1-git-send-email-tiantao6@hisilicon.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Sep 2020 18:12:46 +0200
-Message-ID: <CAJZ5v0iD=QyTrS8Z2UjHzswUTeys9XLvkbxY3hi-vmVchdxUTg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / PNP: Fix missing-prototypes in acpi_pnp.c
+Date:   Fri, 25 Sep 2020 18:15:31 +0200
+Message-ID: <CAJZ5v0jGyX=51HvTQ6SF1y-YE=nd0uf-W6n59Etp8K8gkk6nCg@mail.gmail.com>
+Subject: Re: [PATCH] PCI/ACPI: update kernel-doc line comments
 To:     Tian Tao <tiantao6@hisilicon.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 22, 2020 at 4:13 AM Tian Tao <tiantao6@hisilicon.com> wrote:
+On Tue, Sep 22, 2020 at 4:35 AM Tian Tao <tiantao6@hisilicon.com> wrote:
 >
-> Fix the following warnings.
-> drivers/acpi/acpi_pnp.c:382:13: warning: no previous prototype
-> for ‘acpi_pnp_init’ [-Wmissing-prototypes].
+> Update kernel-doc line comments to fix warnings reported by make W=1.
+> drivers/acpi/pci_root.c:71: warning: Function parameter or
+> member 'handle' not described in 'acpi_is_root_bridge'
 >
 > Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
 > ---
->  drivers/acpi/acpi_pnp.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/acpi/pci_root.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> index f3039b9..4ed755a 100644
-> --- a/drivers/acpi/acpi_pnp.c
-> +++ b/drivers/acpi/acpi_pnp.c
-> @@ -11,6 +11,8 @@
->  #include <linux/module.h>
->  #include <linux/ctype.h>
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index f90e841..8b81280 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -62,7 +62,7 @@ static DEFINE_MUTEX(osc_lock);
 >
-> +#include "internal.h"
-> +
->  static const struct acpi_device_id acpi_pnp_device_ids[] = {
->         /* pata_isapnp */
->         {"PNP0600"},            /* Generic ESDI/IDE/ATA compatible hard disk controller */
+>  /**
+>   * acpi_is_root_bridge - determine whether an ACPI CA node is a PCI root bridge
+> - * @handle - the ACPI CA node in question.
+> + * @handle:  the ACPI CA node in question.
+>   *
+>   * Note: we could make this API take a struct acpi_device * instead, but
+>   * for now, it's more convenient to operate on an acpi_handle.
 > --
 
-Applied as 5.10 material with a minor edit in the subject, thanks!
+Applied as 5.10 material with minor edits in the subject and changelog, thanks!
