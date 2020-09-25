@@ -2,200 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE4427891F
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 15:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D76B27896D
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 15:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728721AbgIYNNy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Sep 2020 09:13:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:48701 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727982AbgIYNNw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 25 Sep 2020 09:13:52 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601039630;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=eo2oqS48+/X5o9QRShUYkc//aVZItbJgr7Lvbd5vGqM=;
-        b=XPB8mVPz2/RA0nXynX3BxQqYrbeFkuvQ++/CCJRrlKrGumEI1y9bNvVZ0dkww6D9/nojAw
-        itYIObOGTTzcHkeScX8zwyxt+DIPtoyHthTRELh9g675qURsKLB0QR0lJ2hEzu/33JIAIp
-        mduE/5wwZKf9ZTSA5siQbwUPetPwm0s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-590-GE9UGUKnMGezduBsetqEUA-1; Fri, 25 Sep 2020 09:13:46 -0400
-X-MC-Unique: GE9UGUKnMGezduBsetqEUA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D4FA910BBECB;
-        Fri, 25 Sep 2020 13:13:43 +0000 (UTC)
-Received: from [10.36.112.211] (ovpn-112-211.ams2.redhat.com [10.36.112.211])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 70CE35C1C7;
-        Fri, 25 Sep 2020 13:13:38 +0000 (UTC)
-Subject: Re: [PATCH RFC 3/4] mm/page_alloc: always move pages to the tail of
- the freelist in unset_migratetype_isolate()
-To:     Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20200916183411.64756-1-david@redhat.com>
- <20200916183411.64756-4-david@redhat.com>
- <9c6cc094-b02a-ac6c-e1ca-370ce7257881@suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <c32daa63-9e73-bae0-2327-ad84fb4c6a12@redhat.com>
-Date:   Fri, 25 Sep 2020 15:13:38 +0200
+        id S1728353AbgIYNXR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 09:23:17 -0400
+Received: from mail-eopbgr20067.outbound.protection.outlook.com ([40.107.2.67]:40550
+        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728872AbgIYNXR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 25 Sep 2020 09:23:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bTgwsuOPeNHl9PlpQsGNILyeqfgxCldCa9H2JA7efLw=;
+ b=etE6KMuRZ85pnAya+bvtN++C4I8wbVgFkSps6kY0eGT6AWTcZTm3NWm+9pRaAy3BHVhWtnjHe+ixJX09Pyw20CmWbgcofSNf3nhFeXkwpvDPuj+6IXj5F3MMtLkM0vvIt7pNfdknzbGXt6H+Sh087gMYHvZ5tshv/nNOzeuEvVo=
+Received: from AM6P192CA0071.EURP192.PROD.OUTLOOK.COM (2603:10a6:209:82::48)
+ by AM6PR08MB5542.eurprd08.prod.outlook.com (2603:10a6:20b:71::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.15; Fri, 25 Sep
+ 2020 13:23:04 +0000
+Received: from AM5EUR03FT029.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:209:82:cafe::99) by AM6P192CA0071.outlook.office365.com
+ (2603:10a6:209:82::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend
+ Transport; Fri, 25 Sep 2020 13:23:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=bestguesspass
+ action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ AM5EUR03FT029.mail.protection.outlook.com (10.152.16.150) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3412.21 via Frontend Transport; Fri, 25 Sep 2020 13:23:04 +0000
+Received: ("Tessian outbound 7161e0c2a082:v64"); Fri, 25 Sep 2020 13:23:04 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 6ad9d0d2c59c6b2b
+X-CR-MTA-TID: 64aa7808
+Received: from 297697a109ec.2
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 5799906F-3E4B-4A08-91DE-745B69FA69F9.1;
+        Fri, 25 Sep 2020 13:22:58 +0000
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 297697a109ec.2
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Fri, 25 Sep 2020 13:22:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Im2lS9uOMEzAVa8p2XvNQH4GSotodbED99cuoYN+96EKXN7OZExwgpx7sewxqAvc9AfzSME5oUPi2S++E4q/jXuennffXZU56BX4BGxjlGyIu123atYDHhIdRuKNKBDGM1t0DoOIKqfY8JJh3Nnm67AboWldg5EigBCYFiwumEFihuoKhnuESlcl+h8YNw37oaKzQMyfirAv3uBnGC4fzUHqsE98P49fz6fpvB6fT69KtOMHOfY49G/T3IK541kxdVejZ83bTEDqLiJtwRSTLyqQr0GcsOpNzUzsSA2HyKyAlwPddzXkSpKlnj02xiHJtIbdmxtC3cDHpFKMGqzIbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bTgwsuOPeNHl9PlpQsGNILyeqfgxCldCa9H2JA7efLw=;
+ b=fU9RAJN+PM2ZzQdH8iKDZeU9Ae3Q6gpdgk8kUvGhu3zYNY7FRQY7kYgaz2qAV4ZDdLFxsqcOn+QImzl/+mlYlHF19CqHGkDuRUE7cn2k4y0yKb7HSCWliNbxTxgI0OADInG25n1UVB1pUVVLLgqQbfEYwGm2uGGlYqVeBCvEhPTGSKpkMxyNBhfqaDR+L3fq6nHoc/fyMf2Yxgay4bXwlpT7GY+bU66pWGtxNlPVnShF9pMFSa36myFHfoR9ggNg8HQenEjLneFOWPSOXlioa2xwhUa24G6Eyimmo2RiFrZiFOocWdZra+eL9b3Nag9Qa/4C91NTzaUVJbVH+X+1mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bTgwsuOPeNHl9PlpQsGNILyeqfgxCldCa9H2JA7efLw=;
+ b=etE6KMuRZ85pnAya+bvtN++C4I8wbVgFkSps6kY0eGT6AWTcZTm3NWm+9pRaAy3BHVhWtnjHe+ixJX09Pyw20CmWbgcofSNf3nhFeXkwpvDPuj+6IXj5F3MMtLkM0vvIt7pNfdknzbGXt6H+Sh087gMYHvZ5tshv/nNOzeuEvVo=
+Authentication-Results-Original: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+Received: from AM6PR08MB4007.eurprd08.prod.outlook.com (2603:10a6:20b:a1::29)
+ by AM6PR08MB4007.eurprd08.prod.outlook.com (2603:10a6:20b:a1::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.22; Fri, 25 Sep
+ 2020 13:22:56 +0000
+Received: from AM6PR08MB4007.eurprd08.prod.outlook.com
+ ([fe80::9904:4b6c:dfa2:e49f]) by AM6PR08MB4007.eurprd08.prod.outlook.com
+ ([fe80::9904:4b6c:dfa2:e49f%6]) with mapi id 15.20.3412.022; Fri, 25 Sep 2020
+ 13:22:56 +0000
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
+ PHY
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Dan Callaghan <dan.callaghan@opengear.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Russell King <linux@armlinux.org.uk>, Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        netdev <netdev@vger.kernel.org>, "linux.cj" <linux.cj@gmail.com>,
+        linux-acpi <linux-acpi@vger.kernel.org>, nd <nd@arm.com>,
+        Rob Herring <Rob.Herring@arm.com>
+References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
+ <1a031e62-1e87-fdc1-b672-e3ccf3530fda@arm.com>
+ <20200724133931.GF1472201@lunn.ch>
+ <97973095-5458-8ac2-890c-667f4ea6cd0e@arm.com>
+ <20200724191436.GH1594328@lunn.ch>
+ <1595922651-sup-5323@galangal.danc.bne.opengear.com>
+ <20200728204548.GC1748118@lunn.ch>
+ <7d42152a-2df1-a26c-b619-b804001e0eac@gmail.com>
+ <CAHp75VejnW23LEfyEO6Py8=e3_W0YMomk8jQ3JQeHqYcaeDitg@mail.gmail.com>
+ <20200731151444.GI1712415@lunn.ch>
+From:   Grant Likely <grant.likely@arm.com>
+Message-ID: <e48957a9-b92a-f2d2-6157-39e8c225311d@arm.com>
+Date:   Fri, 25 Sep 2020 14:22:52 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <9c6cc094-b02a-ac6c-e1ca-370ce7257881@suse.cz>
-Content-Type: text/plain; charset=utf-8
+ Thunderbird/68.12.0
+In-Reply-To: <20200731151444.GI1712415@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-ClientProxiedBy: LO2P265CA0470.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a2::26) To AM6PR08MB4007.eurprd08.prod.outlook.com
+ (2603:10a6:20b:a1::29)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.16.147] (188.28.154.24) by LO2P265CA0470.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:a2::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend Transport; Fri, 25 Sep 2020 13:22:54 +0000
+X-Originating-IP: [188.28.154.24]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 2be5fe35-b9ce-41a8-abd1-08d86156229a
+X-MS-TrafficTypeDiagnostic: AM6PR08MB4007:|AM6PR08MB5542:
+X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM6PR08MB5542D8469CE07B23B983D8F295360@AM6PR08MB5542.eurprd08.prod.outlook.com>
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;OLM:5516;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: oFmG6i07X85UrIomn0zfjsuqvTokMjXE3j4+3IXqYsqRP/Z98jadktfORwYmuqfQ50t3gv+m2hBx4JlLsxNnWK+rxwo8t9fYxMVic89cZmaX0MvWBgcxMAg4nsqJg1p8UMN5WlJiTBWnXFmjUikBTw6vVp46K8tgr295RpRi9aoaJ7oFWPMygYJpkdv7Fk0de3OOSgpVvmirLgnCdS4/9MXRWbBf9jm9MEiJ8KQ3btd6h+MHXGxPdC354mZI/BrefZQMcNT7i7cNYiCPCiywytXtpE/pkcCknHbhMbb0k5EYJsWY6EWWsE+gvQnG4Ng/p8KHUQ+mQ59qY9HazXXr3tcB09cwz+l9T0WF0oNe6PlPIJOgA41Qy8aV10TSlKG3SKzrkqo8fQ87GSf8GljIoFu8GHaAyse87EO+eXunCS4=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4007.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(136003)(396003)(346002)(376002)(39860400002)(86362001)(66946007)(5660300002)(44832011)(16576012)(54906003)(478600001)(7416002)(31696002)(316002)(110136005)(31686004)(8936002)(66556008)(2616005)(26005)(55236004)(186003)(6486002)(53546011)(52116002)(66476007)(956004)(4326008)(2906002)(8676002)(36756003)(16526019)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: AztizN6LRvcSgsXUfHoFnJP1D1wU8iXWOZU5Bu9gCUXQBEt6BEFpyk2ZKRLuhe4muLBNqQTchGFjEGD3ip8q4xlwGHjNQJ1zbi5mjZ7MY0aDfTMd+ad0S4/mAnPUY7VYMaB6Qtn8TDZkcLp8fPKluKIcC/DjmECq5oRa/rPKgu2LwuqqKDeF0DZUoq+2P2GOjogzXqPDnoASy3/6DQk2pe18WIe52qIfUqc/swj+itlktJ7yp4smYSVl67Hbj3eyML6UAsz8H/Fvl81UXwmFyuEgUtsfP8YP6erU7iieHqsT0nwwCt5eMIcqZtj9z+aPdgDysqpMRLqVBPZTZFkPPAHASgW7HGx5nG44NiZyGsz7Qs2nHYu6L2aUKz6eTcrJo7/ov4CFGpsk1Pz/jO3lT1PdEtxCddCXnYzP6oozlNXiSXTl54rv1DuL3IHm26PIPHle7MbTF3otQwwuglHzTEajXPm1VMkkkswpS4iUvndzL0Ff5AEog/Ent4BYJYf0gvdFRg8BNm/oq8+RUnZVcI51gt9EzVgdvLkDik7SFwADjCHxH1u3o/8OB68oWgTy6RT6rMO12kDwyoTmGbKWcW6x1iSthJ5lbJT6gePrb6+mdudC/AGtxuKb4tvW5zpegGiWpJFUv22YVRPeLVyvAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR08MB4007
+Original-Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM5EUR03FT029.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: de4484b8-5495-4bab-d72e-08d861561d5e
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KevtEz8ARb1rz2ejSFS9V7KYW4hzotLFAFCGm5HcPoEFHEmtMSmsyyIKJ0o9tdjpP7UjW0Zvr0o3vSKtB5cYC/67Wvqg9DIFXKM11YkPl5JYrbBmAr0Anr0cqUELFSUsQVnUIFySCE9iz1+9VwHXZmqzVtIV/kOqBJExt3jj8f4lQTHwTIoB/EHCMcEQNl+yonoOUR5C2d5oj6T3bVjYEbjTQA8W32f+fXbCB1gWgUie8UIXywAe1Vras78ELI+fHKgD7hLiWjWaaQEMzgvdvQpHZZXYCCtdsFcWqqjMfuiM/9+JS9TRTdrBdJ8ioxVvZ3ppwKcZ3KHBwgEaPXUSStgiEYb43LAXlph26G8PQwEYkKBn7jXuqeiniD1BPJ5ndz2kzQWtKf/VBMutwr5eAfooy+AScpT5ekx/Fq0fGtXZLVqxayiV5xWHoTGL7Th2jdWtoSmnFU70/GLx7Lnxm/VHXAhvmXqip5LndpzCXXQ=
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(39860400002)(396003)(376002)(136003)(346002)(46966005)(54906003)(16576012)(70206006)(8936002)(316002)(5660300002)(82310400003)(81166007)(36906005)(86362001)(356005)(478600001)(8676002)(2906002)(31696002)(70586007)(26005)(336012)(450100002)(2616005)(31686004)(186003)(53546011)(16526019)(36756003)(82740400003)(44832011)(110136005)(47076004)(6486002)(956004)(4326008)(55236004)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2020 13:23:04.7739
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2be5fe35-b9ce-41a8-abd1-08d86156229a
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: AM5EUR03FT029.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR08MB5542
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 24.09.20 13:13, Vlastimil Babka wrote:
-> On 9/16/20 8:34 PM, David Hildenbrand wrote:
->> Page isolation doesn't actually touch the pages, it simply isolates
->> pageblocks and moves all free pages to the MIGRATE_ISOLATE freelist.
+
+
+On 31/07/2020 16:14, Andrew Lunn wrote:
+>>>> DT can be used on x86, and i suspect it is a much easier path of least
+>>>> resistance.
+>>>
+>>> And you can easily overlay Device Tree to an existing system by using
+>>> either a full Device Tree overlay (dtbo) or using CONFIG_OF_DYNAMIC and
+>>> creating nodes on the fly.
 >>
->> We already place pages to the tail of the freelists when undoing
->> isolation via __putback_isolated_page(), let's do it in any case
->> (e.g., if order == pageblock_order) and document the behavior.
->>
->> This change results in all pages getting onlined via online_pages() to
->> be placed to the tail of the freelist.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
->> Cc: Mel Gorman <mgorman@techsingularity.net>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Dave Hansen <dave.hansen@intel.com>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Mike Rapoport <rppt@kernel.org>
->> Cc: Scott Cheloha <cheloha@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>  include/linux/page-isolation.h |  2 ++
->>  mm/page_alloc.c                | 36 +++++++++++++++++++++++++++++-----
->>  mm/page_isolation.c            |  8 ++++++--
->>  3 files changed, 39 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
->> index 572458016331..a36be2cf4dbb 100644
->> --- a/include/linux/page-isolation.h
->> +++ b/include/linux/page-isolation.h
->> @@ -38,6 +38,8 @@ struct page *has_unmovable_pages(struct zone *zone, struct page *page,
->>  void set_pageblock_migratetype(struct page *page, int migratetype);
->>  int move_freepages_block(struct zone *zone, struct page *page,
->>  				int migratetype, int *num_movable);
->> +int move_freepages_block_tail(struct zone *zone, struct page *page,
->> +			      int migratetype);
->>  
->>  /*
->>   * Changes migrate type in [start_pfn, end_pfn) to be MIGRATE_ISOLATE.
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index bba9a0f60c70..75b0f49b4022 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -899,6 +899,15 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
->>  	list_move(&page->lru, &area->free_list[migratetype]);
->>  }
->>  
->> +/* Used for pages which are on another list */
->> +static inline void move_to_free_list_tail(struct page *page, struct zone *zone,
->> +					  unsigned int order, int migratetype)
->> +{
->> +	struct free_area *area = &zone->free_area[order];
->> +
->> +	list_move_tail(&page->lru, &area->free_list[migratetype]);
->> +}
+>> Why do you need DT on a system that runs without it and Linux has all
+>> means to extend to cover a lot of stuff DT provides for other types of
+>> firmware nodes?
 > 
-> There are just 3 callers of move_to_free_list() before this patch, I would just
-> add the to_tail parameter there instead of new wrapper. For callers with
-> constant parameter, the inline will eliminate it anyway.
+> As i said, path of least resistance. It is here today, heavily used,
+> well understood by lots of network developers, has a very active
+> maintainer in the form of Rob Herring, and avoids 'showflakes' as
+> Florian likes to call it, so we are all sharing the same code,
+> providing a lot of testing and maintenance.
 > 
+> 	  Andrew
 
-So, I'll leave this as is for now, it nicely pairs with
-add_to_free_list()/add_to_free_list_tail() and ...
+Hi Andrew,
 
-[...]
+I'm just coming into this thread now. With my alumni DT-maintainer had 
+on I think that trying to use ACPI & DT on the same system is the worst 
+of both worlds. Trying to do so makes the solution far more complicated 
+than either an ACPI-only or DT-only approach. There is no good way for 
+references between DT & ACPI nodes. I have serious doubts about the 
+reliability of the dynamic DT code in the kernel. Perhaps most 
+problematic is it excludes platform specific data from the ACPI 
+description provided by firmware, which means platform-specific data 
+needs to be shipped with the OS. Rather defeats the whole point of 
+firmware providing the platform description. An ACPI solution is 
+absolutely needed.
 
->> +int move_freepages_block_tail(struct zone *zone, struct page *page,
->> +			      int migratetype)
->> +{
->> +	return __move_freepages_block(zone, page, migratetype, NULL, true);
->>  }
-> 
+Regarding this specific series, I think it is approximately the right 
+approach. I have some specific concerns that I've talked with Calvin 
+about and I'm going to post as replies to the individual patches. My 
+most significant concern is the reference from the ACPI MAC node to the 
+MDIO node, which makes little sense. The MAC should have a reference to 
+the PHY node.
 
-Drop these wrappers, converting callers of move_freepages_block().
+There have been other issues raised in this thread. I'm going to go back 
+and respond to a few of those points in separate emails, but as a larger 
+issue I think there is a fair bit of misunderstanding on what ACPI does 
+and does not do, and how much is expected to be standardized in ACPI 
+specs. In the ACPI world the typical model is the firmware/platform 
+vendor decides what data to put into the ACPI nodes that works for them, 
+and then the OS just has to deal with it. Linux typically never gets a 
+choice about what goes into ACPI nodes.
 
-Thanks!
+Already, threads like this one are setting the bar *far* higher on ACPI 
+schema than has ever been done before. I do think it is right to be 
+asking for a common data model for describing PHY connections. Lining 
+the model up with the DT PHY model is also valuable because we can use 
+common code. I also think as first through the door, what gets accepted 
+(after review) for the layerscape platforms here should become the 
+defacto standard that other vendors are expected to adopt, and I have 
+very high confidence that it will be acceptable because it follow the 
+pattern already used in devicetree.
 
-
--- 
-Thanks,
-
-David / dhildenb
-
+Cheers,
+g.
