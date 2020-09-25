@@ -2,87 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D98A27857E
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 13:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447732785F4
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 13:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727679AbgIYLAd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Sep 2020 07:00:33 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:37485 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727402AbgIYLAc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 07:00:32 -0400
-Received: by mail-ot1-f66.google.com with SMTP id o8so1892609otl.4;
-        Fri, 25 Sep 2020 04:00:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c6a1lgzCizgypHaz6ViKZR7Okd3xqX1EIgWjVLFJSdI=;
-        b=BLnwAs8+q1kBgi00sC9RS+bu0DzRpB8JqNSBz2Kg/fzQ1qCQ0hFVZ72N1MfKJB/oJi
-         NWfgtLfaF09CehdCVIk0gOAkDz5QZnHyLXqC35t7cnJfgxAe09zyWT9rNw2bEgOa95I+
-         17f/wGFOHLCCoZqxLu7q8JiuJYlafFCdt8gIPIh/kih5OqV9EXOzwwqRFWXBefUnWQxc
-         DV/N1kyIR3OAH18v7XUnzUpUZYPaWFeQXfqmC28lvsjSoXrElyY8qJXHd4GauHyCkwLt
-         nfxe0oKHjqEo0Ozy2qcXfw7DIrA+dLnHoJfGMmRNurqqPuwZ4xArSsVk56A73SKgprm9
-         q6Wg==
-X-Gm-Message-State: AOAM530Cr2ZDyHooxv9Q0bfQOnVPCLebKkn5A2AVKZgXrYsiNgZiNI+u
-        DvZOsY/T5FTEEVnLsZmDPNGFXIm2V6TTsuSjQXRJsJdO
-X-Google-Smtp-Source: ABdhPJwoJMoYw5QP1bHK1gX/+M8dxaaaRmbUU6t31+WvNBVHnWkKECelMHMb1PaSIYFzdPpNULW1u3u0j0WspqIgIKc=
-X-Received: by 2002:a9d:718a:: with SMTP id o10mr2457303otj.262.1601031632042;
- Fri, 25 Sep 2020 04:00:32 -0700 (PDT)
+        id S1727521AbgIYLeL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 07:34:11 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2919 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726990AbgIYLeL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 25 Sep 2020 07:34:11 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 23D44ACD6EC795CB14F6;
+        Fri, 25 Sep 2020 12:34:09 +0100 (IST)
+Received: from localhost (10.52.122.107) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 25 Sep
+ 2020 12:34:08 +0100
+Date:   Fri, 25 Sep 2020 12:32:26 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Brice Goglin" <Brice.Goglin@inria.fr>,
+        Sean V Kelley <sean.v.kelley@linux.intel.com>,
+        <linux-api@vger.kernel.org>, Hanjun Guo <guohanjun@huawei.com>
+Subject: Re: [PATCH v10 2/6] x86: Support Generic Initiator only proximity
+ domains
+Message-ID: <20200925123226.0000636a@Huawei.com>
+In-Reply-To: <20200923160609.GO28545@zn.tnic>
+References: <20200907140307.571932-1-Jonathan.Cameron@huawei.com>
+        <20200907140307.571932-3-Jonathan.Cameron@huawei.com>
+        <20200923160609.GO28545@zn.tnic>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20200913223403.59175-1-alex.hung@canonical.com>
-In-Reply-To: <20200913223403.59175-1-alex.hung@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Sep 2020 13:00:21 +0200
-Message-ID: <CAJZ5v0jU_E5M0QmG-cr5zQxt99Tr562A8k1fLG=q=DpqmdB+_g@mail.gmail.com>
-Subject: Re: [PATCH][V2] ACPI: video: use ACPI backlight for HP 635 Notebook
-To:     Alex Hung <alex.hung@canonical.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.122.107]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 14, 2020 at 12:34 AM Alex Hung <alex.hung@canonical.com> wrote:
->
-> Default backlight interface is AMD's radeon_bl0 which does not work on
-> this system. As a result, let's for ACPI backlight interface for this
-> system.
->
-> BugLink: https://bugs.launchpad.net/bugs/1894667
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alex Hung <alex.hung@canonical.com>
-> ---
->
-> V2: correct Cc to stable
->
->  drivers/acpi/video_detect.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 2499d7e..05047a3 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -282,6 +282,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "530U4E/540U4E"),
->                 },
->         },
-> +       /* https://bugs.launchpad.net/bugs/1894667 */
-> +       {
-> +        .callback = video_detect_force_video,
-> +        .ident = "HP 635 Notebook",
-> +        .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "HP 635 Notebook PC"),
-> +               },
-> +       },
->
->         /* Non win8 machines which need native backlight nevertheless */
->         {
-> --
+On Wed, 23 Sep 2020 18:06:09 +0200
+Borislav Petkov <bp@alien8.de> wrote:
 
-Applied as 5.10 material, thanks!
+> On Mon, Sep 07, 2020 at 10:03:03PM +0800, Jonathan Cameron wrote:
+> > In common with memoryless domains we only register GI domains
+> > if the proximity node is not online. If a domain is already
+> > a memory containing domain, or a memoryless domain there is
+> > nothing to do just because it also contains a Generic Initiator.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Hi Borislav,
+
+Thanks for taking a look. Answers inline.
+
+> > ---
+> >  arch/x86/include/asm/numa.h |  2 ++
+> >  arch/x86/kernel/setup.c     |  1 +
+> >  arch/x86/mm/numa.c          | 14 ++++++++++++++
+> >  3 files changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+> > index bbfde3d2662f..f631467272a3 100644
+> > --- a/arch/x86/include/asm/numa.h
+> > +++ b/arch/x86/include/asm/numa.h
+> > @@ -62,12 +62,14 @@ extern void numa_clear_node(int cpu);
+> >  extern void __init init_cpu_to_node(void);
+> >  extern void numa_add_cpu(int cpu);
+> >  extern void numa_remove_cpu(int cpu);
+> > +extern void init_gi_nodes(void);
+> >  #else	/* CONFIG_NUMA */
+> >  static inline void numa_set_node(int cpu, int node)	{ }
+> >  static inline void numa_clear_node(int cpu)		{ }
+> >  static inline void init_cpu_to_node(void)		{ }
+> >  static inline void numa_add_cpu(int cpu)		{ }
+> >  static inline void numa_remove_cpu(int cpu)		{ }
+> > +static inline void init_gi_nodes(void)			{ }
+> >  #endif	/* CONFIG_NUMA */
+> >  
+> >  #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+> > diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> > index 3511736fbc74..9062c146f03a 100644
+> > --- a/arch/x86/kernel/setup.c
+> > +++ b/arch/x86/kernel/setup.c
+> > @@ -1218,6 +1218,7 @@ void __init setup_arch(char **cmdline_p)
+> >  	prefill_possible_map();
+> >  
+> >  	init_cpu_to_node();
+> > +	init_gi_nodes();  
+> 
+> Can this function be an early_initcall() or so instead which you can
+> call in numa.c directly instead of exporting it and calling it here?
+
+I don't think we can.  This is doing the same operation as
+is done for memoryless cpu nodes in the init_cpu_to_node() call above
+so it would make little sense from a code flow point of view, even if
+it were possible.  However it isn't possible as far as I can see.
+
+It is called after init_cpu_to_node() because...
+* A GI node may also be a CPU node and / or a Memory Node, but we only
+  have to do anything extra if it has neither of these.
+  Easiest way to do that is use the same logic init_cpu_to_node() 
+  does and rely on ordering wrt to the other two types of nodes that
+  have already been handled.  We could have could just call it at the
+  end of init_cpu_to_node() but I'd not be happy doing so without renaming
+  that function and then we'd end up with a horrible name like
+  init_cpu_to_node_and_gi() as they are rather different things.
+
+It needs to happen before use is made of the node_data which is allocated
+in init_gi_nodes() / init_memoryless_node() / alloc_node_data()
+
+I think the first call that uses node_data is build_all_zonelists()
+(there might be one hiding earlier but it's definitely needed by this call).
+
+We need the fallback lists to be setup correctly for the GI node, just
+as they are for the memoryless node that has CPUs.
+
+So there is a narrow window in which we need to call this. As mentioned
+I could just call it from init_cpu_to_node() but that would make the code
+harder to understand given it's nothing to do with cpus.
+
+It might be possible to allocate the zonelists for this special case later
+in the boot flow, but it seems like we would be adding a lot of complexity
+to avoid a single function call.
+
+Just to check my logic, I gave using early_initcall() a go and
+it blows up spectacularly when allocations start happening for
+Generic Initiators.
+
+
+> 
+> >  	io_apic_init_mappings();
+> >  
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index aa76ec2d359b..fc630dc6764e 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -747,6 +747,20 @@ static void __init init_memory_less_node(int nid)
+> >  	 */
+> >  }
+> >  
+> > +/*
+> > + * Generic Initiator Nodes may have neither CPU nor Memory.
+> > + * At this stage if either of the others were present we would  
+> 
+> Who's "we"? And what is "either of the others"? The other nodes?
+
+"We" is the kernel.  Silly idiom, I'll rephrase.
+
+"Either of the others" refers to CPU or memory as per the line above.
+I'll state that explicitly.
+
+How about this?
+
++/*
++ * A node may exist which has one or more Generic Initiators but no
++ * CPUs and no memory.
++ * When this function is called, any nodes containing either memory
++ * and/or CPUs will already be online and there is no need to do
++ * anything extra, even if they also contain one or more Generic
++ * Initiators.
++ */
+>
+ 
+Thanks,
+
+Jonathan
+
+
