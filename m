@@ -2,65 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE72278565
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 12:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4160278568
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Sep 2020 12:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727679AbgIYKvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Sep 2020 06:51:20 -0400
-Received: from mail-oo1-f65.google.com ([209.85.161.65]:42131 "EHLO
-        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727201AbgIYKvU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 06:51:20 -0400
-Received: by mail-oo1-f65.google.com with SMTP id g26so629678ooa.9
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Sep 2020 03:51:20 -0700 (PDT)
+        id S1727990AbgIYKx4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Sep 2020 06:53:56 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33670 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727044AbgIYKx4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Sep 2020 06:53:56 -0400
+Received: by mail-oi1-f195.google.com with SMTP id m7so2369269oie.0
+        for <linux-acpi@vger.kernel.org>; Fri, 25 Sep 2020 03:53:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=adACVDPHRu/Yg38C0a5zyi7dpcpUGCaMsMqCMseDBuU=;
-        b=sHtCLLJ6LriQlLYNdPveaoxsV05MQiSwUHNqV1eQJX7+Hpei3YFY1Lntlk2E1gnztO
-         THKzgx9QtFoBMxRaA1LSsjILjRASEEmPmBtnqDlbJa9zOYMBu1+R//rs+uINRRPAFizr
-         G/v4bZ8EWlQ/Y2OrK+FE8otiYIX0bD0ZlYQKazCTHgF5jRarV3UevsOHMip56M69gEY/
-         93yMdyTkFwS1L89/QYrB+q73LpA4mUjFaFyxiW9oHXj+7kb1WRXYxS7dG4oPRnACqYb1
-         UpxS/MoQo7thbFbOab+PnXzJPU7tuTu+dw/5AN1dr1v+C14vXDO/k3Ltkndsu4juQmrm
-         L8Wg==
-X-Gm-Message-State: AOAM530fuaMLQvBouJ4fTLZlTxRQrlSw8M7nvmd5axyb2akrdPhfTXP2
-        H5fyPfGVEpqzPq0JkKaLh41fDG4tIzZZn5KI0n4=
-X-Google-Smtp-Source: ABdhPJw9jGI5MYE1z0V59xGpD0ocJo+6BSyso6T03h1u8cag9xlaHc+oKfzwz3U0V3mPgoBMox0Ojz7hEHYuLJx9E0A=
-X-Received: by 2002:a4a:e946:: with SMTP id v6mr380823ood.38.1601031080113;
- Fri, 25 Sep 2020 03:51:20 -0700 (PDT)
+        bh=sKBa+ey7uoeFf6jsh7JHf0wfIHmbcQaUCnWhXCU9ISs=;
+        b=XEEYa7nDbwk4sr2JzJwJos7yhEVzY1ZYz4HSLTpJzAP49razG7TQYGCKo4PuHdhtxn
+         VzToD/30gTBDoQoxK/jixM0tslaH1g5sv7TxWx8GwQlkuk/FsDlyfzc9erbDbrqs8L0m
+         aoL8+QtSuLd1EklBFyLi02Wjs1spM4UZupdws2LPTNnK2votQ/+O8ZjbToC+R0/XdBLL
+         oAwE5xr8vJEXp57BfRfosH7KQgrftQuGV2JXyt3YMaV7G8MQu/TXsFZ/7KxJ2X1luR64
+         MbLLi/W7FoV2tr9OShYTFg9UenKTW6TDi+4ChjoP9MXXto0k0Z9gsQ8S1/kvHZW+WTc8
+         lavQ==
+X-Gm-Message-State: AOAM532LVvGG+uSGs3ucnLhBGFbt8sG/FpxgPyWK8T+Tv95pZO50E37N
+        xl8AASYf21iOJKMJi3FT9YckL6cXDOrUTcgT8wL147by
+X-Google-Smtp-Source: ABdhPJya/uu1z6NPpLYm2pNRaVtDqPr1Ce5xfa4gSmC6y7QteAOc4sJrAkcM43Jv8IW1jIcAevaYwAiceo+RIpejtSE=
+X-Received: by 2002:aca:df84:: with SMTP id w126mr1202916oig.103.1601031236034;
+ Fri, 25 Sep 2020 03:53:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <1599483453-26635-1-git-send-email-guohanjun@huawei.com>
-In-Reply-To: <1599483453-26635-1-git-send-email-guohanjun@huawei.com>
+References: <20200911164613.4928-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20200911164613.4928-1-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Sep 2020 12:51:09 +0200
-Message-ID: <CAJZ5v0iivuJYz3S-eGbRJM9EAJLSjn24XvjM12UY-N4QDgV7tA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Cleanups for ACPI APD driver
-To:     Hanjun Guo <guohanjun@huawei.com>
+Date:   Fri, 25 Sep 2020 12:53:45 +0200
+Message-ID: <CAJZ5v0jMHUXWjH7nNcyfo5SDjw5c51kKWAcXgV10Kdbc7gsCHA@mail.gmail.com>
+Subject: Re: [PATCH v1] MAINTAINERS: Use my kernel.org address for Intel PMIC work
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kbuild test robot <lkp@intel.com>, Ken Xue <Ken.Xue@amd.com>
+        Mika Westerberg <mika.westerberg@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 7, 2020 at 7:46 PM Hanjun Guo <guohanjun@huawei.com> wrote:
+On Fri, Sep 11, 2020 at 6:47 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> ACPI APD driver has some unused code and some mis-behaved
-> kernel doc, make a cleanup for this driver.
+> Use my kernel.org address for Intel PMIC work. While here,
+> upgrade status to maintainer of PMIC MFD devices.
 >
-> Tested on Hisilicon ARM64, and compile tested on Intel x86.
->
-> v1->v2:
->  - Fix the compile warning reported by kernel test robot.
->
-> Hanjun Guo (5):
->   ACPI / APD: Add kernel doc for the properties in struct
->     apd_device_desc
->   ACPI / APD: Remove the flags in struct apd_device_desc
->   ACPI / APD: Remove ACPI_MODULE_NAME()
->   ACPI / APD: Remove the unneeded APD_ADDR(desc) macro define
->   ACPI / APD: Head file including cleanups
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-All applied as 5.10 material with edited subjects and changelogs, thanks!
+Applied as 5.10 material, thanks!
+
+> ---
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 26af84f97353..f0be706caba3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -405,7 +405,7 @@ F:  drivers/platform/x86/i2c-multi-instantiate.c
+>  ACPI PMIC DRIVERS
+>  M:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>  M:     Len Brown <lenb@kernel.org>
+> -R:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> +R:     Andy Shevchenko <andy@kernel.org>
+>  R:     Mika Westerberg <mika.westerberg@linux.intel.com>
+>  L:     linux-acpi@vger.kernel.org
+>  S:     Supported
+> @@ -9000,7 +9000,7 @@ F:        drivers/gpio/gpio-*cove.c
+>  F:     drivers/gpio/gpio-msic.c
+>
+>  INTEL PMIC MULTIFUNCTION DEVICE DRIVERS
+> -R:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> +M:     Andy Shevchenko <andy@kernel.org>
+>  S:     Maintained
+>  F:     drivers/mfd/intel_msic.c
+>  F:     drivers/mfd/intel_soc_pmic*
+> --
+> 2.28.0
+>
