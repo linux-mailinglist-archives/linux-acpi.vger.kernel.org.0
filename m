@@ -2,99 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7456327A2E5
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Sep 2020 21:44:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC0F27A3DB
+	for <lists+linux-acpi@lfdr.de>; Sun, 27 Sep 2020 22:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbgI0Toj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Sep 2020 15:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726255AbgI0Toi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Sep 2020 15:44:38 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86BBAC0613CE
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Sep 2020 12:44:38 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id u21so5476301eja.2
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Sep 2020 12:44:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=7byhznMTDMGNZWyHHBM3w4db+dAkh5PJbFVolAq7xGs=;
-        b=XL9bbz2OVNOBaK4lzhkkFWRXVTJdIeeEe3fV4JrdrDk5RMWSM5q4fm+HPV88TQDmjg
-         Qaw7IU/gSAcEcL0J5tjDdo33ic7AMvm/hm8Zdtsc6G0cfhySFoGp65ZXaopI0oJ3iQsJ
-         skGeiqApTPUpUkpd8ki9nVFrLM3W5S3/lUEVg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=7byhznMTDMGNZWyHHBM3w4db+dAkh5PJbFVolAq7xGs=;
-        b=KKbqqyGCRskYRoNW7WKErPIsCyLSNPcKt8PF10ZwPs0yZJL2EhjL2dnrSbia+lsreJ
-         4K3sS7x5nFXVvUHwxgb2DmE9q0fMzPxe9OuLe/5z0qVVk+iyy7e3DL6SrqeoVKtdzYvS
-         Bwt5pfnUkS6m1CP8ZMvdYc/PuNFjIVa4Mt8sDFXYXS7PVTWoXuwLPbUkS7fapOcq8a5c
-         h7kf6N5aS6aRCwjj9sd+z2MZqUtJ7uzn2iVrC5pOsQ6yUJXRVSeilpYBy4wKa0FjiMF3
-         HfiVUl3IarP5/4IrNTFS90kuFkTu4it+0Rd06e5LiIx8acohFU9SaodXP9529JHv+g7F
-         G86g==
-X-Gm-Message-State: AOAM533AHvkImUAOX54VXXj8bCFBk82Rmp0h+w4/muf93TJWvY9Xhx9C
-        lUCdZwuSppHqxCFNbZliNuFtwaInkUg3Mg==
-X-Google-Smtp-Source: ABdhPJxuXd0Tkk6MtR5ATzwbwfqK8hEdoQD421k6zX4uJLDfqlIjmyST7uNGvSdk6+ycAR/T8Dh4WQ==
-X-Received: by 2002:a17:906:4a8c:: with SMTP id x12mr12857779eju.271.1601235877033;
-        Sun, 27 Sep 2020 12:44:37 -0700 (PDT)
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com. [209.85.221.45])
-        by smtp.gmail.com with ESMTPSA id j18sm8781467edj.62.2020.09.27.12.44.34
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2020 12:44:35 -0700 (PDT)
-Received: by mail-wr1-f45.google.com with SMTP id x14so9529311wrl.12
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Sep 2020 12:44:34 -0700 (PDT)
-X-Received: by 2002:a5d:6552:: with SMTP id z18mr14720929wrv.32.1601235874347;
- Sun, 27 Sep 2020 12:44:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
- <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net> <20200911130104.GF26842@paasikivi.fi.intel.com>
- <6dea1206-cfaa-bfc5-d57e-4dcddadc03c7@lucaceresoli.net> <20200914094727.GM26842@paasikivi.fi.intel.com>
- <20200926123807.GA3781977@chromium.org> <20200927193900.GA30711@kunai>
-In-Reply-To: <20200927193900.GA30711@kunai>
-From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Sun, 27 Sep 2020 21:44:19 +0200
-X-Gmail-Original-Message-ID: <CAAFQd5Be5sUQYtXapcSOu8CVffW2LuLog9qh71-+mxze9WYUVQ@mail.gmail.com>
-Message-ID: <CAAFQd5Be5sUQYtXapcSOu8CVffW2LuLog9qh71-+mxze9WYUVQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
- powered off
-To:     Wolfram Sang <wsa@the-dreams.de>, Tomasz Figa <tfiga@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Luca Ceresoli <luca@lucaceresoli.net>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726884AbgI0UC2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 27 Sep 2020 16:02:28 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:14476
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726697AbgI0UC2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 27 Sep 2020 16:02:28 -0400
+X-Greylist: delayed 431 seconds by postgrey-1.27 at vger.kernel.org; Sun, 27 Sep 2020 16:02:25 EDT
+X-IronPort-AV: E=Sophos;i="5.77,311,1596492000"; 
+   d="scan'208";a="360169486"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 27 Sep 2020 21:55:11 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org
+Subject: [PATCH 00/18] use semicolons rather than commas to separate statements
+Date:   Sun, 27 Sep 2020 21:12:10 +0200
+Message-Id: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 9:39 PM Wolfram Sang <wsa@the-dreams.de> wrote:
->
->
-> > I think we might be overly complicating things. IMHO the series as is
-> > with the "i2c_" prefix removed from the flags introduced would be
-> > reusable as is for any other subsystem that needs it. Of course, for
-> > now, the handling of the flag would remain implemented only in the I2C
-> > subsystem.
->
-> Just to be clear: you are suggesting to remove "i2c" from the DSD
-> binding "i2c-allow-low-power-probe". And you are not talking about
-> moving I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to struct device_driver? I
-> recall the latter has been NACKed by gkh so far.
->
+These patches replace commas by semicolons.  This was done using the
+Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
 
-I'd also drop "I2C_" from "I2C_DRV_FL_ALLOW_LOW_POWER_PROBE", but all
-the implementation would remain where it is in the code. IOW, I'm just
-suggesting a naming change to avoid proliferating duplicate flags of
-the same meaning across subsystems.
+This semantic patch ensures that commas inside for loop headers will not be
+transformed.  It also doesn't touch macro definitions.
+
+Coccinelle ensures that braces are added as needed when a single-statement
+branch turns into a multi-statement one.
+
+This semantic patch has a few false positives, for variable delcarations
+such as:
+
+LIST_HEAD(x), *y;
+
+The semantic patch could be improved to avoid these, but for the moment
+they have been removed manually (2 occurrences).
+
+// <smpl>
+@initialize:ocaml@
+@@
+
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
+
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
+
+@bad@
+statement S;
+declaration d;
+position p;
+@@
+
+S@p
+d
+
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
+---
+
+ drivers/acpi/processor_idle.c               |    4 +++-
+ drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+ drivers/base/regmap/regmap-debugfs.c        |    2 +-
+ drivers/bcma/driver_pci_host.c              |    4 ++--
+ drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+ drivers/char/agp/amd-k7-agp.c               |    2 +-
+ drivers/char/agp/nvidia-agp.c               |    2 +-
+ drivers/char/agp/sworks-agp.c               |    2 +-
+ drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+ drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+ drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+ drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+ drivers/clk/meson/meson-aoclk.c             |    2 +-
+ drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+ drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+ drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+ drivers/clocksource/mps2-timer.c            |    6 +++---
+ drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+ drivers/counter/ti-eqep.c                   |    2 +-
+ drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+ drivers/crypto/atmel-tdes.c                 |    2 +-
+ drivers/crypto/hifn_795x.c                  |    4 ++--
+ drivers/crypto/talitos.c                    |    8 ++++----
+ 23 files changed, 60 insertions(+), 51 deletions(-)
