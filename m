@@ -2,94 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB79E27A06A
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Sep 2020 12:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E53AF27A2DC
+	for <lists+linux-acpi@lfdr.de>; Sun, 27 Sep 2020 21:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726185AbgI0KDt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Sep 2020 06:03:49 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:59532 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726149AbgI0KDs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 27 Sep 2020 06:03:48 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B860BEED604F6DFDFB84;
-        Sun, 27 Sep 2020 18:03:46 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Sun, 27 Sep 2020 18:03:37 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     <linux-acpi@vger.kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH v2] ACPI: memhotplug: Remove the 'state' from struct acpi_memory_device
-Date:   Sun, 27 Sep 2020 17:55:49 +0800
-Message-ID: <1601200549-8518-1-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        id S1726310AbgI0TjD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 27 Sep 2020 15:39:03 -0400
+Received: from sauhun.de ([88.99.104.3]:38552 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726267AbgI0TjC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 27 Sep 2020 15:39:02 -0400
+Received: from localhost (router.4pisysteme.de [80.79.225.122])
+        by pokefinder.org (Postfix) with ESMTPSA id 556562C0548;
+        Sun, 27 Sep 2020 21:39:00 +0200 (CEST)
+Date:   Sun, 27 Sep 2020 21:39:00 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
+ powered off
+Message-ID: <20200927193900.GA30711@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@the-dreams.de>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Luca Ceresoli <luca@lucaceresoli.net>, linux-i2c@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media@vger.kernel.org
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
+ <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net>
+ <20200911130104.GF26842@paasikivi.fi.intel.com>
+ <6dea1206-cfaa-bfc5-d57e-4dcddadc03c7@lucaceresoli.net>
+ <20200914094727.GM26842@paasikivi.fi.intel.com>
+ <20200926123807.GA3781977@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wRRV7LY7NUeQGEoC"
+Content-Disposition: inline
+In-Reply-To: <20200926123807.GA3781977@chromium.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After commit 315bbae9c5cb ("ACPI / memhotplug: deal with eject request
-in hotplug queue"), the memory device state which is defined in struct
-acpi_memory_device is not actually useful, so remove it along with
-symbols related to it.
 
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
-v1->v2:
-- Make it as a sparate cleanup patch.
+--wRRV7LY7NUeQGEoC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- drivers/acpi/acpi_memhotplug.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index e294f44..468ebb7 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -36,11 +36,6 @@
- 
- #ifdef CONFIG_ACPI_HOTPLUG_MEMORY
- 
--/* Memory Device States */
--#define MEMORY_INVALID_STATE	0
--#define MEMORY_POWER_ON_STATE	1
--#define MEMORY_POWER_OFF_STATE	2
--
- static int acpi_memory_device_add(struct acpi_device *device,
- 				  const struct acpi_device_id *not_used);
- static void acpi_memory_device_remove(struct acpi_device *device);
-@@ -64,8 +59,7 @@ struct acpi_memory_info {
- };
- 
- struct acpi_memory_device {
--	struct acpi_device * device;
--	unsigned int state;	/* State of the memory device */
-+	struct acpi_device *device;
- 	struct list_head res_list;
- };
- 
-@@ -233,7 +227,6 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 	}
- 	if (!num_enabled) {
- 		dev_err(&mem_device->device->dev, "add_memory failed\n");
--		mem_device->state = MEMORY_INVALID_STATE;
- 		return -EINVAL;
- 	}
- 	/*
-@@ -304,9 +297,6 @@ static int acpi_memory_device_add(struct acpi_device *device,
- 		return result;
- 	}
- 
--	/* Set the device state */
--	mem_device->state = MEMORY_POWER_ON_STATE;
--
- 	result = acpi_memory_check_device(mem_device);
- 	if (result) {
- 		acpi_memory_device_free(mem_device);
--- 
-1.7.12.4
+> I think we might be overly complicating things. IMHO the series as is
+> with the "i2c_" prefix removed from the flags introduced would be
+> reusable as is for any other subsystem that needs it. Of course, for
+> now, the handling of the flag would remain implemented only in the I2C
+> subsystem.
 
+Just to be clear: you are suggesting to remove "i2c" from the DSD
+binding "i2c-allow-low-power-probe". And you are not talking about
+moving I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to struct device_driver? I
+recall the latter has been NACKed by gkh so far.
+
+
+--wRRV7LY7NUeQGEoC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9w6k8ACgkQFA3kzBSg
+Kbbb4Q//cQDDt6R/93qbuDZbbBbKU7yOioGMp1yxGawOohDmpz0uV631alJMoKlv
+5l2nQXyXHInvGZu7fmdwqH4ouAgvHMC7jnEw2lv8DOj6q8ovnukacpme+JjGa1y3
+DYO2CIktDQw1xqUas2B5yu4Qt5D+LgnlMFZN+LUSiYGSAVQdZ+nVbYcwjRNQ59Eq
+T38itwlWGIISRo+5zv3prNb//xtoaITJty6DdBOFvoLQK0vv0UNMqva5zD8+86kA
+BKa9JZPRLzYeWpO5TJlVYw13vGjEl802a1kF6+xUTc63bSrUtUhSDCLnezrzlkW7
+gxJRHwrKYoWuuaRckVA14UNRvnZKMAtpuHToZidgeryEOw+biqzYS4fvlebqkg+w
+oub1xk6svlhzujT06LlW5mr0l5eo9yz1+AFmy0Xr7t9ZkOjhK2W9yoZTR7GF8zJv
+acmwMqTDnINf7hSmVbSfPi6hPamjf8M1LloZB5ej2OcPZ2urCx17bXJGeyzMvtPr
+VsVdE7QJd/JQ1uhvWeU1a9dqh6kCBp9+4my8JIk6BwYP4sbaqftlXLxh0MMm4ANC
+mDKxA4Z75Ifj5h+elH23cOZ9eFFANZJM43BmjLff04XUinlnBXm2YBXEECufQJw7
+OLSs3YqJz1M+yqX74QGxnb+dZgTObyOU99s/Qe2mWRwFcEMOjNE=
+=H98q
+-----END PGP SIGNATURE-----
+
+--wRRV7LY7NUeQGEoC--
