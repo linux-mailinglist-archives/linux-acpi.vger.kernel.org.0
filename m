@@ -2,97 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD94727B543
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 21:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13FE327B5A6
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 21:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbgI1T1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Sep 2020 15:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57836 "EHLO
+        id S1726668AbgI1Tsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 15:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726325AbgI1T1I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 15:27:08 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C8CC061755;
-        Mon, 28 Sep 2020 12:27:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=wvOiw2+3bAcRKK9sP6ssyc0QGj9+IdGfx8mVk/nIt+w=; b=Q7y/5cgmDerOTHDRh4oEv9UU//
-        E8wq/Q4/XuX538oWiXR/DXe1vpuxeaHGJWP92muVimbmfWaY6oD2LNjf3yoO75rNdPl5yBSSNkfYZ
-        TUZPmCaq4h0Ebgh07+l4ArZqy90lM0dqpBBRLlMnGiDTXmeIDM1+jkym7vjuyPt2PgawtGYGDKyuw
-        4UUe9JNcuR9bu2zJzh0M4xavAaxNGie+ArR2nI/cTTJ4En/LfdmAPTh8sQP+SaWO6cNlkhjsNIB9f
-        6d3WM3KYyg2Lww+7H/il1O4Btu3qPdBHDPkdJbQJL6FhPWhz1ETtlB2PnQ1/DYFzen7meTCvND6PL
-        XZnsT74A==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kMynZ-000560-K9; Mon, 28 Sep 2020 19:26:58 +0000
-Subject: Re: [PATCH v11 6/6] docs: mm: numaperf.rst Add brief description for
- access class 1.
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        rafael@kernel.org, Ingo Molnar <mingo@redhat.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>, linuxarm@huawei.com,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Sean V Kelley <sean.v.kelley@linux.intel.com>,
-        linux-api@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        Hanjun Guo <guohanjun@huawei.com>
-References: <20200928125235.446188-1-Jonathan.Cameron@huawei.com>
- <20200928125235.446188-7-Jonathan.Cameron@huawei.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <15e6f95b-adac-97e5-5ea9-4dd28ecf560d@infradead.org>
-Date:   Mon, 28 Sep 2020 12:26:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        with ESMTP id S1726500AbgI1Tsh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 15:48:37 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85223C061755;
+        Mon, 28 Sep 2020 12:48:36 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id g72so2170245qke.8;
+        Mon, 28 Sep 2020 12:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BTNL+zfDw2eRPjMS84+hCnl/S955qQfanNkcVv5LTEs=;
+        b=KAiFp8uIfuZP/3hcoex4XODf0/IP3AvxyHpXOE0q682IXBgwTRvCsAvfSaqrp8n0Ik
+         4LQNkz8dlKZ7RC/dNuLoqIRkeAm3mDCr+ZxPiLL+4xERbQTaepq1Kl9DYThWZhd2xtuw
+         1zj27tMcXGDY4XaxZgtHrQO9x772Ojqw+bKNEud17m/szWM2WNTmojyBlXVFY1pY424t
+         alBPdz8oPy99hisWPuGIvIP+cv38ok0gFwVw55fWHNoKQLxxUMRfoANtZoIuEIwmQ3RO
+         IGDTtqLy+Bt2ljF+NhQV9zURcHBc7AdW7pddtF4z5QzeouznVreaxjBji1kQW9J4P1Es
+         b+sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BTNL+zfDw2eRPjMS84+hCnl/S955qQfanNkcVv5LTEs=;
+        b=KlJnP/DfvCgns1ARfHvgujiG0OjGDVerpxGrKBj6r3BOdOimVeT6w8BBDc2dS8mXc9
+         efU/EqRfqgsPTaLnEZficYD8lwBwaX3rZXoZrNPrLXQ1ZrEDY6NzJWsNn/P92dfrhJWt
+         PI2YPYt6crcjhtnvluISnfRCcFhyxHf8Xqrh7aFoK13HKZYWWz3BJDrBUmD5oKnV9E9V
+         f9iKBz8SrG6ytiCSYD9zQ4iuH+c2elBAsGJ5L8eu1hkW0G0u1zCAHYl6jhk7T3C5ZiAp
+         f8j3ZTYGuiS/buFicOWAgzu5769eQVe6zu9wrYAGllmjbUDF2yaJMZV+OwQ9F6nTIaGD
+         Bl/Q==
+X-Gm-Message-State: AOAM533d0KOi4ImB3MGDTfZkTLS8PfMCyvLA3mCoOqoqj6jQ18pu1VjJ
+        avUTNkEujLpx/qmf1eLXwf8=
+X-Google-Smtp-Source: ABdhPJyii5BQnxtJrkXUVz9aLcPGlGbnaZWbGwgiB6mGwzVqqDYzkO0gWDJxDVlOAWxqBpG28Pa48w==
+X-Received: by 2002:a37:a187:: with SMTP id k129mr1075526qke.147.1601322515586;
+        Mon, 28 Sep 2020 12:48:35 -0700 (PDT)
+Received: from localhost.localdomain ([2604:1380:45d1:2600::1])
+        by smtp.gmail.com with ESMTPSA id w59sm2473353qtd.1.2020.09.28.12.48.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2020 12:48:34 -0700 (PDT)
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] ACPI / NUMA: Add stub function for pxm_to_node
+Date:   Mon, 28 Sep 2020 12:45:55 -0700
+Message-Id: <20200928194554.3423466-1-natechancellor@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20200928125235.446188-7-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi--
+After commit 01feba590cd6 ("ACPI: Do not create new NUMA domains from
+ACPI static tables that are not SRAT"):
 
-On 9/28/20 5:52 AM, Jonathan Cameron wrote:
-> Try to make minimal changes to the document which already describes
-> access class 0 in a generic fashion (including IO initiatiors that
-> are not CPUs).
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  v11: No change.
-> 
->  Documentation/admin-guide/mm/numaperf.rst | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/Documentation/admin-guide/mm/numaperf.rst b/Documentation/admin-guide/mm/numaperf.rst
-> index 4d69ef1de830..b89bb85eac75 100644
-> --- a/Documentation/admin-guide/mm/numaperf.rst
-> +++ b/Documentation/admin-guide/mm/numaperf.rst
+$ scripts/config --file arch/x86/configs/x86_64_defconfig -d NUMA -e ACPI_NFIT
 
-> @@ -88,6 +93,9 @@ The latency attributes are provided in nanoseconds.
->  The values reported here correspond to the rated latency and bandwidth
->  for the platform.
->  
-> +Access class 1, takes the same form, but only includes values for CPU to
-> +memory activity.
+$ make -skj"$(nproc)" distclean defconfig drivers/acpi/nfit/
+drivers/acpi/nfit/core.c: In function ‘acpi_nfit_register_region’:
+drivers/acpi/nfit/core.c:3010:27: error: implicit declaration of
+function ‘pxm_to_node’; did you mean ‘xa_to_node’?
+[-Werror=implicit-function-declaration]
+ 3010 |   ndr_desc->target_node = pxm_to_node(spa->proximity_domain);
+      |                           ^~~~~~~~~~~
+      |                           xa_to_node
+cc1: some warnings being treated as errors
+...
 
--ETOOMANYCOMMAS.
+Add a stub function like acpi_map_pxm_to_node had so that the build
+continues to work.
 
-Drop the first comma for sure. Maybe even the second one.
+Fixes: 01feba590cd6 ("ACPI: Do not create new NUMA domains from ACPI static tables that are not SRAT")
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+---
 
-> +
->  ==========
->  NUMA Cache
->  ==========
-> 
+I am not sure if this is the right place or value for this. It looks
+like there is going to be another stub function added here, which is
+going through -mm:
 
-thanks.
+https://lkml.kernel.org/r/159643094925.4062302.14979872973043772305.stgit@dwillia2-desk3.amr.corp.intel.com
+
+ include/acpi/acpi_numa.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
+index fdebcfc6c8df..09eb3bc20ff5 100644
+--- a/include/acpi/acpi_numa.h
++++ b/include/acpi/acpi_numa.h
+@@ -22,5 +22,10 @@ extern int acpi_numa __initdata;
+ extern void bad_srat(void);
+ extern int srat_disabled(void);
+ 
++#else				/* CONFIG_ACPI_NUMA */
++static inline int pxm_to_node(int pxm)
++{
++	return 0;
++}
+ #endif				/* CONFIG_ACPI_NUMA */
+ #endif				/* __ACP_NUMA_H */
+
+base-commit: eb6335b68ce3fc85a93c4c6cd3bb6bc5ac490efe
 -- 
-~Randy
+2.28.0
 
