@@ -2,178 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F9227A54D
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 04:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C2BB27A92C
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 09:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgI1CEN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Sep 2020 22:04:13 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:37056 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726409AbgI1CEN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 27 Sep 2020 22:04:13 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 389ABC2CD5F936A6489C;
-        Mon, 28 Sep 2020 10:04:09 +0800 (CST)
-Received: from localhost.localdomain (10.67.165.24) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 28 Sep 2020 10:04:02 +0800
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-To:     <james.morse@arm.com>, <rafael@kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <tony.luck@intel.com>, <bp@alien8.de>,
-        <akpm@linux-foundation.org>, <jroedel@suse.de>,
-        <peterz@infradead.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v3] ACPI / APEI: do memory failure on the physical address reported by ARM processor error section
-Date:   Mon, 28 Sep 2020 10:02:40 +0800
-Message-ID: <1601258560-6658-1-git-send-email-tanxiaofei@huawei.com>
-X-Mailer: git-send-email 2.8.1
+        id S1726746AbgI1H63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 03:58:29 -0400
+Received: from mx2.suse.de ([195.135.220.15]:47686 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726518AbgI1H63 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 28 Sep 2020 03:58:29 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id DBD45B038;
+        Mon, 28 Sep 2020 07:58:27 +0000 (UTC)
+Date:   Mon, 28 Sep 2020 09:58:24 +0200
+From:   Oscar Salvador <osalvador@suse.de>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH RFC 4/4] mm/page_alloc: place pages to tail in
+ __free_pages_core()
+Message-ID: <20200928075820.GA4082@linux>
+References: <20200916183411.64756-1-david@redhat.com>
+ <20200916183411.64756-5-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200916183411.64756-5-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-synchronise with APEI's irq work") applied, do_sea() return directly
-for user-mode if apei_claim_sea() handled any error record. Therefore,
-each error record reported by the user-mode SEA must be effectively
-processed in APEI GHES driver.
+On Wed, Sep 16, 2020 at 08:34:11PM +0200, David Hildenbrand wrote:
+> @@ -1523,7 +1524,13 @@ void __free_pages_core(struct page *page, unsigned int order)
+>  
+>  	atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
+>  	set_page_refcounted(page);
+> -	__free_pages(page, order);
+> +
+> +	/*
+> +	 * Bypass PCP and place fresh pages right to the tail, primarily
+> +	 * relevant for memory onlining.
+> +	 */
+> +	page_ref_dec(page);
+> +	__free_pages_ok(page, order, FOP_TO_TAIL);
 
-Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
-Error Section, as it has nothing to do with SEA). It is not enough.
-Because ARM Processor Error could also be used for SEA in some hardware
-platforms, such as Kunpeng9xx series. We can't ask them to switch to
-use Memory Error Section for two reasons:
-1)The server was delivered to customers, and it will introduce
-compatibility issue.
-2)It make sense to use ARM Processor Error Section. Because either
-cache or memory errors could generate SEA when consumed by a processor.
+Sorry, I must be missing something obvious here, but I am a bit confused here.
+I get the part of placing them at the tail so rmqueue_bulk() won't
+find them, but I do not get why we decrement page's refcount.
+IIUC, its refcount will be 0, but why do we want to do that?
 
-Do memory failure handling for ARM Processor Error Section just like
-for Memory Error Section.
+Another thing a bit unrelated... we mess three times with page's refcount
+(two before this patch).
+Why do we have this dance in place?
 
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
----
-Changes since v2:
-- Updated commit log
----
- drivers/acpi/apei/ghes.c | 70 ++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 53 insertions(+), 17 deletions(-)
+Thanks
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 99df00f..ca0aa97 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
- 	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
- }
- 
--static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
--				       int sev)
-+static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
--	int flags = -1;
--	int sec_sev = ghes_severity(gdata->error_severity);
--	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
- 		return false;
- 
--	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
--		return false;
--
--	pfn = mem_err->physical_addr >> PAGE_SHIFT;
-+	pfn = PHYS_PFN(physical_addr);
- 	if (!pfn_valid(pfn)) {
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
- 		"Invalid address in generic error data: %#llx\n",
--		mem_err->physical_addr);
-+		physical_addr);
- 		return false;
- 	}
- 
-+	memory_failure_queue(pfn, flags);
-+	return true;
-+}
-+
-+static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-+				       int sev)
-+{
-+	int flags = -1;
-+	int sec_sev = ghes_severity(gdata->error_severity);
-+	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
-+
-+	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-+		return false;
-+
- 	/* iff following two events can be handled properly by now */
- 	if (sec_sev == GHES_SEV_CORRECTED &&
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-@@ -470,14 +477,45 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
- 		flags = 0;
- 
--	if (flags != -1) {
--		memory_failure_queue(pfn, flags);
--		return true;
--	}
-+	if (flags != -1)
-+		return ghes_do_memory_failure(mem_err->physical_addr, flags);
- 
- 	return false;
- }
- 
-+static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-+{
-+	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-+	struct cper_arm_err_info *err_info;
-+	bool queued = false;
-+	int sec_sev, i;
-+
-+	log_arm_hw_error(err);
-+
-+	sec_sev = ghes_severity(gdata->error_severity);
-+	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-+		return false;
-+
-+	err_info = (struct cper_arm_err_info *) (err + 1);
-+	for (i = 0; i < err->err_info_num; i++, err_info++) {
-+		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
-+			continue;
-+
-+		if (err_info->type != CPER_ARM_CACHE_ERROR) {
-+			pr_warn_ratelimited(FW_WARN GHES_PFX
-+			"Physical address should be invalid for %s\n",
-+			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-+			cper_proc_error_type_strs[err_info->type] : "unknown error type");
-+			continue;
-+		}
-+
-+		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-+			queued = true;
-+	}
-+
-+	return queued;
-+}
-+
- /*
-  * PCIe AER errors need to be sent to the AER driver for reporting and
-  * recovery. The GHES severities map to the following AER severities and
-@@ -605,9 +643,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--
--			log_arm_hw_error(err);
-+			queued = ghes_handle_arm_hw_error(gdata, sev);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
 -- 
-2.8.1
-
+Oscar Salvador
+SUSE L3
