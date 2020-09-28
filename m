@@ -2,235 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A36527B65B
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 22:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA66E27B660
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 22:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbgI1Ud4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Sep 2020 16:33:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39956 "EHLO
+        id S1726668AbgI1Uee (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 16:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726607AbgI1Udz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 16:33:55 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDB5C061755;
-        Mon, 28 Sep 2020 13:33:55 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id m17so2567909ioo.1;
-        Mon, 28 Sep 2020 13:33:55 -0700 (PDT)
+        with ESMTP id S1726716AbgI1Uee (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 16:34:34 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A95AC0613CF
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 13:34:34 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id l126so2224062pfd.5
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 13:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pNxQqZbIUbKA/pVuTihMDSXkiAxmD/LhZW5G6KwpTtw=;
-        b=DeXZi/28lBTYBdPmn8L5Wg5PunD/XJQao3jBlEjXodDCQwCB6xgs2cfQ3Su1G/Nnij
-         Udoz2kUopa454OtfZrbCiN7aLSL+pQxEBHvkbHUzDLip2HJlLonz3j45i3dOVKQTjMbg
-         BF2o6P/1h7bSt8+BnwwL0xC3qHE5rM7KV9ctJw3pgOpXPlKPDfMInoHnCpEY85jnGNj5
-         98SFFPA2pTtWcFyF7E+icQ/7GnixQovjKzENQ+mSvfJK7tbQNuN4lZaHqlHBpPsridoy
-         V1rKHOadYWrd3UeFuDTU3r/99s5EGVacZQwt0no2uvlyj/06J8E5uZeT9bUSwFsOTigw
-         Sg6w==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=fSqGGre3K5gDxqZQhBBAgkB/XW4ArHnxdL9/PVe8UEw=;
+        b=NhEgCMqvIk+RvaHqH61RFdho/oyavhy1mnawXx73Z32KtMmWrdQ3TF3Wdl5xGJWAF4
+         HJ7MvCec9xWmOfe2vmH4pRHVPw4F2RLEFJS+4IHA6SOXqWq1vixOup+3/VsF76zS/3fH
+         NNK2l+sjcwTbNoDengDe+AnKeGhAQtj5ceh68=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pNxQqZbIUbKA/pVuTihMDSXkiAxmD/LhZW5G6KwpTtw=;
-        b=WDKriZhPLqKwCWTeii7WNP1CN2DjapQPO/AJMu48Fuv0BtXJK/BkISPPKc1OhWBLte
-         5YrQRDnBX2SbS2F0Y0tjSR3/vJg7ehKv2DeK/rwVxFLK11BKeeGjwywpGJNcCNkicIEs
-         6qVh74X/Anqoirhs6t4za/Eassfo/CUNzIG41+wgFfMmlg3jnAERsBMxbxYWaycYyG/K
-         z5pvLqdq6y5hGTURsFHVscPlJaoLFFtx7PBTSUcF+PD+0RSlHqpfiKnd9pxR28DZWlqG
-         e32jcG5kFdbI2JyxBuUIneGUNN3ZzRvk9mQ/pfRUrRb0edq70nUnj3DnUHvRSodH6xRr
-         YEdg==
-X-Gm-Message-State: AOAM532Fy36lM5HJE8OJolMayiAB5DUsD5zkJpCt2ih6KAxowZ1mCPst
-        R5QFIjYIFN4I7qaQ8N+EPkz6fSHhPmRu4ybXhFA=
-X-Google-Smtp-Source: ABdhPJznLwKjrRT1WnROfKC6JoC0/wSkbw+rziNX/Guf0Zyj6vQOa3REKtcbjD3iq6pB7GbkLKP7PD3uPoNB1y4Nddo=
-X-Received: by 2002:a6b:7909:: with SMTP id i9mr60914iop.98.1601325235094;
- Mon, 28 Sep 2020 13:33:55 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=fSqGGre3K5gDxqZQhBBAgkB/XW4ArHnxdL9/PVe8UEw=;
+        b=M+QMAvGW1Qb1Z/Qv10ID2pfAloi+HPgkTSSG3GR7/IbxfmCr59z1OEJ4zBBAEl9wAC
+         z34rzlQqvp7c+124TEVORD/cv4f0siOzRK1HU/pRB6p9stvvIfDErVl2HITK72iBUbll
+         hd8R/1hQ9c0Deg+IOh43fqgXTK1AX8x1tFYVgWoM8zSRWcI/78X8in41pc8Eati8iscS
+         UhEP5nc8rDenSeT2yZp2ktKjzwM+xkdNI5i9featjOhmx35h/KCaPgFA2UZqGzz9E2Fq
+         nByzerwic9pR2txq3sg68jrQs46rMBRMOK1MgxMnj+HWi4Uu/AspMzkMnrkZ/Jqf4UV5
+         2s8w==
+X-Gm-Message-State: AOAM530yTclribSg5B/xbWtJfIWcv0AtLaT1whdDGCbjfm35wFxYuKT5
+        nyaXn+xsHabnWIm/ZBRk1wqSnA==
+X-Google-Smtp-Source: ABdhPJyzYBgjXDVfi/ERFQgeS7WYZoqBnC+zZTP9Vn+PQLPLjF+pMQ37sNjCiSdOAaPnfO95UdERzg==
+X-Received: by 2002:a17:902:7589:b029:d2:686a:4ede with SMTP id j9-20020a1709027589b02900d2686a4edemr1142882pll.45.1601325273788;
+        Mon, 28 Sep 2020 13:34:33 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id t14sm2209702pgm.42.2020.09.28.13.34.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2020 13:34:32 -0700 (PDT)
+Date:   Mon, 28 Sep 2020 13:34:31 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, corbet@lwn.net,
+        gregkh@linuxfoundation.org, shuah@kernel.org, rafael@kernel.org,
+        johannes@sipsolutions.net, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, arve@android.com,
+        tkjos@android.com, maco@android.com, christian@brauner.io,
+        hridya@google.com, surenb@google.com, minyard@acm.org,
+        arnd@arndb.de, mchehab@kernel.org, rric@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@driverdev.osuosl.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org
+Subject: Re: [PATCH 00/11] Introduce Simple atomic and non-atomic counters
+Message-ID: <202009281331.444F36A7B@keescook>
+References: <cover.1601073127.git.skhan@linuxfoundation.org>
+ <20200927233526.GA500818@google.com>
 MIME-Version: 1.0
-References: <20200928182110.7050-1-david@redhat.com> <20200928182110.7050-5-david@redhat.com>
-In-Reply-To: <20200928182110.7050-5-david@redhat.com>
-From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date:   Mon, 28 Sep 2020 22:33:43 +0200
-Message-ID: <CAM9Jb+iRpsSPET0ntvNRqnw3i44mDKjqYvKWXxPune5pBgpGvA@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] mm/page_alloc: place pages to tail in __free_pages_core()
-To:     David Hildenbrand <david@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200927233526.GA500818@google.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> __free_pages_core() is used when exposing fresh memory to the buddy
-> during system boot and when onlining memory in generic_online_page().
->
-> generic_online_page() is used in two cases:
->
-> 1. Direct memory onlining in online_pages().
-> 2. Deferred memory onlining in memory-ballooning-like mechanisms (HyperV
->    balloon and virtio-mem), when parts of a section are kept
->    fake-offline to be fake-onlined later on.
->
-> In 1, we already place pages to the tail of the freelist. Pages will be
-> freed to MIGRATE_ISOLATE lists first and moved to the tail of the freelists
-> via undo_isolate_page_range().
->
-> In 2, we currently don't implement a proper rule. In case of virtio-mem,
-> where we currently always online MAX_ORDER - 1 pages, the pages will be
-> placed to the HEAD of the freelist - undesireable. While the hyper-v
-> balloon calls generic_online_page() with single pages, usually it will
-> call it on successive single pages in a larger block.
->
-> The pages are fresh, so place them to the tail of the freelists and avoid
-> the PCP. In __free_pages_core(), remove the now superflouos call to
-> set_page_refcounted() and add a comment regarding page initialization and
-> the refcount.
->
-> Note: In 2. we currently don't shuffle. If ever relevant (page shuffling
-> is usually of limited use in virtualized environments), we might want to
-> shuffle after a sequence of generic_online_page() calls in the
-> relevant callers.
->
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-> Cc: Haiyang Zhang <haiyangz@microsoft.com>
-> Cc: Stephen Hemminger <sthemmin@microsoft.com>
-> Cc: Wei Liu <wei.liu@kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/page_alloc.c | 37 ++++++++++++++++++++++++-------------
->  1 file changed, 24 insertions(+), 13 deletions(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d5a5f528b8ca..8a2134fe9947 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -270,7 +270,8 @@ bool pm_suspended_storage(void)
->  unsigned int pageblock_order __read_mostly;
->  #endif
->
-> -static void __free_pages_ok(struct page *page, unsigned int order);
-> +static void __free_pages_ok(struct page *page, unsigned int order,
-> +                           fop_t fop_flags);
->
->  /*
->   * results with 256, 32 in the lowmem_reserve sysctl:
-> @@ -682,7 +683,7 @@ static void bad_page(struct page *page, const char *reason)
->  void free_compound_page(struct page *page)
->  {
->         mem_cgroup_uncharge(page);
-> -       __free_pages_ok(page, compound_order(page));
-> +       __free_pages_ok(page, compound_order(page), FOP_NONE);
->  }
->
->  void prep_compound_page(struct page *page, unsigned int order)
-> @@ -1419,17 +1420,15 @@ static void free_pcppages_bulk(struct zone *zone, int count,
->         spin_unlock(&zone->lock);
->  }
->
-> -static void free_one_page(struct zone *zone,
-> -                               struct page *page, unsigned long pfn,
-> -                               unsigned int order,
-> -                               int migratetype)
-> +static void free_one_page(struct zone *zone, struct page *page, unsigned long pfn,
-> +                         unsigned int order, int migratetype, fop_t fop_flags)
->  {
->         spin_lock(&zone->lock);
->         if (unlikely(has_isolate_pageblock(zone) ||
->                 is_migrate_isolate(migratetype))) {
->                 migratetype = get_pfnblock_migratetype(page, pfn);
->         }
-> -       __free_one_page(page, pfn, zone, order, migratetype, FOP_NONE);
-> +       __free_one_page(page, pfn, zone, order, migratetype, fop_flags);
->         spin_unlock(&zone->lock);
->  }
->
-> @@ -1507,7 +1506,8 @@ void __meminit reserve_bootmem_region(phys_addr_t start, phys_addr_t end)
->         }
->  }
->
-> -static void __free_pages_ok(struct page *page, unsigned int order)
-> +static void __free_pages_ok(struct page *page, unsigned int order,
-> +                           fop_t fop_flags)
->  {
->         unsigned long flags;
->         int migratetype;
-> @@ -1519,7 +1519,8 @@ static void __free_pages_ok(struct page *page, unsigned int order)
->         migratetype = get_pfnblock_migratetype(page, pfn);
->         local_irq_save(flags);
->         __count_vm_events(PGFREE, 1 << order);
-> -       free_one_page(page_zone(page), page, pfn, order, migratetype);
-> +       free_one_page(page_zone(page), page, pfn, order, migratetype,
-> +                     fop_flags);
->         local_irq_restore(flags);
->  }
->
-> @@ -1529,6 +1530,11 @@ void __free_pages_core(struct page *page, unsigned int order)
->         struct page *p = page;
->         unsigned int loop;
->
-> +       /*
-> +        * When initializing the memmap, init_single_page() sets the refcount
-> +        * of all pages to 1 ("allocated"/"not free"). We have to set the
-> +        * refcount of all involved pages to 0.
-> +        */
->         prefetchw(p);
->         for (loop = 0; loop < (nr_pages - 1); loop++, p++) {
->                 prefetchw(p + 1);
-> @@ -1539,8 +1545,12 @@ void __free_pages_core(struct page *page, unsigned int order)
->         set_page_count(p, 0);
->
->         atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
-> -       set_page_refcounted(page);
-> -       __free_pages(page, order);
-> +
-> +       /*
-> +        * Bypass PCP and place fresh pages right to the tail, primarily
-> +        * relevant for memory onlining.
-> +        */
-> +       __free_pages_ok(page, order, FOP_TO_TAIL);
->  }
->
->  #ifdef CONFIG_NEED_MULTIPLE_NODES
-> @@ -3171,7 +3181,8 @@ static void free_unref_page_commit(struct page *page, unsigned long pfn)
->          */
->         if (migratetype >= MIGRATE_PCPTYPES) {
->                 if (unlikely(is_migrate_isolate(migratetype))) {
-> -                       free_one_page(zone, page, pfn, 0, migratetype);
-> +                       free_one_page(zone, page, pfn, 0, migratetype,
-> +                                     FOP_NONE);
->                         return;
->                 }
->                 migratetype = MIGRATE_MOVABLE;
-> @@ -5063,7 +5074,7 @@ static inline void free_the_page(struct page *page, unsigned int order)
->         if (order == 0)         /* Via pcp? */
->                 free_unref_page(page);
->         else
-> -               __free_pages_ok(page, order);
-> +               __free_pages_ok(page, order, FOP_NONE);
->  }
->
->  void __free_pages(struct page *page, unsigned int order)
+On Sun, Sep 27, 2020 at 07:35:26PM -0400, Joel Fernandes wrote:
+> On Fri, Sep 25, 2020 at 05:47:14PM -0600, Shuah Khan wrote:
+> > This patch series is a result of discussion at the refcount_t BOF
+> > the Linux Plumbers Conference. In this discussion, we identified
+> > a need for looking closely and investigating atomic_t usages in
+> > the kernel when it is used strictly as a counter without it
+> > controlling object lifetimes and state changes.
+> > 
+> > There are a number of atomic_t usages in the kernel where atomic_t api
+> > is used strictly for counting and not for managing object lifetime. In
+> > some cases, atomic_t might not even be needed.
+> >     
+> > The purpose of these counters is twofold: 1. clearly differentiate
+> > atomic_t counters from atomic_t usages that guard object lifetimes,
+> > hence prone to overflow and underflow errors. It allows tools that scan
+> > for underflow and overflow on atomic_t usages to detect overflow and
+> > underflows to scan just the cases that are prone to errors. 2. provides
+> > non-atomic counters for cases where atomic isn't necessary.
+> 
+> Nice series :)
+> 
+> It appears there is no user of counter_simple in this series other than the
+> selftest. Would you be planning to add any conversions in the series itself,
+> for illustration of use? Sorry if I missed a usage.
+> 
+> Also how do we guard against atomicity of counter_simple RMW operations? Is
+> the implication that it should be guarded using other synchronization to
+> prevent lost-update problem?
+> 
+> Some more comments:
+> 
+> 1.  atomic RMW operations that have a return value are fully ordered. Would
+>     you be adding support to counter_simple for such ordering as well, for
+>     consistency?
 
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+No -- there is no atomicity guarantee for counter_simple. I would prefer
+counter_simple not exist at all, specifically for this reason.
+
+> 2. I felt counter_atomic and counter_atomic64 would be nice equivalents to
+>    the atomic and atomic64 naming currently used (i.e. dropping the '32').
+>    However that is just my opinion and I am ok with either naming.
+
+I had asked that they be size-named to avoid any confusion (i.e. we're
+making a new API).
+
+-- 
+Kees Cook
