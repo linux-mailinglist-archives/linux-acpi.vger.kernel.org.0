@@ -2,87 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC2327AE74
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 14:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A5427AE46
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 14:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbgI1M5R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Sep 2020 08:57:17 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:14256 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726504AbgI1M5Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Sep 2020 08:57:16 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id A282C398555205D45582;
-        Mon, 28 Sep 2020 20:57:12 +0800 (CST)
-Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 28 Sep 2020 20:57:06 +0800
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        "Sean V Kelley" <sean.v.kelley@linux.intel.com>,
-        <linux-api@vger.kernel.org>, "Borislav Petkov" <bp@alien8.de>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v11 6/6] docs: mm: numaperf.rst Add brief description for access class 1.
-Date:   Mon, 28 Sep 2020 20:52:35 +0800
-Message-ID: <20200928125235.446188-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20200928125235.446188-1-Jonathan.Cameron@huawei.com>
-References: <20200928125235.446188-1-Jonathan.Cameron@huawei.com>
+        id S1726694AbgI1Mx4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 08:53:56 -0400
+Received: from mx2.suse.de ([195.135.220.15]:60790 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726466AbgI1Mx4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 28 Sep 2020 08:53:56 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 12751AC24;
+        Mon, 28 Sep 2020 12:53:55 +0000 (UTC)
+Date:   Mon, 28 Sep 2020 14:53:51 +0200
+From:   Oscar Salvador <osalvador@suse.de>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH RFC 4/4] mm/page_alloc: place pages to tail in
+ __free_pages_core()
+Message-ID: <20200928125346.GA7703@linux>
+References: <20200916183411.64756-1-david@redhat.com>
+ <20200916183411.64756-5-david@redhat.com>
+ <20200928075820.GA4082@linux>
+ <a18327c0-b86a-df00-e984-27c26468caf7@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.123.41.22]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a18327c0-b86a-df00-e984-27c26468caf7@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Try to make minimal changes to the document which already describes
-access class 0 in a generic fashion (including IO initiatiors that
-are not CPUs).
+On Mon, Sep 28, 2020 at 10:36:00AM +0200, David Hildenbrand wrote:
+> Hi Oscar!
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- v11: No change.
+Hi David :-)
 
- Documentation/admin-guide/mm/numaperf.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> 
+> Old code:
+> 
+> set_page_refcounted(): sets the refcount to 1.
+> __free_pages()
+>   -> put_page_testzero(): sets it to 0
+>   -> free_the_page()->__free_pages_ok()
+> 
+> New code:
+> 
+> set_page_refcounted(): sets the refcount to 1.
+> page_ref_dec(page): sets it to 0
+> __free_pages_ok():
 
-diff --git a/Documentation/admin-guide/mm/numaperf.rst b/Documentation/admin-guide/mm/numaperf.rst
-index 4d69ef1de830..b89bb85eac75 100644
---- a/Documentation/admin-guide/mm/numaperf.rst
-+++ b/Documentation/admin-guide/mm/numaperf.rst
-@@ -56,6 +56,11 @@ nodes' access characteristics share the same performance relative to other
- linked initiator nodes. Each target within an initiator's access class,
- though, do not necessarily perform the same as each other.
- 
-+The access class "1" is used to allow differentiation between initiators
-+that are CPUs and hence suitable for generic task scheduling, and
-+IO initiators such as GPUs and NICs.  Unlike access class 0, only
-+nodes containing CPUs are considered.
-+
- ================
- NUMA Performance
- ================
-@@ -88,6 +93,9 @@ The latency attributes are provided in nanoseconds.
- The values reported here correspond to the rated latency and bandwidth
- for the platform.
- 
-+Access class 1, takes the same form, but only includes values for CPU to
-+memory activity.
-+
- ==========
- NUMA Cache
- ==========
+bleh, I misread the patch, somehow I managed to not see that you replaced
+__free_pages with __free_pages_ok.
+
+To be honest, now that we do not need the page's refcount to be 1 for the
+put_page_testzero to trigger (and since you are decrementing it anyways),
+I think it would be much clear for those two to be gone.
+
+But not strong, so:
+
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
 -- 
-2.19.1
-
+Oscar Salvador
+SUSE L3
