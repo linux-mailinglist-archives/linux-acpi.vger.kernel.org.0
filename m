@@ -2,135 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A4D27B7E8
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 01:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E0327B78F
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 01:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgI1XSm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Sep 2020 19:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
+        id S1726945AbgI1XNK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 19:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726882AbgI1XSm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 19:18:42 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD3AC0604C1
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 16:01:58 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id a2so2633275otr.11
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 16:01:58 -0700 (PDT)
+        with ESMTP id S1726924AbgI1XNJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 19:13:09 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F472C05BD25
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 16:13:09 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id b124so2608340pfg.13
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 16:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=G0T+RHalnOsx2x8ckC0/qbcC+AW5CzDJJe/ApeOC0+k=;
-        b=Bm4inKBH6owPhXAt+WYO1qUH2sD6gp/JHO/rGqnxUTTZurVuB2oOlCFyuxF6Mrm1Fb
-         Jl3P3mG83W6n3SQ1lAam+xSpWMDhH6aKSofFE4lx90AFeuypIUoqFdZzThdjUvc+zhBH
-         v12MOvqlrd7l6N2Dd1M3mkf+WXumL1sotF7rM=
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=NftyTi1bwuaE14e4XfgcQF93EOxKUsMOEEQqaDTCXJ4=;
+        b=gb3PRHELtfh8s0n7btbKHS7gdHecLDH27/WSx/dTaEZqzwAyfLHcApZT5c+IqoShdm
+         0LEtidHDj3nYkCuzJeB2PL+jPZX/ntrn70g8bHDhQFR+CUPr0IDYs3hxi4tZpkrlg6d9
+         hrDzPZTP54zHmpmIZZBNppWuJmHgMncA/mXvQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=G0T+RHalnOsx2x8ckC0/qbcC+AW5CzDJJe/ApeOC0+k=;
-        b=pMnV6DdUrQQEKtg0DWFS76Gxf6XgzJvzMkX8U5Sxt3I9rxw3BgPEAipJhlZOLpjdks
-         N1ga+w2EfS0UWzTmqR5SKFYSMdCuBA5IV3Q3K8LbZU6wTc9tmMUWpViPFWFpFogJtbUo
-         RWv4La2uUbSz6OuK2/q0BEEJQaHOwRMYYySnuS0uXhdQl+ASD0d5fkW5eP/vd9xQ5Gnz
-         acpO7MtLztOoQTIbCHhdI4oYu2eJxYrEoXv7DSDWvPPd14uErdI73btpjINASeUEPRtw
-         SGvBWi5xO1eE55f3WDrndfvJI6EAF2M7/G4rcktrHa1vdgIqIDG8C7mf4wSXpTtcUWCQ
-         icEg==
-X-Gm-Message-State: AOAM530mKkl6Whk0A38WzD/t8sBh+Ew0jG20sr9ceRUN96GISVNgcm6M
-        0iES8KP9NFPWbuLlzsjgSyK55g==
-X-Google-Smtp-Source: ABdhPJwSkr7ZuRk8wTA1EBTCYkbbMO+PyhCPeIPgE2gfdGNAWiJW8KkTuzvV5dYyicY9sgk6dMhK3A==
-X-Received: by 2002:a05:6830:1616:: with SMTP id g22mr823663otr.289.1601334117878;
-        Mon, 28 Sep 2020 16:01:57 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id a22sm559885oie.13.2020.09.28.16.01.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2020 16:01:57 -0700 (PDT)
-Subject: Re: [PATCH 00/11] Introduce Simple atomic and non-atomic counters
-To:     Joel Fernandes <joel@joelfernandes.org>,
-        Kees Cook <keescook@chromium.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=NftyTi1bwuaE14e4XfgcQF93EOxKUsMOEEQqaDTCXJ4=;
+        b=cZP11WY/lFCql90stGAdk8P7sxfC9sWOmAGg6b/3Dxk2F0z/Nm5WcoUSZIS4Piw/mT
+         8PjgvLansvehKqbympYb6d6zaFZ9iIUOWDpVhs9BJ9H3/48Juuo6z+5eZ0hpWjAMKMoc
+         NglcP2k1Dq7miNwDjzzwOaVMg2CirpRDbgs+Gx+kPOZ44UFlHXAGeo6BuZZEx/wrX1SG
+         cvAT/RPRSCaFt4/ms42+8cQ6ytQzITsMvO7RM0myStK6MmrfLhsf70hJoeBDnofUWdwu
+         MN6HkccbSfNU88ivULGnj06DWttldOTIPI/yWDjDkwCsSXPAA42LlraHJr8dH7IR4zWi
+         waxA==
+X-Gm-Message-State: AOAM533YvqCSA2QceNivnk2w3BOfUloddRRubmQs30ofP7VoUGoXNxbg
+        FdMU3wjmlrHvIvFq4PLA5aWCbQ==
+X-Google-Smtp-Source: ABdhPJwQDKOxa8hqpizwqXPcIZmf1ybA5/FNT7GiN+5miNLUE3lYvrdUP8suk6yqrm6piIZGkrVe3g==
+X-Received: by 2002:a65:494e:: with SMTP id q14mr1006851pgs.281.1601334788954;
+        Mon, 28 Sep 2020 16:13:08 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id z23sm2835217pfj.177.2020.09.28.16.13.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2020 16:13:08 -0700 (PDT)
+Date:   Mon, 28 Sep 2020 16:13:07 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org, shuah@kernel.org,
         rafael@kernel.org, johannes@sipsolutions.net, lenb@kernel.org,
         james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
         arve@android.com, tkjos@android.com, maco@android.com,
-        christian@brauner.io, hridya@google.com, surenb@google.com,
-        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
-        rric@kernel.org, linux-doc@vger.kernel.org,
+        joel@joelfernandes.org, christian@brauner.io, hridya@google.com,
+        surenb@google.com, minyard@acm.org, arnd@arndb.de,
+        mchehab@kernel.org, rric@kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
         linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
         openipmi-developer@lists.sourceforge.net,
-        linux-edac@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+        linux-edac@vger.kernel.org
+Subject: Re: [PATCH 00/11] Introduce Simple atomic and non-atomic counters
+Message-ID: <202009281612.EDC1C0078@keescook>
 References: <cover.1601073127.git.skhan@linuxfoundation.org>
- <20200927233526.GA500818@google.com> <202009281331.444F36A7B@keescook>
- <20200928211709.GA2641213@google.com>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <9c237ead-5b68-2e3f-2af6-a08c03b24fde@linuxfoundation.org>
-Date:   Mon, 28 Sep 2020 17:01:55 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <202009260923.9A2606CFF6@keescook>
+ <3929a023-eb7a-509c-50e1-ee72dca05191@linuxfoundation.org>
 MIME-Version: 1.0
-In-Reply-To: <20200928211709.GA2641213@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3929a023-eb7a-509c-50e1-ee72dca05191@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/28/20 3:17 PM, Joel Fernandes wrote:
-> On Mon, Sep 28, 2020 at 01:34:31PM -0700, Kees Cook wrote:
->> On Sun, Sep 27, 2020 at 07:35:26PM -0400, Joel Fernandes wrote:
->>> On Fri, Sep 25, 2020 at 05:47:14PM -0600, Shuah Khan wrote:
->>>> This patch series is a result of discussion at the refcount_t BOF
->>>> the Linux Plumbers Conference. In this discussion, we identified
->>>> a need for looking closely and investigating atomic_t usages in
->>>> the kernel when it is used strictly as a counter without it
->>>> controlling object lifetimes and state changes.
->>>>
->>>> There are a number of atomic_t usages in the kernel where atomic_t api
->>>> is used strictly for counting and not for managing object lifetime. In
->>>> some cases, atomic_t might not even be needed.
->>>>      
->>>> The purpose of these counters is twofold: 1. clearly differentiate
->>>> atomic_t counters from atomic_t usages that guard object lifetimes,
->>>> hence prone to overflow and underflow errors. It allows tools that scan
->>>> for underflow and overflow on atomic_t usages to detect overflow and
->>>> underflows to scan just the cases that are prone to errors. 2. provides
->>>> non-atomic counters for cases where atomic isn't necessary.
->>>
->>> Nice series :)
->>>
-
-Thanks.
-
->>> It appears there is no user of counter_simple in this series other than the
->>> selftest. Would you be planning to add any conversions in the series itself,
->>> for illustration of use? Sorry if I missed a usage.
->>>
->>> Also how do we guard against atomicity of counter_simple RMW operations? Is
->>> the implication that it should be guarded using other synchronization to
->>> prevent lost-update problem?
->>>
->>> Some more comments:
->>>
->>> 1.  atomic RMW operations that have a return value are fully ordered. Would
->>>      you be adding support to counter_simple for such ordering as well, for
->>>      consistency?
->>
->> No -- there is no atomicity guarantee for counter_simple. I would prefer
->> counter_simple not exist at all, specifically for this reason.
+On Mon, Sep 28, 2020 at 04:41:47PM -0600, Shuah Khan wrote:
+> On 9/26/20 10:29 AM, Kees Cook wrote:
+> > On Fri, Sep 25, 2020 at 05:47:14PM -0600, Shuah Khan wrote:
+> > >     7. Verified that the test module compiles in kunit env. and test
+> > >        module can be loaded to run the test.
+> > 
+> > I meant write it using KUnit interfaces (e.g. KUNIT_EXPECT*(),
+> > kunit_test_suite(), etc):
+> > https://www.kernel.org/doc/html/latest/dev-tools/kunit/
+> > 
+> > Though I see the docs are still not updated[1] to reflect the Kconfig
+> > (CONFIG_foo_KUNIT_TEST) and file naming conventions (foo_kunit.c).
+> > 
 > 
-> Yeah I am ok with it not existing, especially also as there are no examples
-> of its conversion/usage in the series.
-> 
+> I would like to be able to run this test outside Kunit env., hence the
+> choice to go with a module and kselftest script. It makes it easier to
+> test as part of my workflow as opposed to doing a kunit and build and
+> running it that way.
 
-No. counter_simple is just for counting when there is no need for
-atomicity with the premise that there might be some use-cases. You
-are right that this patch series doesn't use these. My hunch is though
-that atomic_t is overused and it isn't needed in all cases.
+It does -- you just load it normally like before and it prints out
+everything just fine. This is how I use the lib/test_user_copy.c and
+lib/test_overflow.c before/after their conversions.
 
-I will do some research to look for any places that can use
-counter_simple before I spin v2. If I don't find any, I can drop them.
-
-thanks,
--- Shuah
-
+-- 
+Kees Cook
