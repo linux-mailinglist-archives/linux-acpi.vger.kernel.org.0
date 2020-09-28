@@ -2,216 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A51B27B154
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 18:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B5E27B28B
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Sep 2020 18:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbgI1QCT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Sep 2020 12:02:19 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2927 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726344AbgI1QCT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Sep 2020 12:02:19 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 98E474FFE5DFBA37551A;
-        Mon, 28 Sep 2020 17:02:17 +0100 (IST)
-Received: from localhost (10.227.96.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 28 Sep
- 2020 17:02:17 +0100
-Date:   Mon, 28 Sep 2020 17:02:16 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>,
-        <lorenzo.pieralisi@arm.com>, <kernel-hardening@lists.openwall.com>,
-        <catalin.marinas@arm.com>, <linux-acpi@vger.kernel.org>,
-        <sudeep.holla@arm.com>, <will@kernel.org>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v3 1/2] arm64/acpi: disallow AML memory opregions to
- access kernel memory
-Message-ID: <20200928170216.00006ff2@huawei.com>
-In-Reply-To: <20200626155832.2323789-2-ardb@kernel.org>
-References: <20200626155832.2323789-1-ardb@kernel.org>
-        <20200626155832.2323789-2-ardb@kernel.org>
-Organization: Huawei tech. R&D (UK)  Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726815AbgI1Qtp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Sep 2020 12:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33554 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726781AbgI1Qtp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Sep 2020 12:49:45 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF85C061755
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 09:49:44 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id a12so2095967eds.13
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 09:49:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OjaO7kUDshEkXyX/sIanQwh9RsbMzawXkJFVu2Elacw=;
+        b=BOQKe+ZZ13ve03VzZj6TWYxlDnAhDhd6J4X/++n58Bn9kjGDh4BkGap7yChnaVQsFA
+         slKF5YRlSNSPx6F3iB4RICABtFrb/de4KEsnT4e1yDwXMOCtD/Tq4UN8tBXACn0pziet
+         ovkON6pPO40sy1O5XKRrymtshV1Lm12f3u4m0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OjaO7kUDshEkXyX/sIanQwh9RsbMzawXkJFVu2Elacw=;
+        b=hBEb9+lVOoJeZum6Evt1RXnqcUoEy72FluWH6bmsjoqElBczzSePxB1FQS/anW2WBb
+         nWInmzc0CaKALAKdt34m+l4wfKM/4uNlBmfpUd7DwY0oiSh45yBkYNBp5Un19UPdlAqU
+         GVnw6l8bPBu8suy+ZftV4aCvnJcFXiHegXtvhyoPLDrmUHOWhGXIfNoPbv2GrSH/CTtE
+         y1dG4ROcQEL0+I0iQrBYWD0pJX+Li+m+h+dWHmxY2+/H9JGiW3I5qVhIKGwTWbP/8TNZ
+         bcAG8aYD+3YbmEbmwqfUgIRRvDyQz7Q7UlmVewiHc+9ZwYjxSFHlQjz8n5bVZXtFjmCp
+         od4g==
+X-Gm-Message-State: AOAM5327r+kH1Q3FbM36BcVqPsR6k5qxII4RlRXyTAMMjGh/FngoFjjr
+        fhMF4lxLbq4o/HZoodSJOT6BvT9ijgbp0Q==
+X-Google-Smtp-Source: ABdhPJye6vgitq53tBzCZzTwxnA+N6KxIMPQ3wHVAEHuQgxsjO1NHuemA71HstgP5thQDidOIUafQw==
+X-Received: by 2002:aa7:cf93:: with SMTP id z19mr2852324edx.187.1601311782707;
+        Mon, 28 Sep 2020 09:49:42 -0700 (PDT)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
+        by smtp.gmail.com with ESMTPSA id o11sm2263172edw.80.2020.09.28.09.49.40
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2020 09:49:41 -0700 (PDT)
+Received: by mail-wr1-f52.google.com with SMTP id g4so2126448wrs.5
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Sep 2020 09:49:40 -0700 (PDT)
+X-Received: by 2002:a5d:660f:: with SMTP id n15mr2859213wru.103.1601311780342;
+ Mon, 28 Sep 2020 09:49:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.227.96.57]
-X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
+ <f4b82baa-66b7-464e-fd39-66d2243a05ef@lucaceresoli.net> <20200911130104.GF26842@paasikivi.fi.intel.com>
+ <6dea1206-cfaa-bfc5-d57e-4dcddadc03c7@lucaceresoli.net> <20200914094727.GM26842@paasikivi.fi.intel.com>
+ <20200926123807.GA3781977@chromium.org> <20200927193900.GA30711@kunai>
+ <CAAFQd5Be5sUQYtXapcSOu8CVffW2LuLog9qh71-+mxze9WYUVQ@mail.gmail.com> <CAJZ5v0hKQNv+qj-7EQ2Dmtk=UamtVKHBXDCjqo-48Qj13yY+cw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hKQNv+qj-7EQ2Dmtk=UamtVKHBXDCjqo-48Qj13yY+cw@mail.gmail.com>
+From:   Tomasz Figa <tfiga@chromium.org>
+Date:   Mon, 28 Sep 2020 18:49:22 +0200
+X-Gmail-Original-Message-ID: <CAAFQd5CP7bg+UQEp5uzuQY5a_xHLAB4ct81pkO0naAou=-QyKw@mail.gmail.com>
+Message-ID: <CAAFQd5CP7bg+UQEp5uzuQY5a_xHLAB4ct81pkO0naAou=-QyKw@mail.gmail.com>
+Subject: Re: [PATCH v8 0/6] Support running driver's probe for a device
+ powered off
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 26 Jun 2020 17:58:31 +0200
-Ard Biesheuvel <ardb@kernel.org> wrote:
+On Mon, Sep 28, 2020 at 4:18 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Sun, Sep 27, 2020 at 9:44 PM Tomasz Figa <tfiga@chromium.org> wrote:
+> >
+> > On Sun, Sep 27, 2020 at 9:39 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+> > >
+> > >
+> > > > I think we might be overly complicating things. IMHO the series as is
+> > > > with the "i2c_" prefix removed from the flags introduced would be
+> > > > reusable as is for any other subsystem that needs it. Of course, for
+> > > > now, the handling of the flag would remain implemented only in the I2C
+> > > > subsystem.
+> > >
+> > > Just to be clear: you are suggesting to remove "i2c" from the DSD
+> > > binding "i2c-allow-low-power-probe". And you are not talking about
+> > > moving I2C_DRV_FL_ALLOW_LOW_POWER_PROBE to struct device_driver? I
+> > > recall the latter has been NACKed by gkh so far.
+> > >
+> >
+> > I'd also drop "I2C_" from "I2C_DRV_FL_ALLOW_LOW_POWER_PROBE", but all
+> > the implementation would remain where it is in the code. IOW, I'm just
+> > suggesting a naming change to avoid proliferating duplicate flags of
+> > the same meaning across subsystems.
+>
+> But that would indicate that the property was recognized by other
+> subsystems which wouldn't be the case, so it would be confusing.
+>
+> That's why it cannot be documented as a general property ATM too.
 
-> AML uses SystemMemory opregions to allow AML handlers to access MMIO
-> registers of, e.g., GPIO controllers, or access reserved regions of
-> memory that are owned by the firmware.
-> 
-> Currently, we also allow AML access to memory that is owned by the
-> kernel and mapped via the linear region, which does not seem to be
-> supported by a valid use case, and exposes the kernel's internal
-> state to AML methods that may be buggy and exploitable.
-> 
-> On arm64, ACPI support requires booting in EFI mode, and so we can cross
-> reference the requested region against the EFI memory map, rather than
-> just do a minimal check on the first page. So let's only permit regions
-> to be remapped by the ACPI core if
-> - they don't appear in the EFI memory map at all (which is the case for
->   most MMIO), or
-> - they are covered by a single region in the EFI memory map, which is not
->   of a type that describes memory that is given to the kernel at boot.
-> 
-> Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+I guess that's true. Well, this is kAPI in the end, so if we have more
+subsystems, it could be always renamed. So feel free to ignore my
+previous comment.
 
-Hi Ard,
-
-Ran into a problem with this one. See below
-
-> ---
->  arch/arm64/include/asm/acpi.h | 15 +----
->  arch/arm64/kernel/acpi.c      | 66 ++++++++++++++++++++
->  2 files changed, 67 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index a45366c3909b..bd68e1b7f29f 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -47,20 +47,7 @@
->  pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
->  
->  /* ACPI table mapping after acpi_permanent_mmap is set */
-> -static inline void __iomem *acpi_os_ioremap(acpi_physical_address phys,
-> -					    acpi_size size)
-> -{
-> -	/* For normal memory we already have a cacheable mapping. */
-> -	if (memblock_is_map_memory(phys))
-> -		return (void __iomem *)__phys_to_virt(phys);
-> -
-> -	/*
-> -	 * We should still honor the memory's attribute here because
-> -	 * crash dump kernel possibly excludes some ACPI (reclaim)
-> -	 * regions from memblock list.
-> -	 */
-> -	return __ioremap(phys, size, __acpi_get_mem_attribute(phys));
-> -}
-> +void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
->  #define acpi_os_ioremap acpi_os_ioremap
->  
->  typedef u64 phys_cpuid_t;
-> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-> index a7586a4db142..01b861e225b0 100644
-> --- a/arch/arm64/kernel/acpi.c
-> +++ b/arch/arm64/kernel/acpi.c
-> @@ -261,6 +261,72 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr)
->  	return __pgprot(PROT_DEVICE_nGnRnE);
->  }
->  
-> +void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-> +{
-> +	efi_memory_desc_t *md, *region = NULL;
-> +	pgprot_t prot;
-> +
-> +	if (WARN_ON_ONCE(!efi_enabled(EFI_MEMMAP)))
-> +		return NULL;
-> +
-> +	for_each_efi_memory_desc(md) {
-> +		u64 end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT);
-> +
-> +		if (phys < md->phys_addr || phys >= end)
-> +			continue;
-> +
-> +		if (phys + size > end) {
-> +			pr_warn(FW_BUG "requested region covers multiple EFI memory regions\n");
-> +			return NULL;
-> +		}
-> +		region = md;
-> +		break;
-> +	}
-> +
-> +	/*
-> +	 * It is fine for AML to remap regions that are not represented in the
-> +	 * EFI memory map at all, as it only describes normal memory, and MMIO
-> +	 * regions that require a virtual mapping to make them accessible to
-> +	 * the EFI runtime services.
-> +	 */
-> +	prot = __pgprot(PROT_DEVICE_nGnRnE);
-> +	if (region) {
-> +		switch (region->type) {
-> +		case EFI_LOADER_CODE:
-> +		case EFI_LOADER_DATA:
-
-Unfortunately this seems to have broken overriding of ACPI tables from an initrd.
-My particular test environment is qemu + EDK2.
-
-It only has obvious visible affect on tables that are used late in the boot such as PPTT
-as they get dropped before they are used.
-
-These are read after ACPICA is initialized and acpi_reallocate_root_table()
-has been called.  The back trace is:
-
-acpi_os_ioremap+0xfc/0x288
-acpi_os_map_iomem+0xc4/0x188
-acpi_os_map_memory+0x18/0x28
-acpi_tb_acquire_table+0x54/0x8c
-acpi_tb_validate_table+0x34/0x5c
-acpi_tb_validate_temp_table+0x34/0x40
-acpi_tb_verify_temp_table+0x48/0x250
-acpi_reallocate_root_table+0x12c/0x160
-
-Seems that the table is in a region of type EFI_LOADER_DATA.
-
-I don't really know enough about this area to be sure what the right fix is or
-even whether this is a kernel issue, or one that should be fixed elsewhere in
-the stack.
-
-For now I'm just carry a hack that treats EFI_LOADER_DATA in the same fashion as
-EFI_ACPI_RECLAIM_MEMORY below.
-
-What's the right way to fix this?
-
-Jonathan
-
-
-> +		case EFI_BOOT_SERVICES_CODE:
-> +		case EFI_BOOT_SERVICES_DATA:
-> +		case EFI_CONVENTIONAL_MEMORY:
-> +		case EFI_PERSISTENT_MEMORY:
-> +			pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
-> +			return NULL;
-> +
-> +		case EFI_ACPI_RECLAIM_MEMORY:
-> +			/*
-> +			 * ACPI reclaim memory is used to pass firmware tables
-> +			 * and other data that is intended for consumption by
-> +			 * the OS only, which may decide it wants to reclaim
-> +			 * that memory and use it for something else. We never
-> +			 * do that, but we usually add it to the linear map
-> +			 * anyway, in which case we should use the existing
-> +			 * mapping.
-> +			 */
-> +			if (memblock_is_map_memory(phys))
-> +				return (void __iomem *)__phys_to_virt(phys);
-> +			/* fall through */
-> +
-> +		default:
-> +			if (region->attribute & EFI_MEMORY_WB)
-> +				prot = PAGE_KERNEL;
-> +			else if (region->attribute & EFI_MEMORY_WT)
-> +				prot = __pgprot(PROT_NORMAL_WT);
-> +			else if (region->attribute & EFI_MEMORY_WC)
-> +				prot = __pgprot(PROT_NORMAL_NC);
-> +		}
-> +	}
-> +	return __ioremap(phys, size, prot);
-> +}
-> +
->  /*
->   * Claim Synchronous External Aborts as a firmware first notification.
->   *
-
+Best regards,
+Tomasz
