@@ -2,165 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B2A427D35A
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 18:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2D2F27D35B
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 18:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728424AbgI2QKl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 12:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725497AbgI2QKl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Sep 2020 12:10:41 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9AA2C061755;
-        Tue, 29 Sep 2020 09:10:40 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id z19so4997347pfn.8;
-        Tue, 29 Sep 2020 09:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=UuTGkML+V/bG8c9WQuENVdIwmVUvpfepi1FHI1A2IVs=;
-        b=LyGFuuzNN6b5MXt91Coi57plYltGjWT1itn9m8mAcbENHf7D0yJsumf+96wEJfdMbc
-         1oRgG0G2FaEATvZpdUolQAjXASHsYoNSIh6UX4I2pVD2KpKpfkZLtyQMh/FdVDtqVOUF
-         WyI3Ahq11tOjVTY0jktOy6MmuhTO4mSSqEwSR7x6IbixaKkn5G6wzgpzpgscAuC9mWKX
-         OjTJPYlJzbTHxmeqMFWVt0rEtzQbhmkVI7p3dY8HHKinHhnW16V+jPa9/haDt2qx1Er6
-         gJdZZvBVGeM+NmExKi+FwGAgBUVMO0oWFqY7gbUsjESKDmN17Jga+0HYbpogZDXZetUc
-         oU3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=UuTGkML+V/bG8c9WQuENVdIwmVUvpfepi1FHI1A2IVs=;
-        b=fQpHugreDnoEUD15adpA5J/SrspzU3E8BaAVWgMugb45qLm1yNX0e/ilpSybw2tbyZ
-         Y1WCiJuzsh8O2FKq4EEnYK317lr9B1ZlR4zsosgoJRmA+okBkgSgt2oC30hMZJuGkUia
-         8pmn04hGj4wrhZSCr+obd2qMV76mxvocE/4O7FMmKl3tw94HJrDjEtGH8/MDWm7iusPH
-         RX74arflqKhwAcRYamOWi97QE9lq2CD7V1NDjTZjoh3Lzr3NSPJMyqW4EHmx/Xu3Rz2K
-         KMvinuNbHjqgKVp9kUmSMO+nWoGaMYT3G+ajoy2xCg8iBmfIVX1ZKLUQvLxhndaxI8u1
-         ZEnw==
-X-Gm-Message-State: AOAM532D0I+BoB3B56mg2VPdvPuvN8H6xj5fBvYu0wQ8GPRXo9iNZy2k
-        8gO1rqxL/AIIzRr5fg2aplmFC+R2O0MLFJkN9I3galaIGK9dhgW3
-X-Google-Smtp-Source: ABdhPJyHFMKtDIjvWFjykUPPhhpMk/KZL/JZ/pN55uKC8FaSUBfAmJjrLojj9wqAIDdzDAseK7TduVoxe6Yb/XZiwBI=
-X-Received: by 2002:aa7:81d5:0:b029:142:2501:39fa with SMTP id
- c21-20020aa781d50000b0290142250139famr4930845pfn.73.1601395840312; Tue, 29
- Sep 2020 09:10:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it> <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
-In-Reply-To: <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 29 Sep 2020 19:10:21 +0300
-Message-ID: <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
-Subject: Re: How to use an ACPI declared GPIO in a userspace ...
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Flavio Suligoi <f.suligoi@asem.it>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        id S1729158AbgI2QK6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 12:10:58 -0400
+Received: from smtp.asem.it ([151.1.184.197]:59429 "EHLO smtp.asem.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725497AbgI2QK5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Sep 2020 12:10:57 -0400
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000512599.MSG 
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Sep 2020 18:10:54 +0200S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 29
+ Sep 2020 18:10:52 +0200
+Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
+ mapi id 15.01.1979.003; Tue, 29 Sep 2020 18:10:52 +0200
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: RE: How to use an ACPI declared GPIO in a userspace ...
+Thread-Topic: How to use an ACPI declared GPIO in a userspace ...
+Thread-Index: AdaWdniTedAZ6+9wQdyYYgE5sQ27yP//4UoA///YULA=
+Date:   Tue, 29 Sep 2020 16:10:52 +0000
+Message-ID: <43a2499484c2435eae63fe372f9b7b17@asem.it>
+References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it>
+ <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+In-Reply-To: <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+Accept-Language: it-IT, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.17.208]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090210.5F735C8D.001A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 6:48 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->
-> On Tue, Sep 29, 2020 at 5:43 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
-> >
-> > Hi all,
-> >
-> > I need to expose to the userspace a GPIO, physically connected to a boa=
-rd
-> > push-button. This GPIO must expose a pre-defined name, such as
-> > "user-push-button", so that the userspace applications can use it witho=
-ut
-> > know any physical GPIO details.
-> >
-> > I can customize the board BIOS and so my goal is to add an ACPI table w=
-ith
-> > a content like this:
-> >
-> > ...
-> > Scope (\_SB.GPO1)
-> >         {
-> >                 Device (BTNS)
-> >                 {
-> >                         Name (_HID, "PRP0001")
-> >                         Name (_DDN, "GPIO buttons device")
-> >
-> >                         Name (_CRS, ResourceTemplate ()
-> >                         {
-> >                                 GpioIo (
-> >                                 Exclusive,               // Not shared
-> >                                 PullNone,                // No need for=
- pulls
-> >                                 0,                       // Debounce ti=
-meout
-> >                                 0,                       // Drive stren=
-gth
-> >                                 IoRestrictionInputOnly,  // Only used a=
-s input
-> >                                 "\\_SB.GPO1",            // GPIO contro=
-ller
-> >                                 0, ResourceConsumer, , ) // Must be 0
-> >                                 {
-> >                                         25,              // GPIO number
-> >                                 }
-> > ...
-> >
-> > I know that this GPIO can be used from other drivers.
-> > For example I successfully tested it using the "gpio-keys" device drive=
-r,
-> > giving to my GPIO a key-code and emulating in this way a keyboard key.
-> > This could be a possible solution.
-> >
-> > But I prefer to expose my GPIO as a classic GPIO, not as a keyboard key=
-.
-> >
-> > I was wondering if there is a generic GPIO driver that I can use to exp=
-ose
-> > this GPIO with its pre-defined name (caming from the ACPI table declara=
-tion),
-> > to the userspace...
-
-Unfortunately what you are describing in the second part is rather
-property of the controller which can hog the line, but this is not
-what you want in the first part.
-The Linux kernel, in many ways, is designed that you need a driver
-(I=C2=B2C user space device node is rather a mistake, but compromise for
-that time when most of the devices have access from user space
-drivers). So, the proper way is to define this as gpio-keys (either
-interrupt version or polling one) and connect a listener to the event.
-
-Summarize: you need to describe pin(s) via "gpio-line-names" property
-of the controller (it's not so easy task if ACPI tables already have
-parts of it, but I think your case should be feasible). And either
-provide a gpio-keys device, or use line directly by name as (libgpiod
-example):
- gpiodetect
- gpioinfo gpiochipX
- gpiofind $GPIO_LINE_NAME
- gpiomon gpiochipX $(gpiofind $GPIO_LINE_NAME) &
-
-Examples of ACPI are here [1] for controller part (look at the name
-list) and for device part [2]. You may look into other folders as
-well, though they are not so reach of examples.
-
-[1]: https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acpi-tabl=
-es/samples/edison/arduino.asli
-[2]: https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acpi-tabl=
-es/samples/edison/buttons.asli
-
-> Adding Andy who knows ACPI GPIO well.
-
-Thanks.
-
-> In general, the "gpio-line-names" property is used for that and it's
-> supported both for device tree as well as ACPI, although I have only
-> ever used the former.
-
-Right. ACPI supports properties via _DSD() method.
-
---=20
-With Best Regards,
-Andy Shevchenko
+SGkgQmFydG9zeiwNCg0KPiA+IEkgbmVlZCB0byBleHBvc2UgdG8gdGhlIHVzZXJzcGFjZSBhIEdQ
+SU8sIHBoeXNpY2FsbHkgY29ubmVjdGVkIHRvIGENCj4gYm9hcmQNCj4gPiBwdXNoLWJ1dHRvbi4g
+VGhpcyBHUElPIG11c3QgZXhwb3NlIGEgcHJlLWRlZmluZWQgbmFtZSwgc3VjaCBhcw0KPiA+ICJ1
+c2VyLXB1c2gtYnV0dG9uIiwgc28gdGhhdCB0aGUgdXNlcnNwYWNlIGFwcGxpY2F0aW9ucyBjYW4g
+dXNlIGl0DQo+IHdpdGhvdXQNCj4gPiBrbm93IGFueSBwaHlzaWNhbCBHUElPIGRldGFpbHMuDQo+
+ID4NCj4gPiBJIGNhbiBjdXN0b21pemUgdGhlIGJvYXJkIEJJT1MgYW5kIHNvIG15IGdvYWwgaXMg
+dG8gYWRkIGFuIEFDUEkgdGFibGUNCj4gd2l0aA0KPiA+IGEgY29udGVudCBsaWtlIHRoaXM6DQo+
+ID4NCj4gPiAuLi4NCj4gPiBTY29wZSAoXF9TQi5HUE8xKQ0KPiA+ICAgICAgICAgew0KPiA+ICAg
+ICAgICAgICAgICAgICBEZXZpY2UgKEJUTlMpDQo+ID4gICAgICAgICAgICAgICAgIHsNCj4gPiAg
+ICAgICAgICAgICAgICAgICAgICAgICBOYW1lIChfSElELCAiUFJQMDAwMSIpDQo+ID4gICAgICAg
+ICAgICAgICAgICAgICAgICAgTmFtZSAoX0RETiwgIkdQSU8gYnV0dG9ucyBkZXZpY2UiKQ0KPiA+
+DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgTmFtZSAoX0NSUywgUmVzb3VyY2VUZW1wbGF0
+ZSAoKQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHsNCj4gPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIEdwaW9JbyAoDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICBFeGNsdXNpdmUsICAgICAgICAgICAgICAgLy8gTm90IHNoYXJlZA0KPiA+ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgUHVsbE5vbmUsICAgICAgICAgICAgICAgIC8vIE5vIG5l
+ZWQgZm9yDQo+IHB1bGxzDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAwLCAg
+ICAgICAgICAgICAgICAgICAgICAgLy8gRGVib3VuY2UNCj4gdGltZW91dA0KPiA+ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgMCwgICAgICAgICAgICAgICAgICAgICAgIC8vIERyaXZl
+DQo+IHN0cmVuZ3RoDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBJb1Jlc3Ry
+aWN0aW9uSW5wdXRPbmx5LCAgLy8gT25seSB1c2VkIGFzDQo+IGlucHV0DQo+ID4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAiXFxfU0IuR1BPMSIsICAgICAgICAgICAgLy8gR1BJTw0K
+PiBjb250cm9sbGVyDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAwLCBSZXNv
+dXJjZUNvbnN1bWVyLCAsICkgLy8gTXVzdCBiZSAwDQo+ID4gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB7DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IDI1LCAgICAgICAgICAgICAgLy8gR1BJTyBudW1iZXINCj4gPiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIH0NCj4gPiAuLi4NCj4gPg0KPiA+IEkga25vdyB0aGF0IHRoaXMgR1BJTyBj
+YW4gYmUgdXNlZCBmcm9tIG90aGVyIGRyaXZlcnMuDQo+ID4gRm9yIGV4YW1wbGUgSSBzdWNjZXNz
+ZnVsbHkgdGVzdGVkIGl0IHVzaW5nIHRoZSAiZ3Bpby1rZXlzIiBkZXZpY2UNCj4gZHJpdmVyLA0K
+PiA+IGdpdmluZyB0byBteSBHUElPIGEga2V5LWNvZGUgYW5kIGVtdWxhdGluZyBpbiB0aGlzIHdh
+eSBhIGtleWJvYXJkIGtleS4NCj4gPiBUaGlzIGNvdWxkIGJlIGEgcG9zc2libGUgc29sdXRpb24u
+DQo+ID4NCj4gPiBCdXQgSSBwcmVmZXIgdG8gZXhwb3NlIG15IEdQSU8gYXMgYSBjbGFzc2ljIEdQ
+SU8sIG5vdCBhcyBhIGtleWJvYXJkIGtleS4NCj4gPg0KPiA+IEkgd2FzIHdvbmRlcmluZyBpZiB0
+aGVyZSBpcyBhIGdlbmVyaWMgR1BJTyBkcml2ZXIgdGhhdCBJIGNhbiB1c2UgdG8NCj4gZXhwb3Nl
+DQo+ID4gdGhpcyBHUElPIHdpdGggaXRzIHByZS1kZWZpbmVkIG5hbWUgKGNhbWluZyBmcm9tIHRo
+ZSBBQ1BJIHRhYmxlDQo+IGRlY2xhcmF0aW9uKSwNCj4gPiB0byB0aGUgdXNlcnNwYWNlLi4uDQo+
+ID4NCj4gPiBCZXN0IHJlZ2FyZHMsDQo+ID4NCj4gPiBGbGF2aW8NCj4gDQo+IEFkZGluZyBBbmR5
+IHdobyBrbm93cyBBQ1BJIEdQSU8gd2VsbC4NCj4gDQo+IEluIGdlbmVyYWwsIHRoZSAiZ3Bpby1s
+aW5lLW5hbWVzIiBwcm9wZXJ0eSBpcyB1c2VkIGZvciB0aGF0IGFuZCBpdCdzDQo+IHN1cHBvcnRl
+ZCBib3RoIGZvciBkZXZpY2UgdHJlZSBhcyB3ZWxsIGFzIEFDUEksIGFsdGhvdWdoIEkgaGF2ZSBv
+bmx5DQo+IGV2ZXIgdXNlZCB0aGUgZm9ybWVyLg0KPiANCj4gQmFydG9zeg0KDQpUaGFua3MhIEkn
+bGwgdHJ5ISEhDQoNCkZsYXZpbw0K
