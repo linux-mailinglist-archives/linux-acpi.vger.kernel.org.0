@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD7327D32F
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 17:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F0B27D33C
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 18:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbgI2Pyk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 11:54:40 -0400
-Received: from mail-eopbgr80085.outbound.protection.outlook.com ([40.107.8.85]:6821
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        id S1727761AbgI2QAC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 12:00:02 -0400
+Received: from mail-eopbgr70081.outbound.protection.outlook.com ([40.107.7.81]:36353
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725497AbgI2Pyj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 11:54:39 -0400
+        id S1725497AbgI2QAC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Sep 2020 12:00:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
  s=selector2-armh-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0oVHSS33b88D0ztovOHCwVgFf+5wVnvert1uE7lnVIQ=;
- b=dYJyK4Nd3AJoxXe98s71t0mEmhYkI6U19lqUEkERm+FJiWF3cFSYJaksDwPxJicVmDnhvGHik0b6TR80NtmevNTR3VNkWrIK8tGpWctMTfkGwAKJd3oAFn1usTXTdu4fpSJQ8+Qs9fnzEMJwUWreX20170wXoNjK9EFIAV7lDUs=
-Received: from MR2P264CA0109.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:33::25)
- by DB6PR0802MB2264.eurprd08.prod.outlook.com (2603:10a6:4:85::21) with
+ bh=BbWgu0/rbEvekqaT9vCrScRucAtNVK6b2992UlEMrRU=;
+ b=mr36OwRYDfXdQ+C2wskcAcHtA59G4a7BDl8sGWYkr7XOWYoDFO/EnpRJvsmYrzonhUaDf7sFpNVf1QyQFt/6SyEF4p2+YT/fsAZxb+1zDRoKq8ZbQXgXq85uTT6YBfEmqLdlnagCEo65g6fz46uCsv4k7G9hxAymDpnoxcx2hmI=
+Received: from AM6PR08CA0020.eurprd08.prod.outlook.com (2603:10a6:20b:b2::32)
+ by HE1PR0801MB1819.eurprd08.prod.outlook.com (2603:10a6:3:89::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.23; Tue, 29 Sep
- 2020 15:54:34 +0000
-Received: from VE1EUR03FT041.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:500:33:cafe::94) by MR2P264CA0109.outlook.office365.com
- (2603:10a6:500:33::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend
- Transport; Tue, 29 Sep 2020 15:54:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32; Tue, 29 Sep
+ 2020 15:59:55 +0000
+Received: from VE1EUR03FT026.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:20b:b2:cafe::45) by AM6PR08CA0020.outlook.office365.com
+ (2603:10a6:20b:b2::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21 via Frontend
+ Transport; Tue, 29 Sep 2020 15:59:55 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
  smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
  header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=pass action=none
@@ -35,51 +35,51 @@ Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
  63.35.35.123 as permitted sender) receiver=protection.outlook.com;
  client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
 Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- VE1EUR03FT041.mail.protection.outlook.com (10.152.19.163) with Microsoft SMTP
+ VE1EUR03FT026.mail.protection.outlook.com (10.152.18.148) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3412.21 via Frontend Transport; Tue, 29 Sep 2020 15:54:33 +0000
-Received: ("Tessian outbound a0bffebca527:v64"); Tue, 29 Sep 2020 15:54:33 +0000
+ 15.20.3412.21 via Frontend Transport; Tue, 29 Sep 2020 15:59:55 +0000
+Received: ("Tessian outbound 7fc8f57bdedc:v64"); Tue, 29 Sep 2020 15:59:54 +0000
 X-CheckRecipientChecked: true
-X-CR-MTA-CID: f88da8818471738d
+X-CR-MTA-CID: 270d983603d819f8
 X-CR-MTA-TID: 64aa7808
-Received: from 2ce578929680.1
-        by 64aa7808-outbound-1.mta.getcheckrecipient.com id A86CD2B5-9F4B-42B5-B1A0-EBE2334E0C22.1;
-        Tue, 29 Sep 2020 15:53:55 +0000
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 2ce578929680.1
+Received: from fe9453fe044a.1
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id DF8BBFDA-69D1-4D7E-AE88-5DF17D4C2219.1;
+        Tue, 29 Sep 2020 15:59:48 +0000
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id fe9453fe044a.1
     (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Tue, 29 Sep 2020 15:53:55 +0000
+    Tue, 29 Sep 2020 15:59:48 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TAQyave8UQ8hB3bUVAfzJf/5aLj8iOd8fstyEuc/0lvO/TUNoRbiDEYAgjwrBw8A4I1skqHfFNCZ7BkfarfXPyndT9K4tdgFzcvbaCjwEUFgm0yT/2+MyN8n5PdafTMSz5nTU5Mxku2XTt7Z5V+NErvaV8JRnNQFsM5SYnFMNrxjUAROkL/kseDLqrapYE+aMKO/WapTHKPeXxSSQ0eVQ73JWttj1F/vJhJ0v0o8WW/1A1fJDKcQMr9gvNutfLFTyjfTDfOGgC61tuyVhTDrFRFKIp1dogq9Z4Q77TRRGmtSpXBDVe1cYox7HgcuZcwuDGfXtvn+M2S9K0/Ns3m0Ng==
+ b=RB3NHtIG6ftyPontTHvfVkIwwIbPcLvz6QWyvM9GTip1z/xtNyXEINIi0g1RzXL3D5JXJcbeigSIVOJ05O1DnS80DnZxcwZy+V91ACdHxZrbWvYunmlazJO9buKdoFFyOytmIR0FHoVH8zFIkrC9FRfFw41b9D+9dDsG6ysuxooJAqvz8pJRIu85Hu+DtpoiwIi7hu4L/ND5tfgsXMO/1hAk2Lvsm9FxvkEAWiu6FVv5TBHo9fQHJ7hPQweCswb6QGnp11rudNobd5UBDWPdhKpQrITjlBTRy0Gwt26dycLdAt0hPdq/eEKhnYq1t2/5LLD3xNQyVAWvbyUb/f+D8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0oVHSS33b88D0ztovOHCwVgFf+5wVnvert1uE7lnVIQ=;
- b=n+yPZ3SxWiF7V7EhG3QwVNZM69NaE2Jj4GxrhSVYLa5QU2fdZpsmzo3hPoTVY9TSJ/DHyNc9sxpxOJb9Rrlb+vLlIyE3J4lKMzGx4sOsmMWZd/awUYp91tfrgSChbSA0WDIElgU+yT6plfbiPSYDgaPQex7pf9gXaOu+M8C4aVqfrI4o6cILxiC7VcyPY25h77wtCeJdJjPAdg9ks+8Xp/OWuuEbVpQaRnimG4KX1bB02VEroxHG83tPP4j6iBK7jTfdKnw5NhSrlk6vU3ovHcB7bZueMphOLWSVLKGukjWxbP2oh5ddwZ1Jq5x4Ddj/IwAhfnA0/zmze2n0KPzITQ==
+ bh=BbWgu0/rbEvekqaT9vCrScRucAtNVK6b2992UlEMrRU=;
+ b=PTJb85lYxiRFiURY6n2gPIwobMRj3l7Tep8nMu3RqdkQ3P7eas3vspnyX5jrd2DAf0yBE7iuuQVxxwb6g7CrYydt0BzCrlvgBvQRR8slYpiAy0EboRUR6toYkH5CwkXLfeK1k3ag0X09s0oUdKa0U1xEDiq4u66+8Y86maJLz8dyID/ipS/Ktred5W8ysYNryuA5ufk4KN9bhaaleHW+g+heZbYqv0WJ8MM05C+maWkmpIFsZ6uGLo+RG8egIkO5ffXgmIg7vxcN3lLeZlTancmo8zD9Z3xRyQ4PE83Bz8gTZo6X9kQ9h2SmaY+Heu3lxybPMX15ZFiNPGhjYmpnGA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
  header.d=arm.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
  s=selector2-armh-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0oVHSS33b88D0ztovOHCwVgFf+5wVnvert1uE7lnVIQ=;
- b=dYJyK4Nd3AJoxXe98s71t0mEmhYkI6U19lqUEkERm+FJiWF3cFSYJaksDwPxJicVmDnhvGHik0b6TR80NtmevNTR3VNkWrIK8tGpWctMTfkGwAKJd3oAFn1usTXTdu4fpSJQ8+Qs9fnzEMJwUWreX20170wXoNjK9EFIAV7lDUs=
+ bh=BbWgu0/rbEvekqaT9vCrScRucAtNVK6b2992UlEMrRU=;
+ b=mr36OwRYDfXdQ+C2wskcAcHtA59G4a7BDl8sGWYkr7XOWYoDFO/EnpRJvsmYrzonhUaDf7sFpNVf1QyQFt/6SyEF4p2+YT/fsAZxb+1zDRoKq8ZbQXgXq85uTT6YBfEmqLdlnagCEo65g6fz46uCsv4k7G9hxAymDpnoxcx2hmI=
 Authentication-Results-Original: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
 Received: from DB8PR08MB4010.eurprd08.prod.outlook.com (2603:10a6:10:ab::15)
- by DB7PR08MB3323.eurprd08.prod.outlook.com (2603:10a6:5:1c::18) with
+ by DBAPR08MB5703.eurprd08.prod.outlook.com (2603:10a6:10:1ad::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.19; Tue, 29 Sep
- 2020 15:53:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32; Tue, 29 Sep
+ 2020 15:59:45 +0000
 Received: from DB8PR08MB4010.eurprd08.prod.outlook.com
  ([fe80::2d77:cba8:3fc8:3d4f]) by DB8PR08MB4010.eurprd08.prod.outlook.com
  ([fe80::2d77:cba8:3fc8:3d4f%3]) with mapi id 15.20.3412.029; Tue, 29 Sep 2020
- 15:53:51 +0000
+ 15:59:45 +0000
 Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
  PHY
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+To:     Andrew Lunn <andrew@lunn.ch>, Arnd Bergmann <arnd@arndb.de>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Jeremy Linton <jeremy.linton@arm.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jon <jon@solid-run.com>,
@@ -88,126 +88,114 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, linux.cj@gmail.com,
-        linux-acpi@vger.kernel.org, nd <nd@arm.com>
+        Networking <netdev@vger.kernel.org>, linux.cj@gmail.com,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        nd <nd@arm.com>
 References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
  <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
  <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
  <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com>
  <20200929134302.GF3950513@lunn.ch>
+ <CAK8P3a0etJf_SG8qLY0VjR+JamKQ8MtyPwoXnb0mpnGZawLfRA@mail.gmail.com>
+ <20200929145910.GJ3950513@lunn.ch>
 From:   Grant Likely <grant.likely@arm.com>
-Message-ID: <8dff0439-100c-cdee-915f-e793b55f9007@arm.com>
-Date:   Tue, 29 Sep 2020 16:53:47 +0100
+Message-ID: <28906ffc-8774-6479-b292-e8ab2c6f5434@arm.com>
+Date:   Tue, 29 Sep 2020 16:59:41 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
-In-Reply-To: <20200929134302.GF3950513@lunn.ch>
+In-Reply-To: <20200929145910.GJ3950513@lunn.ch>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0060.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:60::24) To DB8PR08MB4010.eurprd08.prod.outlook.com
+X-ClientProxiedBy: LO2P123CA0050.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1::14) To DB8PR08MB4010.eurprd08.prod.outlook.com
  (2603:10a6:10:ab::15)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.16.178] (188.30.19.167) by LO2P265CA0060.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:60::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21 via Frontend Transport; Tue, 29 Sep 2020 15:53:48 +0000
+Received: from [192.168.16.178] (188.30.19.167) by LO2P123CA0050.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:1::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Tue, 29 Sep 2020 15:59:43 +0000
 X-Originating-IP: [188.30.19.167]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 353cad33-73de-4a9a-f8b7-08d8648ff5dc
-X-MS-TrafficTypeDiagnostic: DB7PR08MB3323:|DB6PR0802MB2264:
+X-MS-Office365-Filtering-Correlation-Id: 311f7057-fbd9-4cdd-fffe-08d86490b564
+X-MS-TrafficTypeDiagnostic: DBAPR08MB5703:|HE1PR0801MB1819:
 X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DB6PR0802MB2264F9B4CC11B3487AEB589895320@DB6PR0802MB2264.eurprd08.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <HE1PR0801MB181986AFB58C22B07F6706CA95320@HE1PR0801MB1819.eurprd08.prod.outlook.com>
 x-checkrecipientrouted: true
 NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:4502;OLM:4502;
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: rH7dhhU4MPYMBeTjgsZeU5+C6uGyP932iv7xpSuXtl5x1iGdafMXPwUu+gCJuTDx2JCiso60hmVRWdHCBm2nO+ja7heTNO6KFOnUqdvljysRSE3GcfC1Yp/3LJK2zH35ccEOudq4eJRWCW2i/S8pgs3DLVl2M9IUuj+H8xuPBEgv7O6ueJvEseJflpDhmSxOQQ6Dvn89qh7B3QRYm7JPIv1nn1tB2vVclzLdGCfQPh5zzddswcNBIG0tWp7dH+gtXnzYTASJWlLLkB8UsQSyO0728VzTVW8Gv//qCX2oFYJu6jUWbwj5zujKjkXGpfKaJDJQD7jSBal7TFozJRBaBwoEGps4LuLiTZYlmikiF+/oPsbbGkIO9ED7LbReZCXm9faZpI5OMysdwbcLkA6RQOsvfZWPxkSDKlCYIjYdXgBMrWH9TTS4UXLka90yqHt2ivskHRFwO9UUyPmS1EDt7KwwWvtCjgBjnrUs7uiqkm9AkOlrakPDWufHcTo8PDMY
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(366004)(136003)(376002)(346002)(396003)(54906003)(2616005)(316002)(83380400001)(4326008)(55236004)(53546011)(956004)(66556008)(5660300002)(66946007)(8676002)(44832011)(966005)(8936002)(2906002)(16526019)(52116002)(31686004)(31696002)(6486002)(7416002)(16576012)(86362001)(36756003)(66476007)(110136005)(478600001)(186003)(26005)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: DhRv4u0/o7dk3CePpti+LqvR8Rp626BMVyMb1onRObF9M8rtrghVbGaJQ2tm/gGNWviYralNF8pqTsprmxAISnL9quLk58hsfL+RUuggayLOOWq6D7Hb4y0tB8g2prdAsfM+eQ6BNtByiXL+GUbE3KtSJnaltrohtJyywy8abNUG9CIfwjC0EwG8s8Lajegk9CdfiKISLNp6quouJcMvm4iU9/m10nrOLk1ZTupdD9UXRVgjZ60acsekUMmAvh5OTr6353ArkN3OaipJMiFHDLk6MSxzWnulonqa14mi+R4/tCmqEsRRIt89zO8NgOsbWKRFwEq0x+h7fH9+Y70H6x8Uo6ynkTuG39FqMwpAVnxajrC3IZkkLJQ8AikblWNft1irN7f63ewok7LB/YKFlVQuAQCg0lSdeNlsyTu090LcGIQBzvy5hzYBeakFQUQwyocy3oMtyNKJWUjryJ8PKPTP6tH0Q0XkCIQjEB1wJhYliQ0q3jHO6ZdazCzsqlViqRx0HI8NKo/pZRvMt8aPxlmtShucNkwBhqiOuOI5P/PVZHDeoV4g6gTuB1gnzrq2YN9qurp5m5vySOk77L+w2PzswY5JQNF40l9KYE1qN9YGklAIBiHKz/dVcptXnVXNAeonGC2YM6OrJRGNUQQoxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR08MB3323
+X-Microsoft-Antispam-Message-Info-Original: 2hK7IVeA/N2yi/Jg2P0lNlrPASS+kfm2FgNukrDoMWKwHPeUbQc36tHHjUkZg9zoQMq6niGkggglJCiGbEXfUefHpC72zxeYlsO9KQHjiTjWEbqFgyB/Q8mPzCLCJRQ5sdvvInjjUC+OcXjwMP6KuThxGPB8vBHxSw3tjWZL4SaHU3AjxdL/8Z8fm0SjdHoAbPYev/13CEk91mPyX8WwlNULfnFzhmyiK4DQs8xtUXr8R5anpjCYOXEWSPNTpzvLG17/GWPJA/WE4pn+7UW6f9Rb60FEm9FQ5M//cMaKbN3W81LRwyZoFUUEq6wfi5qzg+4kt9NWyLSjyU/LJOfFo+rj49z4o2OL84CsjeCvOKCrduy6O3TzoOc3MjO2mS9W
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(346002)(376002)(39860400002)(366004)(4326008)(53546011)(55236004)(6486002)(8936002)(16526019)(186003)(26005)(36756003)(8676002)(86362001)(31696002)(52116002)(66946007)(66556008)(66476007)(5660300002)(478600001)(2616005)(956004)(16576012)(54906003)(110136005)(44832011)(316002)(2906002)(7416002)(31686004)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: fGYWMv/9RsnE9KEhiVslM1leIgBWR+AfLwrKCRaAOfrslg5QbevxRZCfNJ8v/puIfLDKuOZxl8IQV+LZWRpV4jYnocsccBVLvahHVd4UZUnLAtoyaIUMyKHqHtIO95nIQOviynsqOpwzcyh7oZumBfrCbfQ08BS/1LVBHfNofDBcToz+3WeN5//YOKmB90NFskqteKkZu+uX3xOySpubT+zNjFCiJYSy8txfgPkPmleNGtTfOvz0nQcn8CaEkzKbq/QSHidwv7EAIJiv82DCfV/BFnVE0+otcO/0YnAejFVkFz0IdpdZnetLPGiR5EKsIionn4Nf1JlSyDLXcnyWhXT6bbJJbYdUbqRPR5exVewXy2wULUqoKANjPlK0ziRcKak9ETk6LdmR9SY1/UBPQGdqHq5ch5s4Yy8+acDqZLvYYtMrE2qi7DsteHphJpv5kAjSn1tiuAofiCyDrvx4/NkowOaq/P4AQ4bKX+WUPf3rZGEYDY2Rto0ZIYmvFew3VhgvzxdMT67uAGHsxxeunIZNhrr11Y6NU3s2tnLCD9Xyd6lUxhJl2RYJEETOOu3rekm9/nGhfc4U2mZZeE/K6wjZhU5bWznM5iJtVB4PbDG7PzMM4jA0ApmgFDbRCtHzo7XdbKnDLNufwyIVjR5IIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR08MB5703
 Original-Authentication-Results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
 X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR03FT041.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: e6778230-cd96-4f9c-cd37-08d8648fdc2a
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR03FT026.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 5fb74058-9947-42f4-43b7-08d86490af3c
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oloPcf10tuxgSENzWK0t6XekOQhluddGAlPJ/hYelAF/NEsHb4+vNmPKf/Fb0e/BEDJbQMUsjNxC/jnc34/MyrtjZ5bzuyKBe8JR3gFGxWZhTP9fhUI8ZAmb0IK3lmCEVdktMoFprZR1kvztgCONcYTkCIK+1rfPZl915g7nleadZOU1FKT9+Lhy3pCb28Tl/+zxg684n0QzI6+1EabqdpWo9WvoXm4G1BVw88W8jF3Pl0PyHwL6aCiQSwtuCbo7sLVzscsqDJBNEpNoEf8mp6EeEBQnC5CvTSWAMvdXGjhDF37KjrD5S8iSKKxJI4xfM6bGJna8+7kXs400mmQxa30PnZBoPFr9zqtKI5ZXyIZR7I79LzakePkh/PYv7RzNTlsIg5VMedtzNSdp0n+pa2mwuGU864hgnMnqS9Z/Z8N/97t70rfFolYyKMXZ3xDYXEyyAWAn7BL09GD95xm/qEUzhR3T8xAsB6JDEXQAL9DIkpFv8yC/GQ/6qLty9VHKVyLZOJRQA6Yg8GMPXTNGCAcuNcGZSU2WKtkPUvNToEnfpxLIKmkjE35Fejmri08O
-X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(396003)(39860400002)(346002)(136003)(376002)(46966005)(70586007)(5660300002)(47076004)(356005)(83380400001)(8936002)(6486002)(110136005)(54906003)(82740400003)(82310400003)(16576012)(36906005)(316002)(81166007)(70206006)(956004)(44832011)(336012)(53546011)(55236004)(26005)(966005)(2906002)(186003)(16526019)(36756003)(4326008)(450100002)(31696002)(31686004)(8676002)(2616005)(478600001)(86362001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: OUjt7xiRl23RMftRkENCh2/63Wu8vZ/NyhYYJYzf8X8/nIVfU444h9xiSJ3jNIErMH9lAGvuTdATQ5leKGtKeGtjrWv1LRnifujbThY/pqPRzlmQs9m/nj8SkFEL5UStNZciQM5tkIbXrCLA0GECrU8h+J6cZINmttWdZJWna0w+YbGsZXwj6rbeAFyXtwxrpWr60os3zOxJPynvmKtB+cnuxATF272liGp61YzZLxMwVgR/jJG0IfQXRc0nqHlBeIweSIxlNP58q8uW2+hTSKRQdUJA/qd0v4m4p1wEHGVmhGiHBbwu4AeWam4cVX3+dp5hP8ryOs5irGmhpz4cN49L06VB+/bhYhaaJwxDtlGscQXH3fXwtCmUslfRT7jp+iduSkY8KcJx7c7rOuVfuO94FYRSgfPD2SBrh6b4jPSU52+bbSv1nWTxcuer08vG
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(376002)(136003)(396003)(39860400002)(346002)(46966005)(450100002)(36756003)(336012)(2906002)(70206006)(8676002)(70586007)(47076004)(2616005)(82740400003)(86362001)(956004)(186003)(44832011)(16526019)(316002)(26005)(54906003)(110136005)(16576012)(6486002)(53546011)(36906005)(55236004)(31686004)(4326008)(8936002)(356005)(478600001)(81166007)(5660300002)(82310400003)(31696002)(43740500002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2020 15:54:33.9433
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2020 15:59:55.2786
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 353cad33-73de-4a9a-f8b7-08d8648ff5dc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 311f7057-fbd9-4cdd-fffe-08d86490b564
 X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: VE1EUR03FT041.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR03FT026.eop-EUR03.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0802MB2264
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0801MB1819
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 29/09/2020 14:43, Andrew Lunn wrote:
-> On Tue, Sep 29, 2020 at 10:47:03AM +0530, Calvin Johnson wrote:
->> Hi Grant,
->>
->> On Fri, Sep 25, 2020 at 02:34:21PM +0100, Grant Likely wrote:
->>>> +DSDT entry for MDIO node
->>>> +------------------------
->>>> +a) Silicon Component
->>>> +--------------------
->>>> +	Scope(_SB)
->>>> +	{
->>>> +	  Device(MDI0) {
->>>> +	    Name(_HID, "NXP0006")
->>>> +	    Name(_CCA, 1)
->>>> +	    Name(_UID, 0)
->>>> +	    Name(_CRS, ResourceTemplate() {
->>>> +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
->>>> +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
->>>> +	       {
->>>> +		 MDI0_IT
->>>> +	       }
->>>> +	    }) // end of _CRS for MDI0
->>>> +	    Name (_DSD, Package () {
->>>> +	      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->>>> +	      Package () {
->>>> +		 Package () {"little-endian", 1},
->>>> +	      }
->>>
->>> Adopting the 'little-endian' property here makes little sense. This looks
->>> like legacy from old PowerPC DT platforms that doesn't belong here. I would
->>> drop this bit.
->>
->> I'm unable to drop this as the xgmac_mdio driver relies on this variable to
->> change the io access to little-endian. Default is big-endian.
->> Please see:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/freescale/xgmac_mdio.c?h=v5.9-rc7#n55
+On 29/09/2020 15:59, Andrew Lunn wrote:
+>> IIRC both UEFI and ACPI define only little-endian data structures.
+>> The code does not attempt to convert these into CPU endianness
+>> at the moment.  In theory it could be changed to support either, but
+>> this seems non-practical for the UEFI runtime services that require
+>> calling into firmware code in little-endian mode.
 > 
-> Hi Calvin
+> Hi Arnd
 > 
-> Are we talking about the bus controller endiannes, or the CPU
-> endianness?
+> Thanks for the info. So we can assume the CPU is little endian.  That
+> helps narrow down the problem.
+> 
+>>> If this is the bus controller endianness, are all the SoCs you plan to
+>>> support via ACPI the same endianness? If they are all the same, you
+>>> can hard code it.
+>>
+>> NXP has a bunch of SoCs that reuse the same on-chip devices but
+>> change the endianness between them based on what the chip
+>> designers guessed the OS would want, which is why the drivers
+>> usually support both register layouts and switch at runtime.
+>> Worse, depending on which SoC was the first to get a DT binding
+>> for a particular NXP on-chip device, the default endianness is
+>> different, and there is either a "big-endian" or "little-endian"
+>> override in the binding.
+>>
+>> I would guess that for modern NXP chips that you might boot with
+>> ACPI the endianness is always wired the same way, but I
+>> understand the caution when they have been burned by this
+>> problem before.
+> 
+> So it might depend on if NXP is worried it might flip the endianness
+> of the synthesis of the MDIO controller at some point for devices it
+> wants to support using ACPI?
+> 
+> Does ACPI have a standard way of declaring the endianness of a device?
+> We don't really want to put the DT parameter in ACPI, we want to use
+> the ACPI way of doing it.
 
-This is orthogonal to the MDIO bus issue. This is a legacy of the xgmac 
-IP block originating in PowerPC platforms with a big-endian bus wiring. 
-The flag here tells the driver to use little endian when accessing MMIO 
-registers.
-
-> If we are talking about the CPU endiannes, are you plan on supporting
-> any big endian platforms using ACPI? If not, just hard code it.
-> Newbie ACPI question: Does ACPI even support big endian CPUs, given
-> its x86 origins? >
-> If this is the bus controller endianness, are all the SoCs you plan to
-> support via ACPI the same endianness? If they are all the same, you
-> can hard code it.
-
-I would agree. The ACPI and DT probe paths are different. It would be 
-easy to automatically set the little-endian flag by default when xgmac 
-is described via ACPI.
+No, and it doesn't need one. If a device is wired up big-endian, then it 
+is between the device driver and the device. The OS, and the ACPI 
+framework doesn't come into play other than providing a generic way of 
+encoding data useful to the device driver. Encoding endian hasn't been a 
+common problem, and the tools are already there to deal with it when it is.
 
 g.
