@@ -2,116 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E8327CF0F
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 15:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D3827CF42
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 15:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728487AbgI2NZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 09:25:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41504 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728479AbgI2NZ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 09:25:29 -0400
-Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 25A77208FE;
-        Tue, 29 Sep 2020 13:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601385927;
-        bh=rT/pIt3f3iDRGK3pCOqPo3GwUoJweoxosgVlS+HbsdQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=pxwTEfKk4ngkGlXBAtRzy0gZE/tOKS7VsDjK0ooRnlOkQFw8SrjClveJvidJ/BbZV
-         j2YdGISiTHGjHFT7gfJY0tuzkCWt8/6zrIzNKrpxpk5fyB8vCoFSqr8c3zQLVvSj+f
-         wrgvJKJXodlCZdZ6qAOIw8PFuGsGciIJ7QEc039U=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, Jonathan.Cameron@huawei.com,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: [PATCH] arm64: permit ACPI core to map kernel memory used for table overrides
-Date:   Tue, 29 Sep 2020 15:25:22 +0200
-Message-Id: <20200929132522.18067-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1729641AbgI2NeK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 09:34:10 -0400
+Received: from smtprelay0036.hostedemail.com ([216.40.44.36]:56784 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728273AbgI2NeK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Sep 2020 09:34:10 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 472EC180A7FFF;
+        Tue, 29 Sep 2020 13:34:08 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1714:1730:1747:1777:1792:1801:2198:2199:2393:2525:2553:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3351:3622:3865:3867:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4605:5007:6742:6743:8985:9025:10004:10400:11232:11658:11854:11914:12043:12050:12297:12555:12740:12760:12895:12986:13019:13069:13311:13357:13439:14181:14659:14721:21080:21451:21627:21740:21939:30012:30054:30056:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: event48_4a081af2718a
+X-Filterd-Recvd-Size: 2674
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf20.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 29 Sep 2020 13:34:03 +0000 (UTC)
+Message-ID: <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Shuah Khan <shuah@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
+        drbd-dev@tron.linbit.com,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Date:   Tue, 29 Sep 2020 06:34:02 -0700
+In-Reply-To: <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+         <20200929124108.GY4282@kadam>
+         <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Jonathan reports that the strict policy for memory mapped by the
-ACPI core breaks the use case of passing ACPI table overrides via
-initramfs. This is due to the fact that the memory type used for
-loading the initramfs in memory is not recognized as a memory type
-that is typically used by firmware to pass firmware tables.
+On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
+> On Tue, 29 Sep 2020, Dan Carpenter wrote:
+> > The times where commas are used deliberately to replace curly braces are
+> > just evil.  Either way the code is cleaner with semi-colons.
+> 
+> I also found exaamples like the following to be particularly unforunate:
+> 
+>                                 fprintf(stderr,
+>                                         "page_nr %lu wrong count %Lu %Lu\n",
+>                                        page_nr, count,
+>                                        count_verify[page_nr]), exit(1);
+> 
+> The exit is very hard to see, unless you know to look for it.
 
-Since the purpose of the strict policy is to ensure that no AML or
-other ACPI code can manipulate any memory that is used by the kernel
-to keep its internal state or the state of user tasks, we can relax
-the permission check, and allow mappings of memory that is reserved
-and marked as NOMAP via memblock, and therefore not covered by the
-linear mapping to begin with.
+I sent that patch last month.
+https://patchwork.kernel.org/patch/11734877/
 
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Fixes: 1583052d111f ("arm64/acpi: disallow AML memory opregions to access kernel memory")
-Fixes: 325f5585ec36 ("arm64/acpi: disallow writeable AML opregion mapping for EFI code regions")
-Reported-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/acpi.c | 22 ++++++++++++++++++--
- include/linux/acpi.h     |  2 +-
- 2 files changed, 21 insertions(+), 3 deletions(-)
+It's still not applied.
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index a85174d05473..cada0b816c8a 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -298,8 +298,21 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
- 		case EFI_BOOT_SERVICES_DATA:
- 		case EFI_CONVENTIONAL_MEMORY:
- 		case EFI_PERSISTENT_MEMORY:
--			pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
--			return NULL;
-+			if (memblock_is_map_memory(phys) ||
-+			    !memblock_is_region_memory(phys, size)) {
-+				pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
-+				return NULL;
-+			}
-+			/*
-+			 * Mapping kernel memory is permitted if the region in
-+			 * question is covered by a single memblock with the
-+			 * NOMAP attribute set: this enables the use of ACPI
-+			 * table overrides passed via initramfs, which are
-+			 * reserved in memory using arch_reserve_mem_area()
-+			 * below. As this particular use case only requires
-+			 * read access, fall through to the R/O mapping case.
-+			 */
-+			fallthrough;
- 
- 		case EFI_RUNTIME_SERVICES_CODE:
- 			/*
-@@ -388,3 +401,8 @@ int apei_claim_sea(struct pt_regs *regs)
- 
- 	return err;
- }
-+
-+void arch_reserve_mem_area(acpi_physical_address addr, size_t size)
-+{
-+	memblock_mark_nomap(addr, size);
-+}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 1e4cdc6c7ae2..64ae25c59d55 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -958,7 +958,7 @@ void acpi_os_set_prepare_extended_sleep(int (*func)(u8 sleep_state,
- acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
- 					   u32 val_a, u32 val_b);
- 
--#ifdef CONFIG_X86
-+#ifndef CONFIG_IA64
- void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
- #else
- static inline void arch_reserve_mem_area(acpi_physical_address addr,
--- 
-2.17.1
+
 
