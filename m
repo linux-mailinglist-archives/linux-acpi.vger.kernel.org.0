@@ -2,170 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD46027D34D
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 18:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B2A427D35A
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 18:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729840AbgI2QFI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 12:05:08 -0400
-Received: from mail-vi1eur05on2041.outbound.protection.outlook.com ([40.107.21.41]:48608
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729528AbgI2QFI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 12:05:08 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UXe6SEzmNI1AMNxMIStgL2HwOE9DkR1nD1vfwHiaJx7KRhQGDjKr9JMBpbtFdzQ3yGAUm3fy0u3eSYcfL29hOBuGq/N0YtLSIyn4wdk84TW7aQTuhkIqcXfFPdLB80Lgb+5Rji76frL6ThVlhOqUf8aEpyKa7GwYF5Ur9YZl2vX9+8PW5kXf+V8wqFlGZyG1bEF9CuJrV69cLq0a/CcCvJnlQwPlOHICR/Ny/EsKOIuJNDy7x9uBCYBatyhIzEqlPLXwKQhekRY/eFfTG3EjaOKzAJ947BkjIHV6jB2elmIOVLqP1ChRdS0ZVcQs+CW5+aEWrkbIFFp1Pa539CSGYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0AKGhZYFCU+dDvNaeLChfMQp0g4uWJUzmL47apN497k=;
- b=j/or8e7KDwvTe382vWsFli4S9LwePsDc+I11xar7aowLD1dKFYDVbJPXdaQNlVG5woXOF5rB5xnKcywndjU5K/MruB+8htbbJX12MT70iqChbdPxF3x1K1NFerZNDIalbu7vTYFqS828RlAwczZNtMKzqhrmC8YHNxhprW3boOVy0jUIbAB3mcKkuXN1YajQxXWzOnq74Hp95bQ8cxptowxjrQF637LRzJSJuOXJ+zwTInnO7P3dDHy1Tra/UseIfkG3/sKS53ky9rj3jlIwQ9XHxgZWk0D348b1lk43cjUeWEv9OSX7cmPjc29IZqHz8Z4aa9oB1+QFPVzQcry+Gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0AKGhZYFCU+dDvNaeLChfMQp0g4uWJUzmL47apN497k=;
- b=DkFron5GM44ggD9NHCzcQsDwTKWOYQPXM56ke9g+cYQvDe+j51WYcLDKCqp2mUanDKVSKhyOTVCxdzzxXZBbEOd0kvheHQVGqj5X3mZMoiidt+kD4gM7ky6EGRw0XrYl3TVg8RmHLSSHzU1W/BTlqRBNxyEAswWN9icQk4I6flw=
-Authentication-Results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB4228.eurprd04.prod.outlook.com (2603:10a6:208:66::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.24; Tue, 29 Sep
- 2020 16:05:03 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a997:35ae:220c:14ef]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a997:35ae:220c:14ef%7]) with mapi id 15.20.3412.029; Tue, 29 Sep 2020
- 16:05:03 +0000
-Date:   Tue, 29 Sep 2020 21:34:43 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Grant Likely <grant.likely@arm.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, linux.cj@gmail.com,
-        linux-acpi@vger.kernel.org, nd <nd@arm.com>
-Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
- PHY
-Message-ID: <20200929160443.GA9110@lsv03152.swis.in-blr01.nxp.com>
-References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
- <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
- <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
- <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com>
- <20200929134302.GF3950513@lunn.ch>
- <8dff0439-100c-cdee-915f-e793b55f9007@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8dff0439-100c-cdee-915f-e793b55f9007@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: SG2PR04CA0143.apcprd04.prod.outlook.com
- (2603:1096:3:16::27) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S1728424AbgI2QKl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 12:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725497AbgI2QKl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Sep 2020 12:10:41 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9AA2C061755;
+        Tue, 29 Sep 2020 09:10:40 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id z19so4997347pfn.8;
+        Tue, 29 Sep 2020 09:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=UuTGkML+V/bG8c9WQuENVdIwmVUvpfepi1FHI1A2IVs=;
+        b=LyGFuuzNN6b5MXt91Coi57plYltGjWT1itn9m8mAcbENHf7D0yJsumf+96wEJfdMbc
+         1oRgG0G2FaEATvZpdUolQAjXASHsYoNSIh6UX4I2pVD2KpKpfkZLtyQMh/FdVDtqVOUF
+         WyI3Ahq11tOjVTY0jktOy6MmuhTO4mSSqEwSR7x6IbixaKkn5G6wzgpzpgscAuC9mWKX
+         OjTJPYlJzbTHxmeqMFWVt0rEtzQbhmkVI7p3dY8HHKinHhnW16V+jPa9/haDt2qx1Er6
+         gJdZZvBVGeM+NmExKi+FwGAgBUVMO0oWFqY7gbUsjESKDmN17Jga+0HYbpogZDXZetUc
+         oU3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=UuTGkML+V/bG8c9WQuENVdIwmVUvpfepi1FHI1A2IVs=;
+        b=fQpHugreDnoEUD15adpA5J/SrspzU3E8BaAVWgMugb45qLm1yNX0e/ilpSybw2tbyZ
+         Y1WCiJuzsh8O2FKq4EEnYK317lr9B1ZlR4zsosgoJRmA+okBkgSgt2oC30hMZJuGkUia
+         8pmn04hGj4wrhZSCr+obd2qMV76mxvocE/4O7FMmKl3tw94HJrDjEtGH8/MDWm7iusPH
+         RX74arflqKhwAcRYamOWi97QE9lq2CD7V1NDjTZjoh3Lzr3NSPJMyqW4EHmx/Xu3Rz2K
+         KMvinuNbHjqgKVp9kUmSMO+nWoGaMYT3G+ajoy2xCg8iBmfIVX1ZKLUQvLxhndaxI8u1
+         ZEnw==
+X-Gm-Message-State: AOAM532D0I+BoB3B56mg2VPdvPuvN8H6xj5fBvYu0wQ8GPRXo9iNZy2k
+        8gO1rqxL/AIIzRr5fg2aplmFC+R2O0MLFJkN9I3galaIGK9dhgW3
+X-Google-Smtp-Source: ABdhPJyHFMKtDIjvWFjykUPPhhpMk/KZL/JZ/pN55uKC8FaSUBfAmJjrLojj9wqAIDdzDAseK7TduVoxe6Yb/XZiwBI=
+X-Received: by 2002:aa7:81d5:0:b029:142:2501:39fa with SMTP id
+ c21-20020aa781d50000b0290142250139famr4930845pfn.73.1601395840312; Tue, 29
+ Sep 2020 09:10:40 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR04CA0143.apcprd04.prod.outlook.com (2603:1096:3:16::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.34 via Frontend Transport; Tue, 29 Sep 2020 16:04:59 +0000
-X-Originating-IP: [14.142.151.118]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 5cfdcd86-4a74-40b4-cbfd-08d864916c8a
-X-MS-TrafficTypeDiagnostic: AM0PR04MB4228:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB4228A56AD923F29F2DA67858D2320@AM0PR04MB4228.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: m7kdSV/O+5iIogDjeKyDH5WDrpsoykSykSVkiNo9l74yHsi6oYHH184FSpuN3P6oN3cRvVW5H5e/QdTmSxpxqhbCZhd/o6QAL98AHWZlI/eCyRvNpReEnVFz6f3SSm1UMiWCAIB/9U5sFCFKqGSZ7FPpC0MZm2SEud6Ekb232OydA4ETA8MUY3wNTwWOtSxiSca2ZU6I92jeM3bWOKKS2Qpc5p5TwTlpZ5cUWGzKatKfECe2S0lzqs7n7VpeJUPQ5gFKOxd5MOqW4cNipsloPGk3rMJG/WhSbu82/aBElkVJpDdZHiLXSS+uejntjjokiSG3khEECMmHkivg7Ce3nmJs+kQ/luq/a42REvj7tEaS0HdRO4Xo2LOlZPdx+Li3+TVyoY+I9BvCo4BmybB7D5rLCDXM0LDu/mNREE7CLz5s/XL9wzz6DY0MgMkAGWpD8IooI4wMGESQw4m2drRFzvDHXgp8SmBf8+DPVKlq2j4CemhbZB7w/KExMG1GBqem
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(346002)(366004)(376002)(66946007)(66476007)(66556008)(186003)(54906003)(16526019)(9686003)(316002)(83380400001)(6916009)(86362001)(5660300002)(1076003)(33656002)(1006002)(6666004)(966005)(478600001)(8936002)(55016002)(956004)(44832011)(2906002)(52116002)(7696005)(7416002)(8676002)(55236004)(6506007)(53546011)(4326008)(26005)(110426005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: /Bd8gvVhND1P/Phyi5DbCciKYi6WTZxsqrzUx76Pc4PR6OHUbggbqY/mgfjD4KTB8NiVsIyr2UYDM9kg/7Q822zDUXp9k1XAbPL7FfCXfByaeC5MDR3Tbd9oq8/RWh9BSxJPb6TLsnbTW7FsdhXy1e7p8cRws6yROErwLPj7g4i+2Sn77w7ir26NlbhVtaKJv+O77RFMRjX87c0PwOXPHS2zROOYuLQkLIWq3OzmQ0WBEdXx7i5aNiI2t6qSj0WqsOc0W/JzFL91q6zi5XtGhphnpGrZp1cBVT7yhYz39OnrMaUgCNwD1cx2rYAXSh5BLp8i1Jc9yt9k+NPS36J1aH1uwEmVarzOd+okF2a1T+ldILtCsuTbpXVZuFg8HUiSMTNYbZUbT2DQHjU/v3I72Wd5VTN6AssSqlcFeg6M2k1boFhn1yt0XIp1+vquzSOgGxWYtOiyvNNfmb6P9i4qdzfE/KL9g/PYe2WPZnWQnqN5QdKinWpkekCx4CdOQiMTwDFZly8h9Ld4qfth0mvSF8QyMBdS4Xo8uMl8CfrSd8bZ5IepLNcj0fY5/T+SVOv3X/y7RP6UCnzuB/7/goQKpSVqLLuOkTfNxgjLlSnXF2n8Mm221iezU1YPho9W0d8hyiwXAbA14cdrymIMNkjPyw==
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cfdcd86-4a74-40b4-cbfd-08d864916c8a
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2020 16:05:03.1793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kx/t++PZxPqypcdGcwibwsdK7CzcI84D6nBkzv3EhBAg2bMN8Ll3fUpq37uVEH/Z4b8H+WdrWUJttGbvH5adUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4228
+References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it> <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+In-Reply-To: <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 29 Sep 2020 19:10:21 +0300
+Message-ID: <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
+Subject: Re: How to use an ACPI declared GPIO in a userspace ...
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Flavio Suligoi <f.suligoi@asem.it>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 04:53:47PM +0100, Grant Likely wrote:
-> 
-> 
-> On 29/09/2020 14:43, Andrew Lunn wrote:
-> > On Tue, Sep 29, 2020 at 10:47:03AM +0530, Calvin Johnson wrote:
-> > > Hi Grant,
-> > > 
-> > > On Fri, Sep 25, 2020 at 02:34:21PM +0100, Grant Likely wrote:
-> > > > > +DSDT entry for MDIO node
-> > > > > +------------------------
-> > > > > +a) Silicon Component
-> > > > > +--------------------
-> > > > > +	Scope(_SB)
-> > > > > +	{
-> > > > > +	  Device(MDI0) {
-> > > > > +	    Name(_HID, "NXP0006")
-> > > > > +	    Name(_CCA, 1)
-> > > > > +	    Name(_UID, 0)
-> > > > > +	    Name(_CRS, ResourceTemplate() {
-> > > > > +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
-> > > > > +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
-> > > > > +	       {
-> > > > > +		 MDI0_IT
-> > > > > +	       }
-> > > > > +	    }) // end of _CRS for MDI0
-> > > > > +	    Name (_DSD, Package () {
-> > > > > +	      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> > > > > +	      Package () {
-> > > > > +		 Package () {"little-endian", 1},
-> > > > > +	      }
-> > > > 
-> > > > Adopting the 'little-endian' property here makes little sense. This looks
-> > > > like legacy from old PowerPC DT platforms that doesn't belong here. I would
-> > > > drop this bit.
-> > > 
-> > > I'm unable to drop this as the xgmac_mdio driver relies on this variable to
-> > > change the io access to little-endian. Default is big-endian.
-> > > Please see:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/freescale/xgmac_mdio.c?h=v5.9-rc7#n55
-> > 
-> > Hi Calvin
-> > 
-> > Are we talking about the bus controller endiannes, or the CPU
-> > endianness?
-> 
-> This is orthogonal to the MDIO bus issue. This is a legacy of the xgmac IP
-> block originating in PowerPC platforms with a big-endian bus wiring. The
-> flag here tells the driver to use little endian when accessing MMIO
-> registers.
-> 
-> > If we are talking about the CPU endiannes, are you plan on supporting
-> > any big endian platforms using ACPI? If not, just hard code it.
-> > Newbie ACPI question: Does ACPI even support big endian CPUs, given
-> > its x86 origins? >
-> > If this is the bus controller endianness, are all the SoCs you plan to
-> > support via ACPI the same endianness? If they are all the same, you
-> > can hard code it.
-> 
-> I would agree. The ACPI and DT probe paths are different. It would be easy
-> to automatically set the little-endian flag by default when xgmac is
-> described via ACPI.
+On Tue, Sep 29, 2020 at 6:48 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>
+> On Tue, Sep 29, 2020 at 5:43 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
+> >
+> > Hi all,
+> >
+> > I need to expose to the userspace a GPIO, physically connected to a boa=
+rd
+> > push-button. This GPIO must expose a pre-defined name, such as
+> > "user-push-button", so that the userspace applications can use it witho=
+ut
+> > know any physical GPIO details.
+> >
+> > I can customize the board BIOS and so my goal is to add an ACPI table w=
+ith
+> > a content like this:
+> >
+> > ...
+> > Scope (\_SB.GPO1)
+> >         {
+> >                 Device (BTNS)
+> >                 {
+> >                         Name (_HID, "PRP0001")
+> >                         Name (_DDN, "GPIO buttons device")
+> >
+> >                         Name (_CRS, ResourceTemplate ()
+> >                         {
+> >                                 GpioIo (
+> >                                 Exclusive,               // Not shared
+> >                                 PullNone,                // No need for=
+ pulls
+> >                                 0,                       // Debounce ti=
+meout
+> >                                 0,                       // Drive stren=
+gth
+> >                                 IoRestrictionInputOnly,  // Only used a=
+s input
+> >                                 "\\_SB.GPO1",            // GPIO contro=
+ller
+> >                                 0, ResourceConsumer, , ) // Must be 0
+> >                                 {
+> >                                         25,              // GPIO number
+> >                                 }
+> > ...
+> >
+> > I know that this GPIO can be used from other drivers.
+> > For example I successfully tested it using the "gpio-keys" device drive=
+r,
+> > giving to my GPIO a key-code and emulating in this way a keyboard key.
+> > This could be a possible solution.
+> >
+> > But I prefer to expose my GPIO as a classic GPIO, not as a keyboard key=
+.
+> >
+> > I was wondering if there is a generic GPIO driver that I can use to exp=
+ose
+> > this GPIO with its pre-defined name (caming from the ACPI table declara=
+tion),
+> > to the userspace...
 
-Thanks Andrew and Grant for this suggestion. Yes, this is an easy way to solve
-this problem. Will do that.
+Unfortunately what you are describing in the second part is rather
+property of the controller which can hog the line, but this is not
+what you want in the first part.
+The Linux kernel, in many ways, is designed that you need a driver
+(I=C2=B2C user space device node is rather a mistake, but compromise for
+that time when most of the devices have access from user space
+drivers). So, the proper way is to define this as gpio-keys (either
+interrupt version or polling one) and connect a listener to the event.
 
-Regards
-Calvin
+Summarize: you need to describe pin(s) via "gpio-line-names" property
+of the controller (it's not so easy task if ACPI tables already have
+parts of it, but I think your case should be feasible). And either
+provide a gpio-keys device, or use line directly by name as (libgpiod
+example):
+ gpiodetect
+ gpioinfo gpiochipX
+ gpiofind $GPIO_LINE_NAME
+ gpiomon gpiochipX $(gpiofind $GPIO_LINE_NAME) &
 
+Examples of ACPI are here [1] for controller part (look at the name
+list) and for device part [2]. You may look into other folders as
+well, though they are not so reach of examples.
+
+[1]: https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acpi-tabl=
+es/samples/edison/arduino.asli
+[2]: https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acpi-tabl=
+es/samples/edison/buttons.asli
+
+> Adding Andy who knows ACPI GPIO well.
+
+Thanks.
+
+> In general, the "gpio-line-names" property is used for that and it's
+> supported both for device tree as well as ACPI, although I have only
+> ever used the former.
+
+Right. ACPI supports properties via _DSD() method.
+
+--=20
+With Best Regards,
+Andy Shevchenko
