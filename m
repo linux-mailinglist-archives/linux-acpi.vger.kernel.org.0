@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BAE27D204
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 16:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AFF127D21D
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 17:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728627AbgI2O7W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 10:59:22 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:33792 "EHLO vps0.lunn.ch"
+        id S1731390AbgI2PGc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 11:06:32 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:33822 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725710AbgI2O7W (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 10:59:22 -0400
+        id S1725710AbgI2PGc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Sep 2020 11:06:32 -0400
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
         (envelope-from <andrew@lunn.ch>)
-        id 1kNH5y-00GlhJ-GW; Tue, 29 Sep 2020 16:59:10 +0200
-Date:   Tue, 29 Sep 2020 16:59:10 +0200
+        id 1kNHCw-00Gljc-7s; Tue, 29 Sep 2020 17:06:22 +0200
+Date:   Tue, 29 Sep 2020 17:06:22 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
-To:     Arnd Bergmann <arnd@arndb.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Grant Likely <grant.likely@arm.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -25,65 +25,46 @@ Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Jon <jon@solid-run.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Networking <netdev@vger.kernel.org>, linux.cj@gmail.com,
+        netdev <netdev@vger.kernel.org>, "linux.cj" <linux.cj@gmail.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         nd <nd@arm.com>
 Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
  PHY
-Message-ID: <20200929145910.GJ3950513@lunn.ch>
+Message-ID: <20200929150622.GK3950513@lunn.ch>
 References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
  <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
  <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
  <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com>
  <20200929134302.GF3950513@lunn.ch>
- <CAK8P3a0etJf_SG8qLY0VjR+JamKQ8MtyPwoXnb0mpnGZawLfRA@mail.gmail.com>
+ <CAHp75VcMbNqizMnwz_SwBEs=yPG0+uL38C0XeS7r_RqFREj7zQ@mail.gmail.com>
+ <20200929143239.GI3950513@lunn.ch>
+ <CAHp75VfjOBDpuY_df1wdxUUfFQV_t_k2PjrwHjd0dvE3jojZ=w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a0etJf_SG8qLY0VjR+JamKQ8MtyPwoXnb0mpnGZawLfRA@mail.gmail.com>
+In-Reply-To: <CAHp75VfjOBDpuY_df1wdxUUfFQV_t_k2PjrwHjd0dvE3jojZ=w@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> IIRC both UEFI and ACPI define only little-endian data structures.
-> The code does not attempt to convert these into CPU endianness
-> at the moment.  In theory it could be changed to support either, but
-> this seems non-practical for the UEFI runtime services that require
-> calling into firmware code in little-endian mode.
-
-Hi Arnd
-
-Thanks for the info. So we can assume the CPU is little endian.  That
-helps narrow down the problem.
-
-> > If this is the bus controller endianness, are all the SoCs you plan to
-> > support via ACPI the same endianness? If they are all the same, you
-> > can hard code it.
+> > Does it have a standardized way of
+> > saying a device is big endian, swap words around if appropriate when
+> > doing IO?
 > 
-> NXP has a bunch of SoCs that reuse the same on-chip devices but
-> change the endianness between them based on what the chip
-> designers guessed the OS would want, which is why the drivers
-> usually support both register layouts and switch at runtime.
-> Worse, depending on which SoC was the first to get a DT binding
-> for a particular NXP on-chip device, the default endianness is
-> different, and there is either a "big-endian" or "little-endian"
-> override in the binding.
-> 
-> I would guess that for modern NXP chips that you might boot with
-> ACPI the endianness is always wired the same way, but I
-> understand the caution when they have been burned by this
-> problem before.
+> I guess this is not applicable to ACPI. Does Linux have a standardized way?
 
-So it might depend on if NXP is worried it might flip the endianness
-of the synthesis of the MDIO controller at some point for devices it
-wants to support using ACPI?
+DT does. You add the property 'little-endian' to indicate you should
+do IO to the device using little endian.
 
-Does ACPI have a standard way of declaring the endianness of a device?
-We don't really want to put the DT parameter in ACPI, we want to use
-the ACPI way of doing it.
+> So, what did you mean under doing I/O? I mean in which context?
 
-    Thanks
-	Andrew
+NXP can synthesise the MDIO controller either big endian, or little
+endian. So on some SoCs we need to tell the driver to talk to the
+hardware using big endian accesses. On other SoCs we need to tell the
+driver to talk to the hardware using little endian.
+
+Is there a standard way in ACPI to describe this?
+
+   Andrew
