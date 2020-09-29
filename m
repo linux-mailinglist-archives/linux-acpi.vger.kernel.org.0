@@ -2,102 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3902027CFAA
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 15:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E69D927D005
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 15:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730091AbgI2NnR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 09:43:17 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:33520 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730027AbgI2NnQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 09:43:16 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1kNFuI-00Gl93-K2; Tue, 29 Sep 2020 15:43:02 +0200
-Date:   Tue, 29 Sep 2020 15:43:02 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
+        id S1729587AbgI2N4B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 09:56:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60044 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727328AbgI2N4A (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Sep 2020 09:56:00 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C648C061755;
+        Tue, 29 Sep 2020 06:56:00 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id 7so3929870pgm.11;
+        Tue, 29 Sep 2020 06:56:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8cnOjlXg8/acRqjzJZ6Vpsc0wsLmh58ThBWZMSvOp7E=;
+        b=DjI4928c6xr+7SC2mBQQiNnqNYZ6GlUnBuLnBcXMYvZgRU2V8uE04jLGPx4cAXa69m
+         m5JX7psHW1a3V/udvX7xyCfPAhv/aOnWusvOyJl3wouE3oWYYBWcoP+updV83cc+EkPF
+         o3i0NpUslv/6y68XpfFiY25H69FKN8rpOxM3fN65U8c3LB04AJ31MXwa9BNAu1W3pnsV
+         0QtduGOdNspKtUdYWu6+0R/+mtYWcjTlI20Yz3QwZHsqgjgytJ1U2a+1qo/umKh8MW9B
+         DbB7O3/EZlD161Bb5iFQjE8zxwVv/XcQSw2/buJUIPbumpEvmFTe+fj2bbMzfWmrxZV3
+         rUPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8cnOjlXg8/acRqjzJZ6Vpsc0wsLmh58ThBWZMSvOp7E=;
+        b=pg4Wjpd+FsO499wTvsUaxPWbCQ0a/niKzWeApOoUD2lCZizxx4cVoakagcm6CDJ8AG
+         VxE3mWYl2ZK3rLNJyDDoVafJ8R9Zp+mey1AxnWEBcswZcOkTvYssu9qPyDl6OS1Ga/+H
+         7ZX7AWZNCxTLv5n9lSO2V5Mcr+8bpU/Oe9gGAIG+iu6h8BzTSIHuZJIudtJP6AUynoMc
+         /bYrB7QSQfIaZeFmPmdWGHTL4w6oNWUAdg+qOv02RnADHyI78wlFly179C8jfH9QdNxg
+         xG/PsC1wjSsio/CJeC8p94xI/RZBy/9DPbGD/BYKBaI9EkQFGGwnGdNwyVjfB6V1n5ww
+         eVug==
+X-Gm-Message-State: AOAM533mXsI9dZGMLwJ18UKsOK0K1MM20CH2VYmJrGZcm8eP2OsYOSfc
+        bJVIRr6vLvbVV1nxresZHdpL278K0j3AKqZ5Pv8=
+X-Google-Smtp-Source: ABdhPJxQdYATfk8pYpnnHB7BmWkVCg3LXvB/+2axN4vn+pVt5bSBSAIbOvd476+VwMN4itBdj501sOYJrosKDjtKtQ4=
+X-Received: by 2002:a63:d648:: with SMTP id d8mr3355331pgj.4.1601387760091;
+ Tue, 29 Sep 2020 06:56:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
+ <20200715090400.4733-2-calvin.johnson@oss.nxp.com> <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
+ <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com> <20200929134302.GF3950513@lunn.ch>
+In-Reply-To: <20200929134302.GF3950513@lunn.ch>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 29 Sep 2020 16:55:40 +0300
+Message-ID: <CAHp75VcMbNqizMnwz_SwBEs=yPG0+uL38C0XeS7r_RqFREj7zQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO PHY
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Grant Likely <grant.likely@arm.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Jeremy Linton <jeremy.linton@arm.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jon <jon@solid-run.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, linux.cj@gmail.com,
-        linux-acpi@vger.kernel.org, nd <nd@arm.com>
-Subject: Re: [net-next PATCH v7 1/6] Documentation: ACPI: DSD: Document MDIO
- PHY
-Message-ID: <20200929134302.GF3950513@lunn.ch>
-References: <20200715090400.4733-1-calvin.johnson@oss.nxp.com>
- <20200715090400.4733-2-calvin.johnson@oss.nxp.com>
- <f7d2de9c-a679-1ad2-d6ba-ca7e2f823343@arm.com>
- <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200929051703.GA10849@lsv03152.swis.in-blr01.nxp.com>
+        netdev <netdev@vger.kernel.org>, "linux.cj" <linux.cj@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        nd <nd@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 10:47:03AM +0530, Calvin Johnson wrote:
-> Hi Grant,
-> 
-> On Fri, Sep 25, 2020 at 02:34:21PM +0100, Grant Likely wrote:
-> > > +DSDT entry for MDIO node
-> > > +------------------------
-> > > +a) Silicon Component
-> > > +--------------------
-> > > +	Scope(_SB)
-> > > +	{
-> > > +	  Device(MDI0) {
-> > > +	    Name(_HID, "NXP0006")
-> > > +	    Name(_CCA, 1)
-> > > +	    Name(_UID, 0)
-> > > +	    Name(_CRS, ResourceTemplate() {
-> > > +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
-> > > +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
-> > > +	       {
-> > > +		 MDI0_IT
-> > > +	       }
-> > > +	    }) // end of _CRS for MDI0
-> > > +	    Name (_DSD, Package () {
-> > > +	      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> > > +	      Package () {
-> > > +		 Package () {"little-endian", 1},
-> > > +	      }
-> > 
-> > Adopting the 'little-endian' property here makes little sense. This looks
-> > like legacy from old PowerPC DT platforms that doesn't belong here. I would
-> > drop this bit.
-> 
-> I'm unable to drop this as the xgmac_mdio driver relies on this variable to
-> change the io access to little-endian. Default is big-endian.
-> Please see:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/freescale/xgmac_mdio.c?h=v5.9-rc7#n55
+On Tue, Sep 29, 2020 at 4:43 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> On Tue, Sep 29, 2020 at 10:47:03AM +0530, Calvin Johnson wrote:
+> > On Fri, Sep 25, 2020 at 02:34:21PM +0100, Grant Likely wrote:
 
-Hi Calvin
+...
 
-Are we talking about the bus controller endiannes, or the CPU
-endianness?
+> Newbie ACPI question: Does ACPI even support big endian CPUs, given
+> its x86 origins?
 
-If we are talking about the CPU endiannes, are you plan on supporting
-any big endian platforms using ACPI? If not, just hard code it.
-Newbie ACPI question: Does ACPI even support big endian CPUs, given
-its x86 origins?
+I understand the newbie part, but can you elaborate what did you mean
+under 'support'?
+To me it sounds like 'network stack was developed for BE CPUs, does it
+support LE ones?'
 
-If this is the bus controller endianness, are all the SoCs you plan to
-support via ACPI the same endianness? If they are all the same, you
-can hard code it.
-
-To some extent, this should be a moot point, assuming sane
-hardware. Generally, the bus endian is fixed. It is either native, or
-like PCI, little endian. The CPU endian is what can change. But in
-general, once you figure out what you have, there is an IO macro which
-will do the right thing without any configuration.
-
-     Andrew
+-- 
+With Best Regards,
+Andy Shevchenko
