@@ -2,199 +2,393 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF09127D5CF
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 20:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9475127D6AB
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 21:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727982AbgI2Sey (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 14:34:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:43447 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727740AbgI2Sey (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 14:34:54 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601404491;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=FfKogqPI4RDlW0YYC3c4xJNHnuiLN6dhs19349Htcrg=;
-        b=ShkUin3Qe9Qptrwr68Grr8Z/FIH5UkgSDgPO6ja1sQG/Y5nuyx6y2wiOLxbjbwSDYAqpq7
-        VYJZOIiwzhrYRGW0grJExhR7BXwz5UrypJdirVHmmYSFmgZvgUkDMv2bniYsBbACnffLJY
-        Xc+7TQibTUmWVV1bpskhpvhwgmbnc1I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-399-cHV3WGSuORKFCG_ly6EV9g-1; Tue, 29 Sep 2020 14:34:47 -0400
-X-MC-Unique: cHV3WGSuORKFCG_ly6EV9g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1728229AbgI2TSB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Sep 2020 15:18:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725554AbgI2TSA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Sep 2020 15:18:00 -0400
+Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CDDF0186840A;
-        Tue, 29 Sep 2020 18:34:45 +0000 (UTC)
-Received: from localhost.localdomain.com (ovpn-66-32.rdu2.redhat.com [10.10.66.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CA38978807;
-        Tue, 29 Sep 2020 18:34:44 +0000 (UTC)
-From:   Qian Cai <cai@redhat.com>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH] ACPICA: Fix a soft-lockup on large systems
-Date:   Tue, 29 Sep 2020 14:34:44 -0400
-Message-Id: <20200929183444.25079-1-cai@redhat.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id D2E6B20774;
+        Tue, 29 Sep 2020 19:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601407079;
+        bh=PLMuI+7JwmyKjVAkvcqBqwoVrHNBT4ni6xGWmeifoYY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=X0kP0I0BynDjfCk7pnD/tkidsBXkZug2YUb36AOE3pMrxRUrnQeoMu28d9yC2YW7b
+         xhNo+fDttkvJ2uV8DOsz2byVe2ZzCs+Blv2WUFOOByPSCY8BC+VkwdyPOmHQ0PRnf6
+         93MxDNHiXdqXbQ8Zi77eHo+5P63M5CAziPA50g+I=
+Date:   Tue, 29 Sep 2020 14:17:56 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>, x86@kernel.org,
+        linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org
+Subject: Re: [PATCH] PCI: Rename d3_delay in the pci_dev struct to align with
+ PCI specification
+Message-ID: <20200929191756.GA2562898@bjorn-Precision-5520>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+In-Reply-To: <20200730210848.1578826-1-kw@linux.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It could take a long time in the loop of acpi_ns_walk_namespace() on
-large systems due to there are many nodes in ACPI namespace, and then
-trigger a soft-lockup. Fix it by adding cond_resched() within the loop.
+On Thu, Jul 30, 2020 at 09:08:48PM +0000, Krzysztof Wilczyński wrote:
+> Rename PCI-related variable "d3_delay" to "d3hot_delay" in the pci_dev
+> struct to better align with the PCI Firmware specification (see PCI
+> Firmware Specification, Revision 3.2, Section 4.6.9, p. 73).
+> 
+> The pci_dev struct already contains variable "d3cold_delay", thus
+> renaming "d3_delay" to "d3hot_delay" reduces ambiguity as PCI devices
+> support two variants of the D3 power state: D3hot and D3cold.
+> 
+> Also, rename other constants and variables, and updates code comments
+> and documentation to ensure alignment with the PCI specification.
+> 
+> There is no change to the functionality.
+> 
+> Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 
-[   70.533393] watchdog: BUG: soft lockup - CPU#25 stuck for 22s! [swapper/0:1]
-[   70.533438] Modules linked in:
-[   70.533468] irq event stamp: 26257732
-[   70.533489] hardirqs last  enabled at (26257731): [<ffffa000106f2e88>] __slab_alloc+0xa8/0xc8
-[   70.533505] hardirqs last disabled at (26257732): [<ffffa0001017387c>] el1_irq+0x7c/0x140
-el1_irq at arch/arm64/kernel/entry.S:650
-[   70.533520] softirqs last  enabled at (26197382): [<ffffa00010171a90>] efi_header_end+0xa90/0x10bc
-[   70.533535] softirqs last disabled at (26197377): [<ffffa0001024a63c>] irq_exit+0x2c4/0x348
-[   70.533551] CPU: 25 PID: 1 Comm: swapper/0 Not tainted 5.9.0-rc7-next-20200929 #1
-[   70.533563] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.15 05/08/2020
-[   70.533577] pstate: 60400009 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[   70.533593] pc : arch_local_irq_restore+0x4/0x8
-[   70.533605] lr : __slab_alloc+0xb0/0xc8
-[   70.533617] sp : ffff000005bd61a0
-[   70.533628] x29: ffff000005bd61a0 x28: 000000000000000e
-[   70.533653] x27: ffff0087b41c8ff8 x26: 0080000000000000
-[   70.533677] x25: ffffa000190db000 x24: ffff000e788d6c10
-[   70.533700] x23: ffffa00010cb41c8 x22: 00000000ffffffff
-[   70.533723] x21: 0000000000012b20 x20: ffff0087b41cde10
-[   70.533746] x19: 0000000000000000 x18: 1fffe001cf1193ca
-[   70.533768] x17: 0000000000000000 x16: 0000000000000000
-[   70.533791] x15: 0000000000071ccc x14: 0000000000071ccc
-[   70.533813] x13: ffff800000b7ac1d x12: 1fffe00000b7ac1c
-[   70.533836] x11: 1fffe00000b7ac1c x10: ffff800000b7ac1c
-[   70.533859] x9 : dfffa00000000000 x8 : ffff000005bd60e7
-[   70.533882] x7 : 00000000f2000000 x6 : dfffa00000000000
-[   70.533904] x5 : 00000000f2f2f200 x4 : 00000000f2f2f2f2
-[   70.533927] x3 : 1fffe00000b6ddca x2 : ffffa00019bf2000
-[   70.533950] x1 : 000000000190a943 x0 : 0000000000000000
-[   70.533973] Call trace:
-[   70.533987]  arch_local_irq_restore+0x4/0x8
-[   70.534000]  kmem_cache_alloc+0x35c/0x3c0
-[   70.534015]  fill_pool+0x278/0x588
-[   70.534028]  __debug_object_init+0x8c/0x1100
-[   70.534041]  debug_object_activate+0x234/0x448
-[   70.534055]  call_rcu+0x38/0x630
-[   70.534070]  put_object+0x84/0xc0
-[   70.534082]  __delete_object+0xc4/0x110
-[   70.534095]  delete_object_full+0x18/0x20
-[   70.534110]  kmemleak_free+0x2c/0x38
-[   70.534122]  slab_free_freelist_hook+0x15c/0x240
-[   70.534135]  kmem_cache_free+0x10c/0x518
-[   70.534150]  acpi_os_release_object+0xc/0x18
-[   70.534165]  acpi_ut_delete_object_desc+0xa8/0xac
-[   70.534177]  acpi_ut_update_ref_count.part.2+0x33c/0x788
-[   70.534190]  acpi_ut_update_object_reference+0x304/0x42c
-[   70.534203]  acpi_ut_remove_reference+0x64/0x74
-[   70.534218]  acpi_ds_store_object_to_local+0x2d8/0x300
-[   70.534231]  acpi_ex_store+0x600/0x658
-[   70.534244]  acpi_ex_opcode_1A_0T_1R+0x3e4/0xb34
-[   70.534257]  acpi_ds_exec_end_op+0x338/0xad0
-[   70.534270]  acpi_ps_parse_loop+0xdb4/0x1020
-[   70.534282]  acpi_ps_parse_aml+0x1f0/0x614
-[   70.534295]  acpi_ps_execute_method+0x500/0x508
-[   70.534308]  acpi_ns_evaluate+0x680/0x7b4
-[   70.534320]  acpi_ut_evaluate_object+0xc4/0x30c
-[   70.534333]  acpi_rs_get_method_data+0x84/0xd8
-[   70.534345]  acpi_walk_resources+0x13c/0x17c
-[   70.534359]  __acpi_dev_get_resources+0x150/0x1d8
-[   70.534371]  acpi_dev_get_resources+0x14/0x20
-[   70.534384]  acpi_init_device_object+0x698/0x10b8
-[   70.534396]  acpi_add_single_object+0xf8/0x1028
-[   70.534408]  acpi_bus_check_add+0x160/0x3f8
-[   70.534421]  acpi_ns_walk_namespace+0x1f4/0x298
-[   70.534433]  acpi_walk_namespace+0xa4/0xe8
-[   70.534446]  acpi_bus_scan+0xe0/0xf0
-[   70.534460]  acpi_scan_init+0x218/0x51c
-[   70.534472]  acpi_init+0x45c/0x4e4
-[   70.534485]  do_one_initcall+0x168/0xb60
-[   70.534498]  kernel_init_freeable+0x698/0x724
-[   70.534511]  kernel_init+0x10/0x11c
-[   70.534524]  ret_from_fork+0x10/0x18
-[  113.641710] rcu: INFO: rcu_sched self-detected stall on CPU
-[  113.641774] rcu:     25-....: (6495 ticks this GP) idle=cbe/1/0x4000000000000002 softirq=772/772 fqs=3246
-[  113.641842]  (t=6500 jiffies g=309 q=1185230)
-[  113.641852] Task dump for CPU 25:
-[  113.641872] task:swapper/0       state:R  running task     stack:22624 pid:    1 ppid:     0 flags:0x0000002a
-[  113.641907] Call trace:
-[  113.641927]  dump_backtrace+0x0/0x398
-[  113.641941]  show_stack+0x14/0x60
-[  113.641956]  sched_show_task.part.94+0x358/0x374
-[  113.641970]  sched_show_task+0x13c/0x1c0
-[  113.641983]  dump_cpu_task+0x80/0x90
-[  113.641996]  rcu_dump_cpu_stacks+0x1ac/0x1f8
-[  113.642012]  rcu_sched_clock_irq+0x1d94/0x2048
-[  113.642027]  update_process_times+0x30/0x1b8
-[  113.642041]  tick_periodic+0x6c/0x310
-[  113.642054]  tick_handle_periodic+0x70/0x140
-[  113.642070]  arch_timer_handler_phys+0x48/0x68
-[  113.642084]  handle_percpu_devid_irq+0x234/0xc08
-[  113.642099]  generic_handle_irq+0x74/0xa0
-[  113.642112]  __handle_domain_irq+0x98/0x158
-[  113.642126]  gic_handle_irq+0xd0/0x158
-[  113.642139]  el1_irq+0xbc/0x140
-[  113.642154]  arch_local_irq_restore+0x4/0x8
-[  113.642167]  kmem_cache_alloc+0x35c/0x3c0
-[  113.642182]  acpi_os_acquire_object+0x28/0x30
-[  113.642195]  acpi_ps_alloc_op+0x98/0x1d4
-[  113.642208]  acpi_ps_create_op+0x374/0x86c
-[  113.642221]  acpi_ps_parse_loop+0x3f4/0x1020
-[  113.642233]  acpi_ps_parse_aml+0x1f0/0x614
-[  113.642246]  acpi_ps_execute_method+0x500/0x508
-[  113.642258]  acpi_ns_evaluate+0x680/0x7b4
-[  113.642273]  acpi_ut_evaluate_object+0xc4/0x30c
-[  113.642286]  acpi_rs_get_method_data+0x84/0xd8
-[  113.642298]  acpi_walk_resources+0x13c/0x17c
-[  113.642313]  __acpi_dev_get_resources+0x150/0x1d8
-[  113.642325]  acpi_dev_get_resources+0x14/0x20
-[  113.642338]  acpi_init_device_object+0x698/0x10b8
-[  113.642351]  acpi_add_single_object+0xf8/0x1028
-[  113.642363]  acpi_bus_check_add+0x160/0x3f8
-acpi_bus_check_add at drivers/acpi/scan.c:1885
-[  113.642376]  acpi_ns_walk_namespace+0x1f4/0x298
-acpi_ns_walk_namespace at drivers/acpi/acpica/nswalk.c:237
-[  113.642389]  acpi_walk_namespace+0xa4/0xe8
-[  113.642401]  acpi_bus_scan+0xe0/0xf0
-[  113.642416]  acpi_scan_init+0x218/0x51c
-[  113.642428]  acpi_init+0x45c/0x4e4
-[  113.642441]  do_one_initcall+0x168/0xb60
-[  113.642455]  kernel_init_freeable+0x698/0x724
-[  113.642469]  kernel_init+0x10/0x11c
-[  113.642481]  ret_from_fork+0x10/0x18
-[  128.674020] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-7f])
+Applied to pci/pm for v5.10, thanks!
 
-Signed-off-by: Qian Cai <cai@redhat.com>
----
- drivers/acpi/acpica/nswalk.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
-index b7f3e8603ad8..216bf9e5a96e 100644
---- a/drivers/acpi/acpica/nswalk.c
-+++ b/drivers/acpi/acpica/nswalk.c
-@@ -267,6 +267,7 @@ acpi_ns_walk_namespace(acpi_object_type type,
- 
- 				return_ACPI_STATUS(status);
- 			}
-+			cond_resched();
- 		}
- 
- 		/*
--- 
-2.18.4
-
+> ---
+>  Documentation/power/pci.rst                   |  2 +-
+>  arch/x86/pci/fixup.c                          |  2 +-
+>  arch/x86/pci/intel_mid_pci.c                  |  2 +-
+>  drivers/hid/intel-ish-hid/ipc/ipc.c           |  2 +-
+>  drivers/net/ethernet/marvell/sky2.c           |  2 +-
+>  drivers/pci/pci-acpi.c                        |  6 +-
+>  drivers/pci/pci.c                             | 14 ++--
+>  drivers/pci/pci.h                             |  4 +-
+>  drivers/pci/quirks.c                          | 68 +++++++++----------
+>  .../staging/media/atomisp/pci/atomisp_v4l2.c  |  2 +-
+>  include/linux/pci.h                           |  2 +-
+>  include/uapi/linux/pci_regs.h                 |  2 +-
+>  12 files changed, 54 insertions(+), 54 deletions(-)
+> 
+> diff --git a/Documentation/power/pci.rst b/Documentation/power/pci.rst
+> index 1831e431f725..b04fb18cc4e2 100644
+> --- a/Documentation/power/pci.rst
+> +++ b/Documentation/power/pci.rst
+> @@ -320,7 +320,7 @@ that these callbacks operate on::
+>  	unsigned int	d2_support:1;	/* Low power state D2 is supported */
+>  	unsigned int	no_d1d2:1;	/* D1 and D2 are forbidden */
+>  	unsigned int	wakeup_prepared:1;  /* Device prepared for wake up */
+> -	unsigned int	d3_delay;	/* D3->D0 transition time in ms */
+> +	unsigned int	d3hot_delay;	/* D3hot->D0 transition time in ms */
+>  	...
+>    };
+>  
+> diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+> index 0c67a5a94de3..9e3d9cc6afc4 100644
+> --- a/arch/x86/pci/fixup.c
+> +++ b/arch/x86/pci/fixup.c
+> @@ -587,7 +587,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0xa26d, pci_invalid_bar);
+>  static void pci_fixup_amd_ehci_pme(struct pci_dev *dev)
+>  {
+>  	dev_info(&dev->dev, "PME# does not work under D3, disabling it\n");
+> -	dev->pme_support &= ~((PCI_PM_CAP_PME_D3 | PCI_PM_CAP_PME_D3cold)
+> +	dev->pme_support &= ~((PCI_PM_CAP_PME_D3hot | PCI_PM_CAP_PME_D3cold)
+>  		>> PCI_PM_CAP_PME_SHIFT);
+>  }
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x7808, pci_fixup_amd_ehci_pme);
+> diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
+> index 00c62115f39c..979f310b67d4 100644
+> --- a/arch/x86/pci/intel_mid_pci.c
+> +++ b/arch/x86/pci/intel_mid_pci.c
+> @@ -322,7 +322,7 @@ static void pci_d3delay_fixup(struct pci_dev *dev)
+>  	 */
+>  	if (type1_access_ok(dev->bus->number, dev->devfn, PCI_DEVICE_ID))
+>  		return;
+> -	dev->d3_delay = 0;
+> +	dev->d3hot_delay = 0;
+>  }
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_ANY_ID, pci_d3delay_fixup);
+>  
+> diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+> index 8f8dfdf64833..a45ac7fa417b 100644
+> --- a/drivers/hid/intel-ish-hid/ipc/ipc.c
+> +++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+> @@ -755,7 +755,7 @@ static int _ish_hw_reset(struct ishtp_device *dev)
+>  	csr |= PCI_D3hot;
+>  	pci_write_config_word(pdev, pdev->pm_cap + PCI_PM_CTRL, csr);
+>  
+> -	mdelay(pdev->d3_delay);
+> +	mdelay(pdev->d3hot_delay);
+>  
+>  	csr &= ~PCI_PM_CTRL_STATE_MASK;
+>  	csr |= PCI_D0;
+> diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
+> index fe54764caea9..ce7a94060a96 100644
+> --- a/drivers/net/ethernet/marvell/sky2.c
+> +++ b/drivers/net/ethernet/marvell/sky2.c
+> @@ -5104,7 +5104,7 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	INIT_WORK(&hw->restart_work, sky2_restart);
+>  
+>  	pci_set_drvdata(pdev, hw);
+> -	pdev->d3_delay = 300;
+> +	pdev->d3hot_delay = 300;
+>  
+>  	return 0;
+>  
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 7224b1e5f2a8..c54588ad2d9c 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1167,7 +1167,7 @@ static struct acpi_device *acpi_pci_find_companion(struct device *dev)
+>   * @pdev: the PCI device whose delay is to be updated
+>   * @handle: ACPI handle of this device
+>   *
+> - * Update the d3_delay and d3cold_delay of a PCI device from the ACPI _DSM
+> + * Update the d3hot_delay and d3cold_delay of a PCI device from the ACPI _DSM
+>   * control method of either the device itself or the PCI host bridge.
+>   *
+>   * Function 8, "Reset Delay," applies to the entire hierarchy below a PCI
+> @@ -1206,8 +1206,8 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
+>  		}
+>  		if (elements[3].type == ACPI_TYPE_INTEGER) {
+>  			value = (int)elements[3].integer.value / 1000;
+> -			if (value < PCI_PM_D3_WAIT)
+> -				pdev->d3_delay = value;
+> +			if (value < PCI_PM_D3HOT_WAIT)
+> +				pdev->d3hot_delay = value;
+>  		}
+>  	}
+>  	ACPI_FREE(obj);
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index c9338f914a0e..5e5d15a96fe1 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -49,7 +49,7 @@ EXPORT_SYMBOL(isa_dma_bridge_buggy);
+>  int pci_pci_problems;
+>  EXPORT_SYMBOL(pci_pci_problems);
+>  
+> -unsigned int pci_pm_d3_delay;
+> +unsigned int pci_pm_d3hot_delay;
+>  
+>  static void pci_pme_list_scan(struct work_struct *work);
+>  
+> @@ -66,10 +66,10 @@ struct pci_pme_device {
+>  
+>  static void pci_dev_d3_sleep(struct pci_dev *dev)
+>  {
+> -	unsigned int delay = dev->d3_delay;
+> +	unsigned int delay = dev->d3hot_delay;
+>  
+> -	if (delay < pci_pm_d3_delay)
+> -		delay = pci_pm_d3_delay;
+> +	if (delay < pci_pm_d3hot_delay)
+> +		delay = pci_pm_d3hot_delay;
+>  
+>  	if (delay)
+>  		msleep(delay);
+> @@ -2878,7 +2878,7 @@ void pci_pm_init(struct pci_dev *dev)
+>  	}
+>  
+>  	dev->pm_cap = pm;
+> -	dev->d3_delay = PCI_PM_D3_WAIT;
+> +	dev->d3hot_delay = PCI_PM_D3HOT_WAIT;
+>  	dev->d3cold_delay = PCI_PM_D3COLD_WAIT;
+>  	dev->bridge_d3 = pci_bridge_d3_possible(dev);
+>  	dev->d3cold_allowed = true;
+> @@ -2903,7 +2903,7 @@ void pci_pm_init(struct pci_dev *dev)
+>  			 (pmc & PCI_PM_CAP_PME_D0) ? " D0" : "",
+>  			 (pmc & PCI_PM_CAP_PME_D1) ? " D1" : "",
+>  			 (pmc & PCI_PM_CAP_PME_D2) ? " D2" : "",
+> -			 (pmc & PCI_PM_CAP_PME_D3) ? " D3hot" : "",
+> +			 (pmc & PCI_PM_CAP_PME_D3hot) ? " D3hot" : "",
+>  			 (pmc & PCI_PM_CAP_PME_D3cold) ? " D3cold" : "");
+>  		dev->pme_support = pmc >> PCI_PM_CAP_PME_SHIFT;
+>  		dev->pme_poll = true;
+> @@ -4601,7 +4601,7 @@ static int pci_af_flr(struct pci_dev *dev, int probe)
+>   *
+>   * NOTE: This causes the caller to sleep for twice the device power transition
+>   * cooldown period, which for the D0->D3hot and D3hot->D0 transitions is 10 ms
+> - * by default (i.e. unless the @dev's d3_delay field has a different value).
+> + * by default (i.e. unless the @dev's d3hot_delay field has a different value).
+>   * Moreover, only devices in D0 can be reset by this function.
+>   */
+>  static int pci_pm_reset(struct pci_dev *dev, int probe)
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 6d3f75867106..70e699e2e264 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -44,7 +44,7 @@ int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
+>  int pci_bus_error_reset(struct pci_dev *dev);
+>  
+>  #define PCI_PM_D2_DELAY         200
+> -#define PCI_PM_D3_WAIT          10
+> +#define PCI_PM_D3HOT_WAIT       10
+>  #define PCI_PM_D3COLD_WAIT      100
+>  #define PCI_PM_BUS_WAIT         50
+>  
+> @@ -177,7 +177,7 @@ extern struct mutex pci_slot_mutex;
+>  
+>  extern raw_spinlock_t pci_lock;
+>  
+> -extern unsigned int pci_pm_d3_delay;
+> +extern unsigned int pci_pm_d3hot_delay;
+>  
+>  #ifdef CONFIG_PCI_MSI
+>  void pci_no_msi(void);
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 812bfc32ecb8..b09215b75b10 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -1846,7 +1846,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_PXHV,	quirk_pci
+>   */
+>  static void quirk_intel_pcie_pm(struct pci_dev *dev)
+>  {
+> -	pci_pm_d3_delay = 120;
+> +	pci_pm_d3hot_delay = 120;
+>  	dev->no_d1d2 = 1;
+>  }
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL,	0x25e2, quirk_intel_pcie_pm);
+> @@ -1873,12 +1873,12 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL,	0x260b, quirk_intel_pcie_pm);
+>  
+>  static void quirk_d3hot_delay(struct pci_dev *dev, unsigned int delay)
+>  {
+> -	if (dev->d3_delay >= delay)
+> +	if (dev->d3hot_delay >= delay)
+>  		return;
+>  
+> -	dev->d3_delay = delay;
+> +	dev->d3hot_delay = delay;
+>  	pci_info(dev, "extending delay after power-on from D3hot to %d msec\n",
+> -		 dev->d3_delay);
+> +		 dev->d3hot_delay);
+>  }
+>  
+>  static void quirk_radeon_pm(struct pci_dev *dev)
+> @@ -3374,36 +3374,36 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0152, disable_igfx_irq);
+>   * PCI devices which are on Intel chips can skip the 10ms delay
+>   * before entering D3 mode.
+>   */
+> -static void quirk_remove_d3_delay(struct pci_dev *dev)
+> -{
+> -	dev->d3_delay = 0;
+> -}
+> -/* C600 Series devices do not need 10ms d3_delay */
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0412, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0c00, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0c0c, quirk_remove_d3_delay);
+> -/* Lynxpoint-H PCH devices do not need 10ms d3_delay */
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c02, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c18, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c1c, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c20, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c22, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c26, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c2d, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c31, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c3a, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c3d, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c4e, quirk_remove_d3_delay);
+> -/* Intel Cherrytrail devices do not need 10ms d3_delay */
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x2280, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x2298, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x229c, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b0, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b5, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b7, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b8, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22d8, quirk_remove_d3_delay);
+> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22dc, quirk_remove_d3_delay);
+> +static void quirk_remove_d3hot_delay(struct pci_dev *dev)
+> +{
+> +	dev->d3hot_delay = 0;
+> +}
+> +/* C600 Series devices do not need 10ms d3hot_delay */
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0412, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0c00, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0c0c, quirk_remove_d3hot_delay);
+> +/* Lynxpoint-H PCH devices do not need 10ms d3hot_delay */
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c02, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c18, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c1c, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c20, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c22, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c26, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c2d, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c31, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c3a, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c3d, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x8c4e, quirk_remove_d3hot_delay);
+> +/* Intel Cherrytrail devices do not need 10ms d3hot_delay */
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x2280, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x2298, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x229c, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b0, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b5, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b7, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22b8, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22d8, quirk_remove_d3hot_delay);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x22dc, quirk_remove_d3hot_delay);
+>  
+>  /*
+>   * Some devices may pass our check in pci_intx_mask_supported() if
+> diff --git a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
+> index a000a1e316f7..beba430a197e 100644
+> --- a/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
+> +++ b/drivers/staging/media/atomisp/pci/atomisp_v4l2.c
+> @@ -1573,7 +1573,7 @@ static int atomisp_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
+>  	spin_lock_init(&isp->lock);
+>  
+>  	/* This is not a true PCI device on SoC, so the delay is not needed. */
+> -	pdev->d3_delay = 0;
+> +	pdev->d3hot_delay = 0;
+>  
+>  	pci_set_drvdata(pdev, isp);
+>  
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 34c1c4f45288..cd9abbbc55e3 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -373,7 +373,7 @@ struct pci_dev {
+>  						      user sysfs */
+>  	unsigned int	clear_retrain_link:1;	/* Need to clear Retrain Link
+>  						   bit manually */
+> -	unsigned int	d3_delay;	/* D3->D0 transition time in ms */
+> +	unsigned int	d3hot_delay;	/* D3hot->D0 transition time in ms */
+>  	unsigned int	d3cold_delay;	/* D3cold->D0 transition time in ms */
+>  
+>  #ifdef CONFIG_PCIEASPM
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index f9701410d3b5..49f15c37e771 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -246,7 +246,7 @@
+>  #define  PCI_PM_CAP_PME_D0	0x0800	/* PME# from D0 */
+>  #define  PCI_PM_CAP_PME_D1	0x1000	/* PME# from D1 */
+>  #define  PCI_PM_CAP_PME_D2	0x2000	/* PME# from D2 */
+> -#define  PCI_PM_CAP_PME_D3	0x4000	/* PME# from D3 (hot) */
+> +#define  PCI_PM_CAP_PME_D3hot	0x4000	/* PME# from D3 (hot) */
+>  #define  PCI_PM_CAP_PME_D3cold	0x8000	/* PME# from D3 (cold) */
+>  #define  PCI_PM_CAP_PME_SHIFT	11	/* Start of the PME Mask in PMC */
+>  #define PCI_PM_CTRL		4	/* PM control and status register */
+> -- 
+> 2.27.0
+> 
