@@ -2,19 +2,19 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6205427EF24
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 18:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6607027EF4A
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 18:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728076AbgI3Q1m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Sep 2020 12:27:42 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:36366 "EHLO vps0.lunn.ch"
+        id S1725372AbgI3Qeo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Sep 2020 12:34:44 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:36400 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727681AbgI3Q1m (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Sep 2020 12:27:42 -0400
+        id S1725355AbgI3Qeo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Sep 2020 12:34:44 -0400
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
         (envelope-from <andrew@lunn.ch>)
-        id 1kNex1-00GvTY-5D; Wed, 30 Sep 2020 18:27:31 +0200
-Date:   Wed, 30 Sep 2020 18:27:31 +0200
+        id 1kNf3w-00GvXT-6Z; Wed, 30 Sep 2020 18:34:40 +0200
+Date:   Wed, 30 Sep 2020 18:34:40 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
 Cc:     Grant Likely <grant.likely@arm.com>,
@@ -34,70 +34,63 @@ Cc:     Grant Likely <grant.likely@arm.com>,
         Diana Madalina Craciun <diana.craciun@nxp.com>,
         Laurentiu Tudor <laurentiu.tudor@nxp.com>,
         "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [net-next PATCH v1 7/7] net/fsl: Use _ADR ACPI object to
- register PHYs
-Message-ID: <20200930162731.GP3996795@lunn.ch>
+Subject: Re: [net-next PATCH v1 3/7] net: phy: Introduce fwnode_get_phy_id()
+Message-ID: <20200930163440.GR3996795@lunn.ch>
 References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
- <20200930160430.7908-8-calvin.johnson@oss.nxp.com>
+ <20200930160430.7908-4-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200930160430.7908-8-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200930160430.7908-4-calvin.johnson@oss.nxp.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Calvin
-
->  	priv->has_a011043 = device_property_read_bool(&pdev->dev,
->  						      "fsl,erratum-a011043");
-> -
-> -	ret = of_mdiobus_register(bus, np);
-> -	if (ret) {
-> -		dev_err(&pdev->dev, "cannot register MDIO bus\n");
-> +	if (is_of_node(pdev->dev.fwnode)) {
-> +		ret = of_mdiobus_register(bus, np);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "cannot register MDIO bus\n");
-> +			goto err_registration;
-> +		}
-> +	} else if (is_acpi_node(pdev->dev.fwnode)) {
-> +		priv->is_little_endian = true;
-> +		/* Mask out all PHYs from auto probing. */
-> +		bus->phy_mask = ~0;
-> +		ret = mdiobus_register(bus);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "mdiobus register err(%d)\n", ret);
-> +			return ret;
-> +		}
+> +/* Extract the phy ID from the compatible string of the form
+> + * ethernet-phy-idAAAA.BBBB.
+> + */
+> +int fwnode_get_phy_id(struct fwnode_handle *fwnode, u32 *phy_id)
+> +{
+> +	unsigned int upper, lower;
+> +	const char *cp;
+> +	int ret;
 > +
-> +		fwnode = pdev->dev.fwnode;
-
-> +	/* Loop over the child nodes and register a phy_device for each PHY */
-> +		fwnode_for_each_child_node(fwnode, child) {
-> +			status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(child),
-> +						       "_ADR", NULL, &addr);
-> +			if (ACPI_FAILURE(status)) {
-> +				pr_debug("_ADR returned %d\n", status);
-> +				continue;
-> +			}
+> +	ret = fwnode_property_read_string(fwnode, "compatible", &cp);
+> +	if (ret)
+> +		return ret;
 > +
-> +			if (addr < 0 || addr >= PHY_MAX_ADDR)
-> +				continue;
-> +
-> +			ret = fwnode_mdiobus_register_phy(bus, child, addr);
-> +			if (ret == -ENODEV)
-> +				dev_err(&bus->dev,
-> +					"MDIO device at address %lld is missing.\n",
-> +					addr);
-> +		}
+> +	if (sscanf(cp, "ethernet-phy-id%4x.%4x", &upper, &lower) == 2) {
+> +		*phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
+> +		return 0;
+> +	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(fwnode_get_phy_id);
 
 Hi Calvin
 
-This looping over the properties should be in the core, in the same
-way of_mdiobus_register() loops over the OF properties in the core.
-We don't want MDIO drivers doing this in their own way, with their own
-bugs.
+Do you really need this? Do you have a board with a broken PHY ID?
+
+>  /**
+>   * get_phy_device - reads the specified PHY device and returns its @phy_device
+>   *		    struct
+> @@ -2866,7 +2888,15 @@ EXPORT_SYMBOL_GPL(device_phy_find_device);
+>   */
+>  struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode)
+>  {
+> -	return fwnode_find_reference(fwnode, "phy-handle", 0);
+> +	struct fwnode_handle *phy_node;
+> +
+> +	phy_node = fwnode_find_reference(fwnode, "phy-handle", 0);
+> +	if (is_acpi_node(fwnode) || !IS_ERR(phy_node))
+> +		return phy_node;
+> +	phy_node = fwnode_find_reference(fwnode, "phy", 0);
+> +	if (IS_ERR(phy_node))
+> +		phy_node = fwnode_find_reference(fwnode, "phy-device", 0);
+> +	return phy_node;
+
+Why do you have three different ways to reference a PHY?
 
     Andrew
