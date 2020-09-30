@@ -2,97 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9174227D97B
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Sep 2020 23:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D2027E2E2
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 09:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728820AbgI2VBW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Sep 2020 17:01:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47303 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728729AbgI2VBW (ORCPT
+        id S1725877AbgI3HsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Sep 2020 03:48:23 -0400
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:53677 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725440AbgI3HsX (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Sep 2020 17:01:22 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601413281;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OM1lPFLRLnTyz/L53c/yNhrqWz31jPAtm/Ix7oSVMYE=;
-        b=LR+cPDfA/FM4zRVX7RfVrMeiKFlLtIH+wUncZrTOZYgF3h41MU/dkdme60+9nlttHHb/pv
-        VG6v2HoDmjdMskczNvqq+FNWrOEMnvKKqMpTpMg2ZXAg1svwjLMHcl+yraeSX+h5JxxyuD
-        i0+YO/aJhKG7Wuun0OvpIUkFMwFYlRA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-151-Rgi3LXT-NPGWy9QVxiXX6g-1; Tue, 29 Sep 2020 17:01:17 -0400
-X-MC-Unique: Rgi3LXT-NPGWy9QVxiXX6g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E1966801AE4;
-        Tue, 29 Sep 2020 21:01:15 +0000 (UTC)
-Received: from ovpn-66-32.rdu2.redhat.com (ovpn-66-32.rdu2.redhat.com [10.10.66.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CCBEA55796;
-        Tue, 29 Sep 2020 21:01:14 +0000 (UTC)
-Message-ID: <ea97f1c4c03bd5d227f2aeed18163bf11490812c.camel@redhat.com>
-Subject: Re: [PATCH] ACPICA: Fix a soft-lockup on large systems
-From:   Qian Cai <cai@redhat.com>
-To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-Cc:     Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Date:   Tue, 29 Sep 2020 17:01:14 -0400
-In-Reply-To: <MWHPR11MB1599F021CB3EBADF44562D5CF0320@MWHPR11MB1599.namprd11.prod.outlook.com>
-References: <20200929183444.25079-1-cai@redhat.com>
-         <MWHPR11MB1599F021CB3EBADF44562D5CF0320@MWHPR11MB1599.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+        Wed, 30 Sep 2020 03:48:23 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0UAYdEKG_1601452096;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0UAYdEKG_1601452096)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 30 Sep 2020 15:48:16 +0800
+Date:   Wed, 30 Sep 2020 15:48:16 +0800
+From:   Wei Yang <richard.weiyang@linux.alibaba.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Wei Yang <richard.weiyang@linux.alibaba.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@kernel.org>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 3/5] mm/page_alloc: always move pages to the tail of
+ the freelist in unset_migratetype_isolate()
+Message-ID: <20200930074816.GA40431@L-31X9LVDL-1304.local>
+Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
+References: <20200928182110.7050-1-david@redhat.com>
+ <20200928182110.7050-4-david@redhat.com>
+ <20200929091803.GB36904@L-31X9LVDL-1304.local>
+ <21d9ea16-863b-19fe-e5b7-841bb4228c6d@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21d9ea16-863b-19fe-e5b7-841bb4228c6d@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2020-09-29 at 19:55 +0000, Kaneda, Erik wrote:
-> This is acpica code and cond_resched is specific to Linux so we cannot accept
-> this in its current form.
+On Tue, Sep 29, 2020 at 12:12:14PM +0200, David Hildenbrand wrote:
+>On 29.09.20 11:18, Wei Yang wrote:
+>> On Mon, Sep 28, 2020 at 08:21:08PM +0200, David Hildenbrand wrote:
+>>> Page isolation doesn't actually touch the pages, it simply isolates
+>>> pageblocks and moves all free pages to the MIGRATE_ISOLATE freelist.
+>>>
+>>> We already place pages to the tail of the freelists when undoing
+>>> isolation via __putback_isolated_page(), let's do it in any case
+>>> (e.g., if order <= pageblock_order) and document the behavior.
+>>>
+>>> Add a "to_tail" parameter to move_freepages_block() but introduce a
+>>> a new move_to_free_list_tail() - similar to add_to_free_list_tail().
+>
+>s/a a/a/
+>
+>>>
+>>> This change results in all pages getting onlined via online_pages() to
+>>> be placed to the tail of the freelist.
+>>>
+>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+>>> Cc: Mel Gorman <mgorman@techsingularity.net>
+>>> Cc: Michal Hocko <mhocko@kernel.org>
+>>> Cc: Dave Hansen <dave.hansen@intel.com>
+>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>> Cc: Mike Rapoport <rppt@kernel.org>
+>>> Cc: Scott Cheloha <cheloha@linux.ibm.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>> include/linux/page-isolation.h |  4 ++--
+>>> mm/page_alloc.c                | 35 +++++++++++++++++++++++-----------
+>>> mm/page_isolation.c            | 12 +++++++++---
+>>> 3 files changed, 35 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
+>>> index 572458016331..3eca9b3c5305 100644
+>>> --- a/include/linux/page-isolation.h
+>>> +++ b/include/linux/page-isolation.h
+>>> @@ -36,8 +36,8 @@ static inline bool is_migrate_isolate(int migratetype)
+>>> struct page *has_unmovable_pages(struct zone *zone, struct page *page,
+>>> 				 int migratetype, int flags);
+>>> void set_pageblock_migratetype(struct page *page, int migratetype);
+>>> -int move_freepages_block(struct zone *zone, struct page *page,
+>>> -				int migratetype, int *num_movable);
+>>> +int move_freepages_block(struct zone *zone, struct page *page, int migratetype,
+>>> +			 bool to_tail, int *num_movable);
+>>>
+>>> /*
+>>>  * Changes migrate type in [start_pfn, end_pfn) to be MIGRATE_ISOLATE.
+>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>> index 9e3ed4a6f69a..d5a5f528b8ca 100644
+>>> --- a/mm/page_alloc.c
+>>> +++ b/mm/page_alloc.c
+>>> @@ -905,6 +905,15 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+>>> 	list_move(&page->lru, &area->free_list[migratetype]);
+>>> }
+>>>
+>>> +/* Used for pages which are on another list */
+>>> +static inline void move_to_free_list_tail(struct page *page, struct zone *zone,
+>>> +					  unsigned int order, int migratetype)
+>>> +{
+>>> +	struct free_area *area = &zone->free_area[order];
+>>> +
+>>> +	list_move_tail(&page->lru, &area->free_list[migratetype]);
+>>> +}
+>>> +
+>> 
+>> Would it be better to pass the *to_tail* to move_to_free_list(), so we won't
+>> have a new function?
+>
+>Hi,
+>
+>thanks for the review!
+>
+>See discussion in RFC + cover letter:
+>
+>"Add a "to_tail" parameter to move_freepages_block() but introduce a new
+>move_to_free_list_tail() - similar to add_to_free_list_tail()."
 
-Do you have any suggestion?
+Hmm, sounds reasonable.
 
-> 
-> The execution time of acpi_ns_walk_namespace is relative to the size of the
-> acpi namespace. This is determined by the size of firmware..
-> If the actual culprit was the traversing the ACPI namespace, you should have a
-> soft lock up on acpi_load_tables which is the function that populates the ACPI
-> namespace. Your stack trace shows that Linux was able to get past this point.
-> Therefore, I'm led to think that the actual problem is the combination of
-> walking the namespace + the handler invoked.
-> 
-> What happens if you add the cond_resched in acpi_bus_check_add?
+Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
 
-This also works fine.
-
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1881,6 +1881,7 @@ static acpi_status acpi_bus_check_add(acpi_handle handle,
-u32 lvl_not_used,
-                return AE_OK;
-        }
- 
-+       cond_resched();
-        acpi_add_single_object(&device, handle, type, sta);
-        if (!device)
-                return AE_CTRL_DEPTH;
-
-> 
-> Out of curiosity, does calling cond_resched guarantee that the acpi_init call
-> will finish before other kernel components that depend on ACPI are
-> initialized?
-
-I don't really see how it could break the dependencies. cond_resched() is just
-to avoid stalling the CPU.
-
+-- 
+Wei Yang
+Help you, Help me
