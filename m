@@ -2,86 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BEEA27E82D
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 14:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D341327E8C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 14:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729568AbgI3MEs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Sep 2020 08:04:48 -0400
-Received: from smtp.asem.it ([151.1.184.197]:63339 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728270AbgI3MEs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Sep 2020 08:04:48 -0400
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000514340.MSG 
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Sep 2020 14:04:45 +0200S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 30
- Sep 2020 14:04:43 +0200
-Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
- mapi id 15.01.1979.003; Wed, 30 Sep 2020 14:04:43 +0200
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: How to use an ACPI declared GPIO in a userspace ...
-Thread-Topic: How to use an ACPI declared GPIO in a userspace ...
-Thread-Index: AdaWdniTedAZ6+9wQdyYYgE5sQ27yP//4UoAgAAGTYD//91o0IAAJ14A//6Yg1A=
-Date:   Wed, 30 Sep 2020 12:04:43 +0000
-Message-ID: <22753b53cd7d4dfba4ef3610f71cc462@asem.it>
-References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it>
- <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
- <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
- <feb8567c830748c483c8c66dd4717003@asem.it>
- <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
-In-Reply-To: <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.17.208]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725776AbgI3MrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Sep 2020 08:47:07 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2932 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725771AbgI3MrH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Sep 2020 08:47:07 -0400
+Received: from lhreml724-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 8488828AD1ADABFA29E5;
+        Wed, 30 Sep 2020 13:47:04 +0100 (IST)
+Received: from J00310691.china.huawei.com (10.47.4.201) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Wed, 30 Sep 2020 13:47:03 +0100
+From:   John Garry <john.garry@huawei.com>
+To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <chenxiang66@hisilicon.com>, John Garry <john.garry@huawei.com>
+Subject: [PATCH] drivers/acpi: Make acpi_evaluate_dsm() prototype consistent
+Date:   Wed, 30 Sep 2020 13:43:50 +0100
+Message-ID: <20200930124350.1176-1-john.garry@huawei.com>
+X-Mailer: git-send-email 2.25.1.windows.1
 MIME-Version: 1.0
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A09020E.5F74745C.0040,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.47.4.201]
+X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgQW5keSwNCg0KPiA+ID4gPiA+IEkgd2FzIHdvbmRlcmluZyBpZiB0aGVyZSBpcyBhIGdlbmVy
-aWMgR1BJTyBkcml2ZXIgdGhhdCBJIGNhbiB1c2UNCj4gTWF5YmUgSSB3YXMgbm90IHNvIGNsZWFy
-LCBidXQgYXMgQmFydCBtZW50aW9uZWQgdGhlIGxlYXN0IHlvdSBjYW4gZG8NCj4gaXMgc2ltcGx5
-IGRlZmluZSBsaW5lIG5hbWUgdmlhICJncGlvLWxpbmUtbmFtZXMiIHByb3BlcnR5LiBUaGUgcHJv
-YmxlbQ0KPiBoZXJlIGlzIHdoZW4gYW5kIGhvdyB5b3Ugd291bGQgbGlrZSB0byBoYXZlIHRoZW0g
-aW5jb3Jwb3JhdGVkLg0KDQpJIGFscmVhZHkgdHJpZWQgYWRkaW5nIHRoZSAiZ3Bpby1saW5lLW5h
-bWVzIiBwcm9wZXJ0eSwgYnV0IHRoZSBwcm9ibGVtDQppcyB0aGUgc2FtZTogbm8gZHJpdmVyIGFz
-a3MgZm9yIHRoaXMgR1BJTywgYXMgc2hvd24gYnkgdGhlIGZvbGxvd2luZw0Ka2VybmVsIG1lc3Nh
-Z2VzOg0KDQpBQ1BJOiBIb3N0LWRpcmVjdGVkIER5bmFtaWMgQUNQSSBUYWJsZSBMb2FkOg0KQUNQ
-STogU1NEVCAweEZGRkY5OTQwMzRENDJBMDAgMDAwMEU4ICh2MDUgQVNFTXNwIEdQSU9fQlROIDAw
-MDAwMDAxIElOVEwgMjAyMDA3MTcpDQpBQ1BJOiBcX1NCXy5HUE8xLkJUTlM6IFBSUDAwMDEgcmVx
-dWlyZXMgJ2NvbXBhdGlibGUnIHByb3BlcnR5DQoNClNvIEknbGwgc3RhcnQgdG8gd3JpdGUgYSBz
-aW1wbGUgZGV2aWNlIGRyaXZlciB0byB1c2UgdGhpcyBHUElPLg0KSSdsbCBrZWVwIHlvdSBpbmZv
-cm1lZCENCiANCj4gV2hlbjogaWYgQUNQSSB0YWJsZXMgYXJlIGJlaW5nIHByb3ZpZGVkIGJ5IGZp
-cm13YXJlIHdoaWNoIHlvdSBtYXkgbm90DQo+IGFsdGVyLCB0aGVuIHlvdSBtdXN0IHVzZSBpbml0
-cmFtZnMgdHlwZSBvZiBzb2x1dGlvbiAobm8gY29uZmlnZnMsDQo+IGRvbid0IGtub3cgYWJvdXQg
-RUZJIHZhciB0aG91Z2gpLiBIb3c6IEluIHRoYXQgY2FzZSB5b3UgbWlnaHQgaGF2ZSBhDQo+IGNo
-YW5jZSB0byBpbmNvcnBvcmF0ZSBfRFNEKCkgbWV0aG9kIGludG8gKmV4aXN0aW5nKiBfQ1JTKCkg
-b25lLg0KPiBQb3NzaWJsZSBpbXBlZGltZW50czogaWYgQUNQSSB0YWJsZSBmcm9tIGZpcm13YXJl
-IGFscmVhZHkgaGFzIGEgX0RTRCgpDQo+IGRlZmluZWQgb3IgYWJvdmUgaXMgbm90IHdvcmtpbmcg
-Zm9yIHNvbWUgcmVhc29uLiBJbiBzdWNoIGEgY2FzZSB5b3UNCj4gbXVzdCB1cGdyYWRlIGVudGly
-ZSBEU0RUIHZpYSBpbml0cmFtZnMuDQo+IA0KPiA+ID4gPiBBZGRpbmcgQW5keSB3aG8ga25vd3Mg
-QUNQSSBHUElPIHdlbGwuDQo+ID4gPg0KPiA+ID4gVGhhbmtzLg0KPiA+ID4NCj4gPiA+ID4gSW4g
-Z2VuZXJhbCwgdGhlICJncGlvLWxpbmUtbmFtZXMiIHByb3BlcnR5IGlzIHVzZWQgZm9yIHRoYXQg
-YW5kIGl0J3MNCj4gPiA+ID4gc3VwcG9ydGVkIGJvdGggZm9yIGRldmljZSB0cmVlIGFzIHdlbGwg
-YXMgQUNQSSwgYWx0aG91Z2ggSSBoYXZlIG9ubHkNCj4gPiA+ID4gZXZlciB1c2VkIHRoZSBmb3Jt
-ZXIuDQo+ID4gPg0KPiA+ID4gUmlnaHQuIEFDUEkgc3VwcG9ydHMgcHJvcGVydGllcyB2aWEgX0RT
-RCgpIG1ldGhvZC4NCj4gDQo+IC0tDQo+IFdpdGggQmVzdCBSZWdhcmRzLA0KPiBBbmR5IFNoZXZj
-aGVua28NCg0KVGhhbmtzIEFuZHkgYW5kIEJhcnRvc3ogZm9yIHlvdXIgc3VwcG9ydCENCkJlc3Qg
-cmVnYXJkcywNCg0KRmxhdmlvDQo=
+When compiling a driver which includes both include/linux/acpi.h and
+include/acpi/acpi_bus.h for when CONFIG_ACPI=n for i386, I get this:
+
+/include/acpi/acpi_bus.h:53:20: error: conflicting types for ‘acpi_evaluate_dsm’
+ union acpi_object *acpi_evaluate_dsm(acpi_handle handle, const guid_t *guid,
+                    ^~~~~~~~~~~~~~~~~
+In file included from drivers/scsi/hisi_sas/hisi_sas.h:10:0,
+                 from drivers/scsi/hisi_sas/hisi_sas_main.c:7:
+./include/linux/acpi.h:866:34: note: previous definition of ‘acpi_evaluate_dsm’ was here
+ static inline union acpi_object *acpi_evaluate_dsm(acpi_handle handle,
+                                  ^~~~~~~~~~~~~~~~~
+Fix by making prototype in include/linux/acpi.h consistent.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 3eb4cb88e8a6..72a696ceba8d 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -866,7 +866,7 @@ static inline bool acpi_driver_match_device(struct device *dev,
+ 
+ static inline union acpi_object *acpi_evaluate_dsm(acpi_handle handle,
+ 						   const guid_t *guid,
+-						   int rev, int func,
++						   u64 rev, u64 func,
+ 						   union acpi_object *argv4)
+ {
+ 	return NULL;
+-- 
+2.26.2
+
+
