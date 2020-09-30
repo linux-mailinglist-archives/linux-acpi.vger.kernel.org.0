@@ -2,140 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D2027E2E2
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 09:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34DCF27E405
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 10:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbgI3HsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Sep 2020 03:48:23 -0400
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:53677 "EHLO
-        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725440AbgI3HsX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Sep 2020 03:48:23 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0UAYdEKG_1601452096;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0UAYdEKG_1601452096)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 30 Sep 2020 15:48:16 +0800
-Date:   Wed, 30 Sep 2020 15:48:16 +0800
-From:   Wei Yang <richard.weiyang@linux.alibaba.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Wei Yang <richard.weiyang@linux.alibaba.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v1 3/5] mm/page_alloc: always move pages to the tail of
- the freelist in unset_migratetype_isolate()
-Message-ID: <20200930074816.GA40431@L-31X9LVDL-1304.local>
-Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
-References: <20200928182110.7050-1-david@redhat.com>
- <20200928182110.7050-4-david@redhat.com>
- <20200929091803.GB36904@L-31X9LVDL-1304.local>
- <21d9ea16-863b-19fe-e5b7-841bb4228c6d@redhat.com>
+        id S1727746AbgI3IoZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 30 Sep 2020 04:44:25 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2929 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725776AbgI3IoZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Sep 2020 04:44:25 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id B202F8CDE30D2099234E;
+        Wed, 30 Sep 2020 09:44:23 +0100 (IST)
+Received: from localhost (10.52.127.162) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Wed, 30 Sep
+ 2020 09:44:23 +0100
+Date:   Wed, 30 Sep 2020 09:42:41 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Randy Dunlap <rdunlap@infradead.org>
+CC:     Nathan Chancellor <natechancellor@gmail.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI / NUMA: Add stub function for pxm_to_node
+Message-ID: <20200930094241.00002949@Huawei.com>
+In-Reply-To: <c313dcd3-7fab-00eb-15f2-65a3a51f7bd5@infradead.org>
+References: <20200928194554.3423466-1-natechancellor@gmail.com>
+        <c313dcd3-7fab-00eb-15f2-65a3a51f7bd5@infradead.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <21d9ea16-863b-19fe-e5b7-841bb4228c6d@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.52.127.162]
+X-ClientProxiedBy: lhreml707-chm.china.huawei.com (10.201.108.56) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 12:12:14PM +0200, David Hildenbrand wrote:
->On 29.09.20 11:18, Wei Yang wrote:
->> On Mon, Sep 28, 2020 at 08:21:08PM +0200, David Hildenbrand wrote:
->>> Page isolation doesn't actually touch the pages, it simply isolates
->>> pageblocks and moves all free pages to the MIGRATE_ISOLATE freelist.
->>>
->>> We already place pages to the tail of the freelists when undoing
->>> isolation via __putback_isolated_page(), let's do it in any case
->>> (e.g., if order <= pageblock_order) and document the behavior.
->>>
->>> Add a "to_tail" parameter to move_freepages_block() but introduce a
->>> a new move_to_free_list_tail() - similar to add_to_free_list_tail().
->
->s/a a/a/
->
->>>
->>> This change results in all pages getting onlined via online_pages() to
->>> be placed to the tail of the freelist.
->>>
->>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
->>> Cc: Mel Gorman <mgorman@techsingularity.net>
->>> Cc: Michal Hocko <mhocko@kernel.org>
->>> Cc: Dave Hansen <dave.hansen@intel.com>
->>> Cc: Vlastimil Babka <vbabka@suse.cz>
->>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->>> Cc: Oscar Salvador <osalvador@suse.de>
->>> Cc: Mike Rapoport <rppt@kernel.org>
->>> Cc: Scott Cheloha <cheloha@linux.ibm.com>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>> include/linux/page-isolation.h |  4 ++--
->>> mm/page_alloc.c                | 35 +++++++++++++++++++++++-----------
->>> mm/page_isolation.c            | 12 +++++++++---
->>> 3 files changed, 35 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
->>> index 572458016331..3eca9b3c5305 100644
->>> --- a/include/linux/page-isolation.h
->>> +++ b/include/linux/page-isolation.h
->>> @@ -36,8 +36,8 @@ static inline bool is_migrate_isolate(int migratetype)
->>> struct page *has_unmovable_pages(struct zone *zone, struct page *page,
->>> 				 int migratetype, int flags);
->>> void set_pageblock_migratetype(struct page *page, int migratetype);
->>> -int move_freepages_block(struct zone *zone, struct page *page,
->>> -				int migratetype, int *num_movable);
->>> +int move_freepages_block(struct zone *zone, struct page *page, int migratetype,
->>> +			 bool to_tail, int *num_movable);
->>>
->>> /*
->>>  * Changes migrate type in [start_pfn, end_pfn) to be MIGRATE_ISOLATE.
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index 9e3ed4a6f69a..d5a5f528b8ca 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -905,6 +905,15 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
->>> 	list_move(&page->lru, &area->free_list[migratetype]);
->>> }
->>>
->>> +/* Used for pages which are on another list */
->>> +static inline void move_to_free_list_tail(struct page *page, struct zone *zone,
->>> +					  unsigned int order, int migratetype)
->>> +{
->>> +	struct free_area *area = &zone->free_area[order];
->>> +
->>> +	list_move_tail(&page->lru, &area->free_list[migratetype]);
->>> +}
->>> +
->> 
->> Would it be better to pass the *to_tail* to move_to_free_list(), so we won't
->> have a new function?
->
->Hi,
->
->thanks for the review!
->
->See discussion in RFC + cover letter:
->
->"Add a "to_tail" parameter to move_freepages_block() but introduce a new
->move_to_free_list_tail() - similar to add_to_free_list_tail()."
+On Tue, 29 Sep 2020 13:13:24 -0700
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-Hmm, sounds reasonable.
+> On 9/28/20 12:45 PM, Nathan Chancellor wrote:
+> > After commit 01feba590cd6 ("ACPI: Do not create new NUMA domains from
+> > ACPI static tables that are not SRAT"):
+> > 
+> > $ scripts/config --file arch/x86/configs/x86_64_defconfig -d NUMA -e ACPI_NFIT
+> > 
+> > $ make -skj"$(nproc)" distclean defconfig drivers/acpi/nfit/
+> > drivers/acpi/nfit/core.c: In function ‘acpi_nfit_register_region’:
+> > drivers/acpi/nfit/core.c:3010:27: error: implicit declaration of
+> > function ‘pxm_to_node’; did you mean ‘xa_to_node’?
+> > [-Werror=implicit-function-declaration]
+> >  3010 |   ndr_desc->target_node = pxm_to_node(spa->proximity_domain);
+> >       |                           ^~~~~~~~~~~
+> >       |                           xa_to_node
+> > cc1: some warnings being treated as errors
+> > ...
+> > 
+> > Add a stub function like acpi_map_pxm_to_node had so that the build
+> > continues to work.
+> > 
+> > Fixes: 01feba590cd6 ("ACPI: Do not create new NUMA domains from ACPI static tables that are not SRAT")
+> > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > ---
+> > 
+> > I am not sure if this is the right place or value for this. It looks
+> > like there is going to be another stub function added here, which is
+> > going through -mm:
+> > 
+> > https://lkml.kernel.org/r/159643094925.4062302.14979872973043772305.stgit@dwillia2-desk3.amr.corp.intel.com
+> > 
+> >  include/acpi/acpi_numa.h | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
+> > index fdebcfc6c8df..09eb3bc20ff5 100644
+> > --- a/include/acpi/acpi_numa.h
+> > +++ b/include/acpi/acpi_numa.h
+> > @@ -22,5 +22,10 @@ extern int acpi_numa __initdata;
+> >  extern void bad_srat(void);
+> >  extern int srat_disabled(void);
+> >  
+> > +#else				/* CONFIG_ACPI_NUMA */
+> > +static inline int pxm_to_node(int pxm)
+> > +{
+> > +	return 0;
+> > +}
+> >  #endif				/* CONFIG_ACPI_NUMA */
+> >  #endif				/* __ACP_NUMA_H */
+> > 
+> > base-commit: eb6335b68ce3fc85a93c4c6cd3bb6bc5ac490efe  
+> 
+> OK, that works/builds. It doesn't quite apply cleanly to linux-next-20200929
+> but that's a minor detail and easy to get around.
+> 
+> Thanks.
+> 
+> Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+>
 
-Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
+Looks correct to me.  Thanks!
 
--- 
-Wei Yang
-Help you, Help me
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+
+
