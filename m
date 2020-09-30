@@ -2,57 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF3CF27F436
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 23:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1984227F4C1
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Oct 2020 00:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730178AbgI3V3U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Sep 2020 17:29:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49294 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725814AbgI3V3U (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Sep 2020 17:29:20 -0400
-Received: from localhost.localdomain (unknown [31.124.44.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 308552072E;
-        Wed, 30 Sep 2020 21:29:17 +0000 (UTC)
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Will Deacon <will@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
-        Jonathan.Cameron@huawei.com, linux-acpi@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH] arm64: permit ACPI core to map kernel memory used for table overrides
-Date:   Wed, 30 Sep 2020 22:29:16 +0100
-Message-Id: <160150134422.10710.17141741550968278682.b4-ty@arm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200929132522.18067-1-ardb@kernel.org>
-References: <20200929132522.18067-1-ardb@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1730941AbgI3WDv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Sep 2020 18:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730090AbgI3WDv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Sep 2020 18:03:51 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0643C061755;
+        Wed, 30 Sep 2020 15:03:51 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6689213C732A9;
+        Wed, 30 Sep 2020 14:47:02 -0700 (PDT)
+Date:   Wed, 30 Sep 2020 15:03:49 -0700 (PDT)
+Message-Id: <20200930.150349.1490001851325231827.davem@davemloft.net>
+To:     calvin.johnson@oss.nxp.com
+Cc:     grant.likely@arm.com, rafael@kernel.org, jeremy.linton@arm.com,
+        andrew@lunn.ch, andy.shevchenko@gmail.com, f.fainelli@gmail.com,
+        linux@armlinux.org.uk, cristian.sovaiala@nxp.com,
+        florinlaurentiu.chiculita@nxp.com, ioana.ciornei@nxp.com,
+        madalin.bucur@oss.nxp.com, heikki.krogerus@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux.cj@gmail.com,
+        netdev@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, diana.craciun@nxp.com,
+        laurentiu.tudor@nxp.com, hkallweit1@gmail.com, kuba@kernel.org
+Subject: Re: [net-next PATCH v1 2/7] net: phy: Introduce phy related fwnode
+ functions
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200930160430.7908-3-calvin.johnson@oss.nxp.com>
+References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
+        <20200930160430.7908-3-calvin.johnson@oss.nxp.com>
+X-Mailer: Mew version 6.8 on Emacs 27.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Wed, 30 Sep 2020 14:47:03 -0700 (PDT)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 29 Sep 2020 15:25:22 +0200, Ard Biesheuvel wrote:
-> Jonathan reports that the strict policy for memory mapped by the
-> ACPI core breaks the use case of passing ACPI table overrides via
-> initramfs. This is due to the fact that the memory type used for
-> loading the initramfs in memory is not recognized as a memory type
-> that is typically used by firmware to pass firmware tables.
-> 
-> Since the purpose of the strict policy is to ensure that no AML or
-> other ACPI code can manipulate any memory that is used by the kernel
-> to keep its internal state or the state of user tasks, we can relax
-> the permission check, and allow mappings of memory that is reserved
-> and marked as NOMAP via memblock, and therefore not covered by the
-> linear mapping to begin with.
+From: Calvin Johnson <calvin.johnson@oss.nxp.com>
+Date: Wed, 30 Sep 2020 21:34:25 +0530
 
-Applied to arm64 (for-next/fixes), thanks!
+> +struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode)
+> +{
+> +	struct device *d;
+> +	struct mdio_device *mdiodev;
 
-[1/1] arm64: permit ACPI core to map kernel memory used for table overrides
-      https://git.kernel.org/arm64/c/a509a66a9d0d
-
--- 
-Catalin
-
+Please use reverse christmas tree ordering for local variables.
