@@ -2,109 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3774127EDCB
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 17:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 802F227EDE1
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Sep 2020 17:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbgI3Ptr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 30 Sep 2020 11:49:47 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:37953 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgI3Ptr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Sep 2020 11:49:47 -0400
-Received: by mail-ot1-f67.google.com with SMTP id y5so2283503otg.5;
-        Wed, 30 Sep 2020 08:49:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=mTrSgX4Tixqu3kTctGZ5BfKCOM+BJ2wQmL4YVycvE/I=;
-        b=eaLDnJOWUIodjpL+nsZUE1H6hR732WP6J6mehaPNbMKBMgGGzkzK2bsc2mXKdEs46e
-         Zbb5wo4ncf78xGLrsM08kFx+DsRiHuXEqIjdoeFYUCcuvPSNXCNIGIWfckSQDwSrpAwo
-         wb8UNTaQtPo5eadTwhE/erkMBKOOXkRUmzFIVVG0iwkqO6KrdRKKA60gjd7SXVTPEvOp
-         FYQ2abPPCUyxC5GX8rGIzk9WEf7EKMT2fk/LYigG37JKTqARY5R/k7hKWMr+vxr6EiST
-         I3tbSweEsU1VVShFbgM1uGPF0mblfna0Kzemcy/iLXTnTtxL/QYnW/wbKqQG/17N+kBF
-         cWIw==
-X-Gm-Message-State: AOAM532HgvxswYdcwvtb5MMTucgwKX+MP1cWdUYKk4YLWT2Li7ZUSTdd
-        UrkdrZW/Y/EROhadPx8k9thzxWeRbJ9Erihb7Vo=
-X-Google-Smtp-Source: ABdhPJz3hWxJC7Wv+mdN7W+4UBYuXRGDar9sH2m/ddSlwtkNcPtwBYe6OJbDp6W+rpGzPUTBMAx+pa5fdCsf+KDNuSQ=
-X-Received: by 2002:a9d:718a:: with SMTP id o10mr1956739otj.262.1601480984876;
- Wed, 30 Sep 2020 08:49:44 -0700 (PDT)
+        id S1728819AbgI3Pv1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Sep 2020 11:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725872AbgI3Pv1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Sep 2020 11:51:27 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E229AC061755;
+        Wed, 30 Sep 2020 08:51:26 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f092a00869c7b979af15d7f.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:2a00:869c:7b97:9af1:5d7f])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2D0A51EC0445;
+        Wed, 30 Sep 2020 17:51:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1601481085;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=8IJoGZzJObE8St80wY9DzpuhEry0/MVi9UTMplvJAkw=;
+        b=kqAUx6o7xOwJppyJb436b4BKze4HaXlnbrBvfP+p8MkQuBxpAJgK0tLtFv4ID9uzNGq/rn
+        tFKrxS+5Iolj5OQ4DpC/m8nov+97uyE1wm5am27Ys0D8CBBf0WaRfFtDC5kmhldJlVYq08
+        8TvGSl+NZXGtXjRwSx+u33PGNixHZrU=
+Date:   Wed, 30 Sep 2020 17:51:18 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        rafael@kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        linuxarm@huawei.com, Dan Williams <dan.j.williams@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Sean V Kelley <sean.v.kelley@linux.intel.com>,
+        linux-api@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>
+Subject: Re: [PATCH v12 2/6] x86: Support Generic Initiator only proximity
+ domains
+Message-ID: <20200930155118.GG6810@zn.tnic>
+References: <20200930140547.840251-1-Jonathan.Cameron@huawei.com>
+ <20200930140547.840251-3-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-References: <20200928194554.3423466-1-natechancellor@gmail.com> <a39af625-6e2e-3cb2-ece5-ea2b2dbb7c21@huawei.com>
-In-Reply-To: <a39af625-6e2e-3cb2-ece5-ea2b2dbb7c21@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 30 Sep 2020 17:49:33 +0200
-Message-ID: <CAJZ5v0hno=F9yuJHRQNix7eiLzP=WtY1rB3xxmmBzLYxW62-tg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / NUMA: Add stub function for pxm_to_node
-To:     Hanjun Guo <guohanjun@huawei.com>,
-        Nathan Chancellor <natechancellor@gmail.com>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200930140547.840251-3-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 11:07 AM Hanjun Guo <guohanjun@huawei.com> wrote:
->
-> On 2020/9/29 3:45, Nathan Chancellor wrote:
-> > After commit 01feba590cd6 ("ACPI: Do not create new NUMA domains from
-> > ACPI static tables that are not SRAT"):
-> >
-> > $ scripts/config --file arch/x86/configs/x86_64_defconfig -d NUMA -e ACPI_NFIT
-> >
-> > $ make -skj"$(nproc)" distclean defconfig drivers/acpi/nfit/
-> > drivers/acpi/nfit/core.c: In function ‘acpi_nfit_register_region’:
-> > drivers/acpi/nfit/core.c:3010:27: error: implicit declaration of
-> > function ‘pxm_to_node’; did you mean ‘xa_to_node’?
-> > [-Werror=implicit-function-declaration]
-> >   3010 |   ndr_desc->target_node = pxm_to_node(spa->proximity_domain);
-> >        |                           ^~~~~~~~~~~
-> >        |                           xa_to_node
-> > cc1: some warnings being treated as errors
-> > ...
-> >
-> > Add a stub function like acpi_map_pxm_to_node had so that the build
-> > continues to work.
-> >
-> > Fixes: 01feba590cd6 ("ACPI: Do not create new NUMA domains from ACPI static tables that are not SRAT")
-> > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> > ---
-> >
-> > I am not sure if this is the right place or value for this. It looks
-> > like there is going to be another stub function added here, which is
-> > going through -mm:
-> >
-> > https://lkml.kernel.org/r/159643094925.4062302.14979872973043772305.stgit@dwillia2-desk3.amr.corp.intel.com
-> >
-> >   include/acpi/acpi_numa.h | 5 +++++
-> >   1 file changed, 5 insertions(+)
-> >
-> > diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
-> > index fdebcfc6c8df..09eb3bc20ff5 100644
-> > --- a/include/acpi/acpi_numa.h
-> > +++ b/include/acpi/acpi_numa.h
-> > @@ -22,5 +22,10 @@ extern int acpi_numa __initdata;
-> >   extern void bad_srat(void);
-> >   extern int srat_disabled(void);
-> >
-> > +#else                                /* CONFIG_ACPI_NUMA */
-> > +static inline int pxm_to_node(int pxm)
-> > +{
-> > +     return 0;
-> > +}
-> >   #endif                              /* CONFIG_ACPI_NUMA */
-> >   #endif                              /* __ACP_NUMA_H */
->
-> Looks good to me,
->
-> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+On Wed, Sep 30, 2020 at 10:05:43PM +0800, Jonathan Cameron wrote:
+> In common with memoryless domains only register GI domains
+> if the proximity node is not online. If a domain is already
+> a memory containing domain, or a memoryless domain there is
+> nothing to do just because it also contains a Generic Initiator.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v12: Update comment to adopt passive voice.
+> 
+>  arch/x86/include/asm/numa.h |  2 ++
+>  arch/x86/kernel/setup.c     |  1 +
+>  arch/x86/mm/numa.c          | 21 +++++++++++++++++++++
+>  3 files changed, 24 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+> index bbfde3d2662f..f631467272a3 100644
+> --- a/arch/x86/include/asm/numa.h
+> +++ b/arch/x86/include/asm/numa.h
+> @@ -62,12 +62,14 @@ extern void numa_clear_node(int cpu);
+>  extern void __init init_cpu_to_node(void);
+>  extern void numa_add_cpu(int cpu);
+>  extern void numa_remove_cpu(int cpu);
+> +extern void init_gi_nodes(void);
+>  #else	/* CONFIG_NUMA */
+>  static inline void numa_set_node(int cpu, int node)	{ }
+>  static inline void numa_clear_node(int cpu)		{ }
+>  static inline void init_cpu_to_node(void)		{ }
+>  static inline void numa_add_cpu(int cpu)		{ }
+>  static inline void numa_remove_cpu(int cpu)		{ }
+> +static inline void init_gi_nodes(void)			{ }
+>  #endif	/* CONFIG_NUMA */
+>  
+>  #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 3511736fbc74..9062c146f03a 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -1218,6 +1218,7 @@ void __init setup_arch(char **cmdline_p)
+>  	prefill_possible_map();
+>  
+>  	init_cpu_to_node();
+> +	init_gi_nodes();
+>  
+>  	io_apic_init_mappings();
+>  
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index aa76ec2d359b..22d3e5ade3ae 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -747,6 +747,27 @@ static void __init init_memory_less_node(int nid)
+>  	 */
+>  }
+>  
+> +/*
+> + * A node may exist which has one or more Generic Initiators but no CPUs and no
+> + * memory.
+> + *
+> + * This function must be called after init_cpu_to_node(), to ensure that any
+> + * memoryless CPU nodes have already been brought online, and before the
+> + * node_data[nid] is needed for zone list setup in build_all_zonelists().
+> + *
+> + * When this function is called, any nodes containing either memory and/or CPUs
+> + * will already be online and there is no need to do anything extra, even if
+> + * they also contain one or more Generic Initiators.
+> + */
+> +void __init init_gi_nodes(void)
+> +{
+> +	int nid;
+> +
+> +	for_each_node_state(nid, N_GENERIC_INITIATOR)
+> +		if (!node_online(nid))
+> +			init_memory_less_node(nid);
+> +}
+> +
+>  /*
+>   * Setup early cpu_to_node.
+>   *
+> -- 
 
-Patch applied, thanks!
+Looks perfect, thanks! :-)
+
+Acked-by: Borislav Petkov <bp@suse.de>
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
