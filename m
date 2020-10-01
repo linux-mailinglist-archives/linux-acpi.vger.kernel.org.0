@@ -2,151 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B89828005D
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Oct 2020 15:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C3F2802F0
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Oct 2020 17:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732147AbgJANo0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Oct 2020 09:44:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:34624 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732018AbgJANoY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 1 Oct 2020 09:44:24 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FE5A30E;
-        Thu,  1 Oct 2020 06:44:23 -0700 (PDT)
-Received: from [172.16.1.113] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ADAF13F6CF;
-        Thu,  1 Oct 2020 06:44:21 -0700 (PDT)
-Subject: Re: [PATCH v3] ACPI / APEI: do memory failure on the physical address
- reported by ARM processor error section
-To:     Xiaofei Tan <tanxiaofei@huawei.com>
-Cc:     rafael@kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, akpm@linux-foundation.org,
-        jroedel@suse.de, peterz@infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxarm@huawei.com
-References: <1601258560-6658-1-git-send-email-tanxiaofei@huawei.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <06ebead0-ffa5-5003-f0a7-0b38fcb0e702@arm.com>
-Date:   Thu, 1 Oct 2020 14:44:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1732287AbgJAPgf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Oct 2020 11:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732417AbgJAPgZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Oct 2020 11:36:25 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC08C0613D0;
+        Thu,  1 Oct 2020 08:36:25 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id d6so4847171pfn.9;
+        Thu, 01 Oct 2020 08:36:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Cg3wbDR04xmJHB+TGPRHBG7JiU528nISGUy/wwYR0YA=;
+        b=T2sIPs+pWd7e9fuAwLNDnWSPDZ6NS1gAGLWZ13W5+J9jcgYuD8w0XVIL+tqDm3r6fi
+         HXytKiICTlyDUrvgFtgXREM/fAUvMkkcKMLxOrZHhD+4sBL74LEuw1k8K3gaVxBsjC1z
+         LFLV+gbwHfU3OdOw8rW/Bvyt0zIyM0NfXMiqLy8aIJ4ZELGfVLOZk1ht9AQLKwxwugKi
+         P927bAHPcG9/f9McY+3gNLck261EN1PBOyhuGPlngi2Cimp1vocgT+300xLteG3t37vu
+         pKytFTgsijEdAm+6usLDTbV9k2UOrPkqY699buhiNKkTQBGpnWhBfylkEOj+PEOpLpaA
+         ABKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Cg3wbDR04xmJHB+TGPRHBG7JiU528nISGUy/wwYR0YA=;
+        b=r8n2f2buyadO1kTj9+LgUWAoazLbe8cwmSw9iakwELjnC3mWNbA5f+IRdPGjvyCu/Y
+         MHws1rrcUjHWWuEe5gF4UGCLPIf1zTjGLcy19aLWQg4ON4rwnkGCD6t3oOghA/vtQ3Cv
+         1LVry/l7u5PVm1sNndeIpRhv7lNJsKPgK+nubKRZCXwRIvm4VMXzupRZkJfKXQnOeDlq
+         zrUBADKG6RQ9Boaod7FZbEbGBUParftk983IU0hzmXo4m4rehiyTyOJurRIiPkvr1sZQ
+         PK4VZKUgp3mqwPj2yC98xxByAgrYgBT6EB5AF5HTWNs5UFJrK/gzBDVbpu+OcaQYU1ny
+         LcQA==
+X-Gm-Message-State: AOAM530aXnpYpvkfow4KOql/u3CXm+3GkWFaAE6waMyrgaTlgdUuNfRe
+        Z/H9pQF8sYpCvBclAn0HEzt/5Q9npJ3W2j1MB8x0VnU+2sbftdM7
+X-Google-Smtp-Source: ABdhPJx0ePV8ZxlgX4p+7m1myWdbYT0oUPnD4lXQDiT5O8wj8IfteO0VHbTZaTVt+PJDD8vNRzrLi/bjRud7qqknnM4=
+X-Received: by 2002:a62:7f0e:0:b029:152:197b:e2bd with SMTP id
+ a14-20020a627f0e0000b0290152197be2bdmr1721683pfd.7.1601566584648; Thu, 01 Oct
+ 2020 08:36:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1601258560-6658-1-git-send-email-tanxiaofei@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com> <20200930160430.7908-7-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200930160430.7908-7-calvin.johnson@oss.nxp.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 1 Oct 2020 18:36:06 +0300
+Message-ID: <CAHp75Vfu_-=+CNYoRd141md902N2uR+K0xvHryfH9YCQi9Hp4w@mail.gmail.com>
+Subject: Re: [net-next PATCH v1 6/7] net: dpaa2-mac: Add ACPI support for
+ DPAA2 MAC driver
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tanxiaofei,
+On Wed, Sep 30, 2020 at 7:06 PM Calvin Johnson
+<calvin.johnson@oss.nxp.com> wrote:
+>
+> Modify dpaa2_mac_connect() to support ACPI along with DT.
+> Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
+> DT or ACPI.
+>
+> Replace of_get_phy_mode with fwnode_get_phy_mode to get
+> phy-mode for a dpmac_node.
+>
+> Use helper function phylink_fwnode_phy_connect() to find phy_dev and
+> connect to mac->phylink.
 
-(sorry for the late reply)
+...
 
-On 28/09/2020 03:02, Xiaofei Tan wrote:
-> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-> synchronise with APEI's irq work") applied, do_sea() return directly
-> for user-mode if apei_claim_sea() handled any error record. Therefore,
-> each error record reported by the user-mode SEA must be effectively
-> processed in APEI GHES driver.
-> 
-> Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
-> Error Section, as it has nothing to do with SEA). It is not enough.
-> Because ARM Processor Error could also be used for SEA in some hardware
-> platforms, such as Kunpeng9xx series. We can't ask them to switch to
-> use Memory Error Section for two reasons:
-> 1)The server was delivered to customers, and it will introduce
-> compatibility issue.
+>  #include "dpaa2-eth.h"
+>  #include "dpaa2-mac.h"
 
-> 2)It make sense to use ARM Processor Error Section. Because either
-> cache or memory errors could generate SEA when consumed by a processor.
-> 
-> Do memory failure handling for ARM Processor Error Section just like
-> for Memory Error Section.
+> +#include <linux/acpi.h>
 
+Please, put generic headers first.
 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 99df00f..ca0aa97 100644
-> --- a/drivers/acpi/apei/ghes.
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
-
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	struct cper_arm_err_info *err_info;
-> +	bool queued = false;
-> +	int sec_sev, i;
+> +       struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> +       struct fwnode_handle *dpmacs, *dpmac = NULL;
+> +       unsigned long long adr;
+> +       acpi_status status;
+>         int err;
+> +       u32 id;
+>
+> -       dpmacs = of_find_node_by_name(NULL, "dpmacs");
+> -       if (!dpmacs)
+> -               return NULL;
+> +       if (is_of_node(dev->parent->fwnode)) {
+> +               dpmacs = device_get_named_child_node(dev->parent, "dpmacs");
+> +               if (!dpmacs)
+> +                       return NULL;
 > +
-> +	log_arm_hw_error(err);
-> +
-> +	sec_sev = ghes_severity(gdata->error_severity);
-> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> +		return false;
-> +
-> +	err_info = (struct cper_arm_err_info *) (err + 1);
-> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
+> +               while ((dpmac = fwnode_get_next_child_node(dpmacs, dpmac))) {
+> +                       err = fwnode_property_read_u32(dpmac, "reg", &id);
+> +                       if (err)
+> +                               continue;
+> +                       if (id == dpmac_id)
+> +                               return dpmac;
+> +               }
+>
+> +       } else if (is_acpi_node(dev->parent->fwnode)) {
+> +               device_for_each_child_node(dev->parent, dpmac) {
+> +                       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(dpmac),
+> +                                                      "_ADR", NULL, &adr);
+> +                       if (ACPI_FAILURE(status)) {
+> +                               pr_debug("_ADR returned %d on %s\n",
+> +                                        status, (char *)buffer.pointer);
+> +                               continue;
+> +                       } else {
+> +                               id = (u32)adr;
+> +                               if (id == dpmac_id)
+> +                                       return dpmac;
+> +                       }
+> +               }
 
-err_info has its own length, could we use that in case someone comes up with a new table
-version? (like this, old versions of the kernel will read mis-aligned structures)
+Can you rather implement generic one which will be
 
+int fwnode_get_child_id(struct fwnode_handle *fwnode, u64 *id);
 
-> +		if (!(err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR))
-> +			continue;
-> +
-> +		if (err_info->type != CPER_ARM_CACHE_ERROR) {
-> +			pr_warn_ratelimited(FW_WARN GHES_PFX
-> +			"Physical address should be invalid for %s\n",
+and put the logic of retrieving 'reg' or _ADR? Also, for the latter we
+have a special macro
+METHOD_NAME__ADR.
 
-Should? A bus-error could have a valid physical address. I can't see anything in the spec
-that forbids this. In general we shouldn't try to validate what firmware is doing.
+See [1] as well. Same idea I have shared already.
 
+[1]: https://lore.kernel.org/linux-iio/20200824054347.3805-1-william.sung@advantech.com.tw/T/#m5f61921fa67a5b40522b7f7b17216e0d204647be
 
-> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> +			cper_proc_error_type_strs[err_info->type] : "unknown error type");
-> +			continue;
-> +		}
+...
 
-I think we should warn for the cases this handler doesn't cover, but we should try to
-catch all of them. e.g:
+> -       of_node_put(dpmac_node);
+> +       if (is_of_node(dpmac_node))
+> +               of_node_put(to_of_node(dpmac_node));
 
-|	bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-|	bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR)
-|
-|	if (!is_cache || !has_pa) {
-|		pr_warn_ratelimited(..."Unhandled processor error type %s\n", ...);
-|		continue;
-|	}
+I'm not sure why you can't use fwnode_handle_put()?
 
+> +       if (is_of_node(dpmac_node))
+> +               of_node_put(to_of_node(dpmac_node));
 
-For cache errors, (err_info->error_info & BIT(26)) has its own corrected/uncorrected flag.
-You filter out 'overall corrected' section types earlier, could you check this error
-record before invoking memory_failure()?
+Ditto.
 
-(sections may contain a set of errors. I'm not convinced a 'corrected section' can't
-contain latent uncorrected errors, it just means the machine didn't need that data yet)
-
-
-
-> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-> +			queued = true;
-
-May as well:
-|		return ghes_do_memory_failure(...);
-
-
-> +	}
-> +
-> +	return queued;
-
-(and make this:
-|	return false
-)
-
-> +}
-
-
-
-Thanks,
-
-James
+--
+With Best Regards,
+Andy Shevchenko
