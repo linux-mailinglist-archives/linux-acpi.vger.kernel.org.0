@@ -2,101 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6BA280D08
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 07:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71C26281040
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 12:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725957AbgJBFRT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 01:17:19 -0400
-Received: from bmailout1.hostsharing.net ([83.223.95.100]:34237 "EHLO
-        bmailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbgJBFRT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 01:17:19 -0400
-X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 01:17:18 EDT
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id B35CA30000CCE;
-        Fri,  2 Oct 2020 07:10:12 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 7CB8449136; Fri,  2 Oct 2020 07:10:12 +0200 (CEST)
-Message-Id: <cea9071dc46025f0d89cdfcec0642b7bfa45968a.1601614985.git.lukas@wunner.de>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Fri, 2 Oct 2020 07:10:12 +0200
-Subject: [PATCH] PCI/ACPI: Whitelist hotplug ports for D3 if power managed by
- ACPI
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        Arthur Borsboom <arthurborsboom@gmail.com>,
-        matoro <matoro@airmail.cc>,
-        Aaron Zakhrov <aaron.zakhrov@gmail.com>,
-        Michal Rostecki <mrostecki@suse.com>,
-        Shai Coleman <git@shaicoleman.com>
+        id S1726329AbgJBKCX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 06:02:23 -0400
+Received: from smtp.asem.it ([151.1.184.197]:53067 "EHLO smtp.asem.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725993AbgJBKCX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 06:02:23 -0400
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000519725.MSG 
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 12:02:20 +0200S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 2 Oct
+ 2020 12:02:19 +0200
+Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
+ mapi id 15.01.1979.003; Fri, 2 Oct 2020 12:02:19 +0200
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: How to use an ACPI declared GPIO in a userspace ...
+Thread-Topic: How to use an ACPI declared GPIO in a userspace ...
+Thread-Index: AdaWdniTedAZ6+9wQdyYYgE5sQ27yP//4UoAgAAGTYD//91o0IAAJ14A//6Yg1CAAsA0gP//s0vAAA+m6wAAAI1qgP/9IPng
+Date:   Fri, 2 Oct 2020 10:02:19 +0000
+Message-ID: <757023db21e642a3a4b6d33428c191cc@asem.it>
+References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it>
+ <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+ <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
+ <feb8567c830748c483c8c66dd4717003@asem.it>
+ <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
+ <22753b53cd7d4dfba4ef3610f71cc462@asem.it>
+ <20200930130113.GQ3956970@smile.fi.intel.com>
+ <2c26adae711145639d0b982a354aff3c@asem.it>
+ <CAHp75Vcq1WOcMNoKpOSpCD1mFSyvYsaX-h7KHTaAOPe=6S4e0A@mail.gmail.com>
+ <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
+In-Reply-To: <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
+Accept-Language: it-IT, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.17.208]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A09020E.5F76FAAC.0038,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Recent laptops with dual AMD GPUs fail to suspend the discrete GPU, thus
-causing lockups on system sleep and high power consumption at runtime.
-The discrete GPU would normally be suspended to D3cold by turning off
-ACPI _PR3 Power Resources of the Root Port above the GPU.
-
-However on affected systems, the Root Port is hotplug-capable and
-pci_bridge_d3_possible() only allows hotplug ports to go to D3 if they
-belong to a Thunderbolt device or if the Root Port possesses a
-"HotPlugSupportInD3" ACPI property.  Neither is the case on affected
-laptops.  The reason for whitelisting only specific, known to work
-hotplug ports for D3 is that there have been reports of SkyLake Xeon-SP
-systems raising Hardware Error NMIs upon suspending their hotplug ports:
-https://lore.kernel.org/linux-pci/20170503180426.GA4058@otc-nc-03/
-
-But if a hotplug port is power manageable by ACPI (as can be detected
-through presence of Power Resources and corresponding _PS0 and _PS3
-methods) then it ought to be safe to suspend it to D3.  To this end,
-amend acpi_pci_bridge_d3() to whitelist such ports for D3.
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1222
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1252
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1304
-Reported-and-tested-by: Arthur Borsboom <arthurborsboom@gmail.com>
-Reported-and-tested-by: matoro <matoro@airmail.cc>
-Reported-by: Aaron Zakhrov <aaron.zakhrov@gmail.com>
-Reported-by: Michal Rostecki <mrostecki@suse.com>
-Reported-by: Shai Coleman <git@shaicoleman.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/pci/pci-acpi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index d5869a0..d9aa551 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -944,6 +944,16 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
- 	if (!dev->is_hotplug_bridge)
- 		return false;
- 
-+	/* Assume D3 support if the bridge is power-manageable by ACPI. */
-+	adev = ACPI_COMPANION(&dev->dev);
-+	if (!adev && !pci_dev_is_added(dev)) {
-+		adev = acpi_pci_find_companion(&dev->dev);
-+		ACPI_COMPANION_SET(&dev->dev, adev);
-+	}
-+
-+	if (adev && acpi_device_power_manageable(adev))
-+		return true;
-+
- 	/*
- 	 * Look for a special _DSD property for the root port and if it
- 	 * is set we know the hierarchy behind it supports D3 just fine.
--- 
-2.27.0
-
+SGkgQW5keSwNCg0Kc29ycnkgZm9yIHRoZSBkZWxheSENCg0KPiA+ID4gTXkgU1NEVCB0YWJsZSBp
+czoNCj4gPg0KPiA+IF5eXl4gU2VlIHRoZSBkaWZmZXJlbmNlPyBJIGNhbid0IGhlbHAgaGVyZS4N
+Cg0KVGhpcyBpcyB0aGUgRFNEVCB0YWJsZSByZWxhdGVkIHRvIHRoZSBHUElPIGNvbnRyb2xsZXIg
+b2YgbXkgYm9hcmQ6DQoNCkRldmljZSAoR1BPMSkNCiAgICAgICAgew0KICAgICAgICAgICAgTmFt
+ZSAoX0FEUiwgWmVybykgIC8vIF9BRFI6IEFkZHJlc3MNCiAgICAgICAgICAgIE5hbWUgKF9ISUQs
+ICJJTlQzNDUyIikgIC8vIF9ISUQ6IEhhcmR3YXJlIElEDQogICAgICAgICAgICBOYW1lIChfQ0lE
+LCAiSU5UMzQ1MiIpICAvLyBfQ0lEOiBDb21wYXRpYmxlIElEDQogICAgICAgICAgICBOYW1lIChf
+REROLCAiR2VuZXJhbCBQdXJwb3NlIElucHV0L091dHB1dCAoR1BJTykgQ29udHJvbGxlciAtIE5v
+cnRod2VzdCIpICAvLyBfREROOiBET1MgRGV2aWNlIE5hbWUNCiAgICAgICAgICAgIE5hbWUgKF9V
+SUQsIDB4MDIpICAvLyBfVUlEOiBVbmlxdWUgSUQNCiAgICAgICAgICAgIE5hbWUgKFJCVUYsIFJl
+c291cmNlVGVtcGxhdGUgKCkNCiAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICBNZW1vcnkz
+MkZpeGVkIChSZWFkV3JpdGUsDQogICAgICAgICAgICAgICAgICAgIDB4MDAwMDAwMDAsICAgICAg
+ICAgLy8gQWRkcmVzcyBCYXNlDQogICAgICAgICAgICAgICAgICAgIDB4MDAwMDQwMDAsICAgICAg
+ICAgLy8gQWRkcmVzcyBMZW5ndGgNCiAgICAgICAgICAgICAgICAgICAgX1kwOCkNCiAgICAgICAg
+ICAgICAgICBJbnRlcnJ1cHQgKFJlc291cmNlQ29uc3VtZXIsIExldmVsLCBBY3RpdmVMb3csIFNo
+YXJlZCwgLCwgKQ0KICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgMHgwMDAw
+MDAwRSwNCiAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICB9KQ0KICAgICAgICAgICAgTWV0
+aG9kIChfQ1JTLCAwLCBOb3RTZXJpYWxpemVkKSAgLy8gX0NSUzogQ3VycmVudCBSZXNvdXJjZSBT
+ZXR0aW5ncw0KICAgICAgICAgICAgew0KICAgICAgICAgICAgICAgIENyZWF0ZURXb3JkRmllbGQg
+KFJCVUYsIFxfU0IuR1BPMS5fWTA4Ll9CQVMsIEIwQkEpICAvLyBfQkFTOiBCYXNlIEFkZHJlc3MN
+CiAgICAgICAgICAgICAgICBDcmVhdGVEV29yZEZpZWxkIChSQlVGLCBcX1NCLkdQTzEuX1kwOC5f
+TEVOLCBCMExOKSAgLy8gX0xFTjogTGVuZ3RoDQogICAgICAgICAgICAgICAgQjBCQSA9IEdQMUEg
+LyogXEdQMUEgKi8NCiAgICAgICAgICAgICAgICBCMExOID0gR1AxTCAvKiBcR1AxTCAqLw0KICAg
+ICAgICAgICAgICAgIFJldHVybiAoUkJVRikgLyogXF9TQl8uR1BPMS5SQlVGICovDQogICAgICAg
+ICAgICB9DQoNCiAgICAgICAgICAgIE1ldGhvZCAoX1NUQSwgMCwgTm90U2VyaWFsaXplZCkgIC8v
+IF9TVEE6IFN0YXR1cw0KICAgICAgICAgICAgew0KICAgICAgICAgICAgICAgIElmICgoT1NZUyA8
+IDB4MDdEQykpDQogICAgICAgICAgICAgICAgew0KICAgICAgICAgICAgICAgICAgICBSZXR1cm4g
+KFplcm8pDQogICAgICAgICAgICAgICAgfQ0KDQogICAgICAgICAgICAgICAgUmV0dXJuICgweDBG
+KQ0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQoNCiANCj4gLS0NCj4gV2l0aCBCZXN0IFJlZ2Fy
+ZHMsDQo+IEFuZHkgU2hldmNoZW5rbw0KDQpCZXN0IHJlZ2FyZHMsDQoNCkZsYXZpbw0K
