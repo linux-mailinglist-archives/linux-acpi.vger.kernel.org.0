@@ -2,89 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E1F3281860
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 18:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B365C281880
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 19:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733260AbgJBQzT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 12:55:19 -0400
-Received: from mail-oo1-f65.google.com ([209.85.161.65]:45848 "EHLO
-        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbgJBQzT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 12:55:19 -0400
-Received: by mail-oo1-f65.google.com with SMTP id h8so498155ooc.12;
-        Fri, 02 Oct 2020 09:55:18 -0700 (PDT)
+        id S1726017AbgJBRDF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 13:03:05 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:43680 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725995AbgJBRDF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 13:03:05 -0400
+Received: by mail-ot1-f67.google.com with SMTP id n61so2004157ota.10
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 10:03:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8acJid1D+NJC+ex0YodQOTm9oogbBy0h06gU04aC0XY=;
-        b=JRPyZGJCt0fT8QC419QRIS2vXzHhyrrIbUwkjM5I+owYOkUYVyxIsQMIjswUcuxO1I
-         NuL1RR2M5oYysSGysrhYcy4dCmfcZXdJZKjVIYDsk9Z7Ivkh7/TH/5KmiEJPxR4AXXSZ
-         pLmqkKuwFh63OIDcoVq/hMQ0hf9wCpq1BHaUL/COO6vwfI9cxxX8O71Yrlw73++OY85v
-         AahmK++zN3TQZRx4IranLTYGzv4mVICmtc1pf2fSLN1XYglrdfplm5kryigqUTLr2vWo
-         SIHCv3486VNI5wsYgrQfEyCkQB+rRfD2XsL8vZ+RG9R/z4T2+qofo6Y2mjfBgH2v8Zqo
-         r9cA==
-X-Gm-Message-State: AOAM532e7QvAr7hUmtqFG9t4mJWMiYByoSb2jVF25Xx4g533hXtg1Dg4
-        9oxqv6Fq9d2h6hANjIvJGrUSNEPM5d1z+IsG5wQ=
-X-Google-Smtp-Source: ABdhPJwZUqG9hHnok6yLqSy68HWB+jGdIfkMO9LgBruMFrfKI+a59EUTUicSwMUusqw5ZgzGMiryMveJdWirBIO3Ikg=
-X-Received: by 2002:a4a:e946:: with SMTP id v6mr2586023ood.38.1601657717839;
- Fri, 02 Oct 2020 09:55:17 -0700 (PDT)
+        bh=7CIlX7BLKx3mfpWeL5R/FKBM8L55G8uLfcJXAXkNSMU=;
+        b=GtTt67ub4+8QK/uw3os6yVvyI2rx8qreg9/uYmP5075OZGo6aTxuVtLpnRMHYQWAFS
+         T7bOfuh5H3XY8qag+ltE+/8JZrNea72O5ZP6+QGY4QCd7rHkB2lSVPBWE1gNyZ8kKKqK
+         qhNfeKFNwSisQrJwX1On5njfm5PxtYZ6XmFFsfGcQkvYen3Xdosk7o9WXdeRbaN6Xlzc
+         ZiMB9QwGg8mJbmFIFSo4EyYwG9e3a6iGGezHaDFRWid92tHwnbfB77HoT5tdLUtgeLd4
+         ZSxGXdhjNiZB6pS+8Z5GoVMk+5ErBk4vmoNYA/tVWTjgUZdnTr5abOzUEZ7awCCfOKkU
+         F2hw==
+X-Gm-Message-State: AOAM530cpIg5dQeupUALr6LuNJ40JedZD/KVzANAV3jyRF1x9fK6SsOW
+        +8zxcflyp9zLh+LbKkIxw2lHjm9nz22rMXcgF8y+TMZO
+X-Google-Smtp-Source: ABdhPJzs8MMeVz5XY4VlVRHpTXxYw50+pRT8sZd0UOj8UTT+BIRDpRT0ocpicMmRpAbLwp8rWUeCCiU8Vb7erpn7kaY=
+X-Received: by 2002:a05:6830:150a:: with SMTP id k10mr2276633otp.167.1601658182439;
+ Fri, 02 Oct 2020 10:03:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200930140547.840251-1-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20200930140547.840251-1-Jonathan.Cameron@huawei.com>
+References: <20200927215042.GA281693@decadent.org.uk>
+In-Reply-To: <20200927215042.GA281693@decadent.org.uk>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Oct 2020 18:55:06 +0200
-Message-ID: <CAJZ5v0hUPk6Geh3MG+948Q_LmHNEYBoJgBKLFb7jH7RCbPv5PQ@mail.gmail.com>
-Subject: Re: [PATCH v12 0/6] ACPI: Support Generic Initiator proximity domains
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linuxarm <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Sean V Kelley <sean.v.kelley@linux.intel.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Hanjun Guo <guohanjun@huawei.com>
+Date:   Fri, 2 Oct 2020 19:02:51 +0200
+Message-ID: <CAJZ5v0gmUQw3U2yC3tQZWaZE-7DV2LUffa=dxRrF+PK5AMPAjg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / extlog: Check for RDMSR failure
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        971058@bugs.debian.org, jim@photojim.ca
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 4:07 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Mon, Sep 28, 2020 at 12:27 AM Ben Hutchings <ben@decadent.org.uk> wrote:
 >
-> It would be very nice to finally merge this support during the next cycle,
-> so please take a look.
+> extlog_init() uses rdmsrl() to read an MSR, which on older CPUs
+> provokes a error message at boot:
 >
-> I think we need acks covering x86, ARM and ACPI.  Rafael took a look back
-> in November at v5 and was looking for x86 and ARM acks.  Whilst there is
-> no ARM specific code left we probably still need an Ack.  If anyone is
-> missing from the cc list, please add them.
+>     unchecked MSR access error: RDMSR from 0x179 at rIP: 0xcd047307 (native_read_msr+0x7/0x40)
 >
-> Introduces a new type of NUMA node for cases where we want to represent
-> the access characteristics of a non CPU initiator of memory requests,
-> as these differ from all those for existing nodes containing CPUs and/or
-> memory.
+> Use rdmsrl_safe() instead, and return -ENODEV if it fails.
 >
-> These Generic Initiators are presented by the node access0 class in
-> sysfs in the same way as a CPU. It seems likely that there will be
-> usecases in which the best 'CPU' is desired and Generic Initiators
-> should be ignored.  The final few patches in this series introduced
-> access1 which is a new performance class in the sysfs node description
-> which presents only CPU to memory relationships.  Test cases for this
-> are described below.
+> Reported-by: jim@photojim.ca
+> References: https://bugs.debian.org/971058
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> ---
+>  drivers/acpi/acpi_extlog.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index f138e12b7b82..72f1fb77abcd 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -222,9 +222,9 @@ static int __init extlog_init(void)
+>         u64 cap;
+>         int rc;
+>
+> -       rdmsrl(MSR_IA32_MCG_CAP, cap);
+> -
+> -       if (!(cap & MCG_ELOG_P) || !extlog_get_l1addr())
+> +       if (rdmsrl_safe(MSR_IA32_MCG_CAP, &cap) ||
+> +           !(cap & MCG_ELOG_P) ||
+> +           !extlog_get_l1addr())
+>                 return -ENODEV;
+>
+>         rc = -EINVAL;
 
-The whole series has been applied as 5.10 material.
-
-If anyone has concerns or objections, please let me know ASAP.
-
-Thanks!
+Applied as 5.10 material, thanks!
