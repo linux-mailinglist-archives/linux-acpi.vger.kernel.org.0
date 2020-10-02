@@ -2,82 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C88F3281402
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 15:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1509F281443
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 15:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726090AbgJBN3M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 09:29:12 -0400
-Received: from smtp.asem.it ([151.1.184.197]:54089 "EHLO smtp.asem.it"
+        id S1726282AbgJBNlR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 09:41:17 -0400
+Received: from mx2.suse.de ([195.135.220.15]:52164 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726017AbgJBN3M (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 09:29:12 -0400
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000520443.MSG 
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 15:29:07 +0200S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 2 Oct
- 2020 15:29:06 +0200
-Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
- mapi id 15.01.1979.003; Fri, 2 Oct 2020 15:29:06 +0200
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: How to use an ACPI declared GPIO in a userspace ...
-Thread-Topic: How to use an ACPI declared GPIO in a userspace ...
-Thread-Index: AdaWdniTedAZ6+9wQdyYYgE5sQ27yP//4UoAgAAGTYD//91o0IAAJ14A//6Yg1CAAsA0gP//s0vAAA+m6wAAAI1qgP/9IPng//o02AD/9F/YAP/onSjw
-Date:   Fri, 2 Oct 2020 13:29:06 +0000
-Message-ID: <809e219eabd44f3886af1da853c58db4@asem.it>
-References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it>
- <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
- <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
- <feb8567c830748c483c8c66dd4717003@asem.it>
- <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
- <22753b53cd7d4dfba4ef3610f71cc462@asem.it>
- <20200930130113.GQ3956970@smile.fi.intel.com>
- <2c26adae711145639d0b982a354aff3c@asem.it>
- <CAHp75Vcq1WOcMNoKpOSpCD1mFSyvYsaX-h7KHTaAOPe=6S4e0A@mail.gmail.com>
- <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
- <757023db21e642a3a4b6d33428c191cc@asem.it>
- <CAHp75Vf-hJ78LmXF8PqOeF-CfWEYqYzMiGCEGaEfnMqxmtiwiw@mail.gmail.com>
- <CAHp75VdBJEbm0=eNZMdc2ZWMh4qwP2S7jRECWWWvh2EfA-NykA@mail.gmail.com>
-In-Reply-To: <CAHp75VdBJEbm0=eNZMdc2ZWMh4qwP2S7jRECWWWvh2EfA-NykA@mail.gmail.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.17.208]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726090AbgJBNlR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 09:41:17 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1601646076;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Z3ByYrh+VAhRxeH0eK8Na0KVOwY/vMeBd7zzpOzuyh8=;
+        b=odvEcVR3MGe4ScG+CTx7+dM1KQK8SJGRd5CwKYZrKZOXio34wK3PH2wl9CUz9kMHYeYQk3
+        BZPLzK9nIIqiothIjrit3Slk86uffisO5vN5J/leVvbHUXfwbIMT2Ft1ZKqM3IeJkWjqwQ
+        TOwk2hwVtjDVFO77HnCPzt1saLmpGVM=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id F40DAAD12;
+        Fri,  2 Oct 2020 13:41:15 +0000 (UTC)
+Date:   Fri, 2 Oct 2020 15:41:15 +0200
+From:   Michal Hocko <mhocko@suse.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v1 4/5] mm/page_alloc: place pages to tail in
+ __free_pages_core()
+Message-ID: <20201002134115.GJ4555@dhcp22.suse.cz>
+References: <20200928182110.7050-1-david@redhat.com>
+ <20200928182110.7050-5-david@redhat.com>
 MIME-Version: 1.0
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A090211.5F772B23.0003,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200928182110.7050-5-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SEkgQW5keSwNCg0KPiA+IFNvLCB3aGF0IGFib3V0IGFkZGluZyB0aGUgZm9sbG93aW5nDQo+ID4N
-Cj4gPg0KPiA+IChSZXBsYWNlICcuLi4nIHdpdGggbWVhbmluZ2Z1bCBsaW5lIG5hbWVzIG9yIGRy
-b3AgZm9yIG5vdywgYnV0IGluIGFueQ0KPiA+IGNhc2UgeW91IG5lZWQgdG8gcHJvdmlkZSBhcyBt
-dWNoIG5hbWVzIGFzIGxpbmVzIG9mIHN1Y2ggR1BJTw0KPiA+IGNvbnRyb2xsZXIpDQo+IA0KPiBJ
-IGhhdmUgY2hlY2tlZCB0aGUgY29kZSwgc28gaXQgYWxsb3dzIHlvdSB0byBkZWZpbmUgZnJvbSAw
-IHVwIHRvIGFsbA0KPiBsaW5lcywgYnV0IG5vIGdhcHMuDQo+IFRodXMsIEkgaGF2ZSBkcm9wcGVk
-ICcuLi4nIGxpbmUgaW4gYWJvdmUgZXhjZXJwdCwgYWRkZWQgdGhlIGNvbXBpbGVkDQo+IEFNTCB0
-byBpbml0cmFtZnMgKGluaXRyZCBtZXRob2QpIGFuZCB2b2lsYSENCj4gDQo+ICUgZ3Bpb2luZm8g
-Z3Bpb2NoaXAxDQo+IGdwaW9jaGlwMSAtIDc3IGxpbmVzOg0KPiAgICAgICAgbGluZSAgIDA6ICAg
-ICAgIkxpbmUwIiAgICAgICB1bnVzZWQgICBpbnB1dCAgYWN0aXZlLWhpZ2gNCj4gICAgICAgIGxp
-bmUgICAxOiAgICAgICJMaW5lMSIgICAgICAgdW51c2VkICAgaW5wdXQgIGFjdGl2ZS1oaWdoDQo+
-ICAgICAgICBsaW5lICAgMjogICAgICAiTGluZTIiICAgICAgIHVudXNlZCAgIGlucHV0ICBhY3Rp
-dmUtaGlnaA0KPiAgICAgICAgbGluZSAgIDM6ICAgICAgdW5uYW1lZCAgICAgICB1bnVzZWQgICBp
-bnB1dCAgYWN0aXZlLWhpZ2gNCj4gDQo+IA0KPiAlIGdwaW9maW5kIExpbmUyDQo+IGdwaW9jaGlw
-MSAyDQo+IA0KPiBPZiBjb3Vyc2UgeW91IG1heSBjb252ZXJ0IF9EU0QgdG8gYmUgYSBNZXRob2Qg
-YW5kIGZpbGwgdGhlIGxpbmUgbmFtZXMNCj4gZHluYW1pY2FsbHkgd2l0aCBoZWxwIG9mIEFTTC4N
-Cg0KVGhhbmtzIGZvciB5b3VyIGhlbHAsIEkgdHJ5IG5vdyENCg0KPiANCj4gLS0NCj4gV2l0aCBC
-ZXN0IFJlZ2FyZHMsDQo+IEFuZHkgU2hldmNoZW5rbw0KDQpCZXN0IHJlZ2FyZHMsDQoNCkZsYXZp
-bw0K
+On Mon 28-09-20 20:21:09, David Hildenbrand wrote:
+> __free_pages_core() is used when exposing fresh memory to the buddy
+> during system boot and when onlining memory in generic_online_page().
+> 
+> generic_online_page() is used in two cases:
+> 
+> 1. Direct memory onlining in online_pages().
+> 2. Deferred memory onlining in memory-ballooning-like mechanisms (HyperV
+>    balloon and virtio-mem), when parts of a section are kept
+>    fake-offline to be fake-onlined later on.
+> 
+> In 1, we already place pages to the tail of the freelist. Pages will be
+> freed to MIGRATE_ISOLATE lists first and moved to the tail of the freelists
+> via undo_isolate_page_range().
+> 
+> In 2, we currently don't implement a proper rule. In case of virtio-mem,
+> where we currently always online MAX_ORDER - 1 pages, the pages will be
+> placed to the HEAD of the freelist - undesireable. While the hyper-v
+> balloon calls generic_online_page() with single pages, usually it will
+> call it on successive single pages in a larger block.
+> 
+> The pages are fresh, so place them to the tail of the freelists and avoid
+> the PCP. In __free_pages_core(), remove the now superflouos call to
+> set_page_refcounted() and add a comment regarding page initialization and
+> the refcount.
+> 
+> Note: In 2. we currently don't shuffle. If ever relevant (page shuffling
+> is usually of limited use in virtualized environments), we might want to
+> shuffle after a sequence of generic_online_page() calls in the
+> relevant callers.
+
+It took some time to get through all the freeing paths with subtle
+differences but this looks reasonable. You are mentioning that this
+influences a boot time free memory ordering as well but only very
+briefly. I do not expect this to make a huge difference but who knows.
+It makes some sense to add pages in the order they show up in the
+physical address ordering.
+
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+> Cc: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
+> Cc: Haiyang Zhang <haiyangz@microsoft.com>
+> Cc: Stephen Hemminger <sthemmin@microsoft.com>
+> Cc: Wei Liu <wei.liu@kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+
+That being said I do not see any fundamental problems.
+Acked-by: Michal Hocko <mhocko@suse.com>
+
+> ---
+>  mm/page_alloc.c | 37 ++++++++++++++++++++++++-------------
+>  1 file changed, 24 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d5a5f528b8ca..8a2134fe9947 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -270,7 +270,8 @@ bool pm_suspended_storage(void)
+>  unsigned int pageblock_order __read_mostly;
+>  #endif
+>  
+> -static void __free_pages_ok(struct page *page, unsigned int order);
+> +static void __free_pages_ok(struct page *page, unsigned int order,
+> +			    fop_t fop_flags);
+>  
+>  /*
+>   * results with 256, 32 in the lowmem_reserve sysctl:
+> @@ -682,7 +683,7 @@ static void bad_page(struct page *page, const char *reason)
+>  void free_compound_page(struct page *page)
+>  {
+>  	mem_cgroup_uncharge(page);
+> -	__free_pages_ok(page, compound_order(page));
+> +	__free_pages_ok(page, compound_order(page), FOP_NONE);
+>  }
+>  
+>  void prep_compound_page(struct page *page, unsigned int order)
+> @@ -1419,17 +1420,15 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+>  	spin_unlock(&zone->lock);
+>  }
+>  
+> -static void free_one_page(struct zone *zone,
+> -				struct page *page, unsigned long pfn,
+> -				unsigned int order,
+> -				int migratetype)
+> +static void free_one_page(struct zone *zone, struct page *page, unsigned long pfn,
+> +			  unsigned int order, int migratetype, fop_t fop_flags)
+>  {
+>  	spin_lock(&zone->lock);
+>  	if (unlikely(has_isolate_pageblock(zone) ||
+>  		is_migrate_isolate(migratetype))) {
+>  		migratetype = get_pfnblock_migratetype(page, pfn);
+>  	}
+> -	__free_one_page(page, pfn, zone, order, migratetype, FOP_NONE);
+> +	__free_one_page(page, pfn, zone, order, migratetype, fop_flags);
+>  	spin_unlock(&zone->lock);
+>  }
+>  
+> @@ -1507,7 +1506,8 @@ void __meminit reserve_bootmem_region(phys_addr_t start, phys_addr_t end)
+>  	}
+>  }
+>  
+> -static void __free_pages_ok(struct page *page, unsigned int order)
+> +static void __free_pages_ok(struct page *page, unsigned int order,
+> +			    fop_t fop_flags)
+>  {
+>  	unsigned long flags;
+>  	int migratetype;
+> @@ -1519,7 +1519,8 @@ static void __free_pages_ok(struct page *page, unsigned int order)
+>  	migratetype = get_pfnblock_migratetype(page, pfn);
+>  	local_irq_save(flags);
+>  	__count_vm_events(PGFREE, 1 << order);
+> -	free_one_page(page_zone(page), page, pfn, order, migratetype);
+> +	free_one_page(page_zone(page), page, pfn, order, migratetype,
+> +		      fop_flags);
+>  	local_irq_restore(flags);
+>  }
+>  
+> @@ -1529,6 +1530,11 @@ void __free_pages_core(struct page *page, unsigned int order)
+>  	struct page *p = page;
+>  	unsigned int loop;
+>  
+> +	/*
+> +	 * When initializing the memmap, init_single_page() sets the refcount
+> +	 * of all pages to 1 ("allocated"/"not free"). We have to set the
+> +	 * refcount of all involved pages to 0.
+> +	 */
+>  	prefetchw(p);
+>  	for (loop = 0; loop < (nr_pages - 1); loop++, p++) {
+>  		prefetchw(p + 1);
+> @@ -1539,8 +1545,12 @@ void __free_pages_core(struct page *page, unsigned int order)
+>  	set_page_count(p, 0);
+>  
+>  	atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
+> -	set_page_refcounted(page);
+> -	__free_pages(page, order);
+> +
+> +	/*
+> +	 * Bypass PCP and place fresh pages right to the tail, primarily
+> +	 * relevant for memory onlining.
+> +	 */
+> +	__free_pages_ok(page, order, FOP_TO_TAIL);
+>  }
+>  
+>  #ifdef CONFIG_NEED_MULTIPLE_NODES
+> @@ -3171,7 +3181,8 @@ static void free_unref_page_commit(struct page *page, unsigned long pfn)
+>  	 */
+>  	if (migratetype >= MIGRATE_PCPTYPES) {
+>  		if (unlikely(is_migrate_isolate(migratetype))) {
+> -			free_one_page(zone, page, pfn, 0, migratetype);
+> +			free_one_page(zone, page, pfn, 0, migratetype,
+> +				      FOP_NONE);
+>  			return;
+>  		}
+>  		migratetype = MIGRATE_MOVABLE;
+> @@ -5063,7 +5074,7 @@ static inline void free_the_page(struct page *page, unsigned int order)
+>  	if (order == 0)		/* Via pcp? */
+>  		free_unref_page(page);
+>  	else
+> -		__free_pages_ok(page, order);
+> +		__free_pages_ok(page, order, FOP_NONE);
+>  }
+>  
+>  void __free_pages(struct page *page, unsigned int order)
+> -- 
+> 2.26.2
+> 
+
+-- 
+Michal Hocko
+SUSE Labs
