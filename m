@@ -2,327 +2,441 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 606B828129E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 14:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B70C2812BD
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 14:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726176AbgJBM1k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 08:27:40 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:37848 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbgJBM1g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 08:27:36 -0400
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id F34642A2;
-        Fri,  2 Oct 2020 14:27:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1601641652;
-        bh=j93LpcQgyeDpuXdfvvJSW8hLghgVN4tBveDKw/MRz/g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CLRrp2dt5LKAINgGy50PzLTlddTXc+slVHmDzvaSq1NkqsPCn8Trq3EqULwMr/iuW
-         gSRjO9cF7UjGAPUmB8JScG9cWLr63qOEluKhdAADk5voO8gixs49gtBlX+5m06vPMe
-         pSo658uWoc0eS0r1XVWDxCMhAtAPCNzfU6MA3kEk=
-Date:   Fri, 2 Oct 2020 15:26:54 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Ben Gamari <ben@smart-cactus.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@iki.fi>
-Subject: Re: OpRegion conflicts for Skylake LPSS
-Message-ID: <20201002122654.GA3933@pendragon.ideasonboard.com>
-References: <87lh41nqqq.fsf@smart-cactus.org>
- <20160426155437.GA10202@lahna.fi.intel.com>
- <87eg9snkiw.fsf@smart-cactus.org>
- <87r3dona7g.fsf@smart-cactus.org>
- <20160429074227.GJ32610@lahna.fi.intel.com>
- <8737q24std.fsf@smart-cactus.org>
- <20160502103501.GP32610@lahna.fi.intel.com>
- <20201001221023.GA12766@pendragon.ideasonboard.com>
- <20201002103512.GZ3956970@smile.fi.intel.com>
+        id S2387856AbgJBMbW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 08:31:22 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2948 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726090AbgJBMbV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 08:31:21 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 4821A485866C963EC62F;
+        Fri,  2 Oct 2020 13:31:20 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.84.119) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Fri, 2 Oct 2020 13:31:19 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+        <tony.luck@intel.com>, <rjw@rjwysocki.net>, <james.morse@arm.com>,
+        <lenb@kernel.org>
+CC:     <linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [RFC PATCH 6/7] RAS/CEC: Add CPU Correctable Error Collector to isolate an erroneous CPU core
+Date:   Fri, 2 Oct 2020 13:22:34 +0100
+Message-ID: <20201002122235.1280-7-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
+In-Reply-To: <20201002122235.1280-1-shiju.jose@huawei.com>
+References: <20201002122235.1280-1-shiju.jose@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201002103512.GZ3956970@smile.fi.intel.com>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.84.119]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+When the CPU correctable errors, for example L1/L2 cache errors,
+reported on an ARM64 CPU core too often, it should be isolated.
+Add the CPU correctable error collector to store the CPU correctable
+error count.
 
-On Fri, Oct 02, 2020 at 01:35:12PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 02, 2020 at 01:10:23AM +0300, Laurent Pinchart wrote:
-> > Hi Mika,
-> > 
-> > Reviving an old thread.
-> 
-> Very old :-)
-> 
-> > On Mon, May 02, 2016 at 01:35:01PM +0300, Mika Westerberg wrote:
-> > > On Sun, May 01, 2016 at 12:47:58AM +0200, Ben Gamari wrote:
-> > > > Mika Westerberg <mika.westerberg@linux.intel.com> writes:
-> > > > > On Fri, Apr 29, 2016 at 09:30:27AM +0200, Ben Gamari wrote:
-> > > > >> Ben Gamari <ben@smart-cactus.org> writes:
-> > > > >> 
-> > > > >> > [ Unknown signature status ]
-> > > > >> > Mika Westerberg <mika.westerberg@linux.intel.com> writes:
-> > > > >> >
-> > > > >> >> On Tue, Apr 26, 2016 at 02:44:13AM +0200, Ben Gamari wrote:
-> > > > >> >>> 
-> > > > >> > snip
-> > > > >> >
-> > > > >> >>> It looks very much like these are describing the same device. Perhaps
-> > > > >> >>> the lpss driver should be binding to this ACPI node? Or perhaps this is
-> > > > >> >>> a firmware issue? Any guidance would be greatly appreciated.
-> > > > >> >>
-> > > > >> >> Can you send me full acpidump of that machine?
-> > > > >> >
-> > > > >> > It can be found at
-> > > > >> > https://github.com/bgamari/dell-e7470-dsdt/blob/master/acpi.log.
-> > > > >> >
-> > > > >> Did this provide any insight? Let me know if more information would be
-> > > > >> helpful.
-> > > > >
-> > > > > Sorry about the delay.
-> > > >
-> > > > No worries.
-> > > > 
-> > > > > The GEXP device is most probably a GPIO expander that is connected to
-> > > > > one of the I2C buses. And it indeed looks to use directly the I2C host
-> > > > > controller registers so kernel rightfully complains about that.
-> > > > >
-> > > > > Are you able to run Windows on that machine? If yes, it would be nice to
-> > > > > know if the INT3446 I2C device is shown in the device manager.
-> > > >
-> > > > I had the original SSD that came with the machine with the original
-> > > > Windows 7 installation intact. I popped it in and found no such device.
-> > > > I then updated to Windows 10 (albeit still booting with the legacy BIOS,
-> > > > not EFI) and found that once again there is no such device shown in
-> > > > device manager.
-> > > 
-> > > That's what I would expect. ACPI spec says that if there is an OpRegion
-> > > touching the same registers than PCI device the OS should not load any
-> > > driver for that device. I guess this is exactly what Windows does.
-> > > 
-> > > Linux does it also but it in addition it issues a scary warning which
-> > > might get users thinking there is something wrong with their system.
-> > 
-> > I'm trying to get camera sensors detected on a Microsoft Surface Go 2
-> > machine (ACPI dumps available at
-> > https://github.com/linux-surface/acpidumps/tree/master/surface_go_2).
-> > The CPU is an Intel Pentium Gold 4425Y, based on Kaby Lake-Y. The DSDT
-> > has been carefully designed, with great care to make it as useless as
-> > possible, so I'm experiencing a few issues.
-> 
-> I think Sakari has a laptop with PCA953x driver in ASL (AML). I remember it had
-> some issues.
+When the correctable error count for a CPU exceed the threshold
+value in a short time period, it will try to isolate the CPU core.
 
-What a surprise, isn't it ? :-)
+If disabling entire CPU core is not acceptable, Please suggest
+method to disable L1 and L2 cache on ARM64 core?
 
-> > One of the camera sensors is connected to I2C4, backed by an LPSS I2C
-> > controller.
-> > 
-> > 00:19.2 Signal processing controller: Intel Corporation Sunrise Point-LP Serial IO I2C Controller #4 (rev 21)
-> >         Subsystem: QUANTA Computer Inc Sunrise Point-LP Serial IO I2C Controller
-> >         Flags: fast devsel, IRQ 34
-> >         Memory at b1648000 (64-bit, non-prefetchable) [size=4K]
-> >         Capabilities: [80] Power Management version 3
-> >         Capabilities: [90] Vendor Specific Information: Len=14 <?>
-> >         Kernel modules: intel_lpss_pci
-> > 
-> > Unfortunately the driver fails to probe due to the same issue reported
-> > by Ben:
-> > 
-> > [    2.060237] intel-lpss 0000:00:19.2: enabling device (0000 -> 0002)
-> > [    2.060483] ACPI Warning: SystemMemory range 0x00000000B1648000-0x00000000B16481FF conflicts with OpRegion 0x00000000B1648000-0x00000000B1648207 (\_SB.PCI0.GEXP.BAR0) (20200528/utaddress-213)
-> > [    2.060489] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
-> > [    2.060726] intel-lpss: probe of 0000:00:19.2 failed with error -16
-> > 
-> > I've checked the GEXP device in the DSDT, and it includes an LPSS I2C
-> > host controller driver in AML, using an OpRegion that covers the I2C
-> > controller registers.
-> > 
-> > Adding acpi_enforce_resources=lax to the kernel command line allows the
-> > I2C controller to be probed, but that's hardly a good solution, as two
-> > drivers (one in the DSDT, one in the kernel) that poke the same hardware
-> > is calling for trouble.
-> > 
-> > I've noticed that Windows maps the devices to different addresses than
-> > Linux. On Windows, the I2C controllers are at
-> > 
-> > I2C0 (8086:9d60): 0xfe40f000 - 0xfe40ffff (IRQ 16)
-> > I2C1 (8086:9d61): 0xfe40e000 - 0xfe40efff (IRQ 17)
-> > I2C2 (8086:96d2): 0xfe40d000 - 0xfe40dfff (IRQ 18)
-> > I2C3 (8086:96d3): 0xfe40c000 - 0xfe40cfff (IRQ 19)
-> > I2C4 (8086:96d4): 0xfe409000 - 0xfe409fff (IRQ 34)
-> > 
-> > while on Linux they're at
-> > 
-> > I2C0 (8086:9d60): 0xb1642000 - 0xb1642fff (IRQ 16)
-> > I2C1 (8086:9d61): 0xb1643000 - 0xb1643fff (IRQ 17)
-> > I2C2 (8086:96d2): 0xb1644000 - 0xb1644fff (IRQ 18)
-> > I2C3 (8086:96d3): 0xb1645000 - 0xb1645fff (IRQ 19)
-> > I2C4 (8086:96d4): 0xb1648000 - 0xb1648fff (IRQ 34)
-> 
-> Addresses are defined by BIOS/Linux PCI core. Basically it sounds like the
-> addresses from the BIOS are changed by OS. Can you enable PCI early dump in
-> Linux and look at what the BIOS assignments there?
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+---
+ arch/arm64/ras/Kconfig |  17 +++
+ drivers/ras/Kconfig    |   1 +
+ drivers/ras/cec.c      | 231 +++++++++++++++++++++++++++++++++++++++--
+ include/linux/ras.h    |   9 ++
+ 4 files changed, 247 insertions(+), 11 deletions(-)
+ create mode 100644 arch/arm64/ras/Kconfig
 
-For the record if anyone wonders how to do so, that's pci=earlydump on
-the kernel command line.
-
-[    0.843745] pci 0000:00:19.2: [8086:9d64] type 00 class 0x118000
-[    0.843747] pci 0000:00:19.2: config space:
-[    0.844637] 00000000: 86 80 64 9d 00 00 10 00 21 00 80 11 10 00 80 00
-[    0.844638] 00000010: 04 80 64 b1 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844639] 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 2d 15 37 12
-[    0.844640] 00000030: 00 00 00 00 80 00 00 00 00 00 00 00 ff 03 00 00
-[    0.844641] 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844641] 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844642] 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844643] 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844644] 00000080: 01 90 03 00 0b 00 00 00 00 00 00 00 00 00 00 00
-[    0.844645] 00000090: 09 00 14 f0 10 00 40 01 01 21 00 00 c1 24 00 00
-[    0.844645] 000000a0: 00 08 0f 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844646] 000000b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844647] 000000c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844648] 000000d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844649] 000000e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.844649] 000000f0: 00 00 00 00 00 00 00 00 b3 0f 41 08 00 00 00 00
-[    0.844920] pci 0000:00:19.2: reg 0x10: [mem 0xb1648000-0xb1648fff 64bit]
-
-So I think Windows remaps the PCI BAR, Linux doesn't.
-
-> Also you may check it in EFI shell.
-
-The firmware doesn't provide one by default on this machine.
-
-> In any case I don't think it should affect the system, but if the ASL
-> has hard coded addresses for hardware, it's a very bad one and must be avoided.
-
-        Device (GEXP)
-        {
-            Name (_ADR, One)  // _ADR: Address
-            Name (_STA, 0x0B)  // _STA: Status
-            OperationRegion (BAR0, SystemMemory, SB04, 0x0208)
-	    ...
-
-SB04 is a field in an operation region defined as
-
-    Name (PNVB, 0x8CF70018)
-    Name (PNVL, 0x0287)
-    OperationRegion (PNVA, SystemMemory, PNVB, PNVL)
-
-# acpidbg -b 'evaluate SB04'
-Evaluating \SB04
-Evaluation of \SB04 returned object 00000000207ad9ad, external buffer length 18
- [Integer] = 00000000B1648000
-
-Do I correctly understand that the GEXP.BAR0 operation region address is
-set to a value provided by the firmware, and then never changes ? If the
-OperationRegion of the GEXP can't be remapped, it will be left accessing
-a PCI device (he LPSS) that have been moved after the PCI BAR has been
-remapped by Windows, right ? I wonder if this means that these AML code
-paths are not triggered after boot time, or if something else is put in
-place to handle the conflict.
-
-My goal is to figure out how to operate this safely in Linux.
-acpi_enforce_resources=lax is good enough for "operate", but doesn't
-seem it matches the "safely" requirement.
-
-> > Interestingly, the I2C4 object contains the following in the DSDT:
-> > 
-> >             If ((SMD4 != 0x02))
-> >             {
-> >                 Name (_HID, "INT3446")  // _HID: Hardware ID
-> >                 Method (_HRV, 0, NotSerialized)  // _HRV: Hardware Revision
-> >                 {
-> >                     Return (LHRV (SB14))
-> >                 }
-> > 
-> >                 Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-> >                 {
-> >                     Return (LCRS (SMD4, SB04, SIR4))
-> >                 }
-> > 
-> >                 Method (_STA, 0, NotSerialized)  // _STA: Status
-> >                 {
-> >                     Return (LSTA (SMD4))
-> >                 }
-> >             }
-> > 
-> >             If ((SMD4 == 0x02))
-> >             {
-> >                 Name (_ADR, 0x00190002)  // _ADR: Address
-> >                 Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-> >                 {
-> >                     If (PCIC (Arg0))
-> >                     {
-> >                         Return (PCID (Arg0, Arg1, Arg2, Arg3))
-> >                     }
-> > 
-> >                     Return (Buffer (One)
-> >                     {
-> >                          0x00                                             // .
-> >                     })
-> >                 }
-> >             }
-> > 
-> > I've evaluated SMD4 with acpidbg and it's equal to 2. I thought it might
-> > be set to a different value in windows, but the hardware IDs reported by
-> > the device manager all refer to the PCI device, not the ACPI device, so
-> > I don't think that's a lead.
-> 
-> This is basically a switch in the reference BIOS how to enumerate LPSS devices,
-> if you don't have such a knob in BIOS menus, I think it's no way to change it.
-
-The firmware menu is very simple, it's a MS machine, designed for
-Windows exclusively, so there are very few options (secure boot can
-still be disabled though).
-
-> > I really wonder how this is supposed to be handled, would the device
-> > really be designed to work in such an unsafe way ? Does Windows remap
-> > the BAR due to the conflict with the GEXP, rendering the GEXP
-> > non-operational after boot ? I have tried to locate the GEXP in the
-> > device manager in Windows, but with its _STA method returning 0x0b, it
-> > seems not to be visible.
-> 
-> Obviously it's designed for Windows (sic!) for a very certain driver which can
-> have all possible ugliness in the world. When people are living by the terms of
-> 20 years old world and doing things in the same way we won't have situation any
-> better.
-> 
-> > > > >> Also, is there a way to simply allow the driver subsystem to allow
-> > > > >> probing to proceed despite this resource conflict so that I can resume
-> > > > >> debugging my original input device issue?
-> > > > >
-> > > > > Try to pass "acpi_enforce_resources=lax" in the kernel command line.
-> > > > 
-> > > > Thanks, indeed this allows the driver to load. Unfortunately it didn't
-> > > > take long to encounter further issues.
-> > > > 
-> > > > The motivation for all of this is to get the touchpad into I2C mode, since
-> > > > currently it is merely exposed as a simple PS/2 device. Unfortunately it
-> > > > seems that even Windows 10 doesn't use the touchpad's I2C mode (although
-> > > > I suppose it's possible that this is guarded on UEFI boot; moreover
-> > > > Windows appears to have proper support for configurating this touchpad
-> > > > in PS/2 mode, which is unfortunately an ALPS devices).
-> > > > 
-> > > > Looking at the DSDT it seems that enabling the I2C interface may require
-> > > > the help of the embedded controller, the state of which is exposed in
-> > > > the DSDT through a mysteriously-named SDS1 field. It looks like this
-> > > > field could take on a number of values which identify a variety of
-> > > > different touchpads. Given that it looks like GPIO pin states may be
-> > > > determined by the value of this field I'm a bit reluctant to go fiddling
-> > > > around with it. 
-> > > > 
-> > > > I do wish that firmware weren't such a nightmare.
-> > > 
-> > > +1
-
+diff --git a/arch/arm64/ras/Kconfig b/arch/arm64/ras/Kconfig
+new file mode 100644
+index 000000000000..bfa14157cd2e
+--- /dev/null
++++ b/arch/arm64/ras/Kconfig
+@@ -0,0 +1,17 @@
++# SPDX-License-Identifier: GPL-2.0
++config RAS_CEC
++        bool "Correctable Errors Collector"
++        depends on ARM64 && HOTPLUG_CPU && DEBUG_FS
++        help
++          This is a small cache which collects correctable CPU errors and
++          counts their repeated occurrence. Once the counter for a CPU
++          overflows in a short time period, we try to offline that CPU
++          as we take it to mean that it has reached a relatively high error
++          count and would probably be best if we don't use it anymore.
++
++          Presently CPU error correction enabld for ARM64 platform only.
++
++config RAS_CEC_DEBUG
++        bool "CEC debugging machinery"
++        default n
++        depends on RAS_CEC
+diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
+index c2a236f2e846..d2f877e5f7ad 100644
+--- a/drivers/ras/Kconfig
++++ b/drivers/ras/Kconfig
+@@ -32,5 +32,6 @@ menuconfig RAS
+ if RAS
+ 
+ source "arch/x86/ras/Kconfig"
++source "arch/arm64/ras/Kconfig"
+ 
+ endif
+diff --git a/drivers/ras/cec.c b/drivers/ras/cec.c
+index ca52917d514c..408bf2ac2461 100644
+--- a/drivers/ras/cec.c
++++ b/drivers/ras/cec.c
+@@ -7,6 +7,8 @@
+ #include <linux/ras.h>
+ #include <linux/kernel.h>
+ #include <linux/workqueue.h>
++#include <linux/cpu.h>
++#include <linux/slab.h>
+ 
+ #if defined(CONFIG_X86_MCE)
+ #include <asm/mce.h>
+@@ -143,7 +145,7 @@ static struct ce_array {
+ 		};
+ 		__u32 flags;
+ 	};
+-} ce_arr;
++} ce_arr, cpu_ce_arr;
+ 
+ static u64 dfs_pfn;
+ 
+@@ -156,6 +158,8 @@ static u64 action_threshold = COUNT_MASK;
+ #define CEC_DECAY_MAX_INTERVAL	   30 *	24 * 60 * 60	/* one month */
+ static u64 decay_interval = CEC_DECAY_DEFAULT_INTERVAL;
+ 
++static const char * const bins[] = { "00", "01", "10", "11" };
++
+ /* Definitions for elements (for example CPU) for which
+  * error count on shrot time period is checked with threshold.
+  *
+@@ -484,6 +488,172 @@ static int cec_add_elem(u64 pfn)
+ 	return ret;
+ }
+ 
++struct cec_elem_offline {
++	struct work_struct work;
++	struct ce_array *ca;
++	int array_index;
++	int elem_id;
++};
++
++/*
++ * Work function to offline a cpu because the offlining to be done
++ * in the process context.
++ */
++static void cec_cpu_offline_work_fn(struct work_struct *work)
++{
++	int rc, cpu;
++	struct cec_elem_offline *elem;
++	struct ce_array *ca;
++
++	elem = container_of(work, struct cec_elem_offline, work);
++
++	cpu = elem->elem_id;
++	if (!cpu_online(cpu))
++		return;
++
++	rc = remove_cpu(cpu);
++	if (rc) {
++		pr_warn("Failed to offline CPU%d, error %d\n", cpu, rc);
++	} else {
++		ca = elem->ca;
++		ca->array[elem->array_index] |= ELEM_STATUS_BIT;
++	}
++
++	kfree(elem);
++}
++
++int cec_cpu_add_elem(int cpu, u64 ce_count)
++{
++	struct ce_array *ca = &cpu_ce_arr;
++	unsigned int to = 0;
++	int count, ret = 0;
++	unsigned long flags;
++	struct cec_elem_offline *elem;
++
++	/*
++	 * We can be called very early on the identify_cpu() path where we are
++	 * not initialized yet. We ignore the error for simplicity.
++	 */
++	if (!ca->array || ca->disabled || !cpu_online(cpu))
++		return -ENODEV;
++
++	spin_lock_irqsave(&ca->spin_lock, flags);
++
++	ca->ces_entered++;
++
++	ret = find_elem(ca, cpu, &to);
++	if (ret < 0) {
++		/*
++		 * Shift range [to-end] to make room for one more element.
++		 */
++		memmove((void *)&ca->array[to + 1],
++			(void *)&ca->array[to],
++			(ca->n - to) * sizeof(u64));
++
++		ca->array[to] = cpu << ca->id_shift;
++		ca->n++;
++	}
++
++	/* Error received for a previously CEC offlined CPU, which later online elsewhere.
++	 * reset array.
++	 */
++	if (ca->array[to] & ELEM_STATUS_BIT) {
++		ca->array[to] &= ~(ELEM_STATUS_BIT);
++		ca->array[to] &= ~(COUNT_MASK);
++	}
++
++	/* Add/refresh element generation and increment count */
++	ca->array[to] |= DECAY_MASK << COUNT_BITS;
++	ca->array[to] += ce_count;
++
++	/* Check action threshold and offline, if reached. */
++	count = COUNT(ca->array[to]);
++	if (count >= action_threshold) {
++		if (!cpu_online(cpu)) {
++			pr_warn("CEC: Invalid cpu: %d\n", cpu);
++		} else {
++			/* We have reached max count for this cpu, offline it. */
++			ca->elems_poisoned++;
++			/* schedule work function to offline the cpu */
++			elem = kmalloc(sizeof(*elem), GFP_NOWAIT);
++			if (elem) {
++				pr_info("CEC: offlining cpu: %d\n", cpu);
++				elem->ca = ca;
++				elem->array_index = to;
++				elem->elem_id = cpu;
++				INIT_WORK(&elem->work, cec_cpu_offline_work_fn);
++				schedule_work(&elem->work);
++			} else
++				pr_warn("CEC: offlining cpu: out of memory %d\n", cpu);
++		}
++
++		/*
++		 * Return a >0 value to callers, to denote that we've reached
++		 * the offlining threshold.
++		 */
++		ret = 1;
++
++		goto unlock;
++	}
++
++	ca->decay_count++;
++
++	/* Do we need to call spring cleaning for the modules(eg CPU) with
++	 * small number of elements?
++	 */
++	if (ca->decay_count >= (num_present_cpus() >> DECAY_BITS))
++		do_spring_cleaning(ca);
++
++	WARN_ON_ONCE(sanity_check(ca));
++
++unlock:
++	spin_unlock_irqrestore(&ca->spin_lock, flags);
++
++	return ret;
++}
++
++static int cec_cpu_stats_show(struct seq_file *seq, void *v)
++{
++	struct ce_array *ca = &cpu_ce_arr;
++	unsigned long flags;
++	int i;
++
++	spin_lock_irqsave(&cpu_ce_arr.spin_lock, flags);
++	seq_puts(seq, "CEC CPU Stats:\n");
++
++	seq_printf(seq, "{ n: %d\n", ca->n);
++	for (i = 0; i < ca->n; i++) {
++		int cpu = ELEM_NO(ca->array[i], ca->id_shift);
++
++	seq_printf(seq, "cpu=%d: %03llx\n",
++		   cpu, ca->array[i]);
++
++	seq_printf(seq, " %3d: [%d|%s|%03lld|%s]\n",
++		   i, cpu, bins[DECAY(ca->array[i])],
++		   COUNT(ca->array[i]),
++		   cpu_online(cpu) ? "online" :
++		   (ca->array[i] & ELEM_STATUS_BIT) ?
++		   "offlined-by-cec" : "offline");
++	}
++
++	seq_printf(seq, "}\n");
++
++	seq_printf(seq, "Stats:\nCEs: %llu\nofflined CPUs: %llu\n",
++		   ca->ces_entered, ca->elems_poisoned);
++
++	seq_printf(seq, "Flags: 0x%x\n", ca->flags);
++
++	seq_printf(seq, "Decay interval: %lld seconds\n", decay_interval);
++	seq_printf(seq, "Decays: %lld\n", ca->decays_done);
++
++	seq_printf(seq, "Action threshold: %lld\n", action_threshold);
++
++	spin_unlock_irqrestore(&cpu_ce_arr.spin_lock, flags);
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(cec_cpu_stats);
++
+ static int u64_get(void *data, u64 *val)
+ {
+ 	*val = *(u64 *)data;
+@@ -514,6 +684,7 @@ static int decay_interval_set(void *data, u64 val)
+ 	decay_interval = val;
+ 
+ 	cec_mod_work(&ce_arr.work, decay_interval);
++	cec_mod_work(&cpu_ce_arr.work, decay_interval/RAS_CEC_NUM_TIME_SLOTS);
+ 
+ 	return 0;
+ }
+@@ -532,8 +703,6 @@ static int action_threshold_set(void *data, u64 val)
+ }
+ DEFINE_DEBUGFS_ATTRIBUTE(action_threshold_ops, u64_get, action_threshold_set, "%lld\n");
+ 
+-static const char * const bins[] = { "00", "01", "10", "11" };
+-
+ static int array_dump(struct seq_file *m, void *v)
+ {
+ 	struct ce_array *ca = &ce_arr;
+@@ -620,6 +789,14 @@ static int __init create_debugfs_nodes(void)
+ 	}
+ #endif
+ 
++#if defined(CONFIG_ARM64)
++	array = debugfs_create_file("cpu_stats", 0400, d, NULL, &cec_cpu_stats_fops);
++	if (!array) {
++		pr_warn("Error creating cpu_stats debugfs node!\n");
++		goto err;
++	}
++#endif
++
+ 	return 0;
+ 
+ err:
+@@ -658,21 +835,26 @@ static struct notifier_block cec_nb = {
+ 
+ static void __init cec_init(void)
+ {
+-	if (ce_arr.disabled)
++	if (ce_arr.disabled && cpu_ce_arr.disabled)
+ 		return;
+ 
+ #if defined(CONFIG_X86_MCE)
+ 	ce_arr.array = (void *)get_zeroed_page(GFP_KERNEL);
+ 	if (!ce_arr.array) {
+ 		pr_err("Error allocating CE array page!\n");
+-		return;
++		goto error;
+ 	}
+ #endif
+ 
+-	if (create_debugfs_nodes()) {
+-		free_page((unsigned long)ce_arr.array);
+-		return;
+-	}
++#if defined(CONFIG_ARM64)
++	cpu_ce_arr.array = kcalloc(num_present_cpus(), sizeof(*(cpu_ce_arr.array)),
++				   GFP_KERNEL);
++	if (!cpu_ce_arr.array)
++		goto error;
++#endif
++
++	if (create_debugfs_nodes())
++		goto error;
+ 
+ #if defined(CONFIG_X86_MCE)
+ 	ce_arr.id_shift = PAGE_SHIFT;
+@@ -682,22 +864,49 @@ static void __init cec_init(void)
+ 	mce_register_decode_chain(&cec_nb);
+ #endif
+ 
++#if defined(CONFIG_ARM64)
++	cpu_ce_arr.short_period = true;
++	cpu_ce_arr.id_shift = ELEM_ID_SHIFT;
++	spin_lock_init(&cpu_ce_arr.spin_lock);
++	INIT_DELAYED_WORK(&cpu_ce_arr.work, cec_work_fn);
++	schedule_delayed_work(&cpu_ce_arr.work, CEC_DECAY_DEFAULT_INTERVAL/RAS_CEC_NUM_TIME_SLOTS);
++#endif
++
+ 	pr_info("Correctable Errors collector initialized.\n");
++	return;
++error:
++#if defined(CONFIG_ARM64)
++	kfree(cpu_ce_arr.array);
++#endif
++	if (ce_arr.array)
++		free_page((unsigned long)ce_arr.array);
++
+ }
+ late_initcall(cec_init);
+ 
+ int __init parse_cec_param(char *str)
+ {
++	bool match = false;
++
+ 	if (!str)
+ 		return 0;
+ 
+ 	if (*str == '=')
+ 		str++;
+ 
+-	if (!strcmp(str, "cec_disable"))
++	if (!strcmp(str, "cec_disable")) {
+ 		ce_arr.disabled = 1;
++		match = true;
++	}
++
++	if (!strcmp(str, "cec_cpu_disable")) {
++		cpu_ce_arr.disabled = 1;
++		match = true;
++	}
++
++	if (match)
++		return 1;
+ 	else
+ 		return 0;
+ 
+-	return 1;
+ }
+diff --git a/include/linux/ras.h b/include/linux/ras.h
+index 1f4048bf2674..43d91298f1e3 100644
+--- a/include/linux/ras.h
++++ b/include/linux/ras.h
+@@ -18,6 +18,15 @@ static inline int ras_add_daemon_trace(void) { return 0; }
+ 
+ #ifdef CONFIG_RAS_CEC
+ int __init parse_cec_param(char *str);
++/**
++ * cec_cpu_add_elem - add the count of CPU correctable errors to the
++ * CEC(correctable errors collector).
++ * @cpu: CPU index.
++ * @ce_count: CPU correctable errors count.
++ */
++int cec_cpu_add_elem(int cpu, u64 ce_count);
++#else
++static inline int cec_cpu_add_elem(int cpu, u64 ce_count) { return -ENODEV; }
+ #endif
+ 
+ #ifdef CONFIG_RAS
 -- 
-Regards,
+2.17.1
 
-Laurent Pinchart
+
