@@ -2,153 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0117A28166D
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 17:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9E962816C8
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 17:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388132AbgJBPUX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 11:20:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:39821 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388294AbgJBPUW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 11:20:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601652021;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=tLF6ZatCZ5zrVPBFeigNCXJI7/8w0ttDqPTuxtDX8zs=;
-        b=Jg+oWXGzxnkPLOKoihHRwxS/LtWf2eIlADJ33zOzwRsWwt3oUuCoTzYXp4iqtvSgB1QXv8
-        SgFgvTeKvWRbmGX32Kx8HdhCNGkeQCOl4jYxCA3qRBOcNqbsUTEVVqegMQ9ekzmJQamKYY
-        Wrw6dpZ8d3Ksd+4RL5Tx23ZyOK/rh2U=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-272-w6qMtHLYOdqGZmEqgP1rMQ-1; Fri, 02 Oct 2020 11:20:16 -0400
-X-MC-Unique: w6qMtHLYOdqGZmEqgP1rMQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C928D109106D;
-        Fri,  2 Oct 2020 15:20:13 +0000 (UTC)
-Received: from [10.36.113.228] (ovpn-113-228.ams2.redhat.com [10.36.113.228])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 593875D9E4;
-        Fri,  2 Oct 2020 15:20:10 +0000 (UTC)
-Subject: Re: [PATCH v1 3/5] mm/page_alloc: always move pages to the tail of
- the freelist in unset_migratetype_isolate()
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20200928182110.7050-1-david@redhat.com>
- <20200928182110.7050-4-david@redhat.com>
- <20201002132404.GI4555@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <df0c45bf-223f-1f0b-ce3d-f2b2e05626bd@redhat.com>
-Date:   Fri, 2 Oct 2020 17:20:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <20201002132404.GI4555@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8
+        id S2388020AbgJBPiv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 11:38:51 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2950 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726176AbgJBPiu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 11:38:50 -0400
+Received: from lhreml717-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id E1DE52450D7A0623FD4C;
+        Fri,  2 Oct 2020 16:38:48 +0100 (IST)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml717-chm.china.huawei.com (10.201.108.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Fri, 2 Oct 2020 16:38:48 +0100
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
+ Fri, 2 Oct 2020 16:38:48 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [RFC PATCH 0/7] RAS/CEC: Extend CEC for errors count check on
+ short time period
+Thread-Topic: [RFC PATCH 0/7] RAS/CEC: Extend CEC for errors count check on
+ short time period
+Thread-Index: AQHWmLdPdbyjNlzT0kmpr3mH9sP7namEMSsAgAASuxA=
+Date:   Fri, 2 Oct 2020 15:38:48 +0000
+Message-ID: <19a8cc62b11c49e9b584857a6a6664e5@huawei.com>
+References: <20201002122235.1280-1-shiju.jose@huawei.com>
+ <20201002124352.GC17436@zn.tnic>
+In-Reply-To: <20201002124352.GC17436@zn.tnic>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.84.119]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 02.10.20 15:24, Michal Hocko wrote:
-> On Mon 28-09-20 20:21:08, David Hildenbrand wrote:
->> Page isolation doesn't actually touch the pages, it simply isolates
->> pageblocks and moves all free pages to the MIGRATE_ISOLATE freelist.
->>
->> We already place pages to the tail of the freelists when undoing
->> isolation via __putback_isolated_page(), let's do it in any case
->> (e.g., if order <= pageblock_order) and document the behavior.
->>
->> Add a "to_tail" parameter to move_freepages_block() but introduce a
->> a new move_to_free_list_tail() - similar to add_to_free_list_tail().
->>
->> This change results in all pages getting onlined via online_pages() to
->> be placed to the tail of the freelist.
-> 
-> Is there anything preventing to do this unconditionally? Or in other
-> words is any of the existing callers of move_freepages_block benefiting
-> from adding to the head?
-
-1. mm/page_isolation.c:set_migratetype_isolate()
-
-We move stuff to the MIGRATE_ISOLATE list, we don't care about the order
-there.
-
-2. steal_suitable_fallback():
-
-I don't think we care too much about the order when already stealing
-pageblocks ... and the freelist is empty I guess?
-
-3. reserve_highatomic_pageblock()/unreserve_highatomic_pageblock()
-
-Not sure if we really care.
-
-Good question, I tried to be careful of what I touch. Thoughts?
-
--- 
-Thanks,
-
-David / dhildenb
-
+SGkgQm9yaXMsIEhpIEphbWVzLA0KDQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9t
+OiBCb3Jpc2xhdiBQZXRrb3YgW21haWx0bzpicEBhbGllbjguZGVdDQo+U2VudDogMDIgT2N0b2Jl
+ciAyMDIwIDEzOjQ0DQo+VG86IFNoaWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5D
+YzogbGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3Jn
+OyBsaW51eC0NCj5rZXJuZWxAdmdlci5rZXJuZWwub3JnOyB0b255Lmx1Y2tAaW50ZWwuY29tOyBy
+andAcmp3eXNvY2tpLm5ldDsNCj5qYW1lcy5tb3JzZUBhcm0uY29tOyBsZW5iQGtlcm5lbC5vcmc7
+IExpbnV4YXJtDQo+PGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+U3ViamVjdDogUmU6IFtSRkMgUEFU
+Q0ggMC83XSBSQVMvQ0VDOiBFeHRlbmQgQ0VDIGZvciBlcnJvcnMgY291bnQgY2hlY2sgb24NCj5z
+aG9ydCB0aW1lIHBlcmlvZA0KPg0KPk9uIEZyaSwgT2N0IDAyLCAyMDIwIGF0IDAxOjIyOjI4UE0g
+KzAxMDAsIFNoaWp1IEpvc2Ugd3JvdGU6DQo+PiBPcGVuIFF1ZXN0aW9ucyBiYXNlZCBvbiB0aGUg
+ZmVlZGJhY2sgZnJvbSBCb3JpcywgMS4gQVJNIHByb2Nlc3Nvcg0KPj4gZXJyb3IgdHlwZXMgYXJl
+IGNhY2hlL1RMQi9idXMgZXJyb3JzLg0KPj4gICAgW1JlZmVyZW5jZSBOMi40LjQuMSBBUk0gUHJv
+Y2Vzc29yIEVycm9yIEluZm9ybWF0aW9uIFVFRkkgU3BlYyB2Mi44XQ0KPj4gQW55IG9mIHRoZSBh
+Ym92ZSBlcnJvciB0eXBlcyBzaG91bGQgbm90IGJlIGNvbnNpZGVyIGZvciB0aGUgZXJyb3INCj4+
+IGNvbGxlY3Rpb24gYW5kIENQVSBjb3JlIGlzb2xhdGlvbj8NCj4+DQo+PiAyLklmIGRpc2FibGlu
+ZyBlbnRpcmUgQ1BVIGNvcmUgaXMgbm90IGFjY2VwdGFibGUsIHBsZWFzZSBzdWdnZXN0DQo+PiBt
+ZXRob2QgdG8gZGlzYWJsZSBMMSBhbmQgTDIgY2FjaGUgb24gQVJNNjQgY29yZT8NCj4NCj5Nb3Jl
+IG9wZW4gcXVlc3Rpb25zOg0KPg0KPj4gVGhpcyByZXF1aXJlbWVudCBpcyB0aGUgcGFydCBvZiB0
+aGUgZWFybHkgZmF1bHQgcHJlZGljdGlvbiBieSB0YWtpbmcNCj4+IGFjdGlvbiB3aGVuIGxhcmdl
+IG51bWJlciBvZiBjb3JyZWN0ZWQgZXJyb3JzIHJlcG9ydGVkIG9uIGEgQ1BVIGNvcmUNCj4+IGJl
+Zm9yZSBpdCBjYXVzaW5nIHNlcmlvdXMgZmF1bHRzLg0KPg0KPkFuZCBkbyB5b3Uga25vdyBvZiBh
+Y3R1YWwgcmVhbC1saWZlIGV4YW1wbGVzIHdoZXJlIHRoaXMgaXMgcmVhbGx5IHRoZSBjYXNlPyBE
+bw0KPnlvdSBoYXZlIGFueSB1c2VycyB3aG8gcmVwb3J0IGEgbGFyZ2UgZXJyb3IgY291bnQgb24g
+QVJNIENQVXMsIG9yaWdpbmF0aW5nDQo+ZnJvbSB0aGUgY2FjaGVzIGFuZCB0aGF0IHNvbWV0aGlu
+ZyBsaWtlIHRoYXQgd291bGQgcmVhbGx5IGhlbHA/DQo+DQo+QmVjYXVzZSBmcm9tIG15IHg4NiBD
+UFVzIGxpbWl0ZWQgZXhwZXJpZW5jZSwgdGhlIGNhY2hlIGFycmF5cyBhcmUgbW9zdGx5DQo+Zmlu
+ZSBhbmQgZXJyb3JzIHJlcG9ydGVkIHRoZXJlIGFyZSBub3Qgc29tZXRoaW5nIHRoYXQgaGFwcGVu
+cyB2ZXJ5DQo+ZnJlcXVlbnRseSBzbyB3ZSBkb24ndCBldmVuIG5lZWQgdG8gY29sbGVjdCBhbmQg
+Y291bnQgdGhvc2UuDQo+DQo+U28gaXMgdGhpcyBzb21ldGhpbmcgd2hpY2ggeW91IG5lZWQgdG8g
+aGF2ZSBpbiBvcmRlciB0byBjaGVjayBhIGJveA0KPnNvbWV3aGVyZSB0aGF0IHRoZXJlIGlzIHNv
+bWUgZnVuY3Rpb25hbGl0eSBvciBpcyB0aGVyZSBhbiBhY3R1YWwgcmVhbC1saWZlIHVzZQ0KPmNh
+c2UgYmVoaW5kIGl0IHdoaWNoIGEgY3VzdG9tZXIgaGFzIHJlcXVlc3RlZD8NCldlIGhhdmUgbm90
+IGdvdCBhIHJlYWwtbGlmZSBleGFtcGxlIGZvciB0aGlzIGNhc2UuIEhvd2V2ZXIgcmFyZSBlcnJv
+cnMNCmxpa2UgdGhpcyBjYW4gb2NjdXIgZnJlcXVlbnRseSBzb21ldGltZXMgYXQgc2NhbGUsIHdo
+aWNoIHdvdWxkIGNhdXNlDQptb3JlIHNlcmlvdXMgaXNzdWVzIGlmIG5vdCBoYW5kbGVkLg0KPg0K
+Pk9wZW4gcXVlc3Rpb24gZnJvbSBKYW1lcyB3aXRoIG15IHJlcGx5IHRvIGl0Og0KPg0KPk9uIFRo
+dSwgT2N0IDAxLCAyMDIwIGF0IDA2OjE2OjAzUE0gKzAxMDAsIEphbWVzIE1vcnNlIHdyb3RlOg0K
+Pj4gSWYgdGhlIGNvcnJlY3RlZC1jb3VudCBpcyBhdmFpbGFibGUgc29tZXdoZXJlLCBjYW4ndCB0
+aGlzIHBvbGljeSBiZQ0KPj4gbWFkZSBpbiB1c2VyLXNwYWNlPw0KVGhlIGVycm9yIGNvdW50IGlz
+IHByZXNlbnQgaW4gdGhlIHN0cnVjdCBjcGVyX2FybV9lcnJfaW5mbywgdGhlIGZpZWxkcyBvZg0K
+dGhpcyBzdHJ1Y3R1cmUgIGFyZSBub3QgcmVwb3J0ZWQgdG8gdGhlIHVzZXItc3BhY2UgdGhyb3Vn
+aCB0cmFjZSBldmVudHM/DQpQcmVzZW50bHkgdGhlIGZpZWxkcyBvZiB0YWJsZSBzdHJ1Y3QgY3Bl
+cl9zZWNfcHJvY19hcm0gb25seSBhcmUgcmVwb3J0ZWQgDQp0byB0aGUgdXNlci1zcGFjZSB0aHJv
+dWdoIHRyYWNlLWFybS1ldmVudC4NCkFsc28gdGhlcmUgY2FuIGJlIG11bHRpcGxlIGNwZXJfYXJt
+X2Vycl9pbmZvIHBlciBjcGVyX3NlY19wcm9jX2FybS4NClRodXMgSSB0aGluayB0aGlzIG5lZWQg
+cmVwb3J0aW5nIHRocm91Z2ggYSBuZXcgdHJhY2UgZXZlbnQ/DQoNCkFsc28gdGhlIGxvZ2ljYWwg
+aW5kZXggb2YgYSBDUFUgd2hpY2ggSSB0aGluayBuZWVkIHRvIGV4dHJhY3QgZnJvbSB0aGUgJ21w
+aWRyJyBmaWVsZCBvZg0Kc3RydWN0IGNwZXJfc2VjX3Byb2NfYXJtIHVzaW5nIHBsYXRmb3JtIGRl
+cGVuZGVudCBrZXJuZWwgZnVuY3Rpb24gZ2V0X2xvZ2ljYWxfaW5kZXgoKS4gICAgDQpUaHVzIGNw
+dSBpbmRleCBhbHNvIG5lZWQgdG8gcmVwb3J0IHRvIHRoZSB1c2VyIHNwYWNlLg0KPg0KPllvdSBt
+ZWFuIHJhc2RhZW1vbiBnb2VzIGFuZCBvZmZsaW5lcyBDUFVzIHdoZW4gY2VydGFpbiB0aHJlc2hv
+bGRzIGFyZQ0KPnJlYWNoZWQ/IFN1cmUuIEl0IHdvdWxkIGJlIG11Y2ggbW9yZSBmbGV4aWJsZSB0
+b28uDQpJIHRoaW5rIGFkZGluZyB0aGUgQ1BVIGVycm9yIGNvbGxlY3Rpb24gdG8gdGhlIGtlcm5l
+bA0KaGFzIHRoZSBmb2xsb3dpbmcgYWR2YW50YWdlcywNCiAgICAxLiBUaGUgQ1BVIGVycm9yIGNv
+bGxlY3Rpb24gYW5kIGlzb2xhdGlvbiB3b3VsZCBub3QgYmUgYWN0aXZlIGlmIHRoZQ0KICAgICAg
+ICAgcmFzZGFlbW9uIHN0b3BwZWQgcnVubmluZyBvciBub3QgcnVubmluZyBvbiBhIG1hY2hpbmUu
+DQogICAgMi4gUmVjZWl2aW5nIGVycm9ycyBhbmQgaXNvbGF0aW5nIGEgQ1BVIGNvcmUgZnJvbSB0
+aGUgdXNlci1zcGFjZSB3b3VsZA0KICAgICAgICBwcm9iYWJseSBkZWxheWVkIG1vcmUsICB3aGVu
+IGxhcmdlIG51bWJlciBvZiBlcnJvcnMgYXJlIHJlcG9ydGVkLg0KICAgMy4gU3VwcG9ydGluZyB0
+aGUgaW50ZXJmYWNlIGZvciBjb25maWd1cmF0aW9uIHBhcmFtZXRlcnMgYW5kICBlcnJvciBzdGF0
+aXN0aWNzIGV0Yw0KICAgICAgICBwcm9iYWJseSBlYXN5IHRvIGltcGxlbWVudCBpbiB0aGUga2Vy
+bmVsLg0KICAgNC4gVGhlIGludGVyZmFjZSBnaXZlbiBmb3IgZGlzYWJsaW5nIGEgQ1BVIGlzIGVh
+c3kgdG8gdXNlIGZyb20gdGhlIGtlcm5lbCBsZXZlbC4NCg0KPg0KPkZpcnN0IHdlIGFuc3dlciBx
+dWVzdGlvbnMgYW5kIGRpc2N1c3MsIHRoZW4gd2UgY29kZS4NCj4NCj4tLQ0KPlJlZ2FyZHMvR3J1
+c3MsDQo+ICAgIEJvcmlzLg0KPg0KDQpUaGFua3MsDQpTaGlqdQ0KDQo+aHR0cHM6Ly9wZW9wbGUu
+a2VybmVsLm9yZy90Z2x4L25vdGVzLWFib3V0LW5ldGlxdWV0dGUNCg==
