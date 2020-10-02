@@ -2,164 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BD232813E7
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 15:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1FF2813F3
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 15:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726569AbgJBNT2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 09:19:28 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35864 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726176AbgJBNT2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 09:19:28 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1601644766;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=dXMHbVb6pgN544nxYenHHL6okl1GWDOP/Q//L6bG8YE=;
-        b=aVfeYjVsEAey7qf6Ex3QHusanTZYPmzDsjnCo7TrMCRYIJ5KC3AfGMHH9a4LEDOf16/V1B
-        Tj2FscxbH8Jro5Mj811UIxo+NCihU8j+Cu5ZAVUjd7kJnPdMpQBL3ARs4+b6GNQApReUkf
-        1nvxW1E7gsIjlG9xufW/BUyvmVHoMsk=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 2E567AEF5;
-        Fri,  2 Oct 2020 13:19:26 +0000 (UTC)
-Date:   Fri, 2 Oct 2020 15:19:24 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v1 2/5] mm/page_alloc: place pages to tail in
- __putback_isolated_page()
-Message-ID: <20201002131924.GH4555@dhcp22.suse.cz>
-References: <20200928182110.7050-1-david@redhat.com>
- <20200928182110.7050-3-david@redhat.com>
+        id S1726090AbgJBNXw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 09:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgJBNXw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 09:23:52 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CE1C0613D0;
+        Fri,  2 Oct 2020 06:23:52 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id gm14so808643pjb.2;
+        Fri, 02 Oct 2020 06:23:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=c9AlsC7mL/22KwPTqU8CIK4fkqeIKoEqnJ8+bBOEjyA=;
+        b=u09pnQKouhywNuDS0UC6dl0VIsJOLGCCpoBTQUm7cWFW4ho3CSXDiu9qRPQkYrmWM4
+         9vzZgumpNcXwhhWXYARqVry7k6KQVvXpfHFHBvMtgFTmIGkleVAuPO+1HZhTmjP/VKCd
+         UbPZPiXkIN7DmdaGiShuflPNXWbaHC5uZ1sGByDXtHG7N4NKtVC/8q6US+LcNT43GBvZ
+         b30wHVPqFWCJT4/IxFnwBHZy9F4pfNurIZnMd0LvXeHPxHIS0KMF8VfuASmL1Lp/rEGE
+         qN3Me5g+ikJwIYI8WNdGPHuifbWXedMoIYa0qKmSfpubswphTVyIOT9VSu9u1EWxMVBO
+         BVHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c9AlsC7mL/22KwPTqU8CIK4fkqeIKoEqnJ8+bBOEjyA=;
+        b=fcGCksbgojG3K4x1sZlyQOUVjxMdhMTapo+SMxeDd9w2W79MqP8avYyGKOznWVjgn+
+         vSUQokBXWAva4Q3G7ee2S9gq9cPOYPea38Lmp+pVhz8eLZl03jOYKRU2yzHR6sa8EfX3
+         vTS+uvTQGoTxrCmJu27wGiKKJvY179+4WdAMq1vVf32MXnj7TBk4IIsluBK+fCg834uS
+         O90Rbw2F/3YuZnW+TeDK8cIngs9qBXtSuSxe/3czdtxSwiIw/sD7t2NSERQ+azwBVWuI
+         w+v1WvQHC5BpgEvJNqCRXTQD1jRkk3f6F7vr1vJfOSaNECJol8729G/q23pxXMaw3PCs
+         DLAw==
+X-Gm-Message-State: AOAM531bnOSnYMqMqhzBM7MDW9VAIfQdYmsGKiQGSvJvqnTjAK/WWN8D
+        VgM0vas6aQ5RXaPjasAOIM+UG1u0kuzM5F0BFbg=
+X-Google-Smtp-Source: ABdhPJx+wn9di+53Pd0e6dxrc9vwB2M3BngMOU+8Cr6r6UXKWQ7wvdErC78BEuebbwLHAgD7kx5o7LWZCy0HB7kg8IM=
+X-Received: by 2002:a17:90a:be11:: with SMTP id a17mr2680288pjs.181.1601645031583;
+ Fri, 02 Oct 2020 06:23:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200928182110.7050-3-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it> <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
+ <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
+ <feb8567c830748c483c8c66dd4717003@asem.it> <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
+ <22753b53cd7d4dfba4ef3610f71cc462@asem.it> <20200930130113.GQ3956970@smile.fi.intel.com>
+ <2c26adae711145639d0b982a354aff3c@asem.it> <CAHp75Vcq1WOcMNoKpOSpCD1mFSyvYsaX-h7KHTaAOPe=6S4e0A@mail.gmail.com>
+ <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
+ <757023db21e642a3a4b6d33428c191cc@asem.it> <CAHp75Vf-hJ78LmXF8PqOeF-CfWEYqYzMiGCEGaEfnMqxmtiwiw@mail.gmail.com>
+In-Reply-To: <CAHp75Vf-hJ78LmXF8PqOeF-CfWEYqYzMiGCEGaEfnMqxmtiwiw@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 2 Oct 2020 16:23:32 +0300
+Message-ID: <CAHp75VdBJEbm0=eNZMdc2ZWMh4qwP2S7jRECWWWvh2EfA-NykA@mail.gmail.com>
+Subject: Re: How to use an ACPI declared GPIO in a userspace ...
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 28-09-20 20:21:07, David Hildenbrand wrote:
-> __putback_isolated_page() already documents that pages will be placed to
-> the tail of the freelist - this is, however, not the case for
-> "order >= MAX_ORDER - 2" (see buddy_merge_likely()) - which should be
-> the case for all existing users.
-> 
-> This change affects two users:
-> - free page reporting
-> - page isolation, when undoing the isolation (including memory onlining).
-> 
-> This behavior is desireable for pages that haven't really been touched
-> lately, so exactly the two users that don't actually read/write page
-> content, but rather move untouched pages.
-> 
-> The new behavior is especially desirable for memory onlining, where we
-> allow allocation of newly onlined pages via undo_isolate_page_range()
-> in online_pages(). Right now, we always place them to the head of the
-> free list, resulting in undesireable behavior: Assume we add
-> individual memory chunks via add_memory() and online them right away to
-> the NORMAL zone. We create a dependency chain of unmovable allocations
-> e.g., via the memmap. The memmap of the next chunk will be placed onto
-> previous chunks - if the last block cannot get offlined+removed, all
-> dependent ones cannot get offlined+removed. While this can already be
-> observed with individual DIMMs, it's more of an issue for virtio-mem
-> (and I suspect also ppc DLPAR).
-> 
-> Document that this should only be used for optimizations, and no code
-> should realy on this for correction (if the order of freepage lists
-> ever changes).
-> 
-> We won't care about page shuffling: memory onlining already properly
-> shuffles after onlining. free page reporting doesn't care about
-> physically contiguous ranges, and there are already cases where page
-> isolation will simply move (physically close) free pages to (currently)
-> the head of the freelists via move_freepages_block() instead of
-> shuffling. If this becomes ever relevant, we should shuffle the whole
-> zone when undoing isolation of larger ranges, and after
-> free_contig_range().
-> 
-> Reviewed-by: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Scott Cheloha <cheloha@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Fri, Oct 2, 2020 at 3:48 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Fri, Oct 2, 2020 at 1:02 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
+>
+> > > > > My SSDT table is:
+> > > >
+> > > > ^^^^ See the difference? I can't help here.
+> >
+> > This is the DSDT table related to the GPIO controller of my board:
+> >
+> > Device (GPO1)
+> >         {
+> >             Name (_ADR, Zero)  // _ADR: Address
+> >             Name (_HID, "INT3452")  // _HID: Hardware ID
+> >             Name (_CID, "INT3452")  // _CID: Compatible ID
+> >             Name (_DDN, "General Purpose Input/Output (GPIO) Controller - Northwest")  // _DDN: DOS Device Name
+> >             Name (_UID, 0x02)  // _UID: Unique ID
+> >             Name (RBUF, ResourceTemplate ()
+> >             {
+> >                 Memory32Fixed (ReadWrite,
+> >                     0x00000000,         // Address Base
+> >                     0x00004000,         // Address Length
+> >                     _Y08)
+> >                 Interrupt (ResourceConsumer, Level, ActiveLow, Shared, ,, )
+> >                 {
+> >                     0x0000000E,
+> >                 }
+> >             })
+> >             Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> >             {
+> >                 CreateDWordField (RBUF, \_SB.GPO1._Y08._BAS, B0BA)  // _BAS: Base Address
+> >                 CreateDWordField (RBUF, \_SB.GPO1._Y08._LEN, B0LN)  // _LEN: Length
+> >                 B0BA = GP1A /* \GP1A */
+> >                 B0LN = GP1L /* \GP1L */
+> >                 Return (RBUF) /* \_SB_.GPO1.RBUF */
+> >             }
+> >
+> >             Method (_STA, 0, NotSerialized)  // _STA: Status
+> >             {
+> >                 If ((OSYS < 0x07DC))
+> >                 {
+> >                     Return (Zero)
+> >                 }
+> >
+> >                 Return (0x0F)
+> >             }
+> >         }
+>
+> So, what about adding the following
+>
+> DefinitionBlock ("linename.aml", "SSDT", 5, "", "LINENAME", 1)
+> {
+>   External (_SB_.GPO1, DeviceObj)
+>   Scope (\_SB.GPO1)
+>   {
+>       Name (_DSD, Package () {
+>           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>           Package () {
+>               Package () {
+>                   "gpio-line-names",
+>                   Package () {
+>                       "Line0",
+>                       "Line1",
+>                       "Line2",
+>                       ...
+>                   }
+>               },
+>           }
+>       })
+>   }
+> }
+>
+> ?
+>
+> (Replace '...' with meaningful line names or drop for now, but in any
+> case you need to provide as much names as lines of such GPIO
+> controller)
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+I have checked the code, so it allows you to define from 0 up to all
+lines, but no gaps.
+Thus, I have dropped '...' line in above excerpt, added the compiled
+AML to initramfs (initrd method) and voila!
 
-> ---
->  mm/page_alloc.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index daab90e960fe..9e3ed4a6f69a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -89,6 +89,18 @@ typedef int __bitwise fop_t;
->   */
->  #define FOP_SKIP_REPORT_NOTIFY	((__force fop_t)BIT(0))
->  
-> +/*
-> + * Place the (possibly merged) page to the tail of the freelist. Will ignore
-> + * page shuffling (relevant code - e.g., memory onlining - is expected to
-> + * shuffle the whole zone).
-> + *
-> + * Note: No code should rely onto this flag for correctness - it's purely
-> + *       to allow for optimizations when handing back either fresh pages
-> + *       (memory onlining) or untouched pages (page isolation, free page
-> + *       reporting).
-> + */
-> +#define FOP_TO_TAIL		((__force fop_t)BIT(1))
-> +
->  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
->  static DEFINE_MUTEX(pcp_batch_high_lock);
->  #define MIN_PERCPU_PAGELIST_FRACTION	(8)
-> @@ -1038,7 +1050,9 @@ static inline void __free_one_page(struct page *page, unsigned long pfn,
->  done_merging:
->  	set_page_order(page, order);
->  
-> -	if (is_shuffle_order(order))
-> +	if (fop_flags & FOP_TO_TAIL)
-> +		to_tail = true;
-> +	else if (is_shuffle_order(order))
->  		to_tail = shuffle_pick_tail();
->  	else
->  		to_tail = buddy_merge_likely(pfn, buddy_pfn, page, order);
-> @@ -3300,7 +3314,7 @@ void __putback_isolated_page(struct page *page, unsigned int order, int mt)
->  
->  	/* Return isolated page to tail of freelist. */
->  	__free_one_page(page, page_to_pfn(page), zone, order, mt,
-> -			FOP_SKIP_REPORT_NOTIFY);
-> +			FOP_SKIP_REPORT_NOTIFY | FOP_TO_TAIL);
->  }
->  
->  /*
-> -- 
-> 2.26.2
+% gpioinfo gpiochip1
+gpiochip1 - 77 lines:
+       line   0:      "Line0"       unused   input  active-high
+       line   1:      "Line1"       unused   input  active-high
+       line   2:      "Line2"       unused   input  active-high
+       line   3:      unnamed       unused   input  active-high
+
+
+% gpiofind Line2
+gpiochip1 2
+
+Of course you may convert _DSD to be a Method and fill the line names
+dynamically with help of ASL.
 
 -- 
-Michal Hocko
-SUSE Labs
+With Best Regards,
+Andy Shevchenko
