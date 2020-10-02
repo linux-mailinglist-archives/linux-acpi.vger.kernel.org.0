@@ -2,81 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B365C281880
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 19:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7DA2818C7
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 19:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726017AbgJBRDF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 13:03:05 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43680 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725995AbgJBRDF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 13:03:05 -0400
-Received: by mail-ot1-f67.google.com with SMTP id n61so2004157ota.10
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 10:03:04 -0700 (PDT)
+        id S2388233AbgJBRHR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 13:07:17 -0400
+Received: from mail-oo1-f66.google.com ([209.85.161.66]:43591 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388054AbgJBRHR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 13:07:17 -0400
+Received: by mail-oo1-f66.google.com with SMTP id w25so511362oos.10
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 10:07:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7CIlX7BLKx3mfpWeL5R/FKBM8L55G8uLfcJXAXkNSMU=;
-        b=GtTt67ub4+8QK/uw3os6yVvyI2rx8qreg9/uYmP5075OZGo6aTxuVtLpnRMHYQWAFS
-         T7bOfuh5H3XY8qag+ltE+/8JZrNea72O5ZP6+QGY4QCd7rHkB2lSVPBWE1gNyZ8kKKqK
-         qhNfeKFNwSisQrJwX1On5njfm5PxtYZ6XmFFsfGcQkvYen3Xdosk7o9WXdeRbaN6Xlzc
-         ZiMB9QwGg8mJbmFIFSo4EyYwG9e3a6iGGezHaDFRWid92tHwnbfB77HoT5tdLUtgeLd4
-         ZSxGXdhjNiZB6pS+8Z5GoVMk+5ErBk4vmoNYA/tVWTjgUZdnTr5abOzUEZ7awCCfOKkU
-         F2hw==
-X-Gm-Message-State: AOAM530cpIg5dQeupUALr6LuNJ40JedZD/KVzANAV3jyRF1x9fK6SsOW
-        +8zxcflyp9zLh+LbKkIxw2lHjm9nz22rMXcgF8y+TMZO
-X-Google-Smtp-Source: ABdhPJzs8MMeVz5XY4VlVRHpTXxYw50+pRT8sZd0UOj8UTT+BIRDpRT0ocpicMmRpAbLwp8rWUeCCiU8Vb7erpn7kaY=
-X-Received: by 2002:a05:6830:150a:: with SMTP id k10mr2276633otp.167.1601658182439;
- Fri, 02 Oct 2020 10:03:02 -0700 (PDT)
+        bh=iVdpyT1orToPkGsOL6ChlRjmfsWF5zRK/lf6o2mJCfg=;
+        b=FOcw9YVU/PIhVh6H3BoRIvqUBC821NW7mhcLnCXzCS8Q5amJ0KohweAqudFfwot8RE
+         8xJVa35xWJfeP4CIm2lAI3t9MeLWz0nFTOuxvUcM3I4g8s4RXyoD2Psb5Rq9NjxJK2p9
+         HIDiAXbt9snw7wwB7cSecG3mwxVJEUqAthdcN/fKKetH64cmp4pN2wKMs/Pcd84+L0tc
+         ky7IMfjAD+sTgCOkMjJANF0o2QS7z7GUWpEv/ZkLkxuLcMK19yBCuCjB4WkqDpwZ2jsQ
+         Xm+wfTx2Joy/M7jZUpoc83dpukc/5J6wwzwbyvBL6CRNrPzevGXFosDdCC5yaCuZKIHb
+         jWLg==
+X-Gm-Message-State: AOAM531yE/gw/rziffZDmWxN82IH5/MrfNY4mwNHTk+vCJv9R4Uf6URc
+        6ugRUOid/7IeJueK3+0WNTo9wNV57PEYUDZTacO+xsgD
+X-Google-Smtp-Source: ABdhPJwvAikTNOd3bVIoajksmgg+bT/E9lro631VTMxr1UHeb8T+X0WTptcCeS83qeqyabWmjbk1mvcNo7gdT2nddmk=
+X-Received: by 2002:a4a:dd0b:: with SMTP id m11mr2585489oou.75.1601658436412;
+ Fri, 02 Oct 2020 10:07:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200927215042.GA281693@decadent.org.uk>
-In-Reply-To: <20200927215042.GA281693@decadent.org.uk>
+References: <1601200549-8518-1-git-send-email-guohanjun@huawei.com>
+In-Reply-To: <1601200549-8518-1-git-send-email-guohanjun@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Oct 2020 19:02:51 +0200
-Message-ID: <CAJZ5v0gmUQw3U2yC3tQZWaZE-7DV2LUffa=dxRrF+PK5AMPAjg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / extlog: Check for RDMSR failure
-To:     Ben Hutchings <ben@decadent.org.uk>
+Date:   Fri, 2 Oct 2020 19:07:05 +0200
+Message-ID: <CAJZ5v0hpe2BByQXLx=Q8EDV6eA_1YGJ_hFXW3mdCtiywzSziCA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: memhotplug: Remove the 'state' from struct acpi_memory_device
+To:     Hanjun Guo <guohanjun@huawei.com>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        971058@bugs.debian.org, jim@photojim.ca
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 12:27 AM Ben Hutchings <ben@decadent.org.uk> wrote:
+On Sun, Sep 27, 2020 at 12:03 PM Hanjun Guo <guohanjun@huawei.com> wrote:
 >
-> extlog_init() uses rdmsrl() to read an MSR, which on older CPUs
-> provokes a error message at boot:
+> After commit 315bbae9c5cb ("ACPI / memhotplug: deal with eject request
+> in hotplug queue"), the memory device state which is defined in struct
+> acpi_memory_device is not actually useful, so remove it along with
+> symbols related to it.
 >
->     unchecked MSR access error: RDMSR from 0x179 at rIP: 0xcd047307 (native_read_msr+0x7/0x40)
->
-> Use rdmsrl_safe() instead, and return -ENODEV if it fails.
->
-> Reported-by: jim@photojim.ca
-> References: https://bugs.debian.org/971058
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
 > ---
->  drivers/acpi/acpi_extlog.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> v1->v2:
+> - Make it as a sparate cleanup patch.
 >
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index f138e12b7b82..72f1fb77abcd 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -222,9 +222,9 @@ static int __init extlog_init(void)
->         u64 cap;
->         int rc;
+>  drivers/acpi/acpi_memhotplug.c | 12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
 >
-> -       rdmsrl(MSR_IA32_MCG_CAP, cap);
+> diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
+> index e294f44..468ebb7 100644
+> --- a/drivers/acpi/acpi_memhotplug.c
+> +++ b/drivers/acpi/acpi_memhotplug.c
+> @@ -36,11 +36,6 @@
+>
+>  #ifdef CONFIG_ACPI_HOTPLUG_MEMORY
+>
+> -/* Memory Device States */
+> -#define MEMORY_INVALID_STATE   0
+> -#define MEMORY_POWER_ON_STATE  1
+> -#define MEMORY_POWER_OFF_STATE 2
 > -
-> -       if (!(cap & MCG_ELOG_P) || !extlog_get_l1addr())
-> +       if (rdmsrl_safe(MSR_IA32_MCG_CAP, &cap) ||
-> +           !(cap & MCG_ELOG_P) ||
-> +           !extlog_get_l1addr())
->                 return -ENODEV;
+>  static int acpi_memory_device_add(struct acpi_device *device,
+>                                   const struct acpi_device_id *not_used);
+>  static void acpi_memory_device_remove(struct acpi_device *device);
+> @@ -64,8 +59,7 @@ struct acpi_memory_info {
+>  };
 >
->         rc = -EINVAL;
+>  struct acpi_memory_device {
+> -       struct acpi_device * device;
+> -       unsigned int state;     /* State of the memory device */
+> +       struct acpi_device *device;
+>         struct list_head res_list;
+>  };
+>
+> @@ -233,7 +227,6 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
+>         }
+>         if (!num_enabled) {
+>                 dev_err(&mem_device->device->dev, "add_memory failed\n");
+> -               mem_device->state = MEMORY_INVALID_STATE;
+>                 return -EINVAL;
+>         }
+>         /*
+> @@ -304,9 +297,6 @@ static int acpi_memory_device_add(struct acpi_device *device,
+>                 return result;
+>         }
+>
+> -       /* Set the device state */
+> -       mem_device->state = MEMORY_POWER_ON_STATE;
+> -
+>         result = acpi_memory_check_device(mem_device);
+>         if (result) {
+>                 acpi_memory_device_free(mem_device);
+> --
 
-Applied as 5.10 material, thanks!
+Applied as 5.10 material with a couple of minor edits in the subject
+and changelog, thanks!
