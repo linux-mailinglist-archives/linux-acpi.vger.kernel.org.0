@@ -2,84 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F9CD281763
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 18:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A5A281838
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 18:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387965AbgJBQES (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 12:04:18 -0400
-Received: from mga17.intel.com ([192.55.52.151]:35080 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726090AbgJBQES (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 12:04:18 -0400
-IronPort-SDR: LecBRMnfDShrs0Qa9uYUtkWGVDoKfWhYgcoZT+xovqSFLdrHijHYqLjddY8ES34bGmPkl2gBCd
- 5gfDaIuJVO2Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9762"; a="143012882"
-X-IronPort-AV: E=Sophos;i="5.77,328,1596524400"; 
-   d="scan'208";a="143012882"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 09:04:15 -0700
-IronPort-SDR: udVJL/X8/W+sS40VxCA/bJb7m+t4hkrhV5lr5F50i8cJL4nqY/4BpWyu9Ine+j38JpOzbwq5K5
- eO+Bl6j/sG3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,328,1596524400"; 
-   d="scan'208";a="294879708"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga007.fm.intel.com with ESMTP; 02 Oct 2020 09:04:14 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 2 Oct 2020 09:04:14 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 2 Oct 2020 09:04:13 -0700
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
- Fri, 2 Oct 2020 09:04:13 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Borislav Petkov <bp@alien8.de>, Shiju Jose <shiju.jose@huawei.com>
-CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: RE: [RFC PATCH 0/7] RAS/CEC: Extend CEC for errors count check on
- short time period
-Thread-Topic: [RFC PATCH 0/7] RAS/CEC: Extend CEC for errors count check on
- short time period
-Thread-Index: AQHWmLdSoSVhEXUwu0K9roIwfCS2WamEt0cA///Ax6A=
-Date:   Fri, 2 Oct 2020 16:04:11 +0000
-Message-ID: <fd12bc3222784e06bb5b0ca1d1f1e1ae@intel.com>
-References: <20201002122235.1280-1-shiju.jose@huawei.com>
- <20201002124352.GC17436@zn.tnic>
-In-Reply-To: <20201002124352.GC17436@zn.tnic>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.22.254.132]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726386AbgJBQrR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 12:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47616 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388064AbgJBQrR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 12:47:17 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB93FC0613E4
+        for <linux-acpi@vger.kernel.org>; Fri,  2 Oct 2020 09:47:16 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id k25so2221854ioh.7
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 09:47:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
+        b=a1gXL5toNpXLmacnL7yhtJtYu+HmO+zq2HSfVRcyZ9z5aGYPOUMcOsxSjRxLjTiwhj
+         zJBgESeE1qI3ToOAsK8MZWwKmHt51a3nMoD6FLDGupRKEjHEktpPC4yX8sNz7w/nKYtr
+         hL0t3LhSNNDXOlNOrlInWA796iaMFGVw4FjQQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
+        b=JQz66DWWsd0YpFxl2iWRvdJBDplNmRrhaFH+Irrk42nSlsfYSfPdkuSU21xgwhH5lw
+         eKxSL4V15WVzY1HUlSIXhOKi2GhB8a/ynC7eC8nDstsgML/SA7TAl7M7x08SkchvAAyx
+         4x7Lg/YRSR5psc2DElv4TgvNEhKJjUnJwCl7bvsqRkOkg5lPF4zoBlUobhEkd96ZXxWs
+         U1K2LD3sh/+erXNP2alkTwGBTYRLEElt5YWkeGKQnlFrRcLkC9f11M/v8bFvXIc2ylT/
+         CgF5xikiP6M5eXg8XnGy3pqb6pp1mJHGvRfnNGpCGwUroc7kGQrzd9gvomLu0zhd79yg
+         Oxlg==
+X-Gm-Message-State: AOAM531tKjPoFaGiG23V4WwyGeMIuVJZopDWDyws7gxyxRR8Px9S3rI+
+        hz++P2+xWA9FHerzsvPJnuSEOw==
+X-Google-Smtp-Source: ABdhPJzrfRpNIYzV2uFrhJdCHt/QTSYBKDnpK2pS6zKI5Da6BP91uaqOQt3S2LEYZ+yKmaDKjo66AQ==
+X-Received: by 2002:a05:6638:10e9:: with SMTP id g9mr2960820jae.139.1601657236070;
+        Fri, 02 Oct 2020 09:47:16 -0700 (PDT)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id h2sm932771ioj.5.2020.10.02.09.47.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2020 09:47:15 -0700 (PDT)
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+To:     Joe Perches <joe@perches.com>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Shuah Khan <shuah@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
+        drbd-dev@tron.linbit.com,
+        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+ <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+ <20200929124108.GY4282@kadam>
+ <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
+ <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
+ <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <81b94c3a-43d6-c9f5-0bc0-43bf65b3d5fc@linuxfoundation.org>
+Date:   Fri, 2 Oct 2020 10:47:13 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiBCZWNhdXNlIGZyb20gbXkgeDg2IENQVXMgbGltaXRlZCBleHBlcmllbmNlLCB0aGUgY2FjaGUg
-YXJyYXlzIGFyZSBtb3N0bHkNCj4gZmluZSBhbmQgZXJyb3JzIHJlcG9ydGVkIHRoZXJlIGFyZSBu
-b3Qgc29tZXRoaW5nIHRoYXQgaGFwcGVucyB2ZXJ5DQo+IGZyZXF1ZW50bHkgc28gd2UgZG9uJ3Qg
-ZXZlbiBuZWVkIHRvIGNvbGxlY3QgYW5kIGNvdW50IHRob3NlLg0KDQpPbiBJbnRlbCBYODYgd2Ug
-bGVhdmUgdGhlIGNvdW50aW5nIGFuZCB0aHJlc2hvbGQgZGVjaXNpb25zIGFib3V0IGNhY2hlDQpo
-ZWFsdGggdG8gdGhlIGhhcmR3YXJlLiBXaGVuIGEgY2FjaGUgcmVhY2hlcyB0aGUgbGltaXQsIGl0
-IGxvZ3MgYSAieWVsbG93Ig0Kc3RhdHVzIGluc3RlYWQgb2YgImdyZWVuIiBpbiB0aGUgbWFjaGlu
-ZSBjaGVjayBiYW5rIChlcnJvciBpcyBzdGlsbCBtYXJrZWQNCmFzICJjb3JyZWN0ZWQiKS4gVGhl
-IG1jZWxvZyg4KSBkYWVtb24gbWF5IGF0dGVtcHQgdG8gdGFrZSBDUFVzIHRoYXQgc2hhcmUNCnRo
-YXQgY2FjaGUgb2ZmbGluZS4NCg0KU2VlIEludGVsIFNETSB2b2x1bWUgM0IgIjE1LjQgRW5oYW5j
-ZWQgQ2FjaGUgRXJyb3IgUmVwb3J0aW5nIg0KDQotVG9ueQ0KDQoNCg==
+On 9/29/20 7:42 AM, Shuah Khan wrote:
+> On 9/29/20 7:34 AM, Joe Perches wrote:
+>> On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
+>>> On Tue, 29 Sep 2020, Dan Carpenter wrote:
+>>>> The times where commas are used deliberately to replace curly braces 
+>>>> are
+>>>> just evil.  Either way the code is cleaner with semi-colons.
+>>>
+>>> I also found exaamples like the following to be particularly unforunate:
+>>>
+>>>                                  fprintf(stderr,
+>>>                                          "page_nr %lu wrong count %Lu 
+>>> %Lu\n",
+>>>                                         page_nr, count,
+>>>                                         count_verify[page_nr]), exit(1);
+>>>
+>>> The exit is very hard to see, unless you know to look for it.
+>>
+>> I sent that patch last month.
+>> https://patchwork.kernel.org/patch/11734877/
+>>
+> 
+> I see what happened. This patch touches lib, cpupower, and selftests.
+> Guess lost in the limbo of who takes it.
+> 
+>   tools/lib/subcmd/help.c                    |  10 +-
+>   tools/power/cpupower/utils/cpufreq-set.c   |  14 +-
+>   tools/testing/selftests/vm/gup_benchmark.c |  18 +-
+>   tools/testing/selftests/vm/userfaultfd.c   | 296 +++++++++++++--------
+>   4 files changed, 210 insertions(+), 128 deletions(-)
+> 
+> I can take it through one of my trees.
+> 
+
+Rafael, Andrew,
+
+This patch is now applied to
+https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git 
+fixes branch.
+
+This spans pm, kselftest-mm tests and tools/lib and has been
+in limbo for a few weeks for that reason.
+
+I decided to take this through kselftest tree to avoid having
+Joe split the patches.
+
+thanks,
+-- Shuah
+
+
+
+
