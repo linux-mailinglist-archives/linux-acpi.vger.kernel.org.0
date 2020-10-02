@@ -2,31 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 441F92810E8
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 13:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 272752810FE
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 13:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgJBLFs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 07:05:48 -0400
-Received: from mail-eopbgr10054.outbound.protection.outlook.com ([40.107.1.54]:32234
-        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
+        id S2387768AbgJBLJV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 07:09:21 -0400
+Received: from mail-eopbgr80053.outbound.protection.outlook.com ([40.107.8.53]:20547
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725920AbgJBLFr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 07:05:47 -0400
+        id S2387669AbgJBLJS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 07:09:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
  s=selector2-armh-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNk2Snx+xIn6u0J0WNFDox8s1P3tucfIFsotgMwNnbI=;
- b=LMA90sN4jpP2z0jApl0MxVEmNpO9Lqd2wlrFIVQZSLGvedFpqp9g67nbFdwLEOtI7p0hi1Ua1Yk27HnxD/pJLFspKN2ZHn2S6qVL121FSbxfB7gtDhZGAecnj4Mygy7eAO6ukVSp509WOliOkm2VuUFzrLVp+cOXVArnIC6p9bk=
-Received: from AM6PR10CA0099.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:209:8c::40)
- by HE1PR0802MB2233.eurprd08.prod.outlook.com (2603:10a6:3:c1::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.37; Fri, 2 Oct
- 2020 11:05:30 +0000
-Received: from AM5EUR03FT007.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:209:8c:cafe::70) by AM6PR10CA0099.outlook.office365.com
- (2603:10a6:209:8c::40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.36 via Frontend
- Transport; Fri, 2 Oct 2020 11:05:29 +0000
+ bh=NIMHDYM6SOKolg75MkAcYUdcmJgViRFjG6eYQ5dBi1U=;
+ b=AQH1Aku8qm3BnysBPNSSw9XI896Wyp5uUHAuk1d4EIPvcUouHSji4+l79TarGO0Ai8CsU4mN6RqCX+5YnHocXAkXW8qJHFRbu16C8KDr/FeuMgbGNn4h344rPTChpKK7eOxdEu0EgBZopBdJKS3lrUN+Q+jiT0GtgO3B+MeroNg=
+Received: from DB6PR07CA0174.eurprd07.prod.outlook.com (2603:10a6:6:43::28) by
+ DB7PR08MB3100.eurprd08.prod.outlook.com (2603:10a6:5:28::31) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3412.23; Fri, 2 Oct 2020 11:09:10 +0000
+Received: from DB5EUR03FT059.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:6:43:cafe::62) by DB6PR07CA0174.outlook.office365.com
+ (2603:10a6:6:43::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.13 via Frontend
+ Transport; Fri, 2 Oct 2020 11:09:10 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
  smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
  header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=pass action=none
@@ -35,50 +34,51 @@ Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
  63.35.35.123 as permitted sender) receiver=protection.outlook.com;
  client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
 Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM5EUR03FT007.mail.protection.outlook.com (10.152.16.145) with Microsoft SMTP
+ DB5EUR03FT059.mail.protection.outlook.com (10.152.21.175) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3433.34 via Frontend Transport; Fri, 2 Oct 2020 11:05:29 +0000
-Received: ("Tessian outbound bac899b43a54:v64"); Fri, 02 Oct 2020 11:05:29 +0000
+ 15.20.3433.34 via Frontend Transport; Fri, 2 Oct 2020 11:09:10 +0000
+Received: ("Tessian outbound 7fc8f57bdedc:v64"); Fri, 02 Oct 2020 11:09:10 +0000
 X-CheckRecipientChecked: true
-X-CR-MTA-CID: 88c0a716cc965fd0
+X-CR-MTA-CID: 5e5214c1a5cafbd7
 X-CR-MTA-TID: 64aa7808
-Received: from 31d25fdc087a.2
-        by 64aa7808-outbound-1.mta.getcheckrecipient.com id E8AC061C-DF22-4D15-9D14-887CBA852B14.1;
-        Fri, 02 Oct 2020 11:05:24 +0000
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 31d25fdc087a.2
+Received: from 68e6c8c6f6bf.1
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 86674786-9E8D-4611-AA9B-98441FD1E2EB.1;
+        Fri, 02 Oct 2020 11:08:33 +0000
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 68e6c8c6f6bf.1
     (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Fri, 02 Oct 2020 11:05:24 +0000
+    Fri, 02 Oct 2020 11:08:33 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DvF6rCtULYdJWPWYKWzuwSHqdh1Y61J+idu3fBBCkI2vzCfRxl5byemF6yEhVAZ6iNlVOLosUUmq89BaV9kaLIw0j8mp0adNcVZLP615NxxUSsTcDtpznVXZubr3v6r0gHU95Srj2+qv7MWEg6ykHT5VRQiUTZN22pNxBQoiRJiHCr1ZgfU3ypWkN19BZqcJxam9A4cxL1I6pBx5lF+fNjle0Ctn1gMSesjIVLcNkCBirUnP+b5zubt/Ub3XR+O+bIa6DXJKqRWoLn4SNu/MTVedMrR/Q94DhvwwOqePiLOvx2pvsCxmXyvm+jj26VmupiemnOkU3erY0tQr28Bmyg==
+ b=bsvSpWwcemH8ACp5NqWLhlDJtKef2AJDBEeXTosHdYiBT4kk6bGruxOSvRnpQfN+7BQDAMBY1Frf38RVgZ7G+lDvm1Ff7h/S3qMKyDfzBgAhcZ86i5OMIUYJ3X+FCTnz4DRB2OqK6aH4fQygWs/mwLP40EN0wc2t2BTzaPsOxP/D4jZqxCpH+1E48PsrzApo9eHRuZthDgg8BULdGXs2/l007txtpanuHYN+WLFy3JEDRDVkB+r20ATqB3NgdYBCsBb+bwMCAlKZhM7uA1PUcqGYUySmliRFnHtn/wrhAycbePaLjdADnc9chGxFOWk5nNel7StKOGPyzRN2GVyBmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNk2Snx+xIn6u0J0WNFDox8s1P3tucfIFsotgMwNnbI=;
- b=OGvvPtmZJJe3x6WsLjy6CYSdquah2Jnsre+WTvbzHNw2oQJW4IueVVkRv44Cw42XZHPFxeT72BgnUU2dhlzuxKEfHrCT6/nXbMTAH0LpWS/tBYz+hrdRSWppdJJG6db0oNc2zh5IUGnYHNaB/ycuhkaV0T5swBTa20uXmd+R6KGQu0e64cktfgTPBgL6XAkuNSmHca9GBCPWYQNIwpvWnbPNWOaCeX3Z/nvbdG2dBXSeOsEYkKxXruiSu4Cgt0PIpW/0YuCAv1Ek2/eeXJZLnutGrC7shb77P4wqgSifXU1N7Kf+4tyh6dLnSC+vBXfcFOgJ87uLMl16PeChYW4Ocw==
+ bh=NIMHDYM6SOKolg75MkAcYUdcmJgViRFjG6eYQ5dBi1U=;
+ b=DgBCGTyUfO2SlH4wFN/s0U9dHxh4SilQ4HuE8XTo/RxTgBaG0sfw0LMoZ4XUPPedbazXasQENYJc8JlQNxvFwrhSUi7QXm4WQlO989ydGmCxke7TYikMxdirVhuABioEM2LFNLt5y4bVJHDCk6QxzCWN4RrG+EwvdJ4/Ior+6ApMrqDmgB0FRe7PmRXziMUeCQvOuqaL6x6ImG/LihsMUDU6hg0DB/9XlGBCCih3u4bHPtHIA+7yHa1Q0o53F5wORmlLcb6GbAHq/2pGTJuL59+WdMvO24amocEhNCqxqTe3mYwSOYCqTrjYdFin+J3kdn56kxRxvKnmY/IagtSV+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
  header.d=arm.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
  s=selector2-armh-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNk2Snx+xIn6u0J0WNFDox8s1P3tucfIFsotgMwNnbI=;
- b=LMA90sN4jpP2z0jApl0MxVEmNpO9Lqd2wlrFIVQZSLGvedFpqp9g67nbFdwLEOtI7p0hi1Ua1Yk27HnxD/pJLFspKN2ZHn2S6qVL121FSbxfB7gtDhZGAecnj4Mygy7eAO6ukVSp509WOliOkm2VuUFzrLVp+cOXVArnIC6p9bk=
+ bh=NIMHDYM6SOKolg75MkAcYUdcmJgViRFjG6eYQ5dBi1U=;
+ b=AQH1Aku8qm3BnysBPNSSw9XI896Wyp5uUHAuk1d4EIPvcUouHSji4+l79TarGO0Ai8CsU4mN6RqCX+5YnHocXAkXW8qJHFRbu16C8KDr/FeuMgbGNn4h344rPTChpKK7eOxdEu0EgBZopBdJKS3lrUN+Q+jiT0GtgO3B+MeroNg=
 Authentication-Results-Original: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
 Received: from DB8PR08MB4010.eurprd08.prod.outlook.com (2603:10a6:10:ab::15)
- by DBAPR08MB5831.eurprd08.prod.outlook.com (2603:10a6:10:1a8::20) with
+ by DB7PR08MB3722.eurprd08.prod.outlook.com (2603:10a6:10:33::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.38; Fri, 2 Oct
- 2020 11:05:19 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.37; Fri, 2 Oct
+ 2020 11:08:32 +0000
 Received: from DB8PR08MB4010.eurprd08.prod.outlook.com
  ([fe80::2d77:cba8:3fc8:3d4f]) by DB8PR08MB4010.eurprd08.prod.outlook.com
  ([fe80::2d77:cba8:3fc8:3d4f%3]) with mapi id 15.20.3412.029; Fri, 2 Oct 2020
- 11:05:19 +0000
-Subject: Re: [net-next PATCH v1 3/7] net: phy: Introduce fwnode_get_phy_id()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
+ 11:08:32 +0000
+Subject: Re: [net-next PATCH v1 1/7] Documentation: ACPI: DSD: Document MDIO
+ PHY
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Jeremy Linton <jeremy.linton@arm.com>,
         Andrew Lunn <andrew@lunn.ch>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
@@ -87,174 +87,210 @@ To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux.cj@gmail.com,
-        netdev@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux.cj@gmail.com, netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Diana Madalina Craciun <diana.craciun@nxp.com>,
         Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>, nd <nd@arm.com>
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, nd <nd@arm.com>
 References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
- <20200930160430.7908-4-calvin.johnson@oss.nxp.com>
+ <20200930160430.7908-2-calvin.johnson@oss.nxp.com>
+ <CAJZ5v0jP8L=bBMYTUkYCSwN=fy8dwTdjqu1JurSxTa2bAHRLew@mail.gmail.com>
 From:   Grant Likely <grant.likely@arm.com>
-Message-ID: <11e6b553-675f-8f3d-f9d5-316dae381457@arm.com>
-Date:   Fri, 2 Oct 2020 12:05:14 +0100
+Message-ID: <39b9a51d-56f6-75f8-a88e-71a7e01b9f55@arm.com>
+Date:   Fri, 2 Oct 2020 12:08:27 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
-In-Reply-To: <20200930160430.7908-4-calvin.johnson@oss.nxp.com>
+In-Reply-To: <CAJZ5v0jP8L=bBMYTUkYCSwN=fy8dwTdjqu1JurSxTa2bAHRLew@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0399.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:f::27) To DB8PR08MB4010.eurprd08.prod.outlook.com
+X-ClientProxiedBy: LO2P123CA0084.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::17) To DB8PR08MB4010.eurprd08.prod.outlook.com
  (2603:10a6:10:ab::15)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.16.178] (188.30.19.167) by LO2P265CA0399.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Fri, 2 Oct 2020 11:05:16 +0000
+Received: from [192.168.16.178] (188.30.19.167) by LO2P123CA0084.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:138::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.26 via Frontend Transport; Fri, 2 Oct 2020 11:08:28 +0000
 X-Originating-IP: [188.30.19.167]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: db6b483a-848a-4808-88e8-08d866c31311
-X-MS-TrafficTypeDiagnostic: DBAPR08MB5831:|HE1PR0802MB2233:
+X-MS-Office365-Filtering-Correlation-Id: e258e3d2-aa75-488d-7b39-08d866c396df
+X-MS-TrafficTypeDiagnostic: DB7PR08MB3722:|DB7PR08MB3100:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <HE1PR0802MB22333A167025998EAFC9770995310@HE1PR0802MB2233.eurprd08.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <DB7PR08MB310021B46E02BFF7E45B4EEB95310@DB7PR08MB3100.eurprd08.prod.outlook.com>
 x-checkrecipientrouted: true
 NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;OLM:6430;
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: Tr36l5jprVJkh4AUADxqVsG6hIojkxwAxxs1f8hoehL8/osAt3ZLPU59pgt4uhdLBKFtBIlzUO27FIAK8mCsKMhZkxDY2fUwYy+zForJd8xaffZIAHASahgWZf+0HKCrLOfJRiLRziEPcnv1BZxwFF9X4V8g5BwgfWoJ2CN6Ym6n/zW2E9ZfoDtpKf09I1wv+hdaBvoARKB0Z81sAPsmnrUj5ZdntnNTD3cEIeXCMHvEeXhJhxkYGtdbDW6MRwld2u2Fh2OOLTdOW77GJQUMQfFz5AHKUthqdkgQ4VvFyYmS/3v0Tetqok4IG/wrkaFY5gliwQo+Ac40Ms5nVAGYEmXjS60ZcJjXpedIfDARBxxnEOrWjCVMlcBoc5nbPPeh3iTe9wgh/JWc13b2dM6HcQ==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(396003)(346002)(366004)(376002)(478600001)(36756003)(2616005)(6486002)(956004)(26005)(66556008)(66476007)(110136005)(83380400001)(31696002)(66946007)(86362001)(186003)(16526019)(54906003)(55236004)(2906002)(5660300002)(53546011)(31686004)(316002)(4326008)(16576012)(8936002)(52116002)(8676002)(7416002)(44832011)(921003)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: yuD4QfqttM6fqNtwYFgvug+1j6x64xGZn5GZikyzoi6g1X7ilQKwG5mAlqYV4GgmrvefhE4pAL8XTXcFKJNyswOA/T7L2nXch7t6qFzVU9eeAh8WV+MNO3hjpG/4Zzkw1kHF14hWNG14lN9MiZIBANST2HdEA1uKUTOdgld3eeG7AfmXx+1Sj519ui/wIT+609AVsrj8DDXzFxwbrolNA0ThAP72oy+XZDl6sE0u/OWCr9+mtbDADwKLp6PE9QlcKKVtONBtqzFdUHvem20pr/2lQFxt2jvS18mCDBBDZbx5roQqRfe7tX9hSwB8QUkEvb8TX5qKzNzyzb0myUMjTBEFr5FAwDwF5beDdWUiDcU+RHIl5b6B+R/7z+hxw8GOHgmekT4mQJSqWujzqhduC+s0nNOALWAyIjVY3SAoYjBwx5l7lKxJd0XekpX8wrJihFab3yhZSPj1CZesVuyEwdDhHu0STXHWMfOuCKdXyFIScvcQ/4Foh7hCbI7IQYoi9IP/Lys2yjpHE7NDzkvIot9PxQbLzLEVcoCdar5C1S0XaFji4PV8nwK5tkZgDoDJO8kS9Em45e7f5lPr0u52FygMBuq7g7xoXX01SJ5RBx8XYvTf5Hcw4z+jckNGuQfvtOMucTwuZuR3/FvMieSfzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR08MB5831
+X-Microsoft-Antispam-Message-Info-Original: PS9ZZearumiMCsa6DJF6WBLUiQl14FR5F5zGmHbZrIVsTQN6ZSNwDrcS+jXNtjaLSzFq6MFZqtt27Gtj4ucg7Ywot+F9eoRmpd1/4kBP+0kdTAqrxzk6F/adaT/3mnnQksY7vYc0ffb0sMMEGakinpqvDRGTte1wJ9JacsSaMVpHsHXb6xLaj8tS8gsQDTzYoPAHVkkeLYm6eW6Ja4D8cGMqnHy0FJ7p8dvESCSBnFdFyy3h3lDMknGXA62PT09Lkz29ghdO5NhKJjgYQmwVmo9+88d0YYKwzs7JsTsZCciaoOuvnsrT6PK+m7KeRWTham3CjecvEUIDImrD0UFJyqgb9zSGplFkYShn2WS1AWPObHJ+k3kGqqaykBMsjLrQ
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(396003)(376002)(136003)(346002)(39860400002)(26005)(66946007)(36756003)(53546011)(16576012)(83380400001)(7416002)(110136005)(31686004)(478600001)(66476007)(2906002)(66556008)(55236004)(54906003)(186003)(52116002)(6486002)(2616005)(4326008)(956004)(316002)(86362001)(31696002)(44832011)(8936002)(5660300002)(8676002)(16526019)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: KrULciEpFdr1qzV4jNv014+I3s/scxOLE0Da+fnxSmkBTFH9Xy+ss/PbgQO4200wQHtDDSk/zajnS7lC4WQwsiknvCKnCTHidPwxp12JUgNc4fmkMajrPnDBTndAiy+hJJyuwgYN9V06yMQ9mPkluVKnoConh9lvmu3FrbKlnXCvsVzTx393lM4eEL/x098ZDPeRGwzCb34fd/XzMy4Ed4fK0XIi/FlCHMEqkHBDrerFt5p5j0Tc9A6YzWNspdn56Akwn59Ei3fuduQExhdbKnzTXI3eGCcruxPxUj7l80eHXVISBNzFF2qvwPDWZJcLRXoUQKJYFkW3nQMnpDQprcSoK6H2m5kivktWWi+cM+qpKLEnEZFwKEm/8KAkGoDcq0ZG9ByiCY0Ao91YKRhtALN7kMeqLMLACOPEZUJajGAvmot3RxP5RWrb9UNeat0+wom7MXmuR3aHfSS/M5bdBoPonsJpOFktwhNo7EWwve0V/2Qntv1mbUFicMDHeyfruMXRSXwAoTUSB77sTm2nP+jOnrOtf1ttWCjpneHgTaZCRJmzkei+oGguAgijooFyzQpU5Ny8q1FJfhgk4y2DjYfz0aQKj5+qjPzdjXD4kWvNLWUIykLcenN+icvAQyBkgT7XkGjSDlwcxiFvhplQbQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR08MB3722
 Original-Authentication-Results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
 X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM5EUR03FT007.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: c853c894-889f-43ae-7b6b-08d866c30c9f
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: DB5EUR03FT059.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 34bf416b-aff7-4ce2-9a73-08d866c37f53
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RROT0Ymq+u/vCae17ntqDGqK2JcB6kHCF81zEen1owTQplJjcRlPB694C0cncj3r2R33P6isNw+vOUQLM8wEiIl8ZjxmB9qSlcSwHL7VKTtMEVNIvhBL3xPn9gesTSSN/Ox68rstmLxuJH6q/U00abmsY0aKTvzK9TLtp/vOlNkjMJQWT4k9w2K9l9C9L+P7vowEGR3/tqe5S5R0H+o4wL+vM8GpdiCXP3unfKTl/cZa0WYqlv93BaL4CQZbzoHPFvlqDyBhX3Xcp75RPfV8SloR7i7CotZAD8/1nJW1ZaI9i5GgDydjwgjHWm/4ssuhRiuI+J/DWfUkHerSSxO2cuokAys+tpvTWDU8HbUWLYAvekc/V+O31Hg3+09A+7F27opauWDp/CxYyyELDNZHJP7P+EtrXkMUP81S+G8ZxK9DoQZkqmu9zR2pO7vxPqKy
-X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(39860400002)(136003)(376002)(346002)(396003)(46966005)(31696002)(8936002)(81166007)(82310400003)(47076004)(6486002)(356005)(82740400003)(2616005)(2906002)(956004)(44832011)(478600001)(8676002)(186003)(16576012)(55236004)(70586007)(31686004)(86362001)(336012)(450100002)(36756003)(5660300002)(70206006)(36906005)(110136005)(316002)(83380400001)(26005)(53546011)(4326008)(16526019)(54906003)(921003)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: lMACAbguczCQHOfd/98A2XbmLddbTXc0VVuRhbBQ3/vCcaZ9UKX6RaTrJMq8OSEq/OHGnuw8+9Dr/CSG54JmOImDhWjUNNlI5LIeqRaqLV2H2ijSV1RK4gq08S0mE0HYVHpRLWCDq0aZo9YLx76Djw3ZASDIRbQJh0lPvFau7oRymaRtp3GMlULV6rUV1sET93qXF6IZQhJk5FqEb+CkDN2IyqxhI0UbbUIQ2UQL8U3P+N60aMNPs5cE1dEmBY//UG/rw74wJZz94FBvupmuYK1ENV6vwjE7lLt77HX7/0SmBrLuRUERGPbCnNUZVxLcENiYKCWcbDAdVz5Cu8w0fsVcftov/7fuY/+slJW9CkAYVy7T7IknbOtZ10YAlFbE+uvUtPiM7HiWsJZmH3MVL5MIMXwq0pDnZb2KgIfVghAbwOJH9xM4lYt0xXGH/rubmtp525VEFxP6lqP3WWixtA3A3sgOzylVZeG/jbvmK8w=
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(39860400002)(136003)(346002)(376002)(396003)(46966005)(82740400003)(5660300002)(81166007)(16526019)(31686004)(478600001)(450100002)(26005)(47076004)(82310400003)(70586007)(356005)(54906003)(8936002)(336012)(110136005)(6486002)(70206006)(2616005)(53546011)(956004)(55236004)(16576012)(316002)(4326008)(2906002)(8676002)(86362001)(83380400001)(44832011)(186003)(36756003)(31696002)(43740500002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2020 11:05:29.6517
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2020 11:09:10.8689
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: db6b483a-848a-4808-88e8-08d866c31311
+X-MS-Exchange-CrossTenant-Network-Message-Id: e258e3d2-aa75-488d-7b39-08d866c396df
 X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM5EUR03FT007.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DB5EUR03FT059.eop-EUR03.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0802MB2233
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR08MB3100
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 30/09/2020 17:04, Calvin Johnson wrote:
-> Extract phy_id from compatible string. This will be used by
-> fwnode_mdiobus_register_phy() to create phy device using the
-> phy_id.
+On 30/09/2020 17:37, Rafael J. Wysocki wrote:
+> On Wed, Sep 30, 2020 at 6:05 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+>>
+>> Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+>> provide them to be connected to MAC.
+>>
+>> Describe properties "phy-handle" and "phy-mode".
+>>
+>> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+>> ---
+>>
+>>   Documentation/firmware-guide/acpi/dsd/phy.rst | 78 +++++++++++++++++++
+>>   1 file changed, 78 insertions(+)
+>>   create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+>>
+>> diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+>> new file mode 100644
+>> index 000000000000..f10feb24ec1c
+>> --- /dev/null
+>> +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+>> @@ -0,0 +1,78 @@
+>> +.. SPDX-License-Identifier: GPL-2.0
+>> +
+>> +=========================
+>> +MDIO bus and PHYs in ACPI
+>> +=========================
+>> +
+>> +The PHYs on an mdiobus are probed and registered using
+>> +fwnode_mdiobus_register_phy().
+>> +Later, for connecting these PHYs to MAC, the PHYs registered on the
+>> +mdiobus have to be referenced.
+>> +
+>> +phy-handle
+>> +-----------
+>> +For each MAC node, a property "phy-handle" is used to reference the
+>> +PHY that is registered on an MDIO bus.
 > 
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> ---
+> It is not clear what "a property" means in this context.
 > 
->   drivers/net/phy/phy_device.c | 32 +++++++++++++++++++++++++++++++-
->   include/linux/phy.h          |  5 +++++
->   2 files changed, 36 insertions(+), 1 deletion(-)
+> This should refer to the documents introducing the _DSD-based generic
+> device properties rules, including the GUID used below.
 > 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index c4aec56d0a95..162abde6223d 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -9,6 +9,7 @@
->   
->   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->   
-> +#include <linux/acpi.h>
->   #include <linux/bitmap.h>
->   #include <linux/delay.h>
->   #include <linux/errno.h>
-> @@ -845,6 +846,27 @@ static int get_phy_c22_id(struct mii_bus *bus, int addr, u32 *phy_id)
->   	return 0;
->   }
->   
-> +/* Extract the phy ID from the compatible string of the form
-> + * ethernet-phy-idAAAA.BBBB.
-> + */
-> +int fwnode_get_phy_id(struct fwnode_handle *fwnode, u32 *phy_id)
-> +{
-> +	unsigned int upper, lower;
-> +	const char *cp;
-> +	int ret;
-> +
-> +	ret = fwnode_property_read_string(fwnode, "compatible", &cp);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (sscanf(cp, "ethernet-phy-id%4x.%4x", &upper, &lower) == 2) {
-> +		*phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
-> +		return 0;
-> +	}
-> +	return -EINVAL;
-> +}
-> +EXPORT_SYMBOL(fwnode_get_phy_id);
+> You need to say whether or not the property is mandatory and if it
+> isn't mandatory, you need to say what the lack of it means.
+> 
+>> +
+>> +phy-mode
+>> +--------
+>> +Property "phy-mode" defines the type of PHY interface.
+> 
+> This needs to be more detailed too, IMO.  At the very least, please
+> list all of the possible values of it and document their meaning.
 
-This block, and the changes in patch 4 duplicate functions from 
-drivers/of/of_mdio.c, but it doesn't refactor anything in 
-drivers/of/of_mdio.c to use the new path. Is your intent to bring all of 
-the parsing in these functions of "compatible" into the ACPI code path?
+If the goal is to align with DT, it would be appropriate to point to 
+where those properties are defined for DT rather than to have a separate 
+description here. I suggest something along the lines of:
 
-If so, then the existing code path needs to be refactored to work with 
-fwnode_handle instead of device_node.
+    The "phy-mode" _DSD property is used to describe the connection to
+    the PHY. The valid values for "phy-mode" are defined in
+    Documentation/devicetree/bindings/ethernet-controller.yaml
 
-If not, then the DT path in these functions should call out to of_mdio, 
-while the ACPI path only does what is necessary.
+> 
+>> +
+>> +An example of this is shown below::
+>> +
+>> +DSDT entry for MACs where PHY nodes are referenced
+>> +--------------------------------------------------
+>> +       Scope(\_SB.MCE0.PR17) // 1G
+>> +       {
+>> +         Name (_DSD, Package () {
+>> +            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>> +                Package () {
+>> +                    Package (2) {"phy-mode", "rgmii-id"},
+>> +                    Package (2) {"phy-handle", Package (){\_SB.MDI0.PHY1}}
+> 
+> What is "phy-handle"?
+> 
+> You haven't introduced it above.
 
-> +
->   /**
->    * get_phy_device - reads the specified PHY device and returns its @phy_device
->    *		    struct
-> @@ -2866,7 +2888,15 @@ EXPORT_SYMBOL_GPL(device_phy_find_device);
->    */
->   struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode)
->   {
-> -	return fwnode_find_reference(fwnode, "phy-handle", 0);
-> +	struct fwnode_handle *phy_node;
-> +
-> +	phy_node = fwnode_find_reference(fwnode, "phy-handle", 0);
-> +	if (is_acpi_node(fwnode) || !IS_ERR(phy_node))
-> +		return phy_node;
-> +	phy_node = fwnode_find_reference(fwnode, "phy", 0);
-> +	if (IS_ERR(phy_node))
-> +		phy_node = fwnode_find_reference(fwnode, "phy-device", 0);
-> +	return phy_node;
->   }
->   EXPORT_SYMBOL_GPL(fwnode_get_phy_node);
->   
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 7b1bf3d46fd3..b6814e04092f 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -1378,6 +1378,7 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, u32 phy_id,
->   				     bool is_c45,
->   				     struct phy_c45_device_ids *c45_ids);
->   #if IS_ENABLED(CONFIG_PHYLIB)
-> +int fwnode_get_phy_id(struct fwnode_handle *fwnode, u32 *phy_id);
->   struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode);
->   struct phy_device *device_phy_find_device(struct device *dev);
->   struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode);
-> @@ -1385,6 +1386,10 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45);
->   int phy_device_register(struct phy_device *phy);
->   void phy_device_free(struct phy_device *phydev);
->   #else
-> +static inline int fwnode_get_phy_id(struct fwnode_handle *fwnode, u32 *phy_id)
-> +{
-> +	return 0;
-> +}
->   static inline
->   struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode)
->   {
+Can you elaborate? "phy-handle" has a section to itself in this 
+document. Agree that it needs to be defined more, but it does read to me 
+as having been defined.
+
+> 
+>> +             }
+>> +          })
+>> +       }
+>> +
+>> +       Scope(\_SB.MCE0.PR18) // 1G
+>> +       {
+>> +         Name (_DSD, Package () {
+>> +           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>> +               Package () {
+>> +                   Package (2) {"phy-mode", "rgmii-id"},
+>> +                   Package (2) {"phy-handle", Package (){\_SB.MDI0.PHY2}}
+>> +           }
+>> +         })
+>> +       }
+>> +
+>> +DSDT entry for MDIO node
+>> +------------------------
+>> +a) Silicon Component
+> 
+> What is this device, exactly?
+> 
+>> +--------------------
+>> +       Scope(_SB)
+>> +       {
+>> +         Device(MDI0) {
+>> +           Name(_HID, "NXP0006")
+>> +           Name(_CCA, 1)
+>> +           Name(_UID, 0)
+>> +           Name(_CRS, ResourceTemplate() {
+>> +             Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
+>> +             Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
+>> +              {
+>> +                MDI0_IT
+>> +              }
+>> +           }) // end of _CRS for MDI0
+>> +         } // end of MDI0
+>> +       }
+>> +
+>> +b) Platform Component
+>> +---------------------
+>> +       Scope(\_SB.MDI0)
+>> +       {
+>> +         Device(PHY1) {
+>> +           Name (_ADR, 0x1)
+>> +         } // end of PHY1
+>> +
+>> +         Device(PHY2) {
+>> +           Name (_ADR, 0x2)
+>> +         } // end of PHY2
+>> +       }
+>> --
+> 
+> What is the connection between the last two pieces of ASL and the _DSD
+> definitions above?
 > 
