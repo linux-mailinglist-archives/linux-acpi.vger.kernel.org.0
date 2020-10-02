@@ -2,100 +2,267 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43CBD28108E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 12:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 759E52810A3
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 12:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387685AbgJBK0R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 06:26:17 -0400
-Received: from smtp.asem.it ([151.1.184.197]:58127 "EHLO smtp.asem.it"
+        id S2387732AbgJBKf1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 06:35:27 -0400
+Received: from mga01.intel.com ([192.55.52.88]:29987 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbgJBK0Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 06:26:16 -0400
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000519847.MSG 
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Oct 2020 12:26:14 +0200S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 2 Oct
- 2020 12:26:12 +0200
-Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
- mapi id 15.01.1979.003; Fri, 2 Oct 2020 12:26:12 +0200
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: How to use an ACPI declared GPIO in a userspace ...
-Thread-Topic: How to use an ACPI declared GPIO in a userspace ...
-Thread-Index: AdaWdniTedAZ6+9wQdyYYgE5sQ27yP//4UoAgAAGTYD//91o0IAAJ14A//6Yg1CAAsA0gP//s0vAAA+m6wAAAI1qgP/9IHKw
-Date:   Fri, 2 Oct 2020 10:26:11 +0000
-Message-ID: <8b6adbc45d134da7b0fd1f9044a37cf6@asem.it>
-References: <9152bb8be33e4192a7766eb53c6ca9af@asem.it>
- <CAMRc=McnsSkg-7UMp7pKaGX2wSqsZC2jQZV2zRepxm9UxGg=YA@mail.gmail.com>
- <CAHp75VfgEGydXN1A+Y=wn3iX1MbLhN8F9kYyfQwTZBJydr+0+Q@mail.gmail.com>
- <feb8567c830748c483c8c66dd4717003@asem.it>
- <CAHp75Vdd2QjvJvLGHa1x=RaSknEG+O+YB4eJA6+2htnZ=Gf52g@mail.gmail.com>
- <22753b53cd7d4dfba4ef3610f71cc462@asem.it>
- <20200930130113.GQ3956970@smile.fi.intel.com>
- <2c26adae711145639d0b982a354aff3c@asem.it>
- <CAHp75Vcq1WOcMNoKpOSpCD1mFSyvYsaX-h7KHTaAOPe=6S4e0A@mail.gmail.com>
- <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
-In-Reply-To: <CAHp75Vdm9K7nGxsk8P_iGy4m=vi=95zpH1S4NuJbb7bekwZoXg@mail.gmail.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.17.208]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725993AbgJBKfY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Oct 2020 06:35:24 -0400
+IronPort-SDR: 7/MlFAq9V3EA2akYHFhyp9Ws2aCN97Uym8pOzRVLtxR4QE06v7UA/V/eRP902uXsD/hbgX2Fw2
+ 16fpF6wYdZgQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9761"; a="181090276"
+X-IronPort-AV: E=Sophos;i="5.77,327,1596524400"; 
+   d="scan'208";a="181090276"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 03:35:20 -0700
+IronPort-SDR: 0G7etxleBVpGOwOlrqUukpKE6pwya/Ra64Fx2ins+Lify1EK3Ru/mVA+5vmppInJqVPnEiUqtv
+ M6jGBj+F5+Ew==
+X-IronPort-AV: E=Sophos;i="5.77,327,1596524400"; 
+   d="scan'208";a="339954397"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 03:35:17 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kOIPA-003Pph-7D; Fri, 02 Oct 2020 13:35:12 +0300
+Date:   Fri, 2 Oct 2020 13:35:12 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Ben Gamari <ben@smart-cactus.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: OpRegion conflicts for Skylake LPSS
+Message-ID: <20201002103512.GZ3956970@smile.fi.intel.com>
+References: <87lh41nqqq.fsf@smart-cactus.org>
+ <20160426155437.GA10202@lahna.fi.intel.com>
+ <87eg9snkiw.fsf@smart-cactus.org>
+ <87r3dona7g.fsf@smart-cactus.org>
+ <20160429074227.GJ32610@lahna.fi.intel.com>
+ <8737q24std.fsf@smart-cactus.org>
+ <20160502103501.GP32610@lahna.fi.intel.com>
+ <20201001221023.GA12766@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A09020E.5F770044.0078,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201001221023.GA12766@pendragon.ideasonboard.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgQW5keSwNCg0Kd2l0aCBteSBjdXN0b20gU1NEVCB0YWJsZToNCg0KRGVmaW5pdGlvbkJsb2Nr
-ICgiZ3Bpb19idXR0b24uYW1sIiwgIlNTRFQiLCA1LCAiQVNFTXNwIiwgIkdQSU9fQlROIiwgMSkN
-CnsNCglFeHRlcm5hbCAoX1NCXy5HUE8xLCBEZXZpY2VPYmopDQoJU2NvcGUgKFxfU0IuR1BPMSkN
-Cgl7DQoJCURldmljZSAoQlROUykNCgkJew0KCQkJTmFtZSAoX0hJRCwgIkFTRU0wMDA1IikJCS8v
-IF9ISUQ6IEhhcmR3YXJlIElEIFBSUDAwMDENCgkJCU5hbWUgKF9VSUQsIFplcm8pICAgICAgICAg
-ICAgIC8vIF9VSUQ6IFVuaXF1ZSBJRA0KCQkJTmFtZSAoX0RETiwgIkRETiAtIFNXIFJlYWRhYmxl
-IEJ1dHRvbiIpICAvLyBfREROOiBET1MgRGV2aWNlIE5hbWUNCgkJCU5hbWUgKF9TVFIsIFVuaWNv
-ZGUgKCJTVFIgLSBTVyBSZWFkYWJsZSBCdXR0b24iKSkgIC8vIF9TVFI6IERlc2NyaXB0aW9uIFN0
-cmluZw0KDQoJCQlOYW1lIChfQ1JTLCBSZXNvdXJjZVRlbXBsYXRlICgpCSAvLyBfQ1JTOiBDdXJy
-ZW50IFJlc291cmNlIFNldHRpbmdzDQoJCQl7DQoJCQkJR3Bpb0lvICgNCgkJCQkJU2hhcmVkLCAg
-ICAgICAgICAgICAgICAgIC8vIE5vdCBzaGFyZWQNCgkJCQkJUHVsbE5vbmUsICAgICAgICAgICAg
-ICAgIC8vIE5vIG5lZWQgZm9yIHB1bGxzDQoJCQkJCTAsICAgICAgICAgICAgICAgICAgICAgICAv
-LyBEZWJvdW5jZSB0aW1lb3V0DQoJCQkJCTAsICAgICAgICAgICAgICAgICAgICAgICAvLyBEcml2
-ZSBzdHJlbmd0aA0KCQkJCQlJb1Jlc3RyaWN0aW9uSW5wdXRPbmx5LCAgLy8gT25seSB1c2VkIGFz
-IGlucHV0DQoJCQkJCSJcXF9TQi5HUE8xIiwgICAgICAgICAgICAvLyBHUElPIGNvbnRyb2xsZXIN
-CgkJCQkJMCwgUmVzb3VyY2VDb25zdW1lciwgLCApIC8vIE11c3QgYmUgMA0KCQkJCQl7DQoJCQkJ
-CQkyNSwgICAgICAgICAgICAgICAgLy8gR1BJTyBudW1iZXIgMjUNCgkJCQkJfQ0KCQkJfSkNCgkJ
-fQ0KCX0NCn0NCg0KSSdtIGFibGUgdG8gc2VlIHRoZSBHUElPIGluOg0KDQovc3lzL2J1cy9wbGF0
-Zm9ybS9kZXZpY2VzL0FTRU0wMDA1OjAwL2Zpcm13YXJlX25vZGU6DQoNCi1yLS1yLS1yLS0gICAg
-MSByb290ICAgICByb290ICAgICAgICAgIDQwOTYgT2N0ICAyIDEyOjEwIGRlc2NyaXB0aW9uDQot
-ci0tci0tci0tICAgIDEgcm9vdCAgICAgcm9vdCAgICAgICAgICA0MDk2IE9jdCAgMiAxMjoxMCBo
-aWQNCi1yLS1yLS1yLS0gICAgMSByb290ICAgICByb290ICAgICAgICAgIDQwOTYgT2N0ICAyIDEy
-OjEwIG1vZGFsaWFzDQotci0tci0tci0tICAgIDEgcm9vdCAgICAgcm9vdCAgICAgICAgICA0MDk2
-IE9jdCAgMiAxMjoxMCBwYXRoDQpscnd4cnd4cnd4ICAgIDEgcm9vdCAgICAgcm9vdCAgICAgICAg
-ICAgICAwIE9jdCAgMiAxMjoxMCBwaHlzaWNhbF9ub2RlIC0+IC4uLy4uLy4uLy4uL3BsYXRmb3Jt
-L0lOVDM0NTI6MDEvQVNFTTAwMDU6MDANCmRyd3hyLXhyLXggICAgMiByb290ICAgICByb290ICAg
-ICAgICAgICAgIDAgT2N0ICAyIDEyOjEwIHBvd2VyDQpscnd4cnd4cnd4ICAgIDEgcm9vdCAgICAg
-cm9vdCAgICAgICAgICAgICAwIE9jdCAgMiAxMjoxMCBzdWJzeXN0ZW0gLT4gLi4vLi4vLi4vLi4v
-Li4vYnVzL2FjcGkNCi1ydy1yLS1yLS0gICAgMSByb290ICAgICByb290ICAgICAgICAgIDQwOTYg
-T2N0ICAyIDEyOjEwIHVldmVudA0KLXItLXItLXItLSAgICAxIHJvb3QgICAgIHJvb3QgICAgICAg
-ICAgNDA5NiBPY3QgIDIgMTI6MTAgdWlkDQoNCmFuZCBzbyBJIGNhbiBzZWUgc29tZSB1c2VmdWwg
-aW5mbzoNCg0KIyBjYXQgZGVzY3JpcHRpb24NClNUUiAtIFNXIFJlYWRhYmxlIEJ1dHRvbg0KIyBj
-YXQgaGlkDQpBU0VNMDAwNQ0KIyBjYXQgbW9kYWxpYXMNCmFjcGk6QVNFTTAwMDU6DQpibXh4eHgt
-eDg2LTY0Oi9zeXMvYnVzL3BsYXRmb3JtL2RldmljZXMvQVNFTTAwMDU6MDAvZmlybXdhcmVfbm9k
-ZSMgY2F0IHBhdGgNClxfU0JfLkdQTzEuQlROUw0KDQpTbywgZnJvbSB1c2Vyc3BhY2UsIEkgY2Fu
-IGRpc2NvdmVyIHRoZSBHUElPIGNvbnRyb2xsZXIgL2Rldi9ncGlvY2hpcDEsDQpidXQgSSBkb24n
-dCBrbm93IGhvdyB0byBkaXNjb3ZlciB0aGUgR1BJTyBudW1iZXIgKDI1IGluIHRoaXMgY2FzZSku
-DQpEbyB5b3UgaGF2ZSBhbnkgc3VnZ2VzdGlvbiBhYm91dCBob3cgdG8gZGlzY292ZXIgdGhpcyBH
-UElPIG51bWJlcj8NCg0KVGhhbmtzIQ0KDQo+IC0tDQo+IFdpdGggQmVzdCBSZWdhcmRzLA0KPiBB
-bmR5IFNoZXZjaGVua28NCg0KQmVzdCByZWdhcmRzLA0KRmxhdmlvDQo=
+On Fri, Oct 02, 2020 at 01:10:23AM +0300, Laurent Pinchart wrote:
+> Hi Mika,
+> 
+> Reviving an old thread.
+
+Very old :-)
+
+> On Mon, May 02, 2016 at 01:35:01PM +0300, Mika Westerberg wrote:
+> > On Sun, May 01, 2016 at 12:47:58AM +0200, Ben Gamari wrote:
+> > > Mika Westerberg <mika.westerberg@linux.intel.com> writes:
+> > > > On Fri, Apr 29, 2016 at 09:30:27AM +0200, Ben Gamari wrote:
+> > > >> Ben Gamari <ben@smart-cactus.org> writes:
+> > > >> 
+> > > >> > [ Unknown signature status ]
+> > > >> > Mika Westerberg <mika.westerberg@linux.intel.com> writes:
+> > > >> >
+> > > >> >> On Tue, Apr 26, 2016 at 02:44:13AM +0200, Ben Gamari wrote:
+> > > >> >>> 
+> > > >> > snip
+> > > >> >
+> > > >> >>> It looks very much like these are describing the same device. Perhaps
+> > > >> >>> the lpss driver should be binding to this ACPI node? Or perhaps this is
+> > > >> >>> a firmware issue? Any guidance would be greatly appreciated.
+> > > >> >>
+> > > >> >> Can you send me full acpidump of that machine?
+> > > >> >
+> > > >> > It can be found at
+> > > >> > https://github.com/bgamari/dell-e7470-dsdt/blob/master/acpi.log.
+> > > >> >
+> > > >> Did this provide any insight? Let me know if more information would be
+> > > >> helpful.
+> > > >
+> > > > Sorry about the delay.
+> > >
+> > > No worries.
+> > > 
+> > > > The GEXP device is most probably a GPIO expander that is connected to
+> > > > one of the I2C buses. And it indeed looks to use directly the I2C host
+> > > > controller registers so kernel rightfully complains about that.
+> > > >
+> > > > Are you able to run Windows on that machine? If yes, it would be nice to
+> > > > know if the INT3446 I2C device is shown in the device manager.
+> > >
+> > > I had the original SSD that came with the machine with the original
+> > > Windows 7 installation intact. I popped it in and found no such device.
+> > > I then updated to Windows 10 (albeit still booting with the legacy BIOS,
+> > > not EFI) and found that once again there is no such device shown in
+> > > device manager.
+> > 
+> > That's what I would expect. ACPI spec says that if there is an OpRegion
+> > touching the same registers than PCI device the OS should not load any
+> > driver for that device. I guess this is exactly what Windows does.
+> > 
+> > Linux does it also but it in addition it issues a scary warning which
+> > might get users thinking there is something wrong with their system.
+> 
+> I'm trying to get camera sensors detected on a Microsoft Surface Go 2
+> machine (ACPI dumps available at
+> https://github.com/linux-surface/acpidumps/tree/master/surface_go_2).
+> The CPU is an Intel Pentium Gold 4425Y, based on Kaby Lake-Y. The DSDT
+> has been carefully designed, with great care to make it as useless as
+> possible, so I'm experiencing a few issues.
+
+I think Sakari has a laptop with PCA953x driver in ASL (AML). I remember it had
+some issues.
+
+> One of the camera sensors is connected to I2C4, backed by an LPSS I2C
+> controller.
+> 
+> 00:19.2 Signal processing controller: Intel Corporation Sunrise Point-LP Serial IO I2C Controller #4 (rev 21)
+>         Subsystem: QUANTA Computer Inc Sunrise Point-LP Serial IO I2C Controller
+>         Flags: fast devsel, IRQ 34
+>         Memory at b1648000 (64-bit, non-prefetchable) [size=4K]
+>         Capabilities: [80] Power Management version 3
+>         Capabilities: [90] Vendor Specific Information: Len=14 <?>
+>         Kernel modules: intel_lpss_pci
+> 
+> Unfortunately the driver fails to probe due to the same issue reported
+> by Ben:
+> 
+> [    2.060237] intel-lpss 0000:00:19.2: enabling device (0000 -> 0002)
+> [    2.060483] ACPI Warning: SystemMemory range 0x00000000B1648000-0x00000000B16481FF conflicts with OpRegion 0x00000000B1648000-0x00000000B1648207 (\_SB.PCI0.GEXP.BAR0) (20200528/utaddress-213)
+> [    2.060489] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+> [    2.060726] intel-lpss: probe of 0000:00:19.2 failed with error -16
+> 
+> I've checked the GEXP device in the DSDT, and it includes an LPSS I2C
+> host controller driver in AML, using an OpRegion that covers the I2C
+> controller registers.
+> 
+> Adding acpi_enforce_resources=lax to the kernel command line allows the
+> I2C controller to be probed, but that's hardly a good solution, as two
+> drivers (one in the DSDT, one in the kernel) that poke the same hardware
+> is calling for trouble.
+> 
+> I've noticed that Windows maps the devices to different addresses than
+> Linux. On Windows, the I2C controllers are at
+> 
+> I2C0 (8086:9d60): 0xfe40f000 - 0xfe40ffff (IRQ 16)
+> I2C1 (8086:9d61): 0xfe40e000 - 0xfe40efff (IRQ 17)
+> I2C2 (8086:96d2): 0xfe40d000 - 0xfe40dfff (IRQ 18)
+> I2C3 (8086:96d3): 0xfe40c000 - 0xfe40cfff (IRQ 19)
+> I2C4 (8086:96d4): 0xfe409000 - 0xfe409fff (IRQ 34)
+> 
+> while on Linux they're at
+> 
+> I2C0 (8086:9d60): 0xb1642000 - 0xb1642fff (IRQ 16)
+> I2C1 (8086:9d61): 0xb1643000 - 0xb1643fff (IRQ 17)
+> I2C2 (8086:96d2): 0xb1644000 - 0xb1644fff (IRQ 18)
+> I2C3 (8086:96d3): 0xb1645000 - 0xb1645fff (IRQ 19)
+> I2C4 (8086:96d4): 0xb1648000 - 0xb1648fff (IRQ 34)
+
+Addresses are defined by BIOS/Linux PCI core. Basically it sounds like the
+addresses from the BIOS are changed by OS. Can you enable PCI early dump in
+Linux and look at what the BIOS assignments there? Also you may check it in EFI
+shell. In any case I don't think it should affect the system, but if the ASL
+has hard coded addresses for hardware, it's a very bad one and must be avoided.
+
+> Interestingly, the I2C4 object contains the following in the DSDT:
+> 
+>             If ((SMD4 != 0x02))
+>             {
+>                 Name (_HID, "INT3446")  // _HID: Hardware ID
+>                 Method (_HRV, 0, NotSerialized)  // _HRV: Hardware Revision
+>                 {
+>                     Return (LHRV (SB14))
+>                 }
+> 
+>                 Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+>                 {
+>                     Return (LCRS (SMD4, SB04, SIR4))
+>                 }
+> 
+>                 Method (_STA, 0, NotSerialized)  // _STA: Status
+>                 {
+>                     Return (LSTA (SMD4))
+>                 }
+>             }
+> 
+>             If ((SMD4 == 0x02))
+>             {
+>                 Name (_ADR, 0x00190002)  // _ADR: Address
+>                 Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+>                 {
+>                     If (PCIC (Arg0))
+>                     {
+>                         Return (PCID (Arg0, Arg1, Arg2, Arg3))
+>                     }
+> 
+>                     Return (Buffer (One)
+>                     {
+>                          0x00                                             // .
+>                     })
+>                 }
+>             }
+> 
+> I've evaluated SMD4 with acpidbg and it's equal to 2. I thought it might
+> be set to a different value in windows, but the hardware IDs reported by
+> the device manager all refer to the PCI device, not the ACPI device, so
+> I don't think that's a lead.
+
+This is basically a switch in the reference BIOS how to enumerate LPSS devices,
+if you don't have such a knob in BIOS menus, I think it's no way to change it.
+
+> I really wonder how this is supposed to be handled, would the device
+> really be designed to work in such an unsafe way ? Does Windows remap
+> the BAR due to the conflict with the GEXP, rendering the GEXP
+> non-operational after boot ? I have tried to locate the GEXP in the
+> device manager in Windows, but with its _STA method returning 0x0b, it
+> seems not to be visible.
+
+Obviously it's designed for Windows (sic!) for a very certain driver which can
+have all possible ugliness in the world. When people are living by the terms of
+20 years old world and doing things in the same way we won't have situation any
+better.
+
+> > > >> Also, is there a way to simply allow the driver subsystem to allow
+> > > >> probing to proceed despite this resource conflict so that I can resume
+> > > >> debugging my original input device issue?
+> > > >
+> > > > Try to pass "acpi_enforce_resources=lax" in the kernel command line.
+> > > 
+> > > Thanks, indeed this allows the driver to load. Unfortunately it didn't
+> > > take long to encounter further issues.
+> > > 
+> > > The motivation for all of this is to get the touchpad into I2C mode, since
+> > > currently it is merely exposed as a simple PS/2 device. Unfortunately it
+> > > seems that even Windows 10 doesn't use the touchpad's I2C mode (although
+> > > I suppose it's possible that this is guarded on UEFI boot; moreover
+> > > Windows appears to have proper support for configurating this touchpad
+> > > in PS/2 mode, which is unfortunately an ALPS devices).
+> > > 
+> > > Looking at the DSDT it seems that enabling the I2C interface may require
+> > > the help of the embedded controller, the state of which is exposed in
+> > > the DSDT through a mysteriously-named SDS1 field. It looks like this
+> > > field could take on a number of values which identify a variety of
+> > > different touchpads. Given that it looks like GPIO pin states may be
+> > > determined by the value of this field I'm a bit reluctant to go fiddling
+> > > around with it. 
+> > > 
+> > > I do wish that firmware weren't such a nightmare.
+> > 
+> > +1
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
