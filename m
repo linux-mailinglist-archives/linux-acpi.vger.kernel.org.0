@@ -2,105 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8067281459
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 15:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAE542814C5
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Oct 2020 16:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387768AbgJBNl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Oct 2020 09:41:58 -0400
-Received: from mx2.suse.de ([195.135.220.15]:53864 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387856AbgJBNlv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Oct 2020 09:41:51 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1601646110;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ex35TTNhtQo4+POapz9XDyIVapheLz/KPghDOJAZTmI=;
-        b=oB4MvVDI1JsMmEp5fS6ih0IDJ3PgAF/1fiyI66oaGiIt+W4qf/INGGv0iE18qGvXKec0xO
-        qLuuPJacZ9haS8eAxNIVDEfYmij/eqsIT1yxOLKQW7XVaOvlwlgI+fJex9EAJ+KK4SDYFi
-        OdM6RJjLLtPQt3GbReg3chiA056/S3g=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 8FBA6AD12;
-        Fri,  2 Oct 2020 13:41:50 +0000 (UTC)
-Date:   Fri, 2 Oct 2020 15:41:49 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v1 5/5] mm/memory_hotplug: update comment regarding zone
- shuffling
-Message-ID: <20201002134149.GK4555@dhcp22.suse.cz>
-References: <20200928182110.7050-1-david@redhat.com>
- <20200928182110.7050-6-david@redhat.com>
+        id S2387917AbgJBOOH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Oct 2020 10:14:07 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44509 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387984AbgJBOOH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Oct 2020 10:14:07 -0400
+Received: by mail-ot1-f66.google.com with SMTP id a2so1454407otr.11;
+        Fri, 02 Oct 2020 07:14:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ihMziQ36Im0zrWKhCpCw4BTS3PLugco3lRz9KFCDqE8=;
+        b=WP8BVfNG4SzkXq5MiiaMxa10OyAQzCmOqm+b0aj2hD9w9H5B7pla8ZsOiKfkFjhdMO
+         CSglfHlTr9Fp2o3YLhi5uBqGcwTBH4SbfFZyS09K0635t6wLTqgkapUl0OYBAetyd8JC
+         D4au8D7XaSRXgQE9g4OsGgjp877U0mn6mvAiWTWKuvMrCaVagZ5LKLwgSZHyOcIivBzh
+         AEXw3NhsZMhmNiRtN6aGjcLeUUUeQSf4FS4elRVwXL66ANp23AXW60CmoQer2iuD1eY0
+         6ZjiRd7sYD5A1W48WADBYFYKYPmoMcMCUcZ7eQZt4366TqqWgLp9UlCEpq1fjuiLdll5
+         f6Jw==
+X-Gm-Message-State: AOAM532jr+2aAJ8lDVtAZ3YyYSQHzlJ5uy9j2gPkFn/LfbZyvoA+T6Mk
+        M0tjm+1GN0ji1SsihWAGeZJo/jNHFBulwe1hlNE=
+X-Google-Smtp-Source: ABdhPJyZyRzl3PSCyG+0F3xvXXLMMo72pPpSBbPEGYzFl5a+viQSZv8vrl+z4BcyLgLlDH9lRF5gIuLcbG9Trd8Z6xw=
+X-Received: by 2002:a9d:718a:: with SMTP id o10mr1878239otj.262.1601648046490;
+ Fri, 02 Oct 2020 07:14:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200928182110.7050-6-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
+ <20200930160430.7908-2-calvin.johnson@oss.nxp.com> <CAJZ5v0jP8L=bBMYTUkYCSwN=fy8dwTdjqu1JurSxTa2bAHRLew@mail.gmail.com>
+ <39b9a51d-56f6-75f8-a88e-71a7e01b9f55@arm.com>
+In-Reply-To: <39b9a51d-56f6-75f8-a88e-71a7e01b9f55@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 2 Oct 2020 16:13:54 +0200
+Message-ID: <CAJZ5v0i-OK05bkA+sH_jBVgTKVLDKUtHqBduH2SKvYv3_kA4WA@mail.gmail.com>
+Subject: Re: [net-next PATCH v1 1/7] Documentation: ACPI: DSD: Document MDIO PHY
+To:     Grant Likely <grant.likely@arm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux.cj@gmail.com, netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, nd <nd@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 28-09-20 20:21:10, David Hildenbrand wrote:
-> As we no longer shuffle via generic_online_page() and when undoing
-> isolation, we can simplify the comment.
-> 
-> We now effectively shuffle only once (properly) when onlining new
-> memory.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Fri, Oct 2, 2020 at 1:09 PM Grant Likely <grant.likely@arm.com> wrote:
+>
+>
+>
+> On 30/09/2020 17:37, Rafael J. Wysocki wrote:
+> > On Wed, Sep 30, 2020 at 6:05 PM Calvin Johnson
+> > <calvin.johnson@oss.nxp.com> wrote:
+> >>
+> >> Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> >> provide them to be connected to MAC.
+> >>
+> >> Describe properties "phy-handle" and "phy-mode".
+> >>
+> >> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> >> ---
+> >>
+> >>   Documentation/firmware-guide/acpi/dsd/phy.rst | 78 +++++++++++++++++++
+> >>   1 file changed, 78 insertions(+)
+> >>   create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+> >>
+> >> diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> >> new file mode 100644
+> >> index 000000000000..f10feb24ec1c
+> >> --- /dev/null
+> >> +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> >> @@ -0,0 +1,78 @@
+> >> +.. SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +=========================
+> >> +MDIO bus and PHYs in ACPI
+> >> +=========================
+> >> +
+> >> +The PHYs on an mdiobus are probed and registered using
+> >> +fwnode_mdiobus_register_phy().
+> >> +Later, for connecting these PHYs to MAC, the PHYs registered on the
+> >> +mdiobus have to be referenced.
+> >> +
+> >> +phy-handle
+> >> +-----------
+> >> +For each MAC node, a property "phy-handle" is used to reference the
+> >> +PHY that is registered on an MDIO bus.
+> >
+> > It is not clear what "a property" means in this context.
+> >
+> > This should refer to the documents introducing the _DSD-based generic
+> > device properties rules, including the GUID used below.
+> >
+> > You need to say whether or not the property is mandatory and if it
+> > isn't mandatory, you need to say what the lack of it means.
+> >
+> >> +
+> >> +phy-mode
+> >> +--------
+> >> +Property "phy-mode" defines the type of PHY interface.
+> >
+> > This needs to be more detailed too, IMO.  At the very least, please
+> > list all of the possible values of it and document their meaning.
+>
+> If the goal is to align with DT, it would be appropriate to point to
+> where those properties are defined for DT rather than to have a separate
+> description here. I suggest something along the lines of:
+>
+>     The "phy-mode" _DSD property is used to describe the connection to
+>     the PHY. The valid values for "phy-mode" are defined in
+>     Documentation/devicetree/bindings/ethernet-controller.yaml
+>
+> >
+> >> +
+> >> +An example of this is shown below::
+> >> +
+> >> +DSDT entry for MACs where PHY nodes are referenced
+> >> +--------------------------------------------------
+> >> +       Scope(\_SB.MCE0.PR17) // 1G
+> >> +       {
+> >> +         Name (_DSD, Package () {
+> >> +            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> >> +                Package () {
+> >> +                    Package (2) {"phy-mode", "rgmii-id"},
+> >> +                    Package (2) {"phy-handle", Package (){\_SB.MDI0.PHY1}}
+> >
+> > What is "phy-handle"?
+> >
+> > You haven't introduced it above.
+>
+> Can you elaborate? "phy-handle" has a section to itself in this
+> document.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+Yes, it does.
 
-> ---
->  mm/memory_hotplug.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 9db80ee29caa..c589bd8801bb 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -859,13 +859,10 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
->  	undo_isolate_page_range(pfn, pfn + nr_pages, MIGRATE_MOVABLE);
->  
->  	/*
-> -	 * When exposing larger, physically contiguous memory areas to the
-> -	 * buddy, shuffling in the buddy (when freeing onlined pages, putting
-> -	 * them either to the head or the tail of the freelist) is only helpful
-> -	 * for maintaining the shuffle, but not for creating the initial
-> -	 * shuffle. Shuffle the whole zone to make sure the just onlined pages
-> -	 * are properly distributed across the whole freelist. Make sure to
-> -	 * shuffle once pageblocks are no longer isolated.
-> +	 * Freshly onlined pages aren't shuffled (e.g., all pages are placed to
-> +	 * the tail of the freelist when undoing isolation). Shuffle the whole
-> +	 * zone to make sure the just onlined pages are properly distributed
-> +	 * across the whole freelist - to create an initial shuffle.
->  	 */
->  	shuffle_zone(zone);
->  
-> -- 
-> 2.26.2
+I overlooked it, sorry.
 
--- 
-Michal Hocko
-SUSE Labs
+> Agree that it needs to be defined more, but it does read to me
+> as having been defined.
+
+Yup.
+
+Cheers!
