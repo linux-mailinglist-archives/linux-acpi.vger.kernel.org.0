@@ -2,130 +2,198 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A0F282456
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Oct 2020 15:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D36628255C
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Oct 2020 18:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725787AbgJCNjU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Oct 2020 09:39:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45107 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725803AbgJCNjU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Oct 2020 09:39:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601732358;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8M7e4lIsCrzIGf7633HTEOQCv2O7TpnRjrbQ+L1jCps=;
-        b=h9DO+OPUaRk76DvrbEFVstsH4hduCemYGb3U/sD02aPgizoGT+yMHArghUZYqNoMfpGiYg
-        UaIBg69kbPukHP9n2HTD2km2hItxMH436lAgq8pQzEWZYKRd/duyyLMNrxI2iPhVkDPk3i
-        LEhlw/TloMfs+Iqbxh3Q2MQN2nolVcw=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-260-PH61le_NMXus8NhUK8zCEQ-1; Sat, 03 Oct 2020 09:39:16 -0400
-X-MC-Unique: PH61le_NMXus8NhUK8zCEQ-1
-Received: by mail-ed1-f72.google.com with SMTP id 63so2265442edy.9
-        for <linux-acpi@vger.kernel.org>; Sat, 03 Oct 2020 06:39:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=8M7e4lIsCrzIGf7633HTEOQCv2O7TpnRjrbQ+L1jCps=;
-        b=Oy8gAkWfuyD9C1ajtcuyQKf1u9uVNyMSyLDNfbzeB4dcPIkkk0kvrtWyRnJTvzbRt6
-         vEtoUPGUZnn3ZEtmABnlIfEzwf+vPvhH3x942D1hIWzr/WcJMLx2nK2LEJEnkUGxlEzJ
-         sMrkxAUl5cATlNP76gVNCfEiknjwpzs6gWOL6rvtKg6BwXrYoLTEDXXpmSxlhoPhPcAe
-         2aDWlUAge4MWdhXpIL1MleglA1YjOpGUmKfcAhXrMDZBBvepi86FWDYrz/hfyzuHMtG1
-         264M8vSx8BViIfnTZ93qYFZIoAscfvYkqk9zWtJNne/K8f+s9fBX5TCVXgWbnrfm42Wx
-         Sw0w==
-X-Gm-Message-State: AOAM5333FJouZzu5o8JZNBtQS3Q/hrzkbq5s5HOSUMmAPRCxFhM6p+zV
-        2AfQlxyZcRfhEuiutAQEL2lRjv3gN0T+7XtSYc7jkJ5yKLtXIJc2+O0/6fSu1ErHQn9vkR/U/MO
-        rzCkU2S6F6OUKvQ4xB79hLg==
-X-Received: by 2002:a05:6402:155a:: with SMTP id p26mr8652925edx.178.1601732355491;
-        Sat, 03 Oct 2020 06:39:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzX1eRSwaIKAlLcSeLEYrz8kiWIM1N+hxxRa99xXnEHb2oygDOhJkjJCKXqwVTA0PWPd2r+Pw==
-X-Received: by 2002:a05:6402:155a:: with SMTP id p26mr8652913edx.178.1601732355341;
-        Sat, 03 Oct 2020 06:39:15 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id g11sm4413115edj.85.2020.10.03.06.39.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2020 06:39:14 -0700 (PDT)
-Subject: Re: [RFC 0/1] Documentation: Add documentation for new
- performance_profile sysfs class
-To:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mark Gross <mgross@linux.intel.com>
-Cc:     Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Pearson <mpearson@lenovo.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Benjamin Berg <bberg@redhat.com>, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20201003131938.9426-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <18b2f906-240e-68ba-8604-0d93065fcc5e@redhat.com>
-Date:   Sat, 3 Oct 2020 15:39:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1725797AbgJCQbc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Oct 2020 12:31:32 -0400
+Received: from mail-am6eur05on2088.outbound.protection.outlook.com ([40.107.22.88]:1122
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725789AbgJCQbb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 3 Oct 2020 12:31:31 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AZ6qORbPf3HJYroUlH2E6LGFDGXlBVCpVzbbOnjFqqHS97h3ibuuwfEb7zVMV6yHSuhhfFFni0l/hTmzAnmN+tbYPx4hDXZJx+snuBabx2XnqjkTeXzjeIP4mM6A44+imSR5xmx2aRvuGHnn4HDz3b5FMuOqQ1vmzqFwoMdA15hpR4Q5Ibg8w+Vnp4tBIVFTTAT0tpVxtE/AnB6hpeDxKpEwB0+MHMkzwP6cCBgfbu2aH/i0GkJwxoZxz+XWyi+U8etupvxtt/nuX8hEgEhf15zH9ERV41iz0P30BUxSZMmfjlTKOxTjKgVUpEkTUsyepyQqQ/+TbAKGf1H5JZYBAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h+4JQJtPkJpVlcyqQ15CAQkJCO2UyuqQJUKjIPkeefc=;
+ b=f8bEasfiYO1mdPH3uDXO6dzxZgmht9MKABbufTfyaKzgdI2b+PNrtoWqjPPC+8HceBFwSyQthMS7+sCtDJzA4/sxs69fogJP6zGtTa7RUrtHMof+XamB0cs+3KRZKKOT2pMZLiNSBiXiGHBr8DnDP6S5gh2t//yihIZxEkrQh5mmHWOT7HYeqoPgxzLYHi4Ldrk4qAXs57C8MY1UUnREDIQ0B98PIl+SGyz3XmWg5jVhc4rWrCCSwfLKFDVDiEqKJwZ65M8FD24Z+xjhk6X+WAfKroLIb648HL+0iWDDU9kOJRBc6FJmPeFniuutYLAA8kz6vPXgObjN75ORGYKWMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h+4JQJtPkJpVlcyqQ15CAQkJCO2UyuqQJUKjIPkeefc=;
+ b=jau4MB96LHl689lVWb058qX1zVZTNni5Scif/v+TOAnjbwP+sxXpHphpwstzI6ppxAb7JbzlmFlKVDRyRT3OjYm5fx4bfTSlVwcXC25EV+p03Bn55cF4Y4NkGGBjguyx4Z4yay+mmTi+mwwi8FbpqtV8y2bJB2g0MbKCpUrQrlQ=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR0402MB3764.eurprd04.prod.outlook.com (2603:10a6:208:9::30) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.38; Sat, 3 Oct
+ 2020 16:31:27 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a997:35ae:220c:14ef]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a997:35ae:220c:14ef%7]) with mapi id 15.20.3433.038; Sat, 3 Oct 2020
+ 16:31:26 +0000
+Date:   Sat, 3 Oct 2020 22:00:25 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [net-next PATCH v1 6/7] net: dpaa2-mac: Add ACPI support for
+ DPAA2 MAC driver
+Message-ID: <20201003163025.GA28093@lsv03152.swis.in-blr01.nxp.com>
+References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
+ <20200930160430.7908-7-calvin.johnson@oss.nxp.com>
+ <CAHp75Vfu_-=+CNYoRd141md902N2uR+K0xvHryfH9YCQi9Hp4w@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vfu_-=+CNYoRd141md902N2uR+K0xvHryfH9YCQi9Hp4w@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [14.142.151.118]
+X-ClientProxiedBy: SG2PR01CA0125.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:40::29) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <20201003131938.9426-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR01CA0125.apcprd01.prod.exchangelabs.com (2603:1096:4:40::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.36 via Frontend Transport; Sat, 3 Oct 2020 16:31:21 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: b7fd94a2-c2b7-4733-a6cd-08d867b9c615
+X-MS-TrafficTypeDiagnostic: AM0PR0402MB3764:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR0402MB3764CDFEF275F03D8FC74CACD20E0@AM0PR0402MB3764.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HQ4YCKgk2uweXrjcfOQGQVRckPI1YHaGf0pgjFzp/Kb2X1mdb3myWLmpcwVVjMWfZqf+On09WmbOH3ym6v1fpHzxVbVxgMp99Ek9oDD9QJreXGUiIyhtpUpIh47ui7iXic6+wFboqtaAJmicXLB+ruQm29VQdBIMHGueKf6GXzk5AXTRBpU5BdTvkDnOcxFxXb86tVhn2QN0ITE/heUF7z6Ubut8YHsCPVvwJKF4mBCP6P76WaX5nJjsLbHyDNKKBqkHYyoh3RntTAwMqRq4522lP3BSZ22aipK2dOG9bu9c4liSaDv5it8uhOH81vYEa9pBhgSEFatC5d0hL1GtKu13bNh0aPI9KPjOCTRj7qyL8q+eWusbNC/ad1pLCgkGnlgcNMDq/wt4w+DGUTAq9UcLEMCzfmLYrJoAT8B8AgDga/rQKR1UpaYvqOKBLGCr/PSR1eXOaqTQjCquI8r5kw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(366004)(39850400004)(396003)(346002)(1006002)(86362001)(55236004)(2906002)(83080400001)(956004)(8676002)(966005)(478600001)(16526019)(66556008)(186003)(1076003)(52116002)(55016002)(7696005)(7416002)(4326008)(66946007)(6506007)(44832011)(66476007)(53546011)(316002)(6916009)(9686003)(26005)(5660300002)(8936002)(33656002)(83380400001)(54906003)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: g4Pl7bqTwezxc6fWwQ0oMfqcUm4lXMy/9zISyKL+vquHFkQc0G+AeLh+4LoYSBg3vKC805Z/bOspmvFk8ycj7r+pcg2aWoBTukz3+XIo/x6sbCuNBSWKMz8ITWH4iqQsdjJXtfAFCK3Q3qLZ7KD31SQHf7c9VixlxxDrRvJS6Id8YV1HGbajF7PJKputvp4vuiFXKVQzlksXMVkEGWq3L2iDw0uO1xE8/AWa4UYJvc0f+TCsLtaOP6line3OprtbpHfSgL5qMmV/Bb+asaQRJP4mAb560wSoQReCkN5nn6cMw62P8Tta8Jfkyxj7NVhZiE7oB1z4OdvqKaaDXP2wQTmSaaN5E7RAXr5Bbb5XLqCdAEdTySRf9vxn2JCCnWQ4ZHtvx/xVyjrFPLKgNfbFKZWaRLe7FmHwk53/Gm0LUd7TGDi5JZYwr9/MMYA/JJeM07pFAz3NhjIR4xpug4tcDZM9kz4lgKvmNWknR8cWRD65dKMZemjtJjWbP/OJZFJUVZoP1rEkc2m8mME4iemCvV+5dceEuzFvcXsAjnMIh0O6vmSvWCLsbHGJJ2xgz7wa3z9yZYxbKWqJVW4GzOBhxRHgleN19H40njgQ3hyIMRqBP1u3iVkfWfBnsBdjpHtpAkJswYGdNvORnuVbhPvqpQ==
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7fd94a2-c2b7-4733-a6cd-08d867b9c615
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2020 16:31:26.7980
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qKVHzar0Ri7MyfDemFmLW28VRbH7wi+k9pXHcSfyBnRb6qKJaKN2UMTOFqZMYSxBnwLtiB0Xs5h7Hn9QBGwrFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3764
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Andy,
 
-On 10/3/20 3:19 PM, Hans de Goede wrote:
-> Hi All,
+On Thu, Oct 01, 2020 at 06:36:06PM +0300, Andy Shevchenko wrote:
+> On Wed, Sep 30, 2020 at 7:06 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Modify dpaa2_mac_connect() to support ACPI along with DT.
+> > Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
+> > DT or ACPI.
+> >
+> > Replace of_get_phy_mode with fwnode_get_phy_mode to get
+> > phy-mode for a dpmac_node.
+> >
+> > Use helper function phylink_fwnode_phy_connect() to find phy_dev and
+> > connect to mac->phylink.
 > 
-> Recently 2 different patches have been submitted for drivers under
-> drivers/platform/x86 to configure the performance-profile of
-> modern laptops (see the actual RFC patch for what I mean with
-> a performance-profile). One for the thinkpad_acpi driver and
-> one for the hp-wmi driver.
+> ...
 > 
-> Since I don't want each pdx86 driver to invent its own userspace API
-> for this I have started a dicussion about coming up with a standardized /
-> common sysfs class / API for this on the pdx86 list:
-> https://www.spinics.net/lists/platform-driver-x86/msg22794.html
+> >  #include "dpaa2-eth.h"
+> >  #include "dpaa2-mac.h"
 > 
-> The sysfs API proposal which I'm sending out as RFC in this email
-> thread is the result of me trying to distill that discussion into
-> a concrete proposal.
+> > +#include <linux/acpi.h>
 > 
-> I have Cc-ed the linux-pm and linux-acpi lists because even though
-> the trigger for doing this is 2 different pdx86 drivers, the resulting
-> API should (must even) also be suitable for other platforms. I can
-> e.g. see various modern ARM platforms also having similar functionality
-> which they may want to export to userspace and the ideally the userspace
-> code for allowing the end-user to configure/select a profile would be
-> the same under ARM and x86.
+> Please, put generic headers first.
 > 
-> Talking about userspace I've also Cc-ed Bastien and Benjamin who are
-> working on the userspace side of this.
+> > +       struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> > +       struct fwnode_handle *dpmacs, *dpmac = NULL;
+> > +       unsigned long long adr;
+> > +       acpi_status status;
+> >         int err;
+> > +       u32 id;
+> >
+> > -       dpmacs = of_find_node_by_name(NULL, "dpmacs");
+> > -       if (!dpmacs)
+> > -               return NULL;
+> > +       if (is_of_node(dev->parent->fwnode)) {
+> > +               dpmacs = device_get_named_child_node(dev->parent, "dpmacs");
+> > +               if (!dpmacs)
+> > +                       return NULL;
+> > +
+> > +               while ((dpmac = fwnode_get_next_child_node(dpmacs, dpmac))) {
+> > +                       err = fwnode_property_read_u32(dpmac, "reg", &id);
+> > +                       if (err)
+> > +                               continue;
+> > +                       if (id == dpmac_id)
+> > +                               return dpmac;
+> > +               }
+> >
+> > +       } else if (is_acpi_node(dev->parent->fwnode)) {
+> > +               device_for_each_child_node(dev->parent, dpmac) {
+> > +                       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(dpmac),
+> > +                                                      "_ADR", NULL, &adr);
+> > +                       if (ACPI_FAILURE(status)) {
+> > +                               pr_debug("_ADR returned %d on %s\n",
+> > +                                        status, (char *)buffer.pointer);
+> > +                               continue;
+> > +                       } else {
+> > +                               id = (u32)adr;
+> > +                               if (id == dpmac_id)
+> > +                                       return dpmac;
+> > +                       }
+> > +               }
+> 
+> Can you rather implement generic one which will be
+> 
+> int fwnode_get_child_id(struct fwnode_handle *fwnode, u64 *id);
+> 
+> and put the logic of retrieving 'reg' or _ADR? Also, for the latter we
+> have a special macro
+> METHOD_NAME__ADR.
+> 
+> See [1] as well. Same idea I have shared already.
+> 
+> [1]: https://lore.kernel.org/linux-iio/20200824054347.3805-1-william.sung@advantech.com.tw/T/#m5f61921fa67a5b40522b7f7b17216e0d204647be
+> 
+> ...
+> 
+> > -       of_node_put(dpmac_node);
+> > +       if (is_of_node(dpmac_node))
+> > +               of_node_put(to_of_node(dpmac_node));
+> 
+> I'm not sure why you can't use fwnode_handle_put()?
+> 
+> > +       if (is_of_node(dpmac_node))
+> > +               of_node_put(to_of_node(dpmac_node));
+> 
+> Ditto.
 
-p.s.
-
-About the type part of the proposed sysfs API for this, the idea
-here is that e.g. the Intel pstate driver could also export a
-performance-profile interface, mirroring the custom interface it
-currently has for this.
-
-The performance-profile-daemon (p-p-d) Bastien is working on already
-talks to the pstate driver in some cases.  Currently it does this using
-the pstate drivers own/custom API, but that does not really scale. If
-ARM or AMD chips get similar functionality in the future then ideally
-these would export a /sys/class/performance-profile with a type
-of "cpu" and then p-p-d would just need to talk to the performance-profile
-API, instead of needing to have its own internal HAL to deal with
-different CPU vendors.
-
-Regards,
-
-Hans
-
+Sure. I'll take care of these comments.
+Thanks
+Calvin
