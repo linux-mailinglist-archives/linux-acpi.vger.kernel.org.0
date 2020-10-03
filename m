@@ -2,188 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 283312825C1
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Oct 2020 20:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C93462825DF
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Oct 2020 20:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725818AbgJCSDS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Oct 2020 14:03:18 -0400
-Received: from mail-eopbgr150044.outbound.protection.outlook.com ([40.107.15.44]:63303
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725804AbgJCSDS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 3 Oct 2020 14:03:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lttuwH97RUPHor9xp8d2rCyOSzYi4VPE1nhN2yuPAo/AlV18uSJG+jew1IaIvIZEMY3+aNo62TdvLblxumQIl/kmW57XCW0Ob3XtX5oOA3ilmuJro327wWYoQ3nkH7jlUJayXl9LkaZkTkHgs9Yd1pLez8JoasVLfKtafgF/a1/Xwm+rSYbt+brI58k0Aq7Y/DtSrKsx6y5uAR8ZO4X+DQcmk31eLgcE0wBuT9c/ttIBVJxM24dCnBYQYrsjGd7/g5AROatIpYp4VlDgGQ88qAgiakidGC6Cr5MDMJVjplCrJSO+rAe7U2bo3y+lwgYqdKBOD6vEFs/iYO7cqeo2AA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c6pPx1AFkSx5t2xv1d5l/6aytetjogUd19I8PYE82k4=;
- b=BRhMMd7jSNkq2TkRdzLMTawtt6VaPzYaSs20p1EaxeovIKbo1wBCe/an1+3AC6yWn18CBXjoiLqRwBzkRTEYIiWwyD929xsHQa5EISTANiZ1W5ZpINdJ0h5wQTwZxGGql44CKK5A/urqEdzywjtfO0sOTErzfz0EbCtzGrQekyAMYvsTJhg23kT64KcfEmSz6Fo1uDXFLc8Mmo2x2zcuogUszTkSvzMwIchWkZFTBn1qRRRAg1sODOnErJEUMABk9akASw7x9UVwPw2MCixGdiJBFssYMw8XGm//W5lnCIhQicodfcYc+SwxWQuz6U3DSl/DVqlXJwUagFzjSvhPuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c6pPx1AFkSx5t2xv1d5l/6aytetjogUd19I8PYE82k4=;
- b=Cq7E13rw3xiVxWTW2/5M1Syss1HWWt6u7PprLlOxe1IfTyEOwtuph3tQ2s3kaPNv1ehWAGMPo+fEogwZ4wu2m0GKKa7htZvebLl4sq+ejwgqpZSDaXkBVa7OLzdz6dmT/dke/vOrQhOfEMAdmk50QHqRds+tQUEfBoJrP9PDS0E=
-Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
- header.d=none;armlinux.org.uk; dmarc=none action=none
- header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB3955.eurprd04.prod.outlook.com (2603:10a6:208:56::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.34; Sat, 3 Oct
- 2020 18:03:14 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a997:35ae:220c:14ef]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a997:35ae:220c:14ef%7]) with mapi id 15.20.3433.042; Sat, 3 Oct 2020
- 18:03:14 +0000
-Date:   Sat, 3 Oct 2020 23:33:01 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux.cj@gmail.com,
-        netdev@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>, nd <nd@arm.com>
-Subject: Re: [net-next PATCH v1 3/7] net: phy: Introduce fwnode_get_phy_id()
-Message-ID: <20201003180301.GD28093@lsv03152.swis.in-blr01.nxp.com>
-References: <20200930160430.7908-1-calvin.johnson@oss.nxp.com>
- <20200930160430.7908-4-calvin.johnson@oss.nxp.com>
- <11e6b553-675f-8f3d-f9d5-316dae381457@arm.com>
- <679fab8f-d33a-9ce8-1982-788d5f90185e@gmail.com>
- <20201002155026.GG1551@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201002155026.GG1551@shell.armlinux.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR01CA0112.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::16) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S1725826AbgJCSkz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Oct 2020 14:40:55 -0400
+Received: from smtprelay0046.hostedemail.com ([216.40.44.46]:41004 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725816AbgJCSkz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Oct 2020 14:40:55 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 9054F18029210;
+        Sat,  3 Oct 2020 18:40:53 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:966:967:968:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1544:1593:1594:1711:1712:1730:1747:1777:1792:1801:2196:2199:2393:2525:2553:2567:2682:2685:2828:2859:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3770:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4117:4250:4321:4385:4605:5007:6742:6743:7903:8829:9025:9121:9388:9391:10004:10848:11026:11232:11233:11473:11658:11914:12043:12262:12295:12297:12438:12555:12663:12679:12740:12760:12895:12986:13161:13229:13439:13845:14093:14096:14097:14181:14659:14721:21063:21080:21365:21433:21451:21611:21627:21740:21749:21811:21819:21939:30054:30070:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: stop55_5311f74271af
+X-Filterd-Recvd-Size: 6242
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Sat,  3 Oct 2020 18:40:49 +0000 (UTC)
+Message-ID: <f44d19ad596f261c0287c9ab18c45161003efb43.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Mark Brown <broonie@kernel.org>, tools@linux.kernel.org,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Date:   Sat, 03 Oct 2020 11:40:48 -0700
+In-Reply-To: <20201001110150.GA6715@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+         <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+         <20200929113745.GB4799@sirena.org.uk>
+         <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
+         <20201001110150.GA6715@sirena.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR01CA0112.apcprd01.prod.exchangelabs.com (2603:1096:4:40::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Sat, 3 Oct 2020 18:03:09 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 661a2880-16a4-4658-031a-08d867c698f8
-X-MS-TrafficTypeDiagnostic: AM0PR04MB3955:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB395506583EDCD196B4E72045D20E0@AM0PR04MB3955.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: P7I4mDm8KJhPS2zJVEclc64geXzT1j4QMHyW62reIfEEwv2PzMf2YkNSvqmmjrPXPYQp97pRbycbwrwJi3GGFnYTIsXFvegxbQkr+B10wLBa11+qYkI7ie1Qp7GPs35/LCks3m9pO5QxWZfzC8MvgY4Ooyotk00tLKM6KHG11TxVcaa10SUaO+Hgq2Rpsht/RxMM/M/pvPlrQCRg4IerBdsAG2vxMoZavpnE+1w210G0XljyLK436TJv8e8Mz1grRTv1bs5TzR4qRhvoIRAFBwLIBlMpS+T1YBELzQCFvobhj5Ysz4xN4Glwv9NrbQNx2VZfnff8pYzS/CCBcfB9xN5RZB2V6C4ZTor9Yt2by3InPeyOJB4+p279hOBzCKYF
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(396003)(376002)(39850400004)(136003)(66946007)(66476007)(54906003)(316002)(55236004)(9686003)(16526019)(26005)(5660300002)(86362001)(4326008)(186003)(66556008)(956004)(7696005)(55016002)(83380400001)(2906002)(7416002)(53546011)(8676002)(6916009)(8936002)(1076003)(6666004)(6506007)(52116002)(1006002)(33656002)(478600001)(44832011)(110426005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: HeQorAorL7kfS7nsFDZSaDP/doLRnKBDjIIlOvdDrERjv4+bttwtqqceLpUZ5QMcHq/uA3fO4743FK2Fhy2iY3D6zLLmNGIUIQ2hxwuAheuRz28pSAnz012RZVWS1OO9ghfyOyON2mwDuitukjm/7O3efjFNfW5cpGwiP4xTzJyCqJe8wILsJrBdORLcyYsWrgN8k2HydY5PTN7/9iWqZ41usfIzmh4eH1Rn+jTLf0tTFdNS8BZlrdP65Xoabcvj6umRa/Jox3D0WGMR4djfLll/WPpiY2THlldyO1u4N/I/FlwIzh6HbD8IOfCDtWewDEs5myrWASlYlZ2GOFDqvUcwCpsV255L4cU6o4cADGVJL/SelxSL99lpnpPZPmz3Bat6O8Q1NwmXVe488mlTpqVO3VrhQv7i4NkxCLzE7E/WASGfLxZ571LJwweUh66KcY9NtAIM4Tq4ttXC4k4aznmWVDLJnRUKkC/8Fe1Bf7/TvD57h65H4jLUfmjBcK2nnax4E+gGmHw+FQD5oB8/1rwcK0l5FPKfSoyy4r5Q4vkxWNXAKLx8mHXTM/oJtGR1fXlKs/78+se70jhz+7ts2NaIuBiUvEUVklnlscKC4aQ5L43WCQ5g7J7AJVei6K2JkGsQdaoYpHDBm5t8POqa7Q==
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 661a2880-16a4-4658-031a-08d867c698f8
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2020 18:03:14.4049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f7c7VtR2yGzdIzWhsTVhBdI8RO4eBMQctU+kW9auL1NRj82sWy1kEjpdPx5YbsCGfgsjCDDcq3vjEdTmWaGf9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB3955
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Russell and Florian,
+(Adding tools and Konstantin Ryabitsev)
 
-On Fri, Oct 02, 2020 at 04:50:26PM +0100, Russell King - ARM Linux admin wrote:
-> On Fri, Oct 02, 2020 at 08:14:07AM -0700, Florian Fainelli wrote:
-> > On 10/2/2020 4:05 AM, Grant Likely wrote:
-> > > On 30/09/2020 17:04, Calvin Johnson wrote:
-> > > > Extract phy_id from compatible string. This will be used by
-> > > > fwnode_mdiobus_register_phy() to create phy device using the
-> > > > phy_id.
-> > > > 
-> > > > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> > > > ---
-> > > > 
-> > > >   drivers/net/phy/phy_device.c | 32 +++++++++++++++++++++++++++++++-
-> > > >   include/linux/phy.h          |  5 +++++
-> > > >   2 files changed, 36 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> > > > index c4aec56d0a95..162abde6223d 100644
-> > > > --- a/drivers/net/phy/phy_device.c
-> > > > +++ b/drivers/net/phy/phy_device.c
-> > > > @@ -9,6 +9,7 @@
-> > > >   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > > > +#include <linux/acpi.h>
-> > > >   #include <linux/bitmap.h>
-> > > >   #include <linux/delay.h>
-> > > >   #include <linux/errno.h>
-> > > > @@ -845,6 +846,27 @@ static int get_phy_c22_id(struct mii_bus *bus,
-> > > > int addr, u32 *phy_id)
-> > > >       return 0;
-> > > >   }
-> > > > +/* Extract the phy ID from the compatible string of the form
-> > > > + * ethernet-phy-idAAAA.BBBB.
-> > > > + */
-> > > > +int fwnode_get_phy_id(struct fwnode_handle *fwnode, u32 *phy_id)
-> > > > +{
-> > > > +    unsigned int upper, lower;
-> > > > +    const char *cp;
-> > > > +    int ret;
-> > > > +
-> > > > +    ret = fwnode_property_read_string(fwnode, "compatible", &cp);
-> > > > +    if (ret)
-> > > > +        return ret;
-> > > > +
-> > > > +    if (sscanf(cp, "ethernet-phy-id%4x.%4x", &upper, &lower) == 2) {
-> > > > +        *phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
-> > > > +        return 0;
-> > > > +    }
-> > > > +    return -EINVAL;
-> > > > +}
-> > > > +EXPORT_SYMBOL(fwnode_get_phy_id);
-> > > 
-> > > This block, and the changes in patch 4 duplicate functions from
-> > > drivers/of/of_mdio.c, but it doesn't refactor anything in
-> > > drivers/of/of_mdio.c to use the new path. Is your intent to bring all of
-> > > the parsing in these functions of "compatible" into the ACPI code path?
-> > > 
-> > > If so, then the existing code path needs to be refactored to work with
-> > > fwnode_handle instead of device_node.
-> > > 
-> > > If not, then the DT path in these functions should call out to of_mdio,
-> > > while the ACPI path only does what is necessary.
-> > 
-> > Rob has been asking before to have drivers/of/of_mdio.c be merged or at
-> > least relocated within drivers/net/phy where it would naturally belong. As a
-> > preliminary step towards ACPI support that would seem reasonable to do.
+There seems to be some mismatch between b4's use of the
+cover letter to a patch series and what maintainers that
+apply a subset of the patches in the patch series.
+
+The merge description shows the entire patch series as
+applied, but the actual merge is only a subset of the
+series.
+
+Can this be improved in b4?
+
+For example, regarding:
+
+https://lore.kernel.org/linux-amlogic/160132172369.55460.9237357219623604216.b4-ty@kernel.org/
+https://lore.kernel.org/lkml/b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com/#t
+
+On Thu, 2020-10-01 at 12:01 +0100, Mark Brown wrote:
+> On Wed, Sep 30, 2020 at 12:33:39PM -0700, Joe Perches wrote:
+> > On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
+> > > Feel free to submit patches to b4.
+> > Have you tried the existing option to send
+> > thank you's on a specific ranges of patches?
 > 
-> I think even I have commented on specific functions while reviewing
-> patches from NXP that the DT/ACPI code should use common bases...
-> 
-> I have been planning that if that doesn't get done, then I'd do it,
-> but really NXP should do it being the ones adding this infrastructure;
-> they should do the job properly and not take advantage of volunteers
-> in the community cleaning up their resulting submissions.
+> I am relying on b4 to identify which patches that I've downloaded are in
+> the pushed branches.  Given that it explicitly lists the patches that
+> are applied it appears to be doing an OK job here.
 
-I'll work on it.
+I'm not so sure about that.
 
-Thanks
-Calvin
+The commit merge description in -next shows 23 files
+modified but the commit range shown in the merge shows
+only a single patch applied:
+
+From next-20201002:
+
+(I've removed some of the commit description below)
+
+$ git log --stat -1 2defc3fa18a68963a330187f5386968e50832d06
+commit 2defc3fa18a68963a330187f5386968e50832d06
+Merge: eb45df24fe82 7f4a122d0b50
+Author: Mark Brown <broonie@kernel.org>
+Date:   Mon Sep 28 18:28:48 2020 +0100
+
+    Merge series "use semicolons rather than commas to separate statements" from Julia Lawall <Julia.Lawall@inria.fr>:
+    
+    These patches replace commas by semicolons.  This was done using the
+    Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+
+[some of the long description elided]
+
+        ---
+    
+     drivers/acpi/processor_idle.c               |    4 +++-
+     drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+     drivers/base/regmap/regmap-debugfs.c        |    2 +-
+     drivers/bcma/driver_pci_host.c              |    4 ++--
+     drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+     drivers/char/agp/amd-k7-agp.c               |    2 +-
+     drivers/char/agp/nvidia-agp.c               |    2 +-
+     drivers/char/agp/sworks-agp.c               |    2 +-
+     drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+     drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+     drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+     drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+     drivers/clk/meson/meson-aoclk.c             |    2 +-
+     drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+     drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+     drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+     drivers/clocksource/mps2-timer.c            |    6 +++---
+     drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+     drivers/counter/ti-eqep.c                   |    2 +-
+     drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+     drivers/crypto/atmel-tdes.c                 |    2 +-
+     drivers/crypto/hifn_795x.c                  |    4 ++--
+     drivers/crypto/talitos.c                    |    8 ++++----
+     23 files changed, 60 insertions(+), 51 deletions(-)
+
+But the commit range of the merge shows only the single commit:
+
+$ git log --stat eb45df24fe82..7f4a122d0b50
+commit 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+Author: Julia Lawall <Julia.Lawall@inria.fr>
+Date:   Sun Sep 27 21:12:24 2020 +0200
+
+    regmap: debugfs: use semicolons rather than commas to separate statements
+    
+    Replace commas with semicolons.  What is done is essentially described by
+    the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+    
+    // <smpl>
+    @@ expression e1,e2; @@
+    e1
+    -,
+    +;
+    e2
+    ... when any
+    // </smpl>
+    
+    Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+    Link: https://lore.kernel.org/r/1601233948-11629-15-git-send-email-Julia.La>
+    Signed-off-by: Mark Brown <broonie@kernel.org>
+
+ drivers/base/regmap/regmap-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+
