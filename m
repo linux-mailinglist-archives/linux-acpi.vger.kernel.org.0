@@ -2,130 +2,248 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E72D52834F2
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Oct 2020 13:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B00283599
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Oct 2020 14:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725891AbgJEL3W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Oct 2020 07:29:22 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:40714 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbgJEL3V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Oct 2020 07:29:21 -0400
-Received: by mail-oi1-f195.google.com with SMTP id m128so8359164oig.7;
-        Mon, 05 Oct 2020 04:29:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=x6lFl31eFcV62mdRSrgqi2jVtVPOBQr2Cb4J+E02tlE=;
-        b=jrcwWR5MA8Feq0FiFnGUs/a88kUFrJUhHgXCpDDkBcZw0rOrXKiUrD0TBvtc2H8VXV
-         NKNzZurOkbfpNz8pIXMdTcEGURKn+uDqge5OaLjP8kYfmL/4hRUGga9zXjLwh/G6UL4a
-         UXe+nzRCnrNO1w2Qw53T/ktHDsmwVWoFlk9+922XFKvJcsqiyBtPEbgoLRSMVRu1NecF
-         LqP7hdNzwsmsWH5F6s31sdapAqVxe9GU0lxOGaElMvYoaned4tKC8SU2i7AkJrIs3e0g
-         pC2aeU1oQ0ljMGoNvXnePD5UgjKhXxn4iOIq4YT6w/K1t0N5sXfrR68WePvTE0E4bt7R
-         +DEQ==
-X-Gm-Message-State: AOAM532XuUTekUkt/zqM6Xn/+eA3dngBYy4/kNltbwxaTdEb02ilaCk2
-        5PIWPqG7memUd9fAvfbMfb/VBKmJE1tV/uKACJD0y/kV
-X-Google-Smtp-Source: ABdhPJy5oSVbn/jgSCcVTW/SgVTLyIBbPb9dm+QZNnpgcfqTsHrmEjvS2hF2S6R94ZvtzUnNvj2TPHwTAOJdxQnL4r0=
-X-Received: by 2002:aca:5c84:: with SMTP id q126mr5556700oib.71.1601897360718;
- Mon, 05 Oct 2020 04:29:20 -0700 (PDT)
+        id S1726000AbgJEMQB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Oct 2020 08:16:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53362 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725940AbgJEMQA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Oct 2020 08:16:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601900158;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=KBX1TXpOrcsq29GpOBaph461kpBMaGykfCUU1aPiYHU=;
+        b=fvHmXnd/fhhhC3C85g5BFdrmIpJzZWl5CQY8AFLn5GsGl0KDJ3JJSe4R3ZvDt25eNjR9m5
+        xo8z6DUemt8FrHNcCRD5m8SUc+Mwt/J4VIvIrWXNXAGx2CNk1585qZjzFvUewNG6lU/qI9
+        K/+lR5RrkkZmAC3aPnEaNTgZhZOnKDQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-587-BY-7UwbeNrSQH1yvi3bonA-1; Mon, 05 Oct 2020 08:15:54 -0400
+X-MC-Unique: BY-7UwbeNrSQH1yvi3bonA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 110A38030CD;
+        Mon,  5 Oct 2020 12:15:51 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-114-222.ams2.redhat.com [10.36.114.222])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id ACE6D277C6;
+        Mon,  5 Oct 2020 12:15:36 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-hyperv@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@kernel.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Scott Cheloha <cheloha@linux.ibm.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>
+Subject: [PATCH v2 0/5] mm: place pages to the freelist tail when onlining and undoing isolation
+Date:   Mon,  5 Oct 2020 14:15:29 +0200
+Message-Id: <20201005121534.15649-1-david@redhat.com>
 MIME-Version: 1.0
-References: <20201005051125.GA3245495@dtor-ws>
-In-Reply-To: <20201005051125.GA3245495@dtor-ws>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 5 Oct 2020 13:29:05 +0200
-Message-ID: <CAJZ5v0jTXNYwLcUcaOHk89WVxWCZEZJhMUd94KBdsTK41Eo-5g@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / button: fix handling lid state changes when input
- device closed
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 5, 2020 at 7:11 AM <dmitry.torokhov@gmail.com> wrote:
->
-> The original intent of 84d3f6b76447 was to delay evaluating lid state until
-> all drivers have been loaded, with input device being opened from userspace
-> serving as a signal for this condition. Let's ensure that state updates
-> happen even if userspace closed (or in the future inhibited) input device.
->
-> Note that if we go through suspend/resume cycle we assume the system has
-> been fully initialized even if LID input device has not been opened yet.
->
-> This has a side-effect of fixing access to input->users outside of
-> input->mutex protections by the way of eliminating said accesses and using
-> driver private flag.
->
-> Fixes: 84d3f6b76447 ("ACPI / button: Delay acpi_lid_initialize_state() until first user space open")
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->  drivers/acpi/button.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 78cfc70cb320..b8dd51d8f96d 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -154,6 +154,7 @@ struct acpi_button {
->         int last_state;
->         ktime_t last_time;
->         bool suspended;
-> +       bool lid_state_initialized;
->  };
->
->  static struct acpi_device *lid_device;
-> @@ -384,6 +385,8 @@ static int acpi_lid_update_state(struct acpi_device *device,
->
->  static void acpi_lid_initialize_state(struct acpi_device *device)
->  {
-> +       struct acpi_button *button = acpi_driver_data(device);
-> +
->         switch (lid_init_state) {
->         case ACPI_BUTTON_LID_INIT_OPEN:
->                 (void)acpi_lid_notify_state(device, 1);
-> @@ -395,13 +398,14 @@ static void acpi_lid_initialize_state(struct acpi_device *device)
->         default:
->                 break;
->         }
-> +
-> +       button->lid_state_initialized = true;
->  }
->
->  static void acpi_button_notify(struct acpi_device *device, u32 event)
->  {
->         struct acpi_button *button = acpi_driver_data(device);
->         struct input_dev *input;
-> -       int users;
->
->         switch (event) {
->         case ACPI_FIXED_HARDWARE_EVENT:
-> @@ -410,10 +414,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
->         case ACPI_BUTTON_NOTIFY_STATUS:
->                 input = button->input;
->                 if (button->type == ACPI_BUTTON_TYPE_LID) {
-> -                       mutex_lock(&button->input->mutex);
-> -                       users = button->input->users;
-> -                       mutex_unlock(&button->input->mutex);
-> -                       if (users)
-> +                       if (button->lid_state_initialized)
->                                 acpi_lid_update_state(device, true);
->                 } else {
->                         int keycode;
-> @@ -458,7 +459,7 @@ static int acpi_button_resume(struct device *dev)
->         struct acpi_button *button = acpi_driver_data(device);
->
->         button->suspended = false;
-> -       if (button->type == ACPI_BUTTON_TYPE_LID && button->input->users) {
-> +       if (button->type == ACPI_BUTTON_TYPE_LID) {
->                 button->last_state = !!acpi_lid_evaluate_state(device);
->                 button->last_time = ktime_get();
->                 acpi_lid_initialize_state(device);
-> --
+When adding separate memory blocks via add_memory*() and onlining them
+immediately, the metadata (especially the memmap) of the next block will be
+placed onto one of the just added+onlined block. This creates a chain
+of unmovable allocations: If the last memory block cannot get
+offlined+removed() so will all dependent ones. We directly have unmovable
+allocations all over the place.
 
-Applied as 5.10 material with the R-by from Hans, thanks!
+This can be observed quite easily using virtio-mem, however, it can also
+be observed when using DIMMs. The freshly onlined pages will usually be
+placed to the head of the freelists, meaning they will be allocated next,
+turning the just-added memory usually immediately un-removable. The
+fresh pages are cold, prefering to allocate others (that might be hot)
+also feels to be the natural thing to do.
+
+It also applies to the hyper-v balloon xen-balloon, and ppc64 dlpar: when
+adding separate, successive memory blocks, each memory block will have
+unmovable allocations on them - for example gigantic pages will fail to
+allocate.
+
+While the ZONE_NORMAL doesn't provide any guarantees that memory can get
+offlined+removed again (any kind of fragmentation with unmovable
+allocations is possible), there are many scenarios (hotplugging a lot of
+memory, running workload, hotunplug some memory/as much as possible) where
+we can offline+remove quite a lot with this patchset.
+
+a) To visualize the problem, a very simple example:
+
+Start a VM with 4GB and 8GB of virtio-mem memory:
+
+ [root@localhost ~]# lsmem
+ RANGE                                 SIZE  STATE REMOVABLE  BLOCK
+ 0x0000000000000000-0x00000000bfffffff   3G online       yes   0-23
+ 0x0000000100000000-0x000000033fffffff   9G online       yes 32-103
+
+ Memory block size:       128M
+ Total online memory:      12G
+ Total offline memory:      0B
+
+Then try to unplug as much as possible using virtio-mem. Observe which
+memory blocks are still around. Without this patch set:
+
+ [root@localhost ~]# lsmem
+ RANGE                                  SIZE  STATE REMOVABLE   BLOCK
+ 0x0000000000000000-0x00000000bfffffff    3G online       yes    0-23
+ 0x0000000100000000-0x000000013fffffff    1G online       yes   32-39
+ 0x0000000148000000-0x000000014fffffff  128M online       yes      41
+ 0x0000000158000000-0x000000015fffffff  128M online       yes      43
+ 0x0000000168000000-0x000000016fffffff  128M online       yes      45
+ 0x0000000178000000-0x000000017fffffff  128M online       yes      47
+ 0x0000000188000000-0x0000000197ffffff  256M online       yes   49-50
+ 0x00000001a0000000-0x00000001a7ffffff  128M online       yes      52
+ 0x00000001b0000000-0x00000001b7ffffff  128M online       yes      54
+ 0x00000001c0000000-0x00000001c7ffffff  128M online       yes      56
+ 0x00000001d0000000-0x00000001d7ffffff  128M online       yes      58
+ 0x00000001e0000000-0x00000001e7ffffff  128M online       yes      60
+ 0x00000001f0000000-0x00000001f7ffffff  128M online       yes      62
+ 0x0000000200000000-0x0000000207ffffff  128M online       yes      64
+ 0x0000000210000000-0x0000000217ffffff  128M online       yes      66
+ 0x0000000220000000-0x0000000227ffffff  128M online       yes      68
+ 0x0000000230000000-0x0000000237ffffff  128M online       yes      70
+ 0x0000000240000000-0x0000000247ffffff  128M online       yes      72
+ 0x0000000250000000-0x0000000257ffffff  128M online       yes      74
+ 0x0000000260000000-0x0000000267ffffff  128M online       yes      76
+ 0x0000000270000000-0x0000000277ffffff  128M online       yes      78
+ 0x0000000280000000-0x0000000287ffffff  128M online       yes      80
+ 0x0000000290000000-0x0000000297ffffff  128M online       yes      82
+ 0x00000002a0000000-0x00000002a7ffffff  128M online       yes      84
+ 0x00000002b0000000-0x00000002b7ffffff  128M online       yes      86
+ 0x00000002c0000000-0x00000002c7ffffff  128M online       yes      88
+ 0x00000002d0000000-0x00000002d7ffffff  128M online       yes      90
+ 0x00000002e0000000-0x00000002e7ffffff  128M online       yes      92
+ 0x00000002f0000000-0x00000002f7ffffff  128M online       yes      94
+ 0x0000000300000000-0x0000000307ffffff  128M online       yes      96
+ 0x0000000310000000-0x0000000317ffffff  128M online       yes      98
+ 0x0000000320000000-0x0000000327ffffff  128M online       yes     100
+ 0x0000000330000000-0x000000033fffffff  256M online       yes 102-103
+
+ Memory block size:       128M
+ Total online memory:     8.1G
+ Total offline memory:      0B
+
+With this patch set:
+
+ [root@localhost ~]# lsmem
+ RANGE                                 SIZE  STATE REMOVABLE BLOCK
+ 0x0000000000000000-0x00000000bfffffff   3G online       yes  0-23
+ 0x0000000100000000-0x000000013fffffff   1G online       yes 32-39
+
+ Memory block size:       128M
+ Total online memory:       4G
+ Total offline memory:      0B
+
+All memory can get unplugged, all memory block can get removed. Of course,
+no workload ran and the system was basically idle, but it highlights the
+issue - the fairly deterministic chain of unmovable allocations. When a
+huge page for the 2MB memmap is needed, a just-onlined 4MB page will
+be split. The remaining 2MB page will be used for the memmap of the next
+memory block. So one memory block will hold the memmap of the two following
+memory blocks. Finally the pages of the last-onlined memory block will get
+used for the next bigger allocations - if any allocation is unmovable,
+all dependent memory blocks cannot get unplugged and removed until that
+allocation is gone.
+
+Note that with bigger memory blocks (e.g., 256MB), *all* memory
+blocks are dependent and none can get unplugged again!
+
+b) Experiment with memory intensive workload
+
+I performed an experiment with an older version of this patch set
+(before we used undo_isolate_page_range() in online_pages():
+Hotplug 56GB to a VM with an initial 4GB, onlining all memory to
+ZONE_NORMAL right from the kernel when adding it. I then run various
+memory intensive workloads that consume most system memory for a total of
+45 minutes. Once finished, I try to unplug as much memory as possible.
+
+With this change, I am able to remove via virtio-mem (adding individual
+128MB memory blocks) 413 out of 448 added memory blocks. Via individual
+(256MB) DIMMs 380 out of 448 added memory blocks. (I don't have any numbers
+without this patchset, but looking at the above example, it's at most half
+of the 448 memory blocks for virtio-mem, and most probably none for DIMMs).
+
+Again, there are workloads that might behave very differently due to the
+nature of ZONE_NORMAL.
+
+This change also affects (besodes memory onlining):
+- Other users of undo_isolate_page_range(): Pages are always placed to the
+  tail.
+-- When memory offlining fails
+-- When memory isolation fails after having isolated some pageblocks
+-- When alloc_contig_range() either succeeds or fails
+- Other users of __putback_isolated_page(): Pages are always placed to the
+  tail.
+-- Free page reporting
+- Other users of __free_pages_core()
+-- AFAIKs, any memory that is getting exposed to the buddy during boot.
+   IIUC we will now usually allocate memory from lower addresses within
+   a zone first (especially during boot).
+- Other users of generic_online_page()
+-- Hyper-V balloon
+
+v1 -> v2:
+- Avoid changing indentation/alignment of function parameters
+- Minor spelling fixes
+- "mm/page_alloc: convert "report" flag of __free_one_page() to a proper
+   flag"
+-- fop_t -> fpi_t
+-- Clarify/extend documentation of FPI_SKIP_REPORT_NOTIFY
+- "mm/page_alloc: move pages to tail in move_to_free_list()"
+-- Perform change for all move_to_free_list()/move_freepages_block() users
+   to simplify.
+-- Adjust subject/description accordingly.
+- "mm/page_alloc: place pages to tail in __free_pages_core()"
+-- s/init_single_page/__init_single_page/
+
+RFC -> v1:
+- Tweak some patch descriptions
+- "mm/page_alloc: place pages to tail in __putback_isolated_page()"
+-- FOP_TO_TAIL now has higher precedence than page shuffling
+-- Add a note that nothing should rely on FOP_TO_TAIL for correctness
+- "mm/page_alloc: always move pages to the tail of the freelist in
+   unset_migratetype_isolate()"
+-- Use "bool" parameter for move_freepages_block() as requested
+- "mm/page_alloc: place pages to tail in __free_pages_core()"
+-- Eliminate set_page_refcounted() + page_ref_dec() and add a comment
+- "mm/memory_hotplug: update comment regarding zone shuffling"
+-- Added
+
+David Hildenbrand (5):
+  mm/page_alloc: convert "report" flag of __free_one_page() to a proper
+    flag
+  mm/page_alloc: place pages to tail in __putback_isolated_page()
+  mm/page_alloc: move pages to tail in move_to_free_list()
+  mm/page_alloc: place pages to tail in __free_pages_core()
+  mm/memory_hotplug: update comment regarding zone shuffling
+
+ mm/memory_hotplug.c | 11 +++---
+ mm/page_alloc.c     | 84 +++++++++++++++++++++++++++++++++++----------
+ mm/page_isolation.c |  5 +++
+ 3 files changed, 75 insertions(+), 25 deletions(-)
+
+-- 
+2.26.2
+
