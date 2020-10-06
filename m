@@ -2,123 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F81284C26
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Oct 2020 15:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D87284EC8
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Oct 2020 17:21:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgJFNEe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Oct 2020 09:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
+        id S1726131AbgJFPVF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Oct 2020 11:21:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725891AbgJFNEd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Oct 2020 09:04:33 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A849C061755;
-        Tue,  6 Oct 2020 06:04:33 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id 7ECB0299E5B
-Subject: Re: [PATCH v4 7/7] Input: Add "inhibited" property
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Patrik Fimml <patrikf@chromium.org>
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
- <20200608112211.12125-1-andrzej.p@collabora.com>
- <20200608112211.12125-8-andrzej.p@collabora.com>
- <20201005181014.GL1009802@dtor-ws>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <ac4eeab7-8333-b96b-707b-eb2d6d0d8139@collabora.com>
-Date:   Tue, 6 Oct 2020 15:04:28 +0200
+        with ESMTP id S1726064AbgJFPVF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Oct 2020 11:21:05 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E8EC0613D4
+        for <linux-acpi@vger.kernel.org>; Tue,  6 Oct 2020 08:21:04 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id b2so423227ilr.1
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Oct 2020 08:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=mmj7x7pJat8UNIIwIa7Sd+SRNOWKvcmn8r90tiL0s1A=;
+        b=IXQwwVAi7F6pRyGOUEQ8zaCzPCqLYGzR6fWH1AMiUEwCFiSYJ471FkLdAmCwbx2c54
+         ItJ9whV/AqUo+mM2d7MbaozYvKfTm/b80nFjzDVrSdzgt+4L5TPDPIQZWJW4+sAYwEpy
+         BbucuKw8YdnI1BxGGqAvEq5di/ZoXDjLG4oTw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mmj7x7pJat8UNIIwIa7Sd+SRNOWKvcmn8r90tiL0s1A=;
+        b=uh91BdShTAMmujaGftJSGVyz90dt9AbOH/pp/lM69zcQkqf4NWt6UHJiNM+X34LoU/
+         YZ5EH2JSPELOX+CZpA9L+9tbW/DJn/2ENtwdeeYDkvYz13APDHjO6mkj8PMMp9Yvyqss
+         pK50d2uYyTVDZnFsF/jf4EJnQ7ijF9m0tIMltI4FHwZ0yC4sFaAF2V8VJoH4VkGwZ2sE
+         gcxiE+MTeacDbKVCyMTzceWKGNE97e9Ib+QMVWEs8S3xFkwgqikvCu/ZioFfTbPSjoDO
+         donEgeeHoiWG7uYj2kZmwaC7sb6xcVqhewFZTqhgTnn2rarGhDxeuhlRCRWXA8rXuwTE
+         mjcw==
+X-Gm-Message-State: AOAM533Yv06sl4WRFj7+eN3xVziTpxCUrNUIpxBdaMES5YzRRcNOiu8o
+        3ImHqCbi24ttMGCs/ZHOHt6UhQ==
+X-Google-Smtp-Source: ABdhPJyqEmZz43/2Pp1HykB1ZUp+7my5maxDOMBk3deo+zKUWBRwafPlIzkV/qrgjjh1lVhgQ7y1zw==
+X-Received: by 2002:a92:b50b:: with SMTP id f11mr4049407ile.109.1601997664092;
+        Tue, 06 Oct 2020 08:21:04 -0700 (PDT)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id z76sm349366ilf.76.2020.10.06.08.21.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2020 08:21:03 -0700 (PDT)
+Subject: Re: [PATCH 00/11] Introduce Simple atomic and non-atomic counters
+To:     Kees Cook <keescook@chromium.org>
+Cc:     corbet@lwn.net, gregkh@linuxfoundation.org, shuah@kernel.org,
+        rafael@kernel.org, johannes@sipsolutions.net, lenb@kernel.org,
+        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        arve@android.com, tkjos@android.com, maco@android.com,
+        joel@joelfernandes.org, christian@brauner.io, hridya@google.com,
+        surenb@google.com, minyard@acm.org, arnd@arndb.de,
+        mchehab@kernel.org, rric@kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1601073127.git.skhan@linuxfoundation.org>
+ <202009260923.9A2606CFF6@keescook>
+ <3929a023-eb7a-509c-50e1-ee72dca05191@linuxfoundation.org>
+ <202009281612.EDC1C0078@keescook>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <700f0ed4-fe09-7610-b460-89b5ad08452c@linuxfoundation.org>
+Date:   Tue, 6 Oct 2020 09:21:01 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201005181014.GL1009802@dtor-ws>
+In-Reply-To: <202009281612.EDC1C0078@keescook>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dmitry,
-
-W dniu 05.10.2020 o 20:10, Dmitry Torokhov pisze:
-> Hi Andrzej,
+On 9/28/20 5:13 PM, Kees Cook wrote:
+> On Mon, Sep 28, 2020 at 04:41:47PM -0600, Shuah Khan wrote:
+>> On 9/26/20 10:29 AM, Kees Cook wrote:
+>>> On Fri, Sep 25, 2020 at 05:47:14PM -0600, Shuah Khan wrote:
+>>>>      7. Verified that the test module compiles in kunit env. and test
+>>>>         module can be loaded to run the test.
+>>>
+>>> I meant write it using KUnit interfaces (e.g. KUNIT_EXPECT*(),
+>>> kunit_test_suite(), etc):
+>>> https://www.kernel.org/doc/html/latest/dev-tools/kunit/
+>>>
+>>> Though I see the docs are still not updated[1] to reflect the Kconfig
+>>> (CONFIG_foo_KUNIT_TEST) and file naming conventions (foo_kunit.c).
+>>>
+>>
+>> I would like to be able to run this test outside Kunit env., hence the
+>> choice to go with a module and kselftest script. It makes it easier to
+>> test as part of my workflow as opposed to doing a kunit and build and
+>> running it that way.
 > 
-> On Mon, Jun 08, 2020 at 01:22:11PM +0200, Andrzej Pietrasiewicz wrote:
->> @@ -284,8 +284,11 @@ static int input_get_disposition(struct input_dev *dev,
->>   	case EV_KEY:
->>   		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
->>   
->> -			/* auto-repeat bypasses state updates */
->> -			if (value == 2) {
->> +			/*
->> +			 * auto-repeat bypasses state updates but repeat
->> +			 * events are ignored if the key is not pressed
->> +			 */
->> +			if (value == 2 && test_bit(code, dev->key)) {
->>   				disposition = INPUT_PASS_TO_HANDLERS;
->>   				break;
->>   			}
-> 
-> Is this chunk really part of inhibit support? I'd think we cancel
-> autorepeat timer when we are releasing a key, no?
+> It does -- you just load it normally like before and it prints out
+> everything just fine. This is how I use the lib/test_user_copy.c and
+> lib/test_overflow.c before/after their conversions.
 > 
 
-When I look at it now it seems to me the chunk might be redundant.
-But let me explain what I had in mind when adding it.
+I am not seeing any kunit links to either of these tests. I find the
+lib/test_overflow.c very hard to read.
 
-It is a matter of what we do with input events generated while a
-device is inhibited. If ->open()/->close() are not provided by the
-driver then inhibiting amounts to merely ignoring input events from
-a device while it remains active. What else can you do if the driver
-does not provide a method to prepare the device for generating events/
-to stop generating events?
+I am going to stick with what I have for now and handle conversion
+later.
 
-In this special case a user might trigger a repeated event while the
-device is inhibited, then the user keeps holding the key down and the
-device is uninhibited. Do we pass anything to handlers then?
+I think it might be a good idea to add tests for atomic_t and refcount_t
+APIS as well at some point.
 
-In my opinion we should not. Such an event is "illegal" in a sense that it
-was generated at a time when nobody wanted any events from the device.
-Hence the test to let only those auto-repeat events through for which
-a key is actually pressed.
-
-However, what I see now is that if a device is inhibited, no key
-will ever reach neither the "1" nor "2" state because of the "if"
-in the very beginning of input_handle_event().
-
-Regards,
-
-Andrzej
+thanks,
+-- Shuah
