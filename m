@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6613A286D1F
+	by mail.lfdr.de (Postfix) with ESMTP id DC100286D20
 	for <lists+linux-acpi@lfdr.de>; Thu,  8 Oct 2020 05:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728225AbgJHDWD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1728209AbgJHDWD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Wed, 7 Oct 2020 23:22:03 -0400
-Received: from mga04.intel.com ([192.55.52.120]:29857 "EHLO mga04.intel.com"
+Received: from mga04.intel.com ([192.55.52.120]:29860 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728209AbgJHDWC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1728216AbgJHDWC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 7 Oct 2020 23:22:02 -0400
-IronPort-SDR: hjWMYFk3WS2MZsjGA/zUjrWiyh9KxeB0FVVyamw/34cni44l0KzI7lb602by6qPaZPVCZTBPdr
- mbGEIgzGYrJA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9767"; a="162613645"
+IronPort-SDR: R7LT2grrkTdHG66lgvu8TMluSlJPjV4AvHtEtOGi+E3isLhaf+8lcvJIOUH6vykfzg0KNpWGUh
+ G/pWnVr18uGw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9767"; a="162613649"
 X-IronPort-AV: E=Sophos;i="5.77,349,1596524400"; 
-   d="scan'208";a="162613645"
+   d="scan'208";a="162613649"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2020 20:22:01 -0700
-IronPort-SDR: 9CsDmXHpwhbYGo/seVvjMlT5AtQB8ewSFORmH0Sa0QdApLsPMNwoPtxtvsHmUYk7WpuVjWwcDg
- 82sGkv9M0Dwg==
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2020 20:22:02 -0700
+IronPort-SDR: QmOYT7Ytyc12/ljelaAZgSUUHW68UVkuf7shxsAefiN+9dSfZ6HF1GweurbFaDoYkvnP2QDoJ4
+ RMC7+svIw0pA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.77,349,1596524400"; 
-   d="scan'208";a="355229343"
+   d="scan'208";a="355229347"
 Received: from sibelius.jf.intel.com ([10.54.75.172])
-  by orsmga007.jf.intel.com with ESMTP; 07 Oct 2020 20:22:01 -0700
+  by orsmga007.jf.intel.com with ESMTP; 07 Oct 2020 20:22:02 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Cc:     Bob Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 5/9] ACPICA: acpi_help: Update UUID list
-Date:   Wed,  7 Oct 2020 19:53:59 -0700
-Message-Id: <20201008025403.2401736-6-erik.kaneda@intel.com>
+Subject: [PATCH 6/9] ACPICA: iASL: Return exceptions for string-to-integer conversions
+Date:   Wed,  7 Oct 2020 19:54:00 -0700
+Message-Id: <20201008025403.2401736-7-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201008025403.2401736-1-erik.kaneda@intel.com>
 References: <20201008025403.2401736-1-erik.kaneda@intel.com>
@@ -46,54 +46,100 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bob Moore <robert.moore@intel.com>
 
-Added the following UUID's
+This allows iASL to generate errors by passing exceptions that may be
+encountered during string-to-integer conversions. The exceptions
+point out invalid hex, decimal, and octal integers.
 
-Memory Device
-Generic Buttons Device
-NVDIMM Root Device
-Control Method Battery
-Device Graphs for _DSD method
-Hierarchical Data Extension
-ARM core_sight Graph UUID
+ACPICA commit e98b8c0a3d96fdabb167c0ef18a809b32ade3228
 
-This commit squashes the following ACPICA commits:
-93e9aa864a7c5e10db876a9af3f2086e50cc6cf5
-759aaf73942af4a1a0d13715ce5e6b054af351fa
-24751ce4cf3089a7c1709e4986bc82dfb5cca7bc
-
-Link: https://github.com/acpica/acpica/commit/93e9aa86
-Link: https://github.com/acpica/acpica/commit/759aaf73
-Link: https://github.com/acpica/acpica/commit/24751ce4
+Link: https://github.com/acpica/acpica/commit/e98b8c0a
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 ---
- include/acpi/acuuid.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/acpi/acpica/utstrsuppt.c | 33 +++++++++++++++++++++++---------
+ include/acpi/acexcep.h           |  4 ++--
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/include/acpi/acuuid.h b/include/acpi/acuuid.h
-index 9e1367b19069..10e30a5030ee 100644
---- a/include/acpi/acuuid.h
-+++ b/include/acpi/acuuid.h
-@@ -27,6 +27,10 @@
- #define UUID_PCI_HOST_BRIDGE            "33db4d5b-1ff7-401c-9657-7441c03dd766"
- #define UUID_I2C_DEVICE                 "3cdff6f7-4267-4555-ad05-b30a3d8938de"
- #define UUID_POWER_BUTTON               "dfbcf3c5-e7a5-44e6-9c1f-29c76f6e059c"
-+#define UUID_MEMORY_DEVICE              "03b19910-f473-11dd-87af-0800200c9a66"
-+#define UUID_GENERIC_BUTTONS_DEVICE     "fa6bd625-9ce8-470d-a2c7-b3ca36c4282e"
-+#define UUID_NVDIMM_ROOT_DEVICE         "2f10e7a4-9e91-11e4-89d3-123b93f75cba"
-+#define UUID_CONTROL_METHOD_BATTERY     "f18fc78b-0f15-4978-b793-53f833a1d35b"
+diff --git a/drivers/acpi/acpica/utstrsuppt.c b/drivers/acpi/acpica/utstrsuppt.c
+index 05ff20049b87..2d91003fcf26 100644
+--- a/drivers/acpi/acpica/utstrsuppt.c
++++ b/drivers/acpi/acpica/utstrsuppt.c
+@@ -45,10 +45,15 @@ acpi_status acpi_ut_convert_octal_string(char *string, u64 *return_value_ptr)
+ 	/* Convert each ASCII byte in the input string */
  
- /* Interfaces */
+ 	while (*string) {
+-
+-		/* Character must be ASCII 0-7, otherwise terminate with no error */
+-
++		/*
++		 * Character must be ASCII 0-7, otherwise:
++		 * 1) Runtime: terminate with no error, per the ACPI spec
++		 * 2) Compiler: return an error
++		 */
+ 		if (!(ACPI_IS_OCTAL_DIGIT(*string))) {
++#ifdef ACPI_ASL_COMPILER
++			status = AE_BAD_OCTAL_CONSTANT;
++#endif
+ 			break;
+ 		}
  
-@@ -56,5 +60,8 @@
- #define UUID_BATTERY_THERMAL_LIMIT      "4c2067e3-887d-475c-9720-4af1d3ed602e"
- #define UUID_THERMAL_EXTENSIONS         "14d399cd-7a27-4b18-8fb4-7cb7b9f4e500"
- #define UUID_DEVICE_PROPERTIES          "daffd814-6eba-4d8c-8a91-bc9bbf4aa301"
-+#define UUID_DEVICE_GRAPHS              "ab02a46b-74c7-45a2-bd68-f7d344ef2153"
-+#define UUID_HIERARCHICAL_DATA_EXTENSION "dbb8e3e6-5886-4ba6-8795-1319f52a966b"
-+#define UUID_CORESIGHT_GRAPH            "3ecbc8b6-1d0e-4fb3-8107-e627f805c6cd"
+@@ -94,10 +99,15 @@ acpi_status acpi_ut_convert_decimal_string(char *string, u64 *return_value_ptr)
+ 	/* Convert each ASCII byte in the input string */
  
- #endif				/* __ACUUID_H__ */
+ 	while (*string) {
+-
+-		/* Character must be ASCII 0-9, otherwise terminate with no error */
+-
++		/*
++		 * Character must be ASCII 0-9, otherwise:
++		 * 1) Runtime: terminate with no error, per the ACPI spec
++		 * 2) Compiler: return an error
++		 */
+ 		if (!isdigit(*string)) {
++#ifdef ACPI_ASL_COMPILER
++			status = AE_BAD_DECIMAL_CONSTANT;
++#endif
+ 			break;
+ 		}
+ 
+@@ -143,10 +153,15 @@ acpi_status acpi_ut_convert_hex_string(char *string, u64 *return_value_ptr)
+ 	/* Convert each ASCII byte in the input string */
+ 
+ 	while (*string) {
+-
+-		/* Must be ASCII A-F, a-f, or 0-9, otherwise terminate with no error */
+-
++		/*
++		 * Character must be ASCII A-F, a-f, or 0-9, otherwise:
++		 * 1) Runtime: terminate with no error, per the ACPI spec
++		 * 2) Compiler: return an error
++		 */
+ 		if (!isxdigit(*string)) {
++#ifdef ACPI_ASL_COMPILER
++			status = AE_BAD_HEX_CONSTANT;
++#endif
+ 			break;
+ 		}
+ 
+diff --git a/include/acpi/acexcep.h b/include/acpi/acexcep.h
+index 436cd1411c3a..2fc624a61769 100644
+--- a/include/acpi/acexcep.h
++++ b/include/acpi/acexcep.h
+@@ -40,12 +40,12 @@
+ struct acpi_exception_info {
+ 	char *name;
+ 
+-#ifdef ACPI_HELP_APP
++#if defined (ACPI_HELP_APP) || defined (ACPI_ASL_COMPILER)
+ 	char *description;
+ #endif
+ };
+ 
+-#ifdef ACPI_HELP_APP
++#if defined (ACPI_HELP_APP) || defined (ACPI_ASL_COMPILER)
+ #define EXCEP_TXT(name,description)     {name, description}
+ #else
+ #define EXCEP_TXT(name,description)     {name}
 -- 
 2.25.1
 
