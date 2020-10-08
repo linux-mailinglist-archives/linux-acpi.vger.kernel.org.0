@@ -2,93 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D4A42879AB
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Oct 2020 18:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D60A287A05
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Oct 2020 18:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729112AbgJHQHA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Oct 2020 12:07:00 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:38682 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725802AbgJHQHA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Oct 2020 12:07:00 -0400
-Received: by mail-oi1-f193.google.com with SMTP id 26so6820739ois.5
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Oct 2020 09:06:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gsxiiG9nWwjNYTQ2qQYugNFfet7AqvFYTmOXkFAp8Zg=;
-        b=Myobm5I/cAfdGLpj+W9rYzUzLcsBJ91p3UE5uymF2OVGq5PQpNSNeWULA8Xq3l2noD
-         lfcIxQTDu+h06Fbf2X6afhagUEDe6gWFJKWQy2mC1ng9oPY7qn16HJg26tECRjsP5pNH
-         iQuaxr8rSkTD38WAvsNbkDeXnPBDohbmvirAU3dRDXnb+g/OKUY4o9x8L4T0vudhPbTr
-         EIjkqVdjEj8Xbl1y0MWhD6oLo9oryPFaEgtTuXQKREcZvuKlQ4FSGi2hTXs9aTeX51XA
-         kmvMsL4FFd2Njcs2Xe3kLnshnvmgmpm1x9ZOuIHKhQfD4eJRmAfgrawMAACzRzFXJVjW
-         HHhg==
-X-Gm-Message-State: AOAM532vKIdI72f+ZQf9RKtFM7BrOlIcw+UYHKafVatYHBFBF9iuS82y
-        d92ZRfhrGk606DPHKtYI4QXUWk3WO1TY+7VJJII=
-X-Google-Smtp-Source: ABdhPJw1gcctpSQyyr3LQ8mMSZDBGhh/4J20OChKiQbRq8Ys5sY2m6YcMVaoHLlgW1s0jSifXtZivr9EUNrmdrvw1aM=
-X-Received: by 2002:aca:5c84:: with SMTP id q126mr5682184oib.71.1602173219317;
- Thu, 08 Oct 2020 09:06:59 -0700 (PDT)
+        id S1728421AbgJHQfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Oct 2020 12:35:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57234 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726029AbgJHQfT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 8 Oct 2020 12:35:19 -0400
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0103E221FE;
+        Thu,  8 Oct 2020 16:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602174919;
+        bh=Qlahj53lYVNiYg7AJ2rpRjvr+jIGD1GKJKKVML4NVdo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=JVjGIr/dcnN1xksiqNbG+5EbegsU/oIDX9jUBqAS8FdCiPm8u2/qWXBDB5A5SPFTI
+         BT867zshbo4KKSkX6On8oFk14J9agHw/y0p3/tUCfKwANiGzETo77Iy2nIexDbM5qM
+         XppPODIVfAmfdTX/Ba5zWmqqdjewjp/z+lEODdI8=
+Received: by mail-ot1-f51.google.com with SMTP id f37so6007514otf.12;
+        Thu, 08 Oct 2020 09:35:18 -0700 (PDT)
+X-Gm-Message-State: AOAM5308ejA7VVCA00+mx+0sroV9fwEpwbzYWpWLV5uN5ahWHAnVE86b
+        dUjU8i1XFHZM0WrdY7mp/KRXwgjhtFWTsRO6Xw==
+X-Google-Smtp-Source: ABdhPJzz60BjsjQ+DWcXVfNZRYE1T6Qcp8v32Xy9DdbXcoosuL4xmpiD0xFSdwduI7ZjY+c1MvZxTW+StDleIYmrSl8=
+X-Received: by 2002:a9d:1c90:: with SMTP id l16mr5952657ota.192.1602174918204;
+ Thu, 08 Oct 2020 09:35:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201008025403.2401736-1-erik.kaneda@intel.com>
-In-Reply-To: <20201008025403.2401736-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 8 Oct 2020 18:06:48 +0200
-Message-ID: <CAJZ5v0hod0bH6xE34P_wfbN0P1FV0jnk+Q9jF=YG+OALDvNg7A@mail.gmail.com>
-Subject: Re: [PATCH 0/9] ACPICA release 20200925
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 8 Oct 2020 11:35:07 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLf0UJNmx8OgpDye2zfFNZyJJ8gbr3nbmGyiMg81RoHOg@mail.gmail.com>
+Message-ID: <CAL_JsqLf0UJNmx8OgpDye2zfFNZyJJ8gbr3nbmGyiMg81RoHOg@mail.gmail.com>
+Subject: Re: [net-next PATCH v1] net: phy: Move of_mdio from drivers/of to drivers/net/mdio
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Grant Likely <grant.likely@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
+        linux.cj@gmail.com, "David S. Miller" <davem@davemloft.net>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 8, 2020 at 5:21 AM Erik Kaneda <erik.kaneda@intel.com> wrote:
+On Thu, Oct 8, 2020 at 9:47 AM Calvin Johnson
+<calvin.johnson@oss.nxp.com> wrote:
 >
-> This release contains the ACPICA patches from the 20200925 release.
-> This contains patches that are mostly for user space tools such as iASL,
-> acpihelp. The only direct impact to the linux kernel is the addition of
-> several predefined names that were found in the SMBus specification.
->
-> Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
->
-> Bob Moore (6):
->   ACPICA: Add predefined names found in the SMBus sepcification
->   ACPICA: acpi_help: Update UUID list
->   ACPICA: iASL: Return exceptions for string-to-integer conversions
->   ACPICA: Debugger: Add a new command: "ALL <NameSeg>"
->   ACPICA: Remove unnecessary semicolon
->   ACPICA: Update version to 20200925 Version 20200925.
->
-> Colin Ian King (2):
->   ACPICA: Add support for 64 bit risc-v compilation.
->   ACPICA: Tree-wide: fix various typos and spelling mistakes
->
-> Randy Dunlap (1):
->   ACPICA: Drop the repeated word "an" in a comment.
->
->  drivers/acpi/acpica/acdebug.h                 |   4 +
->  drivers/acpi/acpica/acpredef.h                |  33 +++-
->  drivers/acpi/acpica/dbexec.c                  |  39 +++-
->  drivers/acpi/acpica/dbinput.c                 |  14 +-
->  drivers/acpi/acpica/dbmethod.c                | 167 +++++++++++++++---
->  drivers/acpi/acpica/nsalloc.c                 |   2 +-
->  drivers/acpi/acpica/nsarguments.c             |   4 +-
->  drivers/acpi/acpica/nsxfobj.c                 |   3 +-
->  drivers/acpi/acpica/psparse.c                 |   4 +-
->  drivers/acpi/acpica/utpredef.c                |   5 +-
->  drivers/acpi/acpica/utstrsuppt.c              |  33 +++-
->  include/acpi/acconfig.h                       |   2 +-
->  include/acpi/acexcep.h                        |   4 +-
->  include/acpi/acpixf.h                         |   2 +-
->  include/acpi/actypes.h                        |   2 +-
->  include/acpi/acuuid.h                         |   7 +
->  include/acpi/platform/aclinux.h               |   3 +-
->  .../os_specific/service_layers/oslinuxtbl.c   |   2 +-
->  18 files changed, 270 insertions(+), 60 deletions(-)
->
-> --
+> Better place for of_mdio.c is drivers/net/mdio.
+> Move of_mdio.c from drivers/of to drivers/net/mdio
 
-All applied as 5.10 material (I dropped a few terminating periods from
-patch subjects), thanks!
+One thing off my todo list. I'd started this ages ago[1].
+
+>
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> ---
+>
+>  MAINTAINERS                        | 2 +-
+>  drivers/net/mdio/Kconfig           | 8 ++++++++
+>  drivers/net/mdio/Makefile          | 2 ++
+>  drivers/{of => net/mdio}/of_mdio.c | 0
+>  drivers/of/Kconfig                 | 7 -------
+>  drivers/of/Makefile                | 1 -
+>  6 files changed, 11 insertions(+), 9 deletions(-)
+>  rename drivers/{of => net/mdio}/of_mdio.c (100%)
+
+of_mdio.c is really a combination of mdio and phylib functions, so it
+should be split up IMO. With that, I think you can get rid of
+CONFIG_OF_MDIO. See my branch[1] for what I had in mind. But that can
+be done after this if the net maintainers prefer.
+
+Acked-by: Rob Herring <robh@kernel.org>
+
+Rob
+
+[1] git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git dt/move-net
