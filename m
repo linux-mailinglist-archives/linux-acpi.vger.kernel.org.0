@@ -2,261 +2,370 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 718EC2876EF
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Oct 2020 17:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5784287793
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Oct 2020 17:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730890AbgJHPPO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Oct 2020 11:15:14 -0400
-Received: from mail-am6eur05on2069.outbound.protection.outlook.com ([40.107.22.69]:11904
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730650AbgJHPPO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 8 Oct 2020 11:15:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gX7IaCTlLtYG5AuHwlSfHQPkNIVlBQVRTtWJkjuIlyM=;
- b=nuW8tl+3VGTP9a1FRaVOhjU2mzKYfdBddrGl0y4yl3MICIhHcFOTp8btdvSUBxM3nR6/qNH3ZHfbXZaTIg7H+J/RJPVpKKpUAcC2J8AaLcCdm+S4Snd9hcHIg+e3fmJLL/wH2z2eIjuPoQ/CUQjVjyox/CuU/oLuzfWIN2uu17c=
-Received: from MR2P264CA0035.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500::23) by
- DB7PR08MB3867.eurprd08.prod.outlook.com (2603:10a6:10:7f::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3433.37; Thu, 8 Oct 2020 15:15:09 +0000
-Received: from VE1EUR03FT003.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:500:0:cafe::c0) by MR2P264CA0035.outlook.office365.com
- (2603:10a6:500::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.22 via Frontend
- Transport; Thu, 8 Oct 2020 15:15:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=pass action=none
- header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- VE1EUR03FT003.mail.protection.outlook.com (10.152.18.108) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3455.23 via Frontend Transport; Thu, 8 Oct 2020 15:15:08 +0000
-Received: ("Tessian outbound 7a6fb63c1e64:v64"); Thu, 08 Oct 2020 15:15:08 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 19cca4a1fe76f0f0
-X-CR-MTA-TID: 64aa7808
-Received: from a404e1ccae16.1
-        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 7B827246-6D10-4899-8288-886D324ED575.1;
-        Thu, 08 Oct 2020 15:14:33 +0000
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id a404e1ccae16.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Thu, 08 Oct 2020 15:14:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CyddwOUReVAHCOJ+okQrGogcA7PRvLacg93p4S3JyWfVxag7MWlAmU8kFHuPQglpUhA2tRjdkda4a7S3ExpFaq8hHz2fq/KKUDNUByW+QtNH+7KLNCGbjTPrWo2qIeXm4FaeDhvELHSugHVpeeIRHIOTtQ5M/XIW4WiUwjWq/IjIag/225JILbU+Sogb+8YQ4rLi9cBU6gz79bA515UYFEgQPpDSIYGmNJQY9z0i5unjJTwGT8CULrcu+LbmupleFG4olSEQnuTyMDP/cgXYF+BTrxka9bZTUJkWQnRJh2dh40c+X8aQX0WdPyfIEg/wY8IoeL8JljXOSh+85UKv8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gX7IaCTlLtYG5AuHwlSfHQPkNIVlBQVRTtWJkjuIlyM=;
- b=Gem2yvanvovU4PvhtZI6wTWB1pLWnJQ9kx+KVbtw+BOf/uk7fafpD59fDc9NXkwscvW1EDmxslxk2hW+bXVjIGjqReVThfAE87Iy9E9eGUd4XnwZQMRCDs7VBNiTO0IbyHG22z9FBArrwmSomCeG6QCIAk5PdOW9IYgnVLjmemuyhEDlatz5ChWvkoDQFmQab47Z2lXoM1dEFfn4GH4BX9zVOORCIZ2HLJqhoAsHtU6KwL9Yte5FWUtTp987xSZoepqT72wvk3SdgYOGTF3r098T6T18d5fqNnwW5fRZ3KaVGC8Q9GAsMUZ4Lh0p6dvnmWiATx4lK5c6H5StwYMUzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gX7IaCTlLtYG5AuHwlSfHQPkNIVlBQVRTtWJkjuIlyM=;
- b=nuW8tl+3VGTP9a1FRaVOhjU2mzKYfdBddrGl0y4yl3MICIhHcFOTp8btdvSUBxM3nR6/qNH3ZHfbXZaTIg7H+J/RJPVpKKpUAcC2J8AaLcCdm+S4Snd9hcHIg+e3fmJLL/wH2z2eIjuPoQ/CUQjVjyox/CuU/oLuzfWIN2uu17c=
-Authentication-Results-Original: vger.kernel.org; dkim=none (message not
- signed) header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=arm.com;
-Received: from DB8PR08MB4010.eurprd08.prod.outlook.com (2603:10a6:10:ab::15)
- by DBBPR08MB4903.eurprd08.prod.outlook.com (2603:10a6:10:df::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.22; Thu, 8 Oct
- 2020 15:14:30 +0000
-Received: from DB8PR08MB4010.eurprd08.prod.outlook.com
- ([fe80::98af:2036:2908:bb3a]) by DB8PR08MB4010.eurprd08.prod.outlook.com
- ([fe80::98af:2036:2908:bb3a%5]) with mapi id 15.20.3433.045; Thu, 8 Oct 2020
- 15:14:30 +0000
-Subject: Re: [net-next PATCH v1] net: phy: Move of_mdio from drivers/of to
- drivers/net/mdio
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        robh+dt@kernel.org
-Cc:     Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev@vger.kernel.org, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux.cj@gmail.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        devicetree@vger.kernel.org
-References: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
-From:   Grant Likely <grant.likely@arm.com>
-Message-ID: <35c67d2a-4458-118a-1b8c-6ad23acaad23@arm.com>
-Date:   Thu, 8 Oct 2020 16:14:25 +0100
+        id S1730918AbgJHPhS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Oct 2020 11:37:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47299 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730874AbgJHPhR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Oct 2020 11:37:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1602171435;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YwF6t+SoAJShwEe59zt9bj/fLG7K7a/8pbBKxqzXzo8=;
+        b=GRJDRLwkwQAegpBc5QXDvG9xal6Fa9juu9BHLfnuC+CEe4HQ/coFaIHKeTg5dxx9gtvowy
+        F88uREzCMCwMv40JkEnL38uFeph3/do1NPaKc9aSnkiys1TBcd/bpCLE9fHFK79V1/+dZ1
+        cYTGjwkPZQfSLTrbiAJprj6Kv1DpbxU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-395-ABW6s4NQMMStLDrtVOPy-w-1; Thu, 08 Oct 2020 11:37:13 -0400
+X-MC-Unique: ABW6s4NQMMStLDrtVOPy-w-1
+Received: by mail-ed1-f71.google.com with SMTP id j6so2338448edl.21
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Oct 2020 08:37:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YwF6t+SoAJShwEe59zt9bj/fLG7K7a/8pbBKxqzXzo8=;
+        b=ZluAkBJAOZCk/SHTIllN5dJFuK9rAfhXyDSlPfrS4i/EMd5ejuc3NYVbQkIpytjJOl
+         P2ecfH8+HU/0/CGZvv0HeK6OCYo4f9SHiVtPASCA7KYbw6hlvzHneDL73AZcMB85VHgK
+         92+F6FjfuoXvlRLA0KD/9InlQRTTTfV5bIE5Klb4n7bOZRRtMQrIndj4vRk7vsejlpGL
+         a54BeAeEDqpmVTKDw911jkMjalNO8wH1NCuRxWYtGmt7B9N6AhDWTQEomVhvOA1Fd97E
+         WDYZsCCOn8z5yzRO8rthRDrbbdz5EtoEpBRmq1VTgS9N7DVClitBPjxPuYF/vK6VjE7i
+         Mrfw==
+X-Gm-Message-State: AOAM530NKct4BZT14AGUwap9m9XT6l5isAES/JqLaaRZMQ0r2rO+agQy
+        aL/eSZA8s2Q4e25Ib6OJ85hDGe46EFMgwvIy57QiT8MbGfDcxz3/A8H91EDdmCiFeJg4Estxr8R
+        s4GmnPwprsPfhKeXzNbdDGA==
+X-Received: by 2002:a17:906:82c5:: with SMTP id a5mr9640644ejy.173.1602171432058;
+        Thu, 08 Oct 2020 08:37:12 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz7ysbnULlCavVcq9YdwG+i7unsWweMmuwi4a3U2i1inmRTUcgmTaMQaQcAapA8k0Tg/9MxGg==
+X-Received: by 2002:a17:906:82c5:: with SMTP id a5mr9640618ejy.173.1602171431758;
+        Thu, 08 Oct 2020 08:37:11 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id rs18sm4436188ejb.69.2020.10.08.08.37.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Oct 2020 08:37:11 -0700 (PDT)
+Subject: Re: [PATCH v2] pinctrl: cherryview: Ensure _REG(ACPI_ADR_SPACE_GPIO,
+ 1) gets called
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        stable@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+References: <20200504145957.480418-1-hdegoede@redhat.com>
+ <20200506064057.GU487496@lahna.fi.intel.com>
+ <f7ebb693-94ec-fd9f-c0a8-cfe8f9d4e9bf@redhat.com>
+ <20200507123025.GR487496@lahna.fi.intel.com>
+ <3d7ce79f-6157-8ae0-dae9-ebc940120487@redhat.com>
+ <20201008144450.GU2495@lahna.fi.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <1925077c-dc47-bc93-6f7b-b8fdbd6efcd8@redhat.com>
+Date:   Thu, 8 Oct 2020 17:37:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-In-Reply-To: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20201008144450.GU2495@lahna.fi.intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [188.30.223.185]
-X-ClientProxiedBy: LO2P265CA0134.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9f::26) To DB8PR08MB4010.eurprd08.prod.outlook.com
- (2603:10a6:10:ab::15)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.16.178] (188.30.223.185) by LO2P265CA0134.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:9f::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.21 via Frontend Transport; Thu, 8 Oct 2020 15:14:27 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: b147b253-8ac1-443a-099e-08d86b9cf17f
-X-MS-TrafficTypeDiagnostic: DBBPR08MB4903:|DB7PR08MB3867:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DB7PR08MB3867B887D8DBB58BDD76F25D950B0@DB7PR08MB3867.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:473;OLM:473;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: fLgsTH3SxrZHw4R6/Xte0fBqQUTTkqHkEQlCQ5z5rYUEXYe9rQXkAtnmLvylMcu9cECtBXbQKEaPZVPuBcIdz+fxQD8fMpGjxiBGUiK3FQzzrWWedarnZLYf0UuG8pHSdSzXcRGkwV1h+5Na5AmpoZ3rX4zvEQNLvMysT1H6TX+YVCSpXVlWrl0d4Mwe4VERmM7Lw8tPAExXMef7P57LonFaI+6UOewW4drByirRoW7H93dnNfncsAzr5Z+F9dZk2nyplF5+hMinH265VRpIUb3RVMQMi9ioeEGTcvBMGI/irmXA3gOPyeQkIytLUl4mfmPQ6R7JJCkpusugsRUoPmhSO4+ZPiV6peahdhhbhktnKf7dm5dKSWzLsIgVLUxvy5dKyfv9//sODzdMcX8pVQ==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(136003)(396003)(366004)(39860400002)(8676002)(2616005)(7416002)(36756003)(66476007)(66556008)(478600001)(66946007)(956004)(31696002)(186003)(54906003)(316002)(5660300002)(16576012)(6486002)(4326008)(52116002)(31686004)(86362001)(53546011)(55236004)(26005)(110136005)(83380400001)(16526019)(2906002)(44832011)(8936002)(921003)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: UuXsKZuaoi6vcHNNOwLLoW29EX21BzJH6wC+47DGl4djCsEoC2NayPfLpUjuNixfApQmlNJGSdXdPSoY4WKbQ68quFZirPuTw2yLmZ24oD74Hf5uClzAz+USdB5IibRdlXZturtJNOiTGl1qglRGvYHBmY36TpXcjsJ7H27Qi+0OoQDr/Kap5fBn4XtGxpjZGpzPCif19esf2DNo5CS+ej/o1A9+nc+IK9YTkzVdxxt5ytltkGX24HOmHexIkv5Rdl1Te64g2fyZdHqo/ioGG7Swbjwu+fkSFuI8YFWCMqBh+cxoK7dUxh74kP6Ds7J+q4zRv9/UToBpOWGano/FSnpw6+Jc42skNCChgijpVuUclrFGlSl4HHeJD+6ApaT4S2gjzfjH6xKX+6END8A16OEVwSoy16eaZHXSL7DNeCE/xlmFLc4jykNp+o+g8YK62LYR873LnJjf7+jB738hO6tOP4uIpqlxdxW7Dg2fEeKZ4vCQS2aJhCpm6+tff+UwtLwl1dTQIchwfnn5rHKhmyRqdKbye7RWiuh8nHHOQeokyeRMqPKQhToaXBZRMIZqrYbb6D3HyYwPN71GuPp2stbZrFm74Hr3pSoQ6DWx1JKh9yCh05Y/T5YKKdbN4QoAzlEettg/0QMOp/OEPcDEHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB4903
-Original-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=arm.com;
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR03FT003.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: d889bf68-b14f-45a6-5239-08d86b9cda98
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: eMQPNeTeHDPdlZME0ahowalk2VymHk8wKuwFuuz+LFKVGzkGa104hAtb6Qk6Za2blKRl9L1P20owTQK3iXYGLUZB+6pP8IGHToyNlr9suYthVhl/zFXRQbH2KE1RImu/6CRichy3xjIzynQqHO02PD0gEja4dVeUqbfXwbeOtm4q56ad/cwH+Uu3RU4rq1twst8hodDm/WIXr0UQcYhqVHlCsKZ0Y9I6An/tMYj9+QpR41KLlmbX6ye1SI0Pgc+8SEsWba+aZShAl8N3BwK3bKwgIIkKFk9CgKaX+SdXALezIUKNA+wbJMaOtIU2hsggEVFjXH15/c9Tz1yOQBm+sApy+wmm+2sFcB4awLzeAnGNNgGdktPqwYRetQpiUqF5owR69JHAu2pwRqxcMIZwaYtbUfGMkbsSvi7d/o7I+ESNT5ZKpftHPOcL+ERHoWWy
-X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(346002)(376002)(39860400002)(396003)(136003)(46966005)(8676002)(47076004)(54906003)(5660300002)(36756003)(4326008)(31686004)(956004)(450100002)(44832011)(16576012)(336012)(82310400003)(2616005)(478600001)(16526019)(110136005)(82740400003)(70586007)(6486002)(70206006)(356005)(31696002)(83380400001)(26005)(186003)(86362001)(81166007)(53546011)(55236004)(316002)(8936002)(2906002)(921003)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2020 15:15:08.1491
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b147b253-8ac1-443a-099e-08d86b9cf17f
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: VE1EUR03FT003.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR08MB3867
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
-
-On 08/10/2020 15:47, Calvin Johnson wrote:
-> Better place for of_mdio.c is drivers/net/mdio.
-> Move of_mdio.c from drivers/of to drivers/net/mdio
+On 10/8/20 4:44 PM, Mika Westerberg wrote:
+> Hi,
 > 
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-
-In-Principle-Acked-By: Grant Likely <grant.likely@arm.com>
-
-... but I've not tested or compiled *anything*!
-
-g.
-
-> ---
+> On Thu, Oct 08, 2020 at 11:31:50AM +0200, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 5/7/20 2:30 PM, Mika Westerberg wrote:
+>>> On Thu, May 07, 2020 at 12:15:09PM +0200, Hans de Goede wrote:
+>>>> Hi,
+>>>>
+>>>> On 5/6/20 8:40 AM, Mika Westerberg wrote:
+>>>>> +Rafael and ACPICA folks.
+>>>>>
+>>>>> On Mon, May 04, 2020 at 04:59:57PM +0200, Hans de Goede wrote:
+>>>>>> On Cherry Trail devices there are 2 possible ACPI OpRegions for
+>>>>>> accessing GPIOs. The standard GeneralPurposeIo OpRegion and the Cherry
+>>>>>> Trail specific UserDefined 0x9X OpRegions.
+>>>>>>
+>>>>>> Having 2 different types of OpRegions leads to potential issues with
+>>>>>> checks for OpRegion availability, or in other words checks if _REG has
+>>>>>> been called for the OpRegion which the ACPI code wants to use.
+>>>>>>
+>>>>>> The ACPICA core does not call _REG on an ACPI node which does not
+>>>>>> define an OpRegion matching the type being registered; and the reference
+>>>>>> design DSDT, from which most Cherry Trail DSDTs are derived, does not
+>>>>>> define GeneralPurposeIo, nor UserDefined(0x93) OpRegions for the GPO2
+>>>>>> (UID 3) device, because no pins were assigned ACPI controlled functions
+>>>>>> in the reference design.
+>>>>>>
+>>>>>> Together this leads to the perfect storm, at least on the Cherry Trail
+>>>>>> based Medion Akayo E1239T. This design does use a GPO2 pin from its ACPI
+>>>>>> code and has added the Cherry Trail specific UserDefined(0x93) opregion
+>>>>>> to its GPO2 ACPI node to access this pin.
+>>>>>>
+>>>>>> But it uses a has _REG been called availability check for the standard
+>>>>>> GeneralPurposeIo OpRegion. This clearly is a bug in the DSDT, but this
+>>>>>> does work under Windows.
+>>>>>
+>>>>> Do we know why this works under Windows? I mean if possible we should do
+>>>>> the same and I kind of suspect that they forcibly call _REG in their
+>>>>> GPIO driver.
+>>>>
+>>>> Windows has its own ACPI implementation, so it could also be that their
+>>>> equivalent of the:
+>>>>
+>>>>           status = acpi_install_address_space_handler(handle, ACPI_ADR_SPACE_GPIO,
+>>>>                                                       acpi_gpio_adr_space_handler,
+>>>>                                                       NULL, achip);
+>>>>
+>>>> Call from drivers/gpio/gpiolib-acpi.c indeed always calls _REG on the handle
+>>>> without checking that there is an actual OpRegion with a space-id
+>>>> of ACPI_ADR_SPACE_GPIO defined, as the ACPICA code does.  Note that the
+>>>> current ACPICA code would require significant rework to allow this, or
+>>>> it would need to add a _REG call at the end of acpi_install_address_space_handler(),
+>>>> potentially calling _REG twice in many cases.
+>>>
+>>> I actually think this is the correct solution. Reading ACPI spec it say
+>>> this:
+>>>
+>>>     Once _REG has been executed for a particular operation region,
+>>>     indicating that the operation region handler is ready, a control
+>>>     method can access fields in the operation region
+>>>
+>>> You can interpret it so that _REG gets called when operation region
+>>> handler is ready. It does not say that there needs to be an actual
+>>> operation region even though the examples following all have operation
+>>> region.
+>>>
+>>> I wonder what our ACPICA gurus think about this? Rafael, Bob, Erik?
+>>
+>> I realize that this thread has gone a bit stale (sorry about that)
+>> but I have been working on an ACPICA solution on that, and this works
+>> nicely. It turns out that ACPICA already had code to run the _REG method
+>> unconditionally in some cases, so I've simply extended that to also
+>> apply to GpioOpRegions.
+>>
+>> One thing which is open for discussion is if we want to extend this
+>> to more then just GpioOpRegions. For now I've chosen to just extend
+>> the current special handling for EC OpRegions to also apply to
+>> GpioOpRegions which fixes the issue at hand.
+>>
+>> I've attached a patch directly against the Linux kernel acpica
+>> copy which fixes this.
+>>
+>> Mika (or anyone else reading along who wants to help), I know that
+>> ACPICA patches go upstream through the ACPICA repo, but I'm not
+>> really familiar with there workflow and I'm a bit swamped with
+>> work atm. So I was wondering if you could perhaps convert
+>> this patch to an upstream ACPICA patch and submit it there for me ?
 > 
->   MAINTAINERS                        | 2 +-
->   drivers/net/mdio/Kconfig           | 8 ++++++++
->   drivers/net/mdio/Makefile          | 2 ++
->   drivers/{of => net/mdio}/of_mdio.c | 0
->   drivers/of/Kconfig                 | 7 -------
->   drivers/of/Makefile                | 1 -
->   6 files changed, 11 insertions(+), 9 deletions(-)
->   rename drivers/{of => net/mdio}/of_mdio.c (100%)
+> IIRC we sometimes take the ACPICA related patches first to Linux and
+> then it gets picked up by the ACPICA maintainers. I think Erik Kaneda
+> (who is Cc'd on this thread) has been doing some of that work.
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8ff71b1a4a99..d1b82a3a1843 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6525,9 +6525,9 @@ F:	Documentation/devicetree/bindings/net/mdio*
->   F:	Documentation/devicetree/bindings/net/qca,ar803x.yaml
->   F:	Documentation/networking/phy.rst
->   F:	drivers/net/mdio/
-> +F:	drivers/net/mdio/of_mdio.c
->   F:	drivers/net/pcs/
->   F:	drivers/net/phy/
-> -F:	drivers/of/of_mdio.c
->   F:	drivers/of/of_net.c
->   F:	include/dt-bindings/net/qca-ar803x.h
->   F:	include/linux/*mdio*.h
-> diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
-> index 27a2a4a3d943..a10cc460d7cf 100644
-> --- a/drivers/net/mdio/Kconfig
-> +++ b/drivers/net/mdio/Kconfig
-> @@ -19,6 +19,14 @@ config MDIO_BUS
->   	  reflects whether the mdio_bus/mdio_device code is built as a
->   	  loadable module or built-in.
->   
-> +config OF_MDIO
-> +	def_tristate PHYLIB
-> +	depends on OF
-> +	depends on PHYLIB
-> +	select FIXED_PHY
-> +	help
-> +	  OpenFirmware MDIO bus (Ethernet PHY) accessors
-> +
->   if MDIO_BUS
->   
->   config MDIO_DEVRES
-> diff --git a/drivers/net/mdio/Makefile b/drivers/net/mdio/Makefile
-> index 14d1beb633c9..5c498dde463f 100644
-> --- a/drivers/net/mdio/Makefile
-> +++ b/drivers/net/mdio/Makefile
-> @@ -1,6 +1,8 @@
->   # SPDX-License-Identifier: GPL-2.0
->   # Makefile for Linux MDIO bus drivers
->   
-> +obj-$(CONFIG_OF_MDIO)	+= of_mdio.o
-> +
->   obj-$(CONFIG_MDIO_ASPEED)		+= mdio-aspeed.o
->   obj-$(CONFIG_MDIO_BCM_IPROC)		+= mdio-bcm-iproc.o
->   obj-$(CONFIG_MDIO_BCM_UNIMAC)		+= mdio-bcm-unimac.o
-> diff --git a/drivers/of/of_mdio.c b/drivers/net/mdio/of_mdio.c
-> similarity index 100%
-> rename from drivers/of/of_mdio.c
-> rename to drivers/net/mdio/of_mdio.c
-> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-> index d91618641be6..18450437d5d5 100644
-> --- a/drivers/of/Kconfig
-> +++ b/drivers/of/Kconfig
-> @@ -74,13 +74,6 @@ config OF_NET
->   	depends on NETDEVICES
->   	def_bool y
->   
-> -config OF_MDIO
-> -	def_tristate PHYLIB
-> -	depends on PHYLIB
-> -	select FIXED_PHY
-> -	help
-> -	  OpenFirmware MDIO bus (Ethernet PHY) accessors
-> -
->   config OF_RESERVED_MEM
->   	bool
->   	depends on OF_EARLY_FLATTREE
-> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-> index 663a4af0cccd..6e1e5212f058 100644
-> --- a/drivers/of/Makefile
-> +++ b/drivers/of/Makefile
-> @@ -9,7 +9,6 @@ obj-$(CONFIG_OF_ADDRESS)  += address.o
->   obj-$(CONFIG_OF_IRQ)    += irq.o
->   obj-$(CONFIG_OF_NET)	+= of_net.o
->   obj-$(CONFIG_OF_UNITTEST) += unittest.o
-> -obj-$(CONFIG_OF_MDIO)	+= of_mdio.o
->   obj-$(CONFIG_OF_RESERVED_MEM) += of_reserved_mem.o
->   obj-$(CONFIG_OF_RESOLVE)  += resolver.o
->   obj-$(CONFIG_OF_OVERLAY) += overlay.o
+> Erik, Rafael, can you help us out here? What is the best way for Hans to
+> get the below patch to the upstream ACPICA?
+
+Thanks Mika, I did not know that getting it into Linux directly
+was an option.
+
+Mika, do you have input wrt always calling _REG for just the
+GpioIoOpRegion type (on top of the existing EC exception) vs
+just simply always calling it for all all/more OpRegion types ?
+
+Regards,
+
+Hans
+
+
+>> >From a2729247cb69707c0244e84cfa4316cffc63b35f Mon Sep 17 00:00:00 2001
+>> From: Hans de Goede <hdegoede@redhat.com>
+>> Date: Wed, 22 Jul 2020 22:22:13 +0200
+>> Subject: [PATCH] ACPICA: Also handle "orphan" _REG methods for GPIO OpRegions
+>>
+>> Before this commit acpi_ev_execute_reg_methods() had special handling
+>> to handle "orphan" (no matching OpRegion declared) _REG methods for EC
+>> nodes.
+>>
+>> On Intel Cherry Trail devices there are 2 possible ACPI OpRegions for
+>> accessing GPIOs. The standard GeneralPurposeIo OpRegion and the Cherry
+>> Trail specific UserDefined 0x9X OpRegions.
+>>
+>> Having 2 different types of OpRegions leads to potential issues with
+>> checks for OpRegion availability, or in other words checks if _REG has
+>> been called for the OpRegion which the ACPI code wants to use.
+>>
+>> Except for the "orphan" EC handling, ACPICA core does not call _REG on
+>> an ACPI node which does not define an OpRegion matching the type being
+>> registered; and the reference design DSDT, from which most Cherry Trail
+>> DSDTs are derived, does not define GeneralPurposeIo, nor UserDefined(0x93)
+>> OpRegions for the GPO2 (UID 3) device, because no pins were assigned ACPI
+>> controlled functions in the reference design.
+>>
+>> Together this leads to the perfect storm, at least on the Cherry Trail
+>> based Medion Akayo E1239T. This design does use a GPO2 pin from its ACPI
+>> code and has added the Cherry Trail specific UserDefined(0x93) opregion
+>> to its GPO2 ACPI node to access this pin.
+>>
+>> But it uses a has _REG been called availability check for the standard
+>> GeneralPurposeIo OpRegion. This clearly is a bug in the DSDT, but this
+>> does work under Windows. This issue leads to the intel_vbtn driver
+>> reporting the device always being in tablet-mode at boot, even if it
+>> is in laptop mode. Which in turn causes userspace to ignore touchpad
+>> events. So iow this issues causes the touchpad to not work at boot.
+>>
+>> This commit fixes this by extending the "orphan" _REG method handling
+>> to also apply to GPIO address-space handlers.
+>>
+>> Note it seems that Windows always calls "orphan" _REG methods so me
+>> may want to consider dropping the space-id check and always do
+>> "orphan" _REG method handling.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/acpi/acpica/evregion.c | 54 +++++++++++++++++-----------------
+>>   1 file changed, 27 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
+>> index 738d4b231f34..21ff341e34a4 100644
+>> --- a/drivers/acpi/acpica/evregion.c
+>> +++ b/drivers/acpi/acpica/evregion.c
+>> @@ -21,7 +21,8 @@ extern u8 acpi_gbl_default_address_spaces[];
+>>   /* Local prototypes */
+>>   
+>>   static void
+>> -acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node);
+>> +acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
+>> +				  acpi_adr_space_type space_id);
+>>   
+>>   static acpi_status
+>>   acpi_ev_reg_run(acpi_handle obj_handle,
+>> @@ -684,10 +685,12 @@ acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
+>>   				     ACPI_NS_WALK_UNLOCK, acpi_ev_reg_run, NULL,
+>>   				     &info, NULL);
+>>   
+>> -	/* Special case for EC: handle "orphan" _REG methods with no region */
+>> -
+>> -	if (space_id == ACPI_ADR_SPACE_EC) {
+>> -		acpi_ev_orphan_ec_reg_method(node);
+>> +	/*
+>> +	 * Special case for EC and GPIO: handle "orphan" _REG methods with
+>> +	 * no region.
+>> +	 */
+>> +	if (space_id == ACPI_ADR_SPACE_EC || space_id == ACPI_ADR_SPACE_GPIO) {
+>> +		acpi_ev_execute_orphan_reg_method(node, space_id);
+>>   	}
+>>   
+>>   	ACPI_DEBUG_PRINT_RAW((ACPI_DB_NAMES,
+>> @@ -760,31 +763,28 @@ acpi_ev_reg_run(acpi_handle obj_handle,
+>>   
+>>   /*******************************************************************************
+>>    *
+>> - * FUNCTION:    acpi_ev_orphan_ec_reg_method
+>> + * FUNCTION:    acpi_ev_execute_orphan_reg_method
+>>    *
+>> - * PARAMETERS:  ec_device_node      - Namespace node for an EC device
+>> + * PARAMETERS:  device_node     - Namespace node for an ACPI device
+>> + *              space_id        - The address space ID
+>>    *
+>>    * RETURN:      None
+>>    *
+>> - * DESCRIPTION: Execute an "orphan" _REG method that appears under the EC
+>> + * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
+>>    *              device. This is a _REG method that has no corresponding region
+>> - *              within the EC device scope. The orphan _REG method appears to
+>> - *              have been enabled by the description of the ECDT in the ACPI
+>> - *              specification: "The availability of the region space can be
+>> - *              detected by providing a _REG method object underneath the
+>> - *              Embedded Controller device."
+>> - *
+>> - *              To quickly access the EC device, we use the ec_device_node used
+>> - *              during EC handler installation. Otherwise, we would need to
+>> - *              perform a time consuming namespace walk, executing _HID
+>> - *              methods to find the EC device.
+>> + *              within the device's scope. ACPI tables depending on these
+>> + *              "orphan" _REG methods have been seen for both EC and GPIO
+>> + *              Operation Regions. Presumably the Windows ACPI implementation
+>> + *              always calls the _REG method independent of the presence of
+>> + *              an actual Operation Region with the correct address space ID.
+>>    *
+>>    *  MUTEX:      Assumes the namespace is locked
+>>    *
+>>    ******************************************************************************/
+>>   
+>>   static void
+>> -acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node)
+>> +acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
+>> +				  acpi_adr_space_type space_id)
+>>   {
+>>   	acpi_handle reg_method;
+>>   	struct acpi_namespace_node *next_node;
+>> @@ -792,9 +792,9 @@ acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node)
+>>   	struct acpi_object_list args;
+>>   	union acpi_object objects[2];
+>>   
+>> -	ACPI_FUNCTION_TRACE(ev_orphan_ec_reg_method);
+>> +	ACPI_FUNCTION_TRACE(ev_execute_orphan_reg_method);
+>>   
+>> -	if (!ec_device_node) {
+>> +	if (!device_node) {
+>>   		return_VOID;
+>>   	}
+>>   
+>> @@ -804,7 +804,7 @@ acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node)
+>>   
+>>   	/* Get a handle to a _REG method immediately under the EC device */
+>>   
+>> -	status = acpi_get_handle(ec_device_node, METHOD_NAME__REG, &reg_method);
+>> +	status = acpi_get_handle(device_node, METHOD_NAME__REG, &reg_method);
+>>   	if (ACPI_FAILURE(status)) {
+>>   		goto exit;	/* There is no _REG method present */
+>>   	}
+>> @@ -816,23 +816,23 @@ acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node)
+>>   	 * with other space IDs to be present; but the code below will then
+>>   	 * execute the _REG method with the embedded_control space_ID argument.
+>>   	 */
+>> -	next_node = acpi_ns_get_next_node(ec_device_node, NULL);
+>> +	next_node = acpi_ns_get_next_node(device_node, NULL);
+>>   	while (next_node) {
+>>   		if ((next_node->type == ACPI_TYPE_REGION) &&
+>>   		    (next_node->object) &&
+>> -		    (next_node->object->region.space_id == ACPI_ADR_SPACE_EC)) {
+>> +		    (next_node->object->region.space_id == space_id)) {
+>>   			goto exit;	/* Do not execute the _REG */
+>>   		}
+>>   
+>> -		next_node = acpi_ns_get_next_node(ec_device_node, next_node);
+>> +		next_node = acpi_ns_get_next_node(device_node, next_node);
+>>   	}
+>>   
+>> -	/* Evaluate the _REG(embedded_control,Connect) method */
+>> +	/* Evaluate the _REG(space_id, Connect) method */
+>>   
+>>   	args.count = 2;
+>>   	args.pointer = objects;
+>>   	objects[0].type = ACPI_TYPE_INTEGER;
+>> -	objects[0].integer.value = ACPI_ADR_SPACE_EC;
+>> +	objects[0].integer.value = space_id;
+>>   	objects[1].type = ACPI_TYPE_INTEGER;
+>>   	objects[1].integer.value = ACPI_REG_CONNECT;
+>>   
+>> -- 
+>> 2.28.0
+>>
 > 
+
