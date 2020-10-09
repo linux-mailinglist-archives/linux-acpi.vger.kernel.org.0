@@ -2,137 +2,256 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AEF3288058
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 04:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A51652881D6
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 07:55:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731112AbgJIC0u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Oct 2020 22:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729724AbgJIC0t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Oct 2020 22:26:49 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69221C0613D2;
-        Thu,  8 Oct 2020 19:26:48 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id w21so5571164pfc.7;
-        Thu, 08 Oct 2020 19:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ianMI0skgT2+5Mr4X9GRt1HqniVrm6Fh/4YOQB+YSrU=;
-        b=Qeh+BstLg+YnjX9buKFp8NLiYlnG/4bwAvdM9WmKjjyJSh3zxCP+hS6VYiyVpHO9Ia
-         DruigZfmhEzVQabkhHCyWB2ovh9SjKbQ7sSkp9TeNucIE3SL0vChe0FUn46pLVYvJ7t8
-         /VfHeZt+p8oF3iIpTDqkfCdrMm+uSckJJDUF4KFN5frLFAvzpwlFqLp0UogbKMZiZqSQ
-         eXTsSl3wV4I+uoyPVkU7KxSCILLkKvStJdVuBwd8HtCb8aDVNYiQh5T9bihalWFhfUe3
-         XuCyC1WNfAkhNQQh6UAstkaVKEHgm3dG/3SxXbcWL0y338naCtDqecaYnTxlOadan2B0
-         deFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ianMI0skgT2+5Mr4X9GRt1HqniVrm6Fh/4YOQB+YSrU=;
-        b=X+aftx43+pC1zpjiZL76Rzv6vclSD39rxOq75L3eVAYFoKpt71WdRfZQjuAIzdj7C4
-         U6g9PCxB3vEfDmT+hJhHMvwR3zwv7KAYQCjjgKCeN3Gf2i6ZDJoNYZkPBJlrm92t9vka
-         Vm+iQwexEA/kgmZBdY7pAxkdV5TlOrfMxiAvcY0htYrEBOgYXHf798MU9siwZ9qHFS1p
-         C3b/01wOnnkcJmbkQdCrAiGTCQUut/3S5tNZdFjuhIwaHuJAyiNrifj4EsqKZpgsmlDQ
-         xarGhqcNt5zsHlH6/UesHAwkG3DqQYRPbEnrXk0Jch4vZL9906D/Dze1n3GViclgwLsx
-         KJOQ==
-X-Gm-Message-State: AOAM532F+32foE5hoxoaBVRmRskOiJRivKHK3beTqVz6XajSiqG1fW24
-        A7naa8zlWp4UmaRkixgDQ2BNs4cDL0F+kQ==
-X-Google-Smtp-Source: ABdhPJw2KHvtC3OqHNVaYtkwsG8qrMazjs18l/MgsjU4PGfRxswG0nHXPWzTdaENAWFViCbsUk6tuQ==
-X-Received: by 2002:a17:90b:1a90:: with SMTP id ng16mr2068760pjb.172.1602210407567;
-        Thu, 08 Oct 2020 19:26:47 -0700 (PDT)
-Received: from [10.230.29.112] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id m5sm8442155pjn.19.2020.10.08.19.26.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Oct 2020 19:26:46 -0700 (PDT)
-Subject: Re: [net-next PATCH v1] net: phy: Move of_mdio from drivers/of to
- drivers/net/mdio
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Rob Herring <robh+dt@kernel.org>, davem@davemloft.net
-Cc:     Grant Likely <grant.likely@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
-        linux.cj@gmail.com, Frank Rowand <frowand.list@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        devicetree@vger.kernel.org
-References: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
- <CAL_JsqLf0UJNmx8OgpDye2zfFNZyJJ8gbr3nbmGyiMg81RoHOg@mail.gmail.com>
- <20201009022056.GA17999@lsv03152.swis.in-blr01.nxp.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <2a0f9055-9110-ecc5-aab2-ff6ec9dc157a@gmail.com>
-Date:   Thu, 8 Oct 2020 19:26:44 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.3.1
+        id S1731379AbgJIFy7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Oct 2020 01:54:59 -0400
+Received: from mga18.intel.com ([134.134.136.126]:39915 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725917AbgJIFy7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 9 Oct 2020 01:54:59 -0400
+IronPort-SDR: /XanyMaiglzoj2it8KQ40r4bP/1J0WKeemcq8G6SCR7WsrWNz/CNhPE9l6+mfAzuaB8++KJo1V
+ a2yU3lEJfOUA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9768"; a="153280244"
+X-IronPort-AV: E=Sophos;i="5.77,354,1596524400"; 
+   d="scan'208";a="153280244"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2020 22:54:58 -0700
+IronPort-SDR: ROocLh77CBu45tiVjrZ8FGGNhepD1wNQSm0CnTBuiLYKmKapkq1r4XgHrgVByfmwR9cqa9g1jV
+ AMomnwPqRR9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,354,1596524400"; 
+   d="scan'208";a="298170003"
+Received: from lkp-server02.sh.intel.com (HELO 80eb06af76cf) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 08 Oct 2020 22:54:57 -0700
+Received: from kbuild by 80eb06af76cf with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kQlMm-0000F7-DQ; Fri, 09 Oct 2020 05:54:56 +0000
+Date:   Fri, 09 Oct 2020 13:54:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 4ae5e76f4c5d75baac0f3466ab0798c6d124a4bf
+Message-ID: <5f7ffb2a.TRwVntyRiYEeMPDi%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20201009022056.GA17999@lsv03152.swis.in-blr01.nxp.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 4ae5e76f4c5d75baac0f3466ab0798c6d124a4bf  Merge branch 'acpica' into linux-next
 
+elapsed time: 721m
 
-On 10/8/2020 7:20 PM, Calvin Johnson wrote:
-> Hi Rob,
-> 
-> On Thu, Oct 08, 2020 at 11:35:07AM -0500, Rob Herring wrote:
->> On Thu, Oct 8, 2020 at 9:47 AM Calvin Johnson
->> <calvin.johnson@oss.nxp.com> wrote:
->>>
->>> Better place for of_mdio.c is drivers/net/mdio.
->>> Move of_mdio.c from drivers/of to drivers/net/mdio
->>
->> One thing off my todo list. I'd started this ages ago[1].
->>
->>>
->>> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
->>> ---
->>>
->>>   MAINTAINERS                        | 2 +-
->>>   drivers/net/mdio/Kconfig           | 8 ++++++++
->>>   drivers/net/mdio/Makefile          | 2 ++
->>>   drivers/{of => net/mdio}/of_mdio.c | 0
->>>   drivers/of/Kconfig                 | 7 -------
->>>   drivers/of/Makefile                | 1 -
->>>   6 files changed, 11 insertions(+), 9 deletions(-)
->>>   rename drivers/{of => net/mdio}/of_mdio.c (100%)
->>
->> of_mdio.c is really a combination of mdio and phylib functions, so it
->> should be split up IMO. With that, I think you can get rid of
->> CONFIG_OF_MDIO. See my branch[1] for what I had in mind. But that can
->> be done after this if the net maintainers prefer.
->>
->> Acked-by: Rob Herring <robh@kernel.org>
->>
->> Rob
->>
->> [1] git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git dt/move-net
-> 
-> Makes sense to me to split of_mdio.c. I can work on it once my current task
-> completes.
+configs tested: 191
+configs skipped: 2
 
-If you could take Rob's patches, given then a round of randconfig build 
-tests and update the MAINTAINERS file (no more drivers/of/of_mdio.c), 
-then this looks like the right approach to me. Thanks!
--- 
-Florian
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                  colibri_pxa300_defconfig
+m68k                       m5475evb_defconfig
+mips                      fuloong2e_defconfig
+arm                          exynos_defconfig
+s390                       zfcpdump_defconfig
+m68k                       m5208evb_defconfig
+powerpc                    mvme5100_defconfig
+mips                        jmr3927_defconfig
+mips                       rbtx49xx_defconfig
+arm                            u300_defconfig
+sh                         ap325rxa_defconfig
+powerpc                 xes_mpc85xx_defconfig
+m68k                        m5307c3_defconfig
+arm                             mxs_defconfig
+h8300                               defconfig
+powerpc                 mpc832x_mds_defconfig
+arm                        mvebu_v5_defconfig
+arm                           omap1_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                          rsk7203_defconfig
+sh                 kfr2r09-romimage_defconfig
+c6x                        evmc6678_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                        warp_defconfig
+powerpc                         ps3_defconfig
+arm                           h3600_defconfig
+powerpc                     mpc512x_defconfig
+mips                     cu1830-neo_defconfig
+powerpc                 mpc832x_rdb_defconfig
+m68k                             allmodconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                        icon_defconfig
+sh                          landisk_defconfig
+mips                     decstation_defconfig
+powerpc                     pseries_defconfig
+arm                       netwinder_defconfig
+arm                          ep93xx_defconfig
+i386                             alldefconfig
+powerpc                 mpc834x_itx_defconfig
+m68k                        mvme16x_defconfig
+arc                    vdk_hs38_smp_defconfig
+arc                          axs103_defconfig
+m68k                       m5275evb_defconfig
+riscv                             allnoconfig
+powerpc                     ppa8548_defconfig
+openrisc                    or1ksim_defconfig
+sh                          rsk7201_defconfig
+mips                      malta_kvm_defconfig
+sh                           se7721_defconfig
+arc                     haps_hs_smp_defconfig
+sh                          r7780mp_defconfig
+sh                          r7785rp_defconfig
+um                             i386_defconfig
+alpha                            allyesconfig
+powerpc                     tqm8548_defconfig
+sh                           se7712_defconfig
+mips                         mpc30x_defconfig
+powerpc                     kilauea_defconfig
+powerpc                      makalu_defconfig
+s390                             allyesconfig
+mips                           rs90_defconfig
+powerpc                       holly_defconfig
+arm                      pxa255-idp_defconfig
+sh                        edosk7705_defconfig
+arm                         assabet_defconfig
+sparc                       sparc32_defconfig
+h8300                            alldefconfig
+arm                           viper_defconfig
+powerpc                      ppc44x_defconfig
+powerpc                      chrp32_defconfig
+arm                         lpc18xx_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                      pic32mzda_defconfig
+arm                         s5pv210_defconfig
+x86_64                              defconfig
+arm                    vt8500_v6_v7_defconfig
+mips                        qi_lb60_defconfig
+c6x                        evmc6472_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                          multi_defconfig
+mips                         tb0219_defconfig
+sh                          urquell_defconfig
+ia64                        generic_defconfig
+ia64                             alldefconfig
+arm                        oxnas_v6_defconfig
+arm                        trizeps4_defconfig
+mips                           ip28_defconfig
+arm                        shmobile_defconfig
+powerpc                      arches_defconfig
+powerpc                    gamecube_defconfig
+powerpc                     ksi8560_defconfig
+h8300                     edosk2674_defconfig
+arm                     eseries_pxa_defconfig
+m68k                          amiga_defconfig
+mips                           xway_defconfig
+sh                              ul2_defconfig
+sh                          lboxre2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201008
+x86_64               randconfig-a003-20201008
+x86_64               randconfig-a005-20201008
+x86_64               randconfig-a001-20201008
+x86_64               randconfig-a002-20201008
+x86_64               randconfig-a006-20201008
+i386                 randconfig-a006-20201008
+i386                 randconfig-a005-20201008
+i386                 randconfig-a001-20201008
+i386                 randconfig-a004-20201008
+i386                 randconfig-a002-20201008
+i386                 randconfig-a003-20201008
+i386                 randconfig-a006-20201009
+i386                 randconfig-a005-20201009
+i386                 randconfig-a001-20201009
+i386                 randconfig-a004-20201009
+i386                 randconfig-a002-20201009
+i386                 randconfig-a003-20201009
+x86_64               randconfig-a012-20201009
+x86_64               randconfig-a015-20201009
+x86_64               randconfig-a013-20201009
+x86_64               randconfig-a014-20201009
+x86_64               randconfig-a011-20201009
+x86_64               randconfig-a016-20201009
+i386                 randconfig-a015-20201009
+i386                 randconfig-a013-20201009
+i386                 randconfig-a014-20201009
+i386                 randconfig-a016-20201009
+i386                 randconfig-a011-20201009
+i386                 randconfig-a012-20201009
+i386                 randconfig-a015-20201008
+i386                 randconfig-a013-20201008
+i386                 randconfig-a014-20201008
+i386                 randconfig-a016-20201008
+i386                 randconfig-a011-20201008
+i386                 randconfig-a012-20201008
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a004-20201009
+x86_64               randconfig-a003-20201009
+x86_64               randconfig-a005-20201009
+x86_64               randconfig-a001-20201009
+x86_64               randconfig-a002-20201009
+x86_64               randconfig-a006-20201009
+x86_64               randconfig-a012-20201008
+x86_64               randconfig-a015-20201008
+x86_64               randconfig-a013-20201008
+x86_64               randconfig-a014-20201008
+x86_64               randconfig-a011-20201008
+x86_64               randconfig-a016-20201008
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
