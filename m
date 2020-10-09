@@ -2,120 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA7A288D75
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 17:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBF1A289006
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 19:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389496AbgJIP4V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Oct 2020 11:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389510AbgJIP4V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Oct 2020 11:56:21 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37AADC0613DE
-        for <linux-acpi@vger.kernel.org>; Fri,  9 Oct 2020 08:56:18 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id o8so9435822otl.4
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Oct 2020 08:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=nxGBD0NCi/MzhF6RzJGO1Op3qiNabAYCN4C/VOLMVMg=;
-        b=Pv8X98rQrxmQmC3AYgeqGl/3Wk9jEr2z3r1AsjjBWItQarSnLt+hACI/K+54PmcGqB
-         a6eccMthV+9Z0NohOHwemKNP3iAKtcfB871irTEsCjdu6VJjkKtzuC0TCZ+38LgwYXqy
-         22DWwqfvNOxEp+4/pcAGi+dbraAvqO0gRaIDs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=nxGBD0NCi/MzhF6RzJGO1Op3qiNabAYCN4C/VOLMVMg=;
-        b=sbPdzKM598WVTFf/3JUJBjq6GKgTLStlM+kJOxRVZmezSIqKqgUyLd5yQRXzEcWzMa
-         KJcDWEZ5xL0STIt8fPs3vbt7vODap4xFlNW9Bx2P7507X4uuPC0R2v0CWwuDfjNjVYss
-         PQPgsf+ceMnIjiqTBq/xrX0lNjFNaLpean+NjBl0ogSwMYekIP4V6jtfrg6jxLsYrNc7
-         R9qYGW1t9dyOy26HU6YoPHLdjiGPNmzCojd8RM7d5AF+KDmtEJ1ipBqcGSXGtNqv1Vq6
-         9Pg0zB7Cy4poaASkW+RB62bqEsFFvQXcSQZ806Fhym81znQdHgUHistMmmItjxS2miMp
-         eK8A==
-X-Gm-Message-State: AOAM533/d55u2RuvI4BKykPCfX5Z0STW/x3oWz6vCrHvrULTbUI0Vn4V
-        7bwQZTxDI1GH3XCw3fyA89C9mA==
-X-Google-Smtp-Source: ABdhPJwbBZCHnPwAt1monb6rS8Y1Exeh2/LVfsjInRAkUPpEXOu1zrSNDvtpFRcJNjRoSW4w4ceTAQ==
-X-Received: by 2002:a9d:224b:: with SMTP id o69mr8748064ota.358.1602258977631;
-        Fri, 09 Oct 2020 08:56:17 -0700 (PDT)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id e7sm7347246oia.9.2020.10.09.08.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2020 08:56:17 -0700 (PDT)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     rafael@kernel.org, james.morse@arm.com, tony.luck@intel.com,
-        bp@alien8.de, gregkh@linuxfoundation.org, keescook@chromium.org
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Borislav Petkov <bp@suse.de>
-Subject: [PATCH v3 06/11] drivers/acpi/apei: convert seqno counter_atomic32
-Date:   Fri,  9 Oct 2020 09:56:01 -0600
-Message-Id: <2f39e13e92b587ac48b7c11a17854b6426cfb745.1602209970.git.skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1602209970.git.skhan@linuxfoundation.org>
-References: <cover.1602209970.git.skhan@linuxfoundation.org>
+        id S1732153AbgJIRcE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Oct 2020 13:32:04 -0400
+Received: from sonic312-21.consmr.mail.bf2.yahoo.com ([74.6.128.83]:46397 "EHLO
+        sonic312-21.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731996AbgJIRcD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Oct 2020 13:32:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602264722; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=i4yeVMf1WmzzZ2gNvIXKaGXddbat6nzn+ZsvKRd8ZJfHnUksDGlOOtNXW7RxYs+O2aetC1K9JojQy8eayXuZwtfsAiDX51e1kblPPWDW/1c2ZHYERqKc0eyhOY5p1BorHyx5/U7ekEOnKs0L3FHelY3KgJJgrDA0iqjH82Urne0vQml3XBEyQSn+1Lw4YCqrMyvlrGKZCQt/4CesS0hQu+EstL2rg0LsaE3Wy4nYz9XX5E7uLoAxvhUOEWuIFs+O4ikuXYJso807XWtS81AW9pNGNPEvIQbOdrmsny/gXVd+W4L2+AH4keCBvhyz636G+azc+97+Hj9PCHWqihoqvA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602264722; bh=RYhzEYt6qJdZ7zGcneJUohepkSKimQxPkalnlCDY/ci=; h=Date:From:Subject; b=lwLZ11brptxByuXUNSgg0U8FccqLztm2gaIeu/WWUEbzHpWYP45h/Z0Jg4lGNYbfAjkSuLkDvhPvg3N/iWhlVBAfuNaQeO+AFWZ6H62ZLQzxUpCEPuez8aWuc78tAQ8AbqqBqx5TlZwN+0pTNUZPJeilUKl99w76hRsEGjpIX0Aj8RIjb6z4KHkGQkUPudkmTRROFgUapnAKRmbSlR4n52+4bDxkvEwEg+VPAke+QJoVbzsxYuMzuie7reK/8bgXc7fA63Odu5tPMho1Gj8CxkOo4WnweUpF6iBinH83hLbIP7Xq98R+e7X/Dj/stZwTABKa7LPMdZ0dIpCcXeMFRA==
+X-YMail-OSG: QXkto0IVM1ksLG3UQ9KQPAfw3n9W0qoZNAGtiXfYg5lvdmWUY_vV5aTvOFc8OMy
+ ejyIt2PoAfxSHpazWNO5nRO40J1vp8HmGAfehAEO0nBkem0aJ.a.GhhA4gHvW1oXNkdUMKigVsaa
+ YfE1xYIasd39pmw4MQ7BmUcrtHH02j9oRTXj7q87Hv0XTH2vg_chjbOTk42fHPkOjQmcYaj5GXJK
+ mY2.RI55WH4H29BALUInGlp6QCbdWpoDc4JlOnvyp6d9z9fDnny2JtX9rO0NpTJY72.PGYicVBMy
+ 6EuRjFMrMCEml9HKSo8QBDh548EtkaNjBYWxEDxt_4YWn6567fxVvIvN6.l1TihiOhCRJBZe64hi
+ zewXIaJqwaw0RxpQkUSCfjPnluHixpJ8S.s_2kDi0muJJmiVjY_Mjd.pkJXjjHFngRmPS6aNR02G
+ hr2UAIg1.jzsokjfdOjFZ9Yy21SkrxwsfNQAu5bZDy7DzyAPhoe94PV5VrduJdvrMgrbwuCa_d4e
+ qu2MVwJRey5UUcPTWp8EPfeGR.0dhFAZoXVlCj_FV.mfiWDdnkkdluekA1010s5ocS.uo.4VN4Q2
+ OKJp76lUQGFka7lwtAkYh1Ff5gWabgU5AtYcQ72gDFk1VUysTrqXJtwu_NzzabJV.DYzfLGmIH.L
+ 8x_.mERlyZu7qeezcbQ3LUGlfihdNUfXctWx6KqrkiOF.nPJZzonrdUAKWCv7XhuIjA2PLET3dss
+ w4NqAm9Wf7oB3PX8UHQIOBrqb5zjv3WNDc_0e06GHVOTTdF1wp7nXq2.siS60jsvTC0wDGBI.vpv
+ UE_w2qgAMUJ3smCYfwub3qblns7p3KNvglfh4UQgjYUKa8XVdughXSIyMY3mCW86k9k4.MUPOPdW
+ Brci5etghJNnQAde3ywRA8N0IwYLpF_PfjVPMWi90Fsb8IISYwMQpv4xPR_aXEzqPTIeY4qgZ.2_
+ 62KwcfSQ5fRCBMTwRmJcGmVr9JysknJjf3CHnyL.VeHdrnVuZLQPYEiaeS_sEj_mm_VEbbAWZWE1
+ wN9GGsnEMuTrLgONZ0ijRDb240Oo4B.bWGcXBqN4Um_qAKv5700iQxkp0Q1NekobD6bIDBRneU27
+ 4RPfR6_rJGyFePxc8lkpYX4_4keULcFaO9EYENGr7RieKhu61olI3qDe8HTSFoD7NEY__EoNPDqJ
+ Xyd2k5x3.Qrr1_dOS4ozUu1mU9TOongnD0Xsf5Z8s5fbXSdgyLcx0WGmsdwHAtXyPBm.TLH94KcT
+ wWSwh7dcRTtsdTaF3MElT0rE1d5MVtbD8TbWeQEz14hti3nL8A_n9bhgEuT1tb8yfaorO0vscM5B
+ Awc.YvDWKllstzj9lIhEYHCWmA9nMHoYjD4Lo6DNivzL_sBScyAmHcrcVIxrqT_7oNx4N3YJpWdA
+ uymTMNlmf18Cd5mwzvjVSBO_mEPj1_N8zXemTERO1J3KXqcKc
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.bf2.yahoo.com with HTTP; Fri, 9 Oct 2020 17:32:02 +0000
+Date:   Fri, 9 Oct 2020 17:32:00 +0000 (UTC)
+From:   Ms lisa Hugh <lisahugh531@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <70189328.794834.1602264720676@mail.yahoo.com>
+Subject: BUSINESS CO-OPERATION FROM (Ms Lisa Hugh).
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <70189328.794834.1602264720676.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-counter_atomic* is introduced to be used when a variable is used as
-a simple counter and doesn't guard object lifetimes. This clearly
-differentiates atomic_t usages that guard object lifetimes.
 
-counter_atomic* variables wrap around to INT_MIN when it overflows
-and should not be used to guard resource lifetimes, device usage and
-open counts that control state changes, and pm states.
 
-seqno is a sequence number counter for logging. This counter gets
-incremented. Unsure if there is a chance of this overflowing. It
-doesn't look like overflowing causes any problems since it is used
-to tag the log messages and nothing more.
+Dear Friend,
 
-Convert it to use counter_atomic32.
+I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
 
-This conversion doesn't change the overflow wrap around behavior.
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Acked-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
----
- drivers/acpi/apei/ghes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 81bf71b10d44..92169436be18 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -41,6 +41,7 @@
- #include <linux/uuid.h>
- #include <linux/ras.h>
- #include <linux/task_work.h>
-+#include <linux/counters.h>
- 
- #include <acpi/actbl1.h>
- #include <acpi/ghes.h>
-@@ -562,7 +563,7 @@ static void __ghes_print_estatus(const char *pfx,
- 				 const struct acpi_hest_generic *generic,
- 				 const struct acpi_hest_generic_status *estatus)
- {
--	static atomic_t seqno;
-+	static struct counter_atomic32 seqno = COUNTER_ATOMIC_INIT(0);
- 	unsigned int curr_seqno;
- 	char pfx_seq[64];
- 
-@@ -573,7 +574,7 @@ static void __ghes_print_estatus(const char *pfx,
- 		else
- 			pfx = KERN_ERR;
- 	}
--	curr_seqno = atomic_inc_return(&seqno);
-+	curr_seqno = counter_atomic32_inc_return(&seqno);
- 	snprintf(pfx_seq, sizeof(pfx_seq), "%s{%u}" HW_ERR, pfx, curr_seqno);
- 	printk("%s""Hardware error from APEI Generic Hardware Error Source: %d\n",
- 	       pfx_seq, generic->header.source_id);
--- 
-2.25.1
+Note/ 50% for you why 50% for me after success of the transfer to your bank account.
 
+Below information is what i need from you so will can be reaching each other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa hugh.
