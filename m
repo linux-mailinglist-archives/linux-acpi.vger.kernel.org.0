@@ -2,60 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A24288C74
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 17:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 006D3288D71
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Oct 2020 17:58:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389225AbgJIPV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Oct 2020 11:21:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33210 "EHLO
+        id S2389513AbgJIP4V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Oct 2020 11:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387664AbgJIPV1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Oct 2020 11:21:27 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7F5C0613D2
-        for <linux-acpi@vger.kernel.org>; Fri,  9 Oct 2020 08:21:27 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id 13so10218233wmf.0
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Oct 2020 08:21:27 -0700 (PDT)
+        with ESMTP id S2389496AbgJIP4N (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Oct 2020 11:56:13 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EF7C0613D8
+        for <linux-acpi@vger.kernel.org>; Fri,  9 Oct 2020 08:56:11 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id f10so9417121otb.6
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Oct 2020 08:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nuviainc-com.20150623.gappssmtp.com; s=20150623;
+        d=linuxfoundation.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wuMwzFJGiXNbyxMe2gMBhOKs5AMVo2Pqd2QKlrNB/ws=;
-        b=m6L8rjVsYldLQQsqSwx1guiHcKxE1+rI0zc7BiY0y3fDMXQPGBKbWcG4ldfwISLnrw
-         Mg9DO+d43pejyWbsDcjNGp2sfcoXGT7m1GCXudRt/ulzzuj/KPTkH8AOTVI6WwVN1IwF
-         2BllAXSQV6UO3JqXDzBs1aC55ZBtYzY+e7J6INQ+A+40sp4EZf9G6YY559LaF9kaLenB
-         9KUFy6I0Krz+RrbC3tfX3BUC0+ty/NjIoNvdBoUkaudJflXQ4Rei0Puzs13Iddo47lFj
-         PHi6+wj7+5guyJamFAjG827Tucf+iRHz2TpOwj9/nvht/k2ALgq/sc4lrf/ftETckVLv
-         e+iQ==
+        bh=b32z5dKsXOrYLHbSI9QCODj0mLTC/ZJJ3E6KUm9+yHE=;
+        b=LDUnatNNn2udc+UqXUN+tdPGpv/2MM9wKl2dLPda8qil/vULNrO0DxhWPtDkcZAr7r
+         Axl53TaOKUNtScl2hLkq3wuBNt2lR3WN46nvKYP8c1uTr33qF1NY9nZeDw/6Yzf+HUky
+         iZQzHYFeB4F6JRZXy5O7uBw49tpgKhHzVWrMk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wuMwzFJGiXNbyxMe2gMBhOKs5AMVo2Pqd2QKlrNB/ws=;
-        b=BV9dGRJ7LQHlkzRS6eETpLorBPouLsmVBbUyxH3FAyLN5jpdSFAVdXSAN0H3k5zQ24
-         OFm6/Jl1XQ0MRB51YaPHYJEgBHS2MBQrtARQIEl5RYQkCykX5qr9qYZwifKQTjVR8yi2
-         y+02yDr0EQpLQXoZuoA7ONs98sqBwFCy5nL4vPmiAqWzX2DD0A0l6sgmVS8q1vD/92xQ
-         R4BABNHTvwq0/XLN2tOhoZZG2U8dqJcRtI2c72ArW3r3iR69owc+swW15MPDq7ltUWwE
-         4jKQOTdp+m1ISAsKz7Kg5PG3fUVT8ZWAZ0tmZrSzDtr0jR7Dqp1wawNI3kJmVj7QSCl+
-         6B2A==
-X-Gm-Message-State: AOAM532D/GLt+PD+AEqO1YmIP4DtSloUYGZS5ViNu7nJi3tJEJ+W97jM
-        lIsQdTEEJi9Ihs5Ryygx8jk0azOu0VsZ+zR6/J4jCZI7VUnbaRWDO+ceaozMQyAF5EtBWqanJkX
-        T48BwA9b0OmIngVskcZ7HF+VxJklkthn0JWRxdenmUMSFg/JyFdK7SFzVVE0OQmy0ErKD2GduT6
-        Y=
-X-Google-Smtp-Source: ABdhPJy8G3LWj+h4qV5r/F3/ksrgPLhUT2yDAVuFxAM/Vntrz27MDOlKhZWBJomnQYaqi5EujfzbJw==
-X-Received: by 2002:a7b:c14f:: with SMTP id z15mr15569681wmi.73.1602256885472;
-        Fri, 09 Oct 2020 08:21:25 -0700 (PDT)
-Received: from localhost ([82.44.17.50])
-        by smtp.gmail.com with ESMTPSA id g139sm12648666wme.2.2020.10.09.08.21.24
+        bh=b32z5dKsXOrYLHbSI9QCODj0mLTC/ZJJ3E6KUm9+yHE=;
+        b=PQ2A+kSuReNp607WS5Q3ABsuwamG9Jo2ma7r3vfQ7QUbeom7ipcaBbAjO4YduKlES/
+         2uRSVMwmzda3B0lNOJAFuvuGU4QfvVTRIuouhuoO3TJUzISlha189BDbEETuDDsPNGOL
+         9zmnUh2gWigL4LtpODyUkJYAs1ebS5HfhZdUCpf/algth29ub8eg2hqs4ryTO2ryf9UW
+         ukXUQnPVV6LizG4TV6wYd/meoxGt/lo4izIjlaF3HUQsc9BQFRvSvm2y2VwuEK4keY8j
+         IxCtoW4vciusM+ecTxViiuAVZDJWsZBbAw3k2/OUtdqzqDpWZsipfmXYbYH7OSJw8gQI
+         PxfA==
+X-Gm-Message-State: AOAM531jrGlqsd/D31s8vnPUu6aI12BY8RRuW2gXrmNM1uJHq43e1mqf
+        q7j4l27mkovPv9BC/aDer8SgHA==
+X-Google-Smtp-Source: ABdhPJz3Y617hhCiPlIHjqC9vW6PFy/AnltbdLlnrMsE2eBnxmpcpkdSCIOXcudkVjETugwBP8Bj1Q==
+X-Received: by 2002:a9d:2a88:: with SMTP id e8mr8717319otb.299.1602258970850;
+        Fri, 09 Oct 2020 08:56:10 -0700 (PDT)
+Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id e7sm7347246oia.9.2020.10.09.08.56.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2020 08:21:24 -0700 (PDT)
-From:   Jamie Iles <jamie@nuviainc.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Jamie Iles <jamie@nuviainc.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [PATCH] ACPI: debug: don't allow debugging when ACPI is disabled
-Date:   Fri,  9 Oct 2020 16:21:16 +0100
-Message-Id: <20201009152116.35184-1-jamie@nuviainc.com>
+        Fri, 09 Oct 2020 08:56:09 -0700 (PDT)
+From:   Shuah Khan <skhan@linuxfoundation.org>
+To:     corbet@lwn.net, keescook@chromium.org, gregkh@linuxfoundation.org,
+        shuah@kernel.org, rafael@kernel.org, johannes@sipsolutions.net,
+        lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
+        bp@alien8.de, arve@android.com, tkjos@android.com,
+        maco@android.com, joel@joelfernandes.org, christian@brauner.io,
+        hridya@google.com, surenb@google.com, minyard@acm.org,
+        arnd@arndb.de, mchehab@kernel.org, rric@kernel.org
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org
+Subject: [PATCH v3 00/11] Introduce Simple atomic counters
+Date:   Fri,  9 Oct 2020 09:55:55 -0600
+Message-Id: <cover.1602209970.git.skhan@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -63,60 +67,149 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If ACPI is disabled then loading the acpi_dbg module will result in the
-following splat when lock debugging is enabled.
+This patch series is a result of discussion at the refcount_t BOF
+the Linux Plumbers Conference. In this discussion, we identified
+a need for looking closely and investigating atomic_t usages in
+the kernel when it is used strictly as a counter without it
+controlling object lifetimes and state changes.
 
-  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-  WARNING: CPU: 0 PID: 1 at kernel/locking/mutex.c:938 __mutex_lock+0xa10/0x1290
-  Kernel panic - not syncing: panic_on_warn set ...
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.9.0-rc8+ #103
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   dump_backtrace+0x0/0x4d8
-   show_stack+0x34/0x48
-   dump_stack+0x174/0x1f8
-   panic+0x360/0x7a0
-   __warn+0x244/0x2ec
-   report_bug+0x240/0x398
-   bug_handler+0x50/0xc0
-   call_break_hook+0x160/0x1d8
-   brk_handler+0x30/0xc0
-   do_debug_exception+0x184/0x340
-   el1_dbg+0x48/0xb0
-   el1_sync_handler+0x170/0x1c8
-   el1_sync+0x80/0x100
-   __mutex_lock+0xa10/0x1290
-   mutex_lock_nested+0x6c/0xc0
-   acpi_register_debugger+0x40/0x88
-   acpi_aml_init+0xc4/0x114
-   do_one_initcall+0x24c/0xb10
-   kernel_init_freeable+0x690/0x728
-   kernel_init+0x20/0x1e8
-   ret_from_fork+0x10/0x18
+There are a number of atomic_t usages in the kernel where atomic_t api
+is used strictly for counting and not for managing object lifetime. In
+some cases, atomic_t might not even be needed.
 
-Fail module loading to avoid this and any subsequent problems that might
-arise by trying to debug AML when ACPI is disabled.
+The purpose of these counters is to clearly differentiate atomic_t
+counters from atomic_t usages that guard object lifetimes, hence prone
+to overflow and underflow errors. It allows tools that scan for underflow
+and overflow on atomic_t usages to detect overflow and underflows to scan
+just the cases that are prone to errors.
 
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Signed-off-by: Jamie Iles <jamie@nuviainc.com>
----
- drivers/acpi/acpi_dbg.c | 3 +++
- 1 file changed, 3 insertions(+)
+Simple atomic counters api provides interfaces for simple atomic counters
+that just count, and don't guard resource lifetimes. The interfaces are
+built on top of atomic_t api, providing a smaller subset of atomic_t
+interfaces necessary to support simple counters.
+    
+Counter wraps around to INT_MIN when it overflows and should not be used
+to guard resource lifetimes, device usage and open counts that control
+state changes, and pm states. Overflowing to INT_MIN is consistent with
+the atomic_t api, which it is built on top of.
+    
+Using counter_atomic* to guard lifetimes could lead to use-after free
+when it overflows and undefined behavior when used to manage state
+changes and device usage/open states.
 
-diff --git a/drivers/acpi/acpi_dbg.c b/drivers/acpi/acpi_dbg.c
-index 6041974c7627..fb7290338593 100644
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -749,6 +749,9 @@ static int __init acpi_aml_init(void)
- {
- 	int ret;
+This patch series introduces Simple atomic counters. Counter atomic ops
+leverage atomic_t and provide a sub-set of atomic_t ops.
+
+In addition this patch series converts a few drivers to use the new api.
+The following criteria is used for select variables for conversion:
+
+1. Variable doesn't guard object lifetimes, manage state changes e.g:
+   device usage counts, device open counts, and pm states.
+2. Variable is used for stats and counters.
+3. The conversion doesn't change the overflow behavior.
+
+Note: Would like to get this into Linux 5.10-rc1 so we can continue
+updating drivers that can be updated to use this API. If this all looks
+good, Kees, would you like to take this through your tree or would you
+like to take this through mine.
+
+Changes since Patch v2:
+-- Thanks for reviews and reviewed-by, and Acked-by tags. Updated
+   the patches with the tags.
+-- Minor changes to address Greg's comment to remove default from
+   Kconfig
+-- Added Copyrights to new files
+Updates to address comments on v2 from Kees Cook
+-- Updated Patch 1/11 to make clear that the counter wraps around to
+   INT_MIN and that this behavior is consistent with the atomic_t
+   api, on which this counter built api built on top of.
+-- Other patch change logs updated with the correct wrap around
+   behavior.
+-- Patch 1/11 is updated to add tests with constants for overflow
+   and underflow.
+-- Patch 8/11 - added inits for the stat counters
+-- Patch 10/11 - fixes the vmci_num_guest_devices != 0 to >0 which is
+   safer than checking for !=0. 
  
-+	if (acpi_disabled)
-+		return -ENODEV;
-+
- 	/* Initialize AML IO interface */
- 	mutex_init(&acpi_aml_io.lock);
- 	init_waitqueue_head(&acpi_aml_io.wait);
+Changes since Patch v1
+-- Thanks for reviews and reviewed-by, and Acked-by tags. Updated
+   the patches with the tags.
+-- Addressed Kees's  and Joel's comments:
+   1. Removed dec_return interfaces
+   2. Removed counter_simple interfaces to be added later with changes
+      to drivers that use them (if any).
+
+Changes since RFC:
+-- Thanks for reviews and reviewed-by, and Acked-by tags. Updated
+   the patches with the tags.
+-- Addressed Kees's comments:
+   1. Non-atomic counters renamed to counter_simple32 and counter_simple64
+      to clearly indicate size.
+   2. Added warning for counter_simple* usage and it should be used only
+      when there is no need for atomicity.
+   3. Renamed counter_atomic to counter_atomic32 to clearly indicate size.
+   4. Renamed counter_atomic_long to counter_atomic64 and it now uses
+      atomic64_t ops and indicates size.
+   5. Test updated for the API renames.
+   6. Added helper functions for test results printing
+   7. Verified that the test module compiles in kunit env. and test
+      module can be loaded to run the test.
+   8. Updated Documentation to reflect the intent to make the API
+      restricted so it can never be used to guard object lifetimes
+      and state management. I left _return ops for now, inc_return
+      is necessary for now as per the discussion we had on this topic.
+-- Updated driver patches with API name changes.
+-- We discussed if binder counters can be non-atomic. For now I left
+   them the same as the RFC patch - using counter_atomic32
+-- Unrelated to this patch series:
+   The patch series review uncovered improvements could be made to
+   test_async_driver_probe and vmw_vmci/vmci_guest. I will track
+   these for fixing later.
+
+Shuah Khan (11):
+  counters: Introduce counter_atomic* counters
+  selftests:lib:test_counters: add new test for counters
+  drivers/base: convert deferred_trigger_count and probe_count to
+    counter_atomic32
+  drivers/base/devcoredump: convert devcd_count to counter_atomic32
+  drivers/acpi: convert seqno counter_atomic32
+  drivers/acpi/apei: convert seqno counter_atomic32
+  drivers/android/binder: convert stats, transaction_log to
+    counter_atomic32
+  drivers/base/test/test_async_driver_probe: convert to use
+    counter_atomic32
+  drivers/char/ipmi: convert stats to use counter_atomic32
+  drivers/misc/vmw_vmci: convert num guest devices counter to
+    counter_atomic32
+  drivers/edac: convert pci counters to counter_atomic32
+
+ Documentation/core-api/counters.rst          | 109 ++++++++++++
+ MAINTAINERS                                  |   8 +
+ drivers/acpi/acpi_extlog.c                   |   5 +-
+ drivers/acpi/apei/ghes.c                     |   5 +-
+ drivers/android/binder.c                     |  41 ++---
+ drivers/android/binder_internal.h            |   3 +-
+ drivers/base/dd.c                            |  19 +-
+ drivers/base/devcoredump.c                   |   5 +-
+ drivers/base/test/test_async_driver_probe.c  |  26 +--
+ drivers/char/ipmi/ipmi_msghandler.c          |   9 +-
+ drivers/char/ipmi/ipmi_si_intf.c             |   9 +-
+ drivers/edac/edac_pci.h                      |   5 +-
+ drivers/edac/edac_pci_sysfs.c                |  28 +--
+ drivers/misc/vmw_vmci/vmci_guest.c           |   9 +-
+ include/linux/counters.h                     | 176 +++++++++++++++++++
+ lib/Kconfig                                  |   9 +
+ lib/Makefile                                 |   1 +
+ lib/test_counters.c                          | 162 +++++++++++++++++
+ tools/testing/selftests/lib/Makefile         |   1 +
+ tools/testing/selftests/lib/config           |   1 +
+ tools/testing/selftests/lib/test_counters.sh |  10 ++
+ 21 files changed, 567 insertions(+), 74 deletions(-)
+ create mode 100644 Documentation/core-api/counters.rst
+ create mode 100644 include/linux/counters.h
+ create mode 100644 lib/test_counters.c
+ create mode 100755 tools/testing/selftests/lib/test_counters.sh
+
 -- 
 2.25.1
 
