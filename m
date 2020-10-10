@@ -2,111 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 190F728A376
+	by mail.lfdr.de (Postfix) with ESMTP id 877B128A377
 	for <lists+linux-acpi@lfdr.de>; Sun, 11 Oct 2020 01:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390339AbgJJW5E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Oct 2020 18:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41592 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731185AbgJJTxO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Oct 2020 15:53:14 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713B0C0613B4;
-        Sat, 10 Oct 2020 04:10:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6cV+tWxBY2tCvh0w9RakejaDPboIY9tCeHrHg2GCiPA=; b=eBUno4bXjQVLTMDPOm+sW25Lwv
-        cowKD724NzwUh0wGoDX2eG2v9P5KJVKb8dHlTaXOU5VS9yonxo5dacyZ9QBDrEL6/NHu9yrFDVlul
-        uJaKEt4lT+vM8kcKN1F9biakAjn/UcusJA6djK/yyy9on5fKvTsxSO+3sp/2KlZsoUnoiEKzwrMB4
-        7TSBcjnZnVEnKSgMC/MZVlM/dgfJ6XN++gsUwy/SxMYtctBJGqU5CSC+MXoSkcGbzs6L+g82bBhNO
-        Y/Lg46iD7UQGhyO+fwbJTDWyUte30Cln331o8ECV+9e4trlBM1tLfDi1pnpFFiEEQbQZdIxL/9tRX
-        HbGqIARQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kRCkg-00026L-PN; Sat, 10 Oct 2020 11:09:27 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        id S2387396AbgJJW5D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Oct 2020 18:57:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50674 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731360AbgJJTMW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 10 Oct 2020 15:12:22 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3BEED3003E5;
-        Sat, 10 Oct 2020 13:09:21 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 017E52010B5FA; Sat, 10 Oct 2020 13:09:20 +0200 (CEST)
-Date:   Sat, 10 Oct 2020 13:09:20 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, corbet@lwn.net,
-        gregkh@linuxfoundation.org, shuah@kernel.org, rafael@kernel.org,
-        johannes@sipsolutions.net, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, arve@android.com,
-        tkjos@android.com, maco@android.com, joel@joelfernandes.org,
-        christian@brauner.io, hridya@google.com, surenb@google.com,
-        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
-        rric@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-edac@vger.kernel.org, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 00/11] Introduce Simple atomic counters
-Message-ID: <20201010110920.GQ2628@hirez.programming.kicks-ass.net>
-References: <cover.1602209970.git.skhan@linuxfoundation.org>
- <20201009193746.GA1073957@hirez.programming.kicks-ass.net>
- <202010091255.246395A6@keescook>
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CBF5122472;
+        Sat, 10 Oct 2020 17:57:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602352624;
+        bh=qCkIXS8ZsPa/miTSH/dO+gBtGrLl0bKkccWoe6NRsxI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=zakQ0exw5bsUlHg/AvMbE0bT/JkNFlEFa9mfuBE6s/p/m5kg5YBHcV7wEMYqDXT2B
+         aKe81E6e0VZyVOml5MTVMhMNdWoF5j4bPZKKlGJhUScgGQjdxJefTW/6VmArHoC3yy
+         A9oe1V8SwONlHtgVc4wlFb3uRksZkGZrem3f2d3w=
+Date:   Sat, 10 Oct 2020 10:57:02 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Grant Likely <grant.likely@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        robh+dt@kernel.org, Diana Madalina Craciun <diana.craciun@nxp.com>,
+        netdev@vger.kernel.org, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux.cj@gmail.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [net-next PATCH v1] net: phy: Move of_mdio from drivers/of to
+ drivers/net/mdio
+Message-ID: <20201010105702.729a2bde@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
+References: <20201008144706.8212-1-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202010091255.246395A6@keescook>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 09, 2020 at 01:45:43PM -0700, Kees Cook wrote:
-> On Fri, Oct 09, 2020 at 09:37:46PM +0200, Peter Zijlstra wrote:
-> > On Fri, Oct 09, 2020 at 09:55:55AM -0600, Shuah Khan wrote:
-> > > Simple atomic counters api provides interfaces for simple atomic counters
-> > > that just count, and don't guard resource lifetimes. The interfaces are
-> > > built on top of atomic_t api, providing a smaller subset of atomic_t
-> > > interfaces necessary to support simple counters.
-> > 
-> > To what actual purpose?!? AFACIT its pointless wrappery, it gets us
-> > nothing.
+On Thu,  8 Oct 2020 20:17:06 +0530 Calvin Johnson wrote:
+> Better place for of_mdio.c is drivers/net/mdio.
+> Move of_mdio.c from drivers/of to drivers/net/mdio
 > 
-> It's not pointless. There is value is separating types for behavioral
-> constraint to avoid flaws. atomic_t provides a native operation. We gained
-> refcount_t for the "must not wrap" type, and this gets us the other side
-> of that behavioral type, which is "wrapping is expected". Separating the
-> atomic_t uses allows for a clearer path to being able to reason about
-> code flow, whether it be a human or a static analyzer.
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
 
-refcount_t got us actual rutime exceptions that atomic_t doesn't. This
-propsal gets us nothing.
-
-atomic_t is very much expected to wrap.
-
-> The counter wrappers add nothing to the image size, and only serve to
-> confine the API to one that cannot be used for lifetime management.
-
-It doesn't add anything period. It doesn't get us new behaviour, it
-splits a 'can wrap' use-case from a 'can wrap' type. That's sodding
-pointless.
-
-Worse, it mixes 2 unrelated cases into one type, which just makes a
-mockery of things (all the inc_return users are not statistics, some
-might even mis-behave if they wrap).
-
-> Once conversions are done, we have a clean line between refcounting
-> and statistical atomics, which means we have a much lower chance of
-> introducing new flaws (and maybe we'll fix flaws during the conversion,
-> which we've certainly seen before when doing this stricter type/language
-> changes).
-> 
-> I don't see why this is an objectionable goal.
-
-People can and will always find a way to mess things up.
-
-Only add types when you get behavioural changes, otherwise it's
-pointless noise.
-
-My NAK stands.
+Applied, thank you.
