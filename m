@@ -2,193 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B32A628A373
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Oct 2020 01:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190F728A376
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Oct 2020 01:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390348AbgJJW5E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S2390339AbgJJW5E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Sat, 10 Oct 2020 18:57:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57034 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732640AbgJJTyo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 10 Oct 2020 15:54:44 -0400
-Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A3131207E8;
-        Sat, 10 Oct 2020 09:32:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602322342;
-        bh=DUFG9J5AcMUp5irs8D9SHdYwSl2ByabA6T3c+hN4CVY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GJ5OYii0BaygS11g+Z6ee8RaWcjnixsYYvsUJKQGUxO/BdpQOw4G09yOMHY5HoCRA
-         M65wYXKWIo/riUMFq7QaRXd08nGtjbbhUGmLJr5C6SPlQwWgrHq6ER8UiKpNCu+pSP
-         M8lC6kbn1BJSczr7AD8BI0BIXlA8DHWAv09gT2dg=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-Date:   Sat, 10 Oct 2020 11:31:53 +0200
-Message-Id: <20201010093153.30177-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731185AbgJJTxO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Oct 2020 15:53:14 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713B0C0613B4;
+        Sat, 10 Oct 2020 04:10:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6cV+tWxBY2tCvh0w9RakejaDPboIY9tCeHrHg2GCiPA=; b=eBUno4bXjQVLTMDPOm+sW25Lwv
+        cowKD724NzwUh0wGoDX2eG2v9P5KJVKb8dHlTaXOU5VS9yonxo5dacyZ9QBDrEL6/NHu9yrFDVlul
+        uJaKEt4lT+vM8kcKN1F9biakAjn/UcusJA6djK/yyy9on5fKvTsxSO+3sp/2KlZsoUnoiEKzwrMB4
+        7TSBcjnZnVEnKSgMC/MZVlM/dgfJ6XN++gsUwy/SxMYtctBJGqU5CSC+MXoSkcGbzs6L+g82bBhNO
+        Y/Lg46iD7UQGhyO+fwbJTDWyUte30Cln331o8ECV+9e4trlBM1tLfDi1pnpFFiEEQbQZdIxL/9tRX
+        HbGqIARQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kRCkg-00026L-PN; Sat, 10 Oct 2020 11:09:27 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3BEED3003E5;
+        Sat, 10 Oct 2020 13:09:21 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 017E52010B5FA; Sat, 10 Oct 2020 13:09:20 +0200 (CEST)
+Date:   Sat, 10 Oct 2020 13:09:20 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, corbet@lwn.net,
+        gregkh@linuxfoundation.org, shuah@kernel.org, rafael@kernel.org,
+        johannes@sipsolutions.net, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, arve@android.com,
+        tkjos@android.com, maco@android.com, joel@joelfernandes.org,
+        christian@brauner.io, hridya@google.com, surenb@google.com,
+        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
+        rric@kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 00/11] Introduce Simple atomic counters
+Message-ID: <20201010110920.GQ2628@hirez.programming.kicks-ass.net>
+References: <cover.1602209970.git.skhan@linuxfoundation.org>
+ <20201009193746.GA1073957@hirez.programming.kicks-ass.net>
+ <202010091255.246395A6@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202010091255.246395A6@keescook>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-We recently introduced a 1 GB sized ZONE_DMA to cater for platforms
-incorporating masters that can address less than 32 bits of DMA, in
-particular the Raspberry Pi 4, which has 4 or 8 GB of DRAM, but has
-peripherals that can only address up to 1 GB (and its PCIe host
-bridge can only access the bottom 3 GB)
+On Fri, Oct 09, 2020 at 01:45:43PM -0700, Kees Cook wrote:
+> On Fri, Oct 09, 2020 at 09:37:46PM +0200, Peter Zijlstra wrote:
+> > On Fri, Oct 09, 2020 at 09:55:55AM -0600, Shuah Khan wrote:
+> > > Simple atomic counters api provides interfaces for simple atomic counters
+> > > that just count, and don't guard resource lifetimes. The interfaces are
+> > > built on top of atomic_t api, providing a smaller subset of atomic_t
+> > > interfaces necessary to support simple counters.
+> > 
+> > To what actual purpose?!? AFACIT its pointless wrappery, it gets us
+> > nothing.
+> 
+> It's not pointless. There is value is separating types for behavioral
+> constraint to avoid flaws. atomic_t provides a native operation. We gained
+> refcount_t for the "must not wrap" type, and this gets us the other side
+> of that behavioral type, which is "wrapping is expected". Separating the
+> atomic_t uses allows for a clearer path to being able to reason about
+> code flow, whether it be a human or a static analyzer.
 
-Instructing the DMA layer about these limitations is straight-forward,
-even though we had to fix some issues regarding memory limits set in
-the IORT for named components, and regarding the handling of ACPI _DMA
-methods. However, the DMA layer also needs to be able to allocate
-memory that is guaranteed to meet those DMA constraints, for bounce
-buffering as well as allocating the backing for consistent mappings.
+refcount_t got us actual rutime exceptions that atomic_t doesn't. This
+propsal gets us nothing.
 
-This is why the 1 GB ZONE_DMA was introduced recently. Unfortunately,
-it turns out the having a 1 GB ZONE_DMA as well as a ZONE_DMA32 causes
-problems with kdump, and potentially in other places where allocations
-cannot cross zone boundaries. Therefore, we should avoid having two
-separate DMA zones when possible.
+atomic_t is very much expected to wrap.
 
-So let's do an early scan of the IORT, and only create the ZONE_DMA
-if we encounter any devices that need it. This puts the burden on
-the firmware to describe such limitations in the IORT, which may be
-redundant (and less precise) if _DMA methods are also being provided.
-However, it should be noted that this situation is highly unusual for
-arm64 ACPI machines. Also, the DMA subsystem still gives precedence to
-the _DMA method if implemented, and so we will not lose the ability to
-perform streaming DMA outside the ZONE_DMA if the _DMA method permits
-it.
+> The counter wrappers add nothing to the image size, and only serve to
+> confine the API to one that cannot be used for lifetime management.
 
-Cc: Jeremy Linton <jeremy.linton@arm.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-This is related to the discussion in 
+It doesn't add anything period. It doesn't get us new behaviour, it
+splits a 'can wrap' use-case from a 'can wrap' type. That's sodding
+pointless.
 
-https://lore.kernel.org/linux-arm-kernel/20201001161740.29064-2-nsaenzjulienne@suse.de/
+Worse, it mixes 2 unrelated cases into one type, which just makes a
+mockery of things (all the inc_return users are not statistics, some
+might even mis-behave if they wrap).
 
- Documentation/arm64/arm-acpi.rst |  7 +++
- arch/arm64/mm/init.c             |  8 +++
- drivers/acpi/arm64/iort.c        | 51 ++++++++++++++++++++
- 3 files changed, 66 insertions(+)
+> Once conversions are done, we have a clean line between refcounting
+> and statistical atomics, which means we have a much lower chance of
+> introducing new flaws (and maybe we'll fix flaws during the conversion,
+> which we've certainly seen before when doing this stricter type/language
+> changes).
+> 
+> I don't see why this is an objectionable goal.
 
-diff --git a/Documentation/arm64/arm-acpi.rst b/Documentation/arm64/arm-acpi.rst
-index 47ecb9930dde..947f5b5c45ef 100644
---- a/Documentation/arm64/arm-acpi.rst
-+++ b/Documentation/arm64/arm-acpi.rst
-@@ -205,6 +205,13 @@ devices available.  This list of tables is not meant to be all inclusive;
- in some environments other tables may be needed (e.g., any of the APEI
- tables from section 18) to support specific functionality.
- 
-+It is assumed that all DMA capable devices in the system are able to
-+access the lowest 4 GB of system memory. If this is not the case, an
-+IORT describing those limitations is mandatory, even if an IORT is not
-+otherwise necessary to describe the I/O topology, and regardless of
-+whether _DMA methods are used to describe the DMA limitations more
-+precisely. Once the system has booted, _DMA methods will take precedence
-+over DMA addressing limits described in the IORT.
- 
- ACPI Detection
- --------------
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index f0599ae73b8d..829fa63c3d72 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -191,6 +191,14 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
- 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
- 
- #ifdef CONFIG_ZONE_DMA
-+	if (IS_ENABLED(CONFIG_ACPI)) {
-+		extern unsigned int acpi_iort_get_zone_dma_size(void);
-+
-+		zone_dma_bits = min(zone_dma_bits,
-+				    acpi_iort_get_zone_dma_size());
-+		arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
-+	}
-+
- 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
- #endif
- #ifdef CONFIG_ZONE_DMA32
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index ec782e4a0fe4..c3db44896e49 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1722,3 +1722,54 @@ void __init acpi_iort_init(void)
- 
- 	iort_init_platform_devices();
- }
-+
-+#ifdef CONFIG_ZONE_DMA
-+/*
-+ * Check the IORT whether any devices exist whose DMA mask is < 32 bits.
-+ * If so, return the smallest value encountered, or 32 otherwise.
-+ */
-+unsigned int __init acpi_iort_get_zone_dma_size(void)
-+{
-+	struct acpi_table_iort *iort;
-+	struct acpi_iort_node *node, *end;
-+	acpi_status status;
-+	u8 limit = 32;
-+	int i;
-+
-+	if (acpi_disabled)
-+		return limit;
-+
-+	status = acpi_get_table(ACPI_SIG_IORT, 0,
-+				(struct acpi_table_header **)&iort);
-+	if (ACPI_FAILURE(status))
-+		return limit;
-+
-+	node = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->node_offset);
-+	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
-+
-+	for (i = 0; i < iort->node_count; i++) {
-+		if (node >= end)
-+			break;
-+
-+		switch (node->type) {
-+			struct acpi_iort_named_component *ncomp;
-+			struct acpi_iort_root_complex *rc;
-+
-+		case ACPI_IORT_NODE_NAMED_COMPONENT:
-+			ncomp = (struct acpi_iort_named_component *)node->node_data;
-+			if (ncomp->memory_address_limit)
-+				limit = min(limit, ncomp->memory_address_limit);
-+			break;
-+
-+		case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
-+			rc = (struct acpi_iort_root_complex *)node->node_data;
-+			if (rc->memory_address_limit);
-+				limit = min(limit, rc->memory_address_limit);
-+			break;
-+		}
-+		node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
-+	}
-+	acpi_put_table(&iort->header);
-+	return limit;
-+}
-+#endif
--- 
-2.17.1
+People can and will always find a way to mess things up.
 
+Only add types when you get behavioural changes, otherwise it's
+pointless noise.
+
+My NAK stands.
