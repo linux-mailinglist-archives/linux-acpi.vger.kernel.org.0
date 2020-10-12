@@ -2,90 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8388C28B19C
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Oct 2020 11:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE31228B268
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Oct 2020 12:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729370AbgJLJa5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Oct 2020 05:30:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34822 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbgJLJa4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Oct 2020 05:30:56 -0400
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D811C208B6
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Oct 2020 09:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602495056;
-        bh=jXNGarK7xqv4fXaRCcbqZJvIyIbGfZXmjWodnU8jsNI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=b9c2yhroyCUMH503COMX1EhHfLwyiUhxjnGHtN7nODVgVpbOBA0FO5DyQQsesGjpD
-         kJ5OOMX8q9pOJODLKwF1i80mtWkJCrKEJyfjX40N46fJD8NjtCg47zrQaJkKH1tzD8
-         3d55xklTWDJ4CQlzQkCk00HxcK7Ndo8R+45ZesN8=
-Received: by mail-ot1-f52.google.com with SMTP id m11so15237723otk.13
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Oct 2020 02:30:55 -0700 (PDT)
-X-Gm-Message-State: AOAM532bxIQJBUXywdl8QJ6VzMmNVZKuxZFJbCIw4vXfnsyLy/o3//FN
-        ++nsG0OolyXi/d+ddNqGEwG0jCIPgCby1sKWkVU=
-X-Google-Smtp-Source: ABdhPJxk9RNK8BvLkloJ8dx/oKbZHAjjdfpKwYc+lBLkbc0vIsK9xi0Jk6Nai41+QFSQBsgunpXgTDZlKMK/Lc6RrYg=
-X-Received: by 2002:a9d:6a85:: with SMTP id l5mr18826344otq.77.1602495055077;
- Mon, 12 Oct 2020 02:30:55 -0700 (PDT)
+        id S2387583AbgJLKjc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Oct 2020 06:39:32 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:36171 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387522AbgJLKjc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Oct 2020 06:39:32 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 32so2243658otm.3;
+        Mon, 12 Oct 2020 03:39:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=opXrJXYgOc86OsjS3+F86ovavBxANA1eFPkkkGV4Wpw=;
+        b=eMR+LwYoxHK4W0lHydMDtRNb+zY/wUOPMRQZwbk8aeDYj95cHvMAF92X6n5DYIK3ev
+         Fhf2dj4vz23EbMbgjcF36dalatMrBYuwv3/gxMAqdoWW5D7lHw2dDltLuzGDIcDWluaT
+         VqYZVp0hyR2downeYJTsSJn7fm5HYCK3FDZzzLageojp0ENPL9Oju9qDRjLujsW4H+bs
+         lqqb2OeNq2NIrq7DYdP3+9ySpMpGhDZqfet/3VP6AcrGA21BXugnr7XHgbDqS2nYK1Xg
+         hOxE6NzFJ5zIOKljc5cR36J2F3NYhOKyhCFAhw5CI+wLjzyh44aHGff9matxUIdn9PxO
+         zJwQ==
+X-Gm-Message-State: AOAM532O/vWBp3q+zGzmMA7KMRrE+a375bmEfJY3M3DD6R476hIUS3AL
+        fELUow/dXTawts97DcZdk4sjrfPvU+fNAx5kH6E=
+X-Google-Smtp-Source: ABdhPJwehpaAcH6PNfSoK8/dVThZ4KPPAwj3Q+bSn0tJneTSoVGBQg25bfJFFx67gieCVHfsNZsUog5va/k2bXW30zQ=
+X-Received: by 2002:a9d:349:: with SMTP id 67mr18661831otv.321.1602499170792;
+ Mon, 12 Oct 2020 03:39:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201010093153.30177-1-ardb@kernel.org> <20201012092821.GB9844@gaia>
-In-Reply-To: <20201012092821.GB9844@gaia>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 12 Oct 2020 11:30:44 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFej2jM_rRSEuRgyQ0W2A9eK=obBfaeNdvWZjydf2RJeg@mail.gmail.com>
-Message-ID: <CAMj1kXFej2jM_rRSEuRgyQ0W2A9eK=obBfaeNdvWZjydf2RJeg@mail.gmail.com>
-Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+References: <1a69c5bc-ccc4-68db-7871-af05a70052c9@molgen.mpg.de>
+ <20201007221628.GW1009802@dtor-ws> <bbb70981-1242-0aea-01c9-f9507f8eae3b@molgen.mpg.de>
+In-Reply-To: <bbb70981-1242-0aea-01c9-f9507f8eae3b@molgen.mpg.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 12 Oct 2020 12:39:15 +0200
+Message-ID: <CAJZ5v0hKmESo0-kfN1+vK7to05GpVV3d7ZnO3XEsQ2jKKhvkJQ@mail.gmail.com>
+Subject: Re: i8042_init: PS/2 mouse not detected with ACPIPnP/PnPBIOS
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-input@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
+        Hans de Goede <hdegoede@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 12 Oct 2020 at 11:28, Catalin Marinas <catalin.marinas@arm.com> wrote:
+On Sun, Oct 11, 2020 at 1:08 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
 >
-> On Sat, Oct 10, 2020 at 11:31:53AM +0200, Ard Biesheuvel wrote:
-> > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> > index f0599ae73b8d..829fa63c3d72 100644
-> > --- a/arch/arm64/mm/init.c
-> > +++ b/arch/arm64/mm/init.c
-> > @@ -191,6 +191,14 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
-> >       unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+> Dear Dmitry, dear Rafael, dear Len,
+>
+>
+> Am 08.10.20 um 00:16 schrieb Dmitry Torokhov:
+>
+> > On Wed, Oct 07, 2020 at 11:18:41PM +0200, Paul Menzel wrote:
+>
+> >> On the Asus F2A85-M PRO Linux 5.9-rc8 (and previous versions) does not
+> >> recognize a plugged in PS/2 mouse using the Plug & Play method. The PS/2
+> >> keyboard is detected fine, and using `i8042.nopnp`, the PS/2 mouse also
+> >> works.
+> >>
+> >>> [    1.035915] calling  i8042_init+0x0/0x42d @ 1
+> >>> [    1.035947] i8042: PNP: PS/2 Controller [PNP0303:PS2K] at 0x60,0x64 irq 1
+> >>> [    1.035948] i8042: PNP: PS/2 appears to have AUX port disabled, if this is incorrect please boot with i8042.nopnp
+> >>> [    1.036589] serio: i8042 KBD port at 0x60,0x64 irq 1
+> >>> [    1.036621] initcall i8042_init+0x0/0x42d returned 0 after 687 usecs
+> >>
+> >> But, the DSDT includes the “mouse device”. From
+> >>
+> >>      acpidump > dump.bin; acpixtract dump.bin; iasl -d *dat; more dsdt.dsl
+> >>
+> >> we get
+> >>
+> >>                  Device (PS2M)
+> >>                  {
+> >>                      Name (_HID, EisaId ("PNP0F03") /* Microsoft PS/2-style Mouse */)  // _HID: Hardware ID
+> >>                      Name (_CID, EisaId ("PNP0F13") /* PS/2 Mouse */) // _CID: Compatible ID
+> >>                      Method (_STA, 0, NotSerialized)  // _STA: Status
+> >>                      {
+> >>                          If ((IOST & 0x4000))
+> >>                          {
+> >>                              Return (0x0F)
+> >>                          }
+> >>                          Else
+> >>                          {
+> >>                              Return (Zero)
+> >>                          }
+> >>                      }
+> >>
+> >> and the identifiers PNP0F03 and PNP0F13 are both listed in the array
+> >> `pnp_aux_devids[]`. But adding print statements to `i8042_pnp_aux_probe()`,
+> >> I do not see them, so the function does not seem to be called.
 > >
-> >  #ifdef CONFIG_ZONE_DMA
-> > +     if (IS_ENABLED(CONFIG_ACPI)) {
-> > +             extern unsigned int acpi_iort_get_zone_dma_size(void);
+> > My guess is that _STA returns 0 indicating that the device is not
+> > present. I would try tracking where IOST is being set and figuring out
+> > why it does not have mouse bit enabled.
 >
-> Nitpick: can we add this prototype to include/linux/acpi_iort.h?
->
-> > +
-> > +             zone_dma_bits = min(zone_dma_bits,
-> > +                                 acpi_iort_get_zone_dma_size());
-> > +             arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
-> > +     }
-> > +
-> >       max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
->
-> I think we should initialise zone_dma_bits slightly earlier via
-> arm64_memblock_init(). We'll eventually have reserve_crashkernel()
-> called before this and it will make use of arm64_dma_phys_limit for
-> "low" reservations:
->
-> https://lore.kernel.org/linux-arm-kernel/20200907134745.25732-7-chenzhou10@huawei.com/
->
+> Does the ACPI subsystem allow to track, how ACPI variables(?) like IOST
+> are read and set?
 
-We don't have access to the ACPI tables yet at that point.
+My guess would be that IOST is a field in an operation region which
+would indicate that it is initialized by the bootstrap part of the
+BIOS.
