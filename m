@@ -2,161 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0AA28D117
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 17:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B1028D164
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 17:41:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389233AbgJMPSM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Oct 2020 11:18:12 -0400
-Received: from mga01.intel.com ([192.55.52.88]:17834 "EHLO mga01.intel.com"
+        id S1728847AbgJMPlI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Oct 2020 11:41:08 -0400
+Received: from foss.arm.com ([217.140.110.172]:33334 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389037AbgJMPSL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Oct 2020 11:18:11 -0400
-IronPort-SDR: j4tCWTFkZFIJdONyoSK3Tl0h4V3nqtMt/voAor1OpHD4WOU/0j92Xbm+c9Pomj9Dz6GDjvJ3Tq
- rPXRbrTRiHmg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9773"; a="183410001"
-X-IronPort-AV: E=Sophos;i="5.77,371,1596524400"; 
-   d="scan'208";a="183410001"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 08:17:54 -0700
-IronPort-SDR: 536CS6GdxDtd9/xQPjkz6Ts0KhJ596SAsKwVEUc5cSdeKRlVHcgzIZDNG2N8zDOYh2NvdFwDF4
- YXQmh3M+gkfA==
-X-IronPort-AV: E=Sophos;i="5.77,371,1596524400"; 
-   d="scan'208";a="463523063"
-Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.131.190]) ([10.249.131.190])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 08:17:52 -0700
-Subject: Re: i8042_init: PS/2 mouse not detected with ACPIPnP/PnPBIOS
-To:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Len Brown <lenb@kernel.org>, linux-input@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
+        id S1727830AbgJMPlI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Oct 2020 11:41:08 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 221D130E;
+        Tue, 13 Oct 2020 08:41:07 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73F803F66B;
+        Tue, 13 Oct 2020 08:41:05 -0700 (PDT)
+Date:   Tue, 13 Oct 2020 16:41:00 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-References: <1a69c5bc-ccc4-68db-7871-af05a70052c9@molgen.mpg.de>
- <20201007221628.GW1009802@dtor-ws>
- <bbb70981-1242-0aea-01c9-f9507f8eae3b@molgen.mpg.de>
- <CAJZ5v0hKmESo0-kfN1+vK7to05GpVV3d7ZnO3XEsQ2jKKhvkJQ@mail.gmail.com>
- <7921b792-c99a-659c-730f-ecb25cb7f04b@molgen.mpg.de>
- <CAJZ5v0iim_XvBcjSZevEmbQb6F8bCb2jP14Ptnqd_7qfuuUHpw@mail.gmail.com>
- <082dfba3-6187-7081-6a8c-8c38a3a95b19@molgen.mpg.de>
-From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
- 173, 80-298 Gdansk
-Message-ID: <48973620-21a8-7fef-8c99-e59c38941145@intel.com>
-Date:   Tue, 13 Oct 2020 17:17:49 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
+Message-ID: <20201013154100.GA22293@e121166-lin.cambridge.arm.com>
+References: <20201010093153.30177-1-ardb@kernel.org>
+ <20201013110929.GB20319@e121166-lin.cambridge.arm.com>
+ <CAMj1kXEbZ3cN1N2V6MfbUZsTot+9TsLTC_UMm5JP1OW8AwvuOw@mail.gmail.com>
+ <20201013131346.GA20925@e121166-lin.cambridge.arm.com>
+ <CAMj1kXGM937+C-4kasuPYp_X9r8ic56KVpZX2G0zW+FYn9NQ7w@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <082dfba3-6187-7081-6a8c-8c38a3a95b19@molgen.mpg.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGM937+C-4kasuPYp_X9r8ic56KVpZX2G0zW+FYn9NQ7w@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/13/2020 5:00 PM, Paul Menzel wrote:
-> Dear Rafael, dear Dmitry,
->
->
-> Am 12.10.20 um 13:00 schrieb Rafael J. Wysocki:
->> On Mon, Oct 12, 2020 at 12:50 PM Paul Menzel wrote:
->
->>> Am 12.10.20 um 12:39 schrieb Rafael J. Wysocki:
->>>> On Sun, Oct 11, 2020 at 1:08 AM Paul Menzel wrote:
->
->>>>> Am 08.10.20 um 00:16 schrieb Dmitry Torokhov:
->>>>>
->>>>>> On Wed, Oct 07, 2020 at 11:18:41PM +0200, Paul Menzel wrote:
->>>>>
->>>>>>> On the Asus F2A85-M PRO Linux 5.9-rc8 (and previous versions) 
->>>>>>> does not
->>>>>>> recognize a plugged in PS/2 mouse using the Plug & Play method. 
->>>>>>> The PS/2
->>>>>>> keyboard is detected fine, and using `i8042.nopnp`, the PS/2 
->>>>>>> mouse also
->>>>>>> works.
->>>>>>>
->>>>>>>> [    1.035915] calling i8042_init+0x0/0x42d @ 1
->>>>>>>> [    1.035947] i8042: PNP: PS/2 Controller [PNP0303:PS2K] at 
->>>>>>>> 0x60,0x64 irq 1
->>>>>>>> [    1.035948] i8042: PNP: PS/2 appears to have AUX port 
->>>>>>>> disabled, if this is incorrect please boot with i8042.nopnp
->>>>>>>> [    1.036589] serio: i8042 KBD port at 0x60,0x64 irq 1
->>>>>>>> [    1.036621] initcall i8042_init+0x0/0x42d returned 0 after 
->>>>>>>> 687 usecs
->>>>>>>
->>>>>>> But, the DSDT includes the “mouse device”. From
->>>>>>>
->>>>>>>        acpidump > dump.bin; acpixtract dump.bin; iasl -d *dat; 
->>>>>>> more dsdt.dsl
->>>>>>>
->>>>>>> we get
->>>>>>>
->>>>>>>                    Device (PS2M)
->>>>>>>                    {
->>>>>>>                        Name (_HID, EisaId ("PNP0F03") /* 
->>>>>>> Microsoft PS/2-style Mouse */)  // _HID: Hardware ID
->>>>>>>                        Name (_CID, EisaId ("PNP0F13") /* PS/2 
->>>>>>> Mouse */) // _CID: Compatible ID
->>>>>>>                        Method (_STA, 0, NotSerialized)  // _STA: 
->>>>>>> Status
->>>>>>>                        {
->>>>>>>                            If ((IOST & 0x4000))
->>>>>>>                            {
->>>>>>>                                Return (0x0F)
->>>>>>>                            }
->>>>>>>                            Else
->>>>>>>                            {
->>>>>>>                                Return (Zero)
->>>>>>>                            }
->>>>>>>                        }
->>>>>>>
->>>>>>> and the identifiers PNP0F03 and PNP0F13 are both listed in the 
->>>>>>> array
->>>>>>> `pnp_aux_devids[]`. But adding print statements to 
->>>>>>> `i8042_pnp_aux_probe()`,
->>>>>>> I do not see them, so the function does not seem to be called.
->>>>>>
->>>>>> My guess is that _STA returns 0 indicating that the device is not
->>>>>> present. I would try tracking where IOST is being set and 
->>>>>> figuring out
->>>>>> why it does not have mouse bit enabled.
->>>>>
->>>>> Does the ACPI subsystem allow to track, how ACPI variables(?) like 
->>>>> IOST
->>>>> are read and set?
->>>>
->>>> My guess would be that IOST is a field in an operation region which
->>>> would indicate that it is initialized by the bootstrap part of the
->>>> BIOS.
->>>
->>> Thank you for your answer. But how can I verify that?
->>
->> Inspecting the ACPI tables from the system in question could help you
->> to find out whether or not IOST really is a field in an operation
->> region, but its initial value may not be possible to determine this
->> way.
->>
->>> Is there a Linux kernel parameter, that would print it?
->>
->> Not that I know of.
->
-> I created an issue in the Linux kernel bugtracker [1] and attached the 
-> output of `acpidump` there.
->
-> Could
->
->     If ((IOST & 0x4000))
->
-> versus
->
->     If ((IOST & 0x0400))
->
-> be a typo?
->
-Yes, it could.
+On Tue, Oct 13, 2020 at 03:42:07PM +0200, Ard Biesheuvel wrote:
+> On Tue, 13 Oct 2020 at 15:13, Lorenzo Pieralisi
+> <lorenzo.pieralisi@arm.com> wrote:
+> >
+> > On Tue, Oct 13, 2020 at 01:22:32PM +0200, Ard Biesheuvel wrote:
+> >
+> > [...]
+> >
+> > > > > diff --git a/Documentation/arm64/arm-acpi.rst b/Documentation/arm64/arm-acpi.rst
+> > > > > index 47ecb9930dde..947f5b5c45ef 100644
+> > > > > --- a/Documentation/arm64/arm-acpi.rst
+> > > > > +++ b/Documentation/arm64/arm-acpi.rst
+> > > > > @@ -205,6 +205,13 @@ devices available.  This list of tables is not meant to be all inclusive;
+> > > > >  in some environments other tables may be needed (e.g., any of the APEI
+> > > > >  tables from section 18) to support specific functionality.
+> > > > >
+> > > > > +It is assumed that all DMA capable devices in the system are able to
+> > > > > +access the lowest 4 GB of system memory. If this is not the case, an
+> > > > > +IORT describing those limitations is mandatory, even if an IORT is not
+> > > > > +otherwise necessary to describe the I/O topology, and regardless of
+> > > > > +whether _DMA methods are used to describe the DMA limitations more
+> > > > > +precisely. Once the system has booted, _DMA methods will take precedence
+> > > > > +over DMA addressing limits described in the IORT.
+> > > >
+> > > > If this is a boot requirement it must be in ARM's official documentation,
+> > > > first, not the kernel one.
+> > > >
+> > > > I understand this is an urgent (well - no comments on why bootstrapping
+> > > > ACPI on Raspberry PI4 is causing all this fuss, honestly) fix but that's
+> > > > not a reason to rush through these guidelines.
+> > > >
+> > > > I would not add this paragraph to arm-acpi.rst, yet.
+> > > >
+> > >
+> > > Which documentation? ACPI compliance by itself is not sufficient for a
+> > > system to be able to boot Linux/arm64, which is why we documented the
+> > > requirements for ACPI boot on Linux/arm64 in this file. I don't think
+> > > we need endorsement from ARM to decide that odd platforms like this
+> > > need to abide by some additional rules if they want to boot in ACPI
+> > > mode.
+> >
+> > I think we do - if we don't we should not add this documentation either.
+> >
+> > ACPI on ARM64 software stack is based on standardized HW requirements.
+> > The sheer fact that we need to work around a HW deficiency shows that
+> > either this platform should have never been booted with ACPI or the _HW_
+> > design guidelines (BSA) are not tight enough.
+> >
+> > Please note that as you may have understood I asked if we can implement
+> > a workaround in IORT because that's information that must be there
+> > regardless (and an OEM ID match in arch code - though pragmatic -
+> > defeats the whole purpose), I don't think we should tell Linux kernel
+> > developers how firmware must be written to work around blatantly
+> > non-compliant systems.
+> >
+> 
+> This is not about systems being compliant or not, unless there is a
+> requirement somewhere that I missed that all masters in the system
+> must be able to access at least 32 bits of DMA.
 
+I think there is in the SBSA (4.1.3 Memory Map) but regardless, this
+is clearly a design bug, that's not a feature.
 
+> The problem here is that Linux/arm64 cannot deal with fully compliant
+> systems that communicate their [permitted] DMA limitations via a _DMA
+> method if this limitation happens to be that the address limit < 32
+> bits. The DMA subsystem can deal with this fine, only the default DMA
+> zone sizing policy creates an internal issue where the DMA subsystem
+> is not able to allocate memory that matches the DMA constraints.
+> 
+> So the 'correct' fix here would be to rework the memory allocator so
+> it can deal with arbitrary DMA limits at allocation time, so that any
+> limit returned by a _DMA method can be adhered to on the fly.
+> 
+> However, we all agree that the Raspberry Pi4 is not worth that effort,
+> and that in the general case, SoCs with such limitations, even if they
+> are compliant per the spec, are not worth the trouble of complicating
+> this even more. So as a compromise, I think it is perfectly reasonable
+> to require that systems that have such limitations communicate them
+> via the IORT, which we can parse early, regardless of whether _DMA
+> methods exist as well, and whether they return the same information.
+> 
+> So this is not a requirement on arm64 ACPI systems in general. It is a
+> requirement that expresses that we, as arm64
+> contributors/[co-]maintainers, are willing to cater for such systems
+> if they implement their firmware in a particular way.
+
+I don't think they should implement their firmware in any particular
+way, that's my point, I don't want them to in the first place.
+
+To start with there is no spec I am aware of that defines when/how to
+use _DMA vs IORT address limits, maybe we should spell that out better
+somewhere and that's useful regardless.
+
+My point is: either this workaround works with firmware written with
+guidelines valid for all arm64 systems (not as a special case: add an
+IORT table because we can't parse _DMA to workaround DMA address range
+shenanigans) or I am not willing to merge it - I prefer to add an OEM ID
+quirk and show what we are forced to do to make this work.
+
+Thanks,
+Lorenzo
