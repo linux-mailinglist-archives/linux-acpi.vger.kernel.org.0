@@ -2,104 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E84F128BE8E
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Oct 2020 18:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A92328C6D9
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 03:36:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390705AbgJLQ7i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Oct 2020 12:59:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41056 "EHLO mail.kernel.org"
+        id S1728263AbgJMBfW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Oct 2020 21:35:22 -0400
+Received: from mga11.intel.com ([192.55.52.93]:42342 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390541AbgJLQ7i (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Oct 2020 12:59:38 -0400
-Received: from gaia (unknown [95.149.105.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E091E2080A;
-        Mon, 12 Oct 2020 16:59:35 +0000 (UTC)
-Date:   Mon, 12 Oct 2020 17:59:33 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-Message-ID: <20201012165933.GD6493@gaia>
-References: <20201010093153.30177-1-ardb@kernel.org>
- <20201012092821.GB9844@gaia>
- <CAMj1kXFej2jM_rRSEuRgyQ0W2A9eK=obBfaeNdvWZjydf2RJeg@mail.gmail.com>
- <CAMj1kXE6mQAnDigp_+nqEj0f+=kBht2Xoqd8S2L1QfPzjL9gog@mail.gmail.com>
- <20201012112453.GD9844@gaia>
- <CAMj1kXEmAxytDjcAgpGpCqWcEuO0HijLVuTZcz-vywW=a74mmA@mail.gmail.com>
- <20201012154954.GB6493@gaia>
- <CAMj1kXFKRZ-eHtvqxZ84RSVcY8LQgkv1Vh6w8CvsWyOO-qJcuA@mail.gmail.com>
- <20201012162238.GC6493@gaia>
- <CAMj1kXFpbVUjOHWEcyzzUR2q7SEWpkiQi3nB+OCLySDHhYY+Fw@mail.gmail.com>
+        id S1728217AbgJMBfW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Oct 2020 21:35:22 -0400
+IronPort-SDR: P9awuN7TupT5IotyhWeK8Uw+UNceI61F61evXtqluhY+5X0px3tSvVOhEBFqVwONg4EJoVJlRx
+ JEBVmXWUzEig==
+X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="162363817"
+X-IronPort-AV: E=Sophos;i="5.77,369,1596524400"; 
+   d="scan'208";a="162363817"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 18:35:21 -0700
+IronPort-SDR: SN8WWaIprLB1wQSmfiEQDM4uoDndPtx+SZ4fyiWBjGzYk2Z+buQh8UtnbuvNTyyTOdBuufKq2E
+ abIQqRhw/3uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,369,1596524400"; 
+   d="scan'208";a="530190952"
+Received: from lkp-server01.sh.intel.com (HELO aa1d92d39b27) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 12 Oct 2020 18:35:19 -0700
+Received: from kbuild by aa1d92d39b27 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kS9Dj-0000FD-4d; Tue, 13 Oct 2020 01:35:19 +0000
+Date:   Tue, 13 Oct 2020 09:34:40 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 91e0225c546b542d828011feef9fb155e18b7941
+Message-ID: <5f850430.JehQN60BoOCjEESB%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFpbVUjOHWEcyzzUR2q7SEWpkiQi3nB+OCLySDHhYY+Fw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 12, 2020 at 06:35:37PM +0200, Ard Biesheuvel wrote:
-> On Mon, 12 Oct 2020 at 18:22, Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > On Mon, Oct 12, 2020 at 05:55:45PM +0200, Ard Biesheuvel wrote:
-> > > On Mon, 12 Oct 2020 at 17:50, Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > > > > > On Mon, Oct 12, 2020 at 12:43:05PM +0200, Ard Biesheuvel wrote:
-> > > > > > > Also, could someone give an executive summary of why it matters where
-> > > > > > > the crashkernel is loaded? As far as I can tell, reserve_crashkernel()
-> > > > > > > only allocates memory for the kernel's executable image itself, which
-> > > > > > > can usually be loaded anywhere in memory. I could see how a
-> > > > > > > crashkernel might need some DMA'able memory if it needs to use the
-> > > > > > > hardware, but I don't think that is what is going on here.
-> > [...]
-> > > > However, the crashkernel=... range is meant for sufficiently large
-> > > > reservation to be able to run the kdump kernel, not just load the image.
-> > >
-> > > Sure. But I was referring to the requirement that it is loaded low in
-> > > memory. Unless I am misunderstanding something, all we need for the
-> > > crashkernel to be able to operate is some ZONE_DMA memory in case it
-> > > is needed by the hardware, and beyond that, it could happily live
-> > > anywhere in memory.
-> >
-> > Yes, the crash kernel doesn't need to be loaded in the low memory. But
-> > some low memory needs to end up in its perceived System RAM. That's what
-> > Chen is trying to do with this series:
-> >
-> > https://lore.kernel.org/linux-arm-kernel/20200907134745.25732-1-chenzhou10@huawei.com/
-> >
-> > It reserves the normal crashkernel memory at some high address range
-> > with a small block (currently proposed as 256MB similar to x86) in the
-> > "low" range.
-> >
-> > This "low" range for arm64 currently means below 1GB but it's only RPi4
-> > that needs it this low, all other platforms are fine with the full low
-> > 32-bit range.
-> >
-> > If it's not doable in a nice way, we'll just leave with this permanent
-> > 1GB ZONE_DMA and hope we won't get platforms requiring an even smaller
-> > one. There's also the option of ignoring kdump on RPi4, make ZONE_DMA
-> > depend on !CRASH_DUMP and the "low" reservations can use the full 32-bit
-> > range since the kdump kernel won't need <30-bit addresses.
-> 
-> Are you aware of any reason why we cannot defer the call to
-> reserve_crashkernel() to the start of bootmem_init()? That way, we
-> have access to the unflattened DT as well as the IORT, and so we can
-> tweak the zone limits based on the h/w description, but before
-> allocating the crashkernel.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 91e0225c546b542d828011feef9fb155e18b7941  Merge branch 'pm-cpufreq' into linux-next
 
-Not really, as long as memblock_reserve/alloc() still works.
+elapsed time: 721m
 
--- 
-Catalin
+configs tested: 178
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm                     eseries_pxa_defconfig
+sh                             shx3_defconfig
+mips                            e55_defconfig
+arm                       spear13xx_defconfig
+arm                          imote2_defconfig
+arc                          axs101_defconfig
+arm                      tct_hammer_defconfig
+m68k                        mvme16x_defconfig
+mips                          rm200_defconfig
+mips                           jazz_defconfig
+sh                   sh7770_generic_defconfig
+powerpc                    sam440ep_defconfig
+sh                          rsk7264_defconfig
+powerpc                       ebony_defconfig
+arm                            mmp2_defconfig
+arm                           spitz_defconfig
+powerpc                  iss476-smp_defconfig
+s390                          debug_defconfig
+ia64                                defconfig
+powerpc                      cm5200_defconfig
+sh                          rsk7201_defconfig
+h8300                            allyesconfig
+arm                       mainstone_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                     asp8347_defconfig
+arm                  colibri_pxa270_defconfig
+mips                      loongson3_defconfig
+powerpc                     kilauea_defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                         palmz72_defconfig
+arm                      integrator_defconfig
+arm                        multi_v7_defconfig
+arm                              alldefconfig
+sh                             espt_defconfig
+c6x                         dsk6455_defconfig
+arm                      footbridge_defconfig
+mips                         mpc30x_defconfig
+sh                        dreamcast_defconfig
+mips                         db1xxx_defconfig
+arm                        realview_defconfig
+mips                           ip32_defconfig
+powerpc                 mpc834x_mds_defconfig
+xtensa                    xip_kc705_defconfig
+sh                   secureedge5410_defconfig
+arm                          iop32x_defconfig
+mips                      pistachio_defconfig
+openrisc                    or1ksim_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                    amigaone_defconfig
+powerpc                    mvme5100_defconfig
+sh                              ul2_defconfig
+arm                            qcom_defconfig
+sh                        sh7785lcr_defconfig
+m68k                        stmark2_defconfig
+xtensa                  cadence_csp_defconfig
+x86_64                           allyesconfig
+mips                      fuloong2e_defconfig
+mips                           xway_defconfig
+arm                            xcep_defconfig
+powerpc                     tqm8548_defconfig
+parisc                              defconfig
+arc                              allyesconfig
+powerpc                 mpc8313_rdb_defconfig
+openrisc                            defconfig
+ia64                         bigsur_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                       maple_defconfig
+powerpc                     powernv_defconfig
+sh                           se7712_defconfig
+arm                         lubbock_defconfig
+sh                     sh7710voipgw_defconfig
+um                           x86_64_defconfig
+nios2                            allyesconfig
+powerpc                          g5_defconfig
+arc                             nps_defconfig
+m68k                        m5272c3_defconfig
+mips                           ip28_defconfig
+arm                         socfpga_defconfig
+sh                          urquell_defconfig
+arc                            hsdk_defconfig
+openrisc                         alldefconfig
+arm                           h3600_defconfig
+sh                             sh03_defconfig
+powerpc                      ppc40x_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                       omap2plus_defconfig
+mips                       lemote2f_defconfig
+mips                         cobalt_defconfig
+arm                           corgi_defconfig
+m68k                        m5307c3_defconfig
+sh                          sdk7780_defconfig
+um                            kunit_defconfig
+arm                      jornada720_defconfig
+h8300                     edosk2674_defconfig
+powerpc                      pcm030_defconfig
+arm64                            alldefconfig
+arm                             rpc_defconfig
+powerpc                     tqm8555_defconfig
+arm                       multi_v4t_defconfig
+powerpc                   motionpro_defconfig
+mips                        workpad_defconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                  mpc885_ads_defconfig
+arc                           tb10x_defconfig
+mips                          ath25_defconfig
+parisc                           allyesconfig
+nios2                         3c120_defconfig
+mips                           ip27_defconfig
+powerpc                     pq2fads_defconfig
+m68k                             allmodconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20201012
+i386                 randconfig-a006-20201012
+i386                 randconfig-a001-20201012
+i386                 randconfig-a003-20201012
+i386                 randconfig-a004-20201012
+i386                 randconfig-a002-20201012
+x86_64               randconfig-a016-20201012
+x86_64               randconfig-a015-20201012
+x86_64               randconfig-a012-20201012
+x86_64               randconfig-a013-20201012
+x86_64               randconfig-a014-20201012
+x86_64               randconfig-a011-20201012
+i386                 randconfig-a016-20201012
+i386                 randconfig-a015-20201012
+i386                 randconfig-a013-20201012
+i386                 randconfig-a012-20201012
+i386                 randconfig-a011-20201012
+i386                 randconfig-a014-20201012
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a004-20201012
+x86_64               randconfig-a002-20201012
+x86_64               randconfig-a006-20201012
+x86_64               randconfig-a001-20201012
+x86_64               randconfig-a003-20201012
+x86_64               randconfig-a005-20201012
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
