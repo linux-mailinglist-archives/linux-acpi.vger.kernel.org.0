@@ -2,241 +2,307 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96FFE28CCB0
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 13:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DBB28CEEC
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 15:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727090AbgJMLnk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Oct 2020 07:43:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53138 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726388AbgJMLnk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Oct 2020 07:43:40 -0400
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 40E9F2080A
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Oct 2020 11:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602589419;
-        bh=9yuBNnRR2p1Vja+yc90NKTUA2cfYCx353by450sECpI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sjEa3SissCOEIpSoYbuyRZAwJxs+XqpY2X78M5H6AHo590rpgEo6Ihho9hGBQsP5V
-         o5x9RM+eQ99iPYdiviH63GRnEaOTkUONYs1oV5NCy6ZDcXgAKXWsyqc8MDex5siiJU
-         gjL69pLasZ+56WxqHU/MICjD3oTpq18vYRAsO6bI=
-Received: by mail-oo1-f53.google.com with SMTP id f19so4529289oot.4
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Oct 2020 04:43:39 -0700 (PDT)
-X-Gm-Message-State: AOAM532MGLKgaytNqtEswvowtfb5LqPVziq+S1AnMU879uaehkDMyGUa
-        bc/Ph+8UkJNpI+usRMv5QUXcxK79uv4ygK5sUPE=
-X-Google-Smtp-Source: ABdhPJxs10R58RNhe6BywzF6G0oqoyPit43IvYBpXbn3y9LEmQgJPaYU1xCr+C02ZXKC8V1BSyog6jggDBKE2dVJQ78=
-X-Received: by 2002:a4a:c3ca:: with SMTP id e10mr21829692ooq.41.1602589418491;
- Tue, 13 Oct 2020 04:43:38 -0700 (PDT)
+        id S1728399AbgJMNJg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Oct 2020 09:09:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45716 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728388AbgJMNJg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Oct 2020 09:09:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1602594573;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pYoLERdYqiwrge/RFON654uxOf57ox4XJoSTutIfBEg=;
+        b=U6gaj6dAq28b62jh4h3RoLCfewOqgIFR526ZQK/5FICMyRK5B13LsZlRWQE0XnL4e3pzg6
+        0o6U9h9arxmXNE/Ezze1S+S+ks6XzzAhFdiMp+acatFyF/NnbtNDs+0oYAuTtj7VvveB9u
+        k9C03NMs25ZohANByzxSrL/BxXNV8dM=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-492-gQeB1ZVzPRS0iivJf1UMdg-1; Tue, 13 Oct 2020 09:09:31 -0400
+X-MC-Unique: gQeB1ZVzPRS0iivJf1UMdg-1
+Received: by mail-ed1-f71.google.com with SMTP id a15so7614152eda.15
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Oct 2020 06:09:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pYoLERdYqiwrge/RFON654uxOf57ox4XJoSTutIfBEg=;
+        b=ifKfhWoGz+Ti4WxKjfnWTjRhnl7b6vUCi8x58lt55/OFSV03Ie3ovD4GnGYdXtCWQ6
+         Umk/DM1yrNQLqhGX6GS1nyGDosTdGYcMyHTXZVa+GpmlHrY+5c+qdP32wZ5Uzsj9sz/L
+         lmmxzxvNgP8cb0mecO1G33n3j39CF8RkoHzyleU509XQpiQodO6AAZC5DcqonZU7mIlP
+         q3/9VmMhc+QwHkKZ+z0prYc35PXO02kWdFkyBd1ZTK2zTvSMQhM2QjVK4uf5Ob/N6+u0
+         xZCKzKrRPbWS3XdSSKOziWAm/08foL62Qzb3+jhXxPDjVYoCqQUieP70qgEwSkmu6q8O
+         3C6w==
+X-Gm-Message-State: AOAM5315EH/By69pWT5pdFm1xOVNg25Ba693pGMxt8KTGB0f4zbIypwj
+        cJpzJequTHYODXIEN2TrmqiS4iI9lr7jyRkIyMqUatxF9ciqZo3DzLD6bX7RDaEhbXsDROcOX2P
+        DCqnHOG2K+3SuvKyhUlO1Fg==
+X-Received: by 2002:a17:906:118f:: with SMTP id n15mr34324102eja.394.1602594568843;
+        Tue, 13 Oct 2020 06:09:28 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyFofbCot5FjJJsFvPWfb0b6xBdK/KZ7WESdzyrT4ROUQd91ZTi1Jm0bhyA7VHl9b2jiU1qjQ==
+X-Received: by 2002:a17:906:118f:: with SMTP id n15mr34324068eja.394.1602594568470;
+        Tue, 13 Oct 2020 06:09:28 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id sd18sm12116119ejb.24.2020.10.13.06.09.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2020 06:09:27 -0700 (PDT)
+Subject: Re: [RFC] Documentation: Add documentation for new
+ performance_profile sysfs class
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <Mario.Limonciello@dell.com>
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mark Pearson <mpearson@lenovo.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Pearson <markpearson@lenovo.com>
+References: <20201003131938.9426-1-hdegoede@redhat.com>
+ <20201003131938.9426-2-hdegoede@redhat.com>
+ <DM6PR19MB263669227D122BB7699951E6FA0C0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <85a36eb58cb9774f1907582dfc75295ed847200c.camel@hadess.net>
+ <DM6PR19MB26364E6AA2F51981F592CE58FA0A0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <c73ffad8fd6bff8ff20d91930b097bff82be1c8f.camel@hadess.net>
+ <DM6PR19MB2636B067186B08B744EA2163FA0A0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <CAJZ5v0jBJBTTb3qBGH0UWOAfvY24gWqJQA=MahnhaTdMu-w0Bw@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <394f897a-4dac-7016-ea17-c37b67589e07@redhat.com>
+Date:   Tue, 13 Oct 2020 15:09:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20201010093153.30177-1-ardb@kernel.org> <20201013110929.GB20319@e121166-lin.cambridge.arm.com>
- <CAMj1kXEbZ3cN1N2V6MfbUZsTot+9TsLTC_UMm5JP1OW8AwvuOw@mail.gmail.com> <CAMj1kXGFHk0qAJoh+SSAS0qgUfe4zDuLmqNMT+Cw1GCZFCLSqg@mail.gmail.com>
-In-Reply-To: <CAMj1kXGFHk0qAJoh+SSAS0qgUfe4zDuLmqNMT+Cw1GCZFCLSqg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 13 Oct 2020 13:43:27 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHDbzYdq5XHo0Qk6xmCkj=tX+nh=fgWjDxAJaY4g-X7kA@mail.gmail.com>
-Message-ID: <CAMj1kXHDbzYdq5XHo0Qk6xmCkj=tX+nh=fgWjDxAJaY4g-X7kA@mail.gmail.com>
-Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAJZ5v0jBJBTTb3qBGH0UWOAfvY24gWqJQA=MahnhaTdMu-w0Bw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 13 Oct 2020 at 13:38, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 13 Oct 2020 at 13:22, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Tue, 13 Oct 2020 at 13:09, Lorenzo Pieralisi
-> > <lorenzo.pieralisi@arm.com> wrote:
-> > >
-> > > On Sat, Oct 10, 2020 at 11:31:53AM +0200, Ard Biesheuvel wrote:
-> > > > We recently introduced a 1 GB sized ZONE_DMA to cater for platforms
-> > > > incorporating masters that can address less than 32 bits of DMA, in
-> > > > particular the Raspberry Pi 4, which has 4 or 8 GB of DRAM, but has
-> > > > peripherals that can only address up to 1 GB (and its PCIe host
-> > > > bridge can only access the bottom 3 GB)
-> > > >
-> > > > Instructing the DMA layer about these limitations is straight-forward,
-> > > > even though we had to fix some issues regarding memory limits set in
-> > > > the IORT for named components, and regarding the handling of ACPI _DMA
-> > > > methods. However, the DMA layer also needs to be able to allocate
-> > > > memory that is guaranteed to meet those DMA constraints, for bounce
-> > > > buffering as well as allocating the backing for consistent mappings.
-> > > >
-> > > > This is why the 1 GB ZONE_DMA was introduced recently. Unfortunately,
-> > > > it turns out the having a 1 GB ZONE_DMA as well as a ZONE_DMA32 causes
-> > > > problems with kdump, and potentially in other places where allocations
-> > > > cannot cross zone boundaries. Therefore, we should avoid having two
-> > > > separate DMA zones when possible.
-> > > >
-> > > > So let's do an early scan of the IORT, and only create the ZONE_DMA
-> > > > if we encounter any devices that need it. This puts the burden on
-> > > > the firmware to describe such limitations in the IORT, which may be
-> > > > redundant (and less precise) if _DMA methods are also being provided.
-> > > > However, it should be noted that this situation is highly unusual for
-> > > > arm64 ACPI machines. Also, the DMA subsystem still gives precedence to
-> > > > the _DMA method if implemented, and so we will not lose the ability to
-> > > > perform streaming DMA outside the ZONE_DMA if the _DMA method permits
-> > > > it.
-> > > >
-> > > > Cc: Jeremy Linton <jeremy.linton@arm.com>
-> > > > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> > > > Cc: Rob Herring <robh+dt@kernel.org>
-> > > > Cc: Christoph Hellwig <hch@lst.de>
-> > > > Cc: Robin Murphy <robin.murphy@arm.com>
-> > > > Cc: Hanjun Guo <guohanjun@huawei.com>
-> > > > Cc: Sudeep Holla <sudeep.holla@arm.com>
-> > > > Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > ---
-> > > > This is related to the discussion in
-> > > >
-> > > > https://lore.kernel.org/linux-arm-kernel/20201001161740.29064-2-nsaenzjulienne@suse.de/
-> > > >
-> > > >  Documentation/arm64/arm-acpi.rst |  7 +++
-> > > >  arch/arm64/mm/init.c             |  8 +++
-> > > >  drivers/acpi/arm64/iort.c        | 51 ++++++++++++++++++++
-> > > >  3 files changed, 66 insertions(+)
-> > >
-> > > Thanks for putting it together so promptly.
-> > >
-> > > > diff --git a/Documentation/arm64/arm-acpi.rst b/Documentation/arm64/arm-acpi.rst
-> > > > index 47ecb9930dde..947f5b5c45ef 100644
-> > > > --- a/Documentation/arm64/arm-acpi.rst
-> > > > +++ b/Documentation/arm64/arm-acpi.rst
-> > > > @@ -205,6 +205,13 @@ devices available.  This list of tables is not meant to be all inclusive;
-> > > >  in some environments other tables may be needed (e.g., any of the APEI
-> > > >  tables from section 18) to support specific functionality.
-> > > >
-> > > > +It is assumed that all DMA capable devices in the system are able to
-> > > > +access the lowest 4 GB of system memory. If this is not the case, an
-> > > > +IORT describing those limitations is mandatory, even if an IORT is not
-> > > > +otherwise necessary to describe the I/O topology, and regardless of
-> > > > +whether _DMA methods are used to describe the DMA limitations more
-> > > > +precisely. Once the system has booted, _DMA methods will take precedence
-> > > > +over DMA addressing limits described in the IORT.
-> > >
-> > > If this is a boot requirement it must be in ARM's official documentation,
-> > > first, not the kernel one.
-> > >
-> > > I understand this is an urgent (well - no comments on why bootstrapping
-> > > ACPI on Raspberry PI4 is causing all this fuss, honestly) fix but that's
-> > > not a reason to rush through these guidelines.
-> > >
-> > > I would not add this paragraph to arm-acpi.rst, yet.
-> > >
-> >
-> > Which documentation? ACPI compliance by itself is not sufficient for a
-> > system to be able to boot Linux/arm64, which is why we documented the
-> > requirements for ACPI boot on Linux/arm64 in this file. I don't think
-> > we need endorsement from ARM to decide that odd platforms like this
-> > need to abide by some additional rules if they want to boot in ACPI
-> > mode.
-> >
-> >
-> > > >  ACPI Detection
-> > > >  --------------
-> > > > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> > > > index f0599ae73b8d..829fa63c3d72 100644
-> > > > --- a/arch/arm64/mm/init.c
-> > > > +++ b/arch/arm64/mm/init.c
-> > > > @@ -191,6 +191,14 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
-> > > >       unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
-> > > >
-> > > >  #ifdef CONFIG_ZONE_DMA
-> > > > +     if (IS_ENABLED(CONFIG_ACPI)) {
-> > > > +             extern unsigned int acpi_iort_get_zone_dma_size(void);
-> > >
-> > > Yes as Catalin asked please add a declaration in IORT headers.
-> > >
-> >
-> > Ack.
-> >
-> > > > +             zone_dma_bits = min(zone_dma_bits,
-> > > > +                                 acpi_iort_get_zone_dma_size());
-> > > > +             arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
-> > > > +     }
-> > > > +
-> > > >       max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
-> > > >  #endif
-> > > >  #ifdef CONFIG_ZONE_DMA32
-> > > > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> > > > index ec782e4a0fe4..c3db44896e49 100644
-> > > > --- a/drivers/acpi/arm64/iort.c
-> > > > +++ b/drivers/acpi/arm64/iort.c
-> > > > @@ -1722,3 +1722,54 @@ void __init acpi_iort_init(void)
-> > > >
-> > > >       iort_init_platform_devices();
-> > > >  }
-> > > > +
-> > > > +#ifdef CONFIG_ZONE_DMA
-> > > > +/*
-> > > > + * Check the IORT whether any devices exist whose DMA mask is < 32 bits.
-> > > > + * If so, return the smallest value encountered, or 32 otherwise.
-> > > > + */
-> > > > +unsigned int __init acpi_iort_get_zone_dma_size(void)
-> > > > +{
-> > > > +     struct acpi_table_iort *iort;
-> > > > +     struct acpi_iort_node *node, *end;
-> > > > +     acpi_status status;
-> > > > +     u8 limit = 32;
-> > > > +     int i;
-> > > > +
-> > > > +     if (acpi_disabled)
-> > > > +             return limit;
-> > > > +
-> > > > +     status = acpi_get_table(ACPI_SIG_IORT, 0,
-> > > > +                             (struct acpi_table_header **)&iort);
-> > > > +     if (ACPI_FAILURE(status))
-> > > > +             return limit;
-> > > > +
-> > > > +     node = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->node_offset);
-> > > > +     end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
-> > > > +
-> > > > +     for (i = 0; i < iort->node_count; i++) {
-> > > > +             if (node >= end)
-> > > > +                     break;
-> > > > +
-> > > > +             switch (node->type) {
-> > > > +                     struct acpi_iort_named_component *ncomp;
-> > > > +                     struct acpi_iort_root_complex *rc;
-> > > > +
-> > > > +             case ACPI_IORT_NODE_NAMED_COMPONENT:
-> > > > +                     ncomp = (struct acpi_iort_named_component *)node->node_data;
-> > > > +                     if (ncomp->memory_address_limit)
-> > > > +                             limit = min(limit, ncomp->memory_address_limit);
-> > > > +                     break;
-> > > > +
-> > > > +             case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
-> > > > +                     rc = (struct acpi_iort_root_complex *)node->node_data;
-> > > > +                     if (rc->memory_address_limit);
-> > >
-> > > You need a node->revision check here otherwise we may end up
-> > > dereferencing junk. AKA ACPI versioning in all its glory.
-> > >
-> >
-> > The address limit field was there since the beginning, and DEN0049B
-> > defines its value as 0x0, so I don't think we need to check anything
-> > here.
-> >
->
-> I meant here that the NC node revision is defined as 0x0 in DEN0049B
+Hi,
 
-... and you meant the RC node not the NC node. Apologies for being
-slow today :-)
+On 10/12/20 6:42 PM, Rafael J. Wysocki wrote:
+> On Wed, Oct 7, 2020 at 8:41 PM Limonciello, Mario
+> <Mario.Limonciello@dell.com> wrote:
+>>
+>>> On Wed, 2020-10-07 at 15:58 +0000, Limonciello, Mario wrote:
+>>>>
+>>>>> On Mon, 2020-10-05 at 12:58 +0000, Limonciello, Mario wrote:
+>>>>>>> On modern systems CPU/GPU/... performance is often dynamically
+>>>>>>> configurable
+>>>>>>> in the form of e.g. variable clock-speeds and TPD. The
+>>>>>>> performance
+>>>>>>> is often
+>>>>>>> automatically adjusted to the load by some automatic-mechanism
+>>>>>>> (which may
+>>>>>>> very well live outside the kernel).
+>>>>>>>
+>>>>>>> These auto performance-adjustment mechanisms often can be
+>>>>>>> configured with
+>>>>>>> one of several performance-profiles, with either a bias towards
+>>>>>>> low-power
+>>>>>>> consumption (and cool and quiet) or towards performance (and
+>>>>>>> higher
+>>>>>>> power
+>>>>>>> consumption and thermals).
+>>>>>>>
+>>>>>>> Introduce a new performance_profile class/sysfs API which
+>>>>>>> offers a
+>>>>>>> generic
+>>>>>>> API for selecting the performance-profile of these automatic-
+>>>>>>> mechanisms.
+>>>>>>>
+>>>>>>
+>>>>>> If introducing an API for this - let me ask the question, why
+>>>>>> even let each
+>>>>>> driver offer a class interface and userspace need to change
+>>>>>> "each" driver's
+>>>>>> performance setting?
+>>>>>>
+>>>>>> I would think that you could just offer something kernel-wide
+>>>>>> like
+>>>>>> /sys/power/performance-profile
+>>>>>>
+>>>>>> Userspace can read and write to a single file.  All drivers can
+>>>>>> get notified
+>>>>>> on this sysfs file changing.
+>>>>>>
+>>>>>> The systems that react in firmware (such as the two that prompted
+>>>>>> this discussion) can change at that time.  It leaves the
+>>>>>> possibility for a
+>>>>>> more open kernel implementation that can do the same thing though
+>>>>>> too by
+>>>>>> directly modifying device registers instead of ACPI devices.
+>>>>>
+>>>>> The problem, as I've mentioned in previous discussions we had about
+>>>>> this, is that, as you've seen in replies to this mail, this would
+>>>>> suddenly be making the kernel apply policy.
+>>>>>
+>>>>> There's going to be pushback as soon as policy is enacted in the
+>>>>> kernel, and you take away the different knobs for individual
+>>>>> components
+>>>>> (or you can control them centrally as well as individually). As
+>>>>> much as
+>>>>> I hate the quantity of knobs[1], I don't think that trying to
+>>>>> reduce
+>>>>> the number of knobs in the kernel is a good use of our time, and
+>>>>> easier
+>>>>> to enact, coordinated with design targets, in user-space.
+>>>>>
+>>>>> Unless you can think of a way to implement this kernel wide setting
+>>>>> without adding one more exponent on the number of possibilities for
+>>>>> the
+>>>>> testing matrix, I'll +1 Hans' original API.
+>>>>>
+>>>> Actually I offered two proposals in my reply.  So are you NAKing
+>>>> both?
+>>>
+>>> No, this is only about the first portion of the email, which I quoted.
+>>> And I'm not NAK'ing it, but I don't see how it can work without being
+>>> antithetical to what kernel "users" expect, or what the folks consuming
+>>> those interfaces (presumably us both) would expect to be able to test
+>>> and maintain.
+>>>
+>>
+>> (Just so others are aware, Bastien and I had a previous discussion on this topic
+>> that he alluded to here: https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/issues/1)
+>>
+>> In general I agree that we shouldn't be offering 100's of knobs to change
+>> things and protect users from themselves where possible.
+>>
+>> Whether the decisions are made in the kernel or in userspace you still have a matrix once
+>> you're letting someone change 2 different kernel devices that offer policy.  I'd argue it's
+>> actually worse if you let userspace change it though.
+>>
+>> Let's go back to the my GPU and platform example and lets say both offer the new knob here
+>> for both.  Userspace software such as your PPD picks performance.  Both the platform device
+>> and GPU device get changed, hopefully no conflicts.
+>> Then user decides no, I don't want my GPU in performance mode, I only want my platform.
+>> So they change the knob for the GPU manually, and now you have a new config in your matrix.
+>>
+>> However if you left it to a single kernel knob, both GPU and platform get moved together and
+>> you don't have these extra configs in your matrix anymore.
+>>
+>> The other point I mentioned, that platform might also do something to GPU via a sideband and
+>> you race, you can solve it with kernel too by modifying the ordering the kernel handles it.
+>>
+>> Userspace however, you give two knobs and now you have to worry about them getting it right
+>> and supporting them doing them in the wrong order.
+>>
+>>>> The other one suggested to use the same firmware attributes class
+>>>> being
+>>>> introduced by the new Dell driver (
+>>>> https://patchwork.kernel.org/patch/11818343/)
+>>>> since this is actually a knob to a specific firmware setting.
+>>>
+>>> This seemed to me like an implementation detail (eg. the same metadata
+>>> is being exported, but in a different way), and I don't feel strongly
+>>> about it either way.
+>>
+>> OK thanks.
+> 
+> IMV there are two choices here:  One is between exposing the low-level
+> interfaces verbatim to user space and wrapping them up into a certain
+> "translation" layer allowing user space to use a unified interface (I
+> think that is what everybody wants) and the other  boils down to how
+> the unified interface between the kernel and user space will look
+> like.
+> 
+> Personally, I think that something line /sys/power/profile allowing
+> drivers (and other kernel entities) to register callbacks might work
+> (as stated in my last reply to Hans).
+
+Note to others reading along I pointed to this thread in this thread:
+https://lore.kernel.org/linux-pm/20201006122024.14539-1-daniel.lezcano@linaro.org/T/#t
+and Rafael's "last reply" above refers to his reply in that thread.
+
+For the sake of people reading along I'm reproducing my reply
+there below.
+
+Rafael, it seems more appropriate to continue this discussion
+in this thread, so lets discuss this further here ?
+
+My reply to Rafael from the other thread:
+
+First of all thank you for your input, with your expertise in this
+area your input is very much appreciated, after all we only get
+one chance to get the userspace API for this right.
+
+Your proposal to have a single sysfs file for userspace to talk
+to and then use an in kernel subscription mechanism for drivers
+to get notified of writes to this file is interesting.
+
+But I see 2 issues with it:
+
+1. How will userspace know which profiles are actually available ?
+
+An obvious solution is to pick a set of standard names and let
+subscribers map those as close to their own settings as possible,
+the most often mentioned set of profile names in this case seems to be:
+
+low_power
+balanced_power
+balanced
+balanced_performance
+performance
+
+Which works fine for the thinkpad_acpi case, but not so much for
+the hp-wmi case. In the HP case what happens is that a WMI call
+is made which sets a bunch of ACPI variables which influence
+the DPTF code (this assumes we have some sort of DPTF support
+such as mjg59's reverse engineered support) but the profile-names
+under Windows are: "Performance", "HP recommended", "Cool" and
+"Quiet".  If you read the discussion from the
+"[RFC] Documentation: Add documentation for new performance_profile sysfs class"
+thread you will see this was brought up as an issue there.
+
+The problem here is that both "cool" and "quiet" could be
+interpreted as low-power. But it seems that they actually mean
+what they say, cool focuses on keeping temps low, which can
+also be done by making the fan-profile more aggressive. And quiet
+is mostly about keeping fan speeds down, at the cost of possible
+higher temperatures.
+
+<edit in this version of the reply:>
+I wonder if the HP profiles are actually just fan speed profiles ?
+Elia do you know ?
+</edit>
+
+IOW we don't really have a 1 dimensional axis.
+My class proposal fixes this by having a notion of both
+standardized names (because anything else would suck) combined
+with a way for drivers to advertise which standardized names
+the support. So in my proposal I simply add quiet and cool
+to the list of standard profile names, and then the HP-wmi
+driver can list those as supported, while not listing
+low_power as a supported profile.  This way we export the
+hardware interface to userspace as is (as much as possible)
+while still offering a standardized interface for userspace
+to consume.  Granted if userspace now actually want to set
+a low_power profile, we have just punted the problem to userspace
+but I really do not see a better solution.
+
+
+2. This only works assuming that all performance-profiles
+are system wide. But given a big desktop case there might
+be very well be separate cooling zones for e.g. the CPU
+and the GPU and I can imagine both having separate
+performance-profile settings and some users will doubtlessly
+want to be able to control these separately ...
+
+Regards,
+
+Hans
+
