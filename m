@@ -2,64 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A9B28E2E0
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 17:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8513728EFE8
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 12:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730294AbgJNPNI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 11:13:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38870 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726006AbgJNPNI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Oct 2020 11:13:08 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B963920714;
-        Wed, 14 Oct 2020 15:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602688387;
-        bh=3i5dhUIVAy4nbl1V3WKqV1+5PF4u0kkQVmgry44PdW4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gzuO+r6W7qZ91N2av8n7cDiJfqvdzzX0Uxet1DjP0Yb+jG2gMQ7tIkr4vBi1TDDxs
-         uDrbp8rf55Q547yyfMenJUUEZH1KtXXuJ6rOOUar/kY35JoRXL7H2Nlb58n289xUyV
-         kC8PuMo4SVtLa6g6oqYHuVvILNHMMRZcWwneEOI4=
-Date:   Wed, 14 Oct 2020 17:13:41 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        stable@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 5.8+ regression fix 0/1] i2c: core: Restore
- acpi_walk_dep_device_list() getting called after registering the ACPI i2c
- devs
-Message-ID: <20201014151341.GB3761660@kroah.com>
-References: <20201014144158.18036-1-hdegoede@redhat.com>
+        id S2389117AbgJOKNe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Oct 2020 06:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388994AbgJOKNe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Oct 2020 06:13:34 -0400
+X-Greylist: delayed 44987 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Oct 2020 03:13:34 PDT
+Received: from mail.dulcetgames.com (unknown [IPv6:2600:3c03::f03c:92ff:fe47:1569])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C71DC061755
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Oct 2020 03:13:34 -0700 (PDT)
+Received: by mail.dulcetgames.com (Postfix, from userid 1001)
+        id 318EA1FFD48; Wed, 14 Oct 2020 15:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dulcetgames.com;
+        s=202010; t=1602694957;
+        bh=deuCOxtctY0h+AKAXOgz5KmT1nRatI7I+5lctkoEZw4=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=WWJXWhqupnqPHoZfqiMEfO/w7MGiJVCxsj3NxI/4B+18HlfqD5PjCDYLaWmx7l0mG
+         b1GgegL0Jjr7MaVanfCOMDC1srlbc7H7kJGp0zu90eVvDWz6QLxYxy9i+hASNBe2KA
+         EN8dti+BlldZRH4sdI4iMag2ySath5oIYwRvlTBcDz8fHBy7slbdqRzBcptAfZXRgI
+         yMIoDW3z2iQecktUWp95t/IZdAtnuelWl6VREp+35ccJD2VGMLSFxMT2+khG/MIEwR
+         9vclCTC/FHU5kBJlnJxkXxDdFMnAgLVRKIFS+4pToeEOOj7qK8/IXBclkP9qcKbPfl
+         xNiuJGwV3kUGw==
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on localhost
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=5.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_REPLYTO,LOTS_OF_MONEY,
+        MISSING_MID,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.2
+Received: from [194.33.45.64] (unknown [194.33.45.64])
+        by mail.dulcetgames.com (Postfix) with ESMTPSA id E7947186827;
+        Wed, 14 Oct 2020 15:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dulcetgames.com;
+        s=202010; t=1602689580;
+        bh=deuCOxtctY0h+AKAXOgz5KmT1nRatI7I+5lctkoEZw4=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=BJcfK+3br2a8zMQ7zxNkTvi99h5UqQ3YhGQzgxfXNvJb11IxuUdXrde7+TheGYpjS
+         /GRbSOOJ7cjYRSfBaU9I+LsfqNhmL+oA0bVnQyUC9s/Ey5/9TybzPtKZwUyhVnrRYm
+         a95pj2VhfDDWJig+XLZAYVOeSfuGD1P/ZiFIqqON9GIVGkUASZdnfBkCTTqhT3lOQi
+         /FUZy9Ps+VL0SAl3bZDQm/aWoePPUduTm4kaVXGCbT92VwR1i/Hdy3BLrUSJ0tNLar
+         z3RCRXhT89HNv9kZzvn825oEEWQkq/iRL0hPHZAW9rT6QZumC8/8dfHAMyPn7vEWZQ
+         Fx0PKZiNEq0Ng==
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201014144158.18036-1-hdegoede@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: DARLEHEN
+To:     Recipients <no-reply@dulcetgames.com>
+From:   "Obrist Nicolas" <no-reply@dulcetgames.com>
+Date:   Wed, 14 Oct 2020 17:32:56 +0200
+Reply-To: li63claudiaa@gmail.com
+Message-Id: <20201014170237.318EA1FFD48@mail.dulcetgames.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 04:41:57PM +0200, Hans de Goede wrote:
-> Hi All,
-> 
-> I am afraid that commit 21653a4181ff ("i2c: core: Call
-> i2c_acpi_install_space_handler() before i2c_acpi_register_devices()")
-> which is in 5.9 and was also added to 5.8.13 (and possible other
-> stable series releases) causes a regression on some devices including
-> on the Microsoft Surface Go 2 (and possibly also the Go 1) where the
-> system no longer boots.
+Sehr geehrte Damen und Herren,
 
-That commit is also in the following stable releases:
-	4.9.238 4.14.200 4.19.149 5.4.69 5.8.13
+Sie brauchen Geld? Sie sind auf der suche nach einem Darlehen? Seri=F6s
+und unkompliziert?
+Dann sind Sie hier bei uns genau richtig.
+Durch unsere jahrelange Erfahrung und kompetente Beratung sind wir
+Europaweit t=E4tig.
 
-so it would need to fixed in all of those places :)
+Wir bieten jedem ein G=DCNSTIGES Darlehen zu TOP Konditionen an.
+Darlehnen zwischen 5000 CHF/Euro bis zu 20 Millionen CHF/Euro m=F6glich.
+Wir erheben dazu 2% Zinssatz.
 
-thanks,
+Lassen Sie sich von unserem kompetenten Team beraten.
+Z=F6gern Sie nicht und kontaktieren Sie mich unter f=FCr weitere Infos &
+Anfragen unter der eingeblendeten Email Adresse.
 
-greg k-h
+Ich freue mich von Ihnen zu h=F6ren.
+
+Obrist Nicolas
