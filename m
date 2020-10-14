@@ -2,65 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20ECF28E83D
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 23:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 300FF28EA9C
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 03:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729956AbgJNVNe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 17:13:34 -0400
-Received: from smtprelay0199.hostedemail.com ([216.40.44.199]:42902 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726575AbgJNVNd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Oct 2020 17:13:33 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id AF21E182CED28;
-        Wed, 14 Oct 2020 21:13:32 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1566:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3871:3872:3874:4321:5007:7875:10004:10400:10848:11232:11658:11914:12043:12048:12297:12663:12740:12760:12895:13019:13069:13311:13357:13439:14659:14721:21080:21451:21627:30054:30060:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: toy72_1009c2b2720f
-X-Filterd-Recvd-Size: 2001
-Received: from XPS-9350 (cpe-72-134-80-165.natsow.res.rr.com [72.134.80.165])
-        (Authenticated sender: joe@perches.com)
-        by omf06.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 14 Oct 2020 21:13:30 +0000 (UTC)
-Message-ID: <567bd8f4f6080c6c3b414d1a9c18aff4c224946e.camel@perches.com>
-Subject: Re: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
-From:   Joe Perches <joe@perches.com>
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Wed, 14 Oct 2020 14:13:29 -0700
-In-Reply-To: <BYAPR11MB325695B550880788DBED54DB87050@BYAPR11MB3256.namprd11.prod.outlook.com>
-References: <20200707200716.GA4920@embeddedor>
-         <CAJZ5v0iDz_EsrpdMQQDfaVC2orMQkEcubmR6-J6mvtrXmKXbRg@mail.gmail.com>
-         <BYAPR11MB325602EDA2D2ACC2B28EAF4687670@BYAPR11MB3256.namprd11.prod.outlook.com>
-         <b851b2c8-2d7c-939d-507d-b322dd4a0dbf@embeddedor.com>
-         <ae54364041b99b89f818812d957d4a4bb4efdc25.camel@perches.com>
-         <BYAPR11MB325695B550880788DBED54DB87050@BYAPR11MB3256.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S2389207AbgJOB7t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Oct 2020 21:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53924 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388854AbgJOB7j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Oct 2020 21:59:39 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B7BC08EC74
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Oct 2020 16:31:45 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id y14so748360pfp.13
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Oct 2020 16:31:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=HXVUBRNSSqTPt62/mgLGqwfLQyF1yjV/YHL73Dao6W8=;
+        b=jCAqi4iTXHmrlmTxFYn6GS2VgUo/8myl3KBrmWg0lRxHbNQgb3vs1osYENVe61bW0P
+         M+4wkDUWjW0myaMTX5a1Gxf50PJCa/e+uOHI7EyM+POftZ0Y/9LfYtXSwlA+pbBlCT0Z
+         p+qpDy78UxHceaiLraq0fP4f7UgNDPeMM5qHQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HXVUBRNSSqTPt62/mgLGqwfLQyF1yjV/YHL73Dao6W8=;
+        b=Iu2y+8l/xadeQk3DxEBNyTif2ulU7WL19cdrr/cn6k2aqNkR3A1X0ea9w1WTS2ryLD
+         6cUSlrl/mDmvlKBBSr2vy7pnyOlWjdHkW7fFvNPdIUGqj3a7zuqRnW5yI7fWdTy8Ksv7
+         cLIxTwP8yrFrBp/TJlPj3MujLdFmeBXXLOru9zwmXFrfaDb6ZBhWGQXMrupQlF2j4sjo
+         b/tTDsdFD417bWXSzYcOzfsbyCUHTWgep9cMiDR/TIATABuSEwDuGy3yghzF5C5UpNHH
+         RBvtvJRGg9LQ8btb25XC4R2poA+xvG0IWl573C3hA5kULqlLxM5WRSMMnbmgLdMvFeu3
+         xUOQ==
+X-Gm-Message-State: AOAM531doawYhGdhUC6R+lg7Ng25DRA851ia8XTPezjsTghfOVy/16Zg
+        2/Ou124Hv4Y4bsteIAzavFcS6g==
+X-Google-Smtp-Source: ABdhPJxOwI5RHIhqZd5sqTZJ3BeFjY/QwyZ69aihzdHcq4MYx7e3PrGhvAMQ5MYwvG0KK4zLFTqSZQ==
+X-Received: by 2002:a63:d66:: with SMTP id 38mr983974pgn.400.1602718304430;
+        Wed, 14 Oct 2020 16:31:44 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id r201sm780160pfc.98.2020.10.14.16.31.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2020 16:31:43 -0700 (PDT)
+Date:   Wed, 14 Oct 2020 16:31:42 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, corbet@lwn.net,
+        gregkh@linuxfoundation.org, shuah@kernel.org, rafael@kernel.org,
+        johannes@sipsolutions.net, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, arve@android.com,
+        tkjos@android.com, maco@android.com, joel@joelfernandes.org,
+        christian@brauner.io, hridya@google.com, surenb@google.com,
+        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
+        rric@kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 00/11] Introduce Simple atomic counters
+Message-ID: <202010141611.70B7A38@keescook>
+References: <cover.1602209970.git.skhan@linuxfoundation.org>
+ <20201009193746.GA1073957@hirez.programming.kicks-ass.net>
+ <202010091255.246395A6@keescook>
+ <20201010110920.GQ2628@hirez.programming.kicks-ass.net>
+ <6e1dd408-653e-817e-b659-23649259a929@linuxfoundation.org>
+ <20201014091720.GC2628@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201014091720.GC2628@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2020-10-14 at 20:48 +0000, Moore, Robert wrote:
-> I'm afraid that the macro does not compile under MSVC:
+On Wed, Oct 14, 2020 at 11:17:20AM +0200, Peter Zijlstra wrote:
+> On Tue, Oct 13, 2020 at 08:12:20PM -0600, Shuah Khan wrote:
 > 
-> warning C4067: unexpected tokens following preprocessor directive - expected a newline (compiling source file ..\..\source\tools\acpiexec\aetests.c)
+> > They don't add any new behavior, As Kees mentioned they do give us a
+> > way to clearly differentiate atomic usages that can wrap.
 > 
->  It looks like "__has_attribute" is not supported.
+> No it doesn't! atomic_t can wrap, this thing can wrap, no distinction.
+> 
+> All it does is fragment the API and sow confusion. FOR NO BENEFIT.
 
-It looks more like compiler.h/compiler_types.h/compiler_attributes.h
-doesn't support msvc.
+I really don't see it this way. It's a distinct subset of the atomic_t
+API. The trouble that has existed here has been with an atomic_t being
+originally used NOT for lifetime management, that mutates into something
+like that because of the available API, but doing so without realizing
+it. atomic_t gets used for all kinds of algorithms, and the "counter"
+type is way too easily accidentally transformed into a "lifetime
+tracker" and we get bugs.
 
+If we have a distinct type for wrapping-counters that limits the API,
+then it is much harder for folks to shoot themselves in the foot. I don't
+see why this is so bad: we end up with safer usage, more easily auditable
+code behavior ("how was this atomic_t instance _intended_ to be used?"),
+and no change in binary size.
 
+> > There is no need to keep inc_return in this API as such. I included it
+> > so it can be used for above cases 1 and 2, so the users don't have to
+> > call inc() followed by read(). It can be left out of the API.
 
+I go back and forth on this, but after looking at these instances,
+it makes sense to have inc_return(), for where counters are actually
+"serial numbers". An argument could be made[1], however, that such uses
+should not end up in the position of _reusing_ earlier identifiers, which
+means it's actually can't wrap. (And some cases just need u64 to make this
+happen[2] -- and in that specific case, don't even need to be atomic_t).
+
+[1] https://lore.kernel.org/lkml/202010071334.8298F3FA7@keescook/
+[2] https://git.kernel.org/linus/d1e7fd6462ca9fc76650fbe6ca800e35b24267da
+
+> Wrong! The atomic usage in mutex doesn't fall in any of those
+> categories.
+
+But the atomic usage in mutex is *IN* mutex -- it's a separate data
+type, etc. We don't build mutexes manually, so why build counters
+manually?
+
+> The only thing you're all saying that makes sense is that unintentional
+> wrapping can have bad consequences, the rest is pure confusion.
+> 
+> Focus on the non-wrapping cases, _everything_ else is not going
+> anywhere.
+
+I view this as a way to do so: this subset of wrapping cases is being
+identified and removed from the pool of all the atomic_t cases so that
+they will have been classified, and we can continue to narrow down all
+the atomic_t uses to find any potentially mis-used non-wrapping cases.
+
+The other option is adding some kind of attribute to the declarations
+(which gets us the annotation) but doesn't provide a limit to the API.
+(e.g. no counter should ever call dec_return).
+
+> So audit the kernel, find the cases that should not wrap, categorize and
+> create APIs for them that trap the wrapping. But don't go around
+> confusing things that don't need confusion.
+
+That's what's happening here. But as it turns out, it's easier to do
+this by employing both the process of elimination (mark the counters)
+and direct identification (mark the refcount_t). Then the pool of
+"unannotated" atomic_t instances continues to shrink.
+
+-- 
+Kees Cook
