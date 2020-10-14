@@ -2,215 +2,424 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB10E28E548
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 19:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC43D28E5A7
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 19:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729296AbgJNRXe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 13:23:34 -0400
-Received: from foss.arm.com ([217.140.110.172]:54358 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbgJNRXd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Oct 2020 13:23:33 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E0B2D6E;
-        Wed, 14 Oct 2020 10:23:32 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE9493F71F;
-        Wed, 14 Oct 2020 10:23:30 -0700 (PDT)
-Date:   Wed, 14 Oct 2020 18:23:25 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-Message-ID: <20201014172325.GA8367@e121166-lin.cambridge.arm.com>
-References: <20201010093153.30177-1-ardb@kernel.org>
- <20201013110929.GB20319@e121166-lin.cambridge.arm.com>
- <CAMj1kXEbZ3cN1N2V6MfbUZsTot+9TsLTC_UMm5JP1OW8AwvuOw@mail.gmail.com>
- <20201013131346.GA20925@e121166-lin.cambridge.arm.com>
- <CAMj1kXGM937+C-4kasuPYp_X9r8ic56KVpZX2G0zW+FYn9NQ7w@mail.gmail.com>
- <20201013154100.GA22293@e121166-lin.cambridge.arm.com>
- <20201014161818.GF3589@gaia>
+        id S1728114AbgJNRol (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Oct 2020 13:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726111AbgJNRol (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Oct 2020 13:44:41 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BA9C061755;
+        Wed, 14 Oct 2020 10:44:41 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id z22so241984wmi.0;
+        Wed, 14 Oct 2020 10:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ieO/NF4wG/IXmQnKsMTVrsYB1eWpln7oBpB9WVl/evk=;
+        b=Cbs+M08d4iOdIl5TmpItA92P0UNO6oXeCqIWzdRSvrWp75MLKBPEG+uOztpGCTQ+y0
+         dpF0u+CFI6a8QweEt7BwE9kNZdPhqgLuLGqWnN6qjPV0yXTqEleR01Tq6At2O0APgoz8
+         Dj6FmDjOMUjtrwRhbqEZl1yx7QcKFrxS+UwF0ooFH5e7JX189HbjVDNNaeY5dLvl/C1R
+         PG6+M9GTqxbwVPGQbQhglB1Gnp1+uUXGlVExRv7H1Cmw6zj3nOfuOnd8olzxO7gauKsR
+         X7C5sP2HPHXL69CTZ+HMT6kMEBisTnh0v1O/eJCyMjymaO8ZXzLFCPFCIwGioHZ7++5h
+         epUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ieO/NF4wG/IXmQnKsMTVrsYB1eWpln7oBpB9WVl/evk=;
+        b=DD0KB1FWpKsoqxfpWEEQN/g23onk/JHRUV/9NDL5I2NfROthRQP95M+Ei/jEd4EiwI
+         GDa/T3vDkrQohO3YZbkRNGVcy196hBxcAfcNzhtcPN9g+SE7WT8s+lcnkNAQEcdpV2/u
+         lOAMxkQtFyM7DlDifRiJ+aMHJTEguTIIfuGs3HzHaT2HHWapHM69VnDK6mY7rPkr7ob6
+         AdZbQYtIWU4NofYjuioR6KTtm3PGjT/8xf5WBbcQAi2zZheg0mtQKCXZTDw7emgrngbX
+         u3ppbxaSLQpXK/cgNcnTa0h0g5+Yxa37L5YBlhhdpxc7WF31FEufgp9XKTnoSlVwSHSe
+         Aedg==
+X-Gm-Message-State: AOAM5325Ql1k8gPVj2+5q1bZ28RD25IWboq6n0NWE7Qzy7Gx4r1OCKwY
+        8UzmGvVrqmbz958atoTCrLO8m1ImwSQOCw==
+X-Google-Smtp-Source: ABdhPJxPKEJG+UaVy0v9/mLZ1Q/pjma68YnqojCmkWEivNPYEmskssCJsBkZUFOCJrLqOvx3+oYsgg==
+X-Received: by 2002:a05:600c:2211:: with SMTP id z17mr44597wml.92.1602697479007;
+        Wed, 14 Oct 2020 10:44:39 -0700 (PDT)
+Received: from pce.localnet (host-80-117-125-178.retail.telecomitalia.it. [80.117.125.178])
+        by smtp.gmail.com with ESMTPSA id f189sm251878wmf.16.2020.10.14.10.44.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2020 10:44:37 -0700 (PDT)
+From:   Elia Devito <eliadevito@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <Mario.Limonciello@dell.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mark Pearson <mpearson@lenovo.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [RFC] Documentation: Add documentation for new performance_profile sysfs class
+Date:   Wed, 14 Oct 2020 19:44:35 +0200
+Message-ID: <1834022.taCxCBeP46@pce>
+In-Reply-To: <CAJZ5v0gbQ=4bp22p3oM22zY+_1h-asYja1+CBbvtySzAY1p_+Q@mail.gmail.com>
+References: <20201003131938.9426-1-hdegoede@redhat.com> <fec6eaeb-cc40-a2d2-87cb-bcae338bbe80@redhat.com> <CAJZ5v0gbQ=4bp22p3oM22zY+_1h-asYja1+CBbvtySzAY1p_+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201014161818.GF3589@gaia>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 05:18:18PM +0100, Catalin Marinas wrote:
-> Hi Lorenzo,
-> 
-> On Tue, Oct 13, 2020 at 04:41:00PM +0100, Lorenzo Pieralisi wrote:
-> > On Tue, Oct 13, 2020 at 03:42:07PM +0200, Ard Biesheuvel wrote:
-> > > On Tue, 13 Oct 2020 at 15:13, Lorenzo Pieralisi
-> > > <lorenzo.pieralisi@arm.com> wrote:
-> > > > On Tue, Oct 13, 2020 at 01:22:32PM +0200, Ard Biesheuvel wrote:
-> > > > > > > diff --git a/Documentation/arm64/arm-acpi.rst b/Documentation/arm64/arm-acpi.rst
-> > > > > > > index 47ecb9930dde..947f5b5c45ef 100644
-> > > > > > > --- a/Documentation/arm64/arm-acpi.rst
-> > > > > > > +++ b/Documentation/arm64/arm-acpi.rst
-> > > > > > > @@ -205,6 +205,13 @@ devices available.  This list of tables is not meant to be all inclusive;
-> > > > > > >  in some environments other tables may be needed (e.g., any of the APEI
-> > > > > > >  tables from section 18) to support specific functionality.
-> > > > > > >
-> > > > > > > +It is assumed that all DMA capable devices in the system are able to
-> > > > > > > +access the lowest 4 GB of system memory. If this is not the case, an
-> > > > > > > +IORT describing those limitations is mandatory, even if an IORT is not
-> > > > > > > +otherwise necessary to describe the I/O topology, and regardless of
-> > > > > > > +whether _DMA methods are used to describe the DMA limitations more
-> > > > > > > +precisely. Once the system has booted, _DMA methods will take precedence
-> > > > > > > +over DMA addressing limits described in the IORT.
-> > > > > >
-> > > > > > If this is a boot requirement it must be in ARM's official documentation,
-> > > > > > first, not the kernel one.
-> > > > > >
-> > > > > > I understand this is an urgent (well - no comments on why bootstrapping
-> > > > > > ACPI on Raspberry PI4 is causing all this fuss, honestly) fix but that's
-> > > > > > not a reason to rush through these guidelines.
-> > > > > >
-> > > > > > I would not add this paragraph to arm-acpi.rst, yet.
-> > > > >
-> > > > > Which documentation? ACPI compliance by itself is not sufficient for a
-> > > > > system to be able to boot Linux/arm64, which is why we documented the
-> > > > > requirements for ACPI boot on Linux/arm64 in this file. I don't think
-> > > > > we need endorsement from ARM to decide that odd platforms like this
-> > > > > need to abide by some additional rules if they want to boot in ACPI
-> > > > > mode.
-> > > >
-> > > > I think we do - if we don't we should not add this documentation either.
-> > > >
-> > > > ACPI on ARM64 software stack is based on standardized HW requirements.
-> > > > The sheer fact that we need to work around a HW deficiency shows that
-> > > > either this platform should have never been booted with ACPI or the _HW_
-> > > > design guidelines (BSA) are not tight enough.
-> > > >
-> > > > Please note that as you may have understood I asked if we can implement
-> > > > a workaround in IORT because that's information that must be there
-> > > > regardless (and an OEM ID match in arch code - though pragmatic -
-> > > > defeats the whole purpose), I don't think we should tell Linux kernel
-> > > > developers how firmware must be written to work around blatantly
-> > > > non-compliant systems.
-> > > 
-> > > This is not about systems being compliant or not, unless there is a
-> > > requirement somewhere that I missed that all masters in the system
-> > > must be able to access at least 32 bits of DMA.
-> > 
-> > I think there is in the SBSA (4.1.3 Memory Map) but regardless, this
-> > is clearly a design bug, that's not a feature.
-> 
-> I think in revision D of the SBSA 6.0 this was moved to 3.1.3. Anyway, I
-> guess you are referring to:
-> 
->   All Non-secure on-chip masters in a base server system that are
->   expected to be under the control of the operating system or hypervisor
->   must be capable of addressing all of the Non-secure address space.
-> 
-> IIUC, this rules out 32-bit devices as well. Even if we look at the less
-> strict BSA (https://developer.arm.com/documentation/den0094/latest), the
-> requirements are the same.
-> 
-> So we can consider the bug either in the *BSA specs or in hardware. If
-> at least the 32-bit devices are acceptable, the specs should probably be
-> updated. Otherwise we just state that Linux has slightly different
-> requirements than *BSA (more relaxed or tightened in various areas) and
-> we describe them somewhere under Documentation/arm64/.
+Hi,
 
-I agree with you completely and I think that the work should be done at
-spec level, I don't think that Linux should mandate how and when an IORT
-table should be provided and with what content, that's BSA+FW spec
-guidelines - that's my opinion at least.
+In data mercoled=EC 14 ottobre 2020 17:46:43 CEST, Rafael J. Wysocki ha scr=
+itto:
+> On Wed, Oct 14, 2020 at 4:16 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > Hi,
+> >=20
+> > On 10/14/20 3:55 PM, Rafael J. Wysocki wrote:
+> > > On Tue, Oct 13, 2020 at 3:09 PM Hans de Goede <hdegoede@redhat.com>=20
+wrote:
+> > >> Hi,
+> > >>=20
+> > >> On 10/12/20 6:42 PM, Rafael J. Wysocki wrote:
+> > >>> On Wed, Oct 7, 2020 at 8:41 PM Limonciello, Mario
+> > >>>=20
+> > >>> <Mario.Limonciello@dell.com> wrote:
+> > >>>>> On Wed, 2020-10-07 at 15:58 +0000, Limonciello, Mario wrote:
+> > >>>>>>> On Mon, 2020-10-05 at 12:58 +0000, Limonciello, Mario wrote:
+> > >>>>>>>>> On modern systems CPU/GPU/... performance is often dynamically
+> > >>>>>>>>> configurable
+> > >>>>>>>>> in the form of e.g. variable clock-speeds and TPD. The
+> > >>>>>>>>> performance
+> > >>>>>>>>> is often
+> > >>>>>>>>> automatically adjusted to the load by some automatic-mechanism
+> > >>>>>>>>> (which may
+> > >>>>>>>>> very well live outside the kernel).
+> > >>>>>>>>>=20
+> > >>>>>>>>> These auto performance-adjustment mechanisms often can be
+> > >>>>>>>>> configured with
+> > >>>>>>>>> one of several performance-profiles, with either a bias towar=
+ds
+> > >>>>>>>>> low-power
+> > >>>>>>>>> consumption (and cool and quiet) or towards performance (and
+> > >>>>>>>>> higher
+> > >>>>>>>>> power
+> > >>>>>>>>> consumption and thermals).
+> > >>>>>>>>>=20
+> > >>>>>>>>> Introduce a new performance_profile class/sysfs API which
+> > >>>>>>>>> offers a
+> > >>>>>>>>> generic
+> > >>>>>>>>> API for selecting the performance-profile of these automatic-
+> > >>>>>>>>> mechanisms.
+> > >>>>>>>>=20
+> > >>>>>>>> If introducing an API for this - let me ask the question, why
+> > >>>>>>>> even let each
+> > >>>>>>>> driver offer a class interface and userspace need to change
+> > >>>>>>>> "each" driver's
+> > >>>>>>>> performance setting?
+> > >>>>>>>>=20
+> > >>>>>>>> I would think that you could just offer something kernel-wide
+> > >>>>>>>> like
+> > >>>>>>>> /sys/power/performance-profile
+> > >>>>>>>>=20
+> > >>>>>>>> Userspace can read and write to a single file.  All drivers can
+> > >>>>>>>> get notified
+> > >>>>>>>> on this sysfs file changing.
+> > >>>>>>>>=20
+> > >>>>>>>> The systems that react in firmware (such as the two that promp=
+ted
+> > >>>>>>>> this discussion) can change at that time.  It leaves the
+> > >>>>>>>> possibility for a
+> > >>>>>>>> more open kernel implementation that can do the same thing tho=
+ugh
+> > >>>>>>>> too by
+> > >>>>>>>> directly modifying device registers instead of ACPI devices.
+> > >>>>>>>=20
+> > >>>>>>> The problem, as I've mentioned in previous discussions we had
+> > >>>>>>> about
+> > >>>>>>> this, is that, as you've seen in replies to this mail, this wou=
+ld
+> > >>>>>>> suddenly be making the kernel apply policy.
+> > >>>>>>>=20
+> > >>>>>>> There's going to be pushback as soon as policy is enacted in the
+> > >>>>>>> kernel, and you take away the different knobs for individual
+> > >>>>>>> components
+> > >>>>>>> (or you can control them centrally as well as individually). As
+> > >>>>>>> much as
+> > >>>>>>> I hate the quantity of knobs[1], I don't think that trying to
+> > >>>>>>> reduce
+> > >>>>>>> the number of knobs in the kernel is a good use of our time, and
+> > >>>>>>> easier
+> > >>>>>>> to enact, coordinated with design targets, in user-space.
+> > >>>>>>>=20
+> > >>>>>>> Unless you can think of a way to implement this kernel wide
+> > >>>>>>> setting
+> > >>>>>>> without adding one more exponent on the number of possibilities
+> > >>>>>>> for
+> > >>>>>>> the
+> > >>>>>>> testing matrix, I'll +1 Hans' original API.
+> > >>>>>>=20
+> > >>>>>> Actually I offered two proposals in my reply.  So are you NAKing
+> > >>>>>> both?
+> > >>>>>=20
+> > >>>>> No, this is only about the first portion of the email, which I
+> > >>>>> quoted.
+> > >>>>> And I'm not NAK'ing it, but I don't see how it can work without
+> > >>>>> being
+> > >>>>> antithetical to what kernel "users" expect, or what the folks
+> > >>>>> consuming
+> > >>>>> those interfaces (presumably us both) would expect to be able to
+> > >>>>> test
+> > >>>>> and maintain.
+> > >>>>=20
+> > >>>> (Just so others are aware, Bastien and I had a previous discussion=
+ on
+> > >>>> this topic that he alluded to here:
+> > >>>> https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/issu=
+es
+> > >>>> /1)
+> > >>>>=20
+> > >>>> In general I agree that we shouldn't be offering 100's of knobs to
+> > >>>> change
+> > >>>> things and protect users from themselves where possible.
+> > >>>>=20
+> > >>>> Whether the decisions are made in the kernel or in userspace you
+> > >>>> still have a matrix once you're letting someone change 2 different
+> > >>>> kernel devices that offer policy.  I'd argue it's actually worse if
+> > >>>> you let userspace change it though.
+> > >>>>=20
+> > >>>> Let's go back to the my GPU and platform example and lets say both
+> > >>>> offer the new knob here for both.  Userspace software such as your
+> > >>>> PPD picks performance.  Both the platform device and GPU device get
+> > >>>> changed, hopefully no conflicts.
+> > >>>> Then user decides no, I don't want my GPU in performance mode, I o=
+nly
+> > >>>> want my platform. So they change the knob for the GPU manually, and
+> > >>>> now you have a new config in your matrix.
+> > >>>>=20
+> > >>>> However if you left it to a single kernel knob, both GPU and platf=
+orm
+> > >>>> get moved together and you don't have these extra configs in your
+> > >>>> matrix anymore.
+> > >>>>=20
+> > >>>> The other point I mentioned, that platform might also do something=
+ to
+> > >>>> GPU via a sideband and you race, you can solve it with kernel too =
+by
+> > >>>> modifying the ordering the kernel handles it.
+> > >>>>=20
+> > >>>> Userspace however, you give two knobs and now you have to worry ab=
+out
+> > >>>> them getting it right and supporting them doing them in the wrong
+> > >>>> order.
+> > >>>>=20
+> > >>>>>> The other one suggested to use the same firmware attributes class
+> > >>>>>> being
+> > >>>>>> introduced by the new Dell driver (
+> > >>>>>> https://patchwork.kernel.org/patch/11818343/)
+> > >>>>>> since this is actually a knob to a specific firmware setting.
+> > >>>>>=20
+> > >>>>> This seemed to me like an implementation detail (eg. the same
+> > >>>>> metadata
+> > >>>>> is being exported, but in a different way), and I don't feel
+> > >>>>> strongly
+> > >>>>> about it either way.
+> > >>>>=20
+> > >>>> OK thanks.
+> > >>>=20
+> > >>> IMV there are two choices here:  One is between exposing the low-le=
+vel
+> > >>> interfaces verbatim to user space and wrapping them up into a certa=
+in
+> > >>> "translation" layer allowing user space to use a unified interface =
+(I
+> > >>> think that is what everybody wants) and the other  boils down to how
+> > >>> the unified interface between the kernel and user space will look
+> > >>> like.
+> > >>>=20
+> > >>> Personally, I think that something line /sys/power/profile allowing
+> > >>> drivers (and other kernel entities) to register callbacks might work
+> > >>> (as stated in my last reply to Hans).
+> > >>=20
+> > >> Note to others reading along I pointed to this thread in this thread:
+> > >> https://lore.kernel.org/linux-pm/20201006122024.14539-1-daniel.lezca=
+no@
+> > >> linaro.org/T/#t and Rafael's "last reply" above refers to his reply =
+in
+> > >> that thread.
+> > >>=20
+> > >> For the sake of people reading along I'm reproducing my reply
+> > >> there below.
+> > >=20
+> > > For completeness, my response in the other thread is here:
+> > >=20
+> > > https://lore.kernel.org/linux-pm/CAJZ5v0jpYpu3Tk7qq_MCVs0wUr-Dw0rY5EZ=
+ELr
+> > > VbQta0NZaoVA@mail.gmail.com/T/#t> >=20
+> > >> Rafael, it seems more appropriate to continue this discussion
+> > >> in this thread, so lets discuss this further here ?
+> > >=20
+> > > And because I sent it before reading this message, let me reproduce it
+> > > below (with some additions).
+> >=20
+> > And I just did the same thing (replied to your reply in the other threa=
+d),
+> > I guess I was too quick.
+>=20
+> Well, same here.
+>=20
+> > So I too will reproduce my reply here.
+>=20
+> And so I'm doing below.
+>=20
+> > And I still believe it is best to then stick to this thread from now on,
+> > because this reproducing thing is not really productive...
+> >=20
+> > >> My reply to Rafael from the other thread:
+> > >>=20
+> > >> First of all thank you for your input, with your expertise in this
+> > >> area your input is very much appreciated, after all we only get
+> > >> one chance to get the userspace API for this right.
+> > >>=20
+> > >> Your proposal to have a single sysfs file for userspace to talk
+> > >> to and then use an in kernel subscription mechanism for drivers
+> > >> to get notified of writes to this file is interesting.
+> > >>=20
+> > >> But I see 2 issues with it:
+> > >>=20
+> > >> 1. How will userspace know which profiles are actually available ?
+> > >>=20
+> > >> An obvious solution is to pick a set of standard names and let
+> > >> subscribers map those as close to their own settings as possible,
+> > >> the most often mentioned set of profile names in this case seems to =
+be:
+> > >>=20
+> > >> low_power
+> > >> balanced_power
+> > >> balanced
+> > >> balanced_performance
+> > >> performance
+> > >>=20
+> > >> Which works fine for the thinkpad_acpi case, but not so much for
+> > >> the hp-wmi case. In the HP case what happens is that a WMI call
+> > >> is made which sets a bunch of ACPI variables which influence
+> > >> the DPTF code (this assumes we have some sort of DPTF support
+> > >> such as mjg59's reverse engineered support) but the profile-names
+> > >> under Windows are: "Performance", "HP recommended", "Cool" and
+> > >> "Quiet".  If you read the discussion from the
+> > >> "[RFC] Documentation: Add documentation for new performance_profile
+> > >> sysfs class" thread you will see this was brought up as an issue
+> > >> there.
+> > >=20
+> > > Two different things seem to be conflated here.  One is how to pass a
+> > > possible performance-vs-power preference coming from user space down
+> > > to device drivers or generally pieces of kernel code that can adjust
+> > > the behavior and/or hardware settings depending on what that
+> > > preference is and the other is how to expose OEM-provided DPTF system
+> > > profile interfaces to user space.
+> >=20
+> > I was hoping / thinking that we could use a single API for both of
+> > these. But I guess that it makes sense to see them as 2 separate
+> > things, esp. since DPTF profiles seem to be somewhat free-form
+> > where as a way to pass a performance-pref to a device could use
+> > a fixes set of values.
+> >=20
+> > So lets say that we indeed want to treat these 2 separately,
+> > then I guess that the issue at hand / my reason to start a
+> > discussion surrounding this is allowing userspace to selecting
+> > the DPTF system profile.
+> >=20
+> > The thinkpad_acpi case at hand is not using DPTF, but that is
+> > because Lenovo decided to implement dynamic DPTF like behavior
+> > inside their embedded controller (for when running Linux) since
+> > DPTF is atm not really supported all that well under Linux and
+> > Lenovo was getting a lot of complaints about sub-optimal
+> > performance because of this.
+> >=20
+> > So the thinkpad_acpi solution is in essence a replacement
+> > for DPTF and it should thus use the same userspace API as
+> > other mechanisms to select DPTF system profiles.
+> >=20
+> > And if we limit this new userspace API solely to setting DPTF
+> > system profiles, then their will indeed be only 1 provider for
+> > this for the entire system.
+> >=20
+> > > The former assumes that there is a common set of values that can be
+> > > understood and acted on in a consistent way by all of the interested
+> > > entities within the kernel and the latter is about passing information
+> > > from user space down to a side-band power control mechanism working in
+> > > its own way behind the kernel's back (and possibly poking at multiple
+> > > hardware components in the platform in its own way).
+> >=20
+> > Ack.
+> >=20
+> > > IMO there is no way to provide a common interface covering these two
+> > > cases at the same time.
+> >=20
+> > I see your point, esp. the free form vs common set of values
+> > argument seems to be exactly what we have been going in circles
+> > about during the discussion about this so far.
+> >=20
+> > >> The problem here is that both "cool" and "quiet" could be
+> > >> interpreted as low-power. But it seems that they actually mean
+> > >> what they say, cool focuses on keeping temps low, which can
+> > >> also be done by making the fan-profile more aggressive. And quiet
+> > >> is mostly about keeping fan speeds down, at the cost of possible
+> > >> higher temperatures.
+> > >>=20
+> > >> <edit in this version of the reply:>
+> > >> I wonder if the HP profiles are actually just fan speed profiles ?
+> > >> Elia do you know ?
+> > >> </edit>
+> > >=20
+> > > I don't think so.
+> > >=20
+> > > AFAICS, in both the Thinkpad and HP cases the profile covers the
+> > > entire platform, which in particular means that they cannot co-exist.
+> >=20
+> > Ok.
+> >=20
 
-The <=32-bit devices story must be clarified in the BSA.
+As far as I know, the profiles affect  the thermal behavior like "how long =
+to=20
+wait before starting the fan and at what temperature" or "how fast to run t=
+he=20
+fan with the current cpu load and temperature".
 
-IMO the issue that Raspberry PI4 highlighted (BSA dev <=32 bit
-addressing + _DMA vs IORT address limits + when an IORT table is
-mandatory) should be addressed at spec level, not in kernel docs, I
-don't want to go that way since this is HW+FW guidelines that must apply
-to all systems, hence my feedback on this patch.
+The only way that firmware uses to "control" performance should be the odvp=
+0=20
+DPTF variable.
 
-> > > The problem here is that Linux/arm64 cannot deal with fully compliant
-> > > systems that communicate their [permitted] DMA limitations via a _DMA
-> > > method if this limitation happens to be that the address limit < 32
-> > > bits. The DMA subsystem can deal with this fine, only the default DMA
-> > > zone sizing policy creates an internal issue where the DMA subsystem
-> > > is not able to allocate memory that matches the DMA constraints.
-> > > 
-> > > So the 'correct' fix here would be to rework the memory allocator so
-> > > it can deal with arbitrary DMA limits at allocation time, so that any
-> > > limit returned by a _DMA method can be adhered to on the fly.
-> > > 
-> > > However, we all agree that the Raspberry Pi4 is not worth that effort,
-> > > and that in the general case, SoCs with such limitations, even if they
-> > > are compliant per the spec, are not worth the trouble of complicating
-> > > this even more. So as a compromise, I think it is perfectly reasonable
-> > > to require that systems that have such limitations communicate them
-> > > via the IORT, which we can parse early, regardless of whether _DMA
-> > > methods exist as well, and whether they return the same information.
-> > > 
-> > > So this is not a requirement on arm64 ACPI systems in general. It is a
-> > > requirement that expresses that we, as arm64
-> > > contributors/[co-]maintainers, are willing to cater for such systems
-> > > if they implement their firmware in a particular way.
-> > 
-> > I don't think they should implement their firmware in any particular
-> > way, that's my point, I don't want them to in the first place.
-> 
-> I haven't checked the *BBR specs, do they say anything about _DMA
-> methods or IORT tables for devices that can't access the full memory?
+On Windows HP expose  both "Cool" and "Quiet" profile respectively as "Idea=
+l=20
+for when the computer feels warm to the touch" and "Ideal for quiet=20
+environments".
 
-No and that should be rectified.
+more detail: https://support.hp.com/in-en/document/c06063108
 
-> > To start with there is no spec I am aware of that defines when/how to
-> > use _DMA vs IORT address limits, maybe we should spell that out better
-> > somewhere and that's useful regardless.
-> 
-> I guess this answers my question above.
+To be precise "Quiet" profile should be available only on platform without=
+=20
+dedicate GPU (I'm investigating if there is other case), instead the other =
+3=20
+profiles ("HP Recommended", "Performance" and "Cool") are available on all=
+=20
+platform that support thermal profile.
 
-Yes even if it is not a definitive answer unfortunately.
+reading here seems that Dell offer identical profiles:
+https://www.dell.com/support/manuals/it/it/itbsdt1/dell-command-power-manag=
+er-v2.2/userguide_dell/thermal-management?guid=3Dguid-c05d2582-fc07-4e3e-91=
+8a-965836d20752&lang=3Den-us=20
 
-> > My point is: either this workaround works with firmware written with
-> > guidelines valid for all arm64 systems (not as a special case: add an
-> > IORT table because we can't parse _DMA to workaround DMA address range
-> > shenanigans) or I am not willing to merge it - I prefer to add an OEM ID
-> > quirk and show what we are forced to do to make this work.
-> 
-> If the guidelines don't say anything about <=32-bit device masks, we can
-> make up our requirements for Linux. Currently it happens to work on some
-> kernel versions because we have a ZONE_DMA of 1GB but prior to this
-> change it wouldn't have worked. We might as well disable ZONE_DMA and
-> ZONE_DMA32 altogether because the BSA specs state that there are no such
-> limited devices, but some SoCs would no longer boot.
+Regards,
 
-I don't think we can (or we should) do that - that ship has sailed
-and I am not sure we are in a position to enforce it.
+Elia
 
-Again - that's a BSA discussion to be had.
 
-> I think all this depends on whether 32-bit devices are also special and
-> need quirks. If they do, can we add both 32-bit and <32-bit devices in
-> the same "special" pot and require IORT tables? I agree it's not nice to
-> ignore the _DMA method alternative during zone setup but we could still
-> check the latter at run-time at warn if smaller than the minimum
-> ZONE_DMA available.
-
-I think this whole discussion must be brought up at spec level and
-rectified. I totally appreciate urgency with this patch and I am happy
-to merge it without kernel docs (provided it does not trigger any
-regressions on existing systems - it should not but the only way to
-know that is by merging it and testing it on ACPI enabled HW).
-
-Thanks,
-Lorenzo
