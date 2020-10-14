@@ -2,102 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A56028DDBE
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 11:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5113628E0B4
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 14:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726217AbgJNJf6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 05:35:58 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2978 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725960AbgJNJf5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Oct 2020 05:35:57 -0400
-Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 96EED2E1D1A2E0660CA8;
-        Wed, 14 Oct 2020 10:35:55 +0100 (IST)
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.85.245) by
- lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.1913.5; Wed, 14 Oct 2020 10:35:55 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <lorenzo.pieralisi@arm.com>,
-        <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [PATCH 1/1] ACPI/IORT: Fix doc warnings in iort.c
-Date:   Wed, 14 Oct 2020 10:31:39 +0100
-Message-ID: <20201014093139.1580-1-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+        id S2388057AbgJNMpE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Oct 2020 08:45:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45192 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388065AbgJNMpE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 14 Oct 2020 08:45:04 -0400
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A07021527
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Oct 2020 12:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602679503;
+        bh=6ppjzznNfXeMqO4LyVAjrU2/JGmafZJqPKLHZkiP5wQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WDMrFN9e89dT1EzhLNdABUUdMiXcEqo9qngnTAVFA8/bmpwf2/3PQ6RbLDSwRV1Da
+         taHknkTL/3gOkZQiGUJWok92u6+wZkm45QJx/lRD2ThY/E/JO1ZDUMeo3UczHXJMrc
+         FOXasJLpb4Z3Ht1VEOHUIBQpb/BI0F6MeNBEZZuU=
+Received: by mail-ot1-f46.google.com with SMTP id m22so3284650ots.4
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Oct 2020 05:45:03 -0700 (PDT)
+X-Gm-Message-State: AOAM531MU/4qEGdCyhzJdiay492Yox3BmBULTKDAAh6dXH10OV/G5PX/
+        u9LdsN6r1hRxwyMAL+CMHEF5y5tBsMsFhOsVBMo=
+X-Google-Smtp-Source: ABdhPJzlp8w6Tm/FX17qfsqKxftQkicXryVcTgriRqMFbY7SeG6EOdvh0iHAl8m5S1ePZnHs9RsNo+dJiOUdGRCv3a4=
+X-Received: by 2002:a05:6830:4028:: with SMTP id i8mr2718741ots.90.1602679502091;
+ Wed, 14 Oct 2020 05:45:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.47.85.245]
-X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
- lhreml715-chm.china.huawei.com (10.201.108.66)
-X-CFilter-Loop: Reflected
+References: <20201010093153.30177-1-ardb@kernel.org> <20201012092821.GB9844@gaia>
+ <CAMj1kXFej2jM_rRSEuRgyQ0W2A9eK=obBfaeNdvWZjydf2RJeg@mail.gmail.com>
+ <CAMj1kXE6mQAnDigp_+nqEj0f+=kBht2Xoqd8S2L1QfPzjL9gog@mail.gmail.com>
+ <20201012112453.GD9844@gaia> <CAMj1kXEmAxytDjcAgpGpCqWcEuO0HijLVuTZcz-vywW=a74mmA@mail.gmail.com>
+ <20201012154954.GB6493@gaia> <CAMj1kXFKRZ-eHtvqxZ84RSVcY8LQgkv1Vh6w8CvsWyOO-qJcuA@mail.gmail.com>
+ <20201012162238.GC6493@gaia> <CAMj1kXFpbVUjOHWEcyzzUR2q7SEWpkiQi3nB+OCLySDHhYY+Fw@mail.gmail.com>
+ <20201012165933.GD6493@gaia> <bd0015dd37df6397767bda2ab8cdff7f805ee4f4.camel@suse.de>
+In-Reply-To: <bd0015dd37df6397767bda2ab8cdff7f805ee4f4.camel@suse.de>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 14 Oct 2020 14:44:50 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHhcB85Uc4wbv7zWkSKACnd05Hj-JRKm_R5OgDB1bkHNg@mail.gmail.com>
+Message-ID: <CAMj1kXHhcB85Uc4wbv7zWkSKACnd05Hj-JRKm_R5OgDB1bkHNg@mail.gmail.com>
+Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fix following warnings caused by mismatch between
-function parameters and function comments.
+On Tue, 13 Oct 2020 at 16:42, Nicolas Saenz Julienne
+<nsaenzjulienne@suse.de> wrote:
+>
+> On Mon, 2020-10-12 at 17:59 +0100, Catalin Marinas wrote:
+> > On Mon, Oct 12, 2020 at 06:35:37PM +0200, Ard Biesheuvel wrote:
+> > > On Mon, 12 Oct 2020 at 18:22, Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > > On Mon, Oct 12, 2020 at 05:55:45PM +0200, Ard Biesheuvel wrote:
+> > > > > On Mon, 12 Oct 2020 at 17:50, Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > > > > > > On Mon, Oct 12, 2020 at 12:43:05PM +0200, Ard Biesheuvel wrote:
+> > > > > > > > > Also, could someone give an executive summary of why it matters where
+> > > > > > > > > the crashkernel is loaded? As far as I can tell, reserve_crashkernel()
+> > > > > > > > > only allocates memory for the kernel's executable image itself, which
+> > > > > > > > > can usually be loaded anywhere in memory. I could see how a
+> > > > > > > > > crashkernel might need some DMA'able memory if it needs to use the
+> > > > > > > > > hardware, but I don't think that is what is going on here.
+> > > > [...]
+> > > > > > However, the crashkernel=... range is meant for sufficiently large
+> > > > > > reservation to be able to run the kdump kernel, not just load the image.
+> > > > >
+> > > > > Sure. But I was referring to the requirement that it is loaded low in
+> > > > > memory. Unless I am misunderstanding something, all we need for the
+> > > > > crashkernel to be able to operate is some ZONE_DMA memory in case it
+> > > > > is needed by the hardware, and beyond that, it could happily live
+> > > > > anywhere in memory.
+> > > >
+> > > > Yes, the crash kernel doesn't need to be loaded in the low memory. But
+> > > > some low memory needs to end up in its perceived System RAM. That's what
+> > > > Chen is trying to do with this series:
+> > > >
+> > > > https://lore.kernel.org/linux-arm-kernel/20200907134745.25732-1-chenzhou10@huawei.com/
+> > > >
+> > > > It reserves the normal crashkernel memory at some high address range
+> > > > with a small block (currently proposed as 256MB similar to x86) in the
+> > > > "low" range.
+> > > >
+> > > > This "low" range for arm64 currently means below 1GB but it's only RPi4
+> > > > that needs it this low, all other platforms are fine with the full low
+> > > > 32-bit range.
+> > > >
+> > > > If it's not doable in a nice way, we'll just leave with this permanent
+> > > > 1GB ZONE_DMA and hope we won't get platforms requiring an even smaller
+> > > > one. There's also the option of ignoring kdump on RPi4, make ZONE_DMA
+> > > > depend on !CRASH_DUMP and the "low" reservations can use the full 32-bit
+> > > > range since the kdump kernel won't need <30-bit addresses.
+> > >
+> > > Are you aware of any reason why we cannot defer the call to
+> > > reserve_crashkernel() to the start of bootmem_init()? That way, we
+> > > have access to the unflattened DT as well as the IORT, and so we can
+> > > tweak the zone limits based on the h/w description, but before
+> > > allocating the crashkernel.
+> >
+> > Not really, as long as memblock_reserve/alloc() still works.
+>
+> I had a look at this myself, and IIUC we're free to call reserve_crashkernel()
+> anytime as long as it's before memblock_free_all().
+>
+> So, should I add a patch in my series taking care of that? or you'd rather take
+> care of it yourselves?
+>
 
-drivers/acpi/arm64/iort.c:55: warning: Function parameter or member 'iort_node' not described in 'iort_set_fwnode'
-drivers/acpi/arm64/iort.c:55: warning: Excess function parameter 'node' description in 'iort_set_fwnode'
-drivers/acpi/arm64/iort.c:682: warning: Function parameter or member 'id' not described in 'iort_get_device_domain'
-drivers/acpi/arm64/iort.c:682: warning: Function parameter or member 'bus_token' not described in 'iort_get_device_domain'
-drivers/acpi/arm64/iort.c:682: warning: Excess function parameter 'req_id' description in 'iort_get_device_domain'
-drivers/acpi/arm64/iort.c:1142: warning: Function parameter or member 'dma_size' not described in 'iort_dma_setup'
-drivers/acpi/arm64/iort.c:1142: warning: Excess function parameter 'size' description in 'iort_dma_setup'
-drivers/acpi/arm64/iort.c:1534: warning: Function parameter or member 'ops' not described in 'iort_add_platform_device'
-
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- drivers/acpi/arm64/iort.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9929ff50c0c0..770d84071a32 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -44,7 +44,7 @@ static DEFINE_SPINLOCK(iort_fwnode_lock);
-  * iort_set_fwnode() - Create iort_fwnode and use it to register
-  *		       iommu data in the iort_fwnode_list
-  *
-- * @node: IORT table node associated with the IOMMU
-+ * @iort_node: IORT table node associated with the IOMMU
-  * @fwnode: fwnode associated with the IORT node
-  *
-  * Returns: 0 on success
-@@ -673,7 +673,8 @@ static int iort_dev_find_its_id(struct device *dev, u32 id,
- /**
-  * iort_get_device_domain() - Find MSI domain related to a device
-  * @dev: The device.
-- * @req_id: Requester ID for the device.
-+ * @id: Requester ID for the device.
-+ * @bus_token: irq domain bus token.
-  *
-  * Returns: the MSI domain for this device, NULL otherwise
-  */
-@@ -1136,7 +1137,7 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
-  *
-  * @dev: device to configure
-  * @dma_addr: device DMA address result pointer
-- * @size: DMA range size result pointer
-+ * @dma_size: DMA range size result pointer
-  */
- void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- {
-@@ -1526,6 +1527,7 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
- /**
-  * iort_add_platform_device() - Allocate a platform device for IORT node
-  * @node: Pointer to device ACPI IORT node
-+ * @ops: Pointer to IORT device config struct
-  *
-  * Returns: 0 on success, <0 failure
-  */
--- 
-2.17.1
-
-
+Would you mind adopting this patch, and insert it into your series
+where appropriate? (after dropping the Documentation/ change, and
+moving the prototype declaration into linux/acpi_iort.h?) Then, you
+can also include moving the reserve_crashkernel() into bootmem_init().
