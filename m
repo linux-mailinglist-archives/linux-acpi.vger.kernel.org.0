@@ -2,87 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6520028D32F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Oct 2020 19:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 022C828D79D
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 02:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726730AbgJMRfY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Oct 2020 13:35:24 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46613 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbgJMRfY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Oct 2020 13:35:24 -0400
-Received: by mail-oi1-f193.google.com with SMTP id s81so180759oie.13;
-        Tue, 13 Oct 2020 10:35:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=j90o4pXE8wrwI/DObfaFUgJw3Uhg+maJFJpVAo6JkBA=;
-        b=Vby9lid004lre9qOCw/oQBsvuz+9bEM+lZmwV1Ud8DJpY0IcureVG6TsMUE6eqBxiA
-         OKQflSM67Tr4YQpH5B+OheweQ4frkwr/xJQSw/0nJioVOqC28d3aO+O7Xaw94TKqWvok
-         UeH6bEB+y/ppI169xiqOBDvrf3RJQj6siq7y0wygkImtrTqgiakz+PGqmlRRQki+qmBW
-         i5SKbDKhStQ4iwW5YWqzBaz8dHK/ujBUEJbRD+qhVheEp0mBHRa7+sa2+iyqhQS4cTkl
-         f7BLw4ZSXVIdLag2VSSJu1m4zNWqDwfskOwqQoeC7pQbvL7MG+AsZaF2iVuBT01FOSV6
-         RnOQ==
-X-Gm-Message-State: AOAM530wWDf0PLs8xEZ4o9210ffN7vic/bl+6C7oLvBnZUS55XMSGChS
-        eCVwioqS1h1Hxq93fZ5sKs2vmJ0Ww1B0FUKw9cGZhbAYiF0=
-X-Google-Smtp-Source: ABdhPJxrrZw26n5N1rCRo0ZhIngERFyu8lKE5hsJrarcEs2ViOUUgl+S4SniHKVKTkL0Sjj+1KaaSQVj6024aQwHvao=
-X-Received: by 2002:aca:fd52:: with SMTP id b79mr513288oii.69.1602610523613;
- Tue, 13 Oct 2020 10:35:23 -0700 (PDT)
+        id S1728402AbgJNAnJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Oct 2020 20:43:09 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:60456 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727837AbgJNAnI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Oct 2020 20:43:08 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 160EB44ABE733EDAB73A;
+        Wed, 14 Oct 2020 08:43:05 +0800 (CST)
+Received: from [10.174.179.182] (10.174.179.182) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 14 Oct 2020 08:43:02 +0800
+Subject: Re: [PATCHv2] ACPI: debug: don't allow debugging when ACPI is
+ disabled
+To:     Jamie Iles <jamie@nuviainc.com>, <linux-acpi@vger.kernel.org>
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+References: <20201009152116.35184-1-jamie@nuviainc.com>
+ <20201012130446.57325-1-jamie@nuviainc.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <b332a42a-cb5d-ad2a-99f5-77df748c343a@huawei.com>
+Date:   Wed, 14 Oct 2020 08:43:02 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 13 Oct 2020 19:35:12 +0200
-Message-ID: <CAJZ5v0gj1X7kO2uVX=zMzR6+y1BWAERT+HDT+0zY0ieXs+Lx3g@mail.gmail.com>
-Subject: [GIT PULL] PNP updates for v5.10-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201012130446.57325-1-jamie@nuviainc.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.182]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On 2020/10/12 21:04, Jamie Iles wrote:
+> If ACPI is disabled then loading the acpi_dbg module will result in the
+> following splat when lock debugging is enabled.
+> 
+>    DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+>    WARNING: CPU: 0 PID: 1 at kernel/locking/mutex.c:938 __mutex_lock+0xa10/0x1290
+>    Kernel panic - not syncing: panic_on_warn set ...
+>    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.9.0-rc8+ #103
+>    Hardware name: linux,dummy-virt (DT)
+>    Call trace:
+>     dump_backtrace+0x0/0x4d8
+>     show_stack+0x34/0x48
+>     dump_stack+0x174/0x1f8
+>     panic+0x360/0x7a0
+>     __warn+0x244/0x2ec
+>     report_bug+0x240/0x398
+>     bug_handler+0x50/0xc0
+>     call_break_hook+0x160/0x1d8
+>     brk_handler+0x30/0xc0
+>     do_debug_exception+0x184/0x340
+>     el1_dbg+0x48/0xb0
+>     el1_sync_handler+0x170/0x1c8
+>     el1_sync+0x80/0x100
+>     __mutex_lock+0xa10/0x1290
+>     mutex_lock_nested+0x6c/0xc0
+>     acpi_register_debugger+0x40/0x88
+>     acpi_aml_init+0xc4/0x114
+>     do_one_initcall+0x24c/0xb10
+>     kernel_init_freeable+0x690/0x728
+>     kernel_init+0x20/0x1e8
+>     ret_from_fork+0x10/0x18
+> 
+> This is because acpi_debugger.lock has not been initialized as
+> acpi_debugger_init() is not called when ACPI is disabled.  Fail module
+> loading to avoid this and any subsequent problems that might arise by
+> trying to debug AML when ACPI is disabled.
+> 
+> Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
+> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Please pull from the tag
+My review still valid, thanks!
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pnp-5.10-rc1
-
-with top-most commit 2ef0342530b0f487a65b5f6c94c85dce5f9b53b5
-
- PNP: remove the now unused pnp_find_card() function
-
-on top of commit ba4f184e126b751d1bffad5897f263108befc780
-
- Linux 5.9-rc6
-
-to receive PNP updates for 5.10-rc1.
-
-These clean the PNP code somewhat:
-
- - Remove the now unused pnp_find_card() function (Christoph Hellwig).
-
- - Drop duplicate pci.h include from the quirks code and add an
-   "internal.h" include to acpi_pnp.c to fix a compiler warning (Tian
-   Tao).
-
-Thanks!
-
-
----------------
-
-Christoph Hellwig (1):
-      PNP: remove the now unused pnp_find_card() function
-
-Tian Tao (2):
-      PNP: quirks: Fix duplicate included pci.h
-      PNP: ACPI: Fix missing-prototypes in acpi_pnp.c
-
----------------
-
- Documentation/admin-guide/pnp.rst |  4 ----
- drivers/acpi/acpi_pnp.c           |  2 ++
- drivers/pnp/isapnp/compat.c       | 23 -----------------------
- drivers/pnp/quirks.c              |  2 --
- include/linux/isapnp.h            |  6 ------
- 5 files changed, 2 insertions(+), 35 deletions(-)
+Hanjun
