@@ -2,136 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA0F28DCAC
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 11:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A56028DDBE
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 11:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729145AbgJNJR4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 05:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726323AbgJNJR4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Oct 2020 05:17:56 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD00C051101;
-        Wed, 14 Oct 2020 02:17:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=oSoCzew+YknB0dx5EoXOzxp1GOMgWSJZPnYxGNWDbHw=; b=bbHVobEMV+gxKJvM2yym+cXIBq
-        fr+AXG56PjCs1dnTUCUFhA1KXpxjWdj+INB1pvURTaabIE118jh6jK8Ie8/ARC+Pmgp45nmv/ifqS
-        mqDWYvAzc8+sJ/BAxkz2sVSKdNFeujBFY8Ovj+C/cNykURt2cFMx2UNiPpfD9qHUfsCmiLFejXHxP
-        emit1XplFzfQI+kL4BAibB+Bb6r/6UqlL6KbtRTBCtsFKGKALZpQ7G5AGARKpVFfX42onYfwZPB/b
-        F0er87EC0E3DR0lqy3cCSF/VE4aSvCn+U9OI1AMBf4CG5GRBlyMf0BFwjrx22xyBB8UuD8IQ0wcrM
-        uSW/YzsA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kScuP-0000Ui-V4; Wed, 14 Oct 2020 09:17:22 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 46051304E03;
-        Wed, 14 Oct 2020 11:17:20 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 21495201A8541; Wed, 14 Oct 2020 11:17:20 +0200 (CEST)
-Date:   Wed, 14 Oct 2020 11:17:20 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     Kees Cook <keescook@chromium.org>, corbet@lwn.net,
-        gregkh@linuxfoundation.org, shuah@kernel.org, rafael@kernel.org,
-        johannes@sipsolutions.net, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, arve@android.com,
-        tkjos@android.com, maco@android.com, joel@joelfernandes.org,
-        christian@brauner.io, hridya@google.com, surenb@google.com,
-        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
-        rric@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@driverdev.osuosl.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-edac@vger.kernel.org, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 00/11] Introduce Simple atomic counters
-Message-ID: <20201014091720.GC2628@hirez.programming.kicks-ass.net>
-References: <cover.1602209970.git.skhan@linuxfoundation.org>
- <20201009193746.GA1073957@hirez.programming.kicks-ass.net>
- <202010091255.246395A6@keescook>
- <20201010110920.GQ2628@hirez.programming.kicks-ass.net>
- <6e1dd408-653e-817e-b659-23649259a929@linuxfoundation.org>
+        id S1726217AbgJNJf6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Oct 2020 05:35:58 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2978 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725960AbgJNJf5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 14 Oct 2020 05:35:57 -0400
+Received: from lhreml715-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 96EED2E1D1A2E0660CA8;
+        Wed, 14 Oct 2020 10:35:55 +0100 (IST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.85.245) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.1913.5; Wed, 14 Oct 2020 10:35:55 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <lorenzo.pieralisi@arm.com>,
+        <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH 1/1] ACPI/IORT: Fix doc warnings in iort.c
+Date:   Wed, 14 Oct 2020 10:31:39 +0100
+Message-ID: <20201014093139.1580-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6e1dd408-653e-817e-b659-23649259a929@linuxfoundation.org>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.47.85.245]
+X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 08:12:20PM -0600, Shuah Khan wrote:
+Fix following warnings caused by mismatch between
+function parameters and function comments.
 
-> They don't add any new behavior, As Kees mentioned they do give us a
-> way to clearly differentiate atomic usages that can wrap.
+drivers/acpi/arm64/iort.c:55: warning: Function parameter or member 'iort_node' not described in 'iort_set_fwnode'
+drivers/acpi/arm64/iort.c:55: warning: Excess function parameter 'node' description in 'iort_set_fwnode'
+drivers/acpi/arm64/iort.c:682: warning: Function parameter or member 'id' not described in 'iort_get_device_domain'
+drivers/acpi/arm64/iort.c:682: warning: Function parameter or member 'bus_token' not described in 'iort_get_device_domain'
+drivers/acpi/arm64/iort.c:682: warning: Excess function parameter 'req_id' description in 'iort_get_device_domain'
+drivers/acpi/arm64/iort.c:1142: warning: Function parameter or member 'dma_size' not described in 'iort_dma_setup'
+drivers/acpi/arm64/iort.c:1142: warning: Excess function parameter 'size' description in 'iort_dma_setup'
+drivers/acpi/arm64/iort.c:1534: warning: Function parameter or member 'ops' not described in 'iort_add_platform_device'
 
-No it doesn't! atomic_t can wrap, this thing can wrap, no distinction.
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+---
+ drivers/acpi/arm64/iort.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-All it does is fragment the API and sow confusion. FOR NO BENEFIT.
-
-> > Worse, it mixes 2 unrelated cases into one type, which just makes a
-> > mockery of things (all the inc_return users are not statistics, some
-> > might even mis-behave if they wrap).
-> > 
-> 
-> You are right that all inc_return usages aren't statistics. There are
-> 3 distinct usages:
-> 
-> 1. Stats
-> 2. Cases where wrapping is fine
-> 3. Cases where wrapping could be a problem. In which case, this API
->    shouldn't be used.
-
-And yet, afaict patch 4 is case 3...
-
-> There is no need to keep inc_return in this API as such. I included it
-> so it can be used for above cases 1 and 2, so the users don't have to
-> call inc() followed by read(). It can be left out of the API.
-> 
-> The atomic_t usages in the kernel fall into the following categories:
-> 
-> 1. Stats (tolerance for accuracy determines whether they need to be
->    atomic or not). RFC version included non-atomic API for cases
->    when lossiness is acceptable. All these cases use/need just init
->    and inc. There are two variations in this case:
-> 
->    a. No checks for wrapping. Use signed value.
->    b. No checks for wrapping, but return unsigned.
-> 
-> 2. Reference counters that release resource and rapping could result
->    in use-after-free type problems. There are two variations in this
->    case:
-> 
->    a. Increments and decrements aren't bounded.
->    b. Increments and decrements are bounded.
-> 
->    Currently tools that flag unsafe atomic_t usages that are candidates
->    for refcount_t conversions don't make a distinction between the two.
-> 
->    The second case, since increments and decrements are bounded, it is
->    safe to continue to use it. At the moment there is no good way to
->    tell them apart other than looking at each of these cases.
-> 
-> 3. Reference counters that manage/control states. Wrapping is a problem
->    in this case, as it could lead to undefined behavior. These cases
->    don't use test and free, use inc/dec. At the moment there is no good
->    way to tell them apart other than looking at each of these cases.
->    This is addressed by REFCOUNT_SATURATED case.
-
-Wrong! The atomic usage in mutex doesn't fall in any of those
-categories.
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 9929ff50c0c0..770d84071a32 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -44,7 +44,7 @@ static DEFINE_SPINLOCK(iort_fwnode_lock);
+  * iort_set_fwnode() - Create iort_fwnode and use it to register
+  *		       iommu data in the iort_fwnode_list
+  *
+- * @node: IORT table node associated with the IOMMU
++ * @iort_node: IORT table node associated with the IOMMU
+  * @fwnode: fwnode associated with the IORT node
+  *
+  * Returns: 0 on success
+@@ -673,7 +673,8 @@ static int iort_dev_find_its_id(struct device *dev, u32 id,
+ /**
+  * iort_get_device_domain() - Find MSI domain related to a device
+  * @dev: The device.
+- * @req_id: Requester ID for the device.
++ * @id: Requester ID for the device.
++ * @bus_token: irq domain bus token.
+  *
+  * Returns: the MSI domain for this device, NULL otherwise
+  */
+@@ -1136,7 +1137,7 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
+  *
+  * @dev: device to configure
+  * @dma_addr: device DMA address result pointer
+- * @size: DMA range size result pointer
++ * @dma_size: DMA range size result pointer
+  */
+ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+ {
+@@ -1526,6 +1527,7 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
+ /**
+  * iort_add_platform_device() - Allocate a platform device for IORT node
+  * @node: Pointer to device ACPI IORT node
++ * @ops: Pointer to IORT device config struct
+  *
+  * Returns: 0 on success, <0 failure
+  */
+-- 
+2.17.1
 
 
-The only thing you're all saying that makes sense is that unintentional
-wrapping can have bad consequences, the rest is pure confusion.
-
-Focus on the non-wrapping cases, _everything_ else is not going
-anywhere.
-
-So audit the kernel, find the cases that should not wrap, categorize and
-create APIs for them that trap the wrapping. But don't go around
-confusing things that don't need confusion.
