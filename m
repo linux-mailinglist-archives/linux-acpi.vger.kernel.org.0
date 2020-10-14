@@ -2,176 +2,330 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7170128E0C3
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 14:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C55F628E1BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Oct 2020 15:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729258AbgJNMy5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Oct 2020 08:54:57 -0400
-Received: from mx2.suse.de ([195.135.220.15]:41092 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727061AbgJNMy4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Oct 2020 08:54:56 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 38632AEDA;
-        Wed, 14 Oct 2020 12:54:55 +0000 (UTC)
-Message-ID: <1c436e677b948c3242ed60839b72e36868c51334.camel@suse.de>
-Subject: Re: [PATCH] arm64: mm: set ZONE_DMA size based on early IORT scan
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Date:   Wed, 14 Oct 2020 14:54:52 +0200
-In-Reply-To: <CAMj1kXHhcB85Uc4wbv7zWkSKACnd05Hj-JRKm_R5OgDB1bkHNg@mail.gmail.com>
-References: <20201010093153.30177-1-ardb@kernel.org>
-         <20201012092821.GB9844@gaia>
-         <CAMj1kXFej2jM_rRSEuRgyQ0W2A9eK=obBfaeNdvWZjydf2RJeg@mail.gmail.com>
-         <CAMj1kXE6mQAnDigp_+nqEj0f+=kBht2Xoqd8S2L1QfPzjL9gog@mail.gmail.com>
-         <20201012112453.GD9844@gaia>
-         <CAMj1kXEmAxytDjcAgpGpCqWcEuO0HijLVuTZcz-vywW=a74mmA@mail.gmail.com>
-         <20201012154954.GB6493@gaia>
-         <CAMj1kXFKRZ-eHtvqxZ84RSVcY8LQgkv1Vh6w8CvsWyOO-qJcuA@mail.gmail.com>
-         <20201012162238.GC6493@gaia>
-         <CAMj1kXFpbVUjOHWEcyzzUR2q7SEWpkiQi3nB+OCLySDHhYY+Fw@mail.gmail.com>
-         <20201012165933.GD6493@gaia>
-         <bd0015dd37df6397767bda2ab8cdff7f805ee4f4.camel@suse.de>
-         <CAMj1kXHhcB85Uc4wbv7zWkSKACnd05Hj-JRKm_R5OgDB1bkHNg@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-HghmYOWVBA/x9qTLND7R"
-User-Agent: Evolution 3.36.5 
+        id S1731377AbgJNNzr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Oct 2020 09:55:47 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:35919 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726119AbgJNNzq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Oct 2020 09:55:46 -0400
+Received: by mail-oi1-f195.google.com with SMTP id u17so3323833oie.3;
+        Wed, 14 Oct 2020 06:55:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wemAUe8l+uVkv3PEUFO1Jzpi+fMpOf3nWcYVW8KGtC8=;
+        b=K0b+9dYa7tJPy1p8wr8eI3Ay9zH3ep/vGfdz1LdhjJ7qa5HxKczYt5ClGuOES3+UxD
+         qGNm2oj/L3sFy2V8Ly1BOQ8kx3pft8YxMCPMLph/QKmrYtTqJN2uwW7n4xKOe0ltZi7l
+         XaguGBRYb1TB1rEf7ijmPUGYqBZ9xFSOWqkUfs/NEWsHwg03suwQXkhWOP8SwbSh3nZG
+         YrY9u4w9FcaIKMmivrUoqhlG9rFQyd9pm2lAx80wA4IMnOleVIAr4F2/fGKbA0ddsdS5
+         NdkTxLKQVInNL3bpszLRUVLzf244BaFJ2HaL4zhfDA/C40BCNusIyLzWur8fXojdtbJ2
+         q+zw==
+X-Gm-Message-State: AOAM533fmqebgo0eaMD+EDAEM4Fjo539GErz7NcAGnZI1HButlHobi4D
+        CUec80ENAdnlBsSz65i2AvTWmIoS7X/W8Ia/KEs=
+X-Google-Smtp-Source: ABdhPJwtIZ31hmmDVxcwsaWl8oT0IzvEVKNuU/vlpHBHeaBXJ2nYyO5y2mRnZqmSCi1ZYlWliq5armXmpzzi/R8GYlQ=
+X-Received: by 2002:aca:5256:: with SMTP id g83mr2351964oib.71.1602683744832;
+ Wed, 14 Oct 2020 06:55:44 -0700 (PDT)
 MIME-Version: 1.0
+References: <20201003131938.9426-1-hdegoede@redhat.com> <20201003131938.9426-2-hdegoede@redhat.com>
+ <DM6PR19MB263669227D122BB7699951E6FA0C0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <85a36eb58cb9774f1907582dfc75295ed847200c.camel@hadess.net>
+ <DM6PR19MB26364E6AA2F51981F592CE58FA0A0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <c73ffad8fd6bff8ff20d91930b097bff82be1c8f.camel@hadess.net>
+ <DM6PR19MB2636B067186B08B744EA2163FA0A0@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <CAJZ5v0jBJBTTb3qBGH0UWOAfvY24gWqJQA=MahnhaTdMu-w0Bw@mail.gmail.com> <394f897a-4dac-7016-ea17-c37b67589e07@redhat.com>
+In-Reply-To: <394f897a-4dac-7016-ea17-c37b67589e07@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 14 Oct 2020 15:55:33 +0200
+Message-ID: <CAJZ5v0is93pUzy8L0s0F+i6j9ecGutRv54ji0Nx3wr-15Y8uBA@mail.gmail.com>
+Subject: Re: [RFC] Documentation: Add documentation for new
+ performance_profile sysfs class
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <Mario.Limonciello@dell.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mark Pearson <mpearson@lenovo.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Oct 13, 2020 at 3:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 10/12/20 6:42 PM, Rafael J. Wysocki wrote:
+> > On Wed, Oct 7, 2020 at 8:41 PM Limonciello, Mario
+> > <Mario.Limonciello@dell.com> wrote:
+> >>
+> >>> On Wed, 2020-10-07 at 15:58 +0000, Limonciello, Mario wrote:
+> >>>>
+> >>>>> On Mon, 2020-10-05 at 12:58 +0000, Limonciello, Mario wrote:
+> >>>>>>> On modern systems CPU/GPU/... performance is often dynamically
+> >>>>>>> configurable
+> >>>>>>> in the form of e.g. variable clock-speeds and TPD. The
+> >>>>>>> performance
+> >>>>>>> is often
+> >>>>>>> automatically adjusted to the load by some automatic-mechanism
+> >>>>>>> (which may
+> >>>>>>> very well live outside the kernel).
+> >>>>>>>
+> >>>>>>> These auto performance-adjustment mechanisms often can be
+> >>>>>>> configured with
+> >>>>>>> one of several performance-profiles, with either a bias towards
+> >>>>>>> low-power
+> >>>>>>> consumption (and cool and quiet) or towards performance (and
+> >>>>>>> higher
+> >>>>>>> power
+> >>>>>>> consumption and thermals).
+> >>>>>>>
+> >>>>>>> Introduce a new performance_profile class/sysfs API which
+> >>>>>>> offers a
+> >>>>>>> generic
+> >>>>>>> API for selecting the performance-profile of these automatic-
+> >>>>>>> mechanisms.
+> >>>>>>>
+> >>>>>>
+> >>>>>> If introducing an API for this - let me ask the question, why
+> >>>>>> even let each
+> >>>>>> driver offer a class interface and userspace need to change
+> >>>>>> "each" driver's
+> >>>>>> performance setting?
+> >>>>>>
+> >>>>>> I would think that you could just offer something kernel-wide
+> >>>>>> like
+> >>>>>> /sys/power/performance-profile
+> >>>>>>
+> >>>>>> Userspace can read and write to a single file.  All drivers can
+> >>>>>> get notified
+> >>>>>> on this sysfs file changing.
+> >>>>>>
+> >>>>>> The systems that react in firmware (such as the two that prompted
+> >>>>>> this discussion) can change at that time.  It leaves the
+> >>>>>> possibility for a
+> >>>>>> more open kernel implementation that can do the same thing though
+> >>>>>> too by
+> >>>>>> directly modifying device registers instead of ACPI devices.
+> >>>>>
+> >>>>> The problem, as I've mentioned in previous discussions we had about
+> >>>>> this, is that, as you've seen in replies to this mail, this would
+> >>>>> suddenly be making the kernel apply policy.
+> >>>>>
+> >>>>> There's going to be pushback as soon as policy is enacted in the
+> >>>>> kernel, and you take away the different knobs for individual
+> >>>>> components
+> >>>>> (or you can control them centrally as well as individually). As
+> >>>>> much as
+> >>>>> I hate the quantity of knobs[1], I don't think that trying to
+> >>>>> reduce
+> >>>>> the number of knobs in the kernel is a good use of our time, and
+> >>>>> easier
+> >>>>> to enact, coordinated with design targets, in user-space.
+> >>>>>
+> >>>>> Unless you can think of a way to implement this kernel wide setting
+> >>>>> without adding one more exponent on the number of possibilities for
+> >>>>> the
+> >>>>> testing matrix, I'll +1 Hans' original API.
+> >>>>>
+> >>>> Actually I offered two proposals in my reply.  So are you NAKing
+> >>>> both?
+> >>>
+> >>> No, this is only about the first portion of the email, which I quoted.
+> >>> And I'm not NAK'ing it, but I don't see how it can work without being
+> >>> antithetical to what kernel "users" expect, or what the folks consuming
+> >>> those interfaces (presumably us both) would expect to be able to test
+> >>> and maintain.
+> >>>
+> >>
+> >> (Just so others are aware, Bastien and I had a previous discussion on this topic
+> >> that he alluded to here: https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/issues/1)
+> >>
+> >> In general I agree that we shouldn't be offering 100's of knobs to change
+> >> things and protect users from themselves where possible.
+> >>
+> >> Whether the decisions are made in the kernel or in userspace you still have a matrix once
+> >> you're letting someone change 2 different kernel devices that offer policy.  I'd argue it's
+> >> actually worse if you let userspace change it though.
+> >>
+> >> Let's go back to the my GPU and platform example and lets say both offer the new knob here
+> >> for both.  Userspace software such as your PPD picks performance.  Both the platform device
+> >> and GPU device get changed, hopefully no conflicts.
+> >> Then user decides no, I don't want my GPU in performance mode, I only want my platform.
+> >> So they change the knob for the GPU manually, and now you have a new config in your matrix.
+> >>
+> >> However if you left it to a single kernel knob, both GPU and platform get moved together and
+> >> you don't have these extra configs in your matrix anymore.
+> >>
+> >> The other point I mentioned, that platform might also do something to GPU via a sideband and
+> >> you race, you can solve it with kernel too by modifying the ordering the kernel handles it.
+> >>
+> >> Userspace however, you give two knobs and now you have to worry about them getting it right
+> >> and supporting them doing them in the wrong order.
+> >>
+> >>>> The other one suggested to use the same firmware attributes class
+> >>>> being
+> >>>> introduced by the new Dell driver (
+> >>>> https://patchwork.kernel.org/patch/11818343/)
+> >>>> since this is actually a knob to a specific firmware setting.
+> >>>
+> >>> This seemed to me like an implementation detail (eg. the same metadata
+> >>> is being exported, but in a different way), and I don't feel strongly
+> >>> about it either way.
+> >>
+> >> OK thanks.
+> >
+> > IMV there are two choices here:  One is between exposing the low-level
+> > interfaces verbatim to user space and wrapping them up into a certain
+> > "translation" layer allowing user space to use a unified interface (I
+> > think that is what everybody wants) and the other  boils down to how
+> > the unified interface between the kernel and user space will look
+> > like.
+> >
+> > Personally, I think that something line /sys/power/profile allowing
+> > drivers (and other kernel entities) to register callbacks might work
+> > (as stated in my last reply to Hans).
+>
+> Note to others reading along I pointed to this thread in this thread:
+> https://lore.kernel.org/linux-pm/20201006122024.14539-1-daniel.lezcano@linaro.org/T/#t
+> and Rafael's "last reply" above refers to his reply in that thread.
+>
+> For the sake of people reading along I'm reproducing my reply
+> there below.
 
---=-HghmYOWVBA/x9qTLND7R
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+For completeness, my response in the other thread is here:
 
-On Wed, 2020-10-14 at 14:44 +0200, Ard Biesheuvel wrote:
-> On Tue, 13 Oct 2020 at 16:42, Nicolas Saenz Julienne
-> <nsaenzjulienne@suse.de> wrote:
-> > On Mon, 2020-10-12 at 17:59 +0100, Catalin Marinas wrote:
-> > > On Mon, Oct 12, 2020 at 06:35:37PM +0200, Ard Biesheuvel wrote:
-> > > > On Mon, 12 Oct 2020 at 18:22, Catalin Marinas <catalin.marinas@arm.=
-com> wrote:
-> > > > > On Mon, Oct 12, 2020 at 05:55:45PM +0200, Ard Biesheuvel wrote:
-> > > > > > On Mon, 12 Oct 2020 at 17:50, Catalin Marinas <catalin.marinas@=
-arm.com> wrote:
-> > > > > > > > > On Mon, Oct 12, 2020 at 12:43:05PM +0200, Ard Biesheuvel =
-wrote:
-> > > > > > > > > > Also, could someone give an executive summary of why it=
- matters where
-> > > > > > > > > > the crashkernel is loaded? As far as I can tell, reserv=
-e_crashkernel()
-> > > > > > > > > > only allocates memory for the kernel's executable image=
- itself, which
-> > > > > > > > > > can usually be loaded anywhere in memory. I could see h=
-ow a
-> > > > > > > > > > crashkernel might need some DMA'able memory if it needs=
- to use the
-> > > > > > > > > > hardware, but I don't think that is what is going on he=
-re.
-> > > > > [...]
-> > > > > > > However, the crashkernel=3D... range is meant for sufficientl=
-y large
-> > > > > > > reservation to be able to run the kdump kernel, not just load=
- the image.
-> > > > > >=20
-> > > > > > Sure. But I was referring to the requirement that it is loaded =
-low in
-> > > > > > memory. Unless I am misunderstanding something, all we need for=
- the
-> > > > > > crashkernel to be able to operate is some ZONE_DMA memory in ca=
-se it
-> > > > > > is needed by the hardware, and beyond that, it could happily li=
-ve
-> > > > > > anywhere in memory.
-> > > > >=20
-> > > > > Yes, the crash kernel doesn't need to be loaded in the low memory=
-. But
-> > > > > some low memory needs to end up in its perceived System RAM. That=
-'s what
-> > > > > Chen is trying to do with this series:
-> > > > >=20
-> > > > > https://lore.kernel.org/linux-arm-kernel/20200907134745.25732-1-c=
-henzhou10@huawei.com/
-> > > > >=20
-> > > > > It reserves the normal crashkernel memory at some high address ra=
-nge
-> > > > > with a small block (currently proposed as 256MB similar to x86) i=
-n the
-> > > > > "low" range.
-> > > > >=20
-> > > > > This "low" range for arm64 currently means below 1GB but it's onl=
-y RPi4
-> > > > > that needs it this low, all other platforms are fine with the ful=
-l low
-> > > > > 32-bit range.
-> > > > >=20
-> > > > > If it's not doable in a nice way, we'll just leave with this perm=
-anent
-> > > > > 1GB ZONE_DMA and hope we won't get platforms requiring an even sm=
-aller
-> > > > > one. There's also the option of ignoring kdump on RPi4, make ZONE=
-_DMA
-> > > > > depend on !CRASH_DUMP and the "low" reservations can use the full=
- 32-bit
-> > > > > range since the kdump kernel won't need <30-bit addresses.
-> > > >=20
-> > > > Are you aware of any reason why we cannot defer the call to
-> > > > reserve_crashkernel() to the start of bootmem_init()? That way, we
-> > > > have access to the unflattened DT as well as the IORT, and so we ca=
-n
-> > > > tweak the zone limits based on the h/w description, but before
-> > > > allocating the crashkernel.
-> > >=20
-> > > Not really, as long as memblock_reserve/alloc() still works.
-> >=20
-> > I had a look at this myself, and IIUC we're free to call reserve_crashk=
-ernel()
-> > anytime as long as it's before memblock_free_all().
-> >=20
-> > So, should I add a patch in my series taking care of that? or you'd rat=
-her take
-> > care of it yourselves?
-> >=20
->=20
-> Would you mind adopting this patch, and insert it into your series
-> where appropriate? (after dropping the Documentation/ change, and
-> moving the prototype declaration into linux/acpi_iort.h?) Then, you
-> can also include moving the reserve_crashkernel() into bootmem_init().
+https://lore.kernel.org/linux-pm/CAJZ5v0jpYpu3Tk7qq_MCVs0wUr-Dw0rY5EZELrVbQta0NZaoVA@mail.gmail.com/T/#t
 
-Yes, I'll take care of it.
+> Rafael, it seems more appropriate to continue this discussion
+> in this thread, so lets discuss this further here ?
 
+And because I sent it before reading this message, let me reproduce it
+below (with some additions).
 
---=-HghmYOWVBA/x9qTLND7R
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+> My reply to Rafael from the other thread:
+>
+> First of all thank you for your input, with your expertise in this
+> area your input is very much appreciated, after all we only get
+> one chance to get the userspace API for this right.
+>
+> Your proposal to have a single sysfs file for userspace to talk
+> to and then use an in kernel subscription mechanism for drivers
+> to get notified of writes to this file is interesting.
+>
+> But I see 2 issues with it:
+>
+> 1. How will userspace know which profiles are actually available ?
+>
+> An obvious solution is to pick a set of standard names and let
+> subscribers map those as close to their own settings as possible,
+> the most often mentioned set of profile names in this case seems to be:
+>
+> low_power
+> balanced_power
+> balanced
+> balanced_performance
+> performance
+>
+> Which works fine for the thinkpad_acpi case, but not so much for
+> the hp-wmi case. In the HP case what happens is that a WMI call
+> is made which sets a bunch of ACPI variables which influence
+> the DPTF code (this assumes we have some sort of DPTF support
+> such as mjg59's reverse engineered support) but the profile-names
+> under Windows are: "Performance", "HP recommended", "Cool" and
+> "Quiet".  If you read the discussion from the
+> "[RFC] Documentation: Add documentation for new performance_profile sysfs class"
+> thread you will see this was brought up as an issue there.
 
------BEGIN PGP SIGNATURE-----
+Two different things seem to be conflated here.  One is how to pass a
+possible performance-vs-power preference coming from user space down
+to device drivers or generally pieces of kernel code that can adjust
+the behavior and/or hardware settings depending on what that
+preference is and the other is how to expose OEM-provided DPTF system
+profile interfaces to user space.
 
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl+G9RwACgkQlfZmHno8
-x/585Af/dHIOSaTQOaR4OjiHc3K9rzqBvSISwiGCqNwQ4bICWdaMk9dTm7tJsiDQ
-9c8S6KhzNiNPFuX4LUsUym+dVkAVVanvOI3EDf8dhl6IzxouQmUhIP6oVY8wqOVF
-cRN8A/YQecs/GMkI5dx573TYispHsQr1mfTMDopquAYDELwDWV4Z4eYRf6EO3ScD
-VVjvdl4a3Zg1AmI/pKWaVBlunC4NVUIcya2DJzRJ9Lq743Fcmfq4OXGunnq7j+Tb
-NQJKoqgQzOGBgxPa4ZOcONOJnKG4XYcg+leMJo2Y9b6+5+9OJ6SvOLbRbWYzCgue
-aOnb3kRr3HM0pVI00+QOnY+jJyqBng==
-=TPqR
------END PGP SIGNATURE-----
+The former assumes that there is a common set of values that can be
+understood and acted on in a consistent way by all of the interested
+entities within the kernel and the latter is about passing information
+from user space down to a side-band power control mechanism working in
+its own way behind the kernel's back (and possibly poking at multiple
+hardware components in the platform in its own way).
 
---=-HghmYOWVBA/x9qTLND7R--
+IMO there is no way to provide a common interface covering these two
+cases at the same time.
 
+> The problem here is that both "cool" and "quiet" could be
+> interpreted as low-power. But it seems that they actually mean
+> what they say, cool focuses on keeping temps low, which can
+> also be done by making the fan-profile more aggressive. And quiet
+> is mostly about keeping fan speeds down, at the cost of possible
+> higher temperatures.
+>
+> <edit in this version of the reply:>
+> I wonder if the HP profiles are actually just fan speed profiles ?
+> Elia do you know ?
+> </edit>
+
+I don't think so.
+
+AFAICS, in both the Thinkpad and HP cases the profile covers the
+entire platform, which in particular means that they cannot co-exist.
+
+> IOW we don't really have a 1 dimensional axis.
+
+Well, AFAICS, DPTF system profile interfaces coming from different
+OEMs will be different, but they are about side-band power control and
+there can be only one thing like that in a platform at the same time.
+
+> My class proposal fixes this by having a notion of both
+> standardized names (because anything else would suck) combined
+> with a way for drivers to advertise which standardized names
+> the support. So in my proposal I simply add quiet and cool
+> to the list of standard profile names, and then the HP-wmi
+> driver can list those as supported, while not listing
+> low_power as a supported profile.  This way we export the
+> hardware interface to userspace as is (as much as possible)
+> while still offering a standardized interface for userspace
+> to consume.  Granted if userspace now actually want to set
+> a low_power profile, we have just punted the problem to userspace
+> but I really do not see a better solution.
+
+First, a common place to register a DPTF system profile seems to be
+needed and, as I said above, I wouldn't expect more than one such
+thing to be present in the system at any given time, so it may be
+registered along with the list of supported profiles and user space
+will have to understand what they mean.
+
+Second, irrespective of the above, it may be useful to have a
+consistent way to pass performance-vs-power preference information
+from user space to different parts of the kernel so as to allow them
+to adjust their operation and this could be done with a system-wide
+power profile attribute IMO.
+
+> 2. This only works assuming that all performance-profiles
+> are system wide. But given a big desktop case there might
+> be very well be separate cooling zones for e.g. the CPU
+> and the GPU and I can imagine both having separate
+> performance-profile settings and some users will doubtlessly
+> want to be able to control these separately ...
+
+Let's say that I'm not convinced. :-)
+
+They cannot be totally separate, because they will affect each other
+and making possibly conflicting adjustments needs to be avoided.
+
+Cheers!
