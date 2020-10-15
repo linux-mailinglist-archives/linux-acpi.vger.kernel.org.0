@@ -2,66 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F8B428F788
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 19:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CC928F814
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 20:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404579AbgJORPm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Oct 2020 13:15:42 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:40479 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390447AbgJORPm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Oct 2020 13:15:42 -0400
-Received: by mail-oi1-f195.google.com with SMTP id m128so3891672oig.7;
-        Thu, 15 Oct 2020 10:15:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Xrn17b+ntKHq1CA8pT0i8xm7h9nTQC4aTvhOh2R5n9A=;
-        b=qJrGjgZPOSKOdEREe/tgkyMw3y/XbGkk/E2HjVdr8f/0YNOdg/ldUgn6f8mJxxiakk
-         yrjSnMysBpi5gxQLTTcn/u7V63tFRWOsvYNkzjI4CM8TwH+VgBgKz1pfS/DOk431YFdS
-         YklU/QvRL7yJ3dqop0gbrXAU4bwM5zxxQ9GxPOUCx+IO/bZJP1Fo3PFGnyUyHTCCKk+e
-         wtexUDdLIS6DbQM4EPEV9zW1jr72DyH678Jc2N2jy+1r1TtkqDlkNqDRhNMAxjXu4MIz
-         +KPPJXE3ief92obkUfPK2TYEcVMn5bCViGDeeTrCrImY76P2DRYMYtjIFtg9vIAyNWcL
-         BgOg==
-X-Gm-Message-State: AOAM532QEU4otNXto8xTIFLQsNnm4aqjodd12+JWxnrc/+IGxeR5p9hi
-        z7S7fqxNyTfuJvtwMdAtiblwfNDw86YJ5JrVB0I=
-X-Google-Smtp-Source: ABdhPJwP1VN0hVmGR9VvMd4jsO2Uxp3lS5dItaBhvW1Gre8RadYL9qa+3YdDWZWBdpO0+PLrofLxqMEowmRXzVQY+9k=
-X-Received: by 2002:aca:fd52:: with SMTP id b79mr2828767oii.69.1602782141621;
- Thu, 15 Oct 2020 10:15:41 -0700 (PDT)
+        id S1730660AbgJOSDs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Oct 2020 14:03:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52066 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728460AbgJOSDs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 15 Oct 2020 14:03:48 -0400
+Received: from gaia (unknown [95.149.105.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DCEC820797;
+        Thu, 15 Oct 2020 18:03:43 +0000 (UTC)
+Date:   Thu, 15 Oct 2020 19:03:41 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Hanjun Guo <guohanjun@huawei.com>
+Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        robh+dt@kernel.org, hch@lst.de, ardb@kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>, robin.murphy@arm.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, jeremy.linton@arm.com,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 7/8] arm64: mm: Set ZONE_DMA size based on early IORT
+ scan
+Message-ID: <20201015180340.GB2624@gaia>
+References: <20201014191211.27029-1-nsaenzjulienne@suse.de>
+ <20201014191211.27029-8-nsaenzjulienne@suse.de>
+ <1a3df60a-4568-cb72-db62-36127d0ffb7e@huawei.com>
 MIME-Version: 1.0
-References: <CAJZ5v0j7XkDh9ddK0BtjWjHqC=xkcyiEEDzTJN=Lykje5-wf3w@mail.gmail.com>
- <CAHk-=wicsjwDrwRzD5g7YKAnWL+-5LYFr0BqDx873vMcgkS47w@mail.gmail.com>
-In-Reply-To: <CAHk-=wicsjwDrwRzD5g7YKAnWL+-5LYFr0BqDx873vMcgkS47w@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 15 Oct 2020 19:15:30 +0200
-Message-ID: <CAJZ5v0ir9KV2cMwRb9Q0oTE0HAeQz0aXssj9Ejex2je4_Y2ZCA@mail.gmail.com>
-Subject: Re: [GIT PULL] ACPI updates for v5.10-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a3df60a-4568-cb72-db62-36127d0ffb7e@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 8:52 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Tue, Oct 13, 2020 at 10:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > ACPI updates for 5.10-rc1.
->
-> So these clashed with Andrew's patches that I merged earlier
-> (particularly commit c01044cc8191: "ACPI: HMAT: refactor
-> hmat_register_target_device to hmem_register_device").
->
-> I think I sorted it out right, but it might be best to double-check my
-> end result.
+On Thu, Oct 15, 2020 at 10:26:18PM +0800, Hanjun Guo wrote:
+> On 2020/10/15 3:12, Nicolas Saenz Julienne wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> > 
+> > We recently introduced a 1 GB sized ZONE_DMA to cater for platforms
+> > incorporating masters that can address less than 32 bits of DMA, in
+> > particular the Raspberry Pi 4, which has 4 or 8 GB of DRAM, but has
+> > peripherals that can only address up to 1 GB (and its PCIe host
+> > bridge can only access the bottom 3 GB)
+> > 
+> > Instructing the DMA layer about these limitations is straight-forward,
+> > even though we had to fix some issues regarding memory limits set in
+> > the IORT for named components, and regarding the handling of ACPI _DMA
+> > methods. However, the DMA layer also needs to be able to allocate
+> > memory that is guaranteed to meet those DMA constraints, for bounce
+> > buffering as well as allocating the backing for consistent mappings.
+> > 
+> > This is why the 1 GB ZONE_DMA was introduced recently. Unfortunately,
+> > it turns out the having a 1 GB ZONE_DMA as well as a ZONE_DMA32 causes
+> > problems with kdump, and potentially in other places where allocations
+> > cannot cross zone boundaries. Therefore, we should avoid having two
+> > separate DMA zones when possible.
+> > 
+> > So let's do an early scan of the IORT, and only create the ZONE_DMA
+> > if we encounter any devices that need it. This puts the burden on
+> > the firmware to describe such limitations in the IORT, which may be
+> > redundant (and less precise) if _DMA methods are also being provided.
+> > However, it should be noted that this situation is highly unusual for
+> > arm64 ACPI machines. Also, the DMA subsystem still gives precedence to
+> > the _DMA method if implemented, and so we will not lose the ability to
+> > perform streaming DMA outside the ZONE_DMA if the _DMA method permits
+> > it.
+> 
+> Sorry, I'm still a little bit confused. With this patch, if we have
+> a device which set the right _DMA method (DMA size >= 32), but with the
+> wrong DMA size in IORT, we still have the ZONE_DMA created which
+> is actually not needed?
 
-That looks good to me, thank you!
+With the current kernel, we get a ZONE_DMA already with an arbitrary
+size of 1GB that matches what RPi4 needs. We are trying to eliminate
+such unnecessary ZONE_DMA based on some heuristics (well, something that
+looks "better" than a OEM ID based quirk). Now, if we learn that IORT
+for platforms in the field is that broken as to describe few bits-wide
+DMA masks, we may have to go back to the OEM ID quirk.
+
+-- 
+Catalin
