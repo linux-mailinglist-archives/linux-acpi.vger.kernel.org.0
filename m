@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3202D28F9AC
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 21:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 476B228F9B0
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 21:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391855AbgJOTqO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Oct 2020 15:46:14 -0400
-Received: from mga11.intel.com ([192.55.52.93]:38341 "EHLO mga11.intel.com"
+        id S2391881AbgJOTrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Oct 2020 15:47:11 -0400
+Received: from mga03.intel.com ([134.134.136.65]:43987 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391854AbgJOTqO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 15 Oct 2020 15:46:14 -0400
-IronPort-SDR: s+hi2SqqKEQU4IkuYooKx2VJGN/dum//EDdeBLAqPsdBC3bYgkyT8EquYG/yguTPjmI1CP4sn+
- veFZod+TLVbA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9775"; a="162973519"
+        id S2391865AbgJOTrK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 15 Oct 2020 15:47:10 -0400
+IronPort-SDR: 0o3A548iK5eeqvOPUoBVxDb203bb/UnxMbqbHlAohWYOoMkRDBfKzDLL9hHHjfEb097DEi6zP+
+ k9+xHiqpGhIw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9775"; a="166500299"
 X-IronPort-AV: E=Sophos;i="5.77,380,1596524400"; 
-   d="scan'208";a="162973519"
+   d="scan'208";a="166500299"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 12:46:13 -0700
-IronPort-SDR: 1FNf/2Jt9eaIreCkupbrPpcxokjRoPlJPhb1fitGpc8/1ucG/gImZjH+wr1Y18zoyTbG3BelDh
- 6QqovO61rssg==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 12:47:09 -0700
+IronPort-SDR: I95RksRwuPmnhmsPzdmHnGLymyKbVO6Jdiz9Y6Sl2vVBPJXKbV8pbeXH8kIlp3BsUvZnRL3DhW
+ Va137lp51opw==
 X-IronPort-AV: E=Sophos;i="5.77,380,1596524400"; 
-   d="scan'208";a="357110343"
-Received: from emcmulli-mobl1.amr.corp.intel.com ([10.212.199.190])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 12:46:12 -0700
-Message-ID: <3e4ca631b8fb85de570bf490e71dd71219c5a2c2.camel@linux.intel.com>
-Subject: Re: [PATCH 2/2] ACPI: DPTF: Add ACPI_DPTF Kconfig menu
+   d="scan'208";a="464417523"
+Received: from spandruv-mobl.amr.corp.intel.com ([10.212.199.190])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 12:47:08 -0700
+Message-ID: <1e820f96242cc847b8465751f074155f8e7b5819.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] ACPI: DPTF: Fix participant driver names
 From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@suse.de>
-Date:   Thu, 15 Oct 2020 12:46:10 -0700
-In-Reply-To: <35637045.pmxlVluP8t@kreacher>
-References: <2206290.MayQypTng0@kreacher> <35637045.pmxlVluP8t@kreacher>
+Date:   Thu, 15 Oct 2020 12:47:07 -0700
+In-Reply-To: <2071902.YaQf1D0BmN@kreacher>
+References: <2206290.MayQypTng0@kreacher> <2071902.YaQf1D0BmN@kreacher>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
@@ -43,88 +43,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2020-10-15 at 18:59 +0200, Rafael J. Wysocki wrote:
+On Thu, 2020-10-15 at 18:58 +0200, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Add a Kconfig menu for Intel DPTF (Dynamic Platform and Thermal
-> Framework), put both the existing participant drivers in it and set
-> them to be built as modules by default.
+> Change the names of DPTF participant drivers to adhere to the
+> sysfs file naming conventions (no spaces present in the name in
+> particular).
 > 
-> While at it, do a few assorted cleanups for a good measure.
-> 
+> Fixes: 2ce6324eadb0 ("ACPI: DPTF: Add PCH FIVR participant driver")
+> Fixes: 6256ebd5daf9 ("ACPI / DPTF: Add DPTF power participant
+> driver")
 > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
 > ---
->  drivers/acpi/dptf/Kconfig |   29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
+>  drivers/acpi/dptf/dptf_pch_fivr.c |    2 +-
+>  drivers/acpi/dptf/dptf_power.c    |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> Index: linux-pm/drivers/acpi/dptf/Kconfig
+> Index: linux-pm/drivers/acpi/dptf/dptf_pch_fivr.c
 > ===================================================================
-> --- linux-pm.orig/drivers/acpi/dptf/Kconfig
-> +++ linux-pm/drivers/acpi/dptf/Kconfig
-> @@ -1,8 +1,25 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -config DPTF_POWER
-> -	tristate "DPTF Platform Power Participant"
-> +
-> +menuconfig ACPI_DPTF
-> +	bool "Intel DPTF (Dynamic Platform and Thermal Framework)
-> Support"
->  	depends on X86
->  	help
-> +	  Intel Dynamic Platform and Thermal Framework (DPTF) is a
-> platform
-> +	  level hardware/software solution for power and thermal
-> management.
-> +
-> +	  As a container for multiple power/thermal technologies, DPTF
-> provides
-> +	  a coordinated approach for different policies to effect the
-> hardware
-> +	  state of a system.
-> +
-> +	  For more information see:
-> +	  <
-> https://01.org/intel%C2%AE-dynamic-platform-and-thermal-framework-dptf-chromium-os/overview
-> >
-> +
-> +if ACPI_DPTF
-> +
-> +config DPTF_POWER
-> +	tristate "Platform Power DPTF Participant"
-> +	default m
-> +	help
->  	  This driver adds support for Dynamic Platform and Thermal
-> Framework
->  	  (DPTF) Platform Power Participant device (INT3407) support.
->  	  This participant is responsible for exposing platform
-> telemetry:
-> @@ -16,15 +33,17 @@ config DPTF_POWER
->  	  the module will be called dptf_power.
->  
->  config DPTF_PCH_FIVR
-> -	tristate "DPTF PCH FIVR Participant"
-> -	depends on X86
-> +	tristate "PCH FIVR DPTF Participant"
-> +	default m
->  	help
->  	  This driver adds support for Dynamic Platform and Thermal
-> Framework
->  	  (DPTF) PCH FIVR Participant device support. This driver
-> allows to
-> -	  switch PCH FIVR (Fully Integrated Voltage Regulator)
-> frequency.
-> +	  switch the PCH FIVR (Fully Integrated Voltage Regulator)
-> frequency.
->  	  This participant is responsible for exposing:
->  		freq_mhz_low_clock
->  		freq_mhz_high_clock
->  
->  	  To compile this driver as a module, choose M here:
->  	  the module will be called dptf_pch_fivr.
-> +
-> +endif
+> --- linux-pm.orig/drivers/acpi/dptf/dptf_pch_fivr.c
+> +++ linux-pm/drivers/acpi/dptf/dptf_pch_fivr.c
+> @@ -114,7 +114,7 @@ static struct platform_driver pch_fivr_d
+>  	.probe = pch_fivr_add,
+>  	.remove = pch_fivr_remove,
+>  	.driver = {
+> -		.name = "DPTF PCH FIVR",
+> +		.name = "dptf_pch_fivr",
+>  		.acpi_match_table = pch_fivr_device_ids,
+>  	},
+>  };
+> Index: linux-pm/drivers/acpi/dptf/dptf_power.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/dptf/dptf_power.c
+> +++ linux-pm/drivers/acpi/dptf/dptf_power.c
+> @@ -237,7 +237,7 @@ static struct platform_driver dptf_power
+>  	.probe = dptf_power_add,
+>  	.remove = dptf_power_remove,
+>  	.driver = {
+> -		.name = "DPTF Platform Power",
+> +		.name = "dptf_power",
+>  		.acpi_match_table = int3407_device_ids,
+>  	},
+>  };
 > 
 > 
 > 
