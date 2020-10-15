@@ -2,101 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4EF028F756
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 19:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8B428F788
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Oct 2020 19:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389973AbgJORAF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Oct 2020 13:00:05 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41578 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388946AbgJORAE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Oct 2020 13:00:04 -0400
-Received: from 89-64-88-192.dynamic.chello.pl (89.64.88.192) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
- id b914199718e2c358; Thu, 15 Oct 2020 19:00:02 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>
-Subject: [PATCH 2/2] ACPI: DPTF: Add ACPI_DPTF Kconfig menu
-Date:   Thu, 15 Oct 2020 18:59:52 +0200
-Message-ID: <35637045.pmxlVluP8t@kreacher>
-In-Reply-To: <2206290.MayQypTng0@kreacher>
-References: <2206290.MayQypTng0@kreacher>
+        id S2404579AbgJORPm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Oct 2020 13:15:42 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:40479 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390447AbgJORPm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Oct 2020 13:15:42 -0400
+Received: by mail-oi1-f195.google.com with SMTP id m128so3891672oig.7;
+        Thu, 15 Oct 2020 10:15:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Xrn17b+ntKHq1CA8pT0i8xm7h9nTQC4aTvhOh2R5n9A=;
+        b=qJrGjgZPOSKOdEREe/tgkyMw3y/XbGkk/E2HjVdr8f/0YNOdg/ldUgn6f8mJxxiakk
+         yrjSnMysBpi5gxQLTTcn/u7V63tFRWOsvYNkzjI4CM8TwH+VgBgKz1pfS/DOk431YFdS
+         YklU/QvRL7yJ3dqop0gbrXAU4bwM5zxxQ9GxPOUCx+IO/bZJP1Fo3PFGnyUyHTCCKk+e
+         wtexUDdLIS6DbQM4EPEV9zW1jr72DyH678Jc2N2jy+1r1TtkqDlkNqDRhNMAxjXu4MIz
+         +KPPJXE3ief92obkUfPK2TYEcVMn5bCViGDeeTrCrImY76P2DRYMYtjIFtg9vIAyNWcL
+         BgOg==
+X-Gm-Message-State: AOAM532QEU4otNXto8xTIFLQsNnm4aqjodd12+JWxnrc/+IGxeR5p9hi
+        z7S7fqxNyTfuJvtwMdAtiblwfNDw86YJ5JrVB0I=
+X-Google-Smtp-Source: ABdhPJwP1VN0hVmGR9VvMd4jsO2Uxp3lS5dItaBhvW1Gre8RadYL9qa+3YdDWZWBdpO0+PLrofLxqMEowmRXzVQY+9k=
+X-Received: by 2002:aca:fd52:: with SMTP id b79mr2828767oii.69.1602782141621;
+ Thu, 15 Oct 2020 10:15:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <CAJZ5v0j7XkDh9ddK0BtjWjHqC=xkcyiEEDzTJN=Lykje5-wf3w@mail.gmail.com>
+ <CAHk-=wicsjwDrwRzD5g7YKAnWL+-5LYFr0BqDx873vMcgkS47w@mail.gmail.com>
+In-Reply-To: <CAHk-=wicsjwDrwRzD5g7YKAnWL+-5LYFr0BqDx873vMcgkS47w@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 15 Oct 2020 19:15:30 +0200
+Message-ID: <CAJZ5v0ir9KV2cMwRb9Q0oTE0HAeQz0aXssj9Ejex2je4_Y2ZCA@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI updates for v5.10-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Oct 14, 2020 at 8:52 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Tue, Oct 13, 2020 at 10:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > ACPI updates for 5.10-rc1.
+>
+> So these clashed with Andrew's patches that I merged earlier
+> (particularly commit c01044cc8191: "ACPI: HMAT: refactor
+> hmat_register_target_device to hmem_register_device").
+>
+> I think I sorted it out right, but it might be best to double-check my
+> end result.
 
-Add a Kconfig menu for Intel DPTF (Dynamic Platform and Thermal
-Framework), put both the existing participant drivers in it and set
-them to be built as modules by default.
-
-While at it, do a few assorted cleanups for a good measure.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/dptf/Kconfig |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
-
-Index: linux-pm/drivers/acpi/dptf/Kconfig
-===================================================================
---- linux-pm.orig/drivers/acpi/dptf/Kconfig
-+++ linux-pm/drivers/acpi/dptf/Kconfig
-@@ -1,8 +1,25 @@
- # SPDX-License-Identifier: GPL-2.0
--config DPTF_POWER
--	tristate "DPTF Platform Power Participant"
-+
-+menuconfig ACPI_DPTF
-+	bool "Intel DPTF (Dynamic Platform and Thermal Framework) Support"
- 	depends on X86
- 	help
-+	  Intel Dynamic Platform and Thermal Framework (DPTF) is a platform
-+	  level hardware/software solution for power and thermal management.
-+
-+	  As a container for multiple power/thermal technologies, DPTF provides
-+	  a coordinated approach for different policies to effect the hardware
-+	  state of a system.
-+
-+	  For more information see:
-+	  <https://01.org/intel%C2%AE-dynamic-platform-and-thermal-framework-dptf-chromium-os/overview>
-+
-+if ACPI_DPTF
-+
-+config DPTF_POWER
-+	tristate "Platform Power DPTF Participant"
-+	default m
-+	help
- 	  This driver adds support for Dynamic Platform and Thermal Framework
- 	  (DPTF) Platform Power Participant device (INT3407) support.
- 	  This participant is responsible for exposing platform telemetry:
-@@ -16,15 +33,17 @@ config DPTF_POWER
- 	  the module will be called dptf_power.
- 
- config DPTF_PCH_FIVR
--	tristate "DPTF PCH FIVR Participant"
--	depends on X86
-+	tristate "PCH FIVR DPTF Participant"
-+	default m
- 	help
- 	  This driver adds support for Dynamic Platform and Thermal Framework
- 	  (DPTF) PCH FIVR Participant device support. This driver allows to
--	  switch PCH FIVR (Fully Integrated Voltage Regulator) frequency.
-+	  switch the PCH FIVR (Fully Integrated Voltage Regulator) frequency.
- 	  This participant is responsible for exposing:
- 		freq_mhz_low_clock
- 		freq_mhz_high_clock
- 
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called dptf_pch_fivr.
-+
-+endif
-
-
-
+That looks good to me, thank you!
