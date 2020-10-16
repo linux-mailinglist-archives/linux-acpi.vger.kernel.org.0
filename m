@@ -2,77 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47AFC29097D
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Oct 2020 18:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9762290A5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Oct 2020 19:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409840AbgJPQPJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Oct 2020 12:15:09 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37419 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2409844AbgJPQPJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Oct 2020 12:15:09 -0400
-Received: by mail-oi1-f195.google.com with SMTP id t77so3022645oie.4
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Oct 2020 09:15:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=x2LK6OOATc1pGBV8SF/3b9Lqb24pgV2Uui241RFnrwM=;
-        b=NA+/DGB7lbyjlkJVOxor3BnEbL3U+hGkuuKh27WQKwtncBGCx6j4feiM2bCJpUaPvr
-         aCGFITBud1FTzheGqWh+HW6r7kSMTLIaXp24ino16qMqc/xthNVmFwdXRAOAusZJHAmh
-         6Nk6I8ICr/mV5YScnUnmRjrZMoXVjcsmiTM/XZh1En7rvMk76hHcGN+U32dtM7fZZ+qH
-         v7+Nd6sUHdxJuDxFolverIrGmRglOYNL4mbXPIkHEcy0dJSnqfcRnwxYZVIkMu2Swoq+
-         wrAaIzHqmeOEgffWq0a8TOlokacjuxD+bIcZD2n3boPa4A7Y5NDIhgbGgngH0v5SOAgQ
-         C7cg==
-X-Gm-Message-State: AOAM5313IhibQrx/Pzl2I+QZFS30INYCTfjKEs/2r08TVZcVSgSULsbV
-        PZ86WiS8gZwKTOYIv7v0vUYLLwqZj6VQCSxjEcLSKskA
-X-Google-Smtp-Source: ABdhPJxw20s+w2sku9sARVkv52XFZj7HPmA/1JXePVK2N83xnD3wzWF1pTZgdo2qFwumM1RkPem8Z7cNZqOse1oFT30=
-X-Received: by 2002:aca:5256:: with SMTP id g83mr3064114oib.71.1602864907228;
- Fri, 16 Oct 2020 09:15:07 -0700 (PDT)
+        id S1732607AbgJPRPY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Oct 2020 13:15:24 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56414 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732605AbgJPRPY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Oct 2020 13:15:24 -0400
+Received: from 89-64-86-149.dynamic.chello.pl (89.64.86.149) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
+ id 922e8bd7e753c80b; Fri, 16 Oct 2020 19:15:21 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Bob Moore <robert.moore@intel.com>
+Subject: Re: [PATCH 4/6] ACPICA: Add support for using logical addresses of GPE blocks
+Date:   Fri, 16 Oct 2020 19:15:20 +0200
+Message-ID: <1735226.fPvPZg4QOa@kreacher>
+In-Reply-To: <3b69e0d0-fb8a-92b4-42fd-f2a8fcdd642b@tessares.net>
+References: <1748021.N9i9sLPJ40@kreacher> <9373262.piL2bvXoCD@kreacher> <3b69e0d0-fb8a-92b4-42fd-f2a8fcdd642b@tessares.net>
 MIME-Version: 1.0
-References: <20201014010340.433398-1-alex.hung@canonical.com>
-In-Reply-To: <20201014010340.433398-1-alex.hung@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 16 Oct 2020 18:14:56 +0200
-Message-ID: <CAJZ5v0g+9ZL8=jsp23YZYAYtRMZMgBx+A0usfx7q1WaNQqLp=A@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor: remove unnecessary string _UID comments
-To:     Alex Hung <alex.hung@canonical.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 3:03 AM Alex Hung <alex.hung@canonical.com> wrote:
->
-> ACPI 6.3 Errata A no longer allows _UID to be string except Itanium
-> for historical reasons as stated in section 5.2.12. Therefore, it is
-> redundant to comment "we don't handle string _UIDs yet" which implies a
-> feature is missing.
->
-> "From ACPI Specification 6.3 onward, all processor objects for all
-> architectures except Itanium must now use Device() objects with an _HID
-> of ACPI0007, and use only integer _UID values."
->
-> Signed-off-by: Alex Hung <alex.hung@canonical.com>
-> ---
->  drivers/acpi/acpi_processor.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> index b51ddf3..710605f 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -264,7 +264,6 @@ static int acpi_processor_get_info(struct acpi_device *device)
->         } else {
->                 /*
->                  * Declared with "Device" statement; match _UID.
-> -                * Note that we don't handle string _UIDs yet.
->                  */
->                 status = acpi_evaluate_integer(pr->handle, METHOD_NAME__UID,
->                                                 NULL, &value);
-> --
+On Friday, October 16, 2020 4:30:55 PM CEST Matthieu Baerts wrote:
+> Hi Rafael,
 
-Applied as 5.10-rc material with edited changelog and subject, thanks!
+Hi,
+
+> On 04/09/2020 19:24, Rafael J. Wysocki wrote:
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> > 
+> > The logical address of every GPE block in system memory must be
+> > known before passing it to acpi_ev_initialize_gpe_block(), because
+> > memory cannot be mapped on the fly from an interrupt handler.
+> > Accordingly, the host OS must map every GPE block in system
+> > memory upfront and it can store the logical addresses of GPE
+> > blocks for future use.
+> 
+> (...)
+> 
+> > diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c
+> > index a0e71f34c77a..37bb67ef3232 100644
+> > --- a/drivers/acpi/acpica/hwgpe.c
+> > +++ b/drivers/acpi/acpica/hwgpe.c
+> > @@ -46,8 +46,13 @@ acpi_status acpi_hw_gpe_read(u64 *value, struct acpi_gpe_address *reg)
+> >   	u32 value32;
+> >   
+> >   	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> > +#ifdef ACPI_GPE_USE_LOGICAL_ADDRESSES
+> > +		*value = (u64)ACPI_GET8(reg->address);
+> 
+> Thank you for the patch!
+> 
+> When compiling net-next repo, recently sync with Linus repo, I got an 
+> error when using i386 arch because of this line above.
+> 
+> Here are the commands I used:
+> 
+> 
+> ================================================
+> $ make defconfig KBUILD_DEFCONFIG=i386_defconfig
+> *** Default configuration is based on 'i386_defconfig'
+> #
+> # configuration written to .config
+> #
+> $ scripts/config --disable DRM --disable PCCARD --disable ATA --disable 
+> MD --disable PPS --disable SOUND --disable USB --disable IOMMU_SUPPORT 
+> --disable INPUT_LEDS --disable AGP --disable VGA_ARB --disable EFI 
+> --disable WLAN --disable WIRELESS --disable LOGO --disable NFS_FS 
+> --disable XFRM_USER --disable INET6_AH --disable INET6_ESP --disable 
+> NETDEVICES -e KUNIT -d KUNIT_DEBUGFS -d KUNIT_TEST -d KUNIT_EXAMPLE_TEST 
+> -d EXT4_KUNIT_TESTS -d SYSCTL_KUNIT_TEST -d LIST_KUNIT_TEST -d 
+> LINEAR_RANGES_TEST -d BITS_TEST -d KUNIT_ALL_TESTS -e INET_DIAG -d 
+> INET_UDP_DIAG -d INET_RAW_DIAG -d INET_DIAG_DESTROY -e MPTCP -e 
+> MPTCP_IPV6 -e MPTCP_KUNIT_TESTS
+> $ KCFLAGS=-Werror make -j8 -l8
+> scripts/kconfig/conf  --syncconfig Kconfig
+> (...)
+>    CC      drivers/acpi/acpica/hwgpe.o
+> In file included from ./include/acpi/acpi.h:24,
+>                   from drivers/acpi/acpica/hwgpe.c:10:
+> drivers/acpi/acpica/hwgpe.c: In function 'acpi_hw_gpe_read':
+> ./include/acpi/actypes.h:501:48: error: cast to pointer from integer of 
+> different size [-Werror=int-to-pointer-cast]
+>    501 | #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) 
+> (p))
+>        |                                                ^
+> drivers/acpi/acpica/acmacros.h:18:41: note: in expansion of macro 
+> 'ACPI_CAST_PTR'
+>     18 | #define ACPI_CAST8(ptr)                 ACPI_CAST_PTR (u8, (ptr))
+>        |                                         ^~~~~~~~~~~~~
+> drivers/acpi/acpica/acmacros.h:22:43: note: in expansion of macro 
+> 'ACPI_CAST8'
+>     22 | #define ACPI_GET8(ptr)                  (*ACPI_CAST8 (ptr))
+>        |                                           ^~~~~~~~~~
+> drivers/acpi/acpica/hwgpe.c:50:17: note: in expansion of macro 'ACPI_GET8'
+>     50 |   *value = (u64)ACPI_GET8(reg->address);
+>        |                 ^~~~~~~~~
+> drivers/acpi/acpica/hwgpe.c: In function 'acpi_hw_gpe_write':
+> ./include/acpi/actypes.h:501:48: error: cast to pointer from integer of 
+> different size [-Werror=int-to-pointer-cast]
+>    501 | #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) 
+> (p))
+>        |                                                ^
+> drivers/acpi/acpica/acmacros.h:18:41: note: in expansion of macro 
+> 'ACPI_CAST_PTR'
+>     18 | #define ACPI_CAST8(ptr)                 ACPI_CAST_PTR (u8, (ptr))
+>        |                                         ^~~~~~~~~~~~~
+> drivers/acpi/acpica/acmacros.h:26:43: note: in expansion of macro 
+> 'ACPI_CAST8'
+>     26 | #define ACPI_SET8(ptr, val)             (*ACPI_CAST8 (ptr) = 
+> (u8) (val))
+>        |                                           ^~~~~~~~~~
+> drivers/acpi/acpica/hwgpe.c:85:3: note: in expansion of macro 'ACPI_SET8'
+>     85 |   ACPI_SET8(reg->address, value);
+>        |   ^~~~~~~~~
+> cc1: all warnings being treated as errors
+
+This is what causes the build to terminate.
+
+> make[3]: *** [scripts/Makefile.build:283: drivers/acpi/acpica/hwgpe.o] 
+> Error 1
+> make[2]: *** [scripts/Makefile.build:500: drivers/acpi/acpica] Error 2
+> make[1]: *** [scripts/Makefile.build:500: drivers/acpi] Error 2
+> make: *** [Makefile:1777: drivers] Error 2
+> ================================================
+> 
+> 
+> > +		return_ACPI_STATUS(AE_OK);
+> > +#else
+> >   		return acpi_os_read_memory((acpi_physical_address)reg->address,
+> >   					    value, ACPI_GPE_REGISTER_WIDTH);
+> > +#endif
+> >   	}
+> >   
+> >   	status = acpi_os_read_port((acpi_io_address)reg->address,
+> > @@ -76,8 +81,13 @@ acpi_status acpi_hw_gpe_read(u64 *value, struct acpi_gpe_address *reg)
+> >   acpi_status acpi_hw_gpe_write(u64 value, struct acpi_gpe_address *reg)
+> >   {
+> >   	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> > +#ifdef ACPI_GPE_USE_LOGICAL_ADDRESSES
+> > +		ACPI_SET8(reg->address, value);
+> 
+> (and also because of this line)
+> 
+> By chance, do you already have a fix for that?
+
+Can you please try the appended patch?
+
+> I didn't see any other 
+> email related to this issue, I am surprised no bot already reported the 
+> problem but maybe I didn't look everywhere :)
+
+No, they didn't AFAICS.
+
+---
+ drivers/acpi/acpica/hwgpe.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: linux-pm/drivers/acpi/acpica/hwgpe.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/hwgpe.c
++++ linux-pm/drivers/acpi/acpica/hwgpe.c
+@@ -47,7 +47,7 @@ acpi_status acpi_hw_gpe_read(u64 *value,
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+ #ifdef ACPI_GPE_USE_LOGICAL_ADDRESSES
+-		*value = (u64)ACPI_GET8(reg->address);
++		*value = (u64)ACPI_GET8((unsigned long)reg->address);
+ 		return_ACPI_STATUS(AE_OK);
+ #else
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+@@ -82,7 +82,7 @@ acpi_status acpi_hw_gpe_write(u64 value,
+ {
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+ #ifdef ACPI_GPE_USE_LOGICAL_ADDRESSES
+-		ACPI_SET8(reg->address, value);
++		ACPI_SET8((unsigned long)reg->address, value);
+ 		return_ACPI_STATUS(AE_OK);
+ #else
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+
+
+
