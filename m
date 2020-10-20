@@ -2,136 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66E52931C2
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Oct 2020 01:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3095D29341E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Oct 2020 06:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726931AbgJSXF5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Oct 2020 19:05:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37924 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388885AbgJSXFu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Oct 2020 19:05:50 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9400C0613E1
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Oct 2020 16:05:49 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id b15so9712iod.13
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Oct 2020 16:05:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=KZcwJitFojA7RhzeD/UU8gbzehCBdvf6g5ia0ZYCrq4=;
-        b=R0THCPfeT+NjRv5n7wRuWr3+iQQVH5mYQugrcFEorv7jMlZOJpq4gWO8x2sltRZ1S3
-         8+uXkfK+0xraFRPc7RLEyC+L1Eqn+lwfgcQ60rCu3Ir6T0iqCUlHxkXPI8IxQxljNihW
-         MxA7dERE+Fo0B6yhfEPLGm6gbjuMrGvt0ee7i4ozPAa6C0OwTV1SJBaz+sj8rzyyiIix
-         DQ1LhxNguLsVQ2r9xWcmCur9QDHoeimXQtC/UVpN+4Yl8O9ZbpYKUwlrKFZtzYHwjpgZ
-         iC+kREvCZvwgmOBCIm7DmgxG6/6ncKrp6QDCnbxkp/qIzrhuMyauJsg53LWTp//HSslk
-         z+3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=KZcwJitFojA7RhzeD/UU8gbzehCBdvf6g5ia0ZYCrq4=;
-        b=HXtEvmF7O5HReXrre005Z3+9ofD6LLXOYKfJ+Uy+i57xrRTs9QkUQ7Evwn8clIH+Fl
-         MpUL4U5hv7LUGOyX0YxXdr0qoOOGSiQBoeqSjSSCY7XNN406jJ0WBsYk7h94N2qLRgYr
-         g/IQXp9qBrdDh5e6jj091ed1AJInT+SB/xTKpzszX7ZYBbrx9+wRaiCfIrWcuw/Kw4Cv
-         aRSWfbWjOZ3JhYKJUshHTTVULhxDdsB9oeVA2ScpKDUyhSMnmnX9L1224gTH6hOApU3u
-         ExKrfD04Buu/5jo6BIyMxEwWhJKgkLHLyt+un+CgWHCimMCBDzYvEN4RoFQjzIvwhWL/
-         2eZw==
-X-Gm-Message-State: AOAM531fWSiytGFU7UqaojN02rcNxL9/909MAXtTJDFmjH5S9JCUHxRz
-        aKHyzAyHvkgpubqmzqmEAO7NxA==
-X-Google-Smtp-Source: ABdhPJwE/qhLAedndnNRaUrUDMs331Onaq8Iz+VDEVRJN+4h4B5ckC67pNXDnvS9MRF/DxLJjNlnIQ==
-X-Received: by 2002:a6b:5019:: with SMTP id e25mr44377iob.123.1603148748578;
-        Mon, 19 Oct 2020 16:05:48 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id u8sm7938ilm.36.2020.10.19.16.05.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2020 16:05:47 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1kUeDq-002hRf-LL; Mon, 19 Oct 2020 20:05:46 -0300
-Date:   Mon, 19 Oct 2020 20:05:46 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Tom Rix <trix@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-        linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-block@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-can@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        linux-pci@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
-        storagedev@microchip.com, devel@driverdev.osuosl.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net,
-        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        bpf <bpf@vger.kernel.org>, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        George Burgess <gbiv@google.com>
-Subject: Re: [RFC] treewide: cleanup unreachable breaks
-Message-ID: <20201019230546.GH36674@ziepe.ca>
-References: <20201017160928.12698-1-trix@redhat.com>
- <20201018054332.GB593954@kroah.com>
- <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
+        id S2391394AbgJTEhp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Oct 2020 00:37:45 -0400
+Received: from mga05.intel.com ([192.55.52.43]:58541 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391382AbgJTEhp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 20 Oct 2020 00:37:45 -0400
+IronPort-SDR: 1OHzR+hxhWqcbnTuWNk97SruEqnc6imwW3iiEzc0jceCbYBhqbqqS3yoybXz4357x51LMoaI88
+ eYhNF3VrjepQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9779"; a="251847590"
+X-IronPort-AV: E=Sophos;i="5.77,396,1596524400"; 
+   d="scan'208";a="251847590"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2020 21:37:45 -0700
+IronPort-SDR: PzaCLT5bntA2untvrWoxXnzT3TWDtmDEGRu6xWXwlMw12o+B1Z/nWvtPF5Jopsh5NO9zRS+xho
+ IPGQBHA1Quew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,396,1596524400"; 
+   d="scan'208";a="359050909"
+Received: from lkp-server01.sh.intel.com (HELO 88424da292e0) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 19 Oct 2020 21:37:43 -0700
+Received: from kbuild by 88424da292e0 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kUjP4-0000OS-Op; Tue, 20 Oct 2020 04:37:42 +0000
+Date:   Tue, 20 Oct 2020 12:37:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD REGRESSION
+ 2a58871c00f77abfc45935812e7e62a9d8a59a40
+Message-ID: <5f8e696e.7otAekyi64MWacHT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 19, 2020 at 12:42:15PM -0700, Nick Desaulniers wrote:
-> On Sat, Oct 17, 2020 at 10:43 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
-> > > From: Tom Rix <trix@redhat.com>
-> > >
-> > > This is a upcoming change to clean up a new warning treewide.
-> > > I am wondering if the change could be one mega patch (see below) or
-> > > normal patch per file about 100 patches or somewhere half way by collecting
-> > > early acks.
-> >
-> > Please break it up into one-patch-per-subsystem, like normal, and get it
-> > merged that way.
-> >
-> > Sending us a patch, without even a diffstat to review, isn't going to
-> > get you very far...
-> 
-> Tom,
-> If you're able to automate this cleanup, I suggest checking in a
-> script that can be run on a directory.  Then for each subsystem you
-> can say in your commit "I ran scripts/fix_whatever.py on this subdir."
->  Then others can help you drive the tree wide cleanup.  Then we can
-> enable -Wunreachable-code-break either by default, or W=2 right now
-> might be a good idea.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 2a58871c00f77abfc45935812e7e62a9d8a59a40  Merge branch 'powercap' into bleeding-edge
 
-I remember using clang-modernize in the past to fix issues very
-similar to this, if clang machinery can generate the warning, can't
-something like clang-tidy directly generate the patch?
+Error/Warning reports:
 
-You can send me a patch for drivers/infiniband/* as well
+https://lore.kernel.org/linux-acpi/202010200230.0MxnAfAW-lkp@intel.com
 
-Thanks,
-Jason
+Error/Warning in current branch:
+
+drivers/base/power/domain.c:419:8: error: implicit declaration of function '__raw_notifier_call_chain'; did you mean 'raw_notifier_call_chain'? [-Werror=implicit-function-declaration]
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- arm-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- arm-defconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- arm64-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- arm64-defconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- i386-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- i386-randconfig-s001-20201019
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- ia64-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- ia64-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- mips-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- mips-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- nds32-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- powerpc-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- powerpc-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- riscv-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- riscv-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- sh-allmodconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- sparc-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- x86_64-allyesconfig
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+|-- x86_64-randconfig-a003-20201019
+|   `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+`-- xtensa-allyesconfig
+    `-- drivers-base-power-domain.c:error:implicit-declaration-of-function-__raw_notifier_call_chain
+
+elapsed time: 720m
+
+configs tested: 94
+configs skipped: 2
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arc                     haps_hs_smp_defconfig
+mips                      malta_kvm_defconfig
+powerpc                  storcenter_defconfig
+sh                     sh7710voipgw_defconfig
+arm                            zeus_defconfig
+arm                        spear6xx_defconfig
+xtensa                  audio_kc705_defconfig
+arm                          tango4_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                      makalu_defconfig
+arm                    vt8500_v6_v7_defconfig
+mips                        workpad_defconfig
+mips                     loongson1b_defconfig
+sh                            migor_defconfig
+mips                         tb0219_defconfig
+sh                          urquell_defconfig
+nios2                         10m50_defconfig
+sparc64                             defconfig
+arm                           omap1_defconfig
+mips                    maltaup_xpa_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20201019
+i386                 randconfig-a005-20201019
+i386                 randconfig-a001-20201019
+i386                 randconfig-a003-20201019
+i386                 randconfig-a004-20201019
+i386                 randconfig-a002-20201019
+i386                 randconfig-a015-20201019
+i386                 randconfig-a013-20201019
+i386                 randconfig-a016-20201019
+i386                 randconfig-a012-20201019
+i386                 randconfig-a011-20201019
+i386                 randconfig-a014-20201019
+x86_64               randconfig-a004-20201019
+x86_64               randconfig-a002-20201019
+x86_64               randconfig-a006-20201019
+x86_64               randconfig-a003-20201019
+x86_64               randconfig-a005-20201019
+x86_64               randconfig-a001-20201019
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a016-20201019
+x86_64               randconfig-a015-20201019
+x86_64               randconfig-a012-20201019
+x86_64               randconfig-a013-20201019
+x86_64               randconfig-a011-20201019
+x86_64               randconfig-a014-20201019
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
