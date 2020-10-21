@@ -2,159 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A49F0294863
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Oct 2020 08:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151A6294B94
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Oct 2020 12:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394480AbgJUGfW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Oct 2020 02:35:22 -0400
-Received: from mga02.intel.com ([134.134.136.20]:28199 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387850AbgJUGfW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Oct 2020 02:35:22 -0400
-IronPort-SDR: ++E5wLLG+OlliEwKXoWgDyy7EuZ6/vQOSU47Zk6zd7eAgXcObhFcVk1kz0lo1FWAh7aaPshiDR
- eyhb7ptzkSpg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9780"; a="154271623"
-X-IronPort-AV: E=Sophos;i="5.77,400,1596524400"; 
-   d="scan'208";a="154271623"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2020 23:35:21 -0700
-IronPort-SDR: /9N1i2KD4BKs5GXi0nyMB4qjkjPuhmdnaNSYwXsuROeM/Zkngw5Ny+EUcboi9fqRDCZBXsnzti
- O2Xr76wDiIUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,400,1596524400"; 
-   d="scan'208";a="301926330"
-Received: from lkp-server01.sh.intel.com (HELO 2c14ddb8ab9c) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 20 Oct 2020 23:35:19 -0700
-Received: from kbuild by 2c14ddb8ab9c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kV7iR-00000e-83; Wed, 21 Oct 2020 06:35:19 +0000
-Date:   Wed, 21 Oct 2020 14:34:42 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- c4fc26703dbdd40a48d67bdb9fefd5b1607278a6
-Message-ID: <5f8fd682.W/nA/YzJWu3Epz3j%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2441840AbgJUK66 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Oct 2020 06:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439214AbgJUK65 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Oct 2020 06:58:57 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61359C0613CE;
+        Wed, 21 Oct 2020 03:58:57 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id z5so2690223iob.1;
+        Wed, 21 Oct 2020 03:58:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GICSwgN3sNFkPLzb9ZiuRIa+ZIKU5hbtJb9zZM8PdNs=;
+        b=ENzNLNVw380JSauwEXTsNIwfSS+Pfic6wIwk3mcDkx2ZI8vSJTG9T4To95nV5K++3S
+         wXrPtza7/nKOZyWO6GUYg/19vJCSiI3irHrOtUq4HfvmyEmN9+Er/0f8hl5JC3NY9rCU
+         4VXyirx16ZxcwPrFkWNc5+fdgPzJzwoqh23QZ4siuTOAmG7kAyniMqDNFkdjAyBLV9KU
+         6xUTE1fU2WS7Y2iHpg238szVhAOmVhcjtjhCua1z7pgont9fb1+CXR9apRekKvjEBXQ4
+         Mjsvsuixy9gpE8FbEhU64igpCUNBdcJC/8ogPwXvQvXYuRk8lqRCeWNgGrCpzH1AQQOC
+         Q+4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GICSwgN3sNFkPLzb9ZiuRIa+ZIKU5hbtJb9zZM8PdNs=;
+        b=rLdhoZC9O9WwK5sULKry9MxuKsBFwmj9Xvpx5eNnh0TUL52qhTWqIAmV5ktSsh8oX9
+         rTKg3aPda7RA41CbrrCPx38QuMVwRbNW1kWfTLycxfiPYLUpvr0JGq6KvpjJ3NynJiCF
+         D3tJuv5Q6fPtnZFAiss5pl7srYiW0q+jT3vrgsULvlGPPM5cZhdEJnlcaDGEl8JfA4GI
+         Q+IRS4qYqBc0fD2GVbIBxiCc6zuvRMMO0jObum7sjiHhi5edOoakqP4dg4/8JMBEmUv7
+         HnOixyI07cygGk2UPqYJDIpyzKa6bcfik13MSV+Fz1LedAsSAnGweJDLelGg4lTFy+lQ
+         hMWA==
+X-Gm-Message-State: AOAM533wbJ1uunInniEBCFniJfy+siDzOqLuS5EhnA3ojkMeUpBYVfTk
+        tM7HSmuxTz94tGpIZ9xwZboyOI73d8nBr0ZQvvY=
+X-Google-Smtp-Source: ABdhPJxVGoa8oGWf7NMjH5r135bL5msWqxriS77JIexiAMhTvnG4ddTh5FYX+VcY2vpk3tlFdrFb/MgirSrWDhsBaEo=
+X-Received: by 2002:a5d:87c7:: with SMTP id q7mr2174472ios.162.1603277936222;
+ Wed, 21 Oct 2020 03:58:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20201005121534.15649-1-david@redhat.com> <20201005121534.15649-6-david@redhat.com>
+In-Reply-To: <20201005121534.15649-6-david@redhat.com>
+From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Date:   Wed, 21 Oct 2020 12:58:45 +0200
+Message-ID: <CAM9Jb+jXR6iPvSxExaEJvm90mqRozh1wcJ6ukEmDy_pqc-37oQ@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] mm/memory_hotplug: update comment regarding zone shuffling
+To:     David Hildenbrand <david@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
+        linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: c4fc26703dbdd40a48d67bdb9fefd5b1607278a6  Merge branch 'pm-core' into bleeding-edge
+> As we no longer shuffle via generic_online_page() and when undoing
+> isolation, we can simplify the comment.
+>
+> We now effectively shuffle only once (properly) when onlining new
+> memory.
+>
+> Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+> Cc: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/memory_hotplug.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 03a00cb68bf7..b44d4c7ba73b 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -858,13 +858,10 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
+>         undo_isolate_page_range(pfn, pfn + nr_pages, MIGRATE_MOVABLE);
+>
+>         /*
+> -        * When exposing larger, physically contiguous memory areas to the
+> -        * buddy, shuffling in the buddy (when freeing onlined pages, putting
+> -        * them either to the head or the tail of the freelist) is only helpful
+> -        * for maintaining the shuffle, but not for creating the initial
+> -        * shuffle. Shuffle the whole zone to make sure the just onlined pages
+> -        * are properly distributed across the whole freelist. Make sure to
+> -        * shuffle once pageblocks are no longer isolated.
+> +        * Freshly onlined pages aren't shuffled (e.g., all pages are placed to
+> +        * the tail of the freelist when undoing isolation). Shuffle the whole
+> +        * zone to make sure the just onlined pages are properly distributed
+> +        * across the whole freelist - to create an initial shuffle.
+>          */
+>         shuffle_zone(zone);
+>
 
-elapsed time: 722m
-
-configs tested: 94
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                         tb0219_defconfig
-powerpc                          g5_defconfig
-m68k                        mvme147_defconfig
-arm                  colibri_pxa270_defconfig
-mips                  decstation_64_defconfig
-mips                         db1xxx_defconfig
-mips                           mtx1_defconfig
-arm                       netwinder_defconfig
-arm                          ep93xx_defconfig
-powerpc                     stx_gp3_defconfig
-sh                           se7722_defconfig
-m68k                        mvme16x_defconfig
-mips                     cu1000-neo_defconfig
-powerpc                      bamboo_defconfig
-arc                            hsdk_defconfig
-powerpc                     mpc83xx_defconfig
-arm                            zeus_defconfig
-xtensa                         virt_defconfig
-xtensa                          iss_defconfig
-xtensa                  cadence_csp_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20201020
-i386                 randconfig-a005-20201020
-i386                 randconfig-a003-20201020
-i386                 randconfig-a001-20201020
-i386                 randconfig-a006-20201020
-i386                 randconfig-a004-20201020
-x86_64               randconfig-a011-20201020
-x86_64               randconfig-a013-20201020
-x86_64               randconfig-a016-20201020
-x86_64               randconfig-a015-20201020
-x86_64               randconfig-a012-20201020
-x86_64               randconfig-a014-20201020
-i386                 randconfig-a016-20201020
-i386                 randconfig-a014-20201020
-i386                 randconfig-a015-20201020
-i386                 randconfig-a013-20201020
-i386                 randconfig-a012-20201020
-i386                 randconfig-a011-20201020
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a001-20201020
-x86_64               randconfig-a002-20201020
-x86_64               randconfig-a003-20201020
-x86_64               randconfig-a006-20201020
-x86_64               randconfig-a005-20201020
-x86_64               randconfig-a004-20201020
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
