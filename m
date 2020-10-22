@@ -2,203 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9F5294CC4
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Oct 2020 14:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1261A2956D0
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Oct 2020 05:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442415AbgJUMfg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Oct 2020 08:35:36 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50836 "EHLO mx2.suse.de"
+        id S2444015AbgJVDcB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Oct 2020 23:32:01 -0400
+Received: from mga04.intel.com ([192.55.52.120]:3314 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2442407AbgJUMfg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Oct 2020 08:35:36 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 57F59AC82;
-        Wed, 21 Oct 2020 12:35:34 +0000 (UTC)
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     robh+dt@kernel.org, catalin.marinas@arm.com, hch@lst.de,
-        ardb@kernel.org, linux-kernel@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Cc:     robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, jeremy.linton@arm.com,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        will@kernel.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v4 6/7] arm64: mm: Set ZONE_DMA size based on early IORT scan
-Date:   Wed, 21 Oct 2020 14:34:36 +0200
-Message-Id: <20201021123437.21538-7-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201021123437.21538-1-nsaenzjulienne@suse.de>
-References: <20201021123437.21538-1-nsaenzjulienne@suse.de>
+        id S2443991AbgJVDcB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 21 Oct 2020 23:32:01 -0400
+IronPort-SDR: RNxXdYcu2/3gc4U6NsmomHheXSIvqjLzAYQhKyJD7Z9zOWBI7chzs5OzI/quUxsPP5SDUQN3iA
+ zoWdOuyQIe8Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9781"; a="164872709"
+X-IronPort-AV: E=Sophos;i="5.77,403,1596524400"; 
+   d="scan'208";a="164872709"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2020 20:32:00 -0700
+IronPort-SDR: DUnhtbEx70I9G1Oq6EFRSo0dnJfAAPUXF0LJnLKPFRi8hBeY8QFPXxARBaxswp1CuN/OvR36jO
+ 7yvPOn8b6cSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,403,1596524400"; 
+   d="scan'208";a="316584427"
+Received: from lkp-server02.sh.intel.com (HELO 911c2f167757) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 21 Oct 2020 20:31:58 -0700
+Received: from kbuild by 911c2f167757 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kVRKX-0000Fh-BO; Thu, 22 Oct 2020 03:31:57 +0000
+Date:   Thu, 22 Oct 2020 11:31:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 3b1afc4e84bf23d1eae93594fc52591e73519f96
+Message-ID: <5f90fd28.0YpCulG29qn9NDli%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 3b1afc4e84bf23d1eae93594fc52591e73519f96  Merge branch 'pm-core' into linux-next
 
-We recently introduced a 1 GB sized ZONE_DMA to cater for platforms
-incorporating masters that can address less than 32 bits of DMA, in
-particular the Raspberry Pi 4, which has 4 or 8 GB of DRAM, but has
-peripherals that can only address up to 1 GB (and its PCIe host
-bridge can only access the bottom 3 GB)
+elapsed time: 721m
 
-Instructing the DMA layer about these limitations is straight-forward,
-even though we had to fix some issues regarding memory limits set in
-the IORT for named components, and regarding the handling of ACPI _DMA
-methods. However, the DMA layer also needs to be able to allocate
-memory that is guaranteed to meet those DMA constraints, for bounce
-buffering as well as allocating the backing for consistent mappings.
+configs tested: 136
+configs skipped: 2
 
-This is why the 1 GB ZONE_DMA was introduced recently. Unfortunately,
-it turns out the having a 1 GB ZONE_DMA as well as a ZONE_DMA32 causes
-problems with kdump, and potentially in other places where allocations
-cannot cross zone boundaries. Therefore, we should avoid having two
-separate DMA zones when possible.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-So let's do an early scan of the IORT, and only create the ZONE_DMA
-if we encounter any devices that need it. This puts the burden on
-the firmware to describe such limitations in the IORT, which may be
-redundant (and less precise) if _DMA methods are also being provided.
-However, it should be noted that this situation is highly unusual for
-arm64 ACPI machines. Also, the DMA subsystem still gives precedence to
-the _DMA method if implemented, and so we will not lose the ability to
-perform streaming DMA outside the ZONE_DMA if the _DMA method permits
-it.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+powerpc                   motionpro_defconfig
+powerpc                   bluestone_defconfig
+arm                        neponset_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                     sbc8548_defconfig
+mips                    maltaup_xpa_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                    gamecube_defconfig
+arm                           tegra_defconfig
+sh                             shx3_defconfig
+um                            kunit_defconfig
+sh                        edosk7705_defconfig
+arm                       mainstone_defconfig
+arm                        spear6xx_defconfig
+arm                            dove_defconfig
+arm                            mps2_defconfig
+arm                        multi_v7_defconfig
+sh                           se7721_defconfig
+powerpc                      mgcoge_defconfig
+sh                          r7785rp_defconfig
+m68k                       bvme6000_defconfig
+microblaze                    nommu_defconfig
+powerpc                    amigaone_defconfig
+arm                            xcep_defconfig
+powerpc                     sequoia_defconfig
+mips                        vocore2_defconfig
+mips                           ip22_defconfig
+powerpc                         ps3_defconfig
+sh                         ap325rxa_defconfig
+mips                        maltaup_defconfig
+powerpc                     stx_gp3_defconfig
+mips                      malta_kvm_defconfig
+powerpc                    mvme5100_defconfig
+arm                             rpc_defconfig
+arm                     am200epdkit_defconfig
+arm                         hackkit_defconfig
+sh                ecovec24-romimage_defconfig
+arm                           u8500_defconfig
+openrisc                 simple_smp_defconfig
+arm                             pxa_defconfig
+xtensa                    xip_kc705_defconfig
+mips                        qi_lb60_defconfig
+ia64                            zx1_defconfig
+xtensa                  cadence_csp_defconfig
+arm                    vt8500_v6_v7_defconfig
+powerpc                  mpc866_ads_defconfig
+sh                          urquell_defconfig
+arm                          gemini_defconfig
+powerpc                     tqm8548_defconfig
+alpha                               defconfig
+sh                            hp6xx_defconfig
+sh                   rts7751r2dplus_defconfig
+sh                          lboxre2_defconfig
+powerpc                 mpc836x_rdk_defconfig
+mips                          rm200_defconfig
+powerpc                      cm5200_defconfig
+parisc                generic-32bit_defconfig
+sh                             sh03_defconfig
+c6x                                 defconfig
+powerpc                          g5_defconfig
+m68k                        m5272c3_defconfig
+xtensa                           alldefconfig
+powerpc                     ksi8560_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a001-20201021
+x86_64               randconfig-a002-20201021
+x86_64               randconfig-a003-20201021
+x86_64               randconfig-a006-20201021
+x86_64               randconfig-a005-20201021
+x86_64               randconfig-a004-20201021
+i386                 randconfig-a002-20201021
+i386                 randconfig-a005-20201021
+i386                 randconfig-a003-20201021
+i386                 randconfig-a001-20201021
+i386                 randconfig-a006-20201021
+i386                 randconfig-a004-20201021
+i386                 randconfig-a016-20201021
+i386                 randconfig-a014-20201021
+i386                 randconfig-a015-20201021
+i386                 randconfig-a013-20201021
+i386                 randconfig-a012-20201021
+i386                 randconfig-a011-20201021
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Cc: Jeremy Linton <jeremy.linton@arm.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-[nsaenz: Rebased, removed documentation change and add declaration in acpi_iort.h]
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+clang tested configs:
+x86_64               randconfig-a011-20201021
+x86_64               randconfig-a013-20201021
+x86_64               randconfig-a016-20201021
+x86_64               randconfig-a015-20201021
+x86_64               randconfig-a012-20201021
+x86_64               randconfig-a014-20201021
 
 ---
-
-Changes since v3:
- - Use min_not_zero()
- - Check ACPI revision
- - Remove unnecessary #ifdef in zone_sizes_init()
-
- arch/arm64/mm/init.c      |  3 ++-
- drivers/acpi/arm64/iort.c | 52 +++++++++++++++++++++++++++++++++++++++
- include/linux/acpi_iort.h |  4 +++
- 3 files changed, 58 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 94e38f99748b..f5d4f85506e4 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -29,6 +29,7 @@
- #include <linux/kexec.h>
- #include <linux/crash_dump.h>
- #include <linux/hugetlb.h>
-+#include <linux/acpi_iort.h>
- 
- #include <asm/boot.h>
- #include <asm/fixmap.h>
-@@ -190,7 +191,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
- 
- #ifdef CONFIG_ZONE_DMA
- 	dt_zone_dma_bits = ilog2(of_dma_get_max_cpu_address(NULL));
--	zone_dma_bits = min(32U, dt_zone_dma_bits);
-+	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_iort_get_zone_dma_size());
- 	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
- 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
- #endif
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9929ff50c0c0..05fe4a076bab 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1718,3 +1718,55 @@ void __init acpi_iort_init(void)
- 
- 	iort_init_platform_devices();
- }
-+
-+#ifdef CONFIG_ZONE_DMA
-+/*
-+ * Check the IORT whether any devices exist whose DMA mask is < 32 bits.
-+ * If so, return the smallest value encountered, or 32 otherwise.
-+ */
-+unsigned int __init acpi_iort_get_zone_dma_size(void)
-+{
-+	struct acpi_table_iort *iort;
-+	struct acpi_iort_node *node, *end;
-+	acpi_status status;
-+	u8 limit = 32;
-+	int i;
-+
-+	if (acpi_disabled)
-+		return limit;
-+
-+	status = acpi_get_table(ACPI_SIG_IORT, 0,
-+				(struct acpi_table_header **)&iort);
-+	if (ACPI_FAILURE(status))
-+		return limit;
-+
-+	node = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->node_offset);
-+	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
-+
-+	for (i = 0; i < iort->node_count; i++) {
-+		if (node >= end)
-+			break;
-+
-+		switch (node->type) {
-+			struct acpi_iort_named_component *ncomp;
-+			struct acpi_iort_root_complex *rc;
-+
-+		case ACPI_IORT_NODE_NAMED_COMPONENT:
-+			ncomp = (struct acpi_iort_named_component *)node->node_data;
-+			limit = min_not_zero(limit, ncomp->memory_address_limit);
-+			break;
-+
-+		case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
-+			if (node->revision < 1)
-+				break;
-+
-+			rc = (struct acpi_iort_root_complex *)node->node_data;
-+			limit = min_not_zero(limit, rc->memory_address_limit);
-+			break;
-+		}
-+		node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
-+	}
-+	acpi_put_table(&iort->header);
-+	return limit;
-+}
-+#endif
-diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-index 20a32120bb88..7d2e184f0d4d 100644
---- a/include/linux/acpi_iort.h
-+++ b/include/linux/acpi_iort.h
-@@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
- const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
- 						const u32 *id_in);
- int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
-+unsigned int acpi_iort_get_zone_dma_size(void);
- #else
- static inline void acpi_iort_init(void) { }
- static inline u32 iort_msi_map_id(struct device *dev, u32 id)
-@@ -55,6 +56,9 @@ static inline const struct iommu_ops *iort_iommu_configure_id(
- static inline
- int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
- { return 0; }
-+
-+static inline unsigned int acpi_iort_get_zone_dma_size(void)
-+{ return 32; }
- #endif
- 
- #endif /* __ACPI_IORT_H__ */
--- 
-2.28.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
