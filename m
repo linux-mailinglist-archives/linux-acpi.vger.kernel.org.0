@@ -2,201 +2,339 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE7E296A2C
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Oct 2020 09:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3219F296AE3
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Oct 2020 10:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S375668AbgJWHTd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Oct 2020 03:19:33 -0400
-Received: from mga03.intel.com ([134.134.136.65]:4264 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S375667AbgJWHTd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 23 Oct 2020 03:19:33 -0400
-IronPort-SDR: U26DqdRpAYXC+56II940KWAhOjNkTYKAHe4Woqkm9i3OC7VlZHNX9FRDivLldL5siSYaCE3AEp
- TJjUNpa+C2yA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9782"; a="167734205"
-X-IronPort-AV: E=Sophos;i="5.77,407,1596524400"; 
-   d="scan'208";a="167734205"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2020 00:19:29 -0700
-IronPort-SDR: DvYSmXdukfQKAyWVRhDnd+YKXcw0fvlY6zxQcX2JrQZY04BIfRjElkp3/idLmziCXYhM3AXKQt
- e/Tc+6K3cGEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,407,1596524400"; 
-   d="scan'208";a="302675193"
-Received: from lkp-server01.sh.intel.com (HELO 1f55bd7cde4b) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 23 Oct 2020 00:19:27 -0700
-Received: from kbuild by 1f55bd7cde4b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kVrME-00006P-QZ; Fri, 23 Oct 2020 07:19:26 +0000
-Date:   Fri, 23 Oct 2020 15:19:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 54e1ca2a19234787050e494833aad6800f8ee645
-Message-ID: <5f9283f3.us5z+Md+hkmv4U8n%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S372563AbgJWIEW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Oct 2020 04:04:22 -0400
+Received: from mail-mw2nam10on2081.outbound.protection.outlook.com ([40.107.94.81]:64608
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S372513AbgJWIEU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 23 Oct 2020 04:04:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ob1qeDsW+6dWVgaY1eEYYCVeeWrcBwH2T9KGLPuLeSOSQf16D2OTbjNRdFf3xi7T5QnprAqXIVu3SE51ucBCrFDgc2nGIC4NrzBmHBVi+iLffC2ItOW9TOGBkO/j2SfHyScBMiHTXXb72qbr5+8MvbaQSIWs6uHII07eAX//dQVtEGH+X2b9/KNOllSGEBmZ/aahHfxtJ6rf61T77QKB5WBV8RpuouPXupDETENo8yOPl7OnNnaemyid9fRQp7FL5o7xi5lzpHY3Zo4K3VJ1mfH5Vas2I/49jYdG7Mxt6owQ0n5NhVcvDz7yHIt4SOCLl1ily1irsf2DqfwIAdqsLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eKol1Q8Hc6dc4ny2l4VCq0xq86gXvcysNExlpKQ/wgg=;
+ b=JJXjqBuM+iUAMd93BCcbl5NQDKkCkJZc1uehsXwSpDNL6QsXmV9WNSwayOdw8H7ljeshEdwERfPPT9GZ5zIIqmx2b7Sw+061O38/qy1BhBYuPoaYA4Rf0tNNjW2Ko7jxQ3gooDgbeDR9N2Z5nI4IndzWt1XPOBx/85oGUUVffhfmtpNJumPu0Vwqdr5WIl6VJOiMWdIB+ra/2TmNwgcWn21Gsg+As177LiYWbT2XVhLW6SC3ZSAy1fOzblkUyUI3h2d2MistqJJS7NV3LhkRGMc5SOkQ4jHb09DPHahE3m12QsMgfMV6Y7W3wrf+m6tXpium48NsdoHYijsjY1KkiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eKol1Q8Hc6dc4ny2l4VCq0xq86gXvcysNExlpKQ/wgg=;
+ b=rmWwa5hRigPTS6zkqmfld7t0yHefDW3N6hVTKSRzDeTU+QK2JyXgQzjaAT8StiIUAFaOF1RGjqE42ogFvmHXl5wdUjFgD24RVzv7o6/uUiADqW7SWHxpsX7GBqoWv172Dpf9c8niX89H2qBhqEiOdpwK2gpDRWPEqRz+BjE05h0=
+Authentication-Results: rjwysocki.net; dkim=none (message not signed)
+ header.d=none;rjwysocki.net; dmarc=none action=none header.from=amd.com;
+Received: from BN6PR1201MB0004.namprd12.prod.outlook.com
+ (2603:10b6:404:ac::23) by BN8PR12MB3090.namprd12.prod.outlook.com
+ (2603:10b6:408:67::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.24; Fri, 23 Oct
+ 2020 08:04:16 +0000
+Received: from BN6PR1201MB0004.namprd12.prod.outlook.com
+ ([fe80::e8ab:4ae2:8e36:dfc9]) by BN6PR1201MB0004.namprd12.prod.outlook.com
+ ([fe80::e8ab:4ae2:8e36:dfc9%5]) with mapi id 15.20.3477.028; Fri, 23 Oct 2020
+ 08:04:16 +0000
+From:   Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org
+Cc:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Subject: [PATCH] ACPI: PM: s2idle: Add AMD support to handle _DSM during S2Idle
+Date:   Fri, 23 Oct 2020 13:33:15 +0530
+Message-Id: <20201023080315.458570-1-Shyam-sundar.S-k@amd.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [165.204.156.251]
+X-ClientProxiedBy: MA1PR0101CA0050.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:20::12) To BN6PR1201MB0004.namprd12.prod.outlook.com
+ (2603:10b6:404:ac::23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from jatayu.amd.com (165.204.156.251) by MA1PR0101CA0050.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:20::12) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Fri, 23 Oct 2020 08:03:53 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 6c842f49-4d3f-47e0-1c37-08d8772a2f9a
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3090:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BN8PR12MB309015756DEE7E004FC7E6509A1A0@BN8PR12MB3090.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:96;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jP/vXALC2d2c3i46MhmiVD/RjCBvzLK51PRIbgUbWTCEC08Gk5U0xrU4Nco8dMXiynraovjz9wnLahn44nv6ntmWkX2zDzgmwYgYssXB4xYbMHMcSyKgxzzTniBX0Ts85x6cJ+svZJha2d7mSyVAWLz9GvMGeH2JT6XMJICB8bw2r51PWrLEG0tjrcn/4Bk8ERgQnnNqB/yX2NnBhL99scOXEkJrFihPONkMClSxH7AmM9cf/VLlE3BBjRnkMJ+1lmiOIDktEeExS4dckpOiR9xSQxjfzPX2/PyL9wEUnY6e24O+HaH5kktPOQqOuYVo7NpUlGq26LphyUl97Ma9wB+MzJ009DqtyumXHyZP1bsAV3yg3M+gaJsKLmVxLQFL86nC5I+a0tyk5DOi8hr5vg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR1201MB0004.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(366004)(396003)(346002)(376002)(66556008)(966005)(8936002)(26005)(8676002)(2616005)(478600001)(956004)(316002)(36756003)(4326008)(86362001)(2906002)(52116002)(66476007)(16526019)(186003)(1076003)(6666004)(5660300002)(83380400001)(6486002)(66946007)(7696005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: PqxshuSbKJkf2aqwt8XnhR5bVJeWVmiLv7zRqA/TFONUBrpfCyXFMhZ4SYjsOP+rKM2J2h5WyKBvByrLvX3hrgkPIbAQDqAuTcBh0v2ZhPhRblnBp80vKDPkQm4ngCnlZ2qHd85Ml3zNlQt5J7yeUD8J48ni/IyvnrxDNeQh7L0rDwXmeY2Rx5YxEsx1ea2xC/WDIIQefifzq+zZ+ex9mK91KLhIeq8fi9n/hvmZKOlB65nVP/wS8uyxCRNH6ZsXCyZZ1eGyMj8tH2QrnF1R3dc9pOjg8Il2EmEhkeMQ1jfLAEkLdxDMhksbgzlETp4CxqOtaB6FUluVWhfjIIuvHlVpA5EwJXJ2IyQKtPrnnq0el6+62MVei/2t2YRSakEPwISGJKEdR48Tv/x3jjbgJ9zeMHCTNmZYQ0Ojd/Zd3F59eau2zTpX0/MpI5/J0KMK7ulRYzz39/b6gvH+/1Dn4r5ptDltbdbgqcxolLi2DcpARl3A2Foz+hsVjFYZ7QsUuuJG2Fq7kqxl54z4/zJJ8HHR+kZPczqt3fhkrlmE5x81wHY/kIzjXl30ubV+OU6UdAw3KRCKBHbIQH7TsM2mJBTRpqu9mAhAfMSPn9btn9qr8VFyNUbXJXRQ+vxWajltHGk6YHi1bIztNppNjHTIMw==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c842f49-4d3f-47e0-1c37-08d8772a2f9a
+X-MS-Exchange-CrossTenant-AuthSource: BN6PR1201MB0004.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2020 08:03:54.7864
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CNw0yec4eQP9nkcWVmldVMiXVDs/J3eInrz34iJC7sD9olJZNkHBdHGoqoa2iQIXfwzoK3IvAYLaqaLuYQEJYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB3090
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 54e1ca2a19234787050e494833aad6800f8ee645  Merge branch 'acpi-utils' into linux-next
+Initial support for S2Idle based on the Intel implementation[1] does not
+work for AMD as the BIOS implementation for ACPI methods like the _DSM
+are not standardized.
 
-elapsed time: 720m
+So, the way in which the UUID's were parsed and the ACPI packages were
+retrieved out of the ACPI objects are not the same between Intel and AMD.
 
-configs tested: 136
-configs skipped: 2
+This patch adds AMD support for S2Idle to parse the UUID, evaluate the
+_DSM methods, preparing the Idle constaint list etc.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                         lpc18xx_defconfig
-arc                        vdk_hs38_defconfig
-mips                      bmips_stb_defconfig
-powerpc                      katmai_defconfig
-mips                         cobalt_defconfig
-powerpc                 mpc837x_mds_defconfig
-mips                          ath79_defconfig
-um                            kunit_defconfig
-powerpc                     ppa8548_defconfig
-powerpc                     akebono_defconfig
-powerpc                     tqm8541_defconfig
-sh                          kfr2r09_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                      ppc40x_defconfig
-mips                      malta_kvm_defconfig
-arm                             mxs_defconfig
-arc                        nsim_700_defconfig
-powerpc                      ppc44x_defconfig
-mips                         db1xxx_defconfig
-sparc64                             defconfig
-sh                           se7343_defconfig
-h8300                               defconfig
-sh                           se7780_defconfig
-arm                            zeus_defconfig
-sh                           se7722_defconfig
-mips                     decstation_defconfig
-arm                      jornada720_defconfig
-sh                          lboxre2_defconfig
-arm                           efm32_defconfig
-sh                      rts7751r2d1_defconfig
-i386                             alldefconfig
-powerpc                    klondike_defconfig
-arm                            pleb_defconfig
-xtensa                              defconfig
-arm                    vt8500_v6_v7_defconfig
-powerpc                     redwood_defconfig
-sh                             sh03_defconfig
-sparc64                          alldefconfig
-sh                     magicpanelr2_defconfig
-arm                       aspeed_g4_defconfig
-arm                          moxart_defconfig
-mips                           jazz_defconfig
-arm                          lpd270_defconfig
-mips                            ar7_defconfig
-riscv                    nommu_virt_defconfig
-powerpc                      acadia_defconfig
-sh                              ul2_defconfig
-mips                  cavium_octeon_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                        m5407c3_defconfig
-sh                             espt_defconfig
-arm                        realview_defconfig
-arm                           spitz_defconfig
-sh                               alldefconfig
-m68k                        mvme16x_defconfig
-mips                           rs90_defconfig
-powerpc                     mpc512x_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20201023
-i386                 randconfig-a005-20201023
-i386                 randconfig-a003-20201023
-i386                 randconfig-a001-20201023
-i386                 randconfig-a006-20201023
-i386                 randconfig-a004-20201023
-i386                 randconfig-a002-20201022
-i386                 randconfig-a005-20201022
-i386                 randconfig-a003-20201022
-i386                 randconfig-a001-20201022
-i386                 randconfig-a006-20201022
-i386                 randconfig-a004-20201022
-x86_64               randconfig-a011-20201022
-x86_64               randconfig-a013-20201022
-x86_64               randconfig-a016-20201022
-x86_64               randconfig-a015-20201022
-x86_64               randconfig-a012-20201022
-x86_64               randconfig-a014-20201022
-i386                 randconfig-a016-20201022
-i386                 randconfig-a014-20201022
-i386                 randconfig-a015-20201022
-i386                 randconfig-a012-20201022
-i386                 randconfig-a013-20201022
-i386                 randconfig-a011-20201022
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a001-20201022
-x86_64               randconfig-a002-20201022
-x86_64               randconfig-a003-20201022
-x86_64               randconfig-a006-20201022
-x86_64               randconfig-a004-20201022
-x86_64               randconfig-a005-20201022
-
+Link: https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf # [1]
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/acpi/sleep.c | 166 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 158 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index aff13bf4d947..a36b4ddcd1e9 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -710,6 +710,11 @@ static const struct acpi_device_id lps0_device_ids[] = {
+ #define ACPI_LPS0_ENTRY		5
+ #define ACPI_LPS0_EXIT		6
+ 
++/* AMD */
++#define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
++#define ACPI_LPS0_SCREEN_OFF_AMD    4
++#define ACPI_LPS0_SCREEN_ON_AMD     5
++
+ static acpi_handle lps0_device_handle;
+ static guid_t lps0_dsm_guid;
+ static char lps0_dsm_func_mask;
+@@ -733,8 +738,128 @@ struct lpi_constraints {
+ 	int min_dstate;
+ };
+ 
++/* AMD */
++/* Device constraint entry structure */
++struct lpi_device_info_amd {
++	int revision;
++	int count;
++	union acpi_object *package;
++};
++
++/* Constraint package structure */
++struct lpi_device_constraint_amd {
++	char *name;
++	int enabled;
++	int function_states;
++	int min_dstate;
++};
++
+ static struct lpi_constraints *lpi_constraints_table;
+ static int lpi_constraints_table_size;
++static int rev_id;
++
++static void lpi_device_get_constraints_amd(void)
++{
++	union acpi_object *out_obj;
++	int i, j, k;
++
++	out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
++					  1, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
++					  NULL, ACPI_TYPE_PACKAGE);
++
++	if (!out_obj)
++		return;
++
++	acpi_handle_info(lps0_device_handle, "_DSM function 1 eval %s\n",
++			 out_obj ? "successful" : "failed");
++
++	for (i = 0; i < out_obj->package.count; i++) {
++		union acpi_object *package = &out_obj->package.elements[i];
++		struct lpi_device_info_amd info = { };
++
++		if (package->type == ACPI_TYPE_INTEGER) {
++			switch (i) {
++			case 0:
++				info.revision = package->integer.value;
++				break;
++			case 1:
++				info.count = package->integer.value;
++				break;
++			default:
++				break;
++			}
++		} else if (package->type == ACPI_TYPE_PACKAGE) {
++			lpi_constraints_table = kcalloc(package->package.count,
++							sizeof(*lpi_constraints_table),
++							GFP_KERNEL);
++
++			if (!lpi_constraints_table)
++				goto free_acpi_buffer;
++
++			acpi_handle_info(lps0_device_handle,
++					 "LPI: constraints list begin:\n");
++
++			for (j = 0; j < package->package.count; ++j) {
++				union acpi_object *info_obj = &package->package.elements[j];
++				struct lpi_device_constraint_amd dev_info = {};
++				struct lpi_constraints *list;
++				acpi_status status;
++
++				for (k = 0; k < info_obj->package.count; ++k) {
++					union acpi_object *obj = &info_obj->package.elements[k];
++					union acpi_object *obj_new;
++
++					list = &lpi_constraints_table[lpi_constraints_table_size];
++					list->min_dstate = -1;
++
++					obj_new = &obj[k];
++					switch (k) {
++					case 0:
++						dev_info.enabled = obj->integer.value;
++						break;
++					case 1:
++						dev_info.name = obj->string.pointer;
++						break;
++					case 2:
++						dev_info.function_states = obj->integer.value;
++						break;
++					case 3:
++						dev_info.min_dstate = obj->integer.value;
++						break;
++					default:
++						break;
++					}
++
++					if (!dev_info.enabled || !dev_info.name ||
++					    !dev_info.min_dstate)
++						continue;
++
++					status = acpi_get_handle(NULL, dev_info.name,
++								 &list->handle);
++					if (ACPI_FAILURE(status))
++						continue;
++
++					acpi_handle_info(lps0_device_handle,
++							 "index:%d Name:%s\n", k, dev_info.name);
++
++					list->min_dstate = dev_info.min_dstate;
++
++					if (list->min_dstate < 0) {
++						acpi_handle_info(lps0_device_handle,
++								 "Incomplete constraint defined\n");
++						continue;
++					}
++				}
++				lpi_constraints_table_size++;
++			}
++		}
++	}
++
++	acpi_handle_info(lps0_device_handle, "LPI: constraints list end\n");
++
++free_acpi_buffer:
++	ACPI_FREE(out_obj);
++}
+ 
+ static void lpi_device_get_constraints(void)
+ {
+@@ -883,7 +1008,7 @@ static void acpi_sleep_run_lps0_dsm(unsigned int func)
+ 	if (!(lps0_dsm_func_mask & (1 << func)))
+ 		return;
+ 
+-	out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, 1, func, NULL);
++	out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, rev_id, func, NULL);
+ 	ACPI_FREE(out_obj);
+ 
+ 	acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
+@@ -894,6 +1019,7 @@ static int lps0_device_attach(struct acpi_device *adev,
+ 			      const struct acpi_device_id *not_used)
+ {
+ 	union acpi_object *out_obj;
++	struct cpuinfo_x86 *c = &boot_cpu_data;
+ 
+ 	if (lps0_device_handle)
+ 		return 0;
+@@ -901,9 +1027,17 @@ static int lps0_device_attach(struct acpi_device *adev,
+ 	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
+ 		return 0;
+ 
+-	guid_parse(ACPI_LPS0_DSM_UUID, &lps0_dsm_guid);
++	if (c->x86_vendor == X86_VENDOR_AMD) {
++		guid_parse(ACPI_LPS0_DSM_UUID_AMD, &lps0_dsm_guid);
++		out_obj = acpi_evaluate_dsm(adev->handle, &lps0_dsm_guid, 0, 0, NULL);
++		rev_id = 0;
++	} else {
++		guid_parse(ACPI_LPS0_DSM_UUID, &lps0_dsm_guid);
++		out_obj = acpi_evaluate_dsm(adev->handle, &lps0_dsm_guid, 1, 0, NULL);
++		rev_id = 1;
++	}
++
+ 	/* Check if the _DSM is present and as expected. */
+-	out_obj = acpi_evaluate_dsm(adev->handle, &lps0_dsm_guid, 1, 0, NULL);
+ 	if (!out_obj || out_obj->type != ACPI_TYPE_BUFFER) {
+ 		acpi_handle_debug(adev->handle,
+ 				  "_DSM function 0 evaluation failed\n");
+@@ -919,7 +1053,12 @@ static int lps0_device_attach(struct acpi_device *adev,
+ 
+ 	lps0_device_handle = adev->handle;
+ 
+-	lpi_device_get_constraints();
++	if (c->x86_vendor == X86_VENDOR_AMD) {
++		acpi_handle_info(adev->handle, "lpi_device_get_constraints_amd\n");
++		lpi_device_get_constraints_amd();
++	} else {
++		lpi_device_get_constraints();
++	}
+ 
+ 	/*
+ 	 * Use suspend-to-idle by default if the default suspend mode was not
+@@ -968,14 +1107,19 @@ static int acpi_s2idle_prepare(void)
+ 
+ static int acpi_s2idle_prepare_late(void)
+ {
++	struct cpuinfo_x86 *c = &boot_cpu_data;
+ 	if (!lps0_device_handle || sleep_no_lps0)
+ 		return 0;
+ 
+ 	if (pm_debug_messages_on)
+ 		lpi_check_constraints();
+ 
+-	acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
+-	acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
++	if (c->x86_vendor == X86_VENDOR_AMD) {
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD);
++	} else {
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
++	}
+ 
+ 	return 0;
+ }
+@@ -1048,11 +1192,17 @@ static bool acpi_s2idle_wake(void)
+ 
+ static void acpi_s2idle_restore_early(void)
+ {
++	struct cpuinfo_x86 *c = &boot_cpu_data;
++
+ 	if (!lps0_device_handle || sleep_no_lps0)
+ 		return;
+ 
+-	acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+-	acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
++	if (c->x86_vendor == X86_VENDOR_AMD) {
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD);
++	} else {
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
++	}
+ }
+ 
+ static void acpi_s2idle_restore(void)
+-- 
+2.25.1
+
