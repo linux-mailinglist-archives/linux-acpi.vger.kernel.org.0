@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB6A12975C9
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Oct 2020 19:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC5B2975CE
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Oct 2020 19:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1753446AbgJWR35 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Oct 2020 13:29:57 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:46018 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1753444AbgJWR34 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Oct 2020 13:29:56 -0400
-Received: by mail-ot1-f65.google.com with SMTP id f37so2041057otf.12;
-        Fri, 23 Oct 2020 10:29:55 -0700 (PDT)
+        id S1753483AbgJWRbg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Oct 2020 13:31:36 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35791 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S461620AbgJWRbg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Oct 2020 13:31:36 -0400
+Received: by mail-ot1-f68.google.com with SMTP id n11so2086202ota.2;
+        Fri, 23 Oct 2020 10:31:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=IXO+oFGzZFMe3RRcGxHZuWeA7SXQBaRULI8TubEz+OI=;
-        b=n96vEu3UOxF0mRNxww5z8Wcywg9sS3mv096mKu+qAti6x7vIRdEK1xWzxt9PXEAkF7
-         OkrbAzlHKRPDr8omgHwQGcXmRCvb4OXyvhBOLW8A0G0XwJ8qM0LLexkevn3VglK+mvIW
-         kmzJvLgxSoVfwsb5up0Jsc6Hn9IeCI+DJljfBGbzybQzMlzQO8+4NwMop2yxVtKVaxxN
-         vjfD+QeIrsMIzJmIIZkjlSdDwlkvHQ/4BOY0I1Le2h5NCj+5/PF5u+X2/4C3LaQt4d4N
-         ba/icmLe5GONkwDQX8jcmct+tBlaVmO9JAjQk+70NcE7iPF6Mnh4PUlcw8xVITD6Lpdp
-         Zlxg==
-X-Gm-Message-State: AOAM532OfCzNTW7i4qfcXSFjXQgmGPqqidwBuNiuCVhZ+Kf8MrrYM/wl
-        mZKOhd+hWjaMZBj5ibg8bjzPcAiPJ43iJyErBL1ii2XjVF4=
-X-Google-Smtp-Source: ABdhPJwaUqMQ79RjPWrxI58BBn8CNW72fehlhqLoEjF976dRF9ieYVvgsIO9tsiM0PkRTle3VTzmhkyVS+eM5OWXCD8=
-X-Received: by 2002:a05:6830:18cd:: with SMTP id v13mr2650846ote.206.1603474194821;
- Fri, 23 Oct 2020 10:29:54 -0700 (PDT)
+        bh=hT2i530CLOTYlwicvZdH7tp3aHwzMHf9nt1Ew4Fstvo=;
+        b=hnO15ku5wZHPvJlsSylvO3RWP2DEubFoFuXSXXICmfN89WXc5QsuOlIWezc6B/HG1r
+         Dope8V4tEgHCUzdv3k+I5eJ+VWL3vUfVqP2YDjD5pkc4x1qNKubCWDq8HZUS1xUHVEc6
+         0+RrhCeszmGlhnaHlJJsuWxdV/oPgmduBw4MVs+n2+PCKzLkNuLJaUFKc+AKXfZeObY8
+         x/NYA54cIf+tbANVR52A4qZwf3WE46dDw5c3fXvac4hCRvLR+Z+T/eYvWW7rcndC2HJ9
+         llWu2SdvGBt+RSjYtjxkO9Mc+0TDi76SObYnb1Qll/4b/Uew33gtbPRMbLgGyMRVWBUs
+         9KhQ==
+X-Gm-Message-State: AOAM530Vdo5ZpSGTueGIN5p89tEEaSiVYSrWJQp6YCb23xIB3EvtKGfP
+        VwSgHjMZ6fG7kbEZ1MDuPVCvdUw6fse6dKn94cAZPr0YPOw=
+X-Google-Smtp-Source: ABdhPJzVYBjwtKKMSaTxsR2lpJzPEyvQmO1p2eGiFjZwKiH1xkc5Qno4uWu9/C0hyRYhPno/hIgTeQomUf4GVHlbJ/Q=
+X-Received: by 2002:a9d:734f:: with SMTP id l15mr2649488otk.260.1603474295544;
+ Fri, 23 Oct 2020 10:31:35 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 23 Oct 2020 19:29:43 +0200
-Message-ID: <CAJZ5v0jJq1myATF3gG=4JwCbBnn3X-MsPXA=nN=WVMcSuDGVzg@mail.gmail.com>
-Subject: [GIT PULL] More power management updates for v5.10-rc1
+Date:   Fri, 23 Oct 2020 19:31:24 +0200
+Message-ID: <CAJZ5v0hSpDBUG34ahJDQqs4u+io9x5HBSy6wq15RENG6ci3cJA@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v5.10-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -47,157 +47,71 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.10-rc1-2
+ acpi-5.10-rc1-2
 
-with top-most commit 41c169d9ae2c890552044e129d101995b62c8a02
+with top-most commit 2818cc745445ae5866598fe45fe563ef843e30af
 
- Merge branch 'pm-avs'
+ Merge branches 'acpi-debug', 'acpi-reboot', 'acpi-processor',
+'acpi-dptf' and 'acpi-utils'
 
-on top of commit defb53a7c790f9e37a765de8a5d830ed15e2055b
+on top of commit cf1d2b44f6c701ffff58606b5b8a8996190d6e7d
 
- Merge tag 'pnp-5.10-rc1' of
+ Merge tag 'acpi-5.10-rc1' of
 git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive more power management updates for 5.10-rc1.
+to receive more ACPI updates for 5.10-rc1.
 
-First of all, the adaptive voltage scaling (AVS) drivers go to new
-platform-specific locations as planned (this part was reported to
-have merge conflicts against the new arm-soc updates in linux-next).
-
-In addition to that, there are some fixes (intel_idle, intel_pstate,
-RAPL, acpi_cpufreq), the addition of on/off notifiers and idle state
-accounting support to the generic power domains (genpd) code and some
-janitorial changes all over.
+These include an ACPICA code build fix related to recent GPE register
+access changes, a Kconfig cleanup related to the Dynamic Platform and
+Thremal Framework (DPTF) support, a reboot issue workaround, a debug
+module fix and a couple of janitorial changes.
 
 Specifics:
 
- - Move the AVS drivers to new platform-specific locations and get
-   rid of the drivers/power/avs directory (Ulf Hansson).
+ - Fix ACPICA code build after recent changes related to accessing
+   GPE registers (Rafael Wysocki).
 
- - Add on/off notifiers and idle state accounting support to the
-   generic power domains (genpd) framework (Ulf Hansson, Lina Iyer).
+ - Clean up DPTF part of the ACPI Kconfig (Rafael Wysocki).
 
- - Ulf will maintain the PM domain part of cpuidle-psci (Ulf Hansson).
+ - Work around a reboot issue related to RESET_REG (Zhang Rui).
 
- - Make intel_idle disregard ACPI _CST if it cannot use the data
-   returned by that method (Mel Gorman).
+ - Prevent ACPI debug module from attempting to run (and crashing)
+   when ACPI is disabled (Jamie Iles).
 
- - Modify intel_pstate to avoid leaving useless sysfs directory
-   structure behind if it cannot be registered (Chen Yu).
+ - Drop confusing comment from the ACPI processor driver (Alex Hung).
 
- - Fix domain detection in the RAPL power capping driver and prevent
-   it from failing to enumerate the Psys RAPL domain (Zhang Rui).
-
- - Allow acpi-cpufreq to use ACPI _PSD information with Family 19 and
-   later AMD chips (Wei Huang).
-
- - Update the driver assumptions comment in intel_idle and fix a
-   kerneldoc comment in the runtime PM framework (Alexander Monakov,
-   Bean Huo).
-
- - Avoid unnecessary resets of the cached frequency in the schedutil
-   cpufreq governor to reduce overhead (Wei Wang).
-
- - Clean up the cpufreq core a bit (Viresh Kumar).
-
- - Make assorted minor janitorial changes (Daniel Lezcano, Geert
-   Uytterhoeven, Hubert Jasudowicz, Tom Rix).
-
- - Clean up and optimize the cpupower utility somewhat (Colin Ian
-   King, Martin Kaistra).
+ - Drop a few unreachable break statements (Tom Rix).
 
 Thanks!
 
 
 ---------------
 
-Alexander Monakov (1):
-      intel_idle: mention assumption that WBINVD is not needed
+Alex Hung (1):
+      ACPI: processor: remove comment regarding string _UID support
 
-Bean Huo (1):
-      PM: runtime: Fix typo in pm_runtime_set_active() helper comment
+Jamie Iles (1):
+      ACPI: debug: don't allow debugging when ACPI is disabled
 
-Chen Yu (1):
-      cpufreq: intel_pstate: Delete intel_pstate sysfs if failed to
-register the driver
-
-Colin Ian King (1):
-      cpupowerutils: fix spelling mistake "dependant" -> "dependent"
-
-Daniel Lezcano (1):
-      cpuidle: Remove pointless stub
-
-Geert Uytterhoeven (1):
-      PM: domains: Add curly braces to delimit comment + statement block
-
-Hubert Jasudowicz (1):
-      powercap: Fix typo in Kconfig "Plance" -> "Plane"
-
-Lina Iyer (1):
-      PM: domains: enable domain idle state accounting
-
-Martin Kaistra (1):
-      cpupower: speed up generating git version string
-
-Mel Gorman (1):
-      intel_idle: Ignore _CST if control cannot be taken from the platform
+Rafael J. Wysocki (3):
+      ACPI: DPTF: Fix participant driver names
+      ACPI: DPTF: Add ACPI_DPTF Kconfig menu
+      ACPICA: Add missing type casts in GPE register access code
 
 Tom Rix (1):
-      PM: sleep: remove unreachable break
+      ACPI: utils: remove unreachable breaks
 
-Ulf Hansson (7):
-      MAINTAINERS: Add section for cpuidle-psci PM domain
-      PM: domains: Add support for PM domain on/off notifiers for genpd
-      PM: AVS: rockchip-io: Move the driver to the rockchip specific drivers
-      PM: AVS: smartreflex Move driver to soc specific drivers
-      PM: domains: Fix build error for genpd notifiers
-      PM: AVS: qcom-cpr: Move the driver to the qcom specific drivers
-      PM: AVS: Drop the avs directory and the corresponding Kconfig
-
-Viresh Kumar (1):
-      cpufreq: Improve code around unlisted freq check
-
-Wei Huang (1):
-      acpi-cpufreq: Honor _PSD table setting on new AMD CPUs
-
-Wei Wang (1):
-      cpufreq: schedutil: restore cached freq when next_f is not changed
-
-Zhang Rui (2):
-      powercap/intel_rapl: Fix domain detection
-      powercap/intel_rapl: enumerate Psys RAPL domain together with
-package RAPL domain
+Zhang Rui (1):
+      ACPI: reboot: Avoid racing after writing to ACPI RESET_REG
 
 ---------------
 
- MAINTAINERS                                        |  14 +-
- arch/arm/plat-omap/Kconfig                         |   2 +-
- drivers/base/power/domain.c                        | 167 +++++++++++++++++++--
- drivers/base/power/main.c                          |   1 -
- drivers/cpufreq/acpi-cpufreq.c                     |   3 +-
- drivers/cpufreq/cpufreq.c                          |  15 +-
- drivers/cpufreq/intel_pstate.c                     |  22 ++-
- drivers/idle/intel_idle.c                          |  15 +-
- drivers/power/Kconfig                              |   1 -
- drivers/power/Makefile                             |   1 -
- drivers/power/avs/Kconfig                          |  37 -----
- drivers/power/avs/Makefile                         |   4 -
- drivers/powercap/Kconfig                           |   2 +-
- drivers/powercap/intel_rapl_common.c               |  82 ++--------
- drivers/powercap/intel_rapl_msr.c                  |   5 +-
- drivers/soc/qcom/Kconfig                           |  16 ++
- drivers/soc/qcom/Makefile                          |   1 +
- drivers/{power/avs/qcom-cpr.c => soc/qcom/cpr.c}   |   0
- drivers/soc/rockchip/Kconfig                       |   8 +
- drivers/soc/rockchip/Makefile                      |   1 +
- .../rockchip/io-domain.c}                          |   0
- drivers/soc/ti/Makefile                            |   1 +
- drivers/{power/avs => soc/ti}/smartreflex.c        |   0
- include/linux/cpuidle.h                            |   5 -
- include/linux/intel_rapl.h                         |   7 +-
- include/linux/pm_domain.h                          |  24 +++
- include/linux/pm_runtime.h                         |   2 +-
- kernel/sched/cpufreq_schedutil.c                   |   5 +-
- tools/power/cpupower/Makefile                      |   2 +-
- tools/power/cpupower/debug/i386/intel_gsic.c       |   2 +-
- 30 files changed, 281 insertions(+), 164 deletions(-)
+ drivers/acpi/acpi_dbg.c           |  3 +++
+ drivers/acpi/acpi_processor.c     |  1 -
+ drivers/acpi/acpica/hwgpe.c       |  4 ++--
+ drivers/acpi/dptf/Kconfig         | 29 ++++++++++++++++++++++++-----
+ drivers/acpi/dptf/dptf_pch_fivr.c |  2 +-
+ drivers/acpi/dptf/dptf_power.c    |  2 +-
+ drivers/acpi/reboot.c             | 11 +++++++++++
+ drivers/acpi/utils.c              |  4 ----
+ 8 files changed, 42 insertions(+), 14 deletions(-)
