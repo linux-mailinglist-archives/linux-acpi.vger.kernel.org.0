@@ -2,77 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A84299905
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Oct 2020 22:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8FB299BE2
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 00:54:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390342AbgJZVsp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Oct 2020 17:48:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50172 "EHLO mail.kernel.org"
+        id S2410270AbgJZXx6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Oct 2020 19:53:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58970 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390340AbgJZVsp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Oct 2020 17:48:45 -0400
-Received: from localhost.localdomain (unknown [192.30.34.233])
+        id S2410262AbgJZXx4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:53:56 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B123B207E8;
-        Mon, 26 Oct 2020 21:48:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4A75F20882;
+        Mon, 26 Oct 2020 23:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603748924;
-        bh=R7zMDymsvhTfopdeoblEJpa47TFpLO5lTLpTKm/lObU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=M1NDeXoK7s+A7e/qV2TipTvaMbyCdFn9rmPhQfFtkGEE+WLsz6dUA5bBa9eq4cGQi
-         7NisPujAUpEBgQPdKNI6+2Iw841e9J/v6CDtRcvVi5XviiscjH10RBB54UB+tXIoNH
-         TJ9BzYliB8YVx5TbF48VMknMIbvtKwtxbb2ZE7rQ=
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Yinghai Lu <yinghai@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: dock: fix enum-conversion warning
-Date:   Mon, 26 Oct 2020 22:48:34 +0100
-Message-Id: <20201026214838.3892471-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.27.0
+        s=default; t=1603756435;
+        bh=HOQPy0p4Pi0/XvfEJsVuHquvnr0IOxQpH7ArqHJntZk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ZSHRqqC6O0VD+2Udzw1/w8Tefpkjdojo5ZucRijGZqts+v8DZwtpI+24z6/p9Ww0l
+         vkmgvVdlDANTc0UwgN1UBrWYWuJXolLt59YBvMAtkgqbq4YPO0NtrOB/bEKzHtA8VW
+         JDrxkvL0lhGqK8H3GQrVpSLt346vFBKw3FpGCH3w=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 090/132] ACPI: HMAT: Fix handling of changes from ACPI 6.2 to ACPI 6.3
+Date:   Mon, 26 Oct 2020 19:51:22 -0400
+Message-Id: <20201026235205.1023962-90-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
+References: <20201026235205.1023962-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-gcc points out a type mismatch:
+[ Upstream commit 2c5b9bde95c96942f2873cea6ef383c02800e4a8 ]
 
-drivers/acpi/dock.c: In function 'hot_remove_dock_devices':
-drivers/acpi/dock.c:234:53: warning: implicit conversion from 'enum <anonymous>' to 'enum dock_callback_type' [-Wenum-conversion]
-  234 |   dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST, false);
+In ACPI 6.3, the Memory Proximity Domain Attributes Structure
+changed substantially.  One of those changes was that the flag
+for "Memory Proximity Domain field is valid" was deprecated.
 
-This is harmless because 'false' still has the correct numeric value,
-but passing DOCK_CALL_HANDLER documents better what is going on
-and avoids the warning.
+This was because the field "Proximity Domain for the Memory"
+became a required field and hence having a validity flag makes
+no sense.
 
-Fixes: 37f908778f20 ("ACPI / dock: Walk list in reverse order during removal of devices")
-Fixes: f09ce741a03a ("ACPI / dock / PCI: Drop ACPI dock notifier chain")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+So the correct logic is to always assume the field is there.
+Current code assumes it never is.
+
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/dock.c | 3 ++-
+ drivers/acpi/numa/hmat.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-index 45d4b7b69de8..24e076f44d23 100644
---- a/drivers/acpi/dock.c
-+++ b/drivers/acpi/dock.c
-@@ -231,7 +231,8 @@ static void hot_remove_dock_devices(struct dock_station *ds)
- 	 * between them).
- 	 */
- 	list_for_each_entry_reverse(dd, &ds->dependent_devices, list)
--		dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST, false);
-+		dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST,
-+				   DOCK_CALL_HANDLER);
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 2c32cfb723701..6a91a55229aee 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -424,7 +424,8 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
+ 		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+ 			p->flags, p->processor_PD, p->memory_PD);
  
- 	list_for_each_entry_reverse(dd, &ds->dependent_devices, list)
- 		acpi_bus_trim(dd->adev);
+-	if (p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) {
++	if ((hmat_revision == 1 && p->flags & ACPI_HMAT_MEMORY_PD_VALID) ||
++	    hmat_revision > 1) {
+ 		target = find_mem_target(p->memory_PD);
+ 		if (!target) {
+ 			pr_debug("HMAT: Memory Domain missing from SRAT\n");
 -- 
-2.27.0
+2.25.1
 
