@@ -2,35 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8FB299BE2
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 00:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1A729A000
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 01:26:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410270AbgJZXx6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Oct 2020 19:53:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58970 "EHLO mail.kernel.org"
+        id S2442496AbgJ0A0q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Oct 2020 20:26:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58464 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2410262AbgJZXx4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:53:56 -0400
+        id S2410161AbgJZXxm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:53:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A75F20882;
-        Mon, 26 Oct 2020 23:53:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 549BB2151B;
+        Mon, 26 Oct 2020 23:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756435;
-        bh=HOQPy0p4Pi0/XvfEJsVuHquvnr0IOxQpH7ArqHJntZk=;
+        s=default; t=1603756422;
+        bh=SRYkNN8HXkCNdHshA/b9nKmA2O2Pol1AIomkmghGlPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZSHRqqC6O0VD+2Udzw1/w8Tefpkjdojo5ZucRijGZqts+v8DZwtpI+24z6/p9Ww0l
-         vkmgvVdlDANTc0UwgN1UBrWYWuJXolLt59YBvMAtkgqbq4YPO0NtrOB/bEKzHtA8VW
-         JDrxkvL0lhGqK8H3GQrVpSLt346vFBKw3FpGCH3w=
+        b=EEafZmAaVc+5vAin2ShsKsXhxz2POvvi4d00EoI8O2wEBq4wk0ORpE/ZtfvsOL+e3
+         ZOtVE+dKE1JTPP6UlQmrb4Gr+e3mzuLyOJwmc6Jt5FMYUoV0sYdLDKLyRd5OLRrLkf
+         HqjcYbbYPYfmfL/0BhmZgw2TKP/hBbxNA7pVdfHk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 090/132] ACPI: HMAT: Fix handling of changes from ACPI 6.2 to ACPI 6.3
-Date:   Mon, 26 Oct 2020 19:51:22 -0400
-Message-Id: <20201026235205.1023962-90-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.8 078/132] ACPI: Add out of bounds and numa_off protections to pxm_to_node()
+Date:   Mon, 26 Oct 2020 19:51:10 -0400
+Message-Id: <20201026235205.1023962-78-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
 References: <20201026235205.1023962-1-sashal@kernel.org>
@@ -44,40 +46,38 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 2c5b9bde95c96942f2873cea6ef383c02800e4a8 ]
+[ Upstream commit 8a3decac087aa897df5af04358c2089e52e70ac4 ]
 
-In ACPI 6.3, the Memory Proximity Domain Attributes Structure
-changed substantially.  One of those changes was that the flag
-for "Memory Proximity Domain field is valid" was deprecated.
+The function should check the validity of the pxm value before using
+it to index the pxm_to_node_map[] array.
 
-This was because the field "Proximity Domain for the Memory"
-became a required field and hence having a validity flag makes
-no sense.
-
-So the correct logic is to always assume the field is there.
-Current code assumes it never is.
+Whilst hardening this code may be good in general, the main intent
+here is to enable following patches that use this function to replace
+acpi_map_pxm_to_node() for non SRAT usecases which should return
+NO_NUMA_NODE for PXM entries not matching with those in SRAT.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Barry Song <song.bao.hua@hisilicon.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/hmat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/numa/srat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 2c32cfb723701..6a91a55229aee 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -424,7 +424,8 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
- 		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
- 			p->flags, p->processor_PD, p->memory_PD);
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 5be5a977da1bf..8ef44ee0d76bd 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -31,7 +31,7 @@ int acpi_numa __initdata;
  
--	if (p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) {
-+	if ((hmat_revision == 1 && p->flags & ACPI_HMAT_MEMORY_PD_VALID) ||
-+	    hmat_revision > 1) {
- 		target = find_mem_target(p->memory_PD);
- 		if (!target) {
- 			pr_debug("HMAT: Memory Domain missing from SRAT\n");
+ int pxm_to_node(int pxm)
+ {
+-	if (pxm < 0)
++	if (pxm < 0 || pxm >= MAX_PXM_DOMAINS || numa_off)
+ 		return NUMA_NO_NODE;
+ 	return pxm_to_node_map[pxm];
+ }
 -- 
 2.25.1
 
