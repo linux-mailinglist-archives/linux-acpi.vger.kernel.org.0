@@ -2,79 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1836C29933B
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Oct 2020 18:01:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42EAB29939D
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Oct 2020 18:21:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1775081AbgJZRA7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 26 Oct 2020 13:00:59 -0400
-Received: from mga14.intel.com ([192.55.52.115]:31527 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1772050AbgJZQ7G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Oct 2020 12:59:06 -0400
-IronPort-SDR: 2sHFqqIShy94SB/pqIoU80T/xqtLjGALSkFNMxM/1Q3MHtlbHUkzHqUlbR3E9RxcQqbz6NCLsc
- 3zVMHomiW38w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="167172950"
-X-IronPort-AV: E=Sophos;i="5.77,420,1596524400"; 
-   d="scan'208";a="167172950"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 09:59:06 -0700
-IronPort-SDR: TRYwYcvvxoZmxQJRLWRtBu1Mow89wGrqonEIN/BftOsc0ulzf1WS67WRn/hRi4NclNBsaeGDQR
- b3Q/md0mv/wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,420,1596524400"; 
-   d="scan'208";a="334093291"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga002.jf.intel.com with ESMTP; 26 Oct 2020 09:59:05 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 26 Oct 2020 09:59:05 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 26 Oct 2020 09:59:04 -0700
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
- Mon, 26 Oct 2020 09:59:04 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     "yaoaili126@163.com" <yaoaili126@163.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>
-CC:     "james.morse@arm.com" <james.morse@arm.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "yangfeng1@kingsoft.com" <yangfeng1@kingsoft.com>,
-        "yaoaili@kingsoft.com" <yaoaili@kingsoft.com>
-Subject: RE: [PATCH] Fix incorrect return value of pre_map_gar_callback
-Thread-Topic: [PATCH] Fix incorrect return value of pre_map_gar_callback
-Thread-Index: AQHWq19sp66xi2qbOUqFwfzrDLYujqmqGylg
-Date:   Mon, 26 Oct 2020 16:59:04 +0000
-Message-ID: <0976809238164c308f8e1592595899f0@intel.com>
-References: <20201026061509.48212-1-yaoaili126@163.com>
-In-Reply-To: <20201026061509.48212-1-yaoaili126@163.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.1.200.100]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1775583AbgJZRVE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Oct 2020 13:21:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41252 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1775598AbgJZRVB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Oct 2020 13:21:01 -0400
+Date:   Mon, 26 Oct 2020 18:20:57 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1603732858;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oB2n0giDJAYWcKw6n8mDK9I+WY0T57Mwbrgg5zYcJr8=;
+        b=ATG4oJgyAV4DEFqzfnJMN996aPUgxFF0bAxJJJCAg69n+GE65sj1guHIvG0ebZP6kEuS0/
+        47NdWhos9vOYpkRJ/T43/0jFyJvJPlijs9M72pmq0C0dSkaNeMXTaLovHfJ78pQYZ8/C7Q
+        8AHK52r/ICHohBylwDlBm6xppyy4/uxQQCw7MboAZ74ggglGT13WX+U2LnT6AYFvS/COPG
+        ZZiW2WRW8Y/uafR7zycJLzKXGYrufJavlfAMoRu83JkS8aEJh6oP2EFYaRfeOjdh6mxSqD
+        O0oIgaQuwYitvuMekguHmak/Sb6Dql6KPc+ZMZHSd8KGbYLT4XWFMhYwvq0EbQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1603732858;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oB2n0giDJAYWcKw6n8mDK9I+WY0T57Mwbrgg5zYcJr8=;
+        b=yIxacmqX5WVWewymSGWT965ZXKcgemXRgvUgqQv3ONw/IE6JrPOlQcLqfy8xBf41NaDzeY
+        75rbpYz0KZ9acSDQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Stephen Berman <stephen.berman@gmx.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20201026172057.h5toqoobiyhc4g3g@linutronix.de>
+References: <20200714141135.47adndrsdgpiqfy4@linutronix.de>
+ <87blkbx1gt.fsf@gmx.net>
+ <87imdp5r80.fsf@rub.de>
+ <20200811132955.wbt55ns7bu5mxouq@linutronix.de>
+ <CAJZ5v0h+n9VCz5=VixVbe_b=ZbTU3D=46stGhE9z7Y7yaUMJzw@mail.gmail.com>
+ <20200811152551.dmfw46urecbmeklr@linutronix.de>
+ <87ft8tayic.fsf@gmx.net>
+ <20200811184902.2fm4eyprmpkfon2j@linutronix.de>
+ <20201006214927.4nsqtfji4fdv3oed@linutronix.de>
+ <3fc9074b-c153-8446-0289-1e4dfab395eb@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <3fc9074b-c153-8446-0289-1e4dfab395eb@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -	if (ctx->ins_table[ins].flags & APEI_EXEC_INS_ACCESS_REGISTER)
-> +	if (ctx->ins_table[ins].flags & APEI_EXEC_INS_ACCESS_REGISTER &&
-> +	 entry->register_region.space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+On 2020-10-07 18:18:03 [+0200], Rafael J. Wysocki wrote:
+> On 10/6/2020 11:49 PM, Sebastian Andrzej Siewior wrote:
+> > On 2020-08-11 20:49:05 [+0200], To Stephen Berman wrote:
+> > > On 2020-08-11 19:22:19 [+0200], Stephen Berman wrote:
+> > > > Attached.
+> > > ssdt6.dsl:
+> > > |  ThermalZone (TZ10)
+> > > |  {
+> > > =E2=80=A6
+> > > |      Method (_TSP, 0, Serialized)  // _TSP: Thermal Sampling Period
+> > > |      {
+> > > |          Return (0x0A)
+> > > |      }
+> > > |
+> > > |      Method (_TZP, 0, Serialized)  // _TZP: Thermal Zone Polling
+> > > |      {
+> > > |          Return (0x0A)
+> > > |      }
+> > > |
+> > > |      Method (_TMP, 0, Serialized)  // _TMP: Temperature
+> > > |      {
+> > > |          \GSA1.ZRC3 ()
+> > > |          Sleep (0x03E8)
+> > > |          Notify (\_TZ.TZ10, 0x81) // Thermal Trip Point Change
+> > > |          Return (0x0B54)
+> > > |      }
+> > >=20
+> > > So if I read this correctly then TZ10 should be polled every second
+> > > (check) and the temperature function contains a `sleep(1 second)' (wh=
+ich
+> > > explains the mysteries delay) followed by the Notify() (which schedul=
+es
+> > > the worker).
+> > >=20
+> > > > Done as Bug 208877.
+> > Rafael, do you have any suggestions?
+>=20
+> I've lost track of this sorry.
+>=20
+> I have ideas, let me get back to this next week.
 
-I don't know (too long since I looked at APEI code) if this is the right fix, but I tried it out and it does allow einj.ko module to load.
+:)
 
-Tested-by: Tony Luck <tony.luck@intel.com>
+> Cheers!
 
--Tony
+Sebastian
