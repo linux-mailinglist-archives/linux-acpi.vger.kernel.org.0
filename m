@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0589299568
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Oct 2020 19:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E334629956C
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Oct 2020 19:33:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1789866AbgJZSdf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Oct 2020 14:33:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:24122 "EHLO
+        id S1789878AbgJZSdj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Oct 2020 14:33:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:58670 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1789769AbgJZSde (ORCPT
+        by vger.kernel.org with ESMTP id S1789864AbgJZSdj (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Oct 2020 14:33:34 -0400
+        Mon, 26 Oct 2020 14:33:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603737212;
+        s=mimecast20190719; t=1603737217;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=5rzN8xtO7O+TraWbLdrWrZIHELIhUQEP4fjr6CDKufA=;
-        b=Rcqff6T6/Ehf8oNhPWoc2CIeWJw8DhPMBbEYg5MYl5NhW50RZkUuQb+Pc5Gb817vi9cpLX
-        vpLBhUwaEuy0jAy1ropQmRxBEmhInPhKvMDy7O1bndlXrCweb3hBDDXK0LY4o4wVKQxRUV
-        CjCpV1g35keiKD9LDs/CDfDsQcF9lWc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-182-3tgId-gMN-mikwpI1mRI4g-1; Mon, 26 Oct 2020 14:33:30 -0400
-X-MC-Unique: 3tgId-gMN-mikwpI1mRI4g-1
-Received: by mail-ej1-f69.google.com with SMTP id c10so5762482ejm.15
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Oct 2020 11:33:30 -0700 (PDT)
+        b=emae8Xe4NZ9DEXmQE3JchuAQyGfTifoOwm5HYsj2m9lDI3aV6bnMlrLl7Cvk9DJwXZupmU
+        C/+EdNo2trRyOYFbytMhIOj3eEqjP6ASW5HdOdWWMQCoKm0tkBbwZqxUJg1LLy8/2xy2yx
+        d11XviJWbcyg2mzC0OqS3xQusEWRj1I=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-272-Nl37tSg6ObmD4_x-_A1CTw-1; Mon, 26 Oct 2020 14:33:34 -0400
+X-MC-Unique: Nl37tSg6ObmD4_x-_A1CTw-1
+Received: by mail-ej1-f71.google.com with SMTP id t1so5730007ejb.21
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Oct 2020 11:33:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
         bh=5rzN8xtO7O+TraWbLdrWrZIHELIhUQEP4fjr6CDKufA=;
-        b=SAt307R44T6bcoCBp49Xn8RH0mfjpnfUaWgpiOI/QndfSJhNiScvYdFuNa+vdqmdPO
-         3V9pUkTcRp1EA6pqnuLfT2R0JgaRYp7dMdAhYPj4TDkRvNRD8Xczq2YZpc+H3hjbPp5/
-         nWSK+G9K75Wr4TP/BbyERguGPZbMkQP/8n4cvKasUJXo4wjKNaQ6Nmv2ut2G6ifRpUar
-         c0YSm6IiJpsQzuO8iEKdxaZTeJzsPeLwvLuouG0/VT4yD4dNQ+UtoBUr5B9SApIpGtpk
-         WDK7tDirMzoMuJPK7vfm6MJK9PTGMMG7NXazFG7CIwKIkOmz6wVpAZo3uki2O0iK5ssd
-         1CWA==
-X-Gm-Message-State: AOAM5312A/rJ+FmnESUsDOMnjKm61CWXGCleGFDmxzYfSHPT3qhHsRes
-        inCQoVfzQRS1SITfuoZ02fcd2TX3I1Lqi9DUNXNu4RcKrP/B6nXzm07bbuwJOnKlx08EVv8VH6w
-        BVtnU3jzkGGQnlIm/Vya0QQ==
-X-Received: by 2002:aa7:c4cc:: with SMTP id p12mr384468edr.77.1603737209494;
-        Mon, 26 Oct 2020 11:33:29 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxc7yieirk6V4fyLFmVp4QgXtXwAqn7MqgB2uT437fmfWnfpIjeCn56kJSZr7QmP/n7KXA+vg==
-X-Received: by 2002:aa7:c4cc:: with SMTP id p12mr384438edr.77.1603737209193;
-        Mon, 26 Oct 2020 11:33:29 -0700 (PDT)
+        b=hQhO8PZXrV8XLFp3LFSxmy1OITliFMDIehHEJewgTJC2a7+CwCfBst49N5LxaUvtuj
+         PkiIN2C5q4kEd88chpkbOnAKSn9ooQnvCUC+I3zvillS+YUboFK1zWSDTIbt9GpG+3Z9
+         BKPqOxuPfLS2gVBci4xz16v1sSuWI52pYF+WHXJEdKEkjwsAh92RQKpl5sfEmVVC1GCB
+         Im7tInW7/4cJyJ9kfViaEHVxqey4WAyzPz0JEfXENEHgGjg1dY+u5c024YzxxLXfJ1SU
+         mA+ctfJ6vXCF8DniL/EJzGufXTGlinFf8sKha1XLOMSxfxcq+3L8f2QOfqw4Od9dSLoR
+         dIJQ==
+X-Gm-Message-State: AOAM530G3K6BP/7rI/g3zT4lUwMzibbJBFMtnrjhCewU6+6i9CYJ6H23
+        ke6hLG5ws0PC9V/tpk42LIW1LfTikGvRdTYzx4yUEZtmSACacI8Xqu3iLDTNC3lI4UqLN+7qdpm
+        UJKANNdpS66zHRZdaCP7WUg==
+X-Received: by 2002:a05:6402:1c10:: with SMTP id ck16mr17381983edb.7.1603737213442;
+        Mon, 26 Oct 2020 11:33:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzgs/35k+Brq5u2rCEN7QCpoBhRml+MyHEqCOWMYIC3NLU3vtjWplyuJHBtZKOX0+eErQdY/A==
+X-Received: by 2002:a05:6402:1c10:: with SMTP id ck16mr17381949edb.7.1603737213185;
+        Mon, 26 Oct 2020 11:33:33 -0700 (PDT)
 Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id b25sm5625353eds.66.2020.10.26.11.33.28
+        by smtp.gmail.com with ESMTPSA id mc4sm6333155ejb.61.2020.10.26.11.33.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2020 11:33:28 -0700 (PDT)
+        Mon, 26 Oct 2020 11:33:32 -0700 (PDT)
 Subject: Re: [PATCH] [RFC] Documentation: Add documentation for new
  platform_profile sysfs attribute
 To:     Mark Pearson <markpearson@lenovo.com>
@@ -63,8 +63,8 @@ Cc:     dvhart@infradead.org, mgross@linux.intel.com,
 References: <markpearson@lenovo.com>
  <20201026174444.866545-1-markpearson@lenovo.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <23f52638-274d-b474-1fd7-38c75760e35e@redhat.com>
-Date:   Mon, 26 Oct 2020 19:33:27 +0100
+Message-ID: <3c850d5a-75e6-4238-74fe-610ed9860abc@redhat.com>
+Date:   Mon, 26 Oct 2020 19:33:31 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.1
 MIME-Version: 1.0
