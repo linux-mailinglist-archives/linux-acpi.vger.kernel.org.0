@@ -2,137 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 292DF29B4B5
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 16:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9E829BD92
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 17:50:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1789322AbgJ0PBy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Oct 2020 11:01:54 -0400
-Received: from mail1.bemta24.messagelabs.com ([67.219.250.116]:43674 "EHLO
+        id S1811850AbgJ0Qmw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Oct 2020 12:42:52 -0400
+Received: from mail1.bemta24.messagelabs.com ([67.219.250.116]:24365 "EHLO
         mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1789270AbgJ0PBx (ORCPT
+        by vger.kernel.org with ESMTP id S1811836AbgJ0Qmu (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 27 Oct 2020 11:01:53 -0400
+        Tue, 27 Oct 2020 12:42:50 -0400
 Received: from [100.112.135.1] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-b.us-west-2.aws.symcld.net id 70/E8-42875-956389F5; Tue, 27 Oct 2020 15:01:45 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFKsWRWlGSWpSXmKPExsWS8eIhr66p2Yx
-  4g9uzFS32X5ew6FpoYLHw/ilWi6/fbrNbvDk+ncli+b5+RovLu+awWXzuPcJo0dTZBGR1TGax
-  WL3nBbMDt8ekmTOYPXbOusvu8WvbGhaPzSu0POadDPR4v+8qm8fnTXIB7FGsmXlJ+RUJrBkLN
-  mxlKTjCU9H/p421gfEvZxcjF4eQwH9GiZZvt1kgnBeMEnNvN7J3MbJzCAuUSBxM6mLk5BAR8J
-  Y4vnUFWAkzSH3vlilsIAkhgS4mif2b6kFsNgFtiS1bfoHFeQVsJZ4deswCYrMIqEqsO/KVGcQ
-  WFQiX6LixgwmiRlDi5MwnYDWcAnYSb7edZwexmQUsJGbOP88IYYtL3HoynwnClpdo3jobbI6E
-  gILEncM32CHsBIllL+8wT2AUnIVk7Cwko2YhGTULyagFjCyrGC2SijLTM0pyEzNzdA0NDHQND
-  Y10DY1NdA3NTPQSq3ST9EqLdctTi0t0jfQSy4v1iitzk3NS9PJSSzYxAqMwpaBtyQ7GXW8+6B
-  1ilORgUhLlXb9rerwQX1J+SmVGYnFGfFFpTmrxIUYZDg4lCd4DJjPihQSLUtNTK9Iyc4AJASY
-  twcGjJMK7DyTNW1yQmFucmQ6ROsWoKCXOq2UKlBAASWSU5sG1wZLQJUZZKWFeRgYGBiGegtSi
-  3MwSVPlXjOIcjErCvJUg43ky80rgpr8CWswEtLitYgrI4pJEhJRUA1O+14vVawqXPjhWk7JlX
-  eYOfbeUMnNe2RU+/gwHpx+tyl20/+IPMyvtlDifV2E2oQ351R/Xr8z58nzP2+ybj8w6f9zVnL
-  PQqDXq33pfkRM7XmQbn1P/9euZ7wfPrN9Xbgdc2mj95EDQ1CtZiqwrdf3s9941VV3SYbrB4VN
-  bzPkw+V0/viZEs99OfFJRJf58ldp67/wFc2MfO/tr/8la59V67+zXDanmLH/ez1Qp6clxvSZx
-  V+Hp0q1Xsv4cPmr6NdW4NG3yv2tBQTkHXU7wp/tZNHgpiN41fbl/z6ngaZt/TuDdqJx52Lydd
-  19nYHyQRpm4Bdffuxczb2a/ezPv7a9lXk+572yO3ukb/PEIb4mtEktxRqKhFnNRcSIABCslsr
-  0DAAA=
+        by server-5.bemta.az-b.us-west-2.aws.symcld.net id 06/B9-42875-70E489F5; Tue, 27 Oct 2020 16:42:47 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplleJIrShJLcpLzFFi42JJl3vFpsvuNyP
+  eYMFWUYv91yUsuhYaWCy8f4rV4uu32+wWb45PZ7JYvq+f0eLyrjlsFp97jzBaNHU2AVkdk1ks
+  Vu95wezA7TFp5gxmj52z7rJ7/Nq2hsVj8wotj3knAz3e77vK5vF5k1wAexRrZl5SfkUCa8aZs
+  5IFX5UqFt7KamB8ItvFyMUhJPCfUeLZ8cWMXYycQM4bRomXG4tAbDYBbYktW36xdTFycIgIyE
+  h8WOsJEmYW2MskseNvCogtLBAl8f1JDwuIzSKgKvFt2142EJtXwEbi0KxnYCMlBOQlnvYuZwa
+  xOYFqznQ9ZoFYpSJx/8ESqHpBiZMzn7BAzJeXaN46mxnClpA4+OIFM8QcBYlvd78xQdgJEste
+  3mGewCgwC0n7LCTts5C0L2BkXsVollSUmZ5RkpuYmaNraGCga2hopGtobKRroZdYpZukV1qsW
+  55aXKJrpJdYXqxXXJmbnJOil5dasokRGEspBS0cOxgPv/6gd4hRkoNJSZR3iceMeCG+pPyUyo
+  zE4oz4otKc1OJDjDIcHEoSvNo+QDnBotT01Iq0zBxgXMOkJTh4lER4J4KkeYsLEnOLM9MhUqc
+  YFaXEedeDJARAEhmleXBtsFRyiVFWSpiXkYGBQYinILUoN7MEVf4VozgHo5Iw73uQKTyZeSVw
+  018BLWYCWtxWMQVkcUkiQkqqgcn59Gm9FSua+vveO7mYvo+/91DQvyVvwZTpfzdl/X74vu/vr
+  Orgx6mu6+pPy37e3RMQuXj73KVfHi3dXrA2ZbHR5mlJz84//3krcR/7jC1PD15u3K5boKJ5Me
+  Dt0nPXplsozH9WMslVuZt9ckdOgO2NS+ImqQcebKqcnsE2w1xJbM5m17Cj8615Drkff6GUFVh
+  4efKqlVz9+huuMczfV/coQyPy+ppXU2bPU883U8na5tHQ9G3Ts2W/qx7l+keazb+b5lSZ7xv+
+  Iz1Xx1sgMGOn16Uz+otM3gt+XVlf8P7bPkapCdk5V3e/f8grV+sQHige5vFvsUSE5dqwhF0tK
+  1j177qv3PM04lVuKZPn5CUiSizFGYmGWsxFxYkA1pxFwqADAAA=
 X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-26.tower-355.messagelabs.com!1603810868!1936!1
-X-Originating-IP: [104.232.225.13]
+X-Msg-Ref: server-3.tower-355.messagelabs.com!1603816965!7460!1
+X-Originating-IP: [103.30.234.6]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.60.3; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 22287 invoked from network); 27 Oct 2020 15:01:09 -0000
-Received: from unknown (HELO lenovo.com) (104.232.225.13)
-  by server-26.tower-355.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 27 Oct 2020 15:01:09 -0000
+Received: (qmail 16068 invoked from network); 27 Oct 2020 16:42:47 -0000
+Received: from unknown (HELO lenovo.com) (103.30.234.6)
+  by server-3.tower-355.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 27 Oct 2020 16:42:47 -0000
 Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
         (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 165E9F4B40D3F6AD8445;
-        Tue, 27 Oct 2020 11:01:08 -0400 (EDT)
-Received: from localhost.localdomain (10.46.59.124) by reswpmail04.lenovo.com
- (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Tue, 27 Oct
- 2020 08:01:06 -0700
-Subject: Re: [External] Re: [PATCH] [RFC] Documentation: Add documentation for
- new platform_profile sysfs attribute
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Elia Devito <eliadevito@gmail.com>
-CC:     <dvhart@infradead.org>, <mgross@linux.intel.com>,
-        <mario.limonciello@dell.com>, <hadess@hadess.net>,
-        <bberg@redhat.com>, <linux-pm@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <markpearson@lenovo.com>
- <ef9b93a0-636f-9b96-9d5b-fee1e5738af7@lenovo.com>
- <1fbaf1fa-47c6-afe7-ca9e-41b3ad6a4556@redhat.com> <12633630.uLZWGnKmhe@pce>
- <1bddcede-5e12-6089-8920-26dd5f534b44@lenovo.com>
- <255af791-e456-7299-d355-fe4f3cea7d63@redhat.com>
+        by Forcepoint Email with ESMTPS id 7B7A14184040F8AEE639;
+        Wed, 28 Oct 2020 00:42:42 +0800 (CST)
+Received: from localhost.localdomain.com (10.64.85.148) by
+ reswpmail04.lenovo.com (10.62.32.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2044.4; Tue, 27 Oct 2020 09:42:37 -0700
 From:   Mark Pearson <markpearson@lenovo.com>
-Message-ID: <c40d0916-a61b-3376-fedd-de815f501827@lenovo.com>
-Date:   Tue, 27 Oct 2020 11:01:04 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+To:     <markpearson@lenovo.com>
+CC:     <dvhart@infradead.org>, <mgross@linux.intel.com>,
+        <mario.limonciello@dell.com>, <eliadevito@gmail.com>,
+        <hadess@hadess.net>, <bberg@redhat.com>,
+        <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH] Documentation: Add documentation for new platform_profile sysfs attribute
+Date:   Tue, 27 Oct 2020 12:42:19 -0400
+Message-ID: <20201027164219.868839-1-markpearson@lenovo.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <markpearson@lenovo.com>
+References: <markpearson@lenovo.com>
 MIME-Version: 1.0
-In-Reply-To: <255af791-e456-7299-d355-fe4f3cea7d63@redhat.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.46.59.124]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.64.85.148]
 X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
  reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Hans de Goede <hdegoede@redhat.com>
 
+On modern systems the platform performance, temperature, fan and other
+hardware related characteristics are often dynamically configurable. The
+profile is often automatically adjusted to the load by somei
+automatic-mechanism (which may very well live outside the kernel).
 
-On 27/10/2020 09:41, Hans de Goede wrote:
-> Hi Mark,
-> 
-> On 10/27/20 1:28 PM, Mark Pearson wrote:
->> Hi Elia
->>
->> On 27/10/2020 05:19, Elia Devito wrote:
->>> Hi to all,
->>>
->>> In data martedì 27 ottobre 2020 08:54:44 CET, Hans de Goede ha scritto:
-<snip>
->>>
->>> This look good,
->>> only thing is that hp-wmi driver need a cool profile (Emphasises the computer
->>> cool to touch), if you can add it would be perfect.
->>>
->>> Regards
->>> Elia
->>>
->>>
->>>
->> Is low-power is different to cool? I figured low-power was going to be cool so combined them.
->> I could call it low-power-cool if that helps? It seems a little clunky but not too bad. I'm sure the user space folks can put sunglasses on it or something ;)
-> 
-> IIRC we already had this discussion, cool means cool-to-touch, so could be done by
-> e.g. extra aggressive ramping up of the fans, so this is not necessarily the same
-> as low-power.
-> 
-> Yes this is all somewhat confusing. Luckily (for us kernel folks) we have already
-> sorta decided to just use the profile-names from the vendors more or less as is and
-> leave figuring this out further to userspace.
-> 
-> The reason to use the enum + try to have a fixed list of choices is to try and
-> limit the proliferation of profile-names to keep things somewhat manageable.
-> 
-> But as I discussed previously with Elia (*) we really need all 3 of low-power
-> cool and quiet.
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> *) I was coming at this discussion from the same angle you (Mark) are
-> 
-OK, I can add a cool option.
+These auto platform-adjustment mechanisms often can be configured with
+one of several 'platform-profiles', with either a bias towards low-power
+consumption or towards performance (and higher power consumption and
+thermals).
 
-I'll get that out later today (unless Elia corrects me :))
+Introduce a new platform_profile sysfs API which offers a generic API for
+selecting the performance-profile of these automatic-mechanisms.
 
-Thanks all
-Mark
+Co-developed-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in V1:
+ - Moved from RFC to proposed patch
+ - Added cool profile as requested
+ - removed extra-profiles as no longer relevant
+
+ .../ABI/testing/sysfs-platform_profile        | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
+
+diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
+new file mode 100644
+index 000000000000..240bd3d7532b
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-platform_profile
+@@ -0,0 +1,66 @@
++Platform-profile selection (e.g. /sys/firmware/acpi/platform_profile)
++
++On modern systems the platform performance, temperature, fan and other
++hardware related characteristics are often dynamically configurable. The
++profile is often automatically adjusted to the load by some
++automatic-mechanism (which may very well live outside the kernel).
++
++These auto platform-adjustment mechanisms often can be configured with
++one of several 'platform-profiles', with either a bias towards low-power
++consumption or towards performance (and higher power consumption and
++thermals).
++
++The purpose of the platform_profile attribute is to offer a generic sysfs
++API for selecting the platform-profile of these automatic-mechanisms.
++
++Note that this API is only for selecting the platform-profile, it is
++NOT a goal of this API to allow monitoring the resulting performance
++characteristics. Monitoring performance is best done with device/vendor
++specific tools such as e.g. turbostat.
++
++Specifically when selecting a high-performance profile the actual achieved
++performance may be limited by various factors such as: the heat generated
++by other components, room temperature, free air flow at the bottom of a
++laptop, etc. It is explicitly NOT a goal of this API to let userspace know
++about any sub-optimal conditions which are impeding reaching the requested
++performance level.
++
++Since numbers are a rather meaningless way to describe platform-profiles
++this API uses strings to describe the various profiles. To make sure that
++userspace gets a consistent experience when using this API this API
++document defines a fixed set of profile-names. Drivers *must* map their
++internal profile representation/names onto this fixed set.
++
++If for some reason there is no good match when mapping then a new profile-name
++may be added. Drivers which wish to introduce new profile-names must:
++1. Have very good reasons to do so.
++2. Add the new profile-name to this document, so that future drivers which also
++   have a similar problem can use the same name.
++
++What:		/sys/firmware/acpi/platform_profile_choices
++Date:		October 2020
++Contact:	Hans de Goede <hdegoede@redhat.com>
++Description:
++		Reading this file gives a space separated list of profiles
++		supported for this device.
++
++		Drivers must use the following standard profile-names:
++
++		low-power:		Emphasises low power consumption
++		cool:			Emphasises cooler operation
++		quiet:			Emphasises quieter operation
++		balanced:		Balance between low power consumption
++					and performance
++		performance:		Emphasises performance (and may lead to
++					higher temperatures and fan speeds)
++
++		Userspace may expect drivers to offer at least several of these
++		standard profile-names.
++
++What:		/sys/firmware/acpi/platform_profile
++Date:		October 2020
++Contact:	Hans de Goede <hdegoede@redhat.com>
++Description:
++		Reading this file gives the current selected profile for this
++		device. Writing this file with one of the strings from
++		available_profiles changes the profile to the new value.
+-- 
+2.28.0
+
