@@ -2,126 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 122BB29A101
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 01:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E28AE29A210
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 02:12:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2443547AbgJ0AbM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Oct 2020 20:31:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51956 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409378AbgJZXvU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:51:20 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4706520878;
-        Mon, 26 Oct 2020 23:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756280;
-        bh=VZVHPvdGvoauXFvYUP0vUslj5DObR0FlXbYEGzh0Xo4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jHjHO6cMCMnxQC4D9t6Z6d6xhv6ZnrIRyoCWqhdbObgbIigRAYT+Qx0qDXU+ToP/p
-         kAuBuvp8VEJViVWMHdOV4Zp965hp5rofOfRJfMLoMsy7nx/3Wpf+Sv7FEX0WohR8Lk
-         3L3fqjYiRYGryUdutVplU/02AMegYUrwCjYPlK98=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tuan Phan <tuanphan@os.amperecomputing.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sasha Levin <sashal@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.9 110/147] PCI/ACPI: Add Ampere Altra SOC MCFG quirk
-Date:   Mon, 26 Oct 2020 19:48:28 -0400
-Message-Id: <20201026234905.1022767-110-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
-References: <20201026234905.1022767-1-sashal@kernel.org>
+        id S2502394AbgJ0BKr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Oct 2020 21:10:47 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:5468 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502382AbgJ0BKq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Oct 2020 21:10:46 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CKttd3s9CzhZYL;
+        Tue, 27 Oct 2020 09:10:49 +0800 (CST)
+Received: from [10.174.179.182] (10.174.179.182) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 27 Oct 2020 09:10:40 +0800
+Subject: Re: [PATCH] ACPI: dock: fix enum-conversion warning
+To:     Arnd Bergmann <arnd@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Yinghai Lu <yinghai@kernel.org>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20201026214838.3892471-1-arnd@kernel.org>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <86ffe33a-f5f5-ca38-3d96-1c311e7d6b03@huawei.com>
+Date:   Tue, 27 Oct 2020 09:10:40 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201026214838.3892471-1-arnd@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.182]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Tuan Phan <tuanphan@os.amperecomputing.com>
+On 2020/10/27 5:48, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> gcc points out a type mismatch:
+> 
+> drivers/acpi/dock.c: In function 'hot_remove_dock_devices':
+> drivers/acpi/dock.c:234:53: warning: implicit conversion from 'enum <anonymous>' to 'enum dock_callback_type' [-Wenum-conversion]
+>    234 |   dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST, false);
+> 
+> This is harmless because 'false' still has the correct numeric value,
+> but passing DOCK_CALL_HANDLER documents better what is going on
+> and avoids the warning.
+> 
+> Fixes: 37f908778f20 ("ACPI / dock: Walk list in reverse order during removal of devices")
+> Fixes: f09ce741a03a ("ACPI / dock / PCI: Drop ACPI dock notifier chain")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>   drivers/acpi/dock.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
+> index 45d4b7b69de8..24e076f44d23 100644
+> --- a/drivers/acpi/dock.c
+> +++ b/drivers/acpi/dock.c
+> @@ -231,7 +231,8 @@ static void hot_remove_dock_devices(struct dock_station *ds)
+>   	 * between them).
+>   	 */
+>   	list_for_each_entry_reverse(dd, &ds->dependent_devices, list)
+> -		dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST, false);
+> +		dock_hotplug_event(dd, ACPI_NOTIFY_EJECT_REQUEST,
+> +				   DOCK_CALL_HANDLER);
+>   
+>   	list_for_each_entry_reverse(dd, &ds->dependent_devices, list)
+>   		acpi_bus_trim(dd->adev);
 
-[ Upstream commit 877c1a5f79c6984bbe3f2924234c08e2f4f1acd5 ]
-
-Ampere Altra SOC supports only 32-bit ECAM reads.  Add an MCFG quirk for
-the platform.
-
-Link: https://lore.kernel.org/r/1596751055-12316-1-git-send-email-tuanphan@os.amperecomputing.com
-Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/pci_mcfg.c  | 20 ++++++++++++++++++++
- drivers/pci/ecam.c       | 10 ++++++++++
- include/linux/pci-ecam.h |  1 +
- 3 files changed, 31 insertions(+)
-
-diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-index 54b36b7ad47d9..e526571e0ebdb 100644
---- a/drivers/acpi/pci_mcfg.c
-+++ b/drivers/acpi/pci_mcfg.c
-@@ -142,6 +142,26 @@ static struct mcfg_fixup mcfg_quirks[] = {
- 	XGENE_V2_ECAM_MCFG(4, 0),
- 	XGENE_V2_ECAM_MCFG(4, 1),
- 	XGENE_V2_ECAM_MCFG(4, 2),
-+
-+#define ALTRA_ECAM_QUIRK(rev, seg) \
-+	{ "Ampere", "Altra   ", rev, seg, MCFG_BUS_ANY, &pci_32b_read_ops }
-+
-+	ALTRA_ECAM_QUIRK(1, 0),
-+	ALTRA_ECAM_QUIRK(1, 1),
-+	ALTRA_ECAM_QUIRK(1, 2),
-+	ALTRA_ECAM_QUIRK(1, 3),
-+	ALTRA_ECAM_QUIRK(1, 4),
-+	ALTRA_ECAM_QUIRK(1, 5),
-+	ALTRA_ECAM_QUIRK(1, 6),
-+	ALTRA_ECAM_QUIRK(1, 7),
-+	ALTRA_ECAM_QUIRK(1, 8),
-+	ALTRA_ECAM_QUIRK(1, 9),
-+	ALTRA_ECAM_QUIRK(1, 10),
-+	ALTRA_ECAM_QUIRK(1, 11),
-+	ALTRA_ECAM_QUIRK(1, 12),
-+	ALTRA_ECAM_QUIRK(1, 13),
-+	ALTRA_ECAM_QUIRK(1, 14),
-+	ALTRA_ECAM_QUIRK(1, 15),
- };
- 
- static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
-diff --git a/drivers/pci/ecam.c b/drivers/pci/ecam.c
-index 8f065a42fc1a2..b54d32a316693 100644
---- a/drivers/pci/ecam.c
-+++ b/drivers/pci/ecam.c
-@@ -168,4 +168,14 @@ const struct pci_ecam_ops pci_32b_ops = {
- 		.write		= pci_generic_config_write32,
- 	}
- };
-+
-+/* ECAM ops for 32-bit read only (non-compliant) */
-+const struct pci_ecam_ops pci_32b_read_ops = {
-+	.bus_shift	= 20,
-+	.pci_ops	= {
-+		.map_bus	= pci_ecam_map_bus,
-+		.read		= pci_generic_config_read32,
-+		.write		= pci_generic_config_write,
-+	}
-+};
- #endif
-diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
-index 1af5cb02ef7f9..033ce74f02e81 100644
---- a/include/linux/pci-ecam.h
-+++ b/include/linux/pci-ecam.h
-@@ -51,6 +51,7 @@ extern const struct pci_ecam_ops pci_generic_ecam_ops;
- 
- #if defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS)
- extern const struct pci_ecam_ops pci_32b_ops;	/* 32-bit accesses only */
-+extern const struct pci_ecam_ops pci_32b_read_ops; /* 32-bit read only */
- extern const struct pci_ecam_ops hisi_pcie_ops;	/* HiSilicon */
- extern const struct pci_ecam_ops thunder_pem_ecam_ops; /* Cavium ThunderX 1.x & 2.x */
- extern const struct pci_ecam_ops pci_thunder_ecam_ops; /* Cavium ThunderX 1.x */
--- 
-2.25.1
-
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
