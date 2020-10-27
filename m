@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2B029AA88
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 12:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0B529AA93
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Oct 2020 12:28:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1749880AbgJ0L2M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Oct 2020 07:28:12 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:6000 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1749895AbgJ0L2K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Oct 2020 07:28:10 -0400
+        id S1749897AbgJ0L2T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Oct 2020 07:28:19 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5747 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1749904AbgJ0L2S (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Oct 2020 07:28:18 -0400
 Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CL8Zz4nPpzhcP9;
-        Tue, 27 Oct 2020 19:28:11 +0800 (CST)
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CL8b36LVczkZs1;
+        Tue, 27 Oct 2020 19:28:15 +0800 (CST)
 Received: from S00345302A-PC.china.huawei.com (10.47.24.15) by
  DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 27 Oct 2020 19:27:59 +0800
+ 14.3.487.0; Tue, 27 Oct 2020 19:28:05 +0800
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
@@ -25,9 +25,9 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <joro@8bytes.org>, <robin.murphy@arm.com>,
         <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
         <jonathan.cameron@huawei.com>
-Subject: [RFC PATCH 2/4] ACPI/IORT: Add support for RMR node parsing
-Date:   Tue, 27 Oct 2020 11:26:44 +0000
-Message-ID: <20201027112646.44680-3-shameerali.kolothum.thodi@huawei.com>
+Subject: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation helper
+Date:   Tue, 27 Oct 2020 11:26:45 +0000
+Message-ID: <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
 References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
@@ -40,167 +40,113 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add support for parsing RMR node information from ACPI.
-Find associated stream ids and smmu node info from the
-RMR node and populate a linked list with RMR memory
-descriptors.
+Add a helper function that retrieves RMR memory descriptors
+associated with a given endpoint dev. These memory regions
+should have a unity mapping in the SMMU. So reserve them as
+IOMMU_RESV_DIRECT.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- drivers/acpi/arm64/iort.c | 119 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 118 insertions(+), 1 deletion(-)
+ drivers/acpi/arm64/iort.c | 56 +++++++++++++++++++++++++++++++++++++++
+ include/linux/acpi_iort.h |  4 +++
+ 2 files changed, 60 insertions(+)
 
 diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9929ff50c0c0..b32cd53cca08 100644
+index b32cd53cca08..c0700149e60b 100644
 --- a/drivers/acpi/arm64/iort.c
 +++ b/drivers/acpi/arm64/iort.c
-@@ -40,6 +40,25 @@ struct iort_fwnode {
- static LIST_HEAD(iort_fwnode_list);
- static DEFINE_SPINLOCK(iort_fwnode_lock);
+@@ -842,6 +842,60 @@ static inline int iort_add_device_replay(struct device *dev)
+ 	return err;
+ }
  
-+struct iort_rmr_id {
-+	u32  sid;
-+	struct acpi_iort_node *smmu;
-+};
++static bool iort_dev_has_rmr(struct device *dev, struct iort_rmr_entry *e)
++{
++	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
++	struct acpi_iort_node *iommu;
++	struct iort_rmr_id *rmr_ids = e->rmr_ids;
++	int i, j;
 +
-+/*
-+ * One entry for IORT RMR.
++	iommu = iort_get_iort_node(fwspec->iommu_fwnode);
++
++	for (i = 0; i < e->rmr_ids_num; i++, rmr_ids++) {
++		for (j = 0; j < fwspec->num_ids; j++) {
++			if (rmr_ids->sid == fwspec->ids[j] &&
++			    rmr_ids->smmu == iommu)
++				return true;
++		}
++	}
++
++	return false;
++}
++
++/**
++ * iort_dev_rmr_get_resv_regions - RMR Reserved region driver helper
++ * @dev: Device from iommu_get_resv_regions()
++ * @head: Reserved region list from iommu_get_resv_regions()
++ *
++ * Returns: 0 on success, <0 failure
 + */
-+struct iort_rmr_entry {
-+	struct list_head list;
++int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
++{
++	struct iort_rmr_entry *e;
 +
-+	unsigned int rmr_ids_num;
-+	struct iort_rmr_id *rmr_ids;
++	list_for_each_entry(e, &iort_rmr_list, list) {
++		struct iommu_resv_region *region;
++		struct acpi_iort_rmr_desc *rmr;
++		int prot = IOMMU_READ | IOMMU_WRITE |
++			   IOMMU_NOEXEC | IOMMU_MMIO;
 +
-+	struct acpi_iort_rmr_desc *rmr_desc;
-+};
++		if (!iort_dev_has_rmr(dev, e))
++			continue;
 +
-+static LIST_HEAD(iort_rmr_list);         /* list of RMR regions from ACPI */
++		rmr = e->rmr_desc;
++		region = iommu_alloc_resv_region(rmr->base_address,
++						 rmr->length, prot,
++						 IOMMU_RESV_DIRECT);
++		if (!region) {
++			dev_err(dev, "Out of memory allocating RMR regions\n");
++			return -ENOMEM;
++		}
++		list_add_tail(&region->list, head);
++	}
++
++	return 0;
++}
 +
  /**
-  * iort_set_fwnode() - Create iort_fwnode and use it to register
-  *		       iommu data in the iort_fwnode_list
-@@ -393,7 +412,8 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
- 		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
- 		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
- 		    node->type == ACPI_IORT_NODE_SMMU_V3 ||
--		    node->type == ACPI_IORT_NODE_PMCG) {
-+		    node->type == ACPI_IORT_NODE_PMCG ||
-+		    node->type == ACPI_IORT_NODE_RMR) {
- 			*id_out = map->output_base;
- 			return parent;
- 		}
-@@ -1647,6 +1667,100 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
- #else
- static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
+  * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+  * @dev: Device from iommu_get_resv_regions()
+@@ -1112,6 +1166,8 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 						const u32 *input_id)
+ { return NULL; }
++int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
++{ return 0; }
  #endif
-+static int iort_rmr_desc_valid(struct acpi_iort_rmr_desc *desc)
-+{
-+	struct iort_rmr_entry *e;
-+	u64 end, start = desc->base_address, length = desc->length;
-+
-+	if ((!IS_ALIGNED(start, SZ_64K)) || (length % SZ_64K != 0))
-+		return -EINVAL;
-+
-+	end = start + length - 1;
-+
-+	/* Check for address overlap */
-+	list_for_each_entry(e, &iort_rmr_list, list) {
-+		u64 e_start = e->rmr_desc->base_address;
-+		u64 e_end = e_start + e->rmr_desc->length - 1;
-+
-+		if (start <= e_end && end >= e_start)
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __init iort_parse_rmr(struct acpi_iort_node *iort_node)
-+{
-+	struct iort_rmr_id *rmr_ids, *ids;
-+	struct iort_rmr_entry *e;
-+	struct acpi_iort_rmr *rmr;
-+	struct acpi_iort_rmr_desc *rmr_desc;
-+	u32 map_count = iort_node->mapping_count;
-+	int i, ret = 0, desc_count = 0;
-+
-+	if (iort_node->type != ACPI_IORT_NODE_RMR)
-+		return 0;
-+
-+	if (!iort_node->mapping_offset || !map_count) {
-+		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
-+		       iort_node);
-+		return -EINVAL;
-+	}
-+
-+	rmr_ids = kmalloc(sizeof(*rmr_ids) * map_count, GFP_KERNEL);
-+	if (!rmr_ids)
-+		return -ENOMEM;
-+
-+	/* Retrieve associated smmu and stream id */
-+	ids = rmr_ids;
-+	for (i = 0; i < map_count; i++, ids++) {
-+		ids->smmu = iort_node_get_id(iort_node, &ids->sid, i);
-+		if (!ids->smmu) {
-+			pr_err(FW_BUG "Invalid SMMU reference, skipping RMR node %p\n",
-+			       iort_node);
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+
-+	/* Retrieve RMR data */
-+	rmr = (struct acpi_iort_rmr *)iort_node->node_data;
-+	if (!rmr->rmr_offset || !rmr->rmr_count) {
-+		pr_err(FW_BUG "Invalid RMR descriptor array, skipping RMR node %p\n",
-+		       iort_node);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, iort_node,
-+				rmr->rmr_offset);
-+
-+	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
-+		ret = iort_rmr_desc_valid(rmr_desc);
-+		if (ret) {
-+			pr_err(FW_BUG "Invalid RMR descriptor[%d] for node %p, skipping...\n",
-+			       i, iort_node);
-+			goto out;
-+		}
-+
-+		e = kmalloc(sizeof(*e), GFP_KERNEL);
-+		if (!e)
-+			goto out;
-+		e->rmr_ids_num = map_count;
-+		e->rmr_ids = rmr_ids;
-+		e->rmr_desc = rmr_desc;
-+
-+		list_add_tail(&e->list, &iort_rmr_list);
-+		desc_count++;
-+	}
-+
-+	return 0;
-+
-+out:
-+	if (!desc_count)
-+		kfree(rmr_ids);
-+	return ret;
-+}
  
- static void __init iort_init_platform_devices(void)
- {
-@@ -1676,6 +1790,9 @@ static void __init iort_init_platform_devices(void)
+ static int nc_dma_get_range(struct device *dev, u64 *size)
+diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+index 20a32120bb88..6dd89faf340c 100644
+--- a/include/linux/acpi_iort.h
++++ b/include/linux/acpi_iort.h
+@@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
+ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 						const u32 *id_in);
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
++int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head);
+ #else
+ static inline void acpi_iort_init(void) { }
+ static inline u32 iort_msi_map_id(struct device *dev, u32 id)
+@@ -55,6 +56,9 @@ static inline const struct iommu_ops *iort_iommu_configure_id(
+ static inline
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+ { return 0; }
++static inline
++int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
++{ return 0; }
+ #endif
  
- 		iort_enable_acs(iort_node);
- 
-+		if (iort_table->revision == 1)
-+			iort_parse_rmr(iort_node);
-+
- 		ops = iort_get_dev_cfg(iort_node);
- 		if (ops) {
- 			fwnode = acpi_alloc_fwnode_static();
+ #endif /* __ACPI_IORT_H__ */
 -- 
 2.17.1
 
