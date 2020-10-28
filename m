@@ -2,179 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BAA429D7CB
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:28:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C02D729D923
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:44:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733133AbgJ1W0z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Oct 2020 18:26:55 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:3013 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1733111AbgJ1W0y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:26:54 -0400
-Received: from lhreml721-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 81CF89497963A380C9A9;
-        Wed, 28 Oct 2020 18:40:34 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Wed, 28 Oct 2020 18:40:34 +0000
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.1913.007; Wed, 28 Oct 2020 18:40:34 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Steven Price <steven.price@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "joro@8bytes.org" <joro@8bytes.org>
-Subject: RE: [Devel] [RFC PATCH 1/4] ACPICA: IORT: Update for revision E
-Thread-Topic: [Devel] [RFC PATCH 1/4] ACPICA: IORT: Update for revision E
-Thread-Index: AQHWrFRpYmjWzlgvCkWX8PhkbYIcjqmr/GWAgACrRfCAAK2ZAIAAAX1Q
-Date:   Wed, 28 Oct 2020 18:40:33 +0000
-Message-ID: <ad260ac88bb84f9d850f95f05454e140@huawei.com>
+        id S2389199AbgJ1Woo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Oct 2020 18:44:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:40608 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730754AbgJ1WmP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:42:15 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2557E1A32;
+        Wed, 28 Oct 2020 09:43:51 -0700 (PDT)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F7D93F66E;
+        Wed, 28 Oct 2020 09:43:49 -0700 (PDT)
+Subject: Re: [RFC PATCH 0/4] ACPI/IORT: Support for IORT RMR node
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, devel@acpica.org
+Cc:     lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        jonathan.cameron@huawei.com, linuxarm@huawei.com,
+        guohanjun@huawei.com, robin.murphy@arm.com,
+        wanghuiqiang@huawei.com, Sami Mujawar <Sami.Mujawar@arm.com>
 References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
- <20201027112646.44680-2-shameerali.kolothum.thodi@huawei.com>
- <BYAPR11MB3256AFF743B4FCC400F4181C87160@BYAPR11MB3256.namprd11.prod.outlook.com>
- <610c14ef56d64fe087ca52aede07d811@huawei.com>
- <MWHPR11MB1599988D7C857E3AFFA4A48AF0170@MWHPR11MB1599.namprd11.prod.outlook.com>
-In-Reply-To: <MWHPR11MB1599988D7C857E3AFFA4A48AF0170@MWHPR11MB1599.namprd11.prod.outlook.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.88.37]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From:   Steven Price <steven.price@arm.com>
+Message-ID: <f389e864-3d7a-3c96-8f51-c04f92759df1@arm.com>
+Date:   Wed, 28 Oct 2020 16:43:48 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgRXJpaywNCg0KW0FkZGluZyBiYWNrIHRoZSBvcmlnaW5hbCBNTHMgKyBDQyBsaXN0XQ0KDQo+
-IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEthbmVkYSwgRXJpayBbbWFpbHRv
-OmVyaWsua2FuZWRhQGludGVsLmNvbV0NCj4gU2VudDogMjggT2N0b2JlciAyMDIwIDE4OjIwDQo+
-IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2Rp
-QGh1YXdlaS5jb20+Ow0KPiBNb29yZSwgUm9iZXJ0IDxyb2JlcnQubW9vcmVAaW50ZWwuY29tPjsg
-V3lzb2NraSwgUmFmYWVsIEoNCj4gPHJhZmFlbC5qLnd5c29ja2lAaW50ZWwuY29tPg0KPiBTdWJq
-ZWN0OiBSRTogW0RldmVsXSBbUkZDIFBBVENIIDEvNF0gQUNQSUNBOiBJT1JUOiBVcGRhdGUgZm9y
-IHJldmlzaW9uIEUNCj4gDQo+IA0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-PiA+IEZyb206IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPiA8c2hhbWVlcmFsaS5rb2xv
-dGh1bS50aG9kaUBodWF3ZWkuY29tPg0KPiA+IFNlbnQ6IFdlZG5lc2RheSwgT2N0b2JlciAyOCwg
-MjAyMCAxOjE1IEFNDQo+ID4gVG86IE1vb3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5j
-b20+DQo+ID4gQ2M6IEthbmVkYSwgRXJpayA8ZXJpay5rYW5lZGFAaW50ZWwuY29tPg0KPiA+IFN1
-YmplY3Q6IFJFOiBbRGV2ZWxdIFtSRkMgUEFUQ0ggMS80XSBBQ1BJQ0E6IElPUlQ6IFVwZGF0ZSBm
-b3IgcmV2aXNpb24NCj4gPiBFDQo+ID4NCj4gPiBIaSwNCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5h
-bCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IE1vb3JlLCBSb2JlcnQgW21haWx0bzpyb2JlcnQu
-bW9vcmVAaW50ZWwuY29tXQ0KPiA+ID4gU2VudDogMjcgT2N0b2JlciAyMDIwIDIxOjQ2DQo+ID4g
-PiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA+IDxzaGFtZWVyYWxpLmtvbG90aHVt
-LnRob2RpQGh1YXdlaS5jb20+DQo+ID4gPiBDYzogS2FuZWRhLCBFcmlrIDxlcmlrLmthbmVkYUBp
-bnRlbC5jb20+DQo+ID4gPiBTdWJqZWN0OiBSRTogW0RldmVsXSBbUkZDIFBBVENIIDEvNF0gQUNQ
-SUNBOiBJT1JUOiBVcGRhdGUgZm9yDQo+ID4gPiByZXZpc2lvbiBFDQo+ID4gPg0KPiA+ID4gVGhp
-cyBwYXRjaCB3aWxsIG5lZWQgdG8gYmUgcG9ydGVkIHRvIHRoZSBuYXRpdmUgQUNQSUNBIGZvcm1h
-dC4NCj4gPg0KPiA+IFRoYW5rcyBmb3IgeW91ciBmZWVkYmFjay4gU29ycnkgdGhhdCwgSSBhbSBu
-b3QgZmFtaWxpYXIgd2l0aCB0aGUgcHJvY2VzcyBoZXJlLg0KPiA+IEFzIG1lbnRpb25lZA0KPiA+
-IGJlbG93LCBJIHRob3VnaHQgYSBwdWxsIHJlcXVlc3QgdmlhIGFjcGljYSBnaXQgaXMgZW5vdWdo
-LCB3aGljaCB5b3UNCj4gPiBjYW4gZmluZCBoZXJlLA0KPiA+DQo+ID4gaHR0cHM6Ly9naXRodWIu
-Y29tL2FjcGljYS9hY3BpY2EvcHVsbC82MzgNCj4gPg0KPiA+IFRoZSBhYm92ZSBwdWxsIGluY2x1
-ZGVzIHRoaXMgaGVhZGVyIGZpbGUgY2hhbmdlICsgb3RoZXIgY2hhbmdlcw0KPiA+IHJlbGF0ZWQg
-dG8gUk1SIGZvciB0b29scy4NCj4gPg0KPiA+IFBsZWFzZSBsZXQgbWUga25vdyB3aGF0IGVsc2Ug
-bmVlZHMgdG8gYmUgZG9uZSB3aGVuIHlvdSBzYXkgIm5hdGl2ZQ0KPiA+IGZvcm1hdCIuDQo+IA0K
-PiBPaCBvaywgdGhhbmtzIGZvciB0aGUgcHVsbCByZXF1ZXN0LiBZb3UncmUgc3VibWl0dGluZyB0
-aGlzIGFzIGFuIFJGQyBmb3IgbGludXguIERvDQo+IHlvdSBleHBlY3QgdGhlIElPUlQgZGVmaW5p
-dGlvbiB0byBjaGFuZ2UgdGhyb3VnaG91dCBsaW51eCdzIFJGQyBwZXJpb2Q/IElmIHlvdQ0KPiBk
-b24ndCBwbGFuIG9uIGNoYW5naW5nIHRoZSBJT1JUIGRlZmluaXRpb24sIHdlIGNhbiBsb29rIGF0
-IHRoZSBwdWxsIHJlcXVlc3QuDQoNClRoZSBJT1JUIHJldmlzaW9uIEUgZG9jdW1lbnQgaXMgcHVi
-bGlzaGVkIGhlcmUsDQpodHRwczovL2RldmVsb3Blci5hcm0uY29tL2RvY3VtZW50YXRpb24vZGVu
-MDA0OS9sYXRlc3QvDQphbmQgSSBkb27igJl0IHRoaW5rIGl0IHdpbGwgY2hhbmdlIG5vdyAoQnV0
-IEFSTSBmb2xrcyBjYW4gY29uZmlybSB0aGlzKS4NCg0KSSBzdWJtaXR0ZWQgdGhpcyBhcyBhbiBS
-RkMsIGJlY2F1c2Ugb2YgdGhlIHZlcnkgZGVwZW5kZW5jeSBvbiB0aGlzIGFjdGJsMi5oDQpoZWFk
-ZXIgdXBkYXRlcyBhbmQgdGhpcyBiZWluZyBub3QgYXZhaWxhYmxlIGluIGtlcm5lbC4gDQoNCj4g
-T25jZSB3ZSBtZXJnZSBpdCwgSSdsbCBzdWJtaXQgdGhlIEFDUElDQSBwYXRjaGVzIHRvIFJhZmFl
-bCBhZnRlciB3ZSBkbyBhDQo+IHJlbGVhc2UuDQoNCk9rLiBUaGFua3MgZm9yIHRoZSBkZXRhaWxz
-LiBMb29raW5nIGZvcndhcmQgdG8gZ2V0dGluZyB0aGlzIG1lcmdlZCB0byBrZXJuZWwgc29vbiA6
-KQ0KDQpUaGFua3MsDQpTaGFtZWVyDQogDQo+IEVyaWsNCj4gPg0KPiA+IFRoYW5rcywNCj4gPiBT
-aGFtZWVyDQo+ID4NCj4gPg0KPiA+ID4NCj4gPiA+DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KPiA+ID4gRnJvbTogU2hhbWVlciBLb2xvdGh1bSA8c2hhbWVlcmFsaS5rb2xvdGh1
-bS50aG9kaUBodWF3ZWkuY29tPg0KPiA+ID4gU2VudDogVHVlc2RheSwgT2N0b2JlciAyNywgMjAy
-MCA0OjI3IEFNDQo+ID4gPiBUbzogbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Ow0KPiA+ID4gbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGlvbW11QGxpc3RzLmxpbnV4LWZv
-dW5kYXRpb24ub3JnOw0KPiA+ID4gZGV2ZWxAYWNwaWNhLm9yZw0KPiA+ID4gQ2M6IGxpbnV4YXJt
-QGh1YXdlaS5jb207IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207IGpvcm9AOGJ5dGVzLm9yZzsN
-Cj4gPiA+IHJvYmluLm11cnBoeUBhcm0uY29tOyB3YW5naHVpcWlhbmdAaHVhd2VpLmNvbTsNCj4g
-PiA+IGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbQ0KPiA+ID4gU3ViamVjdDogW0RldmVsXSBb
-UkZDIFBBVENIIDEvNF0gQUNQSUNBOiBJT1JUOiBVcGRhdGUgZm9yIHJldmlzaW9uIEUNCj4gPiA+
-DQo+ID4gPiBJT1JUIHJldmlzaW9uIEUgY29udGFpbnMgYSBmZXcgYWRkaXRpb25zIGxpa2UsDQo+
-ID4gPiDCoCDCoCAtQWRkZWQgYW4gaWRlbnRpZmllciBmaWVsZCBpbiB0aGUgbm9kZSBkZXNjcmlw
-dG9ycyB0byBhaWQgdGFibGUNCj4gPiA+IMKgIMKgIMKgY3Jvc3MtcmVmZXJlbmNpbmcuDQo+ID4g
-PiDCoCDCoCAtSW50cm9kdWNlZCB0aGUgUmVzZXJ2ZWQgTWVtb3J5IFJhbmdlKFJNUikgbm9kZS4g
-VGhpcyBpcyB1c2VkDQo+ID4gPiAgwqAgwqAgdG8gZGVzY3JpYmUgbWVtb3J5IHJhbmdlcyB0aGF0
-IGFyZSB1c2VkIGJ5IGVuZHBvaW50cyBhbmQNCj4gPiA+IHJlcXVpcmVzDQo+ID4gPiAgwqAgwqAg
-YSB1bml0eSBtYXBwaW5nIGluIFNNTVUuDQo+ID4gPiAgICAgLUludHJvZHVjZWQgYSBmbGFnIGlu
-IHRoZSBSQyBub2RlIHRvIGV4cHJlc3Mgc3VwcG9ydCBmb3IgUFJJLg0KPiA+ID4NCj4gPiA+IFNp
-Z25lZC1vZmYtYnk6IFNoYW1lZXIgS29sb3RodW0NCj4gPiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50
-aG9kaUBodWF3ZWkuY29tPg0KPiA+ID4gLS0tDQo+ID4gPiAgLVRoaXMgc2hvdWxkIGJlIHVwZGF0
-ZWQgdGhyb3VnaCBhY3BpY2EgZ2l0LiBJIGhhdmUgc2VudCBvdXQgYSBwdWxsDQo+ID4gPiAgIHJl
-cXVlc3QgZm9yIHRoZSBzYW1lIGhlcmUsDQo+ID4gPiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9hY3Bp
-Y2EvYWNwaWNhL3B1bGwvNjM4DQo+ID4gPg0KPiA+ID4gUGxlYXNlIGhlbHAgdG8gcmV2aWV3Lg0K
-PiA+ID4gLS0tDQo+ID4gPiAgaW5jbHVkZS9hY3BpL2FjdGJsMi5oIHwgMjUgKysrKysrKysrKysr
-KysrKysrKy0tLS0tLQ0KPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxOSBpbnNlcnRpb25zKCspLCA2
-IGRlbGV0aW9ucygtKQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2FjcGkvYWN0
-YmwyLmggYi9pbmNsdWRlL2FjcGkvYWN0YmwyLmggaW5kZXgNCj4gPiA+IGVjNjY3NzljYjE5My4u
-Mjc0ZmNlN2I1YzAxIDEwMDY0NA0KPiA+ID4gLS0tIGEvaW5jbHVkZS9hY3BpL2FjdGJsMi5oDQo+
-ID4gPiArKysgYi9pbmNsdWRlL2FjcGkvYWN0YmwyLmgNCj4gPiA+IEBAIC02OCw3ICs2OCw3IEBA
-DQo+ID4gPiAgICogSU9SVCAtIElPIFJlbWFwcGluZyBUYWJsZQ0KPiA+ID4gICAqDQo+ID4gPiAg
-ICogQ29uZm9ybXMgdG8gIklPIFJlbWFwcGluZyBUYWJsZSBTeXN0ZW0gU29mdHdhcmUgb24gQVJN
-DQo+ID4gPiBQbGF0Zm9ybXMiLA0KPiA+ID4gLSAqIERvY3VtZW50IG51bWJlcjogQVJNIERFTiAw
-MDQ5RCwgTWFyY2ggMjAxOA0KPiA+ID4gKyAqIERvY3VtZW50IG51bWJlcjogQVJNIERFTiAwMDQ5
-RSwgSnVuZSAyMDIwDQo+ID4gPiAgICoNCj4gPiA+DQo+ID4gPg0KPiA+ICoqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCj4gPiAqKioqKioN
-Cj4gPiA+ICoqKioqKioqKioqKioqLw0KPiA+ID4NCj4gPiA+IEBAIC04Niw3ICs4Niw4IEBAIHN0
-cnVjdCBhY3BpX2lvcnRfbm9kZSB7DQo+ID4gPiAgCXU4IHR5cGU7DQo+ID4gPiAgCXUxNiBsZW5n
-dGg7DQo+ID4gPiAgCXU4IHJldmlzaW9uOw0KPiA+ID4gLQl1MzIgcmVzZXJ2ZWQ7DQo+ID4gPiAr
-CXUxNiByZXNlcnZlZDsNCj4gPiA+ICsJdTE2IGlkZW50aWZpZXI7DQo+ID4gPiAgCXUzMiBtYXBw
-aW5nX2NvdW50Ow0KPiA+ID4gIAl1MzIgbWFwcGluZ19vZmZzZXQ7DQo+ID4gPiAgCWNoYXIgbm9k
-ZV9kYXRhWzFdOw0KPiA+ID4gQEAgLTEwMCw3ICsxMDEsOCBAQCBlbnVtIGFjcGlfaW9ydF9ub2Rl
-X3R5cGUgew0KPiA+ID4gIAlBQ1BJX0lPUlRfTk9ERV9QQ0lfUk9PVF9DT01QTEVYID0gMHgwMiwN
-Cj4gPiA+ICAJQUNQSV9JT1JUX05PREVfU01NVSA9IDB4MDMsDQo+ID4gPiAgCUFDUElfSU9SVF9O
-T0RFX1NNTVVfVjMgPSAweDA0LA0KPiA+ID4gLQlBQ1BJX0lPUlRfTk9ERV9QTUNHID0gMHgwNQ0K
-PiA+ID4gKwlBQ1BJX0lPUlRfTk9ERV9QTUNHID0gMHgwNSwNCj4gPiA+ICsJQUNQSV9JT1JUX05P
-REVfUk1SID0gMHgwNiwNCj4gPiA+ICB9Ow0KPiA+ID4NCj4gPiA+ICBzdHJ1Y3QgYWNwaV9pb3J0
-X2lkX21hcHBpbmcgew0KPiA+ID4gQEAgLTE2NywxMCArMTY5LDEwIEBAIHN0cnVjdCBhY3BpX2lv
-cnRfcm9vdF9jb21wbGV4IHsNCj4gPiA+ICAJdTggcmVzZXJ2ZWRbM107CQkvKiBSZXNlcnZlZCwg
-bXVzdCBiZSB6ZXJvICovDQo+ID4gPiAgfTsNCj4gPiA+DQo+ID4gPiAtLyogVmFsdWVzIGZvciBh
-dHNfYXR0cmlidXRlIGZpZWxkIGFib3ZlICovDQo+ID4gPiArLyogTWFza3MgZm9yIGF0c19hdHRy
-aWJ1dGUgZmllbGQgYWJvdmUgKi8NCj4gPiA+DQo+ID4gPiAtI2RlZmluZSBBQ1BJX0lPUlRfQVRT
-X1NVUFBPUlRFRCAgICAgICAgIDB4MDAwMDAwMDEJLyogVGhlDQo+IHJvb3QNCj4gPiA+IGNvbXBs
-ZXggc3VwcG9ydHMgQVRTICovDQo+ID4gPiAtI2RlZmluZSBBQ1BJX0lPUlRfQVRTX1VOU1VQUE9S
-VEVEICAgICAgIDB4MDAwMDAwMDAJLyogVGhlDQo+IHJvb3QNCj4gPiA+IGNvbXBsZXggZG9lc24n
-dCBzdXBwb3J0IEFUUyAqLw0KPiA+ID4gKyNkZWZpbmUgQUNQSV9JT1JUX0FUU19TVVBQT1JURUQg
-ICAgICAgICAoMSkJLyogVGhlIHJvb3QgY29tcGxleA0KPiA+ID4gc3VwcG9ydHMgQVRTICovDQo+
-ID4gPiArI2RlZmluZSBBQ1BJX0lPUlRfUFJJX1NVUFBPUlRFRCAgICAgICAgICgxPDwxKQkvKiBU
-aGUgcm9vdA0KPiBjb21wbGV4DQo+ID4gPiBzdXBwb3J0cyBQUkkgKi8NCj4gPiA+DQo+ID4gPiAg
-c3RydWN0IGFjcGlfaW9ydF9zbW11IHsNCj4gPiA+ICAJdTY0IGJhc2VfYWRkcmVzczsJLyogU01N
-VSBiYXNlIGFkZHJlc3MgKi8NCj4gPiA+IEBAIC0yNDEsNiArMjQzLDE3IEBAIHN0cnVjdCBhY3Bp
-X2lvcnRfcG1jZyB7DQo+ID4gPiAgCXU2NCBwYWdlMV9iYXNlX2FkZHJlc3M7DQo+ID4gPiAgfTsN
-Cj4gPiA+DQo+ID4gPiArc3RydWN0IGFjcGlfaW9ydF9ybXIgew0KPiA+ID4gKwl1MzIgcm1yX2Nv
-dW50Ow0KPiA+ID4gKwl1MzIgcm1yX29mZnNldDsNCj4gPiA+ICt9Ow0KPiA+ID4gKw0KPiA+ID4g
-K3N0cnVjdCBhY3BpX2lvcnRfcm1yX2Rlc2Mgew0KPiA+ID4gKwl1NjQgYmFzZV9hZGRyZXNzOw0K
-PiA+ID4gKwl1NjQgbGVuZ3RoOw0KPiA+ID4gKwl1MzIgcmVzZXJ2ZWQ7DQo+ID4gPiArfTsNCj4g
-PiA+ICsNCj4gPiA+DQo+ID4gPg0KPiA+IC8qKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqDQo+ID4gKioqKioNCj4gPiA+ICoqKioqKioqKioq
-KioqKioNCj4gPiA+ICAgKg0KPiA+ID4gICAqIElWUlMgLSBJL08gVmlydHVhbGl6YXRpb24gUmVw
-b3J0aW5nIFN0cnVjdHVyZQ0KPiA+ID4gLS0NCj4gPiA+IDIuMTcuMQ0KPiA+ID4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gPiA+IERldmVsIG1haWxp
-bmcgbGlzdCAtLSBkZXZlbEBhY3BpY2Eub3JnIFRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwN
-Cj4gPiA+IHRvDQo+ID4gPiBkZXZlbC0NCj4gPiBsZWF2ZUBhY3BpY2Eub3JnICUod2ViX3BhZ2Vf
-dXJsKXNsaXN0aW5mbyUoY2dpZXh0KXMvJShfaW50ZXJuYWxfbmFtZQ0KPiA+ID4gKXMNCg==
+On 27/10/2020 11:26, Shameer Kolothum wrote:
+> The series adds support to IORT RMR nodes specified in IORT
+> Revision E -ARM DEN 0049E[0]. RMR nodes are used to describe memory
+> ranges that are used by endpoints and require a unity mapping
+> in SMMU.
+
+Hi Shameer,
+
+I've also been taking a look at RMR, and Sami is helping me get set up 
+so that I can do some testing. We're hoping to be able to test an EFI 
+framebuffer or splash screen - which has the added complication of the 
+unity mapping becoming redundant if a native display driver takes over 
+the display controller.
+
+I've looked through your series and the code looks correct to me. 
+Hopefully I'll be able to give it some testing soon.
+
+Thanks,
+
+Steve
+
+> We have faced issues with 3408iMR RAID controller cards which
+> fail to boot when SMMU is enabled. This is because these controllers
+> make use of host memory for various caching related purposes and when
+> SMMU is enabled the iMR firmware fails to access these memory regions
+> as there is no mapping for them. IORT RMR provides a way for UEFI to
+> describe and report these memory regions so that the kernel can make
+> a unity mapping for these in SMMU.
+> 
+> RFC because, Patch #1 is to update the actbl2.h and should be done
+> through acpica update. I have send out a pull request[1] for that.
+> 
+> Tests:
+> 
+> With a UEFI, that reports the RMR for the dev,
+> ....
+> [16F0h 5872   1]                         Type : 06
+> [16F1h 5873   2]                       Length : 007C
+> [16F3h 5875   1]                     Revision : 00
+> [1038h 0056   2]                     Reserved : 00000000
+> [1038h 0056   2]                   Identifier : 00000000
+> [16F8h 5880   4]                Mapping Count : 00000001
+> [16FCh 5884   4]               Mapping Offset : 00000040
+> 
+> [1700h 5888   4]    Number of RMR Descriptors : 00000002
+> [1704h 5892   4]        RMR Descriptor Offset : 00000018
+> 
+> [1708h 5896   8]          Base Address of RMR : 0000E6400000
+> [1710h 5904   8]                Length of RMR : 000000100000
+> [1718h 5912   4]                     Reserved : 00000000
+> 
+> [171Ch 5916   8]          Base Address of RMR : 0000000027B00000
+> [1724h 5924   8]                Length of RMR : 0000000000C00000
+> [172Ch 5932   4]                     Reserved : 00000000
+> 
+> [1730h 5936   4]                   Input base : 00000000
+> [1734h 5940   4]                     ID Count : 00000001
+> [1738h 5944   4]                  Output Base : 00000003
+> [173Ch 5948   4]             Output Reference : 00000064
+> [1740h 5952   4]        Flags (decoded below) : 00000001
+>                                 Single Mapping : 1
+> ...
+> 
+> Without the series the RAID controller initilization fails as
+> below,
+> 
+> ...
+> [   12.631117] megaraid_sas 0000:03:00.0: FW supports sync cache        : Yes
+> [   12.637360] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009
+> [   18.776377] megaraid_sas 0000:03:00.0: Init cmd return status FAILED for SCSI host 0
+> [   23.019383] megaraid_sas 0000:03:00.0: Waiting for FW to come to ready state
+> [  106.684281] megaraid_sas 0000:03:00.0: FW in FAULT state, Fault code:0x10000 subcode:0x0 func:megasas_transition_to_ready
+> [  106.695186] megaraid_sas 0000:03:00.0: System Register set:
+> [  106.889787] megaraid_sas 0000:03:00.0: Failed to transition controller to ready for scsi0.
+> [  106.910475] megaraid_sas 0000:03:00.0: Failed from megasas_init_fw 6407
+> estuary:/$
+> 
+> With the series, now the kernel has direct mapping for the dev as
+> below,
+> 
+> estuary:/$ cat /sys/kernel/iommu_groups/0/reserved_regions
+> 0x0000000008000000 0x00000000080fffff msi
+> 0x0000000027b00000 0x00000000286fffff direct
+> 0x00000000e6400000 0x00000000e64fffff direct
+> estuary:/$
+> 
+> ....
+> [   12.254318] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009
+> [   12.739089] megaraid_sas 0000:03:00.0: FW provided supportMaxExtLDs: 0      max_lds: 32
+> [   12.746628] megaraid_sas 0000:03:00.0: controller type       : iMR(0MB)
+> [   12.752694] megaraid_sas 0000:03:00.0: Online Controller Reset(OCR)  : Enabled
+> [   12.759798] megaraid_sas 0000:03:00.0: Secure JBOD support   : Yes
+> [   12.765778] megaraid_sas 0000:03:00.0: NVMe passthru support : Yes
+> [   12.771931] megaraid_sas 0000:03:00.0: FW provided TM TaskAbort/Reset timeou: 6 secs/60 secs
+> [   12.780503] megaraid_sas 0000:03:00.0: JBOD sequence map support     : Yes
+> [   12.787000] megaraid_sas 0000:03:00.0: PCI Lane Margining support    : No
+> [   12.819179] megaraid_sas 0000:03:00.0: NVME page size        : (4096)
+> [   12.825672] megaraid_sas 0000:03:00.0: megasas_enable_intr_fusion is called outbound_intr_mask:0x40000000
+> [   12.835199] megaraid_sas 0000:03:00.0: INIT adapter done
+> [   12.873932] megaraid_sas 0000:03:00.0: pci id                : (0x1000)/(0x0017)/(0x19e5)/(0xd213)
+> [   12.881644] megaraid_sas 0000:03:00.0: unevenspan support    : no
+> [   12.887451] megaraid_sas 0000:03:00.0: firmware crash dump   : no
+> [   12.893344] megaraid_sas 0000:03:00.0: JBOD sequence map     : enabled
+> 
+> RAID controller init is now success and can detect the drives
+> attached as well.
+> 
+> Thanks,
+> Shameer
+> 
+> [0]. https://developer.arm.com/documentation/den0049/latest/
+> [1]. https://github.com/acpica/acpica/pull/638
+> 
+> Shameer Kolothum (4):
+>    ACPICA: IORT: Update for revision E
+>    ACPI/IORT: Add support for RMR node parsing
+>    ACPI/IORT: Add RMR memory regions reservation helper
+>    iommu/dma: Reserve any RMR regions associated with a dev
+> 
+>   drivers/acpi/arm64/iort.c | 175 +++++++++++++++++++++++++++++++++++++-
+>   drivers/iommu/dma-iommu.c |  12 ++-
+>   include/acpi/actbl2.h     |  25 ++++--
+>   include/linux/acpi_iort.h |   4 +
+>   4 files changed, 205 insertions(+), 11 deletions(-)
+> 
+
