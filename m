@@ -2,503 +2,276 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 512A029D582
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD0429D785
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:25:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729926AbgJ1WEg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Oct 2020 18:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51210 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729351AbgJ1WEd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 18:04:33 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7A3C0613CF;
-        Wed, 28 Oct 2020 15:04:32 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id d24so872143ljg.10;
-        Wed, 28 Oct 2020 15:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=akECrq7o9HUEnJdCiI8zEh/8bSiP+m63+FBfjf6s0F8=;
-        b=WmU1FpEy7SQataM0NhkZnYY0FpjhTCmMRqecukjtK0B1KZCa7sOilIQauinQrcMIX9
-         2rBt2N0Dbg4A7iYD8JDUZda7fK1n5iQz3mrfGHIQ9HElTO5Mk1AItjGdR/O1sdnw1m5S
-         JtXoZIMEx4HwjuAzykZic6MjVCvlLVyLjl2BzhnsrByR7H91Y8lTr0koyn1hKaRQ0Soy
-         zHywpeJTa6RPuqk+cqOi39dLCWCyx2HTFrrVf0xVXuzaiTa3JEEbri+rCGqPfgVimhOa
-         uIlPuAZOSXV9lbS6dtYRaRc4zm2K6L+dukgyYr1fdnm74XvoCmd7mb+z+t6FhqS2wDJq
-         qkNw==
+        id S1732806AbgJ1WZI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Oct 2020 18:25:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47113 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732787AbgJ1WZG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:25:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603923903;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=sq1B8u8NLUEB8OJpFZ9ZPM/0L4/ZYp1FVYQZCWkCea0=;
+        b=QJMfoN4oYHNnQCMpewagHKJbpwrphefKQ/4+CPvqMsnYceFMPgxNivIkuhjt1p1AYxLyfz
+        y5Az/LxE7nNQIBdyvip6zZlyeKvxatq+Hf5B3uS2Hn35/ha8L+C2SSy3mMhH1SrrOC+6Tn
+        F1BmyrQAoY2w332xVa7ix5BnRZDVSfU=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-308-qR7hfgGQPJ-vvdv23BYIBw-1; Wed, 28 Oct 2020 13:23:16 -0400
+X-MC-Unique: qR7hfgGQPJ-vvdv23BYIBw-1
+Received: by mail-ed1-f70.google.com with SMTP id dc23so59487edb.13
+        for <linux-acpi@vger.kernel.org>; Wed, 28 Oct 2020 10:23:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=akECrq7o9HUEnJdCiI8zEh/8bSiP+m63+FBfjf6s0F8=;
-        b=Wwjc6LeDamfjLvLXdN5ePmZKXXoa65NgGjxDp4jSJr3QdgdbTTZ7K/pnPELA+83Qrs
-         oZazLUzkTLdyV+Owanx9LeNRzualrkjbKrN2zQRGfHOyZhimL3F5i3vHio0WtGwX4H2r
-         iELwhV1eHrPypL+tVzkv4t6ow5igDJqOGKhvrk/wQASznhk73+ufXyxWytUwN3xmHY5g
-         ovruftNX+hEhJlbfXtZzBKHoeAx2DbR7SrCvl9hsHRLPjf9X/pNIqZ2Cdgd1GFEaYJjN
-         xkE1yD67QvqXoetiNV2FJHGlYBe89kLxQOvFOA6/syeRLC5rkQiOCDTmWaV6rc115d0S
-         Rgdw==
-X-Gm-Message-State: AOAM531rkIAcKEKjdUD/P/XEpa3wboBnzMw6gOef0lo2Y7+z6P3BiHqj
-        b9O3GJV+mR7RLq478Eoi+9JYPOoCGTs=
-X-Google-Smtp-Source: ABdhPJwu2hqgHtN6pGncrLaNaGjwhlVyTNaQbT7aV/cSdYee1XA+pqKC9SelNk5EpVWMOMge+7yzjA==
-X-Received: by 2002:a17:906:c1ce:: with SMTP id bw14mr6854441ejb.302.1603882475915;
-        Wed, 28 Oct 2020 03:54:35 -0700 (PDT)
-Received: from xws.fritz.box (pd9e5a52a.dip0.t-ipconnect.de. [217.229.165.42])
-        by smtp.gmail.com with ESMTPSA id ks17sm2709156ejb.41.2020.10.28.03.54.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 03:54:35 -0700 (PDT)
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>
-Subject: [PATCH v5] platform/surface: Add Driver to set up lid GPEs on MS Surface device
-Date:   Wed, 28 Oct 2020 11:54:27 +0100
-Message-Id: <20201028105427.1593764-1-luzmaximilian@gmail.com>
-X-Mailer: git-send-email 2.29.1
+        bh=sq1B8u8NLUEB8OJpFZ9ZPM/0L4/ZYp1FVYQZCWkCea0=;
+        b=BHeGQUbfmhZI+SJk20/gKrFfXDOCYrmJuuaOeLXslzeuT/D8iYzNxNDKyj8EIpfB+7
+         n8Ga598+yU9dDY6HbgE94gna5ckzY+u4442w7RipSn8Y+9dGQZlzM17IZ/TBLaDUwx/i
+         Gk+YPRuLqFByXXSy4BqvXvbd5IbU6HAdS4NJ4SjWv1abkySXNnP97kw3e2CxT4PfSuO7
+         RvblJb8alPI2tCnuv7CxH8I2+6oqff9SqpkUogRMGDe0nRIZPUq/2Ag5JNrMh/oWUZJf
+         cIURO2CzhfKT6O1pcCwp3L4m4OsRxF23GxVolEOBOjx8L+tI9sj+fr2YvmzHiTs2UdVg
+         R5Rg==
+X-Gm-Message-State: AOAM531d3LGjkfs2Erm0zAZF5zEuuRqdcl5LLZfeUDFCCEESHYZu3XFE
+        Re/mcNULmK44HOqryKEZ7hQdN6edfGmOwx7s/gEJNdOQ7SRxGsZeiSU06triHml2lPqBeOhcFnO
+        BC05hJGOejadC24uWvYqoJA==
+X-Received: by 2002:a17:906:6453:: with SMTP id l19mr125870ejn.366.1603905794984;
+        Wed, 28 Oct 2020 10:23:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzREE5X9JMuMW0uT+945/sNIo/Jw2GIPaYjye6jFS3w2G6zpJDNsvl2GTmVFhYI71fL0HiW4A==
+X-Received: by 2002:a17:906:6453:: with SMTP id l19mr125853ejn.366.1603905794640;
+        Wed, 28 Oct 2020 10:23:14 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id l17sm112230eji.14.2020.10.28.10.23.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Oct 2020 10:23:13 -0700 (PDT)
+Subject: Re: [PATCH] Documentation: Add documentation for new platform_profile
+ sysfs attribute
+To:     Bastien Nocera <hadess@hadess.net>,
+        Mark Pearson <markpearson@lenovo.com>
+Cc:     dvhart@infradead.org, mgross@linux.intel.com,
+        mario.limonciello@dell.com, eliadevito@gmail.com, bberg@redhat.com,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <markpearson@lenovo.com>
+ <20201027164219.868839-1-markpearson@lenovo.com>
+ <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <d5f0bcba-5366-87da-d199-a85d59ba6c1c@redhat.com>
+Date:   Wed, 28 Oct 2020 18:23:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
+In-Reply-To: <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Conventionally, wake-up events for a specific device, in our case the
-lid device, are managed via the ACPI _PRW field. While this does not
-seem strictly necessary based on ACPI spec, the kernel disables GPE
-wakeups to avoid non-wakeup interrupts preventing suspend by default and
-only enables GPEs associated via the _PRW field with a wake-up capable
-device. This behavior has been introduced in commit f941d3e41da7 ("ACPI:
-EC / PM: Disable non-wakeup GPEs for suspend-to-idle") and is described
-in more detail in its commit message.
+Hi,
 
-Unfortunately, on MS Surface devices, there is no _PRW field present on
-the lid device, thus no GPE is associated with it, and therefore the GPE
-responsible for sending the status-change notification to the lid gets
-disabled during suspend, making it impossible to wake the device via the
-lid.
+On 10/28/20 2:45 PM, Bastien Nocera wrote:
+> Hey Hans, Mark,
+> 
+> On Tue, 2020-10-27 at 12:42 -0400, Mark Pearson wrote:
+>> From: Hans de Goede <hdegoede@redhat.com>
+>>
+>> On modern systems the platform performance, temperature, fan and
+>> other
+>> hardware related characteristics are often dynamically configurable.
+>> The
+>> profile is often automatically adjusted to the load by somei
+>> automatic-mechanism (which may very well live outside the kernel).
+>>
+>> These auto platform-adjustment mechanisms often can be configured
+>> with
+>> one of several 'platform-profiles', with either a bias towards low-
+>> power
+> 
+> Can you please make sure to quote 'platform-profile' and 'profile-name'
+> this way all through the document? They're not existing words, and
+> quoting them shows that they're attribute names, rather than English.
+> 
+>> consumption or towards performance (and higher power consumption and
+>> thermals).
+> 
+> s/thermal/temperature/
+> 
+> "A thermal" is something else (it's seasonal underwear for me ;)
+> 
+>> Introduce a new platform_profile sysfs API which offers a generic API
+>> for
+>> selecting the performance-profile of these automatic-mechanisms.
+>>
+>> Co-developed-by: Mark Pearson <markpearson@lenovo.com>
+>> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>> Changes in V1:
+>>  - Moved from RFC to proposed patch
+>>  - Added cool profile as requested
+>>  - removed extra-profiles as no longer relevant
+>>
+>>  .../ABI/testing/sysfs-platform_profile        | 66
+>> +++++++++++++++++++
+>>  1 file changed, 66 insertions(+)
+>>  create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-platform_profile
+>> b/Documentation/ABI/testing/sysfs-platform_profile
+>> new file mode 100644
+>> index 000000000000..240bd3d7532b
+>> --- /dev/null
+>> +++ b/Documentation/ABI/testing/sysfs-platform_profile
+>> @@ -0,0 +1,66 @@
+>> +Platform-profile selection (e.g.
+>> /sys/firmware/acpi/platform_profile)
+>> +
+>> +On modern systems the platform performance, temperature, fan and
+>> other
+>> +hardware related characteristics are often dynamically configurable.
+>> The
+>> +profile is often automatically adjusted to the load by some
+>> +automatic-mechanism (which may very well live outside the kernel).
+>> +
+>> +These auto platform-adjustment mechanisms often can be configured
+>> with
+>> +one of several 'platform-profiles', with either a bias towards low-
+>> power
+>> +consumption or towards performance (and higher power consumption and
+>> +thermals).
+>> +
+>> +The purpose of the platform_profile attribute is to offer a generic
+>> sysfs
+>> +API for selecting the platform-profile of these automatic-
+>> mechanisms.
+>> +
+>> +Note that this API is only for selecting the platform-profile, it is
+>> +NOT a goal of this API to allow monitoring the resulting performance
+>> +characteristics. Monitoring performance is best done with
+>> device/vendor
+>> +specific tools such as e.g. turbostat.
+>> +
+>> +Specifically when selecting a high-performance profile the actual
+>> achieved
+>> +performance may be limited by various factors such as: the heat
+>> generated
+>> +by other components, room temperature, free air flow at the bottom
+>> of a
+>> +laptop, etc. It is explicitly NOT a goal of this API to let
+>> userspace know
+>> +about any sub-optimal conditions which are impeding reaching the
+>> requested
+>> +performance level.
+>> +
+>> +Since numbers are a rather meaningless way to describe platform-
+>> profiles
+> 
+> It's not meaningless, but rather ambiguous. For a range of 1 to 5, is 1
+> high performance, and 5 low power, or vice-versa?
 
-This patch introduces a pseudo-device and respective driver which, based
-on some DMI matching, marks the corresponding GPE of the lid device for
-wake and enables it during suspend. The behavior of this driver models
-the behavior of the ACPI/PM core for normal wakeup GPEs, properly
-declared via the _PRW field.
+It is meaningless because the space we are trying to describe with the
+profile-names is not 1 dimensional. E.g. as discussed before cool and
+low-power are not necessarily the same thing. If you have a better way
+to word this I'm definitely in favor of improving the text here.
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
----
+> 
+>> +this API uses strings to describe the various profiles. To make sure
+>> that
+>> +userspace gets a consistent experience when using this API this API
+> 
+> you can remove "when using this API".
+> 
+>> +document defines a fixed set of profile-names. Drivers *must* map
+>> their
+>> +internal profile representation/names onto this fixed set.
+>> +
+>> +If for some reason there is no good match when mapping then a new
+>> profile-name
+>> +may be added.
+> 
+> "for some reason" can be removed.
+> 
+>>  Drivers which wish to introduce new profile-names must:
+>> +1. Have very good reasons to do so.
+> 
+> "1. Explain why the existing 'profile-names' cannot be used"
+> 
+>> +2. Add the new profile-name to this document, so that future drivers
+>> which also
+>> +   have a similar problem can use the same name.
+> 
+> "2. Add the new 'profile-name' to the documentation so that other
+> drivers can use it, as well as user-space knowing clearly what
+> behaviour the 'profile-name' corresponds to"
+> 
+>> +
+>> +What:          /sys/firmware/acpi/platform_profile_choices
+>> +Date:          October 2020
+>> +Contact:       Hans de Goede <hdegoede@redhat.com>
+>> +Description:
+>> +               Reading this file gives a space separated list of
+>> profiles
+>> +               supported for this device.
+> 
+> "This file contains a space-separated list of profiles..."
+> 
+>> +
+>> +               Drivers must use the following standard profile-
+>> names:
+>> +
+>> +               low-power:              Emphasises low power
+>> consumption
+>> +               cool:                   Emphasises cooler operation
+>> +               quiet:                  Emphasises quieter operation
+>> +               balanced:               Balance between low power
+>> consumption
+>> +                                       and performance
+>> +               performance:            Emphasises performance (and
+>> may lead to
+>> +                                       higher temperatures and fan
+>> speeds)
+> 
+> I'd replace "Emphasises" with either "Focus on" or the US English
+> spelling of "Emphasizes".
+> 
+>> +               Userspace may expect drivers to offer at least
+>> several of these
+>> +               standard profile-names.
+> 
+> Replce "at least several" with "more than one".
+> 
+>> +
+>> +What:          /sys/firmware/acpi/platform_profile
+>> +Date:          October 2020
+>> +Contact:       Hans de Goede <hdegoede@redhat.com>
+>> +Description:
+>> +               Reading this file gives the current selected profile
+>> for this
+>> +               device. Writing this file with one of the strings
+>> from
+>> +               available_profiles changes the profile to the new
+>> value.
+> 
+> Is there another file which explains whether those sysfs value will
+> contain a trailing linefeed?
 
-Note: This patch depends and is based on
+sysfs APIs are typically created so that they can be used from the shell,
+so on read a newline will be added. On write a newline at the end
+typically is allowed, but ignored. There are even special helper functions
+to deal with properly ignoring the newline on write.
 
-  [PATCH v4] platform/surface: Create a platform subdirectory for
-             Microsoft Surface devices
+Regards,
 
-which can be found at
+Hans
 
-  https://lore.kernel.org/platform-driver-x86/20201009141128.683254-1-luzmaximilian@gmail.com/
-
-and is currently in platform-drivers-x86/for-next.
-
-Changes in v2:
- - Use software nodes and device properties instead of platform data.
- - Simplify module alias.
- - Add comment regarding origin of GPE numbers.
- - Fix style issues.
-
-Changes in v3:
- - Rebase onto v5.9-rc5
- - Fix and restructure error handling and module cleanup.
- - Remove unnecessary platform_set_drvdata(..., NULL) calls.
- - Add pr_fmt definition
- - Return -ENODEV if no compatible device is found in module init.
-
-Changes in v4:
- - Rebase onto platform/surface patch-set
- - Add copyright line
- - Fix typo in comment
-
-Changes in v5:
- - Rebase onto current platform-drivers-x86/for-next
- - Fix MAINTAINERS entry
-
----
- MAINTAINERS                            |   6 +
- drivers/platform/surface/Kconfig       |  10 +
- drivers/platform/surface/Makefile      |   1 +
- drivers/platform/surface/surface_gpe.c | 309 +++++++++++++++++++++++++
- 4 files changed, 326 insertions(+)
- create mode 100644 drivers/platform/surface/surface_gpe.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 38b70bd41d96..17e51a309a3a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11658,6 +11658,12 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
- F:	include/linux/cciss*.h
- F:	include/uapi/linux/cciss*.h
- 
-+MICROSOFT SURFACE GPE LID SUPPORT DRIVER
-+M:	Maximilian Luz <luzmaximilian@gmail.com>
-+L:	platform-driver-x86@vger.kernel.org
-+S:	Maintained
-+F:	drivers/platform/surface/surface_gpe.c
-+
- MICROSOFT SURFACE HARDWARE PLATFORM SUPPORT
- M:	Hans de Goede <hdegoede@redhat.com>
- M:	Mark Gross <mgross@linux.intel.com>
-diff --git a/drivers/platform/surface/Kconfig b/drivers/platform/surface/Kconfig
-index 10902ea43861..33040b0b3b79 100644
---- a/drivers/platform/surface/Kconfig
-+++ b/drivers/platform/surface/Kconfig
-@@ -40,6 +40,16 @@ config SURFACE_3_POWER_OPREGION
- 	  This driver provides support for ACPI operation
- 	  region of the Surface 3 battery platform driver.
- 
-+config SURFACE_GPE
-+	tristate "Surface GPE/Lid Support Driver"
-+	depends on ACPI
-+	depends on DMI
-+	help
-+	  This driver marks the GPEs related to the ACPI lid device found on
-+	  Microsoft Surface devices as wakeup sources and prepares them
-+	  accordingly. It is required on those devices to allow wake-ups from
-+	  suspend by opening the lid.
-+
- config SURFACE_PRO3_BUTTON
- 	tristate "Power/home/volume buttons driver for Microsoft Surface Pro 3/4 tablet"
- 	depends on ACPI && INPUT
-diff --git a/drivers/platform/surface/Makefile b/drivers/platform/surface/Makefile
-index dcb1df06d57a..cedfb027ded1 100644
---- a/drivers/platform/surface/Makefile
-+++ b/drivers/platform/surface/Makefile
-@@ -7,4 +7,5 @@
- obj-$(CONFIG_SURFACE3_WMI)		+= surface3-wmi.o
- obj-$(CONFIG_SURFACE_3_BUTTON)		+= surface3_button.o
- obj-$(CONFIG_SURFACE_3_POWER_OPREGION)	+= surface3_power.o
-+obj-$(CONFIG_SURFACE_GPE)		+= surface_gpe.o
- obj-$(CONFIG_SURFACE_PRO3_BUTTON)	+= surfacepro3_button.o
-diff --git a/drivers/platform/surface/surface_gpe.c b/drivers/platform/surface/surface_gpe.c
-new file mode 100644
-index 000000000000..0f44a52d3a9b
---- /dev/null
-+++ b/drivers/platform/surface/surface_gpe.c
-@@ -0,0 +1,309 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Surface GPE/Lid driver to enable wakeup from suspend via the lid by
-+ * properly configuring the respective GPEs. Required for wakeup via lid on
-+ * newer Intel-based Microsoft Surface devices.
-+ *
-+ * Copyright (C) 2020 Maximilian Luz <luzmaximilian@gmail.com>
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/acpi.h>
-+#include <linux/dmi.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+
-+/*
-+ * Note: The GPE numbers for the lid devices found below have been obtained
-+ *       from ACPI/the DSDT table, specifically from the GPE handler for the
-+ *       lid.
-+ */
-+
-+static const struct property_entry lid_device_props_l17[] = {
-+	PROPERTY_ENTRY_U32("gpe", 0x17),
-+	{},
-+};
-+
-+static const struct property_entry lid_device_props_l4D[] = {
-+	PROPERTY_ENTRY_U32("gpe", 0x4D),
-+	{},
-+};
-+
-+static const struct property_entry lid_device_props_l4F[] = {
-+	PROPERTY_ENTRY_U32("gpe", 0x4F),
-+	{},
-+};
-+
-+static const struct property_entry lid_device_props_l57[] = {
-+	PROPERTY_ENTRY_U32("gpe", 0x57),
-+	{},
-+};
-+
-+/*
-+ * Note: When changing this, don't forget to check that the MODULE_ALIAS below
-+ *       still fits.
-+ */
-+static const struct dmi_system_id dmi_lid_device_table[] = {
-+	{
-+		.ident = "Surface Pro 4",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
-+		},
-+		.driver_data = (void *)lid_device_props_l17,
-+	},
-+	{
-+		.ident = "Surface Pro 5",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to generic product name
-+			 * "Surface Pro".
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 5 (LTE)",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to generic product name
-+			 * "Surface Pro"
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 6",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4F,
-+	},
-+	{
-+		.ident = "Surface Pro 7",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 7"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4D,
-+	},
-+	{
-+		.ident = "Surface Book 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
-+		},
-+		.driver_data = (void *)lid_device_props_l17,
-+	},
-+	{
-+		.ident = "Surface Book 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
-+		},
-+		.driver_data = (void *)lid_device_props_l17,
-+	},
-+	{
-+		.ident = "Surface Book 3",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 3"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4D,
-+	},
-+	{
-+		.ident = "Surface Laptop 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
-+		},
-+		.driver_data = (void *)lid_device_props_l57,
-+	},
-+	{
-+		.ident = "Surface Laptop 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
-+		},
-+		.driver_data = (void *)lid_device_props_l57,
-+	},
-+	{
-+		.ident = "Surface Laptop 3 (Intel 13\")",
-+		.matches = {
-+			/*
-+			 * We match for SKU here due to different variants: The
-+			 * AMD (15") version does not rely on GPEs.
-+			 */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Laptop_3_1867:1868"),
-+		},
-+		.driver_data = (void *)lid_device_props_l4D,
-+	},
-+	{ }
-+};
-+
-+struct surface_lid_device {
-+	u32 gpe_number;
-+};
-+
-+static int surface_lid_enable_wakeup(struct device *dev, bool enable)
-+{
-+	const struct surface_lid_device *lid = dev_get_drvdata(dev);
-+	int action = enable ? ACPI_GPE_ENABLE : ACPI_GPE_DISABLE;
-+	acpi_status status;
-+
-+	status = acpi_set_gpe_wake_mask(NULL, lid->gpe_number, action);
-+	if (ACPI_FAILURE(status)) {
-+		dev_err(dev, "failed to set GPE wake mask: %s\n",
-+			acpi_format_exception(status));
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int surface_gpe_suspend(struct device *dev)
-+{
-+	return surface_lid_enable_wakeup(dev, true);
-+}
-+
-+static int surface_gpe_resume(struct device *dev)
-+{
-+	return surface_lid_enable_wakeup(dev, false);
-+}
-+
-+static SIMPLE_DEV_PM_OPS(surface_gpe_pm, surface_gpe_suspend, surface_gpe_resume);
-+
-+static int surface_gpe_probe(struct platform_device *pdev)
-+{
-+	struct surface_lid_device *lid;
-+	u32 gpe_number;
-+	acpi_status status;
-+	int ret;
-+
-+	ret = device_property_read_u32(&pdev->dev, "gpe", &gpe_number);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to read 'gpe' property: %d\n", ret);
-+		return ret;
-+	}
-+
-+	lid = devm_kzalloc(&pdev->dev, sizeof(*lid), GFP_KERNEL);
-+	if (!lid)
-+		return -ENOMEM;
-+
-+	lid->gpe_number = gpe_number;
-+	platform_set_drvdata(pdev, lid);
-+
-+	status = acpi_mark_gpe_for_wake(NULL, gpe_number);
-+	if (ACPI_FAILURE(status)) {
-+		dev_err(&pdev->dev, "failed to mark GPE for wake: %s\n",
-+			acpi_format_exception(status));
-+		return -EINVAL;
-+	}
-+
-+	status = acpi_enable_gpe(NULL, gpe_number);
-+	if (ACPI_FAILURE(status)) {
-+		dev_err(&pdev->dev, "failed to enable GPE: %s\n",
-+			acpi_format_exception(status));
-+		return -EINVAL;
-+	}
-+
-+	ret = surface_lid_enable_wakeup(&pdev->dev, false);
-+	if (ret)
-+		acpi_disable_gpe(NULL, gpe_number);
-+
-+	return ret;
-+}
-+
-+static int surface_gpe_remove(struct platform_device *pdev)
-+{
-+	struct surface_lid_device *lid = dev_get_drvdata(&pdev->dev);
-+
-+	/* restore default behavior without this module */
-+	surface_lid_enable_wakeup(&pdev->dev, false);
-+	acpi_disable_gpe(NULL, lid->gpe_number);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver surface_gpe_driver = {
-+	.probe = surface_gpe_probe,
-+	.remove = surface_gpe_remove,
-+	.driver = {
-+		.name = "surface_gpe",
-+		.pm = &surface_gpe_pm,
-+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-+	},
-+};
-+
-+static struct platform_device *surface_gpe_device;
-+
-+static int __init surface_gpe_init(void)
-+{
-+	const struct dmi_system_id *match;
-+	struct platform_device *pdev;
-+	struct fwnode_handle *fwnode;
-+	int status;
-+
-+	match = dmi_first_match(dmi_lid_device_table);
-+	if (!match) {
-+		pr_info("no compatible Microsoft Surface device found, exiting\n");
-+		return -ENODEV;
-+	}
-+
-+	status = platform_driver_register(&surface_gpe_driver);
-+	if (status)
-+		return status;
-+
-+	fwnode = fwnode_create_software_node(match->driver_data, NULL);
-+	if (IS_ERR(fwnode)) {
-+		status = PTR_ERR(fwnode);
-+		goto err_node;
-+	}
-+
-+	pdev = platform_device_alloc("surface_gpe", PLATFORM_DEVID_NONE);
-+	if (!pdev) {
-+		status = -ENOMEM;
-+		goto err_alloc;
-+	}
-+
-+	pdev->dev.fwnode = fwnode;
-+
-+	status = platform_device_add(pdev);
-+	if (status)
-+		goto err_add;
-+
-+	surface_gpe_device = pdev;
-+	return 0;
-+
-+err_add:
-+	platform_device_put(pdev);
-+err_alloc:
-+	fwnode_remove_software_node(fwnode);
-+err_node:
-+	platform_driver_unregister(&surface_gpe_driver);
-+	return status;
-+}
-+module_init(surface_gpe_init);
-+
-+static void __exit surface_gpe_exit(void)
-+{
-+	struct fwnode_handle *fwnode = surface_gpe_device->dev.fwnode;
-+
-+	platform_device_unregister(surface_gpe_device);
-+	platform_driver_unregister(&surface_gpe_driver);
-+	fwnode_remove_software_node(fwnode);
-+}
-+module_exit(surface_gpe_exit);
-+
-+MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
-+MODULE_DESCRIPTION("Surface GPE/Lid Driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("dmi:*:svnMicrosoftCorporation:pnSurface*:*");
--- 
-2.29.1
 
