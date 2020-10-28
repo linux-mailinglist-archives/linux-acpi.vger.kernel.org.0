@@ -2,276 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DD0429D785
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CDC229D59E
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Oct 2020 23:05:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732806AbgJ1WZI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Oct 2020 18:25:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47113 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732787AbgJ1WZG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:25:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603923903;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sq1B8u8NLUEB8OJpFZ9ZPM/0L4/ZYp1FVYQZCWkCea0=;
-        b=QJMfoN4oYHNnQCMpewagHKJbpwrphefKQ/4+CPvqMsnYceFMPgxNivIkuhjt1p1AYxLyfz
-        y5Az/LxE7nNQIBdyvip6zZlyeKvxatq+Hf5B3uS2Hn35/ha8L+C2SSy3mMhH1SrrOC+6Tn
-        F1BmyrQAoY2w332xVa7ix5BnRZDVSfU=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-308-qR7hfgGQPJ-vvdv23BYIBw-1; Wed, 28 Oct 2020 13:23:16 -0400
-X-MC-Unique: qR7hfgGQPJ-vvdv23BYIBw-1
-Received: by mail-ed1-f70.google.com with SMTP id dc23so59487edb.13
-        for <linux-acpi@vger.kernel.org>; Wed, 28 Oct 2020 10:23:16 -0700 (PDT)
+        id S1729966AbgJ1WFQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Oct 2020 18:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729971AbgJ1WFO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 18:05:14 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35499C0613D1;
+        Wed, 28 Oct 2020 15:05:14 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id b3so615204pfo.2;
+        Wed, 28 Oct 2020 15:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=GeMX+k14VhxeG76k1/qSlgb4+cXieu72K4e08pwdt1o=;
+        b=InpLHLruF700Q395/JUSDPFi5ct3Q0NFGhIrDU/UmIhGdDThKH8GKD+cw6T2N6QNcD
+         PUvF0K87ShFDKaAjJCfvpeMCAaEiJ8eHb269GNLlCVUSVFBQarvkQDFEeK2v65rPe7+J
+         tC/1aFfwnYWg9j8u/6Ud/Yyen1uhouxurM0nLvzz3MYFdzPpthJUWusVU6lftQoy21uA
+         qiW9X1ZTMFe3cniRtPQ+TCgotIme378DGRcyAXvYYZgBHvV1ur7fGjNBhSILa0vbkqSM
+         tRUkeNha3rVBlOMkNme6QRGiAF7X/US6S2FlZ9tPWrsV95ioL0sZyvBU99MP8xfC1Ema
+         woPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=sq1B8u8NLUEB8OJpFZ9ZPM/0L4/ZYp1FVYQZCWkCea0=;
-        b=BHeGQUbfmhZI+SJk20/gKrFfXDOCYrmJuuaOeLXslzeuT/D8iYzNxNDKyj8EIpfB+7
-         n8Ga598+yU9dDY6HbgE94gna5ckzY+u4442w7RipSn8Y+9dGQZlzM17IZ/TBLaDUwx/i
-         Gk+YPRuLqFByXXSy4BqvXvbd5IbU6HAdS4NJ4SjWv1abkySXNnP97kw3e2CxT4PfSuO7
-         RvblJb8alPI2tCnuv7CxH8I2+6oqff9SqpkUogRMGDe0nRIZPUq/2Ag5JNrMh/oWUZJf
-         cIURO2CzhfKT6O1pcCwp3L4m4OsRxF23GxVolEOBOjx8L+tI9sj+fr2YvmzHiTs2UdVg
-         R5Rg==
-X-Gm-Message-State: AOAM531d3LGjkfs2Erm0zAZF5zEuuRqdcl5LLZfeUDFCCEESHYZu3XFE
-        Re/mcNULmK44HOqryKEZ7hQdN6edfGmOwx7s/gEJNdOQ7SRxGsZeiSU06triHml2lPqBeOhcFnO
-        BC05hJGOejadC24uWvYqoJA==
-X-Received: by 2002:a17:906:6453:: with SMTP id l19mr125870ejn.366.1603905794984;
-        Wed, 28 Oct 2020 10:23:14 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzREE5X9JMuMW0uT+945/sNIo/Jw2GIPaYjye6jFS3w2G6zpJDNsvl2GTmVFhYI71fL0HiW4A==
-X-Received: by 2002:a17:906:6453:: with SMTP id l19mr125853ejn.366.1603905794640;
-        Wed, 28 Oct 2020 10:23:14 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id l17sm112230eji.14.2020.10.28.10.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2020 10:23:13 -0700 (PDT)
-Subject: Re: [PATCH] Documentation: Add documentation for new platform_profile
- sysfs attribute
-To:     Bastien Nocera <hadess@hadess.net>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     dvhart@infradead.org, mgross@linux.intel.com,
-        mario.limonciello@dell.com, eliadevito@gmail.com, bberg@redhat.com,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <markpearson@lenovo.com>
- <20201027164219.868839-1-markpearson@lenovo.com>
- <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <d5f0bcba-5366-87da-d199-a85d59ba6c1c@redhat.com>
-Date:   Wed, 28 Oct 2020 18:23:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GeMX+k14VhxeG76k1/qSlgb4+cXieu72K4e08pwdt1o=;
+        b=lzAqOSVmhU6VbRxYBDriHSDMrHey6KVNiVhpaRvSGsyBJZ6oe/lNxa6Kgo9ZeKm7jw
+         72626PUiA4Wzw92EBR2nnt08hZrqLAqQ/pEukMRqcjE9Gy67ZGvTfqHa330OVmqqvsl1
+         dmDUdms+/w5hAwlsY/+6dXLjqapVltPxry1/ThdulwOK6VxdYhdGIuoABnR/xiKn3syz
+         6NuYhb62FMA8Mrng0Lyv3BurqQCXo4F7Wcc/xOFuCz7PhwcnIYVS42WjxIdX66ew7qKd
+         VbLx+X3wuk4lLZooWloUYYTmUrskVoEoAwmKYhTeSUbSaiJIqBT3cdekqIxXywQ+mOlM
+         UbFg==
+X-Gm-Message-State: AOAM533RQkowhIxbHb2inKGnNmAVletJsLE743O6uN+WKsPGXEmBLzY0
+        M12JzlevK7J8lG5GABHnLbBduYkTX45V4g==
+X-Google-Smtp-Source: ABdhPJw+P7PZ1ANDYILo79Hsg7TsK8M0hrdd6+wFNAfXxYnBAlE0Wr2vQTH+qAkmHlbh1+XaD9f7GA==
+X-Received: by 2002:a63:78c3:: with SMTP id t186mr490857pgc.12.1603907075050;
+        Wed, 28 Oct 2020 10:44:35 -0700 (PDT)
+Received: from hoboy.vegasvil.org (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
+        by smtp.gmail.com with ESMTPSA id d26sm224049pfo.82.2020.10.28.10.44.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 10:44:34 -0700 (PDT)
+Date:   Wed, 28 Oct 2020 10:44:27 -0700
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Javier =?iso-8859-1?Q?Gonz=E1lez?= <javier@javigon.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Bruno Meneguele <bmeneg@redhat.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Len Brown <lenb@kernel.org>,
+        Leonid Maksymchuk <leonmaxx@gmail.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Oleh Kravchenko <oleg@kaa.org.ua>,
+        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
+        Philippe Bergheaud <felix@linux.ibm.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 20/33] docs: ABI: testing: make the files compatible with
+ ReST output
+Message-ID: <20201028174427.GE9364@hoboy.vegasvil.org>
+References: <cover.1603893146.git.mchehab+huawei@kernel.org>
+ <4ebaaa0320101479e392ce2db4b62e24fdf15ef1.1603893146.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ebaaa0320101479e392ce2db4b62e24fdf15ef1.1603893146.git.mchehab+huawei@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Oct 28, 2020 at 03:23:18PM +0100, Mauro Carvalho Chehab wrote:
 
-On 10/28/20 2:45 PM, Bastien Nocera wrote:
-> Hey Hans, Mark,
-> 
-> On Tue, 2020-10-27 at 12:42 -0400, Mark Pearson wrote:
->> From: Hans de Goede <hdegoede@redhat.com>
->>
->> On modern systems the platform performance, temperature, fan and
->> other
->> hardware related characteristics are often dynamically configurable.
->> The
->> profile is often automatically adjusted to the load by somei
->> automatic-mechanism (which may very well live outside the kernel).
->>
->> These auto platform-adjustment mechanisms often can be configured
->> with
->> one of several 'platform-profiles', with either a bias towards low-
->> power
-> 
-> Can you please make sure to quote 'platform-profile' and 'profile-name'
-> this way all through the document? They're not existing words, and
-> quoting them shows that they're attribute names, rather than English.
-> 
->> consumption or towards performance (and higher power consumption and
->> thermals).
-> 
-> s/thermal/temperature/
-> 
-> "A thermal" is something else (it's seasonal underwear for me ;)
-> 
->> Introduce a new platform_profile sysfs API which offers a generic API
->> for
->> selecting the performance-profile of these automatic-mechanisms.
->>
->> Co-developed-by: Mark Pearson <markpearson@lenovo.com>
->> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> Changes in V1:
->>  - Moved from RFC to proposed patch
->>  - Added cool profile as requested
->>  - removed extra-profiles as no longer relevant
->>
->>  .../ABI/testing/sysfs-platform_profile        | 66
->> +++++++++++++++++++
->>  1 file changed, 66 insertions(+)
->>  create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
->>
->> diff --git a/Documentation/ABI/testing/sysfs-platform_profile
->> b/Documentation/ABI/testing/sysfs-platform_profile
->> new file mode 100644
->> index 000000000000..240bd3d7532b
->> --- /dev/null
->> +++ b/Documentation/ABI/testing/sysfs-platform_profile
->> @@ -0,0 +1,66 @@
->> +Platform-profile selection (e.g.
->> /sys/firmware/acpi/platform_profile)
->> +
->> +On modern systems the platform performance, temperature, fan and
->> other
->> +hardware related characteristics are often dynamically configurable.
->> The
->> +profile is often automatically adjusted to the load by some
->> +automatic-mechanism (which may very well live outside the kernel).
->> +
->> +These auto platform-adjustment mechanisms often can be configured
->> with
->> +one of several 'platform-profiles', with either a bias towards low-
->> power
->> +consumption or towards performance (and higher power consumption and
->> +thermals).
->> +
->> +The purpose of the platform_profile attribute is to offer a generic
->> sysfs
->> +API for selecting the platform-profile of these automatic-
->> mechanisms.
->> +
->> +Note that this API is only for selecting the platform-profile, it is
->> +NOT a goal of this API to allow monitoring the resulting performance
->> +characteristics. Monitoring performance is best done with
->> device/vendor
->> +specific tools such as e.g. turbostat.
->> +
->> +Specifically when selecting a high-performance profile the actual
->> achieved
->> +performance may be limited by various factors such as: the heat
->> generated
->> +by other components, room temperature, free air flow at the bottom
->> of a
->> +laptop, etc. It is explicitly NOT a goal of this API to let
->> userspace know
->> +about any sub-optimal conditions which are impeding reaching the
->> requested
->> +performance level.
->> +
->> +Since numbers are a rather meaningless way to describe platform-
->> profiles
-> 
-> It's not meaningless, but rather ambiguous. For a range of 1 to 5, is 1
-> high performance, and 5 low power, or vice-versa?
+> diff --git a/Documentation/ABI/testing/sysfs-uevent b/Documentation/ABI/testing/sysfs-uevent
+> index aa39f8d7bcdf..d0893dad3f38 100644
+> --- a/Documentation/ABI/testing/sysfs-uevent
+> +++ b/Documentation/ABI/testing/sysfs-uevent
+> @@ -19,7 +19,8 @@ Description:
+>                  a transaction identifier so it's possible to use the same UUID
+>                  value for one or more synthetic uevents in which case we
+>                  logically group these uevents together for any userspace
+> -                listeners. The UUID value appears in uevent as
+> +                listeners. The UUID value appears in uevent as:
 
-It is meaningless because the space we are trying to describe with the
-profile-names is not 1 dimensional. E.g. as discussed before cool and
-low-power are not necessarily the same thing. If you have a better way
-to word this I'm definitely in favor of improving the text here.
+I know almost nothing about Sphinx, but why have one colon here ^^^ and ...
 
-> 
->> +this API uses strings to describe the various profiles. To make sure
->> that
->> +userspace gets a consistent experience when using this API this API
-> 
-> you can remove "when using this API".
-> 
->> +document defines a fixed set of profile-names. Drivers *must* map
->> their
->> +internal profile representation/names onto this fixed set.
->> +
->> +If for some reason there is no good match when mapping then a new
->> profile-name
->> +may be added.
-> 
-> "for some reason" can be removed.
-> 
->>  Drivers which wish to introduce new profile-names must:
->> +1. Have very good reasons to do so.
-> 
-> "1. Explain why the existing 'profile-names' cannot be used"
-> 
->> +2. Add the new profile-name to this document, so that future drivers
->> which also
->> +   have a similar problem can use the same name.
-> 
-> "2. Add the new 'profile-name' to the documentation so that other
-> drivers can use it, as well as user-space knowing clearly what
-> behaviour the 'profile-name' corresponds to"
-> 
->> +
->> +What:          /sys/firmware/acpi/platform_profile_choices
->> +Date:          October 2020
->> +Contact:       Hans de Goede <hdegoede@redhat.com>
->> +Description:
->> +               Reading this file gives a space separated list of
->> profiles
->> +               supported for this device.
-> 
-> "This file contains a space-separated list of profiles..."
-> 
->> +
->> +               Drivers must use the following standard profile-
->> names:
->> +
->> +               low-power:              Emphasises low power
->> consumption
->> +               cool:                   Emphasises cooler operation
->> +               quiet:                  Emphasises quieter operation
->> +               balanced:               Balance between low power
->> consumption
->> +                                       and performance
->> +               performance:            Emphasises performance (and
->> may lead to
->> +                                       higher temperatures and fan
->> speeds)
-> 
-> I'd replace "Emphasises" with either "Focus on" or the US English
-> spelling of "Emphasizes".
-> 
->> +               Userspace may expect drivers to offer at least
->> several of these
->> +               standard profile-names.
-> 
-> Replce "at least several" with "more than one".
-> 
->> +
->> +What:          /sys/firmware/acpi/platform_profile
->> +Date:          October 2020
->> +Contact:       Hans de Goede <hdegoede@redhat.com>
->> +Description:
->> +               Reading this file gives the current selected profile
->> for this
->> +               device. Writing this file with one of the strings
->> from
->> +               available_profiles changes the profile to the new
->> value.
-> 
-> Is there another file which explains whether those sysfs value will
-> contain a trailing linefeed?
+> +
+>                  "SYNTH_UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" environment
+>                  variable.
+>  
+> @@ -30,18 +31,19 @@ Description:
+>                  It's possible to define zero or more pairs - each pair is then
+>                  delimited by a space character ' '. Each pair appears in
+>                  synthetic uevent as "SYNTH_ARG_KEY=VALUE". That means the KEY
+> -                name gains "SYNTH_ARG_" prefix to avoid possible collisions
+> +                name gains `SYNTH_ARG_` prefix to avoid possible collisions
+>                  with existing variables.
+>  
+> -                Example of valid sequence written to the uevent file:
+> +                Example of valid sequence written to the uevent file::
 
-sysfs APIs are typically created so that they can be used from the shell,
-so on read a newline will be added. On write a newline at the end
-typically is allowed, but ignored. There are even special helper functions
-to deal with properly ignoring the newline on write.
+... two here?
 
-Regards,
-
-Hans
-
-
+Thanks,
+Richard
