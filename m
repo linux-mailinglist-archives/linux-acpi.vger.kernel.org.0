@@ -2,223 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFA029E11A
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 02:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0834629E0D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 02:38:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727741AbgJ2BxG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Oct 2020 21:53:06 -0400
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:46990 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728701AbgJ1V5n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 17:57:43 -0400
-Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id E55933A5707;
-        Wed, 28 Oct 2020 13:45:40 +0000 (UTC)
-X-Originating-IP: 82.255.60.242
-Received: from [192.168.0.28] (lns-bzn-39-82-255-60-242.adsl.proxad.net [82.255.60.242])
-        (Authenticated sender: hadess@hadess.net)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id EA179E0004;
-        Wed, 28 Oct 2020 13:45:15 +0000 (UTC)
-Message-ID: <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
-Subject: Re: [PATCH] Documentation: Add documentation for new
- platform_profile sysfs attribute
-From:   Bastien Nocera <hadess@hadess.net>
-To:     Mark Pearson <markpearson@lenovo.com>
-Cc:     dvhart@infradead.org, mgross@linux.intel.com,
-        mario.limonciello@dell.com, eliadevito@gmail.com, bberg@redhat.com,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>
-Date:   Wed, 28 Oct 2020 14:45:15 +0100
-In-Reply-To: <20201027164219.868839-1-markpearson@lenovo.com>
-References: <markpearson@lenovo.com>
-         <20201027164219.868839-1-markpearson@lenovo.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
+        id S1728420AbgJ1WDC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Oct 2020 18:03:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729313AbgJ1WBc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 18:01:32 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09BFC0613D1
+        for <linux-acpi@vger.kernel.org>; Wed, 28 Oct 2020 15:01:32 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id m20so902780ljj.5
+        for <linux-acpi@vger.kernel.org>; Wed, 28 Oct 2020 15:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JzxgzmFEKg3uyOYq0U+7u1Sr88Fa5cBf5J/ai9Bi9w4=;
+        b=c8YXWXabra4sW5/XLNopgCr1Ey4kEIOYZ1bnz6+tWCnkIM88z4M2Q3I8N6B+DLSZt4
+         cJzYWSgKqRYIP05RISLd1JWNSMYFkd9oJV/3pYM+4YbdbwwpPxZY4yZg7EkQpNCDvAMI
+         gD29S7F17ZYzpny8Auzr9eQgNQUDt2NXaN1SE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JzxgzmFEKg3uyOYq0U+7u1Sr88Fa5cBf5J/ai9Bi9w4=;
+        b=lzqpEAX3SWM7sC6RCQZN3y/RXzEfVP6aaO3Kp3ASzhTOeSdc8etHJKgb4jBQ3UY48o
+         vIXc3DdiXNXdWDWYgDtb+sfY2UeDLoPpbAn/tHJccne0aW1dN1DnSAd6e9/qJT4Pl2aA
+         DpXTLtW00JTsZ1TKESoSND4xpub5thTJ521NfYpHGdwb5aUThVhkU8SJQuKtzT95Sd1A
+         Td8nTy6wEBCVYZGrDh0/E6gRrrHXZ5YmXNMkiBk+jLZ/ja0W9cEEUpylk251Ss04Oftn
+         wagTmT7GS+MuqUrz6PdRXBKs2SBZDKcnXbRhTQMg2OCdv0o9YsrV72xMnjvvIy3Y5tWR
+         4aig==
+X-Gm-Message-State: AOAM532D7J9KTg1x0Y4RQi33skbxIx1uvNz/Pe+FQigkl1ndg6JUaR3y
+        qywyDjTj33lEezUNjrEkqtyJIJ/l6AQ7iMfwUwU=
+X-Google-Smtp-Source: ABdhPJw9WvnFCFfe0bMtDkbOl61PKkk2WINL/17GJ+UJzZwPlfMZ2z28uuVsBREELq+J+ey2Z9mmqA==
+X-Received: by 2002:adf:e685:: with SMTP id r5mr390473wrm.340.1603905483580;
+        Wed, 28 Oct 2020 10:18:03 -0700 (PDT)
+Received: from alco.lan ([80.71.134.83])
+        by smtp.gmail.com with ESMTPSA id y4sm222505wrp.74.2020.10.28.10.18.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 10:18:02 -0700 (PDT)
+From:   Ricardo Ribalda <ribalda@chromium.org>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH] gpiolib: acpi: Support GpioInt with active_low polarity
+Date:   Wed, 28 Oct 2020 18:17:57 +0100
+Message-Id: <20201028171757.765866-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hey Hans, Mark,
+On the current implementation we only support active_high polarity for
+GpioInt.
 
-On Tue, 2020-10-27 at 12:42 -0400, Mark Pearson wrote:
-> From: Hans de Goede <hdegoede@redhat.com>
-> 
-> On modern systems the platform performance, temperature, fan and
-> other
-> hardware related characteristics are often dynamically configurable.
-> The
-> profile is often automatically adjusted to the load by somei
-> automatic-mechanism (which may very well live outside the kernel).
-> 
-> These auto platform-adjustment mechanisms often can be configured
-> with
-> one of several 'platform-profiles', with either a bias towards low-
-> power
+There can be cases where a GPIO has active_low polarity and it is also a
+IRQ source.
 
-Can you please make sure to quote 'platform-profile' and 'profile-name'
-this way all through the document? They're not existing words, and
-quoting them shows that they're attribute names, rather than English.
+De-couple the irq_polarity and active_low fields instead of re-use it.
 
-> consumption or towards performance (and higher power consumption and
-> thermals).
+With this patch we support ACPI devices such as:
 
-s/thermal/temperature/
+Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+{
+        GpioInt (Edge, ActiveBoth, Exclusive, PullDefault, 0x0000,
+        "\\_SB.PCI0.GPIO", 0x00, ResourceConsumer, ,
+        )
+        {   // Pin list
+                0x0064
+        }
+})
+Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
+{
+        ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /* Device Properties for _DSD */,
+        Package (0x01)
+        {
+        Package (0x02)
+        {
+                "privacy-gpio",
+                Package (0x04)
+                {
+                \_SB.PCI0.XHCI.RHUB.HS07,
+                Zero,
+                Zero,
+                One
+                }
+        }
+        }
+})
 
-"A thermal" is something else (it's seasonal underwear for me ;)
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+ drivers/gpio/gpiolib-acpi.c | 8 ++++----
+ drivers/gpio/gpiolib-acpi.h | 6 ++++--
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-> Introduce a new platform_profile sysfs API which offers a generic API
-> for
-> selecting the performance-profile of these automatic-mechanisms.
-> 
-> Co-developed-by: Mark Pearson <markpearson@lenovo.com>
-> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in V1:
->  - Moved from RFC to proposed patch
->  - Added cool profile as requested
->  - removed extra-profiles as no longer relevant
-> 
->  .../ABI/testing/sysfs-platform_profile        | 66
-> +++++++++++++++++++
->  1 file changed, 66 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-platform_profile
-> b/Documentation/ABI/testing/sysfs-platform_profile
-> new file mode 100644
-> index 000000000000..240bd3d7532b
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-platform_profile
-> @@ -0,0 +1,66 @@
-> +Platform-profile selection (e.g.
-> /sys/firmware/acpi/platform_profile)
-> +
-> +On modern systems the platform performance, temperature, fan and
-> other
-> +hardware related characteristics are often dynamically configurable.
-> The
-> +profile is often automatically adjusted to the load by some
-> +automatic-mechanism (which may very well live outside the kernel).
-> +
-> +These auto platform-adjustment mechanisms often can be configured
-> with
-> +one of several 'platform-profiles', with either a bias towards low-
-> power
-> +consumption or towards performance (and higher power consumption and
-> +thermals).
-> +
-> +The purpose of the platform_profile attribute is to offer a generic
-> sysfs
-> +API for selecting the platform-profile of these automatic-
-> mechanisms.
-> +
-> +Note that this API is only for selecting the platform-profile, it is
-> +NOT a goal of this API to allow monitoring the resulting performance
-> +characteristics. Monitoring performance is best done with
-> device/vendor
-> +specific tools such as e.g. turbostat.
-> +
-> +Specifically when selecting a high-performance profile the actual
-> achieved
-> +performance may be limited by various factors such as: the heat
-> generated
-> +by other components, room temperature, free air flow at the bottom
-> of a
-> +laptop, etc. It is explicitly NOT a goal of this API to let
-> userspace know
-> +about any sub-optimal conditions which are impeding reaching the
-> requested
-> +performance level.
-> +
-> +Since numbers are a rather meaningless way to describe platform-
-> profiles
-
-It's not meaningless, but rather ambiguous. For a range of 1 to 5, is 1
-high performance, and 5 low power, or vice-versa?
-
-> +this API uses strings to describe the various profiles. To make sure
-> that
-> +userspace gets a consistent experience when using this API this API
-
-you can remove "when using this API".
-
-> +document defines a fixed set of profile-names. Drivers *must* map
-> their
-> +internal profile representation/names onto this fixed set.
-> +
-> +If for some reason there is no good match when mapping then a new
-> profile-name
-> +may be added.
-
-"for some reason" can be removed.
-
->  Drivers which wish to introduce new profile-names must:
-> +1. Have very good reasons to do so.
-
-"1. Explain why the existing 'profile-names' cannot be used"
-
-> +2. Add the new profile-name to this document, so that future drivers
-> which also
-> +   have a similar problem can use the same name.
-
-"2. Add the new 'profile-name' to the documentation so that other
-drivers can use it, as well as user-space knowing clearly what
-behaviour the 'profile-name' corresponds to"
-
-> +
-> +What:          /sys/firmware/acpi/platform_profile_choices
-> +Date:          October 2020
-> +Contact:       Hans de Goede <hdegoede@redhat.com>
-> +Description:
-> +               Reading this file gives a space separated list of
-> profiles
-> +               supported for this device.
-
-"This file contains a space-separated list of profiles..."
-
-> +
-> +               Drivers must use the following standard profile-
-> names:
-> +
-> +               low-power:              Emphasises low power
-> consumption
-> +               cool:                   Emphasises cooler operation
-> +               quiet:                  Emphasises quieter operation
-> +               balanced:               Balance between low power
-> consumption
-> +                                       and performance
-> +               performance:            Emphasises performance (and
-> may lead to
-> +                                       higher temperatures and fan
-> speeds)
-
-I'd replace "Emphasises" with either "Focus on" or the US English
-spelling of "Emphasizes".
-
-> +               Userspace may expect drivers to offer at least
-> several of these
-> +               standard profile-names.
-
-Replce "at least several" with "more than one".
-
-> +
-> +What:          /sys/firmware/acpi/platform_profile
-> +Date:          October 2020
-> +Contact:       Hans de Goede <hdegoede@redhat.com>
-> +Description:
-> +               Reading this file gives the current selected profile
-> for this
-> +               device. Writing this file with one of the strings
-> from
-> +               available_profiles changes the profile to the new
-> value.
-
-Is there another file which explains whether those sysfs value will
-contain a trailing linefeed?
-
-Cheers
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 834a12f3219e..bc33c1056391 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -624,7 +624,7 @@ int acpi_gpio_update_gpiod_lookup_flags(unsigned long *lookupflags,
+ 		break;
+ 	}
+ 
+-	if (info->polarity == GPIO_ACTIVE_LOW)
++	if (info->active_low)
+ 		*lookupflags |= GPIO_ACTIVE_LOW;
+ 
+ 	return 0;
+@@ -665,6 +665,7 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+ 					      agpio->pin_table[pin_index]);
+ 		lookup->info.pin_config = agpio->pin_config;
+ 		lookup->info.gpioint = gpioint;
++		lookup->info.active_low = !!lookup->active_low;
+ 
+ 		/*
+ 		 * Polarity and triggering are only specified for GpioInt
+@@ -675,11 +676,10 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+ 		 */
+ 		if (lookup->info.gpioint) {
+ 			lookup->info.flags = GPIOD_IN;
+-			lookup->info.polarity = agpio->polarity;
++			lookup->info.irq_polarity = agpio->polarity;
+ 			lookup->info.triggering = agpio->triggering;
+ 		} else {
+ 			lookup->info.flags = acpi_gpio_to_gpiod_flags(agpio);
+-			lookup->info.polarity = lookup->active_low;
+ 		}
+ 	}
+ 
+@@ -958,7 +958,7 @@ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
+ 				return ret;
+ 
+ 			irq_flags = acpi_dev_get_irq_type(info.triggering,
+-							  info.polarity);
++							  info.irq_polarity);
+ 
+ 			/* Set type if specified and different than the current one */
+ 			if (irq_flags != IRQ_TYPE_NONE &&
+diff --git a/drivers/gpio/gpiolib-acpi.h b/drivers/gpio/gpiolib-acpi.h
+index 1c6d65cf0629..816a2d7a21ed 100644
+--- a/drivers/gpio/gpiolib-acpi.h
++++ b/drivers/gpio/gpiolib-acpi.h
+@@ -16,7 +16,8 @@ struct acpi_device;
+  * @flags: GPIO initialization flags
+  * @gpioint: if %true this GPIO is of type GpioInt otherwise type is GpioIo
+  * @pin_config: pin bias as provided by ACPI
+- * @polarity: interrupt polarity as provided by ACPI
++ * @irq_polarity: interrupt polarity as provided by ACPI
++ * @active_low: pin polarity as provided by ACPI
+  * @triggering: triggering type as provided by ACPI
+  * @quirks: Linux specific quirks as provided by struct acpi_gpio_mapping
+  */
+@@ -25,7 +26,8 @@ struct acpi_gpio_info {
+ 	enum gpiod_flags flags;
+ 	bool gpioint;
+ 	int pin_config;
+-	int polarity;
++	int irq_polarity;
++	bool active_low;
+ 	int triggering;
+ 	unsigned int quirks;
+ };
+-- 
+2.29.0.rc2.309.g374f81d7ae-goog
 
