@@ -2,181 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0EE29DC56
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 01:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FC4329DC3C
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 01:22:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388354AbgJ2AYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Oct 2020 20:24:16 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7083 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731416AbgJ1WhO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 18:37:14 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CLk6S6Zk5zLmtW;
-        Wed, 28 Oct 2020 17:38:56 +0800 (CST)
-Received: from localhost.localdomain (10.67.165.24) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 28 Oct 2020 17:38:47 +0800
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-To:     <james.morse@arm.com>, <rafael@kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <tony.luck@intel.com>, <bp@alien8.de>,
-        <akpm@linux-foundation.org>, <jroedel@suse.de>,
-        <peterz@infradead.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v4] ACPI / APEI: do memory failure on the physical address reported by ARM processor error section
-Date:   Wed, 28 Oct 2020 17:37:15 +0800
-Message-ID: <1603877835-30970-1-git-send-email-tanxiaofei@huawei.com>
-X-Mailer: git-send-email 2.8.1
+        id S2388926AbgJ2AWd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Oct 2020 20:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57062 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388923AbgJ1WiD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Oct 2020 18:38:03 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32F3C0613CF;
+        Wed, 28 Oct 2020 15:38:01 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id w27so1205019ejb.3;
+        Wed, 28 Oct 2020 15:38:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:cc:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=s/GAYx7ZPx5cYyrJpIiN2TWEaOxiqi1GSB3L4+92Y2c=;
+        b=Uv8TJqqZ8sNRjgWSCSuYWFsDZgmVzYOFXrASP3oE9Ka4DpUCAZf26XFlpHKPV4wPzm
+         1hTs0h4i2zVlFe7hi1nf4Gc+ilS3NA7c8LS+hOWDQ9KmBdk0zYj4QQPtqlY9GUNAo+al
+         Y3alnowM1S+oTkOr7Wvu43bHjPo/7S4eHatuUxNghefi+GNYptku2n4md7lvJHSRwI47
+         Bt+5pZXvHu8M95SljAXilBFBlL/AZha7En9I3wvwNam5wAcioDY7YPjxoCkhJqIeQNM9
+         nB0cVo7pEvpW3x/RjQprr4tQyyHq9YpF+tTvo5EwUcIq8UAoIHAwm5W324mnm2ilz7qj
+         zpkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=s/GAYx7ZPx5cYyrJpIiN2TWEaOxiqi1GSB3L4+92Y2c=;
+        b=Ex4pLo40bDq+1SqsF2LKqm1BNuAUyShcQiJgGPdqIJF4AnjI6/yXduhOB0Ib5S1IOq
+         n42s4hUmz8CBdbslzz7f2eE6yc+V6+j6RglHkpDzElXZFXkIBRTRB3qimSE19Bxi1MEn
+         OHzJxE4qsHPgL9tE5q1t0ovxuF8UAuqDRX6gfN9mUBHexST4FC3ASaB+rAukEswSy0Zf
+         idommq6JbZ4xqbjH/hFRr+yk1TmMlgsxEGaKT+Uc485Te+Z9LhvZQXSc3sFcqdwzYwzy
+         EShDfxOtGCniy6nShU/tSFXtLhckzrkF1Gked7nxYPpe0mRQzXvvYVfmEC+ztI9aXYLk
+         SC4Q==
+X-Gm-Message-State: AOAM5314Fka/fIMbZQIqHxK1O/UidPm0DIgwfttd6H5fi2LgJTKFQmK9
+        RTGwu+OhShbeJnuFD62jNBDDs6eoPTA=
+X-Google-Smtp-Source: ABdhPJzA1yToYKpCKuK4NAqE6UeeWarnejBXdNhdxv86i3dO+xwNlFDh0dmkO2He/v5J73RT3owQSg==
+X-Received: by 2002:a05:6402:141:: with SMTP id s1mr4129789edu.87.1603881678274;
+        Wed, 28 Oct 2020 03:41:18 -0700 (PDT)
+Received: from [192.168.2.202] (pd9e5a52a.dip0.t-ipconnect.de. [217.229.165.42])
+        by smtp.gmail.com with ESMTPSA id 64sm561440eda.63.2020.10.28.03.41.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Oct 2020 03:41:17 -0700 (PDT)
+Subject: Re: [PATCH v4] platform/surface: Add Driver to set up lid GPEs on MS
+ Surface device
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20201023140802.1916057-1-luzmaximilian@gmail.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <44362c2a-14f4-bda0-0539-58543c6329a0@gmail.com>
+Date:   Wed, 28 Oct 2020 11:41:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201023140802.1916057-1-luzmaximilian@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-synchronise with APEI's irq work") applied, do_sea() return directly
-for user-mode if apei_claim_sea() handled any error record. Therefore,
-each error record reported by the user-mode SEA must be effectively
-processed in APEI GHES driver.
+On 10/23/20 4:08 PM, Maximilian Luz wrote:
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8ff126ced757..31271180dae3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11532,6 +11532,12 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
+>   F:	include/linux/cciss*.h
+>   F:	include/uapi/linux/cciss*.h
+>   
+> +MICROSOFT SURFACE GPE LID SUPPORT DRIVER
+> +M:	Maximilian Luz <luzmaximilian@gmail.com>
+> +L:	platform-driver-x86@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/platform/x86/surface_gpe.c
 
-Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
-Error Section, as it has nothing to do with SEA). It is not enough.
-Because ARM Processor Error could also be used for SEA in some hardware
-platforms, such as Kunpeng9xx series. We can't ask them to switch to
-use Memory Error Section for two reasons:
-1)The server was delivered to customers, and it will introduce
-compatibility issue.
-2)It make sense to use ARM Processor Error Section. Because either
-cache or memory errors could generate SEA when consumed by a processor.
+This should of course read
 
-Do memory failure handling for ARM Processor Error Section just like
-for Memory Error Section.
+     F: drivers/platform/surface/surface_gpe.c
 
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
----
-Changes since v3:
-- Print unhandled error following James Morse's advice.
+Sorry for that rookie mistake. Will fix asap.
 
-Changes since v2:
-- Updated commit log
----
- drivers/acpi/apei/ghes.c | 70 ++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 53 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 99df00f..b9cbd33 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
- 	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
- }
- 
--static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
--				       int sev)
-+static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
--	int flags = -1;
--	int sec_sev = ghes_severity(gdata->error_severity);
--	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
- 		return false;
- 
--	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
--		return false;
--
--	pfn = mem_err->physical_addr >> PAGE_SHIFT;
-+	pfn = PHYS_PFN(physical_addr);
- 	if (!pfn_valid(pfn)) {
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
- 		"Invalid address in generic error data: %#llx\n",
--		mem_err->physical_addr);
-+		physical_addr);
- 		return false;
- 	}
- 
-+	memory_failure_queue(pfn, flags);
-+	return true;
-+}
-+
-+static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-+				       int sev)
-+{
-+	int flags = -1;
-+	int sec_sev = ghes_severity(gdata->error_severity);
-+	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
-+
-+	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-+		return false;
-+
- 	/* iff following two events can be handled properly by now */
- 	if (sec_sev == GHES_SEV_CORRECTED &&
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-@@ -470,14 +477,45 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
- 		flags = 0;
- 
--	if (flags != -1) {
--		memory_failure_queue(pfn, flags);
--		return true;
--	}
-+	if (flags != -1)
-+		return ghes_do_memory_failure(mem_err->physical_addr, flags);
- 
- 	return false;
- }
- 
-+static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-+{
-+	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-+	struct cper_arm_err_info *err_info;
-+	bool queued = false;
-+	int sec_sev, i;
-+
-+	log_arm_hw_error(err);
-+
-+	sec_sev = ghes_severity(gdata->error_severity);
-+	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-+		return false;
-+
-+	err_info = (struct cper_arm_err_info *) (err + 1);
-+	for (i = 0; i < err->err_info_num; i++, err_info++) {
-+		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-+
-+		if (!is_cache || !has_pa) {
-+			pr_warn_ratelimited(FW_WARN GHES_PFX
-+			"Unhandled processor error type %s\n",
-+			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-+			cper_proc_error_type_strs[err_info->type] : "unknown error");
-+			continue;
-+		}
-+
-+		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-+			queued = true;
-+	}
-+
-+	return queued;
-+}
-+
- /*
-  * PCIe AER errors need to be sent to the AER driver for reporting and
-  * recovery. The GHES severities map to the following AER severities and
-@@ -605,9 +643,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--
--			log_arm_hw_error(err);
-+			queued = ghes_handle_arm_hw_error(gdata, sev);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
--- 
-2.8.1
-
+Regards,
+Max
