@@ -2,98 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E6229EE70
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 15:38:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E2F329EEAB
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 15:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbgJ2OiI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 10:38:08 -0400
-Received: from mga06.intel.com ([134.134.136.31]:64019 "EHLO mga06.intel.com"
+        id S1727705AbgJ2Op5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 10:45:57 -0400
+Received: from mga12.intel.com ([192.55.52.136]:26328 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726309AbgJ2OiH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Oct 2020 10:38:07 -0400
-IronPort-SDR: fCqCEaEd2NM0LfBWEZUxLSsLu3AcPKz7KVm5O/Tg/J2/vSE0KbQNPmPmBRIQ4v63TmctjoaOk8
- 5P7BqtCEpBCw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="230079413"
+        id S1726521AbgJ2Op4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Oct 2020 10:45:56 -0400
+IronPort-SDR: ehqlgiIgw+jVo3sNQsOQdPzNKw40dp9N3NZtnWPq1aFjAV9K1aQyEwRL2aMmEkjStfI3hzkhOi
+ 1le7M3x33h9w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="147723965"
 X-IronPort-AV: E=Sophos;i="5.77,430,1596524400"; 
-   d="scan'208";a="230079413"
+   d="scan'208";a="147723965"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 07:38:06 -0700
-IronPort-SDR: AatJukX5pNEnTmW5wJ6ITt5+S+XxjM0NpZEeqMaKBr1HDxPHNatAkiTub5DVOoesrza9LzlVBW
- xM3znpFxrHdA==
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 07:45:56 -0700
+IronPort-SDR: oZo9X9lcHoVODPC7Qf1h0zpJ2ps1bbmY/set4adm8ulRc9eH5rGtuaSJZyRsOu6+xZf5/6onLr
+ wrBGZorOErvg==
 X-IronPort-AV: E=Sophos;i="5.77,430,1596524400"; 
-   d="scan'208";a="351474361"
+   d="scan'208";a="323725248"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 07:38:03 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 07:45:54 -0700
 Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1kY94z-001JMX-RU; Thu, 29 Oct 2020 16:39:05 +0200
-Date:   Wed, 28 Oct 2020 20:27:44 +0200
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kY9Ca-001Je5-As; Thu, 29 Oct 2020 16:46:56 +0200
+Date:   Thu, 29 Oct 2020 16:46:56 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Ricardo Ribalda <ribalda@chromium.org>
 Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Support GpioInt with active_low polarity
-Message-ID: <20201028182744.GZ4077@smile.fi.intel.com>
-References: <20201028171757.765866-1-ribalda@chromium.org>
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] Documentation: firmware-guide: gpio-properties:
+ active_low only for GpioIo()
+Message-ID: <20201029144656.GD4077@smile.fi.intel.com>
+References: <20201028205101.47583-1-andriy.shevchenko@linux.intel.com>
+ <20201028205101.47583-2-andriy.shevchenko@linux.intel.com>
+ <CANiDSCtRDwfFo9HE84iujjFe6h9aS6b3B8wkz5Rt0aO8=XMsNg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201028171757.765866-1-ribalda@chromium.org>
+In-Reply-To: <CANiDSCtRDwfFo9HE84iujjFe6h9aS6b3B8wkz5Rt0aO8=XMsNg@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 28, 2020 at 06:17:57PM +0100, Ricardo Ribalda wrote:
-> On the current implementation we only support active_high polarity for
-> GpioInt.
+On Wed, Oct 28, 2020 at 10:10:42PM +0100, Ricardo Ribalda wrote:
+> Hi Andy
 > 
-> There can be cases where a GPIO has active_low polarity and it is also a
-> IRQ source.
+> Thanks for your patch and super fast response.
 > 
-> De-couple the irq_polarity and active_low fields instead of re-use it.
+> I think there are two different concepts here:
 > 
-> With this patch we support ACPI devices such as:
+> 1) when the pin has a low value, it is  0 or a 1? =>active_low
 
-Is it real device on the market?!
+I'm not sure I have got it. GpioIo() has no such property and
+_DSD active_low is documented as being polarity setting:
 
-This table is broken. _DSD GPIO active_low is only for GpioIo().
+	active_low == 1 => active low polarity.
 
-If it is a ChromeBook, please fix the firmware.
+> 2) when do I get an irq, low->high or high->low => irq polarity
 
-> Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
-> {
->         GpioInt (Edge, ActiveBoth, Exclusive, PullDefault, 0x0000,
->         "\\_SB.PCI0.GPIO", 0x00, ResourceConsumer, ,
->         )
->         {   // Pin list
->                 0x0064
->         }
-> })
-> Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
-> {
->         ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /* Device Properties for _DSD */,
->         Package (0x01)
->         {
->         Package (0x02)
->         {
->                 "privacy-gpio",
->                 Package (0x04)
->                 {
->                 \_SB.PCI0.XHCI.RHUB.HS07,
->                 Zero,
->                 Zero,
->                 One
->                 }
->         }
->         }
-> })
+IRQ polarity is clearly defined by GpioInt() resource in the ACPI
+specification.
 
+> When I read the acpi spec for GpioInt()
+> https://www.uefi.org/sites/default/files/resources/ACPI_6_2.pdf page
+> 934, it has the same problem as for GpioIo(), it does not express the
+> active_low and this is where the _DSD field comes handy.
+
+ActiveLevel field is described in 19.6.55 GpioInt (GPIO Interrupt Connection
+Resource Descriptor Macro).
+
+> Without using the active_low, how can we describe  a pin that is
+> active low and has to trigger an irq on both edges?
+
+This is nonsense.
+What does it mean?
 
 -- 
 With Best Regards,
