@@ -2,71 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4230029EC49
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 13:50:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 557CA29EC65
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 14:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725820AbgJ2Mur (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 08:50:47 -0400
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:55154 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbgJ2Mur (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 08:50:47 -0400
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id DBA2F3B68CE;
-        Thu, 29 Oct 2020 12:33:55 +0000 (UTC)
-X-Originating-IP: 82.255.60.242
-Received: from [192.168.0.28] (lns-bzn-39-82-255-60-242.adsl.proxad.net [82.255.60.242])
-        (Authenticated sender: hadess@hadess.net)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id B56F5C0010;
-        Thu, 29 Oct 2020 12:33:29 +0000 (UTC)
-Message-ID: <08e3a1d264016aed93aca8632ee42637dc00d238.camel@hadess.net>
-Subject: Re: [PATCH] Documentation: Add documentation for new
- platform_profile sysfs attribute
-From:   Bastien Nocera <hadess@hadess.net>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     dvhart@infradead.org, mgross@linux.intel.com,
-        mario.limonciello@dell.com, eliadevito@gmail.com, bberg@redhat.com,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 29 Oct 2020 13:33:28 +0100
-In-Reply-To: <d5f0bcba-5366-87da-d199-a85d59ba6c1c@redhat.com>
-References: <markpearson@lenovo.com>
-         <20201027164219.868839-1-markpearson@lenovo.com>
-         <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
-         <d5f0bcba-5366-87da-d199-a85d59ba6c1c@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
+        id S1726443AbgJ2NDN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 09:03:13 -0400
+Received: from mga18.intel.com ([134.134.136.126]:14589 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbgJ2NDN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Oct 2020 09:03:13 -0400
+IronPort-SDR: TkP6MwqawPcDnjHFMMmoLIhkNfj7Cc9P4/5W839ZUi/OJCD1sRTOyF6MyRR8YgWRQZUYuudbpo
+ p0MFzarfXkew==
+X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="156198413"
+X-IronPort-AV: E=Sophos;i="5.77,430,1596524400"; 
+   d="scan'208";a="156198413"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 06:01:09 -0700
+IronPort-SDR: 3qgQPkOoGiuutHD8VQ1/Hu9BIIB3Y9S/rb3NSoV/a2yephauLRYags68xLj91KBtA06KyyQn7X
+ q5xTzf5YHR2w==
+X-IronPort-AV: E=Sophos;i="5.77,430,1596524400"; 
+   d="scan'208";a="525500863"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 06:01:07 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id E955220736; Thu, 29 Oct 2020 15:01:05 +0200 (EET)
+Date:   Thu, 29 Oct 2020 15:01:05 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Felipe Balbi <balbi@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCHv2 1/3] software node: Power management operations for
+ software nodes
+Message-ID: <20201029130105.GM26150@paasikivi.fi.intel.com>
+References: <20201029105941.63410-1-heikki.krogerus@linux.intel.com>
+ <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
+ <20201029111303.GL26150@paasikivi.fi.intel.com>
+ <20201029115113.GA2288851@kuha.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201029115113.GA2288851@kuha.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2020-10-28 at 18:23 +0100, Hans de Goede wrote:
+On Thu, Oct 29, 2020 at 01:51:13PM +0200, Heikki Krogerus wrote:
+> On Thu, Oct 29, 2020 at 01:13:03PM +0200, Sakari Ailus wrote:
+> > These functions are doing pretty much the same thing but with different
+> > parameters. How about implementing a macro or a few, which would take all
+> > the parameters as arguments and return the function to call? A few variants
+> > may be needed. Individual functions performing different tasks would become
+> > very simple.
 > 
-> > It's not meaningless, but rather ambiguous. For a range of 1 to 5,
-> > is 1
-> > high performance, and 5 low power, or vice-versa?
-> 
-> It is meaningless because the space we are trying to describe with
-> the
-> profile-names is not 1 dimensional. E.g. as discussed before cool and
-> low-power are not necessarily the same thing. If you have a better
-> way
-> to word this I'm definitely in favor of improving the text here.
+> I would prefer to do that as the second step, if you guys don't mind.
+> I think this was already talked about, but maybe only internally.
+> Those macros should then be used also in other places where the same
+> steps are being executed, for example in drivers/base/power/domain.c.
 
-What do you think of:
+Works for me.
 
-> +Since numbers are a rather meaningless way to describe platform-
-profiles
+For the set:
 
-"Since numbers on their own cannot represent the multiple variables
-that a profile will adjust (power consumption, heat generation, etc.)
-..."
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-> +this API uses strings to describe the various profiles. To make sure that
-> +userspace gets a consistent experience when using this API this API
-> +document defines a fixed set of profile-names. Drivers *must* map their
-> +internal profile representation/names onto this fixed set.
-
+-- 
+Sakari Ailus
