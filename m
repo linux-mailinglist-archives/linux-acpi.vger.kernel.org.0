@@ -2,115 +2,206 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BD529F31F
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 18:26:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8938529F32A
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 18:26:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727872AbgJ2R0H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1728123AbgJ2R0Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 13:26:24 -0400
+Received: from mx2.suse.de ([195.135.220.15]:56364 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727697AbgJ2R0H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Thu, 29 Oct 2020 13:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727800AbgJ2R0F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 13:26:05 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8D0C0613CF;
-        Thu, 29 Oct 2020 10:26:05 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id t14so2927863pgg.1;
-        Thu, 29 Oct 2020 10:26:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8ztGYY/eyx/yp7ALYZLwGRqLddpCGI+AHHziIjGBV1M=;
-        b=FWL+cKVT0VDWznjXqhV+cIxsfltQ9roMo2r2thpj401yo3LUs19ERsrtoB8lf8mn4U
-         QoHoP3SYlAZiS4rza8d3MpGfvno4f+JGRTVA6fKuv2Ms2PXSQdEbNu67REs++qp3d3yv
-         hWTP8MNmlzZZDMqHUAj0U483eR1eWxUN8qrFrCtb7lxAqQfX7Q9YWYXx1YNUNFZNytG+
-         9V+X0qKDlHgZFRwBAhp0SO3dem299j8Jk/WiMaIc/agaz9F6xUuVDGapOByMtmxoAsJ7
-         zbSyhVaiG1MnImMq2bz0QWekcBafmsQSQKiCU0bUo7Zb4vqaTLxoZFchBE+UWZOika3B
-         RwGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8ztGYY/eyx/yp7ALYZLwGRqLddpCGI+AHHziIjGBV1M=;
-        b=R0b6ddBn6EzKFLorvbZikSzuwsauyQfKXxRnSAgU8PKOH1/m51EkIXThQddoCteNCY
-         0HZqBrI99qGGUPoiIG7lC0QfugZOJm4aGFnT6CDez1+mbDFcmcMrIR+Z08S9H2mLIZWC
-         x0rHhG4lazIse8k4dmodTCBTpLpsXVFpyixSDjFlK/s5OEGLKthZcygOhTs9543OHawD
-         xceBtePDQtaX7CeJ4s22EkyNwuGY/YY+7itUnPi0P73wNko68l1wdg6nR3cIr4EnVpUd
-         wbTrb5z6rmeU3JnzkFBBlivePMN+SbtRo+6aZkfXUYakPfV3Vl4TRJu9Q+SWHGxza/nk
-         +TgQ==
-X-Gm-Message-State: AOAM532M/yegaXF2iyrPu0Fy9RJKKP5/YQ+fcJDsbaIXQtKo51sKX7dt
-        MqwD5dcbAstc8ELZS6UT49+K3AQljkIJ5SUUXUxuw5gJLINy2w==
-X-Google-Smtp-Source: ABdhPJwGniRCTOAqXA7FRpEfoDNBbuG6hq2Pf+i11Cv8wRhq7HJW7mK2BPFYFTHOYzWdqOr0AbI/s3dn1NTD6/hQx1M=
-X-Received: by 2002:a65:47c2:: with SMTP id f2mr4946276pgs.4.1603992364948;
- Thu, 29 Oct 2020 10:26:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201028205101.47583-1-andriy.shevchenko@linux.intel.com>
- <20201028205101.47583-2-andriy.shevchenko@linux.intel.com>
- <CANiDSCtRDwfFo9HE84iujjFe6h9aS6b3B8wkz5Rt0aO8=XMsNg@mail.gmail.com>
- <20201029144656.GD4077@smile.fi.intel.com> <CANiDSCuNVT=jr8rLyfWhGKNSOy5OnH7YBZaWSguBDVg219OGvQ@mail.gmail.com>
- <CAHp75VfuZPpBZsyUEyD_R+ZEjPms6Z9L1tDdBKYfusWnbhtyww@mail.gmail.com> <CAHp75Vf-KXSC5x+07rH+wFgv_9xx_+DoMd9ZxTAqr_a5uxc7jA@mail.gmail.com>
-In-Reply-To: <CAHp75Vf-KXSC5x+07rH+wFgv_9xx_+DoMd9ZxTAqr_a5uxc7jA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 29 Oct 2020 19:25:48 +0200
-Message-ID: <CAHp75Vd+doPgSZQEOSAW4oRoAqPUdJyoivtNvbO5d1q-e280Eg@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] Documentation: firmware-guide: gpio-properties:
- active_low only for GpioIo()
-To:     Ricardo Ribalda <ribalda@google.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 5D90DAD76;
+        Thu, 29 Oct 2020 17:26:05 +0000 (UTC)
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     robh+dt@kernel.org, catalin.marinas@arm.com, hch@lst.de,
+        ardb@kernel.org, linux-kernel@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, jeremy.linton@arm.com,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        will@kernel.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH v5 6/7] arm64: mm: Set ZONE_DMA size based on early IORT scan
+Date:   Thu, 29 Oct 2020 18:25:49 +0100
+Message-Id: <20201029172550.3523-7-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.29.0
+In-Reply-To: <20201029172550.3523-1-nsaenzjulienne@suse.de>
+References: <20201029172550.3523-1-nsaenzjulienne@suse.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 7:20 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Thu, Oct 29, 2020 at 7:17 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Thu, Oct 29, 2020 at 4:55 PM Ricardo Ribalda <ribalda@google.com> wrote:
-> > > On Thu, Oct 29, 2020 at 3:45 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Wed, Oct 28, 2020 at 10:10:42PM +0100, Ricardo Ribalda wrote:
-> >
-> > ...
-> >
-> > > > ActiveLevel field is described in 19.6.55 GpioInt (GPIO Interrupt Connection
-> > > > Resource Descriptor Macro).
-> > > >
-> > > > > Without using the active_low, how can we describe  a pin that is
-> > > > > active low and has to trigger an irq on both edges?
-> > > >
-> > > > This is nonsense.
-> > > > What does it mean?
-> > >
-> > > Let me try to explain myself again:
-> > >
-> > > I have a gpio pin that produces IRQs on both edges. so ActiveLevel is Both
-> > >
-> > > The problem is that the value of that pin is inverted: Low means 1 and
-> > > high means 0.
-> > >
-> > > How can I describe that the pin "is inverted" without using the _DSD field?
-> >
-> > "Both edges" and "inverted" or "polarity low" in one sentence make no sense.
->
-> To be on the constructive side, I can *imagine* so badly designed
-> hardware that uses level and edge at the same time, but before I go to
-> conclusions, can you share relevant (pieces of) datasheet?
+From: Ard Biesheuvel <ardb@kernel.org>
 
-The [1] is a real example of how GPIO is being used to detect changing
-of current level of the signal.
-Note, ACPI tables for that device have problems [2], but I guess you
-may get the idea.
+We recently introduced a 1 GB sized ZONE_DMA to cater for platforms
+incorporating masters that can address less than 32 bits of DMA, in
+particular the Raspberry Pi 4, which has 4 or 8 GB of DRAM, but has
+peripherals that can only address up to 1 GB (and its PCIe host
+bridge can only access the bottom 3 GB)
 
+Instructing the DMA layer about these limitations is straight-forward,
+even though we had to fix some issues regarding memory limits set in
+the IORT for named components, and regarding the handling of ACPI _DMA
+methods. However, the DMA layer also needs to be able to allocate
+memory that is guaranteed to meet those DMA constraints, for bounce
+buffering as well as allocating the backing for consistent mappings.
 
-[1]: https://elixir.bootlin.com/linux/latest/source/drivers/extcon/extcon-intel-int3496.c#L138
-[2]: https://elixir.bootlin.com/linux/latest/source/drivers/extcon/extcon-intel-int3496.c#L45
+This is why the 1 GB ZONE_DMA was introduced recently. Unfortunately,
+it turns out the having a 1 GB ZONE_DMA as well as a ZONE_DMA32 causes
+problems with kdump, and potentially in other places where allocations
+cannot cross zone boundaries. Therefore, we should avoid having two
+separate DMA zones when possible.
 
+So let's do an early scan of the IORT, and only create the ZONE_DMA
+if we encounter any devices that need it. This puts the burden on
+the firmware to describe such limitations in the IORT, which may be
+redundant (and less precise) if _DMA methods are also being provided.
+However, it should be noted that this situation is highly unusual for
+arm64 ACPI machines. Also, the DMA subsystem still gives precedence to
+the _DMA method if implemented, and so we will not lose the ability to
+perform streaming DMA outside the ZONE_DMA if the _DMA method permits
+it.
+
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Hanjun Guo <guohanjun@huawei.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+[nsaenz: Rebased, removed documentation change and add declaration in acpi_iort.h]
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
+Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+
+---
+
+Changes since v3:
+ - Use min_not_zero()
+ - Check revision
+ - Remove unnecessary #ifdef in zone_sizes_init()
+ 
+ arch/arm64/mm/init.c      |  3 ++-
+ drivers/acpi/arm64/iort.c | 52 +++++++++++++++++++++++++++++++++++++++
+ include/linux/acpi_iort.h |  4 +++
+ 3 files changed, 58 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index a2ce8a9a71a6..b9dc3831dd6b 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -29,6 +29,7 @@
+ #include <linux/kexec.h>
+ #include <linux/crash_dump.h>
+ #include <linux/hugetlb.h>
++#include <linux/acpi_iort.h>
+ 
+ #include <asm/boot.h>
+ #include <asm/fixmap.h>
+@@ -190,7 +191,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
+ 
+ #ifdef CONFIG_ZONE_DMA
+ 	dt_zone_dma_bits = fls64(of_dma_get_max_cpu_address(NULL));
+-	zone_dma_bits = min(32U, dt_zone_dma_bits);
++	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_iort_get_zone_dma_size());
+ 	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
+ 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+ #endif
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 9929ff50c0c0..05fe4a076bab 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1718,3 +1718,55 @@ void __init acpi_iort_init(void)
+ 
+ 	iort_init_platform_devices();
+ }
++
++#ifdef CONFIG_ZONE_DMA
++/*
++ * Check the IORT whether any devices exist whose DMA mask is < 32 bits.
++ * If so, return the smallest value encountered, or 32 otherwise.
++ */
++unsigned int __init acpi_iort_get_zone_dma_size(void)
++{
++	struct acpi_table_iort *iort;
++	struct acpi_iort_node *node, *end;
++	acpi_status status;
++	u8 limit = 32;
++	int i;
++
++	if (acpi_disabled)
++		return limit;
++
++	status = acpi_get_table(ACPI_SIG_IORT, 0,
++				(struct acpi_table_header **)&iort);
++	if (ACPI_FAILURE(status))
++		return limit;
++
++	node = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->node_offset);
++	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
++
++	for (i = 0; i < iort->node_count; i++) {
++		if (node >= end)
++			break;
++
++		switch (node->type) {
++			struct acpi_iort_named_component *ncomp;
++			struct acpi_iort_root_complex *rc;
++
++		case ACPI_IORT_NODE_NAMED_COMPONENT:
++			ncomp = (struct acpi_iort_named_component *)node->node_data;
++			limit = min_not_zero(limit, ncomp->memory_address_limit);
++			break;
++
++		case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
++			if (node->revision < 1)
++				break;
++
++			rc = (struct acpi_iort_root_complex *)node->node_data;
++			limit = min_not_zero(limit, rc->memory_address_limit);
++			break;
++		}
++		node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
++	}
++	acpi_put_table(&iort->header);
++	return limit;
++}
++#endif
+diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+index 20a32120bb88..7d2e184f0d4d 100644
+--- a/include/linux/acpi_iort.h
++++ b/include/linux/acpi_iort.h
+@@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
+ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 						const u32 *id_in);
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
++unsigned int acpi_iort_get_zone_dma_size(void);
+ #else
+ static inline void acpi_iort_init(void) { }
+ static inline u32 iort_msi_map_id(struct device *dev, u32 id)
+@@ -55,6 +56,9 @@ static inline const struct iommu_ops *iort_iommu_configure_id(
+ static inline
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+ { return 0; }
++
++static inline unsigned int acpi_iort_get_zone_dma_size(void)
++{ return 32; }
+ #endif
+ 
+ #endif /* __ACPI_IORT_H__ */
 -- 
-With Best Regards,
-Andy Shevchenko
+2.29.0
+
