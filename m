@@ -2,86 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABFCF29F32D
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 18:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BD529F31F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 18:26:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbgJ2RZ5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 13:25:57 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55930 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726037AbgJ2RZ5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Oct 2020 13:25:57 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 2788DAC9A;
-        Thu, 29 Oct 2020 17:25:56 +0000 (UTC)
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     robh+dt@kernel.org, catalin.marinas@arm.com, hch@lst.de,
-        ardb@kernel.org, linux-kernel@vger.kernel.org
-Cc:     robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, jeremy.linton@arm.com,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        will@kernel.org, lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org
-Subject: [PATCH v5 0/7] arm64: Default to 32-bit wide ZONE_DMA
-Date:   Thu, 29 Oct 2020 18:25:43 +0100
-Message-Id: <20201029172550.3523-1-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.29.0
+        id S1727872AbgJ2R0H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 13:26:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727800AbgJ2R0F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 13:26:05 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8D0C0613CF;
+        Thu, 29 Oct 2020 10:26:05 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id t14so2927863pgg.1;
+        Thu, 29 Oct 2020 10:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8ztGYY/eyx/yp7ALYZLwGRqLddpCGI+AHHziIjGBV1M=;
+        b=FWL+cKVT0VDWznjXqhV+cIxsfltQ9roMo2r2thpj401yo3LUs19ERsrtoB8lf8mn4U
+         QoHoP3SYlAZiS4rza8d3MpGfvno4f+JGRTVA6fKuv2Ms2PXSQdEbNu67REs++qp3d3yv
+         hWTP8MNmlzZZDMqHUAj0U483eR1eWxUN8qrFrCtb7lxAqQfX7Q9YWYXx1YNUNFZNytG+
+         9V+X0qKDlHgZFRwBAhp0SO3dem299j8Jk/WiMaIc/agaz9F6xUuVDGapOByMtmxoAsJ7
+         zbSyhVaiG1MnImMq2bz0QWekcBafmsQSQKiCU0bUo7Zb4vqaTLxoZFchBE+UWZOika3B
+         RwGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8ztGYY/eyx/yp7ALYZLwGRqLddpCGI+AHHziIjGBV1M=;
+        b=R0b6ddBn6EzKFLorvbZikSzuwsauyQfKXxRnSAgU8PKOH1/m51EkIXThQddoCteNCY
+         0HZqBrI99qGGUPoiIG7lC0QfugZOJm4aGFnT6CDez1+mbDFcmcMrIR+Z08S9H2mLIZWC
+         x0rHhG4lazIse8k4dmodTCBTpLpsXVFpyixSDjFlK/s5OEGLKthZcygOhTs9543OHawD
+         xceBtePDQtaX7CeJ4s22EkyNwuGY/YY+7itUnPi0P73wNko68l1wdg6nR3cIr4EnVpUd
+         wbTrb5z6rmeU3JnzkFBBlivePMN+SbtRo+6aZkfXUYakPfV3Vl4TRJu9Q+SWHGxza/nk
+         +TgQ==
+X-Gm-Message-State: AOAM532M/yegaXF2iyrPu0Fy9RJKKP5/YQ+fcJDsbaIXQtKo51sKX7dt
+        MqwD5dcbAstc8ELZS6UT49+K3AQljkIJ5SUUXUxuw5gJLINy2w==
+X-Google-Smtp-Source: ABdhPJwGniRCTOAqXA7FRpEfoDNBbuG6hq2Pf+i11Cv8wRhq7HJW7mK2BPFYFTHOYzWdqOr0AbI/s3dn1NTD6/hQx1M=
+X-Received: by 2002:a65:47c2:: with SMTP id f2mr4946276pgs.4.1603992364948;
+ Thu, 29 Oct 2020 10:26:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201028205101.47583-1-andriy.shevchenko@linux.intel.com>
+ <20201028205101.47583-2-andriy.shevchenko@linux.intel.com>
+ <CANiDSCtRDwfFo9HE84iujjFe6h9aS6b3B8wkz5Rt0aO8=XMsNg@mail.gmail.com>
+ <20201029144656.GD4077@smile.fi.intel.com> <CANiDSCuNVT=jr8rLyfWhGKNSOy5OnH7YBZaWSguBDVg219OGvQ@mail.gmail.com>
+ <CAHp75VfuZPpBZsyUEyD_R+ZEjPms6Z9L1tDdBKYfusWnbhtyww@mail.gmail.com> <CAHp75Vf-KXSC5x+07rH+wFgv_9xx_+DoMd9ZxTAqr_a5uxc7jA@mail.gmail.com>
+In-Reply-To: <CAHp75Vf-KXSC5x+07rH+wFgv_9xx_+DoMd9ZxTAqr_a5uxc7jA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 29 Oct 2020 19:25:48 +0200
+Message-ID: <CAHp75Vd+doPgSZQEOSAW4oRoAqPUdJyoivtNvbO5d1q-e280Eg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] Documentation: firmware-guide: gpio-properties:
+ active_low only for GpioIo()
+To:     Ricardo Ribalda <ribalda@google.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Using two distinct DMA zones turned out to be problematic. Here's an
-attempt go back to a saner default.
+On Thu, Oct 29, 2020 at 7:20 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Oct 29, 2020 at 7:17 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Thu, Oct 29, 2020 at 4:55 PM Ricardo Ribalda <ribalda@google.com> wrote:
+> > > On Thu, Oct 29, 2020 at 3:45 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Wed, Oct 28, 2020 at 10:10:42PM +0100, Ricardo Ribalda wrote:
+> >
+> > ...
+> >
+> > > > ActiveLevel field is described in 19.6.55 GpioInt (GPIO Interrupt Connection
+> > > > Resource Descriptor Macro).
+> > > >
+> > > > > Without using the active_low, how can we describe  a pin that is
+> > > > > active low and has to trigger an irq on both edges?
+> > > >
+> > > > This is nonsense.
+> > > > What does it mean?
+> > >
+> > > Let me try to explain myself again:
+> > >
+> > > I have a gpio pin that produces IRQs on both edges. so ActiveLevel is Both
+> > >
+> > > The problem is that the value of that pin is inverted: Low means 1 and
+> > > high means 0.
+> > >
+> > > How can I describe that the pin "is inverted" without using the _DSD field?
+> >
+> > "Both edges" and "inverted" or "polarity low" in one sentence make no sense.
+>
+> To be on the constructive side, I can *imagine* so badly designed
+> hardware that uses level and edge at the same time, but before I go to
+> conclusions, can you share relevant (pieces of) datasheet?
 
-I tested this on both a RPi4 and QEMU.
+The [1] is a real example of how GPIO is being used to detect changing
+of current level of the signal.
+Note, ACPI tables for that device have problems [2], but I guess you
+may get the idea.
 
----
 
-Changes since v4:
- - Fix of_dma_get_max_cpu_address() so it returns the last addressable
-   addres, not the limit
-
-Changes since v3:
- - Drop patch adding define in dma-mapping
- - Address small review changes
- - Update Ard's patch
- - Add new patch removing examples from mmzone.h
-
-Changes since v2:
- - Introduce Ard's patch
- - Improve OF dma-ranges parsing function
- - Add unit test for OF function
- - Address small changes
- - Move crashkernel reservation later in boot process
-
-Changes since v1:
- - Parse dma-ranges instead of using machine compatible string
-
-Ard Biesheuvel (1):
-  arm64: mm: Set ZONE_DMA size based on early IORT scan
-
-Nicolas Saenz Julienne (6):
-  arm64: mm: Move reserve_crashkernel() into mem_init()
-  arm64: mm: Move zone_dma_bits initialization into zone_sizes_init()
-  of/address: Introduce of_dma_get_max_cpu_address()
-  of: unittest: Add test for of_dma_get_max_cpu_address()
-  arm64: mm: Set ZONE_DMA size based on devicetree's dma-ranges
-  mm: Remove examples from enum zone_type comment
-
- arch/arm64/mm/init.c      | 16 ++++++------
- drivers/acpi/arm64/iort.c | 52 +++++++++++++++++++++++++++++++++++++++
- drivers/of/address.c      | 42 +++++++++++++++++++++++++++++++
- drivers/of/unittest.c     | 18 ++++++++++++++
- include/linux/acpi_iort.h |  4 +++
- include/linux/mmzone.h    | 20 ---------------
- include/linux/of.h        |  7 ++++++
- 7 files changed, 130 insertions(+), 29 deletions(-)
+[1]: https://elixir.bootlin.com/linux/latest/source/drivers/extcon/extcon-intel-int3496.c#L138
+[2]: https://elixir.bootlin.com/linux/latest/source/drivers/extcon/extcon-intel-int3496.c#L45
 
 -- 
-2.29.0
-
+With Best Regards,
+Andy Shevchenko
