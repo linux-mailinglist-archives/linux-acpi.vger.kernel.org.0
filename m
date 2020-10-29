@@ -2,875 +2,258 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD9B029EA3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 12:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9982729EA6F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 12:26:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727373AbgJ2LNJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 07:13:09 -0400
-Received: from mga01.intel.com ([192.55.52.88]:57371 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727218AbgJ2LNI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Oct 2020 07:13:08 -0400
-IronPort-SDR: Qa66GwwtRSKfXXShMiB96xTBQB0EzoCbmrJOO8+aQCUy69CB/OsEQBHh9A+mb1yOF781pFHCDt
- CJ7QdmGmRMtA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="186199172"
-X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
-   d="scan'208";a="186199172"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 04:13:08 -0700
-IronPort-SDR: P2RP8QlbpI7b6/BG83yrK0lDFNVFossBNWMfIv6vcqEdduJRxrnstAgGwUeTsAcc8qGj9KMV+I
- jMV8B7W3GBQg==
-X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
-   d="scan'208";a="536633371"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 04:13:06 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id E3FC920736; Thu, 29 Oct 2020 13:13:03 +0200 (EET)
-Date:   Thu, 29 Oct 2020 13:13:03 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Felipe Balbi <balbi@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCHv2 1/3] software node: Power management operations for
- software nodes
-Message-ID: <20201029111303.GL26150@paasikivi.fi.intel.com>
-References: <20201029105941.63410-1-heikki.krogerus@linux.intel.com>
- <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
+        id S1726078AbgJ2LZu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 07:25:50 -0400
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:42719 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725774AbgJ2LZt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 07:25:49 -0400
+Received: by mail-oi1-f179.google.com with SMTP id c72so2802492oig.9;
+        Thu, 29 Oct 2020 04:25:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QchY1rQBO8CSFd113tzUKvOK8asotum72xA9lUDpzIc=;
+        b=gNiWdrMZrCfKPlbBzNxTLTeu4oLjUy288fTNywiUgx2OzsjOHBRGYyPItpfOvnMkAv
+         kNbZw4GBEv2jfBwUNlKVoeN+75qv6Pyd+WRL1qXo1HMYiHgOcxIylSsF/zuorxzuFnXp
+         uJb9RqwSMhZ0IjYwlPzk85v4nULcDnY/xy2cRcfC35PZtGExhYZ5TrZoodIvken9KRiw
+         /AUa0Qo8RtSC3Le579QzI7zQ4LLoGOThx2msgOe1IuPn33YbcKW9vpZJr0QbisVid+pS
+         r8esAIcBJufnp3lRGgBo4fRr1CPTZ9x4kPKfq6Mo9qeoMf6yZ+84uXqghIfT1rbUZXAq
+         T7Bg==
+X-Gm-Message-State: AOAM532qnV+8YrXSZA3m7TYMHU5Q9N13+uL8B5VWe0dyXV+FriXfEo0l
+        xUSZHxZjgO2R5dC90nwB3FHZUK8VwRIAtKkct0Q=
+X-Google-Smtp-Source: ABdhPJx9CE4uF1ccjyYAqyCw3qpTvRqSxQHalV2jVP/wHFIrcYNGtma055Xz40efk5OWLEfk3yCow3a8TC21dbC/jA8=
+X-Received: by 2002:aca:4c86:: with SMTP id z128mr2634681oia.71.1603970748463;
+ Thu, 29 Oct 2020 04:25:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <markpearson@lenovo.com> <20201027164219.868839-1-markpearson@lenovo.com>
+ <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
+In-Reply-To: <5ca1ae238b23a611b8a490c244fd93cdcc36ef79.camel@hadess.net>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Oct 2020 12:25:37 +0100
+Message-ID: <CAJZ5v0hUzsCS0dZbT4RRQ31DgTiuCOmyCcJMji_DbU19ghaOdA@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: Add documentation for new platform_profile
+ sysfs attribute
+To:     Bastien Nocera <hadess@hadess.net>,
+        Mark Pearson <markpearson@lenovo.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Moi Heikki,
+On Thu, Oct 29, 2020 at 2:53 AM Bastien Nocera <hadess@hadess.net> wrote:
+>
+> Hey Hans, Mark,
+>
+> On Tue, 2020-10-27 at 12:42 -0400, Mark Pearson wrote:
+> > From: Hans de Goede <hdegoede@redhat.com>
+> >
+> > On modern systems the platform performance, temperature, fan and
+> > other
+> > hardware related characteristics are often dynamically configurable.
+> > The
+> > profile is often automatically adjusted to the load by somei
+> > automatic-mechanism (which may very well live outside the kernel).
+> >
+> > These auto platform-adjustment mechanisms often can be configured
+> > with
+> > one of several 'platform-profiles', with either a bias towards low-
+> > power
 
-On Thu, Oct 29, 2020 at 01:59:39PM +0300, Heikki Krogerus wrote:
-> The software node specific PM operations make it possible to
-> handle most PM related quirks separately in their own
-> functions instead of conditionally in the device driver's
-> generic PM functions (and in some cases all over the
-> driver). The software node specific PM operations will also
-> reduce the need to pass platform data in some cases, for
-> example from a core MFD driver to the child device drivers,
-> as from now on the core MFD driver will be able to implement
-> the PM quirks directly for the child devices without the
-> need to touch the drivers of those child devices.
-> 
-> If a software node includes the PM operations, those PM
-> operations are always executed separately on top of the
-> other PM operations of the device, so the software node will
-> never replace any of the "normal" PM operations of the
-> device (including the PM domain's operations, class's or
-> bus's PM operations, the device drivers own operations, or
-> any other).
-> 
-> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> ---
->  drivers/base/power/common.c |   8 +-
->  drivers/base/swnode.c       | 693 +++++++++++++++++++++++++++++++++++-
->  include/linux/property.h    |  10 +
->  3 files changed, 701 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
-> index bbddb267c2e69..b64cd4690ac63 100644
-> --- a/drivers/base/power/common.c
-> +++ b/drivers/base/power/common.c
-> @@ -109,8 +109,14 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
->  	ret = acpi_dev_pm_attach(dev, power_on);
->  	if (!ret)
->  		ret = genpd_dev_pm_attach(dev);
-> +	if (ret < 0)
-> +		return ret;
->  
-> -	return ret < 0 ? ret : 0;
-> +	ret = software_node_dev_pm_attach(dev, power_on);
-> +	if (ret)
-> +		dev_pm_domain_detach(dev, power_on);
-> +
-> +	return ret;
->  }
->  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
->  
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 010828fc785bc..595a9c240fede 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -8,6 +8,8 @@
->  
->  #include <linux/device.h>
->  #include <linux/kernel.h>
-> +#include <linux/pm_domain.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/property.h>
->  #include <linux/slab.h>
->  
-> @@ -48,6 +50,19 @@ EXPORT_SYMBOL_GPL(is_software_node);
->  				     struct swnode, fwnode) : NULL;	\
->  	})
->  
-> +static inline struct swnode *dev_to_swnode(struct device *dev)
-> +{
-> +	struct fwnode_handle *fwnode = dev_fwnode(dev);
-> +
-> +	if (!fwnode)
-> +		return NULL;
-> +
-> +	if (!is_software_node(fwnode))
-> +		fwnode = fwnode->secondary;
-> +
-> +	return to_swnode(fwnode);
-> +}
-> +
->  static struct swnode *
->  software_node_to_swnode(const struct software_node *node)
->  {
-> @@ -344,6 +359,673 @@ void property_entries_free(const struct property_entry *properties)
->  }
->  EXPORT_SYMBOL_GPL(property_entries_free);
->  
-> +/* -------------------------------------------------------------------------- */
-> +/* Power management operations */
-> +
-> +/*
-> + * The power management operations in software nodes are handled with a power
-> + * management domain - a "wrapper" PM domain:
-> + *
-> + *   When PM operations are supplied as part of the software node, the primary
-> + *   PM domain of the device is stored and replaced with a device specific
-> + *   software node PM domain. The software node PM domain's PM operations, which
-> + *   are implemented below, will then always call the matching PM operation of
-> + *   the primary PM domain (which was stored) on top of the software node's own
-> + *   operation.
-> + *
-> + * If the device does not have primary PM domain, the software node PM wrapper
-> + * operations below will also call the classes, buses and device type's PM
-> + * operations, and of course the device driver's own PM operations if they are
-> + * implemented. The priority of those calls follows drivers/base/power/domain.c:
-> + *
-> + * 1) device type
-> + * 2) class
-> + * 3) bus
-> + * 4) driver
-> + *
-> + * NOTE. The software node PM operation is always called before the primary
-> + * PM domain with resume/on callbacks, and after the primary PM domain with
-> + * suspend/off callbacks. This order is used because the software node PM
-> + * operations are primarily meant to be used to implement quirks, quirks that
-> + * may be needed to power on the device to a point where it is even possible to
-> + * execute the primary PM domain's resume/on routines.
-> + */
-> +
-> +#ifdef CONFIG_PM
-> +struct swnode_pm_domain {
-> +	struct dev_pm_domain pm_domain;
-> +	struct dev_pm_domain *primary;
-> +};
-> +
-> +#define to_swnode_pm_domain(d) \
-> +		container_of(d, struct swnode_pm_domain, pm_domain)
-> +
-> +static int software_node_runtime_suspend(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.runtime_suspend)
-> +		ret = domain->primary->ops.runtime_suspend(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->runtime_suspend)
-> +		ret = dev->type->pm->runtime_suspend(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->runtime_suspend)
-> +		ret = dev->class->pm->runtime_suspend(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->runtime_suspend)
-> +		ret = dev->bus->pm->runtime_suspend(dev);
-> +	else
-> +		ret = pm_generic_runtime_suspend(dev);
-> +
-> +	if (ret || !swnode->node->pm->runtime_suspend)
-> +		return ret;
-> +
-> +	return swnode->node->pm->runtime_suspend(dev);
-> +}
-> +
-> +static int software_node_runtime_resume(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->runtime_resume) {
-> +		ret = swnode->node->pm->runtime_resume(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.runtime_resume)
-> +		ret = domain->primary->ops.runtime_resume(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->runtime_resume)
-> +		ret = dev->type->pm->runtime_resume(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->runtime_resume)
-> +		ret = dev->class->pm->runtime_resume(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->runtime_resume)
-> +		ret = dev->bus->pm->runtime_resume(dev);
-> +	else
-> +		ret = pm_generic_runtime_resume(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_runtime_idle(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret = 0;
-> +
-> +	if (domain->primary && domain->primary->ops.runtime_idle)
-> +		ret = domain->primary->ops.runtime_idle(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->runtime_idle)
-> +		ret = dev->type->pm->runtime_idle(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->runtime_idle)
-> +		ret = dev->class->pm->runtime_idle(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->runtime_idle)
-> +		ret = dev->bus->pm->runtime_idle(dev);
-> +	else if (dev->driver && dev->driver->pm && dev->driver->pm->runtime_idle)
-> +		ret = dev->driver->pm->runtime_idle(dev);
-> +
-> +	if (ret || !swnode->node->pm->runtime_idle)
-> +		return ret;
-> +
-> +	return swnode->node->pm->runtime_idle(dev);
-> +}
+Strictly speaking, power is a rate, so it cannot be consumed.
 
-These functions are doing pretty much the same thing but with different
-parameters. How about implementing a macro or a few, which would take all
-the parameters as arguments and return the function to call? A few variants
-may be needed. Individual functions performing different tasks would become
-very simple.
+So I would say "low-power operation" here.
 
-> +
-> +#ifdef CONFIG_PM_SLEEP
-> +static int software_node_prepare(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.prepare)
-> +		ret = domain->primary->ops.prepare(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->prepare)
-> +		ret = dev->type->pm->prepare(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->prepare)
-> +		ret = dev->class->pm->prepare(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->prepare)
-> +		ret = dev->bus->pm->prepare(dev);
-> +	else
-> +		ret = pm_generic_prepare(dev);
-> +
-> +	if (ret || !swnode->node->pm->prepare)
-> +		return ret;
-> +
-> +	return swnode->node->pm->prepare(dev);
-> +}
-> +
-> +static void software_node_complete(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +
-> +	if (swnode->node->pm->complete)
-> +		swnode->node->pm->complete(dev);
-> +
-> +	if (domain->primary && domain->primary->ops.complete)
-> +		domain->primary->ops.complete(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->complete)
-> +		dev->type->pm->complete(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->complete)
-> +		dev->class->pm->complete(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->complete)
-> +		dev->bus->pm->complete(dev);
-> +	else
-> +		pm_generic_complete(dev);
-> +}
-> +
-> +static int software_node_suspend(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.suspend)
-> +		ret = domain->primary->ops.suspend(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->suspend)
-> +		ret = dev->type->pm->suspend(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->suspend)
-> +		ret = dev->class->pm->suspend(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->suspend)
-> +		ret = dev->bus->pm->suspend(dev);
-> +	else
-> +		ret = pm_generic_suspend(dev);
-> +
-> +	if (ret || !swnode->node->pm->suspend)
-> +		return ret;
-> +
-> +	return swnode->node->pm->suspend(dev);
-> +}
-> +
-> +static int software_node_resume(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->resume) {
-> +		ret = swnode->node->pm->resume(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.resume)
-> +		ret = domain->primary->ops.resume(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->resume)
-> +		ret = dev->type->pm->resume(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->resume)
-> +		ret = dev->class->pm->resume(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->resume)
-> +		ret = dev->bus->pm->resume(dev);
-> +	else
-> +		ret = pm_generic_resume(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_freeze(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.freeze)
-> +		ret = domain->primary->ops.freeze(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->freeze)
-> +		ret = dev->type->pm->freeze(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->freeze)
-> +		ret = dev->class->pm->freeze(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->freeze)
-> +		ret = dev->bus->pm->freeze(dev);
-> +	else
-> +		ret = pm_generic_freeze(dev);
-> +
-> +	if (ret || !swnode->node->pm->freeze)
-> +		return ret;
-> +
-> +	return swnode->node->pm->freeze(dev);
-> +}
-> +
-> +static int software_node_thaw(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->thaw) {
-> +		ret = swnode->node->pm->thaw(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.thaw)
-> +		ret = domain->primary->ops.thaw(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->thaw)
-> +		ret = dev->type->pm->thaw(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->thaw)
-> +		ret = dev->class->pm->thaw(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->thaw)
-> +		ret = dev->bus->pm->thaw(dev);
-> +	else
-> +		ret = pm_generic_thaw(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_poweroff(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.poweroff)
-> +		ret = domain->primary->ops.poweroff(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->poweroff)
-> +		ret = dev->type->pm->poweroff(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->poweroff)
-> +		ret = dev->class->pm->poweroff(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->poweroff)
-> +		ret = dev->bus->pm->poweroff(dev);
-> +	else
-> +		ret = pm_generic_poweroff(dev);
-> +
-> +	if (ret || !swnode->node->pm->poweroff)
-> +		return ret;
-> +
-> +	return swnode->node->pm->poweroff(dev);
-> +}
-> +
-> +static int software_node_restore(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->restore) {
-> +		ret = swnode->node->pm->restore(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.restore)
-> +		ret = domain->primary->ops.restore(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->restore)
-> +		ret = dev->type->pm->restore(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->restore)
-> +		ret = dev->class->pm->restore(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->restore)
-> +		ret = dev->bus->pm->restore(dev);
-> +	else
-> +		ret = pm_generic_restore(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_suspend_late(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.suspend_late)
-> +		ret = domain->primary->ops.suspend_late(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->suspend_late)
-> +		ret = dev->type->pm->suspend_late(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->suspend_late)
-> +		ret = dev->class->pm->suspend_late(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->suspend_late)
-> +		ret = dev->bus->pm->suspend_late(dev);
-> +	else
-> +		ret = pm_generic_suspend_late(dev);
-> +
-> +	if (ret || !swnode->node->pm->suspend_late)
-> +		return ret;
-> +
-> +	return swnode->node->pm->suspend_late(dev);
-> +}
-> +
-> +static int software_node_resume_early(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->resume_early) {
-> +		ret = swnode->node->pm->resume_early(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.resume_early)
-> +		ret = domain->primary->ops.resume_early(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->resume_early)
-> +		ret = dev->type->pm->resume_early(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->resume_early)
-> +		ret = dev->class->pm->resume_early(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->resume_early)
-> +		ret = dev->bus->pm->resume_early(dev);
-> +	else
-> +		pm_generic_resume_early(dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int software_node_freeze_late(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.freeze_late)
-> +		ret = domain->primary->ops.freeze_late(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->freeze_late)
-> +		ret = dev->type->pm->freeze_late(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->freeze_late)
-> +		ret = dev->class->pm->freeze_late(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->freeze_late)
-> +		ret = dev->bus->pm->freeze_late(dev);
-> +	else
-> +		ret = pm_generic_freeze_late(dev);
-> +
-> +	if (ret || !swnode->node->pm->freeze_late)
-> +		return ret;
-> +
-> +	return swnode->node->pm->freeze_late(dev);
-> +}
-> +
-> +static int software_node_thaw_early(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->thaw_early) {
-> +		ret = swnode->node->pm->thaw_early(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.thaw_early)
-> +		ret = domain->primary->ops.thaw_early(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->thaw_early)
-> +		ret = dev->type->pm->thaw_early(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->thaw_early)
-> +		ret = dev->class->pm->thaw_early(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->thaw_early)
-> +		ret = dev->bus->pm->thaw_early(dev);
-> +	else
-> +		ret = pm_generic_thaw_early(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_poweroff_late(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.poweroff_late)
-> +		ret = domain->primary->ops.poweroff_late(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->poweroff_late)
-> +		ret = dev->type->pm->poweroff_late(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->poweroff_late)
-> +		ret = dev->class->pm->poweroff_late(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->poweroff_late)
-> +		ret = dev->bus->pm->poweroff_late(dev);
-> +	else
-> +		ret = pm_generic_poweroff_late(dev);
-> +
-> +	if (ret || !swnode->node->pm->poweroff_late)
-> +		return ret;
-> +
-> +	return swnode->node->pm->poweroff(dev);
-> +}
-> +
-> +static int software_node_restore_early(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->restore_early) {
-> +		ret = swnode->node->pm->restore_early(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.restore_early)
-> +		ret = domain->primary->ops.restore_early(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->restore_early)
-> +		ret = dev->type->pm->restore_early(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->restore_early)
-> +		ret = dev->class->pm->restore_early(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->restore_early)
-> +		ret = dev->bus->pm->restore_early(dev);
-> +	else
-> +		ret = pm_generic_restore_early(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_suspend_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.suspend_noirq)
-> +		ret = domain->primary->ops.suspend_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->suspend_noirq)
-> +		ret = dev->type->pm->suspend_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->suspend_noirq)
-> +		ret = dev->class->pm->suspend_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->suspend_noirq)
-> +		ret = dev->bus->pm->suspend_noirq(dev);
-> +	else
-> +		ret = pm_generic_suspend_noirq(dev);
-> +
-> +	if (ret || !swnode->node->pm->suspend_noirq)
-> +		return ret;
-> +
-> +	return swnode->node->pm->suspend_noirq(dev);
-> +}
-> +
-> +static int software_node_resume_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->resume_noirq) {
-> +		ret = swnode->node->pm->resume_noirq(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.resume_noirq)
-> +		ret = domain->primary->ops.resume_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->resume_noirq)
-> +		ret = dev->type->pm->resume_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->resume_noirq)
-> +		ret = dev->class->pm->resume_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->resume_noirq)
-> +		ret = dev->bus->pm->resume_noirq(dev);
-> +	else
-> +		ret = pm_generic_resume_noirq(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_freeze_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.freeze_noirq)
-> +		ret = domain->primary->ops.freeze_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->freeze_noirq)
-> +		ret = dev->type->pm->freeze_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->freeze_noirq)
-> +		ret = dev->class->pm->freeze_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->freeze_noirq)
-> +		ret = dev->bus->pm->freeze_noirq(dev);
-> +	else
-> +		ret = pm_generic_freeze_noirq(dev);
-> +
-> +	if (ret || !swnode->node->pm->freeze_noirq)
-> +		return ret;
-> +
-> +	return swnode->node->pm->freeze_noirq(dev);
-> +}
-> +
-> +static int software_node_thaw_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->thaw_noirq) {
-> +		ret = swnode->node->pm->thaw_noirq(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.thaw_noirq)
-> +		ret = domain->primary->ops.thaw_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->thaw_noirq)
-> +		ret = dev->type->pm->thaw_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->thaw_noirq)
-> +		ret = dev->class->pm->thaw_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->thaw_noirq)
-> +		ret = dev->bus->pm->thaw_noirq(dev);
-> +	else
-> +		ret = pm_generic_thaw_noirq(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int software_node_poweroff_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (domain->primary && domain->primary->ops.poweroff_noirq)
-> +		ret = domain->primary->ops.poweroff_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->poweroff_noirq)
-> +		ret = dev->type->pm->poweroff_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->poweroff_noirq)
-> +		ret = dev->class->pm->poweroff_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->poweroff_noirq)
-> +		ret = dev->bus->pm->poweroff_noirq(dev);
-> +	else
-> +		ret = pm_generic_poweroff_noirq(dev);
-> +
-> +	if (ret || !swnode->node->pm->poweroff)
-> +		return ret;
-> +
-> +	return swnode->node->pm->poweroff_noirq(dev);
-> +}
-> +
-> +static int software_node_restore_noirq(struct device *dev)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	int ret;
-> +
-> +	if (swnode->node->pm->restore_noirq) {
-> +		ret = swnode->node->pm->restore_noirq(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (domain->primary && domain->primary->ops.restore_noirq)
-> +		ret = domain->primary->ops.restore_noirq(dev);
-> +	else if (dev->type && dev->type->pm && dev->type->pm->restore_noirq)
-> +		ret = dev->type->pm->restore_noirq(dev);
-> +	else if (dev->class && dev->class->pm && dev->class->pm->restore_noirq)
-> +		ret = dev->class->pm->restore_noirq(dev);
-> +	else if (dev->bus && dev->bus->pm && dev->bus->pm->restore_noirq)
-> +		ret = dev->bus->pm->restore_noirq(dev);
-> +	else
-> +		ret = pm_generic_restore_noirq(dev);
-> +
-> +	return ret;
-> +}
-> +#endif /* CONFIG_PM_SLEEP */
-> +
-> +static const struct dev_pm_ops software_node_pm_ops = {
-> +	.runtime_suspend = software_node_runtime_suspend,
-> +	.runtime_resume = software_node_runtime_resume,
-> +	.runtime_idle = software_node_runtime_idle,
-> +#ifdef CONFIG_PM_SLEEP
-> +	.prepare = software_node_prepare,
-> +	.complete = software_node_complete,
-> +	.suspend = software_node_suspend,
-> +	.resume = software_node_resume,
-> +	.freeze = software_node_freeze,
-> +	.thaw = software_node_thaw,
-> +	.poweroff = software_node_poweroff,
-> +	.restore = software_node_restore,
-> +	.suspend_late = software_node_suspend_late,
-> +	.resume_early = software_node_resume_early,
-> +	.freeze_late = software_node_freeze_late,
-> +	.thaw_early = software_node_thaw_early,
-> +	.poweroff_late = software_node_poweroff_late,
-> +	.restore_early = software_node_restore_early,
-> +	.suspend_noirq = software_node_suspend_noirq,
-> +	.resume_noirq = software_node_resume_noirq,
-> +	.freeze_noirq = software_node_freeze_noirq,
-> +	.thaw_noirq = software_node_thaw_noirq,
-> +	.poweroff_noirq = software_node_poweroff_noirq,
-> +	.restore_noirq = software_node_restore_noirq,
-> +#endif /* CONFIG_PM_SLEEP */
-> +};
-> +
-> +static void software_node_dev_pm_detach(struct device *dev, bool power_off)
-> +{
-> +	struct swnode_pm_domain *domain = to_swnode_pm_domain(dev->pm_domain);
-> +
-> +	if (domain->primary && domain->primary->detach) {
-> +		dev->pm_domain = domain->primary;
-> +		domain->primary->detach(dev, power_off);
-> +	} else {
-> +		dev_pm_domain_set(dev, NULL);
-> +	}
-> +
-> +	kfree(domain);
-> +}
-> +
-> +int software_node_dev_pm_attach(struct device *dev, bool power_on)
-> +{
-> +	struct swnode *swnode = dev_to_swnode(dev);
-> +	struct swnode_pm_domain *domain;
-> +
-> +	if (!swnode || !swnode->node->pm)
-> +		return 0;
-> +
-> +	domain = kzalloc(sizeof(*domain), GFP_KERNEL);
-> +	if (!domain)
-> +		return -ENOMEM;
-> +
-> +	if (dev->pm_domain)
-> +		domain->pm_domain = *dev->pm_domain;
-> +
-> +	domain->primary = dev->pm_domain;
-> +	domain->pm_domain.ops = software_node_pm_ops;
-> +	domain->pm_domain.detach = software_node_dev_pm_detach;
-> +
-> +	dev_pm_domain_set(dev, &domain->pm_domain);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(software_node_dev_pm_attach);
-> +#endif /* CONFIG_PM */
-> +
->  /* -------------------------------------------------------------------------- */
->  /* fwnode operations */
->  
-> @@ -845,20 +1527,13 @@ EXPORT_SYMBOL_GPL(fwnode_remove_software_node);
->  
->  int software_node_notify(struct device *dev, unsigned long action)
->  {
-> -	struct fwnode_handle *fwnode = dev_fwnode(dev);
->  	struct swnode *swnode;
->  	int ret;
->  
-> -	if (!fwnode)
-> -		return 0;
-> -
-> -	if (!is_software_node(fwnode))
-> -		fwnode = fwnode->secondary;
-> -	if (!is_software_node(fwnode))
-> +	swnode = dev_to_swnode(dev);
-> +	if (!swnode)
->  		return 0;
->  
-> -	swnode = to_swnode(fwnode);
-> -
->  	switch (action) {
->  	case KOBJ_ADD:
->  		ret = sysfs_create_link(&dev->kobj, &swnode->kobj,
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 2d4542629d80b..33b25c8bd4052 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -453,11 +453,13 @@ static inline void *device_connection_find_match(struct device *dev,
->   * @name: Name of the software node
->   * @parent: Parent of the software node
->   * @properties: Array of device properties
-> + * @pm: Power management operations
->   */
->  struct software_node {
->  	const char *name;
->  	const struct software_node *parent;
->  	const struct property_entry *properties;
-> +	const struct dev_pm_ops *pm;
->  };
->  
->  bool is_software_node(const struct fwnode_handle *fwnode);
-> @@ -479,6 +481,14 @@ int software_node_register(const struct software_node *node);
->  void software_node_unregister(const struct software_node *node);
->  
->  int software_node_notify(struct device *dev, unsigned long action);
-> +#ifdef CONFIG_PM
-> +int software_node_dev_pm_attach(struct device *dev, bool power_on);
-> +#else
-> +static inline int software_node_dev_pm_attach(struct device *dev, bool power_on)
-> +{
-> +	return 0;
-> +}
-> +#endif /* CONFIG_PM */
->  
->  struct fwnode_handle *
->  fwnode_create_software_node(const struct property_entry *properties,
+> Can you please make sure to quote 'platform-profile' and 'profile-name'
+> this way all through the document? They're not existing words, and
+> quoting them shows that they're attribute names, rather than English.
+>
+> > consumption or towards performance (and higher power consumption and
 
--- 
-Terveisin,
+And analogously here.
 
-Sakari Ailus
+> > thermals).
+>
+> s/thermal/temperature/
+
+Right.
+
+> "A thermal" is something else (it's seasonal underwear for me ;)
+>
+> > Introduce a new platform_profile sysfs API which offers a generic API
+> > for
+> > selecting the performance-profile of these automatic-mechanisms.
+> >
+> > Co-developed-by: Mark Pearson <markpearson@lenovo.com>
+> > Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > ---
+> > Changes in V1:
+> >  - Moved from RFC to proposed patch
+> >  - Added cool profile as requested
+> >  - removed extra-profiles as no longer relevant
+> >
+> >  .../ABI/testing/sysfs-platform_profile        | 66
+> > +++++++++++++++++++
+> >  1 file changed, 66 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-platform_profile
+> > b/Documentation/ABI/testing/sysfs-platform_profile
+> > new file mode 100644
+> > index 000000000000..240bd3d7532b
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/sysfs-platform_profile
+> > @@ -0,0 +1,66 @@
+> > +Platform-profile selection (e.g.
+> > /sys/firmware/acpi/platform_profile)
+> > +
+> > +On modern systems the platform performance, temperature, fan and
+> > other
+> > +hardware related characteristics are often dynamically configurable.
+> > The
+> > +profile is often automatically adjusted to the load by some
+> > +automatic-mechanism (which may very well live outside the kernel).
+> > +
+> > +These auto platform-adjustment mechanisms often can be configured
+> > with
+> > +one of several 'platform-profiles', with either a bias towards low-
+> > power
+> > +consumption or towards performance (and higher power consumption and
+> > +thermals).
+> > +
+> > +The purpose of the platform_profile attribute is to offer a generic
+> > sysfs
+> > +API for selecting the platform-profile of these automatic-
+> > mechanisms.
+> > +
+> > +Note that this API is only for selecting the platform-profile, it is
+> > +NOT a goal of this API to allow monitoring the resulting performance
+> > +characteristics. Monitoring performance is best done with
+> > device/vendor
+> > +specific tools such as e.g. turbostat.
+> > +
+> > +Specifically when selecting a high-performance profile the actual
+> > achieved
+> > +performance may be limited by various factors such as: the heat
+> > generated
+> > +by other components, room temperature, free air flow at the bottom
+> > of a
+> > +laptop, etc. It is explicitly NOT a goal of this API to let
+> > userspace know
+> > +about any sub-optimal conditions which are impeding reaching the
+> > requested
+> > +performance level.
+> > +
+> > +Since numbers are a rather meaningless way to describe platform-
+> > profiles
+>
+> It's not meaningless, but rather ambiguous. For a range of 1 to 5, is 1
+> high performance, and 5 low power, or vice-versa?
+
+It just is not useful. :-)
+
+> > +this API uses strings to describe the various profiles. To make sure
+> > that
+> > +userspace gets a consistent experience when using this API this API
+>
+> you can remove "when using this API".
+>
+> > +document defines a fixed set of profile-names. Drivers *must* map
+> > their
+> > +internal profile representation/names onto this fixed set.
+> > +
+> > +If for some reason there is no good match when mapping then a new
+> > profile-name
+> > +may be added.
+>
+> "for some reason" can be removed.
+
+Right.
+
+> >  Drivers which wish to introduce new profile-names must:
+> > +1. Have very good reasons to do so.
+>
+> "1. Explain why the existing 'profile-names' cannot be used"
+>
+> > +2. Add the new profile-name to this document, so that future drivers
+> > which also
+> > +   have a similar problem can use the same name.
+>
+> "2. Add the new 'profile-name' to the documentation so that other
+> drivers can use it, as well as user-space knowing clearly what
+> behaviour the 'profile-name' corresponds to"
+>
+> > +
+> > +What:          /sys/firmware/acpi/platform_profile_choices
+> > +Date:          October 2020
+> > +Contact:       Hans de Goede <hdegoede@redhat.com>
+> > +Description:
+> > +               Reading this file gives a space separated list of
+> > profiles
+> > +               supported for this device.
+>
+> "This file contains a space-separated list of profiles..."
+>
+> > +
+> > +               Drivers must use the following standard profile-
+> > names:
+> > +
+> > +               low-power:              Emphasises low power
+> > consumption
+
+Let's be precise, so "low-power operation", please (see above for the reason).
+
+> > +               cool:                   Emphasises cooler operation
+> > +               quiet:                  Emphasises quieter operation
+> > +               balanced:               Balance between low power
+> > consumption
+
+And same here and analogously everywhere.
+
+> > +                                       and performance
+> > +               performance:            Emphasises performance (and
+> > may lead to
+> > +                                       higher temperatures and fan
+> > speeds)
+>
+> I'd replace "Emphasises" with either "Focus on" or the US English
+> spelling of "Emphasizes".
+>
+> > +               Userspace may expect drivers to offer at least
+> > several of these
+> > +               standard profile-names.
+>
+> Replce "at least several" with "more than one".
+>
+> > +
+> > +What:          /sys/firmware/acpi/platform_profile
+> > +Date:          October 2020
+> > +Contact:       Hans de Goede <hdegoede@redhat.com>
+> > +Description:
+> > +               Reading this file gives the current selected profile
+> > for this
+> > +               device. Writing this file with one of the strings
+> > from
+> > +               available_profiles changes the profile to the new
+> > value.
+>
+> Is there another file which explains whether those sysfs value will
+> contain a trailing linefeed?
+>
+> Cheers
+>
