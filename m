@@ -2,137 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB6029F010
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 16:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85F3429F2B0
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 18:11:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728282AbgJ2PfQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 11:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728288AbgJ2Pef (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 11:34:35 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33DFFC0613D3
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Oct 2020 08:34:35 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id h62so2600158oth.9
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Oct 2020 08:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gj1jJpANXv8NUxKuc1U2kl0sCOsIJejtHtuP5pNNdq0=;
-        b=hfWH7DQo6MwXumxkNFEKQ6mIUkgN/obcpao7IWfhHJqpjo61R6fm7nMF4GfWRZZ7gg
-         6v++9WPm9136sVxb7WABbsXBM+AqlbgE8SMi+UcLO8dQgD6KLmSpBg2nr7W+XZQxeZ2I
-         kbvlULl7hTiQ61gXLmKCUlPZBk5Yrlx18uwefqSuRW/fmpPxzTCKf1tGMBEtw21oqC3G
-         gwYfpkc/FrK4Vj9Ujfmm2UD9+V5RNmWXyIOYY8x62RrdoP/yzzkiYCh6ql7s/kTVcgDW
-         rugAPCELON6oOF0BNIStyGR0eq6Tm3L1XrDoRgMm1jNqyMcndRHTOQ0doqg6O6zuy15w
-         vwIg==
+        id S1726050AbgJ2RLM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 13:11:12 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:41442 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbgJ2RLL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Oct 2020 13:11:11 -0400
+Received: by mail-oi1-f196.google.com with SMTP id k65so3758200oih.8;
+        Thu, 29 Oct 2020 10:11:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gj1jJpANXv8NUxKuc1U2kl0sCOsIJejtHtuP5pNNdq0=;
-        b=MUDCKlcrmyRguxO3tTDqY7TQXAnGNtKHiz4wbh/a2vo6KXzf75LpVYCJqRsLVraCyB
-         BXJf6KHIIxkheeqdUEu/j4gIl0YQVVae7fCqfrMIvjD6FLG/pOGNwFdvFDKDuCj0oR+X
-         H3313nZSGfb32LwjOmYSb2oG1z1mBuEVvuW1DU3ZEohyJ4kHGQzkjZNpEEhUqP3d3Hht
-         YBdzhadmXLwSOJVXz1nK1qlqy7/3nyw5klM+59Ud7Uv7bJLIWtjZbECDayusVs1wkmoj
-         6CuG1qx2A7m7Nhgo9ND9ChAqiKJvvzPsagW07nQble1cNLdcWPgU0KGOqLQDbrjP6RFh
-         Wygw==
-X-Gm-Message-State: AOAM533OjhQ0ssZ5Gf/6kNHfU0PcZ0JgVg+M+aY9mKhU+6SWJNhFs/lw
-        vHJShqtIIgT5kw0CLMpcZC/LmMESMmqQgi/0mCVycw==
-X-Google-Smtp-Source: ABdhPJyGMqctXGvAmi1ujldo3C/IhTNjpeGLqbnC4WkTn6uj6dRtNongZ+NbPm+WXw74/1zYMbAnzsEbA8DtBOJdsC4=
-X-Received: by 2002:a05:6830:14c:: with SMTP id j12mr3812378otp.334.1603985674321;
- Thu, 29 Oct 2020 08:34:34 -0700 (PDT)
+        bh=daqWqpuDAfNvpsbFGrqlJS2OI1IH2cY0LSZL5HwouxY=;
+        b=Rrd7qFNrzEp6vGBpB87IFNbHrGZtZB72NGv8IkhCDchUSphyjedGKCTPMeopNS3JUm
+         6WypartV0bO5ib2vB6eWSzF1xFaXzPVWT1jXoDQgS8Cg8Sae/geCoR1QgyAYl9XUmfDi
+         zMoklLc7P7DHzU5F9A1G90j5K6rEofSbop/x/p2R27KOcbwLG3LMceT3i7IErXkudGVc
+         ZMKgMI2HQmV/7lhfuEjsV6d2M/4qpVAeWIwt2dXIr/rnqcwh1j4HwaeYDoSyNVZCymbk
+         fB4p4Ia2cc7/9wF9BXH4loTkz/k6B7JUhBMOFprNHu9H5TNL0HqVcj3pGQLIc3/rDw3J
+         sx9A==
+X-Gm-Message-State: AOAM531qkabFLgo2s/HRyWOiHXVwcBte1qkTehD5PHg1w+bePtxI9g7M
+        NWCO2Yimdh3meIxLXjQSbyjKBgIxwN/k4cwnIGk=
+X-Google-Smtp-Source: ABdhPJxHVLwwaj1HwM4KZ9eyEvCl8ngRu7uMhbpv0LI+oGCoQ46ibTmoYRFfdTtjLYGqMg4AKXDfDLyLRRFixn1sRxw=
+X-Received: by 2002:aca:30d7:: with SMTP id w206mr441009oiw.69.1603991470287;
+ Thu, 29 Oct 2020 10:11:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201028171757.765866-1-ribalda@chromium.org> <20201028182744.GZ4077@smile.fi.intel.com>
-In-Reply-To: <20201028182744.GZ4077@smile.fi.intel.com>
-From:   Ricardo Ribalda <ribalda@google.com>
-Date:   Thu, 29 Oct 2020 16:34:23 +0100
-Message-ID: <CANiDSCvy2dPyY8O5DVgTBwNNLmfA=kJ5HUKJqcFLnqQ8CWsJgA@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: Support GpioInt with active_low polarity
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+References: <20201029105941.63410-1-heikki.krogerus@linux.intel.com> <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Oct 2020 18:10:59 +0100
+Message-ID: <CAJZ5v0gc6ihoNuh5eR4MW+uf9CBH=qoRjGeeOHxgvjmUnorPCg@mail.gmail.com>
+Subject: Re: [PATCHv2 1/3] software node: Power management operations for
+ software nodes
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Felipe Balbi <balbi@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy
-
-On Thu, Oct 29, 2020 at 3:38 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Oct 29, 2020 at 11:59 AM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
 >
-> On Wed, Oct 28, 2020 at 06:17:57PM +0100, Ricardo Ribalda wrote:
-> > On the current implementation we only support active_high polarity for
-> > GpioInt.
-> >
-> > There can be cases where a GPIO has active_low polarity and it is also a
-> > IRQ source.
-> >
-> > De-couple the irq_polarity and active_low fields instead of re-use it.
-> >
-> > With this patch we support ACPI devices such as:
+> The software node specific PM operations make it possible to
+> handle most PM related quirks separately in their own
+> functions instead of conditionally in the device driver's
+> generic PM functions (and in some cases all over the
+> driver). The software node specific PM operations will also
+> reduce the need to pass platform data in some cases, for
+> example from a core MFD driver to the child device drivers,
+> as from now on the core MFD driver will be able to implement
+> the PM quirks directly for the child devices without the
+> need to touch the drivers of those child devices.
 >
-> Is it real device on the market?!
-
-Yes, it is a chromebook.
-
+> If a software node includes the PM operations, those PM
+> operations are always executed separately on top of the
+> other PM operations of the device, so the software node will
+> never replace any of the "normal" PM operations of the
+> device (including the PM domain's operations, class's or
+> bus's PM operations, the device drivers own operations, or
+> any other).
 >
-> This table is broken. _DSD GPIO active_low is only for GpioIo().
-
-AFAIK the format of the _DSD is not in the ACPI standard. We have
-decided its fields. (please correct me if I am wrong here)
-
-On the other mail I have described why we need to make use of the
-active_low on a GpioInt()
-
-If there is another way of describing ActiveBoth + inverted polarity
-please let me know and I will go that way.
-
-Thanks
-
+> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> ---
+>  drivers/base/power/common.c |   8 +-
+>  drivers/base/swnode.c       | 693 +++++++++++++++++++++++++++++++++++-
+>  include/linux/property.h    |  10 +
+>  3 files changed, 701 insertions(+), 10 deletions(-)
 >
-> If it is a ChromeBook, please fix the firmware.
+> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+> index bbddb267c2e69..b64cd4690ac63 100644
+> --- a/drivers/base/power/common.c
+> +++ b/drivers/base/power/common.c
+> @@ -109,8 +109,14 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
+>         ret = acpi_dev_pm_attach(dev, power_on);
+>         if (!ret)
+>                 ret = genpd_dev_pm_attach(dev);
+> +       if (ret < 0)
+> +               return ret;
 >
-> > Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
-> > {
-> >         GpioInt (Edge, ActiveBoth, Exclusive, PullDefault, 0x0000,
-> >         "\\_SB.PCI0.GPIO", 0x00, ResourceConsumer, ,
-> >         )
-> >         {   // Pin list
-> >                 0x0064
-> >         }
-> > })
-> > Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
-> > {
-> >         ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /* Device Properties for _DSD */,
-> >         Package (0x01)
-> >         {
-> >         Package (0x02)
-> >         {
-> >                 "privacy-gpio",
-> >                 Package (0x04)
-> >                 {
-> >                 \_SB.PCI0.XHCI.RHUB.HS07,
-> >                 Zero,
-> >                 Zero,
-> >                 One
-> >                 }
-> >         }
-> >         }
-> > })
+> -       return ret < 0 ? ret : 0;
+> +       ret = software_node_dev_pm_attach(dev, power_on);
+> +       if (ret)
+> +               dev_pm_domain_detach(dev, power_on);
+> +
+> +       return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
 >
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 010828fc785bc..595a9c240fede 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -8,6 +8,8 @@
 >
-> --
-> With Best Regards,
-> Andy Shevchenko
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+> +#include <linux/pm_domain.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/property.h>
+>  #include <linux/slab.h>
 >
+> @@ -48,6 +50,19 @@ EXPORT_SYMBOL_GPL(is_software_node);
+>                                      struct swnode, fwnode) : NULL;     \
+>         })
 >
+> +static inline struct swnode *dev_to_swnode(struct device *dev)
+> +{
+> +       struct fwnode_handle *fwnode = dev_fwnode(dev);
+> +
+> +       if (!fwnode)
+> +               return NULL;
+> +
+> +       if (!is_software_node(fwnode))
+> +               fwnode = fwnode->secondary;
+> +
+> +       return to_swnode(fwnode);
+> +}
+> +
+>  static struct swnode *
+>  software_node_to_swnode(const struct software_node *node)
+>  {
+> @@ -344,6 +359,673 @@ void property_entries_free(const struct property_entry *properties)
+>  }
+>  EXPORT_SYMBOL_GPL(property_entries_free);
+>
+> +/* -------------------------------------------------------------------------- */
+> +/* Power management operations */
+> +
+> +/*
+> + * The power management operations in software nodes are handled with a power
+> + * management domain - a "wrapper" PM domain:
+> + *
+> + *   When PM operations are supplied as part of the software node, the primary
+> + *   PM domain of the device is stored and replaced with a device specific
+> + *   software node PM domain. The software node PM domain's PM operations, which
+> + *   are implemented below, will then always call the matching PM operation of
+> + *   the primary PM domain (which was stored) on top of the software node's own
+> + *   operation.
+> + *
+> + * If the device does not have primary PM domain, the software node PM wrapper
+> + * operations below will also call the classes, buses and device type's PM
+> + * operations, and of course the device driver's own PM operations if they are
+> + * implemented. The priority of those calls follows drivers/base/power/domain.c:
+> + *
+> + * 1) device type
+> + * 2) class
+> + * 3) bus
+> + * 4) driver
+> + *
+> + * NOTE. The software node PM operation is always called before the primary
+> + * PM domain with resume/on callbacks, and after the primary PM domain with
+> + * suspend/off callbacks. This order is used because the software node PM
+> + * operations are primarily meant to be used to implement quirks, quirks that
+> + * may be needed to power on the device to a point where it is even possible to
+> + * execute the primary PM domain's resume/on routines.
+> + */
 
+Well, this basically implements a wrapper PM domain that is somewhat
+more generic, as a concept, then software nodes PM.
 
--- 
-Ricardo Ribalda
+At least it is not specific to software nodes, so I'd prefer it to be
+defined generically.
+
+Moreover, IIUC, this breaks if the "primary" PM domain callbacks try
+to get to the original PM domain via the dev->pm_domain pointer, which
+the genpd callbacks do.
+
+Do we want to wrap the ACPI PM domain only, by any chance?  If so, it
+may be more straightforward to invoke swnode callbacks directly from
+there, if any.
