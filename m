@@ -2,244 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A0F29E3EA
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 08:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 600A029E616
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Oct 2020 09:14:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgJ2HWW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Oct 2020 03:22:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42034 "EHLO mail.kernel.org"
+        id S1726938AbgJ2IOs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Oct 2020 04:14:48 -0400
+Received: from mga14.intel.com ([192.55.52.115]:15863 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726151AbgJ2HV0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Oct 2020 03:21:26 -0400
-Received: from coco.lan (ip5f5ad5de.dynamic.kabel-deutschland.de [95.90.213.222])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D568206A1;
-        Thu, 29 Oct 2020 07:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603956079;
-        bh=ydKKLjnIGAQnlNnBFT/eI5WDiCpUdvgjw4RkqNPBoTs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AXef/AhAlPh1hi9YsdIj4o1ixVYaGEAZM4H9T1mWHDD5hcqq9AHBGqQYLJm4zvkzm
-         vDRNtmfz4vMaZ1nCDFiLdWyz0Wl7IBqlNL9mj+lYOyRgbN8ZBRkoI4V/HMDyMBFkDS
-         A+Vrm0psmwUp0NppXp1qjXj8jB9uy8mTt+24KpoY=
-Date:   Thu, 29 Oct 2020 08:21:00 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 20/33] docs: ABI: testing: make the files compatible
- with ReST output
-Message-ID: <20201029082100.4820072c@coco.lan>
-In-Reply-To: <20201028174427.GE9364@hoboy.vegasvil.org>
-References: <cover.1603893146.git.mchehab+huawei@kernel.org>
-        <4ebaaa0320101479e392ce2db4b62e24fdf15ef1.1603893146.git.mchehab+huawei@kernel.org>
-        <20201028174427.GE9364@hoboy.vegasvil.org>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1727214AbgJ2IOs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Oct 2020 04:14:48 -0400
+IronPort-SDR: ZtWtvBIzo/AtA6LkFtqhqCBJ2LztGhfEZoIqRRQbRm3mIFxpLwayR0dUKd+L8qbaAxSrovO+YC
+ u2+O/baseihQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="167599621"
+X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
+   d="scan'208";a="167599621"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2020 22:10:50 -0700
+IronPort-SDR: SYBoUfZdu/ewHjqWPlPi92xJwDnFwZBCIciHjHJ828PqiulpsWnHNyeT6uuWW0//ExUQTEt6wF
+ Ybumm3XPVNNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
+   d="scan'208";a="304464084"
+Received: from lkp-server02.sh.intel.com (HELO 72b1a4bebef6) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Oct 2020 22:10:49 -0700
+Received: from kbuild by 72b1a4bebef6 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kY0D1-00005F-LG; Thu, 29 Oct 2020 05:10:47 +0000
+Date:   Thu, 29 Oct 2020 13:10:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 38d3e7dd7c4204c5d26188fe6edded709cfde97c
+Message-ID: <5f9a4ed6.YWfw4vprz0r9j6gs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Richard,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 38d3e7dd7c4204c5d26188fe6edded709cfde97c  Merge branch 'pm-cpufreq' into bleeding-edge
 
-Em Wed, 28 Oct 2020 10:44:27 -0700
-Richard Cochran <richardcochran@gmail.com> escreveu:
+elapsed time: 725m
 
-> On Wed, Oct 28, 2020 at 03:23:18PM +0100, Mauro Carvalho Chehab wrote:
-> 
-> > diff --git a/Documentation/ABI/testing/sysfs-uevent b/Documentation/ABI/testing/sysfs-uevent
-> > index aa39f8d7bcdf..d0893dad3f38 100644
-> > --- a/Documentation/ABI/testing/sysfs-uevent
-> > +++ b/Documentation/ABI/testing/sysfs-uevent
-> > @@ -19,7 +19,8 @@ Description:
-> >                  a transaction identifier so it's possible to use the same UUID
-> >                  value for one or more synthetic uevents in which case we
-> >                  logically group these uevents together for any userspace
-> > -                listeners. The UUID value appears in uevent as
-> > +                listeners. The UUID value appears in uevent as:  
-> 
-> I know almost nothing about Sphinx, but why have one colon here ^^^ and ...
+configs tested: 91
+configs skipped: 2
 
-Good point. After re-reading the text, this ":" doesn't belong here.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> 
-> > +
-> >                  "SYNTH_UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" environment
-> >                  variable.
-> >  
-> > @@ -30,18 +31,19 @@ Description:
-> >                  It's possible to define zero or more pairs - each pair is then
-> >                  delimited by a space character ' '. Each pair appears in
-> >                  synthetic uevent as "SYNTH_ARG_KEY=VALUE". That means the KEY
-> > -                name gains "SYNTH_ARG_" prefix to avoid possible collisions
-> > +                name gains `SYNTH_ARG_` prefix to avoid possible collisions
-> >                  with existing variables.
-> >  
-> > -                Example of valid sequence written to the uevent file:
-> > +                Example of valid sequence written to the uevent file::  
-> 
-> ... two here?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                    socrates_defconfig
+arm                         nhk8815_defconfig
+arm                         shannon_defconfig
+sh                            titan_defconfig
+sh                        sh7785lcr_defconfig
+mips                 decstation_r4k_defconfig
+arm                      jornada720_defconfig
+powerpc64                           defconfig
+mips                       capcella_defconfig
+arm                           tegra_defconfig
+xtensa                  nommu_kc705_defconfig
+powerpc                    sam440ep_defconfig
+sh                          urquell_defconfig
+powerpc                      walnut_defconfig
+sh                          sdk7780_defconfig
+powerpc                     pseries_defconfig
+sh                              ul2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20201028
+i386                 randconfig-a005-20201028
+i386                 randconfig-a003-20201028
+i386                 randconfig-a001-20201028
+i386                 randconfig-a004-20201028
+i386                 randconfig-a006-20201028
+x86_64               randconfig-a011-20201028
+x86_64               randconfig-a013-20201028
+x86_64               randconfig-a016-20201028
+x86_64               randconfig-a015-20201028
+x86_64               randconfig-a012-20201028
+x86_64               randconfig-a014-20201028
+i386                 randconfig-a016-20201028
+i386                 randconfig-a014-20201028
+i386                 randconfig-a015-20201028
+i386                 randconfig-a013-20201028
+i386                 randconfig-a012-20201028
+i386                 randconfig-a011-20201028
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-The main issue that this patch wants to solve is here:
+clang tested configs:
+x86_64               randconfig-a001-20201028
+x86_64               randconfig-a002-20201028
+x86_64               randconfig-a003-20201028
+x86_64               randconfig-a006-20201028
+x86_64               randconfig-a005-20201028
+x86_64               randconfig-a004-20201028
 
-                This generates synthetic uevent including these variables::
-
-                    ACTION=add
-                    SYNTH_ARG_A=1
-                    SYNTH_ARG_B=abc
-                    SYNTH_UUID=fe4d7c9d-b8c6-4a70-9ef1-3d8a58d18eed
-
-On Sphinx, consecutive lines with the same indent belongs to the same
-paragraph. So, without "::", the above will be displayed on a single line,
-which is undesired.
-
-using "::" tells Sphinx to display as-is. It will also place it into a a 
-box (colored for html output) and using a monospaced font.
-
-The change at the "uevent file:" line was done just for coherency
-purposes.
-
-Yet, after re-reading the text, there are other things that are not
-coherent. So, I guess the enclosed patch will work better for sys-uevent.
-
-Thanks,
-Mauro
-
-docs: ABI: sysfs-uevent: make it compatible with ReST output
-
-- Replace " by ``, in order to use monospaced fonts;
-- mark literal blocks as such.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-diff --git a/Documentation/ABI/testing/sysfs-uevent b/Documentation/ABI/testing/sysfs-uevent
-index aa39f8d7bcdf..0b6227706b35 100644
---- a/Documentation/ABI/testing/sysfs-uevent
-+++ b/Documentation/ABI/testing/sysfs-uevent
-@@ -6,42 +6,46 @@ Description:
-                 Enable passing additional variables for synthetic uevents that
-                 are generated by writing /sys/.../uevent file.
- 
--                Recognized extended format is ACTION [UUID [KEY=VALUE ...].
-+                Recognized extended format is::
- 
--                The ACTION is compulsory - it is the name of the uevent action
--                ("add", "change", "remove"). There is no change compared to
--                previous functionality here. The rest of the extended format
--                is optional.
-+			ACTION [UUID [KEY=VALUE ...]
-+
-+                The ACTION is compulsory - it is the name of the uevent
-+                action (``add``, ``change``, ``remove``). There is no change
-+                compared to previous functionality here. The rest of the
-+                extended format is optional.
- 
-                 You need to pass UUID first before any KEY=VALUE pairs.
--                The UUID must be in "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-+                The UUID must be in ``xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx``
-                 format where 'x' is a hex digit. The UUID is considered to be
-                 a transaction identifier so it's possible to use the same UUID
-                 value for one or more synthetic uevents in which case we
-                 logically group these uevents together for any userspace
-                 listeners. The UUID value appears in uevent as
--                "SYNTH_UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" environment
-+                ``SYNTH_UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`` environment
-                 variable.
- 
-                 If UUID is not passed in, the generated synthetic uevent gains
--                "SYNTH_UUID=0" environment variable automatically.
-+                ``SYNTH_UUID=0`` environment variable automatically.
- 
-                 The KEY=VALUE pairs can contain alphanumeric characters only.
-+
-                 It's possible to define zero or more pairs - each pair is then
-                 delimited by a space character ' '. Each pair appears in
--                synthetic uevent as "SYNTH_ARG_KEY=VALUE". That means the KEY
--                name gains "SYNTH_ARG_" prefix to avoid possible collisions
-+                synthetic uevent as ``SYNTH_ARG_KEY=VALUE``. That means the KEY
-+                name gains ``SYNTH_ARG_`` prefix to avoid possible collisions
-                 with existing variables.
- 
--                Example of valid sequence written to the uevent file:
-+                Example of valid sequence written to the uevent file::
- 
-                     add fe4d7c9d-b8c6-4a70-9ef1-3d8a58d18eed A=1 B=abc
- 
--                This generates synthetic uevent including these variables:
-+                This generates synthetic uevent including these variables::
- 
-                     ACTION=add
-                     SYNTH_ARG_A=1
-                     SYNTH_ARG_B=abc
-                     SYNTH_UUID=fe4d7c9d-b8c6-4a70-9ef1-3d8a58d18eed
-+
- Users:
-                 udev, userspace tools generating synthetic uevents
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
