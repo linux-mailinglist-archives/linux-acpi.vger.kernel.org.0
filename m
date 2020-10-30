@@ -2,97 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDEE2A01C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 10:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B962A01CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 10:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbgJ3Jsn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Oct 2020 05:48:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22259 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726221AbgJ3Jsn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Oct 2020 05:48:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604051322;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=J6Tcgj0B/qC3EjbSiarc6Rg5hdfvraCvvFuX9tXeK4U=;
-        b=eQzKe/XrPt4goeFuciruGaJAzXOEYV/XxWWeQNPQLBY5uyEKtKJbCrKbvxCdHogVNhjrR3
-        CJXv8Bjqza2jEy/ibqyB+tuqMmSE+aezHOcPVGweaQGdGHdQ9quEbt5Cw9DRD4U3fBI1Pi
-        IdCRNZwiHCJybBDFkY7Jm4TxZ2+L6IU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-203-LGRW296XMdSP8kfZzUEGvA-1; Fri, 30 Oct 2020 05:48:40 -0400
-X-MC-Unique: LGRW296XMdSP8kfZzUEGvA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1027EADC28;
-        Fri, 30 Oct 2020 09:48:39 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-114-237.ams2.redhat.com [10.36.114.237])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C98745C1CF;
-        Fri, 30 Oct 2020 09:48:37 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@infradead.org>,
-        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH 3/3] pwm: lpss: Set DPM_FLAG_SMART_SUSPEND on Cherry Trail devices
-Date:   Fri, 30 Oct 2020 10:48:32 +0100
-Message-Id: <20201030094832.18297-4-hdegoede@redhat.com>
-In-Reply-To: <20201030094832.18297-1-hdegoede@redhat.com>
-References: <20201030094832.18297-1-hdegoede@redhat.com>
+        id S1726118AbgJ3JuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Oct 2020 05:50:21 -0400
+Received: from foss.arm.com ([217.140.110.172]:57686 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725876AbgJ3JuV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Oct 2020 05:50:21 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDF5F143D;
+        Fri, 30 Oct 2020 02:50:19 -0700 (PDT)
+Received: from [10.57.18.142] (unknown [10.57.18.142])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E76493F719;
+        Fri, 30 Oct 2020 02:49:51 -0700 (PDT)
+Subject: Re: [PATCH v2 31/39] docs: ABI: cleanup several ABI documents
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        =?UTF-8?Q?Marek_Beh=c3=ban?= <marek.behun@nic.cz>,
+        =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
+        <marmarek@invisiblethingslab.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
+        Alexander Antonov <alexander.antonov@linux.intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Chao Yu <chao@kernel.org>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Colin Cross <ccross@android.com>, Dan Murphy <dmurphy@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Danil Kipnis <danil.kipnis@cloud.ionos.com>,
+        David Sterba <dsterba@suse.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Jack Wang <jinpu.wang@cloud.ionos.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Johan Hovold <johan@kernel.org>,
+        Jonas Meurer <jonas@freesources.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Leach <mike.leach@linaro.org>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Oleh Kravchenko <oleg@kaa.org.ua>, Pavel Machek <pavel@ucw.cz>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Peter Chen <peter.chen@nxp.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Roman Sudarikov <roman.sudarikov@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Samuel Thibault <samuel.thibault@ens-lyon.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Stefan Achatz <erazor_de@users.sourceforge.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>, Tony Luck <tony.luck@intel.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+        Wu Hao <hao.wu@intel.com>, ceph-devel@vger.kernel.org,
+        coresight@lists.linaro.org, dri-devel@lists.freedesktop.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+Message-ID: <22fc421c-1998-04d5-a7fb-54467644bf13@arm.com>
+Date:   Fri, 30 Oct 2020 09:49:49 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+In-Reply-To: <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As the comment above the code setting the DPM_FLAG_NO_DIRECT_COMPLETE
-flag explains:
+On 10/30/20 7:40 AM, Mauro Carvalho Chehab wrote:
+> There are some ABI documents that, while they don't generate
+> any warnings, they have issues when parsed by get_abi.pl script
+> on its output result.
+> 
+> Address them, in order to provide a clean output.
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
+> Reviewed-by: Tom Rix <trix@redhat.com> # for fpga-manager
+> Reviewed-By: Kajol Jain<kjain@linux.ibm.com> # for sysfs-bus-event_source-devices-hv_gpci and sysfs-bus-event_source-devices-hv_24x7
+> Acked-by: Oded Gabbay <oded.gabbay@gmail.com> # for Habanalabs
+> Acked-by: Vaibhav Jain <vaibhav@linux.ibm.com> # for sysfs-bus-papr-pmem
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-    /*
-     * On Cherry Trail devices the GFX0._PS0 AML checks if the controller
-     * is on and if it is not on it turns it on and restores what it
-     * believes is the correct state to the PWM controller.
-     * Because of this we must disallow direct-complete, which keeps the
-     * controller (runtime)suspended, on resume to avoid 2 issues:
-     * 1. The controller getting turned on without the linux-pm code
-     *    knowing about this. On devices where the controller is unused
-     *    this causes it to stay on during the next suspend causing high
-     *    battery drain (because S0i3 is not reached)
-     * 2. The state restoring code unexpectedly messing with the controller
-     */
 
-The pm-core must not skip resume to avoid the GFX0._PS0 AML code messing
-with the PWM controller behind our back. But leaving the controller
-runtime-suspended (skipping runtime-resume + normal-suspend) during
-suspend is fine. Set the DPM_FLAG_SMART_SUSPEND flag to allow this.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/pwm/pwm-lpss-platform.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+>   .../testing/sysfs-bus-coresight-devices-etb10 |   5 +-
+For the above,
 
-diff --git a/drivers/pwm/pwm-lpss-platform.c b/drivers/pwm/pwm-lpss-platform.c
-index ac33861edb48..38d17e2e2b4c 100644
---- a/drivers/pwm/pwm-lpss-platform.c
-+++ b/drivers/pwm/pwm-lpss-platform.c
-@@ -71,7 +71,8 @@ static int pwm_lpss_probe_platform(struct platform_device *pdev)
- 	 * 2. The state restoring code unexpectedly messing with the controller
- 	 */
- 	if (info->other_devices_aml_touches_pwm_regs)
--		dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NO_DIRECT_COMPLETE);
-+		dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NO_DIRECT_COMPLETE|
-+						    DPM_FLAG_SMART_SUSPEND);
- 
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
--- 
-2.28.0
-
+Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
