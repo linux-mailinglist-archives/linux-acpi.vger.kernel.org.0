@@ -2,154 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B962A01CB
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 10:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E329B2A0205
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 11:01:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbgJ3JuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Oct 2020 05:50:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:57686 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725876AbgJ3JuV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Oct 2020 05:50:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDF5F143D;
-        Fri, 30 Oct 2020 02:50:19 -0700 (PDT)
-Received: from [10.57.18.142] (unknown [10.57.18.142])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E76493F719;
-        Fri, 30 Oct 2020 02:49:51 -0700 (PDT)
-Subject: Re: [PATCH v2 31/39] docs: ABI: cleanup several ABI documents
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?Q?Marek_Beh=c3=ban?= <marek.behun@nic.cz>,
-        =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
-        <marmarek@invisiblethingslab.com>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
-        Alexander Antonov <alexander.antonov@linux.intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Chao Yu <chao@kernel.org>,
-        Christian Gromm <christian.gromm@microchip.com>,
-        Colin Cross <ccross@android.com>, Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        David Sterba <dsterba@suse.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1726297AbgJ3KBq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Oct 2020 06:01:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31731 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726200AbgJ3KBp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Oct 2020 06:01:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604052104;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qh++YDjpLMr2T/NwgklzR0r6j7IRiLB3Ll291xVhXSE=;
+        b=Jsllh/5BkR+Xc7hMaeDb6cU9VXQr5eRXu02aiyV7XhZc5mfZVF3YumJ7pae2gcq1Lv+422
+        +CKZarVbYB39hO6ZEXoAh7Ufow6Y2khsDt+WEXmPL9yU0qriZeUqJPPjjGVG7OLyNZCgsG
+        KyJ5HdAx8Y4V8yaffCNWZ7fXAp69EEo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-331-vvu4MNjCP6C0D6UL8M-Ocg-1; Fri, 30 Oct 2020 06:01:41 -0400
+X-MC-Unique: vvu4MNjCP6C0D6UL8M-Ocg-1
+Received: by mail-ed1-f71.google.com with SMTP id bs10so2392377edb.22
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Oct 2020 03:01:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qh++YDjpLMr2T/NwgklzR0r6j7IRiLB3Ll291xVhXSE=;
+        b=ncXg8zYvb+PYgQmVeyBgxGVKJXOIrhzsgwYfLdSdBmpdWBqqqYP9GuWV0KJaWPMt/+
+         zmnnWFCNGeaDxo3j8qaJwwxl9FhhQGfoV7x7fkYz9YHmp/fEsGcBh5/Zo4PKyY/XiaRM
+         8vbp/T/SYSP5o6QCfv4KXd6aN99kmYdA7Lm3sabTIVydK7tiGoe31rPyKkTgO/kdz6zi
+         Qnr4tMUvrOnGG18bj73NVMKHiQFMU1dnmjkH1P7V72yeMABQkmU+5Fp5LfO8eeK6Uwmx
+         CT6+/BLwB6vjtB4NM/0qkkw+dvX3v0KNZawFbho9OuHFym+cMaduLm5xvoSp+H6Z5WFN
+         HWdA==
+X-Gm-Message-State: AOAM533aNmQOnD9xM3AAwmdLAh1lno45GFDbfRWL5EXymsH+WFUxF6Kp
+        T0muoMKbHdsSu2H3/tim+etZ6LqA7gHQbsKQV1V0ZZ9C1vQNOsOuUP2LBE8siF2GKc1Kx+XdDzi
+        GJr2XqcLynZs0OOosJ4rtpA==
+X-Received: by 2002:a17:906:4d03:: with SMTP id r3mr1498838eju.364.1604052100571;
+        Fri, 30 Oct 2020 03:01:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyR/QgAeFT6uCvIRGJTtj36hLcVbl/CF9UaFP/+FfZZ2BEaFM1sGsXoSqK6Ey3ng9M8D0CyMw==
+X-Received: by 2002:a17:906:4d03:: with SMTP id r3mr1498818eju.364.1604052100400;
+        Fri, 30 Oct 2020 03:01:40 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id v21sm2788872edt.80.2020.10.30.03.01.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2020 03:01:39 -0700 (PDT)
+Subject: Re: [PATCH] PM / reboot: Use S5 for reboot
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
         Guenter Roeck <linux@roeck-us.net>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        Jack Wang <jinpu.wang@cloud.ionos.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Johan Hovold <johan@kernel.org>,
-        Jonas Meurer <jonas@freesources.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Leach <mike.leach@linaro.org>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Chen <peter.chen@nxp.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Roman Sudarikov <roman.sudarikov@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>, Tony Luck <tony.luck@intel.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Wu Hao <hao.wu@intel.com>, ceph-devel@vger.kernel.org,
-        coresight@lists.linaro.org, dri-devel@lists.freedesktop.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
- <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-Message-ID: <22fc421c-1998-04d5-a7fb-54467644bf13@arm.com>
-Date:   Fri, 30 Oct 2020 09:49:49 +0000
+        Kees Cook <keescook@chromium.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20201030070659.16948-1-kai.heng.feng@canonical.com>
+ <45641823-1866-4FF5-9A1C-BFF61A66FCE3@canonical.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f8e03d98-1732-81f8-9557-a5da8f962368@redhat.com>
+Date:   Fri, 30 Oct 2020 11:01:39 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+In-Reply-To: <45641823-1866-4FF5-9A1C-BFF61A66FCE3@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/30/20 7:40 AM, Mauro Carvalho Chehab wrote:
-> There are some ABI documents that, while they don't generate
-> any warnings, they have issues when parsed by get_abi.pl script
-> on its output result.
+Hi,
+
+On 10/30/20 8:09 AM, Kai-Heng Feng wrote:
+> Hi Hans,
 > 
-> Address them, in order to provide a clean output.
+>> On Oct 30, 2020, at 15:06, Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+>>
+>> After reboot, it's not possible to use hotkeys to enter BIOS setup and
+>> boot menu on some HP laptops.
+>>
+>> BIOS folks identified the root cause is the missing _PTS call, and BIOS
+>> is expecting _PTS to do proper reset.
+>>
+>> Using S5 for reboot is default behavior under Windows, "A full shutdown
+>> (S5) occurs when a system restart is requested" [1], so let's do the
+>> same here.
 > 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
-> Reviewed-by: Tom Rix <trix@redhat.com> # for fpga-manager
-> Reviewed-By: Kajol Jain<kjain@linux.ibm.com> # for sysfs-bus-event_source-devices-hv_gpci and sysfs-bus-event_source-devices-hv_24x7
-> Acked-by: Oded Gabbay <oded.gabbay@gmail.com> # for Habanalabs
-> Acked-by: Vaibhav Jain <vaibhav@linux.ibm.com> # for sysfs-bus-papr-pmem
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> I wonder if this can also solve "HID: i2c-hid: Put ACPI enumerated devices in D3 on shutdown" fixed.
+
+I just checked the _PTS of one of the devices with the SMO91D0 i2c-hid
+sensor-hub and it does not appear to turn off the sensor-hub (or any
+other devices for that matter). Specifically it does not touch the
+GPIO used by the _PS0 / _PS3 methods of the SMO91D0.
+
+Regards,
+
+Hans
 
 
 
->   .../testing/sysfs-bus-coresight-devices-etb10 |   5 +-
-For the above,
 
-Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> [1] https://docs.microsoft.com/en-us/windows/win32/power/system-power-states
+>>
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+>> ---
+>> kernel/reboot.c | 2 ++
+>> 1 file changed, 2 insertions(+)
+>>
+>> diff --git a/kernel/reboot.c b/kernel/reboot.c
+>> index e7b78d5ae1ab..7e5aa1f78693 100644
+>> --- a/kernel/reboot.c
+>> +++ b/kernel/reboot.c
+>> @@ -244,6 +244,8 @@ void migrate_to_reboot_cpu(void)
+>> void kernel_restart(char *cmd)
+>> {
+>> 	kernel_restart_prepare(cmd);
+>> +	if (pm_power_off_prepare)
+>> +		pm_power_off_prepare();
+>> 	migrate_to_reboot_cpu();
+>> 	syscore_shutdown();
+>> 	if (!cmd)
+>> -- 
+>> 2.17.1
+>>
+> 
+
