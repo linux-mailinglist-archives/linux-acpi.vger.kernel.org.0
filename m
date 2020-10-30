@@ -2,82 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6616B2A08AA
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 15:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A713E2A0B12
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 17:28:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgJ3O6b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Oct 2020 10:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbgJ3O6b (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Oct 2020 10:58:31 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5067AC0613D2
-        for <linux-acpi@vger.kernel.org>; Fri, 30 Oct 2020 07:58:31 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id dn5so6930962edb.10
-        for <linux-acpi@vger.kernel.org>; Fri, 30 Oct 2020 07:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
-        b=cba/prsbSBmYoHoIyJJ/4nz72WNuXyuE8Im8hHokykrknu6T+ZGQ3oNaEZCnDQMKfK
-         7InrWK9/LAehftIUxFF07tvuUQ/41xDXt8c8cRINmlHgR1biRfbdW9zZPxVC6xa8zOlP
-         K6M6oRsBtl8MN1IVNiGcNelh1LOXBPRCedQHjpXjHdhTZUoXOfQ5ssal2G05i4dOSCvv
-         FIx5VhgkFc0MSmWonLWORS6bGxkDSNKyYqWmGabj1TsHCGlpIexLxPpAsXs6aOmBy4OY
-         u1xNW9W0JHHwE2pLQBvrBX9wQMtbUIk6CF2f6hu1cvsgwIaE0/cl0h377THHVavVg8oE
-         Ypbg==
+        id S1726424AbgJ3Q2o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Oct 2020 12:28:44 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:44904 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbgJ3Q2n (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Oct 2020 12:28:43 -0400
+Received: by mail-oi1-f194.google.com with SMTP id k27so7186991oij.11;
+        Fri, 30 Oct 2020 09:28:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
-        b=Y/City+1BjCI4bN1owYGNDDVsr06ro20XAtthWH9d8kbBn4TbcHmm/l2tBgjqwgGKL
-         8GrcjK0KvSu9+zbI6cBSQPdolHJGzR3u1Xq9tfTInzlGcnC2lnkFuckKoc+0+Zx7urRF
-         13JE9YL8NwL8sabr/kwKH+TE4HX1Yb8n18IDt6RsJypR7ilZrm5Ud8yP5PSbQKxUbksW
-         MC/ZevvkZmbmBhiKjyFFkllQaZ5uOTgf9jpnHFItfwFc/LOlx89Wv7YKGlh/rUssnPWb
-         KaaI86beOHmXRjtE7BjfmrxunYBe51ryODTiZCkp5q+ezhSv3qX3VOvx3O1kiSt5k0Bd
-         tNQA==
-X-Gm-Message-State: AOAM5301rGS6juYJbSUkKmHkhLHEUsyraGPpetvvi27zN4/kr0VqsymG
-        +gtcIygosnihR0QQiQXDlYMYy/2/N6OfGlaIZw==
-X-Google-Smtp-Source: ABdhPJz2xsjxOvoK0J4Ck702AA6tUztWDi8Hr+jNkMDLFNqNVV9sSKYCidfmYBReGemdlea1AJeouFi1w4gUiDPqlYM=
-X-Received: by 2002:a50:9e82:: with SMTP id a2mr2760020edf.117.1604069910083;
- Fri, 30 Oct 2020 07:58:30 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=N4XrkGP0kfHl+6C37uH3pC+4L7r56rDfCcTmxy0Tqe4=;
+        b=NSi8IEFeNftS6rA3ivbLaq1ck0bDnY9AjsC0/OBl4FQSOYDsn/CZgbsMkLTHC3d4Fw
+         A0R3xV1uZlZL9BSxzaEr0ruwR3YxPHjzFXQVKqtk0CdNwzM3P/6mzVz2WqBK40vUU2J0
+         WUA1wRgBYdfZ/mobS67DUBO2Qct5zkB/cPrd6fu+auy3FSGhmst1QwZjOTHf6kgcZ59i
+         ivOVAITQmMd7j9LtvN1fM5VyYcTxSdXtoQ5t+oTq/YVKC4HxGyVmurNASftJUAjBZSlk
+         YQED8lrdIYcF3KEasg1al08GJy4wW4QAlKTfO3uVqcBQOSAfanJCdZChnYkx9WeBSSi2
+         s/Mg==
+X-Gm-Message-State: AOAM531FyKJoebXyZzvNh/atC7Exg1lVeC5zJ9GkESxxTcDJVf/ECwYl
+        X0FWMARKF7JMHsUZis26gYnmYzEm+uTFtWT270ueHyVuPMc=
+X-Google-Smtp-Source: ABdhPJzWZ6yTjfPS5vwqqtSHtRnnbwbG5hJgNNxEv4FVatTJYAqTaWDcfM2oBIsSdR23WFtS9IljS74PvlS5EgWE0+E=
+X-Received: by 2002:aca:724a:: with SMTP id p71mr2159790oic.157.1604075322923;
+ Fri, 30 Oct 2020 09:28:42 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:58:29
- -0700 (PDT)
-Reply-To: li.anable85@gmail.com
-From:   Liliane Abel <k.griest04@gmail.com>
-Date:   Fri, 30 Oct 2020 15:58:29 +0100
-Message-ID: <CABAZL7kO5JQZMDhdiGK6i8XTXe8pbB5xWmsnDKzGXmDahQmacQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 30 Oct 2020 17:28:32 +0100
+Message-ID: <CAJZ5v0jUdG-6MO8BWz0BsJTqFCbaad1Bk6MexFy8ugdgBFexLg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.10-rc2
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dearest
+Hi Linus,
 
-Greeting my dear, I am Liliane Abel by name, The only daughter of late
-Mr.Benson Abel. My father is one of the top Politician in our country
-and my mother is a farmers and cocoa merchant when they were both
-alive. After the death of my mother, long ago, my father was
-controlling their business until he was poisoned by his business
-associates which he suffered and died.
+Please pull from the tag
 
-Before the death of my father, He told me about (two million five
-hundred thousand united states dollars) which he deposited in the bank
-in Lome-Togo, It was the money he intended to transfer overseas for
-investment before he was poisoned. He also instructed me that I should
-seek for foreign partners in any country of my choice who will assist
-me transfer this money in overseas account where the money will be
-wisely invested.
-I am seeking for your kind assistance in the following ways:  (1) to
-provide a safe bank account into where the money will be transferred
-for investment. (2) To serve as a guardian of this fund since I am a
-girl of 19 years old. (3) To make arrangement for me to come over to
-your country to further my education. This is my reason for writing to
-you. Please if you are willing to assist me I will offer you 25% of
-the total money. Reply if  you are interested
-Best regards.
-Liliane Abel.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.10-rc2
+
+with top-most commit dea47cf45a7f9bb94684830c47d4b259d5f8d6af
+
+ Merge branches 'pm-cpuidle' and 'pm-sleep'
+
+on top of commit 3650b228f83adda7e5ee532e2b90429c03f7b9ec
+
+ Linux 5.10-rc1
+
+to receive power management fixes for 5.10-rc2.
+
+These fix a few issues related to running intel_pstate in the passive
+mode with HWP enabled, correct the handling of the max_cstate module
+parameter in intel_idle and make a few janitorial changes.
+
+Specifics:
+
+ - Modify Kconfig to prevent configuring either the "conservative"
+   or the "ondemand" governor as the default cpufreq governor if
+   intel_pstate is selected, in which case "schedutil" is the
+   default choice for the default governor setting (Rafael Wysocki).
+
+ - Modify the cpufreq core, intel_pstate and the schedutil governor
+   to avoid missing updates of the HWP max limit when intel_pstate
+   operates in the passive mode with HWP enabled (Rafael Wysocki).
+
+ - Fix max_cstate module parameter handling in intel_idle for
+   processor models with C-state tables coming from ACPI (Chen Yu).
+
+ - Clean up assorted pieces of power management code (Jackie Zamow,
+   Tom Rix, Zhang Qilong).
+
+Thanks!
+
+
+---------------
+
+Chen Yu (1):
+      intel_idle: Fix max_cstate for processor models without C-state tables
+
+Jackie Zamow (1):
+      PM: sleep: fix typo in kernel/power/process.c
+
+Rafael J. Wysocki (5):
+      cpufreq: Avoid configuring old governors as default with intel_pstate
+      cpufreq: Introduce CPUFREQ_NEED_UPDATE_LIMITS driver flag
+      cpufreq: intel_pstate: Avoid missing HWP max updates in passive mode
+      cpufreq: Introduce cpufreq_driver_test_flags()
+      cpufreq: schedutil: Always call driver if
+CPUFREQ_NEED_UPDATE_LIMITS is set
+
+Tom Rix (1):
+      cpufreq: speedstep: remove unneeded semicolon
+
+Zhang Qilong (1):
+      cpufreq: e_powersaver: remove unreachable break
+
+---------------
+
+ drivers/cpufreq/Kconfig          |  2 ++
+ drivers/cpufreq/cpufreq.c        | 15 ++++++++++++++-
+ drivers/cpufreq/e_powersaver.c   |  1 -
+ drivers/cpufreq/intel_pstate.c   | 13 ++++++-------
+ drivers/cpufreq/longhaul.c       |  1 -
+ drivers/cpufreq/speedstep-lib.c  |  2 +-
+ drivers/idle/intel_idle.c        |  2 +-
+ include/linux/cpufreq.h          | 11 ++++++++++-
+ kernel/power/process.c           |  2 +-
+ kernel/sched/cpufreq_schedutil.c |  6 ++++--
+ 10 files changed, 39 insertions(+), 16 deletions(-)
