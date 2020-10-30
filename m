@@ -2,169 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CD02A0261
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 11:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3702A02CA
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Oct 2020 11:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbgJ3KJw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Oct 2020 06:09:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48572 "EHLO mail.kernel.org"
+        id S1726385AbgJ3K1H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Oct 2020 06:27:07 -0400
+Received: from mga02.intel.com ([134.134.136.20]:26523 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726482AbgJ3KJt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Oct 2020 06:09:49 -0400
-Received: from coco.lan (unknown [95.90.213.187])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D913322210;
-        Fri, 30 Oct 2020 10:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604052587;
-        bh=nY70Min4E7MUGYz9J7zA0EKOEj/k9pNAzXLi2/4ZMkk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UNBtt1Tx2c8WK/B9Q0efliEgvZY5yYooQin4TVgBsznntS8ZFwkniWxmzY7RzT79m
-         oK9xtt1aioR8FC0aS3pTXQ0Xn3bEUZCk6NmIqh/YY+rYfGes9W0TlZNagZzinCUs9H
-         0mgCmN5om/0DWDTaU4Jmu0IJpLLZxtrFVkEu873I=
-Date:   Fri, 30 Oct 2020 11:09:25 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        id S1725801AbgJ3K1H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Oct 2020 06:27:07 -0400
+IronPort-SDR: +Ct9FnS1yy80eJmATBXWTCWgCa+dpE+mz4iz+Qq48VqhG2X+ajxRG9jhM5vPpMZQu76hofzmof
+ a4vQolQzo/Mg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9789"; a="155561955"
+X-IronPort-AV: E=Sophos;i="5.77,432,1596524400"; 
+   d="scan'208";a="155561955"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2020 03:27:06 -0700
+IronPort-SDR: CT4FJJUbTUHOk1Y8VUb34jR9aa2OXnzu43+bz8SyWYkmZaQbVG4U2NH+Nq20uYPaB9JfIXFhc4
+ ew7ToGlln5yA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,432,1596524400"; 
+   d="scan'208";a="425313417"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 30 Oct 2020 03:27:03 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 30 Oct 2020 12:27:02 +0200
+Date:   Fri, 30 Oct 2020 12:27:02 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-usb@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <netdev@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
- with ReST output
-Message-ID: <20201030110925.3e09d59e@coco.lan>
-In-Reply-To: <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
-        <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
-        <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCHv2 1/3] software node: Power management operations for
+ software nodes
+Message-ID: <20201030102702.GA2333887@kuha.fi.intel.com>
+References: <20201029105941.63410-1-heikki.krogerus@linux.intel.com>
+ <20201029105941.63410-2-heikki.krogerus@linux.intel.com>
+ <CAJZ5v0gc6ihoNuh5eR4MW+uf9CBH=qoRjGeeOHxgvjmUnorPCg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gc6ihoNuh5eR4MW+uf9CBH=qoRjGeeOHxgvjmUnorPCg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Fri, 30 Oct 2020 10:19:12 +0100
-Fabrice Gasnier <fabrice.gasnier@st.com> escreveu:
+Hi Rafael,
 
-> Hi Mauro,
+On Thu, Oct 29, 2020 at 06:10:59PM +0100, Rafael J. Wysocki wrote:
+> Well, this basically implements a wrapper PM domain that is somewhat
+> more generic, as a concept, then software nodes PM.
 > 
-> [...]
-> 
-> >  
-> > +What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
-> > +KernelVersion:	4.12
-> > +Contact:	benjamin.gaignard@st.com
-> > +Description:
-> > +		Reading returns the list possible quadrature modes.
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
-> > +KernelVersion:	4.12
-> > +Contact:	benjamin.gaignard@st.com
-> > +Description:
-> > +		Configure the device counter quadrature modes:
-> > +
-> > +		channel_A:
-> > +			Encoder A input servers as the count input and B as
-> > +			the UP/DOWN direction control input.
-> > +
-> > +		channel_B:
-> > +			Encoder B input serves as the count input and A as
-> > +			the UP/DOWN direction control input.
-> > +
-> > +		quadrature:
-> > +			Encoder A and B inputs are mixed to get direction
-> > +			and count with a scale of 0.25.
-> > +  
-> 
+> At least it is not specific to software nodes, so I'd prefer it to be
+> defined generically.
 
-Hi Fabrice,
+I don't think we should generalize it like that. I do not think the
+power domains should have any links between each other at the general
+level (just like we probable should not link fwnodes together anymore
+like we do now with the "secondary" fwnode). That is why I have
+confined this to software nodes only for now.
 
-> I just noticed that since Jonathan question in v1.
-> 
-> Above ABI has been moved in the past as discussed in [1]. You can take a
-> look at:
-> b299d00 IIO: stm32: Remove quadrature related functions from trigger driver
-> 
-> Could you please remove the above chunk ?
-> 
-> With that, for the stm32 part:
-> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+I think ideally devices could belong to multiple power domains. That
+would be the general solution. I did not think that trying to figure
+out how to do that would be reasonable as the first approach (maybe I
+should have done exactly that?). But would it be acceptable to allow
+devices to belong to multiple power domains?
+
+> Moreover, IIUC, this breaks if the "primary" PM domain callbacks try
+> to get to the original PM domain via the dev->pm_domain pointer, which
+> the genpd callbacks do.
+
+Ouch, that is true.
+
+> Do we want to wrap the ACPI PM domain only, by any chance?  If so, it
+> may be more straightforward to invoke swnode callbacks directly from
+> there, if any.
+
+The software node can still be the only "primary" fwnode. I don't
+think we should limit this to only platforms (and kernels) that
+support ACPI.
 
 
-Hmm... probably those were re-introduced due to a rebase. This
-series were originally written about 1,5 years ago.
+thanks,
 
-I'll drop those hunks.
-
-Thanks!
-Mauro
+-- 
+heikki
