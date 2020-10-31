@@ -2,86 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B95C12A130C
-	for <lists+linux-acpi@lfdr.de>; Sat, 31 Oct 2020 03:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2392C2A151F
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Oct 2020 11:21:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725956AbgJaCjJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:09 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        id S1726705AbgJaKVg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 31 Oct 2020 06:21:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:44274 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726702AbgJaKVf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 31 Oct 2020 06:21:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604139693;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dGSnhPkl0I7vSPYzYjDBbctn/wTQ7qKaQlUwoPQ5d7Q=;
+        b=YD8/d0bwyJb+VyFUg2DOjQz6bSHKrIrnTFVvgxcIrHSHCkxqMi54/+nHu8FTkrFumgawMT
+        b7zd9IBk6r1oY90xywy5k47bIETXDERBP/Tqra7DxD/hi6USFdZxy12aReM4qCos5E1FW0
+        DKkDUIOY0C5CfNFuEuADd+rDFldnBhI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-340-r2J-ZnybPsGTt8b1mWtArg-1; Sat, 31 Oct 2020 06:21:31 -0400
+X-MC-Unique: r2J-ZnybPsGTt8b1mWtArg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7AE0E805F08;
+        Sat, 31 Oct 2020 10:21:29 +0000 (UTC)
+Received: from [10.36.112.45] (ovpn-112-45.ams2.redhat.com [10.36.112.45])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 182FB19482;
+        Sat, 31 Oct 2020 10:21:26 +0000 (UTC)
+Subject: Re: Onlining CXL Type2 device coherent memory
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Vikram Sethi <vsethi@nvidia.com>
+Cc:     "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+        "Natu, Mahesh" <mahesh.natu@intel.com>,
+        "Rudoff, Andy" <andy.rudoff@intel.com>,
+        Jeff Smith <JSMITH@nvidia.com>,
+        Mark Hairgrove <mhairgrove@nvidia.com>,
+        "jglisse@redhat.com" <jglisse@redhat.com>,
+        Linux MM <linux-mm@kvack.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+References: <BL0PR12MB25321C8689BAFDF8678E5C69BD170@BL0PR12MB2532.namprd12.prod.outlook.com>
+ <CAPcyv4jWFf0=VoA2EiXPaQphA-5z9JFO8h0Agy0dO0w6nDyorw@mail.gmail.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <451b2571-c3e8-97d8-bfd0-f8054a1b75c5@redhat.com>
+Date:   Sat, 31 Oct 2020 11:21:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+In-Reply-To: <CAPcyv4jWFf0=VoA2EiXPaQphA-5z9JFO8h0Agy0dO0w6nDyorw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 30.10.20 21:37, Dan Williams wrote:
+> On Wed, Oct 28, 2020 at 4:06 PM Vikram Sethi <vsethi@nvidia.com> wrote:
+>>
+>> Hello,
+>>
+>> I wanted to kick off a discussion on how Linux onlining of CXL [1] type 2 device
+>> Coherent memory aka Host managed device memory (HDM) will work for type 2 CXL
+>> devices which are available/plugged in at boot. A type 2 CXL device can be simply
+>> thought of as an accelerator with coherent device memory, that also has a
+>> CXL.cache to cache system memory.
+>>
+>> One could envision that BIOS/UEFI could expose the HDM in EFI memory map
+>> as conventional memory as well as in ACPI SRAT/SLIT/HMAT. However, at least
+>> on some architectures (arm64) EFI conventional memory available at kernel boot
+>> memory cannot be offlined, so this may not be suitable on all architectures.
+> 
+> That seems an odd restriction. Add David, linux-mm, and linux-acpi as
+> they might be interested / have comments on this restriction as well.
+> 
 
+I am missing some important details.
+
+a) What happens after offlining? Will the memory be remove_memory()'ed? 
+Will the device get physically unplugged?
+
+b) What's the general purpose of the memory and its intended usage when 
+*not* exposed as system RAM? What's the main point of treating it like 
+ordinary system RAM as default?
+
+Also, can you be sure that you can offline that memory? If it's 
+ZONE_NORMAL (as usually all system RAM in the initial map), there are no 
+such guarantees, especially once the system ran for long enough, but 
+also in other cases (e.g., shuffling), or if allocation policies change 
+in the future.
+
+So I *guess* you would already have to use kernel cmdline hacks like 
+"movablecore" to make it work. In that case, you can directly specify 
+what you *actually* want (which I am not sure yet I completely 
+understood) - e.g., something like "memmap=16G!16G" ... or something 
+similar.
+
+I consider offlining+removing *boot* memory to not physically unplug it 
+(e.g., a DIMM getting unplugged) abusing the memory hotunplug 
+infrastructure. It's a different thing when manually adding memory like 
+dax_kmem does via add_memory_driver_managed().
+
+
+Now, back to your original question: arm64 does not support physically 
+unplugging DIMMs that were part of the initial map. If you'd reboot 
+after unplugging a DIMM, your system would crash. We achieve that by 
+disallowing to offline boot memory - we could also try to handle it in 
+ACPI code. But again, most uses of offlining+removing boot memory are 
+abusing the memory hotunplug infrastructure and should rather be solved 
+cleanly via a different mechanism (firmware, kernel cmdline, ...).
+
+Just recently discussed in
+
+https://lkml.kernel.org/r/de8388df2fbc5a6a33aab95831ba7db4@codeaurora.org
+
+>> Further, the device driver associated with the type 2 device/accelerator may
+>> want to save off a chunk of HDM for driver private use.
+>> So it seems the more appropriate model may be something like dev dax model
+>> where the device driver probe/open calls add_memory_driver_managed, and
+>> the driver could choose how much of the HDM it wants to reserve and how
+>> much to make generally available for application mmap/malloc.
+> 
+> Sure, it can always be driver managed. The trick will be getting the
+> platform firmware to agree to not map it by default, but I suspect
+> you'll have a hard time convincing platform-firmware to take that
+> stance. The BIOS does not know, and should not care what OS is booting
+> when it produces the memory map. So I think CXL memory unplug after
+> the fact is more realistic than trying to get the BIOS not to map it.
+> So, to me it looks like arm64 needs to reconsider its unplug stance.
+
+My personal opinion is, if memory isn't just "ordinary system RAM", then 
+let the system know early that memory is special (as we do with 
+soft-reserved).
+
+Ideally, you could configure the firmware (e.g., via BIOS setup) on what 
+to do, that's the cleanest solution, but I can understand that's rather 
+hard to achieve.
 
 -- 
-Sir/Madam,
+Thanks,
 
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
+David / dhildenb
 
-Regards,
-John Galvan
-
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
