@@ -2,161 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B2D2A3317
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Nov 2020 19:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 974132A3351
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Nov 2020 19:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725831AbgKBSgf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Nov 2020 13:36:35 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:3022 "EHLO huawei.com"
+        id S1725805AbgKBSvO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Nov 2020 13:51:14 -0500
+Received: from mail-bn7nam10on2055.outbound.protection.outlook.com ([40.107.92.55]:28001
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725809AbgKBSgf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Nov 2020 13:36:35 -0500
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 5DA34F0A6D15097B8BB5;
-        Mon,  2 Nov 2020 18:36:31 +0000 (GMT)
-Received: from localhost (10.52.120.98) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 2 Nov 2020
- 18:36:30 +0000
-Date:   Mon, 2 Nov 2020 18:34:28 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     David Hildenbrand <david@redhat.com>,
-        Vikram Sethi <vsethi@nvidia.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "Natu, Mahesh" <mahesh.natu@intel.com>,
-        "Rudoff, Andy" <andy.rudoff@intel.com>,
-        Jeff Smith <JSMITH@nvidia.com>,
-        Mark Hairgrove <mhairgrove@nvidia.com>,
-        "jglisse@redhat.com" <jglisse@redhat.com>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: Onlining CXL Type2 device coherent memory
-Message-ID: <20201102183428.00005f4f@Huawei.com>
-In-Reply-To: <CAPcyv4jX1tedjuU-vCSKgvhQeNFukyq9d0ddmsk7jAjWMX+iBQ@mail.gmail.com>
-References: <BL0PR12MB25321C8689BAFDF8678E5C69BD170@BL0PR12MB2532.namprd12.prod.outlook.com>
-        <CAPcyv4jWFf0=VoA2EiXPaQphA-5z9JFO8h0Agy0dO0w6nDyorw@mail.gmail.com>
-        <451b2571-c3e8-97d8-bfd0-f8054a1b75c5@redhat.com>
-        <CAPcyv4jX1tedjuU-vCSKgvhQeNFukyq9d0ddmsk7jAjWMX+iBQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1725797AbgKBSvN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Nov 2020 13:51:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C5gaNma02x4GENoSJMyST5u3xxRMFGRfjBvTrUpsVS59huHVCfWN+n6NV3LbTXEW36PGXrrQ5/yg1OYJ3ew0TJg8HMOL40aC3pvgJY8ntoZww/cOTHGEwXW+jipm2f5NNVLPFXFT4exxnDKtVIStTXxHuFm/Ua2OVSCdwckFZXrSRezuAkYPO9Sj2SJRtgP78mdCKT4oIEGXilS3X+f8aD945fE+gCyYwSYANJr6EopeNxLZoPhLsyFL4SbO087VC+y1QlcOu44D5DGpJZVaE5QXCeMDEXnJ5IC0lhUjNqaIirsBtpRLLQwpnJ1UIcF0f6KvLk57Ap5Was7JQcPlhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x7d/4POo+z1NDPe6aLlF0lty6ZLR1ScJAQfUGL7ag6o=;
+ b=J/0XB+c6PkgHxEbS5FNbR3IFEG2xja0Ebs1ufcM4HNC42/Sp5v6bhrKVVm8mJazhhkft6Wu2EBbJGITkJA9XsFOgR/VM1NneSvhztcO7l4fSXs/sn6I3PiDkcXE+s2Hork8DDonZIHFdfiGuMRmlMUYUeR6yrkDBu9htAETYLQSV8dHsLMIYjUff2LfbYGR4PsnNfyoYbxnsP5H2xI3wwMfr7Aw8YAUDLzQNhPgdEikpUVEo1SFNQTezvS2R7yjolQKIYwqALm0WYeaH349eOFleiIrmsnmsOB2WqDaLxYfmuuy0vSSy797iCcCiymk0cu3NR+3V5XJH/UGVCmXAbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=windriversystems.onmicrosoft.com;
+ s=selector2-windriversystems-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x7d/4POo+z1NDPe6aLlF0lty6ZLR1ScJAQfUGL7ag6o=;
+ b=Ugzku1iILxrasuO1FaA/osnR/fUEOrIjBlRU+i/fVQcv4Qik8kKz7wsgdwaxaJ0hIBFNyCdAZEFLooHnTfd/isKO4vGT/y4sVEp7DprssxJ3OYAPDddNspg4lCj1p3Oc0Q6KR7ueLFrJhLby25Fds6NHKYNJdLfhknqP++OTvpM=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=windriver.com;
+Received: from CO1PR11MB4820.namprd11.prod.outlook.com (2603:10b6:303:6f::8)
+ by MWHPR11MB0062.namprd11.prod.outlook.com (2603:10b6:301:67::34) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.28; Mon, 2 Nov
+ 2020 18:51:09 +0000
+Received: from CO1PR11MB4820.namprd11.prod.outlook.com
+ ([fe80::a18a:3898:84d8:1209]) by CO1PR11MB4820.namprd11.prod.outlook.com
+ ([fe80::a18a:3898:84d8:1209%5]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
+ 18:51:09 +0000
+From:   Mark Asselstine <mark.asselstine@windriver.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Kaneda, Erik" <erik.kaneda@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Moore, Robert" <robert.moore@intel.com>
+Subject: Re: [PATCH] ACPICA: avoid double free when object already has a zero reference count
+Date:   Mon, 02 Nov 2020 13:51:05 -0500
+Message-ID: <5891030.cEBGB3zze1@yow-masselst-lx1>
+Organization: Wind River
+In-Reply-To: <MWHPR11MB15993189246B6AC609247D69F0100@MWHPR11MB1599.namprd11.prod.outlook.com>
+References: <20201028200523.111028-1-mark.asselstine@windriver.com> <CAJZ5v0hr4xFA9bGJM+0e4i-QpESPnwy5ZT4KPwfJgby5Sz3UBw@mail.gmail.com> <MWHPR11MB15993189246B6AC609247D69F0100@MWHPR11MB1599.namprd11.prod.outlook.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [198.84.181.245]
+X-ClientProxiedBy: YQXPR01CA0093.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00:41::22) To CO1PR11MB4820.namprd11.prod.outlook.com
+ (2603:10b6:303:6f::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.120.98]
-X-ClientProxiedBy: lhreml734-chm.china.huawei.com (10.201.108.85) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from yow-masselst-lx1.localnet (198.84.181.245) by YQXPR01CA0093.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c00:41::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Mon, 2 Nov 2020 18:51:08 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ec378fa9-65f8-4074-cbaf-08d87f6042e2
+X-MS-TrafficTypeDiagnostic: MWHPR11MB0062:
+X-Microsoft-Antispam-PRVS: <MWHPR11MB0062E2DA4341BEDAE0DAF2F8ED100@MWHPR11MB0062.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: MnDTyPUU0tuFnj2kMtsYNan6qxXmnJDKu9Nyhj2K/wV1JbmjnBM+uSlFGPd1VDXNWPdfPP6ocI5E8KuArJdforveUieQamGKg9C/EHvlLkLtVyaysUL4uDgB5PFYIuiE9ONGRzN4unjZwfvKfSWWIR+sCznJ+2BYKUctGeWiKtwDsOUOOmQDUknaeCQ+kiDQdUiXPUDaVaK0BE+sABg99pKnUSI4JseqslHg08joXt7BDin58ydiyR+ePoP4kmIGk0GvQnkE2Ss9tALBNy+iGRQQDPHfQAKfa2ptRdhKIinPx79H5i0wC3XazjuX0IcYZuiqDi3owaMP43jlnhz8gD7PyF/+F//rGmAnMci9dDz2mEL71X9OYMdxZu/2QRTC
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4820.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(366004)(136003)(396003)(39850400004)(6666004)(52116002)(16526019)(53546011)(6506007)(44832011)(5660300002)(186003)(36916002)(26005)(316002)(956004)(83380400001)(2906002)(54906003)(66476007)(66556008)(478600001)(66946007)(86362001)(8676002)(6486002)(6512007)(9686003)(4326008)(110136005)(33716001)(8936002)(39026012);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: XDRf7yBn27jBUp43uhLekS42C6qk0EEU49IzXpbiWqV+wgz/nZ+ts2yw2GlyOpgwMGAz+rFqevppySlwYpSHiQJYEJjpkt8q0B3+n/IOwWVLhlBh1BraFNhruf+tzB9UDAaS6lZSWH+qoToIxlTzQaSP3SQNGCgVgQXm69srn0qqy4wrdJOT0hs2dTiaqBl3TF7V6CQgatrUs4921z1q8gIGrJ16S87wrM2otyp/4JJzil2W6NuytHgJYFHPbatE0QlwON6k7xUbNyz8t/fAU30piLw2vLTYb126RdeW8rnDLWU5XIm49/GcL0WEvl2lRHNJQew8TXaeLPmFrYrowek9NwwFtkjdtoP1/svih//4z73qXIrG+K6t88jmaH6UlxHMzjtD5zHoo49i8JhhqK9XwBv1EiCToPKnMg5pY7l6YYMU29NAcxh74dHmsDUUfxII9+amdJSkaVD/7uks1EOgC5jXVisbKzz+O9dbuRk/tDtNB01kPkx9n1XefKLuGhXp+yznOn5F54CIBxO2pYHsIgDYsPSksEIiRNTMmZf6Rx4+Qhc37AZN3Hig3KKt7LSw9qX1US18MwsXdH61EM+QCq1Nr6LG/FtrdooToNYeC6XLme/Rs+skC7okUCbFgfkF8CPeDB8wzJ6mn+X5aA==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec378fa9-65f8-4074-cbaf-08d87f6042e2
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4820.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2020 18:51:09.1759
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qELMP3uE+cgt55rdcjMtCjILRt5B7KnwS/j7fp+XfjkY7NEZN8RezmxFxoEeYvgX4QXSxNsYaJj3NfOtyNLfA9gmj3vDkLwab5mbr3DVilw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB0062
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 31 Oct 2020 09:51:23 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> On Sat, Oct 31, 2020 at 3:21 AM David Hildenbrand <david@redhat.com> wrote:
-> >
-> > On 30.10.20 21:37, Dan Williams wrote:  
-> > > On Wed, Oct 28, 2020 at 4:06 PM Vikram Sethi <vsethi@nvidia.com> wrote:  
-> > >>
-> > >> Hello,
-> > >>
-> > >> I wanted to kick off a discussion on how Linux onlining of CXL [1] type 2 device
-> > >> Coherent memory aka Host managed device memory (HDM) will work for type 2 CXL
-> > >> devices which are available/plugged in at boot. A type 2 CXL device can be simply
-> > >> thought of as an accelerator with coherent device memory, that also has a
-> > >> CXL.cache to cache system memory.
-> > >>
-> > >> One could envision that BIOS/UEFI could expose the HDM in EFI memory map
-> > >> as conventional memory as well as in ACPI SRAT/SLIT/HMAT. However, at least
-> > >> on some architectures (arm64) EFI conventional memory available at kernel boot
-> > >> memory cannot be offlined, so this may not be suitable on all architectures.  
-> > >
-> > > That seems an odd restriction. Add David, linux-mm, and linux-acpi as
-> > > they might be interested / have comments on this restriction as well.
-> > >  
-> >
-> > I am missing some important details.
-> >
-> > a) What happens after offlining? Will the memory be remove_memory()'ed?
-> > Will the device get physically unplugged?
-> >
-> > b) What's the general purpose of the memory and its intended usage when
-> > *not* exposed as system RAM? What's the main point of treating it like
-> > ordinary system RAM as default?
-> >
-> > Also, can you be sure that you can offline that memory? If it's
-> > ZONE_NORMAL (as usually all system RAM in the initial map), there are no
-> > such guarantees, especially once the system ran for long enough, but
-> > also in other cases (e.g., shuffling), or if allocation policies change
-> > in the future.
-> >
-> > So I *guess* you would already have to use kernel cmdline hacks like
-> > "movablecore" to make it work. In that case, you can directly specify
-> > what you *actually* want (which I am not sure yet I completely
-> > understood) - e.g., something like "memmap=16G!16G" ... or something
-> > similar.
-> >
-> > I consider offlining+removing *boot* memory to not physically unplug it
-> > (e.g., a DIMM getting unplugged) abusing the memory hotunplug
-> > infrastructure. It's a different thing when manually adding memory like
-> > dax_kmem does via add_memory_driver_managed().
-> >
-> >
-> > Now, back to your original question: arm64 does not support physically
-> > unplugging DIMMs that were part of the initial map. If you'd reboot
-> > after unplugging a DIMM, your system would crash. We achieve that by
-> > disallowing to offline boot memory - we could also try to handle it in
-> > ACPI code. But again, most uses of offlining+removing boot memory are
-> > abusing the memory hotunplug infrastructure and should rather be solved
-> > cleanly via a different mechanism (firmware, kernel cmdline, ...).
-> >
-> > Just recently discussed in
-> >
-> > https://lkml.kernel.org/r/de8388df2fbc5a6a33aab95831ba7db4@codeaurora.org
-> >  
-> > >> Further, the device driver associated with the type 2 device/accelerator may
-> > >> want to save off a chunk of HDM for driver private use.
-> > >> So it seems the more appropriate model may be something like dev dax model
-> > >> where the device driver probe/open calls add_memory_driver_managed, and
-> > >> the driver could choose how much of the HDM it wants to reserve and how
-> > >> much to make generally available for application mmap/malloc.  
-> > >
-> > > Sure, it can always be driver managed. The trick will be getting the
-> > > platform firmware to agree to not map it by default, but I suspect
-> > > you'll have a hard time convincing platform-firmware to take that
-> > > stance. The BIOS does not know, and should not care what OS is booting
-> > > when it produces the memory map. So I think CXL memory unplug after
-> > > the fact is more realistic than trying to get the BIOS not to map it.
-> > > So, to me it looks like arm64 needs to reconsider its unplug stance.  
-> >
-> > My personal opinion is, if memory isn't just "ordinary system RAM", then
-> > let the system know early that memory is special (as we do with
-> > soft-reserved).
-> >
-> > Ideally, you could configure the firmware (e.g., via BIOS setup) on what
-> > to do, that's the cleanest solution, but I can understand that's rather
-> > hard to achieve.  
+On Monday, November 2, 2020 1:11:22 P.M. EST Kaneda, Erik wrote:
 > 
-> Yes, my hope, which is about the most influence I can have on
-> platform-firmware implementations, is that it marks CXL attached
-> memory as soft-reserved by default and allow OS policy decide where it
-> goes. Barring that, for the configuration that Vikram mentioned, the
-> only other way to get this differentiated / not-ordinary system-ram
-> back to being driver managed would be to unplug it. The soft-reserved
-> path is cleaner.
 > 
+> > -----Original Message-----
+> > From: Rafael J. Wysocki <rafael@kernel.org>
+> > Sent: Thursday, October 29, 2020 7:06 AM
+> > To: Mark Asselstine <mark.asselstine@windriver.com>
+> > Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>; Kaneda, Erik
+> > <erik.kaneda@intel.com>; Moore, Robert <robert.moore@intel.com>
+> > Subject: Re: [PATCH] ACPICA: avoid double free when object already has a
+> > zero reference count
+> >
+> >
+> >
+> > +Erik and Bob
+> >
+> >
+> >
+> > On Thu, Oct 29, 2020 at 3:05 AM Mark Asselstine
+> > <mark.asselstine@windriver.com> wrote:
+> > 
+> > >
+> > >
+> > > The first trip into acpi_ut_update_ref_count() for an object where
+> > > 'object->common.reference_count' is 1 and we are performing a
+> > > REF_DECREMENT will result in 'new_count' being 0 and thus the object
+> > > is deleted via acpi_ut_delete_internal_obj().
+> > >
+> > >
+> > >
+> > > If for some reason we make a subsequent trip into
+> > > acpi_ut_update_ref_count() with the same object,
+> > > object->common.reference_count' will be 0 and performing a
+> > > REF_DECREMENT will produce a warning msg "Reference Count is already
+> > > zero, cannot decrement", 'new_count' will again be 0 and the already
+> > > deleted object will be attempted to be deleted again via
+> > > acpi_ut_delete_internal_obj().
+> 
+> 
+> Mark, Do you have an example of AML/ASL that you used to determine this
+> double free?
 
-The whole reason that was introduced into UEFI the first place was to handle
-this case.  SPM is still in the EFI_MEMORY_MAP but should not be used
-for non moveable general purpose allocations.  It was intended for RAM
-that you 'could' use for normal purpose if it wasn't being used for what
-it was put there for (i.e. your GPU or similar isn't using it).
+Unfortunately no. It is a rare occurance and a consequence of several actions 
+taking place at the same time during boot, including a PCI rescan. 
+Unfortunately due to circumstances I am sure you would rather not have to be 
+concerned about, we have so far had to focus our efforts on an older kernel 
+which also has the preempt-rt patchset applied. It is for this reason I also 
+didn't include the dmesg and eventual kernel BUG_ON in my submission.
 
-So agreed, soft-reserved / SPM.  
+It is unclear at this time if the additional locking or other changes that 
+have been merged since the kernel version we are on would prevent this from 
+occuring on an up to date kernel.
 
-Jonathan
+I have reviewed the code in the latest linux kernel and as far as I can tell 
+the deficiency is still present. If you do go into acpi_ut_update_ref_count() 
+with an object with a reference count of 0 and an action of REF_DECREMENT the 
+following may be called:
+
+acpi_ut_update_ref_count
+  -> acpi_ut_delete_internal_obj
+    -> acpi_ut_delete_object_desc
+      -> acpi_os_release_object
+        -> kmem_cache_free
+
+I completely understand if you have concerns about the change since I can't 
+hand you a reproducer. I was hoping the merrits of the change would stand on 
+their own as there is no reason to call acpi_ut_delete_internal_obj() if we 
+have already done so, even if the rest of the call chain was well behaved. In 
+our case the eventual slab corruption ended up affecting the 'Acpi-Operand' 
+dedicated cache. We see the corruption happen shortly after we see the msg 
+warning that the reference count is already at zero.
+
+Please let me know if there is anything else I can provide to help out and 
+thanks for your time reviewing this change.
+
+Thanks,
+Mark
+
+ 
+> Thanks,
+> Erik
+> 
+> 
+> > >
+> > >
+> > > Since the object deletion doesn't NULL the object the calls to
+> > > acpi_ut_delete_internal_obj(), acpi_ut_delete_object_desc(),
+> > > acpi_os_release_object(), kmem_cache_free() will operate on the object
+> > > as if it hasn't been deleted. In many cases this can result in no
+> > > issues, but if you are using the slab and a new object has been
+> > > created with the same address this can be the cause slab corruption.
+> > >
+> > >
+> > >
+> > > Adding a check if we are decrementing to 0 for the first time and only
+> > > calling acpi_ut_delete_internal_obj() in this case will prevent
+> > > another attempt at deleting the object.
+> > >
+> > >
+> > >
+> > > Signed-off-by: Mark Asselstine <mark.asselstine@windriver.com>
+> > > ---
+> > > 
+> > >  drivers/acpi/acpica/utdelete.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > >
+> > >
+> > > diff --git a/drivers/acpi/acpica/utdelete.c
+> > > b/drivers/acpi/acpica/utdelete.c
+ index 4c0d4e434196..c6b860fd9eb5
+> > > 100644
+> > > --- a/drivers/acpi/acpica/utdelete.c
+> > > +++ b/drivers/acpi/acpica/utdelete.c
+> > > @@ -421,9 +421,9 @@ acpi_ut_update_ref_count(union
+> > 
+> > acpi_operand_object *object, u32 action)
+> > 
+> > >                                       ACPI_GET_FUNCTION_NAME, object,
+> > >                                       object->common.type, new_count));
+> > >
+> > >
+> > >
+> > > -               /* Actually delete the object on a reference count of
+> > > zero */
+ +               /* If we haven't already, actually delete the
+> > > object on a reference> 
+> > count of zero */
+> > 
+> > >
+> > >
+> > > -               if (new_count == 0) {
+> > > +               if (new_count == 0 && original_count != 0) {
+> > > 
+> > >                         acpi_ut_delete_internal_obj(object);
+> > >                 
+> > >                 }
+> > >                 message = "Decrement";
+> > > 
+> > > --
+> > > 2.17.1
+> > >
+> > >
+
 
 
 
