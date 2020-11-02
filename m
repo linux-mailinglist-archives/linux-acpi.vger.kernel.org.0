@@ -2,177 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 137512A3293
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Nov 2020 19:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B2D2A3317
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Nov 2020 19:36:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbgKBSL0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Nov 2020 13:11:26 -0500
-Received: from mga11.intel.com ([192.55.52.93]:59057 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725789AbgKBSLZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Nov 2020 13:11:25 -0500
-IronPort-SDR: 5R+pxpHglk16TyvWL576MM8ecnxhGU/BbZEIbuYy91MKcsmoSNyVsJFu9oI1/2GvjTzaPNhW75
- au0I1CdOJzag==
-X-IronPort-AV: E=McAfee;i="6000,8403,9793"; a="165423967"
-X-IronPort-AV: E=Sophos;i="5.77,445,1596524400"; 
-   d="scan'208";a="165423967"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2020 10:11:25 -0800
-IronPort-SDR: QGrUjS4up1UyNSr1WeBQV0MtAt9Oo3/o+4etMB/wAbpnS2PzUHa1oyhKqUVCQdmm/YLtPDtrjl
- rppPrVo2Wv8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,445,1596524400"; 
-   d="scan'208";a="470469737"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga004.jf.intel.com with ESMTP; 02 Nov 2020 10:11:24 -0800
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 2 Nov 2020 10:11:24 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 2 Nov 2020 10:11:24 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Mon, 2 Nov 2020 10:11:24 -0800
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (104.47.38.55) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.1713.5; Mon, 2 Nov 2020 10:11:23 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I89CVVRX+131nghU2FaUfZy3y1q+eRjFAJhTikTGQIoaBTApgvco/TmhPptA6kxvGT2EwTfvGhIP7t1nYkhL/RuoVJFKqA1XlvwyqAPOY0tw2UZj/VcEqB9jzs28zTVkIP7EltvWtZqpEku1nUTcqXZ/W4iKOqtIA1mWynIBhzn1nSpYrUriXyYnwHRrp2UX4i2qzxZWrz7sm61+fZWh2CZfyjRh3R375ot79ANULuRFDoqYXQlJE7+sAfBzoiZN2y+gHVc3oWJ+Zu4ltiIusqHgyvqgABwUI+rSgDNedzIuUMoZkTZGfKY1SexWdvrYlw6WdyssjehBdCmccFzOwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fInlsdEhRGWDyqi6Xh6jvmoYivDqbFGmCS/HI/xZ6Ag=;
- b=K6M5hhFsXcZWi7hKlIsYd2GCL+bnoOi/DHoX6bnh6Rkk7G8YqFKPPttbBGSl13QzPaaibf8zp6xtw3/9JfU/tOELRyJYpf+XgN2az4YwtG8HogC/Mw4aTHiwdFyTKBM2UYj0y8LlA399VgD6AovTFDdy+z4F7ojLDkDS8DjHecwct7YmKkQw2uRx9LvgriGR42d+6ES4mvZqykslkMjzLPgy6nSfPwNhueDoVT+4ovv4VNylVH/08RehI16a1M6nkkkfyG/duAdXwQLWt0oDd0QB1iVj14X73wRs59+LjRZpx87STXMqaTnpFQbaOlca5iHo2SNkI9C9Qa5krv00yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fInlsdEhRGWDyqi6Xh6jvmoYivDqbFGmCS/HI/xZ6Ag=;
- b=dvXYJeXtE4yB+65R3ObJwYUuFyvuoK/0IGSFqEJ25EVKMhly94IcsQPxxDXq+98V86NfF2hHZhWAXt8D+TFLrcwmz/de/1CRIRKfAUGw3H95s6W1SlPTWKw8X2TUnhI8meUtj+EqTeK39JXMuHwpG1fmdUSHxvZI3qqalzs2hZg=
-Received: from MWHPR11MB1599.namprd11.prod.outlook.com (2603:10b6:301:e::16)
- by CO1PR11MB5188.namprd11.prod.outlook.com (2603:10b6:303:95::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Mon, 2 Nov
- 2020 18:11:22 +0000
-Received: from MWHPR11MB1599.namprd11.prod.outlook.com
- ([fe80::95ce:8aed:2361:1f31]) by MWHPR11MB1599.namprd11.prod.outlook.com
- ([fe80::95ce:8aed:2361:1f31%10]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
- 18:11:22 +0000
-From:   "Kaneda, Erik" <erik.kaneda@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mark Asselstine <mark.asselstine@windriver.com>
-CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>
-Subject: RE: [PATCH] ACPICA: avoid double free when object already has a zero
- reference count
-Thread-Topic: [PATCH] ACPICA: avoid double free when object already has a zero
- reference count
-Thread-Index: AQHWrZgqUSUAS5yOM0Kd9m5guNYbU6mungEAgAaNfIA=
-Date:   Mon, 2 Nov 2020 18:11:22 +0000
-Message-ID: <MWHPR11MB15993189246B6AC609247D69F0100@MWHPR11MB1599.namprd11.prod.outlook.com>
-References: <20201028200523.111028-1-mark.asselstine@windriver.com>
- <CAJZ5v0hr4xFA9bGJM+0e4i-QpESPnwy5ZT4KPwfJgby5Sz3UBw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hr4xFA9bGJM+0e4i-QpESPnwy5ZT4KPwfJgby5Sz3UBw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.5.1.3
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [50.45.176.77]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a7ef0fb6-2029-44f9-f1e6-08d87f5ab46a
-x-ms-traffictypediagnostic: CO1PR11MB5188:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CO1PR11MB518871C29CD90D4685D4564EF0100@CO1PR11MB5188.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: k77Ho6tnMcZ8dFfZr0SmzrM7qc5nqq1B8l5NKqzBwlz3h6r1ZVzWx715t10AoPZrKEw7ZM4pp11CvvkeFNPWCNC/Vn874eT4FbHxkDpgWXgdJUWYG2Ppn6600LpHAz2KJwcNwxpPTuOtkrvaB1i5LdrryOM9XhHZqA5vjzG8qAVe0paNFlNTtR1gZWsdnJHHpypMvypvBGTFI7d3LOIez7+IiXWrjRBNlZD5xHBMadKOSeHqvggQxbTFi/ICNb3gi6YvSf7zXEH6RzUGeZL3s8LMrnKoqOYw5G3fCqMXeeya4Ol0rVZ3UDu/1+p3McrS9ghzQknxnxH4rCzGMF8WZQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB1599.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(366004)(396003)(136003)(8676002)(107886003)(2906002)(8936002)(7696005)(71200400001)(53546011)(26005)(6506007)(4326008)(86362001)(186003)(110136005)(54906003)(478600001)(316002)(55016002)(9686003)(64756008)(66476007)(66946007)(83380400001)(5660300002)(52536014)(33656002)(66556008)(66446008)(76116006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: 6KQd8QeZtXV3GxlB8o9yu4QJD19rTd+GPXbE0NmNyECiyxSfWeMzJjTHgzVWl60nA0wC76UMjnAQpmxkU+TP0y8BVGpghElYgmI34/P/V+7y6o3lENW8A2RgwKi0+mr3qLXPbhwsQXCo3s7sNvxWhRfZCnQjZGFm4yxDv/vjykvJ8sFN504LKo2IE0/S9JcS5Q1KrSBDWBMcBWyV8odoOaz9ERNzrBr4peANk/vniSW5TmPIeJAlo1J3eNL6wz2JDXXtW10nuVUSbWvyDAXtmJOWDiSE8FYfEuejylXFK9FfUlWBROp7xYO/wfGaMcDHWoo6GS2BYDnhujJJngY0v0W3WKIHcURXap/+3awvQNzIeaB5ABMCPTWc2JTDSiFvTTfDxI3TCtHBpeH7UH1MYzI+lqWcUA1GWMhZBpqZmEyMvGff42kI3hkOVD29jmtoHHl2l9kHbrQLCDf7zIyFOyQdOrAqAuLlPJOk6/sQOEa7YJgtOKOABpQYGUrbljiNj/26NGXKVQTe3PjBxrNbjcBOONPlvUOJB5Y85aODYU3Sek65RzD7DCxnkKuAqLk1rKbSce31FFpPiujRgzjp5u4AqMClxYAOlK4MsO2y4DiAxdmJL55UNhs+egCNeOZBucKPDyUZd7aSp0pRk/MtJA==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725831AbgKBSgf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Nov 2020 13:36:35 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:3022 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725809AbgKBSgf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Nov 2020 13:36:35 -0500
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 5DA34F0A6D15097B8BB5;
+        Mon,  2 Nov 2020 18:36:31 +0000 (GMT)
+Received: from localhost (10.52.120.98) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 2 Nov 2020
+ 18:36:30 +0000
+Date:   Mon, 2 Nov 2020 18:34:28 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     David Hildenbrand <david@redhat.com>,
+        Vikram Sethi <vsethi@nvidia.com>,
+        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+        "Natu, Mahesh" <mahesh.natu@intel.com>,
+        "Rudoff, Andy" <andy.rudoff@intel.com>,
+        Jeff Smith <JSMITH@nvidia.com>,
+        Mark Hairgrove <mhairgrove@nvidia.com>,
+        "jglisse@redhat.com" <jglisse@redhat.com>,
+        Linux MM <linux-mm@kvack.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: Onlining CXL Type2 device coherent memory
+Message-ID: <20201102183428.00005f4f@Huawei.com>
+In-Reply-To: <CAPcyv4jX1tedjuU-vCSKgvhQeNFukyq9d0ddmsk7jAjWMX+iBQ@mail.gmail.com>
+References: <BL0PR12MB25321C8689BAFDF8678E5C69BD170@BL0PR12MB2532.namprd12.prod.outlook.com>
+        <CAPcyv4jWFf0=VoA2EiXPaQphA-5z9JFO8h0Agy0dO0w6nDyorw@mail.gmail.com>
+        <451b2571-c3e8-97d8-bfd0-f8054a1b75c5@redhat.com>
+        <CAPcyv4jX1tedjuU-vCSKgvhQeNFukyq9d0ddmsk7jAjWMX+iBQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB1599.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7ef0fb6-2029-44f9-f1e6-08d87f5ab46a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2020 18:11:22.2737
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hEBfkkpd6o5bGH/nk2sOtLvTIw5sRDIqTpePBx91QiukoDVzNtl+hc6PY0x5KWMxQG+dEqjnI/JEDl7fC26z9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5188
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.120.98]
+X-ClientProxiedBy: lhreml734-chm.china.huawei.com (10.201.108.85) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFmYWVsIEouIFd5c29j
-a2kgPHJhZmFlbEBrZXJuZWwub3JnPg0KPiBTZW50OiBUaHVyc2RheSwgT2N0b2JlciAyOSwgMjAy
-MCA3OjA2IEFNDQo+IFRvOiBNYXJrIEFzc2Vsc3RpbmUgPG1hcmsuYXNzZWxzdGluZUB3aW5kcml2
-ZXIuY29tPg0KPiBDYzogQUNQSSBEZXZlbCBNYWxpbmcgTGlzdCA8bGludXgtYWNwaUB2Z2VyLmtl
-cm5lbC5vcmc+OyBLYW5lZGEsIEVyaWsNCj4gPGVyaWsua2FuZWRhQGludGVsLmNvbT47IE1vb3Jl
-LCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hd
-IEFDUElDQTogYXZvaWQgZG91YmxlIGZyZWUgd2hlbiBvYmplY3QgYWxyZWFkeSBoYXMgYQ0KPiB6
-ZXJvIHJlZmVyZW5jZSBjb3VudA0KPiANCj4gK0VyaWsgYW5kIEJvYg0KPiANCj4gT24gVGh1LCBP
-Y3QgMjksIDIwMjAgYXQgMzowNSBBTSBNYXJrIEFzc2Vsc3RpbmUNCj4gPG1hcmsuYXNzZWxzdGlu
-ZUB3aW5kcml2ZXIuY29tPiB3cm90ZToNCj4gPg0KPiA+IFRoZSBmaXJzdCB0cmlwIGludG8gYWNw
-aV91dF91cGRhdGVfcmVmX2NvdW50KCkgZm9yIGFuIG9iamVjdCB3aGVyZQ0KPiA+ICdvYmplY3Qt
-PmNvbW1vbi5yZWZlcmVuY2VfY291bnQnIGlzIDEgYW5kIHdlIGFyZSBwZXJmb3JtaW5nIGENCj4g
-PiBSRUZfREVDUkVNRU5UIHdpbGwgcmVzdWx0IGluICduZXdfY291bnQnIGJlaW5nIDAgYW5kIHRo
-dXMgdGhlIG9iamVjdA0KPiA+IGlzIGRlbGV0ZWQgdmlhIGFjcGlfdXRfZGVsZXRlX2ludGVybmFs
-X29iaigpLg0KPiA+DQo+ID4gSWYgZm9yIHNvbWUgcmVhc29uIHdlIG1ha2UgYSBzdWJzZXF1ZW50
-IHRyaXAgaW50bw0KPiA+IGFjcGlfdXRfdXBkYXRlX3JlZl9jb3VudCgpIHdpdGggdGhlIHNhbWUg
-b2JqZWN0LA0KPiA+IG9iamVjdC0+Y29tbW9uLnJlZmVyZW5jZV9jb3VudCcgd2lsbCBiZSAwIGFu
-ZCBwZXJmb3JtaW5nIGENCj4gPiBSRUZfREVDUkVNRU5UIHdpbGwgcHJvZHVjZSBhIHdhcm5pbmcg
-bXNnICJSZWZlcmVuY2UgQ291bnQgaXMgYWxyZWFkeQ0KPiA+IHplcm8sIGNhbm5vdCBkZWNyZW1l
-bnQiLCAnbmV3X2NvdW50JyB3aWxsIGFnYWluIGJlIDAgYW5kIHRoZSBhbHJlYWR5DQo+ID4gZGVs
-ZXRlZCBvYmplY3Qgd2lsbCBiZSBhdHRlbXB0ZWQgdG8gYmUgZGVsZXRlZCBhZ2FpbiB2aWENCj4g
-PiBhY3BpX3V0X2RlbGV0ZV9pbnRlcm5hbF9vYmooKS4NCg0KTWFyaywgRG8geW91IGhhdmUgYW4g
-ZXhhbXBsZSBvZiBBTUwvQVNMIHRoYXQgeW91IHVzZWQgdG8gZGV0ZXJtaW5lIHRoaXMgZG91Ymxl
-IGZyZWU/DQoNClRoYW5rcywNCkVyaWsNCg0KPiA+DQo+ID4gU2luY2UgdGhlIG9iamVjdCBkZWxl
-dGlvbiBkb2Vzbid0IE5VTEwgdGhlIG9iamVjdCB0aGUgY2FsbHMgdG8NCj4gPiBhY3BpX3V0X2Rl
-bGV0ZV9pbnRlcm5hbF9vYmooKSwgYWNwaV91dF9kZWxldGVfb2JqZWN0X2Rlc2MoKSwNCj4gPiBh
-Y3BpX29zX3JlbGVhc2Vfb2JqZWN0KCksIGttZW1fY2FjaGVfZnJlZSgpIHdpbGwgb3BlcmF0ZSBv
-biB0aGUgb2JqZWN0DQo+ID4gYXMgaWYgaXQgaGFzbid0IGJlZW4gZGVsZXRlZC4gSW4gbWFueSBj
-YXNlcyB0aGlzIGNhbiByZXN1bHQgaW4gbm8NCj4gPiBpc3N1ZXMsIGJ1dCBpZiB5b3UgYXJlIHVz
-aW5nIHRoZSBzbGFiIGFuZCBhIG5ldyBvYmplY3QgaGFzIGJlZW4NCj4gPiBjcmVhdGVkIHdpdGgg
-dGhlIHNhbWUgYWRkcmVzcyB0aGlzIGNhbiBiZSB0aGUgY2F1c2Ugc2xhYiBjb3JydXB0aW9uLg0K
-PiA+DQo+ID4gQWRkaW5nIGEgY2hlY2sgaWYgd2UgYXJlIGRlY3JlbWVudGluZyB0byAwIGZvciB0
-aGUgZmlyc3QgdGltZSBhbmQgb25seQ0KPiA+IGNhbGxpbmcgYWNwaV91dF9kZWxldGVfaW50ZXJu
-YWxfb2JqKCkgaW4gdGhpcyBjYXNlIHdpbGwgcHJldmVudA0KPiA+IGFub3RoZXIgYXR0ZW1wdCBh
-dCBkZWxldGluZyB0aGUgb2JqZWN0Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogTWFyayBBc3Nl
-bHN0aW5lIDxtYXJrLmFzc2Vsc3RpbmVAd2luZHJpdmVyLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJp
-dmVycy9hY3BpL2FjcGljYS91dGRlbGV0ZS5jIHwgNCArKy0tDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9hY3BpL2FjcGljYS91dGRlbGV0ZS5jIGIvZHJpdmVycy9hY3BpL2FjcGljYS91dGRl
-bGV0ZS5jDQo+ID4gaW5kZXggNGMwZDRlNDM0MTk2Li5jNmI4NjBmZDllYjUgMTAwNjQ0DQo+ID4g
-LS0tIGEvZHJpdmVycy9hY3BpL2FjcGljYS91dGRlbGV0ZS5jDQo+ID4gKysrIGIvZHJpdmVycy9h
-Y3BpL2FjcGljYS91dGRlbGV0ZS5jDQo+ID4gQEAgLTQyMSw5ICs0MjEsOSBAQCBhY3BpX3V0X3Vw
-ZGF0ZV9yZWZfY291bnQodW5pb24NCj4gYWNwaV9vcGVyYW5kX29iamVjdCAqb2JqZWN0LCB1MzIg
-YWN0aW9uKQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQUNQSV9H
-RVRfRlVOQ1RJT05fTkFNRSwgb2JqZWN0LA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgb2JqZWN0LT5jb21tb24udHlwZSwgbmV3X2NvdW50KSk7DQo+ID4NCj4gPiAt
-ICAgICAgICAgICAgICAgLyogQWN0dWFsbHkgZGVsZXRlIHRoZSBvYmplY3Qgb24gYSByZWZlcmVu
-Y2UgY291bnQgb2YgemVybyAqLw0KPiA+ICsgICAgICAgICAgICAgICAvKiBJZiB3ZSBoYXZlbid0
-IGFscmVhZHksIGFjdHVhbGx5IGRlbGV0ZSB0aGUgb2JqZWN0IG9uIGEgcmVmZXJlbmNlDQo+IGNv
-dW50IG9mIHplcm8gKi8NCj4gPg0KPiA+IC0gICAgICAgICAgICAgICBpZiAobmV3X2NvdW50ID09
-IDApIHsNCj4gPiArICAgICAgICAgICAgICAgaWYgKG5ld19jb3VudCA9PSAwICYmIG9yaWdpbmFs
-X2NvdW50ICE9IDApIHsNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICBhY3BpX3V0X2RlbGV0
-ZV9pbnRlcm5hbF9vYmoob2JqZWN0KTsNCj4gPiAgICAgICAgICAgICAgICAgfQ0KPiA+ICAgICAg
-ICAgICAgICAgICBtZXNzYWdlID0gIkRlY3JlbWVudCI7DQo+ID4gLS0NCj4gPiAyLjE3LjENCj4g
-Pg0K
+On Sat, 31 Oct 2020 09:51:23 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> On Sat, Oct 31, 2020 at 3:21 AM David Hildenbrand <david@redhat.com> wrote:
+> >
+> > On 30.10.20 21:37, Dan Williams wrote:  
+> > > On Wed, Oct 28, 2020 at 4:06 PM Vikram Sethi <vsethi@nvidia.com> wrote:  
+> > >>
+> > >> Hello,
+> > >>
+> > >> I wanted to kick off a discussion on how Linux onlining of CXL [1] type 2 device
+> > >> Coherent memory aka Host managed device memory (HDM) will work for type 2 CXL
+> > >> devices which are available/plugged in at boot. A type 2 CXL device can be simply
+> > >> thought of as an accelerator with coherent device memory, that also has a
+> > >> CXL.cache to cache system memory.
+> > >>
+> > >> One could envision that BIOS/UEFI could expose the HDM in EFI memory map
+> > >> as conventional memory as well as in ACPI SRAT/SLIT/HMAT. However, at least
+> > >> on some architectures (arm64) EFI conventional memory available at kernel boot
+> > >> memory cannot be offlined, so this may not be suitable on all architectures.  
+> > >
+> > > That seems an odd restriction. Add David, linux-mm, and linux-acpi as
+> > > they might be interested / have comments on this restriction as well.
+> > >  
+> >
+> > I am missing some important details.
+> >
+> > a) What happens after offlining? Will the memory be remove_memory()'ed?
+> > Will the device get physically unplugged?
+> >
+> > b) What's the general purpose of the memory and its intended usage when
+> > *not* exposed as system RAM? What's the main point of treating it like
+> > ordinary system RAM as default?
+> >
+> > Also, can you be sure that you can offline that memory? If it's
+> > ZONE_NORMAL (as usually all system RAM in the initial map), there are no
+> > such guarantees, especially once the system ran for long enough, but
+> > also in other cases (e.g., shuffling), or if allocation policies change
+> > in the future.
+> >
+> > So I *guess* you would already have to use kernel cmdline hacks like
+> > "movablecore" to make it work. In that case, you can directly specify
+> > what you *actually* want (which I am not sure yet I completely
+> > understood) - e.g., something like "memmap=16G!16G" ... or something
+> > similar.
+> >
+> > I consider offlining+removing *boot* memory to not physically unplug it
+> > (e.g., a DIMM getting unplugged) abusing the memory hotunplug
+> > infrastructure. It's a different thing when manually adding memory like
+> > dax_kmem does via add_memory_driver_managed().
+> >
+> >
+> > Now, back to your original question: arm64 does not support physically
+> > unplugging DIMMs that were part of the initial map. If you'd reboot
+> > after unplugging a DIMM, your system would crash. We achieve that by
+> > disallowing to offline boot memory - we could also try to handle it in
+> > ACPI code. But again, most uses of offlining+removing boot memory are
+> > abusing the memory hotunplug infrastructure and should rather be solved
+> > cleanly via a different mechanism (firmware, kernel cmdline, ...).
+> >
+> > Just recently discussed in
+> >
+> > https://lkml.kernel.org/r/de8388df2fbc5a6a33aab95831ba7db4@codeaurora.org
+> >  
+> > >> Further, the device driver associated with the type 2 device/accelerator may
+> > >> want to save off a chunk of HDM for driver private use.
+> > >> So it seems the more appropriate model may be something like dev dax model
+> > >> where the device driver probe/open calls add_memory_driver_managed, and
+> > >> the driver could choose how much of the HDM it wants to reserve and how
+> > >> much to make generally available for application mmap/malloc.  
+> > >
+> > > Sure, it can always be driver managed. The trick will be getting the
+> > > platform firmware to agree to not map it by default, but I suspect
+> > > you'll have a hard time convincing platform-firmware to take that
+> > > stance. The BIOS does not know, and should not care what OS is booting
+> > > when it produces the memory map. So I think CXL memory unplug after
+> > > the fact is more realistic than trying to get the BIOS not to map it.
+> > > So, to me it looks like arm64 needs to reconsider its unplug stance.  
+> >
+> > My personal opinion is, if memory isn't just "ordinary system RAM", then
+> > let the system know early that memory is special (as we do with
+> > soft-reserved).
+> >
+> > Ideally, you could configure the firmware (e.g., via BIOS setup) on what
+> > to do, that's the cleanest solution, but I can understand that's rather
+> > hard to achieve.  
+> 
+> Yes, my hope, which is about the most influence I can have on
+> platform-firmware implementations, is that it marks CXL attached
+> memory as soft-reserved by default and allow OS policy decide where it
+> goes. Barring that, for the configuration that Vikram mentioned, the
+> only other way to get this differentiated / not-ordinary system-ram
+> back to being driver managed would be to unplug it. The soft-reserved
+> path is cleaner.
+> 
+
+The whole reason that was introduced into UEFI the first place was to handle
+this case.  SPM is still in the EFI_MEMORY_MAP but should not be used
+for non moveable general purpose allocations.  It was intended for RAM
+that you 'could' use for normal purpose if it wasn't being used for what
+it was put there for (i.e. your GPU or similar isn't using it).
+
+So agreed, soft-reserved / SPM.  
+
+Jonathan
+
+
+
