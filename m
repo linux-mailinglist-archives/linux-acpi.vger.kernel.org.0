@@ -2,159 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B29D12A18CE
-	for <lists+linux-acpi@lfdr.de>; Sat, 31 Oct 2020 17:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4050F2A231B
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Nov 2020 03:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728074AbgJaQvj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 31 Oct 2020 12:51:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52938 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728015AbgJaQvj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 31 Oct 2020 12:51:39 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE689C0617A7
-        for <linux-acpi@vger.kernel.org>; Sat, 31 Oct 2020 09:51:38 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id o21so5804091ejb.3
-        for <linux-acpi@vger.kernel.org>; Sat, 31 Oct 2020 09:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=g2N2bRo+0Nu9FyFzR3jSXJbqcWCGERbqh2aT9VZgZe0=;
-        b=bHWZLHhdgzYG9jxmwswDLjuL61ArDzTneQZ8u8Ea2FbBuXW1MLDxB10BCzP3jG7Fr0
-         Gx+gz7ODZzG+UnerSEJAaJyOOvVvhv5kIkZPvnAyd05JGJ9m5FFwXoqEKU2K8A71h0Nv
-         +sv77gryarFaBBD+kmaIlW7n8gecCJHRD5Fx0TG3wYERDMKMEui1Z13r+yt8JL0gMfwp
-         uPk19evhJB1iZUcanddX2dLaNSx0RnOrrYJwJYy5D+PzhK/Njb7zVl2B6KurYghUFtA7
-         3HZSgL+d5XJnPIjjTOM5tPl3trHvzfJBt4H5F2QPjcx/iTjplx1VIsQewaJn6iWf2cvp
-         9c7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=g2N2bRo+0Nu9FyFzR3jSXJbqcWCGERbqh2aT9VZgZe0=;
-        b=XXiI8XfhlJLDGsjKrjCR5MRn4WKKSYopGrkE7KjUCoPo9XR5HUJL5Qq5pSd09BD5Zd
-         w9oAZnMMqwLUAVx8BY1G1Pgr/DvCQK2BKwrJ3VMfIHayYf7TtIEdv32/rTOMK3rzVH6/
-         ihZ1p9DV2urNoJQNq92m5lPssfvurfc2Bd6uQhjGXa/deTsZE9kGNozH1JolsFqHi/oT
-         bzZ2VQdv0f6LV4GwHmvHsDgb5lwZNa6povsmHnnQmL+HTdV8qHQOXsNv0q28EfJyMDZH
-         +6JkKlvSzPMuCma5rP2wpawX8B57gknGVTEaZwpA+lHQFEWAcyJqEcm+tj0aQekr7WA5
-         qc2A==
-X-Gm-Message-State: AOAM530q3KkyVp1tKckJvZlPemMqOJ8/8apBH1oGNy24wFhqVrVA92ty
-        AeLMD7432XYZOT2YO7gDPHR3JWCj4NZjTmPsrB1Oyg==
-X-Google-Smtp-Source: ABdhPJx+yFu4DlwZbGmpKSiA9IsU63OA0ThjarRqDAyMcWC+4PuYmxCS5HAMbySsajs/H5zrMgFUTz47bCGoYMjCI24=
-X-Received: by 2002:a17:906:280a:: with SMTP id r10mr7805066ejc.45.1604163097253;
- Sat, 31 Oct 2020 09:51:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <BL0PR12MB25321C8689BAFDF8678E5C69BD170@BL0PR12MB2532.namprd12.prod.outlook.com>
- <CAPcyv4jWFf0=VoA2EiXPaQphA-5z9JFO8h0Agy0dO0w6nDyorw@mail.gmail.com> <451b2571-c3e8-97d8-bfd0-f8054a1b75c5@redhat.com>
-In-Reply-To: <451b2571-c3e8-97d8-bfd0-f8054a1b75c5@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Sat, 31 Oct 2020 09:51:23 -0700
-Message-ID: <CAPcyv4jX1tedjuU-vCSKgvhQeNFukyq9d0ddmsk7jAjWMX+iBQ@mail.gmail.com>
-Subject: Re: Onlining CXL Type2 device coherent memory
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Vikram Sethi <vsethi@nvidia.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "Natu, Mahesh" <mahesh.natu@intel.com>,
-        "Rudoff, Andy" <andy.rudoff@intel.com>,
-        Jeff Smith <JSMITH@nvidia.com>,
-        Mark Hairgrove <mhairgrove@nvidia.com>,
-        "jglisse@redhat.com" <jglisse@redhat.com>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727450AbgKBCfs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 1 Nov 2020 21:35:48 -0500
+Received: from mail-m973.mail.163.com ([123.126.97.3]:35706 "EHLO
+        mail-m973.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727409AbgKBCfs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 1 Nov 2020 21:35:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=2eTmrCKSEZ5sTcw2bc
+        BINOvh7851Ksw9VIukUh0jZGA=; b=pyPECmsy77ISx5GCUngxK/RdgJ6XDFT2hM
+        sQbkqYpQhXJhDhNcfvlMiGyzkW4bxA9GffVl/LpKlAWGslXKu4J6vUWakHZBNpRb
+        wi/g0SVez3oDo17vpJPZb1iJKByDrDDTDXA5R8XWhJSGsheLxZGfJJfzVd5NUXzu
+        daQv1hF7I=
+Received: from smtp.163.com (unknown [36.112.24.9])
+        by smtp3 (Coremail) with SMTP id G9xpCgCHYCoVcJ9fK6WQJw--.78S2;
+        Mon, 02 Nov 2020 10:34:03 +0800 (CST)
+From:   yaoaili126@163.com
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        linux-acpi@vger.kernel.org, yangfeng1@kingsoft.com,
+        yaoaili@kingsoft.com
+Subject: [PATCH] ACPI, APEI, Fix incorrect return value of apei_map_generic_address
+Date:   Sun,  1 Nov 2020 18:33:32 -0800
+Message-Id: <20201102023332.7638-1-yaoaili126@163.com>
+X-Mailer: git-send-email 2.18.4
+In-Reply-To: <28dc453f-40b8-8263-5aeb-f8979f54a941 () arm ! com>
+References: <28dc453f-40b8-8263-5aeb-f8979f54a941 () arm ! com>
+X-CM-TRANSID: G9xpCgCHYCoVcJ9fK6WQJw--.78S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAw13XryfCrWUCryUtw4rAFb_yoWrKw17pF
+        WxurWFkw4rJr4xG3yxAr4jgry5Zws7Gay3t39Fkwn5uF1UGrW5urWDXFyUXFyrJrW8Wr4S
+        qFZ8tFsxCanFvr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jV6wZUUUUU=
+X-Originating-IP: [36.112.24.9]
+X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbiLBXQG1spZS3+4AAAsW
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 3:21 AM David Hildenbrand <david@redhat.com> wrote:
->
-> On 30.10.20 21:37, Dan Williams wrote:
-> > On Wed, Oct 28, 2020 at 4:06 PM Vikram Sethi <vsethi@nvidia.com> wrote:
-> >>
-> >> Hello,
-> >>
-> >> I wanted to kick off a discussion on how Linux onlining of CXL [1] type 2 device
-> >> Coherent memory aka Host managed device memory (HDM) will work for type 2 CXL
-> >> devices which are available/plugged in at boot. A type 2 CXL device can be simply
-> >> thought of as an accelerator with coherent device memory, that also has a
-> >> CXL.cache to cache system memory.
-> >>
-> >> One could envision that BIOS/UEFI could expose the HDM in EFI memory map
-> >> as conventional memory as well as in ACPI SRAT/SLIT/HMAT. However, at least
-> >> on some architectures (arm64) EFI conventional memory available at kernel boot
-> >> memory cannot be offlined, so this may not be suitable on all architectures.
-> >
-> > That seems an odd restriction. Add David, linux-mm, and linux-acpi as
-> > they might be interested / have comments on this restriction as well.
-> >
->
-> I am missing some important details.
->
-> a) What happens after offlining? Will the memory be remove_memory()'ed?
-> Will the device get physically unplugged?
->
-> b) What's the general purpose of the memory and its intended usage when
-> *not* exposed as system RAM? What's the main point of treating it like
-> ordinary system RAM as default?
->
-> Also, can you be sure that you can offline that memory? If it's
-> ZONE_NORMAL (as usually all system RAM in the initial map), there are no
-> such guarantees, especially once the system ran for long enough, but
-> also in other cases (e.g., shuffling), or if allocation policies change
-> in the future.
->
-> So I *guess* you would already have to use kernel cmdline hacks like
-> "movablecore" to make it work. In that case, you can directly specify
-> what you *actually* want (which I am not sure yet I completely
-> understood) - e.g., something like "memmap=16G!16G" ... or something
-> similar.
->
-> I consider offlining+removing *boot* memory to not physically unplug it
-> (e.g., a DIMM getting unplugged) abusing the memory hotunplug
-> infrastructure. It's a different thing when manually adding memory like
-> dax_kmem does via add_memory_driver_managed().
->
->
-> Now, back to your original question: arm64 does not support physically
-> unplugging DIMMs that were part of the initial map. If you'd reboot
-> after unplugging a DIMM, your system would crash. We achieve that by
-> disallowing to offline boot memory - we could also try to handle it in
-> ACPI code. But again, most uses of offlining+removing boot memory are
-> abusing the memory hotunplug infrastructure and should rather be solved
-> cleanly via a different mechanism (firmware, kernel cmdline, ...).
->
-> Just recently discussed in
->
-> https://lkml.kernel.org/r/de8388df2fbc5a6a33aab95831ba7db4@codeaurora.org
->
-> >> Further, the device driver associated with the type 2 device/accelerator may
-> >> want to save off a chunk of HDM for driver private use.
-> >> So it seems the more appropriate model may be something like dev dax model
-> >> where the device driver probe/open calls add_memory_driver_managed, and
-> >> the driver could choose how much of the HDM it wants to reserve and how
-> >> much to make generally available for application mmap/malloc.
-> >
-> > Sure, it can always be driver managed. The trick will be getting the
-> > platform firmware to agree to not map it by default, but I suspect
-> > you'll have a hard time convincing platform-firmware to take that
-> > stance. The BIOS does not know, and should not care what OS is booting
-> > when it produces the memory map. So I think CXL memory unplug after
-> > the fact is more realistic than trying to get the BIOS not to map it.
-> > So, to me it looks like arm64 needs to reconsider its unplug stance.
->
-> My personal opinion is, if memory isn't just "ordinary system RAM", then
-> let the system know early that memory is special (as we do with
-> soft-reserved).
->
-> Ideally, you could configure the firmware (e.g., via BIOS setup) on what
-> to do, that's the cleanest solution, but I can understand that's rather
-> hard to achieve.
+From: Aili Yao <yaoaili@kingsoft.com>
 
-Yes, my hope, which is about the most influence I can have on
-platform-firmware implementations, is that it marks CXL attached
-memory as soft-reserved by default and allow OS policy decide where it
-goes. Barring that, for the configuration that Vikram mentioned, the
-only other way to get this differentiated / not-ordinary system-ram
-back to being driver managed would be to unplug it. The soft-reserved
-path is cleaner.
+From commit 6915564dc5a8 ("ACPI: OSL: Change the type of
+acpi_os_map_generic_address() return value"),acpi_os_map_generic_address
+will return logical address or NULL for error, but
+pre_map_gar_callback and related apei_map_generic_address ,for
+ACPI_ADR_SPACE_SYSTEM_IO case, it should be also return 0,as it's a
+normal case, but now it will return -ENXIO. so check it out for such
+case to avoid einj module initialization fail.
+
+Tested-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
+---
+ arch/x86/kernel/cpu/mce/core.c |  2 +
+ drivers/acpi/apei/apei-base.c  |  4 ++
+ drivers/acpi/apei/ghes.c       | 67 ++++++++++++++++++++++++++++++++++
+ include/acpi/ghes.h            |  2 +
+ 4 files changed, 75 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 4102b866e7c0..22efa708ef53 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -341,6 +341,8 @@ static void mce_panic(const char *msg, struct mce *final, char *exp)
+ 		if (!apei_err)
+ 			apei_err = apei_write_mce(final);
+ 	}
++	/* Print possible additional cper error info, get cper cleared */
++	ghes_in_mce_cper_entry_check();
+ 	if (cpu_missing)
+ 		pr_emerg(HW_ERR "Some CPUs didn't answer in synchronization\n");
+ 	if (exp)
+diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+index 552fd9ffaca4..3294cc8dc073 100644
+--- a/drivers/acpi/apei/apei-base.c
++++ b/drivers/acpi/apei/apei-base.c
+@@ -633,6 +633,10 @@ int apei_map_generic_address(struct acpi_generic_address *reg)
+ 	if (rc)
+ 		return rc;
+ 
++	/* IO space doesn't need mapping */
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO)
++		return 0;
++
+ 	if (!acpi_os_map_generic_address(reg))
+ 		return -ENXIO;
+ 
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index fce7ade2aba9..6f5d89b54561 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1147,9 +1147,76 @@ static void ghes_nmi_remove(struct ghes *ghes)
+ 	 */
+ 	synchronize_rcu();
+ }
++
++int ghes_in_mce_cper_entry_check(void)
++{
++	int rc = -ENOENT;
++	struct ghes *ghes;
++	struct list_head *rcu_list = &ghes_nmi;
++	enum fixed_addresses fixmap_idx = FIX_APEI_GHES_NMI;
++	struct acpi_hest_generic_status *estatus, tmp_header;
++	struct ghes_estatus_node *estatus_node;
++	u32 len, node_len;
++	u64 buf_paddr;
++	int sev;
++
++	/* if NMI handler already in process, let NMI do its job */
++	if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
++		return 0;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(ghes, rcu_list, list) {
++		rc = __ghes_peek_estatus(ghes, &tmp_header, &buf_paddr, fixmap_idx);
++		if (rc) {
++			ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
++			return rc;
++		}
++
++		rc = __ghes_check_estatus(ghes, &tmp_header);
++		if (rc) {
++			ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
++			return rc;
++		}
++
++		len = cper_estatus_len(&tmp_header);
++		node_len = GHES_ESTATUS_NODE_LEN(len);
++		estatus_node = (void *)gen_pool_alloc(ghes_estatus_pool, node_len);
++		if (!estatus_node) {
++			/*
++			 * Going to panic, No need to keep the error.
++			 */
++			ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
++			return -ENOMEM;
++		}
++		estatus_node->ghes = ghes;
++		estatus_node->generic = ghes->generic;
++		estatus_node->task_work.func = NULL;
++		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
++
++		if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
++			ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
++			return -ENOENT;
++		}
++
++		/*
++		 * As we are going to panic, and preemt the possible NMI handing,
++		 * dump all the info and get it cleared.
++		 */
++		ghes_print_queued_estatus();
++		__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
++		ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
++
++		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
++		      node_len);
++	}
++	rcu_read_unlock();
++	atomic_dec(&ghes_in_nmi);
++	return rc;
++}
+ #else /* CONFIG_HAVE_ACPI_APEI_NMI */
+ static inline void ghes_nmi_add(struct ghes *ghes) { }
+ static inline void ghes_nmi_remove(struct ghes *ghes) { }
++int ghes_in_mce_cper_entry_check(void) {}
+ #endif /* CONFIG_HAVE_ACPI_APEI_NMI */
+ 
+ static void ghes_nmi_init_cxt(void)
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 34fb3431a8f3..be1ee0e993d2 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -145,4 +145,6 @@ int ghes_notify_sea(void);
+ static inline int ghes_notify_sea(void) { return -ENOENT; }
+ #endif
+ 
++int ghes_in_mce_cper_entry_check(void);
++
+ #endif /* GHES_H */
+-- 
+2.18.4
+
