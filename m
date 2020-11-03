@@ -2,165 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199392A54CD
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 22:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5EA72A56C8
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 22:31:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387452AbgKCVNJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Nov 2020 16:13:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55740 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389146AbgKCVNB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Nov 2020 16:13:01 -0500
-Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61DED20757;
-        Tue,  3 Nov 2020 21:13:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604437980;
-        bh=upWyisctmfa/CJCkL30cnZl2vLFgPOoeXTJUMhzlavk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=kNCephVWVCkQmD9RzbwVyxWWKg+uF9uDwjhdbm0HicbvDP5FhonRK5SubbCO6kL5h
-         RLhqC68YTMrZ5Xa+J2YN5F9ayHBjAcSU/9fzXCPlxI8bSPMAKYi/XAkhkiBTrYqfzb
-         5X5NoOwGKFsqCb8vRvJTssaOwXPEtizp6n7KzcaI=
-Date:   Tue, 3 Nov 2020 15:12:59 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Maximilian Luz <luzmaximilian@gmail.com>
+        id S1732775AbgKCVbC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Nov 2020 16:31:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732765AbgKCVa6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Nov 2020 16:30:58 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7ABC0613D1;
+        Tue,  3 Nov 2020 13:30:57 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id i19so15524175ejx.9;
+        Tue, 03 Nov 2020 13:30:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sw2bhd4jcneB3g3s5IEtSjSEMGNxHMcx8ThO9lFxrJo=;
+        b=AwacBScAQqRQ+W5tRID5qqC4IItvIBe3BDXXYC+0UUKV+v2EDZOosorQjCOG2yESgY
+         07Wzl3oZgWF+gXl7UA2GFmAYxhjyJjCQ0oWv4jkupNPM19bgqjHZBykek+/HbuCc3niv
+         OzOV6BDTftBQHw+Aw4qGgaUEcTk3oWge2d+lnztIOfNjPf2ScjBi56INKEqXAGCDcAqk
+         qqwZ0BhoL1cG/gBBMP+6WcNeKORi26Lnawh03qSMQqKnC8jMKQ7osIEUbZoHTToZbQpG
+         2sy2OCbY7rBGU4it0QmOC3G40Scym8Yc5jAN8nW7U2X59VfOpw/uSK570ToNOwG9Sw4K
+         BBig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sw2bhd4jcneB3g3s5IEtSjSEMGNxHMcx8ThO9lFxrJo=;
+        b=XY9lk+V+SHvSbcJeVL5u1U0SgzdSfRzmkTzUAuQufJtbCnUMhRrrbYVWQPMpSyktM8
+         mPHuYC+ZW+NbJooaAG27o0BIom9fkCjNFXSKMsy72yd8bNZY5HqUF1hrdx2gjk/T/2Ku
+         HJqz69XVp+5RUqsK5mdrp2OBovzjzy7Fcy8n7o4gKDcLlvZ1h1oamXW4z4oUZDUBY/jh
+         r7TuVnxKMIRcpIfN9MdUS6S2E70RWOPpEdJVRtPsEIpdwHo21m/K+aKPqgECkrqR/fza
+         +DVulQLRUToVW5zt/5gEhnbthVeCR3F/Zqw94GDPEHR/2Tz/N5xFGj7nQTQ/qmRcxgtN
+         uVow==
+X-Gm-Message-State: AOAM532kSh17Qile+InZ7OleEdvml6yQMf7iCXJP3ZrV7Fjz3xHWvLdh
+        pWyxW4TG24YsKVQBjibbOLfOItR1htE=
+X-Google-Smtp-Source: ABdhPJyanutoQCesRoYcYVxElfnfQCZtpsToh/E2HUl14qaji0oBopAlwyhm81yB9lsiyAeZcgMCfQ==
+X-Received: by 2002:a17:906:9902:: with SMTP id zl2mr8130507ejb.510.1604439056114;
+        Tue, 03 Nov 2020 13:30:56 -0800 (PST)
+Received: from [192.168.2.202] (pd9e5a4cd.dip0.t-ipconnect.de. [217.229.164.205])
+        by smtp.gmail.com with ESMTPSA id y14sm56185edo.69.2020.11.03.13.30.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2020 13:30:55 -0800 (PST)
+Subject: Re: [PATCH] ACPI: Remove trailing whitespace
+To:     Bjorn Helgaas <helgaas@kernel.org>
 Cc:     linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: Remove trailing whitespace
-Message-ID: <20201103211259.GA265488@bjorn-Precision-5520>
+References: <20201103211259.GA265488@bjorn-Precision-5520>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <c92703e3-c964-b4a6-e3df-c4c0c28b44c1@gmail.com>
+Date:   Tue, 3 Nov 2020 22:30:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201102133641.474413-1-luzmaximilian@gmail.com>
+In-Reply-To: <20201103211259.GA265488@bjorn-Precision-5520>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 02, 2020 at 02:36:41PM +0100, Maximilian Luz wrote:
-> Remove trailing whitespace and fix some whitespace inconsitencies while
-> at it.
-
-I'm OK with this as long as somebody fixes the
-s/inconsitencies/inconsistencies/
-above.  I assume you've scanned all of drivers/acpi/ for similar
-issues so they can all be fixed at once.
-
-This is up to Rafael, of course.
-
-> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-> ---
->  drivers/acpi/pci_irq.c           |  2 +-
->  drivers/acpi/pci_link.c          | 12 ++++++------
->  drivers/acpi/power.c             |  4 ++--
->  drivers/acpi/processor_perflib.c |  4 ++--
->  4 files changed, 11 insertions(+), 11 deletions(-)
+On 11/3/20 10:12 PM, Bjorn Helgaas wrote:
+> On Mon, Nov 02, 2020 at 02:36:41PM +0100, Maximilian Luz wrote:
+>> Remove trailing whitespace and fix some whitespace inconsitencies while
+>> at it.
 > 
-> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-> index dea8a60e18a4..14ee631cb7cf 100644
-> --- a/drivers/acpi/pci_irq.c
-> +++ b/drivers/acpi/pci_irq.c
-> @@ -175,7 +175,7 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
->  	 * configure the IRQ assigned to this slot|dev|pin.  The 'source_index'
->  	 * indicates which resource descriptor in the resource template (of
->  	 * the link device) this interrupt is allocated from.
-> -	 * 
-> +	 *
->  	 * NOTE: Don't query the Link Device for IRQ information at this time
->  	 *       because Link Device enumeration may not have occurred yet
->  	 *       (e.g. exists somewhere 'below' this _PRT entry in the ACPI
-> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-> index 606da5d77ad3..fb4c5632a232 100644
-> --- a/drivers/acpi/pci_link.c
-> +++ b/drivers/acpi/pci_link.c
-> @@ -6,8 +6,8 @@
->   *  Copyright (C) 2001, 2002 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>
->   *  Copyright (C) 2002       Dominik Brodowski <devel@brodo.de>
->   *
-> - * TBD: 
-> - *      1. Support more than one IRQ resource entry per link device (index).
-> + * TBD:
-> + *	1. Support more than one IRQ resource entry per link device (index).
->   *	2. Implement start/stop mechanism and use ACPI Bus Driver facilities
->   *	   for IRQ management (e.g. start()->_SRS).
->   */
-> @@ -249,8 +249,8 @@ static int acpi_pci_link_get_current(struct acpi_pci_link *link)
->  		}
->  	}
->  
-> -	/* 
-> -	 * Query and parse _CRS to get the current IRQ assignment. 
-> +	/*
-> +	 * Query and parse _CRS to get the current IRQ assignment.
->  	 */
->  
->  	status = acpi_walk_resources(link->device->handle, METHOD_NAME__CRS,
-> @@ -396,7 +396,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
->  /*
->   * "acpi_irq_balance" (default in APIC mode) enables ACPI to use PIC Interrupt
->   * Link Devices to move the PIRQs around to minimize sharing.
-> - * 
-> + *
->   * "acpi_irq_nobalance" (default in PIC mode) tells ACPI not to move any PIC IRQs
->   * that the BIOS has already set to active.  This is necessary because
->   * ACPI has no automatic means of knowing what ISA IRQs are used.  Note that
-> @@ -414,7 +414,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
->   *
->   * Note that PCI IRQ routers have a list of possible IRQs,
->   * which may not include the IRQs this table says are available.
-> - * 
-> + *
->   * Since this heuristic can't tell the difference between a link
->   * that no device will attach to, vs. a link which may be shared
->   * by multiple active devices -- it is not optimal.
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 837b875d075e..9c4c3196cb07 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -13,7 +13,7 @@
->   * 1. via "Device Specific (D-State) Control"
->   * 2. via "Power Resource Control".
->   * The code below deals with ACPI Power Resources control.
-> - * 
-> + *
->   * An ACPI "power resource object" represents a software controllable power
->   * plane, clock plane, or other resource depended on by a device.
->   *
-> @@ -690,7 +690,7 @@ int acpi_device_sleep_wake(struct acpi_device *dev,
->  
->  /*
->   * Prepare a wakeup device, two steps (Ref ACPI 2.0:P229):
-> - * 1. Power on the power resources required for the wakeup device 
-> + * 1. Power on the power resources required for the wakeup device
->   * 2. Execute _DSW (Device Sleep Wake) or (deprecated in ACPI 3.0) _PSW (Power
->   *    State Wake) for the device, if present
->   */
-> diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
-> index 5909e8fa4013..f00e66de6c53 100644
-> --- a/drivers/acpi/processor_perflib.c
-> +++ b/drivers/acpi/processor_perflib.c
-> @@ -627,7 +627,7 @@ int acpi_processor_preregister_performance(
->  		goto err_ret;
->  
->  	/*
-> -	 * Now that we have _PSD data from all CPUs, lets setup P-state 
-> +	 * Now that we have _PSD data from all CPUs, lets setup P-state
->  	 * domain info.
->  	 */
->  	for_each_possible_cpu(i) {
-> @@ -693,7 +693,7 @@ int acpi_processor_preregister_performance(
->  			if (match_pdomain->domain != pdomain->domain)
->  				continue;
->  
-> -			match_pr->performance->shared_type = 
-> +			match_pr->performance->shared_type =
->  					pr->performance->shared_type;
->  			cpumask_copy(match_pr->performance->shared_cpu_map,
->  				     pr->performance->shared_cpu_map);
-> -- 
-> 2.29.2
-> 
+> I'm OK with this as long as somebody fixes the
+> s/inconsitencies/inconsistencies/
+
+Sorry about that, I can resubmit if necessary.
+
+> above.  I assume you've scanned all of drivers/acpi/ for similar
+> issues so they can all be fixed at once.
+
+Yes. I scanned drivers/acpi for trailing whitespaces after I noticed a
+couple of them. I did not explicitly scan for other stuff like spaces
+where there should be tabs, mostly because I haven't found a quick and
+reliable solution for that. I only noticed an inconsistent indentation
+when committing, so I fixed that too.
+
+> This is up to Rafael, of course.
+
+Thanks,
+Max
