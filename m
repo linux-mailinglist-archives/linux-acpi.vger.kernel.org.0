@@ -2,110 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E842A3DF7
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 08:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E96E2A3EF2
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 09:32:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725982AbgKCHsP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Nov 2020 02:48:15 -0500
-Received: from mail-m972.mail.163.com ([123.126.97.2]:37696 "EHLO
-        mail-m972.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725958AbgKCHsP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Nov 2020 02:48:15 -0500
-X-Greylist: delayed 905 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Nov 2020 02:48:13 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=X0PFd
-        pQu5HRUeg0J0/a0LlKtzKU9wCRVpHB31BrzpO0=; b=cE/6K5VIAWa03mEqNKzIV
-        HOHlD98jdpq4e7kQWS9Rx/94WMnUdyWHqP1H6YrJyN9MdEqWHr9g+FbzGqv1SPoG
-        gH0ke53cwrOgjPcl5+Fvm8eYMuSkUWIPsD/BSQtPYaJPRJM97sUGJrCiYXzrarls
-        LBH+c7UWQpsUWQyp/czvbM=
-Received: from smtp.163.com (unknown [36.112.24.9])
-        by smtp2 (Coremail) with SMTP id GtxpCgBHDOZIB6FfMkUfAA--.26S2;
-        Tue, 03 Nov 2020 15:31:20 +0800 (CST)
-From:   yaoaili126@163.com
-To:     james.morse@arm.com
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, linux-acpi@vger.kernel.org, YANGFENG1@kingsoft.com,
-        yaoaili@kingsoft.com
-Subject: Re: Re: One question about ghes_notify_nmi
-Date:   Mon,  2 Nov 2020 23:31:16 -0800
-Message-Id: <20201103073116.25857-1-yaoaili126@163.com>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <db14bb0f-d430-fddc-d2f6-7990b98e681c () arm ! com>
-References: <db14bb0f-d430-fddc-d2f6-7990b98e681c () arm ! com>
+        id S1725997AbgKCIbx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Nov 2020 03:31:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725982AbgKCIbx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Nov 2020 03:31:53 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F332DC0613D1;
+        Tue,  3 Nov 2020 00:31:52 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id t14so13134061pgg.1;
+        Tue, 03 Nov 2020 00:31:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/kEY1+Wj4A6o2via5YD8DTFuwW8aYbCWHvyBUYczxyg=;
+        b=VFZn8Hhkb9g0pPcbEpPnVX7+bVcBTpVBNC/dVwV/dUloVWtnrJhpkJN63u4OzmmPgx
+         48jrVTvhagESHhLKaMduc2S48zgCiomBBZCDVt/fNxD+52Nn/ehai1eC3Vz1wayGwTSO
+         NrLUojetzUJWId0qaW3Y14D2bZAakPhz/FYSROpsX3faiUwRSjniU8LO6wvJaozgq16B
+         ai3CFhFqqKTwTbRD0KSjEWy+uuJpCed2EjiGEbdDQ5E9thHWIYtDHoF14obDdHayCRZb
+         GnJL8kV7sMoYaW1BNXsb1uPRR+FiNi03nvG/c6rrYJduddija3ET+Sz8xlhcUGJF7FOS
+         96tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/kEY1+Wj4A6o2via5YD8DTFuwW8aYbCWHvyBUYczxyg=;
+        b=ZzhTMMscQfInpUCQVH3yoqQu3rur49PR/ZQRtcchgG8HE//gJlUzmWXNeBWAJtCy6L
+         X+WSenjbA6BxYh9uKjISp1eXzR7w10x4qpoHB7P4Gt/FhNCdLRFqiiLjjZ53sOMIRyNM
+         uDbSBc3gW+f9j/G7CU5x0TTVdScQmz2I5YzPnsPYPzWwkRgNH0bA9TgabBv8DhFoiJ6h
+         XxX+3O1aEtWPvI0Ba19mI4/DenUjcke6J/72cjYM2mpUsNM8azktF/wY1vy/1mN+ZeM9
+         +vzIQBQ8xZYjbTEpiRC5bJGWTCyGg7LAzSBRkUx+WKpKU2tJC0JTPqHS3lQm7mNAEhfq
+         lpnA==
+X-Gm-Message-State: AOAM5314alIwDOyQ7DCXap0EcJuUPKUMC0BHqcCeGN+WcpwcNwALi0cM
+        JyFeqfaFNtHiQ4nTzkQjDGaXiyy8BvnyGUmaZ2E=
+X-Google-Smtp-Source: ABdhPJwU3V9Gc2nWQl0z8vKa34dAV2EusTcDpth7i6ltJhtb21Yk9PSO0eAyVduM1DlM80X8w6rXexeXvN1IKFgBN70=
+X-Received: by 2002:a17:90a:430b:: with SMTP id q11mr2672605pjg.129.1604392312516;
+ Tue, 03 Nov 2020 00:31:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GtxpCgBHDOZIB6FfMkUfAA--.26S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF1fGF18Cw13GF43tw47urg_yoW8Kr1fpa
-        93XasrCF95WF10yr4kZay7t3y5Za4kCr43JF1rK3ykZ3s8uFZxtr1Igw429rWkCr1Iq345
-        t3ZrK3y8Aas8AaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07URHqxUUUUU=
-X-Originating-IP: [36.112.24.9]
-X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbifAvRG1r6nPtBdgADsO
+References: <20201102210025.53520-1-andriy.shevchenko@linux.intel.com> <1183267b-3e90-ab71-b1f6-7760ad0ca57c@huawei.com>
+In-Reply-To: <1183267b-3e90-ab71-b1f6-7760ad0ca57c@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 3 Nov 2020 10:31:36 +0200
+Message-ID: <CAHp75VcEhdmU6NW8Dn-r7Aipden7vYda72nP3_LW09+jTFxOBg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] resource: introduce union(), intersection() API
+To:     Hanjun Guo <guohanjun@huawei.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-pci <linux-pci@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Aili Yao <yaoaili@kingsoft.com>
+On Tue, Nov 3, 2020 at 2:46 AM Hanjun Guo <guohanjun@huawei.com> wrote:
+>
+> On 2020/11/3 5:00, Andy Shevchenko wrote:
+> > Some users may want to use resource library to manage their own resources,
+> > besides existing users that open code union() and intersection()
+> > implementations.
+> >
+> > Provide a generic API for wider use.
+> >
+> > Changelog v4:
+> > - added Rb tag (Rafael)
+> > - Cc'ed to LKML and Greg (Rafael)
+> >
+> > Changelog v3:
+> > - rebased on top of v5.10-rc1
+> > - dropped upstreamed dependencies
+> > - added Rb tag to the last patch (Mika)
+> >
+> > Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: linux-pci@vger.kernel.org
+> >
+> > Andy Shevchenko (6):
+> >    resource: Simplify region_intersects() by reducing conditionals
+> >    resource: Group resource_overlaps() with other inline helpers
+> >    resource: Introduce resource_union() for overlapping resources
+> >    resource: Introduce resource_intersection() for overlapping resources
+> >    PCI/ACPI: Replace open coded variant of resource_union()
+> >    ACPI: watchdog: Replace open coded variant of resource_union()
+> >
+> >   drivers/acpi/acpi_watchdog.c |  6 +-----
+> >   drivers/acpi/pci_root.c      |  4 +---
+> >   include/linux/ioport.h       | 34 +++++++++++++++++++++++++++-------
+> >   kernel/resource.c            | 10 +++++-----
+> >   4 files changed, 34 insertions(+), 20 deletions(-)
+>
+> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Hi! Thanks for your reply.
-Got you!
-And for x86 platform, NMI is not only for hw errors, it does have some other
-functions like watchdog, and maybe others i don't know.
-when CPU is in heavy workload, the NMI watchdog will be triggered 
-repeatily, and it will come to ghes_notify_nmi, the atomic raw_spin_lock
-may lock the memory bus which may have little performance inpact to other
-coresi i think.
-I think you may modify it.
+Thanks. Is it for the entire series?
 
-Thanks
-Aili Yao
 
-> -----Original Message-----
-> From: James Morse [mailto:james.morse@arm.com]
-> Sent: Friday, October 30, 2020 8:40 PM
-> To: yaoaili126@163.com
-> Cc: rjw@rjwysocki.net; lenb@kernel.org; tony.luck@intel.com; bp@alien8.de;
-> linux-acpi@vger.kernel.org; YANGFENG1
-> <YANGFENG1@kingsoft.com>; yaoaili<yaoaili@kingsoft.com>
-> Subject: Re: One question about ghes_notify_nmi
-> 
-> Hello,
-> 
-> On 30/10/2020 02:41, yaoaili126@163.com wrote:
-> > From: Aili Yao <yaoaili@kingsoft.com>
-> > Sorry for my ignorance，When I look in to this code, I am totally condused.
-> 
-> No worries - this code is pretty confusing!
-> 
-> 
-> > The Line 1136 has guarranted that Only one NMI will enter following
-> > code I think, Is this right? if so, what is ghes_notify_lock_nmi going to
-> pretect?
-> 
-> Looking at one of the others like ghes_notify_sea() might be simpler.
-> The lock protects the fixmap slot, in case the notification occurs on multiple
-> CPUs.
-> 
-> notify_nmi is weird as it has this atomic_add_unless() which seems to throw
-> away some of the CPUs if they arrive ~together. It was added by commit
-> 6fe9e7c26a971 ("GHES: Make NMI handler have a single reader"), which
-> describes the motivation.
-> 
-> I'm not familiar with how x86 CPUs trigger NMI. From the commit message
-> I've assumed this means there is some broadcast source of NMI, that is never
-> firmware-first. I thought the trip via SMM for firmware-first did 'something'
-> to hold the other CPUs so only one CPU takes the NMI - but I couldn't find it
-> last time I went looking.
-> 
-> As I've no idea how this works, I decided not to change it. I added the
-> spinlock so that the the fixmap slot provided to
-> ghes_in_nmi_spool_from_list() is always protected by a spinlock, but the
-> atomic means that for notify_nmi, the lock will never be contended.
-> 
-> 
-> 
-> Thanks,
-> 
-> James
-
+-- 
+With Best Regards,
+Andy Shevchenko
