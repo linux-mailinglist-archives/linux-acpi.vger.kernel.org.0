@@ -2,78 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E5A2A5100
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 21:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 199392A54CD
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 22:14:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729591AbgKCUhC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Nov 2020 15:37:02 -0500
-Received: from mga14.intel.com ([192.55.52.115]:43072 "EHLO mga14.intel.com"
+        id S2387452AbgKCVNJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Nov 2020 16:13:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55740 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729575AbgKCUhB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Nov 2020 15:37:01 -0500
-IronPort-SDR: E+UDx1ttGSq0yksSXvOfzPa3bRh4uuUJ1COZWm0IStlsDnIqoM4MEYxEHaWm6lJPP3nzN/3/2E
- t1/h6505f54w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9794"; a="168335729"
-X-IronPort-AV: E=Sophos;i="5.77,448,1596524400"; 
-   d="scan'208";a="168335729"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2020 12:37:01 -0800
-IronPort-SDR: K6GmmocQ/lDykcUWMwpHFkz80CKl7H/MdI3BBcT8o7q7ghvRIWH3ohXyTEErK0CEa4DccPagDA
- BoIoYLdM0apQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,448,1596524400"; 
-   d="scan'208";a="320565285"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 03 Nov 2020 12:36:59 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 239E494B; Tue,  3 Nov 2020 22:36:56 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S2389146AbgKCVNB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Nov 2020 16:13:01 -0500
+Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 61DED20757;
+        Tue,  3 Nov 2020 21:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604437980;
+        bh=upWyisctmfa/CJCkL30cnZl2vLFgPOoeXTJUMhzlavk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=kNCephVWVCkQmD9RzbwVyxWWKg+uF9uDwjhdbm0HicbvDP5FhonRK5SubbCO6kL5h
+         RLhqC68YTMrZ5Xa+J2YN5F9ayHBjAcSU/9fzXCPlxI8bSPMAKYi/XAkhkiBTrYqfzb
+         5X5NoOwGKFsqCb8vRvJTssaOwXPEtizp6n7KzcaI=
+Date:   Tue, 3 Nov 2020 15:12:59 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v5 7/7] ACPI: watchdog: Replace open coded variant of resource_union()
-Date:   Tue,  3 Nov 2020 22:36:55 +0200
-Message-Id: <20201103203655.17701-8-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201103203655.17701-1-andriy.shevchenko@linux.intel.com>
-References: <20201103203655.17701-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] ACPI: Remove trailing whitespace
+Message-ID: <20201103211259.GA265488@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201102133641.474413-1-luzmaximilian@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since we have resource_union() helper, let's utilize it here.
+On Mon, Nov 02, 2020 at 02:36:41PM +0100, Maximilian Luz wrote:
+> Remove trailing whitespace and fix some whitespace inconsitencies while
+> at it.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/acpi_watchdog.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+I'm OK with this as long as somebody fixes the
+s/inconsitencies/inconsistencies/
+above.  I assume you've scanned all of drivers/acpi/ for similar
+issues so they can all be fixed at once.
 
-diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-index 5c1e9ea43123..ca28183f4d13 100644
---- a/drivers/acpi/acpi_watchdog.c
-+++ b/drivers/acpi/acpi_watchdog.c
-@@ -151,11 +151,7 @@ void __init acpi_watchdog_init(void)
- 		found = false;
- 		resource_list_for_each_entry(rentry, &resource_list) {
- 			if (rentry->res->flags == res.flags &&
--			    resource_overlaps(rentry->res, &res)) {
--				if (res.start < rentry->res->start)
--					rentry->res->start = res.start;
--				if (res.end > rentry->res->end)
--					rentry->res->end = res.end;
-+			    resource_union(rentry->res, &res, rentry->res)) {
- 				found = true;
- 				break;
- 			}
--- 
-2.28.0
+This is up to Rafael, of course.
 
+> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+> ---
+>  drivers/acpi/pci_irq.c           |  2 +-
+>  drivers/acpi/pci_link.c          | 12 ++++++------
+>  drivers/acpi/power.c             |  4 ++--
+>  drivers/acpi/processor_perflib.c |  4 ++--
+>  4 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+> index dea8a60e18a4..14ee631cb7cf 100644
+> --- a/drivers/acpi/pci_irq.c
+> +++ b/drivers/acpi/pci_irq.c
+> @@ -175,7 +175,7 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
+>  	 * configure the IRQ assigned to this slot|dev|pin.  The 'source_index'
+>  	 * indicates which resource descriptor in the resource template (of
+>  	 * the link device) this interrupt is allocated from.
+> -	 * 
+> +	 *
+>  	 * NOTE: Don't query the Link Device for IRQ information at this time
+>  	 *       because Link Device enumeration may not have occurred yet
+>  	 *       (e.g. exists somewhere 'below' this _PRT entry in the ACPI
+> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+> index 606da5d77ad3..fb4c5632a232 100644
+> --- a/drivers/acpi/pci_link.c
+> +++ b/drivers/acpi/pci_link.c
+> @@ -6,8 +6,8 @@
+>   *  Copyright (C) 2001, 2002 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>
+>   *  Copyright (C) 2002       Dominik Brodowski <devel@brodo.de>
+>   *
+> - * TBD: 
+> - *      1. Support more than one IRQ resource entry per link device (index).
+> + * TBD:
+> + *	1. Support more than one IRQ resource entry per link device (index).
+>   *	2. Implement start/stop mechanism and use ACPI Bus Driver facilities
+>   *	   for IRQ management (e.g. start()->_SRS).
+>   */
+> @@ -249,8 +249,8 @@ static int acpi_pci_link_get_current(struct acpi_pci_link *link)
+>  		}
+>  	}
+>  
+> -	/* 
+> -	 * Query and parse _CRS to get the current IRQ assignment. 
+> +	/*
+> +	 * Query and parse _CRS to get the current IRQ assignment.
+>  	 */
+>  
+>  	status = acpi_walk_resources(link->device->handle, METHOD_NAME__CRS,
+> @@ -396,7 +396,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
+>  /*
+>   * "acpi_irq_balance" (default in APIC mode) enables ACPI to use PIC Interrupt
+>   * Link Devices to move the PIRQs around to minimize sharing.
+> - * 
+> + *
+>   * "acpi_irq_nobalance" (default in PIC mode) tells ACPI not to move any PIC IRQs
+>   * that the BIOS has already set to active.  This is necessary because
+>   * ACPI has no automatic means of knowing what ISA IRQs are used.  Note that
+> @@ -414,7 +414,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
+>   *
+>   * Note that PCI IRQ routers have a list of possible IRQs,
+>   * which may not include the IRQs this table says are available.
+> - * 
+> + *
+>   * Since this heuristic can't tell the difference between a link
+>   * that no device will attach to, vs. a link which may be shared
+>   * by multiple active devices -- it is not optimal.
+> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+> index 837b875d075e..9c4c3196cb07 100644
+> --- a/drivers/acpi/power.c
+> +++ b/drivers/acpi/power.c
+> @@ -13,7 +13,7 @@
+>   * 1. via "Device Specific (D-State) Control"
+>   * 2. via "Power Resource Control".
+>   * The code below deals with ACPI Power Resources control.
+> - * 
+> + *
+>   * An ACPI "power resource object" represents a software controllable power
+>   * plane, clock plane, or other resource depended on by a device.
+>   *
+> @@ -690,7 +690,7 @@ int acpi_device_sleep_wake(struct acpi_device *dev,
+>  
+>  /*
+>   * Prepare a wakeup device, two steps (Ref ACPI 2.0:P229):
+> - * 1. Power on the power resources required for the wakeup device 
+> + * 1. Power on the power resources required for the wakeup device
+>   * 2. Execute _DSW (Device Sleep Wake) or (deprecated in ACPI 3.0) _PSW (Power
+>   *    State Wake) for the device, if present
+>   */
+> diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
+> index 5909e8fa4013..f00e66de6c53 100644
+> --- a/drivers/acpi/processor_perflib.c
+> +++ b/drivers/acpi/processor_perflib.c
+> @@ -627,7 +627,7 @@ int acpi_processor_preregister_performance(
+>  		goto err_ret;
+>  
+>  	/*
+> -	 * Now that we have _PSD data from all CPUs, lets setup P-state 
+> +	 * Now that we have _PSD data from all CPUs, lets setup P-state
+>  	 * domain info.
+>  	 */
+>  	for_each_possible_cpu(i) {
+> @@ -693,7 +693,7 @@ int acpi_processor_preregister_performance(
+>  			if (match_pdomain->domain != pdomain->domain)
+>  				continue;
+>  
+> -			match_pr->performance->shared_type = 
+> +			match_pr->performance->shared_type =
+>  					pr->performance->shared_type;
+>  			cpumask_copy(match_pr->performance->shared_cpu_map,
+>  				     pr->performance->shared_cpu_map);
+> -- 
+> 2.29.2
+> 
