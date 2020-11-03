@@ -2,79 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34A362A37F7
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 01:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A32152A39A2
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Nov 2020 02:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbgKCAnT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Nov 2020 19:43:19 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6736 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725940AbgKCAnT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Nov 2020 19:43:19 -0500
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CQ9xY5hbczkd80;
-        Tue,  3 Nov 2020 08:43:13 +0800 (CST)
-Received: from [10.174.179.182] (10.174.179.182) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 3 Nov 2020 08:43:12 +0800
-Subject: Re: [PATCH v4 0/6] resource: introduce union(), intersection() API
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>
-References: <20201102210025.53520-1-andriy.shevchenko@linux.intel.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <1183267b-3e90-ab71-b1f6-7760ad0ca57c@huawei.com>
-Date:   Tue, 3 Nov 2020 08:43:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727716AbgKCBTX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Nov 2020 20:19:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33088 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727703AbgKCBTW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Nov 2020 20:19:22 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B1D4222B9;
+        Tue,  3 Nov 2020 01:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604366362;
+        bh=Y4pk0+NtOTsiLWykNqOh9dUwM35ghrHdAdWuyBg1o/c=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pEcTlAaEG7NdrnvRteNZcgGm3xw6uRhTyCn4UqjT9jaNOnAZrkhf9H7G+2VlFnqOd
+         e+pGIdFODpJhrrD8T1D17jHj2oA+Ab6/VASkitZsbVKgu5Ed2gTdZrRI0TjunHJ2x/
+         dvggI7YFDRl4c/wPE85Ro40CnYN+DYdrcoJ//lUU=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Zhang Qilong <zhangqilong3@huawei.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.9 31/35] ACPI: NFIT: Fix comparison to '-ENXIO'
+Date:   Mon,  2 Nov 2020 20:18:36 -0500
+Message-Id: <20201103011840.182814-31-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20201103011840.182814-1-sashal@kernel.org>
+References: <20201103011840.182814-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20201102210025.53520-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.182]
-X-CFilter-Loop: Reflected
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020/11/3 5:00, Andy Shevchenko wrote:
-> Some users may want to use resource library to manage their own resources,
-> besides existing users that open code union() and intersection()
-> implementations.
-> 
-> Provide a generic API for wider use.
-> 
-> Changelog v4:
-> - added Rb tag (Rafael)
-> - Cc'ed to LKML and Greg (Rafael)
-> 
-> Changelog v3:
-> - rebased on top of v5.10-rc1
-> - dropped upstreamed dependencies
-> - added Rb tag to the last patch (Mika)
-> 
-> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: linux-pci@vger.kernel.org
-> 
-> Andy Shevchenko (6):
->    resource: Simplify region_intersects() by reducing conditionals
->    resource: Group resource_overlaps() with other inline helpers
->    resource: Introduce resource_union() for overlapping resources
->    resource: Introduce resource_intersection() for overlapping resources
->    PCI/ACPI: Replace open coded variant of resource_union()
->    ACPI: watchdog: Replace open coded variant of resource_union()
-> 
->   drivers/acpi/acpi_watchdog.c |  6 +-----
->   drivers/acpi/pci_root.c      |  4 +---
->   include/linux/ioport.h       | 34 +++++++++++++++++++++++++++-------
->   kernel/resource.c            | 10 +++++-----
->   4 files changed, 34 insertions(+), 20 deletions(-)
+From: Zhang Qilong <zhangqilong3@huawei.com>
 
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+[ Upstream commit 85f971b65a692b68181438e099b946cc06ed499b ]
+
+Initial value of rc is '-ENXIO', and we should
+use the initial value to check it.
+
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 26dd208a0d636..103ae7401f957 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -1564,7 +1564,7 @@ static ssize_t format1_show(struct device *dev,
+ 					le16_to_cpu(nfit_dcr->dcr->code));
+ 			break;
+ 		}
+-		if (rc != ENXIO)
++		if (rc != -ENXIO)
+ 			break;
+ 	}
+ 	mutex_unlock(&acpi_desc->init_mutex);
+-- 
+2.27.0
+
