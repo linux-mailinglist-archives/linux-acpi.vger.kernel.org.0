@@ -2,78 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD7E2A7ACC
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 10:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4612A7AEF
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 10:46:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbgKEJnG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 04:43:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33572 "EHLO mail.kernel.org"
+        id S1726996AbgKEJqH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 5 Nov 2020 04:46:07 -0500
+Received: from smtp.asem.it ([151.1.184.197]:55014 "EHLO smtp.asem.it"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725308AbgKEJnC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Nov 2020 04:43:02 -0500
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 26DF52080D;
-        Thu,  5 Nov 2020 09:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604569381;
-        bh=Pw8x6wof7/hdOOYVanQAZZ6gdVYkVA+IEc86z5O8qrc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kpOlXevlFAmJCREcTFKRfD5uhjvLTSYj+Ves5DKdo86GMUD3CVRVuWr0+OSzjT6zk
-         HsgdWXClSqMcLwNu71VPnjT6eQckO9YY5I6x7/Q9LYmHFyixMBjw3WicOqLDoHzH6P
-         IjT7I/4ewgFB0wAtEIY+2k1FCdt4ggYIQEjta1+0=
-Date:   Thu, 5 Nov 2020 10:43:50 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kernel-team@android.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 17/18] driver core: Add helper functions to convert
- fwnode links to device links
-Message-ID: <20201105094350.GG3439341@kroah.com>
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-18-saravanak@google.com>
+        id S1727006AbgKEJqG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Nov 2020 04:46:06 -0500
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000587625.MSG 
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Nov 2020 10:46:03 +0100S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 5 Nov
+ 2020 10:46:02 +0100
+Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
+ mapi id 15.01.1979.003; Thu, 5 Nov 2020 10:46:02 +0100
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: How to add the "gpio-line-names" property in a PCI gpio expander
+Thread-Topic: How to add the "gpio-line-names" property in a PCI gpio expander
+Thread-Index: AdazWEAUpTjocun1TNeP3lXLN/Ph2w==
+Date:   Thu, 5 Nov 2020 09:46:02 +0000
+Message-ID: <98acf6339a1b43d6a38f867069088530@asem.it>
+Accept-Language: it-IT, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.17.208]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201104232356.4038506-18-saravanak@google.com>
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090212.5FA3C9DA.007A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 04, 2020 at 03:23:54PM -0800, Saravana Kannan wrote:
-> Add helper functions __fw_devlink_link_to_consumers() and
-> __fw_devlink_link_to_suppliers() that convert fwnode links to device
-> links.
-> 
-> __fw_devlink_link_to_consumers() is for creating:
-> - Device links between a newly added device and all its consumer devices
->   that have been added to driver core.
-> - Proxy SYNC_STATE_ONLY device links between the newly added device and
->   the parent devices of all its consumers that have not been added to
->   driver core yet.
-> 
-> __fw_devlink_link_to_suppliers() is for creating:
-> - Device links between a newly added device and all its supplier devices
-> - Proxy SYNC_STATE_ONLY device links between the newly added device and
->   all the supplier devices of its child device nodes.
-> 
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+Hi all,
 
-Did you just add build warnings with these static functions that no one
-calls?
+I'm working to introduce the "gpio-line-names" property in the ACPI
+configuration of the BIOS of our x86 boards (we can customize the BIOS of our
+boards).
 
-thanks,
+All is ok for the gpiochips related to the Intel chipset and some I2C gpio
+expanders. I have inserted the _DSD as described in the Linux documentation.
 
-greg k-h
+In one of our boards we have an add-on PCI board, with a PCI serial device
+Exar XR17V352. This device also contains 16 gpios.
+The exar device drivers work good, both the "8250_exar" and the "gpio_exar", and
+I can manage the exar's gpios correctly.
+The problem is how to assign the gpio-line-names property to a PCI gpio
+expanders like this.
+
+I tried adding a new device in my ACPI configuration, as:
+
+Device (EXAR)
+{
+    Name (_HID, "13A80352")
+    Name (_STR, Unicode ("STR - Exar GPIOs"))  // _STR: Description String
+
+    Name (_DSD, Package () {
+	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+	Package () {
+	    Package () {
+		"gpio-line-names",
+		    Package () {
+			"exar_0",
+			"exar_1",
+			"exar_2",
+			"exar_3",
+			...
+		    }
+		}
+	    }
+    })
+}
+
+but I have no result.
+Does anyone have a suggestion?
+
+Thanks,
+
+Flavio
