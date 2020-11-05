@@ -2,112 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA0A2A82E9
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 17:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 467EC2A8313
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 17:08:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730862AbgKEQBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 11:01:25 -0500
-Received: from m12-15.163.com ([220.181.12.15]:47043 "EHLO m12-15.163.com"
+        id S1726400AbgKEQI0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Nov 2020 11:08:26 -0500
+Received: from mga04.intel.com ([192.55.52.120]:17514 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725308AbgKEQBZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Nov 2020 11:01:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=SRGZE9QaYZjF/f6y12
-        I0JDiF5vu4zgMn7WRer/RYTls=; b=SV4QX1dxSKK6lpzEorGVWMvJGe16/oTozC
-        qfiMNJe3c/W7tgtDcLwD/7JRuP+u2mWCFshBwby3xG/WGHv46NJD/V5aE+l4jF3/
-        BnF5TcjPdkVedjsdN4Juo2sWVlwFFbLoYmdn25rO2uSME6xrSxC+hhxsAjr8MlUB
-        KfFeyvdQ8=
-Received: from smtp.163.com (unknown [36.112.24.10])
-        by smtp11 (Coremail) with SMTP id D8CowAAX_hJ05aNfFE8BGg--.1121S2;
-        Thu, 05 Nov 2020 19:43:50 +0800 (CST)
-From:   yaoaili126@163.com
-To:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, james.morse@arm.com
-Cc:     linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
-        yangfeng1@kingsoft.com, CHENGUOMIN@kingsoft.com,
-        yaoaili@kingsoft.com
-Subject: [PATCH] Fix randconfig build error and code bug
-Date:   Thu,  5 Nov 2020 03:43:26 -0800
-Message-Id: <20201105114326.353021-1-yaoaili126@163.com>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <202011041829.KUaqiCq1-lkp () intel ! com>
-References: <202011041829.KUaqiCq1-lkp () intel ! com>
-X-CM-TRANSID: D8CowAAX_hJ05aNfFE8BGg--.1121S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw47uw18XF4rAry7CFyxuFg_yoW8urWxpF
-        WxurWYyw48XrnrK34kArykZ345Z3s5W3y3Kan8Gw15W3WrZrWIqrnYq34UKFyrCry5Gw4f
-        Za90qrn2ya97tFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jIPfQUUUUU=
-X-Originating-IP: [36.112.24.10]
-X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbiLBbTG1spZVxGmQAAsm
+        id S1725998AbgKEQI0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Nov 2020 11:08:26 -0500
+IronPort-SDR: xZj1FVXCsbwiwyK8P3HnAwiDWUtR2pPVuvUCgT6j+s8y9pQ4JQbxxk+Ez7Rk7bS7zdAjdwk3wo
+ DIcX10Qv7FAA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9795"; a="166816804"
+X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; 
+   d="scan'208";a="166816804"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 08:08:25 -0800
+IronPort-SDR: mDRdZvE19QNwz3uwhN3IXoR5wQ5YjbL8DjtST8/r/vyBNp6FwPdfMABqNOoZFcTOmKDkA5cJc4
+ zniRb5B4BwcQ==
+X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; 
+   d="scan'208";a="528013115"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 08:08:23 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kahpF-0046Fk-Rb; Thu, 05 Nov 2020 18:09:25 +0200
+Date:   Thu, 5 Nov 2020 18:09:25 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: How to add the "gpio-line-names" property in a PCI gpio expander
+Message-ID: <20201105160925.GW4077@smile.fi.intel.com>
+References: <98acf6339a1b43d6a38f867069088530@asem.it>
+ <CAJZ5v0g7POp1Lp05RcJJ8ZD1ZiaetN0_SfbAjnQg0kCw4aQukQ@mail.gmail.com>
+ <20201105115941.GK2495@lahna.fi.intel.com>
+ <574b86929d1247caae717ab1a2f31194@asem.it>
+ <20201105152020.GO2495@lahna.fi.intel.com>
+ <5fb64f9c8af64235943c29c9ba50a2df@asem.it>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5fb64f9c8af64235943c29c9ba50a2df@asem.it>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Aili Yao <yaoaili@kingsoft.com>
+On Thu, Nov 05, 2020 at 03:54:32PM +0000, Flavio Suligoi wrote:
+> > > > > > In one of our boards we have an add-on PCI board, with a PCI
+> > serial
+> > > > device
+> > > > > > Exar XR17V352. This device also contains 16 gpios.
+> > > > > > The exar device drivers work good, both the "8250_exar" and the
+> > > > "gpio_exar", and
+> > > > > > I can manage the exar's gpios correctly.
+> > > > > > The problem is how to assign the gpio-line-names property to a PCI
+> > > > gpio
+> > > > > > expanders like this.
+> > > > > >
+> > > > > > I tried adding a new device in my ACPI configuration, as:
+> > > > > >
+> > > > > > Device (EXAR)
+> > > > > > {
+> > > > > >     Name (_HID, "13A80352")
+> > > >
+> > > > If this is PCI device then you need to have _ADR here instead of _HID.
+> > >
+> > > the problem is that the parent bus of this device is not declared in any
+> > ACPI table.
+> > > The exar chip is on the bus 7 :
+> > >
+> > > 07:00.0 Serial controller: Exar Corp. XR17V3521 Dual PCIe UART (rev 03)
+> > >
+> > > and in the _ADR object you can specify device and function only.
+> > > How can I specify the parent bus? It is not simple …
+> > > The lspci output is the following:
+> > 
+> > The parent is the root port the device is connected to and I'm pretty
+> > sure it exists in the namespace as this seems to be Intel hardware. If
+> > you run 'lspci -t' it shows you the root port.
+> > 
+> > The _ADR should be 0 for this one.
+> 
+> Unfortunately there is bridge in the middle:
+> 
+> root@debian:~# lspci -t
+> -[0000:00]-+-00.0
+>            +-02.0
+>            +-0e.0
+>            +-0f.0
+>            +-12.0
+>            +-13.0-[01]----00.0
+>            +-13.1-[02]----00.0
+>            +-13.2-[03]--
+>            +-14.0-[04]----00.0
+>            +-14.1-[05-09]----00.0-[06-09]--+-01.0-[07]----00.0 <-- Exar (bus 7, dev 0, funct 0)
+>            |                               +-02.0-[08]----00.0
+>            |                               \-03.0-[09]--
+>            +-15.0
+>            +-16.0
+>            +-16.1
+>            +-19.0
+>            +-19.1
+>            +-19.2
+>            +-1f.0
+>            \-1f.1
+> root@debian:~#
+> 
+> My changes in the ACPI:
+> 
+> Scope (_SB.PCI0) {
+>     Device (EXAR)
+> 		{
+> 			Name (_ADR, 0x0000)
 
-CONFIG_ACPI_APEI is not sufficient for ghes module global function
-replace it with CONFIG_ACPI_APEI_GHES.
+_ADR should represent BDF (Bus:Device.Function)
 
-When gen_pool_alloc fails in ghes_in_mce_cper_entry_check, we still need
-to try other cper table to get it cleaned even we are likely to get another
-allocation fail.
+Something like 0x07000000
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
----
- arch/x86/kernel/cpu/mce/internal.h | 6 +++++-
- drivers/acpi/apei/ghes.c           | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+> ....
+> 
+> but it doesn't work, because of the bridge.
 
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index 1c79b32fcaa9..1fdf8ac45372 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -70,7 +70,6 @@ int apei_write_mce(struct mce *m);
- ssize_t apei_read_mce(struct mce *m, u64 *record_id);
- int apei_check_mce(void);
- int apei_clear_mce(u64 record_id);
--extern int ghes_in_mce_cper_entry_check(void);
- #else
- static inline int apei_write_mce(struct mce *m)
- {
-@@ -88,6 +87,11 @@ static inline int apei_clear_mce(u64 record_id)
- {
- 	return -EINVAL;
- }
-+#endif
-+
-+#ifdef CONFIG_ACPI_APEI_GHES
-+extern int ghes_in_mce_cper_entry_check(void);
-+#else
- static inline int ghes_in_mce_cper_entry_check(void)
- {
- 	return 0;
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ba3140d74f75..8baa19c6b625 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1131,7 +1131,7 @@ int ghes_in_mce_cper_entry_check(void)
- 			/* Going to panic, No need to keep the error. */
- 			ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
- 			ret = -ENOMEM;
--			goto done;
-+			continue;
- 		}
- 
- 		estatus_node->ghes = ghes;
-@@ -1157,7 +1157,7 @@ int ghes_in_mce_cper_entry_check(void)
- 		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
- 		      node_len);
- 	}
--done:
-+
- 	rcu_read_unlock();
- 	atomic_dec(&ghes_in_nmi);
- 	return ret;
-
-base-commit: b11831c841cb8046a9e01300f5d91985c293e045
 -- 
-2.18.4
+With Best Regards,
+Andy Shevchenko
 
 
