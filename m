@@ -2,162 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA432A85A6
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 19:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C58422A8A9A
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 00:20:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731620AbgKESEI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 13:04:08 -0500
-Received: from foss.arm.com ([217.140.110.172]:39174 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729783AbgKESEI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Nov 2020 13:04:08 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAC0014BF;
-        Thu,  5 Nov 2020 10:04:06 -0800 (PST)
-Received: from [10.57.54.223] (unknown [10.57.54.223])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C558F3F719;
-        Thu,  5 Nov 2020 10:03:59 -0800 (PST)
-Subject: Re: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
- helper
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org, devel@acpica.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        jonathan.cameron@huawei.com
-References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
- <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
-Date:   Thu, 5 Nov 2020 18:03:58 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1732643AbgKEXUc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Nov 2020 18:20:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43108 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732090AbgKEXUb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Nov 2020 18:20:31 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BB4C0613D4
+        for <linux-acpi@vger.kernel.org>; Thu,  5 Nov 2020 15:20:31 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id b138so2851594yba.5
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Nov 2020 15:20:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=z3KvjLX/VJORZkMvx/1zYSVzh145Bb5NCA0EOT0E+co=;
+        b=Qv4uKSRPKxySPqftfzvwkAWHZJ/wyt516/Gw/2AspIpjKZtwdgTxvcR5AzgtvXTrsu
+         7GoPjn0++JJ8shAHCAfP4oBYeaZT1BMj9MVcQAuLLLYhxyl/1QR0cc9MXCtyvAQemcnM
+         bEqyhD9qFHSdTcI034xskJwUA2Cffn+3FDNY4sUmBGlu3VwlfKXDKTH4LK5NZHiWofKb
+         2F2hFKH9Rn/7KJx+F9DibitQVHzaoYxvN+KaxY9u9L0GLMEF1zk92TEkx3gdy1pnTYEq
+         4NEnDIwskqLl7F2hCoI2cyu8CLaScCwJcYn5HjRyNTXLzLtrM4yj7DPNgT6v5VyLueEe
+         xguw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=z3KvjLX/VJORZkMvx/1zYSVzh145Bb5NCA0EOT0E+co=;
+        b=LJJl4Lenp4HX/hOp+H9rotFQAsshs53iDq4LPKvnsG2kIuz01hh4labNepGEwyLbFN
+         wbl7+rau6qpLEeGiamR0Q2LPsfvQmrR7qsw4wYHIXSEWESSp8gIlo3Gj9B6l2/x7em5Q
+         izkrp3294k1Czv1Rd/VcZ2dyVl2bA68jev1R8m16L7LkHddwmpDkuz268LlCVmvfQUlg
+         IbSkgkUIn64BG86U0T/GdzGph7Iah2vdMz6R6DbPqw7FopYwRwYTdMVUEZJbSoyp+p/O
+         o2Icqi6oLABQBJjNEGIaJsx6fdilszgFL9bnlxAtohHOvTYijAcpuvzcTsNxljRbYX9C
+         hS3A==
+X-Gm-Message-State: AOAM530V0xy+anJPy8D8phxkfRS+HOnqFf5G5RVqs//UgJmDQLERvy7U
+        pzlhAiA/rR6+rfYVl4a5NPkha5Z6K0vBCEavV9sh9g==
+X-Google-Smtp-Source: ABdhPJwNPaIyrXj+5IuUPWsE7V5EABEILCdO7q1BovAOrT9z3Fn8nD8DbzEs7xRgXUqoLjsotAsX31QeSdVbUoTK3ik=
+X-Received: by 2002:a25:f817:: with SMTP id u23mr7258013ybd.466.1604618430227;
+ Thu, 05 Nov 2020 15:20:30 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+References: <20201104232356.4038506-1-saravanak@google.com>
+ <20201104232356.4038506-2-saravanak@google.com> <20201105093413.GC3439341@kroah.com>
+In-Reply-To: <20201105093413.GC3439341@kroah.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 5 Nov 2020 15:19:54 -0800
+Message-ID: <CAGETcx9CZp-yyRwi=27eU7hf3z1uLYhaOrY+iyZYxsNpxhLLAQ@mail.gmail.com>
+Subject: Re: [PATCH v1 01/18] Revert "driver core: Avoid deferred probe due to fw_devlink_pause/resume()"
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-10-27 11:26, Shameer Kolothum wrote:
-> Add a helper function that retrieves RMR memory descriptors
-> associated with a given endpoint dev. These memory regions
-> should have a unity mapping in the SMMU. So reserve them as
-> IOMMU_RESV_DIRECT.
+On Thu, Nov 5, 2020 at 1:33 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Nov 04, 2020 at 03:23:38PM -0800, Saravana Kannan wrote:
+> > This reverts commit 2451e746478a6a6e981cfa66b62b791ca93b90c8.
+> >
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+>
+> You need to say _why_ you are doing this, it's obvious _what_ you are
+> doing :)
+>
+> Same for the other reverts in this series.
 
-As a general observation, we also need a way into this that isn't from 
-the perspective of endpoint devices. With SMMUv3 we need to know all the 
-active stream IDs relevant to a given SMMU instance at probe time, so 
-that we can set up some kind of valid stream table entries *before* 
-enabling the SMMU in the reset routine. Otherwise we're just going to 
-kill ongoing traffic (e.g. EFI GOP) with C_BAD_STE long before we ever 
-start adding devices and worrying about reserved regions for them. 
-Similarly for the initial SMR/S2CR state on SMMUv2 with disable_bypass.
+Sorry, forgot about this. Will fix it in v2.
 
-Robin.
-
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->   drivers/acpi/arm64/iort.c | 56 +++++++++++++++++++++++++++++++++++++++
->   include/linux/acpi_iort.h |  4 +++
->   2 files changed, 60 insertions(+)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index b32cd53cca08..c0700149e60b 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -842,6 +842,60 @@ static inline int iort_add_device_replay(struct device *dev)
->   	return err;
->   }
->   
-> +static bool iort_dev_has_rmr(struct device *dev, struct iort_rmr_entry *e)
-> +{
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> +	struct acpi_iort_node *iommu;
-> +	struct iort_rmr_id *rmr_ids = e->rmr_ids;
-> +	int i, j;
-> +
-> +	iommu = iort_get_iort_node(fwspec->iommu_fwnode);
-> +
-> +	for (i = 0; i < e->rmr_ids_num; i++, rmr_ids++) {
-> +		for (j = 0; j < fwspec->num_ids; j++) {
-> +			if (rmr_ids->sid == fwspec->ids[j] &&
-> +			    rmr_ids->smmu == iommu)
-> +				return true;
-> +		}
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +/**
-> + * iort_dev_rmr_get_resv_regions - RMR Reserved region driver helper
-> + * @dev: Device from iommu_get_resv_regions()
-> + * @head: Reserved region list from iommu_get_resv_regions()
-> + *
-> + * Returns: 0 on success, <0 failure
-> + */
-> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
-> +{
-> +	struct iort_rmr_entry *e;
-> +
-> +	list_for_each_entry(e, &iort_rmr_list, list) {
-> +		struct iommu_resv_region *region;
-> +		struct acpi_iort_rmr_desc *rmr;
-> +		int prot = IOMMU_READ | IOMMU_WRITE |
-> +			   IOMMU_NOEXEC | IOMMU_MMIO;
-> +
-> +		if (!iort_dev_has_rmr(dev, e))
-> +			continue;
-> +
-> +		rmr = e->rmr_desc;
-> +		region = iommu_alloc_resv_region(rmr->base_address,
-> +						 rmr->length, prot,
-> +						 IOMMU_RESV_DIRECT);
-> +		if (!region) {
-> +			dev_err(dev, "Out of memory allocating RMR regions\n");
-> +			return -ENOMEM;
-> +		}
-> +		list_add_tail(&region->list, head);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   /**
->    * iort_iommu_msi_get_resv_regions - Reserved region driver helper
->    * @dev: Device from iommu_get_resv_regions()
-> @@ -1112,6 +1166,8 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->   						const u32 *input_id)
->   { return NULL; }
-> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
-> +{ return 0; }
->   #endif
->   
->   static int nc_dma_get_range(struct device *dev, u64 *size)
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index 20a32120bb88..6dd89faf340c 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
->   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->   						const u32 *id_in);
->   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
-> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head);
->   #else
->   static inline void acpi_iort_init(void) { }
->   static inline u32 iort_msi_map_id(struct device *dev, u32 id)
-> @@ -55,6 +56,9 @@ static inline const struct iommu_ops *iort_iommu_configure_id(
->   static inline
->   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->   { return 0; }
-> +static inline
-> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
-> +{ return 0; }
->   #endif
->   
->   #endif /* __ACPI_IORT_H__ */
-> 
+-Saravana
