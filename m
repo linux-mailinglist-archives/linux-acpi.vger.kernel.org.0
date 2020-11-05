@@ -2,418 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B9E2A752E
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 03:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C923A2A76BC
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 05:59:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730775AbgKECGM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Nov 2020 21:06:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726152AbgKECGM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Nov 2020 21:06:12 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917CDC0613CF;
-        Wed,  4 Nov 2020 18:06:10 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id o9so338074ejg.1;
-        Wed, 04 Nov 2020 18:06:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=aSMHgP1Jnch4n10EFclrFTbEXiLElLRzLCVmmZ3TMoQ=;
-        b=KUe13mZXZiayWXF+T959NLo5KC/8ZgQZ6/KdJ7hgUePbHfny4dceCAytix/j+avi3z
-         YGsxXIcvmP9ol+K3wDCGyykaCUk4ein6+EOCko/DJvGAFMXtTUk7fbkxsAaZrI8kGmqH
-         LD1LseH3z0IUXf1T08d+iIUIaXBNBATCrcxfCgAZ6OssJNgUDtj+qmGRfYkYuObj+f36
-         aNIF2nAJcnexbVUorgWTItWoTaCqbdn1W7jVcBAef1wP1gNdL4mt8SZhPZaUjDJQ7Zok
-         s0FqH64/NdL59A5NTYYi4q91hdAqLE9SzljEY2LgqwItgooFlxtWAXVCq/vzNIZhc/4C
-         VqhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=aSMHgP1Jnch4n10EFclrFTbEXiLElLRzLCVmmZ3TMoQ=;
-        b=aE64B9dLYgOsgrSXM4erZd9nL4Mb3XmzYTwBi36aXypihMFTGB8ypnbAV84fJKM+x4
-         5e6IWEoLu3ZotDs8Jw7Hxn5mFRiTFHBH6VoSJurBX9UWu+GVcIP8Au2jeU/aMO9BLATi
-         +IMB6Sdeu4zwPYgFi/X8oh+7qte5ITUZeTNdtPAdZAp34z2bxY3SvvxAGgVpE6ZJcMRB
-         vfvOhVQ0Sh2DdrQa6H+9fo9yOH6bteswkuJQIKAMpH9tzehcrCjx3b7JV8RbaRq7VtIL
-         /fCHX2s029mT85GY56sS/2FxlSuet3cJTcBGGKm9j2aFlShGyS18ztPfNrq/ZJux40Sw
-         IlUg==
-X-Gm-Message-State: AOAM5322OFP5hIv1Gy0OBTtPcvLNhzaWSZIIG+Ir+2WdQHdnDepLqviL
-        bAD0RNB9ZQlulrWMvgHGuMINBlljiq0=
-X-Google-Smtp-Source: ABdhPJxnv+7azspYA47MO2v8N1xMOTTCawWk+YJ5Juxxih2ksFyN7PHehyT2X00TScoEnvsWYRHJng==
-X-Received: by 2002:a17:906:ec9:: with SMTP id u9mr105984eji.400.1604541968322;
-        Wed, 04 Nov 2020 18:06:08 -0800 (PST)
-Received: from xws.fritz.box (pd9e5a482.dip0.t-ipconnect.de. [217.229.164.130])
-        by smtp.gmail.com with ESMTPSA id p18sm48144edt.23.2020.11.04.18.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2020 18:06:07 -0800 (PST)
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Joe Perches <joe@perches.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, linux-pci@vger.kernel.org,
-        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPI: Fix whitespace inconsistencies
-Date:   Thu,  5 Nov 2020 03:06:00 +0100
-Message-Id: <20201105020600.90443-1-luzmaximilian@gmail.com>
-X-Mailer: git-send-email 2.29.2
+        id S1728085AbgKEE67 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Nov 2020 23:58:59 -0500
+Received: from mga04.intel.com ([192.55.52.120]:24895 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726213AbgKEE67 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 4 Nov 2020 23:58:59 -0500
+IronPort-SDR: wUXvL3OLNZ2X65AeUzDS8WkQ4NA+gBJ6JV4L7BWObSaqQtt+SrtIN/5x4OG83m9dXJsLo756Jf
+ SSKfoYPam8ew==
+X-IronPort-AV: E=McAfee;i="6000,8403,9795"; a="166738544"
+X-IronPort-AV: E=Sophos;i="5.77,452,1596524400"; 
+   d="scan'208";a="166738544"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2020 20:58:54 -0800
+IronPort-SDR: GaFwowDkmyGkXU/+gC79uBotiOAaZ8g4g2rPyoanNNNN/r3pdl3MH2hSCvoXvVJ9Ia4+mvkZvF
+ Cu/lEm+k++ZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,452,1596524400"; 
+   d="scan'208";a="321063157"
+Received: from lkp-server02.sh.intel.com (HELO e61783667810) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 04 Nov 2020 20:58:52 -0800
+Received: from kbuild by e61783667810 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kaXMJ-0001F2-PW; Thu, 05 Nov 2020 04:58:51 +0000
+Date:   Thu, 05 Nov 2020 12:58:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ dddc237beebb79a67a6e2cc18b6a0a29a3a7a89c
+Message-ID: <5fa3865a.NzIx0xFnIiHyCtua%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Replaces spaces with tabs where spaces have been (inconsistently) used
-for indentation and removes trailing whitespaces.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: dddc237beebb79a67a6e2cc18b6a0a29a3a7a89c  Merge branch 'pm-cpufreq-next' into linux-next
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+elapsed time: 725m
+
+configs tested: 150
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                      bmips_stb_defconfig
+powerpc                  storcenter_defconfig
+sh                             shx3_defconfig
+powerpc                      makalu_defconfig
+arm                      pxa255-idp_defconfig
+arm                        shmobile_defconfig
+sh                           se7751_defconfig
+arm                        vexpress_defconfig
+arm                            u300_defconfig
+mips                          ath25_defconfig
+sh                          rsk7269_defconfig
+sh                   secureedge5410_defconfig
+mips                        maltaup_defconfig
+arm                          tango4_defconfig
+parisc                           alldefconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                           tegra_defconfig
+mips                         cobalt_defconfig
+openrisc                            defconfig
+mips                         tb0226_defconfig
+xtensa                              defconfig
+alpha                            allyesconfig
+powerpc                    sam440ep_defconfig
+mips                         db1xxx_defconfig
+arm                            pleb_defconfig
+arm                        mvebu_v7_defconfig
+sh                        sh7785lcr_defconfig
+arm                        spear3xx_defconfig
+powerpc                 mpc834x_itx_defconfig
+ia64                                defconfig
+mips                       capcella_defconfig
+mips                       rbtx49xx_defconfig
+arc                              alldefconfig
+um                            kunit_defconfig
+powerpc                    ge_imp3a_defconfig
+mips                     loongson1c_defconfig
+arm                        multi_v5_defconfig
+powerpc                      cm5200_defconfig
+arc                            hsdk_defconfig
+mips                        jmr3927_defconfig
+powerpc                      ppc6xx_defconfig
+arm                      integrator_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                        clps711x_defconfig
+sh                        edosk7760_defconfig
+parisc                generic-64bit_defconfig
+powerpc                     tqm8555_defconfig
+i386                             allyesconfig
+i386                             alldefconfig
+sh                           se7722_defconfig
+powerpc                       holly_defconfig
+mips                        bcm47xx_defconfig
+mips                            gpr_defconfig
+powerpc                     taishan_defconfig
+arm                          ep93xx_defconfig
+powerpc                      katmai_defconfig
+m68k                       bvme6000_defconfig
+sh                     sh7710voipgw_defconfig
+arm                         orion5x_defconfig
+riscv                    nommu_virt_defconfig
+arm                     davinci_all_defconfig
+sh                   sh7724_generic_defconfig
+powerpc                    klondike_defconfig
+mips                       lemote2f_defconfig
+riscv                            allmodconfig
+mips                            ar7_defconfig
+powerpc                        cell_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                  iss476-smp_defconfig
+arm                          gemini_defconfig
+powerpc                     asp8347_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                     tqm8548_defconfig
+powerpc                     ksi8560_defconfig
+arc                     nsimosci_hs_defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201104
+i386                 randconfig-a006-20201104
+i386                 randconfig-a005-20201104
+i386                 randconfig-a001-20201104
+i386                 randconfig-a002-20201104
+i386                 randconfig-a003-20201104
+i386                 randconfig-a004-20201105
+i386                 randconfig-a006-20201105
+i386                 randconfig-a005-20201105
+i386                 randconfig-a001-20201105
+i386                 randconfig-a002-20201105
+i386                 randconfig-a003-20201105
+x86_64               randconfig-a012-20201104
+x86_64               randconfig-a015-20201104
+x86_64               randconfig-a013-20201104
+x86_64               randconfig-a011-20201104
+x86_64               randconfig-a014-20201104
+x86_64               randconfig-a016-20201104
+i386                 randconfig-a015-20201104
+i386                 randconfig-a013-20201104
+i386                 randconfig-a014-20201104
+i386                 randconfig-a016-20201104
+i386                 randconfig-a011-20201104
+i386                 randconfig-a012-20201104
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a004-20201104
+x86_64               randconfig-a003-20201104
+x86_64               randconfig-a005-20201104
+x86_64               randconfig-a002-20201104
+x86_64               randconfig-a006-20201104
+x86_64               randconfig-a001-20201104
+
 ---
-
-Was previously: ACPI: Remove trailing whitespace
-
-Changes in v2:
- - Use checkpatch to scan for inconsistent indentations and fix them
-   too, i.e. replace spaces with tabs where appropriate.
-
----
- drivers/acpi/acpi_video.c        |  6 +++---
- drivers/acpi/battery.c           |  2 +-
- drivers/acpi/event.c             |  2 +-
- drivers/acpi/internal.h          |  2 +-
- drivers/acpi/nfit/core.c         | 10 +++++-----
- drivers/acpi/pci_irq.c           |  2 +-
- drivers/acpi/pci_link.c          | 12 ++++++------
- drivers/acpi/pci_mcfg.c          |  2 +-
- drivers/acpi/power.c             |  6 +++---
- drivers/acpi/processor_perflib.c |  6 +++---
- drivers/acpi/sbs.c               |  2 +-
- drivers/acpi/sbshc.c             |  2 +-
- drivers/acpi/sbshc.h             |  6 +++---
- drivers/acpi/video_detect.c      | 16 ++++++++--------
- drivers/acpi/wakeup.c            |  4 ++--
- 15 files changed, 40 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index bc96457c9e25..a322a7bd286b 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -578,7 +578,7 @@ acpi_video_bqc_value_to_level(struct acpi_video_device *device,
- 				ACPI_VIDEO_FIRST_LEVEL - 1 - bqc_value;
- 
- 		level = device->brightness->levels[bqc_value +
--		                                   ACPI_VIDEO_FIRST_LEVEL];
-+						   ACPI_VIDEO_FIRST_LEVEL];
- 	} else {
- 		level = bqc_value;
- 	}
-@@ -990,8 +990,8 @@ acpi_video_init_brightness(struct acpi_video_device *device)
- 		goto out_free_levels;
- 
- 	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--	                  "found %d brightness levels\n",
--	                  br->count - ACPI_VIDEO_FIRST_LEVEL));
-+			  "found %d brightness levels\n",
-+			  br->count - ACPI_VIDEO_FIRST_LEVEL));
- 	return 0;
- 
- out_free_levels:
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index cab4af532f36..08ee1c7b12e0 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -987,7 +987,7 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 	 */
- 	if ((battery->state & ACPI_BATTERY_STATE_CRITICAL) ||
- 	    (test_bit(ACPI_BATTERY_ALARM_PRESENT, &battery->flags) &&
--            (battery->capacity_now <= battery->alarm)))
-+	     (battery->capacity_now <= battery->alarm)))
- 		acpi_pm_wakeup_event(&battery->device->dev);
- 
- 	return result;
-diff --git a/drivers/acpi/event.c b/drivers/acpi/event.c
-index 170643927044..92e59f45329b 100644
---- a/drivers/acpi/event.c
-+++ b/drivers/acpi/event.c
-@@ -31,7 +31,7 @@ int acpi_notifier_call_chain(struct acpi_device *dev, u32 type, u32 data)
- 	event.type = type;
- 	event.data = data;
- 	return (blocking_notifier_call_chain(&acpi_chain_head, 0, (void *)&event)
--                        == NOTIFY_BAD) ? -EINVAL : 0;
-+			== NOTIFY_BAD) ? -EINVAL : 0;
- }
- EXPORT_SYMBOL(acpi_notifier_call_chain);
- 
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 43411a7457cd..e3638bafb941 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -134,7 +134,7 @@ int acpi_add_power_resource(acpi_handle handle);
- void acpi_power_add_remove_device(struct acpi_device *adev, bool add);
- int acpi_power_wakeup_list_init(struct list_head *list, int *system_level);
- int acpi_device_sleep_wake(struct acpi_device *dev,
--                           int enable, int sleep_state, int dev_state);
-+			   int enable, int sleep_state, int dev_state);
- int acpi_power_get_inferred_state(struct acpi_device *device, int *state);
- int acpi_power_on_resources(struct acpi_device *device, int state);
- int acpi_power_transition(struct acpi_device *device, int state);
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 3a3c209ed3d3..442608220b5c 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2175,10 +2175,10 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
-  * these commands.
-  */
- enum nfit_aux_cmds {
--        NFIT_CMD_TRANSLATE_SPA = 5,
--        NFIT_CMD_ARS_INJECT_SET = 7,
--        NFIT_CMD_ARS_INJECT_CLEAR = 8,
--        NFIT_CMD_ARS_INJECT_GET = 9,
-+	NFIT_CMD_TRANSLATE_SPA = 5,
-+	NFIT_CMD_ARS_INJECT_SET = 7,
-+	NFIT_CMD_ARS_INJECT_CLEAR = 8,
-+	NFIT_CMD_ARS_INJECT_GET = 9,
- };
- 
- static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
-@@ -2632,7 +2632,7 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
- 	nfit_blk->bdw_offset = nfit_mem->bdw->offset;
- 	mmio = &nfit_blk->mmio[BDW];
- 	mmio->addr.base = devm_nvdimm_memremap(dev, nfit_mem->spa_bdw->address,
--                        nfit_mem->spa_bdw->length, nd_blk_memremap_flags(ndbr));
-+			nfit_mem->spa_bdw->length, nd_blk_memremap_flags(ndbr));
- 	if (!mmio->addr.base) {
- 		dev_dbg(dev, "%s failed to map bdw\n",
- 				nvdimm_name(nvdimm));
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index dea8a60e18a4..14ee631cb7cf 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -175,7 +175,7 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
- 	 * configure the IRQ assigned to this slot|dev|pin.  The 'source_index'
- 	 * indicates which resource descriptor in the resource template (of
- 	 * the link device) this interrupt is allocated from.
--	 * 
-+	 *
- 	 * NOTE: Don't query the Link Device for IRQ information at this time
- 	 *       because Link Device enumeration may not have occurred yet
- 	 *       (e.g. exists somewhere 'below' this _PRT entry in the ACPI
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index 606da5d77ad3..fb4c5632a232 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -6,8 +6,8 @@
-  *  Copyright (C) 2001, 2002 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>
-  *  Copyright (C) 2002       Dominik Brodowski <devel@brodo.de>
-  *
-- * TBD: 
-- *      1. Support more than one IRQ resource entry per link device (index).
-+ * TBD:
-+ *	1. Support more than one IRQ resource entry per link device (index).
-  *	2. Implement start/stop mechanism and use ACPI Bus Driver facilities
-  *	   for IRQ management (e.g. start()->_SRS).
-  */
-@@ -249,8 +249,8 @@ static int acpi_pci_link_get_current(struct acpi_pci_link *link)
- 		}
- 	}
- 
--	/* 
--	 * Query and parse _CRS to get the current IRQ assignment. 
-+	/*
-+	 * Query and parse _CRS to get the current IRQ assignment.
- 	 */
- 
- 	status = acpi_walk_resources(link->device->handle, METHOD_NAME__CRS,
-@@ -396,7 +396,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
- /*
-  * "acpi_irq_balance" (default in APIC mode) enables ACPI to use PIC Interrupt
-  * Link Devices to move the PIRQs around to minimize sharing.
-- * 
-+ *
-  * "acpi_irq_nobalance" (default in PIC mode) tells ACPI not to move any PIC IRQs
-  * that the BIOS has already set to active.  This is necessary because
-  * ACPI has no automatic means of knowing what ISA IRQs are used.  Note that
-@@ -414,7 +414,7 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
-  *
-  * Note that PCI IRQ routers have a list of possible IRQs,
-  * which may not include the IRQs this table says are available.
-- * 
-+ *
-  * Since this heuristic can't tell the difference between a link
-  * that no device will attach to, vs. a link which may be shared
-  * by multiple active devices -- it is not optimal.
-diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-index 7ddd57abadd1..95f23acd5b80 100644
---- a/drivers/acpi/pci_mcfg.c
-+++ b/drivers/acpi/pci_mcfg.c
-@@ -173,7 +173,7 @@ static int pci_mcfg_quirk_matches(struct mcfg_fixup *f, u16 segment,
- {
- 	if (!memcmp(f->oem_id, mcfg_oem_id, ACPI_OEM_ID_SIZE) &&
- 	    !memcmp(f->oem_table_id, mcfg_oem_table_id,
--	            ACPI_OEM_TABLE_ID_SIZE) &&
-+		    ACPI_OEM_TABLE_ID_SIZE) &&
- 	    f->oem_revision == mcfg_oem_revision &&
- 	    f->segment == segment &&
- 	    resource_contains(&f->bus_range, bus_range))
-diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-index 837b875d075e..8048da85b7e0 100644
---- a/drivers/acpi/power.c
-+++ b/drivers/acpi/power.c
-@@ -13,7 +13,7 @@
-  * 1. via "Device Specific (D-State) Control"
-  * 2. via "Power Resource Control".
-  * The code below deals with ACPI Power Resources control.
-- * 
-+ *
-  * An ACPI "power resource object" represents a software controllable power
-  * plane, clock plane, or other resource depended on by a device.
-  *
-@@ -645,7 +645,7 @@ int acpi_power_wakeup_list_init(struct list_head *list, int *system_level_p)
-  * -ENODEV if the execution of either _DSW or _PSW has failed
-  */
- int acpi_device_sleep_wake(struct acpi_device *dev,
--                           int enable, int sleep_state, int dev_state)
-+			   int enable, int sleep_state, int dev_state)
- {
- 	union acpi_object in_arg[3];
- 	struct acpi_object_list arg_list = { 3, in_arg };
-@@ -690,7 +690,7 @@ int acpi_device_sleep_wake(struct acpi_device *dev,
- 
- /*
-  * Prepare a wakeup device, two steps (Ref ACPI 2.0:P229):
-- * 1. Power on the power resources required for the wakeup device 
-+ * 1. Power on the power resources required for the wakeup device
-  * 2. Execute _DSW (Device Sleep Wake) or (deprecated in ACPI 3.0) _PSW (Power
-  *    State Wake) for the device, if present
-  */
-diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
-index 5909e8fa4013..b04a68950ff1 100644
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -354,7 +354,7 @@ static int acpi_processor_get_performance_states(struct acpi_processor *pr)
- 				  (u32) px->control, (u32) px->status));
- 
- 		/*
-- 		 * Check that ACPI's u64 MHz will be valid as u32 KHz in cpufreq
-+		 * Check that ACPI's u64 MHz will be valid as u32 KHz in cpufreq
- 		 */
- 		if (!px->core_frequency ||
- 		    ((u32)(px->core_frequency * 1000) !=
-@@ -627,7 +627,7 @@ int acpi_processor_preregister_performance(
- 		goto err_ret;
- 
- 	/*
--	 * Now that we have _PSD data from all CPUs, lets setup P-state 
-+	 * Now that we have _PSD data from all CPUs, lets setup P-state
- 	 * domain info.
- 	 */
- 	for_each_possible_cpu(i) {
-@@ -693,7 +693,7 @@ int acpi_processor_preregister_performance(
- 			if (match_pdomain->domain != pdomain->domain)
- 				continue;
- 
--			match_pr->performance->shared_type = 
-+			match_pr->performance->shared_type =
- 					pr->performance->shared_type;
- 			cpumask_copy(match_pr->performance->shared_cpu_map,
- 				     pr->performance->shared_cpu_map);
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index f158b8c30113..e6d9f4de2800 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -366,7 +366,7 @@ static int acpi_battery_get_state(struct acpi_battery *battery)
- 					 state_readers[i].mode,
- 					 ACPI_SBS_BATTERY,
- 					 state_readers[i].command,
--				         (u8 *)battery +
-+					 (u8 *)battery +
- 						state_readers[i].offset);
- 		if (result)
- 			goto end;
-diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
-index 87b74e9015e5..53c2862c4c75 100644
---- a/drivers/acpi/sbshc.c
-+++ b/drivers/acpi/sbshc.c
-@@ -176,7 +176,7 @@ int acpi_smbus_write(struct acpi_smb_hc *hc, u8 protocol, u8 address,
- EXPORT_SYMBOL_GPL(acpi_smbus_write);
- 
- int acpi_smbus_register_callback(struct acpi_smb_hc *hc,
--			         smbus_alarm_callback callback, void *context)
-+				 smbus_alarm_callback callback, void *context)
- {
- 	mutex_lock(&hc->lock);
- 	hc->callback = callback;
-diff --git a/drivers/acpi/sbshc.h b/drivers/acpi/sbshc.h
-index c3522bb82792..695c390e2884 100644
---- a/drivers/acpi/sbshc.h
-+++ b/drivers/acpi/sbshc.h
-@@ -24,9 +24,9 @@ enum acpi_sbs_device_addr {
- typedef void (*smbus_alarm_callback)(void *context);
- 
- extern int acpi_smbus_read(struct acpi_smb_hc *hc, u8 protocol, u8 address,
--	       u8 command, u8 * data);
-+		u8 command, u8 *data);
- extern int acpi_smbus_write(struct acpi_smb_hc *hc, u8 protocol, u8 slave_address,
--		u8 command, u8 * data, u8 length);
-+		u8 command, u8 *data, u8 length);
- extern int acpi_smbus_register_callback(struct acpi_smb_hc *hc,
--			         smbus_alarm_callback callback, void *context);
-+		smbus_alarm_callback callback, void *context);
- extern int acpi_smbus_unregister_callback(struct acpi_smb_hc *hc);
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 3a032afd9d05..4f5463b2a217 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -178,14 +178,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X201s"),
- 		},
- 	},
--        {
--         .callback = video_detect_force_video,
--         .ident = "ThinkPad X201T",
--         .matches = {
--                DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--                DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X201T"),
--                },
--        },
-+	{
-+	 .callback = video_detect_force_video,
-+	 .ident = "ThinkPad X201T",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X201T"),
-+		},
-+	},
- 
- 	/* The native backlight controls do not work on some older machines */
- 	{
-diff --git a/drivers/acpi/wakeup.c b/drivers/acpi/wakeup.c
-index f89dd9a99e6e..b02bf770aead 100644
---- a/drivers/acpi/wakeup.c
-+++ b/drivers/acpi/wakeup.c
-@@ -44,7 +44,7 @@ void acpi_enable_wakeup_devices(u8 sleep_state)
- 		if (!dev->wakeup.flags.valid
- 		    || sleep_state > (u32) dev->wakeup.sleep_state
- 		    || !(device_may_wakeup(&dev->dev)
--		        || dev->wakeup.prepare_count))
-+			 || dev->wakeup.prepare_count))
- 			continue;
- 
- 		if (device_may_wakeup(&dev->dev))
-@@ -69,7 +69,7 @@ void acpi_disable_wakeup_devices(u8 sleep_state)
- 		if (!dev->wakeup.flags.valid
- 		    || sleep_state > (u32) dev->wakeup.sleep_state
- 		    || !(device_may_wakeup(&dev->dev)
--		        || dev->wakeup.prepare_count))
-+			 || dev->wakeup.prepare_count))
- 			continue;
- 
- 		acpi_set_gpe_wake_mask(dev->wakeup.gpe_device, dev->wakeup.gpe_number,
--- 
-2.29.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
