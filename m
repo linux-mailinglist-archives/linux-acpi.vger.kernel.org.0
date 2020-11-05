@@ -2,173 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4703C2A8586
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 19:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA432A85A6
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 19:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731609AbgKESBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 13:01:25 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2057 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727275AbgKESBY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Nov 2020 13:01:24 -0500
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CRrVl2nfhz67J3M;
-        Fri,  6 Nov 2020 01:44:15 +0800 (CST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1913.5; Thu, 5 Nov 2020 18:45:30 +0100
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.87.221) by
- lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Thu, 5 Nov 2020 17:45:29 +0000
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <james.morse@arm.com>,
-        <bp@alien8.de>, <tony.luck@intel.com>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <rrichter@marvell.com>
-CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-        <shiju.jose@huawei.com>
-Subject: [RFC PATCH 4/4] ACPI / APEI: Add reporting ARM64 CPU cache corrected error count
-Date:   Thu, 5 Nov 2020 17:42:33 +0000
-Message-ID: <20201105174233.1146-5-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20201105174233.1146-1-shiju.jose@huawei.com>
-References: <20201105174233.1146-1-shiju.jose@huawei.com>
+        id S1731620AbgKESEI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Nov 2020 13:04:08 -0500
+Received: from foss.arm.com ([217.140.110.172]:39174 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729783AbgKESEI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Nov 2020 13:04:08 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAC0014BF;
+        Thu,  5 Nov 2020 10:04:06 -0800 (PST)
+Received: from [10.57.54.223] (unknown [10.57.54.223])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C558F3F719;
+        Thu,  5 Nov 2020 10:03:59 -0800 (PST)
+Subject: Re: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
+ helper
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, devel@acpica.org
+Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        jonathan.cameron@huawei.com
+References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
+ <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
+Date:   Thu, 5 Nov 2020 18:03:58 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.47.87.221]
-X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
- lhreml715-chm.china.huawei.com (10.201.108.66)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add reporting ARM64 CPU cache corrected error count to the ghes_edac.
-The error count would be updated in the EDAC CPU cache sysfs
-interface.
+On 2020-10-27 11:26, Shameer Kolothum wrote:
+> Add a helper function that retrieves RMR memory descriptors
+> associated with a given endpoint dev. These memory regions
+> should have a unity mapping in the SMMU. So reserve them as
+> IOMMU_RESV_DIRECT.
 
-Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- drivers/acpi/apei/ghes.c | 79 ++++++++++++++++++++++++++++++++++++++--
- include/linux/cper.h     |  4 ++
- 2 files changed, 80 insertions(+), 3 deletions(-)
+As a general observation, we also need a way into this that isn't from 
+the perspective of endpoint devices. With SMMUv3 we need to know all the 
+active stream IDs relevant to a given SMMU instance at probe time, so 
+that we can set up some kind of valid stream table entries *before* 
+enabling the SMMU in the reset routine. Otherwise we're just going to 
+kill ongoing traffic (e.g. EFI GOP) with C_BAD_STE long before we ever 
+start adding devices and worrying about reserved regions for them. 
+Similarly for the initial SMR/S2CR state on SMMUv2 with disable_bypass.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index fce7ade2aba9..b17173312087 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -523,6 +523,81 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- #endif
- }
- 
-+/*
-+ * arm_err_trans_type_to_acpi_cache_type: Function to convert transaction type
-+ * in the CPER's ARM cache error structure to the ACPI PPTT cache type.
-+ *
-+ * @type - transaction type. Type of cache error instruction/data/generic.
-+ *
-+ * Return: Success: ACPI PPTT cache type. Failure: Negative value.
-+ */
-+static u8 arm_err_trans_type_to_acpi_cache_type(u8 type)
-+{
-+	switch (type) {
-+	case CPER_ARM_CACHE_TRANS_TYPE_INSTRUCTION:
-+		return ACPI_PPTT_CACHE_TYPE_INSTR;
-+	case CPER_ARM_CACHE_TRANS_TYPE_DATA:
-+		return ACPI_PPTT_CACHE_TYPE_DATA;
-+	case CPER_ARM_CACHE_TRANS_TYPE_GENERIC:
-+		return ACPI_PPTT_CACHE_TYPE_UNIFIED;
-+	default:
-+		pr_warn_ratelimited("FW_WARN GHES_PFX ARM CPER: Invalid cache transaction type\n");
-+		return -EINVAL;
-+	}
-+}
-+
-+static void ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata)
-+{
-+	struct cper_sec_proc_arm *error = acpi_hest_get_payload(gdata);
-+	struct cper_arm_err_info *err_info;
-+	struct ghes_einfo_cpu einfo;
-+	u8 trans_type;
-+	u64 error_info;
-+	int sec_sev;
-+	int i, cache_type;
-+
-+	log_arm_hw_error(error);
-+
-+	sec_sev = ghes_severity(gdata->error_severity);
-+
-+#if defined(CONFIG_ARM64)
-+	if (sec_sev == GHES_SEV_CORRECTED) {
-+		memset(&einfo, 0, sizeof(einfo));
-+		einfo.cpu = get_logical_index(error->mpidr);
-+		if (einfo.cpu == -EINVAL)
-+			return;
-+
-+		/* ARM processor error types are cache/TLB/bus errors.
-+		 * Presently corrected error count for caches only
-+		 * is reported.
-+		 */
-+		err_info = (struct cper_arm_err_info *)(error + 1);
-+
-+		for (i = 0; i < error->err_info_num; i++) {
-+			if (err_info->type != CPER_ARM_CACHE_ERROR)
-+				continue;
-+			einfo.ce_count = err_info->multiple_error + 1;
-+
-+			error_info = err_info->error_info;
-+			if (!(error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) ||
-+			    !(error_info & CPER_ARM_ERR_VALID_LEVEL))
-+				continue;
-+
-+			trans_type = ((error_info >> CPER_ARM_ERR_TRANSACTION_SHIFT)
-+					& CPER_ARM_ERR_TRANSACTION_MASK);
-+			cache_type = arm_err_trans_type_to_acpi_cache_type(trans_type);
-+			if (cache_type < 0)
-+				continue;
-+			einfo.cache_type = cache_type;
-+			einfo.cache_level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
-+					& CPER_ARM_ERR_LEVEL_MASK);
-+			ghes_edac_report_cpu_error(&einfo);
-+			err_info += 1;
-+		}
-+	}
-+#endif
-+}
-+
- static BLOCKING_NOTIFIER_HEAD(vendor_record_notify_list);
- 
- int ghes_register_vendor_record_notifier(struct notifier_block *nb)
-@@ -605,9 +680,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--
--			log_arm_hw_error(err);
-+			ghes_handle_arm_hw_error(gdata);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 6a511a1078ca..0ea966af6ad9 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -314,6 +314,10 @@ enum {
- #define CPER_ARM_ERR_ACCESS_MODE_SHIFT		43
- #define CPER_ARM_ERR_ACCESS_MODE_MASK		GENMASK(0,0)
- 
-+#define CPER_ARM_CACHE_TRANS_TYPE_INSTRUCTION	0
-+#define CPER_ARM_CACHE_TRANS_TYPE_DATA		1
-+#define CPER_ARM_CACHE_TRANS_TYPE_GENERIC	2
-+
- /*
-  * All tables and structs must be byte-packed to match CPER
-  * specification, since the tables are provided by the system BIOS
--- 
-2.17.1
+Robin.
 
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>   drivers/acpi/arm64/iort.c | 56 +++++++++++++++++++++++++++++++++++++++
+>   include/linux/acpi_iort.h |  4 +++
+>   2 files changed, 60 insertions(+)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index b32cd53cca08..c0700149e60b 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -842,6 +842,60 @@ static inline int iort_add_device_replay(struct device *dev)
+>   	return err;
+>   }
+>   
+> +static bool iort_dev_has_rmr(struct device *dev, struct iort_rmr_entry *e)
+> +{
+> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> +	struct acpi_iort_node *iommu;
+> +	struct iort_rmr_id *rmr_ids = e->rmr_ids;
+> +	int i, j;
+> +
+> +	iommu = iort_get_iort_node(fwspec->iommu_fwnode);
+> +
+> +	for (i = 0; i < e->rmr_ids_num; i++, rmr_ids++) {
+> +		for (j = 0; j < fwspec->num_ids; j++) {
+> +			if (rmr_ids->sid == fwspec->ids[j] &&
+> +			    rmr_ids->smmu == iommu)
+> +				return true;
+> +		}
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * iort_dev_rmr_get_resv_regions - RMR Reserved region driver helper
+> + * @dev: Device from iommu_get_resv_regions()
+> + * @head: Reserved region list from iommu_get_resv_regions()
+> + *
+> + * Returns: 0 on success, <0 failure
+> + */
+> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
+> +{
+> +	struct iort_rmr_entry *e;
+> +
+> +	list_for_each_entry(e, &iort_rmr_list, list) {
+> +		struct iommu_resv_region *region;
+> +		struct acpi_iort_rmr_desc *rmr;
+> +		int prot = IOMMU_READ | IOMMU_WRITE |
+> +			   IOMMU_NOEXEC | IOMMU_MMIO;
+> +
+> +		if (!iort_dev_has_rmr(dev, e))
+> +			continue;
+> +
+> +		rmr = e->rmr_desc;
+> +		region = iommu_alloc_resv_region(rmr->base_address,
+> +						 rmr->length, prot,
+> +						 IOMMU_RESV_DIRECT);
+> +		if (!region) {
+> +			dev_err(dev, "Out of memory allocating RMR regions\n");
+> +			return -ENOMEM;
+> +		}
+> +		list_add_tail(&region->list, head);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   /**
+>    * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+>    * @dev: Device from iommu_get_resv_regions()
+> @@ -1112,6 +1166,8 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+>   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>   						const u32 *input_id)
+>   { return NULL; }
+> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
+> +{ return 0; }
+>   #endif
+>   
+>   static int nc_dma_get_range(struct device *dev, u64 *size)
+> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+> index 20a32120bb88..6dd89faf340c 100644
+> --- a/include/linux/acpi_iort.h
+> +++ b/include/linux/acpi_iort.h
+> @@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
+>   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>   						const u32 *id_in);
+>   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
+> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head);
+>   #else
+>   static inline void acpi_iort_init(void) { }
+>   static inline u32 iort_msi_map_id(struct device *dev, u32 id)
+> @@ -55,6 +56,9 @@ static inline const struct iommu_ops *iort_iommu_configure_id(
+>   static inline
+>   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+>   { return 0; }
+> +static inline
+> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head *head)
+> +{ return 0; }
+>   #endif
+>   
+>   #endif /* __ACPI_IORT_H__ */
+> 
