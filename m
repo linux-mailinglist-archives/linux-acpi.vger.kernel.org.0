@@ -2,112 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF9F2A80B1
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 15:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD592A8042
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Nov 2020 15:01:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730429AbgKEOTN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 09:19:13 -0500
-Received: from m12-15.163.com ([220.181.12.15]:34621 "EHLO m12-15.163.com"
+        id S1730875AbgKEOBb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Nov 2020 09:01:31 -0500
+Received: from smtp.asem.it ([151.1.184.197]:55844 "EHLO smtp.asem.it"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730466AbgKEOTM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Nov 2020 09:19:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=SRGZE9QaYZjF/f6y12
-        I0JDiF5vu4zgMn7WRer/RYTls=; b=SV4QX1dxSKK6lpzEorGVWMvJGe16/oTozC
-        qfiMNJe3c/W7tgtDcLwD/7JRuP+u2mWCFshBwby3xG/WGHv46NJD/V5aE+l4jF3/
-        BnF5TcjPdkVedjsdN4Juo2sWVlwFFbLoYmdn25rO2uSME6xrSxC+hhxsAjr8MlUB
-        KfFeyvdQ8=
-Received: from smtp.163.com (unknown [36.112.24.10])
-        by smtp11 (Coremail) with SMTP id D8CowAAX_hJ05aNfFE8BGg--.1121S2;
-        Thu, 05 Nov 2020 19:43:50 +0800 (CST)
-From:   yaoaili126@163.com
-To:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, james.morse@arm.com
-Cc:     linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
-        yangfeng1@kingsoft.com, CHENGUOMIN@kingsoft.com,
-        yaoaili@kingsoft.com
-Subject: [PATCH] Fix randconfig build error and code bug
-Date:   Thu,  5 Nov 2020 03:43:26 -0800
-Message-Id: <20201105114326.353021-1-yaoaili126@163.com>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <202011041829.KUaqiCq1-lkp () intel ! com>
-References: <202011041829.KUaqiCq1-lkp () intel ! com>
-X-CM-TRANSID: D8CowAAX_hJ05aNfFE8BGg--.1121S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw47uw18XF4rAry7CFyxuFg_yoW8urWxpF
-        WxurWYyw48XrnrK34kArykZ345Z3s5W3y3Kan8Gw15W3WrZrWIqrnYq34UKFyrCry5Gw4f
-        Za90qrn2ya97tFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jIPfQUUUUU=
-X-Originating-IP: [36.112.24.10]
-X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbiLBbTG1spZVxGmQAAsm
+        id S1730917AbgKEOB3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Nov 2020 09:01:29 -0500
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000588650.MSG 
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Nov 2020 15:01:26 +0100S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 5 Nov
+ 2020 15:01:24 +0100
+Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
+ mapi id 15.01.1979.003; Thu, 5 Nov 2020 15:01:24 +0100
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: RE: How to add the "gpio-line-names" property in a PCI gpio expander
+Thread-Topic: How to add the "gpio-line-names" property in a PCI gpio expander
+Thread-Index: AdazWEAUpTjocun1TNeP3lXLN/Ph2wACVbgAAABK9IAABkeZAA==
+Date:   Thu, 5 Nov 2020 14:01:24 +0000
+Message-ID: <574b86929d1247caae717ab1a2f31194@asem.it>
+References: <98acf6339a1b43d6a38f867069088530@asem.it>
+ <CAJZ5v0g7POp1Lp05RcJJ8ZD1ZiaetN0_SfbAjnQg0kCw4aQukQ@mail.gmail.com>
+ <20201105115941.GK2495@lahna.fi.intel.com>
+In-Reply-To: <20201105115941.GK2495@lahna.fi.intel.com>
+Accept-Language: it-IT, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.17.208]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090215.5FA405B5.0041,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Aili Yao <yaoaili@kingsoft.com>
-
-CONFIG_ACPI_APEI is not sufficient for ghes module global function
-replace it with CONFIG_ACPI_APEI_GHES.
-
-When gen_pool_alloc fails in ghes_in_mce_cper_entry_check, we still need
-to try other cper table to get it cleaned even we are likely to get another
-allocation fail.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
----
- arch/x86/kernel/cpu/mce/internal.h | 6 +++++-
- drivers/acpi/apei/ghes.c           | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index 1c79b32fcaa9..1fdf8ac45372 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -70,7 +70,6 @@ int apei_write_mce(struct mce *m);
- ssize_t apei_read_mce(struct mce *m, u64 *record_id);
- int apei_check_mce(void);
- int apei_clear_mce(u64 record_id);
--extern int ghes_in_mce_cper_entry_check(void);
- #else
- static inline int apei_write_mce(struct mce *m)
- {
-@@ -88,6 +87,11 @@ static inline int apei_clear_mce(u64 record_id)
- {
- 	return -EINVAL;
- }
-+#endif
-+
-+#ifdef CONFIG_ACPI_APEI_GHES
-+extern int ghes_in_mce_cper_entry_check(void);
-+#else
- static inline int ghes_in_mce_cper_entry_check(void)
- {
- 	return 0;
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ba3140d74f75..8baa19c6b625 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1131,7 +1131,7 @@ int ghes_in_mce_cper_entry_check(void)
- 			/* Going to panic, No need to keep the error. */
- 			ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
- 			ret = -ENOMEM;
--			goto done;
-+			continue;
- 		}
- 
- 		estatus_node->ghes = ghes;
-@@ -1157,7 +1157,7 @@ int ghes_in_mce_cper_entry_check(void)
- 		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
- 		      node_len);
- 	}
--done:
-+
- 	rcu_read_unlock();
- 	atomic_dec(&ghes_in_nmi);
- 	return ret;
-
-base-commit: b11831c841cb8046a9e01300f5d91985c293e045
--- 
-2.18.4
-
-
+SGkgTWlrYSwNCg0KPiA+ID4gSW4gb25lIG9mIG91ciBib2FyZHMgd2UgaGF2ZSBhbiBhZGQtb24g
+UENJIGJvYXJkLCB3aXRoIGEgUENJIHNlcmlhbA0KPiBkZXZpY2UNCj4gPiA+IEV4YXIgWFIxN1Yz
+NTIuIFRoaXMgZGV2aWNlIGFsc28gY29udGFpbnMgMTYgZ3Bpb3MuDQo+ID4gPiBUaGUgZXhhciBk
+ZXZpY2UgZHJpdmVycyB3b3JrIGdvb2QsIGJvdGggdGhlICI4MjUwX2V4YXIiIGFuZCB0aGUNCj4g
+ImdwaW9fZXhhciIsIGFuZA0KPiA+ID4gSSBjYW4gbWFuYWdlIHRoZSBleGFyJ3MgZ3Bpb3MgY29y
+cmVjdGx5Lg0KPiA+ID4gVGhlIHByb2JsZW0gaXMgaG93IHRvIGFzc2lnbiB0aGUgZ3Bpby1saW5l
+LW5hbWVzIHByb3BlcnR5IHRvIGEgUENJDQo+IGdwaW8NCj4gPiA+IGV4cGFuZGVycyBsaWtlIHRo
+aXMuDQo+ID4gPg0KPiA+ID4gSSB0cmllZCBhZGRpbmcgYSBuZXcgZGV2aWNlIGluIG15IEFDUEkg
+Y29uZmlndXJhdGlvbiwgYXM6DQo+ID4gPg0KPiA+ID4gRGV2aWNlIChFWEFSKQ0KPiA+ID4gew0K
+PiA+ID4gICAgIE5hbWUgKF9ISUQsICIxM0E4MDM1MiIpDQo+IA0KPiBJZiB0aGlzIGlzIFBDSSBk
+ZXZpY2UgdGhlbiB5b3UgbmVlZCB0byBoYXZlIF9BRFIgaGVyZSBpbnN0ZWFkIG9mIF9ISUQuDQoN
+CnRoZSBwcm9ibGVtIGlzIHRoYXQgdGhlIHBhcmVudCBidXMgb2YgdGhpcyBkZXZpY2UgaXMgbm90
+IGRlY2xhcmVkIGluIGFueSBBQ1BJIHRhYmxlLg0KVGhlIGV4YXIgY2hpcCBpcyBvbiB0aGUgYnVz
+IDcgOg0KDQowNzowMC4wIFNlcmlhbCBjb250cm9sbGVyOiBFeGFyIENvcnAuIFhSMTdWMzUyMSBE
+dWFsIFBDSWUgVUFSVCAocmV2IDAzKQ0KDQphbmQgaW4gdGhlIF9BRFIgb2JqZWN0IHlvdSBjYW4g
+c3BlY2lmeSBkZXZpY2UgYW5kIGZ1bmN0aW9uIG9ubHkuIA0KSG93IGNhbiBJIHNwZWNpZnkgdGhl
+IHBhcmVudCBidXM/IEl0IGlzIG5vdCBzaW1wbGUg4oCmDQpUaGUgbHNwY2kgb3V0cHV0IGlzIHRo
+ZSBmb2xsb3dpbmc6DQoNCnJvb3RAZGViaWFuOi9ldGMjIGxzcGNpDQowMDowMC4wIEhvc3QgYnJp
+ZGdlOiBJbnRlbCBDb3Jwb3JhdGlvbiBBdG9tL0NlbGVyb24vUGVudGl1bSBQcm9jZXNzb3IgTjQy
+MDAvTjMzNTAvRTM5MDAgU2VyaWVzIEhvc3QgQnJpZGdlIChyZXYgMGQpDQowMDowMi4wIFZHQSBj
+b21wYXRpYmxlIGNvbnRyb2xsZXI6IEludGVsIENvcnBvcmF0aW9uIERldmljZSA1YTg1IChyZXYg
+MGQpDQowMDowZS4wIEF1ZGlvIGRldmljZTogSW50ZWwgQ29ycG9yYXRpb24gQXRvbS9DZWxlcm9u
+L1BlbnRpdW0gUHJvY2Vzc29yIE40MjAwL04zMzUwL0UzOTAwIFNlcmllcyBBdWRpbyBDbHVzdGVy
+IChyZXYgMGQpDQowMDowZi4wIENvbW11bmljYXRpb24gY29udHJvbGxlcjogSW50ZWwgQ29ycG9y
+YXRpb24gQXRvbS9DZWxlcm9uL1BlbnRpdW0gUHJvY2Vzc29yIE40MjAwL04zMzUwL0UzOTAwIFNl
+cmllcyBUcnVzdGVkIEV4ZWN1dGlvbiBFbmdpbmUgKHJldiAwZCkNCjAwOjEyLjAgU0FUQSBjb250
+cm9sbGVyOiBJbnRlbCBDb3Jwb3JhdGlvbiBBdG9tL0NlbGVyb24vUGVudGl1bSBQcm9jZXNzb3Ig
+TjQyMDAvTjMzNTAvRTM5MDAgU2VyaWVzIFNBVEEgQUhDSSBDb250cm9sbGVyIChyZXYgMGQpDQow
+MDoxMy4wIFBDSSBicmlkZ2U6IEludGVsIENvcnBvcmF0aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVt
+IFByb2Nlc3NvciBONDIwMC9OMzM1MC9FMzkwMCBTZXJpZXMgUENJIEV4cHJlc3MgUG9ydCBBICMx
+IChyZXYgZmQpDQowMDoxMy4xIFBDSSBicmlkZ2U6IEludGVsIENvcnBvcmF0aW9uIEF0b20vQ2Vs
+ZXJvbi9QZW50aXVtIFByb2Nlc3NvciBONDIwMC9OMzM1MC9FMzkwMCBTZXJpZXMgUENJIEV4cHJl
+c3MgUG9ydCBBICMyIChyZXYgZmQpDQowMDoxMy4yIFBDSSBicmlkZ2U6IEludGVsIENvcnBvcmF0
+aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVtIFByb2Nlc3NvciBONDIwMC9OMzM1MC9FMzkwMCBTZXJp
+ZXMgUENJIEV4cHJlc3MgUG9ydCBBICMzIChyZXYgZmQpDQowMDoxNC4wIFBDSSBicmlkZ2U6IElu
+dGVsIENvcnBvcmF0aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVtIFByb2Nlc3NvciBONDIwMC9OMzM1
+MC9FMzkwMCBTZXJpZXMgUENJIEV4cHJlc3MgUG9ydCBCICMxIChyZXYgZmQpDQowMDoxNC4xIFBD
+SSBicmlkZ2U6IEludGVsIENvcnBvcmF0aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVtIFByb2Nlc3Nv
+ciBONDIwMC9OMzM1MC9FMzkwMCBTZXJpZXMgUENJIEV4cHJlc3MgUG9ydCBCICMyIChyZXYgZmQp
+DQowMDoxNS4wIFVTQiBjb250cm9sbGVyOiBJbnRlbCBDb3Jwb3JhdGlvbiBBdG9tL0NlbGVyb24v
+UGVudGl1bSBQcm9jZXNzb3IgTjQyMDAvTjMzNTAvRTM5MDAgU2VyaWVzIFVTQiB4SENJIChyZXYg
+MGQpDQowMDoxNi4wIFNpZ25hbCBwcm9jZXNzaW5nIGNvbnRyb2xsZXI6IEludGVsIENvcnBvcmF0
+aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVtIFByb2Nlc3NvciBONDIwMC9OMzM1MC9FMzkwMCBTZXJp
+ZXMgSTJDIENvbnRyb2xsZXIgIzEgKHJldiAwZCkNCjAwOjE2LjEgU2lnbmFsIHByb2Nlc3Npbmcg
+Y29udHJvbGxlcjogSW50ZWwgQ29ycG9yYXRpb24gQXRvbS9DZWxlcm9uL1BlbnRpdW0gUHJvY2Vz
+c29yIE40MjAwL04zMzUwL0UzOTAwIFNlcmllcyBJMkMgQ29udHJvbGxlciAjMiAocmV2IDBkKQ0K
+MDA6MTkuMCBTaWduYWwgcHJvY2Vzc2luZyBjb250cm9sbGVyOiBJbnRlbCBDb3Jwb3JhdGlvbiBB
+dG9tL0NlbGVyb24vUGVudGl1bSBQcm9jZXNzb3IgTjQyMDAvTjMzNTAvRTM5MDAgU2VyaWVzIFNQ
+SSBDb250cm9sbGVyICMxIChyZXYgMGQpDQowMDoxOS4xIFNpZ25hbCBwcm9jZXNzaW5nIGNvbnRy
+b2xsZXI6IEludGVsIENvcnBvcmF0aW9uIEF0b20vQ2VsZXJvbi9QZW50aXVtIFByb2Nlc3NvciBO
+NDIwMC9OMzM1MC9FMzkwMCBTZXJpZXMgU1BJIENvbnRyb2xsZXIgIzIgKHJldiAwZCkNCjAwOjE5
+LjIgU2lnbmFsIHByb2Nlc3NpbmcgY29udHJvbGxlcjogSW50ZWwgQ29ycG9yYXRpb24gQXRvbS9D
+ZWxlcm9uL1BlbnRpdW0gUHJvY2Vzc29yIE40MjAwL04zMzUwL0UzOTAwIFNlcmllcyBTUEkgQ29u
+dHJvbGxlciAjMyAocmV2IDBkKQ0KMDA6MWYuMCBJU0EgYnJpZGdlOiBJbnRlbCBDb3Jwb3JhdGlv
+biBBdG9tL0NlbGVyb24vUGVudGl1bSBQcm9jZXNzb3IgTjQyMDAvTjMzNTAvRTM5MDAgU2VyaWVz
+IExvdyBQaW4gQ291bnQgSW50ZXJmYWNlIChyZXYgMGQpDQowMDoxZi4xIFNNQnVzOiBJbnRlbCBD
+b3Jwb3JhdGlvbiBBdG9tL0NlbGVyb24vUGVudGl1bSBQcm9jZXNzb3IgTjQyMDAvTjMzNTAvRTM5
+MDAgU2VyaWVzIFNNQnVzIENvbnRyb2xsZXIgKHJldiAwZCkNCjAxOjAwLjAgRXRoZXJuZXQgY29u
+dHJvbGxlcjogSW50ZWwgQ29ycG9yYXRpb24gSTIxMCBHaWdhYml0IE5ldHdvcmsgQ29ubmVjdGlv
+biAocmV2IDAzKQ0KMDI6MDAuMCBFdGhlcm5ldCBjb250cm9sbGVyOiBJbnRlbCBDb3Jwb3JhdGlv
+biBJMjEwIEdpZ2FiaXQgTmV0d29yayBDb25uZWN0aW9uIChyZXYgMDMpDQowNDowMC4wIEV0aGVy
+bmV0IGNvbnRyb2xsZXI6IEludGVsIENvcnBvcmF0aW9uIEkyMTAgR2lnYWJpdCBOZXR3b3JrIENv
+bm5lY3Rpb24gKHJldiAwMykNCjA1OjAwLjAgUENJIGJyaWRnZTogUGVyaWNvbSBTZW1pY29uZHVj
+dG9yIERldmljZSAyNDA0IChyZXYgMDUpDQowNjowMS4wIFBDSSBicmlkZ2U6IFBlcmljb20gU2Vt
+aWNvbmR1Y3RvciBEZXZpY2UgMjQwNCAocmV2IDA1KQ0KMDY6MDIuMCBQQ0kgYnJpZGdlOiBQZXJp
+Y29tIFNlbWljb25kdWN0b3IgRGV2aWNlIDI0MDQgKHJldiAwNSkNCjA2OjAzLjAgUENJIGJyaWRn
+ZTogUGVyaWNvbSBTZW1pY29uZHVjdG9yIERldmljZSAyNDA0IChyZXYgMDUpDQowNzowMC4wIFNl
+cmlhbCBjb250cm9sbGVyOiBFeGFyIENvcnAuIFhSMTdWMzUyMSBEdWFsIFBDSWUgVUFSVCAocmV2
+IDAzKSAg74OfLS0tIEV4YXIgc2VyaWFsIHBvcnQNCjA4OjAwLjAgRXRoZXJuZXQgY29udHJvbGxl
+cjogSW50ZWwgQ29ycG9yYXRpb24gSTIxMCBHaWdhYml0IE5ldHdvcmsgQ29ubmVjdGlvbiAocmV2
+IDAzKQ0Kcm9vdEBkZWJpYW46L2V0YyMNClRoYW5rcywNCkZsYXZpbw0KDQo=
