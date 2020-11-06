@@ -2,210 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 091532A914C
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 09:30:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2695C2A91B8
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 09:46:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726027AbgKFIaH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 03:30:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726598AbgKFIaF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 03:30:05 -0500
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25122C0613D2
-        for <linux-acpi@vger.kernel.org>; Fri,  6 Nov 2020 00:30:04 -0800 (PST)
-Received: by mail-yb1-xb41.google.com with SMTP id n142so453664ybf.7
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Nov 2020 00:30:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rD9/ZK7971oPQsgTQDh0lNY/GvvQHJh4mKJIEvE3uW4=;
-        b=swGAdYh9B4UcdKFMGOCYdOwSbZ937eS+baY29gHnJVzue1i6yqXwQF+5BKXpvKHr4Z
-         RUmRrSbxIH9BqZJTbba/OvEVoirIt9d4jzAHqxguCotfDN1/W40/GMutFHguG2mUwzhi
-         M4uq4gk+4QW2Ba7xpUV83eZSWr8OAGFvs+oJFFb6ym0AFvmVFkWocz+me2nV5VLsF+xA
-         CaJMSqO+80UsA+xoFLE7I95pNMW3c4O9qWTgJBC5dOKZGc1+v9vPFzDgWjdMlQn1vHF0
-         cPyugi+aPoE2+5RhsKIIn37Ics5Kgj0P4Cerj20T/T4lcehFRB/jWr2wp0dbMGqKlhM3
-         Unxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rD9/ZK7971oPQsgTQDh0lNY/GvvQHJh4mKJIEvE3uW4=;
-        b=i3mUkwldR3zIeMSTHokdqV7DcCmcwG79X6Holg5Z9HS9To1AKBgg/KwiHNIyeNKL14
-         1AClwLdTOAm1lSPbl6/Rg2bJyOz7G7MfMrItO7jWgO6C8zedp5bHBVJLzu3OMDb5a7d3
-         GYJThoNl8aZqYm5Kfl83fR9QkZOx5qSWLfescSQaKMPVI6crStH1lAPH1WAMysCNcyOI
-         yz++lOM0X+Fu64fmE1o2Vnc6mOfuaN24VMFrkd7nvHwgdzdmHLKqvpVg4d1T+OgFiRVK
-         cQeyMxj4mlTC6S6LDm5GsfJ+Gj1ASb+3WbkZ7kcezXjN+zzwZyQv03CexJPBFThdKYFz
-         c6Xw==
-X-Gm-Message-State: AOAM5329EKHbXhP0Ru0u4vNoECCtiL8utUQc0sMuqSu800IvrEFg+gul
-        dVqcJ9hHw0Ily91SFdMfzXRQHTmlVMrKUKlh1p1k4w==
-X-Google-Smtp-Source: ABdhPJwpd/q7RalIXkxlcZXBgsLbLVH8dlZ2vdkcPOrnPviYs7G3l0dFWmp/wsONIlbvLar8/0m7H/olvn4jVk0vsL4=
-X-Received: by 2002:a25:3:: with SMTP id 3mr1306315yba.412.1604651403053; Fri,
- 06 Nov 2020 00:30:03 -0800 (PST)
+        id S1726190AbgKFIqZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 03:46:25 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2063 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725830AbgKFIqZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 03:46:25 -0500
+X-Greylist: delayed 973 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Nov 2020 03:46:24 EST
+Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CSD7S5d1Jz67J9L;
+        Fri,  6 Nov 2020 16:28:52 +0800 (CST)
+Received: from lhreml721-chm.china.huawei.com (10.201.108.72) by
+ fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Fri, 6 Nov 2020 09:30:08 +0100
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Fri, 6 Nov 2020 08:30:07 +0000
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.1913.007; Fri, 6 Nov 2020 08:30:07 +0000
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: RE: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
+ helper
+Thread-Topic: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
+ helper
+Thread-Index: AQHWrFRUv2Y1mvStkkOY+RTCtTFo26m542gAgADmoJA=
+Date:   Fri, 6 Nov 2020 08:30:07 +0000
+Message-ID: <66c52ba92d274adb818d03d2e6813f0a@huawei.com>
+References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
+ <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
+ <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
+In-Reply-To: <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.83.181]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-16-saravanak@google.com> <20201105094228.GE3439341@kroah.com>
- <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
- <20201106072247.GB2614221@kroah.com> <CAGETcx_tQboQPWuoj9hi38-1n=mAQihCi2b475z2r_9s_rXhNg@mail.gmail.com>
- <20201106075148.GA2619937@kroah.com>
-In-Reply-To: <20201106075148.GA2619937@kroah.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 6 Nov 2020 00:29:27 -0800
-Message-ID: <CAGETcx9LNWAXmbbzp3_LMeA515jwOibBfrzcadAcsNTJPHVnnQ@mail.gmail.com>
-Subject: Re: [PATCH v1 15/18] of: property: Update implementation of
- add_links() to create fwnode links
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 5, 2020 at 11:51 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Nov 05, 2020 at 11:41:20PM -0800, Saravana Kannan wrote:
-> > On Thu, Nov 5, 2020 at 11:22 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Thu, Nov 05, 2020 at 03:25:56PM -0800, Saravana Kannan wrote:
-> > > > On Thu, Nov 5, 2020 at 1:41 AM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Wed, Nov 04, 2020 at 03:23:52PM -0800, Saravana Kannan wrote:
-> > > > > > The semantics of add_links() has changed from creating device link
-> > > > > > between devices to creating fwnode links between fwnodes. So, update the
-> > > > > > implementation of add_links() to match the new semantics.
-> > > > > >
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > > > ---
-> > > > > >  drivers/of/property.c | 150 ++++++++++++------------------------------
-> > > > > >  1 file changed, 41 insertions(+), 109 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> > > > > > index 408a7b5f06a9..86303803f1b3 100644
-> > > > > > --- a/drivers/of/property.c
-> > > > > > +++ b/drivers/of/property.c
-> > > > > > @@ -1038,33 +1038,9 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
-> > > > > >  }
-> > > > > >
-> > > > > >  /**
-> > > > > > - * of_get_next_parent_dev - Add device link to supplier from supplier phandle
-> > > > > > - * @np: device tree node
-> > > > > > - *
-> > > > > > - * Given a device tree node (@np), this function finds its closest ancestor
-> > > > > > - * device tree node that has a corresponding struct device.
-> > > > > > - *
-> > > > > > - * The caller of this function is expected to call put_device() on the returned
-> > > > > > - * device when they are done.
-> > > > > > - */
-> > > > > > -static struct device *of_get_next_parent_dev(struct device_node *np)
-> > > > > > -{
-> > > > > > -     struct device *dev = NULL;
-> > > > > > -
-> > > > > > -     of_node_get(np);
-> > > > > > -     do {
-> > > > > > -             np = of_get_next_parent(np);
-> > > > > > -             if (np)
-> > > > > > -                     dev = get_dev_from_fwnode(&np->fwnode);
-> > > > > > -     } while (np && !dev);
-> > > > > > -     of_node_put(np);
-> > > > > > -     return dev;
-> > > > > > -}
-> > > > > > -
-> > > > > > -/**
-> > > > > > - * of_link_to_phandle - Add device link to supplier from supplier phandle
-> > > > > > - * @dev: consumer device
-> > > > > > - * @sup_np: phandle to supplier device tree node
-> > > > > > + * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
-> > > > > > + * @con_np: consumer device tree node
-> > > > > > + * @sup_np: supplier device tree node
-> > > > > >   *
-> > > > > >   * Given a phandle to a supplier device tree node (@sup_np), this function
-> > > > > >   * finds the device that owns the supplier device tree node and creates a
-> > > > > > @@ -1074,16 +1050,14 @@ static struct device *of_get_next_parent_dev(struct device_node *np)
-> > > > > >   * cases, it returns an error.
-> > > > > >   *
-> > > > > >   * Returns:
-> > > > > > - * - 0 if link successfully created to supplier
-> > > > > > - * - -EAGAIN if linking to the supplier should be reattempted
-> > > > > > + * - 0 if fwnode link successfully created to supplier
-> > > > > >   * - -EINVAL if the supplier link is invalid and should not be created
-> > > > > > - * - -ENODEV if there is no device that corresponds to the supplier phandle
-> > > > > > + * - -ENODEV if struct device will never be create for supplier
-> > > > > >   */
-> > > > > > -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > > > > > -                           u32 dl_flags)
-> > > > > > +static int of_link_to_phandle(struct device_node *con_np,
-> > > > > > +                           struct device_node *sup_np)
-> > > > > >  {
-> > > > > > -     struct device *sup_dev, *sup_par_dev;
-> > > > > > -     int ret = 0;
-> > > > > > +     struct device *sup_dev;
-> > > > > >       struct device_node *tmp_np = sup_np;
-> > > > > >
-> > > > > >       of_node_get(sup_np);
-> > > > > > @@ -1106,7 +1080,8 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > > > > >       }
-> > > > > >
-> > > > > >       if (!sup_np) {
-> > > > > > -             dev_dbg(dev, "Not linking to %pOFP - No device\n", tmp_np);
-> > > > > > +             pr_debug("Not linking %pOFP to %pOFP - No device\n",
-> > > > > > +                      con_np, tmp_np);
-> > > > >
-> > > > > Who is calling this function without a valid dev pointer?
-> > > >
-> > > > Sorry, I plan to delete the "dev" parameter as it's not really used
-> > > > anywhere. I'm trying to do that without causing build time errors and
-> > > > making the series into digestible small patches.
-> > > >
-> > > > I can do the deletion of the parameter as a Patch 19/19. Will that work?
-> > >
-> > > That's fine, but why get rid of dev?  The driver core works on these
-> > > things, and we want errors/messages/warnings to spit out what device is
-> > > causing those issues.  It is fine to drag around a struct device pointer
-> > > just for messages, that's to be expected, and is good.
-> >
-> > In general I agree. If the fwnode being parsed is related to the dev,
-> > it's nice to have the dev name in the logs.
-> >
-> > But in this instance I feel it's analogous to printing the PID that's
-> > parsing the fwnode -- kinda irrelevant. The device in question can
-> > appear very random and it'll just cause more confusion than be of help
-> > if it shows up in the logs.
-> >
-> > For example it can be something like:
-> > <gpio device name>: linking <wifi fwnode> to <iommu fwnode>
-> >
-> > If the device was actually that of the wifi fwnode of the iommu
-> > fwnode, I agree it'll be useful to carry around the dev even if it's
-> > just for logs.
-> >
-> > Hope that makes sense.
->
-> Not really, as the device here should be the one that is doing the
-> linking, so why doesn't that matter?
-
-No, the links being created here are fwnode links. Also, when a fwnode
-is parsed (because the device corresponding to it is added), the whole
-fwnode tree under it is also parsed. So the device in question won't
-be either the consumer or the supplier when the log is printed. So the
-device will just be some random ancestor up the parent chain.
-
--Saravana
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iaW4gTXVycGh5IFtt
+YWlsdG86cm9iaW4ubXVycGh5QGFybS5jb21dDQo+IFNlbnQ6IDA1IE5vdmVtYmVyIDIwMjAgMTg6
+MDQNCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGkua29sb3RodW0u
+dGhvZGlAaHVhd2VpLmNvbT47DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
+ZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5k
+YXRpb24ub3JnOyBkZXZlbEBhY3BpY2Eub3JnDQo+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVh
+d2VpLmNvbT47IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207DQo+IGpvcm9AOGJ5dGVzLm9yZzsg
+d2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47IEd1b2hhbmp1bg0KPiAoSGFu
+anVuIEd1bykgPGd1b2hhbmp1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9u
+YXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCAzLzRd
+IEFDUEkvSU9SVDogQWRkIFJNUiBtZW1vcnkgcmVnaW9ucyByZXNlcnZhdGlvbg0KPiBoZWxwZXIN
+Cj4gDQo+IE9uIDIwMjAtMTAtMjcgMTE6MjYsIFNoYW1lZXIgS29sb3RodW0gd3JvdGU6DQo+ID4g
+QWRkIGEgaGVscGVyIGZ1bmN0aW9uIHRoYXQgcmV0cmlldmVzIFJNUiBtZW1vcnkgZGVzY3JpcHRv
+cnMNCj4gPiBhc3NvY2lhdGVkIHdpdGggYSBnaXZlbiBlbmRwb2ludCBkZXYuIFRoZXNlIG1lbW9y
+eSByZWdpb25zDQo+ID4gc2hvdWxkIGhhdmUgYSB1bml0ecKgbWFwcGluZyBpbiB0aGUgU01NVS4g
+U28gcmVzZXJ2ZSB0aGVtIGFzDQo+ID4gSU9NTVVfUkVTVl9ESVJFQ1QuDQo+IA0KPiBBcyBhIGdl
+bmVyYWwgb2JzZXJ2YXRpb24sIHdlIGFsc28gbmVlZCBhIHdheSBpbnRvIHRoaXMgdGhhdCBpc24n
+dCBmcm9tDQo+IHRoZSBwZXJzcGVjdGl2ZSBvZiBlbmRwb2ludCBkZXZpY2VzLiBXaXRoIFNNTVV2
+MyB3ZSBuZWVkIHRvIGtub3cgYWxsIHRoZQ0KPiBhY3RpdmUgc3RyZWFtIElEcyByZWxldmFudCB0
+byBhIGdpdmVuIFNNTVUgaW5zdGFuY2UgYXQgcHJvYmUgdGltZSwgc28NCj4gdGhhdCB3ZSBjYW4g
+c2V0IHVwIHNvbWUga2luZCBvZiB2YWxpZCBzdHJlYW0gdGFibGUgZW50cmllcyAqYmVmb3JlKg0K
+PiBlbmFibGluZyB0aGUgU01NVSBpbiB0aGUgcmVzZXQgcm91dGluZS4NCg0KU28gSSBndWVzcywg
+dGhlIGlkZWEgaXMgdG8gcHJvdmlkZSBhbiBpbnRlcmZhY2UgaGVyZSB0byByZXRyaWV2ZSB0aG9z
+ZSBhY3RpdmUNCnN0cmVhbSBJZHM/IFRoZSBwcm9ibGVtIGlzLCBhdCBwcmVzZW50KEFGQUlDUyks
+IFJNUiBkb2VzbuKAmXQgaGF2ZSBhbnkNCm1lYW5zIHRvIHNwZWNpZnkgc3VjaCBkZXZpY2VzLiAN
+Cg0KIE90aGVyd2lzZSB3ZSdyZSBqdXN0IGdvaW5nIHRvDQo+IGtpbGwgb25nb2luZyB0cmFmZmlj
+IChlLmcuIEVGSSBHT1ApIHdpdGggQ19CQURfU1RFIGxvbmcgYmVmb3JlIHdlIGV2ZXINCj4gc3Rh
+cnQgYWRkaW5nIGRldmljZXMgYW5kIHdvcnJ5aW5nIGFib3V0IHJlc2VydmVkIHJlZ2lvbnMgZm9y
+IHRoZW0uDQo+IFNpbWlsYXJseSBmb3IgdGhlIGluaXRpYWwgU01SL1MyQ1Igc3RhdGUgb24gU01N
+VXYyIHdpdGggZGlzYWJsZV9ieXBhc3MuDQoNCk9rLiBJIHNlZSB0aGUgZGlzY3Vzc2lvbiBoZXJl
+LA0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtaW9tbXUvNDg0YjllOTAtNzM5NS02MTYx
+LTU3N2MtNGQzZjM3MTY5OTdlQGFybS5jb20vDQoNCkZyb20gd2hhdCBJIGdhdGhlciwgdGhlIHBs
+YW4gaXMgdG8gc2V0dXAgYSBkZWZhdWx0IElERU5USVRZX0RPTUFJTiBmb3INCmRldmljZXMgdGhh
+dCBoYXZlIGxpdmUgc3RyZWFtIGdvaW5nIG9uIGR1cmluZyBib290L1NNTVUgcHJvYmUgdGltZS4g
+DQoNClRoYW5rcywNClNoYW1lZXINCg0KPiBSb2Jpbi4NCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTog
+U2hhbWVlciBLb2xvdGh1bSA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPg0K
+PiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyB8IDU2DQo+ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAgaW5jbHVkZS9saW51eC9hY3Bp
+X2lvcnQuaCB8ICA0ICsrKw0KPiA+ICAgMiBmaWxlcyBjaGFuZ2VkLCA2MCBpbnNlcnRpb25zKCsp
+DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyBiL2RyaXZl
+cnMvYWNwaS9hcm02NC9pb3J0LmMNCj4gPiBpbmRleCBiMzJjZDUzY2NhMDguLmMwNzAwMTQ5ZTYw
+YiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jDQo+ID4gKysrIGIv
+ZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYw0KPiA+IEBAIC04NDIsNiArODQyLDYwIEBAIHN0YXRp
+YyBpbmxpbmUgaW50IGlvcnRfYWRkX2RldmljZV9yZXBsYXkoc3RydWN0DQo+IGRldmljZSAqZGV2
+KQ0KPiA+ICAgCXJldHVybiBlcnI7DQo+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIGJvb2wgaW9y
+dF9kZXZfaGFzX3JtcihzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBpb3J0X3Jtcl9lbnRyeSAq
+ZSkNCj4gPiArew0KPiA+ICsJc3RydWN0IGlvbW11X2Z3c3BlYyAqZndzcGVjID0gZGV2X2lvbW11
+X2Z3c3BlY19nZXQoZGV2KTsNCj4gPiArCXN0cnVjdCBhY3BpX2lvcnRfbm9kZSAqaW9tbXU7DQo+
+ID4gKwlzdHJ1Y3QgaW9ydF9ybXJfaWQgKnJtcl9pZHMgPSBlLT5ybXJfaWRzOw0KPiA+ICsJaW50
+IGksIGo7DQo+ID4gKw0KPiA+ICsJaW9tbXUgPSBpb3J0X2dldF9pb3J0X25vZGUoZndzcGVjLT5p
+b21tdV9md25vZGUpOw0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDA7IGkgPCBlLT5ybXJfaWRzX251
+bTsgaSsrLCBybXJfaWRzKyspIHsNCj4gPiArCQlmb3IgKGogPSAwOyBqIDwgZndzcGVjLT5udW1f
+aWRzOyBqKyspIHsNCj4gPiArCQkJaWYgKHJtcl9pZHMtPnNpZCA9PSBmd3NwZWMtPmlkc1tqXSAm
+Jg0KPiA+ICsJCQkgICAgcm1yX2lkcy0+c21tdSA9PSBpb21tdSkNCj4gPiArCQkJCXJldHVybiB0
+cnVlOw0KPiA+ICsJCX0NCj4gPiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gZmFsc2U7DQo+ID4g
+K30NCj4gPiArDQo+ID4gKy8qKg0KPiA+ICsgKiBpb3J0X2Rldl9ybXJfZ2V0X3Jlc3ZfcmVnaW9u
+cyAtIFJNUiBSZXNlcnZlZCByZWdpb24gZHJpdmVyIGhlbHBlcg0KPiA+ICsgKiBAZGV2OiBEZXZp
+Y2UgZnJvbSBpb21tdV9nZXRfcmVzdl9yZWdpb25zKCkNCj4gPiArICogQGhlYWQ6IFJlc2VydmVk
+IHJlZ2lvbiBsaXN0IGZyb20gaW9tbXVfZ2V0X3Jlc3ZfcmVnaW9ucygpDQo+ID4gKyAqDQo+ID4g
+KyAqIFJldHVybnM6IDAgb24gc3VjY2VzcywgPDAgZmFpbHVyZQ0KPiA+ICsgKi8NCj4gPiAraW50
+IGlvcnRfZGV2X3Jtcl9nZXRfcmVzdl9yZWdpb25zKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0
+IGxpc3RfaGVhZA0KPiAqaGVhZCkNCj4gPiArew0KPiA+ICsJc3RydWN0IGlvcnRfcm1yX2VudHJ5
+ICplOw0KPiA+ICsNCj4gPiArCWxpc3RfZm9yX2VhY2hfZW50cnkoZSwgJmlvcnRfcm1yX2xpc3Qs
+IGxpc3QpIHsNCj4gPiArCQlzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24gKnJlZ2lvbjsNCj4gPiAr
+CQlzdHJ1Y3QgYWNwaV9pb3J0X3Jtcl9kZXNjICpybXI7DQo+ID4gKwkJaW50IHByb3QgPSBJT01N
+VV9SRUFEIHwgSU9NTVVfV1JJVEUgfA0KPiA+ICsJCQkgICBJT01NVV9OT0VYRUMgfCBJT01NVV9N
+TUlPOw0KPiA+ICsNCj4gPiArCQlpZiAoIWlvcnRfZGV2X2hhc19ybXIoZGV2LCBlKSkNCj4gPiAr
+CQkJY29udGludWU7DQo+ID4gKw0KPiA+ICsJCXJtciA9IGUtPnJtcl9kZXNjOw0KPiA+ICsJCXJl
+Z2lvbiA9IGlvbW11X2FsbG9jX3Jlc3ZfcmVnaW9uKHJtci0+YmFzZV9hZGRyZXNzLA0KPiA+ICsJ
+CQkJCQkgcm1yLT5sZW5ndGgsIHByb3QsDQo+ID4gKwkJCQkJCSBJT01NVV9SRVNWX0RJUkVDVCk7
+DQo+ID4gKwkJaWYgKCFyZWdpb24pIHsNCj4gPiArCQkJZGV2X2VycihkZXYsICJPdXQgb2YgbWVt
+b3J5IGFsbG9jYXRpbmcgUk1SIHJlZ2lvbnNcbiIpOw0KPiA+ICsJCQlyZXR1cm4gLUVOT01FTTsN
+Cj4gPiArCQl9DQo+ID4gKwkJbGlzdF9hZGRfdGFpbCgmcmVnaW9uLT5saXN0LCBoZWFkKTsNCj4g
+PiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgIC8qKg0K
+PiA+ICAgICogaW9ydF9pb21tdV9tc2lfZ2V0X3Jlc3ZfcmVnaW9ucyAtIFJlc2VydmVkIHJlZ2lv
+biBkcml2ZXIgaGVscGVyDQo+ID4gICAgKiBAZGV2OiBEZXZpY2UgZnJvbSBpb21tdV9nZXRfcmVz
+dl9yZWdpb25zKCkNCj4gPiBAQCAtMTExMiw2ICsxMTY2LDggQEAgaW50IGlvcnRfaW9tbXVfbXNp
+X2dldF9yZXN2X3JlZ2lvbnMoc3RydWN0DQo+IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFk
+ICpoZWFkKQ0KPiA+ICAgY29uc3Qgc3RydWN0IGlvbW11X29wcyAqaW9ydF9pb21tdV9jb25maWd1
+cmVfaWQoc3RydWN0IGRldmljZSAqZGV2LA0KPiA+ICAgCQkJCQkJY29uc3QgdTMyICppbnB1dF9p
+ZCkNCj4gPiAgIHsgcmV0dXJuIE5VTEw7IH0NCj4gPiAraW50IGlvcnRfZGV2X3Jtcl9nZXRfcmVz
+dl9yZWdpb25zKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGxpc3RfaGVhZA0KPiAqaGVhZCkN
+Cj4gPiAreyByZXR1cm4gMDsgfQ0KPiA+ICAgI2VuZGlmDQo+ID4NCj4gPiAgIHN0YXRpYyBpbnQg
+bmNfZG1hX2dldF9yYW5nZShzdHJ1Y3QgZGV2aWNlICpkZXYsIHU2NCAqc2l6ZSkNCj4gPiBkaWZm
+IC0tZ2l0IGEvaW5jbHVkZS9saW51eC9hY3BpX2lvcnQuaCBiL2luY2x1ZGUvbGludXgvYWNwaV9p
+b3J0LmgNCj4gPiBpbmRleCAyMGEzMjEyMGJiODguLjZkZDg5ZmFmMzQwYyAxMDA2NDQNCj4gPiAt
+LS0gYS9pbmNsdWRlL2xpbnV4L2FjcGlfaW9ydC5oDQo+ID4gKysrIGIvaW5jbHVkZS9saW51eC9h
+Y3BpX2lvcnQuaA0KPiA+IEBAIC0zOCw2ICszOCw3IEBAIHZvaWQgaW9ydF9kbWFfc2V0dXAoc3Ry
+dWN0IGRldmljZSAqZGV2LCB1NjQNCj4gKmRtYV9hZGRyLCB1NjQgKnNpemUpOw0KPiA+ICAgY29u
+c3Qgc3RydWN0IGlvbW11X29wcyAqaW9ydF9pb21tdV9jb25maWd1cmVfaWQoc3RydWN0IGRldmlj
+ZSAqZGV2LA0KPiA+ICAgCQkJCQkJY29uc3QgdTMyICppZF9pbik7DQo+ID4gICBpbnQgaW9ydF9p
+b21tdV9tc2lfZ2V0X3Jlc3ZfcmVnaW9ucyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBsaXN0
+X2hlYWQNCj4gKmhlYWQpOw0KPiA+ICtpbnQgaW9ydF9kZXZfcm1yX2dldF9yZXN2X3JlZ2lvbnMo
+c3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFkDQo+ICpoZWFkKTsNCj4gPiAgICNl
+bHNlDQo+ID4gICBzdGF0aWMgaW5saW5lIHZvaWQgYWNwaV9pb3J0X2luaXQodm9pZCkgeyB9DQo+
+ID4gICBzdGF0aWMgaW5saW5lIHUzMiBpb3J0X21zaV9tYXBfaWQoc3RydWN0IGRldmljZSAqZGV2
+LCB1MzIgaWQpDQo+ID4gQEAgLTU1LDYgKzU2LDkgQEAgc3RhdGljIGlubGluZSBjb25zdCBzdHJ1
+Y3QgaW9tbXVfb3BzDQo+ICppb3J0X2lvbW11X2NvbmZpZ3VyZV9pZCgNCj4gPiAgIHN0YXRpYyBp
+bmxpbmUNCj4gPiAgIGludCBpb3J0X2lvbW11X21zaV9nZXRfcmVzdl9yZWdpb25zKHN0cnVjdCBk
+ZXZpY2UgKmRldiwgc3RydWN0IGxpc3RfaGVhZA0KPiAqaGVhZCkNCj4gPiAgIHsgcmV0dXJuIDA7
+IH0NCj4gPiArc3RhdGljIGlubGluZQ0KPiA+ICtpbnQgaW9ydF9kZXZfcm1yX2dldF9yZXN2X3Jl
+Z2lvbnMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFkDQo+ICpoZWFkKQ0KPiA+
+ICt7IHJldHVybiAwOyB9DQo+ID4gICAjZW5kaWYNCj4gPg0KPiA+ICAgI2VuZGlmIC8qIF9fQUNQ
+SV9JT1JUX0hfXyAqLw0KPiA+DQo=
