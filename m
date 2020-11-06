@@ -2,159 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B99622A8E91
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 06:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB9A2A8FA1
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 07:45:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725842AbgKFFJp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 00:09:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgKFFJp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 00:09:45 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F14C0613CF;
-        Thu,  5 Nov 2020 21:09:45 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9BE333D;
-        Fri,  6 Nov 2020 06:09:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1604639383;
-        bh=72/KUrhMBGIoUetzc6guWYFWopnI5c0uHM8v4HvuRPc=;
+        id S1726242AbgKFGpI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 01:45:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38702 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725842AbgKFGpH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 01:45:07 -0500
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E3532206B2;
+        Fri,  6 Nov 2020 06:45:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604645106;
+        bh=gSrHcJPj/8i6uoEotdwklqj12Wa4bQLC0DC3nlOvvX4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ezicyJe3TH8q8Ejj8OJ4o9ti4tZBl8nP0nWdq3cOvkoDRGPrmeo4/M6VqLD7PYK44
-         9UF8TtdfQpkYyEDrqEMG7KTEdsRoZGs5g8ssxNGacB5T1tVM05IYsjcpRedN3Auqs2
-         QN7HhTIBAHZG/EsFOmyKA0hho5RSOtc5Rn93tW6Y=
-Date:   Fri, 6 Nov 2020 07:09:40 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        b=fqCwGQQooVimXHzYmO7cAz4NdXlOMrQUsSVT8WS0kLlV7zYpTh5L6yALgqgkVEIir
+         wqFoj8Rwnf5YtDUNtkRONC9AeT5Q8ce1vHaVwdlmxhbEwaznloYSfrrVD2txQBfElX
+         rGYohEflm6ap2RJAX2b6h39mD4p2ez8fJ6vew7VU=
+Date:   Fri, 6 Nov 2020 07:45:03 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        kernel-team@android.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
- boot time
-Message-ID: <20201106050940.GG16469@pendragon.ideasonboard.com>
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v1 16/18] efi: Update implementation of add_links() to
+ create fwnode links
+Message-ID: <20201106064503.GB697514@kroah.com>
 References: <20201104232356.4038506-1-saravanak@google.com>
+ <20201104232356.4038506-17-saravanak@google.com>
+ <20201105094318.GF3439341@kroah.com>
+ <CAGETcx_Kh32AjVoUB3uiYBRhB+24JrceTp+HxG6vK6Ks=-e26w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201104232356.4038506-1-saravanak@google.com>
+In-Reply-To: <CAGETcx_Kh32AjVoUB3uiYBRhB+24JrceTp+HxG6vK6Ks=-e26w@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
-
-Thank you for working on this !
-
-On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
-> The current implementation of fw_devlink is very inefficient because it
-> tries to get away without creating fwnode links in the name of saving
-> memory usage. Past attempts to optimize runtime at the cost of memory
-> usage were blocked with request for data showing that the optimization
-> made significant improvement for real world scenarios.
+On Thu, Nov 05, 2020 at 03:27:52PM -0800, Saravana Kannan wrote:
+> On Thu, Nov 5, 2020 at 1:42 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Nov 04, 2020 at 03:23:53PM -0800, Saravana Kannan wrote:
+> > > The semantics of add_links() has changed from creating device link
+> > > between devices to creating fwnode links between fwnodes. So, update the
+> > > implementation of add_links() to match the new semantics.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > ---
+> > >  drivers/firmware/efi/efi-init.c | 23 ++---------------------
+> > >  1 file changed, 2 insertions(+), 21 deletions(-)
+> > >
+> > > diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+> > > index b148f1459fb3..c0c3d4c3837a 100644
+> > > --- a/drivers/firmware/efi/efi-init.c
+> > > +++ b/drivers/firmware/efi/efi-init.c
+> > > @@ -316,11 +316,10 @@ static struct device_node *find_pci_overlap_node(void)
+> > >   * resource reservation conflict on the memory window that the efifb
+> > >   * framebuffer steals from the PCIe host bridge.
+> > >   */
+> > > -static int efifb_add_links(const struct fwnode_handle *fwnode,
+> > > +static int efifb_add_links(struct fwnode_handle *fwnode,
+> > >                          struct device *dev)
+> >
+> > So you are fixing the build warning you added a few patches ago here?
+> > Please fix up the function signatures when you made that change, not
+> > here later on.
 > 
-> We have those scenarios now. There have been several reports of boot
-> time increase in the order of seconds in this thread [1]. Several OEMs
-> and SoC manufacturers have also privately reported significant
-> (350-400ms) increase in boot time due to all the parsing done by
-> fw_devlink.
+> I'm trying not to have a mega patcht that changes a lot of code.
 > 
-> So this patch series refactors fw_devlink to be more efficient. The key
-> difference now is the addition of support for fwnode links -- just a few
-> simple APIs. This also allows most of the code to be moved out of
-> firmware specific (DT mostly) code into driver core.
-> 
-> This brings the following benefits:
-> - Instead of parsing the device tree multiple times (complexity was
->   close to O(N^3) where N in the number of properties) during bootup,
->   fw_devlink parses each fwnode node/property only once and creates
->   fwnode links. The rest of the fw_devlink code then just looks at these
->   fwnode links to do rest of the work.
-> 
-> - Makes it much easier to debug probe issue due to fw_devlink in the
->   future. fw_devlink=on blocks the probing of devices if they depend on
->   a device that hasn't been added yet. With this refactor, it'll be very
->   easy to tell what that device is because we now have a reference to
->   the fwnode of the device.
-> 
-> - Much easier to add fw_devlink support to ACPI and other firmware
->   types. A refactor to move the common bits from DT specific code to
->   driver core was in my TODO list as a prerequisite to adding ACPI
->   support to fw_devlink. This series gets that done.
-> 
-> Tomi/Laurent/Grygorii,
-> 
-> If you can test this series, that'd be great!
+> I guess I can drop this "const" diff from this patch and then merge it
+> with the earlier patch that removes the const. But still leave the
+> rest of the changes in this patch as is. Does that work for you?
 
-I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
-v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
-lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
-dies after the fw_devlink initialization, so I can still report results.
+Yes, that's fine, you just can't add build warnings along the way.
 
-Before your series:
+thanks,
 
-[    0.743065] cpuidle: using governor menu
-[   13.350259] No ATAGs?
-
-With your series applied:
-
-[    0.722670] cpuidle: using governor menu
-[    1.135859] No ATAGs?
-
-That's a very clear improvement :-)
-
-Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> [1] - https://lore.kernel.org/linux-pm/CAGETcx-aiW251dhEXT1GNb9bi6YcX8W=jLBrro5CnPuEjGL09g@mail.gmail.com/
-> 
-> Saravana Kannan (18):
->   Revert "driver core: Avoid deferred probe due to fw_devlink_pause/resume()"
->   Revert "driver core: Rename dev_links_info.defer_sync to defer_hook"
->   Revert "driver core: Don't do deferred probe in parallel with kernel_init thread"
->   Revert "driver core: Remove check in driver_deferred_probe_force_trigger()"
->   Revert "of: platform: Batch fwnode parsing when adding all top level devices"
->   Revert "driver core: fw_devlink: Add support for batching fwnode parsing"
->   driver core: Add fwnode_init()
->   driver core: Add fwnode link support
->   driver core: Allow only unprobed consumers for SYNC_STATE_ONLY device links
->   device property: Add fwnode_is_ancestor_of()
->   driver core: Redefine the meaning of fwnode_operations.add_links()
->   driver core: Add fw_devlink_parse_fwtree()
->   driver core: Add fwnode_get_next_parent_dev() helper function
->   driver core: Use device's fwnode to check if it is waiting for suppliers
->   of: property: Update implementation of add_links() to create fwnode links
->   efi: Update implementation of add_links() to create fwnode links
->   driver core: Add helper functions to convert fwnode links to device links
->   driver core: Refactor fw_devlink feature
-> 
->  drivers/acpi/property.c         |   2 +-
->  drivers/acpi/scan.c             |   2 +-
->  drivers/base/core.c             | 584 +++++++++++++++++++++-----------
->  drivers/base/property.c         |  27 ++
->  drivers/base/swnode.c           |   2 +-
->  drivers/firmware/efi/efi-init.c |  31 +-
->  drivers/of/dynamic.c            |   1 +
->  drivers/of/platform.c           |   2 -
->  drivers/of/property.c           | 150 +++-----
->  include/linux/device.h          |  10 +-
->  include/linux/fwnode.h          |  66 ++--
->  include/linux/of.h              |   2 +-
->  include/linux/property.h        |   2 +
->  kernel/irq/irqdomain.c          |   2 +-
->  14 files changed, 490 insertions(+), 393 deletions(-)
-
--- 
-Regards,
-
-Laurent Pinchart
+greg k-h
