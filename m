@@ -2,80 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFB02A9A9A
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 18:16:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD1B2A9E16
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 20:34:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbgKFRQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 12:16:27 -0500
-Received: from mga18.intel.com ([134.134.136.126]:12710 "EHLO mga18.intel.com"
+        id S1728165AbgKFTdy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 14:33:54 -0500
+Received: from foss.arm.com ([217.140.110.172]:43964 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726034AbgKFRQ1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Nov 2020 12:16:27 -0500
-IronPort-SDR: 764hgrVnXpeIwryWCvBXelDzWFwaYTahMOHu24llVvoGdBD7DYwNOhtGTRPEvNz9vkER+tbXx0
- xKFsXOitxbuA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9797"; a="157353309"
-X-IronPort-AV: E=Sophos;i="5.77,457,1596524400"; 
-   d="scan'208";a="157353309"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 09:16:26 -0800
-IronPort-SDR: Y9X1zk4eBu7ESRskCJls8VkKXxcCCKLcMjTKtM86QxR25V77hDj42jfE10h0r6foGfg0rwc6YA
- wyoUV/ED+BGw==
-X-IronPort-AV: E=Sophos;i="5.77,457,1596524400"; 
-   d="scan'208";a="529869139"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 09:16:24 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kb5Md-004P3w-6c; Fri, 06 Nov 2020 19:17:27 +0200
-Date:   Fri, 6 Nov 2020 19:17:27 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Flavio Suligoi <f.suligoi@asem.it>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: How to add the "gpio-line-names" property in a PCI gpio expander
-Message-ID: <20201106171727.GK4077@smile.fi.intel.com>
-References: <98acf6339a1b43d6a38f867069088530@asem.it>
- <CAJZ5v0g7POp1Lp05RcJJ8ZD1ZiaetN0_SfbAjnQg0kCw4aQukQ@mail.gmail.com>
- <20201105115941.GK2495@lahna.fi.intel.com>
- <574b86929d1247caae717ab1a2f31194@asem.it>
- <20201105152020.GO2495@lahna.fi.intel.com>
- <5fb64f9c8af64235943c29c9ba50a2df@asem.it>
- <20201106070432.GQ2495@lahna.fi.intel.com>
- <c20e82318bbf426c9d9000cac7e7734b@asem.it>
+        id S1728074AbgKFTdy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 14:33:54 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D93E01474;
+        Fri,  6 Nov 2020 11:33:52 -0800 (PST)
+Received: from [172.16.1.113] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 491453F718;
+        Fri,  6 Nov 2020 11:33:51 -0800 (PST)
+Subject: Re: [RFC PATCH 1/4] ACPI: PPTT: Fix for a high level cache node
+ detected in the low level
+To:     Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+        bp@alien8.de, tony.luck@intel.com, rjw@rjwysocki.net,
+        lenb@kernel.org, rrichter@marvell.com
+Cc:     linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linuxarm@huawei.com, jonathan.cameron@huawei.com
+References: <20201105174233.1146-1-shiju.jose@huawei.com>
+ <20201105174233.1146-2-shiju.jose@huawei.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <495c17fa-98fe-c79b-5676-ab1f0b50afba@arm.com>
+Date:   Fri, 6 Nov 2020 19:33:45 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c20e82318bbf426c9d9000cac7e7734b@asem.it>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20201105174233.1146-2-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 04:47:35PM +0000, Flavio Suligoi wrote:
+Hi Shiju, Jonathan,
 
-> > Or something like that. RPX is the root port 14.1 and if I read the
-> > above right both the bridge and the EXAR device have device and function
-> > 0.
+On 05/11/2020 17:42, Shiju Jose wrote:
+> From: Jonathan Cameron <jonathan.cameron@huawei.com>
 > 
-> All ok now, I've added the bridge (I had to use the BIOS sources) and
-> not it works:
+> According to the following sections of the PPTT definition in the
+> ACPI specification(V6.3), a high level cache node( For example L2 cache)
+> could be represented simultaneously both in the private resource
+> of a CPU node and via the next_level_of_cache pointer of a low level
+> cache node.
+> 1. Section 5.2.29.1 Processor hierarchy node structure (Type 0)
+> "Each processor node includes a list of resources that are private
+> to that node. Resources are described in other PPTT structures such as
+> Type 1 cache structures. The processor node’s private resource list
+> includes a reference to each of the structures that represent private
+> resources to a given processor node. For example, an SoC level processor
+> node might contain two references, one pointing to a Level 3 cache
+> resource and another pointing to an ID structure."
+> 
+> 2. Section 5.2.29.2 Cache Type Structure - Type 1
+>    Figure 5-26 Cache Type Structure - Type 1 Example
 
-I suppose not -> now ;)
-
-Glad to hear this! So, maybe you can add some bits to the documentation [1]
-based on your experience?
-
-Note, I have sent a series [2] to amend it a bit, and your input welcome!
-
-[1]: Documentation/firmware-guide/acpi/gpio-properties.rst
-[2]: https://lore.kernel.org/linux-acpi/20201029193243.61546-1-andriy.shevchenko@linux.intel.com/T/#u
+'fix' in the subject makes me twitch ... is there a user-space visible bug because of this?
 
 
--- 
-With Best Regards,
-Andy Shevchenko
+> For the use case of creating EDAC device blocks for the CPU caches,
+> we need to search for cache node types in all levels using
+> acpi_find_cache_node(), as a platform independent solution to
 
+I'm nervous to base the edac user-space view of caches on something other than what is
+described in /sys/devices/system/cpu/cpu0/cache. These things have to match, otherwise
+user-space can't work out which cpu's L2's it should add to get the value for the physical
+cache.
+
+Getting the data from somewhere else risks making this more complicated.
+
+Using the PPTT means this won't work on "HPE Server"s that use ghes_edac too. I don't
+think we should have any arm64 specific behaviour here.
+
+
+> retrieve the cache info from the ACPI PPTT. The reason is that
+> cacheinfo in the drivers/base/cacheinfo.c would not be populated
+> in this stage.
+
+Because both ghes_init() and cacheinfo_sysfs_init() are device_initcall()?
+
+Couldn't we fix this by making ghes_init(), device_initcall_sync() (with a comment saying
+what it depends on)
+
+
+I agree this means dealing with cpuhp as the cacheinfo data is only available for online CPUs.
+
+
+> In this case, we found acpi_find_cache_node()
+> mistakenly detecting high level cache as low level cache, when
+> the cache node is in the processor node’s private resource list.
+> 
+> To fix this issue add duplication check in the acpi_find_cache_level(),
+> for a cache node found in the private resource of a CPU node
+> with all the next level of caches present in the other cache nodes.
+
+I'm not overly familiar with the PPTT, is it possible this issue is visible in
+/sys/devices/system/cpu/cpu0/cache?
+
+
+Thanks,
+
+James
+
+
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 4ae93350b70d..de1dd605d3ad 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -132,21 +132,80 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
+>  	return local_level;
+>  }
+>  
+> +/**
+> + * acpi_pptt_walk_check_duplicate() - Find the cache resource to check,
+> + * is a duplication in the next_level_of_cache pointer of other cache.
+> + * @table_hdr: Pointer to the head of the PPTT table
+> + * @res: cache resource in the PPTT we want to walk
+> + * @res_check: cache resource in the PPTT we want to check for duplication.
+> + *
+> + * Given both PPTT resource, verify that they are cache nodes, then walk
+> + * down each level of cache @res, and check for the duplication.
+> + *
+> + * Return: true if duplication found, false otherwise.
+> + */
+> +static bool acpi_pptt_walk_check_duplicate(struct acpi_table_header *table_hdr,
+> +					   struct acpi_subtable_header *res,
+> +					   struct acpi_subtable_header *res_check)
+> +{
+> +	struct acpi_pptt_cache *cache;
+> +	struct acpi_pptt_cache *check;
+> +
+> +	if (res->type != ACPI_PPTT_TYPE_CACHE ||
+> +	    res_check->type != ACPI_PPTT_TYPE_CACHE)
+> +		return false;
+> +
+> +	cache = (struct acpi_pptt_cache *)res;
+> +	check = (struct acpi_pptt_cache *)res_check;
+> +	while (cache) {
+> +		if (cache == check)
+> +			return true;
+> +		cache = fetch_pptt_cache(table_hdr, cache->next_level_of_cache);
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static struct acpi_pptt_cache *
+>  acpi_find_cache_level(struct acpi_table_header *table_hdr,
+>  		      struct acpi_pptt_processor *cpu_node,
+>  		      unsigned int *starting_level, unsigned int level,
+>  		      int type)
+>  {
+> -	struct acpi_subtable_header *res;
+> +	struct acpi_subtable_header *res, *res2;
+>  	unsigned int number_of_levels = *starting_level;
+>  	int resource = 0;
+> +	int resource2 = 0;
+> +	bool duplicate = false;
+>  	struct acpi_pptt_cache *ret = NULL;
+>  	unsigned int local_level;
+>  
+>  	/* walk down from processor node */
+>  	while ((res = acpi_get_pptt_resource(table_hdr, cpu_node, resource))) {
+>  		resource++;
+> +		/*
+> +		 * PPTT definition in the ACPI specification allows a high level cache
+> +		 * node would be represented simultaneously both in the private resource
+> +		 * of a CPU node and via the next_level_of_cache pointer of another cache node,
+> +		 * within the same CPU hierarchy. This resulting acpi_find_cache_level()
+> +		 * mistakenly detects a higher level cache node in the low level as well.
+> +		 *
+> +		 * Check a cache node in the private resource of the CPU node for any
+> +		 * duplication.
+> +		 */
+> +		resource2 = 0;
+> +		duplicate = false;
+> +		while ((res2 = acpi_get_pptt_resource(table_hdr, cpu_node, resource2))) {
+> +			resource2++;
+> +			if (res2 == res)
+> +				continue;
+> +			if (acpi_pptt_walk_check_duplicate(table_hdr, res2, res)) {
+> +				duplicate = true;
+> +				break;
+> +			}
+> +		}
+> +		if (duplicate)
+> +			continue;
+>  
+>  		local_level = acpi_pptt_walk_cache(table_hdr, *starting_level,
+>  						   res, &ret, level, type);
+> 
 
