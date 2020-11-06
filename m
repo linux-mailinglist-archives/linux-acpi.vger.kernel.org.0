@@ -2,173 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE632A8C0B
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 02:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B99622A8E91
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 06:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730721AbgKFBZ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Nov 2020 20:25:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
+        id S1725842AbgKFFJp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 00:09:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730246AbgKFBZ0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Nov 2020 20:25:26 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2A6C0613D2
-        for <linux-acpi@vger.kernel.org>; Thu,  5 Nov 2020 17:25:26 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id m188so3075722ybf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Nov 2020 17:25:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lzV9usbcyvrZBezSzuliRNMORjroXFiHCPOIQMppm20=;
-        b=mFp6wXmb3dx9Iz2MBUFPuVyhUmTP9lVcgCQyveXhQC419PlTNsEI22yTsPSMZG3kax
-         nCA+1dWmdyC3cWpzU49fyRrvZeCLfP1DG4UmaQghxfel1tj/ATOuawBGgVV7u7rd3IXM
-         B3nOHiSCZ0UVphZueGqjVfoII+u+8CgPeywRQoPZiN90fLMexZ4OTiIWWVcJZpGuww0b
-         5i1H1jHOQRmOezoZJCcZrJFBPQxgzXBPiRWAD7uMqyCVSeIAy0hKx54ImBx5TMTl5tM1
-         ODvAV2PnmUPZgqwW3qnqbwsT2wQij3uP3CiH3p3nXpvFTtKUXi+vJi/c3j/+B8DEr9kj
-         uBQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lzV9usbcyvrZBezSzuliRNMORjroXFiHCPOIQMppm20=;
-        b=gSf7+gtg8ualR8L/j6d8qnOKzRLGDwJu+uknknPUD/VCDYFjzD1DH0t12AtTE+SiZl
-         F+SRsFHsxcmJiA9TbNawLHQ9OgEtCysQ13JqgBgP+6BtWNdQYsTgjJXc4N2Zggo7Znh2
-         3/Dde97rnI2R8pdlt1edHEFCA5l2HWNBsaKcHLF3Xb+pJ3sJJnZtPjPQKG8aQ67p+tse
-         qW1sZcNOjlPA8Tfsh+zMjHDzvbfI0/MFfmxMESK3CnfAomlPUalyEp6BW9yUSYLMPzp7
-         q0dSx/0lh/rP5eAbyzSlzaoCH1rWguYaJ01q/9azT+JHuLbwBKweDpsjCzow5PF95Hyv
-         u0nw==
-X-Gm-Message-State: AOAM530RNPlJeggTN0wiYdkA2lzKx6jUZvI7jMnXdEQHcXrNxyuK2gn2
-        yWnWMrZRJLliBcexHS3JiJZFCWm3yMvB3ZKY23AcpA==
-X-Google-Smtp-Source: ABdhPJyYHml/89uqvPtNmXYMF2Pm87o8/A6MHGqILFDdIGr3l1sb+4jGsYPEXHB+yaFTcNWWksQrzvjmCxCbmsk95lA=
-X-Received: by 2002:a25:9c02:: with SMTP id c2mr7063033ybo.228.1604625925368;
- Thu, 05 Nov 2020 17:25:25 -0800 (PST)
-MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-16-saravanak@google.com> <20201105094228.GE3439341@kroah.com>
- <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
-In-Reply-To: <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 5 Nov 2020 17:24:49 -0800
-Message-ID: <CAGETcx-AcCk2c4Jq9HGfxUcCdnpWb5d_ubNd=r6KciHCFUdAVw@mail.gmail.com>
-Subject: Re: [PATCH v1 15/18] of: property: Update implementation of
- add_links() to create fwnode links
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S1725776AbgKFFJp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 00:09:45 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F14C0613CF;
+        Thu,  5 Nov 2020 21:09:45 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9BE333D;
+        Fri,  6 Nov 2020 06:09:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1604639383;
+        bh=72/KUrhMBGIoUetzc6guWYFWopnI5c0uHM8v4HvuRPc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ezicyJe3TH8q8Ejj8OJ4o9ti4tZBl8nP0nWdq3cOvkoDRGPrmeo4/M6VqLD7PYK44
+         9UF8TtdfQpkYyEDrqEMG7KTEdsRoZGs5g8ssxNGacB5T1tVM05IYsjcpRedN3Auqs2
+         QN7HhTIBAHZG/EsFOmyKA0hho5RSOtc5Rn93tW6Y=
+Date:   Fri, 6 Nov 2020 07:09:40 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        kernel-team@android.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
+ boot time
+Message-ID: <20201106050940.GG16469@pendragon.ideasonboard.com>
+References: <20201104232356.4038506-1-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201104232356.4038506-1-saravanak@google.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 5, 2020 at 3:25 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> On Thu, Nov 5, 2020 at 1:41 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Nov 04, 2020 at 03:23:52PM -0800, Saravana Kannan wrote:
-> > > The semantics of add_links() has changed from creating device link
-> > > between devices to creating fwnode links between fwnodes. So, update the
-> > > implementation of add_links() to match the new semantics.
-> > >
-> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > ---
-> > >  drivers/of/property.c | 150 ++++++++++++------------------------------
-> > >  1 file changed, 41 insertions(+), 109 deletions(-)
-> > >
-> > > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> > > index 408a7b5f06a9..86303803f1b3 100644
-> > > --- a/drivers/of/property.c
-> > > +++ b/drivers/of/property.c
-> > > @@ -1038,33 +1038,9 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
-> > >  }
-> > >
-> > >  /**
-> > > - * of_get_next_parent_dev - Add device link to supplier from supplier phandle
-> > > - * @np: device tree node
-> > > - *
-> > > - * Given a device tree node (@np), this function finds its closest ancestor
-> > > - * device tree node that has a corresponding struct device.
-> > > - *
-> > > - * The caller of this function is expected to call put_device() on the returned
-> > > - * device when they are done.
-> > > - */
-> > > -static struct device *of_get_next_parent_dev(struct device_node *np)
-> > > -{
-> > > -     struct device *dev = NULL;
-> > > -
-> > > -     of_node_get(np);
-> > > -     do {
-> > > -             np = of_get_next_parent(np);
-> > > -             if (np)
-> > > -                     dev = get_dev_from_fwnode(&np->fwnode);
-> > > -     } while (np && !dev);
-> > > -     of_node_put(np);
-> > > -     return dev;
-> > > -}
-> > > -
-> > > -/**
-> > > - * of_link_to_phandle - Add device link to supplier from supplier phandle
-> > > - * @dev: consumer device
-> > > - * @sup_np: phandle to supplier device tree node
-> > > + * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
-> > > + * @con_np: consumer device tree node
-> > > + * @sup_np: supplier device tree node
-> > >   *
-> > >   * Given a phandle to a supplier device tree node (@sup_np), this function
-> > >   * finds the device that owns the supplier device tree node and creates a
-> > > @@ -1074,16 +1050,14 @@ static struct device *of_get_next_parent_dev(struct device_node *np)
-> > >   * cases, it returns an error.
-> > >   *
-> > >   * Returns:
-> > > - * - 0 if link successfully created to supplier
-> > > - * - -EAGAIN if linking to the supplier should be reattempted
-> > > + * - 0 if fwnode link successfully created to supplier
-> > >   * - -EINVAL if the supplier link is invalid and should not be created
-> > > - * - -ENODEV if there is no device that corresponds to the supplier phandle
-> > > + * - -ENODEV if struct device will never be create for supplier
-> > >   */
-> > > -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > > -                           u32 dl_flags)
-> > > +static int of_link_to_phandle(struct device_node *con_np,
-> > > +                           struct device_node *sup_np)
-> > >  {
-> > > -     struct device *sup_dev, *sup_par_dev;
-> > > -     int ret = 0;
-> > > +     struct device *sup_dev;
-> > >       struct device_node *tmp_np = sup_np;
-> > >
-> > >       of_node_get(sup_np);
-> > > @@ -1106,7 +1080,8 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > >       }
-> > >
-> > >       if (!sup_np) {
-> > > -             dev_dbg(dev, "Not linking to %pOFP - No device\n", tmp_np);
-> > > +             pr_debug("Not linking %pOFP to %pOFP - No device\n",
-> > > +                      con_np, tmp_np);
-> >
-> > Who is calling this function without a valid dev pointer?
->
-> Sorry, I plan to delete the "dev" parameter as it's not really used
-> anywhere. I'm trying to do that without causing build time errors and
-> making the series into digestible small patches.
+Hi Saravana,
 
-*facepalm* for my earlier response. You'll notice that I've already
-deleted the "dev" input param to this function. That's why I can't use
-it here :)
+Thank you for working on this !
 
--Saravana
+On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
+> The current implementation of fw_devlink is very inefficient because it
+> tries to get away without creating fwnode links in the name of saving
+> memory usage. Past attempts to optimize runtime at the cost of memory
+> usage were blocked with request for data showing that the optimization
+> made significant improvement for real world scenarios.
+> 
+> We have those scenarios now. There have been several reports of boot
+> time increase in the order of seconds in this thread [1]. Several OEMs
+> and SoC manufacturers have also privately reported significant
+> (350-400ms) increase in boot time due to all the parsing done by
+> fw_devlink.
+> 
+> So this patch series refactors fw_devlink to be more efficient. The key
+> difference now is the addition of support for fwnode links -- just a few
+> simple APIs. This also allows most of the code to be moved out of
+> firmware specific (DT mostly) code into driver core.
+> 
+> This brings the following benefits:
+> - Instead of parsing the device tree multiple times (complexity was
+>   close to O(N^3) where N in the number of properties) during bootup,
+>   fw_devlink parses each fwnode node/property only once and creates
+>   fwnode links. The rest of the fw_devlink code then just looks at these
+>   fwnode links to do rest of the work.
+> 
+> - Makes it much easier to debug probe issue due to fw_devlink in the
+>   future. fw_devlink=on blocks the probing of devices if they depend on
+>   a device that hasn't been added yet. With this refactor, it'll be very
+>   easy to tell what that device is because we now have a reference to
+>   the fwnode of the device.
+> 
+> - Much easier to add fw_devlink support to ACPI and other firmware
+>   types. A refactor to move the common bits from DT specific code to
+>   driver core was in my TODO list as a prerequisite to adding ACPI
+>   support to fw_devlink. This series gets that done.
+> 
+> Tomi/Laurent/Grygorii,
+> 
+> If you can test this series, that'd be great!
+
+I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
+v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
+lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
+dies after the fw_devlink initialization, so I can still report results.
+
+Before your series:
+
+[    0.743065] cpuidle: using governor menu
+[   13.350259] No ATAGs?
+
+With your series applied:
+
+[    0.722670] cpuidle: using governor menu
+[    1.135859] No ATAGs?
+
+That's a very clear improvement :-)
+
+Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> [1] - https://lore.kernel.org/linux-pm/CAGETcx-aiW251dhEXT1GNb9bi6YcX8W=jLBrro5CnPuEjGL09g@mail.gmail.com/
+> 
+> Saravana Kannan (18):
+>   Revert "driver core: Avoid deferred probe due to fw_devlink_pause/resume()"
+>   Revert "driver core: Rename dev_links_info.defer_sync to defer_hook"
+>   Revert "driver core: Don't do deferred probe in parallel with kernel_init thread"
+>   Revert "driver core: Remove check in driver_deferred_probe_force_trigger()"
+>   Revert "of: platform: Batch fwnode parsing when adding all top level devices"
+>   Revert "driver core: fw_devlink: Add support for batching fwnode parsing"
+>   driver core: Add fwnode_init()
+>   driver core: Add fwnode link support
+>   driver core: Allow only unprobed consumers for SYNC_STATE_ONLY device links
+>   device property: Add fwnode_is_ancestor_of()
+>   driver core: Redefine the meaning of fwnode_operations.add_links()
+>   driver core: Add fw_devlink_parse_fwtree()
+>   driver core: Add fwnode_get_next_parent_dev() helper function
+>   driver core: Use device's fwnode to check if it is waiting for suppliers
+>   of: property: Update implementation of add_links() to create fwnode links
+>   efi: Update implementation of add_links() to create fwnode links
+>   driver core: Add helper functions to convert fwnode links to device links
+>   driver core: Refactor fw_devlink feature
+> 
+>  drivers/acpi/property.c         |   2 +-
+>  drivers/acpi/scan.c             |   2 +-
+>  drivers/base/core.c             | 584 +++++++++++++++++++++-----------
+>  drivers/base/property.c         |  27 ++
+>  drivers/base/swnode.c           |   2 +-
+>  drivers/firmware/efi/efi-init.c |  31 +-
+>  drivers/of/dynamic.c            |   1 +
+>  drivers/of/platform.c           |   2 -
+>  drivers/of/property.c           | 150 +++-----
+>  include/linux/device.h          |  10 +-
+>  include/linux/fwnode.h          |  66 ++--
+>  include/linux/of.h              |   2 +-
+>  include/linux/property.h        |   2 +
+>  kernel/irq/irqdomain.c          |   2 +-
+>  14 files changed, 490 insertions(+), 393 deletions(-)
+
+-- 
+Regards,
+
+Laurent Pinchart
