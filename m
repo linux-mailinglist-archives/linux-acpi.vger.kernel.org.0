@@ -2,188 +2,223 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC24C2A9662
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 13:46:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E394E2A96AA
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 14:06:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727169AbgKFMqf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 07:46:35 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51916 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbgKFMqf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 07:46:35 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A6CkLWY099280;
-        Fri, 6 Nov 2020 06:46:21 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604666781;
-        bh=86PyDEAGqhTlwQYgakhBuJ6yxMtyDVOfU+4SvvgVLH4=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=iOPvJyEqx81hPfSNxpbLVH1B49X75y6mM0M8awv4dbpq4SMSPV3V5D+7ZqDs3b58j
-         kaXzqVmeJvP7wA6DC+c/KT3ww+OzFgE15Jj3MtIVYTJwFbJS41wteWHoht8TB8AibN
-         EZFWnYevQBpVLoKc5/Xl5YfY0riPSmK3V5eJlygQ=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A6CkLbr030568
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 6 Nov 2020 06:46:21 -0600
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 6 Nov
- 2020 06:46:20 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 6 Nov 2020 06:46:21 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A6CkGqe084078;
-        Fri, 6 Nov 2020 06:46:17 -0600
-Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
- boot time
-To:     Saravana Kannan <saravanak@google.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201106050940.GG16469@pendragon.ideasonboard.com>
- <CAGETcx-rvTuEmJUsf6qP3WkPLOh6m6cy8E_LsJPoGejNOXrdcw@mail.gmail.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <cf3f5bdc-caf5-82ac-daa3-8b48122306c1@ti.com>
-Date:   Fri, 6 Nov 2020 14:46:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726939AbgKFNGS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 08:06:18 -0500
+Received: from foss.arm.com ([217.140.110.172]:38048 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726708AbgKFNGR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 08:06:17 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4E041474;
+        Fri,  6 Nov 2020 05:06:16 -0800 (PST)
+Received: from [10.57.54.223] (unknown [10.57.54.223])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B3B143F718;
+        Fri,  6 Nov 2020 05:06:14 -0800 (PST)
+Subject: Re: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
+ helper
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Cc:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
+ <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
+ <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
+ <66c52ba92d274adb818d03d2e6813f0a@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <b0123797-4b49-8256-1080-36b9a6f7eee6@arm.com>
+Date:   Fri, 6 Nov 2020 13:06:12 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <CAGETcx-rvTuEmJUsf6qP3WkPLOh6m6cy8E_LsJPoGejNOXrdcw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <66c52ba92d274adb818d03d2e6813f0a@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 06/11/2020 10:36, Saravana Kannan wrote:
-> On Thu, Nov 5, 2020 at 9:09 PM Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
->>
->> Hi Saravana,
->>
->> Thank you for working on this !
->>
->> On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
->>> The current implementation of fw_devlink is very inefficient because it
->>> tries to get away without creating fwnode links in the name of saving
->>> memory usage. Past attempts to optimize runtime at the cost of memory
->>> usage were blocked with request for data showing that the optimization
->>> made significant improvement for real world scenarios.
->>>
->>> We have those scenarios now. There have been several reports of boot
->>> time increase in the order of seconds in this thread [1]. Several OEMs
->>> and SoC manufacturers have also privately reported significant
->>> (350-400ms) increase in boot time due to all the parsing done by
->>> fw_devlink.
->>>
->>> So this patch series refactors fw_devlink to be more efficient. The key
->>> difference now is the addition of support for fwnode links -- just a few
->>> simple APIs. This also allows most of the code to be moved out of
->>> firmware specific (DT mostly) code into driver core.
->>>
->>> This brings the following benefits:
->>> - Instead of parsing the device tree multiple times (complexity was
->>>    close to O(N^3) where N in the number of properties) during bootup,
->>>    fw_devlink parses each fwnode node/property only once and creates
->>>    fwnode links. The rest of the fw_devlink code then just looks at these
->>>    fwnode links to do rest of the work.
->>>
->>> - Makes it much easier to debug probe issue due to fw_devlink in the
->>>    future. fw_devlink=on blocks the probing of devices if they depend on
->>>    a device that hasn't been added yet. With this refactor, it'll be very
->>>    easy to tell what that device is because we now have a reference to
->>>    the fwnode of the device.
->>>
->>> - Much easier to add fw_devlink support to ACPI and other firmware
->>>    types. A refactor to move the common bits from DT specific code to
->>>    driver core was in my TODO list as a prerequisite to adding ACPI
->>>    support to fw_devlink. This series gets that done.
->>>
->>> Tomi/Laurent/Grygorii,
->>>
->>> If you can test this series, that'd be great!
->>
->> I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
->> v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
->> lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
->> dies after the fw_devlink initialization, so I can still report results.
+On 2020-11-06 08:30, Shameerali Kolothum Thodi wrote:
 > 
-> Phew! For a sec I thought you said fw_devlink was causing a deadlock.
 > 
+>> -----Original Message-----
+>> From: Robin Murphy [mailto:robin.murphy@arm.com]
+>> Sent: 05 November 2020 18:04
+>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org; devel@acpica.org
+>> Cc: Linuxarm <linuxarm@huawei.com>; lorenzo.pieralisi@arm.com;
+>> joro@8bytes.org; wanghuiqiang <wanghuiqiang@huawei.com>; Guohanjun
+>> (Hanjun Guo) <guohanjun@huawei.com>; Jonathan Cameron
+>> <jonathan.cameron@huawei.com>
+>> Subject: Re: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
+>> helper
 >>
->> Before your series:
+>> On 2020-10-27 11:26, Shameer Kolothum wrote:
+>>> Add a helper function that retrieves RMR memory descriptors
+>>> associated with a given endpoint dev. These memory regions
+>>> should have a unity mapping in the SMMU. So reserve them as
+>>> IOMMU_RESV_DIRECT.
 >>
->> [    0.743065] cpuidle: using governor menu
->> [   13.350259] No ATAGs?
->>
->> With your series applied:
->>
->> [    0.722670] cpuidle: using governor menu
->> [    1.135859] No ATAGs?
->>
->> That's a very clear improvement :-)
+>> As a general observation, we also need a way into this that isn't from
+>> the perspective of endpoint devices. With SMMUv3 we need to know all the
+>> active stream IDs relevant to a given SMMU instance at probe time, so
+>> that we can set up some kind of valid stream table entries *before*
+>> enabling the SMMU in the reset routine.
 > 
-> Thanks for testing. Great to hear it's helping!
+> So I guess, the idea is to provide an interface here to retrieve those active
+> stream Ids? The problem is, at present(AFAICS), RMR doesn’t have any
+> means to specify such devices.
+
+I'm thinking we need to check if any RMRs exist in the IORT, if so find 
+the devices that map to them, then resolve those devices' ID mappings. 
+In terms of the interface, maybe the better option is to do something 
+closer to what intel-iommu does and handle *all* the processing up-front 
+- let the IOMMU driver just call into the firmware code once to retrieve 
+a complete list of all the relevant abstracted RMR (or DT equivalent) 
+information, so it can then resolve both its own early initialisation 
+and the later per-device setup without calling back into firmware code 
+again.
+
+>   Otherwise we're just going to
+>> kill ongoing traffic (e.g. EFI GOP) with C_BAD_STE long before we ever
+>> start adding devices and worrying about reserved regions for them.
+>> Similarly for the initial SMR/S2CR state on SMMUv2 with disable_bypass.
 > 
->> Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Ok. I see the discussion here,
+> https://lore.kernel.org/linux-iommu/484b9e90-7395-6161-577c-4d3f3716997e@arm.com/
 > 
-> I'll add it to my v2 series.
+>  From what I gather, the plan is to setup a default IDENTITY_DOMAIN for
+> devices that have live stream going on during boot/SMMU probe time.
 
-I've tried your series on top of
-521b619acdc8 Merge tag 'linux-kselftest-kunit-fixes-5.10-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest
-on am571x-idk
+Well, whether we use bypass or a temporary translation context for the 
+period before we even get to default domains... that's a discussion that 
+can wait until we have the ability to set up the STEs at all ;)
 
-Before:
-[    0.049395] cpuidle: using governor menu
-[    1.654766] audit: type=2000 audit(0.040:1): state=initialized audit_enabled=0 res=1
-[    2.315266] No ATAGs?
-[    2.315317] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
-[    2.315327] hw-breakpoint: maximum watchpoint size is 8 bytes.
-...
-[    6.549595] EXT4-fs (mmcblk0p2): mounted filesystem with ordered data mode. Opts: (null)
-[    6.557794] VFS: Mounted root (ext4 filesystem) on device 179:26.
-[    6.574103] devtmpfs: mounted
-[    6.577749] Freeing unused kernel memory: 1024K
-[    6.582433] Run /sbin/init as init process
+Robin.
 
-
-after:
-[    0.049223] cpuidle: using governor menu
-[    0.095893] audit: type=2000 audit(0.040:1): state=initialized audit_enabled=0 res=1
-[    0.102958] No ATAGs?
-[    0.103010] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
-[    0.103020] hw-breakpoint: maximum watchpoint size is 8 bytes.
-...
-[    3.518623] EXT4-fs (mmcblk0p2): mounted filesystem with ordered data mode. Opts: (null)
-[    3.526822] VFS: Mounted root (ext4 filesystem) on device 179:26.
-[    3.543128] devtmpfs: mounted
-[    3.546781] Freeing unused kernel memory: 1024K
-[    3.551463] Run /sbin/init as init process
-
-So, it's much better. Thank you.
-Tested-by: Grygorii Strashko <grygorii.strashko@ti.com>
-
--- 
-Best regards,
-grygorii
+>>> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+>>> ---
+>>>    drivers/acpi/arm64/iort.c | 56
+>> +++++++++++++++++++++++++++++++++++++++
+>>>    include/linux/acpi_iort.h |  4 +++
+>>>    2 files changed, 60 insertions(+)
+>>>
+>>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+>>> index b32cd53cca08..c0700149e60b 100644
+>>> --- a/drivers/acpi/arm64/iort.c
+>>> +++ b/drivers/acpi/arm64/iort.c
+>>> @@ -842,6 +842,60 @@ static inline int iort_add_device_replay(struct
+>> device *dev)
+>>>    	return err;
+>>>    }
+>>>
+>>> +static bool iort_dev_has_rmr(struct device *dev, struct iort_rmr_entry *e)
+>>> +{
+>>> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+>>> +	struct acpi_iort_node *iommu;
+>>> +	struct iort_rmr_id *rmr_ids = e->rmr_ids;
+>>> +	int i, j;
+>>> +
+>>> +	iommu = iort_get_iort_node(fwspec->iommu_fwnode);
+>>> +
+>>> +	for (i = 0; i < e->rmr_ids_num; i++, rmr_ids++) {
+>>> +		for (j = 0; j < fwspec->num_ids; j++) {
+>>> +			if (rmr_ids->sid == fwspec->ids[j] &&
+>>> +			    rmr_ids->smmu == iommu)
+>>> +				return true;
+>>> +		}
+>>> +	}
+>>> +
+>>> +	return false;
+>>> +}
+>>> +
+>>> +/**
+>>> + * iort_dev_rmr_get_resv_regions - RMR Reserved region driver helper
+>>> + * @dev: Device from iommu_get_resv_regions()
+>>> + * @head: Reserved region list from iommu_get_resv_regions()
+>>> + *
+>>> + * Returns: 0 on success, <0 failure
+>>> + */
+>>> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head
+>> *head)
+>>> +{
+>>> +	struct iort_rmr_entry *e;
+>>> +
+>>> +	list_for_each_entry(e, &iort_rmr_list, list) {
+>>> +		struct iommu_resv_region *region;
+>>> +		struct acpi_iort_rmr_desc *rmr;
+>>> +		int prot = IOMMU_READ | IOMMU_WRITE |
+>>> +			   IOMMU_NOEXEC | IOMMU_MMIO;
+>>> +
+>>> +		if (!iort_dev_has_rmr(dev, e))
+>>> +			continue;
+>>> +
+>>> +		rmr = e->rmr_desc;
+>>> +		region = iommu_alloc_resv_region(rmr->base_address,
+>>> +						 rmr->length, prot,
+>>> +						 IOMMU_RESV_DIRECT);
+>>> +		if (!region) {
+>>> +			dev_err(dev, "Out of memory allocating RMR regions\n");
+>>> +			return -ENOMEM;
+>>> +		}
+>>> +		list_add_tail(&region->list, head);
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>>    /**
+>>>     * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+>>>     * @dev: Device from iommu_get_resv_regions()
+>>> @@ -1112,6 +1166,8 @@ int iort_iommu_msi_get_resv_regions(struct
+>> device *dev, struct list_head *head)
+>>>    const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>>>    						const u32 *input_id)
+>>>    { return NULL; }
+>>> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head
+>> *head)
+>>> +{ return 0; }
+>>>    #endif
+>>>
+>>>    static int nc_dma_get_range(struct device *dev, u64 *size)
+>>> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+>>> index 20a32120bb88..6dd89faf340c 100644
+>>> --- a/include/linux/acpi_iort.h
+>>> +++ b/include/linux/acpi_iort.h
+>>> @@ -38,6 +38,7 @@ void iort_dma_setup(struct device *dev, u64
+>> *dma_addr, u64 *size);
+>>>    const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>>>    						const u32 *id_in);
+>>>    int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head
+>> *head);
+>>> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head
+>> *head);
+>>>    #else
+>>>    static inline void acpi_iort_init(void) { }
+>>>    static inline u32 iort_msi_map_id(struct device *dev, u32 id)
+>>> @@ -55,6 +56,9 @@ static inline const struct iommu_ops
+>> *iort_iommu_configure_id(
+>>>    static inline
+>>>    int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head
+>> *head)
+>>>    { return 0; }
+>>> +static inline
+>>> +int iort_dev_rmr_get_resv_regions(struct device *dev, struct list_head
+>> *head)
+>>> +{ return 0; }
+>>>    #endif
+>>>
+>>>    #endif /* __ACPI_IORT_H__ */
+>>>
