@@ -2,168 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2695C2A91B8
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 09:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AF0F2A9199
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 09:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbgKFIqZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 03:46:25 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2063 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725830AbgKFIqZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 03:46:25 -0500
-X-Greylist: delayed 973 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Nov 2020 03:46:24 EST
-Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CSD7S5d1Jz67J9L;
-        Fri,  6 Nov 2020 16:28:52 +0800 (CST)
-Received: from lhreml721-chm.china.huawei.com (10.201.108.72) by
- fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Fri, 6 Nov 2020 09:30:08 +0100
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Fri, 6 Nov 2020 08:30:07 +0000
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.1913.007; Fri, 6 Nov 2020 08:30:07 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Robin Murphy <robin.murphy@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devel@acpica.org" <devel@acpica.org>
-CC:     Linuxarm <linuxarm@huawei.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: RE: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
- helper
-Thread-Topic: [RFC PATCH 3/4] ACPI/IORT: Add RMR memory regions reservation
- helper
-Thread-Index: AQHWrFRUv2Y1mvStkkOY+RTCtTFo26m542gAgADmoJA=
-Date:   Fri, 6 Nov 2020 08:30:07 +0000
-Message-ID: <66c52ba92d274adb818d03d2e6813f0a@huawei.com>
-References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
- <20201027112646.44680-4-shameerali.kolothum.thodi@huawei.com>
- <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
-In-Reply-To: <327e6475-eb48-33a1-ef38-fae9df3bf0cb@arm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.83.181]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726711AbgKFIgq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 03:36:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726692AbgKFIgp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 03:36:45 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86732C0613D3
+        for <linux-acpi@vger.kernel.org>; Fri,  6 Nov 2020 00:36:45 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id i193so468094yba.1
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Nov 2020 00:36:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qEZLCwayVmjTSz55WLFDrASQyKwm9AzKbv8zrefCiDk=;
+        b=Ji/jXL4wApkUI69Y5av8UFEa6ZvMG8Mm7sMdeBuZf7EoU4V1ZJLIvyslti7xbYYgOo
+         7sI5169sAiOnVjscRjwLSG5mTCDgJbsvvoyW7NaM+rXP+TANNYM9GzJTJeHzh5IJBSn6
+         jCu4ranqabbyvqfRRUp8VUmP12hOGnUWANJ2MHUcQuqSD+QuRogFeUpnHgYeTln5Ymb2
+         IxW851j1Otp0qXE2KbajHox2eLThi38VBbZU7+cZkmlqcN1NRpsNCkHTGxZofwDuILfd
+         YJVqD/sCpYRPLK+Qa+6GsSNblgKHxW6x/FkEn9nScueY9kHi8mFdGrFX2iHrBlCcY0aX
+         0Zzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qEZLCwayVmjTSz55WLFDrASQyKwm9AzKbv8zrefCiDk=;
+        b=ocr/bi0FSTspjjBWEhPV02rG4BMxT5VgRfx+5V30b/K+3FipGDFY63JY4jwaxH6t3A
+         3+w6/nrXCHaG8mWd+4Ff2tPRJM8JlFM5vQePKGX05fRKhWTKq0b2OodOghpKJN7yCgAS
+         Re3nyU7aWz/311MYpYNnZjiz6RD5QzxKELv9qQphVYj8MV6KEA3/h3ZY/+9Vq1YK+feu
+         pQuXGiT4DWuEeG5/DFLAlbFjz4eBmeAk42duhioO0/oAh6EYsTtT24dOa+kNBa/AaKpe
+         7B3jbzNUtcomhiqaaDkcIG1kiK7Cmv5HYVArYAPOZ7yCaKp3EKixT8yq6p2nQlZvXDTQ
+         tJaQ==
+X-Gm-Message-State: AOAM53194XISEed1Qf8a3YlAd1gZaJS5aHqQ8hxY0XSt9fY+XY3l2eei
+        8Q0cayKjJ1CV8iUOwkM/2dGTIPAyG20nrFut/9eV3g==
+X-Google-Smtp-Source: ABdhPJzvDcNdXHjO7nYfSMx7aYo6WWdRNoKpDm3K2m0Ae6MfNyULyjym/ptGih8ndA11+PnN2rHt+iT8lQNTMQ3Kip0=
+X-Received: by 2002:a25:d2c5:: with SMTP id j188mr1358442ybg.32.1604651804489;
+ Fri, 06 Nov 2020 00:36:44 -0800 (PST)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+References: <20201104232356.4038506-1-saravanak@google.com> <20201106050940.GG16469@pendragon.ideasonboard.com>
+In-Reply-To: <20201106050940.GG16469@pendragon.ideasonboard.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 6 Nov 2020 00:36:08 -0800
+Message-ID: <CAGETcx-rvTuEmJUsf6qP3WkPLOh6m6cy8E_LsJPoGejNOXrdcw@mail.gmail.com>
+Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
+ boot time
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iaW4gTXVycGh5IFtt
-YWlsdG86cm9iaW4ubXVycGh5QGFybS5jb21dDQo+IFNlbnQ6IDA1IE5vdmVtYmVyIDIwMjAgMTg6
-MDQNCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGkua29sb3RodW0u
-dGhvZGlAaHVhd2VpLmNvbT47DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
-ZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5k
-YXRpb24ub3JnOyBkZXZlbEBhY3BpY2Eub3JnDQo+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVh
-d2VpLmNvbT47IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207DQo+IGpvcm9AOGJ5dGVzLm9yZzsg
-d2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47IEd1b2hhbmp1bg0KPiAoSGFu
-anVuIEd1bykgPGd1b2hhbmp1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9u
-YXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCAzLzRd
-IEFDUEkvSU9SVDogQWRkIFJNUiBtZW1vcnkgcmVnaW9ucyByZXNlcnZhdGlvbg0KPiBoZWxwZXIN
-Cj4gDQo+IE9uIDIwMjAtMTAtMjcgMTE6MjYsIFNoYW1lZXIgS29sb3RodW0gd3JvdGU6DQo+ID4g
-QWRkIGEgaGVscGVyIGZ1bmN0aW9uIHRoYXQgcmV0cmlldmVzIFJNUiBtZW1vcnkgZGVzY3JpcHRv
-cnMNCj4gPiBhc3NvY2lhdGVkIHdpdGggYSBnaXZlbiBlbmRwb2ludCBkZXYuIFRoZXNlIG1lbW9y
-eSByZWdpb25zDQo+ID4gc2hvdWxkIGhhdmUgYSB1bml0ecKgbWFwcGluZyBpbiB0aGUgU01NVS4g
-U28gcmVzZXJ2ZSB0aGVtIGFzDQo+ID4gSU9NTVVfUkVTVl9ESVJFQ1QuDQo+IA0KPiBBcyBhIGdl
-bmVyYWwgb2JzZXJ2YXRpb24sIHdlIGFsc28gbmVlZCBhIHdheSBpbnRvIHRoaXMgdGhhdCBpc24n
-dCBmcm9tDQo+IHRoZSBwZXJzcGVjdGl2ZSBvZiBlbmRwb2ludCBkZXZpY2VzLiBXaXRoIFNNTVV2
-MyB3ZSBuZWVkIHRvIGtub3cgYWxsIHRoZQ0KPiBhY3RpdmUgc3RyZWFtIElEcyByZWxldmFudCB0
-byBhIGdpdmVuIFNNTVUgaW5zdGFuY2UgYXQgcHJvYmUgdGltZSwgc28NCj4gdGhhdCB3ZSBjYW4g
-c2V0IHVwIHNvbWUga2luZCBvZiB2YWxpZCBzdHJlYW0gdGFibGUgZW50cmllcyAqYmVmb3JlKg0K
-PiBlbmFibGluZyB0aGUgU01NVSBpbiB0aGUgcmVzZXQgcm91dGluZS4NCg0KU28gSSBndWVzcywg
-dGhlIGlkZWEgaXMgdG8gcHJvdmlkZSBhbiBpbnRlcmZhY2UgaGVyZSB0byByZXRyaWV2ZSB0aG9z
-ZSBhY3RpdmUNCnN0cmVhbSBJZHM/IFRoZSBwcm9ibGVtIGlzLCBhdCBwcmVzZW50KEFGQUlDUyks
-IFJNUiBkb2VzbuKAmXQgaGF2ZSBhbnkNCm1lYW5zIHRvIHNwZWNpZnkgc3VjaCBkZXZpY2VzLiAN
-Cg0KIE90aGVyd2lzZSB3ZSdyZSBqdXN0IGdvaW5nIHRvDQo+IGtpbGwgb25nb2luZyB0cmFmZmlj
-IChlLmcuIEVGSSBHT1ApIHdpdGggQ19CQURfU1RFIGxvbmcgYmVmb3JlIHdlIGV2ZXINCj4gc3Rh
-cnQgYWRkaW5nIGRldmljZXMgYW5kIHdvcnJ5aW5nIGFib3V0IHJlc2VydmVkIHJlZ2lvbnMgZm9y
-IHRoZW0uDQo+IFNpbWlsYXJseSBmb3IgdGhlIGluaXRpYWwgU01SL1MyQ1Igc3RhdGUgb24gU01N
-VXYyIHdpdGggZGlzYWJsZV9ieXBhc3MuDQoNCk9rLiBJIHNlZSB0aGUgZGlzY3Vzc2lvbiBoZXJl
-LA0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtaW9tbXUvNDg0YjllOTAtNzM5NS02MTYx
-LTU3N2MtNGQzZjM3MTY5OTdlQGFybS5jb20vDQoNCkZyb20gd2hhdCBJIGdhdGhlciwgdGhlIHBs
-YW4gaXMgdG8gc2V0dXAgYSBkZWZhdWx0IElERU5USVRZX0RPTUFJTiBmb3INCmRldmljZXMgdGhh
-dCBoYXZlIGxpdmUgc3RyZWFtIGdvaW5nIG9uIGR1cmluZyBib290L1NNTVUgcHJvYmUgdGltZS4g
-DQoNClRoYW5rcywNClNoYW1lZXINCg0KPiBSb2Jpbi4NCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTog
-U2hhbWVlciBLb2xvdGh1bSA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPg0K
-PiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyB8IDU2DQo+ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAgaW5jbHVkZS9saW51eC9hY3Bp
-X2lvcnQuaCB8ICA0ICsrKw0KPiA+ICAgMiBmaWxlcyBjaGFuZ2VkLCA2MCBpbnNlcnRpb25zKCsp
-DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyBiL2RyaXZl
-cnMvYWNwaS9hcm02NC9pb3J0LmMNCj4gPiBpbmRleCBiMzJjZDUzY2NhMDguLmMwNzAwMTQ5ZTYw
-YiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jDQo+ID4gKysrIGIv
-ZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYw0KPiA+IEBAIC04NDIsNiArODQyLDYwIEBAIHN0YXRp
-YyBpbmxpbmUgaW50IGlvcnRfYWRkX2RldmljZV9yZXBsYXkoc3RydWN0DQo+IGRldmljZSAqZGV2
-KQ0KPiA+ICAgCXJldHVybiBlcnI7DQo+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIGJvb2wgaW9y
-dF9kZXZfaGFzX3JtcihzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBpb3J0X3Jtcl9lbnRyeSAq
-ZSkNCj4gPiArew0KPiA+ICsJc3RydWN0IGlvbW11X2Z3c3BlYyAqZndzcGVjID0gZGV2X2lvbW11
-X2Z3c3BlY19nZXQoZGV2KTsNCj4gPiArCXN0cnVjdCBhY3BpX2lvcnRfbm9kZSAqaW9tbXU7DQo+
-ID4gKwlzdHJ1Y3QgaW9ydF9ybXJfaWQgKnJtcl9pZHMgPSBlLT5ybXJfaWRzOw0KPiA+ICsJaW50
-IGksIGo7DQo+ID4gKw0KPiA+ICsJaW9tbXUgPSBpb3J0X2dldF9pb3J0X25vZGUoZndzcGVjLT5p
-b21tdV9md25vZGUpOw0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDA7IGkgPCBlLT5ybXJfaWRzX251
-bTsgaSsrLCBybXJfaWRzKyspIHsNCj4gPiArCQlmb3IgKGogPSAwOyBqIDwgZndzcGVjLT5udW1f
-aWRzOyBqKyspIHsNCj4gPiArCQkJaWYgKHJtcl9pZHMtPnNpZCA9PSBmd3NwZWMtPmlkc1tqXSAm
-Jg0KPiA+ICsJCQkgICAgcm1yX2lkcy0+c21tdSA9PSBpb21tdSkNCj4gPiArCQkJCXJldHVybiB0
-cnVlOw0KPiA+ICsJCX0NCj4gPiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gZmFsc2U7DQo+ID4g
-K30NCj4gPiArDQo+ID4gKy8qKg0KPiA+ICsgKiBpb3J0X2Rldl9ybXJfZ2V0X3Jlc3ZfcmVnaW9u
-cyAtIFJNUiBSZXNlcnZlZCByZWdpb24gZHJpdmVyIGhlbHBlcg0KPiA+ICsgKiBAZGV2OiBEZXZp
-Y2UgZnJvbSBpb21tdV9nZXRfcmVzdl9yZWdpb25zKCkNCj4gPiArICogQGhlYWQ6IFJlc2VydmVk
-IHJlZ2lvbiBsaXN0IGZyb20gaW9tbXVfZ2V0X3Jlc3ZfcmVnaW9ucygpDQo+ID4gKyAqDQo+ID4g
-KyAqIFJldHVybnM6IDAgb24gc3VjY2VzcywgPDAgZmFpbHVyZQ0KPiA+ICsgKi8NCj4gPiAraW50
-IGlvcnRfZGV2X3Jtcl9nZXRfcmVzdl9yZWdpb25zKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0
-IGxpc3RfaGVhZA0KPiAqaGVhZCkNCj4gPiArew0KPiA+ICsJc3RydWN0IGlvcnRfcm1yX2VudHJ5
-ICplOw0KPiA+ICsNCj4gPiArCWxpc3RfZm9yX2VhY2hfZW50cnkoZSwgJmlvcnRfcm1yX2xpc3Qs
-IGxpc3QpIHsNCj4gPiArCQlzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24gKnJlZ2lvbjsNCj4gPiAr
-CQlzdHJ1Y3QgYWNwaV9pb3J0X3Jtcl9kZXNjICpybXI7DQo+ID4gKwkJaW50IHByb3QgPSBJT01N
-VV9SRUFEIHwgSU9NTVVfV1JJVEUgfA0KPiA+ICsJCQkgICBJT01NVV9OT0VYRUMgfCBJT01NVV9N
-TUlPOw0KPiA+ICsNCj4gPiArCQlpZiAoIWlvcnRfZGV2X2hhc19ybXIoZGV2LCBlKSkNCj4gPiAr
-CQkJY29udGludWU7DQo+ID4gKw0KPiA+ICsJCXJtciA9IGUtPnJtcl9kZXNjOw0KPiA+ICsJCXJl
-Z2lvbiA9IGlvbW11X2FsbG9jX3Jlc3ZfcmVnaW9uKHJtci0+YmFzZV9hZGRyZXNzLA0KPiA+ICsJ
-CQkJCQkgcm1yLT5sZW5ndGgsIHByb3QsDQo+ID4gKwkJCQkJCSBJT01NVV9SRVNWX0RJUkVDVCk7
-DQo+ID4gKwkJaWYgKCFyZWdpb24pIHsNCj4gPiArCQkJZGV2X2VycihkZXYsICJPdXQgb2YgbWVt
-b3J5IGFsbG9jYXRpbmcgUk1SIHJlZ2lvbnNcbiIpOw0KPiA+ICsJCQlyZXR1cm4gLUVOT01FTTsN
-Cj4gPiArCQl9DQo+ID4gKwkJbGlzdF9hZGRfdGFpbCgmcmVnaW9uLT5saXN0LCBoZWFkKTsNCj4g
-PiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgIC8qKg0K
-PiA+ICAgICogaW9ydF9pb21tdV9tc2lfZ2V0X3Jlc3ZfcmVnaW9ucyAtIFJlc2VydmVkIHJlZ2lv
-biBkcml2ZXIgaGVscGVyDQo+ID4gICAgKiBAZGV2OiBEZXZpY2UgZnJvbSBpb21tdV9nZXRfcmVz
-dl9yZWdpb25zKCkNCj4gPiBAQCAtMTExMiw2ICsxMTY2LDggQEAgaW50IGlvcnRfaW9tbXVfbXNp
-X2dldF9yZXN2X3JlZ2lvbnMoc3RydWN0DQo+IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFk
-ICpoZWFkKQ0KPiA+ICAgY29uc3Qgc3RydWN0IGlvbW11X29wcyAqaW9ydF9pb21tdV9jb25maWd1
-cmVfaWQoc3RydWN0IGRldmljZSAqZGV2LA0KPiA+ICAgCQkJCQkJY29uc3QgdTMyICppbnB1dF9p
-ZCkNCj4gPiAgIHsgcmV0dXJuIE5VTEw7IH0NCj4gPiAraW50IGlvcnRfZGV2X3Jtcl9nZXRfcmVz
-dl9yZWdpb25zKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGxpc3RfaGVhZA0KPiAqaGVhZCkN
-Cj4gPiAreyByZXR1cm4gMDsgfQ0KPiA+ICAgI2VuZGlmDQo+ID4NCj4gPiAgIHN0YXRpYyBpbnQg
-bmNfZG1hX2dldF9yYW5nZShzdHJ1Y3QgZGV2aWNlICpkZXYsIHU2NCAqc2l6ZSkNCj4gPiBkaWZm
-IC0tZ2l0IGEvaW5jbHVkZS9saW51eC9hY3BpX2lvcnQuaCBiL2luY2x1ZGUvbGludXgvYWNwaV9p
-b3J0LmgNCj4gPiBpbmRleCAyMGEzMjEyMGJiODguLjZkZDg5ZmFmMzQwYyAxMDA2NDQNCj4gPiAt
-LS0gYS9pbmNsdWRlL2xpbnV4L2FjcGlfaW9ydC5oDQo+ID4gKysrIGIvaW5jbHVkZS9saW51eC9h
-Y3BpX2lvcnQuaA0KPiA+IEBAIC0zOCw2ICszOCw3IEBAIHZvaWQgaW9ydF9kbWFfc2V0dXAoc3Ry
-dWN0IGRldmljZSAqZGV2LCB1NjQNCj4gKmRtYV9hZGRyLCB1NjQgKnNpemUpOw0KPiA+ICAgY29u
-c3Qgc3RydWN0IGlvbW11X29wcyAqaW9ydF9pb21tdV9jb25maWd1cmVfaWQoc3RydWN0IGRldmlj
-ZSAqZGV2LA0KPiA+ICAgCQkJCQkJY29uc3QgdTMyICppZF9pbik7DQo+ID4gICBpbnQgaW9ydF9p
-b21tdV9tc2lfZ2V0X3Jlc3ZfcmVnaW9ucyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBsaXN0
-X2hlYWQNCj4gKmhlYWQpOw0KPiA+ICtpbnQgaW9ydF9kZXZfcm1yX2dldF9yZXN2X3JlZ2lvbnMo
-c3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFkDQo+ICpoZWFkKTsNCj4gPiAgICNl
-bHNlDQo+ID4gICBzdGF0aWMgaW5saW5lIHZvaWQgYWNwaV9pb3J0X2luaXQodm9pZCkgeyB9DQo+
-ID4gICBzdGF0aWMgaW5saW5lIHUzMiBpb3J0X21zaV9tYXBfaWQoc3RydWN0IGRldmljZSAqZGV2
-LCB1MzIgaWQpDQo+ID4gQEAgLTU1LDYgKzU2LDkgQEAgc3RhdGljIGlubGluZSBjb25zdCBzdHJ1
-Y3QgaW9tbXVfb3BzDQo+ICppb3J0X2lvbW11X2NvbmZpZ3VyZV9pZCgNCj4gPiAgIHN0YXRpYyBp
-bmxpbmUNCj4gPiAgIGludCBpb3J0X2lvbW11X21zaV9nZXRfcmVzdl9yZWdpb25zKHN0cnVjdCBk
-ZXZpY2UgKmRldiwgc3RydWN0IGxpc3RfaGVhZA0KPiAqaGVhZCkNCj4gPiAgIHsgcmV0dXJuIDA7
-IH0NCj4gPiArc3RhdGljIGlubGluZQ0KPiA+ICtpbnQgaW9ydF9kZXZfcm1yX2dldF9yZXN2X3Jl
-Z2lvbnMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgbGlzdF9oZWFkDQo+ICpoZWFkKQ0KPiA+
-ICt7IHJldHVybiAwOyB9DQo+ID4gICAjZW5kaWYNCj4gPg0KPiA+ICAgI2VuZGlmIC8qIF9fQUNQ
-SV9JT1JUX0hfXyAqLw0KPiA+DQo=
+On Thu, Nov 5, 2020 at 9:09 PM Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> Hi Saravana,
+>
+> Thank you for working on this !
+>
+> On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
+> > The current implementation of fw_devlink is very inefficient because it
+> > tries to get away without creating fwnode links in the name of saving
+> > memory usage. Past attempts to optimize runtime at the cost of memory
+> > usage were blocked with request for data showing that the optimization
+> > made significant improvement for real world scenarios.
+> >
+> > We have those scenarios now. There have been several reports of boot
+> > time increase in the order of seconds in this thread [1]. Several OEMs
+> > and SoC manufacturers have also privately reported significant
+> > (350-400ms) increase in boot time due to all the parsing done by
+> > fw_devlink.
+> >
+> > So this patch series refactors fw_devlink to be more efficient. The key
+> > difference now is the addition of support for fwnode links -- just a few
+> > simple APIs. This also allows most of the code to be moved out of
+> > firmware specific (DT mostly) code into driver core.
+> >
+> > This brings the following benefits:
+> > - Instead of parsing the device tree multiple times (complexity was
+> >   close to O(N^3) where N in the number of properties) during bootup,
+> >   fw_devlink parses each fwnode node/property only once and creates
+> >   fwnode links. The rest of the fw_devlink code then just looks at these
+> >   fwnode links to do rest of the work.
+> >
+> > - Makes it much easier to debug probe issue due to fw_devlink in the
+> >   future. fw_devlink=on blocks the probing of devices if they depend on
+> >   a device that hasn't been added yet. With this refactor, it'll be very
+> >   easy to tell what that device is because we now have a reference to
+> >   the fwnode of the device.
+> >
+> > - Much easier to add fw_devlink support to ACPI and other firmware
+> >   types. A refactor to move the common bits from DT specific code to
+> >   driver core was in my TODO list as a prerequisite to adding ACPI
+> >   support to fw_devlink. This series gets that done.
+> >
+> > Tomi/Laurent/Grygorii,
+> >
+> > If you can test this series, that'd be great!
+>
+> I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
+> v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
+> lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
+> dies after the fw_devlink initialization, so I can still report results.
+
+Phew! For a sec I thought you said fw_devlink was causing a deadlock.
+
+>
+> Before your series:
+>
+> [    0.743065] cpuidle: using governor menu
+> [   13.350259] No ATAGs?
+>
+> With your series applied:
+>
+> [    0.722670] cpuidle: using governor menu
+> [    1.135859] No ATAGs?
+>
+> That's a very clear improvement :-)
+
+Thanks for testing. Great to hear it's helping!
+
+> Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+I'll add it to my v2 series.
+
+-Saravana
