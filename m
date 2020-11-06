@@ -2,138 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8FB72A8FDB
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 08:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5732A902D
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 08:22:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726414AbgKFHEh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 02:04:37 -0500
-Received: from mga01.intel.com ([192.55.52.88]:57259 "EHLO mga01.intel.com"
+        id S1726198AbgKFHWC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 02:22:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45468 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726121AbgKFHEh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Nov 2020 02:04:37 -0500
-IronPort-SDR: QT4rEx/CW3TSoJvSjpXFACVjQkCTYRg+uxMLvUpLag/aM4JmAHdvku+rsB955MQ3kPaxGqdene
- 5uUuk5m9/v4Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9796"; a="187431657"
-X-IronPort-AV: E=Sophos;i="5.77,455,1596524400"; 
-   d="scan'208";a="187431657"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 23:04:37 -0800
-IronPort-SDR: gmUL+TcBkOBYuAoAVbzqSniT9x0gXFuh+S/nFH2uuorJtviyhtKsy11zK5bFravs7aZZ68+1LP
- 7YcjJxLpc2oA==
-X-IronPort-AV: E=Sophos;i="5.77,455,1596524400"; 
-   d="scan'208";a="539731201"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 23:04:34 -0800
-Received: by lahna (sSMTP sendmail emulation); Fri, 06 Nov 2020 09:04:32 +0200
-Date:   Fri, 6 Nov 2020 09:04:32 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Flavio Suligoi <f.suligoi@asem.it>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: How to add the "gpio-line-names" property in a PCI gpio expander
-Message-ID: <20201106070432.GQ2495@lahna.fi.intel.com>
-References: <98acf6339a1b43d6a38f867069088530@asem.it>
- <CAJZ5v0g7POp1Lp05RcJJ8ZD1ZiaetN0_SfbAjnQg0kCw4aQukQ@mail.gmail.com>
- <20201105115941.GK2495@lahna.fi.intel.com>
- <574b86929d1247caae717ab1a2f31194@asem.it>
- <20201105152020.GO2495@lahna.fi.intel.com>
- <5fb64f9c8af64235943c29c9ba50a2df@asem.it>
+        id S1725828AbgKFHWC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 02:22:02 -0500
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 28F0B20825;
+        Fri,  6 Nov 2020 07:22:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604647320;
+        bh=i2EjFVFc/nx2RMuU8Nde7JRgivITs9LD27Q8XbxFmuE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kCwZXCwdWLtsO3lGzYTbgw5I/1r65MW3SvzEuXwBqqlhwy7QL5N3L/hDUrzPxxokW
+         u5K7Vnbys9/vWJW27fvrzrNs98Ba+b/hM3po043KOpewZaE9GYCScdN/3edcmUS1nN
+         z2x+XLuvU21EsoG1NFs1I5DzY/9wu9DmJjBOesHI=
+Date:   Fri, 6 Nov 2020 08:22:47 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v1 15/18] of: property: Update implementation of
+ add_links() to create fwnode links
+Message-ID: <20201106072247.GB2614221@kroah.com>
+References: <20201104232356.4038506-1-saravanak@google.com>
+ <20201104232356.4038506-16-saravanak@google.com>
+ <20201105094228.GE3439341@kroah.com>
+ <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5fb64f9c8af64235943c29c9ba50a2df@asem.it>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 05, 2020 at 03:54:32PM +0000, Flavio Suligoi wrote:
-> Hi Mika,
-> 
-> > > > > > In one of our boards we have an add-on PCI board, with a PCI
-> > serial
-> > > > device
-> > > > > > Exar XR17V352. This device also contains 16 gpios.
-> > > > > > The exar device drivers work good, both the "8250_exar" and the
-> > > > "gpio_exar", and
-> > > > > > I can manage the exar's gpios correctly.
-> > > > > > The problem is how to assign the gpio-line-names property to a PCI
-> > > > gpio
-> > > > > > expanders like this.
-> > > > > >
-> > > > > > I tried adding a new device in my ACPI configuration, as:
-> > > > > >
-> > > > > > Device (EXAR)
-> > > > > > {
-> > > > > >     Name (_HID, "13A80352")
-> > > >
-> > > > If this is PCI device then you need to have _ADR here instead of _HID.
+On Thu, Nov 05, 2020 at 03:25:56PM -0800, Saravana Kannan wrote:
+> On Thu, Nov 5, 2020 at 1:41 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Nov 04, 2020 at 03:23:52PM -0800, Saravana Kannan wrote:
+> > > The semantics of add_links() has changed from creating device link
+> > > between devices to creating fwnode links between fwnodes. So, update the
+> > > implementation of add_links() to match the new semantics.
 > > >
-> > > the problem is that the parent bus of this device is not declared in any
-> > ACPI table.
-> > > The exar chip is on the bus 7 :
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > ---
+> > >  drivers/of/property.c | 150 ++++++++++++------------------------------
+> > >  1 file changed, 41 insertions(+), 109 deletions(-)
 > > >
-> > > 07:00.0 Serial controller: Exar Corp. XR17V3521 Dual PCIe UART (rev 03)
+> > > diff --git a/drivers/of/property.c b/drivers/of/property.c
+> > > index 408a7b5f06a9..86303803f1b3 100644
+> > > --- a/drivers/of/property.c
+> > > +++ b/drivers/of/property.c
+> > > @@ -1038,33 +1038,9 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
+> > >  }
 > > >
-> > > and in the _ADR object you can specify device and function only.
-> > > How can I specify the parent bus? It is not simple …
-> > > The lspci output is the following:
-> > 
-> > The parent is the root port the device is connected to and I'm pretty
-> > sure it exists in the namespace as this seems to be Intel hardware. If
-> > you run 'lspci -t' it shows you the root port.
-> > 
-> > The _ADR should be 0 for this one.
+> > >  /**
+> > > - * of_get_next_parent_dev - Add device link to supplier from supplier phandle
+> > > - * @np: device tree node
+> > > - *
+> > > - * Given a device tree node (@np), this function finds its closest ancestor
+> > > - * device tree node that has a corresponding struct device.
+> > > - *
+> > > - * The caller of this function is expected to call put_device() on the returned
+> > > - * device when they are done.
+> > > - */
+> > > -static struct device *of_get_next_parent_dev(struct device_node *np)
+> > > -{
+> > > -     struct device *dev = NULL;
+> > > -
+> > > -     of_node_get(np);
+> > > -     do {
+> > > -             np = of_get_next_parent(np);
+> > > -             if (np)
+> > > -                     dev = get_dev_from_fwnode(&np->fwnode);
+> > > -     } while (np && !dev);
+> > > -     of_node_put(np);
+> > > -     return dev;
+> > > -}
+> > > -
+> > > -/**
+> > > - * of_link_to_phandle - Add device link to supplier from supplier phandle
+> > > - * @dev: consumer device
+> > > - * @sup_np: phandle to supplier device tree node
+> > > + * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
+> > > + * @con_np: consumer device tree node
+> > > + * @sup_np: supplier device tree node
+> > >   *
+> > >   * Given a phandle to a supplier device tree node (@sup_np), this function
+> > >   * finds the device that owns the supplier device tree node and creates a
+> > > @@ -1074,16 +1050,14 @@ static struct device *of_get_next_parent_dev(struct device_node *np)
+> > >   * cases, it returns an error.
+> > >   *
+> > >   * Returns:
+> > > - * - 0 if link successfully created to supplier
+> > > - * - -EAGAIN if linking to the supplier should be reattempted
+> > > + * - 0 if fwnode link successfully created to supplier
+> > >   * - -EINVAL if the supplier link is invalid and should not be created
+> > > - * - -ENODEV if there is no device that corresponds to the supplier phandle
+> > > + * - -ENODEV if struct device will never be create for supplier
+> > >   */
+> > > -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> > > -                           u32 dl_flags)
+> > > +static int of_link_to_phandle(struct device_node *con_np,
+> > > +                           struct device_node *sup_np)
+> > >  {
+> > > -     struct device *sup_dev, *sup_par_dev;
+> > > -     int ret = 0;
+> > > +     struct device *sup_dev;
+> > >       struct device_node *tmp_np = sup_np;
+> > >
+> > >       of_node_get(sup_np);
+> > > @@ -1106,7 +1080,8 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> > >       }
+> > >
+> > >       if (!sup_np) {
+> > > -             dev_dbg(dev, "Not linking to %pOFP - No device\n", tmp_np);
+> > > +             pr_debug("Not linking %pOFP to %pOFP - No device\n",
+> > > +                      con_np, tmp_np);
+> >
+> > Who is calling this function without a valid dev pointer?
 > 
-> Unfortunately there is bridge in the middle:
+> Sorry, I plan to delete the "dev" parameter as it's not really used
+> anywhere. I'm trying to do that without causing build time errors and
+> making the series into digestible small patches.
 > 
-> root@debian:~# lspci -t
-> -[0000:00]-+-00.0
->            +-02.0
->            +-0e.0
->            +-0f.0
->            +-12.0
->            +-13.0-[01]----00.0
->            +-13.1-[02]----00.0
->            +-13.2-[03]--
->            +-14.0-[04]----00.0
->            +-14.1-[05-09]----00.0-[06-09]--+-01.0-[07]----00.0 <-- Exar (bus 7, dev 0, funct 0)
->            |                               +-02.0-[08]----00.0
->            |                               \-03.0-[09]--
->            +-15.0
->            +-16.0
->            +-16.1
->            +-19.0
->            +-19.1
->            +-19.2
->            +-1f.0
->            \-1f.1
-> root@debian:~#
-> 
-> My changes in the ACPI:
-> 
-> Scope (_SB.PCI0) {
->     Device (EXAR)
-> 		{
-> 			Name (_ADR, 0x0000)
-> ....
-> 
-> but it doesn't work, because of the bridge.
+> I can do the deletion of the parameter as a Patch 19/19. Will that work?
 
-OK, then add the bridge first:
+That's fine, but why get rid of dev?  The driver core works on these
+things, and we want errors/messages/warnings to spit out what device is
+causing those issues.  It is fine to drag around a struct device pointer
+just for messages, that's to be expected, and is good.
 
-Scope (_SB.PCI0.RPX) {
-    Device (BRG) { // Bridge
-       Name (_ADR, 0)
+> > And the only way it can be NULL is if fwnode is NULL, and as you control
+> > the callers to it, how can that be the case?
+> 
+> fwnode represents a generic firmware node. The to_of_node() returns
+> NULL if fwnode is not a DT node. So con_np can be NULL if that
+> happens. That's why we need a NULL check here.  With the current code,
+> that can never happen, bit I think it doesn't hurt to check in case
+> there's a buggy caller. I don't have a strong opinion - so I can do it
+> whichever way.
 
-       Device (EXAR) { // Expander
-           Name (_ADR, 0)
-       }
-    }
+If it can't happen, no need to check for it :)
 
-Or something like that. RPX is the root port 14.1 and if I read the
-above right both the bridge and the EXAR device have device and function 0.
+thanks,
+
+greg k-h
