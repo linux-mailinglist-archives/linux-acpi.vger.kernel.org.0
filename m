@@ -2,105 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA8CD2A9753
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 15:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C8E2A9871
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 16:22:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727342AbgKFOBj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 09:01:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:21416 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726565AbgKFOBi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Nov 2020 09:01:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604671297;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=S00aK9fNTqlK7mSJ9g7X1HE/gjrKeLDzQAXdMZ1JGdw=;
-        b=bSK52ZQwNdPjHfWzQr+6fisrNrmOedVLByv/ld7arGqsgRitCxal8xIrjgH6p1tLRmTskG
-        quuczA9PPmHoZp4GjL5JfBR8tNmL6ylOHfq0avj4nNcIoOMYIV0jTck9pn1S8N97iwxfhc
-        5elUkNm7/OfgINmjeOGpbmypjhSMOXI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-230-1h2p-XBwOlSVFC2VbMdyKw-1; Fri, 06 Nov 2020 09:01:34 -0500
-X-MC-Unique: 1h2p-XBwOlSVFC2VbMdyKw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E432D5F9F4;
-        Fri,  6 Nov 2020 14:01:32 +0000 (UTC)
-Received: from x1.localdomain (ovpn-113-52.ams2.redhat.com [10.36.113.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 644A71007615;
-        Fri,  6 Nov 2020 14:01:31 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mark Gross <mgross@linux.intel.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@infradead.org>,
-        acpi4asus-user@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH] platform/x86: thinkpad_acpi: Do not report SW_TABLET_MODE on Yoga 11e
-Date:   Fri,  6 Nov 2020 15:01:30 +0100
-Message-Id: <20201106140130.46820-1-hdegoede@redhat.com>
+        id S1727562AbgKFPWH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 10:22:07 -0500
+Received: from foss.arm.com ([217.140.110.172]:40668 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727558AbgKFPWH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 10:22:07 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A1C2914BF;
+        Fri,  6 Nov 2020 07:22:06 -0800 (PST)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 419073F66E;
+        Fri,  6 Nov 2020 07:22:03 -0800 (PST)
+Subject: Re: [RFC PATCH 0/4] ACPI/IORT: Support for IORT RMR node
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Cc:     "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Sami Mujawar <Sami.Mujawar@arm.com>,
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+References: <20201027112646.44680-1-shameerali.kolothum.thodi@huawei.com>
+ <f389e864-3d7a-3c96-8f51-c04f92759df1@arm.com>
+ <36e3a0e58e334e6aa3c051000d742543@huawei.com>
+From:   Steven Price <steven.price@arm.com>
+Message-ID: <ca4a8e2d-40d9-b08d-7ec9-6a50d37f9126@arm.com>
+Date:   Fri, 6 Nov 2020 15:22:03 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <36e3a0e58e334e6aa3c051000d742543@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Yoga 11e series has 2 accelerometers described by a BOSC0200 ACPI node.
-This setup relies on a Windows service which reads both accelerometers and
-then calculates the angle between the 2 halves to determine laptop / tent /
-tablet mode and then reports the calculated mode back to the EC by calling
-special ACPI methods on the BOSC0200 node.
+On 28/10/2020 18:24, Shameerali Kolothum Thodi wrote:
+> Hi Steve,
+> 
+>> -----Original Message-----
+>> From: Steven Price [mailto:steven.price@arm.com]
+>> Sent: 28 October 2020 16:44
+>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org; devel@acpica.org
+>> Cc: lorenzo.pieralisi@arm.com; joro@8bytes.org; Jonathan Cameron
+>> <jonathan.cameron@huawei.com>; Linuxarm <linuxarm@huawei.com>;
+>> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>; robin.murphy@arm.com;
+>> wanghuiqiang <wanghuiqiang@huawei.com>; Sami Mujawar
+>> <Sami.Mujawar@arm.com>
+>> Subject: Re: [RFC PATCH 0/4] ACPI/IORT: Support for IORT RMR node
+>>
+>> On 27/10/2020 11:26, Shameer Kolothum wrote:
+>>> The series adds support to IORT RMR nodes specified in IORT
+>>> Revision E -ARM DEN 0049E[0]. RMR nodes are used to describe memory
+>>> ranges that are used by endpoints and require a unity mapping
+>>> in SMMU.
+>>
+>> Hi Shameer,
+>>
+>> I've also been taking a look at RMR, and Sami is helping me get set up
+>> so that I can do some testing. We're hoping to be able to test an EFI
+>> framebuffer or splash screen - which has the added complication of the
+>> unity mapping becoming redundant if a native display driver takes over
+>> the display controller.
+>>
+>> I've looked through your series and the code looks correct to me.
+> 
+> Thanks for taking a look and the details.
+> 
+>> Hopefully I'll be able to give it some testing soon.
+> 
+> Cool. Please update once you get a chance run the tests.
 
-The bmc150 iio driver does not support this (it involves double
-calculations requiring sqrt and arccos so this really needs to be done
-in userspace), as a result of this on the Yoga 11e the thinkpad_acpi
-code always reports SW_TABLET_MODE=0, starting with GNOME 3.38 reporting
-SW_TABLET_MODE=0 causes GNOME to:
+Hi Shameer,
 
-1. Not show the onscreen keyboard when a text-input field is focussed
-   with the touchscreen.
-2. Disable accelerometer based auto display-rotation.
+Just to update on this, for the EFI framebuffer use case I hit exactly 
+the issue that Robin has mentioned in another thread - the RMR is 
+effectively ignored because the display controller isn't being handled 
+by Linux (so there's no device to link it to). The splash screen might 
+similarly flicker as the SMMU reset will initially block the traffic 
+before the RMR region is enabled.
 
-This makes sense when in laptop-mode but not when in tablet-mode. But
-since for the Yoga 11e the thinkpad_acpi code always reports
-SW_TABLET_MODE=0, GNOME does not know when the device is in tablet-mode.
-
-Stop reporting the broken (always 0) SW_TABLET_MODE on Yoga 11e models
-to fix this.
-
-Note there are plans for userspace to support 360 degree hinges style
-2-in-1s with 2 accelerometers and figure out the mode by itself, see:
-https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/issues/216
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/platform/x86/thinkpad_acpi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 7fc779cd652a..08d5bb3104f9 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -3220,7 +3220,14 @@ static int hotkey_init_tablet_mode(void)
- 
- 		in_tablet_mode = hotkey_gmms_get_tablet_mode(res,
- 							     &has_tablet_mode);
--		if (has_tablet_mode)
-+		/*
-+		 * The Yoga 11e series has 2 accelerometers described by a
-+		 * BOSC0200 ACPI node. This setup relies on a Windows service
-+		 * which calls special ACPI methods on this node to report
-+		 * the laptop/tent/tablet mode to the EC. The bmc150 iio driver
-+		 * does not support this, so skip the hotkey on these models.
-+		 */
-+		if (has_tablet_mode && !acpi_dev_present("BOSC0200", "1", -1))
- 			tp_features.hotkey_tablet = TP_HOTKEY_TABLET_USES_GMMS;
- 		type = "GMMS";
- 	} else if (acpi_evalf(hkey_handle, &res, "MHKG", "qd")) {
--- 
-2.28.0
-
+Steve
