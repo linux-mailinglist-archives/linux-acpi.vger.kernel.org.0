@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 068302A9E1E
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 20:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49BF62A9E20
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 20:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728273AbgKFTen (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 14:34:43 -0500
-Received: from foss.arm.com ([217.140.110.172]:44078 "EHLO foss.arm.com"
+        id S1728184AbgKFTfh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Nov 2020 14:35:37 -0500
+Received: from foss.arm.com ([217.140.110.172]:44104 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726415AbgKFTen (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Nov 2020 14:34:43 -0500
+        id S1726415AbgKFTfg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Nov 2020 14:35:36 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA17C1509;
-        Fri,  6 Nov 2020 11:34:42 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 133E01474;
+        Fri,  6 Nov 2020 11:35:36 -0800 (PST)
 Received: from [172.16.1.113] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5868E3F718;
-        Fri,  6 Nov 2020 11:34:41 -0800 (PST)
-Subject: Re: [PATCH] ACPI, APEI, Fix incorrect return value of
- apei_map_generic_address
-To:     yaoaili126@163.com, rjw@rjwysocki.net, lenb@kernel.org
-Cc:     tony.luck@intel.com, bp@alien8.de, linux-acpi@vger.kernel.org,
-        yangfeng1@kingsoft.com, yaoaili@kingsoft.com
-References: <28dc453f-40b8-8263-5aeb-f8979f54a941 () arm ! com>
- <20201102024726.8214-1-yaoaili126@163.com>
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97C7A3F718;
+        Fri,  6 Nov 2020 11:35:34 -0800 (PST)
+Subject: Re: [PATCH] Dump cper error table in mce_panic
+To:     yaoaili126@163.com
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
+        bp@alien8.de, linux-acpi@vger.kernel.org,
+        linux-edac@vger.kernel.org, yangfeng1@kingsoft.com,
+        CHENGUOMIN@kingsoft.com, yaoaili@kingsoft.com
+References: <20201104065057.40442-1-yaoaili126@163.com>
 From:   James Morse <james.morse@arm.com>
-Message-ID: <e0e1cf62-6e49-1524-a370-41532c5b4ac7@arm.com>
-Date:   Fri, 6 Nov 2020 19:34:39 +0000
+Message-ID: <112d8a04-4f0d-6705-4da1-e8d95a14dbaf@arm.com>
+Date:   Fri, 6 Nov 2020 19:35:32 +0000
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20201102024726.8214-1-yaoaili126@163.com>
+In-Reply-To: <20201104065057.40442-1-yaoaili126@163.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -38,67 +38,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+Hello!
 
-On 02/11/2020 02:47, yaoaili126@163.com wrote:
+On 04/11/2020 06:50, yaoaili126@163.com wrote:
 > From: Aili Yao <yaoaili@kingsoft.com>
 > 
-> From commit 6915564dc5a8 ("ACPI: OSL: Change the type of
-> acpi_os_map_generic_address() return value"),acpi_os_map_generic_address
-> will return logical address or NULL for error, but
-> pre_map_gar_callback and related apei_map_generic_address ,for
-> ACPI_ADR_SPACE_SYSTEM_IO case, it should be also return 0,as it's a
-> normal case, but now it will return -ENXIO. so check it out for such
-> case to avoid einj module initialization fail.
+> For X86_MCE, When there is a fatal ue error, BIOS will prepare one
+> detailed cper error table before raising MCE,
 
-(Nit: To make the commit message easier to read, please put '()' after function names, and
-spaces after commas.)
+(outside GHES-ASSIST), Its not supposed to do this.
+
+There is an example flow described in 18.4.1 "Example: Firmware First Handling Using NMI
+Notification" of ACPI v6.3:
+https://uefi.org/sites/default/files/resources/ACPI_Spec_6_3_A_Oct_6_2020.pdf
 
 
-> Tested-by: Tony Luck <tony.luck@intel.com>
-
-> Signed-off-by: James Morse <james.morse@arm.com>
-
-You can't add other peoples 'signed off'. This is for tracking the path a patch takes, and
-that each person who touches it 'signs off' their changes for the open-source license. See
-the 'Developer's Certificate of Origin 1.1' in Documentation/process/submitting-patches.rst'.
-
-Please remove this tag.
+The machine-check is the notification from hardware, which in step 1 of the above should
+go to firmware. You should only see an NMI, which is step 8.
+Step 7 is to clear the error from hardware, so triggering a machine-check is pointless.
+(but I agree no firmware ever follows this!)
 
 
-> Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
-
-As this fixes the bug where the einj module can't be loaded, I think its appropriate for
-the stable kernels. The tags to do that are:
-Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of acpi_os_map_generic_address() return
-value")
-Cc: <stable@vger.kernel.org>
+You appear to have something that behaves as GHES-ASSIST. Can you post the decompiled dump
+of your HEST table? (decompiled, no binaries!) If its large, you can post it to me off
+list and I'll copy the relevant bits here...
 
 
-With that, please add my:
-Reviewed-by: James Morse <james.morse@arm.com>
+> this cper table is meant
+> to supply addtional error information and not to race with mce handler
+> to panic.
+
+This is a description of GHES_ASSIST. See 18.7 "GHES_ASSIST Error Reporting" of the above pdf.
 
 
-Thanks!
+> Usually possible unexpected cper process from NMI watchdog race panic
+> with MCE panic is not a problem, the panic process will coordinate with
+> each core. But When the CPER is not processed in the first kernel and
+> leave it to the second kernel, this is a problem, lead to a kdump fail.
+
+> Now in this patch, the mce_panic will race with unexpected NMI to dump
+> the cper error log and get it cleaned, this will prevent the cper table
+> leak to the second kernel, which will fix the kdump fail problem, and
+> also guarrante the cper log is collected which it's meant to.
+
+> Anyway,For x86_mce platform, the ghes module is still needed not to
+> panic for fatal memory UE as it's MCE handler's work.
+
+If and only if those GHES are marked as GHES_ASSIST.
+
+If they are not, then you have a fully fledged firwmare-first system.
+
+Could you share what your system is describing it as in the HEST so we can work out what
+is going on here?!
+
+We need to work this out first.
+
+
+Thanks,
 
 James
-
-
-
-> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-> index 552fd9ffaca4..3294cc8dc073 100644
-> --- a/drivers/acpi/apei/apei-base.c
-> +++ b/drivers/acpi/apei/apei-base.c
-> @@ -633,6 +633,10 @@ int apei_map_generic_address(struct acpi_generic_address *reg)
->  	if (rc)
->  		return rc;
->  
-> +	/* IO space doesn't need mapping */
-> +	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO)
-> +		return 0;
-> +
->  	if (!acpi_os_map_generic_address(reg))
->  		return -ENXIO;
->  
-> 
 
