@@ -2,99 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49BF62A9E20
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Nov 2020 20:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A35D2AA3E2
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Nov 2020 09:34:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728184AbgKFTfh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Nov 2020 14:35:37 -0500
-Received: from foss.arm.com ([217.140.110.172]:44104 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726415AbgKFTfg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Nov 2020 14:35:36 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 133E01474;
-        Fri,  6 Nov 2020 11:35:36 -0800 (PST)
-Received: from [172.16.1.113] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97C7A3F718;
-        Fri,  6 Nov 2020 11:35:34 -0800 (PST)
-Subject: Re: [PATCH] Dump cper error table in mce_panic
-To:     yaoaili126@163.com
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, yangfeng1@kingsoft.com,
-        CHENGUOMIN@kingsoft.com, yaoaili@kingsoft.com
-References: <20201104065057.40442-1-yaoaili126@163.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <112d8a04-4f0d-6705-4da1-e8d95a14dbaf@arm.com>
-Date:   Fri, 6 Nov 2020 19:35:32 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <20201104065057.40442-1-yaoaili126@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+        id S1727901AbgKGIeo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 7 Nov 2020 03:34:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728175AbgKGIeo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 7 Nov 2020 03:34:44 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5691BC0613D2
+        for <linux-acpi@vger.kernel.org>; Sat,  7 Nov 2020 00:34:42 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id q83so4521014ybq.17
+        for <linux-acpi@vger.kernel.org>; Sat, 07 Nov 2020 00:34:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:message-id:mime-version:subject:from:to:cc;
+        bh=Z1peopUQ0CXJcnmm3Y1iXQw/XLE0Jshqm+lf7SqAfcA=;
+        b=ljoBwQSYeuvhSAm05Tb8i9IjvzUi2f9jfINj73VmVc0oHO1K+tLPdjZfs/7fHxJ4Zg
+         M4r7Y7HSH212OENIhVPZXNEZdCOhGxYuNm3F3hktzk1t64hSVnYEq72r1jbUYXQCigQZ
+         FSHlH5bRWBwmHB7mM4WOK4FqSdiPP/l4x2SL+sGyMFNPuIEuuu1KtFpMoelEt96svhee
+         q3OqD9B2RwumGf0HzoIJSID4KWqU8RZxG+Wb2TJ40/vyVlG4G3sNo/7FGU/wMlOWbvcA
+         mQZk/looCHFKwfFM81fXiCVvxXSjBE8Dl82hNtH2o/Pk5QLkmWAmblmJYYM5HJgNJBfg
+         4faw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
+         :to:cc;
+        bh=Z1peopUQ0CXJcnmm3Y1iXQw/XLE0Jshqm+lf7SqAfcA=;
+        b=s/T3kBn2uoGV7CPhEDEdckWVDP5LoEepcT738+w4XXlEGZ7CgRBPvy5237koQYzBpN
+         bJKpBoiK+sGvHyF2GqFgn8ObKS4YOQJWgu5AyPzl6i6hMUMJs9v1M/JQ9dcV68K0wVyz
+         xzKwMo6nhPFKFPAvdNkE++kF0A2oLLXDB8EF6oLmcFt/2rruCwek895pMX550Pq034uR
+         bQgzg2HD09m/Bu3yzHJ3ZYoy6kTLZ21bBq+j+b4i6MKc7Qa3Ubw6tEItvocfC3fzQYCF
+         wMT/I6UjN11Orki23byf1bxfvf6Bm3iUcW1w4Y4U0+j2OkHbL7XJYpeQhXpDGKVMcpwl
+         z8qA==
+X-Gm-Message-State: AOAM5316KHVBpHUx71LM4ry9glexi1xRRt5Rnxftxk5VgvHDfR3vehJZ
+        GnPX6OC1T9d2Ceb8+EvpGP2VMibbC2gBglun5L8=
+X-Google-Smtp-Source: ABdhPJzjQVKzDOUD8t863oyfAR/B79KgYVM6UYlPHGButDCCQosno5E9YKHuoNnqgIbwcIAXjWrI2nd0GbIGErKO4xE=
+Sender: "ndesaulniers via sendgmr" 
+        <ndesaulniers@ndesaulniers1.mtv.corp.google.com>
+X-Received: from ndesaulniers1.mtv.corp.google.com ([2620:15c:211:202:f693:9fff:fef4:4d25])
+ (user=ndesaulniers job=sendgmr) by 2002:a25:ca8e:: with SMTP id
+ a136mr7465151ybg.101.1604738081544; Sat, 07 Nov 2020 00:34:41 -0800 (PST)
+Date:   Sat,  7 Nov 2020 00:34:31 -0800
+Message-Id: <20201107083432.3175710-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.29.2.222.g5d2a92d10f8-goog
+Subject: [PATCH] ACPI: GED: fix -Wformat
+From:   Nick Desaulniers <ndesaulniers@google.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello!
+Clang is more aggressive about -Wformat warnings when the format flag
+specifies a type smaller than the parameter. It turns out that gsi is an
+int. Fixes:
 
-On 04/11/2020 06:50, yaoaili126@163.com wrote:
-> From: Aili Yao <yaoaili@kingsoft.com>
-> 
-> For X86_MCE, When there is a fatal ue error, BIOS will prepare one
-> detailed cper error table before raising MCE,
+drivers/acpi/evged.c:105:48: warning: format specifies type 'unsigned
+char' but the argument has type 'unsigned int' [-Wformat]
+trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
+                                            ^~~
 
-(outside GHES-ASSIST), Its not supposed to do this.
+Link: https://github.com/ClangBuiltLinux/linux/issues/378
+Fixes: commit ea6f3af4c5e6 ("ACPI: GED: add support for _Exx / _Lxx handler methods")
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+ drivers/acpi/evged.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There is an example flow described in 18.4.1 "Example: Firmware First Handling Using NMI
-Notification" of ACPI v6.3:
-https://uefi.org/sites/default/files/resources/ACPI_Spec_6_3_A_Oct_6_2020.pdf
-
-
-The machine-check is the notification from hardware, which in step 1 of the above should
-go to firmware. You should only see an NMI, which is step 8.
-Step 7 is to clear the error from hardware, so triggering a machine-check is pointless.
-(but I agree no firmware ever follows this!)
-
-
-You appear to have something that behaves as GHES-ASSIST. Can you post the decompiled dump
-of your HEST table? (decompiled, no binaries!) If its large, you can post it to me off
-list and I'll copy the relevant bits here...
-
-
-> this cper table is meant
-> to supply addtional error information and not to race with mce handler
-> to panic.
-
-This is a description of GHES_ASSIST. See 18.7 "GHES_ASSIST Error Reporting" of the above pdf.
-
-
-> Usually possible unexpected cper process from NMI watchdog race panic
-> with MCE panic is not a problem, the panic process will coordinate with
-> each core. But When the CPER is not processed in the first kernel and
-> leave it to the second kernel, this is a problem, lead to a kdump fail.
-
-> Now in this patch, the mce_panic will race with unexpected NMI to dump
-> the cper error log and get it cleaned, this will prevent the cper table
-> leak to the second kernel, which will fix the kdump fail problem, and
-> also guarrante the cper log is collected which it's meant to.
-
-> Anyway,For x86_mce platform, the ghes module is still needed not to
-> panic for fatal memory UE as it's MCE handler's work.
-
-If and only if those GHES are marked as GHES_ASSIST.
-
-If they are not, then you have a fully fledged firwmare-first system.
-
-Could you share what your system is describing it as in the HEST so we can work out what
-is going on here?!
-
-We need to work this out first.
-
-
-Thanks,
-
-James
+diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
+index b1a7f8d6965e..fe6b6792c8bb 100644
+--- a/drivers/acpi/evged.c
++++ b/drivers/acpi/evged.c
+@@ -101,7 +101,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
+ 
+ 	switch (gsi) {
+ 	case 0 ... 255:
+-		sprintf(ev_name, "_%c%02hhX",
++		sprintf(ev_name, "_%c%02X",
+ 			trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
+ 
+ 		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
+-- 
+2.29.2.222.g5d2a92d10f8-goog
 
