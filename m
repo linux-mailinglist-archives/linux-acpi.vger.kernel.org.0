@@ -2,100 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 671182AA3F5
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Nov 2020 09:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D32CF2AA564
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Nov 2020 14:33:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728074AbgKGItt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 7 Nov 2020 03:49:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727886AbgKGItt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 7 Nov 2020 03:49:49 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B33C0613CF
-        for <linux-acpi@vger.kernel.org>; Sat,  7 Nov 2020 00:49:48 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id q83so4544978ybq.17
-        for <linux-acpi@vger.kernel.org>; Sat, 07 Nov 2020 00:49:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to:cc;
-        bh=6WU5XJ/qlfBh5YZsFPkg9rhMeyoErIKJCIfbV8EW5YE=;
-        b=dD9J/n8G7DJiDwk4rEqBIeBWf32Gb+p1BKwuSv6yg96ucvQmYVFCsRDdSlkwibS1sE
-         vPyCIx1hZ0qWhZV5w52bbGcZkVGWm/SUddyRyVZ/oi1ttKt6h9pRHwkIzrgqDjbV+Ad6
-         lbc3ZNGMQrH/srcf1Z+e4ajxyJTsdIMB/b5Ify3Riowa+xpccCWmS8jmsdvSNeLNUysU
-         HtkF6iq2a06S9t/IEgfNd4wUvQLOEvSPYL61vslWy2sFYZYH3NBKoeFoM07Xf31CIg4J
-         igW5BREAIj2RF32EduPaw4ARttk2oBAtxDR0Hjg5wp7nOtTpCf1f052oAmsMMCJoYae9
-         ahug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=6WU5XJ/qlfBh5YZsFPkg9rhMeyoErIKJCIfbV8EW5YE=;
-        b=tTGNPxhtb/WTkfvKrV4r9Nrx9J/3sS+Q9JdL69TV91+VuAcxpc4iTCG5h4kVQlA97X
-         xgI7LwdU7ZIM4GAPiYmJzROdjCrOIhSEmrB6LBWQqbyEn6ueX86hIKCX3CBhC8W4Sj78
-         1cCzcO0xrTZgy+r7juzE6PQtoGxhl+CY+nHkaITowts07971KGStkg85yXgSDBxqfSWA
-         Q2wM/1KNsfO1ZkMdc3Rz+OX/EUcxkcvCItvheQ4Cd8smPLL/hNNLo5V0RJGBYh0ibuNH
-         2JqU8cYZIAuy2GmdbipeaKG4zG8IXkBPuziRj3EolMYfnBTTp4PSsRZ2jofhlN6DZal6
-         rRFw==
-X-Gm-Message-State: AOAM531oK/S0hnZg3a+SE6nYNcXRwvwxpQrrcetdfQh+kQjsVdDOwFkG
-        VsP2e+uHK8Xy+fWw1Cqte4YPtguKXRxDDJyPPGI=
-X-Google-Smtp-Source: ABdhPJxIjWsegcqOUyZ9K1yAMY6YrV/UBt+/dKSQPXQWzEHDzYKRIIWBi8IWSXTzOPIWQwR9aNMbAqGiXCApsn9sJbs=
-Sender: "ndesaulniers via sendgmr" 
-        <ndesaulniers@ndesaulniers1.mtv.corp.google.com>
-X-Received: from ndesaulniers1.mtv.corp.google.com ([2620:15c:211:202:f693:9fff:fef4:4d25])
- (user=ndesaulniers job=sendgmr) by 2002:a25:8404:: with SMTP id
- u4mr3292320ybk.48.1604738988042; Sat, 07 Nov 2020 00:49:48 -0800 (PST)
-Date:   Sat,  7 Nov 2020 00:49:39 -0800
-In-Reply-To: <CAMj1kXE=V96pJ7xK=9xMh-1Eph4FH7S4WDXDyJUH+82_Zn5DXA@mail.gmail.com>
-Message-Id: <20201107084939.3512560-1-ndesaulniers@google.com>
-Mime-Version: 1.0
-References: <CAMj1kXE=V96pJ7xK=9xMh-1Eph4FH7S4WDXDyJUH+82_Zn5DXA@mail.gmail.com>
-X-Mailer: git-send-email 2.29.2.222.g5d2a92d10f8-goog
-Subject: [PATCH v2] ACPI: GED: fix -Wformat
-From:   Nick Desaulniers <ndesaulniers@google.com>
+        id S1727264AbgKGNdK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 7 Nov 2020 08:33:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:42782 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727084AbgKGNdJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 7 Nov 2020 08:33:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604755988;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=asb1VhlJqNFXbaZHQsc1gN7iTvg7fcNa3S0Q6avocHE=;
+        b=CIgdz/eOfA4rg0BDpf8gehK5Zw/f0kkrGxJnK59d9gNjX0lr/kIt0Nt4ha3hMuD7igI1P6
+        +c6UVZNaS+4x3+IoOebzr74K49xF3Bhyfz2HeXq6YRPmH4FpHIPwxTetq0ih7ujbF/QY1d
+        dwXbVup6fra5JGhPW+NIleYXxfpOpiw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-244-n5rWkkujMdOR8asvGd6B-w-1; Sat, 07 Nov 2020 08:33:04 -0500
+X-MC-Unique: n5rWkkujMdOR8asvGd6B-w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6544C1006705;
+        Sat,  7 Nov 2020 13:33:03 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-12-40.pek2.redhat.com [10.72.12.40])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7D1166EF62;
+        Sat,  7 Nov 2020 13:32:58 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andy@infradead.org>
+Subject: [PATCH] ACPI: button: Add DMI quirk for Medion Akoya E2228T
+Date:   Sat,  7 Nov 2020 14:32:54 +0100
+Message-Id: <20201107133254.101882-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Clang is more aggressive about -Wformat warnings when the format flag
-specifies a type smaller than the parameter. It turns out that gsi is an
-int. Fixes:
+The Medion Akoya E2228T's ACPI _LID implementation is quite broken,
+it has the same issues as the one from the Medion Akoya E2215T:
 
-drivers/acpi/evged.c:105:48: warning: format specifies type 'unsigned
-char' but the argument has type 'unsigned int' [-Wformat]
-trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
-                                            ^~~
+1. For notifications it uses an ActiveLow Edge GpioInt, rather then
+   an ActiveBoth one, meaning that the device is only notified when the
+   lid is closed, not when it is opened.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/378
-Fixes: ea6f3af4c5e6 ("ACPI: GED: add support for _Exx / _Lxx handler methods")
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+2. Matching with this its _LID method simply always returns 0 (closed)
+
+In order for the Linux LID code to work properly with this implementation,
+the lid_init_state selection needs to be set to ACPI_BUTTON_LID_INIT_OPEN,
+add a DMI quirk for this.
+
+While working on this I also found out that the MD60### part of the model
+number differs per country/batch while all of the E2215T and E2228T models
+have this issue, so also remove the " MD60198" part from the E2215T quirk.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/evged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/button.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-index b1a7f8d6965e..fe6b6792c8bb 100644
---- a/drivers/acpi/evged.c
-+++ b/drivers/acpi/evged.c
-@@ -101,7 +101,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
- 
- 	switch (gsi) {
- 	case 0 ... 255:
--		sprintf(ev_name, "_%c%02hhX",
-+		sprintf(ev_name, "_%c%02X",
- 			trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
- 
- 		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 0761529cac05..0d93a5ef4d07 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -89,7 +89,18 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "E2215T MD60198"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "E2215T"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
++	{
++		/*
++		 * Medion Akoya E2228T, notification of the LID device only
++		 * happens on close, not on open and _LID always returns closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "E2228T"),
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
 -- 
-2.29.2.222.g5d2a92d10f8-goog
+2.28.0
 
