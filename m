@@ -2,111 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D850A2AC217
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 18:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A84042AC323
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 19:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730387AbgKIRXh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Nov 2020 12:23:37 -0500
-Received: from mga02.intel.com ([134.134.136.20]:43094 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730315AbgKIRXh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Nov 2020 12:23:37 -0500
-IronPort-SDR: xxlME6wkNqhOqBF4UxtsSs4VFuysoUXgxnCqAne18ZzkNtnC8rr7IaOm8rUlHUucsF09DIA7JX
- mSWpy6rVyLNA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="156845543"
-X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
-   d="scan'208";a="156845543"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 09:23:36 -0800
-IronPort-SDR: 8onsfZOFzt4e0C2bbif6I2wUeGTYo+Lq+K3T8j9WoPRkkUACsHwlLWexCCK0F66sxp7bq950hV
- deZvTmVWgoGg==
-X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
-   d="scan'208";a="327337190"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 09:23:33 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kcAuB-005F9X-8Q; Mon, 09 Nov 2020 19:24:35 +0200
-Date:   Mon, 9 Nov 2020 19:24:35 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lukasz Stelmach <l.stelmach@samsung.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v8 3/6] software node: implement reference properties
-Message-ID: <20201109172435.GJ4077@smile.fi.intel.com>
-References: <20191108042225.45391-1-dmitry.torokhov@gmail.com>
- <20191108042225.45391-4-dmitry.torokhov@gmail.com>
- <CGME20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41@eucas1p1.samsung.com>
- <dleftjeel2pioq.fsf%l.stelmach@samsung.com>
+        id S1729533AbgKISEY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Nov 2020 13:04:24 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:33385 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729119AbgKISEY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 13:04:24 -0500
+Received: by mail-ot1-f66.google.com with SMTP id i18so9850474ots.0;
+        Mon, 09 Nov 2020 10:04:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=B5hjK7wVSPpJfduMzhDHI5uww5U0DautuPSacV0o9N0=;
+        b=Y8NXe9C18hUfgeOuB00Azn/rYZElFFdo+UgZmgzjNYae0n5l4Dsb9uMYpPos0u6Zib
+         qS/nai+p8CP6S6+3EnLLwyx/saceA94S53J8O6IKd9zDKHUOnZUROtACysCYERnXnnbe
+         WfTn0vFGfZGEqf5DbHGpeNI1bGh/FkKy3/XA6eOHBlfXRoWlzPDDrCN/gU6LFtcLBq/6
+         OE0mA7A+r9YrgzJU7T/4w88wpgqtbt8PIhmH1LHf3GWD1tyA0aItlKJjbIpd0bPX5r93
+         +8EVC+2vsfBPg03JWEd55REwToAypTY/7onPk2HliMV15fHMHPLbzHTm5xI/lxC6YrvL
+         +4ig==
+X-Gm-Message-State: AOAM5311jMJvxlAMJ+fbv5SPPUwXet3dFIkiqBCcsWhMf23M4gvZfsTe
+        KEr1vwNZpqGfhkyWpQrlrwd8YtrHUyr6/0C5w4A=
+X-Google-Smtp-Source: ABdhPJzE/GmebSR4aNBeUZDpd8ZDYfpEEIkZd6ZkwDKaP2oQZ6SeNgDMz9HlNjmplw1ReNT3FW6V59edXG6+iovd+PM=
+X-Received: by 2002:a9d:222f:: with SMTP id o44mr11504113ota.321.1604945062613;
+ Mon, 09 Nov 2020 10:04:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dleftjeel2pioq.fsf%l.stelmach@samsung.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20201029193243.61546-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20201029193243.61546-1-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 9 Nov 2020 19:04:11 +0100
+Message-ID: <CAJZ5v0jtpSbWDZ-NeAVSqniDAgq4GsPKzj3nXxsS2uHKpqhxtA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] Documentation: firmware-guide: gpio-properties:
+ Fix factual mistakes
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 09, 2020 at 06:02:29PM +0100, Lukasz Stelmach wrote:
-> It was <2019-11-07 czw 20:22>, when Dmitry Torokhov wrote:
-> > It is possible to store references to software nodes in the same fashion as
-> > other static properties, so that users do not need to define separate
-> > structures:
-> >
-> > static const struct software_node gpio_bank_b_node = {
-> > 	.name = "B",
-> > };
-> >
-> > static const struct property_entry simone_key_enter_props[] = {
-> > 	PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
-> > 	PROPERTY_ENTRY_STRING("label", "enter"),
-> > 	PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
-> > 	{ }
-> > };
-> >
-> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > ---
-> 
-> I am writing a piece that needs to provide a list of gpios to a
-> diriver. The above example looks like what I need.
+On Thu, Oct 29, 2020 at 8:32 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Fix factual mistakes and style issues in GPIO properties document.
+> This converts IoRestriction from InputOnly to OutputOnly as pins
+> in the example are used as outputs.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> v2: elaborated the mistakes the change fixes (Mika)
 
-Nope.
+Whole series applied as 5.10-rc material, thanks!
 
-It mustn't be used for GPIOs or PWMs or whatever that either should come via
-lookup tables or corresponding firmware interface.
-
-> At the moment the driver gets the list from fwnode/of_node. The list
-> contain references to phandles which get resolved and and the driver
-> ends up with a bunch of gpio descriptors. Great.
-> 
-> This example looks nice but does the code that reads the reference from
-> the gpios property and returns a gpiod actually exist? If it doesn't, I
-> am willing to write it.
-> 
-> At first glance it makes more sense to me to pass (struct gpiod_lookup
-> *) instead of (struct software_node *) and make gpiolib's gpiod_find()
-> accept lookup tables as parameter instead of searching the
-> gpio_lookup_list? Or do you think such temporary table should be
-> assembled from the above structure and then used in gpiod_find()?
-> 
-> Any other suggestions on how to get a bunch of gpios (the description
-> for gpios is available in the devicetree) for a device described with a
-> software nodes?
-
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>  .../firmware-guide/acpi/gpio-properties.rst   | 29 ++++++++++---------
+>  1 file changed, 15 insertions(+), 14 deletions(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> index bb6d74f23ee0..e6e65ceb2ca1 100644
+> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
+> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> @@ -20,9 +20,9 @@ index, like the ASL example below shows::
+>
+>        Name (_CRS, ResourceTemplate ()
+>        {
+> -          GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionInputOnly,
+> +          GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionOutputOnly,
+>                    "\\_SB.GPO0", 0, ResourceConsumer) {15}
+> -          GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionInputOnly,
+> +          GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionOutputOnly,
+>                    "\\_SB.GPO0", 0, ResourceConsumer) {27, 31}
+>        })
+>
+> @@ -49,7 +49,7 @@ index
+>  pin
+>    Pin in the GpioIo()/GpioInt() resource. Typically this is zero.
+>  active_low
+> -  If 1 the GPIO is marked as active_low.
+> +  If 1, the GPIO is marked as active_low.
+>
+>  Since ACPI GpioIo() resource does not have a field saying whether it is
+>  active low or high, the "active_low" argument can be used here.  Setting
+> @@ -112,8 +112,8 @@ Example::
+>    Package () {
+>        "gpio-line-names",
+>        Package () {
+> -          "SPI0_CS_N", "EXP2_INT", "MUX6_IO", "UART0_RXD", "MUX7_IO",
+> -          "LVL_C_A1", "MUX0_IO", "SPI1_MISO"
+> +          "SPI0_CS_N", "EXP2_INT", "MUX6_IO", "UART0_RXD",
+> +          "MUX7_IO", "LVL_C_A1", "MUX0_IO", "SPI1_MISO",
+>        }
+>    }
+>
+> @@ -137,7 +137,7 @@ to the GPIO lines it is going to use and provide the GPIO subsystem with a
+>  mapping between those names and the ACPI GPIO resources corresponding to them.
+>
+>  To do that, the driver needs to define a mapping table as a NULL-terminated
+> -array of struct acpi_gpio_mapping objects that each contain a name, a pointer
+> +array of struct acpi_gpio_mapping objects that each contains a name, a pointer
+>  to an array of line data (struct acpi_gpio_params) objects and the size of that
+>  array.  Each struct acpi_gpio_params object consists of three fields,
+>  crs_entry_index, line_index, active_low, representing the index of the target
+> @@ -154,13 +154,14 @@ question would look like this::
+>    static const struct acpi_gpio_mapping bluetooth_acpi_gpios[] = {
+>      { "reset-gpios", &reset_gpio, 1 },
+>      { "shutdown-gpios", &shutdown_gpio, 1 },
+> -    { },
+> +    { }
+>    };
+>
+>  Next, the mapping table needs to be passed as the second argument to
+> -acpi_dev_add_driver_gpios() that will register it with the ACPI device object
+> -pointed to by its first argument.  That should be done in the driver's .probe()
+> -routine.  On removal, the driver should unregister its GPIO mapping table by
+> +acpi_dev_add_driver_gpios() or its managed analogue that will
+> +register it with the ACPI device object pointed to by its first
+> +argument. That should be done in the driver's .probe() routine.
+> +On removal, the driver should unregister its GPIO mapping table by
+>  calling acpi_dev_remove_driver_gpios() on the ACPI device object where that
+>  table was previously registered.
+>
+> @@ -191,12 +192,12 @@ The driver might expect to get the right GPIO when it does::
+>  but since there is no way to know the mapping between "reset" and
+>  the GpioIo() in _CRS desc will hold ERR_PTR(-ENOENT).
+>
+> -The driver author can solve this by passing the mapping explictly
+> -(the recommended way and documented in the above chapter).
+> +The driver author can solve this by passing the mapping explicitly
+> +(this is the recommended way and it's documented in the above chapter).
+>
+>  The ACPI GPIO mapping tables should not contaminate drivers that are not
+>  knowing about which exact device they are servicing on. It implies that
+> -the ACPI GPIO mapping tables are hardly linked to ACPI ID and certain
+> +the ACPI GPIO mapping tables are hardly linked to an ACPI ID and certain
+>  objects, as listed in the above chapter, of the device in question.
+>
+>  Getting GPIO descriptor
+> @@ -229,5 +230,5 @@ Case 2 explicitly tells GPIO core to look for resources in _CRS.
+>  Be aware that gpiod_get_index() in cases 1 and 2, assuming that there
+>  are two versions of ACPI device description provided and no mapping is
+>  present in the driver, will return different resources. That's why a
+> -certain driver has to handle them carefully as explained in previous
+> +certain driver has to handle them carefully as explained in the previous
+>  chapter.
+> --
+> 2.28.0
+>
