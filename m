@@ -2,200 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 793FB2AC054
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 16:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 323DF2AC1A5
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 18:03:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729302AbgKIP7L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Nov 2020 10:59:11 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2078 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbgKIP7L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 10:59:11 -0500
-Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CVFxs6cNGz67JvS;
-        Mon,  9 Nov 2020 23:57:37 +0800 (CST)
-Received: from lhreml721-chm.china.huawei.com (10.201.108.72) by
- fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Mon, 9 Nov 2020 16:59:09 +0100
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Mon, 9 Nov 2020 15:59:08 +0000
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Mon, 9 Nov 2020 15:59:08 +0000
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     James Morse <james.morse@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rrichter@marvell.com" <rrichter@marvell.com>
-CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: RE: [RFC PATCH 1/4] ACPI: PPTT: Fix for a high level cache node
- detected in the low level
-Thread-Topic: [RFC PATCH 1/4] ACPI: PPTT: Fix for a high level cache node
- detected in the low level
-Thread-Index: AQHWs5sq/xqD0yNHmEmvqya0QqywYqm7gESAgAQwVqA=
-Date:   Mon, 9 Nov 2020 15:59:07 +0000
-Message-ID: <201a4a5fe2e8429f94482ebabf1f90c1@huawei.com>
-References: <20201105174233.1146-1-shiju.jose@huawei.com>
- <20201105174233.1146-2-shiju.jose@huawei.com>
- <495c17fa-98fe-c79b-5676-ab1f0b50afba@arm.com>
-In-Reply-To: <495c17fa-98fe-c79b-5676-ab1f0b50afba@arm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.25.110]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1729432AbgKIRDB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Nov 2020 12:03:01 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:51653 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730149AbgKIRDB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 12:03:01 -0500
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20201109170249euoutp01911e4f4735f11beadb22b9e11383bdc2~F5awksuJ12808628086euoutp015;
+        Mon,  9 Nov 2020 17:02:49 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20201109170249euoutp01911e4f4735f11beadb22b9e11383bdc2~F5awksuJ12808628086euoutp015
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1604941369;
+        bh=Y08gvbLOatBstHo4wfd0WefF/z4J98MAQRzvoDc3/fk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Ni3LLMiJxpuooqWl9YnhaA3Kl4WbUjEqICsezpTikHXdud4d+rFCsfgVx3t4QJV5a
+         Da/wghSRo0jCs/p0es2dArrklSp9yPuzKilQPpFZUNoGxv/wqiinFbDST/Ia2KEY7U
+         MCYxztmDQvi0UAxhunx7DjJGDFEylgTHdew/TGU8=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20201109170241eucas1p222a9602e93341a41101578d43b845041~F5apN1BFU2645626456eucas1p2n;
+        Mon,  9 Nov 2020 17:02:41 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 58.DE.05997.13679AF5; Mon,  9
+        Nov 2020 17:02:41 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41~F5ao1pv5l2538525385eucas1p15;
+        Mon,  9 Nov 2020 17:02:41 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20201109170241eusmtrp2ec3b2299bf070afa7deea3d3aad2dc8f~F5ao06u0n2666726667eusmtrp2v;
+        Mon,  9 Nov 2020 17:02:41 +0000 (GMT)
+X-AuditID: cbfec7f4-65dff7000000176d-c6-5fa976311179
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 55.5F.06314.13679AF5; Mon,  9
+        Nov 2020 17:02:41 +0000 (GMT)
+Received: from localhost (unknown [106.120.51.46]) by eusmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20201109170241eusmtip130af573abaa72bf95d603958af0bc52b~F5aoqTjhc0392803928eusmtip1r;
+        Mon,  9 Nov 2020 17:02:41 +0000 (GMT)
+From:   Lukasz Stelmach <l.stelmach@samsung.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH v8 3/6] software node: implement reference properties
+Date:   Mon, 09 Nov 2020 18:02:29 +0100
+In-Reply-To: <20191108042225.45391-4-dmitry.torokhov@gmail.com> (Dmitry
+        Torokhov's message of "Thu, 7 Nov 2019 20:22:22 -0800")
+Message-ID: <dleftjeel2pioq.fsf%l.stelmach@samsung.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
+        protocol="application/pgp-signature"
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFKsWRmVeSWpSXmKPExsWy7djP87qGZSvjDd5NMLTobZrOZPH/w25G
+        i40z1rNaHF70gtGia/VOFospf5YzWSzf189ocXnXHDaLtUfusltM2X6E3WL1nhfMFnO/TGV2
+        4PHYOesuu8emVZ1sHneu7WHzmHcy0KNvyypGj8+b5ALYorhsUlJzMstSi/TtErgy+j5tYC14
+        J1SxpjmogfEXfxcjJ4eEgInEhWedjCC2kMAKRokZH8sh7C+MEhMuaUHYnxkl/i91gan//HwO
+        WxcjF1B8OaPEir4WdgjnOaNEe387SxcjBwebgJ7E2rURIA0iAvoS22f/AlvALPCNWWL9X20Q
+        W1jAU6L15UtmkHIWAVWJTyuTQcKcAo2MEhvvlIOEeQXMJVYfYwcJiwpYSmx5cR/M5hUQlDg5
+        8wkLxMRciZnn3zCCXCAh8JNd4lTbPBaIO10k1t2+yg5hC0u8Or4FypaR+L9zPhPIfAmBeonJ
+        k8wgensYJbbN+QHVay1x59wvNgjbUeLx4gXsEPV8EjfeCkLs5ZOYtG06M0SYV6KjTQiiWkVi
+        Xf8eqClSEr2vVjBC2B4S92d9YIEE1HFGiYOvzrBOYFSYheSdWUjemQU0lllAU2L9Ln2IsLbE
+        soWvmSFsW4l1696zLGBkXcUonlpanJueWmyUl1quV5yYW1yal66XnJ+7iRGYyk7/O/5lB+Ou
+        P0mHGAU4GJV4eA/8WRYvxJpYVlyZe4hRBWjSow2rLzBKseTl56UqifA6nT0dJ8SbklhZlVqU
+        H19UmpNafIhRmoNFSZzXeNHLWCGB9MSS1OzU1ILUIpgsEwenVANjicHuc8lpti4z9kz8GFNv
+        8OYf51/Br2KTvu+647Hj97Vnb0XEujXuVedduSEvetgiKUA+TWld1yfrr9vaf5cZl+xnZtQ8
+        uDdj91lntv1GydkOzJ8/ro2WTzrpfNdy21/W1q7yO6evTp2j/PTXtPrCLumuLWlpO2uDkhSS
+        jnuKyLc/9OnzbFdWYinOSDTUYi4qTgQAdcarjG0DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrKIsWRmVeSWpSXmKPExsVy+t/xu7qGZSvjDXqOiln0Nk1nsvj/YTej
+        xcYZ61ktDi96wWjRtXoni8WUP8uZLJbv62e0uLxrDpvF2iN32S2mbD/CbrF6zwtmi7lfpjI7
+        8HjsnHWX3WPTqk42jzvX9rB5zDsZ6NG3ZRWjx+dNcgFsUXo2RfmlJakKGfnFJbZK0YYWRnqG
+        lhZ6RiaWeobG5rFWRqZK+nY2Kak5mWWpRfp2CXoZfZ82sBa8E6pY0xzUwPiLv4uRk0NCwETi
+        8/M5bF2MXBxCAksZJb4tWszcxcgBlJCSWDk3HaJGWOLPtS6omqeMElN/rWQBqWET0JNYuzYC
+        pEZEQF9i++xfjCA1zALPmCWOLZ7FApIQFvCUaH35khnEFhIolvh5tYcdpJdFQFXi08pkkDCn
+        QCOjxMY75SBhXgFzidXH2EHCogKWElte3AezeQUEJU7OfAI2kVkgW+Lr6ufMExgFZiFJzUKS
+        mgU0iVlAU2L9Ln2IsLbEsoWvmSFsW4l1696zLGBkXcUoklpanJueW2yoV5yYW1yal66XnJ+7
+        iREYjduO/dy8g/HSxuBDjAIcjEo8vAf+LIsXYk0sK67MPcSoAjTm0YbVFxilWPLy81KVRHid
+        zp6OE+JNSaysSi3Kjy8qzUktPsRoCvTlRGYp0eR8YALJK4k3NDU0t7A0NDc2NzazUBLn7RA4
+        GCMkkJ5YkpqdmlqQWgTTx8TBKdXAWLbPwm32N4WZBwvqVmx/ub26Z4q1i5ytzdWvFgtmNH3s
+        Zkvpk+BMF+Ph7Hu7LzJ5unTT8nWZknsPR516smfmGuu2BxnzPa4tubo865LfqoTrkeXpvBvT
+        VvY2fIx8lvSrsu6iiYLAyuojCd8/W097OGGW7KbvF9fU+38tn/T7Zn3o3wnunlMUDJRYijMS
+        DbWYi4oTAZM86yjoAgAA
+X-CMS-MailID: 20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41
+X-Msg-Generator: CA
+X-RootMTR: 20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41
+References: <20191108042225.45391-1-dmitry.torokhov@gmail.com>
+        <20191108042225.45391-4-dmitry.torokhov@gmail.com>
+        <CGME20201109170241eucas1p14c2156334d8c6ef15d52664fa4776f41@eucas1p1.samsung.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgSmFtZXMsDQoNClRoYW5rcyBmb3IgdGhlIGZlZWRiYWNrLg0KDQo+LS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0NCj5Gcm9tOiBKYW1lcyBNb3JzZSBbbWFpbHRvOmphbWVzLm1vcnNlQGFybS5j
-b21dDQo+U2VudDogMDYgTm92ZW1iZXIgMjAyMCAxOTozNA0KPlRvOiBTaGlqdSBKb3NlIDxzaGlq
-dS5qb3NlQGh1YXdlaS5jb20+OyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0KPmJwQGFs
-aWVuOC5kZTsgdG9ueS5sdWNrQGludGVsLmNvbTsgcmp3QHJqd3lzb2NraS5uZXQ7IGxlbmJAa2Vy
-bmVsLm9yZzsNCj5ycmljaHRlckBtYXJ2ZWxsLmNvbQ0KPkNjOiBsaW51eC1lZGFjQHZnZXIua2Vy
-bmVsLm9yZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IExpbnV4YXJtDQo+PGxpbnV4YXJt
-QGh1YXdlaS5jb20+OyBKb25hdGhhbiBDYW1lcm9uDQo+PGpvbmF0aGFuLmNhbWVyb25AaHVhd2Vp
-LmNvbT4NCj5TdWJqZWN0OiBSZTogW1JGQyBQQVRDSCAxLzRdIEFDUEk6IFBQVFQ6IEZpeCBmb3Ig
-YSBoaWdoIGxldmVsIGNhY2hlIG5vZGUNCj5kZXRlY3RlZCBpbiB0aGUgbG93IGxldmVsDQo+DQo+
-SGkgU2hpanUsIEpvbmF0aGFuLA0KPg0KPk9uIDA1LzExLzIwMjAgMTc6NDIsIFNoaWp1IEpvc2Ug
-d3JvdGU6DQo+PiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdl
-aS5jb20+DQo+Pg0KPj4gQWNjb3JkaW5nIHRvIHRoZSBmb2xsb3dpbmcgc2VjdGlvbnMgb2YgdGhl
-IFBQVFQgZGVmaW5pdGlvbiBpbiB0aGUgQUNQSQ0KPj4gc3BlY2lmaWNhdGlvbihWNi4zKSwgYSBo
-aWdoIGxldmVsIGNhY2hlIG5vZGUoIEZvciBleGFtcGxlIEwyIGNhY2hlKQ0KPj4gY291bGQgYmUg
-cmVwcmVzZW50ZWQgc2ltdWx0YW5lb3VzbHkgYm90aCBpbiB0aGUgcHJpdmF0ZSByZXNvdXJjZSBv
-ZiBhDQo+PiBDUFUgbm9kZSBhbmQgdmlhIHRoZSBuZXh0X2xldmVsX29mX2NhY2hlIHBvaW50ZXIg
-b2YgYSBsb3cgbGV2ZWwgY2FjaGUNCj4+IG5vZGUuDQo+PiAxLiBTZWN0aW9uIDUuMi4yOS4xIFBy
-b2Nlc3NvciBoaWVyYXJjaHkgbm9kZSBzdHJ1Y3R1cmUgKFR5cGUgMCkgIkVhY2gNCj4+IHByb2Nl
-c3NvciBub2RlIGluY2x1ZGVzIGEgbGlzdCBvZiByZXNvdXJjZXMgdGhhdCBhcmUgcHJpdmF0ZSB0
-byB0aGF0DQo+PiBub2RlLiBSZXNvdXJjZXMgYXJlIGRlc2NyaWJlZCBpbiBvdGhlciBQUFRUIHN0
-cnVjdHVyZXMgc3VjaCBhcyBUeXBlIDENCj4+IGNhY2hlIHN0cnVjdHVyZXMuIFRoZSBwcm9jZXNz
-b3Igbm9kZeKAmXMgcHJpdmF0ZSByZXNvdXJjZSBsaXN0IGluY2x1ZGVzDQo+PiBhIHJlZmVyZW5j
-ZSB0byBlYWNoIG9mIHRoZSBzdHJ1Y3R1cmVzIHRoYXQgcmVwcmVzZW50IHByaXZhdGUgcmVzb3Vy
-Y2VzDQo+PiB0byBhIGdpdmVuIHByb2Nlc3NvciBub2RlLiBGb3IgZXhhbXBsZSwgYW4gU29DIGxl
-dmVsIHByb2Nlc3NvciBub2RlDQo+PiBtaWdodCBjb250YWluIHR3byByZWZlcmVuY2VzLCBvbmUg
-cG9pbnRpbmcgdG8gYSBMZXZlbCAzIGNhY2hlIHJlc291cmNlDQo+PiBhbmQgYW5vdGhlciBwb2lu
-dGluZyB0byBhbiBJRCBzdHJ1Y3R1cmUuIg0KPj4NCj4+IDIuIFNlY3Rpb24gNS4yLjI5LjIgQ2Fj
-aGUgVHlwZSBTdHJ1Y3R1cmUgLSBUeXBlIDENCj4+ICAgIEZpZ3VyZSA1LTI2IENhY2hlIFR5cGUg
-U3RydWN0dXJlIC0gVHlwZSAxIEV4YW1wbGUNCj4NCj4nZml4JyBpbiB0aGUgc3ViamVjdCBtYWtl
-cyBtZSB0d2l0Y2ggLi4uIGlzIHRoZXJlIGEgdXNlci1zcGFjZSB2aXNpYmxlIGJ1Zw0KPmJlY2F1
-c2Ugb2YgdGhpcz8NCj4NCj4NCj4+IEZvciB0aGUgdXNlIGNhc2Ugb2YgY3JlYXRpbmcgRURBQyBk
-ZXZpY2UgYmxvY2tzIGZvciB0aGUgQ1BVIGNhY2hlcywgd2UNCj4+IG5lZWQgdG8gc2VhcmNoIGZv
-ciBjYWNoZSBub2RlIHR5cGVzIGluIGFsbCBsZXZlbHMgdXNpbmcNCj4+IGFjcGlfZmluZF9jYWNo
-ZV9ub2RlKCksIGFzIGEgcGxhdGZvcm0gaW5kZXBlbmRlbnQgc29sdXRpb24gdG8NCj4NCj5JJ20g
-bmVydm91cyB0byBiYXNlIHRoZSBlZGFjIHVzZXItc3BhY2UgdmlldyBvZiBjYWNoZXMgb24gc29t
-ZXRoaW5nIG90aGVyDQo+dGhhbiB3aGF0IGlzIGRlc2NyaWJlZCBpbiAvc3lzL2RldmljZXMvc3lz
-dGVtL2NwdS9jcHUwL2NhY2hlLiBUaGVzZSB0aGluZ3MNCj5oYXZlIHRvIG1hdGNoLCBvdGhlcndp
-c2UgdXNlci1zcGFjZSBjYW4ndCB3b3JrIG91dCB3aGljaCBjcHUncyBMMidzIGl0IHNob3VsZA0K
-PmFkZCB0byBnZXQgdGhlIHZhbHVlIGZvciB0aGUgcGh5c2ljYWwgY2FjaGUuDQpXaXRoIHRoaXMg
-Zml4IHRoZSAvc3lzL2RldmljZXMvc3lzdGVtL2VkYWMvY3B1L2NwdTAvY2FjaGVOIG1hdGNoIHdp
-dGggIC9zeXMvZGV2aWNlcy9zeXN0ZW0vY3B1L2NwdTAvY2FjaGUvaW5kZXhOLg0KYW5kIHRodXMg
-dXNlci1zcGFjZSBjb3VsZCBleHRyYWN0IGNwdSBsaXN0IGZvciB0aGUgc2hhcmVkIGNhY2hlcy4N
-Cg0KPg0KPkdldHRpbmcgdGhlIGRhdGEgZnJvbSBzb21ld2hlcmUgZWxzZSByaXNrcyBtYWtpbmcg
-dGhpcyBtb3JlIGNvbXBsaWNhdGVkLg0KPg0KPlVzaW5nIHRoZSBQUFRUIG1lYW5zIHRoaXMgd29u
-J3Qgd29yayBvbiAiSFBFIFNlcnZlciJzIHRoYXQgdXNlIGdoZXNfZWRhYw0KPnRvby4gSSBkb24n
-dCB0aGluayB3ZSBzaG91bGQgaGF2ZSBhbnkgYXJtNjQgc3BlY2lmaWMgYmVoYXZpb3VyIGhlcmUu
-DQo+DQo+DQo+PiByZXRyaWV2ZSB0aGUgY2FjaGUgaW5mbyBmcm9tIHRoZSBBQ1BJIFBQVFQuIFRo
-ZSByZWFzb24gaXMgdGhhdA0KPj4gY2FjaGVpbmZvIGluIHRoZSBkcml2ZXJzL2Jhc2UvY2FjaGVp
-bmZvLmMgd291bGQgbm90IGJlIHBvcHVsYXRlZCBpbg0KPj4gdGhpcyBzdGFnZS4NCj4NCj5CZWNh
-dXNlIGJvdGggZ2hlc19pbml0KCkgYW5kIGNhY2hlaW5mb19zeXNmc19pbml0KCkgYXJlIGRldmlj
-ZV9pbml0Y2FsbCgpPw0KPg0KPkNvdWxkbid0IHdlIGZpeCB0aGlzIGJ5IG1ha2luZyBnaGVzX2lu
-aXQoKSwgZGV2aWNlX2luaXRjYWxsX3N5bmMoKSAod2l0aCBhDQo+Y29tbWVudCBzYXlpbmcgd2hh
-dCBpdCBkZXBlbmRzIG9uKQ0KDQpJIGNoZWNrZWQgYnkgbWFraW5nIGdoZXNfaW5pdCgpLCBkZXZp
-Y2VfaW5pdGNhbGxfc3luYygpLiBUaGVuIHRoZQ0KZ2hlc19wcm9iZSgpIGFuZCBnaGVzX2VkYWNf
-cmVnaXN0ZXIoKSBhcmUgZ2V0dGluZw0KY2FsbGVkIGFmdGVyIGRldGVjdF9jYWNoZV9hdHRyaWJ1
-dGVzKCkgb2YgYmFzZS9jYWNoZWluZm8uYyBmdW5jdGlvbiBpcyBjYWxsZWQsIA0Kd2hlcmUgcGVy
-X2NwdV9jYWNoZWluZm8gaXMgYWxsb2NhdGVkIGFuZCBwb3B1bGF0ZWQgZm9yIHRoZSBjcHUgb25s
-aW5lLiANClRodXMgY2FjaGVpbmZvIGRhdGEgaXMgYXZhaWxhYmxlIGZvciB0aGUgb25saW5lIENQ
-VXMuDQoNCj4NCj4NCj5JIGFncmVlIHRoaXMgbWVhbnMgZGVhbGluZyB3aXRoIGNwdWhwIGFzIHRo
-ZSBjYWNoZWluZm8gZGF0YSBpcyBvbmx5IGF2YWlsYWJsZQ0KPmZvciBvbmxpbmUgQ1BVcy4NCg0K
-RG9lcyB0aGlzIHJlcXVpcmUgdGhlIEVEQUMgZGV2aWNlIGluc3RhbmNlIGZvciBhIGNwdSBiZWNv
-bWUgb25saW5lL29mZmxpbmUgdG8gYmUgYWRkZWQvZGVsZXRlZA0Kb24gY3B1aHAgbm90aWZ5IGZ1
-bmN0aW9ucyBpbiB0aGUgZ2hlc19lZGFjIGJlY2F1c2UgdGhlIGNhY2hlIHN0cnVjdHVyZSBhbW9u
-ZyBDUFUgY29yZXMgd291bGQgdmFyeT8NCklmIHNvLCBJIHRoaW5rIGVkYWMgZGV2aWNlIGRvZXMg
-bm90IHN1cHBvcnQgZHluYW1pYyBhZGRpdGlvbi9kZWxldGlvbiBvZiBhIGRldmljZSBpbnN0YW5j
-ZSBiZWNhdXNlDQplZGFjX2RldmljZV9hbGxvY19jdGxfaW5mbygpIHByZS1hbGxvY2F0ZXMgbWVt
-b3J5IGZvciB0aGUgaW50ZXJuYWwgZWRhYyBkZXYgc3RydWN0dXJlcyBmb3IgdGhlIG51bWJlciBv
-ZiANCmluc3RhbmNlcyhudW1iZXIgb2YgQ1BVcykgYW5kIG51bWJlciBvZiBibG9ja3MobnVtYmVy
-IG9mIENhY2hlcykgcGFzc2VkPw0KDQo+DQo+DQo+PiBJbiB0aGlzIGNhc2UsIHdlIGZvdW5kIGFj
-cGlfZmluZF9jYWNoZV9ub2RlKCkgbWlzdGFrZW5seSBkZXRlY3RpbmcNCj4+IGhpZ2ggbGV2ZWwg
-Y2FjaGUgYXMgbG93IGxldmVsIGNhY2hlLCB3aGVuIHRoZSBjYWNoZSBub2RlIGlzIGluIHRoZQ0K
-Pj4gcHJvY2Vzc29yIG5vZGXigJlzIHByaXZhdGUgcmVzb3VyY2UgbGlzdC4NCj4+DQo+PiBUbyBm
-aXggdGhpcyBpc3N1ZSBhZGQgZHVwbGljYXRpb24gY2hlY2sgaW4gdGhlDQo+PiBhY3BpX2ZpbmRf
-Y2FjaGVfbGV2ZWwoKSwgZm9yIGEgY2FjaGUgbm9kZSBmb3VuZCBpbiB0aGUgcHJpdmF0ZQ0KPj4g
-cmVzb3VyY2Ugb2YgYSBDUFUgbm9kZSB3aXRoIGFsbCB0aGUgbmV4dCBsZXZlbCBvZiBjYWNoZXMg
-cHJlc2VudCBpbiB0aGUgb3RoZXINCj5jYWNoZSBub2Rlcy4NCj4NCj5JJ20gbm90IG92ZXJseSBm
-YW1pbGlhciB3aXRoIHRoZSBQUFRULCBpcyBpdCBwb3NzaWJsZSB0aGlzIGlzc3VlIGlzIHZpc2li
-bGUgaW4NCj4vc3lzL2RldmljZXMvc3lzdGVtL2NwdS9jcHUwL2NhY2hlPw0KPg0KPg0KPlRoYW5r
-cywNCj4NCj5KYW1lcw0KPg0KPg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9wcHR0LmMg
-Yi9kcml2ZXJzL2FjcGkvcHB0dC5jIGluZGV4DQo+PiA0YWU5MzM1MGI3MGQuLmRlMWRkNjA1ZDNh
-ZCAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvYWNwaS9wcHR0LmMNCj4+ICsrKyBiL2RyaXZlcnMv
-YWNwaS9wcHR0LmMNCj4+IEBAIC0xMzIsMjEgKzEzMiw4MCBAQCBzdGF0aWMgdW5zaWduZWQgaW50
-IGFjcGlfcHB0dF93YWxrX2NhY2hlKHN0cnVjdA0KPmFjcGlfdGFibGVfaGVhZGVyICp0YWJsZV9o
-ZHIsDQo+PiAgCXJldHVybiBsb2NhbF9sZXZlbDsNCj4+ICB9DQo+Pg0KPj4gKy8qKg0KPj4gKyAq
-IGFjcGlfcHB0dF93YWxrX2NoZWNrX2R1cGxpY2F0ZSgpIC0gRmluZCB0aGUgY2FjaGUgcmVzb3Vy
-Y2UgdG8NCj4+ICtjaGVjaywNCj4+ICsgKiBpcyBhIGR1cGxpY2F0aW9uIGluIHRoZSBuZXh0X2xl
-dmVsX29mX2NhY2hlIHBvaW50ZXIgb2Ygb3RoZXIgY2FjaGUuDQo+PiArICogQHRhYmxlX2hkcjog
-UG9pbnRlciB0byB0aGUgaGVhZCBvZiB0aGUgUFBUVCB0YWJsZQ0KPj4gKyAqIEByZXM6IGNhY2hl
-IHJlc291cmNlIGluIHRoZSBQUFRUIHdlIHdhbnQgdG8gd2Fsaw0KPj4gKyAqIEByZXNfY2hlY2s6
-IGNhY2hlIHJlc291cmNlIGluIHRoZSBQUFRUIHdlIHdhbnQgdG8gY2hlY2sgZm9yDQo+ZHVwbGlj
-YXRpb24uDQo+PiArICoNCj4+ICsgKiBHaXZlbiBib3RoIFBQVFQgcmVzb3VyY2UsIHZlcmlmeSB0
-aGF0IHRoZXkgYXJlIGNhY2hlIG5vZGVzLCB0aGVuDQo+PiArd2Fsaw0KPj4gKyAqIGRvd24gZWFj
-aCBsZXZlbCBvZiBjYWNoZSBAcmVzLCBhbmQgY2hlY2sgZm9yIHRoZSBkdXBsaWNhdGlvbi4NCj4+
-ICsgKg0KPj4gKyAqIFJldHVybjogdHJ1ZSBpZiBkdXBsaWNhdGlvbiBmb3VuZCwgZmFsc2Ugb3Ro
-ZXJ3aXNlLg0KPj4gKyAqLw0KPj4gK3N0YXRpYyBib29sIGFjcGlfcHB0dF93YWxrX2NoZWNrX2R1
-cGxpY2F0ZShzdHJ1Y3QgYWNwaV90YWJsZV9oZWFkZXINCj4qdGFibGVfaGRyLA0KPj4gKwkJCQkJ
-ICAgc3RydWN0IGFjcGlfc3VidGFibGVfaGVhZGVyICpyZXMsDQo+PiArCQkJCQkgICBzdHJ1Y3Qg
-YWNwaV9zdWJ0YWJsZV9oZWFkZXINCj4qcmVzX2NoZWNrKSB7DQo+PiArCXN0cnVjdCBhY3BpX3Bw
-dHRfY2FjaGUgKmNhY2hlOw0KPj4gKwlzdHJ1Y3QgYWNwaV9wcHR0X2NhY2hlICpjaGVjazsNCj4+
-ICsNCj4+ICsJaWYgKHJlcy0+dHlwZSAhPSBBQ1BJX1BQVFRfVFlQRV9DQUNIRSB8fA0KPj4gKwkg
-ICAgcmVzX2NoZWNrLT50eXBlICE9IEFDUElfUFBUVF9UWVBFX0NBQ0hFKQ0KPj4gKwkJcmV0dXJu
-IGZhbHNlOw0KPj4gKw0KPj4gKwljYWNoZSA9IChzdHJ1Y3QgYWNwaV9wcHR0X2NhY2hlICopcmVz
-Ow0KPj4gKwljaGVjayA9IChzdHJ1Y3QgYWNwaV9wcHR0X2NhY2hlICopcmVzX2NoZWNrOw0KPj4g
-Kwl3aGlsZSAoY2FjaGUpIHsNCj4+ICsJCWlmIChjYWNoZSA9PSBjaGVjaykNCj4+ICsJCQlyZXR1
-cm4gdHJ1ZTsNCj4+ICsJCWNhY2hlID0gZmV0Y2hfcHB0dF9jYWNoZSh0YWJsZV9oZHIsIGNhY2hl
-LQ0KPj5uZXh0X2xldmVsX29mX2NhY2hlKTsNCj4+ICsJfQ0KPj4gKw0KPj4gKwlyZXR1cm4gZmFs
-c2U7DQo+PiArfQ0KPj4gKw0KPj4gIHN0YXRpYyBzdHJ1Y3QgYWNwaV9wcHR0X2NhY2hlICoNCj4+
-ICBhY3BpX2ZpbmRfY2FjaGVfbGV2ZWwoc3RydWN0IGFjcGlfdGFibGVfaGVhZGVyICp0YWJsZV9o
-ZHIsDQo+PiAgCQkgICAgICBzdHJ1Y3QgYWNwaV9wcHR0X3Byb2Nlc3NvciAqY3B1X25vZGUsDQo+
-PiAgCQkgICAgICB1bnNpZ25lZCBpbnQgKnN0YXJ0aW5nX2xldmVsLCB1bnNpZ25lZCBpbnQgbGV2
-ZWwsDQo+PiAgCQkgICAgICBpbnQgdHlwZSkNCj4+ICB7DQo+PiAtCXN0cnVjdCBhY3BpX3N1YnRh
-YmxlX2hlYWRlciAqcmVzOw0KPj4gKwlzdHJ1Y3QgYWNwaV9zdWJ0YWJsZV9oZWFkZXIgKnJlcywg
-KnJlczI7DQo+PiAgCXVuc2lnbmVkIGludCBudW1iZXJfb2ZfbGV2ZWxzID0gKnN0YXJ0aW5nX2xl
-dmVsOw0KPj4gIAlpbnQgcmVzb3VyY2UgPSAwOw0KPj4gKwlpbnQgcmVzb3VyY2UyID0gMDsNCj4+
-ICsJYm9vbCBkdXBsaWNhdGUgPSBmYWxzZTsNCj4+ICAJc3RydWN0IGFjcGlfcHB0dF9jYWNoZSAq
-cmV0ID0gTlVMTDsNCj4+ICAJdW5zaWduZWQgaW50IGxvY2FsX2xldmVsOw0KPj4NCj4+ICAJLyog
-d2FsayBkb3duIGZyb20gcHJvY2Vzc29yIG5vZGUgKi8NCj4+ICAJd2hpbGUgKChyZXMgPSBhY3Bp
-X2dldF9wcHR0X3Jlc291cmNlKHRhYmxlX2hkciwgY3B1X25vZGUsDQo+cmVzb3VyY2UpKSkgew0K
-Pj4gIAkJcmVzb3VyY2UrKzsNCj4+ICsJCS8qDQo+PiArCQkgKiBQUFRUIGRlZmluaXRpb24gaW4g
-dGhlIEFDUEkgc3BlY2lmaWNhdGlvbiBhbGxvd3MgYSBoaWdoIGxldmVsDQo+Y2FjaGUNCj4+ICsJ
-CSAqIG5vZGUgd291bGQgYmUgcmVwcmVzZW50ZWQgc2ltdWx0YW5lb3VzbHkgYm90aCBpbiB0aGUN
-Cj5wcml2YXRlIHJlc291cmNlDQo+PiArCQkgKiBvZiBhIENQVSBub2RlIGFuZCB2aWEgdGhlIG5l
-eHRfbGV2ZWxfb2ZfY2FjaGUgcG9pbnRlciBvZg0KPmFub3RoZXIgY2FjaGUgbm9kZSwNCj4+ICsJ
-CSAqIHdpdGhpbiB0aGUgc2FtZSBDUFUgaGllcmFyY2h5LiBUaGlzIHJlc3VsdGluZw0KPmFjcGlf
-ZmluZF9jYWNoZV9sZXZlbCgpDQo+PiArCQkgKiBtaXN0YWtlbmx5IGRldGVjdHMgYSBoaWdoZXIg
-bGV2ZWwgY2FjaGUgbm9kZSBpbiB0aGUgbG93DQo+bGV2ZWwgYXMgd2VsbC4NCj4+ICsJCSAqDQo+
-PiArCQkgKiBDaGVjayBhIGNhY2hlIG5vZGUgaW4gdGhlIHByaXZhdGUgcmVzb3VyY2Ugb2YgdGhl
-IENQVSBub2RlDQo+Zm9yIGFueQ0KPj4gKwkJICogZHVwbGljYXRpb24uDQo+PiArCQkgKi8NCj4+
-ICsJCXJlc291cmNlMiA9IDA7DQo+PiArCQlkdXBsaWNhdGUgPSBmYWxzZTsNCj4+ICsJCXdoaWxl
-ICgocmVzMiA9IGFjcGlfZ2V0X3BwdHRfcmVzb3VyY2UodGFibGVfaGRyLCBjcHVfbm9kZSwNCj5y
-ZXNvdXJjZTIpKSkgew0KPj4gKwkJCXJlc291cmNlMisrOw0KPj4gKwkJCWlmIChyZXMyID09IHJl
-cykNCj4+ICsJCQkJY29udGludWU7DQo+PiArCQkJaWYgKGFjcGlfcHB0dF93YWxrX2NoZWNrX2R1
-cGxpY2F0ZSh0YWJsZV9oZHIsIHJlczIsDQo+cmVzKSkgew0KPj4gKwkJCQlkdXBsaWNhdGUgPSB0
-cnVlOw0KPj4gKwkJCQlicmVhazsNCj4+ICsJCQl9DQo+PiArCQl9DQo+PiArCQlpZiAoZHVwbGlj
-YXRlKQ0KPj4gKwkJCWNvbnRpbnVlOw0KPj4NCj4+ICAJCWxvY2FsX2xldmVsID0gYWNwaV9wcHR0
-X3dhbGtfY2FjaGUodGFibGVfaGRyLA0KPipzdGFydGluZ19sZXZlbCwNCj4+ICAJCQkJCQkgICBy
-ZXMsICZyZXQsIGxldmVsLCB0eXBlKTsNCj4+DQoNClRoYW5rcywNClNoaWp1DQo=
+--=-=-=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+It was <2019-11-07 czw 20:22>, when Dmitry Torokhov wrote:
+> It is possible to store references to software nodes in the same fashion =
+as
+> other static properties, so that users do not need to define separate
+> structures:
+>
+> static const struct software_node gpio_bank_b_node =3D {
+> 	.name =3D "B",
+> };
+>
+> static const struct property_entry simone_key_enter_props[] =3D {
+> 	PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
+> 	PROPERTY_ENTRY_STRING("label", "enter"),
+> 	PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
+> 	{ }
+> };
+>
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> ---
+
+I am writing a piece that needs to provide a list of gpios to a
+diriver. The above example looks like what I need.
+
+At the moment the driver gets the list from fwnode/of_node. The list
+contain references to phandles which get resolved and and the driver
+ends up with a bunch of gpio descriptors. Great.
+
+This example looks nice but does the code that reads the reference from
+the gpios property and returns a gpiod actually exist? If it doesn't, I
+am willing to write it.
+
+At first glance it makes more sense to me to pass (struct gpiod_lookup
+*) instead of (struct software_node *) and make gpiolib's gpiod_find()
+accept lookup tables as parameter instead of searching the
+gpio_lookup_list? Or do you think such temporary table should be
+assembled from the above structure and then used in gpiod_find()?
+
+Any other suggestions on how to get a bunch of gpios (the description
+for gpios is available in the devicetree) for a device described with a
+software nodes?
+
+Kind regards,
+=2D-=20
+=C5=81ukasz Stelmach
+Samsung R&D Institute Poland
+Samsung Electronics
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAl+pdiUACgkQsK4enJil
+gBAtoQf+PVFYMyk5VSXcEzxbOfAudd3xzQezGMekETrSzHkWkccYeM6J1qmYZiDd
+YZUfignacyP1J3K8DYByXeyz8JpeTyd5wjrI0R4WLr5FFTw6uZuhKjlJqz22+o+l
+YPla7v2m3nC0vh6j62c8d4ZVGNliYvbmHKA2Vp1gfiler+SCRQmKoFtkcoGiGDcD
+r38D5qLDV8aqd9sCGKgLB2zZQlHzE9F59MKHcD2HBYmnzvyZVmiyTy2CVGd2v/44
+i1qqg1V+u5QSrCm5HroAnRjGnzEk/tZyseYCghicg5QCY6+EW9RJ+2VRTMqiLtYC
+WY4WU1iS6TccGts+T8OUHb8nMbb6mQ==
+=bcdp
+-----END PGP SIGNATURE-----
+--=-=-=--
