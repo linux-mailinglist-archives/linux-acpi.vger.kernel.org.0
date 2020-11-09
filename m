@@ -2,217 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED292AB62E
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 12:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D11F32AB731
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 12:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728927AbgKILKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Nov 2020 06:10:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727077AbgKILKd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 06:10:33 -0500
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEDFC0613CF
-        for <linux-acpi@vger.kernel.org>; Mon,  9 Nov 2020 03:10:33 -0800 (PST)
-Received: by mail-ed1-x542.google.com with SMTP id b9so8281404edu.10
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Nov 2020 03:10:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=H2Cfn+qf6dsBYRmwxFqKcDe9TIG0CW1IWpnyFZWW40U=;
-        b=hncWSr8JjQJMv9mJOaj63v3xtItKykUmLbKxu68NLYLCb+LH6JF2NhL6WFKtUsXKry
-         VLo8DxUY00CCVbOZ1927avwa1yM4KtZlIy4YBMnTSjD0veGXAvezK7t5fkcoUBp0P1Gj
-         xgCEgOjGCYZR88K8gd6tFc19a38aObX3Wz3WcdT4geKBNHF69YemSgqWNfAoYDLublIK
-         kIUZTToYoMbOTEJF/Go5H3sEdVEpFJ+5aAdNKUWU0cVz5zrthvkQ0zMod4dXK8sKECB2
-         Nsk36jsgtjVSsCClWEv5en3PP/A6ZglwILEQ094or2v+e+Cd4WBZ1DNfipk6W+BoD5LU
-         NR5Q==
+        id S1729537AbgKILf4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Nov 2020 06:35:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:40913 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729812AbgKILdt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 06:33:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604921627;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=I0y9une9dAd7wKCzC7dDx1PwHSDOlK9hwWFCmkAMcfk=;
+        b=dgr0GPgmP0Wv+1F/vifK7TmMVDkRYiC6m3SHLOgplo+BHHikEyu1paFTAmugXdT683g6x+
+        Zfb3vcO5K/guR7y4O7S/0SZXiFk+fDl8H5We0Q4G+IuIMm/g2bB7GhooI6QGmURBprztuX
+        6W+Yb/MPZheCcalr2EfJcH0yKV7YfWM=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-74-TgatxUVQNrKaGAkNn54odg-1; Mon, 09 Nov 2020 06:33:46 -0500
+X-MC-Unique: TgatxUVQNrKaGAkNn54odg-1
+Received: by mail-ed1-f69.google.com with SMTP id v7so2619764edy.4
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Nov 2020 03:33:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=H2Cfn+qf6dsBYRmwxFqKcDe9TIG0CW1IWpnyFZWW40U=;
-        b=ZWnhoVvaXU23G7p9Z5va+4wCv1QpyHvKmENxn6siJBUS23UoYVTADw5m+jtdXoubyS
-         VDL8d2ly/Bpymbwzs5s5/DR1Jdu/crSBfXOLKN50tvauLj5Z+lDX/KAUHF/BXtFb0XUP
-         KrUnv8ygLw3Xtl88KaLW6RfZ0nLo/YIm0s5Ikfq7W4ogSGm5gjR415oPlPwJ+NoYnzDM
-         lQ58RK/9nWL/QWTOZjARQzkyJHFdrLolI+jO1EPESiYUvBbtOJPYqcHKfhk8zmywvtdb
-         CfNJ8uEssI3lN5tWwn+NGHuBRGV7g8p7/moX1VwJK/RebeIi2Sn/ObQ7WTtFeienQ2/D
-         y0dA==
-X-Gm-Message-State: AOAM532vUs5DcxDP9AS3xo2/Ocu9O3I8zR2nB0rLxbA9ZFFkYbVo/XaN
-        9Qj16pArp6ZqIILgbDaKvnP/Lw==
-X-Google-Smtp-Source: ABdhPJzpz+j4UyTF2DMQI8w1doJFCKwzCUumt21o7Ypa/kmYBoTww8uqx19c0rpOEfAy5/rpnZrPGA==
-X-Received: by 2002:a05:6402:16d6:: with SMTP id r22mr15325414edx.246.1604920232260;
-        Mon, 09 Nov 2020 03:10:32 -0800 (PST)
-Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id s21sm8768064edc.42.2020.11.09.03.10.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2020 03:10:31 -0800 (PST)
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     ast@kernel.org, daniel@iogearbox.net
-Cc:     bpf@vger.kernel.org, kafai@fb.com, songliubraving@fb.com,
-        yhs@fb.com, andriin@fb.com, john.fastabend@gmail.com,
-        kpsingh@chromium.org,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Jiri Olsa <jolsa@redhat.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH bpf-next v2 1/6] tools: Factor HOSTCC, HOSTLD, HOSTAR definitions
-Date:   Mon,  9 Nov 2020 12:09:25 +0100
-Message-Id: <20201109110929.1223538-2-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201109110929.1223538-1-jean-philippe@linaro.org>
-References: <20201109110929.1223538-1-jean-philippe@linaro.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=I0y9une9dAd7wKCzC7dDx1PwHSDOlK9hwWFCmkAMcfk=;
+        b=OjdpKYDvYhSJWGD3QRKcksjxsrlNuROjOj6Jee1H7g2V624W1i3AOe5gIMEULsJEBw
+         DiOmo5NpRq1uPBoo7p9CHSIep+zvy1vMY/f+zbEBw/e5Mpv4i2VWh4KB2a35vSVUDOMs
+         kNj7UZmxt7u5GX6vXTwqMm3qGE08Y7P0y8tdnIuX3jBeym62dPfJ8AV8xTQc+6W878ci
+         dWFvntz1qhezci8EwYOcljzDkGGoCiiFZfFrdDYNIFl29XWWc0pxrxuBGcMKVe3z6d2A
+         8dyIZp5sZqsscusabI/0f2apCPrwuOLyN1vYC1G6r2Ny5HMybgx4WLmVbA42zyYH8Bz1
+         CmoA==
+X-Gm-Message-State: AOAM533e7EBPovHcgCPBgutEKZt5Q0cec9emNFFRsPqKUZFCZaqJFizz
+        AbgXmkzvzev4hxxUZMIm3ZoIPkn0QXHYZU3Lh/BUyuSutpjPGxduYYXmfbUnZStXIkMEy2ztXK/
+        U5ionKt5HR67j9W3ZN5ZUZw==
+X-Received: by 2002:a17:906:a856:: with SMTP id dx22mr15307618ejb.134.1604921624267;
+        Mon, 09 Nov 2020 03:33:44 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxv+LZ1UaVjw8uypylORNMXf0QJe+HVoYGs+pFH/saLwYr720RtVw2WF/1rp7jTJs08Uyvd3g==
+X-Received: by 2002:a17:906:a856:: with SMTP id dx22mr15307602ejb.134.1604921624076;
+        Mon, 09 Nov 2020 03:33:44 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id us11sm8710712ejb.91.2020.11.09.03.33.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2020 03:33:43 -0800 (PST)
+Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
+ to instantiated i2c-clients
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>
+Cc:     Mark Gross <mgross@linux.intel.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20201105080014.45410-1-hdegoede@redhat.com>
+ <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
+Date:   Mon, 9 Nov 2020 12:33:42 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Several Makefiles in tools/ need to define the host toolchain variables.
-Move their definition to tools/scripts/Makefile.include
+Hi,
 
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
-v1: https://lore.kernel.org/bpf/20200827153629.3820891-2-jean-philippe@linaro.org/
+On 11/5/20 11:38 AM, Andy Shevchenko wrote:
+> On Thu, Nov 5, 2020 at 10:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi All,
+>>
+>> As the subject says this series is mostly about passing the ACPI fwnode to
+>> i2c-clients instantiated by the i2c-multi-instantiate code.
+>>
+>> As discussed here:
+>> https://bugzilla.kernel.org/show_bug.cgi?id=198671
+>>
+>> BOSC0200 ACPI devices may sometimes describe 2 accelerometers in a single
+>> ACPI device, while working on this I noticed that BOSC0200 ACPI nodes
+>> contain ACCEL_MOUNT_MATRIX info (unlike all the other ACPI ids for bmc150
+>> accelerometers). Which is why I wanted to pass the fwnode so that we
+>> could use this info in the bmc150-accel driver.
+>>
+>> The plan was to use i2c-multi-instantiate for this, but doing so will
+>> change the modalias and /lib/udev/hwdb.d/60-sensor.hwdb matches on
+>> the modalias for various quirks setting ACCEL_MOUNT_MATRIX. So then the
+>> plan became to first add support for the mount-matrix provided inside
+>> the BOSC0200 ACPI node, making the udev info unnecessary. But for at
+>> least 1 model (and probably more) the BOSC0200 ACPI node and hwdb info
+>> does not match and since the hwdb info is added by users of the actual
+>> devices we can assume it is correct, so it seems that we cannot always
+>> trust the ACPI provided info.  This is ok, the hwdb info overrides it
+>> (iio-sensor-proxy prefers the udev provided mount-matrix over the
+>> one provided by the driver) but this means that we MUST keep the
+>> existing hwdb matches working, which means that we cannot use
+>> i2c-multi-instantiate for this.
+>>
+>> Instead I will dust of an old patch for this from Jeremy Cline:
+>> https://patchwork.kernel.org/project/linux-iio/patch/010001602cf53153-39ad69f1-1b39-4e6d-a748-9455a16c2fbd-000000@email.amazonses.com/
+>>
+>> Which deals with there being 2 accelerometers inside the bmc150-accel
+>> driver.
+>>
+>> But before coming to the conclusion that i2c-multi-instantiate
+>> would not work I had already written this series. Since this might
+>> be useful for some other case in the future I'm sending this out
+>> as a RFC now, mostly so that it gets added to the archives.
+> 
+> I think they are in pretty good shape (only the 4th required a bit of
+> attention).
 
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Erik Kaneda <erik.kaneda@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: devel@acpica.org
----
- tools/bpf/resolve_btfids/Makefile |  9 ---------
- tools/build/Makefile              |  4 ----
- tools/objtool/Makefile            |  9 ---------
- tools/perf/Makefile.perf          |  4 ----
- tools/power/acpi/Makefile.config  |  1 -
- tools/scripts/Makefile.include    | 10 ++++++++++
- 6 files changed, 10 insertions(+), 27 deletions(-)
+FWIW I agree with the changes which you suggest for the 4th patch.
 
-diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
-index 66cb92136de4..bf656432ad73 100644
---- a/tools/bpf/resolve_btfids/Makefile
-+++ b/tools/bpf/resolve_btfids/Makefile
-@@ -18,15 +18,6 @@ else
- endif
- 
- # always use the host compiler
--ifneq ($(LLVM),)
--HOSTAR  ?= llvm-ar
--HOSTCC  ?= clang
--HOSTLD  ?= ld.lld
--else
--HOSTAR  ?= ar
--HOSTCC  ?= gcc
--HOSTLD  ?= ld
--endif
- AR       = $(HOSTAR)
- CC       = $(HOSTCC)
- LD       = $(HOSTLD)
-diff --git a/tools/build/Makefile b/tools/build/Makefile
-index 722f1700d96a..bae48e6fa995 100644
---- a/tools/build/Makefile
-+++ b/tools/build/Makefile
-@@ -15,10 +15,6 @@ endef
- $(call allow-override,CC,$(CROSS_COMPILE)gcc)
- $(call allow-override,LD,$(CROSS_COMPILE)ld)
- 
--HOSTCC ?= gcc
--HOSTLD ?= ld
--HOSTAR ?= ar
--
- export HOSTCC HOSTLD HOSTAR
- 
- ifeq ($(V),1)
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 4ea9a833dde7..5cdb19036d7f 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -3,15 +3,6 @@ include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
- 
- # always use the host compiler
--ifneq ($(LLVM),)
--HOSTAR	?= llvm-ar
--HOSTCC	?= clang
--HOSTLD	?= ld.lld
--else
--HOSTAR	?= ar
--HOSTCC	?= gcc
--HOSTLD	?= ld
--endif
- AR	 = $(HOSTAR)
- CC	 = $(HOSTCC)
- LD	 = $(HOSTLD)
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 7ce3f2e8b9c7..62f3deb1d3a8 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -175,10 +175,6 @@ endef
- 
- LD += $(EXTRA_LDFLAGS)
- 
--HOSTCC  ?= gcc
--HOSTLD  ?= ld
--HOSTAR  ?= ar
--
- PKG_CONFIG = $(CROSS_COMPILE)pkg-config
- LLVM_CONFIG ?= llvm-config
- 
-diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
-index 54a2857c2510..331f6d30f472 100644
---- a/tools/power/acpi/Makefile.config
-+++ b/tools/power/acpi/Makefile.config
-@@ -54,7 +54,6 @@ INSTALL_SCRIPT = ${INSTALL_PROGRAM}
- CROSS = #/usr/i386-linux-uclibc/usr/bin/i386-uclibc-
- CROSS_COMPILE ?= $(CROSS)
- LD = $(CC)
--HOSTCC = gcc
- 
- # check if compiler option is supported
- cc-supports = ${shell if $(CC) ${1} -S -o /dev/null -x c /dev/null > /dev/null 2>&1; then echo "$(1)"; fi;}
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index a7974638561c..1358e89cdf7d 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -59,6 +59,16 @@ $(call allow-override,LD,$(CROSS_COMPILE)ld)
- $(call allow-override,CXX,$(CROSS_COMPILE)g++)
- $(call allow-override,STRIP,$(CROSS_COMPILE)strip)
- 
-+ifneq ($(LLVM),)
-+HOSTAR  ?= llvm-ar
-+HOSTCC  ?= clang
-+HOSTLD  ?= ld.lld
-+else
-+HOSTAR  ?= ar
-+HOSTCC  ?= gcc
-+HOSTLD  ?= ld
-+endif
-+
- ifeq ($(CC_NO_CLANG), 1)
- EXTRA_WARNINGS += -Wstrict-aliasing=3
- endif
--- 
-2.29.1
+> Please, send as non-RFC and also Cc Heikki (just in case if he has
+> comments wrt INT3515).
+
+But do we really want to land these changes, while ATM we do not
+really have any need for them ?  Esp. the
+
+"platform/x86: i2c-multi-instantiate: Pass ACPI fwnode to instantiated I2C-clients"
+
+Change is not without a chance of regressions. The acpi_device_is_first_physical_node()
+behavior surprised me a bit while working on the BOSC0200 changes. So I'm not
+100% sure I have managed to see / think of all implications of this change.
+
+Heikki do you now (or in the near future) need access to the fwnode for
+the TypeC controllers handled by the i2c-multi-instantiate code ?
+
+Note that if we do decide to move forward with this set, it should probably
+be merged in its entirety by Wolfram as it also makes i2c-core changes
+(or Wolfram could just merge the i2c-core change and provide an immutable
+branch for me to merge into pdx86/for-next.
+
+And then your (Andy's) cleanup series can be applied on top of this once merged.
+
+Regards,
+
+Hans
+
 
