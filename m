@@ -2,106 +2,217 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF66C2AB59B
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 11:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED292AB62E
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Nov 2020 12:10:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729195AbgKIK5l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Nov 2020 05:57:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:50869 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727303AbgKIK5k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 05:57:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604919459;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KFQ3NXM+Ll2VDtzUJoZCbgvc0RCST66Ng0luYaRPOdM=;
-        b=gptLYbK+G0C4UhviJndoOgg4p3nbxPGU+zc7PxKaqgyF2pH40OtcxwP6xlpbg5ZLPyvZjd
-        LSyu9QmUdvsP5hztnLXsCoLAnWi9sM0pkptOS+huAY4qwvnYSDKJwLglLdy27vhyLf+ik6
-        U7lh4mfJMyr+THaqBnNBbgld4U/Lv8U=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-350--V8jmxqEMeSDz1gB4i3GwQ-1; Mon, 09 Nov 2020 05:57:37 -0500
-X-MC-Unique: -V8jmxqEMeSDz1gB4i3GwQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 43FE357201;
-        Mon,  9 Nov 2020 10:57:36 +0000 (UTC)
-Received: from x1.localdomain (ovpn-114-3.ams2.redhat.com [10.36.114.3])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A6A546EF45;
-        Mon,  9 Nov 2020 10:57:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@infradead.org>,
-        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2 3/3] pwm: lpss: Set DPM_FLAG_SMART_SUSPEND on Cherry Trail devices
-Date:   Mon,  9 Nov 2020 11:57:26 +0100
-Message-Id: <20201109105726.121512-4-hdegoede@redhat.com>
-In-Reply-To: <20201109105726.121512-1-hdegoede@redhat.com>
-References: <20201109105726.121512-1-hdegoede@redhat.com>
+        id S1728927AbgKILKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Nov 2020 06:10:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727077AbgKILKd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Nov 2020 06:10:33 -0500
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEDFC0613CF
+        for <linux-acpi@vger.kernel.org>; Mon,  9 Nov 2020 03:10:33 -0800 (PST)
+Received: by mail-ed1-x542.google.com with SMTP id b9so8281404edu.10
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Nov 2020 03:10:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=H2Cfn+qf6dsBYRmwxFqKcDe9TIG0CW1IWpnyFZWW40U=;
+        b=hncWSr8JjQJMv9mJOaj63v3xtItKykUmLbKxu68NLYLCb+LH6JF2NhL6WFKtUsXKry
+         VLo8DxUY00CCVbOZ1927avwa1yM4KtZlIy4YBMnTSjD0veGXAvezK7t5fkcoUBp0P1Gj
+         xgCEgOjGCYZR88K8gd6tFc19a38aObX3Wz3WcdT4geKBNHF69YemSgqWNfAoYDLublIK
+         kIUZTToYoMbOTEJF/Go5H3sEdVEpFJ+5aAdNKUWU0cVz5zrthvkQ0zMod4dXK8sKECB2
+         Nsk36jsgtjVSsCClWEv5en3PP/A6ZglwILEQ094or2v+e+Cd4WBZ1DNfipk6W+BoD5LU
+         NR5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=H2Cfn+qf6dsBYRmwxFqKcDe9TIG0CW1IWpnyFZWW40U=;
+        b=ZWnhoVvaXU23G7p9Z5va+4wCv1QpyHvKmENxn6siJBUS23UoYVTADw5m+jtdXoubyS
+         VDL8d2ly/Bpymbwzs5s5/DR1Jdu/crSBfXOLKN50tvauLj5Z+lDX/KAUHF/BXtFb0XUP
+         KrUnv8ygLw3Xtl88KaLW6RfZ0nLo/YIm0s5Ikfq7W4ogSGm5gjR415oPlPwJ+NoYnzDM
+         lQ58RK/9nWL/QWTOZjARQzkyJHFdrLolI+jO1EPESiYUvBbtOJPYqcHKfhk8zmywvtdb
+         CfNJ8uEssI3lN5tWwn+NGHuBRGV7g8p7/moX1VwJK/RebeIi2Sn/ObQ7WTtFeienQ2/D
+         y0dA==
+X-Gm-Message-State: AOAM532vUs5DcxDP9AS3xo2/Ocu9O3I8zR2nB0rLxbA9ZFFkYbVo/XaN
+        9Qj16pArp6ZqIILgbDaKvnP/Lw==
+X-Google-Smtp-Source: ABdhPJzpz+j4UyTF2DMQI8w1doJFCKwzCUumt21o7Ypa/kmYBoTww8uqx19c0rpOEfAy5/rpnZrPGA==
+X-Received: by 2002:a05:6402:16d6:: with SMTP id r22mr15325414edx.246.1604920232260;
+        Mon, 09 Nov 2020 03:10:32 -0800 (PST)
+Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id s21sm8768064edc.42.2020.11.09.03.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2020 03:10:31 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     ast@kernel.org, daniel@iogearbox.net
+Cc:     bpf@vger.kernel.org, kafai@fb.com, songliubraving@fb.com,
+        yhs@fb.com, andriin@fb.com, john.fastabend@gmail.com,
+        kpsingh@chromium.org,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Jiri Olsa <jolsa@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Subject: [PATCH bpf-next v2 1/6] tools: Factor HOSTCC, HOSTLD, HOSTAR definitions
+Date:   Mon,  9 Nov 2020 12:09:25 +0100
+Message-Id: <20201109110929.1223538-2-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.29.1
+In-Reply-To: <20201109110929.1223538-1-jean-philippe@linaro.org>
+References: <20201109110929.1223538-1-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As the comment above the code setting the DPM_FLAG_NO_DIRECT_COMPLETE
-flag explains:
+Several Makefiles in tools/ need to define the host toolchain variables.
+Move their definition to tools/scripts/Makefile.include
 
-    /*
-     * On Cherry Trail devices the GFX0._PS0 AML checks if the controller
-     * is on and if it is not on it turns it on and restores what it
-     * believes is the correct state to the PWM controller.
-     * Because of this we must disallow direct-complete, which keeps the
-     * controller (runtime)suspended, on resume to avoid 2 issues:
-     * 1. The controller getting turned on without the linux-pm code
-     *    knowing about this. On devices where the controller is unused
-     *    this causes it to stay on during the next suspend causing high
-     *    battery drain (because S0i3 is not reached)
-     * 2. The state restoring code unexpectedly messing with the controller
-     */
-
-The pm-core must not skip resume to avoid the GFX0._PS0 AML code messing
-with the PWM controller behind our back. But leaving the controller
-runtime-suspended (skipping runtime-resume + normal-suspend) during
-suspend is fine. Set the DPM_FLAG_SMART_SUSPEND flag to allow this.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
-Changes in v2:
-- Extend comment to explain why the DPM_FLAG_SMART_SUSPEND is set
----
- drivers/pwm/pwm-lpss-platform.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+v1: https://lore.kernel.org/bpf/20200827153629.3820891-2-jean-philippe@linaro.org/
 
-diff --git a/drivers/pwm/pwm-lpss-platform.c b/drivers/pwm/pwm-lpss-platform.c
-index ac33861edb48..986786be1e49 100644
---- a/drivers/pwm/pwm-lpss-platform.c
-+++ b/drivers/pwm/pwm-lpss-platform.c
-@@ -69,9 +69,13 @@ static int pwm_lpss_probe_platform(struct platform_device *pdev)
- 	 *    this causes it to stay on during the next suspend causing high
- 	 *    battery drain (because S0i3 is not reached)
- 	 * 2. The state restoring code unexpectedly messing with the controller
-+	 *
-+	 * Leaving the controller runtime-suspended (skipping runtime-resume +
-+	 * normal-suspend) during suspend is fine.
- 	 */
- 	if (info->other_devices_aml_touches_pwm_regs)
--		dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NO_DIRECT_COMPLETE);
-+		dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NO_DIRECT_COMPLETE|
-+						    DPM_FLAG_SMART_SUSPEND);
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Robert Moore <robert.moore@intel.com>
+Cc: Erik Kaneda <erik.kaneda@intel.com>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: devel@acpica.org
+---
+ tools/bpf/resolve_btfids/Makefile |  9 ---------
+ tools/build/Makefile              |  4 ----
+ tools/objtool/Makefile            |  9 ---------
+ tools/perf/Makefile.perf          |  4 ----
+ tools/power/acpi/Makefile.config  |  1 -
+ tools/scripts/Makefile.include    | 10 ++++++++++
+ 6 files changed, 10 insertions(+), 27 deletions(-)
+
+diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
+index 66cb92136de4..bf656432ad73 100644
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -18,15 +18,6 @@ else
+ endif
  
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+ # always use the host compiler
+-ifneq ($(LLVM),)
+-HOSTAR  ?= llvm-ar
+-HOSTCC  ?= clang
+-HOSTLD  ?= ld.lld
+-else
+-HOSTAR  ?= ar
+-HOSTCC  ?= gcc
+-HOSTLD  ?= ld
+-endif
+ AR       = $(HOSTAR)
+ CC       = $(HOSTCC)
+ LD       = $(HOSTLD)
+diff --git a/tools/build/Makefile b/tools/build/Makefile
+index 722f1700d96a..bae48e6fa995 100644
+--- a/tools/build/Makefile
++++ b/tools/build/Makefile
+@@ -15,10 +15,6 @@ endef
+ $(call allow-override,CC,$(CROSS_COMPILE)gcc)
+ $(call allow-override,LD,$(CROSS_COMPILE)ld)
+ 
+-HOSTCC ?= gcc
+-HOSTLD ?= ld
+-HOSTAR ?= ar
+-
+ export HOSTCC HOSTLD HOSTAR
+ 
+ ifeq ($(V),1)
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 4ea9a833dde7..5cdb19036d7f 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -3,15 +3,6 @@ include ../scripts/Makefile.include
+ include ../scripts/Makefile.arch
+ 
+ # always use the host compiler
+-ifneq ($(LLVM),)
+-HOSTAR	?= llvm-ar
+-HOSTCC	?= clang
+-HOSTLD	?= ld.lld
+-else
+-HOSTAR	?= ar
+-HOSTCC	?= gcc
+-HOSTLD	?= ld
+-endif
+ AR	 = $(HOSTAR)
+ CC	 = $(HOSTCC)
+ LD	 = $(HOSTLD)
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 7ce3f2e8b9c7..62f3deb1d3a8 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -175,10 +175,6 @@ endef
+ 
+ LD += $(EXTRA_LDFLAGS)
+ 
+-HOSTCC  ?= gcc
+-HOSTLD  ?= ld
+-HOSTAR  ?= ar
+-
+ PKG_CONFIG = $(CROSS_COMPILE)pkg-config
+ LLVM_CONFIG ?= llvm-config
+ 
+diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
+index 54a2857c2510..331f6d30f472 100644
+--- a/tools/power/acpi/Makefile.config
++++ b/tools/power/acpi/Makefile.config
+@@ -54,7 +54,6 @@ INSTALL_SCRIPT = ${INSTALL_PROGRAM}
+ CROSS = #/usr/i386-linux-uclibc/usr/bin/i386-uclibc-
+ CROSS_COMPILE ?= $(CROSS)
+ LD = $(CC)
+-HOSTCC = gcc
+ 
+ # check if compiler option is supported
+ cc-supports = ${shell if $(CC) ${1} -S -o /dev/null -x c /dev/null > /dev/null 2>&1; then echo "$(1)"; fi;}
+diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
+index a7974638561c..1358e89cdf7d 100644
+--- a/tools/scripts/Makefile.include
++++ b/tools/scripts/Makefile.include
+@@ -59,6 +59,16 @@ $(call allow-override,LD,$(CROSS_COMPILE)ld)
+ $(call allow-override,CXX,$(CROSS_COMPILE)g++)
+ $(call allow-override,STRIP,$(CROSS_COMPILE)strip)
+ 
++ifneq ($(LLVM),)
++HOSTAR  ?= llvm-ar
++HOSTCC  ?= clang
++HOSTLD  ?= ld.lld
++else
++HOSTAR  ?= ar
++HOSTCC  ?= gcc
++HOSTLD  ?= ld
++endif
++
+ ifeq ($(CC_NO_CLANG), 1)
+ EXTRA_WARNINGS += -Wstrict-aliasing=3
+ endif
 -- 
-2.28.0
+2.29.1
 
