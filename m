@@ -2,75 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1B2B2AD382
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A0E82AD3A5
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:25:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726706AbgKJKUH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 05:20:07 -0500
-Received: from mail-02.mail-europe.com ([51.89.119.103]:41982 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbgKJKUH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:20:07 -0500
-Date:   Tue, 10 Nov 2020 10:15:35 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1605003600;
-        bh=hQly7mdUFe6QKrsqMJ4ERsdQsbqOi8MW5KLKpd3SIKM=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=X0e007OBTYu+h56EICJbXKnCNcNRx7JeXvx5wbeSbMVd9vCHFOcpHwGnFiuHJQrEs
-         z112Ms4gBOWENKGgpWVmyjFKRwFpV+Rwp/TbqjMffIiXtCkGegzXVWQF7Kjoe9Xw9c
-         k5SprPw6WlP5cpBhtl4Y1WeJk6JeJiQO1+zzwSJU=
-To:     Mark Pearson <markpearson@lenovo.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
-        "eliadevito@gmail.com" <eliadevito@gmail.com>,
-        "hadess@hadess.net" <hadess@hadess.net>,
-        "bberg@redhat.com" <bberg@redhat.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "dvhart@infradead.org" <dvhart@infradead.org>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
-Message-ID: <2gY5rkKaKLKayk0DYW0lvZ_aIAs8vSf9FOy2obdGvph_7XcpyHlkafBTpW8RHKC5nEcEz_eY-s4pJtuR2ebltW2Fu10GRssTmMxKMuS4PU8=@protonmail.com>
-In-Reply-To: <20201110033124.3211-3-markpearson@lenovo.com>
-References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com> <20201110033124.3211-3-markpearson@lenovo.com>
+        id S1726344AbgKJKZe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 05:25:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726219AbgKJKZd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:25:33 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A4FC0613CF;
+        Tue, 10 Nov 2020 02:25:32 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id 10so11028827pfp.5;
+        Tue, 10 Nov 2020 02:25:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=niga6ecIez4/CTrWY1D2m+YLWeUqIwGeKCtJmF4vVAg=;
+        b=im83aAxNXiHZ9xQwNtMnvw2gsF/qjGRyH0HZUb1KVsLLl/1oLUwlTXaE9pRe2z2lbZ
+         FYthwjEVnVN5i8cTaoB0iZ81qKrdWbgN1sNqosS3FtvAc8Vlv7EQDQSaXOAEFk7V2dkj
+         9rxFaEpbNqwVTuHKnlfHevxaFiuU21hydEmk/62k4JlxASd6CV9BYT64hzX/SdBBxoSw
+         jXQTG9uORIE9wAEf6945w4mMlkP6rbt66OX2umMrOCZutltj4eTVfSfeBzU9D6D+QreW
+         IRybS/9Gbe0RCUl/0pUhEmPkkNiTV0C+RxjwKWHkj9GwsgRau1KrR4fVEC/ziEHZ+x3g
+         lrMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=niga6ecIez4/CTrWY1D2m+YLWeUqIwGeKCtJmF4vVAg=;
+        b=G5MOyNYPj55vvwBz8DacPvygqSu5UjNGAu2HT1BkjmxGjRSj6GHsGQKYMfdPvGLIYN
+         MQ+BB3xyCvtaWErBrGZVR7k8Mvqy9FDAwKb04liBufvnrDt8jiBduKhOQ3oyQKM5Hi3P
+         F9puzrj3WuGfqKECHVWkcGUG2IZrXTYSRtSSDXqP3dXk0v1PNAAIaYLEZjRIWAfgfev3
+         5QdCXZ9sgRbViXvL625EuK1aTB7CGlN9npjjpvW57bJ0ky8UJsPBXNWHQKjvMO+04Lj7
+         B2PxuUZ4g2r34bsi6U4XuFKroIs27t/PyiK7niSntIpVeox/au5ycrarzp6PPl/mDo3A
+         oEng==
+X-Gm-Message-State: AOAM533xq3zGqdGTavSZ5f6/yAYmjRElT5NDudfBpgWjGLyCD39wJXN4
+        BOKRGlAzvj0ibWhUNQxhRpj3Z0mDqYh+eHJXwsY=
+X-Google-Smtp-Source: ABdhPJzrJcuOzfxnFaHZJ+6DkRZv3ZN+jklVWsy9pTAhqOXiz8ZzpIleRahQjFiK/KBX1KuOcdrUHhYXou9M/tR5R4g=
+X-Received: by 2002:a62:343:0:b029:15c:e33c:faff with SMTP id
+ 64-20020a6203430000b029015ce33cfaffmr17171093pfd.7.1605003931630; Tue, 10 Nov
+ 2020 02:25:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com>
+ <20201110033124.3211-3-markpearson@lenovo.com>
+In-Reply-To: <20201110033124.3211-3-markpearson@lenovo.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 10 Nov 2020 12:26:16 +0200
+Message-ID: <CAHp75VcPaZu3S6Sb-Zr3GFokxASWrD7hcOhBA0UA4frC1C5XAg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Benjamin Berg <bberg@redhat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Darren Hart <dvhart@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+On Tue, Nov 10, 2020 at 5:35 AM Mark Pearson <markpearson@lenovo.com> wrote:
+>
+> This is the initial implementation of the platform-profile feature.
+> It provides the details discussed and outlined in the
+> sysfs-platform_profile document.
+>
+> Many modern systems have the ability to modify the operating profile to
+> control aspects like fan speed, temperature and power levels. This
+> module provides a common sysfs interface that platform modules can register
+> against to control their individual profile options.
 
-I've added some questions and comments inline.
+...
 
-
-
-2020. november 10., kedd 4:31 keltez=C3=A9ssel, Mark Pearson =C3=ADrta:
-
-> [...]
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> new file mode 100644
-> index 000000000000..3c460c0a3857
-> --- /dev/null
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -0,0 +1,172 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +config ACPI_PLATFORM_PROFILE
+> +       tristate "ACPI Platform Profile Driver"
+> +       default y
+> +       help
+> +         This driver adds support for platform-profiles on platforms that
+> +         support it.
 > +
+> +         Platform-profiles can be used to control the platform behaviour. For
+> +         example whether to operate in a lower power mode, in a higher
+> +         power performance mode or between the two.
+> +
+> +         This driver provides the sysfs interface and is used as the registration
+> +         point for platform specific drivers.
+> +
+> +         Which profiles are supported is determined on a per-platform basis and
+> +         should be obtained from the platform specific driver.
+
+> +
+> +
+
+None of the blank lines is enough. But can you consider to find
+perhaps better place (I imply some logical group of options in the
+file).
+
+...
+
+>  obj-$(CONFIG_ACPI_SPCR_TABLE)  += spcr.o
+>  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
+>  obj-$(CONFIG_ACPI_PPTT)        += pptt.o
+> +obj-$(CONFIG_ACPI_PLATFORM_PROFILE)    += platform_profile.o
+
+...yes, and this becomes consistent with the above.
+
+...
+
 > +/*
 > + *  platform_profile.c - Platform profile sysfs interface
 > + */
-> +
+
+One line. PLease, don't put the file name into the file. If we want to
+rename it, it will give additional churn and as shown in practice
+people often forget this change to follow.
+
+...
+
 > +#include <linux/module.h>
 > +#include <linux/printk.h>
 > +#include <linux/kobject.h>
@@ -84,330 +139,138 @@ ile.c
 > +#include <acpi/acpi_bus.h>
 > +#include <linux/platform_profile.h>
 
-This should preferably be alphabetically sorted.
+Perhaps sorted?
+Why do you need a specific acpi_bus.h? I thought acpi.h includes it already, no?
 
+...
 
-> +
 > +struct platform_profile *cur_profile;
 
-This should be `static`.
+Better naming since it's a global variable.
+Is it supposed to be exported to modules?
 
+...
 
 > +DEFINE_MUTEX(profile_lock);
-> +
+
+No static?
+
+...
+
 > +/* Ensure the first char of each profile is unique */
+> +static char *profile_str[] = {
 
-I wholeheartedly disagree that only the first character should be considere=
-d.
-It is not future-proof, potentially subverts user expectation, and even wor=
-se,
-someone could rely on this (undocumented) behaviour.
+static const char * const profile_names[]
 
+Also naming (perhaps like I proposed above?).
 
-> +static char *profile_str[] =3D {
+> +       "Low-power",
+> +       "Cool",
+> +       "Quiet",
+> +       "Balance",
+> +       "Performance",
 
-Why is it not `const`?
+> +       "Unknown"
 
-
-> +=09"Low-power",
-> +=09"Cool",
-> +=09"Quiet",
-> +=09"Balance",
-> +=09"Performance",
-> +=09"Unknown"
-
-"unknown" is not documented, yet it may be returned to userspace.
-
+Leave the comma here.
 
 > +};
 
-The documentation has the names in all-lowercase, and in my opinion it'd be
-better to use lowercase names here as well.
+...
 
+> +       int i;
+> +       int ret, count = 0;
 
-> +
-> +static ssize_t platform_profile_choices_show(struct device *dev,
-> +=09=09=09=09=09struct device_attribute *attr,
-> +=09=09=09=09=09char *buf)
-> +{
-> +=09int i;
-> +=09int ret, count =3D 0;
-> +
-> +=09mutex_lock(&profile_lock);
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
-> +
-> +=09if (!cur_profile->choices) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return snprintf(buf, PAGE_SIZE, "None");
+count AFAICS should be size_t (or ssize_t).
+Can you make them in reversed xmas tree order?
 
-"None" is not documented anywhere as far as I can see, maybe an empty line
-would be better in this case?
+...
 
+> +       return snprintf(buf, PAGE_SIZE, "%s", profile_str[profile]);
 
-> +=09}
-> +
-> +=09for (i =3D profile_low; i < profile_unknown; i++) {
-> +=09=09if (cur_profile->choices & (1 << i)) {
+Nowadays we have sysfs_emit(), use it.
 
-`BIT(i)`?
+...
 
+> +       /* Scan for a matching profile */
+> +       for (profile = profile_low; profile < profile_unknown; profile++) {
+> +               if (toupper(buf[0]) == profile_str[profile][0])
+> +                       break;
+> +       }
 
-> +=09=09=09ret =3D snprintf(buf+count, PAGE_SIZE, "%s ", profile_str[i]);
+match_string() / sysfs_match_string() ?
 
-You could use `sysfs_emit_at()`. `ret` is only used in this block, so it co=
-uld be
-defined here.
+...
 
+> +static struct attribute *platform_profile_attributes[] = {
+> +       &dev_attr_platform_profile_choices.attr,
+> +       &dev_attr_platform_profile.attr,
 
-> +=09=09=09if (ret < 0)
-> +=09=09=09=09break;
+> +       NULL,
 
-However unlikely this case is, I'm not sure if providing partial values is
-better than not providing any data at all.
+Drop comma in terminator line.
 
-
-> +=09=09=09count +=3D ret;
-> +=09=09}
-> +=09}
-> +=09mutex_unlock(&profile_lock);
-
-I think a newline character should be written at the end (possibly overwrit=
-ing
-the last space).
-
-
-> +=09return count;
-> +}
-> +
-> +static ssize_t platform_profile_show(struct device *dev,
-> +=09=09=09=09=09struct device_attribute *attr,
-> +=09=09=09=09=09char *buf)
-> +{
-> +=09enum profile_option profile =3D profile_unknown;
-> +
-> +=09mutex_lock(&profile_lock);
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
-> +=09if (cur_profile->profile_get)
-> +=09=09profile =3D cur_profile->profile_get();
-
-I'd assume that `profile_get()` can return any arbitrary errno, which is th=
-en
-propagated to the "reader", but it seems that's not the case?
-I think returning `-EOPNOTSUPP` would be better if `profile_get` is NULL.
-
-
-> +=09mutex_unlock(&profile_lock);
-> +
-> +=09return snprintf(buf, PAGE_SIZE, "%s", profile_str[profile]);
-
-There is `sysfs_emit()`, as far as I know it is supposed to replace this ex=
-act
-snprintf(...) idiom. Directly indexing the `profile_str` with an unchecked
-value here is rather unsafe in my opinion.
-
-
-> +}
-> +
-> +static ssize_t platform_profile_store(struct device *dev,
-> +=09=09=09    struct device_attribute *attr,
-> +=09=09=09    const char *buf, size_t count)
-> +{
-> +=09enum profile_option profile;
-> +
-> +=09mutex_lock(&profile_lock);
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
-> +
-> +=09/* Scan for a matching profile */
-> +=09for (profile =3D profile_low; profile < profile_unknown; profile++) {
-> +=09=09if (toupper(buf[0]) =3D=3D profile_str[profile][0])
-> +=09=09=09break;
-> +=09}
-> +=09if (profile =3D=3D profile_unknown) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -EINVAL;
-> +=09}
-> +
-> +=09if (cur_profile->profile_set)
-> +=09=09cur_profile->profile_set(profile);
-
-The return value is entirely discarded? I'd assume it's returned to the "wr=
-iter".
-I'm also not sure if ignoring if `profile_set` is NULL is the best course o=
-f
-action. Maybe returning `-EOPNOTSUPP` would be better?
-
-
-> +
-> +=09mutex_unlock(&profile_lock);
-> +=09return count;
-> +}
-> +
-> +static DEVICE_ATTR_RO(platform_profile_choices);
-> +static DEVICE_ATTR_RW(platform_profile);
-> +
-> +static struct attribute *platform_profile_attributes[] =3D {
-> +=09&dev_attr_platform_profile_choices.attr,
-> +=09&dev_attr_platform_profile.attr,
-> +=09NULL,
-> +};
-> +
-> +static const struct attribute_group platform_profile_attr_group =3D {
-> +=09.attrs =3D platform_profile_attributes,
 > +};
 
-It's a minor thing, but there is an `ATTRIBUTE_GROUPS()` macro which could =
-possibly
-simplify the above part.
+...
 
-
-> +
-> +int platform_profile_notify(void)
-> +{
-> +=09if (!cur_profile)
-> +=09=09return -ENODEV;
-> +=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +=09return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_notify);
-> +
-> +int platform_profile_register(struct platform_profile *pprof)
-> +{
-> +=09mutex_lock(&profile_lock);
-> +=09/* We can only have one active profile */
-> +=09if (cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -EEXIST;
-> +=09}
-> +=09cur_profile =3D pprof;
-> +=09mutex_unlock(&profile_lock);
-> +=09return sysfs_create_group(acpi_kobj, &platform_profile_attr_group);
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_register);
-> +
-> +int platform_profile_unregister(void)
-> +{
-> +=09mutex_lock(&profile_lock);
-> +=09sysfs_remove_group(acpi_kobj, &platform_profile_attr_group);
-> +=09cur_profile =3D NULL;
-> +=09mutex_unlock(&profile_lock);
-> +=09return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
-> +
-> +static int __init platform_profile_init(void)
-> +{
-> +=09cur_profile =3D NULL;
-
-If I'm not missing anything, `cur_profile` will be initialized to NULL, thu=
-s
-this is not needed.
-
-
-> +=09return 0;
-> +}
-> +
-> +static void platform_profile_exit(void)
-
-This should be marked `__exit`.
-
-
-> +{
-> +=09sysfs_remove_group(acpi_kobj, &platform_profile_attr_group);
-> +=09cur_profile =3D NULL;
-> +}
-> +
-> +MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
-> +MODULE_LICENSE("GPL");
-> +
 > +module_init(platform_profile_init);
 > +module_exit(platform_profile_exit);
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
-ofile.h
-> new file mode 100644
-> index 000000000000..347a12172c09
-> --- /dev/null
-> +++ b/include/linux/platform_profile.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+
+Attach them to respective functions.
+
+...
+
 > +/*
 > + * platform_profile.h - platform profile sysfs interface
+
+No file name.
+
 > + *
-> + * See Documentation/ABI/testing/sysfs-platform_profile for more informa=
-tion.
+> + * See Documentation/ABI/testing/sysfs-platform_profile for more information.
 > + */
-> +
-> +#ifndef _PLATFORM_PROFILE_H_
-> +#define _PLATFORM_PROFILE_H_
-> +
+
+...
+
 > +/*
 > + * If more options are added please update profile_str
 > + * array in platform-profile.c
 > + */
-> +
+
+Kernel doc?
+
 > +enum profile_option {
-> +=09profile_low,
-> +=09profile_cool,
-> +=09profile_quiet,
-> +=09profile_balance,
-> +=09profile_perform,
-> +=09profile_unknown /* Must always be last */
-> +};
+> +       profile_low,
+> +       profile_cool,
+> +       profile_quiet,
+> +       profile_balance,
+> +       profile_perform,
 
-Shouldn't these be prefixed by `platform_`? And I think it'd be better to h=
-ave
-`profile_unknown` as the first value in the enumeration.
+> +       profile_unknown /* Must always be last */
 
+Comment is semi-useless. Comma at the end (or its absence) is usually
+enough to give a clue, but okay, comment makes this explicit.
 
-> +
+...
+
 > +struct platform_profile {
+> +       unsigned int choices; /* bitmap of available choices */
+> +       int cur_profile;      /* Current active profile */
 
-Personally, I think a name like platform_profile_(handler|provider)
-would be a better fit.
+Kernel doc?
 
-
-> +=09unsigned int choices; /* bitmap of available choices */
-
-Most comments are capitalized.
-
-
-> +=09int cur_profile;      /* Current active profile */
-
-`cur_profile` field doesn't seem to be used here. I see that it's utilized =
-in the
-thinkpad_acpi driver, but I feel like this does not "belong" here.
-
-
-> +=09int (*profile_get)(void);
-> +=09int (*profile_set)(int profile);
-
-Why does it take an `int` instead of `enum profile_option`?
-
-
+> +       int (*profile_get)(void);
+> +       int (*profile_set)(int profile);
 > +};
-> +
+
+...
+
 > +extern int platform_profile_register(struct platform_profile *pprof);
 > +extern int platform_profile_unregister(void);
 > +extern int platform_profile_notify(void);
-> +
 
-`extern` could be omitted from here. Although it seems rather "unregulated"
-whether `extern` is to be present in header files or not.
+extern is not needed.
 
-
-> +#endif  /*_PLATFORM_PROFILE_H_*/
-> --
-> 2.28.0
-
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
-
+-- 
+With Best Regards,
+Andy Shevchenko
