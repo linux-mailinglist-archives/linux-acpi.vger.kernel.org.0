@@ -2,130 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C992AE383
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 23:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6285F2AE464
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 00:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732323AbgKJWmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 17:42:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730254AbgKJWmP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 17:42:15 -0500
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EA8C0617A6
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 14:42:14 -0800 (PST)
-Received: by mail-il1-x141.google.com with SMTP id l12so156246ilo.1
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 14:42:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7jSf/XzZ4jyQ+1vMaLtMgIwZ1Hd3aE57H+YNIg7Vd6s=;
-        b=HmAOZ27e8pHLOZtNt33kCndwJB139JyHCZFOiD/C94/+pWb2KGdTlQCvLFR1HyR9mk
-         lFx1ytT/rJSJ7/tpMYshlVQIWUN/TZct4TCzlg9wYsDyPKswhZWrEi9oFiHeYSi0CMuE
-         tmbYZnr4Jy0AgOqG0pqnPBmt6xrLd9kKaYRBo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7jSf/XzZ4jyQ+1vMaLtMgIwZ1Hd3aE57H+YNIg7Vd6s=;
-        b=iX+lDMw9TlWUIWE+1ZAI+517kfiPTnrJKaW8nGH9x9xDpp/S/hWOiL+meN/+IRh77C
-         IF+gFqDFmlBAhZqc7KP0JTjXnMUg5N84voLkXqge/UgY5CreOwvH0Emp/iqW9o/9k7RA
-         9CO6pyUdkxmUdF7L4wwgRlKLIrCo8sCw+pZfzijlTAWc9ueZSFetguIYQYqMusxX39z4
-         2hDyxLdRNNNFlkF2ESpIf/fC/JKIo0EuBMk+niqyTEM5s2ln3F9FiPbC7AdKEduZwgsR
-         dbV5igOCtgBxNG73BpC0gFv+hSdybVQ6u/L2KkyNYMdEuVMc5TDisacH+3eRAhTCSvjF
-         fX7Q==
-X-Gm-Message-State: AOAM5305nIeeaDyV3m8N9lvN+Ez2cKRwLxm5JSkj4mbrf6NrXTdTNIT/
-        WzPnE36jYUDSxMgl6NGrxWRscg==
-X-Google-Smtp-Source: ABdhPJy+/m7HgoPinpwrhFYoHGR3jeRThmYkrgj1Js7jS1hKjj3aF+EFXbp2kYFpSB7gnDlz1TZdJg==
-X-Received: by 2002:a92:99ce:: with SMTP id t75mr16441201ilk.257.1605048133972;
-        Tue, 10 Nov 2020 14:42:13 -0800 (PST)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id e12sm38652ilq.65.2020.11.10.14.42.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2020 14:42:13 -0800 (PST)
-Subject: Re: [PATCH 00/13] Introduce seqnum_ops
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     corbet@lwn.net, keescook@chromium.org, gregkh@linuxfoundation.org,
-        peterz@infradead.org, rafael@kernel.org, lenb@kernel.org,
-        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
-        rric@kernel.org, valentina.manea.m@gmail.com, shuah@kernel.org,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, jmorris@namei.org,
-        serge@hallyn.com, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-edac@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-References: <cover.1605027593.git.skhan@linuxfoundation.org>
- <20201110204414.GA204624@rowland.harvard.edu>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <c58fde16-4bd1-0e1e-94ce-a15c359f9f91@linuxfoundation.org>
-Date:   Tue, 10 Nov 2020 15:42:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+        id S1731996AbgKJXtB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 18:49:01 -0500
+Received: from mail-03.mail-europe.com ([91.134.188.129]:59742 "EHLO
+        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbgKJXtB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 18:49:01 -0500
+Date:   Tue, 10 Nov 2020 23:48:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1605052137;
+        bh=QCQEYvzS954DA1XtnRB6bcr/J8KYUGWKdH/2S6xgIus=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=wG38k1ef0WfvbQFc5EvZn0IHciJJcF0BKD6GUAjYVy9mX/uA/xZwFS55phVo2YHp4
+         SebKqUtOX18cLo34PDUcWr7Ctt+gOtupqnVXTvZ4aZGI1PEq9vG5HJPGVjKw7k/5UJ
+         QHctJLjjuBY0b2Idm1ZZnSpiNWzUUpwrAGSO6a7U=
+To:     Mark Pearson <markpearson@lenovo.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "hadess@hadess.net" <hadess@hadess.net>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: [External] Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
+Message-ID: <uaE8WMqn_yPjB2GzTz-7JGy2CdMlfz9r2Hy_oQ_cg_fvvNw1mkTQERLWS9Q3m9LI-ohJyOCC4wHDmm5X_qtWwUVW7XKlU--gVN3GWHms2zE=@protonmail.com>
+In-Reply-To: <72b0fb0a-8007-d795-8b1a-68fa58231c23@lenovo.com>
+References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com> <20201110033124.3211-3-markpearson@lenovo.com> <2gY5rkKaKLKayk0DYW0lvZ_aIAs8vSf9FOy2obdGvph_7XcpyHlkafBTpW8RHKC5nEcEz_eY-s4pJtuR2ebltW2Fu10GRssTmMxKMuS4PU8=@protonmail.com> <72b0fb0a-8007-d795-8b1a-68fa58231c23@lenovo.com>
 MIME-Version: 1.0
-In-Reply-To: <20201110204414.GA204624@rowland.harvard.edu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/10/20 1:44 PM, Alan Stern wrote:
-> On Tue, Nov 10, 2020 at 12:53:26PM -0700, Shuah Khan wrote:
->> There are a number of atomic_t usages in the kernel where atomic_t api
->> is used strictly for counting sequence numbers and other statistical
->> counters and not for managing object lifetime.
->>
->> The purpose of these Sequence Number Ops is to clearly differentiate
->> atomic_t counter usages from atomic_t usages that guard object lifetimes,
->> hence prone to overflow and underflow errors.
->>
->> The atomic_t api provides a wide range of atomic operations as a base
->> api to implement atomic counters, bitops, spinlock interfaces. The usages
->> also evolved into being used for resource lifetimes and state management.
->> The refcount_t api was introduced to address resource lifetime problems
->> related to atomic_t wrapping. There is a large overlap between the
->> atomic_t api used for resource lifetimes and just counters, stats, and
->> sequence numbers. It has become difficult to differentiate between the
->> atomic_t usages that should be converted to refcount_t and the ones that
->> can be left alone. Introducing seqnum_ops to wrap the usages that are
->> stats, counters, sequence numbers makes it easier for tools that scan
->> for underflow and overflow on atomic_t usages to detect overflow and
->> underflows to scan just the cases that are prone to errors.
->>
->> Sequence Number api provides interfaces for simple atomic_t counter usages
->> that just count, and don't guard resource lifetimes. The seqnum_ops are
->> built on top of atomic_t api, providing a smaller subset of atomic_t
->> interfaces necessary to support atomic_t usages as simple counters.
->> This api has init/set/inc/dec/read and doesn't support any other atomic_t
->> ops with the intent to restrict the use of these interfaces as simple
->> counting usages.
->>
->> Sequence Numbers wrap around to INT_MIN when it overflows and should not
->> be used to guard resource lifetimes, device usage and open counts that
->> control state changes, and pm states. Overflowing to INT_MIN is consistent
->> with the atomic_t api, which it is built on top of.
-> 
-> If Sequence Numbers are subject to wraparound then they aren't reliable.
-> Given that they aren't reliable, why use atomic instructions at all?
-> Why not just use plain regular integers with READ_ONCE and WRITE_ONCE?
-> 
-
-You still need atomic update for these numbers. The intent is to provide
-atomic api for cases where the variable doesn't guard lifetimes and yet
-needs atomic instructions.
-
-Several such usages where atomic_t is used for up counting, also use
-upper bounds. It is also an option to switch to seqnum64 to avoid
-wrap around in case there is a concern.
-
-thanks,
--- Shuah
+Hi
 
 
+> [...]
+> >> +static char *profile_str[] =3D {
+> >
+> > Why is it not `const`?
+> My mistake. I will fix
+> >
+> >
+> >> +=09"Low-power",
+> >> +=09"Cool",
+> >> +=09"Quiet",
+> >> +=09"Balance",
+> >> +=09"Performance",
+> >> +=09"Unknown"
+> >
+> > "unknown" is not documented, yet it may be returned to userspace.
+> Ack - I'll look into if it's really needed, but it seemed sensible to
+> have it whilst doing the implementation.
+
+I don't advocate for its removal, just that it be documented if it may be
+returned to userspace.
+
+
+> >
+> >
+> >> +};
+> [...]
+> >> +#ifndef _PLATFORM_PROFILE_H_
+> >> +#define _PLATFORM_PROFILE_H_
+> >> +
+> >> +/*
+> >> + * If more options are added please update profile_str
+> >> + * array in platform-profile.c
+> >> + */
+> >> +
+> >> +enum profile_option {
+> >> +=09profile_low,
+> >> +=09profile_cool,
+> >> +=09profile_quiet,
+> >> +=09profile_balance,
+> >> +=09profile_perform,
+> >> +=09profile_unknown /* Must always be last */
+> >> +};
+> >
+> > Shouldn't these be prefixed by `platform_`? And I think it'd be better =
+to have
+> > `profile_unknown` as the first value in the enumeration.
+> I can add 'platform_'
+> I liked having profile_unknown as the last value as it makes scanning
+> from 'low' to 'unknown' more future proof if other profiles get added
+> (e.g in platform_profile_choices_show).
+> Is this something you feel strongly about?
+
+I don't feel strongly about it, just that right now, for all practical purp=
+oses
+`profile_unknown` feels like a first-class profile option in the current fo=
+rm of
+the patch, and it didn't seem right that it can just change. I'd do somethi=
+ng like
+```
+enum performance_profile_option {
+  performance_profile_unknown,
+  performance_profile_low,
+  ...
+  performance_profile_max, /* must be last */
+};
+```
+
+But I don't have a strong preference for either one of them. Maybe someone
+could chime in and tell us which one is more prevalent/preferred.
+
+And as a side note, I think you could put something like
+`static_assert(ARRAY_SIZE(profile_str) =3D=3D performance_profile_max);`
+in the code somewhere to make sure there are as many strings in the array a=
+s
+profile options.
+
+You might actually do the following as well:
+```
+static const char *profile_str[] =3D {
+  [performance_profile_unknown] =3D "unknown",
+  [performance_profile_low]     =3D "low",
+  ...
+};
+```
+
+I realize I might be a bit too paranoid here. :-) But if you do these three=
+ things,
+or something similar, then the chances of the enum and the array being out =
+of
+sync (by accident) will be very slim.
+
+
+> [...]
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
