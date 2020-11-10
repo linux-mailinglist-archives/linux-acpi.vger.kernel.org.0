@@ -2,23 +2,23 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 671742AD351
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1B2B2AD382
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:20:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726706AbgKJKRj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 05:17:39 -0500
-Received: from mail-02.mail-europe.com ([51.89.119.103]:41892 "EHLO
+        id S1726706AbgKJKUH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 05:20:07 -0500
+Received: from mail-02.mail-europe.com ([51.89.119.103]:41982 "EHLO
         mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726344AbgKJKRj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:17:39 -0500
+        with ESMTP id S1726690AbgKJKUH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:20:07 -0500
 Date:   Tue, 10 Nov 2020 10:15:35 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1605003454;
+        s=protonmail; t=1605003600;
         bh=hQly7mdUFe6QKrsqMJ4ERsdQsbqOi8MW5KLKpd3SIKM=;
         h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=V4cKUS7w/5TBndHhrxuzS18Bt1UAMDacZSbceqL4iVL1Yi/zmQ13keNfLxGaxUewe
-         GwIz7iZE9PpLow94v4RWWVGyaZUTniqxsLFH8ZmsxXwq5Rmg8e1GNQbwERbWR4zNHc
-         uvyn+GB50u9Wa694YzdbUsSNaH0gIyGj3xs0/YJs=
+        b=X0e007OBTYu+h56EICJbXKnCNcNRx7JeXvx5wbeSbMVd9vCHFOcpHwGnFiuHJQrEs
+         z112Ms4gBOWENKGgpWVmyjFKRwFpV+Rwp/TbqjMffIiXtCkGegzXVWQF7Kjoe9Xw9c
+         k5SprPw6WlP5cpBhtl4Y1WeJk6JeJiQO1+zzwSJU=
 To:     Mark Pearson <markpearson@lenovo.com>
 From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
