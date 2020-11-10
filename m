@@ -2,114 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A95052ADEA6
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 19:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 204C12ADEB9
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 19:50:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730174AbgKJSp2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 13:45:28 -0500
-Received: from mx2.suse.de ([195.135.220.15]:49622 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726307AbgKJSp2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Nov 2020 13:45:28 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 8ABCCABD1;
-        Tue, 10 Nov 2020 18:45:26 +0000 (UTC)
-Message-ID: <1605033925.14855.15.camel@suse.cz>
-Subject: Re: [PATCH 1/3] x86, sched: Calculate frequency invariance for AMD
- systems
-From:   Giovanni Gherdovich <ggherdovich@suse.cz>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jon Grimm <Jon.Grimm@amd.com>,
-        Nathan Fontenot <Nathan.Fontenot@amd.com>,
-        Yazen Ghannam <Yazen.Ghannam@amd.com>,
-        Thomas Lendacky <Thomas.Lendacky@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Pu Wen <puwen@hygon.cn>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Doug Smythies <dsmythies@telus.net>, x86@kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Date:   Tue, 10 Nov 2020 19:45:25 +0100
-In-Reply-To: <20201110094956.GZ2594@hirez.programming.kicks-ass.net>
-References: <20201110083936.31994-1-ggherdovich@suse.cz>
-         <20201110083936.31994-2-ggherdovich@suse.cz>
-         <20201110094956.GZ2594@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1730164AbgKJSuc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 13:50:32 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:35120 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726428AbgKJSuc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 13:50:32 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AAIhtQS121445;
+        Tue, 10 Nov 2020 18:49:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=wC2jbd2NkDz1nAFghaaz9PjGpzDIDHVMI1YpVUVpkYY=;
+ b=mDk3bgC77SfyTsIQJmoA4JjlK+ELV0wEf+2ALlkHf8NY161gdBZxGBHOYExrMjvufFeo
+ OopSm1adJ8Aesyn8ejvl+87ql2LgllSnVHTXjmYP8GNn63AYB4x8fKdDOCYsHs5joHiX
+ qzPixFaNPY9xtTFmDz8NCUvr1fD21rPU953PcFmPi5czUZAU0IP7f3ANi85nkvSEeDWT
+ qM+f3rjlv72E5qJZ+3J+8G9hBM7Pdjzno6nUG4jR80eC3UZLzxRgLWqUFXLiCOGYgqbo
+ QqwuiYoTzAHt8QkyZTOEOTKYKX1s2wTQlkhsEEgl4PGpJTU8kTKTuGf0EM4EseGZWe5n IA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 34nh3awgb5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 10 Nov 2020 18:49:28 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AAIjCpC145314;
+        Tue, 10 Nov 2020 18:49:28 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 34p55p04dn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 10 Nov 2020 18:49:27 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AAInIFC014602;
+        Tue, 10 Nov 2020 18:49:19 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 10 Nov 2020 10:49:18 -0800
+Date:   Tue, 10 Nov 2020 21:49:03 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>, rafael@kernel.org,
+        Will Deacon <will@kernel.org>, linux-kselftest@vger.kernel.org,
+        joel@joelfernandes.org, rric@kernel.org, shuah@kernel.org,
+        devel@driverdev.osuosl.org, minyard@acm.org, corbet@lwn.net,
+        surenb@google.com, linux-doc@vger.kernel.org,
+        linux-acpi@vger.kernel.org, lenb@kernel.org, tkjos@android.com,
+        arnd@arndb.de, bp@alien8.de,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        openipmi-developer@lists.sourceforge.net, mchehab@kernel.org,
+        maco@android.com, christian@brauner.io, linux-edac@vger.kernel.org,
+        tony.luck@intel.com, gregkh@linuxfoundation.org,
+        linux-kernel@vger.kernel.org, arve@android.com,
+        james.morse@arm.com, hridya@google.com, johannes@sipsolutions.net
+Subject: Re: [PATCH v3 00/11] Introduce Simple atomic counters
+Message-ID: <20201110184903.GG29398@kadam>
+References: <cover.1602209970.git.skhan@linuxfoundation.org>
+ <20201009193746.GA1073957@hirez.programming.kicks-ass.net>
+ <202010091255.246395A6@keescook>
+ <20201010110920.GQ2628@hirez.programming.kicks-ass.net>
+ <6e1dd408-653e-817e-b659-23649259a929@linuxfoundation.org>
+ <20201014091720.GC2628@hirez.programming.kicks-ass.net>
+ <202010141611.70B7A38@keescook>
+ <20201016105313.GJ2611@hirez.programming.kicks-ass.net>
+ <202010161541.6DD2D1E@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202010161541.6DD2D1E@keescook>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9801 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100129
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9801 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1011 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 impostorscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100129
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2020-11-10 at 10:49 +0100, Peter Zijlstra wrote:
-> On Tue, Nov 10, 2020 at 09:39:34AM +0100, Giovanni Gherdovich wrote:
+On Fri, Oct 16, 2020 at 03:51:25PM -0700, Kees Cook wrote:
+> On Fri, Oct 16, 2020 at 12:53:13PM +0200, Peter Zijlstra wrote:
+> > That's like saying: "I'm too lazy to track what I've looked at already".
+> > You're basically proposing to graffiti "Kees was here -- 16/10/2020" all
+> > over the kernel. Just so you can see where you still need to go.
+> > 
+> > It says the code was (assuming your audit was correct) good at that
+> > date, but has no guarantees for any moment after that.
 > 
-> > +#ifdef CONFIG_ACPI
-> > +void init_freq_invariance_cppc(void)
-> > +{
-> > +	init_freq_invariance(false, true);
-> > +
-> > +	if (static_branch_likely(&arch_scale_freq_key))
-> > +		on_each_cpu(init_counter_refs, NULL, 0);
-> > +}
-> > +#endif
-> > +
-> >  static void disable_freq_invariance_workfn(struct work_struct *work)
-> >  {
-> >  	static_branch_disable(&arch_scale_freq_key);
-> > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> > index 7a99b19bb893..e1969ff876ff 100644
-> > --- a/drivers/acpi/cppc_acpi.c
-> > +++ b/drivers/acpi/cppc_acpi.c
-> > @@ -39,6 +39,7 @@
-> >  #include <linux/ktime.h>
-> >  #include <linux/rwsem.h>
-> >  #include <linux/wait.h>
-> > +#include <linux/topology.h>
-> >  
-> >  #include <acpi/cppc_acpi.h>
-> >  
-> > @@ -850,6 +851,10 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
-> >  		goto out_free;
-> >  	}
-> >  
-> > +	/* Only needed once, so call on CPU0 */
-> > +	if (pr->id == 0)
-> > +		init_freq_invariance_cppc();
-> > +
-> 
-> This seems broken vs lovely things like booting with maxcpus= or
-> physical hotplug where you add logical CPUs.
+> That kind of bit-rot marking is exactly what I would like to avoid: just
+> putting a comment in is pointless. Making the expectations of the usage
+> become _enforced_ is the goal. And having it enforced by the _compiler_
+> is key. Just adding a meaningless attribute that a static checker
+> will notice some time and hope people fix them doesn't scale either
+> (just look at how many sparse warnings there are).
 
-Right.
+Most Sparse warnings are false positives.  People do actually fix the
+ones which matter.
 
-> 
-> Given the latter hunk limits it to one invocation (is phys_id 0
-> guaranteed to exist? Can a BIOS monkey screw us over?) only to then call
-> it on all CPUs, shouldn't this be changed to let
-> acpi_cppc_processor_probe() call it for every CPU that comes online?
+I think this patchset could be useful.  I'm working on a refcounting
+check for Smatch.  I want to warn about when we forget to drop a
+reference on an error path.  Right now I just assume that anything with
+"error", "drop" or "->stats->" in the name is just a counter.
 
-I sent a V2 that basically does that, it just makes sure that
-"init_freq_invariance(secondary=false)" is called only once (the first CPU
-that gets there), and init_counter_refs() instead is called by all.
-
-Which makes me think, I could make better use of the "secondary" argument
-to init_freq_invariance() and trim a couple of lines from
-init_freq_invariance_cppc().
-
-
-Giovanni
-
-
-
-
+regards,
+dan carpenter
 
