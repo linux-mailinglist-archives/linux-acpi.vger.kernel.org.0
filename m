@@ -2,149 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6285F2AE464
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 00:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C2922AE466
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 00:52:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731996AbgKJXtB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 18:49:01 -0500
-Received: from mail-03.mail-europe.com ([91.134.188.129]:59742 "EHLO
-        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbgKJXtB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 18:49:01 -0500
-Date:   Tue, 10 Nov 2020 23:48:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1605052137;
-        bh=QCQEYvzS954DA1XtnRB6bcr/J8KYUGWKdH/2S6xgIus=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=wG38k1ef0WfvbQFc5EvZn0IHciJJcF0BKD6GUAjYVy9mX/uA/xZwFS55phVo2YHp4
-         SebKqUtOX18cLo34PDUcWr7Ctt+gOtupqnVXTvZ4aZGI1PEq9vG5HJPGVjKw7k/5UJ
-         QHctJLjjuBY0b2Idm1ZZnSpiNWzUUpwrAGSO6a7U=
-To:     Mark Pearson <markpearson@lenovo.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
-        "eliadevito@gmail.com" <eliadevito@gmail.com>,
-        "hadess@hadess.net" <hadess@hadess.net>,
-        "bberg@redhat.com" <bberg@redhat.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "dvhart@infradead.org" <dvhart@infradead.org>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [External] Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
-Message-ID: <uaE8WMqn_yPjB2GzTz-7JGy2CdMlfz9r2Hy_oQ_cg_fvvNw1mkTQERLWS9Q3m9LI-ohJyOCC4wHDmm5X_qtWwUVW7XKlU--gVN3GWHms2zE=@protonmail.com>
-In-Reply-To: <72b0fb0a-8007-d795-8b1a-68fa58231c23@lenovo.com>
-References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com> <20201110033124.3211-3-markpearson@lenovo.com> <2gY5rkKaKLKayk0DYW0lvZ_aIAs8vSf9FOy2obdGvph_7XcpyHlkafBTpW8RHKC5nEcEz_eY-s4pJtuR2ebltW2Fu10GRssTmMxKMuS4PU8=@protonmail.com> <72b0fb0a-8007-d795-8b1a-68fa58231c23@lenovo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+        id S1726737AbgKJXwG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 18:52:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbgKJXwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 18:52:06 -0500
+Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21148C0613D1;
+        Tue, 10 Nov 2020 15:52:06 -0800 (PST)
+Received: by mail-oo1-xc43.google.com with SMTP id i13so3804oou.11;
+        Tue, 10 Nov 2020 15:52:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=GB/JzElEejU8yrYZtAAVnaWAqNt9nJf4JjQo87qrctE=;
+        b=uRikxKqNmTRirr6DL9KpUztoqyBeILPgqzAGtXOjW+WRCYT9k4FEhTlLx/8gVLhT0M
+         eghtZxBbruyN8Hq22tFSbmik93zsXF6O1sAheGsTP7hR9jycRFsuH5a3fvtKIqxofx+q
+         wl/LBJK2offvl1xDmkBdNATkA2sXNbrLPF5mHXrPCQqGpW1+eHID62LdvWQKIqV+uRXz
+         fa+Cr+wRDRcTS065o0IvX0S5LJojnp9gQOTiihwHDbFxb1MVyG199g/wyeDNtYwhx9qv
+         2F3oFXB5tLJM5PtbgrFn8UPhrAxjMah34YB1qjkXcOnuQfj7Qmd6wuqHy8FSmhwH+EZj
+         yhaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=GB/JzElEejU8yrYZtAAVnaWAqNt9nJf4JjQo87qrctE=;
+        b=LcQmV3CJpIyxk+8yJJ1PLhpxam8zkGPlmTEEUNbFmelH9Jvh8N1POxy9LV0WDncMFN
+         wu9u9GH1OIyUsgDg0ajWWYx2ABaxJ0fhL83R0+y5AV8w3K2aX8pl8Fo62PC7R2ebZbmD
+         f3r4l/ycRN/5c3rP+ZhL4/oYSiQwRHMqiZxOSPhQYzC8xstxRjKz5MotkZ/NuWVq9t9R
+         631WxtbY92fgwkBfqL1RMkLQO4i8M6S0mpGPoPDiXqtIVyix51hFJQ9K07DjeVJbx6Mp
+         ZMgzOX4c/OF/Gb2n6J+1V6yhn6sNyIZYWopHuT+SjdBqZoScAVf8FeXzADpYwbF0Eanz
+         KfbA==
+X-Gm-Message-State: AOAM531/lkPCiylrQzegJ1wKQA/QsPZiKE/raGpVCzRPbL7jIDDb3Y4W
+        S+nUZpItW5gSKkxqM37koeA=
+X-Google-Smtp-Source: ABdhPJwkzZk1/CkbSnMbjvKEfnnmpwOqLrp9jAxN7zRdaAK1669ckwYMaPWzLQ4vwATQGhrqv5JB5w==
+X-Received: by 2002:a4a:b188:: with SMTP id c8mr10121238ooo.61.1605052325293;
+        Tue, 10 Nov 2020 15:52:05 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l11sm110018oti.75.2020.11.10.15.52.04
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 10 Nov 2020 15:52:04 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH] ACPI: fan: Initialize performance state sysfs attribute
+Date:   Tue, 10 Nov 2020 15:52:01 -0800
+Message-Id: <20201110235201.76981-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+The following warning is reported if lock debugging is enabled.
 
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 1 PID: 1 at kernel/locking/lockdep.c:4617 lockdep_init_map_waits+0x141/0x222
+...
+Call Trace:
+ __kernfs_create_file+0x7a/0xd8
+ sysfs_add_file_mode_ns+0x135/0x189
+ sysfs_create_file_ns+0x70/0xa0
+ acpi_fan_probe+0x547/0x621
+ platform_drv_probe+0x67/0x8b
+ ...
 
-> [...]
-> >> +static char *profile_str[] =3D {
-> >
-> > Why is it not `const`?
-> My mistake. I will fix
-> >
-> >
-> >> +=09"Low-power",
-> >> +=09"Cool",
-> >> +=09"Quiet",
-> >> +=09"Balance",
-> >> +=09"Performance",
-> >> +=09"Unknown"
-> >
-> > "unknown" is not documented, yet it may be returned to userspace.
-> Ack - I'll look into if it's really needed, but it seemed sensible to
-> have it whilst doing the implementation.
+Dynamically allocated sysfs attributes need to be initialized to avoid
+the warning.
 
-I don't advocate for its removal, just that it be documented if it may be
-returned to userspace.
+Fixes: d19e470b6605 ("ACPI: fan: Expose fan performance state information")
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/acpi/fan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+index 62873388b24f..9cbe58e394d0 100644
+--- a/drivers/acpi/fan.c
++++ b/drivers/acpi/fan.c
+@@ -351,6 +351,7 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+ 		struct acpi_fan_fps *fps = &fan->fps[i];
+ 
+ 		snprintf(fps->name, ACPI_FPS_NAME_LEN, "state%d", i);
++		sysfs_attr_init(&fps->dev_attr.attr);
+ 		fps->dev_attr.show = show_state;
+ 		fps->dev_attr.store = NULL;
+ 		fps->dev_attr.attr.name = fps->name;
+-- 
+2.17.1
 
-> >
-> >
-> >> +};
-> [...]
-> >> +#ifndef _PLATFORM_PROFILE_H_
-> >> +#define _PLATFORM_PROFILE_H_
-> >> +
-> >> +/*
-> >> + * If more options are added please update profile_str
-> >> + * array in platform-profile.c
-> >> + */
-> >> +
-> >> +enum profile_option {
-> >> +=09profile_low,
-> >> +=09profile_cool,
-> >> +=09profile_quiet,
-> >> +=09profile_balance,
-> >> +=09profile_perform,
-> >> +=09profile_unknown /* Must always be last */
-> >> +};
-> >
-> > Shouldn't these be prefixed by `platform_`? And I think it'd be better =
-to have
-> > `profile_unknown` as the first value in the enumeration.
-> I can add 'platform_'
-> I liked having profile_unknown as the last value as it makes scanning
-> from 'low' to 'unknown' more future proof if other profiles get added
-> (e.g in platform_profile_choices_show).
-> Is this something you feel strongly about?
-
-I don't feel strongly about it, just that right now, for all practical purp=
-oses
-`profile_unknown` feels like a first-class profile option in the current fo=
-rm of
-the patch, and it didn't seem right that it can just change. I'd do somethi=
-ng like
-```
-enum performance_profile_option {
-  performance_profile_unknown,
-  performance_profile_low,
-  ...
-  performance_profile_max, /* must be last */
-};
-```
-
-But I don't have a strong preference for either one of them. Maybe someone
-could chime in and tell us which one is more prevalent/preferred.
-
-And as a side note, I think you could put something like
-`static_assert(ARRAY_SIZE(profile_str) =3D=3D performance_profile_max);`
-in the code somewhere to make sure there are as many strings in the array a=
-s
-profile options.
-
-You might actually do the following as well:
-```
-static const char *profile_str[] =3D {
-  [performance_profile_unknown] =3D "unknown",
-  [performance_profile_low]     =3D "low",
-  ...
-};
-```
-
-I realize I might be a bit too paranoid here. :-) But if you do these three=
- things,
-or something similar, then the chances of the enum and the array being out =
-of
-sync (by accident) will be very slim.
-
-
-> [...]
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
