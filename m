@@ -2,264 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3271E2AD072
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 08:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CFB2AD1C1
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 09:50:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbgKJH1X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 02:27:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46026 "EHLO mail.kernel.org"
+        id S1726825AbgKJIuN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 03:50:13 -0500
+Received: from m12-13.163.com ([220.181.12.13]:45301 "EHLO m12-13.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbgKJH1W (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Nov 2020 02:27:22 -0500
-Received: from coco.lan (ip5f5ad5a8.dynamic.kabel-deutschland.de [95.90.213.168])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB0E3206E3;
-        Tue, 10 Nov 2020 07:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604993241;
-        bh=S1o4qj80GoZoWAAm6f5WIdZgKYNgEyeuOMYKs01dOuI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TUH5+tNazhJ/XJzAl/Wd+cQEsRpNMchPxEmOCv92clZjPMpMMVpFOqsyNGQ8qQlVK
-         vt54VFkbwQr8J7ito6H7c5ALBnYlEng06bYHpBTDo7H35Y6tiYwfUYlrrC4pXGTnLL
-         ZqjZgHifCGhcsQ6FCeSyPXsZrR60Wop4+ME3S5hM=
-Date:   Tue, 10 Nov 2020 08:26:58 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Duplicated ABI entries - Was: Re: [PATCH v2 20/39] docs: ABI:
- testing: make the files compatible with ReST output
-Message-ID: <20201110082658.2edc1ab5@coco.lan>
-In-Reply-To: <20201108165621.4d0da3f4@archlinux>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
-        <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
-        <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
-        <20201030110925.3e09d59e@coco.lan>
-        <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
-        <20201102124641.GA881895@kroah.com>
-        <20201102154250.45bee17f@coco.lan>
-        <20201108165621.4d0da3f4@archlinux>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726827AbgKJIuN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Nov 2020 03:50:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=RlJkEVh6ttoD9PLkdU
+        x/BFTSSqOzHRhkDw0D+7d2ZHM=; b=Ysuz4Kx57/RpOr0szKluDKC62bIJym/Z52
+        UsH7LwHqim01saJ/Vp3ucP15FE0fF82llSU+tb4UCr4WAQOvTm3gWVTVuxOKlZ35
+        bPH4gvi44LWDm5YbT6VQGXEQkJUz1KDFrplxaTsw+7qpbBH8OVcw5vklkxcJ9LYO
+        gxasKILJQ=
+Received: from smtp.163.com (unknown [36.112.24.10])
+        by smtp9 (Coremail) with SMTP id DcCowADn5YFgUKpfa7B2Pw--.531S2;
+        Tue, 10 Nov 2020 16:33:38 +0800 (CST)
+From:   yaoaili126@163.com
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        linux-acpi@vger.kernel.org, stable@vger.kernel.org,
+        yangfeng1@kingsoft.com, yaoaili@kingsoft.com
+Subject: [PATCH] ACPI, APEI, Fix error return value in apei_map_generic_address()
+Date:   Tue, 10 Nov 2020 00:33:34 -0800
+Message-Id: <20201110083334.456893-1-yaoaili126@163.com>
+X-Mailer: git-send-email 2.9.5
+X-CM-TRANSID: DcCowADn5YFgUKpfa7B2Pw--.531S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrZr45Zr4UJw45Kr48ArW7XFb_yoW8JF45pF
+        W29ayYkr40kw48Kw4UAw1YvFy5uas3AFy2yr40kwnY9F15CF47Cryqvws093W5XF48K3yS
+        qFnrtFWYyayDAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jaNtsUUUUU=
+X-Originating-IP: [36.112.24.10]
+X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbiKwHYG1QHWcsR6wAAsS
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jonathan,
+From: Aili Yao <yaoaili@kingsoft.com>
 
-Em Sun, 8 Nov 2020 16:56:21 +0000
-Jonathan Cameron <jic23@kernel.org> escreveu:
+From commit 6915564dc5a8 ("ACPI: OSL: Change the type of
+acpi_os_map_generic_address() return value"),
+acpi_os_map_generic_address() will return logical address or NULL for
+error, but for ACPI_ADR_SPACE_SYSTEM_IO case, it should be also return 0
+as it's a normal case, but now it will return -ENXIO. So check it out for
+such case to avoid einj module initialization fail.
 
-> > PS.: the IIO subsystem is the one that currently has more duplicated
-> > ABI entries:  
-> > $ ./scripts/get_abi.pl validate 2>&1|grep iio
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  Documentation/ABI/testing/sysfs-bus-iio:394
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  Documentation/ABI/testing/sysfs-bus-iio:395
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  Documentation/ABI/testing/sysfs-bus-iio:396
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  Documentation/ABI/testing/sysfs-bus-iio:397
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  Documentation/ABI/testing/sysfs-bus-iio:398
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  Documentation/ABI/testing/sysfs-bus-iio:399
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
-> > Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
-> > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:0  Documentation/ABI/testing/sysfs-bus-iio:599
-> > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:36  Documentation/ABI/testing/sysfs-bus-iio:588
-> > Warning: /sys/bus/iio/devices/iio:deviceX/out_currentY_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als:43  Documentation/ABI/testing/sysfs-bus-iio-health-afe440x:38
-> > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
-> > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
-> > Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
-> > Warning: /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  Documentation/ABI/testing/sysfs-bus-iio:45  
+Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of
+acpi_os_map_generic_address() return value")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: James Morse <james.morse@arm.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
+---
+ drivers/acpi/apei/apei-base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> 
-> That was intentional.  Often these provide more information on the
-> ABI for a particular device than is present in the base ABI doc.
+diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+index 552fd9f..3294cc8 100644
+--- a/drivers/acpi/apei/apei-base.c
++++ b/drivers/acpi/apei/apei-base.c
+@@ -633,6 +633,10 @@ int apei_map_generic_address(struct acpi_generic_address *reg)
+ 	if (rc)
+ 		return rc;
+ 
++	/* IO space doesn't need mapping */
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO)
++		return 0;
++
+ 	if (!acpi_os_map_generic_address(reg))
+ 		return -ENXIO;
+ 
+-- 
+2.9.5
 
-FYI, right now, there are 20 duplicated entries, being 16 of them
-from IIO, on those files:
 
-	$ ./scripts/get_abi.pl validate 2>&1|perl -ne 'if (m,(Documentation/\S+)\:,g) { print "$1\n" }'|sort|uniq
-	Documentation/ABI/stable/sysfs-driver-w1_ds28e04
-	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8
-	Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
-	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
-	Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-	Documentation/ABI/testing/sysfs-bus-iio-icm42600
-	Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als
-	Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-	Documentation/ABI/testing/sysfs-class-backlight-adp8860
-	Documentation/ABI/testing/sysfs-class-led-trigger-pattern
-	Documentation/ABI/testing/sysfs-kernel-iommu_groups
-
-> 
-> A bit like when we have additional description for dt binding properties
-> for a particular device, even though they are standard properties.
-> 
-> Often a standard property allows for more values than the specific
-> one for a particular device.  There can also be obscuring coupling
-> between sysfs attributes due to hardware restrictions that we would
-> like to provide some explanatory info on.
-> 
-> I suppose we could add all this information to the parent doc but
-> that is pretty ugly and will make that doc very nasty to read.
-
-I understand what you meant to do, but right now, it is is actually
-a lot uglier than merging into a single entry ;-)
-
-Let's view ABI from the PoV of a system admin that doesn't know
-yet about a certain ABI symbol.
-
-He'll try to seek for the symbol, more likely using the HTML 
-documentation. Only very senior system admins might try to take
-a look at the Kernel.
-
-This is what happens when one would seek for a duplicated symbol
-via command line:
-
-	$ ./scripts/get_abi.pl search /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency$
-	
-	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency
-	----------------------------------------------------------
-	
-	Kernel version:		3.4.0
-	Contact:		linux-iio@vger.kernel.org
-	Defined on file(s):	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371 Documentation/ABI/testing/sysfs-bus-iio
-	
-	Description:
-	
-	Stores the PLL frequency in Hz for channel Y.
-	Reading returns the actual frequency in Hz.
-	The ADF4371 has an integrated VCO with fundamendal output
-	frequency ranging from 4000000000 Hz 8000000000 Hz.
-	
-	out_altvoltage0_frequency:
-	        A divide by 1, 2, 4, 8, 16, 32 or circuit generates
-	        frequencies from 62500000 Hz to 8000000000 Hz.
-	out_altvoltage1_frequency:
-	        This channel duplicates the channel 0 frequency
-	out_altvoltage2_frequency:
-	        A frequency doubler generates frequencies from
-	        8000000000 Hz to 16000000000 Hz.
-	out_altvoltage3_frequency:
-	        A frequency quadrupler generates frequencies from
-	        16000000000 Hz to 32000000000 Hz.
-	
-	Note: writes to one of the channels will affect the frequency of
-	all the other channels, since it involves changing the VCO
-	fundamental output frequency.
-	
-	Output frequency for channel Y in Hz. The number must always be
-	specified and unique if the output corresponds to a single
-	channel.
-
-As the "What:" field is identical on both sysfs-bus-iio-frequency-adf4371
-and sysfs-bus-iio, those entries are merged, which produces an ABI
-documentation mixing both the generic one and the board specific one
-into a single output.
-
-Worse than that, the "generic" content is at the end.
-
-The same happens when generating the HTML output.
-
-See, entries at the HTML output are ordered by the What: field,
-which is considered within the script as an unique key, as it is
-unique (except for IIO and a couple of other cases).
-
--
-
-As I commented on an e-mail I sent to Greg, I see a few ways
-to solve it.
-
-The most trivial one (which I used to solve a few conflicts on
-other places), is to place driver-specific details on a separate
-file under Documentation/driver-api, and mention it at the
-generic entries. The docs building system will generate cross
-references for Documentation/.../foo.rst files, so, everything
-should be OK.
-
-The second alternative that I also used on a couple of places
-is to modify the generic entry for it to contain the generic
-definition first, followed by per-device details.
-
-There is a third possible alternative: add a new optional field
-(something like Scope:) which would be part of the unique key,
-if present. Implementing support for it could be tricky, as the
-produced output would likely need to create cross-references
-between the generic field (if present) and the per-device details.
-
-Thanks,
-Mauro
-
-PS.: I'm taking a few days of PTO during this week. So, it
-could take a while for me to reply again to this thread.
