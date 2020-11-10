@@ -2,114 +2,412 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7839F2AD330
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 671742AD351
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:17:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgKJKKL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 05:10:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48358 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726428AbgKJKKL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:10:11 -0500
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAB3C0613CF;
-        Tue, 10 Nov 2020 02:10:09 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id 10so10994726pfp.5;
-        Tue, 10 Nov 2020 02:10:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UXw8lANWF+DcYrvXP88miW026AegfOsaawplpvjBxqE=;
-        b=cEMrRLXJk4TxfgLHrnJ0KtZ577dLW7PN6qJQObYGQRaea5tulrv+Q+aHNxg2HT7S5W
-         5CYUwE8bvpxhx1Ua+KmsO0Mwu4ZBO2VHhjtKRvJcNbYbKheP1D0H/KhEHypkPgPaVWky
-         siNtBarPoL1EOVi5TjZ1a944LKC3Dhab9zi58IzRgBtwKxmUdPERFg5Ri65GFYAN0QkK
-         2nCQ3EEq5YydCF9rASqVJfrlmgr7552w+yXW54+O/ffksYmfkcsasR11Kj2Wduch4QYI
-         IyowkfP3+1wX+jumWTkQevSkJ76eTVhgsZg5PSujtEUY0gS5tUPL4Mjjl6euM87l+1e/
-         /zpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UXw8lANWF+DcYrvXP88miW026AegfOsaawplpvjBxqE=;
-        b=V6Ub2lu54HPIroQSNObTst6dxSsdScI11JGeNYs5ycEDMQxFErWz6Xl4PFnX5oEenn
-         MQvvJBcSnlFQdkKTpTItE3DyaUwTgqIZV8hrFGvlZwY16IuammALlKEtoXhw+jj5yayW
-         y0vw4euOSjZKK0EYrDbepj0Wzegd369XmUVz6F8z8qOWTvyQz+30fck1L0+RPYd7UTq5
-         WD0igYqWr9qpXBbhINXtZ7jOdqS9f8GNOVy8WpaQreOx6fEBNTBt5DOT6d6peVpdtuvw
-         6aAPfFA7rf9z2Nkqi9W7Ytx83EOUUjSfa1qZxhOz4HEbwo2UCT5m++dGNxJz7sH/d7P9
-         RX7g==
-X-Gm-Message-State: AOAM532sDe0XnztIqVJmGbnPUMXLZ26cJf/aMp5C8qfxt/MyIP1mEqWl
-        25DcZ5uG9LuGgT38BEfc1EDnEQBsBZHvgkt4Oso=
-X-Google-Smtp-Source: ABdhPJx881zO2y+CaAaDgUOKp/Hn8wFf1KCQnm0amakLKef7zPJ3yRQ4utVIclEmizF+k3sh7fxjXfwqVCQfUKeyvRc=
-X-Received: by 2002:a17:90a:4816:: with SMTP id a22mr4416818pjh.228.1605003009064;
- Tue, 10 Nov 2020 02:10:09 -0800 (PST)
+        id S1726706AbgKJKRj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 05:17:39 -0500
+Received: from mail-02.mail-europe.com ([51.89.119.103]:41892 "EHLO
+        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726344AbgKJKRj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:17:39 -0500
+Date:   Tue, 10 Nov 2020 10:15:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1605003454;
+        bh=hQly7mdUFe6QKrsqMJ4ERsdQsbqOi8MW5KLKpd3SIKM=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=V4cKUS7w/5TBndHhrxuzS18Bt1UAMDacZSbceqL4iVL1Yi/zmQ13keNfLxGaxUewe
+         GwIz7iZE9PpLow94v4RWWVGyaZUTniqxsLFH8ZmsxXwq5Rmg8e1GNQbwERbWR4zNHc
+         uvyn+GB50u9Wa694YzdbUsSNaH0gIyGj3xs0/YJs=
+To:     Mark Pearson <markpearson@lenovo.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "hadess@hadess.net" <hadess@hadess.net>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
+Message-ID: <2gY5rkKaKLKayk0DYW0lvZ_aIAs8vSf9FOy2obdGvph_7XcpyHlkafBTpW8RHKC5nEcEz_eY-s4pJtuR2ebltW2Fu10GRssTmMxKMuS4PU8=@protonmail.com>
+In-Reply-To: <20201110033124.3211-3-markpearson@lenovo.com>
+References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com> <20201110033124.3211-3-markpearson@lenovo.com>
 MIME-Version: 1.0
-References: <20201105080014.45410-1-hdegoede@redhat.com> <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
- <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
-In-Reply-To: <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Nov 2020 12:10:57 +0200
-Message-ID: <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
-Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
- to instantiated i2c-clients
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Andy Shevchenko <andy@infradead.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 9, 2020 at 1:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> On 11/5/20 11:38 AM, Andy Shevchenko wrote:
-> > On Thu, Nov 5, 2020 at 10:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+Hi
 
-...
+I've added some questions and comments inline.
 
-> >> But before coming to the conclusion that i2c-multi-instantiate
-> >> would not work I had already written this series. Since this might
-> >> be useful for some other case in the future I'm sending this out
-> >> as a RFC now, mostly so that it gets added to the archives.
-> >
-> > I think they are in pretty good shape (only the 4th required a bit of
-> > attention).
->
-> FWIW I agree with the changes which you suggest for the 4th patch.
->
-> > Please, send as non-RFC and also Cc Heikki (just in case if he has
-> > comments wrt INT3515).
->
-> But do we really want to land these changes, while ATM we do not
-> really have any need for them ?  Esp. the
->
-> "platform/x86: i2c-multi-instantiate: Pass ACPI fwnode to instantiated I2C-clients"
->
-> Change is not without a chance of regressions. The acpi_device_is_first_physical_node()
-> behavior surprised me a bit while working on the BOSC0200 changes. So I'm not
-> 100% sure I have managed to see / think of all implications of this change.
 
-I think in general the direction to switch to fwnode is a good one. I
-was thinking about moving i2c core to use swnodes in which case they
-will utilize fwnode pointer. But it might have complications, you are
-right.
 
-> Heikki do you now (or in the near future) need access to the fwnode for
-> the TypeC controllers handled by the i2c-multi-instantiate code ?
->
-> Note that if we do decide to move forward with this set, it should probably
-> be merged in its entirety by Wolfram as it also makes i2c-core changes
-> (or Wolfram could just merge the i2c-core change and provide an immutable
-> branch for me to merge into pdx86/for-next.
->
-> And then your (Andy's) cleanup series can be applied on top of this once merged.
+2020. november 10., kedd 4:31 keltez=C3=A9ssel, Mark Pearson =C3=ADrta:
 
-Fine to me.
+> [...]
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
+ile.c
+> new file mode 100644
+> index 000000000000..3c460c0a3857
+> --- /dev/null
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -0,0 +1,172 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +/*
+> + *  platform_profile.c - Platform profile sysfs interface
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/printk.h>
+> +#include <linux/kobject.h>
+> +#include <linux/sysfs.h>
+> +#include <linux/init.h>
+> +#include <linux/fs.h>
+> +#include <linux/string.h>
+> +#include <linux/device.h>
+> +#include <linux/acpi.h>
+> +#include <linux/mutex.h>
+> +#include <acpi/acpi_bus.h>
+> +#include <linux/platform_profile.h>
 
--- 
-With Best Regards,
-Andy Shevchenko
+This should preferably be alphabetically sorted.
+
+
+> +
+> +struct platform_profile *cur_profile;
+
+This should be `static`.
+
+
+> +DEFINE_MUTEX(profile_lock);
+> +
+> +/* Ensure the first char of each profile is unique */
+
+I wholeheartedly disagree that only the first character should be considere=
+d.
+It is not future-proof, potentially subverts user expectation, and even wor=
+se,
+someone could rely on this (undocumented) behaviour.
+
+
+> +static char *profile_str[] =3D {
+
+Why is it not `const`?
+
+
+> +=09"Low-power",
+> +=09"Cool",
+> +=09"Quiet",
+> +=09"Balance",
+> +=09"Performance",
+> +=09"Unknown"
+
+"unknown" is not documented, yet it may be returned to userspace.
+
+
+> +};
+
+The documentation has the names in all-lowercase, and in my opinion it'd be
+better to use lowercase names here as well.
+
+
+> +
+> +static ssize_t platform_profile_choices_show(struct device *dev,
+> +=09=09=09=09=09struct device_attribute *attr,
+> +=09=09=09=09=09char *buf)
+> +{
+> +=09int i;
+> +=09int ret, count =3D 0;
+> +
+> +=09mutex_lock(&profile_lock);
+> +=09if (!cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -ENODEV;
+> +=09}
+> +
+> +=09if (!cur_profile->choices) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return snprintf(buf, PAGE_SIZE, "None");
+
+"None" is not documented anywhere as far as I can see, maybe an empty line
+would be better in this case?
+
+
+> +=09}
+> +
+> +=09for (i =3D profile_low; i < profile_unknown; i++) {
+> +=09=09if (cur_profile->choices & (1 << i)) {
+
+`BIT(i)`?
+
+
+> +=09=09=09ret =3D snprintf(buf+count, PAGE_SIZE, "%s ", profile_str[i]);
+
+You could use `sysfs_emit_at()`. `ret` is only used in this block, so it co=
+uld be
+defined here.
+
+
+> +=09=09=09if (ret < 0)
+> +=09=09=09=09break;
+
+However unlikely this case is, I'm not sure if providing partial values is
+better than not providing any data at all.
+
+
+> +=09=09=09count +=3D ret;
+> +=09=09}
+> +=09}
+> +=09mutex_unlock(&profile_lock);
+
+I think a newline character should be written at the end (possibly overwrit=
+ing
+the last space).
+
+
+> +=09return count;
+> +}
+> +
+> +static ssize_t platform_profile_show(struct device *dev,
+> +=09=09=09=09=09struct device_attribute *attr,
+> +=09=09=09=09=09char *buf)
+> +{
+> +=09enum profile_option profile =3D profile_unknown;
+> +
+> +=09mutex_lock(&profile_lock);
+> +=09if (!cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -ENODEV;
+> +=09}
+> +=09if (cur_profile->profile_get)
+> +=09=09profile =3D cur_profile->profile_get();
+
+I'd assume that `profile_get()` can return any arbitrary errno, which is th=
+en
+propagated to the "reader", but it seems that's not the case?
+I think returning `-EOPNOTSUPP` would be better if `profile_get` is NULL.
+
+
+> +=09mutex_unlock(&profile_lock);
+> +
+> +=09return snprintf(buf, PAGE_SIZE, "%s", profile_str[profile]);
+
+There is `sysfs_emit()`, as far as I know it is supposed to replace this ex=
+act
+snprintf(...) idiom. Directly indexing the `profile_str` with an unchecked
+value here is rather unsafe in my opinion.
+
+
+> +}
+> +
+> +static ssize_t platform_profile_store(struct device *dev,
+> +=09=09=09    struct device_attribute *attr,
+> +=09=09=09    const char *buf, size_t count)
+> +{
+> +=09enum profile_option profile;
+> +
+> +=09mutex_lock(&profile_lock);
+> +=09if (!cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -ENODEV;
+> +=09}
+> +
+> +=09/* Scan for a matching profile */
+> +=09for (profile =3D profile_low; profile < profile_unknown; profile++) {
+> +=09=09if (toupper(buf[0]) =3D=3D profile_str[profile][0])
+> +=09=09=09break;
+> +=09}
+> +=09if (profile =3D=3D profile_unknown) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -EINVAL;
+> +=09}
+> +
+> +=09if (cur_profile->profile_set)
+> +=09=09cur_profile->profile_set(profile);
+
+The return value is entirely discarded? I'd assume it's returned to the "wr=
+iter".
+I'm also not sure if ignoring if `profile_set` is NULL is the best course o=
+f
+action. Maybe returning `-EOPNOTSUPP` would be better?
+
+
+> +
+> +=09mutex_unlock(&profile_lock);
+> +=09return count;
+> +}
+> +
+> +static DEVICE_ATTR_RO(platform_profile_choices);
+> +static DEVICE_ATTR_RW(platform_profile);
+> +
+> +static struct attribute *platform_profile_attributes[] =3D {
+> +=09&dev_attr_platform_profile_choices.attr,
+> +=09&dev_attr_platform_profile.attr,
+> +=09NULL,
+> +};
+> +
+> +static const struct attribute_group platform_profile_attr_group =3D {
+> +=09.attrs =3D platform_profile_attributes,
+> +};
+
+It's a minor thing, but there is an `ATTRIBUTE_GROUPS()` macro which could =
+possibly
+simplify the above part.
+
+
+> +
+> +int platform_profile_notify(void)
+> +{
+> +=09if (!cur_profile)
+> +=09=09return -ENODEV;
+> +=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> +=09return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_notify);
+> +
+> +int platform_profile_register(struct platform_profile *pprof)
+> +{
+> +=09mutex_lock(&profile_lock);
+> +=09/* We can only have one active profile */
+> +=09if (cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -EEXIST;
+> +=09}
+> +=09cur_profile =3D pprof;
+> +=09mutex_unlock(&profile_lock);
+> +=09return sysfs_create_group(acpi_kobj, &platform_profile_attr_group);
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_register);
+> +
+> +int platform_profile_unregister(void)
+> +{
+> +=09mutex_lock(&profile_lock);
+> +=09sysfs_remove_group(acpi_kobj, &platform_profile_attr_group);
+> +=09cur_profile =3D NULL;
+> +=09mutex_unlock(&profile_lock);
+> +=09return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
+> +
+> +static int __init platform_profile_init(void)
+> +{
+> +=09cur_profile =3D NULL;
+
+If I'm not missing anything, `cur_profile` will be initialized to NULL, thu=
+s
+this is not needed.
+
+
+> +=09return 0;
+> +}
+> +
+> +static void platform_profile_exit(void)
+
+This should be marked `__exit`.
+
+
+> +{
+> +=09sysfs_remove_group(acpi_kobj, &platform_profile_attr_group);
+> +=09cur_profile =3D NULL;
+> +}
+> +
+> +MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
+> +MODULE_LICENSE("GPL");
+> +
+> +module_init(platform_profile_init);
+> +module_exit(platform_profile_exit);
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
+ofile.h
+> new file mode 100644
+> index 000000000000..347a12172c09
+> --- /dev/null
+> +++ b/include/linux/platform_profile.h
+> @@ -0,0 +1,36 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * platform_profile.h - platform profile sysfs interface
+> + *
+> + * See Documentation/ABI/testing/sysfs-platform_profile for more informa=
+tion.
+> + */
+> +
+> +#ifndef _PLATFORM_PROFILE_H_
+> +#define _PLATFORM_PROFILE_H_
+> +
+> +/*
+> + * If more options are added please update profile_str
+> + * array in platform-profile.c
+> + */
+> +
+> +enum profile_option {
+> +=09profile_low,
+> +=09profile_cool,
+> +=09profile_quiet,
+> +=09profile_balance,
+> +=09profile_perform,
+> +=09profile_unknown /* Must always be last */
+> +};
+
+Shouldn't these be prefixed by `platform_`? And I think it'd be better to h=
+ave
+`profile_unknown` as the first value in the enumeration.
+
+
+> +
+> +struct platform_profile {
+
+Personally, I think a name like platform_profile_(handler|provider)
+would be a better fit.
+
+
+> +=09unsigned int choices; /* bitmap of available choices */
+
+Most comments are capitalized.
+
+
+> +=09int cur_profile;      /* Current active profile */
+
+`cur_profile` field doesn't seem to be used here. I see that it's utilized =
+in the
+thinkpad_acpi driver, but I feel like this does not "belong" here.
+
+
+> +=09int (*profile_get)(void);
+> +=09int (*profile_set)(int profile);
+
+Why does it take an `int` instead of `enum profile_option`?
+
+
+> +};
+> +
+> +extern int platform_profile_register(struct platform_profile *pprof);
+> +extern int platform_profile_unregister(void);
+> +extern int platform_profile_notify(void);
+> +
+
+`extern` could be omitted from here. Although it seems rather "unregulated"
+whether `extern` is to be present in header files or not.
+
+
+> +#endif  /*_PLATFORM_PROFILE_H_*/
+> --
+> 2.28.0
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
+
