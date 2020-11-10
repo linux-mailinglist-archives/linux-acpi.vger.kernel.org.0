@@ -2,92 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B76F2AD321
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:05:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7839F2AD330
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:10:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbgKJKFP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 05:05:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
+        id S1726462AbgKJKKL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 05:10:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726756AbgKJKFP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:05:15 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A02C0613CF;
-        Tue, 10 Nov 2020 02:05:15 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id j5so6243347plk.7;
-        Tue, 10 Nov 2020 02:05:15 -0800 (PST)
+        with ESMTP id S1726428AbgKJKKL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:10:11 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAB3C0613CF;
+        Tue, 10 Nov 2020 02:10:09 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id 10so10994726pfp.5;
+        Tue, 10 Nov 2020 02:10:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Z8sRzW2c8RZd5QnVu3t+S6Fnb+20BTMVKuWncZbl1Mk=;
-        b=jBcpCAYC6h2D3GoGnFV9cBxCc9ihl/hQbJiRz6wM7XpT5AuSL0Fw4vcMyRRXe4AuQH
-         H9TaKMzjMht4L6+hGrbu2MI/U8zSfjxD1CNttqQRY2Kw18QCZo9Wc4iNtwNcEvIZcGCx
-         rU30zHzuvtrd3dkHAEiiDiDoTW7gxmatDRYMvUQddIxw3ON45/p1UtEHcHQIuXimvqvP
-         ncNt4SKNKprevnp2EjUITCnyw0xHPjcdLVLXWn2ezdO3EgYsMdDGx7WrT7J+RFQAqoB+
-         tklyy4ynp/oE0lWq4fNYpt+mJXkuLi+HMDpHV1rxAKINXzI1nGIoThcrW2Vt9cXPiZtd
-         a/yg==
+        bh=UXw8lANWF+DcYrvXP88miW026AegfOsaawplpvjBxqE=;
+        b=cEMrRLXJk4TxfgLHrnJ0KtZ577dLW7PN6qJQObYGQRaea5tulrv+Q+aHNxg2HT7S5W
+         5CYUwE8bvpxhx1Ua+KmsO0Mwu4ZBO2VHhjtKRvJcNbYbKheP1D0H/KhEHypkPgPaVWky
+         siNtBarPoL1EOVi5TjZ1a944LKC3Dhab9zi58IzRgBtwKxmUdPERFg5Ri65GFYAN0QkK
+         2nCQ3EEq5YydCF9rASqVJfrlmgr7552w+yXW54+O/ffksYmfkcsasR11Kj2Wduch4QYI
+         IyowkfP3+1wX+jumWTkQevSkJ76eTVhgsZg5PSujtEUY0gS5tUPL4Mjjl6euM87l+1e/
+         /zpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Z8sRzW2c8RZd5QnVu3t+S6Fnb+20BTMVKuWncZbl1Mk=;
-        b=CcxtVe3+L1nhqEtVc7D+qWwbFXsztMk8vISNnUR7riAo7tfeeS0l4nPryp81rC48CB
-         Su4CbDuyDOEIDabs1twPxgfzY89lYTwZUaOphdRUMBnFPbuML6FiG32u68xxb32SLTlb
-         0IwfcEn5j5UlwgC5naZ6Ey8c+LTmC/nhZen32BO21CmwznZ4HPzb/uLIDpPS57zNE3Wa
-         40iT9nuPKeshUkyR2dGkEuTwTOX9285RO6BqEYKxeSU4Ot+a2qaiGx6CIJ9YAhMB14QZ
-         kTs+MdKX+PA4LO86Tzzxh/GnC9A8wvRtBKl1raHi1gdcsSVC5aNelPwiGZ6VdBXscdYR
-         eQXg==
-X-Gm-Message-State: AOAM5315BFaPs5LRQReT2hdtZ/GsYhL6FNahlmil/gIb83bSja/KefQ4
-        hN5n6FQoU1fwz3qeUMvAYRmL0NYVXOinpdykpdUWj+OtG78=
-X-Google-Smtp-Source: ABdhPJz7EIDi7TpkeQVyGVIaKm597GLSUIoxNxMS0YZWUcXbvLj9JjlGRtGw5Mlby0VhEpyewymJxDmNj7/gjUPHbmM=
-X-Received: by 2002:a17:902:6bc8:b029:d6:d9d:f28c with SMTP id
- m8-20020a1709026bc8b02900d60d9df28cmr265438plt.17.1605002714599; Tue, 10 Nov
- 2020 02:05:14 -0800 (PST)
+        bh=UXw8lANWF+DcYrvXP88miW026AegfOsaawplpvjBxqE=;
+        b=V6Ub2lu54HPIroQSNObTst6dxSsdScI11JGeNYs5ycEDMQxFErWz6Xl4PFnX5oEenn
+         MQvvJBcSnlFQdkKTpTItE3DyaUwTgqIZV8hrFGvlZwY16IuammALlKEtoXhw+jj5yayW
+         y0vw4euOSjZKK0EYrDbepj0Wzegd369XmUVz6F8z8qOWTvyQz+30fck1L0+RPYd7UTq5
+         WD0igYqWr9qpXBbhINXtZ7jOdqS9f8GNOVy8WpaQreOx6fEBNTBt5DOT6d6peVpdtuvw
+         6aAPfFA7rf9z2Nkqi9W7Ytx83EOUUjSfa1qZxhOz4HEbwo2UCT5m++dGNxJz7sH/d7P9
+         RX7g==
+X-Gm-Message-State: AOAM532sDe0XnztIqVJmGbnPUMXLZ26cJf/aMp5C8qfxt/MyIP1mEqWl
+        25DcZ5uG9LuGgT38BEfc1EDnEQBsBZHvgkt4Oso=
+X-Google-Smtp-Source: ABdhPJx881zO2y+CaAaDgUOKp/Hn8wFf1KCQnm0amakLKef7zPJ3yRQ4utVIclEmizF+k3sh7fxjXfwqVCQfUKeyvRc=
+X-Received: by 2002:a17:90a:4816:: with SMTP id a22mr4416818pjh.228.1605003009064;
+ Tue, 10 Nov 2020 02:10:09 -0800 (PST)
 MIME-Version: 1.0
-References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com>
- <20201110033124.3211-4-markpearson@lenovo.com>
-In-Reply-To: <20201110033124.3211-4-markpearson@lenovo.com>
+References: <20201105080014.45410-1-hdegoede@redhat.com> <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
+ <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
+In-Reply-To: <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Nov 2020 12:06:03 +0200
-Message-ID: <CAHp75VePnNAmiOHKpLui3J_nh6_qVsbEGB4rjEAnFVhxkxbGsg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] platform/x86: thinkpad_acpi: Add platform profile support
-To:     Mark Pearson <markpearson@lenovo.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>,
+Date:   Tue, 10 Nov 2020 12:10:57 +0200
+Message-ID: <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
+Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
+ to instantiated i2c-clients
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Mark Gross <mgross@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Benjamin Berg <bberg@redhat.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy@infradead.org>,
         Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Darren Hart <dvhart@infradead.org>
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 5:34 AM Mark Pearson <markpearson@lenovo.com> wrote:
->
-> Add support to thinkpad_acpi for Lenovo platforms that have DYTC
-> version 5 support or newer to use the platform profile feature.
->
-> This will allow users to determine and control the platform modes
-> between low-power, balanced operation and performance modes.
+On Mon, Nov 9, 2020 at 1:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> On 11/5/20 11:38 AM, Andy Shevchenko wrote:
+> > On Thu, Nov 5, 2020 at 10:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
 
 ...
 
-> +#if defined(CONFIG_ACPI_PLATFORM_PROFILE)
-> +               platform_profile_unregister();
-> +#endif
-> +               dytc_available = false;
+> >> But before coming to the conclusion that i2c-multi-instantiate
+> >> would not work I had already written this series. Since this might
+> >> be useful for some other case in the future I'm sending this out
+> >> as a RFC now, mostly so that it gets added to the archives.
+> >
+> > I think they are in pretty good shape (only the 4th required a bit of
+> > attention).
+>
+> FWIW I agree with the changes which you suggest for the 4th patch.
+>
+> > Please, send as non-RFC and also Cc Heikki (just in case if he has
+> > comments wrt INT3515).
+>
+> But do we really want to land these changes, while ATM we do not
+> really have any need for them ?  Esp. the
+>
+> "platform/x86: i2c-multi-instantiate: Pass ACPI fwnode to instantiated I2C-clients"
+>
+> Change is not without a chance of regressions. The acpi_device_is_first_physical_node()
+> behavior surprised me a bit while working on the BOSC0200 changes. So I'm not
+> 100% sure I have managed to see / think of all implications of this change.
 
-> +#if defined(CONFIG_ACPI_PLATFORM_PROFILE)
-> +                       dytc_profile_refresh();
-> +#endif
+I think in general the direction to switch to fwnode is a good one. I
+was thinking about moving i2c core to use swnodes in which case they
+will utilize fwnode pointer. But it might have complications, you are
+right.
 
-Better to use (e.g. test coverage) if (IS_BUILTIN()) / if (IS_ENABLE()) / etc.
+> Heikki do you now (or in the near future) need access to the fwnode for
+> the TypeC controllers handled by the i2c-multi-instantiate code ?
+>
+> Note that if we do decide to move forward with this set, it should probably
+> be merged in its entirety by Wolfram as it also makes i2c-core changes
+> (or Wolfram could just merge the i2c-core change and provide an immutable
+> branch for me to merge into pdx86/for-next.
+>
+> And then your (Andy's) cleanup series can be applied on top of this once merged.
+
+Fine to me.
 
 -- 
 With Best Regards,
