@@ -2,275 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0E82AD3A5
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 11:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E26072AD483
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 12:14:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726344AbgKJKZe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 05:25:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbgKJKZd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 05:25:33 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A4FC0613CF;
-        Tue, 10 Nov 2020 02:25:32 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id 10so11028827pfp.5;
-        Tue, 10 Nov 2020 02:25:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=niga6ecIez4/CTrWY1D2m+YLWeUqIwGeKCtJmF4vVAg=;
-        b=im83aAxNXiHZ9xQwNtMnvw2gsF/qjGRyH0HZUb1KVsLLl/1oLUwlTXaE9pRe2z2lbZ
-         FYthwjEVnVN5i8cTaoB0iZ81qKrdWbgN1sNqosS3FtvAc8Vlv7EQDQSaXOAEFk7V2dkj
-         9rxFaEpbNqwVTuHKnlfHevxaFiuU21hydEmk/62k4JlxASd6CV9BYT64hzX/SdBBxoSw
-         jXQTG9uORIE9wAEf6945w4mMlkP6rbt66OX2umMrOCZutltj4eTVfSfeBzU9D6D+QreW
-         IRybS/9Gbe0RCUl/0pUhEmPkkNiTV0C+RxjwKWHkj9GwsgRau1KrR4fVEC/ziEHZ+x3g
-         lrMA==
+        id S1726219AbgKJLOO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 06:14:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:22678 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727731AbgKJLOO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Nov 2020 06:14:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605006852;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KSRgJhJ11sB2/cPXZUjjpmXqMXC4MjGNNoT6xUrnnGo=;
+        b=V8r5Y7JkiqzXTQmjZG+V71XHiI5HLzqxWuDSbfLsbPXXOT0XiuyE0yR6f73Ez7pKOwQHEt
+        8uJtF0RbD5Q+mamGWHwIvdZaa0KEeyXOApUARJRPmgeF6T8lP07EPJfkLNblCTYkv3e3CN
+        ej0IWJkN4bbfhO0Zg/lVt32w1BGxxTw=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-80-SqHKOaKcOheeTQCRZ2ks2A-1; Tue, 10 Nov 2020 06:14:10 -0500
+X-MC-Unique: SqHKOaKcOheeTQCRZ2ks2A-1
+Received: by mail-ed1-f70.google.com with SMTP id b16so4057941edn.6
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 03:14:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=niga6ecIez4/CTrWY1D2m+YLWeUqIwGeKCtJmF4vVAg=;
-        b=G5MOyNYPj55vvwBz8DacPvygqSu5UjNGAu2HT1BkjmxGjRSj6GHsGQKYMfdPvGLIYN
-         MQ+BB3xyCvtaWErBrGZVR7k8Mvqy9FDAwKb04liBufvnrDt8jiBduKhOQ3oyQKM5Hi3P
-         F9puzrj3WuGfqKECHVWkcGUG2IZrXTYSRtSSDXqP3dXk0v1PNAAIaYLEZjRIWAfgfev3
-         5QdCXZ9sgRbViXvL625EuK1aTB7CGlN9npjjpvW57bJ0ky8UJsPBXNWHQKjvMO+04Lj7
-         B2PxuUZ4g2r34bsi6U4XuFKroIs27t/PyiK7niSntIpVeox/au5ycrarzp6PPl/mDo3A
-         oEng==
-X-Gm-Message-State: AOAM533xq3zGqdGTavSZ5f6/yAYmjRElT5NDudfBpgWjGLyCD39wJXN4
-        BOKRGlAzvj0ibWhUNQxhRpj3Z0mDqYh+eHJXwsY=
-X-Google-Smtp-Source: ABdhPJzrJcuOzfxnFaHZJ+6DkRZv3ZN+jklVWsy9pTAhqOXiz8ZzpIleRahQjFiK/KBX1KuOcdrUHhYXou9M/tR5R4g=
-X-Received: by 2002:a62:343:0:b029:15c:e33c:faff with SMTP id
- 64-20020a6203430000b029015ce33cfaffmr17171093pfd.7.1605003931630; Tue, 10 Nov
- 2020 02:25:31 -0800 (PST)
-MIME-Version: 1.0
-References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com>
- <20201110033124.3211-3-markpearson@lenovo.com>
-In-Reply-To: <20201110033124.3211-3-markpearson@lenovo.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 10 Nov 2020 12:26:16 +0200
-Message-ID: <CAHp75VcPaZu3S6Sb-Zr3GFokxASWrD7hcOhBA0UA4frC1C5XAg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
-To:     Mark Pearson <markpearson@lenovo.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=KSRgJhJ11sB2/cPXZUjjpmXqMXC4MjGNNoT6xUrnnGo=;
+        b=hXi+UAJVFkiV7c134B8lKpX8N25+6D567Qcl3z9m7W+A6lScrnN+yaGdf2x8vpR9M4
+         sgqFAfr4IEA1eYK9CqAVs2ZL3Fm4+Oe/dDsLfpBbli9bzlL4BkzzSrknOWzrcfKkMrMT
+         t1Jfqja1Drqd1zr77rqIy6NTgmHKFyn4SCLhWN8t7MGDpxv/9d9jFI3dGnE9pSA24pFr
+         wPWVTqsCh2Ah9SoS95b9X38mOUDbaUmZ1A3U5rXu5NT59O/4CHWjijGSsDCnS5r7hQ4M
+         SXkirEHWJN28bfNe2x2w1wYw3l3oH2Xgo5DM/a7E8AoraMPog85Nm5oX7aqNxYikge+n
+         ovFQ==
+X-Gm-Message-State: AOAM531sOOKjTtlPNYDqD3B6YvTaN6s48MGEEH4Zgyl9qK7MC9L45no6
+        UfEJ+HK68pCf/4AxWlja8J8qGpvmiddbpjfSVy3aIPmOWggePwmyplO0kPGH9tr8BW63RABnuSM
+        8IZeqqD2EIe94PJjCnhHPhHrvRYH0AUWWtY00s9VllcwVzyW8ABiVg93cMw2uvkj2jsKoAiW2sA
+        ==
+X-Received: by 2002:a17:906:a011:: with SMTP id p17mr19275590ejy.119.1605006849043;
+        Tue, 10 Nov 2020 03:14:09 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwNFy44Mt7CgCugrOz/HHD+C1M8/EzbalGRpxP8nbod7NlLvFWdFQfShKqtm1bpvQoSbFdYQQ==
+X-Received: by 2002:a17:906:a011:: with SMTP id p17mr19275567ejy.119.1605006848827;
+        Tue, 10 Nov 2020 03:14:08 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id l16sm10213992ejd.70.2020.11.10.03.14.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2020 03:14:08 -0800 (PST)
+Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
+ to instantiated i2c-clients
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Mark Gross <mgross@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Benjamin Berg <bberg@redhat.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy@infradead.org>,
         Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Darren Hart <dvhart@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20201105080014.45410-1-hdegoede@redhat.com>
+ <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
+ <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
+ <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <6345eeb9-8416-3e7c-e619-632b5d4abbbd@redhat.com>
+Date:   Tue, 10 Nov 2020 12:14:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
+MIME-Version: 1.0
+In-Reply-To: <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 5:35 AM Mark Pearson <markpearson@lenovo.com> wrote:
->
-> This is the initial implementation of the platform-profile feature.
-> It provides the details discussed and outlined in the
-> sysfs-platform_profile document.
->
-> Many modern systems have the ability to modify the operating profile to
-> control aspects like fan speed, temperature and power levels. This
-> module provides a common sysfs interface that platform modules can register
-> against to control their individual profile options.
+Hi,
 
-...
+On 11/10/20 11:10 AM, Andy Shevchenko wrote:
+> On Mon, Nov 9, 2020 at 1:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>> On 11/5/20 11:38 AM, Andy Shevchenko wrote:
+>>> On Thu, Nov 5, 2020 at 10:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+> 
+> ...
+> 
+>>>> But before coming to the conclusion that i2c-multi-instantiate
+>>>> would not work I had already written this series. Since this might
+>>>> be useful for some other case in the future I'm sending this out
+>>>> as a RFC now, mostly so that it gets added to the archives.
+>>>
+>>> I think they are in pretty good shape (only the 4th required a bit of
+>>> attention).
+>>
+>> FWIW I agree with the changes which you suggest for the 4th patch.
+>>
+>>> Please, send as non-RFC and also Cc Heikki (just in case if he has
+>>> comments wrt INT3515).
+>>
+>> But do we really want to land these changes, while ATM we do not
+>> really have any need for them ?  Esp. the
+>>
+>> "platform/x86: i2c-multi-instantiate: Pass ACPI fwnode to instantiated I2C-clients"
+>>
+>> Change is not without a chance of regressions. The acpi_device_is_first_physical_node()
+>> behavior surprised me a bit while working on the BOSC0200 changes. So I'm not
+>> 100% sure I have managed to see / think of all implications of this change.
+> 
+> I think in general the direction to switch to fwnode is a good one. I
+> was thinking about moving i2c core to use swnodes in which case they
+> will utilize fwnode pointer. But it might have complications, you are
+> right.
 
-> +config ACPI_PLATFORM_PROFILE
-> +       tristate "ACPI Platform Profile Driver"
-> +       default y
-> +       help
-> +         This driver adds support for platform-profiles on platforms that
-> +         support it.
-> +
-> +         Platform-profiles can be used to control the platform behaviour. For
-> +         example whether to operate in a lower power mode, in a higher
-> +         power performance mode or between the two.
-> +
-> +         This driver provides the sysfs interface and is used as the registration
-> +         point for platform specific drivers.
-> +
-> +         Which profiles are supported is determined on a per-platform basis and
-> +         should be obtained from the platform specific driver.
+So do you agree to just keep this series in the archives (in case we need
+it later) for now ? Or would you still like me to post a non RFC version ?
 
-> +
-> +
+Regards,
 
-None of the blank lines is enough. But can you consider to find
-perhaps better place (I imply some logical group of options in the
-file).
+Hans
 
-...
-
->  obj-$(CONFIG_ACPI_SPCR_TABLE)  += spcr.o
->  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
->  obj-$(CONFIG_ACPI_PPTT)        += pptt.o
-> +obj-$(CONFIG_ACPI_PLATFORM_PROFILE)    += platform_profile.o
-
-...yes, and this becomes consistent with the above.
-
-...
-
-> +/*
-> + *  platform_profile.c - Platform profile sysfs interface
-> + */
-
-One line. PLease, don't put the file name into the file. If we want to
-rename it, it will give additional churn and as shown in practice
-people often forget this change to follow.
-
-...
-
-> +#include <linux/module.h>
-> +#include <linux/printk.h>
-> +#include <linux/kobject.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/init.h>
-> +#include <linux/fs.h>
-> +#include <linux/string.h>
-> +#include <linux/device.h>
-> +#include <linux/acpi.h>
-> +#include <linux/mutex.h>
-> +#include <acpi/acpi_bus.h>
-> +#include <linux/platform_profile.h>
-
-Perhaps sorted?
-Why do you need a specific acpi_bus.h? I thought acpi.h includes it already, no?
-
-...
-
-> +struct platform_profile *cur_profile;
-
-Better naming since it's a global variable.
-Is it supposed to be exported to modules?
-
-...
-
-> +DEFINE_MUTEX(profile_lock);
-
-No static?
-
-...
-
-> +/* Ensure the first char of each profile is unique */
-> +static char *profile_str[] = {
-
-static const char * const profile_names[]
-
-Also naming (perhaps like I proposed above?).
-
-> +       "Low-power",
-> +       "Cool",
-> +       "Quiet",
-> +       "Balance",
-> +       "Performance",
-
-> +       "Unknown"
-
-Leave the comma here.
-
-> +};
-
-...
-
-> +       int i;
-> +       int ret, count = 0;
-
-count AFAICS should be size_t (or ssize_t).
-Can you make them in reversed xmas tree order?
-
-...
-
-> +       return snprintf(buf, PAGE_SIZE, "%s", profile_str[profile]);
-
-Nowadays we have sysfs_emit(), use it.
-
-...
-
-> +       /* Scan for a matching profile */
-> +       for (profile = profile_low; profile < profile_unknown; profile++) {
-> +               if (toupper(buf[0]) == profile_str[profile][0])
-> +                       break;
-> +       }
-
-match_string() / sysfs_match_string() ?
-
-...
-
-> +static struct attribute *platform_profile_attributes[] = {
-> +       &dev_attr_platform_profile_choices.attr,
-> +       &dev_attr_platform_profile.attr,
-
-> +       NULL,
-
-Drop comma in terminator line.
-
-> +};
-
-...
-
-> +module_init(platform_profile_init);
-> +module_exit(platform_profile_exit);
-
-Attach them to respective functions.
-
-...
-
-> +/*
-> + * platform_profile.h - platform profile sysfs interface
-
-No file name.
-
-> + *
-> + * See Documentation/ABI/testing/sysfs-platform_profile for more information.
-> + */
-
-...
-
-> +/*
-> + * If more options are added please update profile_str
-> + * array in platform-profile.c
-> + */
-
-Kernel doc?
-
-> +enum profile_option {
-> +       profile_low,
-> +       profile_cool,
-> +       profile_quiet,
-> +       profile_balance,
-> +       profile_perform,
-
-> +       profile_unknown /* Must always be last */
-
-Comment is semi-useless. Comma at the end (or its absence) is usually
-enough to give a clue, but okay, comment makes this explicit.
-
-...
-
-> +struct platform_profile {
-> +       unsigned int choices; /* bitmap of available choices */
-> +       int cur_profile;      /* Current active profile */
-
-Kernel doc?
-
-> +       int (*profile_get)(void);
-> +       int (*profile_set)(int profile);
-> +};
-
-...
-
-> +extern int platform_profile_register(struct platform_profile *pprof);
-> +extern int platform_profile_unregister(void);
-> +extern int platform_profile_notify(void);
-
-extern is not needed.
-
--- 
-With Best Regards,
-Andy Shevchenko
