@@ -2,218 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E30B2ADC4B
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 17:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23CC02ADD64
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 18:50:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730232AbgKJQno (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 11:43:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730108AbgKJQno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 11:43:44 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 046D1C0613CF
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 08:43:44 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id 33so13385474wrl.7
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 08:43:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=VjwgR6IegN0z1NgSz9sFMF8qxZSIVhoD/xcsqEVjbjk=;
-        b=hRDbxVtP8Bios4GvyB/JdFEuyInSAcr/KlNtotz6w15n8CkE/fDJLM5f8Hz0dwJc+W
-         C20pXtLJNa5m/C4yl2wP44s4TWAX60FeWMtnzVfobdd4hy5BjulDIcn7+sNLGMPyOATH
-         OFVK9Diwgd1OWNWx3wE3KFK1ywp/Owqf23SWIIn2wuwzJV30ljm+FJwIVfF/gPKkk+sC
-         ghynYm/HCo7Kjf67Fv7vgwMWYXqqKzFlfllcDivrEPqDng/lH7nJE/FpxtwLYhKIMvd0
-         sTGllGmbLr3xhBijPQsL7SRbLveBFwNvZclLiW9k4hrpmDq9IFcmY8cAYOTeIxiVqxGs
-         PrDQ==
+        id S1730788AbgKJRup (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 12:50:45 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:45923 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729630AbgKJRup (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 12:50:45 -0500
+Received: by mail-oi1-f196.google.com with SMTP id j7so15304533oie.12;
+        Tue, 10 Nov 2020 09:50:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=VjwgR6IegN0z1NgSz9sFMF8qxZSIVhoD/xcsqEVjbjk=;
-        b=Epx/U/VMLmwy5KVXWTp5NVeEKEkmBfbz9uUyu9FiPZA8fpsyPXztsuOkViJXMyM5E9
-         6smoj08i6PfFHktOt5yWziiPgPy3LmsL/Ax+/wPtCtsfu9F8LLc5vlfVVwhRFVdjl42s
-         tu22zy/YT9ym3YuaCzhPlhZ7Xkb4Vqu0yBvJezHamcFwdRMxDs2nU1KqWgGpilTajPfz
-         kZfyh0OPXCQLgofvH9QiU54juqFLPbhoUARX1Tg0TTbdU5hDC0geHoXQJAhtVaNjDg41
-         YsSOfvb77iuPUCthTEMmfc7UC+JMcxODFmlrtR0iVcmY1x6oqlfdvX9WuujY1J2MaCsS
-         BP2Q==
-X-Gm-Message-State: AOAM531EFG89smsHqHCT1VjglKetdOgu7m6AGuJwCMbJxML3J3QzyWoh
-        FfXPB8t81qBt8dD5fEs6stwScw==
-X-Google-Smtp-Source: ABdhPJxjl5TWwjIq/qIhSHNeR2tjI0GfyAcylwfdltw5FFUB3qolv2WQE7bUWpljss9gPnIxtzgV/Q==
-X-Received: by 2002:a5d:5752:: with SMTP id q18mr23918165wrw.176.1605026622750;
-        Tue, 10 Nov 2020 08:43:42 -0800 (PST)
-Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id n123sm3272268wmn.38.2020.11.10.08.43.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2020 08:43:42 -0800 (PST)
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     ast@kernel.org, daniel@iogearbox.net
-Cc:     bpf@vger.kernel.org, kafai@fb.com, songliubraving@fb.com,
-        yhs@fb.com, andriin@fb.com, john.fastabend@gmail.com,
-        kpsingh@chromium.org,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Jiri Olsa <jolsa@redhat.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH bpf-next v3 1/7] tools: Factor HOSTCC, HOSTLD, HOSTAR definitions
-Date:   Tue, 10 Nov 2020 17:43:05 +0100
-Message-Id: <20201110164310.2600671-2-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201110164310.2600671-1-jean-philippe@linaro.org>
-References: <20201110164310.2600671-1-jean-philippe@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KK1FDCmdwdfvxqO791W8Q84+D6lSjpER05CHZff/fQs=;
+        b=gMvfahDCmtHgqlct+4rbSs0WSBIDxhU9Tu68uQ0unuGrJGAJRQcEzXiCFTQTmFSIik
+         ZB0aRWmIZOa8BUuKeD8jyR9MS/z8c+FE3sDQ+WfoUYbi0Fh1gRx/ki8uQcj04IYrbDmj
+         z7aQDrCZfDeGs7CCiohKybSeaOWDdM8vaz3JUbEGutXogxPY/6ow+gMnzG/Fw/GIarWf
+         NXS7MAHGaEg/ELDhzmtK/qWraqIMYKPNOzRSWjwrqGX4voNEWJldWu1cDt4/XgwwjVcA
+         WjxYhR1R8nkFhmDxhZ9M0mnFXPZjdUpB6J6q3awc+qakmr43N2B+ZmunARA2h7hYFDis
+         R/Rw==
+X-Gm-Message-State: AOAM530nJ099szHcHvMo1YdDhweluIKqtW+E84UdJFDUoUnSh2ETZhy4
+        LF6CG8/BQ5UUwHEQhTRVdigUtGhxWXGcA07adOH0B/YW
+X-Google-Smtp-Source: ABdhPJyObWDok1yrGBZMArZ5kaaLv96DnwKwvTrRko4zOcN8h+AdOW63Sv6U27UJnBwdtwYUqC3e7CiZsj+n5rE/2+I=
+X-Received: by 2002:aca:1c0b:: with SMTP id c11mr151372oic.71.1605030643896;
+ Tue, 10 Nov 2020 09:50:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201110130338.143077-1-f.suligoi@asem.it>
+In-Reply-To: <20201110130338.143077-1-f.suligoi@asem.it>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 10 Nov 2020 18:50:32 +0100
+Message-ID: <CAJZ5v0j24AngG5Jx6BAH+XE4APa0SAQHGZ2tnMgeyvc4hnkrHg@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: ACPI: fix spelling mistakes
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Several Makefiles in tools/ need to define the host toolchain variables.
-Move their definition to tools/scripts/Makefile.include
+On Tue, Nov 10, 2020 at 2:03 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
+>
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+>  Documentation/firmware-guide/acpi/acpi-lid.rst       | 8 ++++----
+>  Documentation/firmware-guide/acpi/method-tracing.rst | 2 +-
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/acpi-lid.rst b/Documentation/firmware-guide/acpi/acpi-lid.rst
+> index 874ce0ed340d..71b9af13a048 100644
+> --- a/Documentation/firmware-guide/acpi/acpi-lid.rst
+> +++ b/Documentation/firmware-guide/acpi/acpi-lid.rst
+> @@ -19,9 +19,9 @@ report the "current" state of the lid as either "opened" or "closed".
+>
+>  For most platforms, both the _LID method and the lid notifications are
+>  reliable. However, there are exceptions. In order to work with these
+> -exceptional buggy platforms, special restrictions and expections should be
+> +exceptional buggy platforms, special restrictions and exceptions should be
+>  taken into account. This document describes the restrictions and the
+> -expections of the Linux ACPI lid device driver.
+> +exceptions of the Linux ACPI lid device driver.
+>
+>
+>  Restrictions of the returning value of the _LID control method
+> @@ -46,7 +46,7 @@ state is changed to "closed". The "closed" notification is normally used to
+>  trigger some system power saving operations on Windows. Since it is fully
+>  tested, it is reliable from all AML tables.
+>
+> -Expections for the userspace users of the ACPI lid device driver
+> +Exceptions for the userspace users of the ACPI lid device driver
+>  ================================================================
+>
+>  The ACPI button driver exports the lid state to the userspace via the
+> @@ -100,7 +100,7 @@ use the following kernel parameter:
+>  C. button.lid_init_state=ignore:
+>     When this option is specified, the ACPI button driver never reports the
+>     initial lid state and there is a compensation mechanism implemented to
+> -   ensure that the reliable "closed" notifications can always be delievered
+> +   ensure that the reliable "closed" notifications can always be delivered
+>     to the userspace by always pairing "closed" input events with complement
+>     "opened" input events. But there is still no guarantee that the "opened"
+>     notifications can be delivered to the userspace when the lid is actually
+> diff --git a/Documentation/firmware-guide/acpi/method-tracing.rst b/Documentation/firmware-guide/acpi/method-tracing.rst
+> index 0aa7e2c5d32a..6ab6c0964042 100644
+> --- a/Documentation/firmware-guide/acpi/method-tracing.rst
+> +++ b/Documentation/firmware-guide/acpi/method-tracing.rst
+> @@ -98,7 +98,7 @@ subject to change::
+>     [    0.188903]   exdebug-0398 ex_trace_point        : Method End [0xf58394d8:\_SB.PCI0.LPCB.ECOK] execution.
+>
+>  Developers can utilize these special log entries to track the AML
+> -interpretion, thus can aid issue debugging and performance tuning. Note
+> +interpretation, thus can aid issue debugging and performance tuning. Note
+>  that, as the "AML tracer" logs are implemented via ACPI_DEBUG_PRINT()
+>  macro, CONFIG_ACPI_DEBUG is also required to be enabled for enabling
+>  "AML tracer" logs.
+> --
 
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
-v1: https://lore.kernel.org/bpf/20200827153629.3820891-2-jean-philippe@linaro.org/
-v2: https://lore.kernel.org/bpf/20201109110929.1223538-2-jean-philippe@linaro.org/
-
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Erik Kaneda <erik.kaneda@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: devel@acpica.org
----
- tools/bpf/resolve_btfids/Makefile |  9 ---------
- tools/build/Makefile              |  4 ----
- tools/objtool/Makefile            |  9 ---------
- tools/perf/Makefile.perf          |  4 ----
- tools/power/acpi/Makefile.config  |  1 -
- tools/scripts/Makefile.include    | 10 ++++++++++
- 6 files changed, 10 insertions(+), 27 deletions(-)
-
-diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
-index 66cb92136de4..bf656432ad73 100644
---- a/tools/bpf/resolve_btfids/Makefile
-+++ b/tools/bpf/resolve_btfids/Makefile
-@@ -18,15 +18,6 @@ else
- endif
- 
- # always use the host compiler
--ifneq ($(LLVM),)
--HOSTAR  ?= llvm-ar
--HOSTCC  ?= clang
--HOSTLD  ?= ld.lld
--else
--HOSTAR  ?= ar
--HOSTCC  ?= gcc
--HOSTLD  ?= ld
--endif
- AR       = $(HOSTAR)
- CC       = $(HOSTCC)
- LD       = $(HOSTLD)
-diff --git a/tools/build/Makefile b/tools/build/Makefile
-index 722f1700d96a..bae48e6fa995 100644
---- a/tools/build/Makefile
-+++ b/tools/build/Makefile
-@@ -15,10 +15,6 @@ endef
- $(call allow-override,CC,$(CROSS_COMPILE)gcc)
- $(call allow-override,LD,$(CROSS_COMPILE)ld)
- 
--HOSTCC ?= gcc
--HOSTLD ?= ld
--HOSTAR ?= ar
--
- export HOSTCC HOSTLD HOSTAR
- 
- ifeq ($(V),1)
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 4ea9a833dde7..5cdb19036d7f 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -3,15 +3,6 @@ include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
- 
- # always use the host compiler
--ifneq ($(LLVM),)
--HOSTAR	?= llvm-ar
--HOSTCC	?= clang
--HOSTLD	?= ld.lld
--else
--HOSTAR	?= ar
--HOSTCC	?= gcc
--HOSTLD	?= ld
--endif
- AR	 = $(HOSTAR)
- CC	 = $(HOSTCC)
- LD	 = $(HOSTLD)
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 7ce3f2e8b9c7..62f3deb1d3a8 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -175,10 +175,6 @@ endef
- 
- LD += $(EXTRA_LDFLAGS)
- 
--HOSTCC  ?= gcc
--HOSTLD  ?= ld
--HOSTAR  ?= ar
--
- PKG_CONFIG = $(CROSS_COMPILE)pkg-config
- LLVM_CONFIG ?= llvm-config
- 
-diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
-index 54a2857c2510..331f6d30f472 100644
---- a/tools/power/acpi/Makefile.config
-+++ b/tools/power/acpi/Makefile.config
-@@ -54,7 +54,6 @@ INSTALL_SCRIPT = ${INSTALL_PROGRAM}
- CROSS = #/usr/i386-linux-uclibc/usr/bin/i386-uclibc-
- CROSS_COMPILE ?= $(CROSS)
- LD = $(CC)
--HOSTCC = gcc
- 
- # check if compiler option is supported
- cc-supports = ${shell if $(CC) ${1} -S -o /dev/null -x c /dev/null > /dev/null 2>&1; then echo "$(1)"; fi;}
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index a7974638561c..1358e89cdf7d 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -59,6 +59,16 @@ $(call allow-override,LD,$(CROSS_COMPILE)ld)
- $(call allow-override,CXX,$(CROSS_COMPILE)g++)
- $(call allow-override,STRIP,$(CROSS_COMPILE)strip)
- 
-+ifneq ($(LLVM),)
-+HOSTAR  ?= llvm-ar
-+HOSTCC  ?= clang
-+HOSTLD  ?= ld.lld
-+else
-+HOSTAR  ?= ar
-+HOSTCC  ?= gcc
-+HOSTLD  ?= ld
-+endif
-+
- ifeq ($(CC_NO_CLANG), 1)
- EXTRA_WARNINGS += -Wstrict-aliasing=3
- endif
--- 
-2.29.1
-
+Applied as 5.10-rc material, thanks!
