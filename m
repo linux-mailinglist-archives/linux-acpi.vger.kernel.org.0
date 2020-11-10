@@ -2,105 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CC02ADD64
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 18:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F92D2ADD67
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 18:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730788AbgKJRup (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 12:50:45 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45923 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729630AbgKJRup (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 12:50:45 -0500
-Received: by mail-oi1-f196.google.com with SMTP id j7so15304533oie.12;
-        Tue, 10 Nov 2020 09:50:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KK1FDCmdwdfvxqO791W8Q84+D6lSjpER05CHZff/fQs=;
-        b=gMvfahDCmtHgqlct+4rbSs0WSBIDxhU9Tu68uQ0unuGrJGAJRQcEzXiCFTQTmFSIik
-         ZB0aRWmIZOa8BUuKeD8jyR9MS/z8c+FE3sDQ+WfoUYbi0Fh1gRx/ki8uQcj04IYrbDmj
-         z7aQDrCZfDeGs7CCiohKybSeaOWDdM8vaz3JUbEGutXogxPY/6ow+gMnzG/Fw/GIarWf
-         NXS7MAHGaEg/ELDhzmtK/qWraqIMYKPNOzRSWjwrqGX4voNEWJldWu1cDt4/XgwwjVcA
-         WjxYhR1R8nkFhmDxhZ9M0mnFXPZjdUpB6J6q3awc+qakmr43N2B+ZmunARA2h7hYFDis
-         R/Rw==
-X-Gm-Message-State: AOAM530nJ099szHcHvMo1YdDhweluIKqtW+E84UdJFDUoUnSh2ETZhy4
-        LF6CG8/BQ5UUwHEQhTRVdigUtGhxWXGcA07adOH0B/YW
-X-Google-Smtp-Source: ABdhPJyObWDok1yrGBZMArZ5kaaLv96DnwKwvTrRko4zOcN8h+AdOW63Sv6U27UJnBwdtwYUqC3e7CiZsj+n5rE/2+I=
-X-Received: by 2002:aca:1c0b:: with SMTP id c11mr151372oic.71.1605030643896;
- Tue, 10 Nov 2020 09:50:43 -0800 (PST)
+        id S1726984AbgKJRvK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 12:51:10 -0500
+Received: from mga09.intel.com ([134.134.136.24]:35400 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726307AbgKJRvJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Nov 2020 12:51:09 -0500
+IronPort-SDR: DY9+/byUR4HE7VhngHNNITx+7BnOx2ByVD7ywyYtlZtIVAnLT7WvBB+mJfitSlwVlm6MWx7wEO
+ oXh+Fqiin71g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9801"; a="170177791"
+X-IronPort-AV: E=Sophos;i="5.77,466,1596524400"; 
+   d="scan'208";a="170177791"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2020 09:51:08 -0800
+IronPort-SDR: zdJNpYrSKwfrJlqftnGkOloGkkS2E6l0bRgE1fhTb7ryTDgAQBv6n6hqJ4pUeHB9CBOor0X+hc
+ pMbYCTZjKp1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,466,1596524400"; 
+   d="scan'208";a="327755853"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.21])
+  by orsmga006.jf.intel.com with ESMTP; 10 Nov 2020 09:51:08 -0800
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rjw@rjwysocki.net
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rui.zhang@intel.com, lenb@kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH] ACPI: DPTF: Support Alder Lake
+Date:   Tue, 10 Nov 2020 09:50:58 -0800
+Message-Id: <20201110175058.88137-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <20201110130338.143077-1-f.suligoi@asem.it>
-In-Reply-To: <20201110130338.143077-1-f.suligoi@asem.it>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 10 Nov 2020 18:50:32 +0100
-Message-ID: <CAJZ5v0j24AngG5Jx6BAH+XE4APa0SAQHGZ2tnMgeyvc4hnkrHg@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: ACPI: fix spelling mistakes
-To:     Flavio Suligoi <f.suligoi@asem.it>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 2:03 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
->
-> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
-> ---
->  Documentation/firmware-guide/acpi/acpi-lid.rst       | 8 ++++----
->  Documentation/firmware-guide/acpi/method-tracing.rst | 2 +-
->  2 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/Documentation/firmware-guide/acpi/acpi-lid.rst b/Documentation/firmware-guide/acpi/acpi-lid.rst
-> index 874ce0ed340d..71b9af13a048 100644
-> --- a/Documentation/firmware-guide/acpi/acpi-lid.rst
-> +++ b/Documentation/firmware-guide/acpi/acpi-lid.rst
-> @@ -19,9 +19,9 @@ report the "current" state of the lid as either "opened" or "closed".
->
->  For most platforms, both the _LID method and the lid notifications are
->  reliable. However, there are exceptions. In order to work with these
-> -exceptional buggy platforms, special restrictions and expections should be
-> +exceptional buggy platforms, special restrictions and exceptions should be
->  taken into account. This document describes the restrictions and the
-> -expections of the Linux ACPI lid device driver.
-> +exceptions of the Linux ACPI lid device driver.
->
->
->  Restrictions of the returning value of the _LID control method
-> @@ -46,7 +46,7 @@ state is changed to "closed". The "closed" notification is normally used to
->  trigger some system power saving operations on Windows. Since it is fully
->  tested, it is reliable from all AML tables.
->
-> -Expections for the userspace users of the ACPI lid device driver
-> +Exceptions for the userspace users of the ACPI lid device driver
->  ================================================================
->
->  The ACPI button driver exports the lid state to the userspace via the
-> @@ -100,7 +100,7 @@ use the following kernel parameter:
->  C. button.lid_init_state=ignore:
->     When this option is specified, the ACPI button driver never reports the
->     initial lid state and there is a compensation mechanism implemented to
-> -   ensure that the reliable "closed" notifications can always be delievered
-> +   ensure that the reliable "closed" notifications can always be delivered
->     to the userspace by always pairing "closed" input events with complement
->     "opened" input events. But there is still no guarantee that the "opened"
->     notifications can be delivered to the userspace when the lid is actually
-> diff --git a/Documentation/firmware-guide/acpi/method-tracing.rst b/Documentation/firmware-guide/acpi/method-tracing.rst
-> index 0aa7e2c5d32a..6ab6c0964042 100644
-> --- a/Documentation/firmware-guide/acpi/method-tracing.rst
-> +++ b/Documentation/firmware-guide/acpi/method-tracing.rst
-> @@ -98,7 +98,7 @@ subject to change::
->     [    0.188903]   exdebug-0398 ex_trace_point        : Method End [0xf58394d8:\_SB.PCI0.LPCB.ECOK] execution.
->
->  Developers can utilize these special log entries to track the AML
-> -interpretion, thus can aid issue debugging and performance tuning. Note
-> +interpretation, thus can aid issue debugging and performance tuning. Note
->  that, as the "AML tracer" logs are implemented via ACPI_DEBUG_PRINT()
->  macro, CONFIG_ACPI_DEBUG is also required to be enabled for enabling
->  "AML tracer" logs.
-> --
+Add Alder Lake ACPI IDs for DPTF devices.
 
-Applied as 5.10-rc material, thanks!
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+ drivers/acpi/dptf/dptf_pch_fivr.c   | 1 +
+ drivers/acpi/dptf/dptf_power.c      | 2 ++
+ drivers/acpi/dptf/int340x_thermal.c | 6 ++++++
+ drivers/acpi/fan.c                  | 1 +
+ 4 files changed, 10 insertions(+)
+
+diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+index 4c1992fce150..5fca18296bf6 100644
+--- a/drivers/acpi/dptf/dptf_pch_fivr.c
++++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+@@ -106,6 +106,7 @@ static int pch_fivr_remove(struct platform_device *pdev)
+ 
+ static const struct acpi_device_id pch_fivr_device_ids[] = {
+ 	{"INTC1045", 0},
++	{"INTC1049", 0},
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, pch_fivr_device_ids);
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index 06741305fc77..a24d5d7aa117 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -229,6 +229,8 @@ static const struct acpi_device_id int3407_device_ids[] = {
+ 	{"INT3532", 0},
+ 	{"INTC1047", 0},
+ 	{"INTC1050", 0},
++	{"INTC1060", 0},
++	{"INTC1061", 0},
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
+diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
+index 8d420c7e7178..d14025a85ce8 100644
+--- a/drivers/acpi/dptf/int340x_thermal.c
++++ b/drivers/acpi/dptf/int340x_thermal.c
+@@ -25,10 +25,16 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
+ 	{"INT340A"},
+ 	{"INT340B"},
+ 	{"INTC1040"},
++	{"INTC1041"},
+ 	{"INTC1043"},
+ 	{"INTC1044"},
+ 	{"INTC1045"},
++	{"INTC1046"},
+ 	{"INTC1047"},
++	{"INTC1048"},
++	{"INTC1049"},
++	{"INTC1060"},
++	{"INTC1061"},
+ 	{""},
+ };
+ 
+diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+index 62873388b24f..48354f82fba6 100644
+--- a/drivers/acpi/fan.c
++++ b/drivers/acpi/fan.c
+@@ -27,6 +27,7 @@ static const struct acpi_device_id fan_device_ids[] = {
+ 	{"PNP0C0B", 0},
+ 	{"INT3404", 0},
+ 	{"INTC1044", 0},
++	{"INTC1048", 0},
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, fan_device_ids);
+-- 
+2.25.4
+
