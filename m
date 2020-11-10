@@ -2,89 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA132ADDAA
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 19:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7DED2ADE0F
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 19:19:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730786AbgKJSCa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 13:02:30 -0500
-Received: from mail-oo1-f68.google.com ([209.85.161.68]:37772 "EHLO
-        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730760AbgKJSCa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 13:02:30 -0500
-Received: by mail-oo1-f68.google.com with SMTP id t10so86889oon.4;
-        Tue, 10 Nov 2020 10:02:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=a7bBakPnEgsRSxQE7/dsfPHRj6TDBLQdRIFwKNFk3Lg=;
-        b=ri5ZIRe7CCRJIOvgYfI9zJmzTkswKVBpI+20HWinp9edeKxDCBauvT7SGBCVok9jSI
-         9x/Vnu/ps7beTW5GFo0PI6jxGVanIlUJ/bEoeoMZvnWid3dFY3XhOni6eb3gwvnyEVdC
-         Ox41D2b3/d1Ob8vvkyCvVJMhuPEmEPoO9SfZRZuJOi16inqcXQl+IyDXTot+Lz+yVHDM
-         rqkB6Gi7HlNvY9wXldJ8z/PDtpg8Q45rgCKvvWTinte7CYRuI7ibU3J14RoVsKpAaVcM
-         E2K5hhg5+UUdg+lSb6fNgBcXDOHldMGhbWSFA1V6XfrmUz14q3d9cOoCAQn32UVAOBGb
-         4euA==
-X-Gm-Message-State: AOAM531dISEkiI4h/5tnHRv0FLwmGS20J7FIQt9oy87yw9xeO4xGi3yj
-        VDshsfUgfFCoM8mrqnVhRupbC4DZXS08EKu8T0Sso2Uf
-X-Google-Smtp-Source: ABdhPJw1pxewSH2J2VBZP6s08/qov1XlMFKLLcj9YKwKQ/HM8kQ8zCNYrq5ldX3l3DDWNQWpL1X3qmNtqih2c2iwZto=
-X-Received: by 2002:a4a:e80b:: with SMTP id b11mr14320057oob.1.1605031349208;
- Tue, 10 Nov 2020 10:02:29 -0800 (PST)
-MIME-Version: 1.0
-References: <20201030070659.16948-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20201030070659.16948-1-kai.heng.feng@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 10 Nov 2020 19:02:18 +0100
-Message-ID: <CAJZ5v0j_bv1t5krP98_-epm+z9usW3ZmteaTGwtyjo+wBFu6Kw@mail.gmail.com>
-Subject: Re: [PATCH] PM / reboot: Use S5 for reboot
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        id S1726706AbgKJST0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 13:19:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgKJSTZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 13:19:25 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D6EC0613CF;
+        Tue, 10 Nov 2020 10:19:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=Ct6aE0Bm8FKKbzyR0cHse7bKKnoXTwBFYl7S9+AHa7M=; b=RFBBplucvygNQ6kLC7amRs2zQ2
+        jtuZiTjE7qGN10yc9ZPOrch35q8ioF7bOSvZrVS3CaHAbmRER2RiMQ05VaJEbNKHvh/5BR0O541V2
+        Gca/C1mlMqiRD0ABv+Mep2UJ4C1tdOAmjsGmAFXtgHMbf/ZnmKYTa/b/tE++H7sZr3i6NPxdJiFLc
+        zZXogcHmMGNFpI3oq7mSneRkgpFUNihyVjwMuW9UXJ6iN7LW82vA/iOo7qS8rBiRYbxtO9DblFakc
+        GUdAR8qdE3T1a6EbsoAshklApxvl/ps5eNoUhe4tNlZDdG1fN96lpd4jIJXkVB/fkaHCdXIfsK4xm
+        +2iXQ7/A==;
+Received: from [2601:1c0:6280:3f0::662d]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kcYES-0001S3-4s; Tue, 10 Nov 2020 18:19:04 +0000
+Subject: Re: Duplicated ABI entries - Was: Re: [PATCH v2 20/39] docs: ABI:
+ testing: make the files compatible with ReST output
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?Q?Javier_Gonz=c3=a1lez?= <javier@javigon.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Bruno Meneguele <bmeneg@redhat.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Juergen Gross <jgross@suse.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Len Brown <lenb@kernel.org>,
+        Leonid Maksymchuk <leonmaxx@gmail.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Kees Cook <keescook@chromium.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        Oleh Kravchenko <oleg@kaa.org.ua>,
+        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
+        Philippe Bergheaud <felix@linux.ibm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+ <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
+ <20201030110925.3e09d59e@coco.lan>
+ <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
+ <20201102124641.GA881895@kroah.com> <20201102154250.45bee17f@coco.lan>
+ <20201108165621.4d0da3f4@archlinux> <20201110082658.2edc1ab5@coco.lan>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <aa855d9a-4fc6-2b64-b6b7-69409af3f9d0@infradead.org>
+Date:   Tue, 10 Nov 2020 10:18:48 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
+MIME-Version: 1.0
+In-Reply-To: <20201110082658.2edc1ab5@coco.lan>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 30, 2020 at 8:07 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> After reboot, it's not possible to use hotkeys to enter BIOS setup and
-> boot menu on some HP laptops.
->
-> BIOS folks identified the root cause is the missing _PTS call, and BIOS
-> is expecting _PTS to do proper reset.
->
-> Using S5 for reboot is default behavior under Windows, "A full shutdown
-> (S5) occurs when a system restart is requested" [1], so let's do the
-> same here.
->
-> [1] https://docs.microsoft.com/en-us/windows/win32/power/system-power-states
->
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
->  kernel/reboot.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/kernel/reboot.c b/kernel/reboot.c
-> index e7b78d5ae1ab..7e5aa1f78693 100644
-> --- a/kernel/reboot.c
-> +++ b/kernel/reboot.c
-> @@ -244,6 +244,8 @@ void migrate_to_reboot_cpu(void)
->  void kernel_restart(char *cmd)
->  {
->         kernel_restart_prepare(cmd);
-> +       if (pm_power_off_prepare)
-> +               pm_power_off_prepare();
->         migrate_to_reboot_cpu();
->         syscore_shutdown();
->         if (!cmd)
-> --
+On 11/9/20 11:26 PM, Mauro Carvalho Chehab wrote:
+> Hi Jonathan,
+> 
+> Let's view ABI from the PoV of a system admin that doesn't know
+> yet about a certain ABI symbol.
+> 
+> He'll try to seek for the symbol, more likely using the HTML 
+> documentation. Only very senior system admins might try to take
+> a look at the Kernel.
 
-Applied as 5.11 material with a minor edit in the subject, thanks!
+FWIW, I think that the likely search methods are $search_engine
+and 'grep'.
+
+Have a good few days off.
+
+-- 
+~Randy
+
