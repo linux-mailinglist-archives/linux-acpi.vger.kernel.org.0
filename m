@@ -2,79 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26CFB2AD1C1
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 09:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5CFF2AD16A
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 09:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbgKJIuN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 03:50:13 -0500
-Received: from m12-13.163.com ([220.181.12.13]:45301 "EHLO m12-13.163.com"
+        id S1728478AbgKJIjt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 03:39:49 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48512 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726827AbgKJIuN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Nov 2020 03:50:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=RlJkEVh6ttoD9PLkdU
-        x/BFTSSqOzHRhkDw0D+7d2ZHM=; b=Ysuz4Kx57/RpOr0szKluDKC62bIJym/Z52
-        UsH7LwHqim01saJ/Vp3ucP15FE0fF82llSU+tb4UCr4WAQOvTm3gWVTVuxOKlZ35
-        bPH4gvi44LWDm5YbT6VQGXEQkJUz1KDFrplxaTsw+7qpbBH8OVcw5vklkxcJ9LYO
-        gxasKILJQ=
-Received: from smtp.163.com (unknown [36.112.24.10])
-        by smtp9 (Coremail) with SMTP id DcCowADn5YFgUKpfa7B2Pw--.531S2;
-        Tue, 10 Nov 2020 16:33:38 +0800 (CST)
-From:   yaoaili126@163.com
-To:     rjw@rjwysocki.net, lenb@kernel.org
-Cc:     james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org,
-        yangfeng1@kingsoft.com, yaoaili@kingsoft.com
-Subject: [PATCH] ACPI, APEI, Fix error return value in apei_map_generic_address()
-Date:   Tue, 10 Nov 2020 00:33:34 -0800
-Message-Id: <20201110083334.456893-1-yaoaili126@163.com>
-X-Mailer: git-send-email 2.9.5
-X-CM-TRANSID: DcCowADn5YFgUKpfa7B2Pw--.531S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWrZr45Zr4UJw45Kr48ArW7XFb_yoW8JF45pF
-        W29ayYkr40kw48Kw4UAw1YvFy5uas3AFy2yr40kwnY9F15CF47Cryqvws093W5XF48K3yS
-        qFnrtFWYyayDAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jaNtsUUUUU=
-X-Originating-IP: [36.112.24.10]
-X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbiKwHYG1QHWcsR6wAAsS
+        id S1727483AbgKJIjt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Nov 2020 03:39:49 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 93DC0AE12;
+        Tue, 10 Nov 2020 08:39:47 +0000 (UTC)
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     Jon Grimm <Jon.Grimm@amd.com>,
+        Nathan Fontenot <Nathan.Fontenot@amd.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Pu Wen <puwen@hygon.cn>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Doug Smythies <dsmythies@telus.net>, x86@kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Giovanni Gherdovich <ggherdovich@suse.cz>
+Subject: [PATCH 0/3] Add support for frequency invariance to AMD EPYC Zen2
+Date:   Tue, 10 Nov 2020 09:39:33 +0100
+Message-Id: <20201110083936.31994-1-ggherdovich@suse.cz>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Aili Yao <yaoaili@kingsoft.com>
+This series adds support for frequency invariant accounting on AMD EPYC Zen2
+(aka "Rome"). The first patch by Nathan lays out the foundation by querying
+ACPI infrastructure for the max boost frequency of the system. Specifically,
+this value is available via the CPPC machinery; the previous EPYC generation,
+namely Zen aka "Naples", doesn't implement that and frequency invariance won't
+be supported.
 
-From commit 6915564dc5a8 ("ACPI: OSL: Change the type of
-acpi_os_map_generic_address() return value"),
-acpi_os_map_generic_address() will return logical address or NULL for
-error, but for ACPI_ADR_SPACE_SYSTEM_IO case, it should be also return 0
-as it's a normal case, but now it will return -ENXIO. So check it out for
-such case to avoid einj module initialization fail.
+The second patch sets the estimate for freq_max to be the midpoint between
+max_boost and max_P, as that works slightly better in practice.
 
-Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of
-acpi_os_map_generic_address() return value")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: James Morse <james.morse@arm.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
----
- drivers/acpi/apei/apei-base.c | 4 ++++
- 1 file changed, 4 insertions(+)
+A side effect of this series is to provide, with the invariant schedutil
+governor, a suitable baseline to evaluate a (still work-in-progress)
+CPPC-based cpufreq driver for the AMD platform (see
+https://lore.kernel.org/lkml/cover.1562781484.git.Janakarajan.Natarajan@amd.com
+if/when it will resubmitted.
 
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index 552fd9f..3294cc8 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -633,6 +633,10 @@ int apei_map_generic_address(struct acpi_generic_address *reg)
- 	if (rc)
- 		return rc;
- 
-+	/* IO space doesn't need mapping */
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO)
-+		return 0;
-+
- 	if (!acpi_os_map_generic_address(reg))
- 		return -ENXIO;
- 
+Giovanni Gherdovich (2):
+  x86, sched: Use midpoint of max_boost and max_P for frequency
+    invariance on AMD EPYC
+  x86: Print ratio freq_max/freq_base used in frequency invariance
+    calculations
+
+Nathan Fontenot (1):
+  x86, sched: Calculate frequency invariance for AMD systems
+
+ arch/x86/include/asm/topology.h |  8 ++++
+ arch/x86/kernel/smpboot.c       | 79 +++++++++++++++++++++++++++++----
+ drivers/acpi/cppc_acpi.c        |  5 +++
+ 3 files changed, 84 insertions(+), 8 deletions(-)
+
 -- 
-2.9.5
-
+2.26.2
 
