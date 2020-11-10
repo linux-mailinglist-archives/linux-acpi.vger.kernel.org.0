@@ -2,95 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 751292AD6C3
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 13:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CCBF2AD6E1
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 13:53:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730542AbgKJMrI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 07:47:08 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35987 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730150AbgKJMrI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 07:47:08 -0500
-Received: by mail-ot1-f65.google.com with SMTP id n89so1137238otn.3;
-        Tue, 10 Nov 2020 04:47:07 -0800 (PST)
+        id S1730254AbgKJMx1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 07:53:27 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:37284 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726721AbgKJMx0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 07:53:26 -0500
+Received: by mail-oi1-f193.google.com with SMTP id m17so14181509oie.4;
+        Tue, 10 Nov 2020 04:53:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iQI2guPjiDZb/My9nXr68aWP3FxBBZe/IxqcdhKiV/8=;
-        b=VVOSFla7rm2VFbnkQOvKXcbMP4+t3VsdZ2No6MCkSOZcgNBFPV7Y9NR5SGF1S6Jgwa
-         L4D024E7CmqXVW+fNEYScFcTkTFk/f5SVk5O7oiL11ia2I5wb94YSCmJkiigVTFKwwmr
-         sr7JGUUAD4KJoPJH79qfL/n75aQKQpg3j7gJHq9wC0n6/S0eSRyW0f5w7zPOISl1eLy0
-         LsE7SLx5B31LzbCmK8VWycgMZgfXTAfTtdPbKMreFid+S/7JHNuolqoK0sXWXUvphy+C
-         1c1cSivSOwZBex9KOUOAxCZHAFRla+q4v/4Zg1asvOl18s9KU1EDt4fuLGteE8LBzN9a
-         BMDA==
-X-Gm-Message-State: AOAM5319jEI935ppUFoUOME+p2/J1QDEJHELZ+1MN1Vee4FSrhmjX2si
-        bv1An44+J5SeGV91UNVpGZgaBt3LPR6DzfP18pU=
-X-Google-Smtp-Source: ABdhPJz5pC83/KRZx7w7Vo6FyNhdmyLZJwGmN2hwsfoIrsxqQ+5Z+EEtzTarksKAhskk4wWF4GSOIjntpHA9alZMmY8=
-X-Received: by 2002:a9d:16f:: with SMTP id 102mr14745639otu.206.1605012427418;
- Tue, 10 Nov 2020 04:47:07 -0800 (PST)
+        bh=ux2F0o8vzxMxPMNBAVBwUPgrkDr+3echZMMpgmNRQOE=;
+        b=bsoNzx+NL3vK1kmX6NsjJTFwZZ26weSQb8MEzwfJLmsS9Inoo7zEtVzCsJKhHWeH6M
+         FBNmJ2C0GkV3AqHnVw4QyTcsUob4NtPT68Nm2kDRLwlu+OC9AoLJ+bKRuiMgayOM5LJj
+         /6QTuaa2H0nGKyx2TTshcObE7DKDPi3mjpGPGdnbHkERnzKAcc/xEqsgnnbDlhsQmB+o
+         ckOwaofJtq8M8yd5MN3C0sgP3Zi0mR1Qj5zHnyixJtGMh15aAyqYeXvHDR1pvhboUPlt
+         lMgTZSbjwoffMaHyRk7H4Y/hCVvcOqpgtYeZKQm+iPlxL7gqP16TfeKCoVdCxZ1lRSHq
+         EWzQ==
+X-Gm-Message-State: AOAM531jhapXuvb3dQFa/apWrkAsMUfIKSA6lkGAYE7BPFizxoX0b9+2
+        EpzMX2FGAfPUwN4oAll9RJJzk7FKm9NGRycguQ8=
+X-Google-Smtp-Source: ABdhPJxcIaODQGXC9/SHhpJ979pd7V1gAUkM0Nro2pzz6VlmVYf3IRk7dRRbOFvF83zUzIYHwdo97Efe8FEFsRNoQYo=
+X-Received: by 2002:aca:1c0b:: with SMTP id c11mr2677839oic.71.1605012806095;
+ Tue, 10 Nov 2020 04:53:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20201109172435.GJ4077@smile.fi.intel.com> <CGME20201109181851eucas1p241de8938e399c0b603c764593b057c41@eucas1p2.samsung.com>
- <dleftj4klypf5u.fsf%l.stelmach@samsung.com> <20201109185305.GT1003057@dtor-ws>
- <20201109190551.GM4077@smile.fi.intel.com> <20201110123939.GN1224435@kuha.fi.intel.com>
-In-Reply-To: <20201110123939.GN1224435@kuha.fi.intel.com>
+References: <markpearson@lenovo.com> <20201110033124.3211-1-markpearson@lenovo.com>
+ <20201110033124.3211-3-markpearson@lenovo.com>
+In-Reply-To: <20201110033124.3211-3-markpearson@lenovo.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 10 Nov 2020 13:46:54 +0100
-Message-ID: <CAJZ5v0jqN1v-g4v0eMSQeJCXQ9yntFWaLns9k2bDcaja-jdkcA@mail.gmail.com>
-Subject: Re: [PATCH v8 3/6] software node: implement reference properties
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lukasz Stelmach <l.stelmach@samsung.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+Date:   Tue, 10 Nov 2020 13:53:13 +0100
+Message-ID: <CAJZ5v0jbnjf3vU7qmHjOrdNoki5A2wrTH2uLxQAzi3s6xScrvw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ACPI: platform-profile: Add platform profile support
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Benjamin Berg <bberg@redhat.com>,
         Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        Darren Hart <dvhart@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 1:39 PM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
+On Tue, Nov 10, 2020 at 4:32 AM Mark Pearson <markpearson@lenovo.com> wrote:
 >
-> On Mon, Nov 09, 2020 at 09:05:51PM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 09, 2020 at 10:53:05AM -0800, Dmitry Torokhov wrote:
-> > > On Mon, Nov 09, 2020 at 07:18:37PM +0100, Lukasz Stelmach wrote:
-> > > > It was <2020-11-09 pon 19:24>, when Andy Shevchenko wrote:
-> >
-> > ...
-> >
-> > > > Probably I have missed something and I will be greatful, if you tell me
-> > > > where I can find more information about software nodes. There are few
-> > > > users in the kernel and it isn't obvious for me how to use software
-> > > > nodes properly.
-> > >
-> > > Yeah, I disagree with Andy here. The lookup tables are a crutch that we
-> > > have until GPIO and PWM a taught to support software nodes (I need to
-> > > resurrect my patch series for GPIO, if you have time to test that would
-> > > be awesome).
-> >
-> > We don't have support for list of fwnodes, this will probably break things
-> > where swnode is already exist.
-> >
-> > I think Heikki may send a documentation patch to clarify when swnodes can and
-> > can't be used. Maybe I'm mistaken and above is a good use case by design.
+> This is the initial implementation of the platform-profile feature.
+> It provides the details discussed and outlined in the
+> sysfs-platform_profile document.
 >
-> Yeah, the problem is that I'm not sure that we can limit the swnodes
-> for any specific purpose, or dictate very strictly how they are used
-> with other possible fwnodes.
+> Many modern systems have the ability to modify the operating profile to
+> control aspects like fan speed, temperature and power levels. This
+> module provides a common sysfs interface that platform modules can register
+> against to control their individual profile options.
+>
+> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+> ---
+>  MAINTAINERS                      |   8 ++
+>  drivers/acpi/Kconfig             |  19 ++++
+>  drivers/acpi/Makefile            |   1 +
+>  drivers/acpi/platform_profile.c  | 172 +++++++++++++++++++++++++++++++
+>  include/linux/platform_profile.h |  36 +++++++
+>  5 files changed, 236 insertions(+)
+>  create mode 100644 drivers/acpi/platform_profile.c
+>  create mode 100644 include/linux/platform_profile.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9a54806ebf02..e731ac1c4447 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -436,6 +436,14 @@ S: Orphan
+>  F:     drivers/platform/x86/wmi.c
+>  F:     include/uapi/linux/wmi.h
+>
+> +ACPI PLATFORM PROFILE DRIVER
+> +M:     Mark Pearson <markpearons@lenovo.com>
+> +L:     linux-acpi@vger.kernel.org
+> +S:     Supported
+> +W:     https://01.org/linux-acpi
+> +B:     https://bugzilla.kernel.org
+> +F:     drivers/acpi/platform_profile.c
 
-Generally agreed, but if there are known problems, they need to be
-documented at least for the time being until they are addressed.
-
-> Right now I'm thinking we should simply not talk about the
-> relationship a software node should have or can have with other
-> fwnodes (regardless of their type) in the swnode documentation.
-
-This sounds reasonable to me, with the above exception.
+IMO it is premature to add a MAINTAINERS entry for this until it turns
+out to be really necessary.
