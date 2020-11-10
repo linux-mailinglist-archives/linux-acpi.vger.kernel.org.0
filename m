@@ -2,125 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E26072AD483
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 12:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 847B92AD5C8
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Nov 2020 13:01:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbgKJLOO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 06:14:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:22678 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727731AbgKJLOO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Nov 2020 06:14:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605006852;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KSRgJhJ11sB2/cPXZUjjpmXqMXC4MjGNNoT6xUrnnGo=;
-        b=V8r5Y7JkiqzXTQmjZG+V71XHiI5HLzqxWuDSbfLsbPXXOT0XiuyE0yR6f73Ez7pKOwQHEt
-        8uJtF0RbD5Q+mamGWHwIvdZaa0KEeyXOApUARJRPmgeF6T8lP07EPJfkLNblCTYkv3e3CN
-        ej0IWJkN4bbfhO0Zg/lVt32w1BGxxTw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-80-SqHKOaKcOheeTQCRZ2ks2A-1; Tue, 10 Nov 2020 06:14:10 -0500
-X-MC-Unique: SqHKOaKcOheeTQCRZ2ks2A-1
-Received: by mail-ed1-f70.google.com with SMTP id b16so4057941edn.6
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 03:14:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KSRgJhJ11sB2/cPXZUjjpmXqMXC4MjGNNoT6xUrnnGo=;
-        b=hXi+UAJVFkiV7c134B8lKpX8N25+6D567Qcl3z9m7W+A6lScrnN+yaGdf2x8vpR9M4
-         sgqFAfr4IEA1eYK9CqAVs2ZL3Fm4+Oe/dDsLfpBbli9bzlL4BkzzSrknOWzrcfKkMrMT
-         t1Jfqja1Drqd1zr77rqIy6NTgmHKFyn4SCLhWN8t7MGDpxv/9d9jFI3dGnE9pSA24pFr
-         wPWVTqsCh2Ah9SoS95b9X38mOUDbaUmZ1A3U5rXu5NT59O/4CHWjijGSsDCnS5r7hQ4M
-         SXkirEHWJN28bfNe2x2w1wYw3l3oH2Xgo5DM/a7E8AoraMPog85Nm5oX7aqNxYikge+n
-         ovFQ==
-X-Gm-Message-State: AOAM531sOOKjTtlPNYDqD3B6YvTaN6s48MGEEH4Zgyl9qK7MC9L45no6
-        UfEJ+HK68pCf/4AxWlja8J8qGpvmiddbpjfSVy3aIPmOWggePwmyplO0kPGH9tr8BW63RABnuSM
-        8IZeqqD2EIe94PJjCnhHPhHrvRYH0AUWWtY00s9VllcwVzyW8ABiVg93cMw2uvkj2jsKoAiW2sA
-        ==
-X-Received: by 2002:a17:906:a011:: with SMTP id p17mr19275590ejy.119.1605006849043;
-        Tue, 10 Nov 2020 03:14:09 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwNFy44Mt7CgCugrOz/HHD+C1M8/EzbalGRpxP8nbod7NlLvFWdFQfShKqtm1bpvQoSbFdYQQ==
-X-Received: by 2002:a17:906:a011:: with SMTP id p17mr19275567ejy.119.1605006848827;
-        Tue, 10 Nov 2020 03:14:08 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id l16sm10213992ejd.70.2020.11.10.03.14.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2020 03:14:08 -0800 (PST)
-Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
- to instantiated i2c-clients
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Andy Shevchenko <andy@infradead.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20201105080014.45410-1-hdegoede@redhat.com>
- <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
- <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
- <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <6345eeb9-8416-3e7c-e619-632b5d4abbbd@redhat.com>
-Date:   Tue, 10 Nov 2020 12:14:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
-MIME-Version: 1.0
-In-Reply-To: <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726721AbgKJMBQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 07:01:16 -0500
+Received: from m12-18.163.com ([220.181.12.18]:52826 "EHLO m12-18.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726690AbgKJMBP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Nov 2020 07:01:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=CpdDBEmnH4j9uj+y0K
+        YDhZA9jQHH4uyATyhYlaSijMc=; b=AgyXgXeEGMOU7rgopWrz1jmwXWbZqcWy89
+        cN2mEQhZod284/CyrrA9jN3Nsk1P52Ieuqu+M1Ni/d02e2LoDqROb+2yiSZCVd8G
+        eYuQgjKighsIq5lD+aI0JP6IBW+Pg29HCx86SFB1Qg8v98ewNyDj5sfYuDviULXk
+        /BAGxd8/c=
+Received: from smtp.163.com (unknown [36.112.24.10])
+        by smtp14 (Coremail) with SMTP id EsCowABXXgrOgKpf3x+jDA--.28051S2;
+        Tue, 10 Nov 2020 20:00:14 +0800 (CST)
+From:   yaoaili126@163.com
+To:     james.morse@arm.com
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
+        bp@alien8.de, linux-acpi@vger.kernel.org, YANGFENG1@kingsoft.com,
+        yaoaili@kingsoft.com
+Subject: Re: [PATCH] ACPI, APEI, Fix incorrect return value of apei_map_generic_address
+Date:   Tue, 10 Nov 2020 04:00:02 -0800
+Message-Id: <20201110120002.459078-1-yaoaili126@163.com>
+X-Mailer: git-send-email 2.9.5
+In-Reply-To: <e0e1cf62-6e49-1524-a370-41532c5b4ac7 () arm ! com>
+References: <e0e1cf62-6e49-1524-a370-41532c5b4ac7 () arm ! com>
+X-CM-TRANSID: EsCowABXXgrOgKpf3x+jDA--.28051S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF4xZw4rur1kKFW3Aw13Arb_yoW5Xw4rpF
+        WI9F4UCrWvqr4xKw48Zr1FvFyUXan3Aay7tF10ywnYyF1YkF93Zryjgws8uas8JFW8Ga1F
+        qFsrKaykKayDAFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb4SrUUUUU=
+X-Originating-IP: [36.112.24.10]
+X-CM-SenderInfo: 51drtxdolrjli6rwjhhfrp/1tbifAnYG1r6nXb9VQABsU
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+From: Aili Yao <yaoaili@kingsoft.com>
 
-On 11/10/20 11:10 AM, Andy Shevchenko wrote:
-> On Mon, Nov 9, 2020 at 1:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
->> On 11/5/20 11:38 AM, Andy Shevchenko wrote:
->>> On Thu, Nov 5, 2020 at 10:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+Hi!
+Thank you for all the suggestions and comments!
+I have re-submited the patch following your comments
+I really need to read Documentation/process more detailly!
+
+Thanks
+
+Best Regards!
+
+Aili Yao
+
+> -----Original Message-----
+> From: James Morse [mailto:james.morse@arm.com]
+> Sent: Saturday, November 7, 2020 3:35 AM
+> To: yaoaili126@163.com; rjw@rjwysocki.net; lenb@kernel.org
+> Cc: tony.luck@intel.com; bp@alien8.de; linux-acpi@vger.kernel.org;
+> YANGFENG1<YANGFENG1@kingsoft.com>; yaoaili<yaoaili@kingsoft.com>
+> Subject: Re: [PATCH] ACPI, APEI, Fix incorrect return value of
+> apei_map_generic_address
 > 
-> ...
+> Hello,
 > 
->>>> But before coming to the conclusion that i2c-multi-instantiate
->>>> would not work I had already written this series. Since this might
->>>> be useful for some other case in the future I'm sending this out
->>>> as a RFC now, mostly so that it gets added to the archives.
->>>
->>> I think they are in pretty good shape (only the 4th required a bit of
->>> attention).
->>
->> FWIW I agree with the changes which you suggest for the 4th patch.
->>
->>> Please, send as non-RFC and also Cc Heikki (just in case if he has
->>> comments wrt INT3515).
->>
->> But do we really want to land these changes, while ATM we do not
->> really have any need for them ?  Esp. the
->>
->> "platform/x86: i2c-multi-instantiate: Pass ACPI fwnode to instantiated I2C-clients"
->>
->> Change is not without a chance of regressions. The acpi_device_is_first_physical_node()
->> behavior surprised me a bit while working on the BOSC0200 changes. So I'm not
->> 100% sure I have managed to see / think of all implications of this change.
+> On 02/11/2020 02:47, yaoaili126@163.com wrote:
+> > From: Aili Yao <yaoaili@kingsoft.com>
+> >
+> > From commit 6915564dc5a8 ("ACPI: OSL: Change the type of
+> > acpi_os_map_generic_address() return
+> > value"),acpi_os_map_generic_address
+> > will return logical address or NULL for error, but
+> > pre_map_gar_callback and related apei_map_generic_address ,for
+> > ACPI_ADR_SPACE_SYSTEM_IO case, it should be also return 0,as it's a
+> > normal case, but now it will return -ENXIO. so check it out for such
+> > case to avoid einj module initialization fail.
 > 
-> I think in general the direction to switch to fwnode is a good one. I
-> was thinking about moving i2c core to use swnodes in which case they
-> will utilize fwnode pointer. But it might have complications, you are
-> right.
+> (Nit: To make the commit message easier to read, please put '()' after
+> function names, and spaces after commas.)
+> 
+> 
+> > Tested-by: Tony Luck <tony.luck@intel.com>
+> 
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> 
+> You can't add other peoples 'signed off'. This is for tracking the path a patch
+> takes, and that each person who touches it 'signs off' their changes for the
+> open-source license. See the 'Developer's Certificate of Origin 1.1' in
+> Documentation/process/submitting-patches.rst'.
+> 
+> Please remove this tag.
+> 
+> 
+> > Signed-off-by: Aili Yao <yaoaili@kingsoft.com>
+> 
+> As this fixes the bug where the einj module can't be loaded, I think its
+> appropriate for the stable kernels. The tags to do that are:
+> Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of
+> acpi_os_map_generic_address() return
+> value")
+> Cc: <stable@vger.kernel.org>
+> 
+> 
+> With that, please add my:
+> Reviewed-by: James Morse <james.morse@arm.com>
+> 
+> 
+> Thanks!
+> 
+> James
+> 
+> 
+> 
+> > diff --git a/drivers/acpi/apei/apei-base.c
+> > b/drivers/acpi/apei/apei-base.c index 552fd9ffaca4..3294cc8dc073
+> > 100644
+> > --- a/drivers/acpi/apei/apei-base.c
+> > +++ b/drivers/acpi/apei/apei-base.c
+> > @@ -633,6 +633,10 @@ int apei_map_generic_address(struct
+> acpi_generic_address *reg)
+> >  	if (rc)
+> >  		return rc;
+> >
+> > +	/* IO space doesn't need mapping */
+> > +	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO)
+> > +		return 0;
+> > +
+> >  	if (!acpi_os_map_generic_address(reg))
+> >  		return -ENXIO;
+> >
+> >
 
-So do you agree to just keep this series in the archives (in case we need
-it later) for now ? Or would you still like me to post a non RFC version ?
-
-Regards,
-
-Hans
 
