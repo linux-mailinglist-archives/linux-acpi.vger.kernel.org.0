@@ -2,262 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5442AF880
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 19:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A6E32AF957
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 20:57:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726904AbgKKSsZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Nov 2020 13:48:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
+        id S1726036AbgKKT55 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Nov 2020 14:57:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbgKKSsY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Nov 2020 13:48:24 -0500
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817F8C0613D4
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Nov 2020 10:48:24 -0800 (PST)
-Received: by mail-pf1-x442.google.com with SMTP id x15so818509pfm.9
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Nov 2020 10:48:24 -0800 (PST)
+        with ESMTP id S1725933AbgKKT54 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Nov 2020 14:57:56 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F014C0613D1;
+        Wed, 11 Nov 2020 11:57:56 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id s8so3692487wrw.10;
+        Wed, 11 Nov 2020 11:57:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mb7PYJLkfxY3lJZblFIcMSXi8MnosMBDn1R6Xa9I8rc=;
-        b=NwTnpqOOBMBajgf4OJZhDWFSsJceG1NMb+xiofE37FueQmE6/tvR0tPgS+vcDtvYaL
-         ZRXQr0dERgfSrg/eoUtFQZBnMgQSWSi4ZCrLlHUweIpWxLq2vc1sqwPYtqjX1uxMepK0
-         BgqQ2dFLtdU4cRb3LpBG3VL7NwlkyLuaBBGOLY8hHxjmrduLg9BLdYfRoeu90UpVi84T
-         cexxShAjHY56S1/pFZvqLTFt2lUeZ19ULUbhpPSeQvXZwwNCAk2scQ9vxgX3E7egxh3M
-         kg/2wke8Wo+Ly1nQ2Csu+7XurhIVPiDiMy+pQZPmL5tAoBwOxACyQPRFLwa96+qYfqSY
-         t9Vw==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=EV1zSZnxeiNj7AdewMQkRMYjJy+CWcSEMHO0hUOUs1g=;
+        b=BYAbyz12Cz9TX5VbWQlkl8fmK5Fth8vSaoEBODOtR3POui1l/yUsOz1f/d75S9pXyX
+         TTd1d02z6d7dykDCCljYgKPcqFxj1iPVc+GNzP15xgcJ4ZDXfMTEyeOZyymFj5v8rgRG
+         J8KEp+ZHqliuSq2YhpqHs7lqEPF2MDRhzhfZrrjiTdhtb+0Wof9XjR3iZj8hRCl7+JTh
+         QFm2wLcax2M20+ko7SaOdyl9MevKbPfGhcacEZRALfdriDbci732XmH26nIvXbKfo3ts
+         JUjw7PWwbLTlyWI1AuBwSQf5hfbmBe1BQtBQHILm8+0rzGR7OkrMIfizdHnqmkPkomYg
+         zSQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mb7PYJLkfxY3lJZblFIcMSXi8MnosMBDn1R6Xa9I8rc=;
-        b=uYW9O1ROFwwFFR4u+ttcqMQHYcySEQRgXfqvLXz0l3DF0vvY5fXM+RRhHBMGwQMNcK
-         /zsddkh1HKJUdQo17IeS+t5NcuG1m1wpHmYR7evJDsKF0z+Ly0a8rTC5edWZvlGi9EZ2
-         nIZv5bYof9dCwd+7/zh0KTtc3b48gtYAhiRX+SC6RZ4v1WQc5A0XGlP6CQwLiGlRWiKP
-         fQdh2oVQdi1AK9iuDoyFAqJqY7bZzuYBJRrWrDCRfCv7zZpvxkxYAvmMYyaTkWbxETh+
-         Dr5XJN7sXCCLp0hdAPIa6cWC2nKNpkjUjBMnx34JOAT922YPpUKn83UwYqegUFVdq7+4
-         oc4w==
-X-Gm-Message-State: AOAM530CaSNvkSUlQOGieO3pLYpwzzqGuXt7tuaP7r+Ygnv3tXF1pO3a
-        /IKqBRT4oRQscWZvT6fK8nSsepsJI5V3kJ7SxyJK7A==
-X-Google-Smtp-Source: ABdhPJwcfDwuG4g2UEuurEKOOly1dPYE/YsLGQVFZaAzZQzTo87JJR8jHOfYzFrqSu7HvFx6mL+g9bHWrUMr775JCo8=
-X-Received: by 2002:a62:ed0d:0:b029:18b:78d:626 with SMTP id
- u13-20020a62ed0d0000b029018b078d0626mr24673040pfh.15.1605120503879; Wed, 11
- Nov 2020 10:48:23 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=EV1zSZnxeiNj7AdewMQkRMYjJy+CWcSEMHO0hUOUs1g=;
+        b=PvBrHzqg1Q68a534VrgTLdud06+F3qDCATE//5bcMDByKwKcDYlH/wkyawtX/xtqS8
+         l9AATYd0hbPt5+2ouyn0ZkMMhyVjVfu6Fe6LZJzZ1sc9D6FOw/rss5mdArfAn0lz1H/k
+         i7SoqeoKuYv6hRgCspMnd8H5E/HvqmgB7VBv3aqdLYXr6eUDufTXsZusBRtoCB0skAKU
+         BXGZOEFkoiQvxeBW0oLppxoqzg05Cx8x+nD+yLAKKFY8otSFgDPsZiVLOvSXeAge4OjQ
+         XXJeOkeEunvQzqUOp9EOf+ARJJ9Z3YvWD0A+aa7gujcMe8kWFIl/ByitItTx2bvG0Ogx
+         mKoQ==
+X-Gm-Message-State: AOAM530jpzJqG+P1voIIAS0rL6ra0145HLkaNJR904WjNt4jNTqsLWkH
+        d388dkaWCXznVu9XtN1+on4=
+X-Google-Smtp-Source: ABdhPJzOau2S3qcK5GwcPQnfWJSpcZjjqWa4TkPkvQLBdOY8oHN3aB17OhfrQLoetvMOqQaJJmJv6g==
+X-Received: by 2002:adf:ea47:: with SMTP id j7mr31221822wrn.126.1605124674908;
+        Wed, 11 Nov 2020 11:57:54 -0800 (PST)
+Received: from localhost ([217.111.27.204])
+        by smtp.gmail.com with ESMTPSA id c2sm3875913wrf.68.2020.11.11.11.57.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2020 11:57:53 -0800 (PST)
+Date:   Wed, 11 Nov 2020 20:57:52 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] pwm: lpss: pwm: lpss: Misc. cleanups /
+ improvements
+Message-ID: <20201111195752.GG6125@ulmo>
+References: <20201109105726.121512-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20201111021131.822867-1-ndesaulniers@google.com> <BYAPR11MB3256E0C1DCB4F01D18DF709F87E80@BYAPR11MB3256.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB3256E0C1DCB4F01D18DF709F87E80@BYAPR11MB3256.namprd11.prod.outlook.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 11 Nov 2020 10:48:12 -0800
-Message-ID: <CAKwvOdk2U5+DcXYyMoBAhyaa67EukhB6QMEUbRPcOF7P3Sz21w@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
-To:     "Moore, Robert" <robert.moore@intel.com>
-Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>, Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="yQbNiKLmgenwUfTN"
+Content-Disposition: inline
+In-Reply-To: <20201109105726.121512-1-hdegoede@redhat.com>
+User-Agent: Mutt/1.14.7 (2020-08-29)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 11, 2020 at 7:15 AM Moore, Robert <robert.moore@intel.com> wrote:
->
-> Yes, but: isn't the "fallthrough" keyword compiler-specific? That is the problem for us.
 
-It's not a keyword.
+--yQbNiKLmgenwUfTN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It's a preprocessor macro that expands to
-__attribute__((__fallthrough__)) for compilers that support it.  For
-compilers that do not, it expands to nothing.  Both GCC 7+ and Clang
-support this attribute.  Which other compilers that support
--Wimplicit-fallthrough do you care to support?
+On Mon, Nov 09, 2020 at 11:57:23AM +0100, Hans de Goede wrote:
+> Hi All,
+>=20
+> Now that the pwm-lpss / pwm-crc / i915 atomic PWM conversion has landed
+> in 5.10-rc1 here is a small follow up series with some misc. improvements.
+>=20
+> Changes in v2:
+> - Extend comment to explain why the DPM_FLAG_SMART_SUSPEND is set
+> - Add Andy's Reviewed-by to all 3 patches
 
-> Bob
->
->
-> -----Original Message-----
-> From: ndesaulniers via sendgmr <ndesaulniers@ndesaulniers1.mtv.corp.google.com> On Behalf Of Nick Desaulniers
-> Sent: Tuesday, November 10, 2020 6:12 PM
-> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Gustavo A . R . Silva <gustavoars@kernel.org>
-> Cc: clang-built-linux@googlegroups.com; Nick Desaulniers <ndesaulniers@google.com>; Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org
-> Subject: [PATCH] ACPICA: fix -Wfallthrough
->
-> The "fallthrough" pseudo-keyword was added as a portable way to denote intentional fallthrough. This code seemed to be using a mix of fallthrough comments that GCC recognizes, and some kind of lint marker.
-> I'm guessing that linter hasn't been run in a while from the mixed use of the marker vs comments.
->
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> ---
->  drivers/acpi/acpica/dscontrol.c | 3 +--
->  drivers/acpi/acpica/dswexec.c   | 4 +---
->  drivers/acpi/acpica/dswload.c   | 3 +--
->  drivers/acpi/acpica/dswload2.c  | 3 +--
->  drivers/acpi/acpica/exfldio.c   | 3 +--
->  drivers/acpi/acpica/exresop.c   | 5 ++---
->  drivers/acpi/acpica/exstore.c   | 6 ++----
->  drivers/acpi/acpica/hwgpe.c     | 3 +--
->  drivers/acpi/acpica/utdelete.c  | 3 +--
->  drivers/acpi/acpica/utprint.c   | 2 +-
->  10 files changed, 12 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/dscontrol.c b/drivers/acpi/acpica/dscontrol.c index 4b5b6e859f62..1e75e5fbfd19 100644
-> --- a/drivers/acpi/acpica/dscontrol.c
-> +++ b/drivers/acpi/acpica/dscontrol.c
-> @@ -61,8 +61,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
->                                 break;
->                         }
->                 }
-> -
-> -               /*lint -fallthrough */
-> +               fallthrough;
->
->         case AML_IF_OP:
->                 /*
-> diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c index 1d4f8c81028c..e8c32d4fe55f 100644
-> --- a/drivers/acpi/acpica/dswexec.c
-> +++ b/drivers/acpi/acpica/dswexec.c
-> @@ -597,9 +597,7 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
->                                 if (ACPI_FAILURE(status)) {
->                                         break;
->                                 }
-> -
-> -                               /* Fall through */
-> -                               /*lint -fallthrough */
-> +                               fallthrough;
->
->                         case AML_INT_EVAL_SUBTREE_OP:
->
-> diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c index 27069325b6de..afc663c3742d 100644
-> --- a/drivers/acpi/acpica/dswload.c
-> +++ b/drivers/acpi/acpica/dswload.c
-> @@ -223,8 +223,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state *walk_state,
->                              parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
->                                 break;
->                         }
-> -
-> -                       /*lint -fallthrough */
-> +                       fallthrough;
->
->                 default:
->
-> diff --git a/drivers/acpi/acpica/dswload2.c b/drivers/acpi/acpica/dswload2.c index edadbe146506..1b794b6ba072 100644
-> --- a/drivers/acpi/acpica/dswload2.c
-> +++ b/drivers/acpi/acpica/dswload2.c
-> @@ -213,8 +213,7 @@ acpi_ds_load2_begin_op(struct acpi_walk_state *walk_state,
->                              parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
->                                 break;
->                         }
-> -
-> -                       /*lint -fallthrough */
-> +                       fallthrough;
->
->                 default:
->
-> diff --git a/drivers/acpi/acpica/exfldio.c b/drivers/acpi/acpica/exfldio.c index ade35ff1c7ba..9d1cabe0fed9 100644
-> --- a/drivers/acpi/acpica/exfldio.c
-> +++ b/drivers/acpi/acpica/exfldio.c
-> @@ -433,8 +433,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
->                  * Now that the Bank has been selected, fall through to the
->                  * region_field case and write the datum to the Operation Region
->                  */
-> -
-> -               /*lint -fallthrough */
-> +               fallthrough;
->
->         case ACPI_TYPE_LOCAL_REGION_FIELD:
->                 /*
-> diff --git a/drivers/acpi/acpica/exresop.c b/drivers/acpi/acpica/exresop.c index 4d1b22971d58..df48faa9a551 100644
-> --- a/drivers/acpi/acpica/exresop.c
-> +++ b/drivers/acpi/acpica/exresop.c
-> @@ -197,8 +197,7 @@ acpi_ex_resolve_operands(u16 opcode,
->                                 case ACPI_REFCLASS_DEBUG:
->
->                                         target_op = AML_DEBUG_OP;
-> -
-> -                                       /*lint -fallthrough */
-> +                                       fallthrough;
->
->                                 case ACPI_REFCLASS_ARG:
->                                 case ACPI_REFCLASS_LOCAL:
-> @@ -264,7 +263,7 @@ acpi_ex_resolve_operands(u16 opcode,
->                          * Else not a string - fall through to the normal Reference
->                          * case below
->                          */
-> -                       /*lint -fallthrough */
-> +                       fallthrough;
->
->                 case ARGI_REFERENCE:    /* References: */
->                 case ARGI_INTEGER_REF:
-> diff --git a/drivers/acpi/acpica/exstore.c b/drivers/acpi/acpica/exstore.c index 3adc0a29d890..2067baa7c120 100644
-> --- a/drivers/acpi/acpica/exstore.c
-> +++ b/drivers/acpi/acpica/exstore.c
-> @@ -95,8 +95,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
->                 if (dest_desc->common.flags & AOPOBJ_AML_CONSTANT) {
->                         return_ACPI_STATUS(AE_OK);
->                 }
-> -
-> -               /*lint -fallthrough */
-> +               fallthrough;
->
->         default:
->
-> @@ -421,8 +420,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
->                                 }
->                                 break;
->                         }
-> -
-> -                       /* Fallthrough */
-> +                       fallthrough;
->
->                 case ACPI_TYPE_DEVICE:
->                 case ACPI_TYPE_EVENT:
-> diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c index b13a4ed5bc63..fbfad80c8a53 100644
-> --- a/drivers/acpi/acpica/hwgpe.c
-> +++ b/drivers/acpi/acpica/hwgpe.c
-> @@ -166,8 +166,7 @@ acpi_hw_low_set_gpe(struct acpi_gpe_event_info *gpe_event_info, u32 action)
->                 if (!(register_bit & gpe_register_info->enable_mask)) {
->                         return (AE_BAD_PARAMETER);
->                 }
-> -
-> -               /*lint -fallthrough */
-> +               fallthrough;
->
->         case ACPI_GPE_ENABLE:
->
-> diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c index 4c0d4e434196..8076e7947585 100644
-> --- a/drivers/acpi/acpica/utdelete.c
-> +++ b/drivers/acpi/acpica/utdelete.c
-> @@ -111,8 +111,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
->                         (void)acpi_ev_delete_gpe_block(object->device.
->                                                        gpe_block);
->                 }
-> -
-> -               /*lint -fallthrough */
-> +               fallthrough;
->
->         case ACPI_TYPE_PROCESSOR:
->         case ACPI_TYPE_THERMAL:
-> diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c index 681c11f4af4e..f7e43baf5ff2 100644
-> --- a/drivers/acpi/acpica/utprint.c
-> +++ b/drivers/acpi/acpica/utprint.c
-> @@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
->                 case 'X':
->
->                         type |= ACPI_FORMAT_UPPER;
-> -                       /* FALLTHROUGH */
-> +                       fallthrough;
->
->                 case 'x':
->
-> --
-> 2.29.2.222.g5d2a92d10f8-goog
->
+All three patches applied, thanks.
 
+Thierry
 
--- 
-Thanks,
-~Nick Desaulniers
+--yQbNiKLmgenwUfTN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl+sQkAACgkQ3SOs138+
+s6H2fw/9HXSDngw5gz4ME2lEQMcKkgSohMfps72q+1nh4EdtHmvmnOjCZ2/yJi5/
+mGyPjAfh4TmGAkq1MKPA19Vb6qA4sxpYxo9SgiPPvMKgAO2RdrCONPWENinnqkai
+Er7rdkgriRGonWOUOAE/K8hIfXqmmCOfKPci7dXL8Z8SnK/qgwiI1m6hYWu6tqhb
+ZHMwifMowBjsRNkumlBUU+pFubj7S8SBhn8pxHChJeSfUiLGrw739D+WMUv3sOaI
+oSXeN60BZ/z1Pb9Rhb29FqogemwGaYakeWE7Kox5C1QmxsD/PNkyMlvAUsZ2PkeL
+uWZZj6DZ2L28cDKn3nIazUPLJcptCof1rEzZhaiVV/HM/fTX9CzT30w7Z7e/xHCS
+DuXbFS+NFmyyxnMTszR6iTP4yC/cFBQBaUEkeMZHkbtxU9wmvTX4mRXcT5mod9II
+62jN8qJajGHaZv8LMZawjE1Ik0RPVJPZcUl2y29HTbAxsEf23KQlfnh222sE8hmf
+GJkX5bXR9HW4Ge6vPnBGHQV5DiYXWonOOu+TGK/+ljTEpRBBYHCIpFwwA0H05U4S
+9iH3nHiEnPoYBSk2V+8wmdU0j7vI4TzDD70tRa0rRMTmcYacQgNoxn49gHaEBJFz
+lkNezK1iHgOiCEU8uQ0qNkqq3uWtQ03XHm6Vb4pQPjjUgNjvy+4=
+=wc6m
+-----END PGP SIGNATURE-----
+
+--yQbNiKLmgenwUfTN--
