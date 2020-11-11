@@ -2,85 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 595622AF418
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 15:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8317A2AF436
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 15:57:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727176AbgKKOxW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Nov 2020 09:53:22 -0500
-Received: from smtp.asem.it ([151.1.184.197]:60288 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725939AbgKKOxS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Nov 2020 09:53:18 -0500
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000601011.MSG 
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Nov 2020 15:53:15 +0100S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 11
- Nov 2020 15:53:13 +0100
-Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
- mapi id 15.01.1979.003; Wed, 11 Nov 2020 15:53:13 +0100
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S1727112AbgKKO5F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Nov 2020 09:57:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726553AbgKKO5E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Nov 2020 09:57:04 -0500
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C90EC0613D1;
+        Wed, 11 Nov 2020 06:57:04 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id d3so1093184plo.4;
+        Wed, 11 Nov 2020 06:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MyApQ3Qe0ikm4e96wlEFsdUKuOOWp3HZjy/jI5jhpdQ=;
+        b=TC05TcfmI0zGf3u+l4x7bhmD2pAZ5ansAdrIpTH+gvMFEveSyZ/zWF4nAxcxhujaod
+         6aSitX5yQNexfhAl/d+iJkL6MseppAI75My+pbUN75qKjq5iYArRb0fpHNRkEHWwybIz
+         /VNZtCDsDGsXyb0Zd84xQ7IujxOWh3nHStw0HW89ARgw6qzO1BjtZVXwBwhpdMO3A1K5
+         Q8N7zJwUEEAcULlHUsgMODJKBnDx4+jBnbhrV/toKPa0B8obDwMf3qSJCyA2PwdZMLBL
+         kAQIQHyU1Eo/TGy0n0BV0iltvqCoO+C6vsK7ELKF4zQvrl0c8iDnGATssPGWzpVSIhVc
+         MGtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MyApQ3Qe0ikm4e96wlEFsdUKuOOWp3HZjy/jI5jhpdQ=;
+        b=bzBdSKfNOMWvaGYJrrqxRGCh6YYNnXJN28iFTpp2/bs3qXE0D9rBUuoqYtm6ATxtQ5
+         egn3RnX5iZqwbu/882ZMHuJy7hEzLSRrw6fvV3jE/j1ev6ROMwMNPEpolUrgFWzeRMJq
+         PKA7bPT2SHoKQ6ke2TfCajitL+D/3a08PV5OodtZbSL7jBQIdBO2BSmysKmkp527EQZ3
+         sDtIVWWzWysKv3KsnLk5GtShTucUzvT3Eh7cW+6cuNRnQDrHE4Jm1fLCvYECxjGkRCK3
+         s6qSfWP6qdudSI+I5sDktcQ4B4MTlOiR/NEy/WJishLtTjr/hRT7kTiZSV1AnuFM3AHC
+         5XxA==
+X-Gm-Message-State: AOAM532aPb/YXoSUJ/5iS0qG7cJ2bbickviyVK2PIOvqM3WL520IzjGR
+        npPLXfTjF0QUIg6f37VMBFlaPzLpHCesMYqNiP5oms96zv4=
+X-Google-Smtp-Source: ABdhPJxYzvEL9bujfSelart5xnHseI7z2+ubQqYjhGqDNU8DhEDl09EpsXM6Df/4Eum3wxbzysunMace65GxTLvCiiI=
+X-Received: by 2002:a17:902:6bc8:b029:d6:d9d:f28c with SMTP id
+ m8-20020a1709026bc8b02900d60d9df28cmr5734362plt.17.1605106624126; Wed, 11 Nov
+ 2020 06:57:04 -0800 (PST)
+MIME-Version: 1.0
+References: <20201111130435.432982-1-f.suligoi@asem.it> <CAHp75VeccWtKRQkQE0XyyDZVvkD3QrBig2yU6=pz3KEG-bCKjA@mail.gmail.com>
+ <93941f3b0142473399bfdd18608a4056@asem.it>
+In-Reply-To: <93941f3b0142473399bfdd18608a4056@asem.it>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 11 Nov 2020 16:57:53 +0200
+Message-ID: <CAHp75Vdhd2Swu5qiYszgBG4pfB8LG=jxgi=YMHNviogWQR_oJw@mail.gmail.com>
+Subject: Re: [PATCH v1] Documentation: ACPI: explain how to use gpio-line-names
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v1] Documentation: ACPI: explain how to use
- gpio-line-names
-Thread-Topic: [PATCH v1] Documentation: ACPI: explain how to use
- gpio-line-names
-Thread-Index: AQHWuCs2DratU6tfqk6ZIQJSnDA95anC5K8AgAAdYVA=
-Date:   Wed, 11 Nov 2020 14:53:13 +0000
-Message-ID: <93941f3b0142473399bfdd18608a4056@asem.it>
-References: <20201111130435.432982-1-f.suligoi@asem.it>
- <CAHp75VeccWtKRQkQE0XyyDZVvkD3QrBig2yU6=pz3KEG-bCKjA@mail.gmail.com>
-In-Reply-To: <CAHp75VeccWtKRQkQE0XyyDZVvkD3QrBig2yU6=pz3KEG-bCKjA@mail.gmail.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.17.208]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A090213.5FABFADA.0015,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgQW5keSwNCg0KPiA+IFRoaXMgY29tbWl0IGFsc28gZml4IGEgdHJpdmlhbCBzeW50YXggZXJy
-b3IuDQo+IA0KPiBmaXggLT4gZml4ZXMNCj4gc3ludGF4IGVycm9yIC0+IHNwZWxsaW5nIG1pc3Rh
-a2UNCg0Kb2sNCg0KPiA+IC1FeGFtcGxlOjoNCj4gPiArVGhlICJncGlvLWxpbmUtbmFtZXMiIGRl
-Y2xhcmF0aW9uIGlzIGEgbGlzdCBvZiBzdHJpbmdzICgibmFtZXMiKSwgd2hpY2gNCj4gPiArZGVz
-Y3JpYmVzIGVhY2ggbGluZS9waW4gb2YgYSBHUElPIGNvbnRyb2xsZXIvZXhwYW5kZXIuDQo+ID4g
-K1RoaXMgbGlzdCwgY29udGFpbmVkIGluIGEgcGFja2FnZSwgbXVzdCBiZSBpbnNlcnRlZCBpbnNp
-ZGUgdGhlIEdQSU8NCj4gY29udHJvbGxlcg0KPiA+ICtkZWNsYXJhdGlvbiBvZiBhbiBBQ1BJIHRh
-YmxlICh0eXBpY2FsbHkgaW5zaWRlIHRoZSBEU0RUKS4NCj4gPiArVGhlIGdwaW8tbGluZS1uYW1l
-cyBsaXN0IG11c3QgcmVzcGVjdCB0aGUgZm9sbG93aW5nIHJ1bGVzIChzZWUgYWxzbyB0aGUNCj4g
-PiArZXhhbXBsZXMpOg0KPiANCj4gU2luY2UgaXQncyByZXN0LCBJIHdvdWxkIGV4cGVjdCBncGlv
-LWxpbmUtbmFtZXMgaW4gYWJvdmUgcGFyYWdyYXBocyB0bw0KPiBiZSBhIHRlcm0sIHNvbWV0aGlu
-ZyBsaWtlDQo+IGBgZ3Bpby1saW5lLW5hbWVzYGAgKGRvdWJsZSBiYWNrIHF1b3RlcyBvbiBlYWNo
-IHNpZGUpLiBZZXMsIEkga25vdw0KPiB0aGF0IHRoZXJlIGFyZSBvdGhlciBwbGFjZXMgd2hpY2gg
-bmVlZCB0byBiZSBhbWVuZGVkLCBidXQgSSBiZWxpZXZlDQo+IGl0J3Mgb3V0IG9mIHNjb3BlIG9m
-IHRoaXMgcGF0Y2guDQoNCk9rLCBJJ2xsIHVzZSB0aGUgYmFja3F1b3RlcyBmb3IgY29kZSBzYW1w
-bGVzLCByaWdodCENCklmIHlvdSB3YW50LCB3aGVuIHRoaXMgcGF0Y2ggd2lsbCBiZSBjb25jbHVk
-ZWQsIEkgY2FuIGNoZWNrIGFsbCB0aGUgQUNQSQ0KZG9jdW1lbnRhdGlvbiB0byBwdXQgYWxsIGNv
-ZGUgc2FtcGxlcyBpbnRvIGJhY2txdW90ZXMuDQoNCj4gDQo+IEFsc28gbm8gbmVlZCB0byBoYXZl
-IGVhY2ggc2VudGVuY2UgdG8gYmUgc3RhcnRlZCBmcm9tIGEgbmV3IGxpbmUsIGl0DQo+IHdpbGwg
-YmUgcmVuZGVyZWQgYXMgaXQgaGFzIG9uZSB3aGl0ZSBzcGFjZSBpbiBiZXR3ZWVuLg0KDQpvaw0K
-DQo+ID4gKyAgICBvdGhlciB3b3JkcywgaXQgaXMgbm90IG1hbmRhdG9yeSB0byBmaWxsIGFsbCB0
-aGUgR1BJTyBsaW5lcw0KPiA+ICsgIC0gZW1wdHkgbmFtZXMgYXJlIGFsbG93ZWQgKHR3byBxdW90
-YXRpb24gbWFya3MgIiIgY29ycmVzcG9uZCB0byBhbg0KPiBlbXB0eSBuYW1lKQ0KPiANCj4gYGAi
-ImBgIGJ1dCBiZXR0ZXIgdG8gY2hlY2sgdGhlIHJlc3VsdGluZyAocmVuZGVyZWQpIGZpbGUuIFlv
-dSBtYXkgdXNlDQo+IHJzdDJwZGYgc2NyaXB0IGZvciB0aGF0Lg0KDQpPSyBmb3IgdGhlYGAiImBg
-Lg0KSSBjaGVjayB0aGUgcmVuZGVyZWQgSFRNTCB1c2luZyB0aGUgdXN1YWwgIm1ha2UgaHRtbGRv
-Y3MiLiBJcyBpdCBlbm91Z2g/DQoNCj4gLS0NCj4gV2l0aCBCZXN0IFJlZ2FyZHMsDQo+IEFuZHkg
-U2hldmNoZW5rbw0KDQpSZWdhcmRzLA0KRmxhdmlvDQo=
+On Wed, Nov 11, 2020 at 4:53 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
+
+...
+
+> > Since it's rest, I would expect gpio-line-names in above paragraphs to
+> > be a term, something like
+> > ``gpio-line-names`` (double back quotes on each side). Yes, I know
+> > that there are other places which need to be amended, but I believe
+> > it's out of scope of this patch.
+>
+> Ok, I'll use the backquotes for code samples, right!
+> If you want, when this patch will be concluded, I can check all the ACPI
+> documentation to put all code samples into backquotes.
+
+I'm not sure I understand what you meant under 'code samples'. The
+code excerpts like below are fine, what I'm talking about is the
+reference to properties in the text.
+
+...
+
+> > ``""`` but better to check the resulting (rendered) file. You may use
+> > rst2pdf script for that.
+>
+> OK for the``""``.
+> I check the rendered HTML using the usual "make htmldocs". Is it enough?
+
+Ideally it's not enough. html, pdf and man all should be checked.
+
+-- 
+With Best Regards,
+Andy Shevchenko
