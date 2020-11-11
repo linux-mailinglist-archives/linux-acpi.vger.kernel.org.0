@@ -2,247 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EDAC2AE637
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 03:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA8E42AE76C
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 05:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731919AbgKKCNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Nov 2020 21:13:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
+        id S1725849AbgKKEde (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Nov 2020 23:33:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731557AbgKKCNo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 21:13:44 -0500
-Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01137C0613D1
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 18:13:44 -0800 (PST)
-Received: by mail-qk1-x749.google.com with SMTP id c18so626911qkl.15
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Nov 2020 18:13:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:message-id:mime-version:subject:from:to:cc;
-        bh=W+tp6PqByVFyf+7BIq7ovR7ee/HSTPxo+nYyur7x4tk=;
-        b=XzskPPUhU0Hn8wLRTfAlu5mkhiWcLvj1r+x5iXEJjeMX6bQk7UG4sZf2gyYw2DXihp
-         3dEZhA45Lpgj/Dt/oZOsCoMMCQdgNGJSHAgRKRSZuyqpxoJNX0qJb4AWrWCsXwDpUWK6
-         GZgDYa8jNLoiPSSXDMWb1zxqHH3MxX7JmVy6VLph8rU5kH4S+R9RgGsH9GNzbgaugtYG
-         2Gw6M+HqModRMimvHPZVhn7I4/8HZPJ9QvuHmymZbTLqOhf/kWCd+5t0BKnAsSoiXOhe
-         PpsI71oTKXHMeOsMN3jZ5uBMMQukdvjTyql9zFtCyZTB+mTclThuMvmLQ8YzUSL28eHD
-         C7Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
-         :to:cc;
-        bh=W+tp6PqByVFyf+7BIq7ovR7ee/HSTPxo+nYyur7x4tk=;
-        b=CNkYTsFN5dPYeLN6+a3ApeufPSFmJrJiNhYn6PbaSHAarLm3BTPYQY6O0Lav+3jeaf
-         bkGGJO5Lw6YoRakOPF69dtTuUo8jEhNlQRxlPSRN89tkn9Wj7EEEE+MbKxyoJRv/JRaU
-         SKfTu01XUvPEA6plLRJuTEBmEmbUT1RZE/VhaMYC/Fu1V1pe6zBr+JkdMAyZL5dJR9vZ
-         8Izp41wTtfbrWvf1pB7la8KLVvDw0DdS+TNDuKpOARER6wJy46EVac99NoncYnXyUKmn
-         xqgkh6sbnd5xU3otUzC3rKM4JYhBfjcRgLqkQ5z5xUVe4Pfst2Sm+59BMO+aYyz4HEmR
-         qniw==
-X-Gm-Message-State: AOAM532K3B8dXewctw43yzmS+yKhYNlsagO9DxdcLPQYpcAbem1eQaOx
-        P+GkP7I3r4+Muz8INZPDKvhAG0vQCI0N6rcJ2qw=
-X-Google-Smtp-Source: ABdhPJwSC4FdAQLVj6SfNDoGwrqkKbLnTgmDa2ZIoHmS3uffZ7D/LkKe6rXbTfU3q6tJZswSpEWpGS93EBQCcuss4Cs=
-Sender: "ndesaulniers via sendgmr" 
-        <ndesaulniers@ndesaulniers1.mtv.corp.google.com>
-X-Received: from ndesaulniers1.mtv.corp.google.com ([2620:15c:211:202:f693:9fff:fef4:4d25])
- (user=ndesaulniers job=sendgmr) by 2002:a0c:aedf:: with SMTP id
- n31mr16891447qvd.31.1605060823101; Tue, 10 Nov 2020 18:13:43 -0800 (PST)
-Date:   Tue, 10 Nov 2020 18:11:30 -0800
-Message-Id: <20201111021131.822867-1-ndesaulniers@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.29.2.222.g5d2a92d10f8-goog
-Subject: [PATCH] ACPICA: fix -Wfallthrough
-From:   Nick Desaulniers <ndesaulniers@google.com>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>
-Cc:     clang-built-linux@googlegroups.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S1725828AbgKKEde (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Nov 2020 23:33:34 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE02FC0613D1;
+        Tue, 10 Nov 2020 20:33:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=gL0OocahXZn8ZQNF8szmGW51uY79EBzlZ34GhrWeBso=; b=oDeBdofTe937SyWQ5KS04zcvqC
+        lgvZ1G91Fpn0+Q6hWzn8iz4pOCTvXSHpD6P1QhX5Qd04Kt1Qw+XpMngVvHfktQNVQ1ulA67YiL7nL
+        tA8aihrql/H2AMkAyYWzWFIN9Ce0745Pa94PaKzEiQEtKHdWkthYtwOI+SQpKIJw6ptG47vbEq7Sm
+        XbhcamxT5yKVkB0cRiWCzjhuX2LfopicPBECLbWzvfoBpL8c7A/pYE1TRlavFekqmDsyuYQ9Lmaqv
+        TacYawpzSIaJXXew8hPtbksnGSLMeAoHskMPJw9V8IhREGECwGEFySLXGWxjJ//+BgXGebA+WR5kI
+        gAImvbZw==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kchoe-0002CB-P0; Wed, 11 Nov 2020 04:33:04 +0000
+Date:   Wed, 11 Nov 2020 04:33:04 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     corbet@lwn.net, keescook@chromium.org, gregkh@linuxfoundation.org,
+        peterz@infradead.org, rafael@kernel.org, lenb@kernel.org,
+        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        minyard@acm.org, arnd@arndb.de, mchehab@kernel.org,
+        rric@kernel.org, valentina.manea.m@gmail.com, shuah@kernel.org,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, jmorris@namei.org,
+        serge@hallyn.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-edac@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 00/13] Introduce seqnum_ops
+Message-ID: <20201111043304.GS17076@casper.infradead.org>
+References: <cover.1605027593.git.skhan@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1605027593.git.skhan@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The "fallthrough" pseudo-keyword was added as a portable way to denote
-intentional fallthrough. This code seemed to be using a mix of
-fallthrough comments that GCC recognizes, and some kind of lint marker.
-I'm guessing that linter hasn't been run in a while from the mixed use
-of the marker vs comments.
+On Tue, Nov 10, 2020 at 12:53:26PM -0700, Shuah Khan wrote:
+> There are a number of atomic_t usages in the kernel where atomic_t api
+> is used strictly for counting sequence numbers and other statistical
+> counters and not for managing object lifetime.
 
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
----
- drivers/acpi/acpica/dscontrol.c | 3 +--
- drivers/acpi/acpica/dswexec.c   | 4 +---
- drivers/acpi/acpica/dswload.c   | 3 +--
- drivers/acpi/acpica/dswload2.c  | 3 +--
- drivers/acpi/acpica/exfldio.c   | 3 +--
- drivers/acpi/acpica/exresop.c   | 5 ++---
- drivers/acpi/acpica/exstore.c   | 6 ++----
- drivers/acpi/acpica/hwgpe.c     | 3 +--
- drivers/acpi/acpica/utdelete.c  | 3 +--
- drivers/acpi/acpica/utprint.c   | 2 +-
- 10 files changed, 12 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/acpi/acpica/dscontrol.c b/drivers/acpi/acpica/dscontrol.c
-index 4b5b6e859f62..1e75e5fbfd19 100644
---- a/drivers/acpi/acpica/dscontrol.c
-+++ b/drivers/acpi/acpica/dscontrol.c
-@@ -61,8 +61,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
- 				break;
- 			}
- 		}
--
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case AML_IF_OP:
- 		/*
-diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-index 1d4f8c81028c..e8c32d4fe55f 100644
---- a/drivers/acpi/acpica/dswexec.c
-+++ b/drivers/acpi/acpica/dswexec.c
-@@ -597,9 +597,7 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
- 				if (ACPI_FAILURE(status)) {
- 					break;
- 				}
--
--				/* Fall through */
--				/*lint -fallthrough */
-+				fallthrough;
- 
- 			case AML_INT_EVAL_SUBTREE_OP:
- 
-diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
-index 27069325b6de..afc663c3742d 100644
---- a/drivers/acpi/acpica/dswload.c
-+++ b/drivers/acpi/acpica/dswload.c
-@@ -223,8 +223,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state *walk_state,
- 			     parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
- 				break;
- 			}
--
--			/*lint -fallthrough */
-+			fallthrough;
- 
- 		default:
- 
-diff --git a/drivers/acpi/acpica/dswload2.c b/drivers/acpi/acpica/dswload2.c
-index edadbe146506..1b794b6ba072 100644
---- a/drivers/acpi/acpica/dswload2.c
-+++ b/drivers/acpi/acpica/dswload2.c
-@@ -213,8 +213,7 @@ acpi_ds_load2_begin_op(struct acpi_walk_state *walk_state,
- 			     parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
- 				break;
- 			}
--
--			/*lint -fallthrough */
-+			fallthrough;
- 
- 		default:
- 
-diff --git a/drivers/acpi/acpica/exfldio.c b/drivers/acpi/acpica/exfldio.c
-index ade35ff1c7ba..9d1cabe0fed9 100644
---- a/drivers/acpi/acpica/exfldio.c
-+++ b/drivers/acpi/acpica/exfldio.c
-@@ -433,8 +433,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
- 		 * Now that the Bank has been selected, fall through to the
- 		 * region_field case and write the datum to the Operation Region
- 		 */
--
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case ACPI_TYPE_LOCAL_REGION_FIELD:
- 		/*
-diff --git a/drivers/acpi/acpica/exresop.c b/drivers/acpi/acpica/exresop.c
-index 4d1b22971d58..df48faa9a551 100644
---- a/drivers/acpi/acpica/exresop.c
-+++ b/drivers/acpi/acpica/exresop.c
-@@ -197,8 +197,7 @@ acpi_ex_resolve_operands(u16 opcode,
- 				case ACPI_REFCLASS_DEBUG:
- 
- 					target_op = AML_DEBUG_OP;
--
--					/*lint -fallthrough */
-+					fallthrough;
- 
- 				case ACPI_REFCLASS_ARG:
- 				case ACPI_REFCLASS_LOCAL:
-@@ -264,7 +263,7 @@ acpi_ex_resolve_operands(u16 opcode,
- 			 * Else not a string - fall through to the normal Reference
- 			 * case below
- 			 */
--			/*lint -fallthrough */
-+			fallthrough;
- 
- 		case ARGI_REFERENCE:	/* References: */
- 		case ARGI_INTEGER_REF:
-diff --git a/drivers/acpi/acpica/exstore.c b/drivers/acpi/acpica/exstore.c
-index 3adc0a29d890..2067baa7c120 100644
---- a/drivers/acpi/acpica/exstore.c
-+++ b/drivers/acpi/acpica/exstore.c
-@@ -95,8 +95,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
- 		if (dest_desc->common.flags & AOPOBJ_AML_CONSTANT) {
- 			return_ACPI_STATUS(AE_OK);
- 		}
--
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	default:
- 
-@@ -421,8 +420,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
- 				}
- 				break;
- 			}
--
--			/* Fallthrough */
-+			fallthrough;
- 
- 		case ACPI_TYPE_DEVICE:
- 		case ACPI_TYPE_EVENT:
-diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c
-index b13a4ed5bc63..fbfad80c8a53 100644
---- a/drivers/acpi/acpica/hwgpe.c
-+++ b/drivers/acpi/acpica/hwgpe.c
-@@ -166,8 +166,7 @@ acpi_hw_low_set_gpe(struct acpi_gpe_event_info *gpe_event_info, u32 action)
- 		if (!(register_bit & gpe_register_info->enable_mask)) {
- 			return (AE_BAD_PARAMETER);
- 		}
--
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case ACPI_GPE_ENABLE:
- 
-diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-index 4c0d4e434196..8076e7947585 100644
---- a/drivers/acpi/acpica/utdelete.c
-+++ b/drivers/acpi/acpica/utdelete.c
-@@ -111,8 +111,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
- 			(void)acpi_ev_delete_gpe_block(object->device.
- 						       gpe_block);
- 		}
--
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case ACPI_TYPE_PROCESSOR:
- 	case ACPI_TYPE_THERMAL:
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index 681c11f4af4e..f7e43baf5ff2 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
- 		case 'X':
- 
- 			type |= ACPI_FORMAT_UPPER;
--			/* FALLTHROUGH */
-+			fallthrough;
- 
- 		case 'x':
- 
--- 
-2.29.2.222.g5d2a92d10f8-goog
-
+We already have something in Linux called a sequence counter, and it's
+different from this.  ID counter?  instance number?  monotonic_t?  stat_t?
