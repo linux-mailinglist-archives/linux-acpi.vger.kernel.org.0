@@ -2,134 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C112AF743
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 18:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9982AF7BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Nov 2020 19:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726074AbgKKRRu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Nov 2020 12:17:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60698 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbgKKRRu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Nov 2020 12:17:50 -0500
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172BAC0613D6
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Nov 2020 09:17:50 -0800 (PST)
-Received: by mail-ed1-x542.google.com with SMTP id v4so3133866edi.0
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Nov 2020 09:17:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eQoq2RQCuafra2/12uiljwu+rCNgXWp3T6t2+sz8FTY=;
-        b=1DH8VH1JKBZbEDlGbtroiVXOVC0/URrnHQ4E8/tzT86j+/9Tva1H6wuleBdwke7NC0
-         OtOJ5SRmQEMcfqXHix2vJ5Kn8HKTL1/oLfya12FbOsO3FsuLYwnjILQiqYj0mmVqQmXe
-         Cuzt9YWBUz/3UdIPnqCEFjRKthmWHf8atJVS3KK4AVkpnTPVBpBpbAZHnG8I43hcBvXW
-         Dk0rimoptgAKqXt+ANHhaSihWslTP3l33/U4JZ+UD25Y7G9behZfPGt1U9buudqH9QV0
-         03q5re0g52eZpMu1pz1uDdM8rCL00SnesUh0Gsb1iRIs7nPiQag7jBP9pfO1pyFr2IEo
-         Ll0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eQoq2RQCuafra2/12uiljwu+rCNgXWp3T6t2+sz8FTY=;
-        b=mwAlGyWFRPW3CQAR3DRzwrXb2jN67AZdd8AQzkbD5uNUdIURX3bZ36knv3JZJeg0od
-         BQSjW4krO37gkwD0+sTtV8mchWrnGRu4akS+dIUD1mGW/mNe6+O1H+GM29WyXft0MAWi
-         MuxLz9RfRbWPxc5lhKA0cRWHHKkxCgTT2glnIZISl8FGt9HEZgbRCPgoXCXgx6eViDg4
-         rUUejqqpEnY0pQluKV0p5KNPFFFvuqeSBTenV3NvWl6pgfCGDAxsIxYB9R/t0yTkiOE9
-         dN41Z+3kmJe0B/p3EcZ15k4pjyXP+w0qfSGCeM+JAd24H3lokACfqbdPlRicAYH5Ynqf
-         cm5w==
-X-Gm-Message-State: AOAM532TE5LF9FdRUMDpKSRCuQu4X1ToRSogvDJ7E+es/rNgoMMhIuU5
-        aBKbEmuQVGBNXpy/aaWdzOVG8N25AjAbAjJxJ3LifaheXec=
-X-Google-Smtp-Source: ABdhPJwTwbtangRhABKsob3Xr0CrmoBXrd71z27l2ZDvApiVBFS1mPJU50IdPt5HUcdZ+QRQ7ssj77pEMJ8fTBox2mA=
-X-Received: by 2002:aa7:ca44:: with SMTP id j4mr511437edt.354.1605115068596;
- Wed, 11 Nov 2020 09:17:48 -0800 (PST)
+        id S1726074AbgKKSLi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Nov 2020 13:11:38 -0500
+Received: from foss.arm.com ([217.140.110.172]:59430 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726036AbgKKSLh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Nov 2020 13:11:37 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC867139F;
+        Wed, 11 Nov 2020 10:11:36 -0800 (PST)
+Received: from [172.16.1.113] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABF433F718;
+        Wed, 11 Nov 2020 10:11:35 -0800 (PST)
+Subject: Re: [PATCH] Don't do panic for memory Fatal UE in ghes of x86_mce
+To:     yaoaili126@163.com, tony.luck@intel.com, bp@alien8.de
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        YANGFENG1@kingsoft.com, yaoaili@kingsoft.com
+References: <72ca543a-5022-bd12-14b5-4d7b125cd0fe () arm ! com>
+ <20201109060757.406689-1-yaoaili126@163.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <c292438a-eeb0-abca-6e0c-92339ae3d998@arm.com>
+Date:   Wed, 11 Nov 2020 18:11:22 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-References: <20201111054356.793390-1-ben.widawsky@intel.com>
- <20201111054356.793390-4-ben.widawsky@intel.com> <20201111071231.GC7829@infradead.org>
-In-Reply-To: <20201111071231.GC7829@infradead.org>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 11 Nov 2020 09:17:37 -0800
-Message-ID: <CAPcyv4iA_hNc=xdcbR-eb57W9o4br1BognSr5Sj4pAO3uMm69g@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/9] cxl/mem: Add a driver for the type-3 mailbox
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201109060757.406689-1-yaoaili126@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 11:12 PM Christoph Hellwig <hch@infradead.org> wrote:
->
-> On Tue, Nov 10, 2020 at 09:43:50PM -0800, Ben Widawsky wrote:
-> > +config CXL_MEM
-> > +        tristate "CXL.mem Device Support"
-> > +        depends on PCI && CXL_BUS_PROVIDER != n
->
-> depend on PCI && CXL_BUS_PROVIDER
->
-> > +        default m if CXL_BUS_PROVIDER
->
-> Please don't set weird defaults for new code.  Especially not default
-> to module crap like this.
+Hello,
 
-This goes back to what people like Dave C. asked for LIBNVDIMM / DAX,
-a way to blanket turn on a subsystem without needing to go hunt down
-individual configs. All of CXL is "default n", but if someone turns on
-a piece of it they get all of it by default. The user can then opt-out
-on pieces after that first opt-in. If there's a better way to turn on
-suggested configs I'm open to switch to that style. As for the
-"default m" I was worried that it would be "default y" without the
-specificity, but I did not test that... will check. There have been
-times when I wished that distros defaulted bleeding edge new enabling
-to 'm' and putting that default in the Kconfig maybe saves me from
-needing to file individual config changes to distros after the fact.
+(Boris, Tony, question below: have you seen a machine taking both MCE and at least
+populating FF records for the same error?)
 
->
-> > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
->
-> Please don't use '//' for anything but the SPDX header.
+On 09/11/2020 06:07, yaoaili126@163.com wrote:
+> James Morse wrote:
+>> Its not arm platforms I'm worried about! Its x86 systems that do everything
+>> firmware-first, or everything kernel-first. You seem to have something doing
+>> a bit of both, anything added needs to not break the other systems.
+>>
+>> You can't know at compile time if the system will be doing a bit of both.
+>> You must detect it from the entries in the HEST.
 
-Ok, I find // following by /* */ a bit ugly, but I don't care enough to fight.
 
->
-> > +
-> > +             pci_read_config_word(pdev, pos + PCI_DVSEC_VENDOR_OFFSET, &vendor);
-> > +             pci_read_config_word(pdev, pos + PCI_DVSEC_ID_OFFSET, &id);
-> > +             if (vendor == PCI_DVSEC_VENDOR_CXL && dvsec == id)
-> > +                     return pos;
-> > +
-> > +             pos = pci_find_next_ext_capability(pdev, pos, PCI_EXT_CAP_ID_DVSEC);
->
-> Overly long lines again.
+> Oh, This time I know your concern, I have assumed that x86 will never trigger NMI
+> for memory UE errors, I need to dig more about this.
 
-I thought 100 is the new 80 these days?
+Systems broadly fall into one of three buckets:
 
-> > +static void cxl_mem_remove(struct pci_dev *pdev)
-> > +{
-> > +}
->
-> No need for the empty remove callback.
+1. kernel-first: The OS takes a machine check when an error occurs.
+2. firmware-first: Firmware takes over when an error occurs, and provides a standard
+description of the error via these GHES things, and notifies the OS by some means.
+3. neither of the above.
 
-True, will fix.
+Linux supports all of these, and works out which kind of system you have at boot.
 
->
-> > +MODULE_AUTHOR("Intel Corporation");
->
-> A module author is not a company.
+You appear to have a machine that is doing 1 and 2 at the same time...
 
-At least I don't have a copyright assignment clause, I don't agree
-with the vanity of listing multiple people here especially when
-MAINTAINERS has the contact info, and I don't want to maintain a list
-as people do drive-by contributions and we need to figure out at what
-level of contribution mandates a new MODULE_AUTHOR line. Now, that
-said I would be ok to duplicate the MAINTAINERS as MODULE_AUTHOR
-lines, but I otherwise expect MAINTAINERS is the central source for
-module contact info.
+
+>> But - maybe this isn't GHES-ASSIST!
+>>
+>> Could you dump the HEST and check the flags. Something like:
+>> | cp /sys/firmware/acpi/tables/HEST  .
+>> | iasl HEST
+>>
+>> Look for the GHES entries having an 'alternate source id' that in turn has the
+>> GHES_ASSIST flag set.
+>>
+>> GHES-ASSIST has been my assumption as you were finding firmware-first
+>> records during machine-check. (which suggests its not really a firmware-first
+>> system)
+>>
+>> If the GHES-ASSIST flag isn't set, then something else is going on.
+
+> I have provided the HEST table to you, And I think your concern is right,
+> before further action, we must clarify the GHES-ASSIST topic, I will also look
+> into it. Thanks!
+
+Thanks for sending those. None of them support GHES-ASSIST.
+A cut down version of your lenovo example:
+
+[028h 0040   2]                Subtable Type : 0001 [IA-32 Corrected Machine Check]
+[02Ah 0042   2]                    Source Id : 0001
+[02Ch 0044   2]                    Reserved1 : 0000
+[02Eh 0046   1]        Flags (decoded below) : 01
+                              Firmware First : 1
+[02Fh 0047   1]                      Enabled : 01
+
+...
+
+[288h 0648   2]                Subtable Type : 0009 [Generic Hardware Error Source]
+[28Ah 0650   2]                    Source Id : 0002
+[28Ch 0652   2]            Related Source Id : 0001
+
+This tells us that IA-32 Corrected Machine Check errors can be taken via firmware-first,
+and if they are - errors are reported via GHES.2 (which is polled).
+
+The flags field has a 'GHES-ASSIST' flag which means 'both', it is not set in any of the
+files you sent. I'm afraid this was a bad suggestion from me.
+
+On  this machine, you should see arch_apei_enable_cmcff() print:
+| HEST: Enabling Firmware First mode for corrected errors.
+on this machine. It spots the firmware-first flag, ignores enabled, and calls
+mce_disable_bank() for the listed banks as firmware says it is handling these.
+
+
+But, you've been seeing uncorrected errors, and none of these tables describe a 'type 0 -
+IA-32 Architecture Machine Check Exception Structure'... so presumably linux has
+discovered the hardware itself, and firmware has failed to describe that it is taking
+these errors...
+
+Boris, Tony, have you seen anything like this before?
+(is there a well-known firmware bug down here?)
+
+
+Have you seen this happen without triggering the error via einj? Is is possible its just
+the error injection code in firmware that is doing the wrong thing?
+
+
+>>> I do wondering if we can add one option to each error record the OS
+>>> received from BIOS, if we can, we may unify some of ghes_proc brached
+>>> which is seperate by CONFIG_OPTIONS, this will do more clean code.
+>>
+>> I'm not sure what you are suggesting here.
+
+> I am suggesting the GHES-ASSIST flag per error record. not GHES-ASSIST flag per
+> error source.
+
+I'm afraid the ACPI specification dictates how this works.
+
+
+>>> 3. I have some test result from an Fatal UE inject, following:
+>>> It seems the NMI has preempt MCE, and MCE's work isn't finished as NMI
+>>> has decided to panic. I may refers to Intel for some help.
+>>> That's not good as we may lose the mcelog in pstore.
+>>
+>>> Even if there is no kdump fail issue, I think the No panic action for
+>>> Fatal memory is still needed.
+>>
+>> Injecting fatal errors is expected to be fatal.
+
+[...]
+
+>> You are triggering this with some error injection... its possible this would
+>> never actually happen in real life as the kernel takes the errors via machine-
+>> check, firmware never finds out.
+>> Is it possible to check with your BIOS vendor whether this is the case?
+>>
+> 
+> I think we have different opinions on this:
+> I think the NMI process in this case is un-expected, it's from NMI watchdog.
+> you think This NMI is from BIOS's Firmware Frst Mode invocation. Am I right?
+
+Yes, we're not quite agreed on this, because:
+
+> I prefer my opinion. Because in my tests and real production cases, this is
+> not the Only case I met, mostly I will get mce_panic log or both mce and 
+> ghes log when panic.
+
+Where do the GHES CPER records come from?
+
+The memory areas are paired up with the notifications. Linux only reads the regions that
+go with an NMI when it takes an NMI. If firmware wrote to the regions that go with the
+NMI, its because firmware believes its doing firmware-first for errors reported via NMI.
+
+In which case, why are you also taking a machine-check?
+
+
+In the case you get both MCE and CPER records - do they describe the same error?
+
+
+> I do ask for help from a vendor, He confirmed my opinion but i can't 
+> guarantee he is right as i know little about BIOS.
+
+That the watchdog generates NMI? Sure.
+
+I think the question is whether firmware handles your 'Fatal UE inject' firmware-first, or
+not.
+
+If not - why is it writing CPER records to the GHES regions that go with NMI?
+(even if the NMI comes from somewhere else - this is what makes linux think its
+firmware-first doing this)
+
+If firmware-first, how come you also see a machine-check?
+
+
+I'm afraid beyond this we'd need someone who knows more about x86 to comment.
+I suspect there is something missing from the firmware tables.
+
+
+If you don't want the firmware-first behaviour, and its causing problems, you can disable
+it with 'ghes_disable' on the kernel cmdline. If firmware never triggers the NMI for
+firmware-first, this should hide the problem of it spuriously writing records.
+
+
+Thanks,
+
+James
