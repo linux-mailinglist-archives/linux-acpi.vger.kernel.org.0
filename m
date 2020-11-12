@@ -2,71 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B1F62AFD5D
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 02:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21E1F2AFE98
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 06:39:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgKLBbQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Nov 2020 20:31:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47898 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727702AbgKKXDv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Nov 2020 18:03:51 -0500
-Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3389A208B8;
-        Wed, 11 Nov 2020 23:03:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605135830;
-        bh=Gj/5UEDBt8CVEIKja1eDcZ0nlYSBbNDAl0pvJ3rUQaU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=uz/yGw5r6zcJSFWqdQ/nPbjnM+LdVbVX7fddaeUEOKOruCKsR3fihP5jd++PBF4CR
-         Z++JbK1FAvmwbgig45ygXjHe4EdZLSnNzJPL/RkAMqah5+XXFFWNejWZyjvhtrXzVb
-         WK4x4hLX9jkyk/0R+jOhczjsK8wY8vgBGj+PBxq8=
-Date:   Wed, 11 Nov 2020 17:03:48 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [RFC PATCH 1/9] cxl/acpi: Add an acpi_cxl module for the CXL
- interconnect
-Message-ID: <20201111230348.GA978803@bjorn-Precision-5520>
+        id S1729603AbgKLFjV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 00:39:21 -0500
+Received: from mail-proxy102.phy.heteml.jp ([157.7.189.102]:60950 "EHLO
+        mail-proxy102.phy.heteml.jp" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728130AbgKLDcF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Nov 2020 22:32:05 -0500
+X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Nov 2020 22:32:03 EST
+Received: from mail-proxy102.phy.heteml.jp (localhost [127.0.0.1])
+        by mail-proxy102.phy.heteml.jp (Postfix) with ESMTP id E68169C10B9;
+        Thu, 12 Nov 2020 12:25:19 +0900 (JST)
+Received: from 127.0.0.1 (127.0.0.1)
+ by mail-proxy102.phy.heteml.jp (HETEML-Fsecure);
+ Thu, 12 Nov 2020 12:25:19 +0900 (JST)
+X-Virus-Status: clean(HETEML-Fsecure)
+Received: from User (unknown [52.231.203.57])
+        (Authenticated sender: form@healingart-n.jp)
+        by mail-proxy102.phy.heteml.jp (Postfix) with ESMTPA;
+        Thu, 12 Nov 2020 12:25:19 +0900 (JST)
+Reply-To: <reemhashimymail@gmail.com>
+From:   "Reem" <form@healingart-n.jp>
+Subject: Hello Friend  12/11/2020
+Date:   Thu, 12 Nov 2020 03:25:21 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201111054356.793390-2-ben.widawsky@intel.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201112032519.E68169C10B9@mail-proxy102.phy.heteml.jp>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 09:43:48PM -0800, Ben Widawsky wrote:
+My name is Reem Hashimy, the Emirates Minister of State and Managing Director of the United Arab Emirates (Dubai) World Expo 2020 Committee which has been postponed to October 2021 to March 2022 because of the Covid-19 pandemic.
+ 
+I am writing to you to manage the funds I received as financial gratification from various foreign companies I assisted to receive a participation approval to the coming event. The amount is $44,762,906.00 United States dollars. But I can not personally manage the fund in my country because of the sensitive nature of my office and the certain restriction on married Muslim women.
 
-> +static int acpi_cxl_add(struct acpi_device *adev)
-> +{
-> +	struct acpi_cxl_desc *acpi_desc;
-> +	struct device *dev = &adev->dev;
-> +	struct acpi_table_header *tbl;
-> +	acpi_status status = AE_OK;
+For this reason, an agreement was reached with a consulting firm to direct the various financial gifts into an open beneficiary account in my name with a bank where it will be possible for me to instruct the transfer of ownership right to a third party for investment purpose; which is the reason I am contacting you to receive the fund and manage it as my investment partner. Note that the fund is NOT connected to any criminal or terrorist activity.
+ 
+On your indication of interest with your information to include your name, your phone number and contact mailing address; I will instruct the consulting firm to process the fund from the bank to your country for investment purposes.
 
-Pointless init.
-
-> +	acpi_size sz;
-> +	int rc = 0;
-
-Pointless init.
-
-> +	status = acpi_get_table(ACPI_SIG_CEDT, 0, &tbl);
-> +	if (ACPI_FAILURE(status)) {
-> +		dev_err(dev, "failed to find CEDT at startup\n");
-> +		return 0;
-> +	}
-> +
-> +	rc = devm_add_action_or_reset(dev, acpi_cedt_put_table, tbl);
-> +	if (rc)
-> +		return rc;
+Regards.
+Reem Hashimy.
