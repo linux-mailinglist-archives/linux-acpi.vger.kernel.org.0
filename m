@@ -2,177 +2,352 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC5B22B0DBF
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 20:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 385312B0E13
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 20:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgKLTTY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 14:19:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47838 "EHLO
+        id S1726310AbgKLTa6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 14:30:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726494AbgKLTTY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Nov 2020 14:19:24 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D30C0613D4
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 11:19:23 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id 79so6678949otc.7
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 11:19:23 -0800 (PST)
+        with ESMTP id S1726255AbgKLTa6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Nov 2020 14:30:58 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24A5C0613D1
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 11:30:57 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id h6so5060322pgk.4
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 11:30:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=N4Vjw5NC4RmM34mGJCQoJR5jl336pYDBdqYQzcnhD2k=;
-        b=wQOtted5TwmSA/6KMVqdJrUMJkbajCVoJS/vff6xlEPpCBVenuIVSZv/eoR4aECruU
-         d5V9anMmoMNkvoDTQjf2tyPVhJwR5WfpE83cfSXMn/A5pY0N4oU5OTzSC0vHY00g5YJc
-         pLnDh+fitBnXEt3yN+fMJnDuO7xmfhbut9HECklTkhLonxKgK2jHxzATPK4bn0PACmPH
-         ZEBl+d3dQm87CJzxWNyhyxFbZGCVaj9TKBlibYQ3klCUZBJYrVuqonsahLcyLbtVdVmy
-         GPWcxnJ14W+fN58LZPwVNZyKR0KONiUMoGkVeROW2GdpLWW6Zt+/DWbAbch4RQdWczFy
-         j15Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=bYqHpM6AIuFjCSL/QQBim4EdBYJZxV5g7YmL9Sjc9fA=;
+        b=eio7XsSC4Mj7lBnz2+7Sw/c9maHH5Jg9J1Qo1bW46Iq8BKvwLnKIZd9VVogNPUgaDw
+         fGFWJ8FI4xEYxmHqla6NcPa2BFmntXLwJTP8z41uWYLfKx9e5728e80VqirLJjo+dp06
+         ekGFrXnAAOKkMSaPTzkrf2T7pN6rLB5BAVjVeWv1vLjRadrKyiqPxZ3tdw6s3nroKj4F
+         INROR9JIsPxebkKo9KJTlDY5r1zn6HD3zsscWfo6F8JfC5zvuu112b3R6TCAnRVH8Tki
+         7iPsq3J1+Xt685vIzVE88C+3G5eGDfDHqmoEiRNLhyArXEuNMxaGrYSo+NPaseh8i5iP
+         exsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=N4Vjw5NC4RmM34mGJCQoJR5jl336pYDBdqYQzcnhD2k=;
-        b=Taa5cUM9TAjRxjdGAxeinGXlBDv6MoZZ6kuf6j7lJ12m1cY7hECggOyHiYk0DXzz1A
-         lzPW1QLXGZ3uLBcCNlj4xiiyDKpCPytuVkxak+gB0xTucPI4zDdiYo2GZxXMUH9q5ahQ
-         SiRN7wIqhUr4GR7DVSjSu5aw/RqTD+DkGP43FVQ3IGgFm1ubm0YRzV6racwLNhB4tTZr
-         6ngelh7B0YBdDxjPDuLNWe7PPy5Q7OrhlZ3Wmfk7Gid/29lZTH6RBDhBB5nNUXqVl4C+
-         aUUnjSdUYZ1gUdhGAUGpdHAIae4PTk8o8O2v2d4xRzAf3QSRyQrB4z/Kw4WY4ESM6EDx
-         m3ow==
-X-Gm-Message-State: AOAM530XmhV9TfOXNA+7LpB0WhGeeygPsyrKmnIjH5HZLmOU2mE/gyMf
-        K08muyh9jIK7SeSVte+Qo8ehe2fisji9y16ITsGR8KWbo65GnA==
-X-Google-Smtp-Source: ABdhPJyAEghN6fo6Q0Pe+SPB/ZtVBBbw1BJCqlh/0z2EN0fhMSMVGGj6BZ/khYfF/MMmZSRuCZyyuC13lZFgW9t800s=
-X-Received: by 2002:a05:6830:1e7a:: with SMTP id m26mr576926otr.104.1605208762515;
- Thu, 12 Nov 2020 11:19:22 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=bYqHpM6AIuFjCSL/QQBim4EdBYJZxV5g7YmL9Sjc9fA=;
+        b=VN2j30lSbFjWU1nXtkHxFhzaPHJ9aGx7GjhzOJ9nvcHN2qkJnvMw3oo45W6En7Q9QD
+         i99jFea9mm3A1ZdDmSG7DVunV3Uah0IXlCGyuB4RpQ4oCtPwdduyByyCEgpZ3AVYE8Mc
+         SQBHw/zUUcGoLnbg1PTCcsBqGFkBdJDzyBWE5563r9jAPPIcc4Itq27eQ6vcT2XtvJ+Z
+         BJ3iqalKskBIO+kCT13O4WKpgfLgb7eESy1ZIoutBuC5EZgBmy0d2liElPUS55x+IvjD
+         PlFl91NlbTN1KOcA8F/0oG6jUOYiuIDU5gJvZFd8fGbk/oGa9DdEeN+AnL/CXM14me9Y
+         W01A==
+X-Gm-Message-State: AOAM5334WiSCfmQxdrzR7Pvq+e+eeBQupZLhcFdhS4yYRU1qKC6hBK7P
+        eMhLnuz0igrdxXKXY4BgobixUzRR0U8yxVdR37VNEQ==
+X-Google-Smtp-Source: ABdhPJy76Anx6Wx/lPgUBJpUVx6wL66ZgyVVKz+tSqKj1d8XCMuKDfz2X2D3FpRf0NPoT2GkhndXpzezNVpSYms4+Mc=
+X-Received: by 2002:a17:90b:110b:: with SMTP id gi11mr741001pjb.25.1605209457325;
+ Thu, 12 Nov 2020 11:30:57 -0800 (PST)
 MIME-Version: 1.0
-From:   Furquan Shaikh <furquan@google.com>
-Date:   Thu, 12 Nov 2020 11:19:06 -0800
-Message-ID: <CAEGmHFFjV2UKm3L1G5JF6Ve47L1-aKBAGrCxN3pPX1HO9R-aUg@mail.gmail.com>
-Subject: [RFC] ACPI PM during kernel poweroff/reboot
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pm@vger.kernel.org, Aaron Durbin <adurbin@google.com>,
-        Duncan Laurie <dlaurie@google.com>
+References: <20201111021131.822867-1-ndesaulniers@google.com>
+ <BYAPR11MB3256E0C1DCB4F01D18DF709F87E80@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <CAKwvOdk2U5+DcXYyMoBAhyaa67EukhB6QMEUbRPcOF7P3Sz21w@mail.gmail.com> <BYAPR11MB3256C9711620932685C368F887E70@BYAPR11MB3256.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB3256C9711620932685C368F887E70@BYAPR11MB3256.namprd11.prod.outlook.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 12 Nov 2020 11:30:45 -0800
+Message-ID: <CAKwvOdnu07S8ZtGVe0eVFP=6hLSRa58EtDYOJUK_zGWFaqUboA@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
+To:     "Moore, Robert" <robert.moore@intel.com>
+Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>, Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On x86 Chromebooks, we have observed this issue for a long time now -
-when the system is powered off or rebooted, ACPI PM is not invoked and
-this results in PowerResource _OFF methods not being invoked for any
-of the devices. The _OFF methods are invoked correctly in case of
-suspend-to-idle (S0ix) and suspend-to-memory(S3). However, they do not
-get invoked when `poweroff` or `reboot` are triggered.
+On Thu, Nov 12, 2020 at 7:13 AM Moore, Robert <robert.moore@intel.com> wrot=
+e:
+>
+>
+>
+> -----Original Message-----
+> From: Nick Desaulniers <ndesaulniers@google.com>
+> Sent: Wednesday, November 11, 2020 10:48 AM
+> To: Moore, Robert <robert.moore@intel.com>
+> Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wys=
+ocki@intel.com>; Gustavo A . R . Silva <gustavoars@kernel.org>; clang-built=
+-linux@googlegroups.com; Len Brown <lenb@kernel.org>; linux-acpi@vger.kerne=
+l.org; devel@acpica.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
+>
+> On Wed, Nov 11, 2020 at 7:15 AM Moore, Robert <robert.moore@intel.com> wr=
+ote:
+> >
+> > Yes, but: isn't the "fallthrough" keyword compiler-specific? That is th=
+e problem for us.
+>
+> It's not a keyword.
+>
+> It's a preprocessor macro that expands to
+> __attribute__((__fallthrough__)) for compilers that support it.  For comp=
+ilers that do not, it expands to nothing.  Both GCC 7+ and Clang support th=
+is attribute.  Which other compilers that support -Wimplicit-fallthrough do=
+ you care to support?
+>
+> We need to support MSVC 2017 -- which apparently does not support this.
 
-One of the differences between suspend, hibernate and shutdown paths
-in Linux kernel is that the shutdown path does not use the typical
-device PM phases (prepare, freeze/suspend, poweroff) as used by
-suspend/hibernate. Instead the shutdown path makes use of
-.shutdown_pre() and .shutdown() callbacks.
+In which case, the macro is not expanded to a compiler attribute the
+compiler doesn't support.  Please see also its definition in
+include/linux/compiler_attributes.h.
 
-If I understand correctly, .shutdown() has been around for a long time
-and existed even before the PM callbacks were added. Thus,
-pm->poweroff() and .shutdown() are supposed to be analogous and
-consistent in the behavior. This is why runtime PM is disallowed by
-device_shutdown() before it calls .shutdown() (i.e. to keep behavior
-consistent for both paths). However, in practice, there are
-differences in behavior for the pm->poweroff() and .shutdown() paths
-since the shutdown path does not execute any PM domain operations.
+From what I can tell, MSVC does not warn on implicit fallthrough, so
+there's no corresponding attribute (or comment) to disable the warning
+in MSVC.
 
-Because of this difference in behavior, shutdown path never invokes
-ACPI PM and thus the ACPI PowerResources are not turned off when the
-system is rebooted or powered off (sleep S5). On Chromebooks, it is
-critical to run the _OFF methods for poweroff/reboot in order to
-ensure that the device power off sequencing requirements are met.
-Currently, these requirements are violated which impact the
-reliability of devices over the lifetime of the platform.
+That doesn't mean this code is not portable to MSVC; a macro that
+expands to nothing should not be a problem.
 
-There are a few ways in which this can be addressed:
+Based on
+https://docs.microsoft.com/en-us/cpp/code-quality/c26819?view=3Dmsvc-160
+https://developercommunity.visualstudio.com/idea/423975/issue-compiler-warn=
+ing-when-using-implicit-fallthr.html
+it sounds like MSVC 2019 will be able to warn, for C++ mode, which
+will rely on the C++ style attribute to annotate intentional
+fallthrough.
 
-1. Similar to the case of hibernation, a new
-PMSG_POWEROFF/PM_EVENT_POWEROFF can be introduced to invoke device
-power management phases using `dpm_suspend_start(PMSG_POWEROFF)` and
-`dpm_suspend_end(PMSG_POWEROFF)`. However, as the shutdown path uses
-the class/bus/driver .shutdown() callbacks, adding dpm phases for
-poweroff complicates the order of operations. If the dpm phases are
-run before .shutdown() callbacks, then it will result in the callbacks
-accessing devices after they are powered off. If the .shutdown()
-callbacks are run before dpm phases, then the pm->poweroff() calls are
-made after the device shutdown is done. Since .shutdown() and
-pm->poweroff() are supposed to be analogous, having both calls in the
-shutdown path is not only redundant but also results in incorrect
-behavior.
+Can you confirm how this does not work for MSVC 2017?
 
-2. Another option is to update device_shutdown() to make
-pm_domain.poweroff calls after the class/bus/driver .shutdown() is
-done. However, this suffers from the same problem as #1 above i.e. it
-is redundant and creates conflicting order of operations.
+> > Bob
+> >
+> >
+> > -----Original Message-----
+> > From: ndesaulniers via sendgmr
+> > <ndesaulniers@ndesaulniers1.mtv.corp.google.com> On Behalf Of Nick
+> > Desaulniers
+> > Sent: Tuesday, November 10, 2020 6:12 PM
+> > To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
+> > <erik.kaneda@intel.com>; Wysocki, Rafael J
+> > <rafael.j.wysocki@intel.com>; Gustavo A . R . Silva
+> > <gustavoars@kernel.org>
+> > Cc: clang-built-linux@googlegroups.com; Nick Desaulniers
+> > <ndesaulniers@google.com>; Len Brown <lenb@kernel.org>;
+> > linux-acpi@vger.kernel.org; devel@acpica.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: [PATCH] ACPICA: fix -Wfallthrough
+> >
+> > The "fallthrough" pseudo-keyword was added as a portable way to denote =
+intentional fallthrough. This code seemed to be using a mix of fallthrough =
+comments that GCC recognizes, and some kind of lint marker.
+> > I'm guessing that linter hasn't been run in a while from the mixed use =
+of the marker vs comments.
+> >
+> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> > ---
+> >  drivers/acpi/acpica/dscontrol.c | 3 +--
+> >  drivers/acpi/acpica/dswexec.c   | 4 +---
+> >  drivers/acpi/acpica/dswload.c   | 3 +--
+> >  drivers/acpi/acpica/dswload2.c  | 3 +--
+> >  drivers/acpi/acpica/exfldio.c   | 3 +--
+> >  drivers/acpi/acpica/exresop.c   | 5 ++---
+> >  drivers/acpi/acpica/exstore.c   | 6 ++----
+> >  drivers/acpi/acpica/hwgpe.c     | 3 +--
+> >  drivers/acpi/acpica/utdelete.c  | 3 +--
+> >  drivers/acpi/acpica/utprint.c   | 2 +-
+> >  10 files changed, 12 insertions(+), 23 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/dscontrol.c
+> > b/drivers/acpi/acpica/dscontrol.c index 4b5b6e859f62..1e75e5fbfd19
+> > 100644
+> > --- a/drivers/acpi/acpica/dscontrol.c
+> > +++ b/drivers/acpi/acpica/dscontrol.c
+> > @@ -61,8 +61,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state =
+*walk_state,
+> >                                 break;
+> >                         }
+> >                 }
+> > -
+> > -               /*lint -fallthrough */
+> > +               fallthrough;
+> >
+> >         case AML_IF_OP:
+> >                 /*
+> > diff --git a/drivers/acpi/acpica/dswexec.c
+> > b/drivers/acpi/acpica/dswexec.c index 1d4f8c81028c..e8c32d4fe55f
+> > 100644
+> > --- a/drivers/acpi/acpica/dswexec.c
+> > +++ b/drivers/acpi/acpica/dswexec.c
+> > @@ -597,9 +597,7 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_st=
+ate *walk_state)
+> >                                 if (ACPI_FAILURE(status)) {
+> >                                         break;
+> >                                 }
+> > -
+> > -                               /* Fall through */
+> > -                               /*lint -fallthrough */
+> > +                               fallthrough;
+> >
+> >                         case AML_INT_EVAL_SUBTREE_OP:
+> >
+> > diff --git a/drivers/acpi/acpica/dswload.c
+> > b/drivers/acpi/acpica/dswload.c index 27069325b6de..afc663c3742d
+> > 100644
+> > --- a/drivers/acpi/acpica/dswload.c
+> > +++ b/drivers/acpi/acpica/dswload.c
+> > @@ -223,8 +223,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state *walk=
+_state,
+> >                              parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
+> >                                 break;
+> >                         }
+> > -
+> > -                       /*lint -fallthrough */
+> > +                       fallthrough;
+> >
+> >                 default:
+> >
+> > diff --git a/drivers/acpi/acpica/dswload2.c
+> > b/drivers/acpi/acpica/dswload2.c index edadbe146506..1b794b6ba072
+> > 100644
+> > --- a/drivers/acpi/acpica/dswload2.c
+> > +++ b/drivers/acpi/acpica/dswload2.c
+> > @@ -213,8 +213,7 @@ acpi_ds_load2_begin_op(struct acpi_walk_state *walk=
+_state,
+> >                              parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
+> >                                 break;
+> >                         }
+> > -
+> > -                       /*lint -fallthrough */
+> > +                       fallthrough;
+> >
+> >                 default:
+> >
+> > diff --git a/drivers/acpi/acpica/exfldio.c
+> > b/drivers/acpi/acpica/exfldio.c index ade35ff1c7ba..9d1cabe0fed9
+> > 100644
+> > --- a/drivers/acpi/acpica/exfldio.c
+> > +++ b/drivers/acpi/acpica/exfldio.c
+> > @@ -433,8 +433,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *o=
+bj_desc,
+> >                  * Now that the Bank has been selected, fall through to=
+ the
+> >                  * region_field case and write the datum to the Operati=
+on Region
+> >                  */
+> > -
+> > -               /*lint -fallthrough */
+> > +               fallthrough;
+> >
+> >         case ACPI_TYPE_LOCAL_REGION_FIELD:
+> >                 /*
+> > diff --git a/drivers/acpi/acpica/exresop.c
+> > b/drivers/acpi/acpica/exresop.c index 4d1b22971d58..df48faa9a551
+> > 100644
+> > --- a/drivers/acpi/acpica/exresop.c
+> > +++ b/drivers/acpi/acpica/exresop.c
+> > @@ -197,8 +197,7 @@ acpi_ex_resolve_operands(u16 opcode,
+> >                                 case ACPI_REFCLASS_DEBUG:
+> >
+> >                                         target_op =3D AML_DEBUG_OP;
+> > -
+> > -                                       /*lint -fallthrough */
+> > +                                       fallthrough;
+> >
+> >                                 case ACPI_REFCLASS_ARG:
+> >                                 case ACPI_REFCLASS_LOCAL:
+> > @@ -264,7 +263,7 @@ acpi_ex_resolve_operands(u16 opcode,
+> >                          * Else not a string - fall through to the norm=
+al Reference
+> >                          * case below
+> >                          */
+> > -                       /*lint -fallthrough */
+> > +                       fallthrough;
+> >
+> >                 case ARGI_REFERENCE:    /* References: */
+> >                 case ARGI_INTEGER_REF:
+> > diff --git a/drivers/acpi/acpica/exstore.c
+> > b/drivers/acpi/acpica/exstore.c index 3adc0a29d890..2067baa7c120
+> > 100644
+> > --- a/drivers/acpi/acpica/exstore.c
+> > +++ b/drivers/acpi/acpica/exstore.c
+> > @@ -95,8 +95,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
+> >                 if (dest_desc->common.flags & AOPOBJ_AML_CONSTANT) {
+> >                         return_ACPI_STATUS(AE_OK);
+> >                 }
+> > -
+> > -               /*lint -fallthrough */
+> > +               fallthrough;
+> >
+> >         default:
+> >
+> > @@ -421,8 +420,7 @@ acpi_ex_store_object_to_node(union acpi_operand_obj=
+ect *source_desc,
+> >                                 }
+> >                                 break;
+> >                         }
+> > -
+> > -                       /* Fallthrough */
+> > +                       fallthrough;
+> >
+> >                 case ACPI_TYPE_DEVICE:
+> >                 case ACPI_TYPE_EVENT:
+> > diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c
+> > index b13a4ed5bc63..fbfad80c8a53 100644
+> > --- a/drivers/acpi/acpica/hwgpe.c
+> > +++ b/drivers/acpi/acpica/hwgpe.c
+> > @@ -166,8 +166,7 @@ acpi_hw_low_set_gpe(struct acpi_gpe_event_info *gpe=
+_event_info, u32 action)
+> >                 if (!(register_bit & gpe_register_info->enable_mask)) {
+> >                         return (AE_BAD_PARAMETER);
+> >                 }
+> > -
+> > -               /*lint -fallthrough */
+> > +               fallthrough;
+> >
+> >         case ACPI_GPE_ENABLE:
+> >
+> > diff --git a/drivers/acpi/acpica/utdelete.c
+> > b/drivers/acpi/acpica/utdelete.c index 4c0d4e434196..8076e7947585
+> > 100644
+> > --- a/drivers/acpi/acpica/utdelete.c
+> > +++ b/drivers/acpi/acpica/utdelete.c
+> > @@ -111,8 +111,7 @@ static void acpi_ut_delete_internal_obj(union acpi_=
+operand_object *object)
+> >                         (void)acpi_ev_delete_gpe_block(object->device.
+> >                                                        gpe_block);
+> >                 }
+> > -
+> > -               /*lint -fallthrough */
+> > +               fallthrough;
+> >
+> >         case ACPI_TYPE_PROCESSOR:
+> >         case ACPI_TYPE_THERMAL:
+> > diff --git a/drivers/acpi/acpica/utprint.c
+> > b/drivers/acpi/acpica/utprint.c index 681c11f4af4e..f7e43baf5ff2
+> > 100644
+> > --- a/drivers/acpi/acpica/utprint.c
+> > +++ b/drivers/acpi/acpica/utprint.c
+> > @@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const c=
+har *format, va_list args)
+> >                 case 'X':
+> >
+> >                         type |=3D ACPI_FORMAT_UPPER;
+> > -                       /* FALLTHROUGH */
+> > +                       fallthrough;
+> >
+> >                 case 'x':
+> >
+> > --
+> > 2.29.2.222.g5d2a92d10f8-goog
+> >
+>
+>
+> --
+> Thanks,
+> ~Nick Desaulniers
 
-3. Third possible solution is to detach the device from the PM domain
-after it is shutdown. Currently, device drivers perform a detach
-operation only when the device is removed. However, in case of
-poweroff/reboot as the device is already shutdown, detaching PM domain
-will give it the opportunity to ensure that any power resources are
-correctly turned off before the system shuts down.
 
-Out of these, I think #3 makes the most sense as it does not introduce
-any conflicting operations. I verified that the following diff results
-in _OFF methods getting invoked in both poweroff and reboot cases:
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 94df2ba1bbed..e55d65fbb4a9 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -23,6 +23,7 @@
- #include <linux/of_device.h>
- #include <linux/genhd.h>
- #include <linux/mutex.h>
-+#include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
- #include <linux/sched/signal.h>
-@@ -3230,6 +3231,8 @@ void device_shutdown(void)
-                        dev->driver->shutdown(dev);
-                }
-
-+               dev_pm_domain_detach(dev, true);
-+
-                device_unlock(dev);
-                if (parent)
-                        device_unlock(parent);
-
-This was discussed on the mailing list some time back[1] in the
-context of a different use case. However, the idea of detaching
-devices (on any bus) from the PM domain during shutdown is important
-to ensure correct power sequencing for the devices.
-
-One of the concerns that was raised on the above thread was slowing
-down the shutdown process when not needed. I think this can be handled
-by adding a sysfs attribute to allow platforms to decide if they need
-the ability to power off PM domains on shutdown/reboot path.
-
-Questions that I am looking to get feedback/comments are:
-
-1. Is my assessment of the problem and understanding of the
-.shutdown() and pm.poweroff() correct?
-2. Does the solution #3 i.e. detaching PM domain after shutting down
-device on shutdown path makes sense?
-3. Are there other possible approaches to solve this problem that can
-be explored?
-4. Do we still have the performance concern about the shutdown path? I
-don=E2=80=99t think anything has changed since that thread, so this is
-probably still true.
-5. Does the use of sysfs attribute make sense to let platform control
-if it wants to detach PM domains on shutdown path?
-
-Sorry about the long thread and thank you so much for your time!
-
+--=20
 Thanks,
-Furquan
-
-[1] https://lore.kernel.org/linux-pm/HE1PR04MB30046668C9F4FFAB5C07E693886D0=
-@HE1PR04MB3004.eurprd04.prod.outlook.com/T/#mbd80804857f38c66aa5e825cdd4b61=
-ba6b12317d
+~Nick Desaulniers
