@@ -2,76 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D30CF2B03DD
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 12:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9712B04F7
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 13:30:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727147AbgKLLah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 06:30:37 -0500
-Received: from mail.kingsoft.com ([114.255.44.145]:44122 "EHLO
-        mail.kingsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726776AbgKLLah (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Nov 2020 06:30:37 -0500
-X-AuditID: 0a580155-613ff7000003c60c-d9-5fad190e1708
-Received: from mail.kingsoft.com (localhost [10.88.1.32])
-        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client did not present a certificate)
-        by mail.kingsoft.com (SMG-2-NODE-85) with SMTP id B6.15.50700.E091DAF5; Thu, 12 Nov 2020 19:14:22 +0800 (HKT)
-Received: from aili-OptiPlex-7020 (172.16.253.254) by KSBJMAIL2.kingsoft.cn
- (10.88.1.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Thu, 12 Nov
- 2020 19:30:31 +0800
-Date:   Thu, 12 Nov 2020 19:30:30 +0800
-From:   Aili Yao <yaoaili@kingsoft.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     <lenb@kernel.org>, <james.morse@arm.com>, <rjw@rjwysocki.net>,
-        <tony.luck@intel.com>, <linux-acpi@vger.kernel.org>,
-        <YANGFENG1@kingsoft.com>
-Subject: Re: [PATCH] ACPI, APEI, Fix incorrect return value of
- apei_map_generic_address
-Message-ID: <20201112193030.6f384897.yaoaili@kingsoft.com>
-In-Reply-To: <20201112103258.GA12908@nazgul.tnic>
-References: <20201110120002.459078-1-yaoaili126@163.com>
- <20201110145450.GA9857@nazgul.tnic>
- <20201112172407.432b88cc.yaoaili@kingsoft.com>
- <20201112181203.6c39d096.yaoaili@kingsoft.com>
- <20201112103258.GA12908@nazgul.tnic>
-Organization: Kingsoft
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728019AbgKLMak (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 07:30:40 -0500
+Received: from mga18.intel.com ([134.134.136.126]:37540 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727035AbgKLMaj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Nov 2020 07:30:39 -0500
+IronPort-SDR: h/mViDQNjntVi33CfCi9802VvSsKjBssiZnC31fsH4OzmBt+5zUFMJH8UJW1U+XmgXHIezlU3q
+ hePFXvGboF2Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9802"; a="158078519"
+X-IronPort-AV: E=Sophos;i="5.77,472,1596524400"; 
+   d="scan'208";a="158078519"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2020 04:30:37 -0800
+IronPort-SDR: IX5G07I5r7Fa3ycS3E5e+scfE3PD0jywPOjnJeKppnpcjbQyN69YvgGlcmoazDnhFoGNY4hFRV
+ c+hfoGsznjng==
+X-IronPort-AV: E=Sophos;i="5.77,472,1596524400"; 
+   d="scan'208";a="328481629"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2020 04:30:35 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kdBlJ-006CgX-VS; Thu, 12 Nov 2020 14:31:37 +0200
+Date:   Thu, 12 Nov 2020 14:31:37 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Documentation: ACPI: explain how to use
+ gpio-line-names
+Message-ID: <20201112123137.GA4077@smile.fi.intel.com>
+References: <20201112090241.570637-1-f.suligoi@asem.it>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.16.253.254]
-X-ClientProxiedBy: KSBJMAIL1.kingsoft.cn (10.88.1.31) To KSBJMAIL2.kingsoft.cn
- (10.88.1.32)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrILMWRmVeSWpSXmKPExsXCFcGooMsnuTbeYPM+MYvPG/6xWdzft5zJ
-        YufDt2wWy/f1M1qcOX2J1eLNhXssDmwe31v7WDzWzFvD6LF4z0smj02rOtk8tlxtZ/H4vEku
-        gC2KyyYlNSezLLVI3y6BK6Nr6iq2gs2MFW8eLmFqYGxk7GLk4JAQMJF43ePVxcjFISQwnUmi
-        58s+FgjnBaPEtyezmLoYOTlYBFQlbi68ygZiswHZu+7NYgWxRQSUJL4umgtWwywwiVFiR1MW
-        iC0sECmxf80sdhCbV8BKYt7BHWD1nAKGEgf27WSFWPCcUWLt/JVMIFfwC4hJvGowBqmRELCX
-        eP73LDNEr6DEyZlPWCDm60icWHWMGcKWl9j+dg6YLSSgKHF4yS92iF4liSPdM9gg7FiJZfNe
-        sU5gFJ6FZNQsJKNmIRm1gJF5FSNLcW660SZGSCyE7mCc0fRR7xAjEwfjIUYJDmYlEV5lhzXx
-        QrwpiZVVqUX58UWlOanFhxilOViUxHlrzwKlBNITS1KzU1MLUotgskwcnFINTCEbavIe+0Tp
-        VPHExDjHXyrj1e/mKTmyq99h/VbvwEcNKa3Tb3rx9Bf8LtHYFcMQfrpvUpOIZ9Xtt5Vx2Qc5
-        eJ+u1BJkrDlU2/FxopjTbIvp8/ur3m8L3brlhJCW3sNX+1PPnD5oc2O75Gu2BYs+Jyqc36UX
-        6xZyNueBxManZbdzLngzyVVU/PiyRdb6zHyXuawGcT0hN/yXOupaJLTbJT2zZtLIerlZ40Je
-        oG7uhr6HGS5csW/VvhtP9XlZ8e4EUz/DowP3L+9VN1rhW6L3J2/7xPuNNaxhusseXZx209e8
-        S6+oKVsgvbk25pCu2+t2z0eZBp2/L4s0M7j8uVZy9WCRxuLffzfZf0xaU75MiaU4I9FQi7mo
-        OBEAdbP5EfQCAAA=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201112090241.570637-1-f.suligoi@asem.it>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 12 Nov 2020 11:32:58 +0100
-Borislav Petkov <bp@alien8.de> wrote:
+On Thu, Nov 12, 2020 at 10:02:41AM +0100, Flavio Suligoi wrote:
+> The "gpio-line-names" declaration is not fully
+> documented, so can be useful to add some important
+> information and one more example.
+> 
+> This commit also fixes a trivial spelling mistake.
 
-> I hope it is clear now.
+Thanks!
 
-Yeah, It's clear!
-I will avoid doing that.
-Thanks
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Aili Yao
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+> 
+> v2: - fix commit spelling mistakes
+>     - add double back quotes to gpio-line-names
+>     - adjust documentation lines layout
+>     - add comma at the end of Package list names in the first example
+> 
+>  .../firmware-guide/acpi/gpio-properties.rst   | 58 ++++++++++++++++++-
+>  1 file changed, 56 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> index bb6d74f23ee0..ae5396a1f092 100644
+> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
+> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> @@ -107,7 +107,61 @@ Example::
+>  
+>  - gpio-line-names
+>  
+> -Example::
+> +The ``gpio-line-names`` declaration is a list of strings ("names"), which
+> +describes each line/pin of a GPIO controller/expander. This list, contained in
+> +a package, must be inserted inside the GPIO controller declaration of an ACPI
+> +table (typically inside the DSDT). The ``gpio-line-names`` list must respect the
+> +following rules (see also the examples):
+> +
+> +  - the first name in the list corresponds with the first line/pin of the GPIO
+> +    controller/expander
+> +  - the names inside the list must be consecutive (no "holes" are permitted)
+> +  - the list can be incomplete and can end before the last GPIO line: in
+> +    other words, it is not mandatory to fill all the GPIO lines
+> +  - empty names are allowed (two quotation marks ``""`` correspond to an empty
+> +    name)
+> +
+> +Example of a GPIO controller of 16 lines, with an incomplete list with two
+> +empty names::
+> +
+> +  Package () {
+> +      "gpio-line-names",
+> +      Package () {
+> +          "pin_0",
+> +          "pin_1",
+> +          "",
+> +          "",
+> +          "pin_3",
+> +          "pin_4_push_button",
+> +      }
+> +  }
+> +
+> +At runtime, the above declaration produces the following result (using the
+> +"libgpiod" tools)::
+> +
+> +  root@debian:~# gpioinfo gpiochip4
+> +  gpiochip4 - 16 lines:
+> +          line   0:      "pin_0"       unused   input  active-high
+> +          line   1:      "pin_1"       unused   input  active-high
+> +          line   2:      unnamed       unused   input  active-high
+> +          line   3:      unnamed       unused   input  active-high
+> +          line   4:      "pin_3"       unused   input  active-high
+> +          line   5: "pin_4_push_button" unused input active-high
+> +          line   6:      unnamed       unused   input  active-high
+> +          line   7       unnamed       unused   input  active-high
+> +          line   8:      unnamed       unused   input  active-high
+> +          line   9:      unnamed       unused   input  active-high
+> +          line  10:      unnamed       unused   input  active-high
+> +          line  11:      unnamed       unused   input  active-high
+> +          line  12:      unnamed       unused   input  active-high
+> +          line  13:      unnamed       unused   input  active-high
+> +          line  14:      unnamed       unused   input  active-high
+> +          line  15:      unnamed       unused   input  active-high
+> +  root@debian:~# gpiofind pin_4_push_button
+> +  gpiochip4 5
+> +  root@debian:~#
+> +
+> +Another example::
+>  
+>    Package () {
+>        "gpio-line-names",
+> @@ -191,7 +245,7 @@ The driver might expect to get the right GPIO when it does::
+>  but since there is no way to know the mapping between "reset" and
+>  the GpioIo() in _CRS desc will hold ERR_PTR(-ENOENT).
+>  
+> -The driver author can solve this by passing the mapping explictly
+> +The driver author can solve this by passing the mapping explicitly
+>  (the recommended way and documented in the above chapter).
+>  
+>  The ACPI GPIO mapping tables should not contaminate drivers that are not
+> -- 
+> 2.25.1
+> 
 
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
