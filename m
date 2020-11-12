@@ -2,85 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BF52B02C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 11:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D30CF2B03DD
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 12:30:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727925AbgKLKdI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 05:33:08 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:49648 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726107AbgKLKdI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Nov 2020 05:33:08 -0500
-Received: from nazgul.tnic (unknown [78.130.214.198])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AC6E01EC0402;
-        Thu, 12 Nov 2020 11:33:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1605177186;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=V8yGBB/eTXUI4K69OcAn6gOepvWF9iiSyg1scT+Ektc=;
-        b=EvvYY5NuJIYksNvbfjga8h+YmIkJ4BQOgeVb0mAvqccoBgEdXbH+BL1th6AdI/liEYXSks
-        YQ+BASRItnMoeUN86cuvblO8/e0nD1iEVWyvv0D6plh5HhicypQwajbAYbK1tSZUWSq5/c
-        aD/zYesdtgDgBJHhX+dxQp0XCUxldfY=
-Date:   Thu, 12 Nov 2020 11:32:58 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Aili Yao <yaoaili@kingsoft.com>
-Cc:     <lenb@kernel.org>, <james.morse@arm.com>, <rjw@rjwysocki.net>,
+        id S1727147AbgKLLah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 06:30:37 -0500
+Received: from mail.kingsoft.com ([114.255.44.145]:44122 "EHLO
+        mail.kingsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726776AbgKLLah (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Nov 2020 06:30:37 -0500
+X-AuditID: 0a580155-613ff7000003c60c-d9-5fad190e1708
+Received: from mail.kingsoft.com (localhost [10.88.1.32])
+        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client did not present a certificate)
+        by mail.kingsoft.com (SMG-2-NODE-85) with SMTP id B6.15.50700.E091DAF5; Thu, 12 Nov 2020 19:14:22 +0800 (HKT)
+Received: from aili-OptiPlex-7020 (172.16.253.254) by KSBJMAIL2.kingsoft.cn
+ (10.88.1.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Thu, 12 Nov
+ 2020 19:30:31 +0800
+Date:   Thu, 12 Nov 2020 19:30:30 +0800
+From:   Aili Yao <yaoaili@kingsoft.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     <lenb@kernel.org>, <james.morse@arm.com>, <rjw@rjwysocki.net>,
         <tony.luck@intel.com>, <linux-acpi@vger.kernel.org>,
         <YANGFENG1@kingsoft.com>
 Subject: Re: [PATCH] ACPI, APEI, Fix incorrect return value of
  apei_map_generic_address
-Message-ID: <20201112103258.GA12908@nazgul.tnic>
+Message-ID: <20201112193030.6f384897.yaoaili@kingsoft.com>
+In-Reply-To: <20201112103258.GA12908@nazgul.tnic>
 References: <20201110120002.459078-1-yaoaili126@163.com>
  <20201110145450.GA9857@nazgul.tnic>
  <20201112172407.432b88cc.yaoaili@kingsoft.com>
  <20201112181203.6c39d096.yaoaili@kingsoft.com>
+ <20201112103258.GA12908@nazgul.tnic>
+Organization: Kingsoft
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201112181203.6c39d096.yaoaili@kingsoft.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.16.253.254]
+X-ClientProxiedBy: KSBJMAIL1.kingsoft.cn (10.88.1.31) To KSBJMAIL2.kingsoft.cn
+ (10.88.1.32)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrILMWRmVeSWpSXmKPExsXCFcGooMsnuTbeYPM+MYvPG/6xWdzft5zJ
+        YufDt2wWy/f1M1qcOX2J1eLNhXssDmwe31v7WDzWzFvD6LF4z0smj02rOtk8tlxtZ/H4vEku
+        gC2KyyYlNSezLLVI3y6BK6Nr6iq2gs2MFW8eLmFqYGxk7GLk4JAQMJF43ePVxcjFISQwnUmi
+        58s+FgjnBaPEtyezmLoYOTlYBFQlbi68ygZiswHZu+7NYgWxRQSUJL4umgtWwywwiVFiR1MW
+        iC0sECmxf80sdhCbV8BKYt7BHWD1nAKGEgf27WSFWPCcUWLt/JVMIFfwC4hJvGowBqmRELCX
+        eP73LDNEr6DEyZlPWCDm60icWHWMGcKWl9j+dg6YLSSgKHF4yS92iF4liSPdM9gg7FiJZfNe
+        sU5gFJ6FZNQsJKNmIRm1gJF5FSNLcW660SZGSCyE7mCc0fRR7xAjEwfjIUYJDmYlEV5lhzXx
+        QrwpiZVVqUX58UWlOanFhxilOViUxHlrzwKlBNITS1KzU1MLUotgskwcnFINTCEbavIe+0Tp
+        VPHExDjHXyrj1e/mKTmyq99h/VbvwEcNKa3Tb3rx9Bf8LtHYFcMQfrpvUpOIZ9Xtt5Vx2Qc5
+        eJ+u1BJkrDlU2/FxopjTbIvp8/ur3m8L3brlhJCW3sNX+1PPnD5oc2O75Gu2BYs+Jyqc36UX
+        6xZyNueBxManZbdzLngzyVVU/PiyRdb6zHyXuawGcT0hN/yXOupaJLTbJT2zZtLIerlZ40Je
+        oG7uhr6HGS5csW/VvhtP9XlZ8e4EUz/DowP3L+9VN1rhW6L3J2/7xPuNNaxhusseXZx209e8
+        S6+oKVsgvbk25pCu2+t2z0eZBp2/L4s0M7j8uVZy9WCRxuLffzfZf0xaU75MiaU4I9FQi7mo
+        OBEAdbP5EfQCAAA=
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 06:12:03PM +0800, Aili Yao wrote:
-> If not this, please help point out!.
+On Thu, 12 Nov 2020 11:32:58 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
-If there's something you're not clear on, searching the kernel tree
-might help:
+> I hope it is clear now.
 
-[ ~/kernel/linux> git grep top-post Documentation/
-Documentation/process/2.Process.rst:444:- Avoid top-posting (the practice of putting your answer above the quoted
+Yeah, It's clear!
+I will avoid doing that.
+Thanks
 
-and now you open that document and read:
+Aili Yao
 
-"- Avoid top-posting (the practice of putting your answer above the quoted
-  text you are responding to).  It makes your response harder to read and
-  makes a poor impression."
 
-Here's another example:
 
-A: Because it messes up the order in which people normally read text.
-Q: Why is top-posting such a bad thing?
-A: Top-posting.
-Q: What is the most annoying thing in e-mail?
 
-Also, read this:
-
-http://daringfireball.net/2007/07/on_top
-
-Also, you can look at mail threads on lkml to see how most people reply
-to mail - that also gives a good example what to do.
-
-I hope it is clear now.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
