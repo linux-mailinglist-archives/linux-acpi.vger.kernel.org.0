@@ -2,144 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB912B052E
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 13:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A91C62B05C6
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 14:03:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727803AbgKLMwl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 07:52:41 -0500
-Received: from smtp.asem.it ([151.1.184.197]:50913 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727223AbgKLMwk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Nov 2020 07:52:40 -0500
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000603268.MSG 
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 13:52:38 +0100S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 12
- Nov 2020 13:52:35 +0100
-Received: from flavio-x.asem.intra (172.16.17.208) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server id 15.1.1979.3 via Frontend
- Transport; Thu, 12 Nov 2020 13:52:35 +0100
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-CC:     <linux-gpio@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH v3] Documentation: ACPI: explain how to use gpio-line-names
-Date:   Thu, 12 Nov 2020 13:52:34 +0100
-Message-ID: <20201112125234.60657-1-f.suligoi@asem.it>
-X-Mailer: git-send-email 2.25.1
+        id S1727819AbgKLNDQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 08:03:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45694 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728179AbgKLNDP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Nov 2020 08:03:15 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C46C0613D4
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 05:03:15 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id c17so5872299wrc.11
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Nov 2020 05:03:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XoAG1pru+t0E0RGbZFAgVVNe78IlOrfO4ZdEb2/m39k=;
+        b=UphNYMQS/LN28Yxb1McSQM05xn0X1V0x7rJ0PnNKfQvzO7zSoSBhZ9CLBwJKzAgh16
+         17BMyTB6gytjqNUMMUrH82FFJY2PEIruw0bKT5P4mlmuWOAislyFW6xOumTDMAcADDJ/
+         3I+1KO/GAtkaunGBQ3cAe+TPQ8lRQuZK1Uk3iHPKADw+iRsHWUINdXk0j0p0aLmHWSQD
+         Lar/biWGCcmxYMOxn5/aO0uFOlgWdelEDWUgUAG103fCjfzlpWK4j4svUJKEmpdBgdzE
+         qnbdv6qFgKnizUAGgssYpzF9v1UwcuGMLi2IRXc/YY0k9b1cqi77VreSmTVMP/3andg7
+         tthQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XoAG1pru+t0E0RGbZFAgVVNe78IlOrfO4ZdEb2/m39k=;
+        b=IT9UI4NyVZl3TLhcJA7SiwjcYMbZ5JEe6MsujHvTtaDI5GLoVA9alsfavOIG6bLNim
+         IxzYCLcQLkUy/TC/o01aQJtjgK2ZAUlm9SHYGjqTo4cmA5+7M41WqeC5vdBwHMdKDbNl
+         c4JlikWUzYiDP4brcLag/Nfsjb2p/O7UIJMnC6R6FMcUa64mAjB9an/po9Izkh9xu6Au
+         6hgcinjceZAvBkpRB7efHAfsKqbkg4EybStS+kXOUr1k2w4kHyjPrh7dlAaZ6/L/aA1m
+         PsyWInX8l02UMf8xl8vfa7BBEHIk/vJL4MTjSEnxSCOjEi0dDXRyUain9d+CoNg049cg
+         7D7A==
+X-Gm-Message-State: AOAM533QrTz8/bc93Akvkr7fZ8aTi9xSgWjNxQWUkTBQR98qpb/JtjsI
+        U1CTPHh7lYPmM23E/DEoKM5Riw==
+X-Google-Smtp-Source: ABdhPJxMBUohVh2fAAvMFdY17a6lP3nz140iaaxKiNjcDkvE3A2fsz0yM/aFafAdvuPkFa1NZKXESQ==
+X-Received: by 2002:adf:ce87:: with SMTP id r7mr4434152wrn.212.1605186194089;
+        Thu, 12 Nov 2020 05:03:14 -0800 (PST)
+Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id m22sm6877508wrb.97.2020.11.12.05.03.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2020 05:03:13 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     joro@8bytes.org, will@kernel.org, lorenzo.pieralisi@arm.com,
+        robh+dt@kernel.org
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
+        Jonathan.Cameron@huawei.com, eric.auger@redhat.com,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pci@vger.kernel.org, baolu.lu@linux.intel.com,
+        zhangfei.gao@linaro.org, shameerali.kolothum.thodi@huawei.com,
+        vivek.gautam@arm.com,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v8 0/9] iommu: I/O page faults for SMMUv3
+Date:   Thu, 12 Nov 2020 13:55:12 +0100
+Message-Id: <20201112125519.3987595-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.29.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A782F29.5FAD3014.0056,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The "gpio-line-names" declaration is not fully
-documented, so can be useful to add some important
-information and one more example.
+Add support for stall and PRI to the SMMUv3 driver, along with a common
+I/O Page Fault handler.
 
-This commit also fixes a trivial spelling mistake.
+These patches were last sent as part of v7 of the larger SVA series [1].
+Main changes since v7:
+* Dropped CONFIG_IOMMU_PAGE_FAULT, reuse CONFIG_IOMMU_SVA_LIB instead.
+* Extracted devicetree support into patch 4.
+* Added patch 5 for ACPI support.
+* Dropped event queue flush on unbind(). Since device drivers must
+  complete DMA transactions before calling unbind(), there cannot be any
+  pending stalled event.
+* A few small fixes.
 
-Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
+The series depends on "iommu/sva: Add PASID helpers" [2], since it
+provides the function to search an mm_struct by PASID.
 
-v2: - fix commit spelling mistakes
-    - add double back quotes to gpio-line-names
-    - adjust documentation lines layout
-    - add comma at the end of Package list names in the first example
+Has anyone been testing the PRI patches on hardware? I still only have a
+software model to test them, so as much as I'd like to cross this off my
+list, we could leave out patches 7-9 for now.
 
-v3: - add: Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[1] https://lore.kernel.org/linux-iommu/20200519175502.2504091-1-jean-philippe@linaro.org/
+[2] https://lore.kernel.org/linux-iommu/20201106155048.997886-1-jean-philippe@linaro.org/
 
- .../firmware-guide/acpi/gpio-properties.rst   | 58 ++++++++++++++++++-
- 1 file changed, 56 insertions(+), 2 deletions(-)
+Jean-Philippe Brucker (9):
+  iommu: Add a page fault handler
+  iommu/arm-smmu-v3: Maintain a SID->device structure
+  dt-bindings: document stall property for IOMMU masters
+  of/iommu: Support dma-can-stall property
+  ACPI/IORT: Enable stall support for platform devices
+  iommu/arm-smmu-v3: Add stall support for platform devices
+  PCI/ATS: Add PRI stubs
+  PCI/ATS: Export PRI functions
+  iommu/arm-smmu-v3: Add support for PRI
 
-diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
-index bb6d74f23ee0..ae5396a1f092 100644
---- a/Documentation/firmware-guide/acpi/gpio-properties.rst
-+++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
-@@ -107,7 +107,61 @@ Example::
- 
- - gpio-line-names
- 
--Example::
-+The ``gpio-line-names`` declaration is a list of strings ("names"), which
-+describes each line/pin of a GPIO controller/expander. This list, contained in
-+a package, must be inserted inside the GPIO controller declaration of an ACPI
-+table (typically inside the DSDT). The ``gpio-line-names`` list must respect the
-+following rules (see also the examples):
-+
-+  - the first name in the list corresponds with the first line/pin of the GPIO
-+    controller/expander
-+  - the names inside the list must be consecutive (no "holes" are permitted)
-+  - the list can be incomplete and can end before the last GPIO line: in
-+    other words, it is not mandatory to fill all the GPIO lines
-+  - empty names are allowed (two quotation marks ``""`` correspond to an empty
-+    name)
-+
-+Example of a GPIO controller of 16 lines, with an incomplete list with two
-+empty names::
-+
-+  Package () {
-+      "gpio-line-names",
-+      Package () {
-+          "pin_0",
-+          "pin_1",
-+          "",
-+          "",
-+          "pin_3",
-+          "pin_4_push_button",
-+      }
-+  }
-+
-+At runtime, the above declaration produces the following result (using the
-+"libgpiod" tools)::
-+
-+  root@debian:~# gpioinfo gpiochip4
-+  gpiochip4 - 16 lines:
-+          line   0:      "pin_0"       unused   input  active-high
-+          line   1:      "pin_1"       unused   input  active-high
-+          line   2:      unnamed       unused   input  active-high
-+          line   3:      unnamed       unused   input  active-high
-+          line   4:      "pin_3"       unused   input  active-high
-+          line   5: "pin_4_push_button" unused input active-high
-+          line   6:      unnamed       unused   input  active-high
-+          line   7       unnamed       unused   input  active-high
-+          line   8:      unnamed       unused   input  active-high
-+          line   9:      unnamed       unused   input  active-high
-+          line  10:      unnamed       unused   input  active-high
-+          line  11:      unnamed       unused   input  active-high
-+          line  12:      unnamed       unused   input  active-high
-+          line  13:      unnamed       unused   input  active-high
-+          line  14:      unnamed       unused   input  active-high
-+          line  15:      unnamed       unused   input  active-high
-+  root@debian:~# gpiofind pin_4_push_button
-+  gpiochip4 5
-+  root@debian:~#
-+
-+Another example::
- 
-   Package () {
-       "gpio-line-names",
-@@ -191,7 +245,7 @@ The driver might expect to get the right GPIO when it does::
- but since there is no way to know the mapping between "reset" and
- the GpioIo() in _CRS desc will hold ERR_PTR(-ENOENT).
- 
--The driver author can solve this by passing the mapping explictly
-+The driver author can solve this by passing the mapping explicitly
- (the recommended way and documented in the above chapter).
- 
- The ACPI GPIO mapping tables should not contaminate drivers that are not
+ drivers/iommu/Makefile                        |   1 +
+ .../devicetree/bindings/iommu/iommu.txt       |  18 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  69 +-
+ drivers/iommu/iommu-sva-lib.h                 |  53 ++
+ include/linux/iommu.h                         |   4 +
+ include/linux/pci-ats.h                       |   7 +
+ drivers/acpi/arm64/iort.c                     |   1 +
+ .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   |  52 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   | 605 +++++++++++++++---
+ drivers/iommu/io-pgfault.c                    | 462 +++++++++++++
+ drivers/iommu/of_iommu.c                      |   5 +-
+ drivers/pci/ats.c                             |   4 +
+ 12 files changed, 1191 insertions(+), 90 deletions(-)
+ create mode 100644 drivers/iommu/io-pgfault.c
+
 -- 
-2.25.1
+2.29.1
 
