@@ -2,82 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 410462B0B14
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 18:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 152C02B0C94
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 19:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbgKLRPG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 12:15:06 -0500
-Received: from mga06.intel.com ([134.134.136.31]:14969 "EHLO mga06.intel.com"
+        id S1726433AbgKLS0W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 13:26:22 -0500
+Received: from mx2.suse.de ([195.135.220.15]:58878 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbgKLRPG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Nov 2020 12:15:06 -0500
-IronPort-SDR: hBFCkbwwopfbrQMyL+Vrys5kw+bIj+VgtO8U4O6bwzQhIwW+J8l6jfo23Cvdw9kiyvXML6hFlr
- klt08jnPAgLg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9803"; a="231964592"
-X-IronPort-AV: E=Sophos;i="5.77,472,1596524400"; 
-   d="scan'208";a="231964592"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2020 09:15:02 -0800
-IronPort-SDR: l+u88JxfY5do4LGUjvztuH2gtx4vuAlTHI6mZA2F1X6qP1VA63dhVnjAfaZoCVbLMw4UIaUN5N
- pAZtikZZJKyg==
-X-IronPort-AV: E=Sophos;i="5.77,472,1596524400"; 
-   d="scan'208";a="357164194"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2020 09:15:00 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kdGCX-006GSl-TV; Thu, 12 Nov 2020 19:16:01 +0200
-Date:   Thu, 12 Nov 2020 19:16:01 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-rtc@vger.kernel.org,
-        Tin Huynh <tnhuynh@apm.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] rtc: ds1307: Remove non-valid ACPI IDs
-Message-ID: <20201112171601.GL4077@smile.fi.intel.com>
-References: <20201112155753.36834-1-andriy.shevchenko@linux.intel.com>
- <20201112163617.GE4556@piout.net>
+        id S1726194AbgKLS0V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Nov 2020 13:26:21 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 5FB75AB95;
+        Thu, 12 Nov 2020 18:26:20 +0000 (UTC)
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     Jon Grimm <Jon.Grimm@amd.com>,
+        Nathan Fontenot <Nathan.Fontenot@amd.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Pu Wen <puwen@hygon.cn>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Doug Smythies <dsmythies@telus.net>, x86@kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Giovanni Gherdovich <ggherdovich@suse.cz>
+Subject: [PATCH v4 0/3] Add support for frequency invariance to AMD EPYC Zen2
+Date:   Thu, 12 Nov 2020 19:26:11 +0100
+Message-Id: <20201112182614.10700-1-ggherdovich@suse.cz>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201112163617.GE4556@piout.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 05:36:17PM +0100, Alexandre Belloni wrote:
-> On 12/11/2020 17:57:51+0200, Andy Shevchenko wrote:
-> > The commit 9c19b8930d2c ("rtc: ds1307: Add ACPI support") added non-valid
-> > ACPI IDs (all of them abusing ACPI specification). Moreover there is
-> > no even a single evidence that vendor registered any of such device.
-> > 
-> > Remove broken ACPI IDs from the driver. For prototyping one may use PRP0001
-> > with device tree defined bindings. The following patches will add support
-> > of that to the driver.
-> 
-> I'm intrigued, how does PRP0001 work? Where would the device tree come
-> from?
+v3 at https://lore.kernel.org/lkml/20201110200519.18180-1-ggherdovich@suse.cz/
 
-From nowhere :-)
+Changes wrt v3:
 
-There is no device tree. The properties are coming from _DSD ACPI Method with
-compatible string provided. ACPI glue layer provides a mechanism to parse that
-and match against OF ID table (even when CONFIG_OF=n!).
+- Correct the #ifdef guard for cppc_get_perf_caps() from CONFIG_ACPI to
+  CONFIG_ACPI_CPPC_LIB (reported by "kernel test robot <lkp@intel.com>")
 
-More about PRP0001 is in documentation [1].
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Cover Letter from v3:
 
-> You probably want to have a look at:
-> https://lore.kernel.org/linux-rtc/20201112130734.331094-3-ch@denx.de/T/#u
+v2 at https://lore.kernel.org/lkml/20201110183054.15883-1-ggherdovich@suse.cz/
 
-Thanks for heads up!
-I'll check that thread and answer there.
+Changes wrt v2:
 
-[1]: Documentation/firmware-guide/acpi/enumeration.rst
+- "code golf" on the function function init_freq_invariance_cppc().
+  Make better use of the "secondary" argument to init_freq_invariance(),
+  which was introduced at b56e7d45e807 ("x86, sched: Don't enable static key
+  when starting secondary CPUs") to deal with CPU hotplug.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Cover Letter from v2:
+
+v1 at https://lore.kernel.org/lkml/20201110083936.31994-1-ggherdovich@suse.cz/
+
+Changes wrt v1:
+
+- made initialization safe under CPU hotplug.
+  The function init_freq_invariance_cppc now lets only the first caller
+  into init_freq_invariance().
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Cover Letter from v1:
+
+This series adds support for frequency invariant accounting on AMD EPYC Zen2
+(aka "Rome"). The first patch by Nathan lays out the foundation by querying
+ACPI infrastructure for the max boost frequency of the system. Specifically,
+this value is available via the CPPC machinery; the previous EPYC generation,
+namely Zen aka "Naples", doesn't implement that and frequency invariance won't
+be supported.
+
+The second patch sets the estimate for freq_max to be the midpoint between
+max_boost and max_P, as that works slightly better in practice.
+
+A side effect of this series is to provide, with the invariant schedutil
+governor, a suitable baseline to evaluate a (still work-in-progress)
+CPPC-based cpufreq driver for the AMD platform (see
+https://lore.kernel.org/lkml/cover.1562781484.git.Janakarajan.Natarajan@amd.com
+if/when it will resubmitted.
+
+
+Giovanni Gherdovich (2):
+  x86, sched: Use midpoint of max_boost and max_P for frequency
+    invariance on AMD EPYC
+  x86: Print ratio freq_max/freq_base used in frequency invariance
+    calculations
+
+Nathan Fontenot (1):
+  x86, sched: Calculate frequency invariance for AMD systems
+
+ arch/x86/include/asm/topology.h |  8 ++++
+ arch/x86/kernel/smpboot.c       | 79 ++++++++++++++++++++++++++++++---
+ drivers/acpi/cppc_acpi.c        |  3 ++
+ 3 files changed, 85 insertions(+), 5 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.26.2
 
