@@ -2,19 +2,19 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 607052B0C8D
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 19:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 827AA2B0C95
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Nov 2020 19:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbgKLS0Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Nov 2020 13:26:24 -0500
-Received: from mx2.suse.de ([195.135.220.15]:58932 "EHLO mx2.suse.de"
+        id S1726526AbgKLS0a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Nov 2020 13:26:30 -0500
+Received: from mx2.suse.de ([195.135.220.15]:58982 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726473AbgKLS0X (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Nov 2020 13:26:23 -0500
+        id S1726504AbgKLS0Y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Nov 2020 13:26:24 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 91A4CB038;
-        Thu, 12 Nov 2020 18:26:21 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 2F536B053;
+        Thu, 12 Nov 2020 18:26:22 +0000 (UTC)
 From:   Giovanni Gherdovich <ggherdovich@suse.cz>
 To:     Borislav Petkov <bp@alien8.de>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -35,11 +35,10 @@ Cc:     Jon Grimm <Jon.Grimm@amd.com>,
         Doug Smythies <dsmythies@telus.net>, x86@kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org,
-        Nathan Fontenot <nathan.fontenot@amd.com>,
         Giovanni Gherdovich <ggherdovich@suse.cz>
-Subject: [PATCH v4 1/3] x86, sched: Calculate frequency invariance for AMD systems
-Date:   Thu, 12 Nov 2020 19:26:12 +0100
-Message-Id: <20201112182614.10700-2-ggherdovich@suse.cz>
+Subject: [PATCH v4 2/3] x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC
+Date:   Thu, 12 Nov 2020 19:26:13 +0100
+Message-Id: <20201112182614.10700-3-ggherdovich@suse.cz>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201112182614.10700-1-ggherdovich@suse.cz>
 References: <20201112182614.10700-1-ggherdovich@suse.cz>
@@ -49,218 +48,210 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Nathan Fontenot <nathan.fontenot@amd.com>
+Frequency invariant accounting calculations need the ratio
+freq_curr/freq_max, but freq_max is unknown as it depends on dynamic power
+allocation between cores: AMD EPYC CPUs implement "Core Performance Boost".
+Three candidates are considered to estimate this value:
 
-This is the first pass in creating the ability to calculate the
-frequency invariance on AMD systems. This approach uses the CPPC
-highest performance and nominal performance values that range from
-0 - 255 instead of a high and base frquency. This is because we do
-not have the ability on AMD to get a highest frequency value.
+- maximum non-boost frequency
+- maximum boost frequency
+- the mid point between the above two
 
-On AMD systems the highest performance and nominal performance
-vaues do correspond to the highest and base frequencies for the system
-so using them should produce an appropriate ratio but some tweaking
-is likely necessary.
+Experimental data on an AMD EPYC Zen2 machine slightly favors the third
+option, which is applied with this patch.
 
-Due to CPPC being initialized later in boot than when the frequency
-invariant calculation is currently made, I had to create a callback
-from the CPPC init code to do the calculation after we have CPPC
-data.
+The analysis uses the ondemand cpufreq governor as baseline, and compares
+it with schedutil in a number of configurations. Using the freq_max value
+described above offers a moderate advantage in performance and efficiency:
 
-Special thanks to "kernel test robot <lkp@intel.com>" for reporting that
-compilation of drivers/acpi/cppc_acpi.c is conditional to
-CONFIG_ACPI_CPPC_LIB, not just CONFIG_ACPI.
+sugov-max (freq_max=max_boost) performs the worst on tbench: less
+throughput and reduced efficiency than the other invariant-schedutil
+options (see "Data Overview" below). Consider that tbench is generally a
+problematic case as no schedutil version currently is better than ondemand.
 
-Signed-off-by: Nathan Fontenot <nathan.fontenot@amd.com>
-[ ggherdovich@suse.cz: made safe under CPU hotplug, edited changelog ]
+sugov-P0 (freq_max=max_P) is the worst on dbench, while the other sugov's
+can surpass ondemand with less filesystem latency and slightly increased
+efficiency.
+
+1. DATA OVERVIEW
+2. DETAILED PERFORMANCE TABLES
+3. POWER CONSUMPTION TABLE
+
+1. DATA OVERVIEW
+================
+
+sugov-noinv : non-invariant schedutil governor
+sugov-max   : invariant schedutil, freq_max=max_boost
+sugov-mid   : invariant schedutil, freq_max=midpoint
+sugov-P0    : invariant schedutil, freq_max=max_P
+perfgov     : performance governor
+
+driver      : acpi_cpufreq
+machine     : AMD EPYC 7742 (Zen2, aka "Rome"), dual socket,
+              128 cores / 256 threads, SATA SSD storage, 250G of memory,
+	      XFS filesystem
+
+Benchmarks are described in the next section.
+Tilde (~) means the value is the same as baseline.
+
+-------------------------------------------------------------------------------------
+            ondemand  perfgov  sugov-noinv  sugov-max  sugov-mid  sugov-P0  better if
+-------------------------------------------------------------------------------------
+                                        PERFORMANCE RATIOS
+tbench        1.00       1.44       0.90       0.87       0.93       0.93      higher
+dbench        1.00       0.91       0.95       0.94       0.94       1.06      lower
+kernbench     1.00       0.93       ~          ~          ~          0.97      lower
+gitsource     1.00       0.66       0.97       0.96       ~          0.95      lower
+-------------------------------------------------------------------------------------
+                                    PERFORMANCE-PER-WATT RATIOS
+tbench        1.00       1.16       0.84       0.84       0.88       0.85      higher
+dbench        1.00       1.03       1.02       1.02       1.02       0.93      higher
+kernbench     1.00       1.05       ~          ~          ~          ~         higher
+gitsource     1.00       1.46       1.04       1.04       ~          1.05      higher
+
+2. DETAILED PERFORMANCE TABLES
+==============================
+
+Benchmark          : tbench4 (i.e. dbench4 over the network, actually loopback)
+Varying parameter  : number of clients
+Unit               : MB/sec (higher is better)
+
+                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Hmean  1        427.19  +- 0.16% (        )     778.35  +- 0.10% (  82.20%)     346.92  +- 0.14% ( -18.79%)
+Hmean  2        853.82  +- 0.09% (        )    1536.23  +- 0.03% (  79.93%)     694.36  +- 0.05% ( -18.68%)
+Hmean  4       1657.54  +- 0.12% (        )    2938.18  +- 0.12% (  77.26%)    1362.81  +- 0.11% ( -17.78%)
+Hmean  8       3301.87  +- 0.06% (        )    5679.10  +- 0.04% (  72.00%)    2693.35  +- 0.04% ( -18.43%)
+Hmean  16      6139.65  +- 0.05% (        )    9498.81  +- 0.04% (  54.71%)    4889.97  +- 0.17% ( -20.35%)
+Hmean  32     11170.28  +- 0.09% (        )   17393.25  +- 0.08% (  55.71%)    9104.55  +- 0.09% ( -18.49%)
+Hmean  64     19322.97  +- 0.17% (        )   31573.91  +- 0.08% (  63.40%)   18552.52  +- 0.40% (  -3.99%)
+Hmean  128    30383.71  +- 0.11% (        )   37416.91  +- 0.15% (  23.15%)   25938.70  +- 0.41% ( -14.63%)
+Hmean  256    31143.96  +- 0.41% (        )   30908.76  +- 0.88% (  -0.76%)   29754.32  +- 0.24% (  -4.46%)
+Hmean  512    30858.49  +- 0.26% (        )   38524.60  +- 1.19% (  24.84%)   42080.39  +- 0.56% (  36.37%)
+Hmean  1024   39187.37  +- 0.19% (        )   36213.86  +- 0.26% (  -7.59%)   39555.98  +- 0.12% (   0.94%)
+
+                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Hmean  1        352.59  +- 1.03% ( -17.46%)     352.08  +- 0.75% ( -17.58%)     352.31  +- 1.48% ( -17.53%)
+Hmean  2        697.32  +- 0.08% ( -18.33%)     700.16  +- 0.20% ( -18.00%)     696.79  +- 0.06% ( -18.39%)
+Hmean  4       1369.88  +- 0.04% ( -17.35%)    1369.72  +- 0.07% ( -17.36%)    1365.91  +- 0.05% ( -17.59%)
+Hmean  8       2696.79  +- 0.04% ( -18.33%)    2711.06  +- 0.04% ( -17.89%)    2715.10  +- 0.61% ( -17.77%)
+Hmean  16      4725.03  +- 0.03% ( -23.04%)    4875.65  +- 0.02% ( -20.59%)    4953.05  +- 0.28% ( -19.33%)
+Hmean  32      9231.65  +- 0.10% ( -17.36%)    8704.89  +- 0.27% ( -22.07%)   10562.02  +- 0.36% (  -5.45%)
+Hmean  64     15364.27  +- 0.19% ( -20.49%)   17786.64  +- 0.15% (  -7.95%)   19665.40  +- 0.22% (   1.77%)
+Hmean  128    42100.58  +- 0.13% (  38.56%)   34946.28  +- 0.13% (  15.02%)   38635.79  +- 0.06% (  27.16%)
+Hmean  256    30660.23  +- 1.08% (  -1.55%)   32307.67  +- 0.54% (   3.74%)   31153.27  +- 0.12% (   0.03%)
+Hmean  512    24604.32  +- 0.14% ( -20.27%)   40408.50  +- 1.10% (  30.95%)   38800.29  +- 1.23% (  25.74%)
+Hmean  1024   35535.47  +- 0.28% (  -9.32%)   41070.38  +- 2.56% (   4.81%)   31308.29  +- 2.52% ( -20.11%)
+
+Benchmark          : dbench (filesystem stressor)
+Varying parameter  : number of clients
+Unit               : seconds (lower is better)
+
+NOTE-1: This dbench version measures the average latency of a set of filesystem
+        operations, as we found the traditional dbench metric (throughput) to be
+	misleading.
+NOTE-2: Due to high variability, we partition the original dataset and apply
+        statistical bootrapping (a resampling method). Accuracy is reported in the
+	form of 95% confidence intervals.
+
+                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SubAmean  1         98.79  +- 0.92 (        )      83.36  +- 0.82 (  15.62%)      84.82  +- 0.92 (  14.14%)
+SubAmean  2        116.00  +- 0.89 (        )     102.12  +- 0.77 (  11.96%)     109.63  +- 0.89 (   5.49%)
+SubAmean  4        149.90  +- 1.03 (        )     132.12  +- 0.91 (  11.86%)     143.90  +- 1.15 (   4.00%)
+SubAmean  8        182.41  +- 1.13 (        )     159.86  +- 0.93 (  12.36%)     165.82  +- 1.03 (   9.10%)
+SubAmean  16       237.83  +- 1.23 (        )     219.46  +- 1.14 (   7.72%)     229.28  +- 1.19 (   3.59%)
+SubAmean  32       334.34  +- 1.49 (        )     309.94  +- 1.42 (   7.30%)     321.19  +- 1.36 (   3.93%)
+SubAmean  64       576.61  +- 2.16 (        )     540.75  +- 2.00 (   6.22%)     551.27  +- 1.99 (   4.39%)
+SubAmean  128     1350.07  +- 4.14 (        )    1205.47  +- 3.20 (  10.71%)    1280.26  +- 3.75 (   5.17%)
+SubAmean  256     3444.42  +- 7.97 (        )    3698.00 +- 27.43 (  -7.36%)    3494.14  +- 7.81 (  -1.44%)
+SubAmean  2048   39457.89 +- 29.01 (        )   34105.33 +- 41.85 (  13.57%)   39688.52 +- 36.26 (  -0.58%)
+
+                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SubAmean  1         85.68  +- 1.04 (  13.27%)      84.16  +- 0.84 (  14.81%)      83.99  +- 0.90 (  14.99%)
+SubAmean  2        108.42  +- 0.95 (   6.54%)     109.91  +- 1.39 (   5.24%)     112.06  +- 0.91 (   3.39%)
+SubAmean  4        136.90  +- 1.04 (   8.67%)     137.59  +- 0.93 (   8.21%)     136.55  +- 0.95 (   8.91%)
+SubAmean  8        163.15  +- 0.96 (  10.56%)     166.07  +- 1.02 (   8.96%)     165.81  +- 0.99 (   9.10%)
+SubAmean  16       224.86  +- 1.12 (   5.45%)     223.83  +- 1.06 (   5.89%)     230.66  +- 1.19 (   3.01%)
+SubAmean  32       320.51  +- 1.38 (   4.13%)     322.85  +- 1.49 (   3.44%)     321.96  +- 1.46 (   3.70%)
+SubAmean  64       553.25  +- 1.93 (   4.05%)     554.19  +- 2.08 (   3.89%)     562.26  +- 2.22 (   2.49%)
+SubAmean  128     1264.35  +- 3.72 (   6.35%)    1256.99  +- 3.46 (   6.89%)    2018.97 +- 18.79 ( -49.55%)
+SubAmean  256     3466.25  +- 8.25 (  -0.63%)    3450.58  +- 8.44 (  -0.18%)    5032.12 +- 38.74 ( -46.09%)
+SubAmean  2048   39133.10 +- 45.71 (   0.82%)   39905.95 +- 34.33 (  -1.14%)   53811.86 +-193.04 ( -36.38%)
+
+Benchmark          : kernbench (kernel compilation)
+Varying parameter  : number of jobs
+Unit               : seconds (lower is better)
+
+                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Amean  2        471.71 +- 26.61% (        )     409.88 +- 16.99% (  13.11%)     430.63  +- 0.18% (   8.71%)
+Amean  4        211.87  +- 0.58% (        )     194.03  +- 0.74% (   8.42%)     215.33  +- 0.64% (  -1.63%)
+Amean  8        109.79  +- 1.27% (        )     101.43  +- 1.53% (   7.61%)     111.05  +- 1.95% (  -1.15%)
+Amean  16        59.50  +- 1.28% (        )      55.61  +- 1.35% (   6.55%)      59.65  +- 1.78% (  -0.24%)
+Amean  32        34.94  +- 1.22% (        )      32.36  +- 1.95% (   7.41%)      35.44  +- 0.63% (  -1.43%)
+Amean  64        22.58  +- 0.38% (        )      20.97  +- 1.28% (   7.11%)      22.41  +- 1.73% (   0.74%)
+Amean  128       17.72  +- 0.44% (        )      16.68  +- 0.32% (   5.88%)      17.65  +- 0.96% (   0.37%)
+Amean  256       16.44  +- 0.53% (        )      15.76  +- 0.32% (   4.18%)      16.76  +- 0.60% (  -1.93%)
+Amean  512       16.54  +- 0.21% (        )      15.62  +- 0.41% (   5.53%)      16.84  +- 0.85% (  -1.83%)
+
+                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Amean  2        421.30  +- 0.24% (  10.69%)     419.26  +- 0.15% (  11.12%)     414.38  +- 0.33% (  12.15%)
+Amean  4  	217.81  +- 5.53% (  -2.80%)     211.63  +- 0.99% (   0.12%)     208.43  +- 0.47% (   1.63%)
+Amean  8  	108.80  +- 0.43% (   0.90%)     108.48  +- 1.44% (   1.19%)     108.59  +- 3.08% (   1.09%)
+Amean  16 	 58.84  +- 0.74% (   1.12%)      58.37  +- 0.94% (   1.91%)      57.78  +- 0.78% (   2.90%)
+Amean  32 	 34.04  +- 2.00% (   2.59%)      34.28  +- 1.18% (   1.91%)      33.98  +- 2.21% (   2.75%)
+Amean  64 	 22.22  +- 1.69% (   1.60%)      22.27  +- 1.60% (   1.38%)      22.25  +- 1.41% (   1.47%)
+Amean  128	 17.55  +- 0.24% (   0.97%)      17.53  +- 0.94% (   1.04%)      17.49  +- 0.43% (   1.30%)
+Amean  256	 16.51  +- 0.46% (  -0.40%)      16.48  +- 0.48% (  -0.19%)      16.44  +- 1.21% (   0.00%)
+Amean  512	 16.50  +- 0.35% (   0.19%)      16.35  +- 0.42% (   1.14%)      16.37  +- 0.33% (   0.99%)
+
+Benchmark          : gitsource (time to run the git unit test suite)
+Varying parameter  : none
+Unit               : seconds (lower is better)
+
+                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Amean          1035.76  +- 0.30% (        )     688.21  +- 0.04% (  33.56%)    1003.85  +- 0.14% (   3.08%)
+
+                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Amean           995.82  +- 0.08% (   3.86%)    1011.98  +- 0.03% (   2.30%)     986.87  +- 0.19% (   4.72%)
+
+3. POWER CONSUMPTION TABLE
+==========================
+
+Average power consumption (watts).
+
+--------------------------------------------------------------------------
+            ondemand  perfgov  sugov-noinv  sugov-max  sugov-mid  sugov-P0
+--------------------------------------------------------------------------
+tbench4     227.25     281.83     244.17     236.76     241.50     247.99
+dbench4     151.97     161.87     157.08     158.10     158.06     153.73
+kernbench   162.78     167.22     162.90     164.19     164.65     164.72
+gitsource   133.65     139.00     133.04     134.43     134.18     134.32
+
 Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 ---
- arch/x86/include/asm/topology.h |  8 ++++
- arch/x86/kernel/smpboot.c       | 76 ++++++++++++++++++++++++++++++---
- drivers/acpi/cppc_acpi.c        |  3 ++
- 3 files changed, 82 insertions(+), 5 deletions(-)
+ arch/x86/kernel/smpboot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index f4234575f3fd..f66691d34f4a 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -218,4 +218,12 @@ static inline void arch_set_max_freq_ratio(bool turbo_disabled)
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+void init_freq_invariance_cppc(void);
-+#else
-+static inline void init_freq_invariance_cppc(void)
-+{
-+}
-+#endif
-+
- #endif /* _ASM_X86_TOPOLOGY_H */
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index de776b2e6046..a4ab5cf6aeab 100644
+index a4ab5cf6aeab..c5dd5f6199d9 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -82,6 +82,10 @@
- #include <asm/hw_irq.h>
- #include <asm/stackprotector.h>
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+#include <acpi/cppc_acpi.h>
-+#endif
-+
- /* representing HT siblings of each logical CPU */
- DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_sibling_map);
- EXPORT_PER_CPU_SYMBOL(cpu_sibling_map);
-@@ -148,7 +152,7 @@ static inline void smpboot_restore_warm_reset_vector(void)
- 	*((volatile u32 *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = 0;
- }
- 
--static void init_freq_invariance(bool secondary);
-+static void init_freq_invariance(bool secondary, bool cppc_ready);
- 
- /*
-  * Report back to the Boot Processor during boot time or to the caller processor
-@@ -186,7 +190,7 @@ static void smp_callin(void)
- 	 */
- 	set_cpu_sibling_map(raw_smp_processor_id());
- 
--	init_freq_invariance(true);
-+	init_freq_invariance(true, false);
- 
- 	/*
- 	 * Get our bogomips.
-@@ -1340,7 +1344,7 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
- 	set_sched_topology(x86_topology);
- 
- 	set_cpu_sibling_map(0);
--	init_freq_invariance(false);
-+	init_freq_invariance(false, false);
- 	smp_sanity_check();
- 
- 	switch (apic_intr_mode) {
-@@ -2027,6 +2031,46 @@ static bool intel_set_max_freq_ratio(void)
- 	return true;
- }
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+static bool amd_set_max_freq_ratio(void)
-+{
-+	struct cppc_perf_caps perf_caps;
-+	u64 highest_perf, nominal_perf;
-+	u64 perf_ratio;
-+	int rc;
-+
-+	rc = cppc_get_perf_caps(0, &perf_caps);
-+	if (rc) {
-+		pr_debug("Could not retrieve perf counters (%d)\n", rc);
-+		return false;
-+	}
-+
-+	highest_perf = perf_caps.highest_perf;
-+	nominal_perf = perf_caps.nominal_perf;
-+
-+	if (!highest_perf || !nominal_perf) {
-+		pr_debug("Could not retrieve highest or nominal performance\n");
-+		return false;
-+	}
-+
-+	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-+	if (!perf_ratio) {
-+		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
-+		return false;
-+	}
-+
-+	arch_turbo_freq_ratio = perf_ratio;
-+	arch_set_max_freq_ratio(false);
-+
-+	return true;
-+}
-+#else
-+static bool amd_set_max_freq_ratio(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static void init_counter_refs(void)
- {
- 	u64 aperf, mperf;
-@@ -2038,7 +2082,7 @@ static void init_counter_refs(void)
- 	this_cpu_write(arch_prev_mperf, mperf);
- }
- 
--static void init_freq_invariance(bool secondary)
-+static void init_freq_invariance(bool secondary, bool cppc_ready)
- {
- 	bool ret = false;
- 
-@@ -2054,6 +2098,12 @@ static void init_freq_invariance(bool secondary)
- 
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		ret = intel_set_max_freq_ratio();
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD) {
-+		if (!cppc_ready) {
-+			return;
-+		}
-+		ret = amd_set_max_freq_ratio();
-+	}
- 
- 	if (ret) {
- 		init_counter_refs();
-@@ -2063,6 +2113,22 @@ static void init_freq_invariance(bool secondary)
- 	}
- }
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+static DEFINE_MUTEX(freq_invariance_lock);
-+
-+void init_freq_invariance_cppc(void)
-+{
-+	static bool secondary;
-+
-+	mutex_lock(&freq_invariance_lock);
-+
-+	init_freq_invariance(secondary, true);
-+	secondary = true;
-+
-+	mutex_unlock(&freq_invariance_lock);
-+}
-+#endif
-+
- static void disable_freq_invariance_workfn(struct work_struct *work)
- {
- 	static_branch_disable(&arch_scale_freq_key);
-@@ -2112,7 +2178,7 @@ void arch_scale_freq_tick(void)
- 	schedule_work(&disable_freq_invariance_work);
- }
- #else
--static inline void init_freq_invariance(bool secondary)
-+static inline void init_freq_invariance(bool secondary, bool cppc_ready)
- {
- }
- #endif /* CONFIG_X86_64 */
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 7a99b19bb893..368b13cb975d 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -39,6 +39,7 @@
- #include <linux/ktime.h>
- #include <linux/rwsem.h>
- #include <linux/wait.h>
-+#include <linux/topology.h>
- 
- #include <acpi/cppc_acpi.h>
- 
-@@ -850,6 +851,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 		goto out_free;
+@@ -2054,6 +2054,8 @@ static bool amd_set_max_freq_ratio(void)
  	}
  
-+	init_freq_invariance_cppc();
-+
- 	kfree(output.pointer);
- 	return 0;
- 
+ 	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
++	/* midpoint between max_boost and max_P */
++	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
+ 	if (!perf_ratio) {
+ 		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
+ 		return false;
 -- 
 2.26.2
 
