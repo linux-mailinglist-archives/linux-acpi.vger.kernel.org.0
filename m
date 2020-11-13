@@ -2,60 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDEE62B16F6
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Nov 2020 09:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D97D2B1703
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Nov 2020 09:14:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726136AbgKMIKS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Nov 2020 03:10:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
+        id S1726176AbgKMIOO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Nov 2020 03:14:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbgKMIKS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Nov 2020 03:10:18 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57AD8C0613D1;
-        Fri, 13 Nov 2020 00:10:18 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id i193so7952336yba.1;
-        Fri, 13 Nov 2020 00:10:18 -0800 (PST)
+        with ESMTP id S1726133AbgKMION (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Nov 2020 03:14:13 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90FC9C0613D1;
+        Fri, 13 Nov 2020 00:14:13 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id k65so7945844ybk.5;
+        Fri, 13 Nov 2020 00:14:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YZly4fKiBbV+IkexCkfhDwIO10bCLlCQxITCXC1nduc=;
-        b=u2+i4ApZzbglKW/ZY0KZq8G55eme853Hcxfb0QmEAFmaNROCNYHDJThV7bgI1Dwj3u
-         pR4MtaMYZlMIYkydd2bglPivi43m+c8nhXkNAfWFgNQmT0H/+PCw5y28wYogFlNrJxYP
-         xDLcbVmRUclmos/AgE3Cgf5RM3Hz9Yc845piAFhG6PJAfESlmYVU3+TkGWtU0ioNA6op
-         Y+6TM93BD96hywl2I7jyC3DpFGFoliP51bZWBPHP1GViSl/X7HmwBEpBuvdvMexUA5CP
-         ZWqR1JG3CZDn7H339C32yqa4S/Z2gVJNZq56jaUtMtGMwmq5Aw+rDaX2z4FJXOSSu7ud
-         CgeQ==
+        bh=IGuhm4DDjXM82cBc9tqmhMIUTIMqD4s7kPGRRYpiNzs=;
+        b=c8RAUBDE+Ue238rSIJCCf0RauNJZQw6t3/5DlvGEEH6NFjNfN6fDHyp9CBtDsYFTQp
+         h+OLaJ/8g4gqbVfYSggv/SBfuai8Cfx82NszN51c9Tgk+P0WZq60m6WPGnZqmXa/GC9L
+         rwhuRIAjOKV0PkuMAXcluJJ8dScjXuEuvlEs3srm4rqF95lylht9Vc3oh7XxZc2iuCH+
+         3cjvXWK6rRX0Baheu7alF6T2Shg03TcMANdty6950EO31MV1tlMdLl8EX5qCHzcMfcy5
+         qb5ELBGIGLznYjyfjpo6/sbmy5FTt1zxBbMgpI+vTpe9ALQxcBB5KysZe3husQrmiZKh
+         /48Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YZly4fKiBbV+IkexCkfhDwIO10bCLlCQxITCXC1nduc=;
-        b=b2VZjdfF+OCRbzc9J9WuFzeoYiKHpvbnet93iEWZ3iVfGJNCJ/zOV+kRa2GArcAGVS
-         Rnr57zLWKNR03UFmQl+DahmrnJtAiDRFvxjL/nFbh+CrK4TC7KW3rimG8n/KtOY2bpvJ
-         R20b54vG0YG+szxn4LESQ75IsaLf+1Gr9fNOLlx3N37CCroGA5p/8TfraE6+J6LXxCMM
-         xQz0ukmnXYmBkgzu6m/ihgVaOVYH5zD6J4SygQ0CfNXGiGASwWdMlD6D04A+ElAHJOZH
-         mQvt/8Vi0L4aubgiI2uuMbGhu9ZbaqZI6o55wd+dN1ofMuULMA94cpedo7KjyXdU2F9v
-         /xhw==
-X-Gm-Message-State: AOAM533pcrNqYeX8y9Wq7uDkFj5ce/1eRKk9PK/ahMYPdaaXcXQgMj/P
-        qb4XSt3ntoACEEsDeAsu6qJVpdYdZ1laM0mxzMKXBBxzQh0=
-X-Google-Smtp-Source: ABdhPJwjEpoizRa9L79ZPsT2OVUutT8ozRSyE/0JHG/Ved9tIK9IL3j4WF2zqwupgavLD15Kp/RVtgEi3TpOGmdfEks=
-X-Received: by 2002:a25:5f0f:: with SMTP id t15mr1252894ybb.26.1605255017552;
- Fri, 13 Nov 2020 00:10:17 -0800 (PST)
+        bh=IGuhm4DDjXM82cBc9tqmhMIUTIMqD4s7kPGRRYpiNzs=;
+        b=L3alAlm2ZMXHWH94R9vapSuWSSbH0EVuWoRRnG7DfXJQS+092kDEjhfapgI6p5hnrB
+         kD86Ckh81/PZVxjkpTORrrVQRfwExNuZknXwXHrNGJdKWa1Y0mltOv4z+UjwU7Ai4vUa
+         1LguiHFjQcwV8svNRnSS/XR39gnv5jCsJW5Ylpw/22eFM4vKyfZtLFxTGxTeJ7bTMRCI
+         i1FDe1WIqfrRBlLu1i9oImKX5hQCm7l3F26gsZ4NLLibX9NPoijjMuIIKstEzUQ4AZTK
+         2EN7g+OmerNKWV2hWtVDiV/NyO8cM1A/SEaQf5NkKwLsLn/UFnqSwk/3DmOqnop3wQYm
+         oKBw==
+X-Gm-Message-State: AOAM53239Fx963sN2NODmUR9dlOEvmkPZK47eHYhpJBqeE9na4nF+8an
+        w2m8Wz7Fm7OqFBJkQbeP9c0p1JEMy3dCEE7DlIk=
+X-Google-Smtp-Source: ABdhPJy8TyFXL7XZ3U447iEAI04X21uq6utlKB5gB8S8IpKtxbhOpTXbu1mpRzeii2G3o/I1H6GKbLOZAAC73Np2vPM=
+X-Received: by 2002:a25:338b:: with SMTP id z133mr1271346ybz.33.1605255252936;
+ Fri, 13 Nov 2020 00:14:12 -0800 (PST)
 MIME-Version: 1.0
 References: <20201111021131.822867-1-ndesaulniers@google.com>
  <BYAPR11MB3256E0C1DCB4F01D18DF709F87E80@BYAPR11MB3256.namprd11.prod.outlook.com>
  <CAKwvOdk2U5+DcXYyMoBAhyaa67EukhB6QMEUbRPcOF7P3Sz21w@mail.gmail.com>
  <BYAPR11MB3256C9711620932685C368F887E70@BYAPR11MB3256.namprd11.prod.outlook.com>
- <CAKwvOdnu07S8ZtGVe0eVFP=6hLSRa58EtDYOJUK_zGWFaqUboA@mail.gmail.com> <BYAPR11MB3256BEF30840D4AB440A359C87E70@BYAPR11MB3256.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB3256BEF30840D4AB440A359C87E70@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <CAKwvOdnu07S8ZtGVe0eVFP=6hLSRa58EtDYOJUK_zGWFaqUboA@mail.gmail.com>
+ <BYAPR11MB3256BEF30840D4AB440A359C87E70@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <CAKwvOdnYpmf=ydFVWSqVkWeUpn+M2v9PfdQd71T3oqQ9_1WQaQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdnYpmf=ydFVWSqVkWeUpn+M2v9PfdQd71T3oqQ9_1WQaQ@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 13 Nov 2020 09:10:06 +0100
-Message-ID: <CANiq72nL5O30-QXh9nBnE8rUdkHs=OxZJ=9uVWtKJ3YTDFr-fg@mail.gmail.com>
+Date:   Fri, 13 Nov 2020 09:14:01 +0100
+Message-ID: <CANiq72k13K_zA5aH5hameoe4TSf2o5cA294bA4UEZG0M6S3DXQ@mail.gmail.com>
 Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
-To:     "Moore, Robert" <robert.moore@intel.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     "Moore, Robert" <robert.moore@intel.com>,
         "Kaneda, Erik" <erik.kaneda@intel.com>,
         "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
         "Gustavo A . R . Silva" <gustavoars@kernel.org>,
@@ -69,13 +71,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 10:49 PM Moore, Robert <robert.moore@intel.com> wrote:
+On Fri, Nov 13, 2020 at 1:09 AM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
 >
-> 1>c:\acpica\source\components\utilities\utdelete.c(270): warning C4013: '__attribute__' undefined; assuming extern returning int
-> 1>c:\acpica\source\components\utilities\utdelete.c(270): error C2065: '__fallthrough__': undeclared identifier
-> 1>c:\acpica\source\components\utilities\utdelete.c(272): error C2143: syntax error: missing ';' before 'case'
+> Thank you for the explicit diagnostics observed.  Something fishy is
+> going on though, https://godbolt.org/z/Gbxbxa is how I expect MSVC to
+> handle include/linux/compiler_attributes.h.
+>
+> The C preprocessor should make it such that MSVC never sees
+> `__attribute__` or `__fallthrough__`; that it does begs the question.
+> That would seem to imply that `#if __has_attribute(__fallthrough__)`
+> somehow evaluates to true on MSVC, but my godbolt link shows it does
+> not.
+>
+> Could the upstream ACPICA project be #define'ing something that could
+> be altering this? (Or not #define'ing something?)
+>
+> Worst case, we could do as Joe Perches suggested and disable
+> -Wfallthrough for drivers/acpi/acpica/.
 
-Can you share a minimized sample with the `cl` version and command-line options?
+I agree, something is fishy. MSVC has several flags for conformance
+and extensions support, including two full C preprocessors in newer
+versions; which means we might be missing something, but I don't see
+how the code in compiler_attributes.h could be confusing MSVC even in
+older non-conforming versions.
 
 Cheers,
 Miguel
