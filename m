@@ -2,172 +2,263 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C82AB2B236F
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Nov 2020 19:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A35D92B2382
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Nov 2020 19:17:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726081AbgKMSNa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Nov 2020 13:13:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbgKMSN3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Nov 2020 13:13:29 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B510C0613D1
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Nov 2020 10:13:29 -0800 (PST)
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605291207;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=7aFlYdIzEfv2JOKu+3iUrIPJ1A00nqjzBiRhswpxCy8=;
-        b=vHAJ8fVnMHTxFGQpO7msv6keDGYp1hJrZSCddAcKsOMDP9Ml0b1OstWC7YyD8vLlkcI+DZ
-        jukIStanC15MwXl+bKCAKDT9bfyxMCt7BoRxuKQR68vBCmsECZSn9lUZPRcySCDDHmvCLS
-        XYw1alUEdHAdbzdIwIbrAN6fAAe149wM3bXCw/T4VivLNN5TMXs1bXgNfy2qFO1EJqtYxK
-        awp6sDiHENTZy24higuu6EfwjBkiiNN+cX+E5iyPsv42ZqdsZt7jePMZAD23SyXraZyzWM
-        yfEDyKsnUE3PXcjXf1URb9sPCDcpF4KkR+ugPaSCjfQxzn7C2JtsGgxFbnCpxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605291207;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=7aFlYdIzEfv2JOKu+3iUrIPJ1A00nqjzBiRhswpxCy8=;
-        b=ozBmN8hbH15DzeEjsBp4HoFUozlE+9PU1Z0MVsMnByiITLM6jvkKvEFc3ZrpgTS8asKb+4
-        UQOzTG/hrI05h7Bw==
-To:     linux-acpi@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH] ACPI: EC: Replace in_interrupt() usage.
-Date:   Fri, 13 Nov 2020 19:13:17 +0100
-Message-Id: <20201113181317.2227833-1-bigeasy@linutronix.de>
+        id S1726306AbgKMSRb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Nov 2020 13:17:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57892 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725983AbgKMSRb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Nov 2020 13:17:31 -0500
+Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3C813206CA;
+        Fri, 13 Nov 2020 18:17:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605291450;
+        bh=5nrQeHPsrJ6CdbyW/B7NJ9dBG1ICdXJr6WbQzP/BDzg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=st7NXp5n827AI+wQjAKrJJWVR7UWe3aHHzUnyWDKdxq6t/nLslQN5L8VDmoRJnBid
+         3RHlWKPMF5DpdlQgqRKDqejA5rt7PA4eRw+Nt8eRe45A6zpkvjENRYtrIYrrb51GPG
+         psHRPGpx8tTQPaaxepSN6FFyyBvRAF1ZDJl5I7Qo=
+Date:   Fri, 13 Nov 2020 12:17:28 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [RFC PATCH 3/9] cxl/mem: Add a driver for the type-3 mailbox
+Message-ID: <20201113181728.GA1119310@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201111054356.793390-4-ben.widawsky@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-advance_transaction() is using in_interrupt() to distinguish between an
-invocation from the interrupt handler and an invocation from another
-part of the stack.
+On Tue, Nov 10, 2020 at 09:43:50PM -0800, Ben Widawsky wrote:
+> From: Dan Williams <dan.j.williams@intel.com>
+> 
+> The CXL.mem protocol allows a device to act as a provider of "System
+> RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+> was attached to the typical CPU memory controller.
+> 
+> The memory range exported by the device may optionally be described by
+> the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+> provision persistent memory capacity from one, or more, CXL.mem devices.
+> 
+> A pre-requisite for Linux-managed memory-capacity provisioning is this
+> cxl_mem driver that can speak the "type-3 mailbox" protocol.
 
-This looks misleading because chains like
-  acpi_update_all_gpes() -> acpi_ev_gpe_detect() ->
-  acpi_ev_detect_gpe() -> acpi_ec_gpe_handler()
+"Type 3" to indicate that this is a proper adjective that can be
+looked up in the spec and to match the usage there.
 
-should probably also behave as if they were called from an interrupt
-handler.
+The r1.1 spec I have doesn't mention "mailbox".  Is that also
+something defined in the 2.0 spec?
 
-Replace in_interrupt() usage with a function parameter. Set this
-parameter to `true' if invoked from an interrupt handler
-(acpi_ec_gpe_handler() and acpi_ec_irq_handler()) and `false' otherwise.
+A URL or similar citation for the spec would be nice somewhere.
 
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- drivers/acpi/ec.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+> For now just land the driver boiler-plate and fill it in with
+> functionality in subsequent commits.
+> 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> ---
+>  drivers/cxl/Kconfig  | 20 +++++++++++
+>  drivers/cxl/Makefile |  2 ++
+>  drivers/cxl/mem.c    | 82 ++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/pci.h    | 15 ++++++++
+>  4 files changed, 119 insertions(+)
+>  create mode 100644 drivers/cxl/mem.c
+>  create mode 100644 drivers/cxl/pci.h
+> 
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index dd724bd364df..15548f5c77ff 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -27,4 +27,24 @@ config CXL_ACPI
+>  	  resources described by the CEDT (CXL Early Discovery Table)
+>  
+>  	  Say 'y' to enable CXL (Compute Express Link) drivers.
+> +
+> +config CXL_MEM
+> +        tristate "CXL.mem Device Support"
+> +        depends on PCI && CXL_BUS_PROVIDER != n
+> +        default m if CXL_BUS_PROVIDER
+> +        help
+> +          The CXL.mem protocol allows a device to act as a provider of
+> +          "System RAM" and/or "Persistent Memory" that is fully coherent
+> +          as if the memory was attached to the typical CPU memory
+> +          controller.
+> +
+> +          Say 'y/m' to enable a driver named "cxl_mem.ko" that will attach
+> +          to CXL.mem devices for configuration, provisioning, and health
+> +          monitoring, the so called "type-3 mailbox". Note, this driver
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index e0cb1bcfffb29..0caf5ca1fc076 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -169,7 +169,7 @@ struct acpi_ec_query {
- };
-=20
- static int acpi_ec_query(struct acpi_ec *ec, u8 *data);
--static void advance_transaction(struct acpi_ec *ec);
-+static void advance_transaction(struct acpi_ec *ec, bool interrupt);
- static void acpi_ec_event_handler(struct work_struct *work);
- static void acpi_ec_event_processor(struct work_struct *work);
-=20
-@@ -358,7 +358,7 @@ static inline void acpi_ec_enable_gpe(struct acpi_ec *e=
-c, bool open)
- 		 * EN=3D1 writes.
- 		 */
- 		ec_dbg_raw("Polling quirk");
--		advance_transaction(ec);
-+		advance_transaction(ec, false);
- 	}
- }
-=20
-@@ -488,7 +488,7 @@ static inline void __acpi_ec_enable_event(struct acpi_e=
-c *ec)
- 	 * Unconditionally invoke this once after enabling the event
- 	 * handling mechanism to detect the pending events.
- 	 */
--	advance_transaction(ec);
-+	advance_transaction(ec, false);
- }
-=20
- static inline void __acpi_ec_disable_event(struct acpi_ec *ec)
-@@ -632,14 +632,13 @@ static inline void ec_transaction_transition(struct a=
-cpi_ec *ec, unsigned long f
- 	}
- }
-=20
--static void advance_transaction(struct acpi_ec *ec)
-+static void advance_transaction(struct acpi_ec *ec, bool interrupt)
- {
- 	struct transaction *t;
- 	u8 status;
- 	bool wakeup =3D false;
-=20
--	ec_dbg_stm("%s (%d)", in_interrupt() ? "IRQ" : "TASK",
--		   smp_processor_id());
-+	ec_dbg_stm("%s (%d)", interrupt ? "IRQ" : "TASK", smp_processor_id());
- 	/*
- 	 * By always clearing STS before handling all indications, we can
- 	 * ensure a hardware STS 0->1 change after this clearing can always
-@@ -699,7 +698,7 @@ static void advance_transaction(struct acpi_ec *ec)
- 	 * otherwise will take a not handled IRQ as a false one.
- 	 */
- 	if (!(status & ACPI_EC_FLAG_SCI)) {
--		if (in_interrupt() && t) {
-+		if (interrupt && t) {
- 			if (t->irq_count < ec_storm_threshold)
- 				++t->irq_count;
- 			/* Allow triggering on 0 threshold */
-@@ -710,7 +709,7 @@ static void advance_transaction(struct acpi_ec *ec)
- out:
- 	if (status & ACPI_EC_FLAG_SCI)
- 		acpi_ec_submit_query(ec);
--	if (wakeup && in_interrupt())
-+	if (wakeup && interrupt)
- 		wake_up(&ec->wait);
- }
-=20
-@@ -767,7 +766,7 @@ static int ec_poll(struct acpi_ec *ec)
- 			if (!ec_guard(ec))
- 				return 0;
- 			spin_lock_irqsave(&ec->lock, flags);
--			advance_transaction(ec);
-+			advance_transaction(ec, false);
- 			spin_unlock_irqrestore(&ec->lock, flags);
- 		} while (time_before(jiffies, delay));
- 		pr_debug("controller reset, restart transaction\n");
-@@ -1216,7 +1215,7 @@ static void acpi_ec_check_event(struct acpi_ec *ec)
- 			 * taking care of it.
- 			 */
- 			if (!ec->curr)
--				advance_transaction(ec);
-+				advance_transaction(ec, false);
- 			spin_unlock_irqrestore(&ec->lock, flags);
- 		}
- 	}
-@@ -1259,7 +1258,7 @@ static void acpi_ec_handle_interrupt(struct acpi_ec *=
-ec)
- 	unsigned long flags;
-=20
- 	spin_lock_irqsave(&ec->lock, flags);
--	advance_transaction(ec);
-+	advance_transaction(ec, true);
- 	spin_unlock_irqrestore(&ec->lock, flags);
- }
-=20
---=20
-2.29.2
+"Type 3"
 
+> +          is required for dynamic provisioning of CXL.mem attached
+> +          memory, a pre-requisite for persistent memory support, but
+> +          devices that provide volatile memory may be fully described by
+> +          existing platform firmware memory enumeration.
+> +
+> +          If unsure say 'n'.
+>  endif
+> diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+> index d38cd34a2582..97fdffb00f2d 100644
+> --- a/drivers/cxl/Makefile
+> +++ b/drivers/cxl/Makefile
+> @@ -1,5 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
+> +obj-$(CONFIG_CXL_MEM) += cxl_mem.o
+>  
+>  ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CXL
+>  cxl_acpi-y := acpi.o
+> +cxl_mem-y := mem.o
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> new file mode 100644
+> index 000000000000..aa7d881fa47b
+> --- /dev/null
+> +++ b/drivers/cxl/mem.c
+> @@ -0,0 +1,82 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+> +#include <linux/module.h>
+> +#include <linux/pci.h>
+> +#include <linux/io.h>
+> +#include "acpi.h"
+> +#include "pci.h"
+> +
+> +struct cxl_mem {
+> +	void __iomem *regs;
+> +};
+
+Unused, maybe move it to the patch that adds the use?
+
+> +static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> +{
+> +	int pos;
+> +
+> +	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
+> +	if (!pos)
+> +		return 0;
+> +
+> +	while (pos) {
+> +		u16 vendor, id;
+> +
+> +		pci_read_config_word(pdev, pos + PCI_DVSEC_VENDOR_OFFSET, &vendor);
+> +		pci_read_config_word(pdev, pos + PCI_DVSEC_ID_OFFSET, &id);
+> +		if (vendor == PCI_DVSEC_VENDOR_CXL && dvsec == id)
+> +			return pos;
+> +
+> +		pos = pci_find_next_ext_capability(pdev, pos, PCI_EXT_CAP_ID_DVSEC);
+> +	}
+> +
+> +	return 0;
+> +}
+
+I assume we'll refactor and move this into the PCI core after we
+resolve the several places this is needed.  When we do that, the
+vendor would be passed in, so maybe we should do that here to make it
+simpler to move this to the PCI core.
+
+> +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct cxl_mem *cxlm;
+> +	int rc, regloc;
+> +
+> +	rc = cxl_bus_prepared(pdev);
+> +	if (rc != 0) {
+> +		dev_err(dev, "failed to acquire interface\n");
+
+Interesting naming: apparently when cxl_bus_prepared() returns a
+non-zero ("true") value, it is actually *not* prepared?
+
+> +		return rc;
+> +	}
+> +
+> +	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
+> +	if (!regloc) {
+> +		dev_err(dev, "register location dvsec not found\n");
+> +		return -ENXIO;
+> +	}
+> +
+> +	cxlm = devm_kzalloc(dev, sizeof(*cxlm), GFP_KERNEL);
+> +	if (!cxlm)
+> +		return -ENOMEM;
+
+Unused.  And [4/9] removes it before it's *ever* used :)
+
+> +	return 0;
+> +}
+> +
+> +static void cxl_mem_remove(struct pci_dev *pdev)
+> +{
+> +}
+> +
+> +static const struct pci_device_id cxl_mem_pci_tbl[] = {
+> +	/* PCI class code for CXL.mem Type-3 Devices */
+> +	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+> +	  PCI_CLASS_MEMORY_CXL, 0xffffff, 0 },
+> +	{ /* terminate list */ },
+> +};
+> +MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+> +
+> +static struct pci_driver cxl_mem_driver = {
+> +	.name			= KBUILD_MODNAME,
+> +	.id_table		= cxl_mem_pci_tbl,
+> +	.probe			= cxl_mem_probe,
+> +	.remove			= cxl_mem_remove,
+> +};
+> +
+> +MODULE_LICENSE("GPL v2");
+> +MODULE_AUTHOR("Intel Corporation");
+> +module_pci_driver(cxl_mem_driver);
+> +MODULE_IMPORT_NS(CXL);
+> diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> new file mode 100644
+> index 000000000000..beb03921e6da
+> --- /dev/null
+
+> +++ b/drivers/cxl/pci.h
+> @@ -0,0 +1,15 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+
+/* SPDX-... */
+/* Copyright ...*/
+
+The SPDX rules are a bit arcane and annoyingly hard to grep for, but
+I found them in Documentation/process/license-rules.rst
+
+> +#ifndef __CXL_PCI_H__
+> +#define __CXL_PCI_H__
+> +
+> +#define PCI_CLASS_MEMORY_CXL	0x050210
+> +
+> +#define PCI_EXT_CAP_ID_DVSEC	0x23
+> +#define PCI_DVSEC_VENDOR_CXL	0x1E98
+> +#define PCI_DVSEC_VENDOR_OFFSET	0x4
+> +#define PCI_DVSEC_ID_OFFSET	0x8
+> +#define PCI_DVSEC_ID_CXL	0x0
+> +#define PCI_DVSEC_ID_CXL_REGLOC	0x8
+
+I assume these will go in include/linux/pci_ids.h (PCI_CLASS_...) and
+include/uapi/linux/pci_regs.h (the rest) eventually, after we get the
+merge issues sorted out.  But if they're only used in cxl/mem.c, I'd
+put them there for now.
+
+> +#endif /* __CXL_PCI_H__ */
+> -- 
+> 2.29.2
+> 
