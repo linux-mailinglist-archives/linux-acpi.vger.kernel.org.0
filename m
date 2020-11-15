@@ -2,294 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D09D32B2DF4
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Nov 2020 16:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64E172B3196
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Nov 2020 01:23:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgKNP2P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 14 Nov 2020 10:28:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47012 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbgKNP2P (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 14 Nov 2020 10:28:15 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E56322265;
-        Sat, 14 Nov 2020 15:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605367694;
-        bh=w6GRHv1XESMtvaagowpL5feljKeJs2fwDrGdLJ9/tG8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vQCvFBuAiwuauA3XjLeP+mCvOpc17dcwecF56gxntp9RKPC8CFObV6cOL7g1sMVGV
-         WUs9y45I0DfoBWSVYS/kE6LiWfrPHsf01BnwcP7bRzi13PODYfJfI6KsRUci1zunac
-         cmQCjGJd52D71VNOyOTEClERKlOIYrQhYJXA8hj8=
-Date:   Sat, 14 Nov 2020 15:27:57 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: Duplicated ABI entries - Was: Re: [PATCH v2 20/39] docs: ABI:
- testing: make the files compatible with ReST output
-Message-ID: <20201114152757.6d8b3b7d@archlinux>
-In-Reply-To: <20201110082658.2edc1ab5@coco.lan>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
-        <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
-        <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
-        <20201030110925.3e09d59e@coco.lan>
-        <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
-        <20201102124641.GA881895@kroah.com>
-        <20201102154250.45bee17f@coco.lan>
-        <20201108165621.4d0da3f4@archlinux>
-        <20201110082658.2edc1ab5@coco.lan>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726315AbgKOAXP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 14 Nov 2020 19:23:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbgKOAXO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 Nov 2020 19:23:14 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717B8C0617A6
+        for <linux-acpi@vger.kernel.org>; Sat, 14 Nov 2020 16:23:14 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id y17so13608970ejh.11
+        for <linux-acpi@vger.kernel.org>; Sat, 14 Nov 2020 16:23:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lDh65djbL3+0Re90HpQ5uGMlQP39/tC1wlxppwwaGTY=;
+        b=zc3rdizNfrZHTpuFBKiOHjqOwj6YqI2lGQqq1CIM1svWbGLkuj/ogSOyy17y75VwVd
+         L6cc3S/XVvEFZqqX4pdVY/cGrRQ+flMvXHh7oynk2Ie8/VBSbHKRG+ThVDKyqbaANL0k
+         FQfx0sfijJHCliwLeja2xC/HTr8wnJi8CEeGZ1JLSnHpY5Z++1yiEZDbJoCKCQSQ6c37
+         VWein7kr8k8BWh8IKbOK1OQs1YRg027F2crWu1EA/LCdCZWqd70sOZ0A+3Byul3gFs/E
+         3jefRbgfwN/hymenfNMTypRKITs4C+ZP2tilUmsar59vknU4dfx7XK82wThhMsaLKtet
+         gONQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lDh65djbL3+0Re90HpQ5uGMlQP39/tC1wlxppwwaGTY=;
+        b=FS2fIoDnGe8BlKW7I/m9zhi+HXK1Z3oKZt4MBIcdHJ1y3o1F6qqboi4vUvzy6l2AKy
+         P64qwpO64RjhF35AjKWeMzpCoMzRQXDoFu9szk5JvPghANNnMj5GyM+o7IpHGTWYfR4s
+         8x3dani0U9t35kdDI2yedEAjPxxQWq8qroiQetTlwbpVItXg7KLlqQeU+cLDd0t/ZNVH
+         EjxDwAmt3sG94+tQ9s11cM4D8HpF4918QRvUMWz3TDQEZejoRCuLJ6cgC69wBlCn6Pk+
+         R0mIqd/eOmZDxuantQcyqiH5zPi0mxDE+Jhso8npjspH2498Y0R+Wn2BmRI/UPciyF43
+         hKeA==
+X-Gm-Message-State: AOAM533zF3xZNQgvT4jTdbUgpu3JY5Yp2Nqr3qQmgUYG3L1BHC6EwWeG
+        UfNmN3oGvRkQAa+oDljLXIOYzmeNt2l7LiKnWfjx7Q==
+X-Google-Smtp-Source: ABdhPJxu7z1ds+uPMjji3l7IMz1L0jCGl0EvxBCAcYszfLVIk8E4wu3dHa0UYb/r0y+qQAQvl39SnBZ7N8XVf4izdPU=
+X-Received: by 2002:a17:906:d92c:: with SMTP id rn12mr8596908ejb.472.1605399792950;
+ Sat, 14 Nov 2020 16:23:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20201111054356.793390-4-ben.widawsky@intel.com>
+ <20201113181728.GA1119310@bjorn-Precision-5520> <20201114010857.t77h4h3ff7ythnml@intel.com>
+In-Reply-To: <20201114010857.t77h4h3ff7ythnml@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Sat, 14 Nov 2020 16:23:04 -0800
+Message-ID: <CAPcyv4g+27K-Amk_PhBvSx9+NnWTTP=yDHLdukK1AmK63X8Abw@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/9] cxl/mem: Add a driver for the type-3 mailbox
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-cxl@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 10 Nov 2020 08:26:58 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Fri, Nov 13, 2020 at 5:09 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+[..]
+> > Unused, maybe move it to the patch that adds the use?
+> >
+>
+> This is a remnant from when Dan gave me the basis to do the mmio work. I agree
+> it can be removed now.
 
-> Hi Jonathan,
-> 
-> Em Sun, 8 Nov 2020 16:56:21 +0000
-> Jonathan Cameron <jic23@kernel.org> escreveu:
-> 
-> > > PS.: the IIO subsystem is the one that currently has more duplicated
-> > > ABI entries:  
-> > > $ ./scripts/get_abi.pl validate 2>&1|grep iio
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  Documentation/ABI/testing/sysfs-bus-iio:394
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  Documentation/ABI/testing/sysfs-bus-iio:395
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  Documentation/ABI/testing/sysfs-bus-iio:396
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  Documentation/ABI/testing/sysfs-bus-iio:397
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  Documentation/ABI/testing/sysfs-bus-iio:398
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  Documentation/ABI/testing/sysfs-bus-iio:399
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:0  Documentation/ABI/testing/sysfs-bus-iio:599
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:36  Documentation/ABI/testing/sysfs-bus-iio:588
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_currentY_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als:43  Documentation/ABI/testing/sysfs-bus-iio-health-afe440x:38
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
-> > > Warning: /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  Documentation/ABI/testing/sysfs-bus-iio:45    
-> 
-> > 
-> > That was intentional.  Often these provide more information on the
-> > ABI for a particular device than is present in the base ABI doc.  
-> 
-> FYI, right now, there are 20 duplicated entries, being 16 of them
-> from IIO, on those files:
-> 
-> 	$ ./scripts/get_abi.pl validate 2>&1|perl -ne 'if (m,(Documentation/\S+)\:,g) { print "$1\n" }'|sort|uniq
-> 	Documentation/ABI/stable/sysfs-driver-w1_ds28e04
-> 	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8
-> 	Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
-> 	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
-> 	Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-> 	Documentation/ABI/testing/sysfs-bus-iio-icm42600
-> 	Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als
-> 	Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-> 	Documentation/ABI/testing/sysfs-class-backlight-adp8860
-> 	Documentation/ABI/testing/sysfs-class-led-trigger-pattern
-> 	Documentation/ABI/testing/sysfs-kernel-iommu_groups
-> 
-> > 
-> > A bit like when we have additional description for dt binding properties
-> > for a particular device, even though they are standard properties.
-> > 
-> > Often a standard property allows for more values than the specific
-> > one for a particular device.  There can also be obscuring coupling
-> > between sysfs attributes due to hardware restrictions that we would
-> > like to provide some explanatory info on.
-> > 
-> > I suppose we could add all this information to the parent doc but
-> > that is pretty ugly and will make that doc very nasty to read.  
-> 
-> I understand what you meant to do, but right now, it is is actually
-> a lot uglier than merging into a single entry ;-)
-> 
-> Let's view ABI from the PoV of a system admin that doesn't know
-> yet about a certain ABI symbol.
+Yes.
 
-I'd be surprised if a sys admin is looking at these at all. They
-tend to be used only by userspace software writers.  But I guess the
-point stands.
+> > > +static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> > > +{
+> > > +   int pos;
+> > > +
+> > > +   pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
+> > > +   if (!pos)
+> > > +           return 0;
+> > > +
+> > > +   while (pos) {
+> > > +           u16 vendor, id;
+> > > +
+> > > +           pci_read_config_word(pdev, pos + PCI_DVSEC_VENDOR_OFFSET, &vendor);
+> > > +           pci_read_config_word(pdev, pos + PCI_DVSEC_ID_OFFSET, &id);
+> > > +           if (vendor == PCI_DVSEC_VENDOR_CXL && dvsec == id)
+> > > +                   return pos;
+> > > +
+> > > +           pos = pci_find_next_ext_capability(pdev, pos, PCI_EXT_CAP_ID_DVSEC);
+> > > +   }
+> > > +
+> > > +   return 0;
+> > > +}
+> >
+> > I assume we'll refactor and move this into the PCI core after we
+> > resolve the several places this is needed.  When we do that, the
+> > vendor would be passed in, so maybe we should do that here to make it
+> > simpler to move this to the PCI core.
+> >
+>
+> I think we'll need to keep this in order to try to keep the dream alive of
+> loading a CXL kernel module on an older kernel. However, PCI code would benefit
+> from having it (in an ideal world, it'd only be there).
 
-> 
-> He'll try to seek for the symbol, more likely using the HTML 
-> documentation. Only very senior system admins might try to take
-> a look at the Kernel.
+So I think this is fine / expected to move standalone common code like
+this to the PCI core. What I'm aiming to avoid with "the dream" Ben
+references is unnecessary dependencies on core changes. CXL is large
+enough that it will generate more backport pressure than ACPI NFIT /
+LIBNVDIMM ever did. From a self interest perspective maximizing how
+much of CXL can be enabled without core dependencies is a goal just to
+lighten my own backport load. The internals of cxl_mem_dvsec() are
+simple enough to backport.
 
-Sad truth here is that before these were in the html docs, they'd
-have grepped and the right option would fairly obvious as it
-would be the more specific file.  Ah well, sometimes progress bites :)
+>
+> > > +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > > +{
+> > > +   struct device *dev = &pdev->dev;
+> > > +   struct cxl_mem *cxlm;
+> > > +   int rc, regloc;
+> > > +
+> > > +   rc = cxl_bus_prepared(pdev);
+> > > +   if (rc != 0) {
+> > > +           dev_err(dev, "failed to acquire interface\n");
+> >
+> > Interesting naming: apparently when cxl_bus_prepared() returns a
+> > non-zero ("true") value, it is actually *not* prepared?
+> >
+>
+> This looks like a rebase fail to me, but I'll let Dan answer.
 
-> 
-> This is what happens when one would seek for a duplicated symbol
-> via command line:
-> 
-> 	$ ./scripts/get_abi.pl search /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency$
-> 	
-> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency
-> 	----------------------------------------------------------
-> 	
-> 	Kernel version:		3.4.0
-> 	Contact:		linux-iio@vger.kernel.org
-> 	Defined on file(s):	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371 Documentation/ABI/testing/sysfs-bus-iio
-> 	
-> 	Description:
-> 	
-> 	Stores the PLL frequency in Hz for channel Y.
-> 	Reading returns the actual frequency in Hz.
-> 	The ADF4371 has an integrated VCO with fundamendal output
-> 	frequency ranging from 4000000000 Hz 8000000000 Hz.
-> 	
-> 	out_altvoltage0_frequency:
-> 	        A divide by 1, 2, 4, 8, 16, 32 or circuit generates
-> 	        frequencies from 62500000 Hz to 8000000000 Hz.
-> 	out_altvoltage1_frequency:
-> 	        This channel duplicates the channel 0 frequency
-> 	out_altvoltage2_frequency:
-> 	        A frequency doubler generates frequencies from
-> 	        8000000000 Hz to 16000000000 Hz.
-> 	out_altvoltage3_frequency:
-> 	        A frequency quadrupler generates frequencies from
-> 	        16000000000 Hz to 32000000000 Hz.
-> 	
-> 	Note: writes to one of the channels will affect the frequency of
-> 	all the other channels, since it involves changing the VCO
-> 	fundamental output frequency.
-> 	
-> 	Output frequency for channel Y in Hz. The number must always be
-> 	specified and unique if the output corresponds to a single
-> 	channel.
-> 
-> As the "What:" field is identical on both sysfs-bus-iio-frequency-adf4371
-> and sysfs-bus-iio, those entries are merged, which produces an ABI
-> documentation mixing both the generic one and the board specific one
-> into a single output.
-> 
-> Worse than that, the "generic" content is at the end.
-> 
-> The same happens when generating the HTML output.
-> 
-> See, entries at the HTML output are ordered by the What: field,
-> which is considered within the script as an unique key, as it is
-> unique (except for IIO and a couple of other cases).
-> 
-> -
-> 
-> As I commented on an e-mail I sent to Greg, I see a few ways
-> to solve it.
-> 
-> The most trivial one (which I used to solve a few conflicts on
-> other places), is to place driver-specific details on a separate
-> file under Documentation/driver-api, and mention it at the
-> generic entries. The docs building system will generate cross
-> references for Documentation/.../foo.rst files, so, everything
-> should be OK.
+Yeah, I originally envisioned this as a ternary result with
+-EPROBE_DEFER as a possible return value, but now that we've found a
+way to handle CXL _OSC without colliding with legacy PCIE _OSC this
+can indeed move to a boolean result.
 
-Hmm. That might work out OK.  These devices tend to be weird enough
-that they probably could do with some additional explanation anyway. 
+Will fix up.
 
-> 
-> The second alternative that I also used on a couple of places
-> is to modify the generic entry for it to contain the generic
-> definition first, followed by per-device details.
+>
+> > > +           return rc;
+> > > +   }
+> > > +
+> > > +   regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
+> > > +   if (!regloc) {
+> > > +           dev_err(dev, "register location dvsec not found\n");
+> > > +           return -ENXIO;
+> > > +   }
+> > > +
+> > > +   cxlm = devm_kzalloc(dev, sizeof(*cxlm), GFP_KERNEL);
+> > > +   if (!cxlm)
+> > > +           return -ENOMEM;
+> >
+> > Unused.  And [4/9] removes it before it's *ever* used :)
+> >
+>
+> Same as a few above, I think Dan was providing this for me to implement the
+> reset. It could go away...
 
-I'll do an audit of what we actually have here. Perhaps we end
-up with a mixture of these two options.
+Yes, a collaboration artifact that we can clean up.
 
-Might take a little while though.
+>
+> > > +   return 0;
+> > > +}
+> > > +
+> > > +static void cxl_mem_remove(struct pci_dev *pdev)
+> > > +{
+> > > +}
+> > > +
+> > > +static const struct pci_device_id cxl_mem_pci_tbl[] = {
+> > > +   /* PCI class code for CXL.mem Type-3 Devices */
+> > > +   { PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+> > > +     PCI_CLASS_MEMORY_CXL, 0xffffff, 0 },
+> > > +   { /* terminate list */ },
+> > > +};
+> > > +MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+> > > +
+> > > +static struct pci_driver cxl_mem_driver = {
+> > > +   .name                   = KBUILD_MODNAME,
+> > > +   .id_table               = cxl_mem_pci_tbl,
+> > > +   .probe                  = cxl_mem_probe,
+> > > +   .remove                 = cxl_mem_remove,
+> > > +};
+> > > +
+> > > +MODULE_LICENSE("GPL v2");
+> > > +MODULE_AUTHOR("Intel Corporation");
+> > > +module_pci_driver(cxl_mem_driver);
+> > > +MODULE_IMPORT_NS(CXL);
+> > > diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> > > new file mode 100644
+> > > index 000000000000..beb03921e6da
+> > > --- /dev/null
+> >
+> > > +++ b/drivers/cxl/pci.h
+> > > @@ -0,0 +1,15 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+> >
+> > /* SPDX-... */
+> > /* Copyright ...*/
+> >
+> > The SPDX rules are a bit arcane and annoyingly hard to grep for, but
+> > I found them in Documentation/process/license-rules.rst
 
-> 
-> There is a third possible alternative: add a new optional field
-> (something like Scope:) which would be part of the unique key,
-> if present. Implementing support for it could be tricky, as the
-> produced output would likely need to create cross-references
-> between the generic field (if present) and the per-device details.
-That would be lovely but probably not worth the effort for something
-that occurs so rarely currently.
+Yes, I did not realize the header vs source /* */ vs // SPDX style.
 
-Jonathan
+> >
+> > > +#ifndef __CXL_PCI_H__
+> > > +#define __CXL_PCI_H__
+> > > +
+> > > +#define PCI_CLASS_MEMORY_CXL       0x050210
+> > > +
+> > > +#define PCI_EXT_CAP_ID_DVSEC       0x23
+> > > +#define PCI_DVSEC_VENDOR_CXL       0x1E98
+> > > +#define PCI_DVSEC_VENDOR_OFFSET    0x4
+> > > +#define PCI_DVSEC_ID_OFFSET        0x8
+> > > +#define PCI_DVSEC_ID_CXL   0x0
+> > > +#define PCI_DVSEC_ID_CXL_REGLOC    0x8
+> >
+> > I assume these will go in include/linux/pci_ids.h (PCI_CLASS_...) and
+> > include/uapi/linux/pci_regs.h (the rest) eventually, after we get the
+> > merge issues sorted out.  But if they're only used in cxl/mem.c, I'd
+> > put them there for now.
 
-> 
-> Thanks,
-> Mauro
-> 
-> PS.: I'm taking a few days of PTO during this week. So, it
-> could take a while for me to reply again to this thread.
-
+Yes, I assume they'll move eventually. I'm cheating a standalone
+backport driver organization in the meantime.
