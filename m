@@ -2,133 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F052B45DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 15:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FA92B45D7
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 15:31:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729446AbgKPO3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Nov 2020 09:29:05 -0500
+        id S1729799AbgKPO3E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Nov 2020 09:29:04 -0500
 Received: from mga14.intel.com ([192.55.52.115]:42691 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729485AbgKPO3E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1726426AbgKPO3E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Mon, 16 Nov 2020 09:29:04 -0500
-IronPort-SDR: vHjKuOBJXK/cANRzYh7gKIiK4w1ZvEl+Grx8Zdi7cxR6UAfQiOAmTdWMhYVmN/xD60+ecNmCIp
- AVq3IZ+KHNbA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9806"; a="169969414"
+IronPort-SDR: XS5HSQk1EUkihkpp2RLXRYJ1wJfW4dWLBvQAF82SsDO1sUXsFGoyoWY+t8bYvgv5BH8IC6hdWP
+ t8X5Fcx/YbEQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9806"; a="169969410"
 X-IronPort-AV: E=Sophos;i="5.77,482,1596524400"; 
-   d="scan'208";a="169969414"
+   d="scan'208";a="169969410"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2020 06:29:03 -0800
-IronPort-SDR: lwvGInTPoIdwnq4JdBG2NRX5T8dSJvZ81SK8Xfmn5aeuL7HmrMFNCAfzvdIt0HdDtpDLo3tKc9
- EAYSkUr0lScA==
+IronPort-SDR: IgLTJ36l3Tzsp3/4Ha+z8cTstKVDV0yKnyzbMJQ23VdDYTr7ZHuoG8BsEBynfnhZ//om+sP5Uv
+ jbm2+OLmASKg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.77,482,1596524400"; 
-   d="scan'208";a="367496880"
+   d="scan'208";a="531865896"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 16 Nov 2020 06:29:02 -0800
+  by fmsmga006.fm.intel.com with ESMTP; 16 Nov 2020 06:29:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2CF3B11C; Mon, 16 Nov 2020 16:29:00 +0200 (EET)
+        id 3C33AA7; Mon, 16 Nov 2020 16:29:01 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         linux-rtc@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Tin Huynh <tnhuynh@apm.com>
-Subject: [PATCH v2 1/3] rtc: ds1307: Remove non-valid ACPI IDs
-Date:   Mon, 16 Nov 2020 16:28:57 +0200
-Message-Id: <20201116142859.31257-1-andriy.shevchenko@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 2/3] rtc: ds1307: Make use of device properties
+Date:   Mon, 16 Nov 2020 16:28:58 +0200
+Message-Id: <20201116142859.31257-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201116142859.31257-1-andriy.shevchenko@linux.intel.com>
+References: <20201116142859.31257-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The commit 9c19b8930d2c ("rtc: ds1307: Add ACPI support") added invalid
-ACPI IDs (all of them are abusing ACPI specification). Moreover there is
-not even a single evidence that vendor registered any of such devices.
+Device property API allows to gather device resources from different sources,
+such as ACPI. Convert the drivers to unleash the power of device property API.
 
-Remove broken ACPI IDs from the driver. For prototyping one may use PRP0001
-with device properties adhering to a DT binding. The following patches
-will add support of that to the driver.
-
-Link: https://uefi.org/PNP_ACPI_Registry
-Cc: Tin Huynh <tnhuynh@apm.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
-v2: reworded commit message to clarify source of properties (Rafael)
- drivers/rtc/rtc-ds1307.c | 36 +-----------------------------------
- 1 file changed, 1 insertion(+), 35 deletions(-)
+v2: moved ds3231_clks_names to be global and static
+ drivers/rtc/rtc-ds1307.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 9f5f54ca039d..fcb8e281abd5 100644
+index fcb8e281abd5..49260bc260e3 100644
 --- a/drivers/rtc/rtc-ds1307.c
 +++ b/drivers/rtc/rtc-ds1307.c
-@@ -8,7 +8,6 @@
-  *  Copyright (C) 2012 Bertrand Achard (nvram access fixes)
-  */
- 
--#include <linux/acpi.h>
- #include <linux/bcd.h>
+@@ -12,7 +12,8 @@
  #include <linux/i2c.h>
  #include <linux/init.h>
-@@ -1169,31 +1168,6 @@ static const struct of_device_id ds1307_of_match[] = {
- MODULE_DEVICE_TABLE(of, ds1307_of_match);
- #endif
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/rtc/ds1307.h>
+ #include <linux/rtc.h>
+ #include <linux/slab.h>
+@@ -30,6 +31,7 @@
+  * That's a natural job for a factory or repair bench.
+  */
+ enum ds_type {
++	unknown_ds_type, /* always first and 0 */
+ 	ds_1307,
+ 	ds_1308,
+ 	ds_1337,
+@@ -1600,13 +1602,16 @@ static const struct clk_ops ds3231_clk_32khz_ops = {
+ 	.recalc_rate = ds3231_clk_32khz_recalc_rate,
+ };
  
--#ifdef CONFIG_ACPI
--static const struct acpi_device_id ds1307_acpi_ids[] = {
--	{ .id = "DS1307", .driver_data = ds_1307 },
--	{ .id = "DS1308", .driver_data = ds_1308 },
--	{ .id = "DS1337", .driver_data = ds_1337 },
--	{ .id = "DS1338", .driver_data = ds_1338 },
--	{ .id = "DS1339", .driver_data = ds_1339 },
--	{ .id = "DS1388", .driver_data = ds_1388 },
--	{ .id = "DS1340", .driver_data = ds_1340 },
--	{ .id = "DS1341", .driver_data = ds_1341 },
--	{ .id = "DS3231", .driver_data = ds_3231 },
--	{ .id = "M41T0", .driver_data = m41t0 },
--	{ .id = "M41T00", .driver_data = m41t00 },
--	{ .id = "M41T11", .driver_data = m41t11 },
--	{ .id = "MCP7940X", .driver_data = mcp794xx },
--	{ .id = "MCP7941X", .driver_data = mcp794xx },
--	{ .id = "PT7C4338", .driver_data = ds_1307 },
--	{ .id = "RX8025", .driver_data = rx_8025 },
--	{ .id = "ISL12057", .driver_data = ds_1337 },
--	{ .id = "RX8130", .driver_data = rx_8130 },
--	{ }
--};
--MODULE_DEVICE_TABLE(acpi, ds1307_acpi_ids);
--#endif
--
- /*
-  * The ds1337 and ds1339 both have two alarms, but we only use the first
-  * one (with a "seconds" field).  For ds1337 we expect nINTA is our alarm
-@@ -1794,14 +1768,7 @@ static int ds1307_probe(struct i2c_client *client,
- 		chip = &chips[id->driver_data];
- 		ds1307->type = id->driver_data;
- 	} else {
--		const struct acpi_device_id *acpi_id;
--
--		acpi_id = acpi_match_device(ACPI_PTR(ds1307_acpi_ids),
--					    ds1307->dev);
--		if (!acpi_id)
--			return -ENODEV;
--		chip = &chips[acpi_id->driver_data];
--		ds1307->type = acpi_id->driver_data;
-+		return -ENODEV;
++static const char *ds3231_clks_names[] = {
++	[DS3231_CLK_SQW] = "ds3231_clk_sqw",
++	[DS3231_CLK_32KHZ] = "ds3231_clk_32khz",
++};
++
+ static struct clk_init_data ds3231_clks_init[] = {
+ 	[DS3231_CLK_SQW] = {
+-		.name = "ds3231_clk_sqw",
+ 		.ops = &ds3231_clk_sqw_ops,
+ 	},
+ 	[DS3231_CLK_32KHZ] = {
+-		.name = "ds3231_clk_32khz",
+ 		.ops = &ds3231_clk_32khz_ops,
+ 	},
+ };
+@@ -1627,6 +1632,11 @@ static int ds3231_clks_register(struct ds1307 *ds1307)
+ 	if (!onecell->clks)
+ 		return -ENOMEM;
+ 
++	/* optional override of the clockname */
++	device_property_read_string_array(ds1307->dev, "clock-output-names",
++					  ds3231_clks_names,
++					  ARRAY_SIZE(ds3231_clks_names));
++
+ 	for (i = 0; i < ARRAY_SIZE(ds3231_clks_init); i++) {
+ 		struct clk_init_data init = ds3231_clks_init[i];
+ 
+@@ -1637,9 +1647,7 @@ static int ds3231_clks_register(struct ds1307 *ds1307)
+ 		if (i == DS3231_CLK_SQW && test_bit(HAS_ALARM, &ds1307->flags))
+ 			continue;
+ 
+-		/* optional override of the clockname */
+-		of_property_read_string_index(node, "clock-output-names", i,
+-					      &init.name);
++		init.name = ds3231_clks_names[i];
+ 		ds1307->clks[i].init = &init;
+ 
+ 		onecell->clks[i] = devm_clk_register(ds1307->dev,
+@@ -1648,10 +1656,8 @@ static int ds3231_clks_register(struct ds1307 *ds1307)
+ 			return PTR_ERR(onecell->clks[i]);
  	}
  
- 	want_irq = client->irq > 0 && chip->alarm;
-@@ -2065,7 +2032,6 @@ static struct i2c_driver ds1307_driver = {
- 	.driver = {
- 		.name	= "rtc-ds1307",
- 		.of_match_table = of_match_ptr(ds1307_of_match),
--		.acpi_match_table = ACPI_PTR(ds1307_acpi_ids),
- 	},
- 	.probe		= ds1307_probe,
- 	.id_table	= ds1307_id,
+-	if (!node)
+-		return 0;
+-
+-	of_clk_add_provider(node, of_clk_src_onecell_get, onecell);
++	if (node)
++		of_clk_add_provider(node, of_clk_src_onecell_get, onecell);
+ 
+ 	return 0;
+ }
+@@ -1735,6 +1741,7 @@ static int ds1307_probe(struct i2c_client *client,
+ 			const struct i2c_device_id *id)
+ {
+ 	struct ds1307		*ds1307;
++	const void		*match;
+ 	int			err = -ENODEV;
+ 	int			tmp;
+ 	const struct chip_desc	*chip;
+@@ -1760,9 +1767,9 @@ static int ds1307_probe(struct i2c_client *client,
+ 
+ 	i2c_set_clientdata(client, ds1307);
+ 
+-	if (client->dev.of_node) {
+-		ds1307->type = (enum ds_type)
+-			of_device_get_match_data(&client->dev);
++	match = device_get_match_data(&client->dev);
++	if (match) {
++		ds1307->type = (enum ds_type)match;
+ 		chip = &chips[ds1307->type];
+ 	} else if (id) {
+ 		chip = &chips[id->driver_data];
+@@ -1786,7 +1793,6 @@ static int ds1307_probe(struct i2c_client *client,
+ 			     trickle_charger_setup);
+ 	}
+ 
+-#ifdef CONFIG_OF
+ /*
+  * For devices with no IRQ directly connected to the SoC, the RTC chip
+  * can be forced as a wakeup source by stating that explicitly in
+@@ -1795,10 +1801,8 @@ static int ds1307_probe(struct i2c_client *client,
+  * This will guarantee the 'wakealarm' sysfs entry is available on the device,
+  * if supported by the RTC.
+  */
+-	if (chip->alarm && of_property_read_bool(client->dev.of_node,
+-						 "wakeup-source"))
++	if (chip->alarm && device_property_read_bool(&client->dev, "wakeup-source"))
+ 		ds1307_can_wakeup_device = true;
+-#endif
+ 
+ 	switch (ds1307->type) {
+ 	case ds_1337:
 -- 
 2.28.0
 
