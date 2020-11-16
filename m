@@ -2,145 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ABFA2B4B47
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 17:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDBA2B4BA7
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 17:51:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731544AbgKPQex (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Nov 2020 11:34:53 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35195 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731373AbgKPQex (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Nov 2020 11:34:53 -0500
-Received: by mail-ot1-f65.google.com with SMTP id n11so16620120ota.2;
-        Mon, 16 Nov 2020 08:34:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=X6r+TMuXBaWk+0YlYimRvQ3UQLh6IAXQbc5v0U3Ytpw=;
-        b=A/DkBwv36Hx6eCE6p6k/oGdOq0EEGvqZclZxkTMKgpsYXugw1mZuN1cvSArmh+RYB5
-         XnJgD5puOt/KJa7SHqx9KZYIs26Aijf130/jVnb3TskkADMLbyaI+f73STB/7xAOTfaO
-         4c7q8HUSqoy5c6ecqpwkQtYBXe7miWSzzIQSH1pity7dRc3y4A5vXlxs1BwoKOvhtGdV
-         iBPyeftuz26XlvPyp2iie4WZrbLamxZAxHOywFrXAXEjIejzOVw2uiVGXRtLNYeiTCyH
-         sNK2CQ15VIldWXrcBCtGflwlp6dZ94lG5hLvFptc67fZbhjAUCGiK9sJzSce2jlGI9SH
-         xXkw==
-X-Gm-Message-State: AOAM532yd+kgi/LYm3iywxQm2CuycEWT79lmHYJhnw9sLK65kPmZgog4
-        ex+YqYCTcPalEFLG7PZ0IdairCTbWJrTeqMQZOQ9AyJzSAU=
-X-Google-Smtp-Source: ABdhPJxXfOjX8Lhy1wwWUe392JncSbAGxcKFQfRzrNKGlBugUCM6FToKHQOVyMbEwnMz2xffTepsuPCWMTdjBP+D1T8=
-X-Received: by 2002:a9d:222f:: with SMTP id o44mr46532ota.321.1605544492320;
- Mon, 16 Nov 2020 08:34:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-15-saravanak@google.com>
-In-Reply-To: <20201104232356.4038506-15-saravanak@google.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 16 Nov 2020 17:34:41 +0100
-Message-ID: <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
-Subject: Re: [PATCH v1 14/18] driver core: Use device's fwnode to check if it
- is waiting for suppliers
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+        id S1730102AbgKPQvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Nov 2020 11:51:00 -0500
+Received: from mga02.intel.com ([134.134.136.20]:38338 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728836AbgKPQvA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Nov 2020 11:51:00 -0500
+IronPort-SDR: cOBdZD25TsHyqCduGK+3OpkXUAdc4HLro18lvp0scdlbaC5lxj9XVq5TaxBZ5LRobgHeNooxw8
+ to6Ax0JGnrlg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9807"; a="157801204"
+X-IronPort-AV: E=Sophos;i="5.77,483,1596524400"; 
+   d="scan'208";a="157801204"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2020 08:50:59 -0800
+IronPort-SDR: 3EBLUqO2lAiC7jtYzawjBY+G6ESr3YKN+5Bmt4d3ZZ7AedS2aNQXMorgOdxk5hUPDIUS6UkQLX
+ 2Bisr+WReLag==
+X-IronPort-AV: E=Sophos;i="5.77,483,1596524400"; 
+   d="scan'208";a="533477258"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2020 08:50:56 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kehjT-0077HE-3X; Mon, 16 Nov 2020 18:51:59 +0200
+Date:   Mon, 16 Nov 2020 18:51:59 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linux-acpi@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "Cc: Android Kernel" <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org
+Cc:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6 0/7] resource: introduce union(), intersection() API
+Message-ID: <20201116165159.GE4077@smile.fi.intel.com>
+References: <20201103204510.19154-1-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201103204510.19154-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
->
-> To check if a device is still waiting for its supplier devices to be
-> added, we used to check if the devices is in a global
-> waiting_for_suppliers list. Since the global list will be deleted in
-> subsequent patches, this patch stops using this check.
+On Tue, Nov 03, 2020 at 10:45:03PM +0200, Andy Shevchenko wrote:
+> Some users may want to use resource library to manage their own resources,
+> besides existing users that open code union() and intersection()
+> implementations.
+> 
+> Provide a generic API for wider use.
 
-My kind of educated guess is that you want to drop
-waiting_for_suppliers and that's why you want to use supplier links
-here.
+Greg, Rafael, if there is no further comments, can it be applied?
 
->
-> Instead, this patch uses a more device specific check. It checks if the
-> device's fwnode has any fwnode links that haven't been converted to
-> device links yet.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/base/core.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 4ae5f2885ac5..d51dd564add1 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
->  static LIST_HEAD(deferred_sync);
->  static unsigned int defer_sync_state_count = 1;
->  static DEFINE_MUTEX(fwnode_link_lock);
-> +static bool fw_devlink_is_permissive(void);
->
->  /**
->   * fwnode_link_add - Create a link between two fwnode_handles.
-> @@ -994,13 +995,13 @@ int device_links_check_suppliers(struct device *dev)
->          * Device waiting for supplier to become available is not allowed to
->          * probe.
->          */
-> -       mutex_lock(&wfs_lock);
-> -       if (!list_empty(&dev->links.needs_suppliers) &&
-> -           dev->links.need_for_probe) {
-> -               mutex_unlock(&wfs_lock);
-> +       mutex_lock(&fwnode_link_lock);
-> +       if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> +           !fw_devlink_is_permissive()) {
-> +               mutex_unlock(&fwnode_link_lock);
->                 return -EPROBE_DEFER;
->         }
-> -       mutex_unlock(&wfs_lock);
-> +       mutex_unlock(&fwnode_link_lock);
->
->         device_links_write_lock();
->
-> @@ -1166,10 +1167,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
->         bool val;
->
->         device_lock(dev);
-> -       mutex_lock(&wfs_lock);
-> -       val = !list_empty(&dev->links.needs_suppliers)
-> -             && dev->links.need_for_probe;
-> -       mutex_unlock(&wfs_lock);
+> Changelog v6:
+> - added missed tags
+> 
+> Changelog v5:
+> - added test cases (Greg)
+> 
+> Changelog v4:
+> - added Rb tag (Rafael)
+> - Cc'ed to LKML and Greg (Rafael)
+> 
+> Changelog v3:
+> - rebased on top of v5.10-rc1
+> - dropped upstreamed dependencies
+> - added Rb tag to the last patch (Mika)
 
-Why isn't the lock needed any more?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Or maybe it wasn't needed previously too?
 
-> +       val = !list_empty(&dev->fwnode->suppliers);
->         device_unlock(dev);
->         return sysfs_emit(buf, "%u\n", val);
->  }
-> @@ -2226,7 +2224,7 @@ static int device_add_attrs(struct device *dev)
->                         goto err_remove_dev_groups;
->         }
->
-> -       if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> +       if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
-
-And why is this change needed?
-
->                 error = device_create_file(dev, &dev_attr_waiting_for_supplier);
->                 if (error)
->                         goto err_remove_dev_online;
-> --
-> 2.29.1.341.ge80a0c044ae-goog
->
