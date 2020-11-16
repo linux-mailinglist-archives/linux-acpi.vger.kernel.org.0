@@ -2,100 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 066AE2B45DA
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 15:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF7E2B45EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Nov 2020 15:34:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726426AbgKPO3E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Nov 2020 09:29:04 -0500
-Received: from mga11.intel.com ([192.55.52.93]:2629 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729446AbgKPO3E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Nov 2020 09:29:04 -0500
-IronPort-SDR: Xx86j9uNvuUr1tyBh+6Ume0JM6+1CDB3Dyb5LGZEWLD4QaLWdys08mTsUaWwDjZqEvBr7JrVDU
- JE+3e0hTNoUw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9806"; a="167241605"
-X-IronPort-AV: E=Sophos;i="5.77,482,1596524400"; 
-   d="scan'208";a="167241605"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2020 06:29:03 -0800
-IronPort-SDR: cJOzPQHxlyVNoAYpMnc6L/jHmRXk2oOX2XMLnjm588yVytwMFoHcsdTk/MbnPGrT5XQ7IJ61eI
- JoduHMaMJf9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,482,1596524400"; 
-   d="scan'208";a="340548529"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 16 Nov 2020 06:29:02 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 4559511E; Mon, 16 Nov 2020 16:29:01 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-rtc@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 3/3] rtc: ds1307: Drop of_match_ptr and CONFIG_OF protections
-Date:   Mon, 16 Nov 2020 16:28:59 +0200
-Message-Id: <20201116142859.31257-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201116142859.31257-1-andriy.shevchenko@linux.intel.com>
-References: <20201116142859.31257-1-andriy.shevchenko@linux.intel.com>
+        id S1727260AbgKPOdI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Nov 2020 09:33:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20333 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729613AbgKPOdI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Nov 2020 09:33:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605537187;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pVqPTgI76T5GFIq9BCs/H6903+24L9xVPbvpVQ0trVs=;
+        b=NI7OsINMaRHgVcdFH+SU+Zte6EK65NRlsYXgXuHHXe3S7A11ywhbwYEbYykVqAlyYaxJZY
+        6h1F/6B6otTp2ChflDTaEOZnCvy1zkCxlAupaDvPq/VvbY0Nnj/J0iZ9d1E4CmwOsCAWEV
+        TcpWJMGmamlzipM75lH4YFLgOdpcPMo=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-309-eaMNcvrqOUa3tj-IBFLovg-1; Mon, 16 Nov 2020 09:33:04 -0500
+X-MC-Unique: eaMNcvrqOUa3tj-IBFLovg-1
+Received: by mail-ej1-f69.google.com with SMTP id nt22so7676584ejb.17
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Nov 2020 06:33:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pVqPTgI76T5GFIq9BCs/H6903+24L9xVPbvpVQ0trVs=;
+        b=npSc8UyXqU6oNb7oavkBMboXcZ/kRr1NKQfRwJClFpyA5rMlsINK5GIXO5wwcTvhcB
+         l2FniZxflxn29sq3WWWdpsWpajRqFjDZe7v7xcS0IoQNW8ZAaiqQYTo0ZJE5d23q67yR
+         sZ8PnhYE7VaTxVbHvrmerTN4rNdNIM0iaOokA3/omDBdJ2a/9ZZ94A26e6EUwrA0XOB8
+         J80pQ9AYRB7g6aADDfu38DGcjdAHRrWhhi6qMHp/bfCrv8QrE+ra75djC0m5NNR7qnEv
+         uw92y+Lfj+qQyLfxBLkXoZQgZMzJ21ycrusE5P6c0N7JuEDXaLvcKAPq6mOoMWet8D5Y
+         APFA==
+X-Gm-Message-State: AOAM531yDG6USB0w5bRvmB3UVp9/3QBlG0viQNmjYUUBRUjyqC/1t6U5
+        ZnWkgbhbXmyMAgHs08E1fJKHyLvDMel+kU6X6MEOdkybq1iATGTopZNQMlrT2MHB9iCnP6G0/Tg
+        B4f9yUi08gtMoxrujKoVTzA==
+X-Received: by 2002:a05:6402:3105:: with SMTP id dc5mr15298198edb.38.1605537183490;
+        Mon, 16 Nov 2020 06:33:03 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwoL+hiEtIkBgfgse/cu8U7sdEWiH/JNWpKEa8hPzaXcoIWgmEEVyUYdkjjcNHlO31gc33S3A==
+X-Received: by 2002:a05:6402:3105:: with SMTP id dc5mr15298187edb.38.1605537183335;
+        Mon, 16 Nov 2020 06:33:03 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id w16sm10655384eds.81.2020.11.16.06.33.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2020 06:33:02 -0800 (PST)
+Subject: Re: [External] Re: [PATCH v3] ACPI: platform-profile: Add platform
+ profile support
+To:     Mark Pearson <markpearson@lenovo.com>,
+        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "hadess@hadess.net" <hadess@hadess.net>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+References: <markpearson@lenovo.com>
+ <20201115004402.342838-1-markpearson@lenovo.com>
+ <qpTm5tmuwsXyXCvmpN4vhQoKis0E5jCcILd49n6_9cqzEuN_Pd9iwMEXAFRQQmGf-rCyHe-LfhjTa15-DTTu9sFQCSQaca1KVfqYggmSGts=@protonmail.com>
+ <3bdd8da6-a47a-fbc6-de0e-858f493a226e@lenovo.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <db12f029-cff8-2c38-7d92-38746bde96a9@redhat.com>
+Date:   Mon, 16 Nov 2020 15:33:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <3bdd8da6-a47a-fbc6-de0e-858f493a226e@lenovo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-These prevent use of this driver with ACPI via PRP0001.
-Drop them to remove this restriction.
+Hi,
 
-Also added mod_devicetable.h include given use of struct of_device_id.
+On 11/16/20 12:04 AM, Mark Pearson wrote:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: no changes
- drivers/rtc/rtc-ds1307.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+<snip>
+>> I believe there's no reason to remove the comma from there, and in fact,
+>> having a comma after the last entry in an array, enum, etc. seems to be
+>> the preferred.
+> OK.
+> Have to be honest - I struggle to know when comma's are needed on the last entry and when they aren't (I've had similar corrections in other cases both ways :)). I do seem to have a knack of getting it consistently wrong....
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 49260bc260e3..fdf25db1b1b3 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -11,8 +11,8 @@
- #include <linux/bcd.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/property.h>
- #include <linux/rtc/ds1307.h>
- #include <linux/rtc.h>
-@@ -1091,7 +1091,6 @@ static const struct i2c_device_id ds1307_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, ds1307_id);
- 
--#ifdef CONFIG_OF
- static const struct of_device_id ds1307_of_match[] = {
- 	{
- 		.compatible = "dallas,ds1307",
-@@ -1168,7 +1167,6 @@ static const struct of_device_id ds1307_of_match[] = {
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ds1307_of_match);
--#endif
- 
- /*
-  * The ds1337 and ds1339 both have two alarms, but we only use the first
-@@ -2035,7 +2033,7 @@ static int ds1307_probe(struct i2c_client *client,
- static struct i2c_driver ds1307_driver = {
- 	.driver = {
- 		.name	= "rtc-ds1307",
--		.of_match_table = of_match_ptr(ds1307_of_match),
-+		.of_match_table = ds1307_of_match,
- 	},
- 	.probe		= ds1307_probe,
- 	.id_table	= ds1307_id,
--- 
-2.28.0
+Do the rule of thumb here is, if the last element is a terminating element,
+e.g. NULL or {} or foo_number_of_foo_types in an enum foo declaration then
+there should not be a comma after the last element. The reason for is is
+that in case case new entries will be added one line above the last element.
+
+If there is no terminating element (e.g. because ARRAY_SIZE is always used
+on the array). Then the last element should end with a comma. The reason for
+this is so that the unified diff of a patch adding a new element does not
+have -++ lines, as would be necessary when the comma is missing (-+ to add
+the comma, plus one more + for the new element).
+
+I hope this helps explain.
+
+I expect you will send out a v4 of the entire set addressing all current
+remarks?
+
+Regards,
+
+Hans
 
