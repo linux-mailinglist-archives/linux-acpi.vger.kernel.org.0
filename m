@@ -2,115 +2,271 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC1F2B6B86
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 18:16:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A762B6C93
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 19:09:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729215AbgKQRQC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Nov 2020 12:16:02 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44526 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727641AbgKQRQC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 12:16:02 -0500
-Received: by mail-ot1-f65.google.com with SMTP id f16so20120489otl.11
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Nov 2020 09:16:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MU02iKysb8rL9jD9CUkih37Th/kQmSxXYxpJiBWEGrQ=;
-        b=RdWlxqz4hD1FE8BKE0050y4+W+ZR3IasF6n6YWhZJLOlos6RT8FtoGDdiyVnsO2K16
-         dK1Gq1rH9SsJyIGq3iGcPDnbyxrPS5oy2PyPGPW03AZyMB+uTLFKFRDHfqqYbXeRVCU0
-         pFJ4Ib+VCWPmkh/cvZqC1uQbl9HhIrkCzGLOF4WxfapQdb+ICncrHf0Y8dz8h0jXML65
-         Gnagy3F7kDby8tl61YcihwcubboCs5FHH6Ub2AL+s8kmP+Hs9B7MoYrGK3QQdQtLG3A0
-         Tk2Lz7Qlknj4P5Cq5KS7fI89l3v6ORjE2T1S2wb1KnelBxIyWm5dGn0zTW34UlfXQHMg
-         03fA==
-X-Gm-Message-State: AOAM5306dgOhtI5aM4vAVVukMWRsdQv5xGv3tH45mMgQZwV6vIyZU1fV
-        Sw16aMrxnGwOHaIwWj5kyZQO/VdYtIFe2UWAZPY=
-X-Google-Smtp-Source: ABdhPJz7EBxHuVKAhnJ8OEu/UFqY3O1b8a+5YXwWP3W7MToVbU0vcCL6ff3PhNtPHQy79+i1Dt4RulIS7tdVyX0rRGo=
-X-Received: by 2002:a9d:222f:: with SMTP id o44mr3824864ota.321.1605633360044;
- Tue, 17 Nov 2020 09:16:00 -0800 (PST)
+        id S1729099AbgKQSGu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Nov 2020 13:06:50 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2126 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727746AbgKQSGt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 13:06:49 -0500
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CbDPP5Kpcz67Dp6;
+        Wed, 18 Nov 2020 02:05:13 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Tue, 17 Nov 2020 19:06:47 +0100
+Received: from localhost (10.47.31.177) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Tue, 17 Nov
+ 2020 18:06:46 +0000
+Date:   Tue, 17 Nov 2020 18:06:38 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        "Bjorn Helgaas" <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [RFC PATCH 7/9] cxl/mem: Implement polled mode mailbox
+Message-ID: <20201117180638.00003703@Huawei.com>
+In-Reply-To: <20201117163438.co63em73mmil5xm5@intel.com>
+References: <20201111054356.793390-1-ben.widawsky@intel.com>
+        <20201111054356.793390-8-ben.widawsky@intel.com>
+        <20201117153122.00001a5a@Huawei.com>
+        <20201117163438.co63em73mmil5xm5@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <1605233324-19524-1-git-send-email-guohanjun@huawei.com>
-In-Reply-To: <1605233324-19524-1-git-send-email-guohanjun@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 Nov 2020 18:15:48 +0100
-Message-ID: <CAJZ5v0g1MFkZqFpaFgjH4VzANpdBzMBKxX50RJjjkao2fi=4xw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor: Remove the duplicated
- ACPI_PROCESSOR_CLASS macro
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.31.177]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 13, 2020 at 3:17 AM Hanjun Guo <guohanjun@huawei.com> wrote:
->
-> The ACPI_PROCESSOR_CLASS macro is defined in <acpi/processor.h>,
-> and ACPI drivers for processor already included <acpi/processor.h>,
-> so we can remove those duplicated ACPI_PROCESSOR_CLASS macros.
->
-> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-> ---
->  drivers/acpi/processor_idle.c       | 1 -
->  drivers/acpi/processor_perflib.c    | 1 -
->  drivers/acpi/processor_thermal.c    | 2 --
->  drivers/acpi/processor_throttling.c | 1 -
->  4 files changed, 5 deletions(-)
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index f66236c..d93e400 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -31,7 +31,6 @@
->  #include <asm/apic.h>
->  #endif
->
-> -#define ACPI_PROCESSOR_CLASS            "processor"
->  #define _COMPONENT              ACPI_PROCESSOR_COMPONENT
->  ACPI_MODULE_NAME("processor_idle");
->
-> diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
-> index b04a689..3b5a964 100644
-> --- a/drivers/acpi/processor_perflib.c
-> +++ b/drivers/acpi/processor_perflib.c
-> @@ -22,7 +22,6 @@
->
->  #define PREFIX "ACPI: "
->
-> -#define ACPI_PROCESSOR_CLASS           "processor"
->  #define ACPI_PROCESSOR_FILE_PERFORMANCE        "performance"
->  #define _COMPONENT             ACPI_PROCESSOR_COMPONENT
->  ACPI_MODULE_NAME("processor_perflib");
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-> index 6c7d05b..677a132 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -19,8 +19,6 @@
->
->  #define PREFIX "ACPI: "
->
-> -#define ACPI_PROCESSOR_CLASS            "processor"
-> -
->  #ifdef CONFIG_CPU_FREQ
->
->  /* If a passive cooling situation is detected, primarily CPUfreq is used, as it
-> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
-> index a0bd56e..b187653 100644
-> --- a/drivers/acpi/processor_throttling.c
-> +++ b/drivers/acpi/processor_throttling.c
-> @@ -22,7 +22,6 @@
->
->  #define PREFIX "ACPI: "
->
-> -#define ACPI_PROCESSOR_CLASS            "processor"
->  #define _COMPONENT              ACPI_PROCESSOR_COMPONENT
->  ACPI_MODULE_NAME("processor_throttling");
->
-> --
+On Tue, 17 Nov 2020 08:34:38 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
 
-Applied as 5.11 material along with the other janitorial patches
-posted by you last week.
+> On 20-11-17 15:31:22, Jonathan Cameron wrote:
+> > On Tue, 10 Nov 2020 21:43:54 -0800
+> > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> >   
+> > > Create a function to handle sending a command, optionally with a
+> > > payload, to the memory device, polling on a result, and then optionally
+> > > copying out the payload. The algorithm for doing this come straight out
+> > > of the CXL 2.0 specification.
+> > > 
+> > > Primary mailboxes are capable of generating an interrupt when submitting
+> > > a command in the background. That implementation is saved for a later
+> > > time.
+> > > 
+> > > Secondary mailboxes aren't implemented at this time.
+> > > 
+> > > WARNING: This is untested with actual timeouts occurring.
+> > > 
+> > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>  
+> > 
+> > Question inline for why the preempt / local timer dance is worth bothering with.
+> > What am I missing?
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> > > ---
+> > >  drivers/cxl/cxl.h |  16 +++++++
+> > >  drivers/cxl/mem.c | 107 ++++++++++++++++++++++++++++++++++++++++++++++
+> > >  2 files changed, 123 insertions(+)
+> > > 
+> > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> > > index 482fc9cdc890..f49ab80f68bd 100644
+> > > --- a/drivers/cxl/cxl.h
+> > > +++ b/drivers/cxl/cxl.h
+> > > @@ -21,8 +21,12 @@
+> > >  #define CXLDEV_MB_CTRL 0x04
+> > >  #define   CXLDEV_MB_CTRL_DOORBELL BIT(0)
+> > >  #define CXLDEV_MB_CMD 0x08
+> > > +#define   CXLDEV_MB_CMD_PAYLOAD_LENGTH_SHIFT 16
+> > >  #define CXLDEV_MB_STATUS 0x10
+> > > +#define   CXLDEV_MB_STATUS_RET_CODE_SHIFT 32
+> > > +#define   CXLDEV_MB_STATUS_RET_CODE_MASK 0xffff
+> > >  #define CXLDEV_MB_BG_CMD_STATUS 0x18
+> > > +#define CXLDEV_MB_PAYLOAD 0x20
+> > >  
+> > >  /* Memory Device */
+> > >  #define CXLMDEV_STATUS 0
+> > > @@ -114,4 +118,16 @@ static inline u64 __cxl_raw_read_reg64(struct cxl_mem *cxlm, u32 reg)
+> > >  
+> > >  	return readq(reg_addr + reg);
+> > >  }
+> > > +
+> > > +static inline void cxl_mbox_payload_fill(struct cxl_mem *cxlm, u8 *input,
+> > > +					    unsigned int length)
+> > > +{
+> > > +	memcpy_toio(cxlm->mbox.regs + CXLDEV_MB_PAYLOAD, input, length);
+> > > +}
+> > > +
+> > > +static inline void cxl_mbox_payload_drain(struct cxl_mem *cxlm,
+> > > +					     u8 *output, unsigned int length)
+> > > +{
+> > > +	memcpy_fromio(output, cxlm->mbox.regs + CXLDEV_MB_PAYLOAD, length);
+> > > +}
+> > >  #endif /* __CXL_H__ */
+> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > index 9fd2d1daa534..08913360d500 100644
+> > > --- a/drivers/cxl/mem.c
+> > > +++ b/drivers/cxl/mem.c
+> > > @@ -1,5 +1,6 @@
+> > >  // SPDX-License-Identifier: GPL-2.0-only
+> > >  // Copyright(c) 2020 Intel Corporation. All rights reserved.
+> > > +#include <linux/sched/clock.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/pci.h>
+> > >  #include <linux/io.h>
+> > > @@ -7,6 +8,112 @@
+> > >  #include "pci.h"
+> > >  #include "cxl.h"
+> > >  
+> > > +struct mbox_cmd {
+> > > +	u16 cmd;
+> > > +	u8 *payload;
+> > > +	size_t payload_size;
+> > > +	u16 return_code;
+> > > +};
+> > > +
+> > > +static int cxldev_wait_for_doorbell(struct cxl_mem *cxlm)
+> > > +{
+> > > +	u64 start, now;
+> > > +	int cpu, ret, timeout = 2000000000;
+> > > +
+> > > +	start = local_clock();
+> > > +	preempt_disable();
+> > > +	cpu = smp_processor_id();
+> > > +	for (;;) {
+> > > +		now = local_clock();
+> > > +		preempt_enable();  
+> > 
+> > What do we ever do with this mailbox that is particularly
+> > performance critical? I'd like to understand why we care enough
+> > to mess around with the preemption changes and local clock etc.
+> >   
+> 
+> It is quite obviously a premature optimization at this point (since we only
+> support a single command in QEMU). However, the polling can be anywhere from
+> instant to 2 seconds. QEMU implementation aside again, some devices may never
+> support interrupts on completion, and so I thought providing a poll function now
+> that is capable of working for most [all?] cases was wise.
 
-Thanks!
+Definitely seems premature.  I'd want to see real numbers on hardware
+to justify this sort of complexity.  Maybe others disagree though.
+
+
+Jonathan
+
+> 
+> > > +		if ((cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CTRL) &
+> > > +		     CXLDEV_MB_CTRL_DOORBELL) == 0) {
+> > > +			ret = 0;
+> > > +			break;
+> > > +		}
+> > > +
+> > > +		if (now - start >= timeout) {
+> > > +			ret = -ETIMEDOUT;
+> > > +			break;
+> > > +		}
+> > > +
+> > > +		cpu_relax();
+> > > +		preempt_disable();
+> > > +		if (unlikely(cpu != smp_processor_id())) {
+> > > +			timeout -= (now - start);
+> > > +			cpu = smp_processor_id();
+> > > +			start = local_clock();
+> > > +		}
+> > > +	}
+> > > +
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Returns 0 if the doorbell transaction was successful from a protocol level.
+> > > + * Caller should check the return code in @mbox_cmd to make sure it succeeded.
+> > > + */
+> > > +static int __maybe_unused cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, struct mbox_cmd *mbox_cmd)
+> > > +{
+> > > +	u64 cmd, status;
+> > > +	int rc;
+> > > +
+> > > +	lockdep_assert_held(&cxlm->mbox_lock);
+> > > +
+> > > +	/*
+> > > +	 * Here are the steps from 8.2.8.4 of the CXL 2.0 spec.
+> > > +	 *   1. Caller reads MB Control Register to verify doorbell is clear
+> > > +	 *   2. Caller writes Command Register
+> > > +	 *   3. Caller writes Command Payload Registers if input payload is non-empty
+> > > +	 *   4. Caller writes MB Control Register to set doorbell
+> > > +	 *   5. Caller either polls for doorbell to be clear or waits for interrupt if configured
+> > > +	 *   6. Caller reads MB Status Register to fetch Return code
+> > > +	 *   7. If command successful, Caller reads Command Register to get Payload Length
+> > > +	 *   8. If output payload is non-empty, host reads Command Payload Registers
+> > > +	 */
+> > > +
+> > > +	cmd = mbox_cmd->cmd;
+> > > +	if (mbox_cmd->payload_size) {
+> > > +		/* #3 */  
+> > 
+> > Having just given the steps above, having them out of order feels like it needs
+> > a comment to state why.
+> >   
+> > > +		cmd |= mbox_cmd->payload_size
+> > > +		       << CXLDEV_MB_CMD_PAYLOAD_LENGTH_SHIFT;
+> > > +		cxl_mbox_payload_fill(cxlm, mbox_cmd->payload, mbox_cmd->payload_size);
+> > > +	}
+> > > +
+> > > +	/* #2 */
+> > > +	cxl_write_mbox_reg64(cxlm, CXLDEV_MB_CMD, cmd);
+> > > +
+> > > +	/* #4 */
+> > > +	cxl_write_mbox_reg32(cxlm, CXLDEV_MB_CTRL, CXLDEV_MB_CTRL_DOORBELL);
+> > > +
+> > > +	/* #5 */
+> > > +	rc = cxldev_wait_for_doorbell(cxlm);
+> > > +	if (rc == -ETIMEDOUT) {
+> > > +		dev_warn(&cxlm->pdev->dev, "Mailbox command timed out\n");
+> > > +		return rc;
+> > > +	}
+> > > +
+> > > +	/* #6 */
+> > > +	status = cxl_read_mbox_reg64(cxlm, CXLDEV_MB_STATUS);
+> > > +	cmd = cxl_read_mbox_reg64(cxlm, CXLDEV_MB_CMD);
+> > > +
+> > > +	mbox_cmd->return_code = (status >> CXLDEV_MB_STATUS_RET_CODE_SHIFT) &
+> > > +				CXLDEV_MB_STATUS_RET_CODE_MASK;
+> > > +
+> > > +	/* There was a problem, let the caller deal with it */
+> > > +	if (mbox_cmd->return_code != 0)
+> > > +		return 0;
+> > > +
+> > > +	/* #7 */
+> > > +	mbox_cmd->payload_size = cmd >> CXLDEV_MB_CMD_PAYLOAD_LENGTH_SHIFT;
+> > > +
+> > > +	/* #8 */
+> > > +	if (mbox_cmd->payload_size)
+> > > +		cxl_mbox_payload_drain(cxlm, mbox_cmd->payload, mbox_cmd->payload_size);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  static int cxl_mem_mbox_get(struct cxl_mem *cxlm)
+> > >  {
+> > >  	u64 md_status;  
+> >   
+
