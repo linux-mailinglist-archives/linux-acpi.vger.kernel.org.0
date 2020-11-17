@@ -2,273 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A6AC2B5DB0
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 12:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E192B5E6F
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 12:34:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgKQK7m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Nov 2020 05:59:42 -0500
-Received: from fralinode-sdnproxy-1.icoremail.net ([172.104.134.221]:23356
-        "HELO fralinode-sdnproxy-1.icoremail.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S1725774AbgKQK7m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Nov 2020 05:59:42 -0500
-X-Greylist: delayed 763 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Nov 2020 05:59:38 EST
-Received: from localhost (unknown [218.77.105.7])
-        by c1app9 (Coremail) with SMTP id CQINCgAHHZ8UqrNf2GxnAA--.1812S3;
-        Tue, 17 Nov 2020 18:46:44 +0800 (CST)
-From:   Chen Baozi <chenbaozi@phytium.com.cn>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: [RFC PATCH] acpi/irq: Add stacked IRQ domain support to PCI interrupt link
-Date:   Tue, 17 Nov 2020 18:46:40 +0800
-Message-Id: <20201117104640.25227-1-chenbaozi@phytium.com.cn>
-X-Mailer: git-send-email 2.28.0
+        id S1727977AbgKQLdk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Nov 2020 06:33:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42842 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727759AbgKQLdk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 06:33:40 -0500
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C43C0613CF;
+        Tue, 17 Nov 2020 03:33:39 -0800 (PST)
+Received: by mail-pl1-x643.google.com with SMTP id t18so10091737plo.0;
+        Tue, 17 Nov 2020 03:33:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=D+OKJ+4fv/qJ7XgTFRASaeF6lYZ3wO/Nm8qIoQpWUGs=;
+        b=dG6wD1KoAWEe9+WWXcsI+25PehGSrjHFFzj5S3wZaH30zNdkKVRXFLwrGbfaGMAu3E
+         jAgrBCHZyAzP9OM6tamN94fmEKy4gGS36RM8W/MJ6qsDhVBSL+PaHsISME+zOPXiMsQt
+         TGA/vGq0UFO7ZkFOqow3ZmPONyz3oDaeK8I3xxAz+4kbkM56fl6OVi9sD0aMP8uLZIkF
+         fd37tiKW0b34ESfeEMASp4Jfw+6oRge1TjlHqI8DEAbFuS8Ww+grGd0FVk8c7mxOXBGa
+         UxYe886Gb331ApGiXiVJRZSivmm1AfoWZ0Ub9QPUu/RvjthlUcVyli9N5i6sHlHmH94e
+         PLlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=D+OKJ+4fv/qJ7XgTFRASaeF6lYZ3wO/Nm8qIoQpWUGs=;
+        b=l4XaGTK9+T0fMMeFpVyylI7XD4FH0uituIFT6x/tiWXvAWotfAUwmCE/sa1Po6g6IS
+         1GM/WrCr70Bv+t4YcycZquHq7waNHp6JlISfj+T5OWfywYjpzG/o42imlnEMxKUWpQ/y
+         Nd82Ye5kS1ocKMhZkvsgl0w3V1cPNfp2QKrch8iOtndIDjBenfA2GCUFXWNd3Yl0R3EO
+         kMhS5fFXS6jTfFyNYRPtnSV45UbxhbPkr13OuRoMosLwyukepxvGjBU3fp6XwgITdoDC
+         tt2P8DDfbVv6237nLM+j3mhLGrowRmpdyMtqOeSKAJa/6H7H1NA0bg77Mo6AvH61lT4/
+         w8xQ==
+X-Gm-Message-State: AOAM532iXc4EIs/soqjRNXnciS0N08+T4NqknezT+CDKapDImEqy9zXk
+        jYwQKO6adPTS/qup0AFwzXv/Uu3qPuraVUdH/lM=
+X-Google-Smtp-Source: ABdhPJxHkLW9Tae3mVz2iF/cvEv2iOo+XTBU2AKTv+V8ttoooptwYZL9ewQnyP9rBUpxiWDgvzHNDZU4kJLwQNsdPJ8=
+X-Received: by 2002:a17:90a:9f8e:: with SMTP id o14mr4019653pjp.181.1605612819486;
+ Tue, 17 Nov 2020 03:33:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: CQINCgAHHZ8UqrNf2GxnAA--.1812S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxuw13uFyxXF47Wry8WF1kGrg_yoW3uFyUpF
-        Wxt3WUArW8Xr4UWrs8Aa1rAF9xXa4jkrWUK3y3C3sIqanIgryrtF17CFyUAw1Ykws8Way2
-        vr1UAF18GF9rZF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkab7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
-        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVAFwVW8twCF04k2
-        0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI
-        8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41l
-        IxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIx
-        AIcVCF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
-        x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07bOlk3UUUUU=
-X-CM-SenderInfo: hfkh0updr2xqxsk13x1xpou0fpof0/1tbiDADfP17uHvQfYQAAsI
+References: <20201112130734.331094-1-ch@denx.de> <20201112130734.331094-3-ch@denx.de>
+ <20201116144631.GB1689012@smile.fi.intel.com> <20201116163024.74c767b6@md1za8fc.ad001.siemens.net>
+ <AM0PR10MB3169089EF445E785C363A0B4E7E20@AM0PR10MB3169.EURPRD10.PROD.OUTLOOK.COM>
+In-Reply-To: <AM0PR10MB3169089EF445E785C363A0B4E7E20@AM0PR10MB3169.EURPRD10.PROD.OUTLOOK.COM>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 17 Nov 2020 13:33:23 +0200
+Message-ID: <CAHp75Vdxj0tgn6P8Nfi5mMd=e9Q1+hzt4bquzB93zg0vOeMopw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rtc: rx6110: add ACPI bindings to I2C
+To:     "johannes-hahn@siemens.com" <johannes-hahn@siemens.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Brown, Len" <len.brown@intel.com>
+Cc:     "val.krutov@erd.epson.com" <val.krutov@erd.epson.com>,
+        Claudius Heine <ch@denx.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "werner.zeh@siemens.com" <werner.zeh@siemens.com>,
+        "henning.schild@siemens.com" <henning.schild@siemens.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        "martin.mantel@siemens.com" <martin.mantel@siemens.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some PCIe designs require software to do extra acknowledgements for
-legacy INTx interrupts. If the driver is written only for device tree,
-things are simple. In that case, a new driver can be written under
-driver/pci/controller/ with a DT node of PCIe host written like:
+On Tue, Nov 17, 2020 at 11:51 AM johannes-hahn@siemens.com
+<johannes-hahn@siemens.com> wrote:
+>
+> Hello Val,
+>
+> my name is Johannes Hahn from Siemens AG in Germany.
+> Our product Open Controller II (OCII)[1] uses the Realtime Clock RX6110SA=
+ from SEIKO EPSON.
 
-  pcie {
-    ...
-    interrupt-map = <0 0 0  1  &pcie_intc 0>,
-                    <0 0 0  2  &pcie_intc 1>,
-                    <0 0 0  3  &pcie_intc 2>,
-                    <0 0 0  4  &pcie_intc 3>;
+Nice to hear from you!
 
-    pcie_intc: legacy-interrupt-controller {
-      interrupt-controller;
-      #interrupt-cells = <1>;
-      interrupt-parent = <&gic>;
-      interrupts = <0 226 4>;
-    };
-  };
+> Currently there is a merge request ongoing for the Linux Kernel master br=
+anch[2] which adds I=C2=B2C and ACPI support to your original driver implem=
+entation.
+>
+> Simultaneously there is an already merged patch-set for coreboot[3] avail=
+able creating the ACPI (SSDT) table entries for the RX6110SA.
 
-Similar designs can be found on Aardvark, MediaTek Gen2 and Socionext
-UniPhier PCIe controller at the moment. Essentially, those designs are
-supported by inserting an extra interrupt controller between PCIe host
-and GIC and parse the topology in a DT-based PCI controller driver.
-As we turn to ACPI, All the PCIe hosts are described the same ID of
-"PNP0A03" and share driver/acpi/pci_root.c. It comes to be a problem
-to make this kind of PCI INTx work under ACPI.
+Thanks for pointers, I commented there. The ACPI ID change must be reverted=
+!
 
-Therefore, we introduce an stacked IRQ domain support to PCI interrupt
-link for ACPI. With this support, we can populate the ResourceSource
-to refer to a device object that describes an interrupt controller.
-That would allow us to refer to a dedicated driver which implements
-the logic needed to manage the interrupt state.
+> The OCII uses coreboot for firmware initialization.
+>
+> During the merge request the eligible objection arose that the ACPI ID us=
+ed in the Linux driver patch is not conforming the ACPI Specification.
+> Indeed it does not. But when searching for a  product identifier of RX611=
+0SA I was not able to find a sufficient one with respect to the ACPI Specif=
+ication (see [4] chapter 6.1.5 _HID (Hardware ID),[5]).
 
-Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
----
- drivers/acpi/irq.c          | 22 +++++++++++++++++++++-
- drivers/acpi/pci_irq.c      |  6 ++++--
- drivers/acpi/pci_link.c     | 17 +++++++++++++++--
- include/acpi/acpi_drivers.h |  2 +-
- include/linux/acpi.h        |  4 ++++
- 5 files changed, 45 insertions(+), 6 deletions(-)
+Unfortunately many vendors, even being registered in the ACPI/PNP
+registry, are still neglecting the process.
 
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index e209081d644b..e78a44815c44 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -81,6 +81,25 @@ void acpi_unregister_gsi(u32 gsi)
- }
- EXPORT_SYMBOL_GPL(acpi_unregister_gsi);
- 
-+int acpi_register_irq(struct device *dev, u32 irq, int trigger,
-+		      int polarity, struct fwnode_handle *domain_id)
-+{
-+	struct irq_fwspec fwspec;
-+
-+	if (WARN_ON(!domain_id)) {
-+		pr_warn("GSI: No registered irqchip, giving up\n");
-+		return -EINVAL;
-+	}
-+
-+	fwspec.fwnode = domain_id;
-+	fwspec.param[0] = irq;
-+	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
-+	fwspec.param_count = 2;
-+
-+	return irq_create_fwspec_mapping(&fwspec);
-+}
-+EXPORT_SYMBOL_GPL(acpi_register_irq);
-+
- /**
-  * acpi_get_irq_source_fwhandle() - Retrieve fwhandle from IRQ resource source.
-  * @source: acpi_resource_source to use for the lookup.
-@@ -92,7 +111,7 @@ EXPORT_SYMBOL_GPL(acpi_unregister_gsi);
-  * Return:
-  * The referenced device fwhandle or NULL on failure
-  */
--static struct fwnode_handle *
-+struct fwnode_handle *
- acpi_get_irq_source_fwhandle(const struct acpi_resource_source *source)
- {
- 	struct fwnode_handle *result;
-@@ -115,6 +134,7 @@ acpi_get_irq_source_fwhandle(const struct acpi_resource_source *source)
- 	acpi_bus_put_acpi_device(device);
- 	return result;
- }
-+EXPORT_SYMBOL_GPL(acpi_get_irq_source_fwhandle);
- 
- /*
-  * Context for the resource walk used to lookup IRQ resources.
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index 14ee631cb7cf..19296d70c95c 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -410,6 +410,7 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 	char *link = NULL;
- 	char link_desc[16];
- 	int rc;
-+	struct fwnode_handle *irq_domain;
- 
- 	pin = dev->pin;
- 	if (!pin) {
-@@ -438,7 +439,8 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 			gsi = acpi_pci_link_allocate_irq(entry->link,
- 							 entry->index,
- 							 &triggering, &polarity,
--							 &link);
-+							 &link,
-+							 &irq_domain);
- 		else
- 			gsi = entry->index;
- 	} else
-@@ -462,7 +464,7 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 		return 0;
- 	}
- 
--	rc = acpi_register_gsi(&dev->dev, gsi, triggering, polarity);
-+	rc = acpi_register_irq(&dev->dev, gsi, triggering, polarity, irq_domain);
- 	if (rc < 0) {
- 		dev_warn(&dev->dev, "PCI INT %c: failed to register GSI\n",
- 			 pin_name(pin));
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index fb4c5632a232..219a644d739a 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -59,6 +59,7 @@ struct acpi_pci_link_irq {
- 	u8 resource_type;
- 	u8 possible_count;
- 	u32 possible[ACPI_PCI_LINK_MAX_POSSIBLE];
-+	struct acpi_resource_source resource_source;
- 	u8 initialized:1;
- 	u8 reserved:7;
- };
-@@ -120,6 +121,8 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
- 		{
- 			struct acpi_resource_extended_irq *p =
- 			    &resource->data.extended_irq;
-+			struct acpi_resource_source *rs =
-+			    &link->irq.resource_source;
- 			if (!p || !p->interrupt_count) {
- 				printk(KERN_WARNING PREFIX
- 					      "Blank _PRS EXT IRQ resource\n");
-@@ -140,6 +143,12 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
- 			link->irq.triggering = p->triggering;
- 			link->irq.polarity = p->polarity;
- 			link->irq.resource_type = ACPI_RESOURCE_TYPE_EXTENDED_IRQ;
-+			if (p->resource_source.string_length) {
-+				rs->index = p->resource_source.index;
-+				rs->string_length = p->resource_source.string_length;
-+				rs->string_ptr = kmalloc(rs->string_length, GFP_KERNEL);
-+				strcpy(rs->string_ptr, p->resource_source.string_ptr);
-+			}
- 			break;
- 		}
- 	default:
-@@ -326,7 +335,8 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
- 			resource->res.data.extended_irq.shareable = ACPI_SHARED;
- 		resource->res.data.extended_irq.interrupt_count = 1;
- 		resource->res.data.extended_irq.interrupts[0] = irq;
--		/* ignore resource_source, it's optional */
-+		resource->res.data.extended_irq.resource_source =
-+			link->irq.resource_source;
- 		break;
- 	default:
- 		printk(KERN_ERR PREFIX "Invalid Resource_type %d\n", link->irq.resource_type);
-@@ -612,7 +622,7 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-  * failure: return -1
-  */
- int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
--			       int *polarity, char **name)
-+			       int *polarity, char **name, struct fwnode_handle **irq_domain)
- {
- 	int result;
- 	struct acpi_device *device;
-@@ -656,6 +666,9 @@ int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
- 		*polarity = link->irq.polarity;
- 	if (name)
- 		*name = acpi_device_bid(link->device);
-+	if (irq_domain)
-+		*irq_domain = acpi_get_irq_source_fwhandle(&link->irq.resource_source);
-+
- 	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
- 			  "Link %s is referenced\n",
- 			  acpi_device_bid(link->device)));
-diff --git a/include/acpi/acpi_drivers.h b/include/acpi/acpi_drivers.h
-index 5eb175933a5b..6ff1ea76d476 100644
---- a/include/acpi/acpi_drivers.h
-+++ b/include/acpi/acpi_drivers.h
-@@ -68,7 +68,7 @@
- 
- int acpi_irq_penalty_init(void);
- int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
--			       int *polarity, char **name);
-+			       int *polarity, char **name, struct fwnode_handle **irq_domain);
- int acpi_pci_link_free_irq(acpi_handle handle);
- 
- /* ACPI PCI Device Binding (pci_bind.c) */
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 39263c6b52e1..5f1d7d3192fb 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -324,6 +324,8 @@ extern int sbf_port;
- extern unsigned long acpi_realmode_flags;
- 
- int acpi_register_gsi (struct device *dev, u32 gsi, int triggering, int polarity);
-+int acpi_register_irq(struct device *dev, u32 gsi, int trigger,
-+		      int polarity, struct fwnode_handle *domain_id);
- int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
- int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
- 
-@@ -336,6 +338,8 @@ struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
- 					     const struct irq_domain_ops *ops,
- 					     void *host_data);
- 
-+struct fwnode_handle *acpi_get_irq_source_fwhandle(const struct acpi_resource_source *source);
-+
- #ifdef CONFIG_X86_IO_APIC
- extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
- #else
--- 
-2.28.0
+> According to the fact that there are other Linux RTC drivers on the Kerne=
+l mainline[6] which support ACPI matching that also do not have ACPI Specif=
+ication compatible IDs we used that as an example for our first patch attem=
+pt.
 
+I answered this in previous mail.
+
+> A PNP ID for SEIKO EPSON is already registered at UEFI database[7].
+>
+> What I kindly ask your for is an ACPI Specification conforming Product Id=
+entifier for the RX6110SA RTC ?
+> According to [5] this Product Identifier should be "... always four-chara=
+cter hexadecimal numbers (0-9 and A-F)".
+>
+> In case you do not know it our can not acquire/create one could you pleas=
+e redirect me to someone from SEIKO EPSON who can help me with that demand =
+?
+
+So, to be on the constructive page (I thought initially you are from G
+company, but anyway) you may do the following:
+
+- (for prototyping only) you may use the PRP0001 approach, described in [8]
+- you may issue an ID under your (Siemens) vendor ID
+- you may insist G company to issue the ID under their vendor space
+(thru coreboot)
+- (the best option) to communicate to Seiko Epson to get official ID
+from them for this component (and ID mustn't abuse 6.1.5)
+
+Unfortunately I have no contacts there, but I think the best effort is
+to contact their support and at the same time ask ASWG [9] how to
+proceed. I Cc'ed this to ACPI people in Linux kernel, maybe they can
+help.
+
+Of course you have choice to push bad ID forward and use precedence
+(like many other companies, even Intel in past, do with firmwares and
+Linux kernel is full of badly formed IDs), but since the change is not
+existed in read devices I would really like to see proper process to
+be followed.
+
+In the Linux kernel I'm in principle trying to prevent bad IDs from
+happening as much as I can.
+
+> [1]: (https://mall.industry.siemens.com/mall/en/WW/Catalog/Product/6ES767=
+7-2DB42-0GB0)
+> [2]: https://lkml.org/lkml/2020/11/12/561
+> [3]: https://review.coreboot.org/c/coreboot/+/47235
+> [4]: https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.=
+pdf
+> [5]: https://www.uefi.org/PNP_ACPI_Registry
+> [6]: https://elixir.bootlin.com/linux/latest/source/drivers/rtc/rtc-ds130=
+7.c#L1142
+> [7]: https://www.uefi.org/PNP_ID_List?search=3DSEIKO+EPSON
+
+[8]: https://elixir.bootlin.com/linux/latest/source/Documentation/firmware-=
+guide/acpi/enumeration.rst
+[9]: https://www.uefi.org/workinggroups
+
+> > Before adding new ACPI ID, can you provide an evidence (either from
+> > vendor of the component, or a real snapshot of DSDT from device on
+> > market) that this is real ID?
+> >
+> > Before that happens, NAK.
+> >
+> > P.S. Seems to me that this is kinda cargo cult patch because proposed
+> > ID is against ACPI and PNP registry and ACPI specification.
+>
+> In fact we pushed it in coreboot and Linux at the same time.
+>
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Frevie=
+w.coreboot.org%2Fc%2Fcoreboot%2F%2B%2F47235&amp;data=3D04%7C01%7Cjohannes-h=
+ahn%40siemens.com%7C21c9e1fe99274df7951a08d88a448af5%7C38ae3bcd95794fd4adda=
+b42e1495d55a%7C1%7C0%7C637411374276831534%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiM=
+C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=
+=3D7EVdO%2F77LNyvux0y3m9nEf2HZO%2BDm2WkWMfxzaJUoto%3D&amp;reserved=3D0
+>
+> That is the evidence. But in case this is wrong we can probably still cha=
+nge coreboot, even though the patches have been merged there already.
+>
+> Maybe you can go into detail where you see the violations and maybe even =
+suggest fixes that come to mind.
+
+--=20
+With Best Regards,
+Andy Shevchenko
