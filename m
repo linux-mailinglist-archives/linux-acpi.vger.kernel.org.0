@@ -2,81 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9EAA2B6FF6
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 21:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3072B7112
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Nov 2020 22:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725814AbgKQUXg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Nov 2020 15:23:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40450 "EHLO
+        id S1728198AbgKQVpd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Nov 2020 16:45:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgKQUXg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 15:23:36 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65FA1C0613CF;
-        Tue, 17 Nov 2020 12:23:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=zW7PJS/kK75G8AdfaRvVDViJ861hr4mlWDOhVvzNbPs=; b=HGDME0EmiKRaW95KdNNyjYwM05
-        CWmwbgUDSx7/o1/Hjofufa3hzq37Rj4xzQe4yYLwWhzshQVGaHORvFB/FdSglxS1UOASi0myH+3Q9
-        aXmrxEsfockiLEoKeVuGSgcnKkozYBEEB8KRgRAra8nQc9QzKEfwP6xjjAcpWSbZhnFgiOjy67LKZ
-        J75tt70fbfCnr4784SYi8aELKaV3ce0KPlM8llzcQLAVLcDkFvxAHDhAmtnjaafwyvwOiFWn3q8ZC
-        piE6NIKevGXnvtGptNEHGMh8GQPla4NvtoELbGbip2X5fd59f1dpOF+P1oY76YW6O2RCYFn6l0xpK
-        2tX3K6XQ==;
-Received: from [2601:1c0:6280:3f0::bcc4]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kf7Vh-0000lA-CJ; Tue, 17 Nov 2020 20:23:32 +0000
-Subject: Re: [PATCH] drivers: acpi: add opt-out of apple specific property
- parsing
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org
-References: <20201117201825.5407-1-info@metux.net>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <334dbf18-0e2d-ba15-0bb2-af217ec06b9c@infradead.org>
-Date:   Tue, 17 Nov 2020 12:23:26 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        with ESMTP id S1727121AbgKQVpc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 16:45:32 -0500
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90863C0613CF
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Nov 2020 13:45:32 -0800 (PST)
+Received: by mail-ed1-x544.google.com with SMTP id y4so18260518edy.5
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Nov 2020 13:45:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5lBVBDWK8SCqKzaHy0L/+mLoij0OAwknWiLnXgPeJSM=;
+        b=FBb5z0wFGOiQbc45dE0niLuV0rybunP/wEU/0k6b783EPVbzDuRuejCVpDauBALHfc
+         +lc+d6XRbgwNlOlzPZ80uZOVCFXlW1F2ThVz/PgWXDMr5Qk2qXUzVeV/mkMEpA6NGBWJ
+         /r6IhOXal5Ashs5MZqCi+/Cclekpk1N7Hu9Viof3LXHIYVpqGBDN2fBwVFtEcO1Bg3xL
+         tzN0ffs5tPZJKxTNR/PuvOabZJbNfgH+ytvBghZkwTb90HvxcpdUGn1dX3oNF3/DPg4V
+         t49QQpzkPhLWrGwW9cDwq4Kw7uQG5EcgkdpwrzO/HDHONv+D/N6z78dNpCEiwy/lcNpB
+         TB3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5lBVBDWK8SCqKzaHy0L/+mLoij0OAwknWiLnXgPeJSM=;
+        b=g7qvZ5zB0+Lgvc6j8x5CB7H7OddrYI1kumpdmgDCa4UCF0M1YB9ufhGQo/PCMT8pFA
+         E31scC7k7UYDmynTvAO1S6PuqAsCbhLmlUXS8GDRI8D2bmjSyhbo4u7OEdnsO/XA5VbB
+         eIq2+iT0sxHhdd+yLmrCB4xKxLbXr88/ViNXbCe+N1Bf97FpNTf5nzsOnEo66gN3+OXz
+         jIT4qSqfdN0j/duJ0GM5D864ykmE/KSk271CqggPyKLMqCbmD4//JOMPlZ9sGLzeShWG
+         X/eiGzpY2kkS+9KtJ2IpB0RfI2s/UuoqmeP1Hi+kw4t2vgzixmdGE7cBh69ar7EPKAng
+         6m/A==
+X-Gm-Message-State: AOAM53179vQXLUA1fOMGISc6WXr0Lj/MdwM9k3QcyVyXJHqqw9xEOy8y
+        QLGrPycgQVPfc5huIf7o6iEwsNsOJJwM2m7TUIn3lQ==
+X-Google-Smtp-Source: ABdhPJyqTIqMdYQYBJBwXDLjTJrIAYOVAjbbvPmUH0FRy9zTiej41mBWzaPPONfsn2ZvoadeWtEkbQOTbaDmxU63dbg=
+X-Received: by 2002:a05:6402:b35:: with SMTP id bo21mr24193805edb.52.1605649531304;
+ Tue, 17 Nov 2020 13:45:31 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201117201825.5407-1-info@metux.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201111054356.793390-1-ben.widawsky@intel.com>
+ <20201111054356.793390-2-ben.widawsky@intel.com> <CAJZ5v0i7fcoBe5o-J7q5fYW_1nUYJ-QdshWOBV5fFf85rD_sDA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0i7fcoBe5o-J7q5fYW_1nUYJ-QdshWOBV5fFf85rD_sDA@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Tue, 17 Nov 2020 13:45:20 -0800
+Message-ID: <CAPcyv4i6MCu6RmLCyE+K-j3bbtrYeA+hJXL4+Zy_Tfhmwv2ErA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/9] cxl/acpi: Add an acpi_cxl module for the CXL interconnect
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/17/20 12:18 PM, Enrico Weigelt, metux IT consult wrote:
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index edf1558c1105..398a9ae73705 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -79,6 +79,15 @@ config ACPI_DEBUGGER_USER
->  
->  endif
->  
-> +config ACPI_APPLE
-> +	bool "Apple ACPI properties support"
-> +	default y if X86
-> +	help
-> +	  Extraction of apple specific ACPI properties.
+On Tue, Nov 17, 2020 at 6:33 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+[..]
+> > +static struct acpi_driver acpi_cxl_driver = {
+>
+> First of all, no new acpi_driver instances, pretty please!
+>
+> acpi_default_enumeration() should create a platform device with the
+> ACPI0017 ID for you.  Can't you provide a driver for this one?
+>
 
-	                Apple-specific
-
-> +
-> +	  Say N if you're sure the kernel won't be used on an Apple machine
-> +	  and wanna save a few kb of memory. (embedded or hi-density VMs)
-
-	      want to save a few KB                       high-
-
-
-> +
->  config ACPI_SPCR_TABLE
->  	bool "ACPI Serial Port Console Redirection Support"
->  	default y if X86
-
-
--- 
-~Randy
-
+Ah, yes, I recall we had this discussion around the time the ACPI0012
+NFIT driver was developed. IIRC the reason ACPI0012 remaining an
+acpi_driver was due to a need to handle ACPI notifications, is that
+the deciding factor? ACPI0017 does not have any notifications so it
+seems like platform driver is the way to go.
