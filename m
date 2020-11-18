@@ -2,44 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B591F2B7BF0
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 11:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7757E2B7C10
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 12:07:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725497AbgKRK6m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Nov 2020 05:58:42 -0500
-Received: from mail-eopbgr60054.outbound.protection.outlook.com ([40.107.6.54]:64750
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725446AbgKRK6l (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Nov 2020 05:58:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D5axDpHgjZbTCH39mPPx2kQRLheZajMxcQ1L6lGoChotY4gfaGpUGoQlzRy5g41t8Z0VgoU8DH7XBUMHwZSDIlB/mpIc/bTWognfZN3BPrG9ujo8QpvsoEYEOphMk01nZRqPfZ73keEwrFZvgUSIH9R/pDGAWaNQObdE7XUHa6aNtq4vmvVw6eW6xj3xPADdJHQV2V19SE2DmuGXyBrQ3bsZKRjes9Iqjs16XzIVaKRjyIyaoNIXVxVucvd0oguCxdez1a/UvdH5IhRnp1Enq14wP0WG1wYlGeaObVru0Tig7LcLLem7u7fuEWvQhIuZO0eTkUQQDUZvb1U5RFK29w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Omei04yTwgOfY+7mGNCOJItqpk90ZL6op/D6eJut8/8=;
- b=fCf4wW5fx1elotbgGIEU4X2yHc81fwuK5y5oCchr2SU1/AfUtQU9xtUQposlBj6ig2jYuc1r/h0d/NLcQCB0l2qRvNuxfPg6mQKWuscToyEEKiyRxwJq+2rg5JdMhUpLFlQPUk1SZE2jRplHHyzb1Ni2XdsoFH7z50ydFyBIhLjDb9ErKL45q9Z0qmpcTcx5FULyG01+u/DSHad32VPLUit4/+12tMcc4xwBp2zPBM4SKLMYlA5GYn8QJ7+02kuJc/EIhJfmFTmL+CuQde+mS0Ui9jALgwbXtfQxUqILOnFuEMz4aJvNDfByFVoC06MLSlbYOs/O/d29Zycz53gliA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=siemens.onmicrosoft.com; s=selector1-siemens-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Omei04yTwgOfY+7mGNCOJItqpk90ZL6op/D6eJut8/8=;
- b=GRhTRUSRn1DrYm8EAYsDJe91zQXzkyY70Nzy8yPx10sDRckEpeOwPV1Usye4Z9BLDv5+VsF07kXIoVa7eRDDtm0evv5x0OQ1DNDKQVi2gZiCBQkyB54xwLk7Sz5cCN5RpKbucoGfmbPOY0fbRo4zbRX9eDqxcjjqJErYS7XP+gc=
-Received: from AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:125::20)
- by AM4PR1001MB1364.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:200:96::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3564.28; Wed, 18 Nov
- 2020 10:58:36 +0000
-Received: from AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::5808:917a:e445:f6f7]) by AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::5808:917a:e445:f6f7%7]) with mapi id 15.20.3564.028; Wed, 18 Nov 2020
- 10:58:36 +0000
-From:   "werner.zeh@siemens.com" <werner.zeh@siemens.com>
-To:     "henning.schild@siemens.com" <henning.schild@siemens.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "johannes-hahn@siemens.com" <johannes-hahn@siemens.com>,
+        id S1725781AbgKRLFp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 18 Nov 2020 06:05:45 -0500
+Received: from thoth.sbs.de ([192.35.17.2]:59451 "EHLO thoth.sbs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725446AbgKRLFo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Nov 2020 06:05:44 -0500
+X-Greylist: delayed 3651 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Nov 2020 06:05:43 EST
+Received: from mail2.sbs.de (mail2.sbs.de [192.129.41.66])
+        by thoth.sbs.de (8.15.2/8.15.2) with ESMTPS id 0AIA4Opg011392
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 18 Nov 2020 11:04:24 +0100
+Received: from md1za8fc.ad001.siemens.net ([167.87.8.227])
+        by mail2.sbs.de (8.15.2/8.15.2) with ESMTP id 0AIA4MAe026664;
+        Wed, 18 Nov 2020 11:04:22 +0100
+Date:   Wed, 18 Nov 2020 11:04:21 +0100
+From:   Henning Schild <henning.schild@siemens.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "johannes-hahn@siemens.com" <johannes-hahn@siemens.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         "Brown, Len" <len.brown@intel.com>, Simon Glass <sjg@chromium.org>,
@@ -50,13 +33,12 @@ CC:     "johannes-hahn@siemens.com" <johannes-hahn@siemens.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "werner.zeh@siemens.com" <werner.zeh@siemens.com>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         "martin.mantel@siemens.com" <martin.mantel@siemens.com>
-Subject: AW: [PATCH v2 2/3] rtc: rx6110: add ACPI bindings to I2C
-Thread-Topic: [PATCH v2 2/3] rtc: rx6110: add ACPI bindings to I2C
-Thread-Index: AQHWvC1p+49SbbobiEeEFM6Hdpfg26nMFM+AgAAdwICAAAIqAIABd0qAgAANxvA=
-Date:   Wed, 18 Nov 2020 10:58:36 +0000
-Message-ID: <AM0PR10MB25801B7DCB6C1856B5D4F2C09FE10@AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH v2 2/3] rtc: rx6110: add ACPI bindings to I2C
+Message-ID: <20201118110421.65679ade@md1za8fc.ad001.siemens.net>
+In-Reply-To: <CAHp75VfkHgaaFUN9Nw4sVVsLxzky0=-dAgAmmG+EkF8xV7Na5A@mail.gmail.com>
 References: <20201112130734.331094-1-ch@denx.de>
         <20201112130734.331094-3-ch@denx.de>
         <20201116144631.GB1689012@smile.fi.intel.com>
@@ -64,250 +46,160 @@ References: <20201112130734.331094-1-ch@denx.de>
         <AM0PR10MB3169089EF445E785C363A0B4E7E20@AM0PR10MB3169.EURPRD10.PROD.OUTLOOK.COM>
         <CAHp75Vdxj0tgn6P8Nfi5mMd=e9Q1+hzt4bquzB93zg0vOeMopw@mail.gmail.com>
         <CAHp75VfkHgaaFUN9Nw4sVVsLxzky0=-dAgAmmG+EkF8xV7Na5A@mail.gmail.com>
- <20201118110421.65679ade@md1za8fc.ad001.siemens.net>
-In-Reply-To: <20201118110421.65679ade@md1za8fc.ad001.siemens.net>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_Enabled=true;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_SetDate=2020-11-18T10:58:35Z;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_Method=Standard;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_Name=restricted-default;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_SiteId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_ActionId=f292e25d-cb59-4a6b-99f8-70613f7bf755;
- MSIP_Label_a59b6cd5-d141-4a33-8bf1-0ca04484304f_ContentBits=0
-document_confidentiality: Restricted
-authentication-results: siemens.com; dkim=none (message not signed)
- header.d=none;siemens.com; dmarc=none action=none header.from=siemens.com;
-x-originating-ip: [195.145.170.186]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 0df50b7a-b497-4125-da2f-08d88bb0e648
-x-ms-traffictypediagnostic: AM4PR1001MB1364:
-x-ld-processed: 38ae3bcd-9579-4fd4-adda-b42e1495d55a,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM4PR1001MB136477CE698A0971F3DC4D669FE10@AM4PR1001MB1364.EURPRD10.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 5Gr6S/wagwzB93GBIkJGrPLcVRfrrKTqaPbTWjqnpK9sGVYkxvY7gLMQE5IstpuqAHDej4KFs+/1qvfq7LrLYxOJ8pHjqjcxF00fuKT2nbKu8slIDzbosq0FzGK4E9y96YGwvrtfRmRFZ66/ak+n8US9srANSr1lv4odFzJUHk1aOZ4wRL+uc7TEATYJBcsYs9mNjNAeYRCk2M3j8v1xmH4A/JZJARvsp3Ik60/CPXncFsn5eYtPdvIGepmL+CmlqmT5EPOelZAb8OxBmY+KCIDvfrVvGBrWuSGXSUyHojkVYsOvzqBT2JCBjqhxLewIIM8WVKHAmUnLmA7wLt4PfFAlCXomQabnaLPUDn+MvVMN085N3LPfAghpK6l7lKPMaXRpidtcXGiyk+naJtj6vA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(4636009)(366004)(83380400001)(107886003)(186003)(26005)(33656002)(110136005)(498600001)(55016002)(9686003)(86362001)(6506007)(76116006)(54906003)(7416002)(5660300002)(53546011)(66946007)(66446008)(64756008)(66556008)(66476007)(52536014)(71200400001)(30864003)(4326008)(66574015)(15974865002)(966005)(8676002)(45080400002)(2906002)(8936002)(7696005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: imL23BBbRYi20jKrd9dRLZxRTT66XiLcSLnnm8WxoG/L4jy5Jlj0uEo6IZS5j5xhKWr1fFDcnSblzrVQQZN+bpXnrmpNXRASS3HM7G5YEPUsQlfQADKKmDvkabpnR/cPrppkYSxQvPJ3iIqDf7jCWqRiZ6szyctFiSvMkSJjpqZicB9YQbI0pnEp4+qTuPj4PTxGiG2rREHoUinTacxI3qcarqZcmWLrjDoReF/EfkPTL4YBrCB9i4ZokvJ/+MlID19apMRlK+F4SgimxhxW9ObO4qUeQBAwAJgBO0rHdhmDCLt0F6afQe+EiyHn8geN0gmLNzehOGlbnJziCNclC2XTSxXW/MZuhAtUJRD1pFd8mcEIllrZ9nTVAT6JJl5zE9Z5tGtLkXXD5R0UHsy7grQCRinFi7xA8kNE+WQPEdDv5VAUAP7PZbikXn3UiCDUzKe4LgbhpmIpH81HAFFSy7zegE7hz+tQ7Hy9wr8yc5xclztujgkYacBQFPCswC8qcOHc7bNwUrf2rs8RJ8Wy7f0zjagmDFqDGG2to/FSOZ5szgtokj+xYFyIGrtmB9JIBAuoz0sUFeh0ng3SkPMdoUUCRpFccdk/1kOMAlHGBPkn3V5beK8Xnm7vRg+hWV6lbNJVEatBezO686labmx3qQ==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB2580.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0df50b7a-b497-4125-da2f-08d88bb0e648
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2020 10:58:36.5894
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ICaAtOlKUafCRBT2ygWyBji0HJv75lQmgjf+GAnq4Oxb6GTJu5EHR4636oT6BHh3hxZzMkQ+yZbjEYygZSca2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR1001MB1364
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgSGVubmluZy4NCg0KV2UgaGFkIGEgc2hvcnQgZGlzY3Vzc2lvbiB3aXRoIEFuZHkgb24gY29y
-ZWJvb3QgR2Vycml0IChodHRwczovL3Jldmlldy5jb3JlYm9vdC5vcmcvYy9jb3JlYm9vdC8rLzQ3
-MjM1KSByZWdhcmRpbmcgdGhpcyBpc3N1ZS4NCldlIGhhdmUgYWdyZWVkIHRoYXQgd2Ugd2lsbCBn
-aXZlIEVwc29uIGEgcGVyaW9kIG9mIHR3byB3ZWVrcyBmb3IgcmVhY3Rpb24uIElmIHdlIHdpbGwg
-bm90IGhhdmUgYSB2YWxpZCBISUQgYnkgdGhlbiwgSSB3aWxsIHB1c2ggYSAgcGF0Y2ggd2hpY2gg
-d2lsbCB1c2UgYSBub24tdmFsaWQgSElEIGluc3RlYWQgKHNvbWV0aGluZyBsaWtlIFhYWFgwMDAw
-IGFzIHByb3Bvc2VkIGJ5IEFuZHkpLg0KSSB3aWxsIGNsYXJpZnkgaW4gdGhlIG1lYW50aW1lIHdo
-ZW4gdGhlIG5leHQgY29yZWJvb3QgcmVsZWFzZSB3aWxsIGhhcHBlbiBhbmQgcHJldmVudCB0aGlz
-IHdyb25nIElEIGZyb20gZ2V0dGluZyBwYXJ0IG9mIHRoZSByZWxlYXNlLg0KDQpXZXJuZXINCg0K
-DQotLS0tLVVyc3Byw7xuZ2xpY2hlIE5hY2hyaWNodC0tLS0tDQpWb246IEhlbm5pbmcgU2NoaWxk
-IDxoZW5uaW5nLnNjaGlsZEBzaWVtZW5zLmNvbT4gDQpHZXNlbmRldDogTWl0dHdvY2gsIDE4LiBO
-b3ZlbWJlciAyMDIwIDExOjA0DQpBbjogQW5keSBTaGV2Y2hlbmtvIDxhbmR5LnNoZXZjaGVua29A
-Z21haWwuY29tPg0KQ2M6IEhhaG4sIEpvaGFubmVzIChESSBGQSBDVFIgUExDIFBSQzMpIDxqb2hh
-bm5lcy1oYWhuQHNpZW1lbnMuY29tPjsgUmFmYWVsIEouIFd5c29ja2kgPHJqd0Byand5c29ja2ku
-bmV0PjsgQUNQSSBEZXZlbCBNYWxpbmcgTGlzdCA8bGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+
-OyBCcm93biwgTGVuIDxsZW4uYnJvd25AaW50ZWwuY29tPjsgU2ltb24gR2xhc3MgPHNqZ0BjaHJv
-bWl1bS5vcmc+OyBTaW1vbiBHbGFzcyA8c2pnQGdvb2dsZS5jb20+OyB2YWwua3J1dG92QGVyZC5l
-cHNvbi5jb207IENsYXVkaXVzIEhlaW5lIDxjaEBkZW54LmRlPjsgQWxlc3NhbmRybyBadW1tbyA8
-YS56dW1tb0B0b3dlcnRlY2guaXQ+OyBBbGV4YW5kcmUgQmVsbG9uaSA8YWxleGFuZHJlLmJlbGxv
-bmlAYm9vdGxpbi5jb20+OyBsaW51eC1ydGNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxA
-dmdlci5rZXJuZWwub3JnOyBaZWgsIFdlcm5lciAoREkgTUMgTVRTIFImRCBIVyAxKSA8d2VybmVy
-LnplaEBzaWVtZW5zLmNvbT47IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AaW50
-ZWwuY29tPjsgTWFudGVsLCBNYXJ0aW4gKERJIEZBIENUUiBQTEMgUE8pIDxtYXJ0aW4ubWFudGVs
-QHNpZW1lbnMuY29tPg0KQmV0cmVmZjogUmU6IFtQQVRDSCB2MiAyLzNdIHJ0Yzogcng2MTEwOiBh
-ZGQgQUNQSSBiaW5kaW5ncyB0byBJMkMNCg0KV2UgYXJlIHRyeWluZyB0byByZWFjaCBvdXQgdG8g
-RXBzb24gdG8gZmluZCB2YWxpZCBJRHMsIGJ1dCB3aWxsIGRvIHRoYXQgb2ZmLWxpc3QgZm9yIG5v
-dy4NCg0KSW4gdGhlIG1lYW50aW1lIHdlIHdpbGwgcHJvcG9zZSBqdXN0IHRoZSBJMkMgcGF0Y2hl
-cywgd2l0aG91dCBBQ1BJLg0KDQpXZSBoYXZlIFdlcm5lciBaZWggaGVyZSwgd2hvIHB1c2hlZCB0
-aGUgY29yZWJvb3QgY2hhbmdlLiBJbiBjb3JlYm9vdCBub2JvZHkgb2JqZWN0ZWQsIG1heWJlIHRo
-ZXkgaGF2ZSBub3QgYmVlbiBhd2FyZSBvZiB0aGUgcHJvY2Vzc2VzIG9yIGl0IHdhcyBtaXNzZWQg
-aW4gdGhlaXIgcmV2aWV3Lg0KDQpXZXJuZXIgaSB0aGluayB0aGUgY29yZWJvb3QgY2hhbmdlIHNo
-b3VsZCBiZSByZXZlcnRlZCBzbyBpdCBkb2VzIG5vdCBlbnRlciBhIHJlbGVhc2UgYW5kIHdpbGwg
-YmVjb21lIGxlZ2FjeSB0aGF0IG5lZWRzIHRvIGJlIHN1cHBvcnRlZC4gTGV0IHVzIHJldmlzaXQg
-aXQgb25jZSB3ZSBoYXZlIHRoZSBwcm9wZXIgSURzLiBJZiB0aGF0IGZhaWxzIHdlIGhhdmUgdG8g
-bG9vayBpbnRvIHRoZSBvdGhlciBvcHRpb25zIHRoYXQgQW5keSBwcm9wb3NlZC4gVGhlcmUgaXMg
-bm8gcG9pbnQgaGF2aW5nIHRoZSBjb3JlYm9vdCBzdXBwb3J0IHdpdGhvdXQgdGhlIExpbnV4LXVz
-ZXIgLi4uIA0KDQpyZWdhcmRzLA0KSGVubmluZw0KDQpBbSBUdWUsIDE3IE5vdiAyMDIwIDEzOjQx
-OjA4ICswMjAwDQpzY2hyaWViIEFuZHkgU2hldmNoZW5rbyA8YW5keS5zaGV2Y2hlbmtvQGdtYWls
-LmNvbT46DQoNCj4gK0NjOiBTaW1vbg0KPiANCj4gU2ltb24sIHRoaXMgaXMgYW4gaXNzdWUgd2l0
-aCBBQ1BJIElEcyBhbmQgSSB0aGluayBKRllJIHdvdWxkIGJlIGFuIA0KPiBpbnRlcmVzdGluZyB0
-b3BpYyBzaW5jZSB0aGlzIG1heSBoYXBwZW4gaW4gdGhlIGZ1dHVyZSBpbiBVLUJvb3Qgb3IgDQo+
-IG90aGVyIHByb2plY3RzLiBBbHNvLCB5b3UgbWF5IGtub3cgcGVvcGxlIGZyb20gY29yZWJvb3Qg
-dG8gZmlndXJlIG91dCANCj4gd2hhdCB0byBkbyB3aXRoIHRoaXMgY2FzZSBhbmQgaG93IHRvIHBy
-ZXZlbnQgc29tZXRoaW5nIHNpbWlsYXIgZnJvbSANCj4gaGFwcGVuaW5nIGluIHRoZSBmdXR1cmUu
-DQo+IA0KPiBPbiBUdWUsIE5vdiAxNywgMjAyMCBhdCAxOjMzIFBNIEFuZHkgU2hldmNoZW5rbyAN
-Cj4gPGFuZHkuc2hldmNoZW5rb0BnbWFpbC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gT24gVHVlLCBO
-b3YgMTcsIDIwMjAgYXQgMTE6NTEgQU0gam9oYW5uZXMtaGFobkBzaWVtZW5zLmNvbSANCj4gPiA8
-am9oYW5uZXMtaGFobkBzaWVtZW5zLmNvbT4gd3JvdGU6DQo+ID4gPg0KPiA+ID4gSGVsbG8gVmFs
-LA0KPiA+ID4NCj4gPiA+IG15IG5hbWUgaXMgSm9oYW5uZXMgSGFobiBmcm9tIFNpZW1lbnMgQUcg
-aW4gR2VybWFueS4NCj4gPiA+IE91ciBwcm9kdWN0IE9wZW4gQ29udHJvbGxlciBJSSAoT0NJSSlb
-MV0gdXNlcyB0aGUgUmVhbHRpbWUgQ2xvY2sgDQo+ID4gPiBSWDYxMTBTQSBmcm9tIFNFSUtPIEVQ
-U09OLg0KPiA+DQo+ID4gTmljZSB0byBoZWFyIGZyb20geW91IQ0KPiA+ICANCj4gPiA+IEN1cnJl
-bnRseSB0aGVyZSBpcyBhIG1lcmdlIHJlcXVlc3Qgb25nb2luZyBmb3IgdGhlIExpbnV4IEtlcm5l
-bCANCj4gPiA+IG1hc3RlciBicmFuY2hbMl0gd2hpY2ggYWRkcyBJwrJDIGFuZCBBQ1BJIHN1cHBv
-cnQgdG8geW91ciBvcmlnaW5hbCANCj4gPiA+IGRyaXZlciBpbXBsZW1lbnRhdGlvbi4NCj4gPiA+
-DQo+ID4gPiBTaW11bHRhbmVvdXNseSB0aGVyZSBpcyBhbiBhbHJlYWR5IG1lcmdlZCBwYXRjaC1z
-ZXQgZm9yIA0KPiA+ID4gY29yZWJvb3RbM10gYXZhaWxhYmxlIGNyZWF0aW5nIHRoZSBBQ1BJIChT
-U0RUKSB0YWJsZSBlbnRyaWVzIGZvciANCj4gPiA+IHRoZSBSWDYxMTBTQS4NCj4gPg0KPiA+IFRo
-YW5rcyBmb3IgcG9pbnRlcnMsIEkgY29tbWVudGVkIHRoZXJlLiBUaGUgQUNQSSBJRCBjaGFuZ2Ug
-bXVzdCBiZSANCj4gPiByZXZlcnRlZCENCj4gPiA+IFRoZSBPQ0lJIHVzZXMgY29yZWJvb3QgZm9y
-IGZpcm13YXJlIGluaXRpYWxpemF0aW9uLg0KPiA+ID4NCj4gPiA+IER1cmluZyB0aGUgbWVyZ2Ug
-cmVxdWVzdCB0aGUgZWxpZ2libGUgb2JqZWN0aW9uIGFyb3NlIHRoYXQgdGhlIA0KPiA+ID4gQUNQ
-SSBJRCB1c2VkIGluIHRoZSBMaW51eCBkcml2ZXIgcGF0Y2ggaXMgbm90IGNvbmZvcm1pbmcgdGhl
-IEFDUEkgDQo+ID4gPiBTcGVjaWZpY2F0aW9uLiBJbmRlZWQgaXQgZG9lcyBub3QuIEJ1dCB3aGVu
-IHNlYXJjaGluZyBmb3IgYSANCj4gPiA+IHByb2R1Y3QgaWRlbnRpZmllciBvZiBSWDYxMTBTQSBJ
-IHdhcyBub3QgYWJsZSB0byBmaW5kIGEgc3VmZmljaWVudCANCj4gPiA+IG9uZSB3aXRoIHJlc3Bl
-Y3QgdG8gdGhlIEFDUEkgU3BlY2lmaWNhdGlvbiAoc2VlIFs0XSBjaGFwdGVyIDYuMS41IA0KPiA+
-ID4gX0hJRCAoSGFyZHdhcmUgSUQpLFs1XSkuDQo+ID4NCj4gPiBVbmZvcnR1bmF0ZWx5IG1hbnkg
-dmVuZG9ycywgZXZlbiBiZWluZyByZWdpc3RlcmVkIGluIHRoZSBBQ1BJL1BOUCANCj4gPiByZWdp
-c3RyeSwgYXJlIHN0aWxsIG5lZ2xlY3RpbmcgdGhlIHByb2Nlc3MuDQo+ID4gIA0KPiA+ID4gQWNj
-b3JkaW5nIHRvIHRoZSBmYWN0IHRoYXQgdGhlcmUgYXJlIG90aGVyIExpbnV4IFJUQyBkcml2ZXJz
-IG9uIA0KPiA+ID4gdGhlIEtlcm5lbCBtYWlubGluZVs2XSB3aGljaCBzdXBwb3J0IEFDUEkgbWF0
-Y2hpbmcgdGhhdCBhbHNvIGRvIA0KPiA+ID4gbm90IGhhdmUgQUNQSSBTcGVjaWZpY2F0aW9uIGNv
-bXBhdGlibGUgSURzIHdlIHVzZWQgdGhhdCBhcyBhbiANCj4gPiA+IGV4YW1wbGUgZm9yIG91ciBm
-aXJzdCBwYXRjaCBhdHRlbXB0Lg0KPiA+DQo+ID4gSSBhbnN3ZXJlZCB0aGlzIGluIHByZXZpb3Vz
-IG1haWwuDQo+ID4gIA0KPiA+ID4gQSBQTlAgSUQgZm9yIFNFSUtPIEVQU09OIGlzIGFscmVhZHkg
-cmVnaXN0ZXJlZCBhdCBVRUZJIA0KPiA+ID4gZGF0YWJhc2VbN10uDQo+ID4gPg0KPiA+ID4gV2hh
-dCBJIGtpbmRseSBhc2sgeW91ciBmb3IgaXMgYW4gQUNQSSBTcGVjaWZpY2F0aW9uIGNvbmZvcm1p
-bmcgDQo+ID4gPiBQcm9kdWN0IElkZW50aWZpZXIgZm9yIHRoZSBSWDYxMTBTQSBSVEMgPyBBY2Nv
-cmRpbmcgdG8gWzVdIHRoaXMgDQo+ID4gPiBQcm9kdWN0IElkZW50aWZpZXIgc2hvdWxkIGJlICIu
-Li4gYWx3YXlzIGZvdXItY2hhcmFjdGVyIA0KPiA+ID4gaGV4YWRlY2ltYWwgbnVtYmVycyAoMC05
-IGFuZCBBLUYpIi4NCj4gPiA+DQo+ID4gPiBJbiBjYXNlIHlvdSBkbyBub3Qga25vdyBpdCBvdXIg
-Y2FuIG5vdCBhY3F1aXJlL2NyZWF0ZSBvbmUgY291bGQgDQo+ID4gPiB5b3UgcGxlYXNlIHJlZGly
-ZWN0IG1lIHRvIHNvbWVvbmUgZnJvbSBTRUlLTyBFUFNPTiB3aG8gY2FuIGhlbHAgbWUgDQo+ID4g
-PiB3aXRoIHRoYXQgZGVtYW5kID8NCj4gPg0KPiA+IFNvLCB0byBiZSBvbiB0aGUgY29uc3RydWN0
-aXZlIHBhZ2UgKEkgdGhvdWdodCBpbml0aWFsbHkgeW91IGFyZSBmcm9tIA0KPiA+IEcgY29tcGFu
-eSwgYnV0IGFueXdheSkgeW91IG1heSBkbyB0aGUgZm9sbG93aW5nOg0KPiA+DQo+ID4gLSAoZm9y
-IHByb3RvdHlwaW5nIG9ubHkpIHlvdSBtYXkgdXNlIHRoZSBQUlAwMDAxIGFwcHJvYWNoLCBkZXNj
-cmliZWQgDQo+ID4gaW4gWzhdDQo+ID4gLSB5b3UgbWF5IGlzc3VlIGFuIElEIHVuZGVyIHlvdXIg
-KFNpZW1lbnMpIHZlbmRvciBJRA0KPiA+IC0geW91IG1heSBpbnNpc3QgRyBjb21wYW55IHRvIGlz
-c3VlIHRoZSBJRCB1bmRlciB0aGVpciB2ZW5kb3Igc3BhY2UgDQo+ID4gKHRocnUgY29yZWJvb3Qp
-DQo+ID4gLSAodGhlIGJlc3Qgb3B0aW9uKSB0byBjb21tdW5pY2F0ZSB0byBTZWlrbyBFcHNvbiB0
-byBnZXQgb2ZmaWNpYWwgSUQgDQo+ID4gZnJvbSB0aGVtIGZvciB0aGlzIGNvbXBvbmVudCAoYW5k
-IElEIG11c3RuJ3QgYWJ1c2UgNi4xLjUpDQo+ID4NCj4gPiBVbmZvcnR1bmF0ZWx5IEkgaGF2ZSBu
-byBjb250YWN0cyB0aGVyZSwgYnV0IEkgdGhpbmsgdGhlIGJlc3QgZWZmb3J0IA0KPiA+IGlzIHRv
-IGNvbnRhY3QgdGhlaXIgc3VwcG9ydCBhbmQgYXQgdGhlIHNhbWUgdGltZSBhc2sgQVNXRyBbOV0g
-aG93IHRvIA0KPiA+IHByb2NlZWQuIEkgQ2MnZWQgdGhpcyB0byBBQ1BJIHBlb3BsZSBpbiBMaW51
-eCBrZXJuZWwsIG1heWJlIHRoZXkgY2FuIA0KPiA+IGhlbHAuDQo+ID4NCj4gPiBPZiBjb3Vyc2Ug
-eW91IGhhdmUgY2hvaWNlIHRvIHB1c2ggYmFkIElEIGZvcndhcmQgYW5kIHVzZSBwcmVjZWRlbmNl
-IA0KPiA+IChsaWtlIG1hbnkgb3RoZXIgY29tcGFuaWVzLCBldmVuIEludGVsIGluIHBhc3QsIGRv
-IHdpdGggZmlybXdhcmVzIA0KPiA+IGFuZCBMaW51eCBrZXJuZWwgaXMgZnVsbCBvZiBiYWRseSBm
-b3JtZWQgSURzKSwgYnV0IHNpbmNlIHRoZSBjaGFuZ2UgDQo+ID4gaXMgbm90IGV4aXN0ZWQgaW4g
-cmVhZCBkZXZpY2VzIEkgd291bGQgcmVhbGx5IGxpa2UgdG8gc2VlIHByb3BlciANCj4gPiBwcm9j
-ZXNzIHRvIGJlIGZvbGxvd2VkLg0KPiA+DQo+ID4gSW4gdGhlIExpbnV4IGtlcm5lbCBJJ20gaW4g
-cHJpbmNpcGxlIHRyeWluZyB0byBwcmV2ZW50IGJhZCBJRHMgZnJvbSANCj4gPiBoYXBwZW5pbmcg
-YXMgbXVjaCBhcyBJIGNhbi4NCj4gPiAgDQo+ID4gPiBbMV06DQo+ID4gPiAoaHR0cHM6Ly9tYWxs
-LmluZHVzdHJ5LnNpZW1lbnMuY29tL21hbGwvZW4vV1cvQ2F0YWxvZy9Qcm9kdWN0LzZFUzcNCj4g
-PiA+IDY3Ny0yREI0Mi0wR0IwKQ0KPiA+ID4gWzJdOiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5w
-cm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZsa21sLm9yZyUyRmxrbWwl
-MkYyMDIwJTJGMTElMkYxMiUyRjU2MSZhbXA7ZGF0YT0wNCU3QzAxJTdDd2VybmVyLnplaCU0MHNp
-ZW1lbnMuY29tJTdDNTdlMTkyNDAzZDhlNDY0ODA5MzQwOGQ4OGJhOTU0ZDUlN0MzOGFlM2JjZDk1
-Nzk0ZmQ0YWRkYWI0MmUxNDk1ZDU1YSU3QzElN0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5r
-bm93biU3Q1RXRnBiR1pzYjNkOGV5SldJam9pTUM0d0xqQXdNREFpTENKUUlqb2lWMmx1TXpJaUxD
-SkJUaUk2SWsxaGFXd2lMQ0pYVkNJNk1uMCUzRCU3QzEwMDAmYW1wO3NkYXRhPW1jMmNDc3htWDZj
-ang2SFAxeUVZN0JZZDJVbURheVRoJTJGQXF2ZkE1JTJCRzIwJTNEJmFtcDtyZXNlcnZlZD0wIFsz
-XToNCj4gPiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20v
-P3VybD1odHRwcyUzQSUyRiUyRnJldmlldy5jb3JlYm9vdC5vcmclMkZjJTJGY29yZWJvb3QlMkYl
-MkIlMkY0NzIzNSZhbXA7ZGF0YT0wNCU3QzAxJTdDd2VybmVyLnplaCU0MHNpZW1lbnMuY29tJTdD
-NTdlMTkyNDAzZDhlNDY0ODA5MzQwOGQ4OGJhOTU0ZDUlN0MzOGFlM2JjZDk1Nzk0ZmQ0YWRkYWI0
-MmUxNDk1ZDU1YSU3QzElN0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5rbm93biU3Q1RXRnBi
-R1pzYjNkOGV5SldJam9pTUM0d0xqQXdNREFpTENKUUlqb2lWMmx1TXpJaUxDSkJUaUk2SWsxaGFX
-d2lMQ0pYVkNJNk1uMCUzRCU3QzEwMDAmYW1wO3NkYXRhPUlQdCUyQjJqJTJGYjdUQ0l3blFwVGgw
-WVFmUmhBazNnRzM0eGdzOWo1SjFwMElBJTNEJmFtcDtyZXNlcnZlZD0wIFs0XToNCj4gPiA+IGh0
-dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUz
-QSUyRiUyRg0KPiA+ID4gdWVmaS5vcmclMkZzaXRlcyUyRmRlZmF1bHQlMkZmaWxlcyUyRnJlc291
-cmNlcyUyRkFDUElfNl8zX2ZpbmFsX0phDQo+ID4gPiBuMzAucGRmJmFtcDtkYXRhPTA0JTdDMDEl
-N0N3ZXJuZXIuemVoJTQwc2llbWVucy5jb20lN0M1N2UxOTI0MDNkOGUNCj4gPiA+IDQ2NDgwOTM0
-MDhkODhiYTk1NGQ1JTdDMzhhZTNiY2Q5NTc5NGZkNGFkZGFiNDJlMTQ5NWQ1NWElN0MxJTdDMSU3
-Qw0KPiA+ID4gNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5SldJ
-am9pTUM0d0xqQXdNREFpTENKDQo+ID4gPiBRSWpvaVYybHVNeklpTENKQlRpSTZJazFoYVd3aUxD
-SlhWQ0k2TW4wJTNEJTdDMTAwMCZhbXA7c2RhdGE9OURYc2QNCj4gPiA+IGdSb3pGS0htJTJGM0Ix
-aTFsczJjd3R6aXAxcnNGdUo5cW53RnZYT1klM0QmYW1wO3Jlc2VydmVkPTANCj4gPiA+IFs1XTog
-aHR0cHM6Ly9ldXIwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBz
-JTNBJTJGJTJGd3d3LnVlZmkub3JnJTJGUE5QX0FDUElfUmVnaXN0cnkmYW1wO2RhdGE9MDQlN0Mw
-MSU3Q3dlcm5lci56ZWglNDBzaWVtZW5zLmNvbSU3QzU3ZTE5MjQwM2Q4ZTQ2NDgwOTM0MDhkODhi
-YTk1NGQ1JTdDMzhhZTNiY2Q5NTc5NGZkNGFkZGFiNDJlMTQ5NWQ1NWElN0MxJTdDMSU3QzYzNzQx
-MjkwNjY2OTM1MTI3MyU3Q1Vua25vd24lN0NUV0ZwYkdac2IzZDhleUpXSWpvaU1DNHdMakF3TURB
-aUxDSlFJam9pVjJsdU16SWlMQ0pCVGlJNklrMWhhV3dpTENKWFZDSTZNbjAlM0QlN0MxMDAwJmFt
-cDtzZGF0YT10Rk9URjQweXpEZGZWV0dLYXRMNTZJWW84N2FDQUFCSG94UGVmbUxBdFBVJTNEJmFt
-cDtyZXNlcnZlZD0wIFs2XToNCj4gPiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rp
-b24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRg0KPiA+ID4gZWxpeGlyLmJvb3RsaW4u
-Y29tJTJGbGludXglMkZsYXRlc3QlMkZzb3VyY2UlMkZkcml2ZXJzJTJGcnRjJTJGcnRjDQo+ID4g
-PiAtZHMxMzA3LmMlMjNMMTE0MiZhbXA7ZGF0YT0wNCU3QzAxJTdDd2VybmVyLnplaCU0MHNpZW1l
-bnMuY29tJTdDNTcNCj4gPiA+IGUxOTI0MDNkOGU0NjQ4MDkzNDA4ZDg4YmE5NTRkNSU3QzM4YWUz
-YmNkOTU3OTRmZDRhZGRhYjQyZTE0OTVkNTVhJQ0KPiA+ID4gN0MxJTdDMSU3QzYzNzQxMjkwNjY2
-OTM1MTI3MyU3Q1Vua25vd24lN0NUV0ZwYkdac2IzZDhleUpXSWpvaU1DNHdMDQo+ID4gPiBqQXdN
-REFpTENKUUlqb2lWMmx1TXpJaUxDSkJUaUk2SWsxaGFXd2lMQ0pYVkNJNk1uMCUzRCU3QzEwMDAm
-YW1wO3MNCj4gPiA+IGRhdGE9Zm42SENUY3kxWVlPSDAyZGQzdWlYeW16ODdqWHpUekxPM3JXWDZT
-MUFlSSUzRCZhbXA7cmVzZXJ2ZWQ9MA0KPiA+ID4gWzddOiANCj4gPiA+IGh0dHBzOi8vZXVyMDEu
-c2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRg0KPiA+
-ID4gd3d3LnVlZmkub3JnJTJGUE5QX0lEX0xpc3QlM0ZzZWFyY2glM0RTRUlLTyUyQkVQU09OJmFt
-cDtkYXRhPTA0JTdDDQo+ID4gPiAwMSU3Q3dlcm5lci56ZWglNDBzaWVtZW5zLmNvbSU3QzU3ZTE5
-MjQwM2Q4ZTQ2NDgwOTM0MDhkODhiYTk1NGQ1JTcNCj4gPiA+IEMzOGFlM2JjZDk1Nzk0ZmQ0YWRk
-YWI0MmUxNDk1ZDU1YSU3QzElN0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVQ0KPiA+ID4gbmtu
-b3duJTdDVFdGcGJHWnNiM2Q4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENK
-QlRpSTZJDQo+ID4gPiBrMWhhV3dpTENKWFZDSTZNbjAlM0QlN0MxMDAwJmFtcDtzZGF0YT1OREhV
-cVZLZ25oTkFTcVRPRXlka0clMkJvY1INCj4gPiA+IGVPYXVITWVvMXVDckdDdk95ayUzRCZhbXA7
-cmVzZXJ2ZWQ9MA0KPiA+DQo+ID4gWzhdOg0KPiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnBy
-b3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRmVsDQo+ID4gaXhpci5ib290
-bGluLmNvbSUyRmxpbnV4JTJGbGF0ZXN0JTJGc291cmNlJTJGRG9jdW1lbnRhdGlvbiUyRmZpcm13
-YXINCj4gPiBlLWd1aWRlJTJGYWNwaSUyRmVudW1lcmF0aW9uLnJzdCZhbXA7ZGF0YT0wNCU3QzAx
-JTdDd2VybmVyLnplaCU0MHNpZQ0KPiA+IG1lbnMuY29tJTdDNTdlMTkyNDAzZDhlNDY0ODA5MzQw
-OGQ4OGJhOTU0ZDUlN0MzOGFlM2JjZDk1Nzk0ZmQ0YWRkYWI0DQo+ID4gMmUxNDk1ZDU1YSU3QzEl
-N0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5SlcNCj4g
-PiBJam9pTUM0d0xqQXdNREFpTENKUUlqb2lWMmx1TXpJaUxDSkJUaUk2SWsxaGFXd2lMQ0pYVkNJ
-Nk1uMCUzRCU3QzEwMA0KPiA+IDAmYW1wO3NkYXRhPXk3bUI0Zkg3ZDk4cjRWT1NlVE0ycVElMkJy
-YVV2d1JybXN6bks3cWo3VzZiTSUzRCZhbXA7cmVzDQo+ID4gZXJ2ZWQ9MA0KPiA+IFs5XTogDQo+
-ID4gaHR0cHM6Ly9ldXIwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0
-dHBzJTNBJTJGJTJGd3cNCj4gPiB3LnVlZmkub3JnJTJGd29ya2luZ2dyb3VwcyZhbXA7ZGF0YT0w
-NCU3QzAxJTdDd2VybmVyLnplaCU0MHNpZW1lbnMuYw0KPiA+IG9tJTdDNTdlMTkyNDAzZDhlNDY0
-ODA5MzQwOGQ4OGJhOTU0ZDUlN0MzOGFlM2JjZDk1Nzk0ZmQ0YWRkYWI0MmUxNDk1DQo+ID4gZDU1
-YSU3QzElN0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5
-SldJam9pTUMNCj4gPiA0d0xqQXdNREFpTENKUUlqb2lWMmx1TXpJaUxDSkJUaUk2SWsxaGFXd2lM
-Q0pYVkNJNk1uMCUzRCU3QzEwMDAmYW1wOw0KPiA+IHNkYXRhPWNDd1ByMUpZZ3JQN1JvdSUyRmRS
-MHk1RE9MJTJGVWc5TVJnbnU3UUJvT0dVUlpRJTNEJmFtcDtyZXNlcnZlDQo+ID4gZD0wDQo+ID4g
-PiA+IEJlZm9yZSBhZGRpbmcgbmV3IEFDUEkgSUQsIGNhbiB5b3UgcHJvdmlkZSBhbiBldmlkZW5j
-ZSAoZWl0aGVyIA0KPiA+ID4gPiBmcm9tIHZlbmRvciBvZiB0aGUgY29tcG9uZW50LCBvciBhIHJl
-YWwgc25hcHNob3Qgb2YgRFNEVCBmcm9tIA0KPiA+ID4gPiBkZXZpY2Ugb24gbWFya2V0KSB0aGF0
-IHRoaXMgaXMgcmVhbCBJRD8NCj4gPiA+ID4NCj4gPiA+ID4gQmVmb3JlIHRoYXQgaGFwcGVucywg
-TkFLLg0KPiA+ID4gPg0KPiA+ID4gPiBQLlMuIFNlZW1zIHRvIG1lIHRoYXQgdGhpcyBpcyBraW5k
-YSBjYXJnbyBjdWx0IHBhdGNoIGJlY2F1c2UgDQo+ID4gPiA+IHByb3Bvc2VkIElEIGlzIGFnYWlu
-c3QgQUNQSSBhbmQgUE5QIHJlZ2lzdHJ5IGFuZCBBQ1BJIA0KPiA+ID4gPiBzcGVjaWZpY2F0aW9u
-Lg0KPiA+ID4NCj4gPiA+IEluIGZhY3Qgd2UgcHVzaGVkIGl0IGluIGNvcmVib290IGFuZCBMaW51
-eCBhdCB0aGUgc2FtZSB0aW1lLg0KPiA+ID4NCj4gPiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtz
-LnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRg0KPiA+ID4gcmV2aWV3
-LmNvcmVib290Lm9yZyUyRmMlMkZjb3JlYm9vdCUyRiUyQiUyRjQ3MjM1JmFtcDtkYXRhPTA0JTdD
-MDElDQo+ID4gPiA3Q3dlcm5lci56ZWglNDBzaWVtZW5zLmNvbSU3QzU3ZTE5MjQwM2Q4ZTQ2NDgw
-OTM0MDhkODhiYTk1NGQ1JTdDMzgNCj4gPiA+IGFlM2JjZDk1Nzk0ZmQ0YWRkYWI0MmUxNDk1ZDU1
-YSU3QzElN0MxJTdDNjM3NDEyOTA2NjY5MzUxMjczJTdDVW5rbg0KPiA+ID4gb3duJTdDVFdGcGJH
-WnNiM2Q4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazFoDQo+
-ID4gPiBhV3dpTENKWFZDSTZNbjAlM0QlN0MxMDAwJmFtcDtzZGF0YT1JUHQlMkIyaiUyRmI3VENJ
-d25RcFRoMFlRZlJoQWsNCj4gPiA+IDNnRzM0eGdzOWo1SjFwMElBJTNEJmFtcDtyZXNlcnZlZD0w
-DQo+ID4gPg0KPiA+ID4gVGhhdCBpcyB0aGUgZXZpZGVuY2UuIEJ1dCBpbiBjYXNlIHRoaXMgaXMg
-d3Jvbmcgd2UgY2FuIHByb2JhYmx5IA0KPiA+ID4gc3RpbGwgY2hhbmdlIGNvcmVib290LCBldmVu
-IHRob3VnaCB0aGUgcGF0Y2hlcyBoYXZlIGJlZW4gbWVyZ2VkIA0KPiA+ID4gdGhlcmUgYWxyZWFk
-eS4NCj4gPiA+DQo+ID4gPiBNYXliZSB5b3UgY2FuIGdvIGludG8gZGV0YWlsIHdoZXJlIHlvdSBz
-ZWUgdGhlIHZpb2xhdGlvbnMgYW5kIA0KPiA+ID4gbWF5YmUgZXZlbiBzdWdnZXN0IGZpeGVzIHRo
-YXQgY29tZSB0byBtaW5kLg0KPiA+DQo+ID4gLS0NCj4gPiBXaXRoIEJlc3QgUmVnYXJkcywNCj4g
-PiBBbmR5IFNoZXZjaGVua28NCj4gDQo+IA0KPiANCg0K
+We are trying to reach out to Epson to find valid IDs, but will do that
+off-list for now.
+
+In the meantime we will propose just the I2C patches, without ACPI.
+
+We have Werner Zeh here, who pushed the coreboot change. In coreboot
+nobody objected, maybe they have not been aware of the processes or it
+was missed in their review.
+
+Werner i think the coreboot change should be reverted so it does not
+enter a release and will become legacy that needs to be supported. Let
+us revisit it once we have the proper IDs. If that fails we have to
+look into the other options that Andy proposed. There is no point
+having the coreboot support without the Linux-user ... 
+
+regards,
+Henning
+
+Am Tue, 17 Nov 2020 13:41:08 +0200
+schrieb Andy Shevchenko <andy.shevchenko@gmail.com>:
+
+> +Cc: Simon
+> 
+> Simon, this is an issue with ACPI IDs and I think JFYI would be an
+> interesting topic since this may happen in the future in U-Boot or
+> other projects. Also, you may know people from coreboot to figure out
+> what to do with this case and how to prevent something similar from
+> happening in the future.
+> 
+> On Tue, Nov 17, 2020 at 1:33 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > On Tue, Nov 17, 2020 at 11:51 AM johannes-hahn@siemens.com
+> > <johannes-hahn@siemens.com> wrote:  
+> > >
+> > > Hello Val,
+> > >
+> > > my name is Johannes Hahn from Siemens AG in Germany.
+> > > Our product Open Controller II (OCII)[1] uses the Realtime Clock
+> > > RX6110SA from SEIKO EPSON.  
+> >
+> > Nice to hear from you!
+> >  
+> > > Currently there is a merge request ongoing for the Linux Kernel
+> > > master branch[2] which adds I²C and ACPI support to your original
+> > > driver implementation.
+> > >
+> > > Simultaneously there is an already merged patch-set for
+> > > coreboot[3] available creating the ACPI (SSDT) table entries for
+> > > the RX6110SA.  
+> >
+> > Thanks for pointers, I commented there. The ACPI ID change must be
+> > reverted! 
+> > > The OCII uses coreboot for firmware initialization.
+> > >
+> > > During the merge request the eligible objection arose that the
+> > > ACPI ID used in the Linux driver patch is not conforming the ACPI
+> > > Specification. Indeed it does not. But when searching for a
+> > > product identifier of RX6110SA I was not able to find a
+> > > sufficient one with respect to the ACPI Specification (see [4]
+> > > chapter 6.1.5 _HID (Hardware ID),[5]).  
+> >
+> > Unfortunately many vendors, even being registered in the ACPI/PNP
+> > registry, are still neglecting the process.
+> >  
+> > > According to the fact that there are other Linux RTC drivers on
+> > > the Kernel mainline[6] which support ACPI matching that also do
+> > > not have ACPI Specification compatible IDs we used that as an
+> > > example for our first patch attempt.  
+> >
+> > I answered this in previous mail.
+> >  
+> > > A PNP ID for SEIKO EPSON is already registered at UEFI
+> > > database[7].
+> > >
+> > > What I kindly ask your for is an ACPI Specification conforming
+> > > Product Identifier for the RX6110SA RTC ? According to [5] this
+> > > Product Identifier should be "... always four-character
+> > > hexadecimal numbers (0-9 and A-F)".
+> > >
+> > > In case you do not know it our can not acquire/create one could
+> > > you please redirect me to someone from SEIKO EPSON who can help
+> > > me with that demand ?  
+> >
+> > So, to be on the constructive page (I thought initially you are
+> > from G company, but anyway) you may do the following:
+> >
+> > - (for prototyping only) you may use the PRP0001 approach,
+> > described in [8]
+> > - you may issue an ID under your (Siemens) vendor ID
+> > - you may insist G company to issue the ID under their vendor space
+> > (thru coreboot)
+> > - (the best option) to communicate to Seiko Epson to get official ID
+> > from them for this component (and ID mustn't abuse 6.1.5)
+> >
+> > Unfortunately I have no contacts there, but I think the best effort
+> > is to contact their support and at the same time ask ASWG [9] how to
+> > proceed. I Cc'ed this to ACPI people in Linux kernel, maybe they can
+> > help.
+> >
+> > Of course you have choice to push bad ID forward and use precedence
+> > (like many other companies, even Intel in past, do with firmwares
+> > and Linux kernel is full of badly formed IDs), but since the change
+> > is not existed in read devices I would really like to see proper
+> > process to be followed.
+> >
+> > In the Linux kernel I'm in principle trying to prevent bad IDs from
+> > happening as much as I can.
+> >  
+> > > [1]:
+> > > (https://mall.industry.siemens.com/mall/en/WW/Catalog/Product/6ES7677-2DB42-0GB0)
+> > > [2]: https://lkml.org/lkml/2020/11/12/561 [3]:
+> > > https://review.coreboot.org/c/coreboot/+/47235 [4]:
+> > > https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
+> > > [5]: https://www.uefi.org/PNP_ACPI_Registry [6]:
+> > > https://elixir.bootlin.com/linux/latest/source/drivers/rtc/rtc-ds1307.c#L1142
+> > > [7]: https://www.uefi.org/PNP_ID_List?search=SEIKO+EPSON  
+> >
+> > [8]:
+> > https://elixir.bootlin.com/linux/latest/source/Documentation/firmware-guide/acpi/enumeration.rst
+> > [9]: https://www.uefi.org/workinggroups 
+> > > > Before adding new ACPI ID, can you provide an evidence (either
+> > > > from vendor of the component, or a real snapshot of DSDT from
+> > > > device on market) that this is real ID?
+> > > >
+> > > > Before that happens, NAK.
+> > > >
+> > > > P.S. Seems to me that this is kinda cargo cult patch because
+> > > > proposed ID is against ACPI and PNP registry and ACPI
+> > > > specification.  
+> > >
+> > > In fact we pushed it in coreboot and Linux at the same time.
+> > >
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Freview.coreboot.org%2Fc%2Fcoreboot%2F%2B%2F47235&amp;data=04%7C01%7Cjohannes-hahn%40siemens.com%7C21c9e1fe99274df7951a08d88a448af5%7C38ae3bcd95794fd4addab42e1495d55a%7C1%7C0%7C637411374276831534%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=7EVdO%2F77LNyvux0y3m9nEf2HZO%2BDm2WkWMfxzaJUoto%3D&amp;reserved=0
+> > >
+> > > That is the evidence. But in case this is wrong we can probably
+> > > still change coreboot, even though the patches have been merged
+> > > there already.
+> > >
+> > > Maybe you can go into detail where you see the violations and
+> > > maybe even suggest fixes that come to mind.  
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko  
+> 
+> 
+> 
+
