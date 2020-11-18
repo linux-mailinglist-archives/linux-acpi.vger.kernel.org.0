@@ -2,100 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BF972B7D97
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 13:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 379BB2B7DC2
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 13:46:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgKRM0E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Nov 2020 07:26:04 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34547 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725794AbgKRM0D (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Nov 2020 07:26:03 -0500
-Received: by mail-ot1-f65.google.com with SMTP id j14so1553667ots.1;
-        Wed, 18 Nov 2020 04:26:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PiA+hYcssZWHOVn8FUP0jNEzq1o0bLIoAhov7HTRa3s=;
-        b=FhXiut2BdlaNbRz4GLN4QeL7bHmOhrVLxBNtOC2CobR8RpJwTenI1Xr6G/Z/BH5XTo
-         o9VzSibPEI1YJfL/yfxPMngmvPaVHmd0mcg+lrS3DLcTMijAGgOMEaqAWp3AhySwOD3E
-         BPmCOQClB3LcL+lQJWpjsuXFB0uiwBmmH8kgf0TfOVy7NBNteYPc9e6SVmvemzL7RxSO
-         G6gIW4hbs9o1xtqbwFrwiRbCNSLLGuThNi4/NpcxnTnumbWsqFXnSvsM/57hm7ZEO4ma
-         PJZ7715lrMFJOERyGsID+vfGRCoZZrYCYLQr8vy02r3XQ72/jxnDbvLbbxDJWGNQfAQN
-         pICQ==
-X-Gm-Message-State: AOAM532EM9+pMbw+TgbcyuS0A4J2af9AbC33rlTdKK85YL9oZufxNVVZ
-        YvcBgCT/GsZ3I+oMpc081HyqnXvnuG9c4BmSYmY=
-X-Google-Smtp-Source: ABdhPJzoeLJSnBwU2uet5BoMgaxg6p2GPAzJTKIfrW4HwcWnUV0X+T3Z2xvmIMz+HD3psO6w0GaKCsVc5AjXi/P4qGw=
-X-Received: by 2002:a9d:16f:: with SMTP id 102mr6592389otu.206.1605702361517;
- Wed, 18 Nov 2020 04:26:01 -0800 (PST)
+        id S1725948AbgKRMpk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Nov 2020 07:45:40 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:47560 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbgKRMpk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Nov 2020 07:45:40 -0500
+Received: from zn.tnic (p200300ec2f0caf0066ae0a9db02cf7f4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:af00:66ae:a9d:b02c:f7f4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 257C01EC01A8;
+        Wed, 18 Nov 2020 13:45:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1605703539;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=L2ugBrbTIr2gsU7YZp4QhcDMy178gRinJLza+UP4oi8=;
+        b=KVrCPU9214MZUDQ7mAZakHuHmWrFsC3ceX4DfPxeRysevGHqu1ZuYPv5xExJJaMWl5hElw
+        HhFZ4gxnH2lnN8TiWXI3mRelHwmWsJ97eXrOdUnMArU3geMe/81Yd7Ki/KAwWcMk2axHb/
+        G91cVHfaGQWl8ZG5uCmJ0exbXLaBzNI=
+Date:   Wed, 18 Nov 2020 13:45:38 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Aili Yao <yaoaili@kingsoft.com>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
+        james.morse@arm.com, linux-acpi@vger.kernel.org,
+        linux-edac@vger.kernel.org, yangfeng1@kingsoft.com,
+        CHENGUOMIN@kingsoft.com
+Subject: Re: [PATCH v2] Dump cper error table in mce_panic
+Message-ID: <20201118124538.GI7472@zn.tnic>
+References: <20201104065057.40442-1-yaoaili126@163.com>
+ <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
 MIME-Version: 1.0
-References: <20201111054356.793390-1-ben.widawsky@intel.com>
- <20201111054356.793390-3-ben.widawsky@intel.com> <20201116175909.00007e53@Huawei.com>
- <CAPcyv4h_kSYhcGAdZshFPFbGPgZKCvUh9q7M=jMMRaEauUPzaQ@mail.gmail.com>
-In-Reply-To: <CAPcyv4h_kSYhcGAdZshFPFbGPgZKCvUh9q7M=jMMRaEauUPzaQ@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 Nov 2020 13:25:49 +0100
-Message-ID: <CAJZ5v0ibEXVC5vsjCfougJqp_ZbENUKmbTkCjbxVTen-gsONXA@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/9] cxl/acpi: add OSC support
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 12:26 AM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> On Mon, Nov 16, 2020 at 10:00 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Tue, 10 Nov 2020 21:43:49 -0800
-> > Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >
-> > > From: Vishal Verma <vishal.l.verma@intel.com>
-> > >
-> > > Add support to advertise OS capabilities, and request OS control for CXL
-> > > features using the ACPI _OSC mechanism. Advertise support for all
-> > > possible CXL features, and attempt to request control too for all
-> > > possible features.
-> > >
-> > > Based on a patch by Sean Kelley.
-> > >
-> > > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> >
-> > I guess unsurprisingly a lot of this is cut and paste from PCIe
-> > so can we share some of the code?
-> >
->
-> I do not see a refactoring effort for these bit being all that
-> fruitful.
+On Tue, Nov 17, 2020 at 05:58:04PM +0800, Aili Yao wrote:
+> Subject: [PATCH v2] Dump cper error table in mce_panic
+> 
+> For X86_MCE, When BIOS option WHEA memory log is enabled,if there is a
+> ...
 
-Well, that depends on how much code duplication could be avoided this way.
+This commit message makes no sense to me and I have no clue what you're
+trying to "fix". So before you do anything, please describe the problem
+you're seeing first using this structure:
 
-> The backport pressure for this driver stack I expect will be
-> higher than most, so I'm sensitive to avoiding unnecessary core
-> entanglements.
+Problem is A.
 
-If two pieces of code are based on the same underlying common code, it
-is immediately clear to the reader how similar to each other they are.
-Otherwise, they need to be carefully compared with each other to find
-out what the differences are and whether or not they are arbitrary or
-vitally important.  That is essential both from the revirem
-perspective today and to anyone wanting to understand the given code
-in the future (possibly in order to modify it without breaking it).
-It outweighs the convenience by far IMV, with all due respect.
+It happens because of B.
 
-Recall how much effort it took to combine x86 with x86_64 and why it
-turned out to be necessary to do that work, for one example.
+Fix it by doing C.
+
+(Potentially do D).
+
+When you do that, use simple english sentences and not complex ones.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
