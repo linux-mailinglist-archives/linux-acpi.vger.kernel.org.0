@@ -2,97 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB4C2B7496
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 04:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C7F92B7703
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Nov 2020 08:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726934AbgKRDMW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Nov 2020 22:12:22 -0500
-Received: from mail.kingsoft.com ([114.255.44.145]:45585 "EHLO
-        mail.kingsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725613AbgKRDMV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Nov 2020 22:12:21 -0500
-X-AuditID: 0a580157-b25ff70000003991-f7-5fb48d8826ba
-Received: from mail.kingsoft.com (localhost [10.88.1.32])
-        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client did not present a certificate)
-        by mail.kingsoft.com (SMG-1-NODE-87) with SMTP id BD.F7.14737.88D84BF5; Wed, 18 Nov 2020 10:57:12 +0800 (HKT)
-Received: from aili-OptiPlex-7020 (172.16.253.254) by KSBJMAIL2.kingsoft.cn
- (10.88.1.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Wed, 18 Nov
- 2020 11:12:14 +0800
-Date:   Wed, 18 Nov 2020 11:12:14 +0800
-From:   Aili Yao <yaoaili@kingsoft.com>
-To:     James Morse <james.morse@arm.com>
-CC:     <rjw@rjwysocki.net>, <lenb@kernel.org>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <linux-acpi@vger.kernel.org>,
-        <linux-edac@vger.kernel.org>, <yangfeng1@kingsoft.com>,
-        <CHENGUOMIN@kingsoft.com>, <yaoaili@kingsoft.com>
-Subject: Re: [PATCH] Dump cper error table in mce_panic
-Message-ID: <20201118111140.0c330108@aili-OptiPlex-7020>
-In-Reply-To: <112d8a04-4f0d-6705-4da1-e8d95a14dbaf@arm.com>
-References: <20201104065057.40442-1-yaoaili126@163.com>
- <112d8a04-4f0d-6705-4da1-e8d95a14dbaf@arm.com>
-Organization: Kingsoft
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1725772AbgKRHgl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Nov 2020 02:36:41 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7645 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725794AbgKRHgl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Nov 2020 02:36:41 -0500
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CbZP56gTbz15MsB;
+        Wed, 18 Nov 2020 15:36:09 +0800 (CST)
+Received: from thunder-town.china.huawei.com (10.174.176.144) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 18 Nov 2020 15:36:13 +0800
+From:   Zhen Lei <thunder.leizhen@huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        linux-acpi <linux-acpi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+CC:     Zhen Lei <thunder.leizhen@huawei.com>
+Subject: [PATCH 1/1] ACPI/nfit: avoid accessing uninitialized memory in acpi_nfit_ctl()
+Date:   Wed, 18 Nov 2020 15:35:17 +0800
+Message-ID: <20201118073517.1884-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.16.253.254]
-X-ClientProxiedBy: KSBJMAIL1.kingsoft.cn (10.88.1.31) To KSBJMAIL2.kingsoft.cn
- (10.88.1.32)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrKLMWRmVeSWpSXmKPExsXCFcGooNvRuyXe4Ns2bYvPG/6xWdzft5zJ
-        YufDt2wWy/f1M1pcONXAZHHm9CVWizcX7rE4sHt8b+1j8Vgzbw2jx+I9L5k8Nq3qZPPYcrWd
-        xePzJrkAtigum5TUnMyy1CJ9uwSujKszV7EX/OeueL9VvoHxAmcXIyeHhICJxNyu36xdjFwc
-        QgLTmSTa1q9ggXBeMEpcaOxiBKliEVCV2PTsHDuIzQZk77o3ixXEFgGyL72cwQxiMwvcY5S4
-        tSMVxBYWMJdYOm8FG4jNK2AhceT+DSYQm1PAWmLh258sILaQQIbEybdTgXo5OPgFxCReNRhD
-        HGQv8fzvWWaIVkGJkzOfsECM15E4seoY1Cp5ie1v5zBDjFGUOLzkFztEr5LEke4ZbBB2rMSy
-        ea9YJzAKz0IyahaSUbOQjFrAyLyKkaU4N91wEyMkJsJ3MM5r+qh3iJGJg/EQowQHs5IIr4vJ
-        xngh3pTEyqrUovz4otKc1OJDjNIcLErivOlzN8cLCaQnlqRmp6YWpBbBZJk4OKUamDhjm2+V
-        CLGK1ybO90vpvZHK/Jv3tDWv1veX1Z+UTTd/X7I7PUxO5o2kw4/MvmiLI1cPP9a/+Mr07433
-        jsWzrmrPNgz6+obzI5/e/EkXzs+5OE0s86OoX2/ya5dM7j2P9j19/aYxv9/rq//7CY3S9itO
-        bhQ1iBI+dJjzaOecJp27Lz9Udp2tcF4ivO5I4uObay1CvY9qasinM36IU//904JPQb7KZblq
-        eMmjtQ3Kv0/cfaBs+nfe3WeWMSxPQs/byedMfnNawnPHzj+xm2ITT6+U5ghyXHPsH8eJRcsi
-        P1w5nmPMt4T50P5T+w/wPwjYsqr1Wsd5vyVeh2dbGhxIk6u2v13QdvLpqtYi6ybVVfeVWIoz
-        Eg21mIuKEwHBq6pB+AIAAA==
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.174.176.144]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Thanks for your comments!
+The ACPI_ALLOCATE() does not zero the "buf", so when the condition
+"integer->type != ACPI_TYPE_INTEGER" in int_to_buf() is met, the result
+is unpredictable in acpi_nfit_ctl().
 
-On Fri, 6 Nov 2020 19:35:32 +0000
-James Morse <james.morse@arm.com> wrote:
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+---
+ drivers/acpi/nfit/core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-> You appear to have something that behaves as GHES-ASSIST. Can you post the decompiled dump
-> of your HEST table? (decompiled, no binaries!) If its large, you can post it to me off
-> list and I'll copy the relevant bits here...
-> 
-I think we we can reach a consensus, from and follow Intel Document #563361 23.1 :
-Feature Name MCA 2.0 Recovery (as per EMCA Gen2 architecture)
-Feature Description
-Software layer assisted recovery from uncorrected data errors as defined by the EMCA Gen2
-specification. EMCA Gen2 is a capability that allows firmware to intercept errors triggered via Machine
-Check Architecture (corrected and uncorrected errors) enabling a Firmware First Model (FFM) of error
-handling and possible recovery.
-Use Case
-Enhanced error reporting to support Firmware First Model (FFM) with following attributes:
-1. Allows the SMM code to intercept the MCE/CMCI.
-2. Allows the SMM code to write the MCA Status/Add/Misc registers.
-3. Allows the SMM code to generate MCEs.
-4. Allows the DSM based pointer for enhanced error logs.
-5. Additional IA32_MCG_CAP bit for eMCA support
-
-> 
-> If and only if those GHES are marked as GHES_ASSIST.
-> 
-> If they are not, then you have a fully fledged firwmare-first system.
-> 
-
-Yeah, This should be GHES_ASSIST, But For x86, BIOS don't supply a hest table for it as BIOS will trigger
-MCE, It's out of APEI scope. 
-
-
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 442608220b5c..cda7b6c52504 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -282,18 +282,19 @@ static union acpi_object *pkg_to_buf(union acpi_object *pkg)
+ 
+ static union acpi_object *int_to_buf(union acpi_object *integer)
+ {
+-	union acpi_object *buf = ACPI_ALLOCATE(sizeof(*buf) + 4);
++	union acpi_object *buf = NULL;
+ 	void *dst = NULL;
+ 
+-	if (!buf)
+-		goto err;
+-
+ 	if (integer->type != ACPI_TYPE_INTEGER) {
+ 		WARN_ONCE(1, "BIOS bug, unexpected element type: %d\n",
+ 				integer->type);
+ 		goto err;
+ 	}
+ 
++	buf = ACPI_ALLOCATE(sizeof(*buf) + 4);
++	if (!buf)
++		goto err;
++
+ 	dst = buf + 1;
+ 	buf->type = ACPI_TYPE_BUFFER;
+ 	buf->buffer.length = 4;
 -- 
-Best Regards!
+2.26.0.106.g9fadedd
 
-Aili Yao
+
