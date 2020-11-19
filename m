@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F0D2B9241
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 13:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 837C52B9243
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 13:15:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbgKSMMh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Nov 2020 07:12:37 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7563 "EHLO
+        id S1727252AbgKSMMm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Nov 2020 07:12:42 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8119 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726860AbgKSMMh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Nov 2020 07:12:37 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcJTJ31GlzhXkw;
+        with ESMTP id S1726860AbgKSMMm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Nov 2020 07:12:42 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcJTJ1kRJzLqQB;
         Thu, 19 Nov 2020 20:12:20 +0800 (CST)
 Received: from S00345302A-PC.china.huawei.com (10.210.168.73) by
  DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 19 Nov 2020 20:12:26 +0800
+ 14.3.487.0; Thu, 19 Nov 2020 20:12:32 +0800
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
@@ -26,9 +26,9 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
         <jonathan.cameron@huawei.com>, <steven.price@arm.com>,
         <Sami.Mujawar@arm.com>
-Subject: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
-Date:   Thu, 19 Nov 2020 12:11:43 +0000
-Message-ID: <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
+Subject: [RFC PATCH v2 2/8] ACPI/IORT: Add support for RMR node parsing
+Date:   Thu, 19 Nov 2020 12:11:44 +0000
+Message-ID: <20201119121150.3316-3-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
 References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
@@ -41,84 +41,170 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-IORT revision E contains a few additions like,
-    -Added an identifier field in the node descriptors to aid table
-     cross-referencing.
-    -Introduced the Reserved Memory Range(RMR) node. This is used
-     to describe memory ranges that are used by endpoints and requires
-     a unity mapping in SMMU.
-    -Introduced a flag in the RC node to express support for PRI.
+Add support for parsing RMR node information from ACPI.
+Find associated stream ids and smmu node info from the
+RMR node and populate a linked list with RMR memory
+descriptors.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- include/acpi/actbl2.h | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/acpi/arm64/iort.c | 122 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 121 insertions(+), 1 deletion(-)
 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index ec66779cb193..274fce7b5c01 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -68,7 +68,7 @@
-  * IORT - IO Remapping Table
-  *
-  * Conforms to "IO Remapping Table System Software on ARM Platforms",
-- * Document number: ARM DEN 0049D, March 2018
-+ * Document number: ARM DEN 0049E, June 2020
-  *
-  ******************************************************************************/
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 9929ff50c0c0..a9705aa35028 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -40,6 +40,25 @@ struct iort_fwnode {
+ static LIST_HEAD(iort_fwnode_list);
+ static DEFINE_SPINLOCK(iort_fwnode_lock);
  
-@@ -86,7 +86,8 @@ struct acpi_iort_node {
- 	u8 type;
- 	u16 length;
- 	u8 revision;
--	u32 reserved;
-+	u16 reserved;
-+	u16 identifier;
- 	u32 mapping_count;
- 	u32 mapping_offset;
- 	char node_data[1];
-@@ -100,7 +101,8 @@ enum acpi_iort_node_type {
- 	ACPI_IORT_NODE_PCI_ROOT_COMPLEX = 0x02,
- 	ACPI_IORT_NODE_SMMU = 0x03,
- 	ACPI_IORT_NODE_SMMU_V3 = 0x04,
--	ACPI_IORT_NODE_PMCG = 0x05
-+	ACPI_IORT_NODE_PMCG = 0x05,
-+	ACPI_IORT_NODE_RMR = 0x06,
- };
- 
- struct acpi_iort_id_mapping {
-@@ -167,10 +169,10 @@ struct acpi_iort_root_complex {
- 	u8 reserved[3];		/* Reserved, must be zero */
- };
- 
--/* Values for ats_attribute field above */
-+/* Masks for ats_attribute field above */
- 
--#define ACPI_IORT_ATS_SUPPORTED         0x00000001	/* The root complex supports ATS */
--#define ACPI_IORT_ATS_UNSUPPORTED       0x00000000	/* The root complex doesn't support ATS */
-+#define ACPI_IORT_ATS_SUPPORTED         (1)	/* The root complex supports ATS */
-+#define ACPI_IORT_PRI_SUPPORTED         (1<<1)	/* The root complex supports PRI */
- 
- struct acpi_iort_smmu {
- 	u64 base_address;	/* SMMU base address */
-@@ -241,6 +243,17 @@ struct acpi_iort_pmcg {
- 	u64 page1_base_address;
- };
- 
-+struct acpi_iort_rmr {
-+	u32 rmr_count;
-+	u32 rmr_offset;
++struct iort_rmr_id {
++	u32  sid;
++	struct acpi_iort_node *smmu;
 +};
 +
-+struct acpi_iort_rmr_desc {
-+	u64 base_address;
-+	u64 length;
-+	u32 reserved;
++/*
++ * One entry for IORT RMR.
++ */
++struct iort_rmr_entry {
++	struct list_head list;
++
++	unsigned int rmr_ids_num;
++	struct iort_rmr_id *rmr_ids;
++
++	struct acpi_iort_rmr_desc *rmr_desc;
 +};
 +
- /*******************************************************************************
-  *
-  * IVRS - I/O Virtualization Reporting Structure
++static LIST_HEAD(iort_rmr_list);         /* list of RMR regions from ACPI */
++
+ /**
+  * iort_set_fwnode() - Create iort_fwnode and use it to register
+  *		       iommu data in the iort_fwnode_list
+@@ -393,7 +412,8 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+ 		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
+ 		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
+ 		    node->type == ACPI_IORT_NODE_SMMU_V3 ||
+-		    node->type == ACPI_IORT_NODE_PMCG) {
++		    node->type == ACPI_IORT_NODE_PMCG ||
++		    node->type == ACPI_IORT_NODE_RMR) {
+ 			*id_out = map->output_base;
+ 			return parent;
+ 		}
+@@ -1647,6 +1667,103 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
+ #else
+ static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
+ #endif
++static int iort_rmr_desc_valid(struct acpi_iort_rmr_desc *desc)
++{
++	struct iort_rmr_entry *e;
++	u64 end, start = desc->base_address, length = desc->length;
++
++	if (!IS_ALIGNED(start, SZ_64K) || !IS_ALIGNED(length, SZ_64K))
++		return -EINVAL;
++
++	end = start + length - 1;
++
++	/* Check for address overlap */
++	list_for_each_entry(e, &iort_rmr_list, list) {
++		u64 e_start = e->rmr_desc->base_address;
++		u64 e_end = e_start + e->rmr_desc->length - 1;
++
++		if (start <= e_end && end >= e_start)
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int __init iort_parse_rmr(struct acpi_iort_node *iort_node)
++{
++	struct iort_rmr_id *rmr_ids, *ids;
++	struct iort_rmr_entry *e;
++	struct acpi_iort_rmr *rmr;
++	struct acpi_iort_rmr_desc *rmr_desc;
++	u32 map_count = iort_node->mapping_count;
++	int i, ret = 0, desc_count = 0;
++
++	if (iort_node->type != ACPI_IORT_NODE_RMR)
++		return 0;
++
++	if (!iort_node->mapping_offset || !map_count) {
++		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
++		       iort_node);
++		return -EINVAL;
++	}
++
++	rmr_ids = kmalloc(sizeof(*rmr_ids) * map_count, GFP_KERNEL);
++	if (!rmr_ids)
++		return -ENOMEM;
++
++	/* Retrieve associated smmu and stream id */
++	ids = rmr_ids;
++	for (i = 0; i < map_count; i++, ids++) {
++		ids->smmu = iort_node_get_id(iort_node, &ids->sid, i);
++		if (!ids->smmu) {
++			pr_err(FW_BUG "Invalid SMMU reference, skipping RMR node %p\n",
++			       iort_node);
++			ret = -EINVAL;
++			goto out;
++		}
++	}
++
++	/* Retrieve RMR data */
++	rmr = (struct acpi_iort_rmr *)iort_node->node_data;
++	if (!rmr->rmr_offset || !rmr->rmr_count) {
++		pr_err(FW_BUG "Invalid RMR descriptor array, skipping RMR node %p\n",
++		       iort_node);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, iort_node,
++				rmr->rmr_offset);
++
++	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
++		ret = iort_rmr_desc_valid(rmr_desc);
++		if (ret) {
++			pr_err(FW_BUG "Invalid RMR descriptor[%d] for node %p, skipping...\n",
++			       i, iort_node);
++			goto out;
++		}
++
++		e = kmalloc(sizeof(*e), GFP_KERNEL);
++		if (!e) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
++		e->rmr_ids_num = map_count;
++		e->rmr_ids = rmr_ids;
++		e->rmr_desc = rmr_desc;
++
++		list_add_tail(&e->list, &iort_rmr_list);
++		desc_count++;
++	}
++
++	return 0;
++
++out:
++	if (!desc_count)
++		kfree(rmr_ids);
++	return ret;
++}
+ 
+ static void __init iort_init_platform_devices(void)
+ {
+@@ -1676,6 +1793,9 @@ static void __init iort_init_platform_devices(void)
+ 
+ 		iort_enable_acs(iort_node);
+ 
++		if (iort_table->revision == 1)
++			iort_parse_rmr(iort_node);
++
+ 		ops = iort_get_dev_cfg(iort_node);
+ 		if (ops) {
+ 			fwnode = acpi_alloc_fwnode_static();
 -- 
 2.17.1
 
