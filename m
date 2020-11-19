@@ -2,65 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F292B99E7
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 18:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9422B9A1F
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 18:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729460AbgKSRpQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Nov 2020 12:45:16 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:45584 "EHLO mail.skyhub.de"
+        id S1729520AbgKSRyH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Nov 2020 12:54:07 -0500
+Received: from mx2.suse.de ([195.135.220.15]:40660 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729457AbgKSRpQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 19 Nov 2020 12:45:16 -0500
-Received: from zn.tnic (p200300ec2f0caf00213cbc20ee7f6949.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:af00:213c:bc20:ee7f:6949])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B10881EC04D3;
-        Thu, 19 Nov 2020 18:45:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1605807914;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=m8iQDyfCg54X8Y1uTZbWsdh1r6Ik6jbOt5fBy42wZTI=;
-        b=Ye2+mNOgQh9UIxuEF+Q6Yc2XK5Ttz628Yggr7b9hBozeccW0eJ7ODhJPWjArKLZdUHtgm6
-        EoAzqOmpCx9BBLgnmbR79qy4SUnMv81QXLzm924+Hm3UmbjzxEkABQzXuQMqDKgUKEgzbN
-        xe9cGuym3tf9pVHZ+HjMQc9M230adGk=
-Date:   Thu, 19 Nov 2020 18:45:08 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Aili Yao <yaoaili@kingsoft.com>
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        james.morse@arm.com, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, yangfeng1@kingsoft.com,
-        CHENGUOMIN@kingsoft.com
-Subject: Re: [PATCH v2] Dump cper error table in mce_panic
-Message-ID: <20201119174508.GE3769@zn.tnic>
-References: <20201104065057.40442-1-yaoaili126@163.com>
- <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
- <20201118124538.GI7472@zn.tnic>
- <20201119134057.37ca2c19.yaoaili@kingsoft.com>
+        id S1729335AbgKSRyH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 19 Nov 2020 12:54:07 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 408CFAC22;
+        Thu, 19 Nov 2020 17:54:06 +0000 (UTC)
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     robh+dt@kernel.org, catalin.marinas@arm.com, hch@lst.de,
+        ardb@kernel.org, linux-kernel@vger.kernel.org
+Cc:     robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, jeremy.linton@arm.com,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        will@kernel.org, lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-riscv@lists.infradead.org
+Subject: [PATCH v7 0/7] arm64: Default to 32-bit wide ZONE_DMA
+Date:   Thu, 19 Nov 2020 18:53:52 +0100
+Message-Id: <20201119175400.9995-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201119134057.37ca2c19.yaoaili@kingsoft.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 19, 2020 at 01:40:57PM +0800, Aili Yao wrote:
-> [    0.000000] Linux version 4.18.0+  #37 SMP Thu Nov 19 10:38:16 CST 2020
+Using two distinct DMA zones turned out to be problematic. Here's an
+attempt go back to a saner default.
 
-Ok, before we look any further into this, please redo the whole exercise
-with the latest upstream kernel - not some 4.18 old crap. Use the
-tip/master branch:
+I tested this on both a RPi4 and QEMU.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=master
+---
 
-And then paste results again according to the scheme.
+Changes since v6:
+ - Update patch #1 so we reserve crashkernel before request_standard_resources()
+ - Tested on top of Catalin's mem_init() patches.
 
-Thx.
+Changes since v5:
+ - Unify ACPI/DT functions
+
+Changes since v4:
+ - Fix of_dma_get_max_cpu_address() so it returns the last addressable
+   addres, not the limit
+
+Changes since v3:
+ - Drop patch adding define in dma-mapping
+ - Address small review changes
+ - Update Ard's patch
+ - Add new patch removing examples from mmzone.h
+
+Changes since v2:
+ - Introduce Ard's patch
+ - Improve OF dma-ranges parsing function
+ - Add unit test for OF function
+ - Address small changes
+ - Move crashkernel reservation later in boot process
+
+Changes since v1:
+ - Parse dma-ranges instead of using machine compatible string
+
+Ard Biesheuvel (1):
+  arm64: mm: Set ZONE_DMA size based on early IORT scan
+
+Nicolas Saenz Julienne (6):
+  arm64: mm: Move reserve_crashkernel() into mem_init()
+  arm64: mm: Move zone_dma_bits initialization into zone_sizes_init()
+  of/address: Introduce of_dma_get_max_cpu_address()
+  of: unittest: Add test for of_dma_get_max_cpu_address()
+  arm64: mm: Set ZONE_DMA size based on devicetree's dma-ranges
+  mm: Remove examples from enum zone_type comment
+
+ arch/arm64/mm/init.c      | 22 +++++++++-------
+ drivers/acpi/arm64/iort.c | 55 +++++++++++++++++++++++++++++++++++++++
+ drivers/of/address.c      | 42 ++++++++++++++++++++++++++++++
+ drivers/of/unittest.c     | 18 +++++++++++++
+ include/linux/acpi_iort.h |  4 +++
+ include/linux/mmzone.h    | 20 --------------
+ include/linux/of.h        |  7 +++++
+ 7 files changed, 139 insertions(+), 29 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.29.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
