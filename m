@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 837C52B9243
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 13:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08DB02B9244
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 13:15:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727252AbgKSMMm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Nov 2020 07:12:42 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8119 "EHLO
+        id S1727253AbgKSMMt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Nov 2020 07:12:49 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8120 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726860AbgKSMMm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Nov 2020 07:12:42 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcJTJ1kRJzLqQB;
-        Thu, 19 Nov 2020 20:12:20 +0800 (CST)
+        with ESMTP id S1727058AbgKSMMs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Nov 2020 07:12:48 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcJTP2bGyzLr01;
+        Thu, 19 Nov 2020 20:12:25 +0800 (CST)
 Received: from S00345302A-PC.china.huawei.com (10.210.168.73) by
  DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 19 Nov 2020 20:12:32 +0800
+ 14.3.487.0; Thu, 19 Nov 2020 20:12:38 +0800
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
@@ -26,185 +26,133 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
         <jonathan.cameron@huawei.com>, <steven.price@arm.com>,
         <Sami.Mujawar@arm.com>
-Subject: [RFC PATCH v2 2/8] ACPI/IORT: Add support for RMR node parsing
-Date:   Thu, 19 Nov 2020 12:11:44 +0000
-Message-ID: <20201119121150.3316-3-shameerali.kolothum.thodi@huawei.com>
+Subject: [RFC PATCH v2 3/8] iommu/dma: Introduce generic helper to retrieve RMR info
+Date:   Thu, 19 Nov 2020 12:11:45 +0000
+Message-ID: <20201119121150.3316-4-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
 References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.210.168.73]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add support for parsing RMR node information from ACPI.
-Find associated stream ids and smmu node info from the
-RMR node and populate a linked list with RMR memory
-descriptors.
+Reserved Memory Regions(RMR) associated with an IOMMU may be
+described either through ACPI tables or DT in systems with
+devices that require a unity mapping or bypass for those
+regions in IOMMU drivers.
+
+Introduce a generic interface so that IOMMU drivers can retrieve
+and set up necessary mappings.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- drivers/acpi/arm64/iort.c | 122 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 121 insertions(+), 1 deletion(-)
+ drivers/iommu/dma-iommu.c | 36 ++++++++++++++++++++++++++++++++++++
+ include/linux/dma-iommu.h |  7 +++++++
+ include/linux/iommu.h     | 16 ++++++++++++++++
+ 3 files changed, 59 insertions(+)
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9929ff50c0c0..a9705aa35028 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -40,6 +40,25 @@ struct iort_fwnode {
- static LIST_HEAD(iort_fwnode_list);
- static DEFINE_SPINLOCK(iort_fwnode_lock);
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 0cbcd3fc3e7e..d73768ecdd1a 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -166,6 +166,42 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
+ }
+ EXPORT_SYMBOL(iommu_dma_get_resv_regions);
  
-+struct iort_rmr_id {
-+	u32  sid;
-+	struct acpi_iort_node *smmu;
-+};
-+
-+/*
-+ * One entry for IORT RMR.
++/**
++ * iommu_dma_get_rmrs - Retrieve Reserved Memory Regions(RMRs) associated
++ *                      with a given IOMMU
++ * @iommu_fwnode: fwnode associated with IOMMU
++ * @list: RMR list to be populated
++ *
 + */
-+struct iort_rmr_entry {
-+	struct list_head list;
++int iommu_dma_get_rmrs(struct fwnode_handle *iommu_fwnode,
++		       struct list_head *list)
++{
++	return 0;
++}
++EXPORT_SYMBOL(iommu_dma_get_rmrs);
 +
-+	unsigned int rmr_ids_num;
-+	struct iort_rmr_id *rmr_ids;
++struct iommu_rmr *iommu_dma_alloc_rmr(u64 base, u64 length,
++				      u32 *ids, int num_ids)
++{
++	struct iommu_rmr *rmr;
++	int i;
 +
-+	struct acpi_iort_rmr_desc *rmr_desc;
++	rmr = kzalloc(struct_size(rmr, ids, num_ids), GFP_KERNEL);
++	if (!rmr)
++		return NULL;
++
++	INIT_LIST_HEAD(&rmr->list);
++	rmr->base_address = base;
++	rmr->length = length;
++	rmr->num_ids = num_ids;
++
++	for (i = 0; i < num_ids; i++)
++		rmr->ids[i] = ids[i];
++
++	return rmr;
++}
++EXPORT_SYMBOL(iommu_dma_alloc_rmr);
++
+ static int cookie_init_hw_msi_region(struct iommu_dma_cookie *cookie,
+ 		phys_addr_t start, phys_addr_t end)
+ {
+diff --git a/include/linux/dma-iommu.h b/include/linux/dma-iommu.h
+index 2112f21f73d8..8900ccbc9e6a 100644
+--- a/include/linux/dma-iommu.h
++++ b/include/linux/dma-iommu.h
+@@ -37,6 +37,9 @@ void iommu_dma_compose_msi_msg(struct msi_desc *desc,
+ 
+ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list);
+ 
++int iommu_dma_get_rmrs(struct fwnode_handle *iommu, struct list_head *list);
++struct iommu_rmr *iommu_dma_alloc_rmr(u64 base, u64 length,
++				      u32 *ids, int num_ids);
+ #else /* CONFIG_IOMMU_DMA */
+ 
+ struct iommu_domain;
+@@ -78,5 +81,9 @@ static inline void iommu_dma_get_resv_regions(struct device *dev, struct list_he
+ {
+ }
+ 
++int iommu_dma_get_rmrs(struct fwnode_handle *iommu, struct list_head *list);
++{
++	return 0;
++}
+ #endif	/* CONFIG_IOMMU_DMA */
+ #endif	/* __DMA_IOMMU_H */
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index b95a6f8db6ff..e43c4e8084e7 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -592,6 +592,22 @@ struct iommu_sva {
+ 	struct device			*dev;
+ };
+ 
++/**
++ * struct iommu_rmr - Reserved Memory Region details per IOMMU
++ * @list: Linked list pointers to hold RMR region info
++ * @base_address: base address of Reserved Memory Region
++ * @length: length of memory region
++ * @num_ids: number of associated device IDs
++ * @ids: associated device IDs
++ */
++struct iommu_rmr {
++	struct list_head	list;
++	phys_addr_t		base_address;
++	u64			length;
++	unsigned int		num_ids;
++	u32			ids[];
 +};
 +
-+static LIST_HEAD(iort_rmr_list);         /* list of RMR regions from ACPI */
-+
- /**
-  * iort_set_fwnode() - Create iort_fwnode and use it to register
-  *		       iommu data in the iort_fwnode_list
-@@ -393,7 +412,8 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
- 		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
- 		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
- 		    node->type == ACPI_IORT_NODE_SMMU_V3 ||
--		    node->type == ACPI_IORT_NODE_PMCG) {
-+		    node->type == ACPI_IORT_NODE_PMCG ||
-+		    node->type == ACPI_IORT_NODE_RMR) {
- 			*id_out = map->output_base;
- 			return parent;
- 		}
-@@ -1647,6 +1667,103 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
- #else
- static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
- #endif
-+static int iort_rmr_desc_valid(struct acpi_iort_rmr_desc *desc)
-+{
-+	struct iort_rmr_entry *e;
-+	u64 end, start = desc->base_address, length = desc->length;
-+
-+	if (!IS_ALIGNED(start, SZ_64K) || !IS_ALIGNED(length, SZ_64K))
-+		return -EINVAL;
-+
-+	end = start + length - 1;
-+
-+	/* Check for address overlap */
-+	list_for_each_entry(e, &iort_rmr_list, list) {
-+		u64 e_start = e->rmr_desc->base_address;
-+		u64 e_end = e_start + e->rmr_desc->length - 1;
-+
-+		if (start <= e_end && end >= e_start)
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __init iort_parse_rmr(struct acpi_iort_node *iort_node)
-+{
-+	struct iort_rmr_id *rmr_ids, *ids;
-+	struct iort_rmr_entry *e;
-+	struct acpi_iort_rmr *rmr;
-+	struct acpi_iort_rmr_desc *rmr_desc;
-+	u32 map_count = iort_node->mapping_count;
-+	int i, ret = 0, desc_count = 0;
-+
-+	if (iort_node->type != ACPI_IORT_NODE_RMR)
-+		return 0;
-+
-+	if (!iort_node->mapping_offset || !map_count) {
-+		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
-+		       iort_node);
-+		return -EINVAL;
-+	}
-+
-+	rmr_ids = kmalloc(sizeof(*rmr_ids) * map_count, GFP_KERNEL);
-+	if (!rmr_ids)
-+		return -ENOMEM;
-+
-+	/* Retrieve associated smmu and stream id */
-+	ids = rmr_ids;
-+	for (i = 0; i < map_count; i++, ids++) {
-+		ids->smmu = iort_node_get_id(iort_node, &ids->sid, i);
-+		if (!ids->smmu) {
-+			pr_err(FW_BUG "Invalid SMMU reference, skipping RMR node %p\n",
-+			       iort_node);
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+
-+	/* Retrieve RMR data */
-+	rmr = (struct acpi_iort_rmr *)iort_node->node_data;
-+	if (!rmr->rmr_offset || !rmr->rmr_count) {
-+		pr_err(FW_BUG "Invalid RMR descriptor array, skipping RMR node %p\n",
-+		       iort_node);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, iort_node,
-+				rmr->rmr_offset);
-+
-+	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
-+		ret = iort_rmr_desc_valid(rmr_desc);
-+		if (ret) {
-+			pr_err(FW_BUG "Invalid RMR descriptor[%d] for node %p, skipping...\n",
-+			       i, iort_node);
-+			goto out;
-+		}
-+
-+		e = kmalloc(sizeof(*e), GFP_KERNEL);
-+		if (!e) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
-+		e->rmr_ids_num = map_count;
-+		e->rmr_ids = rmr_ids;
-+		e->rmr_desc = rmr_desc;
-+
-+		list_add_tail(&e->list, &iort_rmr_list);
-+		desc_count++;
-+	}
-+
-+	return 0;
-+
-+out:
-+	if (!desc_count)
-+		kfree(rmr_ids);
-+	return ret;
-+}
- 
- static void __init iort_init_platform_devices(void)
- {
-@@ -1676,6 +1793,9 @@ static void __init iort_init_platform_devices(void)
- 
- 		iort_enable_acs(iort_node);
- 
-+		if (iort_table->revision == 1)
-+			iort_parse_rmr(iort_node);
-+
- 		ops = iort_get_dev_cfg(iort_node);
- 		if (ops) {
- 			fwnode = acpi_alloc_fwnode_static();
+ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode,
+ 		      const struct iommu_ops *ops);
+ void iommu_fwspec_free(struct device *dev);
 -- 
 2.17.1
 
