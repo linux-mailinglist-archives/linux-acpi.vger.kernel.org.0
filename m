@@ -2,24 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87DA52B89F6
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 03:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7702B89FA
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 03:07:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726098AbgKSCFm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Nov 2020 21:05:42 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7650 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726110AbgKSCFl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Nov 2020 21:05:41 -0500
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Cc3102Kh8z15KNh;
-        Thu, 19 Nov 2020 10:05:24 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.176.144) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 19 Nov 2020 10:05:31 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        id S1727271AbgKSCGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Nov 2020 21:06:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726340AbgKSCGm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Nov 2020 21:06:42 -0500
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CC0C0613D4
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Nov 2020 18:06:42 -0800 (PST)
+Received: by mail-qv1-xf44.google.com with SMTP id q7so2102540qvt.12
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Nov 2020 18:06:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ccKfW56H4PWGLSjC0LsiNJcR0/vxH+yLXhxLYv0fM10=;
+        b=rDU5+I6pfV/cpFPoCHYruTKxc1OUpArWLHBTpwX44EnsntWdNP7pLL/ebBoZsoVGbY
+         GyztbDlk2ndtd0rZMuLsmToFvj8GlD22ytPS6vj0lUmZzKsMBJmtQtkDkgX6dSgJy4WS
+         xuLb/McJwAMWVFy49HaLh43LP4vJsl+12KJR4uOPU77WJ7+I5lzrIyPfoKtYBwuot25v
+         NsSO+Sobt2TJqCTfzPXEXOxcpUHp9wIuVbBzCDm/yA6mG+rHPriYmof9pH6e8F2g3N3S
+         wymqm+Og5mCuxNOU9X7ZohZ0mPgRSMnjnsvcovxrsUGR2Q1yxgwujG+wfwT4EDxIjqPo
+         WoKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ccKfW56H4PWGLSjC0LsiNJcR0/vxH+yLXhxLYv0fM10=;
+        b=KwPg6EVRcZYd2b1TBCqQv2y94CpKbE9MmdrlJ1YYKsP83+jEt/nJQ7ASJWfXtxQs4q
+         JU4FJoJ4zXdhNUgBZkDUDGWuxdHDqPAUITrYESoTojqN768B8cPH54bCIyxonPJIYIoR
+         NADwlNHwqy5r2K9L7rIHNKGlXKq69Wv4K+yQc6L0wEPUwvRvMhpBQZ90iV8iH47KFvr0
+         pmrWU/fR6uMIU1IOROCJEQs6CVW+cptngAZQO+fbBsLGGBI+jUs4NG1vaKyAFiUs1tgm
+         62i9TRrg9S5uGYTJui1EExgj0vhgBfBahFQrJODe/ISErQUpqU5kEKWWB5J7RwcBgFpn
+         mWNw==
+X-Gm-Message-State: AOAM5308Y1hdapg3B5eL1Lzx5cxVij20oO3CEkDtnPzVt1fCMh9r3FJR
+        kCeKFLTX7k36QVcK20EWKWK6bLTMDHjjzDdbRcyEGA==
+X-Google-Smtp-Source: ABdhPJydAOOGYkEH//Rv4uY6EQ0za+qOAE0menANWzPkoy7vb2aGs+AHfwWpmp2vsHVsLEFb3E3oYqrsw6jHynE16DU=
+X-Received: by 2002:a0c:e8c8:: with SMTP id m8mr8228752qvo.41.1605751601185;
+ Wed, 18 Nov 2020 18:06:41 -0800 (PST)
+MIME-Version: 1.0
+References: <20201118084117.1937-1-thunder.leizhen@huawei.com>
+ <9b8310ed-e93f-e708-eefa-520701e6d044@huawei.com> <CAPcyv4hc0bw=+HQ-Zj0AWfB2-xMEEC--64zNxBkyapkiQRVVdg@mail.gmail.com>
+ <390a0fb5-5feb-527c-b90e-1c7b6ea65d5f@huawei.com>
+In-Reply-To: <390a0fb5-5feb-527c-b90e-1c7b6ea65d5f@huawei.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 18 Nov 2020 18:06:30 -0800
+Message-ID: <CAPcyv4h0To2N1QrofE6qddeuQPBH3Umh9e+emBv-Nej4gS4V+g@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI/nfit: correct the badrange to be reported in nfit_handle_mce()
+To:     "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
         Dave Jiang <dave.jiang@intel.com>,
         Ira Weiny <ira.weiny@intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
@@ -27,45 +61,35 @@ To:     Dan Williams <dan.j.williams@intel.com>,
         linux-nvdimm <linux-nvdimm@lists.01.org>,
         linux-acpi <linux-acpi@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH v2 1/1] acpi/nfit: fix badrange insertion in nfit_handle_mce()
-Date:   Thu, 19 Nov 2020 09:57:46 +0800
-Message-ID: <20201119015746.1990-2-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20201119015746.1990-1-thunder.leizhen@huawei.com>
-References: <20201119015746.1990-1-thunder.leizhen@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.176.144]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make sure the badrange to be reported can always cover mce->addr.
+On Wed, Nov 18, 2020 at 5:53 PM Leizhen (ThunderTown)
+<thunder.leizhen@huawei.com> wrote:
+>
+>
+>
+> On 2020/11/19 3:16, Dan Williams wrote:
+> > On Wed, Nov 18, 2020 at 12:55 AM Leizhen (ThunderTown)
+> > <thunder.leizhen@huawei.com> wrote:
+> >>
+> >>
+> >>
+> >> On 2020/11/18 16:41, Zhen Lei wrote:
+> >>> The badrange to be reported should always cover mce->addr.
+> >> Maybe I should change this description to:
+> >> Make sure the badrange to be reported can always cover mce->addr.
+> >
+> > Yes, I like that better. Can you also say a bit more about how you
+> > found this bug? As far as I can see this looks like -stable material.
+>
+> I found it when I was learning the code. I'm looking at it carefully.
 
-Fixes: 9ffd6350a103 ("nfit: don't start a full scrub by default for an MCE")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
----
- drivers/acpi/nfit/mce.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ok, good eye.
 
-diff --git a/drivers/acpi/nfit/mce.c b/drivers/acpi/nfit/mce.c
-index ee8d9973f60b..053e719c7bea 100644
---- a/drivers/acpi/nfit/mce.c
-+++ b/drivers/acpi/nfit/mce.c
-@@ -63,7 +63,7 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
- 
- 		/* If this fails due to an -ENOMEM, there is little we can do */
- 		nvdimm_bus_add_badrange(acpi_desc->nvdimm_bus,
--				ALIGN(mce->addr, L1_CACHE_BYTES),
-+				ALIGN_DOWN(mce->addr, L1_CACHE_BYTES),
- 				L1_CACHE_BYTES);
- 		nvdimm_region_notify(nfit_spa->nd_region,
- 				NVDIMM_REVALIDATE_POISON);
--- 
-2.26.0.106.g9fadedd
-
-
+The impact of this one is somewhat mitigated by the fact that errors
+are expanded to 512 byte blast radius, and error consumption maps 4k
+around errors. I suspect few are trying to use the badblock list to do
+fine grained recovery so this bug went unnoticed.
