@@ -2,97 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 416672B9797
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 17:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 672A12B98A6
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Nov 2020 17:55:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbgKSQRY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 19 Nov 2020 11:17:24 -0500
-Received: from smtp.asem.it ([151.1.184.197]:50036 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725877AbgKSQRX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 19 Nov 2020 11:17:23 -0500
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000619548.MSG 
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Nov 2020 17:17:21 +0100
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 19
- Nov 2020 17:17:20 +0100
-Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
- mapi id 15.01.1979.003; Thu, 19 Nov 2020 17:17:20 +0100
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v1] docs: ACPI: enumeration: add PCI hierarchy
- representation
-Thread-Topic: [PATCH v1] docs: ACPI: enumeration: add PCI hierarchy
- representation
-Thread-Index: AQHWvlyAjXLlwduncU2KU0iBvT+xrKnPO2CAgABk9nA=
-Date:   Thu, 19 Nov 2020 16:17:19 +0000
-Message-ID: <9b5ab860bb77427892edbe443889a006@asem.it>
-References: <20201119101233.701918-1-f.suligoi@asem.it>
- <20201119110921.GB4077@smile.fi.intel.com>
-In-Reply-To: <20201119110921.GB4077@smile.fi.intel.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.17.208]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1727888AbgKSQzB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Nov 2020 11:55:01 -0500
+Received: from mslow2.mail.gandi.net ([217.70.178.242]:37468 "EHLO
+        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727872AbgKSQzB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Nov 2020 11:55:01 -0500
+Received: from relay8-d.mail.gandi.net (unknown [217.70.183.201])
+        by mslow2.mail.gandi.net (Postfix) with ESMTP id 1AA823A504B
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Nov 2020 16:38:20 +0000 (UTC)
+X-Originating-IP: 82.255.60.242
+Received: from [192.168.0.28] (lns-bzn-39-82-255-60-242.adsl.proxad.net [82.255.60.242])
+        (Authenticated sender: hadess@hadess.net)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 312D71BF210;
+        Thu, 19 Nov 2020 16:37:55 +0000 (UTC)
+Message-ID: <c86f894d29189980709a905df0855fdf731ade29.camel@hadess.net>
+Subject: Re: [PATCH 0/3] Platform Profile support
+From:   Bastien Nocera <hadess@hadess.net>
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     rjw@rjwysocki.net, hdegoede@redhat.com, mgross@linux.intel.com,
+        linux-acpi@vger.kernel.org, mario.limonciello@dell.com,
+        eliadevito@gmail.com, bberg@redhat.com,
+        platform-driver-x86@vger.kernel.org, dvhart@infradead.org
+Date:   Thu, 19 Nov 2020 17:37:55 +0100
+In-Reply-To: <20201110033124.3211-1-markpearson@lenovo.com>
+References: <markpearson@lenovo.com>
+         <20201110033124.3211-1-markpearson@lenovo.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
 MIME-Version: 1.0
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A090214.5FB69A90.0068,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy!
-
-
-> On Thu, Nov 19, 2020 at 11:12:33AM +0100, Flavio Suligoi wrote:
+On Mon, 2020-11-09 at 22:31 -0500, Mark Pearson wrote:
+> This patch series is for the implementation of the platform-profile
+> feature - the ability to determine which mode the platform is in and
+> to change the mode using a sysfs entry.
 > 
-> Thank you very much for nice piece of documentation!
-> My comments below.
-
-Thanks for your suggestions! I'll use them in the next version
-of the patch!
-
-> > +particular the DSDT (see also [2])::
+> The first patch is an update of the document I've been working on
+> with
+> review and help from the kernel community. Thank you to everybody for
+> their input.
 > 
-> > +	cd /sys/firmware/acpi
-> > +	cp -a tables/ ~
-> > +	cd ~/tables/
+> The second patch implements the platform-profile sysfs and API's
+> needed.
 > 
-> acpidump followed by acpixtract from ACPI tools is better to advertise.
+> The third patch has Lenovo specific changes in thinkpad_acpi.c to use
+> the new platform-profile implementation and be able to switch between
+> low, medium and high power modes.
 
-Ok, I'll use acpixtract
+I've implemented this in power-profiles-daemon:
+https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/merge_requests/41
 
-> 
-> > +	find . -type f -exec mv {} {}.aml \;
-> 
-> Unnecessary step. But I think you wanted to have it to distinguish sources
-> and
-> binaries in the text below.
+Was pretty straight forward to implement, so good job :)
 
-Right, I think that is important include the SSDT tables for external
-symbol resolution. For this reason I renamed the binary tables, to
-use the following command:
-
-> > +	iasl -e SSDT?.* -d DSDT.aml
-
-> --
-> With Best Regards,
-> Andy Shevchenko
-> 
-
-Best regards,
-Flavio
