@@ -2,106 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D53A82BB5EE
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 199A92BB5FE
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:53:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729504AbgKTTu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 14:50:58 -0500
-Received: from mail-02.mail-europe.com ([51.89.119.103]:35768 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729404AbgKTTu6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 14:50:58 -0500
-Date:   Fri, 20 Nov 2020 19:50:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1605901854;
-        bh=M2jHYTpwpp+g8gc1TsXXlWC/UVccnbY0a1aU0LGckOU=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=vw6emZtPcSedSwynDg1H4xwuG0ou9bK/nHmchsP9Z0TrJRipXF5XpBUgWfOokKW0K
-         R8ue6Ti25Lgq3XXvIhZNZ8OdljTTQkrsiBsbcpJrQkfFRqqbN/kh/HNe6NHMrpHMtv
-         O4x8CPRftFYWgS/QnKWsGtXoEFvVvLPywEyYMe3o=
-To:     Mark Pearson <markpearson@lenovo.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
-        "eliadevito@gmail.com" <eliadevito@gmail.com>,
-        "hadess@hadess.net" <hadess@hadess.net>,
-        "bberg@redhat.com" <bberg@redhat.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "dvhart@infradead.org" <dvhart@infradead.org>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
-Message-ID: <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
-In-Reply-To: <20201115004402.342838-1-markpearson@lenovo.com>
-References: <markpearson@lenovo.com> <20201115004402.342838-1-markpearson@lenovo.com>
+        id S1729910AbgKTTvv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 14:51:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48630 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729559AbgKTTvu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 20 Nov 2020 14:51:50 -0500
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ADA4D206B6;
+        Fri, 20 Nov 2020 19:51:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605901908;
+        bh=RBzOhaxiAPO90htsWQNreeN48VhmFALIIs8F+S8F2tg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=0HJ898xky9A4AiX47c8E/kv2vloKTCLDsa1B08r0Ns0UI6ViLC8sEEmzvLmSWmHDR
+         rh+QM7asV5JMfRqDaW/zMVHUMAG8pWVLOHT3LXTHM6aAp9QNwMcpVcVlrfF8wRUqJ9
+         pWgdeTKSVxQ+8c5KHivLBQCp2OjpIRpNZteZuQdk=
+Date:   Fri, 20 Nov 2020 11:51:42 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
+        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
+        coreteam@netfilter.org, devel@driverdev.osuosl.org,
+        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
+        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        linux-afs@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+Message-ID: <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <202011201129.B13FDB3C@keescook>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+        <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <202011201129.B13FDB3C@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
+> On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
+> > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
+> > > This series aims to fix almost all remaining fall-through warnings in
+> > > order to enable -Wimplicit-fallthrough for Clang.
+> > > 
+> > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
+> > > add multiple break/goto/return/fallthrough statements instead of just
+> > > letting the code fall through to the next case.
+> > > 
+> > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
+> > > change[1] is meant to be reverted at some point. So, this patch helps
+> > > to move in that direction.
+> > > 
+> > > Something important to mention is that there is currently a discrepancy
+> > > between GCC and Clang when dealing with switch fall-through to empty case
+> > > statements or to cases that only contain a break/continue/return
+> > > statement[2][3][4].  
+> > 
+> > Are we sure we want to make this change? Was it discussed before?
+> > 
+> > Are there any bugs Clangs puritanical definition of fallthrough helped
+> > find?
+> > 
+> > IMVHO compiler warnings are supposed to warn about issues that could
+> > be bugs. Falling through to default: break; can hardly be a bug?!  
+> 
+> It's certainly a place where the intent is not always clear. I think
+> this makes all the cases unambiguous, and doesn't impact the machine
+> code, since the compiler will happily optimize away any behavioral
+> redundancy.
 
+If none of the 140 patches here fix a real bug, and there is no change
+to machine code then it sounds to me like a W=2 kind of a warning.
 
-2020. november 15., vas=C3=A1rnap 1:44 keltez=C3=A9ssel, Mark Pearson =
-=C3=ADrta:
-
-> [...]
-> +int platform_profile_register(struct platform_profile_handler *pprof)
-> +{
-> +=09mutex_lock(&profile_lock);
-> +=09/* We can only have one active profile */
-> +=09if (cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -EEXIST;
-> +=09}
-> +
-> +=09cur_profile =3D pprof;
-> +=09mutex_unlock(&profile_lock);
-> +=09return sysfs_create_group(acpi_kobj, &platform_profile_group);
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_register);
-> +
-> +int platform_profile_unregister(void)
-> +{
-> +=09mutex_lock(&profile_lock);
-> +=09sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +=09cur_profile =3D NULL;
-> +=09mutex_unlock(&profile_lock);
-> +=09return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
-> [...]
-
-
-I just realized that the sysfs attributes are only created if a profile pro=
-vider
-is registered, and it is removed when the provide unregisters itself. I bel=
-ieve
-it would be easier for system daemons if those attributes existed from modu=
-le load
-to module unload since they can just just open the file and watch it using =
-poll,
-select, etc. If it goes away when the provider unregisters itself, then I b=
-elieve
-a more complicated mechanism (like inotify) would need to be implemented in=
- the
-daemons to be notified when a new provider is registered. Thus my suggestio=
-n
-for the next iteration is to create the sysfs attributes on module load,
-and delete them on unload.
-
-What do you think?
-
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
+I think clang is just being annoying here, but if I'm the only one who
+feels this way chances are I'm wrong :)
