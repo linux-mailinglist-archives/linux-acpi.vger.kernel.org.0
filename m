@@ -2,139 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27C612BB577
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:31:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D53A82BB5EE
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732407AbgKTTao (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 14:30:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729177AbgKTTan (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 14:30:43 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909F6C061A47
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 11:30:43 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id 131so8820482pfb.9
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 11:30:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3bv50j9tOMZCSWAChUvUk5K6TgooTRt3SRcQZBJ9fcA=;
-        b=GgFl3K9IS/lWsdMjkEVVAtTSDzsQ0sxEOabPKwuHzNJyTA7s1nVN/P5Py+wtAIOvbE
-         i43RryzoLL4QMDFVI6bDxTe0ngekUN0rycJ/u5dixn0o4ZWxiMdHtnF6M1zgV7bxdmjG
-         OxnZTS8PQwcd6ZCwnahaxVB8GYQEw6f4nxFx4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3bv50j9tOMZCSWAChUvUk5K6TgooTRt3SRcQZBJ9fcA=;
-        b=lsNruwISIeTOXOajQ49RmSzPOai85rIATohFQg8otJqQerGdIZlNSVe4XXDOQDwbIu
-         YIYzmIOQ/6UMijDKRaAi7efLUTZsbVwLmK7my+E9/U5qR/LOO/pc4PEaw2TWQm4dSvNi
-         4zEkQUR4JdgwM91Ed7dznPT70a8KCyBRJ8t3tQoBPzbiz7xn0sFSu34ZwjGDJaMWZIB6
-         9h0rcBEkjtovcp2MYbv1zl4qOH9f/UXQCIIP/vIiPh7kHCdOeMoY1zpW4k0YC1MpeiHk
-         L0WCcLgFgF1eHmLbrW1euWPoLVBLNc2iNgLxYR+UmGm/d5uBHq9Mm0g4NdF1ifbQ6XA4
-         aiKg==
-X-Gm-Message-State: AOAM531dqRBFjXHVEzRMi2m1xffYbbw4buI3gt3vYNI922DDHIYnofzc
-        nAoozFICPHk1f0wFKsDc5NSPeQ==
-X-Google-Smtp-Source: ABdhPJwl3VgOHP/MWhG5DtpaEL0Yyt6dBbRzpe/94BRgWnGkgcq6AJ5JXkZmDK0TJqDkyAhq9Y3Q+Q==
-X-Received: by 2002:a63:5043:: with SMTP id q3mr17907345pgl.137.1605900643099;
-        Fri, 20 Nov 2020 11:30:43 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d10sm4785681pjj.38.2020.11.20.11.30.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 11:30:41 -0800 (PST)
-Date:   Fri, 20 Nov 2020 11:30:40 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <202011201129.B13FDB3C@keescook>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        id S1729504AbgKTTu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 14:50:58 -0500
+Received: from mail-02.mail-europe.com ([51.89.119.103]:35768 "EHLO
+        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729404AbgKTTu6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 14:50:58 -0500
+Date:   Fri, 20 Nov 2020 19:50:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1605901854;
+        bh=M2jHYTpwpp+g8gc1TsXXlWC/UVccnbY0a1aU0LGckOU=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=vw6emZtPcSedSwynDg1H4xwuG0ou9bK/nHmchsP9Z0TrJRipXF5XpBUgWfOokKW0K
+         R8ue6Ti25Lgq3XXvIhZNZ8OdljTTQkrsiBsbcpJrQkfFRqqbN/kh/HNe6NHMrpHMtv
+         O4x8CPRftFYWgS/QnKWsGtXoEFvVvLPywEyYMe3o=
+To:     Mark Pearson <markpearson@lenovo.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "hadess@hadess.net" <hadess@hadess.net>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
+Message-ID: <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
+In-Reply-To: <20201115004402.342838-1-markpearson@lenovo.com>
+References: <markpearson@lenovo.com> <20201115004402.342838-1-markpearson@lenovo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
-> On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:
-> > This series aims to fix almost all remaining fall-through warnings in
-> > order to enable -Wimplicit-fallthrough for Clang.
-> > 
-> > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> > add multiple break/goto/return/fallthrough statements instead of just
-> > letting the code fall through to the next case.
-> > 
-> > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> > change[1] is meant to be reverted at some point. So, this patch helps
-> > to move in that direction.
-> > 
-> > Something important to mention is that there is currently a discrepancy
-> > between GCC and Clang when dealing with switch fall-through to empty case
-> > statements or to cases that only contain a break/continue/return
-> > statement[2][3][4].
-> 
-> Are we sure we want to make this change? Was it discussed before?
-> 
-> Are there any bugs Clangs puritanical definition of fallthrough helped
-> find?
-> 
-> IMVHO compiler warnings are supposed to warn about issues that could
-> be bugs. Falling through to default: break; can hardly be a bug?!
-
-It's certainly a place where the intent is not always clear. I think
-this makes all the cases unambiguous, and doesn't impact the machine
-code, since the compiler will happily optimize away any behavioral
-redundancy.
+Hi
 
 
--- 
-Kees Cook
+2020. november 15., vas=C3=A1rnap 1:44 keltez=C3=A9ssel, Mark Pearson =
+=C3=ADrta:
+
+> [...]
+> +int platform_profile_register(struct platform_profile_handler *pprof)
+> +{
+> +=09mutex_lock(&profile_lock);
+> +=09/* We can only have one active profile */
+> +=09if (cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -EEXIST;
+> +=09}
+> +
+> +=09cur_profile =3D pprof;
+> +=09mutex_unlock(&profile_lock);
+> +=09return sysfs_create_group(acpi_kobj, &platform_profile_group);
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_register);
+> +
+> +int platform_profile_unregister(void)
+> +{
+> +=09mutex_lock(&profile_lock);
+> +=09sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +=09cur_profile =3D NULL;
+> +=09mutex_unlock(&profile_lock);
+> +=09return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
+> [...]
+
+
+I just realized that the sysfs attributes are only created if a profile pro=
+vider
+is registered, and it is removed when the provide unregisters itself. I bel=
+ieve
+it would be easier for system daemons if those attributes existed from modu=
+le load
+to module unload since they can just just open the file and watch it using =
+poll,
+select, etc. If it goes away when the provider unregisters itself, then I b=
+elieve
+a more complicated mechanism (like inotify) would need to be implemented in=
+ the
+daemons to be notified when a new provider is registered. Thus my suggestio=
+n
+for the next iteration is to create the sysfs attributes on module load,
+and delete them on unload.
+
+What do you think?
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
