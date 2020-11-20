@@ -2,107 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7862BB46E
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4052BB49E
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:00:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731358AbgKTSxw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 13:53:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34856 "EHLO mail.kernel.org"
+        id S1732167AbgKTSzP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 13:55:15 -0500
+Received: from mga12.intel.com ([192.55.52.136]:60653 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730460AbgKTSxv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Nov 2020 13:53:51 -0500
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D19712242B;
-        Fri, 20 Nov 2020 18:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605898429;
-        bh=RlEnelajx5E1UvOiu4TwGuYZq41CYqRzy+OE2vpEZwM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=y6BwGzsUDu1zr4tV0nGpfLuqNb1AQVwTl3HIlZXKXQmalkVaXzcKTw6PaiYzn6cs4
-         cCrQcjpmBltf5qc0pbll6lEfWSr4jv5MMDA/VHBdadKQQtZqXFk9pYOspqu5FdKf1A
-         HiIo+vycYYhwL3jW0KIV5eL5D/2xlLalPiHVxUuA=
-Date:   Fri, 20 Nov 2020 10:53:44 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
+        id S1732139AbgKTSzO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 20 Nov 2020 13:55:14 -0500
+IronPort-SDR: vGt8cgmLjUqOy0p5FYfXowlxAybwHIXrPXypSIw2h3+Hfr4uscJbJ2mC+rNpD4BLxks5RPw3WU
+ eSTXLsBhWCig==
+X-IronPort-AV: E=McAfee;i="6000,8403,9811"; a="150788420"
+X-IronPort-AV: E=Sophos;i="5.78,357,1599548400"; 
+   d="scan'208";a="150788420"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2020 10:55:14 -0800
+IronPort-SDR: AWmO/6KsI/Qp62TUx1W3PMnoqTT2mxLQjlGsttyki7oiQoZNyZopGqWcwpPtVsuwKdGFzhvQ6E
+ oMhH1SLTHwXQ==
+X-IronPort-AV: E=Sophos;i="5.78,357,1599548400"; 
+   d="scan'208";a="331416503"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2020 10:55:11 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kgBZt-008LwO-8M; Fri, 20 Nov 2020 20:56:13 +0200
+Date:   Fri, 20 Nov 2020 20:56:13 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <cover.1605896059.git.gustavoars@kernel.org>
+Cc:     Alban Bedel <albeu@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 007/141] gpio: Fix fall-through warnings for Clang
+Message-ID: <20201120185613.GT4077@smile.fi.intel.com>
 References: <cover.1605896059.git.gustavoars@kernel.org>
+ <9611e213448b27f3f08a010c683d566c712bdbbb.1605896059.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9611e213448b27f3f08a010c683d566c712bdbbb.1605896059.git.gustavoars@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:
-> This series aims to fix almost all remaining fall-through warnings in
-> order to enable -Wimplicit-fallthrough for Clang.
-> 
-> In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> add multiple break/goto/return/fallthrough statements instead of just
-> letting the code fall through to the next case.
-> 
-> Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> change[1] is meant to be reverted at some point. So, this patch helps
-> to move in that direction.
-> 
-> Something important to mention is that there is currently a discrepancy
-> between GCC and Clang when dealing with switch fall-through to empty case
-> statements or to cases that only contain a break/continue/return
-> statement[2][3][4].
+On Fri, Nov 20, 2020 at 12:25:16PM -0600, Gustavo A. R. Silva wrote:
+> In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
+> warnings by explicitly adding a break and a fallthrough statements
+> instead of just letting the code fall through to the next case.
 
-Are we sure we want to make this change? Was it discussed before?
+Shouldn't this go via GPIO tree?
 
-Are there any bugs Clangs puritanical definition of fallthrough helped
-find?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-IMVHO compiler warnings are supposed to warn about issues that could
-be bugs. Falling through to default: break; can hardly be a bug?!
+
