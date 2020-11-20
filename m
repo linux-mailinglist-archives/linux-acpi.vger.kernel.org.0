@@ -2,163 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 121C72BAEC2
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 16:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0421E2BAEE9
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 16:36:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729572AbgKTPUj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 10:20:39 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2137 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728618AbgKTPUj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 10:20:39 -0500
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cd0Yl512Gz67D59;
-        Fri, 20 Nov 2020 23:18:35 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Fri, 20 Nov 2020 16:20:31 +0100
-Received: from localhost (10.47.69.87) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Fri, 20 Nov
- 2020 15:20:30 +0000
-Date:   Fri, 20 Nov 2020 15:20:18 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     Ben Widawsky <ben.widawsky@intel.com>, <linux-cxl@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Ira Weiny" <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [RFC PATCH 8/9] cxl/mem: Register CXL memX devices
-Message-ID: <20201120152018.00006121@Huawei.com>
-In-Reply-To: <CAPcyv4ifDfzN=NTNZTh+xU_-b5Rm4jNOLiakQv-DPQa+6hfRaQ@mail.gmail.com>
-References: <20201111054356.793390-1-ben.widawsky@intel.com>
-        <20201111054356.793390-9-ben.widawsky@intel.com>
-        <20201117155651.0000368b@Huawei.com>
-        <CAPcyv4ifDfzN=NTNZTh+xU_-b5Rm4jNOLiakQv-DPQa+6hfRaQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1728642AbgKTP0R convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 20 Nov 2020 10:26:17 -0500
+Received: from smtp.asem.it ([151.1.184.197]:55711 "EHLO smtp.asem.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728608AbgKTP0Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 20 Nov 2020 10:26:16 -0500
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000621942.MSG 
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 16:26:14 +0100
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 20
+ Nov 2020 16:26:13 +0100
+Received: from ASAS044.asem.intra ([::1]) by ASAS044.asem.intra ([::1]) with
+ mapi id 15.01.1979.003; Fri, 20 Nov 2020 16:26:13 +0100
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] docs: ACPI: enumeration: add PCI hierarchy
+ representation
+Thread-Topic: [PATCH v2] docs: ACPI: enumeration: add PCI hierarchy
+ representation
+Thread-Index: AQHWvy3o1QjrgEUP4UmaOryOTfF696nRDJQAgAAXbqA=
+Date:   Fri, 20 Nov 2020 15:26:13 +0000
+Message-ID: <d51ce85e8c474242a939e13f81c1a5a1@asem.it>
+References: <20201120111125.78296-1-f.suligoi@asem.it>
+ <20201120150014.GS4077@smile.fi.intel.com>
+In-Reply-To: <20201120150014.GS4077@smile.fi.intel.com>
+Accept-Language: it-IT, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.17.208]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.69.87]
-X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090201.5FB7E016.001F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 19 Nov 2020 18:16:19 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+Hi Andy,
 
-> On Tue, Nov 17, 2020 at 7:57 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Tue, 10 Nov 2020 21:43:55 -0800
-> > Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >  
-> > > From: Dan Williams <dan.j.williams@intel.com>
-> > >
-> > > Create the /sys/bus/cxl hierarchy to enumerate memory devices
-> > > (per-endpoint control devices), memory address space devices (platform
-> > > address ranges with interleaving, performance, and persistence
-> > > attributes), and memory regions (active provisioned memory from an
-> > > address space device that is in use as System RAM or delegated to
-> > > libnvdimm as Persistent Memory regions).
-> > >
-> > > For now, only the per-endpoint control devices are registered on the
-> > > 'cxl' bus.  
-> >
-> > Reviewing ABI without documentation is challenging even when it's simple
-> > so please add that for v2.
-> >
-> > This patch feels somewhat unpolished, but I guess it is mainly here to
-> > give an illustration of how stuff might fit together rather than
-> > any expectation of detailed review.  
+> > This patch, with a practical example, show how to do this.
 > 
-> Yeah, this is definitely an early look in the spirit of "Release early
-> / release often".
+> Good enough, we can amend style and formatting later on.
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
 
-Definitely a good idea.
+Thanks!
 
-
-...
-
-> >  
-> > >  static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > >  {
-> > >       struct cxl_mem *cxlm = ERR_PTR(-ENXIO);
-> > >       struct device *dev = &pdev->dev;
-> > > +     struct cxl_memdev *cxlmd;
-> > >       int rc, regloc, i;
-> > >
-> > >       rc = cxl_bus_prepared(pdev);
-> > > @@ -319,20 +545,31 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > >       if (rc)
-> > >               return rc;
-> > >
-> > > -     /* Check that hardware "looks" okay. */
-> > > -     rc = cxl_mem_mbox_get(cxlm);
-> > > +     rc = cxl_mem_identify(cxlm);
-> > >       if (rc)
-> > >               return rc;
-> > > -
-> > > -     cxl_mem_mbox_put(cxlm);  
-> >
-> > It was kind of nice to see the flow earlier, but I'm also thinking it made
-> > a slightly harder to read patch.  Hmm.  Maybe just drop the version earlier
-> > in favour of a todo comment that you then do here?  
+> > Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> > ---
 > 
-> Not sure I follow, but I think you're saying don't bother with an
-> initial patch introducing just doing the raw cxl_mem_mbox_get() in
-> this path, jump straight to cxl_mem_identify()?
+> (Here you usually put a changelog what has been done in v2 vs. v1))
 
-Exactly.
+Yes, you are right! I forgot it!
 
 > 
-> >  
-> > >       dev_dbg(&pdev->dev, "CXL Memory Device Interface Up\n");
-> > > +  
-> >
-> > Nice to tidy that up by moving to earlier patch.  
+> --
+> With Best Regards,
+> Andy Shevchenko
 > 
-> Sure.
-> 
-> >  
-> > >       pci_set_drvdata(pdev, cxlm);
-> > >
-> > > +     cxlmd = cxl_mem_add_memdev(cxlm);
-> > > +     if (IS_ERR(cxlmd))
-> > > +             return PTR_ERR(cxlmd);  
-> >
-> > Given we don't actually use cxlmd perhaps a simple return value
-> > of 0 or error would be better from cxl_mem_add_memdev()
-> >
-> > (I guess you may have follow up patches that do something with it
-> >  here, though it feels wrong to ever do so given it is now registered
-> >  and hence exposed to the system).  
-> 
-> It's not added if IS_ERR() is true, but it would be simpler to just
-> have cxl_mem_add_memdev() return an int since ->probe() doesn't use
-> it.
 
-Agreed.
-
-> 
-> >  
-> > > +
-> > >       return 0;
-> > >  }
-> > >
-
-...
-
-
-
+Regards,
+Flavio
