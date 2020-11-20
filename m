@@ -2,22 +2,23 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0DA2BB521
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB4012BB535
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 20:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732280AbgKTTUB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 14:20:01 -0500
-Received: from gateway33.websitewelcome.com ([192.185.145.4]:42481 "EHLO
-        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732160AbgKTTUB (ORCPT
+        id S1732122AbgKTTZD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 14:25:03 -0500
+Received: from gateway34.websitewelcome.com ([192.185.148.194]:39365 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732315AbgKTTZC (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Nov 2020 14:20:01 -0500
+        Fri, 20 Nov 2020 14:25:02 -0500
+X-Greylist: delayed 1348 seconds by postgrey-1.27 at vger.kernel.org; Fri, 20 Nov 2020 14:25:01 EST
 Received: from cm14.websitewelcome.com (cm14.websitewelcome.com [100.42.49.7])
-        by gateway33.websitewelcome.com (Postfix) with ESMTP id EBE2B2F016
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 12:58:43 -0600 (CST)
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id 231C24E9FDA
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 13:02:32 -0600 (CST)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id gBcJkKULqfgo0gBcJkDGWJ; Fri, 20 Nov 2020 12:58:43 -0600
+        id gBg0kKZwxfgo0gBg0kDLzl; Fri, 20 Nov 2020 13:02:32 -0600
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
@@ -25,29 +26,67 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nC4vgEbGZvs+NmpSgqqGWzHb+DGyy2P/ua3EXV/56lk=; b=p8ofUMrVhnRvdIP8eXzPPa8JFQ
-        +JZE9vafjkgZJBbq8uN0dHAV0vmuSmoDmJS+ZWTRdaYynO5Xo86rtdWu8oP6MGqYy8LPFoTYIycds
-        djqHEg0+MMd7sct6NBty/GRRHOB/4Ga/wqsOTqXvQUa/zgAJHOb+QZSscYgiyvQ5CXiCHS6/4cEaq
-        i97grJSkqA7OmZ4Xuxj6TU2w0rdKd369IZ812YV1gIiOL/L/nWe9SCgIToAid9dJfeL5+yl6Hx5A3
-        vj6wEWIK6fTxc4TPM9GGo9xVvOs4nYiO0iJmIt8Z5REr0eHo4G8LHyVNGrnXYqiBWQVwR4WbZfMqT
-        sI2FCp8A==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:51958 helo=[192.168.15.4])
+        bh=+4VxQ3E1SMf3fqpPxA59SXnFTIYnqNYQQfNHAF4XRGw=; b=n09KqYnyKHrO7dveIUWc55mzig
+        y4HUZZbrqh9oIGiAW16mTaR8pcvnAozTxI+rYVVIt9CxAErudOIqW44giqY0jAAxUq2Az5FkJRw8D
+        DdYM3ceCwzW72Iyh3zFwKX+btf9zXkIFnOla0anfthw4DZBTFFqyoxwOvEOl2OJ26TOTLqWU9obCG
+        intkFNaJRljaeNwR96RWCduzT1c1ht64s9kRw8R+vb7ftuKF/SC10c1DXlPqmQL512w8QCfyvTWtG
+        dzgy+MeNJCgbGq47RynDwYUz9POm4OiFKWoqxvHGtR/GFZ1BW9GSDXleqWC/tOZ433VaTMSGJy7Ut
+        yE2h40Yg==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:52198 helo=[192.168.15.4])
         by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1kgBcJ-004L6l-DH; Fri, 20 Nov 2020 12:58:43 -0600
-Subject: Re: [PATCH 007/141] gpio: Fix fall-through warnings for Clang
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Alban Bedel <albeu@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-hardening@vger.kernel.org
+        id 1kgBfw-0000VH-WA; Fri, 20 Nov 2020 13:02:29 -0600
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+To:     Joe Perches <joe@perches.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel@vger.kernel.org
+Cc:     alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Kees Cook <keescook@chromium.org>
 References: <cover.1605896059.git.gustavoars@kernel.org>
- <9611e213448b27f3f08a010c683d566c712bdbbb.1605896059.git.gustavoars@kernel.org>
- <20201120185613.GT4077@smile.fi.intel.com>
+ <3e0bbb1644fe53d79322c2feb28ccaf3e20c0e94.camel@perches.com>
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Autocrypt: addr=gustavo@embeddedor.com; keydata=
  xsFNBFssHAwBEADIy3ZoPq3z5UpsUknd2v+IQud4TMJnJLTeXgTf4biSDSrXn73JQgsISBwG
@@ -93,12 +132,12 @@ Autocrypt: addr=gustavo@embeddedor.com; keydata=
  6i6Rd2U/i8jH5WvzR57UeWxE4P8bQc0hNGrUsHQH6bpHV2lbuhDdqo+cM9ehGZEO3+gCDFmK
  rjspZjkJbB5Gadzvts5fcWGOXEvuT8uQSvl+vEL0g6vczsyPBtqoBLa9SNrSVtSixD1uOgyt
  AP7RWS474w==
-Message-ID: <f55bca70-5d77-562f-626a-fad51af2857d@embeddedor.com>
-Date:   Fri, 20 Nov 2020 12:58:46 -0600
+Message-ID: <9f986394-125a-81f7-7696-fe1a9f4eb4f5@embeddedor.com>
+Date:   Fri, 20 Nov 2020 13:02:34 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201120185613.GT4077@smile.fi.intel.com>
+In-Reply-To: <3e0bbb1644fe53d79322c2feb28ccaf3e20c0e94.camel@perches.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -110,13 +149,13 @@ X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
 X-Source-IP: 187.162.31.110
 X-Source-L: No
-X-Exim-ID: 1kgBcJ-004L6l-DH
+X-Exim-ID: 1kgBfw-0000VH-WA
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.4]) [187.162.31.110]:51958
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.4]) [187.162.31.110]:52198
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 9
+X-Email-Count: 20
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Precedence: bulk
@@ -125,21 +164,30 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 11/20/20 12:56, Andy Shevchenko wrote:
-> On Fri, Nov 20, 2020 at 12:25:16PM -0600, Gustavo A. R. Silva wrote:
->> In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
->> warnings by explicitly adding a break and a fallthrough statements
->> instead of just letting the code fall through to the next case.
+On 11/20/20 12:28, Joe Perches wrote:
+> On Fri, 2020-11-20 at 12:21 -0600, Gustavo A. R. Silva wrote:
+>> Hi all,
+>>
+>> This series aims to fix almost all remaining fall-through warnings in
+>> order to enable -Wimplicit-fallthrough for Clang.
+>>
+>> In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
+>> add multiple break/goto/return/fallthrough statements instead of just
+>> letting the code fall through to the next case.
+>>
+>> Notice that in order to enable -Wimplicit-fallthrough for Clang, this
+>> change[1] is meant to be reverted at some point. So, this patch helps
+>> to move in that direction.
 > 
-> Shouldn't this go via GPIO tree?
+> This was a bit hard to parse for a second or three.
+> 
+> Thanks Gustavo.
+> 
+> How was this change done?
 
-Yeah. Actually, you can ignore this patch, as I already sent two
-separate patches for this:
-
-https://lore.kernel.org/lkml/20201119170901.GA22703@embeddedor/
-https://lore.kernel.org/lkml/20201119170739.GA22665@embeddedor/
-
-I noticed this immediately after sending this out.
+I audited case by case in order to determine the best fit for each
+situation. Depending on the surrounding logic, sometimes it makes
+more sense a goto or a fallthrough rather than merely a break.
 
 Thanks
 --
