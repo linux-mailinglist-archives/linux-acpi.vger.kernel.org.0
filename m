@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3BC2BBBEE
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B8D2BBBF0
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:06:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727220AbgKUCDE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 21:03:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55398 "EHLO
+        id S1727237AbgKUCDI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 21:03:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727144AbgKUCDE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:03:04 -0500
-Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAAD5C0613CF
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:03 -0800 (PST)
-Received: by mail-qt1-x849.google.com with SMTP id g17so961517qtr.8
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:03 -0800 (PST)
+        with ESMTP id S1727229AbgKUCDI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:03:08 -0500
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C3AC061A47
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:06 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id c137so14145175ybf.21
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:date:in-reply-to:message-id:mime-version:references:subject
          :from:to:cc;
-        bh=BEFBYjf850Ydzo63+5rwraIHDR8Cqu0fdfzu8DbL0fA=;
-        b=gSBeYkC3hQ7wzIslfgvOpCfXurXfCRj9ddCikE8lToem57W+ZgEmKV4/7kwvRk4nkU
-         B+Yq0fCMAX+BTSVg+KpXb7dCkTyHmv0Vs8YcqMGzKEnJxEoD6zAITT29pEfe50aT5Vw5
-         lqaeRb+2fFZDseJzctWDDDyxolv/P8Xoyt31sKR6LtFF7bu+GwPw9Wr1UAuqljOC5xmX
-         Pq3XphLdk4mVFlHUIhUGDCGBx0u3KJ7wFlsV6X/tkJO3bTCgKm7ylfq7fLqqRNeXjayQ
-         noIKMKbcbZ+xGLAnX7Dy7ijL7bpPlFFfcTjukDUZE84H2VUZflsZWWwYjXH4dawoQS7f
-         Pcsw==
+        bh=x2gFsEGnt1hKBTrd9Sh3BTzH1tCcPBvDnEqJhrf0jZk=;
+        b=Oy8wm9rwe1xVP8CflmSHV6kS8mZ8CgBwaFnQT3haVq3hQfhTNPB3Dt+DC1srIEOHnJ
+         00ReduJqDRDAQo4YVHy1qpCiEQz2PNiibjyIT3lltB9/N4XBvYtaxgJiErfIRrfc04LQ
+         HK3VL6wPuPvyARgqpnwh7mKN6u6Cqa0Qqguc/PqLj0TgOesrnHZZ9yRhqVOBaT7kxpd3
+         dYu6ejbMVZYfjOzk9mfZ+HZZdv455G6CXO+PAnMkBmajLUc/z8awlvJ1DwSX5FWgZtuK
+         wF8ckZS3fTtZQZbuZE/wXm3mJ8ohZofNG7tgMMkx/gVSlH7velqealMro7ClhtycjfVJ
+         32NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=BEFBYjf850Ydzo63+5rwraIHDR8Cqu0fdfzu8DbL0fA=;
-        b=VRDvx5d1Pcne9q3MmtO3oFx/zLeNVej5c/jA8J8XfDHDhcjocvN86QoZ9MYv/9poTH
-         8sMq2DyMq5ieIjGSQUfmQAfAHwRNG8d6e36Wue/Ml/hc+bZIlPb7eV75G6BR80akHJ82
-         DVQKFWMXGASynvf17Bj6Na4Dc0ADQ0rET3uabhMRGdA5QG640/Y3I6sQ8yaDubzGeGct
-         71gWcdPypDx6zdBMEpXAGE7Q2u+jqHvOvMILT3eLjTTus3akjHS1uvMIlG+ymWhI/gbz
-         PGodkP1ZzaEgkOmog9VrWdS/bNMdn50Uq66GpqYt9+blOwoLq5fk5zzgpXKhuu2mX41C
-         EYjg==
-X-Gm-Message-State: AOAM530ySuBVGPMWG8uPhXu08Bu69ECR8xUcDQ8JvBUf9U7I3ZGu/MaA
-        7aY5J3DJXjFOcFbC1507p2uxoB7e+TgedbE=
-X-Google-Smtp-Source: ABdhPJztIuCkrLcn+gUs8LJYiOxV3Oj6qHuVK25FKWOhywIwi1DvpSREzSMr8PjNIvYy5JgUGDysjhQxV+JLf+M=
+        bh=x2gFsEGnt1hKBTrd9Sh3BTzH1tCcPBvDnEqJhrf0jZk=;
+        b=HRa0tsl3oyaLntHNsstdsSSCn9anBOp2u49tYi7pxFKRz05RBk+4qNGzdDxhzR0J4j
+         nsrmlBr7eR3U0njPvpDEWQrZZTqZ2DQCL3vS9XXFb9tRtU7NI0eMDWfx6TEzcL6QxKoe
+         c0Oi1BEOkh609OGl94fH4KvYH96W4dX5gQgMBWvSdCiBuvsEG8cRcVoXOwYZBmccbl8V
+         5MbipfatO53bCEo/yKHiBjzByrmFMzE+oyiLIHSdcmSDEyWBhPLDrgrKyvA0rSjnsI1d
+         eGhktrn/w+eaCSYATBcikuMxAvqCzX3IImXzE9S6d03yTIX13GEs+lQsu3g4HeGvy4Xi
+         8qDA==
+X-Gm-Message-State: AOAM530gyRTy8aQizvIo51NH+RlYz8Hwrf4HiNKEZH7blo54so/oSIb9
+        xaN69at1BIPxB5HGMa5RmNppwoAVbulUQOQ=
+X-Google-Smtp-Source: ABdhPJw9Lk+TmjAMNEAUq1RSxqYyPt+9pEP3OOOGTSy7HY7WuXSKaV6EWWbJFhcTCdlhMAZY1adm2F1s03IEpYQ=
 Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:7220:84ff:fe09:fedc])
- (user=saravanak job=sendgmr) by 2002:a0c:9121:: with SMTP id
- q30mr2362792qvq.17.1605924182604; Fri, 20 Nov 2020 18:03:02 -0800 (PST)
-Date:   Fri, 20 Nov 2020 18:02:22 -0800
+ (user=saravanak job=sendgmr) by 2002:a25:8446:: with SMTP id
+ r6mr21337325ybm.442.1605924185419; Fri, 20 Nov 2020 18:03:05 -0800 (PST)
+Date:   Fri, 20 Nov 2020 18:02:23 -0800
 In-Reply-To: <20201121020232.908850-1-saravanak@google.com>
-Message-Id: <20201121020232.908850-8-saravanak@google.com>
+Message-Id: <20201121020232.908850-9-saravanak@google.com>
 Mime-Version: 1.0
 References: <20201121020232.908850-1-saravanak@google.com>
 X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
-Subject: [PATCH v2 07/17] driver core: Add fwnode_init()
+Subject: [PATCH v2 08/17] driver core: Add fwnode link support
 From:   Saravana Kannan <saravanak@google.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,130 +74,180 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are multiple locations in the kernel where a struct fwnode_handle
-is initialized. Add fwnode_init() so that we have one way of
-initializing a fwnode_handle.
+Add support for creating supplier-consumer links between fwnodes.  It is
+intended for internal use the driver core and generic firmware support
+code (eg. Device Tree, ACPI), so it is simple by design and the API
+provided is limited.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/acpi/property.c         | 2 +-
- drivers/acpi/scan.c             | 2 +-
- drivers/base/swnode.c           | 2 +-
- drivers/firmware/efi/efi-init.c | 8 ++++----
- include/linux/fwnode.h          | 6 ++++++
- include/linux/of.h              | 2 +-
- kernel/irq/irqdomain.c          | 2 +-
- 7 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/base/core.c    | 98 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/of/dynamic.c   |  1 +
+ include/linux/fwnode.h | 14 ++++++
+ 3 files changed, 113 insertions(+)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index d04de10a63e4..24e87b630573 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -76,7 +76,7 @@ static bool acpi_nondev_subnode_extract(const union acpi_object *desc,
- 		return false;
- 
- 	dn->name = link->package.elements[0].string.pointer;
--	dn->fwnode.ops = &acpi_data_fwnode_ops;
-+	fwnode_init(&dn->fwnode, &acpi_data_fwnode_ops);
- 	dn->parent = parent;
- 	INIT_LIST_HEAD(&dn->data.properties);
- 	INIT_LIST_HEAD(&dn->data.subnodes);
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index bc6a79e33220..519963bcc047 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1589,7 +1589,7 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
- 	device->device_type = type;
- 	device->handle = handle;
- 	device->parent = acpi_bus_get_parent(handle);
--	device->fwnode.ops = &acpi_device_fwnode_ops;
-+	fwnode_init(&device->fwnode, &acpi_device_fwnode_ops);
- 	acpi_set_device_status(device, sta);
- 	acpi_device_get_busid(device);
- 	acpi_set_pnp_ids(handle, &device->pnp, type);
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 010828fc785b..4a4b2008fbc2 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -653,7 +653,7 @@ swnode_register(const struct software_node *node, struct swnode *parent,
- 	swnode->parent = parent;
- 	swnode->allocated = allocated;
- 	swnode->kobj.kset = swnode_kset;
--	swnode->fwnode.ops = &software_node_ops;
-+	fwnode_init(&swnode->fwnode, &software_node_ops);
- 
- 	ida_init(&swnode->child_ids);
- 	INIT_LIST_HEAD(&swnode->entry);
-diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
-index f55a92ff12c0..b148f1459fb3 100644
---- a/drivers/firmware/efi/efi-init.c
-+++ b/drivers/firmware/efi/efi-init.c
-@@ -359,9 +359,7 @@ static const struct fwnode_operations efifb_fwnode_ops = {
- 	.add_links = efifb_add_links,
- };
- 
--static struct fwnode_handle efifb_fwnode = {
--	.ops = &efifb_fwnode_ops,
--};
-+static struct fwnode_handle efifb_fwnode;
- 
- static int __init register_gop_device(void)
- {
-@@ -375,8 +373,10 @@ static int __init register_gop_device(void)
- 	if (!pd)
- 		return -ENOMEM;
- 
--	if (IS_ENABLED(CONFIG_PCI))
-+	if (IS_ENABLED(CONFIG_PCI)) {
-+		fwnode_init(&efifb_fwnode, &efifb_fwnode_ops);
- 		pd->dev.fwnode = &efifb_fwnode;
-+	}
- 
- 	err = platform_device_add_data(pd, &screen_info, sizeof(screen_info));
- 	if (err)
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index e0abafbb17f8..5589799708b5 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -170,6 +170,12 @@ struct fwnode_operations {
- 	} while (false)
- #define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
- 
-+static inline void fwnode_init(struct fwnode_handle *fwnode,
-+			       const struct fwnode_operations *ops)
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 401fa7e3505c..e2b246a44d1a 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -50,6 +50,104 @@ static LIST_HEAD(wait_for_suppliers);
+ static DEFINE_MUTEX(wfs_lock);
+ static LIST_HEAD(deferred_sync);
+ static unsigned int defer_sync_state_count = 1;
++static DEFINE_MUTEX(fwnode_link_lock);
++
++/**
++ * fwnode_link_add - Create a link between two fwnode_handles.
++ * @con: Consumer end of the link.
++ * @sup: Supplier end of the link.
++ *
++ * Create a fwnode link between fwnode handles @con and @sup. The fwnode link
++ * represents the detail that the firmware lists @sup fwnode as supplying a
++ * resource to @con.
++ *
++ * The driver core will use the fwnode link to create a device link between the
++ * two device objects corresponding to @con and @sup when they are created. The
++ * driver core will automatically delete the fwnode link between @con and @sup
++ * after doing that.
++ *
++ * Attempts to create duplicate links between the same pair of fwnode handles
++ * are ignored and there is no reference counting.
++ */
++int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
 +{
-+	fwnode->ops = ops;
++	struct fwnode_link *link;
++	int ret = 0;
++
++	mutex_lock(&fwnode_link_lock);
++
++	list_for_each_entry(link, &sup->consumers, s_hook)
++		if (link->consumer == con)
++			goto out;
++
++	link = kzalloc(sizeof(*link), GFP_KERNEL);
++	if (!link) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	link->supplier = sup;
++	INIT_LIST_HEAD(&link->s_hook);
++	link->consumer = con;
++	INIT_LIST_HEAD(&link->c_hook);
++
++	list_add(&link->s_hook, &sup->consumers);
++	list_add(&link->c_hook, &con->suppliers);
++out:
++	mutex_unlock(&fwnode_link_lock);
++
++	return ret;
 +}
 +
++/**
++ * fwnode_links_purge_suppliers - Delete all supplier links of fwnode_handle.
++ * @fwnode: fwnode whose supplier links need to be deleted
++ *
++ * Deletes all supplier links connecting directly to @fwnode.
++ */
++static void fwnode_links_purge_suppliers(struct fwnode_handle *fwnode)
++{
++	struct fwnode_link *link, *tmp;
++
++	mutex_lock(&fwnode_link_lock);
++	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
++		list_del(&link->s_hook);
++		list_del(&link->c_hook);
++		kfree(link);
++	}
++	mutex_unlock(&fwnode_link_lock);
++}
++
++/**
++ * fwnode_links_purge_consumers - Delete all consumer links of fwnode_handle.
++ * @fwnode: fwnode whose consumer links need to be deleted
++ *
++ * Deletes all consumer links connecting directly to @fwnode.
++ */
++static void fwnode_links_purge_consumers(struct fwnode_handle *fwnode)
++{
++	struct fwnode_link *link, *tmp;
++
++	mutex_lock(&fwnode_link_lock);
++	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
++		list_del(&link->s_hook);
++		list_del(&link->c_hook);
++		kfree(link);
++	}
++	mutex_unlock(&fwnode_link_lock);
++}
++
++/**
++ * fwnode_links_purge - Delete all links connected to a fwnode_handle.
++ * @fwnode: fwnode whose links needs to be deleted
++ *
++ * Deletes all links connecting directly to a fwnode.
++ */
++void fwnode_links_purge(struct fwnode_handle *fwnode)
++{
++	fwnode_links_purge_suppliers(fwnode);
++	fwnode_links_purge_consumers(fwnode);
++}
+ 
+ #ifdef CONFIG_SRCU
+ static DEFINE_MUTEX(device_links_lock);
+diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+index fe64430b438a..9a824decf61f 100644
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -356,6 +356,7 @@ void of_node_release(struct kobject *kobj)
+ 
+ 	property_list_free(node->properties);
+ 	property_list_free(node->deadprops);
++	fwnode_links_purge(of_fwnode_handle(node));
+ 
+ 	kfree(node->full_name);
+ 	kfree(node->data);
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 5589799708b5..b88365187347 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -10,6 +10,7 @@
+ #define _LINUX_FWNODE_H_
+ 
+ #include <linux/types.h>
++#include <linux/list.h>
+ 
+ struct fwnode_operations;
+ struct device;
+@@ -18,6 +19,15 @@ struct fwnode_handle {
+ 	struct fwnode_handle *secondary;
+ 	const struct fwnode_operations *ops;
+ 	struct device *dev;
++	struct list_head suppliers;
++	struct list_head consumers;
++};
++
++struct fwnode_link {
++	struct fwnode_handle *supplier;
++	struct list_head s_hook;
++	struct fwnode_handle *consumer;
++	struct list_head c_hook;
+ };
+ 
+ /**
+@@ -174,8 +184,12 @@ static inline void fwnode_init(struct fwnode_handle *fwnode,
+ 			       const struct fwnode_operations *ops)
+ {
+ 	fwnode->ops = ops;
++	INIT_LIST_HEAD(&fwnode->consumers);
++	INIT_LIST_HEAD(&fwnode->suppliers);
+ }
+ 
  extern u32 fw_devlink_get_flags(void);
++int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
++void fwnode_links_purge(struct fwnode_handle *fwnode);
  
  #endif
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 5d51891cbf1a..27fba2472eee 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -108,7 +108,7 @@ static inline void of_node_init(struct device_node *node)
- #if defined(CONFIG_OF_KOBJ)
- 	kobject_init(&node->kobj, &of_node_ktype);
- #endif
--	node->fwnode.ops = &of_fwnode_ops;
-+	fwnode_init(&node->fwnode, &of_fwnode_ops);
- }
- 
- #if defined(CONFIG_OF_KOBJ)
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index cf8b374b892d..06fce7e39033 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -91,7 +91,7 @@ struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned int type, int id,
- 	fwid->type = type;
- 	fwid->name = n;
- 	fwid->pa = pa;
--	fwid->fwnode.ops = &irqchip_fwnode_ops;
-+	fwnode_init(&fwid->fwnode, &irqchip_fwnode_ops);
- 	return &fwid->fwnode;
- }
- EXPORT_SYMBOL_GPL(__irq_domain_alloc_fwnode);
 -- 
 2.29.2.454.gaff20da3a2-goog
 
