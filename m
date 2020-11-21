@@ -2,148 +2,267 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 918B62BBFE7
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 15:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F36962BC0AA
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 17:52:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgKUO1o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 Nov 2020 09:27:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:50441 "EHLO
+        id S1726618AbgKUQvQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Nov 2020 11:51:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:56046 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727531AbgKUO1n (ORCPT
+        by vger.kernel.org with ESMTP id S1726690AbgKUQvO (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 21 Nov 2020 09:27:43 -0500
+        Sat, 21 Nov 2020 11:51:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605968861;
+        s=mimecast20190719; t=1605977471;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=I6J3CFPa6tD+HSofD8tcjcXRTFclUnvVy0S97JTMikM=;
-        b=CGRVSb+Nw1IEkXuYxa7YEUpW7OBFDrnmv6lC/NYZdV/Tk0rwu7Dtk0UiXRDNZbiHEsmfgu
-        CnoY5XB0ER372sxOqfIJEkf1uXZPJa0Se4h/CxefduUyOYk/5v/FVlk+sh/V6vTaoaSXsU
-        9DNz+78t/18B52yI83Pj1Oe3Ojs95/c=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-576-N9NjRuqmMNGZgImnkRXsVg-1; Sat, 21 Nov 2020 09:27:40 -0500
-X-MC-Unique: N9NjRuqmMNGZgImnkRXsVg-1
-Received: by mail-ed1-f69.google.com with SMTP id v7so4833926edy.4
-        for <linux-acpi@vger.kernel.org>; Sat, 21 Nov 2020 06:27:40 -0800 (PST)
+         to:to:cc:cc; bh=zLH0U0S3qPuM/4/c12zDySDpu72UCHtVP0nLwv0orcI=;
+        b=PMDCQH+PjaLILI+jmPRUPCxPNqZ9b1d+FDhMFgHSxhSENkqcfenVx43KFi13r+Ex7D2I2M
+        EljLHUMjVzijt8UE/5TuEqt8gAu+s1/L0/cDhZWp3x/Zbeym6GJ6qKuvFiPa3BQkGiro+3
+        9hzEAFUTRPSRQlWmeMKcu1ZaUpOoL+8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-278-aMiauZKsOZ-q4p8-w6xaCg-1; Sat, 21 Nov 2020 11:51:08 -0500
+X-MC-Unique: aMiauZKsOZ-q4p8-w6xaCg-1
+Received: by mail-qk1-f199.google.com with SMTP id x22so10872648qkb.16
+        for <linux-acpi@vger.kernel.org>; Sat, 21 Nov 2020 08:51:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=I6J3CFPa6tD+HSofD8tcjcXRTFclUnvVy0S97JTMikM=;
-        b=Ll/yTU90EoGGmJ/Qr1Xl4adYN9tXgGkKmu9EYBSOlfmVkvGCad4+SMzYGmEiUgv7ys
-         v88x6piOkQLHwkVQRUckynDs5ftpiYfmfhgsuYgyev2YXmJRoc1uLn/N2Vgqjrb2WhlO
-         ODvDguaUAwhrQpGquFq1+FR9j6jNvWHGia1DE2hOyLP3asTtj4d399KvubsrBuMAKPny
-         lqsJNX+32S67BsgttpHkCKdOWxI1oJOIOaIma9v5jU6pw7qYthx6tHFeCRtmO+2H00iX
-         XPu4tjyMQA1IxUWQeiS9JiTaRSv4u3MGJu97oQbwxaiiaKc8CahNojDRyNg+nrfeKU7Z
-         J9rg==
-X-Gm-Message-State: AOAM533f3qxXLh6URjFe2tuQo6eSnKqJGuNY+3ZnMAgveBQO1HdOQ5p2
-        tKsC/xq13F2P+EDZ81yS8iED0ZQnJDZYyDNB5Eh9ZLkS59uszsmE4PKzzU0juH069zLdzxkFWOH
-        yNp+UE1/LV0xXvb4+8RUeEg==
-X-Received: by 2002:a17:906:4712:: with SMTP id y18mr35993635ejq.51.1605968858874;
-        Sat, 21 Nov 2020 06:27:38 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx1qAnebKymK+pyT4JAQ5QTkWsY3FZNVj7U9WtSJWXKnvEvq3hI5rxyzxkfklLG94YQhKHa8A==
-X-Received: by 2002:a17:906:4712:: with SMTP id y18mr35993611ejq.51.1605968858623;
-        Sat, 21 Nov 2020 06:27:38 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id b21sm2504825ejg.93.2020.11.21.06.27.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Nov 2020 06:27:38 -0800 (PST)
-Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
-        "eliadevito@gmail.com" <eliadevito@gmail.com>,
-        "hadess@hadess.net" <hadess@hadess.net>,
-        "bberg@redhat.com" <bberg@redhat.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "dvhart@infradead.org" <dvhart@infradead.org>
-References: <markpearson@lenovo.com>
- <20201115004402.342838-1-markpearson@lenovo.com>
- <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
-Date:   Sat, 21 Nov 2020 15:27:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zLH0U0S3qPuM/4/c12zDySDpu72UCHtVP0nLwv0orcI=;
+        b=evN4CmWvnBrY+YcZwiyNenCg72+gHZLYvJtgtT3WXJlpQUZe/fPqlME3GvbLsUjuY3
+         sDd995E5Tnm2SngVqyF7TGxv3X4hO8Q8tyEeDWEHumIO02BWPyztpZRHZoAidr/s/9hs
+         HNB/khcT2B9A878tDn/o9ZY48sW2aKbGrJOxaCigkKkhaPAAMUWvkEEcG951kWjzEZq7
+         4NrsZ6MgyqmybRRZCBdKM/f/WqKfk3Z6P5QSNALmjvhRPe5eY94r1xxHeJ3R6LxEqA1z
+         edxu+B2vMhzaUEgSzQAQ9Eph4Y3mpIcMreqEcIKgqoIJ6Ap0KEnMVQrVNmMWrXoj/L2G
+         NEog==
+X-Gm-Message-State: AOAM531LBcfIeysFOm0WR6eob0REA8DpxH8cszrAwjIRBmntDD0YjQz1
+        kZa8eokNWza4pwVXu/Qy7RGvD2+i79Jf3Zb0fruycPI4ofASWHk+VtuJC2bOHfejA35HSh+npnd
+        3ejpnzn1UeR48heNxJ9+r7Q==
+X-Received: by 2002:a05:620a:15ce:: with SMTP id o14mr22885283qkm.231.1605977467696;
+        Sat, 21 Nov 2020 08:51:07 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwJMB7Phx6GdQ/NzrSSCIOwTBjDbbn+gugDtHjIEeXte769cdu0l51J2LUn/+h4QxN+fnLujw==
+X-Received: by 2002:a05:620a:15ce:: with SMTP id o14mr22885248qkm.231.1605977467468;
+        Sat, 21 Nov 2020 08:51:07 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id j202sm4129196qke.108.2020.11.21.08.51.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Nov 2020 08:51:06 -0800 (PST)
+From:   trix@redhat.com
+To:     trix@redhat.com, joe@perches.com,
+        clang-built-linux@googlegroups.com
+Cc:     linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
+        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
+        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, alsa-devel@alsa-project.org,
+        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
+Subject: [RFC] MAINTAINERS tag for cleanup robot
+Date:   Sat, 21 Nov 2020 08:50:58 -0800
+Message-Id: <20201121165058.1644182-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.4
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+A difficult part of automating commits is composing the subsystem
+preamble in the commit log.  For the ongoing effort of a fixer producing
+one or two fixes a release the use of 'treewide:' does not seem appropriate.
 
-On 11/20/20 8:50 PM, Barnabás Pőcze wrote:
-> Hi
-> 
-> 
-> 2020. november 15., vasárnap 1:44 keltezéssel, Mark Pearson írta:
-> 
->> [...]
->> +int platform_profile_register(struct platform_profile_handler *pprof)
->> +{
->> +	mutex_lock(&profile_lock);
->> +	/* We can only have one active profile */
->> +	if (cur_profile) {
->> +		mutex_unlock(&profile_lock);
->> +		return -EEXIST;
->> +	}
->> +
->> +	cur_profile = pprof;
->> +	mutex_unlock(&profile_lock);
->> +	return sysfs_create_group(acpi_kobj, &platform_profile_group);
->> +}
->> +EXPORT_SYMBOL_GPL(platform_profile_register);
->> +
->> +int platform_profile_unregister(void)
->> +{
->> +	mutex_lock(&profile_lock);
->> +	sysfs_remove_group(acpi_kobj, &platform_profile_group);
->> +	cur_profile = NULL;
->> +	mutex_unlock(&profile_lock);
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
->> [...]
-> 
-> 
-> I just realized that the sysfs attributes are only created if a profile provider
-> is registered, and it is removed when the provide unregisters itself. I believe
-> it would be easier for system daemons if those attributes existed from module load
-> to module unload since they can just just open the file and watch it using poll,
-> select, etc. If it goes away when the provider unregisters itself, then I believe
-> a more complicated mechanism (like inotify) would need to be implemented in the
-> daemons to be notified when a new provider is registered. Thus my suggestion
-> for the next iteration is to create the sysfs attributes on module load,
-> and delete them on unload.
-> 
-> What do you think?
+It would be better if the normal prefix was used.  Unfortunately normal is
+not consistent across the tree.
 
-Actually I asked Mark to move this to the register / unregister time since
-having a non functioning files in sysfs is a bit weird.
+So I am looking for comments for adding a new tag to the MAINTAINERS file
 
-You make a good point about userspace having trouble figuring when this will
-show up though (I'm not worried about removal that will normally never happen).
+	D: Commit subsystem prefix
 
-I would expect all modules to be loaded before any interested daemons load,
-but that is an assumption and I must admit that that is a bit racy.
+ex/ for FPGA DFL DRIVERS
 
-Bastien, what do you think about Barnabás' suggestion to always have the
-files present and use poll (POLL_PRI) on it to see when it changes, listing
-maybe "none" as available profiles when there is no provider?
+	D: fpga: dfl:
 
-Regards,
+Continuing with cleaning up clang's -Wextra-semi-stmt
 
-Hans
+A significant number of warnings are caused by function like macros with
+a trailing semicolon.  For example.
+
+#define FOO(a) a++; <-- extra, unneeded semicolon
+void bar() {
+	int v = 0;
+	FOO(a);
+} 
+
+Clang will warn at the FOO(a); expansion location. Instead of removing
+the semicolon there,  the fixer removes semicolon from the macro
+definition.  After the fixer, the code will be:
+
+#define FOO(a) a++
+void bar() {
+	int v = 0;
+	FOO(a);
+} 
+
+The fixer review is
+https://reviews.llvm.org/D91789
+
+A run over allyesconfig for x86_64 finds 62 issues, 5 are false positives.
+The false positives are caused by macros passed to other macros and by
+some macro expansions that did not have an extra semicolon.
+
+This cleans up about 1,000 of the current 10,000 -Wextra-semi-stmt
+warnings in linux-next.
+
+An update to [RFC] clang tooling cleanup
+This change adds the clang-tidy-fix as a top level target and
+uses it to do the cleaning.  The next iteration will do a loop of
+cleaners.  This will mean breaking clang-tidy-fix out into its own
+processing function 'run_fixers'.
+
+Makefile: Add toplevel target clang-tidy-fix to makefile
+
+Calls clang-tidy with -fix option for a set of checkers that
+programatically fixes the kernel source in place, treewide.
+
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ Makefile                               |  7 ++++---
+ scripts/clang-tools/run-clang-tools.py | 20 +++++++++++++++++---
+ 2 files changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 47a8add4dd28..57756dbb767b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1567,20 +1567,21 @@ help:
+ 	 echo  ''
+ 	@echo  'Static analysers:'
+ 	@echo  '  checkstack      - Generate a list of stack hogs'
+ 	@echo  '  versioncheck    - Sanity check on version.h usage'
+ 	@echo  '  includecheck    - Check for duplicate included header files'
+ 	@echo  '  export_report   - List the usages of all exported symbols'
+ 	@echo  '  headerdep       - Detect inclusion cycles in headers'
+ 	@echo  '  coccicheck      - Check with Coccinelle'
+ 	@echo  '  clang-analyzer  - Check with clang static analyzer'
+ 	@echo  '  clang-tidy      - Check with clang-tidy'
++	@echo  '  clang-tidy-fix  - Check and fix with clang-tidy'
+ 	@echo  ''
+ 	@echo  'Tools:'
+ 	@echo  '  nsdeps          - Generate missing symbol namespace dependencies'
+ 	@echo  ''
+ 	@echo  'Kernel selftest:'
+ 	@echo  '  kselftest         - Build and run kernel selftest'
+ 	@echo  '                      Build, install, and boot kernel before'
+ 	@echo  '                      running kselftest on it'
+ 	@echo  '                      Run as root for full coverage'
+ 	@echo  '  kselftest-all     - Build kernel selftest'
+@@ -1842,30 +1843,30 @@ nsdeps: modules
+ quiet_cmd_gen_compile_commands = GEN     $@
+       cmd_gen_compile_commands = $(PYTHON3) $< -a $(AR) -o $@ $(filter-out $<, $(real-prereqs))
+ 
+ $(extmod-prefix)compile_commands.json: scripts/clang-tools/gen_compile_commands.py \
+ 	$(if $(KBUILD_EXTMOD),,$(KBUILD_VMLINUX_OBJS) $(KBUILD_VMLINUX_LIBS)) \
+ 	$(if $(CONFIG_MODULES), $(MODORDER)) FORCE
+ 	$(call if_changed,gen_compile_commands)
+ 
+ targets += $(extmod-prefix)compile_commands.json
+ 
+-PHONY += clang-tidy clang-analyzer
++PHONY += clang-tidy-fix clang-tidy clang-analyzer
+ 
+ ifdef CONFIG_CC_IS_CLANG
+ quiet_cmd_clang_tools = CHECK   $<
+       cmd_clang_tools = $(PYTHON3) $(srctree)/scripts/clang-tools/run-clang-tools.py $@ $<
+ 
+-clang-tidy clang-analyzer: $(extmod-prefix)compile_commands.json
++clang-tidy-fix clang-tidy clang-analyzer: $(extmod-prefix)compile_commands.json
+ 	$(call cmd,clang_tools)
+ else
+-clang-tidy clang-analyzer:
++clang-tidy-fix clang-tidy clang-analyzer:
+ 	@echo "$@ requires CC=clang" >&2
+ 	@false
+ endif
+ 
+ # Scripts to check various things for consistency
+ # ---------------------------------------------------------------------------
+ 
+ PHONY += includecheck versioncheck coccicheck export_report
+ 
+ includecheck:
+diff --git a/scripts/clang-tools/run-clang-tools.py b/scripts/clang-tools/run-clang-tools.py
+index fa7655c7cec0..c177ca822c56 100755
+--- a/scripts/clang-tools/run-clang-tools.py
++++ b/scripts/clang-tools/run-clang-tools.py
+@@ -22,43 +22,57 @@ def parse_arguments():
+     Returns:
+         args: Dict of parsed args
+         Has keys: [path, type]
+     """
+     usage = """Run clang-tidy or the clang static-analyzer on a
+         compilation database."""
+     parser = argparse.ArgumentParser(description=usage)
+ 
+     type_help = "Type of analysis to be performed"
+     parser.add_argument("type",
+-                        choices=["clang-tidy", "clang-analyzer"],
++                        choices=["clang-tidy-fix", "clang-tidy", "clang-analyzer"],
+                         help=type_help)
+     path_help = "Path to the compilation database to parse"
+     parser.add_argument("path", type=str, help=path_help)
+ 
+     return parser.parse_args()
+ 
+ 
+ def init(l, a):
+     global lock
+     global args
+     lock = l
+     args = a
+ 
+ 
+ def run_analysis(entry):
+     # Disable all checks, then re-enable the ones we want
+     checks = "-checks=-*,"
+-    if args.type == "clang-tidy":
++    fix = ""
++    header_filter = ""
++    if args.type == "clang-tidy-fix":
++        checks += "linuxkernel-macro-trailing-semi"
++        #
++        # Fix this
++        # #define M(a) a++; <-- clang-tidy fixes the problem here
++        # int f() {
++        #   int v = 0;
++        #   M(v);  <-- clang reports problem here
++        #   return v;
++        # }
++        fix += "-fix"
++        header_filter += "-header-filter=.*"
++    elif args.type == "clang-tidy":
+         checks += "linuxkernel-*"
+     else:
+         checks += "clang-analyzer-*"
+-    p = subprocess.run(["clang-tidy", "-p", args.path, checks, entry["file"]],
++    p = subprocess.run(["clang-tidy", "-p", args.path, checks, header_filter, fix, entry["file"]],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        cwd=entry["directory"])
+     with lock:
+         sys.stderr.buffer.write(p.stdout)
+ 
+ 
+ def main():
+     args = parse_arguments()
+ 
+-- 
+2.18.4
 
