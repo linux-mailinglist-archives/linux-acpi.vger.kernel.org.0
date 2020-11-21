@@ -2,56 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B162BBBBD
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE7C2BBBC1
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726479AbgKUCAX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 21:00:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54886 "EHLO
+        id S1726540AbgKUCAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 21:00:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725820AbgKUCAX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:00:23 -0500
+        with ESMTP id S1726485AbgKUCAd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:00:33 -0500
 Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8804FC061A48
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:21 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id x17so10339571ybr.8
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:21 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF226C061A47
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:31 -0800 (PST)
+Received: by mail-yb1-xb44.google.com with SMTP id v92so10358422ybi.4
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5ycGf66kvaYrLmdh3G+aCiWw8LB61gZe9GTCWFcB4rE=;
-        b=j9fW+Rch9vX4uBVv6QiV4xPZnWddbVzAZ+B6JwtYcvwqUbueVGWGawGEMfe7QmGLEz
-         P9m+3AFUcdwjQNKoUpjkOhzsYIpYby5fdyYtvyo/TPHaFtsQnQBpm8b0Mn0esIUVxHW7
-         ITNUKEgWSH1RJ4p3FEQQ1fchBY3xz2fyvREP3n6OHtrJ8ejt6Ya1c/VnI5Qjh/1kZ9L3
-         vFvAmV1j67ieejnWkVQ/TsbVQ+DutIma5WmdvIe103aX4hAmqNdTp7U2Uo1+gTxHAOlt
-         qhv8yh9EqbN3XMN0+G7boR/RaXq0xVPhhu/Nfe1ykAJL9W+fIM077v3XWkqjKzwPnSLE
-         Fupg==
+        bh=GJ5z0tVbBQ7VCLT8sp/5juMZ091JD7XqJCeF4EvVFNw=;
+        b=HJITK/af57wdm/BTl9j0m7WiTqJw7nFv50SdYolhoyDIzl+Xia7Nh/STQ2R0OfVH3I
+         GES4Bo0L1ecNwkfeDnDN9/xh0vRP++L2FmHxJGbjlga9jCiEz0c6uhPgeL5bTc2kqIlT
+         g+ajoUwKGDitBb8kanZm5QlELC5rIkUZa03eLVS7aJw00PlWu91NpkwCyfMbxHKnM2fm
+         0COwEohBdA/iizGpGS9xRDYaeJLI8UtmZsZvSdgxD4bIc59M8etaJRz9l6v2ks/6PZ/M
+         +/W+uZSP4DDUcr3Y+A/l2sbaMrAdCpQv4gLtNEzVSHD2x0+JNMlO+ExCqsN6n47SeiMs
+         ExRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5ycGf66kvaYrLmdh3G+aCiWw8LB61gZe9GTCWFcB4rE=;
-        b=tq8n+InWV7LSF4E3CHCXgwIVUZTwBFzkT98jX6p8zt/+FYSpRoW7oafl/jjqi/O5xY
-         /XzZzNgothgM1+UhD59itrHmsJOGm00pTVXjZcaI4h1HBxHqrrwkmPVBrCJ7/herqsfi
-         SyrL4bwTKmPVjsEBQMXiJ9cL7QSuecB737ix3Tjh+kwVP8EFv9YS3Dyou3KUm+PIKVKX
-         U0JmV5JCGIgQ2ZDEqnS1yRlA+zM7wPxsnJu1/q2vlUkn4lyOyuFNBs/n3GzRnWpeVULu
-         qtz1vKNUlx+tMdp8S0+YbOuobHlTfrP5QGv8JqkaEKhLxYOBcxGzI2+C2xXOMwWY+NQ9
-         +fBg==
-X-Gm-Message-State: AOAM532PCvnkTk/eEmWkssx/CVDiyUM41TGOmTcHR8mdtkEsTKX+i9fl
-        su2z7NB0x4z0Zk6LCn1aDiAz69MqXV46oqyFFiZDgg==
-X-Google-Smtp-Source: ABdhPJzmti3j25/p9ucrFMH9zeXSUBLReU/TTBO4O7VjGDy1OKygDmnDqi1xN6WvnIkmq8twCFtNDIkwLGgOT0E/7J4=
-X-Received: by 2002:a25:c483:: with SMTP id u125mr23453145ybf.310.1605924020602;
- Fri, 20 Nov 2020 18:00:20 -0800 (PST)
+        bh=GJ5z0tVbBQ7VCLT8sp/5juMZ091JD7XqJCeF4EvVFNw=;
+        b=WyIbZonfXv1wI6cP+mxCa0HLZ14TRziAzEUqC5TmvL/7vr9ubLqo8pTJWOhmvLfbsn
+         rBQdNKG+Q/w3Hd36atJTSwLl9xVXyHlTDDHowg9P+INYsdAKZ/CeL8GLnsnmiV1fnZCW
+         Z5PNeb4r/wiTiZquxICvT8iKlqRy7yzeR+9OTYlFBSI7V09B+6FIoWuCbPhBCYqfJEqb
+         5/1TUkmcTBpMapVyFu7eUJBNpzp2TOJmwFyb9HagyxGoOfrVHBaSw2ss7JhxjxdxX0ms
+         4O8k1YJTCkYD5BnTHR7WUb78KDdMcxsYAHiKkA6pFwma8+Xaoq2gM0QyavjI5lRTp39h
+         WCaw==
+X-Gm-Message-State: AOAM5316Byzy4Z0gtDRmK7jEM/4wLmiqfPZJAxDGeXt2n/i07FAXBZcz
+        CEpL2a/l/GEr/1qFkOGXnPppiYNtVffxCdL5xGQNwA==
+X-Google-Smtp-Source: ABdhPJxT2y4zVe+cUD5k32Ww4LVs2ECUDAo0TuccKAbwPGTL8aNvauikmgoTPrO6IreF4GjWu0610kOCaGWNhRxSoe0=
+X-Received: by 2002:a25:e805:: with SMTP id k5mr40326756ybd.32.1605924030966;
+ Fri, 20 Nov 2020 18:00:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-10-saravanak@google.com> <CAJZ5v0h31RrsrU4F1tjZKQ1O8BFWtkDJxkwyWoKBzm_kyknxVQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0h31RrsrU4F1tjZKQ1O8BFWtkDJxkwyWoKBzm_kyknxVQ@mail.gmail.com>
+ <20201104232356.4038506-12-saravanak@google.com> <CAJZ5v0hxdq2prUUkoPwpW5+crAD096eYQAQ7PZ2oaFKT7_gcHA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hxdq2prUUkoPwpW5+crAD096eYQAQ7PZ2oaFKT7_gcHA@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 20 Nov 2020 17:59:44 -0800
-Message-ID: <CAGETcx-DxkuCE2EuiBoevXobVb55M5WXa+d1syK2u-rUu6Z7Jw@mail.gmail.com>
-Subject: Re: [PATCH v1 09/18] driver core: Allow only unprobed consumers for
- SYNC_STATE_ONLY device links
+Date:   Fri, 20 Nov 2020 17:59:54 -0800
+Message-ID: <CAGETcx8YUCcj-GUsR8=CCgapBTPs8Sxdq4ZWiq7Dwys91SyHCw@mail.gmail.com>
+Subject: Re: [PATCH v1 11/18] driver core: Redefine the meaning of fwnode_operations.add_links()
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
@@ -74,63 +73,94 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 7:57 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, Nov 16, 2020 at 8:16 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
 > On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 > >
-> > SYNC_STATE_ONLY device links only affect the behavior of sync_state()
-> > callbacks. Specifically, they prevent sync_state() only callbacks from
-> > being called on a device if one or more of its consumers haven't probed.
+> > Change the meaning of fwnode_operations.add_links() to just create
+> > fwnode links by parsing the properties of a given fwnode.
 > >
-> > So, creating a SYNC_STATE_ONLY device link from an already probed
-> > consumer is useless. So, don't allow creating such device links.
->
-> I'm wondering why this needs to be part of the series?
->
-> It looks like it could go in separately, couldn't it?
-
-Right, I just wrote this as part of the series as I noticed this gap
-in the error checking as I wrote this series. It can go in separately.
-
->
+> > This patch doesn't actually make any code changes. To keeps things more
+> > digestable, the actual functional changes come in later patches in this
+> > series.
 > >
 > > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > > ---
-> >  drivers/base/core.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
+> >  include/linux/fwnode.h | 42 +++---------------------------------------
+> >  1 file changed, 3 insertions(+), 39 deletions(-)
 > >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 1a1d9a55645c..4a0907574646 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -646,6 +646,17 @@ struct device_link *device_link_add(struct device *consumer,
-> >                 goto out;
-> >         }
-> >
-> > +       /*
-> > +        * SYNC_STATE_ONLY links are useless once a consumer device has probed.
-> > +        * So, only create it if the consumer hasn't probed yet.
-> > +        */
-> > +       if (flags & DL_FLAG_SYNC_STATE_ONLY &&
-> > +           consumer->links.status != DL_DEV_NO_DRIVER &&
-> > +           consumer->links.status != DL_DEV_PROBING) {
-> > +               link = NULL;
-> > +               goto out;
-> > +       }
+> > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> > index afde643f37a2..ec02e1e939cc 100644
+> > --- a/include/linux/fwnode.h
+> > +++ b/include/linux/fwnode.h
+> > @@ -78,44 +78,8 @@ struct fwnode_reference_args {
+> >   *                            endpoint node.
+> >   * @graph_get_port_parent: Return the parent node of a port node.
+> >   * @graph_parse_endpoint: Parse endpoint for port and endpoint id.
+> > - * @add_links: Called after the device corresponding to the fwnode is added
+> > - *             using device_add(). The function is expected to create device
+> > - *             links to all the suppliers of the device that are available at
+> > - *             the time this function is called.  The function must NOT stop
+> > - *             at the first failed device link if other unlinked supplier
+> > - *             devices are present in the system.  This is necessary for the
+> > - *             driver/bus sync_state() callbacks to work correctly.
+> > - *
+> > - *             For example, say Device-C depends on suppliers Device-S1 and
+> > - *             Device-S2 and the dependency is listed in that order in the
+> > - *             firmware.  Say, S1 gets populated from the firmware after
+> > - *             late_initcall_sync().  Say S2 is populated and probed way
+> > - *             before that in device_initcall(). When C is populated, if this
+> > - *             add_links() function doesn't continue past a "failed linking to
+> > - *             S1" and continue linking C to S2, then S2 will get a
+> > - *             sync_state() callback before C is probed. This is because from
+> > - *             the perspective of S2, C was never a consumer when its
+> > - *             sync_state() evaluation is done. To avoid this, the add_links()
+> > - *             function has to go through all available suppliers of the
+> > - *             device (that corresponds to this fwnode) and link to them
+> > - *             before returning.
+> > - *
+> > - *             If some suppliers are not yet available (indicated by an error
+> > - *             return value), this function will be called again when other
+> > - *             devices are added to allow creating device links to any newly
+> > - *             available suppliers.
+> > - *
+> > - *             Return 0 if device links have been successfully created to all
+> > - *             the known suppliers of this device or if the supplier
+> > - *             information is not known.
+> > - *
+> > - *             Return -ENODEV if the suppliers needed for probing this device
+> > - *             have not been registered yet (because device links can only be
+> > - *             created to devices registered with the driver core).
+> > - *
+> > - *             Return -EAGAIN if some of the suppliers of this device have not
+> > - *             been registered yet, but none of those suppliers are necessary
+> > - *             for probing the device.
+> > + * @add_links: Create fwnode links to all the suppliers of the fwnode. Return
+> > + *             zero on success, a negative error code otherwise.
 >
-> Returning NULL at this point may be confusing if there is a link
-> between these devices already.
+> I'd say something like "Create fwnode links to all nodes that
+> represent devices supplying resources to the device represented by the
+> current fwnode.  Return ..., or a negative ... on failure."
 
-But the request is for a SYNC_STATE_ONLY link that can't be created
-when this condition is met. I see it similar to the error check above.
-
-I think returning the existing non-SYNC_STATE_ONLY link gives the
-wrong impression that the link was created successfully. Also, if I
-find the existing link and return it, then I need to refcount it
-(conditional on STATELESS?) and
-the caller who shouldn't be trying to create this link should now need
-to keep track of this and release it too. I think it's cleaner and
-simpler to just return NULL.
+I don't have a strong opinion about this, but want to clarify that I'm
+intentionally choosing not to say "device" because not all fwnodes
+will have devices created for them. Do you still want me to make this
+change?
 
 
--Saravana
+>
+> >   */
+> >  struct fwnode_operations {
+> >         struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
+> > @@ -155,7 +119,7 @@ struct fwnode_operations {
+> >         (*graph_get_port_parent)(struct fwnode_handle *fwnode);
+> >         int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
+> >                                     struct fwnode_endpoint *endpoint);
+> > -       int (*add_links)(const struct fwnode_handle *fwnode,
+> > +       int (*add_links)(struct fwnode_handle *fwnode,
+> >                          struct device *dev);
+> >  };
+> >
+> > --
+> > 2.29.1.341.ge80a0c044ae-goog
+> >
