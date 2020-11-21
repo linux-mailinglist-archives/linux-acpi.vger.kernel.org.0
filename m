@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3C12BBBC8
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D61272BBBCC
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726724AbgKUCBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 21:01:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
+        id S1726808AbgKUCBO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 21:01:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726701AbgKUCBG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:01:06 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAFDC061A04
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:06 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id g15so10344911ybq.6
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:06 -0800 (PST)
+        with ESMTP id S1726799AbgKUCBO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:01:14 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAFE4C061A48
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:13 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id k65so10348999ybk.5
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=K1DTYgzh1PTbt5Dy4OfYWtoZOqwKhfMyLvJRd1nKZqU=;
-        b=OWTrmrFhgMKOD4nQ/pwBJ9g35AYS3uNk81qFnTGjAdORh6DQtZwbJDpzryS7hYSdfG
-         ZfclUmgvHq2KAyNE3vPPPnAdFiTPZD++Ay29kDZZVVcFXH3HFKUq3hpP96QhSC4f3WUP
-         tN7QyhbFxnOXMxQVXZJsWKrtjCr8QpsIfK4XUitTpDVkCCpLX8CmeKtE8uHLPzMzLzH8
-         nlcSAqn29YDGud9qmji88sgxJhdVQZIIHrFp5kaayrn+yLZmvJt0psTbeCzogFX50wth
-         +zljqvHjn1XdsaDxtg2fm1zMp+iGxB8cqhRS9nWTigDeSpF3bM8AZ/UyNIcXTNV4GIZF
-         cSNg==
+        bh=UJxZ6w6/zaA+DRTyYeAyLLTmSLsD8m+KVMVBliZmrDI=;
+        b=ehTkqaGNM8Hrf8tS8vWKP2N8U2ALQooRcd2pt7kat6HeSs39ILQ9wkBFn17L1rjIQP
+         b9FchazIIvOB5MKggiFsjB6XWE6qDZKZyu8nYaY0Deaq/bGL9zixlz1PLA42WfDEShcH
+         D9lbaUbXb0ufmxNl0k8qkYaKA9+oXVmRTn5F8AbS4+NUJn2f/49VTOlBWRVO7By/x9Oo
+         GkHw5l7h/Pd6ztTPgAfQ6bPwQUbaBqBXiytO0qpcu4pTgq8lHwgjzdEOF3Jqr+YI5cs+
+         x946uWbFMYaCsG6z+KESnY6NdUbtI9qZu24vvItI2Ni3iqs9lTSeRBH9dAm0fW32/Qjb
+         QmVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=K1DTYgzh1PTbt5Dy4OfYWtoZOqwKhfMyLvJRd1nKZqU=;
-        b=dLW5GBKhQV/7WodlG4XpMlKuCZBQ/vaJxqaW8X5/jk+qSTU0HaresHaK5OjS/wHoPg
-         mh2oyvWByn0VpV17f1gmveA4Rbu9y1U27hJKOQPp/HakuJ3TLeO9ySS1BQZLqFQ+HSDy
-         cDgNWPnOv0h5lpY7xY+BgBPcOo5Op8nTxlIvyfI2OFiIgdsUCL5XJf1pEiOo66Jqw7SN
-         Lnv1CMFL+9c8GKkqh4YkiL0ZllScgrULS9Aq88PZ7ytbtWLqPNldEQzhtBIoGI1A8lLI
-         YYsfmkBQPaLxz1ORNrdoyx1ZXYH4wt7YqojvOlQY1FjdxCz6zpaPuIH+bVjHyh3MSt8B
-         srIQ==
-X-Gm-Message-State: AOAM532ll001+5e2foiwH30UYeTOyHUDJcOVLCXsXdRFZ+BgRIdK42k7
-        wkPw5gtDbfN/B02Z0OV/e1Hdtq0bPIww+K3PXoUTrw==
-X-Google-Smtp-Source: ABdhPJyaUd7orwxD63L9YPrdxfBc6vqRk8ovK/YWzUfH+pt8qh68rGG+nqHyaKxR4F41T+ZWt5vk0rTg+/kfNtg6Qxc=
-X-Received: by 2002:a25:b090:: with SMTP id f16mr25884519ybj.466.1605924065704;
- Fri, 20 Nov 2020 18:01:05 -0800 (PST)
+        bh=UJxZ6w6/zaA+DRTyYeAyLLTmSLsD8m+KVMVBliZmrDI=;
+        b=tfvTexzayxyXjJF70R7iCvqMhVtJhwntlf1qWnG8cv9W6QI7eVTFSlCL7dlD7D9pEF
+         +XMJousVaP2qxphx46tU8v6LreXTi6dKUx6v7X5h5AeyRjsGXi3PmEr4Ln5Qt2OOVqED
+         Wh3BuSW2a+9sybbZKQqCKMeRT7chL6F6l+T7e7em/lGUpf/4jBuAIYy5XO9Q4ZHafBIi
+         NDsbP3UAZYbntUlAFC6IYBG+fCA2jkvf4CrFqAPTMhkU3SaxThYmkQuxKruftHwpv4Ju
+         flJHwjFnz1tWnkiX/HR4M5hJOa5S4gVPdxKKFhtwV6GHHhCOIyCMSAvWJUV9ZosabInT
+         XHTg==
+X-Gm-Message-State: AOAM532b82+uB7sMQ7aayQyT7XQ5J7a/kkB807Ljk1okT2gPpXqJEpZH
+        t9T85K8reWTX0BkCBhS35dqtp3UchPXa5hekIdz4aw==
+X-Google-Smtp-Source: ABdhPJwfG2sGNnRS52EgcRLh4J/iiR6UL1aDWSNTYXBPHduW02ZJE+LxxwNTXdGAZ5bfoMFWlEWF+kOf5URorWjBbaY=
+X-Received: by 2002:a25:268e:: with SMTP id m136mr25207052ybm.346.1605924072908;
+ Fri, 20 Nov 2020 18:01:12 -0800 (PST)
 MIME-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-15-saravanak@google.com> <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
+ <20201104232356.4038506-14-saravanak@google.com> <CAJZ5v0hVRd2pYfGwpa4FLwhtrS2pj9Ng2a2gf61BO5F-94PPXQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hVRd2pYfGwpa4FLwhtrS2pj9Ng2a2gf61BO5F-94PPXQ@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 20 Nov 2020 18:00:30 -0800
-Message-ID: <CAGETcx8BZVfZo7Yd-gNCcRgYErsTPdUSSRwBPQN39vVCMFQCnA@mail.gmail.com>
-Subject: Re: [PATCH v1 14/18] driver core: Use device's fwnode to check if it
- is waiting for suppliers
+Date:   Fri, 20 Nov 2020 18:00:37 -0800
+Message-ID: <CAGETcx-nHiYLJLW+oUBgH8dm5eoQkEjhQUQu5OKZi9=ym5LvHQ@mail.gmail.com>
+Subject: Re: [PATCH v1 13/18] driver core: Add fwnode_get_next_parent_dev()
+ helper function
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
@@ -74,98 +74,68 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 8:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, Nov 16, 2020 at 8:27 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
 > On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 > >
-> > To check if a device is still waiting for its supplier devices to be
-> > added, we used to check if the devices is in a global
-> > waiting_for_suppliers list. Since the global list will be deleted in
-> > subsequent patches, this patch stops using this check.
->
-> My kind of educated guess is that you want to drop
-> waiting_for_suppliers and that's why you want to use supplier links
-> here.
-
-Yes, and a device would never be added waiting_for_suppliers list.
-
-> >
-> > Instead, this patch uses a more device specific check. It checks if the
-> > device's fwnode has any fwnode links that haven't been converted to
-> > device links yet.
+> > Given a fwnode, this function finds the closest ancestor fwnode that has
+> > a corresponding struct device. The function returns this struct device.
+> > This function will be used in a subsequent patch in this series.
 > >
 > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/base/core.c | 18 ++++++++----------
-> >  1 file changed, 8 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 4ae5f2885ac5..d51dd564add1 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
-> >  static LIST_HEAD(deferred_sync);
-> >  static unsigned int defer_sync_state_count = 1;
-> >  static DEFINE_MUTEX(fwnode_link_lock);
-> > +static bool fw_devlink_is_permissive(void);
-> >
-> >  /**
-> >   * fwnode_link_add - Create a link between two fwnode_handles.
-> > @@ -994,13 +995,13 @@ int device_links_check_suppliers(struct device *dev)
-> >          * Device waiting for supplier to become available is not allowed to
-> >          * probe.
-> >          */
-> > -       mutex_lock(&wfs_lock);
-> > -       if (!list_empty(&dev->links.needs_suppliers) &&
-> > -           dev->links.need_for_probe) {
-> > -               mutex_unlock(&wfs_lock);
-> > +       mutex_lock(&fwnode_link_lock);
-> > +       if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> > +           !fw_devlink_is_permissive()) {
-> > +               mutex_unlock(&fwnode_link_lock);
-> >                 return -EPROBE_DEFER;
-> >         }
-> > -       mutex_unlock(&wfs_lock);
-> > +       mutex_unlock(&fwnode_link_lock);
-> >
-> >         device_links_write_lock();
-> >
-> > @@ -1166,10 +1167,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
-> >         bool val;
-> >
-> >         device_lock(dev);
-> > -       mutex_lock(&wfs_lock);
-> > -       val = !list_empty(&dev->links.needs_suppliers)
-> > -             && dev->links.need_for_probe;
-> > -       mutex_unlock(&wfs_lock);
 >
-> Why isn't the lock needed any more?
->
-> Or maybe it wasn't needed previously too?
+> I would combine this one with patch [10/18].
 
-Yeah, I sent a separate patch for dropping this lock [1]. But I didn't
-want to wait for that to land to write this series. The lock wasn't
-needed in the first place and it was causing a lockdep warning.
-
->
-> > +       val = !list_empty(&dev->fwnode->suppliers);
-> >         device_unlock(dev);
-> >         return sysfs_emit(buf, "%u\n", val);
-> >  }
-> > @@ -2226,7 +2224,7 @@ static int device_add_attrs(struct device *dev)
-> >                         goto err_remove_dev_groups;
-> >         }
-> >
-> > -       if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> > +       if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
->
-> And why is this change needed?
-
-Because if a device doesn't have a fwnode, it can't ever be waiting on
-a supplier. Also, the "show" function dereferences
-dev->fwnode->suppliers.
+Ack.
 
 -Saravana
 
-[1] - https://lore.kernel.org/lkml/20201104205431.3795207-1-saravanak@google.com/
-Ignore the 1/2 thing. There's only 1 relevant patch.
+
+
+
+-Saravana
+
+>
+> > ---
+> >  drivers/base/core.c | 25 +++++++++++++++++++++++++
+> >  1 file changed, 25 insertions(+)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index ee28d8c7ee85..4ae5f2885ac5 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -1562,6 +1562,31 @@ static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
+> >                 fw_devlink_parse_fwtree(child);
+> >  }
+> >
+> > +/**
+> > + * fwnode_get_next_parent_dev - Find device of closest ancestor fwnode
+> > + * @fwnode: firmware node
+> > + *
+> > + * Given a firmware node (@fwnode), this function finds its closest ancestor
+> > + * firmware node that has a corresponding struct device and returns that struct
+> > + * device.
+> > + *
+> > + * The caller of this function is expected to call put_device() on the returned
+> > + * device when they are done.
+> > + */
+> > +static struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
+> > +{
+> > +       struct device *dev = NULL;
+> > +
+> > +       fwnode_handle_get(fwnode);
+> > +       do {
+> > +               fwnode = fwnode_get_next_parent(fwnode);
+> > +               if (fwnode)
+> > +                       dev = get_dev_from_fwnode(fwnode);
+> > +       } while (fwnode && !dev);
+> > +       fwnode_handle_put(fwnode);
+> > +       return dev;
+> > +}
+> > +
+> >  static void fw_devlink_link_device(struct device *dev)
+> >  {
+> >         int fw_ret;
+> > --
+> > 2.29.1.341.ge80a0c044ae-goog
+> >
