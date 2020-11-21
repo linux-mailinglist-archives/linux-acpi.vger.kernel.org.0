@@ -2,125 +2,371 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A45432BB8CE
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Nov 2020 23:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF5B2BBBB7
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728496AbgKTWVa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 17:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S1726117AbgKUCAK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 21:00:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728362AbgKTWV3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 17:21:29 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED15C061A04;
-        Fri, 20 Nov 2020 14:21:29 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id 10so9964113ybx.9;
-        Fri, 20 Nov 2020 14:21:29 -0800 (PST)
+        with ESMTP id S1725935AbgKUCAK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:00:10 -0500
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36133C061A48
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:10 -0800 (PST)
+Received: by mail-yb1-xb41.google.com with SMTP id 2so10309988ybc.12
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=29/AaAKKWIjlxKBDiu42mXe16/c3LUzQvTdn0Wctw9g=;
-        b=th/UjqVcversiy9gEUr46cKRrhHywr0iTgf9mzUejm+T3/Jtu2c6ftjob7N1dnOe2S
-         rGVMit/4Gqy7ZDqW+do8x9wI8RCPt/cmuWncILsoBuux3CBAtfG8gT+eTL8wiBVSM5EH
-         rDgxqkIvK+vUXnfhgj71GxYIUQH1hInVNMbCl5+3prik9RGhi+hsmul85xXuf9uJVr2L
-         NGLQGWDmOXXHg4l9XujW0HrVyacbE3Q1QSLAkLJ0BjE5AdFqhLyeU3T8/6+nJ9hH0JSR
-         o1vAVeqr6Bt+/W6rGIwrn7PuvAvMGRmk1Avx4k6vjCg8etglRiDTMnimrqKcX/KEsNCP
-         0CAw==
+        bh=RL33UOTlemNQ/vQ4qwl9EYK4T3gfkWAqCMJ5EwZ1yTY=;
+        b=Sbi44ROn89jSK8XlzyBlrwwURpgLSbihh/F0n6JsqZvGBlqw8IlZCselUourV3uXVt
+         sHszvmbbyueaU/ivacebDR45mAotQWucVjP35+UeQ5knBZzj+kbAoXy9Y40GhptM8yTX
+         L5dJVeNDGmeBKTtwvDQm3mVk4OuvRfDRRM4r3FEba8eXqohYh6s+q4YSdeoUNguCc7H6
+         N+Plww5vrPEmhZ5kz8jNVcyYESpsTm9PViVuLxVmpdW4HkFSpwHh0YyoEKuK6c2WlYc+
+         H89NqB5aN6hD1i1yoLuT2uMtvyCZGBh5FVwwRbCeDG0iKOlVL0G8E2/fhrvD/FSasPjH
+         jIbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=29/AaAKKWIjlxKBDiu42mXe16/c3LUzQvTdn0Wctw9g=;
-        b=g6dF/T3IXVX8QT4MfDxe+zp+ZIZ9xHCuMvUBvTX6zqjs95vMoZCWRjOR8ZvnplwSFE
-         MpW7FRJ+Cocr8Ai+2u86hCuhUCXhzTl/KKj91vXaqYUhzxnR9kkROQOnLFCEmRZKla1D
-         /TWlHYZvWd31yby8t+xuOaetfQfCA2rnKbYtvImZQoEgF4bMcyOH0wDgheWTNO/AQcgq
-         vKJHu61yvY4IK3yHPMgnP62czhvJ3I6HVNj4LuPzgNFrgnx06uPJAt0tvxIYKvpgGW+N
-         wvCFfMuDeRyb4r/j+b87COnXbi+be8kDhPqdSYEtYbeDyH//DWkZBm0w3V06nDyXNEdi
-         ds0A==
-X-Gm-Message-State: AOAM533E6x8M4HleYo3hGWOidsXyMY+wptATrgMwyVNBk+Ieg+ndwvCB
-        qvPHidvB8XuYLS48BjmsDU0X4FK8+hiPxZdptxg=
-X-Google-Smtp-Source: ABdhPJzYUhkcjTyH5GIcOV5fWMsl+OUdzem471zLY9usW3RhV8izQIRbyESMTmZwFikqgbfOQQqVvSSQCZzBPJX4q90=
-X-Received: by 2002:a5b:40e:: with SMTP id m14mr22113400ybp.33.1605910888617;
- Fri, 20 Nov 2020 14:21:28 -0800 (PST)
+        bh=RL33UOTlemNQ/vQ4qwl9EYK4T3gfkWAqCMJ5EwZ1yTY=;
+        b=UkpHQkMxjVroybw7IbnR+fy080wOu3B+Qgn3hRUWrpPUlXgXkqNKq69j2chePOUA2c
+         x0Wkcjc8Y0P7KuKt2sO50LlAJrbA0KUgrEW/Kw+r9CR/GtDPqC85kF+l3bN83qyd05hq
+         BCt6T6e4cnq9kb+WMON58EtKz/oKNfT+deUZovGJwJ9TXo9es9zA47GbDG/1ubZKetI1
+         90VuQ64By7ukNyKweiWSXp/SaxSwbfFecPXD5GsoNZkOaJn8onM7of5Fp6VPdwnIVOYz
+         8vDomDMx53gsHIaRga4ggeI7vMjdP+IJfABf4KsikVOP/ubHN9vx0TbM92WKpGTloUrk
+         Bhlw==
+X-Gm-Message-State: AOAM531QHOwN31OqAXjtW/umc94d9oGh805kNCkrlS8B/23xI6fo4brh
+        kpkb00GcKDsNQGSmb3bycI7HWVDToIYLV9eYB8+1lA==
+X-Google-Smtp-Source: ABdhPJycFco7NhhJCzLELdACWMic5hnonHza8FX12/J6/oDiCBN0OtjIXt6xR1BOMfz82Hk1vNgpXPQaTkdvtWCLCeo=
+X-Received: by 2002:a25:b090:: with SMTP id f16mr25880254ybj.466.1605924008934;
+ Fri, 20 Nov 2020 18:00:08 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1605896059.git.gustavoars@kernel.org>
-In-Reply-To: <cover.1605896059.git.gustavoars@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 20 Nov 2020 23:21:17 +0100
-Message-ID: <CANiq72=E_gEVvqUUTSqU4zegC2=yZSTM4b=4G-iofp6d3=UgWQ@mail.gmail.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>,
-        Kees Cook <keescook@chromium.org>
+References: <20201104232356.4038506-1-saravanak@google.com>
+ <20201104232356.4038506-9-saravanak@google.com> <CAJZ5v0iKAzkP1jDo202J117Mb=NipEMiLiV0-C8b4LPLDyUSmw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iKAzkP1jDo202J117Mb=NipEMiLiV0-C8b4LPLDyUSmw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 20 Nov 2020 17:59:32 -0800
+Message-ID: <CAGETcx9-Vt5pWxoaBRwisCv4ZTUrCBp+jX3eVU7bh=cvNqqe_A@mail.gmail.com>
+Subject: Re: [PATCH v1 08/18] driver core: Add fwnode link support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "Cc: Android Kernel" <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Gustavo,
-
-On Fri, Nov 20, 2020 at 7:21 PM Gustavo A. R. Silva
-<gustavoars@kernel.org> wrote:
+On Mon, Nov 16, 2020 at 7:51 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Hi all,
+> On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > This patch adds support for creating supplier-consumer links between
 >
-> This series aims to fix almost all remaining fall-through warnings in
-> order to enable -Wimplicit-fallthrough for Clang.
+> Generally speaking the "This patch" part is redundant.  It is
+> sufficient to simply say "Add ...".
+>
+> > fwnode.
+>
+> fwnodes (plural)?
+>
+> > It is intentionally kept simple and with limited APIs as it is
+> > meant to be used only by driver core and firmware code (Eg: device tree,
+> > ACPI, etc).
+>
+> I'd say "It is intended for internal use in the driver core and
+> generic firmware support code (eg. Device Tree, ACPI), so it is simple
+> by design and the API provided by it is limited."
+>
+> >
+> > We can expand the APIs later if there is ever a need for
+> > drivers/frameworks to start using them.
+>
+> The above is totally redundant IMO.
+>
+> >
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  drivers/base/core.c    | 95 ++++++++++++++++++++++++++++++++++++++++++
+> >  drivers/of/dynamic.c   |  1 +
+> >  include/linux/fwnode.h | 14 +++++++
+> >  3 files changed, 110 insertions(+)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 31a76159f118..1a1d9a55645c 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -50,6 +50,101 @@ static LIST_HEAD(wait_for_suppliers);
+> >  static DEFINE_MUTEX(wfs_lock);
+> >  static LIST_HEAD(deferred_sync);
+> >  static unsigned int defer_sync_state_count = 1;
+> > +static DEFINE_MUTEX(fwnode_link_lock);
+> > +
+> > +/**
+> > + * fwnode_link_add - Create a link between two fwnode_handles.
+> > + * @con: Consumer end of the link.
+> > + * @sup: Supplier end of the link.
+> > + *
+> > + * Creates a fwnode link between two fwnode_handles. These fwnode links are
+>
+> Why don't you refer to the arguments here, that is "Create a link
+> between fwnode handles @con and @sup ..."
 
-Thanks for this.
+Ack/done to everything above.
 
-Since this warning is reliable in both/all compilers and we are
-eventually getting rid of all the cases, what about going even further
-and making it an error right after?
+>
+> > + * used by the driver core to automatically generate device links. Attempts to
+> > + * create duplicate links are simply ignored and there is no refcounting.
+>
+> And I'd generally write it this way:
+>
+> "Create a link between fwnode handles @con and @sup representing a
+> pair of devices the first of which uses certain resources provided by
+> the second one, respectively.
+>
+> The driver core will use that link to create a device link between the
+> two device objects corresponding to @con and @sup when they are
+> created and it will automatically delete the link between @con and
+> @sup after doing that.
+>
+> Attempts to create a duplicate link between the same pair of fwnode
+> handles are ignored and there is no reference counting."
 
-Cheers,
-Miguel
+Took most of this as is with some minor rewording.
+
+>
+> > + *
+> > + * These links are automatically deleted once they are converted to device
+> > + * links or when the fwnode_handles (or their corresponding devices) are
+> > + * deleted.
+> > + */
+> > +int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
+>
+> Why doesn't it return a pointer to the new link or NULL?
+>
+> That would be consistent with device_link_add().
+
+However, as opposed to device_link_add(), I don't want the caller
+holding any reference to the allocated link. So I don't want to return
+any pointer to them.
+
+> > +{
+> > +       struct fwnode_link *link;
+> > +       int ret = 0;
+> > +
+> > +       mutex_lock(&fwnode_link_lock);
+> > +
+> > +       /* Duplicate requests are intentionally not refcounted. */
+>
+> Is this comment really necessary?
+
+I guess with the function comment explicitly stating "no ref
+counting", this is kind of redundant. I can remove this.
+
+>
+> > +       list_for_each_entry(link, &sup->consumers, s_hook)
+> > +               if (link->consumer == con)
+> > +                       goto out;
+>
+> It is also necessary to look the other way around AFAICS, that is if
+> there is a link between the two fwnode handles in the other direction
+> already, the creation of a new one should fail.
+
+No, fwnode links can have cycles. At this state, we can't tell which
+ones are invali.d When we create device links out of this, we have
+more info at that point and we make sure not to add any device links
+that can cause cycles. There are a bunch of corner cases where we
+can't tell which one is the invalid fwnode link in the links that make
+up the cycle and in those cases, we have to make the device links as
+SYNC_STATE_ONLY device links. Long story short, cycles are allowed.
+
+>
+> > +
+> > +       link = kzalloc(sizeof(*link), GFP_KERNEL);
+> > +       if (!link) {
+> > +               ret = -ENOMEM;
+> > +               goto out;
+> > +       }
+> > +
+> > +       link->supplier = sup;
+> > +       INIT_LIST_HEAD(&link->s_hook);
+> > +       link->consumer = con;
+> > +       INIT_LIST_HEAD(&link->c_hook);
+> > +
+> > +       list_add(&link->s_hook, &sup->consumers);
+> > +       list_add(&link->c_hook, &con->suppliers);
+> > +out:
+> > +       mutex_unlock(&fwnode_link_lock);
+> > +
+> > +       return ret;
+> > +}
+> > +
+> > +/**
+> > + * fwnode_links_purge_suppliers - Delete all supplier links of fwnode_handle.
+> > + * @fwnode: fwnode whose supplier links needs to be deleted
+>
+> s/needs/need/
+
+Ack
+
+>
+> > + *
+> > + * Deletes all supplier links connecting directly to a fwnode.
+>
+> I'd say "Delete all supplier links connecting directly to @fwnode."
+> and analogously below.
+
+Ack
+
+>
+> > + */
+> > +static void fwnode_links_purge_suppliers(struct fwnode_handle *fwnode)
+> > +{
+> > +       struct fwnode_link *link, *tmp;
+> > +
+> > +       mutex_lock(&fwnode_link_lock);
+> > +       list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
+> > +               list_del(&link->s_hook);
+> > +               list_del(&link->c_hook);
+> > +               kfree(link);
+> > +       }
+> > +       mutex_unlock(&fwnode_link_lock);
+> > +}
+> > +
+> > +/**
+> > + * fwnode_links_purge_consumers - Delete all consumer links of fwnode_handle.
+> > + * @fwnode: fwnode whose consumer links needs to be deleted
+> > + *
+> > + * Deletes all consumer links connecting directly to a fwnode.
+> > + */
+> > +static void fwnode_links_purge_consumers(struct fwnode_handle *fwnode)
+> > +{
+> > +       struct fwnode_link *link, *tmp;
+> > +
+> > +       mutex_lock(&fwnode_link_lock);
+> > +       list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
+> > +               list_del(&link->s_hook);
+> > +               list_del(&link->c_hook);
+> > +               kfree(link);
+>
+> I'd avoid the code duplication, even though it doesn't appear to be
+> significant ATM.
+
+I'd like to leave this as is for now if that's okay.
+
+> > +       }
+> > +       mutex_unlock(&fwnode_link_lock);
+> > +}
+> > +
+> > +/**
+> > + * fwnode_links_purge - Delete all links connected to a fwnode_handle.
+> > + * @fwnode: fwnode whose links needs to be deleted
+> > + *
+> > + * Deletes all links connecting directly to a fwnode.
+> > + */
+> > +void fwnode_links_purge(struct fwnode_handle *fwnode)
+> > +{
+> > +       fwnode_links_purge_suppliers(fwnode);
+>
+> Dropping the lock here may turn out to be problematic at one point
+> going forward.  IMO it is better to hold it throughout the entire
+> operation.
+
+It's not really a problem as there's nothing that can happen in
+between these two calls that can cause a problem but won't be a
+problem if it happens after these two calls. I was trying to avoid
+repeating the purge supplier/consumer code here again. Can we leave
+this as is for now?
+
+>
+> > +       fwnode_links_purge_consumers(fwnode);
+>
+> I'd get rid of the two functions above, add something like
+> fwnode_link_del() and walk the lists directly here calling it for
+> every link on the way.
+
+I need a fwnode_links_purge_suppliers() (as in, not purging consumer
+links) though. I used it later in the series. So instead of repeating
+that code for fwnode_links_purge(), I created
+fwnode_links_purge_consumers() and called both functions from here.
+Can we leave this as is?
+
+-Saravana
+
+>
+> > +}
+> >
+> >  #ifdef CONFIG_SRCU
+> >  static DEFINE_MUTEX(device_links_lock);
+> > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > index fe64430b438a..9a824decf61f 100644
+> > --- a/drivers/of/dynamic.c
+> > +++ b/drivers/of/dynamic.c
+> > @@ -356,6 +356,7 @@ void of_node_release(struct kobject *kobj)
+> >
+> >         property_list_free(node->properties);
+> >         property_list_free(node->deadprops);
+> > +       fwnode_links_purge(of_fwnode_handle(node));
+> >
+> >         kfree(node->full_name);
+> >         kfree(node->data);
+> > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> > index 593fb8e58f21..afde643f37a2 100644
+> > --- a/include/linux/fwnode.h
+> > +++ b/include/linux/fwnode.h
+> > @@ -10,6 +10,7 @@
+> >  #define _LINUX_FWNODE_H_
+> >
+> >  #include <linux/types.h>
+> > +#include <linux/list.h>
+> >
+> >  struct fwnode_operations;
+> >  struct device;
+> > @@ -18,6 +19,15 @@ struct fwnode_handle {
+> >         struct fwnode_handle *secondary;
+> >         const struct fwnode_operations *ops;
+> >         struct device *dev;
+> > +       struct list_head suppliers;
+> > +       struct list_head consumers;
+> > +};
+> > +
+> > +struct fwnode_link {
+> > +       struct fwnode_handle *supplier;
+> > +       struct list_head s_hook;
+> > +       struct fwnode_handle *consumer;
+> > +       struct list_head c_hook;
+> >  };
+> >
+> >  /**
+> > @@ -173,8 +183,12 @@ static inline void fwnode_init(struct fwnode_handle *fwnode,
+> >                                const struct fwnode_operations *ops)
+> >  {
+> >         fwnode->ops = ops;
+> > +       INIT_LIST_HEAD(&fwnode->consumers);
+> > +       INIT_LIST_HEAD(&fwnode->suppliers);
+> >  }
+> >
+> >  extern u32 fw_devlink_get_flags(void);
+> > +int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
+> > +void fwnode_links_purge(struct fwnode_handle *fwnode);
+> >
+> >  #endif
+> > --
+> > 2.29.1.341.ge80a0c044ae-goog
+> >
