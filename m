@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D61272BBBCC
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 343062BBBD3
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Nov 2020 03:02:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbgKUCBO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Nov 2020 21:01:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
+        id S1726985AbgKUCBU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Nov 2020 21:01:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726799AbgKUCBO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:01:14 -0500
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAFE4C061A48
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:13 -0800 (PST)
-Received: by mail-yb1-xb42.google.com with SMTP id k65so10348999ybk.5
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:13 -0800 (PST)
+        with ESMTP id S1726913AbgKUCBU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Nov 2020 21:01:20 -0500
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB82C061A48
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:19 -0800 (PST)
+Received: by mail-yb1-xb41.google.com with SMTP id o71so10355002ybc.2
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UJxZ6w6/zaA+DRTyYeAyLLTmSLsD8m+KVMVBliZmrDI=;
-        b=ehTkqaGNM8Hrf8tS8vWKP2N8U2ALQooRcd2pt7kat6HeSs39ILQ9wkBFn17L1rjIQP
-         b9FchazIIvOB5MKggiFsjB6XWE6qDZKZyu8nYaY0Deaq/bGL9zixlz1PLA42WfDEShcH
-         D9lbaUbXb0ufmxNl0k8qkYaKA9+oXVmRTn5F8AbS4+NUJn2f/49VTOlBWRVO7By/x9Oo
-         GkHw5l7h/Pd6ztTPgAfQ6bPwQUbaBqBXiytO0qpcu4pTgq8lHwgjzdEOF3Jqr+YI5cs+
-         x946uWbFMYaCsG6z+KESnY6NdUbtI9qZu24vvItI2Ni3iqs9lTSeRBH9dAm0fW32/Qjb
-         QmVQ==
+        bh=lptBBbGushlHJUmT2AIfJv9BrkLAXhn95EN3DEBkcQw=;
+        b=kPJh46MIin1X5MmomtGmy+IMegd1fnFrRN5XCBU0BDeFY/SPYlUaHWi2XwcDhT8zpH
+         llJb0JTUYtli9u94w48Nt/YENr3SUlo3KoMOOezh2njap0ClbfsHpIJZwSGYeY5lUegd
+         K/6UvEMs3rCivA+uscms3XDbhVJzYlUPLwXdky9RO/Q3oL/IbcDhdhNN7NrDxRf6C2Ar
+         t5f0tY/S4VosrrEn5PqrH/JLQntmambrJ1huRNGnAzroEDAf7rzsbyS65Pg5QH5AdaPX
+         HjLiChlxtcBtXIDF+rm14mSpZozeinDkEqIpzhD1viKtwqrTe0HDrNLe/9CHIcvjJiuE
+         2Osw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UJxZ6w6/zaA+DRTyYeAyLLTmSLsD8m+KVMVBliZmrDI=;
-        b=tfvTexzayxyXjJF70R7iCvqMhVtJhwntlf1qWnG8cv9W6QI7eVTFSlCL7dlD7D9pEF
-         +XMJousVaP2qxphx46tU8v6LreXTi6dKUx6v7X5h5AeyRjsGXi3PmEr4Ln5Qt2OOVqED
-         Wh3BuSW2a+9sybbZKQqCKMeRT7chL6F6l+T7e7em/lGUpf/4jBuAIYy5XO9Q4ZHafBIi
-         NDsbP3UAZYbntUlAFC6IYBG+fCA2jkvf4CrFqAPTMhkU3SaxThYmkQuxKruftHwpv4Ju
-         flJHwjFnz1tWnkiX/HR4M5hJOa5S4gVPdxKKFhtwV6GHHhCOIyCMSAvWJUV9ZosabInT
-         XHTg==
-X-Gm-Message-State: AOAM532b82+uB7sMQ7aayQyT7XQ5J7a/kkB807Ljk1okT2gPpXqJEpZH
-        t9T85K8reWTX0BkCBhS35dqtp3UchPXa5hekIdz4aw==
-X-Google-Smtp-Source: ABdhPJwfG2sGNnRS52EgcRLh4J/iiR6UL1aDWSNTYXBPHduW02ZJE+LxxwNTXdGAZ5bfoMFWlEWF+kOf5URorWjBbaY=
-X-Received: by 2002:a25:268e:: with SMTP id m136mr25207052ybm.346.1605924072908;
- Fri, 20 Nov 2020 18:01:12 -0800 (PST)
+        bh=lptBBbGushlHJUmT2AIfJv9BrkLAXhn95EN3DEBkcQw=;
+        b=Az2WywxG2SM/xGa5RQmDVvAuydoIECoCUFVfLUux2A+Mjql229qJtNDyhNZc27gYfZ
+         z2xu8yvKW2AMzLGZnIE5py1VzyJm2cn6brpaeqDIDDRK6HvaiYykiYqv8qHY/Z1TYC0Z
+         KM9lRJEkK3Q0pO18NfJXduylQz9jlmDSkPLuj0gF0/+VdNC5L6/k5bsfiMJOGTo9xzGB
+         eOC2rEk3CXdeApnQ2pREEbg++UnyAXLw3UWGGYCyaHbS2rztrYNqukUtlVsVFSvko8Z1
+         DAzB7rqF4bImGW8bv1ZVFd+NgCG1Z1afwHANrdGHmH5bNvOfFEAac7W0xvDnnHJ+6mIX
+         PokA==
+X-Gm-Message-State: AOAM533friPGtf1f9qG7Hq7hutVS/JQxXWPvBY7mJcCFRT1621xo1KIu
+        cXZVuwdIFR4IqHkb1lQyVKywx6M+bVcZKcpwYUrfGQ==
+X-Google-Smtp-Source: ABdhPJwL+RWOtK1NK29JcTWnyDUn955B8Vc2hZVf1e8KN5TtA1N4vftbkBqKUHcWaybv95OBkNNlmFjIuyCz4UCouZk=
+X-Received: by 2002:a25:c483:: with SMTP id u125mr23456504ybf.310.1605924079027;
+ Fri, 20 Nov 2020 18:01:19 -0800 (PST)
 MIME-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-14-saravanak@google.com> <CAJZ5v0hVRd2pYfGwpa4FLwhtrS2pj9Ng2a2gf61BO5F-94PPXQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hVRd2pYfGwpa4FLwhtrS2pj9Ng2a2gf61BO5F-94PPXQ@mail.gmail.com>
+ <20201104232356.4038506-18-saravanak@google.com> <CAJZ5v0gALooTYTLr9JOynHTT=Bqvzp1iTdpQ+SfQn+2u__w-0w@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gALooTYTLr9JOynHTT=Bqvzp1iTdpQ+SfQn+2u__w-0w@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 20 Nov 2020 18:00:37 -0800
-Message-ID: <CAGETcx-nHiYLJLW+oUBgH8dm5eoQkEjhQUQu5OKZi9=ym5LvHQ@mail.gmail.com>
-Subject: Re: [PATCH v1 13/18] driver core: Add fwnode_get_next_parent_dev()
- helper function
+Date:   Fri, 20 Nov 2020 18:00:43 -0800
+Message-ID: <CAGETcx-nbUVm5LL9n0Ee=p6GV-b0r048S56zWJ6e_Fd421krjA@mail.gmail.com>
+Subject: Re: [PATCH v1 17/18] driver core: Add helper functions to convert
+ fwnode links to device links
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
@@ -74,68 +74,128 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 8:27 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, Nov 16, 2020 at 8:57 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
 > On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 > >
-> > Given a fwnode, this function finds the closest ancestor fwnode that has
-> > a corresponding struct device. The function returns this struct device.
-> > This function will be used in a subsequent patch in this series.
+> > Add helper functions __fw_devlink_link_to_consumers() and
+> > __fw_devlink_link_to_suppliers() that convert fwnode links to device
+> > links.
+> >
+> > __fw_devlink_link_to_consumers() is for creating:
+> > - Device links between a newly added device and all its consumer devices
+> >   that have been added to driver core.
+> > - Proxy SYNC_STATE_ONLY device links between the newly added device and
+> >   the parent devices of all its consumers that have not been added to
+> >   driver core yet.
+> >
+> > __fw_devlink_link_to_suppliers() is for creating:
+> > - Device links between a newly added device and all its supplier devices
+> > - Proxy SYNC_STATE_ONLY device links between the newly added device and
+> >   all the supplier devices of its child device nodes.
 > >
 > > Signed-off-by: Saravana Kannan <saravanak@google.com>
->
-> I would combine this one with patch [10/18].
-
-Ack.
-
--Saravana
-
-
-
-
--Saravana
-
->
 > > ---
-> >  drivers/base/core.c | 25 +++++++++++++++++++++++++
-> >  1 file changed, 25 insertions(+)
+> >  drivers/base/core.c | 228 ++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 228 insertions(+)
 > >
 > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index ee28d8c7ee85..4ae5f2885ac5 100644
+> > index d51dd564add1..0c87ff949d81 100644
 > > --- a/drivers/base/core.c
 > > +++ b/drivers/base/core.c
-> > @@ -1562,6 +1562,31 @@ static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-> >                 fw_devlink_parse_fwtree(child);
+> > @@ -1585,6 +1585,234 @@ static struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
+> >         return dev;
 > >  }
 > >
 > > +/**
-> > + * fwnode_get_next_parent_dev - Find device of closest ancestor fwnode
-> > + * @fwnode: firmware node
+> > + * fw_devlink_create_devlink - Create a device link from a consumer to fwnode
+>
+> Have you considered renaming "fw_devlink" to "fwnode_link"?
+
+I avoided using fwnode_link prefix because it's not related to the
+fwnode link APIs. This is a fw_devlink feature related code and hence
+the fw_devlink prefix.
+
+I could just call it fw_devlink_create() or fw_devlink_create_links()
+or fwnode_to_dev_link() if that's less confusing. Any preferences?
+
+> That would be much less confusing IMO and the name of this function
+> would be clearer.
+>
+> > + * @con - Consumer device for the device link
+> > + * @sup - fwnode handle of supplier
 > > + *
-> > + * Given a firmware node (@fwnode), this function finds its closest ancestor
-> > + * firmware node that has a corresponding struct device and returns that struct
-> > + * device.
+> > + * This function will try to create a device link between the consumer and the
+> > + * supplier devices.
+>
+> "... between consumer device @con and the supplier device represented
+> by @sup" (and see below).
+>
 > > + *
-> > + * The caller of this function is expected to call put_device() on the returned
-> > + * device when they are done.
+> > + * The supplier has to be provided as a fwnode because incorrect cycles in
+> > + * fwnode links can sometimes cause the supplier device to never be created.
+> > + * This function detects such cases and returns an error if a device link being
+> > + * created in invalid.
+>
+> "... returns an error if it cannot create a device link from the
+> consumer to a missing supplier."
+>
+> > + *
+> > + * Returns,
+> > + * 0 on successfully creating a device link
+> > + * -EINVAL if the device link being attempted is invalid
+>
+> "if the device link cannot be created as expected"
+>
+> > + * -EAGAIN if the device link needs to be attempted again in the future
+>
+> "if the device link cannot be created right now, but it may be
+> possible to do that in the future."
+
+Ack to all the documentation comments above.
+
+>
 > > + */
-> > +static struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
+> > +static int fw_devlink_create_devlink(struct device *con,
+> > +                                    struct fwnode_handle *sup, u32 flags)
+>
+> I'd call the second arg sup_handle to indicate that it is not a struct device.
+
+Ack
+
+>
 > > +{
-> > +       struct device *dev = NULL;
+> > +       struct device *sup_dev, *sup_par_dev;
+> > +       int ret = 0;
 > > +
-> > +       fwnode_handle_get(fwnode);
-> > +       do {
-> > +               fwnode = fwnode_get_next_parent(fwnode);
-> > +               if (fwnode)
-> > +                       dev = get_dev_from_fwnode(fwnode);
-> > +       } while (fwnode && !dev);
-> > +       fwnode_handle_put(fwnode);
-> > +       return dev;
-> > +}
-> > +
-> >  static void fw_devlink_link_device(struct device *dev)
-> >  {
-> >         int fw_ret;
-> > --
-> > 2.29.1.341.ge80a0c044ae-goog
-> >
+> > +       sup_dev = get_dev_from_fwnode(sup);
+> > +       /*
+> > +        * If we can't find the supplier device from its fwnode, it might be
+> > +        * due to a cyclic dependcy between fwnodes. Some of these cycles can
+>
+> dependency
+>
+
+Ack
+
+> > +        * be broken by applying logic. Check for these types of cycles and
+> > +        * break them so that devices in the cycle probe properly.
+> > +        */
+>
+> I would do
+>
+> if (sup_dev) {
+>         if (!device_link_add(con, sup_dev, flags))
+>                 ret = -EINVAL;
+>
+>         put_device(sup_dev);
+>         return ret;
+> }
+>
+> here and the cycle detection (error code path) below, possibly using
+> the same dev pointer.
+
+Nice suggestion, thanks!
+
+
+-Saravana
