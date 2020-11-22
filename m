@@ -2,72 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D380F2BC35B
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Nov 2020 04:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D462BC3DE
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Nov 2020 06:28:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbgKVDXf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 Nov 2020 22:23:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726544AbgKVDXe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 Nov 2020 22:23:34 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E05C0613CF;
-        Sat, 21 Nov 2020 19:23:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=t7P1qjxLtvKyLv5lupmc5Zc5j0L3lqaoBXMlGIL9vWk=; b=BCb+FFzpwYCsAL5/GuZs0qQqU7
-        2wigu715rAloO1MXfHFDjsI/DCCkjrJ0RLz4Myz+wD98+zNWw6243kPWNzvqzMn6Tn8JVpmOuQv+x
-        7EKe3xartwVOhq4ran1ZhW92oaIukRN20h1OI3pPMusUrtae1AY4TqDUCPUPtiDgxz6eQOoVcrvcz
-        Ara6lCihfF7KrYMxKPcv522GOw1XE7kmR9pLBWd69WCJIf1380JdPIessAMMrwuE8sqCmQUL7YEHL
-        BXN0W+EBw/mKx6JrVL7roopk6K2PnHDj+T1EiV35semdke1klNMJQXZf1Gvzraa/TLsC310jvDxAq
-        zJ5cWKdw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kgfxw-0001fc-2G; Sun, 22 Nov 2020 03:23:04 +0000
-Date:   Sun, 22 Nov 2020 03:23:04 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     trix@redhat.com
-Cc:     joe@perches.com, clang-built-linux@googlegroups.com,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
-        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
-        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, alsa-devel@alsa-project.org,
-        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
-Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
-Message-ID: <20201122032304.GE4327@casper.infradead.org>
-References: <20201121165058.1644182-1-trix@redhat.com>
+        id S1727244AbgKVF2G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Nov 2020 00:28:06 -0500
+Received: from lonlinode-sdnproxy-1.icoremail.net ([139.162.193.133]:42394
+        "HELO lonlinode-sdnproxy-1.icoremail.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S1727110AbgKVF2G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Nov 2020 00:28:06 -0500
+Received: from localhost (unknown [113.247.217.134])
+        by c1app7 (Coremail) with SMTP id BwINCgA3PQHb9rlfssnpAA--.12609S3;
+        Sun, 22 Nov 2020 13:27:55 +0800 (CST)
+Date:   Sun, 22 Nov 2020 13:27:52 +0800
+From:   Chen Baozi <chenbaozi@phytium.com.cn>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] ACPI: Let ACPI know we support Generic Initiator
+ Affinity Structures
+Message-ID: <20201122052752.GA23348@debian-gnu-linux-vm.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201121165058.1644182-1-trix@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CM-TRANSID: BwINCgA3PQHb9rlfssnpAA--.12609S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw43XF4Duw15CFW5ArWrKrg_yoW8ZF47pF
+        sY9w4DCrykCaykCa4kCw4FqFy5Ja13AFyjvr9rK3yUZ34rGr1DJr4ktryUKayj9rs3JF4F
+        gFn0qr15tayDu3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkFb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+        C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+        Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+        W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc2xSY4AK67AK6r4rMxAIw28I
+        cxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2
+        IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI
+        42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42
+        IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+        87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07boxhJUUUUU=
+X-CM-SenderInfo: hfkh0updr2xqxsk13x1xpou0fpof0/1tbiDAPkP17uHyDXUAAAsc
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 08:50:58AM -0800, trix@redhat.com wrote:
-> The fixer review is
-> https://reviews.llvm.org/D91789
-> 
-> A run over allyesconfig for x86_64 finds 62 issues, 5 are false positives.
-> The false positives are caused by macros passed to other macros and by
-> some macro expansions that did not have an extra semicolon.
-> 
-> This cleans up about 1,000 of the current 10,000 -Wextra-semi-stmt
-> warnings in linux-next.
+Hi Jonathan,
 
-Are any of them not false-positives?  It's all very well to enable
-stricter warnings, but if they don't fix any bugs, they're just churn.
+I have found the value of OSC_SB_GENERIC_INITIATOR_SUPPORT is wrong
+when reading source code of driver/acpi/bus.c in the linux-next
+
+On Wed, Sep 30, 2020 at 10:05:44PM +0800, Jonathan Cameron wrote:
+> Until we tell ACPI that we support generic initiators, it will have
+> to operate in fall back domain mode and all _PXM entries should
+> be on existing non GI domains.
+> 
+> This patch sets the relevant OSC bit to make that happen.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/bus.c   | 4 ++++
+>  include/linux/acpi.h | 1 +
+>  2 files changed, 5 insertions(+)
+> 
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 54002670cb7a..113c661eb848 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -303,7 +303,11 @@ static void acpi_bus_osc_support(void)
+>  	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
+>  	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
+>  
+> +#ifdef CONFIG_ARM64
+> +	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GENERIC_INITIATOR_SUPPORT;
+> +#endif
+>  #ifdef CONFIG_X86
+> +	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GENERIC_INITIATOR_SUPPORT;
+>  	if (boot_cpu_has(X86_FEATURE_HWP)) {
+>  		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_SUPPORT;
+>  		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPCV2_SUPPORT;
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index e9f6cd67943e..edbf3c4116b4 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -545,6 +545,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+>  #define OSC_SB_PCLPI_SUPPORT			0x00000080
+>  #define OSC_SB_OSLPI_SUPPORT			0x00000100
+>  #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+> +#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+
+Since the Generic Initiator Support is the Bit 17, it should be
+0x20000 rather than 0x2000.
+
+Baozi.
+
