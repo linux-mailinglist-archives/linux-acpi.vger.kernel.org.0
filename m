@@ -2,137 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C84FE2BC469
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Nov 2020 08:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2D02BC4BA
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Nov 2020 10:32:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727334AbgKVHgE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Nov 2020 02:36:04 -0500
-Received: from lonlinode-sdnproxy-1.icoremail.net ([139.162.193.133]:56634
-        "HELO lonlinode-sdnproxy-1.icoremail.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S1726461AbgKVHgE (ORCPT
+        id S1727369AbgKVJcT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Nov 2020 04:32:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33104 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727412AbgKVJcR (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Nov 2020 02:36:04 -0500
-Received: from localhost (unknown [113.247.217.134])
-        by c1app12 (Coremail) with SMTP id DAINCgBH+haiFLpfNmawAA--.39220S3;
-        Sun, 22 Nov 2020 15:34:58 +0800 (CST)
-From:   Chen Baozi <chenbaozi@phytium.com.cn>
-To:     Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH v3 2/2] ACPI: Advertise Interrupt ResourceSource support
-Date:   Sun, 22 Nov 2020 15:34:53 +0800
-Message-Id: <20201122073453.5758-2-chenbaozi@phytium.com.cn>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201122073453.5758-1-chenbaozi@phytium.com.cn>
-References: <20201122073453.5758-1-chenbaozi@phytium.com.cn>
+        Sun, 22 Nov 2020 04:32:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606037535;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1Y7q9k7HD5zOPOSswO36/j6lKCNPhQl+mLKkjPEYqto=;
+        b=ggJNNHFnAc7DFeEkDxf6XxmLW83mumoRrKU3ZhLS/xpI4hRYwUTn0a72CCU1CuLjwWwU+e
+        lqc3ERu4ZNU3beCfRBQ6/t8GG0hMyGnRV5e2SseJKuxPTylZOeZ81KjpOq3NY3kEPIkNz7
+        w4xnxnT7OTQLpLAzE5T33ZhE0XLoEdI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-181-s27xbpk2OnO50TGzj3FRkg-1; Sun, 22 Nov 2020 04:32:13 -0500
+X-MC-Unique: s27xbpk2OnO50TGzj3FRkg-1
+Received: by mail-ej1-f70.google.com with SMTP id k2so3079732eji.21
+        for <linux-acpi@vger.kernel.org>; Sun, 22 Nov 2020 01:32:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1Y7q9k7HD5zOPOSswO36/j6lKCNPhQl+mLKkjPEYqto=;
+        b=jKvoM3NZWvX1iecZzBs32h9AQ+f7taeKME+ulIUHOdZ3khGboW0Qg38dAx1dFnL0fc
+         wzSL1n5f1/vzJfqZEvWqIWr/XVpUJ5NX/P6vxqrRVAn2pXMPYvTzMHqIJ9RLKndJ9ykZ
+         ZqUwjvUne8AUJNMi8fcSGrN0MRplaeCmrmBGWMneMUwrvxuG5jybfKP0oaVvY/s91vGR
+         k9927TIBumBVblvIciPAjLpIQKaFzUG0IcMurZ0/m0Z6qmwlGfoS0VfqZ832JnOP0vGC
+         og2e/gYG0Z9/FbfOI+n/t1uE1rgcOhR7ov/s++n4MuF1bN7feBhiEIGRxWGoQRlfW1Zi
+         g/1g==
+X-Gm-Message-State: AOAM531XSf4oerOeHytz8PnZ8lxXBD9O3sr4Ya8P4CAUEzh8VilmUUWF
+        CwMgmGzUyBKlCKIUDe55ZZp25OJ4sllcmJSpOoU9rx2eNaODJLTqK4HugiY4ypLj5xPhu1+vJhB
+        xlo29ym6LHtqwMywWTEUg4Q==
+X-Received: by 2002:a05:6402:b3b:: with SMTP id bo27mr41629828edb.376.1606037532047;
+        Sun, 22 Nov 2020 01:32:12 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwEvLOCCbG7eHL42EU8Bi65ubd6FTNy/yzZ+p0DfU6/bVD3GvNQ+FC3LPZuV5BWpCH1Wa/GhA==
+X-Received: by 2002:a05:6402:b3b:: with SMTP id bo27mr41629814edb.376.1606037531812;
+        Sun, 22 Nov 2020 01:32:11 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id c30sm3394001edd.68.2020.11.22.01.32.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2020 01:32:11 -0800 (PST)
+Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
+To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+Cc:     Mark Pearson <markpearson@lenovo.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "hadess@hadess.net" <hadess@hadess.net>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+References: <markpearson@lenovo.com>
+ <20201115004402.342838-1-markpearson@lenovo.com>
+ <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
+ <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
+ <8c3pjwAeJVjl5ZLmnajCVHjcyBjoQeQTupHqZZostKJt3YZ0seAAvD-UIcBYFAFUNjsi0iWrEBNfX1l0tqN-4x07TGQbsiOMEqCpPAxgqJQ=@protonmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <41f3e41a-07be-3276-40fe-5675a19f36ae@redhat.com>
+Date:   Sun, 22 Nov 2020 10:32:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
+In-Reply-To: <8c3pjwAeJVjl5ZLmnajCVHjcyBjoQeQTupHqZZostKJt3YZ0seAAvD-UIcBYFAFUNjsi0iWrEBNfX1l0tqN-4x07TGQbsiOMEqCpPAxgqJQ=@protonmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DAINCgBH+haiFLpfNmawAA--.39220S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxGrW8Cw1DZw45Wr1ktw4rGrg_yoW5uF48pa
-        n293W5CrWkZa98Aa4kCw4rXFy5Ja1aka42grWDGa43Zay0kF1DJr47tFyUWa4j9F43GFWY
-        qrnIqFZ8Kas8uaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-        C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-        Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-        W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka
-        0xkIwI1lc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-        UI43ZEXa7IU890ePUUUUU==
-X-Originating-IP: [113.247.217.134]
-X-CM-SenderInfo: hfkh0updr2xqxsk13x1xpou0fpof0/1tbiDALkP17uHyEOYAABs0
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As mentioned in ACPI v6.3, Table 6-200, the platform will indicate
-to the OS whether or not it supports usage of ResourceSource. If
-not set, the OS may choose to ignore the ResourceSource parameter
-in the extended interrupt descriptor. Since we support parsing
-ResoureSource field of interrupts both for platform devices and
-PCI Interrupt Link devices now, this patch sets the relevant OSC
-bit and checks the capability as described in ACPI specification.
+Hi,
 
-Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/acpi/bus.c   | 5 +++++
- drivers/acpi/irq.c   | 3 ++-
- include/linux/acpi.h | 4 +++-
- 3 files changed, 10 insertions(+), 2 deletions(-)
+On 11/21/20 10:18 PM, Barnabás Pőcze wrote:
+> 2020. november 21., szombat 15:27 keltezéssel, Hans de Goede írta:
+> 
+>> [...]
+>>> I just realized that the sysfs attributes are only created if a profile provider
+>>> is registered, and it is removed when the provide unregisters itself. I believe
+>>> it would be easier for system daemons if those attributes existed from module load
+>>> to module unload since they can just just open the file and watch it using poll,
+>>> select, etc. If it goes away when the provider unregisters itself, then I believe
+>>> a more complicated mechanism (like inotify) would need to be implemented in the
+>>> daemons to be notified when a new provider is registered. Thus my suggestion
+>>> for the next iteration is to create the sysfs attributes on module load,
+>>> and delete them on unload.
+>>>
+>>> What do you think?
+>>
+>> Actually I asked Mark to move this to the register / unregister time since
+>> having a non functioning files in sysfs is a bit weird.
+>> [...]
+> 
+> Ahh, I didn't know that, sorry. If a non-functioning sysfs attribute is a problem,
+> then there is another option: `platform_profile_choices` is always present;
+> if no provider is registered, it's empty. If a provider is (un)registered,
+> then `platform_profile_choices` is sysfs_notify()-ed. `platform_profile`
+> only exists while a provider is registered, so it is created on provider
+> registration and unregistered on provider unregistration.
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 1682f8b454a2..a6af1270bea6 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -281,6 +281,8 @@ bool osc_sb_apei_support_acked;
- bool osc_pc_lpi_support_confirmed;
- EXPORT_SYMBOL_GPL(osc_pc_lpi_support_confirmed);
- 
-+bool osc_sb_intr_ressrc_support_confirmed;
-+
- static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
- static void acpi_bus_osc_support(void)
- {
-@@ -303,6 +305,7 @@ static void acpi_bus_osc_support(void)
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
- 
-+	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_INTR_RESSRC_SUPPORT;
- #ifdef CONFIG_ARM64
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GENERIC_INITIATOR_SUPPORT;
- #endif
-@@ -328,6 +331,8 @@ static void acpi_bus_osc_support(void)
- 				capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
- 			osc_pc_lpi_support_confirmed =
- 				capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-+			osc_sb_intr_ressrc_support_confirmed =
-+				capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_INTR_RESSRC_SUPPORT;
- 		}
- 		kfree(context.ret.pointer);
- 	}
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 2fff5401c3f3..649e09bbd612 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -106,7 +106,8 @@ acpi_get_irq_source_fwhandle(const struct acpi_resource_source *source)
- 	acpi_handle handle;
- 	acpi_status status;
- 
--	if (!source->string_length)
-+	if (!osc_sb_intr_ressrc_support_confirmed ||
-+	    !source->string_length)
- 		return acpi_gsi_domain_id;
- 
- 	status = acpi_get_handle(NULL, source->string_ptr, &handle);
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index b182a267fe66..f9ca8e117f31 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -555,10 +555,12 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
- #define OSC_SB_PCLPI_SUPPORT			0x00000080
- #define OSC_SB_OSLPI_SUPPORT			0x00000100
- #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
--#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
-+#define OSC_SB_INTR_RESSRC_SUPPORT		0x00002000
-+#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
- 
- extern bool osc_sb_apei_support_acked;
- extern bool osc_pc_lpi_support_confirmed;
-+extern bool osc_sb_intr_ressrc_support_confirmed;
- 
- /* PCI Host Bridge _OSC: Capabilities DWORD 2: Support Field */
- #define OSC_PCI_EXT_CONFIG_SUPPORT		0x00000001
--- 
-2.28.0
+TBH, I don't like this suggestion. I would like to either want both of
+them be present and report "none" (and -ENODEV on write in case of platform_profile),
+or neither of them be present.
+
+Note I do agree with you that userspace probably needs a way to find out when a
+provider shows up. Which means we should probably go with always having both of
+them present. But it would also be good to get some input from Bastien here,
+as he is working on a userspace daemon using this API.
+
+Regards,
+
+Hans
 
