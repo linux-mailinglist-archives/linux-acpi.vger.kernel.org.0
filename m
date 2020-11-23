@@ -2,152 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A30F2C0A40
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 14:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73DCC2C08FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 14:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732572AbgKWNR5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Nov 2020 08:17:57 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38070 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732515AbgKWNRz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Nov 2020 08:17:55 -0500
-Received: by mail-ot1-f67.google.com with SMTP id 92so12777821otd.5
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Nov 2020 05:17:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WtIg/mr7EYSJUios6yEOFPXRjF+gCFSVTedG6movZ/g=;
-        b=gu7wQYy+Cc08qrbmTwLAUp14qlnCmFsRYCC2cuWL+pgg6eG00a2O1W0x3rO7J5QwXc
-         4fYnXTYdb20M+7JV4o7l3KVdOr5frKz4OeBI4Aph4rT+AdMocjzQ8iWtMMxbxlipvg7l
-         QpP1X1TEi92ZHy7nzzEo50Bb7oLE8CMQxhZoAI1LF9xurm/W/T8Pscpg0Fu+bUEno+FB
-         VtY67a7ceYRqGfgQcY0ER06+hRpJcRCacQcZQVeUB3ONbcPcQz4THEFnou+CELciq3PI
-         CnWTtr+UfNbNGzRD3eSIyXhwa45OG9YE+58n7FKwQCuCjq0WxAp/wVJhqfdpaTo9z8bv
-         uOlw==
-X-Gm-Message-State: AOAM533fGL9s7UWvxL671wzIhY5jj7ZYF4+5TdMa+IL5zbhDUoOvIV6c
-        wxBP6vdc3W7KqcQEWo7AllHG/M29tRxVGnsRoEE=
-X-Google-Smtp-Source: ABdhPJzN4PXtyMuLXi4dc/T3PVhyKhespjqNGW3HTP6StSnJ5v/t/ybJfhpvZDhnx154LPpU8/g6nEO8J4MI8hIOgUE=
-X-Received: by 2002:a9d:171a:: with SMTP id i26mr24148744ota.260.1606137474427;
- Mon, 23 Nov 2020 05:17:54 -0800 (PST)
+        id S2388361AbgKWNDq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Nov 2020 08:03:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40738 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388335AbgKWNDp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Nov 2020 08:03:45 -0500
+Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 191D120758;
+        Mon, 23 Nov 2020 13:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606136621;
+        bh=J/TET3MqSRKQBkZDLmw3offBuTNq8xblR6VPj5c7KTQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=huMDpxd34lY8zl81VJt6WrkzA8VbZ3WZKfCc+01YUsnQkEm+dvBfrNL343ZTscxgS
+         4cn7RRAIuR/6lyK6TO0qxACy3TNrSBuTodAx+s4Q2YpvApK9inZpqsbsSdtJmbV9Zx
+         YwwBYqtSxUH9kHvWkiEz2t98c4vnYVnAJ6qqQTEg=
+Date:   Mon, 23 Nov 2020 07:03:48 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     Joe Perches <joe@perches.com>, Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
+        linux-atm-general@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-ide@vger.kernel.org, dm-devel@redhat.com,
+        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
+        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
+        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net,
+        linux-afs@lists.infradead.org,
+        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
+        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+        rds-devel@oss.oracle.com,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
+        linux-security-module@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
+        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
+        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        x86@kernel.org, linux-nfs@vger.kernel.org,
+        GR-Linux-NIC-Dev@marvell.com, linux-mm@kvack.org,
+        netdev@vger.kernel.org, linux-decnet-user@lists.sourceforge.net,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        patches@opensource.cirrus.com, linux-integrity@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
+ Clang
+Message-ID: <20201123130348.GA3119@embeddedor>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+ <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook>
+ <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook>
+ <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
+ <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
+ <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
+ <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
 MIME-Version: 1.0
-References: <20201121203040.146252-1-hdegoede@redhat.com> <20201121203040.146252-6-hdegoede@redhat.com>
-In-Reply-To: <20201121203040.146252-6-hdegoede@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 23 Nov 2020 13:17:37 +0100
-Message-ID: <CAJZ5v0i+Oz4meRo+YQw_LRZXReo9APh4kpqAP4Nby8_HExrrJg@mail.gmail.com>
-Subject: Re: [PATCH 5/7] ACPI: scan: Add support for deferring adding devices
- to the second scan phase based on the _DEP list
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 9:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The current solution, of deferring adding of some devices because they
-> need access during the OpRegions of other devices while they are added,
-> is not very generic.
->
-> And support for making the decision to defer adding a device based on
-> its _DEP list, instead of the device's HID being in a fixed list of HIDs
-> to defer, which should be a more generic way to deal with this.
+On Sun, Nov 22, 2020 at 11:53:55AM -0800, James Bottomley wrote:
+> On Sun, 2020-11-22 at 11:22 -0800, Joe Perches wrote:
+> > On Sun, 2020-11-22 at 11:12 -0800, James Bottomley wrote:
+> > > On Sun, 2020-11-22 at 10:25 -0800, Joe Perches wrote:
+> > > > On Sun, 2020-11-22 at 10:21 -0800, James Bottomley wrote:
+> > > > > Please tell me our reward for all this effort isn't a single
+> > > > > missing error print.
+> > > > 
+> > > > There were quite literally dozens of logical defects found
+> > > > by the fallthrough additions.  Very few were logging only.
+> > > 
+> > > So can you give us the best examples (or indeed all of them if
+> > > someone is keeping score)?  hopefully this isn't a US election
+> > > situation ...
+> > 
+> > Gustavo?  Are you running for congress now?
+> > 
+> > https://lwn.net/Articles/794944/
+> 
+> That's 21 reported fixes of which about 50% seem to produce no change
+> in code behaviour at all, a quarter seem to have no user visible effect
+> with the remaining quarter producing unexpected errors on obscure
+> configuration parameters, which is why no-one really noticed them
+> before.
 
-Thanks a lot for working on this!
+The really important point here is the number of bugs this has prevented
+and will prevent in the future. See an example of this, below:
 
-I'll have a more thorough look at the series later this week, stay tuned.
+https://lore.kernel.org/linux-iio/20190813135802.GB27392@kroah.com/
 
-> Since this is likely to cause issues on some hardware, this new method will
-> only be used if the new acpi.defer_scan_based_on_dep kernel commandline
-> option is set to 1.
+This work is still relevant, even if the total number of issues/bugs
+we find in the process is zero (which is not the case).
 
-However, I already can say that I don't like the new command line option.
+"The sucky thing about doing hard work to deploy hardening is that the
+result is totally invisible by definition (things not happening) [..]"
+- Dmitry Vyukov
 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/scan.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 407c8536568b..9927036bfe77 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -31,6 +31,11 @@ extern struct acpi_device *acpi_root;
->
->  #define INVALID_ACPI_HANDLE    ((acpi_handle)empty_zero_page)
->
-> +static int defer_scan_based_on_dep = -1;
-> +module_param(defer_scan_based_on_dep, int, 0444);
-> +MODULE_PARM_DESC(defer_scan_based_on_dep,
-> +       "Use new scan-scheme deferring addition of devices with non empty _DEP list (-1=auto, 0=no, 1=yes)");
-> +
->  static const char *dummy_hid = "device";
->
->  static LIST_HEAD(acpi_dep_list);
-> @@ -1657,11 +1662,45 @@ void acpi_device_add_finalize(struct acpi_device *device)
->
->  static bool acpi_should_defer_add(acpi_handle handle, struct acpi_device_info *info)
->  {
-> +       struct acpi_handle_list dep_devices;
-> +       acpi_status status;
-> +       int i;
-> +
->         if (!acpi_check_defer_add || !info)
->                 return false;
->
-> -       if (acpi_info_matches_hids(info, acpi_defer_add_hids))
-> +       if (!defer_scan_based_on_dep)
-> +               return acpi_info_matches_hids(info, acpi_defer_add_hids);
-> +
-> +       /*
-> +        * We check for _ADR here to avoid deferring the adding of the following:
-> +        * 1. PCI devices
-> +        * 2. ACPI nodes describing USB ports
-> +        * Note checking for _ADR catches more then just these cases...
+Thanks
+--
+Gustavo
 
-s/then/than/
 
-> +        */
-> +       if (info->valid & ACPI_VALID_ADR)
-> +               return false;
-> +
-> +       status = acpi_evaluate_reference(handle, "_DEP", NULL, &dep_devices);
-> +       if (ACPI_FAILURE(status))
-> +               return false;
-> +
-> +       for (i = 0; i < dep_devices.count; i++) {
-> +               struct acpi_device_info *dep_info;
-> +               bool ignore;
-> +
-> +               status = acpi_get_object_info(dep_devices.handles[i], &dep_info);
-> +               if (ACPI_FAILURE(status))
-> +                       continue;
-> +
-> +               ignore = acpi_info_matches_hids(dep_info, acpi_ignore_dep_hids);
-> +               kfree(dep_info);
-> +
-> +               if (ignore)
-> +                       continue;
-> +
->                 return true;
-> +       }
->
->         return false;
->  }
-> @@ -2251,6 +2290,10 @@ int __init acpi_scan_init(void)
->         struct acpi_table_stao *stao_ptr;
->         struct acpi_deferred_dev *deferred_dev, *tmp;
->
-> +       /* Currently no devices are known which need _dep based scan deferral */
-> +       if (defer_scan_based_on_dep == -1)
-> +               defer_scan_based_on_dep = 0;
-> +
->         acpi_pci_root_init();
->         acpi_pci_link_init();
->         acpi_processor_init();
-> --
-> 2.28.0
->
+
+
+
