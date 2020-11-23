@@ -2,141 +2,242 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E79F2C1093
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 17:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 294192C1100
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 17:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387872AbgKWQdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Nov 2020 11:33:19 -0500
-Received: from smtprelay0102.hostedemail.com ([216.40.44.102]:57280 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387935AbgKWQc6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Nov 2020 11:32:58 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id A722B181D3025;
-        Mon, 23 Nov 2020 16:32:53 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2565:2682:2685:2740:2828:2859:2912:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6119:6742:6743:7903:9025:9388:10004:10400:10848:10946:11026:11232:11658:11914:12043:12049:12297:12438:12663:12740:12760:12895:13069:13161:13172:13229:13311:13357:13439:13972:14096:14097:14181:14659:14721:14764:21080:21451:21627:21781:21788:21809:21990:30034:30041:30054:30060:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: can43_5c1502d27366
-X-Filterd-Recvd-Size: 5503
-Received: from XPS-9350.home (unknown [47.151.128.180])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 23 Nov 2020 16:32:42 +0000 (UTC)
-Message-ID: <32dc7423124b51da4e144e931bf099a368ab50a8.camel@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-From:   Joe Perches <joe@perches.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>
-Date:   Mon, 23 Nov 2020 08:32:41 -0800
-In-Reply-To: <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
-References: <cover.1605896059.git.gustavoars@kernel.org>
-         <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <202011201129.B13FDB3C@keescook>
-         <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <202011220816.8B6591A@keescook>
-         <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
-         <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
-         <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
-         <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
-         <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S2387879AbgKWQpN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Nov 2020 11:45:13 -0500
+Received: from mail-oo1-f65.google.com ([209.85.161.65]:47014 "EHLO
+        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732979AbgKWQpN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Nov 2020 11:45:13 -0500
+Received: by mail-oo1-f65.google.com with SMTP id s11so3253742oov.13
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Nov 2020 08:45:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GkRNs8iuxJWIpoSGWBylXKcII9rd9UiaJ7g5QuMVLpk=;
+        b=uNP7MigCwP/biQLwy0nJHXJ7rW97pwDLJQOgxPZZpuxyWEh5BdBWrWpG6bWbSWqCdI
+         JA9J9X9jFPPcCvOmrxQsf1DmCq1wW9cwXafy1XB9tZshME3xVH0mprJbMukWL0gUBRRZ
+         WWvJbD2hp3z//AC6XJtYgh5ZzPW/FFLFKJDFb933L+0Xk33Vu0dCmMyreApNGtFXRasz
+         cGAPyMkSLuLPnuOWTZdE0XCX73F44WwrLIGjXCmmP73B4mOgyi1AquyPNF3SJ8D5tbpP
+         o2hMnfPlNIAhEbmGjuWO6vn4tGRHbWt5N+IebYXT1uAVYSOoj7gXPD9NwytXQxX27G+q
+         bM7Q==
+X-Gm-Message-State: AOAM533pkYg55Bl+y32h+OT2mcC+xmvdG2P7YDPZtKR8rG0topTpJfig
+        tuqdvB7ChKkz7KjZUW7cd4WbrxyHLH98pdjLat5tMGrmKxfGcA==
+X-Google-Smtp-Source: ABdhPJxBSsEb2fqDNeD2NopCluvwwx2vzpwYMSPjLn3N1Ruy1isNWtm0/Imzc+/a39xY+r/rIy7S6EPFMuXMGoegzeM=
+X-Received: by 2002:a4a:bb07:: with SMTP id f7mr157370oop.44.1606149912103;
+ Mon, 23 Nov 2020 08:45:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20201120060752.3146704-1-Shyam-sundar.S-k@amd.com>
+In-Reply-To: <20201120060752.3146704-1-Shyam-sundar.S-k@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 23 Nov 2020 17:45:01 +0100
+Message-ID: <CAJZ5v0jeoiZdgzKupakPn+82iur-nMLH3wEC07cHO1qyvoysug@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: PM: s2idle: Add AMD support to handle _DSM
+ during S2Idle
+To:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2020-11-23 at 07:58 -0800, James Bottomley wrote:
-> We're also complaining about the inability to recruit maintainers:
-> 
-> https://www.theregister.com/2020/06/30/hard_to_find_linux_maintainers_says_torvalds/
-> 
-> And burn out:
-> 
-> http://antirez.com/news/129
+On Fri, Nov 20, 2020 at 7:10 AM Shyam Sundar S K
+<Shyam-sundar.S-k@amd.com> wrote:
+>
+> Initial support for S2Idle based on the Intel implementation [1] does not
+> work for AMD as the BIOS implementation for ACPI methods like the _DSM
+> are not standardized.
+>
+> So, the way in which the UUID's were parsed and the ACPI packages were
+> retrieved out of the ACPI objects are not the same between Intel and AMD.
+>
+> This patch adds AMD support for S2Idle to parse the UUID, evaluate the
+> _DSM methods, preparing the Idle constraint list etc.
+>
+> Link: https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf # [1]
+> Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+> ---
+> v2:(https://www.spinics.net/lists/linux-acpi/msg97104.html)
+> - Remove default case in switch.
+> - Add a routine acpi_match_vendor_name() required when building on a
+>   non-x86 based environment.
+> - Fixed spelling mistakes.
+> ---
+>  drivers/acpi/sleep.c | 166 ++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 157 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index aff13bf4d947..b929fd0d2e04 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -710,6 +710,11 @@ static const struct acpi_device_id lps0_device_ids[] = {
+>  #define ACPI_LPS0_ENTRY                5
+>  #define ACPI_LPS0_EXIT         6
+>
+> +/* AMD */
+> +#define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
+> +#define ACPI_LPS0_SCREEN_OFF_AMD    4
+> +#define ACPI_LPS0_SCREEN_ON_AMD     5
+> +
+>  static acpi_handle lps0_device_handle;
+>  static guid_t lps0_dsm_guid;
+>  static char lps0_dsm_func_mask;
+> @@ -733,8 +738,124 @@ struct lpi_constraints {
+>         int min_dstate;
+>  };
+>
+> +/* AMD */
+> +/* Device constraint entry structure */
+> +struct lpi_device_info_amd {
+> +       int revision;
+> +       int count;
+> +       union acpi_object *package;
+> +};
+> +
+> +/* Constraint package structure */
+> +struct lpi_device_constraint_amd {
+> +       char *name;
+> +       int enabled;
+> +       int function_states;
+> +       int min_dstate;
+> +};
+> +
+>  static struct lpi_constraints *lpi_constraints_table;
+>  static int lpi_constraints_table_size;
+> +static int rev_id;
+> +
+> +static void lpi_device_get_constraints_amd(void)
+> +{
+> +       union acpi_object *out_obj;
+> +       int i, j, k;
+> +
+> +       out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
+> +                                         1, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
+> +                                         NULL, ACPI_TYPE_PACKAGE);
+> +
+> +       if (!out_obj)
+> +               return;
+> +
+> +       acpi_handle_debug(lps0_device_handle, "_DSM function 1 eval %s\n",
+> +                         out_obj ? "successful" : "failed");
+> +
+> +       for (i = 0; i < out_obj->package.count; i++) {
+> +               union acpi_object *package = &out_obj->package.elements[i];
+> +               struct lpi_device_info_amd info = { };
+> +
+> +               if (package->type == ACPI_TYPE_INTEGER) {
+> +                       switch (i) {
+> +                       case 0:
+> +                               info.revision = package->integer.value;
+> +                               break;
+> +                       case 1:
+> +                               info.count = package->integer.value;
+> +                               break;
+> +                       }
+> +               } else if (package->type == ACPI_TYPE_PACKAGE) {
+> +                       lpi_constraints_table = kcalloc(package->package.count,
+> +                                                       sizeof(*lpi_constraints_table),
+> +                                                       GFP_KERNEL);
+> +
+> +                       if (!lpi_constraints_table)
+> +                               goto free_acpi_buffer;
+> +
+> +                       acpi_handle_info(lps0_device_handle,
+> +                                        "LPI: constraints list begin:\n");
+> +
+> +                       for (j = 0; j < package->package.count; ++j) {
+> +                               union acpi_object *info_obj = &package->package.elements[j];
+> +                               struct lpi_device_constraint_amd dev_info = {};
+> +                               struct lpi_constraints *list;
+> +                               acpi_status status;
+> +
+> +                               for (k = 0; k < info_obj->package.count; ++k) {
+> +                                       union acpi_object *obj = &info_obj->package.elements[k];
+> +                                       union acpi_object *obj_new;
+> +
+> +                                       list = &lpi_constraints_table[lpi_constraints_table_size];
+> +                                       list->min_dstate = -1;
+> +
+> +                                       obj_new = &obj[k];
+> +                                       switch (k) {
+> +                                       case 0:
+> +                                               dev_info.enabled = obj->integer.value;
+> +                                               break;
+> +                                       case 1:
+> +                                               dev_info.name = obj->string.pointer;
+> +                                               break;
+> +                                       case 2:
+> +                                               dev_info.function_states = obj->integer.value;
+> +                                               break;
+> +                                       case 3:
+> +                                               dev_info.min_dstate = obj->integer.value;
+> +                                               break;
+> +                                       }
+> +
+> +                                       if (!dev_info.enabled || !dev_info.name ||
+> +                                           !dev_info.min_dstate)
+> +                                               continue;
+> +
+> +                                       status = acpi_get_handle(NULL, dev_info.name,
+> +                                                                &list->handle);
+> +                                       if (ACPI_FAILURE(status))
+> +                                               continue;
+> +
+> +                                       acpi_handle_info(lps0_device_handle,
+> +                                                        "Name:%s\n", dev_info.name);
+> +
+> +                                       list->min_dstate = dev_info.min_dstate;
+> +
+> +                                       if (list->min_dstate < 0) {
+> +                                               acpi_handle_info(lps0_device_handle,
+> +                                                                "Incomplete constraint defined\n");
+> +                                               continue;
+> +                                       }
+> +                               }
+> +                               lpi_constraints_table_size++;
+> +                       }
+> +               }
+> +       }
+> +
+> +       acpi_handle_info(lps0_device_handle, "LPI: constraints list end\n");
+> +
+> +free_acpi_buffer:
+> +       ACPI_FREE(out_obj);
+> +}
+>
+>  static void lpi_device_get_constraints(void)
+>  {
+> @@ -883,13 +1004,22 @@ static void acpi_sleep_run_lps0_dsm(unsigned int func)
+>         if (!(lps0_dsm_func_mask & (1 << func)))
+>                 return;
+>
+> -       out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, 1, func, NULL);
+> +       out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, rev_id, func, NULL);
+>         ACPI_FREE(out_obj);
+>
+>         acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
+>                           func, out_obj ? "successful" : "failed");
+>  }
+>
+> +static bool acpi_match_vendor_name(void)
+> +{
+> +#ifdef CONFIG_X86
+> +       if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
+> +               return true;
+> +#endif
+> +       return false;
+> +}
 
-https://www.wired.com/story/open-source-coders-few-tired/
+Well, I still don't like this (explicit CONFIG_X86 dependencies are
+not welcome in this file), but arguably the damage was done before
+already and there is a bunch of X86-specific code in here anyway, so
+I'm going to take your patch provisionally and rearrange the code on
+top of it so as to relocate the x86-specific part of it into
+acpi/x86/.
 
-> What I'm actually trying to articulate is a way of measuring value of
-> the patch vs cost ... it has nothing really to do with who foots the
-> actual bill.
-
-It's unclear how to measure value in consistency.
-
-But one way that costs can be reduced is by automation and _not_
-involving maintainers when the patch itself is provably correct.
-
-> One thesis I'm actually starting to formulate is that this continual
-> devaluing of maintainers is why we have so much difficulty keeping and
-> recruiting them.
-
-The linux kernel has something like 1500 different maintainers listed
-in the MAINTAINERS file.  That's not a trivial number.
-
-$ git grep '^M:' MAINTAINERS | sort | uniq -c | wc -l
-1543
-$ git grep '^M:' MAINTAINERS| cut -f1 -d'<' | sort | uniq -c | wc -l
-1446
-
-I think the question you are asking is about trust and how it
-effects development.
-
-And back to that wired story, the actual number of what you might
-be considering to be maintainers is likely less than 10% of the
-listed numbers above.
-
-
+Thanks!
