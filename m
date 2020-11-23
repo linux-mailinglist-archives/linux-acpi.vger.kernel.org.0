@@ -2,205 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C7932C0EEA
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 16:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11AA12C0F57
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Nov 2020 16:56:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389556AbgKWPb5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Nov 2020 10:31:57 -0500
-Received: from mga07.intel.com ([134.134.136.100]:39961 "EHLO mga07.intel.com"
+        id S1733001AbgKWPwg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Nov 2020 10:52:36 -0500
+Received: from mga04.intel.com ([192.55.52.120]:3310 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389535AbgKWPb4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Nov 2020 10:31:56 -0500
-IronPort-SDR: JZBy1cOA/lLtxCePJmRYrHEdrabWA/8N8D/npuDyUMT2gI/P3ge0PQ6yn2Mtp99yZ98M7wc+kf
- tK25ohFTVb9g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9813"; a="235925233"
+        id S1732814AbgKWPwg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Nov 2020 10:52:36 -0500
+IronPort-SDR: wdIVWjG4qt3kkvZFlTfNHJ1qSha0XKAk2CxPFx4fu9uvtz0EoQNlcxjxuegxxUzv7XWLNMv6N9
+ dwo6ar0lSANA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9813"; a="169224209"
 X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
-   d="scan'208";a="235925233"
+   d="scan'208";a="169224209"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 07:31:55 -0800
-IronPort-SDR: piJ028cO42auSj/pDfY0RdGBJYLqRw7pR0cUkfYLVF1mRqjmL3WzhV2Txxn52DJlIlpNitn258
- hT4OQ4sQBDGQ==
-X-ExtLoop1: 1
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 07:52:35 -0800
+IronPort-SDR: o6LRPZSLFHblJ72nLIxI7QtuEJsSPQd11jVZTPC9b01xjBsR6V5ML2IOh4GsWUUm1pKbyVJ0KQ
+ V9qBxJqg/0zw==
 X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
-   d="scan'208";a="432321601"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Nov 2020 07:31:53 -0800
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Felipe Balbi <balbi@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH 2/2] usb: dwc3: pci: Register a software node for the dwc3 platform device
-Date:   Mon, 23 Nov 2020 18:31:48 +0300
-Message-Id: <20201123153148.52647-3-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201123153148.52647-1-heikki.krogerus@linux.intel.com>
-References: <20201123153148.52647-1-heikki.krogerus@linux.intel.com>
+   d="scan'208";a="546463497"
+Received: from suygunge-mobl.ger.corp.intel.com (HELO localhost) ([10.249.40.108])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 07:52:23 -0800
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        trix@redhat.com, joe@perches.com,
+        clang-built-linux@googlegroups.com
+Cc:     linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        ibm-acpi-devel@lists.sourceforge.net, keyrings@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-scsi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, cluster-devel@redhat.com,
+        linux-acpi@vger.kernel.org, tboot-devel@lists.sourceforge.net,
+        coreteam@netfilter.org, xen-devel@lists.xenproject.org,
+        MPT-FusionLinux.pdl@broadcom.com, linux-media@vger.kernel.org,
+        alsa-devel@alsa-project.org, intel-gfx@lists.freedesktop.org,
+        ecryptfs@vger.kernel.org, linux-omap@vger.kernel.org,
+        devel@acpica.org, linux-nfs@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
+In-Reply-To: <5843ef910b0e86c00d9c0143dec20f93823b016b.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20201121165058.1644182-1-trix@redhat.com> <5843ef910b0e86c00d9c0143dec20f93823b016b.camel@HansenPartnership.com>
+Date:   Mon, 23 Nov 2020 17:52:20 +0200
+Message-ID: <87y2ism5or.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-By registering the software node directly instead of just
-the properties in it, the driver can take advantage of also
-the other features the software nodes have.
+On Sat, 21 Nov 2020, James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+> On Sat, 2020-11-21 at 08:50 -0800, trix@redhat.com wrote:
+>> A difficult part of automating commits is composing the subsystem
+>> preamble in the commit log.  For the ongoing effort of a fixer
+>> producing
+>> one or two fixes a release the use of 'treewide:' does not seem
+>> appropriate.
+>> 
+>> It would be better if the normal prefix was used.  Unfortunately
+>> normal is
+>> not consistent across the tree.
+>> 
+>> 
+>> 	D: Commit subsystem prefix
+>> 
+>> ex/ for FPGA DFL DRIVERS
+>> 
+>> 	D: fpga: dfl:
+>> 
+>
+> I've got to bet this is going to cause more issues than it solves.
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/usb/dwc3/dwc3-pci.c | 61 ++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+Agreed.
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index bae6a70664c80..037bc21bffa66 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -142,6 +142,18 @@ static const struct property_entry dwc3_pci_amd_properties[] = {
- 	{}
- };
- 
-+static const struct software_node dwc3_pci_intel_swnode = {
-+	.properties = dwc3_pci_intel_properties,
-+};
-+
-+static const struct software_node dwc3_pci_intel_mrfld_swnode = {
-+	.properties = dwc3_pci_mrfld_properties,
-+};
-+
-+static const struct software_node dwc3_pci_amd_swnode = {
-+	.properties = dwc3_pci_amd_properties,
-+};
-+
- static int dwc3_pci_quirks(struct dwc3_pci *dwc)
- {
- 	struct pci_dev			*pdev = dwc->pci;
-@@ -222,7 +234,6 @@ static void dwc3_pci_resume_work(struct work_struct *work)
- 
- static int dwc3_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- {
--	struct property_entry *p = (struct property_entry *)id->driver_data;
- 	struct dwc3_pci		*dwc;
- 	struct resource		res[2];
- 	int			ret;
-@@ -265,7 +276,7 @@ static int dwc3_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	dwc->dwc3->dev.parent = dev;
- 	ACPI_COMPANION_SET(&dwc->dwc3->dev, ACPI_COMPANION(dev));
- 
--	ret = platform_device_add_properties(dwc->dwc3, p);
-+	ret = device_add_software_node(&dwc->dwc3->dev, (void *)id->driver_data);
- 	if (ret < 0)
- 		goto err;
- 
-@@ -288,6 +299,7 @@ static int dwc3_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 
- 	return 0;
- err:
-+	device_remove_software_node(&dwc->dwc3->dev);
- 	platform_device_put(dwc->dwc3);
- 	return ret;
- }
-@@ -304,75 +316,76 @@ static void dwc3_pci_remove(struct pci_dev *pci)
- #endif
- 	device_init_wakeup(&pci->dev, false);
- 	pm_runtime_get(&pci->dev);
-+	device_remove_software_node(&dwc->dwc3->dev);
- 	platform_device_unregister(dwc->dwc3);
- }
- 
- static const struct pci_device_id dwc3_pci_id_table[] = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BSW),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BYT),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MRFLD),
--	  (kernel_ulong_t) &dwc3_pci_mrfld_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_mrfld_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_CMLLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_CMLH),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_SPTLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_SPTH),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BXT),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BXT_M),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_APL),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_KBP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_GLK),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_CNPLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_CNPH),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_CNPV),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ICLLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_EHLLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_TGPLP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_TGPH),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_JSP),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADLS),
--	  (kernel_ulong_t) &dwc3_pci_intel_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_intel_swnode, },
- 
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_NL_USB),
--	  (kernel_ulong_t) &dwc3_pci_amd_properties, },
-+	  (kernel_ulong_t) &dwc3_pci_amd_swnode, },
- 	{  }	/* Terminating Entry */
- };
- MODULE_DEVICE_TABLE(pci, dwc3_pci_id_table);
+> SCSI uses scsi: <driver>: for drivers but not every driver has a
+> MAINTAINERS entry.  We use either scsi: or scsi: core: for mid layer
+> things, but we're not consistent.  Block uses blk-<something>: for all
+> of it's stuff but almost no <somtehing>s have a MAINTAINERS entry.  So
+> the next thing you're going to cause is an explosion of suggested
+> MAINTAINERs entries.
+
+On the one hand, adoption of new MAINTAINERS entries has been really
+slow. Look at B, C, or P, for instance. On the other hand, if this were
+to get adopted, you'll potentially get conflicting prefixes for patches
+touching multiple files. Then what?
+
+I'm guessing a script looking at git log could come up with better
+suggestions for prefixes via popularity contest than manually maintained
+MAINTAINERS entries. It might not always get it right, but then human
+outsiders aren't going to always get it right either.
+
+Now you'll only need Someone(tm) to write the script. ;)
+
+Something quick like this:
+
+git log --since={1year} --pretty=format:%s -- <FILES> |\
+	grep -v "^\(Merge\|Revert\)" |\
+        sed 's/:[^:]*$//' |\
+        sort | uniq -c | sort -rn | head -5
+
+already gives me results that really aren't worse than some of the
+prefixes invented by drive-by contributors.
+
+> Has anyone actually complained about treewide:?
+
+As Joe said, I'd feel silly applying patches to drivers with that
+prefix. If it gets applied by someone else higher up, literally
+treewide, then no complaints.
+
+BR,
+Jani.
+
+
 -- 
-2.29.2
-
+Jani Nikula, Intel Open Source Graphics Center
