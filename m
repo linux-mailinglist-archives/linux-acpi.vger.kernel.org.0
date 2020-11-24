@@ -2,144 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 103BC2C3316
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 22:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E90D12C33A9
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 23:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732361AbgKXVdB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Nov 2020 16:33:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732486AbgKXVct (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Nov 2020 16:32:49 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EF4C08ED7E
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Nov 2020 13:32:47 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id b63so271966pfg.12
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Nov 2020 13:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nUebvx46WK355IC8BSYKhA86maU/C5TyOra9y/oS07E=;
-        b=lzAwh4po+9zegkg/2K9x7CHiUUthvj2PFJyxHwt1QdcZQIdrGCSiE3JgzWuDiv+VMN
-         KwBJ/6n/jsAIvSMb6eOJqvl2BVv6D2OMXP8giSKXaaH9JwLNdR2oULKAXe3g8bDVfAub
-         65Ll+320/JpDsvMBOWCFVSOrRLSDK1WOgK6ns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nUebvx46WK355IC8BSYKhA86maU/C5TyOra9y/oS07E=;
-        b=AfOUUmLBkCGJzcpFo67orkUrjDIY1L6Juoi0lIwXhnvHL+3XCLDWAv+FTboig2Puck
-         Dpu8L2jB/A4mxrvBX9Rs9MKGvqjrUIO154p7fPFNdhRgKebtTWAulaspPKWiYPdkqf4F
-         ihkYrjNK00zlToPTSUUoiwM9lcYlzKjoKIjA0UyBH5IsTKM9elVRVDGZe2b3KQ3VdODH
-         +Xc1NEpfSjnhX77Gv15nj1fWAc2dkFOyNfceX/IOHSaam+4GwhFbeqMHLUJNcFWHM2k1
-         Ys35/NCgkyrctRAzCUmUxPocnuVzeEj0smfJEMA2WYrSVP5b2kqH3eSz9UnzeQG9m/kX
-         2l2g==
-X-Gm-Message-State: AOAM5309XNQixkwomjAypK3ovnN2lgNeQr9FOnDJOFxIeklxm9aNlH16
-        MlJeviUNIMqQGpqZDo+sz4Qcrw==
-X-Google-Smtp-Source: ABdhPJxq53hoH5g966jwbYjUDwfs6lHQ9KOfN5qCJ8fiAFBBjxy/+X2rEoTmF5zSw2rlwmYa8QmuBA==
-X-Received: by 2002:aa7:9af2:0:b029:198:273c:6be8 with SMTP id y18-20020aa79af20000b0290198273c6be8mr329847pfp.4.1606253566848;
-        Tue, 24 Nov 2020 13:32:46 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j74sm15845pfd.43.2020.11.24.13.32.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2020 13:32:45 -0800 (PST)
-Date:   Tue, 24 Nov 2020 13:32:44 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
-        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
-        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        x86@kernel.org, linux-nfs@vger.kernel.org,
-        GR-Linux-NIC-Dev@marvell.com, linux-mm@kvack.org,
-        netdev@vger.kernel.org, linux-decnet-user@lists.sourceforge.net,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        patches@opensource.cirrus.com, linux-integrity@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
- Clang
-Message-ID: <202011241327.BB28F12F6@keescook>
-References: <202011201129.B13FDB3C@keescook>
- <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook>
- <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
- <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
- <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
- <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
- <20201123130348.GA3119@embeddedor>
- <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
+        id S2388880AbgKXWEL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 24 Nov 2020 17:04:11 -0500
+Received: from webmail.de-moe.org ([202.205.109.204]:41874 "EHLO eol.com.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731800AbgKXWEL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Nov 2020 17:04:11 -0500
+X-Greylist: delayed 325 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Nov 2020 17:04:10 EST
+Received: from mail.eol.com.cn (unknown [216.172.109.126])
+        by mail-109-204 (Coremail) with SMTP id AQAAfwCnrGh_gb1feBRrAQ--.11835S23;
+        Wed, 25 Nov 2020 05:56:30 +0800 (CST)
+From:   ddp@eol.com.cn
+To:     linux-acpi@vger.kernel.org
+Subject: Notification
+Date:   24 Nov 2020 15:58:43 -0600
+Message-ID: <20201124155842.D1778EC365CB9301@eol.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-CM-TRANSID: AQAAfwCnrGh_gb1feBRrAQ--.11835S23
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrWxuw43tFy8tFy3tFWfAFb_yoW8uFyxpF
+        WF934Yyr18JFn5G348Ww17JFyjvr95G345Crn5GryDA3Z8Ga4Igr1SkrWFyFW7Zrn3K3yj
+        qryvvw1UC3WYqaDanT9S1TB71UUjXb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UUUUUUUUU==
+X-CM-SenderInfo: xggsqv1roou0fpof0/
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 23, 2020 at 08:31:30AM -0800, James Bottomley wrote:
-> Really, no ... something which produces no improvement has no value at
-> all ... we really shouldn't be wasting maintainer time with it because
-> it has a cost to merge.  I'm not sure we understand where the balance
-> lies in value vs cost to merge but I am confident in the zero value
-> case.
+Hey!
 
-What? We can't measure how many future bugs aren't introduced because the
-kernel requires explicit case flow-control statements for all new code.
+Unfortunately, I have some bad news for you.
+Several months ago, I got access to the device you are using to browse the internet.
+Since that time, I have been monitoring your internet activity.
 
-We already enable -Wimplicit-fallthrough globally, so that's not the
-discussion. The issue is that Clang is (correctly) even more strict
-than GCC for this, so these are the remaining ones to fix for full Clang
-coverage too.
+Being a regular visitor of adult websites, I can confirm that it is you who is responsible for this.
+To keep it simple, the websites you visited provided me with access to your data.
 
-People have spent more time debating this already than it would have
-taken to apply the patches. :)
+I've uploaded a Trojan horse on the driver basis that updates its signature several times per day, to make it impossible for antivirus to detect it. Additionally, it gives me access to your camera and microphone.
+Moreover, I have backed-up all the data, including photos, social media, chats and contacts.
 
-This is about robustness and language wrangling. It's a big code-base,
-and this is the price of our managing technical debt for permanent
-robustness improvements. (The numbers I ran from Gustavo's earlier
-patches were that about 10% of the places adjusted were identified as
-legitimate bugs being fixed. This final series may be lower, but there
-are still bugs being found from it -- we need to finish this and shut
-the door on it for good.)
+Just recently, I came up with an awesome idea to create the video where you cum in one part of the screen, while the video was simultaneously playing on another screen. That was fun!
 
--- 
-Kees Cook
+Rest assured that I can easily send this video to all your contacts with a few clicks, and I assume that you would like to prevent this scenario.
+
+With that in mind, here is my proposal:
+Transfer the amount equivalent to 1200 USD to my Bitcoin wallet, and I will forget about the entire thing. I will also delete all data and videos permanently.
+
+In my opinion, this is a somewhat modest price for my work.
+You can figure out how to purchase Bitcoins using search engines like Google or Bing, seeing that it's not very difficult.
+
+My Bitcoin wallet (BTC): 1F2PWXxHWB74h1h5XV2cTK43oCjGW5dCrk
+
+You have 48 hours to reply and you should also bear the following in mind:
+
+It makes no sense to reply me - the address has been generated automatically.
+It makes no sense to complain either, since the letter along with my Bitcoin wallet cannot be tracked.
+Everything has been orchestrated precisely.
+
+If I ever detect that you mentioned anything about this letter to anyone - the video will be immediately shared, and your contacts will be the first to receive it. Following that, the video will be posted on the web!
+
+P.S. The time will start once you open this letter. (This program has a built-in timer).
+
+Good luck and take it easy! It was just bad luck, next time please be careful.
+
