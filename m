@@ -2,135 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 945942C2883
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 14:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 567C32C28EB
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 15:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388532AbgKXNnf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Nov 2020 08:43:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35956 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388527AbgKXNnS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Nov 2020 08:43:18 -0500
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBD6C0613D6;
-        Tue, 24 Nov 2020 05:43:18 -0800 (PST)
-Received: by mail-ed1-x541.google.com with SMTP id cq7so20902499edb.4;
-        Tue, 24 Nov 2020 05:43:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ctRbS11BgFmifUEFq2VQXHr3JxOfCOKEQgfEbTr9MN0=;
-        b=IbQXIJ5ipOWYlxa4NICpwlQaJnL3WpTzfaLXhKO6rfPPiUTxNDcfHrjpWsihNLoowm
-         R7C/RraZRBeQCcUGXKY7IeBEiK4cS9bIJKdXnnVsSdfofoMHxYNIpAY4/IR0RtNPgT9p
-         b1/GyYxse9KodHSyQSRQgYJTSYnlHem0HQgN/Do93KSQQo+0aqqlyNCrxW+qoewSQ6Cb
-         JVikUX/EFcBAEM8jid33E220rM0GeRbXyUI+Dojb5ZdFLFdIaRpo2kBsXTJleytq7Gr0
-         NMNlM1/pHH3iD8TlVljKWYruDhiAQHGzqrzF7j3CK3I2xgVjBe3Fb/4zd+FzL11Js42B
-         MA8w==
+        id S1728818AbgKXOB1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Nov 2020 09:01:27 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:37602 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727161AbgKXOAy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Nov 2020 09:00:54 -0500
+Received: by mail-oi1-f193.google.com with SMTP id j15so18536072oih.4;
+        Tue, 24 Nov 2020 06:00:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ctRbS11BgFmifUEFq2VQXHr3JxOfCOKEQgfEbTr9MN0=;
-        b=DeVsrHRLuyDE95ObSKvq2Hs/J/Gz3n4RdLf3VVnRc5x2JcczAKtPh801CZTwWsFJcv
-         DTkiKtVlDd3KI4sYOHCscPgL+fafwp/klvLk8hk18+idZ4HdtgjCV6EYGp2UHGDcZgDz
-         k5HFRxL4H6LEcykIB5IN72BDybxxAjcRFSvxU8R4U6/FcmoCKScfjpv0V647cYV9/PiC
-         r94OdSSfk0v05uvT28bXFrsxBaBvtgO9tnTCIg/HZNx9Yu/CPC2dpEPSlq3ALBa/vBfo
-         6il1Xv3aCnUnjLNT06/vplf2x/a9Gd6rtb2Oh7vqEYZtJd0ankRrdmiN+0uQvmQSm74D
-         SoTQ==
-X-Gm-Message-State: AOAM533537ulOkAADXpdNy6nfibNzxsXMlQ15gEjvrulR33jfgVo8uqd
-        lKnR7YpvhKbP0vth7wsH4oT2bC315t0=
-X-Google-Smtp-Source: ABdhPJxWR9HjOYFpydOK8KY8l6vqAJU6DdBK50fePfrUG+pRzPoEwIaXFKbwO70cbXierpKS775+1Q==
-X-Received: by 2002:a50:a40a:: with SMTP id u10mr3896586edb.16.1606225396556;
-        Tue, 24 Nov 2020 05:43:16 -0800 (PST)
-Received: from [192.168.2.202] (pd9e5aead.dip0.t-ipconnect.de. [217.229.174.173])
-        by smtp.gmail.com with ESMTPSA id n14sm6950875edw.38.2020.11.24.05.43.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Nov 2020 05:43:15 -0800 (PST)
-Subject: Re: [PATCH 0/9] Add support for Microsoft Surface System Aggregator
- Module
-To:     Hans de Goede <hdegoede@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     Mark Gross <mgross@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
-        Dorian Stoll <dorian.stoll@tmsp.io>,
-        platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org
-References: <20201115192143.21571-1-luzmaximilian@gmail.com>
- <059069df-c972-5060-1b26-2ddcc842810d@redhat.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <d1a781d9-6433-e1b5-5683-4de15efde686@gmail.com>
-Date:   Tue, 24 Nov 2020 14:43:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MMxyaPdI5i63a9I9pY9fTE+BbPQuigoaoOJPLNSYJ2s=;
+        b=r9DZAJNjWR07M8ZzEueuffHZZw86lPP5fZ/RhtKHHktB8PF+eWNBvVHUD7XkDxqKVv
+         EjblOXGhGUQ9yU7cAR0qJBX9fFYwfc2gN16RC352V6DsSV7nfnn+niwMQeSBSZE8Ys1v
+         hwCveN0VLWNqYFBrc18Kl/BpjrM+gybwAaD5FuG8YKn0cbgfpYry/NCVs6qDP8LDgInr
+         b7MpAf5PnMIMzGzuNXH69exJlrrRek2i5rEcZgkyaNpS/j1fphdEdaxqS3HwkEagwnv8
+         BReqLZDzceA7+wXK/jEa2SyVjp2haNW10tYg8h8G3pJpzC4Ap4POSirpZM5y1mlIZiIZ
+         U1aA==
+X-Gm-Message-State: AOAM530WxwyMQ92QprmD/qHZXanMjdEnTMXeKtMQudUfUBcKNrHdGNXi
+        mXdEacZDjJMyrtVeKeCuIsL7xbNcObKYT/43RmNv7ZzgWyU=
+X-Google-Smtp-Source: ABdhPJw+ybHJH61zUKzHZFG6zHwAKsK1g7zJuox9jKv1ibbKo8nJt3lqKI9LJt2PJtbi4zSUuqZma0bWsSidJ8pPupo=
+X-Received: by 2002:aca:5a42:: with SMTP id o63mr2758594oib.69.1606226452885;
+ Tue, 24 Nov 2020 06:00:52 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <059069df-c972-5060-1b26-2ddcc842810d@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201124073619.771940-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20201124073619.771940-1-kai.heng.feng@canonical.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 24 Nov 2020 15:00:41 +0100
+Message-ID: <CAJZ5v0iJ_x5oXL9gG_TvCriNnPwzZYvGkkEK6_HWrH4fmCqBxQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: Re-enable ACPI GPE if it's already enabled
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/24/20 12:59 PM, Hans de Goede wrote:
-> Hi,
-> 
-> On 11/15/20 8:21 PM, Maximilian Luz wrote:
->> Hello,
->>
->>    N.B.: the following text is mostly a repeat of cover letter from the
->>    previous RFC for the uninitiated, which can be found at
->>
->>    https://lore.kernel.org/linux-serial/20200923151511.3842150-1-luzmaximilian@gmail.com/
->>
->>    See "Changes" below for an overview of differences between the RFC and
->>    this patchset. I hope I have addressed all comments from that in this
->>    version, thank you again for those.
->>
->> The Surface System Aggregator Module (we'll refer to it as Surface
->> Aggregator or SAM below) is an embedded controller (EC) found on various
->> Microsoft Surface devices. Specifically, all 4th and later generation
->> Surface devices, i.e. Surface Pro 4, Surface Book 1 and later, with the
->> exception of the Surface Go series and the Surface Duo. Notably, it
->> seems like this EC can also be found on the ARM-based Surface Pro X [1].
-> 
-> <snip>
-> 
->> This patch-set can also be found at the following repository and
->> reference, if you prefer to look at a kernel tree instead of these
->> emails:
->>
->>    https://github.com/linux-surface/kernel tags/s/surface-aggregator/v1
->>
->> Thanks,
->> Max
-> 
-> Thank you for your work on this. It would be great if we can get better
-> support for the Surface line in the mainline kernel.
-> 
-> Since a lot of people have already commented on this series I think that
-> you have enough feedback to do a v2 addressing that feedback right?
+On Tue, Nov 24, 2020 at 8:36 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> Dell Precision 5550 fails to detect Thunderbolt device hotplug events,
+> once the Thunderbolt device and its root port are runtime-suspended to
+> D3cold.
+>
+> While putting the entire hierarchy to D3cold, the root port ACPI GPE is
+> enabled via acpi_pci_propagate_wakeup() when suspending Thunderbolt
+> bridges/switches. So when putting the root port to D3cold as last step,
+> ACPI GPE is untouched as it's already enabled.
+>
+> However, platform may need PCI devices to be in D3hot or PME enabled
+> prior enabling GPE to make it work.
 
-Yes, I'm already working on it.
+What platforms and why.
 
-> For now I'm going to assume that you will do a v2 addressing the
-> initial round of comments and not review this myself (IOW I'll review
-> this when v2 is posted).
+> So re-enable ACPI GPE to address this.
+>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+>  drivers/acpi/device_pm.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index 94d91c67aeae..dc25d9d204ae 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -757,11 +757,10 @@ static int __acpi_device_wakeup_enable(struct acpi_device *adev,
+>
+>         mutex_lock(&acpi_wakeup_lock);
+>
+> -       if (wakeup->enable_count >= max_count)
+> -               goto out;
+> -
+> -       if (wakeup->enable_count > 0)
+> -               goto inc;
+> +       if (wakeup->enable_count > 0) {
+> +               acpi_disable_gpe(wakeup->gpe_device, wakeup->gpe_number);
+> +               acpi_disable_wakeup_device_power(adev);
+> +       }
 
-Sure, no need for you to review v1 at this point.
-  
-> Let me know if you see things differently.
+An event occurring at this point may be lost after this patch.
 
-Thanks,
-Max
+It looks like you are trying to work around a hardware issue.  Can you
+please describe that issue in detail?
+
+>
+>         error = acpi_enable_wakeup_device_power(adev, target_state);
+>         if (error)
+> @@ -777,8 +776,8 @@ static int __acpi_device_wakeup_enable(struct acpi_device *adev,
+>         acpi_handle_debug(adev->handle, "GPE%2X enabled for wakeup\n",
+>                           (unsigned int)wakeup->gpe_number);
+>
+> -inc:
+> -       wakeup->enable_count++;
+> +       if (wakeup->enable_count < max_count)
+> +               wakeup->enable_count++;
+>
+>  out:
+>         mutex_unlock(&acpi_wakeup_lock);
+> --
+> 2.29.2
+>
