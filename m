@@ -2,104 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A7E2C2A80
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 15:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 181572C2B5A
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 16:32:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389255AbgKXOzs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Nov 2020 09:55:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22218 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389250AbgKXOzr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Nov 2020 09:55:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606229746;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=IDhfVYWGoL+IpVNQ3e9z+GzCQ3AwBmJ5YyBaFP+39/s=;
-        b=PwiZZaYNGrh3xH73nYYkPq8EX8G2ae7u4whZsI3HS6KyctiPnYZwPTF4G7Vnf1OPR+qz43
-        NDwtG9CAfySUAyhC+TpBhQ24Oc4pV6WMlU78MynQvzYZ8mkIIuHHWQJLZJXGKp0Pi+XvPh
-        ULjj1lGRz5QfDl3DZOUD35KfjLFiRDw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-285-uhRFpvSLPfWubnd5bhYaXw-1; Tue, 24 Nov 2020 09:55:42 -0500
-X-MC-Unique: uhRFpvSLPfWubnd5bhYaXw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E98ED9A229;
-        Tue, 24 Nov 2020 14:55:40 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 5BDB65D6AB;
-        Tue, 24 Nov 2020 14:55:40 +0000 (UTC)
-From:   Jeff Moyer <jmoyer@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-nvdimm@lists.01.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI: NFIT: Fix input validation of bus-family
-References: <160619566216.201177.9354229595539334957.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date:   Tue, 24 Nov 2020 09:55:44 -0500
-In-Reply-To: <160619566216.201177.9354229595539334957.stgit@dwillia2-desk3.amr.corp.intel.com>
-        (Dan Williams's message of "Mon, 23 Nov 2020 21:27:42 -0800")
-Message-ID: <x49ft4yiz2n.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S2389688AbgKXPa5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Nov 2020 10:30:57 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:60725 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389670AbgKXPa4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Nov 2020 10:30:56 -0500
+Received: from [192.168.0.28] (lns-bzn-39-82-255-60-242.adsl.proxad.net [82.255.60.242])
+        (Authenticated sender: hadess@hadess.net)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 6969C200010;
+        Tue, 24 Nov 2020 15:30:51 +0000 (UTC)
+Message-ID: <27a41e3d678f9d7fc889a3a77df87f9ed408887d.camel@hadess.net>
+Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
+From:   Bastien Nocera <hadess@hadess.net>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>,
+        Mark Pearson <markpearson@lenovo.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+Date:   Tue, 24 Nov 2020 16:30:50 +0100
+In-Reply-To: <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
+References: <markpearson@lenovo.com>
+         <20201115004402.342838-1-markpearson@lenovo.com>
+         <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
+         <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Sat, 2020-11-21 at 15:27 +0100, Hans de Goede wrote:
+> Hi,
+> 
+> On 11/20/20 8:50 PM, Barnabás Pőcze wrote:
+> > Hi
+> > 
+> > 
+> > 2020. november 15., vasárnap 1:44 keltezéssel, Mark Pearson írta:
+> > 
+> > > [...]
+> > > +int platform_profile_register(struct platform_profile_handler
+> > > *pprof)
+> > > +{
+> > > +       mutex_lock(&profile_lock);
+> > > +       /* We can only have one active profile */
+> > > +       if (cur_profile) {
+> > > +               mutex_unlock(&profile_lock);
+> > > +               return -EEXIST;
+> > > +       }
+> > > +
+> > > +       cur_profile = pprof;
+> > > +       mutex_unlock(&profile_lock);
+> > > +       return sysfs_create_group(acpi_kobj,
+> > > &platform_profile_group);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(platform_profile_register);
+> > > +
+> > > +int platform_profile_unregister(void)
+> > > +{
+> > > +       mutex_lock(&profile_lock);
+> > > +       sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> > > +       cur_profile = NULL;
+> > > +       mutex_unlock(&profile_lock);
+> > > +       return 0;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(platform_profile_unregister);
+> > > [...]
+> > 
+> > 
+> > I just realized that the sysfs attributes are only created if a
+> > profile provider
+> > is registered, and it is removed when the provide unregisters
+> > itself. I believe
+> > it would be easier for system daemons if those attributes existed
+> > from module load
+> > to module unload since they can just just open the file and watch
+> > it using poll,
+> > select, etc. If it goes away when the provider unregisters itself,
+> > then I believe
+> > a more complicated mechanism (like inotify) would need to be
+> > implemented in the
+> > daemons to be notified when a new provider is registered. Thus my
+> > suggestion
+> > for the next iteration is to create the sysfs attributes on module
+> > load,
+> > and delete them on unload.
+> > 
+> > What do you think?
+> 
+> Actually I asked Mark to move this to the register / unregister time
+> since
+> having a non functioning files in sysfs is a bit weird.
+> 
+> You make a good point about userspace having trouble figuring when
+> this will
+> show up though (I'm not worried about removal that will normally
+> never happen).
+> 
+> I would expect all modules to be loaded before any interested daemons
+> load,
+> but that is an assumption and I must admit that that is a bit racy.
+> 
+> Bastien, what do you think about Barnabás' suggestion to always have
+> the
+> files present and use poll (POLL_PRI) on it to see when it changes,
+> listing
+> maybe "none" as available profiles when there is no provider?
 
-> Dan reports that smatch thinks userspace can craft an out-of-bound bus
-> family number. However, nd_cmd_clear_to_send() blocks all non-zero
-> values of bus-family since only the kernel can initiate these commands.
-> However, in the speculation path, family is a user controlled array
-> index value so mask it for speculation safety. Also, since the
-> nd_cmd_clear_to_send() safety is non-obvious and possibly may change in
-> the future include input validation is if userspace could get past the
-> nd_cmd_clear_to_send() gatekeeper.
->
-> Link: http://lore.kernel.org/r/20201111113000.GA1237157@mwanda
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/acpi/nfit/core.c |    6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index cda7b6c52504..b11b08a60684 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -5,6 +5,7 @@
->  #include <linux/list_sort.h>
->  #include <linux/libnvdimm.h>
->  #include <linux/module.h>
-> +#include <linux/nospec.h>
->  #include <linux/mutex.h>
->  #include <linux/ndctl.h>
->  #include <linux/sysfs.h>
-> @@ -479,8 +480,11 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->  		cmd_mask = nd_desc->cmd_mask;
->  		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
->  			family = call_pkg->nd_family;
-> -			if (!test_bit(family, &nd_desc->bus_family_mask))
-> +			if (family > NVDIMM_BUS_FAMILY_MAX ||
-> +			    !test_bit(family, &nd_desc->bus_family_mask))
->  				return -EINVAL;
-> +			family = array_index_nospec(family,
-> +						    NVDIMM_BUS_FAMILY_MAX + 1);
->  			dsm_mask = acpi_desc->family_dsm_mask[family];
->  			guid = to_nfit_bus_uuid(family);
->  		} else {
+Whether the file exists or doesn't, we have ways to monitor it
+appearing or disappearing. I can monitor the directory with inotify to
+see the file appearing or disappearing, or I can monitor the file with
+inotify to see whether it changes. But that doesn't solve the
+challenges from user-space.
 
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+How do I know whether the computer will have this facility at any
+point? Is "none" a placeholder, or a definite answer as to whether the
+computer will have support for "platform profile"?
+
+How am I supposed to handle fallbacks, eg. how can I offer support for,
+say, changing the "energy performance preference" from the Intel p-
+state driver if ACPI platform profile isn't available?
+
+I'm fine with throwing more code at fixing that race, so whatever's
+easier for you, it'll be a pain for user-space either way.
 
