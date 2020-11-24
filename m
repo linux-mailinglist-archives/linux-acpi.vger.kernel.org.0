@@ -2,101 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FEA22C222E
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 10:57:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AEBB2C230F
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 11:35:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729839AbgKXJ4q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Nov 2020 04:56:46 -0500
-Received: from mga06.intel.com ([134.134.136.31]:2854 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731304AbgKXJ4p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Nov 2020 04:56:45 -0500
-IronPort-SDR: 7Ct1CpyRo8q2Sk5vTMPeUl/ZzHBZs39miV+F6dfdGrhiU7crC6mvqd66vVPV56KW8OGJdi9wOb
- rg+dZ9vRYeFw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9814"; a="233527608"
-X-IronPort-AV: E=Sophos;i="5.78,366,1599548400"; 
-   d="scan'208";a="233527608"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2020 01:56:43 -0800
-IronPort-SDR: 5jd8yRAizv3BSsVWv7oyy6W6Jpg58Nv7gkOtYzcelj/HiH/RC+y3+AuVcVtzuzLqsXwHlgX5+o
- 7qyyatCQkdOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,366,1599548400"; 
-   d="scan'208";a="358764289"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 24 Nov 2020 01:56:40 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 0A4FEFC; Tue, 24 Nov 2020 11:56:39 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>,
-        linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] ASoC: Intel: catpt: Replace open coded variant of resource_intersection()
-Date:   Tue, 24 Nov 2020 11:56:28 +0200
-Message-Id: <20201124095628.54373-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.29.2
+        id S1731906AbgKXKfP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Nov 2020 05:35:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:34894 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726744AbgKXKfO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Nov 2020 05:35:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606214113;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ncyxnNig+ZEOG1TiXd1E2PXEyV1aiFvSS2DGZ2RVKgo=;
+        b=FiC3VW9ejNZ5x2Yq0gnkweW2GjTdlutc5vF+ssmywNQk3FBzxZMfsjSrIkq5kg5gLIx3cU
+        gNIgZ73fieg5pEzkabfPB1Q89TSivlgyymukkqsAVtKxm2107OmHfYg2xcpiJ04RmLHIep
+        ZM7+C9PmleG8UVtYpwvgPGAX535shf8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-584-LYFRDXX-POuXCtUiETzt8g-1; Tue, 24 Nov 2020 05:35:11 -0500
+X-MC-Unique: LYFRDXX-POuXCtUiETzt8g-1
+Received: by mail-ed1-f72.google.com with SMTP id h11so6681624edw.14
+        for <linux-acpi@vger.kernel.org>; Tue, 24 Nov 2020 02:35:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ncyxnNig+ZEOG1TiXd1E2PXEyV1aiFvSS2DGZ2RVKgo=;
+        b=OK9/pvqnbX1tDkmFET8QEaFrVEyyFy4r9HahZnNIic7MCKharNOAHtZ46yG6bG8RJD
+         lXEd3W8RlLKpjSCHuokaHM6pKMr1rH2N4MqjSokdQ6m7OMDNIhaJSzN6u/8Wbc61/fS2
+         IOPPAI28alMvwA4TdIzUMFnhQEJsrjfLHCRrtV66XU2jnKfZsKYyJxX3zD7Q3APqZxtl
+         422faW5lNjLGnbAGWIcDDDbK88+SCySOA3kfA8+jp/xF/i9kUT8y1hEKMkiMh74V037a
+         m9BnhY3MYZMiE7LH+tNTgJO1rJI7PczmEibBqbVp3DeANvY7KlMTlytMLMkBf3mt3UTo
+         qflA==
+X-Gm-Message-State: AOAM533u2HEenGUyBXkLCYFwD/BrDhExkSCuKVNVidAQILeVtssoLO9y
+        yXIXoEPm8djWqJYe7lAa7d3WsPgaHAOYUMl2zwhqIUgEmqSqMCDTNJgrt/O/MZszZ/ynhWyU0JJ
+        n39SW8xIZdOdAgPyhxCpdR07MiM/qNgdywJKQYZqF8JlWjTM7ZF9WujcRX1DaioOETb3vvMMauw
+        ==
+X-Received: by 2002:a05:6402:b28:: with SMTP id bo8mr3374334edb.57.1606214109805;
+        Tue, 24 Nov 2020 02:35:09 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJww75UcJuDu23/qq8PN8EPlsRe/LUlPntcUDLlzHy7PQOmwrc9s7a8WlK+zwyeTKw3R7j9JyQ==
+X-Received: by 2002:a05:6402:b28:: with SMTP id bo8mr3374314edb.57.1606214109627;
+        Tue, 24 Nov 2020 02:35:09 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id lr17sm5262571ejb.43.2020.11.24.02.35.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2020 02:35:08 -0800 (PST)
+Subject: Re: [RFC 0/4] platform/x86: i2c-multi-instantiate: Pass ACPI fwnode
+ to instantiated i2c-clients
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20201105080014.45410-1-hdegoede@redhat.com>
+ <CAHp75Vdm4PuQpAMj98wJZoNMwV2tFGPj-r9ezvXyWCYj2cSuaA@mail.gmail.com>
+ <81343662-aaac-a5e8-af86-1370951ff646@redhat.com>
+ <CAHp75VdbHPwnOAUWjSN+HuVsWVb=8EUwfWNR1onL9QNrX8yU0w@mail.gmail.com>
+ <6345eeb9-8416-3e7c-e619-632b5d4abbbd@redhat.com>
+ <CAHp75VdcG_qDpJoppc3Ri8y0rjL9m07r9Xb4JPu30HE6TYf9zQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <5f9b0957-fd18-3ad3-79e0-2124edd7d434@redhat.com>
+Date:   Tue, 24 Nov 2020 11:35:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VdcG_qDpJoppc3Ri8y0rjL9m07r9Xb4JPu30HE6TYf9zQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since we have resource_intersection() helper, let's utilize it here.
+Hi,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
+On 11/10/20 3:47 PM, Andy Shevchenko wrote:
+> On Tue, Nov 10, 2020 at 1:14 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>> On 11/10/20 11:10 AM, Andy Shevchenko wrote:
+>>> On Mon, Nov 9, 2020 at 1:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> 
+> ...
+> 
+>>> I think in general the direction to switch to fwnode is a good one. I
+>>> was thinking about moving i2c core to use swnodes in which case they
+>>> will utilize fwnode pointer. But it might have complications, you are
+>>> right.
+>>
+>> So do you agree to just keep this series in the archives (in case we need
+>> it later) for now ? Or would you still like me to post a non RFC version ?
+> 
+> If nobody else has a different opinion (Heikki, Wolfram, Rafael?), I'm
+> fine with it to be in archives for the time being.
 
-Promised clean up for recently introduced helper.
+Since no-one else has responded, lets just keep this series for the
+archives.
 
-This has dependency to the patches currently in linux-pm tree. Other than that
-everything else is already in upstream. Hence, logically it's better to push
-thru Rafael's tree than wait one more cycle.
+Andy, that also means that there no longer is a reason to hold of merging
+your i2c-multi-instantiate cleanup series (minus patch 3 as discussed),
+so I've merged that into my review-hans branch now.
 
- sound/soc/intel/catpt/core.h   | 11 -----------
- sound/soc/intel/catpt/loader.c |  2 +-
- 2 files changed, 1 insertion(+), 12 deletions(-)
+Regards,
 
-diff --git a/sound/soc/intel/catpt/core.h b/sound/soc/intel/catpt/core.h
-index 0f53a0d43254..a64a0a77dcb7 100644
---- a/sound/soc/intel/catpt/core.h
-+++ b/sound/soc/intel/catpt/core.h
-@@ -22,17 +22,6 @@ void catpt_sram_free(struct resource *sram);
- struct resource *
- catpt_request_region(struct resource *root, resource_size_t size);
- 
--static inline bool catpt_resource_overlapping(struct resource *r1,
--					      struct resource *r2,
--					      struct resource *ret)
--{
--	if (!resource_overlaps(r1, r2))
--		return false;
--	ret->start = max(r1->start, r2->start);
--	ret->end = min(r1->end, r2->end);
--	return true;
--}
--
- struct catpt_ipc_msg {
- 	union {
- 		u32 header;
-diff --git a/sound/soc/intel/catpt/loader.c b/sound/soc/intel/catpt/loader.c
-index 40c22e4bb263..ff7b8f0d34ac 100644
---- a/sound/soc/intel/catpt/loader.c
-+++ b/sound/soc/intel/catpt/loader.c
-@@ -267,7 +267,7 @@ static int catpt_restore_fwimage(struct catpt_dev *cdev,
- 		r2.start = off;
- 		r2.end = r2.start + info->size - 1;
- 
--		if (!catpt_resource_overlapping(&r2, &r1, &common))
-+		if (!resource_intersection(&r2, &r1, &common))
- 			continue;
- 		/* calculate start offset of common data area */
- 		off = common.start - r1.start;
--- 
-2.29.2
+Hans
 
