@@ -2,152 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D29AF2C19DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 01:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C872C1A52
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Nov 2020 01:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728947AbgKXAR6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Nov 2020 19:17:58 -0500
-Received: from mga07.intel.com ([134.134.136.100]:22729 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726745AbgKXAR6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Nov 2020 19:17:58 -0500
-IronPort-SDR: h/P8m5SANIsheky63hBHV2HCKKlCQg6Xo5qxkC2nXcmfYR8EmXlGxmx89R02SJA2fWG4h9C0lA
- CkFGkI8caFZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9814"; a="236005070"
-X-IronPort-AV: E=Sophos;i="5.78,364,1599548400"; 
-   d="scan'208";a="236005070"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 16:17:56 -0800
-IronPort-SDR: qbW+WwGzLA8+eSg5GGNT6me0DMfLWg1G8/paGswTGz2dXhdExFobeq/Qb6sf6WTrtqCA5F8SfF
- k+MwQe1cGyhw==
-X-IronPort-AV: E=Sophos;i="5.78,364,1599548400"; 
-   d="scan'208";a="546615424"
-Received: from laloy-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.93])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 16:17:56 -0800
-Date:   Mon, 23 Nov 2020 16:17:54 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [RFC PATCH 5/9] cxl/mem: Find device capabilities
-Message-ID: <20201124001754.465xfzv5r2q4l52o@intel.com>
-References: <20201111054356.793390-1-ben.widawsky@intel.com>
- <20201111054356.793390-6-ben.widawsky@intel.com>
- <20201117151519.000069d2@Huawei.com>
+        id S1728741AbgKXA6r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Nov 2020 19:58:47 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51159 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726803AbgKXA6q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Nov 2020 19:58:46 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 0EF842A8E0;
+        Mon, 23 Nov 2020 19:58:39 -0500 (EST)
+Date:   Tue, 24 Nov 2020 11:58:37 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+In-Reply-To: <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2011241036520.7@nippy.intranet>
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011220816.8B6591A@keescook>
+ <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com> <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+ <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201117151519.000069d2@Huawei.com>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-11-17 15:15:19, Jonathan Cameron wrote:
-> On Tue, 10 Nov 2020 21:43:52 -0800
-> Ben Widawsky <ben.widawsky@intel.com> wrote:
-> 
-> > CXL devices contain an array of capabilities that describe the
-> > interactions software can interact with the device, or firmware running
-> > on the device. A CXL compliant device must implement the device status
-> > and the mailbox capability. A CXL compliant memory device must implement
-> > the memory device capability.
-> > 
-> > Each of the capabilities can [will] provide an offset within the MMIO
-> > region for interacting with the CXL device.
-> > 
-> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> 
-> A few really minor things in this one.
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/cxl/cxl.h | 89 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  drivers/cxl/mem.c | 58 +++++++++++++++++++++++++++---
-> >  2 files changed, 143 insertions(+), 4 deletions(-)
-> >  create mode 100644 drivers/cxl/cxl.h
-> > 
-> > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > new file mode 100644
-> > index 000000000000..02858ae63d6d
-> > --- /dev/null
-> > +++ b/drivers/cxl/cxl.h
-> > @@ -0,0 +1,89 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
-> > +
-> > +#ifndef __CXL_H__
-> > +#define __CXL_H__
-> > +
-> > +/* Device */
-> > +#define CXLDEV_CAP_ARRAY_REG 0x0
-> > +#define CXLDEV_CAP_ARRAY_CAP_ID 0
-> > +#define CXLDEV_CAP_ARRAY_ID(x) ((x) & 0xffff)
-> > +#define CXLDEV_CAP_ARRAY_COUNT(x) (((x) >> 32) & 0xffff)
-> > +
-> > +#define CXL_CAPABILITIES_CAP_ID_DEVICE_STATUS 1
-> 
-> I'm not sure what you can do about consistent naming, but
-> perhaps this really does need to be 
-> CXLDEV_CAP_CAP_ID_x  however silly that looks.
-> 
-> It's a funny exercise I've only seen done once in a spec, but
-> I wish everyone would try working out what their fully expanded
-> field names will end up as and make sure the long form naming shortens
-> to something sensible.  It definitely helps with clarity!
-> 
-> > +#define CXL_CAPABILITIES_CAP_ID_PRIMARY_MAILBOX 2
-> > +#define CXL_CAPABILITIES_CAP_ID_SECONDARY_MAILBOX 3
-> > +#define CXL_CAPABILITIES_CAP_ID_MEMDEV 0x4000
-> > +
-> > +/* Mailbox */
-> > +#define CXLDEV_MB_CAPS 0x00
-> 
-> Elsewhere you've used _OFFSET postfix. That's useful so I'd do it here
-> as well.  Cross references to the spec section always appreciated as well!
-> 
-> > +#define   CXLDEV_MB_CAP_PAYLOAD_SIZE(cap) ((cap) & 0x1F)
-> > +#define CXLDEV_MB_CTRL 0x04
-> > +#define CXLDEV_MB_CMD 0x08
-> > +#define CXLDEV_MB_STATUS 0x10
-> > +#define CXLDEV_MB_BG_CMD_STATUS 0x18
-> > +
-> > +struct cxl_mem {
-> > +	struct pci_dev *pdev;
-> > +	void __iomem *regs;
-> > +
-> > +	/* Cap 0000h */
-> 
-> What are the numbers here?  These capabilities have too
-> many indexes associated with them in different ways for it
-> to be obvious, so perhaps more detail in the comments?
 
-This comment was a bug. The cap is 0001h actually. I've added the hash define
-for its cap id as part of the comment.
+On Mon, 23 Nov 2020, Miguel Ojeda wrote:
 
-Everything else is accepted.
-
+> On Mon, 23 Nov 2020, Finn Thain wrote:
 > 
-> > +	struct {
-> > +		void __iomem *regs;
-> > +	} status;
-> > +
-> > +	/* Cap 0002h */
-> > +	struct {
-> > +		void __iomem *regs;
-> > +		size_t payload_size;
-> > +	} mbox;
-> > +
-> > +	/* Cap 0040h */
-> > +	struct {
-> > +		void __iomem *regs;
-> > +	} mem;
-> > +};
+> > On Sun, 22 Nov 2020, Miguel Ojeda wrote:
+> > 
+> > > 
+> > > It isn't that much effort, isn't it? Plus we need to take into 
+> > > account the future mistakes that it might prevent, too.
+> > 
+> > We should also take into account optimisim about future improvements 
+> > in tooling.
+> > 
+> Not sure what you mean here. There is no reliable way to guess what the 
+> intention was with a missing fallthrough, even if you parsed whitespace 
+> and indentation.
+> 
+
+What I meant was that you've used pessimism as if it was fact.
+
+For example, "There is no way to guess what the effect would be if the 
+compiler trained programmers to add a knee-jerk 'break' statement to avoid 
+a warning".
+
+Moreover, what I meant was that preventing programmer mistakes is a 
+problem to be solved by development tools. The idea that retro-fitting new 
+language constructs onto mature code is somehow necessary to "prevent 
+future mistakes" is entirely questionable.
+
+> > > So even if there were zero problems found so far, it is still a 
+> > > positive change.
+> > > 
+> > 
+> > It is if you want to spin it that way.
+> > 
+> How is that a "spin"? It is a fact that we won't get *implicit* 
+> fallthrough mistakes anymore (in particular if we make it a hard error).
+> 
+
+Perhaps "handwaving" is a better term?
+
+> > > I would agree if these changes were high risk, though; but they are 
+> > > almost trivial.
+> > > 
+> > 
+> > This is trivial:
+> > 
+> >  case 1:
+> >         this();
+> > +       fallthrough;
+> >  case 2:
+> >         that();
+> > 
+> > But what we inevitably get is changes like this:
+> > 
+> >  case 3:
+> >         this();
+> > +       break;
+> >  case 4:
+> >         hmmm();
+> > 
+> > Why? Mainly to silence the compiler. Also because the patch author 
+> > argued successfully that they had found a theoretical bug, often in 
+> > mature code.
+> > 
+> If someone changes control flow, that is on them. Every kernel developer 
+> knows what `break` does.
+> 
+
+Sure. And if you put -Wimplicit-fallthrough into the Makefile and if that 
+leads to well-intentioned patches that cause regressions, it is partly on 
+you.
+
+Have you ever considered the overall cost of the countless 
+-Wpresume-incompetence flags?
+
+Perhaps you pay the power bill for a build farm that produces logs that 
+no-one reads? Perhaps you've run git bisect, knowing that the compiler 
+messages are not interesting? Or compiled software in using a language 
+that generates impenetrable messages? If so, here's a tip:
+
+# grep CFLAGS /etc/portage/make.conf 
+CFLAGS="... -Wno-all -Wno-extra ..."
+CXXFLAGS="${CFLAGS}"
+
+Now allow me some pessimism: the hardware upgrades, gigawatt hours and 
+wait time attributable to obligatory static analyses are a net loss.
+
+> > But is anyone keeping score of the regressions? If unreported bugs 
+> > count, what about unreported regressions?
+> > 
+> Introducing `fallthrough` does not change semantics. If you are really 
+> keen, you can always compare the objects because the generated code 
+> shouldn't change.
+> 
+
+No, it's not for me to prove that such patches don't affect code 
+generation. That's for the patch author and (unfortunately) for reviewers.
+
+> Cheers,
+> Miguel
+> 
