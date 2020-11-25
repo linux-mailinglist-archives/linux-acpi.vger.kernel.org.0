@@ -2,82 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 925972C4747
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 19:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B202C2C478F
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 19:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731310AbgKYSKs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 13:10:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46236 "EHLO
+        id S1731956AbgKYS0V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 13:26:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730774AbgKYSKr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 13:10:47 -0500
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF00C0613D4
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 10:10:47 -0800 (PST)
-Received: by mail-qk1-x731.google.com with SMTP id x25so4256398qkj.3
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 10:10:47 -0800 (PST)
+        with ESMTP id S1726039AbgKYS0U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 13:26:20 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53456C061A4F;
+        Wed, 25 Nov 2020 10:26:20 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id 64so2843382wra.11;
+        Wed, 25 Nov 2020 10:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=l5xM0WWt/jkF9DKKLvJ1sR0pb3zOF+Q6gsRxfvSpR6g=;
-        b=tCmj0Fi7oSsbasDbtJtzqpFqRRNnW4wk7tvxDZpRTa2syKniCrjtQwiqNqKneYjCdh
-         YMiY0cmrUa5jZAkLfE+kTzEsi8suLEIzr+pRw+w7A15MQK3xH0urliWY5RW8F275mE6J
-         GamUBeD49OY4MQBFsrx+d4NdZlfqFybFi3cP4hh0W3QKSWxi2EMqR9ZUkITQdI1paeqf
-         tPy1kRQDKljMyLwF7158vtn1/KPhjIMqeq/69tg8bX+07m6t2Ame7csLSlELGCLh6R8c
-         przud8LrAgP/MHp91GjFjqE25hff5qWsVnjgAweQ/lU8ROeC+zttUcue9ns4+CRKFxpJ
-         ZyDQ==
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=Pq7koJ8Q+AAcdeM2beSaDTpUisp8gDu/XBiw//Fn39aeMlBdDME/3z0Sxjt5Wg79FV
+         gKGwN/hkusIRq1cCctpYACo55FEfGz61gQ6GSILKlvCG5bTKxIhk5hU7GT0xFIf+niNB
+         QwPkMzo+9bEPnu6GA/Q7MXeZ9Szw1p6jSHGhNHIN8VQn3WGYDMi6ezKsr+Y4rJ3W/uF0
+         eSitkgCk+oZdOLiLuHVsteZSrfyqUI/Xabe0k3c8KP+G8bfBtVZXfmwJb3CzKaXsU/6i
+         0Z9lhn/N9F+MgNutxPyKCXfsA44VxytimOx4C/ds0OhgwXQXzz5MsrG2tgRHSgfdKRJ3
+         jDXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=l5xM0WWt/jkF9DKKLvJ1sR0pb3zOF+Q6gsRxfvSpR6g=;
-        b=ffkHHe1gVFeTvp6dj0zA/Q/GP0nvMpoRmJrnsQOFzg0pehtHoU3+Yl14GWa/vDc1fN
-         YUsHZg6EuzzcP5ArViSX0WcG3okvcvhCnArJpOKNiI8BbwDUK6Q0HfAld2CVUF4dPkhq
-         YwNhzW6b0a87wpubSfYnjBmJc08P8Jvn4V9oAhFIBEjRoV0mxxqpEG7oKye56kW7qMgV
-         sRPxU3AJA/u5KsPoipIxPGY+1iB8Wx5igJjvfUb1AYo2BW9p6ByyoJ/rLu170vkNlmli
-         LbLeRclsfIkbWEZyLvn2mxhcE6GXqXVV+jvrpfnDoOOqZrTpcUA72ZnIBnWh5iDoiItJ
-         EuuQ==
-X-Gm-Message-State: AOAM532La5yXBgD/F8kib5Fg09feu+09I0LGA2KgnunrT1d1wpGlD69O
-        6wVFikRUQPyjPOQdUnT5I7+wpdPDzsiyJO2gm+xTrcQnxxOFYQ==
-X-Google-Smtp-Source: ABdhPJySfhbIxRlLjp5I/W7uj4g7eIHGIVFItOZXq9FgtRUwmcmmct7PX1S+0/TPJx2HqhPlkebBq4bMdMpM0NWdIOY=
-X-Received: by 2002:a37:5f42:: with SMTP id t63mr109619qkb.236.1606327846332;
- Wed, 25 Nov 2020 10:10:46 -0800 (PST)
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=SeWVTYmdUwotrrE7VawmhM/bvYVd61L9bc7RXCIomth/ji01+x+djhzC0Qg4ZHEsHG
+         miqID5fgbccxEV38jRAwSH9qGB83hfjBfJ+dSSFmumnTalSg6l6ZNy0Fi2t9xirXBP66
+         Xt/Q5P+tbpoMZS4MhticQ3GoKAsH5NOZICcZwKcTRigDXFOj6ljqK4hC+IrpxhgXEwMy
+         LeKVgk7YX5V9zLzfU+I4VCnefjwKnxUAZzSwlbZBku7mZ4qwVmLKpgMr/mcj6k0j8/WB
+         EHgHTySI0LvBfr/gcbtfUuHNXDM1v8bC3cEmU4GXNV5g9C7wpRcix0ct8gHzEmKZlGE5
+         0I2A==
+X-Gm-Message-State: AOAM5339n/co+G5/kigIcxbArs4DtJLmeEop/iICDcF8qQUyaBQSZp9H
+        Das1LfStP5ybX/I/4BYtyT8=
+X-Google-Smtp-Source: ABdhPJxNwWNVC14OyTOTnU+mNg7n+bzijPRJzrR69qo6OKhHCYygLflMHkcdw7k7TNGVCGKG4qdUvQ==
+X-Received: by 2002:adf:f3c7:: with SMTP id g7mr5532617wrp.91.1606328779088;
+        Wed, 25 Nov 2020 10:26:19 -0800 (PST)
+Received: from [192.168.1.152] ([102.64.149.89])
+        by smtp.gmail.com with ESMTPSA id x13sm5329634wmj.48.2020.11.25.10.26.14
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 25 Nov 2020 10:26:18 -0800 (PST)
+Message-ID: <5fbea1ca.1c69fb81.8c60.ba31@mx.google.com>
+From:   "Dailborh R." <risonnah.001@gmail.com>
+X-Google-Original-From: Dailborh R.
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-From:   Pedro Ribeiro <pedrib@gmail.com>
-Date:   Thu, 26 Nov 2020 01:10:35 +0700
-Message-ID: <CAEDdjHdmyMSZo=A7gtnKTXqwzzH+ynUw_yFbXd8f9kxOUODkrQ@mail.gmail.com>
-Subject: Legion 5 backlight control not working
-To:     linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Please reply to me
+To:     Recipients <Dailborh@vger.kernel.org>
+Date:   Wed, 25 Nov 2020 18:26:05 +0000
+Reply-To: dailrrob.83@gmail.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I have a Lenovo Legion 5 15ARH05H and I'm trying to get the backlight
-control working.
+I'm Dailborh R. from US. I picked interest in you and I would like to know
+more about you and establish relationship with you. i will wait for
+your response. thank you.
 
-This is a laptop with an AMD APU and NVIDIA GPU. It works in a Hybrid
-graphics mode with both GPU on, or a Discrete graphics mode where only
-the NVIDIA GPU is on and the AMD one is disabled. I always run the
-laptop in Discrete mode.
-
-I have tried various NVIDIA driver versions, and was able to get the
-backlight working on kernel 5.9.1, but I have no idea what I did to my
-system, a few weeks later it stopped working and now I can't get it
-back. Tried various kernel versions too, kernel configs, etc, nothing,
-the backlight just doesn't work.
-
-It doesn't work either via the /sys/class/backlight device nor via the
-hardware keys. On Windows everything works fine.
-
-Every time I boot, I get this in dmesg:
-[    1.057696] ACPI BIOS Error (bug): Could not resolve symbol
-[\_SB.PCI0.GP17.VGA.LCD._BCM.AFN7], AE_NOT_FOUND (20200717/psargs-330)
-[    1.057753] ACPI Error: Aborting method \_SB.PCI0.GP17.VGA.LCD._BCM
-due to previous error (AE_NOT_FOUND) (20200717/psparse-529)
-[    1.057806] ACPI Error: Evaluating _BCM failed (20200717/video-357)
-
-I believe this is related to the brightness control problem, can
-anyone shed a light on this?
-
-Regards,
-Pedro
