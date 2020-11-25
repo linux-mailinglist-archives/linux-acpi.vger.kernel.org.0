@@ -2,258 +2,255 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85D252C46A3
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 18:25:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5D8E2C46F9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 18:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730293AbgKYRYx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 12:24:53 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8586 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731170AbgKYRYx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 12:24:53 -0500
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Ch76X2M1fzLtm3;
-        Thu, 26 Nov 2020 01:24:20 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.58) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 26 Nov 2020 01:24:39 +0800
-From:   John Garry <john.garry@huawei.com>
-To:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
-        <lenb@kernel.org>, <rjw@rjwysocki.net>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>
-CC:     <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <maz@kernel.org>, "John Garry" <john.garry@huawei.com>
-Subject: [PATCH v3 5/5] scsi: hisi_sas: Expose HW queues for v2 hw
-Date:   Thu, 26 Nov 2020 01:20:41 +0800
-Message-ID: <1606324841-217570-6-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1606324841-217570-1-git-send-email-john.garry@huawei.com>
-References: <1606324841-217570-1-git-send-email-john.garry@huawei.com>
+        id S1730414AbgKYRn5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 12:43:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730354AbgKYRn4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 12:43:56 -0500
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFFBC061A4F
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 09:43:56 -0800 (PST)
+Received: by mail-ot1-x333.google.com with SMTP id k3so2948718otp.12
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 09:43:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=u+YTLyj4ie3IN86jCfx4Roc0oN5l1ohxrxg0M+ICyFc=;
+        b=v+0TaqJIZ6xBdedY8c/QAOafuOnHFYHa0PpHixm3maGaH8aKnKdTG8lEVFj2AOtKSg
+         5Y6y8wRQMdmnXkprxxEmZ5PyKQMJQPCNfln2+GqIgjUx/a9vuUmuJbSjHJo3Uf5plH8K
+         7s9fdnHhHt10Bkeaup2izshGDkztf5zU1N3zyRSwioZ122xrSKawBoBwPVRCt+rLsi50
+         R9lS/LMZ1uV+O0clhb6z1ggLdriAe+QKlYa4nKartNHuXHzhIXIW3UvFNc6dsQV4+/Jg
+         hEbQBOUMtP/XLz3REBvWq63wcDk9htj0qdiUtGbajghqbtu581e221Y7F32K70vD7+Co
+         jGlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=u+YTLyj4ie3IN86jCfx4Roc0oN5l1ohxrxg0M+ICyFc=;
+        b=G4ixdaXYjRGoVteoCVARBzFW1qW5mWi+e4/BDYB24GFyiPu8PKDUqL9S4qjPrPlIhg
+         VcuEJtZjjBOJw/I+UXcl3+AjYQmL9R+xl3dAgHV3gX4xxZw5fOioSYrQVogp5ACYbd1R
+         sfAByLsXa+mRdgKVjh8jlXoScUIAdbFN/haT+R+GRx7mAuJxlBDhaLQBRle1Oai8znzP
+         bo7pZ23uPvuvvWQj5h7iOL81/B7BKoflvxjp36CkB8rsRLPVT9/Q+o7CsJU3jg+Rbfcg
+         2hU09A8HR4y3/tPQODjHC3vmuZeXIn5bNSAoh9NEBHxQ+Mdc4EaRTbHcYVeWCQoQ7HvR
+         mENA==
+X-Gm-Message-State: AOAM5330EsOKCewhiUQKxdPIpKSH6e6s/tU9fSKKfBGc5D/VA2kDEY8z
+        9D08VBg9ufpkLhY87SjR8HXTbcyrv7QPbdX0dfK9kA==
+X-Google-Smtp-Source: ABdhPJyip73KKye5lZJcDseEDLuJUEZv7hv+XO9IpoBbBlSGjUiSUzpged/8GPgX+LQZgHaZLxDge9g4x9YwpNNB944=
+X-Received: by 2002:a05:6830:18f8:: with SMTP id d24mr3682744otf.44.1606326235683;
+ Wed, 25 Nov 2020 09:43:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.58]
-X-CFilter-Loop: Reflected
+References: <CAEGmHFFjV2UKm3L1G5JF6Ve47L1-aKBAGrCxN3pPX1HO9R-aUg@mail.gmail.com>
+ <CAJZ5v0hqU-qiM8ddYUT_u0Lm3RNM19gNcXye_s5v3DeCHr7mZQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hqU-qiM8ddYUT_u0Lm3RNM19gNcXye_s5v3DeCHr7mZQ@mail.gmail.com>
+From:   Furquan Shaikh <furquan@google.com>
+Date:   Wed, 25 Nov 2020 09:43:39 -0800
+Message-ID: <CAEGmHFFxxOxNBjut68azQ5eMh71J+ysJeX9SOak6WwNetuJnwA@mail.gmail.com>
+Subject: Re: [RFC] ACPI PM during kernel poweroff/reboot
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Aaron Durbin <adurbin@google.com>,
+        Duncan Laurie <dlaurie@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As a performance enhancement, make the completion queue interrupts managed.
+On Wed, Nov 25, 2020 at 8:39 AM Rafael J. Wysocki <rafael@kernel.org> wrote=
+:
+>
+> On Thu, Nov 12, 2020 at 8:19 PM Furquan Shaikh <furquan@google.com> wrote=
+:
+> >
+> > On x86 Chromebooks, we have observed this issue for a long time now -
+> > when the system is powered off or rebooted, ACPI PM is not invoked and
+> > this results in PowerResource _OFF methods not being invoked for any
+> > of the devices. The _OFF methods are invoked correctly in case of
+> > suspend-to-idle (S0ix) and suspend-to-memory(S3). However, they do not
+> > get invoked when `poweroff` or `reboot` are triggered.
+> >
+> > One of the differences between suspend, hibernate and shutdown paths
+> > in Linux kernel is that the shutdown path does not use the typical
+> > device PM phases (prepare, freeze/suspend, poweroff) as used by
+> > suspend/hibernate. Instead the shutdown path makes use of
+> > .shutdown_pre() and .shutdown() callbacks.
+> >
+> > If I understand correctly, .shutdown() has been around for a long time
+> > and existed even before the PM callbacks were added. Thus,
+> > pm->poweroff() and .shutdown() are supposed to be analogous and
+> > consistent in the behavior.
+>
+> Well, not quite.
+>
+> ->shutdown() is expected to be a lightweight operation also suitable
+> for kexec() and similar situations where ->poweroff() may not work.
+>
+> > This is why runtime PM is disallowed by
+> > device_shutdown() before it calls .shutdown() (i.e. to keep behavior
+> > consistent for both paths). However, in practice, there are
+> > differences in behavior for the pm->poweroff() and .shutdown() paths
+> > since the shutdown path does not execute any PM domain operations.
+>
+> That's correct.
+>
+> > Because of this difference in behavior, shutdown path never invokes
+> > ACPI PM and thus the ACPI PowerResources are not turned off when the
+> > system is rebooted or powered off (sleep S5). On Chromebooks, it is
+> > critical to run the _OFF methods for poweroff/reboot in order to
+> > ensure that the device power off sequencing requirements are met.
+> > Currently, these requirements are violated which impact the
+> > reliability of devices over the lifetime of the platform.
+> >
+> > There are a few ways in which this can be addressed:
+> >
+> > 1. Similar to the case of hibernation, a new
+> > PMSG_POWEROFF/PM_EVENT_POWEROFF can be introduced to invoke device
+> > power management phases using `dpm_suspend_start(PMSG_POWEROFF)` and
+> > `dpm_suspend_end(PMSG_POWEROFF)`. However, as the shutdown path uses
+> > the class/bus/driver .shutdown() callbacks, adding dpm phases for
+> > poweroff complicates the order of operations. If the dpm phases are
+> > run before .shutdown() callbacks, then it will result in the callbacks
+> > accessing devices after they are powered off. If the .shutdown()
+> > callbacks are run before dpm phases, then the pm->poweroff() calls are
+> > made after the device shutdown is done. Since .shutdown() and
+> > pm->poweroff() are supposed to be analogous, having both calls in the
+> > shutdown path is not only redundant but also results in incorrect
+> > behavior.
+> >
+> > 2. Another option is to update device_shutdown() to make
+> > pm_domain.poweroff calls after the class/bus/driver .shutdown() is
+> > done. However, this suffers from the same problem as #1 above i.e. it
+> > is redundant and creates conflicting order of operations.
+> >
+> > 3. Third possible solution is to detach the device from the PM domain
+> > after it is shutdown. Currently, device drivers perform a detach
+> > operation only when the device is removed. However, in case of
+> > poweroff/reboot as the device is already shutdown, detaching PM domain
+> > will give it the opportunity to ensure that any power resources are
+> > correctly turned off before the system shuts down.
+>
+> 4. Make Chromebooks call something like hibernation_platform_enter()
+> on S5 entries (including reboot).
 
-In addition, in commit bf0beec0607d ("blk-mq: drain I/O when all CPUs in a
-hctx are offline"), CPU hotplug for MQ devices using managed interrupts
-is made safe. So expose HW queues to blk-mq to take advantage of this.
+Actually, Chromebooks do not support S4 and hence CONFIG_HIBERNATION.
+This is done for a number of reasons including security. Hence, I
+don't think using hibernation_platform_enter() would be an option.
 
-Flag Scsi_host.host_tagset is also set to ensure that the HBA is not sent
-more commands than it can handle. However the driver still does not use
-request tag for IPTT as there are many HW bugs means that special rules
-apply for IPTT allocation.
+>
+> > Out of these, I think #3 makes the most sense as it does not introduce
+> > any conflicting operations. I verified that the following diff results
+> > in _OFF methods getting invoked in both poweroff and reboot cases:
+>
+> This won't work for PCI devices though, only for devices in the ACPI
+> PM domain, so it is not sufficient in general.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
----
- drivers/scsi/hisi_sas/hisi_sas.h       |  4 ++
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 11 +++++
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 68 +++++++++++++++++++++-----
- 3 files changed, 70 insertions(+), 13 deletions(-)
+That is true. The proposed solution only handles detaching of PM
+domains. I understand your point about this not working for any
+devices not part of the PM domain. The issues that we have observed in
+shutdown/reboot paths have been specific to ACPI power resources
+controlling the sequencing to external devices.
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
-index a25cfc11c96d..aa67807c5693 100644
---- a/drivers/scsi/hisi_sas/hisi_sas.h
-+++ b/drivers/scsi/hisi_sas/hisi_sas.h
-@@ -14,6 +14,7 @@
- #include <linux/debugfs.h>
- #include <linux/dmapool.h>
- #include <linux/iopoll.h>
-+#include <linux/irq.h>
- #include <linux/lcm.h>
- #include <linux/libata.h>
- #include <linux/mfd/syscon.h>
-@@ -312,6 +313,7 @@ enum {
- 
- struct hisi_sas_hw {
- 	int (*hw_init)(struct hisi_hba *hisi_hba);
-+	int (*interrupt_preinit)(struct hisi_hba *hisi_hba);
- 	void (*setup_itct)(struct hisi_hba *hisi_hba,
- 			   struct hisi_sas_device *device);
- 	int (*slot_index_alloc)(struct hisi_hba *hisi_hba,
-@@ -418,6 +420,8 @@ struct hisi_hba {
- 	u32 refclk_frequency_mhz;
- 	u8 sas_addr[SAS_ADDR_SIZE];
- 
-+	int *irq_map; /* v2 hw */
-+
- 	int n_phy;
- 	spinlock_t lock;
- 	struct semaphore sem;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index c8dd8588f800..624c5ec723fb 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -2614,6 +2614,13 @@ static struct Scsi_Host *hisi_sas_shost_alloc(struct platform_device *pdev,
- 	return NULL;
- }
- 
-+static int hisi_sas_interrupt_preinit(struct hisi_hba *hisi_hba)
-+{
-+	if (hisi_hba->hw->interrupt_preinit)
-+		return hisi_hba->hw->interrupt_preinit(hisi_hba);
-+	return 0;
-+}
-+
- int hisi_sas_probe(struct platform_device *pdev,
- 		   const struct hisi_sas_hw *hw)
- {
-@@ -2671,6 +2678,10 @@ int hisi_sas_probe(struct platform_device *pdev,
- 		sha->sas_port[i] = &hisi_hba->port[i].sas_port;
- 	}
- 
-+	rc = hisi_sas_interrupt_preinit(hisi_hba);
-+	if (rc)
-+		goto err_out_ha;
-+
- 	rc = scsi_add_host(shost, &pdev->dev);
- 	if (rc)
- 		goto err_out_ha;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index b57177b52fac..6ad486e49468 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -3302,6 +3302,30 @@ static irq_handler_t fatal_interrupts[HISI_SAS_FATAL_INT_NR] = {
- 	fatal_axi_int_v2_hw
- };
- 
-+#define CQ0_IRQ_INDEX (96)
-+
-+static int hisi_sas_v2_interrupt_preinit(struct hisi_hba *hisi_hba)
-+{
-+	struct platform_device *pdev = hisi_hba->platform_dev;
-+	struct Scsi_Host *shost = hisi_hba->shost;
-+	int nvec, *irqs;
-+	struct irq_affinity desc = {
-+		.pre_vectors = CQ0_IRQ_INDEX,
-+	};
-+
-+	nvec = devm_platform_get_irqs_affinity(pdev, &desc, CQ0_IRQ_INDEX + 1,
-+					CQ0_IRQ_INDEX + hisi_hba->queue_count,
-+					&hisi_hba->irq_map);
-+	if (nvec < 0)
-+		return nvec;
-+
-+	shost->nr_hw_queues = hisi_hba->cq_nvecs = nvec - 96;
-+
-+	kfree(irqs);
-+
-+	return 0;
-+}
-+
- /*
-  * There is a limitation in the hip06 chipset that we need
-  * to map in all mbigen interrupts, even if they are not used.
-@@ -3310,14 +3334,11 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- {
- 	struct platform_device *pdev = hisi_hba->platform_dev;
- 	struct device *dev = &pdev->dev;
--	int irq, rc = 0, irq_map[128];
-+	int irq, rc = 0;
- 	int i, phy_no, fatal_no, queue_no;
- 
--	for (i = 0; i < 128; i++)
--		irq_map[i] = platform_get_irq(pdev, i);
--
- 	for (i = 0; i < HISI_SAS_PHY_INT_NR; i++) {
--		irq = irq_map[i + 1]; /* Phy up/down is irq1 */
-+		irq = hisi_hba->irq_map[i + 1]; /* Phy up/down is irq1 */
- 		rc = devm_request_irq(dev, irq, phy_interrupts[i], 0,
- 				      DRV_NAME " phy", hisi_hba);
- 		if (rc) {
-@@ -3331,7 +3352,7 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 	for (phy_no = 0; phy_no < hisi_hba->n_phy; phy_no++) {
- 		struct hisi_sas_phy *phy = &hisi_hba->phy[phy_no];
- 
--		irq = irq_map[phy_no + 72];
-+		irq = hisi_hba->irq_map[phy_no + 72];
- 		rc = devm_request_irq(dev, irq, sata_int_v2_hw, 0,
- 				      DRV_NAME " sata", phy);
- 		if (rc) {
-@@ -3343,7 +3364,7 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 	}
- 
- 	for (fatal_no = 0; fatal_no < HISI_SAS_FATAL_INT_NR; fatal_no++) {
--		irq = irq_map[fatal_no + 81];
-+		irq = hisi_hba->irq_map[fatal_no + 81];
- 		rc = devm_request_irq(dev, irq, fatal_interrupts[fatal_no], 0,
- 				      DRV_NAME " fatal", hisi_hba);
- 		if (rc) {
-@@ -3354,24 +3375,22 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 		}
- 	}
- 
--	for (queue_no = 0; queue_no < hisi_hba->queue_count; queue_no++) {
-+	for (queue_no = 0; queue_no < hisi_hba->cq_nvecs; queue_no++) {
- 		struct hisi_sas_cq *cq = &hisi_hba->cq[queue_no];
- 
--		cq->irq_no = irq_map[queue_no + 96];
-+		cq->irq_no = hisi_hba->irq_map[queue_no + 96];
- 		rc = devm_request_threaded_irq(dev, cq->irq_no,
- 					       cq_interrupt_v2_hw,
- 					       cq_thread_v2_hw, IRQF_ONESHOT,
- 					       DRV_NAME " cq", cq);
- 		if (rc) {
- 			dev_err(dev, "irq init: could not request cq interrupt %d, rc=%d\n",
--				irq, rc);
-+					cq->irq_no, rc);
- 			rc = -ENOENT;
- 			goto err_out;
- 		}
-+		cq->irq_mask = irq_get_affinity_mask(cq->irq_no);
- 	}
--
--	hisi_hba->cq_nvecs = hisi_hba->queue_count;
--
- err_out:
- 	return rc;
- }
-@@ -3529,6 +3548,26 @@ static struct device_attribute *host_attrs_v2_hw[] = {
- 	NULL
- };
- 
-+static int map_queues_v2_hw(struct Scsi_Host *shost)
-+{
-+	struct hisi_hba *hisi_hba = shost_priv(shost);
-+	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
-+	const struct cpumask *mask;
-+	unsigned int queue, cpu;
-+
-+	for (queue = 0; queue < qmap->nr_queues; queue++) {
-+		mask = irq_get_affinity_mask(hisi_hba->irq_map[96 + queue]);
-+		if (!mask)
-+			continue;
-+
-+		for_each_cpu(cpu, mask)
-+			qmap->mq_map[cpu] = qmap->queue_offset + queue;
-+	}
-+
-+	return 0;
-+
-+}
-+
- static struct scsi_host_template sht_v2_hw = {
- 	.name			= DRV_NAME,
- 	.proc_name		= DRV_NAME,
-@@ -3553,10 +3592,13 @@ static struct scsi_host_template sht_v2_hw = {
- #endif
- 	.shost_attrs		= host_attrs_v2_hw,
- 	.host_reset		= hisi_sas_host_reset,
-+	.map_queues		= map_queues_v2_hw,
-+	.host_tagset		= 1,
- };
- 
- static const struct hisi_sas_hw hisi_sas_v2_hw = {
- 	.hw_init = hisi_sas_v2_init,
-+	.interrupt_preinit = hisi_sas_v2_interrupt_preinit,
- 	.setup_itct = setup_itct_v2_hw,
- 	.slot_index_alloc = slot_index_alloc_quirk_v2_hw,
- 	.alloc_dev = alloc_dev_quirk_v2_hw,
--- 
-2.26.2
+>
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 94df2ba1bbed..e55d65fbb4a9 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -23,6 +23,7 @@
+> >  #include <linux/of_device.h>
+> >  #include <linux/genhd.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/pm_domain.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/netdevice.h>
+> >  #include <linux/sched/signal.h>
+> > @@ -3230,6 +3231,8 @@ void device_shutdown(void)
+> >                         dev->driver->shutdown(dev);
+> >                 }
+> >
+> > +               dev_pm_domain_detach(dev, true);
+> > +
+>
+> It generally makes sense to do this, because ->shutdown() is sort of
+> analogous to ->remove() from the driver model perspective, so if it is
+> sufficient for you, please feel free to send a formal patch with that
+> change.
 
+I will work on creating a formal patch and send it for review.
+
+>
+> >                 device_unlock(dev);
+> >                 if (parent)
+> >                         device_unlock(parent);
+> >
+> > This was discussed on the mailing list some time back[1] in the
+> > context of a different use case. However, the idea of detaching
+> > devices (on any bus) from the PM domain during shutdown is important
+> > to ensure correct power sequencing for the devices.
+> >
+> > One of the concerns that was raised on the above thread was slowing
+> > down the shutdown process when not needed. I think this can be handled
+> > by adding a sysfs attribute to allow platforms to decide if they need
+> > the ability to power off PM domains on shutdown/reboot path.
+>
+> If you need to do that on a per-platform basis, I would go for option
+> 4 above instead.
+
+For Chromebooks, I don't see a reason to do this on a per-platform
+basis. But, I wanted to make sure that the proposed change does not
+have any side-effect on any other user upstream.
+
+>
+> > Questions that I am looking to get feedback/comments are:
+> >
+> > 1. Is my assessment of the problem and understanding of the
+> > .shutdown() and pm.poweroff() correct?
+>
+> Not exactly.
+>
+> > 2. Does the solution #3 i.e. detaching PM domain after shutting down
+> > device on shutdown path makes sense?
+>
+> Yes, it does (to me), but no, it is not sufficient to address the
+> problem at hand.
+>
+> > 3. Are there other possible approaches to solve this problem that can
+> > be explored?
+>
+> Yes, there are.  See option 4 above.
+>
+> > 4. Do we still have the performance concern about the shutdown path? I
+> > don=E2=80=99t think anything has changed since that thread, so this is
+> > probably still true.
+>
+> I think that it is the case.  Whoever had had any performance concerns
+> regarding this before is still going to have them.
+>
+> > 5. Does the use of sysfs attribute make sense to let platform control
+> > if it wants to detach PM domains on shutdown path?
+>
+> That would be clunky IMV.
+
+I can start with the diff I pasted above as a formal patch to see if
+it makes sense. If more changes are required to it, I can work on
+them.
+
+>
+> > Sorry about the long thread and thank you so much for your time!
+>
+> No worries.
+
+Thanks again for your time. I really appreciate the insight and comments.
+
+- Furquan
+
+>
+> Thanks!
