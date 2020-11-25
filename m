@@ -2,84 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4DF2C4465
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 16:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF792C4483
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 16:53:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731305AbgKYPt6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 10:49:58 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:42997 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731189AbgKYPt6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 10:49:58 -0500
-Received: by mail-oi1-f193.google.com with SMTP id v202so3289613oia.9
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 07:49:50 -0800 (PST)
+        id S1731876AbgKYPx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 10:53:28 -0500
+Received: from mail-oo1-f66.google.com ([209.85.161.66]:41749 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731875AbgKYPx2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 10:53:28 -0500
+Received: by mail-oo1-f66.google.com with SMTP id i7so587001oot.8;
+        Wed, 25 Nov 2020 07:53:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=mY0WrvYNIljbWqKzA0GJRBDbUCscPAVS4IlM74iQAg0=;
-        b=VGnloPZkAPKSTs5EJmme1AEoFRPVrB2YgkjVwNYBwy5psG+nQdya2emKNRAhBL1adU
-         qCBW/D+MdwtWMj1dqEH+cO8DmHLLTXxFJp9g2Zf6Ral46sty1CmKeCeLJ12OLFXxV82F
-         TsTQhMchc4f85nlAZSl58Ay7LllNoq53gNLRrQRNOui4WkFPGpG+xwxyTCoN2oI0OtFM
-         +Q9HRpzIXJjXAGLzXs9DgLmhntJUGFnfQKB25TNir7uJgo4wt8wIef/XwGptov+R91OM
-         svENXeIS3NKZVxGPJodVu4SWVATqzZSSbMB9zgzpzJfBu+7br7ZJf2OpAsBN7AbhH5rr
-         /PiA==
-X-Gm-Message-State: AOAM532LD16PvBN908Ob6Amv9vLIPmgWCFeOWNcdly9xWXsh21U2tM5O
-        iaPUrjlaFuBIi7CxCAfP+yrF+s68yrHALt3c37w=
-X-Google-Smtp-Source: ABdhPJwTj+YCHLeNROjlvhJfRGyYwPTAUmweh1qboqGiQizs1FNOrf3G2y3YlMatgxWNI5r0NYzP8y6c74k1G9cHXe8=
-X-Received: by 2002:aca:f15:: with SMTP id 21mr2657926oip.71.1606319390429;
- Wed, 25 Nov 2020 07:49:50 -0800 (PST)
+        bh=PNhYIgX8FOwGy2xl/K8QSb5oEiZJ1td6uMEUfwL7wx4=;
+        b=QRgNpfs60ByMH6Xua7pctE78afOIWRD4QygaPAFbk2i5US50/YJfbrpdS5cC9Vx0r3
+         NzeBiyBYpWunhX1UjmUC7rar7Fcbv+vqp3RJGs4XVlXwXbv7/88MIG35WoXaBaQobygK
+         yXrK7JWmE3SX0lTezbSc0Lf7iRSxBu5Rgc66IlNBJ46VlqMlsU4I387EvAvSiKVU5sfk
+         NMJb+1iiBDFjAk/wBz3bZg8udl4HthyVLVwevjZOGUZIaay6ZCXoEQT83YUm3KWmAL3r
+         7q54GgwPDLeEIBtFLU93S2StfVquwaKk47H0zBrCBTLMl9YsQXMD2sEyse65BDtS5iT2
+         7GoQ==
+X-Gm-Message-State: AOAM531Q2x2jRDcKVbtuPnhGHdq4pbaqr2+fWS9aEWa2YE3uIpai42ao
+        /ub1asce9OzeRMOzgVc0f/fQkCHUnPPhbN6iFDk=
+X-Google-Smtp-Source: ABdhPJzmfVwwG5eqRnSGE8YKnJBW8hSugSvPbpjI9wQAduyysnYM0ilPUBlcPjpAohDu11nSefE+hFiSgjEh+8JhhO8=
+X-Received: by 2002:a4a:aac4:: with SMTP id e4mr3191645oon.2.1606319607628;
+ Wed, 25 Nov 2020 07:53:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20201124095628.54373-1-andriy.shevchenko@linux.intel.com> <f33b4381ea3a4cf4b8e7f27676cd90ed@intel.com>
-In-Reply-To: <f33b4381ea3a4cf4b8e7f27676cd90ed@intel.com>
+References: <1606222266-11685-1-git-send-email-tangyouling@loongson.cn>
+In-Reply-To: <1606222266-11685-1-git-send-email-tangyouling@loongson.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 25 Nov 2020 16:49:39 +0100
-Message-ID: <CAJZ5v0hxqydcoqTCDzR7O7Y4d71Qutx+k4sOmdvOY24f2-OWgg@mail.gmail.com>
-Subject: Re: [PATCH v1] ASoC: Intel: catpt: Replace open coded variant of resource_intersection()
-To:     "Rojewski, Cezary" <cezary.rojewski@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        Mark Brown <broonie@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Date:   Wed, 25 Nov 2020 16:53:16 +0100
+Message-ID: <CAJZ5v0i2RYpw-rxvGWXzetiaSO34EH6x3TN5-O2npZM25Kww7w@mail.gmail.com>
+Subject: Re: [PATCH] acpi: Fix use-after-free in acpi_ipmi.c
+To:     Youling Tang <tangyouling@loongson.cn>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 24, 2020 at 1:13 PM Rojewski, Cezary
-<cezary.rojewski@intel.com> wrote:
+On Tue, Nov 24, 2020 at 1:51 PM Youling Tang <tangyouling@loongson.cn> wrote:
 >
-> On 2020-11-24 10:56 AM, Andy Shevchenko wrote:
-> > Since we have resource_intersection() helper, let's utilize it here.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >
-> > Promised clean up for recently introduced helper.
-> >
-> > This has dependency to the patches currently in linux-pm tree. Other than that
-> > everything else is already in upstream. Hence, logically it's better to push
-> > thru Rafael's tree than wait one more cycle.
-> >
-> >   sound/soc/intel/catpt/core.h   | 11 -----------
-> >   sound/soc/intel/catpt/loader.c |  2 +-
-> >   2 files changed, 1 insertion(+), 12 deletions(-)
-> >
+> kfree() has been called inside put_device so anther kfree would cause a
+> use-after-free bug.
 >
-> Thanks for the patch, Andy.
+> Signed-off-by: Youling Tang <tangyouling@loongson.cn>
+> ---
+>  drivers/acpi/acpi_ipmi.c | 2 --
+>  1 file changed, 2 deletions(-)
 >
-> I hope you didn't get the impression I somehow forgotten about this : )
-> Wanted to make it part of "cleanup/code reduction" after addition of
-> last two missing features (fw traces + external module support).
->
-> Fixes and removal of lpt-specific code were the priority though.
-> As change is already here, I don't see any reason for delaying its
-> merge:
->
-> Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
+> diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+> index 9d6c0fc..72902b6 100644
+> --- a/drivers/acpi/acpi_ipmi.c
+> +++ b/drivers/acpi/acpi_ipmi.c
+> @@ -130,7 +130,6 @@ ipmi_dev_alloc(int iface, struct device *dev, acpi_handle handle)
+>                                ipmi_device, &user);
+>         if (err) {
+>                 put_device(dev);
+> -               kfree(ipmi_device);
 
-Applied as 5.11 material, thanks!
+dev doesn't point to the same object in memory as ipmi_device, though,
+if I'm not mistaken.
+
+Please double check that and resend the patch if you are sure that it
+is correct.
+
+>                 return NULL;
+>         }
+>         ipmi_device->user_interface = user;
+> @@ -142,7 +141,6 @@ static void ipmi_dev_release(struct acpi_ipmi_device *ipmi_device)
+>  {
+>         ipmi_destroy_user(ipmi_device->user_interface);
+>         put_device(ipmi_device->dev);
+> -       kfree(ipmi_device);
+>  }
+>
+>  static void ipmi_dev_release_kref(struct kref *kref)
+> --
+> 2.1.0
+>
