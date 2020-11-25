@@ -2,206 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BFF72C456C
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 17:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 760E32C4581
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 17:43:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730405AbgKYQjk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 25 Nov 2020 11:39:40 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:42469 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730247AbgKYQjj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 11:39:39 -0500
-Received: by mail-oi1-f194.google.com with SMTP id v202so3470931oia.9;
-        Wed, 25 Nov 2020 08:39:38 -0800 (PST)
+        id S1731934AbgKYQms (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 11:42:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49361 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731921AbgKYQms (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Nov 2020 11:42:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606322566;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=juZK3f3JocuxFuk0+WI3w/+Fxzz+7CnaTQk8bHSGA3E=;
+        b=D4VARrvJPxQ30VOqdGtm0OPSZFYfDDKpCYceqPp8Ueg9a2zQtDrSuUQ0SF3Pp5f7smhUnB
+        l9DJkCYD1sLWJPlNY/AgafmAEhfF8buuhUKk+4ZXHRmrc2wkwJ6mbuSZfFCU1LJ3PTZF7Y
+        Zr1AGNozeFvauGx6ssTGUC/5MeHQSB4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-425-KqmgCp46O5e4QfJ99iZEbA-1; Wed, 25 Nov 2020 11:42:43 -0500
+X-MC-Unique: KqmgCp46O5e4QfJ99iZEbA-1
+Received: by mail-ed1-f70.google.com with SMTP id y11so1278902edv.6
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 08:42:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=7mPfjoGFAjx4anIfQnAyhev/AFP8Uj6hgAhwB8CNMbA=;
-        b=HBY+AXgA1nwLaTOvNaFx2LV1//vvBU+Lcq7BChlHPgMxKYgM+BGOdqZ/6DlvH2U+xX
-         FHC6r2C+iUmLuvFnawsjaq/RY2BOiMPi1BpmzuDN87usSyyhFSMavw8MLbuPTphL8WHI
-         9+65VrS4sK1FJO1S5neV5iBFV+6M8PSk6QXSipPK7yw/+JzNqGOVxeTWsfmpYiO8tLGV
-         3GzHBYbZoSPNlQ3NHZ2xxZiLkPGu7wZYejKLxsm6182qHECJ1nMOxn6Uq8/P+ZphktRh
-         AdDloUlsemvq2b2jar7FQna7aE4MWFA7MBpPLIA+5MZ2+tOV5JTLMzoYoANkftE90fO4
-         DHCA==
-X-Gm-Message-State: AOAM532QinyrcYWH72tG6qBV9XlUe0Huh7Ply20e6h35JqfB76U74ET4
-        yVuYyNWXYEuvqAq7KJFA1p5UhPFtGzbphp8n2z8=
-X-Google-Smtp-Source: ABdhPJyLs19+KmxZQ/Uf6uZAQAx6ghSBtFw0Hp20wybfuAUg4HiuJEbUTE1WZece8jPOkNYEsTy3ooklg/D2z9DmQG0=
-X-Received: by 2002:aca:f15:: with SMTP id 21mr2838260oip.71.1606322378446;
- Wed, 25 Nov 2020 08:39:38 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=juZK3f3JocuxFuk0+WI3w/+Fxzz+7CnaTQk8bHSGA3E=;
+        b=H4TxeV9IUPOgMPAol9OHefByXUXQ5sWdYST/+ZbexpZGEubOOvyV3DSFoctvnG4rSb
+         NOoiYD8U2vQenEu6RgVptZ6Yf9/x5Sz6hfztPMxzFMR36tprMqFvYxSbvFC5gtDx6XZ1
+         u45SsirmsWCRMjTznhC7YkFdcOTG0pKm49ePKKzUKSbyKDKCjpPXH8Gsm8m5YIT9YVzW
+         bF1+7f5uxhmPtyJa3wX0vMQTQCVd43eZsXDa03tFV1Z17Q1YQS/MKzOxSSBMcbUe/R81
+         2DBDKdVy7ha6/+Mgh2bEUixKPFudo8iw8ZU+mG5fO7CxnECFZkm2+6QqtOAj3rOiTLxG
+         j6ng==
+X-Gm-Message-State: AOAM533BhVjZoxiHWHRN06xxxPk43WnFoLXdxVgG257m+uGmntXJ3zWk
+        umgWcUU+N0Nj6whtL6RvdUGB5/ZrC5yYRcRoO2eMZhyMJHWuZ8UrbNpHO7hEaiLcK8Q0kEKCUtU
+        JBZ2zr0Uzo0/jWzi7BZq98w==
+X-Received: by 2002:a17:906:5587:: with SMTP id y7mr3982700ejp.138.1606322562120;
+        Wed, 25 Nov 2020 08:42:42 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzxh4Or8HKr+83KVECYRNchQtRYvcSXXNPpLk3nCfBYBpeXj3O9Xk6eX7x5Aodkdv7/36INpA==
+X-Received: by 2002:a17:906:5587:: with SMTP id y7mr3982687ejp.138.1606322561889;
+        Wed, 25 Nov 2020 08:42:41 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id bn25sm1560291ejb.76.2020.11.25.08.42.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2020 08:42:40 -0800 (PST)
+Subject: Re: [PATCH v3] ACPI: platform-profile: Add platform profile support
+To:     Bastien Nocera <hadess@hadess.net>,
+        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
+        Mark Pearson <markpearson@lenovo.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+References: <markpearson@lenovo.com>
+ <20201115004402.342838-1-markpearson@lenovo.com>
+ <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
+ <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
+ <27a41e3d678f9d7fc889a3a77df87f9ed408887d.camel@hadess.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <92a564fa-686f-455d-a0cb-962d4d87a8c7@redhat.com>
+Date:   Wed, 25 Nov 2020 17:42:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-References: <CAEGmHFFjV2UKm3L1G5JF6Ve47L1-aKBAGrCxN3pPX1HO9R-aUg@mail.gmail.com>
-In-Reply-To: <CAEGmHFFjV2UKm3L1G5JF6Ve47L1-aKBAGrCxN3pPX1HO9R-aUg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 25 Nov 2020 17:39:27 +0100
-Message-ID: <CAJZ5v0hqU-qiM8ddYUT_u0Lm3RNM19gNcXye_s5v3DeCHr7mZQ@mail.gmail.com>
-Subject: Re: [RFC] ACPI PM during kernel poweroff/reboot
-To:     Furquan Shaikh <furquan@google.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Aaron Durbin <adurbin@google.com>,
-        Duncan Laurie <dlaurie@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <27a41e3d678f9d7fc889a3a77df87f9ed408887d.camel@hadess.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 8:19 PM Furquan Shaikh <furquan@google.com> wrote:
->
-> On x86 Chromebooks, we have observed this issue for a long time now -
-> when the system is powered off or rebooted, ACPI PM is not invoked and
-> this results in PowerResource _OFF methods not being invoked for any
-> of the devices. The _OFF methods are invoked correctly in case of
-> suspend-to-idle (S0ix) and suspend-to-memory(S3). However, they do not
-> get invoked when `poweroff` or `reboot` are triggered.
->
-> One of the differences between suspend, hibernate and shutdown paths
-> in Linux kernel is that the shutdown path does not use the typical
-> device PM phases (prepare, freeze/suspend, poweroff) as used by
-> suspend/hibernate. Instead the shutdown path makes use of
-> .shutdown_pre() and .shutdown() callbacks.
->
-> If I understand correctly, .shutdown() has been around for a long time
-> and existed even before the PM callbacks were added. Thus,
-> pm->poweroff() and .shutdown() are supposed to be analogous and
-> consistent in the behavior.
+Hi,
 
-Well, not quite.
+On 11/24/20 4:30 PM, Bastien Nocera wrote:
+> On Sat, 2020-11-21 at 15:27 +0100, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 11/20/20 8:50 PM, Barnabás Pőcze wrote:
+>>> Hi
+>>>
+>>>
+>>> 2020. november 15., vasárnap 1:44 keltezéssel, Mark Pearson írta:
+>>>
+>>>> [...]
+>>>> +int platform_profile_register(struct platform_profile_handler
+>>>> *pprof)
+>>>> +{
+>>>> +       mutex_lock(&profile_lock);
+>>>> +       /* We can only have one active profile */
+>>>> +       if (cur_profile) {
+>>>> +               mutex_unlock(&profile_lock);
+>>>> +               return -EEXIST;
+>>>> +       }
+>>>> +
+>>>> +       cur_profile = pprof;
+>>>> +       mutex_unlock(&profile_lock);
+>>>> +       return sysfs_create_group(acpi_kobj,
+>>>> &platform_profile_group);
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(platform_profile_register);
+>>>> +
+>>>> +int platform_profile_unregister(void)
+>>>> +{
+>>>> +       mutex_lock(&profile_lock);
+>>>> +       sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>>>> +       cur_profile = NULL;
+>>>> +       mutex_unlock(&profile_lock);
+>>>> +       return 0;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(platform_profile_unregister);
+>>>> [...]
+>>>
+>>>
+>>> I just realized that the sysfs attributes are only created if a
+>>> profile provider
+>>> is registered, and it is removed when the provide unregisters
+>>> itself. I believe
+>>> it would be easier for system daemons if those attributes existed
+>>> from module load
+>>> to module unload since they can just just open the file and watch
+>>> it using poll,
+>>> select, etc. If it goes away when the provider unregisters itself,
+>>> then I believe
+>>> a more complicated mechanism (like inotify) would need to be
+>>> implemented in the
+>>> daemons to be notified when a new provider is registered. Thus my
+>>> suggestion
+>>> for the next iteration is to create the sysfs attributes on module
+>>> load,
+>>> and delete them on unload.
+>>>
+>>> What do you think?
+>>
+>> Actually I asked Mark to move this to the register / unregister time
+>> since
+>> having a non functioning files in sysfs is a bit weird.
+>>
+>> You make a good point about userspace having trouble figuring when
+>> this will
+>> show up though (I'm not worried about removal that will normally
+>> never happen).
+>>
+>> I would expect all modules to be loaded before any interested daemons
+>> load,
+>> but that is an assumption and I must admit that that is a bit racy.
+>>
+>> Bastien, what do you think about Barnabás' suggestion to always have
+>> the
+>> files present and use poll (POLL_PRI) on it to see when it changes,
+>> listing
+>> maybe "none" as available profiles when there is no provider?
+> 
+> Whether the file exists or doesn't, we have ways to monitor it
+> appearing or disappearing. I can monitor the directory with inotify to
+> see the file appearing or disappearing, or I can monitor the file with
+> inotify to see whether it changes.
 
-->shutdown() is expected to be a lightweight operation also suitable
-for kexec() and similar situations where ->poweroff() may not work.
+Ok, do you have a preference either way? I personally think having the
+file only appear if its functional is a bit cleaner. So if it does not
+matter much for userspace either way then I suggest we go that route.
 
-> This is why runtime PM is disallowed by
-> device_shutdown() before it calls .shutdown() (i.e. to keep behavior
-> consistent for both paths). However, in practice, there are
-> differences in behavior for the pm->poweroff() and .shutdown() paths
-> since the shutdown path does not execute any PM domain operations.
+> But that doesn't solve the challenges from user-space.
+> 
+> How do I know whether the computer will have this facility at any
+> point? Is "none" a placeholder, or a definite answer as to whether the
+> computer will have support for "platform profile"?
+> 
+> How am I supposed to handle fallbacks, eg. how can I offer support for,
+> say, changing the "energy performance preference" from the Intel p-
+> state driver if ACPI platform profile isn't available?
+> 
+> I'm fine with throwing more code at fixing that race, so whatever's
+> easier for you, it'll be a pain for user-space either way.
+ 
+Ugh, right this is a bit different from other hotplug cases, where
+you just wait for a device to show up before using it, since in
+this case you want to use the p-state driver as alternative mechanism
+when there is no platform_profile provider.
 
-That's correct.
+I'm afraid that the answer here is that the kernel does not really
+have anything to help you here. Since the advent of hotplug we had
+this issue of determining when the initial hardware probing / driver
+loading is done. This is basically an impossible problem since with
+things like thunderbolt, etc. probing may be a bit slow and then if
+there is a lot of USB devices connected to the thunderbolt dock,
+those are slow to probe too, etc. See either we wait 5 minutes just to
+be sure, or we cannot really tell when probing is done.
 
-> Because of this difference in behavior, shutdown path never invokes
-> ACPI PM and thus the ACPI PowerResources are not turned off when the
-> system is rebooted or powered off (sleep S5). On Chromebooks, it is
-> critical to run the _OFF methods for poweroff/reboot in order to
-> ensure that the device power off sequencing requirements are met.
-> Currently, these requirements are violated which impact the
-> reliability of devices over the lifetime of the platform.
->
-> There are a few ways in which this can be addressed:
->
-> 1. Similar to the case of hibernation, a new
-> PMSG_POWEROFF/PM_EVENT_POWEROFF can be introduced to invoke device
-> power management phases using `dpm_suspend_start(PMSG_POWEROFF)` and
-> `dpm_suspend_end(PMSG_POWEROFF)`. However, as the shutdown path uses
-> the class/bus/driver .shutdown() callbacks, adding dpm phases for
-> poweroff complicates the order of operations. If the dpm phases are
-> run before .shutdown() callbacks, then it will result in the callbacks
-> accessing devices after they are powered off. If the .shutdown()
-> callbacks are run before dpm phases, then the pm->poweroff() calls are
-> made after the device shutdown is done. Since .shutdown() and
-> pm->poweroff() are supposed to be analogous, having both calls in the
-> shutdown path is not only redundant but also results in incorrect
-> behavior.
->
-> 2. Another option is to update device_shutdown() to make
-> pm_domain.poweroff calls after the class/bus/driver .shutdown() is
-> done. However, this suffers from the same problem as #1 above i.e. it
-> is redundant and creates conflicting order of operations.
->
-> 3. Third possible solution is to detach the device from the PM domain
-> after it is shutdown. Currently, device drivers perform a detach
-> operation only when the device is removed. However, in case of
-> poweroff/reboot as the device is already shutdown, detaching PM domain
-> will give it the opportunity to ensure that any power resources are
-> correctly turned off before the system shuts down.
+Time has taught us that determining when probing is done is an unsolvable
+problem.
 
-4. Make Chromebooks call something like hibernation_platform_enter()
-on S5 entries (including reboot).
+We had e.g. udev-settle for this. But that was both slow and not reliable,
+so that is deprectated and we don't want to bring it back. In general whenever
+someone wants something like udev-settle the answer is to make the
+code wanting that more event driven/dynamic. So I'm afraid that that
+is the answer here too.
 
-> Out of these, I think #3 makes the most sense as it does not introduce
-> any conflicting operations. I verified that the following diff results
-> in _OFF methods getting invoked in both poweroff and reboot cases:
+I have the feeling that in most cases the platform_profile driver will have
+loaded before the daemon starts. So you could use that as a base assumption
+and then do something somewhat ugly like log a message + restart in case you
+loose the race. Assuming that that is easy to implement, you could do that
+for starters and then if loosing the race becomes a real problem, then
+implement something smarter (and more complicated) later.
 
-This won't work for PCI devices though, only for devices in the ACPI
-PM domain, so it is not sufficient in general.
+Sorry, I have no easy answers here.
 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 94df2ba1bbed..e55d65fbb4a9 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -23,6 +23,7 @@
->  #include <linux/of_device.h>
->  #include <linux/genhd.h>
->  #include <linux/mutex.h>
-> +#include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/netdevice.h>
->  #include <linux/sched/signal.h>
-> @@ -3230,6 +3231,8 @@ void device_shutdown(void)
->                         dev->driver->shutdown(dev);
->                 }
->
-> +               dev_pm_domain_detach(dev, true);
-> +
+Regards,
 
-It generally makes sense to do this, because ->shutdown() is sort of
-analogous to ->remove() from the driver model perspective, so if it is
-sufficient for you, please feel free to send a formal patch with that
-change.
+Hans
 
->                 device_unlock(dev);
->                 if (parent)
->                         device_unlock(parent);
->
-> This was discussed on the mailing list some time back[1] in the
-> context of a different use case. However, the idea of detaching
-> devices (on any bus) from the PM domain during shutdown is important
-> to ensure correct power sequencing for the devices.
->
-> One of the concerns that was raised on the above thread was slowing
-> down the shutdown process when not needed. I think this can be handled
-> by adding a sysfs attribute to allow platforms to decide if they need
-> the ability to power off PM domains on shutdown/reboot path.
-
-If you need to do that on a per-platform basis, I would go for option
-4 above instead.
-
-> Questions that I am looking to get feedback/comments are:
->
-> 1. Is my assessment of the problem and understanding of the
-> .shutdown() and pm.poweroff() correct?
-
-Not exactly.
-
-> 2. Does the solution #3 i.e. detaching PM domain after shutting down
-> device on shutdown path makes sense?
-
-Yes, it does (to me), but no, it is not sufficient to address the
-problem at hand.
-
-> 3. Are there other possible approaches to solve this problem that can
-> be explored?
-
-Yes, there are.  See option 4 above.
-
-> 4. Do we still have the performance concern about the shutdown path? I
-> don’t think anything has changed since that thread, so this is
-> probably still true.
-
-I think that it is the case.  Whoever had had any performance concerns
-regarding this before is still going to have them.
-
-> 5. Does the use of sysfs attribute make sense to let platform control
-> if it wants to detach PM domains on shutdown path?
-
-That would be clunky IMV.
-
-> Sorry about the long thread and thank you so much for your time!
-
-No worries.
-
-Thanks!
