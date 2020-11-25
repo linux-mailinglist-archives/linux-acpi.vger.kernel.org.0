@@ -2,17 +2,17 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 963C32C46A1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 18:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B0BE2C46A5
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 18:25:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732691AbgKYRYz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 12:24:55 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8036 "EHLO
+        id S1732716AbgKYRZB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 12:25:01 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8037 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731127AbgKYRYy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 12:24:54 -0500
+        with ESMTP id S1731631AbgKYRYx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 12:24:53 -0500
 Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Ch76f4sSDzhc0Z;
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Ch76f5frfzhf7m;
         Thu, 26 Nov 2020 01:24:26 +0800 (CST)
 Received: from localhost.localdomain (10.69.192.58) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
@@ -24,9 +24,9 @@ To:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
 CC:     <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
         <maz@kernel.org>, "John Garry" <john.garry@huawei.com>
-Subject: [PATCH v3 2/5] ACPI: Make acpi_dev_irqresource_disabled() public
-Date:   Thu, 26 Nov 2020 01:20:38 +0800
-Message-ID: <1606324841-217570-3-git-send-email-john.garry@huawei.com>
+Subject: [PATCH v3 3/5] driver core: platform: Add platform_put_irq()
+Date:   Thu, 26 Nov 2020 01:20:39 +0800
+Message-ID: <1606324841-217570-4-git-send-email-john.garry@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1606324841-217570-1-git-send-email-john.garry@huawei.com>
 References: <1606324841-217570-1-git-send-email-john.garry@huawei.com>
@@ -38,51 +38,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-To allow the platform device to "put" an irq, make the function to reset
-an ACPI companion device irq resource public.
+Add a function to tear down the work which was done in platform_get_irq()
+for when the device driver is done with the irq.
+
+For ACPI companion devices the irq resource is set as disabled, as this
+resource is configured from platform_get_irq()->acpi_irq_get() and requires
+resetting.
 
 Signed-off-by: John Garry <john.garry@huawei.com>
 ---
- drivers/acpi/resource.c | 2 +-
- include/linux/acpi.h    | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/base/platform.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index ad04824ca3ba..0999a98cab3c 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -380,7 +380,7 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 88aef93eb4dd..3eeda3746701 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -289,6 +289,20 @@ int platform_irq_count(struct platform_device *dev)
  }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ EXPORT_SYMBOL_GPL(platform_irq_count);
  
--static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
-+void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
- {
- 	res->start = gsi;
- 	res->end = gsi;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 39263c6b52e1..d5101e36a645 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -467,6 +467,7 @@ bool acpi_dev_resource_ext_address_space(struct acpi_resource *ares,
- 					 struct resource_win *win);
- unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable);
- unsigned int acpi_dev_get_irq_type(int triggering, int polarity);
-+void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi);
- bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
- 				 struct resource *res);
- 
-@@ -939,6 +940,10 @@ static inline struct acpi_device *acpi_resource_consumer(struct resource *res)
- 	return NULL;
- }
- 
-+static inline void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
++void platform_put_irq(struct platform_device *dev, unsigned int num)
 +{
++	unsigned int virq = platform_get_irq(dev, num);
++
++	irq_dispose_mapping(virq);
++	if (has_acpi_companion(&dev->dev)) {
++		struct resource *r = platform_get_resource(dev, IORESOURCE_IRQ,
++							   num);
++
++		if (r)
++			acpi_dev_irqresource_disabled(r, 0);
++	}
 +}
 +
- #endif	/* !CONFIG_ACPI */
- 
- #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+ /**
+  * platform_get_resource_byname - get a resource for a device by name
+  * @dev: platform device
 -- 
 2.26.2
 
