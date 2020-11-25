@@ -2,71 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4562B2C44B6
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 17:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 916442C44BC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 17:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730809AbgKYQLC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 11:11:02 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:32945 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730494AbgKYQLC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 11:11:02 -0500
-Received: by mail-oi1-f194.google.com with SMTP id k26so3412151oiw.0
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 08:11:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/C0ll5xcZ0CylqJR6ttle4L4NJYDwahvYC5vMDg722E=;
-        b=jQxFzbxH1MMclqPXSkpMn16ExRFaAPdxPYpN8wbPAVpXP8sxBSOeGxwIYQ2LCu5/jX
-         0EVGdcxDJmfKTANguUnI+qL2F8g1qK+kY4d+4pkLNrbns1E6PhL+lYZrIVLYD/sLPPbS
-         DFQbTA+YfTTRERPqtYPaqIUwz+YbdUL1+oEHg0jpm+ggohHZvMXJkgE4BENCBYiz4VtE
-         Xpem7wHXyls4fufdTFhg6eekOfTfTM40dVFbQ2Rvpwk/w7RPlPq9BY0xgzPId8FlNJ2P
-         0r64vSM0NPUwMocQRYQWg+lrByiBuuQr+Hich7Chsa53izcgbxoPEg1VMaDXO9gslljq
-         nW+A==
-X-Gm-Message-State: AOAM532R2/PK9ZL/N/Ws8tPL9Z3tMQmF7s7IfaU0BztalhE1xPIs00rD
-        EtVFvsd3+aNnkN/zmngVIn2CqukzgFgxUxUomBU=
-X-Google-Smtp-Source: ABdhPJxEnZaTiOxRsndntYhtVYaLQDpHjvyFDqQNe1j0GKBKkRGfG14Z1pNWHLudF7qiLOyUCNeH3wiCCYwh2xHsmLw=
-X-Received: by 2002:aca:5a42:: with SMTP id o63mr2638661oib.69.1606320661856;
- Wed, 25 Nov 2020 08:11:01 -0800 (PST)
+        id S1730548AbgKYQQ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 11:16:58 -0500
+Received: from mga01.intel.com ([192.55.52.88]:9130 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729690AbgKYQQ6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Nov 2020 11:16:58 -0500
+IronPort-SDR: KZN+0tgX5IcgUfxhn27msJpqUaFciDDgtIK+fLHcTPI5VQGvFXTWNJzDchyddkE3+0Mf6eCPS2
+ QqZGLcUjazqA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9816"; a="190299142"
+X-IronPort-AV: E=Sophos;i="5.78,369,1599548400"; 
+   d="scan'208";a="190299142"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 08:16:29 -0800
+IronPort-SDR: aFuMajIaf/Yarkt/9zkYbhOtoPGi40qljayuaXLUG55UoNU34DHebFeVDMJKaYi+xwsULkZajF
+ REu8jFHWVrWw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,369,1599548400"; 
+   d="scan'208";a="535357184"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 25 Nov 2020 08:16:28 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 8800CFC; Wed, 25 Nov 2020 18:16:27 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCH v2] resource: provide meaningful MODULE_LICENSE() in test suite
+Date:   Wed, 25 Nov 2020 18:16:26 +0200
+Message-Id: <20201125161626.66180-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20201124095628.54373-1-andriy.shevchenko@linux.intel.com>
- <f33b4381ea3a4cf4b8e7f27676cd90ed@intel.com> <CAJZ5v0hxqydcoqTCDzR7O7Y4d71Qutx+k4sOmdvOY24f2-OWgg@mail.gmail.com>
- <20201125161028.GW4077@smile.fi.intel.com>
-In-Reply-To: <20201125161028.GW4077@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 25 Nov 2020 17:10:50 +0100
-Message-ID: <CAJZ5v0huXtSDtQEmUHx4NmjJhFNOVUMktD_eJ06=fsmZB40ayw@mail.gmail.com>
-Subject: Re: [PATCH v1] ASoC: Intel: catpt: Replace open coded variant of resource_intersection()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rojewski, Cezary" <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        Mark Brown <broonie@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 5:09 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Nov 25, 2020 at 04:49:39PM +0100, Rafael J. Wysocki wrote:
-> > On Tue, Nov 24, 2020 at 1:13 PM Rojewski, Cezary
-> > <cezary.rojewski@intel.com> wrote:
->
-> ...
->
-> > Applied as 5.11 material, thanks!
->
-> Thanks!
->
-> There is one fix to the series [1]. But now I realized that I forgot to Cc
-> linux-acpi@. Do you want me resend it?
+modpost complains that module has no licence provided.
+Provide it via meaningful MODULE_LICENSE().
 
-Yes, please!
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: resent with linux-acpi@ included
+ kernel/resource_kunit.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/resource_kunit.c b/kernel/resource_kunit.c
+index 9fdbca8426f1..58ab9f914602 100644
+--- a/kernel/resource_kunit.c
++++ b/kernel/resource_kunit.c
+@@ -148,3 +148,5 @@ static struct kunit_suite resource_test_suite = {
+ 	.test_cases = resource_test_cases,
+ };
+ kunit_test_suite(resource_test_suite);
++
++MODULE_LICENSE("GPL");
+-- 
+2.29.2
+
