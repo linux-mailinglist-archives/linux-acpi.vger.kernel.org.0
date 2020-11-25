@@ -2,152 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C7C2C4A86
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 23:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3589C2C4AD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Nov 2020 23:32:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733185AbgKYWJm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Nov 2020 17:09:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732797AbgKYWJl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 17:09:41 -0500
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B39C061A52
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 14:09:41 -0800 (PST)
-Received: by mail-pl1-x642.google.com with SMTP id b23so81767pls.11
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 14:09:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/ob3FEJdYP5qhdHPeLajEb6PUDm9frxLF1mdXzRdH3M=;
-        b=L3KZpP3LXxZlW/DP5AmTnD4MuZ72/rcy+coOeUVeCNTiwrWtzoVQx/hBMoKUsqDMm0
-         Foet9vcyJsJZ2PSgueU+Q+MvDj0KUWyeWX5guwBWRMdbnXZ08cX56htqXhsZrxHUuRIn
-         vYFnIpmbgrasg1vSD5AH5hKwOy9NejMhVovtjBrzY+2P0ug3w3+5RlYsOk03C83VD9da
-         OdGtf9c6uotPHdYcmuyOqbnF5k3fP8Yo6l5eFDVR7n6m5okfFX1oHlXNOB3u6UsnrVGE
-         wa6MluYkHn1XOYZTDyrE2KQmcun7Qe6vVmhaYurLDnZVMQG/lFJsGakXcuEY3+Obie2U
-         RVfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/ob3FEJdYP5qhdHPeLajEb6PUDm9frxLF1mdXzRdH3M=;
-        b=FhyslZGni6N3hEowgnGaY5ltNBOkGnz6fGn+aW4dDT28fBrrWXs9CSooHupUQotjex
-         +jEP/UqmLg2q8B8M8cYNttJB3cc+0O7NEObPt0ljhQliYgADG9bhtRVla8SGM+hQYL9g
-         +NLnCc/JLfCnmZMcIA8OGFZJlMXjy09jN95Ce6yi2y/ib5uZ2XmFA/aDeCVJB3PwV3n9
-         DZAM7T+SlK6dwr1QMhN7FtL6+IzyOa8j33NbRZIoq13iGsNweg6/ct2TB+p9+2ludIY5
-         ERogc3W4X/1Fswr9sgDHpWSOwo8iaVoRDWVqxlimZ9HODI04K8T9ZShPvV2wXn6P5Rx6
-         v0Xw==
-X-Gm-Message-State: AOAM532Gn0b/cfpbB07Lrag8VZeT7htjKDU4lAE5RJOn5DGto14Wfx78
-        Oj49X/48nVJpD789tXsGW0GClPa8sYnhZVLSFdXDKA==
-X-Google-Smtp-Source: ABdhPJz8lLt/1COGEMpWkFDfyIK6h7HwbxIAa+xtHaAqLUfnjsVh22wexUgkVgdtXLczfRnuDI51yr8PXCWqKuZKul4=
-X-Received: by 2002:a17:902:c14a:b029:d8:dc05:d7ef with SMTP id
- 10-20020a170902c14ab02900d8dc05d7efmr4885886plj.83.1606342180784; Wed, 25 Nov
- 2020 14:09:40 -0800 (PST)
-MIME-Version: 1.0
-References: <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
- <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
- <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
- <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
- <20201123130348.GA3119@embeddedor> <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
- <202011241327.BB28F12F6@keescook> <a841536fe65bb33f1c72ce2455a6eb47a0107565.camel@HansenPartnership.com>
- <CAKwvOdkGBn7nuWTAqrORMeN1G+w3YwBfCqqaRD2nwvoAXKi=Aw@mail.gmail.com> <alpine.LNX.2.23.453.2011260750300.6@nippy.intranet>
-In-Reply-To: <alpine.LNX.2.23.453.2011260750300.6@nippy.intranet>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 25 Nov 2020 14:09:29 -0800
-Message-ID: <CAKwvOdna5Zj_O=sB7Q0jHZX0BJSaakX=ZyftwQ_3=L3-ZB54XQ@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for Clang
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
-        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-scsi@vger.kernel.org,
-        linux-rdma@vger.kernel.org, oss-drivers@netronome.com,
-        bridge@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        selinux@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-nfs@vger.kernel.org, GR-Linux-NIC-Dev@marvell.com,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net, linux-mmc@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
-        netfilter-devel@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, patches@opensource.cirrus.com,
-        linux-integrity@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
+        id S1726641AbgKYWcL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Nov 2020 17:32:11 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:53641 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726114AbgKYWcL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Nov 2020 17:32:11 -0500
+Received: from [192.168.0.28] (lns-bzn-39-82-255-60-242.adsl.proxad.net [82.255.60.242])
+        (Authenticated sender: hadess@hadess.net)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 2F465200002;
+        Wed, 25 Nov 2020 22:32:03 +0000 (UTC)
+Message-ID: <2207fea9195877a7ac6d6d203d9f81d07362a80f.camel@hadess.net>
+Subject: Re: [External] Re: [PATCH v3] ACPI: platform-profile: Add platform
+ profile support
+From:   Bastien Nocera <hadess@hadess.net>
+To:     Mark Pearson <markpearson@lenovo.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "mario.limonciello@dell.com" <mario.limonciello@dell.com>,
+        "eliadevito@gmail.com" <eliadevito@gmail.com>,
+        "bberg@redhat.com" <bberg@redhat.com>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "dvhart@infradead.org" <dvhart@infradead.org>
+Date:   Wed, 25 Nov 2020 23:32:03 +0100
+In-Reply-To: <4e82d54f-33c2-e880-c5f8-beb9d3460cdb@lenovo.com>
+References: <markpearson@lenovo.com>
+         <20201115004402.342838-1-markpearson@lenovo.com>
+         <nRyY5CKaU6WrkbMiM25gTT_bJlrQjTY_UCcQkj8ty-2mPEMVZd4BB9KwrRp7z4GaE3TTOFCXuXnt0_7J_Tj50syusBxTmS5yNZAvYX02X74=@protonmail.com>
+         <761671b3-ad26-230b-e709-05ce3bd69498@redhat.com>
+         <27a41e3d678f9d7fc889a3a77df87f9ed408887d.camel@hadess.net>
+         <92a564fa-686f-455d-a0cb-962d4d87a8c7@redhat.com>
+         <4e82d54f-33c2-e880-c5f8-beb9d3460cdb@lenovo.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 1:33 PM Finn Thain <fthain@telegraphics.com.au> wrote:
->
-> Or do you think that a codebase can somehow satisfy multiple checkers and
-> their divergent interpretations of the language spec?
+On Wed, 2020-11-25 at 14:41 -0500, Mark Pearson wrote:
+> On 25/11/2020 11:42, Hans de Goede wrote:
+> > Hi,
+> > 
+> > On 11/24/20 4:30 PM, Bastien Nocera wrote:
+> > > On Sat, 2020-11-21 at 15:27 +0100, Hans de Goede wrote:
+> > > > Hi,
+> > > > On 11/20/20 8:50 PM, Barnabás Pőcze wrote:
+> > > > > Hi
+> > > > > 2020. november 15., vasárnap 1:44 keltezéssel, Mark Pearson
+> > > > > írta:
+> > > > > 
+> > > > Bastien, what do you think about Barnabás' suggestion to always
+> > > > have the files present and use poll (POLL_PRI) on it to see
+> > > > when
+> > > > it changes, listing maybe "none" as available profiles when
+> > > > there
+> > > > is no provider?
+> > > 
+> > > Whether the file exists or doesn't, we have ways to monitor it 
+> > > appearing or disappearing. I can monitor the directory with
+> > > inotify
+> > > to see the file appearing or disappearing, or I can monitor the
+> > > file with inotify to see whether it changes.
+> > 
+> > Ok, do you have a preference either way? I personally think having
+> > the file only appear if its functional is a bit cleaner. So if it
+> > does not matter much for userspace either way then I suggest we go
+> > that route.
+> > 
+> My (limited) vote is having the file appear when the profile is
+> loaded 
+> seems nicer (and to disappear if the profile is unloaded). No
+> profile, 
+> no interface just seems elegant.
+> 
+> I pretty much have v4 of the patches ready to go (I wanted to rebase
+> on 
+> the update for the palm sensor and finished that today). I'm happy to
+> hold off on them until we're ready if that helps. Bastien - let me
+> know 
+> if it would be useful to have a version to test against to see what
+> will 
+> work best for you, or if you need something different. Definitely
+> want 
+> to make sure user space gets the best option as my understanding is 
+> changing this later becomes a pain :)
 
-Have we found any cases yet that are divergent? I don't think so.  It
-sounds to me like GCC's cases it warns for is a subset of Clang's.
-Having additional coverage with Clang then should ensure coverage for
-both.
+I don't have the hardware. I agree with you that "no profile = no file"
+seems cleaner, but whichever is easier for you.
 
-> > This is not a shiny new warning; it's already on for GCC and has existed
-> > in both compilers for multiple releases.
-> >
->
-> Perhaps you're referring to the compiler feature that lead to the
-> ill-fated, tree-wide /* fallthrough */ patch series.
->
-> When the ink dries on the C23 language spec and the implementations figure
-> out how to interpret it then sure, enforce the warning for new code -- the
-> cost/benefit analysis is straight forward. However, the case for patching
-> existing mature code is another story.
-
-I don't think we need to wait for the ink to dry on the C23 language
-spec to understand that implicit fallthrough is an obvious defect of
-the C language.  While the kernel is a mature codebase, it's not
-immune to bugs.  And its maturity has yet to slow its rapid pace of
-development.
--- 
-Thanks,
-~Nick Desaulniers
