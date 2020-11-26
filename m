@@ -2,157 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D3F2C4E8A
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 06:58:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F312C4E91
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 07:06:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387877AbgKZF5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Nov 2020 00:57:55 -0500
-Received: from mga02.intel.com ([134.134.136.20]:46728 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387863AbgKZF5z (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 26 Nov 2020 00:57:55 -0500
-IronPort-SDR: fQ0LFRe8AtSbF/En5YwpJWt5N3Nj1lhK5o7GBqY0lsNRkfqoPapa9HyTv27quzUPICZ/vnAHkb
- XZa/kFri+f1Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9816"; a="159288084"
-X-IronPort-AV: E=Sophos;i="5.78,371,1599548400"; 
-   d="scan'208";a="159288084"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 21:57:54 -0800
-IronPort-SDR: Jv+dPjbb8uTe2YzimvesQ720722kAOF0nQ/sjfb7O6mlwawsMPlfljYXip2nwTgjFATLgX8UdB
- X7KbJ+ftrFJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,371,1599548400"; 
-   d="scan'208";a="535623205"
-Received: from lkp-server01.sh.intel.com (HELO dd79da36dde1) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 25 Nov 2020 21:57:53 -0800
-Received: from kbuild by dd79da36dde1 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kiAHw-00004u-9Y; Thu, 26 Nov 2020 05:57:52 +0000
-Date:   Thu, 26 Nov 2020 13:57:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 59d584c1f534789d8d96114726c651286876b335
-Message-ID: <5fbf43c0.kdDJx/HTc1hIV0/o%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2387889AbgKZGGB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Nov 2020 01:06:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732387AbgKZGGB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Nov 2020 01:06:01 -0500
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC27C0617A7
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 22:06:00 -0800 (PST)
+Received: by mail-io1-xd42.google.com with SMTP id j23so710401iog.6
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Nov 2020 22:06:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jonmasters-org.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=oEy5q2En1SJI6u34J14mPbz3ymhjWNLu2ImEmUAs9Ws=;
+        b=fODQbTzlog4xbJsMW2izr9T6xV3uC+lc03b1qJ1qSawbRoENnx1Br2TPMmRNY6FXY4
+         ozf90S+p14K47ND2crcJTtExuHJ8j6Mt8bza5gS/hxyN2GTaVHahBV6A1qInS4vXwlaJ
+         81eY/junYJYx/Vcf856DH3Cr64N7ZU+cwY5VtTc+zMWwF6Gq0mZDmDOe50yNYYTWh6Ip
+         jHM+22whCE31Y3BcnmQ8X24tSHUX3wrQjR60Ftzfhqz2HvEr8bG0XTZ0osF0LAr2RnDj
+         MFu4B+QaX/B6Kv1Jqj7k+MhrL15GlxJq+d6WmVs45l8wsfvnf4REBe3jxfZKDGcMFhR8
+         +1kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=oEy5q2En1SJI6u34J14mPbz3ymhjWNLu2ImEmUAs9Ws=;
+        b=cQzFlLcngXrbWTZP7YZHQBRQf3ODY1vlq4OCQJRKtepbljrrvktAzQ6QNN7wV94CWw
+         CvP7xIfAym7XiOqeiXMYU/XNR2OLFCUVUgagkCYxtWfoENVpEgV/YeIY+ySzZ//JT3R1
+         rf/8OW2PVmmKOyuwcjqseFFRUgBuq5awhP85Rdf8vxjgSIWmfUHtjqA4epf5f1VdkR7b
+         W3zVEy++XyrXcZiM/vpMcA7SMOpd0MrEk7085QvQLgRUMHEBX8MIkZfawizPfLRnnRYX
+         9T5AXkAXD1hma/GIZzLDU2YrNt/7SmGFPZ4RN6pMuvTTX0kcNalSkJU9GzwxzNZ7ETnK
+         q2CQ==
+X-Gm-Message-State: AOAM531xnDMHjdr4WHt9agxKlHDyywbBVi6tj9RHiROlQradw7XjZIBQ
+        vaat4dxuB2c6CZMRUMz0TonyOQ==
+X-Google-Smtp-Source: ABdhPJwFDDEDdU/s/zYaPx0ggHOsOr62MbBrECZawSaq4PlqyTZscFc4nlCfmRS2OLqWEFdp3N4DEA==
+X-Received: by 2002:a02:4c8:: with SMTP id 191mr1865300jab.70.1606370760006;
+        Wed, 25 Nov 2020 22:06:00 -0800 (PST)
+Received: from independence.bos.jonmasters.org (Boston.jonmasters.org. [50.195.43.97])
+        by smtp.gmail.com with ESMTPSA id e18sm2531397ilc.52.2020.11.25.22.05.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2020 22:05:59 -0800 (PST)
+Subject: Re: [RFC PATCH 5/9] cxl/mem: Find device capabilities
+To:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <20201111054356.793390-1-ben.widawsky@intel.com>
+ <20201111054356.793390-6-ben.widawsky@intel.com>
+From:   Jon Masters <jcm@jonmasters.org>
+Organization: World Organi{s,z}ation of Broken Dreams
+Message-ID: <8d332852-9c54-95e0-58c7-72939f347aa6@jonmasters.org>
+Date:   Thu, 26 Nov 2020 01:05:56 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20201111054356.793390-6-ben.widawsky@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 59d584c1f534789d8d96114726c651286876b335  Merge branch 'acpi-resources' into bleeding-edge
+On 11/11/20 12:43 AM, Ben Widawsky wrote:
 
-elapsed time: 723m
+> +		case CXL_CAPABILITIES_CAP_ID_SECONDARY_MAILBOX:
+> +			dev_dbg(&cxlm->pdev->dev,
+> +				   "found UNSUPPORTED Secondary Mailbox capability\n");
 
-configs tested: 92
-configs skipped: 2
+Per spec, the secondary mailbox is intended for use by platform 
+firmware, so Linux should never be using it anyway. Maybe that message 
+is slightly misleading?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Jon.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                         rt305x_defconfig
-openrisc                         alldefconfig
-powerpc                       ebony_defconfig
-sh                          r7785rp_defconfig
-sh                          rsk7201_defconfig
-m68k                          hp300_defconfig
-arc                        vdk_hs38_defconfig
-arm                            qcom_defconfig
-m68k                        mvme147_defconfig
-arm                            dove_defconfig
-sh                   rts7751r2dplus_defconfig
-powerpc                   motionpro_defconfig
-arc                        nsim_700_defconfig
-mips                        bcm47xx_defconfig
-arm                           sunxi_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                       holly_defconfig
-um                            kunit_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201125
-i386                 randconfig-a003-20201125
-i386                 randconfig-a002-20201125
-i386                 randconfig-a005-20201125
-i386                 randconfig-a001-20201125
-i386                 randconfig-a006-20201125
-x86_64               randconfig-a015-20201125
-x86_64               randconfig-a011-20201125
-x86_64               randconfig-a014-20201125
-x86_64               randconfig-a016-20201125
-x86_64               randconfig-a012-20201125
-x86_64               randconfig-a013-20201125
-i386                 randconfig-a012-20201125
-i386                 randconfig-a013-20201125
-i386                 randconfig-a011-20201125
-i386                 randconfig-a016-20201125
-i386                 randconfig-a014-20201125
-i386                 randconfig-a015-20201125
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+P.S. Related - I've severe doubts about the mailbox approach being 
+proposed by CXL and have begun to push back through the spec org.
 
-clang tested configs:
-x86_64               randconfig-a006-20201125
-x86_64               randconfig-a003-20201125
-x86_64               randconfig-a004-20201125
-x86_64               randconfig-a005-20201125
-x86_64               randconfig-a002-20201125
-x86_64               randconfig-a001-20201125
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Computer Architect
