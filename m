@@ -2,53 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 333C82C5997
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 17:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1809C2C5999
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 17:54:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391520AbgKZQwX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Nov 2020 11:52:23 -0500
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.3]:61118 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2391590AbgKZQwX (ORCPT
+        id S2391592AbgKZQw0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Nov 2020 11:52:26 -0500
+Received: from mail1.bemta24.messagelabs.com ([67.219.250.115]:54797 "EHLO
+        mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2391591AbgKZQw0 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 26 Nov 2020 11:52:23 -0500
-Received: from [100.112.1.203] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-b.us-east-1.aws.symcld.net id 3D/4C-29643-34DDFBF5; Thu, 26 Nov 2020 16:52:19 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRWlGSWpSXmKPExsWSLveKTdf57v5
-  4g+5dchb7r0tYdC00sFh4/xSrxddvt9kt3hyfzmSxfF8/o8XHZRwWnzsms1is3vOC2WLtl3ls
+        Thu, 26 Nov 2020 11:52:26 -0500
+Received: from [100.112.135.198] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-b.us-west-2.aws.symcld.net id 5F/B2-49214-64DDFBF5; Thu, 26 Nov 2020 16:52:22 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrBKsWRWlGSWpSXmKPExsWSLveKTdft7v5
+  4g5MNghb7r0tYdC00sFh4/xSrxddvt9kt3hyfzmSxfF8/o8XHZRwWnzsms1is3vOC2WLtl3ls
   FmdOX2J14PaYNHMGs8fOWXfZPX5tW8PisXmFlse8k4EePW2bmDze77vK5rHlajuLx+dNcgGcU
-  ayZeUn5FQmsGb3bdjIWHPCvOHhMs4Hxl3MXIxeHkMB/Roln15pYuhg5gZyHjBKfr4iA2GwC2h
-  Jbtvxi62Lk4BARkJH4sNYTpJ5ZYAGTxJfra1hB4sICPhJb2pNBylkEVCU2//jEBGLzClhLTOr
-  7yQhiSwjISzztXc4MYnMK2Eg8nvOOHWJVqET/0ifMEPWCEidnPgE7gRmovnnrbGYIW0Li4IsX
-  zBBzFCQmL7jKBGEnSCx7eYd5AqPALCTts5C0z0LSvoCReRWjaVJRZnpGSW5iZo6uoYGBrqGhk
-  a6hroWlXmKVbpJeabFuamJxia6hXmJ5sV5xZW5yTopeXmrJJkZgdKUUMEbuYNz3+oPeIUZJDi
-  YlUd4le/bHC/El5adUZiQWZ8QXleakFh9ilOHgUJLg9bwNlBMsSk1PrUjLzAFGOkxagoNHSYT
-  3N0iat7ggMbc4Mx0idYpRUUqcdxtIQgAkkVGaB9cGSy6XGGWlhHkZGRgYhHgKUotyM0tQ5V8x
-  inMwKgnzhoFM4cnMK4Gb/gpoMRPQ4umce0AWlyQipKQamAodlm57aKp//fimtKp3rrX6AcWTU
-  /WEDoTv7L9+2cIut0U5mp3VO5vl+6tb25VtUpsY1pQtS5NVYTz4UEDPJm69RN0DpXeGgpfEeH
-  61hH24einLSJvRU+E2j/VHvhTpeaeueX+TtnWZFemy+oZs/c04i1kKKxZ67srLW/fTZ2Fd9Zv
-  pFX+cFqncnb/VX1rz6rzHzYqJaQ8/p6UeiOuV8j2tMe3+V+2JpySkeib/3Xbtpc+jFQEfBSuX
-  8a0r7ZwWv1C4r+JA4A3OjgKDktKJF20Xt8Yvmavr9D6lNctdwtJoW3nvpL3Mlxa8Y1VZm1MUl
-  h1zg7O2QrB20b3KkLmCItfkm1SndypEZfwN7buhxFKckWioxVxUnAgAXl1656kDAAA=
+  ayZeUn5FQmsGd8/fmIuuBZSseT1FpYGxq1uXYxcHEIC/xklDjztYYJwHjJKfOieytrFyMnBJq
+  AtsWXLL7YuRg4OEQEZiQ9rPUFqmAUWMEl8ub4GrEZYIFBiWv9cZhCbRUBVYsbKe2wgNq+AtcT
+  DF1/YQWwJAXmJp73LwWo4BWwkHs95BxYXEgiV6F/6hBmiXlDi5MwnLCA2M1B989bZzBC2hMTB
+  Fy+YIeYoSExecJUJwk6QWPbyDvMERoFZSNpnIWmfhaR9ASPzKkaLpKLM9IyS3MTMHF1DAwNdQ
+  0MjXUNjI10jAwu9xCrdJL3SYt3y1OISXSO9xPJiveLK3OScFL281JJNjMBISyloubCDcd2bD3
+  qHGCU5mJREeZfs2R8vxJeUn1KZkVicEV9UmpNafIhRhoNDSYL3+B2gnGBRanpqRVpmDjDqYdI
+  SHDxKIry/bwOleYsLEnOLM9MhUqcYdTlOrlqyiFmIJS8/L1VKnHcbSJEASFFGaR7cCFgCusQo
+  KyXMy8jAwCDEU5BalJtZgir/ilGcg1FJmHc7yCU8mXklcJteAR3BBHTEdM49IEeUJCKkpBqYD
+  NPeu79OWW79Ksf+saFarY39iyZWz6MfLeacnVhwTM3oU/v680wRurFim8x9lple9T2VN++Rg+
+  +c3m/Zk+/JCf+evmm+coOW9vciZc7dsg0iacYXfDgfS1XOm2/r+zNRTEXzg9Fb1xnf3FTmyXF
+  E/dUp2id+SbunXZMtZsOqHc1mG+8+sv1zxOPHP7F/W4VasxfZqf7QkigqOlvrWdcZldox8/TM
+  2/zlG4N2nrm49snD14zGM5+vf6Kuk/PooKTDunpvj7LCJ6dsr77eHPmmNsfzlIcdk6bIvcq/i
+  2+ZB/fdz7CYtm7V/Nunl35QU3OLq033qDt2YP1Todfa65qDD++UWB/zfYe5xoMHx/UqlFiKMx
+  INtZiLihMB3ZggXrsDAAA=
 X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-4.tower-396.messagelabs.com!1606409537!1406277!1
+X-Msg-Ref: server-10.tower-346.messagelabs.com!1606409539!66079!1
 X-Originating-IP: [103.30.234.6]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.60.3; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 7489 invoked from network); 26 Nov 2020 16:52:19 -0000
+Received: (qmail 23422 invoked from network); 26 Nov 2020 16:52:21 -0000
 Received: from unknown (HELO lenovo.com) (103.30.234.6)
-  by server-4.tower-396.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 26 Nov 2020 16:52:19 -0000
+  by server-10.tower-346.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 26 Nov 2020 16:52:21 -0000
 Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
         (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 4D81B908DC87CDDAB036;
-        Fri, 27 Nov 2020 00:52:14 +0800 (CST)
+        by Forcepoint Email with ESMTPS id 01A4EA03553DB9CF31D3;
+        Fri, 27 Nov 2020 00:52:16 +0800 (CST)
 Received: from localhost.home (10.64.80.205) by reswpmail04.lenovo.com
  (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Thu, 26 Nov
- 2020 08:52:09 -0800
+ 2020 08:52:12 -0800
 From:   Mark Pearson <markpearson@lenovo.com>
 To:     <markpearson@lenovo.com>
 CC:     <hdegoede@redhat.com>, <mgross@linux.intel.com>,
@@ -57,9 +58,9 @@ CC:     <hdegoede@redhat.com>, <mgross@linux.intel.com>,
         <hadess@hadess.net>, <pobrn@protonmail.com>,
         <mario.limnociello@dell.com>, <eliadevito@gmail.com>,
         <bberg@redhat.com>, <dvhart@infradead.org>
-Subject: [PATCH v4 2/3] ACPI: platform-profile: Add platform profile support
-Date:   Thu, 26 Nov 2020 11:51:42 -0500
-Message-ID: <20201126165143.32776-2-markpearson@lenovo.com>
+Subject: [PATCH v4 3/3] platform/x86: thinkpad_acpi: Add platform profile support
+Date:   Thu, 26 Nov 2020 11:51:43 -0500
+Message-ID: <20201126165143.32776-3-markpearson@lenovo.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201126165143.32776-1-markpearson@lenovo.com>
 References: <markpearson@lenovo.com>
@@ -74,361 +75,377 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is the initial implementation of the platform-profile feature.
-It provides the details discussed and outlined in the
-sysfs-platform_profile document.
+Add support to thinkpad_acpi for Lenovo platforms that have DYTC
+version 5 support or newer to use the platform profile feature.
 
-Many modern systems have the ability to modify the operating profile to
-control aspects like fan speed, temperature and power levels. This
-module provides a common sysfs interface that platform modules can register
-against to control their individual profile options.
+This will allow users to determine and control the platform modes
+between low-power, balanced operation and performance modes.
 
 Signed-off-by: Mark Pearson <markpearson@lenovo.com>
 ---
 Changes in v2:
  Address (hopefully) all recommendations from review including:
- - reorder includes list alphabetically
- - make globals statics and use const as required
- - change profile name scanning to use full string
- - clean up profile name lists to remove unwanted additions
- - use sysfs_emit and sysfs_emit_at appropriately (much nicer!)
- - improve error handling. Return errors to user in all cases and use
-   better error codes where appropriate (ENOOPSUPP)
- - clean up sysfs output for better readability
- - formatting fixes where needed
- - improve structure and enum names to be clearer
- - remove cur_profile field from structure. It is now local to the
-   actual platform driver file (patch 3 in series)
- - improve checking so if future profile options are added profile_names
-   will be updated as well.
- - move CONFIG option next to ACPI_THERMAL as it seemed slightly related
- - removed MAINTAINERS update as not appropriate (note warning message
-   is seen when running checkpatch)
+ - use IS_ENABLED instead of IS_DEFINED
+ - update driver to work with all the fixes in platform_profile update
+ - improve error handling for invalid inputs
+ - move tracking of current profile mode into this driver
 
 Changes in v3:
- - Add missed platform_profile.h file
+ - version update for patch series
 
 Changes in v4:
- - Clean up duplicate entry in Kconfig file
- - Add linux/bits.h to include list
- - Remove unnecessary items from include list
- - Make cur_profile const
- - Clean up comments
- - formatting clean-ups
- - add checking of profile return value to show function
- - add checking to store to see if it's a supported profile
- - revert ENOTSUPP change in store function
- - improved error checking in profile registration
- - improved profile naming (now platform_profile_*)
+ - Rebase on top of palm sensor patch which led to a little bit of file
+   restructuring/clean up
+ - Use BIT macro where applicable
+ - Formatting fixes
+ - Check sysfs node created on exit function
+ - implement and use DYTC_SET_COMMAND macro
+ - in case of failure setting performance mode make sure CQL mode is
+   enabled again before returning.
+ - Clean up initialisation and error handling code
 
- drivers/acpi/Kconfig             |  14 ++
- drivers/acpi/Makefile            |   1 +
- drivers/acpi/platform_profile.c  | 215 +++++++++++++++++++++++++++++++
- include/linux/platform_profile.h |  36 ++++++
- 4 files changed, 266 insertions(+)
- create mode 100644 drivers/acpi/platform_profile.c
- create mode 100644 include/linux/platform_profile.h
+  drivers/platform/x86/thinkpad_acpi.c | 306 ++++++++++++++++++++++++++-
+ 1 file changed, 305 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index edf1558c1105..c1ca6255ff85 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -326,6 +326,20 @@ config ACPI_THERMAL
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called thermal.
- 
-+config ACPI_PLATFORM_PROFILE
-+	tristate "ACPI Platform Profile Driver"
-+	default y
-+	help
-+	  This driver adds support for platform-profiles on platforms that
-+	  support it.
-+	  Platform-profiles can be used to control the platform behaviour. For
-+	  example whether to operate in a lower power mode, in a higher
-+	  power performance mode or between the two.
-+	  This driver provides the sysfs interface and is used as the registration
-+	  point for platform specific drivers.
-+	  Which profiles are supported is determined on a per-platform basis and
-+	  should be obtained from the platform specific driver.
-+
- config ACPI_CUSTOM_DSDT_FILE
- 	string "Custom DSDT Table file to include"
- 	default ""
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 44e412506317..c64a8af106c0 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -78,6 +78,7 @@ obj-$(CONFIG_ACPI_PCI_SLOT)	+= pci_slot.o
- obj-$(CONFIG_ACPI_PROCESSOR)	+= processor.o
- obj-$(CONFIG_ACPI)		+= container.o
- obj-$(CONFIG_ACPI_THERMAL)	+= thermal.o
-+obj-$(CONFIG_ACPI_PLATFORM_PROFILE) 	+= platform_profile.o
- obj-$(CONFIG_ACPI_NFIT)		+= nfit/
- obj-$(CONFIG_ACPI_NUMA)		+= numa/
- obj-$(CONFIG_ACPI)		+= acpi_memhotplug.o
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-new file mode 100644
-index 000000000000..678cb4596ada
---- /dev/null
-+++ b/drivers/acpi/platform_profile.c
-@@ -0,0 +1,215 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/* Platform profile sysfs interface */
-+
-+#include <linux/acpi.h>
-+#include <linux/bits.h>
-+#include <linux/init.h>
-+#include <linux/mutex.h>
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 6a4c54db38fb..8463170391f5 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -72,6 +72,7 @@
+ #include <linux/uaccess.h>
+ #include <acpi/battery.h>
+ #include <acpi/video.h>
 +#include <linux/platform_profile.h>
-+#include <linux/sysfs.h>
+ 
+ /* ThinkPad CMOS commands */
+ #define TP_CMOS_VOLUME_DOWN	0
+@@ -9971,6 +9972,296 @@ static struct ibm_struct proxsensor_driver_data = {
+ 	.exit = proxsensor_exit,
+ };
+ 
++#if IS_ENABLED(CONFIG_ACPI_PLATFORM_PROFILE)
 +
-+static const struct platform_profile_handler *cur_profile;
-+static DEFINE_MUTEX(profile_lock);
++/*************************************************************************
++ * DYTC Platform Profile interface
++ */
 +
-+static const char * const profile_names[] = {
-+	[platform_profile_low] = "low-power",
-+	[platform_profile_cool] = "cool",
-+	[platform_profile_quiet] = "quiet",
-+	[platform_profile_balance] = "balance",
-+	[platform_profile_perform] = "performance",
-+};
-+static_assert(ARRAY_SIZE(profile_names) == platform_profile_perform+1);
++#define DYTC_CMD_QUERY        0 /* To get DYTC status - enable/revision */
++#define DYTC_CMD_SET          1 /* To enable/disable IC function mode */
++#define DYTC_CMD_RESET    0x1ff /* To reset back to default */
 +
-+static ssize_t platform_profile_choices_show(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
++#define DYTC_QUERY_ENABLE_BIT 8  /* Bit        8 - 0 = disabled, 1 = enabled */
++#define DYTC_QUERY_SUBREV_BIT 16 /* Bits 16 - 27 - sub revision */
++#define DYTC_QUERY_REV_BIT    28 /* Bits 28 - 31 - revision */
++
++#define DYTC_GET_FUNCTION_BIT 8  /* Bits  8-11 - function setting */
++#define DYTC_GET_MODE_BIT     12 /* Bits 12-15 - mode setting */
++
++#define DYTC_SET_FUNCTION_BIT 12 /* Bits 12-15 - function setting */
++#define DYTC_SET_MODE_BIT     16 /* Bits 16-19 - mode setting */
++#define DYTC_SET_VALID_BIT    20 /* Bit     20 - 1 = on, 0 = off */
++
++#define DYTC_FUNCTION_STD     0  /* Function = 0, standard mode */
++#define DYTC_FUNCTION_CQL     1  /* Function = 1, lap mode */
++#define DYTC_FUNCTION_MMC     11 /* Function = 11, desk mode */
++
++#define DYTC_MODE_PERFORM     2  /* High power mode aka performance */
++#define DYTC_MODE_QUIET       3  /* Low power mode aka quiet */
++#define DYTC_MODE_BALANCE   0xF  /* Default mode aka balance */
++
++#define DYTC_SET_COMMAND(function, mode, on) \
++	(DYTC_CMD_SET | (function) << DYTC_SET_FUNCTION_BIT | \
++	 (mode) << DYTC_SET_MODE_BIT | \
++	 (on) << DYTC_SET_VALID_BIT)
++
++#define DYTC_DISABLE_CQL DYTC_SET_COMMAND(DYTC_FUNCTION_CQL, DYTC_MODE_BALANCE, 0)
++#define DYTC_ENABLE_CQL DYTC_SET_COMMAND(DYTC_FUNCTION_CQL, DYTC_MODE_BALANCE, 1)
++
++static bool dytc_ignore_next_event;
++static bool dytc_profile_available;
++static enum platform_profile_option dytc_current_profile;
++
++static int dytc_command(int command, int *output)
 +{
-+	int len = 0;
-+	int err, i;
++	acpi_handle dytc_handle;
 +
-+	err = mutex_lock_interruptible(&profile_lock);
-+	if (err)
-+		return err;
-+
-+	if (!cur_profile) {
-+		mutex_unlock(&profile_lock);
++	if (ACPI_FAILURE(acpi_get_handle(hkey_handle, "DYTC", &dytc_handle))) {
++		/* Platform doesn't support DYTC */
 +		return -ENODEV;
 +	}
-+
-+	if (!cur_profile->choices) {
-+		mutex_unlock(&profile_lock);
-+		return sysfs_emit(buf, "\n");
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(profile_names); i++) {
-+		if (cur_profile->choices & BIT(i)) {
-+			if (len == 0)
-+				len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
-+			else
-+				len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
-+		}
-+	}
-+	len += sysfs_emit_at(buf, len, "\n");
-+	mutex_unlock(&profile_lock);
-+	return len;
++	if (!acpi_evalf(dytc_handle, output, NULL, "dd", command))
++		return -EIO;
++	return 0;
 +}
 +
-+static ssize_t platform_profile_show(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
++static int convert_dytc_to_profile(int dytcmode, enum platform_profile_option *profile)
 +{
-+	enum platform_profile_option profile = platform_profile_balance;
-+	int err;
-+
-+	err = mutex_lock_interruptible(&profile_lock);
-+	if (err)
-+		return err;
-+
-+	if (!cur_profile) {
-+		mutex_unlock(&profile_lock);
-+		return -ENODEV;
-+	}
-+
-+	if (!cur_profile->profile_get) {
-+		mutex_unlock(&profile_lock);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	err = cur_profile->profile_get(&profile);
-+	mutex_unlock(&profile_lock);
-+	if (err < 0)
-+		return err;
-+
-+	/* Check that profile is valid index */
-+	if ((profile < 0) || (profile >= ARRAY_SIZE(profile_names)))
-+		return sysfs_emit(buf, "\n");
-+
-+	return sysfs_emit(buf, "%s\n", profile_names[profile]);
-+}
-+
-+static ssize_t platform_profile_store(struct device *dev,
-+			    struct device_attribute *attr,
-+			    const char *buf, size_t count)
-+{
-+	int err, i;
-+
-+	err = mutex_lock_interruptible(&profile_lock);
-+	if (err)
-+		return err;
-+
-+	if (!cur_profile) {
-+		mutex_unlock(&profile_lock);
-+		return -ENODEV;
-+	}
-+
-+	if (!cur_profile->profile_set) {
-+		mutex_unlock(&profile_lock);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/* Scan for a matching profile */
-+	i = sysfs_match_string(profile_names, buf);
-+	if (i < 0) {
-+		mutex_unlock(&profile_lock);
++	switch (dytcmode) {
++	case DYTC_MODE_QUIET:
++		*profile = platform_profile_low;
++		break;
++	case DYTC_MODE_BALANCE:
++		*profile =  platform_profile_balance;
++		break;
++	case DYTC_MODE_PERFORM:
++		*profile =  platform_profile_perform;
++		break;
++	default: /* Unknown mode */
 +		return -EINVAL;
 +	}
++	return 0;
++}
 +
-+	/* Check that platform supports this profile choice */
-+	if (!(cur_profile->choices & BIT(i))) {
-+		mutex_unlock(&profile_lock);
++static int convert_profile_to_dytc(enum platform_profile_option profile, int *perfmode)
++{
++	switch (profile) {
++	case platform_profile_low:
++		*perfmode = DYTC_MODE_QUIET;
++		break;
++	case platform_profile_balance:
++		*perfmode = DYTC_MODE_BALANCE;
++		break;
++	case platform_profile_perform:
++		*perfmode = DYTC_MODE_PERFORM;
++		break;
++	default: /* Unknown profile */
 +		return -EOPNOTSUPP;
 +	}
-+
-+	err = cur_profile->profile_set(i);
-+	mutex_unlock(&profile_lock);
-+	if (err)
-+		return err;
-+	return count;
-+}
-+
-+static DEVICE_ATTR_RO(platform_profile_choices);
-+static DEVICE_ATTR_RW(platform_profile);
-+
-+static struct attribute *platform_profile_attrs[] = {
-+	&dev_attr_platform_profile_choices.attr,
-+	&dev_attr_platform_profile.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group platform_profile_group = {
-+	.attrs = platform_profile_attrs
-+};
-+
-+void platform_profile_notify(void)
-+{
-+	if (!cur_profile)
-+		return;
-+	sysfs_notify(acpi_kobj, NULL, "platform_profile");
-+}
-+EXPORT_SYMBOL_GPL(platform_profile_notify);
-+
-+int platform_profile_register(const struct platform_profile_handler *pprof)
-+{
-+	int err;
-+
-+	err = mutex_lock_interruptible(&profile_lock);
-+	if (err)
-+		return err;
-+
-+	/* We can only have one active profile */
-+	if (cur_profile) {
-+		mutex_unlock(&profile_lock);
-+		return -EEXIST;
-+	}
-+
-+	err = sysfs_create_group(acpi_kobj, &platform_profile_group);
-+	if (err) {
-+		mutex_unlock(&profile_lock);
-+		return err;
-+	}
-+
-+	cur_profile = pprof;
-+	mutex_unlock(&profile_lock);
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(platform_profile_register);
 +
-+int platform_profile_unregister(void)
++static int dytc_perfmode_get(int *perfmode, int *funcmode)
 +{
-+	int err;
++	int output, err, cmd_err;
 +
-+	err = mutex_lock_interruptible(&profile_lock);
-+	if (err)
-+		return err;
-+
-+	if (!cur_profile) {
-+		mutex_unlock(&profile_lock);
++	if (!dytc_profile_available)
 +		return -ENODEV;
-+	}
 +
-+	sysfs_remove_group(acpi_kobj, &platform_profile_group);
-+	cur_profile = NULL;
-+	mutex_unlock(&profile_lock);
++	err = dytc_command(DYTC_CMD_GET, &output);
++	if (err)
++		return err;
++
++	*funcmode = (output >> DYTC_GET_FUNCTION_BIT) & 0xF;
++	if (*funcmode == DYTC_FUNCTION_CQL) {
++		int dummy;
++		/*
++		 * We can't get the mode when in CQL mode - so we disable CQL
++		 * mode retrieve the mode and then enable it again.
++		 * As disabling/enabling CQL triggers an event we set a flag to
++		 * ignore these events. This will be cleared by the event handler
++		 */
++		dytc_ignore_next_event = true;
++		err = dytc_command(DYTC_DISABLE_CQL, &dummy);
++		if (err)
++			return err;
++
++		cmd_err = dytc_command(DYTC_CMD_GET, &output);
++		/* Check return condition after we've restored CQL state */
++
++		/* Again ignore this event */
++		dytc_ignore_next_event = true;
++		err = dytc_command(DYTC_ENABLE_CQL, &dummy);
++		if (err)
++			return err;
++		if (cmd_err)
++			return cmd_err;
++	}
++	*perfmode = (output >> DYTC_GET_MODE_BIT) & 0xF;
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(platform_profile_unregister);
 +
-+static int __init platform_profile_init(void)
++/*
++ * dytc_profile_get: Function to register with platform_profile
++ * handler. Returns current platform profile.
++ */
++int dytc_profile_get(enum platform_profile_option *profile)
 +{
++	int funcmode, perfmode;
++	int err;
++
++	err = dytc_perfmode_get(&perfmode, &funcmode);
++	if (err)
++		return err;
++
++	/* Convert Lenovo DYTC profile to platform_profile */
++	err = convert_dytc_to_profile(perfmode, profile);
++	if (err)
++		return err;
++
++	dytc_current_profile = *profile;
 +	return 0;
 +}
-+module_init(platform_profile_init);
 +
-+static void __exit platform_profile_exit(void)
++/*
++ * dytc_profile_set: Function to register with platform_profile
++ * handler. Sets current platform profile.
++ */
++int dytc_profile_set(enum platform_profile_option profile)
 +{
-+	/* Check if we have a registered profile, and clean up */
-+	if (cur_profile) {
-+		sysfs_remove_group(acpi_kobj, &platform_profile_group);
-+		cur_profile = NULL;
++	int cur_perfmode, cur_funcmode;
++	int output;
++	int err;
++
++	if (!dytc_profile_available)
++		return -ENODEV;
++
++	if (profile == platform_profile_balance) {
++		/* To get back to balance mode we just issue a reset command */
++		err = dytc_command(DYTC_CMD_RESET, &output);
++		if (err)
++			return err;
++	} else {
++		int perfmode;
++		int cmd_err;
++
++		err = convert_profile_to_dytc(profile, &perfmode);
++		if (err)
++			return err;
++
++		/* Determine if we are in CQL mode. This alters the commands we do */
++		err = dytc_perfmode_get(&cur_perfmode, &cur_funcmode);
++		if (err)
++			return err;
++
++		if (cur_funcmode == DYTC_FUNCTION_CQL) {
++			/* To set the mode we need to disable CQL first*/
++			dytc_ignore_next_event = true; /* Ignore event */
++			err = dytc_command(DYTC_DISABLE_CQL, &output);
++			if (err)
++				return err;
++		}
++		cmd_err = dytc_command(DYTC_SET_COMMAND(DYTC_FUNCTION_MMC, perfmode, 1),
++				&output);
++		/* Check return condition after we've restored CQL state */
++
++		if (cur_funcmode == DYTC_FUNCTION_CQL) {
++			dytc_ignore_next_event = true; /* Ignore event */
++			err = dytc_command(DYTC_ENABLE_CQL, &output);
++			if (err)
++				return err;
++		}
++		if (cmd_err)
++			return cmd_err;
++	}
++	/* Success - update current profile */
++	dytc_current_profile = profile;
++	return 0;
++}
++
++static void dytc_profile_refresh(void)
++{
++	enum platform_profile_option profile;
++	int perfmode, funcmode;
++	int err;
++
++	err = dytc_perfmode_get(&perfmode, &funcmode);
++	if (err)
++		return;
++
++	err = convert_dytc_to_profile(perfmode, &profile);
++	if (profile != dytc_current_profile) {
++		dytc_current_profile = profile;
++		platform_profile_notify();
 +	}
 +}
-+module_exit(platform_profile_exit);
 +
-+MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-new file mode 100644
-index 000000000000..33ccd40bb9cf
---- /dev/null
-+++ b/include/linux/platform_profile.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Platform profile sysfs interface
-+ *
-+ * See Documentation/ABI/testing/sysfs-platform_profile.rst for more
-+ * information.
-+ */
-+
-+#ifndef _PLATFORM_PROFILE_H_
-+#define _PLATFORM_PROFILE_H_
-+
-+/*
-+ * If more options are added please update profile_names
-+ * array in platform-profile.c and sysfs-platform-profile.rst
-+ * documentation.
-+ */
-+
-+enum platform_profile_option {
-+	platform_profile_low,
-+	platform_profile_cool,
-+	platform_profile_quiet,
-+	platform_profile_balance,
-+	platform_profile_perform,
++static struct platform_profile_handler dytc_profile = {
++	.choices = BIT(platform_profile_low) |
++		BIT(platform_profile_balance) |
++		BIT(platform_profile_perform),
++	.profile_get = dytc_profile_get,
++	.profile_set = dytc_profile_set,
 +};
 +
-+struct platform_profile_handler {
-+	unsigned int choices; /* Bitmap of available choices */
-+	int (*profile_get)(enum platform_profile_option *profile);
-+	int (*profile_set)(enum platform_profile_option profile);
++static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
++{
++	int err, output;
++
++	dytc_profile_available = false;
++	dytc_ignore_next_event = false;
++
++	err = dytc_command(DYTC_CMD_QUERY, &output);
++	/*
++	 * If support isn't available (ENODEV) then don't return an error
++	 * and don't create the sysfs group
++	 */
++	if (err == -ENODEV)
++		return 0;
++	/* For all other errors we can flag the failure */
++	if (err)
++		return err;
++
++	/* Check DYTC is enabled and supports mode setting */
++	if (output & BIT(DYTC_QUERY_ENABLE_BIT)) {
++		/* Only DYTC v5.0 and later has this feature. */
++		int dytc_version;
++
++		dytc_version = (output >> DYTC_QUERY_REV_BIT) & 0xF;
++		if (dytc_version >= 5) {
++			dbg_printk(TPACPI_DBG_INIT,
++				   "DYTC version %d: thermal mode available\n", dytc_version);
++			/* Create platform_profile structure and register */
++			do {
++				err = platform_profile_register(&dytc_profile);
++			} while (err == -EINTR);
++			/*
++			 * If for some reason platform_profiles aren't enabled
++			 * don't quit terminally.
++			 */
++			if (err)
++				return 0;
++			dytc_profile_available = true;
++		}
++	}
++	return 0;
++}
++
++static void dytc_profile_exit(void)
++{
++	if (dytc_profile_available) {
++		dytc_profile_available = false;
++		platform_profile_unregister();
++	}
++}
++
++static struct ibm_struct  dytc_profile_driver_data = {
++	.name = "dytc-profile",
++	.exit = dytc_profile_exit,
 +};
++#endif /* CONFIG_ACPI_PLATFORM_PROFILE */
 +
-+int platform_profile_register(const struct platform_profile_handler *pprof);
-+int platform_profile_unregister(void);
-+void platform_profile_notify(void);
-+
-+#endif  /*_PLATFORM_PROFILE_H_*/
+ /****************************************************************************
+  ****************************************************************************
+  *
+@@ -10019,8 +10310,15 @@ static void tpacpi_driver_event(const unsigned int hkey_event)
+ 		mutex_unlock(&kbdlight_mutex);
+ 	}
+ 
+-	if (hkey_event == TP_HKEY_EV_THM_CSM_COMPLETED)
++	if (hkey_event == TP_HKEY_EV_THM_CSM_COMPLETED) {
+ 		lapsensor_refresh();
++#if IS_ENABLED(CONFIG_ACPI_PLATFORM_PROFILE)
++		if (dytc_ignore_next_event)
++			dytc_ignore_next_event = false; /*clear setting*/
++		else
++			dytc_profile_refresh();
++#endif
++	}
+ }
+ 
+ static void hotkey_driver_event(const unsigned int scancode)
+@@ -10463,6 +10761,12 @@ static struct ibm_init_struct ibms_init[] __initdata = {
+ 		.init = tpacpi_proxsensor_init,
+ 		.data = &proxsensor_driver_data,
+ 	},
++#if IS_ENABLED(CONFIG_ACPI_PLATFORM_PROFILE)
++	{
++		.init = tpacpi_dytc_profile_init,
++		.data = &dytc_profile_driver_data,
++	},
++#endif
+ };
+ 
+ static int __init set_ibm_param(const char *val, const struct kernel_param *kp)
 -- 
 2.28.0
 
