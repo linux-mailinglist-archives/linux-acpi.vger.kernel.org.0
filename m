@@ -2,118 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1CE2C52DC
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 12:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC842C5701
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 15:23:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729055AbgKZLXa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Nov 2020 06:23:30 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2160 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726985AbgKZLXa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Nov 2020 06:23:30 -0500
-Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Chb0c2V2Dz67HSx;
-        Thu, 26 Nov 2020 19:20:48 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 26 Nov 2020 12:23:27 +0100
-Received: from [10.210.172.213] (10.210.172.213) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.1913.5; Thu, 26 Nov 2020 11:23:25 +0000
-Subject: Re: [PATCH v3 3/5] driver core: platform: Add platform_put_irq()
-To:     Marc Zyngier <maz@kernel.org>
-CC:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
-        <lenb@kernel.org>, <rjw@rjwysocki.net>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
-        <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>
-References: <1606324841-217570-1-git-send-email-john.garry@huawei.com>
- <1606324841-217570-4-git-send-email-john.garry@huawei.com>
- <f6fb9ff74c8b361a592a6a4ceebd032d@kernel.org>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <4a7359bb-620b-2219-9b88-8a657f716336@huawei.com>
-Date:   Thu, 26 Nov 2020 11:23:04 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S2389606AbgKZOWm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Nov 2020 09:22:42 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:37299 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388748AbgKZOWl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Nov 2020 09:22:41 -0500
+Received: by mail-ot1-f68.google.com with SMTP id l36so2008731ota.4;
+        Thu, 26 Nov 2020 06:22:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l/8D9WFF6uoCxIH5bJTkTPAuqHAGOXGHPtVcJcM9tAM=;
+        b=H3yBuipHmrk0iXiXfWuE5UM9xj2tJnoyx2EiIkI0XMOWV5SYBkJbPwA1qPdUy8vaoM
+         bQdGqKkSSsoAN7Ag/HSX443s9GLDMDPXcypdmgWJFzm1sjLaBzkkwdnvxWz0wfdYyhki
+         L9mp3XSwSGl2lG5tJ1Guu/GdTq2pDmQTcBmk6FaPdnEdnQDk2lUHXT2h7d7DxYgsPLJy
+         tiJcuv+95uHL9pXm82OIz9KHtbxMh3aByUAHot4uQYq+dMl8pZncix0b8CY83hRjymjl
+         CZJ+vmYajc4XNUASRz4Xmucy+hV4Y86Hu1h7oGp5ZOGP1rImbDhxGdbTc9gMlel6MEJz
+         NpnQ==
+X-Gm-Message-State: AOAM531uT6NiulsCxWfHpyhGsmIRYoCkjZjAP8pF0Tcv+zPUiFDqljWt
+        2TVeePp2nh835G8l5TOoV82GJzv61EiWvOylAaKSbOLvd+I=
+X-Google-Smtp-Source: ABdhPJys38w9OvApwAja0CkxKOfNKCnHuVh+7i3C1I1VHXg118hTb6IzbuWhGP12UBvbgjr8A1Sjx+hE+QezLuPv/9Q=
+X-Received: by 2002:a05:6830:2385:: with SMTP id l5mr2435614ots.321.1606400560949;
+ Thu, 26 Nov 2020 06:22:40 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <f6fb9ff74c8b361a592a6a4ceebd032d@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.210.172.213]
-X-ClientProxiedBy: lhreml707-chm.china.huawei.com (10.201.108.56) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+References: <1606353994-10348-1-git-send-email-tangyouling@loongson.cn>
+In-Reply-To: <1606353994-10348-1-git-send-email-tangyouling@loongson.cn>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 26 Nov 2020 15:22:27 +0100
+Message-ID: <CAJZ5v0hbLh3EKGmy-wCvE_z_BBnWBmnyN+5onL_n2R6VK3BDdg@mail.gmail.com>
+Subject: Re: [PATCH v2] acpi: Fix use-after-free in acpi_ipmi.c
+To:     Youling Tang <tangyouling@loongson.cn>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 26/11/2020 09:28, Marc Zyngier wrote:
-> On 2020-11-25 17:20, John Garry wrote:
->> Add a function to tear down the work which was done in platform_get_irq()
->> for when the device driver is done with the irq.
->>
->> For ACPI companion devices the irq resource is set as disabled, as this
->> resource is configured from platform_get_irq()->acpi_irq_get() and 
->> requires
->> resetting.
->>
->> Signed-off-by: John Garry <john.garry@huawei.com>
->> ---
->>  drivers/base/platform.c | 14 ++++++++++++++
->>  1 file changed, 14 insertions(+)
->>
->> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
->> index 88aef93eb4dd..3eeda3746701 100644
->> --- a/drivers/base/platform.c
->> +++ b/drivers/base/platform.c
->> @@ -289,6 +289,20 @@ int platform_irq_count(struct platform_device *dev)
->>  }
->>  EXPORT_SYMBOL_GPL(platform_irq_count);
->>
+On Thu, Nov 26, 2020 at 2:26 AM Youling Tang <tangyouling@loongson.cn> wrote:
+>
+> kfree() has been called inside put_device so anther kfree would cause a
+> use-after-free bug.
+>
+> Signed-off-by: Youling Tang <tangyouling@loongson.cn>
+> ---
+>  drivers/acpi/acpi_ipmi.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+> index 9d6c0fc..18edf8b 100644
+> --- a/drivers/acpi/acpi_ipmi.c
+> +++ b/drivers/acpi/acpi_ipmi.c
+> @@ -142,7 +142,6 @@ static void ipmi_dev_release(struct acpi_ipmi_device *ipmi_device)
+>  {
+>         ipmi_destroy_user(ipmi_device->user_interface);
+>         put_device(ipmi_device->dev);
 
-Hi Marc,
+Does putting ipmi_device->dev (which is a different object than
+ipmi_device itself) really cause ipmi_device to be freed
+automatically?  If not, the change below will introduce a memory leak.
 
->> +void platform_put_irq(struct platform_device *dev, unsigned int num)
->> +{
->> +    unsigned int virq = platform_get_irq(dev, num);
-> 
-> I find it pretty odd to have to recompute the interrupt number,
-> which in turn results in a domain lookup. 
-
-Well we do have the virq available, but then we need to pass the virq 
-and device irq index. But maybe I somehow reverse-lookup the ACPI res 
-somehow from virq, such that we don't require the irq device index.
-
-> It things were refcounted
-> (they aren't yet), irq_dispose_mapping() would have no effect.
-> 
-> <pedant>
-> It also goes against the usual construct where if you obtain an object
-> based on some parameters, the release happens by specifying the object
-> itself, and not the parameters that lead to the object.
-> </pedant>
-
-Yes, ideally we can use virq.
-
-> 
->> +
->> +    irq_dispose_mapping(virq);
->> +    if (has_acpi_companion(&dev->dev)) {
->> +        struct resource *r = platform_get_resource(dev, IORESOURCE_IRQ,
->> +                               num);
->> +
->> +        if (r)
->> +            acpi_dev_irqresource_disabled(r, 0);
-> 
-> It looks to me that the ACPI thing is what needs to be promoted to a
-> first class function, releasing all the resources that have used by
-> a given device.
-
-This is just clearing the irq resource flags, but it could be reasonable 
-(to promote).
-
-Thanks,
-John
+> -       kfree(ipmi_device);
+>  }
+>
+>  static void ipmi_dev_release_kref(struct kref *kref)
+> --
