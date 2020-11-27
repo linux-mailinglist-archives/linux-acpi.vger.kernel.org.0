@@ -2,76 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3062C5BD5
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Nov 2020 19:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C57A2C5F78
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Nov 2020 06:09:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404532AbgKZSSg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Nov 2020 13:18:36 -0500
-Received: from mga07.intel.com ([134.134.136.100]:47796 "EHLO mga07.intel.com"
+        id S1729273AbgK0FIh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Nov 2020 00:08:37 -0500
+Received: from mga01.intel.com ([192.55.52.88]:11951 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404410AbgKZSSg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 26 Nov 2020 13:18:36 -0500
-IronPort-SDR: GvCSfZUpbSkDVTEhTXL3sHh9aAtD7KX7pxVcoZLW86b3MasG52AGELz48z6G5L0MM0KTcppNWg
- AYRaz1FxlF9A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9817"; a="236444183"
-X-IronPort-AV: E=Sophos;i="5.78,372,1599548400"; 
-   d="scan'208";a="236444183"
+        id S1725854AbgK0FIh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 27 Nov 2020 00:08:37 -0500
+IronPort-SDR: mDvdwMVhmYUeZLlLE3G7IwD587kBXnLaCXrs8ZHTGxCuhWhHHl8m6QXfhUSyLQQPF1jFHZk5r1
+ DgXLRF26DGZQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9817"; a="190507769"
+X-IronPort-AV: E=Sophos;i="5.78,373,1599548400"; 
+   d="scan'208";a="190507769"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2020 10:18:32 -0800
-IronPort-SDR: vdQ1+pws1U/kQy6TK9565q+kQyvWDS9RVechhAiifqXPwZXH5wH40M4m8TnJHPwj/jb1y9d7zF
- As4zxj88a1Ng==
-X-IronPort-AV: E=Sophos;i="5.78,372,1599548400"; 
-   d="scan'208";a="371353169"
-Received: from tsundar1-t480s.amr.corp.intel.com (HELO intel.com) ([10.252.131.217])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2020 10:18:31 -0800
-Date:   Thu, 26 Nov 2020 10:18:29 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Jon Masters <jcm@jonmasters.org>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [RFC PATCH 5/9] cxl/mem: Find device capabilities
-Message-ID: <20201126181829.vy3was5c42ixtwxm@intel.com>
-References: <20201111054356.793390-1-ben.widawsky@intel.com>
- <20201111054356.793390-6-ben.widawsky@intel.com>
- <8d332852-9c54-95e0-58c7-72939f347aa6@jonmasters.org>
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2020 21:08:36 -0800
+IronPort-SDR: mGbRks6uP/ToKFZIBlX7StXZ2TX6GXKIhwKCbm5MGHTRUqmtHUENnwxyC9fnx20l2n0r1KEcFQ
+ 8EqCk2s7oB9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,373,1599548400"; 
+   d="scan'208";a="333561546"
+Received: from lkp-server01.sh.intel.com (HELO fe15a1cd36f8) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 26 Nov 2020 21:08:35 -0800
+Received: from kbuild by fe15a1cd36f8 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kiVzm-00001o-IU; Fri, 27 Nov 2020 05:08:34 +0000
+Date:   Fri, 27 Nov 2020 13:08:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ dda536829065b24b80296e5df9b57dfe3ae57c91
+Message-ID: <5fc089b7.WCm6iz3bFhgqDrlJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d332852-9c54-95e0-58c7-72939f347aa6@jonmasters.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-11-26 01:05:56, Jon Masters wrote:
-> On 11/11/20 12:43 AM, Ben Widawsky wrote:
-> 
-> > +		case CXL_CAPABILITIES_CAP_ID_SECONDARY_MAILBOX:
-> > +			dev_dbg(&cxlm->pdev->dev,
-> > +				   "found UNSUPPORTED Secondary Mailbox capability\n");
-> 
-> Per spec, the secondary mailbox is intended for use by platform firmware, so
-> Linux should never be using it anyway. Maybe that message is slightly
-> misleading?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: dda536829065b24b80296e5df9b57dfe3ae57c91  Merge branch 'pm-cpufreq' into bleeding-edge
 
-Yeah, I think the message could be reworded, but it is dev_dbg, so I wasn't too
-worried about the wording in the first place. I think it is a mistake in this
-case for the spec to describe the intended purpose. If the expectation is for
-platform firmware to use it, but there is no negotiation mechanism in place,
-it's essentially useless.
+elapsed time: 723m
 
-> 
-> Jon.
-> 
-> P.S. Related - I've severe doubts about the mailbox approach being proposed
-> by CXL and have begun to push back through the spec org.
+configs tested: 77
+configs skipped: 3
 
-Any reason not to articulate that here? Now that the spec is public, I don't see
-any reason not to disclose that publicly.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                      ep88xc_defconfig
+powerpc                        fsp2_defconfig
+powerpc                      acadia_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                      chrp32_defconfig
+arm                      tct_hammer_defconfig
+powerpc                     rainier_defconfig
+m68k                        mvme147_defconfig
+mips                         tb0219_defconfig
+powerpc                     tqm8555_defconfig
+mips                    maltaup_xpa_defconfig
+mips                        bcm47xx_defconfig
+mips                           ip28_defconfig
+powerpc                      katmai_defconfig
+powerpc                       eiger_defconfig
+powerpc                      ppc44x_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201127
+i386                 randconfig-a003-20201127
+i386                 randconfig-a002-20201127
+i386                 randconfig-a005-20201127
+i386                 randconfig-a001-20201127
+i386                 randconfig-a006-20201127
+i386                 randconfig-a012-20201127
+i386                 randconfig-a013-20201127
+i386                 randconfig-a011-20201127
+i386                 randconfig-a016-20201127
+i386                 randconfig-a014-20201127
+i386                 randconfig-a015-20201127
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
