@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A262C6C74
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Nov 2020 21:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F772C6E9E
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Nov 2020 04:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728509AbgK0UPv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Nov 2020 15:15:51 -0500
-Received: from mail-41103.protonmail.ch ([185.70.41.103]:60843 "EHLO
+        id S1730776AbgK1DTD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Nov 2020 22:19:03 -0500
+Received: from mail-41103.protonmail.ch ([185.70.41.103]:62150 "EHLO
         mail-41103.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727350AbgK0UPd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Nov 2020 15:15:33 -0500
+        with ESMTP id S1730575AbgK0Tzy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Nov 2020 14:55:54 -0500
 Received: from mail-02.mail-europe.com (mail-02.mail-europe.com [51.89.119.103])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
-        by mail-41103.protonmail.ch (Postfix) with ESMTPS id B0288200FFC8
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Nov 2020 19:16:34 +0000 (UTC)
+        by mail-41103.protonmail.ch (Postfix) with ESMTPS id 26904200FFD4
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Nov 2020 19:25:04 +0000 (UTC)
 Authentication-Results: mail-41103.protonmail.ch;
-        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="REHfzXAP"
-Date:   Fri, 27 Nov 2020 19:14:19 +0000
+        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="p6rEVoVz"
+Date:   Fri, 27 Nov 2020 19:22:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1606504468;
-        bh=OFzHuFWdkGeaAG2R7kvwdvA/h6zW49kBYWeXaLISNXk=;
+        s=protonmail; t=1606504981;
+        bh=JA3R5kNZdeDaHj0Hz7a5oZ95EFWkeaJZqlDY0+PxPXU=;
         h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=REHfzXAP+nYXT6Bw88H+d97bBnhD98gesdW11OWojcxDCJeAanQWZzbkUFSkWQ21x
-         Q845Xwjdv5D+fVDIJunIcCkWoUNC3tHOgwE0E4GzsTcQloCqRJSWcC6WyaI6VHdIg5
-         ncX0hSS1UmnHJmty+jpPYZMxNrFhYIvlqhDOrdsU=
+        b=p6rEVoVzdm57x+PHGSfKeTEp6AMvESTLYZxoP78SjXsn0PLJ+LRqurWKSy0CuoseF
+         XvvVdm6B8+EH7zYyvIrmeOuoO3z8jqvw+FtDjz7MXHfbflzh1XEaqWsvUx93GdAbEC
+         VVc1sAkT7VP9zjxPgXaxoA3+cq5zzWSh4S97JT3w=
 To:     Mark Pearson <markpearson@lenovo.com>
 From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Cc:     "hdegoede@redhat.com" <hdegoede@redhat.com>,
@@ -41,10 +41,10 @@ Cc:     "hdegoede@redhat.com" <hdegoede@redhat.com>,
         "bberg@redhat.com" <bberg@redhat.com>,
         "dvhart@infradead.org" <dvhart@infradead.org>
 Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH v4 2/3] ACPI: platform-profile: Add platform profile support
-Message-ID: <GojTnStq-_lTx1Zy0JIDn-_9ZHLyyTvtUeg4BwNAS51dogIGCn4Ou8qnRTqkJSjp6pHBv3SeuFthHhL58ID3tJSb7w31Ix-2UxExy-d-tIQ=@protonmail.com>
-In-Reply-To: <20201126165143.32776-2-markpearson@lenovo.com>
-References: <markpearson@lenovo.com> <20201126165143.32776-1-markpearson@lenovo.com> <20201126165143.32776-2-markpearson@lenovo.com>
+Subject: Re: [PATCH v4 3/3] platform/x86: thinkpad_acpi: Add platform profile support
+Message-ID: <ioprVbNER4h0HTVvyj2ElXiuNaSPjl8ycgp4XtOtj-Iwe4_6qnNRLYuvxIJKE2ULGPTRURY-1Dr9plCocTnx2S_ugBn7INWZScnn4-pTq4c=@protonmail.com>
+In-Reply-To: <20201126165143.32776-3-markpearson@lenovo.com>
+References: <markpearson@lenovo.com> <20201126165143.32776-1-markpearson@lenovo.com> <20201126165143.32776-3-markpearson@lenovo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -64,99 +64,59 @@ Hi
 earson =C3=ADrta:
 
 > [...]
-+static const char * const profile_names[] =3D {
-+=09[platform_profile_low] =3D "low-power",
-+=09[platform_profile_cool] =3D "cool",
-+=09[platform_profile_quiet] =3D "quiet",
-+=09[platform_profile_balance] =3D "balance",
+> +static bool dytc_ignore_next_event;
 
-Documentation says "balanced".
+As a sidenote: can the profile switching be triggered by means that's not t=
+he
+`/sys/firmware/acpi/platform_profile` attribute (e.g. a physical button)?
+Because if so, then I'm not sure if `dytc_ignore_next_event` achieves its p=
+urpose
+robustly, although I believe it won't cause issues in practice. I think it =
+could
+be made more robust using a mutex to serialize and synchronize access to th=
+e DYTC
+interface, but I'm not sure if the effort is worth it.
 
 
-+=09[platform_profile_perform] =3D "performance",
-+};
+> +static bool dytc_profile_available;
+> +static enum platform_profile_option dytc_current_profile;
 > [...]
-> +static ssize_t platform_profile_show(struct device *dev,
-> +=09=09=09=09=09struct device_attribute *attr,
-> +=09=09=09=09=09char *buf)
+> +static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
 > +{
-> +=09enum platform_profile_option profile =3D platform_profile_balance;
-> +=09int err;
+> +=09int err, output;
 > +
-> +=09err =3D mutex_lock_interruptible(&profile_lock);
+> +=09dytc_profile_available =3D false;
+> +=09dytc_ignore_next_event =3D false;
+> +
+> +=09err =3D dytc_command(DYTC_CMD_QUERY, &output);
+> +=09/*
+> +=09 * If support isn't available (ENODEV) then don't return an error
+> +=09 * and don't create the sysfs group
+> +=09 */
+> +=09if (err =3D=3D -ENODEV)
+> +=09=09return 0;
+> +=09/* For all other errors we can flag the failure */
 > +=09if (err)
 > +=09=09return err;
 > +
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
+> +=09/* Check DYTC is enabled and supports mode setting */
+> +=09if (output & BIT(DYTC_QUERY_ENABLE_BIT)) {
+> +=09=09/* Only DYTC v5.0 and later has this feature. */
+> +=09=09int dytc_version;
 > +
-> +=09if (!cur_profile->profile_get) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -EOPNOTSUPP;
-> +=09}
-> +
-> +=09err =3D cur_profile->profile_get(&profile);
-> +=09mutex_unlock(&profile_lock);
-> +=09if (err < 0)
-> +=09=09return err;
-> +
-
-In `platform_profile_store()`, you do
-```
-err =3D cur_profile->profile_set(i);
-if (err)
-  return err;
-```
-but here you do `if (err < 0)`, why?
-
-
-> +=09/* Check that profile is valid index */
-> +=09if ((profile < 0) || (profile >=3D ARRAY_SIZE(profile_names)))
-> +=09=09return sysfs_emit(buf, "\n");
-> +
-
-I'd write `if (WARN_ON(profile < 0 ....))` since that is serious error in m=
-y
-opinion which should be logged. I am also not sure if
-
-
-> +=09return sysfs_emit(buf, "%s\n", profile_names[profile]);
-> +}
+> +=09=09dytc_version =3D (output >> DYTC_QUERY_REV_BIT) & 0xF;
+> +=09=09if (dytc_version >=3D 5) {
+> +=09=09=09dbg_printk(TPACPI_DBG_INIT,
+> +=09=09=09=09   "DYTC version %d: thermal mode available\n", dytc_version=
+);
+> +=09=09=09/* Create platform_profile structure and register */
+> +=09=09=09do {
+> +=09=09=09=09err =3D platform_profile_register(&dytc_profile);
+> +=09=09=09} while (err =3D=3D -EINTR);
 > [...]
-> +int platform_profile_unregister(void)
-> +{
-> +=09int err;
-> +
-> +=09err =3D mutex_lock_interruptible(&profile_lock);
-> +=09if (err)
-> +=09=09return err;
-> +
 
-I know it was me who said to prefer `mutex_lock_interruptible()`, but in th=
-is
-particular instance I believe `mutex_lock()` would be preferable to avoid t=
-he case
-where the module unloading is interrupted, and thus the profile handler is =
-not
-unregistered properly. This could be handled in each module that uses this
-interface, however, I believe it'd be better to handle it here.
-
-
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
-> +
-> +=09sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +=09cur_profile =3D NULL;
-> +=09mutex_unlock(&profile_lock);
-> +=09return 0;
-> +}
-> [...]
+I'm wondering if this loop is really necessary?
 
 
 Regards,
 Barnab=C3=A1s P=C5=91cze
-
