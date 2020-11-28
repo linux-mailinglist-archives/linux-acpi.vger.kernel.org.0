@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7E12C729D
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Nov 2020 23:09:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52AFA2C72AC
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Nov 2020 23:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389930AbgK1VuM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Nov 2020 16:50:12 -0500
-Received: from mail-41103.protonmail.ch ([185.70.41.103]:58289 "EHLO
-        mail-41103.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730924AbgK1SGN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Nov 2020 13:06:13 -0500
-Received: from mail-02.mail-europe.com (mail-02.mail-europe.com [51.89.119.103])
+        id S1726704AbgK1VuO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Nov 2020 16:50:14 -0500
+Received: from mail-41104.protonmail.ch ([185.70.41.104]:15240 "EHLO
+        mail-41104.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729360AbgK1S0U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Nov 2020 13:26:20 -0500
+Received: from mail-03.mail-europe.com (mail-03.mail-europe.com [91.134.188.129])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
-        by mail-41103.protonmail.ch (Postfix) with ESMTPS id 9165B20000A1
-        for <linux-acpi@vger.kernel.org>; Sat, 28 Nov 2020 15:37:56 +0000 (UTC)
-Authentication-Results: mail-41103.protonmail.ch;
-        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="V4O4unyV"
-Date:   Sat, 28 Nov 2020 15:37:44 +0000
+        by mail-41104.protonmail.ch (Postfix) with ESMTPS id 916C82004166;
+        Sat, 28 Nov 2020 15:59:55 +0000 (UTC)
+Authentication-Results: mail-41104.protonmail.ch;
+        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="jf3/AZVL"
+Date:   Sat, 28 Nov 2020 15:59:50 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1606577873;
-        bh=B+V4mS7J4ue7BMs1VbspTddvELqxycTImgNdKUYU1zg=;
+        s=protonmail; t=1606579191;
+        bh=nCw14+eeRE2dWy7T+MmkCMBCycxMTZVyvYRhCJzD/Sg=;
         h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=V4O4unyV6CK4jnkLr2SQOPI3RQnWZHMbEIihmflTV7D8g67R9wSlBUClMMOOu2g0l
-         oVEWGJipvK8GdfiCREjUY8UHd/Nywl9Tg+3ZbibLEXJmy6JiBVz1NZSvQiSK+6TzLJ
-         ZldUjeM2brLFlTDFpm//QqMlaIXtNYrUfMtfOr+g=
+        b=jf3/AZVLT3/Ws+H7k03k9RHrcl4g6ZiznjMjIK9RbTVHSq5FpgmbzXaPlLfYkBMZ7
+         1wGsdyIHUWmk3zouyx+1cv/iIxV8VKN/alU4Ut6r+Gt1FFGtq7JcJZAQlzwYwQiqRc
+         sotrnH5tE3Gj/Yf7n5aR2QCavl5QaGfMuWk9ukfo=
 To:     Hans de Goede <hdegoede@redhat.com>
 From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Cc:     Mark Pearson <markpearson@lenovo.com>,
@@ -41,10 +41,10 @@ Cc:     Mark Pearson <markpearson@lenovo.com>,
         "bberg@redhat.com" <bberg@redhat.com>,
         "dvhart@infradead.org" <dvhart@infradead.org>
 Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH v4 2/3] ACPI: platform-profile: Add platform profile support
-Message-ID: <tvhsHrDOOP32PZfdoiajK4HUiE7pV3yfxAjHkied_GvQd3tPUQXxfPAI0P84ovCJjmNYib68twP2_ESRc-fyoUzUAJkTvWsobXdWfJGW74s=@protonmail.com>
-In-Reply-To: <faa32924-f53f-b3fd-3f24-3848f45b67e1@redhat.com>
-References: <markpearson@lenovo.com> <20201126165143.32776-1-markpearson@lenovo.com> <20201126165143.32776-2-markpearson@lenovo.com> <faa32924-f53f-b3fd-3f24-3848f45b67e1@redhat.com>
+Subject: Re: [PATCH v4 3/3] platform/x86: thinkpad_acpi: Add platform profile support
+Message-ID: <TdKdryhtwENRgSeQDP9Wa26xQkjONAjw8_sG43rTWK-z30pshFInUWuucPKhaX3qI7yirOqIbyMCMpRnA6sDJewK0b1VJP3z3vy9eBeI2n0=@protonmail.com>
+In-Reply-To: <8e738a62-2d1b-0357-7ef6-fb080d365064@redhat.com>
+References: <markpearson@lenovo.com> <20201126165143.32776-1-markpearson@lenovo.com> <20201126165143.32776-3-markpearson@lenovo.com> <ioprVbNER4h0HTVvyj2ElXiuNaSPjl8ycgp4XtOtj-Iwe4_6qnNRLYuvxIJKE2ULGPTRURY-1Dr9plCocTnx2S_ugBn7INWZScnn4-pTq4c=@protonmail.com> <8e738a62-2d1b-0357-7ef6-fb080d365064@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -60,94 +60,55 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 Hi
 
 
-2020. november 28., szombat 15:08 keltez=C3=A9ssel, Hans de Goede =C3=ADrta=
-:
+2020. november 28., szombat 16:00 keltez=C3=A9ssel, Hans de Goede <hdegoede=
+@redhat.com> =C3=ADrta:
 
 > [...]
-> > +static_assert(ARRAY_SIZE(profile_names) =3D=3D platform_profile_perfor=
-m+1);
+> >> +static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+> >> +{
+> >> +=09int err, output;
+> >> +
+> >> +=09dytc_profile_available =3D false;
+> >> +=09dytc_ignore_next_event =3D false;
+> >> +
+> >> +=09err =3D dytc_command(DYTC_CMD_QUERY, &output);
+> >> +=09/*
+> >> +=09 * If support isn't available (ENODEV) then don't return an error
+> >> +=09 * and don't create the sysfs group
+> >> +=09 */
+> >> +=09if (err =3D=3D -ENODEV)
+> >> +=09=09return 0;
+> >> +=09/* For all other errors we can flag the failure */
+> >> +=09if (err)
+> >> +=09=09return err;
+> >> +
+> >> +=09/* Check DYTC is enabled and supports mode setting */
+> >> +=09if (output & BIT(DYTC_QUERY_ENABLE_BIT)) {
+> >> +=09=09/* Only DYTC v5.0 and later has this feature. */
+> >> +=09=09int dytc_version;
+> >> +
+> >> +=09=09dytc_version =3D (output >> DYTC_QUERY_REV_BIT) & 0xF;
+> >> +=09=09if (dytc_version >=3D 5) {
+> >> +=09=09=09dbg_printk(TPACPI_DBG_INIT,
+> >> +=09=09=09=09   "DYTC version %d: thermal mode available\n", dytc_vers=
+ion);
+> >> +=09=09=09/* Create platform_profile structure and register */
+> >> +=09=09=09do {
+> >> +=09=09=09=09err =3D platform_profile_register(&dytc_profile);
+> >> +=09=09=09} while (err =3D=3D -EINTR);
+> >> [...]
+> >
+> > I'm wondering if this loop is really necessary?
 >
-> It would be better to add an extra member/entry at the end of the enum
-> named platform_profile_no_profiles; and then use that instead of
-> platform_profile_perform+1. Also see below where I use this too.
->
-
-I'm not sure if it's just me, but when I read "no_profiles", then "number o=
-f probiles"
-is not the first thing that comes to mind, maybe _end, _last, _max, etc.
-would be harder to mistake for something else? What do you think?
-
-
-> > +
-> > +static ssize_t platform_profile_choices_show(struct device *dev,
-> > +=09=09=09=09=09struct device_attribute *attr,
-> > +=09=09=09=09=09char *buf)
-> > +{
-> > +=09int len =3D 0;
-> > +=09int err, i;
-> > +
-> > +=09err =3D mutex_lock_interruptible(&profile_lock);
-> > +=09if (err)
-> > +=09=09return err;
-> > +
-> > +=09if (!cur_profile) {
-> > +=09=09mutex_unlock(&profile_lock);
-> > +=09=09return -ENODEV;
-> > +=09}
-> > +
-> > +=09if (!cur_profile->choices) {
-> > +=09=09mutex_unlock(&profile_lock);
-> > +=09=09return sysfs_emit(buf, "\n");
-> > +=09}
->
-> If choices is empty, the for below will never print anything and
-> the end result is still just emitting "\n", so this whole if
-> block is unnecessary and can be removed.
->
-> > +
-> > +=09for (i =3D 0; i < ARRAY_SIZE(profile_names); i++) {
-> > +=09=09if (cur_profile->choices & BIT(i)) {
->
-> Please change the type of choices to an unsigned long array, like this:
->
-> =09unsigned long choices[BITS_TO_LONGS(platform_profile_no_profiles)];
+> It is the result of using mutex_interruptible inside platform_profile_reg=
+ister(),
+> once that is fixed (as I just requested in my review of patch 2/3) then t=
+his loop
+> can go away.
 >
 
-Sorry for the ignorant question, but does this play well with initializatio=
-n?
-Can something like this be done easily?
-```
-struct platform_profile_handler pph =3D {
-  .choices =3D BIT(...) | BIT(...) | etc.
-};
-```
-Or do you need to use something like `__set_bit()` in a function?
-
-
-> [...]
-> > +int platform_profile_register(const struct platform_profile_handler *p=
-prof)
-> > +{
-> > +=09int err;
->
-> Maybe sanity check the platform_profile_handler a bit here,
-> I think it would be ok to check that choices, profile_set and profile_get
-> are all not 0 / NULL here and otherwise just return -EINVAL; Doing so
-> allows making the code above a bit simpler, also removing some exit
-> paths which require an unlock before exiting.
->
-> > +
-> > +=09err =3D mutex_lock_interruptible(&profile_lock);
-> > +=09if (err)
-> > +=09=09return err;
->
-> Please use a regular mutex_lock here, this is called during
-> driver probing, so no need to handle Ctrl+C and other signals.
-> [...]
-
-I believe insmod/modprobe can be interrupted,
-but I agree that's not really of any concern here.
-
+Thank you, I see that, my question should've been "why not simply fail and
+return the error?", but with your requested change the question is moot.
 
 
 Regards,
