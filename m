@@ -2,34 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AFA2C72AC
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Nov 2020 23:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7F82C771E
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Nov 2020 02:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgK1VuO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Nov 2020 16:50:14 -0500
-Received: from mail-41104.protonmail.ch ([185.70.41.104]:15240 "EHLO
-        mail-41104.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729360AbgK1S0U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Nov 2020 13:26:20 -0500
-Received: from mail-03.mail-europe.com (mail-03.mail-europe.com [91.134.188.129])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        id S1726885AbgK2BNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Nov 2020 20:13:35 -0500
+Received: from mail1.bemta24.messagelabs.com ([67.219.250.115]:61362 "EHLO
+        mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726314AbgK2BNf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 28 Nov 2020 20:13:35 -0500
+Received: from [100.112.133.178] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-b.us-west-2.aws.symcld.net id 4A/D5-49214-574F2CF5; Sun, 29 Nov 2020 01:08:05 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKKsWRWlGSWpSXmKPExsWSLveKXbf0y6F
+  4g6Ybohb7r0tYdC00sFh4/xSrxddvt9kt3hyfzmSxfF8/o8XHZRwWnzsms1is3vOC2WLtl3ls
+  FmdOX2J14PaYNHMGs8fOWXfZPX5tW8PisXmFlse8k4EePW2bmDze77vK5rHlajuLx+dNcgGcU
+  ayZeUn5FQmsGTvnvmEt2C1e8ebuepYGxlnCXYxcHEIC/xglJp/exgjhvGCUOP5lOlMXIyeHsE
+  CCxKHma6xdjBwcIgL2Ei+eBIHUMAs0s0hc/byCCaKhlUni98qj7CANbALaElu2/GIDsXkFbCV
+  OP37OCmKzCKhKHJr0HywuKhAusX7JSkaIGkGJkzOfsIAM4hToYpT4vv0eC0iCWcBCYub884wQ
+  trjErSfzmSBseYnmrbOZQWwJAQWJlXcOs0HYCRLLXt5hnsAoOAvJ3FlIRs1CMmoWklELGFlWM
+  ZonFWWmZ5TkJmbm6BoaGOgaGhrpGhqb6pqa6iVW6SbplRbrlqcWl+ga6SWWF+sVV+Ym56To5a
+  WWbGIExmZKQbv5DsYXrz/oHWKU5GBSEuX1un4oXogvKT+lMiOxOCO+qDQntfgQowwHh5IEb/4
+  noJxgUWp6akVaZg4wTcCkJTh4lER4D4CkeYsLEnOLM9MhUqcYFaXEeeeBJARAEhmleXBtsNR0
+  iVFWSpiXkYGBQYinILUoN7MEVf4VozgHo5IwLx/IFJ7MvBK46a+AFjMBLXb5vx9kcUkiQkqqg
+  ckl1LZiYg/7P08R68+3ArlclBceX6dy4Yb/O/1n17OfiNRe4JueY2K0rzNww8FIW3fxv49TtN
+  VUVgv2navayLKmU//xx+AjVyb3l94wE793l/t3T93X+qvr38UmX32hovJ6xqtfRdMumTIc5uY
+  Ia8lc9Txcz2aiwSm+J9efrl62ZUXmyytCzBlh+gFz1jzIyrNlKdco2ba27lyOBXdm1bQLee5f
+  0jQSLhb848szjDije4RnN/9HU1sTkRcTIs2iQg8l7Z3QqJvCFXfM/LIpj1TFw5NtziduvowWD
+  ti0t1546QvbGLe3Uj7MVj8/OWrPe1of8MhpfsWdzGkXdt658z25MXGu29/slc0n7ArlNimxFG
+  ckGmoxFxUnAgBAXmQryAMAAA==
+X-Env-Sender: markpearson@lenovo.com
+X-Msg-Ref: server-27.tower-355.messagelabs.com!1606612083!58179!1
+X-Originating-IP: [103.30.234.7]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.60.3; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 1877 invoked from network); 29 Nov 2020 01:08:05 -0000
+Received: from unknown (HELO lenovo.com) (103.30.234.7)
+  by server-27.tower-355.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 29 Nov 2020 01:08:05 -0000
+Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail-41104.protonmail.ch (Postfix) with ESMTPS id 916C82004166;
-        Sat, 28 Nov 2020 15:59:55 +0000 (UTC)
-Authentication-Results: mail-41104.protonmail.ch;
-        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="jf3/AZVL"
-Date:   Sat, 28 Nov 2020 15:59:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1606579191;
-        bh=nCw14+eeRE2dWy7T+MmkCMBCycxMTZVyvYRhCJzD/Sg=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=jf3/AZVLT3/Ws+H7k03k9RHrcl4g6ZiznjMjIK9RbTVHSq5FpgmbzXaPlLfYkBMZ7
-         1wGsdyIHUWmk3zouyx+1cv/iIxV8VKN/alU4Ut6r+Gt1FFGtq7JcJZAQlzwYwQiqRc
-         sotrnH5tE3Gj/Yf7n5aR2QCavl5QaGfMuWk9ukfo=
-To:     Hans de Goede <hdegoede@redhat.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     Mark Pearson <markpearson@lenovo.com>,
+        by Forcepoint Email with ESMTPS id 8B2C62EA95B2E0B792A;
+        Sun, 29 Nov 2020 09:08:00 +0800 (CST)
+Received: from localhost.localdomain (10.64.84.236) by reswpmail04.lenovo.com
+ (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Sat, 28 Nov
+ 2020 17:07:54 -0800
+Subject: Re: [External] Re: [PATCH v4 2/3] ACPI: platform-profile: Add
+ platform profile support
+To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+CC:     "hdegoede@redhat.com" <hdegoede@redhat.com>,
         "mgross@linux.intel.com" <mgross@linux.intel.com>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "platform-driver-x86@vger.kernel.org" 
@@ -40,76 +64,136 @@ Cc:     Mark Pearson <markpearson@lenovo.com>,
         "eliadevito@gmail.com" <eliadevito@gmail.com>,
         "bberg@redhat.com" <bberg@redhat.com>,
         "dvhart@infradead.org" <dvhart@infradead.org>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH v4 3/3] platform/x86: thinkpad_acpi: Add platform profile support
-Message-ID: <TdKdryhtwENRgSeQDP9Wa26xQkjONAjw8_sG43rTWK-z30pshFInUWuucPKhaX3qI7yirOqIbyMCMpRnA6sDJewK0b1VJP3z3vy9eBeI2n0=@protonmail.com>
-In-Reply-To: <8e738a62-2d1b-0357-7ef6-fb080d365064@redhat.com>
-References: <markpearson@lenovo.com> <20201126165143.32776-1-markpearson@lenovo.com> <20201126165143.32776-3-markpearson@lenovo.com> <ioprVbNER4h0HTVvyj2ElXiuNaSPjl8ycgp4XtOtj-Iwe4_6qnNRLYuvxIJKE2ULGPTRURY-1Dr9plCocTnx2S_ugBn7INWZScnn4-pTq4c=@protonmail.com> <8e738a62-2d1b-0357-7ef6-fb080d365064@redhat.com>
+References: <markpearson@lenovo.com>
+ <20201126165143.32776-1-markpearson@lenovo.com>
+ <20201126165143.32776-2-markpearson@lenovo.com>
+ <GojTnStq-_lTx1Zy0JIDn-_9ZHLyyTvtUeg4BwNAS51dogIGCn4Ou8qnRTqkJSjp6pHBv3SeuFthHhL58ID3tJSb7w31Ix-2UxExy-d-tIQ=@protonmail.com>
+From:   Mark Pearson <markpearson@lenovo.com>
+Message-ID: <f9653a23-aeea-191b-163d-ecbe9d3d352d@lenovo.com>
+Date:   Sat, 28 Nov 2020 20:07:51 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+In-Reply-To: <GojTnStq-_lTx1Zy0JIDn-_9ZHLyyTvtUeg4BwNAS51dogIGCn4Ou8qnRTqkJSjp6pHBv3SeuFthHhL58ID3tJSb7w31Ix-2UxExy-d-tIQ=@protonmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.64.84.236]
+X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
+ reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+Thanks Barnabas,
 
-
-2020. november 28., szombat 16:00 keltez=C3=A9ssel, Hans de Goede <hdegoede=
-@redhat.com> =C3=ADrta:
-
-> [...]
-> >> +static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
-> >> +{
-> >> +=09int err, output;
-> >> +
-> >> +=09dytc_profile_available =3D false;
-> >> +=09dytc_ignore_next_event =3D false;
-> >> +
-> >> +=09err =3D dytc_command(DYTC_CMD_QUERY, &output);
-> >> +=09/*
-> >> +=09 * If support isn't available (ENODEV) then don't return an error
-> >> +=09 * and don't create the sysfs group
-> >> +=09 */
-> >> +=09if (err =3D=3D -ENODEV)
-> >> +=09=09return 0;
-> >> +=09/* For all other errors we can flag the failure */
-> >> +=09if (err)
-> >> +=09=09return err;
-> >> +
-> >> +=09/* Check DYTC is enabled and supports mode setting */
-> >> +=09if (output & BIT(DYTC_QUERY_ENABLE_BIT)) {
-> >> +=09=09/* Only DYTC v5.0 and later has this feature. */
-> >> +=09=09int dytc_version;
-> >> +
-> >> +=09=09dytc_version =3D (output >> DYTC_QUERY_REV_BIT) & 0xF;
-> >> +=09=09if (dytc_version >=3D 5) {
-> >> +=09=09=09dbg_printk(TPACPI_DBG_INIT,
-> >> +=09=09=09=09   "DYTC version %d: thermal mode available\n", dytc_vers=
-ion);
-> >> +=09=09=09/* Create platform_profile structure and register */
-> >> +=09=09=09do {
-> >> +=09=09=09=09err =3D platform_profile_register(&dytc_profile);
-> >> +=09=09=09} while (err =3D=3D -EINTR);
-> >> [...]
-> >
-> > I'm wondering if this loop is really necessary?
->
-> It is the result of using mutex_interruptible inside platform_profile_reg=
-ister(),
-> once that is fixed (as I just requested in my review of patch 2/3) then t=
-his loop
-> can go away.
->
-
-Thank you, I see that, my question should've been "why not simply fail and
-return the error?", but with your requested change the question is moot.
-
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
+On 2020-11-27 2:14 p.m., Barnabás Pőcze wrote:
+> Hi
+> 
+> 
+> 2020. november 26., csütörtök 17:51 keltezéssel, Mark Pearson írta:
+> 
+>> [...]
+> +static const char * const profile_names[] = {
+> +	[platform_profile_low] = "low-power",
+> +	[platform_profile_cool] = "cool",
+> +	[platform_profile_quiet] = "quiet",
+> +	[platform_profile_balance] = "balance",
+> 
+> Documentation says "balanced".
+Ah, my bad. I will correct.
+> 
+> 
+> +	[platform_profile_perform] = "performance",
+> +};
+>> [...]
+>> +static ssize_t platform_profile_show(struct device *dev,
+>> +					struct device_attribute *attr,
+>> +					char *buf)
+>> +{
+>> +	enum platform_profile_option profile = platform_profile_balance;
+>> +	int err;
+>> +
+>> +	err = mutex_lock_interruptible(&profile_lock);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	if (!cur_profile) {
+>> +		mutex_unlock(&profile_lock);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	if (!cur_profile->profile_get) {
+>> +		mutex_unlock(&profile_lock);
+>> +		return -EOPNOTSUPP;
+>> +	}
+>> +
+>> +	err = cur_profile->profile_get(&profile);
+>> +	mutex_unlock(&profile_lock);
+>> +	if (err < 0)
+>> +		return err;
+>> +
+> 
+> In `platform_profile_store()`, you do
+> ```
+> err = cur_profile->profile_set(i);
+> if (err)
+>    return err;
+> ```
+> but here you do `if (err < 0)`, why?
+At one point I had this function returning the profile, but then it 
+ended up getting messy for handling errors. I changed it but didn't 
+change the error handling - I'll tidy this up. Thanks!
+> 
+> 
+>> +	/* Check that profile is valid index */
+>> +	if ((profile < 0) || (profile >= ARRAY_SIZE(profile_names)))
+>> +		return sysfs_emit(buf, "\n");
+>> +
+> 
+> I'd write `if (WARN_ON(profile < 0 ....))` since that is serious error in my
+> opinion which should be logged. I am also not sure if
+Will do. I've not had any experience with the WARN_ON macro before - 
+thanks for the suggestion.
+> 
+> 
+>> +	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>> +}
+>> [...]
+>> +int platform_profile_unregister(void)
+>> +{
+>> +	int err;
+>> +
+>> +	err = mutex_lock_interruptible(&profile_lock);
+>> +	if (err)
+>> +		return err;
+>> +
+> 
+> I know it was me who said to prefer `mutex_lock_interruptible()`, but in this
+> particular instance I believe `mutex_lock()` would be preferable to avoid the case
+> where the module unloading is interrupted, and thus the profile handler is not
+> unregistered properly. This could be handled in each module that uses this
+> interface, however, I believe it'd be better to handle it here.
+Agreed (and I know Hans makes the same point in his email). Your 
+suggestion makes sense, I'll switch back to mutex_lock for the register 
+and unregister functions.
+> 
+> 
+>> +	if (!cur_profile) {
+>> +		mutex_unlock(&profile_lock);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>> +	cur_profile = NULL;
+>> +	mutex_unlock(&profile_lock);
+>> +	return 0;
+>> +}
+>> [...]
+> 
+> 
+> Regards,
+> Barnabás Pőcze
+> 
+Thank you for the review!
+Mark
