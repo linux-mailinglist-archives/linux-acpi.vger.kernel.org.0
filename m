@@ -2,117 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F43F2C7738
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Nov 2020 02:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F862C78F5
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Nov 2020 12:46:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727624AbgK2Bjg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Nov 2020 20:39:36 -0500
-Received: from mail1.bemta24.messagelabs.com ([67.219.250.116]:35436 "EHLO
-        mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726472AbgK2Bjg (ORCPT
+        id S1725909AbgK2Lpw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 29 Nov 2020 06:45:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:56074 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387475AbgK2Lpw (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 28 Nov 2020 20:39:36 -0500
-Received: from [100.112.133.223] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-b.us-west-2.aws.symcld.net id F0/D2-25369-CBAF2CF5; Sun, 29 Nov 2020 01:34:52 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNKsWRWlGSWpSXmKPExsWSLveKTXfPr0P
-  xBsvuC1jsvy5h0bXQwGLh/VOsFl+/3Wa3eHN8OpPF8n39jBafOyazWKze84LZYu2XeWwWZ05f
-  YnXg8tg56y67x69ta1g8Nq/Q8ph3MtCjp20Tk8f7fVfZPLZcbWfx+LxJLoAjijUzLym/IoE14
-  9/OjSwFyzgrHq7czdTAeJi9i5GLQ0jgP6PEhzlHmCGcF4wShzd1snQxcnIIC6RK/N41FyjBwS
-  EiYC/x4kkQSA2zwHFmif0XvrFCNLQySdzYOoEZpIFNQFtiy5ZfbCA2r4CtxPvWaWCDWARUJVZ
-  3PAezRQXCJdYvWckIUSMocXLmE7A4p0AXo8TxpgAQm1nAQmLm/POMELa4xK0n85kgbHmJ5q2z
-  wXZJCChIrLxzmA3CTpBY9vIO8wRGwVlIxs5CMmoWklGzkIxawMiyitE8qSgzPaMkNzEzR9fQw
-  EDX0NBI19DYWNfMQi+xSjdJr7RYtzy1uETXSC+xvFivuDI3OSdFLy+1ZBMjMA5TClpddjD+f/
-  1B7xCjJAeTkiiv1/VD8UJ8SfkplRmJxRnxRaU5qcWHGGU4OJQkeBf8AMoJFqWmp1akZeYAUwJ
-  MWoKDR0mEV+UnUJq3uCAxtzgzHSJ1ilFRSpxXFiQhAJLIKM2Da4OloUuMslLCvIwMDAxCPAWp
-  RbmZJajyrxjFORiVhHmvgGznycwrgZv+CmgxE9Bil//7QRaXJCKkpBqY7gdMuMX8X52fhU3ui
-  J9vovz35r7/WruFiu3628zdFx9pU9+i51qZbZJ66s+Ki0zO8bl792uGmN2I5Ln5w8/Ssf5Cft
-  WXv/5mxnf+r5/iskD5gWyAVvGz7xLbql4HpIeWiyvJbRQ657C8aq9GW0LfRqc7M/fdltXa/eT
-  xr9Zlct9LFtZdv/Eigmnv4r+n5WuWKT2abcjYWy7u+utewEwDE9tnL7esqNTewbVwr0z84skZ
-  hTb714TxbeC5zdvqa7eGwWzBC6/YpVXli/dIz3TKMN98ozLJOc2dO+ywgb72nhPnUruW3LMtX
-  LL257fK1OcTeSQ9s16o/O+43Ptmmu7VlX/ltn/w3HZMwPLr8+chSizFGYmGWsxFxYkAacqbzr
-  4DAAA=
-X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-10.tower-356.messagelabs.com!1606613690!57407!1
-X-Originating-IP: [103.30.234.6]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.60.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 28018 invoked from network); 29 Nov 2020 01:34:52 -0000
-Received: from unknown (HELO lenovo.com) (103.30.234.6)
-  by server-10.tower-356.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 29 Nov 2020 01:34:52 -0000
-Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by Forcepoint Email with ESMTPS id A35C8EB7E4FC0B96B1E7;
-        Sun, 29 Nov 2020 09:34:47 +0800 (CST)
-Received: from localhost.localdomain (10.64.84.236) by reswpmail04.lenovo.com
- (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Sat, 28 Nov
- 2020 17:34:43 -0800
-Subject: Re: [External] Re: [PATCH v4 3/3] platform/x86: thinkpad_acpi: Add
+        Sun, 29 Nov 2020 06:45:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606650265;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=slJJEEbmDh3vvjhZs0GJlf8EjXfcfYNdcj8ThLPhrpM=;
+        b=aY2Ye2RiZpNkM0iNvKhY+htgWUcO/mjFlo+Emnakg0uA6za96t7NVyPO6D8b/RbMLrZGzo
+        hmXvT7v78nFO3WoolZ0o1KIEo6KkctMAapYWlGxCBN5vxOTMyp5WQ31HNxfa6GI8s95Ky1
+        aOzt6kAne2hQ7ZCz565DzgOeQsvzD5A=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-496-jSvl2bdlMQStnMKwIb9SeQ-1; Sun, 29 Nov 2020 06:44:23 -0500
+X-MC-Unique: jSvl2bdlMQStnMKwIb9SeQ-1
+Received: by mail-ed1-f71.google.com with SMTP id g1so5026319edk.0
+        for <linux-acpi@vger.kernel.org>; Sun, 29 Nov 2020 03:44:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=slJJEEbmDh3vvjhZs0GJlf8EjXfcfYNdcj8ThLPhrpM=;
+        b=S70CMQmN+fKZzmsCYGn0POvGHvjhjoTJrTcncvGaAoR8jVqxQEIfWZjfEm7T/DP8oY
+         9PL8CHikgOvO3CXX5yJMNl6Ag8IWCeyFmS/mwHJKcZtmPH42EYH0+iTlGKByuqsdLbCZ
+         sCTMOYQH7nLt3RXZbn7lfY6txvHwdmoMgzCz6H+5/Zf4ZHlMHUFYYeWbreB40AO4sMMW
+         IjbYcjUjyBbVg1eTRsyrCe2NC7f0qseAIaTaEse9U0Psad7lGkxJh97F0U5whJycAHPA
+         WQdxPnct3jqYkkp2Czl6/SZuD/m490DSUMar3Vh+qipn751PONeaRVuRS9cUgIeWeCAH
+         Qvqw==
+X-Gm-Message-State: AOAM5307mnMD9OLRv/139MYQLKeHXqgttU2qdbpjvhn4YndFf18mvYR1
+        OvbfyRq2gSm+xSw+D8j5yv0BP1wkqC5NaAynTjRRQStU7uz21qNrHj6tZ6aB3o0FD0duc9HLZER
+        the7qgIPcO/NaOtbSvmRvzQ==
+X-Received: by 2002:aa7:d1c2:: with SMTP id g2mr10856804edp.8.1606650261727;
+        Sun, 29 Nov 2020 03:44:21 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw4KtJojlIH0/0TCr6HjwxcXOivaK5Cki1hLs05N74t191TPt9ITv2JDmg4uMuCQKyskWYssQ==
+X-Received: by 2002:aa7:d1c2:: with SMTP id g2mr10856792edp.8.1606650261614;
+        Sun, 29 Nov 2020 03:44:21 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id dk14sm7199855ejb.97.2020.11.29.03.44.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Nov 2020 03:44:20 -0800 (PST)
+Subject: Re: [External] Re: [PATCH v4 2/3] ACPI: platform-profile: Add
  platform profile support
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-CC:     "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+To:     Mark Pearson <markpearson@lenovo.com>,
+        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+Cc:     "mgross@linux.intel.com" <mgross@linux.intel.com>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "platform-driver-x86@vger.kernel.org" 
         <platform-driver-x86@vger.kernel.org>,
         "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
         "hadess@hadess.net" <hadess@hadess.net>,
+        "mario.limnociello@dell.com" <mario.limnociello@dell.com>,
         "eliadevito@gmail.com" <eliadevito@gmail.com>,
         "bberg@redhat.com" <bberg@redhat.com>,
         "dvhart@infradead.org" <dvhart@infradead.org>
 References: <markpearson@lenovo.com>
  <20201126165143.32776-1-markpearson@lenovo.com>
- <20201126165143.32776-3-markpearson@lenovo.com>
- <ioprVbNER4h0HTVvyj2ElXiuNaSPjl8ycgp4XtOtj-Iwe4_6qnNRLYuvxIJKE2ULGPTRURY-1Dr9plCocTnx2S_ugBn7INWZScnn4-pTq4c=@protonmail.com>
-From:   Mark Pearson <markpearson@lenovo.com>
-Message-ID: <26f5118a-2bbd-d5c6-a1ff-c9fb80e5f5f7@lenovo.com>
-Date:   Sat, 28 Nov 2020 20:34:40 -0500
+ <20201126165143.32776-2-markpearson@lenovo.com>
+ <faa32924-f53f-b3fd-3f24-3848f45b67e1@redhat.com>
+ <tvhsHrDOOP32PZfdoiajK4HUiE7pV3yfxAjHkied_GvQd3tPUQXxfPAI0P84ovCJjmNYib68twP2_ESRc-fyoUzUAJkTvWsobXdWfJGW74s=@protonmail.com>
+ <79f67d13-0422-d9f0-3014-a6339f591a25@lenovo.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <093d1d21-ddf7-20d4-7031-5252c60db1ef@redhat.com>
+Date:   Sun, 29 Nov 2020 12:44:20 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <ioprVbNER4h0HTVvyj2ElXiuNaSPjl8ycgp4XtOtj-Iwe4_6qnNRLYuvxIJKE2ULGPTRURY-1Dr9plCocTnx2S_ugBn7INWZScnn4-pTq4c=@protonmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <79f67d13-0422-d9f0-3014-a6339f591a25@lenovo.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.64.84.236]
-X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
- reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Barnabas,
+Hi,
 
-On 2020-11-27 2:22 p.m., Barnabás Pőcze wrote:
-> Hi
+On 11/29/20 2:19 AM, Mark Pearson wrote:
 > 
 > 
-> 2020. november 26., csütörtök 17:51 keltezéssel, Mark Pearson írta:
-> 
->> [...]
->> +static bool dytc_ignore_next_event;
-> 
-> As a sidenote: can the profile switching be triggered by means that's not the
-> `/sys/firmware/acpi/platform_profile` attribute (e.g. a physical button)?
-> Because if so, then I'm not sure if `dytc_ignore_next_event` achieves its purpose
-> robustly, although I believe it won't cause issues in practice. I think it could
-> be made more robust using a mutex to serialize and synchronize access to the DYTC
-> interface, but I'm not sure if the effort is worth it.
-> 
+> On 2020-11-28 10:37 a.m., Barnabás Pőcze wrote:
+>> Hi
+>>
+>>
+>> 2020. november 28., szombat 15:08 keltezéssel, Hans de Goede írta:
+>>
+>>> [...]
+>>>> +static_assert(ARRAY_SIZE(profile_names) == platform_profile_perform+1);
+>>>
+>>> It would be better to add an extra member/entry at the end of the enum
+>>> named platform_profile_no_profiles; and then use that instead of
+>>> platform_profile_perform+1. Also see below where I use this too.
+>>>
+>>
+>> I'm not sure if it's just me, but when I read "no_profiles", then "number of probiles"
+>> is not the first thing that comes to mind, maybe _end, _last, _max, etc.
+>> would be harder to mistake for something else? What do you think?
+>>
+> FWIW - my vote would be platform_profile_last, it just seems to fit well when reading the code.
 
-A user can do FN+L, FN+M, FN+H to switch mode (though hopefully with 
-this API and the support in user space they won't need to do that any more).
+I'm fine with platform_profile_last, or iow please feel free to paint this
+bikeshed in any color you like :)
 
-So I think you're right about this area having issues, and Hans picks up 
-on this too. I had avoided a mutex as I thought that would cause 
-problems in the event handler. In Han's email he suggests an atomic int 
-and I think that could work nicely but will have to try it out and see.
+Regards,
 
-Regardless - I agree this area needs some work and I'll look into it
-
-Thanks!
-Mark
+Hans
 
