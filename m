@@ -2,257 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A74F2C8B84
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 18:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C7F2C8B5C
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 18:40:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387779AbgK3RlC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 12:41:02 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8219 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728499AbgK3RlB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 12:41:01 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ClCCf5RwYzkjdj;
-        Tue,  1 Dec 2020 01:39:26 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.58) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 1 Dec 2020 01:39:51 +0800
-From:   John Garry <john.garry@huawei.com>
-To:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
-        <lenb@kernel.org>, <rjw@rjwysocki.net>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
-        <maz@kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <dwagner@suse.de>, "John Garry" <john.garry@huawei.com>
-Subject: [PATCH v4 5/5] scsi: hisi_sas: Expose HW queues for v2 hw
-Date:   Tue, 1 Dec 2020 01:35:59 +0800
-Message-ID: <1606757759-6076-6-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1606757759-6076-1-git-send-email-john.garry@huawei.com>
-References: <1606757759-6076-1-git-send-email-john.garry@huawei.com>
+        id S1729192AbgK3RiG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 12:38:06 -0500
+Received: from mga11.intel.com ([192.55.52.93]:41459 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729024AbgK3RiG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Nov 2020 12:38:06 -0500
+IronPort-SDR: 3N4Qei0+GVdttbD0qsAwD9sdqU8JUMD/lbpF7cPm5fkjtEIdpuICTJL2szpibwzrr5yGdhqBzn
+ 0HsgFB7NBSig==
+X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="169178662"
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
+   d="scan'208";a="169178662"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 09:36:25 -0800
+IronPort-SDR: S5RgzSOMvj9lyrQk4xZKqFlumiDi74YvoddutW32Dw2orZsbyJH1/OwL7wgjxINs7HXrlfp5wL
+ W5MJwW1Mw6EQ==
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
+   d="scan'208";a="334738822"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 09:36:18 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kjn70-00B63R-Bw; Mon, 30 Nov 2020 19:37:18 +0200
+Date:   Mon, 30 Nov 2020 19:37:18 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
+        lenb@kernel.org, gregkh@linuxfoundation.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
+        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
+        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jorhand@linux.microsoft.com, kitakar@gmail.com,
+        heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 04/18] software_node: Enforce parent before child
+ ordering of nodes array for software_node_register_nodes()
+Message-ID: <20201130173718.GP4077@smile.fi.intel.com>
+References: <20201130133129.1024662-1-djrscally@gmail.com>
+ <20201130133129.1024662-5-djrscally@gmail.com>
+ <20201130173530.GO4077@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.58]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201130173530.GO4077@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As a performance enhancement, make the completion queue interrupts managed.
+On Mon, Nov 30, 2020 at 07:35:30PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 30, 2020 at 01:31:15PM +0000, Daniel Scally wrote:
 
-In addition, in commit bf0beec0607d ("blk-mq: drain I/O when all CPUs in a
-hctx are offline"), CPU hotplug for MQ devices using managed interrupts
-is made safe. So expose HW queues to blk-mq to take advantage of this.
+...
 
-Flag Scsi_host.host_tagset is also set to ensure that the HBA is not sent
-more commands than it can handle. However the driver still does not use
-request tag for IPTT as there are many HW bugs means that special rules
-apply for IPTT allocation.
+> >  	for (i = 0; nodes[i].name; i++) {
+> > +		if (nodes[i].parent)
+> > +			if (!software_node_to_swnode(nodes[i].parent)) {
+> > +				ret = -EINVAL;
+> > +				goto err_unregister_nodes;
+> > +			}
+> > +
+> 
+> Besides that can we pack these conditionals together?
+> 
+> 		if (nodes[i].parent && !software_node_to_swnode(nodes[i].parent)) {
 
-Signed-off-by: John Garry <john.garry@huawei.com>
----
- drivers/scsi/hisi_sas/hisi_sas.h       |  4 ++
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 11 +++++
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 66 +++++++++++++++++++++-----
- 3 files changed, 68 insertions(+), 13 deletions(-)
+For being it shorter you may use temporary variable:
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
-index a25cfc11c96d..aa67807c5693 100644
---- a/drivers/scsi/hisi_sas/hisi_sas.h
-+++ b/drivers/scsi/hisi_sas/hisi_sas.h
-@@ -14,6 +14,7 @@
- #include <linux/debugfs.h>
- #include <linux/dmapool.h>
- #include <linux/iopoll.h>
-+#include <linux/irq.h>
- #include <linux/lcm.h>
- #include <linux/libata.h>
- #include <linux/mfd/syscon.h>
-@@ -312,6 +313,7 @@ enum {
- 
- struct hisi_sas_hw {
- 	int (*hw_init)(struct hisi_hba *hisi_hba);
-+	int (*interrupt_preinit)(struct hisi_hba *hisi_hba);
- 	void (*setup_itct)(struct hisi_hba *hisi_hba,
- 			   struct hisi_sas_device *device);
- 	int (*slot_index_alloc)(struct hisi_hba *hisi_hba,
-@@ -418,6 +420,8 @@ struct hisi_hba {
- 	u32 refclk_frequency_mhz;
- 	u8 sas_addr[SAS_ADDR_SIZE];
- 
-+	int *irq_map; /* v2 hw */
-+
- 	int n_phy;
- 	spinlock_t lock;
- 	struct semaphore sem;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index c8dd8588f800..624c5ec723fb 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -2614,6 +2614,13 @@ static struct Scsi_Host *hisi_sas_shost_alloc(struct platform_device *pdev,
- 	return NULL;
- }
- 
-+static int hisi_sas_interrupt_preinit(struct hisi_hba *hisi_hba)
-+{
-+	if (hisi_hba->hw->interrupt_preinit)
-+		return hisi_hba->hw->interrupt_preinit(hisi_hba);
-+	return 0;
-+}
-+
- int hisi_sas_probe(struct platform_device *pdev,
- 		   const struct hisi_sas_hw *hw)
- {
-@@ -2671,6 +2678,10 @@ int hisi_sas_probe(struct platform_device *pdev,
- 		sha->sas_port[i] = &hisi_hba->port[i].sas_port;
- 	}
- 
-+	rc = hisi_sas_interrupt_preinit(hisi_hba);
-+	if (rc)
-+		goto err_out_ha;
-+
- 	rc = scsi_add_host(shost, &pdev->dev);
- 	if (rc)
- 		goto err_out_ha;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index b57177b52fac..9adfdefef9ca 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -3302,6 +3302,28 @@ static irq_handler_t fatal_interrupts[HISI_SAS_FATAL_INT_NR] = {
- 	fatal_axi_int_v2_hw
- };
- 
-+#define CQ0_IRQ_INDEX (96)
-+
-+static int hisi_sas_v2_interrupt_preinit(struct hisi_hba *hisi_hba)
-+{
-+	struct platform_device *pdev = hisi_hba->platform_dev;
-+	struct Scsi_Host *shost = hisi_hba->shost;
-+	struct irq_affinity desc = {
-+		.pre_vectors = CQ0_IRQ_INDEX,
-+		.post_vectors = 16,
-+	};
-+	int resv = desc.pre_vectors + desc.post_vectors, minvec = resv + 1, nvec;
-+
-+	nvec = devm_platform_get_irqs_affinity(pdev, &desc, minvec, 128,
-+					       &hisi_hba->irq_map);
-+	if (nvec < 0)
-+		return nvec;
-+
-+	shost->nr_hw_queues = hisi_hba->cq_nvecs = nvec - resv;
-+
-+	return 0;
-+}
-+
- /*
-  * There is a limitation in the hip06 chipset that we need
-  * to map in all mbigen interrupts, even if they are not used.
-@@ -3310,14 +3332,11 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- {
- 	struct platform_device *pdev = hisi_hba->platform_dev;
- 	struct device *dev = &pdev->dev;
--	int irq, rc = 0, irq_map[128];
-+	int irq, rc = 0;
- 	int i, phy_no, fatal_no, queue_no;
- 
--	for (i = 0; i < 128; i++)
--		irq_map[i] = platform_get_irq(pdev, i);
--
- 	for (i = 0; i < HISI_SAS_PHY_INT_NR; i++) {
--		irq = irq_map[i + 1]; /* Phy up/down is irq1 */
-+		irq = hisi_hba->irq_map[i + 1]; /* Phy up/down is irq1 */
- 		rc = devm_request_irq(dev, irq, phy_interrupts[i], 0,
- 				      DRV_NAME " phy", hisi_hba);
- 		if (rc) {
-@@ -3331,7 +3350,7 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 	for (phy_no = 0; phy_no < hisi_hba->n_phy; phy_no++) {
- 		struct hisi_sas_phy *phy = &hisi_hba->phy[phy_no];
- 
--		irq = irq_map[phy_no + 72];
-+		irq = hisi_hba->irq_map[phy_no + 72];
- 		rc = devm_request_irq(dev, irq, sata_int_v2_hw, 0,
- 				      DRV_NAME " sata", phy);
- 		if (rc) {
-@@ -3343,7 +3362,7 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 	}
- 
- 	for (fatal_no = 0; fatal_no < HISI_SAS_FATAL_INT_NR; fatal_no++) {
--		irq = irq_map[fatal_no + 81];
-+		irq = hisi_hba->irq_map[fatal_no + 81];
- 		rc = devm_request_irq(dev, irq, fatal_interrupts[fatal_no], 0,
- 				      DRV_NAME " fatal", hisi_hba);
- 		if (rc) {
-@@ -3354,24 +3373,22 @@ static int interrupt_init_v2_hw(struct hisi_hba *hisi_hba)
- 		}
- 	}
- 
--	for (queue_no = 0; queue_no < hisi_hba->queue_count; queue_no++) {
-+	for (queue_no = 0; queue_no < hisi_hba->cq_nvecs; queue_no++) {
- 		struct hisi_sas_cq *cq = &hisi_hba->cq[queue_no];
- 
--		cq->irq_no = irq_map[queue_no + 96];
-+		cq->irq_no = hisi_hba->irq_map[queue_no + 96];
- 		rc = devm_request_threaded_irq(dev, cq->irq_no,
- 					       cq_interrupt_v2_hw,
- 					       cq_thread_v2_hw, IRQF_ONESHOT,
- 					       DRV_NAME " cq", cq);
- 		if (rc) {
- 			dev_err(dev, "irq init: could not request cq interrupt %d, rc=%d\n",
--				irq, rc);
-+					cq->irq_no, rc);
- 			rc = -ENOENT;
- 			goto err_out;
- 		}
-+		cq->irq_mask = irq_get_affinity_mask(cq->irq_no);
- 	}
--
--	hisi_hba->cq_nvecs = hisi_hba->queue_count;
--
- err_out:
- 	return rc;
- }
-@@ -3529,6 +3546,26 @@ static struct device_attribute *host_attrs_v2_hw[] = {
- 	NULL
- };
- 
-+static int map_queues_v2_hw(struct Scsi_Host *shost)
-+{
-+	struct hisi_hba *hisi_hba = shost_priv(shost);
-+	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
-+	const struct cpumask *mask;
-+	unsigned int queue, cpu;
-+
-+	for (queue = 0; queue < qmap->nr_queues; queue++) {
-+		mask = irq_get_affinity_mask(hisi_hba->irq_map[96 + queue]);
-+		if (!mask)
-+			continue;
-+
-+		for_each_cpu(cpu, mask)
-+			qmap->mq_map[cpu] = qmap->queue_offset + queue;
-+	}
-+
-+	return 0;
-+
-+}
-+
- static struct scsi_host_template sht_v2_hw = {
- 	.name			= DRV_NAME,
- 	.proc_name		= DRV_NAME,
-@@ -3553,10 +3590,13 @@ static struct scsi_host_template sht_v2_hw = {
- #endif
- 	.shost_attrs		= host_attrs_v2_hw,
- 	.host_reset		= hisi_sas_host_reset,
-+	.map_queues		= map_queues_v2_hw,
-+	.host_tagset		= 1,
- };
- 
- static const struct hisi_sas_hw hisi_sas_v2_hw = {
- 	.hw_init = hisi_sas_v2_init,
-+	.interrupt_preinit = hisi_sas_v2_interrupt_preinit,
- 	.setup_itct = setup_itct_v2_hw,
- 	.slot_index_alloc = slot_index_alloc_quirk_v2_hw,
- 	.alloc_dev = alloc_dev_quirk_v2_hw,
+		software_node *parent;
+
+		parent = nodes[i].parent;
+		if (parent && !software_node_to_swnode(parent)) {
+
 -- 
-2.26.2
+With Best Regards,
+Andy Shevchenko
+
 
