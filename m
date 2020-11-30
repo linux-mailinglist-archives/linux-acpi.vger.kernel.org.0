@@ -2,90 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9A62C8DF7
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 20:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 293712C8E65
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 20:49:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729632AbgK3TVy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 14:21:54 -0500
-Received: from mga04.intel.com ([192.55.52.120]:54688 "EHLO mga04.intel.com"
+        id S1728454AbgK3Tsa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 14:48:30 -0500
+Received: from mga12.intel.com ([192.55.52.136]:18516 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729923AbgK3TVv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Nov 2020 14:21:51 -0500
-IronPort-SDR: YVHvXH8I7oDMU4xxRVOv6ayPsDMoeBVHK+oHhtlP2BMt9bikvbOe3Aq302M13Ln8Kebl72ff8j
- VCXVo8pERK3A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="170131209"
+        id S1726769AbgK3Tsa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Nov 2020 14:48:30 -0500
+IronPort-SDR: KZ/oxSGdfh5OF/l7osVHwEjepXTeXnQkYm/z072eQHXC87X8JSS/27dOigaIYJNOw+DBP8vENZ
+ EEilWazL7uRw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="151954732"
 X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
-   d="scan'208";a="170131209"
+   d="scan'208";a="151954732"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 11:20:22 -0800
-IronPort-SDR: mqiKdYwMMfoR340DKxtCrVCzYi5Kab7J2Rxf3iDZByrcGhePtymLSQEZYeYk3bW4qSNCPpuBYh
- 0uZN7BmBXEMQ==
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 11:47:49 -0800
+IronPort-SDR: RZGJ6XKIOo4T4uaOBma4EwnXA7UglfaiAX3AfgQccRtzCnsHZV8sUqEIJGlyHHI+D7tktO2W2Q
+ KCeaRUhp3Cmw==
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
-   d="scan'208";a="314682847"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 11:20:16 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kjojc-00B76i-KG; Mon, 30 Nov 2020 21:21:16 +0200
-Date:   Mon, 30 Nov 2020 21:21:16 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        gregkh@linuxfoundation.org, mika.westerberg@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 02/18] property: Add support for calling
- fwnode_graph_get_endpoint_by_id() for fwnode->secondary
-Message-ID: <20201130192116.GZ4077@smile.fi.intel.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-3-djrscally@gmail.com>
- <20201130172900.GM4077@smile.fi.intel.com>
- <20201130172857.GS14465@pendragon.ideasonboard.com>
- <20201130175319.GS4077@smile.fi.intel.com>
- <20201130184141.GX4141@pendragon.ideasonboard.com>
+   d="scan'208";a="404844846"
+Received: from sibelius.jf.intel.com ([10.54.75.172])
+  by orsmga001.jf.intel.com with ESMTP; 30 Nov 2020 11:47:49 -0800
+From:   Erik Kaneda <erik.kaneda@intel.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 0/6] ACPICA version 20201113
+Date:   Mon, 30 Nov 2020 11:20:42 -0800
+Message-Id: <20201130192048.3093726-1-erik.kaneda@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130184141.GX4141@pendragon.ideasonboard.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 08:41:41PM +0200, Laurent Pinchart wrote:
-> On Mon, Nov 30, 2020 at 07:53:19PM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 30, 2020 at 07:28:57PM +0200, Laurent Pinchart wrote:
-> > > On Mon, Nov 30, 2020 at 07:29:00PM +0200, Andy Shevchenko wrote:
+This patch series contains the linux-ized release of ACPICA version
+20201113. For Linux, the most notable change is a fix in a memory
+leak that occurs when evaluating _CID as well as handling orphan _REG
+methods for GPIO OperationRegions.
 
-...
+Bob Moore (2):
+  ACPICA: Add 5 new UUIDs to the known UUID table
+  ACPICA: Update version to 20201113
 
-> > > We could also move the !fwnode check to the beginning of the function.
-> > 
-> > It's already there (1). What did I miss?
-> 
-> It is, but as we need an explicitly check at the end, it feels cleaner
-> to move it to the beginning. No big deal though.
+Colin Ian King (1):
+  ACPICA: Remove extreaneous "the" in comments
 
-I prefer to stick with a pattern I mentioned because we may easily to find and
-unify these ones somehow.
+Erik Kaneda (2):
+  ACPICA: Add function trace macros to improve debugging
+  ACPICA: Interpreter: fix memory leak by using use existing buffer
 
-> > 1) via fwnode_graph_get_next_endpoint() -> fwnode_call_ptr_op()
+Hans de Goede (1):
+  ACPICA: Also handle "orphan" _REG methods for GPIO OpRegions
+
+ drivers/acpi/acpica/accommon.h  |  2 +-
+ drivers/acpi/acpica/evregion.c  | 54 ++++++++++++++++-----------------
+ drivers/acpi/acpica/nspredef.c  | 10 +++---
+ drivers/acpi/acpica/nsprepkg.c  | 38 ++++++++++++-----------
+ drivers/acpi/acpica/nsrepair2.c | 39 +++++++++++-------------
+ include/acpi/acpixf.h           |  2 +-
+ include/acpi/acuuid.h           |  5 +++
+ 7 files changed, 77 insertions(+), 73 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 
