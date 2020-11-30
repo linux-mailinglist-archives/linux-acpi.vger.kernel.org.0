@@ -2,90 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B0382C8B44
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 18:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A372C8B7C
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 18:41:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387614AbgK3RgU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 12:36:20 -0500
-Received: from mga05.intel.com ([192.55.52.43]:16886 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387579AbgK3RgT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Nov 2020 12:36:19 -0500
-IronPort-SDR: VFI9a2jaQ1qkLsL4ay+s+CIPEYmoLu57QZ61C9EKfWPAv+VQs9X3AlBCyaloENj/jCkPk5sWF6
- XgZnLhaVIrFg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="257383370"
-X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
-   d="scan'208";a="257383370"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 09:34:37 -0800
-IronPort-SDR: xKJUjQ8laE51Ag27+DBSeh0uh0HukOeHAEfSp51gl9McS9F+Dcgy9QWC1bmPWGjS3LXy8cShle
- kv0Rpm1rzH7Q==
-X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
-   d="scan'208";a="345143661"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 09:34:30 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kjn5G-00B62N-Dw; Mon, 30 Nov 2020 19:35:30 +0200
-Date:   Mon, 30 Nov 2020 19:35:30 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
-        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
-        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
-        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
-        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 04/18] software_node: Enforce parent before child
- ordering of nodes array for software_node_register_nodes()
-Message-ID: <20201130173530.GO4077@smile.fi.intel.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-5-djrscally@gmail.com>
+        id S2387571AbgK3Rkq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 12:40:46 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:8889 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728451AbgK3Rkq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 12:40:46 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4ClCCp0bcGz76Ms;
+        Tue,  1 Dec 2020 01:39:34 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.58) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 1 Dec 2020 01:39:49 +0800
+From:   John Garry <john.garry@huawei.com>
+To:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+        <lenb@kernel.org>, <rjw@rjwysocki.net>,
+        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
+        <maz@kernel.org>
+CC:     <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <dwagner@suse.de>, "John Garry" <john.garry@huawei.com>
+Subject: [PATCH v4 0/5] Support managed interrupts for platform devices
+Date:   Tue, 1 Dec 2020 01:35:54 +0800
+Message-ID: <1606757759-6076-1-git-send-email-john.garry@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130133129.1024662-5-djrscally@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 01:31:15PM +0000, Daniel Scally wrote:
-> Registering software_nodes with the .parent member set to point to a
-> currently unregistered software_node has the potential for problems,
-> so enforce parent -> child ordering in arrays passed to this function.
+So far, managed interrupts are only used for PCI MSIs. This series adds
+platform device support for managed interrupts. Initially this topic was
+discussed at [0].
 
-I agree with Laurent.
+The method to enable managed interrupts is to allocate a group of IRQs for
+the device, and then switch the interrupts to managed - this is done
+through new function irq_update_affinity_desc().
 
-...
+Function devm_platform_get_irqs_affinity() is added as a helper to manage
+this work, such that we don't need to export irq_update_affinity_desc() or
+irq_create_affinity_masks().
 
->  	for (i = 0; nodes[i].name; i++) {
-> +		if (nodes[i].parent)
-> +			if (!software_node_to_swnode(nodes[i].parent)) {
-> +				ret = -EINVAL;
-> +				goto err_unregister_nodes;
-> +			}
-> +
+In the devm_platform_get_irqs_affinity() release call a new platform
+method is used to "put" an irq. The reason for this is that per-irq
+mapping (and irq_desc) needs to be recreated anew for re-probing the LLDD,
+such that we don't attempt to reconfigure the managed or any other flag
+for an irq_desc.
 
-Besides that can we pack these conditionals together?
+For now, the HiSilicon SAS v2 hw driver is switched over. This is used
+in the D05 dev board.
 
-		if (nodes[i].parent && !software_node_to_swnode(nodes[i].parent)) {
+Performance gain observed for 6x SAS SSDs is ~357K -> 420K IOPs for fio read.
 
+This series is tested based on Marc's "MSI: Track device proxying when
+allocating MSIs" series, [1].
 
-Do we have sane ordering in software_node_unregister_nodes()?
+[0] https://lore.kernel.org/lkml/84a9411b-4ae3-1928-3d35-1666f2687ec8@huawei.com/
+[1] https://lore.kernel.org/lkml/20201129135208.680293-1-maz@kernel.org/
+
+Changes since v3:
+- Fix genirq change to re-activate interrupt if we have deactivated it
+- Remove standalone platform_put_irq(), and combine code into
+  devm_platform_get_irqs_affinity_release()
+- Add new inline function in ioport.h rather than making
+  acpi_dev_irqresource_disabled() public
+
+Changes since v2:
+- Update genirq change as follows:
+ - Handle when the irq is started, active, or already managed
+ - Reject update when CONFIG_GENERIC_IRQ_RESERVATION_MODE is set
+- Revamp platform.c API as follows:
+ - Make it devm type
+ - Add platform_put_irq() and associated change in ACPI code to allow irq
+   resource to be reset
+ - Unmap irqs for driver removal
+ - Change API to accept min and max vectors
+
+John Garry (5):
+  genirq/affinity: Add irq_update_affinity_desc()
+  resource: Add irqresource_disabled()
+  ACPI: Drop acpi_dev_irqresource_disabled()
+  Driver core: platform: Add devm_platform_get_irqs_affinity()
+  scsi: hisi_sas: Expose HW queues for v2 hw
+
+ drivers/acpi/resource.c                |  17 +---
+ drivers/base/platform.c                | 121 +++++++++++++++++++++++++
+ drivers/scsi/hisi_sas/hisi_sas.h       |   4 +
+ drivers/scsi/hisi_sas/hisi_sas_main.c  |  11 +++
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  66 +++++++++++---
+ include/linux/interrupt.h              |   8 ++
+ include/linux/ioport.h                 |   7 ++
+ include/linux/platform_device.h        |   6 ++
+ kernel/irq/manage.c                    |  63 +++++++++++++
+ 9 files changed, 278 insertions(+), 25 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.26.2
 
