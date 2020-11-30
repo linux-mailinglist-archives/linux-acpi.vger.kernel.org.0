@@ -2,148 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4E72C923A
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 00:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A57E2C9266
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 00:21:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731228AbgK3XKt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 18:10:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727114AbgK3XKs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 18:10:48 -0500
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315F1C0613D4;
-        Mon, 30 Nov 2020 15:10:08 -0800 (PST)
-Received: by mail-wm1-x342.google.com with SMTP id v14so158270wml.1;
-        Mon, 30 Nov 2020 15:10:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=KAwd+sagU7ZwoHzkY8WFvDixnRdQKdnq8c4J8ZOSLe8=;
-        b=s0YVQetgcXUCZUuePccdDHOm/lYkq9PddmbCKUbzrdcBaI/Z6OQs5HsDCFB1CdHelx
-         PtiqeHUn5ICOwCvxhcCs5/lbeJSEvmDgcRPd+oBbdagJpsECxC3qkU38xrF6I0eqn2Gf
-         9Pscx8gPUzh89FX0lg/09asSb+eYpqdx1lxqKEe6SzIZpdYdN75HITkgYNdBm2DSeuR8
-         2Y1QmiiZnKER7NHr9unT1kgK/vrpRLJPVtjp6ppUzyBAIKABYKE2HbZgI8Z8hReAVSkn
-         vwaaVBI/aaGEtJZq+NIpwHyUwRvO2qyXKE5tulNdYVk/R7vR+n93ve8WUXt9E1R3oQ0M
-         Rtxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=KAwd+sagU7ZwoHzkY8WFvDixnRdQKdnq8c4J8ZOSLe8=;
-        b=eURoDpNIoHXvY0xxufgty5FbBxuRw2IH0Tjhet3yQzoETujZyQBNLGgRV6hH5JeKJ+
-         S9u5+lJzoMeFO/7j7WydkTgQ92XNdFMCNbDIGLmeLlOWIoI24lWI5/uPqFpBZoIYoVUa
-         RhmU8CB0a1I6qvYz/GTc15HuOmLUblHEv6aVk/Jf491nQtDB+gSWDnN8+byV3vhXNeuY
-         NMCE6VFL+itxxY0CRMBHVzutGmOi2pvaxJZGrd7/q2BXphDj0tst1wkP5cT5yZm6j81i
-         G7BiK5koC66vu8HtlwdL0njMMLMFQvEjn75zguEskYe6OnTRgz4e9nVVeakn/uu6g598
-         Em+w==
-X-Gm-Message-State: AOAM531KjmZf7caYfhd8cWDn4xRX8BOORr8AqrQWR2NDol/mbsTbwLSq
-        LVncT0yvxWX9SD3X71JXm4s=
-X-Google-Smtp-Source: ABdhPJwmQ04ElguRaJT90Eh2XmbsVVZmHnFpw23lDOZ42hGc2n73VlqBQK/73YNP+1VHvbCbX8Fspw==
-X-Received: by 2002:a1c:234d:: with SMTP id j74mr148325wmj.18.1606777807007;
-        Mon, 30 Nov 2020 15:10:07 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.80])
-        by smtp.gmail.com with ESMTPSA id a191sm62141wme.25.2020.11.30.15.10.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Nov 2020 15:10:06 -0800 (PST)
-Subject: Re: [PATCH 04/18] software_node: Enforce parent before child ordering
- of nodes array for software_node_register_nodes()
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-5-djrscally@gmail.com>
- <20201130161152.GG14465@pendragon.ideasonboard.com>
- <20201130161239.GH14465@pendragon.ideasonboard.com>
-From:   Dan Scally <djrscally@gmail.com>
-Message-ID: <3f2edde6-e2e3-b379-3c1b-2a5461034b8a@gmail.com>
-Date:   Mon, 30 Nov 2020 23:10:05 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727319AbgK3XUX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 18:20:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51612 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727114AbgK3XUX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 18:20:23 -0500
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1606778380;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qxHsKSfHHXQueGroD51dRhejuAdPNyV7Q/W8lJ8mkc0=;
+        b=yHrJoZR8A3N8X4zK4K5584vD486MgEzCUAlvrxzaGLasgm4/oKFLQEwAQnbBzQPJ8uvUzi
+        cwVafkpLiHR0DcIasYTwvbNbhQhPAUt6NeDBRcZrjQ0Kwet/iLrCnbwAZn6MKD/5wea/AN
+        3PafQz5fVu7bKR34Fz2f+AhtJShGNKw1NhYBcedUxhHvVE65qR2FLBU9tkh8btU79O9ng6
+        iE+SBVHk9P8PErOTLzwr6UBkFjXpgz9ENcGYf5nd2rLF4e4CCJVppDFhJmnoz/iLx3klIf
+        s9O7C4vwf7NyoymLn/QHwAahuyiTzdKmfiWsXbBx+8lxeQV6ny9Qd0AgOPkfBQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1606778380;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qxHsKSfHHXQueGroD51dRhejuAdPNyV7Q/W8lJ8mkc0=;
+        b=5roGyYrsSogIsR3PCkM0rkyQKqDZVbrr7/PvcnkChlPJZSj0Pk+o902lCFGtFzJiXbUIWO
+        GJJHGIJxA7PRMvBw==
+To:     John Garry <john.garry@huawei.com>, jejb@linux.ibm.com,
+        martin.petersen@oracle.com, lenb@kernel.org, rjw@rjwysocki.net,
+        gregkh@linuxfoundation.org, maz@kernel.org
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxarm@huawei.com, linux-acpi@vger.kernel.org, dwagner@suse.de,
+        John Garry <john.garry@huawei.com>
+Subject: Re: [PATCH v4 1/5] genirq/affinity: Add irq_update_affinity_desc()
+In-Reply-To: <1606757759-6076-2-git-send-email-john.garry@huawei.com>
+References: <1606757759-6076-1-git-send-email-john.garry@huawei.com> <1606757759-6076-2-git-send-email-john.garry@huawei.com>
+Date:   Tue, 01 Dec 2020 00:19:40 +0100
+Message-ID: <87y2iih1pv.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201130161239.GH14465@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Laurent
+On Tue, Dec 01 2020 at 01:35, John Garry wrote:
 
-On 30/11/2020 16:12, Laurent Pinchart wrote:
-> On Mon, Nov 30, 2020 at 06:11:52PM +0200, Laurent Pinchart wrote:
->> Hi Daniel,
->>
->> Thank you for the patch.
->>
->> On Mon, Nov 30, 2020 at 01:31:15PM +0000, Daniel Scally wrote:
->>> Registering software_nodes with the .parent member set to point to a
->>> currently unregistered software_node has the potential for problems,
->>> so enforce parent -> child ordering in arrays passed to this function.
->>>
->>> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
->>> ---
->>> Changes since RFC v3:
->>>
->>> 	Patch introduced
->>>
->>>  drivers/base/swnode.c | 15 +++++++++++----
->>>  1 file changed, 11 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
->>> index 615a0c93e116..af7930b3679e 100644
->>> --- a/drivers/base/swnode.c
->>> +++ b/drivers/base/swnode.c
->>> @@ -700,14 +700,21 @@ int software_node_register_nodes(const struct software_node *nodes)
->>>  	int i;
->>>  
->>>  	for (i = 0; nodes[i].name; i++) {
->>> +		if (nodes[i].parent)
->>> +			if (!software_node_to_swnode(nodes[i].parent)) {
->>> +				ret = -EINVAL;
->>> +				goto err_unregister_nodes;
->>> +			}
->>> +
->>>  		ret = software_node_register(&nodes[i]);
->>> -		if (ret) {
->>> -			software_node_unregister_nodes(nodes);
->>> -			return ret;
->>> -		}
->>> +		if (ret)
->>> +			goto err_unregister_nodes;
->>>  	}
->>>  
->>>  	return 0;
->> I'd add a blank line here.
->>
->> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> I spoke a bit too soon. Could you update the documentation of the
-> function to explain this new requirement ?
-Oops - of course, will do
->>> +err_unregister_nodes:
->>> +	software_node_unregister_nodes(nodes);
->>> +	return ret;
->>>  }
->>>  EXPORT_SYMBOL_GPL(software_node_register_nodes);
->>>  
->> -- 
->> Regards,
->>
->> Laurent Pinchart
+> Add a function to allow the affinity of an interrupt be switched to
+> managed, such that interrupts allocated for platform devices may be
+> managed.
+
+Could you please add a paragraph which explains the limitations of that
+interface?
+
+> +/**
+> + * irq_update_affinity_desc - Update affinity management for an interrupt
+> + * @irq:	The interrupt number to update
+> + * @affinity:	Pointer to the affinity descriptor
+> + *
+> + * This interface can be used to configure the affinity management of
+> + * interrupts which have been allocated already.
+
+Same here.
+
+Thanks,
+
+        tglx
