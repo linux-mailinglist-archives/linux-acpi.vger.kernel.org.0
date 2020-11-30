@@ -2,31 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D712C8D11
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 19:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C5D2C8DE1
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 20:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729735AbgK3Smc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 13:42:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726520AbgK3Smc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 13:42:32 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A286C0613D4;
-        Mon, 30 Nov 2020 10:41:52 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6A95A99;
-        Mon, 30 Nov 2020 19:41:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606761709;
-        bh=CPdPrulLViLfkaCcKKsWPHwhLQ/hUyuF5Gf5uEYOwDc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZV7LSuLo5qGpZsp9gP2EiSRj2LrDSnXbR91WNmGSwoxgj5lPSUsGvZJizZ6GW5nht
-         I67pLvh+IWjRiJlAdc/U3vn1xRJUgkdbyw27f3vPXGsEqhXiI/VfcY8mZopO3mUa/E
-         ga5a1f05kmxbkaH5A+cs1HFCrU6xnPRs0IHONPYk=
-Date:   Mon, 30 Nov 2020 20:41:41 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1729882AbgK3TTv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 14:19:51 -0500
+Received: from mga07.intel.com ([134.134.136.100]:24379 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729847AbgK3TTp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Nov 2020 14:19:45 -0500
+IronPort-SDR: Fvd7MtfMuH1xRYF29/klr+iS0DEaXhYhUVTwWWAq4GY7YcFQFt8TX1oepVSHmDxPXae8UfkaI+
+ 26rXe0NKlj+Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="236821998"
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
+   d="scan'208";a="236821998"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 11:18:03 -0800
+IronPort-SDR: RTneXUqRmmUUB51Riy9ytU0vo0Iy8zp5GSqpWWuNwreaTGW9K1dMSqlnr1+2fIdmguqifaiTnv
+ IXsetQfd35Gg==
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; 
+   d="scan'208";a="345185764"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2020 11:17:56 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kjohM-00B74y-Qp; Mon, 30 Nov 2020 21:18:56 +0200
+Date:   Mon, 30 Nov 2020 21:18:56 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
@@ -42,64 +47,64 @@ Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
         laurent.pinchart+renesas@ideasonboard.com,
         jorhand@linux.microsoft.com, kitakar@gmail.com,
         heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 02/18] property: Add support for calling
- fwnode_graph_get_endpoint_by_id() for fwnode->secondary
-Message-ID: <20201130184141.GX4141@pendragon.ideasonboard.com>
+Subject: Re: [PATCH 16/18] i2c: i2c-core-base: Use the new
+ i2c_acpi_dev_name() in i2c_set_dev_name()
+Message-ID: <20201130191856.GX4077@smile.fi.intel.com>
 References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-3-djrscally@gmail.com>
- <20201130172900.GM4077@smile.fi.intel.com>
- <20201130172857.GS14465@pendragon.ideasonboard.com>
- <20201130175319.GS4077@smile.fi.intel.com>
+ <20201130133129.1024662-17-djrscally@gmail.com>
+ <20201130171241.GP14465@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201130175319.GS4077@smile.fi.intel.com>
+In-Reply-To: <20201130171241.GP14465@pendragon.ideasonboard.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
-
-On Mon, Nov 30, 2020 at 07:53:19PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 30, 2020 at 07:28:57PM +0200, Laurent Pinchart wrote:
-> > On Mon, Nov 30, 2020 at 07:29:00PM +0200, Andy Shevchenko wrote:
-> > > On Mon, Nov 30, 2020 at 01:31:13PM +0000, Daniel Scally wrote:
-> 
-> ...
-> 
-> > > > +	if (!best_ep && fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
-> > > > +		return fwnode_graph_get_endpoint_by_id(fwnode->secondary, port,
-> > > > +						       endpoint, flags);
-> > > 
-> > > >  	return best_ep;
-> > > 
-> > > Can we, please, do
-> > > 
-> > > 	if (best_ep)
-> > > 		return best_ep;
-> > > 
-> > > 	if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
-> > > 		return fwnode_graph_get_endpoint_by_id(fwnode->secondary, port,
-> > > 						       endpoint, flags);
-> > > 
-> > > 	return NULL;
-> > > 
-> > > ?
-> > > 
-> > > This 'if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))' becomes kinda
-> > > idiomatic to the cases when we need to proceed primary followed by the
-> > > secondary in cases where it's not already done.
+On Mon, Nov 30, 2020 at 07:12:41PM +0200, Laurent Pinchart wrote:
+> On Mon, Nov 30, 2020 at 01:31:27PM +0000, Daniel Scally wrote:
+> > From: Dan Scally <djrscally@gmail.com>
 > > 
-> > We could also move the !fwnode check to the beginning of the function.
+> > To make sure the new i2c_acpi_dev_name() always reflects the name of i2c
+> > devices sourced from ACPI, use it in i2c_set_dev_name().
+> > 
+> > Signed-off-by: Dan Scally <djrscally@gmail.com>
 > 
-> It's already there (1). What did I miss?
+> I'd squash this with 15/18, which would make it clear there's a memory
+> leak :-)
 
-It is, but as we need an explicitly check at the end, it feels cleaner
-to move it to the beginning. No big deal though.
+...
 
-> 1) via fwnode_graph_get_next_endpoint() -> fwnode_call_ptr_op()
+> >  	if (adev) {
+> > -		dev_set_name(&client->dev, "i2c-%s", acpi_dev_name(adev));
+> > +		dev_set_name(&client->dev, i2c_acpi_dev_name(adev));
+> >  		return;
+
+But you split pattern used in i2c_dev_set_name().
+What you need is to provide something like this
+
+#define I2C_DEV_NAME_FORMAT	"i2c-%s"
+
+const char *i2c_acpi_get_dev_name(...)
+{
+	return kasprintf(..., I2C_DEV_NAME_FORMAT, ...);
+}
+
+(Possible in the future if anybody needs
+  const char *i2c_dev_get_name_by_bus_and_addr(int bus, unsigned short addr)
+)
+
+And here
+
+-		dev_set_name(&client->dev, "i2c-%s", info->dev_name);
++		dev_set_name(&client->dev, I2C_DEV_NAME_FORMAT, info->dev_name);
+
+-		dev_set_name(&client->dev, "i2c-%s", acpi_dev_name(adev));
++		dev_set_name(&client->dev, I2C_DEV_NAME_FORMAT, acpi_dev_name(adev));
 
 -- 
-Regards,
+With Best Regards,
+Andy Shevchenko;
 
-Laurent Pinchart
+
