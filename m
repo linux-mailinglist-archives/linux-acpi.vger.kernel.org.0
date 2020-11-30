@@ -2,119 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F862C78F5
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Nov 2020 12:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D51342C8537
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Nov 2020 14:33:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725909AbgK2Lpw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 29 Nov 2020 06:45:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:56074 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387475AbgK2Lpw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 29 Nov 2020 06:45:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606650265;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=slJJEEbmDh3vvjhZs0GJlf8EjXfcfYNdcj8ThLPhrpM=;
-        b=aY2Ye2RiZpNkM0iNvKhY+htgWUcO/mjFlo+Emnakg0uA6za96t7NVyPO6D8b/RbMLrZGzo
-        hmXvT7v78nFO3WoolZ0o1KIEo6KkctMAapYWlGxCBN5vxOTMyp5WQ31HNxfa6GI8s95Ky1
-        aOzt6kAne2hQ7ZCz565DzgOeQsvzD5A=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-496-jSvl2bdlMQStnMKwIb9SeQ-1; Sun, 29 Nov 2020 06:44:23 -0500
-X-MC-Unique: jSvl2bdlMQStnMKwIb9SeQ-1
-Received: by mail-ed1-f71.google.com with SMTP id g1so5026319edk.0
-        for <linux-acpi@vger.kernel.org>; Sun, 29 Nov 2020 03:44:22 -0800 (PST)
+        id S1726765AbgK3Nce (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 08:32:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38476 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725939AbgK3Nce (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 08:32:34 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9138C0613CF;
+        Mon, 30 Nov 2020 05:31:53 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id s8so16206500wrw.10;
+        Mon, 30 Nov 2020 05:31:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OohUDjp6HEgwFCMO0olHO61AfJV21cETxnMeTMXANPE=;
+        b=LEEf+aDfTzgycqlcDqg7AO6TQ+daYocnGIKufN7HaBFo7no9n+QWHT7G6y6QpnbfFB
+         9tcr/5p+6N/pbAVl+ektMve/T6qZcluAPnXVoUG9vCEiZ0vFo6+seRUKdt0iHGoCRchc
+         VbvxYQd4r6ziLeS94h0hEi93aP9Ft2YO89nT0w3gnROBGSnF7CI9Dld1kdsUcGgXPbLl
+         zlvLjGKJ3J/Q6+A4NQwKJLeLFzXrYYGywCbFihnhfJDh3yAGIz58Dx3xpdVXUYoaQX8d
+         yb3RkB2l62Z9R8dpnfWc1qjcVpn69+5yT1Vbtm1LEedBsDXFBP/iDACXzQ1F//IgF3Xi
+         1QwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=slJJEEbmDh3vvjhZs0GJlf8EjXfcfYNdcj8ThLPhrpM=;
-        b=S70CMQmN+fKZzmsCYGn0POvGHvjhjoTJrTcncvGaAoR8jVqxQEIfWZjfEm7T/DP8oY
-         9PL8CHikgOvO3CXX5yJMNl6Ag8IWCeyFmS/mwHJKcZtmPH42EYH0+iTlGKByuqsdLbCZ
-         sCTMOYQH7nLt3RXZbn7lfY6txvHwdmoMgzCz6H+5/Zf4ZHlMHUFYYeWbreB40AO4sMMW
-         IjbYcjUjyBbVg1eTRsyrCe2NC7f0qseAIaTaEse9U0Psad7lGkxJh97F0U5whJycAHPA
-         WQdxPnct3jqYkkp2Czl6/SZuD/m490DSUMar3Vh+qipn751PONeaRVuRS9cUgIeWeCAH
-         Qvqw==
-X-Gm-Message-State: AOAM5307mnMD9OLRv/139MYQLKeHXqgttU2qdbpjvhn4YndFf18mvYR1
-        OvbfyRq2gSm+xSw+D8j5yv0BP1wkqC5NaAynTjRRQStU7uz21qNrHj6tZ6aB3o0FD0duc9HLZER
-        the7qgIPcO/NaOtbSvmRvzQ==
-X-Received: by 2002:aa7:d1c2:: with SMTP id g2mr10856804edp.8.1606650261727;
-        Sun, 29 Nov 2020 03:44:21 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw4KtJojlIH0/0TCr6HjwxcXOivaK5Cki1hLs05N74t191TPt9ITv2JDmg4uMuCQKyskWYssQ==
-X-Received: by 2002:aa7:d1c2:: with SMTP id g2mr10856792edp.8.1606650261614;
-        Sun, 29 Nov 2020 03:44:21 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id dk14sm7199855ejb.97.2020.11.29.03.44.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Nov 2020 03:44:20 -0800 (PST)
-Subject: Re: [External] Re: [PATCH v4 2/3] ACPI: platform-profile: Add
- platform profile support
-To:     Mark Pearson <markpearson@lenovo.com>,
-        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-Cc:     "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "hadess@hadess.net" <hadess@hadess.net>,
-        "mario.limnociello@dell.com" <mario.limnociello@dell.com>,
-        "eliadevito@gmail.com" <eliadevito@gmail.com>,
-        "bberg@redhat.com" <bberg@redhat.com>,
-        "dvhart@infradead.org" <dvhart@infradead.org>
-References: <markpearson@lenovo.com>
- <20201126165143.32776-1-markpearson@lenovo.com>
- <20201126165143.32776-2-markpearson@lenovo.com>
- <faa32924-f53f-b3fd-3f24-3848f45b67e1@redhat.com>
- <tvhsHrDOOP32PZfdoiajK4HUiE7pV3yfxAjHkied_GvQd3tPUQXxfPAI0P84ovCJjmNYib68twP2_ESRc-fyoUzUAJkTvWsobXdWfJGW74s=@protonmail.com>
- <79f67d13-0422-d9f0-3014-a6339f591a25@lenovo.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <093d1d21-ddf7-20d4-7031-5252c60db1ef@redhat.com>
-Date:   Sun, 29 Nov 2020 12:44:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        bh=OohUDjp6HEgwFCMO0olHO61AfJV21cETxnMeTMXANPE=;
+        b=HbQFhW++PQlKvyPHBAOKlN0y5u19lrhWgUO3wzlege5NiUmGBFjA3gbhsz32rVFddj
+         uLVTwTGnkgUdq7+S4Dr3tA+Xjkap/ZX8KsWX4V2hM0/lhzIlX0jzVCu+vxe2VJ0cItcX
+         Rox7c/ipadVmLOmm6g/EpJKE2y3zu4wzwuc7dtpECAMdKYpvM5FOXEEyZLV62JXrVQUK
+         AyLLJQpHkrES2Tnf63YegAVOlh+D2zA2eHXQZhisC5LyUMyEUuVda9sbmWbaZs57xUvp
+         2ZrWxNKrpKA5Rk72kLwPqkimHYSNEql7sgFCxXwIKCK8zI/Bl0Wt986YrQQBG1V5ELfx
+         Bm/A==
+X-Gm-Message-State: AOAM532t9tU2wtslHtXEY+BwQN7cZkUqRUvyY4T3e+tQ/ViZ8hbl6Vh5
+        hLIZlCXwR0G1SCP2Y9uCes9nvBXYZp0gVnQF
+X-Google-Smtp-Source: ABdhPJxvWyJlVNttaBLVyFzU+UG14IKAfTbd0MHaUPq0yLKidX3VHINPbTXhWrEbFVHnes7BVEFDMw==
+X-Received: by 2002:a05:6000:14b:: with SMTP id r11mr29006695wrx.53.1606743112313;
+        Mon, 30 Nov 2020 05:31:52 -0800 (PST)
+Received: from valhalla.home ([2.31.224.80])
+        by smtp.gmail.com with ESMTPSA id g192sm7452333wme.48.2020.11.30.05.31.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Nov 2020 05:31:51 -0800 (PST)
+From:   Daniel Scally <djrscally@gmail.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, gregkh@linuxfoundation.org,
+        mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
+        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
+        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
+        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
+        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jorhand@linux.microsoft.com, kitakar@gmail.com,
+        heikki.krogerus@linux.intel.com
+Subject: [PATCH 00/18] Add functionality to ipu3-cio2 driver allowing software_node connections to sensors on platforms designed for Windows
+Date:   Mon, 30 Nov 2020 13:31:11 +0000
+Message-Id: <20201130133129.1024662-1-djrscally@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <79f67d13-0422-d9f0-3014-a6339f591a25@lenovo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hello all
 
-On 11/29/20 2:19 AM, Mark Pearson wrote:
-> 
-> 
-> On 2020-11-28 10:37 a.m., Barnabás Pőcze wrote:
->> Hi
->>
->>
->> 2020. november 28., szombat 15:08 keltezéssel, Hans de Goede írta:
->>
->>> [...]
->>>> +static_assert(ARRAY_SIZE(profile_names) == platform_profile_perform+1);
->>>
->>> It would be better to add an extra member/entry at the end of the enum
->>> named platform_profile_no_profiles; and then use that instead of
->>> platform_profile_perform+1. Also see below where I use this too.
->>>
->>
->> I'm not sure if it's just me, but when I read "no_profiles", then "number of probiles"
->> is not the first thing that comes to mind, maybe _end, _last, _max, etc.
->> would be harder to mistake for something else? What do you think?
->>
-> FWIW - my vote would be platform_profile_last, it just seems to fit well when reading the code.
+Previous version:
 
-I'm fine with platform_profile_last, or iow please feel free to paint this
-bikeshed in any color you like :)
+https://lore.kernel.org/linux-media/20201019225903.14276-1-djrscally@gmail.com/
 
-Regards,
+This series aims to add support for webcams on laptops with ACPI tables
+designed for use with CIO2 on Windows. There are two main parts; the
+first is extending the ipu3-cio2 driver to allow for patching the
+firmware via software_nodes if endpoints aren't defined by ACPI. Patch #13
+deals directly with that, all preceding patches are either supplemental
+changes or incidental fixes along the way.
 
-Hans
+The second main part is a way to handle the unusual definition of resource
+destined for the sensors in these ACPI tables; regulators and GPIO lines
+that are supposed to be consumed by the sensor are lumped in the _CRS of
+a dummy ACPI device upon which the sensor is dependent. Patch 18 defines a
+new driver to handle those dummy devices and map the resources to the
+sensor instead. 14-17 are supporting changes for that driver.
+
+Changelogs mostly in the individual patches, but a broad summary:
+
+	- Altered fwnode_device_is_available() to return true if the
+	fwnode_handle doesn't implement that operation.
+	- Altered fwnode_graph_get_endpoint_by_id() to parse secondary
+	if no endpoint found on primary.
+	- Enforce parent->child ordering of software_nodes on registration
+	- Added a function to get the next ACPI device with matching _HID,
+	plus an iterator macro
+	- Altered cio2-bridge.c to store the bridge struct (and basically
+	everything else) in heap, plus removed the requirement to delay
+	ipu3-cio2 probe until after the i2c devices were instantiated. 
+	Also now ensured we handle multiple sensors with the same _HID.
+	- Added a function to get devices _dependent_ on a given ACPI dev,
+	according to their _DEP entries.
+	- Added a function to explicitly construct the name of an I2C dev
+	created from an ACPI dev.
+	- Added a driver to handle the dummy ACPI devices discussed above.
+
+Comments very welcome!
+
+Dan Scally (1):
+  i2c: i2c-core-base: Use the new i2c_acpi_dev_name() in
+    i2c_set_dev_name()
+
+Daniel Scally (16):
+  property: Return true in fwnode_device_is_available for node types
+    that do not implement this operation
+  property: Add support for calling fwnode_graph_get_endpoint_by_id()
+    for fwnode->secondary
+  software_node: Fix failure to put() and get() references to children
+    in software_node_get_next_child()
+  software_node: Enforce parent before child ordering of nodes array for
+    software_node_register_nodes()
+  software_node: Alter software_node_unregister_nodes() to unregister
+    the array in reverse order
+  software_node: amend software_node_unregister_node_group() to perform
+    unregistration of array in reverse order to be consistent with
+    software_node_unregister_nodes()
+  lib/test_printf.c: Use helper function to unwind array of
+    software_nodes
+  ipu3-cio2: Add T: entry to MAINTAINERS
+  ipu3-cio2: Rename ipu3-cio2.c to allow module to be built from
+    multiple source files retaining ipu3-cio2 name
+  media: v4l2-core: v4l2-async: Check possible match in match_fwnode
+    based on sd->fwnode->secondary
+  acpi: Add acpi_dev_get_next_match_dev() and macro to iterate through
+    acpi_devices matching a given _HID
+  ipu3-cio2: Add functionality allowing software_node connections to
+    sensors on platforms designed for Windows
+  acpi: utils: Add function to fetch dependent acpi_devices
+  i2c: i2c-core-acpi: Add i2c_acpi_dev_name()
+  gpio: gpiolib-acpi: Export acpi_get_gpiod()
+  ipu3: Add driver for dummy INT3472 ACPI device
+
+Heikki Krogerus (1):
+  software_node: Add support for fwnode_graph*() family of functions
+
+ MAINTAINERS                                   |   9 +
+ drivers/acpi/utils.c                          |  98 ++++-
+ drivers/base/property.c                       |   9 +
+ drivers/base/swnode.c                         | 157 +++++++-
+ drivers/gpio/gpiolib-acpi.c                   |   3 +-
+ drivers/i2c/i2c-core-acpi.c                   |  14 +
+ drivers/i2c/i2c-core-base.c                   |   2 +-
+ drivers/media/pci/intel/ipu3/Kconfig          |  32 ++
+ drivers/media/pci/intel/ipu3/Makefile         |   4 +
+ drivers/media/pci/intel/ipu3/cio2-bridge.c    | 260 ++++++++++++
+ drivers/media/pci/intel/ipu3/cio2-bridge.h    | 108 +++++
+ drivers/media/pci/intel/ipu3/int3472.c        | 381 ++++++++++++++++++
+ drivers/media/pci/intel/ipu3/int3472.h        |  96 +++++
+ .../ipu3/{ipu3-cio2.c => ipu3-cio2-main.c}    |  27 ++
+ drivers/media/pci/intel/ipu3/ipu3-cio2.h      |   6 +
+ drivers/media/v4l2-core/v4l2-async.c          |   8 +
+ include/acpi/acpi_bus.h                       |   9 +
+ include/linux/acpi.h                          |   5 +
+ include/linux/i2c.h                           |   5 +
+ lib/test_printf.c                             |   4 +-
+ 20 files changed, 1213 insertions(+), 24 deletions(-)
+ create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.c
+ create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.h
+ create mode 100644 drivers/media/pci/intel/ipu3/int3472.c
+ create mode 100644 drivers/media/pci/intel/ipu3/int3472.h
+ rename drivers/media/pci/intel/ipu3/{ipu3-cio2.c => ipu3-cio2-main.c} (98%)
+
+-- 
+2.25.1
 
