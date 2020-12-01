@@ -2,22 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B463E2CA7B7
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 17:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A27C2CA7B9
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 17:05:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389215AbgLAQEm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Dec 2020 11:04:42 -0500
-Received: from foss.arm.com ([217.140.110.172]:45396 "EHLO foss.arm.com"
+        id S2403845AbgLAQFD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Dec 2020 11:05:03 -0500
+Received: from foss.arm.com ([217.140.110.172]:45436 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388988AbgLAQEl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Dec 2020 11:04:41 -0500
+        id S2388182AbgLAQFD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 1 Dec 2020 11:05:03 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71A2F101E;
-        Tue,  1 Dec 2020 08:03:55 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C0311042;
+        Tue,  1 Dec 2020 08:04:09 -0800 (PST)
 Received: from e113632-lin (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B232E3F575;
-        Tue,  1 Dec 2020 08:03:52 -0800 (PST)
-References: <20201201025944.18260-1-song.bao.hua@hisilicon.com> <20201201025944.18260-2-song.bao.hua@hisilicon.com>
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 713343F575;
+        Tue,  1 Dec 2020 08:04:06 -0800 (PST)
+References: <20201201025944.18260-1-song.bao.hua@hisilicon.com> <20201201025944.18260-3-song.bao.hua@hisilicon.com>
 User-agent: mu4e 0.9.17; emacs 26.3
 From:   Valentin Schneider <valentin.schneider@arm.com>
 To:     Barry Song <song.bao.hua@hisilicon.com>
@@ -30,10 +30,10 @@ Cc:     catalin.marinas@arm.com, will@kernel.org, rjw@rjwysocki.net,
         mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linuxarm@huawei.com, xuwei5@huawei.com, prime.zeng@hisilicon.com
-Subject: Re: [RFC PATCH v2 1/2] topology: Represent clusters of CPUs within a die.
-In-reply-to: <20201201025944.18260-2-song.bao.hua@hisilicon.com>
-Date:   Tue, 01 Dec 2020 16:03:46 +0000
-Message-ID: <jhj360pv7h9.mognet@arm.com>
+Subject: Re: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
+In-reply-to: <20201201025944.18260-3-song.bao.hua@hisilicon.com>
+Date:   Tue, 01 Dec 2020 16:04:04 +0000
+Message-ID: <jhj1rg9v7gr.mognet@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -42,77 +42,83 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 On 01/12/20 02:59, Barry Song wrote:
-> That means the cost to transfer ownership of a cacheline between CPUs
-> within a cluster is lower than between CPUs in different clusters on
-> the same die. Hence, it can make sense to tell the scheduler to use
-> the cache affinity of the cluster to make better decision on thread
-> migration.
->
-> This patch simply exposes this information to userspace libraries
-> like hwloc by providing cluster_cpus and related sysfs attributes.
-> PoC of HWLOC support at [2].
->
-> Note this patch only handle the ACPI case.
->
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 1a68a05..ae8ec910 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -6106,6 +6106,37 @@ static inline int select_idle_smt(struct task_struct *p, int target)
+>  
+>  #endif /* CONFIG_SCHED_SMT */
+>  
+> +#ifdef CONFIG_SCHED_CLUSTER
+> +/*
+> + * Scan the local CLUSTER mask for idle CPUs.
+> + */
+> +static int select_idle_cluster(struct task_struct *p, int target)
+> +{
+> +	int cpu;
+> +
+> +	/* right now, no hardware with both cluster and smt to run */
+> +	if (sched_smt_active())
+> +		return -1;
+> +
+> +	for_each_cpu_wrap(cpu, cpu_cluster_mask(target), target) {
 
-AIUI this requires PPTT to describe your system like so:
+Gating this behind this new config only leveraged by arm64 doesn't make it
+very generic. Note that powerpc also has this newish "CACHE" level which
+seems to overlap in function with your "CLUSTER" one (both are arch
+specific, though).
 
- {Processor nodes}             {Caches}
+I think what you are after here is an SD_SHARE_PKG_RESOURCES domain walk,
+i.e. scan CPUs by increasing cache "distance". We already have it in some
+form, as we scan SMT & LLC domains; AFAICT LLC always maps to MC, except
+for said powerpc's CACHE thingie.
 
-       [Node0] ----------------> [L3]
-          ^
-          |
-      [Cluster0] ---------------> []
-          ^
-          |
-        [CPU0] ------------> [L1] -> [L2]
+*If* we are to generally support more levels with SD_SHARE_PKG_RESOURCES,
+we could say frob something into select_idle_cpu(). I'm thinking of
+something like the incomplete, untested below: 
 
-which is a bit odd, because there is that middling level without any
-private resources. I suppose right now this is the only way to describe
-this kind of cache topology via PPTT, but is that widespread?
-
-
-Now, looking at the Ampere eMAG's PPTT, this has a "similar" shape. The
-topology is private L1, L2 shared by pairs of CPUs, shared L3 [1].
-
-If I parse the PPTT thing right this is encoded as:
-
- {Processor nodes}            {Caches}
-
-      [Cluster0] -------------> ([L3] not present in my PPTT for some reason)
-          ^
-          |
-      [  Pair0  ] ------------> [L2]
-        ^     ^
-        |     |
-        |  [CPU1] ------------> [L1]
-      [CPU0] -----------------> [L1] 
-
-So you could spin the same story there were first scanning the pair and
-then the cluster could help.
-
-[1]: https://en.wikichip.org/wiki/ampere_computing/emag/8180
-
-> Special consideration is needed for SMT processors, where it is
-> necessary to move 2 levels up the hierarchy from the leaf nodes
-> (thus skipping the processor core level).
->
-> Currently the ID provided is the offset of the Processor
-> Hierarchy Nodes Structure within PPTT.  Whilst this is unique
-> it is not terribly elegant so alternative suggestions welcome.
->
-
-Skimming through the spec, this sounds like something the ID structure
-(Type 2) could be used for. However in v1 Jonathan and Sudeep talked about
-UID's / DSDT, any news on that?
-
-> Note that arm64 / ACPI does not provide any means of identifying
-> a die level in the topology but that may be unrelate to the cluster
-> level.
->
-> [1] ACPI Specification 6.3 - section 5.2.29.1 processor hierarchy node
->     structure (Type 0)
-> [2] https://github.com/hisilicon/hwloc/tree/linux-cluster
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
+---
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index ae7ceba8fd4f..70692888db00 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6120,7 +6120,7 @@ static inline int select_idle_smt(struct task_struct *p, struct sched_domain *sd
+ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
+ {
+ 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
+-	struct sched_domain *this_sd;
++	struct sched_domain *this_sd, *child = NULL;
+ 	u64 avg_cost, avg_idle;
+ 	u64 time;
+ 	int this = smp_processor_id();
+@@ -6150,14 +6150,22 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 
+ 	time = cpu_clock(this);
+ 
+-	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
++	do {
++		/* XXX: sd should start as SMT's parent */
++		cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
++		if (child)
++			cpumask_andnot(cpus, cpus, sched_domain_span(child));
++
++		for_each_cpu_wrap(cpu, cpus, target) {
++			if (!--nr)
++				return -1;
++			if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
++				break;
++		}
+ 
+-	for_each_cpu_wrap(cpu, cpus, target) {
+-		if (!--nr)
+-			return -1;
+-		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
+-			break;
+-	}
++		child = sd;
++		sd = sd->parent;
++	} while (sd && sd->flags & SD_SHARE_PKG_RESOURCES);
+ 
+ 	time = cpu_clock(this) - time;
+ 	update_avg(&this_sd->avg_scan_cost, time);
