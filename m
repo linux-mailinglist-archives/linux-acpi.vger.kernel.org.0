@@ -2,75 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3DCD2CAAD1
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 19:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F7F72CAAD8
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 19:38:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727763AbgLASeM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Dec 2020 13:34:12 -0500
-Received: from mga07.intel.com ([134.134.136.100]:23317 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727278AbgLASeL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Dec 2020 13:34:11 -0500
-IronPort-SDR: Q/IEJmzca4U4BG1Rv6VIKr/JnGqXPzSkPuqEYTD58HR4LniIuEo87UN7EcBo1if5Fkzh+qvuxU
- Ml2t/2YW+xjQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9822"; a="237011493"
-X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; 
-   d="scan'208";a="237011493"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2020 10:32:31 -0800
-IronPort-SDR: xgXj4cpJdSo4W9Ovflu9Pb3/504DGnz/AlexKg1c3B9uXNptUBbwf1TQuwsRV4ZUOFLJ0uz3SR
- zrRK+oOFZaYQ==
-X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; 
-   d="scan'208";a="364878965"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2020 10:32:28 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kkASv-00BKyP-KY; Tue, 01 Dec 2020 20:33:29 +0200
-Date:   Tue, 1 Dec 2020 20:33:29 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Jie Yang <yang.jie@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1] ASoC: Intel: catpt: Replace open coded variant of
- resource_intersection()
-Message-ID: <20201201183329.GI4077@smile.fi.intel.com>
-References: <20201124095628.54373-1-andriy.shevchenko@linux.intel.com>
- <160683107676.35139.9521964646147921378.b4-ty@kernel.org>
+        id S2392252AbgLAShH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Dec 2020 13:37:07 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:45160 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392246AbgLAShH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 13:37:07 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4AE09DBD;
+        Tue,  1 Dec 2020 19:36:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1606847784;
+        bh=k5QyTVWA4Jc+ywHyi2x/6LgWGDBVIjOrvUWrw4fdzDE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Oq6aB190ZbolqktbLd2lQtY1IEs2kNdnSPqvEx6/o+BFEPDJGW3O1QZBl0nWS+FOm
+         3nkHIY29uUf9Nyew9WsjI9dNwpMWKIIkyYDb0FKoH1saZb62605kjEryMSE8nnO5SM
+         5/NpWYRHvvnurHE4YP70bNNFGmcQ7oTO0FNzPXD0=
+Date:   Tue, 1 Dec 2020 20:36:16 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Dan Scally <djrscally@gmail.com>,
+        Jean-Michel Hautbois <jeanmichel.hautbois@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
+        lenb@kernel.org, gregkh@linuxfoundation.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
+        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
+        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jorhand@linux.microsoft.com, kitakar@gmail.com,
+        heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
+Message-ID: <20201201183616.GD3085@pendragon.ideasonboard.com>
+References: <20201130133129.1024662-1-djrscally@gmail.com>
+ <20201130133129.1024662-19-djrscally@gmail.com>
+ <f5aca6eb-cc41-64d6-cb72-19ee3a8afd1e@ideasonboard.com>
+ <fba097b3-6c61-c1ad-2928-3cb55bff6d19@gmail.com>
+ <20201201183139.GH4077@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <160683107676.35139.9521964646147921378.b4-ty@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20201201183139.GH4077@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 01, 2020 at 01:57:56PM +0000, Mark Brown wrote:
-> On Tue, 24 Nov 2020 11:56:28 +0200, Andy Shevchenko wrote:
-> > Since we have resource_intersection() helper, let's utilize it here.
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> 
-> Thanks!
-> 
-> [1/1] ASoC: Intel: catpt: Replace open coded variant of resource_intersection()
->       (no commit info)
+Hi Andy,
 
-As I mentioned in the comment (after --- line) the patch relies on the stuff in
-linux-pm tree. Do you have any immutable branch pulled? Otherwise Rafael
-already took it where it won't break compilation.
+On Tue, Dec 01, 2020 at 08:31:39PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 30, 2020 at 11:20:55PM +0000, Dan Scally wrote:
+> > On 30/11/2020 16:17, Jean-Michel Hautbois wrote:
+> 
+> ...
+> 
+> > but the ACPI table doesn't define an I2CSerialBusV2 for it. Instead it's
+> > rolled under the sensor's entry, there's a second entry in _CRS for the
+> > sensor that matches the address of the new device:
+> > 
+> > 
+> >             Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> >             {
+> >                 Name (SBUF, ResourceTemplate ()
+> >                 {
+> >                     I2cSerialBusV2 (0x0036, ControllerInitiated, 0x00061A80,
+> >                         AddressingMode7Bit, "\\_SB.PCI0.I2C2",
+> >                         0x00, ResourceConsumer, , Exclusive,
+> >                         )
+> >                     I2cSerialBusV2 (0x000C, ControllerInitiated, 0x00061A80,
+> >                         AddressingMode7Bit, "\\_SB.PCI0.I2C2",
+> >                         0x00, ResourceConsumer, , Exclusive,
+> >                         )
+> >                 })
+> >                 Return (SBUF) /* \_SB_.PCI0.CAM0._CRS.SBUF */
+> >             }
+> > 
+> > So that's another thing we need to work on. At the moment it doesn't
+> > exist as far as the kernel is concerned.
+> 
+> Maybe something along i2c-multi-instantiate can help here (maybe not).
+
+It's two different devices really. That's also one of the "annoyances"
+related to this platform. The INT* HID for the camera sensor actually
+refers to a camera module, with VCM, EEPROM, ... On Chrome OS devices,
+the same HID refers to the camera sensor only. *sigh* :-(
+
+> P.S. Dan, can you drop unrelated text when replying?
+
+I find a full quote actually useful, as it saves me from having to dig
+up original e-mails to read missing parts :-) It's a matter of
+preference I suppose.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
 
-
+Laurent Pinchart
