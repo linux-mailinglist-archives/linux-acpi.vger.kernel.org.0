@@ -2,142 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA7F2CAE0A
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 22:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E842CAE6E
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 22:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388716AbgLAVFz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Dec 2020 16:05:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51282 "EHLO
+        id S2389126AbgLAVbK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Dec 2020 16:31:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388142AbgLAVFy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 16:05:54 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748D3C0613CF;
-        Tue,  1 Dec 2020 13:05:14 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id 64so4966734wra.11;
-        Tue, 01 Dec 2020 13:05:14 -0800 (PST)
+        with ESMTP id S2389080AbgLAVbK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 16:31:10 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1387BC0613D4
+        for <linux-acpi@vger.kernel.org>; Tue,  1 Dec 2020 13:30:24 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id u37so3982107ybi.15
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Dec 2020 13:30:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=4KgTs8jnwN2jfqEMWyUikko75i7S4hns0UPALYVCRbQ=;
-        b=klOBt8lu1fx6++B+g5lFFB9tN2am/IxzxgY9KzHNEd/hYt8IewlmBANcpDgUkrJIII
-         NWrcV0G0Kwdjnlnrcs7vmY4MzMnPp5IJ9JjR/7c4FxXdpRbeKKoWE9orEhjx9m1yfxXl
-         CaxXTuUdgJursIK7EghosSml38Bq9kNrZYhSeI9tBOONZHaxPVRU4GhtrYgv0UsXkpiq
-         +az7ABlLWJByJPz7NXo/33egdZDBwQJxD4nX1gaCcUrbXS3puWaY+UXn/zq0U29CzLSM
-         PYkM9N/CLrXsvp0skI61qbai8AlJYnnQWDrnzf0AdXH+TLJ5+MdOHdSRp1FmMdVxfEh9
-         EMBw==
+        d=google.com; s=20161025;
+        h=sender:date:message-id:mime-version:subject:from:to:cc;
+        bh=0fZJNYwOSqcD8+IxQldlQWReWNbfGau5AHEVcdiMUlE=;
+        b=sjUzOmeqHlEVulc92piMYN9qFlBmLj+7D8kxU4XW2ReOVTN03rm69uePsvpz8soROf
+         sle7We46ZVXIdVxl/HwOuGnjAG9I9usk2JlXX7Z7FgUtMGKjLm6vQCJy6fAgU+pGZSHb
+         PIYRmxtVLS3578blW2fEke3e6kpT6bSRKJ1ijQhZcX64xj0AGZU5Euv8bhPsHU5gYdJN
+         SzQhe3lqCpDem4jcNtOJs0nfxaRuMWifFdkVodfaYjrhsdXWKvn13UyDZ2dhNfaljWX1
+         +BH5JxsmzS0au1misZgLU7a8ELBNTqGJHQ25YnTxBb1IhoWC+Lw66J6HZZ55cMRMXjeO
+         6FOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=4KgTs8jnwN2jfqEMWyUikko75i7S4hns0UPALYVCRbQ=;
-        b=HmEpt8CvFpcFDVoyxFvWySnYzbaBD7sAViNPLlF12M5Esm+27w8OMRQ3ufVk6v9zeG
-         8M5j2nBPoUaZhnVDmoPhfRh1xFeJIz1Jqsi5LcDBgpGAWHeM9AIYs4qbvB6mOoVSKleM
-         ALAmsCFOtocbeKvxwFbrUt/71xcoHipDov02qIiZ3fgN1e1sddOl6QscMM6zQe02OFOd
-         /an7DgcHJDghYd1FdyVwWCTGtozrx/yyQGTtpZUe5DuqV80C/+7e98RQZE95GSmEZM0t
-         TaWCYYony8JGAshItBUvf8fjMPkSZdWHpf5ZECPBEF+ahTUuIYgjUx/qy+06Gh22cMQ9
-         lJnw==
-X-Gm-Message-State: AOAM5337OCPF5/i8R3YBeC/PR2WZE3GmKpidFvCuiS86kfQGM6zMAHSi
-        1DpJmikdlN++pPQT9k8lEDo=
-X-Google-Smtp-Source: ABdhPJxLxptbrOQ6EiMpKv4g4Ist5XMogyCDOIsnIgLwl6ax28Q9xYGsYCFYdo3ZDR/FoGrRD02uNQ==
-X-Received: by 2002:adf:8030:: with SMTP id 45mr6309395wrk.407.1606856713225;
-        Tue, 01 Dec 2020 13:05:13 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.80])
-        by smtp.gmail.com with ESMTPSA id s4sm1232751wru.56.2020.12.01.13.05.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Dec 2020 13:05:12 -0800 (PST)
-Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
-        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
-        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
-        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
-        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com,
-        Hans de Goede <hdegoede@redhat.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-19-djrscally@gmail.com>
- <20201130200719.GB4077@smile.fi.intel.com>
- <8a1b0f5b-1289-256b-b25d-cf8af43bdc84@gmail.com>
- <20201201185417.GL4077@smile.fi.intel.com>
- <20201201185548.GV4569@pendragon.ideasonboard.com>
- <20201201190523.GO4077@smile.fi.intel.com>
- <20201201190638.GZ4569@pendragon.ideasonboard.com>
- <20201201192137.GR4077@smile.fi.intel.com>
-From:   Dan Scally <djrscally@gmail.com>
-Message-ID: <efd0ae7a-4ba2-e02e-6111-7f3d382d1eac@gmail.com>
-Date:   Tue, 1 Dec 2020 21:05:11 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20201201192137.GR4077@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
+         :to:cc;
+        bh=0fZJNYwOSqcD8+IxQldlQWReWNbfGau5AHEVcdiMUlE=;
+        b=EdZxi+l7gCNRxp2B576JhT2PChZT3dTC86LWvHfBSYy6RjcPY8WGUbf8w2kWkqSIoE
+         GZwaAxU3jrs1fs28kG5vfk2MsE+8WIBP/zGL1/XhdItC5VHrZgfI1Iqm8lxxpcbPj+fb
+         yZMDqNCqeT+QgerihJOfhe6fqvz+nV1kbQMFA+MW/HrTeaVwIKnfeMJYVyAB6B4+6WKa
+         77UlBUfbBMbAVeKuMnNzuJSkkV9BNeaz+Jm5D+hpdADhC8jASa04pq2XSn4oSDD5o39Y
+         j8Mu1e2ZPuZzXnmyEnr0S7/S6M4dguVic0yy6HApd4UQgo8zqU9EI/FOuSOeKhKP26YR
+         UUMw==
+X-Gm-Message-State: AOAM530aC+gejmZ77gqEwoS4x6cK4fUzc/Or6M8nYk6e5ToZOB3NG/h3
+        kkfcfqWims0C5nzAOzQwwW6Rgr07ozWf
+X-Google-Smtp-Source: ABdhPJzwbH9QOsffb86FfNWo79SZUkTVor2Plwd0GZicm/PB5AP+/QrE6MFqyeBUo3SlaGcW58JW6fO+9hS+
+Sender: "furquan via sendgmr" <furquan@furquan.mtv.corp.google.com>
+X-Received: from furquan.mtv.corp.google.com ([2620:15c:202:1:7220:84ff:fe09:13a4])
+ (user=furquan job=sendgmr) by 2002:a25:9392:: with SMTP id
+ a18mr7255295ybm.330.1606858223245; Tue, 01 Dec 2020 13:30:23 -0800 (PST)
+Date:   Tue,  1 Dec 2020 13:30:19 -0800
+Message-Id: <20201201213019.1558738-1-furquan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
+Subject: [PATCH] drivers: core: Detach device from power domain on shutdown
+From:   Furquan Shaikh <furquan@google.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Furquan Shaikh <furquan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+When the system is powered off or rebooted, devices are not detached
+from their PM domain. This results in ACPI PM not being invoked and
+hence PowerResouce _OFF method not being invoked for any of the
+devices. Because the ACPI power resources are not turned off in case
+of poweroff and reboot, it violates the power sequencing requirements
+which impacts the reliability of the devices over the lifetime of the
+platform. This is currently observed on all Chromebooks using ACPI.
 
-On 01/12/2020 19:21, Andy Shevchenko wrote:
-> On Tue, Dec 01, 2020 at 09:06:38PM +0200, Laurent Pinchart wrote:
->> On Tue, Dec 01, 2020 at 09:05:23PM +0200, Andy Shevchenko wrote:
->>> On Tue, Dec 01, 2020 at 08:55:48PM +0200, Laurent Pinchart wrote:
->>>
->>>> Do you think the Windows driver would use DMI ?
->>> Linux is using DMI for quirks.
->>>
->>>> That seems quite
->>>> unlikely to me, given how they would have to release a new driver binary
->>>> for every machine. I'm pretty sure that a different mechanism is used to
->>>> identify camera integration, and I think it would make sense to follow
->>>> the same approach. That would allow us to avoid large tables of DMI
->>>> identifiers that would need to be constently updated, potentially making
->>>> user experience better.
->>> All Surface family can be matched in a way as Apple machines [1].
->>>
->>> [1]: https://lkml.org/lkml/2020/4/15/1198
->> But not all Surface machines necessarily have the same camera
->> architecture. My point is that there seems to be identifiers reported in
->> ACPI for the exact purpose of identifying the camera architecture. If we
->> used DMI instead, we would have to handle each machine individually.
-> With help of DMI we may narrow down the search.
->
-> But again, we are talking about uncertainity. It may be your way (a lot of
-> platforms that have different settings), or mine (only a few with more or less
-> standard sets of settings).
->
-> DMI is simply standard in Linux (people usually easier can grep for quirks for
-> a specific platform).
->
-> I would rather ask Hans' opinion since he has quite an expertise with DMI for
-> good and bad.
->
-I have no real preference as to the current method or DMI, but thoughts
-that come to mind are:
+In order to solve the above problem, this change detaches a device
+from its PM domain whenever it is shutdown. This action is basically
+analogous to ->remove() from driver model perspective. Detaching the
+device from its PM domain ensures that the ACPI PM gets a chance to
+turn off the power resources for the device thus complying with its
+power sequencing requirements.
 
+Signed-off-by: Furquan Shaikh <furquan@google.com>
+---
+ drivers/base/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-1. given your info that low byte 0x0c means clock enable, we need to
-register a clock too. Do we need to extend this device specific section
-to map a clock name, or is it acceptable for them to be nameless (ISTR
-that the API will let you fetch a clock using devm_clock_get(dev, NULL);)
-
-2. Given only 0x0b pin is actually a regulator and it's controlling
-multiple devices, my plan when we got round to adding the VCM / EEPROM
-support was simply to extend those mapping tables so that those
-supplementary devices were also able to get that regulator...and the two
-would share it. I think, from reading the regulator code and
-documentation, that that's all fine - and it won't actually be disabled
-until both drivers disable it. Does that sound about right?
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index d661ada1518f..5823f1d719e1 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -23,6 +23,7 @@
+ #include <linux/of_device.h>
+ #include <linux/genhd.h>
+ #include <linux/mutex.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
+ #include <linux/sched/signal.h>
+@@ -4057,6 +4058,8 @@ void device_shutdown(void)
+ 			dev->driver->shutdown(dev);
+ 		}
+ 
++		dev_pm_domain_detach(dev, true);
++
+ 		device_unlock(dev);
+ 		if (parent)
+ 			device_unlock(parent);
+-- 
+2.29.2.454.gaff20da3a2-goog
 
