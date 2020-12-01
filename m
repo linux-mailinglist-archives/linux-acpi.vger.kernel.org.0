@@ -2,78 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9522CA95B
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 18:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2619A2CA9A0
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 18:30:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728168AbgLARQT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Dec 2020 12:16:19 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:44469 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbgLARQS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 12:16:18 -0500
-Received: by mail-ot1-f66.google.com with SMTP id f16so2344159otl.11
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Dec 2020 09:16:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zc+Lt5p1hWao+e3PNU0nffQgpPx9Uuspo+RlTzWsoNI=;
-        b=snNXjtuVIc34KjtCewEtoEY0nTgcH44WalXwvZXegn+NevYFxNw02EFmuGvnGTj5VP
-         U06GnM0DzjXHBFzAXFcMQn1eaD6LtnIcxOwtDnafQKMnc/gB3h/fRrDrseTvlf38/a6K
-         8jqf/btT1pbW3PSsOhREJYB2dsHhvvmgVMvCF93aPtsWArO9QEwh1KVSWDo58dHauXvP
-         3SY50PzZkdjlpNVBwzQR4BUTvJZ29fMBk1Q7fubdDf20dKeEUYnsJMbaWDvToNLmsMCi
-         MBUP73ox0sQHvMEn1gCx4VCsje5nJZCBTapsxP5sw2b7tkXYk1kRjmoDyCKgTdXCMHxL
-         UHcA==
-X-Gm-Message-State: AOAM531744ZQL1gxAFlmhumMipBpB+Z9dQNrOv19T8dkrByzTZs4P9f2
-        bBOUr6fuXsRg+9rqfaFqrQL5o9mL5BYKp3+9nvs=
-X-Google-Smtp-Source: ABdhPJzsaraLmcgR3vy9QgN/lfIVVhAGV0JhluHngvpiizP/cVlY0Fa7Q+IQF9yzoROLBKEbvXXiau1AEwYVvmsv0+k=
-X-Received: by 2002:a9d:171a:: with SMTP id i26mr2589333ota.260.1606842938011;
- Tue, 01 Dec 2020 09:15:38 -0800 (PST)
+        id S1728799AbgLAR2x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Dec 2020 12:28:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56782 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727826AbgLAR2x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 12:28:53 -0500
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1606843691;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=27ELMoHJXn3b8+hiqsrg9icIzbuPOs5y3FOlQUsqIB4=;
+        b=cWQpemZ9a8kYbaab9vBsrF70DINP/sl7/f536Z967AZUolItnvqS+Rna1p+C+P4ZuzA2RV
+        nMcN9Vk7VL3DkpMeX6IKyDSIoy4XrmQRr8MqSSkNek4YQVmJn/BB3cVfkWENovAqEiaZVd
+        TGsAaj0/Dbejlotam3E50tZlCu2cANP0dgfvu/2BPoM9E1A152PyIv2piLVPI01TpxtpGd
+        7PLg3aKf7+EigclyQn5WNC0JOyLrHKUqrKrIdwyqlglFTyl+kFJoNF3BEYvsNhfLcYvLAT
+        6c2Zs+sHe17eErelFMTtQDoDWk+fxyQ46zNIJI3n7xin7+9ZqV/n7hJZKKeZcQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1606843691;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=27ELMoHJXn3b8+hiqsrg9icIzbuPOs5y3FOlQUsqIB4=;
+        b=Nux9htAOFg3I46sIoyYEyXO8aK0gYSHbKoJ1s9kXYsRo4VvFd/2RkgaLkF9b1UceOUt6Fc
+        MWQAmeay6zHUoRAg==
+To:     John Garry <john.garry@huawei.com>, jejb@linux.ibm.com,
+        martin.petersen@oracle.com, lenb@kernel.org, rjw@rjwysocki.net,
+        gregkh@linuxfoundation.org, maz@kernel.org
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxarm@huawei.com, linux-acpi@vger.kernel.org, dwagner@suse.de
+Subject: Re: [PATCH v4 1/5] genirq/affinity: Add irq_update_affinity_desc()
+In-Reply-To: <22315d74-0696-85ef-882c-85961cfb4f32@huawei.com>
+References: <1606757759-6076-1-git-send-email-john.garry@huawei.com> <1606757759-6076-2-git-send-email-john.garry@huawei.com> <87y2iih1pv.fsf@nanos.tec.linutronix.de> <22315d74-0696-85ef-882c-85961cfb4f32@huawei.com>
+Date:   Tue, 01 Dec 2020 18:28:10 +0100
+Message-ID: <87pn3tfnbp.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-References: <20201130192048.3093726-1-erik.kaneda@intel.com>
-In-Reply-To: <20201130192048.3093726-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Dec 2020 18:15:26 +0100
-Message-ID: <CAJZ5v0iOYzD54DTi62diO3BYM9guHmb0qLBK+HU_NXCeySahEw@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPICA version 20201113
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 8:47 PM Erik Kaneda <erik.kaneda@intel.com> wrote:
+On Tue, Dec 01 2020 at 15:22, John Garry wrote:
+> /*
+>   * There are certain limitations on when it may be used - attempts to 
+> use it for when the kernel is configured for generic IRQ reservation 
+> mode (in config GENERIC_IRQ_RESERVATION_MODE) will fail, as it may 
+> conflict with managed/non-managed interrupt accounting. In addition, 
+> attempts to use it on an interrupt which is already started or which has 
+> already been configured as managed will also fail, as these mean invalid 
+> init state or double init.
 >
-> This patch series contains the linux-ized release of ACPICA version
-> 20201113. For Linux, the most notable change is a fix in a memory
-> leak that occurs when evaluating _CID as well as handling orphan _REG
-> methods for GPIO OperationRegions.
+> ...
 >
-> Bob Moore (2):
->   ACPICA: Add 5 new UUIDs to the known UUID table
->   ACPICA: Update version to 20201113
->
-> Colin Ian King (1):
->   ACPICA: Remove extreaneous "the" in comments
->
-> Erik Kaneda (2):
->   ACPICA: Add function trace macros to improve debugging
->   ACPICA: Interpreter: fix memory leak by using use existing buffer
->
-> Hans de Goede (1):
->   ACPICA: Also handle "orphan" _REG methods for GPIO OpRegions
->
->  drivers/acpi/acpica/accommon.h  |  2 +-
->  drivers/acpi/acpica/evregion.c  | 54 ++++++++++++++++-----------------
->  drivers/acpi/acpica/nspredef.c  | 10 +++---
->  drivers/acpi/acpica/nsprepkg.c  | 38 ++++++++++++-----------
->  drivers/acpi/acpica/nsrepair2.c | 39 +++++++++++-------------
->  include/acpi/acpixf.h           |  2 +-
->  include/acpi/acuuid.h           |  5 +++
->  7 files changed, 77 insertions(+), 73 deletions(-)
->
-> --
+> Let me know if not good, if not I'll post again soon.
 
-All applied as 5.11-rc material, thanks!
+LGTM
