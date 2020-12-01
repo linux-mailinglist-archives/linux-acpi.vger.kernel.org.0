@@ -2,95 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E8922CAB28
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 19:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E79672CAB51
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 20:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731163AbgLAS4t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Dec 2020 13:56:49 -0500
-Received: from mga17.intel.com ([192.55.52.151]:65533 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbgLAS4t (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Dec 2020 13:56:49 -0500
-IronPort-SDR: ymHOwF9dz5a11dYhtIRfpEmCVUe7hDaCdE+ASviyymQRKnEj8N48P2+Bf5GPhpr9PWs25Ymgll
- f65XtC4rMqOA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9822"; a="152716011"
-X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; 
-   d="scan'208";a="152716011"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2020 10:55:08 -0800
-IronPort-SDR: O1EQ8vM/QvOLK7AKHZagQtym6r3r7agEaHfKrsefFl/abSiMiZfy7LQEOEJzQYFMGdozDImMyB
- TZlyuPsZwQZA==
-X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; 
-   d="scan'208";a="361147132"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2020 10:54:58 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kkAog-00BLBW-ML; Tue, 01 Dec 2020 20:55:58 +0200
-Date:   Tue, 1 Dec 2020 20:55:58 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dan Scally <djrscally@gmail.com>
-Cc:     Sakari Ailus <sakari.ailus@iki.fi>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        gregkh@linuxfoundation.org, mika.westerberg@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
-Message-ID: <20201201185558.GM4077@smile.fi.intel.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-19-djrscally@gmail.com>
- <20201130205203.GQ4351@valkosipuli.retiisi.org.uk>
- <3e8494a0-a2c0-59e7-46bb-9635c3c239dd@gmail.com>
+        id S2392327AbgLATCc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Dec 2020 14:02:32 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40304 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392316AbgLATCc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Dec 2020 14:02:32 -0500
+Received: by mail-ot1-f66.google.com with SMTP id 79so2707664otc.7;
+        Tue, 01 Dec 2020 11:02:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qGCSg/XgNwi3cF4EDoNSb1VDiK1YqRmCPX4AUa7CIjQ=;
+        b=EGcp8hiiEt5jD/ct7NOw/JbsolttCwIgda3u3crCt/4/mINRRzUAJfjdXoBmcnYSX/
+         RofddQP79sQf8H5sFtByOddKaTkFlWqZhnlUvuRFP/fdKeMm1EwUfOduHWYYzfHzT4zi
+         8ftpwDLc1/mKkFgcqzXo0l8J9D9C1Gte/UhLR6ABC3E23h6H91EssqKL/hR6AcHS/HGO
+         EXIKmwu/7k12efz2dCeZoGOXKuywXIHQU62BekTL/FYrp45YMYbmTeY46ulQDL6ah/+Z
+         rzf2Lsbjh23oS0+lGE3iJTr1BDlXhZfKYLtAhqcYE96zbv604OwLBOG+5kR/3OOdCI3E
+         vw0w==
+X-Gm-Message-State: AOAM530YBKfEUvd9ZsdrbKb2VPpffes0cjX0ZeA9YubrAto33fBYgf/+
+        2WTHRJEkUgMcGZK0np22hdCSYHtVhhGfSVgkfwQ=
+X-Google-Smtp-Source: ABdhPJzI3NAp5K2MsFrEh4Ybf5fvmKKvrAttzNfQPSF1b7gj+fuTd6yw4/6cG75pXHja2a/+buZa4WAjrTWQTpSBRQg=
+X-Received: by 2002:a05:6830:2385:: with SMTP id l5mr2868099ots.321.1606849310854;
+ Tue, 01 Dec 2020 11:01:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3e8494a0-a2c0-59e7-46bb-9635c3c239dd@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <1606757759-6076-1-git-send-email-john.garry@huawei.com> <1606757759-6076-4-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1606757759-6076-4-git-send-email-john.garry@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 1 Dec 2020 20:01:39 +0100
+Message-ID: <CAJZ5v0gnwJ37rzi_+FMB-eN1OAW0n86pYN8FWa_Tc4eWvjNv-Q@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] ACPI: Drop acpi_dev_irqresource_disabled()
+To:     John Garry <john.garry@huawei.com>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        dwagner@suse.de
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 11:06:03PM +0000, Dan Scally wrote:
-> On 30/11/2020 20:52, Sakari Ailus wrote:
-> >> +static const struct acpi_device_id int3472_device_id[] = {
-> >> +	{ "INT3472", 0 },
-> > The INT3472 _HID is really allocated for the tps68470 PMIC chip. It may not
-> > be used by other drivers; people will want to build kernels where both of
-> > these ACPI table layouts are functional.
-> >
-> > Instead, I propose, that you add this as an option to the tps68470 driver
-> > that figures out whether the ACPI device for the tps68470 device actually
-> > describes something else, in a similar fashion you do with the cio2-bridge
-> > driver. I think it may need a separate Kconfig option albeit this and
-> > cio2-bridge cannot be used separately.
-> 
-> It actually occurs to me that that may not work (I know I called that
-> out as an option we considered, but that was a while ago actually). The
-> reason I wasn't worried about the existing tps68470 driver binding to
-> these devices is that it's an i2c driver, and these dummy devices don't
-> have an I2cSerialBusV2, so no I2C device is created by them the kernel.
-> 
-> 
-> Won't that mean the tps68470 driver won't ever be probed for these devices?
+On Mon, Nov 30, 2020 at 6:41 PM John Garry <john.garry@huawei.com> wrote:
+>
+> The functionality of acpi_dev_irqresource_disabled() is same as in common
+> irqresource_disabled(), so drop acpi_dev_irqresource_disabled() in favour
+> of that function.
+>
+> Signed-off-by: John Garry <john.garry@huawei.com>
 
-It won't be probed by kernel as long as it stays pure I²C driver..
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> ---
+>  drivers/acpi/resource.c | 17 +++++------------
+>  1 file changed, 5 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index ad04824ca3ba..58203193417e 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -380,13 +380,6 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+>
+> -static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
+> -{
+> -       res->start = gsi;
+> -       res->end = gsi;
+> -       res->flags = IORESOURCE_IRQ | IORESOURCE_DISABLED | IORESOURCE_UNSET;
+> -}
+> -
+>  static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>                                      u8 triggering, u8 polarity, u8 shareable,
+>                                      bool legacy)
+> @@ -394,7 +387,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>         int irq, p, t;
+>
+>         if (!valid_IRQ(gsi)) {
+> -               acpi_dev_irqresource_disabled(res, gsi);
+> +               irqresource_disabled(res, gsi);
+>                 return;
+>         }
+>
+> @@ -426,7 +419,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>                 res->start = irq;
+>                 res->end = irq;
+>         } else {
+> -               acpi_dev_irqresource_disabled(res, gsi);
+> +               irqresource_disabled(res, gsi);
+>         }
+>  }
+>
+> @@ -463,7 +456,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>                  */
+>                 irq = &ares->data.irq;
+>                 if (index >= irq->interrupt_count) {
+> -                       acpi_dev_irqresource_disabled(res, 0);
+> +                       irqresource_disabled(res, 0);
+>                         return false;
+>                 }
+>                 acpi_dev_get_irqresource(res, irq->interrupts[index],
+> @@ -473,7 +466,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>         case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+>                 ext_irq = &ares->data.extended_irq;
+>                 if (index >= ext_irq->interrupt_count) {
+> -                       acpi_dev_irqresource_disabled(res, 0);
+> +                       irqresource_disabled(res, 0);
+>                         return false;
+>                 }
+>                 if (is_gsi(ext_irq))
+> @@ -481,7 +474,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>                                          ext_irq->triggering, ext_irq->polarity,
+>                                          ext_irq->shareable, false);
+>                 else
+> -                       acpi_dev_irqresource_disabled(res, 0);
+> +                       irqresource_disabled(res, 0);
+>                 break;
+>         default:
+>                 res->flags = 0;
+> --
+> 2.26.2
+>
