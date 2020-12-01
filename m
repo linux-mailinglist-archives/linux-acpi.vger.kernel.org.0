@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 580212C9588
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 04:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 621F22C958A
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Dec 2020 04:06:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727253AbgLADFG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Nov 2020 22:05:06 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:8895 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727242AbgLADFG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 22:05:06 -0500
+        id S1727425AbgLADFL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Nov 2020 22:05:11 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9078 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727242AbgLADFK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Nov 2020 22:05:10 -0500
 Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4ClRl05dHZz75BH;
-        Tue,  1 Dec 2020 11:03:56 +0800 (CST)
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ClRkx6b2lzLxjc;
+        Tue,  1 Dec 2020 11:03:53 +0800 (CST)
 Received: from SWX921481.china.huawei.com (10.126.202.198) by
  DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 1 Dec 2020 11:04:13 +0800
+ 14.3.487.0; Tue, 1 Dec 2020 11:04:18 +0800
 From:   Barry Song <song.bao.hua@hisilicon.com>
 To:     <valentin.schneider@arm.com>, <catalin.marinas@arm.com>,
         <will@kernel.org>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
@@ -29,9 +29,9 @@ To:     <valentin.schneider@arm.com>, <catalin.marinas@arm.com>,
         <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
 CC:     <linuxarm@huawei.com>, <xuwei5@huawei.com>,
         <prime.zeng@hisilicon.com>, Barry Song <song.bao.hua@hisilicon.com>
-Subject: [RFC PATCH v2 1/2] topology: Represent clusters of CPUs within a die.
-Date:   Tue, 1 Dec 2020 15:59:43 +1300
-Message-ID: <20201201025944.18260-2-song.bao.hua@hisilicon.com>
+Subject: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
+Date:   Tue, 1 Dec 2020 15:59:44 +1300
+Message-ID: <20201201025944.18260-3-song.bao.hua@hisilicon.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20201201025944.18260-1-song.bao.hua@hisilicon.com>
 References: <20201201025944.18260-1-song.bao.hua@hisilicon.com>
@@ -44,20 +44,11 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Both ACPI and DT provide the ability to describe additional layers of
-topology between that of individual cores and higher level constructs
-such as the level at which the last level cache is shared.
-In ACPI this can be represented in PPTT as a Processor Hierarchy
-Node Structure [1] that is the parent of the CPU cores and in turn
-has a parent Processor Hierarchy Nodes Structure representing
-a higher level of topology.
-
-For example Kunpeng 920 has 6 clusters in each NUMA node, and each
+ARM64 server chip Kunpeng 920 has 6 clusters in each NUMA node, and each
 cluster has 4 cpus. All clusters share L3 cache data, but each cluster
 has local L3 tag. On the other hand, each clusters will share some
-internal system bus.
+internal system bus. This means cache coherence overhead inside one cluster
+is much less than the overhead across clusters.
 
 +-----------------------------------+                          +---------+
 |  +------+    +------+            +---------------------------+         |
@@ -120,369 +111,227 @@ internal system bus.
 |                                   |                          +---------+
 +-----------------------------------+
 
-That means the cost to transfer ownership of a cacheline between CPUs
-within a cluster is lower than between CPUs in different clusters on
-the same die. Hence, it can make sense to tell the scheduler to use
-the cache affinity of the cluster to make better decision on thread
-migration.
+This patch adds the sched_domain for clusters. On kunpeng 920, without
+this patch, domain0 of cpu0 would be MC for cpu0-cpu23 with
+min_interval=24, max_interval=48; with this patch, MC becomes domain1,
+a new domain0 "CL" including cpu0-cpu3 is added with min_interval=4 and
+max_interval=8.
+This will affect load balance. For example, without this patch, while cpu0
+becomes idle, it will pull a task from cpu1-cpu15. With this patch, cpu0
+will try to pull a task from cpu1-cpu3 first. This will have much less
+overhead of task migration.
 
-This patch simply exposes this information to userspace libraries
-like hwloc by providing cluster_cpus and related sysfs attributes.
-PoC of HWLOC support at [2].
+On the other hand, while doing WAKE_AFFINE, this patch will try to find
+a core in the target cluster before scanning the llc domain.
+This means it will proactively use a core which has better affinity with
+target core at first.
 
-Note this patch only handle the ACPI case.
+Not much benchmark has been done yet. but here is a rough hackbench
+result.
+we run the below command with different -g parameter to increase system load
+by changing g from 1 to 4, for each one of 1-4, we run the benchmark ten times
+and record the data to get the average time:
 
-Special consideration is needed for SMT processors, where it is
-necessary to move 2 levels up the hierarchy from the leaf nodes
-(thus skipping the processor core level).
+First, we run hackbench in only one NUMA node(cpu0-cpu23):
+$ numactl -N 0 hackbench -p -T -l 100000 -g $1
 
-Currently the ID provided is the offset of the Processor
-Hierarchy Nodes Structure within PPTT.  Whilst this is unique
-it is not terribly elegant so alternative suggestions welcome.
+g=1 (seen cpu utilization around 50% for each core)
+Running in threaded mode with 1 groups using 40 file descriptors
+Each sender will pass 100000 messages of 100 bytes
+w/o: 7.689 7.485 7.485 7.458 7.524 7.539 7.738 7.693 7.568 7.674=7.5853
+w/ : 7.516 7.941 7.374 7.963 7.881 7.910 7.420 7.556 7.695 7.441=7.6697
+performance improvement w/ patch: -1.01%
 
-Note that arm64 / ACPI does not provide any means of identifying
-a die level in the topology but that may be unrelate to the cluster
-level.
+g=2 (seen cpu utilization around 70% for each core)
+Running in threaded mode with 2 groups using 40 file descriptors
+Each sender will pass 100000 messages of 100 bytes
+w/o: 10.127 10.119 10.070 10.196 10.057 10.111 10.045 10.164 10.162 9.955=10.1006
+w/ : 9.694 9.654 9.612 9.649 9.686 9.734 9.607 9.842 9.690 9.710=9.6878
+performance improvement w/ patch: 4.08%
 
-[1] ACPI Specification 6.3 - section 5.2.29.1 processor hierarchy node
-    structure (Type 0)
-[2] https://github.com/hisilicon/hwloc/tree/linux-cluster
+g=3 (seen cpu utilization around 90% for each core)
+Running in threaded mode with 3 groups using 40 file descriptors
+Each sender will pass 100000 messages of 100 bytes
+w/o: 15.885 15.254 15.932 15.647 16.120 15.878 15.857 15.759 15.674 15.721=15.7727
+w/ : 14.974 14.657 13.969 14.985 14.728 15.665 15.191 14.995 14.946 14.895=14.9005
+performance improvement w/ patch: 5.53%
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+g=4
+Running in threaded mode with 4 groups using 40 file descriptors
+Each sender will pass 100000 messages of 100 bytes
+w/o: 20.014 21.025 21.119 21.235 19.767 20.971 20.962 20.914 21.090 21.090=20.8187
+w/ : 20.331 20.608 20.338 20.445 20.456 20.146 20.693 20.797 21.381 20.452=20.5647
+performance improvement w/ patch: 1.22%
+
+After that, we run the same hackbench in both NUMA nodes(cpu0-cpu47):
+g=1
+w/o: 7.351 7.416 7.486 7.358 7.516 7.403 7.413 7.411 7.421 7.454=7.4229
+w/ : 7.609 7.596 7.647 7.571 7.687 7.571 7.520 7.513 7.530 7.681=7.5925
+performance improvement by patch: -2.2%
+
+g=2
+w/o: 9.046 9.190 9.053 8.950 9.101 8.930 9.143 8.928 8.905 9.034=9.028
+w/ : 8.247 8.057 8.258 8.310 8.083 8.201 8.044 8.158 8.382 8.173=8.1913
+performance improvement by patch: 9.3%
+
+g=3
+w/o: 11.664 11.767 11.277 11.619 12.557 12.760 11.664 12.165 12.235 11.849=11.9557
+w/ : 9.387 9.461 9.650 9.613 9.591 9.454 9.496 9.716 9.327 9.722=9.5417
+performance improvement by patch: 20.2%
+
+g=4
+w/o: 17.347 17.299 17.655 18.775 16.707 18.879 17.255 18.356 16.859 18.515=17.7647
+w/ : 10.416 10.496 10.601 10.318 10.459 10.617 10.510 10.642 10.467 10.401=10.4927
+performance improvement by patch: 40.9%
+
+g=5
+w/o: 27.805 26.633 24.138 28.086 24.405 27.922 30.043 28.458 31.073 25.819=27.4382
+w/ : 13.817 13.976 14.166 13.688 14.132 14.095 14.003 13.997 13.954 13.907=13.9735
+performance improvement by patch: 49.1%
+
+It seems the patch can bring a huge increase on hackbench especially when
+we bind hackbench to all of cpu0-cpu47, comparing to 5.53% while running
+on single NUMA node(cpu0-cpu23)
+
 Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
 ---
- -v2: no code change, just refine the commit log
- * ABI documentation to be handled seperately as precusor patch needed
-   to add existing topology ABI
- * Discussion of exact naming postponed for a future patch as no
-   conclusion has been reached yet
+ arch/arm64/Kconfig       |  7 +++++++
+ arch/arm64/kernel/smp.c  | 17 +++++++++++++++++
+ include/linux/topology.h |  7 +++++++
+ kernel/sched/fair.c      | 35 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 66 insertions(+)
 
- Documentation/admin-guide/cputopology.rst | 26 +++++++++++---
- arch/arm64/kernel/topology.c              |  2 ++
- drivers/acpi/pptt.c                       | 60 +++++++++++++++++++++++++++++++
- drivers/base/arch_topology.c              | 14 ++++++++
- drivers/base/topology.c                   | 10 ++++++
- include/linux/acpi.h                      |  5 +++
- include/linux/arch_topology.h             |  5 +++
- include/linux/topology.h                  |  6 ++++
- 8 files changed, 124 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/admin-guide/cputopology.rst b/Documentation/admin-guide/cputopology.rst
-index b90dafc..f9d3745 100644
---- a/Documentation/admin-guide/cputopology.rst
-+++ b/Documentation/admin-guide/cputopology.rst
-@@ -24,6 +24,12 @@ core_id:
- 	identifier (rather than the kernel's).  The actual value is
- 	architecture and platform dependent.
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 6d23283..3583c26 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -938,6 +938,13 @@ config SCHED_MC
+ 	  making when dealing with multi-core CPU chips at a cost of slightly
+ 	  increased overhead in some places. If unsure say N here.
  
-+cluster_id:
++config SCHED_CLUSTER
++	bool "Cluster scheduler support"
++	help
++	  Cluster scheduler support improves the CPU scheduler's decision
++	  making when dealing with machines that have clusters(sharing internal
++	  bus or sharing LLC cache tag). If unsure say N here.
 +
-+	the Cluster ID of cpuX.  Typically it is the hardware platform's
-+	identifier (rather than the kernel's).  The actual value is
-+	architecture and platform dependent.
-+
- book_id:
+ config SCHED_SMT
+ 	bool "SMT scheduler support"
+ 	help
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 355ee9e..5c8f026 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -32,6 +32,7 @@
+ #include <linux/irq_work.h>
+ #include <linux/kexec.h>
+ #include <linux/kvm_host.h>
++#include <linux/sched/topology.h>
  
- 	the book ID of cpuX. Typically it is the hardware platform's
-@@ -56,6 +62,14 @@ package_cpus_list:
- 	human-readable list of CPUs sharing the same physical_package_id.
- 	(deprecated name: "core_siblings_list")
- 
-+cluster_cpus:
-+
-+	internal kernel map of CPUs within the same cluster.
-+
-+cluster_cpus_list:
-+
-+	human-readable list of CPUs within the same cluster.
-+
- die_cpus:
- 
- 	internal kernel map of CPUs within the same die.
-@@ -96,11 +110,13 @@ these macros in include/asm-XXX/topology.h::
- 
- 	#define topology_physical_package_id(cpu)
- 	#define topology_die_id(cpu)
-+	#define topology_cluster_id(cpu)
- 	#define topology_core_id(cpu)
- 	#define topology_book_id(cpu)
- 	#define topology_drawer_id(cpu)
- 	#define topology_sibling_cpumask(cpu)
- 	#define topology_core_cpumask(cpu)
-+	#define topology_cluster_cpumask(cpu)
- 	#define topology_die_cpumask(cpu)
- 	#define topology_book_cpumask(cpu)
- 	#define topology_drawer_cpumask(cpu)
-@@ -116,10 +132,12 @@ not defined by include/asm-XXX/topology.h:
- 
- 1) topology_physical_package_id: -1
- 2) topology_die_id: -1
--3) topology_core_id: 0
--4) topology_sibling_cpumask: just the given CPU
--5) topology_core_cpumask: just the given CPU
--6) topology_die_cpumask: just the given CPU
-+3) topology_cluster_id: -1
-+4) topology_core_id: 0
-+5) topology_sibling_cpumask: just the given CPU
-+6) topology_core_cpumask: just the given CPU
-+7) topology_cluster_cpumask: just the given CPU
-+8) topology_die_cpumask: just the given CPU
- 
- For architectures that don't support books (CONFIG_SCHED_BOOK) there are no
- default definitions for topology_book_id() and topology_book_cpumask().
-diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-index 0801a0f..4c40240 100644
---- a/arch/arm64/kernel/topology.c
-+++ b/arch/arm64/kernel/topology.c
-@@ -101,6 +101,8 @@ int __init parse_acpi_topology(void)
- 			cpu_topology[cpu].thread_id  = -1;
- 			cpu_topology[cpu].core_id    = topology_id;
- 		}
-+		topology_id = find_acpi_cpu_topology_cluster(cpu);
-+		cpu_topology[cpu].cluster_id = topology_id;
- 		topology_id = find_acpi_cpu_topology_package(cpu);
- 		cpu_topology[cpu].package_id = topology_id;
- 
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index 4ae9335..8646a93 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -737,6 +737,66 @@ int find_acpi_cpu_topology_package(unsigned int cpu)
+ #include <asm/alternative.h>
+ #include <asm/atomic.h>
+@@ -726,6 +727,20 @@ void __init smp_init_cpus(void)
+ 	}
  }
  
- /**
-+ * find_acpi_cpu_topology_cluster() - Determine a unique CPU cluster value
-+ * @cpu: Kernel logical CPU number
-+ *
-+ * Determine a topology unique cluster ID for the given CPU/thread.
-+ * This ID can then be used to group peers, which will have matching ids.
-+ *
-+ * The cluster, if present is the level of topology above CPUs. In a
-+ * multi-thread CPU, it will be the level above the CPU, not the thread.
-+ * It may not exist in single CPU systems. In simple multi-CPU systems,
-+ * it may be equal to the package topology level.
-+ *
-+ * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be found
-+ * or there is no toplogy level above the CPU..
-+ * Otherwise returns a value which represents the package for this CPU.
-+ */
++static struct sched_domain_topology_level arm64_topology[] = {
++#ifdef CONFIG_SCHED_SMT
++        { cpu_smt_mask, cpu_smt_flags, SD_INIT_NAME(SMT) },
++#endif
++#ifdef CONFIG_SCHED_CLUSTER
++	{ cpu_clustergroup_mask, cpu_core_flags, SD_INIT_NAME(CL) },
++#endif
++#ifdef CONFIG_SCHED_MC
++        { cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
++#endif
++	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
++        { NULL, },
++};
 +
-+int find_acpi_cpu_topology_cluster(unsigned int cpu)
-+{
-+	struct acpi_table_header *table;
-+	acpi_status status;
-+	struct acpi_pptt_processor *cpu_node, *cluster_node;
-+	int retval;
-+	int is_thread;
-+
-+	status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_pptt_warn_missing();
-+		return -ENOENT;
-+	}
-+	cpu_node = acpi_find_processor_node(table, cpu);
-+	if (cpu_node == NULL || !cpu_node->parent) {
-+		retval = -ENOENT;
-+		goto put_table;
-+	}
-+
-+	is_thread = cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD;
-+	cluster_node = fetch_pptt_node(table, cpu_node->parent);
-+	if (cluster_node == NULL) {
-+		retval = -ENOENT;
-+		goto put_table;
-+	}
-+	if (is_thread) {
-+		if (!cluster_node->parent) {
-+			retval = -ENOENT;
-+			goto put_table;
-+		}
-+		cluster_node = fetch_pptt_node(table, cluster_node->parent);
-+		if (cluster_node == NULL) {
-+			retval = -ENOENT;
-+			goto put_table;
-+		}
-+	}
-+	retval = ACPI_PTR_DIFF(cluster_node, table);
-+put_table:
-+	acpi_put_table(table);
-+
-+	return retval;
-+}
-+
-+/**
-  * find_acpi_cpu_topology_hetero_id() - Get a core architecture tag
-  * @cpu: Kernel logical CPU number
-  *
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index 75f72d6..e2ca8f3 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -497,6 +497,11 @@ const struct cpumask *cpu_coregroup_mask(int cpu)
- 	return core_mask;
- }
- 
-+const struct cpumask *cpu_clustergroup_mask(int cpu)
-+{
-+	return &cpu_topology[cpu].cluster_sibling;
-+}
-+
- void update_siblings_masks(unsigned int cpuid)
+ void __init smp_prepare_cpus(unsigned int max_cpus)
  {
- 	struct cpu_topology *cpu_topo, *cpuid_topo = &cpu_topology[cpuid];
-@@ -514,6 +519,11 @@ void update_siblings_masks(unsigned int cpuid)
- 		if (cpuid_topo->package_id != cpu_topo->package_id)
- 			continue;
+ 	const struct cpu_operations *ops;
+@@ -735,6 +750,8 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
  
-+		if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
-+			cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
-+			cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
-+		}
+ 	init_cpu_topology();
+ 
++	set_sched_topology(arm64_topology);
 +
- 		cpumask_set_cpu(cpuid, &cpu_topo->core_sibling);
- 		cpumask_set_cpu(cpu, &cpuid_topo->core_sibling);
- 
-@@ -532,6 +542,9 @@ static void clear_cpu_topology(int cpu)
- 	cpumask_clear(&cpu_topo->llc_sibling);
- 	cpumask_set_cpu(cpu, &cpu_topo->llc_sibling);
- 
-+	cpumask_clear(&cpu_topo->cluster_sibling);
-+	cpumask_set_cpu(cpu, &cpu_topo->cluster_sibling);
-+
- 	cpumask_clear(&cpu_topo->core_sibling);
- 	cpumask_set_cpu(cpu, &cpu_topo->core_sibling);
- 	cpumask_clear(&cpu_topo->thread_sibling);
-@@ -562,6 +575,7 @@ void remove_cpu_topology(unsigned int cpu)
- 		cpumask_clear_cpu(cpu, topology_core_cpumask(sibling));
- 	for_each_cpu(sibling, topology_sibling_cpumask(cpu))
- 		cpumask_clear_cpu(cpu, topology_sibling_cpumask(sibling));
-+
- 	for_each_cpu(sibling, topology_llc_cpumask(cpu))
- 		cpumask_clear_cpu(cpu, topology_llc_cpumask(sibling));
- 
-diff --git a/drivers/base/topology.c b/drivers/base/topology.c
-index ad8d33c..f72ac9a 100644
---- a/drivers/base/topology.c
-+++ b/drivers/base/topology.c
-@@ -46,6 +46,9 @@ static DEVICE_ATTR_RO(physical_package_id);
- define_id_show_func(die_id);
- static DEVICE_ATTR_RO(die_id);
- 
-+define_id_show_func(cluster_id);
-+static DEVICE_ATTR_RO(cluster_id);
-+
- define_id_show_func(core_id);
- static DEVICE_ATTR_RO(core_id);
- 
-@@ -61,6 +64,10 @@ define_siblings_show_func(core_siblings, core_cpumask);
- static DEVICE_ATTR_RO(core_siblings);
- static DEVICE_ATTR_RO(core_siblings_list);
- 
-+define_siblings_show_func(cluster_cpus, cluster_cpumask);
-+static DEVICE_ATTR_RO(cluster_cpus);
-+static DEVICE_ATTR_RO(cluster_cpus_list);
-+
- define_siblings_show_func(die_cpus, die_cpumask);
- static DEVICE_ATTR_RO(die_cpus);
- static DEVICE_ATTR_RO(die_cpus_list);
-@@ -88,6 +95,7 @@ static DEVICE_ATTR_RO(drawer_siblings_list);
- static struct attribute *default_attrs[] = {
- 	&dev_attr_physical_package_id.attr,
- 	&dev_attr_die_id.attr,
-+	&dev_attr_cluster_id.attr,
- 	&dev_attr_core_id.attr,
- 	&dev_attr_thread_siblings.attr,
- 	&dev_attr_thread_siblings_list.attr,
-@@ -95,6 +103,8 @@ static struct attribute *default_attrs[] = {
- 	&dev_attr_core_cpus_list.attr,
- 	&dev_attr_core_siblings.attr,
- 	&dev_attr_core_siblings_list.attr,
-+	&dev_attr_cluster_cpus.attr,
-+	&dev_attr_cluster_cpus_list.attr,
- 	&dev_attr_die_cpus.attr,
- 	&dev_attr_die_cpus_list.attr,
- 	&dev_attr_package_cpus.attr,
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 64ae25c..2a1fbbd 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1332,6 +1332,7 @@ static inline int lpit_read_residency_count_address(u64 *address)
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
-+int find_acpi_cpu_topology_cluster(unsigned int cpu);
- int find_acpi_cpu_topology_package(unsigned int cpu);
- int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
- int find_acpi_cpu_cache_topology(unsigned int cpu, int level);
-@@ -1344,6 +1345,10 @@ static inline int find_acpi_cpu_topology(unsigned int cpu, int level)
- {
- 	return -EINVAL;
- }
-+static inline int find_acpi_cpu_topology_cluster(unsigned int cpu)
-+{
-+	return -EINVAL;
-+}
- static inline int find_acpi_cpu_topology_package(unsigned int cpu)
- {
- 	return -EINVAL;
-diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
-index 69b1dab..dba06864 100644
---- a/include/linux/arch_topology.h
-+++ b/include/linux/arch_topology.h
-@@ -45,10 +45,12 @@ void topology_set_thermal_pressure(const struct cpumask *cpus,
- struct cpu_topology {
- 	int thread_id;
- 	int core_id;
-+	int cluster_id;
- 	int package_id;
- 	int llc_id;
- 	cpumask_t thread_sibling;
- 	cpumask_t core_sibling;
-+	cpumask_t cluster_sibling;
- 	cpumask_t llc_sibling;
- };
- 
-@@ -56,13 +58,16 @@ struct cpu_topology {
- extern struct cpu_topology cpu_topology[NR_CPUS];
- 
- #define topology_physical_package_id(cpu)	(cpu_topology[cpu].package_id)
-+#define topology_cluster_id(cpu)	(cpu_topology[cpu].cluster_id)
- #define topology_core_id(cpu)		(cpu_topology[cpu].core_id)
- #define topology_core_cpumask(cpu)	(&cpu_topology[cpu].core_sibling)
- #define topology_sibling_cpumask(cpu)	(&cpu_topology[cpu].thread_sibling)
-+#define topology_cluster_cpumask(cpu)	(&cpu_topology[cpu].cluster_sibling)
- #define topology_llc_cpumask(cpu)	(&cpu_topology[cpu].llc_sibling)
- void init_cpu_topology(void);
- void store_cpu_topology(unsigned int cpuid);
- const struct cpumask *cpu_coregroup_mask(int cpu);
-+const struct cpumask *cpu_clustergroup_mask(int cpu);
- void update_siblings_masks(unsigned int cpu);
- void remove_cpu_topology(unsigned int cpuid);
- void reset_cpu_topology(void);
+ 	this_cpu = smp_processor_id();
+ 	store_cpu_topology(this_cpu);
+ 	numa_store_cpu_info(this_cpu);
 diff --git a/include/linux/topology.h b/include/linux/topology.h
-index 608fa4a..5f66648 100644
+index 5f66648..2c823c0 100644
 --- a/include/linux/topology.h
 +++ b/include/linux/topology.h
-@@ -185,6 +185,9 @@ static inline int cpu_to_mem(int cpu)
- #ifndef topology_die_id
- #define topology_die_id(cpu)			((void)(cpu), -1)
+@@ -211,6 +211,13 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
+ }
  #endif
-+#ifndef topology_cluster_id
-+#define topology_cluster_id(cpu)		((void)(cpu), -1)
+ 
++#ifdef CONFIG_SCHED_CLUSTER
++static inline const struct cpumask *cpu_cluster_mask(int cpu)
++{
++	return topology_cluster_cpumask(cpu);
++}
 +#endif
- #ifndef topology_core_id
- #define topology_core_id(cpu)			((void)(cpu), 0)
- #endif
-@@ -194,6 +197,9 @@ static inline int cpu_to_mem(int cpu)
- #ifndef topology_core_cpumask
- #define topology_core_cpumask(cpu)		cpumask_of(cpu)
- #endif
-+#ifndef topology_cluster_cpumask
-+#define topology_cluster_cpumask(cpu)		cpumask_of(cpu)
-+#endif
- #ifndef topology_die_cpumask
- #define topology_die_cpumask(cpu)		cpumask_of(cpu)
- #endif
++
+ static inline const struct cpumask *cpu_cpu_mask(int cpu)
+ {
+ 	return cpumask_of_node(cpu_to_node(cpu));
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1a68a05..ae8ec910 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6106,6 +6106,37 @@ static inline int select_idle_smt(struct task_struct *p, int target)
+ 
+ #endif /* CONFIG_SCHED_SMT */
+ 
++#ifdef CONFIG_SCHED_CLUSTER
++/*
++ * Scan the local CLUSTER mask for idle CPUs.
++ */
++static int select_idle_cluster(struct task_struct *p, int target)
++{
++	int cpu;
++
++	/* right now, no hardware with both cluster and smt to run */
++	if (sched_smt_active())
++		return -1;
++
++	for_each_cpu_wrap(cpu, cpu_cluster_mask(target), target) {
++		if (!cpumask_test_cpu(cpu, p->cpus_ptr))
++			continue;
++		if (available_idle_cpu(cpu))
++			return cpu;
++	}
++
++	return -1;
++}
++
++#else /* CONFIG_SCHED_CLUSTER */
++
++static inline int select_idle_cluster(struct task_struct *p, int target)
++{
++	return -1;
++}
++
++#endif /* CONFIG_SCHED_CLUSTER */
++
+ /*
+  * Scan the LLC domain for idle CPUs; this is dynamically regulated by
+  * comparing the average scan cost (tracked in sd->avg_scan_cost) against the
+@@ -6270,6 +6301,10 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ 	if ((unsigned)i < nr_cpumask_bits)
+ 		return i;
+ 
++	i = select_idle_cluster(p, target);
++	if ((unsigned)i < nr_cpumask_bits)
++		return i;
++
+ 	i = select_idle_cpu(p, sd, target);
+ 	if ((unsigned)i < nr_cpumask_bits)
+ 		return i;
 -- 
 2.7.4
 
