@@ -2,88 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 347352CBC4D
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 13:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D70462CBCE9
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 13:24:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725995AbgLBMDk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 07:03:40 -0500
-Received: from mga09.intel.com ([134.134.136.24]:22711 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725899AbgLBMDk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Dec 2020 07:03:40 -0500
-IronPort-SDR: OmFzxEylQUk4OHykfPKy1R7AMYlMQUYO4ma0s/AzKa37RUtjX50tiUmYMHVtYzoT1pqU5bgfci
- Oj0vd77j3q7Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9822"; a="173162685"
-X-IronPort-AV: E=Sophos;i="5.78,386,1599548400"; 
-   d="scan'208";a="173162685"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 04:01:58 -0800
-IronPort-SDR: zEt0GWiSR2TPU57vUg4u1xKU7CcuguoJ8GjgLwL9VhlGNku89SG+rgMRNmMggsu6t9y3QtSwV5
- 4pxlzuzIoxMg==
-X-IronPort-AV: E=Sophos;i="5.78,386,1599548400"; 
-   d="scan'208";a="330415081"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 04:01:51 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kkQqR-00BV9k-Gr; Wed, 02 Dec 2020 14:02:51 +0200
-Date:   Wed, 2 Dec 2020 14:02:51 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dan Scally <djrscally@gmail.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 13/18] ipu3-cio2: Add functionality allowing
- software_node connections to sensors on platforms designed for Windows
-Message-ID: <20201202120251.GB4077@smile.fi.intel.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-14-djrscally@gmail.com>
- <20201130170955.GN14465@pendragon.ideasonboard.com>
- <b5cc6bbd-f679-7023-fde0-de2acb65a3c2@gmail.com>
- <20201201223053.GB4569@pendragon.ideasonboard.com>
- <20201202103851.GC852@paasikivi.fi.intel.com>
- <cb68e265-0e6c-4079-e835-f004e6a46dfb@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb68e265-0e6c-4079-e835-f004e6a46dfb@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1729917AbgLBMX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 07:23:56 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:37389 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729905AbgLBMX4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 07:23:56 -0500
+Received: from orion.localdomain ([77.7.48.174]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1Moex5-1kQHoj0zRx-00p8QN; Wed, 02 Dec 2020 13:21:24 +0100
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org
+Subject: [PATCH v2] drivers: acpi: add opt-out of apple-specific property parsing
+Date:   Wed,  2 Dec 2020 13:21:23 +0100
+Message-Id: <20201202122123.10229-1-info@metux.net>
+X-Mailer: git-send-email 2.11.0
+X-Provags-ID: V03:K1:W3Iutmi7LBFpSyCo5rZCCS/c5K8FL0WvJChVOC6nWMFtMYtXI2K
+ i/q0G/CTMcYTu5+Ooq0wvNDXf5Ibd1TFeHlMgWk8Lz9/eYxAPB3M23s2kRNdP8PudJQmuC9
+ +vHwOHD47KyIZrpypB3LO36+ZtTSWVZgsWXQ0LgNdb2TXl1KwIbWUKblr7/XyAmuztGh+xW
+ yAwBKl09y5ZinWBgsXtoQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tV5PEq4x9YY=:mM6j4bsRX9vrs1qwd0PqHF
+ 9Keo9sC3RXo/wxvM8eU7PKOUJ3KKJDDH2+Nd5XDslZZbZ+lOrgsNsTiOBEcbSp0hDKxiq311R
+ QEXJkq/ms6Cr6/zr2mMS1gTbXl7JxktuC37spVw6herTbTep7K6Ax9l5Ytl3LYxWjHwdvvNbm
+ qMFbc7Vb/6lxi1YfVtuW9285AYUngh0pTHlSM6OY8SFGjxWYLxUGlx1aZBkxVvIOnJSKDPckr
+ yHkSnx3/mkXPzgvKwcJ8VEUDJMdR3HDz7DfHTRPdngbDhJAr4qJ1EFsioUposnHTTe8mJ7T8M
+ g/BILce4mWo/aXx6vPVfbx63rLV+GXt0hryDQjEOFgoTjdvGnH2VduiGHkFW0EqBQPhZ90ecM
+ yOlNPiKv7RuAl5YXyANGHdL4XBG9bJi4KTXaSzkWfq/7AtGdbsSX07g1mzxzK
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 02, 2020 at 10:53:05AM +0000, Dan Scally wrote:
-> On 02/12/2020 10:38, Sakari Ailus wrote:
+Most x86 machines aren't Apple machines, especially VMs.
+Therefore allow opt-out, making the kernel a few KBs smaller,
+eg. for embedded or high-density VMs.
 
-...
+v2: fixed spelling
 
-> >>> Argh, thanks, this is the curse of using VS code on multiple machines...
-> >> I recommend vim ;-)
-> > What is VS code? Very Serious Code?
-> 
-> Visual Studio Code - it has some nice features, but the
-> facepalm-to-productivity ratio is a bit high.
+Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+---
+ drivers/acpi/Kconfig    | 9 +++++++++
+ drivers/acpi/Makefile   | 2 +-
+ drivers/acpi/internal.h | 2 +-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
-Perhaps you can submit an issue report on GitHub. I found VS Code pretty nice
-to be with Linux kernel development.
-
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index edf1558c1105..fc37a9a5c2a8 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -79,6 +79,15 @@ config ACPI_DEBUGGER_USER
+ 
+ endif
+ 
++config ACPI_APPLE
++	bool "Apple ACPI properties support"
++	default y if X86
++	help
++	  Extraction of apple specific ACPI properties.
++
++	  Say N if you're sure the kernel won't be used on an Apple machine
++	  and wanna save a few kb of memory. (embedded or high-density VMs)
++
+ config ACPI_SPCR_TABLE
+ 	bool "ACPI Serial Port Console Redirection Support"
+ 	default y if X86
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 44e412506317..ed1f4405c90a 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -52,7 +52,7 @@ acpi-y				+= evged.o
+ acpi-y				+= sysfs.o
+ acpi-y				+= property.o
+ acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
+-acpi-$(CONFIG_X86)		+= x86/apple.o
++acpi-$(CONFIG_ACPI_APPLE)	+= x86/apple.o
+ acpi-$(CONFIG_X86)		+= x86/utils.o
+ acpi-$(CONFIG_DEBUG_FS)		+= debugfs.o
+ acpi-y				+= acpi_lpat.o
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index e3638bafb941..fa1b6ef7829a 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -239,7 +239,7 @@ static inline void suspend_nvs_restore(void) {}
+ void acpi_init_properties(struct acpi_device *adev);
+ void acpi_free_properties(struct acpi_device *adev);
+ 
+-#ifdef CONFIG_X86
++#ifdef CONFIG_ACPI_APPLE
+ void acpi_extract_apple_properties(struct acpi_device *adev);
+ #else
+ static inline void acpi_extract_apple_properties(struct acpi_device *adev) {}
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.11.0
 
