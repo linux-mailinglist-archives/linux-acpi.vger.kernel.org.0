@@ -2,161 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9D82CBD4E
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 13:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6062CBEB0
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 14:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727760AbgLBMti (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 07:49:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727743AbgLBMti (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 07:49:38 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A2EC0613CF;
-        Wed,  2 Dec 2020 04:48:57 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1335031D;
-        Wed,  2 Dec 2020 13:48:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606913336;
-        bh=hEXBL65wsKMpoxqhRlC0JgpfzMG124QF1pk1LDmzaE8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L0T/EkypqD2YvTs10qu7uWmmrC2uttPectWXso0DbWpalELGRri0X7fyU2R5o3Iqf
-         Fy+G42bQQPJnQ9jH0T9hXkCoMvOBf5NTijP8Gk9qPgy7mW0Uddr/0pC65AH2IFqWSv
-         eCviVQi/vHvBuWgjaYi2LemP4BMjYim+q3/iIqrY=
-Date:   Wed, 2 Dec 2020 14:48:47 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        gregkh@linuxfoundation.org, mika.westerberg@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
-Message-ID: <20201202124847.GG4486@pendragon.ideasonboard.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-19-djrscally@gmail.com>
- <20201130200719.GB4077@smile.fi.intel.com>
- <8a1b0f5b-1289-256b-b25d-cf8af43bdc84@gmail.com>
- <20201201185417.GL4077@smile.fi.intel.com>
- <20201201185548.GV4569@pendragon.ideasonboard.com>
- <20201201190523.GO4077@smile.fi.intel.com>
- <20201201190638.GZ4569@pendragon.ideasonboard.com>
- <20201201192137.GR4077@smile.fi.intel.com>
- <4831d44a-5bcc-8cf3-964c-c7dca6827458@redhat.com>
+        id S1727487AbgLBNuK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 08:50:10 -0500
+Received: from mail-oo1-f67.google.com ([209.85.161.67]:36529 "EHLO
+        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726023AbgLBNuJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 08:50:09 -0500
+Received: by mail-oo1-f67.google.com with SMTP id l20so368034oot.3
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Dec 2020 05:49:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vFjESLmuxNLKDf+Mf0ioNhvLb6p8ExlMqA7Oi02P130=;
+        b=HjezcuVn8Toc7wixsvXeYHPEWy+jtB52VHDIEzBxvhRg12PaJJuvqjjPvhjU+/eY31
+         j/cGfGAlat1pRPczjbR6kyJ0o+rY3joUuBDKwjeLLjbCfawmxWPHDiB8jPdidysYdFwo
+         2KuNyThFBtbB7bFB99O4tuTMzpkfZHqZCNmxPCPkI0JDZzfj2RViyRG4d2RlF3rPfi5n
+         P2w5BVvhLcRJgK2/8sarHRCFbcTpwZDtxiI8wW0PnZRm7Z4I48RUqTSt9F7yxzrqApef
+         tRbu3ldIg1/3q3UtUbWpcZJRplw9NOgorcaIDaNtY8QSD09Hd6EvkbMjTJ1DVQBTYQvT
+         6nXA==
+X-Gm-Message-State: AOAM532pbB2/ezz6hxrI1FW4XbiSCidQPOrPTiC/TKUh+kAaZpSf46at
+        o3JqggLKdbJ49eQGTjJDFFafqglplDptELcEmhKV1W9Pp0I=
+X-Google-Smtp-Source: ABdhPJw49kVJTx25/JdtmboyJAORgupBPlM1ufcs58U96G7RGd3SNv6Bkxi3FDBuTamQ8Xw0BOhGSgpvKfrJTu8gxQc=
+X-Received: by 2002:a4a:bb07:: with SMTP id f7mr1717960oop.44.1606916968890;
+ Wed, 02 Dec 2020 05:49:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4831d44a-5bcc-8cf3-964c-c7dca6827458@redhat.com>
+References: <20201121203040.146252-1-hdegoede@redhat.com>
+In-Reply-To: <20201121203040.146252-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 2 Dec 2020 14:49:17 +0100
+Message-ID: <CAJZ5v0joWwOqaBkEXOsi3oT__j8JMJt68TPuRAY7f5WY6w=KrA@mail.gmail.com>
+Subject: Re: [PATCH 0/7] ACPI: scan: Split root scanning into 2 steps
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+On Sat, Nov 21, 2020 at 9:30 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi Rafael,
+>
+> A while ago (almost 2 years ago) I discussed an issue with you about
+> some devices, where some of the methods used during device-addition
+> (such as _HID) may rely on OpRegions of other devices:
+>
+> https://www.spinics.net/lists/linux-acpi/msg86303.html
+>
+> An example of this is the Acer Switch 10E SW3-016 model. The _HID method
+> of the ACPI node for the UART attached Bluetooth, reads GPIOs to detect
+> the installed wifi chip and update the _HID for the Bluetooth's ACPI node
+> accordingly. The current ACPI scan code calls _HID before the GPIO
+> controller's OpRegions are available, leading to the wrong _HID being
+> used and Bluetooth not working.
+>
+> Last week I bought a second hand Acer device, not knowing it was this
+> exact model. Since I now have access to affected hardware I decided to
+> take a shot at fixing this.
+>
+> In the discussion you suggested to split the acpi_bus_scan of the root
+> into 2 steps, first scan devices with an empty _DEP, putting other
+> acpi_handle-s on a list of deferred devices and then in step 2 scan the
+> rest.
+>
+> I'm happy to report that, at least on the affected device, this works
+> nicely. While working on this I came up with a less drastic way to
+> deal with this. As you will see in patch 4 of this series, I decided
+> to first add a more KISS method of deciding which devices to defer
+> to the second scan step by matching by HID. This has the disadvantage
+> of not being a generic solution. But it has the advantage of being a
+> solution which does not potentially regress other devices.
+>
+> Then in patch 5 I actually do add the option to defer or not based on
+> _DEP being empty. I've put this behind a kernel commandline option as
+> I'm not sure we should do this everywhere by default. At least no without
+> a lot more testing.
+>
+> Patch 6 fixes an issue with patch 5 which causes battery devices to stop
+> working.
+>
+> And patch 7 adds some extra HIDs to the list of HIDs which should be
+> ignored when checking if the _DEP list is empty from Linux' pov, iow
+> some extra HIDs which Linux does not bind to.
+>
+> Please let me know what you think about this patch-set. I would be happy
+> to see just patches 1-4 merged.
 
-On Tue, Dec 01, 2020 at 09:34:58PM +0100, Hans de Goede wrote:
-> On 12/1/20 8:21 PM, Andy Shevchenko wrote:
-> > On Tue, Dec 01, 2020 at 09:06:38PM +0200, Laurent Pinchart wrote:
-> >> On Tue, Dec 01, 2020 at 09:05:23PM +0200, Andy Shevchenko wrote:
-> >>> On Tue, Dec 01, 2020 at 08:55:48PM +0200, Laurent Pinchart wrote:
-> >>>> On Tue, Dec 01, 2020 at 08:54:17PM +0200, Andy Shevchenko wrote:
-> >>>>> On Tue, Dec 01, 2020 at 08:30:03AM +0000, Dan Scally wrote:
-> >>>>>> On 30/11/2020 20:07, Andy Shevchenko wrote:
-> >>>
-> >>> ...
-> >>>
-> >>>>>>>> +static struct int3472_sensor_regulator_map int3472_sensor_regulator_maps[] = {
-> >>>>>>>> +	{ "GNDF140809R", 2, miix_510_ov2680 },
-> >>>>>>>> +	{ "YHCU", 2, surface_go2_ov5693 },
-> >>>>>>>> +	{ "MSHW0070", 2, surface_book_ov5693 },
-> >>>>>>>> +};
-> >>>>>>>
-> >>>>>>> Hmm... Usual way is to use DMI for that. I'm not sure above will not give us
-> >>>>>>> false positive matches.
-> >>>>>>
-> >>>>>> I considered DMI too, no problem to switch to that if it's a better choice.
-> >>>>>
-> >>>>> I prefer DMI as it's a standard way to describe platform quirks in x86 world.
-> >>>>
-> >>>> Do you think the Windows driver would use DMI ?
-> >>>
-> >>> Linux is using DMI for quirks.
-> >>>
-> >>>> That seems quite
-> >>>> unlikely to me, given how they would have to release a new driver binary
-> >>>> for every machine. I'm pretty sure that a different mechanism is used to
-> >>>> identify camera integration, and I think it would make sense to follow
-> >>>> the same approach. That would allow us to avoid large tables of DMI
-> >>>> identifiers that would need to be constently updated, potentially making
-> >>>> user experience better.
-> >>>
-> >>> All Surface family can be matched in a way as Apple machines [1].
-> >>>
-> >>> [1]: https://lkml.org/lkml/2020/4/15/1198
-> >>
-> >> But not all Surface machines necessarily have the same camera
-> >> architecture. My point is that there seems to be identifiers reported in
-> >> ACPI for the exact purpose of identifying the camera architecture. If we
-> >> used DMI instead, we would have to handle each machine individually.
-> > 
-> > With help of DMI we may narrow down the search.
-> > 
-> > But again, we are talking about uncertainity. It may be your way (a lot of
-> > platforms that have different settings), or mine (only a few with more or less
-> > standard sets of settings).
-> > 
-> > DMI is simply standard in Linux (people usually easier can grep for quirks for
-> > a specific platform).
-> > 
-> > I would rather ask Hans' opinion since he has quite an expertise with DMI for
-> > good and bad.
-> 
-> So generally there are 2 ways how things like this can go:
-> 
-> 1) There is sufficient information in the ACPI table and we use data from the
-> ACPI tables
-> 
-> 2) There is unsufficient info in the ACPI tables (or we don't know how to
-> get / interpret the data) and we use DMI quirks
+I took patches 1 and 2, because IMO they are generally useful (I
+rewrote the changelogs to avoid mentioning the rest of the series
+though), but I have some reservations regarding the rest.
 
-And this specific case I believe there is sufficient data in the ACPI
-tables, as I don't believe the Windows driver uses DMI quirks, or comes
-in the form of machine-specific binaries. We however don't know how to
-interpret all the data, but that should hopefully get better over time
-(especially as we'll get more data points, with ACPI dumps from machines
-whose schematics have leaked).
+First off, I'm not really sure if failing acpi_add_single_object() for
+devices with missing dependencies is a good idea.  IIRC there is
+nothing in there that should depend on any opregions supplied by the
+other devices, so it should be safe to allow it to complete.  That, in
+turn, will allow the flags in struct acpi_device to be used to mark
+the "deferred" devices without allocating more memory.
 
-> Although we do often also use a combination, getting what we can from ACPI,
-> combined with a set of defaults for what we cannot get from ACPI
-> based on what reference designs use (IOW what most devices seem to have
-> copy and pasted). Combined with DMI quirks for when the defaults do not
-> work (which is quite often).
-> 
-> Depending on if "not working because of wrong defaults" has bad side effects,
-> another option is also to only allow the driver to load on devices which
-> have the necessary info provided through a DMI match.
+Next, in theory, devices with dependencies may also appear during
+hotplug, so it would be prudent to handle that on every invocation of
+acpi_bus_scan() and not just when it runs for the root object.
 
-Right now there shouldn't be bad side effects, but in the future we'll
-need to setup a PMIC whose output voltages can be controlled, and
-getting it wrong would be very bad. For that I'll definitely vote for
-DMI match to start with, but I don't think that precludes using data
-from ACPI. We could just prevent the driver from loading if the machine
-isn't whitelisted in DMI matches, and still use ACPI data.
+So my approach would be to allow the first namespace walk in
+acpi_bus_scan() to complete, change acpi_bus_attach() to optionally
+skip the devices with missing dependencies and return a result
+indicating whether or not it has set flags.visited for any devices and
+run it in a loop on the "root" device object until it says that no new
+devices have been "attached".
 
-> I hope this helps.
-
--- 
-Regards,
-
-Laurent Pinchart
+Let me cut a prototype patch for that and get back to you.
