@@ -2,52 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D7C2CC343
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 18:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A63E32CC33D
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 18:16:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728731AbgLBRRO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 12:17:14 -0500
-Received: from mail1.bemta24.messagelabs.com ([67.219.250.4]:12859 "EHLO
+        id S1728780AbgLBRQh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 12:16:37 -0500
+Received: from mail1.bemta24.messagelabs.com ([67.219.250.116]:47942 "EHLO
         mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726525AbgLBRRO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 12:17:14 -0500
-Received: from [100.112.131.7] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.us-west-2.aws.symcld.net id 90/E9-03087-1DAC7CF5; Wed, 02 Dec 2020 17:11:45 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJKsWRWlGSWpSXmKPExsWSLveKXffCqeP
-  xBvvOaVnsvy5h0bXQwGLh/VOsFl+/3Wa3eHN8OpPF8n39jBZNnU1sFp87JrNYrN7zgtli7Zd5
-  bBZnTl9ideD2mDRzBrPHzll32T1+bVvD4rF5hZbHvJOBHj1tm5g83u+7yuax5Wo7i8fnTXIBn
-  FGsmXlJ+RUJrBm7XvxkK2hSqZixJq+B8aVsFyMXh5DAf0aJ3ze/MXUxcgI5Dxgldt/JBrHZBL
-  Qltmz5xdbFyMEhIiAj8WGtJ0g9s8B8JolrE66yg8SFBRIlptxMASlnEVCR2Lf2FhuIzStgLfF
-  3/jtWEFtCQF7iae9yZhCbU0BV4kzXYxaIVSoS9x8sgaoXlDg58wlYnBmovnnrbGYIW0Li4IsX
-  zBBzFCTmfV3EAmEnSCx7eYd5AqPALCTts5C0z0LSvoCReRWjeVJRZnpGSW5iZo6uoYGBrqGhk
-  a6hsYGuuYleYpVuol5psW55anGJrpFeYnmxXnFlbnJOil5easkmRmCMpRQ0ee1gbHrzQe8Qoy
-  QHk5Io76r5x+OF+JLyUyozEosz4otKc1KLDzHKcHAoSfDqnwTKCRalpqdWpGXmAOMdJi3BwaM
-  kwisJkuYtLkjMLc5Mh0idYlSUEuctAkkIgCQySvPg2mAp5hKjrJQwLyMDA4MQT0FqUW5mCar8
-  K0ZxDkYlYV4fYMIS4snMK4Gb/gpoMRPQYpfPh0EWlyQipKQamDYe9azxdL37+63HtUtWC/tt/
-  LcUSZ1379KcxSBf3rHAyd8+tskiZpm1/vXgt4KeAp+2Wop+Vfhqt0xavfjBE5bHBTMCPzfeUP
-  lZkyqhG2L8tvLU28RSMQGRousbpXvvb/AKydiQc/Gc2PL6/cwzb1zrY9C7VLesIv5q14umt+a
-  bt0jmaTxZKNQW6KvpMt1plqyl96QDzJbWH6X/5z+6q9XvJswZ8fmzeqhqXMnPR9LcB5d9yi6u
-  uOYuMb340563gpmX1oufTCtJuCYiPudbwNPOCpbLVwSnOG2TnlFf76q1q/3g1aRDS+dc3SLSF
-  vhih++/jdte1k653shalvq7v2rZjQfVy2eWC17R3HP5gBJLcUaioRZzUXEiAF9CkmmsAwAA
+        by vger.kernel.org with ESMTP id S1726221AbgLBRQg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 12:16:36 -0500
+Received: from [100.112.133.223] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-5.bemta.az-b.us-west-2.aws.symcld.net id 29/62-25369-9DAC7CF5; Wed, 02 Dec 2020 17:11:53 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRWlGSWpSXmKPExsWSLveKXffKqeP
+  xBr3/BS32X5ew6FpoYLHw/ilWi6/fbrNbvDk+ncli+b5+RoumziY2i88dk1ksVu95wWyx9ss8
+  Noszpy+xOnB7TJo5g9lj56y77B6/tq1h8di8Qstj3slAj562TUwe7/ddZfPYcrWdxePzJrkAz
+  ijWzLyk/IoE1oxrP1ayFJzxr9i7eD1rA+NEly5GLg4hgf+MEvNnf2SEcB4wSlx6uR/I4eRgE9
+  CW2LLlF1sXIweHiICMxIe1niA1zALzmSSuTbjKDlIjLOAj0bC0lw3EZhFQkdh8sQOsl1fAWmL
+  3pRvMILaEgLzE097lzCBzOAVsJGZvzwcJCwmESrxa9YcVolxQ4uTMJywgNjNQefPW2cwQtoTE
+  wRcvoMYoSMz7uogFwk6QWPbyDvMERoFZSNpnIWmfhaR9ASPzKkaLpKLM9IyS3MTMHF1DAwNdQ
+  0MjXUNjE11DMxO9xCrdJL3SYt3y1OISXSO9xPJiveLK3OScFL281JJNjMBISyloW7KDcdebD3
+  qHGCU5mJREeVfNPx4vxJeUn1KZkVicEV9UmpNafIhRhoNDSYJX/yRQTrAoNT21Ii0zBxj1MGk
+  JDh4lEV5JkDRvcUFibnFmOkTqFKOilDhvEUhCACSRUZoH1wZLNJcYZaWEeRkZGBiEeApSi3Iz
+  S1DlXzGKczAqCfNeOQE0hSczrwRu+iugxUxAi10+HwZZXJKIkJJqYFIpUmqaeyj6ztfUPrkCe
+  9urxsvKWyVDz/Xd2nhN6qK87hT/zfas054dMbk9Q4mbb+2yM0cECndzSi6onuHhqpbT/K7kaP
+  D1IyveL0lNjmYR9zpyof34AanOl0Jv8gxmfHlsEy36Rnsaz4Nn08//P+tkK/x3P9O1D9mTIlo
+  vxOV9ThLn2iRW8DTdJ0fiO+fTY/VP2G8e3R76+EfcFLm7L0QjtV2vvTKwapxQuFKiN2Ovj6j8
+  pqsNJ9Yp7X1zJVT78W2Hy8E7WAJTP+2uKNP/snuvQ4ml3lwWKbNIz9Ta3tVbX55pbP8kzHIz8
+  eoTP2E5q1l7o4oUHl+eUb196cuys8JsidzqUVNXckV26hysllFiKc5INNRiLipOBACcLjiFrw
+  MAAA==
 X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-10.tower-326.messagelabs.com!1606929102!2143!1
+X-Msg-Ref: server-37.tower-355.messagelabs.com!1606929106!7440!1
 X-Originating-IP: [103.30.234.7]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.60.3; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 9901 invoked from network); 2 Dec 2020 17:11:44 -0000
+Received: (qmail 4321 invoked from network); 2 Dec 2020 17:11:47 -0000
 Received: from unknown (HELO lenovo.com) (103.30.234.7)
-  by server-10.tower-326.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 2 Dec 2020 17:11:44 -0000
+  by server-37.tower-355.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 2 Dec 2020 17:11:47 -0000
 Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
         (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by Forcepoint Email with ESMTPS id C134990C6908A62FDE20;
-        Thu,  3 Dec 2020 01:11:39 +0800 (CST)
+        by Forcepoint Email with ESMTPS id 44EACC56D39F85ECCF7B;
+        Thu,  3 Dec 2020 01:11:43 +0800 (CST)
 Received: from localhost.home (10.64.84.211) by reswpmail04.lenovo.com
  (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Wed, 2 Dec 2020
- 09:11:34 -0800
+ 09:11:38 -0800
 From:   Mark Pearson <markpearson@lenovo.com>
 To:     <markpearson@lenovo.com>
 CC:     <hdegoede@redhat.com>, <mgross@linux.intel.com>,
@@ -55,12 +56,13 @@ CC:     <hdegoede@redhat.com>, <mgross@linux.intel.com>,
         <platform-driver-x86@vger.kernel.org>, <hadess@hadess.net>,
         <pobrn@protonmail.com>, <mario.limonciello@dell.com>,
         <eliadevito@gmail.com>, <bberg@redhat.com>, <dvhart@infradead.org>
-Subject: [PATCH v5 1/3] Documentation: Add documentation for new platform_profile sysfs attribute
-Date:   Wed, 2 Dec 2020 12:11:18 -0500
-Message-ID: <20201202171120.65269-1-markpearson@lenovo.com>
+Subject: [PATCH v5 2/3] ACPI: platform-profile: Add platform profile support
+Date:   Wed, 2 Dec 2020 12:11:19 -0500
+Message-ID: <20201202171120.65269-2-markpearson@lenovo.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <markpearson@lenovo.com>
+In-Reply-To: <20201202171120.65269-1-markpearson@lenovo.com>
 References: <markpearson@lenovo.com>
+ <20201202171120.65269-1-markpearson@lenovo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -71,104 +73,341 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On modern systems the platform performance, temperature, fan and other
-hardware related characteristics are often dynamically configurable. The
-profile is often automatically adjusted to the load by some
-automatic-mechanism (which may very well live outside the kernel).
+This is the initial implementation of the platform-profile feature.
+It provides the details discussed and outlined in the
+sysfs-platform_profile document.
 
-These auto platform-adjustment mechanisms often can be configured with
-one of several 'platform-profiles', with either a bias towards low-power
-consumption or towards performance (and higher power consumption and
-thermals).
+Many modern systems have the ability to modify the operating profile to
+control aspects like fan speed, temperature and power levels. This
+module provides a common sysfs interface that platform modules can register
+against to control their individual profile options.
 
-Introduce a new platform_profile sysfs API which offers a generic API for
-selecting the performance-profile of these automatic-mechanisms.
-
-Co-developed-by: Mark Pearson <markpearson@lenovo.com>
 Signed-off-by: Mark Pearson <markpearson@lenovo.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
 Changes in v2:
- - updated to rst format
-Changes in v3, v4 & v5:
- - version bump along with rest of patch series
+ Address (hopefully) all recommendations from review including:
+ - reorder includes list alphabetically
+ - make globals statics and use const as required
+ - change profile name scanning to use full string
+ - clean up profile name lists to remove unwanted additions
+ - use sysfs_emit and sysfs_emit_at appropriately (much nicer!)
+ - improve error handling. Return errors to user in all cases and use
+   better error codes where appropriate (ENOOPSUPP)
+ - clean up sysfs output for better readability
+ - formatting fixes where needed
+ - improve structure and enum names to be clearer
+ - remove cur_profile field from structure. It is now local to the
+   actual platform driver file (patch 3 in series)
+ - improve checking so if future profile options are added profile_names
+   will be updated as well.
+ - move CONFIG option next to ACPI_THERMAL as it seemed slightly related
+ - removed MAINTAINERS update as not appropriate (note warning message
+   is seen when running checkpatch)
 
- .../ABI/testing/sysfs-platform_profile.rst    | 66 +++++++++++++++++++
- 1 file changed, 66 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-platform_profile.rst
+Changes in v3:
+ - Add missed platform_profile.h file
 
-diff --git a/Documentation/ABI/testing/sysfs-platform_profile.rst b/Documentation/ABI/testing/sysfs-platform_profile.rst
+Changes in v4:
+ - Clean up duplicate entry in Kconfig file
+ - Add linux/bits.h to include list
+ - Remove unnecessary items from include list
+ - Make cur_profile const
+ - Clean up comments
+ - formatting clean-ups
+ - add checking of profile return value to show function
+ - add checking to store to see if it's a supported profile
+ - revert ENOTSUPP change in store function
+ - improved error checking in profile registration
+ - improved profile naming (now platform_profile_*)
+
+Changes in v5:
+ - correct 'balance' to 'balanced' to be consistent with documentation
+ - add WARN_ON when checking profile index in show function
+ - switch mutex_lock_interruptible back to mutex_lock where appropriate
+ - add 'platform_profile_last' as final entry in profile entry. Update
+   implementation to use this appropriately
+ - Use BITS_TO_LONG and appropriate access functions for choices field
+ - Correct error handling as recommended
+ - Sanity check profile fields on registration
+ - Remove unnecessary init and exit functions
+
+ drivers/acpi/Kconfig             |  14 +++
+ drivers/acpi/Makefile            |   1 +
+ drivers/acpi/platform_profile.c  | 181 +++++++++++++++++++++++++++++++
+ include/linux/platform_profile.h |  39 +++++++
+ 4 files changed, 235 insertions(+)
+ create mode 100644 drivers/acpi/platform_profile.c
+ create mode 100644 include/linux/platform_profile.h
+
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index edf1558c1105..c1ca6255ff85 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -326,6 +326,20 @@ config ACPI_THERMAL
+ 	  To compile this driver as a module, choose M here:
+ 	  the module will be called thermal.
+ 
++config ACPI_PLATFORM_PROFILE
++	tristate "ACPI Platform Profile Driver"
++	default y
++	help
++	  This driver adds support for platform-profiles on platforms that
++	  support it.
++	  Platform-profiles can be used to control the platform behaviour. For
++	  example whether to operate in a lower power mode, in a higher
++	  power performance mode or between the two.
++	  This driver provides the sysfs interface and is used as the registration
++	  point for platform specific drivers.
++	  Which profiles are supported is determined on a per-platform basis and
++	  should be obtained from the platform specific driver.
++
+ config ACPI_CUSTOM_DSDT_FILE
+ 	string "Custom DSDT Table file to include"
+ 	default ""
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 44e412506317..c64a8af106c0 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -78,6 +78,7 @@ obj-$(CONFIG_ACPI_PCI_SLOT)	+= pci_slot.o
+ obj-$(CONFIG_ACPI_PROCESSOR)	+= processor.o
+ obj-$(CONFIG_ACPI)		+= container.o
+ obj-$(CONFIG_ACPI_THERMAL)	+= thermal.o
++obj-$(CONFIG_ACPI_PLATFORM_PROFILE) 	+= platform_profile.o
+ obj-$(CONFIG_ACPI_NFIT)		+= nfit/
+ obj-$(CONFIG_ACPI_NUMA)		+= numa/
+ obj-$(CONFIG_ACPI)		+= acpi_memhotplug.o
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
 new file mode 100644
-index 000000000000..5f7b2a94409b
+index 000000000000..1bc092359e35
 --- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-platform_profile.rst
-@@ -0,0 +1,66 @@
-+=======================================================================
-+ Platform Profile Selection (e.g. /sys/firmware/acpi/platform_profile)
-+=======================================================================
++++ b/drivers/acpi/platform_profile.c
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
++/* Platform profile sysfs interface */
 +
-+On modern systems the platform performance, temperature, fan and other
-+hardware related characteristics are often dynamically configurable. The
-+profile is often automatically adjusted to the load by some
-+automatic mechanism (which may very well live outside the kernel).
++#include <linux/acpi.h>
++#include <linux/bits.h>
++#include <linux/init.h>
++#include <linux/mutex.h>
++#include <linux/platform_profile.h>
++#include <linux/sysfs.h>
 +
-+These auto platform adjustment mechanisms often can be configured with
-+one of several platform profiles, with either a bias towards low power
-+operation or towards performance.
++static const struct platform_profile_handler *cur_profile;
++static DEFINE_MUTEX(profile_lock);
 +
-+The purpose of the platform_profile attribute is to offer a generic sysfs
-+API for selecting the platform profile of these automatic mechanisms.
++static const char * const profile_names[] = {
++	[platform_profile_low] = "low-power",
++	[platform_profile_cool] = "cool",
++	[platform_profile_quiet] = "quiet",
++	[platform_profile_balanced] = "balanced",
++	[platform_profile_perform] = "performance",
++};
++static_assert(ARRAY_SIZE(profile_names) == platform_profile_last);
 +
-+Note that this API is only for selecting the platform profile, it is
-+NOT a goal of this API to allow monitoring the resulting performance
-+characteristics. Monitoring performance is best done with device/vendor
-+specific tools such as e.g. turbostat.
++static ssize_t platform_profile_choices_show(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	int len = 0;
++	int err, i;
 +
-+Specifically when selecting a high performance profile the actual achieved
-+performance may be limited by various factors such as: the heat generated
-+by other components, room temperature, free air flow at the bottom of a
-+laptop, etc. It is explicitly NOT a goal of this API to let userspace know
-+about any sub-optimal conditions which are impeding reaching the requested
-+performance level.
++	err = mutex_lock_interruptible(&profile_lock);
++	if (err)
++		return err;
 +
-+Since numbers on their own cannot represent the multiple variables that a
-+profile will adjust (power consumption, heat generation, etc) this API
-+uses strings to describe the various profiles. To make sure that userspace
-+gets a consistent experience this API document defines a fixed set of
-+profile names. Drivers *must* map their internal profile representation
-+onto this fixed set.
++	if (!cur_profile) {
++		mutex_unlock(&profile_lock);
++		return -ENODEV;
++	}
 +
++	for_each_set_bit(i, cur_profile->choices, platform_profile_last) {
++		if (len == 0)
++			len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
++		else
++			len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
++	}
++	len += sysfs_emit_at(buf, len, "\n");
++	mutex_unlock(&profile_lock);
++	return len;
++}
 +
-+If there is no good match when mapping then a new profile name may be
-+added. Drivers which wish to introduce new profile names must:
++static ssize_t platform_profile_show(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	enum platform_profile_option profile = platform_profile_balanced;
++	int err;
 +
-+ 1. Explain why the existing profile names canot be used.
-+ 2. Add the new profile name, along with a clear description of the
-+    expected behaviour, to the documentation.
++	err = mutex_lock_interruptible(&profile_lock);
++	if (err)
++		return err;
 +
-+:What:        /sys/firmware/acpi/platform_profile_choices
-+:Date:        October 2020
-+:Contact:     Hans de Goede <hdegoede@redhat.com>
-+:Description: This file contains a space-separated list of profiles supported for this device.
++	if (!cur_profile) {
++		mutex_unlock(&profile_lock);
++		return -ENODEV;
++	}
 +
-+              Drivers must use the following standard profile-names::
++	err = cur_profile->profile_get(&profile);
++	mutex_unlock(&profile_lock);
++	if (err)
++		return err;
 +
-+         		 low-power:     Low power consumption
-+         		 cool:          Cooler operation
-+		         quiet:         Quieter operation
-+		         balanced:      Balance between low power consumption and performance
-+		         performance:   High performance operation
++	/* Check that profile is valid index */
++	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
++		return -EIO;
 +
-+              Userspace may expect drivers to offer more than one of these
-+              standard profile names.
++	return sysfs_emit(buf, "%s\n", profile_names[profile]);
++}
 +
-+:What:        /sys/firmware/acpi/platform_profile
-+:Date:        October 2020
-+:Contact:     Hans de Goede <hdegoede@redhat.com>
-+:Description: Reading this file gives the current selected profile for this
-+              device. Writing this file with one of the strings from
-+              available_profiles changes the profile to the new value.
++static ssize_t platform_profile_store(struct device *dev,
++			    struct device_attribute *attr,
++			    const char *buf, size_t count)
++{
++	int err, i;
++
++	err = mutex_lock_interruptible(&profile_lock);
++	if (err)
++		return err;
++
++	if (!cur_profile) {
++		mutex_unlock(&profile_lock);
++		return -ENODEV;
++	}
++
++	/* Scan for a matching profile */
++	i = sysfs_match_string(profile_names, buf);
++	if (i < 0) {
++		mutex_unlock(&profile_lock);
++		return -EINVAL;
++	}
++
++	/* Check that platform supports this profile choice */
++	if (!test_bit(i, cur_profile->choices)) {
++		mutex_unlock(&profile_lock);
++		return -EOPNOTSUPP;
++	}
++
++	err = cur_profile->profile_set(i);
++	mutex_unlock(&profile_lock);
++	if (err)
++		return err;
++	return count;
++}
++
++static DEVICE_ATTR_RO(platform_profile_choices);
++static DEVICE_ATTR_RW(platform_profile);
++
++static struct attribute *platform_profile_attrs[] = {
++	&dev_attr_platform_profile_choices.attr,
++	&dev_attr_platform_profile.attr,
++	NULL
++};
++
++static const struct attribute_group platform_profile_group = {
++	.attrs = platform_profile_attrs
++};
++
++void platform_profile_notify(void)
++{
++	if (!cur_profile)
++		return;
++	sysfs_notify(acpi_kobj, NULL, "platform_profile");
++}
++EXPORT_SYMBOL_GPL(platform_profile_notify);
++
++int platform_profile_register(const struct platform_profile_handler *pprof)
++{
++	int err;
++
++	mutex_lock(&profile_lock);
++	/* We can only have one active profile */
++	if (cur_profile) {
++		mutex_unlock(&profile_lock);
++		return -EEXIST;
++	}
++
++	/* Sanity check the profile handler field are set */
++	if (!pprof || !pprof->choices || !pprof->profile_set ||
++			!pprof->profile_get) {
++		mutex_unlock(&profile_lock);
++		return -EINVAL;
++	}
++
++	err = sysfs_create_group(acpi_kobj, &platform_profile_group);
++	if (err) {
++		mutex_unlock(&profile_lock);
++		return err;
++	}
++
++	cur_profile = pprof;
++	mutex_unlock(&profile_lock);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(platform_profile_register);
++
++int platform_profile_unregister(void)
++{
++	mutex_lock(&profile_lock);
++	if (!cur_profile) {
++		mutex_unlock(&profile_lock);
++		return -ENODEV;
++	}
++
++	sysfs_remove_group(acpi_kobj, &platform_profile_group);
++	cur_profile = NULL;
++	mutex_unlock(&profile_lock);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(platform_profile_unregister);
++
++MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+new file mode 100644
+index 000000000000..f2e1b1c90482
+--- /dev/null
++++ b/include/linux/platform_profile.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Platform profile sysfs interface
++ *
++ * See Documentation/ABI/testing/sysfs-platform_profile.rst for more
++ * information.
++ */
++
++#ifndef _PLATFORM_PROFILE_H_
++#define _PLATFORM_PROFILE_H_
++
++#include <linux/bitops.h>
++
++/*
++ * If more options are added please update profile_names
++ * array in platform-profile.c and sysfs-platform-profile.rst
++ * documentation.
++ */
++
++enum platform_profile_option {
++	platform_profile_low,
++	platform_profile_cool,
++	platform_profile_quiet,
++	platform_profile_balanced,
++	platform_profile_perform,
++	platform_profile_last, /*must always be last */
++};
++
++struct platform_profile_handler {
++	unsigned long choices[BITS_TO_LONGS(platform_profile_last)];
++	int (*profile_get)(enum platform_profile_option *profile);
++	int (*profile_set)(enum platform_profile_option profile);
++};
++
++int platform_profile_register(const struct platform_profile_handler *pprof);
++int platform_profile_unregister(void);
++void platform_profile_notify(void);
++
++#endif  /*_PLATFORM_PROFILE_H_*/
 -- 
 2.28.0
 
