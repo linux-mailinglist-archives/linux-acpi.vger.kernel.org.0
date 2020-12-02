@@ -2,77 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2E22CBD03
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 13:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92CDB2CBD1F
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 13:38:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729879AbgLBM3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 07:29:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54440 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726881AbgLBM3h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Dec 2020 07:29:37 -0500
-Date:   Wed, 2 Dec 2020 12:28:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606912136;
-        bh=I3OHg8mnnc5iQCobQvP21M7Ashds3CHUIF1IGGWiIuQ=;
-        h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xrDmkokzjmeFguNyxFErMeCaESOXcOF8MCiNvH0TlGkMWzxT10moxLOWbWZPqa3RF
-         i20cZ7fDK+vMT5KMYtN3SWguV+oUm3sPOJr2J4R3EZzMTm2AkJnkGeRmNRTRoW3AG8
-         kKVOwv7KO2ewv7PX5hm7QqK9PD/Wr1GmXU1Rq1+g=
-From:   Mark Brown <broonie@kernel.org>
+        id S1726498AbgLBMgd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 07:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbgLBMgd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 07:36:33 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCCFC0613D4;
+        Wed,  2 Dec 2020 04:35:52 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4018231D;
+        Wed,  2 Dec 2020 13:35:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1606912548;
+        bh=vFRCyeRysRNaucrz5XO0nhTQ4MhbmNXAN8hJkzu4iWg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PUTewk2IxAV3eurGOu8Nlfk23gH1DsdGZ8BL6Wi4qfAO3tSXwHax2CPm6orRBxCBe
+         zusNqgT1zuSBrGdkXG2rbtQlbG/F1voO6RhqhUtmNEA5IRar+cmx6oVGpLFMuk3D7x
+         +GuDrRyEOBKhfRuNBnkg9I9v2Izqa94okdyz3EWI=
+Date:   Wed, 2 Dec 2020 14:35:40 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jie Yang <yang.jie@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1] ASoC: Intel: catpt: Replace open coded variant of
- resource_intersection()
-Message-ID: <20201202122826.GB5560@sirena.org.uk>
-References: <20201124095628.54373-1-andriy.shevchenko@linux.intel.com>
- <160683107676.35139.9521964646147921378.b4-ty@kernel.org>
- <20201201183329.GI4077@smile.fi.intel.com>
+Cc:     Dan Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
+        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
+        gregkh@linuxfoundation.org, mika.westerberg@linux.intel.com,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        wsa@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
+        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
+        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
+        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
+        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jorhand@linux.microsoft.com, kitakar@gmail.com,
+        heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
+Message-ID: <20201202123540.GE4486@pendragon.ideasonboard.com>
+References: <20201130133129.1024662-1-djrscally@gmail.com>
+ <20201130133129.1024662-19-djrscally@gmail.com>
+ <20201130200719.GB4077@smile.fi.intel.com>
+ <20201130233232.GD25713@pendragon.ideasonboard.com>
+ <20201201184925.GJ4077@smile.fi.intel.com>
+ <4181e6a6-a60f-0a2b-1b46-13a2359d8753@gmail.com>
+ <20201202093952.GU4077@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="XF85m9dhOBO43t/C"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201201183329.GI4077@smile.fi.intel.com>
-X-Cookie: Sauron is alive in Argentina!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201202093952.GU4077@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Dec 02, 2020 at 11:39:52AM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 01, 2020 at 08:59:53PM +0000, Dan Scally wrote:
+> > On 01/12/2020 18:49, Andy Shevchenko wrote:
+> 
+> ...
+> 
+> > > Seems we can do this, by locating intel_int3472.c under PDx86 hood and dropping
+> > > ACPI ID table from TPS68470 MFD driver. The PMIC can be instantiated via
+> > > i2c_acpi_new_device() (IIRC the API name).
+> > >
+> > > And actually it makes more sense since it's not and MFD and should not be there.
+> > >
+> > > (Dan, patch wise the one creates intel_int3472.c followed by another one that
+> > >  moves ACPI ID from PMIC and introduces its instantiation via I²C board info
+> > >  structure)
+> > 
+> > I'm mostly following this, but why would we need an i2c_board_info or
+> > i2c_acpi_new_device()? The INT3472 entries that refer to actual tps68470
+> > devices do have an I2cSerialBusV2 enumerated in _CRS so in their case
+> > there's an i2c device registered with the kernel already.
+> 
+> Because as we discussed already we can't have two drivers for the same ID
+> without a big disruption in the driver(s).
+> 
+> If you have a single point of enumeration, it will make things much easier
+> (refer to the same intel_cht_int33fe driver you mentioned earlier).
+> 
+> I just realize that the name of int3472 should follow the same pattern, i.e.
+> intel_skl_int3472.c
 
---XF85m9dhOBO43t/C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We're mostly focussing on Kaby Lake here though. From what I understand
+the ACPI infrastructure for camera support is mostly the same on Sky
+Lake, but not identical. I think a single driver should be able to cover
+both though.
 
-On Tue, Dec 01, 2020 at 08:33:29PM +0200, Andy Shevchenko wrote:
+> > I think we need those things when we get round to handling the
+> > VCM/EEPROM that's hidden within the sensor's ACPI entry, but I've not
+> > done any work on that yet at all.
+> 
+> Let's consider this later — one step at a time.
 
-> As I mentioned in the comment (after --- line) the patch relies on the stuff in
-> linux-pm tree. Do you have any immutable branch pulled? Otherwise Rafael
-> already took it where it won't break compilation.
+-- 
+Regards,
 
-b4 had a bug which caused it to send thanks for every patch I'd ever
-downloaded but not applied, the "no commit info" means there wasn't an
-actual matching commit.  I'd been going to review it but then it got
-applied anyway.
-
---XF85m9dhOBO43t/C
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/HiGkACgkQJNaLcl1U
-h9A0Lgf/RtfnAWSqpPMQ8VebIf7JcBYx+dO+jtAR7nuQOCBgNRrimSJoRjeqPnT1
-v7hruI6gaNlj3EdJJl/zxWcr6Y9Ummxr1IXo9XWGKHYT9T6jGEiZQxWI5/iJa9J6
-sCK355KibYX1+ZPGdIl3svUfRQdTPO2ayo3ySSuw+O3fvWwq1F+ZZ4kKNjLKsi45
-dealsPDDXvcOcn1Egtx4I++LOz+R57bgRoHDJJaXB/Ww9m/2ZRqXvLlxC9LUCPu0
-tM1+dEZl3lWEGKhp61BJH1p3l3kdtxE5b3ha7HBrKHkZWcwkO6VhNUG5riphTDvF
-TiL7/9LFFJA/SBH9KgS7lQKkTjvcjw==
-=ywMl
------END PGP SIGNATURE-----
-
---XF85m9dhOBO43t/C--
+Laurent Pinchart
