@@ -2,96 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 490A32CC446
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 18:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3ED2CC47E
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 19:05:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728430AbgLBRwg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 12:52:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728033AbgLBRwg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 12:52:36 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E896CC0613CF;
-        Wed,  2 Dec 2020 09:51:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=acMSM2cxOCx0tOvk8v1BFFK1BOtvWzyxSd8ojevIz3A=; b=NrZ5GVanJfAildZIYw5HrbgMNi
-        I46mGrSIaySOXWYkGPgkm8OtE/9eZ1I1AYe5VG7MuQDQ0+4ke+kaAIJPEWOlwHYcDWzanvwtLu0nd
-        PZIaIf9cbv+9zensIxNmWR3yMxIkdujgee030pNUOdgJ79as5w53VFTox6e+kWBEOB4nYCVqWCav/
-        kSSmWynEfSpknFmdaRdS/bnXBJ0HhPJe/lwRICdFqpvZvqwpENl/V0OAimVyXuKFfi+/D5rKM8rfl
-        LfQXg9P/qOmYfiCfGU/FxdBejlraWyRYbU+Qw914owfKN8NB8LCpfBO7X+KPUc+Z5aWyaJ8UK01Ts
-        BQshhUfg==;
-Received: from [2601:1c0:6280:3f0::1494]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kkWID-0000MJ-Fm; Wed, 02 Dec 2020 17:51:54 +0000
-Subject: Re: [PATCH v2] drivers: acpi: add opt-out of apple-specific property
- parsing
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org
-References: <20201202122123.10229-1-info@metux.net>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <ad917055-8b27-9ef3-bff1-873a6df354ab@infradead.org>
-Date:   Wed, 2 Dec 2020 09:51:49 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1728619AbgLBSEd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 13:04:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35398 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727108AbgLBSEd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 13:04:33 -0500
+Date:   Wed, 2 Dec 2020 19:03:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1606932231;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=69HDRjllqiet1yJkOQfILNR3Yl0QreV5unRuZHTw+Ms=;
+        b=IuN+w+oTk58nFLIeVhRUFendcdB7o2FQa+14qO9U7uEEaxd/jmKNFJ2ASoU0WB6jKif84H
+        9x9fsIYPWUUtpP/rJE6sR+cu9gU0POCJ+0W6/A0vlAu7J6Cz1nkGetCjQBGTp1XjdZqeoz
+        H9uKDQdQDl/aB4vEBEzWAu9zaKshwK27/QbpcLJ0zZFn8KkOERPv23yA6KKvvoGlhdGAr5
+        B09Hl0ZUsDIyirpA1kYh3SZ/b9R7MbnqXEnRn37z8ogpTT43AqgVx+4frN6gGTRtIAeO65
+        uLRDCgbUrrWEKWoE+IkfxzCd0v4hzppXjVjE2WXaE8/CEENa1TMX4SGPJ+sRxg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1606932231;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=69HDRjllqiet1yJkOQfILNR3Yl0QreV5unRuZHTw+Ms=;
+        b=8Bh62S06OE1HY80q3dlD5PvFWvJlABr6HpttWBR2+MgwKFVRMYzgiNig6kyJ2UWZXjzkt+
+        nfxyklgOmXMn6dCw==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Stephen Berman <stephen.berman@gmx.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20201202180350.kwmgfzkom7v7bzjg@linutronix.de>
+References: <87blkbx1gt.fsf@gmx.net>
+ <87imdp5r80.fsf@rub.de>
+ <20200811132955.wbt55ns7bu5mxouq@linutronix.de>
+ <CAJZ5v0h+n9VCz5=VixVbe_b=ZbTU3D=46stGhE9z7Y7yaUMJzw@mail.gmail.com>
+ <20200811152551.dmfw46urecbmeklr@linutronix.de>
+ <87ft8tayic.fsf@gmx.net>
+ <20200811184902.2fm4eyprmpkfon2j@linutronix.de>
+ <20201006214927.4nsqtfji4fdv3oed@linutronix.de>
+ <3fc9074b-c153-8446-0289-1e4dfab395eb@intel.com>
+ <20201026172057.h5toqoobiyhc4g3g@linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201202122123.10229-1-info@metux.net>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20201026172057.h5toqoobiyhc4g3g@linutronix.de>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi--
-
-On 12/2/20 4:21 AM, Enrico Weigelt, metux IT consult wrote:
-> Most x86 machines aren't Apple machines, especially VMs.
-> Therefore allow opt-out, making the kernel a few KBs smaller,
-> eg. for embedded or high-density VMs.
+On 2020-10-26 18:20:59 [+0100], To Rafael J. Wysocki wrote:
+> > > > > Done as Bug 208877.
+> > > Rafael, do you have any suggestions?
+> > 
+> > I've lost track of this sorry.
+> > 
+> > I have ideas, let me get back to this next week.
 > 
-> v2: fixed spelling
+> :)
+
+Rafael, any update? If you outline an idea or so then I may be able to
+form a patch out of it. Otherwise I have no idea how to fix this - other
+than telling the driver to not poll in smaller intervals than
+30secs.
+
+> > Cheers!
 > 
-> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
-> ---
->  drivers/acpi/Kconfig    | 9 +++++++++
->  drivers/acpi/Makefile   | 2 +-
->  drivers/acpi/internal.h | 2 +-
->  3 files changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index edf1558c1105..fc37a9a5c2a8 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -79,6 +79,15 @@ config ACPI_DEBUGGER_USER
->  
->  endif
->  
-> +config ACPI_APPLE
-> +	bool "Apple ACPI properties support"
-> +	default y if X86
-> +	help
-> +	  Extraction of apple specific ACPI properties.
-
-	                Apple-specific
-
-> +
-> +	  Say N if you're sure the kernel won't be used on an Apple machine
-> +	  and wanna save a few kb of memory. (embedded or high-density VMs)
-
-	      want to
-
-and kb == kilobits. Is that what you mean here?
-
-> +
->  config ACPI_SPCR_TABLE
->  	bool "ACPI Serial Port Console Redirection Support"
->  	default y if X86
-
--- 
-~Randy
-
+Sebastian
