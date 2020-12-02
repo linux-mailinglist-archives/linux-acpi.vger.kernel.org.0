@@ -2,280 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0C462CBB45
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 12:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCEF2CBBCD
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 12:47:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgLBLLr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 06:11:47 -0500
-Received: from mga18.intel.com ([134.134.136.126]:58685 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725885AbgLBLLq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Dec 2020 06:11:46 -0500
-IronPort-SDR: RyLmFhtjWx02UL/PH4r8DYFFq8Rb20iYP1s6TmcvUo8gXygP57fagTlyI7RJDg6K/+Pjs4/J90
- 918qrsqWwSrA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9822"; a="160769198"
-X-IronPort-AV: E=Sophos;i="5.78,386,1599548400"; 
-   d="scan'208";a="160769198"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 03:10:05 -0800
-IronPort-SDR: Lk23xe3XZyWFt9R+rbWcXzE5frBlTRU//JkRyz7ZYuPSO+15kMNmk+3T57kq9l8RqAh52LhvMC
- 1Pnmuurdcjzg==
-X-IronPort-AV: E=Sophos;i="5.78,386,1599548400"; 
-   d="scan'208";a="537945438"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 03:09:58 -0800
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 3901720884; Wed,  2 Dec 2020 13:09:56 +0200 (EET)
-Date:   Wed, 2 Dec 2020 13:09:56 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
-Message-ID: <20201202110956.GD852@paasikivi.fi.intel.com>
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-19-djrscally@gmail.com>
- <20201130200719.GB4077@smile.fi.intel.com>
- <20201130233232.GD25713@pendragon.ideasonboard.com>
- <20201201155513.GB852@paasikivi.fi.intel.com>
- <20201201183758.GE3085@pendragon.ideasonboard.com>
+        id S1726254AbgLBLq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 06:46:57 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:43696 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726320AbgLBLq5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 06:46:57 -0500
+Received: by mail-ot1-f65.google.com with SMTP id f12so1321338oto.10;
+        Wed, 02 Dec 2020 03:46:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wY5+FPr0JumqKQLNGVglKvtcRgToANWbF/y1ZsXODnY=;
+        b=eI3GrgI5QnNCIRT28L4L5tntUtW4IAk177ZFMWNgqHSAsgjBvj0gc9hAHAS+0PfxM/
+         Bbu4e0JQrLrmVhbXaMGzIg536a+3btvVmJxvOdtMcTpIq8YlnSR8cjIm9WzSs+Tt20mU
+         yZbTDk4r9CI/NOS4TctVJHQLtO6F0alcL5lU8VqQNtE7z2aVF5dyeKfg7dUIZOcQcXQe
+         UxCS3R4WsrlYirB+zlQ/11hqeVVyjzyZdGz5Wki07CTOFOGIeNg24pJXUyTORiPC17VV
+         H5TYsUOVedjf2ovCgKuC32OT7MdkOOXC796qUOc/mNbhPqJf/gYcBSZyn5sOhwnoMAoU
+         p66A==
+X-Gm-Message-State: AOAM531eD81wTYBQAUqEaFpUnk3jXYnfaNssPOefE6du88rmODpvMzxr
+        bqQOGvFZKg1/KzwHjHihVYQkiKg/UUFVG1v0Vx9Xx1JWlnQ=
+X-Google-Smtp-Source: ABdhPJydIJia7HpSXbE2uB/RZzjy8q2/skrADm1OvKUYvjFKPf1hJxMSj1FDUuY84YyJyaaKhLZdv/+AIczAW2LPZLQ=
+X-Received: by 2002:a05:6830:2385:: with SMTP id l5mr1432188ots.321.1606909570220;
+ Wed, 02 Dec 2020 03:46:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201201183758.GE3085@pendragon.ideasonboard.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <CAEGmHFFjV2UKm3L1G5JF6Ve47L1-aKBAGrCxN3pPX1HO9R-aUg@mail.gmail.com>
+ <CAJZ5v0hqU-qiM8ddYUT_u0Lm3RNM19gNcXye_s5v3DeCHr7mZQ@mail.gmail.com>
+ <CAEGmHFFxxOxNBjut68azQ5eMh71J+ysJeX9SOak6WwNetuJnwA@mail.gmail.com>
+ <CAJZ5v0j_XWiJyd4zyyuUf41WDEcu5TEo5tT7cYXi8FFqXpBzfA@mail.gmail.com>
+ <CAEGmHFE6EfUQ-RE+sXEppOGKxPJ3i9hUSWUDPAGXDjxYm0P_kw@mail.gmail.com> <CAEGmHFF22xg70hZ-jmL5-RnC+PZPXwsT=dHcQbh7SaEOLDpPXA@mail.gmail.com>
+In-Reply-To: <CAEGmHFF22xg70hZ-jmL5-RnC+PZPXwsT=dHcQbh7SaEOLDpPXA@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 2 Dec 2020 12:45:58 +0100
+Message-ID: <CAJZ5v0jAFyGekZ4Qboihucxpbufos7=PYdghDWXNFNYHriO2zw@mail.gmail.com>
+Subject: Re: [RFC] ACPI PM during kernel poweroff/reboot
+To:     Furquan Shaikh <furquan@google.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Aaron Durbin <adurbin@google.com>,
+        Duncan Laurie <dlaurie@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Laurent,
+On Tue, Dec 1, 2020 at 10:38 PM Furquan Shaikh <furquan@google.com> wrote:
+>
+> On Wed, Nov 25, 2020 at 10:29 AM Furquan Shaikh <furquan@google.com> wrote:
+> >
+> > On Wed, Nov 25, 2020 at 9:51 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Wed, Nov 25, 2020 at 6:43 PM Furquan Shaikh <furquan@google.com> wrote:
+> > > >
+> > > > On Wed, Nov 25, 2020 at 8:39 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > > >
+> > > > > On Thu, Nov 12, 2020 at 8:19 PM Furquan Shaikh <furquan@google.com> wrote:
+> > > > > >
+> > > > > > On x86 Chromebooks, we have observed this issue for a long time now -
+> > > > > > when the system is powered off or rebooted, ACPI PM is not invoked and
+> > > > > > this results in PowerResource _OFF methods not being invoked for any
+> > > > > > of the devices. The _OFF methods are invoked correctly in case of
+> > > > > > suspend-to-idle (S0ix) and suspend-to-memory(S3). However, they do not
+> > > > > > get invoked when `poweroff` or `reboot` are triggered.
+> > > > > >
+> > > > > > One of the differences between suspend, hibernate and shutdown paths
+> > > > > > in Linux kernel is that the shutdown path does not use the typical
+> > > > > > device PM phases (prepare, freeze/suspend, poweroff) as used by
+> > > > > > suspend/hibernate. Instead the shutdown path makes use of
+> > > > > > .shutdown_pre() and .shutdown() callbacks.
+> > > > > >
+> > > > > > If I understand correctly, .shutdown() has been around for a long time
+> > > > > > and existed even before the PM callbacks were added. Thus,
+> > > > > > pm->poweroff() and .shutdown() are supposed to be analogous and
+> > > > > > consistent in the behavior.
+> > > > >
+> > > > > Well, not quite.
+> > > > >
+> > > > > ->shutdown() is expected to be a lightweight operation also suitable
+> > > > > for kexec() and similar situations where ->poweroff() may not work.
+> > > > >
+> > > > > > This is why runtime PM is disallowed by
+> > > > > > device_shutdown() before it calls .shutdown() (i.e. to keep behavior
+> > > > > > consistent for both paths). However, in practice, there are
+> > > > > > differences in behavior for the pm->poweroff() and .shutdown() paths
+> > > > > > since the shutdown path does not execute any PM domain operations.
+> > > > >
+> > > > > That's correct.
+> > > > >
+> > > > > > Because of this difference in behavior, shutdown path never invokes
+> > > > > > ACPI PM and thus the ACPI PowerResources are not turned off when the
+> > > > > > system is rebooted or powered off (sleep S5). On Chromebooks, it is
+> > > > > > critical to run the _OFF methods for poweroff/reboot in order to
+> > > > > > ensure that the device power off sequencing requirements are met.
+> > > > > > Currently, these requirements are violated which impact the
+> > > > > > reliability of devices over the lifetime of the platform.
+> > > > > >
+> > > > > > There are a few ways in which this can be addressed:
+> > > > > >
+> > > > > > 1. Similar to the case of hibernation, a new
+> > > > > > PMSG_POWEROFF/PM_EVENT_POWEROFF can be introduced to invoke device
+> > > > > > power management phases using `dpm_suspend_start(PMSG_POWEROFF)` and
+> > > > > > `dpm_suspend_end(PMSG_POWEROFF)`. However, as the shutdown path uses
+> > > > > > the class/bus/driver .shutdown() callbacks, adding dpm phases for
+> > > > > > poweroff complicates the order of operations. If the dpm phases are
+> > > > > > run before .shutdown() callbacks, then it will result in the callbacks
+> > > > > > accessing devices after they are powered off. If the .shutdown()
+> > > > > > callbacks are run before dpm phases, then the pm->poweroff() calls are
+> > > > > > made after the device shutdown is done. Since .shutdown() and
+> > > > > > pm->poweroff() are supposed to be analogous, having both calls in the
+> > > > > > shutdown path is not only redundant but also results in incorrect
+> > > > > > behavior.
+> > > > > >
+> > > > > > 2. Another option is to update device_shutdown() to make
+> > > > > > pm_domain.poweroff calls after the class/bus/driver .shutdown() is
+> > > > > > done. However, this suffers from the same problem as #1 above i.e. it
+> > > > > > is redundant and creates conflicting order of operations.
+> > > > > >
+> > > > > > 3. Third possible solution is to detach the device from the PM domain
+> > > > > > after it is shutdown. Currently, device drivers perform a detach
+> > > > > > operation only when the device is removed. However, in case of
+> > > > > > poweroff/reboot as the device is already shutdown, detaching PM domain
+> > > > > > will give it the opportunity to ensure that any power resources are
+> > > > > > correctly turned off before the system shuts down.
+> > > > >
+> > > > > 4. Make Chromebooks call something like hibernation_platform_enter()
+> > > > > on S5 entries (including reboot).
+> > > >
+> > > > Actually, Chromebooks do not support S4 and hence CONFIG_HIBERNATION.
+> > >
+> > > This doesn't matter.  The ->poweroff callbacks can still be used by
+> > > them (of course, that part of the current hibernation support code
+> > > needs to be put under a more general Kconfig option for that, but this
+> > > is a technical detail).
+> >
+> > Ah I see what you are saying. Just to be sure I understand this
+> > correctly. Is this what you are thinking:
+> > 1. Extract hibernation_platform_enter() and any other helpers required
+> > to trigger the PM phases for shutdown into a separate unit controlled
+> > by a more general Kconfig.
 
-On Tue, Dec 01, 2020 at 08:37:58PM +0200, Laurent Pinchart wrote:
-> Hi Sakari,
-> 
-> On Tue, Dec 01, 2020 at 05:55:13PM +0200, Sakari Ailus wrote:
-> > On Tue, Dec 01, 2020 at 01:32:32AM +0200, Laurent Pinchart wrote:
-> > > On Mon, Nov 30, 2020 at 10:07:19PM +0200, Andy Shevchenko wrote:
-> > > > On Mon, Nov 30, 2020 at 01:31:29PM +0000, Daniel Scally wrote:
-> > > > > On platforms where ACPI is designed for use with Windows, resources
-> > > > > that are intended to be consumed by sensor devices are sometimes in
-> > > > > the _CRS of a dummy INT3472 device upon which the sensor depends. This
-> > > > > driver binds to the dummy acpi device (which does not represent a
-> > > > 
-> > > > acpi device -> acpi_device
-> > > > 
-> > > > > physical PMIC) and maps them into GPIO lines and regulators for use by
-> > > > > the sensor device instead.
-> > > > 
-> > > > ...
-> > > > 
-> > > > > This patch contains the bits of this process that we're least sure about.
-> > > > > The sensors in scope for this work are called out as dependent (in their
-> > > > > DSDT entry's _DEP) on a device with _HID INT3472. These come in at least
-> > > > > 2 kinds; those with an I2cSerialBusV2 entry (which we presume therefore
-> > > > > are legitimate tps68470 PMICs that need handling by those drivers - work
-> > > > > on that in the future). And those without an I2C device. For those without
-> > > > > an I2C device they instead have an array of GPIO pins defined in _CRS. So
-> > > > > for example, my Lenovo Miix 510's OVTI2680 sensor is dependent on one of
-> > > > > the _latter_ kind of INT3472 devices, with this _CRS:
-> > > > > 
-> > > > > Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-> > > > > {
-> > > > >     Name (SBUF, ResourceTemplate ()
-> > > > >     {
-> > > > >         GpioIo (Exclusive, PullDefault, 0x0000, 0x0000,
-> > > > > 	    IoRestrictionOutputOnly, "\\_SB.PCI0.GPI0",
-> > > > > 	    0x00, ResourceConsumer, ,
-> > > > >             )
-> > > > >             {   // Pin list
-> > > > >                 0x0079
-> > > > >             }
-> > > > >         GpioIo (Exclusive, PullDefault, 0x0000, 0x0000,
-> > > > > 	    IoRestrictionOutputOnly, "\\_SB.PCI0.GPI0",
-> > > > > 	    0x00, ResourceConsumer, ,
-> > > > >             )
-> > > > >             {   // Pin list
-> > > > >                 0x007A
-> > > > >             }
-> > > > >         GpioIo (Exclusive, PullDefault, 0x0000, 0x0000,
-> > > > > 	    IoRestrictionOutputOnly, "\\_SB.PCI0.GPI0",
-> > > > > 	    0x00, ResourceConsumer, ,
-> > > > >             )
-> > > > >             {   // Pin list
-> > > > >                 0x008F
-> > > > >             }
-> > > > >     })
-> > > > >     Return (SBUF) /* \_SB_.PCI0.PMI1._CRS.SBUF */
-> > > > > }
-> > > > > 
-> > > > > and the same device has a _DSM Method, which returns 32-bit ints where
-> > > > > the second lowest byte we noticed to match the pin numbers of the GPIO
-> > > > > lines:
-> > > > > 
-> > > > > Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
-> > > > > {
-> > > > >     If ((Arg0 == ToUUID ("79234640-9e10-4fea-a5c1-b5aa8b19756f")))
-> > > > >     {
-> > > > >         If ((Arg2 == One))
-> > > > >         {
-> > > > >             Return (0x03)
-> > > > >         }
-> > > > > 
-> > > > >         If ((Arg2 == 0x02))
-> > > > >         {
-> > > > >             Return (0x01007900)
-> > > > >         }
-> > > > > 
-> > > > >         If ((Arg2 == 0x03))
-> > > > >         {
-> > > > >             Return (0x01007A0C)
-> > > > >         }
-> > > > > 
-> > > > >         If ((Arg2 == 0x04))
-> > > > >         {
-> > > > >             Return (0x01008F01)
-> > > > >         }
-> > > > >     }
-> > > > > 
-> > > > >     Return (Zero)
-> > > > > }
-> > > > > 
-> > > > > We know that at least some of those pins have to be toggled active for the
-> > > > > sensor devices to be available in i2c, so the conclusion we came to was
-> > > > > that those GPIO entries assigned to the INT3472 device actually represent
-> > > > > GPIOs and regulators to be consumed by the sensors themselves. Tsuchiya
-> > > > > noticed that the lowest byte in the return values of the _DSM method
-> > > > > seemed to represent the type or function of the GPIO line, and we
-> > > > > confirmed that by testing on each surface device that GPIO lines where the
-> > > > > low byte in the _DSM entry for that pin was 0x0d controlled the privacy
-> > > > > LED of the cameras.
-> > > > > 
-> > > > > We're guessing as to the exact meaning of the function byte, but I
-> > > > > conclude they're something like this:
-> > > > > 
-> > > > > 0x00 - probably a reset GPIO
-> > > > > 0x01 - regulator for the sensor
-> > > > > 0x0c - regulator for the sensor
-> > > > > 0x0b - regulator again, but for a VCM or EEPROM
-> > > > > 0x0d - privacy led (only one we're totally confident of since we can see
-> > > > >        it happen!)
-> > > > 
-> > > > It's solely Windows driver design...
-> > > > Luckily I found some information and can clarify above table:
-> > > > 
-> > > > 0x00 Reset
-> > > > 0x01 Power down
-> > > > 0x0b Power enable
-> > > > 0x0c Clock enable
-> > > > 0x0d LED (active high)
-> > > 
-> > > That's very useful information ! Thank you.
-> > > 
-> > > > The above text perhaps should go somewhere under Documentation.
-> > > 
-> > > Or in the driver source code, but definitely somewhere else than in the
-> > > commit message.
-> > > 
-> > > > > After much internal debate I decided to write this as a standalone
-> > > > > acpi_driver. Alternative options we considered:
-> > > > > 
-> > > > > 1. Squash all this into the cio2-bridge code, which I did originally write
-> > > > > but decided I didn't like.
-> > > > > 2. Extend the existing tps68470 mfd driver...they share an ACPI ID so this
-> > > > > kinda makes sense, but ultimately given there is no actual physical
-> > > > > tps68470 in the scenario this patch handles I decided I didn't like this
-> > > > > either.
-> > > > 
-> > > > Looking to this I think the best is to create a module that can be consumed by tps68470 and separately.
-> > > > So, something near to it rather than under ipu3 hood.
-> > > > 
-> > > > You may use same ID's in both drivers (in PMIC less case it can be simple
-> > > > platform and thus they won't conflict), but both of them should provide GPIO
-> > > > resources for consumption.
-> > > > 
-> > > > So, something like
-> > > > 
-> > > >  tps68470.h with API to consume
-> > > >  split tps68470 to -core, -i2c parts
-> > > >  add int3472, which will serve for above and be standalone platform driver
-> > > >  update cio2-bridge accordingly
-> > > > 
-> > > > Would it be feasible?
-> > > 
-> > > Given that INT3472 means Intel camera power management device (that's
-> > > more or less the wording in Windows, I can double-check), would the
-> > > following make sense ?
-> > > 
-> > > A top-level module named intel-camera-pmic (or int3472, or ...) would
-> > > register two drivers, a platform driver and an I2C driver, to
-> > > accommodate for both cases ("discrete PMIC" that doesn't have an
-> > > I2cSerialBusV2, and TPS64870 or uP6641Q that are I2C devices). The probe
-> > > function would perform the following:
-> > > 
-> > > - If there's no CLDB, then the device uses the Chrome OS "ACPI
-> > >   bindings", and refers to a TPS64870. The code that exists in the
-> > >   kernel today (registering GPIOs, and registering an OpRegion to
-> > >   communicate with the power management code in the DSDT) would be
-> > >   activated.
-> > > 
-> > > - If there's a CLDB, then the device type would be retrieved from it:
-> > > 
-> > >   - If the device is a "discrete PMIC", the driver would register clocks
-> > >     and regulators controlled by GPIOs, and create clock, regulator and
-> > >     GPIO lookup entries for the sensor device that references the PMIC.
-> > > 
-> > >   - If the device is a TPS64870, the code that exists in the kernel
-> > >     today to register GPIOs would be activated, and new code would need
-> > >     to be written to register regulators and clocks.
-> > > 
-> > >   - If the device is a uP6641Q, a new driver will need to be written (I
-> > >     don't know on which devices this PMIC is used, so this can probably
-> > >     be deferred).
-> > > 
-> > > We can split this in multiple files and/or modules.
-> > 
-> > That's what I thought of, too, as one option, but with some more detail.
-> > This would be indeed the cleanest option.
-> > 
-> > I think it'd be nice if the CLDB stuff (apart from checking whether it's
-> > there) would be in a different module to avoid cluttering up the real
-> > tps68470 driver.
-> 
-> Given the amount of code, and the fact that the driver should be
-> compiled as a module, I don't think it will make a huge difference in
-> the memory footprint.
+Yes in general, but maybe not hibernation_platform_enter() as a whole,
+because it contains hibernation-specific code.
 
-I'd still prefer to keep the ACPI hack support and the real driver well
-separated. That way it'd be also easy to put them to their respective
-modules. That's actually how the tps68470 MFD driver is currently arranged;
-the GPIO and OP region drivers are separate from each other.
+> > 2. Add a new Kconfig that enables support for performing PM phases
+> > during the poweroff/reboot phases.
 
-Could this be just one more platform device for each of the three cases (or
-one for the two latter; I'm not quite sure yet)?
+Yes.
 
-The GPIO regulator case is relatively safe, but the real PMICs require
-regulator voltage control as well as enabling and disabling the regulators.
-That probably requires either schematics or checking the register values at
-runtime on Windows (i.e. finding out which system you're dealing with, at
-runtime).
+> > 3. Based on this new Kconfig selection, LINUX_REBOOT_CMD_RESTART,
+> > LINUX_REBOOT_CMD_HALT, LINUX_REBOOT_CMD_POWER_OFF will be updated to
+> > use the new paths instead of the current lightweight calls.
 
--- 
-Kind regards,
+Maybe not always, but depending on the platform or similar.
 
-Sakari Ailus
+> I am currently exploring this approach to see how the components need
+> to be organized to make use of hibernation_platform_enter by more than
+> just the hibernation path. Please let me know if the above summary
+> doesn't align with your suggestion.
+>
+> Meanwhile, I have also sent out a formal patch for detaching the PM
+> domain: https://lore.kernel.org/linux-acpi/20201201213019.1558738-1-furquan@google.com/T/#u
+> to ensure that this addresses the issue with ACPI PM domain.
+
+OK, so let's see what the response to it will be.
+
+> I will continue working on the above suggestion as well, but it might
+> take some time for me to get a good understanding of the current paths
+> and to cleanly implement the support for PM phases during
+> poweroff/reboot cases.
+
+Sure, please take your time!
+
+Thanks a lot for working on this!
