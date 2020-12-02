@@ -2,81 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57A062CB9D9
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 10:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 328192CBA11
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Dec 2020 11:06:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388318AbgLBJ4x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Dec 2020 04:56:53 -0500
-Received: from foss.arm.com ([217.140.110.172]:34862 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388389AbgLBJ4w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Dec 2020 04:56:52 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4682730E;
-        Wed,  2 Dec 2020 01:56:07 -0800 (PST)
-Received: from bogus (unknown [10.57.62.173])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C2A93F66B;
-        Wed,  2 Dec 2020 01:56:02 -0800 (PST)
-Date:   Wed, 2 Dec 2020 09:55:56 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Barry Song <song.bao.hua@hisilicon.com>
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        catalin.marinas@arm.com, will@kernel.org, rjw@rjwysocki.net,
+        id S2388511AbgLBKFS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Dec 2020 05:05:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58254 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388373AbgLBKFS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Dec 2020 05:05:18 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8992AC0613D4;
+        Wed,  2 Dec 2020 02:04:37 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id r3so2988918wrt.2;
+        Wed, 02 Dec 2020 02:04:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=5IxG6Wmtw+u+fIWb/sq8BW3pfIfvQKBkdCaDxJ1S95c=;
+        b=NpQdnAYkM3hYe9lUCXxuMvi8tbwkduhwURKx6KDiuLc6/cdZG5tOva+7i64PV4qO8U
+         9YkoBmvBgmLj34TfwoUiWkuFCPGi8bm9Ipc45b7NrOw0Fbku5BlsKXtFNXLJfSDey7n2
+         yrBSsTodw2xtihanyGz639SR1r0kbsTKhw72DLiHgpQJ5hlk/a1ayOpVxi+PF7iXIJsN
+         vJ0sasIjv0rbhDRXHNZzZ2YreO1VKa+RDSTbQfoHL3Lj8ur/kRuuQG78GvJ/RRYGfxTL
+         SUsG0ZYn7AxNIlRZSweinYRyZsN8E62fI0L7OcS1oo5KKFcMKLCSK93aWuoFpfOy+5i1
+         ZkSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5IxG6Wmtw+u+fIWb/sq8BW3pfIfvQKBkdCaDxJ1S95c=;
+        b=JmvU2Wxd24QSGkVRgDhdHjZGVqo4hH/e0dKxVZQsh/XBU9LA2R+3S/Z7o3FRUL8hIV
+         cFtonlrK/mknoW4rW0uSIMUO2YQrax4Yz5iiC9eF6d+2wWX3JPy6VbsXygiO0Xg0cAJA
+         xS5ExbCX3s90M09Cueece1dofS7uuAqxO/5fkgjh70UIupR0an459DsjcsIWtoIZxFkQ
+         eS5w9zlnzoNtwskIZab3oeU0ERNOR0omIYH0xFMY6IPxrDSK+B5ZT+G3g0Ii+FTea5C2
+         uxPcQePOOeGGDvfI2RhL7/3sre4u3W4T6Byg3e+amD7poYOy12d8L8fwh/Pn/c1KKv29
+         k/Lg==
+X-Gm-Message-State: AOAM530W4K/1el+Yqg8/5kJl7/8UUmrlXqa6Risf3jVHkbdwisXK0Kaa
+        2JUJCb3CJKfdpwwcPoFFalo=
+X-Google-Smtp-Source: ABdhPJyfCYV6cSul4aJwkW0s7CGv3wEXRYxHe9IRaq8ViOmh8mGPw7XsoLPWFps7rtnR4dQGcGN1rQ==
+X-Received: by 2002:adf:f085:: with SMTP id n5mr2327047wro.371.1606903475998;
+        Wed, 02 Dec 2020 02:04:35 -0800 (PST)
+Received: from [192.168.1.211] ([2.31.224.80])
+        by smtp.gmail.com with ESMTPSA id q25sm1519063wmq.37.2020.12.02.02.04.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Dec 2020 02:04:35 -0800 (PST)
+Subject: Re: [PATCH 06/18] software_node: amend
+ software_node_unregister_node_group() to perform unregistration of array in
+ reverse order to be consistent with software_node_unregister_nodes()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
         lenb@kernel.org, gregkh@linuxfoundation.org,
-        Jonathan.Cameron@huawei.com, mingo@redhat.com,
-        peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linuxarm@huawei.com, xuwei5@huawei.com, prime.zeng@hisilicon.com,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [RFC PATCH v2 1/2] topology: Represent clusters of CPUs within a
- die.
-Message-ID: <20201202095556.cke6caza2hpw3cmn@bogus>
-References: <20201201025944.18260-1-song.bao.hua@hisilicon.com>
- <20201201025944.18260-2-song.bao.hua@hisilicon.com>
- <jhj360pv7h9.mognet@arm.com>
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
+        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
+        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jorhand@linux.microsoft.com, kitakar@gmail.com,
+        heikki.krogerus@linux.intel.com
+References: <20201130133129.1024662-1-djrscally@gmail.com>
+ <20201130133129.1024662-7-djrscally@gmail.com>
+ <20201130161716.GJ14465@pendragon.ideasonboard.com>
+ <20201130174728.GR4077@smile.fi.intel.com>
+From:   Dan Scally <djrscally@gmail.com>
+Message-ID: <962775e3-0e96-8a05-b618-fad60abe9ecb@gmail.com>
+Date:   Wed, 2 Dec 2020 10:04:34 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jhj360pv7h9.mognet@arm.com>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <20201130174728.GR4077@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 01, 2020 at 04:03:46PM +0000, Valentin Schneider wrote:
+On 30/11/2020 17:47, Andy Shevchenko wrote:
+> On Mon, Nov 30, 2020 at 06:17:16PM +0200, Laurent Pinchart wrote:
+>> Hi Daniel,
+>>
+>> Thank you for the patch.
+>>
+>> The subject line is very long. We try to keep it within a 72 characters
+>> limit in the kernel. That can be a challenge sometimes, and expections
+>> can be accepted, but this one is reaaaally long.
+>>
+>> (The same comment holds for other patches in the series)
 > 
-> On 01/12/20 02:59, Barry Song wrote:
-> > Currently the ID provided is the offset of the Processor
-> > Hierarchy Nodes Structure within PPTT.  Whilst this is unique
-> > it is not terribly elegant so alternative suggestions welcome.
-> >
+> +1.
 
-I had already mentioned that you need to fix the firmware/PPTT on your
-platform. If you fill only mandatory fields, then yes this is optional
-and we resort to use offset as unique number in the kernel.
+My bad; I'll go through the series and condense them down as much as
+possible.
 
->
-> Skimming through the spec, this sounds like something the ID structure
-> (Type 2) could be used for. However in v1 Jonathan and Sudeep talked about
-> UID's / DSDT, any news on that?
->
+>> On Mon, Nov 30, 2020 at 01:31:17PM +0000, Daniel Scally wrote:
+>>> To maintain consistency with software_node_unregister_nodes(), reverse
+>>> the order in which the software_node_unregister_node_group() function
+>>> unregisters nodes.
+>>>
+>>> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+>>
+>> I"d squash this with the previous patch to avoid introducing an
+>> inconsistency.
+> 
+> It's different to previous. It touches not complementary API, but different
+> one. However, I would follow your comment about documenting the behaviour of
+> these two APIs as well…
 
-FYI, type 2 is for SoC identification which is being deprecated(still
-need to check if that progressed and made to the official release yet)
-in favour of Arm SMCCC v1.2 SOC_ID. Anyways it is irrelevant in this
-context. They need to use UIDs and mark the corresponding flag as valid
-for OSPM/kernel to use it.
+I'll update the documentation for this function too.
 
-> > Note that arm64 / ACPI does not provide any means of identifying
-> > a die level in the topology but that may be unrelate to the cluster
-> > level.
-> >
 
-May need spec extension if there are no ways to identify the same.
-
--- 
-Regards,
-Sudeep
