@@ -2,81 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CF182CDD3E
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Dec 2020 19:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 479DE2CDE76
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Dec 2020 20:08:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726257AbgLCSV0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Dec 2020 13:21:26 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:34947 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726883AbgLCSV0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Dec 2020 13:21:26 -0500
-Received: by mail-oi1-f196.google.com with SMTP id t9so3200422oic.2;
-        Thu, 03 Dec 2020 10:21:10 -0800 (PST)
+        id S1726412AbgLCTGn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Dec 2020 14:06:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725923AbgLCTGn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Dec 2020 14:06:43 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C19C061A4F
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Dec 2020 11:06:02 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id t33so3057616ybd.0
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Dec 2020 11:06:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zY1/UVNK1lpCKgo46pv7M4xtEHqMkdRqZiYe+oaE/HI=;
+        b=kBXK6rf2l4HvR3AS0yI+1werbY73mRV1JLVfNayiYB24G4hZ+mMX9KhAe6rtLui6wT
+         l+lgZE+6rx2soFftZ/7j+GPO2PmOscV4Vbqt0Ff03wqQ5toUTRKCyOAdLNdoDa1pKbjg
+         7j4e4l749WlmL7AXqJPQOVJjPkHPHSs6J2y+ZCElAN/sF033I+N/QZot64Qd+YYYqF+d
+         8RqTgH/KtpaMY9PolKpcFzZMTF/JbjDk/O7PXIUOxQ6Ryo2icN6J5B9PqMJ6eC7uVBTJ
+         DXSm2kocF3znjF9z9rF3V7J2WMpCDm+VePuBTnXeflnecy2J7uOGs4/nlDeDyjlCGIhO
+         fE/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=KKbocZqpUKzqfWPXVVR9WnhiikwQgnOhMm0mHx3Z858=;
-        b=gwA4px5qXHcyYHvTgtQPESviufigpbtlAHEfO5kN06aY9pd0zUnfSnH/8GXCSHL/YV
-         HKGjnUM/ZPcu+G4giw3Y7dtRtDzv8HYoCIa6J7PLk4i6lxCGx1W5fHkG9IVqft/l7pyx
-         doMvHZfM4UgA+pKrpnJ3JPRli1G7VJHUOJUk5pteSHQpq5RhwTh3FMzGvuwnIB5YSb/q
-         XgM+ndUkNwSMBi59rmY/rsRWT/Qg1P8zC/DyJCcPAa6OO0lmuyIBjxCJtcfj4l7DyPYo
-         HXQFiDNVJu44/Y84FYNDP4+6gNup4TyeFsSI1vgzdljMibTgQVxBXHhh4uTQah4uCWiM
-         jXOw==
-X-Gm-Message-State: AOAM5324tlLVL4P055jH4gVRI6wNkN5id2ZdMQBR4bWsdH/pXBqwGiKB
-        h1tDsU++U1KclD77HV4jS73H2Q7OKyf2MTlXsw2Y0Jd9
-X-Google-Smtp-Source: ABdhPJzgfipBP0HdWDRTIUsPEJsbcdGH16Ex+4mGd3D0bkryAFppfM8bmtU5Cn008X2SzWFoH3mxktpqAc8880S7OQA=
-X-Received: by 2002:aca:5a42:: with SMTP id o63mr167767oib.69.1607019645213;
- Thu, 03 Dec 2020 10:20:45 -0800 (PST)
+        bh=zY1/UVNK1lpCKgo46pv7M4xtEHqMkdRqZiYe+oaE/HI=;
+        b=Rpm+RFKF9Q9SGUkcZjdtCgCbOgy0Zkvos7ZCumPM3g8PWIST+RRh0n0Zthr4T8KKST
+         df2jG3gsWPCTzqwciqVgihgZVU0Ye6qkP1yaJ8vz/nx8Bh1Yh12WMVTZ02NSFX5wcbtz
+         VWU6REMcgjdaq3sSkZFPZSKsHQl4kgFxqSQOdePv84J5jwF+Z/HXuCsDyRUp6iXh3+MV
+         9ugs+Tdep+Z4Yv1UuifX0eWqvfpYQalLwQpKxH9O93tAP7PMzVvsTZzbRlmz8Jz/Lidh
+         nvaKrKj1lfcpoZ8lMPbqSvSlSadLrGTn8jmFHn1DH8fnsKmOVd0VA9lpDwKApgOupFCt
+         8kDA==
+X-Gm-Message-State: AOAM532i5GzCn03ryhE/ZHgkl5N57Wk/QxsJ56YY2VscxS5e64pUHVEL
+        HApylmTV/eg/11wMmlIQUHQ1abWzVFDfkMGFHNIBEA==
+X-Google-Smtp-Source: ABdhPJyByVU3U6UwdjEq6N0aHqjYPPhLQgY+wiLEv+vExlD872m6k9m3aMBysR1FSGFum9W802/y/aH7VgFItnp+7lI=
+X-Received: by 2002:a25:8401:: with SMTP id u1mr969238ybk.96.1607022361930;
+ Thu, 03 Dec 2020 11:06:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20201203174453.12084-1-info@metux.net>
-In-Reply-To: <20201203174453.12084-1-info@metux.net>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 3 Dec 2020 19:20:31 +0100
-Message-ID: <CAJZ5v0j1UEHK65AR7xqZKzFYbn=MRhB9c0vL5Sdh0APSZZRC8A@mail.gmail.com>
-Subject: Re: [PATCH] drivers: acpi: add opt-out of Apple-specific property parsing
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20201121020232.908850-1-saravanak@google.com> <758a1b59-1033-b0ae-2549-84c8eeea4b11@ti.com>
+In-Reply-To: <758a1b59-1033-b0ae-2549-84c8eeea4b11@ti.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 3 Dec 2020 11:05:26 -0800
+Message-ID: <CAGETcx_CzrPDZA_C+8JvCeL-bSPB814jfDLscEEe+TLiHhBxjA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/17] Refactor fw_devlink to significantly improve
+ boot time
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 3, 2020 at 6:47 PM Enrico Weigelt, metux IT consult
-<info@metux.net> wrote:
+On Tue, Nov 24, 2020 at 12:29 AM 'Tomi Valkeinen' via kernel-team
+<kernel-team@android.com> wrote:
 >
-> Most x86 machines aren't Apple machines, especially VMs.
-> Therefore allow opt-out, making the kernel a few KBs smaller,
-> eg. for embedded or high-density VMs.
+> Hi,
 >
-> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
-> ---
->  drivers/acpi/Kconfig    | 9 +++++++++
->  drivers/acpi/Makefile   | 2 +-
->  drivers/acpi/internal.h | 2 +-
->  3 files changed, 11 insertions(+), 2 deletions(-)
+> On 21/11/2020 04:02, Saravana Kannan wrote:
+> > The current implementation of fw_devlink is very inefficient because it
+> > tries to get away without creating fwnode links in the name of saving
+> > memory usage. Past attempts to optimize runtime at the cost of memory
+> > usage were blocked with request for data showing that the optimization
+> > made significant improvement for real world scenarios.
+> >
+> > We have those scenarios now. There have been several reports of boot
+> > time increase in the order of seconds in this thread [1]. Several OEMs
+> > and SoC manufacturers have also privately reported significant
+> > (350-400ms) increase in boot time due to all the parsing done by
+> > fw_devlink.
+> >
+> > So this patch series refactors fw_devlink to be more efficient. The key
+> > difference now is the addition of support for fwnode links -- just a few
+> > simple APIs. This also allows most of the code to be moved out of
+> > firmware specific (DT mostly) code into driver core.
+> >
+> > This brings the following benefits:
+> > - Instead of parsing the device tree multiple times (complexity was
+> >   close to O(N^3) where N in the number of properties) during bootup,
+> >   fw_devlink parses each fwnode node/property only once and creates
+> >   fwnode links. The rest of the fw_devlink code then just looks at these
+> >   fwnode links to do rest of the work.
+> >
+> > - Makes it much easier to debug probe issue due to fw_devlink in the
+> >   future. fw_devlink=on blocks the probing of devices if they depend on
+> >   a device that hasn't been added yet. With this refactor, it'll be very
+> >   easy to tell what that device is because we now have a reference to
+> >   the fwnode of the device.
+> >
+> > - Much easier to add fw_devlink support to ACPI and other firmware
+> >   types. A refactor to move the common bits from DT specific code to
+> >   driver core was in my TODO list as a prerequisite to adding ACPI
+> >   support to fw_devlink. This series gets that done.
+> >
+> > Laurent and Grygorii tested the v1 series and they saw boot time
+> > improvment of about 12 seconds and 3 seconds, respectively.
 >
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index edf1558c1105..cc47de4f2b18 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -79,6 +79,15 @@ config ACPI_DEBUGGER_USER
+> Tested v2 on OMAP4 SDP. With my particular config, boot time to starting init went from 18.5 seconds
+> to 12.5 seconds.
 >
->  endif
->
-> +config ACPI_APPLE
-> +       bool "Apple ACPI properties support"
-> +       default y if X86
-> +       help
-> +         Extraction of Apple-specific ACPI properties.
-> +
-> +         Say N if you're sure the kernel won't be used on an Apple machine
-> +         and wanna save a few kb of memory. (embedded or high-density VMs)
+>  Tomi
 
-Do you mean bits of bytes here?
+Rafael,
 
-If the latter, please spell this as KB.
+Friendly reminder for a review.
 
-Thanks!
+-Saravana
