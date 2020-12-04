@@ -2,110 +2,228 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 624A72CF55E
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 21:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4BF22CF764
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Dec 2020 00:24:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727693AbgLDUPQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Dec 2020 15:15:16 -0500
-Received: from sonic302-3.consmr.mail.bf2.yahoo.com ([74.6.135.42]:45436 "EHLO
-        sonic302-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727175AbgLDUPQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Dec 2020 15:15:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1607112874; bh=YfdJmkgyAelV91TRnp6plxiix9tzbdDcoL6irU7Kg4w=; h=Date:From:Reply-To:Subject:References:From:Subject; b=S9soSQD8dgkRcnWrDP0QhTqw8YZa4TDhkCg+Bccl9Xpn5W9oB8DXPqHfIRfCcte/gJrEfpQBasktWpqfFxSta3ovQ5M1o3togRdaTMccUpNsfI1YFN5swvZhLPvoBAhjkGddiX9ID1RNvuSv0cgbAbaKiqDOhSJ/mr61HpZaTFGx6gOsXA7qRE+x7b1W0b2CXcKJlbDiYnaR90O+QzsXQm8GkzIBsJEDJ18x0ld0UDGB/bZpZC6XtE2XKrhPazZ68FrYDpvbt+FWImsZhH3azd1s954+nx6d3JCNTlT/tiSGFZkm/8N3+zASewcLpTDeCfUSqL6N2l9FaN/6lq05vQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1607112874; bh=UtDNmFGogPMThnFphE8avDlqCr8wXdYV2PKrk7w7uzV=; h=Date:From:Subject:From:Subject; b=kXCx35ykHBdKpHnnTpH4baF/IXIcMPPZM1EIa/fd7YCRbBUxCnwDWRPJNYd6RmxbrqWiF3zFWeIZZKju7MhiKeZykaKPJd5kZc4WXoiFWmYEYryaNwfH7eBYQ5LKNj6ttkLfqXq0r+GGyxjIs67skA7cutBxBw/1pYSW8jXzAAp98fEZCywfNzOjuP/k1shLNEz/fDnd0xCKOFY9bD0Sy4z2VBzrt8oBFcfKKi0cdwQ/k870MdNe/Bg4VDhQe4S79qHp25UawandMEgNunkrTQvgQpeWI2+LKQJ7/u/dN+52kAvd+A2jAJDY8Rqp9OTNNRCovNdn+aPhI1EsaPsVxA==
-X-YMail-OSG: Eu6C4zkVM1n50fT3WPz8sF_bMHHs_aB4q6r9XGJShMOvk3LNWMrgD1DfN9UPuh1
- XL_y4d.W43eqUtkFEg5_MD5bwmjaI4Ij978ftzAQWpQOCq1pjiS_aT4VbBxlxUpbHfe_IjzNah.w
- UE_3zlywR.n2_tXA.lhMRU91322ND.jeInvCnv.12nHlkFbwjlP.o_rb0.fzVAraN_uquPSJSgDo
- BzM88uLPERYa3VVglqZrrZex_FAtsgbto6THmkN32AGOD8FH7tySuNOLbQVj5b_6uwGvDyDiXjwL
- N6nPlZL5C_vqqDGnkrE_RIeRTLFXk7LSoeaTfkaeg8V.bWvTrs8QYBpm_sMrHzSTth_8OfojJ9Bz
- ABXtrGiPSEAqXt8IDNzVmvVh6ZNtv3XYQHnFThii1oSqLbZ6BspsUMDOp5OZMTOqX0PRFAVF.94f
- 73SG2SU.eEK2GDLLxRomlJfHzAhGufOKDp9egSLdMuQbAFcIDyWKRlu17cHhe3chPOQDzT5vOYNW
- as7SDcbWnzdkw6jKX0ZYpL8gN8_83oxAtmR7OGJ.JyWrXSNxZVnVKB9.lMt_aNrcpK.7_wXDXyZy
- x18FNyJpwichghjZDcJbKm1i9sCHe7eOtmXQrZhFgBn4BsDOUkglw5afZj_Sg1pjdpGvTjWMYbOC
- AcOzEbxPZx_WTC75zj7qD.QGzQ7vv6D7eYoD3eSI7LdFDQGKJdTJo5QUZNuShQcyAhoFvosT1ttM
- q_75fQXdRqw9gM4jxnNkbLWKHdi5PobkyFAZ4I6vB8cuCBqyTMP.br7XA2F_SHZkbZZfi4PC0May
- B3jWj2ZZSht3_OG2JGdeaqZqqg17jXEehWTXITfEmgcPZLvGLpKcozCb0kahWFPUwvkHCDfjFKFy
- t9wx6.OUbRxyLVejcl2BE6yAh9Dqr4uHMlvqantBWGPNCAQutyEB0hLc8MFaZz4OsE23lkyDh3mk
- A9f7D9fPNU5W0Vp4uBvjpQLBH9UgWdf1fR8frfe_SApJJxl_CzrXxK_9yrXHxsrTtbm4Luwot19S
- zD0uzEnErXscYxiBQRi4FXngOqw_l_xpbN36AEa0a.N4EuMuG_67trEPWFRZEByW5VjAXGmd9Dyi
- bM6OnWdFJQARPGn4fWcE4NHJlbd6DmcYHWVh2KvqhE_NgXNtJuXAUHOZLvgjmCxSKln3i7I0A6Z8
- iVjy1244onxtpxeQZMFqvLb.lJfezhdf0RzXiotfhFwIsBeaSL4G6ZsFb8kF3AvFsytjuWXmXQTQ
- ApCGhSo9rA7gDEHac76RVSaoPKiXBccL9DnBQsfE1k0WUNv2J9DmDwsC0PM1sHPm9l94x2u826pp
- MCT8T0R2sbKBTInHgbiSrmYeAlQZW6NbMc2OaKfnpwvLFhC4tPekQURMulI7VbCWVm.UAVvgSgLK
- o8tp_qGe_CmP_pg3brfJNgvMJf_nzJ_qnzOwGO_HPtqhOCaS0_z6AflQw8k76Lml0kECMGXcjl2f
- eTWI9v1_pNlvpwMWLb6cNhAtiStUV9W8a6ZIjp7.hwXMF4XFetwtSPg5f0Tw1Grc_7XrJTJLbNkQ
- 7crXrPP6Qtig4Wg3WLUsh1JM7O4SfrQNwnxytbV36ki21ttOoHUNR2D1pcuW5uLe4e5IZofwu1aH
- PDcWfBTgoNI20n.U.JG_HSIT8P7MhlkQZjFh.6GPN6U4CiSzmzpBDLQy.xoVMvHCbmUn3S9IWtNe
- rm9CyhoSDBIxPX7xis29vkqRmLAveDxB5Qun5W7kZ4QirVWzlF9vlJFmECyKamUixgI_D0svyWbI
- e9TKM8gIRAV_NonyY8f_RsWRN5985bJD7xcIGdt87E8E984QQlSQPZLDmy91A2sTtiUybLyojgsd
- ZKqtNpP44C4A1ZRjGqbI3h3XtWrZCcNY13q08P76VCSpH_Cqs3GEszav20Xy1.Mi6kkbxxBB6R4q
- FO8Ge2xamHgr9F7HQQusgcD7A82j0ul0cB2BDfWOT6smJ2ng3FgXIdKdCqJc.d5M.a6HRBKwyppk
- eLuf3FF8.ycsyuieh_B2.hmaix33Yji1BFZsiSawvS4LQwIy59F7o7zYVKKZFicysNGyImWVevSO
- d3Xj80yWHGCY7OeNsU9a0HXgVO7SXdzvldaSVkc.WT94BiIOJw3kJV86VngzJ02eSIby4XLXTsYT
- Xod9Ue4i66VPPku5JW7izLnyxkJC_gFtqTLnhfW9MdAbE_q4tcI_Chc3uI1Ev_N8pYJ8_OnzFLSE
- DDWCgBFhfx_TAeaO0BBiMTNsaOrSVyAZyUR_fm3bufKYxLtUWY4dOjbPU6drTTgdnefaUuMvNfKs
- 0ItYDpfBLtZ5eI7vLiBIY9B2GG2qzvCqA5LGzKkmVJNapij58sTzxPODQ7bv_1xsWwMd6kAj3Qon
- StDsq6w7TtIZ9Vpg.ocnuWNpUxAF.wHBK0d2hRLoiG88e0o6K70HjxsduMBJ4l.SExJN2rWMtrJA
- X.Qsp8xOztPcNwEt8BIrI7OiviWguxw8e6VXkjDvfaxqZI_uKj69D3fEKmIsuZkn6_2yUhNV4FpM
- ymLj_TgI2hxYq4ZNIAA2QaOvJGS9l3nFPgAux8To8ho8_0ccNAvr7qyBUcJygFuT4xAHoQemX_o5
- TlnSauleDvuHPQ.ZCaE5JrMluCoaahzi6f4fIAJl_vGD2HGqZyJgKDGKmLsWbv3vS_KPPL3GploO
- GhYU3tIoH0AgCZkyHZ9SkxUpdFuUqU4EA55M7iKk0BLlJL60B5e5KCY2WGsZtwl6b3ys4Lj7RcLy
- EzwI9LWEq.eOH2BMP0C38mLd._QnfzY1l3jgcZYYJo4RZUOr7SfUHuUetLK_V3wkh626vMtzrY8H
- NJZE3W_CDy1rOV._FsIlvcHpnoid5jYiNwxkBXubtn5TrCLi5Rd8CRKvYKZC48K7hZRbssm1u8Os
- 1zPFMvopY.VXlaHUjgMzDYfTff.5T28mIGxg0ykN7JBbZLb2OqZM_9u4pcwZDZ53MrQmNYQ2jb8G
- OljspFQ_O0Ybc4k72kYqBygPGd5xwUZKT_F2LLBz6fUrEjjQIf_G3qoAIEZXwDO.DOeVnNDjrJbk
- qxhQ6ecreR0e5P1k2Da49dUIuRhQCl4AjrrSLe6ysm4L.jieyGaWGV1wpbNrt0dMViWXpTmMHO22
- cL2CTeOkN7lnVQ6CHwQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.bf2.yahoo.com with HTTP; Fri, 4 Dec 2020 20:14:34 +0000
-Date:   Fri, 4 Dec 2020 20:14:34 +0000 (UTC)
-From:   "Mr.Mohammed Emdad" <melkumyangerasim0@gmail.com>
-Reply-To: mohammedemdadmohammedemdad77@gmail.com
-Message-ID: <1047570822.2908182.1607112874045@mail.yahoo.com>
-Subject: VERY URGENT
+        id S1727375AbgLDXWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Dec 2020 18:22:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35786 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726508AbgLDXWI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Dec 2020 18:22:08 -0500
+Date:   Fri, 4 Dec 2020 17:21:25 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607124087;
+        bh=jcN9PbMgOLCkW/eP5nH6XSM0/5/dbV78dPtpbOxyH3w=;
+        h=From:To:Cc:Subject:In-Reply-To:From;
+        b=QqgauAw1WS/afGO36xcC6AzO0lwg2sUSG5XaJj47SNxVwB45+PaMKQyXPTE1uxA2D
+         2ADrk6Hd+aNpzENCvjKpuKfjWvTDaIcuyXqRKMZiZVn55JjPa6jIFG1rh2HP1R9aRs
+         kjyT1dcfh6WUCZkjSBb7yvMA6hLuvk+YBxh8tFx9P4PwZ+d4ww5QtWSXClEQLmFb7c
+         HVjZh/rfpG6uKfoYj8jn2+8Ah4HHR5iBBMP/j6vTUG+UsPcYK147BJBxb9g9LLJzSF
+         RfkSYJkNRPiPLQd1fztTn/GP+y1oDuj4qOAApBEQbQaXopbp5PQpBfRpzu7Ry/8BtQ
+         XC7S7TNYdcRUw==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: Re: [PATCH v1 1/2] PM: ACPI: PCI: Drop acpi_pm_set_bridge_wakeup()
+Message-ID: <20201204232125.GA1981160@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1047570822.2908182.1607112874045.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.17111 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2261308.G18gbxz5ee@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Nov 24, 2020 at 08:44:00PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The idea behind acpi_pm_set_bridge_wakeup() was to allow bridges to
+> be reference counted for wakeup enabling, because they may be enabled
+> to signal wakeup on behalf of their subordinate devices and that
+> may happen for multiple times in a row, whereas for the other devices
+> it only makes sense to enable wakeup signaling once.
+> 
+> However, this becomes problematic if the bridge itself is suspended,
+> because it is treated as a "regular" device in that case and the
+> reference counting doesn't work.
+> 
+> For instance, suppose that there are two devices below a bridge and
+> they both can signal wakeup.  Every time one of them is suspended,
+> wakeup signaling is enabled for the bridge, so when they both have
+> been suspended, the bridge's wakeup reference counter value is 2.
+> 
+> Say that the bridge is suspended subsequently and acpi_pci_wakeup()
+> is called for it.  Because the bridge can signal wakeup, that
+> function will invoke acpi_pm_set_device_wakeup() to configure it
+> and __acpi_pm_set_device_wakeup() will be called with the last
+> argument equal to 1.  This causes __acpi_device_wakeup_enable()
+> invoked by it to omit the reference counting, because the reference
+> counter of the target device (the bridge) is 2 at that time.
+> 
+> Now say that the bridge resumes and one of the device below it
+> resumes too, so the bridge's reference counter becomes 0 and
+> wakeup signaling is disabled for it, but there is still the other
+> suspended device which may need the bridge to signal wakeup on its
+> behalf and that is not going to work.
+> 
+> To address this scenario, use wakeup enable reference counting for
+> all devices, not just for bridges, so drop the last argument from
+> __acpi_device_wakeup_enable() and __acpi_pm_set_device_wakeup(),
+> which causes acpi_pm_set_device_wakeup() and
+> acpi_pm_set_bridge_wakeup() to become identical, so drop the latter
+> and use the former instead of it everywhere.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Dear Friend,
-
-
-My name is Mr.Mohammed Emdad, I am working with one of the prime bank in Bu=
-rkina Faso. Here in this bank there is existed dormant account for many yea=
-rs, which belong to one of our late foreign customer. The amount in this ac=
-count stands at $13,500,000.00 (Thirteen Million FiveHundred Thousand USA D=
-ollars).
-
-I need a foreign account where the bank will transfer this fund. I know you=
- would be surprised to read this message, especially from someone relativel=
-y unknown to you But do not worry yourself so much.This is a genuine, risk =
-free and legal business transaction. I am aware of the unsafe nature of the=
- internet, and was compelled to use this medium due to the nature of this p=
-roject.
-
-There is no risk involved; the transaction will be executed under a legitim=
-ate arrangement that will protect you from any breach of law. It is better =
-that we claim the money, than allowing the bank directors to take it, they =
-are rich already. I am not a greedy person, Let me know your mind on this a=
-nd please do treat this information highly confidential. I will review furt=
-her information=E2=80=99s / details to you as soon as i receive your positi=
-ve reply.
-
-If you are really sure of your integrity, trust worthy and confidentiality,=
- kindly get back to me urgently.
-
-Note you might receive this message in your inbox or spam or junk folder, d=
-epends on your web host or server network.
-
-Best regards,
-
-I wait for your positive response.
-
-Mr. Mohammed Emdad
+> ---
+>  drivers/acpi/device_pm.c |   41 ++++++++++++-----------------------------
+>  drivers/pci/pci-acpi.c   |    4 ++--
+>  include/acpi/acpi_bus.h  |    5 -----
+>  3 files changed, 14 insertions(+), 36 deletions(-)
+> 
+> Index: linux-pm/include/acpi/acpi_bus.h
+> ===================================================================
+> --- linux-pm.orig/include/acpi/acpi_bus.h
+> +++ linux-pm/include/acpi/acpi_bus.h
+> @@ -620,7 +620,6 @@ acpi_status acpi_remove_pm_notifier(stru
+>  bool acpi_pm_device_can_wakeup(struct device *dev);
+>  int acpi_pm_device_sleep_state(struct device *, int *, int);
+>  int acpi_pm_set_device_wakeup(struct device *dev, bool enable);
+> -int acpi_pm_set_bridge_wakeup(struct device *dev, bool enable);
+>  #else
+>  static inline void acpi_pm_wakeup_event(struct device *dev)
+>  {
+> @@ -651,10 +650,6 @@ static inline int acpi_pm_set_device_wak
+>  {
+>  	return -ENODEV;
+>  }
+> -static inline int acpi_pm_set_bridge_wakeup(struct device *dev, bool enable)
+> -{
+> -	return -ENODEV;
+> -}
+>  #endif
+>  
+>  #ifdef CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT
+> Index: linux-pm/drivers/acpi/device_pm.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/device_pm.c
+> +++ linux-pm/drivers/acpi/device_pm.c
+> @@ -749,7 +749,7 @@ static void acpi_pm_notify_work_func(str
+>  static DEFINE_MUTEX(acpi_wakeup_lock);
+>  
+>  static int __acpi_device_wakeup_enable(struct acpi_device *adev,
+> -				       u32 target_state, int max_count)
+> +				       u32 target_state)
+>  {
+>  	struct acpi_device_wakeup *wakeup = &adev->wakeup;
+>  	acpi_status status;
+> @@ -757,9 +757,10 @@ static int __acpi_device_wakeup_enable(s
+>  
+>  	mutex_lock(&acpi_wakeup_lock);
+>  
+> -	if (wakeup->enable_count >= max_count)
+> +	if (wakeup->enable_count >= INT_MAX) {
+> +		acpi_handle_info(adev->handle, "Wakeup enable count out of bounds!\n");
+>  		goto out;
+> -
+> +	}
+>  	if (wakeup->enable_count > 0)
+>  		goto inc;
+>  
+> @@ -799,7 +800,7 @@ out:
+>   */
+>  static int acpi_device_wakeup_enable(struct acpi_device *adev, u32 target_state)
+>  {
+> -	return __acpi_device_wakeup_enable(adev, target_state, 1);
+> +	return __acpi_device_wakeup_enable(adev, target_state);
+>  }
+>  
+>  /**
+> @@ -829,8 +830,12 @@ out:
+>  	mutex_unlock(&acpi_wakeup_lock);
+>  }
+>  
+> -static int __acpi_pm_set_device_wakeup(struct device *dev, bool enable,
+> -				       int max_count)
+> +/**
+> + * acpi_pm_set_device_wakeup - Enable/disable remote wakeup for given device.
+> + * @dev: Device to enable/disable to generate wakeup events.
+> + * @enable: Whether to enable or disable the wakeup functionality.
+> + */
+> +int acpi_pm_set_device_wakeup(struct device *dev, bool enable)
+>  {
+>  	struct acpi_device *adev;
+>  	int error;
+> @@ -850,37 +855,15 @@ static int __acpi_pm_set_device_wakeup(s
+>  		return 0;
+>  	}
+>  
+> -	error = __acpi_device_wakeup_enable(adev, acpi_target_system_state(),
+> -					    max_count);
+> +	error = __acpi_device_wakeup_enable(adev, acpi_target_system_state());
+>  	if (!error)
+>  		dev_dbg(dev, "Wakeup enabled by ACPI\n");
+>  
+>  	return error;
+>  }
+> -
+> -/**
+> - * acpi_pm_set_device_wakeup - Enable/disable remote wakeup for given device.
+> - * @dev: Device to enable/disable to generate wakeup events.
+> - * @enable: Whether to enable or disable the wakeup functionality.
+> - */
+> -int acpi_pm_set_device_wakeup(struct device *dev, bool enable)
+> -{
+> -	return __acpi_pm_set_device_wakeup(dev, enable, 1);
+> -}
+>  EXPORT_SYMBOL_GPL(acpi_pm_set_device_wakeup);
+>  
+>  /**
+> - * acpi_pm_set_bridge_wakeup - Enable/disable remote wakeup for given bridge.
+> - * @dev: Bridge device to enable/disable to generate wakeup events.
+> - * @enable: Whether to enable or disable the wakeup functionality.
+> - */
+> -int acpi_pm_set_bridge_wakeup(struct device *dev, bool enable)
+> -{
+> -	return __acpi_pm_set_device_wakeup(dev, enable, INT_MAX);
+> -}
+> -EXPORT_SYMBOL_GPL(acpi_pm_set_bridge_wakeup);
+> -
+> -/**
+>   * acpi_dev_pm_low_power - Put ACPI device into a low-power state.
+>   * @dev: Device to put into a low-power state.
+>   * @adev: ACPI device node corresponding to @dev.
+> Index: linux-pm/drivers/pci/pci-acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-acpi.c
+> +++ linux-pm/drivers/pci/pci-acpi.c
+> @@ -1060,7 +1060,7 @@ static int acpi_pci_propagate_wakeup(str
+>  {
+>  	while (bus->parent) {
+>  		if (acpi_pm_device_can_wakeup(&bus->self->dev))
+> -			return acpi_pm_set_bridge_wakeup(&bus->self->dev, enable);
+> +			return acpi_pm_set_device_wakeup(&bus->self->dev, enable);
+>  
+>  		bus = bus->parent;
+>  	}
+> @@ -1068,7 +1068,7 @@ static int acpi_pci_propagate_wakeup(str
+>  	/* We have reached the root bus. */
+>  	if (bus->bridge) {
+>  		if (acpi_pm_device_can_wakeup(bus->bridge))
+> -			return acpi_pm_set_bridge_wakeup(bus->bridge, enable);
+> +			return acpi_pm_set_device_wakeup(bus->bridge, enable);
+>  	}
+>  	return 0;
+>  }
+> 
+> 
+> 
