@@ -2,74 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A792CF2D3
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 18:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CED602CF337
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 18:41:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388580AbgLDRKy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Dec 2020 12:10:54 -0500
-Received: from mx2.suse.de ([195.135.220.15]:42368 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388544AbgLDRKy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Dec 2020 12:10:54 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id A7643ACC3;
-        Fri,  4 Dec 2020 17:10:12 +0000 (UTC)
-Message-ID: <1607101812.24959.157.camel@suse.cz>
-Subject: Re: [PATCH v4 RESEND] x86, sched: Use midpoint of max_boost and
- max_P for frequency invariance on AMD EPYC
-From:   Giovanni Gherdovich <ggherdovich@suse.cz>
-To:     Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Len Brown <lenb@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Nathan Fontenot <Nathan.Fontenot@amd.com>, x86@kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Date:   Fri, 04 Dec 2020 18:10:12 +0100
-In-Reply-To: <20201204170326.4178-1-ggherdovich@suse.cz>
-References: <20201112182614.10700-3-ggherdovich@suse.cz>
-         <20201204170326.4178-1-ggherdovich@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
+        id S1731051AbgLDRkU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Dec 2020 12:40:20 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2211 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbgLDRkU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Dec 2020 12:40:20 -0500
+Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cnfzj1Y3sz67F7V;
+        Sat,  5 Dec 2020 01:37:37 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 4 Dec 2020 18:39:35 +0100
+Received: from localhost (10.47.77.242) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 4 Dec 2020
+ 17:39:34 +0000
+Date:   Fri, 4 Dec 2020 17:39:12 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     Ben Widawsky <ben.widawsky@intel.com>, <linux-cxl@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Ira Weiny" <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [RFC PATCH 3/9] cxl/mem: Add a driver for the type-3 mailbox
+Message-ID: <20201204173912.00005f7f@Huawei.com>
+In-Reply-To: <CAPcyv4j7iiJ7BMTiHKrtccH7K_mzvA67nNEcq8yT6k93bPnqow@mail.gmail.com>
+References: <20201111054356.793390-1-ben.widawsky@intel.com>
+        <20201111054356.793390-4-ben.widawsky@intel.com>
+        <20201117144935.00006dee@Huawei.com>
+        <CAPcyv4h1NQ_ctMAUv1Sc37uh6Mqnm-VL_+woKKAATGOuLCC0Uw@mail.gmail.com>
+        <CAPcyv4j7iiJ7BMTiHKrtccH7K_mzvA67nNEcq8yT6k93bPnqow@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.77.242]
+X-ClientProxiedBy: lhreml741-chm.china.huawei.com (10.201.108.191) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2020-12-04 at 18:03 +0100, Giovanni Gherdovich wrote:
-> Frequency invariant accounting calculations need the ratio
-> freq_curr/freq_max, but freq_max is unknown as it depends on dynamic power
-> allocation between cores: AMD EPYC CPUs implement "Core Performance Boost".
-> Three candidates are considered to estimate this value:
-> [...]
+...
+
+> > > > +MODULE_IMPORT_NS(CXL);
+> > > > diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> > > > new file mode 100644
+> > > > index 000000000000..beb03921e6da
+> > > > --- /dev/null
+> > > > +++ b/drivers/cxl/pci.h
+> > > > @@ -0,0 +1,15 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+> > > > +#ifndef __CXL_PCI_H__
+> > > > +#define __CXL_PCI_H__
+> > > > +
+> > > > +#define PCI_CLASS_MEMORY_CXL 0x050210
+> > > > +
+> > > > +#define PCI_EXT_CAP_ID_DVSEC 0x23
+> > > > +#define PCI_DVSEC_VENDOR_CXL 0x1E98  
+> > >
+> > > Hmm. The magic question of what to call a vendor ID that isn't a vendor
+> > > ID but just a magic number that talks like a duck and quacks like a duck
+> > > (for anyone wondering what I'm talking about, there is a nice bit of legal
+> > > boilerplate on this in the CXL spec)
+> > >
+> > > This name is definitely not accurate however.
+> > >
+> > > PCI_UNIQUE_VALUE_CXL maybe?  It is used for other things than DVSEC (VDMs etc),
+> > > though possibly this is the only software visible use.  
+> >
+> > Finally working my way back through this review to make the changes.
+> > If 0x1E98 becomes visible to software somewhere else then this can
+> > become something like the following:
+> >
+> > #define PCI_DVSEC_VENDOR_CXL PCI_UNIQUE_VALUE_CXL
+> >
+> > ...or whatever the generic name is, but this field per the
+> > specification is the DVSEC-vendor-id and calling it
+> > PCI_UNIQUE_VALUE_CXL does not have any basis in the spec.
+
+There is a big statement about it as a footnote to 3.1.2 in CXL 2.0
+"The Unique Value that is provided in this specification for use in ...
+Designated Vendor Specific Extended Capabilities.."  And for extra
+amusement in the "Notice Regarding PCI-SIG Unique Value" that forms
+part of the click through
+https://www.computeexpresslink.org/download-the-specification
+(that's the only use of "PCI-SIG Unique Value" that Google finds
+ but I know of one other similar statement)
+
+However, I agree it's being used in DVSEC field only (from software
+point of view) so fair enough to name it after where it is used
+rather than what it is.
+
+> >
+> > I will rename it though to:
+> >
+> > PCI_DVSEC_VENDOR_ID_CXL
+> >
+> > ...since include/linux/pci_ids.h includes the _ID_ part.
+> >  
+> > >
+> > >  
+> > > > +#define PCI_DVSEC_VENDOR_OFFSET      0x4
+> > > > +#define PCI_DVSEC_ID_OFFSET  0x8  
+> > >
+> > > Put a line break here perhaps and maybe a spec reference to where to find
+> > > the various DVSEC IDs.  
+> >
+> > Ok.
+> >  
+> > >  
+> > > > +#define PCI_DVSEC_ID_CXL     0x0  
+> > >
+> > > That's definitely a confusing name as well.  
+> >
+> > Yeah, should be PCI_DVSEC_DEVICE_ID_CXL  
 > 
-> Benchmarks are described in the next section.
-> Tilde (~) means the value is the same as baseline.
+> Actually, no, the spec calls this the "DVSEC id" so PCI_DVSEC_ID_CXL
+> seems suitable to me. This is from:
 > 
-> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
->             ondemand  perfgov  sugov-noinv  sugov-max  sugov-mid  sugov-P0  better if
-> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-> [...]
+> Table 126. PCI Express DVSEC Register Settings for CXL Device
+> 
+> In the CXL 2.0 Specification.
 
-Hello,
+The DVSEC ID naming is straight from the PCI spec so that part is fine,
+my issue is this is one of a whole bunch of CXL related DVSEC ID so it
+needs a more specific name.
 
-this patch is currently merged in the tip tree, branch sched/core as
-commit 46609527577d1def0af29ca5b56cffeeea771ada.
+PCI_DVSEC_ID_CXL_DEVICE would work in line with table 124.
 
-Unfortunately in the original commit message I used "----------" for
-making table headers, and git dropped all the commit message after
-that sign, i.e. the benchmark results and my signed-off-by.
+I'm not that bothered though.
 
-In this "resend" I replaced the offending sign and the new commit
-message should make it intact to the destination tree.
-
-
-Thanks,
-Giovanni
-
+Jonathan
 
 
