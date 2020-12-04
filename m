@@ -2,195 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BBE82CF3B1
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 19:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 267DD2CF404
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 19:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbgLDSNO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Dec 2020 13:13:14 -0500
-Received: from mga01.intel.com ([192.55.52.88]:59269 "EHLO mga01.intel.com"
+        id S1730227AbgLDS1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Dec 2020 13:27:52 -0500
+Received: from mga01.intel.com ([192.55.52.88]:60456 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbgLDSNN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Dec 2020 13:13:13 -0500
-IronPort-SDR: bWg1gOunOBMWNGaLO6bPDPsQTb7Sm13z8TOo40k+IryFtlaYw+UpIPOQyqBgAN9xmOqGx3i4Ws
- M4lpEsbyjoCg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9825"; a="191665886"
+        id S1730131AbgLDS1w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Dec 2020 13:27:52 -0500
+IronPort-SDR: ykzOAGa1+0dab2T75nu2+g0Wbw7jeHKd5TO8BJRMMHrs3ng8Pc9UpW66kekElszJOKQnLbvrTS
+ sVx1jeuC+hAQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9825"; a="191668463"
 X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; 
-   d="scan'208";a="191665886"
+   d="scan'208";a="191668463"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2020 10:12:20 -0800
-IronPort-SDR: RKwnSxn3tNmuYRuBZxouEbsKpq9G4v733izvJSe/cn3xwC6G/G+KsapswhLHLdvtwwFa1LCsaE
- eoSLzY9JWubg==
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2020 10:26:07 -0800
+IronPort-SDR: H1WGPK39oNj/eNKm23P/oQnORIS9zt0ytKpu554yijiSPqweQjWVR/M5oXdCSal1zg2ML5CvtZ
+ Yz3zLMEOmitQ==
 X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; 
-   d="scan'208";a="336451422"
-Received: from yayatigu-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.135.92])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2020 10:12:19 -0800
-Date:   Fri, 4 Dec 2020 10:12:17 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Chris Browy <cbrowy@avery-design.com>
-Cc:     bhelgaas@google.com, dan.j.williams@intel.com, ira.weiny@intel.com,
-        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        rafael.j.wysocki@intel.com, sean.v.kelley@intel.com,
-        vishal.l.verma@intel.com
-Subject: Re: [RFC PATCH 0/9] CXL 2.0 Support
-Message-ID: <20201204181217.n3cm7gqujaqlcp2h@intel.com>
-References: <FB00A034-7C6D-40B1-8452-318A3B052216@avery-design.com>
- <F0ACA340-5BDE-4C17-80ED-DB7F5C5B8403@avery-design.com>
+   d="scan'208";a="540793142"
+Received: from jalmerix-mobl3.amr.corp.intel.com (HELO pbossart-mobl3.intel.com) ([10.255.70.143])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2020 10:26:07 -0800
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org (open list:ACPI FAN DRIVER)
+Subject: [PATCH] ACPI: fan: fix warning with CONFIG_DEBUG_LOCK_ALLOC
+Date:   Fri,  4 Dec 2020 12:25:45 -0600
+Message-Id: <20201204182545.8322-1-pierre-louis.bossart@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <F0ACA340-5BDE-4C17-80ED-DB7F5C5B8403@avery-design.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Chris.
+On a TigerLake device with CONFIG_DEBUG_LOCK_ALLOC the following
+warning is thrown:
 
-On 20-12-04 12:40:03, Chris Browy wrote:
-> Hi Ben,
-> 
-> Trying to bring up the environment using the latest developments as follows:
-> 
-> 1. Linux kernel baseline version is cloned using
->      git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
->    Using master branch.  Merged the 9 CXL linux kernel patches manually and built kernel
-> 
-> 2. QEMU baseline version is cloned using
->      git clone https://gitlab.com/bwidawsk/qemu.git
-> 
-> 3. UEFI baseline is cloned using
->      git clone https://github.com/tianocore/edk2.git
->    Using master and built
-> 
-> 4. Now can run qemu as follows:
->      The qcow2 we use is based on Ubuntu 20.10 with updated with kernel from 1) above
-> 
->      QEMU command:
-> 
->      sudo qemu-system-x86_64 -nic \
->      user,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -machine \
->      type=pc-q35-4.0,hmat=on,accel=kvm -enable-kvm -cpu host -smp \
->      6,cores=6,threads=1,sockets=1 -m 8G -boot order=d -k 'en-us' -vga virtio \
->      -drive file=/home/chris/Downloads/AQCXL/ubuntu_20.qcow,format=qcow2 -drive \
->      if=pflash,format=raw,readonly,file=/home/chris/OVMF_CODE.fd \
->      -drive if=pflash,format=raw,file=/home/chris/OVMF_VARS.fd \
->      -object memory-backend-file,id=cxl-mem1,share,mem-path=/tmp/cxl-test/cxl,size=512M \
->      -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52,uid=0,len-window-base=1,\
->      window-base[0]=0x4c0000000,memdev[0]=cxl-mem1 \
->      -device cxl-rp,id=rp0,bus=cxl.0,addr=0.0,chassis=0,slot=0  \
->      -device cxl-type3,bus=rp0,memdev=cxl-mem1,id=cxl-pmem0,size=256M  2>&1 | tee -a \
->      /home/chris/Downloads/AQCXL/log/qemu.log
-> 
->    The qemu options are derived from looking at the tests/qtests/cxl-test.c
->    along with the -hmat=on which seemed to make sense.
-> 
->    The system boots and lspci -vvv shows the CXL device is enumerated.  But
->    no DOE capability register for CDAT access though (see below).  Otherwise the
->    DVSEC registers are present.
+[   13.784413] BUG: key ffff88810ea5a080 has not been registered!
+[   13.784722] DEBUG_LOCKS_WARN_ON(1)
+[   13.784737] WARNING: CPU: 2 PID: 1 at kernel/locking/lockdep.c:4623
+lockdep_init_map_waits+0x25e/0x310
+[   13.787831] Call Trace:
+[   13.787902]  __kernfs_create_file+0xa5/0x180
+[   13.788016]  sysfs_add_file_mode_ns+0x120/0x270
+[   13.788138]  sysfs_create_file_ns+0xcd/0x120
+[   13.788256]  ? sysfs_add_file_mode_ns+0x270/0x270
+[   13.788381]  ? fan_get_max_state+0x70/0x70
+[   13.788491]  ? sort_r+0x1a5/0x200
+[   13.788579]  acpi_fan_probe+0x63b/0x7a0
 
-DOE is not supported yet in either Linux or QEMU. For us, CDAT isn't a high
-priority yet so it likely won't be done for a while. I'd really like to see DOE
-support added by someone - not me - so that we can wire it up. Not sure what
-that would look like in the QEMU side.
+Dynamically-allocated attributes need to be initialized to make
+lockdep happy, see include/linux/sysfs.h
 
-> 
->    acpidump indicates the CXL0 and CXLM devices but no SRAT or HMAT tables are
->    in the dump which is curious.
+Fixes: d19e470b6605c ('ACPI: fan: Expose fan performance state information')
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+---
+ drivers/acpi/fan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I don't typically use HMAT, but I do have an SRAT in mine, so that's strange.
-You should also have a CEDT.
+diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+index 66c3983f0ccc..9cab806298ff 100644
+--- a/drivers/acpi/fan.c
++++ b/drivers/acpi/fan.c
+@@ -357,6 +357,7 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+ 		fps->dev_attr.store = NULL;
+ 		fps->dev_attr.attr.name = fps->name;
+ 		fps->dev_attr.attr.mode = 0444;
++		sysfs_attr_init(&fps->dev_attr.attr);
+ 		status = sysfs_create_file(&device->dev.kobj, &fps->dev_attr.attr);
+ 		if (status) {
+ 			int j;
+-- 
+2.25.1
 
-> 
-> 
-> 35:00.0 Memory controller [0502]: Intel Corporation Device 0d93 (rev 01) (prog-if 10)
->     Subsystem: Red Hat, Inc. Device 1100
->     Physical Slot: 0
->     Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
->     Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
->     Latency: 0
->     Region 0: Memory at c0a00000 (64-bit, non-prefetchable) [size=64K]
->     Region 2: Memory at c0a10000 (64-bit, non-prefetchable) [size=4K]
->     Capabilities: [80] Express (v2) Endpoint, MSI 00
->         DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
->             ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 0.000W
->         DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
->             RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop-
->             MaxPayload 128 bytes, MaxReadReq 128 bytes
->         DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr- TransPend-
->         LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s, Exit Latency L0s <64ns
->             ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
->         LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk-
->             ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
->         LnkSta: Speed 2.5GT/s (ok), Width x1 (ok)
->             TrErr- Train- SlotClk- DLActive+ BWMgmt- ABWMgmt-
->         DevCap2: Completion Timeout: Not Supported, TimeoutDis-, NROPrPrP-, LTR-
->              10BitTagComp-, 10BitTagReq-, OBFF Not Supported, ExtFmt+, EETLPPrefix+, MaxEETLPPrefixes 4
->                EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
->              FRS-, TPHComp-, ExtTPHComp-
->              AtomicOpsCap: 32bit- 64bit- 128bitCAS-
->         DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled
->              AtomicOpsCtl: ReqEn-
->         LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
->              Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
->              Compliance De-emphasis: -6dB
->         LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete-, EqualizationPhase1-
->              EqualizationPhase2-, EqualizationPhase3-, LinkEqualizationRequest-
->     Capabilities: [100 v1] Designated Vendor-Specific <?>
->     Capabilities: [138 v1] Designated Vendor-Specific <?>
->     Kernel driver in use: cxl_mem
-> 
-> Questions/Comments:
-> -------------------
-> 1. Linux
->   a. Is there a gitlab for the linux kernel patches for CXL?  This would
->      facilitate review and code modifications.
-
-We're hopefully going to send out v2 in the next couple of days. I'll push the
-repo somewhere as well.
-
-> 
-> 2. UEFI (edk2 from tianocore)
->   a. seems to only support CXL 1.1 which means only method #1 (Device
->      option ROM) of Coherent Device Attribute Table_1.02 spec
->      for CDAT handling is possible now.
-> 
->      Does device option ROM need to be added to QEMU CXL setup?
-> 
->      Can we add a CXL 1.1 emulated device?
-
-Patches welcome :-). I know of other people who want this, but I only care about
-2.0+, so I have no intention to implement it.
-
-> 
->   b. lspci doesn’t show the existence of the DOE extended capability register
->      in the CXL CT3D (needed to support method #2).  Are there more patches?
-
-As above, it's not supported. I'm hoping someone else will do that work since I
-don't care about it just yet.
-
-> 
-> 3. Do you have example user programs to share or better yet the CXL 2.0
->    Sec 14.3.6.1 Application Layer/ Transaction layer test for CXL.mem?
-> 
-
-I don't have, mostly because I haven't actually implemented a lot of the real
-CXL support. My primary concern was having the Linux driver be able to enumerate
-devices and communicate with the device via the mailbox interface. v2 will
-contain support for userspace to do this, which I think is a step toward what
-you're asking for.
-
-> 4. What are the userspace system APIs for targeting CXL HDM address domain?
->    Usually you can mmap a SPA if you know how to look it up.
-
-I think Dan answered this in the other thread...
-
-> 
-> 
-> Best Regards,
-> Chris Browy
-> 
-> 
-> 
