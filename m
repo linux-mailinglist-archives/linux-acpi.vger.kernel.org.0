@@ -2,93 +2,311 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 314B82CE471
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 01:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1992CE892
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Dec 2020 08:22:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726356AbgLDA2k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Dec 2020 19:28:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
+        id S1726194AbgLDHWu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Dec 2020 02:22:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726150AbgLDA2j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Dec 2020 19:28:39 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFA5C061A4F;
-        Thu,  3 Dec 2020 16:27:59 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id t4so3644177wrr.12;
-        Thu, 03 Dec 2020 16:27:59 -0800 (PST)
+        with ESMTP id S1727452AbgLDHWt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Dec 2020 02:22:49 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE66C061A53
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Dec 2020 23:22:09 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id jx16so7204117ejb.10
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Dec 2020 23:22:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bfb5d3+2S9JH8wBxkFfQemxxT3PfbV/hkWGgdqWK+2k=;
-        b=avTuOm+YMx8bgyxwZ+cDWgHUigVl3SimWdYJhL2edrAt1+SOGbP8ALx13VR+OBxfe4
-         H3RYi7bUkNDl9vxabn83Fzwred58Bryup17lIxE3XrUNeWBu4a6iUZupQa8/lZF9nN3+
-         8b1Fk1jepOe8r0CdFcLtC31qrRPHfIJZLf+pV9tlHBWnR/sbfZe08pm11QeSRfJxhBL1
-         YT281yK9RyYBeHO/tcx+GeFD8eLY03FSHUPPuKGMrDR1mobaNJcCihgFPgQ6YfFhLV+L
-         zkg8G6SP/s2S4NVds7QZySs5/ulA4M19WIszSonmCDhxtD924kCCoeM5m01CIlsBeui+
-         6CVQ==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xh4rvfrXyDTv/4cuTVOcjiXdlndYmDqYPiu2hA78tl4=;
+        b=aZXHTMyMYhG8sNEPs0gInxJBvCd8V4cEqE5rO250SHcGm1LUcd9PRLUiooxGqssN4A
+         tR/zIV6vmJJCbOE2bUUlRUqm+kijnQfvXp8MATNmEOn9nCdcP96587vLtZiNh9Mqagf9
+         MiTXCUVPjkDvQF3wyeyRGRgmPxj2epsu4I8VK3bjhs7umMmZXl/2dK/+x7DYq8YKIhdW
+         Ap5X2HG9axieTm0JirEzrT+Ks45YHj+toFWm4swizKTWCD11AWQFpAkBkegwxStm9ll1
+         h7z7P4/UYbTCJElq14k/WBQgxvRuebH/T4lPkM0lWC5zNlhrecfOQ/+2QP6yBIEm7xiK
+         b+Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bfb5d3+2S9JH8wBxkFfQemxxT3PfbV/hkWGgdqWK+2k=;
-        b=uPEgEynkkwoONOjxP0CCAVGP1bBRqOiWxMqNd9oKkZY19wv4RLhWK3gH1TWEFWR4/V
-         3sPVooZzSq4Jaycuq8GtbOXJO7aNm2G2Tw34jYjqHYlV7vCh55w8r4A/aWu9Y0IJnepl
-         56MgYU6ZJoQUUOwVwq1Js2hDZjSmW+AXPGB/m6qMVbx8aUFkaJyrwxhGvxstwlyPkxsJ
-         l3cawDfxcqFvvSYv1Yu/HyhpC+yXX897ivQCt0TrKgUhd9PgV2SiDbOMhrHOWP9GsxOS
-         cGukE9fgDqAhZOyQ39BDHqJNHsWTNuTRckUmaBSn8lJ0w4q3MAnI2WEG6cTTZp5hNP8a
-         bCqg==
-X-Gm-Message-State: AOAM5323c3Cw0CjAdnAKrhckHP/IOv4/80BrZ4O9hwx/fQ8/l+zGvQW7
-        V0jN9ziXQjmJ4Ct0NPNB16H9apfX66MoEZL3
-X-Google-Smtp-Source: ABdhPJx7gqirS2esVFVzQOwV0VSKtaITvwJ4LvJdLuV/7haF/fjcxT0A3x0mEmTshu4jFrZKYoZPgg==
-X-Received: by 2002:a5d:6886:: with SMTP id h6mr1801914wru.173.1607041677842;
-        Thu, 03 Dec 2020 16:27:57 -0800 (PST)
-Received: from valhalla.home ([2.31.225.57])
-        by smtp.gmail.com with ESMTPSA id d17sm1306815wro.62.2020.12.03.16.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Dec 2020 16:27:57 -0800 (PST)
-From:   Daniel Scally <djrscally@gmail.com>
-To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, mika.westerberg@linux.intel.com
-Subject: [PATCH] acpi: resource: Use AE_ABORT_METHOD to terminate acpi_dev_get_resources()
-Date:   Fri,  4 Dec 2020 00:27:40 +0000
-Message-Id: <20201204002740.300109-1-djrscally@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xh4rvfrXyDTv/4cuTVOcjiXdlndYmDqYPiu2hA78tl4=;
+        b=CHdnTiP3EFiGNy1h6bCrW9N2dBecvTOkTKwIA67PxtAXkEldwgnYABf/BKjfbxSBpp
+         oSOGdoW+LQguhLLeLCKyWKAWA2ahL9NPNmm6V3E9hzfqrtKDLpfirfWEIxqb7il/KtmD
+         XmbeeBcEgmDbUB2/Q/cWxA89jw3YajNaFV8rdf/vYcP5p/YaSiwUxa9Za1k3O3ObCMCk
+         vcGjRNyyMQra5P5D5lLWSReJEq/g4gfClOX9Els6KdWWPhObTHh+voKP5aPTyiDR0lkp
+         7MuJWmjOw3HetPaQZktXyz3X1OHavKTlhBRATqkwYj6PlOjzjA3R1GPfFCDn8iQVHfSh
+         3B+Q==
+X-Gm-Message-State: AOAM531XQudZLWklrSBam9pmnBpvoHqKAdSYyCZqRi17VBg/0peof1Kg
+        PM7AwWUr3yb+e0a3+svQX3WlgisnGhqNA1lhi1Jtcg==
+X-Google-Smtp-Source: ABdhPJxwbaBlIEOjGnGE5doWopyB4zo2D7MEsreVeUo6De1bMaYn2geUwuXaHHeTRK4+tbvm82zSx3XyjrCNQpnhQ7c=
+X-Received: by 2002:a17:906:518a:: with SMTP id y10mr5989113ejk.323.1607066527615;
+ Thu, 03 Dec 2020 23:22:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201111054356.793390-1-ben.widawsky@intel.com>
+ <20201111054356.793390-4-ben.widawsky@intel.com> <20201117144935.00006dee@Huawei.com>
+In-Reply-To: <20201117144935.00006dee@Huawei.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 3 Dec 2020 23:22:04 -0800
+Message-ID: <CAPcyv4h1NQ_ctMAUv1Sc37uh6Mqnm-VL_+woKKAATGOuLCC0Uw@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/9] cxl/mem: Add a driver for the type-3 mailbox
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Switching this function to AE_CTRL_TERMINATE broke the documented
-behaviour of acpi_dev_get_resources() - AE_CTRL_TERMINATE does not, in
-fact, terminate the resource walk because acpi_walk_resource_buffer()
-ignores it (specifically converting it to AE_OK), referring to that
-value as "an OK termination by the user function". This means that
-acpi_dev_get_resources() does not abort processing when the preproc
-function returns a negative value.
+On Tue, Nov 17, 2020 at 6:50 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Tue, 10 Nov 2020 21:43:50 -0800
+> Ben Widawsky <ben.widawsky@intel.com> wrote:
+>
+> > From: Dan Williams <dan.j.williams@intel.com>
+> >
+> > The CXL.mem protocol allows a device to act as a provider of "System
+> > RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+> > was attached to the typical CPU memory controller.
+> >
+> > The memory range exported by the device may optionally be described by
+> > the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+> > provision persistent memory capacity from one, or more, CXL.mem devices.
+> >
+> > A pre-requisite for Linux-managed memory-capacity provisioning is this
+> > cxl_mem driver that can speak the "type-3 mailbox" protocol.
+> >
+> > For now just land the driver boiler-plate and fill it in with
+> > functionality in subsequent commits.
+> >
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+>
+> I've tried to avoid repeats, so mostly this is me moaning about naming!
+>
+> Jonathan
+>
+> > ---
+> >  drivers/cxl/Kconfig  | 20 +++++++++++
+> >  drivers/cxl/Makefile |  2 ++
+> >  drivers/cxl/mem.c    | 82 ++++++++++++++++++++++++++++++++++++++++++++
+> >  drivers/cxl/pci.h    | 15 ++++++++
+> >  4 files changed, 119 insertions(+)
+> >  create mode 100644 drivers/cxl/mem.c
+> >  create mode 100644 drivers/cxl/pci.h
+> >
+> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> > index dd724bd364df..15548f5c77ff 100644
+> > --- a/drivers/cxl/Kconfig
+> > +++ b/drivers/cxl/Kconfig
+> > @@ -27,4 +27,24 @@ config CXL_ACPI
+> >         resources described by the CEDT (CXL Early Discovery Table)
+> >
+> >         Say 'y' to enable CXL (Compute Express Link) drivers.
+> > +
+> > +config CXL_MEM
+> > +        tristate "CXL.mem Device Support"
+> > +        depends on PCI && CXL_BUS_PROVIDER != n
+> > +        default m if CXL_BUS_PROVIDER
+> > +        help
+> > +          The CXL.mem protocol allows a device to act as a provider of
+> > +          "System RAM" and/or "Persistent Memory" that is fully coherent
+> > +          as if the memory was attached to the typical CPU memory
+> > +          controller.
+> > +
+> > +          Say 'y/m' to enable a driver named "cxl_mem.ko" that will attach
+> > +          to CXL.mem devices for configuration, provisioning, and health
+> > +          monitoring, the so called "type-3 mailbox". Note, this driver
+> > +          is required for dynamic provisioning of CXL.mem attached
+> > +          memory, a pre-requisite for persistent memory support, but
+> > +          devices that provide volatile memory may be fully described by
+> > +          existing platform firmware memory enumeration.
+> > +
+> > +          If unsure say 'n'.
+> >  endif
+> > diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+> > index d38cd34a2582..97fdffb00f2d 100644
+> > --- a/drivers/cxl/Makefile
+> > +++ b/drivers/cxl/Makefile
+> > @@ -1,5 +1,7 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
+> > +obj-$(CONFIG_CXL_MEM) += cxl_mem.o
+> >
+> >  ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CXL
+> >  cxl_acpi-y := acpi.o
+> > +cxl_mem-y := mem.o
+> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > new file mode 100644
+> > index 000000000000..aa7d881fa47b
+> > --- /dev/null
+> > +++ b/drivers/cxl/mem.c
+> > @@ -0,0 +1,82 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+> > +#include <linux/module.h>
+> > +#include <linux/pci.h>
+> > +#include <linux/io.h>
+> > +#include "acpi.h"
+> > +#include "pci.h"
+> > +
+> > +struct cxl_mem {
+> > +     void __iomem *regs;
+> > +};
+> > +
+> > +static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> > +{
+> > +     int pos;
+> > +
+> > +     pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
+> > +     if (!pos)
+> > +             return 0;
+> > +
+> > +     while (pos) {
+> > +             u16 vendor, id;
+> > +
+> > +             pci_read_config_word(pdev, pos + PCI_DVSEC_VENDOR_OFFSET, &vendor);
+> > +             pci_read_config_word(pdev, pos + PCI_DVSEC_ID_OFFSET, &id);
+> > +             if (vendor == PCI_DVSEC_VENDOR_CXL && dvsec == id)
+> > +                     return pos;
+> > +
+> > +             pos = pci_find_next_ext_capability(pdev, pos, PCI_EXT_CAP_ID_DVSEC);
+>
+> This is good generic code and wouldn't cause much backport effort (even if needed
+> to bring in a local copy), so perhaps make it a generic function and move to
+> core PCI code?
+>
+> Mind you I guess that can happen the 'second' time someone wants to find a DVSEC.
+>
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > +{
+> > +     struct device *dev = &pdev->dev;
+> > +     struct cxl_mem *cxlm;
+> > +     int rc, regloc;
+> > +
+> > +     rc = cxl_bus_prepared(pdev);
+> > +     if (rc != 0) {
+> > +             dev_err(dev, "failed to acquire interface\n");
+> > +             return rc;
+> > +     }
+> > +
+> > +     regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
+> > +     if (!regloc) {
+> > +             dev_err(dev, "register location dvsec not found\n");
+> > +             return -ENXIO;
+> > +     }
+> > +
+> > +     cxlm = devm_kzalloc(dev, sizeof(*cxlm), GFP_KERNEL);
+> > +     if (!cxlm)
+> > +             return -ENOMEM;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void cxl_mem_remove(struct pci_dev *pdev)
+> > +{
+> > +}
+>
+> I'd bring this in only when needed in later patch.
+>
+> > +
+> > +static const struct pci_device_id cxl_mem_pci_tbl[] = {
+> > +     /* PCI class code for CXL.mem Type-3 Devices */
+> > +     { PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+> > +       PCI_CLASS_MEMORY_CXL, 0xffffff, 0 },
+> > +     { /* terminate list */ },
+> > +};
+> > +MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+> > +
+> > +static struct pci_driver cxl_mem_driver = {
+> > +     .name                   = KBUILD_MODNAME,
+> > +     .id_table               = cxl_mem_pci_tbl,
+> > +     .probe                  = cxl_mem_probe,
+> > +     .remove                 = cxl_mem_remove,
+> > +};
+> > +
+> > +MODULE_LICENSE("GPL v2");
+> > +MODULE_AUTHOR("Intel Corporation");
+> > +module_pci_driver(cxl_mem_driver);
+> > +MODULE_IMPORT_NS(CXL);
+> > diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> > new file mode 100644
+> > index 000000000000..beb03921e6da
+> > --- /dev/null
+> > +++ b/drivers/cxl/pci.h
+> > @@ -0,0 +1,15 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +// Copyright(c) 2020 Intel Corporation. All rights reserved.
+> > +#ifndef __CXL_PCI_H__
+> > +#define __CXL_PCI_H__
+> > +
+> > +#define PCI_CLASS_MEMORY_CXL 0x050210
+> > +
+> > +#define PCI_EXT_CAP_ID_DVSEC 0x23
+> > +#define PCI_DVSEC_VENDOR_CXL 0x1E98
+>
+> Hmm. The magic question of what to call a vendor ID that isn't a vendor
+> ID but just a magic number that talks like a duck and quacks like a duck
+> (for anyone wondering what I'm talking about, there is a nice bit of legal
+> boilerplate on this in the CXL spec)
+>
+> This name is definitely not accurate however.
+>
+> PCI_UNIQUE_VALUE_CXL maybe?  It is used for other things than DVSEC (VDMs etc),
+> though possibly this is the only software visible use.
 
-Revert to AE_ABORT_METHOD
+Finally working my way back through this review to make the changes.
+If 0x1E98 becomes visible to software somewhere else then this can
+become something like the following:
 
-Fixes: 8a66790b7850 ("ACPI / resources: Use AE_CTRL_TERMINATE to terminate resources walks")
-Signed-off-by: Daniel Scally <djrscally@gmail.com>
----
- drivers/acpi/resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+#define PCI_DVSEC_VENDOR_CXL PCI_UNIQUE_VALUE_CXL
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index ad04824ca3ba..f2f5f1dc7c61 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -541,7 +541,7 @@ static acpi_status acpi_dev_process_resource(struct acpi_resource *ares,
- 		ret = c->preproc(ares, c->preproc_data);
- 		if (ret < 0) {
- 			c->error = ret;
--			return AE_CTRL_TERMINATE;
-+			return AE_ABORT_METHOD;
- 		} else if (ret > 0) {
- 			return AE_OK;
- 		}
--- 
-2.25.1
+...or whatever the generic name is, but this field per the
+specification is the DVSEC-vendor-id and calling it
+PCI_UNIQUE_VALUE_CXL does not have any basis in the spec.
 
+I will rename it though to:
+
+PCI_DVSEC_VENDOR_ID_CXL
+
+...since include/linux/pci_ids.h includes the _ID_ part.
+
+>
+>
+> > +#define PCI_DVSEC_VENDOR_OFFSET      0x4
+> > +#define PCI_DVSEC_ID_OFFSET  0x8
+>
+> Put a line break here perhaps and maybe a spec reference to where to find
+> the various DVSEC IDs.
+
+Ok.
+
+>
+> > +#define PCI_DVSEC_ID_CXL     0x0
+>
+> That's definitely a confusing name as well.
+
+Yeah, should be PCI_DVSEC_DEVICE_ID_CXL
+
+>
+> PCI_DEVSEC_ID_CXL_DEVICE maybe?
+>
+>
+> > +#define PCI_DVSEC_ID_CXL_REGLOC      0x8
+> > +
+> > +#endif /* __CXL_PCI_H__ */
+>
