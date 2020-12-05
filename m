@@ -2,111 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1192CFC55
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Dec 2020 19:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48CD92CFCCE
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Dec 2020 19:51:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728077AbgLER7L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Dec 2020 12:59:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728108AbgLER6W (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Dec 2020 12:58:22 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37586C061A54;
-        Sat,  5 Dec 2020 08:59:18 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id 91so4440233wrj.7;
-        Sat, 05 Dec 2020 08:59:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=pSZy2MIM2IOcpuaCO21YRk9eLUrSbTWR9J9zRoW6BTQ=;
-        b=DpMQDu2t7TBEzkeYMsX+efAU3SxXevbCeoF/HYYK8ivNMoe3tvbAUaPheGZWrv0faI
-         RdRfGGiqCY8xOEsvotkkShAi95/qHhK9Q3jDQXBSIOQfYDyUsAzCRBsNNUEScmNnAX/B
-         cluQZbztVFYHIax8IS3VnFUAG2SCPkDvqDqivqGYirSixN1BlO4zfKHu1CK3b7GjwjtE
-         x0hCT/XtlGCg/PYckZjue34q7a21MFEkiBNOvwCQ55KUnRsT1pA9IABnGkJfe+/B1jD4
-         s96ViVn+DRwYkD6h5wMlKEIf0gThHWX/RsZCD2W1OZSNyzq3RXjCFMYbkoa2mnfhd5VU
-         Lv9A==
+        id S1728671AbgLESTW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Dec 2020 13:19:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28275 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727942AbgLESE0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Dec 2020 13:04:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1607191375;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ngbQFaYupjBC+H+tboAOi4kI6aZEZIqf728BmBL002o=;
+        b=It3CLJ5wQw7T6iQ0EhF/stbl6MWLxpbmkzQCUIkaEYRFYbYwWxXUp+pQp08FMillnIFCEp
+        Rmdt2eWoVnUwjk/9TcRgSsW4c48aWsw2iPa5F0xjwUTqg1+WV6PmRpR0Anp3/XiQEZizx8
+        NYHuIKMqXBeIpeOjp//k8X/H7oM3vg8=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-320-hHHVUDd_NxKR7xSA3N8Rlg-1; Sat, 05 Dec 2020 10:34:48 -0500
+X-MC-Unique: hHHVUDd_NxKR7xSA3N8Rlg-1
+Received: by mail-ed1-f70.google.com with SMTP id dh21so2813234edb.6
+        for <linux-acpi@vger.kernel.org>; Sat, 05 Dec 2020 07:34:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=pSZy2MIM2IOcpuaCO21YRk9eLUrSbTWR9J9zRoW6BTQ=;
-        b=dVDJhHXTGW3oJMNrtgHUDIbisJZRoB+qCwmNMnyR7YO4EdqEx91oP2Lxm8ll3sVU6L
-         Ed6Y5osx8EltcOVyuW7FtAwhdIVfeOKIov5rEa5mKYbzCda3mlzl6URKlZsK2TIiCeyZ
-         yEiYGVBQErnuxuVSmXKkkDoOt4J6NXLQ7eqtw4bs2JUzf8SGuP8KO/HXHjTAkP8RFNaV
-         FwJj/+qlEeSgy8J2SHUemWUbqFzFEFipnM9EpfVIXTMMU82gOz01Q+6o+bBpewC51pez
-         TG/xf1v3FwPVvhUoqQXIgQ8dAKbCofSWFR5ER4yTSZwoZxRGao9ENzTk6mleDunKW4l2
-         /3RA==
-X-Gm-Message-State: AOAM532CbZB8mc7xSkexmjG+Zsl4eA19sAA45GjrZp50kP9RegNRLKh8
-        B5TMAuKyHt978XNe+jKYTJabBrsjjebSpg==
-X-Google-Smtp-Source: ABdhPJwJG10DzMqxYNZFzuj+sbY6HlI/cnAVjqZ7ICArvqAvt/Uan3BW/DBUCVIq4Fc94MpSILvyTA==
-X-Received: by 2002:a5d:668d:: with SMTP id l13mr10705249wru.279.1607187556867;
-        Sat, 05 Dec 2020 08:59:16 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.225.57])
-        by smtp.gmail.com with ESMTPSA id q1sm8137536wrj.8.2020.12.05.08.59.15
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ngbQFaYupjBC+H+tboAOi4kI6aZEZIqf728BmBL002o=;
+        b=lJ5FFiKDHSj08ns6N8vKrONnNpp2MrOmi/0tJEZtn+ZT+Vj5GaMM/kMDQWD1szNHNx
+         VN/TYVPls7jw0l8lfQwv2+EPqVhVVY9COEiuSD8d4Ehpw9BmP+BdGPlGLjX30LM+9J59
+         fcFwZ9FE+HJXdMYVI1Sg078hFVBSVCYta/rPi/5v34tMnOO3OEMl+FpaqCMXxcvNKwDH
+         ZTFMvQ66cRtybfwfDmtTfVnkzCpvmx6+KLV0O5IgFLxtjHmM1yken00+cE3adpQ0klto
+         eRono2dpBxspTYdLttGn0zxbiEXTN5GhHPKrCM43mU11GHIoNrP/wd42gV5Pnstyb6pR
+         SshA==
+X-Gm-Message-State: AOAM533U/ve/tNbI99sezEmV2+rMrvaQ18pkDk3ssfFTRWOVpFedDi63
+        Jvw5ayx6snceA3zGPWh/X3sUdApVd311ORDFEkL8H14qszCRoUNjH6C8q8+vu+dsLdxtC5jYh7k
+        iwhGy4eg/G1dSrX4Vi+LCmQ==
+X-Received: by 2002:a05:6402:8cc:: with SMTP id d12mr12372036edz.0.1607182487238;
+        Sat, 05 Dec 2020 07:34:47 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwYPmjObSWDGzOcfnFCRrago04hStbb9gkJSWAB21feYry+hxhfXvJ/UUwB6qTP3ITLvN7nEA==
+X-Received: by 2002:a05:6402:8cc:: with SMTP id d12mr12372021edz.0.1607182487069;
+        Sat, 05 Dec 2020 07:34:47 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id p91sm5921160edp.9.2020.12.05.07.34.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Dec 2020 08:59:15 -0800 (PST)
-Subject: Re: [PATCH] acpi: resource: Use AE_ABORT_METHOD to terminate
- acpi_dev_get_resources()
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lenb@kernel.org, mika.westerberg@linux.intel.com
-References: <20201204002740.300109-1-djrscally@gmail.com>
- <2246133.BJYN6MDhT9@kreacher>
-From:   Dan Scally <djrscally@gmail.com>
-Message-ID: <884a73ea-0bc3-6598-b440-3d7c6a8561b6@gmail.com>
-Date:   Sat, 5 Dec 2020 16:59:14 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sat, 05 Dec 2020 07:34:46 -0800 (PST)
+Subject: Re: [PATCH] ACPI: scan: Add PNP0D80 to the _DEP exceptions list
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        David Box <david.e.box@linux.intel.com>
+References: <3849919.JfvvSOo2yN@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <52a2b98c-6bf3-760b-eca9-93cf05fb4877@redhat.com>
+Date:   Sat, 5 Dec 2020 16:34:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <2246133.BJYN6MDhT9@kreacher>
+In-Reply-To: <3849919.JfvvSOo2yN@kreacher>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/12/2020 15:21, Rafael J. Wysocki wrote:
-> On Friday, December 4, 2020 1:27:40 AM CET Daniel Scally wrote:
->> Switching this function to AE_CTRL_TERMINATE broke the documented
->> behaviour of acpi_dev_get_resources() - AE_CTRL_TERMINATE does not, in
->> fact, terminate the resource walk because acpi_walk_resource_buffer()
->> ignores it (specifically converting it to AE_OK), referring to that
->> value as "an OK termination by the user function". This means that
->> acpi_dev_get_resources() does not abort processing when the preproc
->> function returns a negative value.
->>
->> Revert to AE_ABORT_METHOD
->>
->> Fixes: 8a66790b7850 ("ACPI / resources: Use AE_CTRL_TERMINATE to terminate resources walks")
->> Signed-off-by: Daniel Scally <djrscally@gmail.com>
-> This is simply a revert of the above commit, so it would be better to present
-> it as a revert explicitly.
+Hi,
 
-Ah, of course. I'll resend as that, sorry for the noise
+On 12/5/20 4:29 PM, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The PNP0D80 ("Windows-compatible System Power Management Controller")
+> device ID is used for identifying the special device object providing
+> the LPI (Low-power S0 Idle) _DSM interface [1].  That device object
+> does not supply any operation regions, but it appears in _DEP lists
+> for other devices in the ACPI tables on some systems to enforce
+> specific enumeration ordering that does not matter in Linux.
+> 
+> For this reason, _DEP list entries pointing to the device object whose
+> _CID returns PNP0D80 need not be taken into account as real operation
+> region dependencies, so add that device ID to the list of device IDs
+> for which the matching _DEP list entries should be ignored.
+> 
+> Accordingly, update the function used for matching device IDs in that
+> list to allow it to check _CID as well as _HID and rename it to
+> acpi_info_matches_ids().
+> 
+> Link: https://www.uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf # [1]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
->
->> ---
->>  drivers/acpi/resource.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->> index ad04824ca3ba..f2f5f1dc7c61 100644
->> --- a/drivers/acpi/resource.c
->> +++ b/drivers/acpi/resource.c
->> @@ -541,7 +541,7 @@ static acpi_status acpi_dev_process_resource(struct acpi_resource *ares,
->>  		ret = c->preproc(ares, c->preproc_data);
->>  		if (ret < 0) {
->>  			c->error = ret;
->> -			return AE_CTRL_TERMINATE;
->> +			return AE_ABORT_METHOD;
->>  		} else if (ret > 0) {
->>  			return AE_OK;
->>  		}
->>
->
->
->
+Thank you for doing this, I contemplated doing the exact same
+thing but never got around to it.
+
+One small review remark inline:
+
+> ---
+>  drivers/acpi/scan.c |   27 +++++++++++++++++++++------
+>  1 file changed, 21 insertions(+), 6 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/scan.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/scan.c
+> +++ linux-pm/drivers/acpi/scan.c
+> @@ -719,25 +719,40 @@ int acpi_device_add(struct acpi_device *
+>  /* --------------------------------------------------------------------------
+>                                   Device Enumeration
+>     -------------------------------------------------------------------------- */
+> -static bool acpi_info_matches_hids(struct acpi_device_info *info,
+> -				   const char * const hids[])
+> +static bool acpi_info_matches_ids(struct acpi_device_info *info,
+> +				  const char * const ids[])
+>  {
+> +	struct acpi_pnp_device_id_list *cid_list = NULL;
+>  	int i;
+>  
+>  	if (!(info->valid & ACPI_VALID_HID))
+>  		return false;
+>  
+> -	for (i = 0; hids[i]; i++) {
+> -		if (!strcmp(info->hardware_id.string, hids[i]))
+> +	if (info->valid & ACPI_VALID_CID)
+> +		cid_list = &info->compatible_id_list;
+> +
+> +	for (i = 0; ids[i]; i++) {
+> +		int j;
+> +
+> +		if (!strcmp(info->hardware_id.string, ids[i]))
+>  			return true;
+> +
+> +		if (!cid_list)
+> +			continue;
+> +
+> +		for (j = 0; j < cid_list->count; j++) {
+> +			if (!strcmp(cid_list->ids[j].string, ids[i]))
+> +				return true;
+> +		}
+>  	}
+>  
+>  	return false;
+>  }
+>  
+>  /* List of HIDs for which we ignore matching ACPI devices, when checking _DEP lists. */
+> -static const char * const acpi_ignore_dep_hids[] = {
+> +static const char * const acpi_ignore_dep_ids[] = {
+>  	"INT3396", /* Windows System Power Management Controller */
+
+I think this one can be dropped now, I checked my acpidump / dsdt.dsl
+collection and 45/45 DSDTs declaring a _HID of INT3396 also added a _CID of
+PNP0D80 to this.
+
+Regards,
+
+Hans
+
+
+> +	"PNP0D80", /* Windows-compatible System Power Management Controller */
+>  	NULL
+>  };
+>  
+> @@ -1857,7 +1872,7 @@ static void acpi_device_dep_initialize(s
+>  			continue;
+>  		}
+>  
+> -		skip = acpi_info_matches_hids(info, acpi_ignore_dep_hids);
+> +		skip = acpi_info_matches_ids(info, acpi_ignore_dep_ids);
+>  		kfree(info);
+>  
+>  		if (skip)
+> 
+> 
+> 
+
