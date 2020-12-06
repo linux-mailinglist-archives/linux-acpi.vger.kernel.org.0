@@ -2,60 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF002D02D8
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Dec 2020 11:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A9E2D02F0
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Dec 2020 11:44:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgLFKe0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Dec 2020 05:34:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbgLFKeZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Dec 2020 05:34:25 -0500
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2705EC0613D0;
-        Sun,  6 Dec 2020 02:33:45 -0800 (PST)
-Received: by mail-ej1-x641.google.com with SMTP id d17so15180001ejy.9;
-        Sun, 06 Dec 2020 02:33:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Vk6HBckdSboz7RYLoG/ecoSXN1J59n5K4n7Y+kNkQLo=;
-        b=ZDvI6gPmFDmtjc02cr7ablSYlYKJeBVjQFTosf5EG1qUoiXEzQp63IwyZI6peJfrw3
-         EP18kGd7Q4MHB11Zbuqfx46xSbNK9rqx7i9ZinrH3Qz3lAhMHM2TE+f1Dpivks1PkOMJ
-         b8eLUzwpmOh/dSlzs3RFVuOgwsRnlYzQHaYWD9qOZA6DE4IWcTK+kdtMaCIAsckEXpdB
-         opUHf6c/wV6f4rTrpw74npxYD679/77nz0UwllgL2ix1YqhiVZMX62DX9VEdXeuBESou
-         xZ8r7k+QtwgIszie7Iy8bc1GgKSBiceorxk4mTqnA+fT+mvtvb4Uiccl7o971vpFR7K9
-         YYLw==
+        id S1726904AbgLFKnV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Dec 2020 05:43:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51891 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726868AbgLFKnU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Dec 2020 05:43:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1607251314;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DGB1JYDSRnOOOUOqlFv/3mgP78JkLdIpK80wJrAOKSU=;
+        b=ER6ZX2USnQNkS8GWODjZ3CTIgv5tk6S5aZI6im9JsvW/03vVh5PT/SXZHaK3NSJktj+IYU
+        LDtzU1Y8WRpREo84ucgPqmsR+VjqfhEpHtkz0nA0jxR5fIImnglC8UA501jcSLbP2xq9sg
+        Q9YL1juYME1sZgT+dBUvoVAE43pssrU=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-145-I0QDWJCiNMqt_kDQrtZxYg-1; Sun, 06 Dec 2020 05:41:49 -0500
+X-MC-Unique: I0QDWJCiNMqt_kDQrtZxYg-1
+Received: by mail-ed1-f70.google.com with SMTP id g25so2151105edu.4
+        for <linux-acpi@vger.kernel.org>; Sun, 06 Dec 2020 02:41:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=Vk6HBckdSboz7RYLoG/ecoSXN1J59n5K4n7Y+kNkQLo=;
-        b=n5KdAcPRrKkOQa+vjOXjh26oVZGs2/3JcJWYTa9deeyZt7+ccYw5uHZ0jIDVjemFPG
-         U9GJZZP6hlkK05LqyMZmRDCH09E+4mGyKmahDcCd/Cr/ChFPjBA1DSM4NhomUAHeFYZ3
-         1rs3WT3xtL4kvCKaWNTVhyVK40MhXJiR2OMHeB2L5qe4aqcRAp4PfLqNYHVMvii1XO+i
-         MkO+JSlqzSuPcm+Ku41i3Xaiph2TKL7E0NO/g5NGizsF4m7e8aw1+6ZWjmeX91DGhIQ6
-         TXxzxiNG/FeEdvA0ggPIcEKM83GE2FhSftHL4xpBOFpKvSb+GycJG5IrSAiGgTFwwOtC
-         wR2w==
-X-Gm-Message-State: AOAM5331bZhuheu4vKEF9R6Njim7ej8JMMnEUUWBnESbXlIPIAc2JdoV
-        p2JoMUziEsLj61ftU3lAu5rC7o4qkEg=
-X-Google-Smtp-Source: ABdhPJxf8y7kdMo+Z9nzNcsHb/5UBhzewgZRy0/IIib00PxKvOAcHu4S6sblBUl0OYAmx1CFdMc9+w==
-X-Received: by 2002:a17:906:578e:: with SMTP id k14mr9265757ejq.90.1607250823489;
-        Sun, 06 Dec 2020 02:33:43 -0800 (PST)
-Received: from [192.168.2.202] (pd9e5a241.dip0.t-ipconnect.de. [217.229.162.65])
-        by smtp.gmail.com with ESMTPSA id z9sm7875241eju.123.2020.12.06.02.33.41
+        bh=DGB1JYDSRnOOOUOqlFv/3mgP78JkLdIpK80wJrAOKSU=;
+        b=hdaNgQ83rhqNClHD9v9s3lpkP7MFkUORdJDhHnU2xnPoEbmlLp3Vx9PV2ezDG51vlP
+         IPV9TvfuxOk2HIE4KDL/0/tdacUFIEQ3Y2NFJe07sllkNznCyzatdH40SfIrP9RyVYbP
+         8kwU4rMTEo7q0Z7UXazO+YcpVPN397PF5yj2HJYRcSpNip0rS5073/c28baNpCIqLmvh
+         mxl3aAfE005PyFZ16kVF/gByyOOgqdcDeClcvn/MLeMy8iwKGM/NY31NQ3wgbINzjKM/
+         NWWOIjML4hcavhhqlBNDJIXhPeumZdpC8XLzLO4Zmq7WTyW9YdSTzRZ3TIBWY5g2yZZd
+         /RTg==
+X-Gm-Message-State: AOAM533uxP+pStlIX9eessxfGcMEa8/XS+qmJu0HMCaDY8DLjG2UC6hy
+        CKqcWsJGyECyLXQcBJpEFtrfIDgBEIkYX07jYg+yvUKMOT73gnc6YIkLJNE4LHzue0zSqlBoPLy
+        m1SHNSH/nB821CYa0fnYMdA==
+X-Received: by 2002:a17:906:1412:: with SMTP id p18mr14920052ejc.480.1607251308243;
+        Sun, 06 Dec 2020 02:41:48 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwMIc++XaaZp76MeeyQPNXmvAvqxtTa/qqjkqPQBgHHCNRABisppYTbhXm/z2wIDSQde6SWag==
+X-Received: by 2002:a17:906:1412:: with SMTP id p18mr14920037ejc.480.1607251308088;
+        Sun, 06 Dec 2020 02:41:48 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id u16sm2416359ejy.90.2020.12.06.02.41.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Dec 2020 02:33:42 -0800 (PST)
+        Sun, 06 Dec 2020 02:41:47 -0800 (PST)
 Subject: Re: [PATCH v2 0/9] Add support for Microsoft Surface System
  Aggregator Module
-To:     Leon Romanovsky <leon@kernel.org>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Mark Gross <mgross@linux.intel.com>,
+        linux-kernel@vger.kernel.org, Mark Gross <mgross@linux.intel.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
         Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
@@ -67,6 +68,7 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Jonathan Corbet <corbet@lwn.net>,
+        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
         Dorian Stoll <dorian.stoll@tmsp.io>,
         platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-kbuild@vger.kernel.org,
@@ -74,64 +76,52 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
 References: <20201203212640.663931-1-luzmaximilian@gmail.com>
  <20201206070705.GA686270@unreal>
  <052ecf4d-9e08-2c08-8a06-c30ba2b28d82@redhat.com>
- <1b4fe1fd-592d-4a88-b156-fbf6af2df428@www.fastmail.com>
- <20201206090614.GA693271@unreal>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <a1db4b23-8159-924a-a99b-2fa4b0eb6fff@gmail.com>
-Date:   Sun, 6 Dec 2020 11:33:40 +0100
+ <20201206085631.GE210929@unreal>
+ <f76b329a-b6f5-486d-b06a-452ec4c51979@redhat.com>
+ <20201206103339.GB693271@unreal>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f2511463-3bb8-a640-7863-b206db136109@redhat.com>
+Date:   Sun, 6 Dec 2020 11:41:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20201206090614.GA693271@unreal>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20201206103339.GB693271@unreal>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 12/6/20 10:06 AM, Leon Romanovsky wrote:> On Sun, Dec 06, 2020 at 05:58:32PM +0900, Blaž Hrastnik wrote:
->>>
->>>> More on that, the whole purpose of proposed interface is to debug and
->>>> not intended to be used by any user space code.
->>>
->>> The purpose is to provide raw access to the Surface Serial Hub protocol,
->>> just like we provide raw access to USB devices and have hidraw devices.
->>>
->>> So this goes a litle beyond just debugging; and eventually the choice
->>> may be made to implement some functionality with userspace drivers,
->>> just like we do for some HID and USB devices.
->>>
->>> Still I agree with you that adding new userspace API is something which
->>> needs to be considered carefully. So I will look at this closely when
->>> reviewing this set.
->>
->> To add to that: this was previously a debugfs interface but was moved to misc after review on the initial RFC:
->> https://lkml.org/lkml/2020/9/24/96
+Hi,
+
+On 12/6/20 11:33 AM, Leon Romanovsky wrote:
+> On Sun, Dec 06, 2020 at 11:04:06AM +0100, Hans de Goede wrote:
+
+<snip>
+
+>> But there is a difference between being careful and just nacking
+>> it because no new UAPI may be added at all (also see GKH's response).
 > 
-> There is a huge difference between the suggestion and final implementation.
-> 
-> Greg suggested to add new debug module to the drivers/misc that will
-> open char device explicitly after user loaded that module to debug this
-> hub. However, the author added full blown char device as a first citizen
-> that has all not-break-user constrains.
+> I saw, the author misunderstood the Greg's comments.
 
-This module still needs to be loaded explicitly. And (I might be wrong
-about this) the "not-break-user constraints" hold as soon as I register
-a misc device at all, no? So I don't see how this is a) any different
-than previously discussed with Greg and b) how the uapi header now
-introduces any not-break-user constraints that would not be there
-without it.
+Quoting from patch 8/9:
 
-This interface is intended as a stable interface. That's something that
-I committed to as soon as I decided to implement this via a misc-device.
+"
++==============================
++User-Space EC Interface (cdev)
++==============================
++
++The ``surface_aggregator_cdev`` module provides a misc-device for the SSAM
++controller to allow for a (more or less) direct connection from user-space to
++the SAM EC. It is intended to be used for development and debugging, and
++therefore should not be used or relied upon in any other way. Note that this
++module is not loaded automatically, but instead must be loaded manually.
+"
 
-Sure, I can move the definitions in the uapi header to the module
-itself, but I don't see any benefit in that. If someone really wants to
-use this interface, they can just as well copy the definitions from the
-module source itself. So why not be upfront about it and make life
-easier for everyone?
+If I'm not mistaken that seems to be pretty much what Greg asked for.
 
 Regards,
-Max
+
+Hans
 
