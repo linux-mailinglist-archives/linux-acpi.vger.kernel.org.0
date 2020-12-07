@@ -2,242 +2,314 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E93232D05C7
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Dec 2020 17:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7442D09C7
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 05:43:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbgLFP7h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Dec 2020 10:59:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbgLFP7h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Dec 2020 10:59:37 -0500
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E179C0613D0;
-        Sun,  6 Dec 2020 07:58:56 -0800 (PST)
-Received: by mail-ej1-x642.google.com with SMTP id b9so5572397ejy.0;
-        Sun, 06 Dec 2020 07:58:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7JUsdDTQYa6SsoBGk/nQT+MAEjNOcu4ZjBA+IxJTpes=;
-        b=YqBpfLcmqrQoBjkWklgi2xVXOFms4ZUSUn0gBBpzNwDGbhCTNqtQd/Gl7ISmdylqUj
-         /Qou3tlCRKqMk1dK81yxnKFxUQoMCCbg0WxsfwSNCdZuEdzN3im3hK9ir/HTDy/9WMfr
-         5Lmenn7l/5/5ARfCEv2yDPG2NKlM/6tB9DjqtYL5kAq8m0PeqRGEFYqbsxaOU1b6Yhsr
-         8xtCFKHR1SsD6VegICq77W52wE3qnvNfn8GDxPYpWOq0+rW9B+9wKahTIuFbmozPapXd
-         FIYh0Nmsai6agwq2AKlMe0D6d2HisrbXS00escVlY3h/bBZ2WKTPeiwGiUbZXqXkXNaL
-         oIfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7JUsdDTQYa6SsoBGk/nQT+MAEjNOcu4ZjBA+IxJTpes=;
-        b=TCjfoTLeAP9eloJU5rw60kabwBxuFwh+x3aNwZyuEINeb42QQkmJvRLYNkd54VkF4V
-         yeXkeRMc0S856hs5/ghPB/CzKpy7xmxyIhQ6Mbv45zOfikYLouwf1uJ9whfNWy4df2XT
-         vHweCcZ7BJ5DBwQsE0ClYBTfY1B8gANDpWWcV4wfJfu3+29UYDbTj1UMX3PJvpyJVk/X
-         04dKhXpqF8CfolmSwt9zRnl/ehcav+wsm7W4NYWlpJLNlXh1eODe8FVuFnL9ltuxxlv+
-         JkhViuJ+ht6mmXqil4aTdPPZLajI/3yGyfU49WnK/nMI3VQ3rTM2tmxc9PdRB9RSFiOq
-         GV4Q==
-X-Gm-Message-State: AOAM531zmS7h7HsiO3cCyopI9XEWqa8xlKfku6gP9SHNisuoh6eCqKgW
-        2IBLbZLaDIp0q8Mn9+x1hZNhIp3hDiQ=
-X-Google-Smtp-Source: ABdhPJzjDV0ivmbLxZZl/gSXPjbU7fqe0lU7OO77fDM1GUFc4F4MnDdc7A8cYCmRiOppi5ylbAObyA==
-X-Received: by 2002:a17:907:2061:: with SMTP id qp1mr15052030ejb.222.1607270334547;
-        Sun, 06 Dec 2020 07:58:54 -0800 (PST)
-Received: from [192.168.2.202] (pd9e5a241.dip0.t-ipconnect.de. [217.229.162.65])
-        by smtp.gmail.com with ESMTPSA id s24sm8400676ejb.20.2020.12.06.07.58.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Dec 2020 07:58:53 -0800 (PST)
-Subject: Re: [PATCH v2 0/9] Add support for Microsoft Surface System
- Aggregator Module
-To:     Leon Romanovsky <leon@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Mark Gross <mgross@linux.intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
-        Dorian Stoll <dorian.stoll@tmsp.io>,
-        platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org
-References: <20201203212640.663931-1-luzmaximilian@gmail.com>
- <20201206070705.GA686270@unreal>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <9dd05a66-efb7-74d2-4f5b-347655b710be@gmail.com>
-Date:   Sun, 6 Dec 2020 16:58:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
-MIME-Version: 1.0
-In-Reply-To: <20201206070705.GA686270@unreal>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726489AbgLGEnD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Sun, 6 Dec 2020 23:43:03 -0500
+Received: from server.avery-design.com ([198.57.169.184]:38770 "EHLO
+        server.avery-design.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbgLGEnC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Dec 2020 23:43:02 -0500
+Received: from ool-944ab965.dyn.optonline.net ([148.74.185.101]:58650 helo=[192.168.1.180])
+        by server.avery-design.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <cbrowy@avery-design.com>)
+        id 1km8Hw-0005gk-M1; Mon, 07 Dec 2020 04:38:16 +0000
+User-Agent: Microsoft-MacOutlook/16.43.20110804
+Date:   Sun, 06 Dec 2020 23:40:47 -0500
+Subject: Re: [RFC PATCH 0/9] CXL 2.0 Support
+From:   Chris Browy <cbrowy@avery-design.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+CC:     <bhelgaas@google.com>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <linux-acpi@vger.kernel.org>,
+        <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <rafael.j.wysocki@intel.com>,
+        <sean.v.kelley@intel.com>, <vishal.l.verma@intel.com>
+Message-ID: <792C4B53-7548-4BDA-99EE-9E5A0233DD16@avery-design.com>
+Thread-Topic: [RFC PATCH 0/9] CXL 2.0 Support
+References: <FB00A034-7C6D-40B1-8452-318A3B052216@avery-design.com>
+ <F0ACA340-5BDE-4C17-80ED-DB7F5C5B8403@avery-design.com>
+ <20201204181217.n3cm7gqujaqlcp2h@intel.com>
+ <B4FDE6CB-DA00-4F58-AA9F-F04E678E076B@avery-design.com>
+In-Reply-To: <B4FDE6CB-DA00-4F58-AA9F-F04E678E076B@avery-design.com>
+Mime-version: 1.0
+Content-type: text/plain;
+        charset="UTF-8"
+Content-transfer-encoding: 8BIT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.avery-design.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - avery-design.com
+X-Get-Message-Sender-Via: server.avery-design.com: authenticated_id: cbrowy@avery-design.com
+X-Authenticated-Sender: server.avery-design.com: cbrowy@avery-design.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 12/6/20 8:07 AM, Leon Romanovsky wrote:
-> On Thu, Dec 03, 2020 at 10:26:31PM +0100, Maximilian Luz wrote:
->> Hello,
->>
->> Here is version two of the Surface System Aggregator Module (SAM/SSAM)
->> driver series, adding initial support for the embedded controller on 5th
->> and later generation Microsoft Surface devices. Initial support includes
->> the ACPI interface to the controller, via which battery and thermal
->> information is provided on some of these devices.
->>
->> The previous version and cover letter detailing what this series is
->> about can be found at
->>
->>    https://lore.kernel.org/platform-driver-x86/20201115192143.21571-1-luzmaximilian@gmail.com/
->>
->> This patch-set can also be found at the following repository and
->> reference, if you prefer to look at a kernel tree instead of these
->> emails:
->>
->>    https://github.com/linux-surface/kernel tags/s/surface-aggregator/v2
->>
->> Thank you all for the feedback to v1, I hope I have addressed all
->> comments.
-> 
-> 
-> I think that it is too far fetched to attempt and expose UAPI headers
-> for some obscure char device that we are all know won't be around in
-> a couple of years from now due to the nature of how this embedded world
-> works.
-> 
-> More on that, the whole purpose of proposed interface is to debug and
-> not intended to be used by any user space code.
+Hi Ben,
 
-I believe this has already been extensively discussed. I want to focus
-more on the part below in this response:
 
-> Also the idea that you are creating new bus just for this device doesn't
-> really sound right. I recommend you to take a look on auxiliary bus and
-> use it or come with very strong justifications why it is not fit yet.
+>On Dec 4, 2020, at 1:12 PM, Ben Widawsky <mailto:ben.widawsky@intel.com> wrote:
+>
+>Hi Chris.
+>
+>On 20-12-04 12:40:03, Chris Browy wrote:
+>
+>Hi Ben,
+>
+>Trying to bring up the environment using the latest developments as follows:
+>
+>1. Linux kernel baseline version is cloned using
+>     git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+>   Using master branch.  Merged the 9 CXL linux kernel patches manually and built kernel
+>
+>2. QEMU baseline version is cloned using
+>     git clone https://gitlab.com/bwidawsk/qemu.git
+>
+>3. UEFI baseline is cloned using
+>     git clone https://github.com/tianocore/edk2.git
+>   Using master and built
+>
+>4. Now can run qemu as follows:
+>     The qcow2 we use is based on Ubuntu 20.10 with updated with kernel from 1) above
+>
+>     QEMU command:
+>
+>     sudo qemu-system-x86_64 -nic \
+>     user,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -machine \
+>     type=pc-q35-4.0,hmat=on,accel=kvm -enable-kvm -cpu host -smp \
+>     6,cores=6,threads=1,sockets=1 -m 8G -boot order=d -k 'en-us' -vga virtio \
+>     -drive file=/home/chris/Downloads/AQCXL/ubuntu_20.qcow,format=qcow2 -drive \
+>     if=pflash,format=raw,readonly,file=/home/chris/OVMF_CODE.fd \
+>     -drive if=pflash,format=raw,file=/home/chris/OVMF_VARS.fd \
+>     -object memory-backend-file,id=cxl-mem1,share,mem-path=/tmp/cxl-test/cxl,size=512M \
+>     -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52,uid=0,len-window-base=1,\
+>     window-base[0]=0x4c0000000,memdev[0]=cxl-mem1 \
+>     -device cxl-rp,id=rp0,bus=cxl.0,addr=0.0,chassis=0,slot=0  \
+>     -device cxl-type3,bus=rp0,memdev=cxl-mem1,id=cxl-pmem0,size=256M  2>&1 | tee -a \
+>     /home/chris/Downloads/AQCXL/log/qemu.log
+>
+>   The qemu options are derived from looking at the tests/qtests/cxl-test.c
+>   along with the -hmat=on which seemed to make sense.
+>
+>   The system boots and lspci -vvv shows the CXL device is enumerated.  But
+>   no DOE capability register for CDAT access though (see below).  Otherwise the
+>   DVSEC registers are present.
+>
+>DOE is not supported yet in either Linux or QEMU. For us, CDAT isn't a high
+>priority yet so it likely won't be done for a while. I'd really like to see DOE
+>support added by someone - not me - so that we can wire it up. Not sure what
+>that would look like in the QEMU side.
+>
+>
+>
+>   acpidump indicates the CXL0 and CXLM devices but no SRAT or HMAT tables are
+>   in the dump which is curious.
+>
+>I don't typically use HMAT, but I do have an SRAT in mine, so that's strange.
+>You should also have a CEDT.
+>
+Could you provide the QEMU command line?  I was not successful adding numa node for cxl-mem1
+and RAM.  Leaving out numa node for cxl-mem1 I can now see  SRAT table being created but that’s
+not exactly the point.
 
-I tend to agree that this is a valid concern to bring up, and adding a
-new bus is not something that should be done lightly.
+Are you using UEFI or legacy BIOS to boot?
 
-Let's ignore that this has been merged into -next after I've submitted
-this (and that I only recently became aware of this) for the time being.
-If I would see a clear benefit, I would not hesitate to switch the
-driver and subsystem over to this.
+Reproducing a known working environment is better for now and then deviate for trying new
+configurations.
 
-What does concern me most, is the device/driver matching by string.
-Right now, this subsystem matches those via a device UID. This UID is
-directly tied to the EC functionality provided by the device. A bit of
-background to this:
+>
+>
+>35:00.0 Memory controller [0502]: Intel Corporation Device 0d93 (rev 01) (prog-if 10)
+>    Subsystem: Red Hat, Inc. Device 1100
+>    Physical Slot: 0
+>    Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+>    Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+>    Latency: 0
+>    Region 0: Memory at c0a00000 (64-bit, non-prefetchable) [size=64K]
+>    Region 2: Memory at c0a10000 (64-bit, non-prefetchable) [size=4K]
+>    Capabilities: [80] Express (v2) Endpoint, MSI 00
+>        DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
+>            ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 0.000W
+>        DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
+>            RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop-
+>            MaxPayload 128 bytes, MaxReadReq 128 bytes
+>        DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr- TransPend-
+>        LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s, Exit Latency L0s <64ns
+>            ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
+>        LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk-
+>            ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+>        LnkSta: Speed 2.5GT/s (ok), Width x1 (ok)
+>            TrErr- Train- SlotClk- DLActive+ BWMgmt- ABWMgmt-
+>        DevCap2: Completion Timeout: Not Supported, TimeoutDis-, NROPrPrP-, LTR-
+>             10BitTagComp-, 10BitTagReq-, OBFF Not Supported, ExtFmt+, EETLPPrefix+, MaxEETLPPrefixes 4
+>               EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+>             FRS-, TPHComp-, ExtTPHComp-
+>             AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+>        DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled
+>             AtomicOpsCtl: ReqEn-
+>        LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
+>             Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+>             Compliance De-emphasis: -6dB
+>        LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete-, EqualizationPhase1-
+>             EqualizationPhase2-, EqualizationPhase3-, LinkEqualizationRequest-
+>    Capabilities: [100 v1] Designated Vendor-Specific <?>
+>    Capabilities: [138 v1] Designated Vendor-Specific <?>
+>    Kernel driver in use: cxl_mem
+Can you check this in the QEMU cxl_component_register_init_common() in cxl-component-utils.c
 
-Requests sent to the EC contain an address, so to say. This consists of
 
-  - Target category (TC): Broad group of functionality, e.g. battery/AC,
-    thermal, HID input, ..., i.e. a subsystem of sorts.
+I used devmem2 to dump out CLX Component CLX.mem regsisters located at BAR + 0x1000. Header
+List:
+     04110000 CXL CAP
+     08010002 CXL RAS
+     0D820004 CXL Link
+     11010005 CXL HDM Decoder
+     00000000
 
-  - Target ID (TID): Some major device, e.g. the dual batteries on the
-    Surface Book 3 are addressed by target ID 1 and 2, some functionality
-    is only available at 2 and some only at 1. May be related to physical
-    parts of/locations on the device.
+I think the 1st entry is the CXL Cap Header List should be
+0x03110001
 
-  - Instance ID (IID): A device instance, e.g. for thermal sensors each
-    sensor is at TC=0x03 (thermal) and has a different instance ID.
 
-Those can be used to pretty much uniquely identify a sub-device on the
-EC.
+Capability_ID looks like it is set using ARRAY_FIELD_DP32
 
-Note the "pretty much". To truly make them unique we can add a function
-ID (FN). With that, we can for example match for TC=0x03, TID=*, IID=*,
-FN=0x00 to load a driver against all thermal sensors. And this is
-basically the device UID that the subsystem uses for matching (modulo
-domain for virtual devices, i.e. device hubs). Sure, we can use some
-string, but that then leads to having to come up with creative names
-once we need some driver specific data, e.g. in the battery driver [1]:
+    /* CXL Capability Header Register */
+    ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, ID, 1);
+    ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, VERSION, 1);
+    ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, CACHE_MEM_VERSION, 1);
+    ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, ARRAY_SIZE, caps);
 
-     const struct auxiliary_device_id my_auxiliary_id_table[] = {
-         { .name = "surface_aggregator_registry.battery", .driver_data = x },
-         { .name = "surface_aggregator_registry.battery_sb3", .driver_data = y },
-         { },
-     }
 
-Arguably, not _that_ big of a deal.
+But value reported for ID is ‘0’.
 
-What worries me more is that this will block any path of auto-detecting
-devices on a more general/global level. Right now, we hard-code devices
-because we haven't found any way to detect them via some EC query yet
-[2] (FYI the node groups contain all devices that will eventually be
-added to the bus, which are already 11 devices on the Surface Book 3
-without taking missing thermal sensors into account; also they are
-spread across a bunch of subsystems, so not just platform). That's of
-course not an ideal solution and one that I hope we can eventually fix.
-If we can auto-detect devices, it's very likely that we know or can
-easily get to the device UID. A meaningful string is somewhat more
-difficult.
+Since there are only RAS, LINK, and HDM headers found the Array_Size should be ‘3’
+according to the spec:
 
-This registry, which is loaded against a platform device that, from what
-we can tell differentiates the models for some driver bindings by
-Windows (that's speculation), is also the reason why we don't register
-client devices directly under the main module, so instead of a nice
-"surface_aggregator.<devicename>", you'll get
-"surface_aggregator_registry.<devicename>". And it may not end there.
+Array_Size: This defines the number of elements present in
+the CXL_Capability array, not including the
+CXL_Capability_Header element. Each element is 1 DWORD in
+size and is located contiguous with previous elements.
 
-Something that's currently not implemented is support for thermal
-sensors on 7th generation devices. With thermal sensors, we can already
-detect which sensors, i.e. which IIDs, are present. Naturally, that's
-part of the EC-API for thermal devices (TC=0x03), so would warrant a
-master driver that registers the individual sensor drivers (that's a
-place where I'd argue that in a normal situation, the auxiliary bus
-makes sense). So with the auxiliary bus we'd now end up with devices
-with "surface_thermal.sensor" for the sensors as well as
-"surface_aggregator_registry.<devicename>", both of type ssam_device
-(which then would be a wrapper around auxiliary_device with UID stored
-in that wrapper). Note that they need to be of type ssam_device (or
-another wrapper around that) as they again need the reference to the
-controller device, their UID for access, etc. With a proper bus, device,
-and the UID for matching, we can just add the sensor devices to the bus
-again, as they will have a meaningful and guaranteed unique UID.
 
- From some reports I've seen it looks like thermal sensors may also be
-available separately on TID=0x01 as well as TID=0x02 on some devices,
-at which point I believe you'd need to introduce some IDA for ID
-allocation to not cause a clash with IDs. At least if you separate the
-base drivers for each TC, which I guess should be preferred due to
-code-reuse. Then again they might use different event registries so you
-may end up needing "surface_thermal.sensor_tc1" and
-"surface_thermal.sensor_tc2" as device names to differentiate those
-for driver loading. Or store the registry in software node properties
-when registering the device.
+‘caps’ should one less that calculated in switch statement
 
-I'm repeating myself here, but to me it looks cleaner to have a single
-bus type as opposed to spreading the same base auxiliary device type
-over several namespaces.
+ 96 void cxl_component_register_init_common(uint32_t *reg_state, enum reg_type type)
+ 97 {
+ 98     int caps = 0;
+ 99     switch (type) {
+100     case CXL2_DOWNSTREAM_PORT:
+101     case CXL2_DEVICE:
+102         /* CAP, RAS, Link */
+103         caps = 3;
+104         break;
+105     case CXL2_UPSTREAM_PORT:
+106     case CXL2_TYPE3_DEVICE:
+107     case CXL2_LOGICAL_DEVICE:
+108         /* + HDM */
+109         caps = 4;
+110         break;
+111     case CXL2_ROOT_PORT:
+112         /* + Extended Security, + Snoop */
+113         caps = 6;
+114         break;
+115     default:
+116         abort();
+117     }
 
-Which then leads me to the question of how a function like
-"is_ssam_device()", i.e. a function testing if the device is of a given
-type, would be implemented without enforcing and testing against some
-part of the device name. Something that, again, doesn't look clean to
-me. Although the use of such a function could probably avoided, but that
-then feels like working around the auxiliary bus.
 
-Unfortunately, there are a couple more hypotheticals at play than I'd
-like to have (making this not an easy decision), but it's a reverse
-engineered driver so I guess that comes with the territory. All in all,
-I believe it's possible to do this (i.e. use the auxiliary bus), but, to
-me at least, the implementation using a discrete bus feels tidier and
-more true to the hardware (or virtual hardware anyway) behind this. I'm
-happy to hear any arguments against this though.
+>
+>Questions/Comments:
+>-------------------
+>1. Linux
+>  a. Is there a gitlab for the linux kernel patches for CXL?  This would
+>     facilitate review and code modifications.
+>
+>We're hopefully going to send out v2 in the next couple of days. I'll push the
+>repo somewhere as well.
+>
+That’s great!
 
-Regards,
-Max
+>
+>
+>
+>2. UEFI (edk2 from tianocore)
+>  a. seems to only support CXL 1.1 which means only method #1 (Device
+>     option ROM) of Coherent Device Attribute Table_1.02 spec
+>     for CDAT handling is possible now.
+>
+>     Does device option ROM need to be added to QEMU CXL setup?
+>
+>     Can we add a CXL 1.1 emulated device?
+>
+>Patches welcome :-). I know of other people who want this, but I only care about
+>2.0+, so I have no intention to implement it.
+Can you summarize how the System Physical Address (SPA) gets assigned to the
+CXL pmem if not by the UEFI or CXL driver methods?
 
-[1]: https://github.com/linux-surface/surface-aggregator-module/blob/61b9bb859c30a8e17654c3a06696feb2691438f7/module/src/clients/surface_battery.c#L1075-L1079
-[2]: https://github.com/linux-surface/surface-aggregator-module/blob/61b9bb859c30a8e17654c3a06696feb2691438f7/module/src/clients/surface_aggregator_registry.c
+Is it some alternate method using host bridge window-base and then
+cxl_realize() in cxl_type3.c.
+
+-device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52,uid=0,len-window-base=1, \
+ window-base[0]=0x4c0000000,memdev[0]=cxl-mem1 \
+
+The QEMU command would inform a lot especially whether you
+create 2 backend memories with numa nodes to models
+RAM and PMEM?
+
+Eventually the CXL driver would need to handle hot plug of
+CT3D and access CDAT from the CT3D via DOE Mailbox.
+
+As Dan mentions about Coherent Device Attribute Table (CDAT) Specification r1.02
+requires CDAT to build the SRAT/HMAT statically and dynamically
+ - Figure 1 Pre-boot CDAT Extraction Method (for CXL devices)  (uses CDAT in option ROM)
+ - Figure 2 OS Runtime CDAT Extraction Method (for CXL devices  (uses DOE mailbox)
+
+>
+>
+>
+>
+>  b. lspci doesn’t show the existence of the DOE extended capability register
+>     in the CXL CT3D (needed to support method #2).  Are there more patches?
+>
+>As above, it's not supported. I'm hoping someone else will do that work since I
+>don't care about it just yet.
+
+We can get a start on some QEMU updates to support DOE mailbox access.
+
+>
+>
+>
+>
+>3. Do you have example user programs to share or better yet the CXL 2.0
+>   Sec 14.3.6.1 Application Layer/ Transaction layer test for CXL.mem?
+>
+>I don't have, mostly because I haven't actually implemented a lot of the real
+>CXL support. My primary concern was having the Linux driver be able to enumerate
+>devices and communicate with the device via the mailbox interface. v2 will
+>contain support for userspace to do this, which I think is a step toward what
+>you're asking for.
+>
+Understood. Looking forward to v2 and linux branch!  Working from a known good
+reference environment will allow for more in depth code review.
+
+
+>
+>
+>4. What are the userspace system APIs for targeting CXL HDM address domain?
+>   Usually you can mmap a SPA if you know how to look it up.
+>
+>I think Dan answered this in the other thread…
+
+Correct 
+
+
+Best Regards,
+Chris Browy
+
+
+
