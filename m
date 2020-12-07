@@ -2,89 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1FF2D115A
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 14:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4C32D1176
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 14:12:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725874AbgLGNGo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Dec 2020 08:06:44 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:44437 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725550AbgLGNGo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 08:06:44 -0500
-Received: by mail-oi1-f194.google.com with SMTP id y74so15255012oia.11;
-        Mon, 07 Dec 2020 05:06:28 -0800 (PST)
+        id S1725901AbgLGNMJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Dec 2020 08:12:09 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41492 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725550AbgLGNMJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 08:12:09 -0500
+Received: by mail-ot1-f66.google.com with SMTP id x13so4839518oto.8
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Dec 2020 05:11:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=W/94ACdseKqSF6CB7Yif+tucy3tYIplFrTaE2W/sI1s=;
-        b=WzZya4CnhChUitKDwMfbqiTDgi1O2Yzxk8npPX7CCz/rm6lW0I7+lKtU+Yy/wo9Pya
-         Afrwstsu+JmkgRYTT3bB3E+6simDj9jdKZsUqiDgnigMwWcL4xD++CcMI4BGS2cnO6dp
-         3m8VIr7fn/dJZPeiGom5IHHruHYZiUaVVyv5Nes5BdliCPu440OFUx+cEXJmrEd4uz1p
-         93FgU8wD3tOEJqqZUtXGam1vtDPzY4dJJT0OGjKbz7/CWUgrYRCzGfFgdeWoegygz2Cz
-         bq7n+k0z536C90uX6MRR0qW7jMII++1SpyK8RuEETpvmoybmZBsP5yBGy85BF78MC5Dy
-         gFww==
-X-Gm-Message-State: AOAM531I1gH/yg383dBbnGXaaYD1XXROCPWhyiDG5FBnN3FZYwynThIA
-        9JsJBIPBqOgKz/g9QVqxEwXgQeW9dbWaJnO1JQc=
-X-Google-Smtp-Source: ABdhPJwLgTxc/iGDrIiGsv0el6r8b5qwdRF4xEXDC7Zk5XGn9SAYBkqk8ANh86PTwngGe/XRKWHEijJFcVdZQJuBwKE=
-X-Received: by 2002:aca:cf4a:: with SMTP id f71mr12862889oig.157.1607346362921;
- Mon, 07 Dec 2020 05:06:02 -0800 (PST)
+        bh=HnNFhL8FNcuY+tVjqMjVY63bFBDILKwPjFtG/++ByPs=;
+        b=hhHaypAlr3vhBWY2XigSGdh2P4O8yIJvO953yNA7TtpFpSkk/VQWQ33ZNvbTfPWoUc
+         WpZVTsxoGM3yJeSlmNgK/JhVS8NvR27FyTqH5t0EWhbK+75+EQ/6nM6wgUscOtbF7/NR
+         PyJJDVV2fmPr9P27tsVXNImE3iK2bOTo4HFKPlKo9zu3NYLGoRgXfBLijRZPFmLu6lMC
+         Eu7nDZ2OJV4vLWLlt+mrKiBy79qRVrIIusrivybjp0407XsX/ABuLXmWt0W4RU2q+eSP
+         uAfs2lSRUiLuxJkD7l0sGE0vnDnaRwfffvFDpFYgnXNpLLC7ggvSuEUotTLiTvnar7ZX
+         o3oA==
+X-Gm-Message-State: AOAM5332VOsDsMKJkCuZukZojhQbHG+/g7uWhcoIMA+RPADLejmeCUYn
+        QroDmy+ZT1feu3mAnzqrY9uat5TKRpTpEnppPLY=
+X-Google-Smtp-Source: ABdhPJyJuNXm1GiuBBWn4XhkaQzpcBfSvuln5INFjvpkC3bDts0EfdplJjXRQ85Zg4P2k7moT0Z7iBDGgBlb4/WRXIU=
+X-Received: by 2002:a9d:745a:: with SMTP id p26mr13413557otk.206.1607346682211;
+ Mon, 07 Dec 2020 05:11:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20201202063942.6644-1-chiu@endlessos.org>
-In-Reply-To: <20201202063942.6644-1-chiu@endlessos.org>
+References: <20201204075041.44339-1-hui.wang@canonical.com>
+In-Reply-To: <20201204075041.44339-1-hui.wang@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Dec 2020 14:05:46 +0100
-Message-ID: <CAJZ5v0h4uMh5qfx5mKDq9+bSC9aUu4x8ivJh_0vmtt8A3htgKw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Add DMI quirk for GIGABYTE GB-BXBT-2807
-To:     Chris Chiu <chiu@endlessos.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux@endlessos.org, "Jasper St. Pierre" <jstpierre@mecheye.net>
+Date:   Mon, 7 Dec 2020 14:11:05 +0100
+Message-ID: <CAJZ5v0jnVoo_heYUAfbt4t6xFAOqq+dGus1LCZP_-5Q8o8cpQQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / bus: skip the primary physical pnp device in companion_match
+To:     Hui Wang <hui.wang@canonical.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 2, 2020 at 7:41 AM Chris Chiu <chiu@endlessos.org> wrote:
+On Fri, Dec 4, 2020 at 8:51 AM Hui Wang <hui.wang@canonical.com> wrote:
 >
-> From: "Jasper St. Pierre" <jstpierre@mecheye.net>
+> We are working on some latest Thinkpad Yoga and Carbon laptops, the
+> touchscreen doesn't work on those machines. And we found the
+> touchscreen module is I2C wacom WACF2200 (056A:5276).
 >
-> The GIGABYTE GB-BXBT-2807 is a mini-PC which uses off the shelf
-> components, like an Intel GPU which is meant for mobile systems.
-> As such, it, by default, has a backlight controller exposed.
+> The problem is in the acpi_pnp.c, the WACFXXX is in the
+> acpi_pnp_device_ids[], so a pnp device will be built and attach to the
+> acpi_dev as the 1st physical_node, later when I2C subsystem starts to
+> initialize, it will build an I2C_dev and attach to the acpi_dev as the
+> 2nd physical_node. When I2C bus needs to match the acpi_id_table, it
+> will call acpi_companion_match(), because the 1st physical_node is not
+> I2C_dev, it fails to match, then the i2c driver (hid_i2c) will not be
+> called.
 >
-> Unfortunately, the backlight controller only confuses userspace, which
-> sees the existence of a backlight device node and has the unrealistic
-> belief that there is actually a backlight there!
+> To fix it, adding a special treatment in the companion_match(): if the
+> 1st dev is on pnp bus and the device in question is not on pnp bus,
+> skip the 1st physical device, just use the device in question to
+> match.
 >
-> Add a DMI quirk to force the backlight off on this system.
+> We could refer to the pnpacpi_add_device() in the
+> pnp/pnpacpi/core.c, pnp device will not be built if the acpi_dev
+> is already attached to a physical device, so a pnp device has
+> lower priority than other devices, it is safe to skip it in
+> the companion_match().
 >
-> Signed-off-by: Jasper St. Pierre <jstpierre@mecheye.net>
-> Reviewed-by: Chris Chiu <chiu@endlessos.org>
+> Signed-off-by: Hui Wang <hui.wang@canonical.com>
 > ---
->  drivers/acpi/video_detect.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/acpi/bus.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 2499d7e3c710..ac2e194acdbf 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -143,6 +143,13 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->         },
->         {
->         .callback = video_detect_force_vendor,
-> +       .ident = "GIGABYTE GB-BXBT-2807",
-> +       .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
-> +               },
-> +       },
-> +       {
->         .ident = "Sony VPCEH3U1E",
->         .matches = {
->                 DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
-> --
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 1682f8b454a2..8aa0a861ca29 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -582,6 +582,15 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
+>         return !!acpi_primary_dev_companion(adev, dev);
+>  }
+>
+> +/* Could move this function to linux/pnp.h in the future */
+> +static bool acpi_dev_is_on_pnp_bus(const struct device *dev)
+> +{
+> +       if (dev->bus)
+> +               return !strcmp(dev->bus->name, "pnp");
+> +       else
 
-Applied as 5.11 material, thanks!
+Unnecessary else.
+
+> +               return false;
+> +}
+> +
+>  /*
+>   * acpi_companion_match() - Can we match via ACPI companion device
+>   * @dev: Device in question
+> @@ -597,7 +606,9 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
+>   * companion.  A typical case is an MFD device where all the sub-devices share
+>   * the parent's ACPI companion.  In such cases we can only allow the primary
+>   * (first) physical device to be matched with the help of the companion's PNP
+> - * IDs.
+> + * IDs. And another case is a pnp device is attached to ACPI device first, then
+> + * other function devices are attached too, in this case, the primary physical
+> + * device (pnp) is ignored, just use the device in question to match.
+>   *
+>   * Additional physical devices sharing the ACPI companion can still use
+>   * resources available from it but they will be matched normally using functions
+> @@ -605,7 +616,7 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
+>   */
+>  struct acpi_device *acpi_companion_match(const struct device *dev)
+>  {
+> -       struct acpi_device *adev;
+> +       struct acpi_device *adev, *radev;
+>
+>         adev = ACPI_COMPANION(dev);
+>         if (!adev)
+> @@ -614,7 +625,15 @@ struct acpi_device *acpi_companion_match(const struct device *dev)
+>         if (list_empty(&adev->pnp.ids))
+>                 return NULL;
+>
+> -       return acpi_primary_dev_companion(adev, dev);
+> +       radev = acpi_primary_dev_companion(adev, dev);
+> +       if (radev == NULL) {
+> +               const struct device *first_dev = acpi_get_first_physical_node(adev);
+> +
+> +               if (acpi_dev_is_on_pnp_bus(first_dev) && !acpi_dev_is_on_pnp_bus(dev))
+> +                       radev = adev;
+> +       }
+> +
+> +       return radev;
+>  }
+
+This is too convoluted IMV.
+
+Would dropping the device ID in question from acpi_pnp_device_ids[]
+make the problem go away?
+
+If so, why don't you do just that?
