@@ -2,329 +2,240 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04FBB2D1229
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 14:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 440E62D14BB
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 16:30:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726422AbgLGNdi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Dec 2020 08:33:38 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:33541 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbgLGNdi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 08:33:38 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20201207133243euoutp02a07eaff1232f3828b35d363c2d162b88~OcnTwTsL90185601856euoutp02d;
-        Mon,  7 Dec 2020 13:32:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20201207133243euoutp02a07eaff1232f3828b35d363c2d162b88~OcnTwTsL90185601856euoutp02d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1607347963;
-        bh=ljQ0v3Ar0KYP2q9/GRtPG9FJKYzmsBEMPJYT7bas0xM=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=YXnyfI3nXv1DhFtGBhw8rjlj6OWDgzzqG6ggdFQv6tUUzN+M3UpHev4Lt5w3dDEeq
-         JsY5rsqNM4QlBu8xSwpaGb6jN+Unr+zoWvEul+H0F5kLgpcw0eew3NnzrXCdwSiqr5
-         8/gkKlmm/vhkZki1ZiEurX6kzTnv6KS7IUhhgWLQ=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20201207133237eucas1p19e9329c72365b51bdbaafba28239f22c~OcnOVcZch0957309573eucas1p1O;
-        Mon,  7 Dec 2020 13:32:37 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id D4.52.44805.5FE2ECF5; Mon,  7
-        Dec 2020 13:32:37 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28~OcnNreb_Q1175011750eucas1p2A;
-        Mon,  7 Dec 2020 13:32:37 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20201207133237eusmtrp22a886004009ed21a7d1310c91ddd5534~OcnNp8qpM0370603706eusmtrp2Q;
-        Mon,  7 Dec 2020 13:32:37 +0000 (GMT)
-X-AuditID: cbfec7f4-b4fff7000000af05-d5-5fce2ef51212
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2B.33.21957.4FE2ECF5; Mon,  7
-        Dec 2020 13:32:36 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20201207133234eusmtip21bd44750aa26b3a6918e1852376589e6~OcnLrilqA0874408744eusmtip2c;
-        Mon,  7 Dec 2020 13:32:34 +0000 (GMT)
-Subject: Re: [PATCH v4 2/7] Input: use input_device_enabled()
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
-Date:   Mon, 7 Dec 2020 14:32:34 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
-        Gecko/20100101 Thunderbird/78.5.1
+        id S1726408AbgLGPaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Dec 2020 10:30:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725774AbgLGPaX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 10:30:23 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0956C061749
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Dec 2020 07:29:42 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id w13so5978297lfd.5
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Dec 2020 07:29:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1r4BkfM1HxSBgbqgEiz4060IqRLxOtaIkE30fzvcseQ=;
+        b=wVcfbZmQN8la4Jkx+hhD8kP0G/xuJhBB3azFfRHFy4lhCNBOP9f/c/dGdcz/GFg6Tc
+         KRtHM8XiulNddoIo91/5BatfKpCzcyOO5puiBlLsrH2QrDTLjyRrSP3RlF1orsg9TNH0
+         Qp9QHimSX2UCutumFvi8/AyLXBEw2TCuodjMNTb/ZVO+TkejLbtYjq/y0Zif3RPXImGg
+         Zr531Hv5fVanoktew8FUP8xdwBU1WIkktroBTC/VMr2/hlEpCg8eV3OOxsKVceNrOa1f
+         ADSa/jTqWBi9a4jyyVd0XpU34VU/SFsDqARbaCvBtIhSfnUdelkC/09wWpbMfElwGJ7Q
+         GH2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1r4BkfM1HxSBgbqgEiz4060IqRLxOtaIkE30fzvcseQ=;
+        b=US+M3fw4VAgeR91vUACEjohMW9rKI1TDYBOV06nm2cX+4ryYAVgDcalPFiW3AMDYsB
+         Kbl8FMoC/Ha1yOqALNBfMcUvQTe9K3ffQKuROAGtsXer8C6WEj8ZuFJFd+BZwxFLOuwz
+         nsWuWNisUCVeNSWRlJRHnW4obzhvesa7EyhoLWJMsKMrRe/n+5hlSrSmlRp3t3ZwuCdY
+         PAWU7yBngYrWtTfy3/WWOu7iLUqv1qwIteijfLeNpfPcTBCMi+0+9fLDvquEQobXkS0y
+         Mxbw8FIn2IxZ1U7pvmLaK3qD2vV+vV75ePfkJD2FHM5qrY3bRj9TZC69O+0+t/+q5E/o
+         AZuQ==
+X-Gm-Message-State: AOAM533BiU5hI+Tlhymay3ilI68sHChY3Cg98pJwdp/VQA6XIFlhuQoY
+        1cx2//FqQzBH7UIugoBU8O5Tm16TCG3MvMfo0dV28w==
+X-Google-Smtp-Source: ABdhPJxLzZW3MxYCggTrCcg+jYpgykLQlUaYsw5wv6HqDpuMkEuJ7tXJhfC//kvcPMlBsUAJqPWyWIq0t3ha7XtWxwA=
+X-Received: by 2002:a19:cc91:: with SMTP id c139mr9247647lfg.31.1607354981132;
+ Mon, 07 Dec 2020 07:29:41 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200608112211.12125-3-andrzej.p@collabora.com>
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta1BUZRj223PZA7VyuCTfYMQMGjOQsVKN81lmkFhnyJnITBumCdc4XAqQ
-        diXDmZKLoWwwayiw7hIoLRcXBVmuu8htl2RkYQloI0UoAnFDwLjIXYjlYPHved/3ed7nfb6Z
-        j8IcJkkXKiL6BCuOFkW6k7Z41a1508uPvU3BO5Myt6GCwX4clclLCTSkT8OQIc8CUPOEAUcD
-        5vfRaEsWDykNe1D28HWAzv6VQqA/E9U8dEaRh6NyUyqB1BlaHMkGH2JItzKKoY6OG3ykupBL
-        oPz6YhxpB8ZIVFgvA0gz+BuBcprHcSRduIqhO5MzBOrWZZNoKq0ZIHlHPQ+lTCtIdN5Qzkdd
-        l77H0NSjBgJV1zXwUPFNC4YWdbf4qM3YRaAn1RocWSqcUbpejOZ1OThaWUjCfD2ZEbMfU9On
-        AkxyYgSjVfTxmX8mPmUWGwGjUaeQTLnqNFN7eYrHzMrbAKMa1RPM8pWLOJOWNE4yZeM1PCYr
-        ewUwsic7A7cE2e4JYSMjvmLFwr1HbcMzagNjDAe+VpfQ8UDrLwUUBenXYFtriBTYUA50EYAp
-        TQc5PA1gZg0tBbareArAny7c5VsHVn5VrZzkSIUAmnujONIEgLMjM4R1qSP9Jsy+uN/ad6KV
-        GPw7vRJYC4yOt4GVvWdwq5qkfaB0TLq2SUDvhd26ojWM09uhqq6OsOLn6GOwVDq3zrGHty8N
-        rWltVg0eylrWMEa7waRKJcZhZ3h3KJdnNYP0uWdg3lUDzp3tD8f7zYDDjnCkpWI9zvNwRftU
-        kATggOk6nytSAexOlK8r3oD3TAukNRtGe8JSnZBr+8F7xRqCe8fN8Pcxe+6IzTC9Kgvj2gJ4
-        LtmBY3tARUvJf7ZNv3Rh54G7YkM0xYY4ig1xFP/7Xga4GjizsZKoMFbySjR70lsiipLERod5
-        f3Y8SgNWv4VxuWW6BhSOTHjrAY8CegApzN1J4OHSHuwgCBHFnWLFx4PFsZGsRA+2Uri7s+BY
-        xbVgBzpMdIL9gmVjWPHTKY+ycYnnSXs+ESUY5FvNJQnONz/f5Cg28fdPxShDk384mnpox5cB
-        2S7z9uzIs66V41d63v75oDoqf16YMCAfatok69l9f1E2/O2D3W5dXsb35o1u4j8yam/Ej+o+
-        bF4S5IU9yNznOvajb31OropKEH5ATRYHbd8RUH07ThbS+86Bfvv05V2pRTXyMEvi6fylXX1+
-        9ebidkuo8mSMk1eBbu5XxfSRPrXv2cPGvi0fVe5b+jhuOSu10S5I8yijMTC8IS4ix8X/pWVl
-        byvZdFhotAgfFxwpi3E9JfhG275t9t1DMM/jrRc1ps7OUs+ezlcDJOZhqdDu2swLPqFdPq/P
-        YRV37O5/19rpmL/ijkvCRT5emFgi+heBzm97hQQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH/d1HHxrMpYDcNWNznTNxjtoCZYcFiC4+rmyJbslMHNOu4OWR
-        QWtaMG7JHCsOpELwwcvCAFmZWqfDVh4FoVvLQALI0ECEQFfkMQYFZXQzKNDxWsJ/n5xzPt+T
-        kxweLviOI+QlKlNYtVKRJOJsJNoXWx2BbvEDucSsDYUfhx0E3Cn6mYQRWw4O9opxBM0zdgKG
-        eg6Bq7UQg2J7OJSM3UKQ+SSLBKfWiMFZfQUB5gfZJBjzLQTkDk/iUO9x4dDVVcUFw+UyEiqb
-        bhJgGZriwLWmXASm4V4SSpunCdC9uIFD39//kvCovoQDsznNCIq6mjDIcus5cMFu5sLDK+dx
-        mH1qJaG20YrBzXvjOLysb+FCR/tDEhZqTQSM3/WHSzY1zNWXEuB5kY7v3sFM9Oxh6gYNiMnQ
-        JjIW/SCXeTZznHn5C2JMxiwOYzZ8wzSUz2LM86IOxBhcNpJZvJpHMDnp0xzmznQdxhSWeBCT
-        uyA5vOVTcbhalZrCbk1QaVIiRNFSCBJLw0AcFBImlga/e+y9IJloV2T4CTYp8RSr3hX5uTgh
-        v+HwSfuHp423qTRk2atDfB5NhdA1DUUcHdrIE1CViB6rshCrjVfptoI0cpV96Ple3drQU0Tn
-        deQhHeLxfKgIuiRv33LdlyrGac+3v63IOJXBp6cmdi6zgPoB0f0N/GXmUFJaN7UcxOd5UZH0
-        o/rrK0xQ22hDYyO5nOlHxdCd7d6rI95025WRlUj+0qrJ3Na1+FC61DyEr/LrdHp18Rr70/0j
-        ZdgFJNCv0/XrFP06Rb9OKUeEEfmyqZrk+GSNVKxRJGtSlfHiWFWyCS39Y03LnLkOlU7MiG0I
-        4yEbonm4yNdru7BTLvA6ofjyK1atkqtTk1iNDcmWzrmIC/1iVUsPrUyRS0MlMmlIaJhEFhYa
-        LPL3qv7+J7mAileksF+w7ElW/b+H8fjCNMx0V0aMxZt+v6HPDkRx9/dap0yjaTPJ/KSMY85N
-        m6OqWiqm/xyQQIzH50jE/lq3t49vd6GjN/CU6o1L7bfbRI/fmXRynmRqPpg6vnP7wOZKKH1W
-        95oyaceZRP1gX/nWoz1+vSNVRr5PPnf/XxvaDgjOmx5HBVHuAKf3uc732fzoy7eQ5OvRoIt5
-        Z8cPOhuiDwqvtwlFwbHaAPqMy2nNcec2/mogs1u9A6LIyCOT1oCY4eru4U8KZOe0b5bNj8qf
-        438ciBO+dW+3clOUdHbuH7PScX/wWt+A47RpA0S3H21+pebjQy6PJM6duUVv3TP/Uc9iYUVn
-        Wkd/WIHR0P3ZvgVMRGgSFNK3cbVG8R+NMNSPGAQAAA==
-X-CMS-MailID: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
-        <20200608112211.12125-1-andrzej.p@collabora.com>
-        <20200608112211.12125-3-andrzej.p@collabora.com>
-        <CGME20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28@eucas1p2.samsung.com>
+References: <20201201025944.18260-1-song.bao.hua@hisilicon.com>
+ <20201201025944.18260-3-song.bao.hua@hisilicon.com> <CAKfTPtAppZFdku6k3cA=kNYKjU5e7w4A+E3R5_m11z+jy_WCBw@mail.gmail.com>
+ <f9d9c6e959e441ec94264891ae90c11d@hisilicon.com> <CAKfTPtDqpQBcjq03cJEKN99XOZdNuV560ja9S-oZzkq7BToR8w@mail.gmail.com>
+ <414fbd167b214452b925ac674575f0d6@hisilicon.com> <CAKfTPtALPjSvOZ2xf9cka9R-1uqi3AHQ+GYy7asT3wfvmLqaXw@mail.gmail.com>
+ <d81006facd444d8a83bd7f1e24ccf6d9@hisilicon.com> <CAKfTPtAy_5QxnbmHq1pbGRhQYJ69ULovO6CKro-KkNKNnHMveg@mail.gmail.com>
+ <b6bfb636b1404d3c827e2ba2034e6822@hisilicon.com>
+In-Reply-To: <b6bfb636b1404d3c827e2ba2034e6822@hisilicon.com>
+From:   Vincent Guittot <vincent.guittot@linaro.org>
+Date:   Mon, 7 Dec 2020 16:29:29 +0100
+Message-ID: <CAKfTPtCs5G4wRSuQzfb8wnkNcUDEb7zTdFK2ZY+kpLnZrHFQ0g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
+To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Cc: Len Brown" <lenb@kernel.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        LAK <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>, "xuwei (O)" <xuwei5@huawei.com>,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andrzej,
-
-On 08.06.2020 13:22, Andrzej Pietrasiewicz wrote:
-> Use the newly added helper in relevant input drivers.
+On Mon, 7 Dec 2020 at 10:59, Song Bao Hua (Barry Song)
+<song.bao.hua@hisilicon.com> wrote:
 >
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+>
+>
+> > -----Original Message-----
+> > From: Vincent Guittot [mailto:vincent.guittot@linaro.org]
+> > Sent: Thursday, December 3, 2020 10:39 PM
+> > To: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
+> > Cc: Valentin Schneider <valentin.schneider@arm.com>; Catalin Marinas
+> > <catalin.marinas@arm.com>; Will Deacon <will@kernel.org>; Rafael J. Wysocki
+> > <rjw@rjwysocki.net>; Cc: Len Brown <lenb@kernel.org>;
+> > gregkh@linuxfoundation.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
+> > Ingo Molnar <mingo@redhat.com>; Peter Zijlstra <peterz@infradead.org>; Juri
+> > Lelli <juri.lelli@redhat.com>; Dietmar Eggemann <dietmar.eggemann@arm.com>;
+> > Steven Rostedt <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel
+> > Gorman <mgorman@suse.de>; Mark Rutland <mark.rutland@arm.com>; LAK
+> > <linux-arm-kernel@lists.infradead.org>; linux-kernel
+> > <linux-kernel@vger.kernel.org>; ACPI Devel Maling List
+> > <linux-acpi@vger.kernel.org>; Linuxarm <linuxarm@huawei.com>; xuwei (O)
+> > <xuwei5@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>
+> > Subject: Re: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
+> >
+> > On Thu, 3 Dec 2020 at 10:11, Song Bao Hua (Barry Song)
+> > <song.bao.hua@hisilicon.com> wrote:
+> > >
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: Vincent Guittot [mailto:vincent.guittot@linaro.org]
+> > > > Sent: Thursday, December 3, 2020 10:04 PM
+> > > > To: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
+> > > > Cc: Valentin Schneider <valentin.schneider@arm.com>; Catalin Marinas
+> > > > <catalin.marinas@arm.com>; Will Deacon <will@kernel.org>; Rafael J. Wysocki
+> > > > <rjw@rjwysocki.net>; Cc: Len Brown <lenb@kernel.org>;
+> > > > gregkh@linuxfoundation.org; Jonathan Cameron
+> > <jonathan.cameron@huawei.com>;
+> > > > Ingo Molnar <mingo@redhat.com>; Peter Zijlstra <peterz@infradead.org>; Juri
+> > > > Lelli <juri.lelli@redhat.com>; Dietmar Eggemann
+> > <dietmar.eggemann@arm.com>;
+> > > > Steven Rostedt <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel
+> > > > Gorman <mgorman@suse.de>; Mark Rutland <mark.rutland@arm.com>; LAK
+> > > > <linux-arm-kernel@lists.infradead.org>; linux-kernel
+> > > > <linux-kernel@vger.kernel.org>; ACPI Devel Maling List
+> > > > <linux-acpi@vger.kernel.org>; Linuxarm <linuxarm@huawei.com>; xuwei (O)
+> > > > <xuwei5@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>
+> > > > Subject: Re: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
+> > > >
+> > > > On Wed, 2 Dec 2020 at 21:58, Song Bao Hua (Barry Song)
+> > > > <song.bao.hua@hisilicon.com> wrote:
+> > > > >
+> > > > > >
+> > > > > > Sorry. Please ignore this. I added some printk here while testing
+> > > > > > one numa. Will update you the data in another email.
+> > > > >
+> > > > > Re-tested in one NUMA node(cpu0-cpu23):
+> > > > >
+> > > > > g=1
+> > > > > Running in threaded mode with 1 groups using 40 file descriptors
+> > > > > Each sender will pass 100000 messages of 100 bytes
+> > > > > w/o: 7.689 7.485 7.485 7.458 7.524 7.539 7.738 7.693 7.568 7.674=7.5853
+> > > > > w/ : 7.516 7.941 7.374 7.963 7.881 7.910 7.420 7.556 7.695 7.441=7.6697
+> > > > > w/ but dropped select_idle_cluster:
+> > > > >      7.752 7.739 7.739 7.571 7.545 7.685 7.407 7.580 7.605 7.487=7.611
+> > > > >
+> > > > > g=2
+> > > > > Running in threaded mode with 2 groups using 40 file descriptors
+> > > > > Each sender will pass 100000 messages of 100 bytes
+> > > > > w/o: 10.127 10.119 10.070 10.196 10.057 10.111 10.045 10.164 10.162
+> > > > > 9.955=10.1006
+> > > > > w/ : 9.694 9.654 9.612 9.649 9.686 9.734 9.607 9.842 9.690 9.710=9.6878
+> > > > > w/ but dropped select_idle_cluster:
+> > > > >      9.877 10.069 9.951 9.918 9.947 9.790 9.906 9.820 9.863 9.906=9.9047
+> > > > >
+> > > > > g=3
+> > > > > Running in threaded mode with 3 groups using 40 file descriptors
+> > > > > Each sender will pass 100000 messages of 100 bytes
+> > > > > w/o: 15.885 15.254 15.932 15.647 16.120 15.878 15.857 15.759 15.674
+> > > > > 15.721=15.7727
+> > > > > w/ : 14.974 14.657 13.969 14.985 14.728 15.665 15.191 14.995 14.946
+> > > > > 14.895=14.9005
+> > > > > w/ but dropped select_idle_cluster:
+> > > > >      15.405 15.177 15.373 15.187 15.450 15.540 15.278 15.628 15.228
+> > > > 15.325=15.3591
+> > > > >
+> > > > > g=4
+> > > > > Running in threaded mode with 4 groups using 40 file descriptors
+> > > > > Each sender will pass 100000 messages of 100 bytes
+> > > > > w/o: 20.014 21.025 21.119 21.235 19.767 20.971 20.962 20.914 21.090
+> > > > 21.090=20.8187
+> > > > > w/ : 20.331 20.608 20.338 20.445 20.456 20.146 20.693 20.797 21.381
+> > > > 20.452=20.5647
+> > > > > w/ but dropped select_idle_cluster:
+> > > > >      19.814 20.126 20.229 20.350 20.750 20.404 19.957 19.888 20.226
+> > > > 20.562=20.2306
+> > > > >
+> > > >
+> > > > I assume that you have run this on v5.9 as previous tests.
+> > >
+> > > Yep
+> > >
+> > > > The results don't show any real benefit of select_idle_cluster()
+> > > > inside a node whereas this is where we could expect most of the
+> > > > benefit. We have to understand why we have such an impact on numa
+> > > > tests only.
+> > >
+> > > There is a 4-5.5% increase while g=2 and g=3.
+> >
+> > my point was with vs without select_idle_cluster() but still having a
+> > cluster domain level
+> > In this case, the diff is -0.8% for g=1 +2.2% for g=2, +3% for g=3 and
+> > -1.7% for g=4
+> >
+> > >
+> > > Regarding the huge increase in NUMA case,  at the first beginning, I suspect
+> > > we have wrong llc domain. For example, if cpu0's llc domain span
+> > > cpu0-cpu47, then select_idle_cpu() is running in wrong range while
+> > > it should run in cpu0-cpu23.
+> > >
+> > > But after printing the llc domain's span, I find it is completely right.
+> > > Cpu0's llc span: cpu0-cpu23
+> > > Cpu24's llc span: cpu24-cpu47
+> >
+> > Have you checked that the cluster mask was also correct ?
+> >
+> > >
+> > > Maybe I need more trace data to figure out if select_idle_cpu() is running
+> > > correctly. For example, maybe I can figure out if it is always returning -1,
+> > > or it returns -1 very often?
+> >
+> > yes, could be interesting to check how often select_idle_cpu return -1
+> >
+> > >
+> > > Or do you have any idea?
+> >
+> > tracking migration across nod could help to understand too
+>
+> I set a bootargs mem=4G to do swapping test before working on cluster
+> scheduler issue. but I forgot to remove the parameter.
+>
+> The huge increase on across-numa case can only be reproduced while
+> i use this mem=4G cmdline which means numa1 has no memory.
+> After removing the limitation, I can't reproduce the huge increase
+> for two NUMAs any more.
 
-This patch landed recently in linux-next as commit d69f0a43c677 ("Input: 
-use input_device_enabled()"). Sadly it causes following warning during 
-system suspend/resume cycle on ARM 32bit Samsung Exynos5250-based Snow 
-Chromebook with kernel compiled from exynos_defconfig:
+Ok. Make more sense
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1777 at drivers/input/input.c:2230 
-input_device_enabled+0x68/0x6c
-Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic 
-libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc 
-exynos_gsc v4l2_mem2mem videob
-CPU: 0 PID: 1777 Comm: rtcwake Not tainted 
-5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
-Hardware name: Samsung Exynos (Flattened Device Tree)
-[<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
-[<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
-[<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
-[<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
-[<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>] 
-(input_device_enabled+0x68/0x6c)
-[<c07fa2fc>] (input_device_enabled) from [<c080a0f8>] 
-(cyapa_gen3_set_power_mode+0x128/0x1cc)
-[<c080a0f8>] (cyapa_gen3_set_power_mode) from [<c0807894>] 
-(cyapa_suspend+0x74/0x114)
-[<c0807894>] (cyapa_suspend) from [<c06ae924>] (dpm_run_callback+0xb0/0x3c8)
-[<c06ae924>] (dpm_run_callback) from [<c06aefe4>] 
-(__device_suspend+0x104/0x784)
-[<c06aefe4>] (__device_suspend) from [<c06b2994>] (dpm_suspend+0x184/0x540)
-[<c06b2994>] (dpm_suspend) from [<c06b369c>] (dpm_suspend_start+0x98/0xa0)
-[<c06b369c>] (dpm_suspend_start) from [<c01a0a10>] 
-(suspend_devices_and_enter+0xec/0xbd4)
-[<c01a0a10>] (suspend_devices_and_enter) from [<c01a180c>] 
-(pm_suspend+0x314/0x42c)
-[<c01a180c>] (pm_suspend) from [<c019f6f8>] (state_store+0x6c/0xc8)
-[<c019f6f8>] (state_store) from [<c0387b04>] (kernfs_fop_write+0x10c/0x228)
-[<c0387b04>] (kernfs_fop_write) from [<c02dbd48>] (vfs_write+0xc8/0x530)
-[<c02dbd48>] (vfs_write) from [<c02dc2ec>] (ksys_write+0x60/0xd8)
-[<c02dc2ec>] (ksys_write) from [<c0100060>] (ret_fast_syscall+0x0/0x2c)
-Exception stack(0xc45bffa8 to 0xc45bfff0)
-...
-irq event stamp: 14101
-hardirqs last  enabled at (14109): [<c01a567c>] vprintk_emit+0x2d8/0x32c
-hardirqs last disabled at (14116): [<c01a5640>] vprintk_emit+0x29c/0x32c
-softirqs last  enabled at (13264): [<c01017a8>] __do_softirq+0x528/0x684
-softirqs last disabled at (13253): [<c01304c4>] irq_exit+0x1ec/0x1f8
----[ end trace 6687a21e6b7e94a9 ]---
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1777 at drivers/input/input.c:2230 
-input_device_enabled+0x68/0x6c
-Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic 
-libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc 
-exynos_gsc v4l2_mem2mem videob
-CPU: 1 PID: 1777 Comm: rtcwake Tainted: G        W 
-5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
-Hardware name: Samsung Exynos (Flattened Device Tree)
-[<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
-[<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
-[<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
-[<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
-[<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>] 
-(input_device_enabled+0x68/0x6c)
-[<c07fa2fc>] (input_device_enabled) from [<c080a0f8>] 
-(cyapa_gen3_set_power_mode+0x128/0x1cc)
-[<c080a0f8>] (cyapa_gen3_set_power_mode) from [<c08088b4>] 
-(cyapa_reinitialize+0xcc/0x154)
-[<c08088b4>] (cyapa_reinitialize) from [<c0808984>] (cyapa_resume+0x48/0x98)
-[<c0808984>] (cyapa_resume) from [<c06ae924>] (dpm_run_callback+0xb0/0x3c8)
-[<c06ae924>] (dpm_run_callback) from [<c06aecf8>] (device_resume+0xbc/0x260)
-[<c06aecf8>] (device_resume) from [<c06b10d8>] (dpm_resume+0x14c/0x51c)
-[<c06b10d8>] (dpm_resume) from [<c06b1cac>] (dpm_resume_end+0xc/0x18)
-[<c06b1cac>] (dpm_resume_end) from [<c01a0ad8>] 
-(suspend_devices_and_enter+0x1b4/0xbd4)
-[<c01a0ad8>] (suspend_devices_and_enter) from [<c01a180c>] 
-(pm_suspend+0x314/0x42c)
-[<c01a180c>] (pm_suspend) from [<c019f6f8>] (state_store+0x6c/0xc8)
-[<c019f6f8>] (state_store) from [<c0387b04>] (kernfs_fop_write+0x10c/0x228)
-[<c0387b04>] (kernfs_fop_write) from [<c02dbd48>] (vfs_write+0xc8/0x530)
-[<c02dbd48>] (vfs_write) from [<c02dc2ec>] (ksys_write+0x60/0xd8)
-[<c02dc2ec>] (ksys_write) from [<c0100060>] (ret_fast_syscall+0x0/0x2c)
-Exception stack(0xc45bffa8 to 0xc45bfff0)
-...
-irq event stamp: 55479
-hardirqs last  enabled at (55487): [<c01a567c>] vprintk_emit+0x2d8/0x32c
-hardirqs last disabled at (55494): [<c01a5640>] vprintk_emit+0x29c/0x32c
-softirqs last  enabled at (53552): [<c01017a8>] __do_softirq+0x528/0x684
-softirqs last disabled at (53541): [<c01304c4>] irq_exit+0x1ec/0x1f8
----[ end trace 6687a21e6b7e94aa ]---
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1777 at drivers/input/input.c:2230 
-input_device_enabled+0x68/0x6c
-Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic 
-libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc 
-exynos_gsc v4l2_mem2mem videob
-CPU: 1 PID: 1777 Comm: rtcwake Tainted: G        W 
-5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
-Hardware name: Samsung Exynos (Flattened Device Tree)
-[<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
-[<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
-[<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
-[<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
-[<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>] 
-(input_device_enabled+0x68/0x6c)
-[<c07fa2fc>] (input_device_enabled) from [<c0808834>] 
-(cyapa_reinitialize+0x4c/0x154)
-[<c0808834>] (cyapa_reinitialize) from [<c0808984>] (cyapa_resume+0x48/0x98)
-[<c0808984>] (cyapa_resume) from [<c06ae924>] (dpm_run_callback+0xb0/0x3c8)
-[<c06ae924>] (dpm_run_callback) from [<c06aecf8>] (device_resume+0xbc/0x260)
-[<c06aecf8>] (device_resume) from [<c06b10d8>] (dpm_resume+0x14c/0x51c)
-[<c06b10d8>] (dpm_resume) from [<c06b1cac>] (dpm_resume_end+0xc/0x18)
-[<c06b1cac>] (dpm_resume_end) from [<c01a0ad8>] 
-(suspend_devices_and_enter+0x1b4/0xbd4)
-[<c01a0ad8>] (suspend_devices_and_enter) from [<c01a180c>] 
-(pm_suspend+0x314/0x42c)
-[<c01a180c>] (pm_suspend) from [<c019f6f8>] (state_store+0x6c/0xc8)
-[<c019f6f8>] (state_store) from [<c0387b04>] (kernfs_fop_write+0x10c/0x228)
-[<c0387b04>] (kernfs_fop_write) from [<c02dbd48>] (vfs_write+0xc8/0x530)
-[<c02dbd48>] (vfs_write) from [<c02dc2ec>] (ksys_write+0x60/0xd8)
-[<c02dc2ec>] (ksys_write) from [<c0100060>] (ret_fast_syscall+0x0/0x2c)
-Exception stack(0xc45bffa8 to 0xc45bfff0)
-...
-irq event stamp: 55829
-hardirqs last  enabled at (55837): [<c01a567c>] vprintk_emit+0x2d8/0x32c
-hardirqs last disabled at (55844): [<c01a5640>] vprintk_emit+0x29c/0x32c
-softirqs last  enabled at (53552): [<c01017a8>] __do_softirq+0x528/0x684
-softirqs last disabled at (53541): [<c01304c4>] irq_exit+0x1ec/0x1f8
----[ end trace 6687a21e6b7e94ab ]---
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1777 at drivers/input/input.c:2230 
-input_device_enabled+0x68/0x6c
-Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic 
-libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc 
-exynos_gsc v4l2_mem2mem videob
-CPU: 1 PID: 1777 Comm: rtcwake Tainted: G        W 
-5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
-Hardware name: Samsung Exynos (Flattened Device Tree)
-[<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
-[<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
-[<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
-[<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
-[<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>] 
-(input_device_enabled+0x68/0x6c)
-[<c07fa2fc>] (input_device_enabled) from [<c080a0f8>] 
-(cyapa_gen3_set_power_mode+0x128/0x1cc)
-[<c080a0f8>] (cyapa_gen3_set_power_mode) from [<c0808890>] 
-(cyapa_reinitialize+0xa8/0x154)
-[<c0808890>] (cyapa_reinitialize) from [<c0808984>] (cyapa_resume+0x48/0x98)
-[<c0808984>] (cyapa_resume) from [<c06ae924>] (dpm_run_callback+0xb0/0x3c8)
-[<c06ae924>] (dpm_run_callback) from [<c06aecf8>] (device_resume+0xbc/0x260)
-[<c06aecf8>] (device_resume) from [<c06b10d8>] (dpm_resume+0x14c/0x51c)
-[<c06b10d8>] (dpm_resume) from [<c06b1cac>] (dpm_resume_end+0xc/0x18)
-[<c06b1cac>] (dpm_resume_end) from [<c01a0ad8>] 
-(suspend_devices_and_enter+0x1b4/0xbd4)
-[<c01a0ad8>] (suspend_devices_and_enter) from [<c01a180c>] 
-(pm_suspend+0x314/0x42c)
-[<c01a180c>] (pm_suspend) from [<c019f6f8>] (state_store+0x6c/0xc8)
-[<c019f6f8>] (state_store) from [<c0387b04>] (kernfs_fop_write+0x10c/0x228)
-[<c0387b04>] (kernfs_fop_write) from [<c02dbd48>] (vfs_write+0xc8/0x530)
-[<c02dbd48>] (vfs_write) from [<c02dc2ec>] (ksys_write+0x60/0xd8)
-[<c02dc2ec>] (ksys_write) from [<c0100060>] (ret_fast_syscall+0x0/0x2c)
-Exception stack(0xc45bffa8 to 0xc45bfff0)
-...
-irq event stamp: 56143
-hardirqs last  enabled at (56151): [<c01a567c>] vprintk_emit+0x2d8/0x32c
-hardirqs last disabled at (56158): [<c01a5640>] vprintk_emit+0x29c/0x32c
-softirqs last  enabled at (53552): [<c01017a8>] __do_softirq+0x528/0x684
-softirqs last disabled at (53541): [<c01304c4>] irq_exit+0x1ec/0x1f8
----[ end trace 6687a21e6b7e94ac ]---
-
-Let me know how I can help debugging this issue.
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+>
+> Guess select_idle_cluster() somehow workaround an scheduler issue
+> for numa without memory.
+>
+> >
+> > Vincent
+> > >
+> > >
+>
+> Thanks
+> Barry
+>
