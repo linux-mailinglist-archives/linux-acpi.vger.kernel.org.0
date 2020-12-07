@@ -2,144 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A29502D1871
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 19:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A0E32D196E
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Dec 2020 20:27:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726102AbgLGSXV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Dec 2020 13:23:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:39058 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726110AbgLGSXV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 13:23:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607365314;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9sdDUmxzObkvlmtgXKPhQxtpEVX8JbdclTJVfFITbFQ=;
-        b=KSCCZVzuiSnQdYHVsbxa7OSvyWD/O9GyiTAxEeh3YI3nayOj+sA9OInRtCv/NNiGtLjMxC
-        msRpWo5QMMeizWuoC/R8Kjbyylz5jLHShOgdvSDqyqtG+n63or6x8OJQ9Mac1dZj14knA3
-        q0ZohvSNza5kyhNKee+dmnN1S03x65k=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-60-NdQTsd9xPAap2wEUlkOt4A-1; Mon, 07 Dec 2020 13:21:53 -0500
-X-MC-Unique: NdQTsd9xPAap2wEUlkOt4A-1
-Received: by mail-ed1-f72.google.com with SMTP id u17so1371082edi.18
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Dec 2020 10:21:52 -0800 (PST)
+        id S1725901AbgLGT0V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Dec 2020 14:26:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725822AbgLGT0V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 14:26:21 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C099BC06179C
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Dec 2020 11:25:40 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id w127so2509924ybw.8
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Dec 2020 11:25:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dzi60D45rWQuaA2cHr5rB8Qrg2wnEyiFvWItg7Nmx+A=;
+        b=v+WQqOx59N4nA+TR3LOO4M4W3N8UUxCd0mi3VCA8QhjuDwo4lIM2+KUjXY4FldkutS
+         N3bExgP4Ogg8B3b0uktbNmwWg7AQmW0STl6R4EvJlNkfllvx3u4GnKCMfiMy6ZPF5DCT
+         ZWIK6jyLgazQ3AjLbIkw1Slu7PeW/Ol5A0PDEi3EAgvI75uo5+oh4xkSm1s2hZbvnjFQ
+         cKgVdvDiXo0sp5k0CAO4kTZ947dYA48KsKA/oO2ZGVPGIC3/sCveX07WRqK7ML6yxNrx
+         AbvIxSQFUZJNZslcFFXo+40ytrrNOS21ihYbAMPkDbuMkp/Eoe9k8fsa3M/0rkagkaCn
+         WkvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=9sdDUmxzObkvlmtgXKPhQxtpEVX8JbdclTJVfFITbFQ=;
-        b=pbXO4VUHo7mEdTjjc+joj4IE9qKfjej+Nv/4vJy0f/IN8NAR5PF3LWCgFy7mFn0dvY
-         sXLQeSy/2HFRioltHBktfboYJ5vqS0Seb+DWEqdQL0FtksbkMGnle5efzkV0UvPjn0N5
-         v7bMWhEvxFmGgIkkTfBO3m4o82VVJEo51QPJsZE18sTNYhU761QJQ2Y9PbxoTkjT5jSD
-         yDqh4S39bTpb0a9GrVWGHuSxKiFkch8VCa+vHJsN1RZnsMaq4DmB30JeAaUeePat3kt4
-         KUleBOYfx5CVuIRq+cz0dQUmt63E0OSeJlc3YD8N4N5GRerlDm0iT35hcj2zP42x89QD
-         PwdQ==
-X-Gm-Message-State: AOAM532DORpKjpD04urxE/52zTwv3XDMFQejMl6n/d0i7P5mv5Zrmljp
-        CiaRAyqbWIhgyDJxoyqIXQGB5R+z52ZHFvEU4h9xpKJ4+CfW9heALNKqKQQwG5GJJNsGmBbHtyx
-        BCRB4VIxlHLOYfj/mvoTn0A==
-X-Received: by 2002:a17:906:4bd2:: with SMTP id x18mr19721834ejv.464.1607365311272;
-        Mon, 07 Dec 2020 10:21:51 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJysF62b/9EGmsRFN0aGkV9U90I0qPEfB39SdKUggYcDeLV+AkT7k5X5iH/EBJ9lML6lAu1cSg==
-X-Received: by 2002:a17:906:4bd2:: with SMTP id x18mr19721820ejv.464.1607365311099;
-        Mon, 07 Dec 2020 10:21:51 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id u5sm14291209edp.5.2020.12.07.10.21.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Dec 2020 10:21:50 -0800 (PST)
-Subject: Re: [PATCH] ACPI: scan: Fix up _DEP-related terminology with
- supplier/consumer
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>
-References: <6314382.p3e4rEhblS@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <054cc790-bebb-9c84-e14c-16b9460d1636@redhat.com>
-Date:   Mon, 7 Dec 2020 19:21:50 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dzi60D45rWQuaA2cHr5rB8Qrg2wnEyiFvWItg7Nmx+A=;
+        b=bDtzv+b+BAkMdLMF7ZvY5SMnR93yi6+92X1X6PkjCF5AZEkIzq0zFjvQid+jl4Mjqa
+         7Mub8O27MYuZAdoa+P6n8KeXmOXpW2g9Qtcw75YTnDOIgNWD2pXf3ka3+7akTIfVQz04
+         h0CCQQezRM/evOJK5mpG3hkMZX2MPl5fsmBKCqpSv/2XeVq5J0LTeeHm374d+xVu0+oN
+         WwUnckQ2ok01zbZSj5tdauFQP0zBYGJpLKAi53HY37NbYy8YwEQP9EVomKqstVBnD5Kh
+         24AuOGi7QLl2Ml55rYCFdLZAwUt4s6x46EAC8wkv21SO5BA6HcSPRlTk5lBi0pfo1SWt
+         N98g==
+X-Gm-Message-State: AOAM530xjpyguwHubyGVNan64i9VotOi7WkzkJKndfy92tXn2/YRvYHf
+        C70n0g+HKieXbYXeZRLg7oStUuzbHWa58GmC1ucOwA==
+X-Google-Smtp-Source: ABdhPJzh94uQucZym0EJ/OhT0eAxJs+lEBfZI5tn0VwSrzUilb89QB7ghzACx8BH7y0+Q9uP9BQEqVPCQXCZ16NCfhM=
+X-Received: by 2002:a25:1383:: with SMTP id 125mr22570950ybt.32.1607369139748;
+ Mon, 07 Dec 2020 11:25:39 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <6314382.p3e4rEhblS@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-9-saravanak@google.com>
+ <20201206074840.GB687065@unreal>
+In-Reply-To: <20201206074840.GB687065@unreal>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 7 Dec 2020 11:25:03 -0800
+Message-ID: <CAGETcx8296K_v1p2-KAW7ABQjB02P63sBzz2aZoRW3E3WHb4Dg@mail.gmail.com>
+Subject: Re: [PATCH v2 08/17] driver core: Add fwnode link support
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Sat, Dec 5, 2020 at 11:48 PM Leon Romanovsky <leon@kernel.org> wrote:
+>
+> On Fri, Nov 20, 2020 at 06:02:23PM -0800, Saravana Kannan wrote:
+> > Add support for creating supplier-consumer links between fwnodes.  It is
+> > intended for internal use the driver core and generic firmware support
+> > code (eg. Device Tree, ACPI), so it is simple by design and the API
+> > provided is limited.
+> >
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  drivers/base/core.c    | 98 ++++++++++++++++++++++++++++++++++++++++++
+> >  drivers/of/dynamic.c   |  1 +
+> >  include/linux/fwnode.h | 14 ++++++
+> >  3 files changed, 113 insertions(+)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 401fa7e3505c..e2b246a44d1a 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -50,6 +50,104 @@ static LIST_HEAD(wait_for_suppliers);
+> >  static DEFINE_MUTEX(wfs_lock);
+> >  static LIST_HEAD(deferred_sync);
+> >  static unsigned int defer_sync_state_count = 1;
+> > +static DEFINE_MUTEX(fwnode_link_lock);
+> > +
+> > +/**
+> > + * fwnode_link_add - Create a link between two fwnode_handles.
+> > + * @con: Consumer end of the link.
+> > + * @sup: Supplier end of the link.
+> > + *
+> > + * Create a fwnode link between fwnode handles @con and @sup. The fwnode link
+> > + * represents the detail that the firmware lists @sup fwnode as supplying a
+> > + * resource to @con.
+> > + *
+> > + * The driver core will use the fwnode link to create a device link between the
+> > + * two device objects corresponding to @con and @sup when they are created. The
+> > + * driver core will automatically delete the fwnode link between @con and @sup
+> > + * after doing that.
+> > + *
+> > + * Attempts to create duplicate links between the same pair of fwnode handles
+> > + * are ignored and there is no reference counting.
+>
+> Sorry to ask, but why is that?
+> Isn't this a programmer error?
 
-On 12/7/20 6:46 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The ACPI namespace scanning code uses the terms master/slave when
-> populating the list of _DEP dependencies, but that use has no
-> external exposures and is not mandated by nor associated with any
-> external specifications.
-> 
-> Change the language used through-out to supplier/consumer.
-> 
-> No functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+No, not a programmer error.
 
-Thanks, patch looks good to me:
+One firmware node can point to the same supplier many times. For
+example, the consumer can be using multiple clocks from the same
+supplier clock controller. In the context of fw_devlink, there's no
+reason to keep track of each clock dependency separately because we'll
+be creating only one device link from fwnode link. So multiple fwnode
+link attempts between the same two devices are just treated as one
+instance of dependency. I hope that clarifies things.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-> ---
->  drivers/acpi/scan.c |   12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -51,8 +51,8 @@ static u64 spcr_uart_addr;
->  
->  struct acpi_dep_data {
->  	struct list_head node;
-> -	acpi_handle master;
-> -	acpi_handle slave;
-> +	acpi_handle supplier;
-> +	acpi_handle consumer;
->  };
->  
->  void acpi_scan_lock_acquire(void)
-> @@ -1881,8 +1881,8 @@ static void acpi_device_dep_initialize(s
->  		if (!dep)
->  			return;
->  
-> -		dep->master = dep_devices.handles[i];
-> -		dep->slave  = adev->handle;
-> +		dep->supplier = dep_devices.handles[i];
-> +		dep->consumer  = adev->handle;
->  		adev->dep_unmet++;
->  
->  		mutex_lock(&acpi_dep_list_lock);
-> @@ -2058,8 +2058,8 @@ void acpi_walk_dep_device_list(acpi_hand
->  
->  	mutex_lock(&acpi_dep_list_lock);
->  	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
-> -		if (dep->master == handle) {
-> -			acpi_bus_get_device(dep->slave, &adev);
-> +		if (dep->supplier == handle) {
-> +			acpi_bus_get_device(dep->consumer, &adev);
->  			if (!adev)
->  				continue;
->  
-> 
-> 
-> 
-
+-Saravana
