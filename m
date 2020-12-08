@@ -2,142 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A792D2075
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Dec 2020 03:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D642D226D
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Dec 2020 05:56:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbgLHCDf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Dec 2020 21:03:35 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53901 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726896AbgLHCDf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 21:03:35 -0500
-Received: from [111.196.65.193] (helo=[192.168.0.106])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <hui.wang@canonical.com>)
-        id 1kmSL2-0008Ew-QB; Tue, 08 Dec 2020 02:02:49 +0000
-Subject: Re: [PATCH] ACPI / bus: skip the primary physical pnp device in
- companion_match
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-References: <20201204075041.44339-1-hui.wang@canonical.com>
- <CAJZ5v0jnVoo_heYUAfbt4t6xFAOqq+dGus1LCZP_-5Q8o8cpQQ@mail.gmail.com>
-From:   Hui Wang <hui.wang@canonical.com>
-Message-ID: <27211ea4-a691-ae96-4fed-6bb8f214963d@canonical.com>
-Date:   Tue, 8 Dec 2020 10:02:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727610AbgLHEyH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Dec 2020 23:54:07 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:58200 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727485AbgLHEyD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Dec 2020 23:54:03 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B84nPNV064006;
+        Tue, 8 Dec 2020 04:52:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=1e3cV7XKyt5cBPHNeWYhYMHu3W87CKppja6U1Jvw5F4=;
+ b=V+G180Fh0lHbcmydQJqS5i+cerb42SoRrRI9QCXlQMjyWKKfj0acXqExTQUiK+7OEtft
+ OuMy/8L57grCegXY4FPi2mfpdUD9NETOrjU6XyLEGnB6yCKU9e30d2WSgQTsYBxq/cMN
+ 5junVfgiRpfFB5rc1EfDtZHP43anCs3FIrUtz16u4yPsKG0NCInMT5yeMTaPCX1MMJeq
+ qZ1GHIcbwNatFRQ/tELhwJDJybfqjlIskC/pDoCLpTPJ2KTrod7PX9rst5aaRTC3xIQA
+ veh/+mbPHLjYXfePq5oiUCHv2+7Gowf8M2KKiHFzojpZKSSSQD2meZy2nTRpI8CVh6TQ Yg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 35825m0srq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 08 Dec 2020 04:52:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B84ocw5155469;
+        Tue, 8 Dec 2020 04:52:34 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 358kys9m8s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 08 Dec 2020 04:52:34 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B84qX4M159553;
+        Tue, 8 Dec 2020 04:52:33 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 358kys9m7s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Dec 2020 04:52:33 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B84qDZf015901;
+        Tue, 8 Dec 2020 04:52:15 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 07 Dec 2020 20:52:13 -0800
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        coreteam@netfilter.org, selinux@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>,
+        linux-hardening@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, patches@opensource.cirrus.com,
+        linux-fbdev@vger.kernel.org, keyrings@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-ext4@vger.kernel.org,
+        wcn36xx@lists.infradead.org, GR-everest-linux-l2@marvell.com,
+        x86@kernel.org, linux-watchdog@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-usb@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        netfilter-devel@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-mediatek@lists.infradead.org,
+        Kees Cook <keescook@chromium.org>,
+        samba-technical@lists.samba.org, ceph-devel@vger.kernel.org,
+        drbd-dev@tron.linbit.com, intel-gfx@lists.freedesktop.org,
+        dm-devel@redhat.com, linux-acpi@vger.kernel.org,
+        linux-ide@vger.kernel.org, xen-devel@lists.xenproject.org,
+        op-tee@lists.trustedfirmware.org, linux-hwmon@vger.kernel.org,
+        linux-sctp@vger.kernel.org, bridge@lists.linux-foundation.org,
+        linux-mtd@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-can@vger.kernel.org, rds-devel@oss.oracle.com,
+        oss-drivers@netronome.com, tipc-discussion@lists.sourceforge.net,
+        cluster-devel@redhat.com, linux-rdma@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net,
+        linux1394-devel@lists.sourceforge.net, alsa-devel@alsa-project.org,
+        linux-i3c@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-afs@lists.infradead.org, nouveau@lists.freedesktop.org,
+        GR-Linux-NIC-Dev@marvell.com, netdev@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com, linux-mm@kvack.org,
+        intel-wired-lan@lists.osuosl.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: (subset) [PATCH 000/141] Fix fall-through warnings for Clang
+Date:   Mon,  7 Dec 2020 23:52:01 -0500
+Message-Id: <160740299787.710.4201881220590518200.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <cover.1605896059.git.gustavoars@kernel.org>
+References: <cover.1605896059.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jnVoo_heYUAfbt4t6xFAOqq+dGus1LCZP_-5Q8o8cpQQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=380 clxscore=1015 priorityscore=1501 mlxscore=0
+ spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012080029
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, 20 Nov 2020 12:21:39 -0600, Gustavo A. R. Silva wrote:
 
-On 12/7/20 9:11 PM, Rafael J. Wysocki wrote:
-> On Fri, Dec 4, 2020 at 8:51 AM Hui Wang <hui.wang@canonical.com> wrote:
->> We are working on some latest Thinkpad Yoga and Carbon laptops, the
->> touchscreen doesn't work on those machines. And we found the
->> touchscreen module is I2C wacom WACF2200 (056A:5276).
->>
->> The problem is in the acpi_pnp.c, the WACFXXX is in the
->> acpi_pnp_device_ids[], so a pnp device will be built and attach to the
->> acpi_dev as the 1st physical_node, later when I2C subsystem starts to
->> initialize, it will build an I2C_dev and attach to the acpi_dev as the
->> 2nd physical_node. When I2C bus needs to match the acpi_id_table, it
->> will call acpi_companion_match(), because the 1st physical_node is not
->> I2C_dev, it fails to match, then the i2c driver (hid_i2c) will not be
->> called.
->>
->> To fix it, adding a special treatment in the companion_match(): if the
->> 1st dev is on pnp bus and the device in question is not on pnp bus,
->> skip the 1st physical device, just use the device in question to
->> match.
->>
->> We could refer to the pnpacpi_add_device() in the
->> pnp/pnpacpi/core.c, pnp device will not be built if the acpi_dev
->> is already attached to a physical device, so a pnp device has
->> lower priority than other devices, it is safe to skip it in
->> the companion_match().
->>
->> Signed-off-by: Hui Wang <hui.wang@canonical.com>
->> ---
->>   drivers/acpi/bus.c | 26 ++++++++++++++++++++++----
->>   1 file changed, 22 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
->> index 1682f8b454a2..8aa0a861ca29 100644
->> --- a/drivers/acpi/bus.c
->> +++ b/drivers/acpi/bus.c
->> @@ -582,6 +582,15 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
->>          return !!acpi_primary_dev_companion(adev, dev);
->>   }
->>
->> +/* Could move this function to linux/pnp.h in the future */
->> +static bool acpi_dev_is_on_pnp_bus(const struct device *dev)
->> +{
->> +       if (dev->bus)
->> +               return !strcmp(dev->bus->name, "pnp");
->> +       else
-> Unnecessary else.
-OK, got it. no need to check the bus,  then no need to add the else.
->> +               return false;
->> +}
->> +
->>   /*
->>    * acpi_companion_match() - Can we match via ACPI companion device
->>    * @dev: Device in question
->> @@ -597,7 +606,9 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
->>    * companion.  A typical case is an MFD device where all the sub-devices share
->>    * the parent's ACPI companion.  In such cases we can only allow the primary
->>    * (first) physical device to be matched with the help of the companion's PNP
->> - * IDs.
->> + * IDs. And another case is a pnp device is attached to ACPI device first, then
->> + * other function devices are attached too, in this case, the primary physical
->> + * device (pnp) is ignored, just use the device in question to match.
->>    *
->>    * Additional physical devices sharing the ACPI companion can still use
->>    * resources available from it but they will be matched normally using functions
->> @@ -605,7 +616,7 @@ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
->>    */
->>   struct acpi_device *acpi_companion_match(const struct device *dev)
->>   {
->> -       struct acpi_device *adev;
->> +       struct acpi_device *adev, *radev;
->>
->>          adev = ACPI_COMPANION(dev);
->>          if (!adev)
->> @@ -614,7 +625,15 @@ struct acpi_device *acpi_companion_match(const struct device *dev)
->>          if (list_empty(&adev->pnp.ids))
->>                  return NULL;
->>
->> -       return acpi_primary_dev_companion(adev, dev);
->> +       radev = acpi_primary_dev_companion(adev, dev);
->> +       if (radev == NULL) {
->> +               const struct device *first_dev = acpi_get_first_physical_node(adev);
->> +
->> +               if (acpi_dev_is_on_pnp_bus(first_dev) && !acpi_dev_is_on_pnp_bus(dev))
->> +                       radev = adev;
->> +       }
->> +
->> +       return radev;
->>   }
-> This is too convoluted IMV.
->
-> Would dropping the device ID in question from acpi_pnp_device_ids[]
-> make the problem go away?
->
-> If so, why don't you do just that?
+> This series aims to fix almost all remaining fall-through warnings in
+> order to enable -Wimplicit-fallthrough for Clang.
+> 
+> In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
+> add multiple break/goto/return/fallthrough statements instead of just
+> letting the code fall through to the next case.
+> 
+> [...]
 
-Yes, if remove "WACFXXX" from acpi_pnp_device_ids[], could fix this 
-issue. I planned to do so, but I found the pnp_driver in the 
-drivers/tty/serial/8250/8250_pnp.c still handle this ID, maybe it could 
-introduce regression on old machines if removing it.
+Applied to 5.11/scsi-queue, thanks!
 
-Thanks.
+[054/141] target: Fix fall-through warnings for Clang
+          https://git.kernel.org/mkp/scsi/c/492096ecfa39
 
+-- 
+Martin K. Petersen	Oracle Linux Engineering
