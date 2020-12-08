@@ -2,139 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 571E52D273B
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Dec 2020 10:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A6DE2D286F
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Dec 2020 11:06:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728669AbgLHJMw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Dec 2020 04:12:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:46297 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726418AbgLHJMv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Dec 2020 04:12:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607418685;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5Ad9dVIz2TEPmfPmKHjiScQxj4MpEXhAMwys+bMreiU=;
-        b=UePwd1DPULy8qHaIENqeuUxEK4HPLWWoRNqniAWfPSj8KSzm/FMNlH5MI+l10yhHVeC0kO
-        gbZ5gFLsq+em7OTa5am77hxoxPg4onLQ5NMNhLhJr40stEwmQB9p6EZZiKOG7tNTaM2nPO
-        CLCpqjOMoysTY+Yj5YVZE3MFuhymgkk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-80-4kaxoUPDPuWKA3ohAvtdxQ-1; Tue, 08 Dec 2020 04:11:23 -0500
-X-MC-Unique: 4kaxoUPDPuWKA3ohAvtdxQ-1
-Received: by mail-ej1-f71.google.com with SMTP id m4so1867581ejc.14
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Dec 2020 01:11:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5Ad9dVIz2TEPmfPmKHjiScQxj4MpEXhAMwys+bMreiU=;
-        b=Ns8TGPq727MBN9utYKH4NDVt5Y606d38Fp9cWigA/p8gdGj2xpRQfmDfLnJnsd6k5y
-         DwuGjZdFfNvVrqPLivhLKy+gnXFzwqZ/PBWkvD34NjE52aiurF6YLrwFvziSbKWFCXAf
-         w9a+kJFKRtiz0tBpWpWc3pT5t7zy+N+W1K+Fe92PUI0HxU6o3+9Ynf+aq1X3kQeIq/pi
-         PadfajaYfrK+6vd10kHtxtcEM8UVta2qaXxxP4J2gwpAa0+NBah8AbqIDiPH2rs5dgKC
-         mtn8gcJK/ppLx8MzCktlMBdhtBKyTRYyuzyDDAaXGW8DSsrZlWGsQJG8aiPkcvQqbrCn
-         sRyw==
-X-Gm-Message-State: AOAM532OIgJRxuw8Wu6loHzuhIZn1Li8r7Qq1J+B5s46TSbTXOFp9xqD
-        v0tvASR9c9XkDYlpnoKNTRnljriwMeM9I6lpLxKvl5FTui2QikUlVnAU5Vuhqo6E4PoXPkmjEFg
-        whd7fOskEyOuAf9vfPrFkhA==
-X-Received: by 2002:a17:906:1194:: with SMTP id n20mr22002836eja.269.1607418682098;
-        Tue, 08 Dec 2020 01:11:22 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw790b+pkpX7nw4XPxUqBpja8l3M/T+KRTl5nj0rMBa8xD00oQ4kISlVGPU4VL//BKIPAAapw==
-X-Received: by 2002:a17:906:1194:: with SMTP id n20mr22002831eja.269.1607418681943;
-        Tue, 08 Dec 2020 01:11:21 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id rl7sm13740822ejb.107.2020.12.08.01.11.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Dec 2020 01:11:21 -0800 (PST)
-Subject: Re: [PATCH v5 1/3] Documentation: Add documentation for new
- platform_profile sysfs attribute
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mark Pearson <markpearson@lenovo.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <mgross@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Benjamin Berg <bberg@redhat.com>,
-        Darren Hart <dvhart@infradead.org>
-References: <markpearson@lenovo.com>
- <20201202171120.65269-1-markpearson@lenovo.com>
- <74b6ef2c-ac13-bffe-edda-478512950d22@redhat.com>
- <CAJZ5v0iWD5Ej-1oCfMAskvQoovMRVc5TkpST1t9brsJirx+5zQ@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ecc70307-aca0-16f8-26b3-4360c61f752b@redhat.com>
-Date:   Tue, 8 Dec 2020 10:11:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1728600AbgLHKGk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Dec 2020 05:06:40 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:41784 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726338AbgLHKGj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Dec 2020 05:06:39 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20201208100546euoutp02e0bc3fe49cc95efcce507d79fc493b31~Otb5fCmXP0214502145euoutp02g;
+        Tue,  8 Dec 2020 10:05:46 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20201208100546euoutp02e0bc3fe49cc95efcce507d79fc493b31~Otb5fCmXP0214502145euoutp02g
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1607421946;
+        bh=Bv2iUMf5t8sR+k2GUep7pVjimXHF1qPn96u6HZaIEr0=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=hMnSZd9FYOxedyWFXh8LpLwk/gDkZjHMeGMuONNZwPBxe6jnqvwWcKtMnWuodrnqY
+         PpjqZpOdUsjc5Hv6aFRI5cnWpHWEaSSx1mrz05aWPxStbFhl6LPVANENFlZHljnrUI
+         SO73IGO7eSMZhZntar85lDda9N8SEjHT96N1n6gA=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20201208100545eucas1p2619963b4961497d52d182d641849c3c8~Otb4-xDnF1791717917eucas1p2j;
+        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 24.9B.45488.9FF4FCF5; Tue,  8
+        Dec 2020 10:05:45 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20201208100545eucas1p2384c9e6421e68c5e4b7a1aacc8015f99~Otb4hk78D2012420124eucas1p2L;
+        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20201208100545eusmtrp1821931dd698ad93b62a75f6681b1cf83~Otb4gH_oj3074730747eusmtrp1h;
+        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
+X-AuditID: cbfec7f5-c77ff7000000b1b0-36-5fcf4ff964ec
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id DE.6C.21957.8FF4FCF5; Tue,  8
+        Dec 2020 10:05:44 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20201208100543eusmtip163dc4372fdcda95019639546a8e0affd~Otb2ggtFC0248002480eusmtip1B;
+        Tue,  8 Dec 2020 10:05:42 +0000 (GMT)
+Subject: Re: [PATCH v4 2/7] Input: use input_device_enabled()
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <ad093ba3-7b17-18f3-6bb5-d8133c3da89a@samsung.com>
+Date:   Tue, 8 Dec 2020 11:05:42 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
+        Gecko/20100101 Thunderbird/78.5.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0iWD5Ej-1oCfMAskvQoovMRVc5TkpST1t9brsJirx+5zQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Te0xTZxzNd+/tC1e8FBxfqkZSDRubFtw0fovIVuKWu8QFt+wFbsMyrkAG
+        hbQy3eI2XnFQQBiwUUqloChPeRQKpSrOltEpjzqMMJ4RaBhDoOtAHBBglosb/53vnN/5zu/8
+        8ePigidsITdKdpqWy6TRIrYL0dS+2L1vMcga6lf9gze6Oj5CoHpVLQvZTJk4Ml+aBKjNYSbQ
+        6IMgNG3Jx1Ch2R9pJq4B9P1YGgs9TKrEUIr6EoEaujNYqPLHFgJljT/CkXFtGkdWax0HleZq
+        WehKaxWBWkZn2KisNQsg3XgvCxW1zRJIuVSBo/6/F1jovlHDRnOZbQCprK0YSptXs1G2uYGD
+        egrScTRnv8VCzTdvYajqxiSOlo3tHNTZ0cNCK806Ak02eqIckxwtGosItLaUjL/hQ009kFCG
+        4VJAnU+KolrUwxzqL8dn1PLPgNJVprGphtLvqOvFcxj1RNUJqNJpE4taLckjqMzkWTZVP2vA
+        qHzNGqCyVvyOPx/i4h9OR0d9Sct9A066RI7cacTjbORZraoZJIB8VyXgcSF5AA5UrRJK4MIV
+        kOUA/rJiYTsFATkPYMpwHCPMAZhe2IU/c4zoBzmMUAbgI3s5YB4OAJXz5qcKl+tOHoGavDed
+        vAdZiMM/c/TrQziZwIP6wRTC+RWb3A+VM8r1PD4ZAK0XnWYelyD3QIvNtI63kWGwVvnPxowb
+        vFNgW/fySAnUL7SznBgnd8FkfSHOYE84YNNizjBIZmyBNZW9GLP3UajKTQUMdodTlkYOg3fA
+        jtwMgjEkAzjafY2z4QbwfpJqw3EYDnUvsZ3dcNIH1hp9GVoCh6p0LCcNSVf4+4wbs4QrzGnK
+        xxmaD1PPC5hpb6i21PwXe/teD54NROpN1dSb6qg31VH/n1sMiErgSccrYiJoxasy+oxYIY1R
+        xMsixJ/HxujA09voWLU8NoDyKYfYBDAuMAHIxUUefG9hV6iAHy796mtaHhsqj4+mFSawnUuI
+        PPlGfXWogIyQnqa/oOk4Wv5Mxbg8YQK2I3C3767t1yvexYx3p1ln7oqtp+DDFyV9dT4D3sLX
+        t2j3fKqQXCi8Yi0K1+50T5SJz8WyM7zejzkYzDf8tKhPDWm4sDNy4Fx94hgZ0D8nPBHbEkgX
+        H6xY1k7kCGsItXHquWBJuNnrlYa8rr2OgkNH/6AnktJPeI5lNa3mlLyAzg6NHFlMlF/Otn/b
+        d1z+Qf8nBSLbsX0fnSp5+9jeskMHXgtMC9FttdvveRX9+rJrWIgHDJaNzXThIVsvP04MG1Lz
+        3itx+WZQrNEE5YXe7LafdHB83Pr8+NXbin97y3H4Q/vFef9ZH4N9d3Jplcp1oTdx9MLHg3Sd
+        XxDvarSt03A74Ub6OyJCESnd/xIuV0j/BdJ214CKBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH97uPtpgwLwXlDhmYxpkhsbS0sNMJRF2W3C3ZGGYZkc3VCldK
+        pNS1ZcLcYhVzCXUENlCwlJdWDIhOqKw8BEyLNIism4pGFsh4RBnjMR6BIQKjwyX898k53883
+        OckR4EKOFyBISTOwujRVqoi3iehecfXvXox1KyXVQVA1PEBAXfFPJIw4cnFwXhpF0DHtJGCw
+        NxbGXUUYlDijwPLsOoLsoRwS/jhTg8FZ8yUCbL98T0LN+SYC8ob/wqF5dRwHt/smH6wF5SRc
+        abtGQNPgBA+utuUhqB9+TEJZxyQBphfVODydmSfhYbOFB7O5HQiK3W0Y5MyZeZDvtPHhwcVz
+        OMxOtZNgb23H4NrtURyWmjv5cL/7AQnL9noCRm/5w48OHSw2lxGw+iIL3xvCjPXuYxr7rYjh
+        zqQwTeZ+PvP39JfM0h3E1Nfk8Bib9RTTUjGLMQvF9xFjHXeQzEplIcHkZk3ymLrJRowpsqwi
+        Jm9Z8snWBHGUTptuYLertXpDtOhzKYSLpQoQh8sVYqnsnUPvhkeIwmKiktjUlK9ZXVjMYbF6
+        oOsWfnyEyigvtiMjKnrdhLwENCWnBxp+55vQJoGQuoLoR5YVcn0RSHddML5iX/rlYxNvPTSF
+        6HO15ZgJCQS+VDRtKXzfM/ejSnB69fRdwiPgFOdFT4yFelhIDWP0fF2wh3mUlDZNeIq8BN5U
+        DO0udfI9TFA7aNeIg+/p3EIdoXu6fdYjPnTXxZH/Kr2ofXTDfCe5Xh9Jl9kG8XUOprMaSl6x
+        P903Uo7lI6F5g27eoJg3KOYNSgUiapAfm67XJGv0UrFepdGnpyWLE7WaerT2kD93LtoaUdnY
+        tNiBMAFyIFqAi/y8dwb0KIXeSarMb1idVqlLT2X1DhSxds4PeMCWRO3aR6cZlNJISYRUHqmQ
+        RCgiZSJ/74bSWqWQSlYZ2GMse5zV/e9hAq8AIxZ/ICbd/unbSblko7qdfbI0ExfOnajydh3c
+        8178nm2QGD9ZIP+q+7Lb8tEXp3YfUrV+FrI3Y9dl/+e+lfcCW5K2KyqCQuzZb8Vljpoqb1Sd
+        bC078m3GjO8Hy6HJw7Khp6cvnCyNVXNP+pyBnIQvP++vyZQpZS9Xr97c/DBFc3Q6bHMDZZx6
+        wzoTdWxrQSE7UXqwlvunu6M9oaDuNc5QHxz9Z2bwwo7e61z2oiv/RMuvZ22KsKQeblvH6ILs
+        zepk+rcPj/ZpLXGhXcbneVSFqX/JyN1pyrw7Z9//nZw7XJUQlGVV3Zvr9RkX4jX9OrPkmUp9
+        wxU4vX/oY2fhwqPbJSz4igi9WiXdhev0qn8BB1s7KhkEAAA=
+X-CMS-MailID: 20201208100545eucas1p2384c9e6421e68c5e4b7a1aacc8015f99
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
+References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
+        <20200608112211.12125-1-andrzej.p@collabora.com>
+        <20200608112211.12125-3-andrzej.p@collabora.com>
+        <CGME20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28@eucas1p2.samsung.com>
+        <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
+        <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Andrzej,
 
-On 12/7/20 8:29 PM, Rafael J. Wysocki wrote:
-> On Thu, Dec 3, 2020 at 10:46 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On 07.12.2020 16:50, Andrzej Pietrasiewicz wrote:
+> Hi Marek,
+>
+> W dniu 07.12.2020 o 14:32, Marek Szyprowski pisze:
+>> Hi Andrzej,
 >>
->> Hi,
->>
->> On 12/2/20 6:11 PM, Mark Pearson wrote:
->>> On modern systems the platform performance, temperature, fan and other
->>> hardware related characteristics are often dynamically configurable. The
->>> profile is often automatically adjusted to the load by some
->>> automatic-mechanism (which may very well live outside the kernel).
+>> On 08.06.2020 13:22, Andrzej Pietrasiewicz wrote:
+>>> Use the newly added helper in relevant input drivers.
 >>>
->>> These auto platform-adjustment mechanisms often can be configured with
->>> one of several 'platform-profiles', with either a bias towards low-power
->>> consumption or towards performance (and higher power consumption and
->>> thermals).
->>>
->>> Introduce a new platform_profile sysfs API which offers a generic API for
->>> selecting the performance-profile of these automatic-mechanisms.
->>>
->>> Co-developed-by: Mark Pearson <markpearson@lenovo.com>
->>> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
->>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 >>
->> Thank you, patches 1 and 2 look good to me now, you may add my:
+>> This patch landed recently in linux-next as commit d69f0a43c677 ("Input:
+>> use input_device_enabled()"). Sadly it causes following warning during
+>> system suspend/resume cycle on ARM 32bit Samsung Exynos5250-based Snow
+>> Chromebook with kernel compiled from exynos_defconfig:
 >>
->> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->>
->> To patch 2 (since I'm co-author of patch 1 it would be a bit weird
->> to add it there too).
->>
->> Rafael, it would be great if you pick up patches 1 and 2 for merging
->> into 5.11 (assuming that you agree that they are ready) then I will merge
->> patch 3 once 5.11-rc1 is out.
-> 
-> I've applied patch [1/2] (as 5.11-rc material) for now, but I still
-> needed to fix it up somewhat.  Please check the result in my
-> bleeding-edge branch.
+>> ------------[ cut here ]------------
+>> WARNING: CPU: 0 PID: 1777 at drivers/input/input.c:2230
+>> input_device_enabled+0x68/0x6c
+>> Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic
+>> libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc
+>> exynos_gsc v4l2_mem2mem videob
+>> CPU: 0 PID: 1777 Comm: rtcwake Not tainted
+>> 5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
+>> Hardware name: Samsung Exynos (Flattened Device Tree)
+>> [<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
+>> [<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
+>> [<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
+>> [<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
+>> [<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>]
+>> (input_device_enabled+0x68/0x6c)
+>> [<c07fa2fc>] (input_device_enabled) from [<c080a0f8>]
+>
+> Apparently you are hitting this line of code in drivers/input/input.c:
+>
+> lockdep_assert_held(&dev->mutex);
+>
+> Inspecting input device's "users" member should happen under dev's lock.
+>
+This check and warning has been introduced by this patch. I assume that 
+the suspend/resume paths are correct, but it looks that they were not 
+tested with this patch thus it has not been noticed that they are not 
+called under the input's lock. This needs a fix. Dmitry: how would you 
+like to handle this issue?
 
-Thank you.
-
-> I'll get to the other patch tomorrow.
-
-The other patch likely conflicts with a bunch of other thinkpad_acpi
-changes already in pdx86/for-next; and I still need to review v5 of
-it, so please do not apply it.
-
-I will pick it up after 5.11-rc1 and send it out as part of a
-pull-req for rc2.
-
-Regards,
-
-Hans
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
