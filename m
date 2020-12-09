@@ -2,382 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F2B2D46AB
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 17:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BF02D473B
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 17:55:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729303AbgLIQY2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Dec 2020 11:24:28 -0500
-Received: from mga17.intel.com ([192.55.52.151]:62275 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727894AbgLIQY2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Dec 2020 11:24:28 -0500
-IronPort-SDR: I26gFkTZnKMQSAJuhEJj5p3VhUHIMRrUt0WrU0C17B6NVQOppr3rLNhFYfDkxDOZY6qXbcnKDY
- g99kaM5QIpJw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9829"; a="153909871"
-X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
-   d="scan'208";a="153909871"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 08:23:48 -0800
-IronPort-SDR: XpkQFTTpJ2gqbFoeHRddvFv44Ge4qjGifLVBUXk51eW77JPL4KIYxhK56dyGEtJtWlMcNeADat
- W6nMAipa6Q9w==
-X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
-   d="scan'208";a="376418592"
-Received: from vishnuba-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.137.226])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 08:23:46 -0800
-Date:   Wed, 9 Dec 2020 08:23:45 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [RFC PATCH 09/14] cxl/mem: Add basic IOCTL interface
-Message-ID: <20201209162345.2vdyn2itfg7jkjf4@intel.com>
-References: <20201209002418.1976362-1-ben.widawsky@intel.com>
- <20201209002418.1976362-10-ben.widawsky@intel.com>
- <CAPcyv4ipGMsKegzWtd+W8wr4mG7X9DtVeQYvL24Eyu1fB3AN=A@mail.gmail.com>
- <20201209021254.ne42jy6ovn2rk3cf@intel.com>
- <CAPcyv4jJWYacUd_xCio29uAUPHzs7Ez9pCC1PpWF3iWHD+XAaw@mail.gmail.com>
+        id S1729012AbgLIQyP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Dec 2020 11:54:15 -0500
+Received: from mail-oo1-f65.google.com ([209.85.161.65]:34430 "EHLO
+        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728082AbgLIQyI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Dec 2020 11:54:08 -0500
+Received: by mail-oo1-f65.google.com with SMTP id t63so546561ooa.1
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Dec 2020 08:53:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2pLLZPe7ZhoOhjW9gte+/owQO3MfPR0ltpqAb8lgrWY=;
+        b=tN7+EkkMoNWJJoztP/mk9aYP+12z3hUitmJjqw9AdHuZGcowyPQHgWYlBFOqljSQHs
+         y/P3zCbUZaZHyE9IZkevDdtxFEUAYfTb9MSfSxIDvXfnp9ypPmdnuH2osK0gGlnIO6Rl
+         F53oQS8DEUeZZh5NDh5Gw5iUu6md2qNN5WOetj/PX615txUIPeRV+2eaNnIIj39qJwcg
+         +TLTzsZ0heCFhE8ztqFMMFMmD5Kkk8JSlEq9zwcCGXDSjhkaTakfafYknO/aQPeK4HZ0
+         b1P8h08JHb0FZjegZuD098QaYjnj69o7Ew6VbMCMCURKQJagkl6p/5YJw83/ZSQG36ja
+         tAow==
+X-Gm-Message-State: AOAM530CUJ5Pftm6U8Zio5lBfcvgZ5Z6/ojyi+CuwT3LEsJfy6KZFLZh
+        vurYrwkOMJRwztZhojZ7sLsn/b3qTsfK8eFb0Ks=
+X-Google-Smtp-Source: ABdhPJwUK86ipo5kqfBcYfY/zn1KDP7EIQ7h8sqt1apV3H+yecVOmBMRkQoB379r0eqZg3phwZedyWW84w84qE27+ZE=
+X-Received: by 2002:a4a:abc9:: with SMTP id o9mr2638197oon.1.1607532807177;
+ Wed, 09 Dec 2020 08:53:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jJWYacUd_xCio29uAUPHzs7Ez9pCC1PpWF3iWHD+XAaw@mail.gmail.com>
+References: <1409ba0c-1580-dc09-e6fe-a0c9bcda6462@gmail.com>
+ <858bb2b0-e2b4-f0d4-0088-7106fec3cb8f@gmail.com> <9a9c176c-8991-cd12-d2da-34114a9d1aca@gmail.com>
+ <CAJZ5v0gsAP1k2ej_5mgK5P_2rLn_GeMbjX9=-BG_die-6WmitA@mail.gmail.com> <529a22f7-52ba-f87d-f82b-8f94e1637ca9@gmail.com>
+In-Reply-To: <529a22f7-52ba-f87d-f82b-8f94e1637ca9@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Dec 2020 17:53:16 +0100
+Message-ID: <CAJZ5v0jy=WecHEQFzfu++uENWerHf5GqfwZMYNjQ2V=H7Geq8Q@mail.gmail.com>
+Subject: Re: acpi_device_notify() binding devices that don't seem like they
+ should be bound
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-12-08 19:33:13, Dan Williams wrote:
-> On Tue, Dec 8, 2020 at 6:13 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >
-> > On 20-12-08 17:37:50, Dan Williams wrote:
-> > > On Tue, Dec 8, 2020 at 4:24 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
-> > > >
-> > > > Add a straightforward IOCTL that provides a mechanism for userspace to
-> > > > query the supported memory device commands.
-> > > >
-> > > > Memory device commands are specified in 8.2.9 of the CXL 2.0
-> > > > specification. They are submitted through a mailbox mechanism specified
-> > > > in 8.2.8.4.
-> > > >
-> > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > >
-> > > > ---
-> > > >
-> > > > I did attempt to use the same struct for querying commands as well as
-> > > > sending commands (upcoming patch). The number of unused fields between
-> > > > the two made for a bad fit IMO.
-> > > >
-> > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > > ---
-> > > >  Documentation/cxl/memory-devices.rst |   9 +++
-> > > >  drivers/cxl/mem.c                    |  89 +++++++++++++++++++++++
-> > > >  include/uapi/linux/cxl_mem.h         | 102 +++++++++++++++++++++++++++
-> > > >  3 files changed, 200 insertions(+)
-> > > >  create mode 100644 include/uapi/linux/cxl_mem.h
-> > > >
-> > > > diff --git a/Documentation/cxl/memory-devices.rst b/Documentation/cxl/memory-devices.rst
-> > > > index 5f723c25382b..ec54674b3822 100644
-> > > > --- a/Documentation/cxl/memory-devices.rst
-> > > > +++ b/Documentation/cxl/memory-devices.rst
-> > > > @@ -32,6 +32,15 @@ CXL Memory Device
-> > > >  .. kernel-doc:: drivers/cxl/mem.c
-> > > >     :internal:
-> > > >
-> > > > +CXL IOCTL Interface
-> > > > +-------------------
-> > > > +
-> > > > +.. kernel-doc:: include/uapi/linux/cxl_mem.h
-> > > > +   :doc: UAPI
-> > > > +
-> > > > +.. kernel-doc:: include/uapi/linux/cxl_mem.h
-> > > > +   :internal:
-> > > > +
-> > > >  External Interfaces
-> > > >  ===================
-> > > >
-> > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > index bb6ea58f6c7b..2c4aadcea0e4 100644
-> > > > --- a/drivers/cxl/mem.c
-> > > > +++ b/drivers/cxl/mem.c
-> > > > @@ -7,6 +7,7 @@
-> > > >  #include <linux/idr.h>
-> > > >  #include <linux/pci.h>
-> > > >  #include <linux/io.h>
-> > > > +#include <uapi/linux/cxl_mem.h>
-> > > >  #include "acpi.h"
-> > > >  #include "pci.h"
-> > > >  #include "cxl.h"
-> > > > @@ -73,6 +74,49 @@ static DEFINE_IDR(cxl_mem_idr);
-> > > >  /* protect cxl_mem_idr allocations */
-> > > >  static DEFINE_MUTEX(cxl_memdev_lock);
-> > > >
-> > > > +/*
-> > > > + * This table defines the supported mailboxes commands for the driver. The id is
-> > > > + * ordinal and thus gaps in this table aren't allowed. This table is made up of
-> > > > + * a UAPI structure. Non-negative values in the table will be validated against
-> > > > + * the user's input. For example, if size_in is 0, and the user passed in 1, it
-> > > > + * is an error.
-> > > > + */
-> > > > +#define CXL_CMD(_id, _flags, sin, sout, _name, _enable, op)                    \
-> > > > +       {                                                                      \
-> > > > +               { .id = CXL_MEM_COMMAND_ID_##_id,                              \
-> > > > +                 .flags = CXL_MEM_COMMAND_FLAG_##_flags,                      \
-> > > > +                 .size_in = sin,                                              \
-> > > > +                 .size_out = sout,                                            \
-> > > > +                 .name = _name },                                             \
-> > > > +                       .enable = _enable, .opcode = op                        \
-> > > > +       }
-> > >
-> > > Seems the ordinality requirement could be dropped if the definition was:
-> > >
-> > > #define CXL_CMD(_id, _flags, sin, sout, _name, _enable, op)                    \
-> > >        [CXL_MEM_COMMAND_ID_##_id] = {
-> > >                              \
-> > >                { .id = CXL_MEM_COMMAND_ID_##_id,                              \
-> > > ...
-> > >
-> > > Then command 0 and 42 could be defined out of order in the table.
-> > > Especially if we need to config-disable or deprecate commands, I think
-> > > it would be useful if this table was tolerant to being sparse.
-> > >
-> >
-> > How sparse are we talking? The current form does support sparseness, but
-> > obviously gets quite large if the ID numbering is similar to random
-> > distribution.
-> 
-> "Sparse" may have been the wrong word to use. I was implying sparse
-> enough that if I add command N+1 I don't need to be careful where I
-> put it in mem_commands, but still be able to rely on lookups into
-> mem_commands being indexed by the command-id.
-> 
+On Wed, Dec 9, 2020 at 5:20 PM Daniel Scally <djrscally@gmail.com> wrote:
+>
+> Hi Rafael
+>
+> On 09/12/2020 15:43, Rafael J. Wysocki wrote:
+> > On Wed, Dec 9, 2020 at 10:55 AM Daniel Scally <djrscally@gmail.com> wrote:
+> >>
+> >>
+> >> On 08/12/2020 23:48, Daniel Scally wrote:
+> >>> Hello again
+> >>>
+> >>> On 06/12/2020 00:00, Daniel Scally wrote:
+> >>>> INT3472:08 is not an acpi device that seems to be a good candidate for
+> >>>> binding to 0000:00:00.0; it just happens to be the first child of
+> >>>> PNP0A08:08 that shares _ADR 0 and has _STA not set to 0.
+> >>>>
+> >>>> The comment within acpi_find_child_device() does imply that there should
+> >>>> only ever be a single child device with the same _ADR as the parent, so
+> >>>> I suppose this is possibly a case of poor ACPI tables confusing the code
+> >>>> a bit; given both PNP0A08:00 and _all_ of the INT3472 devices have _ADR
+> >>>> set to zero (as indeed do the machine's cameras), but I'm not
+> >>>> knowledgeable enough on ACPI to know whether that's to spec (or at least
+> >>>> accounted for). The INT3472 devices themselves do not actually seem to
+> >>>> represent a physical device (atleast, not in this case...sometimes they
+> >>>> do...), rather they're a dummy being used to simply group some GPIO
+> >>>> lines under a common _CRS. The sensors are called out as dependent on
+> >>>> these "devices" in their _DEP method, which is already a horrible way of
+> >>>> doing things so more broken ACPI being to blame wouldn't surprise me.
+> >>>>
+> >>>> The other problem that that raises is that there seems to be _no_ good
+> >>>> candidate for binding to 0000:00:00.0 that's a child of PNP0A08:00 - the
+> >>>> only devices sharing _ADR 0 and having _STA != 0 are those two INT3472
+> >>>> entries and the machine's cameras.
+> >>> After some more reading, I'm pretty confident that this is the problem
+> >>> now - I.E. that those devices having _ADR of 0 is what's causing this
+> >>> issue to materialise, and that those values should be set to something
+> >>> more appropriate. Still unsure about the best approach to fix it though
+> >>> from a kernel point of view; there doesn't seem to be anything out of
+> >>> whack in the logic, and I believe (correct me if I'm wrong) there can be
+> >>> legitimate instances of child devices sharing _ADR=0 with the parent, so
+> >>> the problem becomes how to identify the illegitimate instances so that
+> >>> they can be discarded. My experience in this is really limited, so I
+> >>> lean towards the conclusion that hard-coding exceptions somewhere might
+> >>> be necessary to handle this without resorting to patched ACPI tables.
+> >>> Whether that's within acpi_find_child_device() to prevent matching
+> >>> occurring there, or else setting the adev->pnp.bus_address to some
+> >>> alternate value after creation to compensate.
+> >>>
+> >>> I recognise that that's a horrible answer though, so I'm really hoping
+> >>> that someone has an idea for how to handle this in a better way.
+> >> Oops, missed this crucial line from the spec:
+> >>
+> >> "A device object must contain either an _HID object or an _ADR object,
+> >> but should not contain both."
+> >>
+> >> And here's the Device declaration for these objects:
+> >>
+> >>         Device (PMI0)
+> >>         {
+> >>             Name (_ADR, Zero)  // _ADR: Address
+> >>             Name (_HID, "INT3472")  // _HID: Hardware ID
+> >>             Name (_CID, "INT3472")  // _CID: Compatible ID
+> >>             Name (_DDN, "INCL-CRDD")  // _DDN: DOS Device Name
+> >>             Name (_UID, Zero)  // _UID: Unique ID
+> >>
+> >> So that's the broken part rather than the _ADR value of 0 specifically.
+> >> That at least gives a jumping off point for some logic to fix rather
+> >> than a hardcoded anything, so I'll try to work out a nice way to handle
+> >> that (probably ignoring adevs in acpi_find_child_device() with addr=0
+> >> and a valid _HID) and submit a patch.
+> > Please see the comment in find_child_checks(), though - it kind of
+> > tries to handle this case already.
+> It down-weights them currently yes, but does still allow them to match.
+> I think it makes more sense to not allow a match at all, at least in the
+> situation I've encountered, but I suppose the implication of the logic
+> in this check is that at some point we've encountered ACPI entries with
+> both _HID and _ADR that were potentially correct matches, which kinda
+> re-complicates things again.
 
-I'm not sure I understand the issue then. It's already demonstrated via the
-first command being reserved - ie. already sparse.
+That's correct.
 
-CXL_CMD(INVALID, NONE, 0, 0, "Reserved", false, 0)
+> > I guess what happens is that _STA is not present under the device that
+> > is expected to be matched, so maybe the logic regarding this may be
+> > changed somewhat.
+>
+> Hmm yeah I guess so, so this is kinda a combination of two problems
+> probably. And if the actual device that is expected to match had a _STA
+> > 0 then presumably the down-weighting of devices with a _HID in
+> find_child_checks() would ensure the correct dev was matched.
 
-As long as the command doesn't have @enable set, it's effectively ignored for
-all user interactions.
+That's the intended outcome.
 
-If you look at the last patch in the series, WIP, there is an example for
-enabling one.
-
-
-> > I think if we do see this being more like random distribution, it can be
-> > supported, but I think it adds a decent amount of complexity for what I see as
-> > not much reward - unless you know of a fairly simple way to create this data
-> > structure with full sparse ID support?
-> 
-> I'm expecting the command distribution to be mostly uniform, it's more
-> of the lookup property that I think would be useful especially for the
-> dynamic case of walking mem_commands to update it relative to what the
-> hardware supports or other metadata. Speaking of which I think @enable
-> should be turned into @flags of which 'enable' is one, in case we want
-> to define more flags in the future.
-> 
-
-I like the idea of moving enable to flags. I still don't see a reason to change
-how it's defined today, can you give me an example where what is there won't
-work?
-
-> >
-> > > > +
-> > > > +/**
-> > > > + * struct cxl_mem_command - Driver representation of a memory device command
-> > > > + * @info: Command information as it exists for the UAPI
-> > > > + * @opcode: The actual bits used for the mailbox protocol
-> > > > + * @enable: Whether the command is enabled. The driver may support a large set
-> > > > + *         of commands that may not be enabled. The primary reason a command
-> > > > + *         would not be enabled is for commands that are specified as optional
-> > > > + *         and the hardware doesn't support the command.
-> > > > + *
-> > > > + * The cxl_mem_command is the driver's internal representation of commands that
-> > > > + * are supported by the driver. Some of these commands may not be supported by
-> > > > + * the hardware (!@enable). The driver will use @info to validate the fields
-> > > > + * passed in by the user then submit the @opcode to the hardware.
-> > > > + *
-> > > > + * See struct cxl_command_info.
-> > > > + */
-> > > > +struct cxl_mem_command {
-> > > > +       const struct cxl_command_info info;
-> > > > +       const u16 opcode;
-> > > > +       bool enable;
-> > > > +};
-> > > > +
-> > > > +static struct cxl_mem_command mem_commands[] = {
-> > > > +       CXL_CMD(INVALID, NONE, 0, 0, "Reserved", false, 0),
-> > > > +};
-> > > > +
-> > > >  static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > > >  {
-> > > >         const int timeout = msecs_to_jiffies(2000);
-> > > > @@ -268,8 +312,53 @@ static int cxl_mem_open(struct inode *inode, struct file *file)
-> > > >         return 0;
-> > > >  }
-> > > >
-> > > > +static int cxl_mem_count_commands(void)
-> > > > +{
-> > > > +       int i, n = 0;
-> > > > +
-> > > > +       for (i = 0; i < ARRAY_SIZE(mem_commands); i++) {
-> > > > +               struct cxl_mem_command *c = &mem_commands[i];
-> > > > +
-> > > > +               if (c->enable)
-> > > > +                       n++;
-> > > > +       }
-> > > > +
-> > > > +       return n;
-> > > > +}
-> > > > +
-> > > >  static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> > > >  {
-> > > > +       if (cmd == CXL_MEM_QUERY_COMMANDS) {
-> > > > +               struct cxl_mem_query_commands __user *q = (void __user *)arg;
-> > > > +               u32 n_commands;
-> > > > +               int i, j;
-> > > > +
-> > > > +               if (get_user(n_commands, (u32 __user *)arg))
-> > > > +                       return -EFAULT;
-> > > > +
-> > > > +               if (n_commands == 0)
-> > > > +                       return put_user(cxl_mem_count_commands(),
-> > > > +                                       (u32 __user *)arg);
-> > > > +
-> > > > +               for (i = 0, j = 0;
-> > > > +                    i < ARRAY_SIZE(mem_commands) && j < n_commands; i++) {
-> > > > +                       struct cxl_mem_command *c = &mem_commands[i];
-> > > > +                       const struct cxl_command_info *info = &c->info;
-> > > > +
-> > > > +                       if (!c->enable)
-> > > > +                               continue;
-> > > > +
-> > > > +                       if (copy_to_user(&q->commands[j], info, sizeof(*info)))
-> > > > +                               return -EFAULT;
-> > > > +
-> > > > +                       if (copy_to_user(&q->commands[j].name, info->name,
-> > > > +                                        strlen(info->name)))
-> > > > +                               return -EFAULT;
-> > >
-> > > Not sure why this is needed, see comment below about @name in
-> > > cxl_mem_query_commands.
-> > >
-> > > > +
-> > > > +                       j++;
-> > > > +               }
-> > > > +       }
-> > > > +
-> > > >         return -ENOTTY;
-> > > >  }
-> > > >
-> > > > diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> > > > new file mode 100644
-> > > > index 000000000000..1d1e143f98ec
-> > > > --- /dev/null
-> > > > +++ b/include/uapi/linux/cxl_mem.h
-> > > > @@ -0,0 +1,102 @@
-> > > > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > > > +/*
-> > > > + * CXL IOCTLs for Memory Devices
-> > > > + */
-> > > > +
-> > > > +#ifndef _UAPI_CXL_MEM_H_
-> > > > +#define _UAPI_CXL_MEM_H_
-> > > > +
-> > > > +#if defined(__cplusplus)
-> > > > +extern "C" {
-> > > > +#endif
-> > > > +
-> > > > +/**
-> > > > + * DOC: UAPI
-> > > > + *
-> > > > + * CXL memory devices expose UAPI to have a standard user interface.
-> > > > + * Userspace can refer to these structure definitions and UAPI formats
-> > > > + * to communicate to driver
-> > > > + */
-> > > > +
-> > > > +#define CXL_MEM_QUERY_COMMANDS _IOR('C', 1, struct cxl_mem_query_commands)
-> > > > +
-> > > > +#define CXL_MEM_COMMAND_NAME_LENGTH 32
-> > > > +
-> > > > +/**
-> > > > + * struct cxl_command_info - Command information returned from a query.
-> > > > + * @id: ID number for the command.
-> > > > + * @flags: Flags that specify command behavior.
-> > > > + *
-> > > > + *          - CXL_MEM_COMMAND_FLAG_TAINT: Using this command will taint the kernel.
-> > > > + * @size_in: Expected input size, or -1 if variable length.
-> > > > + * @size_out: Expected output size, or -1 if variable length.
-> > > > + * @name: Name describing the command.
-> > > > + *
-> > > > + * Represents a single command that is supported by both the driver and the
-> > > > + * hardware. The is returned as part of an array from the query ioctl. The
-> > > > + * following would be a command named "foobar" that takes a variable length
-> > > > + * input and returns 0 bytes of output.
-> > > > + *
-> > > > + *  - @id = 10
-> > > > + *  - @name = foobar
-> > > > + *  - @flags = 0
-> > > > + *  - @size_in = -1
-> > > > + *  - @size_out = 0
-> > > > + *
-> > > > + * See struct cxl_mem_query_commands.
-> > > > + */
-> > > > +struct cxl_command_info {
-> > > > +       __u32 id;
-> > > > +#define CXL_MEM_COMMAND_ID_INVALID 0
-> > > > +
-> > > > +       __u32 flags;
-> > > > +#define CXL_MEM_COMMAND_FLAG_NONE 0
-> > > > +#define CXL_MEM_COMMAND_FLAG_TAINT BIT(0)
-> > > > +
-> > > > +       __s32 size_in;
-> > > > +       __s32 size_out;
-> > > > +
-> > > > +       char name[32];
-> > >
-> > > Why does the name for a command need to be shuffled back and forth
-> > > over the ioctl interface. Can't this be handled by a static lookup
-> > > table defined in the header?
-> > >
-> >
-> > I was thinking of cases where the userspace application doesn't match the
-> > current kernel's UAPI and giving the driver flexibility to return whatever.
-> 
-> How / why would the application by looking at @name for UAPI compatibility?
-> 
-> > OTTOMH, I also can't think of a way to do this if you want to do define the
-> > table sparsely though. Do you have ideas for that?
-> 
-> I don't think the name lookup would be sparse. i.e. it would be ok for
-> mem_commands to not have an entry for everything in the name lookup
-> table. As for defining the table it could use C preprocessor trick
-> popularized by Steven Rostedt:
-> 
-> #define CMDS                                                     \
->         C(CMD1, "command one"),     \
->         C(CMD2, "command two")     \
-> #undef C
-> #define C(a, b) a
-> enum commands_enum { CMDS };
-> #undef C
-> #define C(a, b) { b }
-> static struct {
->         const char *name;
-> } commands[] = { CMDS };
-> #undef C
-> 
-> ...then there's no way for the command ids to get out of sync with the names.
-
-I will move it to the header and drop name[32] from UAPI. My personal preference
-is to have the driver fill in the field, but I have no objective reason for
-that.
+We may need another value (between the min and the max) to return when
+adev->pnp.type.platform_id is not set and _STA is not present.
