@@ -2,265 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 412E92D4137
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 12:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E67E2D45B2
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 16:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730818AbgLILgV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Dec 2020 06:36:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2231 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730809AbgLILgQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Dec 2020 06:36:16 -0500
-Received: from fraeml705-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CrZdn62gfz67Nqb;
-        Wed,  9 Dec 2020 19:32:13 +0800 (CST)
-Received: from lhreml713-chm.china.huawei.com (10.201.108.64) by
- fraeml705-chm.china.huawei.com (10.206.15.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Wed, 9 Dec 2020 12:35:33 +0100
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml713-chm.china.huawei.com (10.201.108.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Wed, 9 Dec 2020 11:35:31 +0000
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.1913.007;
- Wed, 9 Dec 2020 19:35:30 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Vincent Guittot <vincent.guittot@linaro.org>
-CC:     Valentin Schneider <valentin.schneider@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Cc: Len Brown" <lenb@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>, "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>
-Subject: RE: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
-Thread-Topic: [RFC PATCH v2 2/2] scheduler: add scheduler level for clusters
-Thread-Index: AQHWx46tyJL5OgLpakCat9sEfhhBKKni9KEAgACKRLD//5RWAIAAjDiggAAA9pCAAKpoUIAARlmAgACFXCD//4SLAIAG0N6Q///aWIAAbBndEA==
-Date:   Wed, 9 Dec 2020 11:35:30 +0000
-Message-ID: <68b3a967cb41456ba6402d913bfafb31@hisilicon.com>
-References: <20201201025944.18260-1-song.bao.hua@hisilicon.com>
- <20201201025944.18260-3-song.bao.hua@hisilicon.com>
- <CAKfTPtAppZFdku6k3cA=kNYKjU5e7w4A+E3R5_m11z+jy_WCBw@mail.gmail.com>
- <f9d9c6e959e441ec94264891ae90c11d@hisilicon.com>
- <CAKfTPtDqpQBcjq03cJEKN99XOZdNuV560ja9S-oZzkq7BToR8w@mail.gmail.com>
- <414fbd167b214452b925ac674575f0d6@hisilicon.com>
- <CAKfTPtALPjSvOZ2xf9cka9R-1uqi3AHQ+GYy7asT3wfvmLqaXw@mail.gmail.com>
- <d81006facd444d8a83bd7f1e24ccf6d9@hisilicon.com>
- <CAKfTPtAy_5QxnbmHq1pbGRhQYJ69ULovO6CKro-KkNKNnHMveg@mail.gmail.com>
- <b6bfb636b1404d3c827e2ba2034e6822@hisilicon.com>
- <CAKfTPtCs5G4wRSuQzfb8wnkNcUDEb7zTdFK2ZY+kpLnZrHFQ0g@mail.gmail.com>
-In-Reply-To: <CAKfTPtCs5G4wRSuQzfb8wnkNcUDEb7zTdFK2ZY+kpLnZrHFQ0g@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.202.110]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728204AbgLIPn6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Dec 2020 10:43:58 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:46857 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727956AbgLIPn4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Dec 2020 10:43:56 -0500
+Received: by mail-oi1-f195.google.com with SMTP id k2so2113167oic.13
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Dec 2020 07:43:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g9LrxAhyj7mPRx7hIEuiOchklAm6pj6kbffvw5W5WgY=;
+        b=NrIC/s/N8rOeURcszBSE3ICFP8tJMS8A00FJdwoWPcRtGeAhw9gfoik2OuZsS/5ZuU
+         JIf3y0I/MnCvhV4Cs1qyh9NojU+MpFUHeFSFWXxlr29S9L3Y1qYGEvcVpx3pVoxvbAk+
+         m6iqY66Sz1DH/3rkTqAw5J8ebjJHvoq6PO15aNkvduxQWWdJLfikufnie2Jz9W4IV1C5
+         vSY79Wjs9mBvZBOLaEgPBzg+jjcEtxlimhfL5gXKyLYU5JUXSbpBIch4QS6MmexB7NAg
+         SXSA4Jm/AKnRFW3DsWiVpMFTQQc+Tm9Y4B0+rf8QERnA5sJVt5Z8HkwpMYutYpezyv2h
+         xVNQ==
+X-Gm-Message-State: AOAM533Xa7dZaDQr8W9oxO6f0H2k1ZtChonWQFI5C4wCtvravHRW+K9E
+        PXlufSN7PF0+lEnl7Vkz3Zv9zB/kCfCJAN9UpUY=
+X-Google-Smtp-Source: ABdhPJwBT7xFjtK2R5tXR80q04XuX4SaKCEiaAckw/1wpLPAzDUp9XHpWhnmZ6JtcsF9djur4k1S1P08kdjsLHmCIDA=
+X-Received: by 2002:aca:5197:: with SMTP id f145mr2188245oib.71.1607528595309;
+ Wed, 09 Dec 2020 07:43:15 -0800 (PST)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+References: <1409ba0c-1580-dc09-e6fe-a0c9bcda6462@gmail.com>
+ <858bb2b0-e2b4-f0d4-0088-7106fec3cb8f@gmail.com> <9a9c176c-8991-cd12-d2da-34114a9d1aca@gmail.com>
+In-Reply-To: <9a9c176c-8991-cd12-d2da-34114a9d1aca@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Dec 2020 16:43:04 +0100
+Message-ID: <CAJZ5v0gsAP1k2ej_5mgK5P_2rLn_GeMbjX9=-BG_die-6WmitA@mail.gmail.com>
+Subject: Re: acpi_device_notify() binding devices that don't seem like they
+ should be bound
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmluY2VudCBHdWl0dG90
-IFttYWlsdG86dmluY2VudC5ndWl0dG90QGxpbmFyby5vcmddDQo+IFNlbnQ6IFR1ZXNkYXksIERl
-Y2VtYmVyIDgsIDIwMjAgNDoyOSBBTQ0KPiBUbzogU29uZyBCYW8gSHVhIChCYXJyeSBTb25nKSA8
-c29uZy5iYW8uaHVhQGhpc2lsaWNvbi5jb20+DQo+IENjOiBWYWxlbnRpbiBTY2huZWlkZXIgPHZh
-bGVudGluLnNjaG5laWRlckBhcm0uY29tPjsgQ2F0YWxpbiBNYXJpbmFzDQo+IDxjYXRhbGluLm1h
-cmluYXNAYXJtLmNvbT47IFdpbGwgRGVhY29uIDx3aWxsQGtlcm5lbC5vcmc+OyBSYWZhZWwgSi4g
-V3lzb2NraQ0KPiA8cmp3QHJqd3lzb2NraS5uZXQ+OyBDYzogTGVuIEJyb3duIDxsZW5iQGtlcm5l
-bC5vcmc+Ow0KPiBncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsgSm9uYXRoYW4gQ2FtZXJvbiA8
-am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsNCj4gSW5nbyBNb2xuYXIgPG1pbmdvQHJlZGhh
-dC5jb20+OyBQZXRlciBaaWpsc3RyYSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+OyBKdXJpDQo+IExl
-bGxpIDxqdXJpLmxlbGxpQHJlZGhhdC5jb20+OyBEaWV0bWFyIEVnZ2VtYW5uIDxkaWV0bWFyLmVn
-Z2VtYW5uQGFybS5jb20+Ow0KPiBTdGV2ZW4gUm9zdGVkdCA8cm9zdGVkdEBnb29kbWlzLm9yZz47
-IEJlbiBTZWdhbGwgPGJzZWdhbGxAZ29vZ2xlLmNvbT47IE1lbA0KPiBHb3JtYW4gPG1nb3JtYW5A
-c3VzZS5kZT47IE1hcmsgUnV0bGFuZCA8bWFyay5ydXRsYW5kQGFybS5jb20+OyBMQUsNCj4gPGxp
-bnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZz47IGxpbnV4LWtlcm5lbA0KPiA8bGlu
-dXgta2VybmVsQHZnZXIua2VybmVsLm9yZz47IEFDUEkgRGV2ZWwgTWFsaW5nIExpc3QNCj4gPGxp
-bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+
-OyB4dXdlaSAoTykNCj4gPHh1d2VpNUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnpl
-bmdAaGlzaWxpY29uLmNvbT4NCj4gU3ViamVjdDogUmU6IFtSRkMgUEFUQ0ggdjIgMi8yXSBzY2hl
-ZHVsZXI6IGFkZCBzY2hlZHVsZXIgbGV2ZWwgZm9yIGNsdXN0ZXJzDQo+IA0KPiBPbiBNb24sIDcg
-RGVjIDIwMjAgYXQgMTA6NTksIFNvbmcgQmFvIEh1YSAoQmFycnkgU29uZykNCj4gPHNvbmcuYmFv
-Lmh1YUBoaXNpbGljb24uY29tPiB3cm90ZToNCj4gPg0KPiA+DQo+ID4NCj4gPiA+IC0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBWaW5jZW50IEd1aXR0b3QgW21haWx0bzp2
-aW5jZW50Lmd1aXR0b3RAbGluYXJvLm9yZ10NCj4gPiA+IFNlbnQ6IFRodXJzZGF5LCBEZWNlbWJl
-ciAzLCAyMDIwIDEwOjM5IFBNDQo+ID4gPiBUbzogU29uZyBCYW8gSHVhIChCYXJyeSBTb25nKSA8
-c29uZy5iYW8uaHVhQGhpc2lsaWNvbi5jb20+DQo+ID4gPiBDYzogVmFsZW50aW4gU2NobmVpZGVy
-IDx2YWxlbnRpbi5zY2huZWlkZXJAYXJtLmNvbT47IENhdGFsaW4gTWFyaW5hcw0KPiA+ID4gPGNh
-dGFsaW4ubWFyaW5hc0Bhcm0uY29tPjsgV2lsbCBEZWFjb24gPHdpbGxAa2VybmVsLm9yZz47IFJh
-ZmFlbCBKLiBXeXNvY2tpDQo+ID4gPiA8cmp3QHJqd3lzb2NraS5uZXQ+OyBDYzogTGVuIEJyb3du
-IDxsZW5iQGtlcm5lbC5vcmc+Ow0KPiA+ID4gZ3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc7IEpv
-bmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47DQo+ID4gPiBJ
-bmdvIE1vbG5hciA8bWluZ29AcmVkaGF0LmNvbT47IFBldGVyIFppamxzdHJhIDxwZXRlcnpAaW5m
-cmFkZWFkLm9yZz47IEp1cmkNCj4gPiA+IExlbGxpIDxqdXJpLmxlbGxpQHJlZGhhdC5jb20+OyBE
-aWV0bWFyIEVnZ2VtYW5uDQo+IDxkaWV0bWFyLmVnZ2VtYW5uQGFybS5jb20+Ow0KPiA+ID4gU3Rl
-dmVuIFJvc3RlZHQgPHJvc3RlZHRAZ29vZG1pcy5vcmc+OyBCZW4gU2VnYWxsIDxic2VnYWxsQGdv
-b2dsZS5jb20+OyBNZWwNCj4gPiA+IEdvcm1hbiA8bWdvcm1hbkBzdXNlLmRlPjsgTWFyayBSdXRs
-YW5kIDxtYXJrLnJ1dGxhbmRAYXJtLmNvbT47IExBSw0KPiA+ID4gPGxpbnV4LWFybS1rZXJuZWxA
-bGlzdHMuaW5mcmFkZWFkLm9yZz47IGxpbnV4LWtlcm5lbA0KPiA+ID4gPGxpbnV4LWtlcm5lbEB2
-Z2VyLmtlcm5lbC5vcmc+OyBBQ1BJIERldmVsIE1hbGluZyBMaXN0DQo+ID4gPiA8bGludXgtYWNw
-aUB2Z2VyLmtlcm5lbC5vcmc+OyBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47IHh1d2Vp
-IChPKQ0KPiA+ID4gPHh1d2VpNUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdA
-aGlzaWxpY29uLmNvbT4NCj4gPiA+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIHYyIDIvMl0gc2No
-ZWR1bGVyOiBhZGQgc2NoZWR1bGVyIGxldmVsIGZvciBjbHVzdGVycw0KPiA+ID4NCj4gPiA+IE9u
-IFRodSwgMyBEZWMgMjAyMCBhdCAxMDoxMSwgU29uZyBCYW8gSHVhIChCYXJyeSBTb25nKQ0KPiA+
-ID4gPHNvbmcuYmFvLmh1YUBoaXNpbGljb24uY29tPiB3cm90ZToNCj4gPiA+ID4NCj4gPiA+ID4N
-Cj4gPiA+ID4NCj4gPiA+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gPiA+
-IEZyb206IFZpbmNlbnQgR3VpdHRvdCBbbWFpbHRvOnZpbmNlbnQuZ3VpdHRvdEBsaW5hcm8ub3Jn
-XQ0KPiA+ID4gPiA+IFNlbnQ6IFRodXJzZGF5LCBEZWNlbWJlciAzLCAyMDIwIDEwOjA0IFBNDQo+
-ID4gPiA+ID4gVG86IFNvbmcgQmFvIEh1YSAoQmFycnkgU29uZykgPHNvbmcuYmFvLmh1YUBoaXNp
-bGljb24uY29tPg0KPiA+ID4gPiA+IENjOiBWYWxlbnRpbiBTY2huZWlkZXIgPHZhbGVudGluLnNj
-aG5laWRlckBhcm0uY29tPjsgQ2F0YWxpbiBNYXJpbmFzDQo+ID4gPiA+ID4gPGNhdGFsaW4ubWFy
-aW5hc0Bhcm0uY29tPjsgV2lsbCBEZWFjb24gPHdpbGxAa2VybmVsLm9yZz47IFJhZmFlbCBKLg0K
-PiBXeXNvY2tpDQo+ID4gPiA+ID4gPHJqd0Byand5c29ja2kubmV0PjsgQ2M6IExlbiBCcm93biA8
-bGVuYkBrZXJuZWwub3JnPjsNCj4gPiA+ID4gPiBncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsg
-Sm9uYXRoYW4gQ2FtZXJvbg0KPiA+ID4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47DQo+
-ID4gPiA+ID4gSW5nbyBNb2xuYXIgPG1pbmdvQHJlZGhhdC5jb20+OyBQZXRlciBaaWpsc3RyYSA8
-cGV0ZXJ6QGluZnJhZGVhZC5vcmc+Ow0KPiBKdXJpDQo+ID4gPiA+ID4gTGVsbGkgPGp1cmkubGVs
-bGlAcmVkaGF0LmNvbT47IERpZXRtYXIgRWdnZW1hbm4NCj4gPiA+IDxkaWV0bWFyLmVnZ2VtYW5u
-QGFybS5jb20+Ow0KPiA+ID4gPiA+IFN0ZXZlbiBSb3N0ZWR0IDxyb3N0ZWR0QGdvb2RtaXMub3Jn
-PjsgQmVuIFNlZ2FsbCA8YnNlZ2FsbEBnb29nbGUuY29tPjsNCj4gTWVsDQo+ID4gPiA+ID4gR29y
-bWFuIDxtZ29ybWFuQHN1c2UuZGU+OyBNYXJrIFJ1dGxhbmQgPG1hcmsucnV0bGFuZEBhcm0uY29t
-PjsgTEFLDQo+ID4gPiA+ID4gPGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZz47
-IGxpbnV4LWtlcm5lbA0KPiA+ID4gPiA+IDxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPjsg
-QUNQSSBEZXZlbCBNYWxpbmcgTGlzdA0KPiA+ID4gPiA+IDxsaW51eC1hY3BpQHZnZXIua2VybmVs
-Lm9yZz47IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsgeHV3ZWkNCj4gKE8pDQo+ID4g
-PiA+ID4gPHh1d2VpNUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxp
-Y29uLmNvbT4NCj4gPiA+ID4gPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCB2MiAyLzJdIHNjaGVk
-dWxlcjogYWRkIHNjaGVkdWxlciBsZXZlbCBmb3IgY2x1c3RlcnMNCj4gPiA+ID4gPg0KPiA+ID4g
-PiA+IE9uIFdlZCwgMiBEZWMgMjAyMCBhdCAyMTo1OCwgU29uZyBCYW8gSHVhIChCYXJyeSBTb25n
-KQ0KPiA+ID4gPiA+IDxzb25nLmJhby5odWFAaGlzaWxpY29uLmNvbT4gd3JvdGU6DQo+ID4gPiA+
-ID4gPg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBTb3JyeS4gUGxlYXNlIGlnbm9yZSB0
-aGlzLiBJIGFkZGVkIHNvbWUgcHJpbnRrIGhlcmUgd2hpbGUgdGVzdGluZw0KPiA+ID4gPiA+ID4g
-PiBvbmUgbnVtYS4gV2lsbCB1cGRhdGUgeW91IHRoZSBkYXRhIGluIGFub3RoZXIgZW1haWwuDQo+
-ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gUmUtdGVzdGVkIGluIG9uZSBOVU1BIG5vZGUoY3B1MC1j
-cHUyMyk6DQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gZz0xDQo+ID4gPiA+ID4gPiBSdW5uaW5n
-IGluIHRocmVhZGVkIG1vZGUgd2l0aCAxIGdyb3VwcyB1c2luZyA0MCBmaWxlIGRlc2NyaXB0b3Jz
-DQo+ID4gPiA+ID4gPiBFYWNoIHNlbmRlciB3aWxsIHBhc3MgMTAwMDAwIG1lc3NhZ2VzIG9mIDEw
-MCBieXRlcw0KPiA+ID4gPiA+ID4gdy9vOiA3LjY4OSA3LjQ4NSA3LjQ4NSA3LjQ1OCA3LjUyNCA3
-LjUzOSA3LjczOCA3LjY5MyA3LjU2OCA3LjY3ND03LjU4NTMNCj4gPiA+ID4gPiA+IHcvIDogNy41
-MTYgNy45NDEgNy4zNzQgNy45NjMgNy44ODEgNy45MTAgNy40MjAgNy41NTYgNy42OTUgNy40NDE9
-Ny42Njk3DQo+ID4gPiA+ID4gPiB3LyBidXQgZHJvcHBlZCBzZWxlY3RfaWRsZV9jbHVzdGVyOg0K
-PiA+ID4gPiA+ID4gICAgICA3Ljc1MiA3LjczOSA3LjczOSA3LjU3MSA3LjU0NSA3LjY4NSA3LjQw
-NyA3LjU4MCA3LjYwNSA3LjQ4Nz03LjYxMQ0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IGc9Mg0K
-PiA+ID4gPiA+ID4gUnVubmluZyBpbiB0aHJlYWRlZCBtb2RlIHdpdGggMiBncm91cHMgdXNpbmcg
-NDAgZmlsZSBkZXNjcmlwdG9ycw0KPiA+ID4gPiA+ID4gRWFjaCBzZW5kZXIgd2lsbCBwYXNzIDEw
-MDAwMCBtZXNzYWdlcyBvZiAxMDAgYnl0ZXMNCj4gPiA+ID4gPiA+IHcvbzogMTAuMTI3IDEwLjEx
-OSAxMC4wNzAgMTAuMTk2IDEwLjA1NyAxMC4xMTEgMTAuMDQ1IDEwLjE2NCAxMC4xNjINCj4gPiA+
-ID4gPiA+IDkuOTU1PTEwLjEwMDYNCj4gPiA+ID4gPiA+IHcvIDogOS42OTQgOS42NTQgOS42MTIg
-OS42NDkgOS42ODYgOS43MzQgOS42MDcgOS44NDIgOS42OTAgOS43MTA9OS42ODc4DQo+ID4gPiA+
-ID4gPiB3LyBidXQgZHJvcHBlZCBzZWxlY3RfaWRsZV9jbHVzdGVyOg0KPiA+ID4gPiA+ID4gICAg
-ICA5Ljg3NyAxMC4wNjkgOS45NTEgOS45MTggOS45NDcgOS43OTAgOS45MDYgOS44MjAgOS44NjMg
-OS45MDY9OS45MDQ3DQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gZz0zDQo+ID4gPiA+ID4gPiBS
-dW5uaW5nIGluIHRocmVhZGVkIG1vZGUgd2l0aCAzIGdyb3VwcyB1c2luZyA0MCBmaWxlIGRlc2Ny
-aXB0b3JzDQo+ID4gPiA+ID4gPiBFYWNoIHNlbmRlciB3aWxsIHBhc3MgMTAwMDAwIG1lc3NhZ2Vz
-IG9mIDEwMCBieXRlcw0KPiA+ID4gPiA+ID4gdy9vOiAxNS44ODUgMTUuMjU0IDE1LjkzMiAxNS42
-NDcgMTYuMTIwIDE1Ljg3OCAxNS44NTcgMTUuNzU5IDE1LjY3NA0KPiA+ID4gPiA+ID4gMTUuNzIx
-PTE1Ljc3MjcNCj4gPiA+ID4gPiA+IHcvIDogMTQuOTc0IDE0LjY1NyAxMy45NjkgMTQuOTg1IDE0
-LjcyOCAxNS42NjUgMTUuMTkxIDE0Ljk5NSAxNC45NDYNCj4gPiA+ID4gPiA+IDE0Ljg5NT0xNC45
-MDA1DQo+ID4gPiA+ID4gPiB3LyBidXQgZHJvcHBlZCBzZWxlY3RfaWRsZV9jbHVzdGVyOg0KPiA+
-ID4gPiA+ID4gICAgICAxNS40MDUgMTUuMTc3IDE1LjM3MyAxNS4xODcgMTUuNDUwIDE1LjU0MCAx
-NS4yNzggMTUuNjI4IDE1LjIyOA0KPiA+ID4gPiA+IDE1LjMyNT0xNS4zNTkxDQo+ID4gPiA+ID4g
-Pg0KPiA+ID4gPiA+ID4gZz00DQo+ID4gPiA+ID4gPiBSdW5uaW5nIGluIHRocmVhZGVkIG1vZGUg
-d2l0aCA0IGdyb3VwcyB1c2luZyA0MCBmaWxlIGRlc2NyaXB0b3JzDQo+ID4gPiA+ID4gPiBFYWNo
-IHNlbmRlciB3aWxsIHBhc3MgMTAwMDAwIG1lc3NhZ2VzIG9mIDEwMCBieXRlcw0KPiA+ID4gPiA+
-ID4gdy9vOiAyMC4wMTQgMjEuMDI1IDIxLjExOSAyMS4yMzUgMTkuNzY3IDIwLjk3MSAyMC45NjIg
-MjAuOTE0IDIxLjA5MA0KPiA+ID4gPiA+IDIxLjA5MD0yMC44MTg3DQo+ID4gPiA+ID4gPiB3LyA6
-IDIwLjMzMSAyMC42MDggMjAuMzM4IDIwLjQ0NSAyMC40NTYgMjAuMTQ2IDIwLjY5MyAyMC43OTcg
-MjEuMzgxDQo+ID4gPiA+ID4gMjAuNDUyPTIwLjU2NDcNCj4gPiA+ID4gPiA+IHcvIGJ1dCBkcm9w
-cGVkIHNlbGVjdF9pZGxlX2NsdXN0ZXI6DQo+ID4gPiA+ID4gPiAgICAgIDE5LjgxNCAyMC4xMjYg
-MjAuMjI5IDIwLjM1MCAyMC43NTAgMjAuNDA0IDE5Ljk1NyAxOS44ODggMjAuMjI2DQo+ID4gPiA+
-ID4gMjAuNTYyPTIwLjIzMDYNCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBJIGFz
-c3VtZSB0aGF0IHlvdSBoYXZlIHJ1biB0aGlzIG9uIHY1LjkgYXMgcHJldmlvdXMgdGVzdHMuDQo+
-ID4gPiA+DQo+ID4gPiA+IFllcA0KPiA+ID4gPg0KPiA+ID4gPiA+IFRoZSByZXN1bHRzIGRvbid0
-IHNob3cgYW55IHJlYWwgYmVuZWZpdCBvZiBzZWxlY3RfaWRsZV9jbHVzdGVyKCkNCj4gPiA+ID4g
-PiBpbnNpZGUgYSBub2RlIHdoZXJlYXMgdGhpcyBpcyB3aGVyZSB3ZSBjb3VsZCBleHBlY3QgbW9z
-dCBvZiB0aGUNCj4gPiA+ID4gPiBiZW5lZml0LiBXZSBoYXZlIHRvIHVuZGVyc3RhbmQgd2h5IHdl
-IGhhdmUgc3VjaCBhbiBpbXBhY3Qgb24gbnVtYQ0KPiA+ID4gPiA+IHRlc3RzIG9ubHkuDQo+ID4g
-PiA+DQo+ID4gPiA+IFRoZXJlIGlzIGEgNC01LjUlIGluY3JlYXNlIHdoaWxlIGc9MiBhbmQgZz0z
-Lg0KPiA+ID4NCj4gPiA+IG15IHBvaW50IHdhcyB3aXRoIHZzIHdpdGhvdXQgc2VsZWN0X2lkbGVf
-Y2x1c3RlcigpIGJ1dCBzdGlsbCBoYXZpbmcgYQ0KPiA+ID4gY2x1c3RlciBkb21haW4gbGV2ZWwN
-Cj4gPiA+IEluIHRoaXMgY2FzZSwgdGhlIGRpZmYgaXMgLTAuOCUgZm9yIGc9MSArMi4yJSBmb3Ig
-Zz0yLCArMyUgZm9yIGc9MyBhbmQNCj4gPiA+IC0xLjclIGZvciBnPTQNCj4gPiA+DQo+ID4gPiA+
-DQo+ID4gPiA+IFJlZ2FyZGluZyB0aGUgaHVnZSBpbmNyZWFzZSBpbiBOVU1BIGNhc2UsICBhdCB0
-aGUgZmlyc3QgYmVnaW5uaW5nLCBJIHN1c3BlY3QNCj4gPiA+ID4gd2UgaGF2ZSB3cm9uZyBsbGMg
-ZG9tYWluLiBGb3IgZXhhbXBsZSwgaWYgY3B1MCdzIGxsYyBkb21haW4gc3Bhbg0KPiA+ID4gPiBj
-cHUwLWNwdTQ3LCB0aGVuIHNlbGVjdF9pZGxlX2NwdSgpIGlzIHJ1bm5pbmcgaW4gd3JvbmcgcmFu
-Z2Ugd2hpbGUNCj4gPiA+ID4gaXQgc2hvdWxkIHJ1biBpbiBjcHUwLWNwdTIzLg0KPiA+ID4gPg0K
-PiA+ID4gPiBCdXQgYWZ0ZXIgcHJpbnRpbmcgdGhlIGxsYyBkb21haW4ncyBzcGFuLCBJIGZpbmQg
-aXQgaXMgY29tcGxldGVseSByaWdodC4NCj4gPiA+ID4gQ3B1MCdzIGxsYyBzcGFuOiBjcHUwLWNw
-dTIzDQo+ID4gPiA+IENwdTI0J3MgbGxjIHNwYW46IGNwdTI0LWNwdTQ3DQo+ID4gPg0KPiA+ID4g
-SGF2ZSB5b3UgY2hlY2tlZCB0aGF0IHRoZSBjbHVzdGVyIG1hc2sgd2FzIGFsc28gY29ycmVjdCA/
-DQo+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiBNYXliZSBJIG5lZWQgbW9yZSB0cmFjZSBkYXRhIHRv
-IGZpZ3VyZSBvdXQgaWYgc2VsZWN0X2lkbGVfY3B1KCkgaXMgcnVubmluZw0KPiA+ID4gPiBjb3Jy
-ZWN0bHkuIEZvciBleGFtcGxlLCBtYXliZSBJIGNhbiBmaWd1cmUgb3V0IGlmIGl0IGlzIGFsd2F5
-cyByZXR1cm5pbmcNCj4gLTEsDQo+ID4gPiA+IG9yIGl0IHJldHVybnMgLTEgdmVyeSBvZnRlbj8N
-Cj4gPiA+DQo+ID4gPiB5ZXMsIGNvdWxkIGJlIGludGVyZXN0aW5nIHRvIGNoZWNrIGhvdyBvZnRl
-biBzZWxlY3RfaWRsZV9jcHUgcmV0dXJuIC0xDQo+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiBPciBk
-byB5b3UgaGF2ZSBhbnkgaWRlYT8NCj4gPiA+DQo+ID4gPiB0cmFja2luZyBtaWdyYXRpb24gYWNy
-b3NzIG5vZCBjb3VsZCBoZWxwIHRvIHVuZGVyc3RhbmQgdG9vDQo+ID4NCj4gPiBJIHNldCBhIGJv
-b3RhcmdzIG1lbT00RyB0byBkbyBzd2FwcGluZyB0ZXN0IGJlZm9yZSB3b3JraW5nIG9uIGNsdXN0
-ZXINCj4gPiBzY2hlZHVsZXIgaXNzdWUuIGJ1dCBJIGZvcmdvdCB0byByZW1vdmUgdGhlIHBhcmFt
-ZXRlci4NCj4gPg0KPiA+IFRoZSBodWdlIGluY3JlYXNlIG9uIGFjcm9zcy1udW1hIGNhc2UgY2Fu
-IG9ubHkgYmUgcmVwcm9kdWNlZCB3aGlsZQ0KPiA+IGkgdXNlIHRoaXMgbWVtPTRHIGNtZGxpbmUg
-d2hpY2ggbWVhbnMgbnVtYTEgaGFzIG5vIG1lbW9yeS4NCj4gPiBBZnRlciByZW1vdmluZyB0aGUg
-bGltaXRhdGlvbiwgSSBjYW4ndCByZXByb2R1Y2UgdGhlIGh1Z2UgaW5jcmVhc2UNCj4gPiBmb3Ig
-dHdvIE5VTUFzIGFueSBtb3JlLg0KPiANCj4gT2suIE1ha2UgbW9yZSBzZW5zZQ0KDQpJIG1hbmFn
-ZWQgdG8gdXNlIGxpbnV4LW5leHQgdG8gdGVzdCBhZnRlciBmaXhpbmcgdGhlIGRpc2sgaGFuZy4N
-Cg0KQnV0IEkgYW0gc3RpbGwgcXVpdGUgc3RydWdnbGluZyB3aXRoIGhvdyB0byBsZXZlcmFnZSB0
-aGUgY2x1c3Rlcg0KdG9wb2xvZ3kgaW4gc2VsZWN0X2lkbGVfY3B1KCkgdG8gbWFrZSBodWdlIGlt
-cHJvdmVtZW50IG9uIGJlbmNobWFyay4NCg0KSWYgSSBkaXNhYmxlIHRoZSBpbmZsdWVuY2Ugb2Yg
-c2NoZWR1bGVyIGJ5IHRhc2tzZXQsIHRoZXJlIGlzDQpvYnZpb3VzbHkgYSBsYXJnZSBkaWZmZXJl
-bmNlIGluIGhhY2tiZW5jaCBpbnNpZGUgY2x1c3RlciBhbmQNCmFjcm9zcyBjbHVzdGVyczoNCg0K
-aW5zaWRlIGEgY2x1c3RlcjoNCnJvb3RAdWJ1bnR1On4jIHRhc2tzZXQgLWMgMCwxLDIsMyBoYWNr
-YmVuY2ggLXAgLVQgLWwgMjAwMDAgLWcgMQ0KUnVubmluZyBpbiB0aHJlYWRlZCBtb2RlIHdpdGgg
-MSBncm91cHMgdXNpbmcgNDAgZmlsZSBkZXNjcmlwdG9ycyBlYWNoDQooPT0gNDAgdGFza3MpDQpF
-YWNoIHNlbmRlciB3aWxsIHBhc3MgMjAwMDAgbWVzc2FnZXMgb2YgMTAwIGJ5dGVzDQpUaW1lOiA0
-LjI4NQ0KDQpBY3Jvc3MgY2x1c3RlcnM6DQpyb290QHVidW50dTp+IyB0YXNrc2V0IC1jIDAsNCw4
-LDEyIGhhY2tiZW5jaCAtcCAtVCAtbCAyMDAwMCAtZyAxDQpSdW5uaW5nIGluIHRocmVhZGVkIG1v
-ZGUgd2l0aCAxIGdyb3VwcyB1c2luZyA0MCBmaWxlIGRlc2NyaXB0b3JzIGVhY2gNCig9PSA0MCB0
-YXNrcykNCkVhY2ggc2VuZGVyIHdpbGwgcGFzcyAyMDAwMCBtZXNzYWdlcyBvZiAxMDAgYnl0ZXMN
-ClRpbWU6IDUuNTI0DQoNCkJ1dCBubyBtYXR0ZXIgaG93IEkgdHVuZSB0aGUgY29kZSBvZiBrZXJu
-ZWwvc2NoZWQvZmFpci5jLCBJDQpkb24ndCBzZWUgdGhpcyBsYXJnZSBkaWZmZXJlbmNlIGJ5IHJ1
-bm5pbmcgaGFja2JlbmNoIGluIHRoZQ0Kd2hvbGUgbnVtYSBub2RlOg0KZm9yIGkgaW4gezEuLjEw
-fQ0KZG8NCgludW1hY3RsIC1OIDAgaGFja2JlbmNoIC1wIC1UIC1sIDIwMDAwIC1nICQxDQpkb25l
-DQoNCnVzdWFsbHksIHRoZSBkaWZmZXJlbmNlIGlzIHVuZGVyICgtNSV+KzUlKS4NCg0KVGhlbiBJ
-IG1hZGUgYSBtYWpvciBjaGFuZ2UgYXMgYmVsb3c6DQpzdGF0aWMgaW50IHNlbGVjdF9pZGxlX2Nw
-dShzdHJ1Y3QgdGFza19zdHJ1Y3QgKnAsIHN0cnVjdCBzY2hlZF9kb21haW4gKnNkLCBpbnQgdGFy
-Z2V0KQ0Kew0KCS4uLg0KDQoNCgl0aW1lID0gY3B1X2Nsb2NrKHRoaXMpOw0KDQojaWYgMA0KCWNw
-dW1hc2tfYW5kKGNwdXMsIHNjaGVkX2RvbWFpbl9zcGFuKHNkKSwgcC0+Y3B1c19wdHIpOw0KDQoJ
-Zm9yX2VhY2hfY3B1X3dyYXAoY3B1LCBjcHVzLCB0YXJnZXQpIHsNCgkJaWYgKCEtLW5yKQ0KCQkJ
-cmV0dXJuIC0xOw0KCQlpZiAoYXZhaWxhYmxlX2lkbGVfY3B1KGNwdSkgfHwgc2NoZWRfaWRsZV9j
-cHUoY3B1KSkNCgkJCWJyZWFrOw0KCX0NCiNlbHNlDQoJaWYgKChjcHU9c2VsZWN0X2lkbGVfY2x1
-c3RlcihwLHRhcmdldCkpID0gLTEpDQoJCXJldHVybiAtMTsNCiNlbmRpZg0KDQoJdGltZSA9IGNw
-dV9jbG9jayh0aGlzKSAtIHRpbWU7DQoJdXBkYXRlX2F2ZygmdGhpc19zZC0+YXZnX3NjYW5fY29z
-dCwgdGltZSk7DQoNCglyZXR1cm4gY3B1Ow0KfQ0KDQpUaGF0IG1lYW5zIEkgZG9uJ3QgZmFsbCBi
-YWNrIHRvIGxsYyBpZiBjbHVzdGVyIGhhcyBubyBpZGxlDQpjcHUuDQoNCldpdGggdGhpcywgSSBh
-bSBnZXR0aW5nIDIwJSBtYWpvciBkaWZmZXJlbmNlIGFzIEkgYW0gYWx3YXlzIGV4cGVjdGluZzoN
-Cg0KZz0gICAgIDEgICAgICAyICAgICAgICAzICAgICAgICA0ICAgICAgICA1ICAgICAgICA2ICAg
-ICAgICA3ICAgICAgOCAgICAgICA5ICAgICAgICAxMA0Kdy9vICAxLjU0OTQgMi4wNjQxIDMuMTY0
-MCA0LjI0MzggNS4zNDQ1IDYuMzA5OCA3LjUwODYgOC40NzIxIDkuNzExNSAgMTAuODU4OA0Kdy8g
-ICAxLjY4MDEgMi4wMjgwIDIuNzg5MCAzLjczMzkgNC41NzQ4IDUuMjk5OCA2LjE0MTMgNi42MjA2
-IDcuNzY0MSAgOC40NzgyDQoNCkkgZ3Vlc3MgbXkgb3JpZ2luYWwgcGF0Y2ggaXMgdmVyeSBlYXN5
-IHRvIGZhbGwgYmFjayB0byBsbGMgYXMNCmNsdXN0ZXIgaXMgbm90IGVhc3kgdG8gaWRsZS4gT25j
-ZSBzeXN0ZW0gaXMgYnVzeSwgdGhlIG9yaWdpbmFsDQpwYXRjaCBpcyBub3AgYXMgaXQgaXMgYWx3
-YXlzIGZhbGxpbmcgYmFjayB0byBsbGMuDQoNCj4gDQo+ID4NCj4gPiBHdWVzcyBzZWxlY3RfaWRs
-ZV9jbHVzdGVyKCkgc29tZWhvdyB3b3JrYXJvdW5kIGFuIHNjaGVkdWxlciBpc3N1ZQ0KPiA+IGZv
-ciBudW1hIHdpdGhvdXQgbWVtb3J5Lg0KPiA+DQo+ID4gPg0KPiA+ID4gVmluY2VudA0KDQpUaGFu
-a3MNCkJhcnJ5DQoNCg==
+On Wed, Dec 9, 2020 at 10:55 AM Daniel Scally <djrscally@gmail.com> wrote:
+>
+>
+>
+> On 08/12/2020 23:48, Daniel Scally wrote:
+> > Hello again
+> >
+> > On 06/12/2020 00:00, Daniel Scally wrote:
+> >> INT3472:08 is not an acpi device that seems to be a good candidate for
+> >> binding to 0000:00:00.0; it just happens to be the first child of
+> >> PNP0A08:08 that shares _ADR 0 and has _STA not set to 0.
+> >>
+> >> The comment within acpi_find_child_device() does imply that there should
+> >> only ever be a single child device with the same _ADR as the parent, so
+> >> I suppose this is possibly a case of poor ACPI tables confusing the code
+> >> a bit; given both PNP0A08:00 and _all_ of the INT3472 devices have _ADR
+> >> set to zero (as indeed do the machine's cameras), but I'm not
+> >> knowledgeable enough on ACPI to know whether that's to spec (or at least
+> >> accounted for). The INT3472 devices themselves do not actually seem to
+> >> represent a physical device (atleast, not in this case...sometimes they
+> >> do...), rather they're a dummy being used to simply group some GPIO
+> >> lines under a common _CRS. The sensors are called out as dependent on
+> >> these "devices" in their _DEP method, which is already a horrible way of
+> >> doing things so more broken ACPI being to blame wouldn't surprise me.
+> >>
+> >> The other problem that that raises is that there seems to be _no_ good
+> >> candidate for binding to 0000:00:00.0 that's a child of PNP0A08:00 - the
+> >> only devices sharing _ADR 0 and having _STA != 0 are those two INT3472
+> >> entries and the machine's cameras.
+> >
+> > After some more reading, I'm pretty confident that this is the problem
+> > now - I.E. that those devices having _ADR of 0 is what's causing this
+> > issue to materialise, and that those values should be set to something
+> > more appropriate. Still unsure about the best approach to fix it though
+> > from a kernel point of view; there doesn't seem to be anything out of
+> > whack in the logic, and I believe (correct me if I'm wrong) there can be
+> > legitimate instances of child devices sharing _ADR=0 with the parent, so
+> > the problem becomes how to identify the illegitimate instances so that
+> > they can be discarded. My experience in this is really limited, so I
+> > lean towards the conclusion that hard-coding exceptions somewhere might
+> > be necessary to handle this without resorting to patched ACPI tables.
+> > Whether that's within acpi_find_child_device() to prevent matching
+> > occurring there, or else setting the adev->pnp.bus_address to some
+> > alternate value after creation to compensate.
+> >
+> > I recognise that that's a horrible answer though, so I'm really hoping
+> > that someone has an idea for how to handle this in a better way.
+>
+> Oops, missed this crucial line from the spec:
+>
+> "A device object must contain either an _HID object or an _ADR object,
+> but should not contain both."
+>
+> And here's the Device declaration for these objects:
+>
+>         Device (PMI0)
+>         {
+>             Name (_ADR, Zero)  // _ADR: Address
+>             Name (_HID, "INT3472")  // _HID: Hardware ID
+>             Name (_CID, "INT3472")  // _CID: Compatible ID
+>             Name (_DDN, "INCL-CRDD")  // _DDN: DOS Device Name
+>             Name (_UID, Zero)  // _UID: Unique ID
+>
+> So that's the broken part rather than the _ADR value of 0 specifically.
+> That at least gives a jumping off point for some logic to fix rather
+> than a hardcoded anything, so I'll try to work out a nice way to handle
+> that (probably ignoring adevs in acpi_find_child_device() with addr=0
+> and a valid _HID) and submit a patch.
+
+Please see the comment in find_child_checks(), though - it kind of
+tries to handle this case already.
+
+I guess what happens is that _STA is not present under the device that
+is expected to be matched, so maybe the logic regarding this may be
+changed somewhat.
+
+> Sorry for the noise, think I'm good now :)
+
+OK
