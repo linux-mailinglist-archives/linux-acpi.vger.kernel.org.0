@@ -2,31 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A06D2D389F
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 03:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B94DD2D391C
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 04:08:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbgLICNj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Dec 2020 21:13:39 -0500
-Received: from mga05.intel.com ([192.55.52.43]:1744 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725283AbgLICNj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Dec 2020 21:13:39 -0500
-IronPort-SDR: rlDyaRsm09s56gA1njSB+d+dr/rRSzPS6UPa/vzdT83jhSxycop2utx4gLMBK0QOjpuLuiNPZH
- MMH3yoqlz7PQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9829"; a="258714232"
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; 
-   d="scan'208";a="258714232"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2020 18:12:57 -0800
-IronPort-SDR: ckNKKA5Kxpi305Ya5K7oK6PfZq5wvelld69YqRpQJ5uammI7shIh9a4nxt7kXSJjmYntcJxyui
- F5ylB9H9aURQ==
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; 
-   d="scan'208";a="407876567"
-Received: from mlubyani-mobl2.amr.corp.intel.com (HELO intel.com) ([10.252.137.9])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2020 18:12:56 -0800
-Date:   Tue, 8 Dec 2020 18:12:54 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Dan Williams <dan.j.williams@intel.com>
+        id S1727074AbgLIDHc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Dec 2020 22:07:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726996AbgLIDHb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Dec 2020 22:07:31 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B53CC061793
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Dec 2020 19:06:51 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id d17so890685ejy.9
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Dec 2020 19:06:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8AFvZy5IevjnVMOU6zN7P4dA9MmKNHlLYmheYvMwvVc=;
+        b=VCeHrc0dr9kgX339cC7qkulsq0krr/xcafwkxj1skiTLZ6/3KXgaUsnTDhDv4Tnhwz
+         MTS8SLN1O0oZAoepsdeB5niM7vOMGclnYbLg9sIHQDhc/Z5E9Oz5USTaQzvSxCz6oxtW
+         TxmBwIvvaem6z/nwACcCJnqe02TxeDkx2+P0gAsRt8sIpX9edLRRaki/7I5qwbL1CR/Z
+         EemZFdefbA8N00+QQYJtiOXUUQ4iLl9sBXVMPjH6AFnmiyle86yLpJIFZdUM/egh3QCj
+         0BW9bvVSzrWebrFu3thuq0w6cl6NXl5G1vMA3VQ5zVihU//GhRT2z6nslyexycsxaslL
+         dVmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8AFvZy5IevjnVMOU6zN7P4dA9MmKNHlLYmheYvMwvVc=;
+        b=mngOseFULZInGX0xJTRy0jaZnAZWeVykqyNXIu4HsjYaRngzrlZNICi86kI/i/vDDG
+         idwDt8ELhzqDbkG0O3BHAI6kISJsSn30QbHhA6ZalNOrRG3nVQKFxksEDwufvxgqq4mQ
+         jrdwcG7nKVF99fIhno6f7hH0tIof97gVekgKpLcbNfvC/aHueEBxSk9udkYzVhGijAcs
+         tjaM+XlKWZR03G7fEORCYBiNIlYo6qtE4grEU11e/Nqo2UqlqhrnUafdZagOMIfVtyZu
+         g9JnNmXVlV9kqn3Qk41OsZLNi1FRdPz7LUSjkJGTratwq9kqGX8DHD3XEZIc7wBHG9Vp
+         Wvcg==
+X-Gm-Message-State: AOAM532GWSMMbqAZuM8ku2uRkDlrE1IA5Tdv5NP3HwIfxQev9M8WGjo1
+        kYKMHSY/ZD3DcGgDTl8haLUHbWYRxlnw50EVpzHw2w==
+X-Google-Smtp-Source: ABdhPJzUtnkqj+yNOhhOCy3e+1NMY2uMlUDSW/4qX+FAGO719KojfcgyijbDv+uhsfz5/UdMq0VYUDVav22eZQBYxMw=
+X-Received: by 2002:a17:906:edb2:: with SMTP id sa18mr327438ejb.264.1607483209942;
+ Tue, 08 Dec 2020 19:06:49 -0800 (PST)
+MIME-Version: 1.0
+References: <20201209002418.1976362-1-ben.widawsky@intel.com>
+ <20201209002418.1976362-13-ben.widawsky@intel.com> <CAPcyv4gW8H1wNVDFhSt1SFbU=mcNZFKBve4xG24rGJaJg1wQZA@mail.gmail.com>
+ <20201209020433.bzsuqudbgtpbtggk@intel.com>
+In-Reply-To: <20201209020433.bzsuqudbgtpbtggk@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Tue, 8 Dec 2020 19:06:46 -0800
+Message-ID: <CAPcyv4j5TWX9AquGcT=jKbyxHsaJOFNd26E7eEen0+fYoMuaQg@mail.gmail.com>
+Subject: Re: [RFC PATCH 12/14] cxl: Add basic debugging
+To:     Ben Widawsky <ben.widawsky@intel.com>
 Cc:     linux-cxl@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux PCI <linux-pci@vger.kernel.org>,
@@ -41,328 +67,164 @@ Cc:     linux-cxl@vger.kernel.org,
         Chris Browy <cbrowy@avery-design.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         Christoph Hellwig <hch@infradead.org>
-Subject: Re: [RFC PATCH 09/14] cxl/mem: Add basic IOCTL interface
-Message-ID: <20201209021254.ne42jy6ovn2rk3cf@intel.com>
-References: <20201209002418.1976362-1-ben.widawsky@intel.com>
- <20201209002418.1976362-10-ben.widawsky@intel.com>
- <CAPcyv4ipGMsKegzWtd+W8wr4mG7X9DtVeQYvL24Eyu1fB3AN=A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4ipGMsKegzWtd+W8wr4mG7X9DtVeQYvL24Eyu1fB3AN=A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-12-08 17:37:50, Dan Williams wrote:
-> On Tue, Dec 8, 2020 at 4:24 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+On Tue, Dec 8, 2020 at 6:04 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+>
+> On 20-12-08 17:17:36, Dan Williams wrote:
+> > On Tue, Dec 8, 2020 at 4:24 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > >
+> > > Provide a standard debug function for use throughout the driver.
+> > >
+> > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > > ---
+> > >  drivers/cxl/cxl.h |  3 +++
+> > >  drivers/cxl/mem.c | 26 +++++++++++++++++++++++++-
+> > >  2 files changed, 28 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> > > index 77c2dee6843c..e5afb89dab0b 100644
+> > > --- a/drivers/cxl/cxl.h
+> > > +++ b/drivers/cxl/cxl.h
+> > > @@ -9,6 +9,9 @@
+> > >  #include <linux/bitops.h>
+> > >  #include <linux/io.h>
+> > >
+> > > +#define cxl_debug(fmt, ...)                                                    \
+> > > +       pr_debug("CXL DEBUG: %s: " fmt, __func__, ##__VA_ARGS__)
+> > > +
 > >
-> > Add a straightforward IOCTL that provides a mechanism for userspace to
-> > query the supported memory device commands.
+> > This should be dev_dbg(), then you don't need the CXL DEBUG prefix. In
+> > fact you don't need a cxl_debug() macro at all in that case. cxl_mem
+> > might need a ->dev attribute for this purpose.
 > >
-> > Memory device commands are specified in 8.2.9 of the CXL 2.0
-> > specification. They are submitted through a mailbox mechanism specified
-> > in 8.2.8.4.
-> >
-> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> >
-> > ---
-> >
-> > I did attempt to use the same struct for querying commands as well as
-> > sending commands (upcoming patch). The number of unused fields between
-> > the two made for a bad fit IMO.
-> >
-> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > ---
-> >  Documentation/cxl/memory-devices.rst |   9 +++
-> >  drivers/cxl/mem.c                    |  89 +++++++++++++++++++++++
-> >  include/uapi/linux/cxl_mem.h         | 102 +++++++++++++++++++++++++++
-> >  3 files changed, 200 insertions(+)
-> >  create mode 100644 include/uapi/linux/cxl_mem.h
-> >
-> > diff --git a/Documentation/cxl/memory-devices.rst b/Documentation/cxl/memory-devices.rst
-> > index 5f723c25382b..ec54674b3822 100644
-> > --- a/Documentation/cxl/memory-devices.rst
-> > +++ b/Documentation/cxl/memory-devices.rst
-> > @@ -32,6 +32,15 @@ CXL Memory Device
-> >  .. kernel-doc:: drivers/cxl/mem.c
-> >     :internal:
-> >
-> > +CXL IOCTL Interface
-> > +-------------------
-> > +
-> > +.. kernel-doc:: include/uapi/linux/cxl_mem.h
-> > +   :doc: UAPI
-> > +
-> > +.. kernel-doc:: include/uapi/linux/cxl_mem.h
-> > +   :internal:
-> > +
-> >  External Interfaces
-> >  ===================
-> >
-> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > index bb6ea58f6c7b..2c4aadcea0e4 100644
-> > --- a/drivers/cxl/mem.c
-> > +++ b/drivers/cxl/mem.c
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/idr.h>
-> >  #include <linux/pci.h>
-> >  #include <linux/io.h>
-> > +#include <uapi/linux/cxl_mem.h>
-> >  #include "acpi.h"
-> >  #include "pci.h"
-> >  #include "cxl.h"
-> > @@ -73,6 +74,49 @@ static DEFINE_IDR(cxl_mem_idr);
-> >  /* protect cxl_mem_idr allocations */
-> >  static DEFINE_MUTEX(cxl_memdev_lock);
-> >
-> > +/*
-> > + * This table defines the supported mailboxes commands for the driver. The id is
-> > + * ordinal and thus gaps in this table aren't allowed. This table is made up of
-> > + * a UAPI structure. Non-negative values in the table will be validated against
-> > + * the user's input. For example, if size_in is 0, and the user passed in 1, it
-> > + * is an error.
-> > + */
-> > +#define CXL_CMD(_id, _flags, sin, sout, _name, _enable, op)                    \
-> > +       {                                                                      \
-> > +               { .id = CXL_MEM_COMMAND_ID_##_id,                              \
-> > +                 .flags = CXL_MEM_COMMAND_FLAG_##_flags,                      \
-> > +                 .size_in = sin,                                              \
-> > +                 .size_out = sout,                                            \
-> > +                 .name = _name },                                             \
-> > +                       .enable = _enable, .opcode = op                        \
-> > +       }
-> 
-> Seems the ordinality requirement could be dropped if the definition was:
-> 
-> #define CXL_CMD(_id, _flags, sin, sout, _name, _enable, op)                    \
->        [CXL_MEM_COMMAND_ID_##_id] = {
->                              \
->                { .id = CXL_MEM_COMMAND_ID_##_id,                              \
-> ...
-> 
-> Then command 0 and 42 could be defined out of order in the table.
-> Especially if we need to config-disable or deprecate commands, I think
-> it would be useful if this table was tolerant to being sparse.
-> 
+>
+> I really like the ability to turn specific messages on and off at will. (FWIW,
+> __func__ is also redundant because pr_debug allows you to specify a flag to
+> always print the function name). While it's not very frequent events here, in
+> the future it likely will be and I think it can be really helpful to be able to
+> have that level of control.
+>
+> If you want to avoid creating a new debug functionality, I'm okay with that, but
+> I'd really like to use pr_debug instead of dev_dbg for those messages going
+> forward. Once you take that step, it seems giving contributors a macro named
+> 'cxl_debug' so they don't have to figure out when to use what, makes sense. My
+> mental separation is, dev_* is useful primarily for errors and initialization
+> debug messaging, pr_debug/trace_printk is for runtime things.
+>
+> I probably should have put that in the commit message...
 
-How sparse are we talking? The current form does support sparseness, but
-obviously gets quite large if the ID numbering is similar to random
-distribution.
+I suspect you haven't taken a look at the backed and of pr_debug() and
+dev_dbg() in a while? They both use _dynamic_func_call and enjoy all
+the benefits afforded by /sys/debug/dynamic_debug/control and the
+"dyndbg" module option for adding __func__ and enable / disable by
+line number or format message . pr_debug() and this cxl_debug() macro
+are completely superseded by dev_dbg(). Even if a driver wanted a
+common prefix on all prints there is the "#define dev_fmt ..."
+mechanism for that.
 
-I think if we do see this being more like random distribution, it can be
-supported, but I think it adds a decent amount of complexity for what I see as
-not much reward - unless you know of a fairly simple way to create this data
-structure with full sparse ID support?
-
-> > +
-> > +/**
-> > + * struct cxl_mem_command - Driver representation of a memory device command
-> > + * @info: Command information as it exists for the UAPI
-> > + * @opcode: The actual bits used for the mailbox protocol
-> > + * @enable: Whether the command is enabled. The driver may support a large set
-> > + *         of commands that may not be enabled. The primary reason a command
-> > + *         would not be enabled is for commands that are specified as optional
-> > + *         and the hardware doesn't support the command.
-> > + *
-> > + * The cxl_mem_command is the driver's internal representation of commands that
-> > + * are supported by the driver. Some of these commands may not be supported by
-> > + * the hardware (!@enable). The driver will use @info to validate the fields
-> > + * passed in by the user then submit the @opcode to the hardware.
-> > + *
-> > + * See struct cxl_command_info.
-> > + */
-> > +struct cxl_mem_command {
-> > +       const struct cxl_command_info info;
-> > +       const u16 opcode;
-> > +       bool enable;
-> > +};
-> > +
-> > +static struct cxl_mem_command mem_commands[] = {
-> > +       CXL_CMD(INVALID, NONE, 0, 0, "Reserved", false, 0),
-> > +};
-> > +
-> >  static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> >  {
-> >         const int timeout = msecs_to_jiffies(2000);
-> > @@ -268,8 +312,53 @@ static int cxl_mem_open(struct inode *inode, struct file *file)
-> >         return 0;
-> >  }
+>
+> > >  #define CXL_SET_FIELD(value, field)                                            \
+> > >         ({                                                                     \
+> > >                 WARN_ON(!FIELD_FIT(field##_MASK, value));                      \
+> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > index a2cea7ac7cc6..6b2f8d3776b5 100644
+> > > --- a/drivers/cxl/mem.c
+> > > +++ b/drivers/cxl/mem.c
+> > > @@ -122,9 +122,12 @@ static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
+> > >  {
+> > >         const int timeout = msecs_to_jiffies(2000);
+> > >         const unsigned long start = jiffies;
+> > > +       unsigned long end = start;
+> > >
+> > >         while (cxl_doorbell_busy(cxlm)) {
+> > > -               if (time_after(jiffies, start + timeout)) {
+> > > +               end = jiffies;
+> > > +
+> > > +               if (time_after(end, start + timeout)) {
+> > >                         /* Check again in case preempted before timeout test */
+> > >                         if (!cxl_doorbell_busy(cxlm))
+> > >                                 break;
+> > > @@ -133,6 +136,8 @@ static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
+> > >                 cpu_relax();
+> > >         }
+> > >
+> > > +       cxl_debug("Doorbell wait took %dms",
+> > > +                 jiffies_to_msecs(end) - jiffies_to_msecs(start));
+> > >         return 0;
+> > >  }
+> > >
+> > > @@ -180,6 +185,8 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> > >         }
+> > >
+> > >         /* #4 */
+> > > +       cxl_debug("Sending command to %s\n",
+> > > +                 dev_driver_string(&cxlm->pdev->dev));
 > >
-> > +static int cxl_mem_count_commands(void)
-> > +{
-> > +       int i, n = 0;
-> > +
-> > +       for (i = 0; i < ARRAY_SIZE(mem_commands); i++) {
-> > +               struct cxl_mem_command *c = &mem_commands[i];
-> > +
-> > +               if (c->enable)
-> > +                       n++;
-> > +       }
-> > +
-> > +       return n;
-> > +}
-> > +
-> >  static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> >  {
-> > +       if (cmd == CXL_MEM_QUERY_COMMANDS) {
-> > +               struct cxl_mem_query_commands __user *q = (void __user *)arg;
-> > +               u32 n_commands;
-> > +               int i, j;
-> > +
-> > +               if (get_user(n_commands, (u32 __user *)arg))
-> > +                       return -EFAULT;
-> > +
-> > +               if (n_commands == 0)
-> > +                       return put_user(cxl_mem_count_commands(),
-> > +                                       (u32 __user *)arg);
-> > +
-> > +               for (i = 0, j = 0;
-> > +                    i < ARRAY_SIZE(mem_commands) && j < n_commands; i++) {
-> > +                       struct cxl_mem_command *c = &mem_commands[i];
-> > +                       const struct cxl_command_info *info = &c->info;
-> > +
-> > +                       if (!c->enable)
-> > +                               continue;
-> > +
-> > +                       if (copy_to_user(&q->commands[j], info, sizeof(*info)))
-> > +                               return -EFAULT;
-> > +
-> > +                       if (copy_to_user(&q->commands[j].name, info->name,
-> > +                                        strlen(info->name)))
-> > +                               return -EFAULT;
-> 
-> Not sure why this is needed, see comment below about @name in
-> cxl_mem_query_commands.
-> 
-> > +
-> > +                       j++;
-> > +               }
-> > +       }
-> > +
-> >         return -ENOTTY;
-> >  }
+> > dev_dbg() already includes dev_driver_string().
 > >
-> > diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> > new file mode 100644
-> > index 000000000000..1d1e143f98ec
-> > --- /dev/null
-> > +++ b/include/uapi/linux/cxl_mem.h
-> > @@ -0,0 +1,102 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > +/*
-> > + * CXL IOCTLs for Memory Devices
-> > + */
-> > +
-> > +#ifndef _UAPI_CXL_MEM_H_
-> > +#define _UAPI_CXL_MEM_H_
-> > +
-> > +#if defined(__cplusplus)
-> > +extern "C" {
-> > +#endif
-> > +
-> > +/**
-> > + * DOC: UAPI
-> > + *
-> > + * CXL memory devices expose UAPI to have a standard user interface.
-> > + * Userspace can refer to these structure definitions and UAPI formats
-> > + * to communicate to driver
-> > + */
-> > +
-> > +#define CXL_MEM_QUERY_COMMANDS _IOR('C', 1, struct cxl_mem_query_commands)
-> > +
-> > +#define CXL_MEM_COMMAND_NAME_LENGTH 32
-> > +
-> > +/**
-> > + * struct cxl_command_info - Command information returned from a query.
-> > + * @id: ID number for the command.
-> > + * @flags: Flags that specify command behavior.
-> > + *
-> > + *          - CXL_MEM_COMMAND_FLAG_TAINT: Using this command will taint the kernel.
-> > + * @size_in: Expected input size, or -1 if variable length.
-> > + * @size_out: Expected output size, or -1 if variable length.
-> > + * @name: Name describing the command.
-> > + *
-> > + * Represents a single command that is supported by both the driver and the
-> > + * hardware. The is returned as part of an array from the query ioctl. The
-> > + * following would be a command named "foobar" that takes a variable length
-> > + * input and returns 0 bytes of output.
-> > + *
-> > + *  - @id = 10
-> > + *  - @name = foobar
-> > + *  - @flags = 0
-> > + *  - @size_in = -1
-> > + *  - @size_out = 0
-> > + *
-> > + * See struct cxl_mem_query_commands.
-> > + */
-> > +struct cxl_command_info {
-> > +       __u32 id;
-> > +#define CXL_MEM_COMMAND_ID_INVALID 0
-> > +
-> > +       __u32 flags;
-> > +#define CXL_MEM_COMMAND_FLAG_NONE 0
-> > +#define CXL_MEM_COMMAND_FLAG_TAINT BIT(0)
-> > +
-> > +       __s32 size_in;
-> > +       __s32 size_out;
-> > +
-> > +       char name[32];
-> 
-> Why does the name for a command need to be shuffled back and forth
-> over the ioctl interface. Can't this be handled by a static lookup
-> table defined in the header?
-> 
-
-I was thinking of cases where the userspace application doesn't match the
-current kernel's UAPI and giving the driver flexibility to return whatever.
-
-OTTOMH, I also can't think of a way to do this if you want to do define the
-table sparsely though. Do you have ideas for that?
-
-> > +};
-> > +
-> > +/**
-> > + * struct cxl_mem_query_commands - Query supported commands.
-> > + * @n_commands: In/out parameter. When @n_commands is > 0, the driver will
-> > + *             return min(num_support_commands, n_commands). When @n_commands
-> > + *             is 0, driver will return the number of total supported commands.
-> > + * @rsvd: Reserved for future use.
-> > + * @commands: Output array of supported commands. This array must be allocated
-> > + *            by userspace to be at least min(num_support_commands, @n_commands)
-> > + *
-> > + * Allow userspace to query the available commands supported by both the driver,
-> > + * and the hardware. Commands that aren't supported by either the driver, or the
-> > + * hardware are not returned in the query.
-> > + *
-> > + * Examples:
-> > + *
-> > + *  - { .n_commands = 0 } // Get number of supported commands
-> > + *  - { .n_commands = 15, .commands = buf } // Return first 15 (or less)
-> > + *    supported commands
-> > + *
-> > + *  See struct cxl_command_info.
-> > + */
-> > +struct cxl_mem_query_commands {
-> > +       /*
-> > +        * Input: Number of commands to return (space allocated by user)
-> > +        * Output: Number of commands supported by the driver/hardware
-> > +        *
-> > +        * If n_commands is 0, kernel will only return number of commands and
-> > +        * not try to populate commands[], thus allowing userspace to know how
-> > +        * much space to allocate
-> > +        */
-> > +       __u32 n_commands;
-> > +       __u32 rsvd;
-> > +
-> > +       struct cxl_command_info __user commands[]; /* out: supported commands */
-> > +};
-> > +
-> > +#if defined(__cplusplus)
-> > +}
-> > +#endif
-> > +
-> > +#endif
-> > --
-> > 2.29.2
+> > >         cxl_write_mbox_reg32(cxlm, CXLDEV_MB_CTRL_OFFSET,
+> > >                              CXLDEV_MB_CTRL_DOORBELL);
+> > >
+> > > @@ -308,6 +315,8 @@ static int cxl_mem_open(struct inode *inode, struct file *file)
+> > >         if (!cxlmd)
+> > >                 return -ENXIO;
+> > >
+> > > +       cxl_debug("Opened %pD\n", file);
+> > > +
+> > >         file->private_data = cxlmd;
+> > >
+> > >         return 0;
+> > > @@ -383,6 +392,10 @@ static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
+> > >                 .size_in = cmd->info.size_in,
+> > >                 .size_out = size_out,
+> > >         };
+> > > +       cxl_debug("Submitting command for user\n"
+> > > +                 "\topcode: %x\n"
+> > > +                 "\tsize: %zub/%zub\n",
+> > > +                 mbox_cmd.opcode, mbox_cmd.size_in, mbox_cmd.size_out);
+> > >         rc = cxl_mem_mbox_send_cmd(cxlmd->cxlm, &mbox_cmd);
+> > >         cxl_mem_mbox_put(cxlmd->cxlm);
+> > >         if (rc)
+> > > @@ -479,6 +492,8 @@ static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg
+> > >                 u32 n_commands;
+> > >                 int i, j;
+> > >
+> > > +               cxl_debug("Query IOCTL\n");
+> > > +
+> > >                 if (get_user(n_commands, (u32 __user *)arg))
+> > >                         return -EFAULT;
+> > >
+> > > @@ -511,6 +526,8 @@ static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg
+> > >                 struct cxl_mem_command c;
+> > >                 int rc;
+> > >
+> > > +               cxl_debug("Send IOCTL\n");
+> > > +
+> > >                 rc = cxl_validate_cmd_from_user(u, &c);
+> > >                 if (rc)
+> > >                         return rc;
+> > > @@ -843,6 +860,13 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
+> > >
+> > >         id = (struct cxl_mbox_identify *)mbox_cmd.payload;
+> > >
+> > > +       cxl_debug("Driver identify command\n"
+> > > +                 "\tFirmware Version: %s\n"
+> > > +                 "\tTotal Capacity: %llu (%llu persistent)\n"
+> > > +                 "\tLSA size: %u\n",
+> > > +                 id->fw_revision, id->total_capacity, id->persistent_capacity,
+> > > +                 id->lsa_size);
+> > > +
 > >
+> > Seems not necessary for details that are published in sysfs?
+>
+> I was thinking for cases where driver doesn't bind, seeing the identify
+> information could be useful. This is one case where dev_dbg would also serve
+> IMO.
+
+There's very little that can cause bind failures after
+cxl_mem_identify() succeeds. The bind failures themselves will
+dev_err() the reason.
