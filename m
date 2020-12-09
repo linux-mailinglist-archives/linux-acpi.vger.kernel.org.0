@@ -2,135 +2,353 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B43542D4BB7
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 21:27:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 475382D4D46
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Dec 2020 23:08:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727720AbgLIUZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Dec 2020 15:25:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
+        id S2388402AbgLIWHP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Dec 2020 17:07:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388443AbgLIUZt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Dec 2020 15:25:49 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40032C0617A6
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Dec 2020 12:25:09 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id v67so2543841ybi.1
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Dec 2020 12:25:09 -0800 (PST)
+        with ESMTP id S2388414AbgLIWHG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Dec 2020 17:07:06 -0500
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C1FC061794
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Dec 2020 14:06:26 -0800 (PST)
+Received: by mail-ed1-x542.google.com with SMTP id r5so3293801eda.12
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Dec 2020 14:06:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=cg29g+SYwUL9P/RFDh0mQu7UEu1IPZckD9ZkR+iLXYo=;
-        b=e7TbuW6aT92M2R580C4ND2MKdbdiOpLdwUFD3ZX37S7eZk5df0KcJ/D9juWDeY4kOF
-         pwAHdRMB2FSW5qVfdj0fjH/POt4nAYNKG+xWDKCojM8KVWE3TSUajHng11kmAWDh10BQ
-         MS9bK06nr8HVHcFQHhAB5UE076W3L0VHafQHk5xQk5s2fmo9TwvfzfhDrr4B3crdJhsa
-         s/vW/nDZgAAQWlcvv3s0GVWDNZXOfbLCi2yFKsx9EAYyowbCyR5lfLUPuIhMBN8hwZzY
-         I+F+bBcVu8m8q//rLkDA6GSXdO+0YgzuGXB70zHtvQCghfQqHST/DuptF51NFngj1OCO
-         Fjxg==
+        bh=G4rcdoQ2Q+nlz9m2enoHZLfKP+zgNUV84+YxMGOGlUo=;
+        b=XicTDqwD7Bb6BPkR6rAEFwXAcHWcve9QFDRj1OFlc4yRBEqoOTHfFs1h0jDGee4C6s
+         6LXqXaJ3w//349o8HNlzvMTeU3u9fDWaXs3gr537fzjzxbskMMuyS4Fj/uQaubTQQQRw
+         fcUkpC416XpnyFRBPYaXZs2GbQI6wAHl4vYbKnX6hCwt3k/+B2zxqA4ZTCDHnExRb/DN
+         lT5mQfTQv8F9703IxGdj7LcfhBB7ytxEifj4pGjXn1m+3DzuDRRO6xNj7ECIjVQEoxRw
+         8l8Wbaa6CfcfyD8WwmX1JvGza7LIdHi5Ukp6seeOqAzalqDCuZpSPQSC3HCbF6MLgsog
+         ilcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cg29g+SYwUL9P/RFDh0mQu7UEu1IPZckD9ZkR+iLXYo=;
-        b=IMFbhksxybSfAWyttNNDYGrJjpmElKzfgKYEOt2BJG6Q8DIqfXP4r87QY6ufU/+a1h
-         dNaSUj+yCnNayy15Uy5IxV5H5QvrwERdZjZuqd3H4hoBjc6AfH4DKecgfJhT4fJl4q3z
-         0qowejVaLvUt2fTZmmt4gPXKea/GIRyViMGPEcbOPEWzM+/b8ZKjweE5h6MhxuM3Eeki
-         QwW1ar+BvNg/GNhuONa2O48EaoQgDjV3/5ZHPPpwlfeesYXQPGB8Q9bz3YXGF18LWsfK
-         ya2MtCzv8+jpJEGSSAFiE9YDBa05CD0wdAZD16Pk9+uxs1sSnx01tIR77wqbT55O5vYX
-         NdXw==
-X-Gm-Message-State: AOAM532v6XWrsY8ITHTdJdsdsFCQ1bOOFrQqcLMMhfh+bz9sZUD56EeU
-        v1oDzrJxiJplcRVtWFBEUf3ifJ8ORccVusalInL5jA==
-X-Google-Smtp-Source: ABdhPJzfeZenFgo4Y7Xmmu4IwZNqsHwT7OkCnHsoDG2nJXOTxwCgvuOcYHDcsXQLa7rZQgx8/o4g2nibdtVh656oDz8=
-X-Received: by 2002:a5b:b49:: with SMTP id b9mr5753924ybr.310.1607545508131;
- Wed, 09 Dec 2020 12:25:08 -0800 (PST)
+        bh=G4rcdoQ2Q+nlz9m2enoHZLfKP+zgNUV84+YxMGOGlUo=;
+        b=kwRZKEWwWX+9gG/c2/uQb6Wqu6NjHXWoAJSSFysrLn2NLGvdcfdJKdi+2OPG2z2ibm
+         kh/bbUJjaA+IouREooobmYn0ueg+vCidQINSP9mpY8DZxeFenD7tbYomdEQCAebCQFI0
+         9wWqdc4SC2/iO9LAJNmUH5noiqB6kytJNDKyCA48rZ0i19JEhRGZSC25sDNou0l6NBb2
+         sBQFGVC1EYAmC+N/BV78sP6gBEFDvh8EHeiZZtIFfr20j2nMUKeqTZI4F+ajbPdXPzpb
+         H8Y64rDmxFUDLYg8DwmI7zVy6zkLzR0HbbHkRy2kG4sAWtMCI/Va30KX/k0Jl0nIuwwA
+         lHjQ==
+X-Gm-Message-State: AOAM533nsnghgdB0eOf6SwUlRY7iD84JC3pEXdPlDV8glMznO/p5OPmG
+        jy/O96Mkj86yNAqwmyqzjTqleFTDXQWsp7ATpLmXKQ==
+X-Google-Smtp-Source: ABdhPJx90bhBtv+ZmxwXUbgqiVhsfzlmNC0JPYADlgNWWRJnzz8gus5K+vcmrHfPcqZOFQhFCp2k++JCBVO5ZljbgDA=
+X-Received: by 2002:aa7:cdc3:: with SMTP id h3mr3933786edw.52.1607551584942;
+ Wed, 09 Dec 2020 14:06:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <X9EUbji0tILG6PvX@kroah.com>
-In-Reply-To: <X9EUbji0tILG6PvX@kroah.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Wed, 9 Dec 2020 12:24:32 -0800
-Message-ID: <CAGETcx_5_=VKxbTddtG4u7p0yhCTdkr746fToPtPecEZcE1ncg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/17] Refactor fw_devlink to significantly improve
- boot time
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
+References: <20201209002418.1976362-1-ben.widawsky@intel.com> <20201209002418.1976362-11-ben.widawsky@intel.com>
+In-Reply-To: <20201209002418.1976362-11-ben.widawsky@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 9 Dec 2020 14:06:22 -0800
+Message-ID: <CAPcyv4j+ixVgEo5q2OhV4kdkBZbnohZj3KDovReQJjPBsREugw@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/14] cxl/mem: Add send command
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Christoph Hellwig <hch@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 10:15 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Dec 8, 2020 at 4:24 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> On Fri, Nov 20, 2020 at 06:02:15PM -0800, Saravana Kannan wrote:
-> > The current implementation of fw_devlink is very inefficient because it
-> > tries to get away without creating fwnode links in the name of saving
-> > memory usage. Past attempts to optimize runtime at the cost of memory
-> > usage were blocked with request for data showing that the optimization
-> > made significant improvement for real world scenarios.
-> >
-> > We have those scenarios now. There have been several reports of boot
-> > time increase in the order of seconds in this thread [1]. Several OEMs
-> > and SoC manufacturers have also privately reported significant
-> > (350-400ms) increase in boot time due to all the parsing done by
-> > fw_devlink.
-> >
-> > So this patch series refactors fw_devlink to be more efficient. The key
-> > difference now is the addition of support for fwnode links -- just a few
-> > simple APIs. This also allows most of the code to be moved out of
-> > firmware specific (DT mostly) code into driver core.
-> >
-> > This brings the following benefits:
-> > - Instead of parsing the device tree multiple times (complexity was
-> >   close to O(N^3) where N in the number of properties) during bootup,
-> >   fw_devlink parses each fwnode node/property only once and creates
-> >   fwnode links. The rest of the fw_devlink code then just looks at these
-> >   fwnode links to do rest of the work.
-> >
-> > - Makes it much easier to debug probe issue due to fw_devlink in the
-> >   future. fw_devlink=on blocks the probing of devices if they depend on
-> >   a device that hasn't been added yet. With this refactor, it'll be very
-> >   easy to tell what that device is because we now have a reference to
-> >   the fwnode of the device.
-> >
-> > - Much easier to add fw_devlink support to ACPI and other firmware
-> >   types. A refactor to move the common bits from DT specific code to
-> >   driver core was in my TODO list as a prerequisite to adding ACPI
-> >   support to fw_devlink. This series gets that done.
-> >
-> > Laurent and Grygorii tested the v1 series and they saw boot time
-> > improvment of about 12 seconds and 3 seconds, respectively.
+> The send command allows userspace to issue mailbox commands directly to
+> the hardware. The driver will verify basic properties of the command but
+> otherwise pass any input payload untouched to the hardware, and return
+> the output payload to userspace.
 >
-> Now queued up to my tree.  Note, I had to hand-apply patches 13 and 16
-> due to some reason (for 13, I have no idea, for 16 it was due to a
-> previous patch applied to my tree that I cc:ed you on.)
+> The caller of this IOCTL is required to allocate enough space for
+> max(size_in, size_out) of the payload. The payload input data will be
+> wiped out if any output payload exists.
+
+Seems awkward for the kernel to overwrite input payloads. I can see
+that potentially complicating userspace if it has the same payload to
+send to multiple devices. What's the rationale for overwriting input?
+
 >
-> Verifying I got it all correct would be great :)
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> ---
+>  drivers/cxl/mem.c            | 127 +++++++++++++++++++++++++++++++++++
+>  include/uapi/linux/cxl_mem.h |  35 ++++++++++
+>  2 files changed, 162 insertions(+)
+>
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 2c4aadcea0e4..0bf03afc0c80 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -324,6 +324,120 @@ static int cxl_mem_count_commands(void)
+>         }
+>
+>         return n;
+> +};
+> +
+> +/**
+> + * handle_mailbox_cmd_from_user() - Dispatch a mailbox command.
+> + * @cxlmd: The CXL memory device to communicate with.
+> + * @cmd: The validated command
+> + * @u: The command submitted by userspace. Only useful for RAW commands.
+> + *
+> + * Return: 0 on success.
+> + *
+> + * This function packages up a &struct mbox_cmd on behalf of userspace,
+> + * dispatches the command, and returns the results.
+> + */
+> +static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
+> +                                       const struct cxl_mem_command *cmd,
+> +                                       struct cxl_send_command __user *u)
+> +{
+> +       struct mbox_cmd mbox_cmd;
+> +       ssize_t payload_size;
+> +       void *payload;
+> +       u32 size_out;
+> +       int rc;
+> +
+> +       if (get_user(size_out, &u->size_out))
+> +               return -EFAULT;
+> +
+> +       payload_size = max_t(ssize_t, cmd->info.size_in, size_out);
+> +       if (payload_size) {
+> +               payload =
+> +                       memdup_user(u64_to_user_ptr(u->payload), payload_size);
 
-A quick diff of drivers/base/core.c between driver-core-testing and my
-local tree doesn't show any major diff (only some unrelated comment
-fixes). So, it looks fine.
+Me thinks this should be vmemdup_user() for payloads that exceed the
+kmalloc() max, and I think it would be worthwhile to clamp @size_out
+to some maximum and not let userspace ask for gigantic payloads.
+Return EINVAL for payloads greater than... 4MB? At least 4MB is the
+arbitrary max that libnvdimm picked.
 
-The patch 13 conflict is probably due to having to rebase the v2
-series on top of this:
-https://lore.kernel.org/lkml/20201104205431.3795207-1-saravanak@google.com/
+> +               if (IS_ERR(payload))
+> +                       return PTR_ERR(payload);
+> +       }
+> +
+> +       rc = cxl_mem_mbox_get(cxlmd->cxlm);
+> +       if (rc)
+> +               return rc;
+> +
+> +       mbox_cmd = (struct mbox_cmd){
 
-And looks like Patch 16 was handled fine.
+I'd expect a space between: ){ ...looks like clang-format does not
+have that rule.
 
-Thanks for applying the series.
+> +               .opcode = cmd->opcode,
+> +               .payload = payload,
+> +               .size_in = cmd->info.size_in,
+> +               .size_out = size_out,
+> +       };
+> +       rc = cxl_mem_mbox_send_cmd(cxlmd->cxlm, &mbox_cmd);
+> +       cxl_mem_mbox_put(cxlmd->cxlm);
+> +       if (rc)
+> +               goto out;
+> +
+> +       rc = put_user(mbox_cmd.return_code, &u->retval);
+> +       if (rc)
+> +               goto out;
+> +
+> +       rc = put_user(mbox_cmd.size_out, &u->size_out);
+> +       if (rc)
+> +               goto out;
+> +
+> +       if (mbox_cmd.size_out)
+> +               if (copy_to_user(u64_to_user_ptr(u->payload), payload,
+> +                                mbox_cmd.size_out))
+> +                       rc = -EFAULT;
+> +
+> +out:
+> +       if (payload_size)
+> +               kfree(payload);
+> +       return rc;
+> +}
+> +
+> +/**
+> + * cxl_validate_cmd_from_user() - Check fields for CXL_MEM_SEND_COMMAND.
+> + * @user_cmd: &struct cxl_send_command from userspace.
 
--Saravana
+Ah cool, I did not realize kernel doc recognized type specifiers like
+that, nice.
+
+> + * @out_cmd: Sanitized and populared &struct cxl_mem_command.
+
+s/populared/populated/
+
+> + *
+> + * Return:
+> + *  * %0       - Command dispatched successfully.
+> + *  * %-EFAULT - Something happened with copy_to/from_user.
+> + *  * %-EINVAL - Rerserved fields were used.
+
+s/Rerserved/Reserved/
+
+> + *  * %-EPERM  - Protected command used by the RAW interface.
+> + *  * %-ENOMEM - Input or output buffer wasn't large enough.
+> + *
+> + */
+> +static int cxl_validate_cmd_from_user(struct cxl_send_command __user *user_cmd,
+> +                                     struct cxl_mem_command *out_cmd)
+> +{
+> +       const struct cxl_command_info *info;
+> +       struct cxl_send_command cmd;
+> +       struct cxl_mem_command *c;
+> +
+> +       if (copy_from_user(&cmd, user_cmd, sizeof(cmd)))
+> +               return -EFAULT;
+> +
+> +       if (cmd.id == 0 || cmd.id >= CXL_MEM_COMMAND_ID_MAX)
+> +               return -EINVAL;
+
+I wonder if the "cmd.id >= CXL_MEM_COMMAND_ID_MAX" case should return
+-ENOTTY. The command might be perfectly valid, just the kernel does
+not have that command specified which would be the case with older
+kernel with newer userspace.
+
+> +
+> +       c = &mem_commands[cmd.id];
+> +       info = &c->info;
+> +
+> +       if (cmd.flags & CXL_MEM_COMMAND_FLAG_MASK)
+> +               return -EINVAL;
+> +
+> +       if (cmd.rsvd)
+> +               return -EINVAL;
+> +
+> +       /* Check the input buffer is the expected size */
+> +       if (info->size_in >= 0 && info->size_in != cmd.size_in)
+> +               return -ENOMEM;
+> +
+> +       /* Check the output buffer is at least large enough */
+> +       if (info->size_out >= 0 && cmd.size_out < info->size_out)
+> +               return -ENOMEM;
+> +
+> +       memcpy(out_cmd, c, sizeof(*c));
+
+Why not do the copy_from_user() directly into out_cmd to save a copy operation?
+
+> +
+> +       return 0;
+>  }
+>
+>  static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> @@ -357,6 +471,19 @@ static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg
+>
+>                         j++;
+>                 }
+> +
+> +               return 0;
+> +       } else if (cmd == CXL_MEM_SEND_COMMAND) {
+> +               struct cxl_send_command __user *u = (void __user *)arg;
+> +               struct cxl_memdev *cxlmd = file->private_data;
+> +               struct cxl_mem_command c;
+> +               int rc;
+> +
+> +               rc = cxl_validate_cmd_from_user(u, &c);
+> +               if (rc)
+> +                       return rc;
+> +
+> +               return handle_mailbox_cmd_from_user(cxlmd, &c, u);
+>         }
+>
+>         return -ENOTTY;
+> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+> index 1d1e143f98ec..189d86a13637 100644
+> --- a/include/uapi/linux/cxl_mem.h
+> +++ b/include/uapi/linux/cxl_mem.h
+> @@ -19,6 +19,7 @@ extern "C" {
+>   */
+>
+>  #define CXL_MEM_QUERY_COMMANDS _IOR('C', 1, struct cxl_mem_query_commands)
+> +#define CXL_MEM_SEND_COMMAND _IOWR('C', 2, struct cxl_send_command)
+>
+>  #define CXL_MEM_COMMAND_NAME_LENGTH 32
+>
+> @@ -48,10 +49,12 @@ extern "C" {
+>  struct cxl_command_info {
+>         __u32 id;
+>  #define CXL_MEM_COMMAND_ID_INVALID 0
+> +#define CXL_MEM_COMMAND_ID_MAX (CXL_MEM_COMMAND_ID_INVALID + 1)
+>
+>         __u32 flags;
+>  #define CXL_MEM_COMMAND_FLAG_NONE 0
+>  #define CXL_MEM_COMMAND_FLAG_TAINT BIT(0)
+
+I guess I missed this in the last patch, why would userspace specify a
+taint flag? @flags is an output parameter?
+
+> +#define CXL_MEM_COMMAND_FLAG_MASK ~BIT(0)
+>
+>         __s32 size_in;
+>         __s32 size_out;
+> @@ -95,6 +98,38 @@ struct cxl_mem_query_commands {
+>         struct cxl_command_info __user commands[]; /* out: supported commands */
+>  };
+>
+> +/**
+> + * struct cxl_send_command - Send a command to a memory device.
+> + * @id: The command to send to the memory device. This must be one of the
+> + *     commands returned by the query command.
+> + * @flags: Flags for the command
+
+in / out field?
+
+> + * @rsvd: Reserved for future use.
+
+Document 'must be zero' to match the code?
+
+> + * @retval: Return value from the memory device (output).
+
+Is this a translated error code or the raw
+> + * @size_in: Size of the payload to provide to the device (input).
+> + * @size_out: Size of the payload received from the device (input/output). This
+> + *           field is filled in my userspace to let the driver know how much
+
+s/my/by/
+
+> + *           space was allocated for output. It is populated by the driver to
+> + *           let userspace know how large the output payload actually was.
+> + * @payload: Pointer to memory available for payload input/output.
+> + *
+> + * Mechanism for userspace to send a command to the hardware for processing. The
+> + * driver will do basic validation on the command sizes, but the payload input
+> + * and output are not introspected. Userspace is required to allocate large
+
+They might be introspected, at least there were some NVDIMM ioctls
+like "clear error" where the driver in addition to telling the device
+to clear the error also cleaned up the kernel's error tracking list.
+I'd say one of the benefits of Linux-commands that get translated to
+CXL-specific payloads is that they allow for kernel translation /
+interpretation / quirking vs 'raw' where the kernel does not care.
+
+> + * enough buffers for max(size_in, size_out).
+> + */
+> +struct cxl_send_command {
+> +       __u32 id;
+> +       __u32 flags;
+> +       __u32 rsvd;
+> +       __u32 retval;
+> +
+> +       struct {
+> +               __s32 size_in;
+> +               __s32 size_out;
+> +               __u64 payload;
+
+per the initial comment above a separate @payload_in and a
+@payload_out pointer would seem to be more flexible and get out of the
+situation where the kernel needs to clobber inputs.
