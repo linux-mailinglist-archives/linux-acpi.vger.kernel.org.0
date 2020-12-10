@@ -2,61 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E17C12D5F04
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 16:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1B2F2D5FB6
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 16:30:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389288AbgLJPFk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 10:05:40 -0500
-Received: from mx2.suse.de ([195.135.220.15]:39082 "EHLO mx2.suse.de"
+        id S2391756AbgLJP3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Dec 2020 10:29:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44398 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388977AbgLJPFb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Dec 2020 10:05:31 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id E0DEFADCD;
-        Thu, 10 Dec 2020 15:04:46 +0000 (UTC)
-Date:   Thu, 10 Dec 2020 16:04:40 +0100
-From:   Mian Yousaf Kaukab <ykaukab@suse.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mian Yousaf Kaukab <yousaf.kaukab@suse.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Petr Cervinka <pcervinka@suse.com>
-Subject: Re: [PATCH 1/2] acpi: cppc: add cpufreq device
-Message-ID: <20201210150417.GA24136@suse.de>
-References: <20201210142139.20490-1-yousaf.kaukab@suse.com>
- <CAJZ5v0hWxLrXCS+X15hnLZ2enBsSJ0aEfnxK2kL+n9k4gkg17Q@mail.gmail.com>
+        id S2391693AbgLJP25 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 10 Dec 2020 10:28:57 -0500
+Date:   Thu, 10 Dec 2020 16:29:31 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1607614097;
+        bh=u7q3rTPGTQ4dUgwP4cEe+JBQSe73GUlEF/YbcVC3h3c=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Yz6kmUWz/BnO7gm3cVIocivjv5KDnSrNDdI8IldyDT2ta4Jm2gCZLwwAxVcneHpT/
+         BDtcTQrp4NGLiyqxGmihdKJrSZGKt3YKwZXOmxDE2r/z4bah+eXq+y0ARierYHBubD
+         UhCCnm13kW4jGKfaobg+dTz9cmcTAXd89uarDCpk=
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     John Garry <john.garry@huawei.com>, jejb@linux.ibm.com,
+        martin.petersen@oracle.com, lenb@kernel.org, rjw@rjwysocki.net,
+        tglx@linutronix.de, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linuxarm@huawei.com,
+        linux-acpi@vger.kernel.org, dwagner@suse.de
+Subject: Re: [PATCH v5 4/5] Driver core: platform: Add
+ devm_platform_get_irqs_affinity()
+Message-ID: <X9I+2ydy8VDOaiec@kroah.com>
+References: <1606905417-183214-1-git-send-email-john.garry@huawei.com>
+ <1606905417-183214-5-git-send-email-john.garry@huawei.com>
+ <X9EYRNDXS1Xcy4iU@kroah.com>
+ <36730230-9fd7-8c6c-b997-328beea2fc31@huawei.com>
+ <X9Ehy28876ezAOLH@kroah.com>
+ <ed238cc6e4a6b865b2dc965f52fe0550@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hWxLrXCS+X15hnLZ2enBsSJ0aEfnxK2kL+n9k4gkg17Q@mail.gmail.com>
+In-Reply-To: <ed238cc6e4a6b865b2dc965f52fe0550@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 10, 2020 at 03:32:09PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Dec 10, 2020 at 3:23 PM Mian Yousaf Kaukab
-> <yousaf.kaukab@suse.com> wrote:
-> >
-> > Convert cppc-cpufreq driver to a platform driver (done in a separate patch)
-> > and add cppc-cpufreq device when acpi_cppc_processor_probe() succeeds.
+On Wed, Dec 09, 2020 at 07:39:03PM +0000, Marc Zyngier wrote:
+> On 2020-12-09 19:13, Greg KH wrote:
+> > On Wed, Dec 09, 2020 at 07:04:02PM +0000, John Garry wrote:
+> > > On 09/12/2020 18:32, Greg KH wrote:
+> > > > On Wed, Dec 02, 2020 at 06:36:56PM +0800, John Garry wrote:
+> > > > > Drivers for multi-queue platform devices may also want managed interrupts
+> > > > > for handling HW queue completion interrupts, so add support.
+> > > >
+> > > 
+> > > Hi Greg,
+> > > 
+> > > > Why would a platform device want all of this?  Shouldn't such a device
+> > > > be on a "real" bus instead?
+> > > 
+> > > For this HW version, the device is on the system bus, directly
+> > > addressable
+> > > by the CPU.
+> > 
+> > What do you mean by "system bus"?
+> > 
+> > > Motivation is that I wanted to switch the HW completion queues to use
+> > > managed interrupts.
+> > 
+> > Fair enough, seems like overkill for a "platform" bus though :)
 > 
-> Honestly, I prefer to drop 28f06f770454 (along with its follower)
-> instead of making this change.
-> 
-Even if we revert 28f06f770454 there is still one more small issue that these
-patches fix. Currently, ACPI_PROCESSOR_DEVICE_HID is used to load cppc-cpufreq
-module. In case when CPPC is disabled, some cycles will be wasted in loading
-cppc-cpufreq module. The module will return error from the init call though
-so no memory is wasted.
+> You should see the box, really... ;-)
 
-After converting to platform-driver, cppc-cpufreq module will only be loaded
-when the platform-device is available.
+{sigh} why do hardware engineers ignore sane busses...
 
-BR,
-Yousaf
+Anyway, if you all are going to maintain this, no objection from me, it
+should go through the irq tree.
+
+thanks,
+
+greg k-h
