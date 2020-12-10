@@ -2,113 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A16A32D5704
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 10:26:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 816182D570D
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 10:26:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731909AbgLJJX2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 04:23:28 -0500
-Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:35017 "EHLO
-        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732324AbgLJJXY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Dec 2020 04:23:24 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id E09D27BC;
-        Thu, 10 Dec 2020 04:22:15 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 10 Dec 2020 04:22:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=1ZAlIqBRVgNBZXJUpDZOGOQfOjR
-        SNiGbqNk2pJT3YNw=; b=Isaz5TMNcW44OShJrlhd6WuizUfUOC1KUEJqkzdW+9w
-        Ymgkf8Fao9zHi9H5ZjSq+0Ir0OXWOa+ftU8sWhtx539/LJQuqnSSW7jwGojSQEtb
-        Rtypr6x8JsgoXCYc6aQ7E24gcFKf8++RVjZ4aBM2qB9+6xr+fSyTaV6GMBAMUv5S
-        IAwuunuiEtrEYtylTJ+Fr7nB+KpYuCuIPbYc/jmMkwdT/tCkWqSYDQ7SfRWSF8+b
-        pNzNTgH6SIbJImurxwcuhpoXzlQ+GOIdqx+K4i/5Z/dSIrJKE+1cTszTsqyJQrfK
-        ln8Mdfm3D8Og0mfhmBtBhei7eeZn7LcFfvGuH1yZKWg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=1ZAlIq
-        BRVgNBZXJUpDZOGOQfOjRSNiGbqNk2pJT3YNw=; b=CKgjqRFVwhvY5TKmLrb6bO
-        C2U7o/SJSvKmhg//sYb+NlScuCI2A6+G1PqgydaGvjjfMCM6/ZtaHfcTbB1vVEYS
-        KC4yWvM4uwMNvafUJyOVbn60FQlFbkmO2oj+8w/P34yeE6cfuoGP9U0BZB0Un1P6
-        MMHOZgFmHWkxtJAuvYNMs7Lp2hvSOPsCNyCNOL5lVtp3vJJzpO9XuIFA3HJZ9O1B
-        UV8FWchJcLKpL7N4ASLjy+u+b6zGNHyzIAulNW0ajuLEkfm/OLypGf7kx3kcfMkF
-        FV1VlW8/W60SFoKEUF4ALMw/nn23qrT4EUm1HfyUjUKRxXS2s45Zz42JJUseEuPA
-        ==
-X-ME-Sender: <xms:x-jRX-TLMHePEwG4CvQz6MQrlQbAIu8xJIB44fmM-Ta8sfKugWSXxQ>
-    <xme:x-jRXzzEG42IsQ9OMWLD0qBhiVK3vo_8JRNvxrfkTxCRolYdYd6GhDsbzQpoE8kyU
-    Y426GiaLfLNWw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudektddgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
-    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucfkphepkeef
-    rdekiedrjeegrdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:x-jRX73N0O2wIJdj4eNoWCWcrW4LlE8ROeZ0VEu_n9XT2kHwvHZcXQ>
-    <xmx:x-jRX6DT3q-WVNaXyEOChJeKyPs6C_PtRW7cg10Lb8MDUuEi2FUixw>
-    <xmx:x-jRX3ifxSc65-zXnkijhzQDQbLG3XPZLGWxgMUSVfKrwbE2YBOuQA>
-    <xmx:x-jRX6sjqC_TECvLg0yMKJ0KEcMFI-xwGUcLoxgXCkbY899hz6L0yA>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 02C0F108005B;
-        Thu, 10 Dec 2020 04:22:14 -0500 (EST)
-Date:   Thu, 10 Dec 2020 10:04:22 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Hui Wang <hui.wang@canonical.com>
-Cc:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ACPI / PNP: check the string length of pnp device id
- in matching_id
-Message-ID: <X9HklmczekRvwKTE@kroah.com>
-References: <20201210012539.5747-1-hui.wang@canonical.com>
+        id S1727979AbgLJJZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Dec 2020 04:25:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38412 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727356AbgLJJZ4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 10 Dec 2020 04:25:56 -0500
+Date:   Thu, 10 Dec 2020 10:26:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1607592315;
+        bh=KHGVsHMNI9pUexaEY9VJTdP9KZ7FbXACIh+y6JJQhrY=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c3Zv5LTemcEfNV4vGa3Q1rrWMKk9+lxCRdSpQf+9k4AyoZ3pk331wtu3xlJrdX3tg
+         gC/F6Iz0VEbN42qqzb6iPZFqOLvTm7VPucfpjy4wG9JiFKNU6Mi95q/KnO3gJ4yAze
+         HiKw8/2TIrqemuyqN4Cr0H+GcmuTVASOSN+wFMIs=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 00/17] Refactor fw_devlink to significantly improve
+ boot time
+Message-ID: <X9HpxMOgzlCcVI7p@kroah.com>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <X9EUbji0tILG6PvX@kroah.com>
+ <CAGETcx_5_=VKxbTddtG4u7p0yhCTdkr746fToPtPecEZcE1ncg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201210012539.5747-1-hui.wang@canonical.com>
+In-Reply-To: <CAGETcx_5_=VKxbTddtG4u7p0yhCTdkr746fToPtPecEZcE1ncg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 10, 2020 at 09:25:39AM +0800, Hui Wang wrote:
-> Recently we met a touchscreen problem on some Thinkpad machines, the
-> touchscreen driver (i2c-hid) is not loaded and the touchscreen can't
-> work.
+On Wed, Dec 09, 2020 at 12:24:32PM -0800, Saravana Kannan wrote:
+> On Wed, Dec 9, 2020 at 10:15 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Fri, Nov 20, 2020 at 06:02:15PM -0800, Saravana Kannan wrote:
+> > > The current implementation of fw_devlink is very inefficient because it
+> > > tries to get away without creating fwnode links in the name of saving
+> > > memory usage. Past attempts to optimize runtime at the cost of memory
+> > > usage were blocked with request for data showing that the optimization
+> > > made significant improvement for real world scenarios.
+> > >
+> > > We have those scenarios now. There have been several reports of boot
+> > > time increase in the order of seconds in this thread [1]. Several OEMs
+> > > and SoC manufacturers have also privately reported significant
+> > > (350-400ms) increase in boot time due to all the parsing done by
+> > > fw_devlink.
+> > >
+> > > So this patch series refactors fw_devlink to be more efficient. The key
+> > > difference now is the addition of support for fwnode links -- just a few
+> > > simple APIs. This also allows most of the code to be moved out of
+> > > firmware specific (DT mostly) code into driver core.
+> > >
+> > > This brings the following benefits:
+> > > - Instead of parsing the device tree multiple times (complexity was
+> > >   close to O(N^3) where N in the number of properties) during bootup,
+> > >   fw_devlink parses each fwnode node/property only once and creates
+> > >   fwnode links. The rest of the fw_devlink code then just looks at these
+> > >   fwnode links to do rest of the work.
+> > >
+> > > - Makes it much easier to debug probe issue due to fw_devlink in the
+> > >   future. fw_devlink=on blocks the probing of devices if they depend on
+> > >   a device that hasn't been added yet. With this refactor, it'll be very
+> > >   easy to tell what that device is because we now have a reference to
+> > >   the fwnode of the device.
+> > >
+> > > - Much easier to add fw_devlink support to ACPI and other firmware
+> > >   types. A refactor to move the common bits from DT specific code to
+> > >   driver core was in my TODO list as a prerequisite to adding ACPI
+> > >   support to fw_devlink. This series gets that done.
+> > >
+> > > Laurent and Grygorii tested the v1 series and they saw boot time
+> > > improvment of about 12 seconds and 3 seconds, respectively.
+> >
+> > Now queued up to my tree.  Note, I had to hand-apply patches 13 and 16
+> > due to some reason (for 13, I have no idea, for 16 it was due to a
+> > previous patch applied to my tree that I cc:ed you on.)
+> >
+> > Verifying I got it all correct would be great :)
 > 
-> An i2c ACPI device with the name WACF2200 is defined in the BIOS, with
-> the current ACPI PNP matching rule, this device will be regarded as
-> a PNP device since there is WACFXXX in the acpi_pnp_device_ids[] and
-> this PNP device is attached to the acpi device as the 1st
-> physical_node, this will make the i2c bus match fail when i2c bus
-> calls acpi_companion_match() to match the acpi_id_table in the i2c-hid
-> driver.
+> A quick diff of drivers/base/core.c between driver-core-testing and my
+> local tree doesn't show any major diff (only some unrelated comment
+> fixes). So, it looks fine.
 > 
-> An ACPI PNP device's id has fixed format and its string length equals
-> 7, after adding this check in the matching_id, the touchscreen could
-> work.
+> The patch 13 conflict is probably due to having to rebase the v2
+> series on top of this:
+> https://lore.kernel.org/lkml/20201104205431.3795207-1-saravanak@google.com/
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hui Wang <hui.wang@canonical.com>
-> ---
->  drivers/acpi/acpi_pnp.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> index 4ed755a963aa..5ce711b9b070 100644
-> --- a/drivers/acpi/acpi_pnp.c
-> +++ b/drivers/acpi/acpi_pnp.c
-> @@ -319,6 +319,10 @@ static bool matching_id(const char *idstr, const char *list_id)
->  {
->  	int i;
->  
-> +	/* a pnp device id has CCCdddd format (C character, d digit), strlen should be 7 */
-> +	if (strlen(idstr) != 7)
-> +		return false;
+> And looks like Patch 16 was handled fine.
 
-Shouldn't you verify that the format is correct as well?
-
-thanks,
+Great, thanks for verifying!
 
 greg k-h
