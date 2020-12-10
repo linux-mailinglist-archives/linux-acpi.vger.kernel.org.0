@@ -2,114 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 816182D570D
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 10:26:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D269D2D57F6
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 11:12:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727979AbgLJJZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 04:25:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38412 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727356AbgLJJZ4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Dec 2020 04:25:56 -0500
-Date:   Thu, 10 Dec 2020 10:26:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1607592315;
-        bh=KHGVsHMNI9pUexaEY9VJTdP9KZ7FbXACIh+y6JJQhrY=;
-        h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c3Zv5LTemcEfNV4vGa3Q1rrWMKk9+lxCRdSpQf+9k4AyoZ3pk331wtu3xlJrdX3tg
-         gC/F6Iz0VEbN42qqzb6iPZFqOLvTm7VPucfpjy4wG9JiFKNU6Mi95q/KnO3gJ4yAze
-         HiKw8/2TIrqemuyqN4Cr0H+GcmuTVASOSN+wFMIs=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 00/17] Refactor fw_devlink to significantly improve
- boot time
-Message-ID: <X9HpxMOgzlCcVI7p@kroah.com>
-References: <20201121020232.908850-1-saravanak@google.com>
- <X9EUbji0tILG6PvX@kroah.com>
- <CAGETcx_5_=VKxbTddtG4u7p0yhCTdkr746fToPtPecEZcE1ncg@mail.gmail.com>
+        id S1731601AbgLJKLz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Dec 2020 05:11:55 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2239 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730876AbgLJKLq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 05:11:46 -0500
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cs8l83X7Lz67Ntq;
+        Thu, 10 Dec 2020 18:08:52 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 10 Dec 2020 11:10:58 +0100
+Received: from [10.210.172.228] (10.210.172.228) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 10 Dec 2020 10:10:53 +0000
+Subject: Re: [PATCH v5 4/5] Driver core: platform: Add
+ devm_platform_get_irqs_affinity()
+To:     Marc Zyngier <maz@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+CC:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+        <lenb@kernel.org>, <rjw@rjwysocki.net>, <tglx@linutronix.de>,
+        <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <dwagner@suse.de>
+References: <1606905417-183214-1-git-send-email-john.garry@huawei.com>
+ <1606905417-183214-5-git-send-email-john.garry@huawei.com>
+ <X9EYRNDXS1Xcy4iU@kroah.com>
+ <36730230-9fd7-8c6c-b997-328beea2fc31@huawei.com>
+ <X9Ehy28876ezAOLH@kroah.com> <ed238cc6e4a6b865b2dc965f52fe0550@kernel.org>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <c1c56bdf-6f0c-2372-4705-9be4584094bd@huawei.com>
+Date:   Thu, 10 Dec 2020 10:10:19 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx_5_=VKxbTddtG4u7p0yhCTdkr746fToPtPecEZcE1ncg@mail.gmail.com>
+In-Reply-To: <ed238cc6e4a6b865b2dc965f52fe0550@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.210.172.228]
+X-ClientProxiedBy: lhreml729-chm.china.huawei.com (10.201.108.80) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 09, 2020 at 12:24:32PM -0800, Saravana Kannan wrote:
-> On Wed, Dec 9, 2020 at 10:15 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Fri, Nov 20, 2020 at 06:02:15PM -0800, Saravana Kannan wrote:
-> > > The current implementation of fw_devlink is very inefficient because it
-> > > tries to get away without creating fwnode links in the name of saving
-> > > memory usage. Past attempts to optimize runtime at the cost of memory
-> > > usage were blocked with request for data showing that the optimization
-> > > made significant improvement for real world scenarios.
-> > >
-> > > We have those scenarios now. There have been several reports of boot
-> > > time increase in the order of seconds in this thread [1]. Several OEMs
-> > > and SoC manufacturers have also privately reported significant
-> > > (350-400ms) increase in boot time due to all the parsing done by
-> > > fw_devlink.
-> > >
-> > > So this patch series refactors fw_devlink to be more efficient. The key
-> > > difference now is the addition of support for fwnode links -- just a few
-> > > simple APIs. This also allows most of the code to be moved out of
-> > > firmware specific (DT mostly) code into driver core.
-> > >
-> > > This brings the following benefits:
-> > > - Instead of parsing the device tree multiple times (complexity was
-> > >   close to O(N^3) where N in the number of properties) during bootup,
-> > >   fw_devlink parses each fwnode node/property only once and creates
-> > >   fwnode links. The rest of the fw_devlink code then just looks at these
-> > >   fwnode links to do rest of the work.
-> > >
-> > > - Makes it much easier to debug probe issue due to fw_devlink in the
-> > >   future. fw_devlink=on blocks the probing of devices if they depend on
-> > >   a device that hasn't been added yet. With this refactor, it'll be very
-> > >   easy to tell what that device is because we now have a reference to
-> > >   the fwnode of the device.
-> > >
-> > > - Much easier to add fw_devlink support to ACPI and other firmware
-> > >   types. A refactor to move the common bits from DT specific code to
-> > >   driver core was in my TODO list as a prerequisite to adding ACPI
-> > >   support to fw_devlink. This series gets that done.
-> > >
-> > > Laurent and Grygorii tested the v1 series and they saw boot time
-> > > improvment of about 12 seconds and 3 seconds, respectively.
-> >
-> > Now queued up to my tree.  Note, I had to hand-apply patches 13 and 16
-> > due to some reason (for 13, I have no idea, for 16 it was due to a
-> > previous patch applied to my tree that I cc:ed you on.)
-> >
-> > Verifying I got it all correct would be great :)
+On 09/12/2020 19:39, Marc Zyngier wrote:
+>>
+>> Ok, I'd like to have the irq maintainers/developers ack this before
+>> taking it in the driver core, as someone is going to have to maintain
+>> this crazy thing for forever if it gets merged.
 > 
-> A quick diff of drivers/base/core.c between driver-core-testing and my
-> local tree doesn't show any major diff (only some unrelated comment
-> fixes). So, it looks fine.
+> I'm actually quite happy with this, and as it turns out, the crazy
+> system that has this SAS thing keeps my backside warm all year long.
+> As long as this machine keeps ticking, I'm happy to help with this.
 > 
-> The patch 13 conflict is probably due to having to rebase the v2
-> series on top of this:
-> https://lore.kernel.org/lkml/20201104205431.3795207-1-saravanak@google.com/
+> So if that helps:
 > 
-> And looks like Patch 16 was handled fine.
+> Acked-by: Marc Zyngier <maz@kernel.org>
 
-Great, thanks for verifying!
+Cheers
 
-greg k-h
+> 
+> We need to work out the merge strategy for the whole lot though, given
+> that it crosses 3 subsystems over two series...
+
+Thomas originally suggested taking the genirq change himself and then 
+providing a tag for others to merge:
+
+https://lore.kernel.org/linux-scsi/87h7qf1yp0.fsf@nanos.tec.linutronix.de/
+
+Not sure if that still stands. The small ACPI change could go in a cycle 
+after rest merged, but may be best not to split up.
+
+The worst that will happen without Marc's series is that is remove + 
+re-probe the SCSI driver is broken, so I'm happy as long as that ends up 
+in same kernel version somehow:
+
+https://lore.kernel.org/lkml/20201129135208.680293-1-maz@kernel.org/
+
+Thanks,
+John
+
