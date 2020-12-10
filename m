@@ -2,114 +2,261 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 336BA2D65A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 19:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E722D65C9
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Dec 2020 20:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393149AbgLJSz2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 13:55:28 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:37464 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393138AbgLJSz0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 13:55:26 -0500
-Received: by mail-oi1-f193.google.com with SMTP id l207so6904618oib.4;
-        Thu, 10 Dec 2020 10:55:10 -0800 (PST)
+        id S2393237AbgLJS5u convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 10 Dec 2020 13:57:50 -0500
+Received: from mail-oo1-f67.google.com ([209.85.161.67]:37613 "EHLO
+        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393188AbgLJS5n (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 13:57:43 -0500
+Received: by mail-oo1-f67.google.com with SMTP id t23so1517880oov.4
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Dec 2020 10:57:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=twsPwbVO8yn8zyqZUdboWjPQ7cI0ykoSS/wwbkutNEI=;
-        b=WK5LbfxAs06m91B7c1sJE4alF1KAfiCPw/lwyICalBrZFPaPi64xZAT5qT2swj0dnX
-         UbO8tONF4nZVbiBp5r/86RmlA/sX9o/qFjllCbZNJVkyjGfPLpai9i+rD+6Nw1gflcm/
-         GeolyZ3crbw1nzo2wHZPD+wdJpq4FHmFel36Uw5tpZ4eXNL6uYZrxi25JFIxv/HVK0yy
-         ERqnLi3G9MfyZ8HmtwSJU/NGgAjRWCc+9cNAqAnHNvkt2xI6YiDovOX/E7mX4vybbqB9
-         6dsUZM71i/animyxqJuehdNf9nAHvxoG0F4waqTxBBC0Qn6e0uhZVkODXnVVUUgaimN4
-         /Kpg==
-X-Gm-Message-State: AOAM532NBKI2A8Q5omc3Q3OwahsT+TN9FkguZit3IJFl3Mhg0ZROK5+u
-        P0R7lIHe/CFsi7IZtEuPGpYctUifoY3igRumvzU=
-X-Google-Smtp-Source: ABdhPJxLClO2crsAIA3P40gP2Nb793PFJLMAKdyrDqX8zhIEkjenPnNDK1rWmD8vPcW48zPM+UzHKVaWiHz5yaKb0uc=
-X-Received: by 2002:aca:cf4a:: with SMTP id f71mr6681750oig.157.1607626485427;
- Thu, 10 Dec 2020 10:54:45 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=iWDqmnrOy6XAoiY09dM3x1lIqPzKRE8zOY9EpMW2dmU=;
+        b=J1lkmrI0eZqeUMY/z1pH7oh/XS78fvOf552+1dia1QbLeYfrlFie9VVCbvDV4Ziwus
+         rBvSoS2PBnKfA4KRL0xJLoGd2tuJHPi1ucnCmLkYtptLI2fa1DGN3XvJKn+Y2wtJZRnv
+         CEI/BMUVbj3u70hoguo/KdPfy/AX+4JdyA7DJl2UBrBENgvybtEwvA8NE2kLjF9ZOcte
+         6D+F6wZr52WqifjKgvPwWi8r+j986rjiq/KZvRHhDKBw7PCCXyBsTv2GSIDi1TThQlT5
+         JUZY1ec5Tl84F0+DqEhJ3uXyMUS90CbnJuy9b6p7gFw9BRe2fz+4pI2MqGZo9qGGx2CA
+         koIg==
+X-Gm-Message-State: AOAM533FhRDoOuW6ZjlO7ghG2p4jqCIOm+emziFFetbA3WdVnRx/cnvJ
+        sR2iYIog2Sp7wDMuIFLMF5TNYxC6nsVQNIKayic=
+X-Google-Smtp-Source: ABdhPJyuD4n0yKZ2AE3WBjYVdqekGOGkrZpEHQnt7MH4zpmXYeny0jb7gtNDj2Yqxpg1ekygBQGPOjw8H8jEKd/IfMc=
+X-Received: by 2002:a4a:9873:: with SMTP id z48mr7020471ooi.44.1607626621507;
+ Thu, 10 Dec 2020 10:57:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20201210142139.20490-1-yousaf.kaukab@suse.com>
- <CAJZ5v0hWxLrXCS+X15hnLZ2enBsSJ0aEfnxK2kL+n9k4gkg17Q@mail.gmail.com>
- <20201210150417.GA24136@suse.de> <1916679.syIRshJoYJ@kreacher> <20201210172339.GA2828@arm.com>
-In-Reply-To: <20201210172339.GA2828@arm.com>
+References: <20201120060752.3146704-1-Shyam-sundar.S-k@amd.com>
+ <CAJZ5v0jeoiZdgzKupakPn+82iur-nMLH3wEC07cHO1qyvoysug@mail.gmail.com> <e0cd4950-e19d-a158-c9c9-b6436854e663@amd.com>
+In-Reply-To: <e0cd4950-e19d-a158-c9c9-b6436854e663@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 10 Dec 2020 19:54:34 +0100
-Message-ID: <CAJZ5v0hx46VUj+FueGKLDNtn-H9Mk9vFSa5RXv6KrpPwcsD=cg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] acpi: cppc: add cpufreq device
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mian Yousaf Kaukab <ykaukab@suse.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mian Yousaf Kaukab <yousaf.kaukab@suse.com>,
+Date:   Thu, 10 Dec 2020 19:56:50 +0100
+Message-ID: <CAJZ5v0jkcFjHzaJXmm9Z-VjxEO373k=g_iwt+8gOs2FcjEABEg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: PM: s2idle: Add AMD support to handle _DSM
+ during S2Idle
+To:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Petr Cervinka <pcervinka@suse.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 10, 2020 at 6:23 PM Ionela Voinescu <ionela.voinescu@arm.com> wrote:
+On Wed, Nov 25, 2020 at 7:45 AM Shyam Sundar S K
+<Shyam-sundar.S-k@amd.com> wrote:
 >
-> Hi Rafael,
 >
-> On Thursday 10 Dec 2020 at 17:55:56 (+0100), Rafael J. Wysocki wrote:
-> > On Thursday, December 10, 2020 4:04:40 PM CET Mian Yousaf Kaukab wrote:
-> > > On Thu, Dec 10, 2020 at 03:32:09PM +0100, Rafael J. Wysocki wrote:
-> > > > On Thu, Dec 10, 2020 at 3:23 PM Mian Yousaf Kaukab
-> > > > <yousaf.kaukab@suse.com> wrote:
-> > > > >
-> > > > > Convert cppc-cpufreq driver to a platform driver (done in a separate patch)
-> > > > > and add cppc-cpufreq device when acpi_cppc_processor_probe() succeeds.
-> > > >
-> > > > Honestly, I prefer to drop 28f06f770454 (along with its follower)
-> > > > instead of making this change.
-> > > >
-> > > Even if we revert 28f06f770454 there is still one more small issue that these
-> > > patches fix. Currently, ACPI_PROCESSOR_DEVICE_HID is used to load cppc-cpufreq
-> > > module. In case when CPPC is disabled, some cycles will be wasted in loading
-> > > cppc-cpufreq module. The module will return error from the init call though
-> > > so no memory is wasted.
-> > >
-> > > After converting to platform-driver, cppc-cpufreq module will only be loaded
-> > > when the platform-device is available.
+>
+> On 11/23/2020 10:15 PM, Rafael J. Wysocki wrote:
+> > [CAUTION: External Email]
 > >
-> > Even so, that issue is low-impact AFAICS and may be addressed later and I'd
-> > rather not let known breakage go into the mainline.
+> > On Fri, Nov 20, 2020 at 7:10 AM Shyam Sundar S K
+> > <Shyam-sundar.S-k@amd.com> wrote:
+> >>
+> >> Initial support for S2Idle based on the Intel implementation [1] does not
+> >> work for AMD as the BIOS implementation for ACPI methods like the _DSM
+> >> are not standardized.
+> >>
+> >> So, the way in which the UUID's were parsed and the ACPI packages were
+> >> retrieved out of the ACPI objects are not the same between Intel and AMD.
+> >>
+> >> This patch adds AMD support for S2Idle to parse the UUID, evaluate the
+> >> _DSM methods, preparing the Idle constraint list etc.
+> >>
+> >> Link: https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fuefi.org%2Fsites%2Fdefault%2Ffiles%2Fresources%2FIntel_ACPI_Low_Power_S0_Idle.pdf&amp;data=04%7C01%7CShyam-sundar.S-k%40amd.com%7C640970e0f42a4fd53a1408d88fcf25d8%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C1%7C637417467581911776%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000&amp;sdata=xPFj5OymQkr3xEaU8qQD1y8O95XCszUblRRuknNvD7I%3D&amp;reserved=0 # [1]
+> >> Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+> >> ---
+> >> v2:(https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.spinics.net%2Flists%2Flinux-acpi%2Fmsg97104.html&amp;data=04%7C01%7CShyam-sundar.S-k%40amd.com%7C640970e0f42a4fd53a1408d88fcf25d8%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C1%7C637417467581911776%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000&amp;sdata=r5whv52ruKVbFgsV1qEuWKeePaUQhjXnxQwF7izFRf4%3D&amp;reserved=0)
+> >> - Remove default case in switch.
+> >> - Add a routine acpi_match_vendor_name() required when building on a
+> >>   non-x86 based environment.
+> >> - Fixed spelling mistakes.
+> >> ---
+> >>  drivers/acpi/sleep.c | 166 ++++++++++++++++++++++++++++++++++++++++---
+> >>  1 file changed, 157 insertions(+), 9 deletions(-)
+> >>
+> >> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> >> index aff13bf4d947..b929fd0d2e04 100644
+> >> --- a/drivers/acpi/sleep.c
+> >> +++ b/drivers/acpi/sleep.c
+> >> @@ -710,6 +710,11 @@ static const struct acpi_device_id lps0_device_ids[] = {
+> >>  #define ACPI_LPS0_ENTRY                5
+> >>  #define ACPI_LPS0_EXIT         6
+> >>
+> >> +/* AMD */
+> >> +#define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
+> >> +#define ACPI_LPS0_SCREEN_OFF_AMD    4
+> >> +#define ACPI_LPS0_SCREEN_ON_AMD     5
+> >> +
+> >>  static acpi_handle lps0_device_handle;
+> >>  static guid_t lps0_dsm_guid;
+> >>  static char lps0_dsm_func_mask;
+> >> @@ -733,8 +738,124 @@ struct lpi_constraints {
+> >>         int min_dstate;
+> >>  };
+> >>
+> >> +/* AMD */
+> >> +/* Device constraint entry structure */
+> >> +struct lpi_device_info_amd {
+> >> +       int revision;
+> >> +       int count;
+> >> +       union acpi_object *package;
+> >> +};
+> >> +
+> >> +/* Constraint package structure */
+> >> +struct lpi_device_constraint_amd {
+> >> +       char *name;
+> >> +       int enabled;
+> >> +       int function_states;
+> >> +       int min_dstate;
+> >> +};
+> >> +
+> >>  static struct lpi_constraints *lpi_constraints_table;
+> >>  static int lpi_constraints_table_size;
+> >> +static int rev_id;
+> >> +
+> >> +static void lpi_device_get_constraints_amd(void)
+> >> +{
+> >> +       union acpi_object *out_obj;
+> >> +       int i, j, k;
+> >> +
+> >> +       out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
+> >> +                                         1, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
+> >> +                                         NULL, ACPI_TYPE_PACKAGE);
+> >> +
+> >> +       if (!out_obj)
+> >> +               return;
+> >> +
+> >> +       acpi_handle_debug(lps0_device_handle, "_DSM function 1 eval %s\n",
+> >> +                         out_obj ? "successful" : "failed");
+> >> +
+> >> +       for (i = 0; i < out_obj->package.count; i++) {
+> >> +               union acpi_object *package = &out_obj->package.elements[i];
+> >> +               struct lpi_device_info_amd info = { };
+> >> +
+> >> +               if (package->type == ACPI_TYPE_INTEGER) {
+> >> +                       switch (i) {
+> >> +                       case 0:
+> >> +                               info.revision = package->integer.value;
+> >> +                               break;
+> >> +                       case 1:
+> >> +                               info.count = package->integer.value;
+> >> +                               break;
+> >> +                       }
+> >> +               } else if (package->type == ACPI_TYPE_PACKAGE) {
+> >> +                       lpi_constraints_table = kcalloc(package->package.count,
+> >> +                                                       sizeof(*lpi_constraints_table),
+> >> +                                                       GFP_KERNEL);
+> >> +
+> >> +                       if (!lpi_constraints_table)
+> >> +                               goto free_acpi_buffer;
+> >> +
+> >> +                       acpi_handle_info(lps0_device_handle,
+> >> +                                        "LPI: constraints list begin:\n");
+> >> +
+> >> +                       for (j = 0; j < package->package.count; ++j) {
+> >> +                               union acpi_object *info_obj = &package->package.elements[j];
+> >> +                               struct lpi_device_constraint_amd dev_info = {};
+> >> +                               struct lpi_constraints *list;
+> >> +                               acpi_status status;
+> >> +
+> >> +                               for (k = 0; k < info_obj->package.count; ++k) {
+> >> +                                       union acpi_object *obj = &info_obj->package.elements[k];
+> >> +                                       union acpi_object *obj_new;
+> >> +
+> >> +                                       list = &lpi_constraints_table[lpi_constraints_table_size];
+> >> +                                       list->min_dstate = -1;
+> >> +
+> >> +                                       obj_new = &obj[k];
+> >> +                                       switch (k) {
+> >> +                                       case 0:
+> >> +                                               dev_info.enabled = obj->integer.value;
+> >> +                                               break;
+> >> +                                       case 1:
+> >> +                                               dev_info.name = obj->string.pointer;
+> >> +                                               break;
+> >> +                                       case 2:
+> >> +                                               dev_info.function_states = obj->integer.value;
+> >> +                                               break;
+> >> +                                       case 3:
+> >> +                                               dev_info.min_dstate = obj->integer.value;
+> >> +                                               break;
+> >> +                                       }
+> >> +
+> >> +                                       if (!dev_info.enabled || !dev_info.name ||
+> >> +                                           !dev_info.min_dstate)
+> >> +                                               continue;
+> >> +
+> >> +                                       status = acpi_get_handle(NULL, dev_info.name,
+> >> +                                                                &list->handle);
+> >> +                                       if (ACPI_FAILURE(status))
+> >> +                                               continue;
+> >> +
+> >> +                                       acpi_handle_info(lps0_device_handle,
+> >> +                                                        "Name:%s\n", dev_info.name);
+> >> +
+> >> +                                       list->min_dstate = dev_info.min_dstate;
+> >> +
+> >> +                                       if (list->min_dstate < 0) {
+> >> +                                               acpi_handle_info(lps0_device_handle,
+> >> +                                                                "Incomplete constraint defined\n");
+> >> +                                               continue;
+> >> +                                       }
+> >> +                               }
+> >> +                               lpi_constraints_table_size++;
+> >> +                       }
+> >> +               }
+> >> +       }
+> >> +
+> >> +       acpi_handle_info(lps0_device_handle, "LPI: constraints list end\n");
+> >> +
+> >> +free_acpi_buffer:
+> >> +       ACPI_FREE(out_obj);
+> >> +}
+> >>
+> >>  static void lpi_device_get_constraints(void)
+> >>  {
+> >> @@ -883,13 +1004,22 @@ static void acpi_sleep_run_lps0_dsm(unsigned int func)
+> >>         if (!(lps0_dsm_func_mask & (1 << func)))
+> >>                 return;
+> >>
+> >> -       out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, 1, func, NULL);
+> >> +       out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, rev_id, func, NULL);
+> >>         ACPI_FREE(out_obj);
+> >>
+> >>         acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
+> >>                           func, out_obj ? "successful" : "failed");
+> >>  }
+> >>
+> >> +static bool acpi_match_vendor_name(void)
+> >> +{
+> >> +#ifdef CONFIG_X86
+> >> +       if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
+> >> +               return true;
+> >> +#endif
+> >> +       return false;
+> >> +}
 > >
-> > I'm going to do drop the problematic commit now and please work with Ionela
-> > to produce a clean series of patches in the right order to avoid introducing
-> > issues between them.
+> > Well, I still don't like this (explicit CONFIG_X86 dependencies are
+> > not welcome in this file), but arguably the damage was done before
+> > already and there is a bunch of X86-specific code in here anyway, so
+> > I'm going to take your patch provisionally and rearrange the code on
+> > top of it so as to relocate the x86-specific part of it into
+> > acpi/x86/.
 > >
+> > Thanks!
 >
-> The following commit will be easy to drop:
-> a37afa60de38  cppc_cpufreq: optimise memory allocation for HW and NONE coordination (2 weeks ago)
->
-> 28f06f770454  will be more difficult to drop as it's embedded in the
-> series, and removing that one will produce conflicts in the patches
-> that follow it:
->
-> f9f5baa8b2a8  ACPI: processor: fix NONE coordination for domain mapping failure (3 weeks ago)
-> cdb4ae5de6f7  cppc_cpufreq: expose information on frequency domains (3 weeks ago)
-> c783a4d94848  cppc_cpufreq: clarify support for coordination types (3 weeks ago)
-> 3bd412fb2c7f  cppc_cpufreq: use policy->cpu as driver of frequency setting (3 weeks ago)
-> 28f06f770454  cppc_cpufreq: replace per-cpu structures with lists (3 weeks ago)
+> Thank you Rafael!
 
-I dropped the commits above along with a37afa60de38 (and regenerated
-my pm-cpufreq branch).
-
-> bb025fb6c276  cppc_cpufreq: simplify use of performance capabilities (3 weeks ago)
-> 48ad8dc94032  cppc_cpufreq: clean up cpu, cpu_num and cpunum variable use (3 weeks ago)
-> 63087265c288  cppc_cpufreq: fix misspelling, code style and readability issues (3 weeks ago)
->
-> Let me know how you want to proceed and I can either send a replacement
-> series or reverts with conflicts fixed.
-
-Please feel free to resubmit with the issue at hand addressed.
+I won't be able to take care of this before the start of the 5.11
+merge window, so I'll do my best to get to it during the merge window
+so as to be able to still get it into 5.11-rc1.
 
 Thanks!
