@@ -2,101 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5838C2D7C79
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 18:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 934612D7CBD
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 18:25:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732741AbgLKRIZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Dec 2020 12:08:25 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:45846 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391969AbgLKRHx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 12:07:53 -0500
-Received: by mail-ot1-f65.google.com with SMTP id h18so8826590otq.12;
-        Fri, 11 Dec 2020 09:07:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=F/h29HAC558Bg8Qs8tEOs2uZIdpDVtZwMm4bchCbIDc=;
-        b=HqdvpSjkkc+zMXntXu/N30Qy24ZR/UHnCRIWQ0YqBwMmlpcxjjY0Ieo+vO4WKkxhNs
-         L9PI4K+q1WgaeiM77soR939CozDQDVLPLo7dDZ2C/yAfhpmcrAXGvQXZoP2USNRoE+Zn
-         RelIesFqmLTTYEIUEIljttECrKQ441xnQ9wkdGpOMKhdkGwacX/ixu7ImctN0qTZeeTj
-         hpkfaUTPHsey024JdO0K8RghDtx4S7MwzxAT7+40wmjvZIyKF+YsqBR3Ww3mgSdbD1UA
-         8aml/xwiaJysvkhVCsrdISeoqZcp4gR/2j4dRNEuOvD2qb6awpnIt9NIz5EL4ISrQhKQ
-         c3ZQ==
-X-Gm-Message-State: AOAM531xWhSg4z5LNqozOip7FwLzS2R+T1Isij5HUcTZpcYVsZbyX/av
-        djWDE8mStvaxAVLEuqx+/+tbl16sN7GHFa9LbV8=
-X-Google-Smtp-Source: ABdhPJxEMIjH8BhKVtsFNTjbKycBJ5a1wpXT30fvx3K1VAsmB741arryrnX61sajOMku7+attcY9Dx4mucEeObAkVmc=
-X-Received: by 2002:a9d:208a:: with SMTP id x10mr8813912ota.260.1607706432927;
- Fri, 11 Dec 2020 09:07:12 -0800 (PST)
+        id S2394527AbgLKRXx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Dec 2020 12:23:53 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:54984 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394392AbgLKRXg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 12:23:36 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BBHK4pb190820;
+        Fri, 11 Dec 2020 17:22:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=YewCcW7n5E9Q1cap81Gm1FCsiBG7HcHcaDDLPsG/k2s=;
+ b=AZfkEdWH7npUi56wy2DPWxOB+OCkup3YJKtY4zkUeDJUpInDfI6gLsu05MegPnuNK0iE
+ spr4siTjIAvsHnWdnD/aqrMiOHxwElrFZ3ViScDvwSxNUyIzt37YajuSyWxYeaZpeW0J
+ zKgixB2zLSr3D85AgRjF1wNII3ikkKuiIHXGGv/jc6d+jRpQc03SHh5RGU/WwS83SEVr
+ BNcHEmf16CgkMlsawQkMmgoMueAgzHBN+Pvd8Cd3/W2xBZPMCQQ6vUqAt+A0fmbTmo1o
+ zs2+dmPWYMhbvur8ckziNQjN6FGHkxaS/LMW3TFDYRaPy4UXnXIuJg/A2t9ZUUo0aXVf GA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 3581mrbprt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 11 Dec 2020 17:22:31 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BBHFtvA123828;
+        Fri, 11 Dec 2020 17:20:31 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 358m549b13-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Dec 2020 17:20:31 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BBHKS5g024598;
+        Fri, 11 Dec 2020 17:20:29 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 11 Dec 2020 09:20:28 -0800
+To:     John Garry <john.garry@huawei.com>
+Cc:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+        <lenb@kernel.org>, <rjw@rjwysocki.net>,
+        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
+        <maz@kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
+        <linux-acpi@vger.kernel.org>, <dwagner@suse.de>
+Subject: Re: [PATCH v5 5/5] scsi: hisi_sas: Expose HW queues for v2 hw
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1k0tontu8.fsf@ca-mkp.ca.oracle.com>
+References: <1606905417-183214-1-git-send-email-john.garry@huawei.com>
+        <1606905417-183214-6-git-send-email-john.garry@huawei.com>
+        <7a30086c-8a23-2272-fac9-a66ca92ae2f8@huawei.com>
+Date:   Fri, 11 Dec 2020 12:20:25 -0500
+In-Reply-To: <7a30086c-8a23-2272-fac9-a66ca92ae2f8@huawei.com> (John Garry's
+        message of "Fri, 11 Dec 2020 16:56:22 +0000")
 MIME-Version: 1.0
-References: <20201210012539.5747-1-hui.wang@canonical.com> <X9HklmczekRvwKTE@kroah.com>
- <b99ea4e8-8bc2-6533-b78d-8a729c9400f7@canonical.com>
-In-Reply-To: <b99ea4e8-8bc2-6533-b78d-8a729c9400f7@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 11 Dec 2020 18:07:01 +0100
-Message-ID: <CAJZ5v0iv6LvNu5nkGOARpJ7vhBjHvafFeTO_bMA3SBi-k-sFBA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI / PNP: check the string length of pnp device id
- in matching_id
-To:     Hui Wang <hui.wang@canonical.com>
-Cc:     Greg KH <greg@kroah.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9832 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=1
+ bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=703
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012110116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9832 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 mlxlogscore=715
+ clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012110116
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 11, 2020 at 1:43 AM Hui Wang <hui.wang@canonical.com> wrote:
->
-> On 12/10/20 5:04 PM, Greg KH wrote:
-> > On Thu, Dec 10, 2020 at 09:25:39AM +0800, Hui Wang wrote:
-> >> Recently we met a touchscreen problem on some Thinkpad machines, the
-> >> touchscreen driver (i2c-hid) is not loaded and the touchscreen can't
-> >> work.
-> >>
-> >> An i2c ACPI device with the name WACF2200 is defined in the BIOS, with
-> >> the current ACPI PNP matching rule, this device will be regarded as
-> >> a PNP device since there is WACFXXX in the acpi_pnp_device_ids[] and
-> >> this PNP device is attached to the acpi device as the 1st
-> >> physical_node, this will make the i2c bus match fail when i2c bus
-> >> calls acpi_companion_match() to match the acpi_id_table in the i2c-hid
-> >> driver.
-> >>
-> >> An ACPI PNP device's id has fixed format and its string length equals
-> >> 7, after adding this check in the matching_id, the touchscreen could
-> >> work.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Hui Wang <hui.wang@canonical.com>
-> >> ---
-> >>   drivers/acpi/acpi_pnp.c | 4 ++++
-> >>   1 file changed, 4 insertions(+)
-> >>
-> >> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> >> index 4ed755a963aa..5ce711b9b070 100644
-> >> --- a/drivers/acpi/acpi_pnp.c
-> >> +++ b/drivers/acpi/acpi_pnp.c
-> >> @@ -319,6 +319,10 @@ static bool matching_id(const char *idstr, const char *list_id)
-> >>   {
-> >>      int i;
-> >>
-> >> +    /* a pnp device id has CCCdddd format (C character, d digit), strlen should be 7 */
-> >> +    if (strlen(idstr) != 7)
-> >> +            return false;
-> > Shouldn't you verify that the format is correct as well?
->
-> I thought the rest code in this function will verify the format, just
-> missing the length checking. But I was wrong, "a pnp device id has
-> CCCdddd format" is not correct since WACFXXX is a valid id,
 
-In fact, the "F" may be regarded as a hex digit and so this follows
-the CCCdddd format too.
+John,
 
-The problem with the current code is that it matches ACPI device IDs
-in the WACFdddd format against the WACFXXX string, which is incorrect.
+> Is there some way in this patch can be merged for 5.11 via the SCSI
+> tree? It has a dependency on the earlier patches in the series, now 
+> picked up via irqchip tree. I've seen multiple rounds of SCSI pull
+> requests before, but not sure when we have that or if the tree is 
+> rebased for those.
 
-> I will follow Rafael's advice:  compare two string's length.
+I'll do a postmerge branch for a few things, including your patch and
+the megaraid patch.
 
-Please do.
+-- 
+Martin K. Petersen	Oracle Linux Engineering
