@@ -2,73 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D74FB2D6E15
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 03:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D032D705C
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 07:52:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389575AbgLKCTL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 21:19:11 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58854 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389595AbgLKCTE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 21:19:04 -0500
-Received: from [123.114.42.209] (helo=localhost.localdomain)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <hui.wang@canonical.com>)
-        id 1knY0j-0001c9-VC; Fri, 11 Dec 2020 02:18:22 +0000
-From:   Hui Wang <hui.wang@canonical.com>
-To:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com
-Cc:     lenb@kernel.org
-Subject: [PATCH v4] ACPI / PNP: compare the string length in the matching_id
-Date:   Fri, 11 Dec 2020 10:18:14 +0800
-Message-Id: <20201211021814.36193-1-hui.wang@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S2436522AbgLKGva (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Dec 2020 01:51:30 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:8991 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391753AbgLKGut (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 01:50:49 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CshGm4V7nzhqWM;
+        Fri, 11 Dec 2020 14:49:36 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 11 Dec 2020 14:49:59 +0800
+From:   Tian Tao <tiantao6@hisilicon.com>
+To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>
+Subject: [PATCH] ACPI / AC: used pr_info instead of printk
+Date:   Fri, 11 Dec 2020 14:50:12 +0800
+Message-ID: <1607669412-21491-1-git-send-email-tiantao6@hisilicon.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.56]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Recently we met a touchscreen problem on some Thinkpad machines, the
-touchscreen driver (i2c-hid) is not loaded and the touchscreen can't
-work.
+printk(KERNEL_INFO) is same with pr_info, so used pr_info instead of
+printk.
 
-An i2c ACPI device with the name WACF2200 is defined in the BIOS, with
-the current rule in matching_id(), this device will be regarded as
-a PNP device since there is WACFXXX in the acpi_pnp_device_ids[] and
-this PNP device is attached to the acpi device as the 1st
-physical_node, this will make the i2c bus match fail when i2c bus
-calls acpi_companion_match() to match the acpi_id_table in the i2c-hid
-driver.
-
-WACF2200 is an i2c device instead of a PNP device, after adding the
-string length comparing, the matching_id() will return false when
-matching WACF2200 and WACFXXX, and it is reasonable to compare the
-string length when matching two ids.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
 ---
-Sorry, the v3 patch has mis-spelling word in the commit header, so fix
-it and send the v4 patch.
+ drivers/acpi/ac.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- drivers/acpi/acpi_pnp.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-index 4ed755a963aa..8f2dc176bb41 100644
---- a/drivers/acpi/acpi_pnp.c
-+++ b/drivers/acpi/acpi_pnp.c
-@@ -319,6 +319,9 @@ static bool matching_id(const char *idstr, const char *list_id)
- {
- 	int i;
+diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+index 46a64e9..5e4b9c1 100644
+--- a/drivers/acpi/ac.c
++++ b/drivers/acpi/ac.c
+@@ -278,9 +278,9 @@ static int acpi_ac_add(struct acpi_device *device)
+ 		goto end;
+ 	}
  
-+	if (strlen(idstr) != strlen(list_id))
-+		return false;
-+
- 	if (memcmp(idstr, list_id, 3))
- 		return false;
+-	printk(KERN_INFO PREFIX "%s [%s] (%s)\n",
+-	       acpi_device_name(device), acpi_device_bid(device),
+-	       ac->state ? "on-line" : "off-line");
++	pr_info(PREFIX "%s [%s] (%s)\n",
++		acpi_device_name(device), acpi_device_bid(device),
++		ac->state ? "on-line" : "off-line");
  
+ 	ac->battery_nb.notifier_call = acpi_ac_battery_notify;
+ 	register_acpi_notifier(&ac->battery_nb);
 -- 
-2.25.1
+2.7.4
 
