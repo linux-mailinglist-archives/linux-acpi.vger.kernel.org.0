@@ -2,26 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A76F2D6DF9
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 03:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D74FB2D6E15
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 03:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389197AbgLKCH4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Dec 2020 21:07:56 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58388 "EHLO
+        id S2389575AbgLKCTL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Dec 2020 21:19:11 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58854 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388867AbgLKCHy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 21:07:54 -0500
+        with ESMTP id S2389595AbgLKCTE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Dec 2020 21:19:04 -0500
 Received: from [123.114.42.209] (helo=localhost.localdomain)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <hui.wang@canonical.com>)
-        id 1knXpv-0000lm-Hd; Fri, 11 Dec 2020 02:07:12 +0000
+        id 1knY0j-0001c9-VC; Fri, 11 Dec 2020 02:18:22 +0000
 From:   Hui Wang <hui.wang@canonical.com>
 To:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com
-Cc:     lenb@kernel.org, stable@vger.kernel.org
-Subject: [PATCH v3] ACPI / PNP: compare the string length in the matching_id
-Date:   Fri, 11 Dec 2020 10:07:02 +0800
-Message-Id: <20201211020702.35576-1-hui.wang@canonical.com>
+Cc:     lenb@kernel.org
+Subject: [PATCH v4] ACPI / PNP: compare the string length in the matching_id
+Date:   Fri, 11 Dec 2020 10:18:14 +0800
+Message-Id: <20201211021814.36193-1-hui.wang@canonical.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,11 +44,14 @@ driver.
 WACF2200 is an i2c device instead of a PNP device, after adding the
 string length comparing, the matching_id() will return false when
 matching WACF2200 and WACFXXX, and it is reasonable to compare the
-string lenth when matching two ids.
+string length when matching two ids.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Hui Wang <hui.wang@canonical.com>
 ---
+Sorry, the v3 patch has mis-spelling word in the commit header, so fix
+it and send the v4 patch.
+
  drivers/acpi/acpi_pnp.c | 3 +++
  1 file changed, 3 insertions(+)
 
