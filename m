@@ -2,82 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89E9F2D7BC5
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 18:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68AF12D7BCC
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 18:00:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730484AbgLKQ6R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Dec 2020 11:58:17 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2249 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730561AbgLKQ5r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 11:57:47 -0500
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Csxgd6z7Lz67KK6;
-        Sat, 12 Dec 2020 00:53:33 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 11 Dec 2020 17:57:00 +0100
-Received: from [10.47.11.239] (10.47.11.239) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 11 Dec
- 2020 16:56:58 +0000
-Subject: Re: [PATCH v5 5/5] scsi: hisi_sas: Expose HW queues for v2 hw
-To:     <jejb@linux.ibm.com>, <martin.petersen@oracle.com>
-CC:     <lenb@kernel.org>, <rjw@rjwysocki.net>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
-        <maz@kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
-        <linux-acpi@vger.kernel.org>, <dwagner@suse.de>
-References: <1606905417-183214-1-git-send-email-john.garry@huawei.com>
- <1606905417-183214-6-git-send-email-john.garry@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <7a30086c-8a23-2272-fac9-a66ca92ae2f8@huawei.com>
-Date:   Fri, 11 Dec 2020 16:56:22 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S2392216AbgLKQ7x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Dec 2020 11:59:53 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:36586 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732965AbgLKQ7V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 11:59:21 -0500
+Received: by mail-ot1-f45.google.com with SMTP id y24so8809544otk.3
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Dec 2020 08:59:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dk6ywEaGDnkzXQlCvF3ccJlPJlGbAuc9/o81TmI79zA=;
+        b=lGoVCjsZUSErSLawZoP8jxq54Nd2udfviJe8P5lSl1hJcyQAGwq4KEPrxE7R3CMJCu
+         cmKUD3e4vH5tetDvIH1/smnvBtm/pY1McAWOfEuWhRqEsMhwLrSUYIWhqYC6vuP4RQ1f
+         F0r0RNfg8IkHHz6+56DheS/Wg+Fuvg81P8ojgn+gZjiOVKN07O0L401OBfmyyLsBqEIl
+         8qCsELEyPHItMt/x8bLXA7uJt8uALbKb/vCeSWutmvbLSOK+UuEO/n8j2+/9eBY/W+zl
+         4/Y4koEeJfCE+5oDXkSmT0T3kbm1MU7SjviESaQGBiVKAVpqZ1NSXOefVhfcBKA4skfw
+         Or1w==
+X-Gm-Message-State: AOAM531zjL73RpdK+cvBbtEnyNdyTmAENab9e0hqpDSMN4L0mfa1Y0Yh
+        yuopZwbW0ee2ZY7obYhuRTgmIotpDHmfL/RVAO0=
+X-Google-Smtp-Source: ABdhPJy/jiQqU+FTE4RHNMrD3Gn0AN9MBSQpeIrDtkDGfW+gtzwKaNO0InoVS1SkjTauksK9KEU3lzn8gLq0UqHl4LE=
+X-Received: by 2002:a9d:67da:: with SMTP id c26mr10614717otn.321.1607705920424;
+ Fri, 11 Dec 2020 08:58:40 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1606905417-183214-6-git-send-email-john.garry@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.11.239]
-X-ClientProxiedBy: lhreml722-chm.china.huawei.com (10.201.108.73) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+References: <1409ba0c-1580-dc09-e6fe-a0c9bcda6462@gmail.com>
+ <CAJZ5v0inSq27Zpq=K4df=wypnSdyk5u1P-06wXiVG_vE2ZvDCQ@mail.gmail.com>
+ <d3758b6a-7661-03b7-5a67-1fcb82253fb7@gmail.com> <1874841.VfOVrlA5c3@kreacher>
+ <f2f4542d-9469-82f7-22ce-04d75f57453e@gmail.com>
+In-Reply-To: <f2f4542d-9469-82f7-22ce-04d75f57453e@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 11 Dec 2020 17:58:29 +0100
+Message-ID: <CAJZ5v0jzrzsgH4N+9W8XOHHj57aTdXd1Qekk_Ds1TUccFiL5bQ@mail.gmail.com>
+Subject: Re: acpi_device_notify() binding devices that don't seem like they
+ should be bound
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 02/12/2020 10:36, John Garry wrote:
-> As a performance enhancement, make the completion queue interrupts managed.
-> 
-> In addition, in commit bf0beec0607d ("blk-mq: drain I/O when all CPUs in a
-> hctx are offline"), CPU hotplug for MQ devices using managed interrupts
-> is made safe. So expose HW queues to blk-mq to take advantage of this.
-> 
-> Flag Scsi_host.host_tagset is also set to ensure that the HBA is not sent
-> more commands than it can handle. However the driver still does not use
-> request tag for IPTT as there are many HW bugs means that special rules
-> apply for IPTT allocation.
-> 
+On Thu, Dec 10, 2020 at 11:46 PM Daniel Scally <djrscally@gmail.com> wrote:
+>
+>
+> On 10/12/2020 16:59, Rafael J. Wysocki wrote:
+> > On Thursday, December 10, 2020 5:07:56 PM CET Daniel Scally wrote:
+> >> On 10/12/2020 16:05, Rafael J. Wysocki wrote:
+> >>> All the adevs with matching _ADR also have both _STA and _HID
+> >>> unfortunately. Sorry; let me stop half-arsing this and show you
+> >>> something useful:
+> >>>
+> >>> [    0.219953] acpi_find_child_device(PNP0A08:00, 0x00, false)
+> >>> [    0.220818] INT3472:00: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220821] INT3472:01: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220870] INT3472:02: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220892] INT3472:03: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220916] INT3472:04: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220941] INT3472:05: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220965] INT3472:06: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> [    0.220990] INT3472:07: _STA 0x00, _ADR=0x00000000, _HID=INT3472
+> >>> These will be ignored with -ENODEV.
+> >>>
+> >>>> [    0.221038] INT3472:08: _STA 0x0f, _ADR=0x00000000, _HID=INT3472
+> >>> For this acpi_find_child_device() will return FIND_CHILD_MIN_SCORE if
+> >>> I'm not mistaken.
+> >> It does - this is the one that binds, being the first.
+> >>>> [    0.221051] OVTI5648:00: _STA 0x0f, _ADR=0x00000000, _HID=OVTI5648
+> >>>> [    0.221061] INT3472:09: _STA 0x0f, _ADR=0x00000000, _HID=INT3472
+> >>>> [    0.221070] OVTI2680:00: _STA 0x0f, _ADR=0x00000000, _HID=OVTI2680
+> >>> As well as for the three above.
+> >>>
+> >>>> [    0.221079] INT3471:00: _STA 0x00, _ADR=0x00000000, _HID=INT3471
+> >>>> [    0.221105] INT33BE:00: _STA 0x00, _ADR=0x00000000, _HID=INT33BE
+> >>>> [    0.221130] INT3471:01: _STA 0x00, _ADR=0x00000000, _HID=INT3471
+> >>>> [    0.221156] INT33BE:01: _STA 0x00, _ADR=0x00000000, _HID=INT33BE
+> >>> And the rest will be ignored.
+> >>>
+> >>>> That's the debug output I included for each adev that's assessed as a
+> >>>> child of PNP0A08:00. _STA, _ADR and _HID present for all, _ADR 0x00 for
+> >>>> all, _STA 0x0f for the 2 sensors and their PMIC's and 0x00 for the rest.
+> >>>> The same situation holds on both of my devices.
+> >>> So in fact we don't want to have an ACPI companion for (PNP0A08:00,
+> >>> 0x00, false).
+> >> Yeah, I think that's right
+> >>> This is a hostbridge special case and let me think about this for a while.
+> >> Sure - thanks very much for your help.
+> > I've come up with the following patch.
+> >
+> > Please let me know if it works for you.
+> >
+> > ---
+> > Index: linux-pm/drivers/pci/pci-acpi.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/pci/pci-acpi.c
+> > +++ linux-pm/drivers/pci/pci-acpi.c
+> > @@ -1162,14 +1162,32 @@ void acpi_pci_remove_bus(struct pci_bus
+> >  static struct acpi_device *acpi_pci_find_companion(struct device *dev)
+> >  {
+> >       struct pci_dev *pci_dev = to_pci_dev(dev);
+> > +     struct acpi_device *adev;
+> >       bool check_children;
+> >       u64 addr;
+> >
+> >       check_children = pci_is_bridge(pci_dev);
+> >       /* Please ref to ACPI spec for the syntax of _ADR */
+> >       addr = (PCI_SLOT(pci_dev->devfn) << 16) | PCI_FUNC(pci_dev->devfn);
+> > -     return acpi_find_child_device(ACPI_COMPANION(dev->parent), addr,
+> > +     adev = acpi_find_child_device(ACPI_COMPANION(dev->parent), addr,
+> >                                     check_children);
+> > +     /*
+> > +      * There may be ACPI device objects in the ACPI namesoace that are
+> > +      * children of the device object representing the host bridge, but don't
+> > +      * represent PCI devices.  Both _HID and _ADR may be present for them,
+> > +      * even though that is against the specification (for example, see
+> > +      * Section 6.1 of ACPI 6.3), but in many cases the _ADR returns 0 which
+> > +      * appears to indicate that they should not be taken into consideration
+> > +      * as potential companions of PCI devices on the root bus.
+> > +      *
+> > +      * To catch this special case, disregard the returned device object if
+> > +      * it has a valid _HID, addr is 0 and the PCI device at hand is on the
+> > +      * root bus.
+> > +      */
+> > +     if (adev->pnp.type.platform_id && !addr && !pci_dev->bus->parent)
+> > +             return NULL;
+> > +
+> > +     return adev;
+> >  }
+> >
+> >  /**
+> >
+> Thanks - this needs to check adev for NULL too; acpi_find_child_device()
+> does return that sometimes.
 
-Hi Martin, James,
+Yes, it does, sorry for the mistake.
 
-Is there some way in this patch can be merged for 5.11 via the SCSI 
-tree? It has a dependency on the earlier patches in the series, now 
-picked up via irqchip tree. I've seen multiple rounds of SCSI pull 
-requests before, but not sure when we have that or if the tree is 
-rebased for those.
+> When changed to:
+>
+> +       if (adev && adev->pnp.type.platform_id && !addr && !pci_dev->bus->parent)
+> +               return NULL;
+>
+> Then it boots properly, and fixes the original problem.  Also;
+> s/namesoace/namespace in the comment.
 
-Thanks,
-John
+Right.
 
+> Really appreciate the help - thank you!
 
-> Signed-off-by: John Garry <john.garry@huawei.com>
-> ---
->   drivers/scsi/hisi_sas/hisi_sas.h       |  4 ++
->   drivers/scsi/hisi_sas/hisi_sas_main.c  | 11 +++++
->   drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 66 +++++++++++++++++++++-----
->   3 files changed, 68 insertions(+), 13 deletions(-)
-> 
+YW
+
+Let me fix the patch and post it "officially".
