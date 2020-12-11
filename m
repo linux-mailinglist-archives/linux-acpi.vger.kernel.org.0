@@ -2,93 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 008E92D803A
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 21:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 039762D821D
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Dec 2020 23:32:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393230AbgLKUyM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Dec 2020 15:54:12 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:60480 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392551AbgLKUxv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 15:53:51 -0500
-Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.530)
- id 852afc7a6c3a62dd; Fri, 11 Dec 2020 21:53:09 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Len Brown <lenb@kernel.org>, Rob Herring <robh@kernel.org>,
-        Qian Cai <qcai@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marc Zyngier <maz@kernel.org>, kernel-team@android.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: Use fwnode_init() to set up fwnode
-Date:   Fri, 11 Dec 2020 21:53:09 +0100
-Message-ID: <3491615.yqrABBVLMz@kreacher>
-In-Reply-To: <20201211202629.2164655-1-saravanak@google.com>
-References: <20201211202629.2164655-1-saravanak@google.com>
+        id S2406918AbgLKWbP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Dec 2020 17:31:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406943AbgLKWbN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Dec 2020 17:31:13 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50E6C0613CF
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Dec 2020 14:30:32 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id l14so9489788ybq.3
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Dec 2020 14:30:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DP4u3vyOK1sWRkeFBHWzyC0Qo+Tg4a0hdWg9PLXt3LI=;
+        b=dQ+wUD6qOEbwif75TWsTM+enWTSOPm3SNDSssvHnd0zoAJo1h7QfGOOoD9syKnkLVl
+         C27SrGgxPVqok7to50/jRSkqMmigLyVJ20yuhqtreHsjd9pPRkV7fJG3ksl1tlEBU0qv
+         72q2WYPDiMk3NFLxaHWu0hykAN8QuyjAWDOVTrTGBZa27IZf4OWtQOFJpkaGcqmTkpum
+         u+COznp6nvTukB//0hKmDAim1qAaV7Lr7QpNlnZXCjXm54type681d1kg/EjrrGwXUea
+         ZxxlI/o2703XOzBWDWdewwdgCimXj/sCvoilcoN/rQp7Nrb0SYX6WNuQO+8BGsQeCbv7
+         yXsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DP4u3vyOK1sWRkeFBHWzyC0Qo+Tg4a0hdWg9PLXt3LI=;
+        b=Y9KFbVE8Tno8M0vF3EPuEaVAKHOpiyWB3/k59etll/yuLSAiMJd5DMcNkWMqAPNnS9
+         Nf6G/eU+QMyv7LExtAKt/A7Ceo0Ngh1nSxZUarhqN6r4OTqewd/W12XuB/H3z+ufPTP3
+         Yk3CG3Ooxevw+pMASzokW2BoDsW+lOEmSewmXH9FW8y0vroCAfjFbJRRmqyLn9zYJH13
+         N9LkEea3SyXGtLppOtOtQsuMUPAOGxFKHFwc6y3cKUyWsRQnjiCTXKrtdtnVn3yCCHeH
+         46RVabr5bhsha/7pgcXkfuxkmFC4VVUYlkUXHLLe++1T99S3JYrmtH4g3E6GDM0N56p2
+         LlMw==
+X-Gm-Message-State: AOAM532Bz8itIK/iyuf21fuBGOEvY/2XGt+9WDXOMGwx5VJkirtsJ/NT
+        3JBeQ3UGq9UrSRdVEdGAdJEZE7xidqub4INzuSZD9w==
+X-Google-Smtp-Source: ABdhPJwi1KxiLbsYZDLOGSqH5Ut1oteRY1ce66tvlhetU1GnU1dasj0j9yrAzoEUGAb6ZstqFJ/R8Ja8XFgNVbOXVFA=
+X-Received: by 2002:a5b:b49:: with SMTP id b9mr20504737ybr.310.1607725831810;
+ Fri, 11 Dec 2020 14:30:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-17-saravanak@google.com>
+ <02e7047071f0b54b046ac472adeeb3fafabc643c.camel@redhat.com>
+ <788ee1c7-0ea2-33ec-658e-50707f7515a6@arm.com> <CAGETcx-MsNyWWT=s1H6hDK+=QvibBLQrT9rM51y5bkomV_+G6g@mail.gmail.com>
+ <813b3fbd80ad4dfee7ff8517d4829a1f@kernel.org> <CAGETcx_hPVv1iTt6q3gLmBN=q+_O6vTwxeS5Nj55Smm3FNk24Q@mail.gmail.com>
+ <caf7719771210fb91565d105bd9c7e4b@kernel.org>
+In-Reply-To: <caf7719771210fb91565d105bd9c7e4b@kernel.org>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 11 Dec 2020 14:29:55 -0800
+Message-ID: <CAGETcx8Fjr-0S5kjUxYytncgQ9ZtMoeey_P680R6RPFk7-haZQ@mail.gmail.com>
+Subject: Re: [PATCH v2 16/17] driver core: Refactor fw_devlink feature
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     Robin Murphy <robin.murphy@arm.com>, Qian Cai <qcai@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, December 11, 2020 9:26:29 PM CET Saravana Kannan wrote:
-> Commit 01bb86b380a3 ("driver core: Add fwnode_init()") was supposed to
-> fix up all instances of fwnode creation to use fwnode_init(). But looks
-> like this instance was missed. This causes a NULL pointer dereference
-> during device_add() [1]. So, fix it.
-> 
-> [   60.792324][    T1] Call trace:
-> [   60.795495][    T1]  device_add+0xf60/0x16b0
-> __fw_devlink_link_to_consumers at drivers/base/core.c:1583
-> (inlined by) fw_devlink_link_device at drivers/base/core.c:1726
-> (inlined by) device_add at drivers/base/core.c:3088
-> [   60.799813][    T1]  platform_device_add+0x274/0x628
-> [   60.804833][    T1]  acpi_iort_init+0x9d8/0xc50
-> [   60.809415][    T1]  acpi_init+0x45c/0x4e8
-> [   60.813556][    T1]  do_one_initcall+0x170/0xb70
-> [   60.818224][    T1]  kernel_init_freeable+0x6a8/0x734
-> [   60.823332][    T1]  kernel_init+0x18/0x12c
-> [   60.827566][    T1]  ret_from_fork+0x10/0x1c
-> [   60.838756][    T1] ---[ end trace fa5c8ce17a226d83 ]---
-> 
-> [1] - https://lore.kernel.org/linux-arm-kernel/02e7047071f0b54b046ac472adeeb3fafabc643c.camel@redhat.com/
-> Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
-> Reported-by: Qian Cai <qcai@redhat.com>
-> Suggested-by: Robin Murphy <robin.murphy@arm.com>
-> Tested-by: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+On Fri, Dec 11, 2020 at 11:07 AM Marc Zyngier <maz@kernel.org> wrote:
+>
+> On 2020-12-11 18:20, Saravana Kannan wrote:
+>
+> > Lol, my only contribution to the patch will be the commit text. I'll
+> > send them with reported-by, suggested-by and tested-by if no one less
+> > beats me to it.
+>
+> Teamwork!
+>
+>          M.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Forgot to CC most of the folks/lists here, but patch has been sent.
 
-> ---
-> Greg,
-> 
-> Can you please pull this into driver-core-next since the commit that
-> causes this is only present in driver-core-next?
-> 
-> -Saravana
-> 
->  include/linux/acpi.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 39263c6b52e1..2630c2e953f7 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -55,7 +55,7 @@ static inline struct fwnode_handle *acpi_alloc_fwnode_static(void)
->  	if (!fwnode)
->  		return NULL;
->  
-> -	fwnode->ops = &acpi_static_fwnode_ops;
-> +	fwnode_init(fwnode, &acpi_static_fwnode_ops);
->  
->  	return fwnode;
->  }
-> 
+https://lore.kernel.org/lkml/20201211202629.2164655-1-saravanak@google.com/
 
-
-
-
+-Saravana
