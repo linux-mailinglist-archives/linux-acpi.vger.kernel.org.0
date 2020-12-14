@@ -2,69 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 958002D9DBC
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 18:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 759C12DA1AE
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 21:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439385AbgLNRa3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Dec 2020 12:30:29 -0500
-Received: from mga02.intel.com ([134.134.136.20]:10234 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440371AbgLNRaW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Dec 2020 12:30:22 -0500
-IronPort-SDR: PVLZGPFdq4PJf412lWWdnix0NxdteFphUlCx9TvlIcyqUgRSBP22vyHVzvvYyiu+2A7TrnJV7n
- /41niS17b8RA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9834"; a="161795988"
-X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="161795988"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 09:29:37 -0800
-IronPort-SDR: D7pm080c5efPDR/a8PvPUF0giaJs4ugzNWCeyNqrCQ2Enl67OQUgyIgQ0AgmjwiZLYvrfprUlS
- r8BgWXEtOd/w==
-X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="411343436"
-Received: from davidjor-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.136.237])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 09:29:36 -0800
-Date:   Mon, 14 Dec 2020 09:29:35 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [RFC PATCH 09/14] cxl/mem: Add basic IOCTL interface
-Message-ID: <20201214172935.efknefvqthp7ohcz@intel.com>
-References: <20201209002418.1976362-1-ben.widawsky@intel.com>
- <20201209002418.1976362-10-ben.widawsky@intel.com>
- <8a252085-9dd9-6cf0-afad-a3ff63cf00d8@infradead.org>
+        id S2502864AbgLNUgF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Dec 2020 15:36:05 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:45592 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2503357AbgLNUef (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 15:34:35 -0500
+Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.530)
+ id c066d0382b008ef8; Mon, 14 Dec 2020 21:33:42 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Hans De Goede <hdegoede@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [RFT][PATCH v1 0/3] ACPI: scan: Defer enumeration of devices with significant dependencies
+Date:   Mon, 14 Dec 2020 21:23:47 +0100
+Message-ID: <1646930.v2jOOB1UEN@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8a252085-9dd9-6cf0-afad-a3ff63cf00d8@infradead.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-12-09 19:32:19, Randy Dunlap wrote:
-> On 12/8/20 4:24 PM, Ben Widawsky wrote:
-> > +
-> > +#define CXL_MEM_QUERY_COMMANDS _IOR('C', 1, struct cxl_mem_query_commands)
-> 
-> Hi,
-> I could have missed it, but IOCTL major "numbers" (like 'C') should be
-> listed in Documentation/userspace-api/ioctl/ioctl-number.rst.
-> 
-> 
-> thanks.
+Hi,
 
-I was unaware of this. Fixing for v3 without conflict.
+This series addresses some enumeration ordering issues by using information
+from _DEP to defer the enumeration of devices that are likely to depend on
+operation region (OpRegion) handlers supplied by the drivers of other
+devices.
 
-Thanks.
-Ben
+This allows the OpRegion suppliers to be probed and start working before the
+devices depending on them are enumerated.
+
+Please see the patch changelogs for details.
+
+Hans, please test this series on the system with OpRegion dependencies in
+control methods used for device enumeration.
+
+Thanks!
+
+
+
