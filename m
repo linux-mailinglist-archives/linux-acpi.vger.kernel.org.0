@@ -2,158 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199A32D9938
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 14:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C287E2D9A3F
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 15:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407981AbgLNNsd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Dec 2020 08:48:33 -0500
-Received: from foss.arm.com ([217.140.110.172]:47520 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407035AbgLNNno (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Dec 2020 08:43:44 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF4831FB;
-        Mon, 14 Dec 2020 05:42:55 -0800 (PST)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 386903F66B;
-        Mon, 14 Dec 2020 05:42:54 -0800 (PST)
-Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
-To:     Robin Murphy <robin.murphy@arm.com>,
-        Shameerali Kolothum Thodi 
-        <shameerali.kolothum.thodi@huawei.com>,
+        id S1731453AbgLNOrv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Dec 2020 09:47:51 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2254 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731101AbgLNOru (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 09:47:50 -0500
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CvkfF3Pj2z67QF3;
+        Mon, 14 Dec 2020 22:43:33 +0800 (CST)
+Received: from lhreml716-chm.china.huawei.com (10.201.108.67) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 14 Dec 2020 15:47:08 +0100
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml716-chm.china.huawei.com (10.201.108.67) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 14 Dec 2020 14:47:08 +0000
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2106.002; Mon, 14 Dec 2020 14:47:08 +0000
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Steven Price <steven.price@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
         "devel@acpica.org" <devel@acpica.org>
-Cc:     Linuxarm <linuxarm@huawei.com>,
+CC:     Linuxarm <linuxarm@huawei.com>,
         "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
         "joro@8bytes.org" <joro@8bytes.org>,
         wanghuiqiang <wanghuiqiang@huawei.com>,
         "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
         Jonathan Cameron <jonathan.cameron@huawei.com>,
         "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>
+Subject: RE: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHWvm1ikW2cGVer1kuw1XacsP3g9qnwQL+AgAY7lgCAADGKgIAAE1CAgAANPCA=
+Date:   Mon, 14 Dec 2020 14:47:08 +0000
+Message-ID: <3d0a3ae81241474f91748dde0cdd4d39@huawei.com>
 References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
  <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com>
  <67cb563d19114f609348dc9f8b4307e9@huawei.com>
  <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com>
-From:   Steven Price <steven.price@arm.com>
-Message-ID: <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
-Date:   Mon, 14 Dec 2020 13:42:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
+In-Reply-To: <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.200.67.216]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14/12/2020 12:33, Robin Murphy wrote:
-> On 2020-12-14 10:55, Shameerali Kolothum Thodi wrote:
->> Hi Steve,
->>
->>> -----Original Message-----
->>> From: Steven Price [mailto:steven.price@arm.com]
->>> Sent: 10 December 2020 10:26
->>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
->>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
->>> iommu@lists.linux-foundation.org; devel@acpica.org
->>> Cc: Linuxarm <linuxarm@huawei.com>; lorenzo.pieralisi@arm.com;
->>> joro@8bytes.org; robin.murphy@arm.com; wanghuiqiang
->>> <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
->>> <guohanjun@huawei.com>; Jonathan Cameron
->>> <jonathan.cameron@huawei.com>; Sami.Mujawar@arm.com
->>> Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
->>>
->>> On 19/11/2020 12:11, Shameer Kolothum wrote:
->>>> RFC v1 --> v2:
->>>>    - Added a generic interface for IOMMU drivers to retrieve all the
->>>>      RMR info associated with a given IOMMU.
->>>>    - SMMUv3 driver gets the RMR list during probe() and installs
->>>>      bypass STEs for all the SIDs in the RMR list. This is to keep
->>>>      the ongoing traffic alive(if any) during SMMUv3 reset. This is
->>>>      based on the suggestions received for v1 to take care of the
->>>>      EFI framebuffer use case. Only sanity tested for now.
->>>
->>> Hi Shameer,
->>>
->>> Sorry for not looking at this before.
->>>
->>> Do you have any plans to implement support in the SMMUv2 driver? The
->>> platform I've been testing the EFI framebuffer support on has the
->>> display controller behind SMMUv2, so as it stands this series doesn't
->>> work. I did hack something up for SMMUv2 so I was able to test the first
->>> 4 patches.
->>
->> Thanks for taking a look. Sure, I can look into adding the support for 
->> SMMUv2.
-
-Great, thanks!
-
->>>
->>>>    - During the probe/attach device, SMMUv3 driver reserves any
->>>>      RMR region associated with the device such that there is a unity
->>>>      mapping for them in SMMU.
->>>
->>> For the EFI framebuffer use case there is no device to attach so I
->>> believe we are left with just the stream ID in bypass mode - which is
->>> definitely an improvement (the display works!)
->>
->> Cool. That’s good to know.
->>
->>   but not actually a unity
->>> mapping of the RMR range. I'm not sure whether it's worth fixing this or
->>> not, but I just wanted to point out there's still a need for a driver
->>> for the device before the bypass mode is replaced with the unity 
->>> mapping.
->>
->> I am not sure either. My idea was we will have bypass STE setup for 
->> all devices
->> with RMR initially and when the corresponding driver takes over(if 
->> that happens)
->> we will have the unity mapping setup properly for the RMR regions. And 
->> for cases
->> like the above, it will remain in the bypass mode.
->>
->> Do you see any problem(security?) if the dev streams remain in bypass 
->> mode for
->> this dev? Or is it possible to have a stub driver for this dev, so 
->> that we will have
->> the probe/attach invoked and everything will fall in place?
-> 
-> The downside is that if a driver never binds to that device, it remains 
-> bypassed. If some other externally-controlled malicious device could 
-> manage to spoof that device's requester ID, that could potentially be 
-> exploited.
-> 
->> TBH, I haven't looked into creating a temp domain for these types of 
->> the devices
->> and also not sure how we benefit from that compared to the STE bypass 
->> mode.
-> 
-> That said, setting up temporary translation contexts that ensure any 
-> access can *only* be to RMR regions until a driver takes over is an 
-> awful lot more work. I'm inclined to be pragmatic here and say we should 
-> get things working at all with the simple bypass STE/S2CR method, then 
-> look at adding the higher-security effort on top.
-> 
-> Right now systems that need this are either broken (but effectively 
-> secure) or using default bypass with SMMUv2. People who prefer to 
-> maintain security over functionality in the interim can maintain that 
-> status quo by simply continuing to not describe any RMRs.
-
-I agree with Robin, let's get this working with the bypass mode (until 
-the device binds) like you've currently got. It's much better than what 
-we have otherwise. Then once that is merged we can look at the temporary 
-translation context or stub driver. The temporary translation context 
-would be 'neatest', but I'm only aware of the EFI framebuffer use case 
-and for that it might be possible to do something simpler - if indeed 
-anything is needed at all. I'm not sure how much we need to be worried 
-about malicious devices spoofing requester IDs.
-
-Thanks,
-
-Steve
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3RldmVuIFByaWNlIFtt
+YWlsdG86c3RldmVuLnByaWNlQGFybS5jb21dDQo+IFNlbnQ6IDE0IERlY2VtYmVyIDIwMjAgMTM6
+NDMNCj4gVG86IFJvYmluIE11cnBoeSA8cm9iaW4ubXVycGh5QGFybS5jb20+OyBTaGFtZWVyYWxp
+IEtvbG90aHVtIFRob2RpDQo+IDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+
+Ow0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4LWFjcGlAdmdl
+ci5rZXJuZWwub3JnOw0KPiBpb21tdUBsaXN0cy5saW51eC1mb3VuZGF0aW9uLm9yZzsgZGV2ZWxA
+YWNwaWNhLm9yZw0KPiBDYzogTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+OyBsb3Jlbnpv
+LnBpZXJhbGlzaUBhcm0uY29tOw0KPiBqb3JvQDhieXRlcy5vcmc7IHdhbmdodWlxaWFuZyA8d2Fu
+Z2h1aXFpYW5nQGh1YXdlaS5jb20+OyBHdW9oYW5qdW4NCj4gKEhhbmp1biBHdW8pIDxndW9oYW5q
+dW5AaHVhd2VpLmNvbT47IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVh
+d2VpLmNvbT47IFNhbWkuTXVqYXdhckBhcm0uY29tDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENI
+IHYyIDAvOF0gQUNQSS9JT1JUOiBTdXBwb3J0IGZvciBJT1JUIFJNUiBub2RlDQo+IA0KPiBPbiAx
+NC8xMi8yMDIwIDEyOjMzLCBSb2JpbiBNdXJwaHkgd3JvdGU6DQo+ID4gT24gMjAyMC0xMi0xNCAx
+MDo1NSwgU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaSB3cm90ZToNCj4gPj4gSGkgU3RldmUsDQo+
+ID4+DQo+ID4+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+Pj4gRnJvbTogU3RldmVu
+IFByaWNlIFttYWlsdG86c3RldmVuLnByaWNlQGFybS5jb21dDQo+ID4+PiBTZW50OiAxMCBEZWNl
+bWJlciAyMDIwIDEwOjI2DQo+ID4+PiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8
+c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsNCj4gPj4+IGxpbnV4LWFybS1r
+ZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+
+ID4+PiBpb21tdUBsaXN0cy5saW51eC1mb3VuZGF0aW9uLm9yZzsgZGV2ZWxAYWNwaWNhLm9yZw0K
+PiA+Pj4gQ2M6IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsgbG9yZW56by5waWVyYWxp
+c2lAYXJtLmNvbTsNCj4gPj4+IGpvcm9AOGJ5dGVzLm9yZzsgcm9iaW4ubXVycGh5QGFybS5jb207
+IHdhbmdodWlxaWFuZw0KPiA+Pj4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsgR3VvaGFuanVu
+IChIYW5qdW4gR3VvKQ0KPiA+Pj4gPGd1b2hhbmp1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2Ft
+ZXJvbg0KPiA+Pj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IFNhbWkuTXVqYXdhckBh
+cm0uY29tDQo+ID4+PiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCB2MiAwLzhdIEFDUEkvSU9SVDog
+U3VwcG9ydCBmb3IgSU9SVCBSTVIgbm9kZQ0KPiA+Pj4NCj4gPj4+IE9uIDE5LzExLzIwMjAgMTI6
+MTEsIFNoYW1lZXIgS29sb3RodW0gd3JvdGU6DQo+ID4+Pj4gUkZDIHYxIC0tPiB2MjoNCj4gPj4+
+PiDCoCDCoC0gQWRkZWQgYSBnZW5lcmljIGludGVyZmFjZSBmb3IgSU9NTVUgZHJpdmVycyB0byBy
+ZXRyaWV2ZSBhbGwgdGhlDQo+ID4+Pj4gwqAgwqAgwqBSTVIgaW5mbyBhc3NvY2lhdGVkIHdpdGgg
+YSBnaXZlbiBJT01NVS4NCj4gPj4+PiDCoCDCoC0gU01NVXYzIGRyaXZlciBnZXRzIHRoZSBSTVIg
+bGlzdCBkdXJpbmcgcHJvYmUoKSBhbmQgaW5zdGFsbHMNCj4gPj4+PiDCoCDCoMKgIGJ5cGFzcyBT
+VEVzIGZvciBhbGwgdGhlIFNJRHMgaW4gdGhlIFJNUiBsaXN0LiBUaGlzIGlzIHRvIGtlZXANCj4g
+Pj4+PiDCoMKgIMKgIHRoZSBvbmdvaW5nIHRyYWZmaWMgYWxpdmUoaWYgYW55KSBkdXJpbmcgU01N
+VXYzIHJlc2V0LiBUaGlzIGlzDQo+ID4+Pj4gwqDCoMKgwqAgYmFzZWQgb24gdGhlIHN1Z2dlc3Rp
+b25zIHJlY2VpdmVkIGZvciB2MSB0byB0YWtlIGNhcmUgb2YgdGhlDQo+ID4+Pj4gwqDCoMKgwqAg
+RUZJIGZyYW1lYnVmZmVyIHVzZSBjYXNlLiBPbmx5IHNhbml0eSB0ZXN0ZWQgZm9yIG5vdy4NCj4g
+Pj4+DQo+ID4+PiBIaSBTaGFtZWVyLA0KPiA+Pj4NCj4gPj4+IFNvcnJ5IGZvciBub3QgbG9va2lu
+ZyBhdCB0aGlzIGJlZm9yZS4NCj4gPj4+DQo+ID4+PiBEbyB5b3UgaGF2ZSBhbnkgcGxhbnMgdG8g
+aW1wbGVtZW50IHN1cHBvcnQgaW4gdGhlIFNNTVV2MiBkcml2ZXI/IFRoZQ0KPiA+Pj4gcGxhdGZv
+cm0gSSd2ZSBiZWVuIHRlc3RpbmcgdGhlIEVGSSBmcmFtZWJ1ZmZlciBzdXBwb3J0IG9uIGhhcyB0
+aGUNCj4gPj4+IGRpc3BsYXkgY29udHJvbGxlciBiZWhpbmQgU01NVXYyLCBzbyBhcyBpdCBzdGFu
+ZHMgdGhpcyBzZXJpZXMgZG9lc24ndA0KPiA+Pj4gd29yay4gSSBkaWQgaGFjayBzb21ldGhpbmcg
+dXAgZm9yIFNNTVV2MiBzbyBJIHdhcyBhYmxlIHRvIHRlc3QgdGhlIGZpcnN0DQo+ID4+PiA0IHBh
+dGNoZXMuDQo+ID4+DQo+ID4+IFRoYW5rcyBmb3IgdGFraW5nIGEgbG9vay4gU3VyZSwgSSBjYW4g
+bG9vayBpbnRvIGFkZGluZyB0aGUgc3VwcG9ydCBmb3INCj4gPj4gU01NVXYyLg0KPiANCj4gR3Jl
+YXQsIHRoYW5rcyENCj4gDQo+ID4+Pg0KPiA+Pj4+IMKgIMKgLSBEdXJpbmcgdGhlIHByb2JlL2F0
+dGFjaCBkZXZpY2UsIFNNTVV2MyBkcml2ZXIgcmVzZXJ2ZXMgYW55DQo+ID4+Pj4gwqAgwqAgwqBS
+TVIgcmVnaW9uIGFzc29jaWF0ZWQgd2l0aCB0aGUgZGV2aWNlIHN1Y2ggdGhhdCB0aGVyZSBpcyBh
+IHVuaXR5DQo+ID4+Pj4gwqAgwqAgwqBtYXBwaW5nIGZvciB0aGVtIGluIFNNTVUuDQo+ID4+Pg0K
+PiA+Pj4gRm9yIHRoZSBFRkkgZnJhbWVidWZmZXIgdXNlIGNhc2UgdGhlcmUgaXMgbm8gZGV2aWNl
+IHRvIGF0dGFjaCBzbyBJDQo+ID4+PiBiZWxpZXZlIHdlIGFyZSBsZWZ0IHdpdGgganVzdCB0aGUg
+c3RyZWFtIElEIGluIGJ5cGFzcyBtb2RlIC0gd2hpY2ggaXMNCj4gPj4+IGRlZmluaXRlbHkgYW4g
+aW1wcm92ZW1lbnQgKHRoZSBkaXNwbGF5IHdvcmtzISkNCj4gPj4NCj4gPj4gQ29vbC4gVGhhdOKA
+mXMgZ29vZCB0byBrbm93Lg0KPiA+Pg0KPiA+PiDCoCBidXQgbm90IGFjdHVhbGx5IGEgdW5pdHkN
+Cj4gPj4+IG1hcHBpbmcgb2YgdGhlIFJNUiByYW5nZS4gSSdtIG5vdCBzdXJlIHdoZXRoZXIgaXQn
+cyB3b3J0aCBmaXhpbmcgdGhpcyBvcg0KPiA+Pj4gbm90LCBidXQgSSBqdXN0IHdhbnRlZCB0byBw
+b2ludCBvdXQgdGhlcmUncyBzdGlsbCBhIG5lZWQgZm9yIGEgZHJpdmVyDQo+ID4+PiBmb3IgdGhl
+IGRldmljZSBiZWZvcmUgdGhlIGJ5cGFzcyBtb2RlIGlzIHJlcGxhY2VkIHdpdGggdGhlIHVuaXR5
+DQo+ID4+PiBtYXBwaW5nLg0KPiA+Pg0KPiA+PiBJIGFtIG5vdCBzdXJlIGVpdGhlci4gTXkgaWRl
+YSB3YXMgd2Ugd2lsbCBoYXZlIGJ5cGFzcyBTVEUgc2V0dXAgZm9yDQo+ID4+IGFsbCBkZXZpY2Vz
+DQo+ID4+IHdpdGggUk1SIGluaXRpYWxseSBhbmQgd2hlbiB0aGUgY29ycmVzcG9uZGluZyBkcml2
+ZXIgdGFrZXMgb3ZlcihpZg0KPiA+PiB0aGF0IGhhcHBlbnMpDQo+ID4+IHdlIHdpbGwgaGF2ZSB0
+aGUgdW5pdHkgbWFwcGluZyBzZXR1cCBwcm9wZXJseSBmb3IgdGhlIFJNUiByZWdpb25zLiBBbmQN
+Cj4gPj4gZm9yIGNhc2VzDQo+ID4+IGxpa2UgdGhlIGFib3ZlLCBpdCB3aWxsIHJlbWFpbiBpbiB0
+aGUgYnlwYXNzIG1vZGUuDQo+ID4+DQo+ID4+IERvIHlvdSBzZWUgYW55IHByb2JsZW0oc2VjdXJp
+dHk/KSBpZiB0aGUgZGV2IHN0cmVhbXMgcmVtYWluIGluIGJ5cGFzcw0KPiA+PiBtb2RlIGZvcg0K
+PiA+PiB0aGlzIGRldj8gT3IgaXMgaXQgcG9zc2libGUgdG8gaGF2ZSBhIHN0dWIgZHJpdmVyIGZv
+ciB0aGlzIGRldiwgc28NCj4gPj4gdGhhdCB3ZSB3aWxsIGhhdmUNCj4gPj4gdGhlIHByb2JlL2F0
+dGFjaCBpbnZva2VkIGFuZCBldmVyeXRoaW5nIHdpbGwgZmFsbCBpbiBwbGFjZT8NCj4gPg0KPiA+
+IFRoZSBkb3duc2lkZSBpcyB0aGF0IGlmIGEgZHJpdmVyIG5ldmVyIGJpbmRzIHRvIHRoYXQgZGV2
+aWNlLCBpdCByZW1haW5zDQo+ID4gYnlwYXNzZWQuIElmIHNvbWUgb3RoZXIgZXh0ZXJuYWxseS1j
+b250cm9sbGVkIG1hbGljaW91cyBkZXZpY2UgY291bGQNCj4gPiBtYW5hZ2UgdG8gc3Bvb2YgdGhh
+dCBkZXZpY2UncyByZXF1ZXN0ZXIgSUQsIHRoYXQgY291bGQgcG90ZW50aWFsbHkgYmUNCj4gPiBl
+eHBsb2l0ZWQuDQo+ID4NCj4gPj4gVEJILCBJIGhhdmVuJ3QgbG9va2VkIGludG8gY3JlYXRpbmcg
+YSB0ZW1wIGRvbWFpbiBmb3IgdGhlc2UgdHlwZXMgb2YNCj4gPj4gdGhlIGRldmljZXMNCj4gPj4g
+YW5kIGFsc28gbm90IHN1cmUgaG93IHdlIGJlbmVmaXQgZnJvbSB0aGF0IGNvbXBhcmVkIHRvIHRo
+ZSBTVEUgYnlwYXNzDQo+ID4+IG1vZGUuDQo+ID4NCj4gPiBUaGF0IHNhaWQsIHNldHRpbmcgdXAg
+dGVtcG9yYXJ5IHRyYW5zbGF0aW9uIGNvbnRleHRzIHRoYXQgZW5zdXJlIGFueQ0KPiA+IGFjY2Vz
+cyBjYW4gKm9ubHkqIGJlIHRvIFJNUiByZWdpb25zIHVudGlsIGEgZHJpdmVyIHRha2VzIG92ZXIg
+aXMgYW4NCj4gPiBhd2Z1bCBsb3QgbW9yZSB3b3JrLiBJJ20gaW5jbGluZWQgdG8gYmUgcHJhZ21h
+dGljIGhlcmUgYW5kIHNheSB3ZSBzaG91bGQNCj4gPiBnZXQgdGhpbmdzIHdvcmtpbmcgYXQgYWxs
+IHdpdGggdGhlIHNpbXBsZSBieXBhc3MgU1RFL1MyQ1IgbWV0aG9kLCB0aGVuDQo+ID4gbG9vayBh
+dCBhZGRpbmcgdGhlIGhpZ2hlci1zZWN1cml0eSBlZmZvcnQgb24gdG9wLg0KPiA+DQo+ID4gUmln
+aHQgbm93IHN5c3RlbXMgdGhhdCBuZWVkIHRoaXMgYXJlIGVpdGhlciBicm9rZW4gKGJ1dCBlZmZl
+Y3RpdmVseQ0KPiA+IHNlY3VyZSkgb3IgdXNpbmcgZGVmYXVsdCBieXBhc3Mgd2l0aCBTTU1VdjIu
+IFBlb3BsZSB3aG8gcHJlZmVyIHRvDQo+ID4gbWFpbnRhaW4gc2VjdXJpdHkgb3ZlciBmdW5jdGlv
+bmFsaXR5IGluIHRoZSBpbnRlcmltIGNhbiBtYWludGFpbiB0aGF0DQo+ID4gc3RhdHVzIHF1byBi
+eSBzaW1wbHkgY29udGludWluZyB0byBub3QgZGVzY3JpYmUgYW55IFJNUnMuDQo+IA0KPiBJIGFn
+cmVlIHdpdGggUm9iaW4sIGxldCdzIGdldCB0aGlzIHdvcmtpbmcgd2l0aCB0aGUgYnlwYXNzIG1v
+ZGUgKHVudGlsDQo+IHRoZSBkZXZpY2UgYmluZHMpIGxpa2UgeW91J3ZlIGN1cnJlbnRseSBnb3Qu
+IEl0J3MgbXVjaCBiZXR0ZXIgdGhhbiB3aGF0DQo+IHdlIGhhdmUgb3RoZXJ3aXNlLiBUaGVuIG9u
+Y2UgdGhhdCBpcyBtZXJnZWQgd2UgY2FuIGxvb2sgYXQgdGhlIHRlbXBvcmFyeQ0KPiB0cmFuc2xh
+dGlvbiBjb250ZXh0IG9yIHN0dWIgZHJpdmVyLiBUaGUgdGVtcG9yYXJ5IHRyYW5zbGF0aW9uIGNv
+bnRleHQNCj4gd291bGQgYmUgJ25lYXRlc3QnLCBidXQgSSdtIG9ubHkgYXdhcmUgb2YgdGhlIEVG
+SSBmcmFtZWJ1ZmZlciB1c2UgY2FzZQ0KPiBhbmQgZm9yIHRoYXQgaXQgbWlnaHQgYmUgcG9zc2li
+bGUgdG8gZG8gc29tZXRoaW5nIHNpbXBsZXIgLSBpZiBpbmRlZWQNCj4gYW55dGhpbmcgaXMgbmVl
+ZGVkIGF0IGFsbC4gSSdtIG5vdCBzdXJlIGhvdyBtdWNoIHdlIG5lZWQgdG8gYmUgd29ycmllZA0K
+PiBhYm91dCBtYWxpY2lvdXMgZGV2aWNlcyBzcG9vZmluZyByZXF1ZXN0ZXIgSURzLg0KDQpQZXJm
+ZWN0LiBJIHdpbGwga2VlcCB0aGUgU1RFIGJ5cGFzcyBhbmQgcmVzcGluIHRoZSBzZXJpZXMgb25j
+ZSB0aGUgdXBkYXRlDQp0byB0aGUgSU9SVCByZXYgRSBpcyBtYWRlIHB1YmxpYyhob3BlIHRoYXQg
+d2lsbCBoYXBwZW4gc29vbikuIEluIHRoZQ0KbWVhbnRpbWUsIGFwcHJlY2lhdGUgYW55IGZlZWRi
+YWNrIG9uIHRoZSByZXN0IG9mIHRoZSBwYXRjaGVzIGluIHRoaXMgc2VyaWVzLg0KDQpUaGFua3Ms
+DQpTaGFtZWVyDQo=
