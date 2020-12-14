@@ -2,121 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F182D90FD
-	for <lists+linux-acpi@lfdr.de>; Sun, 13 Dec 2020 23:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D7292D96AE
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 11:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731603AbgLMWtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 13 Dec 2020 17:49:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728955AbgLMWtZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 13 Dec 2020 17:49:25 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0202C0613CF;
-        Sun, 13 Dec 2020 14:48:44 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id y17so14592074wrr.10;
-        Sun, 13 Dec 2020 14:48:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/WorH3BnykMxRTvls0BDQbtEUswMG/rB3w2zpNBPDJ4=;
-        b=bVQjfb6v6Vmy52tG903p9j8aSsoKAVtCyvWNu6QxISsUzJkl3rhsxgTOdA91pbDdEx
-         6Dy5pGneJizXvZqR1n67PIm8/Gy4otg0Lp4y3oL7tO1lx18qLTgHD7guWfHNDrU3p+BQ
-         h/A1gd2+oQyR7UyZsEVXOzv/cXIIQKxq93wdcjYZqtx9haI3nFF4bQAiYKtEq8PLd/v5
-         KILnHmIp43IUhPSUno+kQgS6ppYOW3rO4t7E3PvQ6n4LkMSlu9MAh7yvd3UdnOrQIBsE
-         8yY7ZNMv8ZorlksHWrxJbWNep7u/dsMOTP47eDGrtClSdZJXhh6dUtFxxRM/pgFmo7DB
-         SdkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/WorH3BnykMxRTvls0BDQbtEUswMG/rB3w2zpNBPDJ4=;
-        b=osPqUES/GP8FjKyj0Lr9M4oPDa+tO9FAfU/tXKY6TOUEQADsWckQUidp87PPMqlwHM
-         RcXQ4CnsNEbA5MIAY7/YSB7afGzYlWmliXEqVvczIBVezAL/3adyC8bB2ZnefQa5yQ0J
-         iqgqIt1FMJCQZ2hoMnq217YD3AdCm+yLTjeeOgLqPe7qYMHEVNsHpSq0+8JNpQDosUFS
-         1G8eok1aZXcq/iHfVtseR3Mjo3Ie0TNkRgzFvZ1hBqiiO2QcE7/rAYIAsUr+f8Kfi42o
-         E2L3PXtr7PHRlSA68d3VIPse1LfpdkTfT0CunwUbsBHpfb7F8vcULbin9ApJckFSyHu5
-         H3xw==
-X-Gm-Message-State: AOAM533ITu4vXEdPdgHZWja9QFspZKh1cG0KEGPif3oSgAopQ2IJ/FZR
-        Y/wwUd+z0XUOl9fWPs2kOqs=
-X-Google-Smtp-Source: ABdhPJxd/kl+xA0aHJWlDHhHlvpnfNUYRoSkXF/Sx8DbHXoI/4Gr9adJHVY9orF5gWFX9kmMvGczRQ==
-X-Received: by 2002:adf:f605:: with SMTP id t5mr25416354wrp.39.1607899723586;
-        Sun, 13 Dec 2020 14:48:43 -0800 (PST)
-Received: from [192.168.1.158] ([2.29.208.56])
-        by smtp.gmail.com with ESMTPSA id y130sm29246086wmc.22.2020.12.13.14.48.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Dec 2020 14:48:42 -0800 (PST)
-Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
-        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
-        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
-        sergey.senozhatsky@gmail.com, linux@rasmusvillemoes.dk,
-        kieran.bingham+renesas@ideasonboard.com, jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-19-djrscally@gmail.com>
- <20201130200719.GB4077@smile.fi.intel.com>
- <20201130233232.GD25713@pendragon.ideasonboard.com>
- <20201201184925.GJ4077@smile.fi.intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <6f3b0d7b-1ce7-aaf1-63c6-08a22dc77791@gmail.com>
-Date:   Sun, 13 Dec 2020 22:48:39 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20201201184925.GJ4077@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
+        id S1729399AbgLNK4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Dec 2020 05:56:15 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2253 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731312AbgLNK4K (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 05:56:10 -0500
+Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CvdVw2P2Wz67Q4M;
+        Mon, 14 Dec 2020 18:51:52 +0800 (CST)
+Received: from lhreml712-chm.china.huawei.com (10.201.108.63) by
+ fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Mon, 14 Dec 2020 11:55:26 +0100
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml712-chm.china.huawei.com (10.201.108.63) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 14 Dec 2020 10:55:26 +0000
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2106.002; Mon, 14 Dec 2020 10:55:26 +0000
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Steven Price <steven.price@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>
+Subject: RE: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHWvm1ikW2cGVer1kuw1XacsP3g9qnwQL+AgAY7lgA=
+Date:   Mon, 14 Dec 2020 10:55:26 +0000
+Message-ID: <67cb563d19114f609348dc9f8b4307e9@huawei.com>
+References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
+ <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com>
+In-Reply-To: <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.200.67.216]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 01/12/2020 18:49, Andy Shevchenko wrote:
->>>> +	table_entry = (struct gpiod_lookup)GPIO_LOOKUP_IDX(acpi_dev_name(adev),
->>>> +							   ares->data.gpio.pin_table[0],
->>>> +							   func, 0, GPIO_ACTIVE_HIGH);
->>>
->>> You won't need this if you have regular INT3472 platform driver.
->>> Simple call there _DSM to map resources to the type and use devm_gpiod_get on
->>> consumer behalf. Thus, previous patch is not needed.
->>
->> How does the consumer (the camera sensor) retrieve the GPIO though ? The
->> _DSM is in the PMIC device object, while the real consumer is the camera
->> sensor.
-> 
-> 1. A GPIO proxy
-> 2. A custom GPIO lookup tables
-> 3. An fwnode passing to the sensor (via swnodes graph)
-> 
-> First may issue deferred probe, while second needs some ordering tricks I guess.
-> Third one should also provide an ACPI GPIO mapping table or so to make the
-> consumer rely on names rather than custom numbers.
-> 
-> Perhaps someone may propose other solutions.
-
-Hi Andy
-
-Sorry; some more clarification here if you have time please:
-
-1. Do you mean here, register a new gpio_chip providing GPIOs to the
-sensors, and just have the .set() callback for that function set the
-corresponding line against the INT3472 device?
-2. I thought custom GPIO lookup tables was what I was doing, are you
-referring to something else?
-3. I guess you mean something like of_find_gpio() and acpi_find_gpio()
-here? As far as I can see there isn't currently a swnodes
-equivalent...we could just pass it via reference of course but it would
-mean the sensor drivers would all need to account for that.
+SGkgU3RldmUsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3RldmVu
+IFByaWNlIFttYWlsdG86c3RldmVuLnByaWNlQGFybS5jb21dDQo+IFNlbnQ6IDEwIERlY2VtYmVy
+IDIwMjAgMTA6MjYNCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGku
+a29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT47DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5m
+cmFkZWFkLm9yZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxp
+bnV4LWZvdW5kYXRpb24ub3JnOyBkZXZlbEBhY3BpY2Eub3JnDQo+IENjOiBMaW51eGFybSA8bGlu
+dXhhcm1AaHVhd2VpLmNvbT47IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207DQo+IGpvcm9AOGJ5
+dGVzLm9yZzsgcm9iaW4ubXVycGh5QGFybS5jb207IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1aXFp
+YW5nQGh1YXdlaS5jb20+OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pDQo+IDxndW9oYW5qdW5AaHVh
+d2VpLmNvbT47IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNv
+bT47IFNhbWkuTXVqYXdhckBhcm0uY29tDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIHYyIDAv
+OF0gQUNQSS9JT1JUOiBTdXBwb3J0IGZvciBJT1JUIFJNUiBub2RlDQo+IA0KPiBPbiAxOS8xMS8y
+MDIwIDEyOjExLCBTaGFtZWVyIEtvbG90aHVtIHdyb3RlOg0KPiA+IFJGQyB2MSAtLT4gdjI6DQo+
+ID4gIMKgLSBBZGRlZCBhIGdlbmVyaWMgaW50ZXJmYWNlIGZvciBJT01NVSBkcml2ZXJzIHRvIHJl
+dHJpZXZlIGFsbCB0aGUNCj4gPiAgwqAgwqBSTVIgaW5mbyBhc3NvY2lhdGVkIHdpdGggYSBnaXZl
+biBJT01NVS4NCj4gPiAgwqAtIFNNTVV2MyBkcml2ZXIgZ2V0cyB0aGUgUk1SIGxpc3QgZHVyaW5n
+IHByb2JlKCkgYW5kIGluc3RhbGxzDQo+ID4gIMKgwqAgYnlwYXNzIFNURXMgZm9yIGFsbCB0aGUg
+U0lEcyBpbiB0aGUgUk1SIGxpc3QuIFRoaXMgaXMgdG8ga2VlcA0KPiA+ICAgwqAgdGhlIG9uZ29p
+bmcgdHJhZmZpYyBhbGl2ZShpZiBhbnkpIGR1cmluZyBTTU1VdjMgcmVzZXQuIFRoaXMgaXMNCj4g
+PiAgICAgYmFzZWQgb24gdGhlIHN1Z2dlc3Rpb25zIHJlY2VpdmVkIGZvciB2MSB0byB0YWtlIGNh
+cmUgb2YgdGhlDQo+ID4gICAgIEVGSSBmcmFtZWJ1ZmZlciB1c2UgY2FzZS4gT25seSBzYW5pdHkg
+dGVzdGVkIGZvciBub3cuDQo+IA0KPiBIaSBTaGFtZWVyLA0KPiANCj4gU29ycnkgZm9yIG5vdCBs
+b29raW5nIGF0IHRoaXMgYmVmb3JlLg0KPiANCj4gRG8geW91IGhhdmUgYW55IHBsYW5zIHRvIGlt
+cGxlbWVudCBzdXBwb3J0IGluIHRoZSBTTU1VdjIgZHJpdmVyPyBUaGUNCj4gcGxhdGZvcm0gSSd2
+ZSBiZWVuIHRlc3RpbmcgdGhlIEVGSSBmcmFtZWJ1ZmZlciBzdXBwb3J0IG9uIGhhcyB0aGUNCj4g
+ZGlzcGxheSBjb250cm9sbGVyIGJlaGluZCBTTU1VdjIsIHNvIGFzIGl0IHN0YW5kcyB0aGlzIHNl
+cmllcyBkb2Vzbid0DQo+IHdvcmsuIEkgZGlkIGhhY2sgc29tZXRoaW5nIHVwIGZvciBTTU1VdjIg
+c28gSSB3YXMgYWJsZSB0byB0ZXN0IHRoZSBmaXJzdA0KPiA0IHBhdGNoZXMuDQoNClRoYW5rcyBm
+b3IgdGFraW5nIGEgbG9vay4gU3VyZSwgSSBjYW4gbG9vayBpbnRvIGFkZGluZyB0aGUgc3VwcG9y
+dCBmb3IgU01NVXYyLiANCg0KPiANCj4gPiAgwqAtIER1cmluZyB0aGUgcHJvYmUvYXR0YWNoIGRl
+dmljZSwgU01NVXYzIGRyaXZlciByZXNlcnZlcyBhbnkNCj4gPiAgwqAgwqBSTVIgcmVnaW9uIGFz
+c29jaWF0ZWQgd2l0aCB0aGUgZGV2aWNlIHN1Y2ggdGhhdCB0aGVyZSBpcyBhIHVuaXR5DQo+ID4g
+IMKgIMKgbWFwcGluZyBmb3IgdGhlbSBpbiBTTU1VLg0KPiANCj4gRm9yIHRoZSBFRkkgZnJhbWVi
+dWZmZXIgdXNlIGNhc2UgdGhlcmUgaXMgbm8gZGV2aWNlIHRvIGF0dGFjaCBzbyBJDQo+IGJlbGll
+dmUgd2UgYXJlIGxlZnQgd2l0aCBqdXN0IHRoZSBzdHJlYW0gSUQgaW4gYnlwYXNzIG1vZGUgLSB3
+aGljaCBpcw0KPiBkZWZpbml0ZWx5IGFuIGltcHJvdmVtZW50ICh0aGUgZGlzcGxheSB3b3JrcyEp
+DQoNCkNvb2wuIFRoYXTigJlzIGdvb2QgdG8ga25vdy4NCg0KIGJ1dCBub3QgYWN0dWFsbHkgYSB1
+bml0eQ0KPiBtYXBwaW5nIG9mIHRoZSBSTVIgcmFuZ2UuIEknbSBub3Qgc3VyZSB3aGV0aGVyIGl0
+J3Mgd29ydGggZml4aW5nIHRoaXMgb3INCj4gbm90LCBidXQgSSBqdXN0IHdhbnRlZCB0byBwb2lu
+dCBvdXQgdGhlcmUncyBzdGlsbCBhIG5lZWQgZm9yIGEgZHJpdmVyDQo+IGZvciB0aGUgZGV2aWNl
+IGJlZm9yZSB0aGUgYnlwYXNzIG1vZGUgaXMgcmVwbGFjZWQgd2l0aCB0aGUgdW5pdHkgbWFwcGlu
+Zy4NCg0KSSBhbSBub3Qgc3VyZSBlaXRoZXIuIE15IGlkZWEgd2FzIHdlIHdpbGwgaGF2ZSBieXBh
+c3MgU1RFIHNldHVwIGZvciBhbGwgZGV2aWNlcw0Kd2l0aCBSTVIgaW5pdGlhbGx5IGFuZCB3aGVu
+IHRoZSBjb3JyZXNwb25kaW5nIGRyaXZlciB0YWtlcyBvdmVyKGlmIHRoYXQgaGFwcGVucykNCndl
+IHdpbGwgaGF2ZSB0aGUgdW5pdHkgbWFwcGluZyBzZXR1cCBwcm9wZXJseSBmb3IgdGhlIFJNUiBy
+ZWdpb25zLiBBbmQgZm9yIGNhc2VzDQpsaWtlIHRoZSBhYm92ZSwgaXQgd2lsbCByZW1haW4gaW4g
+dGhlIGJ5cGFzcyBtb2RlLg0KDQpEbyB5b3Ugc2VlIGFueSBwcm9ibGVtKHNlY3VyaXR5PykgaWYg
+dGhlIGRldiBzdHJlYW1zIHJlbWFpbiBpbiBieXBhc3MgbW9kZSBmb3INCnRoaXMgZGV2PyBPciBp
+cyBpdCBwb3NzaWJsZSB0byBoYXZlIGEgc3R1YiBkcml2ZXIgZm9yIHRoaXMgZGV2LCBzbyB0aGF0
+IHdlIHdpbGwgaGF2ZQ0KdGhlIHByb2JlL2F0dGFjaCBpbnZva2VkIGFuZCBldmVyeXRoaW5nIHdp
+bGwgZmFsbCBpbiBwbGFjZT8NCg0KVEJILCBJIGhhdmVuJ3QgbG9va2VkIGludG8gY3JlYXRpbmcg
+YSB0ZW1wIGRvbWFpbiBmb3IgdGhlc2UgdHlwZXMgb2YgdGhlIGRldmljZXMNCmFuZCBhbHNvIG5v
+dCBzdXJlIGhvdyB3ZSBiZW5lZml0IGZyb20gdGhhdCBjb21wYXJlZCB0byB0aGUgU1RFIGJ5cGFz
+cyBtb2RlLg0KDQpUaG91Z2h0cy9JZGVhcyB3ZWxjb21lLg0KDQpUaGFua3MsDQpTaGFtZWVyDQoN
+Cg==
