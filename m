@@ -2,210 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B88352D9850
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 13:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 199A32D9938
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Dec 2020 14:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728536AbgLNMw4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Dec 2020 07:52:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407501AbgLNMwn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 07:52:43 -0500
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD86EC0613D6
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 04:52:02 -0800 (PST)
-Received: by mail-wm1-x343.google.com with SMTP id y23so15158884wmi.1
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 04:52:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=uA7Oxs/wyvYUE1Q5Z79HLkOoFQjgdYG73UpryFEtyeo=;
-        b=A7JTYmymCT84foHfhEmNIHr/pEfSygaw0il7x05bSBXymRtmnEeQ9s8NImWZYvG1bR
-         IJ7xCY9OfQNEa/YTNBx2CJk7Ipe6KY895wWjACUQcgcAwrrpE4Jqm8k7W/CzO6YM4aR/
-         dscM1fFxsl/sItEgQ3EkazFzVcCs2S7RTUHBTYW31rZbDmyyz0X1ZLZMoXi3UKDQySQH
-         gyixWe2v4wPss1+mh04uaNzSADC1nZCcohSWb/6SDx4QQlplS7Ew13lBe+/dE6xkGvdS
-         aiKO2/ys+HAjPf1PsTGTiBKRnGpAosT6yCiq3CWjYQaTagjjvEcyO/TG5vcVPGXf3plk
-         kSpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=uA7Oxs/wyvYUE1Q5Z79HLkOoFQjgdYG73UpryFEtyeo=;
-        b=AlqbVg7BcNqn/0hl5DLFYvBBTMSWyDBQvHV6nxv4YykfFdiq+uHmxgzQr6bEyvlFvu
-         97qD8GZOquNqU9is5DtbJh0wiZ4LpA5W8VyDTh8iNsVJvxIqUIWzGSQno5Dm+Hv5TsRM
-         66Aj1F/laOwtEPJUREc4fSm5U8fTsJ+/gUlz5U/DS4Ya+T8So25PFqXw1O7Q9DmL+xx6
-         YpUU1lQ/cRVeAOnKX/I8IGYNbQlX1/jZqgdAIOTs4R5BWxyByKSAcH9HnCQo61T1Ai1N
-         mqta5YYodAD9NEhl+XMbutpjXKIU0QNWXdz/PTm+BFHlz8W/veyNTPaf32YQscqRcV3J
-         VC0w==
-X-Gm-Message-State: AOAM530bqMEuemALZaI4bdDkoR9XU4CH892Jbp73kDK5P8WcpQeMkn4R
-        r+hseDBzb9j4dgx46mEz/oNF0g==
-X-Google-Smtp-Source: ABdhPJy7ckFB91jTR/PoEmgcekJEn+mvUgXVeEpBAXlu4Plmu8X+fq263Z3FizP3RlKSLXwiHojtUg==
-X-Received: by 2002:a1c:b7d4:: with SMTP id h203mr27925588wmf.59.1607950321431;
-        Mon, 14 Dec 2020 04:52:01 -0800 (PST)
-Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id j15sm31263649wrr.85.2020.12.14.04.51.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Dec 2020 04:52:00 -0800 (PST)
-Date:   Mon, 14 Dec 2020 13:51:41 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     joro@8bytes.org, will@kernel.org, lorenzo.pieralisi@arm.com,
-        robh+dt@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
-        rjw@rjwysocki.net, lenb@kernel.org, bhelgaas@google.com,
-        Jonathan.Cameron@huawei.com, eric.auger@redhat.com,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org, baolu.lu@linux.intel.com,
-        zhangfei.gao@linaro.org, shameerali.kolothum.thodi@huawei.com,
-        vivek.gautam@arm.com
-Subject: Re: [PATCH v8 4/9] of/iommu: Support dma-can-stall property
-Message-ID: <X9dS9H9PrOZbND9E@myrica>
-References: <20201112125519.3987595-1-jean-philippe@linaro.org>
- <20201112125519.3987595-5-jean-philippe@linaro.org>
- <d0a61d79-82fc-3af8-570e-e2ae3d485455@arm.com>
+        id S2407981AbgLNNsd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Dec 2020 08:48:33 -0500
+Received: from foss.arm.com ([217.140.110.172]:47520 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407035AbgLNNno (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 14 Dec 2020 08:43:44 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF4831FB;
+        Mon, 14 Dec 2020 05:42:55 -0800 (PST)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 386903F66B;
+        Mon, 14 Dec 2020 05:42:54 -0800 (PST)
+Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Shameerali Kolothum Thodi 
+        <shameerali.kolothum.thodi@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Cc:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>
+References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
+ <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com>
+ <67cb563d19114f609348dc9f8b4307e9@huawei.com>
+ <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com>
+From:   Steven Price <steven.price@arm.com>
+Message-ID: <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
+Date:   Mon, 14 Dec 2020 13:42:53 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0a61d79-82fc-3af8-570e-e2ae3d485455@arm.com>
+In-Reply-To: <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 26, 2020 at 06:09:26PM +0000, Robin Murphy wrote:
-> On 2020-11-12 12:55, Jean-Philippe Brucker wrote:
-> > Copy the dma-can-stall property into the fwspec structure.
-> 
-> Can't we just handle this as a regular device property? It's not part of the
-> actual IOMMU specifier, it doesn't need to be translated in any way, and
-> AFAICS it's used a grand total of once, in a slow path. Simply treating it
-> as the per-device property that it is should require zero additional code
-> for DT, and a simple device_add_properties() call for IORT.
-> 
-> TBH that appears to be true of pasid-num-bits as well.
+On 14/12/2020 12:33, Robin Murphy wrote:
+> On 2020-12-14 10:55, Shameerali Kolothum Thodi wrote:
+>> Hi Steve,
+>>
+>>> -----Original Message-----
+>>> From: Steven Price [mailto:steven.price@arm.com]
+>>> Sent: 10 December 2020 10:26
+>>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+>>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>>> iommu@lists.linux-foundation.org; devel@acpica.org
+>>> Cc: Linuxarm <linuxarm@huawei.com>; lorenzo.pieralisi@arm.com;
+>>> joro@8bytes.org; robin.murphy@arm.com; wanghuiqiang
+>>> <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
+>>> <guohanjun@huawei.com>; Jonathan Cameron
+>>> <jonathan.cameron@huawei.com>; Sami.Mujawar@arm.com
+>>> Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+>>>
+>>> On 19/11/2020 12:11, Shameer Kolothum wrote:
+>>>> RFC v1 --> v2:
+>>>>    - Added a generic interface for IOMMU drivers to retrieve all the
+>>>>      RMR info associated with a given IOMMU.
+>>>>    - SMMUv3 driver gets the RMR list during probe() and installs
+>>>>      bypass STEs for all the SIDs in the RMR list. This is to keep
+>>>>      the ongoing traffic alive(if any) during SMMUv3 reset. This is
+>>>>      based on the suggestions received for v1 to take care of the
+>>>>      EFI framebuffer use case. Only sanity tested for now.
+>>>
+>>> Hi Shameer,
+>>>
+>>> Sorry for not looking at this before.
+>>>
+>>> Do you have any plans to implement support in the SMMUv2 driver? The
+>>> platform I've been testing the EFI framebuffer support on has the
+>>> display controller behind SMMUv2, so as it stands this series doesn't
+>>> work. I did hack something up for SMMUv2 so I was able to test the first
+>>> 4 patches.
+>>
+>> Thanks for taking a look. Sure, I can look into adding the support for 
+>> SMMUv2.
 
-Right I think that's better, thanks for the pointer. I'll take care of
-pasid-num-bits too. The Huawei quirk (fake PCIe supporting stall) is a
-little worse this way, but it should work.
+Great, thanks!
+
+>>>
+>>>>    - During the probe/attach device, SMMUv3 driver reserves any
+>>>>      RMR region associated with the device such that there is a unity
+>>>>      mapping for them in SMMU.
+>>>
+>>> For the EFI framebuffer use case there is no device to attach so I
+>>> believe we are left with just the stream ID in bypass mode - which is
+>>> definitely an improvement (the display works!)
+>>
+>> Cool. That’s good to know.
+>>
+>>   but not actually a unity
+>>> mapping of the RMR range. I'm not sure whether it's worth fixing this or
+>>> not, but I just wanted to point out there's still a need for a driver
+>>> for the device before the bypass mode is replaced with the unity 
+>>> mapping.
+>>
+>> I am not sure either. My idea was we will have bypass STE setup for 
+>> all devices
+>> with RMR initially and when the corresponding driver takes over(if 
+>> that happens)
+>> we will have the unity mapping setup properly for the RMR regions. And 
+>> for cases
+>> like the above, it will remain in the bypass mode.
+>>
+>> Do you see any problem(security?) if the dev streams remain in bypass 
+>> mode for
+>> this dev? Or is it possible to have a stub driver for this dev, so 
+>> that we will have
+>> the probe/attach invoked and everything will fall in place?
+> 
+> The downside is that if a driver never binds to that device, it remains 
+> bypassed. If some other externally-controlled malicious device could 
+> manage to spoof that device's requester ID, that could potentially be 
+> exploited.
+> 
+>> TBH, I haven't looked into creating a temp domain for these types of 
+>> the devices
+>> and also not sure how we benefit from that compared to the STE bypass 
+>> mode.
+> 
+> That said, setting up temporary translation contexts that ensure any 
+> access can *only* be to RMR regions until a driver takes over is an 
+> awful lot more work. I'm inclined to be pragmatic here and say we should 
+> get things working at all with the simple bypass STE/S2CR method, then 
+> look at adding the higher-security effort on top.
+> 
+> Right now systems that need this are either broken (but effectively 
+> secure) or using default bypass with SMMUv2. People who prefer to 
+> maintain security over functionality in the interim can maintain that 
+> status quo by simply continuing to not describe any RMRs.
+
+I agree with Robin, let's get this working with the bypass mode (until 
+the device binds) like you've currently got. It's much better than what 
+we have otherwise. Then once that is merged we can look at the temporary 
+translation context or stub driver. The temporary translation context 
+would be 'neatest', but I'm only aware of the EFI framebuffer use case 
+and for that it might be possible to do something simpler - if indeed 
+anything is needed at all. I'm not sure how much we need to be worried 
+about malicious devices spoofing requester IDs.
 
 Thanks,
-Jean
 
----
-Diff untested on ACPI:
-
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index e7b40e569488..ad5c55bc45b2 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -591,8 +591,6 @@ struct iommu_group *fsl_mc_device_group(struct device *dev);
- struct iommu_fwspec {
- 	const struct iommu_ops	*ops;
- 	struct fwnode_handle	*iommu_fwnode;
--	u32			num_pasid_bits;
--	bool			can_stall;
- 	unsigned int		num_ids;
- 	u32			ids[];
- };
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index aa76e775bd6d..1582f6585741 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -960,16 +960,19 @@ static int iort_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
- static void iort_named_component_init(struct device *dev,
- 				      struct acpi_iort_node *node)
- {
-+	struct property_entry props[3] = {};
- 	struct acpi_iort_named_component *nc;
--	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
--
--	if (!fwspec)
--		return;
-
- 	nc = (struct acpi_iort_named_component *)node->node_data;
--	fwspec->num_pasid_bits = FIELD_GET(ACPI_IORT_NC_PASID_BITS,
--					   nc->node_flags);
--	fwspec->can_stall = (nc->node_flags & ACPI_IORT_NC_STALL_SUPPORTED);
-+
-+	props[0] = PROPERTY_ENTRY_U32("pasid-num-bits",
-+				      FIELD_GET(ACPI_IORT_NC_PASID_BITS,
-+						nc->node_flags));
-+	if (nc->node_flags & ACPI_IORT_NC_STALL_SUPPORTED)
-+		props[1] = PROPERTY_ENTRY_BOOL("dma-can-stall");
-+
-+	if (device_add_properties(dev, props))
-+		dev_warn(dev, "Could not register device properties\n");
- }
-
- static int iort_nc_iommu_map(struct device *dev, struct acpi_iort_node *node)
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 521ec7f0b2a0..571bd7c35a62 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2842,7 +2842,8 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
- 	if (ret)
- 		goto err_free_master;
-
--	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
-+	device_property_read_u32(dev, "pasid-num-bits", &master->ssid_bits);
-+	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
-
- 	/*
- 	 * Note that PASID must be enabled before, and disabled after ATS:
-@@ -2858,7 +2859,8 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
- 		master->ssid_bits = min_t(u8, master->ssid_bits,
- 					  CTXDESC_LINEAR_CDMAX);
-
--	if ((smmu->features & ARM_SMMU_FEAT_STALLS && fwspec->can_stall) ||
-+	if ((smmu->features & ARM_SMMU_FEAT_STALLS &&
-+	     device_property_read_bool(dev, "dma-can-stall")) ||
- 	    smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
- 		master->stall_enabled = true;
-
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index d6255ca823d8..a9d2df001149 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -210,14 +210,6 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
- 					     of_pci_iommu_init, &info);
- 	} else {
- 		err = of_iommu_configure_device(master_np, dev, id);
--
--		fwspec = dev_iommu_fwspec_get(dev);
--		if (!err && fwspec) {
--			of_property_read_u32(master_np, "pasid-num-bits",
--					     &fwspec->num_pasid_bits);
--			fwspec->can_stall = of_property_read_bool(master_np,
--								  "dma-can-stall");
--		}
- 	}
-
- 	/*
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 324dbe55836c..13a43a3d6347 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -1828,12 +1828,17 @@ DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_HUAWEI, 0x1610, PCI_CLASS_BRIDGE_PCI
-
- static void quirk_huawei_pcie_sva(struct pci_dev *pdev)
- {
--	struct iommu_fwspec *fwspec;
-+	struct property_entry properties[] = {
-+		PROPERTY_ENTRY_BOOL("dma-can-stall"),
-+		{},
-+	};
-
- 	pdev->eetlp_prefix_path = 1;
--	fwspec = dev_iommu_fwspec_get(&pdev->dev);
--	if (fwspec)
--		fwspec->can_stall = 1;
-+
-+	/* Device-tree can set the stall property */
-+	if (!pdev->dev.of_node &&
-+	    device_add_properties(&pdev->dev, properties))
-+		pci_warn(pdev, "could not add stall property");
- }
-
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_HUAWEI, 0xa250, quirk_huawei_pcie_sva);
-
-
+Steve
