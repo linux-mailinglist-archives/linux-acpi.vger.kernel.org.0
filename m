@@ -2,127 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C53352DABFB
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Dec 2020 12:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B792DAC03
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Dec 2020 12:29:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728813AbgLOLZZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Dec 2020 06:25:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:23491 "EHLO
+        id S1728732AbgLOL1g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Dec 2020 06:27:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:21348 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728651AbgLOLTI (ORCPT
+        by vger.kernel.org with ESMTP id S1729062AbgLOL1d (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 15 Dec 2020 06:19:08 -0500
+        Tue, 15 Dec 2020 06:27:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1608031055;
+        s=mimecast20190719; t=1608031567;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vaPBRIesr27IX6qkoAPHHZTgEVHDzEcMSMnvfR1oaMU=;
-        b=HFUdYgGDTxW9fBAdgg9FKEEz5KBdsYU3XKXZC+wdDi7lg8NFC3QNLpeUT6cd72vrfkmNm6
-        R2lEHuItX12Eeq/NKjxYrPBEDmKowVEh7C+RdEZhTO7rnXp7SRnl8xKTsXXazHsz8ozQFe
-        NGPzfk1ifcVjl1q1UjjoMXCm9wGiDek=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-372-o-pzp4GVM3uDk4mjmAUPCQ-1; Tue, 15 Dec 2020 06:17:33 -0500
-X-MC-Unique: o-pzp4GVM3uDk4mjmAUPCQ-1
-Received: by mail-ed1-f70.google.com with SMTP id cm4so9818770edb.0
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Dec 2020 03:17:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vaPBRIesr27IX6qkoAPHHZTgEVHDzEcMSMnvfR1oaMU=;
-        b=BLESQAYB57iI3KJkWd0XZ9RCCO4ramSvvOIBVOCC64osfl+AtpXXo1uyqXtE5PV+ww
-         oU+RyPVwyA6VlA5GKm+ow+AGf05JyP7qlESwg9gA0sdO3WsHcULyek0dZ9iWI3uqdmGY
-         BWA3jd0Sq8UJ3oRe/jGXCw7aO+2qZzIZHS93l5OZ6X903atFLuELCRmtwTIpj+lnCp2+
-         9XLRmEbeZVjyNNks+CmXi+jMBd/JWXqEqPR3n+dR3+PAhCiRijyXaIR5cEXn45Va9h+R
-         gaM7WHuTwAUnE3zFwnC1ICiPuCOqxqgs0J+kkE21L1merRbMPrMZLXdftYjVGZ9BVE/L
-         8MwQ==
-X-Gm-Message-State: AOAM532PZoDEMmccZ3BokoDqU9zyrbnILincPvmPm3Z4+OzUcp+ZUu6V
-        UebAIYRu5WxFwCgQdv0Jurom8Gjj9flEDAl3sJMpq0OrfIZ0+rMZJq2l/hlY3LXRpLOGgrEbx1Q
-        kf+aNhOaEnZc77JdYQXMWQw==
-X-Received: by 2002:a50:8004:: with SMTP id 4mr14732618eda.329.1608031052571;
-        Tue, 15 Dec 2020 03:17:32 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJy8Ukb3b5sC/L9ddJO9dEIvpLc1T192z0TMMRjb3sOdjbu8IPQRItEeSkmUrx5lh7khNRbdFw==
-X-Received: by 2002:a50:8004:: with SMTP id 4mr14732609eda.329.1608031052383;
-        Tue, 15 Dec 2020 03:17:32 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id d13sm4370782edx.27.2020.12.15.03.17.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Dec 2020 03:17:31 -0800 (PST)
-Subject: Re: [RFT][PATCH v1 0/3] ACPI: scan: Defer enumeration of devices with
- significant dependencies
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <1646930.v2jOOB1UEN@kreacher>
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=VdvU/NwO377Jri/mdqYabuILSsRebo7DrfRPpnxWTKo=;
+        b=Z0N+dP3Qdf8f3TZ75H2AJwhzCDHtB0JKAC1jlSTjYeo2ttEnn7u1Pil9aleytVfbkg6hXN
+        jtlMR1CUVncuH7L2ZYSpm2d9/4uYKXKWb2DhY2uPJCtr42AhGgR/U7L9CAnz0CY6qJ5iZ1
+        5R52vTXnkbULhMCpojpKfRCheHh56aQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-126-qhRzt49GOH-pECGEa8HN3A-1; Tue, 15 Dec 2020 06:26:05 -0500
+X-MC-Unique: qhRzt49GOH-pECGEa8HN3A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C33851005504;
+        Tue, 15 Dec 2020 11:26:04 +0000 (UTC)
+Received: from x1.localdomain (ovpn-114-62.ams2.redhat.com [10.36.114.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C8A94710DB;
+        Tue, 15 Dec 2020 11:26:03 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <551a2185-bde5-3338-2d47-d2cf4b1c55f5@redhat.com>
-Date:   Tue, 15 Dec 2020 12:17:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: scan: Add Intel Baytrail Mailbox Device to acpi_ignore_dep_ids
+Date:   Tue, 15 Dec 2020 12:26:02 +0100
+Message-Id: <20201215112602.5314-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <1646930.v2jOOB1UEN@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Linux does not have a driver for / does not use the "Intel Baytrail
+Mailbox Device" (ACIP HID INT33BD). Add it to the acpi_ignore_dep_ids
+list, so that we do not defer probing ACPI devices which depend on
+another ACPI device with this HID.
 
-On 12/14/20 9:23 PM, Rafael J. Wysocki wrote:
-> Hi,
-> 
-> This series addresses some enumeration ordering issues by using information
-> from _DEP to defer the enumeration of devices that are likely to depend on
-> operation region (OpRegion) handlers supplied by the drivers of other
-> devices.
-> 
-> This allows the OpRegion suppliers to be probed and start working before the
-> devices depending on them are enumerated.
-> 
-> Please see the patch changelogs for details.
-> 
-> Hans, please test this series on the system with OpRegion dependencies in
-> control methods used for device enumeration.
+Specifically this makes us not defer the probing of the GPO1 ACPI
+device / GPIO controller on the Acer Switch 10E SW3-016. On this
+tablet model the  _HID method of the ACPI node for the UART attached
+Bluetooth, reads GPIOs to detect the installed wifi chip and updates
+the reported _HID for the Bluetooth's ACPI node accordingly.
 
-Thank you for you work on this!
+For the Bluetooth's ACPI node to report the correct _HID the GPO1 device
+must be probed and attached during the first scan pass. Adding the
+"INT33BD" HID to the acpi_ignore_dep_ids list makes this all work.
 
-I started with reviewing the series so that I would know what to
-expect during testing. All 3 patches look good to me:
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/scan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-As is the series does not fix the Bluetooth HID misreporting on
-the system with OpRegion dependencies in its BT ACPI node's _HID,
-but ...
-
-This is expected because that _HID has a _DEP on the GPO1 GPIO
-controller, which in turn has a _DEP pointing to the
-"Intel Baytrail Mailbox Device" ("INT33BD")
-
-We (Linux) don't do anything with the INT33BD device, so it can
-simply be added to the acpi_ignore_dep_ids list. With this done the
-3 patches from this RFT fix the BT _HID issue. IOW everything works
-as expected / as we want.
-
-While at it I also booted the kernel with these patches on a
-Lenovo Yoga X1 Carbon 8th gen. I'm not seeing any adverse side
-effects there, so please add my tested-by to the entire series:
-
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-
-I will send out a patch adding "INT33BD" to the
-acpi_ignore_dep_ids list (to be applied on top of this series)
-right away.
-
-Regards,
-
-Hans
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 28713741d6ee..05814d188c7d 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -752,6 +752,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+ /* List of HIDs for which we ignore matching ACPI devices, when checking _DEP lists. */
+ static const char * const acpi_ignore_dep_ids[] = {
+ 	"PNP0D80", /* Windows-compatible System Power Management Controller */
++	"INT33BD", /* Intel Baytrail Mailbox Device */
+ 	NULL
+ };
+ 
+-- 
+2.28.0
 
