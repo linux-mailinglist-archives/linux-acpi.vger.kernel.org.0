@@ -2,112 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FF552DA453
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Dec 2020 00:45:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6095F2DA741
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Dec 2020 05:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726645AbgLNXmx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Dec 2020 18:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46712 "EHLO
+        id S1725562AbgLOE5r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Dec 2020 23:57:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727030AbgLNXlI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 18:41:08 -0500
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 965B2C061257
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 15:40:03 -0800 (PST)
-Received: by mail-wm1-x344.google.com with SMTP id e25so16795667wme.0
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 15:40:03 -0800 (PST)
+        with ESMTP id S1725272AbgLOE5r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Dec 2020 23:57:47 -0500
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B96B9C06179C
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 20:57:06 -0800 (PST)
+Received: by mail-ot1-x341.google.com with SMTP id o11so18167427ote.4
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Dec 2020 20:57:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HR6fxnctcFG0S2fOhN1StND9v+I0KlYE3gnQEW5jseo=;
-        b=I4+ur7/JqkDvRM9rhYAD8XbIRYlOOoS5VmC+0o3cupQmlhxvVdRe5zc1ugCTN2c50N
-         rUCImwC/t6kBthv1M2bwbWgHCayE1VisBLU4Etxmli/UZw03f3d976Ws99Ep9PcZoQDN
-         MEXTGyToiCQh1Y6IhO6g6Y4yY7GOQveUouYtNOk1UMvM0XGxJkxPRvsqmo4UdosctfW8
-         pMTaP7uJMLDlFOhOd656vO7TunBRhFr32P3JgME36WPwQSkCrSJE4ldXKhOk1elfhuzc
-         4Ozvb0ZZLcQBBvaAv24A8g9JNIOfBNGMc+mpd1WCCDQ1ZZx8aR8mya6qP0gdMWp1jCxs
-         EI2g==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=t2CzDzHRfMNSnqgic5nqeErM22D3QpmpZZFW910ZYos=;
+        b=O/ep66pZSJZh3lkMCUmfcxmr5xb8x65TJMHfkvoXh16IpCJHWXaNwZW+VJkyg5U5M5
+         8hYeVyjThTt6B0SMzEnmcr9LbpCfY7rWuyHTyV1+Yngf17i1IJtvyTb9ebPNpvASThf+
+         x0EsIQVnsqCgLrroc2cllx/fH5tHUvO5ej/V1HeEawhEaB1ty+vdfw08TDpn202qRD7K
+         lgHKa/BupgUdEw3Whqsh0FED6ifaJEckxs7ycGUwDhW6URMUO7Mt09HiRxBXvrUGwj60
+         22r3nWdqDSSomEllkMYsj2o9zFn0oAFzKXnhFjtYMG5lmUBetQYOLr+UvSRd52uRsStM
+         1FXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HR6fxnctcFG0S2fOhN1StND9v+I0KlYE3gnQEW5jseo=;
-        b=a2fw4Z9IGrKwM6a/coAVUpbmFBo/DkZ12/hDP3edu8xqYZDYsG+ccdI+fmToBQi/Y0
-         wsbbKaC5vsUY4wAdAtdyZrkVmpTSx6FoUcuvL2UduCuz6aHuNFdJ3KCCNWM+8q5ekJE+
-         q6eYpCjaVOL9uEKpRt5wehUihWfLHjBn6obMn/fW/q11aB2pkVkO0qzJSIJoJWF0KYhY
-         qaPZYAnnINxvX8IlRz7NoNRIjhreTnRCh29DYE7pWBWtBAXDAUhGq0ufDTyRHfpWBkz8
-         nNBNbZOnk3J1vP8XzXaKnjg+MA+ZINb+L90ZKq77uMBqtDZ+9hyKr7GD+tqgNmyuH4Ur
-         7kig==
-X-Gm-Message-State: AOAM531NNqPs5oj4WC+i3jOyKpI2YSXydmTnTWAO1el/u5Iv5B/WQUf7
-        5MFPv1yEaRnRUgO5FFGB2ubILw==
-X-Google-Smtp-Source: ABdhPJy7Yk7b8Tx5ebVkN303VPChAZspl2TDmQ7lnf4hy9dgarasNh2bFkcPl+Ftld8ZcrfTN396vA==
-X-Received: by 2002:a1c:81d5:: with SMTP id c204mr29695087wmd.156.1607989202159;
-        Mon, 14 Dec 2020 15:40:02 -0800 (PST)
-Received: from mai.imgcgcw.net ([2a01:e34:ed2f:f020:e842:4086:6f24:55a6])
-        by smtp.gmail.com with ESMTPSA id h3sm34145075wmm.4.2020.12.14.15.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Dec 2020 15:40:01 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rui.zhang@intel.com
-Cc:     mjg59@codon.org.uk, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, amitk@kernel.org,
-        thara.gopinath@linaro.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER)
-Subject: [PATCH 4/6] acpi/drivers/thermal: Remove TRIPS_NONE cooling device binding
-Date:   Tue, 15 Dec 2020 00:38:07 +0100
-Message-Id: <20201214233811.485669-4-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201214233811.485669-1-daniel.lezcano@linaro.org>
-References: <20201214233811.485669-1-daniel.lezcano@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=t2CzDzHRfMNSnqgic5nqeErM22D3QpmpZZFW910ZYos=;
+        b=s7VxVJ+RAgNtYGmjjyc5E8xJNrrlDVSHz1SVPOPkH7fAVIeozYy8be0l699QXvW7nV
+         Y/BD580IwoACiIa/wXU+z+dJ724/EJq/h3MGn0NMBprWjxDM4E0HKGJltvSSRYnbUZwC
+         Hc0eRFMLYn3Ox2OwGFrRcvl0+wNWfOxDdxtF5OpwyqnpICgW9tmvLZbw/b8T1QK3uvVt
+         fAB1/0aR+fsEF2pl5ybWdWythr2XCRtRM2oMLHmytvaZdePmVtdB2SVX8RCUdfE7KQu0
+         jFtsjfwBu0zpsuEgaeN6htsJ+CLHO3edCU8oulPQXJ0k9/6b/12UdZ2qx4mRx1FC7IE3
+         KS7A==
+X-Gm-Message-State: AOAM5333oPT8GBx1R6XX7qsMZxboQSnGVDjaTdMHkfByECh3C6mdinjt
+        nuVy7JD3adIxMLLZk6oQalQivQrr+VEtFNZtH9L49g==
+X-Google-Smtp-Source: ABdhPJyUL9Q3xcu4a2fiLvGFfl5XNFEYQDO0yMccZOvTDYIQt4bsP2haDoZV9j7gsurgjmincBo4UMsaxXNA97fOddE=
+X-Received: by 2002:a9d:3d06:: with SMTP id a6mr21271486otc.368.1608008225706;
+ Mon, 14 Dec 2020 20:57:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201201213019.1558738-1-furquan@google.com>
+In-Reply-To: <20201201213019.1558738-1-furquan@google.com>
+From:   Furquan Shaikh <furquan@google.com>
+Date:   Mon, 14 Dec 2020 20:56:48 -0800
+Message-ID: <CAEGmHFGZM0mADs-Eiz780RHzyf3emJinSAMT6ipRMpOvb+HGjg@mail.gmail.com>
+Subject: Re: [PATCH] drivers: core: Detach device from power domain on shutdown
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The loop is here to create default cooling device binding on the
-THERMAL_TRIPS_NONE number which is used to be the 'forced_passive'
-feature. However, we removed all code dealing with that in the thermal
-core, thus this binding does no longer make sense.
+On Tue, Dec 1, 2020 at 1:30 PM Furquan Shaikh <furquan@google.com> wrote:
+>
+> When the system is powered off or rebooted, devices are not detached
+> from their PM domain. This results in ACPI PM not being invoked and
+> hence PowerResouce _OFF method not being invoked for any of the
+> devices. Because the ACPI power resources are not turned off in case
+> of poweroff and reboot, it violates the power sequencing requirements
+> which impacts the reliability of the devices over the lifetime of the
+> platform. This is currently observed on all Chromebooks using ACPI.
+>
+> In order to solve the above problem, this change detaches a device
+> from its PM domain whenever it is shutdown. This action is basically
+> analogous to ->remove() from driver model perspective. Detaching the
+> device from its PM domain ensures that the ACPI PM gets a chance to
+> turn off the power resources for the device thus complying with its
+> power sequencing requirements.
+>
+> Signed-off-by: Furquan Shaikh <furquan@google.com>
+> ---
+>  drivers/base/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index d661ada1518f..5823f1d719e1 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/of_device.h>
+>  #include <linux/genhd.h>
+>  #include <linux/mutex.h>
+> +#include <linux/pm_domain.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/netdevice.h>
+>  #include <linux/sched/signal.h>
+> @@ -4057,6 +4058,8 @@ void device_shutdown(void)
+>                         dev->driver->shutdown(dev);
+>                 }
+>
+> +               dev_pm_domain_detach(dev, true);
+> +
+>                 device_unlock(dev);
+>                 if (parent)
+>                         device_unlock(parent);
+> --
+> 2.29.2.454.gaff20da3a2-goog
+>
 
-Remove it.
+Hello,
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/acpi/thermal.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+Gentle ping. Just checking if there are any comments.
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index b5e4bc9e3282..26a89ff80a0e 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -764,25 +764,6 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
- 		}
- 	}
- 
--	for (i = 0; i < tz->devices.count; i++) {
--		handle = tz->devices.handles[i];
--		status = acpi_bus_get_device(handle, &dev);
--		if (ACPI_SUCCESS(status) && (dev == device)) {
--			if (bind)
--				result = thermal_zone_bind_cooling_device
--						(thermal, THERMAL_TRIPS_NONE,
--						 cdev, THERMAL_NO_LIMIT,
--						 THERMAL_NO_LIMIT,
--						 THERMAL_WEIGHT_DEFAULT);
--			else
--				result = thermal_zone_unbind_cooling_device
--						(thermal, THERMAL_TRIPS_NONE,
--						 cdev);
--			if (result)
--				goto failed;
--		}
--	}
--
- failed:
- 	return result;
- }
--- 
-2.25.1
-
+Thanks,
+Furquan
