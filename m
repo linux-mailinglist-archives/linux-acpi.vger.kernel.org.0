@@ -2,153 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF4A2DBB47
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 07:35:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 037E92DBF54
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 12:25:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbgLPGfR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Dec 2020 01:35:17 -0500
-Received: from mga09.intel.com ([134.134.136.24]:45521 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725914AbgLPGfR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Dec 2020 01:35:17 -0500
-IronPort-SDR: WuXpjr1wDRfUcEUO7SYDAsnyjrCcopgyxCXV3hoyktVRU7P3h3VX3/k0K3/yk/MkFS61xBoPwP
- Laxbwken7MSQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9836"; a="175161164"
-X-IronPort-AV: E=Sophos;i="5.78,423,1599548400"; 
-   d="scan'208";a="175161164"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2020 22:34:35 -0800
-IronPort-SDR: CxysrdpUf96KlnkAHd3nZ3toEb8xbwiKnBauIzj7ikT3U5nrrDwLzqzHrGgcRHBX0tHH16iePW
- sN/LSM1KhWiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,423,1599548400"; 
-   d="scan'208";a="412331510"
-Received: from lkp-server02.sh.intel.com (HELO a947d92d0467) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 15 Dec 2020 22:34:34 -0800
-Received: from kbuild by a947d92d0467 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kpQOP-0001BZ-Fz; Wed, 16 Dec 2020 06:34:33 +0000
-Date:   Wed, 16 Dec 2020 14:33:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- d767dc777613ec5643a61a966665f81594da46ae
-Message-ID: <5fd9aa54.ON7EqWJt7wfHT0QR%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725813AbgLPLZX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Dec 2020 06:25:23 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9211 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725385AbgLPLZW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Dec 2020 06:25:22 -0500
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Cwt6t5pxrzkqBb;
+        Wed, 16 Dec 2020 19:23:50 +0800 (CST)
+Received: from [10.63.139.185] (10.63.139.185) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 16 Dec 2020 19:24:31 +0800
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>
+References: <20200623150427.GA2403606@bjorn-Precision-5520>
+CC:     Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <joro@8bytes.org>,
+        "Bjorn Helgaas" <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        <kenneth-lee-2012@foxmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
+        Souvik Chakravarty <Souvik.Chakravarty@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+From:   Zhou Wang <wangzhou1@hisilicon.com>
+Message-ID: <5FD9EE6E.1040505@hisilicon.com>
+Date:   Wed, 16 Dec 2020 19:24:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200623150427.GA2403606@bjorn-Precision-5520>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.63.139.185]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: d767dc777613ec5643a61a966665f81594da46ae  Merge branch 'acpi-pnp' into bleeding-edge
+On 2020/6/23 23:04, Bjorn Helgaas wrote:
+> On Fri, Jun 19, 2020 at 10:26:54AM +0800, Zhangfei Gao wrote:
+>> Have studied _DSM method, two issues we met comparing using quirk.
+>>
+>> 1. Need change definition of either pci_host_bridge or pci_dev, like adding
+>> member can_stall,
+>> while pci system does not know stall now.
+>>
+>> a, pci devices do not have uuid: uuid need be described in dsdt, while pci
+>> devices are not defined in dsdt.
+>>     so we have to use host bridge.
+> 
+> PCI devices *can* be described in the DSDT.  IIUC these particular
+> devices are hardwired (not plug-in cards), so platform firmware can
+> know about them and could describe them in the DSDT.
+> 
+>> b,  Parsing dsdt is in in pci subsystem.
+>> Like drivers/acpi/pci_root.c:
+>>        obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid,
+>> 1,
+>>                                 IGNORE_PCI_BOOT_CONFIG_DSM, NULL);
+>>
+>> After parsing DSM in pci, we need record this info.
+>> Currently, can_stall info is recorded in iommu_fwspec,
+>> which is allocated in iommu_fwspec_init and called by iort_iommu_configure
+>> for uefi.
+> 
+> You can look for a _DSM wherever it is convenient for you.  It could
+> be in an AMBA shim layer.
+> 
+>> 2. Guest kernel also need support sva.
+>> Using quirk, the guest can boot with sva enabled, since quirk is
+>> self-contained by kernel.
+>> If using  _DSM, a specific uefi or dtb has to be provided,
+>> currently we can useQEMU_EFI.fd from apt install qemu-efi
+> 
+> I don't quite understand what this means, but as I mentioned before, a
+> quirk for a *limited* number of devices is OK, as long as there is a
+> plan that removes the need for a quirk for future devices.
+> 
+> E.g., if the next platform version ships with a DTB or firmware with a
+> _DSM or other mechanism that enables the kernel to discover this
+> information without a kernel change, it's fine to use a quirk to cover
+> the early platform.
+> 
+> The principles are:
+> 
+>   - I don't want to have to update a quirk for every new Device ID
+>     that needs this.
 
-elapsed time: 720m
+Hi Bjorn and Zhangfei,
 
-configs tested: 90
-configs skipped: 2
+We plan to use ATS/PRI to support SVA in future PCI devices. However, for
+current devices, we need to add limited number of quirk to let them
+work. The device IDs of current quirk needed devices are ZIP engine(0xa250, 0xa251),
+SEC engine(0xa255, 0xa256), HPRE engine(0xa258, 0xa259), revision id are
+0x21 and 0x30.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Let's continue to upstream these quirks!
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-c6x                        evmc6457_defconfig
-powerpc                        fsp2_defconfig
-h8300                    h8300h-sim_defconfig
-xtensa                       common_defconfig
-xtensa                    xip_kc705_defconfig
-sh                           se7724_defconfig
-arm                            lart_defconfig
-um                             i386_defconfig
-ia64                         bigsur_defconfig
-arm                     davinci_all_defconfig
-powerpc                      ppc64e_defconfig
-arm                  colibri_pxa270_defconfig
-arm                            mps2_defconfig
-sh                        dreamcast_defconfig
-powerpc                 mpc85xx_cds_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20201215
-i386                 randconfig-a004-20201215
-i386                 randconfig-a003-20201215
-i386                 randconfig-a002-20201215
-i386                 randconfig-a006-20201215
-i386                 randconfig-a005-20201215
-i386                 randconfig-a014-20201215
-i386                 randconfig-a013-20201215
-i386                 randconfig-a012-20201215
-i386                 randconfig-a011-20201215
-i386                 randconfig-a015-20201215
-i386                 randconfig-a016-20201215
-x86_64               randconfig-a003-20201215
-x86_64               randconfig-a006-20201215
-x86_64               randconfig-a002-20201215
-x86_64               randconfig-a005-20201215
-x86_64               randconfig-a004-20201215
-x86_64               randconfig-a001-20201215
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Best,
+Zhou
 
-clang tested configs:
-x86_64               randconfig-a016-20201215
-x86_64               randconfig-a012-20201215
-x86_64               randconfig-a013-20201215
-x86_64               randconfig-a015-20201215
-x86_64               randconfig-a014-20201215
-x86_64               randconfig-a011-20201215
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
+>   - I don't really want to have to manage non-PCI information in the
+>     struct pci_dev.  If this is AMBA- or IOMMU-related, it should be
+>     stored in a structure related to AMBA or the IOMMU.
+> .
+> 
