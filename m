@@ -2,218 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFE12DC817
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 22:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D05D2DC86B
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 22:41:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727037AbgLPVD3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Dec 2020 16:03:29 -0500
-Received: from mga12.intel.com ([192.55.52.136]:61257 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727036AbgLPVD2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Dec 2020 16:03:28 -0500
-IronPort-SDR: RwsPfkU7FS0iAaHfLX0hwf7F4hOtxQoOGRiDdiZWIJIcLbuwtaTvrKqh+3FxS35EtwUATGC9cX
- NpEUH+GJg+7w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9837"; a="154366833"
-X-IronPort-AV: E=Sophos;i="5.78,425,1599548400"; 
-   d="scan'208";a="154366833"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 13:02:47 -0800
-IronPort-SDR: 1ewMrPgtZ+TnWQTvrR2HfvFdnb2Gc9vlU05j8yLqULERDjnpHtzmkixPU0PtIr69fOr+x5qtKn
- 6N5AjdgEacLQ==
-X-IronPort-AV: E=Sophos;i="5.78,425,1599548400"; 
-   d="scan'208";a="337763452"
-Received: from ticela-or-085.amr.corp.intel.com (HELO intel.com) ([10.252.135.213])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 13:02:46 -0800
-Date:   Wed, 16 Dec 2020 13:02:43 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [RFC PATCH 12/14] cxl: Add basic debugging
-Message-ID: <20201216210243.c6jmqlkjzk4gq2mi@intel.com>
-References: <20201209002418.1976362-1-ben.widawsky@intel.com>
- <20201209002418.1976362-13-ben.widawsky@intel.com>
- <CAPcyv4gW8H1wNVDFhSt1SFbU=mcNZFKBve4xG24rGJaJg1wQZA@mail.gmail.com>
- <20201209020433.bzsuqudbgtpbtggk@intel.com>
- <CAPcyv4j5TWX9AquGcT=jKbyxHsaJOFNd26E7eEen0+fYoMuaQg@mail.gmail.com>
+        id S1725821AbgLPVlz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Dec 2020 16:41:55 -0500
+Received: from mail1.bemta23.messagelabs.com ([67.219.246.1]:30753 "EHLO
+        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725601AbgLPVlz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Dec 2020 16:41:55 -0500
+Received: from [100.112.2.115] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-1.bemta.az-b.us-east-1.aws.symcld.net id F9/33-44756-ADD7ADF5; Wed, 16 Dec 2020 21:36:26 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDKsWRWlGSWpSXmKPExsWSLveKXfdW7a1
+  4g3Pd/Bb7r0tYdC00sFh4/xSrxddvt9kt3hyfzmSxfF8/o0VTZxObxeeOySwWq/e8YLZY+2Ue
+  m8XcL1OZLc6cvsTqwOMxaeYMZo+ds+6ye/zatobFY/MKLY9NqzrZPOadDPToadvE5PF+31U2j
+  y1X21k8Pm+SC+CKYs3MS8qvSGDNWPswrGCbZEX/2tuMDYzTRbsYuTiEBP4zSqxq+80I4bxglL
+  izvoe1i5GTQ1ggQeLImUWMILaIgLbEkkVXmUGKmAV6WCQebr7NCtEB5Fz91gHWwQZUtWXLLzY
+  Qm1fAVmLN5PVMIDaLgKrEsi3PwGpEBcIl1i9ZyQhRIyhxcuYTFhCbUyBQ4v/haUD1HEAbNCXW
+  79IHCTMLiEvcejKfCcKWl2jeOpsZxJYQUJD4++sqC4SdILHs5R3mCYyCs5BMnYUwaRaSSbOQT
+  FrAyLKK0SypKDM9oyQ3MTNH19DAQNfQ0EjXWNfIwFgvsUo3Sa+0WDc1sbhE11AvsbxYr7gyNz
+  knRS8vtWQTIzBSUwqYT+9gXPrmg94hRkkOJiVR3iLvW/FCfEn5KZUZicUZ8UWlOanFhxhlODi
+  UJHirqoBygkWp6akVaZk5wKQBk5bg4FES4X1fDZTmLS5IzC3OTIdInWJUlBLnvQ2SEABJZJTm
+  wbXBEtUlRlkpYV5GBgYGIZ6C1KLczBJU+VeM4hyMSsK8x2uApvBk5pXATX8FtJgJaPHqPddBF
+  pckIqSkGpgcRNcKHp11fd+9Ql2nvlsfPrDmaogyq1506LISlf3Invk444fm+39msw22yR1dW8
+  XV8CdJzsbCpfFSxJS8946+1UIZ4k957WZmREftYLU+lX9IqzTye+Hhzc6BLx9JOb+ZNE1BdtK
+  Ks3HTT3/IENn5+7ZJUG/rm9we0+O3KnWPuIhuK14yIXyG6Fzl57vLp6tm3bt7Ylu05Ls7QRqh
+  c39InnJoW3hLfm7vj/T1EvHfL71wbNDWZe8Q12u/eyvycs2W1a+9bp3++PGncPPEQ/vmS27e9
+  Km1VlJnA3tc4Q2VGsGF7NfCeXQYnqa/qbE9HDNny/kz/G6SB6W7lLgVpu846XSw9+Zy2Tt6zG
+  aiRROVWIozEg21mIuKEwHnc5LhzwMAAA==
+X-Env-Sender: markpearson@lenovo.com
+X-Msg-Ref: server-23.tower-395.messagelabs.com!1608154584!26216!1
+X-Originating-IP: [103.30.234.7]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.60.3; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 13275 invoked from network); 16 Dec 2020 21:36:26 -0000
+Received: from unknown (HELO lenovo.com) (103.30.234.7)
+  by server-23.tower-395.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 16 Dec 2020 21:36:26 -0000
+Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by Forcepoint Email with ESMTPS id A602C3DEC105BA942B96;
+        Thu, 17 Dec 2020 05:36:20 +0800 (CST)
+Received: from localhost.localdomain (10.38.108.33) by reswpmail04.lenovo.com
+ (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Wed, 16 Dec
+ 2020 13:36:17 -0800
+Subject: Re: [External] Re: [PATCH v6 2/3] ACPI: platform-profile: Add
+ platform profile support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        Darren Hart <dvhart@infradead.org>,
+        "njosh1@lenovo.com" <njosh1@lenovo.com>
+References: <markpearson@lenovo.com>
+ <20201211020630.305905-1-markpearson@lenovo.com>
+ <20201211020630.305905-2-markpearson@lenovo.com>
+ <CAJZ5v0hMnRizowg-FeS0ON9eJOD7ootqdTVyCPFRr6VCz7aS5g@mail.gmail.com>
+ <l-Nzteqdz9SbINiwW0w4kFnKwknGoh5DH7VXqvkb23SZPwhvNyna0FRV9z2IZ18T0S9-a4n3LGBR1pMZYKX4FcxNTOma7vIuya66CY_Mkpc=@protonmail.com>
+ <CAJZ5v0hHoScy18FE_Aj+zoWpr-vUhGq-vO+8AjO7RxmOvZBYMA@mail.gmail.com>
+ <00993237-eb24-6038-3a85-bb76f96f679d@lenovo.com>
+ <CAJZ5v0ji_+BbCrJo=3TB1Cytb8eV-tGE_m6R35UYfwmpUs6MAg@mail.gmail.com>
+From:   Mark Pearson <markpearson@lenovo.com>
+Message-ID: <e682cdbd-41fe-065e-5912-d0fb94879dc9@lenovo.com>
+Date:   Wed, 16 Dec 2020 16:36:16 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4j5TWX9AquGcT=jKbyxHsaJOFNd26E7eEen0+fYoMuaQg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ji_+BbCrJo=3TB1Cytb8eV-tGE_m6R35UYfwmpUs6MAg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.38.108.33]
+X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
+ reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20-12-08 19:06:46, Dan Williams wrote:
-> On Tue, Dec 8, 2020 at 6:04 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >
-> > On 20-12-08 17:17:36, Dan Williams wrote:
-> > > On Tue, Dec 8, 2020 at 4:24 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
-> > > >
-> > > > Provide a standard debug function for use throughout the driver.
-> > > >
-> > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > > ---
-> > > >  drivers/cxl/cxl.h |  3 +++
-> > > >  drivers/cxl/mem.c | 26 +++++++++++++++++++++++++-
-> > > >  2 files changed, 28 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > > > index 77c2dee6843c..e5afb89dab0b 100644
-> > > > --- a/drivers/cxl/cxl.h
-> > > > +++ b/drivers/cxl/cxl.h
-> > > > @@ -9,6 +9,9 @@
-> > > >  #include <linux/bitops.h>
-> > > >  #include <linux/io.h>
-> > > >
-> > > > +#define cxl_debug(fmt, ...)                                                    \
-> > > > +       pr_debug("CXL DEBUG: %s: " fmt, __func__, ##__VA_ARGS__)
-> > > > +
-> > >
-> > > This should be dev_dbg(), then you don't need the CXL DEBUG prefix. In
-> > > fact you don't need a cxl_debug() macro at all in that case. cxl_mem
-> > > might need a ->dev attribute for this purpose.
-> > >
-> >
-> > I really like the ability to turn specific messages on and off at will. (FWIW,
-> > __func__ is also redundant because pr_debug allows you to specify a flag to
-> > always print the function name). While it's not very frequent events here, in
-> > the future it likely will be and I think it can be really helpful to be able to
-> > have that level of control.
-> >
-> > If you want to avoid creating a new debug functionality, I'm okay with that, but
-> > I'd really like to use pr_debug instead of dev_dbg for those messages going
-> > forward. Once you take that step, it seems giving contributors a macro named
-> > 'cxl_debug' so they don't have to figure out when to use what, makes sense. My
-> > mental separation is, dev_* is useful primarily for errors and initialization
-> > debug messaging, pr_debug/trace_printk is for runtime things.
-> >
-> > I probably should have put that in the commit message...
-> 
-> I suspect you haven't taken a look at the backed and of pr_debug() and
-> dev_dbg() in a while? They both use _dynamic_func_call and enjoy all
-> the benefits afforded by /sys/debug/dynamic_debug/control and the
-> "dyndbg" module option for adding __func__ and enable / disable by
-> line number or format message . pr_debug() and this cxl_debug() macro
-> are completely superseded by dev_dbg(). Even if a driver wanted a
-> common prefix on all prints there is the "#define dev_fmt ..."
-> mechanism for that.
-> 
 
-In that case, I'm just going to squash in the debug messages into the various
-commits that need them.
-
-> >
-> > > >  #define CXL_SET_FIELD(value, field)                                            \
-> > > >         ({                                                                     \
-> > > >                 WARN_ON(!FIELD_FIT(field##_MASK, value));                      \
-> > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > index a2cea7ac7cc6..6b2f8d3776b5 100644
-> > > > --- a/drivers/cxl/mem.c
-> > > > +++ b/drivers/cxl/mem.c
-> > > > @@ -122,9 +122,12 @@ static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > > >  {
-> > > >         const int timeout = msecs_to_jiffies(2000);
-> > > >         const unsigned long start = jiffies;
-> > > > +       unsigned long end = start;
-> > > >
-> > > >         while (cxl_doorbell_busy(cxlm)) {
-> > > > -               if (time_after(jiffies, start + timeout)) {
-> > > > +               end = jiffies;
-> > > > +
-> > > > +               if (time_after(end, start + timeout)) {
-> > > >                         /* Check again in case preempted before timeout test */
-> > > >                         if (!cxl_doorbell_busy(cxlm))
-> > > >                                 break;
-> > > > @@ -133,6 +136,8 @@ static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > > >                 cpu_relax();
-> > > >         }
-> > > >
-> > > > +       cxl_debug("Doorbell wait took %dms",
-> > > > +                 jiffies_to_msecs(end) - jiffies_to_msecs(start));
-> > > >         return 0;
-> > > >  }
-> > > >
-> > > > @@ -180,6 +185,8 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
-> > > >         }
-> > > >
-> > > >         /* #4 */
-> > > > +       cxl_debug("Sending command to %s\n",
-> > > > +                 dev_driver_string(&cxlm->pdev->dev));
-> > >
-> > > dev_dbg() already includes dev_driver_string().
-> > >
-> > > >         cxl_write_mbox_reg32(cxlm, CXLDEV_MB_CTRL_OFFSET,
-> > > >                              CXLDEV_MB_CTRL_DOORBELL);
-> > > >
-> > > > @@ -308,6 +315,8 @@ static int cxl_mem_open(struct inode *inode, struct file *file)
-> > > >         if (!cxlmd)
-> > > >                 return -ENXIO;
-> > > >
-> > > > +       cxl_debug("Opened %pD\n", file);
-> > > > +
-> > > >         file->private_data = cxlmd;
-> > > >
-> > > >         return 0;
-> > > > @@ -383,6 +392,10 @@ static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
-> > > >                 .size_in = cmd->info.size_in,
-> > > >                 .size_out = size_out,
-> > > >         };
-> > > > +       cxl_debug("Submitting command for user\n"
-> > > > +                 "\topcode: %x\n"
-> > > > +                 "\tsize: %zub/%zub\n",
-> > > > +                 mbox_cmd.opcode, mbox_cmd.size_in, mbox_cmd.size_out);
-> > > >         rc = cxl_mem_mbox_send_cmd(cxlmd->cxlm, &mbox_cmd);
-> > > >         cxl_mem_mbox_put(cxlmd->cxlm);
-> > > >         if (rc)
-> > > > @@ -479,6 +492,8 @@ static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg
-> > > >                 u32 n_commands;
-> > > >                 int i, j;
-> > > >
-> > > > +               cxl_debug("Query IOCTL\n");
-> > > > +
-> > > >                 if (get_user(n_commands, (u32 __user *)arg))
-> > > >                         return -EFAULT;
-> > > >
-> > > > @@ -511,6 +526,8 @@ static long cxl_mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg
-> > > >                 struct cxl_mem_command c;
-> > > >                 int rc;
-> > > >
-> > > > +               cxl_debug("Send IOCTL\n");
-> > > > +
-> > > >                 rc = cxl_validate_cmd_from_user(u, &c);
-> > > >                 if (rc)
-> > > >                         return rc;
-> > > > @@ -843,6 +860,13 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
-> > > >
-> > > >         id = (struct cxl_mbox_identify *)mbox_cmd.payload;
-> > > >
-> > > > +       cxl_debug("Driver identify command\n"
-> > > > +                 "\tFirmware Version: %s\n"
-> > > > +                 "\tTotal Capacity: %llu (%llu persistent)\n"
-> > > > +                 "\tLSA size: %u\n",
-> > > > +                 id->fw_revision, id->total_capacity, id->persistent_capacity,
-> > > > +                 id->lsa_size);
-> > > > +
-> > >
-> > > Seems not necessary for details that are published in sysfs?
-> >
-> > I was thinking for cases where driver doesn't bind, seeing the identify
-> > information could be useful. This is one case where dev_dbg would also serve
-> > IMO.
+On 16/12/2020 14:50, Rafael J. Wysocki wrote:
+> On Wed, Dec 16, 2020 at 8:19 PM Mark Pearson <markpearson@lenovo.com> wrote:
+>>
+>> Hi Rafael,
+>>
+>> On 16/12/2020 13:47, Rafael J. Wysocki wrote:
+>>> On Wed, Dec 16, 2020 at 7:42 PM Barnabás Pőcze <pobrn@protonmail.com> wrote:
+>>>>
+>>>> 2020. december 16., szerda 19:13 keltezéssel, Rafael J. Wysocki írta:
+>>>>
+>>>>> On Fri, Dec 11, 2020 at 3:15 AM Mark Pearson <markpearson@lenovo.com> wrote:
+>>>>>>
+>>>>>> This is the initial implementation of the platform-profile feature.
+>>>>>> It provides the details discussed and outlined in the
+>>>>>> sysfs-platform_profile document.
+>>>>>>
+>>>>>> Many modern systems have the ability to modify the operating profile to
+>>>>>> control aspects like fan speed, temperature and power levels. This
+>>>>>> module provides a common sysfs interface that platform modules can register
+>>>>>> against to control their individual profile options.
+>>>>>>
+>>>>>> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+>>>>> [...]
+>>>>>> +enum platform_profile_option {
+>>>>>> +       PLATFORM_PROFILE_LOW,
+>>>>>> +       PLATFORM_PROFILE_COOL,
+>>>>>> +       PLATFORM_PROFILE_QUIET,
+>>>>>> +       PLATFORM_PROFILE_BALANCED,
+>>>>>> +       PLATFORM_PROFILE_PERFORM,
+>>>>>> +       PLATFORM_PROFILE_LAST, /*must always be last */
+>>>>>> +};
+>>>>>> +
+>>>>>> +struct platform_profile_handler {
+>>>>>> +       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+>>>>>> +       int (*profile_get)(enum platform_profile_option *profile);
+>>>>>
+>>>>> I'm not sure why this callback is necessary and, provided that there
+>>>>> is a good enough reason, why it cannot return an enum
+>>>>> platform_profile_option value.
+>>>>>
+>>>>> In principle, if ->profile_set() returns 0, the requested profile can
+>>>>> be saved in a static var and then returned by subsequent "read"
+>>>>> operations.
+>>>>>
+>>>>
+>>>> It is possible that the platform profile can be changed with (e.g.) a dedicated
+>>>> button (commonly found on laptops), in which case there needs to be a mechanism
+>>>> to retrieve the new profile, which would not be possible without introducing
+>>>> something else in place of that getter - unless I'm missing something obvious.
+>>>
+>>> Fair enough.
+>>>
+>>> The other question remains, then.
+>>>
+>> My thinking here that I shouldn't make assumptions for future platform
+>> implementations - there may be valid cases in the future where being
+>> able to return an error condition if there was an error would be useful.
+>>
+>> Just trying to keep this somewhat future proof. Returning an error
+>> condition seemed a useful thing to have available.
 > 
-> There's very little that can cause bind failures after
-> cxl_mem_identify() succeeds. The bind failures themselves will
-> dev_err() the reason.
+> You can still return an error while returning a platform_profile_option value.
+> 
+> Just add a special value representing an error to that set.
+> 
+I'd like to understand what is better about that approach than having an
+error and a returnable parameter?
+
+I'm probably missing something obvious but if I add an extra
+platform_profile option (e.g PLATFORM_PROFILE_ERROR) to be used in an
+error case (and return just an enum platform_profile_option) it seems I
+lose the granularity of being able to return a specific error condition.
+It doesn't feel like an improvement.
+
+Let me know what I'm missing.
+
+Thanks
+Mark
+
+
+
