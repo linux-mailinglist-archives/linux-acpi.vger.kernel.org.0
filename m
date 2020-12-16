@@ -2,23 +2,23 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB62E2DC6B3
+	by mail.lfdr.de (Postfix) with ESMTP id 006412DC6B1
 	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 19:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731728AbgLPSne (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Dec 2020 13:43:34 -0500
-Received: from mail-03.mail-europe.com ([91.134.188.129]:54848 "EHLO
-        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731732AbgLPSne (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Dec 2020 13:43:34 -0500
+        id S1729157AbgLPSmy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Dec 2020 13:42:54 -0500
+Received: from mail-40131.protonmail.ch ([185.70.40.131]:14904 "EHLO
+        mail-40131.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728060AbgLPSmx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Dec 2020 13:42:53 -0500
 Date:   Wed, 16 Dec 2020 18:42:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1608144130;
+        s=protonmail; t=1608144131;
         bh=bjEMbxsRKDZFGIURv7LQRdyvGAt7PpANZNbe0eQmDQA=;
         h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=u0haiwnJEw8aw3xeUOLMGbJ1/HyW0qZedRP4jBTK0J/cXVcWlZtq3iYCMlma7FwX+
-         lsM2WLgRv9aKB6a39ALMKRq89YODbK19zzSFEWlfJhP8k5athU9KFVcKHTFlVlFe6f
-         eYehkf4MGe9yLtYgFquoJYMTG9Y87XaBLR3zpCHw=
+        b=t1E0yFZwA9d9oDFfC0hI9qvG3M/uXHyJNHOg/WFu3mhpjyjpDayxW3bvQOQWTY2jm
+         uGdGggeLDjfI0kXAGV9X2V/RaXS8kMv5/HW/92WReM4Y1jtHayx2W2puxU8DGf89Yg
+         hH8vuyXo57HCyWDa0Da83eiDEhL7SxY0j5jOznEs=
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Cc:     Mark Pearson <markpearson@lenovo.com>,
