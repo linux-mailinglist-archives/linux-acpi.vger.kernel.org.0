@@ -2,127 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 037E92DBF54
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 12:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7BE42DC5FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Dec 2020 19:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725813AbgLPLZX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Dec 2020 06:25:23 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:9211 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725385AbgLPLZW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Dec 2020 06:25:22 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Cwt6t5pxrzkqBb;
-        Wed, 16 Dec 2020 19:23:50 +0800 (CST)
-Received: from [10.63.139.185] (10.63.139.185) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 16 Dec 2020 19:24:31 +0800
-Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>
-References: <20200623150427.GA2403606@bjorn-Precision-5520>
-CC:     Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <joro@8bytes.org>,
-        "Bjorn Helgaas" <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        <kenneth-lee-2012@foxmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
-        Souvik Chakravarty <Souvik.Chakravarty@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-From:   Zhou Wang <wangzhou1@hisilicon.com>
-Message-ID: <5FD9EE6E.1040505@hisilicon.com>
-Date:   Wed, 16 Dec 2020 19:24:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1729766AbgLPSOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Dec 2020 13:14:40 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:44798 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729762AbgLPSOj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Dec 2020 13:14:39 -0500
+Received: by mail-ot1-f45.google.com with SMTP id f16so23874299otl.11;
+        Wed, 16 Dec 2020 10:14:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2NqLp0xMJUXp8l692c4bVNhRCbaY/x/DqAWSQcYHaN0=;
+        b=KTGzlT4QUrbkJ5TudOAkMhCL6xqdhXhdf5Jsly2P0Lf0MTOGrwLlZJZXZn7O08pGT8
+         YSTrmGPowT311oTVg9nA6OQ6LQRDaFnHBgVu7x9GAcI8yvH23PBJH4ZIoxa2wSZN9/l5
+         DTWOANSEhCvleKSeAsOuQQrMPwe5UPwMCLLmTkbDMah89MFa6nX4ZbsoTmkileNfcHlf
+         sMOelUUt9SKD43RhxVQVo9d+FW53rpLHRPg/Cr3kEqickmllAfqfWGk7VGN7hjSsKcPD
+         U9alYMX92tpZ7EJJoqFCCUus4lqAcWr07k3vjByK8fFvvrmJ/uOzdXQg9gzfTic3Lng+
+         weFg==
+X-Gm-Message-State: AOAM531pNbBOCeQOTHDo9eqdShtKRFjMlH+KdrymNhfnwybwjQ69Ycdv
+        8Oke31ycoPCcSjhkotkr1SBcA1KkSlGT6WcjmRg=
+X-Google-Smtp-Source: ABdhPJyHykrQ8TnhAPmDsGcpolzw06DzSj/2yyrmUwYINiO9/ojdtg1aIBcVwV198dVMz/HubANxR21K3QmKjksh9+U=
+X-Received: by 2002:a9d:745a:: with SMTP id p26mr27686809otk.206.1608142438759;
+ Wed, 16 Dec 2020 10:13:58 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200623150427.GA2403606@bjorn-Precision-5520>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.63.139.185]
-X-CFilter-Loop: Reflected
+References: <markpearson@lenovo.com> <20201211020630.305905-1-markpearson@lenovo.com>
+ <20201211020630.305905-2-markpearson@lenovo.com>
+In-Reply-To: <20201211020630.305905-2-markpearson@lenovo.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 16 Dec 2020 19:13:47 +0100
+Message-ID: <CAJZ5v0hMnRizowg-FeS0ON9eJOD7ootqdTVyCPFRr6VCz7aS5g@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] ACPI: platform-profile: Add platform profile support
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        Darren Hart <dvhart@infradead.org>, njosh1@lenovo.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020/6/23 23:04, Bjorn Helgaas wrote:
-> On Fri, Jun 19, 2020 at 10:26:54AM +0800, Zhangfei Gao wrote:
->> Have studied _DSM method, two issues we met comparing using quirk.
->>
->> 1. Need change definition of either pci_host_bridge or pci_dev, like adding
->> member can_stall,
->> while pci system does not know stall now.
->>
->> a, pci devices do not have uuid: uuid need be described in dsdt, while pci
->> devices are not defined in dsdt.
->>     so we have to use host bridge.
-> 
-> PCI devices *can* be described in the DSDT.  IIUC these particular
-> devices are hardwired (not plug-in cards), so platform firmware can
-> know about them and could describe them in the DSDT.
-> 
->> b,  Parsing dsdt is in in pci subsystem.
->> Like drivers/acpi/pci_root.c:
->>        obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid,
->> 1,
->>                                 IGNORE_PCI_BOOT_CONFIG_DSM, NULL);
->>
->> After parsing DSM in pci, we need record this info.
->> Currently, can_stall info is recorded in iommu_fwspec,
->> which is allocated in iommu_fwspec_init and called by iort_iommu_configure
->> for uefi.
-> 
-> You can look for a _DSM wherever it is convenient for you.  It could
-> be in an AMBA shim layer.
-> 
->> 2. Guest kernel also need support sva.
->> Using quirk, the guest can boot with sva enabled, since quirk is
->> self-contained by kernel.
->> If using  _DSM, a specific uefi or dtb has to be provided,
->> currently we can useQEMU_EFI.fd from apt install qemu-efi
-> 
-> I don't quite understand what this means, but as I mentioned before, a
-> quirk for a *limited* number of devices is OK, as long as there is a
-> plan that removes the need for a quirk for future devices.
-> 
-> E.g., if the next platform version ships with a DTB or firmware with a
-> _DSM or other mechanism that enables the kernel to discover this
-> information without a kernel change, it's fine to use a quirk to cover
-> the early platform.
-> 
-> The principles are:
-> 
->   - I don't want to have to update a quirk for every new Device ID
->     that needs this.
+On Fri, Dec 11, 2020 at 3:15 AM Mark Pearson <markpearson@lenovo.com> wrote:
+>
+> This is the initial implementation of the platform-profile feature.
+> It provides the details discussed and outlined in the
+> sysfs-platform_profile document.
+>
+> Many modern systems have the ability to modify the operating profile to
+> control aspects like fan speed, temperature and power levels. This
+> module provides a common sysfs interface that platform modules can register
+> against to control their individual profile options.
+>
+> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
 
-Hi Bjorn and Zhangfei,
+[cut]
 
-We plan to use ATS/PRI to support SVA in future PCI devices. However, for
-current devices, we need to add limited number of quirk to let them
-work. The device IDs of current quirk needed devices are ZIP engine(0xa250, 0xa251),
-SEC engine(0xa255, 0xa256), HPRE engine(0xa258, 0xa259), revision id are
-0x21 and 0x30.
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> new file mode 100644
+> index 000000000000..9a1e2abd7602
+> --- /dev/null
+> +++ b/include/linux/platform_profile.h
+> @@ -0,0 +1,39 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Platform profile sysfs interface
+> + *
+> + * See Documentation/ABI/testing/sysfs-platform_profile.rst for more
+> + * information.
+> + */
+> +
+> +#ifndef _PLATFORM_PROFILE_H_
+> +#define _PLATFORM_PROFILE_H_
+> +
+> +#include <linux/bitops.h>
+> +
+> +/*
+> + * If more options are added please update profile_names
+> + * array in platform-profile.c and sysfs-platform-profile.rst
+> + * documentation.
+> + */
+> +
+> +enum platform_profile_option {
+> +       PLATFORM_PROFILE_LOW,
+> +       PLATFORM_PROFILE_COOL,
+> +       PLATFORM_PROFILE_QUIET,
+> +       PLATFORM_PROFILE_BALANCED,
+> +       PLATFORM_PROFILE_PERFORM,
+> +       PLATFORM_PROFILE_LAST, /*must always be last */
+> +};
+> +
+> +struct platform_profile_handler {
+> +       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> +       int (*profile_get)(enum platform_profile_option *profile);
 
-Let's continue to upstream these quirks!
+I'm not sure why this callback is necessary and, provided that there
+is a good enough reason, why it cannot return an enum
+platform_profile_option value.
 
-Best,
-Zhou
+In principle, if ->profile_set() returns 0, the requested profile can
+be saved in a static var and then returned by subsequent "read"
+operations.
 
-> 
->   - I don't really want to have to manage non-PCI information in the
->     struct pci_dev.  If this is AMBA- or IOMMU-related, it should be
->     stored in a structure related to AMBA or the IOMMU.
-> .
-> 
+> +       int (*profile_set)(enum platform_profile_option profile);
+> +};
+> +
+> +int platform_profile_register(const struct platform_profile_handler *pprof);
+> +int platform_profile_remove(void);
+> +void platform_profile_notify(void);
+> +
+> +#endif  /*_PLATFORM_PROFILE_H_*/
+> --
