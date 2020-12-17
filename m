@@ -2,124 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 875932DD404
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 16:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC942DD47F
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 16:45:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726773AbgLQPUx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Dec 2020 10:20:53 -0500
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:37223 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbgLQPUx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 10:20:53 -0500
-Received: by mail-ot1-f51.google.com with SMTP id o11so27600140ote.4;
-        Thu, 17 Dec 2020 07:20:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jSDEFM7dZmRw/OpMRHKYf12NdjPTesgd4CgHpbI7LGg=;
-        b=hleZ05mn7F7uby6eUcNUcZVggVmWNp5arpeLw2pbF7JFj6I+vOuPQlFKjDiZDJZzwC
-         wq5TWbtg/rkB3rD0cK7eTuL++M/eSZGZuNj1BhMZd/YFVldcRLPPj+MBJbrTBRpfPDjJ
-         5gsx9P0WznA4XuipRTaOo0V1mw/yqMNtUacRjNdbv8FwrCJoplSiLCkNmoOhCkS3qvLI
-         93kWTpRLXguESFIB4dD9C42+FarkwN9fEkPea5XXMuuI27/x9pScGvocFq9wC7y2x8oY
-         BzSaHj4RQ8Fl6wxs2iIX3K3qnyHX0PLfjwya2cLoIN8nNUeq8vgBXMOGcd8VOw6h42dI
-         tGfw==
-X-Gm-Message-State: AOAM530i7rrA/wmsO8cF0kbel/LfvLTp3EeXjIRAcAUqcv1qAhw5KnEj
-        mbTKdhWCYV2qCBKDOlSLsBLXTYr3CGSYys3WOF4=
-X-Google-Smtp-Source: ABdhPJwnSTwHLmDwKSjH13YE6MNaQeX5rSDuuL8+LTkBNJ4N1LPnRzrWJuL6K/0/NmuQTROMY10zlXOPOjHkOnMZr2o=
-X-Received: by 2002:a9d:67da:: with SMTP id c26mr30260902otn.321.1608218411887;
- Thu, 17 Dec 2020 07:20:11 -0800 (PST)
+        id S1729126AbgLQPnI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Dec 2020 10:43:08 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2266 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728684AbgLQPnI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 10:43:08 -0500
+Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CxblR0MY3z67QlZ;
+        Thu, 17 Dec 2020 23:39:31 +0800 (CST)
+Received: from lhreml720-chm.china.huawei.com (10.201.108.71) by
+ fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 17 Dec 2020 16:42:25 +0100
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml720-chm.china.huawei.com (10.201.108.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 17 Dec 2020 15:42:24 +0000
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2106.002; Thu, 17 Dec 2020 15:42:24 +0000
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Jon Nettleton <jon@solid-run.com>
+CC:     Steven Price <steven.price@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHWvm1ikW2cGVer1kuw1XacsP3g9qnwQL+AgAY7lgCAADGKgIAAE1CAgAANPCCABLvjgIAAC6dg
+Date:   Thu, 17 Dec 2020 15:42:24 +0000
+Message-ID: <93c22f3c57c042c39871a0fd3a2eaa0e@huawei.com>
+References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
+ <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com>
+ <67cb563d19114f609348dc9f8b4307e9@huawei.com>
+ <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com>
+ <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
+ <3d0a3ae81241474f91748dde0cdd4d39@huawei.com>
+ <CABdtJHvoWCE4Zd5gTf4wbAKtriWRFx6y1CSH0taVxMmEf7tweg@mail.gmail.com>
+In-Reply-To: <CABdtJHvoWCE4Zd5gTf4wbAKtriWRFx6y1CSH0taVxMmEf7tweg@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.52.128.133]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <markpearson@lenovo.com> <20201211020630.305905-1-markpearson@lenovo.com>
- <20201211020630.305905-2-markpearson@lenovo.com> <CAJZ5v0hMnRizowg-FeS0ON9eJOD7ootqdTVyCPFRr6VCz7aS5g@mail.gmail.com>
- <l-Nzteqdz9SbINiwW0w4kFnKwknGoh5DH7VXqvkb23SZPwhvNyna0FRV9z2IZ18T0S9-a4n3LGBR1pMZYKX4FcxNTOma7vIuya66CY_Mkpc=@protonmail.com>
- <CAJZ5v0hHoScy18FE_Aj+zoWpr-vUhGq-vO+8AjO7RxmOvZBYMA@mail.gmail.com>
- <00993237-eb24-6038-3a85-bb76f96f679d@lenovo.com> <CAJZ5v0ji_+BbCrJo=3TB1Cytb8eV-tGE_m6R35UYfwmpUs6MAg@mail.gmail.com>
- <e682cdbd-41fe-065e-5912-d0fb94879dc9@lenovo.com> <CAJZ5v0gMo_22OJvjrufJy6uQsMjh+AT_mYQyFD-LpNzAwhkimA@mail.gmail.com>
- <lz2i0N6rCGcqra4IF0bl9Q0ke6btCg4-uW4fwI4PCnjsfLvhF2hm3SgqjCtUBybLzZTKDMmleu123UylZDfAjZ_jsayppN-X0PnSaaNwK6c=@protonmail.com>
- <CAJZ5v0gzXrft6x03tEtpn492StzSH=8jJbOmS6ncpVRRvscNKg@mail.gmail.com> <aa65eb2a-5b0a-26de-e667-d9c68f2341a5@gmail.com>
-In-Reply-To: <aa65eb2a-5b0a-26de-e667-d9c68f2341a5@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Dec 2020 16:20:00 +0100
-Message-ID: <CAJZ5v0j2Od-WWhJg8pEcn42sY=ifQ6X7xrBQMR9KAh=vc9Q9qQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v6 2/3] ACPI: platform-profile: Add
- platform profile support
-To:     Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Benjamin Berg <bberg@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        "njosh1@lenovo.com" <njosh1@lenovo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 17, 2020 at 4:18 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->
->
->
-> On 12/17/20 4:09 PM, Rafael J. Wysocki wrote:
-> > On Thu, Dec 17, 2020 at 4:02 PM Barnabás Pőcze <pobrn@protonmail.com> wrote:
-> >>
-> >> 2020. december 17., csütörtök 14:36 keltezéssel, Rafael J. Wysocki <rafael@kernel.org> írta:
-> >>
-> >>> [...]
-> >>>>>> My thinking here that I shouldn't make assumptions for future platform
-> >>>>>> implementations - there may be valid cases in the future where being
-> >>>>>> able to return an error condition if there was an error would be useful.
-> >>>>>>
-> >>>>>> Just trying to keep this somewhat future proof. Returning an error
-> >>>>>> condition seemed a useful thing to have available.
-> >>>>>
-> >>>>> You can still return an error while returning a platform_profile_option value.
-> >>>>>
-> >>>>> Just add a special value representing an error to that set.
-> >>>>>
-> >>>> I'd like to understand what is better about that approach than having an
-> >>>> error and a returnable parameter?
-> >>>>
-> >>>> I'm probably missing something obvious but if I add an extra
-> >>>> platform_profile option (e.g PLATFORM_PROFILE_ERROR) to be used in an
-> >>>> error case (and return just an enum platform_profile_option) it seems I
-> >>>> lose the granularity of being able to return a specific error condition.
-> >>>> It doesn't feel like an improvement.
-> >>>
-> >>> And what's the user expected to do about the different error codes
-> >>> that can be returned?
-> >>
-> >> Even assuming the users of the API cannot or will not handle different errors
-> >> differently, who would benefit from getting rid of this information which may be
-> >> an aid in debugging for those who know what they're looking at?
-> >>
-> >> And if a new enum value is introduced to signal an error condition, how is that
-> >> going to be communicated to the users? A magic string like "error" or "-1"?
-> >> Or under a single errno like -EIO?
-> >
-> > Yes.
-> >
-> >> Personally, I believe neither of these two
-> >> solutions are better than returning the actual errno which is deemed most
-> >> appropriate by the platform profile handler. Or am I missing a third way?
-> >
-> > Can we please defer this until we actually have a driver needing to
-> > return different error values from ->get_profile() (and I find it hard
-> > to believe that there will be any drivers like that)?
->
-> I can maybe give an example. On Microsoft Surface devices, the
-> performance mode / platform profile is set via a request to the embedded
-> controller and can be queried the same way. This request can fail (most
-> notably with ETIMEDOUT and EREMOTEIO). I think at least being able to
-> show users an error in this case would be helpful.
-
-OK, fair enough, let's keep it the way it is.
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uIE5ldHRsZXRvbiBb
+bWFpbHRvOmpvbkBzb2xpZC1ydW4uY29tXQ0KPiBTZW50OiAxNyBEZWNlbWJlciAyMDIwIDE0OjQ4
+DQo+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRo
+b2RpQGh1YXdlaS5jb20+DQo+IENjOiBTdGV2ZW4gUHJpY2UgPHN0ZXZlbi5wcmljZUBhcm0uY29t
+PjsgUm9iaW4gTXVycGh5DQo+IDxyb2Jpbi5tdXJwaHlAYXJtLmNvbT47IGxpbnV4LWFybS1rZXJu
+ZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsNCj4gbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGlv
+bW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnOw0KPiBkZXZlbEBhY3BpY2Eub3JnOyBsb3Jl
+bnpvLnBpZXJhbGlzaUBhcm0uY29tOyBqb3JvQDhieXRlcy5vcmc7IEd1b2hhbmp1bg0KPiAoSGFu
+anVuIEd1bykgPGd1b2hhbmp1bkBodWF3ZWkuY29tPjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdl
+aS5jb20+Ow0KPiBKb25hdGhhbiBDYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+
+Ow0KPiBTYW1pLk11amF3YXJAYXJtLmNvbTsgd2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVh
+d2VpLmNvbT4NCj4gU3ViamVjdDogUmU6IFtSRkMgUEFUQ0ggdjIgMC84XSBBQ1BJL0lPUlQ6IFN1
+cHBvcnQgZm9yIElPUlQgUk1SIG5vZGUNCj4gDQo+IE9uIE1vbiwgRGVjIDE0LCAyMDIwIGF0IDM6
+NDggUE0gU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50
+aG9kaUBodWF3ZWkuY29tPiB3cm90ZToNCj4gPg0KPiA+DQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2lu
+YWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBTdGV2ZW4gUHJpY2UgW21haWx0bzpzdGV2ZW4u
+cHJpY2VAYXJtLmNvbV0NCj4gPiA+IFNlbnQ6IDE0IERlY2VtYmVyIDIwMjAgMTM6NDMNCj4gPiA+
+IFRvOiBSb2JpbiBNdXJwaHkgPHJvYmluLm11cnBoeUBhcm0uY29tPjsgU2hhbWVlcmFsaSBLb2xv
+dGh1bSBUaG9kaQ0KPiA+ID4gPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT47
+DQo+ID4gPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4LWFjcGlA
+dmdlci5rZXJuZWwub3JnOw0KPiA+ID4gaW9tbXVAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmc7
+IGRldmVsQGFjcGljYS5vcmcNCj4gPiA+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNv
+bT47IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207DQo+ID4gPiBqb3JvQDhieXRlcy5vcmc7IHdh
+bmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+OyBHdW9oYW5qdW4NCj4gPiA+IChI
+YW5qdW4gR3VvKSA8Z3VvaGFuanVuQGh1YXdlaS5jb20+OyBKb25hdGhhbiBDYW1lcm9uDQo+ID4g
+PiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgU2FtaS5NdWphd2FyQGFybS5jb20NCj4g
+PiA+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIHYyIDAvOF0gQUNQSS9JT1JUOiBTdXBwb3J0IGZv
+ciBJT1JUIFJNUiBub2RlDQo+ID4gPg0KPiA+ID4gT24gMTQvMTIvMjAyMCAxMjozMywgUm9iaW4g
+TXVycGh5IHdyb3RlOg0KPiA+ID4gPiBPbiAyMDIwLTEyLTE0IDEwOjU1LCBTaGFtZWVyYWxpIEtv
+bG90aHVtIFRob2RpIHdyb3RlOg0KPiA+ID4gPj4gSGkgU3RldmUsDQo+ID4gPiA+Pg0KPiA+ID4g
+Pj4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+Pj4gRnJvbTogU3RldmVuIFBy
+aWNlIFttYWlsdG86c3RldmVuLnByaWNlQGFybS5jb21dDQo+ID4gPiA+Pj4gU2VudDogMTAgRGVj
+ZW1iZXIgMjAyMCAxMDoyNg0KPiA+ID4gPj4+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2Rp
+DQo+ID4gPiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsNCj4gPiA+ID4+
+PiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4LWFjcGlAdmdlci5r
+ZXJuZWwub3JnOw0KPiA+ID4gPj4+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnOyBk
+ZXZlbEBhY3BpY2Eub3JnDQo+ID4gPiA+Pj4gQ2M6IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWku
+Y29tPjsgbG9yZW56by5waWVyYWxpc2lAYXJtLmNvbTsNCj4gPiA+ID4+PiBqb3JvQDhieXRlcy5v
+cmc7IHJvYmluLm11cnBoeUBhcm0uY29tOyB3YW5naHVpcWlhbmcNCj4gPiA+ID4+PiA8d2FuZ2h1
+aXFpYW5nQGh1YXdlaS5jb20+OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pDQo+ID4gPiA+Pj4gPGd1
+b2hhbmp1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA+ID4gPj4+IDxqb25hdGhh
+bi5jYW1lcm9uQGh1YXdlaS5jb20+OyBTYW1pLk11amF3YXJAYXJtLmNvbQ0KPiA+ID4gPj4+IFN1
+YmplY3Q6IFJlOiBbUkZDIFBBVENIIHYyIDAvOF0gQUNQSS9JT1JUOiBTdXBwb3J0IGZvciBJT1JU
+IFJNUiBub2RlDQo+ID4gPiA+Pj4NCj4gPiA+ID4+PiBPbiAxOS8xMS8yMDIwIDEyOjExLCBTaGFt
+ZWVyIEtvbG90aHVtIHdyb3RlOg0KPiA+ID4gPj4+PiBSRkMgdjEgLS0+IHYyOg0KPiA+ID4gPj4+
+PiAgICAtIEFkZGVkIGEgZ2VuZXJpYyBpbnRlcmZhY2UgZm9yIElPTU1VIGRyaXZlcnMgdG8gcmV0
+cmlldmUgYWxsIHRoZQ0KPiA+ID4gPj4+PiAgICAgIFJNUiBpbmZvIGFzc29jaWF0ZWQgd2l0aCBh
+IGdpdmVuIElPTU1VLg0KPiA+ID4gPj4+PiAgICAtIFNNTVV2MyBkcml2ZXIgZ2V0cyB0aGUgUk1S
+IGxpc3QgZHVyaW5nIHByb2JlKCkgYW5kIGluc3RhbGxzDQo+ID4gPiA+Pj4+ICAgICAgYnlwYXNz
+IFNURXMgZm9yIGFsbCB0aGUgU0lEcyBpbiB0aGUgUk1SIGxpc3QuIFRoaXMgaXMgdG8ga2VlcA0K
+PiA+ID4gPj4+PiAgICAgIHRoZSBvbmdvaW5nIHRyYWZmaWMgYWxpdmUoaWYgYW55KSBkdXJpbmcg
+U01NVXYzIHJlc2V0LiBUaGlzIGlzDQo+ID4gPiA+Pj4+ICAgICAgYmFzZWQgb24gdGhlIHN1Z2dl
+c3Rpb25zIHJlY2VpdmVkIGZvciB2MSB0byB0YWtlIGNhcmUgb2YgdGhlDQo+ID4gPiA+Pj4+ICAg
+ICAgRUZJIGZyYW1lYnVmZmVyIHVzZSBjYXNlLiBPbmx5IHNhbml0eSB0ZXN0ZWQgZm9yIG5vdy4N
+Cj4gPiA+ID4+Pg0KPiA+ID4gPj4+IEhpIFNoYW1lZXIsDQo+ID4gPiA+Pj4NCj4gPiA+ID4+PiBT
+b3JyeSBmb3Igbm90IGxvb2tpbmcgYXQgdGhpcyBiZWZvcmUuDQo+ID4gPiA+Pj4NCj4gPiA+ID4+
+PiBEbyB5b3UgaGF2ZSBhbnkgcGxhbnMgdG8gaW1wbGVtZW50IHN1cHBvcnQgaW4gdGhlIFNNTVV2
+MiBkcml2ZXI/DQo+IFRoZQ0KPiA+ID4gPj4+IHBsYXRmb3JtIEkndmUgYmVlbiB0ZXN0aW5nIHRo
+ZSBFRkkgZnJhbWVidWZmZXIgc3VwcG9ydCBvbiBoYXMgdGhlDQo+ID4gPiA+Pj4gZGlzcGxheSBj
+b250cm9sbGVyIGJlaGluZCBTTU1VdjIsIHNvIGFzIGl0IHN0YW5kcyB0aGlzIHNlcmllcyBkb2Vz
+bid0DQo+ID4gPiA+Pj4gd29yay4gSSBkaWQgaGFjayBzb21ldGhpbmcgdXAgZm9yIFNNTVV2MiBz
+byBJIHdhcyBhYmxlIHRvIHRlc3QgdGhlDQo+IGZpcnN0DQo+ID4gPiA+Pj4gNCBwYXRjaGVzLg0K
+PiA+ID4gPj4NCj4gPiA+ID4+IFRoYW5rcyBmb3IgdGFraW5nIGEgbG9vay4gU3VyZSwgSSBjYW4g
+bG9vayBpbnRvIGFkZGluZyB0aGUgc3VwcG9ydCBmb3INCj4gPiA+ID4+IFNNTVV2Mi4NCj4gPiA+
+DQo+ID4gPiBHcmVhdCwgdGhhbmtzIQ0KPiA+ID4NCj4gPiA+ID4+Pg0KPiA+ID4gPj4+PiAgICAt
+IER1cmluZyB0aGUgcHJvYmUvYXR0YWNoIGRldmljZSwgU01NVXYzIGRyaXZlciByZXNlcnZlcyBh
+bnkNCj4gPiA+ID4+Pj4gICAgICBSTVIgcmVnaW9uIGFzc29jaWF0ZWQgd2l0aCB0aGUgZGV2aWNl
+IHN1Y2ggdGhhdCB0aGVyZSBpcyBhDQo+IHVuaXR5DQo+ID4gPiA+Pj4+ICAgICAgbWFwcGluZyBm
+b3IgdGhlbSBpbiBTTU1VLg0KPiA+ID4gPj4+DQo+ID4gPiA+Pj4gRm9yIHRoZSBFRkkgZnJhbWVi
+dWZmZXIgdXNlIGNhc2UgdGhlcmUgaXMgbm8gZGV2aWNlIHRvIGF0dGFjaCBzbyBJDQo+ID4gPiA+
+Pj4gYmVsaWV2ZSB3ZSBhcmUgbGVmdCB3aXRoIGp1c3QgdGhlIHN0cmVhbSBJRCBpbiBieXBhc3Mg
+bW9kZSAtIHdoaWNoIGlzDQo+ID4gPiA+Pj4gZGVmaW5pdGVseSBhbiBpbXByb3ZlbWVudCAodGhl
+IGRpc3BsYXkgd29ya3MhKQ0KPiA+ID4gPj4NCj4gPiA+ID4+IENvb2wuIFRoYXTigJlzIGdvb2Qg
+dG8ga25vdy4NCj4gPiA+ID4+DQo+ID4gPiA+PiAgIGJ1dCBub3QgYWN0dWFsbHkgYSB1bml0eQ0K
+PiA+ID4gPj4+IG1hcHBpbmcgb2YgdGhlIFJNUiByYW5nZS4gSSdtIG5vdCBzdXJlIHdoZXRoZXIg
+aXQncyB3b3J0aCBmaXhpbmcgdGhpcw0KPiBvcg0KPiA+ID4gPj4+IG5vdCwgYnV0IEkganVzdCB3
+YW50ZWQgdG8gcG9pbnQgb3V0IHRoZXJlJ3Mgc3RpbGwgYSBuZWVkIGZvciBhIGRyaXZlcg0KPiA+
+ID4gPj4+IGZvciB0aGUgZGV2aWNlIGJlZm9yZSB0aGUgYnlwYXNzIG1vZGUgaXMgcmVwbGFjZWQg
+d2l0aCB0aGUgdW5pdHkNCj4gPiA+ID4+PiBtYXBwaW5nLg0KPiA+ID4gPj4NCj4gPiA+ID4+IEkg
+YW0gbm90IHN1cmUgZWl0aGVyLiBNeSBpZGVhIHdhcyB3ZSB3aWxsIGhhdmUgYnlwYXNzIFNURSBz
+ZXR1cCBmb3INCj4gPiA+ID4+IGFsbCBkZXZpY2VzDQo+ID4gPiA+PiB3aXRoIFJNUiBpbml0aWFs
+bHkgYW5kIHdoZW4gdGhlIGNvcnJlc3BvbmRpbmcgZHJpdmVyIHRha2VzIG92ZXIoaWYNCj4gPiA+
+ID4+IHRoYXQgaGFwcGVucykNCj4gPiA+ID4+IHdlIHdpbGwgaGF2ZSB0aGUgdW5pdHkgbWFwcGlu
+ZyBzZXR1cCBwcm9wZXJseSBmb3IgdGhlIFJNUiByZWdpb25zLiBBbmQNCj4gPiA+ID4+IGZvciBj
+YXNlcw0KPiA+ID4gPj4gbGlrZSB0aGUgYWJvdmUsIGl0IHdpbGwgcmVtYWluIGluIHRoZSBieXBh
+c3MgbW9kZS4NCj4gPiA+ID4+DQo+ID4gPiA+PiBEbyB5b3Ugc2VlIGFueSBwcm9ibGVtKHNlY3Vy
+aXR5PykgaWYgdGhlIGRldiBzdHJlYW1zIHJlbWFpbiBpbiBieXBhc3MNCj4gPiA+ID4+IG1vZGUg
+Zm9yDQo+ID4gPiA+PiB0aGlzIGRldj8gT3IgaXMgaXQgcG9zc2libGUgdG8gaGF2ZSBhIHN0dWIg
+ZHJpdmVyIGZvciB0aGlzIGRldiwgc28NCj4gPiA+ID4+IHRoYXQgd2Ugd2lsbCBoYXZlDQo+ID4g
+PiA+PiB0aGUgcHJvYmUvYXR0YWNoIGludm9rZWQgYW5kIGV2ZXJ5dGhpbmcgd2lsbCBmYWxsIGlu
+IHBsYWNlPw0KPiA+ID4gPg0KPiA+ID4gPiBUaGUgZG93bnNpZGUgaXMgdGhhdCBpZiBhIGRyaXZl
+ciBuZXZlciBiaW5kcyB0byB0aGF0IGRldmljZSwgaXQgcmVtYWlucw0KPiA+ID4gPiBieXBhc3Nl
+ZC4gSWYgc29tZSBvdGhlciBleHRlcm5hbGx5LWNvbnRyb2xsZWQgbWFsaWNpb3VzIGRldmljZSBj
+b3VsZA0KPiA+ID4gPiBtYW5hZ2UgdG8gc3Bvb2YgdGhhdCBkZXZpY2UncyByZXF1ZXN0ZXIgSUQs
+IHRoYXQgY291bGQgcG90ZW50aWFsbHkgYmUNCj4gPiA+ID4gZXhwbG9pdGVkLg0KPiA+ID4gPg0K
+PiA+ID4gPj4gVEJILCBJIGhhdmVuJ3QgbG9va2VkIGludG8gY3JlYXRpbmcgYSB0ZW1wIGRvbWFp
+biBmb3IgdGhlc2UgdHlwZXMgb2YNCj4gPiA+ID4+IHRoZSBkZXZpY2VzDQo+ID4gPiA+PiBhbmQg
+YWxzbyBub3Qgc3VyZSBob3cgd2UgYmVuZWZpdCBmcm9tIHRoYXQgY29tcGFyZWQgdG8gdGhlIFNU
+RSBieXBhc3MNCj4gPiA+ID4+IG1vZGUuDQo+ID4gPiA+DQo+ID4gPiA+IFRoYXQgc2FpZCwgc2V0
+dGluZyB1cCB0ZW1wb3JhcnkgdHJhbnNsYXRpb24gY29udGV4dHMgdGhhdCBlbnN1cmUgYW55DQo+
+ID4gPiA+IGFjY2VzcyBjYW4gKm9ubHkqIGJlIHRvIFJNUiByZWdpb25zIHVudGlsIGEgZHJpdmVy
+IHRha2VzIG92ZXIgaXMgYW4NCj4gPiA+ID4gYXdmdWwgbG90IG1vcmUgd29yay4gSSdtIGluY2xp
+bmVkIHRvIGJlIHByYWdtYXRpYyBoZXJlIGFuZCBzYXkgd2Ugc2hvdWxkDQo+ID4gPiA+IGdldCB0
+aGluZ3Mgd29ya2luZyBhdCBhbGwgd2l0aCB0aGUgc2ltcGxlIGJ5cGFzcyBTVEUvUzJDUiBtZXRo
+b2QsIHRoZW4NCj4gPiA+ID4gbG9vayBhdCBhZGRpbmcgdGhlIGhpZ2hlci1zZWN1cml0eSBlZmZv
+cnQgb24gdG9wLg0KPiA+ID4gPg0KPiA+ID4gPiBSaWdodCBub3cgc3lzdGVtcyB0aGF0IG5lZWQg
+dGhpcyBhcmUgZWl0aGVyIGJyb2tlbiAoYnV0IGVmZmVjdGl2ZWx5DQo+ID4gPiA+IHNlY3VyZSkg
+b3IgdXNpbmcgZGVmYXVsdCBieXBhc3Mgd2l0aCBTTU1VdjIuIFBlb3BsZSB3aG8gcHJlZmVyIHRv
+DQo+ID4gPiA+IG1haW50YWluIHNlY3VyaXR5IG92ZXIgZnVuY3Rpb25hbGl0eSBpbiB0aGUgaW50
+ZXJpbSBjYW4gbWFpbnRhaW4gdGhhdA0KPiA+ID4gPiBzdGF0dXMgcXVvIGJ5IHNpbXBseSBjb250
+aW51aW5nIHRvIG5vdCBkZXNjcmliZSBhbnkgUk1Scy4NCj4gPiA+DQo+ID4gPiBJIGFncmVlIHdp
+dGggUm9iaW4sIGxldCdzIGdldCB0aGlzIHdvcmtpbmcgd2l0aCB0aGUgYnlwYXNzIG1vZGUgKHVu
+dGlsDQo+ID4gPiB0aGUgZGV2aWNlIGJpbmRzKSBsaWtlIHlvdSd2ZSBjdXJyZW50bHkgZ290LiBJ
+dCdzIG11Y2ggYmV0dGVyIHRoYW4gd2hhdA0KPiA+ID4gd2UgaGF2ZSBvdGhlcndpc2UuIFRoZW4g
+b25jZSB0aGF0IGlzIG1lcmdlZCB3ZSBjYW4gbG9vayBhdCB0aGUgdGVtcG9yYXJ5DQo+ID4gPiB0
+cmFuc2xhdGlvbiBjb250ZXh0IG9yIHN0dWIgZHJpdmVyLiBUaGUgdGVtcG9yYXJ5IHRyYW5zbGF0
+aW9uIGNvbnRleHQNCj4gPiA+IHdvdWxkIGJlICduZWF0ZXN0JywgYnV0IEknbSBvbmx5IGF3YXJl
+IG9mIHRoZSBFRkkgZnJhbWVidWZmZXIgdXNlIGNhc2UNCj4gPiA+IGFuZCBmb3IgdGhhdCBpdCBt
+aWdodCBiZSBwb3NzaWJsZSB0byBkbyBzb21ldGhpbmcgc2ltcGxlciAtIGlmIGluZGVlZA0KPiA+
+ID4gYW55dGhpbmcgaXMgbmVlZGVkIGF0IGFsbC4gSSdtIG5vdCBzdXJlIGhvdyBtdWNoIHdlIG5l
+ZWQgdG8gYmUgd29ycmllZA0KPiA+ID4gYWJvdXQgbWFsaWNpb3VzIGRldmljZXMgc3Bvb2Zpbmcg
+cmVxdWVzdGVyIElEcy4NCj4gPg0KPiA+IFBlcmZlY3QuIEkgd2lsbCBrZWVwIHRoZSBTVEUgYnlw
+YXNzIGFuZCByZXNwaW4gdGhlIHNlcmllcyBvbmNlIHRoZSB1cGRhdGUNCj4gPiB0byB0aGUgSU9S
+VCByZXYgRSBpcyBtYWRlIHB1YmxpYyhob3BlIHRoYXQgd2lsbCBoYXBwZW4gc29vbikuIEluIHRo
+ZQ0KPiA+IG1lYW50aW1lLCBhcHByZWNpYXRlIGFueSBmZWVkYmFjayBvbiB0aGUgcmVzdCBvZiB0
+aGUgcGF0Y2hlcyBpbiB0aGlzIHNlcmllcy4NCj4gDQo+IFNoYW1lZXIsDQoNCkhpIEpvbiwNCg0K
+PiANCj4gSSBhbSBwcmV0dHkgc3VyZSByZXYgRSBpcyBhbHJlYWR5IHB1YmxpYy4gIFlvdSBjYW4g
+ZmluZCBpdCBoZXJlLg0KPiANCj4gaHR0cHM6Ly9kZXZlbG9wZXIuYXJtLmNvbS9kb2N1bWVudGF0
+aW9uL2RlbjAwNDkvbGF0ZXN0Lw0KPiANCj4gSXQgaXMgYWxzbyBtYXJrZWQgbm9uLWNvbmZpZGVu
+dGlhbC4NCg0KWWVzLCBSZXYgRSBpcyBhbHJlYWR5IG91dCB0aGVyZS4gQnV0IEkgYW0gdG9sZCB0
+aGF0IEFSTSBmb2xrcyBhcmUgd29ya2luZyBvbg0Kc29tZSB1cGRhdGVzIHRvIHRoZSBJT1JUIHNw
+ZWMsIGVzcGVjaWFsbHkgYXJvdW5kIHRoZSBSTVIgdG9waWMuIEhvcGVmdWxseQ0KaXQgd2lsbCBi
+ZSBvdXQgc29vbi4NCiANCj4gDQo+IEkgYWxzbyBoYXZlIGluaXRpYWwgcGF0Y2hlcyBmb3IgZWRr
+MiBhbmQgdGhlIEhvbmV5Q29tYiBMWDIxNjBhDQo+IEFDUEkgdGFibGVzIGFkZGluZyBSTVIgbm9k
+ZXMgdGhhdCBwYXJ0aWFsbHkgd29yayB3aXRoIHlvdXIgcGF0Y2hlcy4NCg0KVGhhbmtzIGZvciB0
+aGUgdXBkYXRlIGFuZCBnb29kIHRvIGtub3cgdGhhdCBpdCBpcyB1c2VmdWwuDQoNClNoYW1lZXIN
+Cg0KPiBUaGlzIGlzIHdpdGggYmFzaWMgU01NVXYyIHN1cHBvcnQgYnV0IHNpbmNlIHlvdSBoYXZl
+IG1vcmUgZXhwZXJpZW5jZQ0KPiB0aGlzIHRoaXMgSSBhbSBtb3JlIHRoYW4gaGFwcHkgdG8gd29y
+ayB3aXRoIHlvdSBvbiB5b3VyIHBhdGNoc2V0Lg0KPiANCj4gLUpvbg0KPiANCj4gDQo+ID4NCj4g
+PiBUaGFua3MsDQo+ID4gU2hhbWVlcg0KPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fDQo+ID4gbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QNCj4g
+PiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gPiBodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwNCg==
