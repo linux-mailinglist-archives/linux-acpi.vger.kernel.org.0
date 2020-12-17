@@ -2,148 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51B392DCC7B
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 07:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E292DCCFE
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 08:33:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbgLQG3d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Dec 2020 01:29:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47134 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726711AbgLQG3a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 01:29:30 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A22C0617B0
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Dec 2020 22:28:50 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id d26so12163854wrb.12
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Dec 2020 22:28:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Uw0qn01yEipuE4KQo4q/I//7O4Z5qhvsoEs4F9itwqk=;
-        b=VJEC/6EOmgFyFKHDv7NxjcSOxbitydIzcOYkIbzqE+DlWxlizfKe5e4ZWTxitA4pjT
-         mhyCgnuIZY28r45HXehI6gk/xqbL/nLipe38jbK+hHwshuM6wGD6doQ23fitAES7Y5Mg
-         +uicIE+cJAxcIMPlsG5WUAJ03mL780xvp1pTP6Q33zNwdrx77qbWEU0He2TjGA7gKTVw
-         /HMert+f/4zgGvMT69ibNddye0lPOzhef285rGCmDr8cs4DUsHPuQPbar0T6fdME2unT
-         AIssadyUx9iBEXc/LO7rTLciI+N6En2ddm7nw8LX1UYM/hPBLjdftjzfZDmkAKX0F3G7
-         qu3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Uw0qn01yEipuE4KQo4q/I//7O4Z5qhvsoEs4F9itwqk=;
-        b=nHMzQC6Bd24nOv16W+d/AFLyFtVUXJuubFavElRpxUjUrvpMQ0JrfHO+4Sw8TtZ66i
-         K92g4C1Ig8PO9e6zHJbWVLpJ2c0b9aLMCTdT+sL7yEWoxivoLbBXiKvU4dAJNIKgPdSx
-         JrwfUBHJq+nWHNaxudN9J9xLdD+4w9X2/RstmJ+A5zajNrR8lvWjoxeHmFMVZY/ZIwzl
-         vM2gCcTEpVb9eBk08cvMNeEjn7WsI95dxSaGTvwA1VhNnMLNixXVENoN98mUFbS1tI93
-         sJeEhbDDjHot5tbIXrn6dHuUX58dt/7UVUKsggf3/ATPXh1zxeL4hGVbZRh6SC4JfXrp
-         q8Eg==
-X-Gm-Message-State: AOAM531prmIb0ijs0Z3mGyOs1253zdPkh+yO/8W/TTvdPP/KZMvpn/kZ
-        dLbHy+lt3AXyrRVtpPu8UGd5iO+fzW117Q==
-X-Google-Smtp-Source: ABdhPJyunrsUCrTcQ8XdR1MnBNLU7dkhvUJngbHOgEo/eLy44Cv0qPXsVg4Nn9LpC9RRWGWk25BnHg==
-X-Received: by 2002:a5d:4683:: with SMTP id u3mr42264872wrq.19.1608186528506;
-        Wed, 16 Dec 2020 22:28:48 -0800 (PST)
-Received: from ?IPv6:2a01:e34:ed2f:f020:601a:58a2:ee98:f8a1? ([2a01:e34:ed2f:f020:601a:58a2:ee98:f8a1])
-        by smtp.googlemail.com with ESMTPSA id w3sm6634432wma.3.2020.12.16.22.28.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Dec 2020 22:28:47 -0800 (PST)
-Subject: Re: [PATCH 3/5] thermal/drivers/acpi: Use hot and critical ops
-To:     rui.zhang@intel.com
-Cc:     kai.heng.feng@canonical.com, lukasz.luba@arm.com,
-        srinivas.pandruvada@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>
-References: <20201210121514.25760-1-daniel.lezcano@linaro.org>
- <20201210121514.25760-3-daniel.lezcano@linaro.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <c20d9077-66e8-f947-6422-c48e2f679cc5@linaro.org>
-Date:   Thu, 17 Dec 2020 07:28:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726012AbgLQHdh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Dec 2020 02:33:37 -0500
+Received: from mail-am6eur05on2081.outbound.protection.outlook.com ([40.107.22.81]:59872
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726160AbgLQHdg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Dec 2020 02:33:36 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DB8eMc5GytVXw+D7U7ik/hs6cYaimtVxFpZ+OUdqbMrWm6zLbPLVULPLGN1Oyd5xBfJS0BkIbg9qYTudI02/AjtLc3nRLfOWhBekWOuZAY8Uz/mlAPYdEFIA1YAX019bwlq16o5ZbmIBmi7TfD4qiU+aZUuEpKLCWs1p5eFEB/ANiGh2zDr4PkMz3C25NgYdiJgRxKslrsJpv4w0lOrBp3bRAfHhp3XkwM3J1rATFyoaywmZDWNRrOxXSuvc12lWaJ4Jk9NTp9+eUEpztftnxZ5M/8+V13MLgeRCozFOFBxUI++2PtrYIqboNIUwSUTIoKXKRJA9OA+vdOZJ+mo9vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mWpAU/+WXNlz/jrvbt/ZnViJTvSzHmSrq8Bdojbsahw=;
+ b=CsG5t0cixuhBhdDwh8cUXy6GAoRCuJ6CCl0mrSf6SktFBtO3A2lqPU6Xfghbr2lqp4+wz6SDBgO1RBi6+dct7HC5d7vE9RE7dkCB66pu3bJvgYRDeZJ0j0kpQe2KS17VFygxa2JADeYqvTmhYgrKbSj/Orcx1JxelZfgptEPmwfMUyLvBF2NhkwwSlZHuNF75+cOUBwWiDidlfqEGKQB7zJkvntb+h4yvn4bS+Q/Cn8d4bI12GWZ4U5/vMcNwnXfylfnIS06cwi7keOz7S7b7ic56/O1g8zeHw1LUkfODLWoSBOTOZYsvINXd0I9QWebiVjdBbPtrB1CCfIVIz//4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mWpAU/+WXNlz/jrvbt/ZnViJTvSzHmSrq8Bdojbsahw=;
+ b=eRBs2Mtdohz3ywnRR9guhR2ztY5V8hwOaWB4L8tJPX9CuCTM+ERwcXMMa5m3cjoWdpuQ3OjxPo8dKS16s3POjg0+R9NZu0kISefCAjH0M+Nh9LbS5ysKw7aQhCoSfYDYPrC2d/3Ft1yPEd5fTBEUF0uVzezfoOBrljw5+MYGjIk=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB5025.eurprd04.prod.outlook.com (2603:10a6:208:cd::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12; Thu, 17 Dec
+ 2020 07:32:45 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a891:518d:935c:30dd]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a891:518d:935c:30dd%6]) with mapi id 15.20.3654.020; Thu, 17 Dec 2020
+ 07:32:44 +0000
+Date:   Thu, 17 Dec 2020 13:02:24 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, "linux.cj" <linux.cj@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [net-next PATCH v2 02/14] net: phy: Introduce phy related fwnode
+ functions
+Message-ID: <20201217073224.GA19657@lsv03152.swis.in-blr01.nxp.com>
+References: <20201215164315.3666-1-calvin.johnson@oss.nxp.com>
+ <20201215164315.3666-3-calvin.johnson@oss.nxp.com>
+ <CAHp75VeJc6jXAi9LV84+-paH+8Xx7+-6vtfSe+G5eoFn2VRErg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VeJc6jXAi9LV84+-paH+8Xx7+-6vtfSe+G5eoFn2VRErg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [14.142.151.118]
+X-ClientProxiedBy: SG2PR01CA0127.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:40::31) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <20201210121514.25760-3-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR01CA0127.apcprd01.prod.exchangelabs.com (2603:1096:4:40::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend Transport; Thu, 17 Dec 2020 07:32:38 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 983117a0-4539-4800-4c3f-08d8a25df213
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5025:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB50257D8118AF89A6FEA18F05D2C40@AM0PR04MB5025.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: YRCMp5hC2vEJGKns4zAbquf2THBTcG/B9kbpkoTEft4P/myz8HRwEbDRBmKOe1WPJ8XzvTHpVthaZSjCyGqxlWOAYhaXFaEpDWiVx88ZMrMX55DrGvHQHBuSx5PZA9j+5nwbjHofXJJNFQ+BlYo2mpwxKyMzNdITw+ZU6GYvOgTcr/TMDNxhaGsH3SR3LzCsL8HpXWELbD5RJHELR6A0F8RbQVKqTlhAb8KZEW6FDYBt3tdSLeMBHbV7+qJstHnLNFeo8b09uleAg5FR0yjDxJDBWjFqekC3kkxvup0K/wbr0XgON7NIGPcZCEdLjlmiZ5M4zpXUmQTMQ7bbVRIVnK3Ea631Fr0i+hrzOflYnpmcKCQw+6yJpC+kNTTrH0MAJuKThKvzmWHWoRqwjkpxi3o9XzEowELEKwxjidghzuLtiVHQ3ev0vCuMpM6zzbQCP+44NxzxOYMwweJtTNliBQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(136003)(346002)(366004)(39860400002)(1076003)(55016002)(2906002)(6666004)(16526019)(956004)(66946007)(66476007)(86362001)(7416002)(8676002)(316002)(66556008)(44832011)(6916009)(9686003)(1006002)(83380400001)(7696005)(54906003)(4326008)(966005)(52116002)(5660300002)(26005)(55236004)(8936002)(186003)(6506007)(53546011)(33656002)(478600001)(110426006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?8unNBxUfshPeY1K0TqHF0MQrDUx1T8CTbumMvrLA9XU7vAjgy6Tg5YHnryjb?=
+ =?us-ascii?Q?ZJPFlxAeCGlJ+I3vEjP59UeNC7QlKJaI8/OkNF4lX781SiWlzxEd88dVjYC/?=
+ =?us-ascii?Q?lHjnewsTQJgUToY45+GMXhTYazTTi64LS1WGn/2+CDG1plLFaXE9uMtbd5vX?=
+ =?us-ascii?Q?3ur+uekv9BSri64adai7Jh+cf7yiUkoE3y5sPtt3Fy5J0Yh9MCcujB5lSGoG?=
+ =?us-ascii?Q?BOyUiAWiguMOXBGvXifC9Ys6vC/600UGk+uFjfIytnb5Okeb8WLGBtzDIntd?=
+ =?us-ascii?Q?sF6twH6s1LFloKu42oOayF9k4qgUpAVzVnrYmSlxkoIm3FoCk06ZYw1OcZUk?=
+ =?us-ascii?Q?M7lDn4LySBfZ7JB+uDJlh0e+gdTSlO2rRRG8dEgXWS6ME4HIA25qsZ4Pkqo4?=
+ =?us-ascii?Q?/csJ70u+22H7MzOEAkCK7upQYgMTROrPFg8Nr+I2mV1sFsh4jtQyVH8Xphda?=
+ =?us-ascii?Q?6PkS1vST2I4rKZGziEfYFBrNmba56oHggNCGh7UPvzDtsXcFEGqtS7GOBJEx?=
+ =?us-ascii?Q?i6wS0DNMy+RvqL5G2n0ZyQqIYQsRUBeiLEJi/q2Vcz2CQWWqQkchxEYLzlym?=
+ =?us-ascii?Q?UdFuLXgHpyYgPVKv/KwKHjt7gdoEKthNi/B+xU+LGQLtRQM8ctrbQAvIfOwa?=
+ =?us-ascii?Q?RQ0aMAwVxfEfBgVk9XcUbzYsPSo9hEHou5C89DatZwCkvABR7Merpw1wp3Ii?=
+ =?us-ascii?Q?TYHS//qp/ozplK7GAXjjPtLy5/MegqWjhds3N6/FP4TrlmGZWFeki9suDERY?=
+ =?us-ascii?Q?b4NuyRpYzabUKjmuqTuGruFtTQocSIghX3SVD7Z3rWkd145joROPiaiZYzgF?=
+ =?us-ascii?Q?hLABKSpHqCmyMDdtt0T6iXlUdzIRI6IHxgviVGFJJ5FcMLTOgwIubs1pa7/m?=
+ =?us-ascii?Q?oMsEmFp1OVSALnRc6xxp3PfE3lv/9KVm4oKjL6kGJDDm1d+9FBIWaEXmgC0h?=
+ =?us-ascii?Q?V8r58vcEHMbWUQnb2SFworwu2go9jIIgOPeI44RoN3KsSD4Ce5NbIZMWyH3T?=
+ =?us-ascii?Q?nFGe?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2020 07:32:44.8345
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Network-Message-Id: 983117a0-4539-4800-4c3f-08d8a25df213
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QoGg5PquZATkEfP6dgii4+x+9u9h4ZlRGA1tcLpWFwm+oMM6SbsaDXlOh6qkdJO97VygVFSnY8111xG6nAiBJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5025
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/12/2020 13:15, Daniel Lezcano wrote:
-> The acpi driver wants to do a netlink notification in case of a hot or
-> critical trip point. Implement the corresponding ops to be used for
-> the thermal zone and use them instead of the notify ops.
+On Tue, Dec 15, 2020 at 07:23:26PM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 15, 2020 at 6:44 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Define fwnode_phy_find_device() to iterate an mdiobus and find the
+> > phy device of the provided phy fwnode. Additionally define
+> > device_phy_find_device() to find phy device of provided device.
+> >
+> > Define fwnode_get_phy_node() to get phy_node using named reference.
 > 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
-Is there any comment on this patch ?
-
-> ---
->  drivers/acpi/thermal.c | 30 ++++++++++++++----------------
->  1 file changed, 14 insertions(+), 16 deletions(-)
+> ...
 > 
-> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> index 12c0ece746f0..b5e4bc9e3282 100644
-> --- a/drivers/acpi/thermal.c
-> +++ b/drivers/acpi/thermal.c
-> @@ -677,27 +677,24 @@ static int thermal_get_trend(struct thermal_zone_device *thermal,
->  	return 0;
->  }
->  
-> -
-> -static int thermal_notify(struct thermal_zone_device *thermal, int trip,
-> -			   enum thermal_trip_type trip_type)
-> +static void acpi_thermal_zone_device_hot(struct thermal_zone_device *thermal)
->  {
-> -	u8 type = 0;
->  	struct acpi_thermal *tz = thermal->devdata;
->  
-> -	if (trip_type == THERMAL_TRIP_CRITICAL)
-> -		type = ACPI_THERMAL_NOTIFY_CRITICAL;
-> -	else if (trip_type == THERMAL_TRIP_HOT)
-> -		type = ACPI_THERMAL_NOTIFY_HOT;
-> -	else
-> -		return 0;
-> -
->  	acpi_bus_generate_netlink_event(tz->device->pnp.device_class,
-> -					dev_name(&tz->device->dev), type, 1);
-> +					dev_name(&tz->device->dev),
-> +					ACPI_THERMAL_NOTIFY_HOT, 1);
-> +}
->  
-> -	if (trip_type == THERMAL_TRIP_CRITICAL && nocrt)
-> -		return 1;
-> +static void acpi_thermal_zone_device_critical(struct thermal_zone_device *thermal)
-> +{
-> +	struct acpi_thermal *tz = thermal->devdata;
->  
-> -	return 0;
-> +	acpi_bus_generate_netlink_event(tz->device->pnp.device_class,
-> +					dev_name(&tz->device->dev),
-> +					ACPI_THERMAL_NOTIFY_CRITICAL, 1);
-> +
-> +	thermal_zone_device_critical(thermal);
->  }
->  
->  static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
-> @@ -812,7 +809,8 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
->  	.get_trip_temp = thermal_get_trip_temp,
->  	.get_crit_temp = thermal_get_crit_temp,
->  	.get_trend = thermal_get_trend,
-> -	.notify = thermal_notify,
-> +	.hot = acpi_thermal_zone_device_hot,
-> +	.critical = acpi_thermal_zone_device_critical,
->  };
->  
->  static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+> > +#include <linux/acpi.h>
 > 
+> Not sure we need this. See below.
 
+This is required to use is_acpi_node().
+> 
+> ...
+> 
+> > +/**
+> > + * fwnode_phy_find_device - Find phy_device on the mdiobus for the provided
+> > + * phy_fwnode.
+> 
+> Can we keep a summary on one line?
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Ok
+> 
+> > + * @phy_fwnode: Pointer to the phy's fwnode.
+> > + *
+> > + * If successful, returns a pointer to the phy_device with the embedded
+> > + * struct device refcount incremented by one, or NULL on failure.
+> > + */
+> > +struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode)
+> > +{
+> > +       struct mdio_device *mdiodev;
+> > +       struct device *d;
+> 
+> > +       if (!phy_fwnode)
+> > +               return NULL;
+> 
+> Why is this needed?
+> Perhaps a comment to the function description explains a case when
+> @phy_fwnode == NULL.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+I think this function should be modified to follow of_phy_find_device() which
+has NULL check. I'll add fwnode_mdio_find_device() also.
+Here is a case where of_phy_find_device() is called without checking phy_np.
+https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/qualcomm/emac/emac-phy.c#L145
+> 
+> > +       d = bus_find_device_by_fwnode(&mdio_bus_type, phy_fwnode);
+> > +       if (d) {
+> > +               mdiodev = to_mdio_device(d);
+> > +               if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY)
+> > +                       return to_phy_device(d);
+> > +               put_device(d);
+> > +       }
+> > +
+> > +       return NULL;
+> > +}
+> 
+> ...
+> 
+> > + * For ACPI, only "phy-handle" is supported. DT supports all the three
+> > + * named references to the phy node.
+> 
+> ...
+> 
+> > +       /* Only phy-handle is used for ACPI */
+> > +       phy_node = fwnode_find_reference(fwnode, "phy-handle", 0);
+> > +       if (is_acpi_node(fwnode) || !IS_ERR(phy_node))
+> > +               return phy_node;
+> 
+> So, what is the problem with going through the rest on ACPI?
+> Usually we describe the restrictions in the documentation.
+
+Others are legacy DT properties which are not intended to be supported
+in ACPI. I can add this info in the document.
+
+Thanks for the review, Andy!
+
+Regards
+Calvin
