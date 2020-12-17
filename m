@@ -2,172 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B672DD2C9
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 15:19:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D1D2DD332
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 15:45:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728102AbgLQOR5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Dec 2020 09:17:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727415AbgLQOR4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 09:17:56 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E32C061794;
-        Thu, 17 Dec 2020 06:17:16 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id c5so23100561wrp.6;
-        Thu, 17 Dec 2020 06:17:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RVg2KaUX9LtQiHzjB7xT37Qy3WEyf0tgr+9J0DJhh24=;
-        b=elLHsMhscHdpWReZCb0saZ18kXY3TQwyWKKjk4J/DDSkJEa6TEqF/R1VJ9cI8Du5n1
-         in7SwPFMnB072o0zodeRItpXzFA/gijJ3+s5fDtzqW8AY6NGcidWXLfTwlq9elhIq34Q
-         12wKCsmDUyjy+6KOHsUuj1S1IA3RjtffIje7f5kDp+QIoL6ds9lHwEWLDt076LkYaRr0
-         NIMtEk5ztziZL0+Gcx+VNfiPzPRF1I6xipCcXJ9kJADJWEsPJVxpELfzGt/OrMJRcqmu
-         FkNGbljp8D3PEE01W2eZLv+y0dTo3km34j1eK693igl080OWz249961mCS7bLLaWdwSe
-         jXgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RVg2KaUX9LtQiHzjB7xT37Qy3WEyf0tgr+9J0DJhh24=;
-        b=Hmj/QJ2lGBn5mFFfH1DcxJ6+2MjH3l9muXAqjHyEsCFgSaRfcmQUx7uWAqF9nTxvG1
-         S6KjKcKtyJt9wmZEo/ldwqHA+XlwGSUgOFw72KjVCKnnKJdrgupUoZLEhwpwJ9mc1gNg
-         yVbm9hx8VI40kpSFAlpFrEh1AWOPZ52RSBYCONpLp5ugkf/CF4Drxy/Re8eVaHn2Bvcc
-         0xQwQDgkIlqr6X9/g99BxaU/lsfD13XU/GIDMdEYvxiSXSbx0KDd22lK3+nnRTI110Mu
-         XmeRTzsWueU9CWZKlfYlMqtZr/6Cl0PipiVxDdrYEwI//P2wN/PXGV3ueKussOUxXZmG
-         Cc7w==
-X-Gm-Message-State: AOAM533/cMxeZmVhG1f5ievFHciRYSGYxbuAsObVcHc5OBa8Ch7ttIeC
-        5LssPQcloWmJrpQrt0Gc9N8=
-X-Google-Smtp-Source: ABdhPJxZvUwst1WZ0MrRvTXG9usPINfZ0wEuqEMsaqHc3yrKUJOq/opPYDvircGFa1Qjy5wmZfc4Uw==
-X-Received: by 2002:a5d:4905:: with SMTP id x5mr28326528wrq.75.1608214634962;
-        Thu, 17 Dec 2020 06:17:14 -0800 (PST)
-Received: from [192.168.1.211] ([2.29.208.56])
-        by smtp.gmail.com with ESMTPSA id h98sm10253123wrh.69.2020.12.17.06.17.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Dec 2020 06:17:14 -0800 (PST)
-Subject: Re: [PATCH 13/18] ipu3-cio2: Add functionality allowing software_node
- connections to sensors on platforms designed for Windows
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Sakari Ailus <sakari.ailus@iki.fi>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        gregkh@linuxfoundation.org, mika.westerberg@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, yong.zhi@intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        linux@rasmusvillemoes.dk, kieran.bingham+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jorhand@linux.microsoft.com, kitakar@gmail.com,
-        heikki.krogerus@linux.intel.com
-References: <20201130133129.1024662-1-djrscally@gmail.com>
- <20201130133129.1024662-14-djrscally@gmail.com>
- <20201130203551.GP4351@valkosipuli.retiisi.org.uk>
- <5238fc28-350b-a785-0a33-edeba9dfb096@gmail.com>
- <20201215220249.GG26370@paasikivi.fi.intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <797dda65-aedd-6a83-3f36-0cba457e4570@gmail.com>
-Date:   Thu, 17 Dec 2020 14:17:12 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728050AbgLQOoR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Dec 2020 09:44:17 -0500
+Received: from mail1.bemta23.messagelabs.com ([67.219.246.115]:9391 "EHLO
+        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728111AbgLQOoR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Dec 2020 09:44:17 -0500
+Received: from [100.112.5.40] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-c.us-east-1.aws.symcld.net id 1F/62-56876-87D6BDF5; Thu, 17 Dec 2020 14:38:48 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLKsWRWlGSWpSXmKPExsWS8eIhj25F7u1
+  4g99b1S32X5ew6FpoYLHw/ilWi6/fbrNbvDk+ncli+b5+RoumziY2i88dk1ksVu95wWyx9ss8
+  Nou5X6YyW5w5fYnVgcdj0swZzB47Z91l9/i1bQ2Lx+YVWh6bVnWyecw7GejR07aJyeP9vqtsH
+  luutrN4fN4kF8AVxZqZl5RfkcCaMan/PHPBDPmKve+uMzcwTpDqYuTiEBL4zyjx8dlxNgjnBa
+  PEhlvHWbsYOTmEBRIkjpxZxAhiiwhoSyxZdJUZpIhZoI1F4sX9d+wQHa2sEttuzgCrYgOq2rL
+  lFxuIzStgK3G6cRs7iM0ioCrx8no/E4gtKhAusX7JSkaIGkGJkzOfsIDYnAKBEusOLgPawAG0
+  QVNi/S59kDCzgLjErSfzmSBseYnmrbOZQWwJAQWJv7+uskDYCRLLXt5hnsAoOAvJ1FkIk2Yhm
+  TQLyaQFjCyrGM2SijLTM0pyEzNzdA0NDHQNDY10zYAsE73EKt1kvdJi3dTE4hJdQ73E8mK94s
+  rc5JwUvbzUkk2MwFhNKWDL2MHY/uaD3iFGSQ4mJVHeRw6344X4kvJTKjMSizPii0pzUosPMcp
+  wcChJ8LZlA+UEi1LTUyvSMnOAaQMmLcHBoyTCuwckzVtckJhbnJkOkTrFqCglznsGJCEAksgo
+  zYNrg6WqS4yyUsK8jAwMDEI8BalFuZklqPKvGMU5GJWEeVtBpvBk5pXATX8FtJgJaPHqPddBF
+  pckIqSkGpgmcz67xbxl2Y2OCRrmz+Yb8Px9Lq64Re3elzC3tXe9LrhU3kvb9fuCrl/y6gqWbf
+  4PqwR2aq3aVjKzf8OUz/lTl/WWBEVsqcu5smr6mnVPmuUsVsZNTlNYUeIb5q60tD3sDfcOJ1G
+  Xj84T1E85BU7VeL9tigxr1fMjKpcU15YtKVrbGGpzPvbPnw6RTSt2Lkm/q1HjWFxVWybLOmVd
+  a2ElRybTvQ+NmytzrT6Y/lx5vtZmg9AE9mjNYxOX7PhbkXH5MPucya3zLTlD715OiTmzNL6Xz
+  059u5dIW9Tm6FsXD/+fo3rQft26M0afFmoq9JY2KpzdeC35nensBxJXn99ZNmX6svc3EzJnlm
+  k4T52ZpsRSnJFoqMVcVJwIAOctBSzQAwAA
+X-Env-Sender: markpearson@lenovo.com
+X-Msg-Ref: server-7.tower-415.messagelabs.com!1608215928!82129!1
+X-Originating-IP: [104.232.225.12]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.60.3; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 17866 invoked from network); 17 Dec 2020 14:38:48 -0000
+Received: from unknown (HELO lenovo.com) (104.232.225.12)
+  by server-7.tower-415.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 17 Dec 2020 14:38:48 -0000
+Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by Forcepoint Email with ESMTPS id 67C58B2667BEB6B8A082;
+        Thu, 17 Dec 2020 09:38:48 -0500 (EST)
+Received: from localhost.localdomain (10.38.108.33) by reswpmail04.lenovo.com
+ (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Thu, 17 Dec
+ 2020 06:38:47 -0800
+Subject: Re: [External] Re: [PATCH v6 2/3] ACPI: platform-profile: Add
+ platform profile support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Benjamin Berg <bberg@redhat.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Nitin Joshi1 <njoshi1@lenovo.com>
+References: <markpearson@lenovo.com>
+ <20201211020630.305905-1-markpearson@lenovo.com>
+ <20201211020630.305905-2-markpearson@lenovo.com>
+ <CAJZ5v0hMnRizowg-FeS0ON9eJOD7ootqdTVyCPFRr6VCz7aS5g@mail.gmail.com>
+ <l-Nzteqdz9SbINiwW0w4kFnKwknGoh5DH7VXqvkb23SZPwhvNyna0FRV9z2IZ18T0S9-a4n3LGBR1pMZYKX4FcxNTOma7vIuya66CY_Mkpc=@protonmail.com>
+ <CAJZ5v0hHoScy18FE_Aj+zoWpr-vUhGq-vO+8AjO7RxmOvZBYMA@mail.gmail.com>
+ <00993237-eb24-6038-3a85-bb76f96f679d@lenovo.com>
+ <CAJZ5v0ji_+BbCrJo=3TB1Cytb8eV-tGE_m6R35UYfwmpUs6MAg@mail.gmail.com>
+ <e682cdbd-41fe-065e-5912-d0fb94879dc9@lenovo.com>
+ <CAJZ5v0gMo_22OJvjrufJy6uQsMjh+AT_mYQyFD-LpNzAwhkimA@mail.gmail.com>
+From:   Mark Pearson <markpearson@lenovo.com>
+Message-ID: <4727e1ba-fab5-a051-a803-ea465e7877fa@lenovo.com>
+Date:   Thu, 17 Dec 2020 09:38:46 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20201215220249.GG26370@paasikivi.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAJZ5v0gMo_22OJvjrufJy6uQsMjh+AT_mYQyFD-LpNzAwhkimA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.38.108.33]
+X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
+ reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari - sorry for delayed reply. I didn't get this email actually,
-just spotted it on the newsgroup by chance.
 
-On 15/12/2020 22:02, Sakari Ailus wrote:
-> Hi Daniel,
-> 
-> On Tue, Dec 15, 2020 at 10:28:59AM +0000, Daniel Scally wrote:
->> Morning Sakari
+
+On 17/12/2020 08:36, Rafael J. Wysocki wrote:
+> On Wed, Dec 16, 2020 at 10:36 PM Mark Pearson <markpearson@lenovo.com> wrote:
 >>
->> On 30/11/2020 20:35, Sakari Ailus wrote:
->>>> +/*
->>>> + * Extend this array with ACPI Hardware ID's of devices known to be working.
->>>> + * Do not add a HID for a sensor that is not actually supported.
->>>> + */
->>>> +static const char * const cio2_supported_devices[] = {
->>>> +	"INT33BE",
->>>> +	"OVTI2680",
+>>
+>> On 16/12/2020 14:50, Rafael J. Wysocki wrote:
+>>> On Wed, Dec 16, 2020 at 8:19 PM Mark Pearson <markpearson@lenovo.com> wrote:
+>>>>
+>>>> Hi Rafael,
+>>>>
+>>>> On 16/12/2020 13:47, Rafael J. Wysocki wrote:
+>>>>> On Wed, Dec 16, 2020 at 7:42 PM Barnabás Pőcze <pobrn@protonmail.com> wrote:
+>>>>>>
+>>>>>> 2020. december 16., szerda 19:13 keltezéssel, Rafael J. Wysocki írta:
+>>>>>>
+>>>>>>> On Fri, Dec 11, 2020 at 3:15 AM Mark Pearson <markpearson@lenovo.com> wrote:
+>>>>>>>>
+>>>>>>>> This is the initial implementation of the platform-profile feature.
+>>>>>>>> It provides the details discussed and outlined in the
+>>>>>>>> sysfs-platform_profile document.
+>>>>>>>>
+>>>>>>>> Many modern systems have the ability to modify the operating profile to
+>>>>>>>> control aspects like fan speed, temperature and power levels. This
+>>>>>>>> module provides a common sysfs interface that platform modules can register
+>>>>>>>> against to control their individual profile options.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+>>>>>>> [...]
+>>>>>>>> +enum platform_profile_option {
+>>>>>>>> +       PLATFORM_PROFILE_LOW,
+>>>>>>>> +       PLATFORM_PROFILE_COOL,
+>>>>>>>> +       PLATFORM_PROFILE_QUIET,
+>>>>>>>> +       PLATFORM_PROFILE_BALANCED,
+>>>>>>>> +       PLATFORM_PROFILE_PERFORM,
+>>>>>>>> +       PLATFORM_PROFILE_LAST, /*must always be last */
+>>>>>>>> +};
+>>>>>>>> +
+>>>>>>>> +struct platform_profile_handler {
+>>>>>>>> +       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+>>>>>>>> +       int (*profile_get)(enum platform_profile_option *profile);
+>>>>>>>
+>>>>>>> I'm not sure why this callback is necessary and, provided that there
+>>>>>>> is a good enough reason, why it cannot return an enum
+>>>>>>> platform_profile_option value.
+>>>>>>>
+>>>>>>> In principle, if ->profile_set() returns 0, the requested profile can
+>>>>>>> be saved in a static var and then returned by subsequent "read"
+>>>>>>> operations.
+>>>>>>>
+>>>>>>
+>>>>>> It is possible that the platform profile can be changed with (e.g.) a dedicated
+>>>>>> button (commonly found on laptops), in which case there needs to be a mechanism
+>>>>>> to retrieve the new profile, which would not be possible without introducing
+>>>>>> something else in place of that getter - unless I'm missing something obvious.
+>>>>>
+>>>>> Fair enough.
+>>>>>
+>>>>> The other question remains, then.
+>>>>>
+>>>> My thinking here that I shouldn't make assumptions for future platform
+>>>> implementations - there may be valid cases in the future where being
+>>>> able to return an error condition if there was an error would be useful.
+>>>>
+>>>> Just trying to keep this somewhat future proof. Returning an error
+>>>> condition seemed a useful thing to have available.
 >>>
->>> I guess we don't have the known-good frequencies for the CSI-2 bus in
->>> firmware?
+>>> You can still return an error while returning a platform_profile_option value.
 >>>
->>> One option would be to put there what the drivers currently use. This
->>> assumes the support for these devices is, well, somewhat opportunistic but
->>> I guess there's no way around that right now at least.
+>>> Just add a special value representing an error to that set.
 >>>
->>> As the systems are laptops, they're likely somewhat less prone to EMI
->>> issues to begin with than mobile phones anyway.
+>> I'd like to understand what is better about that approach than having an
+>> error and a returnable parameter?
 >>
->> Just looking at this; we're currently using this with the ov2680 driver
->> that's in mainline currently (with very minor tweaks) plus a
->> hacked-into-roughly-working version of the atomisp-ov5693 driver (ACPI
->> ID INT33BE = ov5693 physical device). Neither of those drivers lists any
->> link frequencies, nor provides a link frequency control for v4l2 to work
->> with.
->>
->> On the other hand, the ov5648 [1] and ov8865 [2] drivers which Paul has
->> submitted recently, which we also want to be able to support, _do_
->> include that. I can register the frequencies Paul's defined there as a
->> link-frequencies property but this gives rise to two questions:
->>
->>
->> 1. Is this _mandatory_? Do I need to be finding the link-frequencies for
->> the OV2680 and OV5693 drivers too? Or can I skip that property where the
->> driver doesn't handle it anyway. Seems to be working fine without
->> controlling it in driver.
+>> I'm probably missing something obvious but if I add an extra
+>> platform_profile option (e.g PLATFORM_PROFILE_ERROR) to be used in an
+>> error case (and return just an enum platform_profile_option) it seems I
+>> lose the granularity of being able to return a specific error condition.
+>> It doesn't feel like an improvement.
 > 
-> Receiver drivers generally need the information to program the receiver
-> timing. It may work for you without using the correct frequency, but the
-> risk of failure on another unit increases.
-
-Hmm, ok. I'll see if I can find the correct values then to add to the
-existing drivers.
-
->> 2. Can I trust all the values in the drivers to be available on each
->> platform? For example for the ov5648 Paul lists these as available:
->>
->>  938static const s64 ov5648_link_freq_menu[] = {
->>
->>
->>  939        210000000,
->>
->>
->>  940        168000000,
->>
->>
->>  941};
->>
->> But can I safely register a link-frequencies property for both of those
->> and trust that that'll work on all IPU3 platforms with an ov5648 in them?
-> 
-> Ideally we'd know which frequency Windows uses, and use the same.
-> 
-> Using another frequency may have adverse effects elsewhere in the system.
-> AFAIU mostly this concerns radios of all sorts.
-> 
-> Now that this is in the kernel in any case, it can be fixed later on so I'm
-> not too worried about it. Having still a comment there that the
-> configuration is opportunistic would be nice.
+> And what's the user expected to do about the different error codes
+> that can be returned?
 > 
 
-Understood - I'll add in the ability to add the link-frequencies plus a
-comment explaining.
+From my experiences when something fails I would rather have more
+information than less. I'm probably over thinking it though.
 
-Thanks
-Dan
+Looking at it again, from my Lenovo platform profile implementation
+perspective I have no objections. It's hard to argue a point without
+having a hard requirement or example :) I'll go ahead with your
+suggestion of just returning the profile.
 
+Thank you for the review
+Mark
