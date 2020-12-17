@@ -2,127 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C4512DDA38
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 21:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A77A2DDBF6
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Dec 2020 00:44:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgLQUit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Dec 2020 15:38:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38340 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726951AbgLQUit (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Dec 2020 15:38:49 -0500
-Date:   Thu, 17 Dec 2020 14:38:06 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608237488;
-        bh=Rpq08eYW+DA58q5pcS/wXU0VbVBc1vYow6lIlzk55rU=;
-        h=From:To:Cc:Subject:In-Reply-To:From;
-        b=KqE949u41Nqk8wZdC73imrPNhV6iDujEFjRfkVjZScfGg5NLARgNksvDkk54oZI9i
-         mv/u6l2got64jOQ5WYUtngu2q9vI6xjHII+Jcy+PrjjE2gs1K6xgdwztx+nAvI4G2p
-         D/IUTUhGXYUo0T11xN0y5dzNNoaIntqhsq2soJ1qJZmtzmxSv5ozHe2eIvw5XczDhw
-         7imXx7N9zkX5LZaNE/XBXWbLBfgxWdq6WNk63Vd9f31kXpIWOfBj6C4mP+2GZruhTz
-         M32DBRPOd7HuNC1U2xW9CiDgiKPo9i9u/PExMcMNgvaVJ1cxp2OOgAAkXwohRF2CCU
-         mV7YA0/SGEecA==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Zhou Wang <wangzhou1@hisilicon.com>
-Cc:     Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
-        Souvik Chakravarty <Souvik.Chakravarty@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
-Message-ID: <20201217203806.GA20785@bjorn-Precision-5520>
+        id S1732203AbgLQXoe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Dec 2020 18:44:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732201AbgLQXoe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 18:44:34 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A7F9C061794;
+        Thu, 17 Dec 2020 15:43:53 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id t16so246741wra.3;
+        Thu, 17 Dec 2020 15:43:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UBqa0Lp+3ygWF6OGkOP1uHW2xoysiDViqe/7uQy1Q2c=;
+        b=cEYYIywkMDxTUX7cW4KSyTS2FP1Gm5u6zdbSRyz9XE5nFKnajH0cak8KW6FwfluVn4
+         qlZQw5PljRD+nMQIVe3vIx5UOxbVfNaV5oBef1CBnMWSj3YCutyw/hRY7p6Kq9l+ID+4
+         LI8X/TLt1ntdFeXyqmORSPBDFYr9c3nayM2xoUOfuqEaMWK+u+nFNfvP++rMGm6y+6FW
+         tTcF14+5gBOmMB8UmMqbDL82ob6pz/AwIH4JXdYzm6paYc3xSRDSCLLqa+lg571loPU6
+         ylQraO6B0PDL3azcn+VFc8iIR9Q3IdLhWiAIc5MkmTdchxXo5uc1ynkLy8LEjLH4HVcZ
+         6/oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UBqa0Lp+3ygWF6OGkOP1uHW2xoysiDViqe/7uQy1Q2c=;
+        b=P5gNUgsL5DQMq/zhm57qhNMu4POti8OkOOX43MEcsctblnUKVbZ4hT1yk53QzIariE
+         CAlDB3ll6/9lquPOKhkatUbt8wu1W0Kf6L3dlgaXxkubm3r/yMZ4Axq+pXDk2MyVAFPa
+         rioyTESBK7fOYKqNFsboRqVvXGHJ1je7s3vcWKKh7KzBC0AhAq/tF1FWexg/gfnqjSDu
+         LayJONumkmBxVPMDXqPKger8hktssAbL08yBfLLGd1V3qD74FzWZ04XKsWKhpkARQI7S
+         L8iKCFPIUrkB8DHpLlAcIWk59yRJcA+NWJF650jX7g5JFNlNjicXU6b/kCIDXYrk1yde
+         D6DQ==
+X-Gm-Message-State: AOAM530o54+/7oUZpR5P7uhIbKGOBtuTxJz6CSyy6Ony8KkFELOMF1Q5
+        EJXK2lcfJqHoxMLrMWePePC5c3RCGAPG+ds6
+X-Google-Smtp-Source: ABdhPJyKudBgqFd03IKg8iG672BcNf9NNDeb5mtZkBsdWzUVc+LJ4BDY6PIukgM8KKWdQkM+Y48bWQ==
+X-Received: by 2002:a5d:4905:: with SMTP id x5mr1207091wrq.75.1608248632136;
+        Thu, 17 Dec 2020 15:43:52 -0800 (PST)
+Received: from valhalla.home ([2.29.208.56])
+        by smtp.gmail.com with ESMTPSA id o3sm1873575wrc.93.2020.12.17.15.43.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Dec 2020 15:43:51 -0800 (PST)
+From:   Daniel Scally <djrscally@gmail.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, gregkh@linuxfoundation.org,
+        yong.zhi@intel.com, sakari.ailus@linux.intel.com,
+        bingbu.cao@intel.com, tian.shu.qiu@intel.com, mchehab@kernel.org,
+        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
+        rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
+        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+        linus.walleij@linaro.org, heikki.krogerus@linux.intel.com,
+        kitakar@gmail.com, jorhand@linux.microsoft.com
+Subject: [PATCH v2 00/12] Add functionality to ipu3-cio2 driver allowing software_node connections to sensors on platforms designed for Windows
+Date:   Thu, 17 Dec 2020 23:43:25 +0000
+Message-Id: <20201217234337.1983732-1-djrscally@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5FD9EE6E.1040505@hisilicon.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 16, 2020 at 07:24:30PM +0800, Zhou Wang wrote:
-> On 2020/6/23 23:04, Bjorn Helgaas wrote:
-> > On Fri, Jun 19, 2020 at 10:26:54AM +0800, Zhangfei Gao wrote:
-> >> Have studied _DSM method, two issues we met comparing using quirk.
-> >>
-> >> 1. Need change definition of either pci_host_bridge or pci_dev, like adding
-> >> member can_stall,
-> >> while pci system does not know stall now.
-> >>
-> >> a, pci devices do not have uuid: uuid need be described in dsdt, while pci
-> >> devices are not defined in dsdt.
-> >>     so we have to use host bridge.
-> > 
-> > PCI devices *can* be described in the DSDT.  IIUC these particular
-> > devices are hardwired (not plug-in cards), so platform firmware can
-> > know about them and could describe them in the DSDT.
-> > 
-> >> b,  Parsing dsdt is in in pci subsystem.
-> >> Like drivers/acpi/pci_root.c:
-> >>        obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid,
-> >> 1,
-> >>                                 IGNORE_PCI_BOOT_CONFIG_DSM, NULL);
-> >>
-> >> After parsing DSM in pci, we need record this info.
-> >> Currently, can_stall info is recorded in iommu_fwspec,
-> >> which is allocated in iommu_fwspec_init and called by iort_iommu_configure
-> >> for uefi.
-> > 
-> > You can look for a _DSM wherever it is convenient for you.  It could
-> > be in an AMBA shim layer.
-> > 
-> >> 2. Guest kernel also need support sva.
-> >> Using quirk, the guest can boot with sva enabled, since quirk is
-> >> self-contained by kernel.
-> >> If using  _DSM, a specific uefi or dtb has to be provided,
-> >> currently we can useQEMU_EFI.fd from apt install qemu-efi
-> > 
-> > I don't quite understand what this means, but as I mentioned before, a
-> > quirk for a *limited* number of devices is OK, as long as there is a
-> > plan that removes the need for a quirk for future devices.
-> > 
-> > E.g., if the next platform version ships with a DTB or firmware with a
-> > _DSM or other mechanism that enables the kernel to discover this
-> > information without a kernel change, it's fine to use a quirk to cover
-> > the early platform.
-> > 
-> > The principles are:
-> > 
-> >   - I don't want to have to update a quirk for every new Device ID
-> >     that needs this.
-> 
-> Hi Bjorn and Zhangfei,
-> 
-> We plan to use ATS/PRI to support SVA in future PCI devices. However, for
-> current devices, we need to add limited number of quirk to let them
-> work. The device IDs of current quirk needed devices are ZIP engine(0xa250, 0xa251),
-> SEC engine(0xa255, 0xa256), HPRE engine(0xa258, 0xa259), revision id are
-> 0x21 and 0x30.
-> 
-> Let's continue to upstream these quirks!
+Hello all
 
-Please post the patches you propose.  I don't think the previous ones
-are in my queue.  Please include the lore URL for the previous
-posting(s) in the cover letter so we can connect the discussion.
+Previous version:
+https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
+The RFC version before that:
+https://lore.kernel.org/linux-media/20201019225903.14276-1-djrscally@gmail.com/
 
-> >   - I don't really want to have to manage non-PCI information in the
-> >     struct pci_dev.  If this is AMBA- or IOMMU-related, it should be
-> >     stored in a structure related to AMBA or the IOMMU.
-> > .
-> > 
+This series is to start adding support for webcams on laptops with ACPI tables
+designed for use with CIO2 on Windows. This problem has two main parts; the
+first part, which is handled in this series, is extending the ipu3-cio2
+driver to allow for patching the firmware via software_nodes if endpoints
+aren't defined by ACPI. The second is adding a new driver to handle power,
+clocks and GPIO pins defined in DSDT tables in an awkward way. I decided to
+split that second part out from this series, and instead give it its own
+series (a v2 of which should land "soon"). The reasons for that are:
+
+1. It's a logically separate change anyway
+2. The recipients list was getting really long and
+3. That probably meant that handling merge for all of this in one go was
+   going to be impractically awkward.
+
+Given how few comments the remaining patches of this series received in the
+last posting, I'm hopeful that most or all of it could get picked up for 5.12.
+We touch a few different areas:
+
+lib (with an ack already)
+  lib/test_printf.c: Use helper function to unwind array of
+    software_nodes
+
+drivers/base
+  software_node: Fix refcounts in software_node_get_next_child()
+  property: Return true in fwnode_device_is_available for NULL ops
+  property: Call fwnode_graph_get_endpoint_by_id() for fwnode->secondary
+  software_node: Enforce parent before child ordering of nodes arrays
+  software_node: unregister software_nodes in reverse order
+
+drivers/acpi
+  acpi: Add acpi_dev_get_next_match_dev() and helper macro
+
+drivers/media
+  media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
+    match_fwnode()
+  ipu3-cio2: Add T: entry to MAINTAINERS
+  ipu3-cio2: Rename ipu3-cio2.c
+  ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
+
+Given that, it feels sensible to me to try and merge them all through a single
+tree; I was hoping the other maintainers would be amenable to having everything
+merged through the media tree. Mauro; if that plan is ok (and of course assuming
+that the rest of the patches are acked by their respective maintainers too),
+could we get a dedicated feature branch just in case the following series ends
+up being ready in time too? 
+
+Series-level changelog:
+	- Squashed the patches enforcing ordering in register/unregister_nodes()
+
+More details of changes on each patch.
+
+Comments as always very welcome - and thanks to everyone for all your help on
+this so far, hope I've addressed everything from last time.
+
+Dan
+
+Daniel Scally (11):
+  software_node: Fix refcounts in software_node_get_next_child()
+  property: Return true in fwnode_device_is_available for NULL ops
+  property: Call fwnode_graph_get_endpoint_by_id() for fwnode->secondary
+  software_node: Enforce parent before child ordering of nodes arrays
+  software_node: unregister software_nodes in reverse order
+  lib/test_printf.c: Use helper function to unwind array of
+    software_nodes
+  ipu3-cio2: Add T: entry to MAINTAINERS
+  ipu3-cio2: Rename ipu3-cio2.c
+  media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
+    match_fwnode()
+  acpi: Add acpi_dev_get_next_match_dev() and helper macro
+  ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
+
+Heikki Krogerus (1):
+  software_node: Add support for fwnode_graph*() family of functions
+
+ MAINTAINERS                                   |   2 +
+ drivers/acpi/utils.c                          |  30 +-
+ drivers/base/property.c                       |  15 +-
+ drivers/base/swnode.c                         | 173 +++++++++--
+ drivers/media/pci/intel/ipu3/Kconfig          |  18 ++
+ drivers/media/pci/intel/ipu3/Makefile         |   3 +
+ drivers/media/pci/intel/ipu3/cio2-bridge.c    | 274 ++++++++++++++++++
+ drivers/media/pci/intel/ipu3/cio2-bridge.h    | 122 ++++++++
+ .../ipu3/{ipu3-cio2.c => ipu3-cio2-main.c}    |  34 +++
+ drivers/media/pci/intel/ipu3/ipu3-cio2.h      |   6 +
+ drivers/media/v4l2-core/v4l2-async.c          |   8 +
+ include/acpi/acpi_bus.h                       |   7 +
+ lib/test_printf.c                             |   4 +-
+ 13 files changed, 669 insertions(+), 27 deletions(-)
+ create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.c
+ create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.h
+ rename drivers/media/pci/intel/ipu3/{ipu3-cio2.c => ipu3-cio2-main.c} (98%)
+
+-- 
+2.25.1
+
