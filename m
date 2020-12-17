@@ -2,62 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 422352DCE47
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 10:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 672B12DCEA8
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Dec 2020 10:46:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbgLQJ3L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Dec 2020 04:29:11 -0500
-Received: from mga04.intel.com ([192.55.52.120]:1837 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726703AbgLQJ3L (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Dec 2020 04:29:11 -0500
-IronPort-SDR: ve+m5k+NDqtjwa3keGwuZVT1vS+GXT/VEksg+RqOkXzx4tFhpA6nw7RF0T2+7auxJkGSRSHj0U
- RXGS9FA6QkYA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9837"; a="172650301"
-X-IronPort-AV: E=Sophos;i="5.78,426,1599548400"; 
-   d="scan'208";a="172650301"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2020 01:27:25 -0800
-IronPort-SDR: 35SsHYj6v3p7in39ljv1jdkaos50haWexDHJ/ZCTChLnl45Ba7fxRHaYrZvVYGHILFVF7Nr3mq
- I+N7wJCJZXHg==
-X-IronPort-AV: E=Sophos;i="5.78,426,1599548400"; 
-   d="scan'208";a="339223589"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2020 01:27:23 -0800
-Received: by lahna (sSMTP sendmail emulation); Thu, 17 Dec 2020 11:27:19 +0200
-Date:   Thu, 17 Dec 2020 11:27:19 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Hans De Goede <hdegoede@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [RFT][PATCH v1 0/3] ACPI: scan: Defer enumeration of devices
- with significant dependencies
-Message-ID: <20201217092719.GF5246@lahna.fi.intel.com>
-References: <1646930.v2jOOB1UEN@kreacher>
+        id S1727835AbgLQJpe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Dec 2020 04:45:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727381AbgLQJpc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Dec 2020 04:45:32 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E4DC061285;
+        Thu, 17 Dec 2020 01:44:52 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id v3so14828866plz.13;
+        Thu, 17 Dec 2020 01:44:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/biV0j4oPyBDlCc0KD7PgZ5xhcMTjG11uj+u1mWK9zQ=;
+        b=lqpUUnmDzJZ6oVXsh/B9dcOr/1+RqrbuxyF3agHwYTZrWF0e7PbmpGhqbHgD51iulM
+         H3OP1/+4scC0XufolApvlZDNK3mn5Dv4HlmEa7QO9ng33e7pCN+WmOa0psYkvKdYdyNO
+         HMMjCo/0xmELTrG94ggPeFS9k/c0M7won4f5Hq0co5tSc1G5drkluKc2Ez0FdfDsG4rn
+         +bgMBeOuLJBRbo80rLe0pKPYc6rzL8NegOxdJxBztWpIG1mFe+nCvolDXOI3E5hGatya
+         4O8fqYUidRKMgM8Ncsst8FF2gfJHzgXqw60rX4MKAs3lKaxfyu9VsQnJpCpQQWCiSN+l
+         wsbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/biV0j4oPyBDlCc0KD7PgZ5xhcMTjG11uj+u1mWK9zQ=;
+        b=rnqhTeaxCcQkl7Jm1gvnzV/ybiPNQPt/1isT7I0TGSWU3IN542QWFXhk6SfgBS0d2q
+         YHN+y4UdLIr2cyLyzyk6H11nBm4Qx/xoBmjL8kOc2uM2Zc2CKXYfr+K7PFpXeSsbzXqf
+         LD+tMyOkO6yRTVa10t0h7b7tKCUFFKzRYdYnbW+5P3qVQpGeZdp2zBWqO+A7mrs4Bmto
+         hhP6HhZQLqTY7fh0A/hp88BPudZmCcjebjBajE8l4rahiYWq5UCLJAIFKPLMmpcZXO0b
+         lKs1CiGdA4QlL7OKUQoQZeSTRakQiAqvBfjX/abwj3yT6EVxzqVN770BWya7gsQw17Iy
+         5Deg==
+X-Gm-Message-State: AOAM530dBlTyyuetJh9BwSgnjJkNSddSv0l7eUMEWPHcHOwKgmyGNeHO
+        J0idd/21Xy/S8h99syKudmBbLZPsj9iAD5SEh5g=
+X-Google-Smtp-Source: ABdhPJy/HJsE2ZeepcRvJ0wKWfdVq2vODHsuQUBdazmRA3zZn6ZJf/EzyRhUYUyYz+uWOeBHY5Ic61x7rqKaZefJwsQ=
+X-Received: by 2002:a17:90a:c592:: with SMTP id l18mr7201456pjt.228.1608198291744;
+ Thu, 17 Dec 2020 01:44:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1646930.v2jOOB1UEN@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20201215164315.3666-1-calvin.johnson@oss.nxp.com>
+ <20201215164315.3666-5-calvin.johnson@oss.nxp.com> <CAHp75VcHrBtAY3KDugBYEo9=YuDwbh+QLdOU8yiKb2VyaU2x9A@mail.gmail.com>
+ <20201217082804.GB19657@lsv03152.swis.in-blr01.nxp.com>
+In-Reply-To: <20201217082804.GB19657@lsv03152.swis.in-blr01.nxp.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 17 Dec 2020 11:44:35 +0200
+Message-ID: <CAHp75Vd=BFrZRUoBCa9xfFSZVM+_-GReHppcpy4AvxEPsHQOpg@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 04/14] net: phy: Introduce fwnode_get_phy_id()
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, "linux.cj" <linux.cj@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Thu, Dec 17, 2020 at 10:28 AM Calvin Johnson
+<calvin.johnson@oss.nxp.com> wrote:
+> On Tue, Dec 15, 2020 at 07:28:10PM +0200, Andy Shevchenko wrote:
+> > On Tue, Dec 15, 2020 at 6:44 PM Calvin Johnson
+> > <calvin.johnson@oss.nxp.com> wrote:
 
-On Mon, Dec 14, 2020 at 09:23:47PM +0100, Rafael J. Wysocki wrote:
-> Hi,
-> 
-> This series addresses some enumeration ordering issues by using information
-> from _DEP to defer the enumeration of devices that are likely to depend on
-> operation region (OpRegion) handlers supplied by the drivers of other
-> devices.
-> 
-> This allows the OpRegion suppliers to be probed and start working before the
-> devices depending on them are enumerated.
+...
 
-For the whole series,
+> > > +       if (sscanf(cp, "ethernet-phy-id%4x.%4x", &upper, &lower) == 2) {
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> >        *phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
+
+> > And perhaps GENMASK() ?
+>
+> Sure. Will rewrite accordingly.
+
+Reading this again I'm now not sure these masks are needed at all.
+
+-- 
+With Best Regards,
+Andy Shevchenko
