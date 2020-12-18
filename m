@@ -2,107 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E312DE6C1
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Dec 2020 16:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6B92DE71F
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Dec 2020 17:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728111AbgLRPhj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Dec 2020 10:37:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727817AbgLRPhi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Dec 2020 10:37:38 -0500
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59273C0617B0;
-        Fri, 18 Dec 2020 07:36:58 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id v2so1740505pfm.9;
-        Fri, 18 Dec 2020 07:36:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+KLSZTU5ExRpj/cZNjbTv8MS71w3sCFIMI4H99ieEKo=;
-        b=D3L/yJ8R/OunwhSbKyc2rz9lb4mfdgQquJr33FFTlqhVg6z/JACxfrmS720bcqh/Ib
-         Pw6mECItEwlQUWPQ4EJ+EJJ2tyRVYW25NC0zrIoyhgMW+8C+iFOSkenV50hekAvn7Z6y
-         BJRQumM4mlXxzFNbWqLA3Wqzx8JdX08m7T0zc6Q/jAilDAIrPXlUSuImzXGGTDyhn3S7
-         XfXgPr0sZSFXBQH0Sm7I8Zq8Dwh20lkzfCHSGuzEu6Vly96TvmUxV75SfHSbEidDQnlk
-         SHqQVtoSbC1tMVCZniDtNjymplJpvdwZEvSzq1wxQmbYSrUiDsOIU9LuCaxQ/5w13OEK
-         7qLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+KLSZTU5ExRpj/cZNjbTv8MS71w3sCFIMI4H99ieEKo=;
-        b=rUfZCmCxMtlT86M+ccMiICo7SnOsqhJRpGW+dNN4I5LUZYdqpnkUFc2lw3U9+C5of8
-         uinsbfk6oIp8fVXpPYUHnJjesgH77zM5uT3DOPpv/1b30eOhtVCecRa2tx2XGir3egR8
-         ya3eqTc/Yg5ipR6Mw+de9UQu1ouWZIcR2heZcxmk2HjtSIMGiOrJkzXMjmB06gJQcV/y
-         as+lAmnI5O+EJP3ySnw8xyhRIt56hEZnX9EdZMk8Z2Jo8fQZBH2QAkr4uGzstaZzTHvM
-         ZCFfPeyRtqave7ROU4dUcEUIdPxpppKLSkHpMqV+vtgE9RlDJthIesBcc5VU8cokbrvR
-         Xd1Q==
-X-Gm-Message-State: AOAM531lAqqvLFrL9mdCyC1aU+cOYhdKys1jYT0w1c2UOeLMNAfRmZEX
-        gFtjWZg+JQ9q11pkF/fQnNVX//ZQK2AE/NajiC8=
-X-Google-Smtp-Source: ABdhPJyhQWu/LkN+fP3nOWDXs/TSnn33BgzHb1Co9HMOBy4XiN4f0exFG/8nxg1+9UOhOdoEd6TyXUQIQCRxNmCW63I=
-X-Received: by 2002:a63:74b:: with SMTP id 72mr4681349pgh.4.1608305817763;
- Fri, 18 Dec 2020 07:36:57 -0800 (PST)
+        id S1726181AbgLRQC4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Dec 2020 11:02:56 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:41438 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726228AbgLRQCz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Dec 2020 11:02:55 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2BDD82CF;
+        Fri, 18 Dec 2020 17:02:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1608307332;
+        bh=s2SHQA0PN7urDd/Qm3xpPmk0SAd9BjjKrvkA4hZemV4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OFxcFcRYphMYulyRHR3ufYN6rRoNVK6eIUT4lylN+2Ep7+NVgoerI/bkEwgOUO6hw
+         3kKeqs/9UiyviMhbz/17vdyHdsd48l6WXEfIhVNFmYIPNOhgYfC7df6hF5NykwaxoY
+         P748LH6UxsHOv9BQDiVlWzvt0x+Vu4fjo81/1afs=
+Date:   Fri, 18 Dec 2020 18:02:04 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
+        lenb@kernel.org, gregkh@linuxfoundation.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
+        sergey.senozhatsky@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+        linus.walleij@linaro.org, heikki.krogerus@linux.intel.com,
+        kitakar@gmail.com, jorhand@linux.microsoft.com
+Subject: Re: [PATCH v2 04/12] software_node: Enforce parent before child
+ ordering of nodes arrays
+Message-ID: <X9zSfPUmHL3kho+D@pendragon.ideasonboard.com>
+References: <20201217234337.1983732-1-djrscally@gmail.com>
+ <20201217234337.1983732-5-djrscally@gmail.com>
 MIME-Version: 1.0
-References: <20201215164315.3666-1-calvin.johnson@oss.nxp.com>
- <20201215164315.3666-9-calvin.johnson@oss.nxp.com> <CAHp75Vf69NuxqcJntQi+CT1QN4cpdr2LYNzo6=t-pBWcWgufPA@mail.gmail.com>
- <20201218054044.GB14594@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20201218054044.GB14594@lsv03152.swis.in-blr01.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 18 Dec 2020 17:36:41 +0200
-Message-ID: <CAHp75Vd4+b9asXXVGnFAH8nuDgyzR+ocaKaf7ibdt88gpMMT9w@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 08/14] net: mdiobus: Introduce fwnode_mdiobus_register()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, "linux.cj" <linux.cj@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201217234337.1983732-5-djrscally@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 7:40 AM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
-> On Tue, Dec 15, 2020 at 07:53:26PM +0200, Andy Shevchenko wrote:
-> > On Tue, Dec 15, 2020 at 6:44 PM Calvin Johnson
-> > <calvin.johnson@oss.nxp.com> wrote:
+Hi Daniel,
 
-...
+Thank you for the patch.
 
-> > I would rather see this as simple as
-> >
-> >      if (is_of_node(fwnode))
-> >                return of_mdiobus_register(mdio, to_of_node(fwnode));
-> >      if (is_acpi_node(fwnode))
-> >                return acpi_mdiobus_register(mdio, fwnode);
-> >
-> > where the latter one is defined somewhere in drivers/acpi/.
-> Makes sense. I'll do it. But I think it will be better to place
-> acpi_mdiobus_register() here itself in the network subsystem, maybe
-> /drivers/net/mdio/acpi_mdio.c.
+On Thu, Dec 17, 2020 at 11:43:29PM +0000, Daniel Scally wrote:
+> Registering software_nodes with the .parent member set to point to a
+> currently unregistered software_node has the potential for problems,
+> so enforce parent -> child ordering in arrays passed in to
+> software_node_register_nodes().
+> 
+> Software nodes that are children of another software node should be
+> unregistered before their parent. To allow easy unregistering of an array
+> of software_nodes ordered parent to child, reverse the order in which
+> software_node_unregister_nodes() unregisters software_nodes.
+> 
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> ---
+> Changes in v2:
+> 
+> 	- Squashed the patches that originally touched these separately
+> 	- Updated documentation
+> 
+>  drivers/base/swnode.c | 43 ++++++++++++++++++++++++++++++-------------
+>  1 file changed, 30 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 615a0c93e116..cfd1faea48a7 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -692,7 +692,10 @@ swnode_register(const struct software_node *node, struct swnode *parent,
+>   * software_node_register_nodes - Register an array of software nodes
+>   * @nodes: Zero terminated array of software nodes to be registered
+>   *
+> - * Register multiple software nodes at once.
+> + * Register multiple software nodes at once. If any node in the array
+> + * has it's .parent pointer set, then it's parent **must** have been
+> + * registered before it is; either outside of this function or by
+> + * ordering the array such that parent comes before child.
+>   */
+>  int software_node_register_nodes(const struct software_node *nodes)
+>  {
+> @@ -700,33 +703,47 @@ int software_node_register_nodes(const struct software_node *nodes)
+>  	int i;
+>  
+>  	for (i = 0; nodes[i].name; i++) {
+> -		ret = software_node_register(&nodes[i]);
+> -		if (ret) {
+> -			software_node_unregister_nodes(nodes);
+> -			return ret;
+> +		const struct software_node *parent = nodes[i].parent;
+> +
+> +		if (parent && !software_node_to_swnode(parent)) {
+> +			ret = -EINVAL;
+> +			goto err_unregister_nodes;
+>  		}
+> +
+> +		ret = software_node_register(&nodes[i]);
+> +		if (ret)
+> +			goto err_unregister_nodes;
+>  	}
+>  
+>  	return 0;
+> +
+> +err_unregister_nodes:
+> +	software_node_unregister_nodes(nodes);
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(software_node_register_nodes);
+>  
+>  /**
+>   * software_node_unregister_nodes - Unregister an array of software nodes
+> - * @nodes: Zero terminated array of software nodes to be unregistered
+> + * @nodes: Zero terminated array of software nodes to be unregistered.
 
-Even better, thanks!
+Not sure if this is needed.
+
+>   *
+> - * Unregister multiple software nodes at once.
+> + * Unregister multiple software nodes at once. If parent pointers are set up
+> + * in any of the software nodes then the array MUST be ordered such that
+
+I'd either replace **must** above with MUST, or use **must** here. I'm
+not sure if kerneldoc handles emphasis with **must**, if it does that
+seems a bit nicer to me, but it's really up to you.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> + * parents come before their children.
+>   *
+> - * NOTE: Be careful using this call if the nodes had parent pointers set up in
+> - * them before registering.  If so, it is wiser to remove the nodes
+> - * individually, in the correct order (child before parent) instead of relying
+> - * on the sequential order of the list of nodes in the array.
+> + * NOTE: If you are uncertain whether the array is ordered such that
+> + * parents will be unregistered before their children, it is wiser to
+> + * remove the nodes individually, in the correct order (child before
+> + * parent).
+>   */
+>  void software_node_unregister_nodes(const struct software_node *nodes)
+>  {
+> -	int i;
+> +	unsigned int i = 0;
+> +
+> +	while (nodes[i].name)
+> +		i++;
+>  
+> -	for (i = 0; nodes[i].name; i++)
+> +	while (i--)
+>  		software_node_unregister(&nodes[i]);
+>  }
+>  EXPORT_SYMBOL_GPL(software_node_unregister_nodes);
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+
+Laurent Pinchart
