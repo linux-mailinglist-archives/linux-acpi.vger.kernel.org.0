@@ -2,164 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D602DDDA1
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Dec 2020 05:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64CB12DDE16
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Dec 2020 06:37:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbgLREJo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Dec 2020 23:09:44 -0500
-Received: from mail-dm6nam12on2106.outbound.protection.outlook.com ([40.107.243.106]:34177
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        id S1725860AbgLRFfe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Dec 2020 00:35:34 -0500
+Received: from mail-eopbgr140053.outbound.protection.outlook.com ([40.107.14.53]:9351
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727018AbgLREJn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Dec 2020 23:09:43 -0500
+        id S1725290AbgLRFfe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 18 Dec 2020 00:35:34 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F+G6BRGR0+qDn8w42D/B1PU4Z3x9k8gVqHOggtyV4IoXBGtYizRcgTcq+2eKTOOik99Y8eMRSLfYynsz3VDQnNqeRSZDEd+qavaQ11nFpUj4DaqrfNjSqcbEiYsF3l0A/bNa8nJax3Uk7yFK7C3glJrZiYyijJkLtpBGHC6bv9wvJS1+imMfrtSc+jhc6L8PVlOP+Lc90WaXNQtxSaoQeleJ22XJ7av6Qlt1tVRAJWORtqbhfqOj2Fa61IiAbrh7tExrJzdhZgRfJYVG09Dm7dz82fRKu9Nidh3FjO7wAIXr0Hl2H0qs+7lI7knyeBayEtrOVrl89g2LAQBGoMJsqw==
+ b=EtQXalxPwVgzIQwAgd85ivsk7izi6J9pIatIL0EUEU/dbAj9+0Y1g84OMyGwYopRpLho5bHFhABg8QB3eR6PNrsJhMMA7d7PcYamiW1j3KAngw8EGDnJT7+8INvVpr+UqyXjDgXRzDKTRXQNIX39lhcLzgEuUWWqpeWPBaM7aFhfzhXU9DFUOpGj7FEjjkeJ/isUZsghIwNnye2D6t3ycbCRAP44PNdka4DYAKWmJwr3FrwQx677qJug5jmJfdTmDum0N60WN5ozhtj2OklvC8d+Gw3VEBtJA0uAsewGx94Q4J2yItxxOgQvZTWcoR/uqYysXTAK3OuL3ZC7Udnt2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jHyGVToNyCceEqLuNYWC5gJT/9bTKhLAvVw0KH067rc=;
- b=eGUUUr1g2q56eqj3MxQmdWYWyVpUqV7fqBNUbK1ZB4B3tg2a6EAQ957PaHv0LtcUubW7POmo7s+Vnd3MrRE77PC9Y+9d/GDN1Kid012ixmz6i/CzRC6TQhW+jxTK3Xfm5/tzCsmYDP4+VLTxGMsRBvqaInKtB8eAAEN8zrpX0VFpe7z3RaLjOerOeYPS9jvie/0dR6MTFNtt/jd0sxppOzTL+e/LaHBbg1QQGnP0exc7GMW+rhbowYtAbaXxU+RsZSuiO3ozjk4CYe/d0xZsnJoIiW8dlhj3gE/OoDxluBDfoXoyTF/5WPC1yJCY+JN7BSM8PcuYUsVVh/5wFHMc4A==
+ bh=dfbUzOO0nnnYLJD01N89O5SINzlaMLm3kIpFO5b2JAY=;
+ b=IWtZFlBPLs2D2CUX3f5aMGmu+LJPKH0FXs8N9wquLYhCfvWp+KtLLAJFbp+RDABYUxy9PO8SBkzXXbfqqHUKr9zXmIunRHYm7y5VIbzeI9b/vYZq9MsXt/lxDO2VW7FLmu5ZSGyG7YRxBepdVwbCZd0ahMHLd+dJNQ1orXhW7tig93M/YYfSBhUtw888HHXfqnoxYu4WSp0fVaLMU34oD4TF4Ct4Xc6GeC3xEXAjXe044TZagEIWgTiW2ayRSzhCG5IwmKjWsod/s3IbyQ7bzUPwhFFnatqfyqgfDb8NBWpGEB8QKCAHgnL9WoEwZNbW555epqIV8yvVjYMXW+cgjg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jHyGVToNyCceEqLuNYWC5gJT/9bTKhLAvVw0KH067rc=;
- b=GnXlybknL9gJHrLvsjA0ljOEgQWc96czAftsoW3G0xIrRDMcn2lxmnZMOLuukMrwUsD0bEvWPDqWFV1L2oDB17kaXXKXnCv14Gcl9CbCFJpeq4CfLULDQJiLcJb50WKah+HpMCGoJsIvB88190C4+dzVgCeBVhrVoaAzSPZj/Io=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=microsoft.com;
-Received: from (2603:10b6:207:37::26) by
- BL0PR2101MB1009.namprd21.prod.outlook.com (2603:10b6:207:36::31) with
+ bh=dfbUzOO0nnnYLJD01N89O5SINzlaMLm3kIpFO5b2JAY=;
+ b=WHZONqcMJbPPXaOnHGI8zUhg1zLGNQ7wfHNAy6ijVwI6CFb2UbCR61GmSPhMIsQ+LTpaFwie+Z1uAHR4kStF/lE+Hq5j8pf2hpLsZl+kVSBD/kzgxXOhs4xng2i6aVHr5wp/hB4El1ziIKHi/N+ouwh3CZb1BHtxJ4OYPVr8BYM=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB4228.eurprd04.prod.outlook.com (2603:10a6:208:66::26) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3700.5; Fri, 18 Dec
- 2020 04:08:55 +0000
-Received: from BL0PR2101MB1092.namprd21.prod.outlook.com
- ([fe80::adcd:42ae:1c83:369]) by BL0PR2101MB1092.namprd21.prod.outlook.com
- ([fe80::adcd:42ae:1c83:369%7]) with mapi id 15.20.3700.007; Fri, 18 Dec 2020
- 04:08:55 +0000
-From:   Dexuan Cui <decui@microsoft.com>
-To:     linux-acpi@vger.kernel.org, rjw@rjwysocki.net, len.brown@intel.com,
-        mikelley@microsoft.com
-Cc:     linux-kernel@vger.kernel.org, wei.liu@kernel.org,
-        sthemmin@microsoft.com, haiyangz@microsoft.com, kys@microsoft.com,
-        Dexuan Cui <decui@microsoft.com>
-Subject: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by buffer overflow
-Date:   Thu, 17 Dec 2020 20:08:26 -0800
-Message-Id: <20201218040826.57203-1-decui@microsoft.com>
-X-Mailer: git-send-email 2.17.1
-Reply-To: decui@microsoft.com
-Content-Type: text/plain
-X-Originating-IP: [2001:4898:80e8:0:3e21:8394:8c1a:bef2]
-X-ClientProxiedBy: MWHPR14CA0032.namprd14.prod.outlook.com
- (2603:10b6:300:12b::18) To BL0PR2101MB1092.namprd21.prod.outlook.com
- (2603:10b6:207:37::26)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.14; Fri, 18 Dec
+ 2020 05:34:43 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a891:518d:935c:30dd]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::a891:518d:935c:30dd%6]) with mapi id 15.20.3654.020; Fri, 18 Dec 2020
+ 05:34:43 +0000
+Date:   Fri, 18 Dec 2020 11:04:23 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, "linux.cj" <linux.cj@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [net-next PATCH v2 06/14] net: mdiobus: Introduce
+ fwnode_mdiobus_register_phy()
+Message-ID: <20201218053423.GA14594@lsv03152.swis.in-blr01.nxp.com>
+References: <20201215164315.3666-1-calvin.johnson@oss.nxp.com>
+ <20201215164315.3666-7-calvin.johnson@oss.nxp.com>
+ <CAHp75VcY2uOirAXGv5kFvHbNfHcZ6-gPsUMTB-_5AuBkHdu-0A@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcY2uOirAXGv5kFvHbNfHcZ6-gPsUMTB-_5AuBkHdu-0A@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [14.142.151.118]
+X-ClientProxiedBy: SG2PR06CA0119.apcprd06.prod.outlook.com
+ (2603:1096:1:1d::21) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from decui-u1804.corp.microsoft.com (2001:4898:80e8:0:3e21:8394:8c1a:bef2) by MWHPR14CA0032.namprd14.prod.outlook.com (2603:10b6:300:12b::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3676.28 via Frontend Transport; Fri, 18 Dec 2020 04:08:53 +0000
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0119.apcprd06.prod.outlook.com (2603:1096:1:1d::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend Transport; Fri, 18 Dec 2020 05:34:37 +0000
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 8b34b651-88e7-480c-5103-08d8a30aa2ed
-X-MS-TrafficTypeDiagnostic: BL0PR2101MB1009:
+X-MS-Office365-Filtering-Correlation-Id: 94ad3b62-734d-451b-e9c2-08d8a3169fb8
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4228:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BL0PR2101MB1009476972C93D7D40161E7EBFC39@BL0PR2101MB1009.namprd21.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+X-Microsoft-Antispam-PRVS: <AM0PR04MB4228DFE0812E70099C1620D8D2C30@AM0PR04MB4228.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: a6PwMPVPTR44LJ6HBr2lAzavSy2TIYbf9FFECnGyDivUO9vNP0DfZqpsjTvimxbPBN/UJFR+qPMzaV1eq6G9/UcU0rbJgIEa7HAHjRfGqxXdJuvFZZSspnj43UzgV3fjkPQZWxW4Yw/od1cA1/3KFam8NBhNTveaNbQlMmUnM4k1IJyFbGCxFnWmlYyHsBnkLh481McqPmVNj2JdMeyXcmIkjCOt5z4k+I3Z7GhiJY2lxOtyZ+pX++nFiasYm7CzjV7UvJJbdC4k0FoQNvGx9/GRW0WoBg9B3zAcbB6+T5VSYHiFPKa3l5ex+rzom02gNNhiXyOIYEnAxBdkz/ZLnjrRx2+I2Trb5xpbortXvdt63uPri36CzalxQ2pENxmPrQ7cBylh+klxudBKdVNvwA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR2101MB1092.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(366004)(39860400002)(346002)(376002)(82950400001)(3450700001)(107886003)(316002)(2616005)(82960400001)(2906002)(10290500003)(66946007)(83380400001)(5660300002)(6486002)(16526019)(4326008)(86362001)(8936002)(52116002)(6666004)(1076003)(66476007)(186003)(6636002)(7696005)(8676002)(478600001)(36756003)(66556008);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?YzZC5kwZKa5QbXJeRoObB6gRE4MhIfQ6UGkokDdriX65kiOJeP4HtwomTVhP?=
- =?us-ascii?Q?VWCEsmf/idEGbGdjRN9Aw3T7qzUEVShNpCy9vaSLZq5n53JTExWXCOTUbn3t?=
- =?us-ascii?Q?1l8RdA+MNKQmGvkIha7r22nkqc14Ah+ADbbnvfcbLtta32xRD8QMTpeKF084?=
- =?us-ascii?Q?5mxyywnyYWZzZUzgpQY78A7+QWgx/emUqNwYE/+DM8vuHVELYDHqZetVlJJx?=
- =?us-ascii?Q?XLJZeEaQYCj6RLk4ZQOK7U3qHx1XUF59wwzap3dZYke/bvBbDZtYQ7JCslnR?=
- =?us-ascii?Q?Le66p4bRgWFdXHcjM5P0vAQlrVfNmq2af2BxAAaL5wTRpgsLm9yL6h5JlBrA?=
- =?us-ascii?Q?4u/SQS4MDz+G7p5pZOVkx0HikRAtNQ3qK5hWmZHSr6aS/mLXbkc+2bMlV272?=
- =?us-ascii?Q?Pm6FZjZOmKf77agXngqKM9XQxXE871qIi5T4nzplCpArtY9pzj7g4O4PcWWx?=
- =?us-ascii?Q?P5cfgifGzWgqp4VtPORquywlavI/QRxB5ziJ3BCwI7UBWJWrbri+fqH1xNx3?=
- =?us-ascii?Q?6RNGc1MfuAasNbT5REOzoqdIzNmFOMB07moIdK9a8wUxDyzbIxndmkBhR1/d?=
- =?us-ascii?Q?Ml1PvS05nnkbKA2ti7KwqQaGr3jt2Ex2Mnst8raMf3XZWEsbNHedT0fk+lXY?=
- =?us-ascii?Q?f4S3aJ2i3qxpwaR8uD+y4uATtbaXNrpIerWjtc4+Mhjz1ruSskX3t02dPsYb?=
- =?us-ascii?Q?pJEAOvwe8di1qWs3/I05SxxF4ERfHDU6DVvEF38XAfXol1b0CNKOytkCZ5Yq?=
- =?us-ascii?Q?H6+vzZZ8CAtAYgvYdtggCYpkHZHj6JBpal5vXLGI1l0kzTjO0owU4vNMKyeY?=
- =?us-ascii?Q?Nb+0v0H2OFJhQ69jsAfncJlTroVukVyQk6279I6fL6YqmmUKYP5FtWqUk9i+?=
- =?us-ascii?Q?yhcqk3GV37wDVCUwhstTmtIdamj/6O66g7TakU/0TFVXIl8aLT3un/lU8ZIO?=
- =?us-ascii?Q?/QOjxjPBVxaqx8B2/WArW3uUhe2pMdJMaPnCLTrsXrpWPT1XdlmpHn7seALq?=
- =?us-ascii?Q?BlcUo6WbuPAsVBiw1PwZWB/CsaoURlg0zvFqR1hMKI79yOo=3D?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR2101MB1092.namprd21.prod.outlook.com
+X-Microsoft-Antispam-Message-Info: /KpInvuR5+2Okb71c9BScAf8OlQx0p9lNd2VrL7DQyg4EHbO4KkkYN7Hrck3aTVxm5Gf0FXLZr2mRm8JoAFP7HrBVNEIQ+z9008OgIfkrDlmi6Z5F7YQqk/wbc9+o6SI7rd+cy4H9usOItuorrRn0OCbQeIovpc+Nfmw4pLbRElp4yIxRDgiSfp+ztP5VpUw2WHrdxF8qP+6PG0kxvg6JEO26khwJgdLwQO3a8bXOblreE/CxW5gHc8Wu8PrnMiQ0jv3T7pdSl+qGHt60yk3nK82whTSm8682z7+zEJT1Q8kAlJLMf7/m9JeTK0cx1csdwicJYmV52Hm78COeJ0UaD/Y2MlZ/CI2Xni3BJjNL58uBiPZGPw1+Ix35qJbwv7pZoSLNupmQgWPhAN6a6n2IhHXRteMNqzvsMhq/CQirufjU6P/NhMieoXUE3KY413eV4Qvkn7wa2rXB4LCRpj24A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(396003)(136003)(376002)(39860400002)(7416002)(316002)(4326008)(478600001)(66476007)(6916009)(66946007)(2906002)(6506007)(26005)(54906003)(66556008)(1076003)(53546011)(956004)(86362001)(52116002)(8676002)(6666004)(55016002)(33656002)(966005)(9686003)(44832011)(1006002)(5660300002)(186003)(55236004)(16526019)(7696005)(8936002)(110426006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?LOwW2M0jCLw/8pWrM8qCf2WxG6gwKBDXwuCJ+jUma0xax/dCjZR7Ov52LDQe?=
+ =?us-ascii?Q?MgRrhvRrZ3axPgWc7f0CaAW5c/jYlVjx5GD5VGXv1PT5ibIFcqcyF+855Cn+?=
+ =?us-ascii?Q?jYdJeMxj4L1hV7MYAvTQIciaTfoVRaQMgHc/NrCGZkaGhhjocOUjOtxHXcnr?=
+ =?us-ascii?Q?GDX4R5ca+vk7MfmHS0eXaqfqYdmpynYXpcWLLC68Lu8sy1p/QG7VPxcNzIum?=
+ =?us-ascii?Q?v0D8BD4K9Wt/7S7mCkJ7dlKmupcuHL+BIpchwdqqKycFvXVDaQC2/X8GYWGc?=
+ =?us-ascii?Q?2nA5fCMKURLYFJhj3d3DPGXAhPi9oU+fPUUmALjp1Ps/7l2FV760EcQUPlYb?=
+ =?us-ascii?Q?RaRXohXtN/O1omEJcYI+omAsH9p5DZzEKX2jgrIkuK5hD/rAAnX70leppESQ?=
+ =?us-ascii?Q?WfOjOqSqXMPmYU0VNI9Vxrwi0h1WCQ7H3B5Nx+1hwoB5G8yhqMHa63nCPFFn?=
+ =?us-ascii?Q?E1lye5xett1by9jj9YT+C8+wWzs2Bx8G0X451mgctAAVTwPJGcp5SqPHbNjF?=
+ =?us-ascii?Q?wJJIYSmz0065IcFW33NDEKrFYJwnWyEfSR8a7DbINfaKTdzed4TyQeAZQPPJ?=
+ =?us-ascii?Q?KIQBctm3hSCZKAlOs+wWH7RClzbFRvQhyNIvqfJl2xEfnSFOCpRKMvf+G/XW?=
+ =?us-ascii?Q?T2nZXxkJHIregVzqyDi1xtTfBm3suiZtphYny21hJEzCmuoGMV9MeNRHRZqL?=
+ =?us-ascii?Q?05Zb1QYSfVuhZHQocUb27cWvXMc7VN5vXczC2aHg4ADBmfEfqkA4KzngWdn7?=
+ =?us-ascii?Q?FflzYE2jGG0aQJl3w1csuPBYA3Lc0j1g3zPfQwTBzvxRKp15U/j5s+Bil7p/?=
+ =?us-ascii?Q?G6MlKcSW4CIM3zoOS32VG8buSIdDesij3LYc8IQdtiX3RSnPS+2ei1qXJkIa?=
+ =?us-ascii?Q?0zmo6nSod5DffWwir3T4dncboEOFLI5pckjAICeJZ8xCNBDPPcuSYmBMDyRx?=
+ =?us-ascii?Q?lCiDmDASeAU1mlzeVlzC63MDGwVj67Wv5Th2eVvufL679f+quDGQfwD37TGE?=
+ =?us-ascii?Q?npJF?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2020 04:08:54.9418
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2020 05:34:43.5489
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b34b651-88e7-480c-5103-08d8a30aa2ed
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94ad3b62-734d-451b-e9c2-08d8a3169fb8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iB2DIlUAWWpW6c/QTIa2ZBaFNqhCCqZnEheiBtJFGIwqy3lwkTy0d3YmCdUJfBxDX/O8XKtX5JONTHJZuniD0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR2101MB1009
+X-MS-Exchange-CrossTenant-UserPrincipalName: jA8SN9zjevNtyr0hF7ka4p4ZqMJHuc5v2D5GVwSMdd7FueJHLjwEVJ81l8jCx8mHwzcDxMX6TyZaQ5jaPFr7eg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4228
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Linux VM on Hyper-V crashes with the latest mainline:
+On Tue, Dec 15, 2020 at 07:33:40PM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 15, 2020 at 6:44 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Introduce fwnode_mdiobus_register_phy() to register PHYs on the
+> > mdiobus. From the compatible string, identify whether the PHY is
+> > c45 and based on this create a PHY device instance which is
+> > registered on the mdiobus.
+> 
+> ...
+> 
+> > +int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+> > +                               struct fwnode_handle *child, u32 addr)
+> > +{
+> > +       struct mii_timestamper *mii_ts;
+> > +       struct phy_device *phy;
+> > +       const char *cp;
+> > +       bool is_c45;
+> > +       u32 phy_id;
+> > +       int rc;
+> 
+> > +       if (is_of_node(child)) {
+> > +               mii_ts = of_find_mii_timestamper(to_of_node(child));
+> > +               if (IS_ERR(mii_ts))
+> > +                       return PTR_ERR(mii_ts);
+> > +       }
+> 
+> Perhaps
+> 
+>                mii_ts = of_find_mii_timestamper(to_of_node(child));
+> 
+> > +
+> > +       rc = fwnode_property_read_string(child, "compatible", &cp);
+> > +       is_c45 = !(rc || strcmp(cp, "ethernet-phy-ieee802.3-c45"));
+> > +
+> > +       if (is_c45 || fwnode_get_phy_id(child, &phy_id))
+> > +               phy = get_phy_device(bus, addr, is_c45);
+> > +       else
+> > +               phy = phy_device_create(bus, addr, phy_id, 0, NULL);
+> > +       if (IS_ERR(phy)) {
+> 
+> > +               if (mii_ts && is_of_node(child))
+> > +                       unregister_mii_timestamper(mii_ts);
+> 
+> if (!IS_ERR_OR_NULL(mii_ts))
+>  ...
+> 
+> However it points to the question why unregister() doesn't handle the
+> above cases.
+> I would expect unconditional call to unregister() here.
 
-[    4.069624] detected buffer overflow in strcpy
-[    4.077733] kernel BUG at lib/string.c:1149!
-..
-[    4.085819] RIP: 0010:fortify_panic+0xf/0x11
-...
-[    4.085819] Call Trace:
-[    4.085819]  acpi_device_add.cold.15+0xf2/0xfb
-[    4.085819]  acpi_add_single_object+0x2a6/0x690
-[    4.085819]  acpi_bus_check_add+0xc6/0x280
-[    4.085819]  acpi_ns_walk_namespace+0xda/0x1aa
-[    4.085819]  acpi_walk_namespace+0x9a/0xc2
-[    4.085819]  acpi_bus_scan+0x78/0x90
-[    4.085819]  acpi_scan_init+0xfa/0x248
-[    4.085819]  acpi_init+0x2c1/0x321
-[    4.085819]  do_one_initcall+0x44/0x1d0
-[    4.085819]  kernel_init_freeable+0x1ab/0x1f4
+This is following the logic defined in of_mdiobus_register_phy().
+https://elixir.bootlin.com/linux/latest/source/drivers/net/mdio/of_mdio.c#L107
 
-This is because of the recent buffer overflow detection in the
-commit 6a39e62abbaf ("lib: string.h: detect intra-object overflow in fortified string functions")
+	mii_ts = of_find_mii_timestamper(child);
+	if (IS_ERR(mii_ts))
+		return PTR_ERR(mii_ts);
 
-Here acpi_device_bus_id->bus_id can only hold 14 characters, while the
-the acpi_device_hid(device) returns a 22-char string
-"HYPER_V_GEN_COUNTER_V1".
+I think the logic above is correct because this function returns only if
+of_find_mii_timestamper() returns error. On NULL return, it proceeds further.
 
-Per ACPI Spec v6.2, Section 6.1.5 _HID (Hardware ID), if the ID is a
-string, it must be of the form AAA#### or NNNN####, i.e. 7 chars or 8
-chars.
+> 
+> > +               return PTR_ERR(phy);
+> > +       }
+> > +
+> > +       if (is_acpi_node(child)) {
+> > +               phy->irq = bus->irq[addr];
+> > +
+> > +               /* Associate the fwnode with the device structure so it
+> > +                * can be looked up later.
+> > +                */
+> > +               phy->mdio.dev.fwnode = child;
+> > +
+> > +               /* All data is now stored in the phy struct, so register it */
+> > +               rc = phy_device_register(phy);
+> > +               if (rc) {
+> > +                       phy_device_free(phy);
+> > +                       fwnode_handle_put(phy->mdio.dev.fwnode);
+> > +                       return rc;
+> > +               }
+> > +
+> > +               dev_dbg(&bus->dev, "registered phy at address %i\n", addr);
+> > +       } else if (is_of_node(child)) {
+> > +               rc = of_mdiobus_phy_device_register(bus, phy, to_of_node(child), addr);
+> > +               if (rc) {
+> 
+> > +                       if (mii_ts)
+> > +                               unregister_mii_timestamper(mii_ts);
+> 
+> Ditto.
+> 
+> > +                       phy_device_free(phy);
+> > +                       return rc;
+> > +               }
+> > +
+> > +               /* phy->mii_ts may already be defined by the PHY driver. A
+> > +                * mii_timestamper probed via the device tree will still have
+> > +                * precedence.
+> > +                */
+> 
+> > +               if (mii_ts)
+> > +                       phy->mii_ts = mii_ts;
+> 
+> How is that defined? Do you need to do something with an old pointer?
 
-The field bus_id in struct acpi_device_bus_id was originally defined as
-char bus_id[9], and later was enlarged to char bus_id[15] in 2007 in the
-commit bb0958544f3c ("ACPI: use more understandable bus_id for ACPI devices")
+As the comment says, I think PHY drivers which got invoked before calling
+of_mdiobus_register_phy() may have defined phy->mii_ts.
 
-It looks like so far an ID string of >=15 chars is only seen in the guest
-BIOS/firmware by Hyper-V, and AFAIK the ID string "HYPER_V_GEN_COUNTER_V1"
-is never used by Linux VM on Hyper-V, so let's just truncate the string to
-fix the panic.
-
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
----
- drivers/acpi/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index a1b226eb2ce2..b801442b6b1b 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -674,7 +674,8 @@ int acpi_device_add(struct acpi_device *device,
- 	}
- 	if (!found) {
- 		acpi_device_bus_id = new_bus_id;
--		strcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device));
-+		strlcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device),
-+			sizeof(acpi_device_bus_id->bus_id));
- 		acpi_device_bus_id->instance_no = 0;
- 		list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
- 	}
--- 
-2.19.1
-
+> 
+> > +       }
+> > +       return 0;
+> > +}
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
