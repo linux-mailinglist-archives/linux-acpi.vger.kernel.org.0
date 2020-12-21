@@ -2,118 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0FA2E00B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Dec 2020 20:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2D22E00D1
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Dec 2020 20:15:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbgLUTIP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Dec 2020 14:08:15 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:57986 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbgLUTIO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Dec 2020 14:08:14 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 245031C0B7C; Mon, 21 Dec 2020 20:07:33 +0100 (CET)
-Date:   Mon, 21 Dec 2020 20:07:32 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>
-Subject: Re: How can a userspace program tell if the system supports the ACPI
- S4 state (Suspend-to-Disk)?
-Message-ID: <20201221190731.GA19905@amd>
-References: <MWHPR21MB0863BA3D689DDEC3CA6BC262BFC91@MWHPR21MB0863.namprd21.prod.outlook.com>
+        id S1726226AbgLUTOf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Dec 2020 14:14:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59784 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726296AbgLUTOf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 21 Dec 2020 14:14:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1608577988;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=mrVDB9kShOjxrbhbFLrKZcgNDJTJ7+1Yk+kpVt3L0gU=;
+        b=ZdwGs3FsP0DNJ0iWMlE9KGRDM+wGyNLGC6rl9q4yY3nVmZsYehCAfSH3Jo50U4KdPMiVIq
+        2l6NjKBY+iPjou26ligbSHV+6/CD1JRlwRrJCynfZG6/QLgXDVA5P1ic+w5hQlUYdY1JLa
+        rgtAYR9gb0Y3rBue0XJUX1mDvCDh6h4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-195-o28lj1lmNiiBGvm5Qt89zw-1; Mon, 21 Dec 2020 14:13:04 -0500
+X-MC-Unique: o28lj1lmNiiBGvm5Qt89zw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F8BE800D53;
+        Mon, 21 Dec 2020 19:13:03 +0000 (UTC)
+Received: from x1.localdomain (ovpn-115-12.ams2.redhat.com [10.36.115.12])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BA2781002393;
+        Mon, 21 Dec 2020 19:13:01 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] i2c: core: Do not print duplicate error when failing to register an i2c-client from ACPI
+Date:   Mon, 21 Dec 2020 20:13:00 +0100
+Message-Id: <20201221191300.244648-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="BOKacYhQ+x31HxR3"
-Content-Disposition: inline
-In-Reply-To: <MWHPR21MB0863BA3D689DDEC3CA6BC262BFC91@MWHPR21MB0863.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+i2c_new_client_device() already prints an error when it fails. Some
+ACPI tables contain 2 ACPI devices describing the same i2c-client,
+leading to errors like this:
 
---BOKacYhQ+x31HxR3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[    1.620847] i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
+[    1.620870] i2c i2c-4: failed to add I2C device MAGN0001:00 from ACPI
 
-On Sat 2020-12-12 01:20:30, Dexuan Cui wrote:
-> Hi all,
-> It looks like Linux can hibernate even if the system does not support the=
- ACPI
-> S4 state, as long as the system can shut down, so "cat /sys/power/state"
-> always contains "disk", unless we specify the kernel parameter "nohiberna=
-te"
-> or we use LOCKDOWN_HIBERNATION.
->=20
-> In some scenarios IMO it can still be useful if the userspace is able to =
-detect
-> if the ACPI S4 state is supported or not, e.g. when a Linux guest runs on=
-=20
-> Hyper-V, Hyper-V uses the virtual ACPI S4 state as an indicator of the pr=
-oper
-> support of the tool stack on the host, i.e. the guest is discouraged from=
-=20
-> trying hibernation if the state is not supported.
+There is nothing we can do about the first -EBUSY error being logged,
+but the second error does not really add any new information, so lets
+drop it.
 
-Umm. Does not sound like exactly strong reason to me.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/i2c/i2c-core-acpi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-If ACPI S4 is special to the hypervisor, perhaps that should be
-reported to userspace...?
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 37c510d9347a..8ceaa88dd78f 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -225,12 +225,8 @@ static void i2c_acpi_register_device(struct i2c_adapter *adapter,
+ 	adev->power.flags.ignore_parent = true;
+ 	acpi_device_set_enumerated(adev);
+ 
+-	if (IS_ERR(i2c_new_client_device(adapter, info))) {
++	if (IS_ERR(i2c_new_client_device(adapter, info)))
+ 		adev->power.flags.ignore_parent = false;
+-		dev_err(&adapter->dev,
+-			"failed to add I2C device %s from ACPI\n",
+-			dev_name(&adev->dev));
+-	}
+ }
+ 
+ static acpi_status i2c_acpi_add_device(acpi_handle handle, u32 level,
+-- 
+2.28.0
 
-> I know we can check the S4 state by 'dmesg':
->=20
-> # dmesg |grep ACPI: | grep support
-> [    3.034134] ACPI: (supports S0 S4 S5)
->=20
-> But this method is unreliable because the kernel msg buffer can be filled
-> and overwritten. Is there any better method? If not, do you think if the
-> below patch is appropriate? Thanks!
-
-
-> @@ -600,8 +601,12 @@ static ssize_t state_show(struct kobject *kobj, stru=
-ct kobj_attribute *attr,
->                         s +=3D sprintf(s,"%s ", pm_states[i]);
->=20
->  #endif
-> -       if (hibernation_available())
-> -               s +=3D sprintf(s, "disk ");
-> +       if (hibernation_available()) {
-> +               if (acpi_sleep_state_supported(ACPI_STATE_S4))
-> +                       s +=3D sprintf(s, "disk+ ");
-> +               else
-> +                       s +=3D sprintf(s, "disk ");
-> +       }
->         if (s !=3D buf)
-
-Will this compile on all the systems?
-
-Certainly needs documentation.
-
-Plus if ACPI S4 is supported, kernel can support both normal
-hibernation and ACPI S4... so perhaps it should list two entries? And
-"disk+" sounds wrong, "acpidisk"?
-
-=2E..and that would bring next question. Usespace writes "disk" there
-and uses different file to select between S4 and S5...
-
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---BOKacYhQ+x31HxR3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl/g8nMACgkQMOfwapXb+vLkgwCeMW2fXbRDW6Sr2dCIQGMICYaX
-sBsAoJgURNDoL/yTSiY5EuI7q+BdCwvx
-=HAYT
------END PGP SIGNATURE-----
-
---BOKacYhQ+x31HxR3--
