@@ -2,54 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 864402DFB40
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Dec 2020 11:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B949C2DFB44
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Dec 2020 11:59:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgLUKxg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Dec 2020 05:53:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbgLUKxf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Dec 2020 05:53:35 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7142FC0613D6;
-        Mon, 21 Dec 2020 02:52:55 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id t16so10599064wra.3;
-        Mon, 21 Dec 2020 02:52:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=UwwnMwR2kfUcWRxk8iTnFBRRH6uRfKSxOocUF3HIakM=;
-        b=c0fXFtpGPZpKDXElftRtOWRuvSUR20VZQT52u9Z0QEqNgGXxMojaqvycQPlQiGjerM
-         zVehpwzGRrMfJ5ofvCFCZIViVQ9EAaVgGxEad+7Bd7s8rJmDFitKPc4JT7zZ42A6wUVX
-         DP4cqoc3PQ7s0x6DpZGC0JHKEKl+45etvo1zKaVYFshoO/iA/fWyDnIj6U/I5fvIv0TZ
-         Q2M3UE+L83bx9Z0N6j8PKsgTWBFgEdAsWu6iD/6YRhHlfa9vnKuwXqide9HZxWAQkHG7
-         IDAstFAqUp6Tdt/CkNQcVqKrkr2bf3PPctbu5VeAp/epyj0khTZgyYaGaszc/D/Y1aKF
-         ufsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=UwwnMwR2kfUcWRxk8iTnFBRRH6uRfKSxOocUF3HIakM=;
-        b=QZs1nsdny8lBWh+C0wtwBc4TuWVUred1dbIlWoMpyCMH5up/3ikb5Xeurl2a/0B274
-         tFPORM/OZNB/g6KXMneDPakdk+d5U6Q4h5f54XxHmuNMmIQfy8j3i81MfNv5tJcYVojx
-         LLdJwVPP1m8x+jPDwQyowp6AD/aN0qZcnik5BQFpMn8ijTdXHBQdoLTYTWcOughcDO04
-         DHm5DALm+4PcT+Ur7rZfkEQroBNCDVkYoXtq4k+/rqdYv6G3x4Otw9zUtUSj9G0KXozm
-         HsSwDJpnl0RBOuLd0eQD8QROgJ3tIELd4PsyivlCrmCt2zcfcgdAPuZr9Q25DH1zlZGv
-         GK/g==
-X-Gm-Message-State: AOAM533d6xwUyM2nGjCb6ClN3AdRkwOM5+Wb9hAed+51/IeM7figfWl0
-        G6AchxYiY1nv68VntLMKfxs=
-X-Google-Smtp-Source: ABdhPJyDRD1hyEkZAhGiG6vgtYKzIOhhOFbhtoE0B0prFL8jZXxIwDDe6LhiOl1y+4R6z6DTsrtz8A==
-X-Received: by 2002:a5d:4c49:: with SMTP id n9mr18203106wrt.30.1608547974186;
-        Mon, 21 Dec 2020 02:52:54 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id l5sm26600567wrv.44.2020.12.21.02.52.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Dec 2020 02:52:53 -0800 (PST)
-Subject: Re: [PATCH v2 12/12] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+        id S1725938AbgLUK70 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Dec 2020 05:59:26 -0500
+Received: from mga06.intel.com ([134.134.136.31]:8795 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725898AbgLUK70 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 21 Dec 2020 05:59:26 -0500
+IronPort-SDR: E8me36LRLhbuBPaD0Z+v1uPKd6jFKT0K6X+DK6HSIPca1CGxwktM6CN/PYWkOMFk8Pl7z7nHmI
+ dEGAIMlMCyCA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9841"; a="237273217"
+X-IronPort-AV: E=Sophos;i="5.78,436,1599548400"; 
+   d="scan'208";a="237273217"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2020 02:57:40 -0800
+IronPort-SDR: rgl18WKC6PsWs6q4I3s+395OQJynOrNu+wzz/IIef7cvNS4HBhkk4JJAh2ae5WKuETt8+eMfTd
+ a2w+OU5iniLw==
+X-IronPort-AV: E=Sophos;i="5.78,436,1599548400"; 
+   d="scan'208";a="415756307"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2020 02:57:34 -0800
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 528DF205F7; Mon, 21 Dec 2020 12:57:32 +0200 (EET)
+Date:   Mon, 21 Dec 2020 12:57:32 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -74,6 +53,8 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Tsuchiya Yuto <kitakar@gmail.com>, jorhand@linux.microsoft.com
+Subject: Re: [PATCH v2 12/12] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
+Message-ID: <20201221105732.GL26370@paasikivi.fi.intel.com>
 References: <20201217234337.1983732-1-djrscally@gmail.com>
  <20201217234337.1983732-13-djrscally@gmail.com>
  <20201218211732.GE4077@smile.fi.intel.com>
@@ -81,71 +62,78 @@ References: <20201217234337.1983732-1-djrscally@gmail.com>
  <CAHp75VcebKas4j-vByodicHxRMrO4jkaJToSUW3iLJC2+vY_iA@mail.gmail.com>
  <e86fc26d-8c2f-c8a6-fc2e-ec612fd5d158@gmail.com>
  <20201221102147.GJ26370@paasikivi.fi.intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <5ba6ada9-c8a6-fa66-b8d6-5769b7bcdfea@gmail.com>
-Date:   Mon, 21 Dec 2020 10:52:52 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <5ba6ada9-c8a6-fa66-b8d6-5769b7bcdfea@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201221102147.GJ26370@paasikivi.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5ba6ada9-c8a6-fa66-b8d6-5769b7bcdfea@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Dec 21, 2020 at 10:52:52AM +0000, Daniel Scally wrote:
+> 
+> On 21/12/2020 10:21, Sakari Ailus wrote:
+> > Hi Daniel, Andy,
+> >
+> > On Sat, Dec 19, 2020 at 11:48:51PM +0000, Daniel Scally wrote:
+> >> On 19/12/2020 18:52, Andy Shevchenko wrote:
+> >>> On Sat, Dec 19, 2020 at 2:25 AM Daniel Scally <djrscally@gmail.com> wrote:
+> >>>> On 18/12/2020 21:17, Andy Shevchenko wrote:
+> >>>>> On Thu, Dec 17, 2020 at 11:43:37PM +0000, Daniel Scally wrote:
+> >>> ...
+> >>>
+> >>>>>> +    sensor->ep_properties[0] = PROPERTY_ENTRY_U32(sensor->prop_names.bus_type, 4);
+> >>>>> Does 4 has any meaning that can be described by #define ?
+> >>>> It's V4L2_FWNODE_BUS_TYPE_CSI2_DPHY:
+> >>>>
+> >>>> https://elixir.bootlin.com/linux/latest/source/drivers/media/v4l2-core/v4l2-fwnode.c#L36
+> >>>>
+> >>>> That enum's not in an accessible header, but I can define it in this
+> >>>> module's header
+> >>> Maybe you can do a preparatory patch to make it visible to v4l2
+> >>> drivers? (Like moving to one of v4l2 headers)
+> >> Sure ok, guess media/v4l2-fwnode.h makes the most sense.
+> > Yes, please.
+> Done for the next version
+> >
+> >>> ...
+> >>>
+> >>>>>> +                    if (bridge->n_sensors >= CIO2_NUM_PORTS) {
+> >>>>>> +                            dev_warn(&cio2->dev, "Exceeded available CIO2 ports\n");
+> >>>>>> +                            /* overflow i so outer loop ceases */
+> >>>>>> +                            i = ARRAY_SIZE(cio2_supported_sensors);
+> >>>>>> +                            break;
+> >>>>> Why not to create a new label below and assign ret here with probably comment
+> >>>>> why it's not an error?
+> >>>> Sure, I can do that, but since it wouldn't need any cleanup I could also
+> >>>> just return 0 here as Laurent suggest (but with a comment explaining why
+> >>>> that's ok as you say) - do you have a preference?
+> >>> While it's a good suggestion it will bring a bit of inconsistency into
+> >>> approach. Everywhere else in the function you are using the goto
+> >>> approach.
+> >>> So yes, I have a preference.
+> >> No problem
+> > Laurent also commented on the return code.
+> >
+> > I might just handle this as an error. The earlier ports are fine, but
+> > there's also a problem with the data here. It'd be easier to spot that this
+> > way, and we can change this in the future if need be.
+> 
+> 
+> You mean just raise an error with dev_err()? Or fail the probe and
+> unwind the 4 sensors that were already connected successfully? I'm fine
 
-On 21/12/2020 10:21, Sakari Ailus wrote:
-> Hi Daniel, Andy,
->
-> On Sat, Dec 19, 2020 at 11:48:51PM +0000, Daniel Scally wrote:
->> On 19/12/2020 18:52, Andy Shevchenko wrote:
->>> On Sat, Dec 19, 2020 at 2:25 AM Daniel Scally <djrscally@gmail.com> wrote:
->>>> On 18/12/2020 21:17, Andy Shevchenko wrote:
->>>>> On Thu, Dec 17, 2020 at 11:43:37PM +0000, Daniel Scally wrote:
->>> ...
->>>
->>>>>> +    sensor->ep_properties[0] = PROPERTY_ENTRY_U32(sensor->prop_names.bus_type, 4);
->>>>> Does 4 has any meaning that can be described by #define ?
->>>> It's V4L2_FWNODE_BUS_TYPE_CSI2_DPHY:
->>>>
->>>> https://elixir.bootlin.com/linux/latest/source/drivers/media/v4l2-core/v4l2-fwnode.c#L36
->>>>
->>>> That enum's not in an accessible header, but I can define it in this
->>>> module's header
->>> Maybe you can do a preparatory patch to make it visible to v4l2
->>> drivers? (Like moving to one of v4l2 headers)
->> Sure ok, guess media/v4l2-fwnode.h makes the most sense.
-> Yes, please.
-Done for the next version
->
->>> ...
->>>
->>>>>> +                    if (bridge->n_sensors >= CIO2_NUM_PORTS) {
->>>>>> +                            dev_warn(&cio2->dev, "Exceeded available CIO2 ports\n");
->>>>>> +                            /* overflow i so outer loop ceases */
->>>>>> +                            i = ARRAY_SIZE(cio2_supported_sensors);
->>>>>> +                            break;
->>>>> Why not to create a new label below and assign ret here with probably comment
->>>>> why it's not an error?
->>>> Sure, I can do that, but since it wouldn't need any cleanup I could also
->>>> just return 0 here as Laurent suggest (but with a comment explaining why
->>>> that's ok as you say) - do you have a preference?
->>> While it's a good suggestion it will bring a bit of inconsistency into
->>> approach. Everywhere else in the function you are using the goto
->>> approach.
->>> So yes, I have a preference.
->> No problem
-> Laurent also commented on the return code.
->
-> I might just handle this as an error. The earlier ports are fine, but
-> there's also a problem with the data here. It'd be easier to spot that this
-> way, and we can change this in the future if need be.
+Both.
 
+> with that if so - we have no in scope devices where that will be a
+> problem at the moment.
 
-You mean just raise an error with dev_err()? Or fail the probe and
-unwind the 4 sensors that were already connected successfully? I'm fine
-with that if so - we have no in scope devices where that will be a
-problem at the moment.
+I guess there will be quite a few additional things to address before
+getting anything with four sensors working.
 
+-- 
+Regards,
+
+Sakari Ailus
