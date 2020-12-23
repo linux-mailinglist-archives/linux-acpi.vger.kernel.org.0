@@ -2,61 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 126D62E101F
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Dec 2020 23:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F1B2E1630
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Dec 2020 03:59:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726329AbgLVWYq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Dec 2020 17:24:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49840 "EHLO mail.kernel.org"
+        id S1729112AbgLWC6x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Dec 2020 21:58:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45508 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727857AbgLVWYp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 22 Dec 2020 17:24:45 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 583A222B2D;
-        Tue, 22 Dec 2020 22:24:05 +0000 (UTC)
+        id S1728964AbgLWCUZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:20:25 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4E9322256F;
+        Wed, 23 Dec 2020 02:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608675845;
-        bh=9uE+ZLL0wSwX0x3Lrro9ZLZMX2HzyERMpCjs9kyf/yg=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=FwyqE3IUaG60WXN/1z0VpYD4oqcomoXjl1adpL6uiuD4vq/mfUM6Msyg9maxfeqSZ
-         EJCNfPLqCSMpnXZ5D3bet6daXqtS7QrKOf8hRtGvkrq3ZfgHy0kkzlFVGPv5sG4R5N
-         TAy0GAukvLVEUvQBweTAKSscqvUFCvvmEeQxNwnn/7a+pLBPhqITmQ5L+dyy4xHGhU
-         UdOQNcFxW7h7Gt6XvN9bhvVa4dElyGPSfEpRnQ8SuFU9GzyMJJr78nzO/5dflzP12J
-         4HzuIewgHMshjpM8+UckFlUVT8rgUUd3bt+sKgjl0reTmYYor+gqhL5Ygfv8EuE9Hp
-         4magR2KPp39/g==
-Received: from pdx-korg-docbuild-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-1.ci.codeaurora.org (Postfix) with ESMTP id 52D776019C;
-        Tue, 22 Dec 2020 22:24:05 +0000 (UTC)
-Subject: Re: [GIT PULL] More ACPI updates for v5.11-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0jS2-kDBA70XwStNEg3pUusK_=h5P58d71cOx83zU-WOw@mail.gmail.com>
-References: <CAJZ5v0jS2-kDBA70XwStNEg3pUusK_=h5P58d71cOx83zU-WOw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0jS2-kDBA70XwStNEg3pUusK_=h5P58d71cOx83zU-WOw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc1-2
-X-PR-Tracked-Commit-Id: 538fcf57aaee6ad78a05f52b69a99baa22b33418
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 614cb5894306cfa2c7d9b6168182876ff5948735
-Message-Id: <160867584533.8550.10758431906540958942.pr-tracker-bot@kernel.org>
-Date:   Tue, 22 Dec 2020 22:24:05 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
+        s=k20201202; t=1608690010;
+        bh=C1V8F8DQ0RPPzESWTdeKqnGzBe0X7hN6HCddQAmlQDc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=r0Lu3fhHL/wABqfp6KavItaLYkvzURTBS1wMnpzDRXuDWzYV29VduG4gMONGJAe3N
+         7Wi51F8MLCSHGveNpHmXntPXsAG2bDOiPLeBb4fUFj9E4vXCklcIsGS1FgAnbEHM0M
+         XQD4dU+R6tcfo2YI4h2T3Y4cB2wd8OAkrkw8w9Q4Jq4V2F8/jcjZ0RlxqEBhA/E8N3
+         yL9akp6S9+P02Ug5GlBWyD20mAOYduqGrK2vvxmUK4GT3LdB6ZqGT/L0/0bsVH8ZgZ
+         n5Vf7qW4MPk1dJNjW+8b+klK1Ppae+M8+UophaGPxQ2XyAJKboFw+dv4S3aBBRJ7oS
+         jHuLY0itnegfg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Jasper St. Pierre" <jstpierre@mecheye.net>,
+        Chris Chiu <chiu@endlessos.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 090/130] ACPI: video: Add DMI quirk for GIGABYTE GB-BXBT-2807
+Date:   Tue, 22 Dec 2020 21:17:33 -0500
+Message-Id: <20201223021813.2791612-90-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20201223021813.2791612-1-sashal@kernel.org>
+References: <20201223021813.2791612-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Tue, 22 Dec 2020 20:15:22 +0100:
+From: "Jasper St. Pierre" <jstpierre@mecheye.net>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc1-2
+[ Upstream commit 25417185e9b5ff90746d50769d2a3fcd1629e254 ]
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/614cb5894306cfa2c7d9b6168182876ff5948735
+The GIGABYTE GB-BXBT-2807 is a mini-PC which uses off the shelf
+components, like an Intel GPU which is meant for mobile systems.
+As such, it, by default, has a backlight controller exposed.
 
-Thank you!
+Unfortunately, the backlight controller only confuses userspace, which
+sees the existence of a backlight device node and has the unrealistic
+belief that there is actually a backlight there!
 
+Add a DMI quirk to force the backlight off on this system.
+
+Signed-off-by: Jasper St. Pierre <jstpierre@mecheye.net>
+Reviewed-by: Chris Chiu <chiu@endlessos.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/video_detect.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 55af78b55c513..301ffe5b8feb0 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -143,6 +143,13 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 	},
+ 	{
+ 	.callback = video_detect_force_vendor,
++	.ident = "GIGABYTE GB-BXBT-2807",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
++		},
++	},
++	{
+ 	.ident = "Sony VPCEH3U1E",
+ 	.matches = {
+ 		DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.27.0
+
