@@ -2,55 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1F12E278C
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8772D2E2791
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:13:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728462AbgLXOB1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 09:01:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
+        id S1726839AbgLXONS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 09:13:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbgLXOB1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:01:27 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BD4C061794;
-        Thu, 24 Dec 2020 06:00:46 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id 91so2249378wrj.7;
-        Thu, 24 Dec 2020 06:00:46 -0800 (PST)
+        with ESMTP id S1726609AbgLXONR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:13:17 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B1FCC061794;
+        Thu, 24 Dec 2020 06:12:37 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id b5so1239158pjl.0;
+        Thu, 24 Dec 2020 06:12:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=hTZYu0KyYNj6GV2bBjh3qdlRgAwRDrZxZXOKPRcg84c=;
-        b=jiGvw60pmyZpHGhIJzNBYgP2ZTYSe+VnyxjnYIr+4u8iTKTN21QV+44OhsfqCw7VW8
-         lZ5OeT4hf6sDduKPRa1gWUbK4PAEAh0D6dhG03iEYbtisuv6/t1Lw8r1a8BGjVSnI5mF
-         rAsvVuThEHRhgM90vJtP11SEB5GDJ25CAr1EyT5BziG9phgkcgoBlwOgiPMUenv1Nvf4
-         E/Wyd6iIhE/xdYVXIl5sX1wwNLm9Ad46AEZTasiZMQaBjyzP9EETbZnYCGWaYX8qp2gt
-         lcsYTH9XP0gdcjEECO87XqqYjk8GM6Y9yxvDBW99BllbIDxhCljRDblhe+b/sZShu69V
-         jGwQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SyPbtlk9TvZ8wXRc8WjmzSpmQJoyLh7+BtUnWFRUKOY=;
+        b=Vv2Jg/rS+lyAVr9MqO3QquOplXTJE9iaeVSbUISyBQrx29Nk1tkF6q5D3r+WDG8vjg
+         9FxmYx405/I97A8UVartQUnPETdQwiTCKYvIh24PLTWfcaFLGssnDt6tumHRLal0hskY
+         myzItrP2leShibgY5N7Ebte7LM+rOf8YmclPEVSqgcyLurAqn2aINtFSbrrWqphjKSya
+         WYStg7PkOmpP1clUIgvTPjXeQ0Yt61Ib82ihwMiA8PcGqHnsZbIczK1Edwni6qzKjG0W
+         Say17Xh1AysuN/55mVAHC4XMuq0Z4EYGT6hxGbiBZuxzc6PuJLJ2tufoPs4HlCgyU/2e
+         Avgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=hTZYu0KyYNj6GV2bBjh3qdlRgAwRDrZxZXOKPRcg84c=;
-        b=pVfGHuAc6JGqNlz8a8SYLQPLk/DXI8P32u1ApZDoQkw9Aln9IQ5s7bcQl4C3ojUTcL
-         omnsQKWLu9any/8daZ0NgofAsgOlsvt1cHLiB6e+ST17cDbTw97Fmp0HQ/s9B8DQE6zD
-         aSvtutiLdIh/9zyhzERVrT1RhEBlMWM/IbkccDVkJx6vBKMpdzJfexooa93ywDJQvAo7
-         U+aV5RJDDus8NTrILKEEbL7lmQNjB5/rLK6qmtS50+nl4kaYIQS3Sk2y2pBA2FzbnUt2
-         P+BBJnDNXMPvnadrLvwfsTbdeujIelbYBDgzENzZ+Yoo5S/wz+bbskyLpT2Irs6Mol40
-         CGeg==
-X-Gm-Message-State: AOAM530MEYSUj5VxtwFG4aKFyoo8+s+z54OtLsItfuUIgsOeiZZAJzpH
-        XI4tMzG1dbxQYD9kKo76wWE=
-X-Google-Smtp-Source: ABdhPJx+Z0EJqXx/2AjrwRP+xuKb0XQTgwvxvJSravZrEZ5dPl56k33iW2pd5DGEMbQAm/r9ZBJ2ng==
-X-Received: by 2002:a5d:56c3:: with SMTP id m3mr34636969wrw.419.1608818445462;
-        Thu, 24 Dec 2020 06:00:45 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id h13sm38544866wrm.28.2020.12.24.06.00.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Dec 2020 06:00:44 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SyPbtlk9TvZ8wXRc8WjmzSpmQJoyLh7+BtUnWFRUKOY=;
+        b=KO5LwyaFjpUOqhuk0DkZ3GRh6gnuh8rycIvQHwWOHyDTkB9EYdVch1YzKiPNDRQNIF
+         pM47jd0IO1VPii/XC0D2mZNStSJjot9YV/1HabjhpWXSRzcDM3KCDa/SYv3VHAP6fTTA
+         GUCASbl255gB7LYz/eAquAE2bedI4s+i6HCP2D5bhnfveHzoHkYYIvLfHAmg70YX1wuL
+         fjc5C3NBsqWqJeEyCXWS6h4MC3sM5YNAp0edmV/B9aK4/Ye//ib9+eSBankF+4HcQst0
+         3imlLCphttReoo1/HeyL6znlFph3Sao/f1U2sdB6Afrsow96saH+x3EE9BcE0Zk8EOSe
+         rJGw==
+X-Gm-Message-State: AOAM533xAHw38HI9MrjZXk6GF98f+g3b/orNqGyN8Fn+j2idTg/+gxDg
+        M9vdS48Ug1/ZvsPLZ5u2zx/W/Ss6EE2dPhOx0Vc=
+X-Google-Smtp-Source: ABdhPJx4kU2kgiBhzVnrEN4w5jn8fz4Uh0jF+A7nHQah1fR613EyonYvxy52LCufMdVu+K4/MKNj9N0tSoQEuzzOI1Q=
+X-Received: by 2002:a17:90a:c592:: with SMTP id l18mr4636764pjt.228.1608819157024;
+ Thu, 24 Dec 2020 06:12:37 -0800 (PST)
+MIME-Version: 1.0
+References: <20201224010907.263125-1-djrscally@gmail.com> <20201224010907.263125-6-djrscally@gmail.com>
+ <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com> <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
+In-Reply-To: <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 24 Dec 2020 16:12:20 +0200
+Message-ID: <CAHp75VdWuowLenNPQRNc+QXeyuvwKqh_bjw=1WvmFrzoygXFRw@mail.gmail.com>
 Subject: Re: [PATCH v3 05/14] software_node: unregister software_nodes in
  reverse order
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Daniel Scally <djrscally@gmail.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
@@ -81,47 +83,38 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         kernel test robot <lkp@intel.com>,
         Dan Carpenter <dan.carpenter@oracle.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20201224010907.263125-1-djrscally@gmail.com>
- <20201224010907.263125-6-djrscally@gmail.com>
- <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
-Date:   Thu, 24 Dec 2020 14:00:42 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 24/12/2020 12:13, Andy Shevchenko wrote:
-> On Thu, Dec 24, 2020 at 3:12 AM Daniel Scally <djrscally@gmail.com> wrote:
->>
->> To maintain consistency with software_node_unregister_nodes(), reverse
->> the order in which the software_node_unregister_node_group() function
->> unregisters nodes.
-> 
-> ...
-> 
->> - * Unregister multiple software nodes at once.
->> + * Unregister multiple software nodes at once. The array will be unwound in
->> + * reverse order (i.e. last entry first) and thus if any member of the array
->> + * has its .parent member set then they should appear later in the array such
->> + * that they are unregistered first.
-> 
-> I'm, as being not a native speaker, a bit confused by this comment.
-> The idea is that children are unregistered first. Can you try to make
-> it more clear maybe?
+On Thu, Dec 24, 2020 at 4:00 PM Daniel Scally <djrscally@gmail.com> wrote:
+> On 24/12/2020 12:13, Andy Shevchenko wrote:
+> > On Thu, Dec 24, 2020 at 3:12 AM Daniel Scally <djrscally@gmail.com> wrote:
 
-Sure, how about:
+...
 
-The array will be unwound in reverse order (i.e. last entry first). If
-any member of the array is a child of another member then the child must
-appear later in the array than their parent, so that they are
-unregistered first.
+> >> + * Unregister multiple software nodes at once. The array will be unwound in
+> >> + * reverse order (i.e. last entry first) and thus if any member of the array
+> >> + * has its .parent member set then they should appear later in the array such
+> >> + * that they are unregistered first.
+> >
+> > I'm, as being not a native speaker, a bit confused by this comment.
+> > The idea is that children are unregistered first. Can you try to make
+> > it more clear maybe?
+>
+> Sure, how about:
+>
+> The array will be unwound in reverse order (i.e. last entry first). If
+> any member of the array is a child of another member then the child must
 
-?
+children ?
+
+> appear later in the array than their parent, so that they are
+> unregistered first.
+
+I think with the above change it will be better, yes.
+
+-- 
+With Best Regards,
+Andy Shevchenko
