@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC0C2E2794
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 883892E279A
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727861AbgLXOOz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 09:14:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55356 "EHLO
+        id S1726611AbgLXOV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 09:21:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbgLXOOz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:14:55 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BB8C06179C;
-        Thu, 24 Dec 2020 06:14:14 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id i9so2302261wrc.4;
-        Thu, 24 Dec 2020 06:14:14 -0800 (PST)
+        with ESMTP id S1726609AbgLXOV7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:21:59 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7ABDC061794;
+        Thu, 24 Dec 2020 06:21:18 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id t30so2336244wrb.0;
+        Thu, 24 Dec 2020 06:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=5IQf/4MAsKE+WTlNyQCuo6jepc1CwhVN6xmkcDb3fIU=;
-        b=nf8307rNrKyayWyufbV1EUOx8jMRH6o3Gm83koiFlra3TmbAw2CLkRj6RU3AR4BWe0
-         W4IhyHFn7uM0YyUBigTpmrl8TN5GgU6EUhQ8PkBjYuPEtHLbvz5zxtPl6flbqlh6Yqsq
-         cJKrFj5QGtpVtDbhQe0JMYOw3LnkTxsuImQW65vtTB/aFvNqvjKnX42SEI6eIN4dE+s+
-         67ZuUGW9ndnOM4vjHoZBa2kUw92bJ1EdeLDLyZ23rW+YFeoeHfSmWikPf7CHvon16JK4
-         vzqw+q7eF42PVLxAGdvfuE6wk9UWjRwmK9tgmifeh0WAJdlw/sYqqXmQ2ZSNzUg29Rx1
-         Jksg==
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=290qlAj9/wIw73WZ0l4W99gBHafzKX3LexaIq9Kbj8U=;
+        b=H9IK62WB6jMmUFDg7RSJNvniwFUqmjdFIKzyYfj+RwCDdYSPuSroL6eBRLv8eVZ1Cy
+         laPMMShRTovyn+4hKMvHimz2EOcmiiM8wUEtoquUtc5qN9wwK7vhuFCtmolrJ84xCRnj
+         Y56bXcM9MIdixqjr3UM8SM9DUt/Oibf+OmHSNY7bziTGwpEzqLTcisda3iqDWOMhlmqo
+         nbQv7zyg+939bA6LNeL/WFyM3cFz8dIUaFsG/0x2v0tJXYR7kzkgaARUvEt5ga2+j6kn
+         l+sjTN0wNnlsweBiL976XpqYLrRLfbxxLfwgXOUL+6yFVqplC36ydG4mBpxafmOwou6n
+         vqog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=5IQf/4MAsKE+WTlNyQCuo6jepc1CwhVN6xmkcDb3fIU=;
-        b=tyxFljXOn5LVvo69phxmdHT59i+m5rRLJ/djfSh3uGj+4EDqHnP5QiEN5KNfnHs2Yd
-         ifcuG5D83cL2KtQW3hOItNlsPJaoAW+V+be/3+OoMNzkpPhcZnWiWPC1hI1Z7g+RCuY4
-         bFlTwFHj5HVKkv8hkFey05owh2U42jRh/6iicAGgJlPUHHDbqAKzboJjdUIR5XVgw2wc
-         Jq455gqQHviLIRgDu/Xvpio1Dt2GB8NvLv9hzEP8OfeC4e9TyRD1oiHbUdiBLWtUCfqd
-         jMzlUp+4yR/7uC/bIQy77fJUkmLV+VQpG2toG3U/07qkGzXaN0y7iQ4H8Ur8Ao6ubM48
-         6YWQ==
-X-Gm-Message-State: AOAM530wvwu2BQt2hreTSq3Uka82YeeXlzX39wEDp5cTLiypCYlWGSes
-        8/afmonquKmFfvDvrw4xC/c=
-X-Google-Smtp-Source: ABdhPJxGYjXpOyykLaMQVjAfA6eADmsUdE3HMzSHLW25ZR9l3/ybTlPCveS+Hf2tvWrIkS5u+eLs3Q==
-X-Received: by 2002:adf:dc8b:: with SMTP id r11mr34994434wrj.131.1608819253334;
-        Thu, 24 Dec 2020 06:14:13 -0800 (PST)
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=290qlAj9/wIw73WZ0l4W99gBHafzKX3LexaIq9Kbj8U=;
+        b=JCK67CWqLksLE/S5Q000u8pogUxR2nWT1UTRvUksdYLUi6SBhOr/tUE7HzLNs6QRN/
+         a4PSCJ9D+LpqdQ0Vh90Xo+crEA/Uivqtmo8zkA8bPBfpICittyXJJNN+5duWs7H2/wOl
+         aAfrV5FbKvHrQ28OZjjQ27rKScmDNbV2Dkxg0gZ2jOoGOWjghN4eLBSNmTiRZq3F8wTR
+         4I4Rlg+HdcDMyCkSFY8ld5/v6QfIFVgrOHutJMpbkyJJ0I3w+F2PWALlMC4kcsnIW+J7
+         Z2rXDXAs69glEiY4jpml+fv2N30pa52nXDKF+Wcw8GRbOHly/PsCjYvKi04na05UATds
+         +j5A==
+X-Gm-Message-State: AOAM530py1N1e2kSgxl0xCCeo+JR3H/sndm6sxa4c+gkOcZpU7Qdszmj
+        0XN3bK1x7/+1zrqyMw5fGNY=
+X-Google-Smtp-Source: ABdhPJxwdOtDBlVfQIHVLEKHHof6seG/XVVw9+uHRHUBsSzYk42WKjnntQucO6c8Fh6rR3yG8w7FCQ==
+X-Received: by 2002:adf:fd05:: with SMTP id e5mr34705157wrr.225.1608819677538;
+        Thu, 24 Dec 2020 06:21:17 -0800 (PST)
 Received: from [192.168.1.211] ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id z22sm3506603wml.1.2020.12.24.06.14.11
+        by smtp.gmail.com with ESMTPSA id l20sm44277150wrh.82.2020.12.24.06.21.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Dec 2020 06:14:12 -0800 (PST)
-Subject: Re: [PATCH v3 05/14] software_node: unregister software_nodes in
- reverse order
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        Thu, 24 Dec 2020 06:21:17 -0800 (PST)
+Subject: Re: [PATCH v3 07/14] software_node: Add support for fwnode_graph*()
+ family of functions
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
@@ -77,54 +78,67 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         niklas.soderlund+renesas@ragnatech.se,
         Steve Longerbeam <slongerbeam@gmail.com>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        Linus Walleij <linus.walleij@linaro.org>
 References: <20201224010907.263125-1-djrscally@gmail.com>
- <20201224010907.263125-6-djrscally@gmail.com>
- <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com>
- <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
- <CAHp75VdWuowLenNPQRNc+QXeyuvwKqh_bjw=1WvmFrzoygXFRw@mail.gmail.com>
+ <20201224010907.263125-8-djrscally@gmail.com>
+ <CAHp75Vft7gg1AcKCEU+E74eB_ZMouHFd-8uZ7pcVj5CoJzZpvQ@mail.gmail.com>
+ <X+SPsks5itN9OFqB@pendragon.ideasonboard.com>
+ <CAHp75Ve6YHm-tdqFPvOhfJiT=uRK_dpKY3mnhQd6Mg3KkSuKqA@mail.gmail.com>
 From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <2b415312-fe30-c73b-0077-4ec2a07116df@gmail.com>
-Date:   Thu, 24 Dec 2020 14:14:10 +0000
+Message-ID: <d47e0ccf-9def-e9c9-fdfb-390ad5d2ee5e@gmail.com>
+Date:   Thu, 24 Dec 2020 14:21:15 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VdWuowLenNPQRNc+QXeyuvwKqh_bjw=1WvmFrzoygXFRw@mail.gmail.com>
+In-Reply-To: <CAHp75Ve6YHm-tdqFPvOhfJiT=uRK_dpKY3mnhQd6Mg3KkSuKqA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Andy, Laurent
 
-On 24/12/2020 14:12, Andy Shevchenko wrote:
-> On Thu, Dec 24, 2020 at 4:00 PM Daniel Scally <djrscally@gmail.com> wrote:
->> On 24/12/2020 12:13, Andy Shevchenko wrote:
->>> On Thu, Dec 24, 2020 at 3:12 AM Daniel Scally <djrscally@gmail.com> wrote:
+> On Thu, Dec 24, 2020 at 2:55 PM Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+>> On Thu, Dec 24, 2020 at 02:24:12PM +0200, Andy Shevchenko wrote:
+>>> On Thu, Dec 24, 2020 at 3:14 AM Daniel Scally wrote:
+> 
 > ...
->
->>>> + * Unregister multiple software nodes at once. The array will be unwound in
->>>> + * reverse order (i.e. last entry first) and thus if any member of the array
->>>> + * has its .parent member set then they should appear later in the array such
->>>> + * that they are unregistered first.
->>> I'm, as being not a native speaker, a bit confused by this comment.
->>> The idea is that children are unregistered first. Can you try to make
->>> it more clear maybe?
->> Sure, how about:
+> 
+>>>> +               if (!strncmp(to_swnode(port)->node->name, "port@",
+>>>
+>>> You may use here corresponding _FMT macro.
+>>>
+>>>> +                            FWNODE_GRAPH_PORT_NAME_PREFIX_LEN))
+>>>> +                       return port;
+> 
+> ...
+> 
+>>>> +       /* Ports have naming style "port@n", we need to select the n */
+>>>
+>>>> +       ret = kstrtou32(swnode->parent->node->name + FWNODE_GRAPH_PORT_NAME_PREFIX_LEN,
+>>>
+>>> Maybe a temporary variable?
+>>>
+>>>   unsigned int prefix_len = FWNODE_GRAPH_PORT_NAME_PREFIX_LEN;
+>>>   ...
+>>>   ret = kstrtou32(swnode->parent->node->name + prefix_len,
 >>
->> The array will be unwound in reverse order (i.e. last entry first). If
->> any member of the array is a child of another member then the child must
-> children ?
+>> Honestly I'm wondering if those macros don't hinder readability. I'd
+>> rather write
+>>
+>>         + strlen("port@")
+> 
+> Works for me, since the compiler optimizes this away to be a plain constant.
 
-Yes, you are right of course.
+Well, how about instead of the LEN macro, we have:
 
->
->> appear later in the array than their parent, so that they are
->> unregistered first.
-> I think with the above change it will be better, yes.
->
-Ok, done.
+#define FWNODE_GRAPH_PORT_NAME_PREFIX	"port@"
+#define FWNODE_GRAPH_PORT_NAME_FMT FWNODE_GRAPH_PORT_NAME_PREFIX "%u"
+
+And then it's still maintainable in one place but (I think) slightly
+less clunky, since we can do strlen(FWNODE_GRAPH_PORT_NAME_PREFIX)
+
+Or we can do strlen("port@"), I'm good either way :)
