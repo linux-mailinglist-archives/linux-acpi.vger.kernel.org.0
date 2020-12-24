@@ -2,56 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E0E2E26E4
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 13:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F512E26EB
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 13:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728666AbgLXMdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 07:33:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728033AbgLXMdS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 07:33:18 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87FFDC06179C;
-        Thu, 24 Dec 2020 04:32:38 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id l23so1122768pjg.1;
-        Thu, 24 Dec 2020 04:32:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+J/0VOs8YWsyYToq/9Zvb+xHjb6tDaj6rDWhx//Wfpo=;
-        b=l0rzDsHOq1wmUBmp52YLRQvtQ4Qp7o0p2Y2NbinY59TeXwK8AQewMCoI2Nsh0/2Uce
-         sLwOMzOu1z1+5tQjZfwEEUbMoA7i8v1r4e4nBprge1DeRrBpUHIwO2v9AgY8lmLfAxQ0
-         GoIr4upsln73uiXwBTzKtc/r2reaCi36S9U+dQbX0gLtLoK6zeCt+s8b3oRJ6HiBYmQJ
-         TcHIrGgPrWhChpH9AciSxVrngWU7fRUnJe8wjwRov8kOx2ZeKP9KWqFVWTI59E0bsD1S
-         xbf9OjUMivjrsPu1cvk/sxF0T9c3I5D2SFqhYRqWnoGOkh0nfG0i2gfn0OHZ7QgOKQMq
-         DBgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+J/0VOs8YWsyYToq/9Zvb+xHjb6tDaj6rDWhx//Wfpo=;
-        b=m/12YxYPxxh8HIyTbeGDE0NxJHvu2BioZrHOy4XiTnaUnAm5NQCyUPRqeJ7NNsQfSQ
-         mJ7xwIlbjpnRuVNqs3EfSHwmUI6nlQAbDVsdmqlsKxhZJU1iICtMaWOAE8hmJRHroFeI
-         4N4MvKwk0XjBVrmYHQsRbQUg8ilSg89e88jFPNzKMV/uNA2ec3Oo2pgJp1zYiL3jSP6s
-         kTOxiWnnVZw51mTStA4G8Pi4BFvvTQUh4YTnxSqcsIl+I3hYgHF2P86TV9boS19gyhK1
-         EQvc5KjVvcRXh7IS02j4TEI9bWoqrJiO8EYAxP99MuuC9sEH2PBLmwJAz1Wld5gnASuX
-         ziUQ==
-X-Gm-Message-State: AOAM531lxPZRg9UGTE1OxwPO49vgbmE2tQj4z7fMflGJ5AVuQniiNZ+l
-        sK7AjUg0ZH0kNM9RdPyT1yxwV4SbXRlO1F/VYMsC7ctvuNs=
-X-Google-Smtp-Source: ABdhPJyNndhTJZhlBZ82GcH9swNKAsjjQWJTLb2NlauCAUMkFWa1mKNvf8bPsb3uv/kOpRxR4L+XF0VT7Bx6OMLZkpQ=
-X-Received: by 2002:a17:90a:c592:: with SMTP id l18mr4272542pjt.228.1608813158085;
- Thu, 24 Dec 2020 04:32:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20201224010907.263125-1-djrscally@gmail.com> <20201224010907.263125-14-djrscally@gmail.com>
-In-Reply-To: <20201224010907.263125-14-djrscally@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 24 Dec 2020 14:32:21 +0200
-Message-ID: <CAHp75VdSyNv3M9T0_nQKsZfO-nxd5A3Z6o0mrRKrpHm282wsjQ@mail.gmail.com>
-Subject: Re: [PATCH v3 13/14] include: media: v4l2-fwnode: Include v4l2_fwnode_bus_type
+        id S1726611AbgLXMmh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 07:42:37 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:46178 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726544AbgLXMmg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 07:42:36 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id AC005A1D;
+        Thu, 24 Dec 2020 13:41:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1608813712;
+        bh=J/8sxE1HCRi3qy+XlujR1ZWY51W837kVZDGvsYwH3VE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SrcTe9Wv7dxB/G451JnRL2NfU6J+09V4l9RjvYlsNUOfkswXW2TDbY7qjQDzEP1iv
+         aGoHkXR39j3JqD8l1lvspdWNuDuly1ZF6M1En3YyMzN5r1UlUnZW+oY6fJmFYULiI0
+         vzCot/qducG4HcxNTUml86J/ZTviHLi8ktaJDVwA=
+Date:   Thu, 24 Dec 2020 14:41:44 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
         devel@acpica.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -78,97 +52,86 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Steve Longerbeam <slongerbeam@gmail.com>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 06/14] include: fwnode.h: Define format macros for
+ ports and endpoints
+Message-ID: <X+SMiJ1dC7AlZZI+@pendragon.ideasonboard.com>
+References: <20201224010907.263125-1-djrscally@gmail.com>
+ <20201224010907.263125-7-djrscally@gmail.com>
+ <CAHp75Ve8YRygEn3wcbmnSPthG+R_-9hhkAdMLk7jgiPi=jnJ5Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHp75Ve8YRygEn3wcbmnSPthG+R_-9hhkAdMLk7jgiPi=jnJ5Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 24, 2020 at 3:13 AM Daniel Scally <djrscally@gmail.com> wrote:
->
-> V4L2 fwnode bus types are enumerated in v4l2-fwnode.c, meaning they aren't
-> available to the rest of the kernel. Move the enum to the corresponding
-> header so that I can use the label to refer to those values.
+Hi Daniel,
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-One nitpick below, though.
+Thank you for the patch.
 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
-> ---
-> Changes in v3
->         - Patch introduced
->
->  drivers/media/v4l2-core/v4l2-fwnode.c | 11 -----------
->  include/media/v4l2-fwnode.h           | 22 ++++++++++++++++++++++
->  2 files changed, 22 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-> index 5353e37eb950..c1c2b3060532 100644
-> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
-> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-> @@ -28,17 +28,6 @@
->  #include <media/v4l2-fwnode.h>
->  #include <media/v4l2-subdev.h>
->
-> -enum v4l2_fwnode_bus_type {
-> -       V4L2_FWNODE_BUS_TYPE_GUESS = 0,
-> -       V4L2_FWNODE_BUS_TYPE_CSI2_CPHY,
-> -       V4L2_FWNODE_BUS_TYPE_CSI1,
-> -       V4L2_FWNODE_BUS_TYPE_CCP2,
-> -       V4L2_FWNODE_BUS_TYPE_CSI2_DPHY,
-> -       V4L2_FWNODE_BUS_TYPE_PARALLEL,
-> -       V4L2_FWNODE_BUS_TYPE_BT656,
-> -       NR_OF_V4L2_FWNODE_BUS_TYPE,
-> -};
-> -
->  static const struct v4l2_fwnode_bus_conv {
->         enum v4l2_fwnode_bus_type fwnode_bus_type;
->         enum v4l2_mbus_type mbus_type;
-> diff --git a/include/media/v4l2-fwnode.h b/include/media/v4l2-fwnode.h
-> index 4365430eea6f..d306a28bda96 100644
-> --- a/include/media/v4l2-fwnode.h
-> +++ b/include/media/v4l2-fwnode.h
-> @@ -213,6 +213,28 @@ struct v4l2_fwnode_connector {
->         } connector;
->  };
->
-> +/**
-> + * enum v4l2_fwnode_bus_type - Video bus types defined by firmware properties
-> + * @V4L2_FWNODE_BUS_TYPE_GUESS: Default value if no bus-type fwnode property
-> + * @V4L2_FWNODE_BUS_TYPE_CSI2_CPHY: MIPI CSI-2 bus, C-PHY physical layer
-> + * @V4L2_FWNODE_BUS_TYPE_CSI1: MIPI CSI-1 bus
-> + * @V4L2_FWNODE_BUS_TYPE_CCP2: SMIA Compact Camera Port 2 bus
-> + * @V4L2_FWNODE_BUS_TYPE_CSI2_DPHY: MIPI CSI-2 bus, D-PHY physical layer
-> + * @V4L2_FWNODE_BUS_TYPE_PARALLEL: Camera Parallel Interface bus
-> + * @V4L2_FWNODE_BUS_TYPE_BT656: BT656 video format bus-type
-> + * @NR_OF_V4L2_FWNODE_BUS_TYPE: Number of bus-types
-> + */
-> +enum v4l2_fwnode_bus_type {
-> +       V4L2_FWNODE_BUS_TYPE_GUESS = 0,
-> +       V4L2_FWNODE_BUS_TYPE_CSI2_CPHY,
-> +       V4L2_FWNODE_BUS_TYPE_CSI1,
-> +       V4L2_FWNODE_BUS_TYPE_CCP2,
-> +       V4L2_FWNODE_BUS_TYPE_CSI2_DPHY,
-> +       V4L2_FWNODE_BUS_TYPE_PARALLEL,
-> +       V4L2_FWNODE_BUS_TYPE_BT656,
+On Thu, Dec 24, 2020 at 02:17:07PM +0200, Andy Shevchenko wrote:
+> On Thu, Dec 24, 2020 at 3:12 AM Daniel Scally wrote:
+> >
+> > OF, ACPI and software_nodes all implement graphs including nodes for ports
+> > and endpoints. These are all intended to be named with a common schema,
+> > as "port@n" and "endpoint@n" where n is an unsigned int representing the
+> > index of the node. To ensure commonality across the subsystems, provide a
+> > set of macros to define the format.
+> 
+> Nitpicks below, but in general that's what I meant, thanks!
+> 
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> (after addressing nitpicks)
+> 
+> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> > ---
+> > Changes in v3
+> >         - Patch introduced
+> >
+> >  include/linux/fwnode.h | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> >
+> > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> > index 9506f8ec0974..52889efceb7d 100644
+> > --- a/include/linux/fwnode.h
+> > +++ b/include/linux/fwnode.h
+> > @@ -32,6 +32,19 @@ struct fwnode_endpoint {
+> >         const struct fwnode_handle *local_fwnode;
+> >  };
+> >
+> > +/*
+> > + * ports and endpoints defined in OF, ACPI and as software_nodes should all
+> > + * follow a common naming scheme; use these macros to ensure commonality across
+> > + * the subsystems.
+> > + *
+> > + * The *PREFIX_LEN macros refer to the length of the "port@" and "endpoint@"
+> 
+> *PREFIX_LEN -> *_PREFIX_LEN
+> 
+> > + * sections of the naming scheme.
+> > + */
+> > +#define FWNODE_GRAPH_PORT_NAME_FORMAT          "port@%u"
+> > +#define FWNODE_GRAPH_PORT_NAME_PREFIX_LEN      5
+> > +#define FWNODE_GRAPH_ENDPOINT_NAME_FORMAT      "endpoint@%u"
+> > +#define FWNODE_GRAPH_ENDPOINT_PREFIX_LEN       9
+> 
+> _FORMAT -> _FMT (however, V4L2 guys may correct me, because IIRC _FMT
+> suffix is also used for other things in v4l2.
 
-> +       NR_OF_V4L2_FWNODE_BUS_TYPE,
+This isn't related to V4L2, so it doesn't matter much :-) I personally
+prefer spelling names out in full when that wouldn't result in too long
+lines, but it's really a matter of personal preference, I don't mind
+either way.
 
-I see that comma is in the original line, but I think it's a good time
-to remove it from this line. Since it's a terminator line we might
-prevent potential issues during review (by a different diff look) and
-at compile time (if anything comes after it).
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-> +};
-> +
->  /**
->   * v4l2_fwnode_endpoint_parse() - parse all fwnode node properties
->   * @fwnode: pointer to the endpoint's fwnode handle
-> --
-> 2.25.1
->
-
+> >  #define NR_FWNODE_REFERENCE_ARGS       8
+> >
+> >  /**
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+
+Laurent Pinchart
