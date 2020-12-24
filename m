@@ -2,95 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 883892E279A
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E032E279E
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:27:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726611AbgLXOV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 09:21:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56466 "EHLO
+        id S1727372AbgLXOZE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 09:25:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbgLXOV7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:21:59 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7ABDC061794;
-        Thu, 24 Dec 2020 06:21:18 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id t30so2336244wrb.0;
-        Thu, 24 Dec 2020 06:21:18 -0800 (PST)
+        with ESMTP id S1727144AbgLXOZD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:25:03 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A00C0617A6;
+        Thu, 24 Dec 2020 06:24:22 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id y23so1756858wmi.1;
+        Thu, 24 Dec 2020 06:24:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=290qlAj9/wIw73WZ0l4W99gBHafzKX3LexaIq9Kbj8U=;
-        b=H9IK62WB6jMmUFDg7RSJNvniwFUqmjdFIKzyYfj+RwCDdYSPuSroL6eBRLv8eVZ1Cy
-         laPMMShRTovyn+4hKMvHimz2EOcmiiM8wUEtoquUtc5qN9wwK7vhuFCtmolrJ84xCRnj
-         Y56bXcM9MIdixqjr3UM8SM9DUt/Oibf+OmHSNY7bziTGwpEzqLTcisda3iqDWOMhlmqo
-         nbQv7zyg+939bA6LNeL/WFyM3cFz8dIUaFsG/0x2v0tJXYR7kzkgaARUvEt5ga2+j6kn
-         l+sjTN0wNnlsweBiL976XpqYLrRLfbxxLfwgXOUL+6yFVqplC36ydG4mBpxafmOwou6n
-         vqog==
+        bh=M+N06EmcJFVLj4CN44KRnLg8MB/99NEOfhbL1AkgPbo=;
+        b=mdsMzpeGWDSWXjAkbEs6+T3MmkZvHv2GGN3947O4nVnpNrCxD69QpTVwbicNf6/qif
+         G7ncpLa4Lv1ixIMDxGgvlDwcbXo60ZlEB7sTj52pkdq5BF8cCHmKTfvhih26z4yv7iL5
+         GqPyjm1SOTEXfefif6TaRUxcMU7N2SlT1XYeZ09BPU6iChnAV5eD1x5ckspI9bhhy6PN
+         oMLqZFp3MZ2R6DyAC0gHa6jupqL+5+xiL33/AVVNc1GD+90hniALIg8+I/lqfn9NYVqy
+         WNoh5Hmym/iBeXUe9RDOw3/MYy6eb+8K2I0li60yydia1IjC+kf+IKSbVX2cwlmJQP1s
+         azmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=290qlAj9/wIw73WZ0l4W99gBHafzKX3LexaIq9Kbj8U=;
-        b=JCK67CWqLksLE/S5Q000u8pogUxR2nWT1UTRvUksdYLUi6SBhOr/tUE7HzLNs6QRN/
-         a4PSCJ9D+LpqdQ0Vh90Xo+crEA/Uivqtmo8zkA8bPBfpICittyXJJNN+5duWs7H2/wOl
-         aAfrV5FbKvHrQ28OZjjQ27rKScmDNbV2Dkxg0gZ2jOoGOWjghN4eLBSNmTiRZq3F8wTR
-         4I4Rlg+HdcDMyCkSFY8ld5/v6QfIFVgrOHutJMpbkyJJ0I3w+F2PWALlMC4kcsnIW+J7
-         Z2rXDXAs69glEiY4jpml+fv2N30pa52nXDKF+Wcw8GRbOHly/PsCjYvKi04na05UATds
-         +j5A==
-X-Gm-Message-State: AOAM530py1N1e2kSgxl0xCCeo+JR3H/sndm6sxa4c+gkOcZpU7Qdszmj
-        0XN3bK1x7/+1zrqyMw5fGNY=
-X-Google-Smtp-Source: ABdhPJxwdOtDBlVfQIHVLEKHHof6seG/XVVw9+uHRHUBsSzYk42WKjnntQucO6c8Fh6rR3yG8w7FCQ==
-X-Received: by 2002:adf:fd05:: with SMTP id e5mr34705157wrr.225.1608819677538;
-        Thu, 24 Dec 2020 06:21:17 -0800 (PST)
+        bh=M+N06EmcJFVLj4CN44KRnLg8MB/99NEOfhbL1AkgPbo=;
+        b=GuElCHoPMvwOsjDadmjSoA27dfzGXt/3HNaCBNHIMlRTsyS4fxeDYAEQtXA2y+WkpK
+         48DO2dal7hLx93hktaYUkkuDfEFzoFeaAfhmzkkhXmNWv8f/MiappJeL2+BEwHRE3UMV
+         6ADebZvdEmrVsveOmSooiiZ5s8J+n+QNaRz3aEXuQTei9SRzacDarcCOne3IlBO2aLRZ
+         5Tn0fKfau8lzyw29NlvlavHQguZc4Cz6gQ1AdCgQA+32aThBwnjxI3w+D07EsSHPzG7h
+         I0atE35Vsv0QArPaHBazkvZ/xDcXASUTHgQWZUHUIbMGGcleeFNh/lTbh/0TZOdVub8N
+         70oQ==
+X-Gm-Message-State: AOAM533hHUQ8R8oCYGofgO214r0oMtYVXF2LeaLH0ihTO2c5kCBXAAu3
+        Zug2K3bwI59xJ21v+IREc2A=
+X-Google-Smtp-Source: ABdhPJyyPU4z/SYA/lIq8JzuBtX0l1hBD+x/9V9HufAJW1hUEnYBubQAF3jSek3Rg2I3dccWrin6sQ==
+X-Received: by 2002:a7b:c8c5:: with SMTP id f5mr4604917wml.106.1608819861647;
+        Thu, 24 Dec 2020 06:24:21 -0800 (PST)
 Received: from [192.168.1.211] ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id l20sm44277150wrh.82.2020.12.24.06.21.16
+        by smtp.gmail.com with ESMTPSA id o17sm40499882wrg.32.2020.12.24.06.24.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Dec 2020 06:21:17 -0800 (PST)
+        Thu, 24 Dec 2020 06:24:20 -0800 (PST)
 Subject: Re: [PATCH v3 07/14] software_node: Add support for fwnode_graph*()
  family of functions
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        devel@acpica.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tian Shu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        kieran.bingham+renesas@ideasonboard.com,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        niklas.soderlund+renesas@ragnatech.se,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
+        lenb@kernel.org, gregkh@linuxfoundation.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
+        sergey.senozhatsky@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+        hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
+        niklas.soderlund+renesas@ragnatech.se, slongerbeam@gmail.com,
+        heikki.krogerus@linux.intel.com, linus.walleij@linaro.org
 References: <20201224010907.263125-1-djrscally@gmail.com>
  <20201224010907.263125-8-djrscally@gmail.com>
- <CAHp75Vft7gg1AcKCEU+E74eB_ZMouHFd-8uZ7pcVj5CoJzZpvQ@mail.gmail.com>
- <X+SPsks5itN9OFqB@pendragon.ideasonboard.com>
- <CAHp75Ve6YHm-tdqFPvOhfJiT=uRK_dpKY3mnhQd6Mg3KkSuKqA@mail.gmail.com>
+ <X+SPUTDn+lPdV4ny@pendragon.ideasonboard.com>
 From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <d47e0ccf-9def-e9c9-fdfb-390ad5d2ee5e@gmail.com>
-Date:   Thu, 24 Dec 2020 14:21:15 +0000
+Message-ID: <fcb0d5b6-db28-ff0a-b998-c46ebad8e759@gmail.com>
+Date:   Thu, 24 Dec 2020 14:24:19 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75Ve6YHm-tdqFPvOhfJiT=uRK_dpKY3mnhQd6Mg3KkSuKqA@mail.gmail.com>
+In-Reply-To: <X+SPUTDn+lPdV4ny@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,47 +81,51 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy, Laurent
-
-> On Thu, Dec 24, 2020 at 2:55 PM Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
->> On Thu, Dec 24, 2020 at 02:24:12PM +0200, Andy Shevchenko wrote:
->>> On Thu, Dec 24, 2020 at 3:14 AM Daniel Scally wrote:
+On 24/12/2020 12:53, Laurent Pinchart wrote:
+>> +	while ((port = software_node_get_next_child(parent, old))) {
+>> +		/*
+>> +		 * ports have naming style "port@n", so we search for children
+>> +		 * that follow that convention (but without assuming anything
+>> +		 * about the index number)
+>> +		 */
+>> +		if (!strncmp(to_swnode(port)->node->name, "port@",
+>> +			     FWNODE_GRAPH_PORT_NAME_PREFIX_LEN))
 > 
-> ...
+> I would either add a macro to replace the prefix ("port@"), or drop
+> FWNODE_GRAPH_PORT_NAME_PREFIX_LEN. I think this is the worst of both
+> worlds, the string and its length are defined in two different places
+> :-)
 > 
->>>> +               if (!strncmp(to_swnode(port)->node->name, "port@",
->>>
->>> You may use here corresponding _FMT macro.
->>>
->>>> +                            FWNODE_GRAPH_PORT_NAME_PREFIX_LEN))
->>>> +                       return port;
+> I would personally drop the macro, but I don't mind either way as long
+> as the string and its length are defined in the same place.
+
+OK, pending outcome of the discussion in the other thread I'll do both
+things the same way - whatever the decision there is.
+
+
+>> +static int
+>> +software_node_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+>> +				   struct fwnode_endpoint *endpoint)
+>> +{
+>> +	struct swnode *swnode = to_swnode(fwnode);
+>> +	int ret;
+>> +
+>> +	/* Ports have naming style "port@n", we need to select the n */
+>> +	ret = kstrtou32(swnode->parent->node->name + FWNODE_GRAPH_PORT_NAME_PREFIX_LEN,
+>> +			10, &endpoint->port);
 > 
-> ...
+> Same here.
 > 
->>>> +       /* Ports have naming style "port@n", we need to select the n */
->>>
->>>> +       ret = kstrtou32(swnode->parent->node->name + FWNODE_GRAPH_PORT_NAME_PREFIX_LEN,
->>>
->>> Maybe a temporary variable?
->>>
->>>   unsigned int prefix_len = FWNODE_GRAPH_PORT_NAME_PREFIX_LEN;
->>>   ...
->>>   ret = kstrtou32(swnode->parent->node->name + prefix_len,
->>
->> Honestly I'm wondering if those macros don't hinder readability. I'd
->> rather write
->>
->>         + strlen("port@")
-> 
-> Works for me, since the compiler optimizes this away to be a plain constant.
+> I wonder if we should add a check to ensure parent->node->name is long
+> enough (and possibly even start with the right prefix), as otherwise the
+> pointer passed to kstrtou32() may be past the end of the string. Maybe
+> this is overkill, if we can rely on the fact that software nodes have
+> correct names.
 
-Well, how about instead of the LEN macro, we have:
+Not necessarily actually; ports yes but endpoints no, so I think the
+danger is there. I'll add the check.
 
-#define FWNODE_GRAPH_PORT_NAME_PREFIX	"port@"
-#define FWNODE_GRAPH_PORT_NAME_FMT FWNODE_GRAPH_PORT_NAME_PREFIX "%u"
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-And then it's still maintainable in one place but (I think) slightly
-less clunky, since we can do strlen(FWNODE_GRAPH_PORT_NAME_PREFIX)
+Thanks!
 
-Or we can do strlen("port@"), I'm good either way :)
