@@ -2,130 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1E032E279E
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 15:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6676E2E2881
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 19:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727372AbgLXOZE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 09:25:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
+        id S1727861AbgLXSNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 13:13:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727144AbgLXOZD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 09:25:03 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A00C0617A6;
-        Thu, 24 Dec 2020 06:24:22 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id y23so1756858wmi.1;
-        Thu, 24 Dec 2020 06:24:22 -0800 (PST)
+        with ESMTP id S1727144AbgLXSNf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 13:13:35 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBE0C061573
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Dec 2020 10:12:54 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id ce23so4154771ejb.8
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Dec 2020 10:12:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=M+N06EmcJFVLj4CN44KRnLg8MB/99NEOfhbL1AkgPbo=;
-        b=mdsMzpeGWDSWXjAkbEs6+T3MmkZvHv2GGN3947O4nVnpNrCxD69QpTVwbicNf6/qif
-         G7ncpLa4Lv1ixIMDxGgvlDwcbXo60ZlEB7sTj52pkdq5BF8cCHmKTfvhih26z4yv7iL5
-         GqPyjm1SOTEXfefif6TaRUxcMU7N2SlT1XYeZ09BPU6iChnAV5eD1x5ckspI9bhhy6PN
-         oMLqZFp3MZ2R6DyAC0gHa6jupqL+5+xiL33/AVVNc1GD+90hniALIg8+I/lqfn9NYVqy
-         WNoh5Hmym/iBeXUe9RDOw3/MYy6eb+8K2I0li60yydia1IjC+kf+IKSbVX2cwlmJQP1s
-         azmw==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=i/bZV6f3Jgwpe0hsSvhOuCb/+QOJ83g18wcZboghI0Y=;
+        b=pWkJ0CXUF8MOopXQSCftP9Fm67ZjipXsPCwZm8GMMkKqJtoWlxDJUJYdF2lnKGWXHb
+         YFQdfLFSmHWXVtxbT3IFdFBl2TFMqW88RjwH0eSrF3Xdwctqr5jHx6uMxpPWBpPY8u2l
+         qgCwhmGtXfzNY4oCS1wBMulXx+5hOxrBxSmGuQk+650dKKYwy9Zfy3aQwq0YumaW1xvE
+         mV+BVqGJE49DEVPOctznZcE8Wu+rgKXqMAxML1BSyTXRlceltOFco1UuEIYIfQgtyNtM
+         6Nudfd1V9upHxx2jcFQPYzw9cWnw2KiTds+22HcXkxhhUJTfDD0XoirOwUq2Ks7Zqd0P
+         FCTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=M+N06EmcJFVLj4CN44KRnLg8MB/99NEOfhbL1AkgPbo=;
-        b=GuElCHoPMvwOsjDadmjSoA27dfzGXt/3HNaCBNHIMlRTsyS4fxeDYAEQtXA2y+WkpK
-         48DO2dal7hLx93hktaYUkkuDfEFzoFeaAfhmzkkhXmNWv8f/MiappJeL2+BEwHRE3UMV
-         6ADebZvdEmrVsveOmSooiiZ5s8J+n+QNaRz3aEXuQTei9SRzacDarcCOne3IlBO2aLRZ
-         5Tn0fKfau8lzyw29NlvlavHQguZc4Cz6gQ1AdCgQA+32aThBwnjxI3w+D07EsSHPzG7h
-         I0atE35Vsv0QArPaHBazkvZ/xDcXASUTHgQWZUHUIbMGGcleeFNh/lTbh/0TZOdVub8N
-         70oQ==
-X-Gm-Message-State: AOAM533hHUQ8R8oCYGofgO214r0oMtYVXF2LeaLH0ihTO2c5kCBXAAu3
-        Zug2K3bwI59xJ21v+IREc2A=
-X-Google-Smtp-Source: ABdhPJyyPU4z/SYA/lIq8JzuBtX0l1hBD+x/9V9HufAJW1hUEnYBubQAF3jSek3Rg2I3dccWrin6sQ==
-X-Received: by 2002:a7b:c8c5:: with SMTP id f5mr4604917wml.106.1608819861647;
-        Thu, 24 Dec 2020 06:24:21 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id o17sm40499882wrg.32.2020.12.24.06.24.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Dec 2020 06:24:20 -0800 (PST)
-Subject: Re: [PATCH v3 07/14] software_node: Add support for fwnode_graph*()
- family of functions
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
-        lenb@kernel.org, gregkh@linuxfoundation.org, yong.zhi@intel.com,
-        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
-        tian.shu.qiu@intel.com, mchehab@kernel.org, robert.moore@intel.com,
-        erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
-        sergey.senozhatsky@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
-        hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
-        niklas.soderlund+renesas@ragnatech.se, slongerbeam@gmail.com,
-        heikki.krogerus@linux.intel.com, linus.walleij@linaro.org
-References: <20201224010907.263125-1-djrscally@gmail.com>
- <20201224010907.263125-8-djrscally@gmail.com>
- <X+SPUTDn+lPdV4ny@pendragon.ideasonboard.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <fcb0d5b6-db28-ff0a-b998-c46ebad8e759@gmail.com>
-Date:   Thu, 24 Dec 2020 14:24:19 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=i/bZV6f3Jgwpe0hsSvhOuCb/+QOJ83g18wcZboghI0Y=;
+        b=lHqzt3pi/M600j5Y+7cH/XeEWQbwCo/t/ZBlhDS9gg5G1k+Qd/qdnprv+0LgQ307fK
+         JAH9GFKUS2ovK8locH7TpZO3FajBQ9zqxUQuXVGM0ttDlAxwe+UiD1qDmrTA1DD57ICt
+         VxcrrMilddHHcGHk0fq6Y9xKzzp8QA2Le/F/SC5sBcsIu9iFU6UmauPMZCEYdJVKxki1
+         bYA43pH1cTqSIKkDVZRCFICWlgL7pA5nWQWUIdIuj8WgpIw2Vp5gvp9iW1VNIwt1NOwg
+         OGa+VFX5Ru1xYyNZIB4zw15mk7cK/GdcgHlugMIJZjtlOSVe3iVG46XN8+5Rwvd6jUYG
+         3MFw==
+X-Gm-Message-State: AOAM5323/wojqT4dkkBLwLDsXxkAZmezn9uN6GXLER1eWK0Fnv+l1B1C
+        dx2Zl1RZQdjGBZ7i83FQ6hNrV6gbICE0GA2ZyT+EXIL+36I5Fw==
+X-Google-Smtp-Source: ABdhPJxUVrAI6Hfaopd0MhhblCfzYhbFzcD2Qva6RHDD6HsvjDMOfogg30xNXJ/eArWSfgnSt92nXNVX0Apo7Zs1/5Q=
+X-Received: by 2002:a17:906:a3c7:: with SMTP id ca7mr29715074ejb.523.1608833573249;
+ Thu, 24 Dec 2020 10:12:53 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <X+SPUTDn+lPdV4ny@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <alpine.DEB.2.22.394.2012222207060.2723@hadrien>
+In-Reply-To: <alpine.DEB.2.22.394.2012222207060.2723@hadrien>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 24 Dec 2020 10:12:42 -0800
+Message-ID: <CAPcyv4hDqwQ3eatVBUYwAVSMc-p3yqRJkwesxYEZW2j=WEjqgg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NFIT: fix flexible_array.cocci warnings
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>, kbuild-all@lists.01.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 24/12/2020 12:53, Laurent Pinchart wrote:
->> +	while ((port = software_node_get_next_child(parent, old))) {
->> +		/*
->> +		 * ports have naming style "port@n", so we search for children
->> +		 * that follow that convention (but without assuming anything
->> +		 * about the index number)
->> +		 */
->> +		if (!strncmp(to_swnode(port)->node->name, "port@",
->> +			     FWNODE_GRAPH_PORT_NAME_PREFIX_LEN))
-> 
-> I would either add a macro to replace the prefix ("port@"), or drop
-> FWNODE_GRAPH_PORT_NAME_PREFIX_LEN. I think this is the worst of both
-> worlds, the string and its length are defined in two different places
-> :-)
-> 
-> I would personally drop the macro, but I don't mind either way as long
-> as the string and its length are defined in the same place.
+On Tue, Dec 22, 2020 at 1:10 PM Julia Lawall <julia.lawall@inria.fr> wrote:
+>
+> From: kernel test robot <lkp@intel.com>
+>
+> Zero-length and one-element arrays are deprecated, see
+> Documentation/process/deprecated.rst
+> Flexible-array members should be used instead.
+>
+> Generated by: scripts/coccinelle/misc/flexible_array.cocci
+>
+> Fixes: 7b36c1398fb6 ("coccinelle: misc: add flexible_array.cocci script")
+> CC: Denis Efremov <efremov@linux.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
 
-OK, pending outcome of the discussion in the other thread I'll do both
-things the same way - whatever the decision there is.
+Hmm, this triggers:
 
+drivers/acpi/nfit/core.c:2276:4: error: flexible array member in a
+struct with no named members
+drivers/acpi/nfit/core.c:2287:4: error: flexible array member in a
+struct with no named members
 
->> +static int
->> +software_node_graph_parse_endpoint(const struct fwnode_handle *fwnode,
->> +				   struct fwnode_endpoint *endpoint)
->> +{
->> +	struct swnode *swnode = to_swnode(fwnode);
->> +	int ret;
->> +
->> +	/* Ports have naming style "port@n", we need to select the n */
->> +	ret = kstrtou32(swnode->parent->node->name + FWNODE_GRAPH_PORT_NAME_PREFIX_LEN,
->> +			10, &endpoint->port);
-> 
-> Same here.
-> 
-> I wonder if we should add a check to ensure parent->node->name is long
-> enough (and possibly even start with the right prefix), as otherwise the
-> pointer passed to kstrtou32() may be past the end of the string. Maybe
-> this is overkill, if we can rely on the fact that software nodes have
-> correct names.
+$ gcc --version
+gcc (GCC) 10.2.1 20201016 (Red Hat 10.2.1-6)
 
-Not necessarily actually; ports yes but endpoints no, so I think the
-danger is there. I'll add the check.
-
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-Thanks!
-
+I'll need to circle back to this later.
