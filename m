@@ -2,93 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6676E2E2881
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 19:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D69342E2898
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 19:38:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727861AbgLXSNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Dec 2020 13:13:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727144AbgLXSNf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Dec 2020 13:13:35 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBE0C061573
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Dec 2020 10:12:54 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id ce23so4154771ejb.8
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Dec 2020 10:12:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=i/bZV6f3Jgwpe0hsSvhOuCb/+QOJ83g18wcZboghI0Y=;
-        b=pWkJ0CXUF8MOopXQSCftP9Fm67ZjipXsPCwZm8GMMkKqJtoWlxDJUJYdF2lnKGWXHb
-         YFQdfLFSmHWXVtxbT3IFdFBl2TFMqW88RjwH0eSrF3Xdwctqr5jHx6uMxpPWBpPY8u2l
-         qgCwhmGtXfzNY4oCS1wBMulXx+5hOxrBxSmGuQk+650dKKYwy9Zfy3aQwq0YumaW1xvE
-         mV+BVqGJE49DEVPOctznZcE8Wu+rgKXqMAxML1BSyTXRlceltOFco1UuEIYIfQgtyNtM
-         6Nudfd1V9upHxx2jcFQPYzw9cWnw2KiTds+22HcXkxhhUJTfDD0XoirOwUq2Ks7Zqd0P
-         FCTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i/bZV6f3Jgwpe0hsSvhOuCb/+QOJ83g18wcZboghI0Y=;
-        b=lHqzt3pi/M600j5Y+7cH/XeEWQbwCo/t/ZBlhDS9gg5G1k+Qd/qdnprv+0LgQ307fK
-         JAH9GFKUS2ovK8locH7TpZO3FajBQ9zqxUQuXVGM0ttDlAxwe+UiD1qDmrTA1DD57ICt
-         VxcrrMilddHHcGHk0fq6Y9xKzzp8QA2Le/F/SC5sBcsIu9iFU6UmauPMZCEYdJVKxki1
-         bYA43pH1cTqSIKkDVZRCFICWlgL7pA5nWQWUIdIuj8WgpIw2Vp5gvp9iW1VNIwt1NOwg
-         OGa+VFX5Ru1xYyNZIB4zw15mk7cK/GdcgHlugMIJZjtlOSVe3iVG46XN8+5Rwvd6jUYG
-         3MFw==
-X-Gm-Message-State: AOAM5323/wojqT4dkkBLwLDsXxkAZmezn9uN6GXLER1eWK0Fnv+l1B1C
-        dx2Zl1RZQdjGBZ7i83FQ6hNrV6gbICE0GA2ZyT+EXIL+36I5Fw==
-X-Google-Smtp-Source: ABdhPJxUVrAI6Hfaopd0MhhblCfzYhbFzcD2Qva6RHDD6HsvjDMOfogg30xNXJ/eArWSfgnSt92nXNVX0Apo7Zs1/5Q=
-X-Received: by 2002:a17:906:a3c7:: with SMTP id ca7mr29715074ejb.523.1608833573249;
- Thu, 24 Dec 2020 10:12:53 -0800 (PST)
-MIME-Version: 1.0
-References: <alpine.DEB.2.22.394.2012222207060.2723@hadrien>
-In-Reply-To: <alpine.DEB.2.22.394.2012222207060.2723@hadrien>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 24 Dec 2020 10:12:42 -0800
-Message-ID: <CAPcyv4hDqwQ3eatVBUYwAVSMc-p3yqRJkwesxYEZW2j=WEjqgg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NFIT: fix flexible_array.cocci warnings
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
+        id S1728727AbgLXShw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Dec 2020 13:37:52 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:39502 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728719AbgLXShw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 24 Dec 2020 13:37:52 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-277-gYu6pb9aP32_rumPVp6FPw-1; Thu, 24 Dec 2020 18:36:12 +0000
+X-MC-Unique: gYu6pb9aP32_rumPVp6FPw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 24 Dec 2020 18:36:11 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 24 Dec 2020 18:36:11 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Daniel Scally' <djrscally@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Denis Efremov <efremov@linux.com>, kbuild-all@lists.01.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tian Shu Qiu <tian.shu.qiu@intel.com>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "Erik Kaneda" <erik.kaneda@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        "Steven Rostedt" <rostedt@goodmis.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        "kieran.bingham+renesas@ideasonboard.com" 
+        <kieran.bingham+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        "niklas.soderlund+renesas@ragnatech.se" 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: RE: [PATCH v3 05/14] software_node: unregister software_nodes in
+ reverse order
+Thread-Topic: [PATCH v3 05/14] software_node: unregister software_nodes in
+ reverse order
+Thread-Index: AQHW2f9YHWzUalHOOk+Pd50vjly8GaoGkhDQ
+Date:   Thu, 24 Dec 2020 18:36:10 +0000
+Message-ID: <fcb07dea193b4b99b11f2a8e684d8acf@AcuMS.aculab.com>
+References: <20201224010907.263125-1-djrscally@gmail.com>
+ <20201224010907.263125-6-djrscally@gmail.com>
+ <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com>
+ <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
+ <CAHp75VdWuowLenNPQRNc+QXeyuvwKqh_bjw=1WvmFrzoygXFRw@mail.gmail.com>
+ <2b415312-fe30-c73b-0077-4ec2a07116df@gmail.com>
+In-Reply-To: <2b415312-fe30-c73b-0077-4ec2a07116df@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 22, 2020 at 1:10 PM Julia Lawall <julia.lawall@inria.fr> wrote:
->
-> From: kernel test robot <lkp@intel.com>
->
-> Zero-length and one-element arrays are deprecated, see
-> Documentation/process/deprecated.rst
-> Flexible-array members should be used instead.
->
-> Generated by: scripts/coccinelle/misc/flexible_array.cocci
->
-> Fixes: 7b36c1398fb6 ("coccinelle: misc: add flexible_array.cocci script")
-> CC: Denis Efremov <efremov@linux.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
+RnJvbTogRGFuaWVsIFNjYWxseSANCj4gU2VudDogMjQgRGVjZW1iZXIgMjAyMCAxNDoxNA0KLi4u
+DQo+ID4+IFRoZSBhcnJheSB3aWxsIGJlIHVud291bmQgaW4gcmV2ZXJzZSBvcmRlciAoaS5lLiBs
+YXN0IGVudHJ5IGZpcnN0KS4gSWYNCj4gPj4gYW55IG1lbWJlciBvZiB0aGUgYXJyYXkgaXMgYSBj
+aGlsZCBvZiBhbm90aGVyIG1lbWJlciB0aGVuIHRoZSBjaGlsZCBtdXN0DQo+ID4gY2hpbGRyZW4g
+Pw0KPiANCj4gWWVzLCB5b3UgYXJlIHJpZ2h0IG9mIGNvdXJzZS4NCg0KVGhlIHNlY29uZCAnY2hp
+bGQnIGlzIGEgYmFjay1yZWZlcmVuY2UgdG8gJ2FueSBtZW1iZXInIHNvIGlzIHNpbmd1bGFyDQpz
+byAnY2hpbGQnIGlzIGNvcnJlY3QuDQondGhlIGNoaWxkJyBjb3VsZCBiZSByZXBsYWNlZCBieSAn
+aXQnDQoNCllvdSBjb3VsZCBoYXZlOg0KICAgSWYgYW55IG1lbWJlcnMgb2YgdGhlIGFycmF5IGFy
+ZSBjaGlsZHJlbiBvZiBhbm90aGVyIG1lbWJlciB0aGVuIHRoZQ0KICAgY2hpbGRyZW4gbXVzdCBh
+cHBlYXIgbGF0ZXIgaW4gdGhlIGxpc3QuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJl
+c3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsx
+IDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-Hmm, this triggers:
-
-drivers/acpi/nfit/core.c:2276:4: error: flexible array member in a
-struct with no named members
-drivers/acpi/nfit/core.c:2287:4: error: flexible array member in a
-struct with no named members
-
-$ gcc --version
-gcc (GCC) 10.2.1 20201016 (Red Hat 10.2.1-6)
-
-I'll need to circle back to this later.
