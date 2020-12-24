@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C762E2340
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 02:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91C6D2E2347
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Dec 2020 02:13:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728867AbgLXBKs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Dec 2020 20:10:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
+        id S1728969AbgLXBKx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Dec 2020 20:10:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728849AbgLXBKr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Dec 2020 20:10:47 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA62C0611CD;
-        Wed, 23 Dec 2020 17:09:39 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id 3so382647wmg.4;
-        Wed, 23 Dec 2020 17:09:39 -0800 (PST)
+        with ESMTP id S1728908AbgLXBKt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Dec 2020 20:10:49 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A2EAC0611CE;
+        Wed, 23 Dec 2020 17:09:40 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id k10so366365wmi.3;
+        Wed, 23 Dec 2020 17:09:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=pXfvbEbd97X9tgUcpgJXDMXX4T6+llrDk7Gc/FGg//Y=;
-        b=pdkhJoVdBdsTNCQLRAjaKojDdYEwaTCipf3GHM8oSUxBocoHcjjT3geseMKBbCjvHG
-         YG8/OU89/eMjiG3BDmEBuzf4EHpHjpl2YRpMweoz4hWowzXPT29rgpkjfL75kFb26cqv
-         4a6yBtGbROTA/7Pm202chdMDPUEtjSPw1fcwbPtyP/9CuiHXEzWh4Vnb7cpyZfYZORpV
-         MGcGK87qDxzGfp0ZTRdXX1d6bofRWV98yvW5NecTfrCgrYKtyTfyJi+9Vrt4Pi7lRpoa
-         ASDz0sllD9BK4OZoAI9ciZXnNvsmD+bcl2+SKk29gu0S+YywFXeTZvEM/bNKRSe3kfZY
-         ThrA==
+        bh=RN4eZW0P5zJGQ+ExnLjE8F4o1z5DWe8tjmYcqAjmd8g=;
+        b=Z6KH8ThAa3j0w+iK1ZWRecYUgVX8cXs+S51zqeJ/CN878vHMwmwiEqMENCQ4xAG2eN
+         3Fbe72iHm8xFtQGOVWN6S+7i67QHptesp0QbE+X71pJgcbUHGeZQ4eC50Afixx1M2hle
+         EG842ywAsfa/K/W2nqMP2SwZaOCPi1sWTZVstX5GW5nWIkJm4/BpBT4mX/sUyLj3EgI7
+         a2cxNPJ3M+UzY74EEf10CLOTxP+Y4rhSRtHNgf7TrYyVce1solCdF8fqtC4hnKx/TVjy
+         1c2kchPO2KOFyiyD9erRtCixY9OSER3jbNmQr+Wl0ToOSWFSaJZuZfzvK19xTU8NooMW
+         ul5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=pXfvbEbd97X9tgUcpgJXDMXX4T6+llrDk7Gc/FGg//Y=;
-        b=K9xNNgXjvhE19I5Axwni+/EfBVf8qGEzHOjwQ8VTup07Ob6GSEtk4HB9dUzDTJ/wqD
-         9ePl2Lxzk6kcOW6mebafapxNpNMaoV+YLeNa5QW7jiZq4QsQ5ujxdo6bKWlS+hKsQyUh
-         H9Ym9CsAlm6oUoDNJmX6/KgNKRKUzkK+pOndQCjQjBg4sXw0nZMvDVj9ZgTqklWT0vTC
-         dD58tSMXR9FzXA3Dx+RK+XHtJMmYVv5rwf7gyz5MKUwziDUPRbfuxtiIz5loBhmhjMUU
-         56xfJ1h8DSojnphpI4wlWsMwdgWZnpxl5A+ql9/NRdkfoEjnkyQgHH9tRgcl8+5jrwLP
-         gdgQ==
-X-Gm-Message-State: AOAM532Jkcyd40uqJgMI+wNdNUh+GbxsJLT/P4DygdEI4eNnFtTikdWq
-        G3nyQki87MHN92N//NAomrcgS9DJLBcoCDWr
-X-Google-Smtp-Source: ABdhPJyn73S6Pxf3bJIidrjYtZpWabGA2Hoxk8EqIvh689uAsC2qIHypCJ8GD1MGWNQICEM4/qpIfg==
-X-Received: by 2002:a1c:6506:: with SMTP id z6mr1949588wmb.55.1608772177883;
-        Wed, 23 Dec 2020 17:09:37 -0800 (PST)
+        bh=RN4eZW0P5zJGQ+ExnLjE8F4o1z5DWe8tjmYcqAjmd8g=;
+        b=Jt1zIPu7tQU3ryw+bUeJ0zhar2bJx+IhtXDE+evmjf1fbKez0aoZ0sGTOSR5MAdLMo
+         7KC0oCVM5TOKYAJaSPa6aEuUIGUNmnXjmVofiZQAfmmqfPKS9oTF4Hmx7oL1KydHnWyD
+         xy2B5DezhWmph5M5wyJJbk5vTZ/2k6Wf62SZKleCpBdniXq9p25WkFk7nA0CN1YCzvIk
+         LZhDRY17uvTR4YzOsHy5zmGyAU1+O9UbBQMEkB7Zt57zib5qBjWO7iTsTb2ja1ghgy6/
+         allfgb55Sl6/4a6etZRFdS99+jX/Jpdnd/qJyUOv4nLLf7Gj3B/+Qbr+1ZAYCYSOImoK
+         JDug==
+X-Gm-Message-State: AOAM5307gBn6qdcKs60AV5fab43nB9c+kbnItyTEHPGfUy5A6CalcU6y
+        jhvUnmsVnCFm1h7IWxpsXuA5vkTAMsGw7pUL
+X-Google-Smtp-Source: ABdhPJzJmNQdMwNpl7s31MtXZuCE6vhgnmsG9jR4VzJsq0ZYiSdT3Fafrgp5fgpG01d9QefPnL0fAg==
+X-Received: by 2002:a1c:dc87:: with SMTP id t129mr1977147wmg.52.1608772179190;
+        Wed, 23 Dec 2020 17:09:39 -0800 (PST)
 Received: from valhalla.home ([2.31.224.116])
-        by smtp.gmail.com with ESMTPSA id b200sm1598653wmb.10.2020.12.23.17.09.36
+        by smtp.gmail.com with ESMTPSA id b200sm1598653wmb.10.2020.12.23.17.09.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Dec 2020 17:09:37 -0800 (PST)
+        Wed, 23 Dec 2020 17:09:38 -0800 (PST)
 From:   Daniel Scally <djrscally@gmail.com>
 To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-media@vger.kernel.org, devel@acpica.org
@@ -61,9 +61,9 @@ Cc:     rjw@rjwysocki.net, lenb@kernel.org, gregkh@linuxfoundation.org,
         hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
         niklas.soderlund+renesas@ragnatech.se, slongerbeam@gmail.com,
         heikki.krogerus@linux.intel.com, linus.walleij@linaro.org
-Subject: [PATCH v3 12/14] acpi: Add acpi_dev_get_next_match_dev() and helper macro
-Date:   Thu, 24 Dec 2020 01:09:05 +0000
-Message-Id: <20201224010907.263125-13-djrscally@gmail.com>
+Subject: [PATCH v3 13/14] include: media: v4l2-fwnode: Include v4l2_fwnode_bus_type
+Date:   Thu, 24 Dec 2020 01:09:06 +0000
+Message-Id: <20201224010907.263125-14-djrscally@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201224010907.263125-1-djrscally@gmail.com>
 References: <20201224010907.263125-1-djrscally@gmail.com>
@@ -73,108 +73,75 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-To ensure we handle situations in which multiple sensors of the same
-model (and therefore _HID) are present in a system, we need to be able
-to iterate over devices matching a known _HID but unknown _UID and _HRV
- - add acpi_dev_get_next_match_dev() to accommodate that possibility and
-change acpi_dev_get_first_match_dev() to simply call the new function
-with a NULL starting point. Add an iterator macro for convenience.
+V4L2 fwnode bus types are enumerated in v4l2-fwnode.c, meaning they aren't
+available to the rest of the kernel. Move the enum to the corresponding
+header so that I can use the label to refer to those values.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Daniel Scally <djrscally@gmail.com>
 ---
 Changes in v3
-	- prefixed referenced to the arguments with "@" in comment
+	- Patch introduced
 
- drivers/acpi/utils.c    | 30 ++++++++++++++++++++++++++----
- include/acpi/acpi_bus.h |  7 +++++++
- 2 files changed, 33 insertions(+), 4 deletions(-)
+ drivers/media/v4l2-core/v4l2-fwnode.c | 11 -----------
+ include/media/v4l2-fwnode.h           | 22 ++++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-index d5411a166685..ddca1550cce6 100644
---- a/drivers/acpi/utils.c
-+++ b/drivers/acpi/utils.c
-@@ -843,12 +843,13 @@ bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
- EXPORT_SYMBOL(acpi_dev_present);
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index 5353e37eb950..c1c2b3060532 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -28,17 +28,6 @@
+ #include <media/v4l2-fwnode.h>
+ #include <media/v4l2-subdev.h>
  
- /**
-- * acpi_dev_get_first_match_dev - Return the first match of ACPI device
-+ * acpi_dev_get_next_match_dev - Return the next match of ACPI device
-+ * @adev: Pointer to the previous acpi_device matching this @hid, @uid and @hrv
-  * @hid: Hardware ID of the device.
-  * @uid: Unique ID of the device, pass NULL to not check _UID
-  * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-  *
-- * Return the first match of ACPI device if a matching device was present
-+ * Return the next match of ACPI device if another matching device was present
-  * at the moment of invocation, or NULL otherwise.
-  *
-  * The caller is responsible to call put_device() on the returned device.
-@@ -856,8 +857,9 @@ EXPORT_SYMBOL(acpi_dev_present);
-  * See additional information in acpi_dev_present() as well.
-  */
- struct acpi_device *
--acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
-+acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv)
- {
-+	struct device *start = adev ? &adev->dev : NULL;
- 	struct acpi_dev_match_info match = {};
- 	struct device *dev;
+-enum v4l2_fwnode_bus_type {
+-	V4L2_FWNODE_BUS_TYPE_GUESS = 0,
+-	V4L2_FWNODE_BUS_TYPE_CSI2_CPHY,
+-	V4L2_FWNODE_BUS_TYPE_CSI1,
+-	V4L2_FWNODE_BUS_TYPE_CCP2,
+-	V4L2_FWNODE_BUS_TYPE_CSI2_DPHY,
+-	V4L2_FWNODE_BUS_TYPE_PARALLEL,
+-	V4L2_FWNODE_BUS_TYPE_BT656,
+-	NR_OF_V4L2_FWNODE_BUS_TYPE,
+-};
+-
+ static const struct v4l2_fwnode_bus_conv {
+ 	enum v4l2_fwnode_bus_type fwnode_bus_type;
+ 	enum v4l2_mbus_type mbus_type;
+diff --git a/include/media/v4l2-fwnode.h b/include/media/v4l2-fwnode.h
+index 4365430eea6f..d306a28bda96 100644
+--- a/include/media/v4l2-fwnode.h
++++ b/include/media/v4l2-fwnode.h
+@@ -213,6 +213,28 @@ struct v4l2_fwnode_connector {
+ 	} connector;
+ };
  
-@@ -865,9 +867,29 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
- 	match.uid = uid;
- 	match.hrv = hrv;
- 
--	dev = bus_find_device(&acpi_bus_type, NULL, &match, acpi_dev_match_cb);
-+	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
- 	return dev ? to_acpi_device(dev) : NULL;
- }
-+EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-+
 +/**
-+ * acpi_dev_get_first_match_dev - Return the first match of ACPI device
-+ * @hid: Hardware ID of the device.
-+ * @uid: Unique ID of the device, pass NULL to not check _UID
-+ * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-+ *
-+ * Return the first match of ACPI device if a matching device was present
-+ * at the moment of invocation, or NULL otherwise.
-+ *
-+ * The caller is responsible to call put_device() on the returned device.
-+ *
-+ * See additional information in acpi_dev_present() as well.
++ * enum v4l2_fwnode_bus_type - Video bus types defined by firmware properties
++ * @V4L2_FWNODE_BUS_TYPE_GUESS: Default value if no bus-type fwnode property
++ * @V4L2_FWNODE_BUS_TYPE_CSI2_CPHY: MIPI CSI-2 bus, C-PHY physical layer
++ * @V4L2_FWNODE_BUS_TYPE_CSI1: MIPI CSI-1 bus
++ * @V4L2_FWNODE_BUS_TYPE_CCP2: SMIA Compact Camera Port 2 bus
++ * @V4L2_FWNODE_BUS_TYPE_CSI2_DPHY: MIPI CSI-2 bus, D-PHY physical layer
++ * @V4L2_FWNODE_BUS_TYPE_PARALLEL: Camera Parallel Interface bus
++ * @V4L2_FWNODE_BUS_TYPE_BT656: BT656 video format bus-type
++ * @NR_OF_V4L2_FWNODE_BUS_TYPE: Number of bus-types
 + */
-+struct acpi_device *
-+acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
-+{
-+	return acpi_dev_get_next_match_dev(NULL, hid, uid, hrv);
-+}
- EXPORT_SYMBOL(acpi_dev_get_first_match_dev);
- 
- /*
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index a3abcc4b7d9f..0a028ba967d3 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -688,9 +688,16 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
- 
- bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
- 
-+struct acpi_device *
-+acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
- struct acpi_device *
- acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
- 
-+#define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
-+	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
-+	     adev;							\
-+	     adev = acpi_dev_get_next_match_dev(adev, hid, uid, hrv))
++enum v4l2_fwnode_bus_type {
++	V4L2_FWNODE_BUS_TYPE_GUESS = 0,
++	V4L2_FWNODE_BUS_TYPE_CSI2_CPHY,
++	V4L2_FWNODE_BUS_TYPE_CSI1,
++	V4L2_FWNODE_BUS_TYPE_CCP2,
++	V4L2_FWNODE_BUS_TYPE_CSI2_DPHY,
++	V4L2_FWNODE_BUS_TYPE_PARALLEL,
++	V4L2_FWNODE_BUS_TYPE_BT656,
++	NR_OF_V4L2_FWNODE_BUS_TYPE,
++};
 +
- static inline void acpi_dev_put(struct acpi_device *adev)
- {
- 	put_device(&adev->dev);
+ /**
+  * v4l2_fwnode_endpoint_parse() - parse all fwnode node properties
+  * @fwnode: pointer to the endpoint's fwnode handle
 -- 
 2.25.1
 
