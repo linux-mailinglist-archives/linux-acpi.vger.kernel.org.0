@@ -2,35 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB8242E6B3E
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Dec 2020 00:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C1E2E6B74
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Dec 2020 00:10:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729048AbgL1XAV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Dec 2020 18:00:21 -0500
-Received: from mga03.intel.com ([134.134.136.65]:26745 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731775AbgL1W4W (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Dec 2020 17:56:22 -0500
-IronPort-SDR: CibDkYV6HPQ8IvcRrUfyqyR2b7Rv+OiZBORwJ6Rgs7MkcpdOYEPqiy3dYyPZNKO+S9OPK3Tfv+
- 4U1D0Ns/qdjw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9848"; a="176529384"
-X-IronPort-AV: E=Sophos;i="5.78,456,1599548400"; 
-   d="scan'208";a="176529384"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 14:55:41 -0800
-IronPort-SDR: RDA/+I/5GKfDFCkIf6tVgGIakOFgulH3t0Bbr6Yuf4NZbXXydFd6LHfppPZxTVQ6QxynaeSWuG
- XYBcblFDj7aA==
-X-IronPort-AV: E=Sophos;i="5.78,456,1599548400"; 
-   d="scan'208";a="562962395"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 14:55:34 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1ku1RL-000Iqk-5E; Tue, 29 Dec 2020 00:56:35 +0200
-Date:   Tue, 29 Dec 2020 00:56:35 +0200
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        id S1727686AbgL1XI7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Dec 2020 18:08:59 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:44536 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727231AbgL1XI4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Dec 2020 18:08:56 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 294F23E;
+        Tue, 29 Dec 2020 00:08:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1609196890;
+        bh=mB5ce02/kggJtcT6vhpDUNFdXXr9q+/WEv+XXlNQq74=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=h4akwS4Igz+Bl+QldrRBKC0Ma5OLn8Xf+P4gQLIr58DO+D7jt/9Mi9IIkJHkt1Wmb
+         DZJgR2n4toeSLgHZiibW1D1htMtMXko5RSyr+r0XrKgKyU17sEEj/Xyj5RKYJKsWuC
+         cceBaSmnOQ/h8Jmh1QfjJgjrImAdyVRlOe3ZUFu0=
+Date:   Tue, 29 Dec 2020 01:07:59 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
@@ -56,10 +51,9 @@ Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
         Steve Longerbeam <slongerbeam@gmail.com>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Jordan Hand <jorhand@linux.microsoft.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        Jordan Hand <jorhand@linux.microsoft.com>
 Subject: Re: [PATCH v3 14/14] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
-Message-ID: <20201228225635.GI4077@smile.fi.intel.com>
+Message-ID: <X+plTyUFhfHi7eIE@pendragon.ideasonboard.com>
 References: <20201224010907.263125-1-djrscally@gmail.com>
  <20201224010907.263125-15-djrscally@gmail.com>
  <CAHp75VeXN6PnV7Mzz6UMpD+m-yjPi6XK0kx1=+-M5mci=Vb=YQ@mail.gmail.com>
@@ -67,15 +61,14 @@ References: <20201224010907.263125-1-djrscally@gmail.com>
  <2d37df3d-f04c-6679-6e27-6c7f82e9b158@gmail.com>
  <20201228225544.GH4077@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20201228225544.GH4077@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 29, 2020 at 12:55:45AM +0200, Andy Shevchenko wrote:
+On Tue, Dec 29, 2020 at 12:55:44AM +0200, Andy Shevchenko wrote:
 > On Mon, Dec 28, 2020 at 10:37:38PM +0000, Daniel Scally wrote:
 > > On 28/12/2020 17:05, Sakari Ailus wrote:
 > > > On Thu, Dec 24, 2020 at 02:54:44PM +0200, Andy Shevchenko wrote:
@@ -97,17 +90,17 @@ On Tue, Dec 29, 2020 at 12:55:45AM +0200, Andy Shevchenko wrote:
 > > Which do you prefer?
 > 
 > Actually ipu3-cio2.h misses a lot of inclusions (like mutex.h which I
-> immediately noticed when scrolled over data types). I think here should be a
-> compromise variant, split out something like ipu3-cio2-defs.h which can be
+> immediately noticed when scrolled over data types).
 
-Seems like cio2-defs.h more plausible name.
+Then ipu3-cio2.h should be fixed :-)
 
-> included in both ipu3-cio2.h and cio2-bridge.h.
+> I think here should be a compromise variant, split out something like
+> ipu3-cio2-defs.h which can be included in both ipu3-cio2.h and
+> cio2-bridge.h.
 > 
 > And cio2-bridge.h needs more inclusions like types.h.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
 
-
+Laurent Pinchart
