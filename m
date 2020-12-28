@@ -2,178 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C169C2E30FF
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Dec 2020 12:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEBF2E35B9
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Dec 2020 11:15:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbgL0L57 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Dec 2020 06:57:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32087 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726039AbgL0L57 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 27 Dec 2020 06:57:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1609070192;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9ys+IfJQ4jaDgELByvREU1Pf0LqPPJ8r6KX3wnASlGk=;
-        b=eMFVcR4AAG6W+FtPvmCBM20TktWf4P0v4atKQlnfGG3XAFUS2/eTEBnB9OZQb7LXa9QtBq
-        YiM+l6J5KFTe+HdJktCG12OwFvgpIzqcTSWk1ToeEit4cWFsXyAgke/EbqmFwRhdaJR1VP
-        5zD/yjCAzje/iPUMbLPKmoFejtXTCos=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-412-ET6CTTcrPHSEDe_mdsbHOA-1; Sun, 27 Dec 2020 06:56:25 -0500
-X-MC-Unique: ET6CTTcrPHSEDe_mdsbHOA-1
-Received: by mail-ej1-f71.google.com with SMTP id h4so1846569eja.12
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Dec 2020 03:56:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=9ys+IfJQ4jaDgELByvREU1Pf0LqPPJ8r6KX3wnASlGk=;
-        b=gPfTesNlyPCiBJZlwXAebX7hi9iJRTuugdgjaercy7Trz8PJA7vskkEeNyVzoDRdad
-         zyhL0OMGZs26phkh5K/D4RB/l6NEHEpqstFM5iCPLk5i6dlcKrqDUoFkdyE4shyOXCVq
-         YMP2qlDRkP2YySJIs/lEBaG6Qs7lPNlbAC0BP/u42Lqrv0eKB4MI/XwiXFcAjx8e1ndV
-         iWPRBNQnESdqllTYb2NpQGECxde0asPP3fTuiX7crmXq79VmNPGwN343UWeTzHRGv3Oz
-         g5acQH9pjPnr03JSiGN48gP1gNGW/+y7A1OmuWmwxm1tVHQP7K3w9vDttxUW3hUq6xtX
-         posw==
-X-Gm-Message-State: AOAM5304vSzKTG3wd5jyG+F+C6h05b15L1fRmAnQR6nCa8M082ejo4U3
-        Wiv+0I4mhORqMbeYfmr1kreMPILTjR0aSuhoPf4DH2H3u5ZsD8JN5w8tEu5lN9a8lZFJjcKmo8h
-        kV03K4FZ35dCI3Fo3aaNb0Q==
-X-Received: by 2002:a17:906:710b:: with SMTP id x11mr39696679ejj.433.1609070183351;
-        Sun, 27 Dec 2020 03:56:23 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwnc5Um/4mkKSiag3jZlEv6fWKGuXg9vVpDEurV5CS3KXc+TJKo9Vs2YkS+2syQUvzKwp7z8A==
-X-Received: by 2002:a17:906:710b:: with SMTP id x11mr39696662ejj.433.1609070183123;
-        Sun, 27 Dec 2020 03:56:23 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id w17sm34409942edu.90.2020.12.27.03.56.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Dec 2020 03:56:22 -0800 (PST)
-Subject: Re: [pm:bleeding-edge 8612/8615]
- drivers/acpi/platform_profile.c:147:24: warning: address of array
- 'pprof->choices' will always evaluate to 'true'
-To:     kernel test robot <lkp@intel.com>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-References: <202012271352.JvNDF17O-lkp@intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <34a43212-ff2b-cbc6-a670-975d39ac9f12@redhat.com>
-Date:   Sun, 27 Dec 2020 12:56:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1727088AbgL1KPO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Dec 2020 05:15:14 -0500
+Received: from mga11.intel.com ([192.55.52.93]:30884 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727013AbgL1KPN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 28 Dec 2020 05:15:13 -0500
+IronPort-SDR: HBP2g1Q93KKK65JbxiSPMynVPbZOitzEy5YfqrGjZV4VXGO1AhB9SLujPmdc148flvUXdGatzr
+ iEUKZxLb/iQw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9847"; a="172857407"
+X-IronPort-AV: E=Sophos;i="5.78,454,1599548400"; 
+   d="scan'208";a="172857407"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 02:14:32 -0800
+IronPort-SDR: 2o4QrVc5rt8K5snm4jNOP8DVG+i65S6cUj1QRCuntb4Jlr6nOgSwGZOxSK/8GtFxZXGVM90fgy
+ 5VWJOoopVeow==
+X-IronPort-AV: E=Sophos;i="5.78,454,1599548400"; 
+   d="scan'208";a="384530659"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 02:14:25 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1ktpYk-000CE8-13; Mon, 28 Dec 2020 12:15:26 +0200
+Date:   Mon, 28 Dec 2020 12:15:26 +0200
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'Daniel Scally' <djrscally@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tian Shu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        "kieran.bingham+renesas@ideasonboard.com" 
+        <kieran.bingham+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        "niklas.soderlund+renesas@ragnatech.se" 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH v3 05/14] software_node: unregister software_nodes in
+ reverse order
+Message-ID: <20201228101526.GV4077@smile.fi.intel.com>
+References: <20201224010907.263125-1-djrscally@gmail.com>
+ <20201224010907.263125-6-djrscally@gmail.com>
+ <CAHp75VdF5NdjrSxcOafh7KNNDteYEUDk9otA0HKX-iks7G0D4g@mail.gmail.com>
+ <de478ef0-0b4d-df1d-2651-9cc35bf2f45b@gmail.com>
+ <CAHp75VdWuowLenNPQRNc+QXeyuvwKqh_bjw=1WvmFrzoygXFRw@mail.gmail.com>
+ <2b415312-fe30-c73b-0077-4ec2a07116df@gmail.com>
+ <fcb07dea193b4b99b11f2a8e684d8acf@AcuMS.aculab.com>
 MIME-Version: 1.0
-In-Reply-To: <202012271352.JvNDF17O-lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fcb07dea193b4b99b11f2a8e684d8acf@AcuMS.aculab.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 12/27/20 6:11 AM, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> head:   a33520709645543f108361fe21fa9434a351c4e9
-> commit: 8c9b909fb1282e43792433e6c1cba125ccfc6201 [8612/8615] ACPI: platform-profile: Add platform profile support
-> config: x86_64-randconfig-a015-20201221 (attached as .config)
-> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project cee1e7d14f4628d6174b33640d502bff3b54ae45)
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # install x86_64 cross compiling tool for clang build
->         # apt-get install binutils-x86-64-linux-gnu
->         # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=8c9b909fb1282e43792433e6c1cba125ccfc6201
->         git remote add pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
->         git fetch --no-tags pm bleeding-edge
->         git checkout 8c9b909fb1282e43792433e6c1cba125ccfc6201
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64 
+On Thu, Dec 24, 2020 at 06:36:10PM +0000, David Laight wrote:
+> From: Daniel Scally 
+> > Sent: 24 December 2020 14:14
+> ...
+> > >> The array will be unwound in reverse order (i.e. last entry first). If
+> > >> any member of the array is a child of another member then the child must
+> > > children ?
+> > 
+> > Yes, you are right of course.
 > 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+> The second 'child' is a back-reference to 'any member' so is singular
+> so 'child' is correct.
+> 'the child' could be replaced by 'it'
 > 
-> All warnings (new ones prefixed by >>):
-> 
->>> drivers/acpi/platform_profile.c:147:24: warning: address of array 'pprof->choices' will always evaluate to 'true' [-Wpointer-bool-conversion]
->            if (!pprof || !pprof->choices || !pprof->profile_set ||
->                          ~~~~~~~~^~~~~~~
->    1 warning generated.
+> You could have:
+>    If any members of the array are children of another member then the
+>    children must appear later in the list.
 
+Works for me!
+Dan, can you consider David's proposal?
 
-Ah, this is caused by changing choices from a single long to:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-
-So that we can use for_each_set_bit and are future proof for more then
-32 profiles.
-
-To fix this the check should be changed into this (untested):
-
-#include <linux/bitmap.h>
-
-	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
-	    !pprof->profile_set || !pprof->profile_get) {
-		mutex_unlock(&profile_lock);
-		return -EINVAL;
-	}
-
-Mark can you provide a (tested) patch for this?
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
-
-> 
-> 
-> vim +147 drivers/acpi/platform_profile.c
-> 
->    134	
->    135	int platform_profile_register(const struct platform_profile_handler *pprof)
->    136	{
->    137		int err;
->    138	
->    139		mutex_lock(&profile_lock);
->    140		/* We can only have one active profile */
->    141		if (cur_profile) {
->    142			mutex_unlock(&profile_lock);
->    143			return -EEXIST;
->    144		}
->    145	
->    146		/* Sanity check the profile handler field are set */
->  > 147		if (!pprof || !pprof->choices || !pprof->profile_set ||
->    148				!pprof->profile_get) {
->    149			mutex_unlock(&profile_lock);
->    150			return -EINVAL;
->    151		}
->    152	
->    153		err = sysfs_create_group(acpi_kobj, &platform_profile_group);
->    154		if (err) {
->    155			mutex_unlock(&profile_lock);
->    156			return err;
->    157		}
->    158	
->    159		cur_profile = pprof;
->    160		mutex_unlock(&profile_lock);
->    161		return 0;
->    162	}
->    163	EXPORT_SYMBOL_GPL(platform_profile_register);
->    164	
-> 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-> 
 
