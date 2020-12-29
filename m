@@ -2,177 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7930A2E6CBB
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Dec 2020 01:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 348732E6DA7
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Dec 2020 04:36:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728284AbgL2AH6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Dec 2020 19:07:58 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:44820 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727527AbgL2AH6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Dec 2020 19:07:58 -0500
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8BC5D98;
-        Tue, 29 Dec 2020 01:07:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1609200434;
-        bh=d4Mhfe3bfkE71312xd7PJbpeT/ceK/ppJxKjsDG5mdA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pXfrmYmua0twZRFvuhxMt7W8MJbwh2Lre6rJEvwDuS/nfUsF2WPCJM7kBxduidM+Y
-         zZMMvC8paqLiNrH7tJvaB9z9xRTQqpKIyryeFcsRASAuLVYXCvAMHh5npSrXh5CD3s
-         oaojhOJE+hcISC6kr6s5P3YJwqtHcgaWjzE05kBk=
-Date:   Tue, 29 Dec 2020 02:07:04 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        devel@acpica.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tian Shu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        kieran.bingham+renesas@ideasonboard.com,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        niklas.soderlund+renesas@ragnatech.se,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jordan Hand <jorhand@linux.microsoft.com>
-Subject: Re: [PATCH v3 14/14] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
-Message-ID: <X+pzKDNWpiQWenHy@pendragon.ideasonboard.com>
-References: <20201224010907.263125-1-djrscally@gmail.com>
- <20201224010907.263125-15-djrscally@gmail.com>
- <CAHp75VeXN6PnV7Mzz6UMpD+m-yjPi6XK0kx1=+-M5mci=Vb=YQ@mail.gmail.com>
- <20201228170521.GZ26370@paasikivi.fi.intel.com>
- <2d37df3d-f04c-6679-6e27-6c7f82e9b158@gmail.com>
- <20201228225544.GH4077@smile.fi.intel.com>
- <X+plTyUFhfHi7eIE@pendragon.ideasonboard.com>
- <CAHp75Vdzk7i+QzkTxLJUUkw3xZot9F7QT8pyu6b5yjkCVzMXEA@mail.gmail.com>
+        id S1727398AbgL2DgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Dec 2020 22:36:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42694 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727217AbgL2DgD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Dec 2020 22:36:03 -0500
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2536C0613D6;
+        Mon, 28 Dec 2020 19:35:22 -0800 (PST)
+Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id E039722802;
+        Tue, 29 Dec 2020 04:35:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1609212919;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cNdJDbDl/05MujOD4qQl4/7GqexrrHvbmx1qNqivlSU=;
+        b=WM/xtIyBLhf31SuCiZgFmRkU8AS6VdMxcUgA/+iMcr5GeIDX82oWeb+NHgHO8DXlam3F9r
+        t8PwP2aDtrFNXpGL0vC7HcTLESRO5qWs1eYqqSWpuUmCHEN3wOHE6TvBp64bT/FHf775I6
+        c2J5isdcP499j2aMyDW2ot/unbwI0sY=
+From:   Michael Walle <michael@walle.cc>
+To:     saravanak@google.com
+Cc:     ardb@kernel.org, devicetree@vger.kernel.org,
+        frowand.list@gmail.com, gregkh@linuxfoundation.org,
+        grygorii.strashko@ti.com, kernel-team@android.com,
+        laurent.pinchart@ideasonboard.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org, rafael@kernel.org,
+        rjw@rjwysocki.net, robh+dt@kernel.org, tglx@linutronix.de,
+        tomi.valkeinen@ti.com, Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH v2 16/17] driver core: Refactor fw_devlink feature
+Date:   Tue, 29 Dec 2020 04:34:40 +0100
+Message-Id: <20201229033440.32142-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20201121020232.908850-17-saravanak@google.com>
+References: <20201121020232.908850-17-saravanak@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vdzk7i+QzkTxLJUUkw3xZot9F7QT8pyu6b5yjkCVzMXEA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
-
-On Tue, Dec 29, 2020 at 01:54:59AM +0200, Andy Shevchenko wrote:
-> On Tue, Dec 29, 2020 at 1:08 AM Laurent Pinchart wrote:
-> >
-> > On Tue, Dec 29, 2020 at 12:55:44AM +0200, Andy Shevchenko wrote:
-> > > On Mon, Dec 28, 2020 at 10:37:38PM +0000, Daniel Scally wrote:
-> > > > On 28/12/2020 17:05, Sakari Ailus wrote:
+> The current implementation of fw_devlink is very inefficient because it
+> tries to get away without creating fwnode links in the name of saving
+> memory usage. Past attempts to optimize runtime at the cost of memory
+> usage were blocked with request for data showing that the optimization
+> made significant improvement for real world scenarios.
 > 
-> ...
+> We have those scenarios now. There have been several reports of boot
+> time increase in the order of seconds in this thread [1]. Several OEMs
+> and SoC manufacturers have also privately reported significant
+> (350-400ms) increase in boot time due to all the parsing done by
+> fw_devlink.
 > 
-> > > > Which do you prefer?
-> > >
-> > > Actually ipu3-cio2.h misses a lot of inclusions (like mutex.h which I
-> > > immediately noticed when scrolled over data types).
-> >
-> > Then ipu3-cio2.h should be fixed :-)
+> So this patch uses all the setup done by the previous patches in this
+> series to refactor fw_devlink to be more efficient. Most of the code has
+> been moved out of firmware specific (DT mostly) code into driver core.
 > 
-> Below is a draft patch (it is possible mangled, due to Gmail). Can you
-> look at it and tell me what you think?
-
-Thank you for the patch.
-
-> I believe some headers can be removed, but I have no idea about header
-> inclusion guarantees that v4l2 provides.
+> This brings the following benefits:
+> - Instead of parsing the device tree multiple times during bootup,
+>   fw_devlink parses each fwnode node/property only once and creates
+>   fwnode links. The rest of the fw_devlink code then just looks at these
+>   fwnode links to do rest of the work.
 > 
-> From 10fa6c7ff66ded35a246677ffe20c677e8453f5b3 Mon Sep 17 00:00:00 2001
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Date: Tue, 29 Dec 2020 01:42:03 +0200
-> Subject: [PATCH 1/1] media: ipu3-cio2: Add headers that ipu3-cio2.h is direct
->  user of
+> - Makes it much easier to debug probe issue due to fw_devlink in the
+>   future. fw_devlink=on blocks the probing of devices if they depend on
+>   a device that hasn't been added yet. With this refactor, it'll be very
+>   easy to tell what that device is because we now have a reference to
+>   the fwnode of the device.
 > 
-> Add headers that ipu3-cio2.h is direct user of.
+> - Much easier to add fw_devlink support to ACPI and other firmware
+>   types. A refactor to move the common bits from DT specific code to
+>   driver core was in my TODO list as a prerequisite to adding ACPI
+>   support to fw_devlink. This series gets that done.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/media/pci/intel/ipu3/ipu3-cio2.h | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.h
-> b/drivers/media/pci/intel/ipu3/ipu3-cio2.h
-> index ccf0b85ae36f..9ea154c50ba1 100644
-> --- a/drivers/media/pci/intel/ipu3/ipu3-cio2.h
-> +++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.h
-> @@ -4,8 +4,25 @@
->  #ifndef __IPU3_CIO2_H
->  #define __IPU3_CIO2_H
-> 
-> +#include <linux/bits.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mutex.h>
->  #include <linux/types.h>
-> 
-> +#include <asm/page.h>
-> +
-> +#include <linux/videodev2.h>
+> [1] - https://lore.kernel.org/linux-omap/ea02f57e-871d-cd16-4418-c1da4bbc4696@ti.com/
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Tested-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-I think this can be dropped.
+git bisect show that this commit broke my board in 5.11-rc1:
 
-> +
-> +#include <media/media-device.h>
-> +#include <media/media-entity.h>
-> +#include <media/v4l2-async.h>
-> +#include <media/v4l2-dev.h>
-> +#include <media/v4l2-device.h>
-> +#include <media/v4l2-subdev.h>
-> +#include <media/videobuf2-core.h>
-> +#include <media/videobuf2-v4l2.h>
-> +
->  #define CIO2_NAME "ipu3-cio2"
->  #define CIO2_DEVICE_NAME "Intel IPU3 CIO2"
->  #define CIO2_ENTITY_NAME "ipu3-csi2"
-> @@ -325,6 +342,8 @@ struct csi2_bus_info {
->   u32 lanes;
->  };
-> 
-> +struct cio2_fbpt_entry;
-> +
->  struct cio2_queue {
->   /* mutex to be used by vb2_queue */
->   struct mutex lock;
-> @@ -355,6 +374,8 @@ struct cio2_queue {
->   atomic_t bufs_queued;
->  };
-> 
-> +struct pci_dev;
-> +
+[    2.294375] sysfs: cannot create duplicate filename '/devices/virtual/devlink/0000:00:00.1--0000:00:00.1'
+[    2.303999] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.11.0-rc1-00016-ga0fb284b267 #267
+[    2.312125] Hardware name: Kontron SMARC-sAL28 (4 Lane) (DT)
+[    2.317804] Call trace:
+[    2.320253]  dump_backtrace+0x0/0x1b8
+[    2.323936]  show_stack+0x20/0x70
+[    2.327263]  dump_stack+0xd8/0x134
+[    2.330677]  sysfs_warn_dup+0x6c/0x88
+[    2.334351]  sysfs_create_dir_ns+0xe8/0x100
+[    2.338547]  kobject_add_internal+0x9c/0x290
+[    2.342833]  kobject_add+0xa0/0x108
+[    2.346331]  device_add+0xfc/0x798
+[    2.349746]  device_link_add+0x454/0x5e0
+[    2.353682]  fw_devlink_create_devlink+0xb8/0xc8
+[    2.358316]  __fw_devlink_link_to_suppliers+0x84/0x180
+[    2.363474]  __fw_devlink_link_to_suppliers+0x134/0x180
+[    2.368718]  device_add+0x778/0x798
+[    2.372217]  device_register+0x28/0x38
+[    2.375979]  __mdiobus_register+0x94/0x340
+[    2.380089]  of_mdiobus_register+0xb4/0x380
+[    2.384285]  enetc_pf_probe+0x73c/0xb10
+[    2.388132]  local_pci_probe+0x48/0xb8
+[    2.391896]  pci_device_probe+0x120/0x1c0
+[    2.395920]  really_probe+0xec/0x3c0
+[    2.399505]  driver_probe_device+0x60/0xc0
+[    2.403614]  device_driver_attach+0x7c/0x88
+[    2.407810]  __driver_attach+0x60/0xe8
+[    2.411570]  bus_for_each_dev+0x7c/0xd0
+[    2.415419]  driver_attach+0x2c/0x38
+[    2.419004]  bus_add_driver+0x194/0x1f8
+[    2.422851]  driver_register+0x6c/0x128
+[    2.426698]  __pci_register_driver+0x4c/0x58
+[    2.430983]  enetc_pf_driver_init+0x2c/0x38
+[    2.435181]  do_one_initcall+0x54/0x2d8
+[    2.439029]  kernel_init_freeable+0x1fc/0x268
+[    2.443403]  kernel_init+0x1c/0x120
+[    2.446904]  ret_from_fork+0x10/0x30
+[    2.450502] kobject_add_internal failed for 0000:00:00.1--0000:00:00.1 with -EEXIST, don't try to register things with the same name in the same directory.
 
-How about grouping all forward declarations at the top ?
+Looks like it will generate that link twice? Let me know if I can help
+testing.
 
-Otherwise this looks good,
+See also: https://lavalab.kontron.com/scheduler/job/3894#L831
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-If I was maintaining this driver I would likely move the structure
-definitions to ipu3-cio2.c though.
-
->  struct cio2_device {
->   struct pci_dev *pci_dev;
->   void __iomem *base;
-
--- 
-Regards,
-
-Laurent Pinchart
+-michael
