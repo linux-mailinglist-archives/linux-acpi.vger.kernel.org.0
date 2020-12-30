@@ -2,130 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D204B2E71F0
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Dec 2020 16:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 556002E7556
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Dec 2020 01:24:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726488AbgL2Prl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Dec 2020 10:47:41 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:40039 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbgL2Prl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Dec 2020 10:47:41 -0500
-Received: by mail-oi1-f170.google.com with SMTP id p5so14967017oif.7;
-        Tue, 29 Dec 2020 07:47:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MEK4Mw7UBxOJIa/S7PzM0wAgV0d+78LiF/JzTK6IpGY=;
-        b=qdj8aBOTwilPMY5oade8smWV58IfL0Edd2EXNuwQ2tfG9+SyaDsyZ1dGdtyjGW87cb
-         KW30p0W2MkEHwjrfA0PFDIHW+uWaxF6lVLCJDWph8ubkAB6H8LE+Ypsq72EQiuMS2Vp2
-         Q4KzfyXAHaj5PVefDueizjQ5d/XoGj9SAV1xiTfL2dg3mMd70XbLiPL45x/EOPYwk/ry
-         QFDmzDgXDcFdHTodCZEl7VisuO/xcmrI6s+Brgr+SUJnl6E5YVgF6krfjSVxv8hXI8/S
-         Z2Gea8foxytAE2MbWHQdWtuo7CDvZ3hzfNJ452qqL1s9IKR+JhdpjYGJ8rAGJectvcu8
-         KJQw==
-X-Gm-Message-State: AOAM531AuF31wxVsD/iZIRWp0ms8MsUzEQ+pmT7sGKw7ywJqJ/PUv/1e
-        HgKVbIeO7RORWndDN+G8kOdAh4LKLCEMx5XAKgs=
-X-Google-Smtp-Source: ABdhPJympvLKSdtn+Fy+6FP9V+9doVUVBA4W7GeIJDtKG8gT7sd01LpO7TI4S50YuBA/JEnu2FTSmmKRRj/lb9Y+FOA=
-X-Received: by 2002:aca:4c1:: with SMTP id 184mr2791324oie.157.1609256820193;
- Tue, 29 Dec 2020 07:47:00 -0800 (PST)
+        id S1726276AbgL3AYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Dec 2020 19:24:22 -0500
+Received: from mail1.bemta23.messagelabs.com ([67.219.246.115]:58792 "EHLO
+        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726156AbgL3AYW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Dec 2020 19:24:22 -0500
+Received: from [100.112.7.19] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-c.us-east-1.aws.symcld.net id EA/01-56876-D67CBEF5; Wed, 30 Dec 2020 00:18:53 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOIsWRWlGSWpSXmKPExsWS8eIhr27u8df
+  xBmcOali8OT6dyWL5vn5Gi88dk1ksVu95wWxx5vQlVgdWj3knAz3e77vK5rHlajuLx+dNcgEs
+  UayZeUn5FQmsGU9W7GYpWKpbsfflD/YGxh71LkYuDiGB/4wSzXN7WSGch0DOkRmMXYycHGwC2
+  hJbtvxi62Lk4BARkJH4sNYTpIZZoI9RYtbf/ewgNcICiRINb9cxg9gsAqoSXZeng9m8AlYSk5
+  /OBauREJCXeNq7HCzOCVRzpusxC4gtJKAicf/BEjaIekGJkzOfgMWZgeqbt85mhrAlJA6+eME
+  MMUdB4lPrZDYIO0Fi2cs7zBMYBWYhaZ+FpH0WkvYFjMyrGM2SijLTM0pyEzNzdA0NDHQNDY10
+  zYAsE73EKt1kvdJi3dTE4hJdQ73E8mK94src5JwUvbzUkk2MwPBPKWDL2MHY/uaD3iFGSQ4mJ
+  VFeyQWv44X4kvJTKjMSizPii0pzUosPMcpwcChJ8PIdBcoJFqWmp1akZeYAYxEmLcHBoyTCWw
+  eS5i0uSMwtzkyHSJ1iVJQS530AkhAASWSU5sG1weL/EqOslDAvIwMDgxBPQWpRbmYJqvwrRnE
+  ORiVh3mSQKTyZeSVw018BLWYCWsyYA7a4JBEhJdXAZBtc/URQK6wy4uLzaLkEVV9Z9X6VheU3
+  PD4/VbV2kS6+tTN6PrPq3RtOJs822x4rXtb0QLvlqebl2Ovbme6pTpt8f0O+ccif015HUh8cn
+  7Fv7rdb3QfFr/2fcb2d5Z/l44CVBlxX5+TUOLXGyi7TfmTR1rTd79meFfGtO44cnCjo7rLm39
+  F+9qb16poLbczTbrBnzNzstZFdc17kbqUfv115H+qGsPStLXexfb6Zd8Y2vae/f2zKzWM1mvi
+  S0+PROo0qu/QFxfq//0d41lvO75x/2HxttHDdrs0/xDYvKmy/eTu/00n/y6nHn3VWVBQvYeYW
+  TV9uu7Cu62tX9RUGIYMpnPO2/+J0LdXZFiP0X4mlOCPRUIu5qDgRAGcxirN6AwAA
+X-Env-Sender: markpearson@lenovo.com
+X-Msg-Ref: server-24.tower-415.messagelabs.com!1609287533!657538!1
+X-Originating-IP: [104.232.225.13]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.60.3; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 11716 invoked from network); 30 Dec 2020 00:18:53 -0000
+Received: from unknown (HELO lenovo.com) (104.232.225.13)
+  by server-24.tower-415.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 30 Dec 2020 00:18:53 -0000
+Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by Forcepoint Email with ESMTPS id 71729F22B6B38509BA9C;
+        Tue, 29 Dec 2020 19:18:53 -0500 (EST)
+Received: from localhost.home (10.64.93.153) by reswpmail04.lenovo.com
+ (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Tue, 29 Dec
+ 2020 16:18:51 -0800
+From:   Mark Pearson <markpearson@lenovo.com>
+To:     <markpearson@lenovo.com>
+CC:     <hdegoede@redhat.com>, <mgross@linux.intel.com>,
+        <rjw@rjwysocki.net>, <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>
+Subject: [PATCH v8 1/3] Documentation: Add documentation for new platform_profile sysfs attribute
+Date:   Tue, 29 Dec 2020 19:18:25 -0500
+Message-ID: <20201230001827.3745-1-markpearson@lenovo.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <markpearson@lenovo.com>
+References: <markpearson@lenovo.com>
 MIME-Version: 1.0
-References: <202012271352.JvNDF17O-lkp@intel.com> <34a43212-ff2b-cbc6-a670-975d39ac9f12@redhat.com>
- <16284400-7c71-ee40-b694-614d6daf21f5@lenovo.com> <CAJZ5v0je=BeU98tkXmE9Mu1aiqc4=o288S=uOuFwh=okWJC2eQ@mail.gmail.com>
- <22e7ec14-faab-bddd-fff2-303ab3bff01e@lenovo.com>
-In-Reply-To: <22e7ec14-faab-bddd-fff2-303ab3bff01e@lenovo.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 29 Dec 2020 16:46:38 +0100
-Message-ID: <CAJZ5v0gyAXmbbjbW=sh9UzZRaJMuc0_Btx4V+4DhrSQOPrt3Mg@mail.gmail.com>
-Subject: Re: [External] Re: [pm:bleeding-edge 8612/8615] drivers/acpi/platform_profile.c:147:24:
- warning: address of array 'pprof->choices' will always evaluate to 'true'
-To:     Mark Pearson <markpearson@lenovo.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
-        clang-built-linux@googlegroups.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.64.93.153]
+X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
+ reswpmail04.lenovo.com (10.62.32.23)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 29, 2020 at 4:36 PM Mark Pearson <markpearson@lenovo.com> wrote:
->
-> Hi Rafael
->
-> On 29/12/2020 10:23, Rafael J. Wysocki wrote:
-> > On Tue, Dec 29, 2020 at 12:18 AM Mark Pearson <markpearson@lenovo.com> wrote:
-> >>
-> >> Hi Hans
-> >>
-> >> On 27/12/2020 06:56, Hans de Goede wrote:
-> >>> Hi,
-> >>>
-> >>> On 12/27/20 6:11 AM, kernel test robot wrote:
-> >>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> >>>> head:   a33520709645543f108361fe21fa9434a351c4e9
-> >>>> commit: 8c9b909fb1282e43792433e6c1cba125ccfc6201 [8612/8615] ACPI: platform-profile: Add platform profile support
-> >>>> config: x86_64-randconfig-a015-20201221 (attached as .config)
-> >>>> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project cee1e7d14f4628d6174b33640d502bff3b54ae45)
-> >>>> reproduce (this is a W=1 build):
-> >>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >>>>         chmod +x ~/bin/make.cross
-> >>>>         # install x86_64 cross compiling tool for clang build
-> >>>>         # apt-get install binutils-x86-64-linux-gnu
-> >>>>         # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=8c9b909fb1282e43792433e6c1cba125ccfc6201
-> >>>>         git remote add pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-> >>>>         git fetch --no-tags pm bleeding-edge
-> >>>>         git checkout 8c9b909fb1282e43792433e6c1cba125ccfc6201
-> >>>>         # save the attached .config to linux build tree
-> >>>>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64
-> >>>>
-> >>>> If you fix the issue, kindly add following tag as appropriate
-> >>>> Reported-by: kernel test robot <lkp@intel.com>
-> >>>>
-> >>>> All warnings (new ones prefixed by >>):
-> >>>>
-> >>>>>> drivers/acpi/platform_profile.c:147:24: warning: address of array 'pprof->choices' will always evaluate to 'true' [-Wpointer-bool-conversion]
-> >>>>            if (!pprof || !pprof->choices || !pprof->profile_set ||
-> >>>>                          ~~~~~~~~^~~~~~~
-> >>>>    1 warning generated.
-> >>>
-> >>>
-> >>> Ah, this is caused by changing choices from a single long to:
-> >>>
-> >>>       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> >>>
-> >>> So that we can use for_each_set_bit and are future proof for more then
-> >>> 32 profiles.
-> >>>
-> >>> To fix this the check should be changed into this (untested):
-> >>>
-> >>> #include <linux/bitmap.h>
-> >>>
-> >>>       if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
-> >>>           !pprof->profile_set || !pprof->profile_get) {
-> >>>               mutex_unlock(&profile_lock);
-> >>>               return -EINVAL;
-> >>>       }
-> >>>
-> >>> Mark can you provide a (tested) patch for this?
-> >>>
-> >>> Regards,
-> >>>
-> >>> Hans
-> >>>
-> >> Will do!
-> >
-> > Please note that I'm not going to push the material to Linus with this
-> > warning, so if you want it to go into 5.11, that needs to be addressed
-> > timely.
-> >
-> > Thanks!
-> >
-> Understood :) I tested this last night and it looks good. Do I push this
-> as a v8 patch on the current series or as a new standalone patch?
+On modern systems the platform performance, temperature, fan and other
+hardware related characteristics are often dynamically configurable. The
+profile is often automatically adjusted to the load by some
+automatic-mechanism (which may very well live outside the kernel).
 
-An incremental patch to fix the issue, please.
+These auto platform-adjustment mechanisms often can be configured with
+one of several 'platform-profiles', with either a bias towards low-power
+consumption or towards performance (and higher power consumption and
+thermals).
+
+Introduce a new platform_profile sysfs API which offers a generic API for
+selecting the performance-profile of these automatic-mechanisms.
+
+Co-developed-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+ - updated to rst format
+Changes in v3, v4, v5
+ - version bump along with rest of patch series
+Changes in v6:
+ - Split sysfs-platform_profile.rs into ABI text and then admin guide in
+   userspace-api section. Hope this is correct - I'm guessing a bit.
+Changes in v7:
+ - Correct available_choices to platform_profile_choices
+ - Improve phrasing as recommended by review
+Changes in v8:
+ - Removed unnecessary empty lines at end of file
+
+ .../ABI/testing/sysfs-platform_profile        | 24 +++++++++++
+ Documentation/userspace-api/index.rst         |  1 +
+ .../userspace-api/sysfs-platform_profile.rst  | 42 +++++++++++++++++++
+ 3 files changed, 67 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
+ create mode 100644 Documentation/userspace-api/sysfs-platform_profile.rst
+
+diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
+new file mode 100644
+index 000000000000..9d6b89b66cca
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-platform_profile
+@@ -0,0 +1,24 @@
++What:		/sys/firmware/acpi/platform_profile_choices
++Date:		October 2020
++Contact:	Hans de Goede <hdegoede@redhat.com>
++Description:	This file contains a space-separated list of profiles supported for this device.
++
++		Drivers must use the following standard profile-names:
++
++		============	============================================
++		low-power	Low power consumption
++		cool		Cooler operation
++		quiet		Quieter operation
++		balanced	Balance between low power consumption and performance
++		performance	High performance operation
++		============	============================================
++
++		Userspace may expect drivers to offer more than one of these
++		standard profile names.
++
++What:		/sys/firmware/acpi/platform_profile
++Date:		October 2020
++Contact:	Hans de Goede <hdegoede@redhat.com>
++Description:	Reading this file gives the current selected profile for this
++		device. Writing this file with one of the strings from
++		platform_profile_choices changes the profile to the new value.
+diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
+index acd2cc2a538d..d29b020e5622 100644
+--- a/Documentation/userspace-api/index.rst
++++ b/Documentation/userspace-api/index.rst
+@@ -24,6 +24,7 @@ place where this information is gathered.
+    ioctl/index
+    iommu
+    media/index
++   sysfs-platform_profile
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/userspace-api/sysfs-platform_profile.rst b/Documentation/userspace-api/sysfs-platform_profile.rst
+new file mode 100644
+index 000000000000..c33a71263d9e
+--- /dev/null
++++ b/Documentation/userspace-api/sysfs-platform_profile.rst
+@@ -0,0 +1,42 @@
++=====================================================================
++Platform Profile Selection (e.g. /sys/firmware/acpi/platform_profile)
++=====================================================================
++
++On modern systems the platform performance, temperature, fan and other
++hardware related characteristics are often dynamically configurable. The
++platform configuration is often automatically adjusted to the current
++conditions by some automatic mechanism (which may very well live outside
++the kernel).
++
++These auto platform adjustment mechanisms often can be configured with
++one of several platform profiles, with either a bias towards low power
++operation or towards performance.
++
++The purpose of the platform_profile attribute is to offer a generic sysfs
++API for selecting the platform profile of these automatic mechanisms.
++
++Note that this API is only for selecting the platform profile, it is
++NOT a goal of this API to allow monitoring the resulting performance
++characteristics. Monitoring performance is best done with device/vendor
++specific tools such as e.g. turbostat.
++
++Specifically when selecting a high performance profile the actual achieved
++performance may be limited by various factors such as: the heat generated
++by other components, room temperature, free air flow at the bottom of a
++laptop, etc. It is explicitly NOT a goal of this API to let userspace know
++about any sub-optimal conditions which are impeding reaching the requested
++performance level.
++
++Since numbers on their own cannot represent the multiple variables that a
++profile will adjust (power consumption, heat generation, etc) this API
++uses strings to describe the various profiles. To make sure that userspace
++gets a consistent experience the sysfs-platform_profile ABI document defines
++a fixed set of profile names. Drivers *must* map their internal profile
++representation onto this fixed set.
++
++If there is no good match when mapping then a new profile name may be
++added. Drivers which wish to introduce new profile names must:
++
++ 1. Explain why the existing profile names canot be used.
++ 2. Add the new profile name, along with a clear description of the
++    expected behaviour, to the sysfs-platform_profile ABI documentation.
+-- 
+2.28.0
+
