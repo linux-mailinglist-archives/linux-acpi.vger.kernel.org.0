@@ -2,105 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AC612E7A6B
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Dec 2020 16:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 215432E7BA0
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Dec 2020 18:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgL3Pi5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Dec 2020 10:38:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726463AbgL3Pi5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Dec 2020 10:38:57 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2889C06179B
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Dec 2020 07:38:16 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id r4so5005335wmh.5
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Dec 2020 07:38:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=t5qU0u0BbjyAf7ASokX3PDKEGwUdQpw6OEstGnrNo58=;
-        b=CN437dPVzQo0tvO2u2a4Jee8cmUZkWsILIxPzYq/EoNcgHYmX8y3d7PWXku/qVwxRy
-         Zbih/MHCKJ0s5zdvYyotn+sgkUAbn783RjApS1XoiEBHja3W0TkLhDNloVKFYYkBmZPu
-         bVcCOIdNJMbJDfBeXs3wHJX3reDJ/A3syjLGnD4ylznyFGeKC+MoVy8YK4APmzXAjBuS
-         0bhWQJ3ohVhocsH0n4miWboYQILyBW2+Q/1yPdUqZRoLnu7Oxv4w/V8HvP9eJUXrlEoS
-         SZml0TkX7+8HKCCONeQ51dWaKMKvDIxnFUWfQV7WtXsmlJz8yBd7fMn2d2wxfoRVGLPr
-         821g==
+        id S1726221AbgL3Rgr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Dec 2020 12:36:47 -0500
+Received: from mail-ot1-f48.google.com ([209.85.210.48]:42490 "EHLO
+        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbgL3Rgr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Dec 2020 12:36:47 -0500
+Received: by mail-ot1-f48.google.com with SMTP id 11so15942489oty.9;
+        Wed, 30 Dec 2020 09:36:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=t5qU0u0BbjyAf7ASokX3PDKEGwUdQpw6OEstGnrNo58=;
-        b=BEZtPWqVH0BkyRcrICBxZbvroHpV0vsmoSuTc98Qvl8O91gksBIGNgXWQPjEKAYIUn
-         PSpfHdZwOn2YCUdfdZFuy6jqxfIO4JcjUzYKFJY4NRwW3rFUQAPeJva7dRWErOshssP/
-         n+JySuVgIlJuZw0xSGCeC0wj7/XR3vjTrZBDiYu8owXLnHnpXV37DFodMQ2NfRvqC9r/
-         HOgIQLoqOLBtQsTDjXfiFakx1Asq2tONpw2fndAvIlXKnFvLDh+o5/+IfrA0RFvDfvqE
-         uubNhVmhKUGm/MD4QNMa3iNzVjoz3RNhm3Mv9Ao8O2RlordeORJW7i/xk+Mk/kI0HCSA
-         0Ydw==
-X-Gm-Message-State: AOAM533gZ8XCZx+/F/QUE2ThIi5uzZcuPmGNI0TyiZJP0X/+SMzwkLTM
-        a6e4+0JiaKuRcLYyZ0Br2oLOgw==
-X-Google-Smtp-Source: ABdhPJzATfgVUVRnd0DMVpZVYIHm8h4tAgYslW1iLToSCwh2SN+9DdP1CGeN0glGGZOf/+K+y4Ot4w==
-X-Received: by 2002:a05:600c:d8:: with SMTP id u24mr8094776wmm.103.1609342694387;
-        Wed, 30 Dec 2020 07:38:14 -0800 (PST)
-Received: from localhost.localdomain (lns-bzn-59-82-252-148-164.adsl.proxad.net. [82.252.148.164])
-        by smtp.gmail.com with ESMTPSA id g191sm8634484wmg.39.2020.12.30.07.38.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Dec 2020 07:38:13 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dWnS6I8UEx94mp4jO4CRVu1zT+7oC6nWHWCtpIaNNJU=;
+        b=pdobmfV3ieKjdaUCe3MxHV4QHt+/zzwKBTIS+/8sIiZXABWPpNqMXKpmFCLCJp7+tQ
+         LUIAwUs0PKQtOIZ7CEbzzQa4mQ8FGa45S1/hMrOThJ/esrhaAGCRsgkK991NeHdsNQLw
+         JAwhK5fXiFk2t32VvQo7Cm6IzlHc2GsNs5gZ+zV5QnvkhS9N/mOnNEQ48r/ap0pYZWKp
+         fzSN9e1J1PdbTogaQ/649018FihgiMevwgZZNhshnN7JTNfkGvOYb7JZEJKUEmCM3d9H
+         w7G6d/42ice/qEwerBqklsS1IUsvY0mvizDqo5AwWvY0GpA0C8wAcJkECj1ThcnrjLLe
+         Zs1g==
+X-Gm-Message-State: AOAM530lulXceGQ0om2dXVlU0qghPdZrCR5LbmUw5pajKm2ZqB3pS4W7
+        dKb7/9V+T23AZ58iixCCDeX+b+HfWOld15Kf8tw=
+X-Google-Smtp-Source: ABdhPJzNw86skedRcIC0BMM58zjOg1ottUR8MHfDXqu5oTG3/88yzIZ9WF3y6+8QG81eE4oyluy27N8Obgb1N2yJK3M=
+X-Received: by 2002:a9d:67da:: with SMTP id c26mr40422141otn.321.1609349765726;
+ Wed, 30 Dec 2020 09:36:05 -0800 (PST)
+MIME-Version: 1.0
+References: <markpearson@lenovo.com> <20201230001827.3745-1-markpearson@lenovo.com>
+In-Reply-To: <20201230001827.3745-1-markpearson@lenovo.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 30 Dec 2020 18:35:53 +0100
+Message-ID: <CAJZ5v0hv12N4y=ZmjKwry4jGckyrQFBB5pNKgjHNG=dMzqfkvg@mail.gmail.com>
+Subject: Re: [PATCH v8 1/3] Documentation: Add documentation for new
+ platform_profile sysfs attribute
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] powercap/drivers/dtpm: Fix __udivdi3 and __aeabi_uldivmod unresolved symbols
-Date:   Wed, 30 Dec 2020 16:37:44 +0100
-Message-Id: <20201230153744.15612-1-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <CAJZ5v0gN3NfWyAHA7At=1ZG90vCJbDoUzF5ts2_t3GmunSbrMQ@mail.gmail.com>
-References: <CAJZ5v0gN3NfWyAHA7At=1ZG90vCJbDoUzF5ts2_t3GmunSbrMQ@mail.gmail.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-32 bits architectures do not support u64 division, so the macro
-DIV_ROUND_CLOSEST is not adequate as the compiler will replace the
-call to an unexisting function for the platform, leading to an
-unresolved symbols.
+On Wed, Dec 30, 2020 at 1:24 AM Mark Pearson <markpearson@lenovo.com> wrote:
+>
+> On modern systems the platform performance, temperature, fan and other
+> hardware related characteristics are often dynamically configurable. The
+> profile is often automatically adjusted to the load by some
+> automatic-mechanism (which may very well live outside the kernel).
+>
+> These auto platform-adjustment mechanisms often can be configured with
+> one of several 'platform-profiles', with either a bias towards low-power
+> consumption or towards performance (and higher power consumption and
+> thermals).
+>
+> Introduce a new platform_profile sysfs API which offers a generic API for
+> selecting the performance-profile of these automatic-mechanisms.
+>
+> Co-developed-by: Mark Pearson <markpearson@lenovo.com>
+> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Fix this by using the compatible macros:
+Applied, thanks!
 
-DIV64_U64_ROUND_CLOSEST and DIV_ROUND_CLOSEST_ULL.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/powercap/dtpm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/powercap/dtpm.c b/drivers/powercap/dtpm.c
-index 5b6857e9b064..0abcc439d728 100644
---- a/drivers/powercap/dtpm.c
-+++ b/drivers/powercap/dtpm.c
-@@ -99,8 +99,8 @@ static void __dtpm_rebalance_weight(struct dtpm *dtpm)
- 		pr_debug("Setting weight '%d' for '%s'\n",
- 			 child->weight, child->zone.name);
- 
--		child->weight = DIV_ROUND_CLOSEST(child->power_max * 1024,
--						  dtpm->power_max);
-+		child->weight = DIV64_U64_ROUND_CLOSEST(
-+			child->power_max * 1024, dtpm->power_max);
- 
- 		__dtpm_rebalance_weight(child);
- 	}
-@@ -272,7 +272,7 @@ static int __set_power_limit_uw(struct dtpm *dtpm, int cid, u64 power_limit)
- 			} else if (power_limit == dtpm->power_min) {
- 				power = child->power_min;
- 			} else {
--				power = DIV_ROUND_CLOSEST(
-+				power = DIV_ROUND_CLOSEST_ULL(
- 					power_limit * child->weight, 1024);
- 			}
- 
--- 
-2.17.1
-
+> ---
+> Changes in v2:
+>  - updated to rst format
+> Changes in v3, v4, v5
+>  - version bump along with rest of patch series
+> Changes in v6:
+>  - Split sysfs-platform_profile.rs into ABI text and then admin guide in
+>    userspace-api section. Hope this is correct - I'm guessing a bit.
+> Changes in v7:
+>  - Correct available_choices to platform_profile_choices
+>  - Improve phrasing as recommended by review
+> Changes in v8:
+>  - Removed unnecessary empty lines at end of file
+>
+>  .../ABI/testing/sysfs-platform_profile        | 24 +++++++++++
+>  Documentation/userspace-api/index.rst         |  1 +
+>  .../userspace-api/sysfs-platform_profile.rst  | 42 +++++++++++++++++++
+>  3 files changed, 67 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-platform_profile
+>  create mode 100644 Documentation/userspace-api/sysfs-platform_profile.rst
+>
+> diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
+> new file mode 100644
+> index 000000000000..9d6b89b66cca
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-platform_profile
+> @@ -0,0 +1,24 @@
+> +What:          /sys/firmware/acpi/platform_profile_choices
+> +Date:          October 2020
+> +Contact:       Hans de Goede <hdegoede@redhat.com>
+> +Description:   This file contains a space-separated list of profiles supported for this device.
+> +
+> +               Drivers must use the following standard profile-names:
+> +
+> +               ============    ============================================
+> +               low-power       Low power consumption
+> +               cool            Cooler operation
+> +               quiet           Quieter operation
+> +               balanced        Balance between low power consumption and performance
+> +               performance     High performance operation
+> +               ============    ============================================
+> +
+> +               Userspace may expect drivers to offer more than one of these
+> +               standard profile names.
+> +
+> +What:          /sys/firmware/acpi/platform_profile
+> +Date:          October 2020
+> +Contact:       Hans de Goede <hdegoede@redhat.com>
+> +Description:   Reading this file gives the current selected profile for this
+> +               device. Writing this file with one of the strings from
+> +               platform_profile_choices changes the profile to the new value.
+> diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
+> index acd2cc2a538d..d29b020e5622 100644
+> --- a/Documentation/userspace-api/index.rst
+> +++ b/Documentation/userspace-api/index.rst
+> @@ -24,6 +24,7 @@ place where this information is gathered.
+>     ioctl/index
+>     iommu
+>     media/index
+> +   sysfs-platform_profile
+>
+>  .. only::  subproject and html
+>
+> diff --git a/Documentation/userspace-api/sysfs-platform_profile.rst b/Documentation/userspace-api/sysfs-platform_profile.rst
+> new file mode 100644
+> index 000000000000..c33a71263d9e
+> --- /dev/null
+> +++ b/Documentation/userspace-api/sysfs-platform_profile.rst
+> @@ -0,0 +1,42 @@
+> +=====================================================================
+> +Platform Profile Selection (e.g. /sys/firmware/acpi/platform_profile)
+> +=====================================================================
+> +
+> +On modern systems the platform performance, temperature, fan and other
+> +hardware related characteristics are often dynamically configurable. The
+> +platform configuration is often automatically adjusted to the current
+> +conditions by some automatic mechanism (which may very well live outside
+> +the kernel).
+> +
+> +These auto platform adjustment mechanisms often can be configured with
+> +one of several platform profiles, with either a bias towards low power
+> +operation or towards performance.
+> +
+> +The purpose of the platform_profile attribute is to offer a generic sysfs
+> +API for selecting the platform profile of these automatic mechanisms.
+> +
+> +Note that this API is only for selecting the platform profile, it is
+> +NOT a goal of this API to allow monitoring the resulting performance
+> +characteristics. Monitoring performance is best done with device/vendor
+> +specific tools such as e.g. turbostat.
+> +
+> +Specifically when selecting a high performance profile the actual achieved
+> +performance may be limited by various factors such as: the heat generated
+> +by other components, room temperature, free air flow at the bottom of a
+> +laptop, etc. It is explicitly NOT a goal of this API to let userspace know
+> +about any sub-optimal conditions which are impeding reaching the requested
+> +performance level.
+> +
+> +Since numbers on their own cannot represent the multiple variables that a
+> +profile will adjust (power consumption, heat generation, etc) this API
+> +uses strings to describe the various profiles. To make sure that userspace
+> +gets a consistent experience the sysfs-platform_profile ABI document defines
+> +a fixed set of profile names. Drivers *must* map their internal profile
+> +representation onto this fixed set.
+> +
+> +If there is no good match when mapping then a new profile name may be
+> +added. Drivers which wish to introduce new profile names must:
+> +
+> + 1. Explain why the existing profile names canot be used.
+> + 2. Add the new profile name, along with a clear description of the
+> +    expected behaviour, to the sysfs-platform_profile ABI documentation.
+> --
+> 2.28.0
+>
