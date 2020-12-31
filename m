@@ -2,142 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A7DC2E8146
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Dec 2020 17:45:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D932E81FF
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Dec 2020 21:48:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727213AbgLaQox (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 31 Dec 2020 11:44:53 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:52198 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727168AbgLaQow (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 31 Dec 2020 11:44:52 -0500
-Received: from zn.tnic (p200300ec2f124d002bc781a5c0b200e2.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:4d00:2bc7:81a5:c0b2:e2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8D0DA1EC0118;
-        Thu, 31 Dec 2020 17:44:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1609433050;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=YYvhz9AnthRjVosI8l9DrVzEhZjCTviKSd1FjaNAGJQ=;
-        b=OOzWsX8g/IqONmZjAXGcwhODJ43zWHlV3AFNioX7Xlyw1Unl1YlXtNyG1wQ/cdXZ/r5Wqt
-        rBMyDHPHKNk3enqwRnyib26JSCgrljIB5rCxoG+JKyQZi4at/fByWqXqhuEm7bIeTIKV8Z
-        rIjcirX1PrQ5Aj2eeceBG5laFL16eV0=
-Date:   Thu, 31 Dec 2020 17:44:09 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, james.morse@arm.com,
-        mchehab+huawei@kernel.org, tony.luck@intel.com, rjw@rjwysocki.net,
-        lenb@kernel.org, rrichter@marvell.com, linuxarm@huawei.com,
-        xuwei5@huawei.com, jonathan.cameron@huawei.com,
-        john.garry@huawei.com, tanxiaofei@huawei.com,
-        shameerali.kolothum.thodi@huawei.com, salil.mehta@huawei.com
-Subject: Re: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
-Message-ID: <20201231164409.GC4504@zn.tnic>
-References: <20201208172959.1249-1-shiju.jose@huawei.com>
- <20201208172959.1249-2-shiju.jose@huawei.com>
+        id S1726693AbgLaUqz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Dec 2020 15:46:55 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56294 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726210AbgLaUqz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Dec 2020 15:46:55 -0500
+Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
+ id adb218dee83d9126; Thu, 31 Dec 2020 21:46:12 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Stephen Berman <stephen.berman@gmx.net>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Date:   Thu, 31 Dec 2020 21:46:11 +0100
+Message-ID: <9709109.MH8tSaV5v9@kreacher>
+In-Reply-To: <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com>
+References: <87blkbx1gt.fsf@gmx.net> <CAJZ5v0j86pX_a4bSLP=sobLoYhfQYV9dWL8HHf2941kXgND79g@mail.gmail.com> <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201208172959.1249-2-shiju.jose@huawei.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 08, 2020 at 05:29:58PM +0000, Shiju Jose wrote:
-> The corrected error count on the CPU caches required
-> reporting to the user-space for the predictive failure
-> analysis. For this purpose, add an EDAC device and device
-> blocks for the CPU caches found.
-> The cache's corrected error count would be stored in the
-> /sys/devices/system/edac/cpu/cpu*/cache*/ce_count.
+On Wednesday, December 2, 2020 8:13:38 PM CET Rafael J. Wysocki wrote:
+> On Wed, Dec 2, 2020 at 7:31 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, Dec 2, 2020 at 7:03 PM Sebastian Andrzej Siewior
+> > <bigeasy@linutronix.de> wrote:
+> > >
+> > > On 2020-10-26 18:20:59 [+0100], To Rafael J. Wysocki wrote:
+> > > > > > > > Done as Bug 208877.
+> > > > > > Rafael, do you have any suggestions?
+> > > > >
+> > > > > I've lost track of this sorry.
+> > > > >
+> > > > > I have ideas, let me get back to this next week.
+> > > >
+> > > > :)
+> > >
+> > > Rafael, any update? If you outline an idea or so then I may be able to
+> > > form a patch out of it. Otherwise I have no idea how to fix this - other
+> > > than telling the driver to not poll in smaller intervals than
+> > > 30secs.
+> >
+> > The idea, roughly speaking, is to limit the number of outstanding work
+> > items in the queue (basically, if there's a notification occurring
+> > before the previous one can be handled, there is no need to queue up
+> > another work item for it).
+> 
+> That's easier said than done, though, because of the way the work item
+> queue-up is hooked up into the ACPICA code.
 
-This still doesn't begin to explain why the kernel needs this. I had
-already asked whether errors in CPU caches are something which happen
-often enough so that software should count them but nothing came. So pls
-justify first why this wants to be added to the kernel.
+So scratch this and it wouldn't work in general anyway AFAICS.
 
-> diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
-> index 7a47680d6f07..c73eeab27ac9 100644
-> --- a/drivers/edac/Kconfig
-> +++ b/drivers/edac/Kconfig
-> @@ -74,6 +74,16 @@ config EDAC_GHES
->  
->  	  In doubt, say 'Y'.
->  
-> +config EDAC_GHES_CPU_ERROR
-> +	bool "EDAC device for reporting firmware-first BIOS detected CPU error count"
+ATM, I'm tempted to do something like the patch below (with the rationale
+that it shouldn't be necessary to read the temperature right after updating
+the trip points if polling is in use, because the next update through polling
+will cause it to be read anyway and it will trigger trip point actions as
+needed).
 
-Why a separate Kconfig item?
+Stephen, can you give it a go, please?
 
-> +	depends on EDAC_GHES
-> +	help
-> +	  EDAC device for the firmware-first BIOS detected CPU error count reported
+---
+ drivers/acpi/thermal.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-Well this is not what it is doing - you're talking about cache errors.
-"CPU errors" can be a lot more than just cache errors.
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -911,24 +911,25 @@ static void acpi_thermal_notify(struct a
+ 	switch (event) {
+ 	case ACPI_THERMAL_NOTIFY_TEMPERATURE:
+ 		acpi_thermal_check(tz);
+-		break;
++		return;
+ 	case ACPI_THERMAL_NOTIFY_THRESHOLDS:
+ 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_THRESHOLDS);
+-		acpi_thermal_check(tz);
+-		acpi_bus_generate_netlink_event(device->pnp.device_class,
+-						  dev_name(&device->dev), event, 0);
+ 		break;
+ 	case ACPI_THERMAL_NOTIFY_DEVICES:
+ 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_DEVICES);
+-		acpi_thermal_check(tz);
+-		acpi_bus_generate_netlink_event(device->pnp.device_class,
+-						  dev_name(&device->dev), event, 0);
+ 		break;
+ 	default:
+ 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+ 				  "Unsupported event [0x%x]\n", event));
+-		break;
++		return;
+ 	}
++
++	/* Trigger an update of the thermal zone unless polling is in use. */
++	if (!tz->polling_frequency)
++		acpi_thermal_check(tz);
++
++	acpi_bus_generate_netlink_event(device->pnp.device_class,
++					dev_name(&device->dev), event, 0);
+ }
+ 
+ /*
 
-> +static void ghes_edac_create_cpu_device(struct device *dev)
-> +{
-> +	int cpu;
-> +	struct cpu_cacheinfo *this_cpu_ci;
-> +
-> +	/*
-> +	 * Find the maximum number of caches present in the CPU heirarchy
-> +	 * among the online CPUs.
-> +	 */
-> +	for_each_online_cpu(cpu) {
-> +		this_cpu_ci = get_cpu_cacheinfo(cpu);
-> +		if (!this_cpu_ci)
-> +			continue;
-> +		if (max_number_of_caches < this_cpu_ci->num_leaves)
-> +			max_number_of_caches = this_cpu_ci->num_leaves;
 
-So this is counting the number of cache levels on the system? So you
-want to count the errors per cache levels?
 
-> +	}
-> +	if (!max_number_of_caches)
-> +		return;
-> +
-> +	/*
-> +	 * EDAC device interface only supports creating the CPU cache hierarchy for alls
-> +	 * the CPUs together. Thus need to allocate cpu_edac_block_list for the
-> +	 * max_number_of_caches among all the CPUs irrespective of the number of caches
-> +	 * per CPU might vary.
-> +	 */
-
-So this is lumping all the caches together into a single list? What for?
-To untangle to the proper ones when the error gets reported?
-
-Have you heard of percpu variables?
-
-> @@ -624,6 +787,10 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
->  	ghes_pvt = pvt;
->  	spin_unlock_irqrestore(&ghes_lock, flags);
->  
-> +#if defined(CONFIG_EDAC_GHES_CPU_ERROR)
-> +	ghes_edac_create_cpu_device(dev);
-> +#endif
-> +
-
-Init stuff belongs into ghes_scan_system().
-
-...
-
-Ok, I've seen enough. "required reporting to the user-space for the
-predictive failure analysis." is not even trying to explain *why* you're
-doing this, what *actual* problem it is addressing and why should the
-kernel get it.
-
-And without a proper problem definition of what you're trying to solve,
-this is not going anywhere.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
