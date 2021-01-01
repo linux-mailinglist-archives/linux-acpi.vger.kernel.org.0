@@ -2,124 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71D932E81FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Dec 2020 21:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75C892E83C6
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jan 2021 13:58:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726693AbgLaUqz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 31 Dec 2020 15:46:55 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:56294 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726210AbgLaUqz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Dec 2020 15:46:55 -0500
-Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id adb218dee83d9126; Thu, 31 Dec 2020 21:46:12 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Stephen Berman <stephen.berman@gmx.net>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
+        id S1727058AbhAAM5u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jan 2021 07:57:50 -0500
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:54701 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726604AbhAAM5u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jan 2021 07:57:50 -0500
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 2D4875803CF;
+        Fri,  1 Jan 2021 07:56:44 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Fri, 01 Jan 2021 07:56:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm1; bh=VN9gFoYMofdXX2/sNpiOzvL02L
+        G+6gSlPlV9GtM1Kfc=; b=sd0Fd3pvJJNbv03G4raVb6jSmjyMImU8Z6RCX4My8Q
+        mCbPz0lW6CXPsont0kh63M/9bKYNlqI5WoYOO4pdiCwd5dhwO/NUA0JbUrIUe9ZN
+        7lo9i5ZVDpgtDOJxbc/bh/mZOFssWUcIJi3fB+GgxOAfCNXErj1d2/u9sCU5z3+2
+        +G+JMtAI/T5sU8nrQ8pkpMwUUxE5r/ecXM0atDjnEvs2l1SDhI2pkY5Mvqzirzvc
+        nCvmPJD1Ft2Wv1dCJ7ZzCLllyI0dMWLNpYwviSnf5ls7HyQJgU1sTKQscyfmaQiJ
+        EbyD7I/FYJ3AM3v2ZHZYu9CUC9ZVFBGXU85gCmKv/exA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=VN9gFoYMofdXX2/sN
+        piOzvL02LG+6gSlPlV9GtM1Kfc=; b=ZyCQ3wtskd6wViZL+8hs1RE1j/k4rD+74
+        tknJ3ZS4FpGDIVEMwUFiAXVtis3BnezFPyP/2iQaTK0XWpyAmdC8x/eJw6eJcJ7n
+        PtwV8+EQDwnqe101Kht3ZrRa1eDlCajtceD+hmQbfTUcgG0UQy32Yg8MQoeUcVdM
+        JXogDCLA0/oHmmYEUX7KVJsoMpnhY880x9EyDnRlKHOYcprRta3O0Fjr+8+22VhN
+        QfMo8o9IkAATZZ3cQS7yC+8zesm8iGtxn9n9KCpnkGkcqyrpUHNFcQX/mkuKJDZI
+        8hKSnY9DlGKANPRLiaIw2M6DxbryKPi4XpFUYZv8IKk+k4g3x9bpQ==
+X-ME-Sender: <xms:CxzvX-H4xxVryl_FQCRVYdKfBbGhS6-4vC4CIQ-6x_XcqhoJ_ItXww>
+    <xme:CxzvX_U5IcXq4NsvKz35iTd9aOSUWftjSyn4Eam6-JayZpaAVW2hUjHZLtyNXL5Fr
+    uf73XhWwFIuM2JAh30>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvddvjedggeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeflihgrgihunhcu
+    jggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecuggftrf
+    grthhtvghrnhephfejtdektdeuhedtieefteekveffteejteefgeekveegffetvddugfel
+    iefhtddunecukfhppeeitddrudejjedrudekledrudejudenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhih
+    ghhorghtrdgtohhm
+X-ME-Proxy: <xmx:CxzvX4IjdKSZl-5ljBv3qMpkaUksKqifZz_jmyIpyh5i69gH-tvrrg>
+    <xmx:CxzvX4FWFRrhWJHjHdXosEYIVg2_8YeNIy_cNhjXHuQE-42Ouq0Adg>
+    <xmx:CxzvX0V__R-ScF_6BvwrndGlggyLm2f07ObFdN3yvsRzprQhZMkOyA>
+    <xmx:CxzvX2JYGem75q2ZAMZlCZ58IZjwUDrQ7-SBTN7myeCoKrDghESTqg>
+Received: from strike.202.net.flygoat.com (unknown [60.177.189.171])
+        by mail.messagingengine.com (Postfix) with ESMTPA id A70B6240057;
+        Fri,  1 Jan 2021 07:56:37 -0500 (EST)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     platform-driver-x86@vger.kernel.org
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
-Date:   Thu, 31 Dec 2020 21:46:11 +0100
-Message-ID: <9709109.MH8tSaV5v9@kreacher>
-In-Reply-To: <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com>
-References: <87blkbx1gt.fsf@gmx.net> <CAJZ5v0j86pX_a4bSLP=sobLoYhfQYV9dWL8HHf2941kXgND79g@mail.gmail.com> <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com>
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] IdeaPad platform profile support
+Date:   Fri,  1 Jan 2021 20:56:24 +0800
+Message-Id: <20210101125629.20974-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, December 2, 2020 8:13:38 PM CET Rafael J. Wysocki wrote:
-> On Wed, Dec 2, 2020 at 7:31 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Wed, Dec 2, 2020 at 7:03 PM Sebastian Andrzej Siewior
-> > <bigeasy@linutronix.de> wrote:
-> > >
-> > > On 2020-10-26 18:20:59 [+0100], To Rafael J. Wysocki wrote:
-> > > > > > > > Done as Bug 208877.
-> > > > > > Rafael, do you have any suggestions?
-> > > > >
-> > > > > I've lost track of this sorry.
-> > > > >
-> > > > > I have ideas, let me get back to this next week.
-> > > >
-> > > > :)
-> > >
-> > > Rafael, any update? If you outline an idea or so then I may be able to
-> > > form a patch out of it. Otherwise I have no idea how to fix this - other
-> > > than telling the driver to not poll in smaller intervals than
-> > > 30secs.
-> >
-> > The idea, roughly speaking, is to limit the number of outstanding work
-> > items in the queue (basically, if there's a notification occurring
-> > before the previous one can be handled, there is no need to queue up
-> > another work item for it).
-> 
-> That's easier said than done, though, because of the way the work item
-> queue-up is hooked up into the ACPICA code.
+Tested on Lenovo Yoga-14SARE Chinese Edition.
 
-So scratch this and it wouldn't work in general anyway AFAICS.
+Jiaxun Yang (2):
+  ACPI: platform-profile: Introduce data parameter to handler
+  platform/x86: ideapad-laptop: DYTC Platform profile support
 
-ATM, I'm tempted to do something like the patch below (with the rationale
-that it shouldn't be necessary to read the temperature right after updating
-the trip points if polling is in use, because the next update through polling
-will cause it to be read anyway and it will trigger trip point actions as
-needed).
+ drivers/acpi/platform_profile.c       |   4 +-
+ drivers/platform/x86/Kconfig          |   1 +
+ drivers/platform/x86/ideapad-laptop.c | 281 ++++++++++++++++++++++++++
+ include/linux/platform_profile.h      |   5 +-
+ 4 files changed, 287 insertions(+), 4 deletions(-)
 
-Stephen, can you give it a go, please?
-
----
- drivers/acpi/thermal.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -911,24 +911,25 @@ static void acpi_thermal_notify(struct a
- 	switch (event) {
- 	case ACPI_THERMAL_NOTIFY_TEMPERATURE:
- 		acpi_thermal_check(tz);
--		break;
-+		return;
- 	case ACPI_THERMAL_NOTIFY_THRESHOLDS:
- 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_THRESHOLDS);
--		acpi_thermal_check(tz);
--		acpi_bus_generate_netlink_event(device->pnp.device_class,
--						  dev_name(&device->dev), event, 0);
- 		break;
- 	case ACPI_THERMAL_NOTIFY_DEVICES:
- 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_DEVICES);
--		acpi_thermal_check(tz);
--		acpi_bus_generate_netlink_event(device->pnp.device_class,
--						  dev_name(&device->dev), event, 0);
- 		break;
- 	default:
- 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
- 				  "Unsupported event [0x%x]\n", event));
--		break;
-+		return;
- 	}
-+
-+	/* Trigger an update of the thermal zone unless polling is in use. */
-+	if (!tz->polling_frequency)
-+		acpi_thermal_check(tz);
-+
-+	acpi_bus_generate_netlink_event(device->pnp.device_class,
-+					dev_name(&device->dev), event, 0);
- }
- 
- /*
-
-
+-- 
+2.30.0
 
