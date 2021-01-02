@@ -2,142 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C564E2E86EF
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Jan 2021 12:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9858D2E8814
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Jan 2021 18:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726486AbhABLEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 2 Jan 2021 06:04:02 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55248 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726327AbhABLEC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 Jan 2021 06:04:02 -0500
-Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id f83ed3595adce064; Sat, 2 Jan 2021 12:03:18 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Stephen Berman <stephen.berman@gmx.net>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
+        id S1726602AbhABRJZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 2 Jan 2021 12:09:25 -0500
+Received: from mga05.intel.com ([192.55.52.43]:47109 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726567AbhABRJZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 2 Jan 2021 12:09:25 -0500
+IronPort-SDR: MoabWB71FKseD7fb+AdSUrQypGT5w9oJS1Wy2UwFW8Muk1cyFxbesU9x1q6ZWV904Aj+QmJzX0
+ kSLzFC3qToGg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9852"; a="261584912"
+X-IronPort-AV: E=Sophos;i="5.78,470,1599548400"; 
+   d="scan'208";a="261584912"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2021 09:07:39 -0800
+IronPort-SDR: fwJSomnSF/y6+hHAl/Wvfe+88D95eUwIF55usTYH5kRi3sl+70frRvBRIA57qSnRaRAqdM3H0k
+ t0W9ogWd1Yaw==
+X-IronPort-AV: E=Sophos;i="5.78,470,1599548400"; 
+   d="scan'208";a="401489679"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2021 09:07:33 -0800
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 9E9E0207BF; Sat,  2 Jan 2021 19:07:31 +0200 (EET)
+Date:   Sat, 2 Jan 2021 19:07:31 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
-Date:   Sat, 02 Jan 2021 12:03:17 +0100
-Message-ID: <1744807.WFtog62eDp@kreacher>
-In-Reply-To: <9709109.MH8tSaV5v9@kreacher>
-References: <87blkbx1gt.fsf@gmx.net> <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com> <9709109.MH8tSaV5v9@kreacher>
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        devel@acpica.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tian Shu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        kieran.bingham+renesas@ideasonboard.com,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        niklas.soderlund+renesas@ragnatech.se,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jordan Hand <jorhand@linux.microsoft.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH v3 14/14] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
+Message-ID: <20210102170731.GD11878@paasikivi.fi.intel.com>
+References: <20201224010907.263125-1-djrscally@gmail.com>
+ <20201224010907.263125-15-djrscally@gmail.com>
+ <CAHp75VeXN6PnV7Mzz6UMpD+m-yjPi6XK0kx1=+-M5mci=Vb=YQ@mail.gmail.com>
+ <20201228170521.GZ26370@paasikivi.fi.intel.com>
+ <2d37df3d-f04c-6679-6e27-6c7f82e9b158@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d37df3d-f04c-6679-6e27-6c7f82e9b158@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, December 31, 2020 9:46:11 PM CET Rafael J. Wysocki wrote:
-> On Wednesday, December 2, 2020 8:13:38 PM CET Rafael J. Wysocki wrote:
-> > On Wed, Dec 2, 2020 at 7:31 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Wed, Dec 2, 2020 at 7:03 PM Sebastian Andrzej Siewior
-> > > <bigeasy@linutronix.de> wrote:
-> > > >
-> > > > On 2020-10-26 18:20:59 [+0100], To Rafael J. Wysocki wrote:
-> > > > > > > > > Done as Bug 208877.
-> > > > > > > Rafael, do you have any suggestions?
-> > > > > >
-> > > > > > I've lost track of this sorry.
-> > > > > >
-> > > > > > I have ideas, let me get back to this next week.
-> > > > >
-> > > > > :)
-> > > >
-> > > > Rafael, any update? If you outline an idea or so then I may be able to
-> > > > form a patch out of it. Otherwise I have no idea how to fix this - other
-> > > > than telling the driver to not poll in smaller intervals than
-> > > > 30secs.
-> > >
-> > > The idea, roughly speaking, is to limit the number of outstanding work
-> > > items in the queue (basically, if there's a notification occurring
-> > > before the previous one can be handled, there is no need to queue up
-> > > another work item for it).
+Hi Daniel,
+
+On Mon, Dec 28, 2020 at 10:37:38PM +0000, Daniel Scally wrote:
+> >>> +#define CIO2_NUM_PORTS                         4
 > > 
-> > That's easier said than done, though, because of the way the work item
-> > queue-up is hooked up into the ACPICA code.
+> > This is already defined in ipu3-cio2.h. Could you include that instead?
 > 
-> So scratch this and it wouldn't work in general anyway AFAICS.
+> Yes; but I'd need to also include media/v4l2-device.h and
+> media/videobuf2-dma-sg.h (they're included in ipu3-cio2-main.c at the
+> moment). It didn't seem worth it; but I can move those two includes from
+> the .c to the .h and then include ipu3-cio2.h in cio2-bridge.h
 > 
-> ATM, I'm tempted to do something like the patch below (with the rationale
-> that it shouldn't be necessary to read the temperature right after updating
-> the trip points if polling is in use, because the next update through polling
-> will cause it to be read anyway and it will trigger trip point actions as
-> needed).
+> Which do you prefer?
 
-There is one more way to address this, probably better: instead of checking the
-temperature right away in acpi_thermal_notify(), queue that on acpi_thermal_pm_queue
-and so only if another thermal check is not pending.
+Seems you got answers already... :-) splitting the header in two seems good
+to me. But IMO it doesn't have to be a part of this set.
 
-This way there will be at most one temperature check coming from
-acpi_thermal_notify() queued up at any time which should prevent the
-build-up of work items from taking place.
-
-So something like this:
-
----
- drivers/acpi/thermal.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -900,6 +900,12 @@ static void acpi_thermal_unregister_ther
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
- 
-+static void acpi_queue_thermal_check(struct acpi_thermal *tz)
-+{
-+	if (!work_pending(&tz->thermal_check_work))
-+		queue_work(acpi_thermal_pm_queue, &tz->thermal_check_work);
-+}
-+
- static void acpi_thermal_notify(struct acpi_device *device, u32 event)
- {
- 	struct acpi_thermal *tz = acpi_driver_data(device);
-@@ -910,17 +916,17 @@ static void acpi_thermal_notify(struct a
- 
- 	switch (event) {
- 	case ACPI_THERMAL_NOTIFY_TEMPERATURE:
--		acpi_thermal_check(tz);
-+		acpi_queue_thermal_check(tz);
- 		break;
- 	case ACPI_THERMAL_NOTIFY_THRESHOLDS:
- 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_THRESHOLDS);
--		acpi_thermal_check(tz);
-+		acpi_queue_thermal_check(tz);
- 		acpi_bus_generate_netlink_event(device->pnp.device_class,
- 						  dev_name(&device->dev), event, 0);
- 		break;
- 	case ACPI_THERMAL_NOTIFY_DEVICES:
- 		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_DEVICES);
--		acpi_thermal_check(tz);
-+		acpi_queue_thermal_check(tz);
- 		acpi_bus_generate_netlink_event(device->pnp.device_class,
- 						  dev_name(&device->dev), event, 0);
- 		break;
-@@ -1117,7 +1123,7 @@ static int acpi_thermal_resume(struct de
- 		tz->state.active |= tz->trips.active[i].flags.enabled;
- 	}
- 
--	queue_work(acpi_thermal_pm_queue, &tz->thermal_check_work);
-+	acpi_queue_thermal_check(tz);
- 
- 	return AE_OK;
- }
-
-
-
+-- 
+Sakari Ailus
