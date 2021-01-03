@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0E42E8EDE
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 00:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0EF2E8EE0
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 00:17:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727989AbhACXOT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1727983AbhACXOT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Sun, 3 Jan 2021 18:14:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727810AbhACXOS (ORCPT
+        with ESMTP id S1727982AbhACXOS (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Jan 2021 18:14:18 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05AD5C0617A0;
-        Sun,  3 Jan 2021 15:13:07 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id w5so29983006wrm.11;
-        Sun, 03 Jan 2021 15:13:06 -0800 (PST)
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F620C0617A1;
+        Sun,  3 Jan 2021 15:13:08 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id c133so16486379wme.4;
+        Sun, 03 Jan 2021 15:13:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=dAqkkyYwyPFHbEmWCS3R50YVCMCYrcz4Bx/nBN7je3I=;
-        b=bAsLflULZRXQExGUX+0UdEP0a1Ns96fYqj/jUjmNEL05faFv6FTb705JQeLXVn7s3t
-         ecximccKmAAKVt8gbGlJiPzIkmKk41bfc56zCWYOvCUtEqSNDRVXgjlhleyDua26Zer6
-         7iJ1ChFyFnCUtPTK/igfH+UOFQtiSY9RzxtJ9lswzZiIuumuf4V1mE1Gpm0mbMilrZeT
-         7OXcZSvywIZ/RLVRh8oYnIvWiooQY8ghXOBEZp1oqsbNqAkGR2yEZinbsHkC5qKwPiQk
-         VCuMujgaceVSzKV49Xs+RKOFi9OtWtb/erMNWqif7Hgoampo7Tgk785EMUq6qTVMlz8I
-         79Fg==
+        bh=R0GAqmMhWCpJ1h+yyfP0dUQgaIKJOiN6SmCAxCwFEKI=;
+        b=nGIufHNC+J2K6NafexTPvNG7L2Mfidg/YDxQoTHoZ4HFOYtOXTmFjP2mJBTdRwpChk
+         G1DWlVC7d9qd4QUGocCfiX6Vu3XEW1xzGodLAQ5nGxtwq+wPLN2dc0UAQcsju+OoPuyM
+         qvjip6TG+arkB144KvaP1PbL0RDA7ELcAB1/VmgQcgaR6pN0O3Aa+rWWGMNQNRIQnTVl
+         GBKJdbSrp7YxEwdG9WWoAB7fU+vUSTSL48nEmhrX4hzASXCjBCwhMLOCdGqaG75wWuAz
+         lI6GTGmLIhp0QhN8ru8JSr73VjLsEwD7EEKr+WrXUkE4P9E9NmWZymiCjD6NhQaZkIpi
+         TPlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dAqkkyYwyPFHbEmWCS3R50YVCMCYrcz4Bx/nBN7je3I=;
-        b=azxe/0qdTCDXMoaER2B3EC/qr6qr6uAiGVbSJijCY054yzD641+UtqbPZI7KroqyfS
-         BYge+43AtMB0KVB1SPNaDFbU7Crlt8FwOl79kcI505F3DXF/ha5613M2K7l7nDkHfL5b
-         2K5R919RZudjjftpmjiskMC9vQJ+8STHE6zYnprxuQaM5PSH9XkiekXsLxuryu/H7Zld
-         /QpaODAJi3O5ZwgRC+fEGZKqWMt/j2g2fu640H3TXxBB32jOmzL7enIxUtLnK2YRKhZw
-         6mKzZ1YuJmcS7C+9RsAaxm1HQV77PlCO0l9eMFckrZ/bTKwgDca2HATjw2mRFyBZpDUn
-         QxHA==
-X-Gm-Message-State: AOAM531ry4n/8ZCJ+9EIwIhuyE6zxmiTW7QjEdvOdfTyq/x6LlEfF2Vd
-        JcLuAE/dARlURx1v6Jpu1LVzmnz5Y30uxMXS
-X-Google-Smtp-Source: ABdhPJwZpbVvZoi1jbn1ZAbjJknVkdcChkUJA5YNjBA3Xr6NErCmPZlCJwZt4JXAvXELiWprKM15+g==
-X-Received: by 2002:a5d:54cc:: with SMTP id x12mr77599309wrv.132.1609715585852;
-        Sun, 03 Jan 2021 15:13:05 -0800 (PST)
+        bh=R0GAqmMhWCpJ1h+yyfP0dUQgaIKJOiN6SmCAxCwFEKI=;
+        b=rldXdMgVXMHWupN0QetEV/im4KV6b0ggozeLdy0BxftZPjAA0ui1qxAcx4Y4Sv6W68
+         Th32/t5r+d4CkOc48rg9t6lJ0KmdITJGq2ZhZFChtCZEL+ImwPCVSiC/0jdBOxepFLxz
+         W7qqWShGDrHfibmX5bSLeOCcKxdrmFdmn1Z508deF/GcMoeIOAFDN1CaYrlh6gIwVuJw
+         481t7SOUcyDbvrWYTqkcCf+Ni0CvQYVbf276G46ojUs7vFkxsjZIwilyyDkQodtGSMjg
+         aIUpQ23uU+KsQXUsPGs9PwxK5E2Kv2bVoCgRoVbmuPqc4HgYD9ZBTJr58rB/UZfAhORc
+         Dakg==
+X-Gm-Message-State: AOAM530N5CfbAqC4p1XflG/zScZceumtR44h2znvDvWqfeq6czJToUOp
+        CoFn+mEAvnQvJzMXqVuwhiKZ3UszdmbY8fra
+X-Google-Smtp-Source: ABdhPJy9XdA7GbO81Nb7fgLNPrp6CJ5xQunVhwOh5UmO5Abry4Qw4SYT0hnooPHj34IqfJPdktiDvw==
+X-Received: by 2002:a1c:4384:: with SMTP id q126mr24898530wma.84.1609715587155;
+        Sun, 03 Jan 2021 15:13:07 -0800 (PST)
 Received: from valhalla.home ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id h9sm32571018wme.11.2021.01.03.15.13.04
+        by smtp.gmail.com with ESMTPSA id h9sm32571018wme.11.2021.01.03.15.13.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Jan 2021 15:13:05 -0800 (PST)
+        Sun, 03 Jan 2021 15:13:06 -0800 (PST)
 From:   Daniel Scally <djrscally@gmail.com>
 To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-media@vger.kernel.org, devel@acpica.org,
@@ -63,9 +63,9 @@ Cc:     lenb@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
         niklas.soderlund+renesas@ragnatech.se, slongerbeam@gmail.com,
         heikki.krogerus@linux.intel.com, linus.walleij@linaro.org,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH v4 09/15] lib/test_printf.c: Use helper function to unwind array of software_nodes
-Date:   Sun,  3 Jan 2021 23:12:29 +0000
-Message-Id: <20210103231235.792999-10-djrscally@gmail.com>
+Subject: [PATCH v4 10/15] ipu3-cio2: Add T: entry to MAINTAINERS
+Date:   Sun,  3 Jan 2021 23:12:30 +0000
+Message-Id: <20210103231235.792999-11-djrscally@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210103231235.792999-1-djrscally@gmail.com>
 References: <20210103231235.792999-1-djrscally@gmail.com>
@@ -75,38 +75,32 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Use the software_node_unregister_nodes() helper function to unwind this
-array in a cleaner way.
+Development for the ipu3-cio2 driver is taking place in media_tree, but
+there's no T: entry in MAINTAINERS to denote that - rectify that oversight
 
-Acked-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Daniel Scally <djrscally@gmail.com>
 ---
 Changes in v4:
 
 	- None
 
- lib/test_printf.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/test_printf.c b/lib/test_printf.c
-index 7ac87f18a10f..7d60f24240a4 100644
---- a/lib/test_printf.c
-+++ b/lib/test_printf.c
-@@ -644,9 +644,7 @@ static void __init fwnode_pointer(void)
- 	test(second_name, "%pfwP", software_node_fwnode(&softnodes[1]));
- 	test(third_name, "%pfwP", software_node_fwnode(&softnodes[2]));
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 80881fb36404..16b544624577 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8946,6 +8946,7 @@ M:	Bingbu Cao <bingbu.cao@intel.com>
+ R:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
++T:	git git://linuxtv.org/media_tree.git
+ F:	Documentation/userspace-api/media/v4l/pixfmt-srggb10-ipu3.rst
+ F:	drivers/media/pci/intel/ipu3/
  
--	software_node_unregister(&softnodes[2]);
--	software_node_unregister(&softnodes[1]);
--	software_node_unregister(&softnodes[0]);
-+	software_node_unregister_nodes(softnodes);
- }
- 
- static void __init
 -- 
 2.25.1
 
