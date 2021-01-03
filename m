@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17EA22E8ECE
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 00:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF612E8ED1
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 00:17:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727842AbhACXNh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Jan 2021 18:13:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59368 "EHLO
+        id S1726019AbhACXNj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 Jan 2021 18:13:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbhACXNg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Jan 2021 18:13:36 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B525C0613C1;
-        Sun,  3 Jan 2021 15:12:56 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id t16so30019144wra.3;
-        Sun, 03 Jan 2021 15:12:56 -0800 (PST)
+        with ESMTP id S1727857AbhACXNi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Jan 2021 18:13:38 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E49C0613CF;
+        Sun,  3 Jan 2021 15:12:57 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id t16so30019256wra.3;
+        Sun, 03 Jan 2021 15:12:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lj8Kk41KDbEvFLR6VVSK7iwBFdicxvK1tQNgP1oE8J8=;
-        b=LOqr2nPjnGwuOf6I0blQ6EE2xh+NavKW8DbropEelg4A/lD4K7NDpbL1mH7X+fpS9T
-         vsVUlFtwiEQztq1lH7G2h97l6XsS+Fd3L9/sdwx2LqByoA7fBK+cGzM+rMOjEcDV7ls4
-         30V+44nZB7C3nfj0tX+QvsYRTd67lRq72IxAvHMI3PJPiuHCfAqNrAhtM7O1O/Bgku5Z
-         2BoD+sy63Rr6xBpxzhGnQ0H/J6+aYCN+6ZFBY93n2L6K4F2qTgl+UqBsgm0V606+cB0a
-         XCdk6jqT0xX+CXXBU5P/P8Q3pa8YF2sDhTzfcuVh9jSyQbTICEKbcJYCoBrAvHHAtHwq
-         +aUA==
+        bh=Tj4Vv1U/qJ+vwgqOcBhuEivdNVXX0IsLutn8hXTWDbY=;
+        b=p3rjX7HmnF65UhEdD56od5UHLtxBRibFTZIWUCJrAL+dBk+7mBkjgd20fvuhlZkI9F
+         TiSLMhoCGey/BNXa+039H9LjFh3+gznRnDLe+deWiyJy1ZrX86Sq45vuyg4xyEj9SEVR
+         J3qAYzEt6bUgKA3ppXo1fEF7Pp+GolmTQ4FS+FyYBWjT5nOA38cJsEQhuiBnee2SVAw6
+         pSD2wJmLJKYZAvV9NrhypriWPJ/YgsXTY14fapHHFO4EkmGcrDSIghxtGZmOAQbKMZel
+         lL2JvbUhvXWvUiLu34EMr9dmMLeUEAjTYZXmRlBbMx11UJXcI5Mk3MlXz9AsfrZ3lE0a
+         cZbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lj8Kk41KDbEvFLR6VVSK7iwBFdicxvK1tQNgP1oE8J8=;
-        b=bJgkAB9umsj2v6EyzX0S1y8xCWGRaN6v0jAC3ZXR8bXHxlEjFcqWjJn/R7wb4CpGja
-         zUQ+yKAiJuDbQIyxd/ukbm9FBDEB8nH/UDVKCeykjiXUAm0z5z5nyur2KLNB7xeeNUXs
-         sQ5RsNcAwKwGJwDXl3mBwUTemaJlrii2e1UZDGDty3MhEuQLdl7LbRajRAr0VqjbP5YQ
-         11yZ7nf6wCakw3TVGVObAyVjMrKLgAqXmwR8fseiSLtpgo6VsZ8aICqy+RO1GFeaM9gO
-         bQTFbmjfXpYyOdURPvQd8K3RYK9pkjRolKsHMnJy8reVFael75cFMVgUY/0GkwOPvdGA
-         vTxA==
-X-Gm-Message-State: AOAM532+d2bkMUbKfgF/I99rvI6oQNUTG5/lR2Znh9Le4naGAntkTRan
-        70WAqmHEfwltu55lB6hpmIof4J1sFhu2ihEf
-X-Google-Smtp-Source: ABdhPJxyoycOlujBIr+fRlhxn+S2GEHyrNdgui7hSt2Zg5gWSbLuUvqNH9J/w1b2BMP95YTNSj8fEA==
-X-Received: by 2002:adf:e704:: with SMTP id c4mr77855006wrm.355.1609715575108;
-        Sun, 03 Jan 2021 15:12:55 -0800 (PST)
+        bh=Tj4Vv1U/qJ+vwgqOcBhuEivdNVXX0IsLutn8hXTWDbY=;
+        b=LRH1df/I8gFQfKlrddA0tJC7MrvggT3VSxHkKGFPvy3QDevGfk+ZWQpQWampB+cd/u
+         uKkM0el+Wit2Yy/9NxvtyaKh2rwfr3U5X9Z1HezgeIm7/wPYPtI2PGG/uyUIw03MGLuN
+         26TtJ2h/KZHBOjo0+vmnW588uxC7HHTCiNIDbOF2qDbMOJC3tY7foEpJOOO9NWQJ1zip
+         7hF8U9MCO6WGyNPiSy39YUjUPZNjh3jMs1yK1oZ6xZ8hetdrIkGwHVvpMRQ1opvmQFnY
+         K3n2PmKpWBS14ffRYT3gH+S8JRKa1wGaiE1DKj1Pg8iWK3CFYoCrihXSd7Q9QQ+3+WdL
+         1fLw==
+X-Gm-Message-State: AOAM532dcfhbKYN/pRyi86lBB93Ll2cA1u49Ky9hxHZAwNHIUOCyj1fY
+        sYO2Y86LMSnV0DSLOJYJ+Z/k+A0PecEmkrKn
+X-Google-Smtp-Source: ABdhPJxTB559nKKcXdsTL/70LIjZpgm3qPEjtdwtBTp81FlH78B9cBOEvpqfFjWekttiRYLrjfECcg==
+X-Received: by 2002:adf:fb05:: with SMTP id c5mr76331149wrr.69.1609715576468;
+        Sun, 03 Jan 2021 15:12:56 -0800 (PST)
 Received: from valhalla.home ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id h9sm32571018wme.11.2021.01.03.15.12.53
+        by smtp.gmail.com with ESMTPSA id h9sm32571018wme.11.2021.01.03.15.12.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Jan 2021 15:12:54 -0800 (PST)
+        Sun, 03 Jan 2021 15:12:55 -0800 (PST)
 From:   Daniel Scally <djrscally@gmail.com>
 To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-media@vger.kernel.org, devel@acpica.org,
@@ -63,9 +63,9 @@ Cc:     lenb@kernel.org, yong.zhi@intel.com, sakari.ailus@linux.intel.com,
         niklas.soderlund+renesas@ragnatech.se, slongerbeam@gmail.com,
         heikki.krogerus@linux.intel.com, linus.walleij@linaro.org,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH v4 01/15] software_node: Fix refcounts in software_node_get_next_child()
-Date:   Sun,  3 Jan 2021 23:12:21 +0000
-Message-Id: <20210103231235.792999-2-djrscally@gmail.com>
+Subject: [PATCH v4 02/15] media: ipu3-cio2: Add headers that ipu3-cio2.h is direct user of
+Date:   Sun,  3 Jan 2021 23:12:22 +0000
+Message-Id: <20210103231235.792999-3-djrscally@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210103231235.792999-1-djrscally@gmail.com>
 References: <20210103231235.792999-1-djrscally@gmail.com>
@@ -75,48 +75,56 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The software_node_get_next_child() function currently does not hold
-references to the child software_node that it finds or put the ref that
-is held against the old child - fix that.
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Fixes: 59abd83672f7 ("drivers: base: Introducing software nodes to the firmware node framework")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Add headers that ipu3-cio2.h is direct user of.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Daniel Scally <djrscally@gmail.com>
+Reviewed-by: Daniel Scally <djrscally@gmail.com>
+Tested-by: Daniel Scally <djrscally@gmail.com>
 ---
 Changes in v4:
 
-	- None
+	- Incorporated so it can be used in a later patch - thanks Andy.
+	  Not sure if this needs my Signed-off-by since I didn't write
+	  any part of it. checkpatch.pl --strict doesn't complain at its
+	  absence so I'm going with no; but let me know if I'm wrong.
 
- drivers/base/swnode.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/pci/intel/ipu3/ipu3-cio2.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 010828fc785b..615a0c93e116 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -443,14 +443,18 @@ software_node_get_next_child(const struct fwnode_handle *fwnode,
- 	struct swnode *c = to_swnode(child);
+diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.h b/drivers/media/pci/intel/ipu3/ipu3-cio2.h
+index ccf0b85ae36f..62187ab5ae43 100644
+--- a/drivers/media/pci/intel/ipu3/ipu3-cio2.h
++++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.h
+@@ -4,8 +4,26 @@
+ #ifndef __IPU3_CIO2_H
+ #define __IPU3_CIO2_H
  
- 	if (!p || list_empty(&p->children) ||
--	    (c && list_is_last(&c->entry, &p->children)))
-+	    (c && list_is_last(&c->entry, &p->children))) {
-+		fwnode_handle_put(child);
- 		return NULL;
-+	}
++#include <linux/bits.h>
++#include <linux/dma-mapping.h>
++#include <linux/kernel.h>
++#include <linux/mutex.h>
+ #include <linux/types.h>
  
- 	if (c)
- 		c = list_next_entry(c, entry);
- 	else
- 		c = list_first_entry(&p->children, struct swnode, entry);
--	return &c->fwnode;
++#include <asm/page.h>
 +
-+	fwnode_handle_put(child);
-+	return fwnode_handle_get(&c->fwnode);
- }
- 
- static struct fwnode_handle *
++#include <media/media-device.h>
++#include <media/media-entity.h>
++#include <media/v4l2-async.h>
++#include <media/v4l2-dev.h>
++#include <media/v4l2-device.h>
++#include <media/v4l2-subdev.h>
++#include <media/videobuf2-core.h>
++#include <media/videobuf2-v4l2.h>
++
++struct cio2_fbpt_entry;		/* defined here, after the first usage */
++struct pci_dev;
++
+ #define CIO2_NAME					"ipu3-cio2"
+ #define CIO2_DEVICE_NAME				"Intel IPU3 CIO2"
+ #define CIO2_ENTITY_NAME				"ipu3-csi2"
 -- 
 2.25.1
 
