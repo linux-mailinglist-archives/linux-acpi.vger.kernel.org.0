@@ -2,435 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE972E93CB
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 11:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89F8C2E9402
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jan 2021 12:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726029AbhADK4k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Jan 2021 05:56:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54746 "EHLO
+        id S1726328AbhADLVS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Jan 2021 06:21:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725830AbhADK4j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Jan 2021 05:56:39 -0500
+        with ESMTP id S1726265AbhADLVS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Jan 2021 06:21:18 -0500
 Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37590C061793
-        for <linux-acpi@vger.kernel.org>; Mon,  4 Jan 2021 02:55:59 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id p22so26843033edu.11
-        for <linux-acpi@vger.kernel.org>; Mon, 04 Jan 2021 02:55:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE626C061795
+        for <linux-acpi@vger.kernel.org>; Mon,  4 Jan 2021 03:20:37 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id cw27so26958519edb.5
+        for <linux-acpi@vger.kernel.org>; Mon, 04 Jan 2021 03:20:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=solid-run-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=jNoWJV7/ZpanihG2/+qxpPMzBkVQY0wXDUZpsjLAt4k=;
-        b=D8McgG9WOmzV0nhCGpe/uvPh6rmYuE+ywcPSbcLvakvFiLJ0zuXVBnHu99/syh08OB
-         n+Vs3+9uzQtQFYdyyCWWXVnYL+sWFBjWy91DAghnPDOZIQXNOFzClp/1x0iAOJgzMqit
-         X1sKLYH01EPc2aw7sfDBwjO1rai/c5dIrhSJqimB7xYenaTUlT9m2Zs4HV0ozKr/ff/N
-         yzpmSaPbZFEbAIC919EXhnsDo7zinNKSMkQ73H8anP+MmTOfg0Qur1IeL1I/oKQaDCZD
-         LjUJYvcdRKebRu4zgm9sYN6a+RpJjdon2E5G/VcfFhouxTliIfFJhcTSVwLS/gHy7k5E
-         FV/g==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=MZWKWB6DR6hNDrsfU5p9DwYo2p/txd/B82NQ7fAKCkU=;
+        b=nl9r27QNZY4Nj976rgvuCPiFY8wmes/BZl9umicY7cdV5Fxo65af2BrZmdHzWXIobt
+         oOIWzDwmZlzJ+VLUWsqIfQpqc6bGiZgUeqKQz+cSyvdruBb3tLxfz2mX5cjngPL00izA
+         jKU+EP+gmt7AU7mKPsjiYsvEGXM4g6KcOpVKz5FfcnjWpqdCKjcXmU5XvQhBC59tGcVA
+         sFXHAd1mGsSXug2gdh18mC7rN85u6D5jxHebdmrMg5cJ4ZQCom4WaIouYIyB+huraAHb
+         mnknX2v4ZX85PGB6N3r8QKcP0KJItnyVdKr8S4V4Kf6GeqLKrYMRGdE+L8A9grpgXzQe
+         qyyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jNoWJV7/ZpanihG2/+qxpPMzBkVQY0wXDUZpsjLAt4k=;
-        b=bNtb0tIRo48BaO+PlBXgrwbNstpH7OLuubzXCXBr9JOCdwDKB9DKeKFk15qWMifm+k
-         6gbr04RKeYy+U9oEg/6QomhiDs7HKMqaLusqBoJ0MLrZOJODtcFBkOruvQIRepuGB0+I
-         2lkSSFJVwTxMateea7CA9iizu15B2BQZ8v5ZgVtp3G02eZhepEFT3oOt4thKH8o2noHD
-         z2ZH0TibC42+pdO4TbjYOqcHnVT1nM3cUprjVH2bRk6inpyzfaPaCazbbJJThBLo5mKw
-         98WvOgivAHgCoYOA85aMTHaupVPKhd3gDWCQVQIGIwaEBHZ5h5Gqyjl8k2tfGao+cFZE
-         Kwrg==
-X-Gm-Message-State: AOAM532HrHkkBwODEO/TZPewDlKgGX8V0tMkgURsr+N172PfBvmypTcR
-        kLbdo/PNIuhOVh+Y7u9K6rJ6FN7qm9hyLutmRNOlhQ==
-X-Google-Smtp-Source: ABdhPJyLjEwzDlo5bwj2FZyPv5CY2QTPm+IhrpEXAEAnsgnAnJgweeduHEH+ncaw8QMCBqYyguYHpqqCyITXGGXOeTQ=
-X-Received: by 2002:a50:b746:: with SMTP id g64mr70060117ede.33.1609757757959;
- Mon, 04 Jan 2021 02:55:57 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=MZWKWB6DR6hNDrsfU5p9DwYo2p/txd/B82NQ7fAKCkU=;
+        b=YTP2J8WVX955AcYRd4vMHRFBsN3Nodz5hBu2Ny1sCfF5ylPkuQ4O8b1zcu/LPB9IFk
+         WrUSKKX3ONOrxgJLcMN2jHoVviVi6FRhbbFOfdtXQefeA4kaPJfcDx9rkabYPc9xtooc
+         nkV7iivWE9XvrLzXACoylmsC5UTIMQmq7I9CJLsUt0SYiVAJ/pmlKQIhx0JD+jeFbHiP
+         5xy/xmfpU8t61tePpwEcakH6wLwFjeQRoqJfjUlqwWljOhlK1ZGxwzorOdc+rnFsDtw5
+         eKxwFj+Tw40xaTeGb4pF9v8aUs+SvENqQgsRzS125tgtRm0GJgbTebU2X51nbzspesCN
+         kKTg==
+X-Gm-Message-State: AOAM5320RJ+zHrk7NZ7eafi5v+q5e5sAKwxBuVorcv7DH/wi5NCndFCd
+        EZ9YToneDvYEt1B96JaK7SWvLA==
+X-Google-Smtp-Source: ABdhPJwHI1lN3jR5DnkDpXruXetK/kDTL1pCTJK1usrE58eGVznR+xTruuuJBkNz+y3TDbBeob5Xaw==
+X-Received: by 2002:a50:e84d:: with SMTP id k13mr68908071edn.154.1609759236390;
+        Mon, 04 Jan 2021 03:20:36 -0800 (PST)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-129-8.adsl.proxad.net. [82.252.129.8])
+        by smtp.googlemail.com with ESMTPSA id h16sm23360677eji.110.2021.01.04.03.20.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Jan 2021 03:20:35 -0800 (PST)
+Subject: Re: [PATCH] powercap/drivers/dtpm: Fix __udivdi3 and __aeabi_uldivmod
+ unresolved symbols
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        open list <linux-kernel@vger.kernel.org>
+References: <CAJZ5v0gN3NfWyAHA7At=1ZG90vCJbDoUzF5ts2_t3GmunSbrMQ@mail.gmail.com>
+ <20201230153744.15612-1-daniel.lezcano@linaro.org>
+ <CAMuHMdXCn-tKcaeAHTgdJu0Lg=YrF7cFnW8-tD4ZBfVPUb53NA@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <f350a7a4-9305-5a75-8261-94f7e4760389@linaro.org>
+Date:   Mon, 4 Jan 2021 12:20:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
- <e9837ba5-deeb-c64c-2261-d0ab82eebfac@arm.com> <67cb563d19114f609348dc9f8b4307e9@huawei.com>
- <8f92d0b3-360b-5d47-10a7-83d09e75d993@arm.com> <6dcf51b2-cad5-d377-a34c-4e64fd3acbb8@arm.com>
- <3d0a3ae81241474f91748dde0cdd4d39@huawei.com> <CABdtJHvoWCE4Zd5gTf4wbAKtriWRFx6y1CSH0taVxMmEf7tweg@mail.gmail.com>
- <93c22f3c57c042c39871a0fd3a2eaa0e@huawei.com> <CABdtJHswDUdB-mw5EJtncvFxqyE0O4zAH5QavbsrG9mWHyateQ@mail.gmail.com>
- <CABdtJHvGXBMmjbb8z9aHQt=nhAvCiFdsKJZfzagsmT+Kj8G_Bw@mail.gmail.com> <4f0ede92d9d24b9da0baacd7e77e672d@huawei.com>
-In-Reply-To: <4f0ede92d9d24b9da0baacd7e77e672d@huawei.com>
-From:   Jon Nettleton <jon@solid-run.com>
-Date:   Mon, 4 Jan 2021 11:55:20 +0100
-Message-ID: <CABdtJHvLpLsfgpLHnKqMaP48pqsuTh9WKhLcnU7cKHvnr-6BHQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
-To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Cc:     Steven Price <steven.price@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAMuHMdXCn-tKcaeAHTgdJu0Lg=YrF7cFnW8-tD4ZBfVPUb53NA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 4, 2021 at 9:55 AM Shameerali Kolothum Thodi
-<shameerali.kolothum.thodi@huawei.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Jon Nettleton [mailto:jon@solid-run.com]
-> > Sent: 18 December 2020 10:53
-> > To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> > Cc: Steven Price <steven.price@arm.com>; Robin Murphy
-> > <robin.murphy@arm.com>; linux-arm-kernel@lists.infradead.org;
-> > linux-acpi@vger.kernel.org; iommu@lists.linux-foundation.org;
-> > devel@acpica.org; lorenzo.pieralisi@arm.com; joro@8bytes.org; Guohanjun
-> > (Hanjun Guo) <guohanjun@huawei.com>; Linuxarm <linuxarm@huawei.com>;
-> > Jonathan Cameron <jonathan.cameron@huawei.com>;
-> > Sami.Mujawar@arm.com; wanghuiqiang <wanghuiqiang@huawei.com>
-> > Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR node
-> >
-> > On Thu, Dec 17, 2020 at 4:53 PM Jon Nettleton <jon@solid-run.com> wrote=
-:
-> > >
-> > > On Thu, Dec 17, 2020 at 4:42 PM Shameerali Kolothum Thodi
-> > > <shameerali.kolothum.thodi@huawei.com> wrote:
-> > > >
-> > > >
-> > > >
-> > > > > -----Original Message-----
-> > > > > From: Jon Nettleton [mailto:jon@solid-run.com]
-> > > > > Sent: 17 December 2020 14:48
-> > > > > To: Shameerali Kolothum Thodi
-> > <shameerali.kolothum.thodi@huawei.com>
-> > > > > Cc: Steven Price <steven.price@arm.com>; Robin Murphy
-> > > > > <robin.murphy@arm.com>; linux-arm-kernel@lists.infradead.org;
-> > > > > linux-acpi@vger.kernel.org; iommu@lists.linux-foundation.org;
-> > > > > devel@acpica.org; lorenzo.pieralisi@arm.com; joro@8bytes.org;
-> > Guohanjun
-> > > > > (Hanjun Guo) <guohanjun@huawei.com>; Linuxarm
-> > <linuxarm@huawei.com>;
-> > > > > Jonathan Cameron <jonathan.cameron@huawei.com>;
-> > > > > Sami.Mujawar@arm.com; wanghuiqiang <wanghuiqiang@huawei.com>
-> > > > > Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT RMR n=
-ode
-> > > > >
-> > > > > On Mon, Dec 14, 2020 at 3:48 PM Shameerali Kolothum Thodi
-> > > > > <shameerali.kolothum.thodi@huawei.com> wrote:
-> > > > > >
-> > > > > >
-> > > > > >
-> > > > > > > -----Original Message-----
-> > > > > > > From: Steven Price [mailto:steven.price@arm.com]
-> > > > > > > Sent: 14 December 2020 13:43
-> > > > > > > To: Robin Murphy <robin.murphy@arm.com>; Shameerali Kolothum
-> > Thodi
-> > > > > > > <shameerali.kolothum.thodi@huawei.com>;
-> > > > > > > linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.=
-org;
-> > > > > > > iommu@lists.linux-foundation.org; devel@acpica.org
-> > > > > > > Cc: Linuxarm <linuxarm@huawei.com>; lorenzo.pieralisi@arm.com=
-;
-> > > > > > > joro@8bytes.org; wanghuiqiang <wanghuiqiang@huawei.com>;
-> > Guohanjun
-> > > > > > > (Hanjun Guo) <guohanjun@huawei.com>; Jonathan Cameron
-> > > > > > > <jonathan.cameron@huawei.com>; Sami.Mujawar@arm.com
-> > > > > > > Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IORT R=
-MR
-> > node
-> > > > > > >
-> > > > > > > On 14/12/2020 12:33, Robin Murphy wrote:
-> > > > > > > > On 2020-12-14 10:55, Shameerali Kolothum Thodi wrote:
-> > > > > > > >> Hi Steve,
-> > > > > > > >>
-> > > > > > > >>> -----Original Message-----
-> > > > > > > >>> From: Steven Price [mailto:steven.price@arm.com]
-> > > > > > > >>> Sent: 10 December 2020 10:26
-> > > > > > > >>> To: Shameerali Kolothum Thodi
-> > > > > > > <shameerali.kolothum.thodi@huawei.com>;
-> > > > > > > >>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.ker=
-nel.org;
-> > > > > > > >>> iommu@lists.linux-foundation.org; devel@acpica.org
-> > > > > > > >>> Cc: Linuxarm <linuxarm@huawei.com>;
-> > lorenzo.pieralisi@arm.com;
-> > > > > > > >>> joro@8bytes.org; robin.murphy@arm.com; wanghuiqiang
-> > > > > > > >>> <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
-> > > > > > > >>> <guohanjun@huawei.com>; Jonathan Cameron
-> > > > > > > >>> <jonathan.cameron@huawei.com>; Sami.Mujawar@arm.com
-> > > > > > > >>> Subject: Re: [RFC PATCH v2 0/8] ACPI/IORT: Support for IO=
-RT RMR
-> > node
-> > > > > > > >>>
-> > > > > > > >>> On 19/11/2020 12:11, Shameer Kolothum wrote:
-> > > > > > > >>>> RFC v1 --> v2:
-> > > > > > > >>>>    - Added a generic interface for IOMMU drivers to retr=
-ieve all
-> > the
-> > > > > > > >>>>      RMR info associated with a given IOMMU.
-> > > > > > > >>>>    - SMMUv3 driver gets the RMR list during probe() and
-> > installs
-> > > > > > > >>>>      bypass STEs for all the SIDs in the RMR list. This =
-is to keep
-> > > > > > > >>>>      the ongoing traffic alive(if any) during SMMUv3 res=
-et. This
-> > is
-> > > > > > > >>>>      based on the suggestions received for v1 to take ca=
-re of
-> > the
-> > > > > > > >>>>      EFI framebuffer use case. Only sanity tested for no=
-w.
-> > > > > > > >>>
-> > > > > > > >>> Hi Shameer,
-> > > > > > > >>>
-> > > > > > > >>> Sorry for not looking at this before.
-> > > > > > > >>>
-> > > > > > > >>> Do you have any plans to implement support in the SMMUv2
-> > driver?
-> > > > > The
-> > > > > > > >>> platform I've been testing the EFI framebuffer support on=
- has the
-> > > > > > > >>> display controller behind SMMUv2, so as it stands this se=
-ries
-> > doesn't
-> > > > > > > >>> work. I did hack something up for SMMUv2 so I was able to=
- test
-> > the
-> > > > > first
-> > > > > > > >>> 4 patches.
-> > > > > > > >>
-> > > > > > > >> Thanks for taking a look. Sure, I can look into adding the=
- support for
-> > > > > > > >> SMMUv2.
-> > > > > > >
-> > > > > > > Great, thanks!
-> > > > > > >
-> > > > > > > >>>
-> > > > > > > >>>>    - During the probe/attach device, SMMUv3 driver reser=
-ves
-> > any
-> > > > > > > >>>>      RMR region associated with the device such that the=
-re is
-> > a
-> > > > > unity
-> > > > > > > >>>>      mapping for them in SMMU.
-> > > > > > > >>>
-> > > > > > > >>> For the EFI framebuffer use case there is no device to at=
-tach so I
-> > > > > > > >>> believe we are left with just the stream ID in bypass mod=
-e - which
-> > is
-> > > > > > > >>> definitely an improvement (the display works!)
-> > > > > > > >>
-> > > > > > > >> Cool. That=E2=80=99s good to know.
-> > > > > > > >>
-> > > > > > > >>   but not actually a unity
-> > > > > > > >>> mapping of the RMR range. I'm not sure whether it's worth=
- fixing
-> > this
-> > > > > or
-> > > > > > > >>> not, but I just wanted to point out there's still a need =
-for a driver
-> > > > > > > >>> for the device before the bypass mode is replaced with th=
-e unity
-> > > > > > > >>> mapping.
-> > > > > > > >>
-> > > > > > > >> I am not sure either. My idea was we will have bypass STE =
-setup for
-> > > > > > > >> all devices
-> > > > > > > >> with RMR initially and when the corresponding driver takes=
- over(if
-> > > > > > > >> that happens)
-> > > > > > > >> we will have the unity mapping setup properly for the RMR =
-regions.
-> > And
-> > > > > > > >> for cases
-> > > > > > > >> like the above, it will remain in the bypass mode.
-> > > > > > > >>
-> > > > > > > >> Do you see any problem(security?) if the dev streams remai=
-n in
-> > bypass
-> > > > > > > >> mode for
-> > > > > > > >> this dev? Or is it possible to have a stub driver for this=
- dev, so
-> > > > > > > >> that we will have
-> > > > > > > >> the probe/attach invoked and everything will fall in place=
-?
-> > > > > > > >
-> > > > > > > > The downside is that if a driver never binds to that device=
-, it remains
-> > > > > > > > bypassed. If some other externally-controlled malicious dev=
-ice could
-> > > > > > > > manage to spoof that device's requester ID, that could pote=
-ntially be
-> > > > > > > > exploited.
-> > > > > > > >
-> > > > > > > >> TBH, I haven't looked into creating a temp domain for thes=
-e types
-> > of
-> > > > > > > >> the devices
-> > > > > > > >> and also not sure how we benefit from that compared to the=
- STE
-> > bypass
-> > > > > > > >> mode.
-> > > > > > > >
-> > > > > > > > That said, setting up temporary translation contexts that e=
-nsure any
-> > > > > > > > access can *only* be to RMR regions until a driver takes ov=
-er is an
-> > > > > > > > awful lot more work. I'm inclined to be pragmatic here and =
-say we
-> > should
-> > > > > > > > get things working at all with the simple bypass STE/S2CR m=
-ethod,
-> > then
-> > > > > > > > look at adding the higher-security effort on top.
-> > > > > > > >
-> > > > > > > > Right now systems that need this are either broken (but eff=
-ectively
-> > > > > > > > secure) or using default bypass with SMMUv2. People who pre=
-fer to
-> > > > > > > > maintain security over functionality in the interim can mai=
-ntain that
-> > > > > > > > status quo by simply continuing to not describe any RMRs.
-> > > > > > >
-> > > > > > > I agree with Robin, let's get this working with the bypass mo=
-de (until
-> > > > > > > the device binds) like you've currently got. It's much better=
- than what
-> > > > > > > we have otherwise. Then once that is merged we can look at th=
-e
-> > temporary
-> > > > > > > translation context or stub driver. The temporary translation=
- context
-> > > > > > > would be 'neatest', but I'm only aware of the EFI framebuffer=
- use case
-> > > > > > > and for that it might be possible to do something simpler - i=
-f indeed
-> > > > > > > anything is needed at all. I'm not sure how much we need to b=
-e
-> > worried
-> > > > > > > about malicious devices spoofing requester IDs.
-> > > > > >
-> > > > > > Perfect. I will keep the STE bypass and respin the series once =
-the update
-> > > > > > to the IORT rev E is made public(hope that will happen soon). I=
-n the
-> > > > > > meantime, appreciate any feedback on the rest of the patches in=
- this
-> > series.
-> > > > >
-> > > > > Shameer,
-> > > >
-> > > > Hi Jon,
-> > > >
-> > > > >
-> > > > > I am pretty sure rev E is already public.  You can find it here.
-> > > > >
-> > > > > https://developer.arm.com/documentation/den0049/latest/
-> > > > >
-> > > > > It is also marked non-confidential.
-> > > >
-> > > > Yes, Rev E is already out there. But I am told that ARM folks are w=
-orking on
-> > > > some updates to the IORT spec, especially around the RMR topic. Hop=
-efully
-> > > > it will be out soon.
-> > >
-> > > Yes there are some changes coming to the SPEC but I don't know if it =
-is
-> > > worth holding up your patchset as an initial implementation.  If you =
-would
-> > > like I am more than happy to bring this up as a topic for the next St=
-eering
-> > > Committee meeting.
-> > >
-> > > Jon
-> >
-> > Shameer,
-> >
->
-> Hi Jon,
->
-> > My first attempt at smmuv2 support can be found in this kernel branch.
-> >
-> > https://github.com/SolidRun/linux-stable/commits/linux-5.10.y-cex7
-> >
-> > It is functioning if the bypass SMRs are setup in the firmware and RMR'=
-s
-> > are exposed in the ACPI tables.
->
-> Ok. Thanks for sharing it. Happy to carry those patches as part of this
-> series if you are fine with it.
 
-That is fine with me.  I have also cc'd Laurentiu from NXP as part of the
-code is lifted from his integration with the Qualcom patches submitted
-for device-tree handling.
+Hi Geert,
 
-We may want to also start a conversation if the RMR list should be
-populated from the device-tree codepaths and then have the SMMU*
-drivers share the same mechanism for adding the bypass mappings
-and then letting drivers reclaim the DMA regions.
 
-I think there was an Nvidia patchset that did something similar based
-on DT reserved memory regions and smmu mappings.
+On 04/01/2021 09:18, Geert Uytterhoeven wrote:
+> Hi Daniel,
+> 
+> On Wed, Dec 30, 2020 at 4:39 PM Daniel Lezcano
+> <daniel.lezcano@linaro.org> wrote:
+>> 32 bits architectures do not support u64 division, so the macro
+>> DIV_ROUND_CLOSEST is not adequate as the compiler will replace the
+>> call to an unexisting function for the platform, leading to an
+>> unresolved symbols.
+>>
+>> Fix this by using the compatible macros:
+>>
+>> DIV64_U64_ROUND_CLOSEST and DIV_ROUND_CLOSEST_ULL.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> 
+> Thanks for your patch!
+> 
+>> --- a/drivers/powercap/dtpm.c
+>> +++ b/drivers/powercap/dtpm.c
+>> @@ -99,8 +99,8 @@ static void __dtpm_rebalance_weight(struct dtpm *dtpm)
+>>                 pr_debug("Setting weight '%d' for '%s'\n",
+>>                          child->weight, child->zone.name);
+>>
+>> -               child->weight = DIV_ROUND_CLOSEST(child->power_max * 1024,
+>> -                                                 dtpm->power_max);
+>> +               child->weight = DIV64_U64_ROUND_CLOSEST(
+>> +                       child->power_max * 1024, dtpm->power_max);
+> 
+> Note that 64-by-64 divisions are expensive on 32-bit platforms.
+> 
+> Does dtpm.power_max need to be u64?
 
->
->   Different from your situation we do want
-> > the device to reclaim the RMR's associated with it on initialization, a=
-nd I
-> > am still seeing issues there.  I need to spend more time figuring out w=
-hy
-> > this is not working properly.
->
-> I am not sure what your requirement is here. So if the kernel driver even=
-tually
-> comes up and takes control of the device, you no longer require the bypas=
-s/identity
-> mapping for these regions. Is that correct?
+The dtpm is based on the powercap framework which deals with microwatts
+and the functions are expecting u64 values.
 
-Yes this is basically correct.  I believe some of the issues I have
-run into will
-be covered in the next release of the RMR specs.  For now this patchset
-does give me basic working functionality, and the future refinements will
-add more fine grained security that I am looking for.
+The division here happens when there is an update of the dtpm tree which
+occurs rarely (at boot time or hotplug).
 
-As I mentioned before, it would be nice to get this functionality moving
-forward and then we can refine it as spec updates are made public.
+As the power model is in the vast majority on 64b platforms, the effort
+to optimize to u32 sounds not worth, especially that the 32b platforms
+supporting the energy model are now obsolete.
 
--Jon
+> The (lack of) documentation for the dtpm structure does not say what is
+> being stored there.
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
->
-> Shameer
->
-> > -Jon
-> >
-> > >
-> > > >
-> > > > >
-> > > > > I also have initial patches for edk2 and the HoneyComb LX2160a
-> > > > > ACPI tables adding RMR nodes that partially work with your patche=
-s.
-> > > >
-> > > > Thanks for the update and good to know that it is useful.
-> > > >
-> > > > Shameer
-> > > >
-> > > > > This is with basic SMMUv2 support but since you have more experie=
-nce
-> > > > > this this I am more than happy to work with you on your patchset.
-> > > > >
-> > > > > -Jon
-> > > > >
-> > > > >
-> > > > > >
-> > > > > > Thanks,
-> > > > > > Shameer
-> > > > > > _______________________________________________
-> > > > > > linux-arm-kernel mailing list
-> > > > > > linux-arm-kernel@lists.infradead.org
-> > > > > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
