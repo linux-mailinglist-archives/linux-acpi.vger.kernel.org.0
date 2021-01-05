@@ -2,100 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8622EAD9C
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 15:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FD22EAF28
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 16:46:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727807AbhAEOpf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jan 2021 09:45:35 -0500
-Received: from mga06.intel.com ([134.134.136.31]:5664 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbhAEOpf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Jan 2021 09:45:35 -0500
-IronPort-SDR: 0wKfKPwklrv6LJ+gE8f9q8pdEn2VySIqPUUSzfkjwDZ5BkbEHKSobWQApwe1+6PlAQZ85n2WAP
- Ts02rEvvusbA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="238665577"
-X-IronPort-AV: E=Sophos;i="5.78,477,1599548400"; 
-   d="scan'208";a="238665577"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 06:43:47 -0800
-IronPort-SDR: isNkmx9pp854yTHO9IEOrwSKG0Lqa3pJgJ6TU3J/etfYbIPq1xqdtWv5NBApKeoEQEWoK5OWgx
- CWSeDxZR6Wgw==
-X-IronPort-AV: E=Sophos;i="5.78,477,1599548400"; 
-   d="scan'208";a="421796225"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 06:43:41 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1kwnZj-002Cyn-Ff; Tue, 05 Jan 2021 16:44:43 +0200
-Date:   Tue, 5 Jan 2021 16:44:43 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bard Liao <yung-chuan.liao@linux.intel.com>
-Cc:     gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, heikki.krogerus@linux.intel.com,
-        rafael@kernel.org, bard.liao@intel.com
-Subject: Re: [PATCH 2/2] device property: add description of fwnode cases
-Message-ID: <20210105144443.GN4077@smile.fi.intel.com>
-References: <20210105091146.25422-1-yung-chuan.liao@linux.intel.com>
- <20210105091146.25422-3-yung-chuan.liao@linux.intel.com>
+        id S1727895AbhAEPpL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jan 2021 10:45:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727408AbhAEPpL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jan 2021 10:45:11 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9271BC061795
+        for <linux-acpi@vger.kernel.org>; Tue,  5 Jan 2021 07:44:30 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id c124so3389902wma.5
+        for <linux-acpi@vger.kernel.org>; Tue, 05 Jan 2021 07:44:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=u8B6Jcqsj2qQHBVOgCivAszp3Mr4Z2LIctYHDfeemKo=;
+        b=rdkjlnzWp+2zOi5b7d3ppqU3lIZOJ5blen0fY3s5Lownn35zv1OY5oSXisTXNXbPyC
+         Ah5BTaAA34KGKm3jno6izGQnj64gA8NV4bnBGGFhoxXY1cRienDsq01Ly1HW5H5v+TQx
+         RWOPXFrWoVhDadJzet0FLMTTT4lZz790d5QI/C4J4dpDywH6AsGpYvxaqVY/qSlO/BPg
+         ZsWCmKKl3DTc8YgbmzfK8jhQJyf6JzeXIk/ww02n/CzBftFPbXesLu8JnbSGmtitC9xf
+         E+awFJNqK1Q5XoKUMT9yHEi6NGaQRncmPO1aB1pii/ZEpU2u3J2T0L7B86U71oVchq4x
+         u48g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=u8B6Jcqsj2qQHBVOgCivAszp3Mr4Z2LIctYHDfeemKo=;
+        b=IoFo+PjNWTqicHJPJX7PZ9Nz9iO8MUgyNtAoJQFFvSl0mYPaZVfd3WnFSlvKXzzjRy
+         pkiZ3gl7xKob4gEyqLMPI8TWUyrpdHcglx9lCdGte7aiXDR7bhVApICPSdw5+Zsnetc0
+         yQ7qV50d1EPGftzGt0vdvC0EPb+lGwDVcStltWzQuTjSu7ZdCH9O5330HQBxINmLIh7g
+         mhVAlsxafYUSfx+b4GbYUf5z/rKIkKcS4dDjq5Sre3ojGTGb8UMWCBBE/TzoMu5/IKnE
+         x6/RkIfvNSw8xjYgrplOJfjCRAEpg8fIFyDI9CklwJ466kCJ/j88D5qtt4sMQzGcLkPr
+         V4UA==
+X-Gm-Message-State: AOAM530A2zZRXvEVQdTwMPfm3AJoqIWcRwZgZXHfS2qCBWDzgsp0WIa6
+        ThMHJLqpii/K2rb1jZET5981oY+V5Yb4Sw==
+X-Google-Smtp-Source: ABdhPJwPZdpUvNf4958mHWq+C7VzsGf8VpOVbdIf0IvglN6LK/TbWfdvoLZMv0Z1Xr0zlF0zVNQlLw==
+X-Received: by 2002:a7b:c246:: with SMTP id b6mr4128150wmj.154.1609861468726;
+        Tue, 05 Jan 2021 07:44:28 -0800 (PST)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-152-224.adsl.proxad.net. [82.252.152.224])
+        by smtp.googlemail.com with ESMTPSA id s6sm191847wro.79.2021.01.05.07.44.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Jan 2021 07:44:27 -0800 (PST)
+Subject: Re: [PATCH 4/6] acpi/drivers/thermal: Remove TRIPS_NONE cooling
+ device binding
+To:     rui.zhang@intel.com
+Cc:     mjg59@codon.org.uk, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, amitk@kernel.org,
+        thara.gopinath@linaro.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>
+References: <20201214233811.485669-1-daniel.lezcano@linaro.org>
+ <20201214233811.485669-4-daniel.lezcano@linaro.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <1de4868e-6229-ed33-f45a-7cd82d3ee48a@linaro.org>
+Date:   Tue, 5 Jan 2021 16:44:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210105091146.25422-3-yung-chuan.liao@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20201214233811.485669-4-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 05, 2021 at 05:11:46PM +0800, Bard Liao wrote:
-> There are only four valid fwnode cases which are
-> - primary --> secondary --> -ENODEV
-> - primary --> NULL
-> - secondary --> -ENODEV
-> - NULL
+Hi Rui,
+
+
+On 15/12/2020 00:38, Daniel Lezcano wrote:
+> The loop is here to create default cooling device binding on the
+> THERMAL_TRIPS_NONE number which is used to be the 'forced_passive'
+> feature. However, we removed all code dealing with that in the thermal
+> core, thus this binding does no longer make sense.
 > 
-> dev->fwnode should be converted between the 4 cases above no matter
-> how/when set_primary_fwnode() and set_secondary_fwnode() are called.
-> Describe it in the code so people will keep it in mind.
+> Remove it.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Thanks! It will help in the future to understand better this code.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Are you fine with this change?
 
-> Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Thanks
+
+  -- Daniel
+
 > ---
->  drivers/base/core.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/acpi/thermal.c | 19 -------------------
+>  1 file changed, 19 deletions(-)
 > 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 51b9545a050b..17eb14607074 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -4414,6 +4414,12 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
->   *
->   * Set the device's firmware node pointer to @fwnode, but if a secondary
->   * firmware node of the device is present, preserve it.
-> + *
-> + * Valid fwnode cases are:
-> + *  - primary --> secondary --> -ENODEV
-> + *  - primary --> NULL
-> + *  - secondary --> -ENODEV
-> + *  - NULL
->   */
->  void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
->  {
-> @@ -4432,6 +4438,7 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
->  	} else {
->  		if (fwnode_is_primary(fn)) {
->  			dev->fwnode = fn->secondary;
-> +			/* Set fn->secondary = NULL to keep fn as a primary fwnode */
->  			if (!(parent && fn == parent->fwnode))
->  				fn->secondary = NULL;
->  		} else {
-> -- 
-> 2.17.1
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index b5e4bc9e3282..26a89ff80a0e 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -764,25 +764,6 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
+>  		}
+>  	}
+>  
+> -	for (i = 0; i < tz->devices.count; i++) {
+> -		handle = tz->devices.handles[i];
+> -		status = acpi_bus_get_device(handle, &dev);
+> -		if (ACPI_SUCCESS(status) && (dev == device)) {
+> -			if (bind)
+> -				result = thermal_zone_bind_cooling_device
+> -						(thermal, THERMAL_TRIPS_NONE,
+> -						 cdev, THERMAL_NO_LIMIT,
+> -						 THERMAL_NO_LIMIT,
+> -						 THERMAL_WEIGHT_DEFAULT);
+> -			else
+> -				result = thermal_zone_unbind_cooling_device
+> -						(thermal, THERMAL_TRIPS_NONE,
+> -						 cdev);
+> -			if (result)
+> -				goto failed;
+> -		}
+> -	}
+> -
+>  failed:
+>  	return result;
+>  }
 > 
+
 
 -- 
-With Best Regards,
-Andy Shevchenko
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
