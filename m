@@ -2,174 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4001A2EB0BD
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 17:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 173922EB139
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 18:20:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730093AbhAEQ6X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jan 2021 11:58:23 -0500
-Received: from mail1.bemta24.messagelabs.com ([67.219.250.115]:7793 "EHLO
-        mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729248AbhAEQ6W (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jan 2021 11:58:22 -0500
-Received: from [100.112.132.72] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-b.us-west-2.aws.symcld.net id CE/76-61492-D9994FF5; Tue, 05 Jan 2021 16:53:49 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMKsWRWlGSWpSXmKPExsWSLveKXXfuzC/
-  xBrPnMVq8OT6dyeLIqZNsFlMP1FjsfPiWzWL5vn5Gi8u75rBZfO6YzGKxes8LZou5X6YyW5w5
-  fYnVgctjVkMvm8e7U1vYPDat6mTzmHcy0OP9vqtsHluutrN4fN4kF8AexZqZl5RfkcCaMfHlH
-  eaCbeIVdy5eYGlgfC/UxcjFISTwn1Gi/+sjNgjnGaPExZ/fGbsYOTmEBTwktm7cxApiiwhUSG
-  yevJsVpIhZYBeTxMuWJVAd55kkDr5tBetgE9CW2LLlFxuIzStgKzFjTQsziM0ioCKxrnM6O4g
-  tKhAusX7JSkaIGkGJkzOfsIDYnAL2EhO23ASKcwBt0JRYv0sfJMwsIC5x68l8JghbXqJ562xm
-  kBIJILvnoSxIWEIgQWIZ0GcTGAVnIRk6C2HQLCSDZiEZtICRZRWjRVJRZnpGSW5iZo6uoYGBr
-  qGhka6hsQkQm+klVukm6ZUW65anFpfoGukllhfrFVfmJuek6OWllmxiBMZfSkFbxw7G6W8+6B
-  1ilORgUhLlnRb9JV6ILyk/pTIjsTgjvqg0J7X4EKMMB4eSBC8XMKKFBItS01Mr0jJzgKkAJi3
-  BwaMkwis0HSjNW1yQmFucmQ6ROsWoy7Hy4JJFzEIsefl5qVLivFdBigRAijJK8+BGwNLSJUZZ
-  KWFeRgYGBiGegtSi3MwSVPlXjOIcjErCvKdnAE3hycwrgdv0CugIJqAjDod+BjmiJBEhJdXAZ
-  Hph9sWoZf+LFqaucnFiSHf61HqpaN6vXRsL+zsbo07z3HXOnfylcOstvvvtHbuurL29K/aJ86
-  a7rtrOZnmTLxr6BW8Vr7Cz3l/3dbGdJd8LD854r92beqaFzVm7ftHrPNYq8VfG+Q/4ks7W5on
-  bchR0228szF6r/0V+voZnm4ndW84esfbQC3yZt7ObSyxehpbysP30iX1oc/7JufO6k5aLq0av
-  94jiS5G9GxU424+jfWrMvl+CX+2WnmBNXiNkxnKqJUD1ouChnX+lbBuvvW35tWPTqRr+dXqGu
-  gGV8eI7ZB+ZNbZa2c5+w5MV+pz5U9yuQPvZR88YGW+Yxqn+5cjMCRq911ITQy7lzVdXYinOSD
-  TUYi4qTgQAL8xcMcYDAAA=
-X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-24.tower-356.messagelabs.com!1609865626!4995!1
-X-Originating-IP: [103.30.234.7]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.60.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 31544 invoked from network); 5 Jan 2021 16:53:48 -0000
-Received: from unknown (HELO lenovo.com) (103.30.234.7)
-  by server-24.tower-356.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 5 Jan 2021 16:53:48 -0000
-Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 3AD635DA9918C07D62E6;
-        Wed,  6 Jan 2021 00:53:44 +0800 (CST)
-Received: from localhost.localdomain (10.38.54.96) by reswpmail04.lenovo.com
- (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Tue, 5 Jan 2021
- 08:53:42 -0800
-Subject: Re: [External] Re: [PATCH 0/2] IdeaPad platform profile support
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Platform Driver <platform-driver-x86@vger.kernel.org>,
+        id S1729683AbhAERT3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jan 2021 12:19:29 -0500
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:33098 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729242AbhAERT3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jan 2021 12:19:29 -0500
+Received: by mail-oi1-f176.google.com with SMTP id d203so350061oia.0;
+        Tue, 05 Jan 2021 09:19:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w6rJskTc4hEuFh9sBz5GYGc9LX37ZTG1VymDOHA5oC0=;
+        b=l7vHBKjXB0oCWlck/jjxi1DHyejdBSriTWQQJgkBgCrzISw1wz/9Q6hDzqWvBmc1fW
+         hH7lXSEicSvh0VMSBwXjUqZ4T50tIMSjwlcDH0ODOr+lGOOeQx6UJJP9tdSb1/73hCrr
+         G2bSqOIB9MlUAiK7ZzXaKAaPyfOPdpM83UrrBJjJqYbO9cuL22dOGYrV2fLssVPMsEL7
+         eIq9vkc60skqxDTUuYjUHtruWNezb+i46Ko+WCFx7K9OfYJZ8nIwIZX/qeD5/yJBMgro
+         h8Msn4dzIxD50R9yhR11/SVdBaJHHwaEmIr4vjg4z3iMStU5HsZkQOaMD5WFQUXM1Saq
+         twsw==
+X-Gm-Message-State: AOAM533MbVrkunFZ4ps0CWbbG1n6gXKUjWrhCaVQauRaSQLB4lv3XTIc
+        P5p0uizig+6YDpBIyNmrjoU5slIux6RUPaHGPRM=
+X-Google-Smtp-Source: ABdhPJyeLw9qLKGDfXEat5y3Fu4ARdx1irTIcueXHn8PgQMkxdz03DWfT4YQb+KCnNSWSo2WsrQfBTIdi8X1XnO7U8A=
+X-Received: by 2002:aca:d6c8:: with SMTP id n191mr389256oig.69.1609867127808;
+ Tue, 05 Jan 2021 09:18:47 -0800 (PST)
+MIME-Version: 1.0
+References: <20210101125629.20974-1-jiaxun.yang@flygoat.com>
+ <35ac853a-266c-6944-6e5e-6286456865e3@redhat.com> <CAJZ5v0jcCD3qWUJQcS+nFVJWSCQEbq2eN3i07mN8yFr3WZD9dg@mail.gmail.com>
+ <6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com>
+In-Reply-To: <6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Jan 2021 18:18:35 +0100
+Message-ID: <CAJZ5v0je41iXQnr3m-RY9fD_C-qnqbLdqYMvUzp0qgBwEvVoJA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] IdeaPad platform profile support
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Mark Gross <mgross@linux.intel.com>,
         Ike Panhc <ike.pan@canonical.com>,
+        Mark Pearson <markpearson@lenovo.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210101125629.20974-1-jiaxun.yang@flygoat.com>
- <35ac853a-266c-6944-6e5e-6286456865e3@redhat.com>
- <CAJZ5v0jcCD3qWUJQcS+nFVJWSCQEbq2eN3i07mN8yFr3WZD9dg@mail.gmail.com>
- <6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com>
- <2eefa5ec-4f09-eabd-2c20-f217fa084dfc@lenovo.com>
- <75952842-3ee3-82a2-7809-66e2d5263c73@flygoat.com>
-From:   Mark Pearson <markpearson@lenovo.com>
-Message-ID: <f53cd0dc-17b4-6410-02f9-526e67c7132c@lenovo.com>
-Date:   Tue, 5 Jan 2021 11:53:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <75952842-3ee3-82a2-7809-66e2d5263c73@flygoat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.38.54.96]
-X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
- reswpmail04.lenovo.com (10.62.32.23)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jiaxun,
+On Mon, Jan 4, 2021 at 9:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 1/4/21 9:33 PM, Rafael J. Wysocki wrote:
+> > On Mon, Jan 4, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 1/1/21 1:56 PM, Jiaxun Yang wrote:
+> >>> Tested on Lenovo Yoga-14SARE Chinese Edition.
+> >>>
+> >>> Jiaxun Yang (2):
+> >>>   ACPI: platform-profile: Introduce data parameter to handler
+> >>>   platform/x86: ideapad-laptop: DYTC Platform profile support
+> >>>
+> >>>  drivers/acpi/platform_profile.c       |   4 +-
+> >>>  drivers/platform/x86/Kconfig          |   1 +
+> >>>  drivers/platform/x86/ideapad-laptop.c | 281 ++++++++++++++++++++++++++
+> >>>  include/linux/platform_profile.h      |   5 +-
+> >>>  4 files changed, 287 insertions(+), 4 deletions(-)
+> >>
+> >>
+> >> Thank you for your series, unfortunately the
+> >> "ACPI: platform-profile: Introduce data parameter to handler"
+> >> patch causes a conflict with the pending:
+> >> "[PATCH v8 3/3] platform/x86: thinkpad_acpi: Add platform profile support"
+> >> patch.
+> >>
+> >> But I do agree that adding that data parameter makes sense, so
+> >> it might be best to merge:
+> >>
+> >> "ACPI: platform-profile: Introduce data parameter to handler"
+> >>
+> >> First and then rebase the thinkpad_acpi patch on top.
+> >>
+> >> Rafael, do you think you could add:
+> >>
+> >> "ACPI: platform-profile: Introduce data parameter to handler"
+> >>
+> >> To the 2 ACPI: platform-profile patches which you already have pending for 5.11-rc# ?
+> >
+> > I'm not sure why that patch is needed at all, because whoever
+> > registers a platform profile handler needs to have access to the
+> > original handler object anyway.
+>
+> True, I was actually thinking that instead of the data argument, we might
+> pass a pointer to the original handler object like this:
+>
+> @@ -64,7 +64,7 @@ static ssize_t platform_profile_show(struct device *dev,
+>                 return -ENODEV;
+>         }
+>
+> -       err = cur_profile->profile_get(&profile);
+> +       err = cur_profile->profile_get(cur_profile, &profile);
+>         mutex_unlock(&profile_lock);
+>         if (err)
+>                 return err;
 
-On 05/01/2021 01:24, Jiaxun Yang wrote:
-> 在 2021/1/5 上午5:58, Mark Pearson 写道:
->> On 04/01/2021 15:58, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 1/4/21 9:33 PM, Rafael J. Wysocki wrote:
->>>> On Mon, Jan 4, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com>
->>>>   wrote:
->>>>> Hi,
->>>>>
->>>>> On 1/1/21 1:56 PM, Jiaxun Yang wrote:
->>>>>> Tested on Lenovo Yoga-14SARE Chinese Edition.
->>>>>>
-> [...]
->> Just for my understanding of what happens next....please correct me if I
->> have anything wrong:
->>
->>   - platform_profile gets pulled from ACPI for 5.11
->>
->>   - platform_profile gets updated to add this data/pointer implementation
->> and goes into 5.12.
-> Hi all,
-> 
-> Another approach could be just let all the patch go through pdx86 tree
-> and with
-> pointer part acked by Rafael as it's unlikely to have merge conflicts.
-> 
->> Jiaxun, let me know if you're happy with following
->> up on that based on Hans suggestions, If you are pushed for time let me
->> know and I'll happily help out/implement/test as required. I sadly don't
->> have any ideapads but very happy to support your efforts any way I can.
-> 
-> 
-> I'm happy with Hans suggestion, will send v2 for it later.
-> 
-> I've been ask Lenovo engineers about DYTC and other ideapad ACPI
-> stuff on Lenovo China forum[1], but moderator here told me Lenovo won't
-> invest any Linux effort on their consumer product line :-(
-> 
-> Is it possible to publish a DYTC specification or documents to help us
-> further
-> understand these mechanisms?
-> 
-> I'm tired of reading disassembly AML and code to figure out these
-> internals.
-> 
-I hear you :)
+I would prefer this approach.
 
-Afraid I'm not allowed to publish the full DYTC spec - but I make public
-the bits that I can.
+>
+> And then the driver which has registered the cur_profile, can get to
+> its own data by using container of on the cur_profile pointer.
+>
+> With the code currently in your bleeding-edge branch, there is no way
+> for any driver-code to get to its own (possibly/likely dynamically
+> allocated) driver-data struct.
+>
+> E.g. a typical driver using only dynamic data tied to device_get_drvdata,
+> might have this:
+>
+> struct driver_data {
+>         ...
+>         struct platform_profile_handler profile_handler;
+>         ...
+> };
+>
+> int probe(...) {
+>         struct driver_data *my_data;
+>
+>         my_data = devm_kzalloc(dev, sizeof(*my_data), GFP_KERNEL);
+>
+>         ...
+>
+>         ret = platform_profile_register(&my_data->profile_handler);
+>         ...
+> }
+>
+> And with the change which I suggest above would then be able to
+> get the struct driver_data *my_data back from the profile_get callback by
+> using container_of on the struct platform_profile_handler *profile_handler
+> argument added to the profile_get callback.
 
-I don't have many hooks into the ideapad team as it's not in the Linux
-plan - so I can't answer your questions with confidence. I am going to
-ask the firmware team if they can confirm if ideapad is using the same
-spec - it would make sense if they are.
-Feel free to bug me off mailing list and I'll happily help out with any
-debugging issues.
+OK, fair enough.
 
-I'm also not allowed to confirm or deny future plans but my personal
-hope is that the Linux project in Lenovo grows. Fingers crossed for the
-future.
+> I know that the platform_profile stuff is intended to only have a
+> single provider, so this could use global variables, but some
+> drivers which may be a provider use 0 global variables (other then
+> module_params) atm and it would be a lot cleaner from the pov
+> of the design of these drivers to be able to do something like the
+> pseudo code above. Which is why I added my Reviewed-by to patch 1/2
+> of the series from this thread.
+>
+> Patch 1/2 does use a slightly different approach then I suggest above,
+> thinking more about this it would be cleaner IMHO to just pass the
+> cur_profile pointer to the callbacks as the pseudo-code patch which I
+> wrote above does. Drivers which use globals can then just ignore
+> the extra argument (and keep the platform_profile_handler struct const)
+> where as drivers which use dynamic allocation can embed the struct in
+> their driver's data-struct.
 
->>
->>   - Can we get the x86 portion done at the same time or does that end up
->> going to 5.13? I had been looking at the ideapad_laptop.c patch and have
->> some concerns there as Jiaxun's patch is essentially a duplicate of what
->> I implemented in thinkpad_acpi.c which doesn't seem to be ideal
->> (especially as there is a V6 version of DYTC coming out this year). I
->> haven't had time to look at code to consider better alternatives
->> though...
-> 
-> It may be worthy to share these code but I'm comfort to have this
-> duplication as I'm
-> unsure about the future of DYTC. Will DYTC for thinkpads always coherent
-> with DYTC
-> for ideapads?
-I'll see if I can find out.
+Agreed.
 
-> 
-> Thanks.
-> 
-> [1]: https://club.lenovo.com.cn/thread-5980431-1-1.html
-> 
-> - Jiaxun
-> 
->>
->> Mark
-> 
+> > Also, on a somewhat related note, I'm afraid that it may not be a good
+> > idea to push this series for 5.11-rc in the face of recent objections
+> > against new material going in after the merge window.
+>
+> That is fine with me, since this did not make rc1 (nor rc2) I'm not entirely
+> comfortable with sending out a late pull-req for the pdx86 side of this
+> either, so lets postpone this to 5.12 (sorry Mark).
+>
+> Rafael, once we have the discussion with the passing a pointer back to
+> the drivers data thing resolved (and a patch merged for that if we go
+> that route) can you provide me with an immutable branch to merge into
+> pdx86/for-next so that I can then merge the pdx86 bits on top ?
+
+Sure, no problem.
+
+> Note this does not need to be done right now around say rc4 would be fine,
+> so that we have some time for the patches currently in bleeding-edge to
+> settle a bit.
+
+OK
+
+Cheers!
