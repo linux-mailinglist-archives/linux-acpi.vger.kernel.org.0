@@ -2,83 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C95EC2EA71C
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 10:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0BB82EA81A
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jan 2021 11:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbhAEJNi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jan 2021 04:13:38 -0500
-Received: from mga17.intel.com ([192.55.52.151]:50274 "EHLO mga17.intel.com"
+        id S1726681AbhAEKAp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jan 2021 05:00:45 -0500
+Received: from sauhun.de ([88.99.104.3]:40936 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727922AbhAEJNh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Jan 2021 04:13:37 -0500
-IronPort-SDR: aFYyTwkkOO51OzhiK9CXy4FsjM4rmXkqDabpuIHL0OILHRtiU2dY1/wHrHZpftN70r1mu/r8Ub
- IYD7g0sU2NsQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="156862078"
-X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="156862078"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 01:11:51 -0800
-IronPort-SDR: VVhF95p9st5xLBTXdLZ6yja8BVMHiBlCOm/ZMHGL6AmvzZXwA4+G3hwSiRE1uoUxK+B8JXqBOA
- jypsA8TDu8mQ==
-X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="378794974"
-Received: from bard-ubuntu.sh.intel.com ([10.239.13.33])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 01:11:49 -0800
-From:   Bard Liao <yung-chuan.liao@linux.intel.com>
-To:     gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-acpi@vger.kernel.org,
-        heikki.krogerus@linux.intel.com, rafael@kernel.org
-Cc:     bard.liao@intel.com
-Subject: [PATCH 2/2] device property: add description of fwnode cases
-Date:   Tue,  5 Jan 2021 17:11:46 +0800
-Message-Id: <20210105091146.25422-3-yung-chuan.liao@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210105091146.25422-1-yung-chuan.liao@linux.intel.com>
-References: <20210105091146.25422-1-yung-chuan.liao@linux.intel.com>
+        id S1725831AbhAEKAp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Jan 2021 05:00:45 -0500
+Received: from localhost (p5486cfc1.dip0.t-ipconnect.de [84.134.207.193])
+        by pokefinder.org (Postfix) with ESMTPSA id E38C72C03EF;
+        Tue,  5 Jan 2021 11:00:02 +0100 (CET)
+Date:   Tue, 5 Jan 2021 11:00:01 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andy@infradead.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] i2c: core: Do not print duplicate error when failing to
+ register an i2c-client from ACPI
+Message-ID: <20210105100001.GB2000@ninjato>
+References: <20201221191300.244648-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gatW/ieO32f1wygP"
+Content-Disposition: inline
+In-Reply-To: <20201221191300.244648-1-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are only four valid fwnode cases which are
-- primary --> secondary --> -ENODEV
-- primary --> NULL
-- secondary --> -ENODEV
-- NULL
 
-dev->fwnode should be converted between the 4 cases above no matter
-how/when set_primary_fwnode() and set_secondary_fwnode() are called.
-Describe it in the code so people will keep it in mind.
+--gatW/ieO32f1wygP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
----
- drivers/base/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+On Mon, Dec 21, 2020 at 08:13:00PM +0100, Hans de Goede wrote:
+> i2c_new_client_device() already prints an error when it fails. Some
+> ACPI tables contain 2 ACPI devices describing the same i2c-client,
+> leading to errors like this:
+>=20
+> [    1.620847] i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x=
+1d (-16)
+> [    1.620870] i2c i2c-4: failed to add I2C device MAGN0001:00 from ACPI
+>=20
+> There is nothing we can do about the first -EBUSY error being logged,
+> but the second error does not really add any new information, so lets
+> drop it.
+>=20
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 51b9545a050b..17eb14607074 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -4414,6 +4414,12 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
-  *
-  * Set the device's firmware node pointer to @fwnode, but if a secondary
-  * firmware node of the device is present, preserve it.
-+ *
-+ * Valid fwnode cases are:
-+ *  - primary --> secondary --> -ENODEV
-+ *  - primary --> NULL
-+ *  - secondary --> -ENODEV
-+ *  - NULL
-  */
- void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
- {
-@@ -4432,6 +4438,7 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
- 	} else {
- 		if (fwnode_is_primary(fn)) {
- 			dev->fwnode = fn->secondary;
-+			/* Set fn->secondary = NULL to keep fn as a primary fwnode */
- 			if (!(parent && fn == parent->fwnode))
- 				fn->secondary = NULL;
- 		} else {
--- 
-2.17.1
+Applied to for-next, thanks!
 
+
+--gatW/ieO32f1wygP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl/0OKEACgkQFA3kzBSg
+KbZw6w//fNjx9Xc9pJHZp7Rhl6FfYMrELZpsPb/rZ6603Y3BhTD8+aStoOWYCW6C
+DIZ4IQwqB6Y6/wU29clnMI3DvEx27yX+VwbECmqzixxQjihoDo8Y4PVUd05WTTOp
+qSnaL1CqY0N7X7VbBG/jx+oqsrUHJmvoaqSlYu1uPnwydLMAIebBg2WLQ9IF2sp1
+AJXhyxAvekjGw8OzKqFklSrH73omNZ8Aj/FhTBvkosPU/JMoZfacwxxzJrkfzfe/
+9Gl9qwzXdfR3XfZnWz6985D82yGMM1NyoiqJlqZtezebTnt4cdFQMWsd0L4Bi/ub
+4DdxL7N1+ex6aHdfnDRfi1c/j4WxcB/j/QXn3VRt6UfCa+M9IxVA1sij8CI3zRR4
+Sf2ftB+nDRMSmdSsMVTYrhGpXmHnedXawdPcMK+GIuc0OBExSuwPkFKyETxdugDr
+Gn492BvoWr6MkrrihRyP+t4wcnnkBuK23WkarJA3vSqeYN7b3hX+BtsvycbpY8wg
+8gXjLgXEZcfkgZxwshA/nt328G4LBKDxzTeCxADIPKVJRSEJk072MClJ0Lhq7787
+gAY3jx/therbs/7nLUbD66UDlnvilJkydMIK/yhGjWFZ6sJ9kMwh41iGwpKprv5C
+9XkNl0/nEsfetGIz/l9gRFBKAu9uSe+/LT7MpWqFEBSqHnLSkVY=
+=imiC
+-----END PGP SIGNATURE-----
+
+--gatW/ieO32f1wygP--
