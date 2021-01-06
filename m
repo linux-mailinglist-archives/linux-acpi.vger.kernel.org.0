@@ -2,291 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A08442EBB23
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jan 2021 09:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4842EBB9C
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jan 2021 10:19:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbhAFIgk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Jan 2021 03:36:40 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10549 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726501AbhAFIgi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jan 2021 03:36:38 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4D9jN46qg7zMFWZ;
-        Wed,  6 Jan 2021 16:34:44 +0800 (CST)
-Received: from SWX921481.china.huawei.com (10.126.203.68) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 6 Jan 2021 16:35:45 +0800
-From:   Barry Song <song.bao.hua@hisilicon.com>
-To:     <valentin.schneider@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <rjw@rjwysocki.net>,
-        <vincent.guittot@linaro.org>, <lenb@kernel.org>,
-        <gregkh@linuxfoundation.org>, <jonathan.cameron@huawei.com>,
-        <mingo@redhat.com>, <peterz@infradead.org>,
-        <juri.lelli@redhat.com>, <dietmar.eggemann@arm.com>,
-        <rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
-        <mark.rutland@arm.com>, <sudeep.holla@arm.com>,
-        <aubrey.li@linux.intel.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linuxarm@openeuler.org>, <xuwei5@huawei.com>,
-        <prime.zeng@hisilicon.com>, <tiantao6@hisilicon.com>,
-        Barry Song <song.bao.hua@hisilicon.com>
-Subject: [RFC PATCH v3 2/2] scheduler: add scheduler level for clusters
-Date:   Wed, 6 Jan 2021 21:30:26 +1300
-Message-ID: <20210106083026.40444-3-song.bao.hua@hisilicon.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
-References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
+        id S1726308AbhAFJSz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Jan 2021 04:18:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:55762 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726295AbhAFJSy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jan 2021 04:18:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1609924648;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=74reAFMP9bENCEIgFbfQOXKA/PsWi2wcOMNMUHX6jRs=;
+        b=NncPIcfMenZN+GlJydfVWrMld/lrhzHQHBmSoMdt9BAVrc98/miKmT9CZfD71AH9I4EDor
+        OG5dlzqln/LgNIKh8S9GBG9FkqbFroffq24LyCc0MpUWK+eKDAl9LMI4eik2RDaRE+gOlZ
+        N0nTZf5G460yhn3MV6GzAFch0WLdemY=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-170-m-6rdBCDMTC02NjtrIhNZQ-1; Wed, 06 Jan 2021 04:17:26 -0500
+X-MC-Unique: m-6rdBCDMTC02NjtrIhNZQ-1
+Received: by mail-ed1-f69.google.com with SMTP id g6so1695006edw.13
+        for <linux-acpi@vger.kernel.org>; Wed, 06 Jan 2021 01:17:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=74reAFMP9bENCEIgFbfQOXKA/PsWi2wcOMNMUHX6jRs=;
+        b=M1fF6+tAVnL6z/xocC+pIHxaeKhhC5prQfYwYZmFZoDUW1DEAmqFCJ555c+V9mQVz/
+         YSmffr/erd5Hn52htLcbYzOiPIYfREZPTTO0qHn47ET5R0KnHZLSWcnOqc8uPFEsjG+6
+         PvOW3EMQbdeZHFgTBbjmgRbH0g0kQvuraMMKpVVRnV7YNJ7Cgt3q++Zc1wei7lVGmeun
+         EVTlgT4Io10aSzxlPMmDce9buTJklqRGCZZJY96sWYGaz/fUpM7OWz9aiRTWSX3pAcwQ
+         1LCgRcWgTUdPAqXsRuTo1KHO00ShnCSMWCs3EgjxuNNqiNpLM4htYnBAkI+Dim5SeVb2
+         kmWg==
+X-Gm-Message-State: AOAM531/xlAA1EhLOZkUpNJiQzsecHEFTgEeveQFgU6QZz1Ogtqppjgh
+        5xnwc7XeNWXeckeggtwTC6UMOrAInfLApECsEcowK7C8xLvvDcXX1ZIVMWCnQtKr/67b4Gyrs7z
+        lnnV04BpUOeGhCXGXsEBHkg==
+X-Received: by 2002:a05:6402:746:: with SMTP id p6mr3354039edy.313.1609924645421;
+        Wed, 06 Jan 2021 01:17:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJySWOSAgxnffC8LBV3wDGbija0UW5bX4NCm1gy26Oam0C1xmlbog1r2rFQq7ZWJYvqHt58O5w==
+X-Received: by 2002:a05:6402:746:: with SMTP id p6mr3354035edy.313.1609924645315;
+        Wed, 06 Jan 2021 01:17:25 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id z24sm1187871edr.9.2021.01.06.01.17.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Jan 2021 01:17:24 -0800 (PST)
+Subject: Re: [PATCH 0/2] IdeaPad platform profile support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210101125629.20974-1-jiaxun.yang@flygoat.com>
+ <35ac853a-266c-6944-6e5e-6286456865e3@redhat.com>
+ <CAJZ5v0jcCD3qWUJQcS+nFVJWSCQEbq2eN3i07mN8yFr3WZD9dg@mail.gmail.com>
+ <6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com>
+ <CAJZ5v0je41iXQnr3m-RY9fD_C-qnqbLdqYMvUzp0qgBwEvVoJA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <9e745724-d704-6250-9bfb-e347f3611ec4@redhat.com>
+Date:   Wed, 6 Jan 2021 10:17:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.126.203.68]
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAJZ5v0je41iXQnr3m-RY9fD_C-qnqbLdqYMvUzp0qgBwEvVoJA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ARM64 server chip Kunpeng 920 has 6 clusters in each NUMA node, and each
-cluster has 4 cpus. All clusters share L3 cache data, but each cluster
-has local L3 tag. On the other hand, each clusters will share some
-internal system bus. This means cache coherence overhead inside one cluster
-is much less than the overhead across clusters.
+Hi,
 
-This patch adds the sched_domain for clusters. On kunpeng 920, without
-this patch, domain0 of cpu0 would be MC with cpu0~cpu23 with ; with this
-patch, MC becomes domain1, a new domain0 "CLS" including cpu0-cpu3.
+On 1/5/21 6:18 PM, Rafael J. Wysocki wrote:
+> On Mon, Jan 4, 2021 at 9:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
 
-This will affect load balance. For example, without this patch, while cpu0
-becomes idle, it will pull a task from cpu1-cpu15. With this patch, cpu0
-will try to pull a task from cpu1-cpu3 first. This will have much less
-overhead of task migration.
+<snip>
 
-On the other hand, while doing WAKE_AFFINE, this patch will try to find
-a core in the target cluster before scanning the whole llc domain.
-This means it will proactively use a core which has better affinity with
-target core at first.
+>> Patch 1/2 does use a slightly different approach then I suggest above,
+>> thinking more about this it would be cleaner IMHO to just pass the
+>> cur_profile pointer to the callbacks as the pseudo-code patch which I
+>> wrote above does. Drivers which use globals can then just ignore
+>> the extra argument (and keep the platform_profile_handler struct const)
+>> where as drivers which use dynamic allocation can embed the struct in
+>> their driver's data-struct.
+> 
+> Agreed.
 
-Though it is named "cluster", architectures or machines can define its
-exact meaning of cluster as long as some cpus can share some resources
-in lower level than llc. So the implementation is applicable to all
-architectures.
+Note that Jiaxun has provided a v2 of this patch-set with patch 1/2 implementing
+the new approach.
 
-Different cpus might have different resource sharing like L1, L2, cache
-tags, internal busses etc.
-Since it is hard to know where we should start to scan, this patch adds
-a SD_SHARE_CLS_RESOURCES rather than directly leveraging the existing
-SD_SHARE_PKG_RESOURCES flag. Architectures or machines can decide what
-is cluster and who should get SD_SHARE_CLS_RESOURCES. select_idle_cpu()
-will scan from the first sched_domain with SD_SHARE_CLS_RESOURCES.
+Can you merge merge that patch please and then once you're happy that this
+has seen enough exposure in -next, provide me with an immutable branch with
+the 3 platform-profile patches in it ?
 
-The below is a hackbench result:
+Regards,
 
-we run the below command with different -g parameter from 1 to 10, for each
-different g, we run the command 10 times and get the average time
-$ numactl -N 0 hackbench -p -T -l 20000 -g $1
-
-hackbench will report the time which is needed to complete a certain number
-of messages transmissions between a certain number of tasks, for example:
-$ numactl -N 0 hackbench -p -T -l 20000 -g 10
-Running in threaded mode with 10 groups using 40 file descriptors each
-(== 400 tasks)
-Each sender will pass 20000 messages of 100 bytes
-Time: 8.874
-
-The below is the result of hackbench w/ and w/o the patch:
-g     1      2      3      4      5      6      7      8      9      10
-w/o 1.4777 2.0112 3.1919 4.2654 5.3246 6.4019 7.5939 8.7073 9.7526 10.8987
-w/  1.4793 1.9344 2.9080 3.9267 4.8339 5.7186 6.6923 7.5088 8.3715 9.2173
-                  +8.9%  +7.9%  +9.3%  +10.7% +11.8% +13.8% +14.2% +15.5%
-
-Tracing the kernel while g=10, it shows select_idle_cpu() has a large chance
-to get cpu in the same cluster with the target while it sometimes gets cpu
-outside the cluster:
-target cpu
-19  -> 17
-13  -> 15
-23  -> 20
-23  -> 20
-19  -> 17
-13  -> 15
-16  -> 17
-19  -> 17
-7   -> 5
-10  -> 11
-23  -> 20
-*23 -> 4
-...
-
-Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
----
- -v3:
-  - rebased againest 5.11-rc2
-  - with respect to the comments of Valentin Schneider, Peter Zijlstra,
-    Vincent Guittot and Mel Gorman etc.
-  * moved the scheduler changes from arm64 to the common place for all
-    architectures.
-  * added SD_SHARE_CLS_RESOURCES sd_flags specifying the sched_domain
-    where select_idle_cpu() should begin to scan from
-  * removed redundant select_idle_cluster() function since all code is
-    in select_idle_cpu() now. it also avoided scanning cluster cpus
-    twice in v2 code;
-  * redo the hackbench in one numa after the above changes
-
- arch/arm64/Kconfig             |  7 +++++++
- include/linux/sched/sd_flags.h |  9 +++++++++
- include/linux/sched/topology.h |  7 +++++++
- include/linux/topology.h       |  7 +++++++
- kernel/sched/fair.c            | 27 +++++++++++++++++++++------
- kernel/sched/topology.c        |  6 ++++++
- 6 files changed, 57 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 05e1735..546cd61 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -973,6 +973,13 @@ config SCHED_MC
- 	  making when dealing with multi-core CPU chips at a cost of slightly
- 	  increased overhead in some places. If unsure say N here.
- 
-+config SCHED_CLUSTER
-+	bool "Cluster scheduler support"
-+	help
-+	  Cluster scheduler support improves the CPU scheduler's decision
-+	  making when dealing with machines that have clusters(sharing internal
-+	  bus or sharing LLC cache tag). If unsure say N here.
-+
- config SCHED_SMT
- 	bool "SMT scheduler support"
- 	help
-diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
-index 34b21e9..fc3c894 100644
---- a/include/linux/sched/sd_flags.h
-+++ b/include/linux/sched/sd_flags.h
-@@ -100,6 +100,15 @@ SD_FLAG(SD_ASYM_CPUCAPACITY, SDF_SHARED_PARENT | SDF_NEEDS_GROUPS)
- SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-+ * Domain members share CPU cluster resources (i.e. llc cache tags)
-+ *
-+ * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-+ *               the cluster resouces (such as llc tags and internal bus)
-+ * NEEDS_GROUPS: Caches are shared between groups.
-+ */
-+SD_FLAG(SD_SHARE_CLS_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
-+
-+/*
-  * Domain members share CPU package resources (i.e. caches)
-  *
-  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 8f0f778..846fcac 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -42,6 +42,13 @@ static inline int cpu_smt_flags(void)
- }
- #endif
- 
-+#ifdef CONFIG_SCHED_CLUSTER
-+static inline int cpu_cluster_flags(void)
-+{
-+	return SD_SHARE_CLS_RESOURCES | SD_SHARE_PKG_RESOURCES;
-+}
-+#endif
-+
- #ifdef CONFIG_SCHED_MC
- static inline int cpu_core_flags(void)
- {
-diff --git a/include/linux/topology.h b/include/linux/topology.h
-index bf2cc3c..81be614 100644
---- a/include/linux/topology.h
-+++ b/include/linux/topology.h
-@@ -211,6 +211,13 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
- }
- #endif
- 
-+#ifdef CONFIG_SCHED_CLUSTER
-+static inline const struct cpumask *cpu_cluster_mask(int cpu)
-+{
-+	return topology_cluster_cpumask(cpu);
-+}
-+#endif
-+
- static inline const struct cpumask *cpu_cpu_mask(int cpu)
- {
- 	return cpumask_of_node(cpu_to_node(cpu));
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 04a3ce2..c14fae6 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6145,6 +6145,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- {
- 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
- 	struct sched_domain *this_sd;
-+	struct sched_domain *prev_ssd = NULL, *ssd;
- 	u64 avg_cost, avg_idle;
- 	u64 time;
- 	int this = smp_processor_id();
-@@ -6174,15 +6175,29 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 
- 	time = cpu_clock(this);
- 
--	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
--
--	for_each_cpu_wrap(cpu, cpus, target) {
--		if (!--nr)
--			return -1;
--		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
-+	/*
-+	 * we first scan those child domains who declare they are sharing
-+	 * cluster resources such as llc tags, internal busses; then scan
-+	 * the whole llc
-+	 */
-+	for_each_domain(target, ssd) {
-+		if ((ssd->flags & SD_SHARE_CLS_RESOURCES) || (ssd == sd)) {
-+			cpumask_and(cpus, sched_domain_span(ssd), p->cpus_ptr);
-+			if (prev_ssd)
-+				cpumask_andnot(cpus, cpus, sched_domain_span(prev_ssd));
-+			for_each_cpu_wrap(cpu, cpus, target) {
-+				if (!--nr)
-+					return -1;
-+				if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
-+					goto done;
-+			}
-+			prev_ssd = ssd;
-+		}
-+		if (ssd == sd)
- 			break;
- 	}
- 
-+done:
- 	time = cpu_clock(this) - time;
- 	update_avg(&this_sd->avg_scan_cost, time);
- 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 5d3675c..79030c9 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1361,6 +1361,7 @@ int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
-  */
- #define TOPOLOGY_SD_FLAGS		\
- 	(SD_SHARE_CPUCAPACITY	|	\
-+	 SD_SHARE_CLS_RESOURCES	|	\
- 	 SD_SHARE_PKG_RESOURCES |	\
- 	 SD_NUMA		|	\
- 	 SD_ASYM_PACKING)
-@@ -1480,6 +1481,11 @@ static struct sched_domain_topology_level default_topology[] = {
- #ifdef CONFIG_SCHED_SMT
- 	{ cpu_smt_mask, cpu_smt_flags, SD_INIT_NAME(SMT) },
- #endif
-+
-+#ifdef CONFIG_SCHED_CLUSTER
-+       { cpu_clustergroup_mask, cpu_cluster_flags, SD_INIT_NAME(CLS) },
-+#endif
-+
- #ifdef CONFIG_SCHED_MC
- 	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
- #endif
--- 
-2.7.4
+Hans
 
