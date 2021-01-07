@@ -2,104 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D82012ED125
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 14:49:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7756A2ED12F
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 14:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728128AbhAGNsw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jan 2021 08:48:52 -0500
-Received: from mail-ot1-f50.google.com ([209.85.210.50]:34719 "EHLO
+        id S1728480AbhAGNwJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jan 2021 08:52:09 -0500
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:35286 "EHLO
         mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728167AbhAGNsw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 08:48:52 -0500
-Received: by mail-ot1-f50.google.com with SMTP id a109so6314199otc.1;
-        Thu, 07 Jan 2021 05:48:36 -0800 (PST)
+        with ESMTP id S1728452AbhAGNwJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 08:52:09 -0500
+Received: by mail-ot1-f50.google.com with SMTP id i6so6326331otr.2;
+        Thu, 07 Jan 2021 05:51:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FxOc7uHglOoDfD1fFSW1c40P0G5PgpxQwefSb6uXKX0=;
-        b=UGg5UZQVM3Gi3eSa+RqFiRAjA0wgmqpMLEiRDydpJ1RDflXwLZTe41E2UkIeTwCi8e
-         xTrZ9uLl0rb+hJGJGiyyDurN1MJuVrfDxKVeUMgL1i2y63VoPCg4PE4ef1LBFnxSSF3U
-         KEgWVHF5BhQUtFEJuM5qqtUFjhdH3KIx84gCt8fprQEoXB3UY5Vs8FSHjSb06rhjDYoh
-         b9Wy02YPn/wLDG7kB5WCaNITGOdyQPEd11LC4vqys5+cxrk7RHKLLlOhDJhqqWiy8OW5
-         tyuCh0Py8IC0wcd08cPbp/JXQY2drkeYFwYYb3aKFHHgsR6DSq3j9rbEnGIIESoUj0XL
-         UiAQ==
-X-Gm-Message-State: AOAM530XbL94yaYQbqD8Hy3dTrXjXu+SYS5llrkPc7EzL2Sm39GPoQof
-        4WSSDUOU+wtyARYkZxWZEPHXm6Pe/ppBf6kV5xE=
-X-Google-Smtp-Source: ABdhPJyeJqQC2tPO8m/QCgSqmxuUOkbOdB4YBKAgAsShfPvmNBRfDYkobds4iz78u9E8W5YARno4ZTrC0ocfJuWSqzs=
-X-Received: by 2002:a9d:208a:: with SMTP id x10mr6538983ota.260.1610027290930;
- Thu, 07 Jan 2021 05:48:10 -0800 (PST)
+        bh=CMWuGz3d4Qig577O3FdlCU+qyCG2EaepFu5Glz45Sg4=;
+        b=XBaSAzT4Tc8j0MickH0r/N1zNOSlDVm8C/qJZG7Ki1bzANZY3XVaiXOPkskkL1BIgs
+         JVCrwr9zuwyxn542lUKGCT4qq8by3qiP5CocqxYJFqvPkoeFbdinAhylClxbFPX24k7e
+         TC9IY3yboCd1SLTHuJq07CRbYRT47hN7OGnzMNRuJ+hzZra5Dzkx5Esg4Z6CG5q7UYCI
+         3HxdHEy7E48CGLIoj14/2PAIcweOPISVXuYeucj3LMwgCZ6QAefGJMS499z1iuw8sC0M
+         EgGLA0MtNuAOOZI9xv5UE9lERWu+KnY5b5W53XRIpQ22C0mOj6kitC+/LwnOaJrK8jFE
+         Tmjg==
+X-Gm-Message-State: AOAM531ctlVhCQA8U9M/AAGiBkMcdlocBkVyzE9e0Nget46UrP8hssD1
+        m0fWA3RSjdyhJRS1dduYNdQakeJjIZehn8xpgEk=
+X-Google-Smtp-Source: ABdhPJw7thMotG+kLxNi6hR91Eh41PYqaTrzXs93IWXGnkZxQEZY9mKCQCaBD2A8QaIWhZE2tUGwEPq0qy+dEL/k0dA=
+X-Received: by 2002:a9d:67da:: with SMTP id c26mr6708467otn.321.1610027487936;
+ Thu, 07 Jan 2021 05:51:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20201218040826.57203-1-decui@microsoft.com> <MW2PR2101MB1052E61BEB80F14896EEFA79D7DF9@MW2PR2101MB1052.namprd21.prod.outlook.com>
- <MW2PR2101MB181943C255A86A11E5402E50BFD19@MW2PR2101MB1819.namprd21.prod.outlook.com>
-In-Reply-To: <MW2PR2101MB181943C255A86A11E5402E50BFD19@MW2PR2101MB1819.namprd21.prod.outlook.com>
+References: <20210101125629.20974-1-jiaxun.yang@flygoat.com>
+ <35ac853a-266c-6944-6e5e-6286456865e3@redhat.com> <CAJZ5v0jcCD3qWUJQcS+nFVJWSCQEbq2eN3i07mN8yFr3WZD9dg@mail.gmail.com>
+ <6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com> <CAJZ5v0je41iXQnr3m-RY9fD_C-qnqbLdqYMvUzp0qgBwEvVoJA@mail.gmail.com>
+ <9e745724-d704-6250-9bfb-e347f3611ec4@redhat.com>
+In-Reply-To: <9e745724-d704-6250-9bfb-e347f3611ec4@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Jan 2021 14:47:34 +0100
-Message-ID: <CAJZ5v0gXW0oEmduxZEc0BZWxfQd=+jh_r88OZAHmwCW=GFNBGg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by buffer overflow
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     Michael Kelley <mikelley@microsoft.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "len.brown@intel.com" <len.brown@intel.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>
+Date:   Thu, 7 Jan 2021 14:50:51 +0100
+Message-ID: <CAJZ5v0gSCpZ6O+o7uXQKyQN+xOWhQSjiRqdqSdkez=ZsgCaOjg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] IdeaPad platform profile support
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 5, 2021 at 11:02 PM Dexuan Cui <decui@microsoft.com> wrote:
+On Wed, Jan 6, 2021 at 10:17 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> > From: Michael Kelley <mikelley@microsoft.com>
-> > Sent: Tuesday, December 22, 2020 5:56 AM
-> > From: Dexuan Cui
-> > Sent: Thursday, December 17, 2020
-> > 8:08 PM
-> > >
-> > > Linux VM on Hyper-V crashes with the latest mainline:
-> > > ...
-> > > --- a/drivers/acpi/scan.c
-> > > +++ b/drivers/acpi/scan.c
-> > > @@ -674,7 +674,8 @@ int acpi_device_add(struct acpi_device *device,
-> > >     }
-> > >     if (!found) {
-> > >             acpi_device_bus_id = new_bus_id;
-> > > -           strcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device));
-> > > +           strlcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device),
-> > > +                   sizeof(acpi_device_bus_id->bus_id));
-> > >             acpi_device_bus_id->instance_no = 0;
-> > >             list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
-> > >     }
+> Hi,
+>
+> On 1/5/21 6:18 PM, Rafael J. Wysocki wrote:
+> > On Mon, Jan 4, 2021 at 9:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> <snip>
+>
+> >> Patch 1/2 does use a slightly different approach then I suggest above,
+> >> thinking more about this it would be cleaner IMHO to just pass the
+> >> cur_profile pointer to the callbacks as the pseudo-code patch which I
+> >> wrote above does. Drivers which use globals can then just ignore
+> >> the extra argument (and keep the platform_profile_handler struct const)
+> >> where as drivers which use dynamic allocation can embed the struct in
+> >> their driver's data-struct.
 > >
-> > Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+> > Agreed.
 >
-> Hi, ACPI maintainers,
-> Would you please take a look at the small fix? Currently the mainline Linux
-> kernel, running in a VM on Hyper-V, has been broken for almost 3 weeks,
-> i.e. the VM always panics when it boots.
-
-The root cause is a VM issue AFAICS, though.
-
-> The patch has already had Michael's Reviewed-by.
+> Note that Jiaxun has provided a v2 of this patch-set with patch 1/2 implementing
+> the new approach.
 >
-> BTW, the patch should have a stable tag:
-> Cc: <stable@vger.kernel.org>
->
-> Or, do you want the patch to go through the Hyper-V tree?
-> https://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git/log/?h=hyperv-fixes
->
-> The small patch is unlikely to cause a merge conflict, and it only affects
-> Linux VMs on Hyper-V so far.
+> Can you merge merge that patch please and then once you're happy that this
+> has seen enough exposure in -next, provide me with an immutable branch with
+> the 3 platform-profile patches in it ?
 
-It doesn't look like the right fix to me, though.
-
-The problem appears to be that the string coming from _HID is too long
-(which is a spec violation).  The patch truncates it to match the
-length of the target buffer, but that is not particularly useful.
-
-It would be better to use something like kstrdup_const() to initialize
-acpi_device_bus_id->bus_id IMV.
+I will, thanks!
