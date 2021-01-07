@@ -2,86 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F7FC2ED4C4
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 17:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89ABA2ED4E3
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 18:00:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728066AbhAGQvv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jan 2021 11:51:51 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:41195 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727673AbhAGQvv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 11:51:51 -0500
-Received: by mail-oi1-f178.google.com with SMTP id 15so8047101oix.8;
-        Thu, 07 Jan 2021 08:51:35 -0800 (PST)
+        id S1726294AbhAGQ7c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jan 2021 11:59:32 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:34748 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726165AbhAGQ7b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 11:59:31 -0500
+Received: by mail-oi1-f179.google.com with SMTP id s75so8103732oih.1;
+        Thu, 07 Jan 2021 08:59:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QRY+oCUw7AZGdFQ4cs7QiDXR0ZT6ctIGkSGF1RXO+kE=;
-        b=Q/aNxtwM87K3fVcnE4x4Ilco6FDDbqn7hgb9HW7WIF66tkueA8GZI2MxNd9LyKapaD
-         98t8vynWOakTOXKi8pD8weAFWVT5hDUCFF5ZwV7yw6i0uTZ6mjz3WX9GbcLy+RGqw7d3
-         FPkrQreLeEXXWrZdkEvlu+myXGod2y3e+G7p8smYhXO0Wi2YcOvw+QL18hIRbLgUG+le
-         PauMK6pRrYsGhpVCSqny4VQVZXYKgYnfG3tKOTyfXjavQiNQcMKJQP508Nrmq6MQvF1l
-         QxGzoi019HEqc6iXV2O4yFBD0oIX7QBMeHDoePb4sZxSI0ezu7IqnYaPV2Kz3baItSS/
-         uiWA==
-X-Gm-Message-State: AOAM530tSjB5V8bs1gBLKHZHLY2LUn5p5N3EVnyMY2SwEl7Kgt4ipcii
-        mbWb7H/zYW3nuHETwmYZd0tu2Q4fEzvx3oxaqPJaNDhT
-X-Google-Smtp-Source: ABdhPJzc1zvGCFdycyKQ4s3da/G/8VntC06Ff9g6YI5/v8JFOOo6IXLnUwSz4SV+L/QInyI5z3bs9hmnMkHpFP5gkuQ=
-X-Received: by 2002:aca:4892:: with SMTP id v140mr1917599oia.71.1610038270432;
- Thu, 07 Jan 2021 08:51:10 -0800 (PST)
+        bh=TIUCk98ZrOIpG1GmXrTUqVGJnHOd4caRGIWW5TIJbS8=;
+        b=V9wmrk0UF4HA5UOscb5LbilpDS7fBHbHS8dra03Sf+rWktkY691IelWFUBCBwJgZqE
+         SePmY35BDEtnHNgLsIIdq0HYoIGkb1FKkh+BOJPiOOcIIQJle/mxY3xaSR6tXC9gL5QB
+         PIzutpQc5NzAtgQ0adidcW4vZeJBpiYSHaNYkxFUZdcPS5AeAU2HyURZTRVt8oLLy7Mn
+         ZFlNc5VKDNIeF1iGDiO836FISAUhiQVhdT+aH0cPPE4fhjDMJRBv6cAvkOHIf3zYBDDw
+         bqLKYZgnyc1VCboaA6bUY0V7VMbW1V1R4laLms/yo1fwhL5WK/KMke6fPh2+eTlYVbY4
+         FAaQ==
+X-Gm-Message-State: AOAM532pgwAO4DHV8BvMqzguHl2N+bMeIWPFY56IuiJY7U31CjG8Kdao
+        FJPT7Q806EiFxAl+28Stc8iDJaD1RxBRDJ+hqi8vDgIW
+X-Google-Smtp-Source: ABdhPJyukCZVV38p/zQ6tWkukqy7Ouk8hw/xptUTZs702eMWVli+xcwlX7CjqRphxq0FnBzRuew4EmXAlYy3f3RzpsQ=
+X-Received: by 2002:aca:d6c8:: with SMTP id n191mr1825561oig.69.1610038730626;
+ Thu, 07 Jan 2021 08:58:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20201229111759.1207387-1-pbrobinson@gmail.com>
-In-Reply-To: <20201229111759.1207387-1-pbrobinson@gmail.com>
+References: <20210105091146.25422-1-yung-chuan.liao@linux.intel.com>
+ <20210105091146.25422-3-yung-chuan.liao@linux.intel.com> <20210107141123.GI940479@kuha.fi.intel.com>
+In-Reply-To: <20210107141123.GI940479@kuha.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Jan 2021 17:50:59 +0100
-Message-ID: <CAJZ5v0jFUtBMJNA7a4_NnR16q5=bwQ=v+dJ0tiEGGhVZ9TqWPA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Update Kconfig help text for items that are no
- longer modular
-To:     Peter Robinson <pbrobinson@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+Date:   Thu, 7 Jan 2021 17:58:39 +0100
+Message-ID: <CAJZ5v0go48B+3QV5zreg1yxy2KnvLdp5p=n2Rb+D8XyBtb=Rbg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] device property: add description of fwnode cases
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        "Rafael J. Wysocki" <rafael@kernel.org>, bard.liao@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 29, 2020 at 12:19 PM Peter Robinson <pbrobinson@gmail.com> wrote:
+On Thu, Jan 7, 2021 at 3:11 PM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
 >
-> The CONTAINER and HOTPLUG_MEMORY memory options mention modules
-> but are bool only options so if selected are alway built in. Drop
-> the help text about modules.
+> On Tue, Jan 05, 2021 at 05:11:46PM +0800, Bard Liao wrote:
+> > There are only four valid fwnode cases which are
+> > - primary --> secondary --> -ENODEV
+> > - primary --> NULL
+> > - secondary --> -ENODEV
+> > - NULL
+> >
+> > dev->fwnode should be converted between the 4 cases above no matter
+> > how/when set_primary_fwnode() and set_secondary_fwnode() are called.
+> > Describe it in the code so people will keep it in mind.
+> >
+> > Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 >
-> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-> ---
->  drivers/acpi/Kconfig | 6 ------
->  1 file changed, 6 deletions(-)
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 >
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index edf1558c1105..ebcf534514be 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -395,9 +395,6 @@ config ACPI_CONTAINER
->
->           This helps support hotplug of nodes, CPUs, and memory.
->
-> -         To compile this driver as a module, choose M here:
-> -         the module will be called container.
-> -
->  config ACPI_HOTPLUG_MEMORY
->         bool "Memory Hotplug"
->         depends on MEMORY_HOTPLUG
-> @@ -411,9 +408,6 @@ config ACPI_HOTPLUG_MEMORY
->           removing memory devices at runtime, you need not enable
->           this driver.
->
-> -         To compile this driver as a module, choose M here:
-> -         the module will be called acpi_memhotplug.
-> -
->  config ACPI_HOTPLUG_IOAPIC
->         bool
->         depends on PCI
-> --
+> > ---
+> >  drivers/base/core.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 51b9545a050b..17eb14607074 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -4414,6 +4414,12 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
+> >   *
+> >   * Set the device's firmware node pointer to @fwnode, but if a secondary
+> >   * firmware node of the device is present, preserve it.
+> > + *
+> > + * Valid fwnode cases are:
+> > + *  - primary --> secondary --> -ENODEV
+> > + *  - primary --> NULL
+> > + *  - secondary --> -ENODEV
+> > + *  - NULL
+> >   */
+> >  void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
+> >  {
+> > @@ -4432,6 +4438,7 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
+> >       } else {
+> >               if (fwnode_is_primary(fn)) {
+> >                       dev->fwnode = fn->secondary;
+> > +                     /* Set fn->secondary = NULL to keep fn as a primary fwnode */
+> >                       if (!(parent && fn == parent->fwnode))
+> >                               fn->secondary = NULL;
+> >               } else {
+> > --
 
-Applied as 5.11-rc material, thanks!
+Applied (with a minor edit in the new comment) along with the [1/2] as
+5.11-rc material, thanks!
