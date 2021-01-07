@@ -2,96 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E943B2ED17E
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 15:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D3AF2ED4A9
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 17:46:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728452AbhAGONW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jan 2021 09:13:22 -0500
-Received: from mga05.intel.com ([192.55.52.43]:3997 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728458AbhAGONV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 7 Jan 2021 09:13:21 -0500
-IronPort-SDR: UwsH1x60SKyq4n0jBWw7J80qkJA4ziuKEdWQXWzMILNoq8vkHWLD3R3GxflxMoo85bAfkW5Gj+
- guFr1MrBD7NA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9856"; a="262198860"
-X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
-   d="scan'208";a="262198860"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 06:11:27 -0800
-IronPort-SDR: hVZyhe5iC0dPVUEVIwinYLdVV7dZRGwMlg2rK9AgsUtSQDwavyivHZj3HsRWpSZs4+XSkZJmf/
- 1B2Zjrq7krtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
-   d="scan'208";a="463046195"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 07 Jan 2021 06:11:24 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 07 Jan 2021 16:11:24 +0200
-Date:   Thu, 7 Jan 2021 16:11:23 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Bard Liao <yung-chuan.liao@linux.intel.com>
-Cc:     gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, bard.liao@intel.com
-Subject: Re: [PATCH 2/2] device property: add description of fwnode cases
-Message-ID: <20210107141123.GI940479@kuha.fi.intel.com>
-References: <20210105091146.25422-1-yung-chuan.liao@linux.intel.com>
- <20210105091146.25422-3-yung-chuan.liao@linux.intel.com>
+        id S1728934AbhAGQpo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jan 2021 11:45:44 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:32991 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728210AbhAGQpo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 11:45:44 -0500
+Received: by mail-ot1-f41.google.com with SMTP id b24so6911431otj.0;
+        Thu, 07 Jan 2021 08:45:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+uZsJqi945rkcVNm9VG7/abNUIugtrjhQzGRoQZbwj0=;
+        b=G5IUr/2Oz6alok1/TZVASPO1i6upYScuhg0iNATiAZPWe+707Z1U6VM5ywSY8CmpP5
+         hzYxuN3qor3pK2Hr9cVwfC0+3GAvZnlBUthAbMu5am30aRUqomJ8tMs1bUUGPYsYGaoL
+         nFX59X1mUydAXcBbrUnoHo3arIDWIqsFQyFaraUtGQ0wk2uaw78wbR3GMbATn4bbhHgl
+         hCkhz7TygmqAA+0KgBsHBFtSjaTuEelrgjZvdeGOelOb1kDc23xg+Cfb+0aviqCV5t3K
+         WWRiDUPs+50/ZcMAAaQgxsRTrZEn64ZdfE/ouSqSW/DpyuVpJmcGcBDrvB+RolCoXga/
+         6E+Q==
+X-Gm-Message-State: AOAM532Ea6MSaKmrAsd6iYyo/leB4Suymd7h3IYYQ7jU4bC2jkHcT7G4
+        bLIbiO0gJilJ9lX7Uu53TFwpUCvbb29sYMkqnss=
+X-Google-Smtp-Source: ABdhPJxORZr4iS7jVPnM0soLaho3P2ZecdCv4gYOBLb4qCBf7E7fX1+pc+5Rtn1IbZzbvl38VpjX2o3v9LwTxxe5Fpo=
+X-Received: by 2002:a9d:208a:: with SMTP id x10mr7080650ota.260.1610037903337;
+ Thu, 07 Jan 2021 08:45:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210105091146.25422-3-yung-chuan.liao@linux.intel.com>
+References: <20201231113525.19614-1-shawn.guo@linaro.org>
+In-Reply-To: <20201231113525.19614-1-shawn.guo@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 7 Jan 2021 17:44:52 +0100
+Message-ID: <CAJZ5v0hWsGNxbDgOVV-1_BbreX1+vD6hJ1Mu+_G8cEAq2RH_-g@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: add stub acpi_create_platform_device() for !CONFIG_ACPI
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 05, 2021 at 05:11:46PM +0800, Bard Liao wrote:
-> There are only four valid fwnode cases which are
-> - primary --> secondary --> -ENODEV
-> - primary --> NULL
-> - secondary --> -ENODEV
-> - NULL
-> 
-> dev->fwnode should be converted between the 4 cases above no matter
-> how/when set_primary_fwnode() and set_secondary_fwnode() are called.
-> Describe it in the code so people will keep it in mind.
-> 
-> Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
+On Thu, Dec 31, 2020 at 12:36 PM Shawn Guo <shawn.guo@linaro.org> wrote:
+>
+> It adds a stub acpi_create_platform_device() for !CONFIG_ACPI build, so
+> that caller doesn't have to deal with !CONFIG_ACPI build issue.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
 > ---
->  drivers/base/core.c | 7 +++++++
+> This fixes an build issue reported by kernel test robot as below.
+>
+> https://lore.kernel.org/linux-arm-msm/20201230124925.19260-1-shawn.guo@linaro.org/T/#u
+>
+>  include/linux/acpi.h | 7 +++++++
 >  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 51b9545a050b..17eb14607074 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -4414,6 +4414,12 @@ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
->   *
->   * Set the device's firmware node pointer to @fwnode, but if a secondary
->   * firmware node of the device is present, preserve it.
-> + *
-> + * Valid fwnode cases are:
-> + *  - primary --> secondary --> -ENODEV
-> + *  - primary --> NULL
-> + *  - secondary --> -ENODEV
-> + *  - NULL
->   */
->  void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
+>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 2630c2e953f7..053bf05fb1f7 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -885,6 +885,13 @@ static inline int acpi_device_modalias(struct device *dev,
+>         return -ENODEV;
+>  }
+>
+> +static inline struct platform_device *
+> +acpi_create_platform_device(struct acpi_device *adev,
+> +                           struct property_entry *properties)
+> +{
+> +       return NULL;
+> +}
+> +
+>  static inline bool acpi_dma_supported(struct acpi_device *adev)
 >  {
-> @@ -4432,6 +4438,7 @@ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
->  	} else {
->  		if (fwnode_is_primary(fn)) {
->  			dev->fwnode = fn->secondary;
-> +			/* Set fn->secondary = NULL to keep fn as a primary fwnode */
->  			if (!(parent && fn == parent->fwnode))
->  				fn->secondary = NULL;
->  		} else {
-> -- 
-> 2.17.1
+>         return false;
+> --
 
-thanks,
-
--- 
-heikki
+Applied as 5.11-rc material, thanks!
