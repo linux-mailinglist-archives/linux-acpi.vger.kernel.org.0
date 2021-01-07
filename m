@@ -2,126 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D25E72ED539
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 18:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A161A2ED72E
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 20:07:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728184AbhAGRL7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jan 2021 12:11:59 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:36194 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728131AbhAGRL7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jan 2021 12:11:59 -0500
-Received: by mail-oi1-f170.google.com with SMTP id 9so8133215oiq.3;
-        Thu, 07 Jan 2021 09:11:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1PbEYJF/MvWbGrN60pFdKWGcw422aT1Ml4Xjt2II+jk=;
-        b=pjrcQ8HIDqRPH8mr1fYsOYySO3QPQbMefiPXc0F1DgM5O9yYrWrXWpqWrKc46H1oJV
-         2C7YbsVKZIu27UBMzNPWEI5Yj0YWBfZUp3HQZjM75tmOnCNe673/CYH4zLdejFCqlLUe
-         Y9OjHgDR0rBgs0BxUoyGgpn9GvMsB8twdzT9hW4Q0vWGfxre6/9licxs/X89iidgzhnZ
-         ZGF1rLgUkwQadPz1udTxS/qobsqih7U4chiQzF1GcbrHy4RgzNF3MW+qWCqrmG/jViG+
-         xd/FTrYQcJJYmNA7UK9jUt6Ih4yI1JpzZnX0oiiRAt11a4Wtj42mDTHOuwlzYqBx+vTw
-         f65Q==
-X-Gm-Message-State: AOAM532Cyzkb4VJyRBWq2zJRUH+POUle67WcpTCKz/35uf4ty2Ukt8cT
-        DKx6XTQI4qzmxWutmDlcWkS/wGF9LY5/4gArS60=
-X-Google-Smtp-Source: ABdhPJwvt9RljOaJcwc//OOXu96K4s2vVFASiWCVYzOY7QE13L5vHON4PHIPfkcAKUzSL6SijcimmyHoyMuJHe8Vo8M=
-X-Received: by 2002:aca:4892:: with SMTP id v140mr1981608oia.71.1610039478172;
- Thu, 07 Jan 2021 09:11:18 -0800 (PST)
+        id S1729263AbhAGTF7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jan 2021 14:05:59 -0500
+Received: from mga04.intel.com ([192.55.52.120]:25134 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729245AbhAGTF6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 7 Jan 2021 14:05:58 -0500
+IronPort-SDR: Gi5IosvKN0tRO8JRA3iaLpIsSsh8PL/Xvd/+FMwew+H3rrv2WAji3n2Ct67LL4KfnW0KPMr4Tr
+ +SBZq6s8pPxQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9857"; a="174900161"
+X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
+   d="scan'208";a="174900161"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 11:05:02 -0800
+IronPort-SDR: ugZjmmK2T3r417oWf45PqYMOPuOYoYwD0HR+0RRMBVcXPP6uNrBnTBONaMiLjsyNL2sXT4Ipp6
+ sNyf/8fHZkDQ==
+X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
+   d="scan'208";a="379823323"
+Received: from testonfe-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.141.243])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 11:05:02 -0800
+Date:   Thu, 7 Jan 2021 11:05:00 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Christoph Hellwig <hch@infradead.org>
+Subject: Re: [RFC PATCH v2 07/14] cxl/mem: Implement polled mode mailbox
+Message-ID: <20210107190500.qvsb2qkqcvgclanu@intel.com>
+References: <20201209002418.1976362-1-ben.widawsky@intel.com>
+ <20201209002418.1976362-8-ben.widawsky@intel.com>
 MIME-Version: 1.0
-References: <20210105131447.38036-1-jiaxun.yang@flygoat.com>
- <20210105131447.38036-2-jiaxun.yang@flygoat.com> <683c8358-fd71-cd27-8e39-19fdf3e1f71f@redhat.com>
-In-Reply-To: <683c8358-fd71-cd27-8e39-19fdf3e1f71f@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Jan 2021 18:11:07 +0100
-Message-ID: <CAJZ5v0jHFqGu1hmFwkfWsvP37hQnhBiG4M_Pa7TTHYL4C1VgMA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: platform-profile: Introduce object pointers
- to callbacks
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mark Gross <mgross@linux.intel.com>,
-        Ike Panhc <ike.pan@canonical.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201209002418.1976362-8-ben.widawsky@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 5, 2021 at 2:18 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 1/5/21 2:14 PM, Jiaxun Yang wrote:
-> > Add a object pointer to handler callbacks to avoid having
-> > global variables everywhere.
-> >
-> > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> > Suggested-by: Hans de Goede <hdegoede@redhat.com>
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->
-> Regards,
->
-> Hans
->
->
->
-> > ---
-> >  drivers/acpi/platform_profile.c  | 4 ++--
-> >  include/linux/platform_profile.h | 6 ++++--
-> >  2 files changed, 6 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> > index 91be50a32cc8..bb4d7b0fe2ac 100644
-> > --- a/drivers/acpi/platform_profile.c
-> > +++ b/drivers/acpi/platform_profile.c
-> > @@ -64,7 +64,7 @@ static ssize_t platform_profile_show(struct device *dev,
-> >               return -ENODEV;
-> >       }
-> >
-> > -     err = cur_profile->profile_get(&profile);
-> > +     err = cur_profile->profile_get(cur_profile, &profile);
-> >       mutex_unlock(&profile_lock);
-> >       if (err)
-> >               return err;
-> > @@ -104,7 +104,7 @@ static ssize_t platform_profile_store(struct device *dev,
-> >               return -EOPNOTSUPP;
-> >       }
-> >
-> > -     err = cur_profile->profile_set(i);
-> > +     err = cur_profile->profile_set(cur_profile, i);
-> >       mutex_unlock(&profile_lock);
-> >       if (err)
-> >               return err;
-> > diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-> > index 3623d7108421..43f4583b5259 100644
-> > --- a/include/linux/platform_profile.h
-> > +++ b/include/linux/platform_profile.h
-> > @@ -28,8 +28,10 @@ enum platform_profile_option {
-> >
-> >  struct platform_profile_handler {
-> >       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> > -     int (*profile_get)(enum platform_profile_option *profile);
-> > -     int (*profile_set)(enum platform_profile_option profile);
-> > +     int (*profile_get)(struct platform_profile_handler *pprof,
-> > +                             enum platform_profile_option *profile);
-> > +     int (*profile_set)(struct platform_profile_handler *pprof,
-> > +                             enum platform_profile_option profile);
-> >  };
-> >
-> >  int platform_profile_register(const struct platform_profile_handler *pprof);
-> >
->
+On 20-12-08 16:24:11, Ben Widawsky wrote:
 
-Applied with a modified subject and some edits in the changelog as
-5.12 material, and I'm leaving the [2/2] to you.
+[snip]
 
-Thanks!
+> +static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> +				 struct mbox_cmd *mbox_cmd)
+> +{
+> +	u64 cmd, status;
+> +	size_t out_len;
+> +	int rc;
+> +
+> +	lockdep_assert_held(&cxlm->mbox_lock);
+> +
+> +	/*
+> +	 * Here are the steps from 8.2.8.4 of the CXL 2.0 spec.
+> +	 *   1. Caller reads MB Control Register to verify doorbell is clear
+> +	 *   2. Caller writes Command Register
+> +	 *   3. Caller writes Command Payload Registers if input payload is non-empty
+> +	 *   4. Caller writes MB Control Register to set doorbell
+> +	 *   5. Caller either polls for doorbell to be clear or waits for interrupt if configured
+> +	 *   6. Caller reads MB Status Register to fetch Return code
+> +	 *   7. If command successful, Caller reads Command Register to get Payload Length
+> +	 *   8. If output payload is non-empty, host reads Command Payload Registers
+> +	 */
+> +
+> +	/* #1 */
+> +	WARN_ON(cxl_doorbell_busy(cxlm));
+> +
+> +	/* #2 */
+> +	cxl_write_mbox_reg64(cxlm, CXLDEV_MB_CMD_OFFSET, mbox_cmd->opcode);
+> +
+> +	if (mbox_cmd->size_in) {
+> +		/* #3 */
+> +		CXL_SET_FIELD(mbox_cmd->size_in, CXLDEV_MB_CMD_PAYLOAD_LENGTH);
+> +		cxl_mbox_payload_fill(cxlm, mbox_cmd->payload,
+> +				      mbox_cmd->size_in);
+> +	}
+
+There is a bug here where the payload length isn't written on input. It was
+working in v1. It will be fixed in v3.
+
+[snip]
+
