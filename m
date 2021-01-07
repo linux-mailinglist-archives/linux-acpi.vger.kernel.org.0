@@ -2,32 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B14772ED169
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 15:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A322ED160
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jan 2021 15:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728322AbhAGOHW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jan 2021 09:07:22 -0500
-Received: from mga17.intel.com ([192.55.52.151]:20554 "EHLO mga17.intel.com"
+        id S1727885AbhAGOGc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jan 2021 09:06:32 -0500
+Received: from mga02.intel.com ([134.134.136.20]:34935 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727590AbhAGOHW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 7 Jan 2021 09:07:22 -0500
-IronPort-SDR: wyyZ7DaXeH0WPdt2OG193DzTyBUw5/Ed/RByyoO/oJIIt1Nm5qkUXGdpu5qOAF567iGsAu3g8Q
- uwFYd+3guCxQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9856"; a="157208519"
+        id S1727711AbhAGOGc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 7 Jan 2021 09:06:32 -0500
+IronPort-SDR: d6Tf+Ib61/uoN9iwqhHoDdjkwUBa0Xc48ydcwwkh1//eQjnloCmhFI9MPPJfzhJ38cRltjCp8f
+ /aFuhERSOWUA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9856"; a="164496875"
 X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
-   d="scan'208";a="157208519"
+   d="scan'208";a="164496875"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 06:05:36 -0800
-IronPort-SDR: SCON5tZcZd+efgwfTS2kzjVcHn3Rp7ZApShflS1T0SLf2ewL+wJX73E/zPUOxnMs2Vrd/KNh4s
- 1/f2yuYhA7/Q==
-X-ExtLoop1: 1
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 06:04:45 -0800
+IronPort-SDR: z+6k2atxnFNgkMXTm375fLKHEBt2Qq7N2XeP2WseLO21euHdixYWyyJ6OQL9x6fgYMi+FqGmJJ
+ PKUVOvqv9p7w==
 X-IronPort-AV: E=Sophos;i="5.79,329,1602572400"; 
-   d="scan'208";a="463044894"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 07 Jan 2021 06:05:28 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 07 Jan 2021 16:05:28 +0200
-Date:   Thu, 7 Jan 2021 16:05:28 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+   d="scan'208";a="463044704"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2021 06:04:36 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kxVuz-004maB-3C; Thu, 07 Jan 2021 16:05:37 +0200
+Date:   Thu, 7 Jan 2021 16:05:37 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Daniel Scally <djrscally@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
@@ -36,84 +37,39 @@ Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
         tian.shu.qiu@intel.com, robert.moore@intel.com,
         erik.kaneda@intel.com, pmladek@suse.com, rostedt@goodmis.org,
-        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        linux@rasmusvillemoes.dk,
         laurent.pinchart+renesas@ideasonboard.com,
         jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
         hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
         niklas.soderlund+renesas@ragnatech.se,
         prabhakar.mahadev-lad.rj@bp.renesas.com, slongerbeam@gmail.com,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v5 06/15] software_node: unregister software_nodes in
- reverse order
-Message-ID: <20210107140528.GF940479@kuha.fi.intel.com>
+        heikki.krogerus@linux.intel.com,
+        Jordan Hand <jorhand@linux.microsoft.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: Re: [PATCH v5 15/15] ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
+Message-ID: <20210107140537.GX4077@smile.fi.intel.com>
 References: <20210107132838.396641-1-djrscally@gmail.com>
- <20210107132838.396641-7-djrscally@gmail.com>
+ <20210107132838.396641-16-djrscally@gmail.com>
+ <20210107140505.GW4077@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210107132838.396641-7-djrscally@gmail.com>
+In-Reply-To: <20210107140505.GW4077@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 07, 2021 at 01:28:29PM +0000, Daniel Scally wrote:
-> To maintain consistency with software_node_unregister_nodes(), reverse
-> the order in which the software_node_unregister_node_group() function
-> unregisters nodes.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+On Thu, Jan 07, 2021 at 04:05:05PM +0200, Andy Shevchenko wrote:
+> On Thu, Jan 07, 2021 at 01:28:38PM +0000, Daniel Scally wrote:
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Seems like missed changelog (no need to resend, just send a follow up).
 
-> ---
-> Changes in v5:
-> 
-> 	- None
-> 
->  drivers/base/swnode.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 166c5cc73f39..6f7443c6d3b5 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -779,16 +779,23 @@ EXPORT_SYMBOL_GPL(software_node_register_node_group);
->   * software_node_unregister_node_group - Unregister a group of software nodes
->   * @node_group: NULL terminated array of software node pointers to be unregistered
->   *
-> - * Unregister multiple software nodes at once.
-> + * Unregister multiple software nodes at once. The array will be unwound in
-> + * reverse order (i.e. last entry first) and thus if any members of the array are
-> + * children of another member then the children must appear later in the list such
-> + * that they are unregistered first.
->   */
-> -void software_node_unregister_node_group(const struct software_node **node_group)
-> +void software_node_unregister_node_group(
-> +		const struct software_node **node_group)
->  {
-> -	unsigned int i;
-> +	unsigned int i = 0;
->  
->  	if (!node_group)
->  		return;
->  
-> -	for (i = 0; node_group[i]; i++)
-> +	while (node_group[i])
-> +		i++;
-> +
-> +	while (i--)
->  		software_node_unregister(node_group[i]);
->  }
->  EXPORT_SYMBOL_GPL(software_node_unregister_node_group);
-> -- 
-> 2.25.1
+I meant the follow up with only changelog text, thanks!
 
 -- 
-heikki
+With Best Regards,
+Andy Shevchenko
+
+
