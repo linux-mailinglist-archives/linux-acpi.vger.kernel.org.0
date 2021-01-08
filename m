@@ -2,108 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C39842EF520
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 16:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBB102EF565
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 17:03:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727570AbhAHPuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 10:50:50 -0500
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:46593 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727858AbhAHPuu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 10:50:50 -0500
-Received: by mail-ot1-f43.google.com with SMTP id w3so9988408otp.13;
-        Fri, 08 Jan 2021 07:50:34 -0800 (PST)
+        id S1727893AbhAHQCc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 11:02:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727806AbhAHQCc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 11:02:32 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683B3C061381;
+        Fri,  8 Jan 2021 08:02:10 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id m6so6501626pfm.6;
+        Fri, 08 Jan 2021 08:02:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yS0AQ/iq89KHuEBttzOsrVBcJm6DSFlGJhHRYYlq9Vg=;
+        b=vZXv3fwD7kPl/XbGIAAO3uTKrrphORulHDQgEvscSYFdJ9vBEVlAK83ndyS+c2QTSa
+         fO1RMSVdSMepPSh/ylXacQHZHkGi8WuBGvzkOxly81Smjj8G9exLp9/qMAMUkQaJ7I1y
+         Jvx/HllplJfdCEYBpyeINjBXG1oyRxQ8Ng97NcUmZKiOCQ0WHjiDCbfYoqbxTDoSVQDe
+         IkW/UmNkzUqUqVDp1cFxbMcGqahU8MM43ZZcsUfzW3Dw+LNAyUXFz0QpyAypZkrpvvzL
+         Blh9hNleVXMB9Z7xKYvVAm9SRm4CLNMp+pOtJc7C/pINVrvUBIPdsVho9zhLMxSdX1yN
+         Yc1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FvJeCYxadcyoAzF1SiLwwloKn8yQ7/+aj8/jI72xI9s=;
-        b=b8sZGAqvJ/qxWP+m2lXjb6XKZpoe00SQFwfGUZ3/y/fAzr74BHHKg8aycCdYnQkzLl
-         OeDqcQR1sVIUO5jJ03gH50moiNFcaa2TGRDDU7YcMAjzmOvTnESDFqKp512X1VY4tpck
-         bblba2EEBdF/tVVMX9BFx/Ka8ieZ6dKhxc1uIw19oyvwQtof652B3UimfxOuF9hUzkXr
-         d/LM7o+NmK5POexMYr7Y+OUXR0fMQZOWtcUf461TMf7nIfRRpx8A3j19qf+xRkQb7Clv
-         FtDc7yKsf/zsokDf4iLhg8ARfWmOQp60LgTRs5auXJLbA2Z7jnWY50BsjmZwgwkKIFYq
-         w2zw==
-X-Gm-Message-State: AOAM5320+zuL4yZ6pxjhHE4bqGzkQ7gBVDI50mn6Tuh9zYhL/jGeK9l9
-        RcsTC5WtqDRC8PCp+Mg+lgwz+pQQnJ9YxdWrPfk=
-X-Google-Smtp-Source: ABdhPJzhk6ZttQly8yx3EcnFBoo7Ui0FTYZ13DKb90t5youTBK4XgR/5mhjcA8VYl4AZruQiGjUNPWY4zcsHXs0eF70=
-X-Received: by 2002:a9d:7191:: with SMTP id o17mr2106178otj.321.1610121009033;
- Fri, 08 Jan 2021 07:50:09 -0800 (PST)
+        bh=yS0AQ/iq89KHuEBttzOsrVBcJm6DSFlGJhHRYYlq9Vg=;
+        b=PPW8+NMroo8dl5OL09PxXnF3fQop/PEsfeAm4Qhuzu5aeVJ1wVJFobOjTbOUZMTnIH
+         KAE8qrGFXIh42aPVsvk9/78rLKjcqd+1UQZRagTlPGz6UwgHbNOv3B+H37qnzeGHWBmn
+         yW5i1M6J2CgoCbE0SznZwqCLLsHAxZeizOQPMqTX7RI097sYcCvoLUzwkLXWfpZCK671
+         igW3aWFyGZiLYzSkGBoOCu9ubUyeC41OZdgDvJAmOFiMUfPwGNTniQOOeqAPa7KeuOj5
+         qKXgbKJYjMPZl8AMclnyenq3en03A95e7BOJAGEznFokD66xV5XCHk9fWtLcb/YMVvES
+         E5Jw==
+X-Gm-Message-State: AOAM531dP3yDu+BTD12/n1wVh8X974xRS8sYrqRNazDEPoKLYdFEALj2
+        tgWIhsmsxL2DiOsbK1F0aDXmuuKNI1CqKEc/C919wLQVWbY=
+X-Google-Smtp-Source: ABdhPJzSDvErGMVOwr8SEzKwOjPck/i7G6MoaXyJluKS4BDsjfS+yG0yY5PPGRgSqqMbBxwg/F+qglIJMdUnjUqw+08=
+X-Received: by 2002:a63:4b16:: with SMTP id y22mr7622914pga.203.1610121729822;
+ Fri, 08 Jan 2021 08:02:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20201201213019.1558738-1-furquan@google.com> <CAEGmHFGZM0mADs-Eiz780RHzyf3emJinSAMT6ipRMpOvb+HGjg@mail.gmail.com>
- <X/h9+1YUj49qQcil@kroah.com>
-In-Reply-To: <X/h9+1YUj49qQcil@kroah.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 8 Jan 2021 16:49:58 +0100
-Message-ID: <CAJZ5v0j0wmV5tMuZDpRvELNcd=4aR-=D-KVnX1wEmoE-oJeFnA@mail.gmail.com>
-Subject: Re: [PATCH] drivers: core: Detach device from power domain on shutdown
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Furquan Shaikh <furquan@google.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20210108152447.116871-1-f.suligoi@asem.it>
+In-Reply-To: <20210108152447.116871-1-f.suligoi@asem.it>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 8 Jan 2021 18:02:58 +0200
+Message-ID: <CAHp75Vf54TTXr4HH6TxMo0QRTBa5V3=La1LCDxSizaYZjJM9Qg@mail.gmail.com>
+Subject: Re: [PATCH v1] Documentation: ACPI: add new rule for gpio-line-names
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 8, 2021 at 4:43 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, Jan 8, 2021 at 5:28 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
 >
-> On Mon, Dec 14, 2020 at 08:56:48PM -0800, Furquan Shaikh wrote:
-> > On Tue, Dec 1, 2020 at 1:30 PM Furquan Shaikh <furquan@google.com> wrote:
-> > >
-> > > When the system is powered off or rebooted, devices are not detached
-> > > from their PM domain. This results in ACPI PM not being invoked and
-> > > hence PowerResouce _OFF method not being invoked for any of the
-> > > devices. Because the ACPI power resources are not turned off in case
-> > > of poweroff and reboot, it violates the power sequencing requirements
-> > > which impacts the reliability of the devices over the lifetime of the
-> > > platform. This is currently observed on all Chromebooks using ACPI.
-> > >
-> > > In order to solve the above problem, this change detaches a device
-> > > from its PM domain whenever it is shutdown. This action is basically
-> > > analogous to ->remove() from driver model perspective. Detaching the
-> > > device from its PM domain ensures that the ACPI PM gets a chance to
-> > > turn off the power resources for the device thus complying with its
-> > > power sequencing requirements.
-> > >
-> > > Signed-off-by: Furquan Shaikh <furquan@google.com>
-> > > ---
-> > >  drivers/base/core.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > index d661ada1518f..5823f1d719e1 100644
-> > > --- a/drivers/base/core.c
-> > > +++ b/drivers/base/core.c
-> > > @@ -23,6 +23,7 @@
-> > >  #include <linux/of_device.h>
-> > >  #include <linux/genhd.h>
-> > >  #include <linux/mutex.h>
-> > > +#include <linux/pm_domain.h>
-> > >  #include <linux/pm_runtime.h>
-> > >  #include <linux/netdevice.h>
-> > >  #include <linux/sched/signal.h>
-> > > @@ -4057,6 +4058,8 @@ void device_shutdown(void)
-> > >                         dev->driver->shutdown(dev);
-> > >                 }
-> > >
-> > > +               dev_pm_domain_detach(dev, true);
-> > > +
-> > >                 device_unlock(dev);
-> > >                 if (parent)
-> > >                         device_unlock(parent);
-> > > --
-> > > 2.29.2.454.gaff20da3a2-goog
-> > >
-> >
-> > Hello,
-> >
-> > Gentle ping. Just checking if there are any comments.
+> The gpio-line-names lists must respect some rules.
 >
-> I'll wait for Rafael to ack this before taking it...
+> This patch adds a new rule in documentation, to avoid
+> the use of duplicate names in the same gpiochip.
 
-Done.
+Thanks!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Cheers!
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+>  Documentation/firmware-guide/acpi/gpio-properties.rst | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> index b36aa3e743d8..4e264c16ddff 100644
+> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
+> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> @@ -146,6 +146,7 @@ following rules (see also the examples):
+>      other words, it is not mandatory to fill all the GPIO lines
+>    - empty names are allowed (two quotation marks ``""`` correspond to an empty
+>      name)
+> +  - names inside one GPIO controller/expander must be unique
+>
+>  Example of a GPIO controller of 16 lines, with an incomplete list with two
+>  empty names::
+> --
+> 2.25.1
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
