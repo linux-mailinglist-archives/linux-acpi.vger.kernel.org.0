@@ -2,142 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3FF22EEDB3
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 08:08:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDEA2EEDD3
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 08:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbhAHHHm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 02:07:42 -0500
-Received: from mail-bn8nam12on2115.outbound.protection.outlook.com ([40.107.237.115]:25185
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        id S1727073AbhAHHYz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 02:24:55 -0500
+Received: from mail-eopbgr680114.outbound.protection.outlook.com ([40.107.68.114]:61317
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726312AbhAHHHl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 Jan 2021 02:07:41 -0500
+        id S1725308AbhAHHYy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 Jan 2021 02:24:54 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NR69rZnhdKfiObeKcL0BAoPWMFvPN2oKmYjdGD/Y6Fp1en4+jdqbZCxlJt9zepG3ixoO5UIuX1nedDV2Pjmr1IIbFOc2MJQRLKYWGM0L48EKowfUU+DvFsxmWkDSRbpfbDSnaqfhtiiISbGl+4gDeIiL5Deh5SpFR33rAdWNS3eBgeMRchI+j1K8QGRVUw7pdeIC2EKvooc+nm+vcCOb7co4v5w7SlL4mYFtzUK5x+CeCsNlpa10y8Z7ZZCDuktWqGygFLHgLD59tFB4Rd4Po9uAzw50+RUnO8dOqgD76NNjYN2D41Lnl62vK4vIdEMrsNOIYdYLG7pByM3BBTlrgQ==
+ b=LazP9oXHmrsJFLEtB/Dnm6Z22m/bi58EH1ecYEdj5HfJCRTaWg8stT4I9/O5yL5QCyd5RK2ZMTRjVQW+Bp1FsbXyeUwZLSEGkhzGIbu5/QBsxY8zy9BKCqS14Ha0R8LosnUNDI2JvGW/WgMuo/gFtjDK84QwrjcJcIwTBOw+8TKoxK4xJ/uufT7p8AGpFSdO/1HFZMSotyfgqsAPok7RWozdzNZlUqQaU7d6hH9n7GDUoG4oG9nQgfN1bG4lk4dG1r939D8fS7DmcI8ZYEj+VoApDrLBBkXiXfatX6qGS6TAb65bm8pPXkQIYyTMEdKzI7UXsbvL4/ZO/mGcFMNv3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S/NCrnfYA6UqaqOgaQ3G9ASvs2M1VJ8AfBfD7BcYY3A=;
- b=TQ9i3cterWbzXJWV0GVYSwueNgHLljUbDn/mNmmxXgR4d/r1R0Q7qCjBEuDKLZo3T/SvH9CqsH8ubBuROHO0y3ueNGMF8+S/uLRGHwsZEUJWQC330fnScoASQOLU6nf/tzHtuKCDzzCQ5ryzSDmM7jylB6iNgUvgFC/Vv+vJ2Ed/E3lbLRHVcbzwVyFztm7qscPYfiuhsjyFjwIFHYfdw08FkdmlvSfoiJ+1npdjdSyFxAxzHdu7DkEIpyuNZRvpRAXKHC+yabz+m6BjvkGtpb7Sj0i/bIJ3Dny22nvJRnPaMFo53m80Q2f6wjEXIp4zU3CVKPKwKz13OC+IPEOTDw==
+ bh=xj3ed6d3IMFdKu43Ze3G9tDXsMwOvWFFGDAtMdCDFLU=;
+ b=jw+U5qhNv5T5+9m9Fi/8qbKfAy/5E3+0guaOIv3ZcCpKVKQCHmmbduLgA7eET/0a6aHXnENZ8BHVOXtbVpxyPWy16Adpqlf1LTzrXYIWm6iAGprmru4T2w9LDKj3/5V/61UyKef7c4cd/uNovCOC+MAIrZxvo7XeOcmrbfLVnHY+DX5Kjqvy3eVsI3ehGe7pfRUvLTEEdscWdRuRhNA26Z7+PAdznNFEem/0ueqSJzm0SJ1bAf+xqlT2LSZfvqQsA5SC2JI8a4ObyQIKF97W2j75uj4Iftsmj7tKoPk/NTYqhM0hworD1MSvOzgAU7Ww8n4CZC7LvUD0pxy4EtB4JQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microsoft.com; dmarc=pass action=none
  header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S/NCrnfYA6UqaqOgaQ3G9ASvs2M1VJ8AfBfD7BcYY3A=;
- b=P3XaWxv2UJGaHSF0g0kNRXcw+4lKJ8R3eRbJlrPjQtmeS1TFzD0hxhTSVHYlVvTNkhJxUT5csEBuegh5RTf+Mdg3JKKXbsDvKG6BkTAWCBli9zvNRek9sHc2Ejd3U6XSjkRnV5uXQPxEVAatIyi8ure0tKvbvDnkwNV2YVTAyA0=
-Received: from (2603:10b6:300:128::18) by
- MW2PR2101MB1050.namprd21.prod.outlook.com (2603:10b6:302:a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.0; Fri, 8 Jan
- 2021 07:06:53 +0000
-Received: from MWHPR21MB0798.namprd21.prod.outlook.com
- ([fe80::74c5:1aa5:e46f:8cb4]) by MWHPR21MB0798.namprd21.prod.outlook.com
- ([fe80::74c5:1aa5:e46f:8cb4%14]) with mapi id 15.20.3763.005; Fri, 8 Jan 2021
- 07:06:53 +0000
-From:   Dexuan Cui <decui@microsoft.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Michael Kelley <mikelley@microsoft.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "len.brown@intel.com" <len.brown@intel.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>
-Subject: RE: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by buffer
- overflow
-Thread-Topic: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by
- buffer overflow
-Thread-Index: AQHW2GokQzlfi5P1IkaRrU4aFB3YlqoZpozAgAKf7QCAASCqQA==
-Date:   Fri, 8 Jan 2021 07:06:53 +0000
-Message-ID: <MWHPR21MB0798BBF5D452BBD9052350C1BFAE9@MWHPR21MB0798.namprd21.prod.outlook.com>
-References: <20201218040826.57203-1-decui@microsoft.com>
- <MW2PR2101MB1052E61BEB80F14896EEFA79D7DF9@MW2PR2101MB1052.namprd21.prod.outlook.com>
- <MW2PR2101MB181943C255A86A11E5402E50BFD19@MW2PR2101MB1819.namprd21.prod.outlook.com>
- <CAJZ5v0gXW0oEmduxZEc0BZWxfQd=+jh_r88OZAHmwCW=GFNBGg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gXW0oEmduxZEc0BZWxfQd=+jh_r88OZAHmwCW=GFNBGg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=380a94cf-4900-4c47-b864-3dc546c8459a;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-01-08T07:00:44Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: kernel.org; dkim=none (message not signed)
+ bh=xj3ed6d3IMFdKu43Ze3G9tDXsMwOvWFFGDAtMdCDFLU=;
+ b=PgpQtc7dFd2jNtMCuZgLsbFHKGY/6FNl8zpE9kN7Nmnk6hbzaINUcHGBIpNyWHKOq3tGGZtm45BbmEoCYH77vDt8DjdUq+WTRNjz7rW2TAnzxI6vtHzPjomdJIhCiP5fPDMHvM7S++UpsH5IbkaDb8U/fTk6b4wPxHDKrKtpff4=
+Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=microsoft.com;
-x-originating-ip: [73.140.237.219]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: f421cae5-6c95-4da8-db7b-08d8b3a3fa43
-x-ms-traffictypediagnostic: MW2PR2101MB1050:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MW2PR2101MB10501FCD274D1AA724BAAEDFBFAE9@MW2PR2101MB1050.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VbUWXoFEne7vxjzZ/QoFowkXt/RZszZ8jMoN5+XocNzwSPRiF3UneXz9QPNa023d7utCTqB1+ZcPO6ErstRznuZ9qHsjG3hBwaZjL/++5OQJ4TLbMDg79STq2FNp/iY1Mzmly+bGjFPdDbARxr+SW2b+VvohAbLza+42qkrupB5L06M8+ZkLGWG9FfLfYQ5oykZBzG79FeqwsmpKjOiA8kq/2L6wNjcgi0K7KcTtDvauIfCRgFB/K86XVljrZOfDw+omAfvQJ8DLcrM/kYRrVKRHdsaaIEouJ15epeoH1UqXzlObpQiXENAn0Jhdow/e5aEpAs1/Z6s6XYVHCesWaQdLF7UyFlAndD2FNAInpPH+sWEaTHaOP7gAYihmrNvqzD4JlJMqh+iw3yjbxZvecg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB0798.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(366004)(136003)(376002)(39860400002)(8676002)(66476007)(66556008)(76116006)(33656002)(66446008)(64756008)(478600001)(10290500003)(66946007)(71200400001)(2906002)(8990500004)(82960400001)(55016002)(26005)(5660300002)(8936002)(83380400001)(7696005)(107886003)(9686003)(86362001)(316002)(6506007)(82950400001)(4744005)(54906003)(4326008)(52536014)(6916009)(186003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?4HJ9z9/MrmC73KptpGIc77aNeHPDvaPKsmVlcD25bKc289aaxCM30NnHIotm?=
- =?us-ascii?Q?qeRysIe8nCcPGJ4S8doMsH3+o8Md78Dfcukn3U7EkTRrG5GC4+f+pOOmbOGR?=
- =?us-ascii?Q?EEH4j3p3ms+cwUWz+rDUKzkwQvcUn39z7mztsS7CtwcPOtBpxtspiEc09VI0?=
- =?us-ascii?Q?tjqvE/XhTjwNcg1ZnJJUmosfTn+jHHWumV7uYh6NVz0JEZ8IZGAS7bYPAQa8?=
- =?us-ascii?Q?PYmpLSTotnVYEzcsSvVFz62VSfsML5onWwLHYmP8DcQBqwRGah8TD4kOXdja?=
- =?us-ascii?Q?lL9ba3jvdGeAwNCkHTHx+n+N5sMTL+1Eqf/Ajvg1zywYhhSgkXEBGRk+jkCu?=
- =?us-ascii?Q?r1s/r+E3sJZt4/tNhUrznplriZ447OxQ68DQ1bs3BXnY/ypg59f/xQAw0+FA?=
- =?us-ascii?Q?5OCg/+u6jAXyi9XCy5VfI9oLHIpbdUOKol9P3keTKqBtV+26I43YoqimXjE1?=
- =?us-ascii?Q?a9NvvTmddmhPYheFm+kf0UMuxGUQuu+GXzGLzacA4X/N6OhDesCWB+Vd9v4b?=
- =?us-ascii?Q?RysvVZSqGT160h+ji391eZHwg9zPNrfMBSBAHHP79AfBuCb3yUgG9QDn84Jw?=
- =?us-ascii?Q?SPuAbQJ9gh/lSkjpDXgQ5yr+21d8roSWFuG2uJQSVfiykaQelrdX4b/DoZpR?=
- =?us-ascii?Q?NF0AWIy9Gn2mfyzIY84Z1dUQulGuTftGdkt2ifOV+0qm2KfIhjzDe/7rJzlp?=
- =?us-ascii?Q?qEspbUT2NPivJV0iLkSNU7gOt9dIQuEHm1Nf5AfkoxcS8irCLVEt2kuOQ822?=
- =?us-ascii?Q?V1M5WWuJcroDkG9+DGbuUzPCVdvNezg9RvhAnaB7djKzqGoM4uXu3nnXMMDC?=
- =?us-ascii?Q?tL44gkOelbPVwS5cGuNLxy4FHQhi9B5p3e5VyWoKfPl7y6IqM0lMZbSolFct?=
- =?us-ascii?Q?M0BO5/2FDc/aO++eeaxoyvpIwsBegDKhCBZE2CMPfTs6+JolS1SZKM2kjYvH?=
- =?us-ascii?Q?ltuRWzKpZE36G7/IFEB+sX/JKI7kw2xLTV+eFiapaqI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from (52.132.24.26) by BL0PR2101MB0995.namprd21.prod.outlook.com
+ (52.132.23.157) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.0; Fri, 8 Jan
+ 2021 07:24:10 +0000
+Received: from BL0PR2101MB1092.namprd21.prod.outlook.com
+ ([fe80::adcd:42ae:1c83:369]) by BL0PR2101MB1092.namprd21.prod.outlook.com
+ ([fe80::adcd:42ae:1c83:369%8]) with mapi id 15.20.3763.004; Fri, 8 Jan 2021
+ 07:24:10 +0000
+From:   Dexuan Cui <decui@microsoft.com>
+To:     rafael@kernel.org, linux-acpi@vger.kernel.org, rjw@rjwysocki.net,
+        len.brown@intel.com, mikelley@microsoft.com
+Cc:     linux-kernel@vger.kernel.org, wei.liu@kernel.org,
+        sthemmin@microsoft.com, haiyangz@microsoft.com, kys@microsoft.com,
+        dwaipayanray1@gmail.com, Dexuan Cui <decui@microsoft.com>
+Subject: [PATCH v2] ACPI: scan: Fix a Hyper-V Linux VM panic caused by buffer overflow
+Date:   Thu,  7 Jan 2021 23:23:48 -0800
+Message-Id: <20210108072348.34091-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.17.1
+Reply-To: decui@microsoft.com
+Content-Type: text/plain
+X-Originating-IP: [2001:4898:80e8:f:c886:430:9262:7eed]
+X-ClientProxiedBy: MWHPR13CA0045.namprd13.prod.outlook.com
+ (2603:10b6:300:95::31) To BL0PR2101MB1092.namprd21.prod.outlook.com
+ (2603:10b6:207:37::26)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from decui-u1804.corp.microsoft.com (2001:4898:80e8:f:c886:430:9262:7eed) by MWHPR13CA0045.namprd13.prod.outlook.com (2603:10b6:300:95::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.4 via Frontend Transport; Fri, 8 Jan 2021 07:24:08 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 2448e752-7f9f-4a0e-e9d4-08d8b3a66443
+X-MS-TrafficTypeDiagnostic: BL0PR2101MB0995:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BL0PR2101MB09954DA98C5F5652E95FA6CEBFAE9@BL0PR2101MB0995.namprd21.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1417;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Y0758nWrPtz+UbwhfLcWzYdpHAXerVxJTQK/eS4A7vTdboJGeqPorePNaS0h6ogWA7qoeY+CD4Y8d/AWnTRbYWJZFWlC4xYjefMK8lDs+ssh/QkK50F+GvFTml9MD3nFzqXO0CZkKkw6zMEEtfEyXqvNJCZ6MG142YQ/zt0zxeLE3JwdjrMKwDZQF9pswx+EDGqgdnkpRphXHQ3TolmpxCuKNP/ZT23AouXoxOVkBmWjp8kwJ7GAGIByyXsV5abLF1xsBUB2/evF+Za3SHT+quhaxs14S51VWzG8j/pl5UqJG0sJDiXNQQcrlTXZIyAqX+ebM/OT7Yetz15wxrwQqThZeS2gbvZIU9ZXMe0N6xRGLNlwJmShf1jLUODDvQIJevCH4Y2EUi2GFs5ZA4pPQQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR2101MB1092.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(39860400002)(346002)(366004)(376002)(2906002)(66476007)(66556008)(3450700001)(6666004)(66946007)(52116002)(8676002)(83380400001)(7696005)(4326008)(107886003)(186003)(6486002)(478600001)(2616005)(36756003)(86362001)(1076003)(10290500003)(5660300002)(16526019)(82960400001)(6636002)(82950400001)(316002)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?Dz5Z0qZ0sGcR+YqNVRqD4gZ/+57+Z5KPbsQj6Ia3BtGpoty3j7r0ZkRCA05r?=
+ =?us-ascii?Q?8Uwn0dqL27YpaQoAlZn4Bz+XKB1aO3AxJez0UqaaZ2rEaB6wuJgRkpZHJT6r?=
+ =?us-ascii?Q?ngc9jedA6yFeO6GhAp97CoPgjhslCP5aDf4kmwdtqVNYXqN+EqjgCKfirH4M?=
+ =?us-ascii?Q?QygMYOvFIAlykv+XYoahFt3vTk5qiu0+m0v7COo2uOWIWKTYzrP2lMmPgDQ7?=
+ =?us-ascii?Q?BMnr4FEPQFDMI/gBaB1Ry0o7pFy0Gq4HYBJYvWE2EFrir3GB/h1lw2RXdSnt?=
+ =?us-ascii?Q?pdpAjSQGDz8dzO1Ujv0349X7bOGxlgmv54NkAPZvpXLo71YF2HwC8EOY6zxA?=
+ =?us-ascii?Q?VYktH+d1OtayFW4pu/fDPzwBm63MnJxbNu26JIm2gThX97tvYX/YJKw1GIwH?=
+ =?us-ascii?Q?Oe9mLUnFWLZy0xvfDqz3tbKnCZ4SsT4vLAe8/aF+ErIIkVHWvjHjpfVp5b83?=
+ =?us-ascii?Q?9Fp8OvSqUqh4hhLpt1+SNKpas+bd5iSbLTcBwzf5/rUcAONQX0RzB5aYXxMC?=
+ =?us-ascii?Q?RLSDkE07F7iB4g5gjwKD0Omai4w10HH2U0+4FxVLXLna04y7aDB57pTSo0Hy?=
+ =?us-ascii?Q?iV6y9emyFFq5JEqizkWeWojQ4e2vnm77RbmZXHBo1DnVm9wHld8fwA0Nj748?=
+ =?us-ascii?Q?+TpVMsgWv/I1VF5CwjzBWDce0SeEEvKIv7M0WlPPf0fBTaVuATgV0UyoyqX3?=
+ =?us-ascii?Q?9qIelx9jVppZs+kWLAhEIgIbFJaJVvumLyggnHZ9YpiEMPlQU+yfgGJuYhxC?=
+ =?us-ascii?Q?O24Xk8JILC+D+I5wlFaX9PA+2yLKhkMlBW8uiuXWAKZO+YOaV95ZOTK9c8FY?=
+ =?us-ascii?Q?xjV+rk+GNIjZociRVF7/EE6xWfQlg+bzfFZ1zFBeUA3i58YWPlg3g2Q4xTh2?=
+ =?us-ascii?Q?O2346Oj/4sIWzFJ6rxi+vnALTJ/ddBkHr3wSPD8Nl3+1fQU0YqvAYA33rBd5?=
+ =?us-ascii?Q?ElM6E2bGiefavwwxnctPr2GdwiuKIR978R16+ftHK1PCfAyyG6+0Fn7YleUZ?=
+ =?us-ascii?Q?iNNOQImzl/9NmgkPxUl4kqZ0SqZJJ7iomSU2rX1HuBH66Qk=3D?=
 X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR2101MB1092.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB0798.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f421cae5-6c95-4da8-db7b-08d8b3a3fa43
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2021 07:06:53.1398
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2021 07:24:09.8931
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sSjOFIrC08HgqLiBiI3Pu72KtaDlB2UT9SnhXKy2sstrtSdxi2wM0quGcezs69Cp463b1tE3fYocc1GYNHQK4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB1050
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2448e752-7f9f-4a0e-e9d4-08d8b3a66443
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SGN28ZThZp2cMEAFX9sq17FUbEmg8KHtES05cpHdCsP7iMBhREPnuGf8Xq1+SWQOXGfbYWlp9nQ/SjUqHLG/BA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR2101MB0995
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> From: Rafael J. Wysocki <rafael@kernel.org>
-> Sent: Thursday, January 7, 2021 5:48 AM
-> > > > Linux VM on Hyper-V crashes with the latest mainline:
-> > > > ...
-> The root cause is a VM issue AFAICS, though.
+Linux VM on Hyper-V crashes with the latest mainline:
 
-Yes.
-=20
-> It doesn't look like the right fix to me, though.
->=20
-> The problem appears to be that the string coming from _HID is too long
-> (which is a spec violation).=20
+[    4.069624] detected buffer overflow in strcpy
+[    4.077733] kernel BUG at lib/string.c:1149!
+..
+[    4.085819] RIP: 0010:fortify_panic+0xf/0x11
+...
+[    4.085819] Call Trace:
+[    4.085819]  acpi_device_add.cold.15+0xf2/0xfb
+[    4.085819]  acpi_add_single_object+0x2a6/0x690
+[    4.085819]  acpi_bus_check_add+0xc6/0x280
+[    4.085819]  acpi_ns_walk_namespace+0xda/0x1aa
+[    4.085819]  acpi_walk_namespace+0x9a/0xc2
+[    4.085819]  acpi_bus_scan+0x78/0x90
+[    4.085819]  acpi_scan_init+0xfa/0x248
+[    4.085819]  acpi_init+0x2c1/0x321
+[    4.085819]  do_one_initcall+0x44/0x1d0
+[    4.085819]  kernel_init_freeable+0x1ab/0x1f4
 
-Yes. We have requested Hyper-V team to fix the buggy BIOS/firmware,
-but we have to cope with the existing buggy Hyper-V hosts, at least
-before the Hyper-V fix is deployed to the hosts, and some old versions
-of the hosts may not get updated. :-(
+This is because of the recent buffer overflow detection in the
+commit 6a39e62abbaf ("lib: string.h: detect intra-object overflow in fortified string functions")
 
-> The patch truncates it to match the
-> length of the target buffer, but that is not particularly useful.
->=20
-> It would be better to use something like kstrdup_const() to initialize
-> acpi_device_bus_id->bus_id IMV.
+Here acpi_device_bus_id->bus_id can only hold 14 characters, while the
+the acpi_device_hid(device) returns a 22-char string
+"HYPER_V_GEN_COUNTER_V1".
 
-Makes sense. I'll submit v2 shortly.
+Per ACPI Spec v6.2, Section 6.1.5 _HID (Hardware ID), if the ID is a
+string, it must be of the form AAA#### or NNNN####, i.e. 7 chars or 8
+chars.
 
-Thanks,
--- Dexuan
+The field bus_id in struct acpi_device_bus_id was originally defined as
+char bus_id[9], and later was enlarged to char bus_id[15] in 2007 in the
+commit bb0958544f3c ("ACPI: use more understandable bus_id for ACPI devices")
+
+Fix the issue by changing the field bus_id to const char *, and use
+kstrdup_const() to initialize it.
+
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+---
+
+Changes in v2:
+    strlcpy -> kstrdup_const. Thanks Rafael J. Wysocki!
+    Change commit log accordingly.
+
+ drivers/acpi/internal.h |  2 +-
+ drivers/acpi/scan.c     | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index cb229e24c563..e6a5d997241c 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -97,7 +97,7 @@ void acpi_scan_table_handler(u32 event, void *table, void *context);
+ extern struct list_head acpi_bus_id_list;
+ 
+ struct acpi_device_bus_id {
+-	char bus_id[15];
++	const char *bus_id;
+ 	unsigned int instance_no;
+ 	struct list_head node;
+ };
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index a1b226eb2ce2..8d49d192d1c1 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -486,6 +486,7 @@ static void acpi_device_del(struct acpi_device *device)
+ 				acpi_device_bus_id->instance_no--;
+ 			else {
+ 				list_del(&acpi_device_bus_id->node);
++				kfree_const(acpi_device_bus_id->bus_id);
+ 				kfree(acpi_device_bus_id);
+ 			}
+ 			break;
+@@ -674,7 +675,14 @@ int acpi_device_add(struct acpi_device *device,
+ 	}
+ 	if (!found) {
+ 		acpi_device_bus_id = new_bus_id;
+-		strcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device));
++		acpi_device_bus_id->bus_id =
++			kstrdup_const(acpi_device_hid(device), GFP_KERNEL);
++		if (!acpi_device_bus_id->bus_id) {
++			pr_err(PREFIX "Memory allocation error for bus id\n");
++			result = -ENOMEM;
++			goto err_free_new_bus_id;
++		}
++
+ 		acpi_device_bus_id->instance_no = 0;
+ 		list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
+ 	}
+@@ -709,6 +717,10 @@ int acpi_device_add(struct acpi_device *device,
+ 	if (device->parent)
+ 		list_del(&device->node);
+ 	list_del(&device->wakeup_list);
++
++ err_free_new_bus_id:
++	if (!found)
++		kfree(new_bus_id);
+ 	mutex_unlock(&acpi_device_lock);
+ 
+  err_detach:
+-- 
+2.19.1
+
