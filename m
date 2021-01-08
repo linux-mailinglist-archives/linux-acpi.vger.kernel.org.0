@@ -2,99 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBB102EF565
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 17:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA632EF5AF
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 17:26:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727893AbhAHQCc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 11:02:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727806AbhAHQCc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 11:02:32 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683B3C061381;
-        Fri,  8 Jan 2021 08:02:10 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id m6so6501626pfm.6;
-        Fri, 08 Jan 2021 08:02:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yS0AQ/iq89KHuEBttzOsrVBcJm6DSFlGJhHRYYlq9Vg=;
-        b=vZXv3fwD7kPl/XbGIAAO3uTKrrphORulHDQgEvscSYFdJ9vBEVlAK83ndyS+c2QTSa
-         fO1RMSVdSMepPSh/ylXacQHZHkGi8WuBGvzkOxly81Smjj8G9exLp9/qMAMUkQaJ7I1y
-         Jvx/HllplJfdCEYBpyeINjBXG1oyRxQ8Ng97NcUmZKiOCQ0WHjiDCbfYoqbxTDoSVQDe
-         IkW/UmNkzUqUqVDp1cFxbMcGqahU8MM43ZZcsUfzW3Dw+LNAyUXFz0QpyAypZkrpvvzL
-         Blh9hNleVXMB9Z7xKYvVAm9SRm4CLNMp+pOtJc7C/pINVrvUBIPdsVho9zhLMxSdX1yN
-         Yc1Q==
+        id S1727228AbhAHQ0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 11:26:23 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:50855 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727176AbhAHQ0X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 11:26:23 -0500
+Received: from mail-lf1-f71.google.com ([209.85.167.71])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1kxua4-000425-Tq
+        for linux-acpi@vger.kernel.org; Fri, 08 Jan 2021 16:25:41 +0000
+Received: by mail-lf1-f71.google.com with SMTP id 202so8798060lfk.5
+        for <linux-acpi@vger.kernel.org>; Fri, 08 Jan 2021 08:25:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yS0AQ/iq89KHuEBttzOsrVBcJm6DSFlGJhHRYYlq9Vg=;
-        b=PPW8+NMroo8dl5OL09PxXnF3fQop/PEsfeAm4Qhuzu5aeVJ1wVJFobOjTbOUZMTnIH
-         KAE8qrGFXIh42aPVsvk9/78rLKjcqd+1UQZRagTlPGz6UwgHbNOv3B+H37qnzeGHWBmn
-         yW5i1M6J2CgoCbE0SznZwqCLLsHAxZeizOQPMqTX7RI097sYcCvoLUzwkLXWfpZCK671
-         igW3aWFyGZiLYzSkGBoOCu9ubUyeC41OZdgDvJAmOFiMUfPwGNTniQOOeqAPa7KeuOj5
-         qKXgbKJYjMPZl8AMclnyenq3en03A95e7BOJAGEznFokD66xV5XCHk9fWtLcb/YMVvES
-         E5Jw==
-X-Gm-Message-State: AOAM531dP3yDu+BTD12/n1wVh8X974xRS8sYrqRNazDEPoKLYdFEALj2
-        tgWIhsmsxL2DiOsbK1F0aDXmuuKNI1CqKEc/C919wLQVWbY=
-X-Google-Smtp-Source: ABdhPJzSDvErGMVOwr8SEzKwOjPck/i7G6MoaXyJluKS4BDsjfS+yG0yY5PPGRgSqqMbBxwg/F+qglIJMdUnjUqw+08=
-X-Received: by 2002:a63:4b16:: with SMTP id y22mr7622914pga.203.1610121729822;
- Fri, 08 Jan 2021 08:02:09 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=4ysF699gum20ke/f8RjKaFSvgbRhAZM2ouyRt7X4Sec=;
+        b=AZ0FgybyBCSbkj/TMrKoSeJoyGwFkQq12gqL/E5RU0Hx0AgGBoWWsXf3oYSipMjElk
+         l2jX4jPu6pw7OeIjbLKGAV5+oPB2tLPpZrluRRQbnLcS9j2O+y5zb8UGWaMtzQnpIO3a
+         FaCoXagLqCe9qfLEPfBk2rMyeuAGxHohHMlRRJaDHQDH/VklFDd9ENlSwD2OYBrbf9kx
+         Td1xG/1un1QrZF5D488A7ImIG260V2Td7i6gEez3ow+Gq+FR1hEm+DtnBw5UfF3cfzSh
+         Bri2nDRRectpuzzIjkCq3HhoYahDMuqNv9rl3DPrvvxzsbBCQsD09AVwjyho2H1jyuhd
+         ZOdg==
+X-Gm-Message-State: AOAM53389v294DvAPeHp6XWFcBfThdqelnTaIuwFUFpxOOLjh4XDP6s3
+        0msCLj91SynxqQWsNt3EqH8taKQ2NyzutBW0ZbmJxlaaew+W5z4VNj0cexMM5AGg7rhD2UlROpT
+        ZQdd04hcn3mlYzFLwmnDZbP+6xJHEh3QV9Z0R8CsrJiv5XpX3ee/4sro=
+X-Received: by 2002:a2e:6c0a:: with SMTP id h10mr1936321ljc.149.1610123140356;
+        Fri, 08 Jan 2021 08:25:40 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwKx6HpdNkM3sZ0PdAhD2aJSAg9xbk+QEeabuLyBIv/0NMYrhLvBkVH1TueHAuvhIV8BPYPhzkdpLT7hrF+25Y=
+X-Received: by 2002:a2e:6c0a:: with SMTP id h10mr1936310ljc.149.1610123140107;
+ Fri, 08 Jan 2021 08:25:40 -0800 (PST)
 MIME-Version: 1.0
-References: <20210108152447.116871-1-f.suligoi@asem.it>
-In-Reply-To: <20210108152447.116871-1-f.suligoi@asem.it>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 8 Jan 2021 18:02:58 +0200
-Message-ID: <CAHp75Vf54TTXr4HH6TxMo0QRTBa5V3=La1LCDxSizaYZjJM9Qg@mail.gmail.com>
-Subject: Re: [PATCH v1] Documentation: ACPI: add new rule for gpio-line-names
-To:     Flavio Suligoi <f.suligoi@asem.it>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Sat, 9 Jan 2021 00:25:28 +0800
+Message-ID: <CAAd53p6aURhfFp1RFQxEPtGfzSdUfe4=N=P2rP27ULxp-D4GCg@mail.gmail.com>
+Subject: Multiple MODALIAS= in uevent file confuses userspace
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        lennart@poettering.net,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 8, 2021 at 5:28 PM Flavio Suligoi <f.suligoi@asem.it> wrote:
->
-> The gpio-line-names lists must respect some rules.
->
-> This patch adds a new rule in documentation, to avoid
-> the use of duplicate names in the same gpiochip.
+Commit 8765c5ba19490 ("ACPI / scan: Rework modalias creation when
+"compatible" is present") creates two modaliases for certain ACPI
+devices. However userspace (systemd-udevd in this case) assumes uevent
+file doesn't have duplicated keys, so two "MODALIAS=" breaks the
+assumption.
 
-Thanks!
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Based on the assumption, systemd-udevd internally uses hashmap to
+store each line of uevent file, so the second modalias always replaces
+the first modalias.
 
-> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
-> ---
->  Documentation/firmware-guide/acpi/gpio-properties.rst | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
-> index b36aa3e743d8..4e264c16ddff 100644
-> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
-> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
-> @@ -146,6 +146,7 @@ following rules (see also the examples):
->      other words, it is not mandatory to fill all the GPIO lines
->    - empty names are allowed (two quotation marks ``""`` correspond to an empty
->      name)
-> +  - names inside one GPIO controller/expander must be unique
->
->  Example of a GPIO controller of 16 lines, with an incomplete list with two
->  empty names::
-> --
-> 2.25.1
->
+My attempt [1] is to add a new key, "MODALIAS1" for the second
+modalias. This brings up the question of whether each key in uevent
+file is unique. If it's no unique, this may break may userspace.
 
+[1] https://github.com/systemd/systemd/pull/18163
 
--- 
-With Best Regards,
-Andy Shevchenko
+Kai-Heng
