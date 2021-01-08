@@ -2,70 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA632EF5AF
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 17:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC722EF6CC
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jan 2021 18:54:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727228AbhAHQ0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 11:26:23 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:50855 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727176AbhAHQ0X (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 11:26:23 -0500
-Received: from mail-lf1-f71.google.com ([209.85.167.71])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1kxua4-000425-Tq
-        for linux-acpi@vger.kernel.org; Fri, 08 Jan 2021 16:25:41 +0000
-Received: by mail-lf1-f71.google.com with SMTP id 202so8798060lfk.5
-        for <linux-acpi@vger.kernel.org>; Fri, 08 Jan 2021 08:25:40 -0800 (PST)
+        id S1726011AbhAHRyV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 12:54:21 -0500
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:46886 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728483AbhAHRyV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 12:54:21 -0500
+Received: by mail-oi1-f181.google.com with SMTP id q205so12177035oig.13;
+        Fri, 08 Jan 2021 09:54:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=4ysF699gum20ke/f8RjKaFSvgbRhAZM2ouyRt7X4Sec=;
-        b=AZ0FgybyBCSbkj/TMrKoSeJoyGwFkQq12gqL/E5RU0Hx0AgGBoWWsXf3oYSipMjElk
-         l2jX4jPu6pw7OeIjbLKGAV5+oPB2tLPpZrluRRQbnLcS9j2O+y5zb8UGWaMtzQnpIO3a
-         FaCoXagLqCe9qfLEPfBk2rMyeuAGxHohHMlRRJaDHQDH/VklFDd9ENlSwD2OYBrbf9kx
-         Td1xG/1un1QrZF5D488A7ImIG260V2Td7i6gEez3ow+Gq+FR1hEm+DtnBw5UfF3cfzSh
-         Bri2nDRRectpuzzIjkCq3HhoYahDMuqNv9rl3DPrvvxzsbBCQsD09AVwjyho2H1jyuhd
-         ZOdg==
-X-Gm-Message-State: AOAM53389v294DvAPeHp6XWFcBfThdqelnTaIuwFUFpxOOLjh4XDP6s3
-        0msCLj91SynxqQWsNt3EqH8taKQ2NyzutBW0ZbmJxlaaew+W5z4VNj0cexMM5AGg7rhD2UlROpT
-        ZQdd04hcn3mlYzFLwmnDZbP+6xJHEh3QV9Z0R8CsrJiv5XpX3ee/4sro=
-X-Received: by 2002:a2e:6c0a:: with SMTP id h10mr1936321ljc.149.1610123140356;
-        Fri, 08 Jan 2021 08:25:40 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwKx6HpdNkM3sZ0PdAhD2aJSAg9xbk+QEeabuLyBIv/0NMYrhLvBkVH1TueHAuvhIV8BPYPhzkdpLT7hrF+25Y=
-X-Received: by 2002:a2e:6c0a:: with SMTP id h10mr1936310ljc.149.1610123140107;
- Fri, 08 Jan 2021 08:25:40 -0800 (PST)
+        bh=64bLvDgCgYBUvVvAphyLAP7mcN/gvgPAZaS5Ydc+1zM=;
+        b=VoIjvmVH8pN/IrUdJwwxpuY1TyEFBCjBVrKBpXaxhe9MtZzy4yJ618QXQRikiWkVUR
+         XZG1IkkPAlBV6Nldks9jQXZSvwq0neQrP7zK3BRa1iuAy+sK7KYcdVvwmnDgd5P0DRTp
+         y6NsBDZGMtI3jDg9T5q/VkxoVVe7VhJwGuz7/ecRGC/Of3dLzt3uIjRc6iJzUlIIeI/p
+         S+RWLzDPj8n9rwiATHea7HxFQz/I5nqFwHG88tnw/MWTbVglPIPDbg3MLO5vPS7FYN7/
+         vEeiBTIXpY4/vsJ86dC3vV+p1I/ATlQ3Rcnz54rkANpb97ypaDagcMq2hrcgZwggLKnj
+         pnEw==
+X-Gm-Message-State: AOAM530zioVT/H+kLmBdh9r/PYy6BdOlJZzm+IO9r1kbW66AjgpTBOKa
+        NAohyOpGwLQATnzsrvN5GGMOtKSomaH03hm9MUChvP19G7w=
+X-Google-Smtp-Source: ABdhPJzF3kao47vS5LN6XIubxJB7JS5wJsaGQHNNPbD2uqTmUXtzyumaR+GdxUWLoOjPrxsok9JJO4fXMcNI8CqEec8=
+X-Received: by 2002:aca:d6c8:: with SMTP id n191mr2897549oig.69.1610128420533;
+ Fri, 08 Jan 2021 09:53:40 -0800 (PST)
 MIME-Version: 1.0
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Sat, 9 Jan 2021 00:25:28 +0800
-Message-ID: <CAAd53p6aURhfFp1RFQxEPtGfzSdUfe4=N=P2rP27ULxp-D4GCg@mail.gmail.com>
-Subject: Multiple MODALIAS= in uevent file confuses userspace
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        lennart@poettering.net,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 8 Jan 2021 18:53:29 +0100
+Message-ID: <CAJZ5v0hZP8tsniMBtjBatd-ORJMXqVWXiPEPpJvpfZagUGyPEw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.11-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 8765c5ba19490 ("ACPI / scan: Rework modalias creation when
-"compatible" is present") creates two modaliases for certain ACPI
-devices. However userspace (systemd-udevd in this case) assumes uevent
-file doesn't have duplicated keys, so two "MODALIAS=" breaks the
-assumption.
+Hi Linus,
 
-Based on the assumption, systemd-udevd internally uses hashmap to
-store each line of uevent file, so the second modalias always replaces
-the first modalias.
+Please pull from the tag
 
-My attempt [1] is to add a new key, "MODALIAS1" for the second
-modalias. This brings up the question of whether each key in uevent
-file is unique. If it's no unique, this may break may userspace.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.11-rc3
 
-[1] https://github.com/systemd/systemd/pull/18163
+with top-most commit 24e8ab6886d80fe60b1d4e64b6d9f15ea9ad597a
 
-Kai-Heng
+ Merge branches 'acpi-scan' and 'acpi-misc'
+
+on top of commit e71ba9452f0b5b2e8dc8aa5445198cd9214a6a62
+
+ Linux 5.11-rc2
+
+to receive ACPI fixes for 5.11-rc3.
+
+These address two build issues and drop confusing text from a couple
+of Kconfig entries.
+
+Specifics:
+
+ - Drop two local variables that are never read and the code updating
+   their values from the x86 suspend-to-idle code (Rafael Wysocki).
+
+ - Add empty stub of an ACPI helper function to avoid build issues
+   when CONFIG_ACPI is not set (Shawn Guo).
+
+ - Remove confusing text regarding modules from Kconfig entries that
+   correspond to non-modular code (Peter Robinson).
+
+Thanks!
+
+
+---------------
+
+Peter Robinson (1):
+      ACPI: Update Kconfig help text for items that are no longer modular
+
+Rafael J. Wysocki (1):
+      ACPI: PM: s2idle: Drop unused local variables and related code
+
+Shawn Guo (1):
+      ACPI: scan: add stub acpi_create_platform_device() for !CONFIG_ACPI
+
+---------------
+
+ drivers/acpi/Kconfig      |  6 ------
+ drivers/acpi/x86/s2idle.c | 14 +-------------
+ include/linux/acpi.h      |  7 +++++++
+ 3 files changed, 8 insertions(+), 19 deletions(-)
