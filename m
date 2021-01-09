@@ -2,168 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 855B12EFD0E
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 03:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A2482EFD51
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 04:12:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbhAICJA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 21:09:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbhAICJA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 21:09:00 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 268A5C061573;
-        Fri,  8 Jan 2021 18:08:20 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8BDDCDA;
-        Sat,  9 Jan 2021 03:08:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1610158098;
-        bh=HqFLAk4wlbnnnu9n22IHt3F+ZPuS5ti9Z/jeFz4xo7I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qE9VFJETZN1AGT0SgJrTBHu7AoPRhLMLNT0WYnSHcBow7oyLBog1H35mUp0gCtnFx
-         OUOkRX1fbBnZnqHtQtXbDYU8xFkFofqDv2KsvOF7JpfX8jy/vTOD0uP17oH4s6jc9W
-         oCRWPasJDJBjOYoL86d8zgBB/ZOpErpJT0A6y/nU=
-Date:   Sat, 9 Jan 2021 04:08:04 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        mchehab@kernel.org, sergey.senozhatsky@gmail.com,
-        yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk,
-        laurent.pinchart+renesas@ideasonboard.com,
-        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
-        hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
-        niklas.soderlund+renesas@ragnatech.se,
-        prabhakar.mahadev-lad.rj@bp.renesas.com, slongerbeam@gmail.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v5 00/15] Add functionality to ipu3-cio2 driver allowing
- software_node connections to sensors on platforms designed for Windows
-Message-ID: <X/kQBAQZi3l5/WI7@pendragon.ideasonboard.com>
-References: <20210107132838.396641-1-djrscally@gmail.com>
+        id S1726189AbhAIDLC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 22:11:02 -0500
+Received: from mail-dm6nam11on2113.outbound.protection.outlook.com ([40.107.223.113]:33822
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725836AbhAIDLC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 Jan 2021 22:11:02 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PefeCaoxe+H9GZcWshp7KTaAZo4lCTaUeNSTVNhklzS4G7Axr7W2oYZFF1hVzkdKF+qKlriTpPbQFp+epHHJIsOLLSsqVw6tM5bIF4CWCyhg4fnNWHq2EMol9Nt+XHV1rrwkjXNNi6ojWsjqTfF5icJpn4XAjofn74hWq6CC9uClMPGvygMSBw/juLmZTmCYGvq2kA8WlhPsqp2cAox2ka5BprwlqlyykXPOt11pYx6fzbOO06t7J6+zewNo60gFrixdr8KgcNuMWOBb6dFWnWGDNbMWitTSEuTGfertpU61XHLg1Q/qyRiCfKN8OE0JeuWTSFIKPbdImxqQMPtBsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mge6mZ5BxNGL708h6xa9Jr6ju2HWqmcs/mmrFlO+JxY=;
+ b=PrB5gYfc73drt7WHcA++L1P5W/O+ZdecOar/mDwTeN97DfNjiSMZcZ8WmmNzvbHK0wgEm/TynScJx/EZa2T6bC+lil9unM1eJK+sgOdbpzUGLX2J8xQtPyPmKXJZOpNutwUi1M80RxkDBznG/awr+YPsAuusPTrJR6fUF3ndaDm+0kOJICLlW7qAJByeJcJIJ4R3r/lJFbfjTyRpSxsb0nSaXFCkuT/buEX1y6hRTP787Pu4VN8PlVxvVPyN9CT1ta/Srm2c37VkeAFIAVy3t+8FHbjlBQoUGwx6h6FSe5BhBSyy1+SoanKxZThWJy6TbJh8rX18ayn05H9nO3Yy4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mge6mZ5BxNGL708h6xa9Jr6ju2HWqmcs/mmrFlO+JxY=;
+ b=WqIaGCVyqa8e5hpW/YrFb0uv7nFzoQt3g0DjlpxV0VSPspFoxvJCvLh+vwp9RwX9vridn22kKQ6ZbALrsxQZN6X94Q52M0rtTQ+1vzBFJS0qzzUjw91aChfrChpxsoyMMoqHAFSuUkjUZZcGpG9DrpuM8SDuvirscrRG+6zNtlc=
+Received: from (2603:10b6:300:128::18) by
+ MWHPR21MB0191.namprd21.prod.outlook.com (2603:10b6:300:79::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3784.0; Sat, 9 Jan 2021 03:10:05 +0000
+Received: from MWHPR21MB0798.namprd21.prod.outlook.com
+ ([fe80::74c5:1aa5:e46f:8cb4]) by MWHPR21MB0798.namprd21.prod.outlook.com
+ ([fe80::74c5:1aa5:e46f:8cb4%14]) with mapi id 15.20.3763.007; Sat, 9 Jan 2021
+ 03:10:05 +0000
+From:   Dexuan Cui <decui@microsoft.com>
+To:     Dexuan Cui <decui@microsoft.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "len.brown@intel.com" <len.brown@intel.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        "rui.zhang@intel.com" <rui.zhang@intel.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        "dwaipayanray1@gmail.com" <dwaipayanray1@gmail.com>
+Subject: RE: [PATCH v2] ACPI: scan: Fix a Hyper-V Linux VM panic caused by
+ buffer overflow
+Thread-Topic: [PATCH v2] ACPI: scan: Fix a Hyper-V Linux VM panic caused by
+ buffer overflow
+Thread-Index: AQHW5Y9DoP/1GXp3uE+7wQPdQBcnaKoenHFQ
+Date:   Sat, 9 Jan 2021 03:10:05 +0000
+Message-ID: <MWHPR21MB0798B23AD969666FCDAD5095BFAD9@MWHPR21MB0798.namprd21.prod.outlook.com>
+References: <20210108072348.34091-1-decui@microsoft.com>
+In-Reply-To: <20210108072348.34091-1-decui@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=1bf73e76-964f-4bbf-ac26-f157d6553093;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-01-09T03:01:52Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: microsoft.com; dkim=none (message not signed)
+ header.d=none;microsoft.com; dmarc=none action=none
+ header.from=microsoft.com;
+x-originating-ip: [73.140.237.219]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 821faf62-642c-465d-5657-08d8b44c103b
+x-ms-traffictypediagnostic: MWHPR21MB0191:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MWHPR21MB01911B0A7F7062D01E4F2614BFAD9@MWHPR21MB0191.namprd21.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6xgW6MdGnlgraG21IFCW6vq4VKM8TRdZwL66TZlgebm2dxiHbd+/OKkOcJaiQYNmtmzmvgxCPGMWJvnhV7+Qi2havUJxYtLJrC1w3nWdeSZlhO9D94up1CQo+ok2zZId1wUxb9OTJH/9RGDBu+hUXYGkgIBgqbXfumm17mzO/XPNP5KDVNfRlhbKBjcagtCM6eN83ivtRKSgUPxDyU02aRXL6veCNiLi47cFV5jBsFsCBqTakcX9Mcl92JOsfcz7HXCZil97mx8xoemSEWO8RzjHo8jGRaksPjMrjwTXmLtjMxcEermn724SwyY2BVDlxoWA99WZrfmNYh8/mjQ6MoeeTJn5gPgrYT6r7+2CDEYZPCr1Q0qw3aYzl0OP8QBg0hgeVJbT5g+MGV8LCtGHtFB/SSdbb75DrsvBHQHIpWafNVNtxdnxru9g1asGWsdTpTU6cCjefJDQ+vJBiwgxAw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB0798.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(136003)(366004)(346002)(39860400002)(7696005)(8676002)(33656002)(110136005)(4744005)(52536014)(76116006)(66476007)(66556008)(64756008)(66446008)(66946007)(54906003)(5660300002)(26005)(8936002)(478600001)(8990500004)(82950400001)(82960400001)(4326008)(316002)(86362001)(6506007)(186003)(9686003)(966005)(10290500003)(55016002)(2906002)(71200400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?5hpFBhYH3CL+5oqwPRmhZaOSoHFIBf2t7fhmNmYdK6vNSP6h/LBDql5njcIi?=
+ =?us-ascii?Q?gwGMnAJuTSwpHABBuLaKAhgQMTisK7Fg/+PVSSebJMa0QdUeoiJ+xTlmnwgJ?=
+ =?us-ascii?Q?ENMmv9sIC54T846K0TsM4dgcuf5ogfNWqTqAM9wgDQlJnWQMYQ3g3ligIKI4?=
+ =?us-ascii?Q?qCMvkufABJvHJodX2mucrCSvyjoL+NsFbJIgzewqKveSIz/E63TF56Yf5eM4?=
+ =?us-ascii?Q?jIrF92bQgVekPvTTo7UY7+8cT0tBbiaSoZpWBofh/iS0+h2SiNo+l4CZM+0l?=
+ =?us-ascii?Q?goFj+FCA/ZpnacsRzMCLJb1/dW1uuGeZgmkN1PVu5kiWme86gTFlq+jGQivC?=
+ =?us-ascii?Q?s/+Me5RQd9BIRocxGbWZ03nmRrJwpiyri4OQ0tMVBX5PRyLJA3qsVGH8aRcW?=
+ =?us-ascii?Q?VrgWFjhYNASCjiOe8EWl7CEU167fX9+GiahuNrSeLeEBM2Q/QBavgfp8J0v/?=
+ =?us-ascii?Q?zglAlUhwA5JU22eMBY2IzLKM8SKXOwnP4SosYeOsBjXRcUmYgiWSjbVqoH+D?=
+ =?us-ascii?Q?zG25IYczGvEFRoVJjgslyL78IDBSfK2kk8df4C8VSw4yNHJYCspL3DGoYq8K?=
+ =?us-ascii?Q?sqKIVsuyKShEH6AAYvAKPf73ld37m/7Vw2gEqxIGPMJfoInIh/+zKRfYB+IJ?=
+ =?us-ascii?Q?YY+9FXuHKtqWtXoYCwfwqZtGKoKObMm0OKWtfzV9OMb0OERz/XOQqTowV7TV?=
+ =?us-ascii?Q?KMmZGwniRovX6nDUHJ5iytePAD3SQOI3BzzmW90hi5mXcgUkAzgNyahWgE2X?=
+ =?us-ascii?Q?e7/PhS/1Tdwawx6hxVixrqK2CL80J6qiy4jMJAg6pKlceg1qHMEkcEjJc/Vt?=
+ =?us-ascii?Q?6Tdm6//dtf/BVt5P/+KAdVcfdYRh/ce67mSEvya6zkcAj+Nucx9Szog8VnTm?=
+ =?us-ascii?Q?Rmu3EQ1bdN0mq3yUygd0l5/UUBzngdpBmfg1XAmKdjK12KLvC7hg2Yuy/Uhh?=
+ =?us-ascii?Q?hOaAlL/9DNxiRKcJbKrtcQoklxpdlh8gMSICI80Ir8A=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210107132838.396641-1-djrscally@gmail.com>
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB0798.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 821faf62-642c-465d-5657-08d8b44c103b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2021 03:10:05.4504
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OodfvEZgQa2rJDtt6XouMSsBAkx2Fsgip9VOnOk+jKSwI/YN1qpSFwj3XuyW1vlF9T3xmbBhraLVNvEbbKetCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR21MB0191
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Greg,
+> From: Dexuan Cui <decui@microsoft.com>
+> Sent: Thursday, January 7, 2021 11:24 PM
+> ...
+> Linux VM on Hyper-V crashes with the latest mainline:
+> ...
+>=20
+> Changes in v2:
+>     strlcpy -> kstrdup_const. Thanks Rafael J. Wysocki!
+>     Change commit log accordingly.
 
-On Thu, Jan 07, 2021 at 01:28:23PM +0000, Daniel Scally wrote:
-> 
-> Hello all
-> 
-> v4:
-> https://lore.kernel.org/linux-media/20210103231235.792999-1-djrscally@gmail.com/T/#m11b7cb977e1b73fba1e625c3d6a189e2943a7783
-> v3:
-> https://lore.kernel.org/linux-media/20201224010907.263125-1-djrscally@gmail.com/T/#m37b831bb2b406917d6db5da9acf9ed35df65d72d
-> v2:
-> https://lore.kernel.org/linux-media/20201217234337.1983732-1-djrscally@gmail.com/T/#md93fd090009b42a6a98aed892aff0d38cf07e0cd
-> v1:
-> https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
-> 
-> This series is to start adding support for webcams on laptops with ACPI tables
-> designed for use with CIO2 on Windows. This series extends the ipu3-cio2
-> driver to allow for patching the firmware via software_nodes if endpoints
-> aren't defined by ACPI.
-> 
-> I'm hopeful that most or all of this series could get picked up for 5.12.
-> We touch a few different areas (listed below), but I think the easiest
-> approach would be to merge everything through media tree. Rafael, Greg,
-> Mauro and Sergey; are you ok with that plan, or would you prefer a
-> different approach? Mauro; if that plan is ok (and of course assuming that
-> the rest of the patches are acked by their respective maintainers) could
-> we get a dedicated feature branch just in case the following series ends
-> up being ready in time too?
-> 
-> lib
->   lib/test_printf.c: Use helper function to unwind array of
->     software_nodes
-> 
-> base
->   software_node: Fix refcounts in software_node_get_next_child()
->   property: Return true in fwnode_device_is_available for NULL ops
->   property: Call fwnode_graph_get_endpoint_by_id() for fwnode->secondary
->   software_node: Enforce parent before child ordering of nodes arrays
->   software_node: unregister software_nodes in reverse order
+Hi Rafael, Len, and all,
+Can you please take a look at the v2 patch?
 
-Could you please let us know with an Acked-by if these patches can be
-merged through the linux-media tree for v5.12 ? This is a cross-tree
-series and we would like to avoid topic branches if possible.
+The Linux mainline has been broken for several weeks when it
+runs as a guest on Hyper-V, so we'd like this to be fixed ASAP,
+as more people are being affected, e.g.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D210449
 
->   include: fwnode.h: Define format macros for ports and endpoints
-> 
-> acpi
->   acpi: Add acpi_dev_get_next_match_dev() and helper macro
-> 
-> media
->   media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
->     match_fwnode()
->   ipu3-cio2: Add T: entry to MAINTAINERS
->   ipu3-cio2: Rename ipu3-cio2.c
->   ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
->   include: media: v4l2-fwnode: Include v4l2_fwnode_bus_type
-> 
-> Series-level changelog:
-> 	- Rebased onto 5.11-rc1
-> 
-> Thanks
-> Dan
-> 
-> Andy Shevchenko (1):
->   media: ipu3-cio2: Add headers that ipu3-cio2.h is direct user of
-> 
-> Daniel Scally (13):
->   software_node: Fix refcounts in software_node_get_next_child()
->   device property: Return true in fwnode_device_is_available for NULL
->     ops
->   device property: Call fwnode_graph_get_endpoint_by_id() for
->     fwnode->secondary
->   software_node: Enforce parent before child ordering of nodes arrays
->   software_node: unregister software_nodes in reverse order
->   device property: Define format macros for ports and endpoints
->   lib/test_printf.c: Use helper function to unwind array of
->     software_nodes
->   ipu3-cio2: Add T: entry to MAINTAINERS
->   ipu3-cio2: Rename ipu3-cio2.c
->   media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
->     match_fwnode()
->   ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro
->   media: v4l2-fwnode: Include v4l2_fwnode_bus_type
->   ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
-> 
-> Heikki Krogerus (1):
->   software_node: Add support for fwnode_graph*() family of functions
-> 
->  MAINTAINERS                                   |   2 +
->  drivers/acpi/utils.c                          |  30 +-
->  drivers/base/property.c                       |  15 +-
->  drivers/base/swnode.c                         | 180 ++++++++--
->  drivers/media/pci/intel/ipu3/Kconfig          |  18 +
->  drivers/media/pci/intel/ipu3/Makefile         |   3 +
->  drivers/media/pci/intel/ipu3/cio2-bridge.c    | 311 ++++++++++++++++++
->  drivers/media/pci/intel/ipu3/cio2-bridge.h    | 125 +++++++
->  .../ipu3/{ipu3-cio2.c => ipu3-cio2-main.c}    |  34 ++
->  drivers/media/pci/intel/ipu3/ipu3-cio2.h      |  24 ++
->  drivers/media/v4l2-core/v4l2-async.c          |   8 +
->  drivers/media/v4l2-core/v4l2-fwnode.c         |  11 -
->  include/acpi/acpi_bus.h                       |   7 +
->  include/linux/fwnode.h                        |   7 +
->  include/media/v4l2-fwnode.h                   |  22 ++
->  lib/test_printf.c                             |   4 +-
->  16 files changed, 763 insertions(+), 38 deletions(-)
->  create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.c
->  create mode 100644 drivers/media/pci/intel/ipu3/cio2-bridge.h
->  rename drivers/media/pci/intel/ipu3/{ipu3-cio2.c => ipu3-cio2-main.c} (98%)
-
--- 
-Regards,
-
-Laurent Pinchart
+Thanks,
+-- Dexuan
