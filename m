@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8602EFCEB
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 02:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 897312EFCF2
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 03:02:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725916AbhAIBzY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jan 2021 20:55:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54290 "EHLO
+        id S1725836AbhAICCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jan 2021 21:02:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbhAIBzY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 20:55:24 -0500
+        with ESMTP id S1725817AbhAICCB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jan 2021 21:02:01 -0500
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E58C061574;
-        Fri,  8 Jan 2021 17:54:43 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489FCC061573;
+        Fri,  8 Jan 2021 18:01:21 -0800 (PST)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9C0AADA;
-        Sat,  9 Jan 2021 02:54:40 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DD446DA;
+        Sat,  9 Jan 2021 03:01:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1610157280;
-        bh=jsCR+yhrfK8nH0oAXFTJMNv1U8hDPr9PYMtoSLMCqCU=;
+        s=mail; t=1610157679;
+        bh=jsI0Dp9o8mrHP2CblfN6r1QQaTwTWmysU4tURYPgUMo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QuFp3hwFlh1bR873Wb239tIxK237bWOasYBz2H5bAeksp62LpNcVH+8G6NacmW6cq
-         bJN2H1zcG1F4zSsubHyV/cCXzXVn1J8SSj2pqcgBPpoQ6QkippKDB7Vl4Nbp+NJWQ9
-         b0PFNQg93LxV3SCUTolKPh2qP7j6cC9Qo8nYs908=
-Date:   Sat, 9 Jan 2021 03:54:27 +0200
+        b=U5QiHG9PHSftUYLy4cNy4+FFhCfqaahcrriQXDw5S0GoNFuyDf58VveyPSwEGqhPq
+         XWvP4G1NkoVvO8QloEltriFbRw+f9BdyYsWl8JX+/SCOoJ+18b4avlLmY6iyf+w0JJ
+         oAnqnVPXnkfQaTeSYpJagUn3auT7dgWhn1OE4xT4=
+Date:   Sat, 9 Jan 2021 04:01:05 +0200
 From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
 Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, lenb@kernel.org, gregkh@linuxfoundation.org,
-        mchehab@kernel.org, sergey.senozhatsky@gmail.com,
-        yong.zhi@intel.com, sakari.ailus@linux.intel.com,
-        bingbu.cao@intel.com, tian.shu.qiu@intel.com,
-        robert.moore@intel.com, erik.kaneda@intel.com, pmladek@suse.com,
-        rostedt@goodmis.org, andriy.shevchenko@linux.intel.com,
+        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
+        gregkh@linuxfoundation.org, mchehab@kernel.org, yong.zhi@intel.com,
+        sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
+        tian.shu.qiu@intel.com, robert.moore@intel.com,
+        erik.kaneda@intel.com, andriy.shevchenko@linux.intel.com,
         linux@rasmusvillemoes.dk,
         laurent.pinchart+renesas@ideasonboard.com,
         jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
@@ -43,129 +43,59 @@ Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
         niklas.soderlund+renesas@ragnatech.se,
         prabhakar.mahadev-lad.rj@bp.renesas.com, slongerbeam@gmail.com,
         heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v5 13/15] ACPI / bus: Add acpi_dev_get_next_match_dev()
- and helper macro
-Message-ID: <X/kM0wWEInPhz3mz@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v5 09/15] lib/test_printf.c: Use helper function to
+ unwind array of software_nodes
+Message-ID: <X/kOYeZtkCspoAC5@pendragon.ideasonboard.com>
 References: <20210107132838.396641-1-djrscally@gmail.com>
- <20210107132838.396641-14-djrscally@gmail.com>
+ <20210107132838.396641-10-djrscally@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210107132838.396641-14-djrscally@gmail.com>
+In-Reply-To: <20210107132838.396641-10-djrscally@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi Peter, Steven and Sergey,
 
-Could you please review this patch, and let us know (see question in the
-cover letter) if it can be merged through the linux-media tree for v5.12
-?
+Could you please let us know if you're fine with this patch getting
+merged in v5.12 through the linux-media tree ? The cover letter contains
+additional details (in a nutshell, this is a cross-tree series and we
+would like to avoid topic branches if possible).
 
-On Thu, Jan 07, 2021 at 01:28:36PM +0000, Daniel Scally wrote:
-> To ensure we handle situations in which multiple sensors of the same
-> model (and therefore _HID) are present in a system, we need to be able
-> to iterate over devices matching a known _HID but unknown _UID and _HRV
->  - add acpi_dev_get_next_match_dev() to accommodate that possibility and
-> change acpi_dev_get_first_match_dev() to simply call the new function
-> with a NULL starting point. Add an iterator macro for convenience.
+On Thu, Jan 07, 2021 at 01:28:32PM +0000, Daniel Scally wrote:
+> Use the software_node_unregister_nodes() helper function to unwind this
+> array in a cleaner way.
 > 
+> Acked-by: Petr Mladek <pmladek@suse.com>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
 > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Signed-off-by: Daniel Scally <djrscally@gmail.com>
 > ---
 > Changes in v5:
 > 
-> 	- Changed commit subject
+> 	- None
 > 
->  drivers/acpi/utils.c    | 30 ++++++++++++++++++++++++++----
->  include/acpi/acpi_bus.h |  7 +++++++
->  2 files changed, 33 insertions(+), 4 deletions(-)
+>  lib/test_printf.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> index d5411a166685..ddca1550cce6 100644
-> --- a/drivers/acpi/utils.c
-> +++ b/drivers/acpi/utils.c
-> @@ -843,12 +843,13 @@ bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
->  EXPORT_SYMBOL(acpi_dev_present);
+> diff --git a/lib/test_printf.c b/lib/test_printf.c
+> index 7ac87f18a10f..7d60f24240a4 100644
+> --- a/lib/test_printf.c
+> +++ b/lib/test_printf.c
+> @@ -644,9 +644,7 @@ static void __init fwnode_pointer(void)
+>  	test(second_name, "%pfwP", software_node_fwnode(&softnodes[1]));
+>  	test(third_name, "%pfwP", software_node_fwnode(&softnodes[2]));
 >  
->  /**
-> - * acpi_dev_get_first_match_dev - Return the first match of ACPI device
-> + * acpi_dev_get_next_match_dev - Return the next match of ACPI device
-> + * @adev: Pointer to the previous acpi_device matching this @hid, @uid and @hrv
->   * @hid: Hardware ID of the device.
->   * @uid: Unique ID of the device, pass NULL to not check _UID
->   * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
->   *
-> - * Return the first match of ACPI device if a matching device was present
-> + * Return the next match of ACPI device if another matching device was present
->   * at the moment of invocation, or NULL otherwise.
->   *
->   * The caller is responsible to call put_device() on the returned device.
-> @@ -856,8 +857,9 @@ EXPORT_SYMBOL(acpi_dev_present);
->   * See additional information in acpi_dev_present() as well.
->   */
->  struct acpi_device *
-> -acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
-> +acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv)
->  {
-> +	struct device *start = adev ? &adev->dev : NULL;
->  	struct acpi_dev_match_info match = {};
->  	struct device *dev;
->  
-> @@ -865,9 +867,29 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
->  	match.uid = uid;
->  	match.hrv = hrv;
->  
-> -	dev = bus_find_device(&acpi_bus_type, NULL, &match, acpi_dev_match_cb);
-> +	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
->  	return dev ? to_acpi_device(dev) : NULL;
+> -	software_node_unregister(&softnodes[2]);
+> -	software_node_unregister(&softnodes[1]);
+> -	software_node_unregister(&softnodes[0]);
+> +	software_node_unregister_nodes(softnodes);
 >  }
-> +EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-> +
-> +/**
-> + * acpi_dev_get_first_match_dev - Return the first match of ACPI device
-> + * @hid: Hardware ID of the device.
-> + * @uid: Unique ID of the device, pass NULL to not check _UID
-> + * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-> + *
-> + * Return the first match of ACPI device if a matching device was present
-> + * at the moment of invocation, or NULL otherwise.
-> + *
-> + * The caller is responsible to call put_device() on the returned device.
-> + *
-> + * See additional information in acpi_dev_present() as well.
-> + */
-> +struct acpi_device *
-> +acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
-> +{
-> +	return acpi_dev_get_next_match_dev(NULL, hid, uid, hrv);
-> +}
->  EXPORT_SYMBOL(acpi_dev_get_first_match_dev);
 >  
->  /*
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 6d1879bf9440..02a716a0af5d 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -683,9 +683,16 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
->  
->  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
->  
-> +struct acpi_device *
-> +acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
->  struct acpi_device *
->  acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
->  
-> +#define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
-> +	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
-> +	     adev;							\
-> +	     adev = acpi_dev_get_next_match_dev(adev, hid, uid, hrv))
-> +
->  static inline void acpi_dev_put(struct acpi_device *adev)
->  {
->  	put_device(&adev->dev);
+>  static void __init
 
 -- 
 Regards,
