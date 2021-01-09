@@ -2,203 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1422EFECC
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 10:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CBB42EFEE0
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jan 2021 11:01:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbhAIJia (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 Jan 2021 04:38:30 -0500
-Received: from mail-co1nam11on2104.outbound.protection.outlook.com ([40.107.220.104]:60257
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726661AbhAIJia (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 9 Jan 2021 04:38:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n1pDiH49MKajliwd2B+xRYn07is4Xjxz1TB1x4Y1ytPGg2v/xpsFL8WEU6FRX47sHjhPw7XmXfrVCcmQJpd3KfWKVLX0JX8bkOChJE5NgO1xz+lEddYFsmAoNg+HO+/D+uBSmqQ69d9S2YRA9CNGCO4Wp6TzBEjoyd+5k94OJrcDhhpkZBobOciOX1hneVZWCV0iRVerr4XcA8WjGI1YAFpXescEBnKxcdT6VwluL7YjNcvmNXkJaNbEgD8xt6MHJqSQGaWMFapafsNDv4ecag77hcVDWdGnJPyS/oX4l0ty2yZDCkatRZSdxTXsFiRBZEyuUJvr1l6h40A8mUGHOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NzUhl2qBjjefEApuCTjSg5mZomXZMUoAH5UbfwXr58U=;
- b=CA5l+LteBzh0CvBZ/h7XbiwgxAPgAOyw1wGuVRu64MR7bVvw8JlkAqmN/iyZK7CikANuqsypRgcebjrHCZ0Sr/v7LkC7I4njgcwHLDZIs/FHgYMsG8NIf0USoQ9WFOJfuS3iiUToq52hXSNsPrrlpTqIx0e3LhKb3aCxZqRzh3pytLsBVBoNn5nUskiVLxDTEfETSdhNfwkLtkKjEpiF52ZwNYHA+H1VPkQPsMJzfBY8nfnFti8pHuuu/mKQw2wksdYfN/vJKQ2ppA1zyXT7/XeESrDP43UnmlwypREMB1LK8LEpdz46EL8TpKxBXMZnOHr9DgxyZ5LIZI3E8Ztraw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NzUhl2qBjjefEApuCTjSg5mZomXZMUoAH5UbfwXr58U=;
- b=CpBqV/H+He+7HCYm/zrkjLB+Gv7P1pLKp7Pigje1xXW3dEcHdLDthOm6TppLIbO7gl2/DZDMNGV/nCzZE/mihU9kdqWbnGOLD/FuzMizGOZLUvQJQLeUWT+IeF5gVn7Voa7aGFdyDl8KqaI2agtqxEZo4XRXPyHZJM9cZWr5gow=
-Received: from (2603:10b6:300:128::18) by
- MWHPR21MB0512.namprd21.prod.outlook.com (2603:10b6:300:df::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3763.0; Sat, 9 Jan 2021 09:37:41 +0000
-Received: from MWHPR21MB0798.namprd21.prod.outlook.com
- ([fe80::74c5:1aa5:e46f:8cb4]) by MWHPR21MB0798.namprd21.prod.outlook.com
- ([fe80::74c5:1aa5:e46f:8cb4%14]) with mapi id 15.20.3763.007; Sat, 9 Jan 2021
- 09:37:41 +0000
-From:   Dexuan Cui <decui@microsoft.com>
+        id S1726607AbhAIJ6v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 Jan 2021 04:58:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44090 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726178AbhAIJ6u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Jan 2021 04:58:50 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D94C061786;
+        Sat,  9 Jan 2021 01:58:10 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id m5so11296378wrx.9;
+        Sat, 09 Jan 2021 01:58:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=gL3/Ra544UmXMsRokx3MeIRI3LWNCM8pYM7Ye7rk538=;
+        b=P3yITzy4KP/TEzZpDthHQrkRRKfwsIwhSdxsF2VhudSCcA6HsEzvdE93cBKUe39wbB
+         v6qg9G/6HIA6pzN+O25I5WP1MmgH08PDxzfLzrfA75MZMBDqXUmSe82IqyJXxYFBsinX
+         OZ43l8tKeaTZ4yGT6sxyGH0bube7rX0hDtp6BrSFso1tHfTDCITu8eQdPxHQZU/7Gm2Q
+         Hj8veQN5HLpqODc6tfKIxygKQjzsFpld2eXCR4dWedJHEKctv2d7f8ZuRvi9kg6YqgNG
+         VcITkCm+PpS2VaHiFTR7v1OLoKC/zWyurMbJ5AV6FvYVH5ubyA2fWK+hp3qiaBgfSt+y
+         IYFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=gL3/Ra544UmXMsRokx3MeIRI3LWNCM8pYM7Ye7rk538=;
+        b=riNRPbxmycAU/pAy12o6GortDjsXwmoijCo5J5j7i7RQythldmE7AjHbJCB457TRnF
+         e69/3T8q+0p4bR4JKN9q4LM0UC81UcBOEMAojXXnAiOhvh4jp87qDZL4ksw4oN+gsHlf
+         DhvaApiL1Pgr9u5G14mCLiooZwXE+Y37Ir5BX/NqsA7SSSOyzLLEHITf7QegaGIG7J78
+         Dt2KIcwAiV/19wEqQBvoqHZ9Z8cI/laM/Gr46DaO3oWdnByT7qsbguTLdME/J8JdqKfj
+         gmpk5e2hP1nsH1DF+zII1zauGeWAaBohKI224uQSLX8ysiVMZFWdZr/VPQ86dtIG5l7g
+         p9Dg==
+X-Gm-Message-State: AOAM530xZ7PZVEjxdHKl6+tpy9opun7i6CQmB13Y0TJMUmm5hipE/tIH
+        2PYguWTeLvRdnQrgXWNyyZk=
+X-Google-Smtp-Source: ABdhPJywEA2rYMsdN+vyJkjpq/bBJv58ZCK0HdiRSxqB5tBhoqfQY1wFavOpqlxRhU4ZjJhOqr/REw==
+X-Received: by 2002:a5d:4bc2:: with SMTP id l2mr7612962wrt.204.1610186288681;
+        Sat, 09 Jan 2021 01:58:08 -0800 (PST)
+Received: from [192.168.1.211] ([2.29.208.120])
+        by smtp.gmail.com with ESMTPSA id l7sm14838781wme.4.2021.01.09.01.58.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Jan 2021 01:58:07 -0800 (PST)
+Subject: Re: [PATCH 18/18] ipu3: Add driver for dummy INT3472 ACPI device
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "len.brown@intel.com" <len.brown@intel.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "rui.zhang@intel.com" <rui.zhang@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        "dwaipayanray1@gmail.com" <dwaipayanray1@gmail.com>
-Subject: RE: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by buffer
- overflow
-Thread-Topic: [PATCH] ACPI: scan: Fix a Hyper-V Linux VM panic caused by
- buffer overflow
-Thread-Index: AQHW5msTvOtVmGN0LkKiF72uk6T6VQ==
-Date:   Sat, 9 Jan 2021 09:37:41 +0000
-Message-ID: <MWHPR21MB0798C62978C2E6F23FAB953EBFAD9@MWHPR21MB0798.namprd21.prod.outlook.com>
-References: <20210108072348.34091-1-decui@microsoft.com>
- <MWHPR21MB0798B23AD969666FCDAD5095BFAD9@MWHPR21MB0798.namprd21.prod.outlook.com>
- <CAHp75VfPsMNZxN-hA3Cytjpm0K9xGoQpcGY_FZR4hUrtyqMj=w@mail.gmail.com>
-In-Reply-To: <CAHp75VfPsMNZxN-hA3Cytjpm0K9xGoQpcGY_FZR4hUrtyqMj=w@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=1d08c07d-780a-4e7e-b7aa-36d737930967;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-01-09T09:15:15Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=microsoft.com;
-x-originating-ip: [73.140.237.219]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: ccd3669c-ade4-44dc-4d59-08d8b48235fa
-x-ms-traffictypediagnostic: MWHPR21MB0512:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR21MB0512AE73186D45910F604708BFAD9@MWHPR21MB0512.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4T1IBK0C+4i+t2ihKm51txQ3PFWfqjBLqkSIZVHLcLOOegaW+twrOAUiagvqtjsrCIw0WoU2jXZw41IwUvWz10P6NkPXUebj9aqFnUd8GqzbfmyghAnn/yoWByOMH1dDtX+VX7lttZAODBngdE4e3EMyDtkO0+5bu1/iwoUTLizKbWvNJ2pJRmFe4D/MYVjqymmkXeAwHhjZGfS0TFnVBSnFwUTyC1M8w5k6TMLGaTLWpzEbh0b7a9+LZigWHo7neGNIID6MEMGmHN38k8UyqWrzkq6JWxQBLwi9KnExN4dK6vk45qirDTplfDur4CoXWzqDul0MGW7/nP+nl6mhjFWZxCq/dzQocYkKY4QCV2BFrx13JLsUZ/s3WWlsI3UQs0Kd+ZGvyrMkpibGCkDvw5sTjcv1Z9w1dXhm+vcBmi4795sC5IjePDOxGdQlFoj/oNoxrPzY9TyHr5xVT3ue6A==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB0798.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(376002)(346002)(39860400002)(366004)(186003)(4326008)(5660300002)(6916009)(9686003)(55016002)(83380400001)(8990500004)(82960400001)(82950400001)(478600001)(6506007)(10290500003)(7696005)(71200400001)(54906003)(66476007)(8936002)(64756008)(66946007)(66446008)(26005)(76116006)(316002)(33656002)(8676002)(66556008)(52536014)(86362001)(2906002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?Dh9Uo3EWBapEaSgXwoXCuJack4/pSC1pexK4udshm6p+uT8ycL67DJpUhqwa?=
- =?us-ascii?Q?+HPDSQqiuF9gWFMkPJqNk3h0IVr6G8usNwHTH7e5L5NPymLM0nK1Ms/G2/zP?=
- =?us-ascii?Q?2Q9iZAxWqtQOcLh5BTi+sMMYLDOCAOwgiYaXEcZlNIBd8SFBFP1BFrzIsG1v?=
- =?us-ascii?Q?htYvr63tPUxAfO+nCo2rl5HgqmoUbUL9gcfu9sti6Oyrcvn0gdYt4uHuwE0Q?=
- =?us-ascii?Q?rLaFdxZCCyJz7mRZUGurScVx4QUOXIsIjiV0JJ0a6/GhZkmLFoQQ7C2GWQqr?=
- =?us-ascii?Q?p/o5NhAVJ5r4Ve299fw9t+VhtCgdbCPf1Vz+YSCA7Arof3l4bLLz9A7byQiD?=
- =?us-ascii?Q?6QQG/4BfpmV6KPNysUFPIPRJc28hjZSdJv6ypT+pCCUn1w8JuYpWlbvzuBWN?=
- =?us-ascii?Q?WgUSSAqCh1MtFFjAI2KBzJPuAKORRibh3Pa7JurwtJLs9uLFWJqrioi6p3ry?=
- =?us-ascii?Q?EGbfzYZZ0NQEef5llQoG1+y6R1lL9eeQxxC2K+1kRykk1Ds75dkYaQC75tVT?=
- =?us-ascii?Q?31JVRb1OqayY8LIAdPn+2K04Sn3akvWKx+Vckv4myuQ/xVtxzDA7ktLH611O?=
- =?us-ascii?Q?rwhztTtMMEb0gZXYlDDRVrx7Zz7CEk3UQdfNXOb9vf5v8pAC1zThD4p5Q/Fp?=
- =?us-ascii?Q?fRSLb26a9Dyv/R8/1aGg9hTflhcMS0IOAO+EMB2BhMektnq2uJNt4jSA4Dm+?=
- =?us-ascii?Q?asAAfuxNQSI1DfILS6vYXMatBjqfrl7bCagg9ykuNH0uacofz5bBNH+xPVTn?=
- =?us-ascii?Q?TULc4c4WHUVZqnpT3wRABcZqzZXbl+uzYZBaKi+4/7eHCAkQAhi2EmFPu4L0?=
- =?us-ascii?Q?sYm/RhlpGb8C3K8JK4MQ1KpUwwIpJsyIesS6MGi/EFUqp9pcL4KYGcquCNiB?=
- =?us-ascii?Q?FSWVG3t3h+DLEks9ZF34aZaHDMDK7g3AIOCvCVdAUVPnGqa+abeezjEBEyAt?=
- =?us-ascii?Q?bfsdKvdLr14F+6tSS69VuRUkhaSpkNKrJH+BoewKBk0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>, Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tian Shu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        "kieran.bingham+renesas@ideasonboard.com" 
+        <kieran.bingham+renesas@ideasonboard.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Jordan Hand <jorhand@linux.microsoft.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20201130133129.1024662-1-djrscally@gmail.com>
+ <20201130133129.1024662-19-djrscally@gmail.com>
+ <20201130200719.GB4077@smile.fi.intel.com>
+ <778f23fc-b99c-33a2-642d-ca0e47fd4ed5@gmail.com>
+ <CAHp75VeYOqJt9iKaGPA4=dkb2kYUbqUV4PGTn8uSsnUt_kSGSw@mail.gmail.com>
+ <360b3783-b0ff-bdb8-5bcf-ec88a554503f@gmail.com>
+ <CAHp75Vcy878xKUUUDH5ory9uS-Vhhx_W1PZc=S6hsSLYJ0i60w@mail.gmail.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <4cec819b-603f-102c-5e83-61c37b495973@gmail.com>
+Date:   Sat, 9 Jan 2021 09:58:05 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB0798.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccd3669c-ade4-44dc-4d59-08d8b48235fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2021 09:37:41.5570
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6NDPnrixMqiJoEcJj0Bxp58F/Uj7KeGXMiCxWQ1iDjL0JeG/VhWXaPV+b7inRSoCBuWJC99x6Rgyjlr4TWwLvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR21MB0512
+In-Reply-To: <CAHp75Vcy878xKUUUDH5ory9uS-Vhhx_W1PZc=S6hsSLYJ0i60w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> From: Andy Shevchenko <andy.shevchenko@gmail.com>=20
-> Sent: Saturday, January 9, 2021 12:52 AM
->>=20
->> Hi Rafael, Len, and all,
->> Can you please take a look at the v2 patch?
->>=20
->> The Linux mainline has been broken for several weeks when it
->> runs as a guest on Hyper-V, so we'd like this to be fixed ASAP,
->> as more people are being affected
->=20
-> I would like to see a warning printed when the dupped
-> string violates the spec.
 
-Hi Andy,
-Do you want a simple strlen() check like the below, or a full
-check of the AAA#### or NNNN#### format?
-
-Can we have the v2 (https://lkml.org/lkml/2021/1/8/53) merged=20
-first, and then we can add another patch for the format checking?
-
-I'm trying to do one thing in one patch so the patch is small enough
-for easy reviewing.
-
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index cb229e24c563..e6a5d997241c 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -97,7 +97,7 @@ void acpi_scan_table_handler(u32 event, void *table, void=
- *context);
- extern struct list_head acpi_bus_id_list;
-=20
- struct acpi_device_bus_id {
--	char bus_id[15];
-+	const char *bus_id;
- 	unsigned int instance_no;
- 	struct list_head node;
- };
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index a1b226eb2ce2..3b9902e5d965 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -486,6 +486,7 @@ static void acpi_device_del(struct acpi_device *device)
- 				acpi_device_bus_id->instance_no--;
- 			else {
- 				list_del(&acpi_device_bus_id->node);
-+				kfree_const(acpi_device_bus_id->bus_id);
- 				kfree(acpi_device_bus_id);
- 			}
- 			break;
-@@ -674,7 +675,23 @@ int acpi_device_add(struct acpi_device *device,
- 	}
- 	if (!found) {
- 		acpi_device_bus_id =3D new_bus_id;
--		strcpy(acpi_device_bus_id->bus_id, acpi_device_hid(device));
-+		acpi_device_bus_id->bus_id =3D
-+			kstrdup_const(acpi_device_hid(device), GFP_KERNEL);
-+		if (!acpi_device_bus_id->bus_id) {
-+			pr_err(PREFIX "Memory allocation error for bus id\n");
-+			result =3D -ENOMEM;
-+			goto err_free_new_bus_id;
-+		}
-+
-+		/*
-+		 *  ACPI Spec v6.2, Section 6.1.5 _HID (Hardware ID): if the
-+		 * ID is a string, it must be of the form AAA#### or NNNN####,
-+		 * i.e. 7 chars or 8 characters.
-+		 */
-+		if (strlen(acpi_device_bus_id->bus_id) > 8)
-+			pr_warn(PREFIX "too long HID name: %s\n",
-+				acpi_device_bus_id->bus_id);
-+
- 		acpi_device_bus_id->instance_no =3D 0;
- 		list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
- 	}
-@@ -709,6 +726,10 @@ int acpi_device_add(struct acpi_device *device,
- 	if (device->parent)
- 		list_del(&device->node);
- 	list_del(&device->wakeup_list);
-+
-+ err_free_new_bus_id:
-+	if (!found)
-+		kfree(new_bus_id);
- 	mutex_unlock(&acpi_device_lock);
-=20
-  err_detach:
-
-
-
+On 09/01/2021 09:17, Andy Shevchenko wrote:
+> On Saturday, January 9, 2021, Daniel Scally <djrscally@gmail.com> wrote:
+>
+>> Hi Andy
+>>
+>> On 08/01/2021 12:17, Andy Shevchenko wrote:
+>>> On Fri, Jan 8, 2021 at 1:56 AM Daniel Scally <djrscally@gmail.com>
+>> wrote:
+>>>> On 30/11/2020 20:07, Andy Shevchenko wrote:
+>>>>> On Mon, Nov 30, 2020 at 01:31:29PM +0000, Daniel Scally wrote:
+>>> ...
+>>>
+>>>>> It's solely Windows driver design...
+>>>>> Luckily I found some information and can clarify above table:
+>>>>>
+>>>>> 0x00 Reset
+>>>>> 0x01 Power down
+>>>>> 0x0b Power enable
+>>>>> 0x0c Clock enable
+>>>>> 0x0d LED (active high)
+>>>>>
+>>>>> The above text perhaps should go somewhere under Documentation.
+>>>> Coming back to this; there's a bit of an anomaly with the 0x01 Power
+>>>> Down pin for at least one platform.  As listed above, the OV2680 on one
+>>>> of my platforms has 3 GPIOs defined, and the table above gives them as
+>>>> type Reset, Power down and Clock enable. I'd assumed from this table
+>>>> that "power down" meant a powerdown GPIO (I.E. the one usually called
+>>>> PWDNB in Omnivision datasheets and "powerdown" in drivers), but the
+>>>> datasheet for the OV2680 doesn't list a separate reset and powerdown
+>>>> pin, but rather a single pin that performs both functions.
+>>> All of them are GPIOs, the question here is how they are actually
+>>> connected on PCB level and I have no answer to that. You have to find
+>>> schematics somewhere.
+>> Yeah; I've been trying to get those but so far, no dice.
+>>
+>>
+> Can you share the exact name / model of the hardware in question here? I
+> would try to search for the schematics.
+Lenovo Miix 510-12ISK 80U1 - I also tried asking Lenovo for them but
+that didn't really go anywhere; but of course I'm just contacting their
+usual support line and explaining what I'm after, so I didn't really
+expect it to.
+>
+>
+>>>> Am I wrong to treat that as something that ought to be mapped as a
+>>>> powerdown GPIO to the sensors? Or do you know of any other way to
+>>>> reconcile that discrepancy?
+>>> The GPIOs can go directly to the sensors or be a control pin for
+>>> separate discrete power gates.
+>>> So, we can do one of the following:
+>>>  a) present PD GPIO as fixed regulator;
+>>>  b) present PD & Reset GPIOs as regulator;
+>>>  c) provide them as is to the sensor and sensor driver must do what it
+>>> considers right.
+>>>
+>>> Since we don't have schematics (yet?) and we have plenty of variations
+>>> of sensors, I would go to c) and update the driver of the affected
+>>> sensor as needed. Because even if you have separate discrete PD for
+>>> one sensor on one platform there is no guarantee that it will be the
+>>> same on another. Providing a "virtual" PD in a sensor that doesn't
+>>> support it is the best choice I think. Let's hear what Sakari and
+>>> other experienced camera sensor developers say.
+>>>
+>>> My vision is purely based on electrical engineering background,
+>>> experience with existing (not exactly camera) sensor drivers and
+>>> generic cases.
+>> Alright; thanks. I'm happy with C being the answer, so unless someone
+>> thinks differently I'll work on that basis.
+>>
+>>
+> Laurent answered that it is not the best choice from camera sensor driver
+> perspective.
+Yep, seen - no problem. I will look at doing it via the method he suggests.
