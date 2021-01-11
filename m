@@ -2,99 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BAB22F0F19
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Jan 2021 10:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D54B2F12AC
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Jan 2021 13:59:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727716AbhAKJ3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Jan 2021 04:29:05 -0500
-Received: from foss.arm.com ([217.140.110.172]:51098 "EHLO foss.arm.com"
+        id S1727645AbhAKM60 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Jan 2021 07:58:26 -0500
+Received: from mga09.intel.com ([134.134.136.24]:19306 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726273AbhAKJ3F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Jan 2021 04:29:05 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88323101E;
-        Mon, 11 Jan 2021 01:28:19 -0800 (PST)
-Received: from e123083-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E58003F70D;
-        Mon, 11 Jan 2021 01:28:14 -0800 (PST)
-Date:   Mon, 11 Jan 2021 10:28:11 +0100
-From:   Morten Rasmussen <morten.rasmussen@arm.com>
-To:     Tim Chen <tim.c.chen@linux.intel.com>
-Cc:     Barry Song <song.bao.hua@hisilicon.com>,
-        valentin.schneider@arm.com, catalin.marinas@arm.com,
-        will@kernel.org, rjw@rjwysocki.net, vincent.guittot@linaro.org,
-        lenb@kernel.org, gregkh@linuxfoundation.org,
-        jonathan.cameron@huawei.com, mingo@redhat.com,
-        peterz@infradead.org, juri.lelli@redhat.com,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-        mgorman@suse.de, mark.rutland@arm.com, sudeep.holla@arm.com,
-        aubrey.li@linux.intel.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linuxarm@openeuler.org, xuwei5@huawei.com,
-        prime.zeng@hisilicon.com, tiantao6@hisilicon.com
-Subject: Re: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters
- and add cluster scheduler
-Message-ID: <20210111092811.GB47324@e123083-lin>
-References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
- <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
- <20210108151241.GA47324@e123083-lin>
- <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
+        id S1726686AbhAKM60 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Jan 2021 07:58:26 -0500
+IronPort-SDR: LoT3vkwoCskR2FOcijk4ohDA0eQpWoCBxt6Y4YZLBLQySxAR9oQwrZtsOqCNdqdW+tMNO8PNgu
+ 5/LjBgUW4t0w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9860"; a="178002962"
+X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
+   d="scan'208";a="178002962"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 04:56:36 -0800
+IronPort-SDR: rYQXHqKv5O3uuQA3e427T24HknA9G3wkZhKo2mwyILHTWFz9r0QGNRFJzThPjPlIQ2vfrvk3st
+ f8enqWbH0Zdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
+   d="scan'208";a="464152338"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 11 Jan 2021 04:56:33 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 11 Jan 2021 14:56:32 +0200
+Date:   Mon, 11 Jan 2021 14:56:32 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 0/2] Remove one more platform_device_add_properties() call
+Message-ID: <20210111125632.GA2020859@kuha.fi.intel.com>
+References: <20201123153148.52647-1-heikki.krogerus@linux.intel.com>
+ <CAJZ5v0jAaz2zELkJoKjHtxyfuKEi=ORuCCad-F0yp6KephieGg@mail.gmail.com>
+ <20201204112318.GA4013126@kuha.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
+In-Reply-To: <20201204112318.GA4013126@kuha.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 08, 2021 at 12:22:41PM -0800, Tim Chen wrote:
+On Fri, Dec 04, 2020 at 01:23:22PM +0200, Heikki Krogerus wrote:
+> Hi Felipe,
 > 
-> 
-> On 1/8/21 7:12 AM, Morten Rasmussen wrote:
-> > On Thu, Jan 07, 2021 at 03:16:47PM -0800, Tim Chen wrote:
-> >> On 1/6/21 12:30 AM, Barry Song wrote:
-> >>> ARM64 server chip Kunpeng 920 has 6 clusters in each NUMA node, and each
-> >>> cluster has 4 cpus. All clusters share L3 cache data while each cluster
-> >>> has local L3 tag. On the other hand, each cluster will share some
-> >>> internal system bus. This means cache is much more affine inside one cluster
-> >>> than across clusters.
-> >>
-> >> There is a similar need for clustering in x86.  Some x86 cores could share L2 caches that
-> >> is similar to the cluster in Kupeng 920 (e.g. on Jacobsville there are 6 clusters
-> >> of 4 Atom cores, each cluster sharing a separate L2, and 24 cores sharing L3).  
-> >> Having a sched domain at the L2 cluster helps spread load among 
-> >> L2 domains.  This will reduce L2 cache contention and help with
-> >> performance for low to moderate load scenarios.
+> On Mon, Nov 23, 2020 at 06:06:31PM +0100, Rafael J. Wysocki wrote:
+> > On Mon, Nov 23, 2020 at 4:32 PM Heikki Krogerus
+> > <heikki.krogerus@linux.intel.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > I originally introduced these as part of my series where I was
+> > > proposing PM ops for software nodes [1], but since that still needs
+> > > work, I'm sending these two separately.
+> > >
+> > > So basically I'm only modifying dwc3-pci.c so it registers a software
+> > > node directly at this point. That will remove one more user of
+> > > platform_device_add_properties().
+> > >
+> > > [1] https://lore.kernel.org/lkml/20201029105941.63410-1-heikki.krogerus@linux.intel.com/
+> > >
+> > > thanks,
+> > >
+> > > Heikki Krogerus (2):
+> > >   software node: Introduce device_add_software_node()
+> > >   usb: dwc3: pci: Register a software node for the dwc3 platform device
+> > >
+> > >  drivers/base/swnode.c       | 69 ++++++++++++++++++++++++++++++++-----
+> > >  drivers/usb/dwc3/dwc3-pci.c | 61 +++++++++++++++++++-------------
+> > >  include/linux/property.h    |  3 ++
+> > >  3 files changed, 100 insertions(+), 33 deletions(-)
+> > >
+> > > --
 > > 
-> > IIUC, you are arguing for the exact opposite behaviour, i.e. balancing
-> > between L2 caches while Barry is after consolidating tasks within the
-> > boundaries of a L3 tag cache. One helps cache utilization, the other
-> > communication latency between tasks. Am I missing something? 
+> > These look good to me.
 > > 
-> > IMHO, we need some numbers on the table to say which way to go. Looking
-> > at just benchmarks of one type doesn't show that this is a good idea in
-> > general.
-> > 
+> > If you want me to take them, though, I need an ACK from the dwc3 side.
 > 
-> I think it is going to depend on the workload.  If there are dependent
-> tasks that communicate with one another, putting them together
-> in the same cluster will be the right thing to do to reduce communication
-> costs.  On the other hand, if the tasks are independent, putting them together on the same cluster
-> will increase resource contention and spreading them out will be better.
+> Is this OK?
 
-Agree. That is exactly where I'm coming from. This is all about the task
-placement policy. We generally tend to spread tasks to avoid resource
-contention, SMT and caches, which seems to be what you are proposing to
-extend. I think that makes sense given it can produce significant
-benefits.
+I think this went under you radar, so I'll resend these.
 
-> 
-> Any thoughts on what is the right clustering "tag" to use to clump
-> related tasks together?
-> Cgroup? Pid? Tasks with same mm?
+Br,
 
-I think this is the real question. I think the closest thing we have at
-the moment is the wakee/waker flip heuristic. This seems to be related.
-Perhaps the wake_affine tricks can serve as starting point?
-
-Morten
+-- 
+heikki
