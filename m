@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B447C2F23D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 01:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 019492F23CC
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 01:33:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390900AbhALA0B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S2388431AbhALA0B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Mon, 11 Jan 2021 19:26:01 -0500
-Received: from mga01.intel.com ([192.55.52.88]:57931 "EHLO mga01.intel.com"
+Received: from mga01.intel.com ([192.55.52.88]:57927 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390903AbhAKXCp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Jan 2021 18:02:45 -0500
-IronPort-SDR: S/M48+TKmN+BdBJOdmFZkGRIrPI+H1Eb8zEFEludaFZKvbeCGbBbTcPnE+ecNDPMieX4emj9l2
- LFgMxOFQQfhQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="196564946"
+        id S2390914AbhAKXDA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Jan 2021 18:03:00 -0500
+IronPort-SDR: cQQKTS6mSiQ/DJav3kdz4g+rgxEgY4a0jQkxaZWSfV0KDQuq1LcDp/mluvgQUDEsOOITI4X4me
+ hEyOJqzhkARw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="196564954"
 X-IronPort-AV: E=Sophos;i="5.79,339,1602572400"; 
-   d="scan'208";a="196564946"
+   d="scan'208";a="196564954"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 15:01:25 -0800
-IronPort-SDR: kGubCYlCfSM/8WYR0sgxK/WSFaTh72jgzicklg+hvHwn0UbBxmJCl/v1z/bLr6ovfOGdv2zin3
- nzi64MGvnZGA==
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 15:01:27 -0800
+IronPort-SDR: 9NXKWS3C/Dq448GHF+a9V9CcH1lLHTwf7ffxW/mDer/kc4dQsTFmjm80GaqP4jWn590cLDm4+N
+ 6GHOKCP6o/MQ==
 X-IronPort-AV: E=Sophos;i="5.79,339,1602572400"; 
-   d="scan'208";a="381181278"
+   d="scan'208";a="381181292"
 Received: from yyang31-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.142.71])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 15:01:25 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 15:01:27 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
  fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
  via Mailbox Transport; Mon, 11 Jan 2021 14:51:43 -0800
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+Received: from fmsmsx605.amr.corp.intel.com (10.18.126.85) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.1713.5; Mon, 11 Jan 2021 14:51:42 -0800
 Received: from fmsmga008.fm.intel.com (10.253.24.58) by
- orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
  via Frontend Transport; Mon, 11 Jan 2021 14:51:42 -0800
-IronPort-SDR: kEPmQlJck7soFNnY4OmysN+yLBgksCzipRRYR833FRvRqvLuayPCtT4wcxhZVJmwBZx29pJo7T
- ejSBIM8E7wwQ==
+IronPort-SDR: ZxpCVApPOpk0948rEmPyzjcAQIfRJ4RpvKSw9tMLqqgCHH8ZLE8YbvsQijFc5W547cymkbrvI1
+ vXGRFrgpg1ig==
 X-IronPort-AV: E=Sophos;i="5.79,339,1602572400"; 
-   d="scan'208";a="352778034"
+   d="scan'208";a="352778038"
 Received: from yyang31-mobl.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.142.71])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 14:51:39 -0800
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 14:51:40 -0800
 From:   Ben Widawsky <ben.widawsky@intel.com>
 To:     <linux-cxl@vger.kernel.org>
 CC:     Ben Widawsky <ben.widawsky@intel.com>,
@@ -58,42 +58,28 @@ CC:     Ben Widawsky <ben.widawsky@intel.com>,
         "Randy Dunlap" <rdunlap@infradead.org>,
         Christoph Hellwig <hch@infradead.org>,
         <daniel.lll@alibaba-inc.com>
-Subject: [RFC PATCH v3 11/16] taint: add taint for direct hardware access
-Date:   Mon, 11 Jan 2021 14:51:15 -0800
-Message-ID: <20210111225121.820014-12-ben.widawsky@intel.com>
+Subject: [RFC PATCH v3 11/16] taint: add taint for unfettered hardware access
+Date:   Mon, 11 Jan 2021 14:51:16 -0800
+Message-ID: <20210111225121.820014-13-ben.widawsky@intel.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210111225121.820014-1-ben.widawsky@intel.com>
 References: <20210111225121.820014-1-ben.widawsky@intel.com>
 Content-Transfer-Encoding: 7BIT
-X-MS-Exchange-Organization-Network-Message-Id: 17b4e2db-9911-417e-d3c8-08d8b6837716
+X-MS-Exchange-Organization-Network-Message-Id: 2f91fe97-7d6f-4d43-1e1f-08d8b6837709
 Content-Type:   text/plain; charset=US-ASCII
 X-MS-Exchange-Organization-AVStamp-Enterprise: 1.0
 X-MS-Exchange-Organization-SCL: -1
-X-MS-Exchange-Organization-AuthSource: ORSMSX609.amr.corp.intel.com
+X-MS-Exchange-Organization-AuthSource: fmsmsx605.amr.corp.intel.com
 X-MS-Exchange-Organization-AuthAs: Anonymous
-X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.1930372
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:00.6604597
 X-MS-Exchange-Processed-By-BccFoldering: 15.01.1713.001
 MIME-Version: 1.0
-X-TUID: WLsKeG+bl5Oe
+X-TUID: 3FTTYK+k8WaG
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For drivers that moderate access to the underlying hardware it is
-sometimes desirable to allow userspace to bypass restrictions. Once
-userspace has done this, the driver can no longer guarantee the sanctity
-of either the OS or the hardware. When in this state, it is helpful for
-kernel developers to be made aware (via this taint flag) of this fact
-for subsequent bug reports.
-
-Example usage:
-- Hardware xyzzy accepts 2 commands, waldo and fred.
-- The xyzzy driver provides an interface for using waldo, but not fred.
-- quux is convinced they really need the fred command.
-- xyzzy driver allows quux to frob hardware to initiate fred.
-  - kernel gets tainted.
-- turns out fred command is borked, and scribbles over memory.
-- developers laugh while closing quux's subsequent bug report.
+Make notes about why we use this.
 
 Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 ---
