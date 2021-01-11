@@ -2,100 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2088A2F0B79
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Jan 2021 04:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BAB22F0F19
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Jan 2021 10:29:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbhAKDaT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 Jan 2021 22:30:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbhAKDaS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Jan 2021 22:30:18 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91ECC061786
-        for <linux-acpi@vger.kernel.org>; Sun, 10 Jan 2021 19:29:38 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id i7so11714012pgc.8
-        for <linux-acpi@vger.kernel.org>; Sun, 10 Jan 2021 19:29:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=+190HtGxYGthJ3UarYG4jBGiYtQEc6153YIJJk+ijNY=;
-        b=LuCgDnHErXxvO1PGQ6i/XYWWhYB3y1kt4JQrM24JWllHTTOymwP5NiRWkT8Yhg8jDk
-         jEpoV5AWOIM5uezdU9++Df5S1ztN25zpvqbXVByw8NFrkzhpDhUwNRfK4OASGHK4/PXe
-         85Zl4tSt7+xCs8ms+/2+NIyPvvFWnNFMzb67B/WbhT7Xsoaaf8TrGbCvion0tPWzPfre
-         qwV0j0F4imd9ZUb1/zAJgtuEZEBQ8Xt0noWtPgEUDu9eEFCk+pIdOhL85YDm7aUzFVDl
-         Pw/MUwJ9sDVp5feHXyt3Y346Ok1YcT+vC1kdI1KfcZFDsVFgZWNuAdg1gzzK//lqS9y9
-         /G3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=+190HtGxYGthJ3UarYG4jBGiYtQEc6153YIJJk+ijNY=;
-        b=im7T/MoxACCwkMLZKWYt4cnMtRAyVgU031BouCRtO40ugcliI8MvJyXeaq0lvZt4IX
-         +LTOhz3/SbYVav/btzQX1P3PhDBHzliZiNcYMzgi7bLFlJiDgDF1igwUdHKkvpoiAUR5
-         H8ZXzhBc6O9HMv98q6K1unfPAuO0v5PvQ+iCBa4DF7YV/4diwEPUPVFQk4X8Q0bm6JO/
-         YquJ0T85MU3YRjJHfgd3Q3gmKA9qo3Ujjf/JmJoZvbPqSS6c7oOrL0JByVRNgxOk0BeA
-         GfWVhPId1n2NFZb9VJHlnUeDKhaK/GNIQMUoy/OQQktCmhrmx12BZbV3SbweEsqD9Bux
-         x0yQ==
-X-Gm-Message-State: AOAM530ideumc5Z4aYBsdPL2MJ3M9D23yg6UT+HrQj/ccSTve2vQqYpP
-        PZgELBYHGUCMqkY+FoCAU0CfJQ==
-X-Google-Smtp-Source: ABdhPJwwQFR7I7/0eiUTAGB7SUuXQ0WuUsz/4ODs/+uu4PeDeTMH0rlqowLXpZ/fV/xQ7w+hBPAYWg==
-X-Received: by 2002:a63:fb49:: with SMTP id w9mr17867506pgj.403.1610335778268;
-        Sun, 10 Jan 2021 19:29:38 -0800 (PST)
-Received: from ?IPv6:240e:362:4bf:e00:57d:5da4:e49:50d? ([240e:362:4bf:e00:57d:5da4:e49:50d])
-        by smtp.gmail.com with ESMTPSA id k25sm16744621pfi.10.2021.01.10.19.29.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Jan 2021 19:29:37 -0800 (PST)
-Subject: Re: [PATCH v9 05/10] uacce: Enable IOMMU_DEV_FEAT_IOPF
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>, joro@8bytes.org,
-        will@kernel.org
-Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        vdumpa@nvidia.com, shameerali.kolothum.thodi@huawei.com,
-        vivek.gautam@arm.com, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zhou Wang <wangzhou1@hisilicon.com>
-References: <20210108145217.2254447-1-jean-philippe@linaro.org>
- <20210108145217.2254447-6-jean-philippe@linaro.org>
-From:   Zhangfei Gao <zhangfei.gao@linaro.org>
-Message-ID: <2cef454d-d872-d306-ceca-c7ae1dbfea1e@linaro.org>
-Date:   Mon, 11 Jan 2021 11:29:05 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727716AbhAKJ3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Jan 2021 04:29:05 -0500
+Received: from foss.arm.com ([217.140.110.172]:51098 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726273AbhAKJ3F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Jan 2021 04:29:05 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88323101E;
+        Mon, 11 Jan 2021 01:28:19 -0800 (PST)
+Received: from e123083-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E58003F70D;
+        Mon, 11 Jan 2021 01:28:14 -0800 (PST)
+Date:   Mon, 11 Jan 2021 10:28:11 +0100
+From:   Morten Rasmussen <morten.rasmussen@arm.com>
+To:     Tim Chen <tim.c.chen@linux.intel.com>
+Cc:     Barry Song <song.bao.hua@hisilicon.com>,
+        valentin.schneider@arm.com, catalin.marinas@arm.com,
+        will@kernel.org, rjw@rjwysocki.net, vincent.guittot@linaro.org,
+        lenb@kernel.org, gregkh@linuxfoundation.org,
+        jonathan.cameron@huawei.com, mingo@redhat.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, mark.rutland@arm.com, sudeep.holla@arm.com,
+        aubrey.li@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linuxarm@openeuler.org, xuwei5@huawei.com,
+        prime.zeng@hisilicon.com, tiantao6@hisilicon.com
+Subject: Re: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters
+ and add cluster scheduler
+Message-ID: <20210111092811.GB47324@e123083-lin>
+References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
+ <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
+ <20210108151241.GA47324@e123083-lin>
+ <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210108145217.2254447-6-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Jan 08, 2021 at 12:22:41PM -0800, Tim Chen wrote:
+> 
+> 
+> On 1/8/21 7:12 AM, Morten Rasmussen wrote:
+> > On Thu, Jan 07, 2021 at 03:16:47PM -0800, Tim Chen wrote:
+> >> On 1/6/21 12:30 AM, Barry Song wrote:
+> >>> ARM64 server chip Kunpeng 920 has 6 clusters in each NUMA node, and each
+> >>> cluster has 4 cpus. All clusters share L3 cache data while each cluster
+> >>> has local L3 tag. On the other hand, each cluster will share some
+> >>> internal system bus. This means cache is much more affine inside one cluster
+> >>> than across clusters.
+> >>
+> >> There is a similar need for clustering in x86.  Some x86 cores could share L2 caches that
+> >> is similar to the cluster in Kupeng 920 (e.g. on Jacobsville there are 6 clusters
+> >> of 4 Atom cores, each cluster sharing a separate L2, and 24 cores sharing L3).  
+> >> Having a sched domain at the L2 cluster helps spread load among 
+> >> L2 domains.  This will reduce L2 cache contention and help with
+> >> performance for low to moderate load scenarios.
+> > 
+> > IIUC, you are arguing for the exact opposite behaviour, i.e. balancing
+> > between L2 caches while Barry is after consolidating tasks within the
+> > boundaries of a L3 tag cache. One helps cache utilization, the other
+> > communication latency between tasks. Am I missing something? 
+> > 
+> > IMHO, we need some numbers on the table to say which way to go. Looking
+> > at just benchmarks of one type doesn't show that this is a good idea in
+> > general.
+> > 
+> 
+> I think it is going to depend on the workload.  If there are dependent
+> tasks that communicate with one another, putting them together
+> in the same cluster will be the right thing to do to reduce communication
+> costs.  On the other hand, if the tasks are independent, putting them together on the same cluster
+> will increase resource contention and spreading them out will be better.
 
+Agree. That is exactly where I'm coming from. This is all about the task
+placement policy. We generally tend to spread tasks to avoid resource
+contention, SMT and caches, which seems to be what you are proposing to
+extend. I think that makes sense given it can produce significant
+benefits.
 
-On 2021/1/8 下午10:52, Jean-Philippe Brucker wrote:
-> The IOPF (I/O Page Fault) feature is now enabled independently from the
-> SVA feature, because some IOPF implementations are device-specific and
-> do not require IOMMU support for PCIe PRI or Arm SMMU stall.
->
-> Enable IOPF unconditionally when enabling SVA for now. In the future, if
-> a device driver implementing a uacce interface doesn't need IOPF
-> support, it will need to tell the uacce module, for example with a new
-> flag.
->
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Zhangfei Gao <zhangfei.gao@linaro.org>
-> Cc: Zhou Wang <wangzhou1@hisilicon.com>
-Thanks Jean
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+> 
+> Any thoughts on what is the right clustering "tag" to use to clump
+> related tasks together?
+> Cgroup? Pid? Tasks with same mm?
 
+I think this is the real question. I think the closest thing we have at
+the moment is the wakee/waker flip heuristic. This seems to be related.
+Perhaps the wake_affine tricks can serve as starting point?
+
+Morten
