@@ -2,158 +2,281 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E262F3AA9
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 20:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F0C82F3D03
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jan 2021 01:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390350AbhALTe4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Jan 2021 14:34:56 -0500
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:43916 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388019AbhALTez (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jan 2021 14:34:55 -0500
-Received: by mail-oi1-f172.google.com with SMTP id q25so3540696oij.10;
-        Tue, 12 Jan 2021 11:34:39 -0800 (PST)
+        id S2438121AbhALVhZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Jan 2021 16:37:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32796 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437004AbhALUl0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jan 2021 15:41:26 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D92AC061786
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Jan 2021 12:40:46 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id w1so5356261ejf.11
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Jan 2021 12:40:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ct93Q3jRetKhaczI+6WcmnjHIFRP3Fo82VEGV+KynCk=;
+        b=T1cZ3JpkSXggl/Jkc5Ldu1myuVwPhCGRR6lqhbhAHv3xS6v+mjC6VwXUiCcBHC25JI
+         sb9pXAcR2De4/gHbvIQK58ATkuAIMTf8m0ZgZE26P2jThxM+b/ywIX6Gu2z+FyH0wWqI
+         8DFVg8H/XJthxJXuQvnTjakrBLaohUIK39TJ9dp1Wu2Tev0vDanE1M6tvq6gbTsrMYZi
+         fRb5OXVvMxBBACwBd5AVcfcv78E2i85gV9iyy6Vtoj0CfpbmHYeTroe17RJ5ajvbGH6H
+         k6CV8KJlnlEiKHnr/nVg+5HGrZtBNr0EowWx6PE5j9SDR6LkSOrpI1J1zsWPXsZ8PQed
+         7L0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=k32Qu3cNSiXcAEMafYSgn1kVqosninNEkgSTQf4f+b8=;
-        b=fp8Qd2NeuY+hQCJRQo4uUuCfnEB6p9MkS1IaFYgCRVKuy6wtKB/Wdldzw09ppKud7U
-         7cU0l0DEdHd4ct0xpoKnlNkRz+9+jv6Bvz4c+xliBpLVWGohRqIaM4Kn8fpQ3n18JH6r
-         j8WAhrZvRvEtImnp6ReCEtxaKgP5ivLbK1SGWtQMLvqBJqUeep4Zk7H95eD2jByy+RM1
-         AOixkbJs+W0zoV05/mJKvI+4x53dBSbZCSQjVuMRb6KhQYokWcZI56OVdvjC93l0DQC/
-         KSbOvl89Kq7UMlYM5slpSFDERmJczI0xeFQd7/Onu5fnXgX9l0IzQ8G5M4h2L7CbBXmt
-         dleQ==
-X-Gm-Message-State: AOAM533UOCjvmvI6AFxm0A56099trQC0cEcSDXlkZe0NSBw6sIVUl82E
-        hPaWtXWlFzaL6IFr0WGOe46xvvmlZSfp7nrfgfo=
-X-Google-Smtp-Source: ABdhPJx7Dl0rZbXiXD6L6Xfo9BZWZpfCRxNircr5Bvuzz8XDqjnp0tR+JuDzrI0pKoBbcHejVMVKTnBv1PaBNG8qTnA=
-X-Received: by 2002:aca:4892:: with SMTP id v140mr468391oia.71.1610480054580;
- Tue, 12 Jan 2021 11:34:14 -0800 (PST)
+        bh=Ct93Q3jRetKhaczI+6WcmnjHIFRP3Fo82VEGV+KynCk=;
+        b=RRyC/HWWBsLUNaKvCCW62wCCDZUmJ+mxnqI5mpXc7+uGOmPEA5CvZEGnqbLgq2xZya
+         iWmH1nDpmvxC9Gphughjs2Fsx+n87TIh8JLi8mY06wk6UrNCHHqEf+iK5fRpVsIQq85D
+         wc2XuWGGmpxA22HasqWXwfZyz22BPjs+WJLEBTQPQCuuadH4AJ2il1EV5lj5pp6ZAtY9
+         M1NDiAC2P74B9JKebeI06h69mmm4az/DZP8PSySfvNxhxMGpfMyKN1dSJFUJIpmPhcXL
+         AhKw8o9Hni5ZW8z2Da1QJwW6bRrlh/KST5BFWfUUNgJTS4TiUNnugSM7c6Om3byVn+Dn
+         acXg==
+X-Gm-Message-State: AOAM533rmp90J2sAX5WUH/b7vv6wHtcs7eoY7220hjtV/ZK9P6jQ2lw5
+        gMw3xqAA3lmNlgTXNs68QD+4zwlbGaSwc/xCBkywIw==
+X-Google-Smtp-Source: ABdhPJzHdcTzIjQRpyGIEfN0AC0DGdj1ibAM+dEAeusNPr+hYVUdYuvlpZNheWMWFHBf12PCInMSBiFgFRDLAzCahKY=
+X-Received: by 2002:a17:907:d8e:: with SMTP id go14mr439401ejc.472.1610484044797;
+ Tue, 12 Jan 2021 12:40:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20210107132838.396641-1-djrscally@gmail.com>
-In-Reply-To: <20210107132838.396641-1-djrscally@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 12 Jan 2021 20:34:03 +0100
-Message-ID: <CAJZ5v0gb9c-kWM4aAKm6UqbVKt7dyp6xJS5E=7yoPRnPP+msbw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] Add functionality to ipu3-cio2 driver allowing
- software_node connections to sensors on platforms designed for Windows
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        yong.zhi@intel.com, Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>, tian.shu.qiu@intel.com,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
-        Niklas Soderlund <niklas.soderlund+renesas@ragnatech.se>,
-        prabhakar.mahadev-lad.rj@bp.renesas.com,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+References: <20210111225121.820014-1-ben.widawsky@intel.com>
+ <20210111225121.820014-6-ben.widawsky@intel.com> <20210112191342.00006aad@Huawei.com>
+ <20210112192115.vhxjz3cr5vwjshwf@intel.com>
+In-Reply-To: <20210112192115.vhxjz3cr5vwjshwf@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Tue, 12 Jan 2021 12:40:35 -0800
+Message-ID: <CAPcyv4iDoFdBn7UkvRpAunLY=TM7vWnH77P3nGKStBfJ9YdwKA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 05/16] cxl/mem: Map memory device registers
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-cxl@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Jon Masters <jcm@jonmasters.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        daniel.lll@alibaba-inc.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 7, 2021 at 2:30 PM Daniel Scally <djrscally@gmail.com> wrote:
+On Tue, Jan 12, 2021 at 11:21 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
+> On 21-01-12 19:13:42, Jonathan Cameron wrote:
+> > On Mon, 11 Jan 2021 14:51:09 -0800
+> > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> >
+> > > All the necessary bits are initialized in order to find and map the
+> > > register space for CXL Memory Devices. This is accomplished by using the
+> > > Register Locator DVSEC (CXL 2.0 - 8.1.9.1) to determine which PCI BAR to
+> > > use, and how much of an offset from that BAR should be added.
+> > >
+> > > If the memory device registers are found and mapped a new internal data
+> > > structure tracking device state is allocated.
+> > >
+> > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> >
+> > Some issues with managed allocations being manually freed in remove.
+> > It shouldn't be necessary to do that.
+> >
+> > > ---
+> > >  drivers/cxl/cxl.h |  17 ++++++++
+> > >  drivers/cxl/mem.c | 100 +++++++++++++++++++++++++++++++++++++++++++++-
+> > >  drivers/cxl/pci.h |  14 +++++++
+> > >  3 files changed, 130 insertions(+), 1 deletion(-)
+> > >  create mode 100644 drivers/cxl/cxl.h
+> > >
+> > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> > > new file mode 100644
+> > > index 000000000000..d81d0ba4617c
+> > > --- /dev/null
+> > > +++ b/drivers/cxl/cxl.h
+> > > @@ -0,0 +1,17 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > > +/* Copyright(c) 2020 Intel Corporation. */
+> > > +
+> > > +#ifndef __CXL_H__
+> > > +#define __CXL_H__
+> > > +
+> > > +/**
+> > > + * struct cxl_mem - A CXL memory device
+> > > + * @pdev: The PCI device associated with this CXL device.
+> > > + * @regs: IO mappings to the device's MMIO
+> > > + */
+> > > +struct cxl_mem {
+> > > +   struct pci_dev *pdev;
+> > > +   void __iomem *regs;
+> > > +};
+> > > +
+> > > +#endif
+> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > index 005404888942..8301db34d2ff 100644
+> > > --- a/drivers/cxl/mem.c
+> > > +++ b/drivers/cxl/mem.c
+> > > @@ -5,6 +5,58 @@
+> > >  #include <linux/io.h>
+> > >  #include "acpi.h"
+> > >  #include "pci.h"
+> > > +#include "cxl.h"
+> > > +
+> > > +/**
+> > > + * cxl_mem_create() - Create a new &struct cxl_mem.
+> > > + * @pdev: The pci device associated with the new &struct cxl_mem.
+> > > + * @reg_lo: Lower 32b of the register locator
+> > > + * @reg_hi: Upper 32b of the register locator.
+> > > + *
+> > > + * Return: The new &struct cxl_mem on success, NULL on failure.
+> > > + *
+> > > + * Map the BAR for a CXL memory device. This BAR has the memory device's
+> > > + * registers for the device as specified in CXL specification.
+> > > + */
+> > > +static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+> > > +                                 u32 reg_hi)
+> > > +{
+> > > +   struct device *dev = &pdev->dev;
+> > > +   struct cxl_mem *cxlm;
+> > > +   void __iomem *regs;
+> > > +   u64 offset;
+> > > +   u8 bar;
+> > > +   int rc;
+> > > +
+> > > +   offset = ((u64)reg_hi << 32) | (reg_lo & CXL_REGLOC_ADDR_MASK);
+> > > +   bar = (reg_lo >> CXL_REGLOC_BIR_SHIFT) & CXL_REGLOC_BIR_MASK;
+> > > +
+> > > +   /* Basic sanity check that BAR is big enough */
+> > > +   if (pci_resource_len(pdev, bar) < offset) {
+> > > +           dev_err(dev, "BAR%d: %pr: too small (offset: %#llx)\n", bar,
+> > > +                   &pdev->resource[bar], (unsigned long long)offset);
+> > > +           return NULL;
+> > > +   }
+> > > +
+> > > +   rc = pcim_iomap_regions(pdev, BIT(bar), pci_name(pdev));
+> > > +   if (rc != 0) {
+> > > +           dev_err(dev, "failed to map registers\n");
+> > > +           return NULL;
+> > > +   }
+> > > +
+> > > +   cxlm = devm_kzalloc(&pdev->dev, sizeof(*cxlm), GFP_KERNEL);
+> > > +   if (!cxlm) {
+> > > +           dev_err(dev, "No memory available\n");
+> > > +           return NULL;
+> > > +   }
+> > > +
+> > > +   regs = pcim_iomap_table(pdev)[bar];
+> > > +   cxlm->pdev = pdev;
+> > > +   cxlm->regs = regs + offset;
+> > > +
+> > > +   dev_dbg(dev, "Mapped CXL Memory Device resource\n");
+> > > +   return cxlm;
+> > > +}
+> > >
+> > >  static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> > >  {
+> > > @@ -33,7 +85,8 @@ static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> > >  static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > >  {
+> > >     struct device *dev = &pdev->dev;
+> > > -   int rc, regloc;
+> > > +   struct cxl_mem *cxlm;
+> > > +   int rc, regloc, i;
+> > >
+> > >     rc = cxl_bus_acquire(pdev);
+> > >     if (rc != 0) {
+> > > @@ -41,15 +94,59 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > >             return rc;
+> > >     }
+> > >
+> > > +   rc = pcim_enable_device(pdev);
+> > > +   if (rc)
+> > > +           return rc;
+> > > +
+> > >     regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
+> > >     if (!regloc) {
+> > >             dev_err(dev, "register location dvsec not found\n");
+> > >             return -ENXIO;
+> > >     }
+> > > +   regloc += 0xc; /* Skip DVSEC + reserved fields */
+> > > +
+> > > +   rc = -ENXIO;
+> > > +   for (i = regloc; i < regloc + 0x24; i += 8) {
+> > > +           u32 reg_lo, reg_hi;
+> > > +           u8 reg_type;
+> > > +
+> > > +           /* "register low and high" contain other bits */
+> > > +           pci_read_config_dword(pdev, i, &reg_lo);
+> > > +           pci_read_config_dword(pdev, i + 4, &reg_hi);
+> > > +
+> > > +           reg_type =
+> > > +                   (reg_lo >> CXL_REGLOC_RBI_SHIFT) & CXL_REGLOC_RBI_MASK;
+> > > +
+> > > +           if (reg_type == CXL_REGLOC_RBI_MEMDEV) {
+> > > +                   rc = 0;
+> > > +                   cxlm = cxl_mem_create(pdev, reg_lo, reg_hi);
+> > > +                   if (!cxlm)
+> > > +                           rc = -ENODEV;
+> > > +                   break;
+> > > +           }
+> > > +   }
+> > > +
+> > > +   if (rc)
+> > > +           return rc;
+> > >
+> > > +   pci_set_drvdata(pdev, cxlm);
+> > After below cleanup, not needed yet..
+> >
+> > >     return 0;
+> > >  }
+> > >
+> > > +static void cxl_mem_remove(struct pci_dev *pdev)
+> > > +{
+> > > +   struct cxl_mem *cxlm;
+> > > +
+> > > +   cxlm = pci_get_drvdata(pdev);
+> > > +   if (!cxlm)
+> > > +           return;
+> > > +
+> > > +   kfree(cxlm);
+> >
+> > There is bunch of unwinding here that I'd expect to see in error paths
+> > for probe but it's not there...  Which made me wonder.
+> > So pcim_iounmap_regions is a managed interface, why are call it by
+> > hand?  Same is true of the allocation of cxlm above.  So currently this
+> > remove isn't doing anything useful.
+> >
+> > > +
+> > > +   pcim_iounmap_regions(pdev, ~0);
+> > > +   pci_set_drvdata(pdev, NULL);
+> >
+> > This hasn't been needed for a long time. Example of removal of similar...
+> > http://patchwork.ozlabs.org/project/netdev/patch/005801ceaec1$6b8d3320$42a79960$%25han@samsung.com/
+> >
 >
-> Hello all
+> Thanks. I copy pasted it from a driver that obviously hasn't been updated yet
+> :-)
 >
-> v4:
-> https://lore.kernel.org/linux-media/20210103231235.792999-1-djrscally@gmail.com/T/#m11b7cb977e1b73fba1e625c3d6a189e2943a7783
-> v3:
-> https://lore.kernel.org/linux-media/20201224010907.263125-1-djrscally@gmail.com/T/#m37b831bb2b406917d6db5da9acf9ed35df65d72d
-> v2:
-> https://lore.kernel.org/linux-media/20201217234337.1983732-1-djrscally@gmail.com/T/#md93fd090009b42a6a98aed892aff0d38cf07e0cd
-> v1:
-> https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
+> The kfree is still necessary though, right? Earlier in development, I just freed
+> it immediately after creation (this patch is obviously not super useful
+> functionally, but serves nicely for review).
 >
-> This series is to start adding support for webcams on laptops with ACPI tables
-> designed for use with CIO2 on Windows. This series extends the ipu3-cio2
-> driver to allow for patching the firmware via software_nodes if endpoints
-> aren't defined by ACPI.
->
-> I'm hopeful that most or all of this series could get picked up for 5.12.
-> We touch a few different areas (listed below), but I think the easiest
-> approach would be to merge everything through media tree. Rafael, Greg,
-> Mauro and Sergey; are you ok with that plan, or would you prefer a
-> different approach? Mauro; if that plan is ok (and of course assuming that
-> the rest of the patches are acked by their respective maintainers) could
-> we get a dedicated feature branch just in case the following series ends
-> up being ready in time too?
->
-> lib
->   lib/test_printf.c: Use helper function to unwind array of
->     software_nodes
->
-> base
->   software_node: Fix refcounts in software_node_get_next_child()
->   property: Return true in fwnode_device_is_available for NULL ops
->   property: Call fwnode_graph_get_endpoint_by_id() for fwnode->secondary
->   software_node: Enforce parent before child ordering of nodes arrays
->   software_node: unregister software_nodes in reverse order
->   include: fwnode.h: Define format macros for ports and endpoints
->
-> acpi
->   acpi: Add acpi_dev_get_next_match_dev() and helper macro
->
-> media
->   media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
->     match_fwnode()
->   ipu3-cio2: Add T: entry to MAINTAINERS
->   ipu3-cio2: Rename ipu3-cio2.c
->   ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
->   include: media: v4l2-fwnode: Include v4l2_fwnode_bus_type
->
-> Series-level changelog:
->         - Rebased onto 5.11-rc1
->
-> Thanks
-> Dan
->
-> Andy Shevchenko (1):
->   media: ipu3-cio2: Add headers that ipu3-cio2.h is direct user of
->
-> Daniel Scally (13):
->   software_node: Fix refcounts in software_node_get_next_child()
->   device property: Return true in fwnode_device_is_available for NULL
->     ops
->   device property: Call fwnode_graph_get_endpoint_by_id() for
->     fwnode->secondary
->   software_node: Enforce parent before child ordering of nodes arrays
->   software_node: unregister software_nodes in reverse order
->   device property: Define format macros for ports and endpoints
->   lib/test_printf.c: Use helper function to unwind array of
->     software_nodes
->   ipu3-cio2: Add T: entry to MAINTAINERS
->   ipu3-cio2: Rename ipu3-cio2.c
->   media: v4l2-core: v4l2-async: Check sd->fwnode->secondary in
->     match_fwnode()
->   ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro
->   media: v4l2-fwnode: Include v4l2_fwnode_bus_type
->   ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver
->
-> Heikki Krogerus (1):
->   software_node: Add support for fwnode_graph*() family of functions
+> So we can remove the actual allocation from this patch and move it to later if
+> you think it makes a big difference. My preference is to just leave it doing the
+> kfree and call it good.
 
-Please feel free to add
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-to all of the device properties patches in this series if that helps.
-
-Thanks!
+devm obviates the need for a cxl_mem_remove() to undo cxl_mem_probe()
+actions. This was all devm clean in v2. The other allocation done in
+the probe path is cxl_memdev() allocation, but that is undone by a
+devm_add_action_or_reset() to unregister the device along with typical
+device reference count rules.
