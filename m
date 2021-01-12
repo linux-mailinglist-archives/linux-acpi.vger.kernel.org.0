@@ -2,157 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 400502F29E4
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 09:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B00CC2F2A49
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 09:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732978AbhALIUt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Jan 2021 03:20:49 -0500
-Received: from mga03.intel.com ([134.134.136.65]:26289 "EHLO mga03.intel.com"
+        id S1733109AbhALIrP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Jan 2021 03:47:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727988AbhALIUt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Jan 2021 03:20:49 -0500
-IronPort-SDR: 3r6L7ruk2fxCsYTML7X+b0kBof9+ptgUfPVJeXkXXebv56L2NX6c7HS+9A+IXGX8LtRbgMgyhM
- 7rJtL+OFscKw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="178097520"
-X-IronPort-AV: E=Sophos;i="5.79,340,1602572400"; 
-   d="scan'208";a="178097520"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2021 00:20:30 -0800
-IronPort-SDR: v81JxTktJBdKRhzZIUClkOk0PGSIZ4icjzH7DW9ZgKxwMH/xX2dqcn4SGtu6aWumLPQUdrUcAA
- PJsGaZZAtUsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,340,1602572400"; 
-   d="scan'208";a="389089846"
-Received: from lkp-server01.sh.intel.com (HELO b73930e00c65) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 12 Jan 2021 00:20:28 -0800
-Received: from kbuild by b73930e00c65 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kzEui-00001X-6K; Tue, 12 Jan 2021 08:20:28 +0000
-Date:   Tue, 12 Jan 2021 16:19:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        id S1727057AbhALIrP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 Jan 2021 03:47:15 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4E2DD22D58;
+        Tue, 12 Jan 2021 08:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610441194;
+        bh=ciAXMWsi1OyGELvtpt/m0CxKb/Rp63H/1ov/9xDpsh0=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Dow033TIMEXBUvK39a+HbkQl5oExK3dD2H8Exj34bpAyN3K+YeGOG70iQbSyzOz59
+         K+v+e1FOSy3JA2W7gtCTMGyzZfdeaGk9hChJth9En0QvssfkedVOlk1/ZHP6V3hx1x
+         +5v7pZOhrffdm+fWLLEuOIhAl1NbhAw9IIDgv3eXALPd1EBSF0P2p8HibvAgeyqJT6
+         LXhfpGzcNFBrDAn9txs+Pg8yKuEXGWJctpWyPx9qJIbteSwoRRRwdpD6SRoGLE8gHT
+         dE5Z+puoi+dCmOhX7vvpMMXcycTaPz5VvGtkWCJhY3QUj6xEbyrTBMEqKZZye4xRzv
+         BeYP7sfjtOP4Q==
+From:   Felipe Balbi <balbi@kernel.org>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- e286f24a2dd220eef9fc28349fbc054279ef712e
-Message-ID: <5ffd5b96.jmsqyxS9F/ubTXNq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Subject: Re: [PATCH v2 0/3] Remove one more platform_device_add_properties()
+ call
+In-Reply-To: <20210111141045.14027-1-heikki.krogerus@linux.intel.com>
+References: <20210111141045.14027-1-heikki.krogerus@linux.intel.com>
+Date:   Tue, 12 Jan 2021 10:46:17 +0200
+Message-ID: <87v9c24k6e.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: e286f24a2dd220eef9fc28349fbc054279ef712e  Merge branch 'acpi-platform' into bleeding-edge
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-elapsed time: 726m
+Heikki Krogerus <heikki.krogerus@linux.intel.com> writes:
 
-configs tested: 96
-configs skipped: 2
+> Hi Felipe, Rafael,
+>
+> This is the second version of this series. There are no real changes,
+> but I added the Tiger Lake ID patch to this series in hope that it
+> will make your life a bit easier, assuming that Rafael will still pick
+> these.
+>
+>
+> The original over letter:
+>
+> I originally introduced these as part of my series where I was
+> proposing PM ops for software nodes [1], but since that still needs
+> work, I'm sending these two separately.
+>
+> So basically I'm only modifying dwc3-pci.c so it registers a software
+> node directly at this point. That will remove one more user of
+> platform_device_add_properties().
+>
+> [1] https://lore.kernel.org/lkml/20201029105941.63410-1-heikki.krogerus@l=
+inux.intel.com/
+>
+> thanks,
+>
+> Heikki Krogerus (3):
+>   software node: Introduce device_add_software_node()
+>   usb: dwc3: pci: Register a software node for the dwc3 platform device
+>   usb: dwc3: pci: ID for Tiger Lake CPU
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Looks good to me.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                  cavium_octeon_defconfig
-sh                           se7206_defconfig
-powerpc                  storcenter_defconfig
-arm                          ep93xx_defconfig
-powerpc                  iss476-smp_defconfig
-h8300                     edosk2674_defconfig
-arm                           h5000_defconfig
-sh                  sh7785lcr_32bit_defconfig
-mips                        bcm63xx_defconfig
-mips                malta_kvm_guest_defconfig
-mips                         rt305x_defconfig
-powerpc                      ppc64e_defconfig
-arm                         vf610m4_defconfig
-m68k                           sun3_defconfig
-arm                           efm32_defconfig
-nios2                            alldefconfig
-mips                  maltasmvp_eva_defconfig
-powerpc                     sbc8548_defconfig
-arm                         palmz72_defconfig
-arm                        mvebu_v7_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20210111
-i386                 randconfig-a005-20210111
-i386                 randconfig-a006-20210111
-i386                 randconfig-a001-20210111
-i386                 randconfig-a003-20210111
-i386                 randconfig-a004-20210111
-x86_64               randconfig-a015-20210110
-x86_64               randconfig-a012-20210110
-x86_64               randconfig-a013-20210110
-x86_64               randconfig-a016-20210110
-x86_64               randconfig-a014-20210110
-x86_64               randconfig-a011-20210110
-i386                 randconfig-a012-20210111
-i386                 randconfig-a011-20210111
-i386                 randconfig-a016-20210111
-i386                 randconfig-a015-20210111
-i386                 randconfig-a013-20210111
-i386                 randconfig-a014-20210111
-x86_64               randconfig-a004-20210111
-x86_64               randconfig-a006-20210111
-x86_64               randconfig-a001-20210111
-x86_64               randconfig-a003-20210111
-x86_64               randconfig-a005-20210111
-x86_64               randconfig-a002-20210111
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+Acked-by: Felipe Balbi <balbi@kernel.org>
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+=2D-=20
+balbi
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl/9YdkRHGJhbGJpQGtl
+cm5lbC5vcmcACgkQzL64meEamQZP8Q//SjHqtKRaghDM4izhNhkimSEdFbeFCGzK
+CmxKzi3ipE+TAXUceA2AEf1fjaVbn4L2yFQvaWx72exq3kco42rjNZMHURS+y0um
+zpFsaNsuzUojMJe9nJcOP2or0fU/5bZzl0Dt7FeEtT66wIwhBBW+YeuA5Acb4Cvz
+EV3JFq/YrCBoU5aaipyZmjH4E3WS8QWAfN40XkOc8Z5fGLNZ6XcdOyAxvLHX7W0S
+M0P1McOUPOA6weaRfbCfwHQ5g1hebPnpK/5kXBr4usxJ9TkjU4mGu3EFYtfhP1aq
+pds+DUXzTFnigBspfP/swr8t5lC7Qzqy07G4mKSNU0KnHH7lzrk1UKoKxlI5wy/o
+s+PhylYkLmpeoasRQzni6S3n48xxeHuZDWxSHA/NL8jV/J489SahB5qcz9p+omOP
+XCMM8Sf7xjSiXTohNw35RxqaAHo8kDJiof1yUSO13s9tpkjb8cSM+9wINGa34EPa
+wgZeHLmyMZ+dwMW7o6xoPktvi82ybcAvgpAdwOR4r+1uZGsvxds+EPtSZOI9cnc9
+1M8GnD/RnVJ5B2Aj+IZlsFcR3Elumk5NZJeJ/CnuXpBHshlZmStDDekoaZWGAOrd
+lK5VkgSUBxzl5hJrvna6MXS4nT3Ji4BWp6yAoykIMuDYjW6rsW0ssHAgk22BOVGC
+JQIyOTA7uKk=
+=FYgQ
+-----END PGP SIGNATURE-----
+--=-=-=--
