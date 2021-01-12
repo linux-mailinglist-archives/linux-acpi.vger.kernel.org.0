@@ -2,117 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8752F2EC0
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 13:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D35B02F2F4E
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jan 2021 13:47:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbhALMLw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Jan 2021 07:11:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25578 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729397AbhALMLw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Jan 2021 07:11:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610453425;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NZcfuIkSfijuGWfxInzpq+l4A2mSAx/w0ty9n0COzTo=;
-        b=Xo6pedTaB+7fGmpoIYRUnDSiVIMdTbsFhkVBWQ7eWTXDb5KgSmHH11OdWjVlFz++Et7El0
-        DrsZ1V6x2zfhPueyePtyLew7MdUeDfRoSJztHPRKuTDtN4l73ru9OVp3/n1d/HkTcs7GOB
-        r6iKOxBdlhSmt10/voTTcO0nRk8wkGc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-268-9Rni5KZBOiiDJylLD8IgZg-1; Tue, 12 Jan 2021 07:10:24 -0500
-X-MC-Unique: 9Rni5KZBOiiDJylLD8IgZg-1
-Received: by mail-ej1-f71.google.com with SMTP id u25so927079ejf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Jan 2021 04:10:22 -0800 (PST)
+        id S2388052AbhALMqU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 12 Jan 2021 07:46:20 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:43784 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387974AbhALMqU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jan 2021 07:46:20 -0500
+Received: by mail-ot1-f45.google.com with SMTP id q25so2082511otn.10;
+        Tue, 12 Jan 2021 04:46:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NZcfuIkSfijuGWfxInzpq+l4A2mSAx/w0ty9n0COzTo=;
-        b=aCgosni3GkPOJXV3iuOvY8Czf2wGeUvKd3pPMuOSfK5kB5DBF7P2OCGsTfFHNPTxsV
-         xfZGYGeeaSnE2cVoCImfspctoHfETP5FpfYnjmRhRDj2d9SBX0MkXPjR/RTkko+5uFSa
-         yVqpK6YnC1qdG4NozyYxfvnUYyAqRinxUPFdY6+/qjAKOe5rPaOPTEQPykLz/9HZk+Nq
-         8fCLCsZfF0EiwtIoGOi7hD7WpBIaxhkex1WEMmOWzecagDKEfF+oJ3O3Vbm6Z+DjX+X2
-         GEVOhSjmsQEG1UZ+62K6TXGr+OfO8ZdXkG5Vaok6mNYwaJwbwRAopRP9M8Z7nMazWu3G
-         tKDA==
-X-Gm-Message-State: AOAM531PxdM/BeYofgjH0xo8lKe6mCQRH58WLPVEqwLOkIgJF8vHpWCN
-        6V6AuXWHYvOYMCjs8vPkFKFDVc0qUXXuSNqRuJb0jdM4oTuIFg1oRnMiwEzXrDMhVxcCTtRxZgk
-        dpYzFrZRT9xqUPy+uCjQ8hw==
-X-Received: by 2002:a50:fc83:: with SMTP id f3mr3207131edq.219.1610453420965;
-        Tue, 12 Jan 2021 04:10:20 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwVmcf5yD1UBcXS9zLqzd4HS+LUSsB107z2DJ9q1J1ELacsiWEgharWo+d9R554Z2iIUj5Fuw==
-X-Received: by 2002:a50:fc83:: with SMTP id f3mr3207116edq.219.1610453420798;
-        Tue, 12 Jan 2021 04:10:20 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id v16sm1307446eds.64.2021.01.12.04.10.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Jan 2021 04:10:20 -0800 (PST)
-Subject: Re: [pm:bleeding-edge 20/29] drivers/acpi/platform_profile.c:67:33:
- error: passing 'const struct platform_profile_handler to parameter of type
- 'struct platform_profile_handler discards qualifiers
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        kernel test robot <lkp@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-References: <202101081623.CGkLO3Kx-lkp@intel.com>
- <5e7a4d87-52ef-e487-9cc2-8e7094beaa08@redhat.com>
- <106d7891-230f-18e1-1b0f-cb6a62cf0387@flygoat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <01442a77-7d87-5a12-d7b8-4fe397a37464@redhat.com>
-Date:   Tue, 12 Jan 2021 13:10:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=EFOSSjP2fTd1K6RGm8lMh2K690UVe2NBQkQwH5LWtVE=;
+        b=p51g4VnsBc0vJcrt93uyuSmVjBE/sxcuboKWaGe77/BJgtIimlu6aiZkk8G972lnMH
+         D8zZFwzWuCbS71U3rdIk64TrPfHG8XFu3SfO6V/XQSHCXpE8C22rww2HuWGBIx86Pbj7
+         G2R7yMCXbo23vF93s+Y6a1QXDyv5Sbev5lClTNM/HhtDsKqXRmYpnPUfC5hv9IA5RlGF
+         jJ0fC8JKmwJH21plPHe3pRQOMQ6ClXwTCOVSOLY17awOGxFBu11+FCP00K35fr2puhdo
+         tF0VQaQ+EPb0KlAcSlcVc2RbWBt2G2oOKoW3Nq1nkFYleieVkn7yUvxHfOS2jdu55Nzg
+         urJA==
+X-Gm-Message-State: AOAM53263x6SEFHgyZSZ78dgEnIlxjx/bQfwLMVWQnd2PYk7V3nPc/yX
+        AnwGfYmE94jeZG6AKLpFP8W9SsbgBUCpf5yGk1mpJKJn
+X-Google-Smtp-Source: ABdhPJyawNLYHpp3fs0HwK16+5LDEjwKVxHsqC5aggXbKqlM6e3ARb7zgK9iSZn6Zl/iLEr4qIO18zAKTIzYogi+Fb0=
+X-Received: by 2002:a9d:208a:: with SMTP id x10mr2572558ota.260.1610455537788;
+ Tue, 12 Jan 2021 04:45:37 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <106d7891-230f-18e1-1b0f-cb6a62cf0387@flygoat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20201201213019.1558738-1-furquan@google.com> <e77e0569-568a-f7fb-9f0d-e64943b467f0@gmail.com>
+In-Reply-To: <e77e0569-568a-f7fb-9f0d-e64943b467f0@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 12 Jan 2021 13:45:25 +0100
+Message-ID: <CAJZ5v0jhniqG43F6hCqXdxQiQZRc67GdkdP0BXcRut=P7k7BVQ@mail.gmail.com>
+Subject: Re: [PATCH] drivers: core: Detach device from power domain on shutdown
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Furquan Shaikh <furquan@google.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tue, Jan 12, 2021 at 10:55 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> 02.12.2020 00:30, Furquan Shaikh пишет:
+> > When the system is powered off or rebooted, devices are not detached
+> > from their PM domain. This results in ACPI PM not being invoked and
+> > hence PowerResouce _OFF method not being invoked for any of the
+> > devices. Because the ACPI power resources are not turned off in case
+> > of poweroff and reboot, it violates the power sequencing requirements
+> > which impacts the reliability of the devices over the lifetime of the
+> > platform. This is currently observed on all Chromebooks using ACPI.
+> >
+> > In order to solve the above problem, this change detaches a device
+> > from its PM domain whenever it is shutdown. This action is basically
+> > analogous to ->remove() from driver model perspective. Detaching the
+> > device from its PM domain ensures that the ACPI PM gets a chance to
+> > turn off the power resources for the device thus complying with its
+> > power sequencing requirements.
+> >
+> > Signed-off-by: Furquan Shaikh <furquan@google.com>
+> > ---
+> >  drivers/base/core.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index d661ada1518f..5823f1d719e1 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -23,6 +23,7 @@
+> >  #include <linux/of_device.h>
+> >  #include <linux/genhd.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/pm_domain.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/netdevice.h>
+> >  #include <linux/sched/signal.h>
+> > @@ -4057,6 +4058,8 @@ void device_shutdown(void)
+> >                       dev->driver->shutdown(dev);
+> >               }
+> >
+> > +             dev_pm_domain_detach(dev, true);
+> > +
+> >               device_unlock(dev);
+> >               if (parent)
+> >                       device_unlock(parent);
+> >
+>
+> This patch broke system shutdown on NVIDIA Tegra using today's
+> linux-next because power domain can't be turned off until device drivers
+> handed control over device resets to the power domain of Power
+> Management controller on Tegra. This patch introduced the wrong
+> behaviour, apparently it should be made specific to ACPI only.
+>
+> Please fix, thanks in advance.
 
-On 1/12/21 1:07 PM, Jiaxun Yang wrote:
-> 在 2021/1/12 下午6:42, Hans de Goede 写道:
->> Hi,
->>
->> On 1/8/21 9:52 AM, kernel test robot wrote:
-> [...]
->>
->> If you fix the issue, kindly add following tag as appropriate
->> Reported-by: kernel test robot <lkp@intel.com>
->>
->> All errors (new ones prefixed by >>):
->>
-> [...]
->>>     2 errors generated.
-> 
-> Oops, thanks for the reminder, I should exclude 0day CI from mail filter.
-> It's wired that GCC didn't say anything about it.
-> 
->> Ugh, so that means that the current version of the
->> "ACPI: platform-profile: Pass profile pointer to driver callbacks"
->> patch is no good. Since this is causing compile errors I assume
->> that it will be dropped from the bleeding-edge branch.
->> Is that right Rafael?
-> 
-> I'm not familiar with x86pdx and ACPI workflow.
-> Should I resend the patch or send a fixup patch?
-
-I believe a new version of the patch is best, then Rafael can
-replace the broken patch. We want to avoid having a commit in
-git history which does not compile in some cases, because that
-creates problems when git bisecting.
-
-Regards,
-
-Hans
-
+OK, so Greg please drop it.
