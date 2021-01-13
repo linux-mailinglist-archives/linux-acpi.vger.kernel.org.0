@@ -2,70 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4F02F4BF3
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jan 2021 14:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB182F4C29
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jan 2021 14:25:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726426AbhAMND2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 13 Jan 2021 08:03:28 -0500
-Received: from mx1.emlix.com ([136.243.223.33]:34778 "EHLO mx1.emlix.com"
+        id S1725747AbhAMNZD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Jan 2021 08:25:03 -0500
+Received: from mga01.intel.com ([192.55.52.88]:46597 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726406AbhAMND1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 Jan 2021 08:03:27 -0500
-Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id C07CA5FBD3;
-        Wed, 13 Jan 2021 13:53:48 +0100 (CET)
-From:   Rolf Eike Beer <eb@emlix.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        linux-kbuild@vger.kernel.org
-Subject: [PATCH 2/2 RESEND] tools/thermal: tmon: default to prefixed pkg-config when crosscompiling
-Date:   Wed, 13 Jan 2021 13:53:48 +0100
-Message-ID: <1946777.uSh3co5Jvm@devpool47>
-Organization: emlix GmbH
-In-Reply-To: <6322266.jcO1KTHXCh@devpool21>
-References: <3551127.BzHy4GdJBa@devpool21> <6322266.jcO1KTHXCh@devpool21>
+        id S1725681AbhAMNZD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 13 Jan 2021 08:25:03 -0500
+IronPort-SDR: 1kz0cKtco43MR/jXMHW0BEKIAHKKtfi5f20AqH8vqjlFap0EyI4cqQ9JjFqCeS7Hba2KvaL0jV
+ mSVXcX5aC41Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9862"; a="196836962"
+X-IronPort-AV: E=Sophos;i="5.79,344,1602572400"; 
+   d="scan'208";a="196836962"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2021 05:23:17 -0800
+IronPort-SDR: RD+Ub80QGEiN/6IouSEmhG6/MxR+JvKF9uSFPztpT9gX2Gh2hXdr8B6zNjX/fZbyS9s3lQReJF
+ RubQhHVF2VCA==
+X-IronPort-AV: E=Sophos;i="5.79,344,1602572400"; 
+   d="scan'208";a="353470294"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2021 05:23:11 -0800
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id EA5C2207BF; Wed, 13 Jan 2021 15:23:09 +0200 (EET)
+Date:   Wed, 13 Jan 2021 15:23:09 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org, rjw@rjwysocki.net,
+        lenb@kernel.org, gregkh@linuxfoundation.org, mchehab@kernel.org,
+        yong.zhi@intel.com, bingbu.cao@intel.com, tian.shu.qiu@intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        laurent.pinchart+renesas@ideasonboard.com,
+        jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+        hverkuil-cisco@xs4all.nl, m.felsch@pengutronix.de,
+        niklas.soderlund+renesas@ragnatech.se,
+        prabhakar.mahadev-lad.rj@bp.renesas.com, slongerbeam@gmail.com,
+        heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v5 09/15] lib/test_printf.c: Use helper function to
+ unwind array of software_nodes
+Message-ID: <20210113132309.GK11878@paasikivi.fi.intel.com>
+References: <20210107132838.396641-1-djrscally@gmail.com>
+ <20210107132838.396641-10-djrscally@gmail.com>
+ <X/kOYeZtkCspoAC5@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <X/kOYeZtkCspoAC5@pendragon.ideasonboard.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This matches what other parts of the tools/ directory already do.
+Hello all,
 
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Cc: stable@vger.kernel.org
----
- tools/thermal/tmon/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Sat, Jan 09, 2021 at 04:01:05AM +0200, Laurent Pinchart wrote:
+> Hi Peter, Steven and Sergey,
+> 
+> Could you please let us know if you're fine with this patch getting
+> merged in v5.12 through the linux-media tree ? The cover letter contains
+> additional details (in a nutshell, this is a cross-tree series and we
+> would like to avoid topic branches if possible).
 
-diff --git a/tools/thermal/tmon/Makefile b/tools/thermal/tmon/Makefile
-index 36dc70497066..0a2fd593c65f 100644
---- a/tools/thermal/tmon/Makefile
-+++ b/tools/thermal/tmon/Makefile
-@@ -10,7 +10,7 @@ override CFLAGS+= $(call cc-option,-O3,-O1) ${WARNFLAGS}
- # Add "-fstack-protector" only if toolchain supports it.
- override CFLAGS+= $(call cc-option,-fstack-protector-strong)
- CC?= $(CROSS_COMPILE)gcc
--PKG_CONFIG?= pkg-config
-+PKG_CONFIG?= $(CROSS_COMPILE)pkg-config
- 
- override CFLAGS+=-D VERSION=\"$(VERSION)\"
- TARGET=tmon
--- 
-2.29.2
+I'll proceed to merge this patch through the media tree.
+
+Thanks.
 
 -- 
-Rolf Eike Beer, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11
-Gothaer Platz 3, 37083 Göttingen, Germany
-Sitz der Gesellschaft: Göttingen, Amtsgericht Göttingen HR B 3160
-Geschäftsführung: Heike Jordan, Dr. Uwe Kracke – Ust-IdNr.: DE 205 198 055
+Kind regards,
 
-emlix - smart embedded open source
-
-
-
+Sakari Ailus
