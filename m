@@ -2,43 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9852F6D97
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jan 2021 22:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B54992F6F01
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 00:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730242AbhANV4u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jan 2021 16:56:50 -0500
-Received: from mga02.intel.com ([134.134.136.20]:31410 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729536AbhANV4t (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Jan 2021 16:56:49 -0500
-IronPort-SDR: 7WJnf/vTeo4XJ2BvwtdYBIswV0bcoC4j2a9ruv3h2JNx8/Tyqnruw30k3JidqWlLC+vZmwp2rW
- r6w2jKjVybkg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9864"; a="165536108"
-X-IronPort-AV: E=Sophos;i="5.79,347,1602572400"; 
-   d="scan'208";a="165536108"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2021 13:55:03 -0800
-IronPort-SDR: o16aF2jsRFDqAvWWtpCp2BSpzDjAlyShyT4lFA+IfgjDvGWm9R+Hr9h+EYYh0VPO1wK3WfGxtJ
- /NxG2DDAIs1Q==
-X-IronPort-AV: E=Sophos;i="5.79,347,1602572400"; 
-   d="scan'208";a="382419372"
-Received: from dvarelam-mobl1.amr.corp.intel.com (HELO [10.212.182.202]) ([10.212.182.202])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2021 13:55:01 -0800
-To:     ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S1731031AbhANXgS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jan 2021 18:36:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:29206 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730570AbhANXgS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 14 Jan 2021 18:36:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610667291;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PfasKP2iCnaJb0ZdoB0GjmrRdn+LyX4XBde4LYRSHHM=;
+        b=H1JIV/lxYSPYjp2SsAmU1Ni6Ba6bYmnhz4PxHa7Qbg3SMydj/C9VsDABVtjH3AVNw6m0nu
+        uPw5GXMqfpdd8CrKy2LPxUFJ58WZRvDkELfBzWvSLTU810cLIIzshJnMG8O1uqotgwbZMa
+        lD0N+aHQjhhzA/ZGr1ZMGoICU3amo2c=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-450-OiXrnLZPPgOen2LqcpHWdg-1; Thu, 14 Jan 2021 18:34:50 -0500
+X-MC-Unique: OiXrnLZPPgOen2LqcpHWdg-1
+Received: by mail-ed1-f72.google.com with SMTP id k5so3019638edk.15
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Jan 2021 15:34:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PfasKP2iCnaJb0ZdoB0GjmrRdn+LyX4XBde4LYRSHHM=;
+        b=Qp8Ic46lsnsqSjlI96DIwNxAvmrAuusa8k3jUM2n+KHXMOe0jGxJ1hRlmqDGT4nB80
+         J3y4StHxflH7lvFQlXpnty15VXzeU/BWR4GzwSzNB2/bdrkA9S7ySFNaGOkY5Txhjuo6
+         +IzlbA2DcqZ2MvRy70OD1nQk/twTMD4IpBO7aUhkXMEZREXDfD36WBiclzDnPfQJxnVs
+         j+EuIzCJd35tRFqZ8LGWqbxqT3tWfJ3VmAOy2oyN+FEx7p0iVbpPmqNQGcJzrc+gKc50
+         CxJiZijV1D5fDNPc81cgCUkZ8reUr/82GrnfjDdpa6sZ6Pf6an1MJcCTamd+09MLAxc8
+         1edg==
+X-Gm-Message-State: AOAM530yolreWBHtF0ji3UkM0bETt4RaH/TeTxnXTF+b6njPSDlItpsf
+        bWm6fEPali+rYlBTKSCVv9XBDRM+fBNrh89kKcURovxCWWLYSduIcWE/692PwdQV/al5sNcaoio
+        107p37iZvsjeNuXx+AKim8Q==
+X-Received: by 2002:a17:906:7118:: with SMTP id x24mr6918828ejj.333.1610667288412;
+        Thu, 14 Jan 2021 15:34:48 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxmQdg7NIsXTOozpD4hbk20BGP4x/85hzBaKHv5Vm7Le7k9XeOGmeKmByvt8xPeOcbg1SICRw==
+X-Received: by 2002:a17:906:7118:: with SMTP id x24mr6918814ejj.333.1610667288217;
+        Thu, 14 Jan 2021 15:34:48 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id w11sm800746edj.8.2021.01.14.15.34.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Jan 2021 15:34:47 -0800 (PST)
+Subject: Re: ACPI scan regression -> Boot fail on Cherrytrail w/ 5.11-rc3
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Subject: ACPI scan regression -> Boot fail on Cherrytrail w/ 5.11-rc3
-Message-ID: <792c89fd-88f2-b243-50df-21f3be1cc20c@linux.intel.com>
-Date:   Thu, 14 Jan 2021 15:55:00 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        "Rafael J. Wysocki" <rafael@kernel.org>
+References: <792c89fd-88f2-b243-50df-21f3be1cc20c@linux.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f5dae2aa-ffcb-1af1-726f-2362cb4fe470@redhat.com>
+Date:   Fri, 15 Jan 2021 00:34:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <792c89fd-88f2-b243-50df-21f3be1cc20c@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -46,132 +75,77 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
-My primary test device for SOF on Cherrytrail no longer boots with 
-v5.11-rc3 and the sof-dev branch, nothing happens after the 'loading 
-initial ramdisk'. It's a 'Zotac' headless device derived from the 
-Cherrytrail FFD design, so likely there are other devices hit by this 
-problem.
 
-A long bisect points to the commit 71da201f38dfb ('ACPI: scan: Defer 
-enumeration of devices with _DEP lists').
+On 1/14/21 10:55 PM, Pierre-Louis Bossart wrote:
+> Hi,
+> My primary test device for SOF on Cherrytrail no longer boots with v5.11-rc3 and the sof-dev branch, nothing happens after the 'loading initial ramdisk'. It's a 'Zotac' headless device derived from the Cherrytrail FFD design, so likely there are other devices hit by this problem.
+> 
+> A long bisect points to the commit 71da201f38dfb ('ACPI: scan: Defer enumeration of devices with _DEP lists').
+> 
+> Reverting the two commits below solves the boot issue.
+> 
+> I have absolutely no idea what these two patches do, but they sure have a large impact. Please let me know what sort of information or tests might help root-cause this problem.
 
-Reverting the two commits below solves the boot issue.
+Heh, I was just about to answer your other (off-list) email about your
+CHT test device booting with a suggestion that you should try reverting that
+exact commit as it is the only commit that I'm aware of which went into 5.11
+which might cause this...
 
-I have absolutely no idea what these two patches do, but they sure have 
-a large impact. Please let me know what sort of information or tests 
-might help root-cause this problem.
+So I just boot 5.11-rc3 on a Acer Aspire Switch 10E SW3-016 (x5-Z8300 CHT
+based) myself and that booted fine.`
 
-FWIW I uploaded the alsa-info here:
-http://alsa-project.org/db/?f=963685fa2c775b98b60835da3e61d9dd60056841
+Next I tried a MINIX NEO Z83-4 (x5-Z8300) which is a Mini PC and as such
+probably the closest to the Zotac box which you are using which I have
+at hand to test on, and I can somewhat reproduce it there.
 
-Thanks for your help
--Pierre
+It seems that the new code somehow causes us to hit a race somewhere, so
+the NEO Z83-4 will boot most of the times but not always, it get past
+the loading initrd phase for me and then it threw the following error
+and after that the boot hung (waiting for the rootfs to show up)
 
-git revert 0de7fb7c8687048299305529d17f6a1e98ae658c
-git revert 71da201f38dfb0c3a3d33bbe3168ea9112299dde
+platform device 80860F14: Resources present before probing
 
-71da201f38dfb0c3a3d33bbe3168ea9112299dde is the first bad commit
-commit 71da201f38dfb0c3a3d33bbe3168ea9112299dde
-Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Date:   Mon Dec 14 21:27:27 2020 +0100
+As I already told Rafael in a previous email, I did see something
+similar when my personal tree was still 5.10 based, with the ACPI
+scan rework patches cherry-picked for testing. In that case I got
+a backtrace (followed by a hang) during boot about a kernel NULL
+pointer deref triggered by sysfs_seq_file_read or some such. But
+this problem went away with 5.11-rc1, so I stopped looking into
+it. I do have a tag of my broken 5.10 + cherry-picks tree, so
+I should be able to reproduce that issue.
 
-     ACPI: scan: Defer enumeration of devices with _DEP lists
+So I see 2 possible theories here:
 
-     In some cases ACPI control methods used during device enumeration
-     (such as _HID or _STA) may rely on Operation Region handlers
-     supplied by the drivers of other devices [1]:
+1. We have 2 probes of the same device racing somehow
+2. The struct device memory is getting corrupted somehow.
 
-      An example of this is the Acer Switch 10E SW3-016 model. The _HID
-      method of the ACPI node for the UART attached Bluetooth, reads
-      GPIOs to detect the installed wifi chip and update the _HID for the
-      Bluetooth's ACPI node accordingly. The current ACPI scan code calls
-      _HID before the GPIO controller's OpRegions are available, leading
-      to the wrong _HID being used and Bluetooth not working.
+Pierre-Louis, can you see if the following hack helps? :
 
-     In principle, in those cases there should be a _DEP control method
-     under the device object with OpRegion enumeration dependencies, so
-     deferring the enumeration of devices with _DEP returning a non-empty
-     list of suppliers of OpRegions depended on by the given device
-     (modulo some known exceptions that don't really supply any OpRegions
-     and are listed by _DEP for other reasons irrelevant for Linux) should
-     at least address the first-order dependencies by allowing the OpRegion
-     suppliers to be enumerated before their consumers.
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1939,7 +1939,6 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
+ 		/* Bail out if the number of recorded dependencies is not 0. */
+ 		if (count > 0) {
+ 			acpi_bus_scan_second_pass = true;
+-			return AE_CTRL_DEPTH;
+ 		}
+ 	}
+ 
+@@ -1948,8 +1947,7 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
+ 		return AE_CTRL_DEPTH;
+ 
+ 	acpi_scan_init_hotplug(device);
+-	if (!check_dep)
+-		acpi_scan_dep_init(device);
++	acpi_scan_dep_init(device);
+ 
+ out:
+ 	if (!*adev_p)
 
-     Implement the above idea by modifying acpi_bus_scan() to enumerate
-     devices in the given scope of the ACPI namespace in two passes,
-     where the first pass covers the devices without "significant" lists
-     of dependencies coming from _DEP only and the second pass covers
-     all of the devices that were not enumerated in the first pass.
+And can you collect an acpidump from the device and either send it to me and Rafael
+offlist, or upload it somewhere and send us a link ?
 
-     Take _DEP into account only for device objects with _HID, mostly in
-     order to avoid deferring the creation of ACPI device objects that
-     represent PCI devices and must be present during the enumeration
-     of the PCI bus (which takes place during the processing of the ACPI
-     device object that represents the host bridge), so that they can
-     be properly associated with the corresponding PCI devices.
+Regards,
 
-     Link: 
-https://lore.kernel.org/linux-acpi/20201121203040.146252-1-hdegoede@redhat.com/ 
-# [1]
-     Reported-by: Hans de Goede <hdegoede@redhat.com>
-     Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-     Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-     Tested-by: Hans de Goede <hdegoede@redhat.com>
-     Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Hans
 
-  drivers/acpi/scan.c | 103 
-+++++++++++++++++++++++++++++++++++++++-------------
-  1 file changed, 78 insertions(+), 25 deletions(-)
-
-git bisect start
-# bad: [7c53f6b671f4aba70ff15e1b05148b10d58c2837] Linux 5.11-rc3
-git bisect bad 7c53f6b671f4aba70ff15e1b05148b10d58c2837
-# good: [2c85ebc57b3e1817b6ce1a6b703928e113a90442] Linux 5.10
-git bisect good 2c85ebc57b3e1817b6ce1a6b703928e113a90442
-# good: [3db1a3fa98808aa90f95ec3e0fa2fc7abf28f5c9] Merge tag 
-'staging-5.11-rc1' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
-git bisect good 3db1a3fa98808aa90f95ec3e0fa2fc7abf28f5c9
-# good: [9805529ec544ea7a82d891d5239a8ebd3dbb2a3e] Merge tag 
-'arm-soc-dt-5.11' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
-git bisect good 9805529ec544ea7a82d891d5239a8ebd3dbb2a3e
-# good: [f4a2f7866faaf89ea1595b136e01fcb336b46aab] Merge tag 'rtc-5.11' 
-of git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux
-git bisect good f4a2f7866faaf89ea1595b136e01fcb336b46aab
-# bad: [ef2c8b81b88868f042579b9dd021cc9edbc2d0c6] Merge tag 
-'drm-next-2020-12-24' of git://anongit.freedesktop.org/drm/drm
-git bisect bad ef2c8b81b88868f042579b9dd021cc9edbc2d0c6
-# good: [8653b778e454a7708847aeafe689bce07aeeb94e] Merge tag 
-'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux
-git bisect good 8653b778e454a7708847aeafe689bce07aeeb94e
-# good: [4960821a4d80781fd3e63cd71fb1b38c2dadb915] Merge tag 
-'pm-5.11-rc1-2' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-git bisect good 4960821a4d80781fd3e63cd71fb1b38c2dadb915
-# good: [418eddef050d5f6393c303a94e3173847ab85466] vdpa: Use simpler 
-version of ida allocation
-git bisect good 418eddef050d5f6393c303a94e3173847ab85466
-# bad: [58cf05f597b03a8212d9ecf2c79ee046d3ee8ad9] Merge tag 
-'sound-fix-5.11-rc1' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-git bisect bad 58cf05f597b03a8212d9ecf2c79ee046d3ee8ad9
-# bad: [6755f4563144e38f375f43dbb01926fd4ce08620] Merge tag 
-'linux-watchdog-5.11-rc1' of git://www.linux-watchdog.org/linux-watchdog
-git bisect bad 6755f4563144e38f375f43dbb01926fd4ce08620
-# good: [6f733cb2e7db38f8141b14740bcde577844a03b7] watchdog: Fix 
-potential dereferencing of null pointer
-git bisect good 6f733cb2e7db38f8141b14740bcde577844a03b7
-# bad: [538fcf57aaee6ad78a05f52b69a99baa22b33418] Merge branches 
-'acpi-scan', 'acpi-pnp' and 'acpi-sleep'
-git bisect bad 538fcf57aaee6ad78a05f52b69a99baa22b33418
-# bad: [9272e97ae9e9b95e0805c690404a0df9fb03055f] ACPI: scan: Add Intel 
-Baytrail Mailbox Device to acpi_ignore_dep_ids
-git bisect bad 9272e97ae9e9b95e0805c690404a0df9fb03055f
-# bad: [71da201f38dfb0c3a3d33bbe3168ea9112299dde] ACPI: scan: Defer 
-enumeration of devices with _DEP lists
-git bisect bad 71da201f38dfb0c3a3d33bbe3168ea9112299dde
-# good: [6fc250887cbe14a350d472516f2e0118240c5d68] ACPI: scan: Evaluate 
-_DEP before adding the device
-git bisect good 6fc250887cbe14a350d472516f2e0118240c5d68
-# first bad commit: [71da201f38dfb0c3a3d33bbe3168ea9112299dde] ACPI: 
-scan: Defer enumeration of devices with _DEP lists
