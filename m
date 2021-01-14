@@ -2,126 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B742F5B79
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jan 2021 08:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 601072F60EF
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jan 2021 13:15:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726806AbhANHmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jan 2021 02:42:15 -0500
-Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:46995 "EHLO
-        wnew3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727236AbhANHmO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Jan 2021 02:42:14 -0500
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailnew.west.internal (Postfix) with ESMTP id 30BF2133C;
-        Thu, 14 Jan 2021 02:34:44 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Thu, 14 Jan 2021 02:34:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm1; bh=y9iRB6bWqyUOw
-        TqFryU9bKwjbnx+WsNsQUdiHEf3u80=; b=yuOR9eeGEYszXoXcjxIOQ5wU5/gxW
-        oAf1xKensHC9wRv5w7HYinK8QY1DqiozSUbTjTHE/WAAVewfPjRj4hXB6LvWXbTd
-        zc89xW1IHFwUdKLYYovlsmjzZIiobwnfPeaPWotV3wb66wbsKpHd9sCywvy9yAYA
-        PmQmj+BeXIGpvqnv9QYMDF064fElYp1GslkGE1ms79PEnAD9Gf4Cjm75SvUmbtqG
-        LUV3Urc8qNo87QhO0GSwJmK1eP1Zqu/NDDpsrYZEUUZ/gHjocQXhpuOdYGucrSAY
-        MIB/LueHOCAnldUJZHYVQrnORkIUTY1JMsq7a9iTB+kLzkpTu2UYWwGJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :in-reply-to:message-id:mime-version:references:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; bh=y9iRB6bWqyUOwTqFryU9bKwjbnx+WsNsQUdiHEf3u80=; b=PIirAcYc
-        6F+ruUoVAvsfEtw/snDwaXFKkzvT3zliRgCCn8UIhx/ypEk+hOfBNCY4Vpc5KAaa
-        ATGo4lrloRR5YQKIae4iPd4ojlBF6vqClnRNb243B62ow0/ZOMwu72XLpWYI1att
-        6sUdLd6ICO0Mnedos3tz5N0Yy0KgaXqgisbTIjo4/By/ga6Gzu8XKuznCPq22ZBR
-        YlCRcWy9xYXh8i3Nf6La19iEW9qQ7Yk3tb11wQVq4NQfJpWrKcW0P3eUvPWsBFBW
-        VVHeQRj/1VDEOqCUT9AK/GGVXejLv1qAJ/qsBbf40TXVdSOwa5/ZSZ1PP7gRZ2e+
-        /ncSQcjaVnXLsw==
-X-ME-Sender: <xms:E_T_X01tPrPAt7Vl-QYkbAn7xfOQ0C8qeFlROl0DOUCYYYiB24erGg>
-    <xme:E_T_X_HTuTiOjw2eO0oOaofwDJTBwaLN6CVgNGxXYpAigO6oYZ_r1eeVmCA1Vzzzm
-    WjZQcH2z4se8lUppyU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedukedrtdeggddutdelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekre
-    dtredttdenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhg
-    sehflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeehgfelvdeugeetheekge
-    dvgeehhfektdetteelhfefkeeuudekvedtteffteegkeenucffohhmrghinhepkhgvrhhn
-    vghlrdhorhhgnecukfhppeduudeirddvvdekrdekgedrvdenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhih
-    ghhorghtrdgtohhm
-X-ME-Proxy: <xmx:E_T_X84bFnNy-mmJoTDC2xBcQz1dIPdDlXGL9X_JcENVv90DTCcB3w>
-    <xmx:E_T_X91WMGir-JoUtrOStz0nYCD7agOYWgpzMLJtDD3stRoRmLAbUw>
-    <xmx:E_T_X3FOn8B_P8f2Z4YIIwHrXhinqZgQ6X2FmtIofUV0ciCypyTwbw>
-    <xmx:E_T_X8RYYQjcIebCVpMjgSjVudQVHuTKr_hOn02mZ-nAJNGXbv9k8PVYc1w>
-Received: from strike.U-LINK.com (unknown [116.228.84.2])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 5B363240062;
-        Thu, 14 Jan 2021 02:34:41 -0500 (EST)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-pm@vger.kernel.org, rjw@rjwysocki.net, hdegoede@redhat.com,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH RESEND 2/2] ACPI: platform-profile: Introduce object pointers to callbacks
-Date:   Thu, 14 Jan 2021 15:34:29 +0800
-Message-Id: <20210114073429.176462-3-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210114073429.176462-1-jiaxun.yang@flygoat.com>
-References: <20210114073429.176462-1-jiaxun.yang@flygoat.com>
+        id S1729099AbhANMPH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jan 2021 07:15:07 -0500
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:45417 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728394AbhANMPH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jan 2021 07:15:07 -0500
+Received: by mail-oi1-f169.google.com with SMTP id f132so5624627oib.12;
+        Thu, 14 Jan 2021 04:14:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N9a/fEJBQ8EKU9Sx9nqvztNjfJU08nsUnc68QxM+gI0=;
+        b=txBiCk3+e96gRhDgM9ZIJ5hGOycHyPpUGFU31b7UElOS4i7FFYw1bbQUKR/f1XtPqh
+         5rzk4Fz9TMmXWwX1IxzVlflq6LynF996VMlXDScQw/6QEN39W32eOJ0t2gFhPtL0LXsX
+         3Im2HO4X8ynoB0NNR5VImJNaPZqgJlq6QCmHor4unc2GXKV6shSKKnZwLypJIibnAC9x
+         wyF2SHKGYlKj4PcFHXNuYXwkydQvyUcUpO9u68kRlIsHvlMLj5g6Yxcdh2tDwVUze2H9
+         rbAAD6j4ZyBov0e/zZJx9rEC8/bPmUF2FYXnENkQNv4lvaLgWzWjychbqi+PeAp4qGKL
+         j2SQ==
+X-Gm-Message-State: AOAM533k2XV0noqsXtrUDckLMdGS6T9fc7XLu7HsULPSG97OSgl7hYXM
+        CiBU9lSJKKUwfTNr69Adgvwy35tJULc3DAWi4gw=
+X-Google-Smtp-Source: ABdhPJwnOu4NivPEtE8UVzJUtYv6p12q9l3jiDfhNWRCmVri46I6u9UoJeA+CkIB1VbyIjBuoZaslNZOspFi5TDKBrY=
+X-Received: by 2002:aca:4892:: with SMTP id v140mr2383078oia.71.1610626466163;
+ Thu, 14 Jan 2021 04:14:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210114071923.14920-1-qiuxu.zhuo@intel.com>
+In-Reply-To: <20210114071923.14920-1-qiuxu.zhuo@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 14 Jan 2021 13:14:13 +0100
+Message-ID: <CAJZ5v0j0JABf3mx2wv5Z7tQY8f0pjWVMwH2mCYWVN_siJ-ziFg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Documentation: ACPI: EINJ: Fix error type value for
+ PCIe error
+To:     Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Huang Ying <ying.huang@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add a object pointer to handler callbacks to avoid having
-global variables everywhere.
+On Thu, Jan 14, 2021 at 8:20 AM Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
+>
+> Fix the error type value for PCI Express uncorrectable non-fatal
+> error to 0x00000080 and fix the error type value for PCI Express
+> uncorrectable fatal error to 0x00000100.
+>
+> See Advanced Configuration and Power Interface Specification,
+> version 6.2, table "18-409 Error Type Definition".
+>
+> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reported-by: Lijian Zhao <lijian.zhao@intel.com>
+> ---
+> The error type values used in file drivers/acpi/apei/einj.c
+> function available_error_type_show() are correct.
+>
+>
+>  Documentation/firmware-guide/acpi/apei/einj.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
+> index e588bccf5158..c042176e1707 100644
+> --- a/Documentation/firmware-guide/acpi/apei/einj.rst
+> +++ b/Documentation/firmware-guide/acpi/apei/einj.rst
+> @@ -50,8 +50,8 @@ The following files belong to it:
+>    0x00000010        Memory Uncorrectable non-fatal
+>    0x00000020        Memory Uncorrectable fatal
+>    0x00000040        PCI Express Correctable
+> -  0x00000080        PCI Express Uncorrectable fatal
+> -  0x00000100        PCI Express Uncorrectable non-fatal
+> +  0x00000080        PCI Express Uncorrectable non-fatal
+> +  0x00000100        PCI Express Uncorrectable fatal
+>    0x00000200        Platform Correctable
+>    0x00000400        Platform Uncorrectable non-fatal
+>    0x00000800        Platform Uncorrectable fatal
+> --
 
-Link: https://lore.kernel.org/linux-acpi/6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/platform_profile.c  | 4 ++--
- include/linux/platform_profile.h | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 9dddf44b43d4..6398b40e6d31 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -64,7 +64,7 @@ static ssize_t platform_profile_show(struct device *dev,
- 		return -ENODEV;
- 	}
- 
--	err = cur_profile->profile_get(&profile);
-+	err = cur_profile->profile_get(cur_profile, &profile);
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
-@@ -104,7 +104,7 @@ static ssize_t platform_profile_store(struct device *dev,
- 		return -EOPNOTSUPP;
- 	}
- 
--	err = cur_profile->profile_set(i);
-+	err = cur_profile->profile_set(cur_profile, i);
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index 3623d7108421..43f4583b5259 100644
---- a/include/linux/platform_profile.h
-+++ b/include/linux/platform_profile.h
-@@ -28,8 +28,10 @@ enum platform_profile_option {
- 
- struct platform_profile_handler {
- 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
--	int (*profile_get)(enum platform_profile_option *profile);
--	int (*profile_set)(enum platform_profile_option profile);
-+	int (*profile_get)(struct platform_profile_handler *pprof,
-+				enum platform_profile_option *profile);
-+	int (*profile_set)(struct platform_profile_handler *pprof,
-+				enum platform_profile_option profile);
- };
- 
- int platform_profile_register(const struct platform_profile_handler *pprof);
--- 
-2.30.0
-
+Applied as 5.11-rc material with a couple of minor edits in the subject, thanks!
