@@ -2,84 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38FF52F5B75
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jan 2021 08:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D0A02F5B77
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jan 2021 08:43:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727251AbhANHly (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jan 2021 02:41:54 -0500
-Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:45203 "EHLO
+        id S1727184AbhANHmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jan 2021 02:42:15 -0500
+Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:55133 "EHLO
         wnew3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726806AbhANHlx (ORCPT
+        by vger.kernel.org with ESMTP id S1726806AbhANHmO (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Jan 2021 02:41:53 -0500
-X-Greylist: delayed 386 seconds by postgrey-1.27 at vger.kernel.org; Thu, 14 Jan 2021 02:41:53 EST
+        Thu, 14 Jan 2021 02:42:14 -0500
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailnew.west.internal (Postfix) with ESMTP id 7B3B81264;
-        Thu, 14 Jan 2021 02:34:39 -0500 (EST)
+        by mailnew.west.internal (Postfix) with ESMTP id A2DA3132C;
+        Thu, 14 Jan 2021 02:34:41 -0500 (EST)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Thu, 14 Jan 2021 02:34:39 -0500
+  by compute6.internal (MEProxy); Thu, 14 Jan 2021 02:34:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=fm1; bh=dDIFxzNu3vWVo+l1dCICe/VaE1
-        aaZujoPHgnsTlqRZ4=; b=qS+bqO1czqSFZqRECl8C2AwWadpiT0Q5fslkVoV0aF
-        IoYWtoUMRENXpnwKV/W40ZgTEdmUDidgpuJmY3mpVn1juNlrTk2FjqRNhxR8ZgoJ
-        3V/n97I984/IUiFJ9jxAUj4m0XhGjFblPEsmlhukVsyhPoEE/QVK+c5eGsnzfa52
-        fxcJBtjDLgzSb3O+ut5PuT7F2IBjYp2Py/2uyXCSP+ziZFv+P/InsV9OA2Y+Fmql
-        J2kQ/68WbpYVukoSbXZFDMtB5pFILFXI4HXkQv+ez4LwK9rWjVME6tBC9U/3s+w8
-        /EDYet2pP6o2ClQeG4K9kBKX7SSWAw5UX14VuTUgHseQ==
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding; s=fm1; bh=pl/fwFs3liZoW
+        1v6PYB/hJz7Z5at8pyDDKPnWlYHs1U=; b=Vjx7eaOy1vJv654LTe33cK7wrK7ki
+        cxqh1sckvpLPILenpW40fU96MM0i5tqiJWOvH6wZXPHeGIoK89GxBsJfFvxtbrWa
+        u/ZViEotgUSHRpcx4fX9RcaHRQTPTuDUufSbW8SGpTmpB6P+yIXVya8uaCI+DsCk
+        RI++t9XnAEGt60pubaZCL9axdNvaoFT51FE9VGCyhqKbZqD5ybJhKKrY7kyL0EBL
+        k/of1r1lwdAykELA10rhhR56fnN7yaBi2KVfKIeviIlcAGhm7+pshE92rUvYiP8G
+        Tsffk34iueSsuprrt5lwKUub3OIRcirU65PsLjlNzTp2JSIfBOEDTO5uQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=dDIFxzNu3vWVo+l1d
-        CICe/VaE1aaZujoPHgnsTlqRZ4=; b=VWG+Zja+aD5qGDpdpQcH+Vrbq8wq0ReOU
-        RwiEmRPVhv/2pGbYp4BMTv6/YJAuA1rnK2tQzvZC5fvVuLO/QHKtoFC/1UC8lxO7
-        +2y0YWlsyJXy2oSfY8emEn7BqIFPEHiKJ9CdDW8oAavFJWInTbdbUy3ct5W0ww4w
-        TQvR7Or2I6gqX2exvnOV9BxxGShHqEs5FrtRg1H5s2OXzKE7NdCyjDL/7N2RYy/N
-        wyeLMZX/kCXsrf+fhDQGXYxt85ar9fdGepgGlzg61AH6mMCFjv+BbEd7M1V5LrZF
-        Igm/IDt8buPwmfC1ufu9iUAuWHHBCTZMrf6ajva56g9nIXij348UQ==
-X-ME-Sender: <xms:DvT_X_FW0Ir--91IHqAas9PObZ4goB4MV9l1taT6rejNugcpqfetRQ>
-    <xme:DvT_X8Wm87RgjfP2ucCbPbH6WF-YskmIWBON3ijWlnwmNa5e4VmGYP55ta_xJEG21
-    nZGvIlk753igvFE_ws>
+        :in-reply-to:message-id:mime-version:references:subject:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; bh=pl/fwFs3liZoW1v6PYB/hJz7Z5at8pyDDKPnWlYHs1U=; b=m4+3rHxg
+        q3fjYVSNPIXoHSYd+cwQwAxEnlVDa8Ad/BKqihP3amQStSTsrRk+KAuySHMfms1N
+        WkSocEcHJgZUo3nRL5ODSiVTzbq2XTst3iIlXYsDPMPf6lVPUtLNGK/2iBoEaHsE
+        TQ28Ikln1/iJnecSsEf1vSzCpYns702p1gs/zbfThdjDqgdu1dxEgX3vQ3IDUDe0
+        kl/7N6fyhgX3h4WLV5kPGd7TJzsPEdOuDgl+mJV37SmLXF3KfNEpJ2imTHji3EhL
+        HXwxf7MBpZMejkZysOeWZb/EzaGq0KWNqxlLpF76gjKPthv4hnBl8n9B7KgcvaHq
+        Y/P2NaKr5AFbhg==
+X-ME-Sender: <xms:EPT_X7xWW_bwgpUsq3e8NmjB3_DQm1sQhl108BG0lG25LisRa3KCKg>
+    <xme:EPT_XzTyFjpvOdoKReS-CfLLFLGBtAUuX2m3TJiS4Y30FjXrsCqWqe0VJBaSJyPYA
+    WsKaww09lUhSSweS30>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedukedrtdeggddutdelucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
-    dttdenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehf
-    lhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpefhjedtkedtueehtdeifeetke
-    evffetjeetfeegkeevgefftedvudfgleeihfdtudenucfkphepudduiedrvddvkedrkeeg
-    rddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjh
-    hirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:DvT_XxJYj36GoqLCquvvWY4BiEYgPNKcbhyVYrotAgicVWdwbS2Ryw>
-    <xmx:DvT_X9EXpL1l7qLid52MG4mre5K6rOJzM3JD_W-VYHtH2oApnS1HAg>
-    <xmx:DvT_X1WuM5vbQKjGDmWYcBCQo9ZMc0PE4A2CY_qqoKrbj0-e-aJ00w>
-    <xmx:DvT_XyhRBNUH8-C3ZyvN1m2PCrLf2vtWQalgpydZYowYnWcrHahHy-uVCtU>
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekre
+    dtredttdenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhg
+    sehflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeehgfelvdeugeetheekge
+    dvgeehhfektdetteelhfefkeeuudekvedtteffteegkeenucffohhmrghinhepkhgvrhhn
+    vghlrdhorhhgnecukfhppeduudeirddvvdekrdekgedrvdenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhih
+    ghhorghtrdgtohhm
+X-ME-Proxy: <xmx:EPT_X1UwsLDzCBhTqU30tesIwV7Nypc-KA8puv0UYfMrc_6sN4AwWg>
+    <xmx:EPT_X1hesA8pFRyhr1X1kDTMPPIDongoAFtWjPi8-kp06nDSh4u2aA>
+    <xmx:EPT_X9D_PqjHQH1Opg2dPoYTRYrnIo6RK3WqOPAUZoneGLNVeMU1Rw>
+    <xmx:EPT_XwM33LbnoOsinfmBgEkrYfgXliXQaWxTZFflMD0TL54749TfdvsuZKI>
 Received: from strike.U-LINK.com (unknown [116.228.84.2])
-        by mail.messagingengine.com (Postfix) with ESMTPA id EA0A4240062;
-        Thu, 14 Jan 2021 02:34:35 -0500 (EST)
+        by mail.messagingengine.com (Postfix) with ESMTPA id AD72D240064;
+        Thu, 14 Jan 2021 02:34:38 -0500 (EST)
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, rjw@rjwysocki.net, hdegoede@redhat.com,
         Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH RESEND 0/2] ACPI: platform-profile enhancements
-Date:   Thu, 14 Jan 2021 15:34:27 +0800
-Message-Id: <20210114073429.176462-1-jiaxun.yang@flygoat.com>
+Subject: [PATCH RESEND 1/2] ACPI: platform-profile: Drop const qualifier for cur_profile
+Date:   Thu, 14 Jan 2021 15:34:28 +0800
+Message-Id: <20210114073429.176462-2-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210114073429.176462-1-jiaxun.yang@flygoat.com>
+References: <20210114073429.176462-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Resend as previous mail has a typo at to address.
-Replacing b417d9c7404df67b9be0104585fefb2ca8d36677 at pm/bleeding-edge.
+All planned uses of cur_profile have their platform_profile_handler
+defined as const, so just drop const qualifier here to prevent build
+error.
 
-Jiaxun Yang (2):
-  ACPI: platform-profile: Drop const qualifier for cur_profile
-  ACPI: platform-profile: Introduce object pointers to callbacks
+Link: https://lore.kernel.org/linux-acpi/5e7a4d87-52ef-e487-9cc2-8e7094beaa08@redhat.com/
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+ drivers/acpi/platform_profile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/acpi/platform_profile.c  | 6 +++---
- include/linux/platform_profile.h | 6 ++++--
- 2 files changed, 7 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index 91be50a32cc8..9dddf44b43d4 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -9,7 +9,7 @@
+ #include <linux/platform_profile.h>
+ #include <linux/sysfs.h>
+ 
+-static const struct platform_profile_handler *cur_profile;
++static struct platform_profile_handler *cur_profile;
+ static DEFINE_MUTEX(profile_lock);
+ 
+ static const char * const profile_names[] = {
 -- 
 2.30.0
 
