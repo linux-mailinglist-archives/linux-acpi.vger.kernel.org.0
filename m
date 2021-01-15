@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C81482F8545
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 20:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9A572F854B
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 20:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728293AbhAOTVv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jan 2021 14:21:51 -0500
-Received: from mga06.intel.com ([134.134.136.31]:59259 "EHLO mga06.intel.com"
+        id S2387981AbhAOTWc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jan 2021 14:22:32 -0500
+Received: from mga06.intel.com ([134.134.136.31]:59317 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbhAOTVv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Jan 2021 14:21:51 -0500
-IronPort-SDR: yfWoAVDSyglEU9xHVHSj+FvZ6hj+zrnhYdSyPcBhgZckBEQqJZE00ODyYff1VeCbDZ9odtLzGO
- OolcHdDvu6/Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9865"; a="240139535"
+        id S1726065AbhAOTWb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 Jan 2021 14:22:31 -0500
+IronPort-SDR: fTtsEKZLFvSyOjgUN5XRx9o6+SLk8zTbt/X+C+l7GUDybWtpxEAdu7mU8vn+2oyPn6uOddTxaQ
+ xHub2C+0qnmg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9865"; a="240139536"
 X-IronPort-AV: E=Sophos;i="5.79,350,1602572400"; 
-   d="scan'208";a="240139535"
+   d="scan'208";a="240139536"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2021 11:20:55 -0800
-IronPort-SDR: jPCKECkXy5P3tVGH6q7V8BvhH89bWtLaBtWLUY2gZv9Qi/7NOXUP5ZhWi5QlcV5eWdN+KuGZex
- IvVbdlSrGiog==
+IronPort-SDR: K4ahf+h8hdG6dejvJzex3B/yupuIh0i1/MAPViSz2jmqGow9Sf849mqETlOxpqi+g0fZcs4KY5
+ fUgVirW2lJSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.79,350,1602572400"; 
-   d="scan'208";a="425417893"
+   d="scan'208";a="425417896"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by orsmga001.jf.intel.com with ESMTP; 15 Jan 2021 11:20:55 -0800
 From:   Erik Kaneda <erik.kaneda@intel.com>
@@ -30,9 +30,9 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Cc:     Bob Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 4/9] ACPICA: add type casts for string functions
-Date:   Fri, 15 Jan 2021 10:48:21 -0800
-Message-Id: <20210115184826.2250-5-erik.kaneda@intel.com>
+Subject: [PATCH 5/9] ACPICA: Update version to 20201217 Version 20201217.
+Date:   Fri, 15 Jan 2021 10:48:22 -0800
+Message-Id: <20210115184826.2250-6-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210115184826.2250-1-erik.kaneda@intel.com>
 References: <20210115184826.2250-1-erik.kaneda@intel.com>
@@ -44,62 +44,28 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bob Moore <robert.moore@intel.com>
 
-Detected by gcc 10.2.0
+ACPICA commit 830dcc2b4fd2de8f0c63f1c366f51da276fe3d85
 
-ACPICA commit 608559800e1ad48b819744aeb1866d94335e2655
-
-Link: https://github.com/acpica/acpica/commit/60855980
+Link: https://github.com/acpica/acpica/commit/830dcc2b
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 ---
- drivers/acpi/acpica/dbinput.c    | 4 ++--
- drivers/acpi/acpica/utstrsuppt.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/acpi/acpixf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dbinput.c b/drivers/acpi/acpica/dbinput.c
-index 2952856b8a67..b8a48923064f 100644
---- a/drivers/acpi/acpica/dbinput.c
-+++ b/drivers/acpi/acpica/dbinput.c
-@@ -473,7 +473,7 @@ char *acpi_db_get_next_token(char *string,
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index 0bba8b8c350e..be76e40769cb 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -12,7 +12,7 @@
  
- 	/* Remove any spaces at the beginning, ignore blank lines */
+ /* Current ACPICA subsystem version in YYYYMMDD format */
  
--	while (*string && isspace(*string)) {
-+	while (*string && isspace((int)*string)) {
- 		string++;
- 	}
+-#define ACPI_CA_VERSION                 0x20201113
++#define ACPI_CA_VERSION                 0x20201217
  
-@@ -571,7 +571,7 @@ char *acpi_db_get_next_token(char *string,
- 
- 		/* Find end of token */
- 
--		while (*string && !isspace(*string)) {
-+		while (*string && !isspace((int)*string)) {
- 			string++;
- 		}
- 		break;
-diff --git a/drivers/acpi/acpica/utstrsuppt.c b/drivers/acpi/acpica/utstrsuppt.c
-index 2d91003fcf26..199982a6fb16 100644
---- a/drivers/acpi/acpica/utstrsuppt.c
-+++ b/drivers/acpi/acpica/utstrsuppt.c
-@@ -104,7 +104,7 @@ acpi_status acpi_ut_convert_decimal_string(char *string, u64 *return_value_ptr)
- 		 * 1) Runtime: terminate with no error, per the ACPI spec
- 		 * 2) Compiler: return an error
- 		 */
--		if (!isdigit(*string)) {
-+		if (!isdigit((int)*string)) {
- #ifdef ACPI_ASL_COMPILER
- 			status = AE_BAD_DECIMAL_CONSTANT;
- #endif
-@@ -158,7 +158,7 @@ acpi_status acpi_ut_convert_hex_string(char *string, u64 *return_value_ptr)
- 		 * 1) Runtime: terminate with no error, per the ACPI spec
- 		 * 2) Compiler: return an error
- 		 */
--		if (!isxdigit(*string)) {
-+		if (!isxdigit((int)*string)) {
- #ifdef ACPI_ASL_COMPILER
- 			status = AE_BAD_HEX_CONSTANT;
- #endif
+ #include <acpi/acconfig.h>
+ #include <acpi/actypes.h>
 -- 
 2.29.2
 
