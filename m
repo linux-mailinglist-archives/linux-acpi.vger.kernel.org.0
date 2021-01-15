@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E872F86F0
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 21:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9BA2F880A
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 23:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726286AbhAOUtu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jan 2021 15:49:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:36183 "EHLO
+        id S1726417AbhAOV66 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jan 2021 16:58:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32494 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727204AbhAOUtt (ORCPT
+        by vger.kernel.org with ESMTP id S1725933AbhAOV65 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Jan 2021 15:49:49 -0500
+        Fri, 15 Jan 2021 16:58:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610743701;
+        s=mimecast20190719; t=1610747850;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h78aLzK7T/4YSRsc/LXk3VPIoZf9w7bE89xtwfEbOho=;
-        b=RrbfyXae6Qx7EwIXEhmV0l0GRZTVy6F5WVTewDHnQq1ay6RmZYutZCRZGrIcx9J91fvshO
-        ssLnWNlDYkWDur9wT+PJS01s2rvOv/qvUR61RRxO1cW5fluu6pDSJkNleO5cvH2OOnRq+D
-        CB04pnF8FYWqk4UTIclfMA+1n1vlwSo=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-41-5dQCW2yQPHKMorbJYaQL1g-1; Fri, 15 Jan 2021 15:48:18 -0500
-X-MC-Unique: 5dQCW2yQPHKMorbJYaQL1g-1
-Received: by mail-ej1-f71.google.com with SMTP id rl8so3792454ejb.8
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jan 2021 12:48:18 -0800 (PST)
+        bh=jY+U5v6/6kVmmsRdUZSZGfpfyPH/xyMsKCvEUpN/LO4=;
+        b=FG6/HJqK6jgH/nrpf78sUN+ai0GX04V8CMo5YlyBqzFj7wj1YC5/3E9j5cPHAPaC1hzaov
+        Qo1yYDLA3+05MipCXnVXLZmEc2b94tEPp6lEMrBqI7EfWkZJJz3ZtHXeFvmemFFGPzbSP2
+        koVUWD4XTGaTH2iyMsDWuty845vSITg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-29-LG56V4SROpy9m0lbUQFXTg-1; Fri, 15 Jan 2021 16:57:28 -0500
+X-MC-Unique: LG56V4SROpy9m0lbUQFXTg-1
+Received: by mail-ej1-f70.google.com with SMTP id le12so1017530ejb.13
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Jan 2021 13:57:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=h78aLzK7T/4YSRsc/LXk3VPIoZf9w7bE89xtwfEbOho=;
-        b=co4HA9FTSyXchhylMvxbfSovOjjs4mOmnK0kPKqgUqleMteefcVXmA9kUvv3xg336M
-         +bkhAFRgwZ6EneAeoXgr4JimjvPQJAyhzOAlRS5O+XJWTl1y3g6yj34xdT5n7Y+SWc7y
-         OecyZ3C0HzEaEjrKL/toHzrUI8UieAGZVZlhwXI0PVT35h+22F/75Q6lfgDd+Tc4ZUXT
-         SvR/3qN8SWCRg27oJqVJW2iFwsbDPPCY95Xsv4IDTBT/BNMuI9A3+EiLvBWRhz2UX2Pt
-         3D6yCG9T4Yj7TT55js/3L4ihzsdvmk9AOzyBwOCh0MYIgqwvTvVBerXThHQvpivp6QcS
-         MZsw==
-X-Gm-Message-State: AOAM531eu2Q1POo7WPw6MLodToPwcIMyxTz7oL96nq5xoxQVeqJ/0Iq9
-        1YDfvsocMcPRdN7u9X2nNfSB++npO92nXrn7U1Leb9pL2cxBvnsR5UBV985dhs4bfM8JHLOuAYx
-        m7Y8dZGvuGN/fcogHX0D4HA==
-X-Received: by 2002:aa7:cc15:: with SMTP id q21mr11244951edt.213.1610743697420;
-        Fri, 15 Jan 2021 12:48:17 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyaXYZ1YGuh5o3JDo+/fDNFozr2VhdGoydQdAWWDyuipJZcmd8TpNMLm88un1wyMNY1LQUVLA==
-X-Received: by 2002:aa7:cc15:: with SMTP id q21mr11244933edt.213.1610743697164;
-        Fri, 15 Jan 2021 12:48:17 -0800 (PST)
+        bh=jY+U5v6/6kVmmsRdUZSZGfpfyPH/xyMsKCvEUpN/LO4=;
+        b=rE4wNdpAheo+7mqh+k5LPsmjiSrWp5ejVKpoqXvjnXLYff0RCbndUo/WZfwewIRcdS
+         /Ru2lPQk/NXYrNdK0XD3t0SbuXmh5zN2CkKGuo3yy+jXKX2zlD9WXxeCfHsHe0h+xdRf
+         Yr0xTfswlZuN8vvothKZ/cr2g8p2S1uzUgxNPJLUEnTBYye7pxCfZPmj9PT8HtEkH2Df
+         tiOK1XhY0ekyJIXSovBAc1yBMmr09iEdS4mum1PIm3oNLDBT9vgvjNZfhxkBDBI0ujGr
+         46yIkHggCV6e1kpKoEQtrpqUyUEfLXMIGEY/f+bKLUITJhPoLKjBaJivaB8G82en+ztR
+         6A5g==
+X-Gm-Message-State: AOAM532zqEIWARtl2MHQcEUtQWiNivVo+6Mgf+jEcsSA4wW1geUUPEoJ
+        ThYlNK6LCi95X9/5Aa7kRH3LI4L6NHiS0AilGSmBcID7ZQvh6E8VGgQ3EKEO8PvgI4tPhHLoRrr
+        RZpoSiltOf6OmYksrd2Kpkg==
+X-Received: by 2002:a17:906:edc8:: with SMTP id sb8mr10376898ejb.247.1610747847713;
+        Fri, 15 Jan 2021 13:57:27 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxRrIMhOT+NMY0wvZmfo//VjzwYaE1r8AOrwPah/qKatS1qkE01rEFGj/YZW6JpziwKRwwgoQ==
+X-Received: by 2002:a17:906:edc8:: with SMTP id sb8mr10376887ejb.247.1610747847489;
+        Fri, 15 Jan 2021 13:57:27 -0800 (PST)
 Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id cb14sm4475436ejb.105.2021.01.15.12.48.16
+        by smtp.gmail.com with ESMTPSA id j18sm4358066ejv.18.2021.01.15.13.57.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jan 2021 12:48:16 -0800 (PST)
+        Fri, 15 Jan 2021 13:57:26 -0800 (PST)
 Subject: Re: ACPI scan regression -> Boot fail on Cherrytrail w/ 5.11-rc3
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
@@ -66,8 +66,8 @@ References: <792c89fd-88f2-b243-50df-21f3be1cc20c@linux.intel.com>
  <8b316bf8-6a5c-c6d4-c0db-304ec529c805@linux.intel.com>
  <2803525.PQFCXvBIof@kreacher>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ee1c264e-b4bc-9657-1f45-288f9f4c1ef3@redhat.com>
-Date:   Fri, 15 Jan 2021 21:48:15 +0100
+Message-ID: <a16da87e-903f-d230-c271-b35d6c4ba9da@redhat.com>
+Date:   Fri, 15 Jan 2021 22:57:26 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
@@ -176,48 +176,6 @@ On 1/15/21 8:01 PM, Rafael J. Wysocki wrote:
 >  				continue;
 >  
 >  			adev->dep_unmet--;
-
-Oh, OOOhh, good catch I've been staring at these exact lines multiple times,
-my "spidey sense" telling me that the problem was likely something like this:
-
-1. The addition of the acpi_device gets deferred because of the _DEP
-list, this means that there are now entries for it on the acpi_dep_list
-
-2. Later during the first pass, or before the handle is checked again
-during the second pass, acpi_walk_dep_device_list() gets called because
-the _DEP is now resolved.
-
-3. My theory was this would lead to doing driver attach twice or some
-such, but that is not possible...
-
-But instead we are following a pointer which points to whatever the memory
-used by the:
-
-        struct acpi_device *adev;
-
-local variable on the stack points to; and it seems, at least with
-my compiler / kernel .config that the stack layout is such that the
-stack memory does contain a valid pointer (from some previous functions
-stack frame) and then whatever that points to gets used as an acpi_device
-and likely gets mangled a bit. Which explains the memory-corruption like
-behavior which I've been seeing.
-
-Specifically I think that this happening when the MMC controller
-addition gets deferred to the second step:
-
-[    0.426722] ACPI: \_SB_.PCI0.SDHB: Dependencies found
-[    0.427927] ACPI: \_SB_.PCI0.SDHB.BRCM: Dependencies found
-[    0.431863] ACPI: \_SB_.PCI0.SDHC: Dependencies found
-[    0.433128] ACPI: \_SB_.PCI0.SHC1: Dependencies found
-
-
-I'll verify that this fixes both my reproducers (5.10 + backport on one device,
-5.11-rc3 on another dev) by seeing if I can now boot 10 times in a row
-successfully. But I'm pretty hopeful that this will fix them.
-
-I'm also hopeful that this will fix Pierre-Louis' case too.
-
-
 > Index: linux-pm/drivers/usb/core/usb-acpi.c
 > ===================================================================
 > --- linux-pm.orig/drivers/usb/core/usb-acpi.c
@@ -235,10 +193,12 @@ I'm also hopeful that this will fix Pierre-Louis' case too.
 >  	}
 >  
 
-I'm pretty sure that we are not actually hitting this one, but we should
-definitely still fix it.
+I can confirm that these changes fix the intermittent boot issue I had with
+5.11-rc3 on the Minix Neo z83-4. It is getting a bit late here, so I will
+test my second (also intermittent) reproducer tomorrow.
 
 Regards,
 
 Hans
+
 
