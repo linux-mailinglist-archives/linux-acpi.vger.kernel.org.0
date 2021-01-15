@@ -2,211 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0B72F76F5
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 11:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5382F7737
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 12:08:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727478AbhAOKsK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jan 2021 05:48:10 -0500
-Received: from mail-eopbgr60072.outbound.protection.outlook.com ([40.107.6.72]:41538
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726370AbhAOKsJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Jan 2021 05:48:09 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WkaqwxCzoCWF65w5savxe9xUJnfMknsqbB66Bv07PB9AlTJCRKGIZLc8+j+9D0P9ZYej9l4Y3C935xd1+BLY4n+80GLTIr+OtvO0LFNatQ4NtOl+sgJPTqou/dXH8arCU82h4sJ7yelyWJ+V//nrTcbEj5yoBFScxm/pwunJJnfxc4ZWNj6VSt0bOlEkXITGuWmNikSbQ8J4A9smADm6SYcp+VhCnFqE6Xd565bXVM9mAnFb8SGrdPbWY+fZ8m5GgJJd3KZfJR+TBCcBGtOgwHo9kLF7+YaFg+JiwmOfeThjbIuAbeVaaQzBQGkYDq5g+6ikvD619RHvOaTioF1qrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qzt7/NSzvGmQE1XQ3mlQvE4x34GfamM9eB/oaQ+4nhU=;
- b=LTQtNJKsAzX78kXnvVsxNkvXZJ0zcLY6Pbs2EKkfKAKhOr7kE5k1Rv6EUowORo4mxf+T9cUE2Y/yoQIAFFQ+yu/RgYm2KxGB7fClPFo9CXj5pnftfS4tMWSau/04Zc2Pl706rqqLEfpG/ewtdyXo3ce/U1Q/v89btTP6qosjwB4ffE5LR80jMWra9GlBNog8daRIEHVv2DHHJqfPiLkSkE0qgohmHpkUQ4joMAEeX9vOzSaVSp+yB2WfEzea3+IeZtuV9koH/yc8UeHk4v0ZUlTXJ5oQtzDzqsFCimDpa4BfAjGkydT0Iv2Dz1/FMIxtDXLVsQMbm1jIj6qJKeCCEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qzt7/NSzvGmQE1XQ3mlQvE4x34GfamM9eB/oaQ+4nhU=;
- b=XiRJ+S15YSC5ta3QhbV7lvG6PFNSE8AZKqND1rVivPAfrpaDXZhYEkqwDas7L+cHj+3q4A708lbBjhGmOHcDDy7I/9gFH4MMh7WIUSsEPONiCvVLjwVo66BW7P7UItzMajnbjlW9+EuxudQzo5pQ1mxnRlDfK1aa9XNj9UQKPMI=
-Authentication-Results: google.com; dkim=none (message not signed)
- header.d=none;google.com; dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM8PR04MB7937.eurprd04.prod.outlook.com (2603:10a6:20b:248::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10; Fri, 15 Jan
- 2021 10:47:20 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a891:518d:935c:30dd]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::a891:518d:935c:30dd%5]) with mapi id 15.20.3742.012; Fri, 15 Jan 2021
- 10:47:20 +0000
-Date:   Fri, 15 Jan 2021 16:17:05 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux.cj@gmail.com,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [net-next PATCH v3 09/15] device property: Introduce
- fwnode_get_id()
-Message-ID: <20210115104705.GB22724@lsv03152.swis.in-blr01.nxp.com>
-References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
- <20210112134054.342-10-calvin.johnson@oss.nxp.com>
- <CAGETcx-7JVz=QLCMWicHqoagWYjeBXdFJmSv1v6MQhtPt2RS=Q@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx-7JVz=QLCMWicHqoagWYjeBXdFJmSv1v6MQhtPt2RS=Q@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR06CA0246.apcprd06.prod.outlook.com
- (2603:1096:4:ac::30) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S1727137AbhAOLHP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jan 2021 06:07:15 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2355 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbhAOLHO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jan 2021 06:07:14 -0500
+Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DHJDV0Qyhz67bNM;
+        Fri, 15 Jan 2021 19:02:34 +0800 (CST)
+Received: from lhreml712-chm.china.huawei.com (10.201.108.63) by
+ fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 15 Jan 2021 12:06:31 +0100
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml712-chm.china.huawei.com (10.201.108.63) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 15 Jan 2021 11:06:31 +0000
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.2106.002;
+ Fri, 15 Jan 2021 11:06:30 +0000
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rrichter@marvell.com" <rrichter@marvell.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
+Subject: RE: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
+Thread-Topic: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
+Thread-Index: AQHWzYfjlbqCwiJRuEue7sP+GeTJvaoRjUKAgBcV6jA=
+Date:   Fri, 15 Jan 2021 11:06:30 +0000
+Message-ID: <a5745b56831c461bbb2cde4afc7ee295@huawei.com>
+References: <20201208172959.1249-1-shiju.jose@huawei.com>
+ <20201208172959.1249-2-shiju.jose@huawei.com> <20201231164409.GC4504@zn.tnic>
+In-Reply-To: <20201231164409.GC4504@zn.tnic>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.87.250]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0246.apcprd06.prod.outlook.com (2603:1096:4:ac::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10 via Frontend Transport; Fri, 15 Jan 2021 10:47:13 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 599ea6f6-189c-499b-886c-08d8b942ee82
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7937:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8PR04MB7937BD78D370E30B7FD3B5C0D2A70@AM8PR04MB7937.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zwAipUkt/eYaHlmkxDu4ITYxp91ela0coqzpITAVch0N8msk3d24YTpy2SQwK6ZTpltY3uk8/ntu50tbtl5DeLrb+puF3yCTzt2Yg8x7tPEh/JhvNbQ3imdZjd1CzSYStnCX4w70WRQN44tfhxS5TGrxlvMtObqYySTe/FLXjpW1W0+X9Ss30+wqXdYWk1zvRY6QSAUDYGsCdJxPYoxD7XyOAbQBVHUIaCANgoahxHIRtwCK2jGRwZdcPPV2PL8RuOl5jw3Jg3xdStNtae8Wu6P/NziwPQfGgzjcphmSgRn2wVgZcjrCSmYjeTOkEqECXMD3vbx3anXQ+7CLOB3ZeHkNc7Y6bCRhwLZa3rDYNjQslhqvm+SkdZC8ESCxQtiH8m7fjNks6BfXzA9Ix9TehAqlOprvWOYYXZltp2Vq5FrIGhIcU2eV1FErSJYQ9f7K
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(346002)(136003)(396003)(39860400002)(2906002)(86362001)(83380400001)(1006002)(55236004)(33656002)(186003)(55016002)(8676002)(316002)(6916009)(66946007)(6506007)(53546011)(7696005)(6666004)(66556008)(52116002)(44832011)(7416002)(66476007)(16526019)(9686003)(5660300002)(478600001)(1076003)(4326008)(54906003)(26005)(8936002)(956004)(110426009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?OKE23DzffpSYdln0ZeU1q9A8JXTPYljJ8SM+lFdDbA7YL/+cUYSBpYieZ4Pl?=
- =?us-ascii?Q?D06dCxYKMGxXaPaVugQIR1OIwcFfMOci30p0iMoRNo1KYdoNPVc0uR2F5+4A?=
- =?us-ascii?Q?wmIUoz0/phE1eFQFa1O1raxFdWnBf8K7vf3pFcufFtr0+SXIEsm9oaShZLOS?=
- =?us-ascii?Q?am+E0p+wtqxhsijy1Yu89NPBF98qeI7DBi01psBUf1JbmQe3HllRnf1UI6ej?=
- =?us-ascii?Q?2UlZycHjjVXeX6KTZE2o9vRfLE1plkitjoTA7aCpDsjH8xD35uwHiZw3QiVp?=
- =?us-ascii?Q?4xNOF0FnjXD+jAhoXwDYxA8DbzdLdw2n6vG2BIgSUfhuzVtdz+aeSKrKg7qG?=
- =?us-ascii?Q?HE/PBUzmFnjOH0zi7YRi+yrUaCC/CQSQTnQsVWFe79WWqWMQYsCfcqaTmeIB?=
- =?us-ascii?Q?0/RxT5KfHXAUiG65zvHJ52nsd4AAo3Bqm/XhJ2+pr6KdNtTe5F0kHw3MD2OV?=
- =?us-ascii?Q?xuuU54cUS1qEc3EiTiuIrDGPqxm5KP81h3v/UQlfvziJ9geuUZ1WXUzkoa59?=
- =?us-ascii?Q?Vm1GoSMlf0uSrtmhSOaoHKBR5OxB5cIzTEJ7kO3Jb/21QjegcxS9NX46PNLa?=
- =?us-ascii?Q?rF0mAAS1YfqlbY9waMh6w4n5emh8sI+HcKpm5vv21YKmH3PqtpTsktmM8oL5?=
- =?us-ascii?Q?M5BaFwGDGMZ+la3mXVXhSsTbZxym51VwI8UXRVGEeGBYHqIAFNWMyBSi7Asz?=
- =?us-ascii?Q?z67CJ5IyrijUpoKFs99QeLdd2q7ZtJ6ED5twS4V1G05WD/FHXa8A1gNxVsMR?=
- =?us-ascii?Q?5lF6N2D4qKTayyVAZ/cKMT7A4zGgh34flgILpymLQA5XUhVNsX0nB50I3n2U?=
- =?us-ascii?Q?rYhn20xe21exzsJotS0Zm1PDuX9vTGMeiVhkfr4i7/m8VBrbwEMEJ5D4frnR?=
- =?us-ascii?Q?dw1jwdQXt3aFT7ST1Vgrp2wd6bQNKZQDMPRPOv6gkRyiq3yIvU1UE0S6tQTv?=
- =?us-ascii?Q?tFq0ZpUBtysHPFPl3SESlrqnLUj+ksrVBYFaoUDeXtaAwiDxjmSy+cMypjK5?=
- =?us-ascii?Q?aBaQ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 599ea6f6-189c-499b-886c-08d8b942ee82
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2021 10:47:20.2192
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b7TEHHUDK3FdrbjN6lrxp0z9h8FmyReDezVldEFC/rX2MF5fFUQsdnQ7L7bzFOq+ve1cOsGajEcFpBvzgPfVNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7937
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On Tue, Jan 12, 2021 at 09:30:31AM -0800, Saravana Kannan wrote:
-> On Tue, Jan 12, 2021 at 5:42 AM Calvin Johnson
-> <calvin.johnson@oss.nxp.com> wrote:
-> >
-> > Using fwnode_get_id(), get the reg property value for DT node
-> > or get the _ADR object value for ACPI node.
-> >
-> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> > ---
-> >
-> > Changes in v3:
-> > - Modified to retrieve reg property value for ACPI as well
-> > - Resolved compilation issue with CONFIG_ACPI = n
-> > - Added more info into documentation
-> >
-> > Changes in v2: None
-> >
-> >  drivers/base/property.c  | 33 +++++++++++++++++++++++++++++++++
-> >  include/linux/property.h |  1 +
-> >  2 files changed, 34 insertions(+)
-> >
-> > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > index 35b95c6ac0c6..2d51108cb936 100644
-> > --- a/drivers/base/property.c
-> > +++ b/drivers/base/property.c
-> > @@ -580,6 +580,39 @@ const char *fwnode_get_name_prefix(const struct fwnode_handle *fwnode)
-> >         return fwnode_call_ptr_op(fwnode, get_name_prefix);
-> >  }
-> >
-> > +/**
-> > + * fwnode_get_id - Get the id of a fwnode.
-> > + * @fwnode: firmware node
-> > + * @id: id of the fwnode
-> > + *
-> > + * This function provides the id of a fwnode which can be either
-> > + * DT or ACPI node. For ACPI, "reg" property value, if present will
-> > + * be provided or else _ADR value will be provided.
-> > + * Returns 0 on success or a negative errno.
-> > + */
-> > +int fwnode_get_id(struct fwnode_handle *fwnode, u32 *id)
-> > +{
-> > +#ifdef CONFIG_ACPI
-> > +       unsigned long long adr;
-> > +       acpi_status status;
-> > +#endif
-> > +       int ret;
-> > +
-> > +       ret = fwnode_property_read_u32(fwnode, "reg", id);
-> > +       if (!(ret && is_acpi_node(fwnode)))
-> > +               return ret;
-> > +
-> > +#ifdef CONFIG_ACPI
-> > +       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(fwnode),
-> > +                                      METHOD_NAME__ADR, NULL, &adr);
-> > +       if (ACPI_FAILURE(status))
-> > +               return -EINVAL;
-> > +       *id = (u32)adr;
-> > +#endif
-> > +       return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(fwnode_get_id);
-> 
-> Please don't do it this way. The whole point of fwnode_operations is
-> to avoid conditional stuff at the fwnode level. Also ACPI and DT
-> aren't mutually exclusive if I'm not mistaken.
-> 
-> Also, can you CC me on the entire series please? I want to reply to
-> some of your other patches too. Most of the fwnode changes don't seem
-> right. fwnode is lower level that the device-driver framework. Making
-> it aware of busses like mdio, etc doesn't sound right. Also, there's
-> already get_dev_from_fwnode() which is a much more efficient way to
-> look up/get a device from a fwnode instead of looping through a bus.
-
-Thanks for reviewing the patch. I'll add you in the upcoming v4 series.
-There is lot of history into patch series. It would be helpful, if you can
-search for related submissions in the past and get some background.
-
-Regards
-Calvin
+SGkgQm9yaXMsDQoNClRoYW5rcyBmb3IgdGhlIGZlZWRiYWNrLg0KQXBvbG9naWVzIGZvciB0aGUg
+ZGVsYXkuDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEJvcmlzbGF2IFBl
+dGtvdiBbbWFpbHRvOmJwQGFsaWVuOC5kZV0NCj5TZW50OiAzMSBEZWNlbWJlciAyMDIwIDE2OjQ0
+DQo+VG86IFNoaWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5DYzogbGludXgtZWRh
+Y0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5r
+ZXJuZWxAdmdlci5rZXJuZWwub3JnOyBqYW1lcy5tb3JzZUBhcm0uY29tOw0KPm1jaGVoYWIraHVh
+d2VpQGtlcm5lbC5vcmc7IHRvbnkubHVja0BpbnRlbC5jb207IHJqd0Byand5c29ja2kubmV0Ow0K
+PmxlbmJAa2VybmVsLm9yZzsgcnJpY2h0ZXJAbWFydmVsbC5jb207IExpbnV4YXJtIDxsaW51eGFy
+bUBodWF3ZWkuY29tPjsNCj54dXdlaSAoTykgPHh1d2VpNUBodWF3ZWkuY29tPjsgSm9uYXRoYW4g
+Q2FtZXJvbg0KPjxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBKb2huIEdhcnJ5IDxqb2hu
+LmdhcnJ5QGh1YXdlaS5jb20+Ow0KPnRhbnhpYW9mZWkgPHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47
+IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj48c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBo
+dWF3ZWkuY29tPjsgU2FsaWwgTWVodGENCj48c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj5TdWJq
+ZWN0OiBSZTogW1JGQyBQQVRDSCAxLzJdIEVEQUMvZ2hlczogQWRkIEVEQUMgZGV2aWNlIGZvciB0
+aGUgQ1BVDQo+Y2FjaGVzDQo+DQo+T24gVHVlLCBEZWMgMDgsIDIwMjAgYXQgMDU6Mjk6NThQTSAr
+MDAwMCwgU2hpanUgSm9zZSB3cm90ZToNCj4+IFRoZSBjb3JyZWN0ZWQgZXJyb3IgY291bnQgb24g
+dGhlIENQVSBjYWNoZXMgcmVxdWlyZWQgcmVwb3J0aW5nIHRvIHRoZQ0KPj4gdXNlci1zcGFjZSBm
+b3IgdGhlIHByZWRpY3RpdmUgZmFpbHVyZSBhbmFseXNpcy4gRm9yIHRoaXMgcHVycG9zZSwgYWRk
+DQo+PiBhbiBFREFDIGRldmljZSBhbmQgZGV2aWNlIGJsb2NrcyBmb3IgdGhlIENQVSBjYWNoZXMg
+Zm91bmQuDQo+PiBUaGUgY2FjaGUncyBjb3JyZWN0ZWQgZXJyb3IgY291bnQgd291bGQgYmUgc3Rv
+cmVkIGluIHRoZQ0KPj4gL3N5cy9kZXZpY2VzL3N5c3RlbS9lZGFjL2NwdS9jcHUqL2NhY2hlKi9j
+ZV9jb3VudC4NCj4NCj5UaGlzIHN0aWxsIGRvZXNuJ3QgYmVnaW4gdG8gZXhwbGFpbiB3aHkgdGhl
+IGtlcm5lbCBuZWVkcyB0aGlzLiBJIGhhZCBhbHJlYWR5DQo+YXNrZWQgd2hldGhlciBlcnJvcnMg
+aW4gQ1BVIGNhY2hlcyBhcmUgc29tZXRoaW5nIHdoaWNoIGhhcHBlbiBvZnRlbg0KPmVub3VnaCBz
+byB0aGF0IHNvZnR3YXJlIHNob3VsZCBjb3VudCB0aGVtIGJ1dCBub3RoaW5nIGNhbWUuIFNvIHBs
+cyBqdXN0aWZ5DQo+Zmlyc3Qgd2h5IHRoaXMgd2FudHMgdG8gYmUgYWRkZWQgdG8gdGhlIGtlcm5l
+bC4NCg0KTDIgY2FjaGUgY29ycmVjdGVkIGVycm9ycyBhcmUgZGV0ZWN0ZWQgb2NjYXNpb25hbGx5
+IG9uIGZldyBvZg0Kb3VyIEFSTTY0IGhhcmR3YXJlIGJvYXJkcy4gVGhvdWdoIGl0IGlzIHJhcmUs
+IHRoZSBwcm9iYWJpbGl0eSBvZg0KdGhlIENQVSBjYWNoZSBlcnJvcnMgZnJlcXVlbnRseSBvY2N1
+cnJpbmcgY2FuJ3QgYmUgYXZvaWRlZC4NClRoZSBlYXJsaWVyIGZhaWx1cmUgZGV0ZWN0aW9uIGJ5
+IG1vbml0b3JpbmcgdGhlIGNhY2hlIGNvcnJlY3RlZA0KZXJyb3JzIGZvciB0aGUgZnJlcXVlbnQg
+b2NjdXJyZW5jZXMgYW5kIHRha2luZyBwcmV2ZW50aXZlDQphY3Rpb24gY291bGQgcHJldmVudCBt
+b3JlIHNlcmlvdXMgaGFyZHdhcmUgZmF1bHRzLg0KDQpPbiBJbnRlbCBhcmNoaXRlY3R1cmVzLCBj
+YWNoZSBjb3JyZWN0ZWQgZXJyb3JzIGFyZSByZXBvcnRlZCBhbmQNCnRoZSBhZmZlY3RlZCBjb3Jl
+cyBhcmUgb2ZmbGluZSBpbiB0aGUgYXJjaGl0ZWN0dXJlIHNwZWNpZmljIG1ldGhvZC4NCmh0dHA6
+Ly93d3cubWNlbG9nLm9yZy9jYWNoZS5odG1sDQoNCkhvd2V2ZXIgZm9yIHRoZSBmaXJtd2FyZS1m
+aXJzdCBlcnJvciByZXBvcnRpbmcsIHNwZWNpZmljYWxseSBvbg0KQVJNNjQgYXJjaGl0ZWN0dXJl
+cywgdGhlcmUgaXMgbm8gcHJvdmlzaW9uIHByZXNlbnQgZm9yIHJlcG9ydGluZw0KdGhlIGNhY2hl
+IGNvcnJlY3RlZCBlcnJvciBjb3VudCB0byB0aGUgdXNlci1zcGFjZSBhbmQgdGFraW5nDQpwcmV2
+ZW50aXZlIGFjdGlvbiBzdWNoIGFzIG9mZmxpbmUgdGhlIGFmZmVjdGVkIGNvcmVzLg0KPg0KPj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZWRhYy9LY29uZmlnIGIvZHJpdmVycy9lZGFjL0tjb25maWcg
+aW5kZXgNCj4+IDdhNDc2ODBkNmYwNy4uYzczZWVhYjI3YWM5IDEwMDY0NA0KPj4gLS0tIGEvZHJp
+dmVycy9lZGFjL0tjb25maWcNCj4+ICsrKyBiL2RyaXZlcnMvZWRhYy9LY29uZmlnDQo+PiBAQCAt
+NzQsNiArNzQsMTYgQEAgY29uZmlnIEVEQUNfR0hFUw0KPj4NCj4+ICAJICBJbiBkb3VidCwgc2F5
+ICdZJy4NCj4+DQo+PiArY29uZmlnIEVEQUNfR0hFU19DUFVfRVJST1INCj4+ICsJYm9vbCAiRURB
+QyBkZXZpY2UgZm9yIHJlcG9ydGluZyBmaXJtd2FyZS1maXJzdCBCSU9TIGRldGVjdGVkIENQVQ0K
+PmVycm9yIGNvdW50Ig0KPg0KPldoeSBhIHNlcGFyYXRlIEtjb25maWcgaXRlbT8NCkNPTkZJR19F
+REFDX0dIRVNfQ1BVX0NBQ0hFX0VSUk9SIGlzIGFkZGVkIHRvIG1ha2UgdGhpcw0KZmVhdHVyZSBv
+cHRpb25hbCBvbmx5IGZvciB0aGUgcGxhdGZvcm1zIHdoaWNoIG5lZWQgdGhpcyBhbmQgc3VwcG9y
+dGVkLg0KDQo+DQo+PiArCWRlcGVuZHMgb24gRURBQ19HSEVTDQo+PiArCWhlbHANCj4+ICsJICBF
+REFDIGRldmljZSBmb3IgdGhlIGZpcm13YXJlLWZpcnN0IEJJT1MgZGV0ZWN0ZWQgQ1BVIGVycm9y
+IGNvdW50DQo+PiArcmVwb3J0ZWQNCj4NCj5XZWxsIHRoaXMgaXMgbm90IHdoYXQgaXQgaXMgZG9p
+bmcgLSB5b3UncmUgdGFsa2luZyBhYm91dCBjYWNoZSBlcnJvcnMuDQo+IkNQVSBlcnJvcnMiIGNh
+biBiZSBhIGxvdCBtb3JlIHRoYW4ganVzdCBjYWNoZSBlcnJvcnMuDQpTdXJlLiBJIHdpbGwgY2hh
+bmdlLg0KDQo+DQo+PiArc3RhdGljIHZvaWQgZ2hlc19lZGFjX2NyZWF0ZV9jcHVfZGV2aWNlKHN0
+cnVjdCBkZXZpY2UgKmRldikgew0KPj4gKwlpbnQgY3B1Ow0KPj4gKwlzdHJ1Y3QgY3B1X2NhY2hl
+aW5mbyAqdGhpc19jcHVfY2k7DQo+PiArDQo+PiArCS8qDQo+PiArCSAqIEZpbmQgdGhlIG1heGlt
+dW0gbnVtYmVyIG9mIGNhY2hlcyBwcmVzZW50IGluIHRoZSBDUFUgaGVpcmFyY2h5DQo+PiArCSAq
+IGFtb25nIHRoZSBvbmxpbmUgQ1BVcy4NCj4+ICsJICovDQo+PiArCWZvcl9lYWNoX29ubGluZV9j
+cHUoY3B1KSB7DQo+PiArCQl0aGlzX2NwdV9jaSA9IGdldF9jcHVfY2FjaGVpbmZvKGNwdSk7DQo+
+PiArCQlpZiAoIXRoaXNfY3B1X2NpKQ0KPj4gKwkJCWNvbnRpbnVlOw0KPj4gKwkJaWYgKG1heF9u
+dW1iZXJfb2ZfY2FjaGVzIDwgdGhpc19jcHVfY2ktPm51bV9sZWF2ZXMpDQo+PiArCQkJbWF4X251
+bWJlcl9vZl9jYWNoZXMgPSB0aGlzX2NwdV9jaS0+bnVtX2xlYXZlczsNCj4NCj5TbyB0aGlzIGlz
+IGNvdW50aW5nIHRoZSBudW1iZXIgb2YgY2FjaGUgbGV2ZWxzIG9uIHRoZSBzeXN0ZW0/IFNvIHlv
+dSB3YW50IHRvDQo+Y291bnQgdGhlIGVycm9ycyBwZXIgY2FjaGUgbGV2ZWxzPw0KWWVzLiBUaGlz
+IHdhcyB0aGUgc3VnZ2VzdGlvbiBmcm9tIEphbWVzIGFuZCB0byBvZmZsaW5lIHRoZSBhZmZlY3Rl
+ZCBjb3JlcyBmb3IgdGhlIHNoYXJlZCBjYWNoZS4NCg0KPg0KPj4gKwl9DQo+PiArCWlmICghbWF4
+X251bWJlcl9vZl9jYWNoZXMpDQo+PiArCQlyZXR1cm47DQo+PiArDQo+PiArCS8qDQo+PiArCSAq
+IEVEQUMgZGV2aWNlIGludGVyZmFjZSBvbmx5IHN1cHBvcnRzIGNyZWF0aW5nIHRoZSBDUFUgY2Fj
+aGUNCj5oaWVyYXJjaHkgZm9yIGFsbHMNCj4+ICsJICogdGhlIENQVXMgdG9nZXRoZXIuIFRodXMg
+bmVlZCB0byBhbGxvY2F0ZSBjcHVfZWRhY19ibG9ja19saXN0IGZvcg0KPnRoZQ0KPj4gKwkgKiBt
+YXhfbnVtYmVyX29mX2NhY2hlcyBhbW9uZyBhbGwgdGhlIENQVXMgaXJyZXNwZWN0aXZlIG9mIHRo
+ZQ0KPm51bWJlciBvZiBjYWNoZXMNCj4+ICsJICogcGVyIENQVSBtaWdodCB2YXJ5Lg0KPj4gKwkg
+Ki8NCj4NCj5TbyB0aGlzIGlzIGx1bXBpbmcgYWxsIHRoZSBjYWNoZXMgdG9nZXRoZXIgaW50byBh
+IHNpbmdsZSBsaXN0PyBXaGF0IGZvcj8NCj5UbyB1bnRhbmdsZSB0byB0aGUgcHJvcGVyIG9uZXMg
+d2hlbiB0aGUgZXJyb3IgZ2V0cyByZXBvcnRlZD8NCj4NCj5IYXZlIHlvdSBoZWFyZCBvZiBwZXJj
+cHUgdmFyaWFibGVzPw0KWWVzLiBDaGFuZ2VkIHRoZSBsaXN0IHRvIHRoZSBwZXJjcHUgdmFyaWFi
+bGUuDQoNCj4NCj4+IEBAIC02MjQsNiArNzg3LDEwIEBAIGludCBnaGVzX2VkYWNfcmVnaXN0ZXIo
+c3RydWN0IGdoZXMgKmdoZXMsIHN0cnVjdA0KPmRldmljZSAqZGV2KQ0KPj4gIAlnaGVzX3B2dCA9
+IHB2dDsNCj4+ICAJc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgmZ2hlc19sb2NrLCBmbGFncyk7DQo+
+Pg0KPj4gKyNpZiBkZWZpbmVkKENPTkZJR19FREFDX0dIRVNfQ1BVX0VSUk9SKQ0KPj4gKwlnaGVz
+X2VkYWNfY3JlYXRlX2NwdV9kZXZpY2UoZGV2KTsNCj4+ICsjZW5kaWYNCj4+ICsNCj4NCj5Jbml0
+IHN0dWZmIGJlbG9uZ3MgaW50byBnaGVzX3NjYW5fc3lzdGVtKCkuDQo+DQpEaWQgeW91IG1lYW4g
+Y2FsbGluZyAgZ2hlc19lZGFjX2NyZWF0ZV9jcHVfZGV2aWNlKCkgaW4gdGhlIGdoZXNfc2Nhbl9z
+eXN0ZW0oKT8NCg0KPi4uLg0KPg0KPk9rLCBJJ3ZlIHNlZW4gZW5vdWdoLiAicmVxdWlyZWQgcmVw
+b3J0aW5nIHRvIHRoZSB1c2VyLXNwYWNlIGZvciB0aGUgcHJlZGljdGl2ZQ0KPmZhaWx1cmUgYW5h
+bHlzaXMuIiBpcyBub3QgZXZlbiB0cnlpbmcgdG8gZXhwbGFpbiAqd2h5KiB5b3UncmUgZG9pbmcg
+dGhpcywgd2hhdA0KPiphY3R1YWwqIHByb2JsZW0gaXQgaXMgYWRkcmVzc2luZyBhbmQgd2h5IHNo
+b3VsZCB0aGUga2VybmVsIGdldCBpdC4NCj4NCj5BbmQgd2l0aG91dCBhIHByb3BlciBwcm9ibGVt
+IGRlZmluaXRpb24gb2Ygd2hhdCB5b3UncmUgdHJ5aW5nIHRvIHNvbHZlLCB0aGlzDQo+aXMgbm90
+IGdvaW5nIGFueXdoZXJlLg0KPg0KPi0tDQo+UmVnYXJkcy9HcnVzcywNCj4gICAgQm9yaXMuDQo+
+DQoNClRoYW5rcywNClNoaWp1DQo=
