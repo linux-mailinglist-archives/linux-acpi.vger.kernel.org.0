@@ -2,75 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3287F2F74C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 09:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 793722F75DC
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jan 2021 10:52:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbhAOI4W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jan 2021 03:56:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:54440 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726381AbhAOI4U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Jan 2021 03:56:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610700893;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=znxl+FRovgO8/86n29y7oXuD6db7aqsDOrd2YL92PYY=;
-        b=hs0jgEjy/V527EHnRxuJGUdlMZTA0HzAjEe0TlOpfY30m//dAKm79qP6c4Sozh3/KlTNGO
-        SChVk0nEqIq4j/zKsbe1cYatemV8eP8tQITSyhjtoTeEZjzOP4Z6KAuI83w7pAngzXs2nY
-        fxoibdGQHtFoU84uDFBcBPn6wcNjcxM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-446-atwNnMBUPk6PPKRCSNWj6A-1; Fri, 15 Jan 2021 03:54:50 -0500
-X-MC-Unique: atwNnMBUPk6PPKRCSNWj6A-1
-Received: by mail-ed1-f69.google.com with SMTP id cm4so3556179edb.0
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jan 2021 00:54:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=znxl+FRovgO8/86n29y7oXuD6db7aqsDOrd2YL92PYY=;
-        b=osFdrAbRVuIkOnsOOzwOqG3BsN7nWREF+uWHHJuDj9j95nh2G0Vn3NJfTqL8l9l+I8
-         gSG0jAduZ4F/hGTvDsCybPAZOomCZRGc5t/9lkFUP1LmFUxgaZz3Twp7Amzx+BBD92BK
-         vjiZCnhYsEVjHyEmxaHVvwlQIOwPbzcjw6ta5EO4ZqeYzOs8nPEj/AUxLAChFlJo/clD
-         E/+ekdZ2hzf7NihZGCrxn32zl4mo2iGSLVQpd78ABegHb3JvNhYEjSu/VFTWxKpJR4nR
-         88ofsFy2OO9Bq9IqKvsK54i91x6VQ5O80SVzpbgTU89+iuqJUzxs/CIaBkm1iTdEldQ3
-         Norw==
-X-Gm-Message-State: AOAM533f3PegKzv2oh0ko32W/jBdyo5WDeFL/NaaWm6w08wA1Pk/dP1T
-        NL60N/s9WhGSs1fjjVZCbmVRfXFL/ShHGAfxECezC+qsxSgfx7GyrqNYX97nCjzyoldc/5Z6ST4
-        K+EtPBVYVQO96YcodaBe1Ag==
-X-Received: by 2002:a17:906:aac1:: with SMTP id kt1mr7728684ejb.329.1610700888668;
-        Fri, 15 Jan 2021 00:54:48 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyF6di5ctyxBFaeY60v8hPaVVh40c2clE5gU3WoWExg9XiDhma561SpDAcJQKRsvd+SaD3u0g==
-X-Received: by 2002:a17:906:aac1:: with SMTP id kt1mr7728676ejb.329.1610700888516;
-        Fri, 15 Jan 2021 00:54:48 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id b14sm3263341edu.3.2021.01.15.00.54.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jan 2021 00:54:48 -0800 (PST)
-Subject: Re: ACPI scan regression -> Boot fail on Cherrytrail w/ 5.11-rc3
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        id S1729116AbhAOJuz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jan 2021 04:50:55 -0500
+Received: from mga18.intel.com ([134.134.136.126]:51113 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726829AbhAOJuz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 Jan 2021 04:50:55 -0500
+IronPort-SDR: WcKDESq7H4ynFERcAiuFJDutXHrOgSR8bdXsDVoPCUJQpMhFsa8h4ZzzVe6XbSTsE9zaba2fE0
+ 9DHx4/LDSPng==
+X-IronPort-AV: E=McAfee;i="6000,8403,9864"; a="166195715"
+X-IronPort-AV: E=Sophos;i="5.79,349,1602572400"; 
+   d="scan'208";a="166195715"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2021 01:49:17 -0800
+IronPort-SDR: ogNTLClcTE7XycGsagNh8CZ8d+3nIpa8dtTrJhgV+fBOcf75Yt0rJ05O8A2nv8KbMmNHmn3h0S
+ J/oi4N1lmU/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,349,1602572400"; 
+   d="scan'208";a="465538723"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 15 Jan 2021 01:49:15 -0800
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Greg KH <greg@kroah.com>
+Cc:     Felipe Balbi <balbi@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-References: <792c89fd-88f2-b243-50df-21f3be1cc20c@linux.intel.com>
- <f5dae2aa-ffcb-1af1-726f-2362cb4fe470@redhat.com>
- <1bb7f766-4f29-55b1-882c-3d70cca0912f@linux.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ce3ce3b6-c2d2-b0d0-56a6-941d3b607cb4@redhat.com>
-Date:   Fri, 15 Jan 2021 09:54:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        Daniel Scally <djrscally@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v3 0/4] Remove one more platform_device_add_properties() call
+Date:   Fri, 15 Jan 2021 12:49:10 +0300
+Message-Id: <20210115094914.88401-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <1bb7f766-4f29-55b1-882c-3d70cca0912f@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -78,51 +45,51 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 1/15/21 1:49 AM, Pierre-Louis Bossart wrote:
-> Thanks Hans for your reply, much appreciated.
-> 
->> Pierre-Louis, can you see if the following hack helps? :
->>
->> --- a/drivers/acpi/scan.c
->> +++ b/drivers/acpi/scan.c
->> @@ -1939,7 +1939,6 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
->>           /* Bail out if the number of recorded dependencies is not 0. */
->>           if (count > 0) {
->>               acpi_bus_scan_second_pass = true;
->> -            return AE_CTRL_DEPTH;
->>           }
->>       }
->>   @@ -1948,8 +1947,7 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
->>           return AE_CTRL_DEPTH;
->>         acpi_scan_init_hotplug(device);
->> -    if (!check_dep)
->> -        acpi_scan_dep_init(device);
->> +    acpi_scan_dep_init(device);
->>     out:
->>       if (!*adev_p)
-> 
-> Yep, those 'hacks' solve the boot problem on my device. I tried multiple times and it's completely reproducible.
+I'm now clearing the dev_fwnode(dev)->secondary pointer in
+device_remove_software_node() as requested by Daniel and Andy. Thanks
+guys, it's much better now. I also took the liberty of including one
+more PCI ID patch where I add PCI ID for the Alder Lake-P variant. I
+hope that is OK.
 
-Ok, so this confirms my earlier findings (with my personal 5.10 + cherry pick tree)
-that the problem is not doing 2 scan "rounds" and thus calling e.g.
-acpi_bus_attach twice. But the problem is rather with deferring the device-creation
-of some devices to the second step.
+Andy, I dropped your Tested-by tag because of the change I made to the
+first patch. If you have time to retest these, I would much appreciate.
 
->> And can you collect an acpidump from the device and either send it to me and Rafael
->> offlist, or upload it somewhere and send us a link ?
-> 
-> will do
 
-2 more questions, for me on the device where I can recreate this the problem only
-happens intermittently. Since you did a successful bisect, I assume that when the
-boot fails, it fails every boot, right?   Do you have any special kernel debugging
-options enabled, e.g. CONFIG_PAGE_POISONING, which might explain why for you it is
-100% reproducable while for me it is intermittent ?  
+v2 cover letter:
 
-Also may I ask what the exact model is of the Zotac device you are seeing this on?
-(the DMI strings are not helpful with this)
+Hi Felipe, Rafael,
 
-Regards,
+This is the second version of this series. There are no real changes,
+but I added the Tiger Lake ID patch to this series in hope that it
+will make your life a bit easier, assuming that Rafael will still pick
+these.
 
-Hans
+
+The original over letter:
+
+I originally introduced these as part of my series where I was
+proposing PM ops for software nodes [1], but since that still needs
+work, I'm sending these two separately.
+
+So basically I'm only modifying dwc3-pci.c so it registers a software
+node directly at this point. That will remove one more user of
+platform_device_add_properties().
+
+[1] https://lore.kernel.org/lkml/20201029105941.63410-1-heikki.krogerus@linux.intel.com/
+
+thanks,
+
+Heikki Krogerus (4):
+  software node: Introduce device_add_software_node()
+  usb: dwc3: pci: Register a software node for the dwc3 platform device
+  usb: dwc3: pci: ID for Tiger Lake CPU
+  usb: dwc3: pci: add support for the Intel Alder Lake-P
+
+ drivers/base/swnode.c       | 71 ++++++++++++++++++++++++++++++++-----
+ drivers/usb/dwc3/dwc3-pci.c | 69 ++++++++++++++++++++++-------------
+ include/linux/property.h    |  3 ++
+ 3 files changed, 110 insertions(+), 33 deletions(-)
+
+-- 
+2.29.2
 
