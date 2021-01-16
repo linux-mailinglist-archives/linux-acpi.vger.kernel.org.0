@@ -2,143 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C28062F8D57
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jan 2021 13:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0AD82F8F2D
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jan 2021 21:26:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726603AbhAPMh7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Jan 2021 07:37:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:45657 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726018AbhAPMh6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 16 Jan 2021 07:37:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610800592;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=p/hW3UDH3Mt+qMjiOhDxhyq+alcWmdFGAsYWy1szuU8=;
-        b=iiyxwgUG9gKPwwifcizIRYziLkHqAC7jZJBC6VqU3huMb4jMzQP++WCKy9I4msimSfz3DI
-        gJngZFOpkkMSEkV+dRmQYXyEgAJX8NC0TC0PIpBW5xmH1lA8jDpE8doqO0H6NcAC1iXnUj
-        o0zMbEHCnGSX1uZ5H6CQEPAmXvktQcI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-533-Ac3TUgxhNQ6JBYh8-kzoTg-1; Sat, 16 Jan 2021 07:36:30 -0500
-X-MC-Unique: Ac3TUgxhNQ6JBYh8-kzoTg-1
-Received: by mail-ej1-f69.google.com with SMTP id q11so4346993ejd.0
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Jan 2021 04:36:29 -0800 (PST)
+        id S1726273AbhAPUYr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 16 Jan 2021 15:24:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52288 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726862AbhAPUYZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Jan 2021 15:24:25 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0186BC061757;
+        Sat, 16 Jan 2021 12:23:45 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id g15so2900160pjd.2;
+        Sat, 16 Jan 2021 12:23:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zJcT2DByVAw9ygpQVE1Cu1D42e69pC0/D4yERSfO1vs=;
+        b=cqvOCT9aGlsgaY+6t8ngHwL012YqGygdXVHowcHeQ37Qc9M6aWlqxI50cyv2E67O7p
+         YhBaF5Ctj3FnPAXonjfwicrOIW+uY+3qlXxiTIjVRti7EMXhcUelHS41onGomzJFXAmm
+         5jVzIR1s4+liUvfF2va9+RorHYikxTjPXQnuvzf+07fdNJZtGmhkM69rxVn/xc/LEA77
+         h33gj9j4bnwH5aX9+CAQfEF3jaw9BjlupMLc2uD+fdnXoQZNHEndRlptioaUlcYjwnkx
+         XfTQpf2jRMkASm+fHNeyF8CoHQ7dCUXkwGp1gLeDaoWw88v2fD4r6/3Vsyld6AB2iNSd
+         pj+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=p/hW3UDH3Mt+qMjiOhDxhyq+alcWmdFGAsYWy1szuU8=;
-        b=jioYi5uHaNpLL1YkReWEQ4VZxxFGvvpWt0uH4LmeBIwQyzW7zfLALIcUOaK1IeSX+/
-         m5zNrj1X14T3ot1qaLTGlxG+X/fHL/EHu4ySXKsxHbqTatxscaoFp4m6ldC/e3raxmQT
-         hMufbolZFWULhXqDfK0gwcw7e/xKfYy4r58x8klSTgSdYd/ir2qSh+2fJFiXy8gdmje7
-         KHPEXpa4JTOfbKjf/xBkJvxZ/+fGlMW9mlmTR3sQIVPGIVtmcPW+OMzIqWLOh/zvbtk1
-         JUuXeDXjwml/EWh9KhkY7+8RwSx8JHRe9YzKnfkW3YQ8mGp6OAjdYS2Tn/5l16tJivy8
-         GsRg==
-X-Gm-Message-State: AOAM532x4uGprc4LVB5YRu2KJaxW119McZfDpe7cw2/N/b/C5QVcZk17
-        rxCiZTv2WDDhFjluc3BaTMRDpXMgU9Mk5bPhJQUrTYHg9Xszt0eMZF9Df2pXJdS3Z7RseUW/b2f
-        JV70B37pRXhRtqEZnbkxt8g==
-X-Received: by 2002:aa7:cd44:: with SMTP id v4mr13245287edw.156.1610800588967;
-        Sat, 16 Jan 2021 04:36:28 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJy6sfd3skgtXMX3K0NcltTHfd1eDkWSBYRb5dIgmFvrNR1iPf56gxLl6J4bo+5TtlNTkGD6JQ==
-X-Received: by 2002:aa7:cd44:: with SMTP id v4mr13245283edw.156.1610800588844;
-        Sat, 16 Jan 2021 04:36:28 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id s4sm830187ejc.14.2021.01.16.04.36.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Jan 2021 04:36:28 -0800 (PST)
-Subject: Re: [PATCH v1 2/2] ACPI: scan: Adjust white space in
- acpi_device_add()
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <3494203.VBaj39JGmp@kreacher> <8659794.ROA1lt5W1e@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <42424760-6c02-7480-e38a-f1d66b447742@redhat.com>
-Date:   Sat, 16 Jan 2021 13:36:27 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zJcT2DByVAw9ygpQVE1Cu1D42e69pC0/D4yERSfO1vs=;
+        b=pJFY2C1tiizckMN3QTdnSfJO1qG/9XmjlO2jQh6Ox1n8593kFUQMjXP9ZsdPFGDvQH
+         +sgZQntaJIhMLSFLLSw3UCAQbYHf0TPrmb2fG+qZjd7/k3JPy/+Q8m3bmRp2zp0cQNf9
+         uAp8d1QE3iUlvWVxg+EJBbHqYshgcevy39NzCU5FhwTw70IiiYn1sWgVEbO4v/lPZwgH
+         HCjkQqC4/jmJxxr3PnlC0SUg9+bZXF58/ZTo8thMBdYok+auQHTIMZb0LU7GI8XJaS85
+         ageGnnOlI6wer2sueww9jxQqqcJam2VinZDKs6P9ixKeGmYLT4gWkt0gITYSISHG16q0
+         4FTQ==
+X-Gm-Message-State: AOAM5339EJNuJRCub3y6miRxK2pUZ2NIze7+5c1qw3QqmeSeUcJWHJd+
+        34kwayzpFd4ZnCde5eNILy+a92WOuSTCl3W+/u05sJYnLsqghg==
+X-Google-Smtp-Source: ABdhPJw9qBR8ysjKdldStISGdFIiUBrlQ2yCfiUx+yQJg115xhaT1SXXGwHdf/DAS5D5i5pFzBybiNYaGDAyeWzCmXs=
+X-Received: by 2002:a17:902:7e47:b029:de:7c27:c903 with SMTP id
+ a7-20020a1709027e47b02900de7c27c903mr7284267pln.21.1610828624287; Sat, 16 Jan
+ 2021 12:23:44 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <8659794.ROA1lt5W1e@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210115094914.88401-1-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20210115094914.88401-1-heikki.krogerus@linux.intel.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 16 Jan 2021 22:23:28 +0200
+Message-ID: <CAHp75Vc3xjaOugX3d8bohz12OEP=n4BAonNyQJQ=UgBfVZorOg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Remove one more platform_device_add_properties() call
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Greg KH <greg@kroah.com>, Felipe Balbi <balbi@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Fri, Jan 15, 2021 at 11:52 AM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> Hi,
+>
+> I'm now clearing the dev_fwnode(dev)->secondary pointer in
+> device_remove_software_node() as requested by Daniel and Andy. Thanks
+> guys, it's much better now. I also took the liberty of including one
+> more PCI ID patch where I add PCI ID for the Alder Lake-P variant. I
+> hope that is OK.
+>
+> Andy, I dropped your Tested-by tag because of the change I made to the
+> first patch. If you have time to retest these, I would much appreciate.
 
-On 1/14/21 7:47 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Add empty lines in some places in acpi_device_add() to help
-> readability and drop leading spaces before the labels in there.
-> 
-> No functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Since Greg already grabbed a v3 I will test it when it appears in linux-next.
 
-Patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-> ---
->  drivers/acpi/scan.c |    9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -692,10 +692,12 @@ int acpi_device_add(struct acpi_device *
->  
->  	if (device->wakeup.flags.valid)
->  		list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
-> +
->  	mutex_unlock(&acpi_device_lock);
->  
->  	if (device->parent)
->  		device->dev.parent = &device->parent->dev;
-> +
->  	device->dev.bus = &acpi_bus_type;
->  	device->dev.release = release;
->  	result = device_add(&device->dev);
-> @@ -711,16 +713,19 @@ int acpi_device_add(struct acpi_device *
->  
->  	return 0;
->  
-> - err:
-> +err:
->  	mutex_lock(&acpi_device_lock);
-> +
->  	if (device->parent)
->  		list_del(&device->node);
-> +
->  	list_del(&device->wakeup_list);
->  
-> - err_unlock:
-> +err_unlock:
->  	mutex_unlock(&acpi_device_lock);
->  
->  	acpi_detach_data(device->handle, acpi_scan_drop_device);
-> +
->  	return result;
->  }
->  
-> 
-> 
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
