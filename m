@@ -2,101 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 057232FA8FB
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 19:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B7412FA95B
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 19:55:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbhARShf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 13:37:35 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:33266 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730765AbhARSha (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 13:37:30 -0500
-Received: from zn.tnic (p200300ec2f069f001e13c6b7481d9a7b.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:9f00:1e13:c6b7:481d:9a7b])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DFC91EC0258;
-        Mon, 18 Jan 2021 19:36:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1610995007;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=HzegoAfVAaZDbMTTGri4bkt9an6vYxRS8pFX5icPkSI=;
-        b=LG+oqy9qBBRsJNBF02g3yaLSWmeU5nKLH4rV8OwnUJMlbGI7aILOqGDNGRd4Wqw+vXfeNL
-        Vt4i06eSjr1IjIgLE492qqYnrQjqy2PhUilGbnGPEUTtI3ISyofSJraNVInPHVLR/rpnXY
-        RvU1PrqluqrVphvE2q+gATDoQR5UnUc=
-Date:   Mon, 18 Jan 2021 19:36:37 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rrichter@marvell.com" <rrichter@marvell.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
-Subject: Re: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
-Message-ID: <20210118183637.GD30090@zn.tnic>
-References: <20201208172959.1249-1-shiju.jose@huawei.com>
- <20201208172959.1249-2-shiju.jose@huawei.com>
- <20201231164409.GC4504@zn.tnic>
- <a5745b56831c461bbb2cde4afc7ee295@huawei.com>
+        id S2436928AbhARSyQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 13:54:16 -0500
+Received: from smtprelay0097.hostedemail.com ([216.40.44.97]:36896 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2407839AbhARSyM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Jan 2021 13:54:12 -0500
+X-Greylist: delayed 604 seconds by postgrey-1.27 at vger.kernel.org; Mon, 18 Jan 2021 13:54:10 EST
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave03.hostedemail.com (Postfix) with ESMTP id D4F8A181CAC78;
+        Mon, 18 Jan 2021 18:44:11 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 746F61801AC86;
+        Mon, 18 Jan 2021 18:43:19 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:982:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2553:2559:2562:2736:2828:3138:3139:3140:3141:3142:3352:3622:3865:3867:3868:3870:3871:3872:3873:3874:4250:4321:5007:6742:6743:7652:7903:8784:10004:10400:10946:11232:11658:11914:12294:12297:12740:12895:13069:13160:13229:13311:13357:13439:13894:14659:14777:21080:21627:21990:30029:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: team75_1e0c60f2754b
+X-Filterd-Recvd-Size: 2364
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf03.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 18 Jan 2021 18:43:16 +0000 (UTC)
+Message-ID: <d4671ea998010c9400ed7fd6cdf0d8ecf9a79af4.camel@perches.com>
+Subject: Re: [PATCH v2 4/7] i2c: i2c-core-acpi: Add i2c_acpi_dev_name()
+From:   Joe Perches <joe@perches.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org,
+        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        hdegoede@redhat.com, mgross@linux.intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        sakari.ailus@linux.intel.com, laurent.pinchart@ideasonboard.com,
+        kieran.bingham@ideasonboard.com
+Date:   Mon, 18 Jan 2021 10:43:14 -0800
+In-Reply-To: <20210118133942.GI4077@smile.fi.intel.com>
+References: <20210118003428.568892-1-djrscally@gmail.com>
+         <20210118003428.568892-5-djrscally@gmail.com>
+         <20210118133942.GI4077@smile.fi.intel.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a5745b56831c461bbb2cde4afc7ee295@huawei.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 15, 2021 at 11:06:30AM +0000, Shiju Jose wrote:
-> L2 cache corrected errors are detected occasionally on few of
-> our ARM64 hardware boards. Though it is rare, the probability of
-> the CPU cache errors frequently occurring can't be avoided.
-> The earlier failure detection by monitoring the cache corrected
-> errors for the frequent occurrences and taking preventive
-> action could prevent more serious hardware faults.
+On Mon, 2021-01-18 at 15:39 +0200, Andy Shevchenko wrote:
+> On Mon, Jan 18, 2021 at 12:34:25AM +0000, Daniel Scally wrote:
+> > We want to refer to an i2c device by name before it has been
 > 
-> On Intel architectures, cache corrected errors are reported and
-> the affected cores are offline in the architecture specific method.
-> http://www.mcelog.org/cache.html
+> I²C
+
+Andy, are you next going to suggest renaming all the files with i2c?
+
+$ git ls-files | grep i2c | wc -l
+953
+
+Please do not use the pedantic I²C, 7 bit ascii is just fine here.
+
+My keyboard does not have a superscripted 2 key, and yes, I know
+how to use it with multiple keypresses but it's irrelevant.
+
+> > created by the kernel; add a function that constructs the name
+> > from the acpi device instead.
 > 
-> However for the firmware-first error reporting, specifically on
-> ARM64 architectures, there is no provision present for reporting
-> the cache corrected error count to the user-space and taking
-> preventive action such as offline the affected cores.
+> acpi -> ACPI
 
-How hard was it to write that in your first submission? What do you
-think would be the best way to persuade a patch reviewer/maintainer to
-take a look at your submission?
+Same deal with acpi filenames.  Everyone already recognizes acpi is
+actually ACPI and there isn't any confusion in anyone's mind.
 
-> >Why a separate Kconfig item?
-> CONFIG_EDAC_GHES_CPU_CACHE_ERROR is added to make this
-> feature optional only for the platforms which need this and supported.
-> 
-> >
-> >> +	depends on EDAC_GHES
+$ git ls-files | grep acpi | wc -l
+533
 
-depends on EDAC_GHES hardly expresses which platforms need it/support
-it.
+> Prefix: "i2c: core: "
 
-If anything, depends on ARM64.
+Please stop being a pedant on these trivial things.
+It's unimportant and has almost no value.
 
-> >Init stuff belongs into ghes_scan_system().
-> >
-> Did you mean calling  ghes_edac_create_cpu_device() in the ghes_scan_system()?
 
-I mean, all hardware discovery needs to happen in ghes_scan_system
-- you don't need to call those from outside the driver, in
-ghes_edac_register().
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
