@@ -2,74 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 951E92FA267
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 15:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 617ED2FA260
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 15:02:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391510AbhARMan (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 07:30:43 -0500
-Received: from mga07.intel.com ([134.134.136.100]:10055 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391503AbhARMaj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 07:30:39 -0500
-IronPort-SDR: nUwFUPJV6CSSo518YJoIPh6QYXAsuZMMB2c9JMkiVvps0LfDPy9QM6a39QgjQ1KhD1lwDqAPOf
- 25ZwWjMvfLoQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9867"; a="242866894"
-X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="242866894"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:28:53 -0800
-IronPort-SDR: 6iH2ILx1Vuk7B7LU89OE6QX3T0bl5uWmnLgdqabGa401cHoG+kpRpyXtCNjDmh0DUPh5ZxHfA4
- 5T0Cd9pQihGg==
-X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="346860180"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:28:48 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l1TfK-0027Uk-F1; Mon, 18 Jan 2021 14:29:50 +0200
-Date:   Mon, 18 Jan 2021 14:29:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        andy@kernel.org, mika.westerberg@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, lee.jones@linaro.org, hdegoede@redhat.com,
-        mgross@linux.intel.com, robert.moore@intel.com,
-        erik.kaneda@intel.com, sakari.ailus@linux.intel.com,
-        kieran.bingham@ideasonboard.com
-Subject: Re: [PATCH v2 1/7] acpi: utils: move acpi_lpss_dep() to utils
-Message-ID: <20210118122950.GE4077@smile.fi.intel.com>
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-2-djrscally@gmail.com>
- <YAU3msXszVZ8CLjs@pendragon.ideasonboard.com>
+        id S1726463AbhAROAg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 09:00:36 -0500
+Received: from mail-oo1-f46.google.com ([209.85.161.46]:33808 "EHLO
+        mail-oo1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404720AbhARN7v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 08:59:51 -0500
+Received: by mail-oo1-f46.google.com with SMTP id x23so4115891oop.1
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jan 2021 05:59:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=k0bTAOQfEQNUgaA8Wuth/48iPFWLJksYYz/1CLDCgHI=;
+        b=nv7Up+gOzEpTL4DjVmyjESVkpO1dtUtaWsxuDBIkXWjopg6wMYkv2TQGOIQZJAO2Ag
+         mzQTVOevhE7AkQwNSCbiHeC9cmQrUOnbd4h21UjSffrSUMMe/PtK3kAR9iXQSM+D5JWh
+         dRjLb2DhYDRr6h3QcF/IvwyT/cXYE4Cd0ZNbGXs0LFx8/TmEGE+sfG6UNxgqa6OI0OBq
+         24rggCsAlS3dFKydKeU7WYVQFnG50snnP/A0wFJ1zw9HNkRFCaAqFqN5BURsMOINrboW
+         s8PZY7f4JXwyFiplshAPWAAcz1MfDJSm40mnzg8pqEIo4i/HCAHSrxNr1ktD0bg6j/81
+         h7Xg==
+X-Gm-Message-State: AOAM533fnYDwjtZ/HBklrItIQ7l6KGm9lCex7zKxPQRwfVzs0x3H5ey3
+        2Zv+srowTnfff8bS7QU663M+bih+0UELfywG/FU=
+X-Google-Smtp-Source: ABdhPJxOBWR6EMPLT8QwNE5tfOL3KF4HMA2ebV6WCeWnIOmotY8KskdiayFEHCABsVNaNlj/NOQcXvI/QXPTIYmsVZM=
+X-Received: by 2002:a4a:9873:: with SMTP id z48mr17224307ooi.44.1610978350534;
+ Mon, 18 Jan 2021 05:59:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YAU3msXszVZ8CLjs@pendragon.ideasonboard.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210115215752.389656-1-hdegoede@redhat.com>
+In-Reply-To: <20210115215752.389656-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 18 Jan 2021 14:58:54 +0100
+Message-ID: <CAJZ5v0gk0ninRntm508SAgzSrRe5gjZ+-e5ac1h-Cx2reVOSfg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: scan: Make acpi_bus_get_device() clear the adev ptr
+ on error
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 09:24:10AM +0200, Laurent Pinchart wrote:
-> On Mon, Jan 18, 2021 at 12:34:22AM +0000, Daniel Scally wrote:
+On Fri, Jan 15, 2021 at 10:59 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Set the acpi_device pointer which acpi_bus_get_device()
+> returns-by-reference to NULL on error.
+>
+> We've recently had 2 cases where callers of acpi_bus_get_device()
+> did not properly error check the return value, using the
+> returned-by-reference acpi_device pointer blindly, set it to NULL
+> so that this will lead to an immediate oops, rather then following
+> a pointer to who knows what.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-...
+This should fix the crash reported by Pierre-Louis, so let me apply it
+instead of the two debug changes posted by me
+(https://lore.kernel.org/linux-acpi/98e6ed8e-884e-adb4-a146-a66daefa94a7@redhat.com/T/#md5add2fe554a30e3a929d87a66b435f4cc8bf628).
 
-> > +bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle);
-> 
-> "lpss" stands for low power subsystem, an Intel device within the PCH
-> that handles I2C, SPI, UART, ... I think the function should be renamed,
-> as it's now generic. acpi_dev_has_dep() is a potential candidate, I'm
-> sure better ones exist. A bit of kerneldoc would also not hurt.
+Pierre-Louis, can you please double check that the issue goes away
+with this patch applied?
 
-Actually a good suggestions. Please apply my tag after addressing above.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> ---
+>  drivers/acpi/scan.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index c575c9b67f76..c53e88deee1d 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -585,6 +585,8 @@ static int acpi_get_device_data(acpi_handle handle, struct acpi_device **device,
+>         if (!device)
+>                 return -EINVAL;
+>
+> +       *device = NULL;
+> +
+>         status = acpi_get_data_full(handle, acpi_scan_drop_device,
+>                                     (void **)device, callback);
+>         if (ACPI_FAILURE(status) || !*device) {
+> --
+> 2.28.0
+>
