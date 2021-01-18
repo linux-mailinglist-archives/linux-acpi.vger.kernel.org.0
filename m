@@ -2,91 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 177972FA3DF
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 15:59:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C43932FA40E
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 16:06:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393094AbhARO7F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 09:59:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51404 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393088AbhARO7C (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 09:59:02 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BCFAF22C7E;
-        Mon, 18 Jan 2021 14:58:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1610981901;
-        bh=nh5KakTK6nTSgE6PtzTNzNznKC5ibgWCISjQhk0kTsA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LzyfKaPVnpa7W9U9p8yK5Gg7abCBOku3OUsP8ZijR04c9zrMXFLkPHFqZLGxHWP5E
-         X+ZFlhny43fdMOkjqHkDBRQR9i9OpakW9pPLEZNJidMO+OB46d6WJvYhCYJqkxQti4
-         cZlQfHEKanVkrtkO2zRv66ft+IeLGDQxMXwT/U7k=
-Date:   Mon, 18 Jan 2021 15:58:18 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        lennart@poettering.net,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: Multiple MODALIAS= in uevent file confuses userspace
-Message-ID: <YAWiCkJwiOS8i50c@kroah.com>
-References: <CAAd53p6aURhfFp1RFQxEPtGfzSdUfe4=N=P2rP27ULxp-D4GCg@mail.gmail.com>
- <CAAd53p45q+Jigje0FcWAERiBUGfJhR8nTYNh7SFxBpajAe4=oA@mail.gmail.com>
- <CAJZ5v0iyEq6+OemJNXQv46h0pW=LHxiR2HeFe4+us59_x6Nymg@mail.gmail.com>
- <20210118141238.GQ968855@lahna.fi.intel.com>
- <YAWalPeMPt44lBgI@kroah.com>
- <20210118144853.GP4077@smile.fi.intel.com>
+        id S2393149AbhARPE4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 10:04:56 -0500
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:43907 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405383AbhARPEV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 10:04:21 -0500
+Received: by mail-oi1-f175.google.com with SMTP id q25so17945921oij.10
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jan 2021 07:04:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OaaMIalrFYwhzB1x2X5ejUsVgqoKBQE3WCNvHl3NOaY=;
+        b=uAYKh4nYFQBZeKfhm8ZT1BX2EZs0GXVAMPC7C6cvU3w4kl5JAXGl+k1cckpzeiqmhp
+         TNSGHkRGJqW0cMK3B5T0AcHh8eQQGnlfvuXTTcVwX38Mi8t+0OzkJL5nTSUeCvRfTnap
+         FueqlHHfruepiraY9gdkirDscEdDcc9oaM9/dJ8kQFKC8WveBq1x7G3HDUXU79xXjO6/
+         4HKwV1vAGzHRlJws+gWDKVTNcRgWawsuf5RjwrPi1RhYNF5aPwnA1PR0VcVyu8nlrR3Y
+         zR6naL8hIsYh83dAaJ9uIFJtmlwpVDlz6Thr7WACT96dqNvTHKkSCHY60hEqOgknKs/W
+         qlWg==
+X-Gm-Message-State: AOAM532B0kIZIJQLV7zGZEt00am5LlhOICFnZCwJ7TMj5pPXH/44HPQQ
+        EKB+wTVRGn93RuIHyM4rBHG+jJ9ri+t8iZvMqEK0VPPk
+X-Google-Smtp-Source: ABdhPJzxCc/ebiaUGRJfSIvBQ38msRGmDYKk4sOfrIf33+mH415MyNWlCzRuY7fPETxfLFyZ1E/D0VDCpkTPRar3bLg=
+X-Received: by 2002:aca:4892:: with SMTP id v140mr13408534oia.71.1610982219487;
+ Mon, 18 Jan 2021 07:03:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210118144853.GP4077@smile.fi.intel.com>
+References: <20210115184826.2250-1-erik.kaneda@intel.com>
+In-Reply-To: <20210115184826.2250-1-erik.kaneda@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 18 Jan 2021 16:03:23 +0100
+Message-ID: <CAJZ5v0ht1z_TOaUNLxHRCAqG=FicvFUzwNwNvzdbZtQdxo-Fog@mail.gmail.com>
+Subject: Re: [PATCH 0/9] ACPICA release 20201217 and 20210105
+To:     Erik Kaneda <erik.kaneda@intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 04:48:53PM +0200, Andy Shevchenko wrote:
-> On Mon, Jan 18, 2021 at 03:26:28PM +0100, Greg Kroah-Hartman wrote:
-> > On Mon, Jan 18, 2021 at 04:12:38PM +0200, Mika Westerberg wrote:
-> > > On Mon, Jan 18, 2021 at 02:50:33PM +0100, Rafael J. Wysocki wrote:
-> > > > On Mon, Jan 18, 2021 at 8:27 AM Kai-Heng Feng
-> > > > <kai.heng.feng@canonical.com> wrote:
-> > > > > On Sat, Jan 9, 2021 at 12:25 AM Kai-Heng Feng
-> > > > > <kai.heng.feng@canonical.com> wrote:
-> > > > > >
-> > > > > > Commit 8765c5ba19490 ("ACPI / scan: Rework modalias creation when
-> > > > > > "compatible" is present") creates two modaliases for certain ACPI
-> > > > > > devices. However userspace (systemd-udevd in this case) assumes uevent
-> > > > > > file doesn't have duplicated keys, so two "MODALIAS=" breaks the
-> > > > > > assumption.
-> > > > > >
-> > > > > > Based on the assumption, systemd-udevd internally uses hashmap to
-> > > > > > store each line of uevent file, so the second modalias always replaces
-> > > > > > the first modalias.
-> > > > > >
-> > > > > > My attempt [1] is to add a new key, "MODALIAS1" for the second
-> > > > > > modalias. This brings up the question of whether each key in uevent
-> > > > > > file is unique. If it's no unique, this may break may userspace.
-> > > > >
-> > > > > Does anyone know if there's any user of the second modalias?
-> > > > > If there's no user of the second one, can we change it to OF_MODALIAS
-> > > > > or COMPAT_MODALIAS?
-> > > 
-> > > The only users I'm aware are udev and the busybox equivalent (udev,
-> > > mdev) but I'm not sure if they use the second second modalias at all so
-> > > OF_MODALIAS for the DT compatible string sounds like a good way to solve
-> > > this.
-> > 
-> > As udev seems to "break" with this (which is where we got the original
-> > report from), I don't think you need to worry about that user :)
-> 
-> > Does anyone use mdev anymore, and in any ACPI-supported systems?
-> 
-> Yes, regularly.
+On Fri, Jan 15, 2021 at 8:20 PM Erik Kaneda <erik.kaneda@intel.com> wrote:
+>
+> This series contains ACPICA versions 20201217 and 20210105. These
+> releases are quite small and contain trivial or stylistic fixes as well
+> as deprecating MTMR and VRTC tables. The copyright update patch is large
+> in size so it might not come through the mailing list. As an
+> alternative, this patch set is hosted at the following link on github:
+>
+> https://github.com/SchmErik/linux/tree/20210105
+>
+> Al Stone (2):
+>   ACPICA: Remove the MTMR (Mid-Timer) table
+>   ACPICA: Remove the VRTC table
+>
+> Bob Moore (4):
+>   ACPICA: add type casts for string functions
+>   ACPICA: Update version to 20201217 Version 20201217.
+>   ACPICA: Updated all copyrights to 2021
+>   ACPICA: Update version to 20210105
+>
+> Maximilian Luz (2):
+>   ACPICA: Fix exception code class checks
+>   ACPICA: Clean up exception code class checks
+>
+> Nick Desaulniers (1):
+>   ACPICA: ACPICA: fix -Wfallthrough
 
-Ok, and how badly does it break when MODALIAS is multiple lines like
-this?  Or can it handle it?
-
-thanks,
-
-greg k-h
+All patches in the series applied with some changelog adjustments, thanks!
