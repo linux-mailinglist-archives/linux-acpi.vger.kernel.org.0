@@ -2,74 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C222FACB9
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 22:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7242FAD2E
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 23:14:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438095AbhARVcw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 16:32:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60592 "EHLO
+        id S2388105AbhARWNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 17:13:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438090AbhARVct (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 16:32:49 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0638C061573;
-        Mon, 18 Jan 2021 13:32:08 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id 6so10516757wri.3;
-        Mon, 18 Jan 2021 13:32:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=3IxsDslcDpReoCownP1xCxAE8Z7K7L8fc04mjObgzts=;
-        b=LiHdyuMRtxwFFN85BRDfMqn42rOOx2PQnpqXHn+wCW6txvyR484QC77Fo3yc9GtjJC
-         JZgHnAanhhU0/wc5ytc8KoEZA0Oaef2TUx0BIe/JPBhQ0q64uDigP6NIWLmWAf1csPaV
-         IV1DM3h7In/OiD8NcRLfWjI91EoPQfO6GR6MBfdmjhSbdFZaziwAZRDofdNpuv3Hiu8L
-         XJnvx1JCzhS/K+rL698xb3V0WR7v6Mt31XD1ZHXc3lPv0lTO+xPgzAZEU3aO2IRVSBQn
-         mJ62u+jhTuCNwYnmrHldNpE2mQ6kNN9x1C79nMuo9EC2e78wCxEmOmKw13Mc8DicbCTO
-         k/Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3IxsDslcDpReoCownP1xCxAE8Z7K7L8fc04mjObgzts=;
-        b=hacC5/xxx9wG6f8bLy3J6BJ1bhdg0d8jPKUHqNfdCSvRn2OomgMf41Ug0e9/BrmFWF
-         LRiq8uIeNojIzCsjkHuxaC8FpDjsJ0UyFO1bNWXEkJz1T2rypM+ll4AP5+R4w6ONS2eM
-         TqFcpNA4RXO7MWGViz2bHS9WK6WIVAzVtjt72js+cEwaC09OY8uhFcB59asD0oOhkZ74
-         d8do7oAyE8bRZseCZX/WfCFFfIWFl9PpaA8+ujtO/laUNt8rcXS9ktKf9oo0Em12S6ux
-         qu9ZMHppMMV7Uh4CVBJPWM5N266k3HwQwN6Y/x0kmJUs4Ik59ODzV7IVje7xSCr1A4K5
-         GRPA==
-X-Gm-Message-State: AOAM531v4e0pdergupoGKX3eUSfubrabjqMn2OyBdQPQoMwxxJffWcXu
-        SrG8F8cz/AbhYMopVAXCozQ=
-X-Google-Smtp-Source: ABdhPJz2/YugJp7o0rq4nt9EWaD5osgjh0JyF/0i0c/fHNpFEwSdbLrHbtCXK7w/ze+rNwL0pFiC5A==
-X-Received: by 2002:adf:d085:: with SMTP id y5mr1309658wrh.41.1611005527636;
-        Mon, 18 Jan 2021 13:32:07 -0800 (PST)
-Received: from [192.168.1.158] ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id m82sm1113425wmf.29.2021.01.18.13.32.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Jan 2021 13:32:07 -0800 (PST)
-Subject: Re: [PATCH v2 5/7] gpio: gpiolib-acpi: Export acpi_get_gpiod()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, devel@acpica.org,
-        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
-        hdegoede@redhat.com, mgross@linux.intel.com,
-        robert.moore@intel.com, erik.kaneda@intel.com,
-        sakari.ailus@linux.intel.com, laurent.pinchart@ideasonboard.com,
-        kieran.bingham@ideasonboard.com
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-6-djrscally@gmail.com>
- <20210118134502.GK4077@smile.fi.intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <dc79f590-bbca-0eba-7d50-538f2b9ec42b@gmail.com>
-Date:   Mon, 18 Jan 2021 21:32:05 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S2388051AbhARWNf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 17:13:35 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94FAC061757;
+        Mon, 18 Jan 2021 14:12:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=5B9g+MMdkfjDrWyHguWhdW+L/wC5SN7nNmsF2xSXNSM=; b=CnWX9AJYZ5WVkbueQhdSbY538L
+        zd6XPx+rOvh0UH4xB/JwYgcpc/fG9we3B9Oos+K7jQkeChYJ32PtVQllfyE5N4500UinIBbAcnQh+
+        V84mdUhG6IgKhl2V9GB8fRoJgPPgpzYq9aRSt8MZA17iPEh5kRtS/4rTEIlOyhBYnT0+vnz6y57AQ
+        HaExpRbotZ4XugQbQZ6DGqw4/1eJZOWtWAWUo/bwbiyQgmWcCcSEc4V9glTzanggnU/cFGW6XTmhN
+        iBLEzva7KvHwxRspf0u8PDYOqGucRpUHdjXbSNbf57iCkZhJuZi0MyDwkB+WroXPj+otOdzd4674j
+        xOH13W5Q==;
+Received: from [2601:1c0:6280:3f0::9abc]
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1l1clS-0002tt-Ta; Mon, 18 Jan 2021 22:12:47 +0000
+Subject: Re: [net-next PATCH v3 01/15] Documentation: ACPI: DSD: Document MDIO
+ PHY
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>
+Cc:     Diana Madalina Craciun <diana.craciun@nxp.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-acpi@vger.kernel.org, linux.cj@gmail.com,
+        linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
+ <20210112134054.342-2-calvin.johnson@oss.nxp.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <414bb8d0-df20-25f2-07a4-408fe22b0093@infradead.org>
+Date:   Mon, 18 Jan 2021 14:12:36 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20210118134502.GK4077@smile.fi.intel.com>
+In-Reply-To: <20210112134054.342-2-calvin.johnson@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -77,23 +67,137 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18/01/2021 13:45, Andy Shevchenko wrote:
-> On Mon, Jan 18, 2021 at 12:34:26AM +0000, Daniel Scally wrote:
->> I need to be able to translate GPIO resources in an acpi_device's _CRS
+Hi,
+
+On 1/12/21 5:40 AM, Calvin Johnson wrote:
+> Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> provide them to be connected to MAC.
 > 
-> ACPI device's
+> Describe properties "phy-handle" and "phy-mode".
 > 
->> into gpio_descs. Those are represented in _CRS as a pathname to a GPIO
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> ---
 > 
-> into GPIO descriptor array
+> Changes in v3: None
+> Changes in v2:
+> - Updated with more description in document
 > 
->> device plus the pin's index number: this function is perfect for that
->> purpose.
+>  Documentation/firmware-guide/acpi/dsd/phy.rst | 129 ++++++++++++++++++
+>  1 file changed, 129 insertions(+)
+>  create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
 > 
-> ...
-> 
->> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> 
-> Wrong header. Please use gpio/consumer.h.
-> 
-Ack to all - thanks.
+> diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> new file mode 100644
+> index 000000000000..a2e4fdcdbf53
+> --- /dev/null
+> +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> @@ -0,0 +1,129 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=========================
+> +MDIO bus and PHYs in ACPI
+> +=========================
+> +
+> +The PHYs on an MDIO bus [1] are probed and registered using
+> +fwnode_mdiobus_register_phy().
+> +Later, for connecting these PHYs to MAC, the PHYs registered on the
+> +mdiobus have to be referenced.
+> +
+> +UUID given below should be used as mentioned in the "Device Properties
+
+   The UUID given below
+
+> +UUID For _DSD" [2] document.
+> +   - UUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301
+> +
+> +This document introduces two _DSD properties that are to be used
+> +for PHYs on the MDIO bus.[3]
+> +
+> +phy-handle
+> +----------
+> +For each MAC node, a device property "phy-handle" is used to reference
+> +the PHY that is registered on an MDIO bus. This is mandatory for
+> +network interfaces that have PHYs connected to MAC via MDIO bus.
+> +
+> +During the MDIO bus driver initialization, PHYs on this bus are probed
+> +using the _ADR object as shown below and are registered on the mdio bus.
+
+s/mdio/MDIO/  (please be consistent, as 3 lines above)
+> +
+> +::
+> +      Scope(\_SB.MDI0)
+> +      {
+> +        Device(PHY1) {
+> +          Name (_ADR, 0x1)
+> +        } // end of PHY1
+> +
+> +        Device(PHY2) {
+> +          Name (_ADR, 0x2)
+> +        } // end of PHY2
+> +      }
+> +
+> +Later, during the MAC driver initialization, the registered PHY devices
+> +have to be retrieved from the mdio bus. For this, MAC driver needs
+
+ditto.
+
+> +reference to the previously registered PHYs which are provided
+> +using reference to the device as {\_SB.MDI0.PHY1}.
+> +
+> +phy-mode
+> +--------
+> +The "phy-mode" _DSD property is used to describe the connection to
+> +the PHY. The valid values for "phy-mode" are defined in [4].
+> +
+> +
+> +An ASL example of this is shown below.
+> +
+> +DSDT entry for MDIO node
+> +------------------------
+> +The MDIO bus has an SoC component(mdio controller) and a platform
+
+                           component (MDIO controller)
+
+> +component(PHYs on the mdiobus).
+
+   component (PHYs
+
+> +
+> +a) Silicon Component
+> +This node describes the MDIO controller,MDI0
+
+                                controller, MDI0
+
+> +--------------------------------------------
+
+and then one more '-', please.
+
+> +::
+> +	Scope(_SB)
+> +	{
+> +	  Device(MDI0) {
+> +	    Name(_HID, "NXP0006")
+> +	    Name(_CCA, 1)
+> +	    Name(_UID, 0)
+> +	    Name(_CRS, ResourceTemplate() {
+> +	      Memory32Fixed(ReadWrite, MDI0_BASE, MDI_LEN)
+> +	      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared)
+> +	       {
+> +		 MDI0_IT
+> +	       }
+> +	    }) // end of _CRS for MDI0
+> +	  } // end of MDI0
+> +	}
+> +
+> +b) Platform Component
+> +This node defines the PHYs that are connected to the MDIO bus, MDI0
+> +-------------------------------------------------------------------
+
+[deletia]
+
+
+thanks.
+-- 
+~Randy
+You can't do anything without having to do something else first.
+-- Belefant's Law
