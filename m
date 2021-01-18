@@ -2,83 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E312FA68F
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 17:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8612FA6B5
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 17:52:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405803AbhARQoH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 11:44:07 -0500
-Received: from mga06.intel.com ([134.134.136.31]:8760 "EHLO mga06.intel.com"
+        id S2393533AbhARQum (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 11:50:42 -0500
+Received: from mga09.intel.com ([134.134.136.24]:12201 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405681AbhARQno (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 11:43:44 -0500
-IronPort-SDR: LKD/3STSXLgcOm/e5wTO2Oj+jPwcgmSnPuvK1eo6/1niucmpoZaay+I3vDLw2FYhE57yUcHVC4
- Lcvo/6gjHyHQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9868"; a="240366370"
+        id S2405467AbhARQr2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Jan 2021 11:47:28 -0500
+IronPort-SDR: jASLDhy09QTGmPWNFcnjWjAMApqEyoY39TFT/hqv7imN6P2d57B5mP2vJLWj9F4spsb9ZB5QTB
+ fR9YSosXsvYA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9868"; a="178974609"
 X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="240366370"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:41:51 -0800
-IronPort-SDR: Op/kjjsZzHuGZ5jUoKNrngn2tFcngTUBJX+xDyw0XNbwjGUJ8h45cHOatY4wKk2Vvbo+l+e9t4
- U1qjLoNC5d1w==
+   d="scan'208";a="178974609"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:45:41 -0800
+IronPort-SDR: L2k9qsWbf2hD5ZU/jAXnWYF3Es0/C6JMu4rm40iOpuWS/WV/Y2M0j5c+utuSw6lOTPHxz2aPvl
+ tkCJaKMgWqkQ==
 X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="500695133"
+   d="scan'208";a="402096256"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:41:43 -0800
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:45:39 -0800
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l1Xc4-002MIe-SA; Mon, 18 Jan 2021 18:42:44 +0200
-Date:   Mon, 18 Jan 2021 18:42:44 +0200
+        id 1l1Xfu-002MWN-4Q; Mon, 18 Jan 2021 18:46:42 +0200
+Date:   Mon, 18 Jan 2021 18:46:42 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        lennart@poettering.net,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, andy@kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>
-Subject: Re: [PATCH v2 1/7] acpi: utils: move acpi_lpss_dep() to utils
-Message-ID: <20210118164244.GD4077@smile.fi.intel.com>
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-2-djrscally@gmail.com>
- <20210118122852.GD4077@smile.fi.intel.com>
- <CAJZ5v0hihFa=M658GE2LtoKCnPkMQznXBtq9_+g0_4gFnw6qAg@mail.gmail.com>
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: Multiple MODALIAS= in uevent file confuses userspace
+Message-ID: <20210118164642.GE4077@smile.fi.intel.com>
+References: <CAAd53p6aURhfFp1RFQxEPtGfzSdUfe4=N=P2rP27ULxp-D4GCg@mail.gmail.com>
+ <CAAd53p45q+Jigje0FcWAERiBUGfJhR8nTYNh7SFxBpajAe4=oA@mail.gmail.com>
+ <CAJZ5v0iyEq6+OemJNXQv46h0pW=LHxiR2HeFe4+us59_x6Nymg@mail.gmail.com>
+ <20210118141238.GQ968855@lahna.fi.intel.com>
+ <YAWalPeMPt44lBgI@kroah.com>
+ <20210118144853.GP4077@smile.fi.intel.com>
+ <YAWiCkJwiOS8i50c@kroah.com>
+ <20210118152744.GW4077@smile.fi.intel.com>
+ <YAW6BI00Kr615kFk@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hihFa=M658GE2LtoKCnPkMQznXBtq9_+g0_4gFnw6qAg@mail.gmail.com>
+In-Reply-To: <YAW6BI00Kr615kFk@kroah.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 05:06:30PM +0100, Rafael J. Wysocki wrote:
-> On Mon, Jan 18, 2021 at 1:30 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Mon, Jan 18, 2021 at 12:34:22AM +0000, Daniel Scally wrote:
-> > > I need to be able to identify devices which declare themselves to be
-> > > dependent on other devices through _DEP; add this function to utils.c
-> > > and export it to the rest of the ACPI layer.
-> >
-> > Prefix -> "ACPI / utils: "
+On Mon, Jan 18, 2021 at 05:40:36PM +0100, Greg Kroah-Hartman wrote:
+> On Mon, Jan 18, 2021 at 05:27:44PM +0200, Andy Shevchenko wrote:
+> > On Mon, Jan 18, 2021 at 03:58:18PM +0100, Greg Kroah-Hartman wrote:
+> > > On Mon, Jan 18, 2021 at 04:48:53PM +0200, Andy Shevchenko wrote:
+> > > > On Mon, Jan 18, 2021 at 03:26:28PM +0100, Greg Kroah-Hartman wrote:
+> > > > > On Mon, Jan 18, 2021 at 04:12:38PM +0200, Mika Westerberg wrote:
+> > > > > > On Mon, Jan 18, 2021 at 02:50:33PM +0100, Rafael J. Wysocki wrote:
+> > > > > > > On Mon, Jan 18, 2021 at 8:27 AM Kai-Heng Feng
+> > > > > > > <kai.heng.feng@canonical.com> wrote:
+> > > > > > > > On Sat, Jan 9, 2021 at 12:25 AM Kai-Heng Feng
+> > > > > > > > <kai.heng.feng@canonical.com> wrote:
+> > > > > > > > >
+> > > > > > > > > Commit 8765c5ba19490 ("ACPI / scan: Rework modalias creation when
+> > > > > > > > > "compatible" is present") creates two modaliases for certain ACPI
+> > > > > > > > > devices. However userspace (systemd-udevd in this case) assumes uevent
+> > > > > > > > > file doesn't have duplicated keys, so two "MODALIAS=" breaks the
+> > > > > > > > > assumption.
+> > > > > > > > >
+> > > > > > > > > Based on the assumption, systemd-udevd internally uses hashmap to
+> > > > > > > > > store each line of uevent file, so the second modalias always replaces
+> > > > > > > > > the first modalias.
+> > > > > > > > >
+> > > > > > > > > My attempt [1] is to add a new key, "MODALIAS1" for the second
+> > > > > > > > > modalias. This brings up the question of whether each key in uevent
+> > > > > > > > > file is unique. If it's no unique, this may break may userspace.
+> > > > > > > >
+> > > > > > > > Does anyone know if there's any user of the second modalias?
+> > > > > > > > If there's no user of the second one, can we change it to OF_MODALIAS
+> > > > > > > > or COMPAT_MODALIAS?
+> > > > > > 
+> > > > > > The only users I'm aware are udev and the busybox equivalent (udev,
+> > > > > > mdev) but I'm not sure if they use the second second modalias at all so
+> > > > > > OF_MODALIAS for the DT compatible string sounds like a good way to solve
+> > > > > > this.
+> > > > > 
+> > > > > As udev seems to "break" with this (which is where we got the original
+> > > > > report from), I don't think you need to worry about that user :)
+> > > > 
+> > > > > Does anyone use mdev anymore, and in any ACPI-supported systems?
+> > > > 
+> > > > Yes, regularly.
+> > > 
+> > > Ok, and how badly does it break when MODALIAS is multiple lines like
+> > > this?  Or can it handle it?
+> > 
+> > Since the mentioned change landed into v4.1 I never had a problem with my
+> > setup. From my point of view it doesn't affect anyhow mdev setup.
 > 
-> Preferably "ACPI: utils: " for that matter
+> Do you actually have a device with multiple entries and try to do a rule
+> based on it?
 
-Ah, good to know! I was always bending between / and : there.
+I doubt I have any use case for that. It may explain why only now the problem
+was observed.
+
+> That's how this was triggered in udev, "normal" operations
+> work just fine.
 
 -- 
 With Best Regards,
