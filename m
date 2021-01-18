@@ -2,119 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8612FA6B5
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 17:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29EA82FA70C
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 18:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393533AbhARQum (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 11:50:42 -0500
-Received: from mga09.intel.com ([134.134.136.24]:12201 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405467AbhARQr2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 11:47:28 -0500
-IronPort-SDR: jASLDhy09QTGmPWNFcnjWjAMApqEyoY39TFT/hqv7imN6P2d57B5mP2vJLWj9F4spsb9ZB5QTB
- fR9YSosXsvYA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9868"; a="178974609"
-X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="178974609"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:45:41 -0800
-IronPort-SDR: L2k9qsWbf2hD5ZU/jAXnWYF3Es0/C6JMu4rm40iOpuWS/WV/Y2M0j5c+utuSw6lOTPHxz2aPvl
- tkCJaKMgWqkQ==
-X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="402096256"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 08:45:39 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l1Xfu-002MWN-4Q; Mon, 18 Jan 2021 18:46:42 +0200
-Date:   Mon, 18 Jan 2021 18:46:42 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        lennart@poettering.net,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: Multiple MODALIAS= in uevent file confuses userspace
-Message-ID: <20210118164642.GE4077@smile.fi.intel.com>
-References: <CAAd53p6aURhfFp1RFQxEPtGfzSdUfe4=N=P2rP27ULxp-D4GCg@mail.gmail.com>
- <CAAd53p45q+Jigje0FcWAERiBUGfJhR8nTYNh7SFxBpajAe4=oA@mail.gmail.com>
- <CAJZ5v0iyEq6+OemJNXQv46h0pW=LHxiR2HeFe4+us59_x6Nymg@mail.gmail.com>
- <20210118141238.GQ968855@lahna.fi.intel.com>
- <YAWalPeMPt44lBgI@kroah.com>
- <20210118144853.GP4077@smile.fi.intel.com>
- <YAWiCkJwiOS8i50c@kroah.com>
- <20210118152744.GW4077@smile.fi.intel.com>
- <YAW6BI00Kr615kFk@kroah.com>
+        id S2406888AbhARRHy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 12:07:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59876 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406887AbhARRHo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 12:07:44 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B685C06179E;
+        Mon, 18 Jan 2021 09:06:03 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1B63A2BB;
+        Mon, 18 Jan 2021 18:06:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1610989561;
+        bh=hV0WHCjFGw1rTzD++XaJeAj6GzXlQajHsTgjgpBryXs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hNOuPj1h1pmgWY6bY3ZJf0d6zcHBaf2KDadN25ZLRYS3uYrRXRtW4ifFoF3bhFHYL
+         GCffXA6cQ4bSUs2nnaCbMH89pxaj2C4s33AF8CV1DbCZq84qvdBHar6S/0GRSdHKLN
+         DCD4v5FAjSgMZh9n6G8RDF7w7jSlsArXuLo5u5N8=
+Date:   Mon, 18 Jan 2021 19:05:44 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "andy@kernel.org" <andy@kernel.org>,
+        "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "mgross@linux.intel.com" <mgross@linux.intel.com>,
+        "robert.moore@intel.com" <robert.moore@intel.com>,
+        "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
+        "sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+        "kieran.bingham@ideasonboard.com" <kieran.bingham@ideasonboard.com>
+Subject: Re: [PATCH v2 6/7] platform: x86: Add intel_skl_int3472 driver
+Message-ID: <YAW/6Ek/j733xzLW@pendragon.ideasonboard.com>
+References: <20210118003428.568892-1-djrscally@gmail.com>
+ <20210118003428.568892-7-djrscally@gmail.com>
+ <-GKrxu8GJvGe-PlKkLpblw9N-DtVtS7i87BOCLgJR72yf4hUFpUgiOlGcFero_gqgUxJrX2gxtLOnz_31hJugfam0SXXmXxIzGIhS162mhI=@protonmail.com>
+ <20210118135121.GM4077@smile.fi.intel.com>
+ <w3qrFtorGLZ_wMnr_Mi7cltli9g8jsMtiQ7Z1Usnj2IKfJ1MJz6-wxlIAEQ-ErgU1x6IBxdAIHBHtQ3OOT_FJOuUYheILlUc20ysNL_zroo=@protonmail.com>
+ <20210118152323.GV4077@smile.fi.intel.com>
+ <e1032328-c5e8-0bfa-4b87-64207d283d17@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YAW6BI00Kr615kFk@kroah.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e1032328-c5e8-0bfa-4b87-64207d283d17@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 05:40:36PM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Jan 18, 2021 at 05:27:44PM +0200, Andy Shevchenko wrote:
-> > On Mon, Jan 18, 2021 at 03:58:18PM +0100, Greg Kroah-Hartman wrote:
-> > > On Mon, Jan 18, 2021 at 04:48:53PM +0200, Andy Shevchenko wrote:
-> > > > On Mon, Jan 18, 2021 at 03:26:28PM +0100, Greg Kroah-Hartman wrote:
-> > > > > On Mon, Jan 18, 2021 at 04:12:38PM +0200, Mika Westerberg wrote:
-> > > > > > On Mon, Jan 18, 2021 at 02:50:33PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > On Mon, Jan 18, 2021 at 8:27 AM Kai-Heng Feng
-> > > > > > > <kai.heng.feng@canonical.com> wrote:
-> > > > > > > > On Sat, Jan 9, 2021 at 12:25 AM Kai-Heng Feng
-> > > > > > > > <kai.heng.feng@canonical.com> wrote:
-> > > > > > > > >
-> > > > > > > > > Commit 8765c5ba19490 ("ACPI / scan: Rework modalias creation when
-> > > > > > > > > "compatible" is present") creates two modaliases for certain ACPI
-> > > > > > > > > devices. However userspace (systemd-udevd in this case) assumes uevent
-> > > > > > > > > file doesn't have duplicated keys, so two "MODALIAS=" breaks the
-> > > > > > > > > assumption.
-> > > > > > > > >
-> > > > > > > > > Based on the assumption, systemd-udevd internally uses hashmap to
-> > > > > > > > > store each line of uevent file, so the second modalias always replaces
-> > > > > > > > > the first modalias.
-> > > > > > > > >
-> > > > > > > > > My attempt [1] is to add a new key, "MODALIAS1" for the second
-> > > > > > > > > modalias. This brings up the question of whether each key in uevent
-> > > > > > > > > file is unique. If it's no unique, this may break may userspace.
-> > > > > > > >
-> > > > > > > > Does anyone know if there's any user of the second modalias?
-> > > > > > > > If there's no user of the second one, can we change it to OF_MODALIAS
-> > > > > > > > or COMPAT_MODALIAS?
-> > > > > > 
-> > > > > > The only users I'm aware are udev and the busybox equivalent (udev,
-> > > > > > mdev) but I'm not sure if they use the second second modalias at all so
-> > > > > > OF_MODALIAS for the DT compatible string sounds like a good way to solve
-> > > > > > this.
-> > > > > 
-> > > > > As udev seems to "break" with this (which is where we got the original
-> > > > > report from), I don't think you need to worry about that user :)
-> > > > 
-> > > > > Does anyone use mdev anymore, and in any ACPI-supported systems?
-> > > > 
-> > > > Yes, regularly.
-> > > 
-> > > Ok, and how badly does it break when MODALIAS is multiple lines like
-> > > this?  Or can it handle it?
+Hi Hans,
+
+On Mon, Jan 18, 2021 at 04:32:54PM +0100, Hans de Goede wrote:
+> On 1/18/21 4:23 PM, andriy.shevchenko@linux.intel.com wrote:
+> > On Mon, Jan 18, 2021 at 02:51:30PM +0000, Barnabás Pőcze wrote:
+> >> 2021. január 18., hétfő 14:51 keltezéssel, Andy Shevchenko írta:
+> >>
+> >>> On Mon, Jan 18, 2021 at 11:12:34AM +0000, Barnabás Pőcze wrote:
+> >>>> 2021. január 18., hétfő 1:34 keltezéssel, Daniel Scally írta:
+> >>>
+> >>>> Have you considered putting the source (and header) files into a dedicated
+> >>>> folder? I think it'd help manageability in the long run, and it'd be immediately
+> >>>> obvious that these source files form a single "unit".
+> >>>
+> >>> What would be the folder name? Because, for example, intel_cht_int33fe* have no
+> >>> folder (yet?) and here it's kinda similar case when HID describes something
+> >>> else than just one IP.
+> >>
+> >> I think "intel_skl_int3472" would not be a bad name for the folder. And I believe
+> >> "intel_cht_int33fe" could be given its own folder as well.
 > > 
-> > Since the mentioned change landed into v4.1 I never had a problem with my
-> > setup. From my point of view it doesn't affect anyhow mdev setup.
+> > I;m not objecting (at some point in the past I had proposed moving Intel stuff
+> > to a separate folder, but at that time PDx86 has no folders at all and Darren
+> > was kinda not in favour of creating ones, but things changed), just let's hear
+> > Hans on this.
 > 
-> Do you actually have a device with multiple entries and try to do a rule
-> based on it?
+> I'm in favor of using a folder for this and "intel_skl_int3472" is fine with me.
+> 
+> With that said I'm not entirely sure if I'm in favor of the _skl_ part of
+> the folder and driver name or not.
+> 
+> The INT3472 ACPI device is used with other CPUs, e.g. Apollo Lake too and
+> I think the driver should work fine with those.
 
-I doubt I have any use case for that. It may explain why only now the problem
-was observed.
+It should work on Kabylake as well, although there are some differences
+in the way the INT3472 device is modelled in the DSDT between those two
+platforms. Hopefully nothing that couldn't be supported in a single
+driver without adding too many hacks.
 
-> That's how this was triggered in udev, "normal" operations
-> work just fine.
+> The intel_cht_int33fe case is special because the driver only applies
+> to some models with an INT33FE ACPI device (the whole INT33FE ACPI device
+> is a horrible thing which seems to stem from Intel rushing Bay Trail to
+> market to try and compete on the tablet market).
+
+The INT3472 ACPI device is also horrible. It reminds me of Intercal, the
+programming language that was created by gathering features of several
+well known languages and then making sure that none of them would be
+used: the ACPI model of the device was probably created by someone who
+has studied ACPI extensively and decided to break every single best
+practice rule. I lack English words strong enough to express my dismay
+on this topic (but I still have hope to find solace in Finnish).
+
+> With that all said SKL probably is the first SoC to feature this and I
+> guess future IPUs may still use INT3472 given Intel's BAD habit of
+> re-using ACPI HIDs for multiple incompatible generations. So I guess
+> that keeping it is fine; and if we then need an incompatible INT3472
+> driver for newer IPUs we can use a different prefix for those.
+> 
+> TL;DR:
+> 
+> 1. Using a folder is fine, desirable even
+> 2. I've some concerns about the name, but I'm not really objecting,
+> just giving my 2 cents.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
 
-
+Laurent Pinchart
