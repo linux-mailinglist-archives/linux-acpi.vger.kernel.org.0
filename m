@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAD72F9FDB
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 13:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CE62FA018
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 13:42:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390880AbhARMey (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 07:34:54 -0500
-Received: from mga03.intel.com ([134.134.136.65]:33257 "EHLO mga03.intel.com"
+        id S2404139AbhARMkf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 07:40:35 -0500
+Received: from mga12.intel.com ([192.55.52.136]:25171 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404055AbhARMeu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 07:34:50 -0500
-IronPort-SDR: MxqmXUfBU5LuYfmsxWK0knQc4fqoe5VGAz980ECJAZrhR8ukHLLiqyqst2RAXhPXhOSdhYx5ZU
- vy8psgIA2NZA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9867"; a="178882109"
+        id S2404134AbhARMk3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Jan 2021 07:40:29 -0500
+IronPort-SDR: MRx95v8s+VqhFX3Pd4CWSsBOzZFfoMRD7HhvjYzcbU1EV8kcS74IRS9f7KpzoC8NTlbFrHtfib
+ viJT3+CymR/A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9867"; a="157977409"
 X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="178882109"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:32:58 -0800
-IronPort-SDR: KpQl6Qabvav18BtNcRapJV3kUkLwcUyZ1hPHgtgvtgXbRb3U/GdOt7sUgY3UXvOTcAKPfPy43I
- dxdGuYOAzxcg==
+   d="scan'208";a="157977409"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:38:43 -0800
+IronPort-SDR: WMRsZG1MOufHvxOoZIIgcqAuj1XaPWgqLN7+7YCCwfZF8XPmtUTbFJb5X8yV9VJQ6s/PPMdjJc
+ Vq/KEtLrm6Tw==
 X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
-   d="scan'208";a="365325419"
+   d="scan'208";a="466359027"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:32:53 -0800
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:38:38 -0800
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l1TjH-0027kG-Q9; Mon, 18 Jan 2021 14:33:55 +0200
-Date:   Mon, 18 Jan 2021 14:33:55 +0200
+        id 1l1Toq-00285s-4i; Mon, 18 Jan 2021 14:39:40 +0200
+Date:   Mon, 18 Jan 2021 14:39:40 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Daniel Scally <djrscally@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -40,47 +40,94 @@ Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         robert.moore@intel.com, erik.kaneda@intel.com,
         sakari.ailus@linux.intel.com, laurent.pinchart@ideasonboard.com,
         kieran.bingham@ideasonboard.com
-Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent
- acpi_devices
-Message-ID: <20210118123355.GF4077@smile.fi.intel.com>
+Subject: Re: [PATCH v2 3/7] i2c: i2c-core-base: Use format macro in
+ i2c_dev_set_name()
+Message-ID: <20210118123940.GG4077@smile.fi.intel.com>
 References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-3-djrscally@gmail.com>
+ <20210118003428.568892-4-djrscally@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210118003428.568892-3-djrscally@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210118003428.568892-4-djrscally@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 12:34:23AM +0000, Daniel Scally wrote:
-> In some ACPI tables we encounter, devices use the _DEP method to assert
-> a dependence on other ACPI devices as opposed to the OpRegions that the
-> specification intends. We need to be able to find those devices "from"
-> the dependee, so add a function to parse all ACPI Devices and check if
-> the include the handle of the dependee device in their _DEP buffer.
+On Mon, Jan 18, 2021 at 12:34:24AM +0000, Daniel Scally wrote:
+> Some places in the kernel allow users to map resources to a device
+> using device name (for example, gpiod_lookup_table). Currently
 
-Fix prefix to be "ACPI / utils: " and rebase on top of function name changes as
-suggested by Laurent.
+"...in the struct gpiod_lookup_table)." ?
 
-...
+> this involves waiting for the i2c_client to have been registered so we
 
-> +/**
-> + * acpi_dev_get_next_dep_dev - Return next ACPI device dependent on input dev
+I²C client ?
 
-Are you expecting some kind of for_each_*() macro to be added and used?
-Otherwise there is probably no need to have it "_next_" in the name as it will
-be a bit confusing.
+> can use dev_name(&client->dev). We want to add a function to allow users
+> to refer to an i2c device by name before it has been instantiated, so
 
-> + * @adev: Pointer to the dependee device
-> + * @prev: Pointer to the previous dependent device (or NULL for first match)
-> + *
-> + * Return the next ACPI device which declares itself dependent on @adev in
-> + * the _DEP buffer.
-> + *
-> + * The caller is responsible to call put_device() on the returned device.
-> + */
+I²C device ?
+
+> create a macro for the format that's accessible outside the i2c layer
+
+I²C layer ?
+
+> and use it in i2c_dev_set_name()
+
+Period at the end.
+
+For the record, I do not like wrapping below to 80 limit and agree with
+Wolfram.
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> ---
+> 	- Used format macro in i2c_dev_set_name() instead of sub func
+> 
+>  drivers/i2c/i2c-core-base.c | 4 ++--
+>  include/linux/i2c.h         | 3 +++
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 63ebf722a424..547b8926cac8 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -811,12 +811,12 @@ static void i2c_dev_set_name(struct i2c_adapter *adap,
+>  	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
+>  
+>  	if (info && info->dev_name) {
+> -		dev_set_name(&client->dev, "i2c-%s", info->dev_name);
+> +		dev_set_name(&client->dev, I2C_DEV_NAME_FORMAT, info->dev_name);
+>  		return;
+>  	}
+>  
+>  	if (adev) {
+> -		dev_set_name(&client->dev, "i2c-%s", acpi_dev_name(adev));
+> +		dev_set_name(&client->dev, I2C_DEV_NAME_FORMAT, acpi_dev_name(adev));
+>  		return;
+>  	}
+>  
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index 56622658b215..4d40a4b46810 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -39,6 +39,9 @@ enum i2c_slave_event;
+>  typedef int (*i2c_slave_cb_t)(struct i2c_client *client,
+>  			      enum i2c_slave_event event, u8 *val);
+>  
+> +/* I2C Device Name Format - to maintain consistency outside the i2c layer */
+> +#define I2C_DEV_NAME_FORMAT		"i2c-%s"
+> +
+>  /* I2C Frequency Modes */
+>  #define I2C_MAX_STANDARD_MODE_FREQ	100000
+>  #define I2C_MAX_FAST_MODE_FREQ		400000
+> -- 
+> 2.25.1
+> 
 
 -- 
 With Best Regards,
