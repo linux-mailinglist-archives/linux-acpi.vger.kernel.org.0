@@ -2,120 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 846AB2F9DC0
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 12:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B342F9FA7
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 13:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389955AbhARLNi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 06:13:38 -0500
-Received: from mail-40131.protonmail.ch ([185.70.40.131]:33813 "EHLO
-        mail-40131.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389208AbhARLNd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jan 2021 06:13:33 -0500
-Date:   Mon, 18 Jan 2021 11:12:34 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1610968360;
-        bh=peSC9o9yu05hJE1IC0P2apZMWF5VoegXfyyqCO9GoLM=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=n3XZ3zXlRHqfavOYPOO4tMpM6ITEmWi7rzGm1xwFAXrA+DFpaNcnHbXyTD0eQaL0N
-         xqR7q698aaAqxz/QTH/P7btgZ0H//3/BvLEHd0K+66DfrfUfORbrj5tmGE0HTdaaCw
-         o1awLClmG58F+Hwqq9edfb4Q1t/wBUWASaq2qI0Y=
+        id S2391494AbhARMaD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jan 2021 07:30:03 -0500
+Received: from mga17.intel.com ([192.55.52.151]:3201 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391480AbhARM3m (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Jan 2021 07:29:42 -0500
+IronPort-SDR: nxnbOWCZEH08Q1+W7Lk7Ya10E3vlgOFxGF1x7ekinxN0/Gga4i2BjsI//wY1trC/Utl7CEB1cv
+ T5chMmN6PWxw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9867"; a="158569566"
+X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
+   d="scan'208";a="158569566"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:27:55 -0800
+IronPort-SDR: 2j/s5jqLYA5tSPupN5GM+8EIavU5r0cI0hwt2U8w3taMjoaixo9V17vkvePk10ElGdV9NYhb2T
+ SeW3LjG0YcBA==
+X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
+   d="scan'208";a="500631904"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:27:50 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1l1TeO-0027Qp-96; Mon, 18 Jan 2021 14:28:52 +0200
+Date:   Mon, 18 Jan 2021 14:28:52 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Daniel Scally <djrscally@gmail.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "andy@kernel.org" <andy@kernel.org>,
-        "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "mgross@linux.intel.com" <mgross@linux.intel.com>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
-        "sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "laurent.pinchart@ideasonboard.com" 
-        <laurent.pinchart@ideasonboard.com>,
-        "kieran.bingham@ideasonboard.com" <kieran.bingham@ideasonboard.com>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH v2 6/7] platform: x86: Add intel_skl_int3472 driver
-Message-ID: <-GKrxu8GJvGe-PlKkLpblw9N-DtVtS7i87BOCLgJR72yf4hUFpUgiOlGcFero_gqgUxJrX2gxtLOnz_31hJugfam0SXXmXxIzGIhS162mhI=@protonmail.com>
-In-Reply-To: <20210118003428.568892-7-djrscally@gmail.com>
-References: <20210118003428.568892-1-djrscally@gmail.com> <20210118003428.568892-7-djrscally@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org,
+        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        hdegoede@redhat.com, mgross@linux.intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        sakari.ailus@linux.intel.com, laurent.pinchart@ideasonboard.com,
+        kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH v2 1/7] acpi: utils: move acpi_lpss_dep() to utils
+Message-ID: <20210118122852.GD4077@smile.fi.intel.com>
+References: <20210118003428.568892-1-djrscally@gmail.com>
+ <20210118003428.568892-2-djrscally@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210118003428.568892-2-djrscally@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+On Mon, Jan 18, 2021 at 12:34:22AM +0000, Daniel Scally wrote:
+> I need to be able to identify devices which declare themselves to be
+> dependent on other devices through _DEP; add this function to utils.c
+> and export it to the rest of the ACPI layer.
 
+Prefix -> "ACPI / utils: "
 
-2021. janu=C3=A1r 18., h=C3=A9tf=C5=91 1:34 keltez=C3=A9ssel, Daniel Scally=
- =C3=ADrta:
+Otherwise good to me
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> ACPI devices with _HID INT3472 are currently matched to the tps68470
-> driver, however this does not cover all situations in which that _HID
-> occurs. We've encountered three possibilities:
->
-> 1. On Chrome OS devices, an ACPI device with _HID INT3472 (representing
-> a physical tps68470 device) that requires a GPIO and OpRegion driver
-> 2. On devices designed for Windows, an ACPI device with _HID INT3472
-> (again representing a physical tps68470 device) which requires GPIO,
-> Clock and Regulator drivers.
-> 3. On other devices designed for Windows, an ACPI device with _HID
-> INT3472 which does NOT represent a physical tps68470, and is instead
-> used as a dummy device to group some system GPIO lines which are meant
-> to be consumed by the sensor that is dependent on this entry.
->
-> This commit adds a new module, registering a platform driver to deal
-> with the 3rd scenario plus an i2c-driver to deal with #1 and #2, by
-> querying the CLDB buffer found against INT3472 entries to determine
-> which is most appropriate.
->
-> Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Signed-off-by: Daniel Scally <djrscally@gmail.com>
 > ---
 > Changes in v2:
->
-> =09- Switched to a module registering a platform driver to run
-> =09the dummy ACPI devices, plus an i2c driver to replace and extend
-> =09the existing tps68470 driver
-> =09- Added clock handling functions to the int3472-discrete driver
-> =09- A whole bunch of other changes too numerous to enumerate
->  MAINTAINERS                                   |   5 +
->  drivers/platform/x86/Kconfig                  |  25 +
->  drivers/platform/x86/Makefile                 |   4 +
->  .../platform/x86/intel_skl_int3472_common.c   | 100 ++++
->  .../platform/x86/intel_skl_int3472_common.h   | 100 ++++
->  .../platform/x86/intel_skl_int3472_discrete.c | 496 ++++++++++++++++++
->  .../platform/x86/intel_skl_int3472_tps68470.c | 145 +++++
->  7 files changed, 875 insertions(+)
->  create mode 100644 drivers/platform/x86/intel_skl_int3472_common.c
->  create mode 100644 drivers/platform/x86/intel_skl_int3472_common.h
->  create mode 100644 drivers/platform/x86/intel_skl_int3472_discrete.c
->  create mode 100644 drivers/platform/x86/intel_skl_int3472_tps68470.c
+> 	- Introduced
+> 
+>  drivers/acpi/acpi_lpss.c | 24 ------------------------
+>  drivers/acpi/internal.h  |  1 +
+>  drivers/acpi/utils.c     | 24 ++++++++++++++++++++++++
+>  3 files changed, 25 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+> index be73974ce449..70c7d9a3f715 100644
+> --- a/drivers/acpi/acpi_lpss.c
+> +++ b/drivers/acpi/acpi_lpss.c
+> @@ -543,30 +543,6 @@ static struct device *acpi_lpss_find_device(const char *hid, const char *uid)
+>  	return bus_find_device(&pci_bus_type, NULL, &data, match_hid_uid);
+>  }
+>  
+> -static bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle)
+> -{
+> -	struct acpi_handle_list dep_devices;
+> -	acpi_status status;
+> -	int i;
+> -
+> -	if (!acpi_has_method(adev->handle, "_DEP"))
+> -		return false;
+> -
+> -	status = acpi_evaluate_reference(adev->handle, "_DEP", NULL,
+> -					 &dep_devices);
+> -	if (ACPI_FAILURE(status)) {
+> -		dev_dbg(&adev->dev, "Failed to evaluate _DEP.\n");
+> -		return false;
+> -	}
+> -
+> -	for (i = 0; i < dep_devices.count; i++) {
+> -		if (dep_devices.handles[i] == handle)
+> -			return true;
+> -	}
+> -
+> -	return false;
+> -}
+> -
+>  static void acpi_lpss_link_consumer(struct device *dev1,
+>  				    const struct lpss_device_links *link)
+>  {
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index cb229e24c563..ee62c0973576 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -79,6 +79,7 @@ static inline void acpi_lpss_init(void) {}
+>  #endif
+>  
+>  void acpi_apd_init(void);
+> +bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle);
+>  
+>  acpi_status acpi_hotplug_schedule(struct acpi_device *adev, u32 src);
+>  bool acpi_queue_hotplug_work(struct work_struct *work);
+> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+> index ddca1550cce6..78b38775f18b 100644
+> --- a/drivers/acpi/utils.c
+> +++ b/drivers/acpi/utils.c
+> @@ -807,6 +807,30 @@ static int acpi_dev_match_cb(struct device *dev, const void *data)
+>  	return hrv == match->hrv;
+>  }
+>  
+> +bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle)
+> +{
+> +	struct acpi_handle_list dep_devices;
+> +	acpi_status status;
+> +	int i;
+> +
+> +	if (!acpi_has_method(adev->handle, "_DEP"))
+> +		return false;
+> +
+> +	status = acpi_evaluate_reference(adev->handle, "_DEP", NULL,
+> +					 &dep_devices);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_dbg(&adev->dev, "Failed to evaluate _DEP.\n");
+> +		return false;
+> +	}
+> +
+> +	for (i = 0; i < dep_devices.count; i++) {
+> +		if (dep_devices.handles[i] == handle)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  /**
+>   * acpi_dev_present - Detect that a given ACPI device is present
+>   * @hid: Hardware ID of the device.
+> -- 
+> 2.25.1
+> 
 
-Have you considered putting the source (and header) files into a dedicated
-folder? I think it'd help manageability in the long run, and it'd be immedi=
-ately
-obvious that these source files form a single "unit".
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Regards,
-Barnab=C3=A1s P=C5=91cze
