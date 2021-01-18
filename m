@@ -2,106 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BC212F956A
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Jan 2021 22:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 550542F96BB
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jan 2021 01:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728875AbhAQVPz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Jan 2021 16:15:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
+        id S1730478AbhARAfX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Jan 2021 19:35:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726785AbhAQVPz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Jan 2021 16:15:55 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26E7C061573;
-        Sun, 17 Jan 2021 13:15:14 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id 6so7321165wri.3;
-        Sun, 17 Jan 2021 13:15:14 -0800 (PST)
+        with ESMTP id S1730468AbhARAfW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Jan 2021 19:35:22 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E826FC061573;
+        Sun, 17 Jan 2021 16:34:41 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id r4so12385274wmh.5;
+        Sun, 17 Jan 2021 16:34:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=jU5xZt4ZGGg5V25qXIr6WdPMU0NBUDnBFNWZBAT6X+0=;
-        b=Tz9UVGWXaGHqzyAQCbw3J/kzNbeG0QwiRtDaiv3Tfx+tT+9OZ8P/xv0D6SBiPGSkAD
-         7JufDrDEyqlzV5eXk4pIJB7LuX40V6tVTlYC4H6SYOq+h6Aioucms3ODro/SSW7twhYg
-         51uuk2qi0ttMbQOOIvCi+lvAgOJJfqroDqXSpmTTrOfA623PZ6h/e0K1q6H9BwShTe41
-         snbenmG+SYePulp56f8DVe8QJ7dn788mMPlZkg4mD6Ey8uunixsHQZ+YlYhVn57Scuq4
-         DCU//k8R1zAAGhK1ONpTIJm9uaTruZRRFZ92qoGrfKrNON2tcXRxyVDdZkn+0A62QrhJ
-         T9vQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hv3QULuAw3daEtPKtW/GfZxtyLAjRCNrwbUyjJ0z7Xs=;
+        b=iab6/rtv8fV2t/9tKiUZM6JzYtYY5t2jiLWWaSJwuY4UQBwFm9+jBWNQ7plLcMo4yv
+         Ew0u3XTUYFIes11V2xwarfu+yyqrmpJhps5NW8NU0GNSSaAm3mJ7uvOqOL1+RkHGzr6m
+         AXeXBkXDUe3OqWEcONBJEtzhC4f1kP3x3rAntdvkvCIFQt5FfmxIfVFRaTAlA6F4rRj/
+         p+h9CYL6A2JH8yF1B6Sn8jm6eeZ6CNHF0HnDMyj+iCp2wSXj70pjrPQcs2F/OVF1FAEK
+         UONkTBn3oPbgabnAfnEbWYEueALZzKbthyc5W7LXOI38rJEfnfjVvbIvGLgZ56YWAv/O
+         CcSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=jU5xZt4ZGGg5V25qXIr6WdPMU0NBUDnBFNWZBAT6X+0=;
-        b=RvvfU2ZyyDGKeFEC/kxu6FIsClBuSVGHG9imY9YnCCSXPk6hNhLab8smPnWlrJ4n3a
-         pBQlNKlqI1bryv8L8A54m0U30hIPhxZbt3ArEMcX0LqlPNPZzXqhh3qocYRnlSDlsaB5
-         VfTuiyb0GAP9YLyItyFzXIf36XT7KUsV2evVVV8jpuIRhniqFuOnkrpWZzf+lInY0UMv
-         Qg5h4JKPL6bGRFe3cZoMLyLy9JZytUw2i8xGM6u5XVsIhOdgFTgS8j7ulpjiwaqf0j6X
-         qeFI7ZwpmqfpsKIg9knIdEFG9Z2EtNr6GGmtCb7oV8rZbPDDgg87kI6/infSrjK68OD0
-         sxyw==
-X-Gm-Message-State: AOAM531dV1abRyq6CLh5x8Tsi2ga0ttURk8F0MRzigbGZpkQU0I4q6J6
-        O2ur6RcYCq+9M6VWxRJZTA/tHylfBIA=
-X-Google-Smtp-Source: ABdhPJzeZMKzgf7s2G+Fjc7CxiN7nf8qJ818bKfHiQ3vOEyJ4dwhfkGs/dDeLV9G68Z1GHr9f4My8Q==
-X-Received: by 2002:adf:f6c9:: with SMTP id y9mr23315026wrp.121.1610918113281;
-        Sun, 17 Jan 2021 13:15:13 -0800 (PST)
-Received: from [192.168.1.211] ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id o18sm4270956wmh.20.2021.01.17.13.15.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Jan 2021 13:15:12 -0800 (PST)
-Subject: Re: [PATCH v3 0/4] Remove one more platform_device_add_properties()
- call
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg KH <greg@kroah.com>, Felipe Balbi <balbi@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20210115094914.88401-1-heikki.krogerus@linux.intel.com>
- <CAHp75Vc3xjaOugX3d8bohz12OEP=n4BAonNyQJQ=UgBfVZorOg@mail.gmail.com>
- <c644e72c-bb46-56c2-931e-7cb98b024cc3@gmail.com>
- <CAHp75VfMOcPyXELoD4S+oQjAaVg6H0Hn2hs2UAbYEKhnFZp36A@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hv3QULuAw3daEtPKtW/GfZxtyLAjRCNrwbUyjJ0z7Xs=;
+        b=pOVyc+hEhXCvnB9KpAj8DjaNczycBidmZi8qbsgJZ9c3nhUIB6blz18jUenXm8BVLC
+         7epdXB2fgSSjzi/9NRwUo4FOQ+obuof3/2+4hZJvZ/ur4MXJGh65Epi1rmfczbC5FURt
+         aBK7Ga86dVPRvSENOqSRYWGZAgvazrAAwWS5jWtm/fcGN29yzW9dHz7KMQ42i/DNM3pE
+         UnyaoEBgy5EtMz9ExaJxMJAVUj2KbX3ag3FRwBlSdvuyOuYTieTKfdiOfq//cAc4gSSc
+         EKJKGUBY9A4sLFQHhg7DpaAIcCvUNJ6ycFU3zF/K1Iz4XlUnpTunb591HGOckO48xibF
+         kSrw==
+X-Gm-Message-State: AOAM5333qTqvngQZz7Ql6ebXRofpY3vC8xL3ygKJJS9yNAmS14YZt6WS
+        ETpmBFAyIAdmp1tpMfCtzzgEAVqsaoA8eQ==
+X-Google-Smtp-Source: ABdhPJx2d8jb8IceRsmC0SWY66dY7dVMCHYr1ggXjUpDi/gyQV3E+EAl3VTbJ8wyyNCBSbuwmUlSqA==
+X-Received: by 2002:a1c:6383:: with SMTP id x125mr18434747wmb.46.1610930080551;
+        Sun, 17 Jan 2021 16:34:40 -0800 (PST)
+Received: from valhalla.home ([2.29.208.120])
+        by smtp.gmail.com with ESMTPSA id o124sm23642040wmb.5.2021.01.17.16.34.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Jan 2021 16:34:39 -0800 (PST)
 From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <073ee5a2-65e1-f5b3-c1be-6a1b37475563@gmail.com>
-Date:   Sun, 17 Jan 2021 21:15:11 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        hdegoede@redhat.com, mgross@linux.intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        sakari.ailus@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+Subject: [PATCH v2 0/7] Introduce intel_skl_int3472 driver 
+Date:   Mon, 18 Jan 2021 00:34:21 +0000
+Message-Id: <20210118003428.568892-1-djrscally@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfMOcPyXELoD4S+oQjAaVg6H0Hn2hs2UAbYEKhnFZp36A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hello all
 
-On 17/01/2021 21:05, Andy Shevchenko wrote:
-> On Sat, Jan 16, 2021 at 11:29 PM Daniel Scally <djrscally@gmail.com> wrote:
->> On 16/01/2021 20:23, Andy Shevchenko wrote:
->>> On Fri, Jan 15, 2021 at 11:52 AM Heikki Krogerus
->>> <heikki.krogerus@linux.intel.com> wrote:
->>>> Hi,
->>>>
->>>> I'm now clearing the dev_fwnode(dev)->secondary pointer in
->>>> device_remove_software_node() as requested by Daniel and Andy. Thanks
->>>> guys, it's much better now. I also took the liberty of including one
->>>> more PCI ID patch where I add PCI ID for the Alder Lake-P variant. I
->>>> hope that is OK.
->>>>
->>>> Andy, I dropped your Tested-by tag because of the change I made to the
->>>> first patch. If you have time to retest these, I would much appreciate.
->>> Since Greg already grabbed a v3 I will test it when it appears in linux-next.
->>>
->> It seems the grabbed one is the v2 one though actually
-> In his last message he wrote that he noticed the v3 *as I understand that*.
-> Greg, is it right? I mean you took v3 eventually?
->
-You're right:
+v1 for this series was originally 14-18 of this series:
+https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
 
-https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/commit/?h=usb-testing&id=e68d0119e3284334de5650a1ac42ef4e179f895e
+At the moment in the kernel the ACPI _HID INT3472 is taken by the tps68470
+MFD driver, but that driver can only handle some of the cases of that _HID
+that we see. There are at least these three possibilities:
 
-My bad; I went off the automated message but didn't check the tree.
+1. INT3472 devices that provide GPIOs through the usual framework and run
+   power and clocks through an operation region; this is the situation that
+   the current module handles and is seen on ChromeOS devices
+2. INT3472 devices that provide GPIOs, plus clocks and regulators that are
+   meant to be driven through the usual frameworks, usually seen on devices
+   designed to run Windows
+3. INT3472 devices that don't actually represent a physical tps68470, but
+   are being used as a convenient way of grouping a bunch of system GPIO
+   lines that are intended to enable power and clocks for sensors which
+   are called out as dependent on them. Also seen on devices designed to
+   run Windows.
 
+This series introduces a new module which registers:
+
+1. An i2c driver that determines which scenario (#1 or #2) applies to the
+   machine and registers platform devices to be bound to GPIO, OpRegion,
+   clock and regulator drivers as appropriate.
+2. A platform driver that binds to the dummy INT3472 devices described in
+   #3
+
+The platform driver for the dummy device registers the GPIO lines that
+enable the clocks and regulators to the sensors via those frameworks so
+that sensor drivers can consume them in the usual fashion. The existing
+GPIO and OpRegion tps68470 drivers will work with the i2c driver that's
+registered. Clock and regulator drivers are currently in the works.
+
+The existing mfd/tps68470.c driver being thus superseded, it is removed.
+
+This has been tested on a number of devices; but currently **not** on a
+ChromeOS, which we ideally need to do to ensure no regression caused by
+replacing the tps68470 MFD driver.
+
+Thanks
+Dan
+
+Daniel Scally (7):
+  acpi: utils: move acpi_lpss_dep() to utils
+  acpi: utils: Add function to fetch dependent acpi_devices
+  i2c: i2c-core-base: Use format macro in i2c_dev_set_name()
+  i2c: i2c-core-acpi: Add i2c_acpi_dev_name()
+  gpio: gpiolib-acpi: Export acpi_get_gpiod()
+  platform: x86: Add intel_skl_int3472 driver
+  mfd: Remove tps68470 MFD driver
+
+ MAINTAINERS                                   |   5 +
+ drivers/acpi/acpi_lpss.c                      |  24 -
+ drivers/acpi/internal.h                       |   1 +
+ drivers/acpi/pmic/Kconfig                     |   1 -
+ drivers/acpi/utils.c                          |  58 ++
+ drivers/gpio/Kconfig                          |   1 -
+ drivers/gpio/gpiolib-acpi.c                   |   3 +-
+ drivers/i2c/i2c-core-acpi.c                   |  16 +
+ drivers/i2c/i2c-core-base.c                   |   4 +-
+ drivers/mfd/Kconfig                           |  18 -
+ drivers/mfd/Makefile                          |   1 -
+ drivers/mfd/tps68470.c                        |  97 ----
+ drivers/platform/x86/Kconfig                  |  25 +
+ drivers/platform/x86/Makefile                 |   4 +
+ .../platform/x86/intel_skl_int3472_common.c   | 100 ++++
+ .../platform/x86/intel_skl_int3472_common.h   | 100 ++++
+ .../platform/x86/intel_skl_int3472_discrete.c | 496 ++++++++++++++++++
+ .../platform/x86/intel_skl_int3472_tps68470.c | 145 +++++
+ include/acpi/acpi_bus.h                       |   2 +
+ include/linux/acpi.h                          |   5 +
+ include/linux/i2c.h                           |   8 +
+ 21 files changed, 969 insertions(+), 145 deletions(-)
+ delete mode 100644 drivers/mfd/tps68470.c
+ create mode 100644 drivers/platform/x86/intel_skl_int3472_common.c
+ create mode 100644 drivers/platform/x86/intel_skl_int3472_common.h
+ create mode 100644 drivers/platform/x86/intel_skl_int3472_discrete.c
+ create mode 100644 drivers/platform/x86/intel_skl_int3472_tps68470.c
+
+-- 
+2.25.1
 
