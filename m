@@ -2,109 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4340E2FB910
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 15:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 148462FB923
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 15:35:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395400AbhASOSR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jan 2021 09:18:17 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2368 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389495AbhASKFY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jan 2021 05:05:24 -0500
-Received: from fraeml705-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DKkgx048mz67bwc;
-        Tue, 19 Jan 2021 18:01:17 +0800 (CST)
-Received: from lhreml717-chm.china.huawei.com (10.201.108.68) by
- fraeml705-chm.china.huawei.com (10.206.15.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Tue, 19 Jan 2021 11:04:24 +0100
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml717-chm.china.huawei.com (10.201.108.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 19 Jan 2021 10:04:24 +0000
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.2106.006;
- Tue, 19 Jan 2021 10:04:23 +0000
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
+        id S2395412AbhASOS1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jan 2021 09:18:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55026 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389854AbhASKRt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jan 2021 05:17:49 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D884AC061575
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jan 2021 02:17:06 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id y187so16197161wmd.3
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jan 2021 02:17:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=UOCaNFGn8qpkTDzGnatAjkLM9ck0E2AazlgdK9gboJ4=;
+        b=QD87Pn3W+Re5ufLbkWhCkzqvZ/+9A1VMq6Cpc2o9IIWv5cfzqzWOkTL/Of7gjH6EYk
+         sxqbyCsM6OB5YZ2GXYGVcTpvFCAw11aiEGVETWqYHejTw+6yGH9f4A5TygoZoUk630FK
+         WI1fDC7P8JWsRMBZTQZrTJ3jtmVxbu3jGVUD/wKwWfV4Yg+i0qClff+9ucTwjubdxCCt
+         4CbcPfEnYDDMSjamXU2ldnJvncO76AwzxoFmiO87WMAGv5m6ZN+uTtM1OUgPnSz9/b4z
+         W7iBp8uYw/0GU9TshvvnorexHM7uwECFb0GIz83iYFMSd/CsvbZyFUco+xZ/5PsH6GVe
+         0wxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=UOCaNFGn8qpkTDzGnatAjkLM9ck0E2AazlgdK9gboJ4=;
+        b=VZu7c795KfnPlCsyduQ9YKyLkuLzhkr4JnlHDicm5O9dgXa2BjNtY/DzCfoiVMnlfq
+         R5FNdktWBt+KdkLIHCBBbBH/XPLtITw7JLquvPcorLY55nw+npG5+cfRENS97NqYmtiA
+         zfwYnh9wPQYLRIOWiH3yBTc2OcJUjr46OJ3l1hCYHd3TjjKOctSnsU8O5L6g7ncm7+qz
+         656CEFw1DKA4YfFT78xhlmu8aTjJUtB/yN1C+dy5eYkHkdJ1seCGnimfxSJPDVjRPIu3
+         8q0QazbJlzhg66m/GJhH//eZe186ZLT4MohB7uvcGfeQUjV2Cfwi5VCZOjz5gflr+G89
+         It5g==
+X-Gm-Message-State: AOAM5337Ld4zCrvP7Mr2TwTcd2ttbhXuNUzmTAO+E8xv7esxu/zKooPR
+        zcPIBEcu9XosbulyZhGfZY5+8w==
+X-Google-Smtp-Source: ABdhPJwi964FZpWtpaHGKGUwgdiVe5a4w9/d4IuQfbqMX1SZ+lU2/MFLQP7L80VpVdKZbL3TFcGFYw==
+X-Received: by 2002:a7b:c456:: with SMTP id l22mr3054466wmi.73.1611051425483;
+        Tue, 19 Jan 2021 02:17:05 -0800 (PST)
+Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id w18sm34729229wrn.2.2021.01.19.02.17.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jan 2021 02:17:04 -0800 (PST)
+Date:   Tue, 19 Jan 2021 11:16:46 +0100
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     "Tian, Kevin" <kevin.tian@intel.com>
+Cc:     Lu Baolu <baolu.lu@linux.intel.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "will@kernel.org" <will@kernel.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
         "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
         "lenb@kernel.org" <lenb@kernel.org>,
-        "rrichter@marvell.com" <rrichter@marvell.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
-Subject: RE: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
-Thread-Topic: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
-Thread-Index: AQHWzYfjlbqCwiJRuEue7sP+GeTJvaoRjUKAgBcV6jCABVN5gIAA+W4Q
-Date:   Tue, 19 Jan 2021 10:04:23 +0000
-Message-ID: <51d4ecaf997043718d3066e0a45518d2@huawei.com>
-References: <20201208172959.1249-1-shiju.jose@huawei.com>
- <20201208172959.1249-2-shiju.jose@huawei.com> <20201231164409.GC4504@zn.tnic>
- <a5745b56831c461bbb2cde4afc7ee295@huawei.com>
- <20210118183637.GD30090@zn.tnic>
-In-Reply-To: <20210118183637.GD30090@zn.tnic>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.92.19]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-accelerators@lists.ozlabs.org" 
+        <linux-accelerators@lists.ozlabs.org>,
+        "vdumpa@nvidia.com" <vdumpa@nvidia.com>,
+        "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+        "shameerali.kolothum.thodi@huawei.com" 
+        <shameerali.kolothum.thodi@huawei.com>,
+        "vivek.gautam@arm.com" <vivek.gautam@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Zhou Wang <wangzhou1@hisilicon.com>
+Subject: Re: [PATCH v9 03/10] iommu: Separate IOMMU_DEV_FEAT_IOPF from
+ IOMMU_DEV_FEAT_SVA
+Message-ID: <YAaxjmJW+ZMvrhac@myrica>
+References: <20210108145217.2254447-1-jean-philippe@linaro.org>
+ <20210108145217.2254447-4-jean-philippe@linaro.org>
+ <4de8ef03-a2ed-316e-d3e3-6b8474e20113@linux.intel.com>
+ <X/1o72DTmzdCMhDz@myrica>
+ <c88e5d74-098d-7f1d-a7bb-a89e40fb8fa4@linux.intel.com>
+ <MWHPR11MB18868F53E5A9E0CF9975042B8CA90@MWHPR11MB1886.namprd11.prod.outlook.com>
+ <YAB0SHyUZbxprkL3@larix.localdomain>
+ <636814a9-7dea-06f6-03ec-6a98dd30b7e3@linux.intel.com>
+ <MWHPR11MB188653AF6EFA0E55DE17815F8CA40@MWHPR11MB1886.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MWHPR11MB188653AF6EFA0E55DE17815F8CA40@MWHPR11MB1886.namprd11.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgQm9yaXMsDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEJvcmlzbGF2
-IFBldGtvdiBbbWFpbHRvOmJwQGFsaWVuOC5kZV0NCj5TZW50OiAxOCBKYW51YXJ5IDIwMjEgMTg6
-MzcNCj5UbzogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiBsaW51eC1l
-ZGFjQHZnZXIua2VybmVsLm9yZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0K
-Pmtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGphbWVzLm1vcnNlQGFybS5jb207DQo+bWNoZWhhYito
-dWF3ZWlAa2VybmVsLm9yZzsgdG9ueS5sdWNrQGludGVsLmNvbTsgcmp3QHJqd3lzb2NraS5uZXQ7
-DQo+bGVuYkBrZXJuZWwub3JnOyBycmljaHRlckBtYXJ2ZWxsLmNvbTsgSm9uYXRoYW4gQ2FtZXJv
-bg0KPjxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyB0YW54aWFvZmVpIDx0YW54aWFvZmVp
-QGh1YXdlaS5jb20+Ow0KPmxpbnV4YXJtQG9wZW5ldWxlci5vcmcNCj5TdWJqZWN0OiBSZTogW1JG
-QyBQQVRDSCAxLzJdIEVEQUMvZ2hlczogQWRkIEVEQUMgZGV2aWNlIGZvciB0aGUgQ1BVDQo+Y2Fj
-aGVzDQo+DQo+T24gRnJpLCBKYW4gMTUsIDIwMjEgYXQgMTE6MDY6MzBBTSArMDAwMCwgU2hpanUg
-Sm9zZSB3cm90ZToNCj4+IEwyIGNhY2hlIGNvcnJlY3RlZCBlcnJvcnMgYXJlIGRldGVjdGVkIG9j
-Y2FzaW9uYWxseSBvbiBmZXcgb2Ygb3VyDQo+PiBBUk02NCBoYXJkd2FyZSBib2FyZHMuIFRob3Vn
-aCBpdCBpcyByYXJlLCB0aGUgcHJvYmFiaWxpdHkgb2YgdGhlIENQVQ0KPj4gY2FjaGUgZXJyb3Jz
-IGZyZXF1ZW50bHkgb2NjdXJyaW5nIGNhbid0IGJlIGF2b2lkZWQuDQo+PiBUaGUgZWFybGllciBm
-YWlsdXJlIGRldGVjdGlvbiBieSBtb25pdG9yaW5nIHRoZSBjYWNoZSBjb3JyZWN0ZWQgZXJyb3Jz
-DQo+PiBmb3IgdGhlIGZyZXF1ZW50IG9jY3VycmVuY2VzIGFuZCB0YWtpbmcgcHJldmVudGl2ZSBh
-Y3Rpb24gY291bGQNCj4+IHByZXZlbnQgbW9yZSBzZXJpb3VzIGhhcmR3YXJlIGZhdWx0cy4NCj4+
-DQo+PiBPbiBJbnRlbCBhcmNoaXRlY3R1cmVzLCBjYWNoZSBjb3JyZWN0ZWQgZXJyb3JzIGFyZSBy
-ZXBvcnRlZCBhbmQgdGhlDQo+PiBhZmZlY3RlZCBjb3JlcyBhcmUgb2ZmbGluZSBpbiB0aGUgYXJj
-aGl0ZWN0dXJlIHNwZWNpZmljIG1ldGhvZC4NCj4+IGh0dHA6Ly93d3cubWNlbG9nLm9yZy9jYWNo
-ZS5odG1sDQo+Pg0KPj4gSG93ZXZlciBmb3IgdGhlIGZpcm13YXJlLWZpcnN0IGVycm9yIHJlcG9y
-dGluZywgc3BlY2lmaWNhbGx5IG9uDQo+PiBBUk02NCBhcmNoaXRlY3R1cmVzLCB0aGVyZSBpcyBu
-byBwcm92aXNpb24gcHJlc2VudCBmb3IgcmVwb3J0aW5nIHRoZQ0KPj4gY2FjaGUgY29ycmVjdGVk
-IGVycm9yIGNvdW50IHRvIHRoZSB1c2VyLXNwYWNlIGFuZCB0YWtpbmcgcHJldmVudGl2ZQ0KPj4g
-YWN0aW9uIHN1Y2ggYXMgb2ZmbGluZSB0aGUgYWZmZWN0ZWQgY29yZXMuDQo+DQo+SG93IGhhcmQg
-d2FzIGl0IHRvIHdyaXRlIHRoYXQgaW4geW91ciBmaXJzdCBzdWJtaXNzaW9uPyBXaGF0IGRvIHlv
-dSB0aGluaw0KPndvdWxkIGJlIHRoZSBiZXN0IHdheSB0byBwZXJzdWFkZSBhIHBhdGNoIHJldmll
-d2VyL21haW50YWluZXIgdG8gdGFrZSBhDQo+bG9vayBhdCB5b3VyIHN1Ym1pc3Npb24/DQo+DQo+
-PiA+V2h5IGEgc2VwYXJhdGUgS2NvbmZpZyBpdGVtPw0KPj4gQ09ORklHX0VEQUNfR0hFU19DUFVf
-Q0FDSEVfRVJST1IgaXMgYWRkZWQgdG8gbWFrZSB0aGlzIGZlYXR1cmUNCj4+IG9wdGlvbmFsIG9u
-bHkgZm9yIHRoZSBwbGF0Zm9ybXMgd2hpY2ggbmVlZCB0aGlzIGFuZCBzdXBwb3J0ZWQuDQo+Pg0K
-Pj4gPg0KPj4gPj4gKwlkZXBlbmRzIG9uIEVEQUNfR0hFUw0KPg0KPmRlcGVuZHMgb24gRURBQ19H
-SEVTIGhhcmRseSBleHByZXNzZXMgd2hpY2ggcGxhdGZvcm1zIG5lZWQgaXQvc3VwcG9ydCBpdC4N
-Cj4NCj5JZiBhbnl0aGluZywgZGVwZW5kcyBvbiBBUk02NC4NClN1cmUuIEkgd2lsbCBhZGQgZGVw
-ZW5kZW5jeSBvbiBBUk02NC4NClRoaXMgRURBQyBjb2RlIGZvciB0aGUgY2FjaGUgZXJyb3JzIGlz
-ICBhcmNoaXRlY3R1cmUgaW5kZXBlbmRlbnQgZm9yIHRoZQ0KZmlybXdhcmUtZmlyc3QgZXJyb3Ig
-cmVwb3J0aW5nIGFuZCAgY291bGQgYmUgdXNlZCBmb3Igb3RoZXIgYXJjaGl0ZWN0dXJlcywNCnRo
-b3VnaCBub3cgd2UgbmVlZCBpdCBmb3IgdGhlIEFSTTY0LiANCg0KPg0KPj4gPkluaXQgc3R1ZmYg
-YmVsb25ncyBpbnRvIGdoZXNfc2Nhbl9zeXN0ZW0oKS4NCj4+ID4NCj4+IERpZCB5b3UgbWVhbiBj
-YWxsaW5nICBnaGVzX2VkYWNfY3JlYXRlX2NwdV9kZXZpY2UoKSBpbiB0aGUNCj5naGVzX3NjYW5f
-c3lzdGVtKCk/DQo+DQo+SSBtZWFuLCBhbGwgaGFyZHdhcmUgZGlzY292ZXJ5IG5lZWRzIHRvIGhh
-cHBlbiBpbiBnaGVzX3NjYW5fc3lzdGVtDQo+LSB5b3UgZG9uJ3QgbmVlZCB0byBjYWxsIHRob3Nl
-IGZyb20gb3V0c2lkZSB0aGUgZHJpdmVyLCBpbg0KPmdoZXNfZWRhY19yZWdpc3RlcigpLg0KDQpz
-dXJlLiBXaWxsIG1vZGlmeS4NCj4NCj4tLQ0KPlJlZ2FyZHMvR3J1c3MsDQo+ICAgIEJvcmlzLg0K
-DQpUaGFua3MsDQpTaGlqdQ0K
+On Mon, Jan 18, 2021 at 06:54:28AM +0000, Tian, Kevin wrote:
+> > From: Lu Baolu <baolu.lu@linux.intel.com>
+> > Sent: Saturday, January 16, 2021 11:54 AM
+> > 
+> > Hi Jean,
+> > 
+> > On 2021/1/15 0:41, Jean-Philippe Brucker wrote:
+> > > I guess detailing what's needed for nested IOPF can help the discussion,
+> > > although I haven't seen any concrete plan about implementing it, and it
+> > > still seems a couple of years away. There are two important steps with
+> > > nested IOPF:
+> > >
+> > > (1) Figuring out whether a fault comes from L1 or L2. A SMMU stall event
+> > >      comes with this information, but a PRI page request doesn't. The
+> > IOMMU
+> > >      driver has to first translate the IOVA to a GPA, injecting the fault
+> > >      into the guest if this translation fails by using the usual
+> > >      iommu_report_device_fault().
+> 
+> The IOMMU driver can walk the page tables to find out the level information.
+> If the walk terminates at the 1st level, inject to the guest. Otherwise fix the 
+> mm fault at 2nd level. It's not efficient compared to hardware-provided info,
+> but it's doable and actual overhead needs to be measured (optimization exists
+> e.g. having fault client to hint no 2nd level fault expected when registering fault
+> handler in pinned case).
+> 
+> > >
+> > > (2) Translating the faulting GPA to a HVA that can be fed to
+> > >      handle_mm_fault(). That requires help from KVM, so another interface -
+> > >      either KVM registering GPA->HVA translation tables or IOMMU driver
+> > >      querying each translation. Either way it should be reusable by device
+> > >      drivers that implement IOPF themselves.
+> 
+> Or just leave to the fault client (say VFIO here) to figure it out. VFIO has the
+> information about GPA->HPA and can then call handle_mm_fault to fix the
+> received fault. The IOMMU driver just exports an interface for the device drivers 
+> which implement IOPF themselves to report a fault which is then handled by
+> the IOMMU core by reusing the same faulting path.
+> 
+> > >
+> > > (1) could be enabled with iommu_dev_enable_feature(). (2) requires a
+> > more
+> > > complex interface. (2) alone might also be desirable - demand-paging for
+> > > level 2 only, no SVA for level 1.
+> 
+> Yes, this is what we want to point out. A general FEAT_IOPF implies more than
+> what this patch intended to address.
+> 
+> > >
+> > > Anyway, back to this patch. What I'm trying to convey is "can the IOMMU
+> > > receive incoming I/O page faults for this device and, when SVA is enabled,
+> > > feed them to the mm subsystem?  Enable that or return an error." I'm stuck
+> > > on the name. IOPF alone is too vague. Not IOPF_L1 as Kevin noted, since L1
+> > > is also used in virtualization. IOPF_BIND and IOPF_SVA could also mean (2)
+> > > above. IOMMU_DEV_FEAT_IOPF_FLAT?
+> > >
+> > > That leaves space for the nested extensions. (1) above could be
+> > > IOMMU_FEAT_IOPF_NESTED, and (2) requires some new interfacing with
+> > KVM (or
+> > > just an external fault handler) and could be used with either IOPF_FLAT or
+> > > IOPF_NESTED. We can figure out the details later. What do you think?
+> > 
+> > I agree that we can define IOPF_ for current usage and leave space for
+> > future extensions.
+> > 
+> > IOPF_FLAT represents IOPF on first-level translation, currently first
+> > level translation could be used in below cases.
+> > 
+> > 1) FL w/ internal Page Table: Kernel IOVA;
+> > 2) FL w/ external Page Table: VFIO passthrough;
+> > 3) FL w/ shared CPU page table: SVA
+> > 
+> > We don't need to support IOPF for case 1). Let's put it aside.
+> > 
+> > IOPF handling of 2) and 3) are different. Do we need to define different
+> > names to distinguish these two cases?
+> > 
+> 
+> Defining feature names according to various use cases does not sound a
+> clean way. In an ideal way we should have just a general FEAT_IOPF since
+> the hardware (at least VT-d) does support fault in either 1st-level, 2nd-
+> level or nested configurations. We are entering this trouble just because
+> there is difficulty for the software evolving to enable full hardware cap
+> in one batch. My last proposal was sort of keeping FEAT_IOPF as a general
+> capability for whether delivering fault through the IOMMU or the ad-hoc
+> device, and then having a separate interface for whether IOPF reporting
+> is available under a specific configuration. The former is about the path
+> between the IOMMU and the device, while the latter is about the interface
+> between the IOMMU driver and its faulting client.
+> 
+> The reporting capability can be checked when the fault client is registering 
+> its fault handler, and at this time the IOMMU driver knows how the related 
+> mapping is configured (1st, 2nd, or nested) and whether fault reporting is 
+> supported in such configuration. We may introduce IOPF_REPORT_FLAT and 
+> IOPF_REPORT_NESTED respectively. while IOPF_REPORT_FLAT detection is 
+> straightforward (2 and 3 can be differentiated internally based on configured 
+> level), IOPF_REPORT_NESTED needs additional info to indicate which level is 
+> concerned since the vendor driver may not support fault reporting in both 
+> levels or the fault client may be interested in only one level (e.g. with 2nd
+> level pinned).
+
+I agree with this plan (provided I understood it correctly this time):
+have IOMMU_DEV_FEAT_IOPF describing the IOPF interface between device and
+IOMMU. Enabling it on its own doesn't do anything visible to the driver,
+it just probes for capabilities and enables PRI if necessary. For host
+SVA, since there is no additional communication between IOMMU and device
+driver, enabling IOMMU_DEV_FEAT_SVA in addition to IOPF is sufficient.
+Then when implementing nested we'll extend iommu_register_fault_handler()
+with flags and parameters. That will also enable advanced dispatching (1).
+
+Will it be necessary to enable FEAT_IOPF when doing VFIO passthrough
+(injecting to the guest or handling it with external page tables)?
+I think that would be better. Currently a device driver registering a
+fault handler doesn't know if it will get recoverable page faults or only
+unrecoverable ones.
+
+So I don't think this patch needs any change. Baolu, are you ok with
+keeping this and patch 4?
+
+Thanks,
+Jean
