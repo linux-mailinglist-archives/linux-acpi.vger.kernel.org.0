@@ -2,83 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D386E2FB927
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 15:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2846B2FB912
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 15:35:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395407AbhASOSY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jan 2021 09:18:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54986 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389840AbhASKRk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jan 2021 05:17:40 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D86C061573;
-        Tue, 19 Jan 2021 02:16:57 -0800 (PST)
-Received: from zn.tnic (p200300ec2f0bca00c2aa0e949335efb7.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:ca00:c2aa:e94:9335:efb7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90EF01EC05C4;
-        Tue, 19 Jan 2021 11:16:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1611051415;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=4CqezFVMKH36MJrRgW74iAw00guuFWAyVYHxCYgTsAo=;
-        b=Gh928GzQ6JGqQd2EW/IdX6MUCu5eog1EnJbJ0axAHdcj9ENc7N/VVzoc4FtcQm05sF5ZwP
-        2/wg3n5xOEbbdNsvS9nLyb0maPeMkPBArRD7oUCCZRXjk/9sqB5ZKp1SwL1beqC6G/V8ku
-        7fJUgJBNNv9kQz7g5639id4DLBTHtwQ=
-Date:   Tue, 19 Jan 2021 11:16:55 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rrichter@marvell.com" <rrichter@marvell.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
-Subject: Re: [RFC PATCH 1/2] EDAC/ghes: Add EDAC device for the CPU caches
-Message-ID: <20210119101655.GD27433@zn.tnic>
-References: <20201208172959.1249-1-shiju.jose@huawei.com>
- <20201208172959.1249-2-shiju.jose@huawei.com>
- <20201231164409.GC4504@zn.tnic>
- <a5745b56831c461bbb2cde4afc7ee295@huawei.com>
- <20210118183637.GD30090@zn.tnic>
- <51d4ecaf997043718d3066e0a45518d2@huawei.com>
+        id S2395416AbhASOSk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jan 2021 09:18:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43826 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404389AbhASKfe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 Jan 2021 05:35:34 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B0CE120867;
+        Tue, 19 Jan 2021 10:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1611052493;
+        bh=Ai9OtUYE17P/PsNgazL93C2QuNBAGpf3R4vtI8UU7tU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qFRNSgW3Phy8vew+1a95X5kmhqMA1QVSxeV/v+QNU2W1CjRdJbVoEEFxU+MWUM02h
+         2DbPo1jagUWGtrttWrzJaB8//4Nk1CztWgxvQLBQLDFvD1qhKaf0zFyLJu66ud/02r
+         FYwE1BBXlCiLLU1DbVyIFNnZE0An7DU/psfcJBtw=
+Date:   Tue, 19 Jan 2021 11:34:50 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        AceLan Kao <acelan.kao@canonical.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI / device_sysfs: Use OF_MODALIAS for "compatible"
+ modalias
+Message-ID: <YAa1ygjr2L3VxBKF@kroah.com>
+References: <20210119081513.300938-1-kai.heng.feng@canonical.com>
+ <YAaXz9Pg5x3DsCs3@kroah.com>
+ <CAAd53p7tdFiARtW1RXsjN8+OwRXWzMnok_rfKHDHCh-JSam3cQ@mail.gmail.com>
+ <20210119094159.GQ4077@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <51d4ecaf997043718d3066e0a45518d2@huawei.com>
+In-Reply-To: <20210119094159.GQ4077@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 10:04:23AM +0000, Shiju Jose wrote:
-> This EDAC code for the cache errors is  architecture independent for the
-> firmware-first error reporting and  could be used for other architectures,
+On Tue, Jan 19, 2021 at 11:41:59AM +0200, Andy Shevchenko wrote:
+> On Tue, Jan 19, 2021 at 04:41:48PM +0800, Kai-Heng Feng wrote:
+> > On Tue, Jan 19, 2021 at 4:27 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > > On Tue, Jan 19, 2021 at 04:15:13PM +0800, Kai-Heng Feng wrote:
+> 
+> ...
+> 
+> > > Who will use OF_MODALIAS and where have you documented it?
+> > 
+> > After this lands in mainline, I'll modify the pull request for systemd
+> > to add a new rule for OF_MODALIAS.
+> > I'll modify the comment on the function to document the change.
+> 
+> I'm wondering why to have two fixes in two places instead of fixing udev to
+> understand multiple MODALIAS= events?
 
-I'm not so sure about that because you're lumping all the cache
-hierarchies together and there might be L3 slices on some x86
-incarnations, for example, which do not belong to the core you're
-reporting the error for... It would need to be tested though.
+It's not a matter of multiple events, it's a single event with a
+key/value pair with duplicate keys and different values.
 
-Also, if this is a firmware-first mode, then I would expect the firmware
-to also report which cache triggered the error and thus not need any OS
-glue at all.
+What is this event with different values supposed to be doing in
+userspace?  Do you want multiple invocations of `modprobe` or something
+else?
 
-Therefore ARM only and I'd need an ACK from ARM folks whether they want
-it this way.
+Usually a "device" only has a single "signature" that modprobe uses to
+look up the correct module for.  Modules can support any number of
+device signatures, but traditionally it is odd to think that a device
+itself can be supported by multiple modules, which is what you are
+saying is happening here.
 
-Thx.
+So what should userspace do with this, and why does a device need to
+have multiple module alias signatures?
 
--- 
-Regards/Gruss,
-    Boris.
+thanks,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+greg k-h
