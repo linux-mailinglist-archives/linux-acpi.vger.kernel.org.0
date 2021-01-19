@@ -2,95 +2,250 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 916972FC384
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 23:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 207B42FC46D
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 00:09:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728027AbhASWc7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jan 2021 17:32:59 -0500
-Received: from mga18.intel.com ([134.134.136.126]:24755 "EHLO mga18.intel.com"
+        id S2387889AbhASORO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jan 2021 09:17:14 -0500
+Received: from mga14.intel.com ([192.55.52.115]:53291 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727669AbhASRoS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:44:18 -0500
-IronPort-SDR: dJV84DJ/vSSJ+Hn8A+Wxhhtm3za3Zz/j8Sqwl21dBj00sBMoTG3/iIJ32hKObH1S0bMA52ZeqM
- W5dm7lHYx3mw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9869"; a="166632754"
-X-IronPort-AV: E=Sophos;i="5.79,359,1602572400"; 
-   d="scan'208";a="166632754"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2021 09:42:19 -0800
-IronPort-SDR: EL58UZk+sJ19P4ixy5WWw7RUj9/Yx+9c2hUyTbYVWS2dSrkQoe04HMeVAzYEqHzQNh6FuH/9zD
- F+SVCiy3PhJQ==
-X-IronPort-AV: E=Sophos;i="5.79,359,1602572400"; 
-   d="scan'208";a="501005745"
+        id S1732905AbhASJ0I (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 Jan 2021 04:26:08 -0500
+IronPort-SDR: yzdCDtBwq/+mi8eOFSqsfskx3ZG6xw11n0a36+IuoO3KYTadCogrNbpyFfFtSBjGFvKkH4xhdB
+ 3G8yRoIxvY8w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9868"; a="178121666"
+X-IronPort-AV: E=Sophos;i="5.79,358,1602572400"; 
+   d="scan'208";a="178121666"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2021 01:23:53 -0800
+IronPort-SDR: fYt+TwSxnqP24B6kl7d2nh0cJr09mHy0C1J1P/Qytt9UO+g+k4EOGUs6oJi25/lwBBzKbgw85E
+ ZQrfueVFWWzQ==
+X-IronPort-AV: E=Sophos;i="5.79,358,1602572400"; 
+   d="scan'208";a="350454613"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2021 09:42:13 -0800
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2021 01:23:46 -0800
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l1v2B-004oA2-Fm; Tue, 19 Jan 2021 19:43:15 +0200
-Date:   Tue, 19 Jan 2021 19:43:15 +0200
+        id 1l1nFo-003L1D-9R; Tue, 19 Jan 2021 11:24:48 +0200
+Date:   Tue, 19 Jan 2021 11:24:48 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        devel@acpica.org, rjw@rjwysocki.net, lenb@kernel.org,
-        andy@kernel.org, mika.westerberg@linux.intel.com,
-        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        wsa@kernel.org, lee.jones@linaro.org, hdegoede@redhat.com,
-        mgross@linux.intel.com, robert.moore@intel.com,
-        erik.kaneda@intel.com, sakari.ailus@linux.intel.com,
-        kieran.bingham@ideasonboard.com
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org,
+        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        hdegoede@redhat.com, mgross@linux.intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        sakari.ailus@linux.intel.com, kieran.bingham@ideasonboard.com
 Subject: Re: [PATCH v2 6/7] platform: x86: Add intel_skl_int3472 driver
-Message-ID: <YAcaM9Tcif1rS3V/@smile.fi.intel.com>
+Message-ID: <20210119092448.GN4077@smile.fi.intel.com>
 References: <20210118003428.568892-1-djrscally@gmail.com>
  <20210118003428.568892-7-djrscally@gmail.com>
  <YAVRqWeUsLjvU62P@pendragon.ideasonboard.com>
  <20210118144606.GO4077@smile.fi.intel.com>
  <75e99a06-4579-44ee-5f20-8f2ee3309a68@gmail.com>
- <1053125f-7cb2-8aa0-3204-24df62986184@gmail.com>
- <20210119093358.GO4077@smile.fi.intel.com>
- <YAcKj9fyNZY8QETd@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <YAcKj9fyNZY8QETd@pendragon.ideasonboard.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <75e99a06-4579-44ee-5f20-8f2ee3309a68@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 06:36:31PM +0200, Laurent Pinchart wrote:
-> On Tue, Jan 19, 2021 at 11:33:58AM +0200, Andy Shevchenko wrote:
-> > On Tue, Jan 19, 2021 at 12:11:40AM +0000, Daniel Scally wrote:
-> > > On 18/01/2021 21:19, Daniel Scally wrote:
+On Mon, Jan 18, 2021 at 09:19:52PM +0000, Daniel Scally wrote:
+> On 18/01/2021 14:46, Andy Shevchenko wrote:
+> > On Mon, Jan 18, 2021 at 11:15:21AM +0200, Laurent Pinchart wrote:
+> >> On Mon, Jan 18, 2021 at 12:34:27AM +0000, Daniel Scally wrote:
 
 ...
 
-> > See my previous reply. TL;DR: you have to modify clk-gpio.c to export couple of
-> > methods to be able to use it as a library.
+> >>> +static struct i2c_driver int3472_tps68470 = {
+> >>> +	.driver = {
+> >>> +		.name = "int3472-tps68470",
+> >>> +		.acpi_match_table = int3472_device_id,
+> >>> +	},
+> >>> +	.probe_new = skl_int3472_tps68470_probe,
+> >>> +};
+> > I'm not sure we want to have like this. If I'm not mistaken the I²C driver can
+> > be separated without ACPI IDs (just having I²C IDs) and you may instantiate it
+> > via i2c_new_client_device() or i2c_acpi_new_device() whichever suits better...
 > 
-> That seems really overkill given the very simple implementation of the
-> clock provided here.
+> Sorry, I'm a bit confused by this. The i2c device is already
+> present...we just want the driver to bind to them, so what role do those
+> functions have there?
 
-Less code in the end is called an overkill? Hmm...
-I think since we in Linux it's better to utilize what it provides. Do you want
-me to prepare a patch to show that there is no overkill at all?
+What I meant is something like
+
+ *_i2c.c
+	real I²C driver for the TPS chip, but solely with I²C ID table, no ACPI
+	involved (and it sounds like it should be mfd/tps one, in which you
+	just cut out ACPI IDs and convert to pure I²C one, that what I had
+	suggested in the first place)
+
+ *_proxy.c
+	GPIO proxy as library
+
+ *.c
+	platform driver with ACPI ID, in which ->probe() we actually instantiate
+	above via calling i2c_acpi_new_device(), *if needed*, along with GPIO
+	proxy
 
 ...
 
-> > > (also, Laurent, if we did it this way we wouldn't be able to also handle
-> > > the led-indicator GPIO here without some fairly major rework)
-> > 
-> > LED indicators are done as LED class devices (see plenty of examples in PDx86
-> > drivers: drivers/platform/x86/)
-> 
-> How do you expose the link between the sensor and its indicator LED to
-> userspace ? Isn't it better to handle it in the kernel to avoid rogue
-> userspace turning the camera on without notifying the user ?
+> >>> +struct int3472_gpio_clock {
+> >>> +	struct clk *clk;
+> >>> +	struct clk_hw clk_hw;
+> >>> +	struct clk_lookup *cl;
+> >>> +	struct gpio_desc *gpio;
+> >>> +};
 
-I didn't get this. It's completely a LED handling driver business. We may
-expose it to user space or not, but it's orthogonal to the usage of LED class
-IIUC. Am I mistaken here?
+> >>> +static const struct clk_ops skl_int3472_clock_ops = {
+> >>> +	.prepare = skl_int3472_clk_prepare,
+> >>> +	.unprepare = skl_int3472_clk_unprepare,
+> >>> +	.enable = skl_int3472_clk_enable,
+> >>> +	.disable = skl_int3472_clk_disable,
+> >>> +};
+
+> > Wondering if this has some similarities with and actually can utilize clk-gpio
+> > driver.
+> > Yeah, sounds like reinventing clk-gpio.c.
+> >
+> > static const struct clk_ops clk_gpio_gate_ops = {
+> > 	.enable = clk_gpio_gate_enable,
+> > 	.disable = clk_gpio_gate_disable,
+> > 	.is_enabled = clk_gpio_gate_is_enabled,
+> > };
+> >
+> > Or is it mux? It has support there as well.
+> >
+> Hmm, yeah, this looks like it would work actually. So I think I'd need to:
+> 
+> 
+> 1. Make enabling INTEL_SKL_INT3472 also enable the clk-gpio driver
+> 
+> 2. Register a platform device to bind to the clk-gpio driver
+> 
+> 3. Register a gpio lookup table so that the clk-gpio driver can find the
+> gpio in question using gpiod_get()
+> 
+> And that looks like it will work; I'll try it.
+
+You need to modify clk-gpio.c to export
+
+clk_hw_register_gpio_gate()
+clk_hw_register_gpio_mux()
+
+(perhaps it will require to add *_unregister() counterparts) and call it from
+your code.
+
+See, for example, how clk_hw_unregister_fixed_rate() is being used. Another
+case is to add a helper directly into clk-gpio and call it instead of
+clk_hw_*() one, see how clk_register_fractional_divider() is implemented and
+used.
+
+...
+
+> >>> +	/* Lenovo Miix 510-12ISK - OV5648, Rear */
+> >>> +	{ "GEFF150023R", REGULATOR_SUPPLY("avdd", "i2c-OVTI5648:00"), NULL},
+> >>> +	/* Surface Go 1&2 - OV5693, Front */
+> >>> +	{ "YHCU", REGULATOR_SUPPLY("avdd", "i2c-INT33BE:00"), NULL},
+> > I'm wondering if you should use same I2C format macro and create this
+> > dynamically? Or rather find a corresponding ACPI device instance and
+> > copy it's name? ...
+> 
+> The supply name needs hard-coding really, but the device name I suppose
+> can come from int3472->sensor_name.
+
+To be strict in terms you are using "device instance name" in the
+REGULATOR_SUPPLY() second parameter. Because "device name" is generic and
+doesn't point to the actual *instance* of the device in the system.
+
+So, and "device name instance" we may get only by traversing through the (ACPI)
+bus and find corresponding struct device and derive name from it. Same way like
+you have done in previous patch series.
+
+Because there is no guarantee that, e.g., i2c-INT33BE:00 will be present on
+the system and moreover there is no guarantee that if two INT33BE or more
+devices are present you will get :00 always for the one you need!
+
+...
+
+> >>> +	ret = ERR_PTR(-ENODEV);
+> > This seems redundant. Or are you expecting ARRAY_SIZE() to be 0?
+> > If no, you may add static_assert() near to the array definition.
+> 
+> It **could** become 0, if the entries I've added are removed in future
+> because the sensors are no longer supported or something. There might be
+> no sensor_module_config for a given device. We only need to supply one if
+> 
+> a) The platform has a 0x0b type GPIO, which means we need to define a
+> supply name the driver is expecting
+> 
+> b) The GPIO functions deviate from documented purpose, which means we
+> need to supply a remapping struct
+> 
+> Otherwise, there's no need for it.
+
+I see. So, up to you then.
+
+> 
+> 
+> >>> +
+> >>> +	int3472->regulator.rdev = regulator_register(&int3472->regulator.rdesc,
+> >>> +						     &cfg);
+> >>> +	if (IS_ERR(int3472->regulator.rdev)) {
+> >>> +		ret = PTR_ERR(int3472->regulator.rdev);
+> >>> +		goto err_free_gpio;
+> >>> +	}
+> > Similar here, can we utilize gpio-regulator.c?
+> >
+> 
+> Also yes probably, with the same steps as for the clocks. Again, I'll
+> try that out, thanks very much.
+
+You may look at arch/x86/platform/intel-mid/device_libs/platform_bcm43xx.c
+(but in your case you probably don't need a GPIO lookup table, just check).
+
+...
+
+> >>> +		dev_warn(&int3472->pdev->dev,
+> >>> +			 "GPIO type 0x%llx unknown; the sensor may not work\n",
+> >>> +			 (obj->integer.value & 0xff));
+> >> No need for parentheses.
+> > And instead of "%llx" with " & 0xff" you may use "%x" with "(u8)" cast.
+> > However, I don't think we need to show only last byte, because it may give
+> > wrong impression on values like "0x100".
+> 
+> But in this case only the last byte holds the type information, second
+> lowest byte is the pin number. So as we understand it, 0x100 would be
+> invalid anyway.
+
+Ah, indeed. So, I think the best is to have %hhx and see if you can supply just
+obj->integer.value and compiler won't warn about type mismatch.
+
+...
+
+> >>> +	} else {
+> >>> +		opregion_dev = skl_int3472_register_pdev("tps68470_pmic_opregion",
+> >>> +							 &client->dev);
+> >>> +		if (IS_ERR(opregion_dev)) {
+> >>> +			ret = PTR_ERR(opregion_dev);
+> >>> +			goto err_free_gpio;
+> >>> +		}
+> >>> +	}
+> >> I wonder if this could be simplified by using devm_mfd_add_devices. You
+> >> could have two arrays of mfd_cell, one for each case.
+> > Yeah, which effectively means that we should have some kind of mfd/tps68470 in
+> > place.
+> 
+> Can you expand on what you mean by that a little, please?
+
+The very first comment in this reply should hopefully shed a light on my idea.
 
 -- 
 With Best Regards,
