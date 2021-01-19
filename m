@@ -2,142 +2,330 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B39AA2FAF58
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 05:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B552FB157
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jan 2021 07:25:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730565AbhASEJ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jan 2021 23:09:27 -0500
-Received: from mail-eopbgr80051.outbound.protection.outlook.com ([40.107.8.51]:25028
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730605AbhASEJO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Jan 2021 23:09:14 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O6IjAu5sjhNbmmbJ8kibt1Yl4N+qHk9F2Zgw+q3Zs2ijFbfUSHmi5DDsZPhx4itr5kOTJEm6x2c1BG+pvXYX6yVG4XmiXFj6Gd5V79yLG7fA1pPZK3ll73dBwPTc2MlEsVcGgBeX0zBP+VRICUqh2Igydd+AuYRmGTSYcxrT3e8IPGrTbTmDXC0awEYIaJGC6ZW4N47LwiRLYB9iv+1UnBKm1/SfovdY9KikUt306N7bPMyW+yYO3BYp5HhbJPsliXGIC/Wa4DW1HLidGd034FoTB6c8xzTsXRy/4Q/Kf5i9yTVB2Z2qSRvF385JRy0ZtbV8Ll9nkvg+Dn/CnuqoXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ifIqMjfF/b1E/ZgqtwPwvaZetJ1gjiJX0vi+0mlUQwo=;
- b=LCaAvIuKvZmwGMVg/80stjW2HXJ65XxW/mDGw6ct/Y2yQ5VmKRSzF90+6I5+YbtwEJAFzEMT/yoXvRGwTgKe0nmy3knUkLyeCqIkzr//ZQ1TG0RLYaw7aXyQ+7k0HpgZBtYkRXEBFfRTpIsKUkuMpl+sw2rbr1+kw9j7seVyGTHCPZkYZWSJPKvGq5AvJB6wht7wWOWBurcLqmt0afrZ5hjGSJGbIOsnwS7CvSvHwMb5YaiDU1WT+nz+4xk3dgjCY4M7OWOHdyHA/Bc2OCCRkK25Fi8Ke0Kx28rlm6kKfGBCNSzeSa1usDeFtfhMIvvWvzO2usQyVrfV/F4G0zpEIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ifIqMjfF/b1E/ZgqtwPwvaZetJ1gjiJX0vi+0mlUQwo=;
- b=EjDsRu6qSZ1lE7ds3mivIec0EEzW2AXVxI6y9IpVUePlqF3s9NrFSXynM5uGZkz2suQ+LL8mgJIBvlk9hMVgA6oz7p4wp2zlDpTr/yWN7oWIVO4fW2jj0VLrrIVGa7KkK5ukvQM2RgG+ZbHFg6ihzz3xFPUpLXHktoQ9b5vFGGs=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB7155.eurprd04.prod.outlook.com (2603:10a6:208:194::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.11; Tue, 19 Jan
- 2021 04:08:23 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::bda3:e1f0:3c08:b357]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::bda3:e1f0:3c08:b357%6]) with mapi id 15.20.3763.014; Tue, 19 Jan 2021
- 04:08:23 +0000
-Date:   Tue, 19 Jan 2021 09:38:10 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux.cj" <linux.cj@gmail.com>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [net-next PATCH v3 14/15] net: phylink: Refactor
- phylink_of_phy_connect()
-Message-ID: <20210119040810.GB19428@lsv03152.swis.in-blr01.nxp.com>
-References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
- <20210112134054.342-15-calvin.johnson@oss.nxp.com>
- <CAHp75VdAB=k10oLHbYEekbQAhOqnoVWHxN-gNW7zcayZxv0M7Q@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdAB=k10oLHbYEekbQAhOqnoVWHxN-gNW7zcayZxv0M7Q@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR06CA0150.apcprd06.prod.outlook.com
- (2603:1096:1:1f::28) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S1726841AbhASGX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jan 2021 01:23:56 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:50596 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbhASGUd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jan 2021 01:20:33 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2CA884FB;
+        Tue, 19 Jan 2021 07:19:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1611037180;
+        bh=IYpSSFS5uWQHDE9xBeG8TUITMXIREX1vOTs+lDKH2fY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fCQHz1mqiFog/n+vu2z9TTuTmUnhIkZZ7adowo6pzDyODOnLrel4VCyQxtfcU3700
+         YfriRj5RuUjTvCY1P8EccHorUmMjSv9LYDQZR84aIiTRkCjrcMMwVwF9pk+HOTyeXc
+         j6cJlKhTecsiF6FZlzwuxb77uUABz+kE6ydGhLPo=
+Date:   Tue, 19 Jan 2021 08:19:23 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org,
+        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        hdegoede@redhat.com, mgross@linux.intel.com,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        sakari.ailus@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH v2 6/7] platform: x86: Add intel_skl_int3472 driver
+Message-ID: <YAZ5648kEmCuobdj@pendragon.ideasonboard.com>
+References: <20210118003428.568892-1-djrscally@gmail.com>
+ <20210118003428.568892-7-djrscally@gmail.com>
+ <YAVRqWeUsLjvU62P@pendragon.ideasonboard.com>
+ <3872041c-1a4a-2508-d325-80242598d55e@gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0150.apcprd06.prod.outlook.com (2603:1096:1:1f::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10 via Frontend Transport; Tue, 19 Jan 2021 04:08:17 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 69c67499-80d8-42ad-a793-08d8bc2fdcb5
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7155:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB715507377F57D25C5DD8C88AD2A30@AM0PR04MB7155.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9NfJr/KNyF8N/g/tsf7cIqntBVvg918IkzUpMkB/Gp5Nnnaki9KQ960Pg7YkYvX0DV1uSC2Gza08yowSqE1b+9efdszgCkIhjawV7NqwYb5fsLpPzVbQw3s8qTulEYDEqrS6DjUVDgn4Xx2NXJ4OJ5/2Kw0YxlDm9K/UWcVjcM3LjZria+VcPlhUFv/5zvMeoKsRvi0CEhJ2fnlq/dZD//O0GFKQree4Jqwjjnj/yKhApURmenG6m97KjUVt1Aebt9Mftf+x6Q1jhNn7jBqfD7pWNQ3dDnW/xx4SmRkrNl9yV5VZqpHReI1ar8gqwMTI0JHQpoHqYU9Ek7AaoEJwFAzKPKYjgNXhwvCU7nCRMe153WnKwVsPBZQfVRUSM9+XXxWLCqi7RPmkAEUcLEqOFAc7/rxpEHpqisTDq2NSw53K9NPKnUpph7O590/ebbUgapYxvYMEzYvXty4w3rm/woCuagMIicwo7PVPMbzFpTUrw5i09F33CqyTa99EWGc8BAvpQqMiikPIQ93Yu0kmHIbtEZ48GssdRweG9ZDeFEtStxDNuFHTX05vwQyQGcFm07DQPXdpYOWzZNRUP5nxvw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(376002)(396003)(39860400002)(136003)(66476007)(4326008)(66946007)(8936002)(1006002)(956004)(6666004)(55236004)(186003)(478600001)(33656002)(1076003)(66556008)(16526019)(86362001)(2906002)(7696005)(6506007)(53546011)(54906003)(8676002)(26005)(6916009)(52116002)(44832011)(5660300002)(4744005)(9686003)(7416002)(316002)(55016002)(110426009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?h9hyY8vVPYBmUJip+H231q/K0pv6kgpqR0pW+MD6jrulIp7q3P6vJYblM76y?=
- =?us-ascii?Q?a9MdSuC8Mxf3fCg0yB4lbsPS44H4SvqrwcoJB3DwsHnqM7ybENfZriNrlVSg?=
- =?us-ascii?Q?NQcTN5pOttwvDFx9sxQNQk28GFuRMGek3OX3WZIiX71HVI6pc5eCOGZAdI+K?=
- =?us-ascii?Q?vf6JnEa47nwLH5pI2RLw5xADsgPkSa5ewA3PrEyi3AiTUgDV7CgUR4CaWFjc?=
- =?us-ascii?Q?5EE8jcwjJV8ZnMkqwjumiDxQKnE3d3eYnuz55KiyLpMuav714KG/+x0y7EM7?=
- =?us-ascii?Q?Hr5ZKbJvtVWhLpEm2753Ba55fxHwatulMdo6P7vcTGJzD0c4sifuUHvB9xPX?=
- =?us-ascii?Q?uC82FM55ccbw3D7IUTpAfCExLweaZ4YX+nNk9cL3Zp/EmARBNr6+MGoOFIBB?=
- =?us-ascii?Q?CT/ZEHGHqpP9y7Ud3yumoNf/D6JciiHgLlMe0lwUac+RZJNcKiXK6l2H8NK0?=
- =?us-ascii?Q?PBhGqL+hpNX0mypeDliWjfeHi9lWVzBKofK35USad6ciAGmJZdlRoT1roDBj?=
- =?us-ascii?Q?yFkgwA0LVJx34losGjSUo24rPxw52Vc/uafUmxRrspXV79U312VDa7Z2PHtC?=
- =?us-ascii?Q?svrCkko0vGZw8D/z3YbrxyFudjUj7U0yOyUu5P7sKZhwKsoaejLZyv1lkev+?=
- =?us-ascii?Q?AD2J8OvhThhAQDPlMJfu415fUOEi+Y7SArCk5wQoJ4AkZVV+0eFX5H2xIaKw?=
- =?us-ascii?Q?0HW+fJX9EoE1Sm4HObGbWFI7CLsAvkubufxxXRUQ/a894POAY4WLk2v0PF0A?=
- =?us-ascii?Q?hJSZXXp9ZXW6cmYur+8GlQqdm8G0uKhBr4+drYBXderlQWdjxgZ0wWX4wuBc?=
- =?us-ascii?Q?4pcjIElKNpmvD7Jl2kY3QBLqGI2tb5CRiVCqAwaAmBpOBTQIPwK6jROOE5C7?=
- =?us-ascii?Q?5glD4NOCY3rNj/7nA2AYZwx4S9XNxOXr/aneOmxKvV3VHA34/0dDC2Izryk1?=
- =?us-ascii?Q?JFKvT2Wm4NVwmYSBvfWuCPuxjSsnhLUK4gfMlneU2TFczDrSQ+q8DIBHKKNO?=
- =?us-ascii?Q?eR1d?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69c67499-80d8-42ad-a793-08d8bc2fdcb5
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2021 04:08:23.0619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VUIr11w1FfhjtLFBof2XHPxTYc3auDwLLFUT1Dk0C0QBjmLGW/uAxclfdIKm0fSnDbGLOoGvbyYu2k+7D8rSgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7155
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3872041c-1a4a-2508-d325-80242598d55e@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 12, 2021 at 05:57:01PM +0200, Andy Shevchenko wrote:
-> On Tue, Jan 12, 2021 at 3:43 PM Calvin Johnson
-> <calvin.johnson@oss.nxp.com> wrote:
-> >
-> > Refactor phylink_of_phy_connect() to use phylink_fwnode_phy_connect().
+Hi Daniel,
+
+On Mon, Jan 18, 2021 at 08:46:34PM +0000, Daniel Scally wrote:
+> Hi Laurent, thanks for the comments - really appreciate the detail.
 > 
-> Same Q as per previous patch. If it's indeed a bug in the existing
-> code, should be fixed in a separate patch
+> Some specific responses below but assume a general "will do" to
+> everything you mentioned otherwise...
+> 
+> On 18/01/2021 09:15, Laurent Pinchart wrote:
+> >> +	  PMIC) and one designed for Chrome OS.
+> > 
+> > How about expanding this a bit to explain what the INT3472 stands for ?
+> >
+> > 	  The INT3472 is an Intel camera power controller, a logical device
+> > 	  found on some Skylake-based systems that can map to different
+> > 	  hardware devices depending on the platform. On machines
+> > 	  designed for Chrome OS, it maps to a TPS68470 camera PMIC. On
+> > 	  machines designed for Windows, it maps to either a TP68470
+> > 	  camera PMIC, a uP6641Q sensor PMIC, or a set of discrete GPIOs
+> > 	  and power gates.
+> 
+> Yeah sure ok
+> 
+> >> This driver handles all three
+> >> +	  situations by discovering information it needs to discern them at
+> >> +	  runtime.
+> >> +
+> >> +	  If your device was designed for Chrome OS, this driver will provide
+> >> +	  an ACPI operation region, which must be available before any of the
+> >> +	  devices using this are probed. For this reason, you should select Y
+> >> +	  if your device was designed for ChromeOS. This option also configures
+> >> +	  the designware-i2c driver to be built-in, for the same reason.
+> > 
+> > Is the last sentence a leftover ?
+> 
+> Oops - it is, but it was supposed to remind me to double check that that
+> was still necessary. I'll take a look, thanks.
+> 
+> >> +
+> >> +#include "intel_skl_int3472_common.h"
+> >> +
+> >> +int skl_int3472_get_cldb_buffer(struct acpi_device *adev,
+> >> +				struct int3472_cldb *cldb)
+> >> +{
+> >> +	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> >> +	acpi_handle handle = adev->handle;
+> >> +	union acpi_object *obj;
+> >> +	acpi_status status;
+> >> +	int ret = 0;
+> >> +
+> >> +	status = acpi_evaluate_object(handle, "CLDB", NULL, &buffer);
+> >> +	if (ACPI_FAILURE(status))
+> >> +		return -ENODEV;
+> >> +
+> >> +	obj = buffer.pointer;
+> >> +	if (!obj) {
+> >> +		dev_err(&adev->dev, "ACPI device has no CLDB object\n");
+> > 
+> > Is this the code path that is taken on Chrome OS ? If so an error
+> > message isn't appropriate. I'd drop this message, and instead add an
+> > error message in the discrete PMIC code.
+> 
+> Ah yes of course, thanks, I'll move the error message.
+> 
+> >> +
+> >> +	unsigned int n_gpios; /* how many GPIOs have we seen */
+> >> +
+> >> +	struct int3472_gpio_regulator regulator;
+> >> +	struct int3472_gpio_clock clock;
+> > 
+> > You don't necessarily need to define separate structures for this, you
+> > could also write
+> >
+> > 	struct {
+> > 		char regulator_name[GPIO_REGULATOR_NAME_LENGTH];
+> > 		char supply_name[GPIO_REGULATOR_SUPPLY_NAME_LENGTH];
+> > 		struct gpio_desc *gpio;
+> > 		struct regulator_dev *rdev;
+> > 		struct regulator_desc rdesc;
+> > 	} regulator;
+> >
+> > 	struct {
+> > 		struct clk *clk;
+> > 		struct clk_hw clk_hw;
+> > 		struct clk_lookup *cl;
+> > 		struct gpio_desc *gpio;
+> > 	} clock;
+> >
+> > It's entirely up to you.
+> 
+> Ooh yeah I like that more, thanks very much.
+> 
+> >> +/* 79234640-9e10-4fea-a5c1-b5aa8b19756f */
+> >> +static const guid_t int3472_gpio_guid =
+> >> +	GUID_INIT(0x79234640, 0x9e10, 0x4fea,
+> >> +		  0xa5, 0xc1, 0xb5, 0xaa, 0x8b, 0x19, 0x75, 0x6f);
+> >> +
+> >> +/* 822ace8f-2814-4174-a56b-5f029fe079ee */
+> >> +static const guid_t cio2_sensor_module_guid =
+> >> +	GUID_INIT(0x822ace8f, 0x2814, 0x4174,
+> >> +		  0xa5, 0x6b, 0x5f, 0x02, 0x9f, 0xe0, 0x79, 0xee);
+> > 
+> > A comment that explains what those DSM functions do would be useful for
+> > reference. It has taken lots of time to figure it out, let's spare the
+> > pain to the next person who tries to understand this :-)
+> 
+> Hah - good point, well made. I'll explain what they're for then.
+> 
+> >> +static int skl_int3472_clk_enable(struct clk_hw *hw)
+> >> +{
+> >> +	struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+> >> +
+> >> +	gpiod_set_value(clk->gpio, 1);
+> > 
+> > The clock enable() and disable() methods are not supposed to sleep,
+> > while setting a GPIO value may sleep in the general case. Should this be
+> > moved to skl_int3472_clk_prepare() ? Same for skl_int3472_clk_disable()
+> > and skl_int3472_clk_unprepare().
+> 
+> I was under the assumption the difference between gpiod_set_value() and
+> gpiod_set_value_cansleep() was that gpiod_set_value() _can't_ sleep, but
+> actually reading the function's comments it seems it will just complain
+> if it turns out it can sleep:
+> 
+> * This function can be called from contexts where we cannot sleep, and will
+> * complain if the GPIO chip functions potentially sleep. It doesn't
+> complain, on either of my devices, but I guess that can't be guaranteed
+> for _every_ device, so these calls probably are safer in (un)prepare() yes.
 
-Sorry, I didn't get what you meant. This patch just refactors
-phylink_of_phy_connect(). There is no bug fixing.
+If we could guarantee that the GPIOs are connected to the SoC, we could
+keep using the code above, as there should be no need to sleep. The
+question is whether this can be guaranteed or not. It's true that I
+would be surprised if the GPIOs were connected, for instance, to an I2C
+GPIO expander..
 
-Regards
-Calvin
+> >> +			}
+> >> +
+> >> +			i++;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	if (!func)
+> >> +		return 0;
+> > 
+> > I initially thought this wasn't right, as if no entry was found in the
+> > mapping table, func would still have its non-NULL value as passed to
+> > this function. I then realized that you're checking if the match that
+> > was found is NULL. A comment to explain this would be useful.
+> 
+> Yep ok - I actually had one and decided it was superfluous and removed
+> it - my bad.
+> 
+> >> +
+> >> +	status = acpi_get_handle(NULL, path, &handle);
+> >> +	if (ACPI_FAILURE(status))
+> >> +		return -EINVAL;
+> >> +
+> >> +	ret = acpi_bus_get_device(handle, &adev);
+> >> +	if (ret)
+> >> +		return -ENODEV;
+> >> +
+> >> +	table_entry = (struct gpiod_lookup)GPIO_LOOKUP_IDX(acpi_dev_name(adev),
+> >> +							   ares->data.gpio.pin_table[0],
+> >> +							   func, 0, polarity);
+> > 
+> > I wonder if
+> >
+> > 	table_entry.key = acpi_dev_name(adev);
+> > 	table_entry.chip_hwnum = ares->data.gpio.pin_table[0];
+> > 	table_entry.con_id = func;
+> > 	table_entry.idx = 0;
+> > 	table_entry.flags = polarity;
+> >
+> > (with struct gpiod_lookup table_entry = { }; above) would be more
+> > readable. Up to you.
+> >
+> >> +
+> >> +	memcpy(&int3472->gpios.table[int3472->n_sensor_gpios], &table_entry,
+> >> +	       sizeof(table_entry));
+> > 
+> > Ah, or maybe
+> >
+> > 	struct gpio_lookup *table_entry;
+> >
+> > 	table_entry = &int3472->gpios.table[int3472->n_sensor_gpios];
+> > 	table_entry->key = acpi_dev_name(adev);
+> > 	table_entry->chip_hwnum = ares->data.gpio.pin_table[0];
+> > 	table_entry->con_id = func;
+> > 	table_entry->idx = 0;
+> > 	table_entry->flags = polarity;
+> >
+> > (no need to memset() to 0 first as the whole structure has been
+> > allocated with kzalloc()).
+> 
+> Yeah you're right, this looks much nicer - thanks.
+> 
+> >> +	int ret = 0;
+> >> +
+> >> +	init.name = kasprintf(GFP_KERNEL, "%s-clk",
+> >> +			      acpi_dev_name(int3472->adev));
+> > 
+> > You need to check for NULL and return -ENOMEM.
+> 
+> Oops, of course, thanks
+> 
+> >> +		goto err_unregister_clk;
+> > 
+> > If this fails, you will end up calling clk_unregister() and
+> > clkdev_drop() in skl_int3472_discrete_remove(). You should replace the
+> > check in the remove function with
+> >
+> > 	if (!int3472->clock.cl) {
+> 
+> You're right, good spot, thank you.
+> 
+> >> +		dev_err(&int3472->pdev->dev, "No sensor module config\n");
+> >> +		return PTR_ERR(sensor_config);
+> >> +	}
+> > 
+> > Would it make sense to call this in skl_int3472_discrete_probe() or
+> > skl_int3472_parse_crs() and cache the config pointer ?
+> 
+> Yes, probably actually, and then the GPIO mapping function can just
+> check for its presence.
+> 
+> >> +	init_data.constraints.valid_ops_mask = REGULATOR_CHANGE_STATUS;
+> >> +	init_data.num_consumer_supplies = 1;
+> >> +	init_data.consumer_supplies = &sensor_config->supply_map;
+> >> +
+> >> +	snprintf(int3472->regulator.regulator_name,
+> >> +		 GPIO_REGULATOR_NAME_LENGTH, "int3472-discrete-regulator");
+> > 
+> > s/GPIO_REGULATOR_NAME_LENGTH/sizeof(int3472->regulator.regulator_name)/
+> >
+> > Do regulator names need to be unique ? If so you may have a problem if a
+> > platform has two discrete INT3472.
+> 
+> Unlike clocks, the regulator framework doesn't shout at you when you do
+> this, but I agree it's suboptimal at the very least, I'll set it to
+> ..."%s-regulator", acpi_dev_name(int3472->adev)... as with the clock.
+> 
+> >> +	case INT3472_GPIO_TYPE_PRIVACY_LED:
+> >> +		ret = skl_int3472_map_gpio_to_sensor(int3472, ares,
+> >> +						     "indicator-led",
+> >> +						     GPIO_ACTIVE_HIGH);
+> > 
+> > Mapping the indicator LED to the sensor isn't great, as all sensor
+> > drivers would then need to handle it. Could it be handled in the
+> > regulator instead, so that it would be turned on automatically when the
+> > sensor is powered up ? Another option, more complicated, would be to
+> > handle it in the CIO2 driver (but I'm not sure how we would map it).
+> 
+> Not with the regulator, because it turns out only the 0x0b pin is one of
+> those and those appear on very few devices in scope, so it wouldn't be
+> called on a Surface Book 2 for example. Perhaps as part of clock
+> prepare/enable? I don't much like the idea of it running in the CIO2
+> driver to be honest, feels a bit out of place.
+
+The clock is another option, but could there be platforms where the
+clock GPIO isn't present ?
+
+Another option would be to let userspace handle that GPIO, but we then
+need to convey it to userspace.
+
+> >> +
+> >> +	if (int3472->gpios_mapped)
+> >> +		gpiod_remove_lookup_table(&int3472->gpios);
+> > 
+> > You could avoid the need for the gpios_mapped field by checking for
+> >
+> > 	if (int3472->gpios.list.next)
+> >
+> > Up to you.
+> 
+> Thank you! I was scratching my head trying to figure out a better way of
+> doing that.
+
+-- 
+Regards,
+
+Laurent Pinchart
