@@ -2,104 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D6D2FD905
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 20:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A092FD93E
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 20:15:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392463AbhATTDY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jan 2021 14:03:24 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:43302 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392380AbhATTDV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 14:03:21 -0500
-Received: from 89-64-80-175.dynamic.chello.pl (89.64.80.175) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id 37c59415165b22d5; Wed, 20 Jan 2021 20:02:10 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v1 6/6] ACPI: bus: Drop ACPI_BUS_COMPONENT which is not used any more
-Date:   Wed, 20 Jan 2021 20:01:18 +0100
-Message-ID: <1953409.1HvooF2U0O@kreacher>
-In-Reply-To: <2809410.8bz27usjlQ@kreacher>
-References: <2809410.8bz27usjlQ@kreacher>
+        id S2392192AbhATTOM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jan 2021 14:14:12 -0500
+Received: from mail-wm1-f42.google.com ([209.85.128.42]:38206 "EHLO
+        mail-wm1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388578AbhATTNo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 14:13:44 -0500
+Received: by mail-wm1-f42.google.com with SMTP id y187so3807021wmd.3;
+        Wed, 20 Jan 2021 11:13:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MBnGinpLx/odbS3fMalb2PzzBTxTBoYrscYbO4dcTx4=;
+        b=jQK8KsomxkfnpfpF06mYjwHfydEhZZRMxmpaztn9NkUx54MfEK9fn9wocyoa1BbVzt
+         YW1La+uX/oiAQCLmr5ZpNZTpmySgblUJyuYpmkTnGe4aPM2U2mvXFgElHDqlyct2V45U
+         cjMAPCbch1jICD3HqdjgveCuw+VxZ+YxfgZo55fPPxszNNPJwZtotvt5nwbZCWAde9Ol
+         hx8RpgaMedSXfmYUbMhgGob4A13g177bHE8J8Vw6twC2ooBArPUfeQChlazn/3dZxXSz
+         VitUO0K8ej/iG/7nelG33ZTHKLN1cEJmqXjoW97xnM47laEPY5Oi+uEBprMlFZL526k/
+         sOEg==
+X-Gm-Message-State: AOAM5307vz7dJHGgOy4N5jjq62h1jE3cNC+rwzPAQOZwZb/yo9YQe9yy
+        ot5MPwJ1miARJQIO0jJvUMblkqNS6zD2489tiq8=
+X-Google-Smtp-Source: ABdhPJw8c6qlkHR9iOkx8qE2vXeyMZs0yuZj2aqvZqkBYp8IXyAbHDidFzxsbIm2t+aeBTe9BpPR7HOZC2oOs1VO7wQ=
+X-Received: by 2002:a1c:a593:: with SMTP id o141mr5723964wme.92.1611169982589;
+ Wed, 20 Jan 2021 11:13:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
+ <20210112134054.342-10-calvin.johnson@oss.nxp.com> <CAHp75VdyPWD-cM5Q_9k8yRAutMSjm-3kwE0pQT3+ztKGwcU+4A@mail.gmail.com>
+ <CAJZ5v0hic-Yf74Rn06kui4z+KZBES_uiH-pRmmRcFcYjuDZ=CA@mail.gmail.com> <CAHp75Vc=b8tXmv7yussXNVKPOovmpKAB1b9cWSAw5rpKDcvLiQ@mail.gmail.com>
+In-Reply-To: <CAHp75Vc=b8tXmv7yussXNVKPOovmpKAB1b9cWSAw5rpKDcvLiQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 20 Jan 2021 20:12:26 +0100
+Message-ID: <CAJZ5v0ivSmgAbfH9JhGHRp9411F14XtrimESHftZGMLYKLfKmQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 09/15] device property: Introduce fwnode_get_id()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Grant Likely <grant.likely@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Saravana Kannan <saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Jan 20, 2021 at 7:44 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Wed, Jan 20, 2021 at 8:18 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > On Tue, Jan 12, 2021 at 4:47 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Tue, Jan 12, 2021 at 3:42 PM Calvin Johnson
+> > > <calvin.johnson@oss.nxp.com> wrote:
+>
+> ...
+>
+> > > > +int fwnode_get_id(struct fwnode_handle *fwnode, u32 *id)
+> > > > +{
+> > > > +#ifdef CONFIG_ACPI
+> > > > +       unsigned long long adr;
+> > > > +       acpi_status status;
+> > > > +#endif
+> > > > +       int ret;
+> > > > +
+> > > > +       ret = fwnode_property_read_u32(fwnode, "reg", id);
+> > > > +       if (!(ret && is_acpi_node(fwnode)))
+> > > > +               return ret;
+> > > > +
+> > > > +#ifdef CONFIG_ACPI
+> > > > +       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(fwnode),
+> > > > +                                      METHOD_NAME__ADR, NULL, &adr);
+> > > > +       if (ACPI_FAILURE(status))
+> > > > +               return -EINVAL;
+> > > > +       *id = (u32)adr;
+> > >
+> > > Shouldn't be
+> > >
+> > >        return 0;
+> > > #else
+> > >        return -EINVAL;
+> > > #endif
+> > >
+> > > ?
+> > >
+> > > Yes, it's a theoretical case when is_acpi_node() returns true when
+> > > CONFIG_ACPI=n.
+> >
+> > How so?  is_acpi_node() is defined as a static inline returning false then.
+>
+> I understand that, that's why it's pure theoretical when, for example,
+> the semantics is changed. But I believe it's unlucky to happen.
 
-After dropping all of the code using ACPI_BUS_COMPONENT drop it
-too and modify the example in the documentation using it.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- Documentation/firmware-guide/acpi/debug.rst |   13 ++++++-------
- drivers/acpi/sysfs.c                        |    1 -
- include/acpi/acpi_drivers.h                 |    1 -
- 3 files changed, 6 insertions(+), 9 deletions(-)
-
-Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
-+++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
-@@ -52,7 +52,6 @@ shows the supported mask values, current
-     ACPI_CA_DISASSEMBLER            0x00000800
-     ACPI_COMPILER                   0x00001000
-     ACPI_TOOLS                      0x00002000
--    ACPI_BUS_COMPONENT              0x00010000
-     ACPI_AC_COMPONENT               0x00020000
-     ACPI_BATTERY_COMPONENT          0x00040000
-     ACPI_BUTTON_COMPONENT           0x00080000
-@@ -117,15 +116,15 @@ currently these::
- Examples
- ========
- 
--For example, drivers/acpi/bus.c contains this::
-+For example, drivers/acpi/acpica/evxfevnt.c contains this::
- 
--    #define _COMPONENT              ACPI_BUS_COMPONENT
-+    #define _COMPONENT          ACPI_EVENTS
-     ...
--    ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Device insertion detected\n"));
-+    ACPI_DEBUG_PRINT((ACPI_DB_INIT, "ACPI mode disabled\n"));
- 
--To turn on this message, set the ACPI_BUS_COMPONENT bit in acpi.debug_layer
--and the ACPI_LV_INFO bit in acpi.debug_level.  (The ACPI_DEBUG_PRINT
--statement uses ACPI_DB_INFO, which is macro based on the ACPI_LV_INFO
-+To turn on this message, set the ACPI_EVENTS bit in acpi.debug_layer
-+and the ACPI_LV_INIT bit in acpi.debug_level.  (The ACPI_DEBUG_PRINT
-+statement uses ACPI_DB_INIT, which is a macro based on the ACPI_LV_INIT
- definition.)
- 
- Enable all AML "Debug" output (stores to the Debug object while interpreting
-Index: linux-pm/drivers/acpi/sysfs.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sysfs.c
-+++ linux-pm/drivers/acpi/sysfs.c
-@@ -52,7 +52,6 @@ static const struct acpi_dlayer acpi_deb
- 	ACPI_DEBUG_INIT(ACPI_COMPILER),
- 	ACPI_DEBUG_INIT(ACPI_TOOLS),
- 
--	ACPI_DEBUG_INIT(ACPI_BUS_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_AC_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_BATTERY_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_BUTTON_COMPONENT),
-Index: linux-pm/include/acpi/acpi_drivers.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_drivers.h
-+++ linux-pm/include/acpi/acpi_drivers.h
-@@ -15,7 +15,6 @@
-  * Please update drivers/acpi/debug.c and Documentation/firmware-guide/acpi/debug.rst
-  * if you add to this list.
-  */
--#define ACPI_BUS_COMPONENT		0x00010000
- #define ACPI_AC_COMPONENT		0x00020000
- #define ACPI_BATTERY_COMPONENT		0x00040000
- #define ACPI_BUTTON_COMPONENT		0x00080000
-
-
-
+Changing the definition of it for CONFIG_ACPI=n would be a regression
+given the current usage of it.
