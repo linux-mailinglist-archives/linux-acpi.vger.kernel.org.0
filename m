@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD372FD906
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 20:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DF082FD91A
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 20:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392484AbhATTD2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jan 2021 14:03:28 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:52026 "EHLO
+        id S1729736AbhATTGy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jan 2021 14:06:54 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:52034 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392425AbhATTDY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 14:03:24 -0500
+        with ESMTP id S2392433AbhATTD0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 14:03:26 -0500
 Received: from 89-64-80-175.dynamic.chello.pl (89.64.80.175) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id 7fd8987296b51fa0; Wed, 20 Jan 2021 20:02:16 +0100
+ id 1695341e921a8916; Wed, 20 Jan 2021 20:02:15 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v1 1/6] ACPI: power: Clean up printing messages
-Date:   Wed, 20 Jan 2021 19:57:03 +0100
-Message-ID: <2085818.bEvWYRANqJ@kreacher>
+Subject: [PATCH v1 2/6] ACPI: PM: Clean up printing messages
+Date:   Wed, 20 Jan 2021 19:58:18 +0100
+Message-ID: <1984297.f6DJSeQy12@kreacher>
 In-Reply-To: <2809410.8bz27usjlQ@kreacher>
 References: <2809410.8bz27usjlQ@kreacher>
 MIME-Version: 1.0
@@ -32,154 +32,114 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Replace all of the ACPI_DEBUG_PRINT() instances in power.c with
-acpi_handle_debug() or pr_debug(), depending on the context,
-drop the _COMPONENT and ACPI_MODULE_NAME() definitions that
-are not used any more, and replace the direct invocations of
-printk() in there with acpi_handle_info() or pr_info(), depending
-on the context.
+Replace the remaining ACPI_DEBUG_PRINT() instances in device_pm.c
+with dev_dbg() invocations, drop the _COMPONENT and ACPI_MODULE_NAME()
+definitions that are not used any more, and drop the no longer needed
+ACPI_POWER_COMPONENT definition from the headers and documentation.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/power.c |   44 +++++++++++++++-----------------------------
- 1 file changed, 15 insertions(+), 29 deletions(-)
+ Documentation/firmware-guide/acpi/debug.rst |    1 -
+ drivers/acpi/device_pm.c                    |   20 ++++++++------------
+ drivers/acpi/sysfs.c                        |    1 -
+ include/acpi/acpi_drivers.h                 |    1 -
+ 4 files changed, 8 insertions(+), 15 deletions(-)
 
-Index: linux-pm/drivers/acpi/power.c
+Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
 ===================================================================
---- linux-pm.orig/drivers/acpi/power.c
-+++ linux-pm/drivers/acpi/power.c
-@@ -21,6 +21,8 @@
-  * may be shared by multiple devices.
+--- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
++++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
+@@ -59,7 +59,6 @@ shows the supported mask values, current
+     ACPI_SBS_COMPONENT              0x00100000
+     ACPI_FAN_COMPONENT              0x00200000
+     ACPI_PCI_COMPONENT              0x00400000
+-    ACPI_POWER_COMPONENT            0x00800000
+     ACPI_CONTAINER_COMPONENT        0x01000000
+     ACPI_SYSTEM_COMPONENT           0x02000000
+     ACPI_THERMAL_COMPONENT          0x04000000
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -10,6 +10,8 @@
+  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   */
  
 +#define pr_fmt(fmt) "ACPI: PM: " fmt
 +
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -32,8 +34,6 @@
- #include "sleep.h"
+ #include <linux/acpi.h>
+ #include <linux/export.h>
+ #include <linux/mutex.h>
+@@ -20,9 +22,6 @@
+ 
  #include "internal.h"
  
--#define _COMPONENT			ACPI_POWER_COMPONENT
--ACPI_MODULE_NAME("power");
- #define ACPI_POWER_CLASS		"power_resource"
- #define ACPI_POWER_DEVICE_NAME		"Power Resource"
- #define ACPI_POWER_RESOURCE_STATE_OFF	0x00
-@@ -181,9 +181,6 @@ static int acpi_power_get_state(acpi_han
- {
- 	acpi_status status = AE_OK;
- 	unsigned long long sta = 0;
--	char node_name[5];
--	struct acpi_buffer buffer = { sizeof(node_name), node_name };
+-#define _COMPONENT	ACPI_POWER_COMPONENT
+-ACPI_MODULE_NAME("device_pm");
 -
+ /**
+  * acpi_power_state_string - String representation of ACPI device power state.
+  * @state: ACPI device power state to return the string representation of.
+@@ -130,8 +129,8 @@ int acpi_device_get_power(struct acpi_de
+ 	*state = result;
  
- 	if (!handle || !state)
- 		return -EINVAL;
-@@ -195,11 +192,8 @@ static int acpi_power_get_state(acpi_han
- 	*state = (sta & 0x01)?ACPI_POWER_RESOURCE_STATE_ON:
- 			      ACPI_POWER_RESOURCE_STATE_OFF;
- 
--	acpi_get_name(handle, ACPI_SINGLE_NAME, &buffer);
--
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Resource [%s] is %s\n",
--			  node_name,
--				*state ? "on" : "off"));
-+	acpi_handle_debug(handle, "Power resource is %s\n",
-+			  *state ? "on" : "off");
+  out:
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Device [%s] power state is %s\n",
+-			  device->pnp.bus_id, acpi_power_state_string(*state)));
++	dev_dbg(&device->dev, "Device power state is %s\n",
++		acpi_power_state_string(*state));
  
  	return 0;
  }
-@@ -229,8 +223,7 @@ static int acpi_power_get_list_state(str
- 			break;
- 	}
+@@ -174,9 +173,8 @@ int acpi_device_set_power(struct acpi_de
  
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Resource list is %s\n",
--			  cur_state ? "on" : "off"));
-+	pr_debug("Power resource list is %s\n", cur_state ? "on" : "off");
- 
- 	*state = cur_state;
- 	return 0;
-@@ -357,8 +350,7 @@ static int __acpi_power_on(struct acpi_p
- 	if (ACPI_FAILURE(status))
- 		return -ENODEV;
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Power resource [%s] turned on\n",
--			  resource->name));
-+	pr_debug("Power resource [%s] turned on\n", resource->name);
- 
- 	/*
- 	 * If there are other dependents on this power resource we need to
-@@ -383,9 +375,7 @@ static int acpi_power_on_unlocked(struct
- 	int result = 0;
- 
- 	if (resource->ref_count++) {
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Power resource [%s] already on\n",
--				  resource->name));
-+		pr_debug("Power resource [%s] already on\n", resource->name);
- 	} else {
- 		result = __acpi_power_on(resource);
- 		if (result)
-@@ -413,8 +403,8 @@ static int __acpi_power_off(struct acpi_
- 	if (ACPI_FAILURE(status))
- 		return -ENODEV;
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Power resource [%s] turned off\n",
--			  resource->name));
-+	pr_debug("Power resource [%s] turned off\n", resource->name);
-+
- 	return 0;
- }
- 
-@@ -423,16 +413,12 @@ static int acpi_power_off_unlocked(struc
- 	int result = 0;
- 
- 	if (!resource->ref_count) {
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Power resource [%s] already off\n",
--				  resource->name));
-+		pr_debug("Power resource [%s] already off\n", resource->name);
+ 	/* There is a special case for D0 addressed below. */
+ 	if (state > ACPI_STATE_D0 && state == device->power.state) {
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Device [%s] already in %s\n",
+-				  device->pnp.bus_id,
+-				  acpi_power_state_string(state)));
++		dev_dbg(&device->dev, "Device already in %s\n",
++			acpi_power_state_string(state));
  		return 0;
  	}
  
- 	if (--resource->ref_count) {
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Power resource [%s] still in use\n",
--				  resource->name));
-+		pr_debug("Power resource [%s] still in use\n", resource->name);
+@@ -276,10 +274,8 @@ int acpi_device_set_power(struct acpi_de
+ 			 acpi_power_state_string(target_state));
  	} else {
- 		result = __acpi_power_off(resource);
- 		if (result)
-@@ -672,7 +658,7 @@ int acpi_device_sleep_wake(struct acpi_d
- 	if (ACPI_SUCCESS(status)) {
- 		return 0;
- 	} else if (status != AE_NOT_FOUND) {
--		printk(KERN_ERR PREFIX "_DSW execution failed\n");
-+		acpi_handle_info(dev->handle, "_DSW execution failed\n");
- 		dev->wakeup.flags.valid = 0;
- 		return -ENODEV;
+ 		device->power.state = target_state;
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-				  "Device [%s] transitioned to %s\n",
+-				  device->pnp.bus_id,
+-				  acpi_power_state_string(target_state)));
++		dev_dbg(&device->dev, "Power state changed to %s\n",
++			acpi_power_state_string(target_state));
  	}
-@@ -680,7 +666,7 @@ int acpi_device_sleep_wake(struct acpi_d
- 	/* Execute _PSW */
- 	status = acpi_execute_simple_method(dev->handle, "_PSW", enable);
- 	if (ACPI_FAILURE(status) && (status != AE_NOT_FOUND)) {
--		printk(KERN_ERR PREFIX "_PSW execution failed\n");
-+		acpi_handle_info(dev->handle, "_PSW execution failed\n");
- 		dev->wakeup.flags.valid = 0;
- 		return -ENODEV;
- 	}
-@@ -960,8 +946,8 @@ int acpi_add_power_resource(acpi_handle
- 	if (result)
- 		goto err;
  
--	printk(KERN_INFO PREFIX "%s [%s] (%s)\n", acpi_device_name(device),
--	       acpi_device_bid(device), state ? "on" : "off");
-+	pr_info("%s [%s] (%s)\n", acpi_device_name(device),
-+		acpi_device_bid(device), state ? "on" : "off");
- 
- 	device->flags.match_driver = true;
- 	result = acpi_device_add(device, acpi_release_power_resource);
+ 	return result;
+Index: linux-pm/drivers/acpi/sysfs.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sysfs.c
++++ linux-pm/drivers/acpi/sysfs.c
+@@ -59,7 +59,6 @@ static const struct acpi_dlayer acpi_deb
+ 	ACPI_DEBUG_INIT(ACPI_SBS_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_FAN_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_PCI_COMPONENT),
+-	ACPI_DEBUG_INIT(ACPI_POWER_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_CONTAINER_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
+Index: linux-pm/include/acpi/acpi_drivers.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_drivers.h
++++ linux-pm/include/acpi/acpi_drivers.h
+@@ -22,7 +22,6 @@
+ #define ACPI_SBS_COMPONENT		0x00100000
+ #define ACPI_FAN_COMPONENT		0x00200000
+ #define ACPI_PCI_COMPONENT		0x00400000
+-#define ACPI_POWER_COMPONENT		0x00800000
+ #define ACPI_CONTAINER_COMPONENT	0x01000000
+ #define ACPI_SYSTEM_COMPONENT		0x02000000
+ #define ACPI_THERMAL_COMPONENT		0x04000000
 
 
 
