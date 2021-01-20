@@ -2,168 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 341EC2FDB26
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 21:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 317D92FDC95
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 23:30:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732721AbhATUs1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jan 2021 15:48:27 -0500
-Received: from mga17.intel.com ([192.55.52.151]:60530 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731514AbhATUsU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Jan 2021 15:48:20 -0500
-IronPort-SDR: 1rU1P64yCiKAZuw5iv+Lv31L30Myu6ihxmYy8K/abKr9cP4Hg1ggVa0m2emtK2y4Di7lsy/caL
- 1EYmG3b23nDQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9870"; a="158950365"
-X-IronPort-AV: E=Sophos;i="5.79,362,1602572400"; 
-   d="scan'208";a="158950365"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2021 12:47:28 -0800
-IronPort-SDR: L/wl4gvZ7TdUoU8zWusXveudB72pqSFzK8Nfs/i5YpgujXfQRwJYLNxC7jdT2Q2FyyqoJIO0g8
- +oA8cmMfCEeA==
-X-IronPort-AV: E=Sophos;i="5.79,362,1602572400"; 
-   d="scan'208";a="366509663"
-Received: from djiang5-mobl1.amr.corp.intel.com (HELO [10.254.121.244]) ([10.254.121.244])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2021 12:47:26 -0800
-Subject: Re: [PATCH v9 05/10] uacce: Enable IOMMU_DEV_FEAT_IOPF
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>, joro@8bytes.org,
-        will@kernel.org
-Cc:     vivek.gautam@arm.com, guohanjun@huawei.com,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-acpi@vger.kernel.org, zhangfei.gao@linaro.org,
-        lenb@kernel.org, devicetree@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, eric.auger@redhat.com,
-        vdumpa@nvidia.com, robh+dt@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rjw@rjwysocki.net, shameerali.kolothum.thodi@huawei.com,
-        iommu@lists.linux-foundation.org, sudeep.holla@arm.com,
-        robin.murphy@arm.com, linux-accelerators@lists.ozlabs.org,
-        baolu.lu@linux.intel.com, Dan Williams <dan.j.williams@intel.com>,
-        "Pan, Jacob jun" <jacob.jun.pan@intel.com>
-References: <20210108145217.2254447-1-jean-philippe@linaro.org>
- <20210108145217.2254447-6-jean-philippe@linaro.org>
-From:   Dave Jiang <dave.jiang@intel.com>
-Message-ID: <e14f47bd-1b0c-1905-3bb7-62e1c5b096c7@intel.com>
-Date:   Wed, 20 Jan 2021 13:47:25 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        id S1726249AbhATWZv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jan 2021 17:25:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32154 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388961AbhATVzD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 Jan 2021 16:55:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611179617;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Qkj5MTn4PqAHlxRkP6Nm9pU0Bj533hacC35Vuu/cJN4=;
+        b=KcHG3w07j0ScqoeXuZKudu7CqT3Utu9r2HB6yOn4A2k8dh+bshslfp7GWX0RKtT1lPyFGY
+        oRJ0zrnkii8rwaB0aYvsSPUKW4iQbBLI+HotN5AsmDuul9GyOXvXiLNHgiugDiiM86uTjw
+        VD9Tm1Et1jbY4kJVI9IHdwemMSzSq8o=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-253-g8OH0cg5OwiPaRkCT-fZ9A-1; Wed, 20 Jan 2021 16:53:33 -0500
+X-MC-Unique: g8OH0cg5OwiPaRkCT-fZ9A-1
+Received: by mail-ej1-f72.google.com with SMTP id b18so14346ejz.6
+        for <linux-acpi@vger.kernel.org>; Wed, 20 Jan 2021 13:53:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Qkj5MTn4PqAHlxRkP6Nm9pU0Bj533hacC35Vuu/cJN4=;
+        b=UgepIgTK9jOk39WFkcIbCASxCVdXqGJDuj+ggVpZtU0P/aIE5XfdT3zWltNoZwnEg1
+         Skgk2NShX/5Hu1axa1begUW1nlp3rz0u4PiFA5lyN3KFrmu3MQEAioozpCi1a7M77cMm
+         hV61mY/XVRU0H/Md40TzhCcioS0+2uyNEvLsd63k5x6kh/Wn5Ztk0mgRtRWe+eP1KtZg
+         3QDTZ1Pge8/1a5VpRJKB4WemROfH0XLCpXWDFFNpbxfSC+58tkKFZaGUC6efRGJmbjwW
+         0qvhOoSo8zcd+rAlhUVlLNROjuF+yhhDCtx2bPlNYqMWXBBvpXwkG8YPi6OkRjop9JIE
+         DfgQ==
+X-Gm-Message-State: AOAM532QcT1ZSvpIVCZe0F36kNnZUTfNcPTC+OaeUlVHm03n5l19h1tG
+        4ufzGan7H6Ip0f/7PK/8dbi0+P235LueCa1F41bQL5SN0u5aPAMwMeBgM/l0TOQuhH0+jdv/uxy
+        LEZPNLUmx/wwRNbG9fGg5og==
+X-Received: by 2002:a17:907:96a2:: with SMTP id hd34mr7649436ejc.494.1611179611844;
+        Wed, 20 Jan 2021 13:53:31 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzI3lxgxiq/yVQUuFKTdqZdIG+IDBHyajT8lNqTn0fRfhXoFS1SjkyS+YoPp+jyqVVTfDye6w==
+X-Received: by 2002:a17:907:96a2:: with SMTP id hd34mr7649432ejc.494.1611179611693;
+        Wed, 20 Jan 2021 13:53:31 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id j18sm1410893ejv.18.2021.01.20.13.53.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Jan 2021 13:53:30 -0800 (PST)
+Subject: Re: [PATCH] ACPI: scan: Rearrange code related to
+ acpi_get_device_data()
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+References: <3445520.6OZ3MRzmT7@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <d6dcb0cc-ff6a-3b71-55a2-d965cd8a290c@redhat.com>
+Date:   Wed, 20 Jan 2021 22:53:30 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20210108145217.2254447-6-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3445520.6OZ3MRzmT7@kreacher>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
-On 1/8/2021 7:52 AM, Jean-Philippe Brucker wrote:
-> The IOPF (I/O Page Fault) feature is now enabled independently from the
-> SVA feature, because some IOPF implementations are device-specific and
-> do not require IOMMU support for PCIe PRI or Arm SMMU stall.
->
-> Enable IOPF unconditionally when enabling SVA for now. In the future, if
-> a device driver implementing a uacce interface doesn't need IOPF
-> support, it will need to tell the uacce module, for example with a new
-> flag.
->
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On 1/18/21 8:25 PM, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> There are two callers of acpi_get_device_data(), acpi_bus_get_device()
+> and acpi_bus_get_acpi_device(), but only one of them takes the int
+> return value into account.  Moreover, the latter knows that it passes
+> a valid return pointer to acpi_get_device_data() and it properly
+> clears that pointer upfront, so it doesn't need acpi_get_device_data()
+> to do that.
+> 
+> For this reason, rearrange acpi_get_device_data() to return a strct
+> acpi_device pointer instead of an int and adapt its callers to that.
+> 
+> While at it, rename acpi_get_device_data() to handle_to_device(),
+> because the old name does not really reflect the functionality
+> provided by that function.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Nice cleanup, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
 > ---
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Zhangfei Gao <zhangfei.gao@linaro.org>
-> Cc: Zhou Wang <wangzhou1@hisilicon.com>
+> 
+> On top of https://patchwork.kernel.org/project/linux-acpi/patch/20210115215752.389656-1-hdegoede@redhat.com/
+> 
 > ---
->   drivers/misc/uacce/uacce.c | 32 +++++++++++++++++++++++++-------
->   1 file changed, 25 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/misc/uacce/uacce.c b/drivers/misc/uacce/uacce.c
-> index d07af4edfcac..41ef1eb62a14 100644
-> --- a/drivers/misc/uacce/uacce.c
-> +++ b/drivers/misc/uacce/uacce.c
-> @@ -385,6 +385,24 @@ static void uacce_release(struct device *dev)
->   	kfree(uacce);
->   }
->   
-> +static unsigned int uacce_enable_sva(struct device *parent, unsigned int flags)
-> +{
-> +	if (!(flags & UACCE_DEV_SVA))
-> +		return flags;
+>  drivers/acpi/scan.c |   35 +++++++++++++++++------------------
+>  1 file changed, 17 insertions(+), 18 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/scan.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/scan.c
+> +++ linux-pm/drivers/acpi/scan.c
+> @@ -578,29 +578,31 @@ static void acpi_scan_drop_device(acpi_h
+>  	mutex_unlock(&acpi_device_del_lock);
+>  }
+>  
+> -static int acpi_get_device_data(acpi_handle handle, struct acpi_device **device,
+> -				void (*callback)(void *))
+> +static struct acpi_device *handle_to_device(acpi_handle handle,
+> +					    void (*callback)(void *))
+>  {
+> +	struct acpi_device *adev = NULL;
+>  	acpi_status status;
+>  
+> -	if (!device)
+> -		return -EINVAL;
+> -
+> -	*device = NULL;
+> -
+>  	status = acpi_get_data_full(handle, acpi_scan_drop_device,
+> -				    (void **)device, callback);
+> -	if (ACPI_FAILURE(status) || !*device) {
+> -		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "No context for object [%p]\n",
+> -				  handle));
+> -		return -ENODEV;
+> +				    (void **)&adev, callback);
+> +	if (ACPI_FAILURE(status) || !adev) {
+> +		acpi_handle_debug(handle, "No context!\n");
+> +		return NULL;
+>  	}
+> -	return 0;
+> +	return adev;
+>  }
+>  
+>  int acpi_bus_get_device(acpi_handle handle, struct acpi_device **device)
+>  {
+> -	return acpi_get_device_data(handle, device, NULL);
+> +	if (!device)
+> +		return -EINVAL;
 > +
-> +	flags &= ~UACCE_DEV_SVA;
+> +	*device = handle_to_device(handle, NULL);
+> +	if (!*device)
+> +		return -ENODEV;
 > +
-> +	if (iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_IOPF))
-> +		return flags;
-> +
-> +	if (iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_SVA)) {
-> +		iommu_dev_disable_feature(parent, IOMMU_DEV_FEAT_IOPF);
-> +		return flags;
-> +	}
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL(acpi_bus_get_device);
+>  
+> @@ -612,10 +614,7 @@ static void get_acpi_device(void *dev)
+>  
+>  struct acpi_device *acpi_bus_get_acpi_device(acpi_handle handle)
+>  {
+> -	struct acpi_device *adev = NULL;
+> -
+> -	acpi_get_device_data(handle, &adev, get_acpi_device);
+> -	return adev;
+> +	return handle_to_device(handle, get_acpi_device);
+>  }
+>  
+>  void acpi_bus_put_acpi_device(struct acpi_device *adev)
+> 
+> 
+> 
 
-Sorry to jump in a bit late on this and not specifically towards the 
-intent of this patch. But I'd like to start a discussion on if we want 
-to push the iommu dev feature enabling to the device driver itself 
-rather than having UACCE control this? Maybe allow the device driver to 
-manage the feature bits and UACCE only verify that they are enabled?
-
- 1. The device driver knows what platform it's on and what specific
-    feature bits its devices supports. Maybe in the future if there are
-    feature bits that's needed on one platform and not on another?
- 2. This allows the possibility of multiple uacce device registered to 1
-    pci dev, which for a device with asymmetric queues (Intel DSA/idxd
-    driver) that is desirable feature. The current setup forces a single
-    uacce device per pdev. If additional uacce devs are registered, the
-    first removal of uacce device will disable the feature bit for the
-    rest of the registered devices. With uacce managing the feature bit,
-    it would need to add device context to the parent pdev and ref
-    counting. It may be cleaner to just allow device driver to manage
-    the feature bits and the driver should have all the information on
-    when the feature needs to be turned on and off.
-
-- DaveJ
-
-
-> +
-> +	return flags | UACCE_DEV_SVA;
-> +}
-> +
->   /**
->    * uacce_alloc() - alloc an accelerator
->    * @parent: pointer of uacce parent device
-> @@ -404,11 +422,7 @@ struct uacce_device *uacce_alloc(struct device *parent,
->   	if (!uacce)
->   		return ERR_PTR(-ENOMEM);
->   
-> -	if (flags & UACCE_DEV_SVA) {
-> -		ret = iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_SVA);
-> -		if (ret)
-> -			flags &= ~UACCE_DEV_SVA;
-> -	}
-> +	flags = uacce_enable_sva(parent, flags);
->   
->   	uacce->parent = parent;
->   	uacce->flags = flags;
-> @@ -432,8 +446,10 @@ struct uacce_device *uacce_alloc(struct device *parent,
->   	return uacce;
->   
->   err_with_uacce:
-> -	if (flags & UACCE_DEV_SVA)
-> +	if (flags & UACCE_DEV_SVA) {
->   		iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_SVA);
-> +		iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_IOPF);
-> +	}
->   	kfree(uacce);
->   	return ERR_PTR(ret);
->   }
-> @@ -487,8 +503,10 @@ void uacce_remove(struct uacce_device *uacce)
->   	mutex_unlock(&uacce->queues_lock);
->   
->   	/* disable sva now since no opened queues */
-> -	if (uacce->flags & UACCE_DEV_SVA)
-> +	if (uacce->flags & UACCE_DEV_SVA) {
->   		iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_SVA);
-> +		iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_IOPF);
-> +	}
->   
->   	if (uacce->cdev)
->   		cdev_device_del(uacce->cdev, &uacce->dev);
