@@ -2,184 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432CA2FD79B
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 18:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BDE62FD828
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jan 2021 19:30:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388138AbhATR5B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jan 2021 12:57:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41154 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390688AbhATR4Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 12:56:25 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D03C0613C1
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jan 2021 09:55:44 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id w5so23920078wrm.11
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jan 2021 09:55:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=u9d5u2rU+oUC3PSlRpvM5/qU7mQebSKD882Pr796bxs=;
-        b=wEnitb2FT1wKDf1iNM7t56LriFK4O7jTr2wCXes6P2kZJt+uv2bOsBYl05PBc67RH3
-         ki0Mp8eoch3QTMyJQqFtnCTTan938j+tP/G06YgZdIhAkpCxq0yYDC/apO5qVi0ZOpgV
-         5cp+DimAxrvWAqyXhlgcq57wD3/c6z26cc7l9+YX5SpA3U1RXHaIopSp64TzfqO3Jm+9
-         +43mtK1dITx3LWvkypY1YtZPmHgwt9+T2WyQZLoYzAfZExLHbKOF+4FH8fr8BTEPqhud
-         K3fr5ZlvbiOHrRmL7nElGamCR1LC9Il92GcLPi5B7aHUOm0cb2fnWKmwLJJrNJ18BBA5
-         2HEQ==
+        id S2404262AbhATSTh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jan 2021 13:19:37 -0500
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:39512 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391964AbhATSSo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jan 2021 13:18:44 -0500
+Received: by mail-ot1-f50.google.com with SMTP id i30so11348535ota.6;
+        Wed, 20 Jan 2021 10:18:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=u9d5u2rU+oUC3PSlRpvM5/qU7mQebSKD882Pr796bxs=;
-        b=TOaYCLn/Rv+8rAVqpKGV+NvgY9jtDjDMGo791K+bfjJA6Mzr5dE5cfyQXKbbWpF5/u
-         sLdwg61mo0+iyv6NBDdOCMXHmabDp0ELNo/Q/ROAYg06J1i84aGSDAC9AZ08JdTBZmio
-         F1IRbkNpqVRL5yivWC0P/OQxN6PdiTuQ3kPSwQUNgjMr7b+n7TLkA4pS0OXswdORBMmQ
-         dmCq4Rbr6XBztb6RLfQCeaWQzqo9nrui9azWPWZVyjxK3u2Zmzfv7AmOZA/iOfGVxfsv
-         wT81/BXxTX/bKBFAwqIHIo6rp7Z1uf5iLZgELFWbgmFd/VguIrFKI4ujwubFq2ycfw6m
-         XQsA==
-X-Gm-Message-State: AOAM531bSZVHZpkzFm19Po0DSP7OHBR33tM5b7at9PGD8oV1q1QyTlMe
-        r1Jsa6Rk/GM3gQXTgqXCRks/TfW9+l8tZg==
-X-Google-Smtp-Source: ABdhPJxYz9wWmfwCtCBcKPiQmZrmimspu6SwMfoxK1Eays8A9xFacgdeujsrMNO5XqeMv6Tbgovf9g==
-X-Received: by 2002:a5d:4987:: with SMTP id r7mr10727143wrq.352.1611165343667;
-        Wed, 20 Jan 2021 09:55:43 -0800 (PST)
-Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id m18sm5608010wrw.43.2021.01.20.09.55.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jan 2021 09:55:42 -0800 (PST)
-Date:   Wed, 20 Jan 2021 18:55:23 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     joro@8bytes.org, will@kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, guohanjun@huawei.com,
-        rjw@rjwysocki.net, iommu@lists.linux-foundation.org,
-        robh+dt@kernel.org, linux-accelerators@lists.ozlabs.org,
-        sudeep.holla@arm.com, vivek.gautam@arm.com,
-        zhangfei.gao@linaro.org, linux-arm-kernel@lists.infradead.org,
-        lenb@kernel.org
-Subject: Re: [PATCH v9 10/10] iommu/arm-smmu-v3: Add stall support for
- platform devices
-Message-ID: <YAhui7UOw7743shI@myrica>
-References: <20210108145217.2254447-1-jean-philippe@linaro.org>
- <20210108145217.2254447-11-jean-philippe@linaro.org>
- <d36d0edd-6762-41e0-2082-d9c08c125524@arm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IgWDE0PErg3ORn5MUSyThw1N3Ecrc6Z8pCtsc577ahI=;
+        b=ojM9r7PCtlxNYXItFNuFj/iw6hmuaeCLkNxVczASwTCTvtBngMAekwLoUvvd6etJaI
+         ybFnwSmuTOkJoyBjly/xRwbNLWye/NhawA2DdPwZRVj/ilBSIhz5Eo7crOy2+itv0nNV
+         CVcL7Tsw77M7BMHNUNHT3u/vQOlMggZ8R77Fl2P0wfSyzjuFrAvDQuFe5AZDM2sTKUxE
+         yJSK1lErEmX26ucnQWobUn2fJ32RYt5FYhrlWU+jLaHSWABujrBDC5nZod/Jlx1JOMjZ
+         P7B/LQPO1JeBtWjEkwgI/+b06V5MWh8DoJrkiWvy5Lpq27Ii0kQ8mgg6OWZMhhuBvo7e
+         6a0Q==
+X-Gm-Message-State: AOAM5319XFPLIJwgtWTE35qCnVYCoOV0ZimRJ132nvoFjO4vSDacAFK4
+        vDHXGKIyblYZqlCEhS0v3Ikp3kcOQLjtnVeNQHs=
+X-Google-Smtp-Source: ABdhPJwN77JI0VoJPEv4UVgKZFKkiy2aKaFZpzEAoON0ded46fj5YtH3TNGxm9cmcPfHk60ojzmuOupUQn33CroVRy0=
+X-Received: by 2002:a05:6830:138f:: with SMTP id d15mr1588674otq.321.1611166682565;
+ Wed, 20 Jan 2021 10:18:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d36d0edd-6762-41e0-2082-d9c08c125524@arm.com>
+References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
+ <20210112134054.342-10-calvin.johnson@oss.nxp.com> <CAHp75VdyPWD-cM5Q_9k8yRAutMSjm-3kwE0pQT3+ztKGwcU+4A@mail.gmail.com>
+In-Reply-To: <CAHp75VdyPWD-cM5Q_9k8yRAutMSjm-3kwE0pQT3+ztKGwcU+4A@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 20 Jan 2021 19:17:51 +0100
+Message-ID: <CAJZ5v0hic-Yf74Rn06kui4z+KZBES_uiH-pRmmRcFcYjuDZ=CA@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 09/15] device property: Introduce fwnode_get_id()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Saravana Kannan <saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 05:28:21PM +0000, Robin Murphy wrote:
-> On 2021-01-08 14:52, Jean-Philippe Brucker wrote:
-> > +#define EVTQ_1_PRIV			(1UL << 33)
-> > +#define EVTQ_1_EXEC			(1UL << 34)
-> > +#define EVTQ_1_READ			(1UL << 35)
-> 
-> Nit: personally I'd find it a little clearer if these were named PnU, InD,
-> and RnW to match the architecture, but quite possibly that's just me and
-> those are gibberish to everyone else...
-
-No problem, I think it's still decipherable without a spec
-
-> > +bool arm_smmu_master_iopf_enabled(struct arm_smmu_master *master)
+On Tue, Jan 12, 2021 at 4:47 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Jan 12, 2021 at 3:42 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Using fwnode_get_id(), get the reg property value for DT node
+> > or get the _ADR object value for ACPI node.
+> >
+> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> > ---
+> >
+> > Changes in v3:
+> > - Modified to retrieve reg property value for ACPI as well
+> > - Resolved compilation issue with CONFIG_ACPI = n
+> > - Added more info into documentation
+> >
+> > Changes in v2: None
+> >
+> >  drivers/base/property.c  | 33 +++++++++++++++++++++++++++++++++
+> >  include/linux/property.h |  1 +
+> >  2 files changed, 34 insertions(+)
+> >
+> > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > index 35b95c6ac0c6..2d51108cb936 100644
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -580,6 +580,39 @@ const char *fwnode_get_name_prefix(const struct fwnode_handle *fwnode)
+> >         return fwnode_call_ptr_op(fwnode, get_name_prefix);
+> >  }
+> >
+> > +/**
+> > + * fwnode_get_id - Get the id of a fwnode.
+> > + * @fwnode: firmware node
+> > + * @id: id of the fwnode
+> > + *
+> > + * This function provides the id of a fwnode which can be either
+> > + * DT or ACPI node. For ACPI, "reg" property value, if present will
+> > + * be provided or else _ADR value will be provided.
+> > + * Returns 0 on success or a negative errno.
+> > + */
+> > +int fwnode_get_id(struct fwnode_handle *fwnode, u32 *id)
 > > +{
-> > +	bool enabled;
+> > +#ifdef CONFIG_ACPI
+> > +       unsigned long long adr;
+> > +       acpi_status status;
+> > +#endif
+> > +       int ret;
 > > +
-> > +	mutex_lock(&sva_lock);
-> > +	enabled = master->iopf_enabled;
-> > +	mutex_unlock(&sva_lock);
-> 
-> Forgive me for being dim, but what's the locking synchronising against here?
-> If we're expecting that master->iopf_enabled can change at any time, isn't
-> whatever we've read potentially already invalid as soon as we've dropped the
-> lock?
-
-Right, no reason to lock this. I doubt the lock in sva_enabled() is
-necessary either, I could remove it in a separate patch.
-
-> > +static int arm_smmu_page_response(struct device *dev,
-> > +				  struct iommu_fault_event *unused,
-> > +				  struct iommu_page_response *resp)
-> > +{
-> > +	struct arm_smmu_cmdq_ent cmd = {0};
-> > +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> > +	int sid = master->streams[0].id;
-> 
-> If that's going to be the case, should we explicitly prevent multi-stream
-> devices from opting in to faults at all?
-
-Sure I'll add a check in iopf_supported(). Dealing with multi-stream
-devices should be easy enough (record the incoming SID into
-iommu_fault_event and fetch it back here), it just didn't seem necessary
-for the moment.
-
-> > +	if (evt[1] & EVTQ_1_STALL) {
-> > +		flt->type = IOMMU_FAULT_PAGE_REQ;
-> > +		flt->prm = (struct iommu_fault_page_request) {
-> > +			.flags = IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE,
-> > +			.grpid = FIELD_GET(EVTQ_1_STAG, evt[1]),
-> > +			.perm = perm,
-> > +			.addr = FIELD_GET(EVTQ_2_ADDR, evt[2]),
-> > +		};
+> > +       ret = fwnode_property_read_u32(fwnode, "reg", id);
+> > +       if (!(ret && is_acpi_node(fwnode)))
+> > +               return ret;
 > > +
-> > +		if (ssid_valid) {
-> > +			flt->prm.flags |= IOMMU_FAULT_PAGE_REQUEST_PASID_VALID;
-> > +			flt->prm.pasid = FIELD_GET(EVTQ_0_SSID, evt[0]);
-> > +		}
-> 
-> So if we get a bad ATS request with R=1, or a TLB/CFG conflict or any other
-> imp-def event which happens to have bit 95 set, we might try to report it as
-> something pageable? I would have thought we should look at the event code
-> before *anything* else.
+> > +#ifdef CONFIG_ACPI
+> > +       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(fwnode),
+> > +                                      METHOD_NAME__ADR, NULL, &adr);
+> > +       if (ACPI_FAILURE(status))
+> > +               return -EINVAL;
+> > +       *id = (u32)adr;
+>
+> Shouldn't be
+>
+>        return 0;
+> #else
+>        return -EINVAL;
+> #endif
+>
+> ?
+>
+> Yes, it's a theoretical case when is_acpi_node() returns true when
+> CONFIG_ACPI=n.
 
-Yes I definitely need to fix this
-
-> > @@ -2250,6 +2383,12 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
-> >   			smmu_domain->s1_cfg.s1cdmax, master->ssid_bits);
-> >   		ret = -EINVAL;
-> >   		goto out_unlock;
-> > +	} else if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1 &&
-> > +		   smmu_domain->stall_enabled != master->stall_enabled) {
-> 
-> I appreciate that it's probably a fair bit more complex, but it would be
-> nice to at least plan for resolving this decision later (i.e. at a point
-> where a caller shows an interest in actually using stalls) in future.
-> Obviously the first devices advertising stall capabilities will be the ones
-> that do want to use it for their primary functionality, that are driving the
-> work here. However once this all matures, firmwares may start annotating any
-> stallable devices as such for completeness, rather than assuming any
-> specific usage. At that point it would be a pain if, say, assigning two
-> devices to the same VFIO domain for old-fashioned pinned DMA, was suddenly
-> prevented for irrelevant reasons just because of a DT/IORT update.
-
-It is more complex but possible. Device drivers signal their intent to use
-stall by enabling IOMMU_DEV_FEAT_IOPF, so we can postpone setting CD.S
-until then. We'll still need to make sure all devices attached to a domain
-support it, and prevent attaching a device that can't handle stall to a
-stall-enabled domain since it would inherit all CDs. Then there will be
-drivers wanting to receive stall events for context #0 and handle them by
-issuing iommu_map() calls (unpinned VFIO, mentioned by Baolu on patch
-3). That requires setting and clearing CD.S live. So it is doable but I'd
-rather leave it for later.
-
-> > @@ -2785,6 +2943,7 @@ static int arm_smmu_cmdq_init(struct arm_smmu_device *smmu)
-> >   static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
-> >   {
-> >   	int ret;
-> > +	bool sva = arm_smmu_sva_supported(smmu);
-> >   	/* cmdq */
-> >   	ret = arm_smmu_init_one_queue(smmu, &smmu->cmdq.q, ARM_SMMU_CMDQ_PROD,
-> > @@ -2804,6 +2963,12 @@ static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
-> >   	if (ret)
-> >   		return ret;
-> > +	if (sva && smmu->features & ARM_SMMU_FEAT_STALLS) {
-> 
-> Surely you could just test for ARM_SMMU_FEAT_SVA by now rather than go
-> through the whole of arm_smmu_sva_supported() again?
-
-Oh right, that was dumb
-
-Thanks for the review
-Jean
+How so?  is_acpi_node() is defined as a static inline returning false then.
