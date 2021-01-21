@@ -2,111 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A5EE2FF467
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 20:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA4E2FF480
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 20:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbhAUTTc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 14:19:32 -0500
-Received: from mail-pj1-f49.google.com ([209.85.216.49]:54055 "EHLO
-        mail-pj1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbhAUTQ5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 14:16:57 -0500
-Received: by mail-pj1-f49.google.com with SMTP id p15so2259948pjv.3;
-        Thu, 21 Jan 2021 11:16:41 -0800 (PST)
+        id S1726424AbhAUTFz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 21 Jan 2021 14:05:55 -0500
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:33065 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725878AbhAUTFG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 14:05:06 -0500
+Received: by mail-oi1-f177.google.com with SMTP id d203so3331160oia.0;
+        Thu, 21 Jan 2021 11:04:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=woffDF3uhRUDrdb3LU2Pk/FCA9mpI3Ytb8KoYeIYJeA=;
-        b=IIU02koRSEoT4q8Q9ehofpACmz28KHNp5Hoo0ciG0PZFexGoI6CrB1+Xk8QwfjWevd
-         9aPp+easnrBYUHsSJIoIo5AZOwH4mPI85IjM6Ovh61PWTrjXE44HqZs+mr6em35jqaGa
-         EeVgBUpgL7u15YnhNnXXicdzfmcBNZVH/5hhEM6nJH9R/8cjNC82E6c1SJ8m8Hb7dzhj
-         kW7zpezLwdNWgixcStg0onr3zTfVOjazOP4jvjxtUhUy8p1UkfN8poImx0/JPZeNNM7F
-         CGpMvXkKLf2j/lGXklS4Pm7FZva+fP1Pv0UbuLcOFEZMPdqgj79+Ud8h2x7I8r05/afi
-         hWWg==
-X-Gm-Message-State: AOAM532jzK13OBfeXyDxm8FOvUju0u68R+8+TuzkaEgVQ8MogjADldH+
-        SIlsGdWLRU0Jex1oyeVCbaY=
-X-Google-Smtp-Source: ABdhPJzI8AJqE+iWCmW+gyRA1cuwSUSwg+34G/hZ8dWOKvbeMCOrdJpb6lBYekcwpzJj0GgfI7rBMw==
-X-Received: by 2002:a17:902:6b0a:b029:dc:31af:8dc3 with SMTP id o10-20020a1709026b0ab02900dc31af8dc3mr1144525plk.41.1611256576405;
-        Thu, 21 Jan 2021 11:16:16 -0800 (PST)
-Received: from localhost ([2601:647:5b00:1162:1ac0:17a6:4cc6:d1ef])
-        by smtp.gmail.com with ESMTPSA id w7sm6270590pfb.62.2021.01.21.11.16.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jan 2021 11:16:15 -0800 (PST)
-From:   Moritz Fischer <mdf@kernel.org>
-To:     lorenzo.pieralisi@arm.com
-Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, moritzf@google.com, will@kernel.org,
-        Moritz Fischer <mdf@kernel.org>
-Subject: [PATCH] ACPI/IORT: Do not blindly trust DMA masks from firmware
-Date:   Thu, 21 Jan 2021 11:16:12 -0800
-Message-Id: <20210121191612.90387-1-mdf@kernel.org>
-X-Mailer: git-send-email 2.30.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=sxUFDSeoZEWN4aDqisZF6mUVpomTtmiF7YK6hytZxWc=;
+        b=qWa+uEpZ5yso8/rb0urhOsLhosKvFHOxVghxZirLSf+NyVU4lUnkz+0Yyi2/8WqwMJ
+         dDo+yvXqyPP80ZaCbcWyLdrh5wr2FQ2rITEfsh2lpxAjUY2DtDfYORfcO5iPIthS5FOK
+         6CMlt/IbsL7hSM674dbayLLexoq+gSxD6NaM/8SDYEoPv/YxiIBf9AtQF5w3+AQyez/p
+         CjuEWz102L451pDCZ7Cm+fR2jpkbxq72MdadmemvrWPAMyIwm7iuwZX3NSlZR3BXg3OB
+         Nw00zR7EHZnVSGcVPA6ai1iHN3xwKm/vDAqkcycFWCPUVUcX9Joqk67V9mSOcaUsUuSl
+         UjOA==
+X-Gm-Message-State: AOAM530b/i4To4Gq0pyUDiYB713k8FTP3OmJLgw4eFvLo5I6Xh4ijxWT
+        jahMtwKDx6Bxj5id4GbBwrZRa/5kWiKgKs70aH4=
+X-Google-Smtp-Source: ABdhPJwFYOx7GKzTGGbTxgqjm5rCY/53kLF3X/JTRr/LaAc8hfo2mXKv0cD2IHyeZkf+1CBzz3/fcbRitQ3sr4ri09g=
+X-Received: by 2002:aca:308a:: with SMTP id w132mr703472oiw.69.1611255814671;
+ Thu, 21 Jan 2021 11:03:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201111021131.822867-1-ndesaulniers@google.com> <031790d7-ee26-f919-9338-b135e9b94635@nvidia.com>
+In-Reply-To: <031790d7-ee26-f919-9338-b135e9b94635@nvidia.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 21 Jan 2021 20:03:23 +0100
+Message-ID: <CAJZ5v0it3KfdNo7kwq-7__C+Kvr4Eo7x8-3rBi09B5rHfNv-hQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
+To:     Jon Hunter <jonathanh@nvidia.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        clang-built-linux@googlegroups.com, Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Address issue observed on real world system with suboptimal IORT table
-where DMA masks of PCI devices would get set to 0 as result.
+On Thu, Jan 21, 2021 at 11:08 AM Jon Hunter <jonathanh@nvidia.com> wrote:
+>
+>
+> On 11/11/2020 02:11, Nick Desaulniers wrote:
+> > The "fallthrough" pseudo-keyword was added as a portable way to denote
+> > intentional fallthrough. This code seemed to be using a mix of
+> > fallthrough comments that GCC recognizes, and some kind of lint marker.
+> > I'm guessing that linter hasn't been run in a while from the mixed use
+> > of the marker vs comments.
+> >
+> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+>
+>
+> I know this is not the exact version that was merged, I can't find it on
+> the list, but looks like the version that was merged [0],
 
-iort_dma_setup() would query the root complex' IORT entry for a DMA
-mask, and use that over the one the device has been configured with
-earlier.
+It would be this patch:
 
-Ideally we want to use the minimum mask of what the IORT contains for
-the root complex and what the device was configured with, but never 0.
+https://patchwork.kernel.org/project/linux-acpi/patch/20210115184826.2250-4-erik.kaneda@intel.com/
 
-Fixes: 5ac65e8c8941 ("ACPI/IORT: Support address size limit for root complexes")
-Signed-off-by: Moritz Fischer <mdf@kernel.org>
----
-Hi all,
+Nick, Erik?
 
-not sure I'm doing this right, but I think the current behavior (while a
-corner case) seems to also fail for 32 bit devices if the IORT specifies
-64 bit. It works on my test system now with a 32 bit device.
-
-Open to suggestions for better solutions (and maybe the
-nc_dma_get_range() should have the same sanity check?)
-
-Thanks,
-Moritz
-
----
- drivers/acpi/arm64/iort.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index d4eac6d7e9fb..c48eabf8c121 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1126,6 +1126,11 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
- 
- 	rc = (struct acpi_iort_root_complex *)node->node_data;
- 
-+	if (!rc->memory_address_limit) {
-+		dev_warn(dev, "Root complex has broken memory_address_limit\n");
-+		return -EINVAL;
-+	}
-+
- 	*size = rc->memory_address_limit >= 64 ? U64_MAX :
- 			1ULL<<rc->memory_address_limit;
- 
-@@ -1172,9 +1177,9 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- 		 */
- 		end = dmaaddr + size - 1;
- 		mask = DMA_BIT_MASK(ilog2(end) + 1);
--		dev->bus_dma_limit = end;
--		dev->coherent_dma_mask = mask;
--		*dev->dma_mask = mask;
-+		dev->bus_dma_limit = min_not_zero(dev->bus_dma_limit, end);
-+		dev->coherent_dma_mask = min_not_zero(dev->coherent_dma_mask, mask);
-+		*dev->dma_mask = min_not_zero(*dev->dma_mask, mask);
- 	}
- 
- 	*dma_addr = dmaaddr;
--- 
-2.30.0
-
+> is causing build errors with older toolchains (GCC v6) ...
+>
+> /dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol.c: In function ‘acpi_ds_exec_begin_control_op’:
+> /dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol.c:65:3: error: ‘ACPI_FALLTHROUGH’ undeclared (first use in this function)
+>    ACPI_FALLTHROUGH;
+>    ^~~~~~~~~~~~~~~~
+> /dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol.c:65:3: note: each undeclared identifier is reported only once for each function it appears in
+> /dvs/git/dirty/git-master_l4t-upstream/kernel/scripts/Makefile.build:287: recipe for target 'drivers/acpi/acpica/dscontrol.o' failed
+>
+> Cheers
+> Jon
+>
+> [0] https://github.com/acpica/acpica/commit/4b9135f5
+>
+> --
+> nvpublic
