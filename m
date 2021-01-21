@@ -2,91 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB7E2FE71D
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 11:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67A62FE811
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 11:52:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728373AbhAUKHt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 05:07:49 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:11942 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728760AbhAUKH2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 05:07:28 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B6009521b0000>; Thu, 21 Jan 2021 02:06:19 -0800
-Received: from [10.26.72.207] (172.20.145.6) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 21 Jan
- 2021 10:06:14 +0000
-Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
-To:     Nick Desaulniers <ndesaulniers@google.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>
-CC:     <clang-built-linux@googlegroups.com>, Len Brown <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
-        <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20201111021131.822867-1-ndesaulniers@google.com>
-From:   Jon Hunter <jonathanh@nvidia.com>
-Message-ID: <031790d7-ee26-f919-9338-b135e9b94635@nvidia.com>
-Date:   Thu, 21 Jan 2021 10:06:12 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1729867AbhAUKvi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 05:51:38 -0500
+Received: from mga12.intel.com ([192.55.52.136]:47845 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729800AbhAUKv2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Jan 2021 05:51:28 -0500
+IronPort-SDR: LX5cH+jqCv7lJ255IediMs20JFOIv0AJM2zREfSZfsZZ5Debv8mFAT4s+0Xdu9xMQjqhudN2Th
+ BTNdhyTpDjOA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9870"; a="158430067"
+X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
+   d="scan'208";a="158430067"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 02:49:41 -0800
+IronPort-SDR: ytMdTu6t6jXggkalWWS/ai6nveuZOIW76KCY5D+jBagvuZvS7Ro/IHCNSzdRDFkHw0H3Gl1Bsp
+ oPOgvSNikulg==
+X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
+   d="scan'208";a="356419120"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 02:49:38 -0800
+Received: by lahna (sSMTP sendmail emulation); Thu, 21 Jan 2021 12:49:34 +0200
+Date:   Thu, 21 Jan 2021 12:49:34 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        AceLan Kao <acelan.kao@canonical.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI / device_sysfs: Use OF_MODALIAS for "compatible"
+ modalias
+Message-ID: <20210121104934.GS1988617@lahna.fi.intel.com>
+References: <20210119081513.300938-1-kai.heng.feng@canonical.com>
+ <YAaXz9Pg5x3DsCs3@kroah.com>
+ <CAAd53p7tdFiARtW1RXsjN8+OwRXWzMnok_rfKHDHCh-JSam3cQ@mail.gmail.com>
+ <20210119094159.GQ4077@smile.fi.intel.com>
+ <YAa1ygjr2L3VxBKF@kroah.com>
+ <CAAd53p4MTSzuPEp3Y5=wP3HwguTOkyTrVZpi6xOCS0_Q1qcMdQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201111021131.822867-1-ndesaulniers@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [172.20.145.6]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1611223579; bh=ecknqWhuJL3W8p6oQ0zL/CmHsHXhDRwgK1lykE3RJyQ=;
-        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
-         MIME-Version:In-Reply-To:Content-Type:Content-Language:
-         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-        b=hQ9ZqKLYBvSdVpq/QxZyE+ROLV9WzIzI1NNn1H29M+eRY+CERXSsX24rDtifxNsGx
-         gJ2UWTvPfHxQPkxRszZlLARzfL9qwIiYhq5F+2t79hEujT/T5wE8Yp1RaXH2zb0fr6
-         KHps9XcTapcsTT97zKDniQRCU4yvcwZ70NNbSARxqEtCZ24LK8kFgvHFFYcec4iQiu
-         K6lnTBYBrtu4Nzw/d/leu7Jb6yGNZVVUz/AaQE498WuZTFrBTbJAIJhmhvshqTfCI4
-         C39BAL/NroKKXoA1IGLpxQLmfT0xYmlLYnLvjg2yPkM/dWCj7zdbg5clw5OrAMpJ7S
-         lM34IV6mGryeA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAd53p4MTSzuPEp3Y5=wP3HwguTOkyTrVZpi6xOCS0_Q1qcMdQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Jan 21, 2021 at 02:22:43PM +0800, Kai-Heng Feng wrote:
+> On Tue, Jan 19, 2021 at 6:34 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Jan 19, 2021 at 11:41:59AM +0200, Andy Shevchenko wrote:
+> > > On Tue, Jan 19, 2021 at 04:41:48PM +0800, Kai-Heng Feng wrote:
+> > > > On Tue, Jan 19, 2021 at 4:27 PM Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > On Tue, Jan 19, 2021 at 04:15:13PM +0800, Kai-Heng Feng wrote:
+> > >
+> > > ...
+> > >
+> > > > > Who will use OF_MODALIAS and where have you documented it?
+> > > >
+> > > > After this lands in mainline, I'll modify the pull request for systemd
+> > > > to add a new rule for OF_MODALIAS.
+> > > > I'll modify the comment on the function to document the change.
+> > >
+> > > I'm wondering why to have two fixes in two places instead of fixing udev to
+> > > understand multiple MODALIAS= events?
+> >
+> > It's not a matter of multiple events, it's a single event with a
+> > key/value pair with duplicate keys and different values.
+> >
+> > What is this event with different values supposed to be doing in
+> > userspace?  Do you want multiple invocations of `modprobe` or something
+> > else?
+> >
+> > Usually a "device" only has a single "signature" that modprobe uses to
+> > look up the correct module for.  Modules can support any number of
+> > device signatures, but traditionally it is odd to think that a device
+> > itself can be supported by multiple modules, which is what you are
+> > saying is happening here.
+> >
+> > So what should userspace do with this, and why does a device need to
+> > have multiple module alias signatures?
+> 
+> >From the original use case [1], I think the "compatible" modalias
+> should be enough.
+> Andy and Mika, what do you think? Can we remove the ACPI modalias for this case?
 
-On 11/11/2020 02:11, Nick Desaulniers wrote:
-> The "fallthrough" pseudo-keyword was added as a portable way to denote
-> intentional fallthrough. This code seemed to be using a mix of
-> fallthrough comments that GCC recognizes, and some kind of lint marker.
-> I'm guessing that linter hasn't been run in a while from the mixed use
-> of the marker vs comments.
->=20
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-
-
-I know this is not the exact version that was merged, I can't find it on
-the list, but looks like the version that was merged [0], is causing
-build errors with older toolchains (GCC v6) ...
-
-/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
-.c: In function =E2=80=98acpi_ds_exec_begin_control_op=E2=80=99:
-/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
-.c:65:3: error: =E2=80=98ACPI_FALLTHROUGH=E2=80=99 undeclared (first use in=
- this function)
-   ACPI_FALLTHROUGH;
-   ^~~~~~~~~~~~~~~~
-/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
-.c:65:3: note: each undeclared identifier is reported only once for each fu=
-nction it appears in
-/dvs/git/dirty/git-master_l4t-upstream/kernel/scripts/Makefile.build:287: r=
-ecipe for target 'drivers/acpi/acpica/dscontrol.o' failed
-
-Cheers
-Jon
-
-[0] https://github.com/acpica/acpica/commit/4b9135f5
-	=20
---=20
-nvpublic
+Yes, I think that should work. After all we want the match to happen
+through the DT compatible string if the property is present, not through
+ACPI IDs.
