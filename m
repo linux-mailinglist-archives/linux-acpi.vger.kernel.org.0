@@ -2,19 +2,19 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 264BD2FDE31
+	by mail.lfdr.de (Postfix) with ESMTP id 943832FDE32
 	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 01:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728539AbhAUAwX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jan 2021 19:52:23 -0500
-Received: from mx2.suse.de ([195.135.220.15]:54756 "EHLO mx2.suse.de"
+        id S1728628AbhAUAw3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jan 2021 19:52:29 -0500
+Received: from mx2.suse.de ([195.135.220.15]:56374 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732716AbhAUAdw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Jan 2021 19:33:52 -0500
+        id S1726671AbhAUAgl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 Jan 2021 19:36:41 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 8290FAD29;
-        Thu, 21 Jan 2021 00:33:07 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 5E99DAC9B;
+        Thu, 21 Jan 2021 00:35:59 +0000 (UTC)
 From:   Giovanni Gherdovich <ggherdovich@suse.cz>
 To:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -33,8 +33,8 @@ Cc:     Jon Grimm <Jon.Grimm@amd.com>,
         linux-acpi@vger.kernel.org,
         Giovanni Gherdovich <ggherdovich@suse.cz>
 Subject: [PATCH] x86,sched: On AMD EPYC set freq_max = max_boost in schedutil invariant formula
-Date:   Thu, 21 Jan 2021 01:32:23 +0100
-Message-Id: <20210121003223.20257-1-ggherdovich@suse.cz>
+Date:   Thu, 21 Jan 2021 01:35:50 +0100
+Message-Id: <20210121003550.20415-1-ggherdovich@suse.cz>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
