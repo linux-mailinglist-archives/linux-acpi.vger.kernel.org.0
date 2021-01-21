@@ -2,136 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33AB82FF6D9
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 22:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C39782FF708
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 22:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727701AbhAUVLR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 16:11:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbhAUVJI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 16:09:08 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2479CC061756;
-        Thu, 21 Jan 2021 13:08:28 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id m4so3100127wrx.9;
-        Thu, 21 Jan 2021 13:08:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=OMFMRDIlKBCL9Ohj87OUa8tkrf6G4uCu7Gi4SktmUto=;
-        b=KIp5eccKN5MoF5EXrpEigjcHLx1XdU7pp8SCXjiUMhOP7z30XgYU21ZTTHczLR/j/V
-         JjnhKqS1LUsWLbRXTE4le0QiPC1m3iNG2Fili4MHXGLYx3YVMoOu0bc7sRsN6v+BFMpv
-         UjkckzY8iVFdijAmbxeupjYIL1YnEjAmdVXYIWq0IYB94NdcYmoghMZAnxgWAHGGmkFL
-         pXO/3NlyjnPbCHVv+QktRvMlRkld1BBaQZ2rTQccbzW4J5ify05AH23Rc89B/K/jIJcr
-         O1hOXNLtrjxcpeye37n7r7VVgdCFpW2TV5wdXh9MG4JH7lrRSBbKp/r58QcL0LQQcVPB
-         4h+w==
+        id S1727007AbhAUVSo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 16:18:44 -0500
+Received: from mail-pf1-f182.google.com ([209.85.210.182]:39964 "EHLO
+        mail-pf1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727457AbhAUVSY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 16:18:24 -0500
+Received: by mail-pf1-f182.google.com with SMTP id i63so2288443pfg.7;
+        Thu, 21 Jan 2021 13:18:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=OMFMRDIlKBCL9Ohj87OUa8tkrf6G4uCu7Gi4SktmUto=;
-        b=HEmT3MNZAfLxK3s6N/s2U5X15HRLC6TC6qHYU6vaFfq5hE/vSS3TLqYRZOsNblEST2
-         bIcUu6XRR8MAnEcQuZmqNeGhYWkMJo/FooOSoQ8oSo94myTompW+uR1PNHIwy2mhSDGd
-         ikGKDMMaF6dpFuU/G21h6aCed/oam/yCD906a7xUAOyiltHOSPWeqrdkPdOPV/z9kwQL
-         ojGcKHCSh6Fbxkny+yzW4PIBK0pYzee+2Oy7GE7BX90CFQA4BpRRkMnXdgDJpCD2Hnp4
-         TJdK3/MLRtJsMZCJj01s8DRWdwv6k/wZuIuFsgY1Z4JFFT+O8KkqPC/VTUREuc7iKWbq
-         9jSQ==
-X-Gm-Message-State: AOAM5302hU3OZW0OeaZg1zfiL9O6uyB5SiGyUtUMi7PVnYR6SGUBLG65
-        S5kwXjOM+fwe5ssTkIt9WDA=
-X-Google-Smtp-Source: ABdhPJw3191VKC674udlSDdtZ4NJ1fR1XfdltPOh/9Cz1AcR6fwweuP3nkh4JmZd0P/D8rW7WCg83Q==
-X-Received: by 2002:a05:6000:1374:: with SMTP id q20mr1279024wrz.44.1611263306941;
-        Thu, 21 Jan 2021 13:08:26 -0800 (PST)
-Received: from [192.168.1.211] ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id i131sm8816923wmi.25.2021.01.21.13.08.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Jan 2021 13:08:26 -0800 (PST)
-Subject: Re: [PATCH v2 6/7] platform: x86: Add intel_skl_int3472 driver
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, devel@acpica.org,
-        rjw@rjwysocki.net, lenb@kernel.org, andy@kernel.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
-        hdegoede@redhat.com, mgross@linux.intel.com,
-        robert.moore@intel.com, erik.kaneda@intel.com,
-        sakari.ailus@linux.intel.com, kieran.bingham@ideasonboard.com
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-7-djrscally@gmail.com>
- <YAVRqWeUsLjvU62P@pendragon.ideasonboard.com>
- <20210118144606.GO4077@smile.fi.intel.com>
- <75e99a06-4579-44ee-5f20-8f2ee3309a68@gmail.com>
- <1053125f-7cb2-8aa0-3204-24df62986184@gmail.com>
- <20210119093358.GO4077@smile.fi.intel.com>
- <YAcKj9fyNZY8QETd@pendragon.ideasonboard.com>
- <YAcaM9Tcif1rS3V/@smile.fi.intel.com>
- <YAevLTVlUSXMylWL@pendragon.ideasonboard.com>
- <YAgXlgLauIGEe05w@smile.fi.intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <837b221d-57ad-88fb-65df-e1cae64f0ad0@gmail.com>
-Date:   Thu, 21 Jan 2021 21:08:25 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=nCPV03LmtFFgNcmlSbKeR1ygTL47bRCqEh8UZyzy3+Q=;
+        b=P04qPiUWgcgEPj12Dz+M/9rq/H5gR9gqN8VWQ+1NRZmjjgQN0QEdduUMrEURBnueh/
+         7QU8EGByec6JaUjSziCpOZ6/42G9Lr3QwosAhqn71znFVsWsgvuwd1J1RN+5phrHGd6w
+         d/R1p+Cr9b6zBlXbrJJkjAksYnJ1lqBO2nbgDYTpOmNMHgTY1vZbqm/hpeS6lW2yowdS
+         qR40V2wMozFD6V+xNoAL0D1opbtL1N8jUA5F3yKf/hbnYILXxwddFwI0hKWr4NBeItNb
+         wVppceIWiB03aPXK+uAiGXgrz6Y8iWnrIRuUaU/Q1R9LNJfgjXbUFaWp5QkGhL+chQn+
+         1xvw==
+X-Gm-Message-State: AOAM531IFzb5ASHjBJCoQ5i3rtgfw4e2Pg1nbANZYAv+HhXO3x8xIavn
+        /v4KqpfzTvrkQwa2StAkjWHQIgupkWU=
+X-Google-Smtp-Source: ABdhPJx4ZPV+AWlNMwICVk+gIH9l4TV9qGoMwij2g0OwOsYnUuQjDnNztMqliT7x8AdhiylRKEpAWw==
+X-Received: by 2002:a63:f106:: with SMTP id f6mr1227988pgi.163.1611263860562;
+        Thu, 21 Jan 2021 13:17:40 -0800 (PST)
+Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
+        by smtp.gmail.com with ESMTPSA id l12sm6575702pjq.7.2021.01.21.13.17.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Jan 2021 13:17:39 -0800 (PST)
+Date:   Thu, 21 Jan 2021 13:17:38 -0800
+From:   Moritz Fischer <mdf@kernel.org>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Moritz Fischer <mdf@kernel.org>, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        moritzf@google.com, sudeep.holla@arm.com, will@kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] ACPI/IORT: Do not blindly trust DMA masks from firmware
+Message-ID: <YAnvckodi9MOTrV4@epycbox.lan>
+References: <20210121191612.90387-1-mdf@kernel.org>
+ <faa089d5-48e3-d51d-0d14-849e5446dbf4@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <YAgXlgLauIGEe05w@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <faa089d5-48e3-d51d-0d14-849e5446dbf4@arm.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi both
+Robin,
 
-On 20/01/2021 11:44, Andy Shevchenko wrote:
-> On Wed, Jan 20, 2021 at 06:18:53AM +0200, Laurent Pinchart wrote:
->> On Tue, Jan 19, 2021 at 07:43:15PM +0200, Andy Shevchenko wrote:
->>> On Tue, Jan 19, 2021 at 06:36:31PM +0200, Laurent Pinchart wrote:
->>>> On Tue, Jan 19, 2021 at 11:33:58AM +0200, Andy Shevchenko wrote:
->>>>> On Tue, Jan 19, 2021 at 12:11:40AM +0000, Daniel Scally wrote:
->>>>>> On 18/01/2021 21:19, Daniel Scally wrote:
-> ...
->
->>>>> See my previous reply. TL;DR: you have to modify clk-gpio.c to export couple of
->>>>> methods to be able to use it as a library.
->>>> That seems really overkill given the very simple implementation of the
->>>> clock provided here.
->>> Less code in the end is called an overkill? Hmm...
->>> I think since we in Linux it's better to utilize what it provides. Do you want
->>> me to prepare a patch to show that there is no overkill at all?
->> The amount of code we would save it very small. It's not necessarily a
->> bad idea, but I think such an improvement could be made on top, it
->> shouldn't block this series.
-> Okay, let's wait what Dan will say on this.
-> I can probably help to achieve this improvement sooner than later.
+On Thu, Jan 21, 2021 at 08:08:42PM +0000, Robin Murphy wrote:
+> On 2021-01-21 19:16, Moritz Fischer wrote:
+> > Address issue observed on real world system with suboptimal IORT table
+> > where DMA masks of PCI devices would get set to 0 as result.
+> > 
+> > iort_dma_setup() would query the root complex' IORT entry for a DMA
+> > mask, and use that over the one the device has been configured with
+> > earlier.
+> > 
+> > Ideally we want to use the minimum mask of what the IORT contains for
+> > the root complex and what the device was configured with, but never 0.
+> > 
+> > Fixes: 5ac65e8c8941 ("ACPI/IORT: Support address size limit for root complexes")
+> > Signed-off-by: Moritz Fischer <mdf@kernel.org>
+> > ---
+> > Hi all,
+> > 
+> > not sure I'm doing this right, but I think the current behavior (while a
+> > corner case) seems to also fail for 32 bit devices if the IORT specifies
+> > 64 bit. It works on my test system now with a 32 bit device.
+> 
+> I suppose it could go wrong if it's an old driver that doesn't explicitly
+> set its own masks and assumes they will always be 32-bit. Technically we'd
+> consider that the driver's fault these days, but there's a lot of legacy
+> around still.
 
+Huh, ok :) That's news to me. On my system I had three devices running
+into this, so yeah I think it's quite common.
 
-Well; turns out that we missed an operation we really need to add
-(clk_recalc_rate) which in our case needs to read a fixed value stored
-in a buffer in ACPI; most of the code is shared with an existing
-function in the driver so it's not much extra to add, but I think it
-kinda precludes using clk-gpio for this anyway
+If that's the official stance I can send patches for the drivers in
+question :)
 
->>>>>> (also, Laurent, if we did it this way we wouldn't be able to also handle
->>>>>> the led-indicator GPIO here without some fairly major rework)
->>>>> LED indicators are done as LED class devices (see plenty of examples in PDx86
->>>>> drivers: drivers/platform/x86/)
->>>> How do you expose the link between the sensor and its indicator LED to
->>>> userspace ? Isn't it better to handle it in the kernel to avoid rogue
->>>> userspace turning the camera on without notifying the user ?
->>> I didn't get this. It's completely a LED handling driver business. We may
->>> expose it to user space or not, but it's orthogonal to the usage of LED class
->>> IIUC. Am I mistaken here?
->> If it stays internal to the kernel and is solely controlled from the
->> int3472 driver, there's no need to involve the LED class. If we want to
->> expose the privacy LED to userspace then the LED framework is the way to
->> go, but we will also need to find a way to expose the link between the
->> camera sensor and the LED to userspace. If there are two privacy LEDs,
->> one for the front sensor and one for the back sensor, userspace will
->> need to know which is which.
-> I see. For now we probably can keep GPIO LED implementation internally.
->
+> 
+> > Open to suggestions for better solutions (and maybe the
+> > nc_dma_get_range() should have the same sanity check?)
+> 
+> Honestly the more I come back to this, the more I think we should give up
+> trying to be clever and just leave the default masks alone beyond the
+> initial "is anything set up at all?" sanity checks. Setting the bus limit is
+> what really matters these days, and should be sufficient to encode any
+> genuine restriction. There's certainly no real need to widen the default
+> masks above 32 bits just because firmware suggests so, since the driver
+> should definitely be calling dma_set_mask() and friends later if it's
+> >32-bit capable anyway.
+> 
+> > Thanks,
+> > Moritz
+> > 
+> > ---
+> >   drivers/acpi/arm64/iort.c | 11 ++++++++---
+> >   1 file changed, 8 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> > index d4eac6d7e9fb..c48eabf8c121 100644
+> > --- a/drivers/acpi/arm64/iort.c
+> > +++ b/drivers/acpi/arm64/iort.c
+> > @@ -1126,6 +1126,11 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
+> >   	rc = (struct acpi_iort_root_complex *)node->node_data;
+> > +	if (!rc->memory_address_limit) {
+> > +		dev_warn(dev, "Root complex has broken memory_address_limit\n");
+> 
+> Probably warrants a FW_BUG in there.
+> 
+> > +		return -EINVAL;
+> > +	}
+> > +
+> >   	*size = rc->memory_address_limit >= 64 ? U64_MAX :
+> >   			1ULL<<rc->memory_address_limit;
+> > @@ -1172,9 +1177,9 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+> >   		 */
+> >   		end = dmaaddr + size - 1;
+> >   		mask = DMA_BIT_MASK(ilog2(end) + 1);
+> > -		dev->bus_dma_limit = end;
+> > -		dev->coherent_dma_mask = mask;
+> > -		*dev->dma_mask = mask;
+> > +		dev->bus_dma_limit = min_not_zero(dev->bus_dma_limit, end);
+> 
+> This doesn't need to change, since the default bus limit is 0 anyway (and
+> that means "no limit").
+Ok, I'll drop this.
+> 
+> > +		dev->coherent_dma_mask = min_not_zero(dev->coherent_dma_mask, mask);
+> > +		*dev->dma_mask = min_not_zero(*dev->dma_mask, mask);
+
+I'll keep those two?
+> AFAICS the only way an empty mask could get here now is from
+> nc_dma_get_range(), so I'd rather see a consistent warning there than just
+> silently start working around that too.
+
+In my case the empty mask came from the pci dev branch returning a size
+of 1. (1 << 0).
+
+I'll replace the dev_warn() with a pr_warn(FW_BUG ...) for both
+{nc,rc}_dma_get_range() cases then?
+
+> 
+> Of course IORT doesn't say these fields are optional (other than the lack of
+> a root complex limit in older table versions), so we're giving bad firmware
+> a pass to never be fixed, ho hum...
+
+I think if we yell loud enough (like FW_BUG) that'll get people's
+attention?
+
+Thanks for the quick reply
+- Moritz
