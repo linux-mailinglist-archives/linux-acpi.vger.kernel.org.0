@@ -2,182 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87F5B2FE9A7
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 13:10:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DDF2FEA53
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 13:41:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729259AbhAUMJ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 07:09:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49302 "EHLO
+        id S1731149AbhAUMkk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 07:40:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730864AbhAUMFR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 07:05:17 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09234C061757;
-        Thu, 21 Jan 2021 04:04:33 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id y187so1310093wmd.3;
-        Thu, 21 Jan 2021 04:04:32 -0800 (PST)
+        with ESMTP id S1731230AbhAUMkM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 07:40:12 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C5FEC0613C1
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Jan 2021 04:39:32 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id c12so1585474wrc.7
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Jan 2021 04:39:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=NPaJmIoqOQ2ZtBkLTXast52ZNe1Rt1J2mdt0JMfHVxE=;
-        b=MMEoBFia73Ara9Y6z+76gKokEEI1bzPJ9TpoHM+qHnrUCVU0RGG3mYhqcZl36/rgK0
-         ca92dJ7ZDT7DUMqo6tSKr1pxGQZK3zYyHHqPhjtDvCbMdumYU6g06q+z+sJVAqtP9USN
-         XoTGkadKrFekrw0EnRDNFXSUBCXIk/z3TkxjgdKzsOWd38Ffl2PHDK/ANcQzDS4Yn4lM
-         hHXDqH5yGHBK6+xyNVWrLs5Z/Uwz6jv84fokQ6IiCGkuy4+gYYGSvHvVcr8hTwZr7wIU
-         kq8PlZ/Wia4iPy4CjGhFIsvUPZ2CYiBctH7AaPAEacWwR5IoYnBjc6fi1pPzvtkGD82j
-         HbPw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=b3l0OetoC6tw2Q4vXg0OJU58lOnJngSuhcgcpV0j+8A=;
+        b=eWz40E4PQwAOppqBXOwKvt7Q0dVqHUMh5fqoJvuQDA3+kHfzRAM63s2hCG8pfXf/KX
+         t1YLSGF55pBNR2O9qMkU8XNhlJEEPEFxSPI+KSsuahcO6/fMwqXvmQIo6j1dfavCmDdj
+         2B4/qfVkLa0wBIQM3C7X6KgbYGm6oqE9MOBt17J/hCH9OvzxW2nN3/Fafr9nNHhw1pKd
+         KvmOhkIHRvFkOP99nRyu5JXBGxSs8J9RFK95nw/VPMXO4yliQAc11MxeVpIy76ZiUVm2
+         hY98zO+6QyqZygvqDXOilArvpDWBw4lbh2dFhPuehwvVGwJAKaiui4K6V79Pg/DqOpRc
+         a7+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=NPaJmIoqOQ2ZtBkLTXast52ZNe1Rt1J2mdt0JMfHVxE=;
-        b=G1+U4J6u4tkCd/LYMiyQ3IjD7/ByW7KdWYs8Fx45oOYDOsqZj0kp6cur7F30i9U49J
-         CdR2tDM8/m1jgrtnRnhcNa1m7qqRqdOVoJ8bnI57xZ8oAowmLEJfbeOIDv7eYXdM0BtX
-         m+djLA1sfuDqSTZFJ5he9DtlKNuhoDGHQn/gcP1gNHCbHrpIbQqoWSj1cO4Ut4fiKDBD
-         dxLSd178pWCHoV0qD5EO9ivgtq1tM5Z5eXUIANBCcQjK8BM4BTNHRiHZcz7W13w9uyw7
-         v5v/+V4/MMQFDRrJUGUetx6I+mNX15k7B2o2KnpuAbGMHJ9Q7ydiVoCxalW4no1W3ZSf
-         iJjA==
-X-Gm-Message-State: AOAM5334wnc3JTPqeWQZVUwtPvKwh8uDgw8jd6jIBbyVBtK1KyoDAKBf
-        JzHu8LfQ8e4BkMwoIVtrq08=
-X-Google-Smtp-Source: ABdhPJwLdBKcGRNBAVpRiCip7CUbIQZuIXcYHBeps2IOw9tAKoPEKqtROcIFSlKGeTrZSbBGNejK9g==
-X-Received: by 2002:a1c:18e:: with SMTP id 136mr8788559wmb.69.1611230671786;
-        Thu, 21 Jan 2021 04:04:31 -0800 (PST)
-Received: from [192.168.1.211] ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id m2sm7632951wml.34.2021.01.21.04.04.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Jan 2021 04:04:31 -0800 (PST)
-Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent
- acpi_devices
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, andy@kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-3-djrscally@gmail.com>
- <CAJZ5v0gVQsZ4rxXW8uMidW9zfY_S50zpfrL-Gq0J3Z4-qqBiww@mail.gmail.com>
- <b381b48e-1bf2-f3e7-10a6-e51cd261f43c@gmail.com>
- <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
- <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com>
- <CAJZ5v0gg5oXG3yOO9iDvPKSsadYrFojW6JcKfZcQbFFpO78zAQ@mail.gmail.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <85ccf00d-7c04-b1da-a4bc-82c805df69c9@gmail.com>
-Date:   Thu, 21 Jan 2021 12:04:30 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=b3l0OetoC6tw2Q4vXg0OJU58lOnJngSuhcgcpV0j+8A=;
+        b=Lv2A5DsjFVo2h4mxH0GVapLNhQHQXMRk9UMXXAh84YcOKrS/XWvEyDH1VydWdYAIvx
+         9/x0BqgfWPrltsH/MagHTcImjl9jtqaK+1LvIxM70TbUWifVzY3uEsz8fovvEY7SXXbo
+         Wu9e1qUnrWFPSVSFLYAk4O9JIc7EzwPznqF0gAIMxyKRxSRlTpyl/k0Eqvtsh/z0ZNbK
+         39H6CUmH9TOHXMEYIrUCf1XHByFJMm8t4YPkyimFCTzENWlFZePD4yL6oI7GtuXObtoz
+         IKNIHukcPr7wx6XWwFo4Vh2T+aYG7nnquaUu4iZ3HN5FHfpHtsYBNDtSOOrJxA1xGSc8
+         dV1g==
+X-Gm-Message-State: AOAM531ug8QvICYgg2uY6/mGNEDMZvbloz+9ehbAJEj4enpnrBlcV07A
+        ChwXoxXxJFTTsUICasoZNwomNg==
+X-Google-Smtp-Source: ABdhPJxQ+YnQY5ijaIW9U3we9pi/dCo07br3O0qdhedw1UO5Y/HhGzv9KZbJGYIhp9HYeRyQJgQvQQ==
+X-Received: by 2002:adf:d20b:: with SMTP id j11mr13720018wrh.318.1611232771208;
+        Thu, 21 Jan 2021 04:39:31 -0800 (PST)
+Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id p18sm7979248wmc.31.2021.01.21.04.39.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Jan 2021 04:39:30 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     joro@8bytes.org, will@kernel.org
+Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
+        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
+        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
+        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
+        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
+        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v10 00/10] iommu: I/O page faults for SMMUv3
+Date:   Thu, 21 Jan 2021 13:36:14 +0100
+Message-Id: <20210121123623.2060416-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gg5oXG3yOO9iDvPKSsadYrFojW6JcKfZcQbFFpO78zAQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Add stall support to the SMMUv3, along with a common I/O Page Fault
+handler.
 
-On 21/01/2021 11:58, Rafael J. Wysocki wrote:
-> On Thu, Jan 21, 2021 at 10:47 AM Daniel Scally <djrscally@gmail.com> wrote:
->> Hi Rafael
->>
->> On 19/01/2021 13:15, Rafael J. Wysocki wrote:
->>> On Mon, Jan 18, 2021 at 9:51 PM Daniel Scally <djrscally@gmail.com> wrote:
->>>> On 18/01/2021 16:14, Rafael J. Wysocki wrote:
->>>>> On Mon, Jan 18, 2021 at 1:37 AM Daniel Scally <djrscally@gmail.com> wrote:
->>>>>> In some ACPI tables we encounter, devices use the _DEP method to assert
->>>>>> a dependence on other ACPI devices as opposed to the OpRegions that the
->>>>>> specification intends. We need to be able to find those devices "from"
->>>>>> the dependee, so add a function to parse all ACPI Devices and check if
->>>>>> the include the handle of the dependee device in their _DEP buffer.
->>>>> What exactly do you need this for?
->>>> So, in our DSDT we have devices with _HID INT3472, plus sensors which
->>>> refer to those INT3472's in their _DEP method. The driver binds to the
->>>> INT3472 device, we need to find the sensors dependent on them.
->>>>
->>> Well, this is an interesting concept. :-)
->>>
->>> Why does _DEP need to be used for that?  Isn't there any other way to
->>> look up the dependent sensors?
->>>
->>>>> Would it be practical to look up the suppliers in acpi_dep_list instead?
->>>>>
->>>>> Note that supplier drivers may remove entries from there, but does
->>>>> that matter for your use case?
->>>> Ah - that may work, yes. Thank you, let me test that.
->>> Even if that doesn't work right away, but it can be made work, I would
->>> very much prefer that to the driver parsing _DEP for every device in
->>> the namespace by itself.
->>
->> This does work; do you prefer it in scan.c, or in utils.c (in which case
->> with acpi_dep_list declared as external var in internal.h)?
-> Let's put it in scan.c for now, because there is the lock protecting
-> the list in there too.
->
-> How do you want to implement this?  Something like "walk the list and
-> run a callback for the matching entries" or do you have something else
-> in mind?
+Changes since v9 [1]:
+* Style changes suggested by Jonathan
+* Fixes to patch 10 pointed out by Robin
+* In patch 10, don't register the mm fault handler when enabling
+  IOMMU_DEV_FEAT_IOPF, because that feature only indicates that a device
+  driver wants to use PRI or stall. After enabling it, drivers may
+  register their own IOPF handler (see discussion on v9 patch 03).
+  Instead register the mm handler when enabling IOMMU_DEV_FEAT_SVA.
 
+[1] https://lore.kernel.org/linux-iommu/20210108145217.2254447-1-jean-philippe@linaro.org/
 
-Something like this (though with a mutex_lock()). It could be simplified
-by dropping the prev stuff, but we have seen INT3472 devices with
-multiple sensors declaring themselves dependent on the same device
+Jean-Philippe Brucker (10):
+  iommu: Fix comment for struct iommu_fwspec
+  iommu/arm-smmu-v3: Use device properties for pasid-num-bits
+  iommu: Separate IOMMU_DEV_FEAT_IOPF from IOMMU_DEV_FEAT_SVA
+  iommu/vt-d: Support IOMMU_DEV_FEAT_IOPF
+  uacce: Enable IOMMU_DEV_FEAT_IOPF
+  iommu: Add a page fault handler
+  iommu/arm-smmu-v3: Maintain a SID->device structure
+  dt-bindings: document stall property for IOMMU masters
+  ACPI/IORT: Enable stall support for platform devices
+  iommu/arm-smmu-v3: Add stall support for platform devices
 
+ drivers/iommu/Makefile                        |   1 +
+ .../devicetree/bindings/iommu/iommu.txt       |  18 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  56 ++-
+ drivers/iommu/iommu-sva-lib.h                 |  53 ++
+ include/linux/iommu.h                         |  26 +-
+ drivers/acpi/arm64/iort.c                     |  15 +-
+ .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   |  59 ++-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   | 347 +++++++++++--
+ drivers/iommu/intel/iommu.c                   |  11 +-
+ drivers/iommu/io-pgfault.c                    | 461 ++++++++++++++++++
+ drivers/iommu/of_iommu.c                      |   5 -
+ drivers/misc/uacce/uacce.c                    |  39 +-
+ 12 files changed, 1018 insertions(+), 73 deletions(-)
+ create mode 100644 drivers/iommu/io-pgfault.c
 
-struct acpi_device *
-acpi_dev_get_next_dependent_dev(struct acpi_device *supplier,
-                struct acpi_device *prev)
-{
-    struct acpi_dep_data *dep;
-    struct acpi_device *adev;
-    int ret;
-
-    if (!supplier)
-        return ERR_PTR(-EINVAL);
-
-    if (prev) {
-        /*
-         * We need to find the previous device in the list, so we know
-         * where to start iterating from.
-         */
-        list_for_each_entry(dep, &acpi_dep_list, node)
-            if (dep->consumer == prev->handle &&
-                dep->supplier == supplier->handle)
-                break;
-
-        dep = list_next_entry(dep, node);
-    } else {
-        dep = list_first_entry(&acpi_dep_list, struct acpi_dep_data,
-                       node);
-    }
-
-
-    list_for_each_entry_from(dep, &acpi_dep_list, node) {
-        if (dep->supplier == supplier->handle) {
-            ret = acpi_bus_get_device(dep->consumer, &adev);
-            if (ret)
-                return ERR_PTR(ret);
-
-            return adev;
-        }
-    }
-
-    return NULL;
-}
+-- 
+2.30.0
 
