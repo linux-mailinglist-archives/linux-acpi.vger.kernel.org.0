@@ -2,190 +2,222 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC7F82FF2ED
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 19:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A72A12FF35A
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 19:41:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389341AbhAUSJh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 13:09:37 -0500
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:34839 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389720AbhAUSJd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 13:09:33 -0500
-Received: by mail-oi1-f169.google.com with SMTP id w8so3135895oie.2;
-        Thu, 21 Jan 2021 10:09:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rZuG0eDaYJNboNh8e3LplxwDe2N2H+yB/LmrSLFUl6M=;
-        b=mpkd3gCV1ZB6Juf+EQnHYyaq+CeUe3ecQxGnUd7uu/l9DT1GyHAiYpRPiCTckxdwcu
-         V3xwqZSMqz3SwpPlslSYftoRE8zgYGXGIqgbhtBymwtR/Qdn4elnQiJCGdfo/T813M83
-         J/MhKLhpC/q+UEDX69wVRJiVlTIv9hvf1q4QVqvWlREkpH23j0nyzcy+Z+44gUdslrWl
-         3QH+ltYD/mDAqm2VcdfaPv4fDRGoiyrPx2w55sysQEICePLlNj/eXJhenl8Q7aNbXaZw
-         nzjIKsutWYadXq0/4Td18vt+mmSi2cakIwlMWAeOuaS0uc+QlhDxeQgRz9wH42+1woke
-         Snog==
-X-Gm-Message-State: AOAM530kLzE1PB5BRbLrkjTQus1vv5zd702sh82DuavPC1AjLIu0oIXy
-        s22k5WItbF+VkjmilXT6kTT+uNZzlTKiricwjCM=
-X-Google-Smtp-Source: ABdhPJzonsjyrNxpDyasZkL5KpTZWxHq4Ux3HEM1YkApyJQtDjSw14vrAyNsETjZ7up7pvN+p39lnrgFySegxATtRNE=
-X-Received: by 2002:aca:308a:: with SMTP id w132mr552636oiw.69.1611252522742;
- Thu, 21 Jan 2021 10:08:42 -0800 (PST)
+        id S1726082AbhAUSli (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 13:41:38 -0500
+Received: from mga04.intel.com ([192.55.52.120]:41448 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726467AbhAUSlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Jan 2021 13:41:36 -0500
+IronPort-SDR: Gnj00ZfF8g+yyRNBTPSdbKOEzeY6vEYD9lam/VcD4VkpCLqnHsQTb2zq5nJGWLHKOSx+u06W9B
+ YKu1ojPJ14SA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="176747681"
+X-IronPort-AV: E=Sophos;i="5.79,364,1602572400"; 
+   d="scan'208";a="176747681"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 10:40:43 -0800
+IronPort-SDR: 7zvoVKsgeq7e6EpaNxZ2fCy5jza869ddxJ26eTcXGKm5qrQRN2UecNPmGNGbsAw6hOC+sHspgL
+ +L7o7L5zH5Yw==
+X-IronPort-AV: E=Sophos;i="5.79,364,1602572400"; 
+   d="scan'208";a="385412345"
+Received: from jonesmel-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.130.74])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 10:40:43 -0800
+Date:   Thu, 21 Jan 2021 10:40:41 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Jon Masters <jcm@jonmasters.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        daniel.lll@alibaba-inc.com
+Subject: Re: [RFC PATCH v3 13/16] cxl/mem: Create concept of enabled commands
+Message-ID: <20210121184041.r7x7tofhu2qqneus@intel.com>
+References: <20210111225121.820014-1-ben.widawsky@intel.com>
+ <20210111225121.820014-15-ben.widawsky@intel.com>
+ <20210114172531.0000347a@Huawei.com>
 MIME-Version: 1.0
-References: <20210118003428.568892-1-djrscally@gmail.com> <20210118003428.568892-3-djrscally@gmail.com>
- <CAJZ5v0gVQsZ4rxXW8uMidW9zfY_S50zpfrL-Gq0J3Z4-qqBiww@mail.gmail.com>
- <b381b48e-1bf2-f3e7-10a6-e51cd261f43c@gmail.com> <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
- <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com> <CAJZ5v0gg5oXG3yOO9iDvPKSsadYrFojW6JcKfZcQbFFpO78zAQ@mail.gmail.com>
- <85ccf00d-7c04-b1da-a4bc-82c805df69c9@gmail.com> <CAJZ5v0jO9O1zhBMNRNB5kRt1o86BTjr1kRuFUe=nNVTDwBQhEg@mail.gmail.com>
- <0fac24d2-e8fc-7dc8-0f2f-44c7aadb1daf@gmail.com>
-In-Reply-To: <0fac24d2-e8fc-7dc8-0f2f-44c7aadb1daf@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 21 Jan 2021 19:08:31 +0100
-Message-ID: <CAJZ5v0jVxMMGh6k-vXeBRsCtD0L14poNUrg4kZOpCfOz2sZGZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent acpi_devices
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, andy@kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210114172531.0000347a@Huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 5:34 PM Daniel Scally <djrscally@gmail.com> wrote:
->
->
-> On 21/01/2021 14:39, Rafael J. Wysocki wrote:
-> > On Thu, Jan 21, 2021 at 1:04 PM Daniel Scally <djrscally@gmail.com> wrote:
-> >>
-> >> On 21/01/2021 11:58, Rafael J. Wysocki wrote:
-> >>> On Thu, Jan 21, 2021 at 10:47 AM Daniel Scally <djrscally@gmail.com> wrote:
-> >>>> Hi Rafael
-> >>>>
-> >>>> On 19/01/2021 13:15, Rafael J. Wysocki wrote:
-> >>>>> On Mon, Jan 18, 2021 at 9:51 PM Daniel Scally <djrscally@gmail.com> wrote:
-> >>>>>> On 18/01/2021 16:14, Rafael J. Wysocki wrote:
-> >>>>>>> On Mon, Jan 18, 2021 at 1:37 AM Daniel Scally <djrscally@gmail.com> wrote:
-> >>>>>>>> In some ACPI tables we encounter, devices use the _DEP method to assert
-> >>>>>>>> a dependence on other ACPI devices as opposed to the OpRegions that the
-> >>>>>>>> specification intends. We need to be able to find those devices "from"
-> >>>>>>>> the dependee, so add a function to parse all ACPI Devices and check if
-> >>>>>>>> the include the handle of the dependee device in their _DEP buffer.
-> >>>>>>> What exactly do you need this for?
-> >>>>>> So, in our DSDT we have devices with _HID INT3472, plus sensors which
-> >>>>>> refer to those INT3472's in their _DEP method. The driver binds to the
-> >>>>>> INT3472 device, we need to find the sensors dependent on them.
-> >>>>>>
-> >>>>> Well, this is an interesting concept. :-)
-> >>>>>
-> >>>>> Why does _DEP need to be used for that?  Isn't there any other way to
-> >>>>> look up the dependent sensors?
-> >>>>>
-> >>>>>>> Would it be practical to look up the suppliers in acpi_dep_list instead?
-> >>>>>>>
-> >>>>>>> Note that supplier drivers may remove entries from there, but does
-> >>>>>>> that matter for your use case?
-> >>>>>> Ah - that may work, yes. Thank you, let me test that.
-> >>>>> Even if that doesn't work right away, but it can be made work, I would
-> >>>>> very much prefer that to the driver parsing _DEP for every device in
-> >>>>> the namespace by itself.
-> >>>> This does work; do you prefer it in scan.c, or in utils.c (in which case
-> >>>> with acpi_dep_list declared as external var in internal.h)?
-> >>> Let's put it in scan.c for now, because there is the lock protecting
-> >>> the list in there too.
-> >>>
-> >>> How do you want to implement this?  Something like "walk the list and
-> >>> run a callback for the matching entries" or do you have something else
-> >>> in mind?
-> >>
-> >> Something like this (though with a mutex_lock()). It could be simplified
-> >> by dropping the prev stuff, but we have seen INT3472 devices with
-> >> multiple sensors declaring themselves dependent on the same device
-> >>
-> >>
-> >> struct acpi_device *
-> >> acpi_dev_get_next_dependent_dev(struct acpi_device *supplier,
-> >>                 struct acpi_device *prev)
-> >> {
-> >>     struct acpi_dep_data *dep;
-> >>     struct acpi_device *adev;
-> >>     int ret;
-> >>
-> >>     if (!supplier)
-> >>         return ERR_PTR(-EINVAL);
-> >>
-> >>     if (prev) {
-> >>         /*
-> >>          * We need to find the previous device in the list, so we know
-> >>          * where to start iterating from.
-> >>          */
-> >>         list_for_each_entry(dep, &acpi_dep_list, node)
-> >>             if (dep->consumer == prev->handle &&
-> >>                 dep->supplier == supplier->handle)
-> >>                 break;
-> >>
-> >>         dep = list_next_entry(dep, node);
-> >>     } else {
-> >>         dep = list_first_entry(&acpi_dep_list, struct acpi_dep_data,
-> >>                        node);
-> >>     }
-> >>
-> >>
-> >>     list_for_each_entry_from(dep, &acpi_dep_list, node) {
-> >>         if (dep->supplier == supplier->handle) {
-> >>             ret = acpi_bus_get_device(dep->consumer, &adev);
-> >>             if (ret)
-> >>                 return ERR_PTR(ret);
-> >>
-> >>             return adev;
-> >>         }
-> >>     }
-> >>
-> >>     return NULL;
-> >> }
-> > That would work I think, but would it be practical to modify
-> > acpi_walk_dep_device_list() so that it runs a callback for every
-> > consumer found instead of or in addition to the "delete from the list
-> > and free the entry" operation?
->
->
-> I think that this would work fine, if that's the way you want to go.
-> We'd just need to move everything inside the if (dep->supplier ==
-> handle) block to a new callback, and for my purposes I think also add a
-> way to stop parsing the list from the callback (so like have the
-> callbacks return int and stop parsing on a non-zero return). Do you want
-> to expose that ability to pass a callback outside of ACPI?
+On 21-01-14 17:25:31, Jonathan Cameron wrote:
+> On Mon, 11 Jan 2021 14:51:18 -0800
+> Ben Widawsky <ben.widawsky@intel.com> wrote:
+> 
+> > CXL devices must implement the Device Command Interface (described in
+> > 8.2.9 of the CXL 2.0 spec). While the driver already maintains a list of
+> > commands it supports, there is still a need to be able to distinguish
+> > between commands that the driver knows about from commands that may not
+> > be supported by the hardware. No such commands currently are defined in
+> > the driver.
+> > 
+> > The implementation leaves the statically defined table of commands and
+> > supplements it with a bitmap to determine commands that are enabled.
+> > 
+> > ---
+> > 
+> > There are multiple approaches that can be taken, but this is nice for a
+> > few reasons.
+> > 
+> > Here are some of the other solutions:
+> > 
+> > Create a per instance table with only the supported commands.
+> > 1. Having a fixed command id -> command mapping is much easier to manage
+> >    for development and debugging.
+> > 2. Dealing with dynamic memory allocation for the table adds unnecessary
+> >    complexity.
+> > 3. Most tables for device types are likely to be quite similar.
+> > 4. Makes it difficult to implement helper macros like cxl_for_each_cmd()
+> > 
+> > If the per instance table did preserve ids, #1 above can be addressed.
+> > However, as "enable" is currently the only mutable state for the
+> > commands, it would yield a lot of overhead for not much gain.
+> > Additionally, the other issues remain.
+> > 
+> > If "enable" remains the only mutable state, I believe this to be the
+> > best solution. Once the number of mutable elements in a command grows,
+> > it probably makes sense to move to per device instance state with a
+> > fixed command ID mapping.
+> Agreed with the logic.   
+> 
+> However, patch wise, should either drop the --- above or move this below the
+> --- after your sign off.  Otherwise you run the risk of git dropping your
+> sign off and resulting complaints from anyone run validation scripts
+> of the kernel tree that check for that.
+> 
+> > 
+> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > ---
+> >  drivers/cxl/cxl.h |  4 ++++
+> >  drivers/cxl/mem.c | 38 +++++++++++++++++++++++++++++++++++++-
+> >  2 files changed, 41 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> > index 537ac4d8e6bd..963ba30cb200 100644
+> > --- a/drivers/cxl/cxl.h
+> > +++ b/drivers/cxl/cxl.h
+> > @@ -17,6 +17,9 @@
+> >  
+> >  #define CXL_GET_FIELD(word, field) FIELD_GET(field##_MASK, word)
+> >  
+> > +/* XXX: Arbitrary max */
+> > +#define CXL_MAX_COMMANDS 32
+> 
+> If going this way, probably want a build time check that you don't
+> go beyond this value for a given command set.  I haven't actually
+> thought about how to construct that but should be easy enough.
+> 
 
-Yes.
+I think BUILD_BUG_ON of ARRAY_SIZE mem_commands is sufficient. Let me know if
+you want anything more.
 
-> Or just export helpers to call each of the callbacks (one to fetch the next
-> dependent device, one to decrement the unmet dependencies counter)
-
-If you can run a callback for every matching entry, you don't really
-need to have a callback to return the next matching entry.  You can do
-stuff for all of them in one go (note that it probably is not a good
-idea to run the callback under the lock, so the for loop currently in
-there is not really suitable for that).
-
-> Otherwise, I'd just need to update the 5 users of that function either
-> to use the new helper or else to also pass the decrement dependencies
-> callback.
-
-Or have a wrapper around it passing the decrement dependencies
-callback for the "typical" users.
+> > +
+> >  /* Device  (CXL 2.0 - 8.2.8.3) */
+> >  #define CXLDEV_CAP_ARRAY_REG 0x0
+> >  #define CXLDEV_CAP_ARRAY_CAP_ID 0
+> > @@ -88,6 +91,7 @@ struct cxl_mem {
+> >  	} ram;
+> >  
+> >  	char firmware_version[0x10];
+> > +	DECLARE_BITMAP(enabled_cmds, CXL_MAX_COMMANDS);
+> >  
+> >  	/* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
+> >  	struct {
+> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > index a824cfd4342a..20b26fa2c466 100644
+> > --- a/drivers/cxl/mem.c
+> > +++ b/drivers/cxl/mem.c
+> > @@ -114,6 +114,8 @@ static struct {
+> >   *    would typically be used for deprecated commands.
+> >   *  * %CXL_CMD_FLAG_MANDATORY: Hardware must support this command. This flag is
+> >   *    only used internally by the driver for sanity checking.
+> > + *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
+> > + *    a direct mapping to hardware. They are implicitly always enabled.
+> >   *
+> >   * The cxl_mem_command is the driver's internal representation of commands that
+> >   * are supported by the driver. Some of these commands may not be supported by
+> > @@ -129,6 +131,7 @@ struct cxl_mem_command {
+> >  #define CXL_CMD_INTERNAL_FLAG_NONE 0
+> >  #define CXL_CMD_INTERNAL_FLAG_HIDDEN BIT(0)
+> >  #define CXL_CMD_INTERNAL_FLAG_MANDATORY BIT(1)
+> > +#define CXL_CMD_INTERNAL_FLAG_PSEUDO BIT(2)
+> >  };
+> >  
+> >  /*
+> > @@ -140,7 +143,7 @@ struct cxl_mem_command {
+> >  static struct cxl_mem_command mem_commands[] = {
+> >  	CXL_CMD(INVALID, KERNEL, 0, 0, HIDDEN),
+> >  	CXL_CMD(IDENTIFY, NONE, 0, 0x43, MANDATORY),
+> > -	CXL_CMD(RAW, NONE, ~0, ~0, MANDATORY),
+> > +	CXL_CMD(RAW, NONE, ~0, ~0, PSEUDO),
+> >  };
+> >  
+> >  #define cxl_for_each_cmd(cmd)                                                  \
+> > @@ -618,6 +621,10 @@ static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
+> >  	c = &mem_commands[send_cmd->id];
+> >  	info = &c->info;
+> >  
+> > +	/* Check that the command is enabled for hardware */
+> > +	if (!test_bit(cxl_cmd_index(c), cxlm->enabled_cmds))
+> > +		return -ENOTTY;
+> > +
+> >  	if (info->flags & CXL_MEM_COMMAND_FLAG_KERNEL)
+> >  		return -EPERM;
+> >  
+> > @@ -1029,6 +1036,31 @@ static int cxl_mem_add_memdev(struct cxl_mem *cxlm)
+> >  	return rc;
+> >  }
+> >  
+> > +/**
+> > + * cxl_mem_enumerate_cmds() - Enumerate commands for a device.
+> > + * @cxlm: The device.
+> > + *
+> > + * Returns 0 if enumerate completed successfully.
+> > + *
+> > + * CXL devices have optional support for certain commands. This function will
+> > + * determine the set of supported commands for the hardware and update the
+> > + * enabled_cmds bitmap in the @cxlm.
+> > + */
+> > +static int cxl_mem_enumerate_cmds(struct cxl_mem *cxlm)
+> > +{
+> > +	struct cxl_mem_command *c;
+> > +
+> > +	/* All commands are considered enabled for now (except INVALID). */
+> > +	cxl_for_each_cmd(c) {
+> > +		if (c->flags & CXL_CMD_INTERNAL_FLAG_HIDDEN)
+> > +			continue;
+> > +
+> > +		set_bit(cxl_cmd_index(c), cxlm->enabled_cmds);
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  /**
+> >   * cxl_mem_identify() - Send the IDENTIFY command to the device.
+> >   * @cxlm: The device to identify.
+> > @@ -1147,6 +1179,10 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> >  	if (rc)
+> >  		goto err;
+> >  
+> > +	rc = cxl_mem_enumerate_cmds(cxlm);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> >  	rc = cxl_mem_identify(cxlm);
+> >  	if (rc)
+> >  		goto err;
+> 
