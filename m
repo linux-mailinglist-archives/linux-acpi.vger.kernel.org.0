@@ -2,127 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F4E62FE74B
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 11:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DB7E2FE71D
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 11:08:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728469AbhAUKPW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 05:15:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728708AbhAUJrt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 04:47:49 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998C9C061575;
-        Thu, 21 Jan 2021 01:47:31 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id b5so1050428wrr.10;
-        Thu, 21 Jan 2021 01:47:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=yKc5i0pAM0tVHvQhN0nKtZMVSNkJgO1BmOAhXjVUe9U=;
-        b=jIYHon01Ye/54nu5CwPQAQ1eytx++CbmX92yv5dAYqEzAk0u6CSuQBswvAjb0XZdjc
-         /OS/PSaOUHTY1TJq6dp1oPKEGQeCSRw6NJw73BzzcQqQep3Xbru5wnL0mRUjYcB2nd2M
-         HUC7yB3w6wJFnLcFHlIbh7Ppm8ILeqye9tIFD2kFAyi9xIhMwUwk/1FJ7AtsJxeEnO72
-         FO+HTjnEz/9GUR1c8OwVuO04P54NRbYIkws+lqSHxuyBPIz2Doi6LlBDJadZnb8RHkML
-         xfkza48hXgIx5aVxKUAIBrgKqzPCK47T8+XgbVSqQo7zftiSAtInnyeaZ1JbVTsl9DJT
-         mRZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=yKc5i0pAM0tVHvQhN0nKtZMVSNkJgO1BmOAhXjVUe9U=;
-        b=bWHH2iFPNcPCMju5nj88bv4k8A9wCNEg3F3bZx2ywYjijEfVRYP1OHjpOPmK/W733W
-         CwOJiJ+AOrUfyKgkUO/QO0ZD3op0ddBnhHucs6XmHEuDq+LjoyJhiacw+fgev8H6Nlbs
-         Ch9milkC5dJ4nAB4hfmWXOePbrYwJTuJc6TIl1/HC9qNiqwYvFFY8Bon9+36eMymr2e6
-         bdLvyCu/dX08Y9VGDa0CCgtvOUCW+z5aICrhtn/L7twxZo+KZ4OvB78p/zAHblQ7F2ed
-         YCYAzX+mLpl7KYsyf57esTcoNBnSyIeAfvJBVa8m3ruNq8AM/P5jEvODeaXMhxXD+5M8
-         5bRw==
-X-Gm-Message-State: AOAM530wFjzXsY3SHlgz85modexMT00GJ25fHhXWWjDE5RgKibDoY6V3
-        jKd1Mmk7sa9/w8ESl4MNj/U=
-X-Google-Smtp-Source: ABdhPJwjt1eJ+KrHwe5acgIBFhZjuKePkobn9OcmLVCO2pB2kKBCZs08qinTPDkGKYdcEneH3v0nqA==
-X-Received: by 2002:adf:902a:: with SMTP id h39mr13230023wrh.147.1611222450386;
-        Thu, 21 Jan 2021 01:47:30 -0800 (PST)
-Received: from [192.168.1.211] ([2.29.208.120])
-        by smtp.gmail.com with ESMTPSA id u5sm8350654wmg.9.2021.01.21.01.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Jan 2021 01:47:29 -0800 (PST)
-Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent
- acpi_devices
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, andy@kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
+        id S1728373AbhAUKHt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 05:07:49 -0500
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:11942 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728760AbhAUKH2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 05:07:28 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B6009521b0000>; Thu, 21 Jan 2021 02:06:19 -0800
+Received: from [10.26.72.207] (172.20.145.6) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 21 Jan
+ 2021 10:06:14 +0000
+Subject: Re: [PATCH] ACPICA: fix -Wfallthrough
+To:     Nick Desaulniers <ndesaulniers@google.com>,
         Robert Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>
-References: <20210118003428.568892-1-djrscally@gmail.com>
- <20210118003428.568892-3-djrscally@gmail.com>
- <CAJZ5v0gVQsZ4rxXW8uMidW9zfY_S50zpfrL-Gq0J3Z4-qqBiww@mail.gmail.com>
- <b381b48e-1bf2-f3e7-10a6-e51cd261f43c@gmail.com>
- <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com>
-Date:   Thu, 21 Jan 2021 09:47:28 +0000
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>
+CC:     <clang-built-linux@googlegroups.com>, Len Brown <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
+        <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20201111021131.822867-1-ndesaulniers@google.com>
+From:   Jon Hunter <jonathanh@nvidia.com>
+Message-ID: <031790d7-ee26-f919-9338-b135e9b94635@nvidia.com>
+Date:   Thu, 21 Jan 2021 10:06:12 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20201111021131.822867-1-ndesaulniers@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [172.20.145.6]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1611223579; bh=ecknqWhuJL3W8p6oQ0zL/CmHsHXhDRwgK1lykE3RJyQ=;
+        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+         MIME-Version:In-Reply-To:Content-Type:Content-Language:
+         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+        b=hQ9ZqKLYBvSdVpq/QxZyE+ROLV9WzIzI1NNn1H29M+eRY+CERXSsX24rDtifxNsGx
+         gJ2UWTvPfHxQPkxRszZlLARzfL9qwIiYhq5F+2t79hEujT/T5wE8Yp1RaXH2zb0fr6
+         KHps9XcTapcsTT97zKDniQRCU4yvcwZ70NNbSARxqEtCZ24LK8kFgvHFFYcec4iQiu
+         K6lnTBYBrtu4Nzw/d/leu7Jb6yGNZVVUz/AaQE498WuZTFrBTbJAIJhmhvshqTfCI4
+         C39BAL/NroKKXoA1IGLpxQLmfT0xYmlLYnLvjg2yPkM/dWCj7zdbg5clw5OrAMpJ7S
+         lM34IV6mGryeA==
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael
 
-On 19/01/2021 13:15, Rafael J. Wysocki wrote:
-> On Mon, Jan 18, 2021 at 9:51 PM Daniel Scally <djrscally@gmail.com> wrote:
->> On 18/01/2021 16:14, Rafael J. Wysocki wrote:
->>> On Mon, Jan 18, 2021 at 1:37 AM Daniel Scally <djrscally@gmail.com> wrote:
->>>> In some ACPI tables we encounter, devices use the _DEP method to assert
->>>> a dependence on other ACPI devices as opposed to the OpRegions that the
->>>> specification intends. We need to be able to find those devices "from"
->>>> the dependee, so add a function to parse all ACPI Devices and check if
->>>> the include the handle of the dependee device in their _DEP buffer.
->>> What exactly do you need this for?
->> So, in our DSDT we have devices with _HID INT3472, plus sensors which
->> refer to those INT3472's in their _DEP method. The driver binds to the
->> INT3472 device, we need to find the sensors dependent on them.
->>
-> Well, this is an interesting concept. :-)
->
-> Why does _DEP need to be used for that?  Isn't there any other way to
-> look up the dependent sensors?
->
->>> Would it be practical to look up the suppliers in acpi_dep_list instead?
->>>
->>> Note that supplier drivers may remove entries from there, but does
->>> that matter for your use case?
->> Ah - that may work, yes. Thank you, let me test that.
-> Even if that doesn't work right away, but it can be made work, I would
-> very much prefer that to the driver parsing _DEP for every device in
-> the namespace by itself.
+On 11/11/2020 02:11, Nick Desaulniers wrote:
+> The "fallthrough" pseudo-keyword was added as a portable way to denote
+> intentional fallthrough. This code seemed to be using a mix of
+> fallthrough comments that GCC recognizes, and some kind of lint marker.
+> I'm guessing that linter hasn't been run in a while from the mixed use
+> of the marker vs comments.
+>=20
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 
 
-This does work; do you prefer it in scan.c, or in utils.c (in which case
-with acpi_dep_list declared as external var in internal.h)?
+I know this is not the exact version that was merged, I can't find it on
+the list, but looks like the version that was merged [0], is causing
+build errors with older toolchains (GCC v6) ...
 
+/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
+.c: In function =E2=80=98acpi_ds_exec_begin_control_op=E2=80=99:
+/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
+.c:65:3: error: =E2=80=98ACPI_FALLTHROUGH=E2=80=99 undeclared (first use in=
+ this function)
+   ACPI_FALLTHROUGH;
+   ^~~~~~~~~~~~~~~~
+/dvs/git/dirty/git-master_l4t-upstream/kernel/drivers/acpi/acpica/dscontrol=
+.c:65:3: note: each undeclared identifier is reported only once for each fu=
+nction it appears in
+/dvs/git/dirty/git-master_l4t-upstream/kernel/scripts/Makefile.build:287: r=
+ecipe for target 'drivers/acpi/acpica/dscontrol.o' failed
 
+Cheers
+Jon
 
+[0] https://github.com/acpica/acpica/commit/4b9135f5
+	=20
+--=20
+nvpublic
