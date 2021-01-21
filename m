@@ -2,99 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D67A62FE811
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 11:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 317CA2FE982
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jan 2021 13:00:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729867AbhAUKvi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 05:51:38 -0500
-Received: from mga12.intel.com ([192.55.52.136]:47845 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729800AbhAUKv2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Jan 2021 05:51:28 -0500
-IronPort-SDR: LX5cH+jqCv7lJ255IediMs20JFOIv0AJM2zREfSZfsZZ5Debv8mFAT4s+0Xdu9xMQjqhudN2Th
- BTNdhyTpDjOA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9870"; a="158430067"
-X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
-   d="scan'208";a="158430067"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 02:49:41 -0800
-IronPort-SDR: ytMdTu6t6jXggkalWWS/ai6nveuZOIW76KCY5D+jBagvuZvS7Ro/IHCNSzdRDFkHw0H3Gl1Bsp
- oPOgvSNikulg==
-X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
-   d="scan'208";a="356419120"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 02:49:38 -0800
-Received: by lahna (sSMTP sendmail emulation); Thu, 21 Jan 2021 12:49:34 +0200
-Date:   Thu, 21 Jan 2021 12:49:34 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI / device_sysfs: Use OF_MODALIAS for "compatible"
- modalias
-Message-ID: <20210121104934.GS1988617@lahna.fi.intel.com>
-References: <20210119081513.300938-1-kai.heng.feng@canonical.com>
- <YAaXz9Pg5x3DsCs3@kroah.com>
- <CAAd53p7tdFiARtW1RXsjN8+OwRXWzMnok_rfKHDHCh-JSam3cQ@mail.gmail.com>
- <20210119094159.GQ4077@smile.fi.intel.com>
- <YAa1ygjr2L3VxBKF@kroah.com>
- <CAAd53p4MTSzuPEp3Y5=wP3HwguTOkyTrVZpi6xOCS0_Q1qcMdQ@mail.gmail.com>
+        id S1730845AbhAUL7p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jan 2021 06:59:45 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:42838 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728846AbhAUL7f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jan 2021 06:59:35 -0500
+Received: by mail-ot1-f41.google.com with SMTP id f6so1319644ots.9;
+        Thu, 21 Jan 2021 03:59:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LMQpWTlwXlB+6DhuZpRPyd2/2y3TLAjilyG8Sg/pBQ4=;
+        b=tbYRWno+wlZxOIOXoc2efdBECq/zwJxHZz1DYSHEeo+FGar5goxcUjpkxY3rGtxCeJ
+         fVg67s99LYEEctteoTQ+xRmZ3ewBDg4T4lUF4yAREJRFr0j/N8K/m/YKAKg2Vgc4xbB6
+         iEVO+UGhc8mKZ1xM7xdgDSchClUVeQvpsGbqXUDHcwMgPpX9d9Rg1GlCmDCq7u9jU954
+         GxnGuhfllwcvkfjkEuB+oYpodG9Xwyf9ROKGbVu1hHbGJ70bSXqdT5FOjD44ps9ysPA1
+         HgTK8dCXKw1DEhDwBAclb7jJtK0cuW7IsUemF0WzulbJavAPHbzIAKaiD3dCOikBTzAj
+         r6Rg==
+X-Gm-Message-State: AOAM53133IraZqjTiy30MFqRAaPr71tvh56qzkH6t7K4zJmFvIJ8+FjT
+        QFRQ/pwpkIz00imBdtTk60g7XAsjdeAn19ik9eo=
+X-Google-Smtp-Source: ABdhPJzUXT3Qcu1MEek/JIy1QokhzlIz+1Z889izuguqO0chtBSEj4LHKA87+uH8We9MoxEatFnak9b3i0z82NlULJU=
+X-Received: by 2002:a9d:1710:: with SMTP id i16mr9965157ota.260.1611230334235;
+ Thu, 21 Jan 2021 03:58:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAd53p4MTSzuPEp3Y5=wP3HwguTOkyTrVZpi6xOCS0_Q1qcMdQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210118003428.568892-1-djrscally@gmail.com> <20210118003428.568892-3-djrscally@gmail.com>
+ <CAJZ5v0gVQsZ4rxXW8uMidW9zfY_S50zpfrL-Gq0J3Z4-qqBiww@mail.gmail.com>
+ <b381b48e-1bf2-f3e7-10a6-e51cd261f43c@gmail.com> <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
+ <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com>
+In-Reply-To: <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 21 Jan 2021 12:58:43 +0100
+Message-ID: <CAJZ5v0gg5oXG3yOO9iDvPKSsadYrFojW6JcKfZcQbFFpO78zAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent acpi_devices
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, andy@kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 02:22:43PM +0800, Kai-Heng Feng wrote:
-> On Tue, Jan 19, 2021 at 6:34 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
+On Thu, Jan 21, 2021 at 10:47 AM Daniel Scally <djrscally@gmail.com> wrote:
+>
+> Hi Rafael
+>
+> On 19/01/2021 13:15, Rafael J. Wysocki wrote:
+> > On Mon, Jan 18, 2021 at 9:51 PM Daniel Scally <djrscally@gmail.com> wrote:
+> >> On 18/01/2021 16:14, Rafael J. Wysocki wrote:
+> >>> On Mon, Jan 18, 2021 at 1:37 AM Daniel Scally <djrscally@gmail.com> wrote:
+> >>>> In some ACPI tables we encounter, devices use the _DEP method to assert
+> >>>> a dependence on other ACPI devices as opposed to the OpRegions that the
+> >>>> specification intends. We need to be able to find those devices "from"
+> >>>> the dependee, so add a function to parse all ACPI Devices and check if
+> >>>> the include the handle of the dependee device in their _DEP buffer.
+> >>> What exactly do you need this for?
+> >> So, in our DSDT we have devices with _HID INT3472, plus sensors which
+> >> refer to those INT3472's in their _DEP method. The driver binds to the
+> >> INT3472 device, we need to find the sensors dependent on them.
+> >>
+> > Well, this is an interesting concept. :-)
 > >
-> > On Tue, Jan 19, 2021 at 11:41:59AM +0200, Andy Shevchenko wrote:
-> > > On Tue, Jan 19, 2021 at 04:41:48PM +0800, Kai-Heng Feng wrote:
-> > > > On Tue, Jan 19, 2021 at 4:27 PM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > On Tue, Jan 19, 2021 at 04:15:13PM +0800, Kai-Heng Feng wrote:
-> > >
-> > > ...
-> > >
-> > > > > Who will use OF_MODALIAS and where have you documented it?
-> > > >
-> > > > After this lands in mainline, I'll modify the pull request for systemd
-> > > > to add a new rule for OF_MODALIAS.
-> > > > I'll modify the comment on the function to document the change.
-> > >
-> > > I'm wondering why to have two fixes in two places instead of fixing udev to
-> > > understand multiple MODALIAS= events?
+> > Why does _DEP need to be used for that?  Isn't there any other way to
+> > look up the dependent sensors?
 > >
-> > It's not a matter of multiple events, it's a single event with a
-> > key/value pair with duplicate keys and different values.
-> >
-> > What is this event with different values supposed to be doing in
-> > userspace?  Do you want multiple invocations of `modprobe` or something
-> > else?
-> >
-> > Usually a "device" only has a single "signature" that modprobe uses to
-> > look up the correct module for.  Modules can support any number of
-> > device signatures, but traditionally it is odd to think that a device
-> > itself can be supported by multiple modules, which is what you are
-> > saying is happening here.
-> >
-> > So what should userspace do with this, and why does a device need to
-> > have multiple module alias signatures?
-> 
-> >From the original use case [1], I think the "compatible" modalias
-> should be enough.
-> Andy and Mika, what do you think? Can we remove the ACPI modalias for this case?
+> >>> Would it be practical to look up the suppliers in acpi_dep_list instead?
+> >>>
+> >>> Note that supplier drivers may remove entries from there, but does
+> >>> that matter for your use case?
+> >> Ah - that may work, yes. Thank you, let me test that.
+> > Even if that doesn't work right away, but it can be made work, I would
+> > very much prefer that to the driver parsing _DEP for every device in
+> > the namespace by itself.
+>
+>
+> This does work; do you prefer it in scan.c, or in utils.c (in which case
+> with acpi_dep_list declared as external var in internal.h)?
 
-Yes, I think that should work. After all we want the match to happen
-through the DT compatible string if the property is present, not through
-ACPI IDs.
+Let's put it in scan.c for now, because there is the lock protecting
+the list in there too.
+
+How do you want to implement this?  Something like "walk the list and
+run a callback for the matching entries" or do you have something else
+in mind?
