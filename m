@@ -2,231 +2,422 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA3FA3007C4
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 16:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5BA43007AE
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 16:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729273AbhAVPtM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jan 2021 10:49:12 -0500
-Received: from mail-eopbgr30068.outbound.protection.outlook.com ([40.107.3.68]:58961
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729204AbhAVPsR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Jan 2021 10:48:17 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Lnk7AyG2GsIg4IUO+AgDuHb+iTAjJnK0igXwLghKT7g2h43/BPGd5+J5ehtM0pSvHTHbek20/6KXC6wob/P5EF3P/zEwhK74rSXhUUZhdNGl0hH9C1ibt12vy6ervMILEoouJyYFUW4fzN981MwqUT4pfVvzorQ2jQ4oNKCzW4QTHNgm0JUvV0jK1RRObdAREVgpxVkr2QAdPA7CL6vUwah5k3gZFTypyL1gbdP7p4I0oJje+oi7B0ew/FBboAXhbrCb7z2bZ7B1mVQCdHfQpy8sDd+k1K/NnUz4WC7bBRalykeF7id3a1VyeDgmvd4WEAsngKIxOddrBt0UzN7r5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hPXicAkotzmCd19tN3aKAQTf20oFbPpqck2oZy6QbN8=;
- b=AX5qJ031uW0Ezk5t/ve6D/eZi9Y6Xzu+t474qRz42vuxhHSb6NptqlzAuGEx5fTEvQ/febaIor4kds5qGc+9dP4YTBhKkFuDcwy3q/pUPB2M/IXFZXJ4sm9tAC8Ac5szzOh56UOwlmhjhFpp14hBbUBI5e87dMAlrF4MAH9dtUerawGm9M0QJuqSfimGKoSc7sdKRJnQRRICdYYOLfD9AAI1V80dP94PqHZQ6ELlUn8NSizNOgD9J0Kf7l8mN433H2yBg7ri2h5qCJwV78Nrl/O17dadlhtnjPW524uKKk+Stayk+EdmULQkKp/LOgN6hg8SyVaWYXWPvSSkVKK+kQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hPXicAkotzmCd19tN3aKAQTf20oFbPpqck2oZy6QbN8=;
- b=jYw+5x4CJNTWXcABb3YodAelIU3YAW45/DejnlNS0cqomyDF3QYI1wdSrQfbNOhLf9XaJ1jPCXx0gXvZygP3CzVMzvy4/sBrzr1uwbX9Mpz9w6dt+rfprcqvfk2+tEm9Tdzde+qm6f4bqQAtIV+/U2CW8fTQkyYj8n7I0FyAwHI=
-Authentication-Results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR0402MB3443.eurprd04.prod.outlook.com (2603:10a6:208:1b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.12; Fri, 22 Jan
- 2021 15:45:19 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42%5]) with mapi id 15.20.3784.015; Fri, 22 Jan 2021
- 15:45:19 +0000
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux.cj@gmail.com, Diana Madalina Craciun <diana.craciun@nxp.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [net-next PATCH v4 13/15] phylink: introduce phylink_fwnode_phy_connect()
-Date:   Fri, 22 Jan 2021 21:12:58 +0530
-Message-Id: <20210122154300.7628-14-calvin.johnson@oss.nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210122154300.7628-1-calvin.johnson@oss.nxp.com>
-References: <20210122154300.7628-1-calvin.johnson@oss.nxp.com>
-Content-Type: text/plain
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR06CA0117.apcprd06.prod.outlook.com
- (2603:1096:1:1d::19) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S1728686AbhAVPoT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jan 2021 10:44:19 -0500
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:38087 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729061AbhAVPnx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jan 2021 10:43:53 -0500
+Received: by mail-oi1-f181.google.com with SMTP id h6so5022370oie.5
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Jan 2021 07:43:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3tCOg3okVXxN4m8sE7gb5HcmfkJY6SxmMVeADSFNIJw=;
+        b=sNHk2WPbgV1SGQKYSpa/cVvCBAot60BGoNRIr9Vmrep/ES26/4UsDl4hTetYQYE+WG
+         l8yTyhvguqGf9PJSPa5IjkPjrk4OEMrSia6a37gGiCvMwX/JiH3M22X3ZNI7InT01vJS
+         pav0SglavW6m9KOkb2OtsMqlHQAp+YhwW4qwOs0cnsBQl5HgKJPPJOSvz9U2VFLn88ms
+         OBJRiQhZPiCsVw3qbpBuvnGFD4A4K85jEEqP/0gYTAELbk2oxJjGOy5dJDujg04Xr/uH
+         YGuGc8jVZ3zxm5JYTgXw/fR26IjqU/NcQ/JVjPUGx0FeZZr+31LcR7qZdcPfZV2Ijx8T
+         sCrg==
+X-Gm-Message-State: AOAM533/G+cEV2OgCuLmjI3zhxmVpH7w0JgRf6xlMxxbAZM4UgSiEvrn
+        RuHGicW6E9mvH2C/tDucimTfQqNRLPcK70M8TmToGyXL
+X-Google-Smtp-Source: ABdhPJz4LPVw46Riuoja80y2dnxG9tOOeUlr7cQ2s/FQ31chkB+UILRZCR+fX4KNOnkTV0JO6sK5/M5KWAtflJYE0RQ=
+X-Received: by 2002:aca:fc84:: with SMTP id a126mr3679096oii.71.1611330192364;
+ Fri, 22 Jan 2021 07:43:12 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0117.apcprd06.prod.outlook.com (2603:1096:1:1d::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.12 via Frontend Transport; Fri, 22 Jan 2021 15:45:12 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: a2892d52-168c-4999-693c-08d8beecb88c
-X-MS-TrafficTypeDiagnostic: AM0PR0402MB3443:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR0402MB344366AE6C83A6841E745F50D2A00@AM0PR0402MB3443.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2399;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /aH43FXRUxlfFhq0XKZsv6A5Ukve3GFRPuahM95uGk7jzQm/n/G6NaqpJWCl8ZAALhAd28hf7TYk3y4nQjkNnT9xIH2tjtJ/UoDl6H3koXwTIIAbyd9MzINvSoAdf5Gm8tESYQSzpbOjPyNiR6N2dr2BqbPF7NhC32IGCqw77BkHcnzbn4L/sBYyBCK0R6u3yPhSHrNKzSKRP/gOkIBJYq6XNGzaq43cVwkO7GQVyCvQLaxPFBemQLGyygLoWG5SAWu2Fk5X1+S+k33lBWyvLwPyDODy+zf5Syau9xCoLh3Ipvc+NXlDpNzsxx2te4TSXhWmF8uVBnPCRRttM+4f12PP/QJUoAS72Zti777hMyNGaAf06qxN2LeUBLBGgQGq/v4eGcMDmqN+fk4c8oN9pjtA10igojo5u9+RCjrCiW+pkCcfk7HdzzRzgNObdW+jeAqoXizKu1X9Fu/hL2FNmQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(136003)(396003)(39850400004)(366004)(2906002)(6506007)(921005)(6512007)(6666004)(186003)(5660300002)(1006002)(16526019)(52116002)(54906003)(956004)(55236004)(8676002)(66556008)(8936002)(66476007)(2616005)(66946007)(1076003)(478600001)(26005)(110136005)(86362001)(316002)(7416002)(4326008)(6486002)(44832011)(110426009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?AdmRGScw0y1uYSVYP9vPbzmCP98C4LZo039VeCc5HAZvHS6qRUCDT1AXnyv9?=
- =?us-ascii?Q?bm3akotAvjg5s23ZdNJUUYYnX99tkznMheH1jRKIjljzreVLlrzU1JLloKyq?=
- =?us-ascii?Q?TaIhUzK5J58MTA2n1hH34fTlXlUc+RkrkXJOOoOO133PdNvJQFenOMyYV6bj?=
- =?us-ascii?Q?6o3yyQ7gMJr3F8/GoEmZ8Kny0FrSMdTq+xNFvpuKliZ8ZxeW2JHUiW7foM1w?=
- =?us-ascii?Q?5xNKL8resUymjVfQgC/aS6ij706K0vkf+FOrVj/3nvd8S0MQwDQQQcr623GY?=
- =?us-ascii?Q?517GpSRGrn0QoPaCHfVULMbHMbZM1t6x56voJIHO6JdICPHpVpTNosKX13r5?=
- =?us-ascii?Q?i8sgIzQVedqTEPUNLcUDn67Tr3VvSc0qq4rJ0ODsNYaIJFvKGSSQc1KteXVI?=
- =?us-ascii?Q?vGCUwYzoxfspoh/9iD/5fU+J2umMRiIzjTSlxbij1NSJoShEMaqgZaWdjQi0?=
- =?us-ascii?Q?Guwk2JoD234mL0S+Ev/xaN7Q3LSb3EJku3gNSicKMD1aHjbRdsMiAn+HQx6P?=
- =?us-ascii?Q?qI4nPDEWaWpq+pAn6JtUIpu2Yvke6u17AuCQFvCsYMNDri/3I2BDUtjzd3wU?=
- =?us-ascii?Q?p7Fe/RYpuBrGmK/id7gIMjxWWVaTAIQFES7ErtxaUdR51vr+4FRCKm7LnWpe?=
- =?us-ascii?Q?BUGFzdkP5JRR3CIxpFijFc13ReTtMCdWCf5SaFZ5oc7MxWZPBaPVUgXXQdGy?=
- =?us-ascii?Q?Oc8RaTOZfkoRircBc0yjGemy+5gNOC9DEeg2A289GuS2pnfs8S6unyGey/n1?=
- =?us-ascii?Q?+8uYVY4LOOqajzZVsA7Aldqnz0QglkKNM0l1gpzgv7rPgjLxgJyJght17/ZL?=
- =?us-ascii?Q?ohCgNApYEzb/M56gwnpbe+iizlJH3y68jrWz/craH30pGT56Dbj7I5ZWXqGf?=
- =?us-ascii?Q?+nr9heb6KZYs6wc95F1fdV8wcvPjHrLOsvCnkJBZ9Ym3NNB76zEH9kXh7otD?=
- =?us-ascii?Q?yHIJk9D0ksIiDUqarf/eAPWVcG9Gl/jsgmILFXoqFkmxcPfEle65BNJF3D+D?=
- =?us-ascii?Q?llPG3Dn9tPtezmFBx4smnwt5md9s2+O4jIt770RPw3UPoFgOwMfxyvoZiXEx?=
- =?us-ascii?Q?flrg0IBj?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2892d52-168c-4999-693c-08d8beecb88c
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2021 15:45:19.2793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0U0c4BNBRYsnTk+rg8gilpyGc2NlFcrMimylsC2qawCTRIRkHbZOlsmItDwNLUyEbA8zZVsPvArh6WfJEcHN+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3443
+References: <20210115100220.21686-1-rui.zhang@intel.com>
+In-Reply-To: <20210115100220.21686-1-rui.zhang@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 22 Jan 2021 16:43:01 +0100
+Message-ID: <CAJZ5v0izPwooX6vnuN6Lfx1etDqBfyoucGV3iEs+Tp5GQi16JQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: introduce support for FPDT table
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Todd Brandt <todd.e.brandt@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Define phylink_fwnode_phy_connect() to connect phy specified by
-a fwnode to a phylink instance.
+On Fri, Jan 15, 2021 at 10:51 AM Zhang Rui <rui.zhang@intel.com> wrote:
+>
+> ACPI Firmware Performance Data Table (FPDT) provides information about
+> firmware performance during system boot, S3 suspend and S3 resume.
+>
+> Have the kernel parse the FPDT table, and expose the firmware
+> performance data to userspace as sysfs attributes under
+> /sys/firmware/acpi/fpdt/.
+>
+> Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 
-Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
----
+Applied as 5.12 material with a minor adjustment of the Kconfig entry, thanks!
 
-Changes in v4:
-- call phy_device_free() before returning
-
-Changes in v3: None
-Changes in v2: None
-
- drivers/net/phy/phylink.c | 56 +++++++++++++++++++++++++++++++++++++++
- include/linux/phylink.h   |  3 +++
- 2 files changed, 59 insertions(+)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 84f6e197f965..5466e1e6272a 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -5,6 +5,7 @@
-  *
-  * Copyright (C) 2015 Russell King
-  */
-+#include <linux/acpi.h>
- #include <linux/ethtool.h>
- #include <linux/export.h>
- #include <linux/gpio/consumer.h>
-@@ -1120,6 +1121,61 @@ int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
- }
- EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
- 
-+/**
-+ * phylink_fwnode_phy_connect() - connect the PHY specified in the fwnode.
-+ * @pl: a pointer to a &struct phylink returned from phylink_create()
-+ * @fwnode: a pointer to a &struct fwnode_handle.
-+ * @flags: PHY-specific flags to communicate to the PHY device driver
-+ *
-+ * Connect the phy specified @fwnode to the phylink instance specified
-+ * by @pl.
-+ *
-+ * Returns 0 on success or a negative errno.
-+ */
-+int phylink_fwnode_phy_connect(struct phylink *pl,
-+			       struct fwnode_handle *fwnode,
-+			       u32 flags)
-+{
-+	struct fwnode_handle *phy_fwnode;
-+	struct phy_device *phy_dev;
-+	int ret;
-+
-+	if (is_of_node(fwnode)) {
-+		/* Fixed links and 802.3z are handled without needing a PHY */
-+		if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
-+		    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
-+		     phy_interface_mode_is_8023z(pl->link_interface)))
-+			return 0;
-+	}
-+
-+	phy_fwnode = fwnode_get_phy_node(fwnode);
-+	if (IS_ERR(phy_fwnode)) {
-+		if (pl->cfg_link_an_mode == MLO_AN_PHY)
-+			return -ENODEV;
-+		return 0;
-+	}
-+
-+	phy_dev = fwnode_phy_find_device(phy_fwnode);
-+	/* We're done with the phy_node handle */
-+	fwnode_handle_put(phy_fwnode);
-+	if (!phy_dev)
-+		return -ENODEV;
-+
-+	ret = phy_attach_direct(pl->netdev, phy_dev, flags,
-+				pl->link_interface);
-+	if (ret) {
-+		phy_device_free(phy_dev);
-+		return ret;
-+	}
-+
-+	ret = phylink_bringup_phy(pl, phy_dev, pl->link_config.interface);
-+	if (ret)
-+		phy_detach(phy_dev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(phylink_fwnode_phy_connect);
-+
- /**
-  * phylink_disconnect_phy() - disconnect any PHY attached to the phylink
-  *   instance.
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index d81a714cfbbd..75d4f99090fd 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -439,6 +439,9 @@ void phylink_destroy(struct phylink *);
- 
- int phylink_connect_phy(struct phylink *, struct phy_device *);
- int phylink_of_phy_connect(struct phylink *, struct device_node *, u32 flags);
-+int phylink_fwnode_phy_connect(struct phylink *pl,
-+			       struct fwnode_handle *fwnode,
-+			       u32 flags);
- void phylink_disconnect_phy(struct phylink *);
- 
- void phylink_mac_change(struct phylink *, bool up);
--- 
-2.17.1
-
+> ---
+>  Documentation/ABI/testing/sysfs-firmware-acpi |  43 +++
+>  drivers/acpi/Kconfig                          |   8 +
+>  drivers/acpi/Makefile                         |   1 +
+>  drivers/acpi/acpi_fpdt.c                      | 263 ++++++++++++++++++
+>  4 files changed, 315 insertions(+)
+>  create mode 100644 drivers/acpi/acpi_fpdt.c
+>
+> diff --git a/Documentation/ABI/testing/sysfs-firmware-acpi b/Documentation/ABI/testing/sysfs-firmware-acpi
+> index b16d30a71709..819939d858c9 100644
+> --- a/Documentation/ABI/testing/sysfs-firmware-acpi
+> +++ b/Documentation/ABI/testing/sysfs-firmware-acpi
+> @@ -1,3 +1,46 @@
+> +What:          /sys/firmware/acpi/fpdt/
+> +Date:          Jan 2021
+> +Contact:       Zhang Rui <rui.zhang@intel.com>
+> +Description:
+> +               ACPI Firmware Performance Data Table (FPDT) provides
+> +               information for firmware performance data for system boot,
+> +               S3 suspend and S3 resume. This sysfs entry contains the
+> +               performance data retrieved from the FPDT.
+> +
+> +               boot:
+> +                       firmware_start_ns: Timer value logged at the beginning
+> +                               of firmware image execution. In nanoseconds.
+> +                       bootloader_load_ns: Timer value logged just prior to
+> +                               loading the OS boot loader into memory.
+> +                               In nanoseconds.
+> +                       bootloader_launch_ns: Timer value logged just prior to
+> +                               launching the currently loaded OS boot loader
+> +                               image. In nanoseconds.
+> +                       exitbootservice_start_ns: Timer value logged at the
+> +                               point when the OS loader calls the
+> +                               ExitBootServices function for UEFI compatible
+> +                               firmware. In nanoseconds.
+> +                       exitbootservice_end_ns: Timer value logged at the point
+> +                               just prior to the OS loader gaining control
+> +                               back from the ExitBootServices function for
+> +                               UEFI compatible firmware. In nanoseconds.
+> +               suspend:
+> +                       suspend_start_ns: Timer value recorded at the previous
+> +                               OS write to SLP_TYP upon entry to S3. In
+> +                               nanoseconds.
+> +                       suspend_end_ns: Timer value recorded at the previous
+> +                               firmware write to SLP_TYP used to trigger
+> +                               hardware entry to S3. In nanoseconds.
+> +               resume:
+> +                       resume_count: A count of the number of S3 resume cycles
+> +                               since the last full boot sequence.
+> +                       resume_avg_ns: Average timer value of all resume cycles
+> +                               logged since the last full boot sequence,
+> +                               including the most recent resume. In nanoseconds.
+> +                       resume_prev_ns: Timer recorded at the end of the previous
+> +                               platform runtime firmware S3 resume, just prior to
+> +                               handoff to the OS waking vector. In nanoseconds.
+> +
+>  What:          /sys/firmware/acpi/bgrt/
+>  Date:          January 2012
+>  Contact:       Matthew Garrett <mjg@redhat.com>
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index ebcf534514be..84930fa2dc32 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -87,6 +87,14 @@ config ACPI_SPCR_TABLE
+>           This table provides information about the configuration of the
+>           earlycon console.
+>
+> +config ACPI_FPDT
+> +       bool "ACPI Firmware Performance Data Table(FPDT)"
+> +       depends on X86_64
+> +       help
+> +         Enable support for the Firmware Performance Data Table (FPDT).
+> +         This table provides information on the timing of the system
+> +         boot, S3 suspend and S3 resume firmware code paths.
+> +
+>  config ACPI_LPIT
+>         bool
+>         depends on X86_64
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index 076894a3330f..eb93bb7b6479 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -57,6 +57,7 @@ acpi-$(CONFIG_X86)            += x86/utils.o
+>  acpi-$(CONFIG_X86)             += x86/s2idle.o
+>  acpi-$(CONFIG_DEBUG_FS)                += debugfs.o
+>  acpi-y                         += acpi_lpat.o
+> +acpi-$(CONFIG_ACPI_FPDT)       += acpi_fpdt.o
+>  acpi-$(CONFIG_ACPI_LPIT)       += acpi_lpit.o
+>  acpi-$(CONFIG_ACPI_GENERIC_GSI) += irq.o
+>  acpi-$(CONFIG_ACPI_WATCHDOG)   += acpi_watchdog.o
+> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+> new file mode 100644
+> index 000000000000..b8108117262a
+> --- /dev/null
+> +++ b/drivers/acpi/acpi_fpdt.c
+> @@ -0,0 +1,263 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * FPDT support for exporting boot and suspend/resume performance data
+> + *
+> + * Copyright (C) 2021 Intel Corporation. All rights reserved.
+> + */
+> +
+> +#define pr_fmt(fmt) "ACPI FPDT: " fmt
+> +
+> +#include <linux/acpi.h>
+> +
+> +/*
+> + * FPDT contains ACPI table header and a number of fpdt_subtable_entries.
+> + * Each fpdt_subtable_entry points to a subtable: FBPT or S3PT.
+> + * Each FPDT subtable (FBPT/S3PT) is composed of a fpdt_subtable_header
+> + * and a number of fpdt performance records.
+> + * Each FPDT performance record is composed of a fpdt_record_header and
+> + * performance data fields, for boot or suspend or resume phase.
+> + */
+> +enum fpdt_subtable_type {
+> +       SUBTABLE_FBPT,
+> +       SUBTABLE_S3PT,
+> +};
+> +
+> +struct fpdt_subtable_entry {
+> +       u16 type;               /* refer to enum fpdt_subtable_type */
+> +       u8 length;
+> +       u8 revision;
+> +       u32 reserved;
+> +       u64 address;            /* physical address of the S3PT/FBPT table */
+> +};
+> +
+> +struct fpdt_subtable_header {
+> +       u32 signature;
+> +       u32 length;
+> +};
+> +
+> +enum fpdt_record_type {
+> +       RECORD_S3_RESUME,
+> +       RECORD_S3_SUSPEND,
+> +       RECORD_BOOT,
+> +};
+> +
+> +struct fpdt_record_header {
+> +       u16 type;               /* refer to enum fpdt_record_type */
+> +       u8 length;
+> +       u8 revision;
+> +};
+> +
+> +struct resume_performance_record {
+> +       struct fpdt_record_header header;
+> +       u32 resume_count;
+> +       u64 resume_prev;
+> +       u64 resume_avg;
+> +} __attribute__((packed));
+> +
+> +struct boot_performance_record {
+> +       struct fpdt_record_header header;
+> +       u32 reserved;
+> +       u64 firmware_start;
+> +       u64 bootloader_load;
+> +       u64 bootloader_launch;
+> +       u64 exitbootservice_start;
+> +       u64 exitbootservice_end;
+> +} __attribute__((packed));
+> +
+> +struct suspend_performance_record {
+> +       struct fpdt_record_header header;
+> +       u64 suspend_start;
+> +       u64 suspend_end;
+> +} __attribute__((packed));
+> +
+> +
+> +static struct resume_performance_record *record_resume;
+> +static struct suspend_performance_record *record_suspend;
+> +static struct boot_performance_record *record_boot;
+> +
+> +#define FPDT_ATTR(phase, name) \
+> +static ssize_t name##_show(struct kobject *kobj,       \
+> +                struct kobj_attribute *attr, char *buf)        \
+> +{      \
+> +       return sprintf(buf, "%llu\n", record_##phase->name);    \
+> +}      \
+> +static struct kobj_attribute name##_attr =     \
+> +__ATTR(name##_ns, 0444, name##_show, NULL)
+> +
+> +FPDT_ATTR(resume, resume_prev);
+> +FPDT_ATTR(resume, resume_avg);
+> +FPDT_ATTR(suspend, suspend_start);
+> +FPDT_ATTR(suspend, suspend_end);
+> +FPDT_ATTR(boot, firmware_start);
+> +FPDT_ATTR(boot, bootloader_load);
+> +FPDT_ATTR(boot, bootloader_launch);
+> +FPDT_ATTR(boot, exitbootservice_start);
+> +FPDT_ATTR(boot, exitbootservice_end);
+> +
+> +static ssize_t resume_count_show(struct kobject *kobj,
+> +                                struct kobj_attribute *attr, char *buf)
+> +{
+> +       return sprintf(buf, "%u\n", record_resume->resume_count);
+> +}
+> +
+> +static struct kobj_attribute resume_count_attr =
+> +__ATTR_RO(resume_count);
+> +
+> +static struct attribute *resume_attrs[] = {
+> +       &resume_count_attr.attr,
+> +       &resume_prev_attr.attr,
+> +       &resume_avg_attr.attr,
+> +       NULL
+> +};
+> +
+> +static const struct attribute_group resume_attr_group = {
+> +       .attrs = resume_attrs,
+> +       .name = "resume",
+> +};
+> +
+> +static struct attribute *suspend_attrs[] = {
+> +       &suspend_start_attr.attr,
+> +       &suspend_end_attr.attr,
+> +       NULL
+> +};
+> +
+> +static const struct attribute_group suspend_attr_group = {
+> +       .attrs = suspend_attrs,
+> +       .name = "suspend",
+> +};
+> +
+> +static struct attribute *boot_attrs[] = {
+> +       &firmware_start_attr.attr,
+> +       &bootloader_load_attr.attr,
+> +       &bootloader_launch_attr.attr,
+> +       &exitbootservice_start_attr.attr,
+> +       &exitbootservice_end_attr.attr,
+> +       NULL
+> +};
+> +
+> +static const struct attribute_group boot_attr_group = {
+> +       .attrs = boot_attrs,
+> +       .name = "boot",
+> +};
+> +
+> +static struct kobject *fpdt_kobj;
+> +
+> +static int fpdt_process_subtable(u64 address, u32 subtable_type)
+> +{
+> +       struct fpdt_subtable_header *subtable_header;
+> +       struct fpdt_record_header *record_header;
+> +       char *signature = (subtable_type == SUBTABLE_FBPT ? "FBPT" : "S3PT");
+> +       u32 length, offset;
+> +       int result;
+> +
+> +       subtable_header = acpi_os_map_memory(address, sizeof(*subtable_header));
+> +       if (!subtable_header)
+> +               return -ENOMEM;
+> +
+> +       if (strncmp((char *)&subtable_header->signature, signature, 4)) {
+> +               pr_info(FW_BUG "subtable signature and type mismatch!\n");
+> +               return -EINVAL;
+> +       }
+> +
+> +       length = subtable_header->length;
+> +       acpi_os_unmap_memory(subtable_header, sizeof(*subtable_header));
+> +
+> +       subtable_header = acpi_os_map_memory(address, length);
+> +       if (!subtable_header)
+> +               return -ENOMEM;
+> +
+> +       offset = sizeof(*subtable_header);
+> +       while (offset < length) {
+> +               record_header = (void *)subtable_header + offset;
+> +               offset += record_header->length;
+> +
+> +               switch (record_header->type) {
+> +               case RECORD_S3_RESUME:
+> +                       if (subtable_type != SUBTABLE_S3PT) {
+> +                               pr_err(FW_BUG "Invalid record %d for subtable %s\n",
+> +                                    record_header->type, signature);
+> +                               return -EINVAL;
+> +                       }
+> +                       if (record_resume) {
+> +                               pr_err("Duplicate resume performance record found.\n");
+> +                               continue;
+> +                       }
+> +                       record_resume = (struct resume_performance_record *)record_header;
+> +                       result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
+> +                       if (result)
+> +                               return result;
+> +                       break;
+> +               case RECORD_S3_SUSPEND:
+> +                       if (subtable_type != SUBTABLE_S3PT) {
+> +                               pr_err(FW_BUG "Invalid %d for subtable %s\n",
+> +                                    record_header->type, signature);
+> +                               continue;
+> +                       }
+> +                       if (record_suspend) {
+> +                               pr_err("Duplicate suspend performance record found.\n");
+> +                               continue;
+> +                       }
+> +                       record_suspend = (struct suspend_performance_record *)record_header;
+> +                       result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
+> +                       if (result)
+> +                               return result;
+> +                       break;
+> +               case RECORD_BOOT:
+> +                       if (subtable_type != SUBTABLE_FBPT) {
+> +                               pr_err(FW_BUG "Invalid %d for subtable %s\n",
+> +                                    record_header->type, signature);
+> +                               return -EINVAL;
+> +                       }
+> +                       if (record_boot) {
+> +                               pr_err("Duplicate boot performance record found.\n");
+> +                               continue;
+> +                       }
+> +                       record_boot = (struct boot_performance_record *)record_header;
+> +                       result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
+> +                       if (result)
+> +                               return result;
+> +                       break;
+> +
+> +               default:
+> +                       pr_err(FW_BUG "Invalid record %d found.\n", record_header->type);
+> +                       return -EINVAL;
+> +               }
+> +       }
+> +       return 0;
+> +}
+> +
+> +void acpi_init_fpdt(void)
+> +{
+> +       acpi_status status;
+> +       struct acpi_table_header *header;
+> +       struct fpdt_subtable_entry *subtable;
+> +       u32 offset = sizeof(*header);
+> +
+> +       status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
+> +
+> +       if (ACPI_FAILURE(status))
+> +               return;
+> +
+> +       fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+> +       if (!fpdt_kobj)
+> +               return;
+> +
+> +       while (offset < header->length) {
+> +               subtable = (void *)header + offset;
+> +               switch (subtable->type) {
+> +               case SUBTABLE_FBPT:
+> +               case SUBTABLE_S3PT:
+> +                       fpdt_process_subtable(subtable->address,
+> +                                             subtable->type);
+> +                       break;
+> +               default:
+> +                       pr_info(FW_BUG, "Invalid subtable type %d found.\n",
+> +                              subtable->type);
+> +                       return;
+> +               }
+> +               offset += sizeof(*subtable);
+> +       }
+> +}
+> +
+> +fs_initcall(acpi_init_fpdt);
+> --
+> 2.17.1
+>
