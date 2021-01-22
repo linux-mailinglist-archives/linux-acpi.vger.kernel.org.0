@@ -2,345 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5EC7300E01
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 21:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F54300E74
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 22:05:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729052AbhAVUql (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jan 2021 15:46:41 -0500
-Received: from mx2.suse.de ([195.135.220.15]:52124 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730382AbhAVUlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Jan 2021 15:41:36 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id BBAC6ABDA;
-        Fri, 22 Jan 2021 20:40:46 +0000 (UTC)
-From:   Giovanni Gherdovich <ggherdovich@suse.cz>
-To:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Jon Grimm <Jon.Grimm@amd.com>,
-        Nathan Fontenot <Nathan.Fontenot@amd.com>,
-        Yazen Ghannam <Yazen.Ghannam@amd.com>,
-        Thomas Lendacky <Thomas.Lendacky@amd.com>,
-        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Michael Larabel <Michael@phoronix.com>, x86@kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Giovanni Gherdovich <ggherdovich@suse.cz>
-Subject: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost in schedutil invariant formula
-Date:   Fri, 22 Jan 2021 21:40:38 +0100
-Message-Id: <20210122204038.3238-2-ggherdovich@suse.cz>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210122204038.3238-1-ggherdovich@suse.cz>
-References: <20210122204038.3238-1-ggherdovich@suse.cz>
+        id S1728893AbhAVVFW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jan 2021 16:05:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51578 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730956AbhAVU7l (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jan 2021 15:59:41 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CED6C06174A
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Jan 2021 12:59:01 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id b11so6739611ybj.9
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Jan 2021 12:59:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tFBOhDhZE+sffz0l6h3gmZcjhk5QjifXRo2nY423Z8U=;
+        b=EltnYhbWOukF5okpdXiW9OaK/D6IEMnbuoQC70nY4erIGhZ1kOk/vJ9OLSs8Kgwsud
+         /DhiwEtqJy12ahGMvuwb+wuqRQNgbnmHhSjEUe9vXI/YTfajEz8EdAhHg+6J5TXycfvZ
+         TG3X/m4WjMQ7ncBnEPPVSJD9zhH23Yg9le/dNQ9SOzLDk+jMT5qCZA0AUoLZ63uOZy0C
+         84ZCmYx7FRbx5aZeFEHes29O+KC7v7piqEnqKgyXCnPUNkul58/qakvGk0hffEyyo98d
+         7mFdEsVFFgfsJxZfcxFJtZVoTwy0nt+71QPASazRu3magI4PS6kM1f4YrBb0ure9a2Zx
+         a1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tFBOhDhZE+sffz0l6h3gmZcjhk5QjifXRo2nY423Z8U=;
+        b=bL26l3J+tOXgtU88By1F22F7rYWUKKtSK+2HHXoZEL4iyVHoRASk8pctZgWSuu1KYn
+         rProHJJnsGIGrFiqfjy4DiInHsfSjRstYopbeMvqTVVZ1AJhyo/wTcG3A5/HDV3Kz1Bc
+         BfXPqL1ArTnrK/s+ZOKK6M6+mhpQ2H5cc9blCmk/eswijulZfhevIYwdM7KKkDn39+5N
+         8P9gK84Z7XL++03nMMfqgwhb00YrtnhmaPQWXE4cfSOr7xAe5Y9PJ66o4HBaA5wlSC/O
+         UJxEH74aFdYEo3S4sCVk8TMrm45ASbMLw//pBU1uO3NFds1KGKbxgCEiu7OX3NSEsWwK
+         WNnw==
+X-Gm-Message-State: AOAM530RYLFi1Ao0NuIy9ButxcN2UrGymzlbo43o5nB8BTQlSyXTy9sM
+        zM/74vRlmrc4JM3tm7rblXvfssI+Jf3wg7xreXqXiw==
+X-Google-Smtp-Source: ABdhPJxz6BmL17ilwDtkmTNCHLH83w6r5IBrNYbPHVFz4VMv0KgX+SH2FrNiRHxMyDNAIkSS99ID76Oyojyirckz9B0=
+X-Received: by 2002:a25:3345:: with SMTP id z66mr9201005ybz.466.1611349140491;
+ Fri, 22 Jan 2021 12:59:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210112134054.342-1-calvin.johnson@oss.nxp.com>
+ <20210112134054.342-10-calvin.johnson@oss.nxp.com> <CAGETcx-7JVz=QLCMWicHqoagWYjeBXdFJmSv1v6MQhtPt2RS=Q@mail.gmail.com>
+ <20210112180343.GI4077@smile.fi.intel.com> <CAJZ5v0iW0jJUcXtiQtLOakkSejZCJD=hTFLL4mvoAN3ZTB+1Tw@mail.gmail.com>
+ <CAHp75VcJS10KMA5amUc36PFgj0FLddj1fXD4dUtuAchrVhhzPg@mail.gmail.com>
+ <CAJZ5v0ga5RqwFzbBqSChJ7=gBBM-7dWNQPz6bqvqsNAkWZJ=vQ@mail.gmail.com>
+ <CAGETcx8DP8J53ntxX2VCSnbMfq1qki7gD-md+NC_jVfOkTam3g@mail.gmail.com> <CAJZ5v0gUCUxJX9sGJiZ+zTVYrc3rjuUO2B2fx+O6PewbG7F8aw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gUCUxJX9sGJiZ+zTVYrc3rjuUO2B2fx+O6PewbG7F8aw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 22 Jan 2021 12:58:24 -0800
+Message-ID: <CAGETcx-904Cr11nVW6PC=OqWnwM-ZC-DdEUa8+7JmhsH3UOqHw@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 09/15] device property: Introduce fwnode_get_id()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Grant Likely <grant.likely@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Phoronix.com discovered a severe performance regression on AMD EPYC
-introduced on schedutil [see link 1] by the following commits from v5.11-rc1
+On Fri, Jan 22, 2021 at 8:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Wed, Jan 20, 2021 at 9:01 PM Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > On Wed, Jan 20, 2021 at 11:15 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Wed, Jan 20, 2021 at 7:51 PM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote:
+> > > >
+> > > > On Wed, Jan 20, 2021 at 8:18 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > > > On Tue, Jan 12, 2021 at 7:02 PM Andy Shevchenko
+> > > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > > On Tue, Jan 12, 2021 at 09:30:31AM -0800, Saravana Kannan wrote:
+> > > > > > > On Tue, Jan 12, 2021 at 5:42 AM Calvin Johnson
+> > > > > > > <calvin.johnson@oss.nxp.com> wrote:
+> > > >
+> > > > ...
+> > > >
+> > > > > > > > +       ret = fwnode_property_read_u32(fwnode, "reg", id);
+> > > > > > > > +       if (!(ret && is_acpi_node(fwnode)))
+> > > > > > > > +               return ret;
+> > > > > > > > +
+> > > > > > > > +#ifdef CONFIG_ACPI
+> > > > > > > > +       status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(fwnode),
+> > > > > > > > +                                      METHOD_NAME__ADR, NULL, &adr);
+> > > > > > > > +       if (ACPI_FAILURE(status))
+> > > > > > > > +               return -EINVAL;
+> > > > > > > > +       *id = (u32)adr;
+> > > > > > > > +#endif
+> > > > > > > > +       return 0;
+> > > >
+> > > > > > > Also ACPI and DT
+> > > > > > > aren't mutually exclusive if I'm not mistaken.
+> > > > > >
+> > > > > > That's why we try 'reg' property for both cases first.
+> > > > > >
+> > > > > > is_acpi_fwnode() conditional is that what I don't like though.
+> > > > >
+> > > > > I'm not sure what you mean here, care to elaborate?
+> > > >
+> > > > I meant is_acpi_node(fwnode) in the conditional.
+> > > >
+> > > > I think it's redundant and we can simple do something like this:
+> > > >
+> > > >   if (ret) {
+> > > > #ifdef ACPI
+> > > >     ...
+> > > > #else
+> > > >     return ret;
+> > > > #endif
+> > > >   }
+> > > >   return 0;
+> > > >
+> > > > --
+> > >
+> > > Right, that should work.  And I'd prefer it too.
+> >
+> > Rafael,
+> >
+> > I'd rather this new function be an ops instead of a bunch of #ifdef or
+> > if (acpi) checks. Thoughts?
+>
+> Well, it looks more like a helper function than like an op and I'm not
+> even sure how many potential users of it will expect that _ADR should
+> be evaluated in the absence of the "reg" property.
+>
+> It's just that the "reg" property happens to be kind of an _ADR
+> equivalent in this particular binding AFAICS.
 
-    commit 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD systems")
-    commit 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC")
+I agree it is not clear how useful this helper function is going to be.
 
-Furthermore commit db865272d9c4 ("cpufreq: Avoid configuring old governors as
-default with intel_pstate") from v5.10 made it extremely easy to default to
-schedutil even if the preferred driver is acpi_cpufreq. Distros are likely to
-build both intel_pstate and acpi_cpufreq on x86, and the presence of the
-former removes ondemand from the defaults. This situation amplifies the
-visibility of the bug we're addressing.
+But in general, to me, any time the wrapper/helper functions in
+drivers/base/property.c need to do something like this:
 
-[link 1] https://www.phoronix.com/scan.php?page=article&item=linux511-amd-schedutil&num=1
+if (ACPI)
+   ACPI specific code
+if (OF)
+   OF specific code
 
-1. PROBLEM DESCRIPTION   : over-utilization and schedutil
-2. PROPOSED SOLUTION     : raise freq_max in schedutil formula
-3. DATA TABLE            : image processing benchmark
-4. ANALYSIS AND COMMENTS : with over-utilization, freq-invariance is lost
+I think the code should be pushed to the fwnode ops. That's one of the
+main point of fwnode. So that firmware specific stuff is done by
+firmware specific code. Also, when adding support for new firmware,
+it's pretty clear what support the firmware needs to implement.
+Instead of having to go fix up a bunch of code all over the place.
 
-1. PROBLEM DESCRIPTION (over-utilization and schedutil)
+So fwnode_ops->get_id() would be the OP ACPI and OF would implement.
+And then we can have a wrapper in drivers/base/property.c.
 
-The problem happens on CPU-bound workloads spanning a large number of cores.
-In this case schedutil won't select the maximum P-State. Actually, it's
-likely that it will select the minimum one.
-
-A CPU-bound workload puts the machine in a state generally called
-"over-utilization": an increase in CPU speed doesn't result in an increase of
-capacity. The fraction of time tasks spend on CPU becomes constant regardless
-of clock frequency (the tasks eat whatever we throw at them), and the PELT
-invariant util goes up and down with the frequency (i.e. it's not invariant
-anymore).
-
-2. PROPOSED SOLUTION (raise freq_max in schedutil formula)
-
-The solution we implement here is a stop-gap one: when the driver is
-acpi_cpufreq and the machine an AMD EPYC, schedutil will use max_boost instead
-of max_P as the value for freq_max in its formula
-
-    freq_next = 1.25 * freq_max * util
-
-essentially giving freq_next some more headroom to grow in the over-utilized
-case. This is the approach also followed by intel_pstate in passive mode.
-
-The correct way to attack this problem would be to have schedutil detect
-over-utilization and select freq_max irrespective of the util value, which has
-no meaning at that point. This approach is too risky for an -rc5 submission so
-we defer it to the next cycle.
-
-3. DATA TABLE (image processing benchmark)
-
-What follows is a more detailed account of the effects on a specific test.
-
-TEST        : Intel Open Image Denoise, www.openimagedenoise.org
-INVOCATION  : ./denoise -hdr memorial.pfm -out out.pfm -bench 200 -threads $NTHREADS
-CPU         : MODEL            : 2x AMD EPYC 7742
-              FREQUENCY TABLE  : P2: 1.50 GHz
-                                 P1: 2.00 GHz
-				 P0: 2.25 GHz
-              MAX BOOST        :     3.40 GHz
-
-Results: threads, msecs (ratio). Lower is better.
-
-               v5.10          v5.11-rc4    v5.11-rc4-patch
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      1   1069.85 (1.00)   1071.84 (1.00)   1070.42 (1.00)
-      2    542.24 (1.00)    544.40 (1.00)    544.48 (1.00)
-      4    278.00 (1.00)    278.44 (1.00)    277.72 (1.00)
-      8    149.81 (1.00)    149.61 (1.00)    149.87 (1.00)
-     16     79.01 (1.00)     79.31 (1.00)     78.94 (1.00)
-     24     58.01 (1.00)     58.51 (1.01)     58.15 (1.00)
-     32     46.58 (1.00)     48.30 (1.04)     46.66 (1.00)
-     48     37.29 (1.00)     51.29 (1.38)     37.27 (1.00)
-     64     34.01 (1.00)     49.59 (1.46)     33.71 (0.99)
-     80     31.09 (1.00)     44.27 (1.42)     31.33 (1.01)
-     96     28.56 (1.00)     40.82 (1.43)     28.47 (1.00)
-    112     28.09 (1.00)     40.06 (1.43)     28.63 (1.02)
-    120     28.73 (1.00)     39.78 (1.38)     28.14 (0.98)
-    128     28.93 (1.00)     39.60 (1.37)     29.38 (1.02)
-
-See how the 128 threads case is almost 40% worse than baseline in v5.11-rc4.
-
-4. ANALYSIS AND COMMENTS (with over-utilization freq-invariance is lost)
-
-Statistics for NTHREADS=128 (number of physical cores of the machine)
-
-                                      v5.10          v5.11-rc4
-                                      ~~~~~~~~~~~~~~~~~~~~~~~~
-CPU activity (mpstat)                 80-90%         80-90%
-schedutil requests (tracepoint)       always P0      mostly P2
-CPU frequency (HW feedback)           ~2.2 GHz       ~1.5 GHz
-PELT root rq util (tracepoint)        ~825           ~450
-
-mpstat shows that the workload is CPU-bound and usage doesn't change with
-clock speed. What is striking is that the PELT util of any root runqueue in
-v5.11-rc4 is half of what used to be before the frequency invariant support
-(v5.10), leading to wrong frequency choices. How did we get there?
-
-This workload is constant in time, so instead of using the PELT sum we can
-pretend that scale invariance is obtained with
-
-    util_inv = util_raw * freq_curr / freq_max1        [formula-1]
-
-where util_raw is the PELT util from v5.10 (which is to say, not invariant),
-and util_inv is the PELT util from v5.11-rc4. freq_max1 comes from
-commit 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for
-frequency invariance on AMD EPYC") and is (P0+max_boost)/2 = (2.25+3.4)/2 =
-2.825 GHz.  Then we have the schedutil formula
-
-    freq_next = 1.25 * freq_max2 * util_inv            [formula-2]
-
-Here v5.11-rc4 uses freq_max2 = P0 = 2.25 GHz (and this patch changes it to
-3.4 GHz).
-
-Since all cores are busy, there is no boost available. Let's be generous and say
-the tasks initially get P0, i.e. freq_curr = 2.25 GHz. Combining the formulas
-above and taking util_raw = 825/1024 = 0.8, freq_next is:
-
-    freq_next = 1.25 * 2.25 * 0.8 * 2.25 / 2.825 = 1.79 GHz
-
-After quantization (pick the next frequency up in the table), freq_next is
-P1 = 2.0 GHz. See how we lost 250 MHz in the process. Iterate once more,
-freq_next become 1.59 GHz. Since it's > P2, it's saved by quantization and P1
-is selected, but if util_raw fluctuates a little and goes below 0.75, P0 is
-selected and that kills util_inv by formula-1, which gives util_inv = 0.4.
-
-The culprit of the problem is that with over-utilization, util_raw and
-freq_curr in formula-1 are independent. In the nominal case, if freq_curr goes
-up then util_raw goes down and viceversa. Here util_raw doesn't care and stays
-constant. If freq_curr descrease, util_inv decreases too and so forth (it's a
-feedback loop).
-
-Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD systems")
-Fixes: 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC")
-Reported-by: Michael Larabel <Michael@phoronix.com>
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
----
- drivers/cpufreq/acpi-cpufreq.c   | 64 +++++++++++++++++++++++++++++++-
- drivers/cpufreq/cpufreq.c        |  3 ++
- include/linux/cpufreq.h          |  5 +++
- kernel/sched/cpufreq_schedutil.c |  8 +++-
- 4 files changed, 76 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index 1e4fbb002a31..2378bc1bf2c4 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -27,6 +27,10 @@
- 
- #include <acpi/processor.h>
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+#include <acpi/cppc_acpi.h>
-+#endif
-+
- #include <asm/msr.h>
- #include <asm/processor.h>
- #include <asm/cpufeature.h>
-@@ -628,11 +632,57 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+static bool amd_max_boost(unsigned int max_freq,
-+			  unsigned int *max_boost)
-+{
-+	struct cppc_perf_caps perf_caps;
-+	u64 highest_perf, nominal_perf, perf_ratio;
-+	int ret;
-+
-+	ret = cppc_get_perf_caps(0, &perf_caps);
-+	if (ret) {
-+		pr_debug("Could not retrieve perf counters (%d)\n", ret);
-+		return false;
-+	}
-+
-+	highest_perf = perf_caps.highest_perf;
-+	nominal_perf = perf_caps.nominal_perf;
-+
-+	if (!highest_perf || !nominal_perf) {
-+		pr_debug("Could not retrieve highest or nominal performance\n");
-+		return false;
-+	}
-+
-+	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-+	if (perf_ratio <= SCHED_CAPACITY_SCALE) {
-+		pr_debug("Either perf_ratio is 0, or nominal >= highest performance\n");
-+		return false;
-+	}
-+
-+	*max_boost = max_freq * perf_ratio >> SCHED_CAPACITY_SHIFT;
-+	if (!*max_boost) {
-+		pr_debug("max_boost seems to be zero\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+#else
-+static bool amd_max_boost(unsigned int max_freq,
-+			  unsigned int *max_boost)
-+{
-+	return false;
-+}
-+#endif
-+
- static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- {
- 	unsigned int i;
- 	unsigned int valid_states = 0;
- 	unsigned int cpu = policy->cpu;
-+	unsigned int freq, max_freq = 0;
-+	unsigned int max_boost;
- 	struct acpi_cpufreq_data *data;
- 	unsigned int result = 0;
- 	struct cpuinfo_x86 *c = &cpu_data(policy->cpu);
-@@ -779,15 +829,25 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 		    freq_table[valid_states-1].frequency / 1000)
- 			continue;
- 
-+		freq = perf->states[i].core_frequency * 1000;
- 		freq_table[valid_states].driver_data = i;
--		freq_table[valid_states].frequency =
--		    perf->states[i].core_frequency * 1000;
-+		freq_table[valid_states].frequency = freq;
-+
-+		if (freq > max_freq)
-+			max_freq = freq;
-+
- 		valid_states++;
- 	}
- 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
- 	policy->freq_table = freq_table;
- 	perf->state = 0;
- 
-+	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-+	    amd_max_boost(max_freq, &max_boost)) {
-+		policy->cpuinfo.max_boost = max_boost;
-+		static_branch_enable(&cpufreq_amd_max_boost);
-+	}
-+
- 	switch (perf->control_register.space_id) {
- 	case ACPI_ADR_SPACE_SYSTEM_IO:
- 		/*
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index d0a3525ce27f..b96677f6b57e 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2721,6 +2721,9 @@ int cpufreq_boost_enabled(void)
- }
- EXPORT_SYMBOL_GPL(cpufreq_boost_enabled);
- 
-+DEFINE_STATIC_KEY_FALSE(cpufreq_amd_max_boost);
-+EXPORT_SYMBOL_GPL(cpufreq_amd_max_boost);
-+
- /*********************************************************************
-  *               REGISTER / UNREGISTER CPUFREQ DRIVER                *
-  *********************************************************************/
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 9c8b7437b6cd..341cac76d254 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -40,9 +40,14 @@ enum cpufreq_table_sorting {
- 	CPUFREQ_TABLE_SORTED_DESCENDING
- };
- 
-+DECLARE_STATIC_KEY_FALSE(cpufreq_amd_max_boost);
-+
-+#define cpufreq_driver_has_max_boost() static_branch_unlikely(&cpufreq_amd_max_boost)
-+
- struct cpufreq_cpuinfo {
- 	unsigned int		max_freq;
- 	unsigned int		min_freq;
-+	unsigned int		max_boost;
- 
- 	/* in 10^(-9) s = nanoseconds */
- 	unsigned int		transition_latency;
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 6931f0cdeb80..541f3db3f576 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -159,8 +159,12 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
- 				  unsigned long util, unsigned long max)
- {
- 	struct cpufreq_policy *policy = sg_policy->policy;
--	unsigned int freq = arch_scale_freq_invariant() ?
--				policy->cpuinfo.max_freq : policy->cur;
-+	unsigned int freq, max_freq;
-+
-+	max_freq = cpufreq_driver_has_max_boost() ?
-+			policy->cpuinfo.max_boost : policy->cpuinfo.max_freq;
-+
-+	freq = arch_scale_freq_invariant() ? max_freq : policy->cur;
- 
- 	freq = map_util_freq(util, freq, max);
- 
--- 
-2.26.2
-
+-Saravana
