@@ -2,153 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662F02FFD6E
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 08:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CF42FFEBD
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 09:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727056AbhAVHb2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jan 2021 02:31:28 -0500
-Received: from mga02.intel.com ([134.134.136.20]:10477 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727047AbhAVHbY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Jan 2021 02:31:24 -0500
-IronPort-SDR: Cq1nBF6GtPXaRBa3YHcrYlt6Ya9K42u997SZHri56oDY38Qns8xpEphQu6e6/eG6jO8sW0NyWO
- 3lPiG6OpMWBQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="166503376"
-X-IronPort-AV: E=Sophos;i="5.79,366,1602572400"; 
-   d="scan'208";a="166503376"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 23:30:42 -0800
-IronPort-SDR: ezljlS7CbtHOd3WXQa0V1Jv6Vd1XlpejZno5NZTHuWLPNwvFVAPZIISd+oPP6QthUR5B8fJieg
- IfuLnJOa95xA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,366,1602572400"; 
-   d="scan'208";a="392226326"
-Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 21 Jan 2021 23:30:41 -0800
-Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l2qu0-00075E-Ge; Fri, 22 Jan 2021 07:30:40 +0000
-Date:   Fri, 22 Jan 2021 15:30:36 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS WITH WARNING
- 33b4fa8533186db3c463120ced43b1c12ecba18d
-Message-ID: <600a7f1c.IUhAMURl7o4IVqMl%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726198AbhAVIxh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jan 2021 03:53:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727065AbhAVIwW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jan 2021 03:52:22 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C2CC0613D6
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Jan 2021 00:51:41 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id s24so6297695wmj.0
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Jan 2021 00:51:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=vrASp/RtgpnkhA58OvyJAdDc1T+gTz0RiPx6wduZk8c=;
+        b=up1a2h2iDNc3JdPf9XWIf2bOEaBA5o+PTzwpwYGlMWM3ZPj/bERowdcDTXhk7MzMw/
+         0IFYO6oW0pkXjX1cb3hU7fdkG5CpEdf5p2OrQuENFNur3mXO1UNPNNoA78V26IXInBoj
+         TajCQT15iimZzsSU1SJAar/pCn1bCAmu7IeSTP9dwglQQsZGde0nTViozhqrE/WuU4wa
+         gbsoMIH3ZTkUTJskvTs16R6tGViSYH17JSudaIueKcawYY5Tbj2U9x+w96OIJ1XQBqcy
+         tHESxQyCoAjop66UARHym1LLJEipIIbc8xAb1bYp5sSgO+3CD+f4WOOCCsBpjXXfzNH9
+         O73Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vrASp/RtgpnkhA58OvyJAdDc1T+gTz0RiPx6wduZk8c=;
+        b=lBa/fci8pmqEATfytvqBGEQPLN/KKOv7zVsC3OlEK3cnkS+XVpgPHSDlUru9E1oyrM
+         V4HNP4b53bIGpVMK3tZ3VactD7pKYbIYRSHE/g2n2C/KxVUO2snCk36w5KPF0GD16wpH
+         co5pK6AKh5bskvxhCUOvHAjIED50MS3wdvWGYlz/1D9TSI3vFIx3/cJzReEJ3FyN4vFN
+         QFiXuJDhKpcbQeQDD6Vf3xWgCYUCwtoAjgK/0K1NU+IhPkOuWLKdC9UeCysFNQB5VpPa
+         dFlK8QzvM8V2kZbw/e7kCquzBLhCuHFzcYG9uPKKXMlIxZl8bCJx+d4gvpBd5mfw4S4e
+         ie/A==
+X-Gm-Message-State: AOAM530XiaJnegMtGfmY95cRxYJKk5Cc1T8FwPaQBn04cdcoK9bfyT0r
+        qn6yL82NO2kHsKcRwLpfeGSHzQ==
+X-Google-Smtp-Source: ABdhPJwPXJQhdUZQz8TZ2CsHYCjCHXTUgo1cueUoveXyLgzD7Ys+eUwGva42rD/7MMLN1jYZ/pNjIQ==
+X-Received: by 2002:a1c:1d12:: with SMTP id d18mr2803870wmd.121.1611305500497;
+        Fri, 22 Jan 2021 00:51:40 -0800 (PST)
+Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id l5sm11088232wrv.44.2021.01.22.00.51.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jan 2021 00:51:39 -0800 (PST)
+Date:   Fri, 22 Jan 2021 09:51:20 +0100
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     joro@8bytes.org, will@kernel.org, lorenzo.pieralisi@arm.com,
+        robh+dt@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
+        rjw@rjwysocki.net, lenb@kernel.org, robin.murphy@arm.com,
+        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
+        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
+        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
+        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com
+Subject: Re: [PATCH v10 10/10] iommu/arm-smmu-v3: Add stall support for
+ platform devices
+Message-ID: <YAqSCKeN2o+GsISZ@myrica>
+References: <20210121123623.2060416-1-jean-philippe@linaro.org>
+ <20210121123623.2060416-11-jean-philippe@linaro.org>
+ <20210121191236.00000103@Huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210121191236.00000103@Huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 33b4fa8533186db3c463120ced43b1c12ecba18d  Merge branch 'acpi-platform' into bleeding-edge
+On Thu, Jan 21, 2021 at 07:12:36PM +0000, Jonathan Cameron wrote:
+> > @@ -2502,6 +2647,7 @@ static void arm_smmu_release_device(struct device *dev)
+> >  
+> >  	master = dev_iommu_priv_get(dev);
+> >  	WARN_ON(arm_smmu_master_sva_enabled(master));
+> > +	iopf_queue_remove_device(master->smmu->evtq.iopf, dev);
+> >  	arm_smmu_detach_dev(master);
+> >  	arm_smmu_disable_pasid(master);
+> >  	arm_smmu_remove_master(master);
+> 
+> The lack of symmetry here bothers me a bit, but it's already true, so I guess
+> this case is fine as well.
 
-Warning ids grouped by kconfigs:
+Normally the device driver calls iommu_dev_feat_disable(SVA) which does
+iopf_queue_remove_device(). This is just a safety net in case the device
+gets removed without the driver properly cleaning up (which will WARN as
+well) 
 
-gcc_recent_errors
-`-- x86_64-randconfig-s022-20210122
-    `-- include-linux-spinlock.h:sparse:sparse:context-imbalance-in-pm_clk_list_lock-wrong-count-at-exit
+> 
+> ...
+> >  
+> > @@ -2785,6 +2946,7 @@ static int arm_smmu_cmdq_init(struct arm_smmu_device *smmu)
+> >  static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
+> >  {
+> >  	int ret;
+> > +	bool sva = smmu->features & ARM_SMMU_FEAT_STALLS;
+> 
+> FEAT_SVA?
 
-elapsed time: 722m
+Ugh yes, thanks. I left this as a bool instead of moving into the test
+below because the PRI patch reuses it, but I think I'll just move it down
+when resending.
 
-configs tested: 89
-configs skipped: 2
+Thanks,
+Jean
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                   motionpro_defconfig
-c6x                        evmc6457_defconfig
-mips                         tb0226_defconfig
-mips                           ip22_defconfig
-powerpc                        icon_defconfig
-mips                        nlm_xlp_defconfig
-xtensa                generic_kc705_defconfig
-powerpc                    socrates_defconfig
-m68k                          atari_defconfig
-arm                             mxs_defconfig
-powerpc                   currituck_defconfig
-arm                        trizeps4_defconfig
-powerpc                 mpc834x_itx_defconfig
-arm                        shmobile_defconfig
-um                           x86_64_defconfig
-arc                        nsimosci_defconfig
-m68k                       m5208evb_defconfig
-arm                         lpc32xx_defconfig
-sh                           se7780_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210121
-i386                 randconfig-a002-20210121
-i386                 randconfig-a004-20210121
-i386                 randconfig-a006-20210121
-i386                 randconfig-a005-20210121
-i386                 randconfig-a003-20210121
-i386                 randconfig-a013-20210121
-i386                 randconfig-a011-20210121
-i386                 randconfig-a012-20210121
-i386                 randconfig-a014-20210121
-i386                 randconfig-a015-20210121
-i386                 randconfig-a016-20210121
-x86_64               randconfig-a002-20210121
-x86_64               randconfig-a003-20210121
-x86_64               randconfig-a001-20210121
-x86_64               randconfig-a005-20210121
-x86_64               randconfig-a006-20210121
-x86_64               randconfig-a004-20210121
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
+> >  
+> >  	/* cmdq */
+> >  	ret = arm_smmu_init_one_queue(smmu, &smmu->cmdq.q, ARM_SMMU_CMDQ_PROD,
+> > @@ -2804,6 +2966,12 @@ static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > +	if (sva && smmu->features & ARM_SMMU_FEAT_STALLS) {
+> 
+> Isn't this checking same thing twice?
+> 
+> > +		smmu->evtq.iopf = iopf_queue_alloc(dev_name(smmu->dev));
+> > +		if (!smmu->evtq.iopf)
+> > +			return -ENOMEM;
+> > +	}
+> > +
+> >  	/* priq */
+> >  	if (!(smmu->features & ARM_SMMU_FEAT_PRI))
+> >  		return 0;
+> > @@ -3718,6 +3886,7 @@ static int arm_smmu_device_remove(struct platform_device *pdev)
+> >  	iommu_device_unregister(&smmu->iommu);
+> >  	iommu_device_sysfs_remove(&smmu->iommu);
+> >  	arm_smmu_device_disable(smmu);
+> > +	iopf_queue_free(smmu->evtq.iopf);
+> >  
+> >  	return 0;
+> >  }
+> 
