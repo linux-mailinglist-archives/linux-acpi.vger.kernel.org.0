@@ -2,116 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A8D2FFA47
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 03:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 662F02FFD6E
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 08:32:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbhAVCEV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jan 2021 21:04:21 -0500
-Received: from mga18.intel.com ([134.134.136.126]:59189 "EHLO mga18.intel.com"
+        id S1727056AbhAVHb2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jan 2021 02:31:28 -0500
+Received: from mga02.intel.com ([134.134.136.20]:10477 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726044AbhAVCEQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Jan 2021 21:04:16 -0500
-IronPort-SDR: 99dEDPAi4MSJtr5wjwt9uUZGOCSNIENSQBNG7A9g3l5x5yU/h2P9NLBCWsD7vS5lTHCJIRij5g
- +Ts3P8ABF43Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="167055292"
-X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; 
-   d="scan'208";a="167055292"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 18:02:25 -0800
-IronPort-SDR: Xbl5c/D865xh6OlMgMyL0U1IZOcNA6WvEvPrOI/eUbFuSdvCK6xN46A2PhCPSr8KiBbjTQoRZM
- DDbMHc3lOXNw==
+        id S1727047AbhAVHbY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Jan 2021 02:31:24 -0500
+IronPort-SDR: Cq1nBF6GtPXaRBa3YHcrYlt6Ya9K42u997SZHri56oDY38Qns8xpEphQu6e6/eG6jO8sW0NyWO
+ 3lPiG6OpMWBQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="166503376"
+X-IronPort-AV: E=Sophos;i="5.79,366,1602572400"; 
+   d="scan'208";a="166503376"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 23:30:42 -0800
+IronPort-SDR: ezljlS7CbtHOd3WXQa0V1Jv6Vd1XlpejZno5NZTHuWLPNwvFVAPZIISd+oPP6QthUR5B8fJieg
+ IfuLnJOa95xA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; 
-   d="scan'208";a="467684968"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.28]) ([10.239.159.28])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Jan 2021 18:02:16 -0800
-Cc:     baolu.lu@linux.intel.com, lorenzo.pieralisi@arm.com,
-        robh+dt@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robin.murphy@arm.com,
-        Jonathan.Cameron@huawei.com, eric.auger@redhat.com,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, jacob.jun.pan@linux.intel.com,
-        kevin.tian@intel.com, vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH v10 04/10] iommu/vt-d: Support IOMMU_DEV_FEAT_IOPF
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>, joro@8bytes.org,
-        will@kernel.org
-References: <20210121123623.2060416-1-jean-philippe@linaro.org>
- <20210121123623.2060416-5-jean-philippe@linaro.org>
-From:   Lu Baolu <baolu.lu@linux.intel.com>
-Message-ID: <d834784c-2d96-a4be-8d9b-3a5d3939325d@linux.intel.com>
-Date:   Fri, 22 Jan 2021 09:54:01 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+X-IronPort-AV: E=Sophos;i="5.79,366,1602572400"; 
+   d="scan'208";a="392226326"
+Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 21 Jan 2021 23:30:41 -0800
+Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l2qu0-00075E-Ge; Fri, 22 Jan 2021 07:30:40 +0000
+Date:   Fri, 22 Jan 2021 15:30:36 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ 33b4fa8533186db3c463120ced43b1c12ecba18d
+Message-ID: <600a7f1c.IUhAMURl7o4IVqMl%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210121123623.2060416-5-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 33b4fa8533186db3c463120ced43b1c12ecba18d  Merge branch 'acpi-platform' into bleeding-edge
 
-On 1/21/21 8:36 PM, Jean-Philippe Brucker wrote:
-> Allow drivers to query and enable IOMMU_DEV_FEAT_IOPF, which amounts to
-> checking whether PRI is enabled.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Warning ids grouped by kconfigs:
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+gcc_recent_errors
+`-- x86_64-randconfig-s022-20210122
+    `-- include-linux-spinlock.h:sparse:sparse:context-imbalance-in-pm_clk_list_lock-wrong-count-at-exit
 
-Best regards,
-baolu
+elapsed time: 722m
 
-> ---
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Cc: Lu Baolu <baolu.lu@linux.intel.com>
-> ---
->   drivers/iommu/intel/iommu.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index f665322a0991..c777bd94df5d 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -5330,6 +5330,8 @@ static int siov_find_pci_dvsec(struct pci_dev *pdev)
->   static bool
->   intel_iommu_dev_has_feat(struct device *dev, enum iommu_dev_features feat)
->   {
-> +	struct device_domain_info *info = get_domain_info(dev);
-> +
->   	if (feat == IOMMU_DEV_FEAT_AUX) {
->   		int ret;
->   
-> @@ -5344,13 +5346,13 @@ intel_iommu_dev_has_feat(struct device *dev, enum iommu_dev_features feat)
->   		return !!siov_find_pci_dvsec(to_pci_dev(dev));
->   	}
->   
-> -	if (feat == IOMMU_DEV_FEAT_SVA) {
-> -		struct device_domain_info *info = get_domain_info(dev);
-> +	if (feat == IOMMU_DEV_FEAT_IOPF)
-> +		return info && info->pri_supported;
->   
-> +	if (feat == IOMMU_DEV_FEAT_SVA)
->   		return info && (info->iommu->flags & VTD_FLAG_SVM_CAPABLE) &&
->   			info->pasid_supported && info->pri_supported &&
->   			info->ats_supported;
-> -	}
->   
->   	return false;
->   }
-> @@ -5361,6 +5363,9 @@ intel_iommu_dev_enable_feat(struct device *dev, enum iommu_dev_features feat)
->   	if (feat == IOMMU_DEV_FEAT_AUX)
->   		return intel_iommu_enable_auxd(dev);
->   
-> +	if (feat == IOMMU_DEV_FEAT_IOPF)
-> +		return intel_iommu_dev_has_feat(dev, feat) ? 0 : -ENODEV;
-> +
->   	if (feat == IOMMU_DEV_FEAT_SVA) {
->   		struct device_domain_info *info = get_domain_info(dev);
->   
-> 
+configs tested: 89
+configs skipped: 2
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                   motionpro_defconfig
+c6x                        evmc6457_defconfig
+mips                         tb0226_defconfig
+mips                           ip22_defconfig
+powerpc                        icon_defconfig
+mips                        nlm_xlp_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                    socrates_defconfig
+m68k                          atari_defconfig
+arm                             mxs_defconfig
+powerpc                   currituck_defconfig
+arm                        trizeps4_defconfig
+powerpc                 mpc834x_itx_defconfig
+arm                        shmobile_defconfig
+um                           x86_64_defconfig
+arc                        nsimosci_defconfig
+m68k                       m5208evb_defconfig
+arm                         lpc32xx_defconfig
+sh                           se7780_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210121
+i386                 randconfig-a002-20210121
+i386                 randconfig-a004-20210121
+i386                 randconfig-a006-20210121
+i386                 randconfig-a005-20210121
+i386                 randconfig-a003-20210121
+i386                 randconfig-a013-20210121
+i386                 randconfig-a011-20210121
+i386                 randconfig-a012-20210121
+i386                 randconfig-a014-20210121
+i386                 randconfig-a015-20210121
+i386                 randconfig-a016-20210121
+x86_64               randconfig-a002-20210121
+x86_64               randconfig-a003-20210121
+x86_64               randconfig-a001-20210121
+x86_64               randconfig-a005-20210121
+x86_64               randconfig-a006-20210121
+x86_64               randconfig-a004-20210121
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
