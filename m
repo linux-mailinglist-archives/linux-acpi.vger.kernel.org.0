@@ -2,235 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6563001A0
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 12:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B67BD30021C
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jan 2021 12:57:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727957AbhAVLbv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jan 2021 06:31:51 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2400 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728253AbhAVL3r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jan 2021 06:29:47 -0500
-Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DMcMN4x7wz67fb2;
-        Fri, 22 Jan 2021 19:23:28 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 22 Jan 2021 12:29:03 +0100
-Received: from localhost (10.47.73.222) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 22 Jan
- 2021 11:28:58 +0000
-Date:   Fri, 22 Jan 2021 11:28:16 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Vishal Verma" <vishal.l.verma@intel.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        "Bjorn Helgaas" <helgaas@kernel.org>,
-        Jon Masters <jcm@jonmasters.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "Christoph Hellwig" <hch@infradead.org>,
-        <daniel.lll@alibaba-inc.com>
-Subject: Re: [RFC PATCH v3 13/16] cxl/mem: Create concept of enabled
- commands
-Message-ID: <20210122112816.00004c75@Huawei.com>
-In-Reply-To: <20210121184041.r7x7tofhu2qqneus@intel.com>
-References: <20210111225121.820014-1-ben.widawsky@intel.com>
-        <20210111225121.820014-15-ben.widawsky@intel.com>
-        <20210114172531.0000347a@Huawei.com>
-        <20210121184041.r7x7tofhu2qqneus@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727252AbhAVLzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jan 2021 06:55:55 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:11570 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727134AbhAVLyg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jan 2021 06:54:36 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DMd0l2PvczM8bR;
+        Fri, 22 Jan 2021 19:52:23 +0800 (CST)
+Received: from [127.0.0.1] (10.40.188.87) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.498.0; Fri, 22 Jan 2021
+ 19:53:41 +0800
+Subject: Re: [PATCH v9 05/10] uacce: Enable IOMMU_DEV_FEAT_IOPF
+To:     Dave Jiang <dave.jiang@intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        <joro@8bytes.org>, <will@kernel.org>
+References: <20210108145217.2254447-1-jean-philippe@linaro.org>
+ <20210108145217.2254447-6-jean-philippe@linaro.org>
+ <e14f47bd-1b0c-1905-3bb7-62e1c5b096c7@intel.com>
+CC:     <vivek.gautam@arm.com>, <guohanjun@huawei.com>,
+        <linux-acpi@vger.kernel.org>, <zhangfei.gao@linaro.org>,
+        <lenb@kernel.org>, <devicetree@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, <eric.auger@redhat.com>,
+        <vdumpa@nvidia.com>, <robh+dt@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <rjw@rjwysocki.net>, <shameerali.kolothum.thodi@huawei.com>,
+        <iommu@lists.linux-foundation.org>, <sudeep.holla@arm.com>,
+        <robin.murphy@arm.com>, <linux-accelerators@lists.ozlabs.org>,
+        <baolu.lu@linux.intel.com>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        "Pan, Jacob jun" <jacob.jun.pan@intel.com>
+From:   Zhou Wang <wangzhou1@hisilicon.com>
+Message-ID: <d25faa15-eaaf-a3b8-adaf-f7c81653f688@hisilicon.com>
+Date:   Fri, 22 Jan 2021 19:53:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <e14f47bd-1b0c-1905-3bb7-62e1c5b096c7@intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.73.222]
-X-ClientProxiedBy: lhreml750-chm.china.huawei.com (10.201.108.200) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
+X-Originating-IP: [10.40.188.87]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 21 Jan 2021 10:40:41 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
-
-> On 21-01-14 17:25:31, Jonathan Cameron wrote:
-> > On Mon, 11 Jan 2021 14:51:18 -0800
-> > Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >   
-> > > CXL devices must implement the Device Command Interface (described in
-> > > 8.2.9 of the CXL 2.0 spec). While the driver already maintains a list of
-> > > commands it supports, there is still a need to be able to distinguish
-> > > between commands that the driver knows about from commands that may not
-> > > be supported by the hardware. No such commands currently are defined in
-> > > the driver.
-> > > 
-> > > The implementation leaves the statically defined table of commands and
-> > > supplements it with a bitmap to determine commands that are enabled.
-> > > 
-> > > ---
-> > > 
-> > > There are multiple approaches that can be taken, but this is nice for a
-> > > few reasons.
-> > > 
-> > > Here are some of the other solutions:
-> > > 
-> > > Create a per instance table with only the supported commands.
-> > > 1. Having a fixed command id -> command mapping is much easier to manage
-> > >    for development and debugging.
-> > > 2. Dealing with dynamic memory allocation for the table adds unnecessary
-> > >    complexity.
-> > > 3. Most tables for device types are likely to be quite similar.
-> > > 4. Makes it difficult to implement helper macros like cxl_for_each_cmd()
-> > > 
-> > > If the per instance table did preserve ids, #1 above can be addressed.
-> > > However, as "enable" is currently the only mutable state for the
-> > > commands, it would yield a lot of overhead for not much gain.
-> > > Additionally, the other issues remain.
-> > > 
-> > > If "enable" remains the only mutable state, I believe this to be the
-> > > best solution. Once the number of mutable elements in a command grows,
-> > > it probably makes sense to move to per device instance state with a
-> > > fixed command ID mapping.  
-> > Agreed with the logic.   
-> > 
-> > However, patch wise, should either drop the --- above or move this below the
-> > --- after your sign off.  Otherwise you run the risk of git dropping your
-> > sign off and resulting complaints from anyone run validation scripts
-> > of the kernel tree that check for that.
-> >   
-> > > 
-> > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > ---
-> > >  drivers/cxl/cxl.h |  4 ++++
-> > >  drivers/cxl/mem.c | 38 +++++++++++++++++++++++++++++++++++++-
-> > >  2 files changed, 41 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > > index 537ac4d8e6bd..963ba30cb200 100644
-> > > --- a/drivers/cxl/cxl.h
-> > > +++ b/drivers/cxl/cxl.h
-> > > @@ -17,6 +17,9 @@
-> > >  
-> > >  #define CXL_GET_FIELD(word, field) FIELD_GET(field##_MASK, word)
-> > >  
-> > > +/* XXX: Arbitrary max */
-> > > +#define CXL_MAX_COMMANDS 32  
-> > 
-> > If going this way, probably want a build time check that you don't
-> > go beyond this value for a given command set.  I haven't actually
-> > thought about how to construct that but should be easy enough.
-> >   
+On 2021/1/21 4:47, Dave Jiang wrote:
 > 
-> I think BUILD_BUG_ON of ARRAY_SIZE mem_commands is sufficient. Let me know if
-> you want anything more.
+> On 1/8/2021 7:52 AM, Jean-Philippe Brucker wrote:
+>> The IOPF (I/O Page Fault) feature is now enabled independently from the
+>> SVA feature, because some IOPF implementations are device-specific and
+>> do not require IOMMU support for PCIe PRI or Arm SMMU stall.
+>>
+>> Enable IOPF unconditionally when enabling SVA for now. In the future, if
+>> a device driver implementing a uacce interface doesn't need IOPF
+>> support, it will need to tell the uacce module, for example with a new
+>> flag.
+>>
+>> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>> ---
+>> Cc: Arnd Bergmann <arnd@arndb.de>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: Zhangfei Gao <zhangfei.gao@linaro.org>
+>> Cc: Zhou Wang <wangzhou1@hisilicon.com>
+>> ---
+>>   drivers/misc/uacce/uacce.c | 32 +++++++++++++++++++++++++-------
+>>   1 file changed, 25 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/misc/uacce/uacce.c b/drivers/misc/uacce/uacce.c
+>> index d07af4edfcac..41ef1eb62a14 100644
+>> --- a/drivers/misc/uacce/uacce.c
+>> +++ b/drivers/misc/uacce/uacce.c
+>> @@ -385,6 +385,24 @@ static void uacce_release(struct device *dev)
+>>       kfree(uacce);
+>>   }
+>>   +static unsigned int uacce_enable_sva(struct device *parent, unsigned int flags)
+>> +{
+>> +    if (!(flags & UACCE_DEV_SVA))
+>> +        return flags;
+>> +
+>> +    flags &= ~UACCE_DEV_SVA;
+>> +
+>> +    if (iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_IOPF))
+>> +        return flags;
+>> +
+>> +    if (iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_SVA)) {
+>> +        iommu_dev_disable_feature(parent, IOMMU_DEV_FEAT_IOPF);
+>> +        return flags;
+>> +    }
+> 
+> Sorry to jump in a bit late on this and not specifically towards the
+> intent of this patch. But I'd like to start a discussion on if we want
+> to push the iommu dev feature enabling to the device driver itself rather
+> than having UACCE control this? Maybe allow the device driver to manage
+> the feature bits and UACCE only verify that they are enabled?
+> 
+> 1. The device driver knows what platform it's on and what specific
+>    feature bits its devices supports. Maybe in the future if there are
+>    feature bits that's needed on one platform and not on another?
 
-That is fine.
+Hi Dave,
+
+From the discussion in this series, the meaning of IOMMU_DEV_FEAT_IOPF here
+is the IOPF capability of iommu device itself. So I think check it in UACCE
+will be fine.
+
+> 2. This allows the possibility of multiple uacce device registered to 1
+>    pci dev, which for a device with asymmetric queues (Intel DSA/idxd
+>    driver) that is desirable feature. The current setup forces a single
+>    uacce device per pdev. If additional uacce devs are registered, the
+>    first removal of uacce device will disable the feature bit for the
+>    rest of the registered devices. With uacce managing the feature bit,
+>    it would need to add device context to the parent pdev and ref
+>    counting. It may be cleaner to just allow device driver to manage
+>    the feature bits and the driver should have all the information on
+>    when the feature needs to be turned on and off.
+
+Yes, we have this problem, however, this problem exists for IOMMU_DEV_FEAT_SVA
+too. How about to fix it in another patch?
+
+Best,
+Zhou
 
 > 
-> > > +
-> > >  /* Device  (CXL 2.0 - 8.2.8.3) */
-> > >  #define CXLDEV_CAP_ARRAY_REG 0x0
-> > >  #define CXLDEV_CAP_ARRAY_CAP_ID 0
-> > > @@ -88,6 +91,7 @@ struct cxl_mem {
-> > >  	} ram;
-> > >  
-> > >  	char firmware_version[0x10];
-> > > +	DECLARE_BITMAP(enabled_cmds, CXL_MAX_COMMANDS);
-> > >  
-> > >  	/* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
-> > >  	struct {
-> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > index a824cfd4342a..20b26fa2c466 100644
-> > > --- a/drivers/cxl/mem.c
-> > > +++ b/drivers/cxl/mem.c
-> > > @@ -114,6 +114,8 @@ static struct {
-> > >   *    would typically be used for deprecated commands.
-> > >   *  * %CXL_CMD_FLAG_MANDATORY: Hardware must support this command. This flag is
-> > >   *    only used internally by the driver for sanity checking.
-> > > + *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
-> > > + *    a direct mapping to hardware. They are implicitly always enabled.
-> > >   *
-> > >   * The cxl_mem_command is the driver's internal representation of commands that
-> > >   * are supported by the driver. Some of these commands may not be supported by
-> > > @@ -129,6 +131,7 @@ struct cxl_mem_command {
-> > >  #define CXL_CMD_INTERNAL_FLAG_NONE 0
-> > >  #define CXL_CMD_INTERNAL_FLAG_HIDDEN BIT(0)
-> > >  #define CXL_CMD_INTERNAL_FLAG_MANDATORY BIT(1)
-> > > +#define CXL_CMD_INTERNAL_FLAG_PSEUDO BIT(2)
-> > >  };
-> > >  
-> > >  /*
-> > > @@ -140,7 +143,7 @@ struct cxl_mem_command {
-> > >  static struct cxl_mem_command mem_commands[] = {
-> > >  	CXL_CMD(INVALID, KERNEL, 0, 0, HIDDEN),
-> > >  	CXL_CMD(IDENTIFY, NONE, 0, 0x43, MANDATORY),
-> > > -	CXL_CMD(RAW, NONE, ~0, ~0, MANDATORY),
-> > > +	CXL_CMD(RAW, NONE, ~0, ~0, PSEUDO),
-> > >  };
-> > >  
-> > >  #define cxl_for_each_cmd(cmd)                                                  \
-> > > @@ -618,6 +621,10 @@ static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
-> > >  	c = &mem_commands[send_cmd->id];
-> > >  	info = &c->info;
-> > >  
-> > > +	/* Check that the command is enabled for hardware */
-> > > +	if (!test_bit(cxl_cmd_index(c), cxlm->enabled_cmds))
-> > > +		return -ENOTTY;
-> > > +
-> > >  	if (info->flags & CXL_MEM_COMMAND_FLAG_KERNEL)
-> > >  		return -EPERM;
-> > >  
-> > > @@ -1029,6 +1036,31 @@ static int cxl_mem_add_memdev(struct cxl_mem *cxlm)
-> > >  	return rc;
-> > >  }
-> > >  
-> > > +/**
-> > > + * cxl_mem_enumerate_cmds() - Enumerate commands for a device.
-> > > + * @cxlm: The device.
-> > > + *
-> > > + * Returns 0 if enumerate completed successfully.
-> > > + *
-> > > + * CXL devices have optional support for certain commands. This function will
-> > > + * determine the set of supported commands for the hardware and update the
-> > > + * enabled_cmds bitmap in the @cxlm.
-> > > + */
-> > > +static int cxl_mem_enumerate_cmds(struct cxl_mem *cxlm)
-> > > +{
-> > > +	struct cxl_mem_command *c;
-> > > +
-> > > +	/* All commands are considered enabled for now (except INVALID). */
-> > > +	cxl_for_each_cmd(c) {
-> > > +		if (c->flags & CXL_CMD_INTERNAL_FLAG_HIDDEN)
-> > > +			continue;
-> > > +
-> > > +		set_bit(cxl_cmd_index(c), cxlm->enabled_cmds);
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  /**
-> > >   * cxl_mem_identify() - Send the IDENTIFY command to the device.
-> > >   * @cxlm: The device to identify.
-> > > @@ -1147,6 +1179,10 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > >  	if (rc)
-> > >  		goto err;
-> > >  
-> > > +	rc = cxl_mem_enumerate_cmds(cxlm);
-> > > +	if (rc)
-> > > +		return rc;
-> > > +
-> > >  	rc = cxl_mem_identify(cxlm);
-> > >  	if (rc)
-> > >  		goto err;  
-> >   
+> - DaveJ
+> 
+> 
+>> +
+>> +    return flags | UACCE_DEV_SVA;
+>> +}
+>> +
+>>   /**
+>>    * uacce_alloc() - alloc an accelerator
+>>    * @parent: pointer of uacce parent device
+>> @@ -404,11 +422,7 @@ struct uacce_device *uacce_alloc(struct device *parent,
+>>       if (!uacce)
+>>           return ERR_PTR(-ENOMEM);
+>>   -    if (flags & UACCE_DEV_SVA) {
+>> -        ret = iommu_dev_enable_feature(parent, IOMMU_DEV_FEAT_SVA);
+>> -        if (ret)
+>> -            flags &= ~UACCE_DEV_SVA;
+>> -    }
+>> +    flags = uacce_enable_sva(parent, flags);
+>>         uacce->parent = parent;
+>>       uacce->flags = flags;
+>> @@ -432,8 +446,10 @@ struct uacce_device *uacce_alloc(struct device *parent,
+>>       return uacce;
+>>     err_with_uacce:
+>> -    if (flags & UACCE_DEV_SVA)
+>> +    if (flags & UACCE_DEV_SVA) {
+>>           iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_SVA);
+>> +        iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_IOPF);
+>> +    }
+>>       kfree(uacce);
+>>       return ERR_PTR(ret);
+>>   }
+>> @@ -487,8 +503,10 @@ void uacce_remove(struct uacce_device *uacce)
+>>       mutex_unlock(&uacce->queues_lock);
+>>         /* disable sva now since no opened queues */
+>> -    if (uacce->flags & UACCE_DEV_SVA)
+>> +    if (uacce->flags & UACCE_DEV_SVA) {
+>>           iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_SVA);
+>> +        iommu_dev_disable_feature(uacce->parent, IOMMU_DEV_FEAT_IOPF);
+>> +    }
+>>         if (uacce->cdev)
+>>           cdev_device_del(uacce->cdev, &uacce->dev);
+> 
+> .
+> 
 
