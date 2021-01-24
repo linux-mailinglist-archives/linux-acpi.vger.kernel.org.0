@@ -2,100 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C97CC301849
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jan 2021 21:13:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A506301B6A
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Jan 2021 12:35:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbhAWUMm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 23 Jan 2021 15:12:42 -0500
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:39614 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbhAWUM2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 23 Jan 2021 15:12:28 -0500
-Received: by mail-ot1-f45.google.com with SMTP id i30so8763247ota.6
-        for <linux-acpi@vger.kernel.org>; Sat, 23 Jan 2021 12:12:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jQxhocxA91sIH2Hl2zGB7Xk97EyjrHZEvCAcN3xczrc=;
-        b=OpDnrmNIsgSjKq2tb8lOZ5PmrXtvgakxdvVTtVlxr++7xed9DRCEhvCLOtbmKrsYq9
-         PW5h+ekObkX+pXRJOlTFjztYtPUOOeBmCJ0QRiiyJeAOMntkO1qtJU8n0NMni9KODfYH
-         YQ5bByRaICR/jKnigNOxyVWgeuU36MdwpyGUNJKyUuxbraZLGcpQY3/7DhldpNW9akyj
-         vvhnBNWdIfye1zUHBvMBtzovJ02xyUuP55jtD9evSYkZ2rCNCenA9FYmKjYMghTAqJNj
-         n0+LZfMftIe/Ur8HQe3ql0iAiBj7l1NNboiVDSBnaJlozRFZu1keKP8IqSR/s/jSR4VC
-         TewQ==
-X-Gm-Message-State: AOAM533oxsDwPsOQCPcn2u4vkLS6xdvdEEBbuwLTxyticzSBhWGiV/Jh
-        JMTE4KMio/9c7mRZWw6qNZ9mSHTReIT+RdIsMe0=
-X-Google-Smtp-Source: ABdhPJzKnuNL2Bga0eMURd7ZzV6MKoCG3AJH2HI6S+4UYcd4OfzQutvSlPSQ0Ram6y8+DDoWW7rabcBrvKkyrzJRgbo=
-X-Received: by 2002:a9d:1710:: with SMTP id i16mr7457872ota.260.1611432707264;
- Sat, 23 Jan 2021 12:11:47 -0800 (PST)
+        id S1726614AbhAXLep (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 24 Jan 2021 06:34:45 -0500
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:56695 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726367AbhAXLek (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 24 Jan 2021 06:34:40 -0500
+Received: from localhost.localdomain ([92.131.99.25])
+        by mwinf5d43 with ME
+        id LbYv240060Ys01Y03bYvtp; Sun, 24 Jan 2021 12:32:57 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 24 Jan 2021 12:32:57 +0100
+X-ME-IP: 92.131.99.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     robert.moore@intel.com, erik.kaneda@intel.com,
+        rafael.j.wysocki@intel.com, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ACPICA: Common: Fix a typo
+Date:   Sun, 24 Jan 2021 12:32:52 +0100
+Message-Id: <20210124113252.733716-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20210122002357.370836-4-erik.kaneda@intel.com>
- <20210123152104.GA36465@roeck-us.net> <20210123152520.GA41373@roeck-us.net>
-In-Reply-To: <20210123152520.GA41373@roeck-us.net>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 23 Jan 2021 21:11:35 +0100
-Message-ID: <CAJZ5v0hnNqOM=0N2MUo_3YXke3pC5Qv=5mo6bCOmHBC6L6J=Cg@mail.gmail.com>
-Subject: Re: [v2,3/9] ACPICA: ACPICA: fix -Wfallthrough
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Jon Hunter <jonathanh@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jan 23, 2021 at 4:25 PM Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On Sat, Jan 23, 2021 at 07:21:04AM -0800, Guenter Roeck wrote:
-> > On Thu, Jan 21, 2021 at 04:23:51PM -0800, Erik Kaneda wrote:
-> > > From: Nick Desaulniers <ndesaulniers@google.com>
-> > >
-> > > ACPICA commit 4b9135f5774caa796ddf826448811e8e7f08ef2f
-> > >
-> > > GCC 7.1 gained -Wimplicit-fallthrough to warn on implicit fallthrough,
-> > > as well as __attribute__((__fallthrough__)) and comments to explicitly
-> > > denote that cases of fallthrough were intentional. Clang also supports
-> > > this warning and statement attribute, but not the comment form.
-> > >
-> > > Robert Moore provides additional context about the lint comments being
-> > > removed. They were for "an old version of PC-Lint, which we don't use
-> > > anymore." Drop those.
-> > >
-> > > This will help us enable -Wimplicit-fallthrough throughout the Linux
-> > > kernel.
-> > >
-> > > Suggested-by: Robert Moore <robert.moore@intel.com>
-> > > Reported-by: Jon Hunter <jonathanh@nvidia.com>
-> > >
-> > > Link: https://github.com/acpica/acpica/commit/4b9135f5
-> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> > > Signed-off-by: Bob Moore <robert.moore@intel.com>
-> > > Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-> >
-> > With gcc 6.5 (and presumably each gcc version older than 7.1),
-> > this patch results in:
-> >
-> > drivers/acpi/acpica/dscontrol.c: In function ‘acpi_ds_exec_begin_control_op’:
-> > drivers/acpi/acpica/dscontrol.c:65:3: error: ‘ACPI_FALLTHROUGH’ undeclared
-> >
-> > and similar errors for other files.
-> >
->
-> Wait, this differs from the patch in -next.
->
-> > > +#ifndef ACPI_FALLTHROUGH
-> > > +#define ACPI_FALLTHROUGH do {} while(0)
->
-> This line is missing in -next.
->
-> v2 doesn't say what changed in v2. Is that the change ?
+This module is 'cmfsize', not 'cfsize'.
+Fix it.
 
-Yes, it is.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ tools/power/acpi/common/cmfsize.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It should appear in -next on Monday.
+diff --git a/tools/power/acpi/common/cmfsize.c b/tools/power/acpi/common/cmfsize.c
+index 9ea2c0aeb86c..185b8c588e1d 100644
+--- a/tools/power/acpi/common/cmfsize.c
++++ b/tools/power/acpi/common/cmfsize.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
+ /******************************************************************************
+  *
+- * Module Name: cfsize - Common get file size function
++ * Module Name: cmfsize - Common get file size function
+  *
+  * Copyright (C) 2000 - 2021, Intel Corp.
+  *
+-- 
+2.27.0
+
