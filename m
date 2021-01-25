@@ -2,135 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90837302BEA
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Jan 2021 20:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B39302BCA
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Jan 2021 20:42:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731555AbhAYToX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 25 Jan 2021 14:44:23 -0500
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.115]:23146 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732119AbhAYToO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Jan 2021 14:44:14 -0500
-Received: from [100.112.4.31] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-c.us-east-1.aws.symcld.net id 80/91-56876-E6E1F006; Mon, 25 Jan 2021 19:39:26 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEKsWRWlGSWpSXmKPExsWSLveKTTdPjj/
-  BYMkhFouv326zW7w5Pp3JYvm+fkaL1XteMFucOX2J1YHV49e2NSwe7/ddZfPYcrWdxePzJrkA
-  lijWzLyk/IoE1oxnx9azF7znq1jw8hpTA+Nlni5GLg4hgf+MEh2bT7NDOC8YJRb8/sgK4exll
-  Lj0fxpbFyMnB5uAnsS5s3uZQWwRgSCJp7/fgNnMAhsYJX5/YgWxhQUKJJZMvMYKUVMosfXuGS
-  jbSGLlzt3sIDaLgKrExl2/WEBsXgFLidcft4PZQgIpEk1b94HZnAIWEueurAWzGQXEJL6fWsM
-  EsUtc4taT+WC2hICAxJI955khbFGJl4//sULY8hK7z/2GqteRWLD7ExuErS2xbOFrZoi9ghIn
-  Zz5hmcAoOgvJ2FlIWmYhaZmFpGUBI8sqRtOkosz0jJLcxMwcXUMDA11DQyNdM10zM73EKt1kv
-  dJi3dTE4hJdQ73E8mK94src5JwUvbzUkk2MwIhMKWBz2sF4+/UHvUOMkhxMSqK8AY/4EoT4kv
-  JTKjMSizPii0pzUosPMcpwcChJ8C6Q4U8QEixKTU+tSMvMASYHmLQEB4+SCK8gSJq3uCAxtzg
-  zHSJ1itGYY8LLuYuYOQ4enbeIWYglLz8vVUqcd7IsUKkASGlGaR7cIFjSusQoKyXMy8jAwCDE
-  U5BalJtZgir/ilGcg1FJmFcdZApPZl4J3L5XQKcwAZ3y5AwfyCkliQgpqQamCby8p7nKprU5R
-  nQyPXdIiiu1Oz3f9fDf4ovGuXfv9NxZ3l/y5L1NgWCl9FGGQO+o6sfRVcoXOgSt3mmcCPxpcd
-  XvRf/ZtXubmnu5gu3Yz0Y+tgjfXygYmrTlyNszkRlJk2rKFaY5ubg4T/wU+nWuxLKW2ZvV5q6
-  s+7CqdWr5Fp4dzJ05Qr+9cmdmcc4O/Lyp983OnY+1tjpuW+Fw38vseQv3nJ62LR8uaVz3Z3sQ
-  dZnpgIr4yuQO+VXS5yTjd1hqCKq7bcqYdr7oYNOfh1yOZ3dGZn7ZytmWv5Eju/TB/HsVU2YrZ
-  VcWfvevMX/zQLXP4GtitmJtx32/F74W2+MXMzz4lLTgvcnrnssMSdeVWIozEg21mIuKEwHpa7
-  bq1QMAAA==
-X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-13.tower-416.messagelabs.com!1611603564!592724!1
-X-Originating-IP: [103.30.234.6]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.60.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 5506 invoked from network); 25 Jan 2021 19:39:25 -0000
-Received: from unknown (HELO lenovo.com) (103.30.234.6)
-  by server-13.tower-416.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 25 Jan 2021 19:39:25 -0000
-Received: from reswpmail03.lenovo.com (unknown [10.62.32.22])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 9042E44D725A5280A362;
-        Tue, 26 Jan 2021 03:39:22 +0800 (CST)
-Received: from reswpmail02.lenovo.com (10.62.32.21) by reswpmail03.lenovo.com
- (10.62.32.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Mon, 25 Jan
- 2021 14:39:09 -0500
-Received: from reswpmail02.lenovo.com ([fe80::9926:4849:da71:32a2]) by
- reswpmail02.lenovo.com ([fe80::9926:4849:da71:32a2%11]) with mapi id
- 15.01.2044.006; Mon, 25 Jan 2021 14:39:20 -0500
-From:   Mark RH Pearson <markpearson@lenovo.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-CC:     Bastien Nocera <hadess@hadess.net>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>
-Subject: RE: [External]  [PATCH 1/1] ACPI: platform-profile: Fix possible
- deadlock in platform_profile_remove()
-Thread-Topic: [External]  [PATCH 1/1] ACPI: platform-profile: Fix possible
- deadlock in platform_profile_remove()
-Thread-Index: AQHW802a5N+n/u79qUWPR70nMVIfVKo4vGjA
-Date:   Mon, 25 Jan 2021 19:39:20 +0000
-Message-ID: <71f4b64a29c24f929b578c5127f8a835@lenovo.com>
-References: <20210125190909.4384-1-hdegoede@redhat.com>
- <20210125190909.4384-2-hdegoede@redhat.com>
-In-Reply-To: <20210125190909.4384-2-hdegoede@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.46.52.30]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1731978AbhAYTlb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Jan 2021 14:41:31 -0500
+Received: from mga09.intel.com ([134.134.136.24]:28854 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731919AbhAYTlU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Jan 2021 14:41:20 -0500
+IronPort-SDR: RIDpzrMel86cx846B77IJEM0poexx7HzLMM+96r2+2SzDz6YTGZ+OaXlFTFq/F+83nPbuzdKET
+ 8IBO/8QYpK0A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9875"; a="179936890"
+X-IronPort-AV: E=Sophos;i="5.79,374,1602572400"; 
+   d="scan'208";a="179936890"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2021 11:39:55 -0800
+IronPort-SDR: 6UCbQk3KpBrios7K18Q623lCYKxLETnSU8+ywUef7wLszvGvoLktgenVXNkqlesed3+EEoO6SD
+ uu3HCg/xwC/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,374,1602572400"; 
+   d="scan'208";a="504267860"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 25 Jan 2021 11:39:52 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 87D51D7; Mon, 25 Jan 2021 21:39:51 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v1 01/10] x86/platform/intel-mid: Remove unused leftovers (msic_audio)
+Date:   Mon, 25 Jan 2021 21:39:39 +0200
+Message-Id: <20210125193948.56760-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
+References: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -----Original Message-----
-> From: Hans de Goede <hdegoede@redhat.com>
-> Sent: Monday, January 25, 2021 2:09 PM
-> 
-> After a rmmod thinkpad_acpi, lockdep pointed out this possible deadlock:
-> 
-> Our _show and _store sysfs attr functions get called with the kn->active
-> lock held for the sysfs attr and then take the profile_lock.
-> sysfs_remove_group() also takes the kn->active lock for the sysfs attr,
-> so if we call it with the profile_lock held, then we get an ABBA deadlock.
-> 
-> platform_profile_remove() must only be called by drivers which have
-> first *successfully* called platform_profile_register(). Anything else
-> is a driver bug. So the check for cur_profile being set before calling
-> sysfs_remove_group() is not necessary and it can be dropped.
-> 
-> It is safe to call sysfs_remove_group() without holding the profile_lock
-> since the attr-group group cannot be re-added until after we clear
-> cur_profile.
-> 
-> Change platform_profile_remove() to only hold the profile_lock while
-> clearing the cur_profile, fixing the deadlock.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/platform_profile.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 80e9df427eb8..4a59c5993bde 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -164,13 +164,9 @@ EXPORT_SYMBOL_GPL(platform_profile_register);
-> 
->  int platform_profile_remove(void)
->  {
-> -	mutex_lock(&profile_lock);
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> -
->  	sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +
-> +	mutex_lock(&profile_lock);
->  	cur_profile = NULL;
->  	mutex_unlock(&profile_lock);
->  	return 0;
-> --
-> 2.29.2
-Thanks Hans - good catch! Looks good to me.
-Mark
+The commit 05f4434bc130 ("ASoC: Intel: remove mfld_machine") removed
+the driver, no need to have support files for it.
+
+Cc: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ .../platform/intel-mid/device_libs/Makefile   |  1 -
+ .../device_libs/platform_msic_audio.c         | 42 -------------------
+ 2 files changed, 43 deletions(-)
+ delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_msic_audio.c
+
+diff --git a/arch/x86/platform/intel-mid/device_libs/Makefile b/arch/x86/platform/intel-mid/device_libs/Makefile
+index 918edac9ab9a..e926577fe665 100644
+--- a/arch/x86/platform/intel-mid/device_libs/Makefile
++++ b/arch/x86/platform/intel-mid/device_libs/Makefile
+@@ -8,7 +8,6 @@ obj-$(subst m,y,$(CONFIG_BRCMFMAC_SDIO)) += platform_bcm43xx.o
+ obj-$(subst m,y,$(CONFIG_BT_HCIUART_BCM)) += platform_bt.o
+ # IPC Devices
+ obj-$(subst m,y,$(CONFIG_MFD_INTEL_MSIC)) += platform_msic.o
+-obj-$(subst m,y,$(CONFIG_SND_MFLD_MACHINE)) += platform_msic_audio.o
+ obj-$(subst m,y,$(CONFIG_GPIO_MSIC)) += platform_msic_gpio.o
+ obj-$(subst m,y,$(CONFIG_MFD_INTEL_MSIC)) += platform_msic_ocd.o
+ obj-$(subst m,y,$(CONFIG_MFD_INTEL_MSIC)) += platform_msic_battery.o
+diff --git a/arch/x86/platform/intel-mid/device_libs/platform_msic_audio.c b/arch/x86/platform/intel-mid/device_libs/platform_msic_audio.c
+deleted file mode 100644
+index e765da78ad8c..000000000000
+--- a/arch/x86/platform/intel-mid/device_libs/platform_msic_audio.c
++++ /dev/null
+@@ -1,42 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * platform_msic_audio.c: MSIC audio platform data initialization file
+- *
+- * (C) Copyright 2013 Intel Corporation
+- * Author: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@intel.com>
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/interrupt.h>
+-#include <linux/scatterlist.h>
+-#include <linux/init.h>
+-#include <linux/sfi.h>
+-#include <linux/platform_device.h>
+-#include <linux/mfd/intel_msic.h>
+-#include <asm/intel-mid.h>
+-
+-#include "platform_msic.h"
+-
+-static void *msic_audio_platform_data(void *info)
+-{
+-	struct platform_device *pdev;
+-
+-	pdev = platform_device_register_simple("sst-platform", -1, NULL, 0);
+-
+-	if (IS_ERR(pdev)) {
+-		pr_err("failed to create audio platform device\n");
+-		return NULL;
+-	}
+-
+-	return msic_generic_platform_data(info, INTEL_MSIC_BLOCK_AUDIO);
+-}
+-
+-static const struct devs_id msic_audio_dev_id __initconst = {
+-	.name = "msic_audio",
+-	.type = SFI_DEV_TYPE_IPC,
+-	.delay = 1,
+-	.msic = 1,
+-	.get_platform_data = &msic_audio_platform_data,
+-};
+-
+-sfi_device(msic_audio_dev_id);
+-- 
+2.29.2
+
