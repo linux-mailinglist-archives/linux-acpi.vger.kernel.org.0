@@ -2,88 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8AE1302783
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Jan 2021 17:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0EE33027C9
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Jan 2021 17:27:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730602AbhAYQKN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Jan 2021 11:10:13 -0500
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:36728 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730604AbhAYQJs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Jan 2021 11:09:48 -0500
-Received: by mail-ot1-f42.google.com with SMTP id d7so5497356otf.3;
-        Mon, 25 Jan 2021 08:09:32 -0800 (PST)
+        id S1729808AbhAYQ02 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Jan 2021 11:26:28 -0500
+Received: from mail-oo1-f42.google.com ([209.85.161.42]:39147 "EHLO
+        mail-oo1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730770AbhAYQ0D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Jan 2021 11:26:03 -0500
+Received: by mail-oo1-f42.google.com with SMTP id z36so1463211ooi.6;
+        Mon, 25 Jan 2021 08:25:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YvaHpgEbGNK1hYYfVoX+VD9+F7xaMKXTEHaFZo2RAoc=;
-        b=SA0a4xVAVvd4rW/cyUSceoIaPmwAY4QUSlO57B8i4hKvmGhKAdPT3BiYnpswHRoPe9
-         MsHctXYX5PTDgHqoH0zfU8FQh63XXp48QBdtnREF23wIpRFnAqQf6vS5Na5anme2Jvt/
-         2NkkbwHkjQ/nxYL7d5SzF2TCsFoamZu++hz3DruQtUHPL1NxJSebakbPz9dYxMln+iR4
-         fXL5yVm5XcgqRErvb7lBVVm9z/mIXphpqB5r+ZpOaeG411InH0ekpYBrUpeXXDvDRF30
-         2esuYLFDdfcJvsirUVeQH4xdYHw1Oxi/4lOXpdbbRO65nAcYIBy++3tlbseih4wolUih
-         +UDg==
-X-Gm-Message-State: AOAM531KLudeFShqe5gQuLbca0gOfEjXovI4AAAfuS6ASZmL6/Nkv5ON
-        oyGyce8UnyrNW8LFwXDUEvX9Hdqyu/t199ZfyQkoq1mt
-X-Google-Smtp-Source: ABdhPJykIN+/Xa795R8a1kQrnvteDiw/is5D9Wr88ncijkPejqn0kf9B/Uu0SaRtUa6C3Yb0uJ0qRC53fNMe2D4Y9qk=
-X-Received: by 2002:a05:6830:2313:: with SMTP id u19mr930088ote.321.1611590947536;
- Mon, 25 Jan 2021 08:09:07 -0800 (PST)
+        bh=eFwTq+OScXIcVonxGOjBlHjUqwMYEvu6XWhum3jN8NI=;
+        b=CL7M/oUzUcl5VtJNC1eEZNqlaTiTMo25p60mGtRGfBkTI4YgONPaJehJWyXipQ4Wh3
+         HmlGnnu6Cq/wSBkKrTnr+Kb8XSlkwANRR/H14shTP2lnz571+KV4zPcZTGam+YdY2ULj
+         4tJ5r14ODIRv4O1MwltyFZxfSFVwFyt1tnsHjQKdps6xmE5RIN78sA+cwEoJhvAxcrwE
+         /A6+ihoLEI/Kg0VR4H02ezY2zB1oxAwUGIrMb2YfSnyQVtZrqUva89r6ejpjymPwghp8
+         IjKJe+mzdS0VI727P4v9rn9Dtn0BNf3yB1iEPUaM9jrNLslh4VzU5ZZul5ce5chAB4DW
+         INew==
+X-Gm-Message-State: AOAM530+Kz8jRR4xJg4YpqkdTKEiIcXMCb55BtObKSSXHZuVLQqtQhuo
+        uqel/MSI8wtOb4x+89bD7640S9II8dxjYVFxFlU=
+X-Google-Smtp-Source: ABdhPJw94FS2sVkIv7zvr5rZNd8U07Htu+OFlLA4/p6peeom+asbQeBkITEoCKvoQ4I4CyzSQUvYE2e5xtNUlRgxMmc=
+X-Received: by 2002:a4a:9873:: with SMTP id z48mr1015923ooi.44.1611591922626;
+ Mon, 25 Jan 2021 08:25:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20210122125302.991591-1-kai.heng.feng@canonical.com> <YArN3Gec5h6jPxWq@kroah.com>
-In-Reply-To: <YArN3Gec5h6jPxWq@kroah.com>
+References: <87blkbx1gt.fsf@gmx.net> <CAJZ5v0j86pX_a4bSLP=sobLoYhfQYV9dWL8HHf2941kXgND79g@mail.gmail.com>
+ <CAJZ5v0j7i86twMS+csYMaetUkvqjof4FD2GRNoZ_AN=SBF7F1w@mail.gmail.com>
+ <9709109.MH8tSaV5v9@kreacher> <87eej0iuf0.fsf@gmx.net> <87wnw278ds.fsf@gmx.net>
+In-Reply-To: <87wnw278ds.fsf@gmx.net>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 25 Jan 2021 17:08:55 +0100
-Message-ID: <CAJZ5v0j6Y-cbqs6sAz-bxaHPpBsu95gFnuGQJyoqgXNpfEOfcw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / device_sysfs: Prefer "compatible" modalias
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
+Date:   Mon, 25 Jan 2021 17:25:11 +0100
+Message-ID: <CAJZ5v0ihGfW=8PRXZgLVMfwOCVJQQh=Kc+htqbYhBFvxgfYuZQ@mail.gmail.com>
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+To:     Stephen Berman <stephen.berman@gmx.net>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
         Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 22, 2021 at 2:06 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Sun, Jan 24, 2021 at 2:49 PM Stephen Berman <stephen.berman@gmx.net> wrote:
 >
-> On Fri, Jan 22, 2021 at 08:53:02PM +0800, Kai-Heng Feng wrote:
-> > Commit 8765c5ba1949 ("ACPI / scan: Rework modalias creation when
-> > "compatible" is present") may create two "MODALIAS=" in uevent file if
-> > conditions are met.
-> >
-> > This breaks systemd-udevd, which assumes each "key" in uevent file is
-> > unique. The internal implementation of systemd-udevd overwrites the
-> > first MODALIAS with the second one, so its kmod rule doesn't load driver
-> > for the first MODALIAS.
-> >
-> > So if both ACPI modalias and OF modalias are present, use the latter
-> > one to ensure there's only one MODALIAS.
-> >
-> > Reference: https://github.com/systemd/systemd/pull/18163
-> > Cc: AceLan Kao <acelan.kao@canonical.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > Fixes: 8765c5ba1949 ("ACPI / scan: Rework modalias creation when "compatible" is present")
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> >  drivers/acpi/device_sysfs.c | 20 ++++++--------------
-> >  1 file changed, 6 insertions(+), 14 deletions(-)
+> On Mon, 04 Jan 2021 16:38:43 +0100 Stephen Berman <stephen.berman@gmx.net> wrote:
 >
-> Thanks for fixing this up!
+> > On Thu, 31 Dec 2020 21:46:11 +0100 "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+> >
+> >> ATM, I'm tempted to do something like the patch below (with the rationale
+> >> that it shouldn't be necessary to read the temperature right after updating
+> >> the trip points if polling is in use, because the next update through polling
+> >> will cause it to be read anyway and it will trigger trip point actions as
+> >> needed).
+> >>
+> >> Stephen, can you give it a go, please?
+> >
+> > On Sat, 02 Jan 2021 12:03:17 +0100 "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+> >
+> >> There is one more way to address this, probably better: instead of checking the
+> >> temperature right away in acpi_thermal_notify(), queue that on
+> >> acpi_thermal_pm_queue
+> >> and so only if another thermal check is not pending.
+> >>
+> >> This way there will be at most one temperature check coming from
+> >> acpi_thermal_notify() queued up at any time which should prevent the
+> >> build-up of work items from taking place.
+> >>
+> >> So something like this:
+> >
+> > Thanks for the patches.  I'll try them as soon as I can.
 >
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> FTR, since this is the thread I started for this bug, I've confirmed in
+> https://lore.kernel.org/lkml/87y2gi78sg.fsf@gmx.net/T/#t that the latest
+> patch fixes the bug.
 
-Applied as 5.11-rc material with some minor edits in the subject and
-changelog and with the tags.
+OK, thanks!
 
-Thanks everyone!
+The patch has been applied as 5.11-rc material.
