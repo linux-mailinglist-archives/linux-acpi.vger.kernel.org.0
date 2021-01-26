@@ -2,83 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CD93059D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 12:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 194DF305C4C
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 13:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236865AbhA0Lcc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 06:32:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34356 "EHLO mail.kernel.org"
+        id S313129AbhAZWt0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 17:49:26 -0500
+Received: from mga04.intel.com ([192.55.52.120]:36382 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234567AbhA0La2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Jan 2021 06:30:28 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A2EE32076E;
-        Wed, 27 Jan 2021 11:29:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611746980;
-        bh=MeXh87PhrXGbxuFNLGsx1zwPAc25m19iwuT8SQtjfxM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mN3AANCpN24xFffemzewOHV6grTdbxxS9mB86vkxuBnaH3UP65G7fhJ4XbU6mlVuE
-         bOiBn8AfBKsWcqHfnUgWPLEAy33uVN10uS5fxR406SbIoPD4l268dDhS1W4Vxl9ezo
-         x4y55qp7EzLbFu321LifyESl+IQmsbmjvi2F3gTdPIiLWNZhEtRkdbub/V9Zo/3vO5
-         amAQlDSJT2ZV8QlvHhU2KUn5QsFEpcfSYWtWqntRrXXnT2HdrN2pIHjQUXjdBvLpx5
-         1JHhFLbfXqlhonfYw2i2gWc5UclrLPTcG5HvjMB8+FAlq2V/GQAECRgaSoZioVa5hO
-         BTi4jsm5haKKw==
-Date:   Wed, 27 Jan 2021 11:28:57 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S1731383AbhAZRyg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Jan 2021 12:54:36 -0500
+IronPort-SDR: L/uIIItjI/LsSYtI9Q9Zmmt+FMszO/mthjHDQVylSjZXxUAuc0g+u2hdHRZ5M4kinZtckaf8gd
+ OkvaU9hIHWDw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9876"; a="177372717"
+X-IronPort-AV: E=Sophos;i="5.79,377,1602572400"; 
+   d="scan'208";a="177372717"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2021 09:46:55 -0800
+IronPort-SDR: 9BOZyjjP+wxn+s2WqjrByA6IhdwaBxr36rjbSTSKPNfWFL2a9iQRmsy3zDtDd+tOU4Upl5wCqq
+ YpuFtUeqFGbg==
+X-IronPort-AV: E=Sophos;i="5.79,377,1602572400"; 
+   d="scan'208";a="362068232"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2021 09:46:51 -0800
+Received: by lahna (sSMTP sendmail emulation); Tue, 26 Jan 2021 19:46:49 +0200
+Date:   Tue, 26 Jan 2021 19:46:49 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Christian Kellner <christian@kellner.me>,
         Len Brown <lenb@kernel.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-spi@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
-        linux-acpi@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
-Message-ID: <20210127112857.GA4387@sirena.org.uk>
-References: <20210126202317.2914080-1-helgaas@kernel.org>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 5/6] ACPI: Add support for native USB4 control _OSC
+Message-ID: <20210126174649.GE1988617@lahna.fi.intel.com>
+References: <20210126155723.9388-1-mika.westerberg@linux.intel.com>
+ <20210126155723.9388-6-mika.westerberg@linux.intel.com>
+ <CAJZ5v0jT4crr7fyQE4oVijvTU0hhKOEUvDLziPZZ7J0Hvjrj2w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bg08WKrSYDhXBjb5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210126202317.2914080-1-helgaas@kernel.org>
-X-Cookie: La-dee-dee, la-dee-dah.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAJZ5v0jT4crr7fyQE4oVijvTU0hhKOEUvDLziPZZ7J0Hvjrj2w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
---bg08WKrSYDhXBjb5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jan 26, 2021 at 06:35:20PM +0100, Rafael J. Wysocki wrote:
+> > +       capbuf[OSC_QUERY_DWORD] = 0;
+> > +       capbuf[OSC_SUPPORT_DWORD] = 0;
+> > +       capbuf[OSC_CONTROL_DWORD] = control;
+> > +
+> > +       status = acpi_run_osc(handle, &context);
+> 
+> This is the same _OSC that is evaluated in
+> acpi_bus_osc_negotiate_platform_control(), right?
 
-On Tue, Jan 26, 2021 at 02:23:17PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
->=20
-> The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
-> Replace it with "if (ACPI_SUCCESS(status))".
+Yes, but different UUID.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+> So shouldn't the capbuf[OSC_SUPPORT_DWORD] be whatever is negotiated
+> through acpi_bus_osc_negotiate_platform_control()?  At least that
+> would be consistent with acpi_pci_osc_control_set().
 
---bg08WKrSYDhXBjb5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmARTngACgkQJNaLcl1U
-h9C2dwf9GE0PHhDzOzGae10MRkXBNzBdmeTf035YAM12jQ6o9G9kDK3xBSA64Jcy
-rr3+mkHvYkCEBEdAzV25MDRg2iXAoLBYJdmfMHXt/u9D0aJf80gMEXgrUDE6yjQo
-AJvXTJrJqu+KS2RMpnxIHfO1rXRZrQMIAln9GbePtqKjGUN5cx6QJKUDYyrMlevp
-9KZr/ClGQmLOYJ7suU9mr1NFgEgf6XnsU7Gq6BGuyo10GO62Qg3bztHtkiiRxz/x
-zvr9PngfutrIGT7qfvKBSmWk2y50qe5XDeJRD8e6YbFS/Ge5LnOwmNc24jjts04w
-OE5TwTVKRHFfy39WTQ3IdmJaznDhqg==
-=b7Y/
------END PGP SIGNATURE-----
-
---bg08WKrSYDhXBjb5--
+The ACPI 6.4 spec says that the support field for this _OSC is reserved
+(table 6.14 in the spec). So as far as I can tell this is not the same
+as what we pass for the platform _OSC.
