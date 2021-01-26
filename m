@@ -2,115 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC947303603
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 06:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15BEB3037CD
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 09:25:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbhAZF5g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Jan 2021 00:57:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:42603 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727853AbhAYMOJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:14:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611576721;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qFYGXPSLNwIoMSm+97j34GHslVZxB/S/yGvgs080vfg=;
-        b=SUONJrzFpCTedPd48O1wM1OTd0xw2dzAFcRwj6PH9qsF173jKSlPS48dbBfh7vcqmU0p5P
-        dKmqe57J9XESngvxmV+8QrsOcFLQEX6UlNNgGpHrDzGT3uFhOtanNmxDr37HHWy+eX+CKj
-        NduMDNgNRLQN2R4RwVRhVBn3ThbNtXA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-470-3CETjn75OdGqFRqkPGCJGA-1; Mon, 25 Jan 2021 07:00:32 -0500
-X-MC-Unique: 3CETjn75OdGqFRqkPGCJGA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0C752192203E;
-        Mon, 25 Jan 2021 12:00:26 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-112-170.ams2.redhat.com [10.36.112.170])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6DA3960C90;
-        Mon, 25 Jan 2021 12:00:02 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Mark Pearson <mpearson@lenovo.com>,
-        Bastien Nocera <hadess@hadess.net>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH v2 2/2] ACPI: platform-profile: Introduce object pointers to callbacks
-Date:   Mon, 25 Jan 2021 12:59:57 +0100
-Message-Id: <20210125115957.3292-3-hdegoede@redhat.com>
-In-Reply-To: <20210125115957.3292-1-hdegoede@redhat.com>
-References: <20210125115957.3292-1-hdegoede@redhat.com>
+        id S2388786AbhAZIXp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 03:23:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389840AbhAZIVq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 03:21:46 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79923C061573
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Jan 2021 00:21:05 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id e15so1931941wme.0
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Jan 2021 00:21:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=+jmRovbHoJFIPsxdXAY7r0V1zGJfwiz2YjhcYRzpajM=;
+        b=PxUN3nqggnDRnjIg//589fa4L1h6sSUPQup32s/k9tsY1DOKHbiY07oQpUffQPQ0S6
+         Hjyb6TEEApQdEuHzAXuTm9jOnPEHJWUxI/neKhqfWxZgx576UI8YQORSxwI0f8HpTvnB
+         3Y8arwDxSK4Mbl+fWIXurbvmHeZ1c9tRuCK1JXRa4pQa6OEIsgk1kkKdyWwicY+PiHvw
+         FmbZkaml8GNQNpNkeeMS+I2iClvaXvN6gHPAy6D7mkLhLMOpt/mqS5lCBHCxhCOpDmJ8
+         DtaDUBVZCPdvJBF/RbcoF7YqQ/RbEYvcRYz59yrYb0Al1URb4qryjElzKZ0vmWu4kMlK
+         f4rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=+jmRovbHoJFIPsxdXAY7r0V1zGJfwiz2YjhcYRzpajM=;
+        b=iJh7EKQ23NulNWxSNlu0tsOAnjbP46I6ciT/i2iXLn8XcXNuMc+XpvgGbmag/fdocG
+         l8S9OhpCyq1s/2KpaUXSGhz2N7nPpdvhEVQnhT7TuNm5t9kUtO6X+NJnN+uVWQkD5uW8
+         QZiY+x4Q0/UeD22CnZfHwFsWi6x5nNyI3vL0aPgU/MkHhSfH6pDRfUwavIX7NQIz9f0N
+         Xl/6yiybZgXXnqWpFgGgVp/rU0uYA/udmuQzI66OBhPXwee/DNujTxrU/PNfLtKe8F+y
+         DMBqa+ecdo6ySdhW4k3Q8biTeyyXxwIgLuaEdZpsh/nOLLGBNQ54a5Li6aX61vby2wr5
+         WCqA==
+X-Gm-Message-State: AOAM532+e7xoIzykux06n9A2v2op5eoqZtBeJVrkM7FID217VIPwd83s
+        X99aDWrX0ZViJlnMJOzT56opng==
+X-Google-Smtp-Source: ABdhPJzWMEJBAbelnI6VV/+tPmVfTI0FrXf0cV2oFryj7tJwUA85QEhadchYojFzQ1oygPTv16rZ2w==
+X-Received: by 2002:a1c:26c1:: with SMTP id m184mr3611308wmm.49.1611649264241;
+        Tue, 26 Jan 2021 00:21:04 -0800 (PST)
+Received: from dell ([91.110.221.188])
+        by smtp.gmail.com with ESMTPSA id g194sm2259715wme.39.2021.01.26.00.21.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jan 2021 00:21:03 -0800 (PST)
+Date:   Tue, 26 Jan 2021 08:21:01 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH v1 00/10] mfd, x86: remove msic driver and leftovers
+Message-ID: <20210126082101.GD4903@dell>
+References: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+In-Reply-To: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+On Mon, 25 Jan 2021, Andy Shevchenko wrote:
 
-Add an object pointer to handler callbacks to avoid the need for
-drivers to have a global variable to get to their driver-data
-struct.
+> This is a second part of the Intel MID outdated platforms removal.
+> First part is available as immutable branch [1]. The series has functional
+> and build dependencies, so the mentioned branch should be used as a base
+> for these changes.
+> 
+> Note, that some of the drivers, that arch/x86 covers, seems never appeared
+> in the upstream (like msic_ocd).
 
-Link: https://lore.kernel.org/linux-acpi/6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com/
-Link: https://lore.kernel.org/r/20210114073429.176462-3-jiaxun.yang@flygoat.com
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2 (Hans de Goede):
-- Tweak the commit message wording a bit
----
- drivers/acpi/platform_profile.c  | 4 ++--
- include/linux/platform_profile.h | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+What platforms stop working after this removal?
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index f65c61db7921..80e9df427eb8 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -64,7 +64,7 @@ static ssize_t platform_profile_show(struct device *dev,
- 		return -ENODEV;
- 	}
- 
--	err = cur_profile->profile_get(&profile);
-+	err = cur_profile->profile_get(cur_profile, &profile);
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
-@@ -104,7 +104,7 @@ static ssize_t platform_profile_store(struct device *dev,
- 		return -EOPNOTSUPP;
- 	}
- 
--	err = cur_profile->profile_set(i);
-+	err = cur_profile->profile_set(cur_profile, i);
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index c797fdb3d91a..a26542d53058 100644
---- a/include/linux/platform_profile.h
-+++ b/include/linux/platform_profile.h
-@@ -28,8 +28,10 @@ enum platform_profile_option {
- 
- struct platform_profile_handler {
- 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
--	int (*profile_get)(enum platform_profile_option *profile);
--	int (*profile_set)(enum platform_profile_option profile);
-+	int (*profile_get)(struct platform_profile_handler *pprof,
-+				enum platform_profile_option *profile);
-+	int (*profile_set)(struct platform_profile_handler *pprof,
-+				enum platform_profile_option profile);
- };
- 
- int platform_profile_register(struct platform_profile_handler *pprof);
+Are you sure no-one is using them?
+
+I wouldn't be keen on breaking Janet's PC that she's been using daily
+and keeping up-to-date since the 90's.
+
 -- 
-2.29.2
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
