@@ -2,218 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 999E5304C9A
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 23:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21619304C9B
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 23:51:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730396AbhAZWuM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Jan 2021 17:50:12 -0500
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:38269 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389919AbhAZS2f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 13:28:35 -0500
-Received: by mail-ot1-f43.google.com with SMTP id s2so14980411otp.5;
-        Tue, 26 Jan 2021 10:28:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qvmjRU4vLqrugRhSX00gkIjq8wIoIE/XEIcN8DtiKuE=;
-        b=SAGnkRyXVlf1GZPQKEWnL40rNe90j1c0ewT/y0pGvNGaQ7qbZwv1IqPWRoUHsV0tJO
-         smRhp+FQL5yn+R9V9CeRKFgX4NF2Tqekz5YgyhGMGwrABCnFHKQ2BoenZLHv27fdK83i
-         ni0qihsAIZIBMrdqMIlKLczufKjZdMjR4+dOMB7czsddPBZO2oJL0rV2ksezMEESgkc7
-         4WmRj9fG4XmON1Imd85Ag+Da2sAcDWxwfQjKGuj8xAnMk0ESzYXnmc+q/obYWaQ4FTQe
-         yolY1ososnjh02iBL56TTkjQvNVLTOLmFrD87hcfq/5SYEoxDqmkszloOFJSfVN5xxJL
-         AIUw==
-X-Gm-Message-State: AOAM5317INulFbDe6xhOYb3dD3go47Yw1z57ASUJQbBW8hx+WHDKvPnC
-        DtFk3JOggoCrcEUHEFhBCGIOimkIY+vaQGEuegQ=
-X-Google-Smtp-Source: ABdhPJx9LhMbNU6k3LrL4EYj7kHNDp6IURievBPQQGwcjjjGCzdjHTollhV6O/srU4Q32A0xpH0mQcrpAELah6EDIwA=
-X-Received: by 2002:a9d:1710:: with SMTP id i16mr4839780ota.260.1611685673920;
- Tue, 26 Jan 2021 10:27:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20210126155723.9388-1-mika.westerberg@linux.intel.com> <20210126155723.9388-6-mika.westerberg@linux.intel.com>
-In-Reply-To: <20210126155723.9388-6-mika.westerberg@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 26 Jan 2021 19:27:42 +0100
-Message-ID: <CAJZ5v0i3b5Ke_a3JEGVaYz6htRvmCPaN2cshB-XiQD2p-iQ+Wg@mail.gmail.com>
-Subject: Re: [PATCH 5/6] ACPI: Add support for native USB4 control _OSC
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Christian Kellner <christian@kellner.me>,
+        id S1730405AbhAZWuR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 17:50:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37810 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731660AbhAZUYE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Jan 2021 15:24:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F2B122241;
+        Tue, 26 Jan 2021 20:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611692602;
+        bh=+EsghCNbKfoMSubSdhekrk7Lexni+2yNl926lkdHUas=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qwRjUfaK417oQM28DFY8h3Ud1rcErIYR4T7Bmp0ZdAgKa8w/gXoTZIhygR/b+QPRG
+         ThnmNkLq6RievbT9icGV7yrwEj9kslvhrvzHMBIAe+3azHatZ+o54YYVY/VFvQvBG1
+         2gntQ3GiBy8pF00YTQQcx72bZ9S7TkTNnBSvI0+t+3R2q4faV0Vu9DS2TNjfCIy/sl
+         BN+RCQ+4b7QG2hM1TNlRmNed7E7oQyQNG8sJnffJFrhym128OmaPciCSTCDWH32zBb
+         eAWcDx0UiTtUizZXKQiyM8Yvcav5WB15Ojw/VbEQ8Gjnt6a25MtgXar7j9Ql1PQyCB
+         tvzORGfjCd4Jg==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-spi@vger.kernel.org, acpi4asus-user@lists.sourceforge.net,
+        linux-hwmon@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+Date:   Tue, 26 Jan 2021 14:23:17 -0600
+Message-Id: <20210126202317.2914080-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 5:01 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> ACPI 6.4 introduced a new _OSC capability that is used negotiate native
-> connection manager support. Connection manager is the entity that is
-> responsible for tunneling over the USB4 fabric. If the platform rejects
-> the native access then firmware based connection manager is used.
->
-> The new _OSC also includes a set of bits that can be used to disable
-> certain tunnel types such as PCIe for security reasons for instance.
->
-> This implements the new USB4 _OSC so that we try to negotiate native
-> USB4 support if the Thunderbolt/USB4 (CONFIG_USB4) driver is enabled.
-> Drivers can determine what was negotiated by checking two new variables
-> exposed in this patch.
->
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
+Replace it with "if (ACPI_SUCCESS(status))".
 
-> ---
->  drivers/acpi/bus.c   | 76 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/acpi.h | 10 ++++++
->  2 files changed, 86 insertions(+)
->
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index ca7c7b2bf56e..f7ad2d283e51 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -281,6 +281,12 @@ bool osc_sb_apei_support_acked;
->  bool osc_pc_lpi_support_confirmed;
->  EXPORT_SYMBOL_GPL(osc_pc_lpi_support_confirmed);
->
-> +/*
-> + * ACPI 6.4 Operating System Capabilities for USB.
-> + */
-> +bool osc_sb_native_usb4_support_confirmed;
-> +EXPORT_SYMBOL_GPL(osc_sb_native_usb4_support_confirmed);
-> +
->  static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
->  static void acpi_bus_osc_negotiate_platform_control(void)
->  {
-> @@ -317,6 +323,9 @@ static void acpi_bus_osc_negotiate_platform_control(void)
->         if (IS_ENABLED(CONFIG_SCHED_MC_PRIO))
->                 capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_DIVERSE_HIGH_SUPPORT;
->
-> +       if (IS_ENABLED(CONFIG_USB4))
-> +               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_NATIVE_USB4_SUPPORT;
-> +
->         if (!ghes_disable)
->                 capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_APEI_SUPPORT;
->         if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
-> @@ -348,8 +357,74 @@ static void acpi_bus_osc_negotiate_platform_control(void)
->                         capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
->                 osc_pc_lpi_support_confirmed =
->                         capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-> +               osc_sb_native_usb4_support_confirmed =
-> +                       capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
-> +       }
-> +
-> +       kfree(context.ret.pointer);
-> +}
-> +
-> +/*
-> + * Native control of USB4 capabilities. If any of the tunneling bits is
-> + * set it means OS is in control and we use software based connection
-> + * manager.
-> + */
-> +u32 osc_sb_native_usb4_control;
-> +EXPORT_SYMBOL_GPL(osc_sb_native_usb4_control);
-> +
-> +static void acpi_bus_decode_usb_osc(const char *msg, u32 bits)
-> +{
-> +       printk(KERN_INFO PREFIX "%s USB3%c DisplayPort%c PCIe%c XDomain%c\n", msg,
-> +              (bits & OSC_USB_USB3_TUNNELING) ? '+' : '-',
-> +              (bits & OSC_USB_DP_TUNNELING) ? '+' : '-',
-> +              (bits & OSC_USB_PCIE_TUNNELING) ? '+' : '-',
-> +              (bits & OSC_USB_XDOMAIN) ? '+' : '-');
-> +}
-> +
-> +static u8 sb_usb_uuid_str[] = "23A0D13A-26AB-486C-9C5F-0FFA525A575A";
-> +static void acpi_bus_osc_negotiate_usb_control(void)
-> +{
-> +       u32 capbuf[3];
-> +       struct acpi_osc_context context = {
-> +               .uuid_str = sb_usb_uuid_str,
-> +               .rev = 1,
-> +               .cap.length = sizeof(capbuf),
-> +               .cap.pointer = capbuf,
-> +       };
-> +       acpi_handle handle;
-> +       acpi_status status;
-> +       u32 control;
-> +
-> +       if (!osc_sb_native_usb4_support_confirmed)
-> +               return;
-> +
-> +       if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
-> +               return;
-> +
-> +       control = OSC_USB_USB3_TUNNELING | OSC_USB_DP_TUNNELING |
-> +                 OSC_USB_PCIE_TUNNELING | OSC_USB_XDOMAIN;
-> +
-> +       capbuf[OSC_QUERY_DWORD] = 0;
-> +       capbuf[OSC_SUPPORT_DWORD] = 0;
-> +       capbuf[OSC_CONTROL_DWORD] = control;
-> +
-> +       status = acpi_run_osc(handle, &context);
-> +       if (ACPI_FAILURE(status))
-> +               return;
-> +
-> +       if (context.ret.length != sizeof(capbuf)) {
-> +               printk(KERN_INFO PREFIX "USB4 _OSC: returned invalid length buffer\n");
-> +               goto out_free;
->         }
->
-> +       osc_sb_native_usb4_control =
-> +               control & ((u32 *)context.ret.pointer)[OSC_CONTROL_DWORD];
-> +
-> +       acpi_bus_decode_usb_osc("USB4 _OSC: OS supports", control);
-> +       acpi_bus_decode_usb_osc("USB4 _OSC: OS controls",
-> +                               osc_sb_native_usb4_control);
-> +
-> +out_free:
->         kfree(context.ret.pointer);
->  }
->
-> @@ -1188,6 +1263,7 @@ static int __init acpi_bus_init(void)
->          * so it must be run after ACPI_FULL_INITIALIZATION
->          */
->         acpi_bus_osc_negotiate_platform_control();
-> +       acpi_bus_osc_negotiate_usb_control();
->
->         /*
->          * _PDC control method may load dynamic SSDT tables,
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 2630c2e953f7..ac68c2d4e393 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -546,9 +546,19 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
->  #define OSC_SB_OSLPI_SUPPORT                   0x00000100
->  #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT                0x00001000
->  #define OSC_SB_GENERIC_INITIATOR_SUPPORT       0x00002000
-> +#define OSC_SB_NATIVE_USB4_SUPPORT             0x00040000
->
->  extern bool osc_sb_apei_support_acked;
->  extern bool osc_pc_lpi_support_confirmed;
-> +extern bool osc_sb_native_usb4_support_confirmed;
-> +
-> +/* USB4 Capabilities */
-> +#define OSC_USB_USB3_TUNNELING                 0x00000001
-> +#define OSC_USB_DP_TUNNELING                   0x00000002
-> +#define OSC_USB_PCIE_TUNNELING                 0x00000004
-> +#define OSC_USB_XDOMAIN                                0x00000008
-> +
-> +extern u32 osc_sb_native_usb4_control;
->
->  /* PCI Host Bridge _OSC: Capabilities DWORD 2: Support Field */
->  #define OSC_PCI_EXT_CONFIG_SUPPORT             0x00000001
-> --
-> 2.29.2
->
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+
+This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
+it seems easier to just apply these all at once.  But I'd be happy to split
+them up into individual patches if you'd rather.
+
+
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c | 4 ++--
+ drivers/gpu/drm/radeon/radeon_bios.c     | 4 ++--
+ drivers/hwmon/acpi_power_meter.c         | 4 ++--
+ drivers/platform/x86/asus-laptop.c       | 6 +++---
+ drivers/spi/spi.c                        | 2 +-
+ sound/pci/hda/hda_intel.c                | 4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+index 6333cada1e09..055f600eeed8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+@@ -291,7 +291,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+ 			continue;
+ 
+ 		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-		if (!ACPI_FAILURE(status)) {
++		if (ACPI_SUCCESS(status)) {
+ 			found = true;
+ 			break;
+ 		}
+@@ -304,7 +304,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+ 				continue;
+ 
+ 			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				found = true;
+ 				break;
+ 			}
+diff --git a/drivers/gpu/drm/radeon/radeon_bios.c b/drivers/gpu/drm/radeon/radeon_bios.c
+index bb29cf02974d..43bbbfd6ade8 100644
+--- a/drivers/gpu/drm/radeon/radeon_bios.c
++++ b/drivers/gpu/drm/radeon/radeon_bios.c
+@@ -205,7 +205,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+ 			continue;
+ 
+ 		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-		if (!ACPI_FAILURE(status)) {
++		if (ACPI_SUCCESS(status)) {
+ 			found = true;
+ 			break;
+ 		}
+@@ -218,7 +218,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+ 				continue;
+ 
+ 			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				found = true;
+ 				break;
+ 			}
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index 848718ab7312..7d3ddcba34ce 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -161,7 +161,7 @@ static ssize_t set_avg_interval(struct device *dev,
+ 	mutex_lock(&resource->lock);
+ 	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_PAI",
+ 				       &args, &data);
+-	if (!ACPI_FAILURE(status))
++	if (ACPI_SUCCESS(status))
+ 		resource->avg_interval = temp;
+ 	mutex_unlock(&resource->lock);
+ 
+@@ -232,7 +232,7 @@ static ssize_t set_cap(struct device *dev, struct device_attribute *devattr,
+ 	mutex_lock(&resource->lock);
+ 	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_SHL",
+ 				       &args, &data);
+-	if (!ACPI_FAILURE(status))
++	if (ACPI_SUCCESS(status))
+ 		resource->cap = temp;
+ 	mutex_unlock(&resource->lock);
+ 
+diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
+index 0edafe687fa9..bfea656e910c 100644
+--- a/drivers/platform/x86/asus-laptop.c
++++ b/drivers/platform/x86/asus-laptop.c
+@@ -861,7 +861,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * The significance of others is yet to be found.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "SFUN", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "SFUN value         : %#x\n",
+ 			       (uint) temp);
+ 	/*
+@@ -873,7 +873,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * takes several seconds to run on some systems.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "HWRS", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "HWRS value         : %#x\n",
+ 			       (uint) temp);
+ 	/*
+@@ -884,7 +884,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * silently ignored.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "ASYM", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "ASYM value         : %#x\n",
+ 			       (uint) temp);
+ 	if (asus->dsdt_info) {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 720ab34784c1..801d8b499788 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2210,7 +2210,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 		return AE_OK;
+ 
+ 	if (!lookup.max_speed_hz &&
+-	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
++	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+ 	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
+ 		/* Apple does not use _CRS but nested devices for SPI slaves */
+ 		acpi_spi_parse_apple_properties(adev, &lookup);
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 770ad25f1907..fe8049cd2765 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1444,7 +1444,7 @@ static bool atpx_present(void)
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (dhandle) {
+ 			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				pci_dev_put(pdev);
+ 				return true;
+ 			}
+@@ -1454,7 +1454,7 @@ static bool atpx_present(void)
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (dhandle) {
+ 			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				pci_dev_put(pdev);
+ 				return true;
+ 			}
+-- 
+2.25.1
+
