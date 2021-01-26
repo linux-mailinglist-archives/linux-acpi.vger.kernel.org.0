@@ -2,28 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B1B30393D
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 10:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF1853039CF
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 11:06:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730871AbhAZJmX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Jan 2021 04:42:23 -0500
-Received: from outbound-smtp48.blacknight.com ([46.22.136.219]:46137 "EHLO
-        outbound-smtp48.blacknight.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2391392AbhAZJkT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Jan 2021 04:40:19 -0500
-X-Greylist: delayed 447 seconds by postgrey-1.27 at vger.kernel.org; Tue, 26 Jan 2021 04:40:17 EST
-Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
-        by outbound-smtp48.blacknight.com (Postfix) with ESMTPS id A619CFAC5D
-        for <linux-acpi@vger.kernel.org>; Tue, 26 Jan 2021 09:31:42 +0000 (GMT)
-Received: (qmail 27702 invoked from network); 26 Jan 2021 09:31:42 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.22.4])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 26 Jan 2021 09:31:42 -0000
-Date:   Tue, 26 Jan 2021 09:31:40 +0000
-From:   Mel Gorman <mgorman@techsingularity.net>
+        id S2391901AbhAZKGx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 05:06:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391307AbhAZKGk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 05:06:40 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88CEC06174A;
+        Tue, 26 Jan 2021 02:06:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=+kPzGNU12fuOGcg8WL76MmT72as1QhBaLqRMdjDE51Y=; b=pvezCzoH/WtrAlLIICs0RpSpiD
+        3GvaMlQdberOS3T537LcfBj+Kx/F0aAzYm1A7eD0bSnLoP+q8FAZNLreZyzgpc5xdoaDW3+VVpR/R
+        xd5pxE/iMaoqcVwWLqTUEMlv+ShJuvynxy2g57RCqc3Uj03pFYRtIYlHdgB/zifVZAgN6faDwqE7I
+        Vsot7u6rUQzhqTpyO4GAwTdzEB3v7469gtQRxoUSY9FdmLY3w00ixx7CvhyLt0fSXC5WW8gRSsNHI
+        AxmlzYeJJTvuOL3S9vTQqY7fBIXlGY497Y+1tSWn9o+DJXuAqPVQwox+ACM1DLvxMKGwNFM29XOZ7
+        +phTkUng==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1l4LBP-005P2b-59; Tue, 26 Jan 2021 10:03:03 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B1C0E3010C8;
+        Tue, 26 Jan 2021 11:02:45 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 9EC79209C50F3; Tue, 26 Jan 2021 11:02:45 +0100 (CET)
+Date:   Tue, 26 Jan 2021 11:02:45 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Giovanni Gherdovich <ggherdovich@suse.cz>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+Cc:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Jon Grimm <Jon.Grimm@amd.com>,
@@ -31,6 +45,7 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Yazen Ghannam <Yazen.Ghannam@amd.com>,
         Thomas Lendacky <Thomas.Lendacky@amd.com>,
         Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
         Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
         Vincent Guittot <vincent.guittot@linaro.org>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
@@ -39,70 +54,67 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-acpi@vger.kernel.org
 Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost
  in schedutil invariant formula
-Message-ID: <20210126093140.GB3592@techsingularity.net>
+Message-ID: <YA/oxTTLVohtCBzk@hirez.programming.kicks-ass.net>
 References: <20210122204038.3238-1-ggherdovich@suse.cz>
  <20210122204038.3238-2-ggherdovich@suse.cz>
- <YA6YEK4/rjtPLdkG@hirez.programming.kicks-ass.net>
- <1611652167.11983.65.camel@suse.cz>
+ <YA6XmO2nuivdpE8M@hirez.programming.kicks-ass.net>
+ <1611653310.11983.66.camel@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1611652167.11983.65.camel@suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1611653310.11983.66.camel@suse.cz>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 10:09:27AM +0100, Giovanni Gherdovich wrote:
-> On Mon, 2021-01-25 at 11:06 +0100, Peter Zijlstra wrote:
+On Tue, Jan 26, 2021 at 10:28:30AM +0100, Giovanni Gherdovich wrote:
+> On Mon, 2021-01-25 at 11:04 +0100, Peter Zijlstra wrote:
 > > On Fri, Jan 22, 2021 at 09:40:38PM +0100, Giovanni Gherdovich wrote:
-> > > 1. PROBLEM DESCRIPTION (over-utilization and schedutil)
+> > > This workload is constant in time, so instead of using the PELT sum we can
+> > > pretend that scale invariance is obtained with
 > > > 
-> > > The problem happens on CPU-bound workloads spanning a large number of cores.
-> > > In this case schedutil won't select the maximum P-State. Actually, it's
-> > > likely that it will select the minimum one.
+> > >     util_inv = util_raw * freq_curr / freq_max1        [formula-1]
 > > > 
-> > > A CPU-bound workload puts the machine in a state generally called
-> > > "over-utilization": an increase in CPU speed doesn't result in an increase of
-> > > capacity. The fraction of time tasks spend on CPU becomes constant regardless
-> > > of clock frequency (the tasks eat whatever we throw at them), and the PELT
-> > > invariant util goes up and down with the frequency (i.e. it's not invariant
-> > > anymore).
-> > >                                       v5.10          v5.11-rc4
-> > >                                       ~~~~~~~~~~~~~~~~~~~~~~~~
-> > > CPU activity (mpstat)                 80-90%         80-90%
-> > > schedutil requests (tracepoint)       always P0      mostly P2
-> > > CPU frequency (HW feedback)           ~2.2 GHz       ~1.5 GHz
-> > > PELT root rq util (tracepoint)        ~825           ~450
+> > > where util_raw is the PELT util from v5.10 (which is to say, not invariant),
+> > > and util_inv is the PELT util from v5.11-rc4. freq_max1 comes from
+> > > commit 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for
+> > > frequency invariance on AMD EPYC") and is (P0+max_boost)/2 = (2.25+3.4)/2 =
+> > > 2.825 GHz.  Then we have the schedutil formula
 > > > 
-> > > mpstat shows that the workload is CPU-bound and usage doesn't change with
+> > >     freq_next = 1.25 * freq_max2 * util_inv            [formula-2]
+> > > 
+> > > Here v5.11-rc4 uses freq_max2 = P0 = 2.25 GHz (and this patch changes it to
+> > > 3.4 GHz).
+> > > 
+> > > Since all cores are busy, there is no boost available. Let's be generous and say
+> > > the tasks initially get P0, i.e. freq_curr = 2.25 GHz. Combining the formulas
+> > > above and taking util_raw = 825/1024 = 0.8, freq_next is:
+> > > 
+> > >     freq_next = 1.25 * 2.25 * 0.8 * 2.25 / 2.825 = 1.79 GHz
 > > 
-> > So I'm having trouble with calling a 80%-90% workload CPU bound, because
-> > clearly there's a ton of idle time.
+> > Right, so here's a 'problem' between schedutil and cpufreq, they don't
+> > use the same f_max at all times.
+> > 
+> > And this is also an inconsistency between acpi_cpufreq and intel_pstate
+> > (passive). IIRC the intel_pstate cpufreq drivers uses 4C/1C/P0 resp,
+> > while ACPI seems to stick to P0 f_max.
 > 
-> Yes you're right. There is considerable idle time and calling it CPU-bound is
-> a bit of a stretch.
+> That's correct. A different f_max is used depending on the occasion. Let me
+> rephrase with:
 > 
-> Yet I don't think I'm completely off the mark. The busy time is the same with
-> the machine running at 1.5 GHz and at 2.2 GHz (it just takes longer to
-> finish). To me it seems like the CPU is the bottleneck, with some overhead on
-> top.
+> cpufreq core asks the driver what's the f_max. What's the answer?
 > 
+> intel_pstate says: 1C
 
-I think this is an important observation because while the load may not
-be fully CPU-bound, it's still at the point where race-to-idle by running
-at a higher frequency is relevant. During the busy time, the results
-(and Michael's testing) indicate that the higher frequency may still be
-justified. I agree that there is a "a 'problem' between schedutil and
-cpufreq, they don't use the same f_max at all times", fixing that mid
--rc may not be appropriate because it's a big change in an rc window.
+Oh indeed it does...
 
-So, should this patch be merged for 5.11 as a stopgap, fix up
-schedutil/cpufreq and then test both AMD and Intel chips reporting the
-correct max non-turbo and max-turbo frequencies? That would give time to
-give some testing in linux-next before merging to reduce the chance
-something else falls out.
+> acpi_cpufreq says: P0
+> 
+> scheduler asks the freq-invariance machinery what's f_max, because it needs to
+> compute f_curr/f_max. What's the answer?
+> 
+> Intel CPUs: 4C in most cases, 1C on Atom, something else on Xeon Phi.
+> AMD CPUs: (P0 + 1C) / 2.
 
--- 
-Mel Gorman
-SUSE Labs
+Right, and thwn freq-invariance uses larger f_max than cpufreq uses for
+frequency selection, we under select exactly like you found.
