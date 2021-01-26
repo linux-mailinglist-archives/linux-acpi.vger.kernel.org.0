@@ -2,201 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD168303ECB
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 14:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7CE30433F
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 17:00:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404557AbhAZNdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Jan 2021 08:33:09 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:11510 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404592AbhAZNdF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 08:33:05 -0500
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DQ70p5v8Jzj4x4;
-        Tue, 26 Jan 2021 21:31:06 +0800 (CST)
-Received: from [127.0.0.1] (10.40.192.162) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.498.0; Tue, 26 Jan 2021
- 21:32:09 +0800
-Subject: Re: [PATCH v5] ACPI / APEI: fix the regression of synchronous
- external aborts occur in user-mode
-To:     <james.morse@arm.com>, <lenb@kernel.org>
-References: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
-CC:     <rafael@kernel.org>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <akpm@linux-foundation.org>, <jroedel@suse.de>,
-        <peterz@infradead.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>
-From:   tanxiaofei <tanxiaofei@huawei.com>
-Message-ID: <94a38a33-a949-3cce-d617-e1476912596e@huawei.com>
-Date:   Tue, 26 Jan 2021 21:32:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S2404398AbhAZP7n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 10:59:43 -0500
+Received: from mga09.intel.com ([134.134.136.24]:33515 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404401AbhAZP7R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Jan 2021 10:59:17 -0500
+IronPort-SDR: CO34Df8XAU24WbLREn4D2SqWDHn6pa+UTSbqPyw4892Lx9GeOlz46AL2YnHEs2bqjCinDTslFV
+ 5fyoFosm2vIg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9876"; a="180066869"
+X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
+   d="scan'208";a="180066869"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2021 07:57:28 -0800
+IronPort-SDR: 2BvbJ83PtWtTzwiSEdoW5oz/CKkDYJdafRsEiBYkgmqDLzj/owbFQwpIZYM5Yx1POD4TRFnXFF
+ pKpXDdaCnVtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
+   d="scan'208";a="402785447"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 26 Jan 2021 07:57:25 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 2F26D17F; Tue, 26 Jan 2021 17:57:24 +0200 (EET)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     linux-usb@vger.kernel.org
+Cc:     Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Christian Kellner <christian@kellner.me>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 2/6] thunderbolt: Add support for PCIe tunneling disabled (SL5)
+Date:   Tue, 26 Jan 2021 18:57:19 +0300
+Message-Id: <20210126155723.9388-3-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210126155723.9388-1-mika.westerberg@linux.intel.com>
+References: <20210126155723.9388-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.192.162]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-@James
-Hi James, please help to review this patch. Thank you very much. :)
+Recent Intel Thunderbolt firmware connection manager has support for
+another security level, SL5, that disables PCIe tunneling. This option
+can be turned on from the BIOS.
 
-On 2020/12/10 20:09, Xiaofei Tan wrote:
-> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-> synchronise with APEI's irq work") applied, do_sea() return directly
-> for user-mode if apei_claim_sea() handled any error record. Therefore,
-> each error record reported by the user-mode SEA must be effectively
-> processed in APEI GHES driver.
->
-> Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
-> Error Section, as it has nothing to do with SEA). It is not enough.
-> Because ARM Processor Error could also be used for SEA in some hardware
-> platforms, such as Kunpeng9xx series. We can't ask them to switch to
-> use Memory Error Section for two reasons:
-> 1)The server was delivered to customers, and it will introduce
-> compatibility issue.
-> 2)It make sense to use ARM Processor Error Section. Because either
-> cache or memory errors could generate SEA when consumed by a processor.
->
-> Do memory failure handling for ARM Processor Error Section just like
-> for Memory Error Section.
->
-> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> ---
-> Changes since v4:
-> - 1. Change the patch name from " ACPI / APEI: do memory failure on the
-> physical address reported by ARM processor error section" to this
-> more proper one.
-> - 2. Add a comment in the code to tell why not filter out corrected
-> error in an uncorrected section.
->
-> Changes since v3:
-> - Print unhandled error following James Morse's advice.
->
-> Changes since v2:
-> - Updated commit log
-> ---
->  drivers/acpi/apei/ghes.c | 76 +++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 59 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index fce7ade..0893968 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
->  	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
->  }
->
-> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> -				       int sev)
-> +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->  {
->  	unsigned long pfn;
-> -	int flags = -1;
-> -	int sec_sev = ghes_severity(gdata->error_severity);
-> -	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
->
->  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->  		return false;
->
-> -	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-> -		return false;
-> -
-> -	pfn = mem_err->physical_addr >> PAGE_SHIFT;
-> +	pfn = PHYS_PFN(physical_addr);
->  	if (!pfn_valid(pfn)) {
->  		pr_warn_ratelimited(FW_WARN GHES_PFX
->  		"Invalid address in generic error data: %#llx\n",
-> -		mem_err->physical_addr);
-> +		physical_addr);
->  		return false;
->  	}
->
-> +	memory_failure_queue(pfn, flags);
-> +	return true;
-> +}
-> +
-> +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> +				       int sev)
-> +{
-> +	int flags = -1;
-> +	int sec_sev = ghes_severity(gdata->error_severity);
-> +	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
-> +
-> +	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-> +		return false;
-> +
->  	/* iff following two events can be handled properly by now */
->  	if (sec_sev == GHES_SEV_CORRECTED &&
->  	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-> @@ -470,14 +477,51 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->  		flags = 0;
->
-> -	if (flags != -1) {
-> -		memory_failure_queue(pfn, flags);
-> -		return true;
-> -	}
-> +	if (flags != -1)
-> +		return ghes_do_memory_failure(mem_err->physical_addr, flags);
->
->  	return false;
->  }
->
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	struct cper_arm_err_info *err_info;
-> +	bool queued = false;
-> +	int sec_sev, i;
-> +
-> +	log_arm_hw_error(err);
-> +
-> +	sec_sev = ghes_severity(gdata->error_severity);
-> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> +		return false;
-> +
-> +	err_info = (struct cper_arm_err_info *) (err + 1);
-> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
-> +		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-> +		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-> +
-> +		/*
-> +		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-> +		 * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
-> +		 * firmware won't mix corrected errors in an uncorrected section,
-> +		 * and don't filter out 'corrected' error here.
-> +		 */
-> +		if (!is_cache || !has_pa) {
-> +			pr_warn_ratelimited(FW_WARN GHES_PFX
-> +			"Unhandled processor error type %s\n",
-> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> +			cper_proc_error_type_strs[err_info->type] : "unknown error");
-> +			continue;
-> +		}
-> +
-> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-> +			queued = true;
-> +	}
-> +
-> +	return queued;
-> +}
-> +
->  /*
->   * PCIe AER errors need to be sent to the AER driver for reporting and
->   * recovery. The GHES severities map to the following AER severities and
-> @@ -605,9 +649,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->  			ghes_handle_aer(gdata);
->  		}
->  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> -
-> -			log_arm_hw_error(err);
-> +			queued = ghes_handle_arm_hw_error(gdata, sev);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->
->
+When this is set the driver exposes a new security level "nopcie" to the
+userspace and hides the authorized attribute under connected devices.
+
+While there we also hide it when "dponly" security level is enabled
+since it is not really usable in that case anyway.
+
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ Documentation/ABI/testing/sysfs-bus-thunderbolt |  2 ++
+ Documentation/admin-guide/thunderbolt.rst       |  7 +++++++
+ drivers/thunderbolt/domain.c                    | 12 +++++++++++-
+ drivers/thunderbolt/switch.c                    |  6 +++++-
+ include/linux/thunderbolt.h                     |  3 +++
+ 5 files changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-thunderbolt b/Documentation/ABI/testing/sysfs-bus-thunderbolt
+index 581dea95245b..d7f09d011b6d 100644
+--- a/Documentation/ABI/testing/sysfs-bus-thunderbolt
++++ b/Documentation/ABI/testing/sysfs-bus-thunderbolt
+@@ -85,6 +85,8 @@ Description:	This attribute holds current Thunderbolt security level
+ 		usbonly  Automatically tunnel USB controller of the
+ 			 connected Thunderbolt dock (and Display Port). All
+ 			 PCIe links downstream of the dock are removed.
++		nopcie   USB4 system where PCIe tunneling is disabled from
++			 the BIOS.
+ 		=======  ==================================================
+ 
+ What: /sys/bus/thunderbolt/devices/.../authorized
+diff --git a/Documentation/admin-guide/thunderbolt.rst b/Documentation/admin-guide/thunderbolt.rst
+index 0d4348445f91..f18e881373c4 100644
+--- a/Documentation/admin-guide/thunderbolt.rst
++++ b/Documentation/admin-guide/thunderbolt.rst
+@@ -47,6 +47,9 @@ be DMA masters and thus read contents of the host memory without CPU and OS
+ knowing about it. There are ways to prevent this by setting up an IOMMU but
+ it is not always available for various reasons.
+ 
++Some USB4 systems have a BIOS setting to disable PCIe tunneling. This is
++treated as another security level (nopcie).
++
+ The security levels are as follows:
+ 
+   none
+@@ -77,6 +80,10 @@ The security levels are as follows:
+     Display Port in a dock. All PCIe links downstream of the dock are
+     removed.
+ 
++  nopcie
++    PCIe tunneling is disabled/forbidden from the BIOS. Available in some
++    USB4 systems.
++
+ The current security level can be read from
+ ``/sys/bus/thunderbolt/devices/domainX/security`` where ``domainX`` is
+ the Thunderbolt domain the host controller manages. There is typically
+diff --git a/drivers/thunderbolt/domain.c b/drivers/thunderbolt/domain.c
+index 9ba2181464cc..a1c79c9c4f66 100644
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -118,6 +118,7 @@ static const char * const tb_security_names[] = {
+ 	[TB_SECURITY_SECURE] = "secure",
+ 	[TB_SECURITY_DPONLY] = "dponly",
+ 	[TB_SECURITY_USBONLY] = "usbonly",
++	[TB_SECURITY_NOPCIE] = "nopcie",
+ };
+ 
+ static ssize_t boot_acl_show(struct device *dev, struct device_attribute *attr,
+@@ -243,8 +244,14 @@ static ssize_t deauthorization_show(struct device *dev,
+ 				    char *buf)
+ {
+ 	const struct tb *tb = container_of(dev, struct tb, dev);
++	bool deauthorization = false;
+ 
+-	return sprintf(buf, "%d\n", !!tb->cm_ops->disapprove_switch);
++	/* Only meaningful if authorization is supported */
++	if (tb->security_level == TB_SECURITY_USER ||
++	    tb->security_level == TB_SECURITY_SECURE)
++		deauthorization = !!tb->cm_ops->disapprove_switch;
++
++	return sprintf(buf, "%d\n", deauthorization);
+ }
+ static DEVICE_ATTR_RO(deauthorization);
+ 
+@@ -452,6 +459,9 @@ int tb_domain_add(struct tb *tb)
+ 			goto err_ctl_stop;
+ 	}
+ 
++	tb_dbg(tb, "security level set to %s\n",
++	       tb_security_names[tb->security_level]);
++
+ 	ret = device_add(&tb->dev);
+ 	if (ret)
+ 		goto err_ctl_stop;
+diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+index cdba05e72486..60fd92113740 100644
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1768,7 +1768,11 @@ static umode_t switch_attr_is_visible(struct kobject *kobj,
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct tb_switch *sw = tb_to_switch(dev);
+ 
+-	if (attr == &dev_attr_device.attr) {
++	if (attr == &dev_attr_authorized.attr) {
++		if (sw->tb->security_level == TB_SECURITY_NOPCIE ||
++		    sw->tb->security_level == TB_SECURITY_DPONLY)
++			return 0;
++	} else if (attr == &dev_attr_device.attr) {
+ 		if (!sw->device)
+ 			return 0;
+ 	} else if (attr == &dev_attr_device_name.attr) {
+diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
+index 034dccf93955..659a0a810fa1 100644
+--- a/include/linux/thunderbolt.h
++++ b/include/linux/thunderbolt.h
+@@ -45,6 +45,8 @@ enum tb_cfg_pkg_type {
+  * @TB_SECURITY_USBONLY: Only tunnel USB controller of the connected
+  *			 Thunderbolt dock (and Display Port). All PCIe
+  *			 links downstream of the dock are removed.
++ * @TB_SECURITY_NOPCIE: For USB4 systems this level is used when the
++ *			PCIe tunneling is disabled from the BIOS.
+  */
+ enum tb_security_level {
+ 	TB_SECURITY_NONE,
+@@ -52,6 +54,7 @@ enum tb_security_level {
+ 	TB_SECURITY_SECURE,
+ 	TB_SECURITY_DPONLY,
+ 	TB_SECURITY_USBONLY,
++	TB_SECURITY_NOPCIE,
+ };
+ 
+ /**
+-- 
+2.29.2
 
