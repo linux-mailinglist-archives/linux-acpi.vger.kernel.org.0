@@ -2,99 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F5A8305C30
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 13:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14050305C5D
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 14:03:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237943AbhA0Mzb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 07:55:31 -0500
-Received: from mga11.intel.com ([192.55.52.93]:48650 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238066AbhA0Mwi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Jan 2021 07:52:38 -0500
-IronPort-SDR: CZB6JRl299cKdDBLVezpuoH95l8KaZPXMy87ZusmDfMXf820Ge0MaFAB1rT8XSbayo3MVNU7Oq
- /HEOEehY/jnQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9876"; a="176551754"
-X-IronPort-AV: E=Sophos;i="5.79,379,1602572400"; 
-   d="scan'208";a="176551754"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2021 04:49:44 -0800
-IronPort-SDR: NJDK9KRqBG61tdPn3HyFnSon9wtk2ujx9vVoCAGI5VRYIYZ7c7AZDO6Raw4eqkCxGCsEMa8N96
- 97IuSuPBu5Tg==
-X-IronPort-AV: E=Sophos;i="5.79,379,1602572400"; 
-   d="scan'208";a="362420090"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2021 04:49:38 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 27 Jan 2021 14:49:35 +0200
-Date:   Wed, 27 Jan 2021 14:49:35 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Limonciello, Mario" <Mario.Limonciello@dell.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        id S313054AbhAZWrr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 17:47:47 -0500
+Received: from mail-oo1-f52.google.com ([209.85.161.52]:46116 "EHLO
+        mail-oo1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391180AbhAZRWA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 12:22:00 -0500
+Received: by mail-oo1-f52.google.com with SMTP id n127so4293219ooa.13;
+        Tue, 26 Jan 2021 09:21:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aPQdBJqdYP+qjgNaEERsih40G8gcGBWaXApD47b4ab0=;
+        b=sJeWnktIr47xO0D5JsPzu/8l/za2M+V7XQkb4jKuhAzapyj7hDwoIAy0z+Aq8FVchp
+         ouq2ZHMrZAwj6VRkwDRT3wyg0vFfG9Ty5iObELf13U1yA9YpcIilRkvc1FqXbcL1d3D9
+         8AdQlG3YPlwdhrxoUoK10PgFkmLQRGpxUhGtFNmDw5cGozyaVcEgahFkAE7qmrXXL4uw
+         7NCZIo/aLhGyt+08ny/qmRRbZKn5OlaRj67XAL9L+mRUEKSSzla39NB6XVGORzV9IHN3
+         NK+T3JuAItrvnwlfHV6cVVEKoQBj6vgpCoJK8gQfoNwYkI0BF7brxyZDNxZGZ1io46LB
+         SjvA==
+X-Gm-Message-State: AOAM531fyHEIWaVIPYZTOUTkW8nHVdRDqMGuxBOd6As4pwyRin/L/kU6
+        ioOvaO6Wq3BhYifr3ryF1g+tuLWMOsZMjj+JC9M=
+X-Google-Smtp-Source: ABdhPJxzN3Vcgug7hAy03MdX9gmNg4LeJVwDsLrr/J+QfPOD4Fh1+RoiZaAX+fHDULYI/9pIjb7W32My19sL/x1R3Bc=
+X-Received: by 2002:a4a:cb87:: with SMTP id y7mr4754105ooq.1.1611681679111;
+ Tue, 26 Jan 2021 09:21:19 -0800 (PST)
+MIME-Version: 1.0
+References: <20210126155723.9388-1-mika.westerberg@linux.intel.com> <20210126155723.9388-5-mika.westerberg@linux.intel.com>
+In-Reply-To: <20210126155723.9388-5-mika.westerberg@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 26 Jan 2021 18:21:08 +0100
+Message-ID: <CAJZ5v0i+wCOFZOhyx6i=TUGMeWyQR4vXzDN06G6xheFwC66Tuw@mail.gmail.com>
+Subject: Re: [PATCH 4/6] ACPI: Execute platform _OSC also with query bit clear
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
         <linux-usb@vger.kernel.org>,
         Michael Jamet <michael.jamet@intel.com>,
         Yehezkel Bernat <YehezkelShB@gmail.com>,
         Andreas Noever <andreas.noever@gmail.com>,
         Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <mario.limonciello@dell.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Christian Kellner <christian@kellner.me>,
         Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 4/6] ACPI: Execute platform _OSC also with query bit clear
-Message-ID: <20210127124935.GC2542@lahna.fi.intel.com>
-References: <20210126155723.9388-1-mika.westerberg@linux.intel.com>
- <20210126155723.9388-5-mika.westerberg@linux.intel.com>
- <CAJZ5v0i+wCOFZOhyx6i=TUGMeWyQR4vXzDN06G6xheFwC66Tuw@mail.gmail.com>
- <SA1PR19MB4926907D028D3F924FF42A36FABC9@SA1PR19MB4926.namprd19.prod.outlook.com>
- <CAJZ5v0hQ_JZVfOpSZY0hxc01He9x7uzgU2rsKffmQubaeKy=EA@mail.gmail.com>
- <SA1PR19MB4926A9A1E4D0AD96FAE236B3FABC9@SA1PR19MB4926.namprd19.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR19MB4926A9A1E4D0AD96FAE236B3FABC9@SA1PR19MB4926.namprd19.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 10:43:32PM +0000, Limonciello, Mario wrote:
-> > I would put that information into the changelog.
-> 
-> Thanks, @Mika Westerberg can you collapse that in when you re-spin the
-> series?
+On Tue, Jan 26, 2021 at 5:01 PM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> From: Mario Limonciello <mario.limonciello@dell.com>
+>
+> The platform _OSC can change the hardware state when query bit is not
+> set. According to ACPI spec it is recommended that the OS runs _OSC with
+> query bit set until the platform does not mask any of the capabilities.
+> Then it should run it with query bit clear in order to actually commit
+> the changes. At the moment Linux only runs the _OSC with query bit set
 
-Sure.
+And that's because there was nothing it could ask to control using the
+_SB scope _OSC.
 
-> > 
-> > Moreover, have you looked at acpi_pci_osc_control_set()?
-> > 
-> > What it does is analogous to what you are proposing, but a bit
-> > different, and I would like to preserve consistency between _OSC use
-> > cases.
-> > 
-> > So would it be possible to adjust the _SB _OSC evaluation flow to
-> > follow the PCI _OSC one?  That is, if any control bits are there, pass
-> > them along with the last evaluation of _OSC with the query flag clear.
-> > Or is the latter defective and if so then why?
-> 
-> Basically the only difference is another line cloning OSC_CONTROL_DWORD from
-> capbuf_ret to capbuf?
-> 
-> Yes, this actually sounds like it better adheres to the spec to me.
-> 
-> Quoting spec:
-> " If the OS is granted control of a feature in the Control Field in one call to
-> _OSC, then it must preserve the set state of that bit (requesting that feature)
-> in all subsequent calls."
+Today it is just reporting what features are supported by it.
 
-However, the platform wide _OSC does not actually have this
-OSC_CONTROL_DWORD at all ;-)
+However, with the upcoming USB4 CM support it needs to ask for the
+control of that feature and that's why the _SB scope _OSC support
+needs to be extended.  So it is not a fix for a bug or missing spec
+coverage, which this part of the changelog kind of implies, it's just
+enabling a new feature.
 
-I think what we do in this patch is already equivalent to what the PCI
-_OSC is doing:
+> and this is going to cause problems with the USB4 CM (Connection
+> Manager) switch that is going to commit the switch only when the OS
+> requests control over the feature.
+>
+> For this reason modify the _OSC support so that we first execute it with
+> query bit set, then use the returned valu as base of the features we
 
-  1. Query bit set _OSC
-  2. Take the returned OSC_SUPPORT_DWORD buffer and
-  3. Pass it to the _OSC with query bit clear.
+s/valu/value/
 
-I may be missing something, though.
+> want to control and run the _OSC again with query bit clear.
+>
+> Also rename the function to better match what it does.
+>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@dell.com>
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+>
+> ---
+>  drivers/acpi/bus.c | 43 +++++++++++++++++++++++++++++++------------
+>  1 file changed, 31 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 1682f8b454a2..ca7c7b2bf56e 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -282,9 +282,9 @@ bool osc_pc_lpi_support_confirmed;
+>  EXPORT_SYMBOL_GPL(osc_pc_lpi_support_confirmed);
+>
+>  static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
+> -static void acpi_bus_osc_support(void)
+> +static void acpi_bus_osc_negotiate_platform_control(void)
+>  {
+> -       u32 capbuf[2];
+> +       u32 capbuf[2], *capbuf_ret;
+>         struct acpi_osc_context context = {
+>                 .uuid_str = sb_uuid_str,
+>                 .rev = 1,
+> @@ -321,17 +321,36 @@ static void acpi_bus_osc_support(void)
+>                 capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_APEI_SUPPORT;
+>         if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
+>                 return;
+> -       if (ACPI_SUCCESS(acpi_run_osc(handle, &context))) {
+> -               u32 *capbuf_ret = context.ret.pointer;
+> -               if (context.ret.length > OSC_SUPPORT_DWORD) {
+> -                       osc_sb_apei_support_acked =
+> -                               capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+> -                       osc_pc_lpi_support_confirmed =
+> -                               capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+> -               }
+> +
+> +       if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+> +               return;
+> +
+> +       capbuf_ret = context.ret.pointer;
+> +       if (context.ret.length <= OSC_SUPPORT_DWORD) {
+>                 kfree(context.ret.pointer);
+> +               return;
+>         }
+> -       /* do we need to check other returned cap? Sounds no */
+> +
+> +       /*
+> +        * Now run _OSC again with query flag clean and with the caps
+
+s/clean/clear/
+
+> +        * both platform and OS supports.
+
+s/both platform and OS supports/supported by both the OS and the platform/
+
+> +        */
+> +       capbuf[OSC_QUERY_DWORD] = 0;
+> +       capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+> +       kfree(context.ret.pointer);
+> +
+> +       if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+> +               return;
+> +
+> +       capbuf_ret = context.ret.pointer;
+> +       if (context.ret.length > OSC_SUPPORT_DWORD) {
+> +               osc_sb_apei_support_acked =
+> +                       capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+> +               osc_pc_lpi_support_confirmed =
+> +                       capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+> +       }
+> +
+> +       kfree(context.ret.pointer);
+>  }
+>
+>  /* --------------------------------------------------------------------------
+> @@ -1168,7 +1187,7 @@ static int __init acpi_bus_init(void)
+>          * _OSC method may exist in module level code,
+>          * so it must be run after ACPI_FULL_INITIALIZATION
+>          */
+> -       acpi_bus_osc_support();
+> +       acpi_bus_osc_negotiate_platform_control();
+>
+>         /*
+>          * _PDC control method may load dynamic SSDT tables,
+> --
+> 2.29.2
+>
