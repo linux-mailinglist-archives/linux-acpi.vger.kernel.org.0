@@ -2,97 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CA23044E7
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 18:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AB223046FA
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Jan 2021 19:48:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389750AbhAZRRw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Jan 2021 12:17:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43632 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392961AbhAZQaE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Jan 2021 11:30:04 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C228C0611C2;
-        Tue, 26 Jan 2021 08:29:49 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id w1so23765528ejf.11;
-        Tue, 26 Jan 2021 08:29:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tJCa0cOTJvX5zYj1Www2fkXyoYmX0kF/2yQRjPEXfzI=;
-        b=MCdqpn+KiuPT1B3ptrofAJeKE+m0GA2s3i3B7Q+rlEN47D32lRy35NLmKSLmswGKqF
-         z8vcRerVnSzVXMCnAW+VmsrQC7broxoIDI+aVzz8f7URjemri5gapUFOGM2CJJ8DiglR
-         Az7GW65zZNVnD9D4Ka/ig69OoymPLK/pUH2wVOvfrP01+9fN8G+KEQENalHpshnh379a
-         wNFprTIF0xQlCry/4cTwYOqhbCGYW4NtIOvHVQffL4ghl6N0nul29p1MBPDU/wVB6mAT
-         I7Yt1Ra0JXfCK6yWsIkUXwIAV4GBaFi3XhuabB03kHvTqsy4G+Zi3q8KP6WMyBft+3lg
-         IpcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tJCa0cOTJvX5zYj1Www2fkXyoYmX0kF/2yQRjPEXfzI=;
-        b=MoJjw3QenK7OZ+9/4EePtmAKTdLmvXWvkOMrWQ5Xb4UfT/HQm4uNYxGbCiJ5tcdLxb
-         Un4sxlpNE33m7a4/ZpiGxO3VNdsA4QiHW07F3JKrpFdKPTd82ADG+6LXlvB1ovYpKrCp
-         cnFnA1vG8wgSb2NYkbE3JpKzzg8P8S64J4TrHgeEZTl07VbYkou3lkgL8aqljPDu0+5W
-         qC05pRjM0MKJEeYhDJ4weAJZ3w7MN1nKMyZOVLLw37IAkxXsWQi7snRYXbUoDYJWFVdd
-         CslnPtxfMT3bHuF+kTyU2lnEr2i3j733hNBFV00825lK+5VjENbU7quiDdzwmSOK73qz
-         sz5g==
-X-Gm-Message-State: AOAM532zGRamWQ7Qv2oN8SGjfDe0tniuIrDNorPE6YhFXswGmZYXYvPP
-        +JaS0oSCTjnyRGK+7hpBBhI8ALuZNSusm3aUUbA=
-X-Google-Smtp-Source: ABdhPJxrbAJ14sn7uvoeut1bNy0BDzhd9SOgMoknlpeXav6FQ/pq2SrBcTiuptJ5zkNU+RkbZlw/ee/ba2pOSyRUfXA=
-X-Received: by 2002:a17:906:4690:: with SMTP id a16mr4052661ejr.442.1611678588312;
- Tue, 26 Jan 2021 08:29:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20210126155723.9388-1-mika.westerberg@linux.intel.com>
- <20210126155723.9388-3-mika.westerberg@linux.intel.com> <CA+CmpXscOVjn20ffw37GRLBWhQDRJ9J8svYvU1-VWg5eA-Bm4A@mail.gmail.com>
- <20210126162630.GA1988617@lahna.fi.intel.com>
-In-Reply-To: <20210126162630.GA1988617@lahna.fi.intel.com>
-From:   Yehezkel Bernat <yehezkelshb@gmail.com>
-Date:   Tue, 26 Jan 2021 18:29:32 +0200
-Message-ID: <CA+CmpXvWq_ce5HOSjUNt05BFAyyb96Yb_=o45V53nyqfRkZ0ng@mail.gmail.com>
-Subject: Re: [PATCH 2/6] thunderbolt: Add support for PCIe tunneling disabled (SL5)
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     linux-usb@vger.kernel.org, Michael Jamet <michael.jamet@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Christian Kellner <christian@kellner.me>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1732407AbhAZRRs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Jan 2021 12:17:48 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48038 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390906AbhAZJKO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Jan 2021 04:10:14 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 57DE5B254;
+        Tue, 26 Jan 2021 09:09:28 +0000 (UTC)
+Message-ID: <1611652167.11983.65.camel@suse.cz>
+Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost
+ in schedutil invariant formula
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Jon Grimm <Jon.Grimm@amd.com>,
+        Nathan Fontenot <Nathan.Fontenot@amd.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Michael Larabel <Michael@phoronix.com>, x86@kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org
+Date:   Tue, 26 Jan 2021 10:09:27 +0100
+In-Reply-To: <YA6YEK4/rjtPLdkG@hirez.programming.kicks-ass.net>
+References: <20210122204038.3238-1-ggherdovich@suse.cz>
+         <20210122204038.3238-2-ggherdovich@suse.cz>
+         <YA6YEK4/rjtPLdkG@hirez.programming.kicks-ass.net>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 6:26 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> On Tue, Jan 26, 2021 at 06:18:47PM +0200, Yehezkel Bernat wrote:
-> > On Tue, Jan 26, 2021 at 5:57 PM Mika Westerberg
-> > <mika.westerberg@linux.intel.com> wrote:
-> > >
-> > > Recent Intel Thunderbolt firmware connection manager has support for
-> > > another security level, SL5, that disables PCIe tunneling. This option
-> > > can be turned on from the BIOS.
-> > >
-> > > When this is set the driver exposes a new security level "nopcie" to the
-> > > userspace and hides the authorized attribute under connected devices.
-> > >
-> > > While there we also hide it when "dponly" security level is enabled
-> > > since it is not really usable in that case anyway.
-> > >
-> > > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > ---
-> >
-> > Looks good to me, I'm just not sure I understand how this is different from
-> > dponly mode. Is this just because it comes from the new _OSC?
->
-> The firmware connection manager reports this new security level instead
-> of dponly so we reflect that to the userspace, and while at it take
-> advantage of the nopcie when USB4 _OSC disables PCIe tunneling so they
-> both look the same from userspace perspective.
+On Mon, 2021-01-25 at 11:06 +0100, Peter Zijlstra wrote:
+> On Fri, Jan 22, 2021 at 09:40:38PM +0100, Giovanni Gherdovich wrote:
+> > 1. PROBLEM DESCRIPTION (over-utilization and schedutil)
+> > 
+> > The problem happens on CPU-bound workloads spanning a large number of cores.
+> > In this case schedutil won't select the maximum P-State. Actually, it's
+> > likely that it will select the minimum one.
+> > 
+> > A CPU-bound workload puts the machine in a state generally called
+> > "over-utilization": an increase in CPU speed doesn't result in an increase of
+> > capacity. The fraction of time tasks spend on CPU becomes constant regardless
+> > of clock frequency (the tasks eat whatever we throw at them), and the PELT
+> > invariant util goes up and down with the frequency (i.e. it's not invariant
+> > anymore).
+> >                                       v5.10          v5.11-rc4
+> >                                       ~~~~~~~~~~~~~~~~~~~~~~~~
+> > CPU activity (mpstat)                 80-90%         80-90%
+> > schedutil requests (tracepoint)       always P0      mostly P2
+> > CPU frequency (HW feedback)           ~2.2 GHz       ~1.5 GHz
+> > PELT root rq util (tracepoint)        ~825           ~450
+> > 
+> > mpstat shows that the workload is CPU-bound and usage doesn't change with
+> 
+> So I'm having trouble with calling a 80%-90% workload CPU bound, because
+> clearly there's a ton of idle time.
 
-Makes sense. Thanks for the clarification!
+Yes you're right. There is considerable idle time and calling it CPU-bound is
+a bit of a stretch.
+
+Yet I don't think I'm completely off the mark. The busy time is the same with
+the machine running at 1.5 GHz and at 2.2 GHz (it just takes longer to
+finish). To me it seems like the CPU is the bottleneck, with some overhead on
+top.
+
+I will confirm what causes the idle time.
+
+
+Giovanni
