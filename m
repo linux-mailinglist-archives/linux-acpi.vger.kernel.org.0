@@ -2,90 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E359A306268
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 18:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C66730628B
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 18:49:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236438AbhA0RpE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 12:45:04 -0500
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:43381 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236425AbhA0Ro7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 12:44:59 -0500
-Received: by mail-ot1-f41.google.com with SMTP id v1so2489144ott.10;
-        Wed, 27 Jan 2021 09:44:44 -0800 (PST)
+        id S1344274AbhA0Rsu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jan 2021 12:48:50 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:38127 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343847AbhA0RsZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 12:48:25 -0500
+Received: by mail-ot1-f54.google.com with SMTP id s2so2520130otp.5;
+        Wed, 27 Jan 2021 09:48:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iHVRlfV9EQu4gPj5dVenKguyA2U2WXu41Z7MOBH2q+k=;
-        b=LPm4Nd3P5iDXt5n/WX5rX0Qet0y5kDWLmoWOWa4cdU+SCGR4EPxkY9OZQdBnKmFhUw
-         YK7xnUBHrWykplK/+mR4h38u8jUWPIuUwvX2x88oLc7pWusPZWwb7M9OfyTZVnrb29X8
-         y/l1Vyci1kIRyFduiNT4Gma3gxUIc731uEdPwEOTHhPHqqt/hovG+z0I329Sr8ZKUJrY
-         INh0uY+30oxqw+eg3mF9VOWZohZ8kr44hRNFx51eHpntvCEq0cMrd4dmmSOSbIBbHgQ9
-         kksksED3Qms4/sQ10tJ2HFk2OamNUiJ3vYiwv/o7FgNUBCJdyv4AioAoMfUCvKCxf6wo
-         suNw==
-X-Gm-Message-State: AOAM532UMZbORRP7Nu0TUJW6tvf1zU1TmEnx9b524b0BcR4IsrEwmwxU
-        KxLHZxoSkO/zCNM8B5Bznt/WCBLCY3cqhuZ6FMs=
-X-Google-Smtp-Source: ABdhPJx3wpBSkXPSpXDG6M0ltMbmguxQMImznzdVeAu1VT6FKAr93J3QfMztoWACmNnTeM4RMvDtc7yrOgIFRwkLX6w=
-X-Received: by 2002:a05:6830:2313:: with SMTP id u19mr8675107ote.321.1611769458811;
- Wed, 27 Jan 2021 09:44:18 -0800 (PST)
+        bh=vdHwbl73abB6VMNWToTNpqvH4TxI0Xt6czMeP1SSONU=;
+        b=er5OIGZ1kW43ICfaAkQzJpytcPP1dgk+bpk7ontLmrmYEf8JTmJFyUIxah0NA02Q/h
+         ZcxHroDwtGkyO7bpSvr+GHjGMU3DuC+ILUAeacI9nNQFxeNgnizJ28nUvNQRvCqySmPG
+         xa0p53orHk2l6tTrHwCC/CLHnlz9xs5sFGzQpbOYM/8Ou+lTtIqLLPTPTSavse2HcHtR
+         190Po2XTmd2vXjC1Jdz6jbz0w/iTpg/f/jgfv9TBmPFPU9dUSx5p4ucL4E0yGeXRvmQ1
+         2qzHs9Xc+39dU0rkjY17b2iSSQNuYj1YgNeBUjhGiXj3Hj5ttwppvySH4VAYobRTljih
+         u1wA==
+X-Gm-Message-State: AOAM530+CDd5MzOINjK7Uf0IBrdiF21fOqvzTlHH6RJExBBxeO5WeRRH
+        ovQeEmcROL7gAYEiIy4jZHDnkTYBbe8iLA7HASI=
+X-Google-Smtp-Source: ABdhPJw6u6KdfHzrO2hRhAY3DwystwML/VIEMZE1ZlXSpGH7GLROPx503G79S+aeNM16cQlyOHZImsR58roCK+rTu+U=
+X-Received: by 2002:a9d:1710:: with SMTP id i16mr8426465ota.260.1611769664581;
+ Wed, 27 Jan 2021 09:47:44 -0800 (PST)
 MIME-Version: 1.0
-References: <CAJZ5v0ir4=urUviCR_4N96revWZkHVDyNNUiaJ3jjGzpX8zLVQ@mail.gmail.com>
- <20210127160650.GA2991034@bjorn-Precision-5520>
-In-Reply-To: <20210127160650.GA2991034@bjorn-Precision-5520>
+References: <20210125115957.3292-1-hdegoede@redhat.com> <20210125115957.3292-3-hdegoede@redhat.com>
+In-Reply-To: <20210125115957.3292-3-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 Jan 2021 18:44:07 +0100
-Message-ID: <CAJZ5v0gmP2QBmMWkdVaGy+j6+FFPH6VGfRMU9ncz6m4BhBPgFA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        acpi4asus-user@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
+Date:   Wed, 27 Jan 2021 18:47:33 +0100
+Message-ID: <CAJZ5v0iVGpUxUVMAO4R9bz8dogFRoYun-9-4G_Mgzq0_WP305Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] ACPI: platform-profile: Introduce object pointers
+ to callbacks
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Mark Pearson <mpearson@lenovo.com>,
+        Bastien Nocera <hadess@hadess.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
+        Platform Driver <platform-driver-x86@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 5:06 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Tue, Jan 26, 2021 at 6:58 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> On Wed, Jan 27, 2021 at 04:44:02PM +0100, Rafael J. Wysocki wrote:
-> > On Wed, Jan 27, 2021 at 4:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > >
-> > > On Tue, Jan 26, 2021 at 02:23:17PM -0600, Bjorn Helgaas wrote:
-> > > > From: Bjorn Helgaas <bhelgaas@google.com>
-> > > >
-> > > > The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
-> > > > Replace it with "if (ACPI_SUCCESS(status))".
-> > > >
-> > > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > > > ---
-> > > >
-> > > > This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
-> > > > it seems easier to just apply these all at once.  But I'd be happy to split
-> > > > them up into individual patches if you'd rather.
-> > >
-> > > Thanks, everybody.  Rafael, I'll just merge this via my tree to avoid
-> > > burdening you.
-> >
-> > It may conflict with some janitorial stuff I'm doing, though, so
-> > unless you've already applied it, I'd prefer to take it via the ACPI
-> > tree.
+> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 >
-> No problem, it's all yours!
+> Add an object pointer to handler callbacks to avoid the need for
+> drivers to have a global variable to get to their driver-data
+> struct.
+>
+> Link: https://lore.kernel.org/linux-acpi/6a29f338-d9e4-150c-81dd-2ffb54f5bc35@redhat.com/
+> Link: https://lore.kernel.org/r/20210114073429.176462-3-jiaxun.yang@flygoat.com
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> Suggested-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Applied as 5.12 material with the ACKs, thanks!
+Applied on top of the previous platform-profile patches, thanks!
+
+> ---
+> Changes in v2 (Hans de Goede):
+> - Tweak the commit message wording a bit
+> ---
+>  drivers/acpi/platform_profile.c  | 4 ++--
+>  include/linux/platform_profile.h | 6 ++++--
+>  2 files changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index f65c61db7921..80e9df427eb8 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -64,7 +64,7 @@ static ssize_t platform_profile_show(struct device *dev,
+>                 return -ENODEV;
+>         }
+>
+> -       err = cur_profile->profile_get(&profile);
+> +       err = cur_profile->profile_get(cur_profile, &profile);
+>         mutex_unlock(&profile_lock);
+>         if (err)
+>                 return err;
+> @@ -104,7 +104,7 @@ static ssize_t platform_profile_store(struct device *dev,
+>                 return -EOPNOTSUPP;
+>         }
+>
+> -       err = cur_profile->profile_set(i);
+> +       err = cur_profile->profile_set(cur_profile, i);
+>         mutex_unlock(&profile_lock);
+>         if (err)
+>                 return err;
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> index c797fdb3d91a..a26542d53058 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -28,8 +28,10 @@ enum platform_profile_option {
+>
+>  struct platform_profile_handler {
+>         unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> -       int (*profile_get)(enum platform_profile_option *profile);
+> -       int (*profile_set)(enum platform_profile_option profile);
+> +       int (*profile_get)(struct platform_profile_handler *pprof,
+> +                               enum platform_profile_option *profile);
+> +       int (*profile_set)(struct platform_profile_handler *pprof,
+> +                               enum platform_profile_option profile);
+>  };
+>
+>  int platform_profile_register(struct platform_profile_handler *pprof);
+> --
+> 2.29.2
+>
