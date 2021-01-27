@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9E530600F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 16:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 847F7306012
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 16:47:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236666AbhA0PrC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 10:47:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
+        id S236679AbhA0PrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jan 2021 10:47:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236580AbhA0PpR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 10:45:17 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54802C06178A
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:37 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id 190so1923040wmz.0
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:37 -0800 (PST)
+        with ESMTP id S236597AbhA0PpT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 10:45:19 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1304C061793
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:38 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id i9so2081190wmq.1
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=D32J+akdetMmA5Myd4Zx5B3eWdLb4pZJ7wlpCkerL8M=;
-        b=UH/OoMLSzaN+FsOIAJC5gSRoEPcxuWqa3X8jFrP04820j5DyxMxcbcEASbEFTLSXhf
-         0GbsQXfuVhptl0Se2XE0XAs8Zavr6sEKa2rel8nhxvwz8E6FblS4+tq7tjVQqwaG5r9b
-         Q4JSoMMnhu5zc9L6nMwEKawp/1O1SoINlbiuSmMTVFjA6k7Xrr6gMXIw3KB3jaQMaxMo
-         sA9iPSfbVPKxUwMegdGRfLLOmLkAjzbukFGhVZZMHzsBnMub1mMrtEn+gV6cjVLeklC+
-         8hCfYS+bjCENMG1iK1Sk4oFenjeVv0OZ5a07jNWA999LGtsOmmNr5ryx/vn7jghMVJ/O
-         eRJQ==
+        bh=uiSdj3ahcV4jfiq23D9UAVEBduTBnIEfUfM+Rzx87y0=;
+        b=Mrx2fWY2rsbi1BLTyPkIpFFj1S95FTrb66KJsxbFJgvM+8jkmHybwZuT/uj2GyWSLn
+         dTZlf3d5ggBEtQJVU1JMBsZJaRmAfVfM5257W62qCe/W8//8I4bOuDWGMwebfaSU5SOG
+         xtztN8LNapip2/77JVFc1aRqgfg1tTvKUweHlQ0c4sB9B0Z5BMSK5/gPD6hi+kJ43i7A
+         14KnhgsBvK7j5+kIOT8IeBEBNpRdSgZatwC8vPLINLrQYzrqDsxn2UFQ/6s98efXxZtp
+         pVNIwL2mjFs+mTlq8X/6x03Xrt1e0+vBfm/XstFBcxptX6POl5gEQ29G8nnJ/4ROC+Jj
+         xpTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=D32J+akdetMmA5Myd4Zx5B3eWdLb4pZJ7wlpCkerL8M=;
-        b=gZ6ZUKe9dTls8xPJrpFmNOy71P1Vyz0Q2NNfCaatUwTKBOeV4I8oJ7CJ2DUIH+RATl
-         8gj2KDaNSNkyX/3kJI2uSGuGfCJWBGPccRyo7RE3Xks8GXELZ126yforpgBNbl7RoDfw
-         w8Xue7+LoVRr97SXd4yyzyxM+3XHyV6T7fgLKX5d5p3FtjkKU8cwIerRFECRnB/090XO
-         DkT6ke/wxddn//1CgxMuyeRsWQDEJlgYGmtgQmzBeeOa7S6VBr+gn64suaP0F4VL8ziX
-         ySyMZ7mS6QjJzZi1SBVXxdvFy1zmVDxf0gQ5njHX9G37EJ39FIQzmApDw00TwKCm9Zhe
-         zg2A==
-X-Gm-Message-State: AOAM531l0+fWPNJDV/aOWemK7A9HoeGQ24U3np/akakrpsIHbIm/hxzx
-        aWk9K5U6HN743DvrhxDxtXdzfQ==
-X-Google-Smtp-Source: ABdhPJzy0k3dyJCcmI0DOV2YmsdPhxSkIMBG/sE+bD/YNWVcoT4hQjPYj1cRKeOBm1MyQqnklQnaFg==
-X-Received: by 2002:a7b:ce11:: with SMTP id m17mr4703993wmc.158.1611762276108;
-        Wed, 27 Jan 2021 07:44:36 -0800 (PST)
+        bh=uiSdj3ahcV4jfiq23D9UAVEBduTBnIEfUfM+Rzx87y0=;
+        b=Kk1H5my0g6OQVFKgutWA5ZxomUhoyFTe2RjgkiC2VOOVkxFcYKjwC/8BCb2wYacobx
+         7+BUffgl5I/jbVQMZsLf4JQUZV3wsXwP6iImvmByMjg6urH2miescXdOu94E9pMsmDub
+         ZTQ0i1FCcULXvLORAN7jQBeRS48iuD+4PQbT93F1Df9nHoFr8KnT8nBqqTnvtxiXm0ly
+         yFTtU+Sc2KL+2BKlaPh9+KKN5CSaRfYnGhDKVwABCHtcTw68JAktVPdcGQIgkcPnzNw0
+         ViG6/lJQ6IMhAsFKiu4We7+b3Ahha2Kavbx9sA7VDR5SdIVSdF8AMFZZUnctRecptTxR
+         u6ZA==
+X-Gm-Message-State: AOAM532+EEktOyewEd6CXjBSqc/ZJ0ltkOa6cFxZR3a+FMLAoka6RXIa
+        67rUnfqTmHIKDwAXrLS2e7v+gA==
+X-Google-Smtp-Source: ABdhPJwX5c9WHQvg18Gz9XuxMNONYUxp2DhAyUzAjv7EFKCA7Yg+sUNaNdG1XL4EXschcvUWjjZ+bg==
+X-Received: by 2002:a1c:2341:: with SMTP id j62mr4832905wmj.34.1611762277458;
+        Wed, 27 Jan 2021 07:44:37 -0800 (PST)
 Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id r13sm3046921wmh.9.2021.01.27.07.44.34
+        by smtp.gmail.com with ESMTPSA id r13sm3046921wmh.9.2021.01.27.07.44.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jan 2021 07:44:35 -0800 (PST)
+        Wed, 27 Jan 2021 07:44:36 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     joro@8bytes.org, will@kernel.org
 Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
@@ -59,10 +59,14 @@ Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
         jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
         vdumpa@nvidia.com, zhangfei.gao@linaro.org,
         shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v12 02/10] iommu/arm-smmu-v3: Use device properties for pasid-num-bits
-Date:   Wed, 27 Jan 2021 16:43:15 +0100
-Message-Id: <20210127154322.3959196-3-jean-philippe@linaro.org>
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Zhou Wang <wangzhou1@hisilicon.com>
+Subject: [PATCH v12 03/10] iommu: Separate IOMMU_DEV_FEAT_IOPF from IOMMU_DEV_FEAT_SVA
+Date:   Wed, 27 Jan 2021 16:43:16 +0100
+Message-Id: <20210127154322.3959196-4-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210127154322.3959196-1-jean-philippe@linaro.org>
 References: <20210127154322.3959196-1-jean-philippe@linaro.org>
@@ -72,97 +76,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pasid-num-bits property shouldn't need a dedicated fwspec field,
-it's a job for device properties. Add properties for IORT, and access
-the number of PASID bits using device_property_read_u32().
+Some devices manage I/O Page Faults (IOPF) themselves instead of relying
+on PCIe PRI or Arm SMMU stall. Allow their drivers to enable SVA without
+mandating IOMMU-managed IOPF. The other device drivers now need to first
+enable IOMMU_DEV_FEAT_IOPF before enabling IOMMU_DEV_FEAT_SVA. Enabling
+IOMMU_DEV_FEAT_IOPF on its own doesn't have any effect visible to the
+device driver, it is used in combination with other features.
 
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- include/linux/iommu.h                       |  2 --
- drivers/acpi/arm64/iort.c                   | 13 +++++++------
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  3 ++-
- drivers/iommu/of_iommu.c                    |  5 -----
- 4 files changed, 9 insertions(+), 14 deletions(-)
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Zhangfei Gao <zhangfei.gao@linaro.org>
+Cc: Zhou Wang <wangzhou1@hisilicon.com>
+---
+ include/linux/iommu.h | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index bdf3f34a4457..b7ea11fc1a93 100644
+index b7ea11fc1a93..00348e4c3c26 100644
 --- a/include/linux/iommu.h
 +++ b/include/linux/iommu.h
-@@ -571,7 +571,6 @@ struct iommu_group *fsl_mc_device_group(struct device *dev);
-  * @ops: ops for this device's IOMMU
-  * @iommu_fwnode: firmware handle for this device's IOMMU
-  * @flags: IOMMU_FWSPEC_* flags
-- * @num_pasid_bits: number of PASID bits supported by this device
-  * @num_ids: number of associated device IDs
-  * @ids: IDs which this device may present to the IOMMU
-  */
-@@ -579,7 +578,6 @@ struct iommu_fwspec {
- 	const struct iommu_ops	*ops;
- 	struct fwnode_handle	*iommu_fwnode;
- 	u32			flags;
--	u32			num_pasid_bits;
- 	unsigned int		num_ids;
- 	u32			ids[];
+@@ -156,10 +156,24 @@ struct iommu_resv_region {
+ 	enum iommu_resv_type	type;
  };
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index d4eac6d7e9fb..c9a8bbb74b09 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -968,15 +968,16 @@ static int iort_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
- static void iort_named_component_init(struct device *dev,
- 				      struct acpi_iort_node *node)
- {
-+	struct property_entry props[2] = {};
- 	struct acpi_iort_named_component *nc;
--	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
--
--	if (!fwspec)
--		return;
  
- 	nc = (struct acpi_iort_named_component *)node->node_data;
--	fwspec->num_pasid_bits = FIELD_GET(ACPI_IORT_NC_PASID_BITS,
--					   nc->node_flags);
-+	props[0] = PROPERTY_ENTRY_U32("pasid-num-bits",
-+				      FIELD_GET(ACPI_IORT_NC_PASID_BITS,
-+						nc->node_flags));
-+
-+	if (device_add_properties(dev, props))
-+		dev_warn(dev, "Could not add device properties\n");
- }
+-/* Per device IOMMU features */
++/**
++ * enum iommu_dev_features - Per device IOMMU features
++ * @IOMMU_DEV_FEAT_AUX: Auxiliary domain feature
++ * @IOMMU_DEV_FEAT_SVA: Shared Virtual Addresses
++ * @IOMMU_DEV_FEAT_IOPF: I/O Page Faults such as PRI or Stall. Generally
++ *			 enabling %IOMMU_DEV_FEAT_SVA requires
++ *			 %IOMMU_DEV_FEAT_IOPF, but some devices manage I/O Page
++ *			 Faults themselves instead of relying on the IOMMU. When
++ *			 supported, this feature must be enabled before and
++ *			 disabled after %IOMMU_DEV_FEAT_SVA.
++ *
++ * Device drivers query whether a feature is supported using
++ * iommu_dev_has_feature(), and enable it using iommu_dev_enable_feature().
++ */
+ enum iommu_dev_features {
+-	IOMMU_DEV_FEAT_AUX,	/* Aux-domain feature */
+-	IOMMU_DEV_FEAT_SVA,	/* Shared Virtual Addresses */
++	IOMMU_DEV_FEAT_AUX,
++	IOMMU_DEV_FEAT_SVA,
++	IOMMU_DEV_FEAT_IOPF,
+ };
  
- static int iort_nc_iommu_map(struct device *dev, struct acpi_iort_node *node)
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index baebaac34a83..88dd9feb32f4 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2392,7 +2392,8 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
- 		}
- 	}
- 
--	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
-+	device_property_read_u32(dev, "pasid-num-bits", &master->ssid_bits);
-+	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
- 
- 	/*
- 	 * Note that PASID must be enabled before, and disabled after ATS:
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index e505b9130a1c..a9d2df001149 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -210,11 +210,6 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
- 					     of_pci_iommu_init, &info);
- 	} else {
- 		err = of_iommu_configure_device(master_np, dev, id);
--
--		fwspec = dev_iommu_fwspec_get(dev);
--		if (!err && fwspec)
--			of_property_read_u32(master_np, "pasid-num-bits",
--					     &fwspec->num_pasid_bits);
- 	}
- 
- 	/*
+ #define IOMMU_PASID_INVALID	(-1U)
 -- 
 2.30.0
 
