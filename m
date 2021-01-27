@@ -2,72 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 124E130620E
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 18:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E359A306268
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 18:45:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343828AbhA0Rbk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 12:31:40 -0500
-Received: from mga03.intel.com ([134.134.136.65]:25776 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234279AbhA0RaP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Jan 2021 12:30:15 -0500
-IronPort-SDR: GINBAH5giFuh/dER7syXuX3j2t2mq/14E1uF8NsF/yF25/y9yAn1tilKe9vrZIkni7QN76tJYz
- Hm9duBUT7TXw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9877"; a="180182874"
-X-IronPort-AV: E=Sophos;i="5.79,380,1602572400"; 
-   d="scan'208";a="180182874"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2021 09:28:27 -0800
-IronPort-SDR: hqDu3WS98TI7yoUuuPLr0IGqC4vI5OKQ7KDoEZ5zKepMYEJUbi+SCSgN8H+T+Y0GJ4Se7+wqZW
- RYnh0wazBLIA==
-X-IronPort-AV: E=Sophos;i="5.79,380,1602572400"; 
-   d="scan'208";a="388402900"
-Received: from susiezhx-mobl.amr.corp.intel.com (HELO [10.213.180.238]) ([10.213.180.238])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2021 09:28:27 -0800
-Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux
- 5.10
-To:     =?UTF-8?Q?Marcin_=c5=9alusarz?= <marcin.slusarz@gmail.com>
-Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
- <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
- <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com>
- <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
- <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com>
-Date:   Wed, 27 Jan 2021 11:28:25 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S236438AbhA0RpE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jan 2021 12:45:04 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:43381 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236425AbhA0Ro7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 12:44:59 -0500
+Received: by mail-ot1-f41.google.com with SMTP id v1so2489144ott.10;
+        Wed, 27 Jan 2021 09:44:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iHVRlfV9EQu4gPj5dVenKguyA2U2WXu41Z7MOBH2q+k=;
+        b=LPm4Nd3P5iDXt5n/WX5rX0Qet0y5kDWLmoWOWa4cdU+SCGR4EPxkY9OZQdBnKmFhUw
+         YK7xnUBHrWykplK/+mR4h38u8jUWPIuUwvX2x88oLc7pWusPZWwb7M9OfyTZVnrb29X8
+         y/l1Vyci1kIRyFduiNT4Gma3gxUIc731uEdPwEOTHhPHqqt/hovG+z0I329Sr8ZKUJrY
+         INh0uY+30oxqw+eg3mF9VOWZohZ8kr44hRNFx51eHpntvCEq0cMrd4dmmSOSbIBbHgQ9
+         kksksED3Qms4/sQ10tJ2HFk2OamNUiJ3vYiwv/o7FgNUBCJdyv4AioAoMfUCvKCxf6wo
+         suNw==
+X-Gm-Message-State: AOAM532UMZbORRP7Nu0TUJW6tvf1zU1TmEnx9b524b0BcR4IsrEwmwxU
+        KxLHZxoSkO/zCNM8B5Bznt/WCBLCY3cqhuZ6FMs=
+X-Google-Smtp-Source: ABdhPJx3wpBSkXPSpXDG6M0ltMbmguxQMImznzdVeAu1VT6FKAr93J3QfMztoWACmNnTeM4RMvDtc7yrOgIFRwkLX6w=
+X-Received: by 2002:a05:6830:2313:: with SMTP id u19mr8675107ote.321.1611769458811;
+ Wed, 27 Jan 2021 09:44:18 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAJZ5v0ir4=urUviCR_4N96revWZkHVDyNNUiaJ3jjGzpX8zLVQ@mail.gmail.com>
+ <20210127160650.GA2991034@bjorn-Precision-5520>
+In-Reply-To: <20210127160650.GA2991034@bjorn-Precision-5520>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 27 Jan 2021 18:44:07 +0100
+Message-ID: <CAJZ5v0gmP2QBmMWkdVaGy+j6+FFPH6VGfRMU9ncz6m4BhBPgFA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        acpi4asus-user@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Jan 27, 2021 at 5:06 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Wed, Jan 27, 2021 at 04:44:02PM +0100, Rafael J. Wysocki wrote:
+> > On Wed, Jan 27, 2021 at 4:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > >
+> > > On Tue, Jan 26, 2021 at 02:23:17PM -0600, Bjorn Helgaas wrote:
+> > > > From: Bjorn Helgaas <bhelgaas@google.com>
+> > > >
+> > > > The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
+> > > > Replace it with "if (ACPI_SUCCESS(status))".
+> > > >
+> > > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > > ---
+> > > >
+> > > > This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
+> > > > it seems easier to just apply these all at once.  But I'd be happy to split
+> > > > them up into individual patches if you'd rather.
+> > >
+> > > Thanks, everybody.  Rafael, I'll just merge this via my tree to avoid
+> > > burdening you.
+> >
+> > It may conflict with some janitorial stuff I'm doing, though, so
+> > unless you've already applied it, I'd prefer to take it via the ACPI
+> > tree.
+>
+> No problem, it's all yours!
 
-
-
-> Weird, I can't reproduce this problem with my self-compiled kernel :/
-> I don't even see soundwire modules loaded in. Manually loading them of course
-> doesn't do much.
-> 
-> Previously I could boot into the "faulty" kernel by using "recovery mode", but
-> I can't do that anymore - it crashes too.
-> 
-> Maybe there's some kind of race and this bug depends on some specific
-> ordering of events?
-
-missing Kconfig?
-You need CONFIG_SOUNDWIRE and CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE 
-selected to enter this sdw_intel_acpi_scan() routine.
-
+Applied as 5.12 material with the ACKs, thanks!
