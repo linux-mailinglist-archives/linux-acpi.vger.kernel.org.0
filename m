@@ -2,70 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95ECC305FDD
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 16:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2431306006
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 16:46:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236101AbhA0PmD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 10:42:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36166 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235666AbhA0PkM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Jan 2021 10:40:12 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 81166207CC;
-        Wed, 27 Jan 2021 15:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611761972;
-        bh=jnWaTgTjEiXLwIl71ozjyUIexPVv8coDp5HgeSvIPAU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=eSolqN6tHqQ0PDVntK44LMEXtuXPy8sGMBO07JjNGhqNWFtFsLcW3JUeCHs/z1LAa
-         U5w9nLj0hS2uHQiu503HQlUiVTIZI85a1WP2hHxcnu84gsQ9xgXevcyFGWAUsJQnRC
-         jJhQN7GlF4xrFRKWzM8fl/lv/GeXYMcheZ7af9xwVtxllUv6uaoY9Ytl6mdXpms7t9
-         wnuCZsdLOZTUH7mYIq8lXnXGUXd2gBLf7y60zLzAatYwXe1DNfz3iM9g4D0oxCN4MD
-         kInYfuVpHA5JchQP6v3X3y3PswSpTbIyQkMhOAuPVVt2JKxeFDZFjWF2mwgehR3GOa
-         BQobHlPNxc7ag==
-Date:   Wed, 27 Jan 2021 09:39:28 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Sinan Kaya <okaya@kernel.org>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Sean V Kelley <sean.v.kelley@intel.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH 0/3] PCI/ACPI: _OSC cleanups
-Message-ID: <20210127153928.GA2988033@bjorn-Precision-5520>
+        id S235978AbhA0PqB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jan 2021 10:46:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60284 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236507AbhA0Pou (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 10:44:50 -0500
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BD1C0613ED
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:34 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id q7so2362300wre.13
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 07:44:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wS1ZhkPy53Ug869D5KbFul/TixGQjhvdRxH2RGl6FFE=;
+        b=yN8+ZEYXs60LN4H3/iPUmkayFZ/QFexI3MYPBddUqnXmHvaY0MXGcSoHtKGUGxBV7c
+         htle9Dm4IzXGK+AFIQBxOCDlyawRU2/4Zxpk022izvBIRBliGrxNFxcTQBDRUV8NGYff
+         WjI+fQb5fNoNcnAcq1+EM4Zr40bYkcq0Pq9P8M1MRSSkWNS/u7gmKPYcWqSWnuZDM2sY
+         7O235W+myUX8QySNqVx40PNuAvAQePQiBSFrRXdcGt1cNOmrWFEiBxF2Y2jp5jL50DRM
+         UNJ9LSP88Qref/3tFFBjVg1GkIQGAKo4NjTZsaCKcq8f9eE2WMxyrP1DYs3odfFOss1P
+         Nhuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wS1ZhkPy53Ug869D5KbFul/TixGQjhvdRxH2RGl6FFE=;
+        b=CC+P59fk1slvAyNtrzhnJ+uUm3j0nqovuraFHYwvP4PfBqiKv1JgPyG3V0yRIeWyCe
+         5CJnBEvzuKKrpra6VC+9e60OGNOCjiXnkHiNNtudWglx6A48lW6m8QpOgwKauKiuWXET
+         S+yyLkjeOmFeyry299oU7Fg2TvZwRu/3pForKqRb8GZ1rRpkuNgdASSuf6fSZdWAx5RP
+         PoApTa5eW3hkRBtYybKjSdW5zvgSo+0bp+X4qTXblQ7g2FHEYRBtQvz5Nbf2wq/kCsu+
+         cPBWOdg7BE9DrM3lvi2aRgYNTjDueJnbSYme/77T5PJ2/VVhwdt44sJOuilXCo5I7iho
+         hR3w==
+X-Gm-Message-State: AOAM530KIyESRETtHPkUFegrk0+TqpIf6QeszTTTfOfG3GGJye9PkKdC
+        mYvkd88jXzE25jsXBRko+PQEWg==
+X-Google-Smtp-Source: ABdhPJw8bmHv9UQA9WE+SkZNIdRG10VRBsv+I85VSHEhTtrJjAVrYGHN6RHpUEQcYQaNw5S9xdZKEg==
+X-Received: by 2002:adf:f743:: with SMTP id z3mr11958548wrp.165.1611762273360;
+        Wed, 27 Jan 2021 07:44:33 -0800 (PST)
+Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id r13sm3046921wmh.9.2021.01.27.07.44.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Jan 2021 07:44:32 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     joro@8bytes.org, will@kernel.org
+Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
+        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
+        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
+        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
+        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
+        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v12 00/10] iommu: I/O page faults for SMMUv3
+Date:   Wed, 27 Jan 2021 16:43:13 +0100
+Message-Id: <20210127154322.3959196-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i_HJzBM1+e3oU4b_y==0hoQJWJ+ZKxLCU5HCdnjdFYqA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 02:55:07PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Jan 27, 2021 at 1:54 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > From: Bjorn Helgaas <bhelgaas@google.com>
-> >
-> > Clean up a few _OSC-related things.
-> >
-> > We talked about the _OSC failure message in the last patch long ago, and I
-> > just dropped the ball, sorry about that.  Previous discussion:
-> > https://lore.kernel.org/linux-pci/20200602223618.GA845676@bjorn-Precision-5520/
-> >
-> > I'm happy to merge these given your ack, Rafael, or you can take them if
-> > they look good to you.
-> 
-> They do look good to me, so
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> for the whole series.
-> 
-> I don't think it really matters which way they go in and I'm guessing
-> that it will be somewhat more convenient to you to apply them, so
-> please route them through the PCI tree.
+Add stall support to the SMMUv3, along with a common I/O Page Fault
+handler.
 
-Thanks, Rafael, I put these on my pci/enumeration branch for v5.12.
+Since v11 I added a sanity check in arm_smmu_dev_disable_feature(),
+patch 10: return -EBUSY if device drivers attempt to disable the IOPF
+feature before SVA. That would leak the IOPF param and fault handler.
+
+v11: https://lore.kernel.org/linux-iommu/20210125110650.3232195-1-jean-philippe@linaro.org/
+v10: https://lore.kernel.org/linux-iommu/20210121123623.2060416-1-jean-philippe@linaro.org/
+v9: https://lore.kernel.org/linux-iommu/20210108145217.2254447-1-jean-philippe@linaro.org/
+
+Jean-Philippe Brucker (10):
+  iommu: Fix comment for struct iommu_fwspec
+  iommu/arm-smmu-v3: Use device properties for pasid-num-bits
+  iommu: Separate IOMMU_DEV_FEAT_IOPF from IOMMU_DEV_FEAT_SVA
+  iommu/vt-d: Support IOMMU_DEV_FEAT_IOPF
+  uacce: Enable IOMMU_DEV_FEAT_IOPF
+  iommu: Add a page fault handler
+  iommu/arm-smmu-v3: Maintain a SID->device structure
+  dt-bindings: document stall property for IOMMU masters
+  ACPI/IORT: Enable stall support for platform devices
+  iommu/arm-smmu-v3: Add stall support for platform devices
+
+ drivers/iommu/Makefile                        |   1 +
+ .../devicetree/bindings/iommu/iommu.txt       |  18 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  56 ++-
+ drivers/iommu/iommu-sva-lib.h                 |  53 ++
+ include/linux/iommu.h                         |  26 +-
+ drivers/acpi/arm64/iort.c                     |  15 +-
+ .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   |  59 ++-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   | 351 +++++++++++--
+ drivers/iommu/intel/iommu.c                   |  11 +-
+ drivers/iommu/io-pgfault.c                    | 461 ++++++++++++++++++
+ drivers/iommu/of_iommu.c                      |   5 -
+ drivers/misc/uacce/uacce.c                    |  39 +-
+ 12 files changed, 1021 insertions(+), 74 deletions(-)
+ create mode 100644 drivers/iommu/io-pgfault.c
+
+-- 
+2.30.0
+
