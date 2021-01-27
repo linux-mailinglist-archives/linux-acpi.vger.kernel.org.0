@@ -2,113 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8BC3062F7
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 19:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3831E3063F3
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jan 2021 20:20:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344004AbhA0SEZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jan 2021 13:04:25 -0500
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:45880 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344299AbhA0SEB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 13:04:01 -0500
-Received: by mail-ot1-f48.google.com with SMTP id n42so2549831ota.12;
-        Wed, 27 Jan 2021 10:03:45 -0800 (PST)
+        id S231192AbhA0TT5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jan 2021 14:19:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231186AbhA0TTy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jan 2021 14:19:54 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5C7C06174A
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 11:19:14 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id c128so2643167wme.2
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jan 2021 11:19:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=WmTmSJyvMNMEsxUfXorZvamTtfHyuaHjFj26Pjyvxgg=;
+        b=B7uVylQ4lWkmgSEe8GWJf1WCvdQR/UkeEDDPlC+SkfwO9jgFMoHL9DQ1Q4MvMkpBlV
+         qdNXepVzwR1lj8z9hIAWbQdWYXDELgnVAvpvciskVcarC9cWy4W5Pii+eYZBBtRnWhox
+         Vvc8T9Yf5br5KXAgnDTiu7xr4Qm1BIKjHyLtvS3hePk8RLMZem3ohq4U8oRce3XGIIkQ
+         6a7y/kdk1YzLh/fe58BMrm9EuFOoXUR6UG45FqICGgfJqPL5mbwtRXPAAPnWPoCSnI7n
+         FAbvsq4XdnxPCy8doFkQEXsdYPdX+RvEenPc/swndBYjiHLMLYlyA5OPPSrrgn2Dw1tK
+         5p3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=na56r5/ZVqp5Nhf6XImJXM3SxezwPgSuPKrOAxP7Kco=;
-        b=Oh1AYwvmkbArMHBJTcBa6GSN8/A33bRs4wyI1V+1TXuaPQbUqudTFt8aF3do0LI2xh
-         fd4LFbESw3GoJNu5H07rjjSKHUlTqaqPaCoE+VraGK4/yG9+zQCpKmOs+YKwoLJnkUzu
-         3nj2F+BdTFvYSGkwW1qcZ+kQLu6gNmxuT9utzZxaI3vLNUBMguWYmL/F3cODzmuTVAzW
-         E3Bm1gwCjDPmhRqbEj448yP+tyvecUSCzxR3C1whwKo/RDupA5r46DL20JAltKkz7P0K
-         V22Kmgt6f5WFvRMlYNMPGJvwcWlkCVgGSNadGQA9LjCk2UoGct3/sRZ3jNevMzovlNTG
-         1N9g==
-X-Gm-Message-State: AOAM532X8LTvq2mZjuN6qi0WRlSt7gLu34OBy54P5Af/SX94wZZ7xr5f
-        dN+o1aCW7zmbAa52mEXOyNaHs/uor97znkkSaBs=
-X-Google-Smtp-Source: ABdhPJxFNZ4AHZCkeLCOY8sLPsT6XMxq26TlW/hMVSs1D8DPaURtRbicVqID5HkUaw9AS3fMgeU5PIy45pc2+yCdQmo=
-X-Received: by 2002:a05:6830:2313:: with SMTP id u19mr8736288ote.321.1611770600093;
- Wed, 27 Jan 2021 10:03:20 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=WmTmSJyvMNMEsxUfXorZvamTtfHyuaHjFj26Pjyvxgg=;
+        b=f+/XDWkN6tZdhPmqsb1NeXmRqua3heMZSsupT6W2Bn9sy5A68v6EdBFCqfmymPrie2
+         Tt+AmDOguGrmzoAvL/YkcWe/4WFo0pxrCwt3DpQLhmUIaSKCCM86ssZGOCzMogsZK30k
+         4YxSMMqy9Q21nnBWewOqOHKM0GuOWohr5Uc9jZiWQK/la0K/+9jdSJTLt+A6/KNCLioR
+         bWQzFHIfu8WUaq9hJiDvQZ7oAYuPfzQbjMC9DLF1suUF8aF1bkA/foEh/0SUNEXz79Eq
+         hPpjbDHd4mShJP9eZpWV0WYybMkSkaxzy35e3DPGW9d5OPshAnYm8JKIsjfhuE+3EoAs
+         gOrw==
+X-Gm-Message-State: AOAM531VelNqcXsamA5mND47DrXfxGMXogrnSAdsT0pNSG+U6jG/CXax
+        TOwz9So/qgGPVOptkro42Qk1JJ23IUi451/AFbM=
+X-Google-Smtp-Source: ABdhPJwjVss4T/I/Wvjp4U+yLwODJcxV8/S0Q16ivTYKxPBelNOC8XdFXHFlIPDJtsRRyLJG/KAN8Tp6hizIIr+sLI8=
+X-Received: by 2002:a1c:2905:: with SMTP id p5mr5413653wmp.156.1611775152973;
+ Wed, 27 Jan 2021 11:19:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20210126163201.1433505-1-terry.bowman@amd.com> <20210126164454.GD6514@zn.tnic>
-In-Reply-To: <20210126164454.GD6514@zn.tnic>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 Jan 2021 19:03:08 +0100
-Message-ID: <CAJZ5v0ion650GwNKG_8kiAduP9jgz1WrvHN3QiDWNfMkFH+70Q@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI / APEI: Add is_generic_error() to identify GHES sources
-To:     Borislav Petkov <bp@alien8.de>, Terry Bowman <terry.bowman@amd.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Colin Ian King <colin.king@canonical.com>,
+References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
+ <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
+ <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
+ <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com> <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com>
+In-Reply-To: <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com>
+From:   =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date:   Wed, 27 Jan 2021 20:18:58 +0100
+Message-ID: <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
+Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        jon.grimm@amd.com
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 11:48 PM Borislav Petkov <bp@alien8.de> wrote:
+=C5=9Br., 27 sty 2021 o 18:28 Pierre-Louis Bossart
+<pierre-louis.bossart@linux.intel.com> napisa=C5=82(a):
+> > Weird, I can't reproduce this problem with my self-compiled kernel :/
+> > I don't even see soundwire modules loaded in. Manually loading them of =
+course
+> > doesn't do much.
+> >
+> > Previously I could boot into the "faulty" kernel by using "recovery mod=
+e", but
+> > I can't do that anymore - it crashes too.
+> >
+> > Maybe there's some kind of race and this bug depends on some specific
+> > ordering of events?
 >
-> On Tue, Jan 26, 2021 at 10:32:01AM -0600, Terry Bowman wrote:
-> > From: Yazen Ghannam <yazen.ghannam@amd.com>
-> >
-> > Refactor duplicated GHES identity logic into is_generic_error().
-> >
-> > Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> > Reviewed-by: Robert Richter <rrichter@amd.com>
-> > Co-developed-by: Terry Bowman <terry.bowman@amd.com>
-> > Signed-off-by: Terry Bowman <terry.bowman@amd.com>
-> > ---
-> > Changes in v2:
-> >   - Rename is_ghes_type() to is_generic_error()
-> >   - Add co-developed-by
-> >
-> >  drivers/acpi/apei/hest.c | 12 ++++++++----
-> >  1 file changed, 8 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> > index 6e980fe16772..f220bb00e91b 100644
-> > --- a/drivers/acpi/apei/hest.c
-> > +++ b/drivers/acpi/apei/hest.c
-> > @@ -49,6 +49,12 @@ static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
-> >       [ACPI_HEST_TYPE_IA32_DEFERRED_CHECK] = -1,
-> >  };
-> >
-> > +static inline bool is_generic_error(struct acpi_hest_header *hest_hdr)
-> > +{
-> > +     return hest_hdr->type == ACPI_HEST_TYPE_GENERIC_ERROR ||
-> > +            hest_hdr->type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
-> > +}
-> > +
-> >  static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
-> >  {
-> >       u16 hest_type = hest_hdr->type;
-> > @@ -141,8 +147,7 @@ static int __init hest_parse_ghes_count(struct acpi_hest_header *hest_hdr, void
-> >  {
-> >       int *count = data;
-> >
-> > -     if (hest_hdr->type == ACPI_HEST_TYPE_GENERIC_ERROR ||
-> > -         hest_hdr->type == ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-> > +     if (is_generic_error(hest_hdr))
-> >               (*count)++;
-> >       return 0;
-> >  }
-> > @@ -153,9 +158,7 @@ static int __init hest_parse_ghes(struct acpi_hest_header *hest_hdr, void *data)
-> >       struct ghes_arr *ghes_arr = data;
-> >       int rc, i;
-> >
-> > -     if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
-> > -         hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-> > +     if (!is_generic_error(hest_hdr))
-> >               return 0;
-> >
-> >       if (!((struct acpi_hest_generic *)hest_hdr)->enabled)
-> > --
->
-> Acked-by: Borislav Petkov <bp@suse.de>
+> missing Kconfig?
+> You need CONFIG_SOUNDWIRE and CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE
+> selected to enter this sdw_intel_acpi_scan() routine.
 
-Applied as 5.12 material, thanks!
+It was a PEBKAC, but a slightly different one. I won't bore you with
+(embarrassing) details ;).
+
+I reproduced the problem, tested both your and Rafael's patches
+and the kernel still crashes, with the same stack trace.
+(Yes, I'm sure I booted the right kernel :)
+
+Why "recovery mode" stopped working (or worked previously) is still a myste=
+ry.
