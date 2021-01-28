@@ -2,48 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2FC30773A
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 14:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F34F5307762
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 14:49:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231775AbhA1Ng4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 28 Jan 2021 08:36:56 -0500
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:38083 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231833AbhA1Ngz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 08:36:55 -0500
-Received: by mail-oi1-f173.google.com with SMTP id h6so6006530oie.5
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jan 2021 05:36:39 -0800 (PST)
+        id S231139AbhA1NqK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Jan 2021 08:46:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33554 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229950AbhA1NqI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 08:46:08 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 167F3C061573
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Jan 2021 05:45:26 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id 7so5475187wrz.0
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Jan 2021 05:45:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=SFy1hLE8z9JcXXcHD+Y2lQDh9IQ4Iy+69IQAQvy1q6c=;
+        b=LwJ23A4IowdG6XptWGWnjjTqh9RBudynR3L3jnlY5OnL6z7EXXXo4N8uM4IHA1xygp
+         rsGa9WG889mQ5PevFLjMq6Vgwmp2mRromKpTcu1VkIlLT985gE3l3b1cNG1QrDxj2uBE
+         Gmu3u668wYUoyoe7pqfxiZ0wtAyWkoUaRvBtIlh+ljx4o5RSBYC6J8dj8sU52RNkthna
+         m299/I16dPlogB7TuJvAhZgDvqAgqA9y0QVhVixVT0o6fbfeDjPPp2Ip7kawtHnYy4P4
+         uwtEEJc/o15nXQ5gBHpeEIkj9YTT8AKM6iFy56Ux8lyLHzXVM5Z8EE7W9VplCnD2ZHEK
+         NW3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=z5SGY4C5ay7xChxrMI2Qk0gCkSY/GyjML+ouR/QlQZU=;
-        b=g9hW+XcMLYfav/o6UHVFxzl7xCMrsIv4KeO2sQYTk+fmKljWSC3XLg8w+ZwDTNzMnQ
-         ZZucxmqOwfOgUmFqdG03+zEAaWiTGVZ1YU37tCwcG4v8dFcXEB9ByO2hz+nMwNDyyr1l
-         ViZeqIEC547fKvzhs/NYPT5RjihUCgdHuAIZ2qbfGfjWEPzqN/lrb2c20t2cDHNov6eX
-         yZzYfMgG7natNXG7vhi8ssjcexJC2iLtmtqbzWQijV598/UXPnQSUDKZE736IqLLIL9V
-         egd4c9PWX6MUN9lzMXgyK1h/wCHeUUCj8bKIIJCCVLksn51R2gm5DOGVdbrL/opkKU4O
-         pZbw==
-X-Gm-Message-State: AOAM531DNjJGz0jMcVQq/PBskhinQEliYamJKyeD0nzMfajusWmt1oGv
-        BjLsEeKEzh7864+AERwrgAILSjctTstegix4NJM=
-X-Google-Smtp-Source: ABdhPJzN1D4xsgEXVkEQRaiVc11OT9iu/x6qu0NQE3Zh8hKG9k05ybTUmTB4hsgSmW7JsJx3yPtQ2lwVPALf7nJaK4E=
-X-Received: by 2002:aca:d14:: with SMTP id 20mr6771661oin.157.1611840974543;
- Thu, 28 Jan 2021 05:36:14 -0800 (PST)
+        bh=SFy1hLE8z9JcXXcHD+Y2lQDh9IQ4Iy+69IQAQvy1q6c=;
+        b=QH8mPK74bWkikYLa0GamablkaDlLbtp7owGiaSHb6VN72HyjK1USn7AGGzwwOEzWz9
+         cwS7Xo7heHpcvlD7tPjCIpsMQLQ+7kAaGbu94zAuzfvZpMwJiy9YjCU1EZSnYpCXIumT
+         TTP4RAK5gDkxq1wsmpLkbDYx2PieaaTNcqemNst06gsWbZh0Srkgx2Q0VknLI5AayuZ3
+         bxhcDMQD2temIRzTBij40mwpvJpWTT2oKIVYFH0xKyMU5lpZ8eb6ES+pVkGTcUWQv6yN
+         lHTOIGeAwRYoAl/s2CYnMWsfwrS8651H657S7OpQyRfxLITgyMCE7fB4Txe/zKSKe9pL
+         A8eg==
+X-Gm-Message-State: AOAM531rtVgYJ4Ah+N4PYoeqHjs/QkPGkFOJ3qD6H8LKl+8kUWyTi2Vf
+        M5tjVvhiHyTzZTLh3dcR+YEZyTKES0H3rhixOd0=
+X-Google-Smtp-Source: ABdhPJyk9EpbsexhzzxqLg2NPgST68DTMBvHtKSNBe09UXSQTIgBMkts0Toa8UDD+73cZaJWpyY8RUaN4+dq6jTcxZI=
+X-Received: by 2002:a5d:4c84:: with SMTP id z4mr15948312wrs.289.1611841524844;
+ Thu, 28 Jan 2021 05:45:24 -0800 (PST)
 MIME-Version: 1.0
 References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
  <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
  <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
  <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
  <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com> <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
- <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com> <CA+GA0_usYrYJVLkoQ_uknwBgHu_ZDRomBS4wvmfJC+BX=0j53w@mail.gmail.com>
-In-Reply-To: <CA+GA0_usYrYJVLkoQ_uknwBgHu_ZDRomBS4wvmfJC+BX=0j53w@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 Jan 2021 14:36:03 +0100
-Message-ID: <CAJZ5v0iDUJZWxgT4zMzro=k-RC8t-vVLUw2WhT9cJY0aRPmfvA@mail.gmail.com>
+ <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com> <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
+From:   =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date:   Thu, 28 Jan 2021 14:45:09 +0100
+Message-ID: <CA+GA0_u56Rf1ETi0q9-AgHH0taszhcY4xUcEarvxi_fFu6DqCw@mail.gmail.com>
 Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
-To:     =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
         "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
         <alsa-devel@alsa-project.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -53,27 +66,34 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Erik Kaneda <erik.kaneda@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 2:29 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote:
+czw., 28 sty 2021 o 13:39 Rafael J. Wysocki <rafael@kernel.org> napisa=C5=
+=82(a):
 >
-> czw., 28 sty 2021 o 13:13 Rafael J. Wysocki <rafael@kernel.org> napisał(a):
+> On Thu, Jan 28, 2021 at 1:13 PM Rafael J. Wysocki <rafael@kernel.org> wro=
+te:
 > >
-> > On Wed, Jan 27, 2021 at 8:19 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote:
+> > On Wed, Jan 27, 2021 at 8:19 PM Marcin =C5=9Alusarz <marcin.slusarz@gma=
+il.com> wrote:
 > > >
-> > > śr., 27 sty 2021 o 18:28 Pierre-Louis Bossart
-> > > <pierre-louis.bossart@linux.intel.com> napisał(a):
-> > > > > Weird, I can't reproduce this problem with my self-compiled kernel :/
-> > > > > I don't even see soundwire modules loaded in. Manually loading them of course
+> > > =C5=9Br., 27 sty 2021 o 18:28 Pierre-Louis Bossart
+> > > <pierre-louis.bossart@linux.intel.com> napisa=C5=82(a):
+> > > > > Weird, I can't reproduce this problem with my self-compiled kerne=
+l :/
+> > > > > I don't even see soundwire modules loaded in. Manually loading th=
+em of course
 > > > > > doesn't do much.
 > > > > >
-> > > > > Previously I could boot into the "faulty" kernel by using "recovery mode", but
+> > > > > Previously I could boot into the "faulty" kernel by using "recove=
+ry mode", but
 > > > > > I can't do that anymore - it crashes too.
 > > > > >
-> > > > > Maybe there's some kind of race and this bug depends on some specific
+> > > > > Maybe there's some kind of race and this bug depends on some spec=
+ific
 > > > > > ordering of events?
 > > > >
 > > > > missing Kconfig?
@@ -87,7 +107,8 @@ On Thu, Jan 28, 2021 at 2:29 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote
 > > > and the kernel still crashes, with the same stack trace.
 > > > (Yes, I'm sure I booted the right kernel :)
 > > >
-> > > Why "recovery mode" stopped working (or worked previously) is still a mystery.
+> > > Why "recovery mode" stopped working (or worked previously) is still a=
+ mystery.
 > >
 > > So for clarity, you've tried this:
 > >
@@ -97,14 +118,11 @@ On Thu, Jan 28, 2021 at 2:29 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote
 > >     acpi_handle handle;
 > >     int ret;
 > >
-> >     handle = ACPI_HANDLE(&pci->dev);
+> >     handle =3D ACPI_HANDLE(&pci->dev);
 > >     if (!handle)
 > >         return -ENODEV;
 > >
 > > and it has not made a difference?
->
-> yes, I tried the same and it made no difference
->
 > >
 > > And the relevant part of the trace is:
 > >
@@ -118,7 +136,8 @@ On Thu, Jan 28, 2021 at 2:29 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote
 > > RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
 > > R10: ffffffffc0f5f4d1 R11: ffffffff8f0cb268 R12: 0000000000001001
 > > R13: ffffffff8e33b160 R14: 0000000000000048 R15: 0000000000000000
-> > FS:  00007f24548288c0(0000) GS:ffff9f781fb80000(0000) knlGS:0000000000000000
+> > FS:  00007f24548288c0(0000) GS:ffff9f781fb80000(0000) knlGS:00000000000=
+00000
 > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
 > > CR2: 0000000000000050 CR3: 0000000106158004 CR4: 0000000000770ee0
 > > PKRU: 55555554
@@ -139,34 +158,25 @@ On Thu, Jan 28, 2021 at 2:29 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote
 > > acpi_bus_get_device().  Subsequently it got to acpi_get_data_full()
 > > and acpi_ns_validate_handle() that crashed, because it tried to
 > > dereference it via ACPI_GET_DESCRIPTOR_TYPE().
-> >
-> > To debug it further, can you please modify
-> > snd_intel_dsp_check_soundwire() to read like this:
-> >
-> > static int snd_intel_dsp_check_soundwire(struct pci_dev *pci)
-> > {
-> >     struct sdw_intel_acpi_info info;
-> >     struct acpi_device *adev = NULL;
-> >     acpi_handle handle;
-> >     int ret;
-> >
-> >     handle = ACPI_HANDLE(&pci->dev);
-> >     if (!handle)
-> >         return -ENODEV;
-> >
-> >     if (acpi_bus_get_device(handle, &adev))
-> >         return -ENODEV;
-> >
-> > and see what happens then?
 >
-> still, the same crash
+> But interestingly enough, sdw_intel_acpi_cb() calls
+> acpi_evaluate_integer() on the same handle that is passed to
+> acpi_bus_get_device() later and it also calls
+> acpi_ns_validate_handle() on that handle which doesn't crash.
 >
-> just to be sure, I added printks there and none of these 2 error paths are hit,
-> but my printk after these changes is hit
+> Moreover, it asks _ADR to be evaluated with respect to that handle and
+> because it gets to the acpi_bus_get_device() call at all, this appears
+> to have been successful.
+>
+> The only explanation for that I can think about (and which does not
+> involve supernatural intervention so to speak) is a stack corruption
+> occurring between these two calls in sdw_intel_acpi_cb().  IOW,
+> something scribbles on the handle in the meantime, but ATM I have no
+> idea what that can be.
+>
+> Marcin, please boot with ACPICA deubg (level =3D ACPI_LV_INFO and
+> component =3D ACPI_NAMESPACE | ACPI_BUS_COMPONENT) enabled (see
+> Documentation/firmware-guide/acpi/debug.rst for instructions) and
+> collect the log.
 
-So we have a valid ACPI handle for the given parent PCI device.
-
-OK, please try to run this with the ACPICA debug enabled as mentioned
-in one of the previous messages.
-
-Something fishy seems to be going on in there.
+https://people.freedesktop.org/~mslusarz/tmp/acpi_debug.txt
