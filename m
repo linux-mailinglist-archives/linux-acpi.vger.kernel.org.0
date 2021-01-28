@@ -2,174 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2222F307705
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 14:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 340CF307709
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 14:28:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231383AbhA1N02 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Jan 2021 08:26:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231422AbhA1N0R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 08:26:17 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73A4C061573
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jan 2021 05:25:36 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id z6so5338982wrq.10
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jan 2021 05:25:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5CJz8xLHc13QcIlEYKKlUT9R0qkQPk9oXqmcrIZ27QY=;
-        b=hhFyNkNdt9g+ql1bsZG7vbhI10kPhDWRIYKPVMSW21jvFL7L5m6h7bD5hVgLHkXc57
-         ASQb7KYAFtnHQMXZRoJMzbe1QU3YV9IklzuKF3Ty9p4pRHE8H26c4pl5l7OmnAcTQfLu
-         0oQcCcVcS9sqq2c57HEEdQVG0MH7SoVGPcystgzxaY4pRBnZbVxHjHice93a1stnP2I9
-         oT/texPqcMEYNXT5Vh7b5WF+2i2Vl3o37Vu9hcL6oTjFmiksDxbe6hjQXMSkgmc2//N6
-         +LuyeiT41I9ZJaKt0nNpGmAd6NuM/q0dVLxH8NGLBmmWFq0L9EVM8kqsD/lmZUkSc8Zq
-         oHBg==
+        id S231422AbhA1N1y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Jan 2021 08:27:54 -0500
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:42145 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229950AbhA1N1x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 08:27:53 -0500
+Received: by mail-oi1-f178.google.com with SMTP id x71so5950257oia.9;
+        Thu, 28 Jan 2021 05:27:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5CJz8xLHc13QcIlEYKKlUT9R0qkQPk9oXqmcrIZ27QY=;
-        b=RXtZRf9H2KB7xmhM2T4+GgZJoXMBG+XTJTk+7/8o/w1hnVx1U5x3Exp1w9Nix/r2+Q
-         f0UzaFIIwHWtsDyBWcy4EMXl59jKzNGZeTGD1TJN5AVpfQleGkTlOvXKMntDf+9V8uDo
-         bP1rHE9JRj+NKJPckAlBai7uZhpD+JPB81S566oUMxMLfuBBX3hWwyEbnWdGEfOWVtpu
-         RO/6Gbv/DC5Z9gBMxRsi0rCdQ8kmtYswjcIbx7X007MTdlUZY+FE3UOc2ZD/2K7fZ/tD
-         rPgSH6z7dDUI5VA1Es3KA253PhcicT3rrxPM57Ocz5+WgKWzs71s15ZXz2W3XgNutjUF
-         Z7KQ==
-X-Gm-Message-State: AOAM530RsAIP4NXKnHvw7O9o7BkLi6Dkn3oQRtnbkrYF+YZjU/jZPFgZ
-        /HbIb+i5gjthc6FRy+5zvw4uMzCp3t9rMI+XHJ9Irk/L1lc=
-X-Google-Smtp-Source: ABdhPJwMQ9ruALH/Jb2jaRHJomVbcEBfRHKcvurxJRTBp/GAU9u3ZPLUFTVMgcarXl5ntS4iyKMiXpxmnqnazgKLVJ4=
-X-Received: by 2002:a5d:4046:: with SMTP id w6mr15792973wrp.369.1611840335384;
- Thu, 28 Jan 2021 05:25:35 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=d+pToT/xuOngAcSKyQ+8hwJjJmM6UNxACT5XfJoc2AE=;
+        b=dECB/xTTkJs5fMfQ6zPxlJpms5dXaBUPVK4tGccB+fshy3JBUVLtGjaAUU4Q1FU5Sb
+         poZ6j7fsX2VjGmOgz2TbN5Q6toBI3kNvCLLbk4bPu7duG3eeIGY/RjP68eULlUsRGP+J
+         KsEUYU7KrodfbvwG3Lt/efl31IJGPn1R8db0S4RdspCfKV7k5jZMXTXvwlGTmhIomzzq
+         7eW06ObGO+jaKNOiGttv/SxwHbaT9XR/aqY8Vopo8aJq+DBnoujkM1ErPo3Lv+hB+L7J
+         9VgD7pqCyE/X4oGO71ZV2Bq6xOIqt/NCnLu0nWTu2xQkUFcY0uTna8Zg+ef3Idmfu2+K
+         sxfQ==
+X-Gm-Message-State: AOAM531lX9TirP0XpZW7jCusbhP6ikvZicZsc0CEMUmCAj7H0n8Doc9W
+        ix7u8uvhwPuVqGXg3Xd5drUp8QqQ9c9c7bZzrVA=
+X-Google-Smtp-Source: ABdhPJzAu7gjzUFdzbLVZ5OnnOmQv0SgGGWAcjqzCLHhlbb+h1mN+nsV4W0iY4Ug1UCmEJEv5Gi3MAUqM92cSLyPbNY=
+X-Received: by 2002:aca:308a:: with SMTP id w132mr6238707oiw.69.1611840431466;
+ Thu, 28 Jan 2021 05:27:11 -0800 (PST)
 MIME-Version: 1.0
-References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
- <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
- <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
- <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
- <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com> <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
- <709fa03c-43b7-45e4-3ddc-aae0d8f4ced4@linux.intel.com>
-In-Reply-To: <709fa03c-43b7-45e4-3ddc-aae0d8f4ced4@linux.intel.com>
-From:   =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-Date:   Thu, 28 Jan 2021 14:25:19 +0100
-Message-ID: <CA+GA0_sXVNHr1048otvwGwORt17ET0EbvTq-kGMOQoh1YOWYRw@mail.gmail.com>
-Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+References: <20210122154300.7628-1-calvin.johnson@oss.nxp.com>
+ <20210122154300.7628-2-calvin.johnson@oss.nxp.com> <CAJZ5v0iX3uU36448ALA20hiVk968VKTsvgwLrp8ur96MQo3Acw@mail.gmail.com>
+ <20210128112729.GA28413@lsv03152.swis.in-blr01.nxp.com> <CAJZ5v0id1i57K_=7eiK0cpOE6UtsKNfR7L7UEBcN1=G+WS+1TA@mail.gmail.com>
+ <20210128131205.GA7882@lsv03152.swis.in-blr01.nxp.com>
+In-Reply-To: <20210128131205.GA7882@lsv03152.swis.in-blr01.nxp.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 28 Jan 2021 14:27:00 +0100
+Message-ID: <CAJZ5v0j1XVSyFa1q4RZ=FnSmfR5VOyX+u1uWBWdvTOVBJJ-JXw@mail.gmail.com>
+Subject: Re: [net-next PATCH v4 01/15] Documentation: ACPI: DSD: Document MDIO PHY
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Grant Likely <grant.likely@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "linux.cj" <linux.cj@gmail.com>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-=C5=9Br., 27 sty 2021 o 23:02 Pierre-Louis Bossart
-<pierre-louis.bossart@linux.intel.com> napisa=C5=82(a):
-> On 1/27/21 1:18 PM, Marcin =C5=9Alusarz wrote:
-> > =C5=9Br., 27 sty 2021 o 18:28 Pierre-Louis Bossart
-> > <pierre-louis.bossart@linux.intel.com> napisa=C5=82(a):
-> >>> Weird, I can't reproduce this problem with my self-compiled kernel :/
-> >>> I don't even see soundwire modules loaded in. Manually loading them o=
-f course
-> >>> doesn't do much.
-> >>>
-> >>> Previously I could boot into the "faulty" kernel by using "recovery m=
-ode", but
-> >>> I can't do that anymore - it crashes too.
-> >>>
-> >>> Maybe there's some kind of race and this bug depends on some specific
-> >>> ordering of events?
-> >>
-> >> missing Kconfig?
-> >> You need CONFIG_SOUNDWIRE and CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE
-> >> selected to enter this sdw_intel_acpi_scan() routine.
+On Thu, Jan 28, 2021 at 2:12 PM Calvin Johnson
+<calvin.johnson@oss.nxp.com> wrote:
+>
+> On Thu, Jan 28, 2021 at 01:00:40PM +0100, Rafael J. Wysocki wrote:
+> > On Thu, Jan 28, 2021 at 12:27 PM Calvin Johnson
+> > <calvin.johnson@oss.nxp.com> wrote:
+> > >
+> > > Hi Rafael,
+> > >
+> > > Thanks for the review. I'll work on all the comments.
+> > >
+> > > On Fri, Jan 22, 2021 at 08:22:21PM +0100, Rafael J. Wysocki wrote:
+> > > > On Fri, Jan 22, 2021 at 4:43 PM Calvin Johnson
+> > > > <calvin.johnson@oss.nxp.com> wrote:
+> > > > >
+> > > > > Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> > > > > provide them to be connected to MAC.
+> > > > >
+> > > > > Describe properties "phy-handle" and "phy-mode".
+> > > > >
+> > > > > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> > > > > ---
+> > > > >
+> > > > > Changes in v4:
+> > > > > - More cleanup
+> > > >
+> > > > This looks much better that the previous versions IMV, some nits below.
+> > > >
+> > > > > Changes in v3: None
+> > > > > Changes in v2:
+> > > > > - Updated with more description in document
+> > > > >
+> > > > >  Documentation/firmware-guide/acpi/dsd/phy.rst | 129 ++++++++++++++++++
+> > > > >  1 file changed, 129 insertions(+)
+> > > > >  create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
+> > > > >
+> > > > > diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> > > > > new file mode 100644
+> > > > > index 000000000000..76fca994bc99
+> > > > > --- /dev/null
+> > > > > +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
+> > > > > @@ -0,0 +1,129 @@
+> > > > > +.. SPDX-License-Identifier: GPL-2.0
+> > > > > +
+> > > > > +=========================
+> > > > > +MDIO bus and PHYs in ACPI
+> > > > > +=========================
+> > > > > +
+> > > > > +The PHYs on an MDIO bus [1] are probed and registered using
+> > > > > +fwnode_mdiobus_register_phy().
+> > > >
+> > > > Empty line here, please.
+> > > >
+> > > > > +Later, for connecting these PHYs to MAC, the PHYs registered on the
+> > > > > +MDIO bus have to be referenced.
+> > > > > +
+> > > > > +The UUID given below should be used as mentioned in the "Device Properties
+> > > > > +UUID For _DSD" [2] document.
+> > > > > +   - UUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301
+> > > >
+> > > > I would drop the above paragraph.
+> > > >
+> > > > > +
+> > > > > +This document introduces two _DSD properties that are to be used
+> > > > > +for PHYs on the MDIO bus.[3]
+> > > >
+> > > > I'd say "for connecting PHYs on the MDIO bus [3] to the MAC layer."
+> > > > above and add the following here:
+> > > >
+> > > > "These properties are defined in accordance with the "Device
+> > > > Properties UUID For _DSD" [2] document and the
+> > > > daffd814-6eba-4d8c-8a91-bc9bbf4aa301 UUID must be used in the Device
+> > > > Data Descriptors containing them."
+> > > >
+> > > > > +
+> > > > > +phy-handle
+> > > > > +----------
+> > > > > +For each MAC node, a device property "phy-handle" is used to reference
+> > > > > +the PHY that is registered on an MDIO bus. This is mandatory for
+> > > > > +network interfaces that have PHYs connected to MAC via MDIO bus.
+> > > > > +
+> > > > > +During the MDIO bus driver initialization, PHYs on this bus are probed
+> > > > > +using the _ADR object as shown below and are registered on the MDIO bus.
+> > > >
+> > > > Do you want to mention the "reg" property here?  I think it would be
+> > > > useful to do that.
+> > >
+> > > No. I think we should adhere to _ADR in MDIO case. The "reg" property for ACPI
+> > > may be useful for other use cases that Andy is aware of.
 > >
-> > It was a PEBKAC, but a slightly different one. I won't bore you with
-> > (embarrassing) details ;).
-> >
-> > I reproduced the problem, tested both your and Rafael's patches
-> > and the kernel still crashes, with the same stack trace.
-> > (Yes, I'm sure I booted the right kernel :)
-> >
-> > Why "recovery mode" stopped working (or worked previously) is still a m=
-ystery.
-> >
+> > The code should reflect this, then.  I mean it sounds like you want to
+> > check the "reg" property only if this is a non-ACPI node.
 >
-> Thanks Marcin for the information. If you have a consistent failure
-> that's better to some extent.
+> Right. For MDIO case, that is what is required.
+> "reg" for DT and "_ADR" for ACPI.
 >
-> Maybe a bit of explanation of what this routine tries to do:
-> when SoundWire is enabled in a system, we need to have the following
-> pattern in the DSDT:
->
->      Scope (_SB.PCI0)
->      {
->          Device (HDAS)
->          {
->              Name (_ADR, 0x001F0003)  // _ADR: Address
->          }
->
->
->          Scope (HDAS)
->          {
->              Device (SNDW)
->              {
->                  Name (_ADR, 0x40000000)  // _ADR: Address
->
-> The only thing the code does is to walk through the children and check
-> if the valid _ADR 0x40000000 is found.
->
-> You don't have SoundWire in your device so there should not be any
-> children found. I don't see anything in the DSDT that looks like
-> _SB.PCI0.HDAS.<something>, so in theory we should not even enter the
-> callback.
->
-> The error happens in acpi_bus_get_device(), after we read the adr but
-> before we check it, so wondering if we shouldn't revert the checks. Can
-> you try the diff below? I am not sure why there is a crash and we should
-> root-cause this issue, just trying to triangulate what is happening.
->
-> diff --git a/drivers/soundwire/intel_init.c b/drivers/soundwire/intel_ini=
-t.c
-> index cabdadb09a1b..6bc87a682fb3 100644
-> --- a/drivers/soundwire/intel_init.c
-> +++ b/drivers/soundwire/intel_init.c
-> @@ -369,13 +369,6 @@ static acpi_status sdw_intel_acpi_cb(acpi_handle
-> handle, u32 level,
->          if (ACPI_FAILURE(status))
->                  return AE_OK; /* keep going */
->
-> -       if (acpi_bus_get_device(handle, &adev)) {
-> -               pr_err("%s: Couldn't find ACPI handle\n", __func__);
-> -               return AE_NOT_FOUND;
-> -       }
-> -
-> -       info->handle =3D handle;
-> -
->          /*
->           * On some Intel platforms, multiple children of the HDAS
->           * device can be found, but only one of them is the SoundWire
-> @@ -386,6 +379,13 @@ static acpi_status sdw_intel_acpi_cb(acpi_handle
-> handle, u32 level,
->          if (FIELD_GET(GENMASK(31, 28), adr) !=3D SDW_LINK_TYPE)
->                  return AE_OK; /* keep going */
->
-> +       if (acpi_bus_get_device(handle, &adev)) {
-> +               pr_err("%s: Couldn't find ACPI handle\n", __func__);
-> +               return AE_NOT_FOUND;
-> +       }
-> +
-> +       info->handle =3D handle;
-> +
->          /* device found, stop namespace walk */
->          return AE_CTRL_TERMINATE;
->   }
+> However, Andy pointed out [1] that ACPI nodes can also hold reg property and
+> therefore, fwnode_get_id() need to be capable to handling that situation as
+> well.
 
-still the same crash
+No, please don't confuse those two things.
+
+Yes, ACPI nodes can also hold a "reg" property, but the meaning of it
+depends on the binding which is exactly my point: _ADR is not a
+fallback replacement for "reg" in general and it is not so for MDIO
+too.  The new function as proposed doesn't match the MDIO requirements
+and so it should not be used for MDIO.
+
+For MDIO, the exact flow mentioned above needs to be implemented (and
+if someone wants to use it for their use case too, fine).
+
+Otherwise the code wouldn't match the documentation.
