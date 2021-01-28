@@ -2,158 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2650D30756C
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 13:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A203075CF
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jan 2021 13:18:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbhA1MCK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Jan 2021 07:02:10 -0500
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:34380 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231467AbhA1MBd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 07:01:33 -0500
-Received: by mail-ot1-f47.google.com with SMTP id a109so4921098otc.1;
-        Thu, 28 Jan 2021 04:01:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YFd+ePX8uVw6q9k4sjKVG2onbgLoQUdjhM3fDLy+Btw=;
-        b=LKAWVBS4m/h6/48Dn7N3w/0wd/2/YrXf3YGyPnTCTcha00mJP7Bcd7j0kSVCxIlT1a
-         nRFIRNFxyLbsSFE1bIT9E6R9RfRE7Ix+IkidxlxQidzV63n//jEn7JK2dOYUPYXuVNrx
-         4346xc/BYZWanIKx34Gua+023jjAl8+GnV2eGbNp45x4NIPODrXb+SlG+mQ1VBNe10q3
-         9JeQJ0cI0kiuFN5ygg7dL5JMWfNVcCCVhqJ8FL9HtpoZ04zafFjdCpS2DxHeY0YYC3zR
-         UYAKxHRuBfPUsJ3BjyAQSHy3UchLkW4+UDe5YZLud5VJV7vgoDk5RqgIbSozJUiK4v99
-         KO8w==
-X-Gm-Message-State: AOAM531WQHwOAHnXHH+l80TuECAHVajGLwz9Dy6O7jQ2nLfXvqSiOsUq
-        EIoTjc1NkZoADqscNK7YHWNL92mg1xZLgmgNTe0=
-X-Google-Smtp-Source: ABdhPJzw7uAHH10wT+hfkmC7l6BXx19Gtl05Ag3LL5T55Scni979vNQ+rXgR5Evx5NIc8UxTLZi8I+qmU3q2QMTkMfc=
-X-Received: by 2002:a9d:7a4a:: with SMTP id z10mr11396877otm.206.1611835251636;
- Thu, 28 Jan 2021 04:00:51 -0800 (PST)
+        id S231466AbhA1MST convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 28 Jan 2021 07:18:19 -0500
+Received: from mail.kingsoft.com ([114.255.44.146]:41180 "EHLO
+        mail.kingsoft.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231555AbhA1MSL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jan 2021 07:18:11 -0500
+X-Greylist: delayed 948 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 07:18:02 EST
+X-AuditID: 0a580155-6fbff700000550c6-25-6012a164fcc0
+Received: from mail.kingsoft.com (localhost [10.88.1.32])
+        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client did not present a certificate)
+        by mail.kingsoft.com (SMG-2-NODE-85) with SMTP id 13.F6.20678.461A2106; Thu, 28 Jan 2021 19:35:00 +0800 (HKT)
+Received: from aili-OptiPlex-7020 (172.16.253.254) by KSBJMAIL2.kingsoft.cn
+ (10.88.1.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Thu, 28 Jan
+ 2021 20:01:28 +0800
+Date:   Thu, 28 Jan 2021 20:01:28 +0800
+From:   Aili Yao <yaoaili@kingsoft.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     <tony.luck@intel.com>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <james.morse@arm.com>, <linux-acpi@vger.kernel.org>,
+        <linux-edac@vger.kernel.org>, <yangfeng1@kingsoft.com>,
+        <CHENGUOMIN@kingsoft.com>
+Subject: Re: [PATCH v2] Dump cper error table in mce_panic
+Message-ID: <20210128200128.6f022993.yaoaili@kingsoft.com>
+In-Reply-To: <20201120102422.GA712@zn.tnic>
+References: <20201104065057.40442-1-yaoaili126@163.com>
+        <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
+        <20201118124538.GI7472@zn.tnic>
+        <20201119134057.37ca2c19.yaoaili@kingsoft.com>
+        <20201119174508.GE3769@zn.tnic>
+        <20201120172235.620eb826.yaoaili@kingsoft.com>
+        <20201120102422.GA712@zn.tnic>
+Organization: Kingsoft
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20210122154300.7628-1-calvin.johnson@oss.nxp.com>
- <20210122154300.7628-2-calvin.johnson@oss.nxp.com> <CAJZ5v0iX3uU36448ALA20hiVk968VKTsvgwLrp8ur96MQo3Acw@mail.gmail.com>
- <20210128112729.GA28413@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20210128112729.GA28413@lsv03152.swis.in-blr01.nxp.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 Jan 2021 13:00:40 +0100
-Message-ID: <CAJZ5v0id1i57K_=7eiK0cpOE6UtsKNfR7L7UEBcN1=G+WS+1TA@mail.gmail.com>
-Subject: Re: [net-next PATCH v4 01/15] Documentation: ACPI: DSD: Document MDIO PHY
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Grant Likely <grant.likely@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "linux.cj" <linux.cj@gmail.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [172.16.253.254]
+X-ClientProxiedBy: KSBJMAIL1.kingsoft.cn (10.88.1.31) To KSBJMAIL2.kingsoft.cn
+ (10.88.1.32)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOLMWRmVeSWpSXmKPExsXCFcGooJuyUCjBYOdNEYvPG/6xWdzft5zJ
+        YufDt2wWy/f1M1pcONXAZHHm9CVWizcX7rE4sHt8b+1j8Vgzbw2jx+I9L5k8Nq3qZPPYcrWd
+        xePzJrkAtigum5TUnMyy1CJ9uwSujLmnrQquyVWcWNfJ0sA4X6KLkZNDQsBEYtmH/+xdjFwc
+        QgLTmSQu3L/MCOG8YJS49bOTGaSKRUBVYtqJeWA2G5C9694sVhBbREBJ4uuiuUwgDcwC5xkl
+        +hqusoAkhAWsJJ5ueANm8wLZa6ddAWvgFNCW6Jnzkwliw3omifaHu4AcDg5+ATGJVw3GECfZ
+        Szz/e5YZoldQ4uTMJ2BzmAU0JVq3/2aHsLUlli18DVYjJKAocXjJL3aIXiWJI90z2CDsWIll
+        816xTmAUnoVk1Cwko2YhGbWAkXkVI0txbrrRJkZIXITuYJzR9FHvECMTB+MhRgkOZiUR3rdz
+        hBKEeFMSK6tSi/Lji0pzUosPMUpzsCiJ85Y78CUICaQnlqRmp6YWpBbBZJk4OKUamMwLjtQH
+        SU5dYxz9rHVWd1f3q+kOe5mZ8g8b6AufmlxdGSrwsF5sR2Uw6wVt6aLZnJGP7i7vd9199+ui
+        +Rzz7m0Mj6y/fSK4pv9Psr30Dl8TpqKJvFWWDcdEN92c9lkjp/fMvIV9glpn1L4sFVLcseLJ
+        3B3Bt12ufVApO/vZsTbpa6C+Q1bilh/X+20zrEu+vO0TOHa0huFf6pxJZ4ucNTPXadR3S6bG
+        8idIOH7S0rzTqr7s84yCXUqCDlyBea9zvCY5fDr1kf2Eztt9Mekzu0/9qM3b+KTuh/0sednZ
+        c+cdtONeer8/xHRXZPf0eJ/3j02+nvT/ZJvntENNxok/aWvM/m1L7be/6XH2W9C3T4mlOCPR
+        UIu5qDgRAC9wxqP6AgAA
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 12:27 PM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
->
-> Hi Rafael,
->
-> Thanks for the review. I'll work on all the comments.
->
-> On Fri, Jan 22, 2021 at 08:22:21PM +0100, Rafael J. Wysocki wrote:
-> > On Fri, Jan 22, 2021 at 4:43 PM Calvin Johnson
-> > <calvin.johnson@oss.nxp.com> wrote:
-> > >
-> > > Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
-> > > provide them to be connected to MAC.
-> > >
-> > > Describe properties "phy-handle" and "phy-mode".
-> > >
-> > > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> > > ---
-> > >
-> > > Changes in v4:
-> > > - More cleanup
-> >
-> > This looks much better that the previous versions IMV, some nits below.
-> >
-> > > Changes in v3: None
-> > > Changes in v2:
-> > > - Updated with more description in document
-> > >
-> > >  Documentation/firmware-guide/acpi/dsd/phy.rst | 129 ++++++++++++++++++
-> > >  1 file changed, 129 insertions(+)
-> > >  create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
-> > >
-> > > diff --git a/Documentation/firmware-guide/acpi/dsd/phy.rst b/Documentation/firmware-guide/acpi/dsd/phy.rst
-> > > new file mode 100644
-> > > index 000000000000..76fca994bc99
-> > > --- /dev/null
-> > > +++ b/Documentation/firmware-guide/acpi/dsd/phy.rst
-> > > @@ -0,0 +1,129 @@
-> > > +.. SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +=========================
-> > > +MDIO bus and PHYs in ACPI
-> > > +=========================
-> > > +
-> > > +The PHYs on an MDIO bus [1] are probed and registered using
-> > > +fwnode_mdiobus_register_phy().
-> >
-> > Empty line here, please.
-> >
-> > > +Later, for connecting these PHYs to MAC, the PHYs registered on the
-> > > +MDIO bus have to be referenced.
-> > > +
-> > > +The UUID given below should be used as mentioned in the "Device Properties
-> > > +UUID For _DSD" [2] document.
-> > > +   - UUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301
-> >
-> > I would drop the above paragraph.
-> >
-> > > +
-> > > +This document introduces two _DSD properties that are to be used
-> > > +for PHYs on the MDIO bus.[3]
-> >
-> > I'd say "for connecting PHYs on the MDIO bus [3] to the MAC layer."
-> > above and add the following here:
-> >
-> > "These properties are defined in accordance with the "Device
-> > Properties UUID For _DSD" [2] document and the
-> > daffd814-6eba-4d8c-8a91-bc9bbf4aa301 UUID must be used in the Device
-> > Data Descriptors containing them."
-> >
-> > > +
-> > > +phy-handle
-> > > +----------
-> > > +For each MAC node, a device property "phy-handle" is used to reference
-> > > +the PHY that is registered on an MDIO bus. This is mandatory for
-> > > +network interfaces that have PHYs connected to MAC via MDIO bus.
-> > > +
-> > > +During the MDIO bus driver initialization, PHYs on this bus are probed
-> > > +using the _ADR object as shown below and are registered on the MDIO bus.
-> >
-> > Do you want to mention the "reg" property here?  I think it would be
-> > useful to do that.
->
-> No. I think we should adhere to _ADR in MDIO case. The "reg" property for ACPI
-> may be useful for other use cases that Andy is aware of.
 
-The code should reflect this, then.  I mean it sounds like you want to
-check the "reg" property only if this is a non-ACPI node.
+> On Fri, Nov 20, 2020 at 05:22:35PM +0800, Aili Yao wrote:
+> > Hi, This test result if from tip/master, previous is upstream latest.  
+> 
+> Thanks for doing those, now let's see.
+> 
+> With rc4 you have the MCE error in the first kernel:
+> 
+> [  106.956286] Disabling lock debugging due to kernel taint
+> [  106.962373] mce: [Hardware Error]: CPU 18: Machine Check Exception: 5 Bank 7: be00000001010091
+> [  106.962377] mce: [Hardware Error]: RIP !INEXACT! 10:<ffffffffac58472a>
+> [  106.996488] {acpi_idle_do_entry+0x4a/0x60}
+> [  107.001057] mce: [Hardware Error]: TSC ae4b410af0b8 ADDR 314d193000 MISC 200400c008002086
+> [  107.010283] mce: [Hardware Error]: PROCESSOR 0:50657 TIME 1605843017 SOCKET 1 APIC 40 microcode 5000021
+> [  107.020767] mce: [Hardware Error]: Run the above through 'mcelog --ascii'
+> [  107.031295] mce: [Hardware Error]: Machine check: Processor context corrupt
+> [  107.039065] Kernel panic - not syncing: Fatal machine check
+> 
+> Now the kdump kernel fires and there's an error record in the CPER
+> thing.
+> 
+> > [    6.280390] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0
+> > [    6.288655] ACPI: Power Button [PWRF]
+> > [    6.292961] ERST: Error Record Serialization Table (ERST) support is initialized.
+> > [    6.301295] pstore: Registered erst as persistent store backend
+> > [    6.307912] {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 4
+> > [    6.308886] {1}[Hardware Error]: event severity: fatal
+> > [    6.308886] {1}[Hardware Error]:  Error 0, type: fatal
+> > [    6.308886] {1}[Hardware Error]:  fru_text: Card03, ChnB, DIMM0
+> > [    6.308886] {1}[Hardware Error]:   section_type: memory error
+> > [    6.308886] {1}[Hardware Error]:   error_status: 0x0000000000000000  
+> 
+> And this error_status is all clear. I wonder why.
+> 
+> Looking at the ÜFI spec "Section O: Error Status" it defines a couple
+> of bits there: whether it was an address or control bits error, who
+> detected the error (responder, requestor), whether it was the first
+> error, etc, etc.
+> 
+> And none of those bits are set.
+> 
+> Which makes me not trust that error record a whole lot but that's a
+> given, since it is firmware and firmware is an unfixable piece of crap
+> by definition.
+> 
+> So then one could probably say that if none of those error status bits
+> are set, then the error being reported is not something, let's say
+> "fresh". This is doubly the case considering that it gets detected when
+> the GHES driver probes:
+> 
+>         /* Handle any pending errors right away */
+>         spin_lock_irqsave(&ghes_notify_lock_irq, flags);
+>         ghes_proc(ghes);
+>         spin_unlock_irqrestore(&ghes_notify_lock_irq, flags);
+> 
+> so *maybe*, just *maybe* one could say here:
+> 
+> If the error_status doesn't have any valid bits *and* it has been
+> detected on driver init - i.e., the error has been there before the
+> driver probed, then even if the error is fatal, GHES should not call
+> __ghes_panic().
+> 
+> The even better way to detect this is to be able to check whether this
+> is the kdump kernel and whether it got loaded due to a fatal MCE in the
+> first kernel and then match that error address with the error address of
+> the error which caused the first panic in the mce code. Then the second
+> kernel won't need to panic but simply log.
+> 
+> However, I think that second way to check is probably hard and the first
+> heuristic is probably good enough...
+> 
+> Tony, thoughts?
+> 
+
+Long away from this issue, any feedback?
+From kexec-tool, the hest_disable parameter has been added to 2nd kernel, So
+the kdump will not be affected by ghes errors.
+But we still may lose the ghes error info, so i think this patch is still needed?
+
+Thanks
+
+-- 
+Best Regards!
+
+Aili Yao
