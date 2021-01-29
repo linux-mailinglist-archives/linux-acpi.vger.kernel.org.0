@@ -2,126 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2966308B6D
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Jan 2021 18:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B93308C34
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Jan 2021 19:15:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230249AbhA2RWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Jan 2021 12:22:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbhA2RWF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Jan 2021 12:22:05 -0500
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3CFC061573;
-        Fri, 29 Jan 2021 09:21:25 -0800 (PST)
-Received: by mail-pf1-x42d.google.com with SMTP id w14so6647347pfi.2;
-        Fri, 29 Jan 2021 09:21:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mpRwxmNoK4zRm0ABxxngmN28HRh6rDJ6+OLZGZ+9rbg=;
-        b=Pd0gq8sBQOE7jDW7l3EY2lggegQw+66lD6svdPfel98i9pRz5ibkDIgCo4m5B5wfaC
-         A+jhjOz5zp7kK4L0pZSkU6PxFe855OmDNEVpD4HdSybmDa5CdBiVeD4j2Md41Z4sla/c
-         glnbOeaR3Q8cb9ffwmsHFuSmh5PJ0jjeH2OCl01aMC/+OBABG09H71zrmAKQn0YPA+4O
-         BIvUfV1J15URctuRg5R6CWy9BpZhJyNFF5sCsFXs7uHFIA0CWTGl+YTocK9aIgFY8Mu2
-         KhKtjQeUa3zGsB1WSg6Bt44eSKvY3u5hA7H/s2saX/hmpKkBiD0vTxxwbShdvsB0HyQx
-         N58g==
+        id S232584AbhA2SMK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Jan 2021 13:12:10 -0500
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:37252 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231335AbhA2SMJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Jan 2021 13:12:09 -0500
+Received: by mail-ot1-f46.google.com with SMTP id h14so9483052otr.4;
+        Fri, 29 Jan 2021 10:11:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mpRwxmNoK4zRm0ABxxngmN28HRh6rDJ6+OLZGZ+9rbg=;
-        b=jfXPw1sJcUZBTEGUq36C5fQFw9HYD24YiBIegYeM4JP+Bzh3sVHb3PTW08r1GlLssY
-         f74z9J9OhYrESb43MGQ8D6kSw07eKSnXu+lKLSfJ0NcW91Q4zFnqHpRxMIy3LYcf9Pob
-         JkEdDUSwyJz05tO/UIGpwrL/9iIfaTIVL4UVeE5kKGQxX4Udx1nQROlPvyE4nV9BeaeX
-         G8YcD/VR1G5ung8V68w2JCVResawr2Hy+FVseeDJxBlan+CozxUMdv7eLFGr25qP5tR4
-         QBDygUm5MKbLCH7g5xNjeWmCwlkQEDmCBwoxu+G2efg8Jm/qkWduMQpLbkgeWgrnP/CB
-         lrWg==
-X-Gm-Message-State: AOAM530RK9/T88MX3HouG/1AKJjTHlLbKmxjIyG8Pya+jO6B63CWI1zW
-        QOp7cpitF1sC6Dxeag5MwN4Yq9ZejxgaqSwCSIU=
-X-Google-Smtp-Source: ABdhPJycqBO07z91rrjUNeFij2ntnYs+9hiTrGVGfrQpNhdNPNyCS+p+/sdPX9vOlqiDKZGUgIZBd3VW5p+NmjUWr50=
-X-Received: by 2002:a62:5a86:0:b029:1ae:6b45:b6a9 with SMTP id
- o128-20020a625a860000b02901ae6b45b6a9mr5255939pfb.7.1611940884875; Fri, 29
- Jan 2021 09:21:24 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=Q4oVQSes+s6zJZHgbO5XBLVNfA/GuxCMLqREk38t5eY=;
+        b=ks8y6omQQgpIhUdOTOy7iEN9cqnBaWv42XlcOTcpZvmsfFZ2i1jLe4zt01hOrll6Np
+         8/f37rT3LSPgw1x3IAHGdWQP1O9fzXKTlaRE/fG8LhzIz7wMTC40nJ3uNi4ihbrBhnC6
+         HXyhS+2YIoJyXhqQgtPA3wFqx6XWUxvP6F+eF2ubLL82vKGbJ0MCA5lKY2JfcAGOX2X6
+         C3j9C3LqbavtLRWm/ZliRNG+VBc3SgD1rMI7nOLNF8FFSrE4dFowPWEY7gTJeyjBONjx
+         sBJMdTdquBWIu2HuNwrIeuV75rZ5dSWrUKwGKepD9DZUwi2cugjDCSd2nk6gL5kBUOTu
+         wTEQ==
+X-Gm-Message-State: AOAM531IFgnWlrkXA3SJEI/WbBFts/0aju2kkBqhN6SiqsCe5WJb26uB
+        AJ0A8QMXnbExuHKpuqUjdV9Rzw1X0HlofpR7WeMLWaxObyo=
+X-Google-Smtp-Source: ABdhPJwWVTb27M10LImI8Ql5aBqCCDUdwfufJ8qd1DtyyXgYufMEHKn8AWOxGEY7QhOFvF99va4Q0cU7gOHVnXt5qiI=
+X-Received: by 2002:a9d:7a4a:: with SMTP id z10mr3775525otm.206.1611943888425;
+ Fri, 29 Jan 2021 10:11:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20210122154300.7628-1-calvin.johnson@oss.nxp.com>
- <20210122154300.7628-2-calvin.johnson@oss.nxp.com> <CAJZ5v0iX3uU36448ALA20hiVk968VKTsvgwLrp8ur96MQo3Acw@mail.gmail.com>
- <20210128112729.GA28413@lsv03152.swis.in-blr01.nxp.com> <CAJZ5v0id1i57K_=7eiK0cpOE6UtsKNfR7L7UEBcN1=G+WS+1TA@mail.gmail.com>
- <20210128131205.GA7882@lsv03152.swis.in-blr01.nxp.com> <CAJZ5v0j1XVSyFa1q4RZ=FnSmfR5VOyX+u1uWBWdvTOVBJJ-JXw@mail.gmail.com>
- <20210129064739.GA24267@lsv03152.swis.in-blr01.nxp.com> <CAJZ5v0hrG_-_3LLb956TdFO830DaPv6NdobKetXrc9H+u9bdgw@mail.gmail.com>
- <CAJZ5v0jKuHbK0BSUR6+qU-8zVxrwKrAFRn3ssyWtwvvhQNObQg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jKuHbK0BSUR6+qU-8zVxrwKrAFRn3ssyWtwvvhQNObQg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 29 Jan 2021 19:21:07 +0200
-Message-ID: <CAHp75Vcq53+Ogret0d=4ThOM9bqF21FFFLDnW0AQzeKmM62gFA@mail.gmail.com>
-Subject: Re: [net-next PATCH v4 01/15] Documentation: ACPI: DSD: Document MDIO PHY
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Grant Likely <grant.likely@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "linux.cj" <linux.cj@gmail.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 29 Jan 2021 19:11:17 +0100
+Message-ID: <CAJZ5v0is8qQ91Nx_hhMgc3Ga8NgFbE-JAu03=M-L9sCpf8pVmQ@mail.gmail.com>
+Subject: [GIT PULL][Resend] ACPI fixes for v5.11-rc6
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 6:44 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> On Fri, Jan 29, 2021 at 5:37 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > On Fri, Jan 29, 2021 at 7:48 AM Calvin Johnson
-> > <calvin.johnson@oss.nxp.com> wrote:
+[Resending, because it hasn't made it to the mailing lists, not sure why.]
 
-...
+Hi Linus,
 
-> > It would work, but I would introduce a wrapper around the _ADR
-> > evaluation, something like:
-> >
-> > int acpi_get_local_address(acpi_handle handle, u32 *addr)
-> > {
-> >       unsigned long long adr;
-> >       acpi_status status;
-> >
-> >       status = acpi_evaluate_integer(handle, METHOD_NAME__ADR, NULL, &adr);
-> >       if (ACPI_FAILURE(status))
-> >                 return -ENODATA;
-> >
-> >       *addr = (u32)adr;
-> >       return 0;
-> > }
-> >
-> > in drivers/acpi/utils.c and add a static inline stub always returning
-> > -ENODEV for it for !CONFIG_ACPI.
+Please pull from the tag
 
-...
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.11-rc6
 
-> BTW, you may not need the fwnode_get_local_addr() at all then, just
-> evaluate either the "reg" property for OF or acpi_get_local_address()
-> for ACPI in the "caller" code directly. A common helper doing this can
-> be added later.
+with top-most commit b584b7e9630acc65a4d01ff5f9090d1a0fb3bbb6
 
-Sounds good to me and it will address your concern about different
-semantics of reg/_ADR on per driver/subsystem basis.
+ Merge branch 'acpi-sysfs'
 
--- 
-With Best Regards,
-Andy Shevchenko
+on top of commit 6ee1d745b7c9fd573fba142a2efdad76a9f1cb04
+
+ Linux 5.11-rc5
+
+to receive ACPI fixes for 5.11-rc6.
+
+These fix the handling of notifications in the ACPI thermal driver
+and address a device enumeration issue leading to the presence of
+multiple MODALIAS entries in one uevent file in sysfs in some cases.
+
+Specifics:
+
+ - Modify the ACPI thermal driver to avoid evaluating _TMP directly
+   in its Notify () handler callback and running too many thermal
+   checks for one thermal zone at the same time so as to address a
+   work item accumulation issue observed on some systems that fail
+   to shut down as a result of it (Rafael Wysocki).
+
+ - Modify the ACPI uevent file creation code to avoid putting
+   multiple MODALIAS entries in one uevent file in sysfs which
+   breaks systemd-udevd (Kai-Heng Feng).
+
+Thanks!
+
+
+---------------
+
+Kai-Heng Feng (1):
+      ACPI: sysfs: Prefer "compatible" modalias
+
+Rafael J. Wysocki (1):
+      ACPI: thermal: Do not call acpi_thermal_check() directly
+
+---------------
+
+ drivers/acpi/device_sysfs.c | 20 ++++++--------------
+ drivers/acpi/thermal.c      | 46 ++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 39 insertions(+), 27 deletions(-)
