@@ -2,164 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D255308F3A
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Jan 2021 22:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 931C7308FE5
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Jan 2021 23:15:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233293AbhA2VYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Jan 2021 16:24:06 -0500
-Received: from mga06.intel.com ([134.134.136.31]:9705 "EHLO mga06.intel.com"
+        id S233433AbhA2WNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Jan 2021 17:13:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57196 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232776AbhA2VYF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 29 Jan 2021 16:24:05 -0500
-IronPort-SDR: B/YHyPl/so9M/APay8n/FyCmVMrrYqBaln1DLKVX3IOEc+lTuzEULWj1/PSbmdk9RxQSL8uJA3
- MEL5Yuktjxmg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9879"; a="242005593"
-X-IronPort-AV: E=Sophos;i="5.79,386,1602572400"; 
-   d="scan'208";a="242005593"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 13:22:19 -0800
-IronPort-SDR: 8TLGKFkxh7yP7CkNxzB+YxP0Zrq2iIwPA5OEWVGItUxtV3d8iJghJPpWQwbX40LoPBcaFfGbW8
- w6+hW1T+bo1A==
-X-IronPort-AV: E=Sophos;i="5.79,386,1602572400"; 
-   d="scan'208";a="370545067"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 13:22:14 -0800
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id D8B8B211D8; Fri, 29 Jan 2021 23:22:11 +0200 (EET)
-Date:   Fri, 29 Jan 2021 23:22:11 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+        id S232902AbhA2WM7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 29 Jan 2021 17:12:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id E471C64DDC;
+        Fri, 29 Jan 2021 22:12:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611958336;
+        bh=/SVJ+uL1rQaD4F5YhrrFT/Fd13xIvTRb0HXNGjSwgsY=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=civvN1fF50R3FxfDWc/uJKetHhydGscWCBj89j2e2WKmBrrR6LXLrC7LNBtrvgSDz
+         6jsUOA8tlG8WFTTe8/pdEijBe+J5zZl7K0VVPLpCV52Ef1AchXEzZtVbgFY6giM6UB
+         JRzr3ISreWj3cnsisDqNGRMYN0Pl8bLrTgp2rPJn0TkGpNzVBtCjxTS23UQ7Vs3x5L
+         BPbiA4VvthFw+iqiJfJVIPd3Ymvb71SDfTN/astRV85EMaU8tgAb75QeFGHa9PtZqR
+         dSj8eOMuRDhu/D0HnL4G3OuIBrb/vqxRinPo2tN7Vd04yJLELA+RhmHH+6oIjXfKFh
+         30V8g6lVfxgsg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D933360953;
+        Fri, 29 Jan 2021 22:12:16 +0000 (UTC)
+Subject: Re: [GIT PULL][Resend] ACPI fixes for v5.11-rc6
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0is8qQ91Nx_hhMgc3Ga8NgFbE-JAu03=M-L9sCpf8pVmQ@mail.gmail.com>
+References: <CAJZ5v0is8qQ91Nx_hhMgc3Ga8NgFbE-JAu03=M-L9sCpf8pVmQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0is8qQ91Nx_hhMgc3Ga8NgFbE-JAu03=M-L9sCpf8pVmQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc6
+X-PR-Tracked-Commit-Id: b584b7e9630acc65a4d01ff5f9090d1a0fb3bbb6
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 016decc0d836b746faac03de5e1ac976c53a3958
+Message-Id: <161195833682.1476.6884925231244087533.pr-tracker-bot@kernel.org>
+Date:   Fri, 29 Jan 2021 22:12:16 +0000
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Subject: Re: [PATCH v9 1/7] ACPI: scan: Obtain device's desired enumeration
- power state
-Message-ID: <20210129212211.GK32460@paasikivi.fi.intel.com>
-References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
- <20210128232729.16064-1-sakari.ailus@linux.intel.com>
- <CAJZ5v0hdG1W0D5E6GbrTDiAjMyC0mSgb3Z2WEBy3hhb4iJhDNw@mail.gmail.com>
- <20210129164522.GJ32460@paasikivi.fi.intel.com>
- <CAJZ5v0iJB80QX9ze9_hpNP4R-+C36Rvn8d+7S-4-guWrN=SiWQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0iJB80QX9ze9_hpNP4R-+C36Rvn8d+7S-4-guWrN=SiWQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 05:57:17PM +0100, Rafael J. Wysocki wrote:
-> On Fri, Jan 29, 2021 at 5:45 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Rafael,
-> >
-> > Thanks for the comments.
-> >
-> > On Fri, Jan 29, 2021 at 03:07:57PM +0100, Rafael J. Wysocki wrote:
-> > > On Fri, Jan 29, 2021 at 12:27 AM Sakari Ailus
-> > > <sakari.ailus@linux.intel.com> wrote:
-> > > >
-> > > > Store a device's desired enumeration power state in struct
-> > > > acpi_device_power_flags during acpi_device object's initialisation.
-> > > >
-> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > ---
-> > > >  drivers/acpi/scan.c     | 6 ++++++
-> > > >  include/acpi/acpi_bus.h | 3 ++-
-> > > >  2 files changed, 8 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > > > index 1d7a02ee45e05..b077c645c9845 100644
-> > > > --- a/drivers/acpi/scan.c
-> > > > +++ b/drivers/acpi/scan.c
-> > > > @@ -987,6 +987,8 @@ static void acpi_bus_init_power_state(struct acpi_device *device, int state)
-> > > >
-> > > >  static void acpi_bus_get_power_flags(struct acpi_device *device)
-> > > >  {
-> > > > +       unsigned long long pre;
-> > > > +       acpi_status status;
-> > > >         u32 i;
-> > > >
-> > > >         /* Presence of _PS0|_PR0 indicates 'power manageable' */
-> > > > @@ -1008,6 +1010,10 @@ static void acpi_bus_get_power_flags(struct acpi_device *device)
-> > > >         if (acpi_has_method(device->handle, "_DSW"))
-> > > >                 device->power.flags.dsw_present = 1;
-> > > >
-> > > > +       status = acpi_evaluate_integer(device->handle, "_PRE", NULL, &pre);
-> > > > +       if (ACPI_SUCCESS(status) && !pre)
-> > > > +               device->power.flags.allow_low_power_probe = 1;
-> > >
-> > > While this is what has been discussed and thanks for taking it into
-> > > account, I'm now thinking that it may be cleaner to introduce a new
-> > > object to return the deepest power state of the device in which it can
-> > > be enumerated, say _DSE (Device State for Enumeration) such that 4
-> > > means D3cold, 3 - D3hot and so on, so the above check can be replaced
-> > > with something like
-> > >
-> > > status = acpi_evaluate_integer(device->handle, "_PRE", NULL, &dse);
-> >
-> > s/_PRE/_DSE/
-> >
-> > ?
-> 
-> Yes, sorry.
-> 
-> >
-> > > if (ACPI_FAILURE(status))
-> >
-> > ACPI_SUCCESS?
-> 
-> Yup.
-> 
-> > >         device->power.state_for_enumeratin = dse;
-> > >
-> > > And then, it is a matter of comparing ->power.state_for_enumeratin
-> > > with ->power.state and putting the device into D0 if the former is
-> > > shallower than the latter.
-> > >
-> > > What do you think?
-> >
-> > Sounds good. How about calling the function e.g.
-> > acpi_device_resume_for_probe(), so runtime PM could be used to resume the
-> > device if the function returns true?
-> 
-> I'd rather try to power it up before enabling runtime PM, because in
-> order to do the latter properly, you need to know if the device is
-> active or suspended to start with.
-> 
-> So you need something like (pseudo-code)
-> 
-> if (this_device_needs_to_be_on(ACPI_COMPANION(dev))) {
->    acpi_device_set_power(ACPI_COMPANION(dev), ACPI_STATE_D0);
->    pm_runtime_set_active(dev);
-> } else {
->    pm_runtime_set_suspended(dev);
+The pull request you sent on Fri, 29 Jan 2021 19:11:17 +0100:
 
-I guess the else branch isn't needed? The device remains suspended if its
-state hasn't been changed.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc6
 
-> }
-> 
-> and then you can enable PM-runtime.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/016decc0d836b746faac03de5e1ac976c53a3958
 
-Yes, agreed, this is what drivers should do. The I²C framework would use
-the function and conditionally power the device on before enabling runtime
-PM.
-
-This is how it's implemented by the set already but I think the change in
-semantics requires a little more still.
+Thank you!
 
 -- 
-Sakari Ailus
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
