@@ -2,191 +2,335 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A78309396
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Jan 2021 10:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F34530946C
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Jan 2021 11:23:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbhA3Jmw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 30 Jan 2021 04:42:52 -0500
-Received: from mga09.intel.com ([134.134.136.24]:13355 "EHLO mga09.intel.com"
+        id S231195AbhA3A0C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Jan 2021 19:26:02 -0500
+Received: from mga01.intel.com ([192.55.52.88]:38334 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230168AbhA3JkJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 30 Jan 2021 04:40:09 -0500
-IronPort-SDR: ldOyrqH71DKdub8IpEFEBUrvJc44zqWgIUycb/xnbOqX4wG4n7Ajk0vU9UHnoY5HI5oql70Byn
- x3ocaOQYDz3A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9879"; a="180656007"
+        id S231138AbhA3AZa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 29 Jan 2021 19:25:30 -0500
+IronPort-SDR: fTWEneBAuMBp2DwOiY5I6Y6OO8BD5g6ZPHumQdQGdaea7DOp/MZWAzCebvyWqNAErLCV1h1py6
+ pam1MuykNTxw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9879"; a="199350681"
 X-IronPort-AV: E=Sophos;i="5.79,387,1602572400"; 
-   d="scan'208";a="180656007"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 22:59:54 -0800
-IronPort-SDR: ppu7VpAmIDKtzn7aP7tHzRr/sj0d6JFiDwSTqa1T4IiO3nu6oOWEyswWFDs1MS94WZoclYIuRi
- QlvbSD1sk2cA==
-X-ExtLoop1: 1
+   d="scan'208";a="199350681"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 16:24:45 -0800
+IronPort-SDR: CqRdBbsp55b6+sSNXhG3wGGUB2/578PfuTqvbSayjqJApMWWI+5ryRenXObkNHyZXkWhJhHCX2
+ PyYqjWy56nvg==
 X-IronPort-AV: E=Sophos;i="5.79,387,1602572400"; 
-   d="scan'208";a="404774942"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 29 Jan 2021 22:59:53 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l5kEa-0004MF-IK; Sat, 30 Jan 2021 06:59:52 +0000
-Date:   Sat, 30 Jan 2021 14:59:28 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- e86d494782b7e43504b343d37b88c5c1d7af9ff6
-Message-ID: <601503d0.mNkS62LRsk+LcCq4%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+   d="scan'208";a="370591645"
+Received: from jambrizm-mobl1.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.133.15])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 16:24:45 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: [PATCH 01/14] cxl/mem: Introduce a driver for CXL-2.0-Type-3 endpoints
+Date:   Fri, 29 Jan 2021 16:24:25 -0800
+Message-Id: <20210130002438.1872527-2-ben.widawsky@intel.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210130002438.1872527-1-ben.widawsky@intel.com>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: e86d494782b7e43504b343d37b88c5c1d7af9ff6  Merge branch 'pnp' into linux-next
+From: Dan Williams <dan.j.williams@intel.com>
 
-elapsed time: 724m
+The CXL.mem protocol allows a device to act as a provider of "System
+RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+was attached to the typical CPU memory controller.
 
-configs tested: 128
-configs skipped: 2
+With the CXL-2.0 specification a PCI endpoint can implement a "Type-3"
+device interface and give the operating system control over "Host
+Managed Device Memory". See section 2.3 Type 3 CXL Device.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The memory range exported by the device may optionally be described by
+the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+provision persistent memory capacity from one, or more, CXL.mem devices.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-nios2                         3c120_defconfig
-powerpc                     tqm5200_defconfig
-arm                             rpc_defconfig
-mips                    maltaup_xpa_defconfig
-powerpc                     tqm8540_defconfig
-sh                        edosk7705_defconfig
-arm                       imx_v4_v5_defconfig
-riscv                             allnoconfig
-m68k                           sun3_defconfig
-riscv                            allmodconfig
-arm                  colibri_pxa300_defconfig
-x86_64                           allyesconfig
-powerpc                 mpc8315_rdb_defconfig
-arm                             pxa_defconfig
-arm                       omap2plus_defconfig
-powerpc                 xes_mpc85xx_defconfig
-arm                         lubbock_defconfig
-microblaze                          defconfig
-xtensa                  cadence_csp_defconfig
-mips                         rt305x_defconfig
-sh                          kfr2r09_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arm                      jornada720_defconfig
-arc                          axs101_defconfig
-powerpc                 mpc8540_ads_defconfig
-sh                               j2_defconfig
-arm                          ep93xx_defconfig
-sh                        dreamcast_defconfig
-sh                          rsk7203_defconfig
-arm                      tct_hammer_defconfig
-powerpc                    mvme5100_defconfig
-sh                           se7712_defconfig
-c6x                        evmc6474_defconfig
-arm                         shannon_defconfig
-mips                      pistachio_defconfig
-arm                        multi_v5_defconfig
-mips                          ath79_defconfig
-sh                           se7721_defconfig
-mips                     cu1830-neo_defconfig
-xtensa                    xip_kc705_defconfig
-powerpc                      walnut_defconfig
-sh                             sh03_defconfig
-arc                        nsim_700_defconfig
-sh                         ecovec24_defconfig
-xtensa                         virt_defconfig
-powerpc                    amigaone_defconfig
-mips                      pic32mzda_defconfig
-powerpc                     asp8347_defconfig
-sh                   sh7770_generic_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-arc                              allyesconfig
-c6x                              allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210130
-i386                 randconfig-a003-20210130
-i386                 randconfig-a002-20210130
-i386                 randconfig-a001-20210130
-i386                 randconfig-a004-20210130
-i386                 randconfig-a006-20210130
-i386                 randconfig-a013-20210130
-i386                 randconfig-a011-20210130
-i386                 randconfig-a015-20210130
-i386                 randconfig-a012-20210130
-i386                 randconfig-a014-20210130
-i386                 randconfig-a016-20210130
-x86_64               randconfig-a004-20210130
-x86_64               randconfig-a002-20210130
-x86_64               randconfig-a001-20210130
-x86_64               randconfig-a005-20210130
-x86_64               randconfig-a006-20210130
-x86_64               randconfig-a003-20210130
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-x86_64                                   rhel
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+A pre-requisite for Linux-managed memory-capacity provisioning is this
+cxl_mem driver that can speak the mailbox protocol defined in section
+8.2.8.4 Mailbox Registers.
 
-clang tested configs:
-x86_64               randconfig-a015-20210130
-x86_64               randconfig-a011-20210130
-x86_64               randconfig-a014-20210130
-x86_64               randconfig-a016-20210130
-x86_64               randconfig-a012-20210130
-x86_64               randconfig-a013-20210130
-x86_64               randconfig-a012-20210129
-x86_64               randconfig-a015-20210129
-x86_64               randconfig-a016-20210129
-x86_64               randconfig-a011-20210129
-x86_64               randconfig-a013-20210129
-x86_64               randconfig-a014-20210129
+For now just land the initial driver boiler-plate and Documentation/
+infrastructure.
 
+Link: https://www.computeexpresslink.org/download-the-specification
+Cc: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ Documentation/driver-api/cxl/index.rst        | 12 ++++
+ .../driver-api/cxl/memory-devices.rst         | 29 +++++++++
+ Documentation/driver-api/index.rst            |  1 +
+ drivers/Kconfig                               |  1 +
+ drivers/Makefile                              |  1 +
+ drivers/cxl/Kconfig                           | 35 +++++++++++
+ drivers/cxl/Makefile                          |  4 ++
+ drivers/cxl/mem.c                             | 61 +++++++++++++++++++
+ drivers/cxl/pci.h                             | 20 ++++++
+ 9 files changed, 164 insertions(+)
+ create mode 100644 Documentation/driver-api/cxl/index.rst
+ create mode 100644 Documentation/driver-api/cxl/memory-devices.rst
+ create mode 100644 drivers/cxl/Kconfig
+ create mode 100644 drivers/cxl/Makefile
+ create mode 100644 drivers/cxl/mem.c
+ create mode 100644 drivers/cxl/pci.h
+
+diff --git a/Documentation/driver-api/cxl/index.rst b/Documentation/driver-api/cxl/index.rst
+new file mode 100644
+index 000000000000..036e49553542
+--- /dev/null
++++ b/Documentation/driver-api/cxl/index.rst
+@@ -0,0 +1,12 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++====================
++Compute Express Link
++====================
++
++.. toctree::
++   :maxdepth: 1
++
++   memory-devices
++
++.. only::  subproject and html
+diff --git a/Documentation/driver-api/cxl/memory-devices.rst b/Documentation/driver-api/cxl/memory-devices.rst
+new file mode 100644
+index 000000000000..43177e700d62
+--- /dev/null
++++ b/Documentation/driver-api/cxl/memory-devices.rst
+@@ -0,0 +1,29 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: <isonum.txt>
++
++===================================
++Compute Express Link Memory Devices
++===================================
++
++A Compute Express Link Memory Device is a CXL component that implements the
++CXL.mem protocol. It contains some amount of volatile memory, persistent memory,
++or both. It is enumerated as a PCI device for configuration and passing
++messages over an MMIO mailbox. Its contribution to the System Physical
++Address space is handled via HDM (Host Managed Device Memory) decoders
++that optionally define a device's contribution to an interleaved address
++range across multiple devices underneath a host-bridge or interleaved
++across host-bridges.
++
++Driver Infrastructure
++=====================
++
++This section covers the driver infrastructure for a CXL memory device.
++
++CXL Memory Device
++-----------------
++
++.. kernel-doc:: drivers/cxl/mem.c
++   :doc: cxl mem
++
++.. kernel-doc:: drivers/cxl/mem.c
++   :internal:
+diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
+index 2456d0a97ed8..d246a18fd78f 100644
+--- a/Documentation/driver-api/index.rst
++++ b/Documentation/driver-api/index.rst
+@@ -35,6 +35,7 @@ available subsections can be seen below.
+    usb/index
+    firewire
+    pci/index
++   cxl/index
+    spi
+    i2c
+    ipmb
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index dcecc9f6e33f..62c753a73651 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -6,6 +6,7 @@ menu "Device Drivers"
+ source "drivers/amba/Kconfig"
+ source "drivers/eisa/Kconfig"
+ source "drivers/pci/Kconfig"
++source "drivers/cxl/Kconfig"
+ source "drivers/pcmcia/Kconfig"
+ source "drivers/rapidio/Kconfig"
+ 
+diff --git a/drivers/Makefile b/drivers/Makefile
+index fd11b9ac4cc3..678ea810410f 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -73,6 +73,7 @@ obj-$(CONFIG_NVM)		+= lightnvm/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+ obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+ obj-$(CONFIG_DAX)		+= dax/
++obj-$(CONFIG_CXL_BUS)		+= cxl/
+ obj-$(CONFIG_DMA_SHARED_BUFFER) += dma-buf/
+ obj-$(CONFIG_NUBUS)		+= nubus/
+ obj-y				+= macintosh/
+diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+new file mode 100644
+index 000000000000..3b66b46af8a0
+--- /dev/null
++++ b/drivers/cxl/Kconfig
+@@ -0,0 +1,35 @@
++# SPDX-License-Identifier: GPL-2.0-only
++menuconfig CXL_BUS
++	tristate "CXL (Compute Express Link) Devices Support"
++	depends on PCI
++	help
++	  CXL is a bus that is electrically compatible with PCI Express, but
++	  layers three protocols on that signalling (CXL.io, CXL.cache, and
++	  CXL.mem). The CXL.cache protocol allows devices to hold cachelines
++	  locally, the CXL.mem protocol allows devices to be fully coherent
++	  memory targets, the CXL.io protocol is equivalent to PCI Express.
++	  Say 'y' to enable support for the configuration and management of
++	  devices supporting these protocols.
++
++if CXL_BUS
++
++config CXL_MEM
++	tristate "CXL.mem: Endpoint Support"
++	help
++	  The CXL.mem protocol allows a device to act as a provider of
++	  "System RAM" and/or "Persistent Memory" that is fully coherent
++	  as if the memory was attached to the typical CPU memory
++	  controller.
++
++	  Say 'y/m' to enable a driver (named "cxl_mem.ko" when built as
++	  a module) that will attach to CXL.mem devices for
++	  configuration, provisioning, and health monitoring. This
++	  driver is required for dynamic provisioning of CXL.mem
++	  attached memory which is a prerequisite for persistent memory
++	  support. Typically volatile memory is mapped by platform
++	  firmware and included in the platform memory map, but in some
++	  cases the OS is responsible for mapping that memory. See
++	  Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
++
++	  If unsure say 'm'.
++endif
+diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+new file mode 100644
+index 000000000000..4a30f7c3fc4a
+--- /dev/null
++++ b/drivers/cxl/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++
++cxl_mem-y := mem.o
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+new file mode 100644
+index 000000000000..f4ee9a507ac9
+--- /dev/null
++++ b/drivers/cxl/mem.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/io.h>
++#include "pci.h"
++
++static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
++{
++	int pos;
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
++	if (!pos)
++		return 0;
++
++	while (pos) {
++		u16 vendor, id;
++
++		pci_read_config_word(pdev, pos + PCI_DVSEC_VENDOR_ID_OFFSET,
++				     &vendor);
++		pci_read_config_word(pdev, pos + PCI_DVSEC_ID_OFFSET, &id);
++		if (vendor == PCI_DVSEC_VENDOR_ID_CXL && dvsec == id)
++			return pos;
++
++		pos = pci_find_next_ext_capability(pdev, pos,
++						   PCI_EXT_CAP_ID_DVSEC);
++	}
++
++	return 0;
++}
++
++static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct device *dev = &pdev->dev;
++	int regloc;
++
++	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
++	if (!regloc) {
++		dev_err(dev, "register location dvsec not found\n");
++		return -ENXIO;
++	}
++
++	return 0;
++}
++
++static const struct pci_device_id cxl_mem_pci_tbl[] = {
++	/* PCI class code for CXL.mem Type-3 Devices */
++	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
++	  PCI_CLASS_MEMORY_CXL, 0xffffff, 0 },
++	{ /* terminate list */ },
++};
++MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
++
++static struct pci_driver cxl_mem_driver = {
++	.name			= KBUILD_MODNAME,
++	.id_table		= cxl_mem_pci_tbl,
++	.probe			= cxl_mem_probe,
++};
++
++MODULE_LICENSE("GPL v2");
++module_pci_driver(cxl_mem_driver);
+diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+new file mode 100644
+index 000000000000..a8a9935fa90b
+--- /dev/null
++++ b/drivers/cxl/pci.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++#ifndef __CXL_PCI_H__
++#define __CXL_PCI_H__
++
++#define PCI_CLASS_MEMORY_CXL	0x050210
++
++/*
++ * See section 8.1 Configuration Space Registers in the CXL 2.0
++ * Specification
++ */
++#define PCI_EXT_CAP_ID_DVSEC		0x23
++#define PCI_DVSEC_VENDOR_ID_CXL		0x1E98
++#define PCI_DVSEC_VENDOR_ID_OFFSET	0x4
++#define PCI_DVSEC_ID_CXL		0x0
++#define PCI_DVSEC_ID_OFFSET		0x8
++
++#define PCI_DVSEC_ID_CXL_REGLOC		0x8
++
++#endif /* __CXL_PCI_H__ */
+-- 
+2.30.0
+
