@@ -2,85 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF4130AFB7
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C973730AFC2
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:50:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231886AbhBASpv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:45:51 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:40671 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231928AbhBASpi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:45:38 -0500
-Received: by mail-oi1-f178.google.com with SMTP id k142so5462444oib.7;
-        Mon, 01 Feb 2021 10:45:21 -0800 (PST)
+        id S229555AbhBASun (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 13:50:43 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:40351 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229763AbhBASun (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:50:43 -0500
+Received: by mail-oi1-f179.google.com with SMTP id k142so5480568oib.7;
+        Mon, 01 Feb 2021 10:50:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3F+IaK/LsrQrHTLR46KGKmkQYpd2IqLJ3cy++TfHCOw=;
-        b=PTLBFKfUCgeX1DZXG8ht8oQv5uNZqQLyQG2y7AuKoxg4zBn/uuYZimwfbdGLQo0EG8
-         1irTCtqfwL0ElLiQNCWYtcCb1Ewt9P3tCWOINnlU3+m5fXZAXjGoVRx3T7k+H1hzs1GS
-         7KTZsdcGw2oTYDg+DkoOqxPFwbMsio4cB7lP265i4IFCPrIQ+OwxinNbJL753uzE/5ho
-         9ReduF/t/ah6PGjPWBaoxuD29KljszKWT8WFrsRXxpqakGQUBW34xqk8cXZbCStw5u8t
-         mBd94hzh/omnJ3PcR4+2F9MuQM8CidMtqs8fAwWy1GvKmqX22DM1rq0/qCeGkcf2UgEn
-         s0yA==
-X-Gm-Message-State: AOAM532x+geUoyy4q0eyRgGF25Kn3ZAVkHZpca1Lp0MBbusYEXx92J8M
-        kHTKw9IHe3vRn7nywwU4Y+uQ/wehZK8YqPBAT1K1UXeD
-X-Google-Smtp-Source: ABdhPJzopJHlhNhpir5maIJreoA9jMznT8poHisvkoSSMrrZIJGmFYhdiu1HY4P/xs6wY/6LlBOOvINugbgG+phwxZ0=
-X-Received: by 2002:aca:fc84:: with SMTP id a126mr170770oii.71.1612205096134;
- Mon, 01 Feb 2021 10:44:56 -0800 (PST)
+        bh=aOyiAkm4EZ4H70a+GP6ZyqUn1vvRaBH/f0gl3qIFpYY=;
+        b=ImEKVCvFakcrrs9qQ85KlGAGGSiepv1BJ7VlB/wyCu03KWeRtNPyucFPg3nK6zCP8P
+         4YvrQXWsf0yGcbtAgeoDU8PzPsz241ZdJKKEngtaBXcWwhU/HDz144aDL1uwY1aTeUPv
+         nOEaITKUrcGB31VB8+s5+sug77Dl6bsDSupS3sZ/9bvW+uAkb573V0hy8eRNlV/ibOga
+         H5b5O4gfkvZlT9YBWu6k0It3Ld/Rj8FDTV09G/+HvnyWrQd5yneABWDXdsKRaAyjXgLU
+         K5c9gfFLPeAj+nR2jk42kjX0E10iMO0rYlvCJkTjKFF4FznasZqMd9N1yhAMZLpgrerb
+         Eahg==
+X-Gm-Message-State: AOAM530zC0fCr2QYqfOMfI2LcrXYwQ/DZHeBa+hh5hdeT1gaYar4VEt8
+        +8Kv3xf6OyrvG8C14o2KbERaqH3lPLCdq0J+lUw=
+X-Google-Smtp-Source: ABdhPJzLA3DzsrAUF09uDXBNIgSYisgX3jApC6Ba9Ye4EuEP84kjmP4Akv5YDF8Omh0VMlWbwgL0iKioz8R+yHcuA14=
+X-Received: by 2002:aca:d14:: with SMTP id 20mr171918oin.157.1612205401622;
+ Mon, 01 Feb 2021 10:50:01 -0800 (PST)
 MIME-Version: 1.0
-References: <2367702.B5bJTmGzJm@kreacher> <1996712.1aSbzQgNOC@kreacher> <ab62890a1128b0d3109553208379015fcb36e0c7.camel@perches.com>
-In-Reply-To: <ab62890a1128b0d3109553208379015fcb36e0c7.camel@perches.com>
+References: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
+ <20210126082101.GD4903@dell> <YA/xfxcwCabETug6@smile.fi.intel.com> <YBhLuNZ7xmHdhurU@smile.fi.intel.com>
+In-Reply-To: <YBhLuNZ7xmHdhurU@smile.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Feb 2021 19:44:43 +0100
-Message-ID: <CAJZ5v0hoPLKe9mVY_mJgFrcLSdutTd-UFGJS11pu8qDzemy43w@mail.gmail.com>
-Subject: Re: [PATCH v1 2/5] ACPI: battery: Clean up printing messages
-To:     Joe Perches <joe@perches.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
+Date:   Mon, 1 Feb 2021 19:49:50 +0100
+Message-ID: <CAJZ5v0jQLZ7hEn7nDN8AADy7djnrQRrC4jtXKY-YqZiO609_2A@mail.gmail.com>
+Subject: Re: [PATCH v1 00/10] mfd, x86: remove msic driver and leftovers
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 1, 2021 at 7:37 PM Joe Perches <joe@perches.com> wrote:
+On Mon, Feb 1, 2021 at 7:45 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Mon, 2021-02-01 at 19:16 +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Tue, Jan 26, 2021 at 12:39:59PM +0200, Andy Shevchenko wrote:
+> > On Tue, Jan 26, 2021 at 08:21:01AM +0000, Lee Jones wrote:
+> > > On Mon, 25 Jan 2021, Andy Shevchenko wrote:
+> > >
+> > > > This is a second part of the Intel MID outdated platforms removal.
+> > > > First part is available as immutable branch [1]. The series has functional
+> > > > and build dependencies, so the mentioned branch should be used as a base
+> > > > for these changes.
+> > > >
+> > > > Note, that some of the drivers, that arch/x86 covers, seems never appeared
+> > > > in the upstream (like msic_ocd).
+> > >
+> > > What platforms stop working after this removal?
 > >
-> > Replace the ACPI_DEBUG_PRINT() and ACPI_EXCEPTION() instances
-> > in battery.c with acpi_handle_debug() and acpi_handle_info() calls,
-> > respectively, drop the _COMPONENT and ACPI_MODULE_NAME() definitions
-> > that are not used any more, drop the no longer needed
-> > ACPI_BATTERY_COMPONENT definition from the headers and update the
-> > documentation accordingly.
+> > Intel Moorstown, Medfield, Clovertrail.
 > >
-> > While at it, update the pr_fmt() definition and drop the unneeded
-> > PREFIX sybmbol definition from battery.c.
-> []
-> > --- linux-pm.orig/drivers/acpi/battery.c
-> []
-> > @@ -466,7 +460,8 @@ static int extract_package(struct acpi_b
-> >  static int acpi_battery_get_status(struct acpi_battery *battery)
-> >  {
-> >       if (acpi_bus_get_status(battery->device)) {
-> > -             ACPI_EXCEPTION((AE_INFO, AE_ERROR, "Evaluating _STA"));
-> > +             acpi_handle_info(battery->device->handle,
-> > +                              "_STA evaluation failed\n");
+> > > Are you sure no-one is using them?
+> >
+> > Definitely.
+> >
+> > > I wouldn't be keen on breaking Janet's PC that she's been using daily
+> > > and keeping up-to-date since the 90's.
+> >
+> > They never were in PCs.
+> >
+> > All of them were supported by Android and Janet won't update her phone or even
+> > Android tablet for sure they never ever run any kind of Linux than Android.
 >
-> I believe this changes the logging level from KERN_ERR to KERN_INFO.
->
-> Perhaps this and others should instead use acpi_handle_err()
+> So, I hope you are satisfied and we may proceed with removal.
 
-Actually, these log level changes, because the messages in question
-are not very urgent.
+Speaking of which, the patches here are requisite for SFI support
+removal, so I'd like to route them through the ACPI tree if that's
+fine by all of the interested parties.
 
-Something doesn't work and it's kind of good to know that, but there's
-not much that can be done about it.
+Thanks!
