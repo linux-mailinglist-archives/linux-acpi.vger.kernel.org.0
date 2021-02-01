@@ -2,90 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C973730AFC2
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD7430AFF1
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 20:02:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbhBASun (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:50:43 -0500
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:40351 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbhBASun (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:50:43 -0500
-Received: by mail-oi1-f179.google.com with SMTP id k142so5480568oib.7;
-        Mon, 01 Feb 2021 10:50:27 -0800 (PST)
+        id S229692AbhBATCC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 14:02:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229959AbhBATBz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 14:01:55 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1BEC061756
+        for <linux-acpi@vger.kernel.org>; Mon,  1 Feb 2021 11:01:15 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id y8so5003423ede.6
+        for <linux-acpi@vger.kernel.org>; Mon, 01 Feb 2021 11:01:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=C4j8R2NWjOWWuVLjBbyJdPlrlZ/j8TvzFIyUEA+Ndu8=;
+        b=nyzwIexSmOjDJ+JcSNBcdEk6/yXwTc3YKKDydwVmgfPbkLgTinbZm6+ykK0VQzEtXd
+         2FGnsXVks/jQjS4fLAnBKnK11OSqp97qHKPP7ZUqdq9zaUFinHt8zs2HO+5Snar6F84v
+         5kZW9qoTEN+59FePDotW3jAP0kx+s2AOE3I3aKrRS257mRb/6+u9GsKidEMKfGro142s
+         DWpsafh0uFz0iMyedBmo8mVT7/beWRMM3ciL+gitIiUzkwCc6LH/5iwE8X/spV3q0Kbs
+         nPUT/vZZ8B2SFP534Z/VBodBdcFAo7cIr+SWbdYD0ZsBKkAsg8VJmh6BVUYFFwT3Dh2D
+         +6LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=aOyiAkm4EZ4H70a+GP6ZyqUn1vvRaBH/f0gl3qIFpYY=;
-        b=ImEKVCvFakcrrs9qQ85KlGAGGSiepv1BJ7VlB/wyCu03KWeRtNPyucFPg3nK6zCP8P
-         4YvrQXWsf0yGcbtAgeoDU8PzPsz241ZdJKKEngtaBXcWwhU/HDz144aDL1uwY1aTeUPv
-         nOEaITKUrcGB31VB8+s5+sug77Dl6bsDSupS3sZ/9bvW+uAkb573V0hy8eRNlV/ibOga
-         H5b5O4gfkvZlT9YBWu6k0It3Ld/Rj8FDTV09G/+HvnyWrQd5yneABWDXdsKRaAyjXgLU
-         K5c9gfFLPeAj+nR2jk42kjX0E10iMO0rYlvCJkTjKFF4FznasZqMd9N1yhAMZLpgrerb
-         Eahg==
-X-Gm-Message-State: AOAM530zC0fCr2QYqfOMfI2LcrXYwQ/DZHeBa+hh5hdeT1gaYar4VEt8
-        +8Kv3xf6OyrvG8C14o2KbERaqH3lPLCdq0J+lUw=
-X-Google-Smtp-Source: ABdhPJzLA3DzsrAUF09uDXBNIgSYisgX3jApC6Ba9Ye4EuEP84kjmP4Akv5YDF8Omh0VMlWbwgL0iKioz8R+yHcuA14=
-X-Received: by 2002:aca:d14:: with SMTP id 20mr171918oin.157.1612205401622;
- Mon, 01 Feb 2021 10:50:01 -0800 (PST)
+        bh=C4j8R2NWjOWWuVLjBbyJdPlrlZ/j8TvzFIyUEA+Ndu8=;
+        b=atlezGblRG0wa5RuDoQ6gSxwl5Wb8ex20tBzvbHpOibRx3WmqDzkr0qyzj8qnuFuII
+         FftCBaDofALZR6BcMKLdTtjsjVOKXK8mPkYa1BkliC3G1yczg1N1HTwf33UZMa4nW7pH
+         auzAXvCc3Uu3Fh1MgPvpKknq7tLvvimG6Q902VUnSj21dPCUNqVNT/Tyms4riPWHLsna
+         YcdtYn1DvKslxJzDPHzFgMd84WNfponMbnxr0tVM4k7VAqs/qvl1PTfDHPN8hUSqHjCi
+         yOILw2yDyV/72AkEYU9OLobbHggK5W2uLM448HMLd5zptjlVYss4ic04HY/RQkPtCDol
+         Fz7Q==
+X-Gm-Message-State: AOAM532ZSybCmhNtn7Jt95dxGfvEbTeH/3odypeF0o7ZKC9SUJYXCuFX
+        DFuAyE+OtSj80kGho+Q38b52OxlvCJqIywtWYS8VDQ==
+X-Google-Smtp-Source: ABdhPJynM6kBjwVDj3TQA0+jvvwTHEb3P0qRRcbLVYHUWU+FzxYi6yyx9m7bmpMHOcX1OWvc84NajYIYsO/BTj6o3/4=
+X-Received: by 2002:aa7:cd87:: with SMTP id x7mr21185852edv.210.1612206073657;
+ Mon, 01 Feb 2021 11:01:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
- <20210126082101.GD4903@dell> <YA/xfxcwCabETug6@smile.fi.intel.com> <YBhLuNZ7xmHdhurU@smile.fi.intel.com>
-In-Reply-To: <YBhLuNZ7xmHdhurU@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Feb 2021 19:49:50 +0100
-Message-ID: <CAJZ5v0jQLZ7hEn7nDN8AADy7djnrQRrC4jtXKY-YqZiO609_2A@mail.gmail.com>
-Subject: Re: [PATCH v1 00/10] mfd, x86: remove msic driver and leftovers
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-9-ben.widawsky@intel.com> <20210201181845.GJ197521@fedora>
+ <20210201183455.3dndfwyswwvs2dlm@intel.com>
+In-Reply-To: <20210201183455.3dndfwyswwvs2dlm@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 1 Feb 2021 11:01:11 -0800
+Message-ID: <CAPcyv4iBbA+PCnTg-hFALuDJNqcJrwwXN_gMEe6z9LZvSfC5hw@mail.gmail.com>
+Subject: Re: [PATCH 08/14] taint: add taint for direct hardware access
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 1, 2021 at 7:45 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Feb 1, 2021 at 10:35 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> On Tue, Jan 26, 2021 at 12:39:59PM +0200, Andy Shevchenko wrote:
-> > On Tue, Jan 26, 2021 at 08:21:01AM +0000, Lee Jones wrote:
-> > > On Mon, 25 Jan 2021, Andy Shevchenko wrote:
+> On 21-02-01 13:18:45, Konrad Rzeszutek Wilk wrote:
+> > On Fri, Jan 29, 2021 at 04:24:32PM -0800, Ben Widawsky wrote:
+> > > For drivers that moderate access to the underlying hardware it is
+> > > sometimes desirable to allow userspace to bypass restrictions. Once
+> > > userspace has done this, the driver can no longer guarantee the sanctity
+> > > of either the OS or the hardware. When in this state, it is helpful for
+> > > kernel developers to be made aware (via this taint flag) of this fact
+> > > for subsequent bug reports.
 > > >
-> > > > This is a second part of the Intel MID outdated platforms removal.
-> > > > First part is available as immutable branch [1]. The series has functional
-> > > > and build dependencies, so the mentioned branch should be used as a base
-> > > > for these changes.
-> > > >
-> > > > Note, that some of the drivers, that arch/x86 covers, seems never appeared
-> > > > in the upstream (like msic_ocd).
-> > >
-> > > What platforms stop working after this removal?
+> > > Example usage:
+> > > - Hardware xyzzy accepts 2 commands, waldo and fred.
+> > > - The xyzzy driver provides an interface for using waldo, but not fred.
+> > > - quux is convinced they really need the fred command.
+> > > - xyzzy driver allows quux to frob hardware to initiate fred.
 > >
-> > Intel Moorstown, Medfield, Clovertrail.
-> >
-> > > Are you sure no-one is using them?
-> >
-> > Definitely.
-> >
-> > > I wouldn't be keen on breaking Janet's PC that she's been using daily
-> > > and keeping up-to-date since the 90's.
-> >
-> > They never were in PCs.
-> >
-> > All of them were supported by Android and Janet won't update her phone or even
-> > Android tablet for sure they never ever run any kind of Linux than Android.
+> > Would it not be easier to _not_ frob the hardware for fred-operation?
+> > Aka not implement it or just disallow in the first place?
 >
-> So, I hope you are satisfied and we may proceed with removal.
+> Yeah. So the idea is you either are in a transient phase of the command and some
+> future kernel will have real support for fred - or a vendor is being short
+> sighted and not adding support for fred.
+>
+> >
+> >
+> > >   - kernel gets tainted.
+> > > - turns out fred command is borked, and scribbles over memory.
+> > > - developers laugh while closing quux's subsequent bug report.
+> >
+> > Yeah good luck with that theory in-the-field. The customer won't
+> > care about this and will demand a solution for doing fred-operation.
+> >
+> > Just easier to not do fred-operation in the first place,no?
+>
+> The short answer is, in an ideal world you are correct. See nvdimm as an example
+> of the real world.
+>
+> The longer answer. Unless we want to wait until we have all the hardware we're
+> ever going to see, it's impossible to have a fully baked, and validated
+> interface. The RAW interface is my admission that I make no guarantees about
+> being able to provide the perfect interface and giving the power back to the
+> hardware vendors and their driver writers.
+>
+> As an example, suppose a vendor shipped a device with their special vendor
+> opcode. They can enable their customers to use that opcode on any driver
+> version. That seems pretty powerful and worthwhile to me.
+>
 
-Speaking of which, the patches here are requisite for SFI support
-removal, so I'd like to route them through the ACPI tree if that's
-fine by all of the interested parties.
+Powerful, frightening, and questionably worthwhile when there are
+already examples of commands that need extra coordination for whatever
+reason. However, I still think the decision tilts towards allowing
+this given ongoing spec work.
 
-Thanks!
+NVDIMM ended up allowing unfettered vendor passthrough given the lack
+of an organizing body to unify vendors. CXL on the other hand appears
+to have more gravity to keep vendors honest. A WARN splat with a
+taint, and a debugfs knob for the truly problematic commands seems
+sufficient protection of system integrity while still following the
+Linux ethos of giving system owners enough rope to make their own
+decisions.
+
+> Or a more realistic example, we ship a driver that adds a command which is
+> totally broken. Customers can utilize the RAW interface until it gets fixed in a
+> subsequent release which might be quite a ways out.
+>
+> I'll say the RAW interface isn't an encouraged usage, but it's one that I expect
+> to be needed, and if it's not we can always try to kill it later. If nobody is
+> actually using it, nobody will complain, right :D
+
+It might be worthwhile to make RAW support a compile time decision so
+that Linux distros can only ship support for the commands the CXL
+driver-dev community has blessed, but I'll leave it to a distro
+developer to second that approach.
