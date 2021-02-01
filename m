@@ -2,115 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 860F430ACB9
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 17:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AFE30ACEB
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 17:48:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbhBAQfx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 11:35:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30687 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230055AbhBAQfw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 11:35:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612197265;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wEqPXcgm5ocMR+3QesxkVD02pYDJl75FzS8y1W/fhns=;
-        b=QszDMbKMpuTHdvIfhK5Uw4Dr3iKca8amxRyqmsBMf9bvpnKyT0m2BHhNohlcDitxxfDJro
-        +BPpuzvQWIrYOIV/sd3Aj3u8DvGL+T43aL5gGbtD2rr8UORcYVGWPltNwfmnBdrXN7Exaa
-        cndDIJjYtjSSts9AHqP/P6q4VZ14nng=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-319-y-LxIJNAM3S61KvwD6wgiA-1; Mon, 01 Feb 2021 11:34:23 -0500
-X-MC-Unique: y-LxIJNAM3S61KvwD6wgiA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 375DC1927800;
-        Mon,  1 Feb 2021 16:34:22 +0000 (UTC)
-Received: from x1.localdomain (ovpn-112-234.ams2.redhat.com [10.36.112.234])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6984E10013C0;
-        Mon,  1 Feb 2021 16:34:21 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
-Subject: [PATCH 1/1] ACPI: scan: Fix Battery devices sometimes never binding
-Date:   Mon,  1 Feb 2021 17:34:19 +0100
-Message-Id: <20210201163419.396568-2-hdegoede@redhat.com>
-In-Reply-To: <20210201163419.396568-1-hdegoede@redhat.com>
-References: <20210201163419.396568-1-hdegoede@redhat.com>
+        id S231160AbhBAQrM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 11:47:12 -0500
+Received: from mga01.intel.com ([192.55.52.88]:43772 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230368AbhBAQrL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Feb 2021 11:47:11 -0500
+IronPort-SDR: Sd75AQB5TUeGcpQJAM8Okp8DrUX/pneKdN3B/2/x9bQnB09zfBNTJJY4PTqoSZUwAcwwlwtHYw
+ /RexSpm/G3Nw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="199612725"
+X-IronPort-AV: E=Sophos;i="5.79,392,1602572400"; 
+   d="scan'208";a="199612725"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 08:46:27 -0800
+IronPort-SDR: M3GO0gtPpl4qrl6C556Eviq48tEr0nI9xeXenrjI9aOzDLzPk5EbXy2fLA3f1ny/gNUGsp94NG
+ 7a+Tjq+HYd3Q==
+X-IronPort-AV: E=Sophos;i="5.79,393,1602572400"; 
+   d="scan'208";a="577880723"
+Received: from jambrizm-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.15])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 08:46:26 -0800
+Date:   Mon, 1 Feb 2021 08:46:24 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     David Rientjes <rientjes@google.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 02/14] cxl/mem: Map memory device registers
+Message-ID: <20210201164624.bhfufqfalogfazzi@intel.com>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-3-ben.widawsky@intel.com>
+ <792edaa-a11b-41c6-c2a1-2c72a3e4e815@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <792edaa-a11b-41c6-c2a1-2c72a3e4e815@google.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With the new 2 step scanning process, which defers instantiating some
-ACPI-devices based on their _DEP to the second step, the following may
-happen:
+On 21-01-30 15:51:42, David Rientjes wrote:
+> On Fri, 29 Jan 2021, Ben Widawsky wrote:
+> 
+> > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> > new file mode 100644
+> > index 000000000000..d81d0ba4617c
+> > --- /dev/null
+> > +++ b/drivers/cxl/cxl.h
+> > @@ -0,0 +1,17 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +/* Copyright(c) 2020 Intel Corporation. */
+> > +
+> > +#ifndef __CXL_H__
+> > +#define __CXL_H__
+> > +
+> > +/**
+> > + * struct cxl_mem - A CXL memory device
+> > + * @pdev: The PCI device associated with this CXL device.
+> > + * @regs: IO mappings to the device's MMIO
+> > + */
+> > +struct cxl_mem {
+> > +	struct pci_dev *pdev;
+> > +	void __iomem *regs;
+> > +};
+> > +
+> > +#endif
+> 
+> Stupid question: can there be more than one CXL.mem capable logical 
+> device?  I only ask to determine if an ordinal is needed to enumerate 
+> multiple LDs.
 
-1. During the first acpi_walk_namespace(acpi_bus_check_add) call
-   acpi_scan_check_dep() gets called on the Battery ACPI dev handle and
-   adds one or more deps for this handle to the acpi_dep_list
+Not a stupid question at all. I admit, I haven't spent much time thinking about
+MLDs. I don't have a solid answer to your question. As I understand it, the
+devices in the virtual hierarchy will appear as individual CXL type 3 device
+components (2.4 in the spec) and transparent to software. A few times I've
+attempted to think about MLDs, get confused, and go do something else. The only
+MLD specificity I know of is the MLD DVSEC (8.1.10), which seems not incredibly
+interesting to me at present (basically, only supporting hot reset).
 
-2. During the first acpi_bus_attach() call one or more of the suppliers of
-   these deps get their driver attached and
-   acpi_walk_dep_device_list(supplier_handle) gets called.
+> 
+> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > index f4ee9a507ac9..a869c8dc24cc 100644
+> > --- a/drivers/cxl/mem.c
+> > +++ b/drivers/cxl/mem.c
+> > @@ -4,6 +4,58 @@
+> >  #include <linux/pci.h>
+> >  #include <linux/io.h>
+> >  #include "pci.h"
+> > +#include "cxl.h"
+> > +
+> > +/**
+> > + * cxl_mem_create() - Create a new &struct cxl_mem.
+> > + * @pdev: The pci device associated with the new &struct cxl_mem.
+> > + * @reg_lo: Lower 32b of the register locator
+> > + * @reg_hi: Upper 32b of the register locator.
+> > + *
+> > + * Return: The new &struct cxl_mem on success, NULL on failure.
+> > + *
+> > + * Map the BAR for a CXL memory device. This BAR has the memory device's
+> > + * registers for the device as specified in CXL specification.
+> > + */
+> > +static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+> > +				      u32 reg_hi)
+> > +{
+> > +	struct device *dev = &pdev->dev;
+> > +	struct cxl_mem *cxlm;
+> > +	void __iomem *regs;
+> > +	u64 offset;
+> > +	u8 bar;
+> > +	int rc;
+> > +
+> > +	offset = ((u64)reg_hi << 32) | (reg_lo & CXL_REGLOC_ADDR_MASK);
+> > +	bar = (reg_lo >> CXL_REGLOC_BIR_SHIFT) & CXL_REGLOC_BIR_MASK;
+> > +
+> > +	/* Basic sanity check that BAR is big enough */
+> > +	if (pci_resource_len(pdev, bar) < offset) {
+> > +		dev_err(dev, "BAR%d: %pr: too small (offset: %#llx)\n", bar,
+> > +			&pdev->resource[bar], (unsigned long long)offset);
+> > +		return NULL;
+> > +	}
+> > +
+> > +	rc = pcim_iomap_regions(pdev, BIT(bar), pci_name(pdev));
+> > +	if (rc != 0) {
+> > +		dev_err(dev, "failed to map registers\n");
+> > +		return NULL;
+> > +	}
+> > +
+> > +	cxlm = devm_kzalloc(&pdev->dev, sizeof(*cxlm), GFP_KERNEL);
+> > +	if (!cxlm) {
+> > +		dev_err(dev, "No memory available\n");
+> > +		return NULL;
+> > +	}
+> > +
+> > +	regs = pcim_iomap_table(pdev)[bar];
+> > +	cxlm->pdev = pdev;
+> > +	cxlm->regs = regs + offset;
+> > +
+> > +	dev_dbg(dev, "Mapped CXL Memory Device resource\n");
+> > +	return cxlm;
+> > +}
+> >  
+> >  static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> >  {
+> > @@ -32,15 +84,42 @@ static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> >  static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> >  {
+> >  	struct device *dev = &pdev->dev;
+> > -	int regloc;
+> > +	struct cxl_mem *cxlm;
+> > +	int rc, regloc, i;
+> > +
+> > +	rc = pcim_enable_device(pdev);
+> > +	if (rc)
+> > +		return rc;
+> >  
+> >  	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
+> >  	if (!regloc) {
+> >  		dev_err(dev, "register location dvsec not found\n");
+> >  		return -ENXIO;
+> >  	}
+> > +	regloc += 0xc; /* Skip DVSEC + reserved fields */
+> 
+> Assuming the DVSEC revision number is always 0x0 or there's no value in 
+> storing this in struct cxl_mem for the future.
 
-   At this point acpi_bus_get_device(dep->consumer) get called,
-   but since the battery has DEPs it has not been instantiated during the
-   first acpi_walk_namespace(acpi_bus_check_add), so the
-   acpi_bus_get_device(dep->consumer) call fails.
+So this logic actually came from Dan originally, so don't take this necessarily
+as the authoritative answer.
 
-   Before this commit, acpi_walk_dep_device_list() would now continue
-   *without* removing the acpi_dep_data entry for this supplier,consumer
-   pair from the acpi_dep_list.
+At some point revision id will need to be considered. However, the consortium
+seems to be going to great lengths (kudos) to make all modifications backward
+compatible. As such, we can consider this the driver for rev0 (the only such rev
+in existence today), and when a new rev comes along, figure out how to best
+handle it. However, the expectation is that this code will still work for revN.
 
-3. During the second acpi_walk_namespace(acpi_bus_check_add) call
-   an acpi_device gets instantiated for the battery and
-   acpi_scan_dep_init() gets called to initialize its dep_unmet val.
+> 
+> Acked-by: David Rientjes <rientjes@google.com>
 
-   Before this commit, the dep_unmet count would include DEPs for
-   suppliers for which acpi_walk_dep_device_list(supplier_handle)
-   has already been called, so it will never become 0 and the
-   ACPI battery driver will never get attached / bind.
-
-Fix the ACPI battery driver never binding in this scenario by making
-acpi_walk_dep_device_list() always remove matching acpi_dep_data
-entries independent of the acpi_bus_get_device(dep->consumer) call
-succeeding or not.
-
-Fixes: 71da201f38df ("ACPI: scan: Defer enumeration of devices with _DEP lists")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/scan.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 5d7b2fcecf06..4ce54115e981 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2123,12 +2123,12 @@ void acpi_walk_dep_device_list(acpi_handle handle)
- 	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
- 		if (dep->supplier == handle) {
- 			acpi_bus_get_device(dep->consumer, &adev);
--			if (!adev)
--				continue;
- 
--			adev->dep_unmet--;
--			if (!adev->dep_unmet)
--				acpi_bus_attach(adev, true);
-+			if (adev) {
-+				adev->dep_unmet--;
-+				if (!adev->dep_unmet)
-+					acpi_bus_attach(adev, true);
-+			}
- 
- 			list_del(&dep->node);
- 			kfree(dep);
--- 
-2.29.2
-
+Thanks!
