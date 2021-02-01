@@ -2,399 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B47530AF23
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E48CB30AF08
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231665AbhBASZ0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:25:26 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61290 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232708AbhBASVd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:21:33 -0500
-Received: from 89-64-80-124.dynamic.chello.pl (89.64.80.124) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id b9ae310afc5cb18a; Mon, 1 Feb 2021 19:20:23 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Joe Perches <joe@perches.com>
-Subject: [PATCH v1 4/5] ACPI: video: Clean up printing messages
-Date:   Mon, 01 Feb 2021 19:18:14 +0100
-Message-ID: <4524334.CTQdp8m5YU@kreacher>
-In-Reply-To: <2367702.B5bJTmGzJm@kreacher>
-References: <2367702.B5bJTmGzJm@kreacher>
+        id S232779AbhBASV0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 13:21:26 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:60972 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232511AbhBASVE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:21:04 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111IESci139830;
+        Mon, 1 Feb 2021 18:18:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=laeAtUecp3TIKpKhO/1Rnd7cQcHwnEo4AXdo+IXkIXs=;
+ b=nW/kPVt8FqBDyn4pUJ+TXuIXtW0atdkwUXpp0Mwh1oh0pujoRdpZzIpAIbcDQZJLzPVP
+ W744lzFHxtuSqxsLW+kQgTi8hIh45oS3PeGzN+EOYiAFfC5rUNJZyfOhI4M21srkP5on
+ vRPWDFs1fO3O41w8jKXpEXccUHqmBMMVmjgvrui3Q941miERKBYuui+rNnDKfgVZx8TY
+ 2u9XNlT67tfepainB/1/8SBsvdTGeuUZiq83wEceNRMMNOmAkf5ck0z5SsaBvRhBwzap
+ y1Do+8SsXCshgQhMz4jmZQyfZabqwGNCc+wBACxxpsicZePFio2a6e6zJUhmkbGCBoVh Wg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 36cxvqxseu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 18:18:53 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111IFRKV057559;
+        Mon, 1 Feb 2021 18:18:52 GMT
+Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2055.outbound.protection.outlook.com [104.47.46.55])
+        by aserp3030.oracle.com with ESMTP id 36dh1ms450-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 18:18:52 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Je9q5Qvvt9rDw0CQ961EcImWruWeVFfx2t3ZPL9Q/D1TwxZr5jqAfUaEpavLaRKD1dNNG6rKmO43cX8a3fFRhPeaZzfNOLVgF7xNBAV9yGWFaWWF54pamxCaq4O2qNpT8aFxt+AEDo5Ta8vud6ZvatGYdxeaaK925fG1sqRZ32WPBK0KqO7t8weWFV86k2a/mTPigtEQ2a9bMtGcmDTiFmO6GXwIqj6gCkjK1qv8jGMf02/YRXrjLpF3XiTtzXJO4VifnSHRGyTHnnZb3IpjDFs+q/tIAD1yf/SqpbCW7Klu6J79c3PpIHY3E1G0YctZLFcPewMtqVgd6PR8zJxaVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=laeAtUecp3TIKpKhO/1Rnd7cQcHwnEo4AXdo+IXkIXs=;
+ b=J0qlFkvdOiPi+kDC5EtCzhgoweffblxsbULlH8DsKBFZYYCcPEF5F9bS29prQTr9TzbJ99YP8RrxZIS436f2bfev7VejeWMyCHqy60pj21AP6udonDT+hsNClcUbr95JFcTu/khdJG2vM10zLalv8XL8miboPKy25rwoXPZ6xcQe/5FAtQtp4oZnhL7uaZxsi2NIj0e1czdLr1BIaN5xQXB1DtmdRlFRBgzpEawiKMYqN0YYu7KMxsZ9YMGR5IJSQ3XFtrzFgdnRmtrfIwt5j5BI48Op6OTHss8vYOoxeUgUz2CFzg9I8gDbVPiaJKloLSCk8ZyaC3wjxKlamOduxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=laeAtUecp3TIKpKhO/1Rnd7cQcHwnEo4AXdo+IXkIXs=;
+ b=j5gZNJk2MNh0rsoRxfeRn1DJR0/xRbz9/MshbBzQAJw1T/1t4UswBFnBtZb0r/wzOv1Mt6JVu2xRMqQQ1Dd9r+2qLuTvARcgZzjaqnx46czAkpf1caohxfZCJY1yW0P+Z2mkgGYCaP7tObSS+BTNyIgL3R2zM2qFUNAvjxzRbPc=
+Authentication-Results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.25; Mon, 1 Feb
+ 2021 18:18:50 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456%4]) with mapi id 15.20.3784.019; Mon, 1 Feb 2021
+ 18:18:50 +0000
+Date:   Mon, 1 Feb 2021 13:18:45 -0500
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 08/14] taint: add taint for direct hardware access
+Message-ID: <20210201181845.GJ197521@fedora>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-9-ben.widawsky@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210130002438.1872527-9-ben.widawsky@intel.com>
+X-Originating-IP: [209.6.208.110]
+X-ClientProxiedBy: MN2PR14CA0004.namprd14.prod.outlook.com
+ (2603:10b6:208:23e::9) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from fedora (209.6.208.110) by MN2PR14CA0004.namprd14.prod.outlook.com (2603:10b6:208:23e::9) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.16 via Frontend Transport; Mon, 1 Feb 2021 18:18:47 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 98a708ff-7bd1-4674-a84c-08d8c6ddd2d4
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:
+X-Microsoft-Antispam-PRVS: <BYAPR10MB26639C450004DE90F39F068C89B69@BYAPR10MB2663.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZLuBjSotqmSvUCvhvCj4thzhgV8C2co1iX1KL3DHY/nXpqmiMURV+BrP2zghIZp1Y0fzB6Hr+3C4fPOIQYWfDon1I+u20UUXdvo557dvWYvL/eh+Q2Qmfl5/sWpkzKpv7wVZYYJp9YM5V9ZzmSQezZ2PKpmDNBDEbew7lrb42vnPKdGEFf9JKIGq0Dx3Fb71Zpos1iHYmrYxAKx3CfzAZ+XwNLlPM9ftZg+mb/Cz4fWvTmncWJvaFgGOS14q+ikYPHKhYuBFOScWwZEmAhpLCmsmpiJP7MFMlJXIMI4RpxmXfiK31+bgIYOmYjd+ln24UE9ZWMMNaisbxzrIdsDupxW3sjwOn+4G60TJ8W0sJQoTu41GLsNISGcgKmnQM6saIpNHftuPkhLJV/I4Vmh6rZ18uRyw3XCSvR/W4FNgVKy5yxeduzNN7eg71oBUzgeoD9VKlW3G4WUwea6LUE4uCzYpQ1J2KGlSH5Vetrsu9IVkJjfsWqJj/s4aA328PdJEp4okGVqCTaJpHncleQjt4g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2999.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(396003)(346002)(136003)(366004)(39860400002)(478600001)(26005)(83380400001)(6496006)(4326008)(9576002)(316002)(66946007)(5660300002)(2906002)(66556008)(54906003)(66476007)(956004)(33656002)(186003)(9686003)(52116002)(16526019)(55016002)(1076003)(86362001)(7416002)(33716001)(8936002)(6916009)(8676002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?SWHmi8qChy6WQUszWVRdSEpJrj0NAn1ft+20AnirfM4HIKevbLZCtEPQHYQA?=
+ =?us-ascii?Q?U0hwhqOUNZAgpWngO+qV2aRNphtMsR3lmZv4rM2elgc9Y4M1qwuBxTs4VWr1?=
+ =?us-ascii?Q?gYXs1EvbCfAfxpFOeToer97jRjBQHxqfaZ+4JH/+A2h67/DaCxwvUSpluJS8?=
+ =?us-ascii?Q?oATmTUf02Ns+xuIWKkKdcH0RDoTFzdzjt5pRAYqmkSLhXZfOWNLjFZa2UmFi?=
+ =?us-ascii?Q?1pY+PJIxkmJVm7T7qQkGotr6UUJVBHegwb3my2GxC7NUUI7AYdebPXffaIPb?=
+ =?us-ascii?Q?8i0Ae7EUC/bC673pyjrGUDtkuToFL5hUU4BoCsGYgFLE/KPvYIIJeB0gXfxX?=
+ =?us-ascii?Q?/VJzPdai/WGcz94PlanSYX3ApJRh5UvijpqoBI6GPRroACiTwe2OFoNqGa8i?=
+ =?us-ascii?Q?aYQoQnKt9EEnolapo5LChwmADAgnutvi27friqDOFZeOHc9qBBUbP7FlQQz6?=
+ =?us-ascii?Q?R+sj8qqZEmPRDS/jMR3Yso8b3xMBYzVD1dRB2evKALBwJirEwhCp/p74DCU0?=
+ =?us-ascii?Q?gi7Pl8ZZTuTC93u4dujwMYiHOLha6Z8Papm8l7Xi3PmBR2OCp7CFSVRWBo4b?=
+ =?us-ascii?Q?2OFS2Ch3pUF5ZLmlPr7x/JtFsySXvUGyGwfVsKdnawpAx8wJKDuyc8fJ/Jph?=
+ =?us-ascii?Q?55nMqx4UcwQ3FaiWnT9EzmKFaVNXcfVtvj0YoqxOpLJblLgzTqqpyLIlrZ0d?=
+ =?us-ascii?Q?QYwRTJH+PX+EJnOFqaQ6Eq5RU+QB84xnSoNuvtt5rz7IzlYpxXQ3g9ZjmpsH?=
+ =?us-ascii?Q?hN2KzlANDYieLOkTmR63IZJ3SkQQ1U17FVyujUVXMahCbh2+sOiPieqhVAwD?=
+ =?us-ascii?Q?cmNYkHZ5LgrwivdzI+ay2l3gtdN+WdLKfBTi29UAy0X0lOb68E1PtM9CG1CN?=
+ =?us-ascii?Q?m3MvlJVCc3X/QB0Z+2KKiFRvgaB8ZSSA6ez41dKY7vhkV3id7qPlvQ+3M7jb?=
+ =?us-ascii?Q?VhZ354CPO6ZYpl71Dr7Bl437VVKSIT0QENKE4PLSUUoU14Af3l+U/surm7hU?=
+ =?us-ascii?Q?5jGiDOLEbcady5zD+7qvq58Ru13CaejsEziXXgN/CDwzLteeVPGuAUJEIvDn?=
+ =?us-ascii?Q?RNPbXr/w?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98a708ff-7bd1-4674-a84c-08d8c6ddd2d4
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2021 18:18:50.1698
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RRIcKceMbTWksFfPgSQS1+uBSv8t/s8tgqoMSE35hIZgoNmicn9A7eFkDeunLAz6Fwpf/uJwDXKRIy+CDQmBNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB2663
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=862 bulkscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010095
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010095
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Jan 29, 2021 at 04:24:32PM -0800, Ben Widawsky wrote:
+> For drivers that moderate access to the underlying hardware it is
+> sometimes desirable to allow userspace to bypass restrictions. Once
+> userspace has done this, the driver can no longer guarantee the sanctity
+> of either the OS or the hardware. When in this state, it is helpful for
+> kernel developers to be made aware (via this taint flag) of this fact
+> for subsequent bug reports.
+> 
+> Example usage:
+> - Hardware xyzzy accepts 2 commands, waldo and fred.
+> - The xyzzy driver provides an interface for using waldo, but not fred.
+> - quux is convinced they really need the fred command.
+> - xyzzy driver allows quux to frob hardware to initiate fred.
 
-Replace the ACPI_DEBUG_PRINT() instances in acpi_video.c with
-acpi_handle_debug() calls and the ACPI_EXCEPTION()/ACPI_ERROR()/
-ACPI_WARNING() instances in there with acpi_handle_info() calls.
-
-Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
-used any more from acpi_video.c, drop the no longer needed
-ACPI_VIDEO_COMPONENT definition from the headers and update the
-documentation accordingly.
-
-While at it, add a pr_fmt() definition to acpi_video.c, replace the
-direct printk() invocations in there with acpi_handle_info() or
-pr_info() (and reduce the excessive log level where applicable) and
-drop the PREFIX sybmbol definition which is not necessary any more
-from acpi_video.c.
-
-Also make one unrelated janitorial change to fix up white space and
-use ACPI_FAILURE() instead of negating ACPI_SUCCESS().
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- Documentation/firmware-guide/acpi/debug.rst |    1 
- drivers/acpi/acpi_video.c                   |   95 ++++++++++++++--------------
- drivers/acpi/sysfs.c                        |    1 
- include/acpi/acpi_drivers.h                 |    1 
- 4 files changed, 49 insertions(+), 49 deletions(-)
-
-Index: linux-pm/drivers/acpi/acpi_video.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpi_video.c
-+++ linux-pm/drivers/acpi/acpi_video.c
-@@ -7,6 +7,8 @@
-  *  Copyright (C) 2006 Thomas Tuttle <linux-kernel@ttuttle.net>
-  */
- 
-+#define pr_fmt(fmt) "ACPI: video: " fmt
-+
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -26,16 +28,11 @@
- #include <acpi/video.h>
- #include <linux/uaccess.h>
- 
--#define PREFIX "ACPI: "
--
- #define ACPI_VIDEO_BUS_NAME		"Video Bus"
- #define ACPI_VIDEO_DEVICE_NAME		"Video Device"
- 
- #define MAX_NAME_LEN	20
- 
--#define _COMPONENT		ACPI_VIDEO_COMPONENT
--ACPI_MODULE_NAME("video");
--
- MODULE_AUTHOR("Bruno Ducrot");
- MODULE_DESCRIPTION("ACPI Video Driver");
- MODULE_LICENSE("GPL");
-@@ -330,7 +327,7 @@ acpi_video_device_lcd_query_levels(acpi_
- 		return status;
- 	obj = (union acpi_object *)buffer.pointer;
- 	if (!obj || (obj->type != ACPI_TYPE_PACKAGE)) {
--		printk(KERN_ERR PREFIX "Invalid _BCL data\n");
-+		acpi_handle_info(handle, "Invalid _BCL data\n");
- 		status = -EFAULT;
- 		goto err;
- 	}
-@@ -354,7 +351,7 @@ acpi_video_device_lcd_set_level(struct a
- 	status = acpi_execute_simple_method(device->dev->handle,
- 					    "_BCM", level);
- 	if (ACPI_FAILURE(status)) {
--		ACPI_ERROR((AE_INFO, "Evaluating _BCM failed"));
-+		acpi_handle_info(device->dev->handle, "_BCM evaluation failed\n");
- 		return -EIO;
- 	}
- 
-@@ -368,7 +365,7 @@ acpi_video_device_lcd_set_level(struct a
- 			return 0;
- 		}
- 
--	ACPI_ERROR((AE_INFO, "Current brightness invalid"));
-+	acpi_handle_info(device->dev->handle, "Current brightness invalid\n");
- 	return -EINVAL;
- }
- 
-@@ -622,9 +619,8 @@ acpi_video_device_lcd_get_level_current(
- 			 * BQC returned an invalid level.
- 			 * Stop using it.
- 			 */
--			ACPI_WARNING((AE_INFO,
--				      "%s returned an invalid level",
--				      buf));
-+			acpi_handle_info(device->dev->handle,
-+					 "%s returned an invalid level", buf);
- 			device->cap._BQC = device->cap._BCQ = 0;
- 		} else {
- 			/*
-@@ -635,7 +631,8 @@ acpi_video_device_lcd_get_level_current(
- 			 * ACPI video backlight still works w/ buggy _BQC.
- 			 * http://bugzilla.kernel.org/show_bug.cgi?id=12233
- 			 */
--			ACPI_WARNING((AE_INFO, "Evaluating %s failed", buf));
-+			acpi_handle_info(device->dev->handle,
-+					 "%s evaluation failed", buf);
- 			device->cap._BQC = device->cap._BCQ = 0;
- 		}
- 	}
-@@ -675,7 +672,7 @@ acpi_video_device_EDID(struct acpi_video
- 	if (obj && obj->type == ACPI_TYPE_BUFFER)
- 		*edid = obj;
- 	else {
--		printk(KERN_ERR PREFIX "Invalid _DDC data\n");
-+		acpi_handle_info(device->dev->handle, "Invalid _DDC data\n");
- 		status = -EFAULT;
- 		kfree(obj);
- 	}
-@@ -827,10 +824,9 @@ int acpi_video_get_levels(struct acpi_de
- 	int result = 0;
- 	u32 value;
- 
--	if (!ACPI_SUCCESS(acpi_video_device_lcd_query_levels(device->handle,
--								&obj))) {
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Could not query available "
--						"LCD brightness level\n"));
-+	if (ACPI_FAILURE(acpi_video_device_lcd_query_levels(device->handle, &obj))) {
-+		acpi_handle_debug(device->handle,
-+				  "Could not query available LCD brightness level\n");
- 		result = -ENODEV;
- 		goto out;
- 	}
-@@ -842,7 +838,6 @@ int acpi_video_get_levels(struct acpi_de
- 
- 	br = kzalloc(sizeof(*br), GFP_KERNEL);
- 	if (!br) {
--		printk(KERN_ERR "can't allocate memory\n");
- 		result = -ENOMEM;
- 		goto out;
- 	}
-@@ -863,7 +858,7 @@ int acpi_video_get_levels(struct acpi_de
- 	for (i = 0; i < obj->package.count; i++) {
- 		o = (union acpi_object *)&obj->package.elements[i];
- 		if (o->type != ACPI_TYPE_INTEGER) {
--			printk(KERN_ERR PREFIX "Invalid data\n");
-+			acpi_handle_info(device->handle, "Invalid data\n");
- 			continue;
- 		}
- 		value = (u32) o->integer.value;
-@@ -900,7 +895,8 @@ int acpi_video_get_levels(struct acpi_de
- 			br->levels[i] = br->levels[i - level_ac_battery];
- 		count += level_ac_battery;
- 	} else if (level_ac_battery > ACPI_VIDEO_FIRST_LEVEL)
--		ACPI_ERROR((AE_INFO, "Too many duplicates in _BCL package"));
-+		acpi_handle_info(device->handle,
-+				 "Too many duplicates in _BCL package");
- 
- 	/* Check if the _BCL package is in a reversed order */
- 	if (max_level == br->levels[ACPI_VIDEO_FIRST_LEVEL]) {
-@@ -910,8 +906,8 @@ int acpi_video_get_levels(struct acpi_de
- 		     sizeof(br->levels[ACPI_VIDEO_FIRST_LEVEL]),
- 		     acpi_video_cmp_level, NULL);
- 	} else if (max_level != br->levels[count - 1])
--		ACPI_ERROR((AE_INFO,
--			    "Found unordered _BCL package"));
-+		acpi_handle_info(device->handle,
-+				 "Found unordered _BCL package");
- 
- 	br->count = count;
- 	*dev_br = br;
-@@ -989,9 +985,9 @@ set_level:
- 	if (result)
- 		goto out_free_levels;
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--			  "found %d brightness levels\n",
--			  br->count - ACPI_VIDEO_FIRST_LEVEL));
-+	acpi_handle_debug(device->dev->handle, "found %d brightness levels\n",
-+			  br->count - ACPI_VIDEO_FIRST_LEVEL);
-+
- 	return 0;
- 
- out_free_levels:
-@@ -1023,7 +1019,8 @@ static void acpi_video_device_find_cap(s
- 	if (acpi_has_method(device->dev->handle, "_BQC")) {
- 		device->cap._BQC = 1;
- 	} else if (acpi_has_method(device->dev->handle, "_BCQ")) {
--		printk(KERN_WARNING FW_BUG "_BCQ is used instead of _BQC\n");
-+		acpi_handle_info(device->dev->handle,
-+				 "_BCQ is used instead of _BQC\n");
- 		device->cap._BCQ = 1;
- 	}
- 
-@@ -1083,8 +1080,7 @@ static int acpi_video_bus_check(struct a
- 	/* Does this device support video switching? */
- 	if (video->cap._DOS || video->cap._DOD) {
- 		if (!video->cap._DOS) {
--			printk(KERN_WARNING FW_BUG
--				"ACPI(%s) defines _DOD but not _DOS\n",
-+			pr_info(FW_BUG "ACPI(%s) defines _DOD but not _DOS\n",
- 				acpi_device_bid(video->device));
- 		}
- 		video->flags.multihead = 1;
-@@ -1272,7 +1268,8 @@ acpi_video_device_bind(struct acpi_video
- 		ids = &video->attached_array[i];
- 		if (device->device_id == (ids->value.int_val & 0xffff)) {
- 			ids->bind_info = device;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO, "device_bind %d\n", i));
-+			acpi_handle_debug(video->device->handle, "%s: %d\n",
-+					  __func__, i);
- 		}
- 	}
- }
-@@ -1325,19 +1322,21 @@ static int acpi_video_device_enumerate(s
- 
- 	status = acpi_evaluate_object(video->device->handle, "_DOD", NULL, &buffer);
- 	if (!ACPI_SUCCESS(status)) {
--		ACPI_EXCEPTION((AE_INFO, status, "Evaluating _DOD"));
-+		acpi_handle_info(video->device->handle,
-+				 "_DOD evaluation failed: %s\n",
-+				 acpi_format_exception(status));
- 		return status;
- 	}
- 
- 	dod = buffer.pointer;
- 	if (!dod || (dod->type != ACPI_TYPE_PACKAGE)) {
--		ACPI_EXCEPTION((AE_INFO, status, "Invalid _DOD data"));
-+		acpi_handle_info(video->device->handle, "Invalid _DOD data\n");
- 		status = -EFAULT;
- 		goto out;
- 	}
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Found %d video heads in _DOD\n",
--			  dod->package.count));
-+	acpi_handle_debug(video->device->handle, "Found %d video heads in _DOD\n",
-+			  dod->package.count);
- 
- 	active_list = kcalloc(1 + dod->package.count,
- 			      sizeof(struct acpi_video_enumerated_device),
-@@ -1352,15 +1351,18 @@ static int acpi_video_device_enumerate(s
- 		obj = &dod->package.elements[i];
- 
- 		if (obj->type != ACPI_TYPE_INTEGER) {
--			printk(KERN_ERR PREFIX
--				"Invalid _DOD data in element %d\n", i);
-+			acpi_handle_info(video->device->handle,
-+					 "Invalid _DOD data in element %d\n", i);
- 			continue;
- 		}
- 
- 		active_list[count].value.int_val = obj->integer.value;
- 		active_list[count].bind_info = NULL;
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "dod element[%d] = %d\n", i,
--				  (int)obj->integer.value));
-+
-+		acpi_handle_debug(video->device->handle,
-+				  "_DOD element[%d] = %d\n", i,
-+				  (int)obj->integer.value);
-+
- 		count++;
- 	}
- 
-@@ -1451,7 +1453,8 @@ acpi_video_switch_brightness(struct work
- 
- out:
- 	if (result)
--		printk(KERN_ERR PREFIX "Failed to switch the brightness\n");
-+		acpi_handle_info(device->dev->handle,
-+				 "Failed to switch brightness\n");
- }
- 
- int acpi_video_get_edid(struct acpi_device *device, int type, int device_id,
-@@ -1601,8 +1604,8 @@ static void acpi_video_bus_notify(struct
- 		break;
- 
- 	default:
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Unsupported event [0x%x]\n", event));
-+		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-+				  event);
- 		break;
- 	}
- 
-@@ -1675,8 +1678,7 @@ static void acpi_video_device_notify(acp
- 		keycode = KEY_DISPLAY_OFF;
- 		break;
- 	default:
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Unsupported event [0x%x]\n", event));
-+		acpi_handle_debug(handle, "Unsupported event [0x%x]\n", event);
- 		break;
- 	}
- 
-@@ -1812,11 +1814,12 @@ static void acpi_video_dev_register_back
- 			&device->cooling_dev->device.kobj,
- 			"thermal_cooling");
- 	if (result)
--		printk(KERN_ERR PREFIX "Create sysfs link\n");
-+		pr_info("sysfs link creation failed\n");
-+
- 	result = sysfs_create_link(&device->cooling_dev->device.kobj,
- 			&device->dev->dev.kobj, "device");
- 	if (result)
--		printk(KERN_ERR PREFIX "Create sysfs link\n");
-+		pr_info("Reverse sysfs link creation failed\n");
- }
- 
- static void acpi_video_run_bcl_for_osi(struct acpi_video_bus *video)
-@@ -2030,7 +2033,7 @@ static int acpi_video_bus_add(struct acp
- 				acpi_video_bus_match, NULL,
- 				device, NULL);
- 	if (status == AE_ALREADY_EXISTS) {
--		printk(KERN_WARNING FW_BUG
-+		pr_info(FW_BUG
- 			"Duplicate ACPI video bus devices for the"
- 			" same VGA controller, please try module "
- 			"parameter \"video.allow_duplicates=1\""
-@@ -2073,7 +2076,7 @@ static int acpi_video_bus_add(struct acp
- 	if (error)
- 		goto err_put_video;
- 
--	printk(KERN_INFO PREFIX "%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
-+	pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
- 	       ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
- 	       video->flags.multihead ? "yes" : "no",
- 	       video->flags.rom ? "yes" : "no",
-Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
-+++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
-@@ -59,7 +59,6 @@ shows the supported mask values, current
-     ACPI_SYSTEM_COMPONENT           0x02000000
-     ACPI_THERMAL_COMPONENT          0x04000000
-     ACPI_MEMORY_DEVICE_COMPONENT    0x08000000
--    ACPI_VIDEO_COMPONENT            0x10000000
-     ACPI_PROCESSOR_COMPONENT        0x20000000
- 
- debug_level
-Index: linux-pm/drivers/acpi/sysfs.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sysfs.c
-+++ linux-pm/drivers/acpi/sysfs.c
-@@ -59,7 +59,6 @@ static const struct acpi_dlayer acpi_deb
- 	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_MEMORY_DEVICE_COMPONENT),
--	ACPI_DEBUG_INIT(ACPI_VIDEO_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_PROCESSOR_COMPONENT),
- };
- 
-Index: linux-pm/include/acpi/acpi_drivers.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_drivers.h
-+++ linux-pm/include/acpi/acpi_drivers.h
-@@ -22,7 +22,6 @@
- #define ACPI_SYSTEM_COMPONENT		0x02000000
- #define ACPI_THERMAL_COMPONENT		0x04000000
- #define ACPI_MEMORY_DEVICE_COMPONENT	0x08000000
--#define ACPI_VIDEO_COMPONENT		0x10000000
- #define ACPI_PROCESSOR_COMPONENT	0x20000000
- 
- /*
+Would it not be easier to _not_ frob the hardware for fred-operation?
+Aka not implement it or just disallow in the first place?
 
 
+>   - kernel gets tainted.
+> - turns out fred command is borked, and scribbles over memory.
+> - developers laugh while closing quux's subsequent bug report.
 
+Yeah good luck with that theory in-the-field. The customer won't
+care about this and will demand a solution for doing fred-operation.
+
+Just easier to not do fred-operation in the first place,no?
