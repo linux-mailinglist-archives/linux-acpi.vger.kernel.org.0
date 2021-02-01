@@ -2,129 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8560030A767
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 13:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA9330A812
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 13:55:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231251AbhBAMRa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 07:17:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56706 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhBAMRV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 07:17:21 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7F8C061573
-        for <linux-acpi@vger.kernel.org>; Mon,  1 Feb 2021 04:16:40 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id c12so16330523wrc.7
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Feb 2021 04:16:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=oJabRfuTZeECePsHkmJf5HW1b5PdAIVWqevNIinvl8Q=;
-        b=G8Jhiphtk8XwIw6iD4FdZHGkvygenNRGNM+WjY5BiAo7fHz4u1XswmFe9wAEZGGFju
-         Fx6tWZ3Z2WHcqwZiK6T1jBWsm1W9nsmM9f2tT5JjyJVHIRjAt0FQpjESy4fWYdItUiDW
-         CdjkW8WJ0HIGuy7T5lut9ww6biQr9AMxGKeZ61nc2f4xVCwlSfa3XqH2TgUGZm+s1J3t
-         2tW57SVmkjqQLKm9iRmtnyK/+ZiIqJWGUUXBpgKX3L/JGanrJLR6gA5LDlYRNqMIsxuY
-         aLlalXkufcc7YcdfawsjypWnnT9IUXePdjoj4jgNwuQraTA3ZX/WSCQcQy690cpbH6g8
-         V0Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=oJabRfuTZeECePsHkmJf5HW1b5PdAIVWqevNIinvl8Q=;
-        b=QvRu70h+S75HOAaC234C0uXug8QjThy+KKfVpwOxc/pF5GItaKBveH0/kKy42+CVmG
-         F3NvmO5IwZNeIJivvHy8sCoHh97eFQjxeFitnhwfDhcLzUbtdgF3bs4ITroFJAQdNbnN
-         GT3NAk4se9mBP0IVjqmdoGmIQN4rxZbBS4zIgsQ16rv4s7JWnEL75bxPU+TACRQ9gguS
-         0WjM38OX4QhPuNoSx6WYXGw1Uzvho5dEh65HMzUz6sp3mEz6/LIxd+xf2YghoujXz88w
-         qeBxVKdwEvx0T7tjcBKRmkJh08CVYRXofQ1ArLe1svEaXu2ueGxqqjS4DOKYKsFQNnDz
-         iylg==
-X-Gm-Message-State: AOAM5306g5UoU0FZUjMOJtFnHnacdI/4sMjArrBgzfE4TqmGlGb/90XG
-        Qw/dN8ZdFuxBfASNoIJH6A9EZeZgIY5g+Bp4C5Y=
-X-Google-Smtp-Source: ABdhPJxK8qJ5CahqZe/ffBUqX/rfHLlY78dtxPHbgW380PZEKwltK8wpOq4XF1gJghr9iAOrH4Qk9XYedvW6p9HHEQQ=
-X-Received: by 2002:a5d:4c84:: with SMTP id z4mr17338087wrs.289.1612181799212;
- Mon, 01 Feb 2021 04:16:39 -0800 (PST)
+        id S231887AbhBAMyM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 07:54:12 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:12376 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231673AbhBAMyG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 07:54:06 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DTnry0dngz7fHl;
+        Mon,  1 Feb 2021 20:52:02 +0800 (CST)
+Received: from [127.0.0.1] (10.40.188.87) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.498.0; Mon, 1 Feb 2021
+ 20:53:12 +0800
+Subject: Re: [PATCH v12 10/10] iommu/arm-smmu-v3: Add stall support for
+ platform devices
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20210127154322.3959196-1-jean-philippe@linaro.org>
+ <20210127154322.3959196-11-jean-philippe@linaro.org>
+ <8adc79cc-7afb-dfe8-4f7b-07fa6dc5b905@hisilicon.com>
+ <YBfij71tyYvh8LhB@myrica>
+CC:     <joro@8bytes.org>, <will@kernel.org>, <vivek.gautam@arm.com>,
+        <guohanjun@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <zhangfei.gao@linaro.org>, <lenb@kernel.org>,
+        <devicetree@vger.kernel.org>, <kevin.tian@intel.com>,
+        <robh+dt@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <rjw@rjwysocki.net>, <iommu@lists.linux-foundation.org>,
+        <sudeep.holla@arm.com>, <robin.murphy@arm.com>,
+        <linux-accelerators@lists.ozlabs.org>
+From:   Zhou Wang <wangzhou1@hisilicon.com>
+Message-ID: <ddeae968-62c8-63ce-c531-035f6f9a9968@hisilicon.com>
+Date:   Mon, 1 Feb 2021 20:53:12 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
- <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
- <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
- <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
- <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com> <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
- <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com>
- <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
- <CA+GA0_vYdxFj_SPWgdkufo04VaOuWqcNTSck6gvnMfN07ZdO_Q@mail.gmail.com>
- <CA+GA0_vKyJZSQZ9bA6_BSDeGfRZ_nz86gj2aVHaOoy1h57CMzA@mail.gmail.com>
- <CA+GA0_u8NA90GmMSDO-Ejg-C2YEXCn8rnVZpk-_+eXcDm7XRpg@mail.gmail.com> <CAJZ5v0hqHihRdad16Djo+R1ezjFHt2YffgDg59TYYKJSSjmA4Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hqHihRdad16Djo+R1ezjFHt2YffgDg59TYYKJSSjmA4Q@mail.gmail.com>
-From:   =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-Date:   Mon, 1 Feb 2021 13:16:16 +0100
-Message-ID: <CA+GA0_s7atD4O_DP0NXwVUVvdia2NWwSEfW2Mcw-UoJ9effPvg@mail.gmail.com>
-Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YBfij71tyYvh8LhB@myrica>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.40.188.87]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 1 lut 2021 o 12:43 Rafael J. Wysocki <rafael@kernel.org> napisa=C5=82=
-(a):
->
-> On Fri, Jan 29, 2021 at 9:03 PM Marcin =C5=9Alusarz <marcin.slusarz@gmail=
-.com> wrote:
-> >
-> > pt., 29 sty 2021 o 19:59 Marcin =C5=9Alusarz <marcin.slusarz@gmail.com>=
- napisa=C5=82(a):
-> > >
-> > > czw., 28 sty 2021 o 15:32 Marcin =C5=9Alusarz <marcin.slusarz@gmail.c=
-om> napisa=C5=82(a):
-> > > >
-> > > > czw., 28 sty 2021 o 13:39 Rafael J. Wysocki <rafael@kernel.org> nap=
-isa=C5=82(a):
-> > > > > The only explanation for that I can think about (and which does n=
-ot
-> > > > > involve supernatural intervention so to speak) is a stack corrupt=
-ion
-> > > > > occurring between these two calls in sdw_intel_acpi_cb().  IOW,
-> > > > > something scribbles on the handle in the meantime, but ATM I have=
- no
-> > > > > idea what that can be.
-> > > >
-> > > > I tried KASAN but it didn't find anything and kernel actually boote=
-d
-> > > > successfully.
-> > >
-> > > I investigated this and it looks like a compiler bug (or something na=
-stier),
-> > > but I can't find where exactly registers get corrupted because if I a=
-dd printks
-> > > the corruption seems on the printk side, but if I don't add them it s=
-eems
-> > > the value gets corrupted earlier.
-> > (...)
-> > > I'm using gcc 10.2.1 from Debian testing.
-> >
-> > Someone on IRC, after hearing only that "gcc miscompiles the kernel",
-> > suggested disabling CONFIG_STACKPROTECTOR_STRONG.
-> > It helped indeed and it matches my observations, so it's quite likely i=
-t
-> > is the culprit.
-> >
-> > What do we do now?
->
-> Figure out why the stack protection kicks in, I suppose.
->
-> The target object is not on the stack, so if the pointer to it is
-> valid (we need to verify somehow that it is indeed), dereferencing it
-> shouldn't cause the stack protection to trigger.
+On 2021/2/1 19:14, Jean-Philippe Brucker wrote:
+> Hi Zhou,
+> 
+> On Mon, Feb 01, 2021 at 09:18:42AM +0800, Zhou Wang wrote:
+>>> @@ -1033,8 +1076,7 @@ int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain, int ssid,
+>>>  			FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid) |
+>>>  			CTXDESC_CD_0_V;
+>>>  
+>>> -		/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
+>>> -		if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
+>>> +		if (smmu_domain->stall_enabled)
+>>
+>> Could we add ssid checking here? like: if (smmu_domain->stall_enabled && ssid).
+>> The reason is if not CD.S will also be set when ssid is 0, which is not needed.
+> 
+> Some drivers may want to get stall events on SSID 0:
+> https://lore.kernel.org/kvm/20210125090402.1429-1-lushenming@huawei.com/#t
 
-Well, the problem is not that stack protector finds something, but
-the feature itself corrupts some registers.
+Hi Jean,
+
+I did not notice this before. Yes, if we need to support IOPF in vfio, we
+need enable stall events on SSID 0.
+
+> 
+> Are you seeing an issue with stall events on ssid 0?  Normally there
+> shouldn't be any fault on this context, but if they happen and no handler
+
+It happened that there is bug in the test code of HiSilicon HPRE crypto driver.
+We used a wrong iova which triggered a SMMU event with stall bit :)
+
+> is registered, the SMMU driver will just abort them and report them like a
+> non-stall event.
+
+It will report event 0x10 with stall bit.
+
+Best,
+Zhou
+
+> 
+> Thanks,
+> Jean
+> 
+> .
+> 
+
