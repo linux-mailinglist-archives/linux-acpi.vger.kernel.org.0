@@ -2,225 +2,354 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 494E730AF0A
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B1130AF24
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:25:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231318AbhBASVt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:21:49 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2470 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232323AbhBASUu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:20:50 -0500
-Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DTx3T1Lrqz67gVh;
-        Tue,  2 Feb 2021 02:16:37 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Mon, 1 Feb 2021 19:20:04 +0100
-Received: from localhost (10.47.76.76) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Mon, 1 Feb 2021
- 18:20:03 +0000
-Date:   Mon, 1 Feb 2021 18:19:18 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-CC:     David Rientjes <rientjes@google.com>, <linux-cxl@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-nvdimm@lists.01.org>, <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        "Christoph Hellwig" <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Ira Weiny" <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        "Rafael Wysocki" <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        <daniel.lll@alibaba-inc.com>,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH 02/14] cxl/mem: Map memory device registers
-Message-ID: <20210201181918.00000b13@Huawei.com>
-In-Reply-To: <20210201164624.bhfufqfalogfazzi@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
-        <20210130002438.1872527-3-ben.widawsky@intel.com>
-        <792edaa-a11b-41c6-c2a1-2c72a3e4e815@google.com>
-        <20210201164624.bhfufqfalogfazzi@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S232653AbhBASZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 13:25:29 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:52884 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232658AbhBASVX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:21:23 -0500
+Received: from 89-64-80-124.dynamic.chello.pl (89.64.80.124) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
+ id 1442e88330b5154c; Mon, 1 Feb 2021 19:20:22 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH v1 5/5] ACPI: thermal: Clean up printing messages
+Date:   Mon, 01 Feb 2021 19:19:21 +0100
+Message-ID: <2844446.tJ1DJ623rE@kreacher>
+In-Reply-To: <2367702.B5bJTmGzJm@kreacher>
+References: <2367702.B5bJTmGzJm@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.76.76]
-X-ClientProxiedBy: lhreml703-chm.china.huawei.com (10.201.108.52) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 1 Feb 2021 08:46:24 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> On 21-01-30 15:51:42, David Rientjes wrote:
-> > On Fri, 29 Jan 2021, Ben Widawsky wrote:
-> >   
-> > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > > new file mode 100644
-> > > index 000000000000..d81d0ba4617c
-> > > --- /dev/null
-> > > +++ b/drivers/cxl/cxl.h
-> > > @@ -0,0 +1,17 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > > +/* Copyright(c) 2020 Intel Corporation. */
-> > > +
-> > > +#ifndef __CXL_H__
-> > > +#define __CXL_H__
-> > > +
-> > > +/**
-> > > + * struct cxl_mem - A CXL memory device
-> > > + * @pdev: The PCI device associated with this CXL device.
-> > > + * @regs: IO mappings to the device's MMIO
-> > > + */
-> > > +struct cxl_mem {
-> > > +	struct pci_dev *pdev;
-> > > +	void __iomem *regs;
-> > > +};
-> > > +
-> > > +#endif  
-> > 
-> > Stupid question: can there be more than one CXL.mem capable logical 
-> > device?  I only ask to determine if an ordinal is needed to enumerate 
-> > multiple LDs.  
-> 
-> Not a stupid question at all. I admit, I haven't spent much time thinking about
-> MLDs. I don't have a solid answer to your question. As I understand it, the
-> devices in the virtual hierarchy will appear as individual CXL type 3 device
-> components (2.4 in the spec) and transparent to software. A few times I've
-> attempted to think about MLDs, get confused, and go do something else. The only
-> MLD specificity I know of is the MLD DVSEC (8.1.10), which seems not incredibly
-> interesting to me at present (basically, only supporting hot reset).
+Replace the ACPI_DEBUG_PRINT() instances in thermal.c with
+acpi_handle_debug() calls and modify the ACPI_THERMAL_TRIPS_EXCEPTION()
+macro in there to use acpi_handle_info() internally.
 
-That's my understanding as well.  If you have an MLD (and hence multiple logical memory
-devices) the fact they have multiple logical devices will be nearly invisible to
-any given host (will more or less look like an SLD).  Configuration via the
-fabric manager API will be invisible to the host other than via hotplug
-events when the configuration changes.
-Note the MLD DVSEC is only in the fabric manager owned logical device (so Linux
-won't see it in the PCI hierarchy).  Note the fabric manager is usually controlled by
-a BMC or similar.
+Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
+used any more from thermal.c, drop the no longer needed
+ACPI_THERMAL_COMPONENT definition from the headers and update the
+documentation accordingly.
 
-Various registers become hardwired to 0 and certain writes are ignored when it's
-an MLD logical device rather than an physical device (SLD)
+While at it, add a pr_fmt() definition to thermal.c, drop the PREFIX
+definition from there and replace some pr_warn() calls with pr_info()
+or acpi_handle_info().
 
-We might want to look at emulating this in QEMU to give us a
-platform to verify the spec (particularly to make sure the various hardwired
-registers don't cause any problems), but I'd not expect to see anything specific
-in kernel support.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ Documentation/firmware-guide/acpi/debug.rst |    1 
+ drivers/acpi/sysfs.c                        |    1 
+ drivers/acpi/thermal.c                      |   87 +++++++++++++---------------
+ include/acpi/acpi_drivers.h                 |    1 
+ 4 files changed, 43 insertions(+), 47 deletions(-)
 
-Jonathan
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -13,6 +13,8 @@
+  *          concepts of 'multiple limiters', upper/lower limits, etc.
+  */
+ 
++#define pr_fmt(fmt) "ACPI: thermal: " fmt
++
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/dmi.h>
+@@ -29,8 +31,6 @@
+ #include <linux/uaccess.h>
+ #include <linux/units.h>
+ 
+-#define PREFIX "ACPI: "
+-
+ #define ACPI_THERMAL_CLASS		"thermal_zone"
+ #define ACPI_THERMAL_DEVICE_NAME	"Thermal Zone"
+ #define ACPI_THERMAL_NOTIFY_TEMPERATURE	0x80
+@@ -43,9 +43,6 @@
+ #define ACPI_THERMAL_MAX_ACTIVE	10
+ #define ACPI_THERMAL_MAX_LIMIT_STR_LEN 65
+ 
+-#define _COMPONENT		ACPI_THERMAL_COMPONENT
+-ACPI_MODULE_NAME("thermal");
+-
+ MODULE_AUTHOR("Paul Diefenbaugh");
+ MODULE_DESCRIPTION("ACPI Thermal Zone Driver");
+ MODULE_LICENSE("GPL");
+@@ -197,8 +194,9 @@ static int acpi_thermal_get_temperature(
+ 		return -ENODEV;
+ 
+ 	tz->temperature = tmp;
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Temperature is %lu dK\n",
+-			  tz->temperature));
++
++	acpi_handle_debug(tz->device->handle, "Temperature is %lu dK\n",
++			  tz->temperature);
+ 
+ 	return 0;
+ }
+@@ -216,8 +214,8 @@ static int acpi_thermal_get_polling_freq
+ 		return -ENODEV;
+ 
+ 	tz->polling_frequency = tmp;
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Polling frequency is %lu dS\n",
+-			  tz->polling_frequency));
++	acpi_handle_debug(tz->device->handle, "Polling frequency is %lu dS\n",
++			  tz->polling_frequency);
+ 
+ 	return 0;
+ }
+@@ -254,12 +252,12 @@ static int acpi_thermal_set_cooling_mode
+  * 2.TODO: Devices listed in _PSL, _ALx, _TZD may change.
+  *   We need to re-bind the cooling devices of a thermal zone when this occurs.
+  */
+-#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, str)	\
++#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, tz, str)	\
+ do {	\
+ 	if (flags != ACPI_TRIPS_INIT)	\
+-		ACPI_EXCEPTION((AE_INFO, AE_ERROR,	\
++		acpi_handle_info(tz->device->handle,	\
+ 		"ACPI thermal trip point %s changed\n"	\
+-		"Please send acpidump to linux-acpi@vger.kernel.org", str)); \
++		"Please report to linux-acpi@vger.kernel.org\n", str); \
+ } while (0)
+ 
+ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+@@ -283,17 +281,17 @@ static int acpi_thermal_trips_update(str
+ 		 */
+ 		if (ACPI_FAILURE(status)) {
+ 			tz->trips.critical.flags.valid = 0;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					  "No critical threshold\n"));
++			acpi_handle_debug(tz->device->handle,
++					  "No critical threshold\n");
+ 		} else if (tmp <= 2732) {
+-			pr_warn(FW_BUG "Invalid critical threshold (%llu)\n",
++			pr_info(FW_BUG "Invalid critical threshold (%llu)\n",
+ 				tmp);
+ 			tz->trips.critical.flags.valid = 0;
+ 		} else {
+ 			tz->trips.critical.flags.valid = 1;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
++			acpi_handle_debug(tz->device->handle,
+ 					  "Found critical threshold [%lu]\n",
+-					  tz->trips.critical.temperature));
++					  tz->trips.critical.temperature);
+ 		}
+ 		if (tz->trips.critical.flags.valid == 1) {
+ 			if (crt == -1) {
+@@ -305,8 +303,8 @@ static int acpi_thermal_trips_update(str
+ 				 * Allow override critical threshold
+ 				 */
+ 				if (crt_k > tz->trips.critical.temperature)
+-					pr_warn(PREFIX "Critical threshold %d C\n",
+-						crt);
++					pr_info("Critical threshold %d C\n", crt);
++
+ 				tz->trips.critical.temperature = crt_k;
+ 			}
+ 		}
+@@ -318,14 +316,14 @@ static int acpi_thermal_trips_update(str
+ 				"_HOT", NULL, &tmp);
+ 		if (ACPI_FAILURE(status)) {
+ 			tz->trips.hot.flags.valid = 0;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					"No hot threshold\n"));
++			acpi_handle_debug(tz->device->handle,
++					  "No hot threshold\n");
+ 		} else {
+ 			tz->trips.hot.temperature = tmp;
+ 			tz->trips.hot.flags.valid = 1;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					"Found hot threshold [%lu]\n",
+-					tz->trips.hot.temperature));
++			acpi_handle_debug(tz->device->handle,
++					  "Found hot threshold [%lu]\n",
++					  tz->trips.hot.temperature);
+ 		}
+ 	}
+ 
+@@ -378,7 +376,8 @@ static int acpi_thermal_trips_update(str
+ 		status = acpi_evaluate_reference(tz->device->handle, "_PSL",
+ 							NULL, &devices);
+ 		if (ACPI_FAILURE(status)) {
+-			pr_warn(PREFIX "Invalid passive threshold\n");
++			acpi_handle_info(tz->device->handle,
++					 "Invalid passive threshold\n");
+ 			tz->trips.passive.flags.valid = 0;
+ 		}
+ 		else
+@@ -388,12 +387,12 @@ static int acpi_thermal_trips_update(str
+ 				sizeof(struct acpi_handle_list))) {
+ 			memcpy(&tz->trips.passive.devices, &devices,
+ 				sizeof(struct acpi_handle_list));
+-			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 		}
+ 	}
+ 	if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
+ 		if (valid != tz->trips.passive.flags.valid)
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
+ 	}
+ 
+ 	/* Active (optional) */
+@@ -440,8 +439,8 @@ static int acpi_thermal_trips_update(str
+ 			status = acpi_evaluate_reference(tz->device->handle,
+ 						name, NULL, &devices);
+ 			if (ACPI_FAILURE(status)) {
+-				pr_warn(PREFIX "Invalid active%d threshold\n",
+-					i);
++				acpi_handle_info(tz->device->handle,
++						 "Invalid active%d threshold\n", i);
+ 				tz->trips.active[i].flags.valid = 0;
+ 			}
+ 			else
+@@ -451,12 +450,12 @@ static int acpi_thermal_trips_update(str
+ 					sizeof(struct acpi_handle_list))) {
+ 				memcpy(&tz->trips.active[i].devices, &devices,
+ 					sizeof(struct acpi_handle_list));
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 			}
+ 		}
+ 		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
+ 			if (valid != tz->trips.active[i].flags.valid)
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
+ 
+ 		if (!tz->trips.active[i].flags.valid)
+ 			break;
+@@ -469,7 +468,7 @@ static int acpi_thermal_trips_update(str
+ 		if (ACPI_SUCCESS(status)
+ 		    && memcmp(&tz->devices, &devices, sizeof(devices))) {
+ 			tz->devices = devices;
+-			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 		}
+ 	}
+ 
+@@ -925,8 +924,8 @@ static void acpi_thermal_notify(struct a
+ 						  dev_name(&device->dev), event, 0);
+ 		break;
+ 	default:
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-				  "Unsupported event [0x%x]\n", event));
++		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
++				  event);
+ 		break;
+ 	}
+ }
+@@ -1074,7 +1073,7 @@ static int acpi_thermal_add(struct acpi_
+ 	mutex_init(&tz->thermal_check_lock);
+ 	INIT_WORK(&tz->thermal_check_work, acpi_thermal_check_fn);
+ 
+-	pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
++	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
+ 		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
+ 	goto end;
+ 
+@@ -1146,24 +1145,24 @@ static int acpi_thermal_resume(struct de
+ static int thermal_act(const struct dmi_system_id *d) {
+ 
+ 	if (act == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "disabling all active thermal trip points\n", d->ident);
++		pr_notice("%s detected: disabling all active thermal trip points\n",
++			  d->ident);
+ 		act = -1;
+ 	}
+ 	return 0;
+ }
+ static int thermal_nocrt(const struct dmi_system_id *d) {
+ 
+-	pr_notice(PREFIX "%s detected: "
+-		  "disabling all critical thermal trip point actions.\n", d->ident);
++	pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
++		  d->ident);
+ 	nocrt = 1;
+ 	return 0;
+ }
+ static int thermal_tzp(const struct dmi_system_id *d) {
+ 
+ 	if (tzp == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "enabling thermal zone polling\n", d->ident);
++		pr_notice("%s detected: enabling thermal zone polling\n",
++			  d->ident);
+ 		tzp = 300;	/* 300 dS = 30 Seconds */
+ 	}
+ 	return 0;
+@@ -1171,8 +1170,8 @@ static int thermal_tzp(const struct dmi_
+ static int thermal_psv(const struct dmi_system_id *d) {
+ 
+ 	if (psv == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "disabling all passive thermal trip points\n", d->ident);
++		pr_notice("%s detected: disabling all passive thermal trip points\n",
++			  d->ident);
+ 		psv = -1;
+ 	}
+ 	return 0;
+@@ -1225,7 +1224,7 @@ static int __init acpi_thermal_init(void
+ 	dmi_check_system(thermal_dmi_table);
+ 
+ 	if (off) {
+-		pr_notice(PREFIX "thermal control disabled\n");
++		pr_notice("thermal control disabled\n");
+ 		return -ENODEV;
+ 	}
+ 
+Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
+===================================================================
+--- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
++++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
+@@ -57,7 +57,6 @@ shows the supported mask values, current
+     ACPI_PCI_COMPONENT              0x00400000
+     ACPI_CONTAINER_COMPONENT        0x01000000
+     ACPI_SYSTEM_COMPONENT           0x02000000
+-    ACPI_THERMAL_COMPONENT          0x04000000
+     ACPI_MEMORY_DEVICE_COMPONENT    0x08000000
+     ACPI_PROCESSOR_COMPONENT        0x20000000
+ 
+Index: linux-pm/drivers/acpi/sysfs.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sysfs.c
++++ linux-pm/drivers/acpi/sysfs.c
+@@ -57,7 +57,6 @@ static const struct acpi_dlayer acpi_deb
+ 	ACPI_DEBUG_INIT(ACPI_PCI_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_CONTAINER_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
+-	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_MEMORY_DEVICE_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_PROCESSOR_COMPONENT),
+ };
+Index: linux-pm/include/acpi/acpi_drivers.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_drivers.h
++++ linux-pm/include/acpi/acpi_drivers.h
+@@ -20,7 +20,6 @@
+ #define ACPI_PCI_COMPONENT		0x00400000
+ #define ACPI_CONTAINER_COMPONENT	0x01000000
+ #define ACPI_SYSTEM_COMPONENT		0x02000000
+-#define ACPI_THERMAL_COMPONENT		0x04000000
+ #define ACPI_MEMORY_DEVICE_COMPONENT	0x08000000
+ #define ACPI_PROCESSOR_COMPONENT	0x20000000
+ 
 
 
-
-> 
-> >   
-> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > index f4ee9a507ac9..a869c8dc24cc 100644
-> > > --- a/drivers/cxl/mem.c
-> > > +++ b/drivers/cxl/mem.c
-> > > @@ -4,6 +4,58 @@
-> > >  #include <linux/pci.h>
-> > >  #include <linux/io.h>
-> > >  #include "pci.h"
-> > > +#include "cxl.h"
-> > > +
-> > > +/**
-> > > + * cxl_mem_create() - Create a new &struct cxl_mem.
-> > > + * @pdev: The pci device associated with the new &struct cxl_mem.
-> > > + * @reg_lo: Lower 32b of the register locator
-> > > + * @reg_hi: Upper 32b of the register locator.
-> > > + *
-> > > + * Return: The new &struct cxl_mem on success, NULL on failure.
-> > > + *
-> > > + * Map the BAR for a CXL memory device. This BAR has the memory device's
-> > > + * registers for the device as specified in CXL specification.
-> > > + */
-> > > +static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
-> > > +				      u32 reg_hi)
-> > > +{
-> > > +	struct device *dev = &pdev->dev;
-> > > +	struct cxl_mem *cxlm;
-> > > +	void __iomem *regs;
-> > > +	u64 offset;
-> > > +	u8 bar;
-> > > +	int rc;
-> > > +
-> > > +	offset = ((u64)reg_hi << 32) | (reg_lo & CXL_REGLOC_ADDR_MASK);
-> > > +	bar = (reg_lo >> CXL_REGLOC_BIR_SHIFT) & CXL_REGLOC_BIR_MASK;
-> > > +
-> > > +	/* Basic sanity check that BAR is big enough */
-> > > +	if (pci_resource_len(pdev, bar) < offset) {
-> > > +		dev_err(dev, "BAR%d: %pr: too small (offset: %#llx)\n", bar,
-> > > +			&pdev->resource[bar], (unsigned long long)offset);
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	rc = pcim_iomap_regions(pdev, BIT(bar), pci_name(pdev));
-> > > +	if (rc != 0) {
-> > > +		dev_err(dev, "failed to map registers\n");
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	cxlm = devm_kzalloc(&pdev->dev, sizeof(*cxlm), GFP_KERNEL);
-> > > +	if (!cxlm) {
-> > > +		dev_err(dev, "No memory available\n");
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	regs = pcim_iomap_table(pdev)[bar];
-> > > +	cxlm->pdev = pdev;
-> > > +	cxlm->regs = regs + offset;
-> > > +
-> > > +	dev_dbg(dev, "Mapped CXL Memory Device resource\n");
-> > > +	return cxlm;
-> > > +}
-> > >  
-> > >  static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
-> > >  {
-> > > @@ -32,15 +84,42 @@ static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
-> > >  static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > >  {
-> > >  	struct device *dev = &pdev->dev;
-> > > -	int regloc;
-> > > +	struct cxl_mem *cxlm;
-> > > +	int rc, regloc, i;
-> > > +
-> > > +	rc = pcim_enable_device(pdev);
-> > > +	if (rc)
-> > > +		return rc;
-> > >  
-> > >  	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC);
-> > >  	if (!regloc) {
-> > >  		dev_err(dev, "register location dvsec not found\n");
-> > >  		return -ENXIO;
-> > >  	}
-> > > +	regloc += 0xc; /* Skip DVSEC + reserved fields */  
-> > 
-> > Assuming the DVSEC revision number is always 0x0 or there's no value in 
-> > storing this in struct cxl_mem for the future.  
-> 
-> So this logic actually came from Dan originally, so don't take this necessarily
-> as the authoritative answer.
-> 
-> At some point revision id will need to be considered. However, the consortium
-> seems to be going to great lengths (kudos) to make all modifications backward
-> compatible. As such, we can consider this the driver for rev0 (the only such rev
-> in existence today), and when a new rev comes along, figure out how to best
-> handle it. However, the expectation is that this code will still work for revN.
-> 
-> > 
-> > Acked-by: David Rientjes <rientjes@google.com>  
-> 
-> Thanks!
 
