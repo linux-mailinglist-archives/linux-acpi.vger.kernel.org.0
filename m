@@ -2,109 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C22130AF8B
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B60530AF80
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232997AbhBAShL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:37:11 -0500
-Received: from mga12.intel.com ([192.55.52.136]:30823 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232747AbhBASfk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 1 Feb 2021 13:35:40 -0500
-IronPort-SDR: eb5ne3CQoN6MJZEmWUYCu0+ivqgwXhPk3P+3t5zjksACCsFYrbz7DQf/vSuJQoRyLCIpWLKcgX
- Wqic+wUlPvBg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="159899885"
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400"; 
-   d="scan'208";a="159899885"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 10:34:58 -0800
-IronPort-SDR: 2nH8t8/c+4stZ/sLd9CRvDKJQVvEtoDO5fWXWNPS17Xeu0Z+5yQgq5tPL/lE+iYxcH8yEzg95U
- mZhVmj6F73ng==
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400"; 
-   d="scan'208";a="371650563"
-Received: from jambrizm-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.15])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 10:34:57 -0800
-Date:   Mon, 1 Feb 2021 10:34:55 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        daniel.lll@alibaba-inc.com,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH 08/14] taint: add taint for direct hardware access
-Message-ID: <20210201183455.3dndfwyswwvs2dlm@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-9-ben.widawsky@intel.com>
- <20210201181845.GJ197521@fedora>
+        id S233013AbhBASgv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 13:36:51 -0500
+Received: from smtprelay0174.hostedemail.com ([216.40.44.174]:43840 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232955AbhBASg2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:36:28 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id C9901182CF66A;
+        Mon,  1 Feb 2021 18:35:37 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2691:2828:2895:3138:3139:3140:3141:3142:3352:3622:3865:3867:3868:3870:3872:3874:4321:5007:7576:7652:7875:10004:10400:10848:11026:11232:11473:11658:11914:12043:12296:12297:12438:12740:12895:13069:13311:13357:13439:13894:14181:14659:14721:21080:21212:21451:21611:21627:21660:30054:30064:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: sound29_52137f3275c4
+X-Filterd-Recvd-Size: 2116
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf09.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  1 Feb 2021 18:35:35 +0000 (UTC)
+Message-ID: <ab62890a1128b0d3109553208379015fcb36e0c7.camel@perches.com>
+Subject: Re: [PATCH v1 2/5] ACPI: battery: Clean up printing messages
+From:   Joe Perches <joe@perches.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Date:   Mon, 01 Feb 2021 10:35:33 -0800
+In-Reply-To: <1996712.1aSbzQgNOC@kreacher>
+References: <2367702.B5bJTmGzJm@kreacher> <1996712.1aSbzQgNOC@kreacher>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210201181845.GJ197521@fedora>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-02-01 13:18:45, Konrad Rzeszutek Wilk wrote:
-> On Fri, Jan 29, 2021 at 04:24:32PM -0800, Ben Widawsky wrote:
-> > For drivers that moderate access to the underlying hardware it is
-> > sometimes desirable to allow userspace to bypass restrictions. Once
-> > userspace has done this, the driver can no longer guarantee the sanctity
-> > of either the OS or the hardware. When in this state, it is helpful for
-> > kernel developers to be made aware (via this taint flag) of this fact
-> > for subsequent bug reports.
-> > 
-> > Example usage:
-> > - Hardware xyzzy accepts 2 commands, waldo and fred.
-> > - The xyzzy driver provides an interface for using waldo, but not fred.
-> > - quux is convinced they really need the fred command.
-> > - xyzzy driver allows quux to frob hardware to initiate fred.
+On Mon, 2021-02-01 at 19:16 +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Would it not be easier to _not_ frob the hardware for fred-operation?
-> Aka not implement it or just disallow in the first place?
-
-Yeah. So the idea is you either are in a transient phase of the command and some
-future kernel will have real support for fred - or a vendor is being short
-sighted and not adding support for fred.
-
+> Replace the ACPI_DEBUG_PRINT() and ACPI_EXCEPTION() instances
+> in battery.c with acpi_handle_debug() and acpi_handle_info() calls,
+> respectively, drop the _COMPONENT and ACPI_MODULE_NAME() definitions
+> that are not used any more, drop the no longer needed
+> ACPI_BATTERY_COMPONENT definition from the headers and update the
+> documentation accordingly.
 > 
-> 
-> >   - kernel gets tainted.
-> > - turns out fred command is borked, and scribbles over memory.
-> > - developers laugh while closing quux's subsequent bug report.
-> 
-> Yeah good luck with that theory in-the-field. The customer won't
-> care about this and will demand a solution for doing fred-operation.
-> 
-> Just easier to not do fred-operation in the first place,no?
+> While at it, update the pr_fmt() definition and drop the unneeded
+> PREFIX sybmbol definition from battery.c.
+[]
+> --- linux-pm.orig/drivers/acpi/battery.c
+[]
+> @@ -466,7 +460,8 @@ static int extract_package(struct acpi_b
+>  static int acpi_battery_get_status(struct acpi_battery *battery)
+>  {
+>  	if (acpi_bus_get_status(battery->device)) {
+> -		ACPI_EXCEPTION((AE_INFO, AE_ERROR, "Evaluating _STA"));
+> +		acpi_handle_info(battery->device->handle,
+> +				 "_STA evaluation failed\n");
 
-The short answer is, in an ideal world you are correct. See nvdimm as an example
-of the real world.
+I believe this changes the logging level from KERN_ERR to KERN_INFO.
 
-The longer answer. Unless we want to wait until we have all the hardware we're
-ever going to see, it's impossible to have a fully baked, and validated
-interface. The RAW interface is my admission that I make no guarantees about
-being able to provide the perfect interface and giving the power back to the
-hardware vendors and their driver writers.
+Perhaps this and others should instead use acpi_handle_err()
 
-As an example, suppose a vendor shipped a device with their special vendor
-opcode. They can enable their customers to use that opcode on any driver
-version. That seems pretty powerful and worthwhile to me.
 
-Or a more realistic example, we ship a driver that adds a command which is
-totally broken. Customers can utilize the RAW interface until it gets fixed in a
-subsequent release which might be quite a ways out.
-
-I'll say the RAW interface isn't an encouraged usage, but it's one that I expect
-to be needed, and if it's not we can always try to kill it later. If nobody is
-actually using it, nobody will complain, right :D
