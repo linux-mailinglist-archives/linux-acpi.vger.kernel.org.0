@@ -2,97 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9435930A6BC
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 12:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7D830A6C6
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 12:46:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbhBALnt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 1 Feb 2021 06:43:49 -0500
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:44363 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbhBALnt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 06:43:49 -0500
-Received: by mail-oi1-f172.google.com with SMTP id n7so18416421oic.11
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Feb 2021 03:43:33 -0800 (PST)
+        id S229644AbhBALpn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 1 Feb 2021 06:45:43 -0500
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:33276 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229481AbhBALpm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 06:45:42 -0500
+Received: by mail-oi1-f169.google.com with SMTP id j25so18502402oii.0;
+        Mon, 01 Feb 2021 03:45:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=uZn7ZnnuCBX/W22GeRC16TXeNlhza967RHxAmFxVnzU=;
-        b=FJ66a0hFWqVNiPY0ItGkKSuN4tbmPaF3H8aKh5XzFN6dEhN/Iau8gO423z7GF4Qa2q
-         wT4mJV15Sj231q+WyojI8VYPvUs2s69TJd53N706md7vWInbUen0EglenNN8GkiqEyVv
-         bH1cgWiySGeKnWE/3Y/uHHo3Zv8sboy+TeChcvrZuEIgXaB0q08ZIMBRglacNzfS7jIj
-         ne7jmHqaogiHWWbepzFopCK5cdM88DE8iMNs6tzaAkjwj6DGrML+z++5YdKm/lTrW9cs
-         5jSvzqdZrzOYqRg8MrSmdvtKbxP4CZ8UeUvmiRzbkm1lP5sN+MBPBD9YRAeFf+D8S9k1
-         xWFQ==
-X-Gm-Message-State: AOAM530edT5eCROIYYnrhcn7iPz9K278gmF4w2NOwBGowKg5iT/KT+M2
-        hHLmW671c5WGhN9bkf9I6gctVso03C4bznt8eew=
-X-Google-Smtp-Source: ABdhPJwQnP3u+qOoXMxYe6YhYqIR6+9UKvF8rIWwtA83rZ95dumube+bnWK+S3cxixTLoNX1L1XuYy6tcwYgDyB6RSY=
-X-Received: by 2002:aca:d14:: with SMTP id 20mr11071141oin.157.1612179787831;
- Mon, 01 Feb 2021 03:43:07 -0800 (PST)
+        bh=F3brwljMK0uhzeGRjZ/IuBQwp5XiEQw0EzVWxL9yxHk=;
+        b=nOiQxrcJLo1158TBeGPNaNURf699znMIIMT/o+af0IUdw2dnZfcB+RWs9GVw6cn/Nw
+         y+0zC4Dp9ReQMc3InO/AKCmp0mWY/o3nk0TLFfyRurzdZbcpvLxqk2K3Msy4NDzk9LAH
+         AwhG+dmKFkUWI3wYK7FgkFP+oF12REvh2fekpHuyP/qTUy+wu6HUzKQJPOP+z71JCJn+
+         58+60bZ83SIym6kaWNqroxKTaUHxx2T8HaQD8UBdBb+Fy5QJDJmTKLoshprNNoylGmOL
+         zoAMl8PK+dc0DJseoP1YkRhwmAo0lTq9iEOB5tuSSgpKuySKEGanl5pUpp0PUfBfbtRv
+         Jvuw==
+X-Gm-Message-State: AOAM532og5wZ4CkJ2PYywbNrAG+imBfbakm8VPpiLlMK5bYO3FqDOAYA
+        LTKpe3/MkGLgPk3ZYeAHhKoI3/MxAtS2JH2M+ok=
+X-Google-Smtp-Source: ABdhPJzoNEdv4WA1XDyCNcLyrUciFwO8fzlSNHkNfIqwp+f4fXLx2xULurRS7gSTb2eGjCfulRKi0Um3QyNdSJW8w6E=
+X-Received: by 2002:aca:308a:: with SMTP id w132mr10054609oiw.69.1612179901283;
+ Mon, 01 Feb 2021 03:45:01 -0800 (PST)
 MIME-Version: 1.0
-References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
- <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
- <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
- <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
- <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com> <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
- <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com>
- <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
- <CA+GA0_vYdxFj_SPWgdkufo04VaOuWqcNTSck6gvnMfN07ZdO_Q@mail.gmail.com>
- <CA+GA0_vKyJZSQZ9bA6_BSDeGfRZ_nz86gj2aVHaOoy1h57CMzA@mail.gmail.com> <CA+GA0_u8NA90GmMSDO-Ejg-C2YEXCn8rnVZpk-_+eXcDm7XRpg@mail.gmail.com>
-In-Reply-To: <CA+GA0_u8NA90GmMSDO-Ejg-C2YEXCn8rnVZpk-_+eXcDm7XRpg@mail.gmail.com>
+References: <20200903081550.6012-1-sakari.ailus@linux.intel.com>
+ <20210128232729.16064-1-sakari.ailus@linux.intel.com> <CAJZ5v0hdG1W0D5E6GbrTDiAjMyC0mSgb3Z2WEBy3hhb4iJhDNw@mail.gmail.com>
+ <20210129164522.GJ32460@paasikivi.fi.intel.com> <CAJZ5v0iJB80QX9ze9_hpNP4R-+C36Rvn8d+7S-4-guWrN=SiWQ@mail.gmail.com>
+ <20210129212211.GK32460@paasikivi.fi.intel.com>
+In-Reply-To: <20210129212211.GK32460@paasikivi.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Feb 2021 12:42:53 +0100
-Message-ID: <CAJZ5v0hqHihRdad16Djo+R1ezjFHt2YffgDg59TYYKJSSjmA4Q@mail.gmail.com>
-Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
-To:     =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date:   Mon, 1 Feb 2021 12:44:46 +0100
+Message-ID: <CAJZ5v0jjgy2KXOw5pyshvaEVzLctu4jsgYK1+YDA+8sZfp-6mw@mail.gmail.com>
+Subject: Re: [PATCH v9 1/7] ACPI: scan: Obtain device's desired enumeration
+ power state
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Erik Kaneda <erik.kaneda@intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 9:03 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote:
+On Fri, Jan 29, 2021 at 10:22 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
 >
-> pt., 29 sty 2021 o 19:59 Marcin Ślusarz <marcin.slusarz@gmail.com> napisał(a):
-> >
-> > czw., 28 sty 2021 o 15:32 Marcin Ślusarz <marcin.slusarz@gmail.com> napisał(a):
+> On Fri, Jan 29, 2021 at 05:57:17PM +0100, Rafael J. Wysocki wrote:
+> > On Fri, Jan 29, 2021 at 5:45 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
 > > >
-> > > czw., 28 sty 2021 o 13:39 Rafael J. Wysocki <rafael@kernel.org> napisał(a):
-> > > > The only explanation for that I can think about (and which does not
-> > > > involve supernatural intervention so to speak) is a stack corruption
-> > > > occurring between these two calls in sdw_intel_acpi_cb().  IOW,
-> > > > something scribbles on the handle in the meantime, but ATM I have no
-> > > > idea what that can be.
+> > > Hi Rafael,
 > > >
-> > > I tried KASAN but it didn't find anything and kernel actually booted
-> > > successfully.
+> > > Thanks for the comments.
+> > >
+> > > On Fri, Jan 29, 2021 at 03:07:57PM +0100, Rafael J. Wysocki wrote:
+> > > > On Fri, Jan 29, 2021 at 12:27 AM Sakari Ailus
+> > > > <sakari.ailus@linux.intel.com> wrote:
+> > > > >
+> > > > > Store a device's desired enumeration power state in struct
+> > > > > acpi_device_power_flags during acpi_device object's initialisation.
+> > > > >
+> > > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > ---
+> > > > >  drivers/acpi/scan.c     | 6 ++++++
+> > > > >  include/acpi/acpi_bus.h | 3 ++-
+> > > > >  2 files changed, 8 insertions(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> > > > > index 1d7a02ee45e05..b077c645c9845 100644
+> > > > > --- a/drivers/acpi/scan.c
+> > > > > +++ b/drivers/acpi/scan.c
+> > > > > @@ -987,6 +987,8 @@ static void acpi_bus_init_power_state(struct acpi_device *device, int state)
+> > > > >
+> > > > >  static void acpi_bus_get_power_flags(struct acpi_device *device)
+> > > > >  {
+> > > > > +       unsigned long long pre;
+> > > > > +       acpi_status status;
+> > > > >         u32 i;
+> > > > >
+> > > > >         /* Presence of _PS0|_PR0 indicates 'power manageable' */
+> > > > > @@ -1008,6 +1010,10 @@ static void acpi_bus_get_power_flags(struct acpi_device *device)
+> > > > >         if (acpi_has_method(device->handle, "_DSW"))
+> > > > >                 device->power.flags.dsw_present = 1;
+> > > > >
+> > > > > +       status = acpi_evaluate_integer(device->handle, "_PRE", NULL, &pre);
+> > > > > +       if (ACPI_SUCCESS(status) && !pre)
+> > > > > +               device->power.flags.allow_low_power_probe = 1;
+> > > >
+> > > > While this is what has been discussed and thanks for taking it into
+> > > > account, I'm now thinking that it may be cleaner to introduce a new
+> > > > object to return the deepest power state of the device in which it can
+> > > > be enumerated, say _DSE (Device State for Enumeration) such that 4
+> > > > means D3cold, 3 - D3hot and so on, so the above check can be replaced
+> > > > with something like
+> > > >
+> > > > status = acpi_evaluate_integer(device->handle, "_PRE", NULL, &dse);
+> > >
+> > > s/_PRE/_DSE/
+> > >
+> > > ?
 > >
-> > I investigated this and it looks like a compiler bug (or something nastier),
-> > but I can't find where exactly registers get corrupted because if I add printks
-> > the corruption seems on the printk side, but if I don't add them it seems
-> > the value gets corrupted earlier.
-> (...)
-> > I'm using gcc 10.2.1 from Debian testing.
+> > Yes, sorry.
+> >
+> > >
+> > > > if (ACPI_FAILURE(status))
+> > >
+> > > ACPI_SUCCESS?
+> >
+> > Yup.
+> >
+> > > >         device->power.state_for_enumeratin = dse;
+> > > >
+> > > > And then, it is a matter of comparing ->power.state_for_enumeratin
+> > > > with ->power.state and putting the device into D0 if the former is
+> > > > shallower than the latter.
+> > > >
+> > > > What do you think?
+> > >
+> > > Sounds good. How about calling the function e.g.
+> > > acpi_device_resume_for_probe(), so runtime PM could be used to resume the
+> > > device if the function returns true?
+> >
+> > I'd rather try to power it up before enabling runtime PM, because in
+> > order to do the latter properly, you need to know if the device is
+> > active or suspended to start with.
+> >
+> > So you need something like (pseudo-code)
+> >
+> > if (this_device_needs_to_be_on(ACPI_COMPANION(dev))) {
+> >    acpi_device_set_power(ACPI_COMPANION(dev), ACPI_STATE_D0);
+> >    pm_runtime_set_active(dev);
+> > } else {
+> >    pm_runtime_set_suspended(dev);
 >
-> Someone on IRC, after hearing only that "gcc miscompiles the kernel",
-> suggested disabling CONFIG_STACKPROTECTOR_STRONG.
-> It helped indeed and it matches my observations, so it's quite likely it
-> is the culprit.
+> I guess the else branch isn't needed? The device remains suspended if its
+> state hasn't been changed.
+
+Assuming that the initial status is always "suspended", the else
+branch is not needed.
+
+> > }
+> >
+> > and then you can enable PM-runtime.
 >
-> What do we do now?
+> Yes, agreed, this is what drivers should do. The I涎 framework would use
+> the function and conditionally power the device on before enabling runtime
+> PM.
+>
+> This is how it's implemented by the set already but I think the change in
+> semantics requires a little more still.
 
-Figure out why the stack protection kicks in, I suppose.
-
-The target object is not on the stack, so if the pointer to it is
-valid (we need to verify somehow that it is indeed), dereferencing it
-shouldn't cause the stack protection to trigger.
+Agreed.
