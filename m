@@ -2,354 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B1130AF24
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F0130AF34
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Feb 2021 19:27:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232653AbhBASZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Feb 2021 13:25:29 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:52884 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232658AbhBASVX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:21:23 -0500
-Received: from 89-64-80-124.dynamic.chello.pl (89.64.80.124) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id 1442e88330b5154c; Mon, 1 Feb 2021 19:20:22 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Joe Perches <joe@perches.com>
-Subject: [PATCH v1 5/5] ACPI: thermal: Clean up printing messages
-Date:   Mon, 01 Feb 2021 19:19:21 +0100
-Message-ID: <2844446.tJ1DJ623rE@kreacher>
-In-Reply-To: <2367702.B5bJTmGzJm@kreacher>
-References: <2367702.B5bJTmGzJm@kreacher>
+        id S232769AbhBAS13 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Feb 2021 13:27:29 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:42260 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232917AbhBAS1H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Feb 2021 13:27:07 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111IEFD8139697;
+        Mon, 1 Feb 2021 18:24:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=l60f08n2UUQ9F7F3myeI2FXfLaXXPiQ5alJJSKZvH80=;
+ b=LBCr0/3WVhQl444e1NQPWB3C0vU5e53WYhZXU+RZn4XLfkaVJFz3cjWm8jzWvGvRIhT5
+ 75nvBupyd0qJmU3vLmnrrwFKr22kPkua9pK1b4NGc3XX26rKzkL3TI42x/8E6M4QF/7P
+ ZkavPwbTu3rAxLJnADX9DH2y2Q6HuL+oZEscgHb8fHF+LSO1NzUuT2DiQyatfch6XW0I
+ MBHD6IGZJ4cMl2u9SouVDi6oxCPm9cB4Lzq9hQEZ+u+UnZdOxvU30DGNLPvUJadTea24
+ vaPEobGG2a/rNZ1CAaqV8POXTxAqQeHxOjjb65T3UbFCT75wyBgd5NVPuI1S3TU3L/MP bQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 36cxvqxt7e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 18:24:09 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111IFRRP057545;
+        Mon, 1 Feb 2021 18:24:08 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2046.outbound.protection.outlook.com [104.47.66.46])
+        by aserp3030.oracle.com with ESMTP id 36dh1msbuy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 18:24:08 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fWkqEZtd3OIeluG+4X4rhE54rgfIb06tXmSzdTThvnJBGeq2AHfFYbf6RJyy6yD8K+e2DHcDIVytPTPQZYcLHDO4/IpFlYSwYl30a/bQma/Li4m8QrYqFQUwWLry62OE7wcdgHOZgedG+8z7zV6QcjpeZcCy5IQyL8rSSeSIoJsX6G8/pHN1SMYRHqHQYwMrvNVd8ZY/FMo/R9A9OBg09C/2TyhrKbEHWlbs5fi/49XrP1rH0SXFqjxQTDrV+D3I8Y4DPnPI2C5jumD71KRqSTP1rrzRcN3jPmosIBLdCiW2Un6aQPQA+NFT72QDIotYjRtS4NjBPVAwyTptIWb9Hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l60f08n2UUQ9F7F3myeI2FXfLaXXPiQ5alJJSKZvH80=;
+ b=F9ON7cEsf1087McSMSkMUR3qbCpU4fvsmHLCunfgRoHHW+TJoSuERM1ACi6Yuhy/BUvRQJICLxhpzBODY5Wk+imuMPHSVfSQ1M9be/pxnkFMUwaF8awLuWCh/SXU5fOGvcaNB1sriksSxZX2ZGThlKaek+sDqn319oYI1cOB8uOoHSb6JeweLVuJveU7SUJJX2KaLRlOfqzs0ipmXaYqodPho9l5oc8xbClTD5/SyM1w4jyqUuW6+0unh0AY1V/pSiLQIG13mVc8n/qrhoik+bFtOb7+0xf7Q7qIh0prhTmuCzqRmk8OPt1/Ifl9pbpvmIS0d/Nrp455O9BLsvlUkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l60f08n2UUQ9F7F3myeI2FXfLaXXPiQ5alJJSKZvH80=;
+ b=SPA0d3qXkIMDwOb3ocqYLU6EFcdhPUUld6p87yD1GvhXJtlxb5GkhXtefCCikPa3voceSIEXTkvfH4zraQk5HqaOGJ2LjWMX01hmWM9fuL8p3HS/8rCtsoc/xyB+lox91pNwk2TfxWVs+dQA1WCN5XP4aoUJbxLAuaQ5NPpXEjs=
+Authentication-Results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB3592.namprd10.prod.outlook.com (2603:10b6:a03:11f::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.17; Mon, 1 Feb
+ 2021 18:24:05 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456%4]) with mapi id 15.20.3784.019; Mon, 1 Feb 2021
+ 18:24:05 +0000
+Date:   Mon, 1 Feb 2021 13:24:00 -0500
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 09/14] cxl/mem: Add a "RAW" send command
+Message-ID: <20210201182400.GK197521@fedora>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-10-ben.widawsky@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210130002438.1872527-10-ben.widawsky@intel.com>
+X-Originating-IP: [209.6.208.110]
+X-ClientProxiedBy: MN2PR22CA0010.namprd22.prod.outlook.com
+ (2603:10b6:208:238::15) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from fedora (209.6.208.110) by MN2PR22CA0010.namprd22.prod.outlook.com (2603:10b6:208:238::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.17 via Frontend Transport; Mon, 1 Feb 2021 18:24:02 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 9d461fed-002c-49e3-9ac4-08d8c6de8e80
+X-MS-TrafficTypeDiagnostic: BYAPR10MB3592:
+X-Microsoft-Antispam-PRVS: <BYAPR10MB35929DAA0162FB50D3D0B66589B69@BYAPR10MB3592.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:517;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8fYLKQYRUI1hSIiCIiAi9zeWolG5+hrEaxbHatdmIhbu/FLOP/KgePAgoeBtdlyZZXxoJTWQFvNfvpEexpqacdnz/PKbT3dmTfT5bzOvaUXLvmhKJdtPHNv9hjsIectS5pTmlVMMhJOeKdmhVGTJgzCtUChDV99m3xzlguPJe1fLSWbhD0ku+rqIWQmxuIvVW9Jn2G3mJBvvw5mxAYKY+FjeL1IhmWzmSOCfzWaggdTAc8NO4Wf6UvOJSl2TiLmzow59xpc3s2XfJw+MpOlhO96F75rNlQtab1QOI0OrSQUbkMcbjg5JD0KaNn0LaifnVQSAjqPZP/HQ0oiZDZjgYVXxjyZ+cASg0IRatAdRnYmAWB9P50MQ3mD606f5G1mbKByFP7MkTX3ndYchhNoItn8am0fyYs/6G0qslLtLe9ltKZC9xmQh/FCAT0AGxRkBCN98/zB9FQH+YGddJR/kAL50zXoeFKfe38g0WzrRjYan2/IBSBwf6MLCw+Q0QKaMA3Ngoz1uy3Fq5I+ApvXTuw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2999.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(39860400002)(136003)(346002)(376002)(366004)(186003)(16526019)(52116002)(956004)(6496006)(7416002)(54906003)(4326008)(33716001)(316002)(86362001)(8936002)(66946007)(66556008)(55016002)(66476007)(6916009)(5660300002)(9686003)(9576002)(83380400001)(1076003)(478600001)(2906002)(26005)(8676002)(33656002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?knjkINRLpew+T2+ghIBAvf0NYHVEWFS/xsS/K2MaUxyHLYkAlHqQy1mU5ITo?=
+ =?us-ascii?Q?rf3RS/aQYn9GJRA4+H6LQbuu9SQRQNASVFue9S6N/Unyq4KO1YLhAqPZzj4Y?=
+ =?us-ascii?Q?htDLMXKhTcklg0bpGmgO8svp72YWiQ36HLW4L8QJPQm/G5piYG8Plwkn7J5v?=
+ =?us-ascii?Q?rTAuo10ADs/nXuNnYbWVC5nV5MIUgBUnjPzNJwGfef/py9q1fr1Fmg6rnhH5?=
+ =?us-ascii?Q?mE2yxy/kzDHCxOG1rjoHTZpt4VhOHCxsS8QUuM6iQLFcAzjW2RTLm6ZcxyN0?=
+ =?us-ascii?Q?7ANhc4zaXE7cc/SuTLzXLALRpn1EMdSnyoJQjbXdgtD3W/60qqLd4ys6bAe5?=
+ =?us-ascii?Q?mSMGTRLE8x7csKe41kt4DEeZM9AubqEqC+d8ydZ0R3Rnh20TgOVemSgH9KY1?=
+ =?us-ascii?Q?dXQpAW4ptxCGdxkjHSmTfoD56zKj5equI0WrkIea24ZIipnI9fGAN4D1RTTU?=
+ =?us-ascii?Q?E8BsIuaWxvbmjWzoOOrLcIwzxqqy1Xio6UgjwJK+tCZAuI74aY2jFJ/whLrO?=
+ =?us-ascii?Q?8ZzlYNgwdhrivtBtX9kQsb2n0S0s+CzFM0TcXXx0jxjqX/MNOG8cM0O1CCyB?=
+ =?us-ascii?Q?sLYONj93/XBxsx5cuIPQXTQA9rF8e1DPu+K+/bfgUsiT7NsFJ4JPk2KFWQXh?=
+ =?us-ascii?Q?r3Fz7pxqmAHZ/mBPR/IvVsMbKmDl+ZR4kEfeX+LTRV9KekugFgGR4QibLPfi?=
+ =?us-ascii?Q?DdcNB31ZZAqhhz5tuNoi1TwMbUJT8jzxGUf8abFhS7G8Hr43UUUEaLFRd3O8?=
+ =?us-ascii?Q?0b+NiE5A7ey7DDGElFoZ795vDSgge3HTN4EJnn2UC5txsDHQnlayUwh1agdE?=
+ =?us-ascii?Q?5NRFZ9GzE2Ojm3Z97b5+oxSmwAXNaiK7V2fbMEClJTkOl1SG7C6lRJp9ZFhK?=
+ =?us-ascii?Q?F7WwCDF6aeqoFzcycJzHCDWVr+OaDzbF9ixH935RbfJIAwBZPEUUf36cb0q/?=
+ =?us-ascii?Q?g0p4Lz4i0i8ZZX5+eWw8vRqcQT+2c0LGP4BGoqNnMBakugg6q20AAe1Goce3?=
+ =?us-ascii?Q?Y8oTnyhlCw0KsDCM5v3Lfin9+7IQpBHvDqymVBrQ70NaHPx1s3rPM7ckERbd?=
+ =?us-ascii?Q?u29oMIme?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d461fed-002c-49e3-9ac4-08d8c6de8e80
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2021 18:24:05.0306
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GcK29ybDpcmjYVgqwbtQzSnSoxajqTbxpYMTfCZHDg92TTRoXk68DT7E+Ou+CmU2yIgyuj6n4brpx49YiBmmoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3592
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010095
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010095
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Jan 29, 2021 at 04:24:33PM -0800, Ben Widawsky wrote:
+> The CXL memory device send interface will have a number of supported
+> commands. The raw command is not such a command. Raw commands allow
+> userspace to send a specified opcode to the underlying hardware and
+> bypass all driver checks on the command. This is useful for a couple of
+> usecases, mainly:
+> 1. Undocumented vendor specific hardware commands
+> 2. Prototyping new hardware commands not yet supported by the driver
 
-Replace the ACPI_DEBUG_PRINT() instances in thermal.c with
-acpi_handle_debug() calls and modify the ACPI_THERMAL_TRIPS_EXCEPTION()
-macro in there to use acpi_handle_info() internally.
+This sounds like a recipe for ..
 
-Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
-used any more from thermal.c, drop the no longer needed
-ACPI_THERMAL_COMPONENT definition from the headers and update the
-documentation accordingly.
+In case you really really want this may I recommend you do two things:
 
-While at it, add a pr_fmt() definition to thermal.c, drop the PREFIX
-definition from there and replace some pr_warn() calls with pr_info()
-or acpi_handle_info().
+- Wrap this whole thing with #ifdef
+  CONFIG_CXL_DEBUG_THIS_WILL_DESTROY_YOUR_LIFE
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- Documentation/firmware-guide/acpi/debug.rst |    1 
- drivers/acpi/sysfs.c                        |    1 
- drivers/acpi/thermal.c                      |   87 +++++++++++++---------------
- include/acpi/acpi_drivers.h                 |    1 
- 4 files changed, 43 insertions(+), 47 deletions(-)
+ (or something equivalant to make it clear this should never be
+  enabled in production kernels).
 
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -13,6 +13,8 @@
-  *          concepts of 'multiple limiters', upper/lower limits, etc.
-  */
- 
-+#define pr_fmt(fmt) "ACPI: thermal: " fmt
-+
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/dmi.h>
-@@ -29,8 +31,6 @@
- #include <linux/uaccess.h>
- #include <linux/units.h>
- 
--#define PREFIX "ACPI: "
--
- #define ACPI_THERMAL_CLASS		"thermal_zone"
- #define ACPI_THERMAL_DEVICE_NAME	"Thermal Zone"
- #define ACPI_THERMAL_NOTIFY_TEMPERATURE	0x80
-@@ -43,9 +43,6 @@
- #define ACPI_THERMAL_MAX_ACTIVE	10
- #define ACPI_THERMAL_MAX_LIMIT_STR_LEN 65
- 
--#define _COMPONENT		ACPI_THERMAL_COMPONENT
--ACPI_MODULE_NAME("thermal");
--
- MODULE_AUTHOR("Paul Diefenbaugh");
- MODULE_DESCRIPTION("ACPI Thermal Zone Driver");
- MODULE_LICENSE("GPL");
-@@ -197,8 +194,9 @@ static int acpi_thermal_get_temperature(
- 		return -ENODEV;
- 
- 	tz->temperature = tmp;
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Temperature is %lu dK\n",
--			  tz->temperature));
-+
-+	acpi_handle_debug(tz->device->handle, "Temperature is %lu dK\n",
-+			  tz->temperature);
- 
- 	return 0;
- }
-@@ -216,8 +214,8 @@ static int acpi_thermal_get_polling_freq
- 		return -ENODEV;
- 
- 	tz->polling_frequency = tmp;
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Polling frequency is %lu dS\n",
--			  tz->polling_frequency));
-+	acpi_handle_debug(tz->device->handle, "Polling frequency is %lu dS\n",
-+			  tz->polling_frequency);
- 
- 	return 0;
- }
-@@ -254,12 +252,12 @@ static int acpi_thermal_set_cooling_mode
-  * 2.TODO: Devices listed in _PSL, _ALx, _TZD may change.
-  *   We need to re-bind the cooling devices of a thermal zone when this occurs.
-  */
--#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, str)	\
-+#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, tz, str)	\
- do {	\
- 	if (flags != ACPI_TRIPS_INIT)	\
--		ACPI_EXCEPTION((AE_INFO, AE_ERROR,	\
-+		acpi_handle_info(tz->device->handle,	\
- 		"ACPI thermal trip point %s changed\n"	\
--		"Please send acpidump to linux-acpi@vger.kernel.org", str)); \
-+		"Please report to linux-acpi@vger.kernel.org\n", str); \
- } while (0)
- 
- static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
-@@ -283,17 +281,17 @@ static int acpi_thermal_trips_update(str
- 		 */
- 		if (ACPI_FAILURE(status)) {
- 			tz->trips.critical.flags.valid = 0;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--					  "No critical threshold\n"));
-+			acpi_handle_debug(tz->device->handle,
-+					  "No critical threshold\n");
- 		} else if (tmp <= 2732) {
--			pr_warn(FW_BUG "Invalid critical threshold (%llu)\n",
-+			pr_info(FW_BUG "Invalid critical threshold (%llu)\n",
- 				tmp);
- 			tz->trips.critical.flags.valid = 0;
- 		} else {
- 			tz->trips.critical.flags.valid = 1;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-+			acpi_handle_debug(tz->device->handle,
- 					  "Found critical threshold [%lu]\n",
--					  tz->trips.critical.temperature));
-+					  tz->trips.critical.temperature);
- 		}
- 		if (tz->trips.critical.flags.valid == 1) {
- 			if (crt == -1) {
-@@ -305,8 +303,8 @@ static int acpi_thermal_trips_update(str
- 				 * Allow override critical threshold
- 				 */
- 				if (crt_k > tz->trips.critical.temperature)
--					pr_warn(PREFIX "Critical threshold %d C\n",
--						crt);
-+					pr_info("Critical threshold %d C\n", crt);
-+
- 				tz->trips.critical.temperature = crt_k;
- 			}
- 		}
-@@ -318,14 +316,14 @@ static int acpi_thermal_trips_update(str
- 				"_HOT", NULL, &tmp);
- 		if (ACPI_FAILURE(status)) {
- 			tz->trips.hot.flags.valid = 0;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--					"No hot threshold\n"));
-+			acpi_handle_debug(tz->device->handle,
-+					  "No hot threshold\n");
- 		} else {
- 			tz->trips.hot.temperature = tmp;
- 			tz->trips.hot.flags.valid = 1;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--					"Found hot threshold [%lu]\n",
--					tz->trips.hot.temperature));
-+			acpi_handle_debug(tz->device->handle,
-+					  "Found hot threshold [%lu]\n",
-+					  tz->trips.hot.temperature);
- 		}
- 	}
- 
-@@ -378,7 +376,8 @@ static int acpi_thermal_trips_update(str
- 		status = acpi_evaluate_reference(tz->device->handle, "_PSL",
- 							NULL, &devices);
- 		if (ACPI_FAILURE(status)) {
--			pr_warn(PREFIX "Invalid passive threshold\n");
-+			acpi_handle_info(tz->device->handle,
-+					 "Invalid passive threshold\n");
- 			tz->trips.passive.flags.valid = 0;
- 		}
- 		else
-@@ -388,12 +387,12 @@ static int acpi_thermal_trips_update(str
- 				sizeof(struct acpi_handle_list))) {
- 			memcpy(&tz->trips.passive.devices, &devices,
- 				sizeof(struct acpi_handle_list));
--			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-+			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
- 		}
- 	}
- 	if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
- 		if (valid != tz->trips.passive.flags.valid)
--				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
-+				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
- 	}
- 
- 	/* Active (optional) */
-@@ -440,8 +439,8 @@ static int acpi_thermal_trips_update(str
- 			status = acpi_evaluate_reference(tz->device->handle,
- 						name, NULL, &devices);
- 			if (ACPI_FAILURE(status)) {
--				pr_warn(PREFIX "Invalid active%d threshold\n",
--					i);
-+				acpi_handle_info(tz->device->handle,
-+						 "Invalid active%d threshold\n", i);
- 				tz->trips.active[i].flags.valid = 0;
- 			}
- 			else
-@@ -451,12 +450,12 @@ static int acpi_thermal_trips_update(str
- 					sizeof(struct acpi_handle_list))) {
- 				memcpy(&tz->trips.active[i].devices, &devices,
- 					sizeof(struct acpi_handle_list));
--				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-+				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
- 			}
- 		}
- 		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
- 			if (valid != tz->trips.active[i].flags.valid)
--				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
-+				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
- 
- 		if (!tz->trips.active[i].flags.valid)
- 			break;
-@@ -469,7 +468,7 @@ static int acpi_thermal_trips_update(str
- 		if (ACPI_SUCCESS(status)
- 		    && memcmp(&tz->devices, &devices, sizeof(devices))) {
- 			tz->devices = devices;
--			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-+			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
- 		}
- 	}
- 
-@@ -925,8 +924,8 @@ static void acpi_thermal_notify(struct a
- 						  dev_name(&device->dev), event, 0);
- 		break;
- 	default:
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Unsupported event [0x%x]\n", event));
-+		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-+				  event);
- 		break;
- 	}
- }
-@@ -1074,7 +1073,7 @@ static int acpi_thermal_add(struct acpi_
- 	mutex_init(&tz->thermal_check_lock);
- 	INIT_WORK(&tz->thermal_check_work, acpi_thermal_check_fn);
- 
--	pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
-+	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
- 		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
- 	goto end;
- 
-@@ -1146,24 +1145,24 @@ static int acpi_thermal_resume(struct de
- static int thermal_act(const struct dmi_system_id *d) {
- 
- 	if (act == 0) {
--		pr_notice(PREFIX "%s detected: "
--			  "disabling all active thermal trip points\n", d->ident);
-+		pr_notice("%s detected: disabling all active thermal trip points\n",
-+			  d->ident);
- 		act = -1;
- 	}
- 	return 0;
- }
- static int thermal_nocrt(const struct dmi_system_id *d) {
- 
--	pr_notice(PREFIX "%s detected: "
--		  "disabling all critical thermal trip point actions.\n", d->ident);
-+	pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
-+		  d->ident);
- 	nocrt = 1;
- 	return 0;
- }
- static int thermal_tzp(const struct dmi_system_id *d) {
- 
- 	if (tzp == 0) {
--		pr_notice(PREFIX "%s detected: "
--			  "enabling thermal zone polling\n", d->ident);
-+		pr_notice("%s detected: enabling thermal zone polling\n",
-+			  d->ident);
- 		tzp = 300;	/* 300 dS = 30 Seconds */
- 	}
- 	return 0;
-@@ -1171,8 +1170,8 @@ static int thermal_tzp(const struct dmi_
- static int thermal_psv(const struct dmi_system_id *d) {
- 
- 	if (psv == 0) {
--		pr_notice(PREFIX "%s detected: "
--			  "disabling all passive thermal trip points\n", d->ident);
-+		pr_notice("%s detected: disabling all passive thermal trip points\n",
-+			  d->ident);
- 		psv = -1;
- 	}
- 	return 0;
-@@ -1225,7 +1224,7 @@ static int __init acpi_thermal_init(void
- 	dmi_check_system(thermal_dmi_table);
- 
- 	if (off) {
--		pr_notice(PREFIX "thermal control disabled\n");
-+		pr_notice("thermal control disabled\n");
- 		return -ENODEV;
- 	}
- 
-Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
-+++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
-@@ -57,7 +57,6 @@ shows the supported mask values, current
-     ACPI_PCI_COMPONENT              0x00400000
-     ACPI_CONTAINER_COMPONENT        0x01000000
-     ACPI_SYSTEM_COMPONENT           0x02000000
--    ACPI_THERMAL_COMPONENT          0x04000000
-     ACPI_MEMORY_DEVICE_COMPONENT    0x08000000
-     ACPI_PROCESSOR_COMPONENT        0x20000000
- 
-Index: linux-pm/drivers/acpi/sysfs.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sysfs.c
-+++ linux-pm/drivers/acpi/sysfs.c
-@@ -57,7 +57,6 @@ static const struct acpi_dlayer acpi_deb
- 	ACPI_DEBUG_INIT(ACPI_PCI_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_CONTAINER_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
--	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_MEMORY_DEVICE_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_PROCESSOR_COMPONENT),
- };
-Index: linux-pm/include/acpi/acpi_drivers.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_drivers.h
-+++ linux-pm/include/acpi/acpi_drivers.h
-@@ -20,7 +20,6 @@
- #define ACPI_PCI_COMPONENT		0x00400000
- #define ACPI_CONTAINER_COMPONENT	0x01000000
- #define ACPI_SYSTEM_COMPONENT		0x02000000
--#define ACPI_THERMAL_COMPONENT		0x04000000
- #define ACPI_MEMORY_DEVICE_COMPONENT	0x08000000
- #define ACPI_PROCESSOR_COMPONENT	0x20000000
- 
+ - Add a nice big fat printk in dmesg telling the user that they
+   are creating a unstable parallel universe that will lead to their
+   blood pressure going sky-high, or perhaps something more professional
+   sounding.
 
+- Rethink this. Do you really really want to encourage vendors
+  to use this raw API instead of them using the proper APIs?
 
+> 
+> While this all sounds very powerful it comes with a couple of caveats:
+> 1. Bug reports using raw commands will not get the same level of
+>    attention as bug reports using supported commands (via taint).
+> 2. Supported commands will be rejected by the RAW command.
+> 
+> With this comes new debugfs knob to allow full access to your toes with
+> your weapon of choice.
 
+Problem is that debugfs is no longer "debug" but is enabled in
+production kernel.
