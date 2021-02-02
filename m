@@ -2,255 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE19530CB91
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 20:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3DE30CBD4
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 20:41:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239796AbhBBT3O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 14:29:14 -0500
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:38687 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239702AbhBBT1J (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 14:27:09 -0500
-Received: by mail-oi1-f179.google.com with SMTP id h6so24015199oie.5;
-        Tue, 02 Feb 2021 11:26:53 -0800 (PST)
+        id S233568AbhBBThK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 14:37:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233234AbhBBTgu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 14:36:50 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A72C0613D6
+        for <linux-acpi@vger.kernel.org>; Tue,  2 Feb 2021 11:36:09 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id b187so7490486ybg.9
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Feb 2021 11:36:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mJRuYCsACyjbu2bTi4zs+lKukZqRlpJel5M3D22wH5U=;
+        b=Lq/9seBMFnU+4UyAjSWVG5UnuBUR0c7wil7/tBHsR5KVpgBTzegsn9UhWvcNzqmhvl
+         mZmw83KQeTXehx95rDkE5GLviFdWg5hzPfuAIszoAXqpBa/vji0I4q5K/HBbd3HG62xn
+         m+dFt5t3SkP0bWztk9w76PPzwBngR5E1MUiTvazUEVECMn+dw2O0MSyV/DIAlnS0HggO
+         rdzFtHZE53R0prr13ZZAYjp7vEKcW+Ex+nF3AmHu2pLwDoS+CuyGIWdykgl+EqM1ybHO
+         NLALbQnKQkb8mvMtEFB5+QWYm+dVfG9kJ2SrbmR8nyFvY9ELN54VdcoYOSPCoeMYMZtK
+         jobw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PL823AeoOnocWqbQIyVntk39u9KZJqQxqiL1WnA09Sg=;
-        b=QAcIWKCaEmMVCuLUqeV/dcFlxAshI6uttm0bKMUpf9B0ruSi3HFE8dmfCLqzo2xr2C
-         X5SlQvPiorTVGMVSlDmyXSTXsWD2PT+6N3apbZu44w5v4cGBFLhHhF0R75tD6xuSWcYn
-         iSoXx++JJy8rIELObkqtBcKuuFcEcfNrtyEv4VEm50nxcC1nPAWucQZCTVpkfv2iuGyJ
-         cw6dFTvna5qvA/7ZCaDHXg8s9IfMHfu/KJr3xZPmp87DY/h1M5hkBQMJixET+xCGmgkp
-         0gAY+ciewXpToYqTTI/Mo8hlR3cqefx7FYKzoVsRwWemI69Uhy/4ogiaiwELB45dC+rY
-         ZHOQ==
-X-Gm-Message-State: AOAM530BnhddBR44tKMjXfV8I5Pecf6Wf3RE8/XOCjNS/73yhwMlLHlt
-        jemlfuMn1F+ppAZ/LsmN72Ah5kZCGsEVQ6TNHfXiaZR8
-X-Google-Smtp-Source: ABdhPJw8RpA/f4W1jBVnbwWVEPVxyIJO/CICSQu1l8/b4aOfxPM+pRbMQdkYN/xOqpBAcmgFQ4+sQ3OmdkdTt3t0sHU=
-X-Received: by 2002:aca:fc84:: with SMTP id a126mr3912900oii.71.1612293988009;
- Tue, 02 Feb 2021 11:26:28 -0800 (PST)
+        bh=mJRuYCsACyjbu2bTi4zs+lKukZqRlpJel5M3D22wH5U=;
+        b=LZfHcIrUUnDoievB/ojQWVQHUMPFwxUyylK8Rd0A0rEmR4YbvZJ1mFdJzKFUslcwVe
+         dQ49v2S1EYRMG6o35h5KIaHEAgp4MJ6JVXQSzDZ9rr5x6dql+Y4p3tqRMBZM/3mz45KK
+         9UT/UxnSKMsFpcinWKaJBm+F7au+wG0g6Pe/69DcHnjChmdJo2y/wALOfUExBnsJthsq
+         b1Oqh6qXcGwp7oRGs59liZry20Z/47Ko/8GlmQreJGaYR3sjxRRluG+dsMU+eoJWcjok
+         0OQDynwmJH1/IMOuCNJs83xG8JCoWA7mdEK7hXe/ZaMkMmKH1nh4h3bm92V/7n25od2r
+         uT0w==
+X-Gm-Message-State: AOAM530AMm3XuA+8lUuiNk+zhsd/2JOZ1nKNhq7tLW0Vlvdv6Ql36fkw
+        /vgov6IiCAAmCVqe0++UPd8mQ/zI9JoZJRghCcj6jA==
+X-Google-Smtp-Source: ABdhPJz8gu3KaqjHBuCbAj6P0BapdPRW9atnTP1aMeUs9VOBOz5Lkid8nxWj9FHgeK6gAH6eDP3ClYOcs7/r5JQJcGc=
+X-Received: by 2002:a05:6902:1025:: with SMTP id x5mr34361582ybt.96.1612294568994;
+ Tue, 02 Feb 2021 11:36:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20210122204038.3238-1-ggherdovich@suse.cz> <20210122204038.3238-2-ggherdovich@suse.cz>
- <CAJZ5v0hQ_r3th5upo-X5fNBG0tUNbLbhQN-cqmDd1FGwhGx4dg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hQ_r3th5upo-X5fNBG0tUNbLbhQN-cqmDd1FGwhGx4dg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 2 Feb 2021 20:26:16 +0100
-Message-ID: <CAJZ5v0jsF-_8GzQgqZH10bf0oUTmALiT1kVcjDqYgGPqx9iKZg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost in
- schedutil invariant formula
-To:     Giovanni Gherdovich <ggherdovich@suse.cz>
-Cc:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Jon Grimm <Jon.Grimm@amd.com>,
-        Nathan Fontenot <Nathan.Fontenot@amd.com>,
-        Yazen Ghannam <Yazen.Ghannam@amd.com>,
-        Thomas Lendacky <Thomas.Lendacky@amd.com>,
-        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Michael Larabel <Michael@phoronix.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
+References: <20210202043345.3778765-1-saravanak@google.com>
+ <20210202043345.3778765-2-saravanak@google.com> <CAJZ5v0j=ib_0tziOrEtafuezhgihNxh-Tv4-jT57z0b34uUHPw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0j=ib_0tziOrEtafuezhgihNxh-Tv4-jT57z0b34uUHPw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 2 Feb 2021 11:35:33 -0800
+Message-ID: <CAGETcx_UF8H_Fo-goSgMg8iKjV_+LQvSyxsYXa+q5vmDAAOB8Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] driver core: fw_devlink: Detect supplier devices
+ that will never be added
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Martin Kaiser <martin@kaiser.cx>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Cc: Android Kernel" <kernel-team@android.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 2, 2021 at 7:59 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, Feb 2, 2021 at 6:12 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> On Fri, Jan 22, 2021 at 9:47 PM Giovanni Gherdovich <ggherdovich@suse.cz> wrote:
+> On Tue, Feb 2, 2021 at 5:33 AM Saravana Kannan <saravanak@google.com> wrote:
 > >
+> > During the initial parsing of firmware by fw_devlink, fw_devlink might
+> > infer that some supplier firmware nodes would get populated as devices.
+> > But the inference is not always correct. This patch tries to logically
+> > detect and fix such mistakes as boot progresses or more devices probe.
+> >
+> > fw_devlink makes a fundamental assumption that once a device binds to a
+> > driver, it will populate (i.e: add as struct devices) all the child
+> > firmware nodes that could be populated as devices (if they aren't
+> > populated already).
+> >
+> > So, whenever a device probes, we check all its child firmware nodes. If
+> > a child firmware node has a corresponding device populated, we don't
+> > modify the child node or its descendants. However, if a child firmware
+> > node has not been populated as a device, we delete all the fwnode links
+> > where the child node or its descendants are suppliers. This ensures that
+> > no other device is blocked on a firmware node that will never be
+> > populated as a device. We also mark such fwnodes as NOT_DEVICE, so that
+> > no new fwnode links are created with these nodes as suppliers.
+> >
+> > Fixes: e590474768f1 ("driver core: Set fw_devlink=on by default")
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
 >
-> [cut]
->
-> >
-> > Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD systems")
-> > Fixes: 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC")
-> > Reported-by: Michael Larabel <Michael@phoronix.com>
-> > Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-> > ---
-> >  drivers/cpufreq/acpi-cpufreq.c   | 64 +++++++++++++++++++++++++++++++-
-> >  drivers/cpufreq/cpufreq.c        |  3 ++
-> >  include/linux/cpufreq.h          |  5 +++
-> >  kernel/sched/cpufreq_schedutil.c |  8 +++-
-> >  4 files changed, 76 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-> > index 1e4fbb002a31..2378bc1bf2c4 100644
-> > --- a/drivers/cpufreq/acpi-cpufreq.c
-> > +++ b/drivers/cpufreq/acpi-cpufreq.c
-> > @@ -27,6 +27,10 @@
-> >
-> >  #include <acpi/processor.h>
-> >
-> > +#ifdef CONFIG_ACPI_CPPC_LIB
->
-> Why is the #ifdef needed here?
->
-> > +#include <acpi/cppc_acpi.h>
-> > +#endif
-> > +
-> >  #include <asm/msr.h>
-> >  #include <asm/processor.h>
-> >  #include <asm/cpufeature.h>
-> > @@ -628,11 +632,57 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
-> >  }
-> >  #endif
-> >
-> > +#ifdef CONFIG_ACPI_CPPC_LIB
-> > +static bool amd_max_boost(unsigned int max_freq,
-> > +                         unsigned int *max_boost)
-> > +{
-> > +       struct cppc_perf_caps perf_caps;
-> > +       u64 highest_perf, nominal_perf, perf_ratio;
-> > +       int ret;
-> > +
-> > +       ret = cppc_get_perf_caps(0, &perf_caps);
-> > +       if (ret) {
-> > +               pr_debug("Could not retrieve perf counters (%d)\n", ret);
-> > +               return false;
-> > +       }
-> > +
-> > +       highest_perf = perf_caps.highest_perf;
-> > +       nominal_perf = perf_caps.nominal_perf;
-> > +
-> > +       if (!highest_perf || !nominal_perf) {
-> > +               pr_debug("Could not retrieve highest or nominal performance\n");
-> > +               return false;
-> > +       }
-> > +
-> > +       perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-> > +       if (perf_ratio <= SCHED_CAPACITY_SCALE) {
-> > +               pr_debug("Either perf_ratio is 0, or nominal >= highest performance\n");
-> > +               return false;
-> > +       }
-> > +
-> > +       *max_boost = max_freq * perf_ratio >> SCHED_CAPACITY_SHIFT;
-> > +       if (!*max_boost) {
-> > +               pr_debug("max_boost seems to be zero\n");
-> > +               return false;
-> > +       }
-> > +
-> > +       return true;
-> > +}
-> > +#else
-> > +static bool amd_max_boost(unsigned int max_freq,
-> > +                         unsigned int *max_boost)
-> > +{
-> > +       return false;
-> > +}
-> > +#endif
-> > +
-> >  static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
-> >  {
-> >         unsigned int i;
-> >         unsigned int valid_states = 0;
-> >         unsigned int cpu = policy->cpu;
-> > +       unsigned int freq, max_freq = 0;
-> > +       unsigned int max_boost;
-> >         struct acpi_cpufreq_data *data;
-> >         unsigned int result = 0;
-> >         struct cpuinfo_x86 *c = &cpu_data(policy->cpu);
-> > @@ -779,15 +829,25 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
-> >                     freq_table[valid_states-1].frequency / 1000)
-> >                         continue;
-> >
-> > +               freq = perf->states[i].core_frequency * 1000;
-> >                 freq_table[valid_states].driver_data = i;
-> > -               freq_table[valid_states].frequency =
-> > -                   perf->states[i].core_frequency * 1000;
-> > +               freq_table[valid_states].frequency = freq;
-> > +
-> > +               if (freq > max_freq)
-> > +                       max_freq = freq;
-> > +
-> >                 valid_states++;
-> >         }
-> >         freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
-> >         policy->freq_table = freq_table;
-> >         perf->state = 0;
-> >
-> > +       if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-> > +           amd_max_boost(max_freq, &max_boost)) {
-> > +               policy->cpuinfo.max_boost = max_boost;
->
-> Why not to set max_freq to max_boost instead?
+> Still ACKed.
 
-I mean, would setting the frequency in the last table entry to max_boost work?
+Thanks. I didn't want to add your Ack when I made changes since your Ack.
 
-Alternatively, one more (artificial) entry with the frequency equal to
-max_boost could be added.
-
-> This value is set once at the init time anyway and schedutil would use
-> max_boost instead of max_freq anyway.
->
-> Also notice that the static branch is global and the max_boost value
-> for different CPUs may be different, at least in theory.
->
-> > +               static_branch_enable(&cpufreq_amd_max_boost);
-> > +       }
-> > +
-> >         switch (perf->control_register.space_id) {
-> >         case ACPI_ADR_SPACE_SYSTEM_IO:
-> >                 /*
-> > diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> > index d0a3525ce27f..b96677f6b57e 100644
-> > --- a/drivers/cpufreq/cpufreq.c
-> > +++ b/drivers/cpufreq/cpufreq.c
-> > @@ -2721,6 +2721,9 @@ int cpufreq_boost_enabled(void)
-> >  }
-> >  EXPORT_SYMBOL_GPL(cpufreq_boost_enabled);
-> >
-> > +DEFINE_STATIC_KEY_FALSE(cpufreq_amd_max_boost);
-> > +EXPORT_SYMBOL_GPL(cpufreq_amd_max_boost);
-> > +
-> >  /*********************************************************************
-> >   *               REGISTER / UNREGISTER CPUFREQ DRIVER                *
-> >   *********************************************************************/
-> > diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-> > index 9c8b7437b6cd..341cac76d254 100644
-> > --- a/include/linux/cpufreq.h
-> > +++ b/include/linux/cpufreq.h
-> > @@ -40,9 +40,14 @@ enum cpufreq_table_sorting {
-> >         CPUFREQ_TABLE_SORTED_DESCENDING
-> >  };
-> >
-> > +DECLARE_STATIC_KEY_FALSE(cpufreq_amd_max_boost);
-> > +
-> > +#define cpufreq_driver_has_max_boost() static_branch_unlikely(&cpufreq_amd_max_boost)
-> > +
-> >  struct cpufreq_cpuinfo {
-> >         unsigned int            max_freq;
-> >         unsigned int            min_freq;
-> > +       unsigned int            max_boost;
-> >
-> >         /* in 10^(-9) s = nanoseconds */
-> >         unsigned int            transition_latency;
-> > diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-> > index 6931f0cdeb80..541f3db3f576 100644
-> > --- a/kernel/sched/cpufreq_schedutil.c
-> > +++ b/kernel/sched/cpufreq_schedutil.c
-> > @@ -159,8 +159,12 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
-> >                                   unsigned long util, unsigned long max)
-> >  {
-> >         struct cpufreq_policy *policy = sg_policy->policy;
-> > -       unsigned int freq = arch_scale_freq_invariant() ?
-> > -                               policy->cpuinfo.max_freq : policy->cur;
-> > +       unsigned int freq, max_freq;
-> > +
-> > +       max_freq = cpufreq_driver_has_max_boost() ?
-> > +                       policy->cpuinfo.max_boost : policy->cpuinfo.max_freq;
-> > +
-> > +       freq = arch_scale_freq_invariant() ? max_freq : policy->cur;
-> >
-> >         freq = map_util_freq(util, freq, max);
-> >
-> > --
-> > 2.26.2
-> >
+-Saravana
