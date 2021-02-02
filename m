@@ -2,97 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BE930C952
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9530830C9A2
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238313AbhBBSQK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 13:16:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238397AbhBBSOi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 13:14:38 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8131EC06174A;
-        Tue,  2 Feb 2021 10:13:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=bJEP+2U5IHzdV2qfnQ7rYOCO3psxW3Bn2kjhHos5sUE=; b=wJAxx4saCmpOESyrOd9ngpJa8p
-        WclqsGHnEBCWPZPSjwMviTo2DraBgO/ruRSqVc1jZKjk8P1ETlGUT0ZhoSJ33sXPtY4wPD7EvVtuh
-        vCvgqYuU6TWVajw+XMVs3AHKvE5tj9r31Wn/vHI220bvXTQUv2tsHtmfxQzVKF/YsaUzbG3Vf9Ab3
-        k/bav4UP053XTUZXT8EEZItKfYHXn9QYa4ayeq5KkBDZ9C0tBvTgz8TTDs1JdXN30lUSljn6FZsQA
-        n63z8TKMycIgOhwJqOfnP/Y2l/w5Xc5shymhQEajRookQg5x/6X5bhabeGGdnWvfGkOTYGGBW5qIJ
-        kuPLgAzg==;
-Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1l70BW-00FZoh-LW; Tue, 02 Feb 2021 18:13:54 +0000
-Date:   Tue, 2 Feb 2021 18:13:54 +0000
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-Cc:     linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        daniel.lll@alibaba-inc.com,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH 05/14] cxl/mem: Register CXL memX devices
-Message-ID: <20210202181354.GE3708021@infradead.org>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-6-ben.widawsky@intel.com>
+        id S238491AbhBBSXk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 13:23:40 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:57100 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238420AbhBBSVY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 13:21:24 -0500
+Received: from 89-64-80-193.dynamic.chello.pl (89.64.80.193) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
+ id 637ff068aa18e73b; Tue, 2 Feb 2021 19:19:56 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH v2 1/5] ACPI: AC: Clean up printing messages
+Date:   Tue, 02 Feb 2021 19:14:55 +0100
+Message-ID: <5584914.5WsbVgmIkf@kreacher>
+In-Reply-To: <1991501.dpTHplkurC@kreacher>
+References: <2367702.B5bJTmGzJm@kreacher> <1991501.dpTHplkurC@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210130002438.1872527-6-ben.widawsky@intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 25e08e5f40bd..33432a4cbe23 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -3179,6 +3179,20 @@ struct device *get_device(struct device *dev)
->  }
->  EXPORT_SYMBOL_GPL(get_device);
->  
-> +/**
-> + * get_live_device() - increment reference count for device iff !dead
-> + * @dev: device.
-> + *
-> + * Forward the call to get_device() if the device is still alive. If
-> + * this is called with the device_lock() held then the device is
-> + * guaranteed to not die until the device_lock() is dropped.
-> + */
-> +struct device *get_live_device(struct device *dev)
-> +{
-> +	return dev && !dev->p->dead ? get_device(dev) : NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(get_live_device);
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Err, if you want to add new core functionality that needs to be in a
-separate well documented prep patch, and also CCed to the relevant
-maintainers.
+Replace the ACPI_DEBUG_PRINT() and ACPI_EXCEPTION() instances
+in ac.c with acpi_handle_debug() and acpi_handle_info() calls,
+respectively, which among other things causes the excessive log
+level of the messages previously printed via ACPI_EXCEPTION() to
+be more adequate.
 
->  	mutex_unlock(&cxlm->mbox.mutex);
->  }
->  
-> +static int cxl_memdev_open(struct inode *inode, struct file *file)
-> +{
-> +	struct cxl_memdev *cxlmd =
-> +		container_of(inode->i_cdev, typeof(*cxlmd), cdev);
-> +
-> +	file->private_data = cxlmd;
+Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
+used any more, drop the no longer needed ACPI_AC_COMPONENT definition
+from the headers and update the documentation accordingly.
 
-There is no good reason to ever mirror stuff from the inode into
-file->private_data, as you can just trivially get at the original
-location using file_inode(file).
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+v1 -> v2: Changelog update
+
+---
+ Documentation/firmware-guide/acpi/debug.rst |    1 -
+ drivers/acpi/ac.c                           |   12 +++++-------
+ drivers/acpi/sysfs.c                        |    1 -
+ include/acpi/acpi_drivers.h                 |    1 -
+ 4 files changed, 5 insertions(+), 10 deletions(-)
+
+Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
+===================================================================
+--- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
++++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
+@@ -52,7 +52,6 @@ shows the supported mask values, current
+     ACPI_CA_DISASSEMBLER            0x00000800
+     ACPI_COMPILER                   0x00001000
+     ACPI_TOOLS                      0x00002000
+-    ACPI_AC_COMPONENT               0x00020000
+     ACPI_BATTERY_COMPONENT          0x00040000
+     ACPI_BUTTON_COMPONENT           0x00080000
+     ACPI_SBS_COMPONENT              0x00100000
+Index: linux-pm/drivers/acpi/ac.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/ac.c
++++ linux-pm/drivers/acpi/ac.c
+@@ -28,9 +28,6 @@
+ #define ACPI_AC_STATUS_ONLINE		0x01
+ #define ACPI_AC_STATUS_UNKNOWN		0xFF
+ 
+-#define _COMPONENT		ACPI_AC_COMPONENT
+-ACPI_MODULE_NAME("ac");
+-
+ MODULE_AUTHOR("Paul Diefenbaugh");
+ MODULE_DESCRIPTION("ACPI AC Adapter Driver");
+ MODULE_LICENSE("GPL");
+@@ -102,8 +99,9 @@ static int acpi_ac_get_state(struct acpi
+ 	status = acpi_evaluate_integer(ac->device->handle, "_PSR", NULL,
+ 				       &ac->state);
+ 	if (ACPI_FAILURE(status)) {
+-		ACPI_EXCEPTION((AE_INFO, status,
+-				"Error reading AC Adapter state"));
++		acpi_handle_info(ac->device->handle,
++				"Error reading AC Adapter state: %s\n",
++				acpi_format_exception(status));
+ 		ac->state = ACPI_AC_STATUS_UNKNOWN;
+ 		return -ENODEV;
+ 	}
+@@ -153,8 +151,8 @@ static void acpi_ac_notify(struct acpi_d
+ 
+ 	switch (event) {
+ 	default:
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-				  "Unsupported event [0x%x]\n", event));
++		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
++				  event);
+ 		fallthrough;
+ 	case ACPI_AC_NOTIFY_STATUS:
+ 	case ACPI_NOTIFY_BUS_CHECK:
+Index: linux-pm/drivers/acpi/sysfs.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sysfs.c
++++ linux-pm/drivers/acpi/sysfs.c
+@@ -52,7 +52,6 @@ static const struct acpi_dlayer acpi_deb
+ 	ACPI_DEBUG_INIT(ACPI_COMPILER),
+ 	ACPI_DEBUG_INIT(ACPI_TOOLS),
+ 
+-	ACPI_DEBUG_INIT(ACPI_AC_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_BATTERY_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_BUTTON_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_SBS_COMPONENT),
+Index: linux-pm/include/acpi/acpi_drivers.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_drivers.h
++++ linux-pm/include/acpi/acpi_drivers.h
+@@ -15,7 +15,6 @@
+  * Please update drivers/acpi/debug.c and Documentation/firmware-guide/acpi/debug.rst
+  * if you add to this list.
+  */
+-#define ACPI_AC_COMPONENT		0x00020000
+ #define ACPI_BATTERY_COMPONENT		0x00040000
+ #define ACPI_BUTTON_COMPONENT		0x00080000
+ #define ACPI_SBS_COMPONENT		0x00100000
+
+
+
