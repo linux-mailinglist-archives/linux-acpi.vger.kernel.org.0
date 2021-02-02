@@ -2,119 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A548E30BD22
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 12:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1D430BFC5
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 14:43:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbhBBLbe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 06:31:34 -0500
-Received: from mga17.intel.com ([192.55.52.151]:6959 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230319AbhBBL3e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Feb 2021 06:29:34 -0500
-IronPort-SDR: Mfg/488EZG1NsiXVMVGwbHvLj29W8WOYlWqewBIsz83yGGVMvRAYZC7J62+9bJmDdvYcO3YXe/
- 928gBCh2FJJA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="160603654"
-X-IronPort-AV: E=Sophos;i="5.79,394,1602572400"; 
-   d="scan'208";a="160603654"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 03:27:43 -0800
-IronPort-SDR: 2Rc0Ikw4v3gdbwgcJwco0+nR1oatilf8/ryPGdXG7K+2H+4ey6rP6I8ScbsETZ+vR3T1kOCBEy
- GN/VDhaWLS0Q==
-X-IronPort-AV: E=Sophos;i="5.79,394,1602572400"; 
-   d="scan'208";a="370573944"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 03:27:39 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1l6tqK-001NPV-2X; Tue, 02 Feb 2021 13:27:36 +0200
-Date:   Tue, 2 Feb 2021 13:27:36 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, andy@kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
+        id S232280AbhBBNlO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 08:41:14 -0500
+Received: from smtprelay0164.hostedemail.com ([216.40.44.164]:33094 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232480AbhBBNjM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 08:39:12 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 6EA46180240BD;
+        Tue,  2 Feb 2021 13:38:19 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:1801:2198:2199:2393:2553:2559:2562:2691:2828:2895:3138:3139:3140:3141:3142:3353:3622:3743:3865:3866:3867:3868:3870:3871:3872:3874:4321:4605:5007:7576:7652:7875:9389:10004:10400:10848:11026:11232:11233:11473:11658:11783:11914:12043:12296:12297:12438:12740:12895:13069:13095:13311:13357:13439:13894:14181:14659:14721:21080:21212:21433:21451:21611:21627:21660:21740:30041:30054:30064:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: tub70_03089f0275cb
+X-Filterd-Recvd-Size: 3098
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf09.hostedemail.com (Postfix) with ESMTPA;
+        Tue,  2 Feb 2021 13:38:17 +0000 (UTC)
+Message-ID: <d1064a357d80e2df3e78de1119f23c6f60ee1a50.camel@perches.com>
+Subject: Re: [PATCH v1 2/5] ACPI: battery: Clean up printing messages
+From:   Joe Perches <joe@perches.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>
-Subject: Re: [PATCH v2 2/7] acpi: utils: Add function to fetch dependent
- acpi_devices
-Message-ID: <YBk3KDs5FCffkQp1@smile.fi.intel.com>
-References: <b381b48e-1bf2-f3e7-10a6-e51cd261f43c@gmail.com>
- <CAJZ5v0iU2m4Hs6APuauQ645DwbjYaB8nJFjYH0+7yQnR-FPZBQ@mail.gmail.com>
- <e2d7e5e9-920f-7227-76a6-b166e30e11e5@gmail.com>
- <CAJZ5v0gg5oXG3yOO9iDvPKSsadYrFojW6JcKfZcQbFFpO78zAQ@mail.gmail.com>
- <85ccf00d-7c04-b1da-a4bc-82c805df69c9@gmail.com>
- <CAJZ5v0jO9O1zhBMNRNB5kRt1o86BTjr1kRuFUe=nNVTDwBQhEg@mail.gmail.com>
- <0fac24d2-e8fc-7dc8-0f2f-44c7aadb1daf@gmail.com>
- <CAJZ5v0jVxMMGh6k-vXeBRsCtD0L14poNUrg4kZOpCfOz2sZGZQ@mail.gmail.com>
- <ee8f6b58-55c8-e0a0-c161-bdef361f9e0a@gmail.com>
- <d9ec0439-4323-51a2-70e7-c258fe63cd86@gmail.com>
+        Erik Kaneda <erik.kaneda@intel.com>
+Date:   Tue, 02 Feb 2021 05:38:16 -0800
+In-Reply-To: <CAJZ5v0hoPLKe9mVY_mJgFrcLSdutTd-UFGJS11pu8qDzemy43w@mail.gmail.com>
+References: <2367702.B5bJTmGzJm@kreacher> <1996712.1aSbzQgNOC@kreacher>
+         <ab62890a1128b0d3109553208379015fcb36e0c7.camel@perches.com>
+         <CAJZ5v0hoPLKe9mVY_mJgFrcLSdutTd-UFGJS11pu8qDzemy43w@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d9ec0439-4323-51a2-70e7-c258fe63cd86@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 02, 2021 at 09:58:17AM +0000, Daniel Scally wrote:
-> On 21/01/2021 21:06, Daniel Scally wrote:
-> > On 21/01/2021 18:08, Rafael J. Wysocki wrote:
-
-...
-
-> > No problem;  I'll tweak that then
+On Mon, 2021-02-01 at 19:44 +0100, Rafael J. Wysocki wrote:
+> On Mon, Feb 1, 2021 at 7:37 PM Joe Perches <joe@perches.com> wrote:
+> > 
+> > On Mon, 2021-02-01 at 19:16 +0100, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > 
+> > > Replace the ACPI_DEBUG_PRINT() and ACPI_EXCEPTION() instances
+> > > in battery.c with acpi_handle_debug() and acpi_handle_info() calls,
+> > > respectively, drop the _COMPONENT and ACPI_MODULE_NAME() definitions
+> > > that are not used any more, drop the no longer needed
+> > > ACPI_BATTERY_COMPONENT definition from the headers and update the
+> > > documentation accordingly.
+> > > 
+> > > While at it, update the pr_fmt() definition and drop the unneeded
+> > > PREFIX sybmbol definition from battery.c.
+> > []
+> > > --- linux-pm.orig/drivers/acpi/battery.c
+> > []
+> > > @@ -466,7 +460,8 @@ static int extract_package(struct acpi_b
+> > >  static int acpi_battery_get_status(struct acpi_battery *battery)
+> > >  {
+> > >       if (acpi_bus_get_status(battery->device)) {
+> > > -             ACPI_EXCEPTION((AE_INFO, AE_ERROR, "Evaluating _STA"));
+> > > +             acpi_handle_info(battery->device->handle,
+> > > +                              "_STA evaluation failed\n");
+> > 
+> > I believe this changes the logging level from KERN_ERR to KERN_INFO.
+> > 
+> > Perhaps this and others should instead use acpi_handle_err()
 > 
-> Slightly walking back my "No problem" here; as I understand this there's
-> kinda two options:
+> Actually, these log level changes, because the messages in question
+> are not very urgent.
 > 
-> 1. Walk over the (locked) list, when a match is found unlock, run the
-> callback and re-lock.
-> 
-> The problem with that idea is unless I'm mistaken there's no guarantee
-> that the .next pointer is still valid then (even using the *_safe()
-> methods) because either the next or the next + 1 entry could have been
-> removed whilst the list was unlocked and the callback was being ran, so
-> this seems a little unsafe.
+> Something doesn't work and it's kind of good to know that, but there's
+> not much that can be done about it.
 
-It's easy to solve.
-See an example in deferred_probe_work_func().
+That more argues for removal of KERN_<LEVEL> filtering.
 
-https://elixir.bootlin.com/linux/latest/source/drivers/base/dd.c#L75
+I fail to see how difficult it is to change these to the existing
+KERN_<LEVEL> using a simple acpi_handle_info() -> acpi_handle_err()
+substitution where appropriate.
 
-> 2. Walk over the (locked) list twice, the first time counting matching
-> entries and using that to allocate a temporary buffer, then walk again
-> to store the matching entries into the buffer. Finally, run the callback
-> for everything in the buffer, free it and return.
-> 
-> Obviously that's a lot less efficient than the current function, which
-> isn't particularly palatable.
-> 
-> Apologies if I've missed a better option that would work fine; but
-> failing that do you still want me to go ahead and change
-> acpi_walk_dep_device_list() to do this (I'd choose #2 of the above), or
-> fallback to using acpi_dev_get_next_dependent_dev() described above? If
-> the latter, does acpi_walk_dep_device_list() maybe need re-naming to
-> make clear it's not a generalised function?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+At a minimum, the commit message should note the KERN_<LEVEL> changes.
 
