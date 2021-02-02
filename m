@@ -2,149 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1515C30C9B9
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 986F730C9E0
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:34:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238517AbhBBS1B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 13:27:01 -0500
-Received: from mga11.intel.com ([192.55.52.93]:64452 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238289AbhBBSZE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Feb 2021 13:25:04 -0500
-IronPort-SDR: e23cfKNk14nG+y+GcyHumJmOm8EhyYG6TNHiBXm9to+MOhS9nO8oLkKqcfi0UubNcoZ/kkYyzC
- goFY6vFohgZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="177397682"
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400"; 
-   d="scan'208";a="177397682"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:24:21 -0800
-IronPort-SDR: rlVOr+F59Dm93VedZPbkRLa3d7C9TiDXpbtmq3k0WVsbXYLMphar3MgWZ1t5VZzywr2UW91/TO
- FbLUWuM8GdVQ==
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400"; 
-   d="scan'208";a="391610338"
-Received: from joship1x-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.131.202])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:24:20 -0800
-Date:   Tue, 2 Feb 2021 10:24:18 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        daniel.lll@alibaba-inc.com,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-Message-ID: <20210202182418.3wyxnm6rqeoeclu2@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-4-ben.widawsky@intel.com>
- <20210202181016.GD3708021@infradead.org>
+        id S238528AbhBBSbe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 13:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238698AbhBBS33 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 13:29:29 -0500
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 078DBC0617A9
+        for <linux-acpi@vger.kernel.org>; Tue,  2 Feb 2021 10:28:48 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id s61so18115850ybi.4
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Feb 2021 10:28:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lNJbMXdW5NhHjyCId8HTqd13CNsq/Z1nn+1X4OrWEfw=;
+        b=G4bS+HtEVOYuA7OOzdnpQ/V32sCFCZ18daV1mH17GoydeQwgUsittgg63qpXUrVy6R
+         UjBz9ydicELIrB/h49LrQyds0I3p3jK6779AjQrjh55dbRDCBxI+XUhlCVgloKrHxTq3
+         t2Ihd6qUZPG4w2Z5bjscgkKILXQBfwRRfXToiliDvOrAzZdBIPeALDn765Ui8i9Aomrh
+         gmGyjY9aNLQJ3XrPqYGLaa1LXgSuFULtt/udI3V8dbSP9g5tvQSQIiZmFZ/9BG3oIulj
+         PTWEZQkNqaB/Kz3joOqRb+7NVGjMbl1oGXGvalX8sxCNiCP484H72xGwxVOcDsXYRklI
+         2jjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lNJbMXdW5NhHjyCId8HTqd13CNsq/Z1nn+1X4OrWEfw=;
+        b=KnyxrShy/Ke7GWrKSjIyXYafX0jHQsVCPSAJ4np06CAYrD9TjztwVhVmAsbtEtMkGi
+         2NAy039X4BsB4M6I1b6Czb7iXSZ2ss1Hq7PR9Vxk2EkMieZg5INNddGw+sH2yQuhwuQu
+         q0f2hooPsOUA8651FQaIkUjp4f0faCdlIbvyV5yZhjc2bVBeE/RWLT+5gfMx17yUrRbr
+         KeJ0RyQ7gZxYyNwTRXkjy8cjTCzOd4FBPIdPFLT6yETDs/n66Ji/M7u76UWNn5TDc3bY
+         Ql2ttzJtUJC8peyDc2kSmQDmiLvW9lmaauO0xORyjliutAaMFCf54yIAKoisd+3c0TnH
+         2Mow==
+X-Gm-Message-State: AOAM5302FselhpvIrM6Bt/QegqiigqtVP2yCT0iUi8FeEpWhDS7cULGy
+        TZbBekcdxSxrK2S+r5zz7v3ZQmr3cSufjX+kQWnWUg==
+X-Google-Smtp-Source: ABdhPJzw4AXagK88h3IvA01AciBUdKDaE3KyCS8Lz/IMvU52NU66GWMWXgJ7wvKfGw+PVx8X1AL4krqmBRohWpAIHck=
+X-Received: by 2002:a25:c683:: with SMTP id k125mr36522770ybf.32.1612290528066;
+ Tue, 02 Feb 2021 10:28:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210202181016.GD3708021@infradead.org>
+References: <20210202043345.3778765-1-saravanak@google.com>
+ <cb6edbd0-346b-0674-5b5c-7ce3a437736d@microchip.com> <CAL_JsqKa5tHsKpOzkTjoiyQSJ+Q7_JOhkZ1m5tnOHK8dDGP7uA@mail.gmail.com>
+In-Reply-To: <CAL_JsqKa5tHsKpOzkTjoiyQSJ+Q7_JOhkZ1m5tnOHK8dDGP7uA@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 2 Feb 2021 10:28:11 -0800
+Message-ID: <CAGETcx9w5mnPzB=+xgApNiDkAup4+4Axi3P+H51t82RK2oAbhw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Make fw_devlink=on more forgiving
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Martin Kaiser <martin@kaiser.cx>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
+        Android Kernel Team <kernel-team@android.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-02-02 18:10:16, Christoph Hellwig wrote:
-> On Fri, Jan 29, 2021 at 04:24:27PM -0800, Ben Widawsky wrote:
-> >  #ifndef __CXL_H__
-> >  #define __CXL_H__
-> >  
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bitops.h>
-> > +#include <linux/io.h>
-> > +
-> > +#define CXL_SET_FIELD(value, field)                                            \
-> > +	({                                                                     \
-> > +		WARN_ON(!FIELD_FIT(field##_MASK, value));                      \
-> > +		FIELD_PREP(field##_MASK, value);                               \
-> > +	})
-> > +
-> > +#define CXL_GET_FIELD(word, field) FIELD_GET(field##_MASK, word)
-> 
-> This looks like some massive obsfucation.  What is the intent
-> here?
-> 
+On Tue, Feb 2, 2021 at 9:41 AM Rob Herring <robh+dt@kernel.org> wrote:
+>
+> On Tue, Feb 2, 2021 at 10:52 AM <Tudor.Ambarus@microchip.com> wrote:
+> >
+> > Hi, Saravana,
+> >
+> > On 2/2/21 6:33 AM, Saravana Kannan wrote:
+> > > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> > >
+> > > This patch series solves two general issues with fw_devlink=on
+> > >
+> > > Patch 1/3 and 3/3 addresses the issue of firmware nodes that look like
+> > > they'll have struct devices created for them, but will never actually
+> > > have struct devices added for them. For example, DT nodes with a
+> > > compatible property that don't have devices added for them.
+> > >
+> > > Patch 2/2 address (for static kernels) the issue of optional suppliers
+> > > that'll never have a driver registered for them. So, if the device could
+> > > have probed with fw_devlink=permissive with a static kernel, this patch
+> > > should allow those devices to probe with a fw_devlink=on. This doesn't
+> > > solve it for the case where modules are enabled because there's no way
+> > > to tell if a driver will never be registered or it's just about to be
+> > > registered. I have some other ideas for that, but it'll have to come
+> > > later thinking about it a bit.
+> > >
+> > > Marek, Geert,
+> > >
+> > > I don't expect v2 to do any better for your cases.
+> > >
+> > > This series not making any difference for Marek is still a mystery to
+> > > me. I guess one of the consumers doesn't take too well to its probe (and
+> > > it's consumers' probe) being delayed till late_initcall(). I'll continue
+> > > looking into it.
+> > >
+> > > Marc,
+> > >
+> > > This v2 should do better than v1 with gpiolib stub driver reverted. I
+> > > forgot to take care of the case where more suppliers could link after I
+> > > went and deleted some of the links. v2 handles that now.
+> > >
+> > > Tudor,
+> > >
+> > > You should still make the clock driver fix (because it's a bug), but I
+> > > think this series will fix your issue too (even without the clock driver
+> > > fix). Can you please give this a shot?
+> > >
+> >
+> > Did the following tests (using sama5_defconfig and at91-sama5d2_xplained.dts):
+> > 1/ modular kernel with your v2 on top of next-20210202, and without the clock
+> > driver fix: the problem persists.
+> >
+> > 2/ static kernel with your v2 on top of next-20210202, and without the clock
+> > driver fix: the problem persists. Comparing to the previous test, I see that
+> > the links to pmc are dropped. I can see the following only with early printk
+> > enabled:
+> > platform fc008000.serial: Dropping the link to f0014000.pmc
+> > But later on, the serial still gets deferred waiting for the dma controller
+> > this time:
+> > platform f8020000.serial: probe deferral - supplier f0010000.dma-controller not ready
+> > I'll check what happens in the dma-controller.
+>
+> Not sure if it's the case here, but some serial drivers use DMA only
+> when available and decide that on open() rather than probe. How is
+> devlinks going to deal with that?
 
-I will drop these. I don't recall why I did this to be honest.
+That's kinda what I'm trying to work out here :) but in a more generic fashion.
 
-> > +	/* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
-> > +	struct {
-> > +		void __iomem *regs;
-> > +	} status;
-> > +
-> > +	/* Cap 0002h - CXL_CAP_CAP_ID_PRIMARY_MAILBOX */
-> > +	struct {
-> > +		void __iomem *regs;
-> > +		size_t payload_size;
-> > +	} mbox;
-> > +
-> > +	/* Cap 4000h - CXL_CAP_CAP_ID_MEMDEV */
-> > +	struct {
-> > +		void __iomem *regs;
-> > +	} mem;
-> 
-> This style looks massively obsfucated.  For one the comments look like
-> absolute gibberish, but also what is the point of all these anonymous
-> structures?
-
-They're not anonymous, and their names are for the below register functions. The
-comments are connected spec reference 'Cap XXXXh' to definitions in cxl.h. I can
-articulate that if it helps.
-
-> 
-> > +#define cxl_reg(type)                                                          \
-> > +	static inline void cxl_write_##type##_reg32(struct cxl_mem *cxlm,      \
-> > +						    u32 reg, u32 value)        \
-> > +	{                                                                      \
-> > +		void __iomem *reg_addr = cxlm->type.regs;                      \
-> > +		writel(value, reg_addr + reg);                                 \
-> > +	}                                                                      \
-> > +	static inline void cxl_write_##type##_reg64(struct cxl_mem *cxlm,      \
-> > +						    u32 reg, u64 value)        \
-> > +	{                                                                      \
-> > +		void __iomem *reg_addr = cxlm->type.regs;                      \
-> > +		writeq(value, reg_addr + reg);                                 \
-> > +	}                                                                      \
-> 
-> What is the value add of all this obsfucation over the trivial
-> calls to the write*/read* functions, possible with a locally
-> declarate "void __iomem *" variable in the callers like in all
-> normall drivers?  Except for making the life of the poor soul trying
-> to debug this code some time in the future really hard, of course.
-> 
-
-The register space for CXL devices is a bit weird since it's all subdivided
-under 1 BAR for now. To clearly distinguish over the different subregions, these
-helpers exist. It's really easy to mess this up as the developer and I actually
-would disagree that it makes debugging quite a bit easier. It also gets more
-convoluted when you add the other 2 BARs which also each have their own
-subregions.
-
-For example. if my mailbox function does:
-cxl_read_status_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-
-instead of:
-cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-
-It's easier to spot than:
-readl(cxlm->regs + cxlm->status_offset + CXLDEV_MB_CAPS_OFFSET)
-
-
-> > +	/* 8.2.8.4.3 */
-> 
-> ????
-> 
-
-I had been trying to be consistent with 'CXL2.0 - ' in front of all spec
-reference. I obviously missed this one.
-
+-Saravana
