@@ -2,81 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7246A30C9A7
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1515C30C9B9
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 19:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238466AbhBBSYU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 13:24:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238343AbhBBSWW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 13:22:22 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F2DC061573;
-        Tue,  2 Feb 2021 10:21:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=vJQck9cecnoSoCojZCPUMXo6OxMEgYGIIQPIgpbtvzM=; b=dIImtc+P/h3mcm9NDqxb8YSdZQ
-        c2g0P6glS3/CaT+4ZRrshegHoxPsUVRVfd3wWFg859SU+13ZDr3vx9tRGbHZaQstSJzDbhZToecHQ
-        VKkj3tQVDjH2KNOOyqaouT+qeVw7a9lAuWMOnVzPgYBs9S9zFqUJa6PDazctBF8EIRWIXmn5Ol00L
-        AEUJ7Nd2H0qVJZICj48TvnwqKdGldWwSvhV5+0ZWltgbDt9Swpa1DiI65Sn/JAfh82wBbfpXLvJCJ
-        zXns1uGPmQt9Trlj8YiVzB+0w7vzteZgX/vuIJqpySogTEkCNtC87xZEjZk920RlnDHp/WBn3KRpf
-        ksX5m32A==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1l70Ic-0004la-3u; Tue, 02 Feb 2021 18:21:14 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 21C3A306FFE;
-        Tue,  2 Feb 2021 19:21:10 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0BDCF203B8CC5; Tue,  2 Feb 2021 19:21:10 +0100 (CET)
-Date:   Tue, 2 Feb 2021 19:21:10 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Giovanni Gherdovich <ggherdovich@suse.cz>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Jon Grimm <Jon.Grimm@amd.com>,
-        Nathan Fontenot <Nathan.Fontenot@amd.com>,
-        Yazen Ghannam <Yazen.Ghannam@amd.com>,
-        Thomas Lendacky <Thomas.Lendacky@amd.com>,
-        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
-        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Michael Larabel <Michael@phoronix.com>, x86@kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost
- in schedutil invariant formula
-Message-ID: <YBmYFnZuezAIlEhw@hirez.programming.kicks-ass.net>
-References: <20210122204038.3238-1-ggherdovich@suse.cz>
- <20210122204038.3238-2-ggherdovich@suse.cz>
- <YA6YEK4/rjtPLdkG@hirez.programming.kicks-ass.net>
- <1611652167.11983.65.camel@suse.cz>
- <20210126093140.GB3592@techsingularity.net>
- <YA/pYrvvjf8AxPEv@hirez.programming.kicks-ass.net>
- <1611933781.15858.48.camel@suse.cz>
- <1612275425.27785.70.camel@suse.cz>
+        id S238517AbhBBS1B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 13:27:01 -0500
+Received: from mga11.intel.com ([192.55.52.93]:64452 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238289AbhBBSZE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Feb 2021 13:25:04 -0500
+IronPort-SDR: e23cfKNk14nG+y+GcyHumJmOm8EhyYG6TNHiBXm9to+MOhS9nO8oLkKqcfi0UubNcoZ/kkYyzC
+ goFY6vFohgZw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="177397682"
+X-IronPort-AV: E=Sophos;i="5.79,396,1602572400"; 
+   d="scan'208";a="177397682"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:24:21 -0800
+IronPort-SDR: rlVOr+F59Dm93VedZPbkRLa3d7C9TiDXpbtmq3k0WVsbXYLMphar3MgWZ1t5VZzywr2UW91/TO
+ FbLUWuM8GdVQ==
+X-IronPort-AV: E=Sophos;i="5.79,396,1602572400"; 
+   d="scan'208";a="391610338"
+Received: from joship1x-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.131.202])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:24:20 -0800
+Date:   Tue, 2 Feb 2021 10:24:18 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
+Message-ID: <20210202182418.3wyxnm6rqeoeclu2@intel.com>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-4-ben.widawsky@intel.com>
+ <20210202181016.GD3708021@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1612275425.27785.70.camel@suse.cz>
+In-Reply-To: <20210202181016.GD3708021@infradead.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 02, 2021 at 03:17:05PM +0100, Giovanni Gherdovich wrote:
-> Hello Rafael,
+On 21-02-02 18:10:16, Christoph Hellwig wrote:
+> On Fri, Jan 29, 2021 at 04:24:27PM -0800, Ben Widawsky wrote:
+> >  #ifndef __CXL_H__
+> >  #define __CXL_H__
+> >  
+> > +#include <linux/bitfield.h>
+> > +#include <linux/bitops.h>
+> > +#include <linux/io.h>
+> > +
+> > +#define CXL_SET_FIELD(value, field)                                            \
+> > +	({                                                                     \
+> > +		WARN_ON(!FIELD_FIT(field##_MASK, value));                      \
+> > +		FIELD_PREP(field##_MASK, value);                               \
+> > +	})
+> > +
+> > +#define CXL_GET_FIELD(word, field) FIELD_GET(field##_MASK, word)
 > 
-> you haven't replied to this patch, which was written aiming at v5.11.
+> This looks like some massive obsfucation.  What is the intent
+> here?
+> 
 
-I've tentatively queued this for x86/urgent, but ideally this goes
-through a cpufreq tree. Rafael, Viresh?
+I will drop these. I don't recall why I did this to be honest.
 
+> > +	/* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
+> > +	struct {
+> > +		void __iomem *regs;
+> > +	} status;
+> > +
+> > +	/* Cap 0002h - CXL_CAP_CAP_ID_PRIMARY_MAILBOX */
+> > +	struct {
+> > +		void __iomem *regs;
+> > +		size_t payload_size;
+> > +	} mbox;
+> > +
+> > +	/* Cap 4000h - CXL_CAP_CAP_ID_MEMDEV */
+> > +	struct {
+> > +		void __iomem *regs;
+> > +	} mem;
+> 
+> This style looks massively obsfucated.  For one the comments look like
+> absolute gibberish, but also what is the point of all these anonymous
+> structures?
+
+They're not anonymous, and their names are for the below register functions. The
+comments are connected spec reference 'Cap XXXXh' to definitions in cxl.h. I can
+articulate that if it helps.
+
+> 
+> > +#define cxl_reg(type)                                                          \
+> > +	static inline void cxl_write_##type##_reg32(struct cxl_mem *cxlm,      \
+> > +						    u32 reg, u32 value)        \
+> > +	{                                                                      \
+> > +		void __iomem *reg_addr = cxlm->type.regs;                      \
+> > +		writel(value, reg_addr + reg);                                 \
+> > +	}                                                                      \
+> > +	static inline void cxl_write_##type##_reg64(struct cxl_mem *cxlm,      \
+> > +						    u32 reg, u64 value)        \
+> > +	{                                                                      \
+> > +		void __iomem *reg_addr = cxlm->type.regs;                      \
+> > +		writeq(value, reg_addr + reg);                                 \
+> > +	}                                                                      \
+> 
+> What is the value add of all this obsfucation over the trivial
+> calls to the write*/read* functions, possible with a locally
+> declarate "void __iomem *" variable in the callers like in all
+> normall drivers?  Except for making the life of the poor soul trying
+> to debug this code some time in the future really hard, of course.
+> 
+
+The register space for CXL devices is a bit weird since it's all subdivided
+under 1 BAR for now. To clearly distinguish over the different subregions, these
+helpers exist. It's really easy to mess this up as the developer and I actually
+would disagree that it makes debugging quite a bit easier. It also gets more
+convoluted when you add the other 2 BARs which also each have their own
+subregions.
+
+For example. if my mailbox function does:
+cxl_read_status_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+
+instead of:
+cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+
+It's easier to spot than:
+readl(cxlm->regs + cxlm->status_offset + CXLDEV_MB_CAPS_OFFSET)
+
+
+> > +	/* 8.2.8.4.3 */
+> 
+> ????
+> 
+
+I had been trying to be consistent with 'CXL2.0 - ' in front of all spec
+reference. I obviously missed this one.
 
