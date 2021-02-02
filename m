@@ -2,156 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B63C030B90E
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 09:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D941830B963
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Feb 2021 09:18:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbhBBH7W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Feb 2021 02:59:22 -0500
-Received: from mga04.intel.com ([192.55.52.120]:48705 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231484AbhBBH7V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Feb 2021 02:59:21 -0500
-IronPort-SDR: LNcSzbt1vXxBJtGA3VZhH5YqfrAIYarVUWehLtI1HqxPrg7/b2ofNqjLJ1lbJMRYijE7tFrPCA
- h6F79pzfP83Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="178254286"
-X-IronPort-AV: E=Sophos;i="5.79,394,1602572400"; 
-   d="scan'208";a="178254286"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 23:58:38 -0800
-IronPort-SDR: pddY9mkJUav+6c5kTCy1CkkbjsHf+BfUxNd/52jdc8432uXaJqDDhm7rR18AE78dbhHLjBTQZt
- DKr5Wi+syfnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,394,1602572400"; 
-   d="scan'208";a="406061142"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 01 Feb 2021 23:58:37 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l6qa4-0009CJ-HL; Tue, 02 Feb 2021 07:58:36 +0000
-Date:   Tue, 02 Feb 2021 15:57:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- b2e14bec96f5d823b14872e354acc5e2393cb1d7
-Message-ID: <60190607.wgQqN/9tzZgagaY4%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S232367AbhBBIPn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Feb 2021 03:15:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59932 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232336AbhBBIPR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Feb 2021 03:15:17 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C20C061573
+        for <linux-acpi@vger.kernel.org>; Tue,  2 Feb 2021 00:14:36 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id c127so1431597wmf.5
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Feb 2021 00:14:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=V9OYiORsRMdWxR7osHjENqg1fnGThuRA0XqX/4BX+1c=;
+        b=hEjTSeELyWKPp0CnG3NhEUXGWqHKYf4FGwe42X4txoQqMYdN/l4GEsSWhpryg4cdr2
+         mLsbhB3My1be7fS3MUpSzG86Cu25HOLVj4xBtJwoJxvToTcO80tPG9WprKlOFXmaYj2V
+         DxgK0KjdyjKXHoASZ1QOLIHkyyRXhuX5iJeGoPV+mIf6XDHXOfkIeb0+QlXC7S35rj9Z
+         As/d/yiCIxOt7ghX7xJK2eTO0hQeWt0mIuQB641+PEgDtDz4qwLyvty+BQx/fO4DR9v0
+         LrIl8FFsdMFqrIO0l5JW53vwNphVfmVzAdhsBSbcy52Au6eT+JO097BcO+k2yS64KV3P
+         AZAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=V9OYiORsRMdWxR7osHjENqg1fnGThuRA0XqX/4BX+1c=;
+        b=K64hItgvI5Eqd2uGv8lRPgPPiDUOtXBUTEhTZ8Vf8/ZdNak11YXQO34VgQzNrXI9Kh
+         RcFVPKPSQww5Rv9VeokvZ4bKFyjuXGzU8pEFiCoPPOg4IrKB4ZPeBOSaheY7xRSyVJE2
+         +cGERrWH8pMaYi5Liho3/TAl54ljMVuTq4xzHaNU4Ibo9GkJfzM65kIyKwftmFA2gr5q
+         kSa9j+a6/ce05cMgK6kV2oo8Qc5BCwnNevj3Tnw5c65yTlFWYgPjlXa7NBGAnFmDw4TH
+         7Dd67GI/4exI6aWwe1xxf+ZgYmEWMyOhdNGpcyMdWoRdy2kJ7+DjiAGIy+Jb1u7drXS9
+         42aQ==
+X-Gm-Message-State: AOAM5309AqKTr7MEPUZET8iDhyg57pKBTQQEHFN3XiT/kLYr3MY6eTKE
+        ZRWQmSJsGu2JIqowOIpvHnTnaA==
+X-Google-Smtp-Source: ABdhPJz7x1HW6afm8E3SZwUYCuRD8nwdukBQBuMeDo46SISBs/cF7jfaDGXCswTgBC8EtkPPNPrOJg==
+X-Received: by 2002:a1c:5644:: with SMTP id k65mr2376244wmb.62.1612253675132;
+        Tue, 02 Feb 2021 00:14:35 -0800 (PST)
+Received: from dell ([91.110.221.188])
+        by smtp.gmail.com with ESMTPSA id z8sm31399154wrh.83.2021.02.02.00.14.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Feb 2021 00:14:34 -0800 (PST)
+Date:   Tue, 2 Feb 2021 08:14:32 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v1 10/10] mfd: intel_msic: Remove driver for deprecated
+ platform
+Message-ID: <20210202081432.GX4774@dell>
+References: <20210125193948.56760-1-andriy.shevchenko@linux.intel.com>
+ <20210125193948.56760-11-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210125193948.56760-11-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: b2e14bec96f5d823b14872e354acc5e2393cb1d7  Merge branch 'acpi-scan-fixes' into bleeding-edge
+On Mon, 25 Jan 2021, Andy Shevchenko wrote:
 
-elapsed time: 726m
+> Intel Moorestown and Medfield are quite old Intel Atom based
+> 32-bit platforms, which were in limited use in some Android phones,
+> tablets and consumer electronics more than eight years ago.
+> 
+> There are no bugs or problems ever reported outside from Intel
+> for breaking any of that platforms for years. It seems no real
+> users exists who run more or less fresh kernel on it. The commit
+> 05f4434bc130 ("ASoC: Intel: remove mfld_machine") also in align
+> with this theory.
+> 
+> Due to above and to reduce a burden of supporting outdated drivers
+> we remove the support of outdated platforms completely.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  MAINTAINERS                                 |   2 -
+>  arch/x86/include/asm/intel_scu_ipc_legacy.h |  12 -
+>  drivers/mfd/Kconfig                         |   9 -
+>  drivers/mfd/Makefile                        |   1 -
+>  drivers/mfd/intel_msic.c                    | 425 ------------------
+>  include/linux/mfd/intel_msic.h              | 453 --------------------
+>  6 files changed, 902 deletions(-)
+>  delete mode 100644 drivers/mfd/intel_msic.c
+>  delete mode 100644 include/linux/mfd/intel_msic.h
 
-configs tested: 93
-configs skipped: 2
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                 mpc836x_rdk_defconfig
-ia64                          tiger_defconfig
-m68k                         amcore_defconfig
-powerpc                     kilauea_defconfig
-sh                         apsh4a3a_defconfig
-powerpc                 mpc8560_ads_defconfig
-mips                           ci20_defconfig
-powerpc                      katmai_defconfig
-powerpc                         wii_defconfig
-mips                           ip32_defconfig
-mips                          ath25_defconfig
-xtensa                  cadence_csp_defconfig
-sh                        sh7763rdp_defconfig
-arm                         s5pv210_defconfig
-arm                        keystone_defconfig
-ia64                         bigsur_defconfig
-mips                      maltaaprp_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20210201
-x86_64               randconfig-a001-20210201
-x86_64               randconfig-a005-20210201
-x86_64               randconfig-a002-20210201
-x86_64               randconfig-a004-20210201
-x86_64               randconfig-a003-20210201
-i386                 randconfig-a001-20210201
-i386                 randconfig-a005-20210201
-i386                 randconfig-a003-20210201
-i386                 randconfig-a006-20210201
-i386                 randconfig-a002-20210201
-i386                 randconfig-a004-20210201
-i386                 randconfig-a013-20210201
-i386                 randconfig-a016-20210201
-i386                 randconfig-a014-20210201
-i386                 randconfig-a012-20210201
-i386                 randconfig-a015-20210201
-i386                 randconfig-a011-20210201
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a013-20210201
-x86_64               randconfig-a014-20210201
-x86_64               randconfig-a015-20210201
-x86_64               randconfig-a016-20210201
-x86_64               randconfig-a011-20210201
-x86_64               randconfig-a012-20210201
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
