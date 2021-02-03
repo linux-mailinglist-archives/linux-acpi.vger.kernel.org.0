@@ -2,186 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9B5230D8B9
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 12:33:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AC230DB8A
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 14:42:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234015AbhBCLdV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 06:33:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2490 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234120AbhBCLdU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 06:33:20 -0500
-Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DVzwK5ZvJz67kYJ;
-        Wed,  3 Feb 2021 19:29:05 +0800 (CST)
-Received: from lhreml719-chm.china.huawei.com (10.201.108.70) by
- fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 3 Feb 2021 12:32:35 +0100
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml719-chm.china.huawei.com (10.201.108.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Wed, 3 Feb 2021 11:32:34 +0000
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.006;
- Wed, 3 Feb 2021 19:32:32 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Tim Chen <tim.c.chen@linux.intel.com>,
-        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "tiantao (H)" <tiantao6@hisilicon.com>
-Subject: RE: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters and
- add cluster scheduler
-Thread-Topic: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters
- and add cluster scheduler
-Thread-Index: AQHW5AbtPZ7BCMS2PUiSVVUiYd0GPqocSCyAgCouMeA=
-Date:   Wed, 3 Feb 2021 11:32:32 +0000
-Message-ID: <38ce39d2d4754d76934bb07370eff48b@hisilicon.com>
-References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
- <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
-In-Reply-To: <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.200.87]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S232170AbhBCNlI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 08:41:08 -0500
+Received: from mail-oo1-f45.google.com ([209.85.161.45]:32872 "EHLO
+        mail-oo1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232138AbhBCNkz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 08:40:55 -0500
+Received: by mail-oo1-f45.google.com with SMTP id u7so6020490ooq.0;
+        Wed, 03 Feb 2021 05:40:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zAG2ORrJOSGIc7ykt4Jaj4cXkoSE9ZmRI1sEKOlUH8E=;
+        b=PhpseIQ7HbXBQPVzhJGTrmZsOPUGXkFxLjtqmdsonvWN1W4F0ODYkz2MrJ1fU4fpKL
+         lvuyw6BVuvxSE493fTLJD8QUKdHrS5FG1tmlycFNMDzAd5/z03/iHRETertE7lpivV1H
+         C7mahhx7N2iJ8KKFxE/+EHaZRLuzMHuMijgxpaX3Yj9FVx0a0tU28/NUqlGw7i6/zACM
+         Mb+qFJAWn+WMam2YuFR4lJ6aN8oqIlbnAkd9WV6GpnSBshbILoa5h7dHjRRFNGLhE5tI
+         KfpBoK4dqd5SKEGozATzV+7gHZllgouN0OYT6eTZmaZBd1dVBmejQxf7uEjt1tJKNldl
+         rJsw==
+X-Gm-Message-State: AOAM532zfnnsP7CuFqvESHDNnBe7Vfvx9WIIAssoYXD+cHWPCTOcn9ux
+        C0npWapnTiha6pct+bo155+jnqhJL3+bHfRHEK0=
+X-Google-Smtp-Source: ABdhPJznq67sM7X2NqxYyznZ/cNjiEpWbWJjVSPRblRmQj7rDdHbTumwwKR+SgAw1TSA8/C7nESxIFPERtQAnrzcSTw=
+X-Received: by 2002:a4a:9873:: with SMTP id z48mr2107388ooi.44.1612359614153;
+ Wed, 03 Feb 2021 05:40:14 -0800 (PST)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+References: <20210122204038.3238-1-ggherdovich@suse.cz> <20210122204038.3238-2-ggherdovich@suse.cz>
+ <CAJZ5v0hQ_r3th5upo-X5fNBG0tUNbLbhQN-cqmDd1FGwhGx4dg@mail.gmail.com>
+ <CAJZ5v0jsF-_8GzQgqZH10bf0oUTmALiT1kVcjDqYgGPqx9iKZg@mail.gmail.com> <1612341564.3640.14.camel@suse.cz>
+In-Reply-To: <1612341564.3640.14.camel@suse.cz>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 3 Feb 2021 14:40:01 +0100
+Message-ID: <CAJZ5v0jdcxFBxqYjvTfO64v3Vij1ATp4_GMJKdQCvAysM4gbjw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost in
+ schedutil invariant formula
+To:     Giovanni Gherdovich <ggherdovich@suse.cz>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jon Grimm <Jon.Grimm@amd.com>,
+        Nathan Fontenot <Nathan.Fontenot@amd.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Michael Larabel <Michael@phoronix.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGltIENoZW4gW21haWx0
-bzp0aW0uYy5jaGVuQGxpbnV4LmludGVsLmNvbV0NCj4gU2VudDogRnJpZGF5LCBKYW51YXJ5IDgs
-IDIwMjEgMTI6MTcgUE0NCj4gVG86IFNvbmcgQmFvIEh1YSAoQmFycnkgU29uZykgPHNvbmcuYmFv
-Lmh1YUBoaXNpbGljb24uY29tPjsNCj4gdmFsZW50aW4uc2NobmVpZGVyQGFybS5jb207IGNhdGFs
-aW4ubWFyaW5hc0Bhcm0uY29tOyB3aWxsQGtlcm5lbC5vcmc7DQo+IHJqd0Byand5c29ja2kubmV0
-OyB2aW5jZW50Lmd1aXR0b3RAbGluYXJvLm9yZzsgbGVuYkBrZXJuZWwub3JnOw0KPiBncmVna2hA
-bGludXhmb3VuZGF0aW9uLm9yZzsgSm9uYXRoYW4gQ2FtZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBo
-dWF3ZWkuY29tPjsNCj4gbWluZ29AcmVkaGF0LmNvbTsgcGV0ZXJ6QGluZnJhZGVhZC5vcmc7IGp1
-cmkubGVsbGlAcmVkaGF0LmNvbTsNCj4gZGlldG1hci5lZ2dlbWFubkBhcm0uY29tOyByb3N0ZWR0
-QGdvb2RtaXMub3JnOyBic2VnYWxsQGdvb2dsZS5jb207DQo+IG1nb3JtYW5Ac3VzZS5kZTsgbWFy
-ay5ydXRsYW5kQGFybS5jb207IHN1ZGVlcC5ob2xsYUBhcm0uY29tOw0KPiBhdWJyZXkubGlAbGlu
-dXguaW50ZWwuY29tDQo+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7
-IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eGFybUBvcGVuZXVsZXIub3JnOyB4dXdlaSAoTykNCj4gPHh1d2VpNUBodWF3ZWku
-Y29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxpY29uLmNvbT47IHRpYW50YW8gKEgp
-DQo+IDx0aWFudGFvNkBoaXNpbGljb24uY29tPg0KPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCB2
-MyAwLzJdIHNjaGVkdWxlcjogZXhwb3NlIHRoZSB0b3BvbG9neSBvZiBjbHVzdGVycyBhbmQNCj4g
-YWRkIGNsdXN0ZXIgc2NoZWR1bGVyDQo+IA0KPiANCj4gDQo+IE9uIDEvNi8yMSAxMjozMCBBTSwg
-QmFycnkgU29uZyB3cm90ZToNCj4gPiBBUk02NCBzZXJ2ZXIgY2hpcCBLdW5wZW5nIDkyMCBoYXMg
-NiBjbHVzdGVycyBpbiBlYWNoIE5VTUEgbm9kZSwgYW5kIGVhY2gNCj4gPiBjbHVzdGVyIGhhcyA0
-IGNwdXMuIEFsbCBjbHVzdGVycyBzaGFyZSBMMyBjYWNoZSBkYXRhIHdoaWxlIGVhY2ggY2x1c3Rl
-cg0KPiA+IGhhcyBsb2NhbCBMMyB0YWcuIE9uIHRoZSBvdGhlciBoYW5kLCBlYWNoIGNsdXN0ZXIg
-d2lsbCBzaGFyZSBzb21lDQo+ID4gaW50ZXJuYWwgc3lzdGVtIGJ1cy4gVGhpcyBtZWFucyBjYWNo
-ZSBpcyBtdWNoIG1vcmUgYWZmaW5lIGluc2lkZSBvbmUgY2x1c3Rlcg0KPiA+IHRoYW4gYWNyb3Nz
-IGNsdXN0ZXJzLg0KPiA+DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLSsgICAgICAgICAgICAgICAgICAgICAgICAgICstLS0tLS0tLS0rDQo+ID4gICAgIHwgICst
-LS0tLS0rICAgICstLS0tLS0rICAgICAgICAgICAgKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LSsgICAgICAgICB8DQo+ID4gICAgIHwgIHwgQ1BVMCB8ICAgIHwgY3B1MSB8ICAgICAgICAgICAg
-IHwgICAgKy0tLS0tLS0tLS0tKyAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0t
-LS0rICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICAgfCAgICAgICAgICAgfCAgICAgICAgIHwg
-ICAgICAgICB8DQo+ID4gICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICst
-LS0tKyAgICBMMyAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0r
-ICAgICstLS0tLS0rICAgY2x1c3RlciAgIHwgICAgfCAgICB0YWcgICAgfCAgICAgICAgIHwgICAg
-ICAgICB8DQo+ID4gICAgIHwgIHwgQ1BVMiB8ICAgIHwgQ1BVMyB8ICAgICAgICAgICAgIHwgICAg
-fCAgICAgICAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAg
-ICstLS0tLS0rICAgICAgICAgICAgIHwgICAgKy0tLS0tLS0tLS0tKyAgICAgICAgIHwgICAgICAg
-ICB8DQo+ID4gICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLSsgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8
-DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAgICstLS0t
-LS0rICAgICAgICAgICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsgICAgICAgICB8DQo+
-ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAgICAgICAgIHwgICAgKy0tLS0tLS0t
-LS0tKyAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAgICstLS0tLS0r
-ICAgICAgICAgICAgIHwgICAgfCAgICAgICAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4g
-ICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgfCAgICBMMyAgICAg
-fCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAgICstLS0tLS0rICAg
-ICAgICAgICAgICstLS0tKyAgICB0YWcgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAg
-IHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAgICAgICAgIHwgICAgfCAgICAgICAgICAgfCAg
-ICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAgICstLS0tLS0rICAgICAg
-ICAgICAgIHwgICAgKy0tLS0tLS0tLS0tKyAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgICAgICAgICB8DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLSsgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICBMMyAgICB8DQo+ID4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICBkYXRhICB8DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LSsgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0t
-LS0rICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICAgKy0tLS0tLS0tLS0tKyAgICAgICAgIHwg
-ICAgICAgICB8DQo+ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAgICAgICAgIHwg
-ICAgfCAgICAgICAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0r
-ICAgICstLS0tLS0rICAgICAgICAgICAgICstLS0tKyAgICBMMyAgICAgfCAgICAgICAgIHwgICAg
-ICAgICB8DQo+ID4gICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-fCAgICB0YWcgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAg
-ICstLS0tLS0rICAgICAgICAgICAgIHwgICAgfCAgICAgICAgICAgfCAgICAgICAgIHwgICAgICAg
-ICB8DQo+ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAgICAgICAgKysgICAgKy0t
-LS0tLS0tLS0tKyAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0rICAgICst
-LS0tLS0rICAgICAgICAgICAgfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsgICAgICAgICB8
-DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLXwgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLXwgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+
-ID4gICAgIHwgICstLS0tLS0rICAgICstLS0tLS0rICAgICAgICAgICAgKy0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLSsgICAgICAgICB8DQo+ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8
-ICAgICAgICAgICAgIHwgICAgKy0tLS0tLS0tLS0tKyAgICAgICAgIHwgICAgICAgICB8DQo+ID4g
-ICAgIHwgICstLS0tLS0rICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICAgfCAgICAgICAgICAg
-fCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICstLS0tKyAgICBMMyAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAg
-IHwgICstLS0tLS0rICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICAgfCAgICB0YWcgICAgfCAg
-ICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAg
-ICAgICAgIHwgICAgfCAgICAgICAgICAgfCAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwg
-ICstLS0tLS0rICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICAgKy0tLS0tLS0tLS0tKyAgICAg
-ICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgICstLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAgICAgICB8DQo+ID4gICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LSsgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0t
-LS0rICAgICstLS0tLS0rICAgICAgICAgICAgICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsg
-ICAgICAgICB8DQo+ID4gICAgIHwgIHwgICAgICB8ICAgIHwgICAgICB8ICAgICAgICAgICAgIHwg
-ICArLS0tLS0tLS0tLS0rICAgICAgICAgIHwgICAgICAgICB8DQo+ID4gICAgIHwgICstLS0tLS0r
-ICAgICstLS0tLS0rICAgICAgICAgICAgIHwgICB8ICAgICAgICAgICB8ICAgICAgICAgIHwgICAg
-ICAgICB8DQo+ID4NCj4gPg0KPiANCj4gVGhlcmUgaXMgYSBzaW1pbGFyIG5lZWQgZm9yIGNsdXN0
-ZXJpbmcgaW4geDg2LiAgU29tZSB4ODYgY29yZXMgY291bGQgc2hhcmUgTDINCj4gY2FjaGVzIHRo
-YXQNCj4gaXMgc2ltaWxhciB0byB0aGUgY2x1c3RlciBpbiBLdXBlbmcgOTIwIChlLmcuIG9uIEph
-Y29ic3ZpbGxlIHRoZXJlIGFyZSA2IGNsdXN0ZXJzDQo+IG9mIDQgQXRvbSBjb3JlcywgZWFjaCBj
-bHVzdGVyIHNoYXJpbmcgYSBzZXBhcmF0ZSBMMiwgYW5kIDI0IGNvcmVzIHNoYXJpbmcgTDMpLg0K
-PiBIYXZpbmcgYSBzY2hlZCBkb21haW4gYXQgdGhlIEwyIGNsdXN0ZXIgaGVscHMgc3ByZWFkIGxv
-YWQgYW1vbmcNCj4gTDIgZG9tYWlucy4gIFRoaXMgd2lsbCByZWR1Y2UgTDIgY2FjaGUgY29udGVu
-dGlvbiBhbmQgaGVscCB3aXRoDQo+IHBlcmZvcm1hbmNlIGZvciBsb3cgdG8gbW9kZXJhdGUgbG9h
-ZCBzY2VuYXJpb3MuDQo+IA0KPiBUaGUgY2x1c3RlciBkZXRlY3Rpb24gbWVjaGFuaXNtIHdpbGwg
-bmVlZA0KPiB0byBiZSBiYXNlZCBvbiBMMiBjYWNoZSBzaGFyaW5nIGluIHRoaXMgY2FzZS4gIEkg
-c3VnZ2VzdCBtYWtpbmcgdGhlDQo+IGNsdXN0ZXIgZGV0ZWN0aW9uIHRvIGJlIENQVSBhcmNoaXRl
-Y3R1cmUgZGVwZW5kZW50IHNvIGJvdGggQVJNNjQgYW5kIHg4NiB1c2UNCj4gY2FzZXMNCj4gY2Fu
-IGJlIGFjY29tbW9kYXRlZC4NCj4gDQo+IEF0dGFjaGVkIGJlbG93IGFyZSB0d28gUkZDIHBhdGNo
-ZXMgZm9yIGNyZWF0aW5nIHg4NiBMMg0KPiBjYWNoZSBzY2hlZCBkb21haW4sIHNhbnMgdGhlIGlk
-bGUgY3B1IHNlbGVjdGlvbiBvbiB3YWtlIHVwIGNvZGUuICBJdCBpcw0KPiBzaW1pbGFyIGVub3Vn
-aCBpbiBjb25jZXB0IHRvIEJhcnJ5J3MgcGF0Y2ggdGhhdCB3ZSBzaG91bGQgaGF2ZSBhDQo+IHNp
-bmdsZSBwYXRjaHNldCB0aGF0IGFjY29tbW9kYXRlcyBib3RoIHVzZSBjYXNlcy4NCg0KSGkgVGlt
-LCBBZ3JlZWQgb24gdGhpcy4NCmhvcGVmdWxseSB0aGUgUkZDIHY0IEkgYW0gcHJlcGFyaW5nIHdp
-bGwgY292ZXIgeW91ciBjYXNlLg0KDQo+IA0KPiBUaGFua3MuDQo+IA0KPiBUaW0NCg0KVGhhbmtz
-DQpCYXJyeQ0KDQo=
+On Wed, Feb 3, 2021 at 9:39 AM Giovanni Gherdovich <ggherdovich@suse.cz> wrote:
+>
+> Hello,
+>
+> both Rafael and Viresh make a similar remark: why adding a new "max_boost"
+> variable, since "max_freq" is already available and could be used instead.
+>
+> Replying here to both.
+>
+> On Tue, 2021-02-02 at 20:26 +0100, Rafael J. Wysocki wrote:
+> > On Tue, Feb 2, 2021 at 7:59 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Fri, Jan 22, 2021 at 9:47 PM Giovanni Gherdovich <ggherdovich@suse.cz> wrote:
+> > >
+> > > [cut]
+> > > > @@ -779,15 +829,25 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+> > > >                     freq_table[valid_states-1].frequency / 1000)
+> > > >                         continue;
+> > > >
+> > > > +               freq = perf->states[i].core_frequency * 1000;
+> > > >                 freq_table[valid_states].driver_data = i;
+> > > > -               freq_table[valid_states].frequency =
+> > > > -                   perf->states[i].core_frequency * 1000;
+> > > > +               freq_table[valid_states].frequency = freq;
+> > > > +
+> > > > +               if (freq > max_freq)
+> > > > +                       max_freq = freq;
+> > > > +
+> > > >                 valid_states++;
+> > > >         }
+> > > >         freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
+> > > >         policy->freq_table = freq_table;
+> > > >         perf->state = 0;
+> > > >
+> > > > +       if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
+> > > > +           amd_max_boost(max_freq, &max_boost)) {
+> > > > +               policy->cpuinfo.max_boost = max_boost;
+> > >
+> > > Why not to set max_freq to max_boost instead?
+> >
+> > I mean, would setting the frequency in the last table entry to max_boost work?
+> >
+> > Alternatively, one more (artificial) entry with the frequency equal to
+> > max_boost could be added.
+>
+> On Wed, 2021-02-03 at 11:34 +0530, Viresh Kumar wrote:
+> > [cut]
+> >
+> > On 22-01-21, 21:40, Giovanni Gherdovich wrote:
+> > > diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+> > > index 6931f0cdeb80..541f3db3f576 100644
+> > > --- a/kernel/sched/cpufreq_schedutil.c
+> > > +++ b/kernel/sched/cpufreq_schedutil.c
+> > > @@ -159,8 +159,12 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
+> > >                               unsigned long util, unsigned long max)
+> > >  {
+> > >     struct cpufreq_policy *policy = sg_policy->policy;
+> > > -   unsigned int freq = arch_scale_freq_invariant() ?
+> > > -                           policy->cpuinfo.max_freq : policy->cur;
+> > > +   unsigned int freq, max_freq;
+> > > +
+> > > +   max_freq = cpufreq_driver_has_max_boost() ?
+> > > +                   policy->cpuinfo.max_boost : policy->cpuinfo.max_freq;
+> >
+> > Also, can't we update max_freq itself from the cpufreq driver? What
+> > troubles will it cost ?
+>
+> I could add the max boost frequency to the frequency table (and
+> policy->cpuinfo.max_freq would follow), yes, but that would trigger the
+> following warning from acpi-cpufreq.c:
+>
+> static void acpi_cpufreq_cpu_ready(struct cpufreq_policy *policy)
+> {
+>         struct acpi_processor_performance *perf = per_cpu_ptr(acpi_perf_data,
+>                                                               policy->cpu);
+>
+>         if (perf->states[0].core_frequency * 1000 != policy->cpuinfo.max_freq)
+>                 pr_warn(FW_WARN "P-state 0 is not max freq\n");
+> }
+
+This check can be changed, though.
+
+> so I thought that to stay out of troubles I'd supply a different variable,
+> max_boost, to be used only in the schedutil formula.
+
+Which is not necessary and the extra static branch is not necessary.
+
+Moreover, there is no reason whatsoever to believe that EPYC is the
+only affected processor model.  If I'm not mistaken, the regression
+will be visible on every CPU where the scale invariance algorithm uses
+the max frequency greater than the max frequency used acpi_cpufreq.
+
+Also, AFAICS, it should be sufficient to modify acpi_cpufreq to remedy
+this for all of the affected CPUs, not just EPYC.
+
+> After schedutil figures out a desired next_freq then the usual comparison with the
+> firmware-supplied frequency table could take place.
+>
+> Altering the frequency table seemed more invasive because once a freq value is
+> in there, it's going to be actually requested by the driver to the platform.
+
+This need not be the case if the control structure for the new entry
+is copied from an existing one.
+
+> I only want my max_boost to stretch the range of schedutil's next_freq.
+
+Right, but that can be done in a different way which would be cleaner too IMO.
+
+I'm going to send an alternative patch to fix this problem.
+
+> On Tue, 2021-02-02 at 19:59 +0100, Rafael J. Wysocki wrote:
+> >
+> > [cut]
+> > Also notice that the static branch is global and the max_boost value
+> > for different CPUs may be different, at least in theory.
+>
+> In theory yes, but I'm guarding the code with two conditions:
+>
+> * vendor is X86_VENDOR_AMD
+> * cppc_get_perf_caps() returns success
+>
+> this identifies AMD EPYC cpus with model 7xx2 and later, where max_boost is
+> the same on all cores. I may have added synchronization so that only one cpu
+> sets the value, but I didn't in the interest of simplicity for an -rc patch
+> (I'd have to consider hotplug, the maxcpus= command line param, ecc).
+
+And what about the other potentially affected processors?
+
+I wouldn't worry about the -rc time frame too much.  If we can do a
+better fix now, let's do it.
