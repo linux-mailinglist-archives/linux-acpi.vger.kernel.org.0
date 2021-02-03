@@ -2,161 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 006A330D4FF
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 09:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8755030D505
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 09:17:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232614AbhBCIPm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 03:15:42 -0500
-Received: from mga12.intel.com ([192.55.52.136]:59776 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232561AbhBCIPm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Feb 2021 03:15:42 -0500
-IronPort-SDR: Gd9tu4MAUgC8SGWBI0N4lyaFdcSDAF5rYK51lePd1emA0ULgab1AoG8l4WAZRQ6B6otdzOz3FL
- qemh3ryCBLbA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="160170433"
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; 
-   d="scan'208";a="160170433"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2021 00:14:21 -0800
-IronPort-SDR: Zz9BsWghIPqPVYqrEjlyGrzbzzZS1dlgETtp7d4ipnswJrLX8SLoV6CuDEgLoVmS2vG2z4itmR
- 1UXIGXYFszDw==
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; 
-   d="scan'208";a="433292573"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2021 00:14:17 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 03 Feb 2021 10:14:15 +0200
-Date:   Wed, 3 Feb 2021 10:14:15 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Christian Kellner <christian@kellner.me>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] ACPI: Execute platform _OSC also with query bit
- clear
-Message-ID: <20210203081415.GR2542@lahna.fi.intel.com>
-References: <20210129083241.72497-1-mika.westerberg@linux.intel.com>
- <20210129083241.72497-4-mika.westerberg@linux.intel.com>
+        id S232644AbhBCIQm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 03:16:42 -0500
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:33114 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232632AbhBCIQl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 03:16:41 -0500
+Received: by mail-oi1-f169.google.com with SMTP id j25so25937448oii.0;
+        Wed, 03 Feb 2021 00:16:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OMNMC+xpp5BmBErZ7DTtHEEdPkb5Qun0a5vbRXVX3vY=;
+        b=POUgEegnMg7DMDQLrjEjgKdFHfrWjvwj8udpuPYIdEuwBzcLGEv0HtuWkrzYsb+pDp
+         tlN79z4zrt40hE1IYgDWuENhJCz918W/sH0mLMrSfxsLIUyLrgD1qG7lNqjED5724oJH
+         vek8NEL/52PkxUm4zmtpPvZ1hytLDkrzsE8QBafbdBtk5LcR1R7KSuiUicLK7lVTVNL3
+         9ciUS1rXYHwp0aUL0ZCSx2EtRteN8N4iEXFwIMqHnKFrgkY5ue9Y41RztEzChWmCYyFK
+         AaQJsrG42B8qWF9D7nvj1dNV7KbcqxxUlDs/6kXJ7qrhcdfn40soMnth7hUx5FcUNZuI
+         jXDQ==
+X-Gm-Message-State: AOAM532Rxdg1AKi+72YhT+dwmLpqXcsKy8bHewPPY+kqkcUr8KdovIZ4
+        gpUbObOwOqQHnYsxhXfickEFxdI87+QKKGIcF8k=
+X-Google-Smtp-Source: ABdhPJw59iItHayjaGX97phdW1sK3zjTtayzwJ1NUfqJOoKyyAHQO7+Dk/qcLkjM2SfB36dbgq0cCIFHKr1/YJuwhRk=
+X-Received: by 2002:aca:4d8d:: with SMTP id a135mr1200672oib.153.1612340160027;
+ Wed, 03 Feb 2021 00:16:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210129083241.72497-4-mika.westerberg@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210202043345.3778765-1-saravanak@google.com>
+ <20210202212231.g5tj3f7tv74gagm6@viti.kaiser.cx> <CAGETcx_cS_Y-1Bw3tNhZRckEQO=yB8UDzNRr+Khs_X2ym7tnwA@mail.gmail.com>
+ <CAMuHMdWN4JA4w+6MUAc-ogRAE602G8KSgy+71dtx7QQ60t1XZQ@mail.gmail.com> <CAGETcx8Yai=q+sHiixcv=D=T9r0+X1GZ8LRBc98SX_omYVhavQ@mail.gmail.com>
+In-Reply-To: <CAGETcx8Yai=q+sHiixcv=D=T9r0+X1GZ8LRBc98SX_omYVhavQ@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 3 Feb 2021 09:15:48 +0100
+Message-ID: <CAMuHMdWyA3y1PYff5X9DoPaj0TREK3jFe_P+e+rNVb1K-kRDbA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Make fw_devlink=on more forgiving
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Martin Kaiser <martin@kaiser.cx>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Android Kernel Team <kernel-team@android.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi Saravana,
 
-I wonder if you are OK with this patch?
+On Wed, Feb 3, 2021 at 9:11 AM Saravana Kannan <saravanak@google.com> wrote:
+> On Tue, Feb 2, 2021 at 11:55 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Tue, Feb 2, 2021 at 11:44 PM Saravana Kannan <saravanak@google.com> wrote:
+> > > On Tue, Feb 2, 2021 at 1:22 PM Martin Kaiser <martin@kaiser.cx> wrote:
+> > > > Thus wrote Saravana Kannan (saravanak@google.com):
+> > > > All of those drivers have a gpio in
+> > > > their device-tree node, such as
+> > > >
+> > > > my_driver {
+> > > >    gpio_test1 = <&gpio1 0 0>;
+> > > >    ...
+> > > > };
+> > > >
+> > > > with gpio1 from arch/arm/boot/dts/imx25.dtsi.
+> > > >
+> > > > The probe function calls
+> > > >
+> > > > of_get_named_gpio(np, "gpio_test1", 0);
+> > > >
+> > > > to get the gpio. This fails with -EINVAL.
+> > >
+> > > And you didn't see this issue with the fsl,avic patch?
+> > >
+> > > The property you are using is not a standard GPIO binding (-gpios,
+> > > gpio, gpios) and I'm not surprised it's not working. The gpio1 is
+> > > probably getting probe deferred and ends up running after "my_driver".
+> >
+> > So my_driver doesn't support deferred probe, as of_get_named_gpio()
+> > returns -EINVAL instead of -EPROBE_DEFER?
+> > Converting my_driver from of_get_named_gpio() to the gpiod_*() API
+> > should at least make the driver support probe deferral, after which I
+> > expect it to start working again on reprobe?
+>
+> The way I understood the API/example, you can't just change the code
+> and have it work. The DT itself isn't using standard bindings. And we
 
-Thanks!
+Oh, right.
 
-On Fri, Jan 29, 2021 at 11:32:39AM +0300, Mika Westerberg wrote:
-> From: Mario Limonciello <mario.limonciello@dell.com>
-> 
-> The platform _OSC can change the hardware state when query bit is not
-> set. According to ACPI spec it is recommended that the OS runs _OSC with
-> query bit set until the platform does not mask any of the capabilities.
-> Then it should run it with query bit clear in order to actually commit
-> the changes. Linux has not been doing this for the reasons that there
-> has not been anything to commit, until now.
-> 
-> The ACPI 6.4 introduced _OSC for USB4 to allow the OS to negotiate
-> native control over USB4 tunneling. The platform might implement this so
-> that it only activates the software connection manager path when the OS
-> calls the _OSC with the query bit clear. Otherwise it may default to the
-> firmware connection manager, for instance.
-> 
-> For this reason modify the _OSC support so that we first execute it with
-> query bit set, then use the returned value as base of the features we
-> want to control and run the _OSC again with query bit clear. This also
-> follows what Windows is doing.
-> 
-> Also rename the function to better match what it does.
-> 
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@dell.com>
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> ---
->  drivers/acpi/bus.c | 43 +++++++++++++++++++++++++++++++------------
->  1 file changed, 31 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 1682f8b454a2..a52cb28c40d8 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -282,9 +282,9 @@ bool osc_pc_lpi_support_confirmed;
->  EXPORT_SYMBOL_GPL(osc_pc_lpi_support_confirmed);
->  
->  static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
-> -static void acpi_bus_osc_support(void)
-> +static void acpi_bus_osc_negotiate_platform_control(void)
->  {
-> -	u32 capbuf[2];
-> +	u32 capbuf[2], *capbuf_ret;
->  	struct acpi_osc_context context = {
->  		.uuid_str = sb_uuid_str,
->  		.rev = 1,
-> @@ -321,17 +321,36 @@ static void acpi_bus_osc_support(void)
->  		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_APEI_SUPPORT;
->  	if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
->  		return;
-> -	if (ACPI_SUCCESS(acpi_run_osc(handle, &context))) {
-> -		u32 *capbuf_ret = context.ret.pointer;
-> -		if (context.ret.length > OSC_SUPPORT_DWORD) {
-> -			osc_sb_apei_support_acked =
-> -				capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
-> -			osc_pc_lpi_support_confirmed =
-> -				capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-> -		}
-> +
-> +	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
-> +		return;
-> +
-> +	capbuf_ret = context.ret.pointer;
-> +	if (context.ret.length <= OSC_SUPPORT_DWORD) {
->  		kfree(context.ret.pointer);
-> +		return;
->  	}
-> -	/* do we need to check other returned cap? Sounds no */
-> +
-> +	/*
-> +	 * Now run _OSC again with query flag clear and with the caps
-> +	 * supported by both the OS and the platform.
-> +	 */
-> +	capbuf[OSC_QUERY_DWORD] = 0;
-> +	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
-> +	kfree(context.ret.pointer);
-> +
-> +	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
-> +		return;
-> +
-> +	capbuf_ret = context.ret.pointer;
-> +	if (context.ret.length > OSC_SUPPORT_DWORD) {
-> +		osc_sb_apei_support_acked =
-> +			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
-> +		osc_pc_lpi_support_confirmed =
-> +			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-> +	}
-> +
-> +	kfree(context.ret.pointer);
->  }
->  
->  /* --------------------------------------------------------------------------
-> @@ -1168,7 +1187,7 @@ static int __init acpi_bus_init(void)
->  	 * _OSC method may exist in module level code,
->  	 * so it must be run after ACPI_FULL_INITIALIZATION
->  	 */
-> -	acpi_bus_osc_support();
-> +	acpi_bus_osc_negotiate_platform_control();
->  
->  	/*
->  	 * _PDC control method may load dynamic SSDT tables,
-> -- 
-> 2.29.2
+> can't make kernel changes that assume the DT has been changed to match
+> the code. So, the best we could do is have of_get_named_gpio() return
+> -EPROBE_DEFER if it doesn't find the GPIO -- assuming that doesn't
+> break other users. Or have this specific driver remap the -EINVAL to
+> -EPROBE_DEFER.
+
+The latter would hide real errors, too, and would cause futile reprobes.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
