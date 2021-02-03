@@ -2,18 +2,18 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BC330E2DA
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 19:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4463130E2D6
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 19:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbhBCSwI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 13:52:08 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54380 "EHLO
+        id S232555AbhBCSv6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 13:51:58 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:46888 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbhBCSv7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 13:51:59 -0500
+        with ESMTP id S231149AbhBCSv6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 13:51:58 -0500
 Received: from 89-64-80-249.dynamic.chello.pl (89.64.80.249) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.537)
- id 0926f76eb9bd3a2d; Wed, 3 Feb 2021 19:51:16 +0100
+ id d7156e899d797b16; Wed, 3 Feb 2021 19:51:14 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     Linux PM <linux-pm@vger.kernel.org>,
@@ -24,9 +24,9 @@ Cc:     Linux PM <linux-pm@vger.kernel.org>,
         Erik Kaneda <erik.kaneda@intel.com>,
         Joe Perches <joe@perches.com>,
         Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH v3 4/5] ACPI: video: Clean up printing messages
-Date:   Wed, 03 Feb 2021 19:48:33 +0100
-Message-ID: <1924490.ZvBDFke9FE@kreacher>
+Subject: [PATCH v3 5/5] ACPI: thermal: Clean up printing messages
+Date:   Wed, 03 Feb 2021 19:49:21 +0100
+Message-ID: <1775685.AT6DldZj4Y@kreacher>
 In-Reply-To: <1961054.9MKZ8ejxOh@kreacher>
 References: <2367702.B5bJTmGzJm@kreacher> <1991501.dpTHplkurC@kreacher> <1961054.9MKZ8ejxOh@kreacher>
 MIME-Version: 1.0
@@ -38,292 +38,225 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Replace the ACPI_DEBUG_PRINT() instances in acpi_video.c with
-acpi_handle_debug() calls and the ACPI_EXCEPTION()/ACPI_ERROR()/
-ACPI_WARNING() instances in there with acpi_handle_info() calls,
-which among other things causes the excessive log levels of those
-messages to be increased.
+Replace the ACPI_DEBUG_PRINT() instances in thermal.c with
+acpi_handle_debug() calls and modify the ACPI_THERMAL_TRIPS_EXCEPTION()
+macro in there to use acpi_handle_info() internally,  which among other
+things causes the excessive log level of the messages printed by it to
+be increased.
 
 Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
-used any more from acpi_video.c, drop the no longer needed
-ACPI_VIDEO_COMPONENT definition from the headers and update the
+used any more from thermal.c, drop the no longer needed
+ACPI_THERMAL_COMPONENT definition from the headers and update the
 documentation accordingly.
 
-While at it, add a pr_fmt() definition to acpi_video.c, replace the
-direct printk() invocations in there with acpi_handle_info() or
-pr_info() (and reduce the excessive log level where applicable) and
-drop the PREFIX sybmbol definition which is not necessary any more
-from acpi_video.c.
-
-Also make unrelated janitorial changes to fix up white space and
-use ACPI_FAILURE() instead of negating ACPI_SUCCESS().
+While at it, add a pr_fmt() definition to thermal.c, drop the PREFIX
+definition from there and replace some pr_warn() calls with pr_info()
+or acpi_handle_info() to reduce the excessive log level and (in the
+latter case) facilitate easier identification of the message source.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 ---
 
-v2 -> v3: Replace more !ACPI_SUCCESS() instances with ACPI_FAILURE().
+v2 -> v3: Add R-by tag.
 
 v1 -> v2: Changelog update.
 
 ---
  Documentation/firmware-guide/acpi/debug.rst |    1 
- drivers/acpi/acpi_video.c                   |   99 ++++++++++++++--------------
  drivers/acpi/sysfs.c                        |    1 
+ drivers/acpi/thermal.c                      |   87 +++++++++++++---------------
  include/acpi/acpi_drivers.h                 |    1 
- 4 files changed, 51 insertions(+), 51 deletions(-)
+ 4 files changed, 43 insertions(+), 47 deletions(-)
 
-Index: linux-pm/drivers/acpi/acpi_video.c
+Index: linux-pm/drivers/acpi/thermal.c
 ===================================================================
---- linux-pm.orig/drivers/acpi/acpi_video.c
-+++ linux-pm/drivers/acpi/acpi_video.c
-@@ -7,6 +7,8 @@
-  *  Copyright (C) 2006 Thomas Tuttle <linux-kernel@ttuttle.net>
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -13,6 +13,8 @@
+  *          concepts of 'multiple limiters', upper/lower limits, etc.
   */
  
-+#define pr_fmt(fmt) "ACPI: video: " fmt
++#define pr_fmt(fmt) "ACPI: thermal: " fmt
 +
  #include <linux/kernel.h>
  #include <linux/module.h>
- #include <linux/init.h>
-@@ -26,16 +28,11 @@
- #include <acpi/video.h>
+ #include <linux/dmi.h>
+@@ -29,8 +31,6 @@
  #include <linux/uaccess.h>
+ #include <linux/units.h>
  
 -#define PREFIX "ACPI: "
 -
- #define ACPI_VIDEO_BUS_NAME		"Video Bus"
- #define ACPI_VIDEO_DEVICE_NAME		"Video Device"
+ #define ACPI_THERMAL_CLASS		"thermal_zone"
+ #define ACPI_THERMAL_DEVICE_NAME	"Thermal Zone"
+ #define ACPI_THERMAL_NOTIFY_TEMPERATURE	0x80
+@@ -43,9 +43,6 @@
+ #define ACPI_THERMAL_MAX_ACTIVE	10
+ #define ACPI_THERMAL_MAX_LIMIT_STR_LEN 65
  
- #define MAX_NAME_LEN	20
- 
--#define _COMPONENT		ACPI_VIDEO_COMPONENT
--ACPI_MODULE_NAME("video");
+-#define _COMPONENT		ACPI_THERMAL_COMPONENT
+-ACPI_MODULE_NAME("thermal");
 -
- MODULE_AUTHOR("Bruno Ducrot");
- MODULE_DESCRIPTION("ACPI Video Driver");
+ MODULE_AUTHOR("Paul Diefenbaugh");
+ MODULE_DESCRIPTION("ACPI Thermal Zone Driver");
  MODULE_LICENSE("GPL");
-@@ -326,11 +323,11 @@ acpi_video_device_lcd_query_levels(acpi_
- 	*levels = NULL;
+@@ -197,8 +194,9 @@ static int acpi_thermal_get_temperature(
+ 		return -ENODEV;
  
- 	status = acpi_evaluate_object(handle, "_BCL", NULL, &buffer);
--	if (!ACPI_SUCCESS(status))
-+	if (ACPI_FAILURE(status))
- 		return status;
- 	obj = (union acpi_object *)buffer.pointer;
- 	if (!obj || (obj->type != ACPI_TYPE_PACKAGE)) {
--		printk(KERN_ERR PREFIX "Invalid _BCL data\n");
-+		acpi_handle_info(handle, "Invalid _BCL data\n");
- 		status = -EFAULT;
- 		goto err;
- 	}
-@@ -354,7 +351,7 @@ acpi_video_device_lcd_set_level(struct a
- 	status = acpi_execute_simple_method(device->dev->handle,
- 					    "_BCM", level);
- 	if (ACPI_FAILURE(status)) {
--		ACPI_ERROR((AE_INFO, "Evaluating _BCM failed"));
-+		acpi_handle_info(device->dev->handle, "_BCM evaluation failed\n");
- 		return -EIO;
- 	}
- 
-@@ -368,7 +365,7 @@ acpi_video_device_lcd_set_level(struct a
- 			return 0;
- 		}
- 
--	ACPI_ERROR((AE_INFO, "Current brightness invalid"));
-+	acpi_handle_info(device->dev->handle, "Current brightness invalid\n");
- 	return -EINVAL;
- }
- 
-@@ -622,9 +619,8 @@ acpi_video_device_lcd_get_level_current(
- 			 * BQC returned an invalid level.
- 			 * Stop using it.
- 			 */
--			ACPI_WARNING((AE_INFO,
--				      "%s returned an invalid level",
--				      buf));
-+			acpi_handle_info(device->dev->handle,
-+					 "%s returned an invalid level", buf);
- 			device->cap._BQC = device->cap._BCQ = 0;
- 		} else {
- 			/*
-@@ -635,7 +631,8 @@ acpi_video_device_lcd_get_level_current(
- 			 * ACPI video backlight still works w/ buggy _BQC.
- 			 * http://bugzilla.kernel.org/show_bug.cgi?id=12233
- 			 */
--			ACPI_WARNING((AE_INFO, "Evaluating %s failed", buf));
-+			acpi_handle_info(device->dev->handle,
-+					 "%s evaluation failed", buf);
- 			device->cap._BQC = device->cap._BCQ = 0;
- 		}
- 	}
-@@ -675,7 +672,7 @@ acpi_video_device_EDID(struct acpi_video
- 	if (obj && obj->type == ACPI_TYPE_BUFFER)
- 		*edid = obj;
- 	else {
--		printk(KERN_ERR PREFIX "Invalid _DDC data\n");
-+		acpi_handle_info(device->dev->handle, "Invalid _DDC data\n");
- 		status = -EFAULT;
- 		kfree(obj);
- 	}
-@@ -827,10 +824,9 @@ int acpi_video_get_levels(struct acpi_de
- 	int result = 0;
- 	u32 value;
- 
--	if (!ACPI_SUCCESS(acpi_video_device_lcd_query_levels(device->handle,
--								&obj))) {
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Could not query available "
--						"LCD brightness level\n"));
-+	if (ACPI_FAILURE(acpi_video_device_lcd_query_levels(device->handle, &obj))) {
-+		acpi_handle_debug(device->handle,
-+				  "Could not query available LCD brightness level\n");
- 		result = -ENODEV;
- 		goto out;
- 	}
-@@ -842,7 +838,6 @@ int acpi_video_get_levels(struct acpi_de
- 
- 	br = kzalloc(sizeof(*br), GFP_KERNEL);
- 	if (!br) {
--		printk(KERN_ERR "can't allocate memory\n");
- 		result = -ENOMEM;
- 		goto out;
- 	}
-@@ -863,7 +858,7 @@ int acpi_video_get_levels(struct acpi_de
- 	for (i = 0; i < obj->package.count; i++) {
- 		o = (union acpi_object *)&obj->package.elements[i];
- 		if (o->type != ACPI_TYPE_INTEGER) {
--			printk(KERN_ERR PREFIX "Invalid data\n");
-+			acpi_handle_info(device->handle, "Invalid data\n");
- 			continue;
- 		}
- 		value = (u32) o->integer.value;
-@@ -900,7 +895,8 @@ int acpi_video_get_levels(struct acpi_de
- 			br->levels[i] = br->levels[i - level_ac_battery];
- 		count += level_ac_battery;
- 	} else if (level_ac_battery > ACPI_VIDEO_FIRST_LEVEL)
--		ACPI_ERROR((AE_INFO, "Too many duplicates in _BCL package"));
-+		acpi_handle_info(device->handle,
-+				 "Too many duplicates in _BCL package");
- 
- 	/* Check if the _BCL package is in a reversed order */
- 	if (max_level == br->levels[ACPI_VIDEO_FIRST_LEVEL]) {
-@@ -910,8 +906,8 @@ int acpi_video_get_levels(struct acpi_de
- 		     sizeof(br->levels[ACPI_VIDEO_FIRST_LEVEL]),
- 		     acpi_video_cmp_level, NULL);
- 	} else if (max_level != br->levels[count - 1])
--		ACPI_ERROR((AE_INFO,
--			    "Found unordered _BCL package"));
-+		acpi_handle_info(device->handle,
-+				 "Found unordered _BCL package");
- 
- 	br->count = count;
- 	*dev_br = br;
-@@ -989,9 +985,9 @@ set_level:
- 	if (result)
- 		goto out_free_levels;
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--			  "found %d brightness levels\n",
--			  br->count - ACPI_VIDEO_FIRST_LEVEL));
-+	acpi_handle_debug(device->dev->handle, "found %d brightness levels\n",
-+			  br->count - ACPI_VIDEO_FIRST_LEVEL);
+ 	tz->temperature = tmp;
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Temperature is %lu dK\n",
+-			  tz->temperature));
 +
++	acpi_handle_debug(tz->device->handle, "Temperature is %lu dK\n",
++			  tz->temperature);
+ 
  	return 0;
- 
- out_free_levels:
-@@ -1023,7 +1019,8 @@ static void acpi_video_device_find_cap(s
- 	if (acpi_has_method(device->dev->handle, "_BQC")) {
- 		device->cap._BQC = 1;
- 	} else if (acpi_has_method(device->dev->handle, "_BCQ")) {
--		printk(KERN_WARNING FW_BUG "_BCQ is used instead of _BQC\n");
-+		acpi_handle_info(device->dev->handle,
-+				 "_BCQ is used instead of _BQC\n");
- 		device->cap._BCQ = 1;
- 	}
- 
-@@ -1083,8 +1080,7 @@ static int acpi_video_bus_check(struct a
- 	/* Does this device support video switching? */
- 	if (video->cap._DOS || video->cap._DOD) {
- 		if (!video->cap._DOS) {
--			printk(KERN_WARNING FW_BUG
--				"ACPI(%s) defines _DOD but not _DOS\n",
-+			pr_info(FW_BUG "ACPI(%s) defines _DOD but not _DOS\n",
- 				acpi_device_bid(video->device));
- 		}
- 		video->flags.multihead = 1;
-@@ -1272,7 +1268,8 @@ acpi_video_device_bind(struct acpi_video
- 		ids = &video->attached_array[i];
- 		if (device->device_id == (ids->value.int_val & 0xffff)) {
- 			ids->bind_info = device;
--			ACPI_DEBUG_PRINT((ACPI_DB_INFO, "device_bind %d\n", i));
-+			acpi_handle_debug(video->device->handle, "%s: %d\n",
-+					  __func__, i);
- 		}
- 	}
  }
-@@ -1324,20 +1321,22 @@ static int acpi_video_device_enumerate(s
- 		return AE_NOT_EXIST;
+@@ -216,8 +214,8 @@ static int acpi_thermal_get_polling_freq
+ 		return -ENODEV;
  
- 	status = acpi_evaluate_object(video->device->handle, "_DOD", NULL, &buffer);
--	if (!ACPI_SUCCESS(status)) {
--		ACPI_EXCEPTION((AE_INFO, status, "Evaluating _DOD"));
-+	if (ACPI_FAILURE(status)) {
-+		acpi_handle_info(video->device->handle,
-+				 "_DOD evaluation failed: %s\n",
-+				 acpi_format_exception(status));
- 		return status;
- 	}
+ 	tz->polling_frequency = tmp;
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Polling frequency is %lu dS\n",
+-			  tz->polling_frequency));
++	acpi_handle_debug(tz->device->handle, "Polling frequency is %lu dS\n",
++			  tz->polling_frequency);
  
- 	dod = buffer.pointer;
- 	if (!dod || (dod->type != ACPI_TYPE_PACKAGE)) {
--		ACPI_EXCEPTION((AE_INFO, status, "Invalid _DOD data"));
-+		acpi_handle_info(video->device->handle, "Invalid _DOD data\n");
- 		status = -EFAULT;
- 		goto out;
- 	}
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Found %d video heads in _DOD\n",
--			  dod->package.count));
-+	acpi_handle_debug(video->device->handle, "Found %d video heads in _DOD\n",
-+			  dod->package.count);
- 
- 	active_list = kcalloc(1 + dod->package.count,
- 			      sizeof(struct acpi_video_enumerated_device),
-@@ -1352,15 +1351,18 @@ static int acpi_video_device_enumerate(s
- 		obj = &dod->package.elements[i];
- 
- 		if (obj->type != ACPI_TYPE_INTEGER) {
--			printk(KERN_ERR PREFIX
--				"Invalid _DOD data in element %d\n", i);
-+			acpi_handle_info(video->device->handle,
-+					 "Invalid _DOD data in element %d\n", i);
- 			continue;
- 		}
- 
- 		active_list[count].value.int_val = obj->integer.value;
- 		active_list[count].bind_info = NULL;
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "dod element[%d] = %d\n", i,
--				  (int)obj->integer.value));
-+
-+		acpi_handle_debug(video->device->handle,
-+				  "_DOD element[%d] = %d\n", i,
-+				  (int)obj->integer.value);
-+
- 		count++;
- 	}
- 
-@@ -1451,7 +1453,8 @@ acpi_video_switch_brightness(struct work
- 
- out:
- 	if (result)
--		printk(KERN_ERR PREFIX "Failed to switch the brightness\n");
-+		acpi_handle_info(device->dev->handle,
-+				 "Failed to switch brightness\n");
+ 	return 0;
  }
+@@ -254,12 +252,12 @@ static int acpi_thermal_set_cooling_mode
+  * 2.TODO: Devices listed in _PSL, _ALx, _TZD may change.
+  *   We need to re-bind the cooling devices of a thermal zone when this occurs.
+  */
+-#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, str)	\
++#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, tz, str)	\
+ do {	\
+ 	if (flags != ACPI_TRIPS_INIT)	\
+-		ACPI_EXCEPTION((AE_INFO, AE_ERROR,	\
++		acpi_handle_info(tz->device->handle,	\
+ 		"ACPI thermal trip point %s changed\n"	\
+-		"Please send acpidump to linux-acpi@vger.kernel.org", str)); \
++		"Please report to linux-acpi@vger.kernel.org\n", str); \
+ } while (0)
  
- int acpi_video_get_edid(struct acpi_device *device, int type, int device_id,
-@@ -1601,8 +1604,8 @@ static void acpi_video_bus_notify(struct
+ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+@@ -283,17 +281,17 @@ static int acpi_thermal_trips_update(str
+ 		 */
+ 		if (ACPI_FAILURE(status)) {
+ 			tz->trips.critical.flags.valid = 0;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					  "No critical threshold\n"));
++			acpi_handle_debug(tz->device->handle,
++					  "No critical threshold\n");
+ 		} else if (tmp <= 2732) {
+-			pr_warn(FW_BUG "Invalid critical threshold (%llu)\n",
++			pr_info(FW_BUG "Invalid critical threshold (%llu)\n",
+ 				tmp);
+ 			tz->trips.critical.flags.valid = 0;
+ 		} else {
+ 			tz->trips.critical.flags.valid = 1;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
++			acpi_handle_debug(tz->device->handle,
+ 					  "Found critical threshold [%lu]\n",
+-					  tz->trips.critical.temperature));
++					  tz->trips.critical.temperature);
+ 		}
+ 		if (tz->trips.critical.flags.valid == 1) {
+ 			if (crt == -1) {
+@@ -305,8 +303,8 @@ static int acpi_thermal_trips_update(str
+ 				 * Allow override critical threshold
+ 				 */
+ 				if (crt_k > tz->trips.critical.temperature)
+-					pr_warn(PREFIX "Critical threshold %d C\n",
+-						crt);
++					pr_info("Critical threshold %d C\n", crt);
++
+ 				tz->trips.critical.temperature = crt_k;
+ 			}
+ 		}
+@@ -318,14 +316,14 @@ static int acpi_thermal_trips_update(str
+ 				"_HOT", NULL, &tmp);
+ 		if (ACPI_FAILURE(status)) {
+ 			tz->trips.hot.flags.valid = 0;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					"No hot threshold\n"));
++			acpi_handle_debug(tz->device->handle,
++					  "No hot threshold\n");
+ 		} else {
+ 			tz->trips.hot.temperature = tmp;
+ 			tz->trips.hot.flags.valid = 1;
+-			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-					"Found hot threshold [%lu]\n",
+-					tz->trips.hot.temperature));
++			acpi_handle_debug(tz->device->handle,
++					  "Found hot threshold [%lu]\n",
++					  tz->trips.hot.temperature);
+ 		}
+ 	}
+ 
+@@ -378,7 +376,8 @@ static int acpi_thermal_trips_update(str
+ 		status = acpi_evaluate_reference(tz->device->handle, "_PSL",
+ 							NULL, &devices);
+ 		if (ACPI_FAILURE(status)) {
+-			pr_warn(PREFIX "Invalid passive threshold\n");
++			acpi_handle_info(tz->device->handle,
++					 "Invalid passive threshold\n");
+ 			tz->trips.passive.flags.valid = 0;
+ 		}
+ 		else
+@@ -388,12 +387,12 @@ static int acpi_thermal_trips_update(str
+ 				sizeof(struct acpi_handle_list))) {
+ 			memcpy(&tz->trips.passive.devices, &devices,
+ 				sizeof(struct acpi_handle_list));
+-			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 		}
+ 	}
+ 	if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
+ 		if (valid != tz->trips.passive.flags.valid)
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
+ 	}
+ 
+ 	/* Active (optional) */
+@@ -440,8 +439,8 @@ static int acpi_thermal_trips_update(str
+ 			status = acpi_evaluate_reference(tz->device->handle,
+ 						name, NULL, &devices);
+ 			if (ACPI_FAILURE(status)) {
+-				pr_warn(PREFIX "Invalid active%d threshold\n",
+-					i);
++				acpi_handle_info(tz->device->handle,
++						 "Invalid active%d threshold\n", i);
+ 				tz->trips.active[i].flags.valid = 0;
+ 			}
+ 			else
+@@ -451,12 +450,12 @@ static int acpi_thermal_trips_update(str
+ 					sizeof(struct acpi_handle_list))) {
+ 				memcpy(&tz->trips.active[i].devices, &devices,
+ 					sizeof(struct acpi_handle_list));
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 			}
+ 		}
+ 		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
+ 			if (valid != tz->trips.active[i].flags.valid)
+-				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
++				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
+ 
+ 		if (!tz->trips.active[i].flags.valid)
+ 			break;
+@@ -469,7 +468,7 @@ static int acpi_thermal_trips_update(str
+ 		if (ACPI_SUCCESS(status)
+ 		    && memcmp(&tz->devices, &devices, sizeof(devices))) {
+ 			tz->devices = devices;
+-			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
++			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+ 		}
+ 	}
+ 
+@@ -925,8 +924,8 @@ static void acpi_thermal_notify(struct a
+ 						  dev_name(&device->dev), event, 0);
  		break;
- 
  	default:
 -		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
 -				  "Unsupported event [0x%x]\n", event));
@@ -331,86 +264,103 @@ Index: linux-pm/drivers/acpi/acpi_video.c
 +				  event);
  		break;
  	}
+ }
+@@ -1074,7 +1073,7 @@ static int acpi_thermal_add(struct acpi_
+ 	mutex_init(&tz->thermal_check_lock);
+ 	INIT_WORK(&tz->thermal_check_work, acpi_thermal_check_fn);
  
-@@ -1675,8 +1678,7 @@ static void acpi_video_device_notify(acp
- 		keycode = KEY_DISPLAY_OFF;
- 		break;
- 	default:
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Unsupported event [0x%x]\n", event));
-+		acpi_handle_debug(handle, "Unsupported event [0x%x]\n", event);
- 		break;
+-	pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
++	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
+ 		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
+ 	goto end;
+ 
+@@ -1146,24 +1145,24 @@ static int acpi_thermal_resume(struct de
+ static int thermal_act(const struct dmi_system_id *d) {
+ 
+ 	if (act == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "disabling all active thermal trip points\n", d->ident);
++		pr_notice("%s detected: disabling all active thermal trip points\n",
++			  d->ident);
+ 		act = -1;
+ 	}
+ 	return 0;
+ }
+ static int thermal_nocrt(const struct dmi_system_id *d) {
+ 
+-	pr_notice(PREFIX "%s detected: "
+-		  "disabling all critical thermal trip point actions.\n", d->ident);
++	pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
++		  d->ident);
+ 	nocrt = 1;
+ 	return 0;
+ }
+ static int thermal_tzp(const struct dmi_system_id *d) {
+ 
+ 	if (tzp == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "enabling thermal zone polling\n", d->ident);
++		pr_notice("%s detected: enabling thermal zone polling\n",
++			  d->ident);
+ 		tzp = 300;	/* 300 dS = 30 Seconds */
+ 	}
+ 	return 0;
+@@ -1171,8 +1170,8 @@ static int thermal_tzp(const struct dmi_
+ static int thermal_psv(const struct dmi_system_id *d) {
+ 
+ 	if (psv == 0) {
+-		pr_notice(PREFIX "%s detected: "
+-			  "disabling all passive thermal trip points\n", d->ident);
++		pr_notice("%s detected: disabling all passive thermal trip points\n",
++			  d->ident);
+ 		psv = -1;
+ 	}
+ 	return 0;
+@@ -1225,7 +1224,7 @@ static int __init acpi_thermal_init(void
+ 	dmi_check_system(thermal_dmi_table);
+ 
+ 	if (off) {
+-		pr_notice(PREFIX "thermal control disabled\n");
++		pr_notice("thermal control disabled\n");
+ 		return -ENODEV;
  	}
  
-@@ -1812,11 +1814,12 @@ static void acpi_video_dev_register_back
- 			&device->cooling_dev->device.kobj,
- 			"thermal_cooling");
- 	if (result)
--		printk(KERN_ERR PREFIX "Create sysfs link\n");
-+		pr_info("sysfs link creation failed\n");
-+
- 	result = sysfs_create_link(&device->cooling_dev->device.kobj,
- 			&device->dev->dev.kobj, "device");
- 	if (result)
--		printk(KERN_ERR PREFIX "Create sysfs link\n");
-+		pr_info("Reverse sysfs link creation failed\n");
- }
- 
- static void acpi_video_run_bcl_for_osi(struct acpi_video_bus *video)
-@@ -2030,7 +2033,7 @@ static int acpi_video_bus_add(struct acp
- 				acpi_video_bus_match, NULL,
- 				device, NULL);
- 	if (status == AE_ALREADY_EXISTS) {
--		printk(KERN_WARNING FW_BUG
-+		pr_info(FW_BUG
- 			"Duplicate ACPI video bus devices for the"
- 			" same VGA controller, please try module "
- 			"parameter \"video.allow_duplicates=1\""
-@@ -2073,7 +2076,7 @@ static int acpi_video_bus_add(struct acp
- 	if (error)
- 		goto err_put_video;
- 
--	printk(KERN_INFO PREFIX "%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
-+	pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
- 	       ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
- 	       video->flags.multihead ? "yes" : "no",
- 	       video->flags.rom ? "yes" : "no",
 Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
 ===================================================================
 --- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
 +++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
-@@ -59,7 +59,6 @@ shows the supported mask values, current
+@@ -57,7 +57,6 @@ shows the supported mask values, current
+     ACPI_PCI_COMPONENT              0x00400000
+     ACPI_CONTAINER_COMPONENT        0x01000000
      ACPI_SYSTEM_COMPONENT           0x02000000
-     ACPI_THERMAL_COMPONENT          0x04000000
+-    ACPI_THERMAL_COMPONENT          0x04000000
      ACPI_MEMORY_DEVICE_COMPONENT    0x08000000
--    ACPI_VIDEO_COMPONENT            0x10000000
      ACPI_PROCESSOR_COMPONENT        0x20000000
  
- debug_level
 Index: linux-pm/drivers/acpi/sysfs.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/sysfs.c
 +++ linux-pm/drivers/acpi/sysfs.c
-@@ -59,7 +59,6 @@ static const struct acpi_dlayer acpi_deb
+@@ -57,7 +57,6 @@ static const struct acpi_dlayer acpi_deb
+ 	ACPI_DEBUG_INIT(ACPI_PCI_COMPONENT),
+ 	ACPI_DEBUG_INIT(ACPI_CONTAINER_COMPONENT),
  	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
- 	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
+-	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
  	ACPI_DEBUG_INIT(ACPI_MEMORY_DEVICE_COMPONENT),
--	ACPI_DEBUG_INIT(ACPI_VIDEO_COMPONENT),
  	ACPI_DEBUG_INIT(ACPI_PROCESSOR_COMPONENT),
  };
- 
 Index: linux-pm/include/acpi/acpi_drivers.h
 ===================================================================
 --- linux-pm.orig/include/acpi/acpi_drivers.h
 +++ linux-pm/include/acpi/acpi_drivers.h
-@@ -22,7 +22,6 @@
+@@ -20,7 +20,6 @@
+ #define ACPI_PCI_COMPONENT		0x00400000
+ #define ACPI_CONTAINER_COMPONENT	0x01000000
  #define ACPI_SYSTEM_COMPONENT		0x02000000
- #define ACPI_THERMAL_COMPONENT		0x04000000
+-#define ACPI_THERMAL_COMPONENT		0x04000000
  #define ACPI_MEMORY_DEVICE_COMPONENT	0x08000000
--#define ACPI_VIDEO_COMPONENT		0x10000000
  #define ACPI_PROCESSOR_COMPONENT	0x20000000
  
- /*
 
 
 
