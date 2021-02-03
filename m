@@ -2,92 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 249A330DDD2
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 16:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9418030DE89
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 16:46:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbhBCPP0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 10:15:26 -0500
-Received: from mail-wm1-f45.google.com ([209.85.128.45]:51866 "EHLO
-        mail-wm1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233976AbhBCPFb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 10:05:31 -0500
-Received: by mail-wm1-f45.google.com with SMTP id m2so5866043wmm.1;
-        Wed, 03 Feb 2021 07:05:12 -0800 (PST)
+        id S234512AbhBCPps (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 10:45:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234114AbhBCPpc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 10:45:32 -0500
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1814AC0613D6;
+        Wed,  3 Feb 2021 07:44:52 -0800 (PST)
+Received: by mail-qv1-xf2a.google.com with SMTP id u16so135310qvo.9;
+        Wed, 03 Feb 2021 07:44:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=967+scZz5c/VMb8QxhN8JJ1TyJw7YVtgje+ictxSWfE=;
+        b=W9cR27rS5wSTdzg8SX5V048E11ydpWYV5g8B/Th/mXLyO6MZ1UWYb5JS21T3E00Zwc
+         vqIrQmZcJYa/RiD0Akt2OZerYzoIorG8EzCiKZ1AKeEkiWR2n96lVZmmyCX6QESOgnJE
+         8oGj7+/OpBUr2/RMtsVK2HKy8qXp7LnXWCaVkfnh2deNxD1Q0A7h9o/s4CFzd4wYvCKM
+         TDm0/J/9zuQs9VKQ5sJ2vEDi/Sx1IWZs55QZ3arnhKXar/5YPBufBZMk4HpyPtytNjWa
+         Y0peHCe9jXTKw81c2hrnye4Ho/ghzSWnX7t8GObYSqMFAjf946hBSn0cg5pXS+GNkIT/
+         i4Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HHDz3iIV5n6XQTRqm5AjoptlDcjURqmul15yV2T30Po=;
-        b=fe6tL+mpWgPHM2k1U2l2piNuKt/ZU2RcjgpMapyh71mZrbH0/hjPiLD7BbPbuvJJqf
-         hRiUZdOp2ssEmyav/BdwtoLmvWxNlH20gl3Sl3dH/yKVgoimYLyT6p/n2l2K7jyUmEeu
-         SiwzL9tHrycmcq0IJ8Xakr5Uewy8Zxq2iQLZwlpY5euwWBmnX5G4DS6IoIlDsKO81UGR
-         2ieIfU9QmZhaEWoP1t+ANEk5k0NhgoJm0zoBCD/6uMj/0k7A68BIyjs9FcXWUU9typ0s
-         VQIh3DgXy6285UCoMPAegxHub8FXlBAf85I/v7HT7mygVPuHSSUkUZkZ1Yzk8XpWcN9q
-         ldTg==
-X-Gm-Message-State: AOAM531eYpRlZuufaGKZREEpia7JA4O/Qw5z0ebcoMV1jYsk6f29PJaW
-        AhY5TghHdDT3O6WxBn9ETiPuqEjkWbM=
-X-Google-Smtp-Source: ABdhPJzwkBHGVxOk7rfacDfATl2XTu3uy85q3dwEZjvioDzYxjMkoIPyGbkuyyrJdxM+xF7WZ5ETSw==
-X-Received: by 2002:a1c:1f4d:: with SMTP id f74mr3341162wmf.12.1612364686079;
-        Wed, 03 Feb 2021 07:04:46 -0800 (PST)
-Received: from liuwe-devbox-debian-v2.j3c5onc20sse1dnehy4noqpfcg.zx.internal.cloudapp.net ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id r17sm4051704wro.46.2021.02.03.07.04.45
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=967+scZz5c/VMb8QxhN8JJ1TyJw7YVtgje+ictxSWfE=;
+        b=tYtr7mTV2c2/CoPO7TSP86CwDIzrtQYT523LJYxAbVnNJsMO5m5sukgOGaIUr7yuDP
+         e4NhayUTxAzVGLcx+tghwCV4sqvDWolsdnPxG1mNjooNMpXAsTas6Q2DAlr4MoKGyPmT
+         /2ekf0lRm5zvEbVMxbJq/geDn9+Oak5qBOwpBofn6vk3VKR8zx3f9fdQuGrKDBR7FI0R
+         oKm3g4YcSeN3MUas5Xcg4aMgZLBtgQT4C3S0fZ9x7OmOuTc+PWyCg4ikRceRCzpEUk8V
+         KC3o0bNQvXk6CiRnjJUJHOrieIm9JpN9OHo79298L22MCt9NOtw/ut4FSeB/hlplncw0
+         w+sA==
+X-Gm-Message-State: AOAM531rJmv/3eDnLWqjQzP2NPKpOtRoYYAr9i2EgEPpPekpuQ5SxLEh
+        fMYDOFTG3h78gNOPWJ8JVNI=
+X-Google-Smtp-Source: ABdhPJxxJXDZSqwfz04ep3TuMOEDWyxgzktejYV0vydgtNU+CgmdshqXj4Yl+ltDhDwRo8wCC23M8Q==
+X-Received: by 2002:a05:6214:1103:: with SMTP id e3mr3428912qvs.12.1612367091437;
+        Wed, 03 Feb 2021 07:44:51 -0800 (PST)
+Received: from localhost.localdomain ([156.146.36.139])
+        by smtp.gmail.com with ESMTPSA id g11sm1560043qto.89.2021.02.03.07.44.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Feb 2021 07:04:45 -0800 (PST)
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Linux on Hyper-V List <linux-hyperv@vger.kernel.org>
-Cc:     virtualization@lists.linux-foundation.org,
-        Linux Kernel List <linux-kernel@vger.kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Vineeth Pillai <viremana@linux.microsoft.com>,
-        Sunil Muthuswamy <sunilmut@microsoft.com>,
-        Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-        pasha.tatashin@soleen.com, Wei Liu <wei.liu@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI COMPONENT ARCHITECTURE
-        (ACPICA)),
-        devel@acpica.org (open list:ACPI COMPONENT ARCHITECTURE (ACPICA))
-Subject: [PATCH v6 08/16] ACPI / NUMA: add a stub function for node_to_pxm()
-Date:   Wed,  3 Feb 2021 15:04:27 +0000
-Message-Id: <20210203150435.27941-9-wei.liu@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210203150435.27941-1-wei.liu@kernel.org>
-References: <20210203150435.27941-1-wei.liu@kernel.org>
+        Wed, 03 Feb 2021 07:44:50 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     robert.moore@intel.com, erik.kaneda@intel.com,
+        rafael.j.wysocki@intel.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] include: acpi:  Correct spelling in the file acoutput.h is optimzation to optimization
+Date:   Wed,  3 Feb 2021 21:14:37 +0530
+Message-Id: <20210203154437.15949-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There is already a stub function for pxm_to_node but conversion to the
-other direction is missing.
 
-It will be used by Microsoft Hypervisor code later.
+s/optimzation/optimization/
 
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
-v6: new
----
- include/acpi/acpi_numa.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/acpi/acoutput.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
-index a4c6ef809e27..40a91ce87e04 100644
---- a/include/acpi/acpi_numa.h
-+++ b/include/acpi/acpi_numa.h
-@@ -30,6 +30,10 @@ static inline int pxm_to_node(int pxm)
- {
- 	return 0;
- }
-+static inline int node_to_pxm(int node)
-+{
-+	return 0;
-+}
- #endif				/* CONFIG_ACPI_NUMA */
- 
- #ifdef CONFIG_ACPI_HMAT
--- 
-2.20.1
+diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
+index c5d900c0ecda..1ba212372e79 100644
+--- a/include/acpi/acoutput.h
++++ b/include/acpi/acoutput.h
+@@ -362,7 +362,7 @@
+  *
+  * A less-safe version of the macros is provided for optional use if the
+  * compiler uses excessive CPU stack (for example, this may happen in the
+- * debug case if code optimzation is disabled.)
++ * debug case if code optimization is disabled.)
+  */
+
+ /* Exit trace helper macro */
+--
+2.26.2
 
