@@ -2,174 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7DE30E4E3
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 22:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E5D30E559
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 22:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbhBCVYO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 16:24:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60134 "EHLO
+        id S232102AbhBCV6u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 16:58:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbhBCVYM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 16:24:12 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB10C061573
-        for <linux-acpi@vger.kernel.org>; Wed,  3 Feb 2021 13:23:32 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id lg21so1477561ejb.3
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Feb 2021 13:23:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
-        b=kxpyxImNyl0PD+X1iGOdvaWlfhCG1TIKsHTUd3YIbtmQGOQN1d0MCUUHfIff4tHdHo
-         4rkeo72QT5v52E7o4MSw6G5C9PFnkqsaxGiD2t6Z3g/nUDvrDKbVkRo0D9oUGce8xMd1
-         D9WDuYQE1t98gpIh3hjVGZlF/tNPEAhtns2hDwk/fUXSf38hcGas8HbkZcDAaRURLGKV
-         3RiAoKUv3nJWfMx/5VeciMGYvZKE2HYlJAAUd9sAwpDOwfKSbc1R0yNBFxbZNzr0+sYo
-         /MDlatcZ7OcQ7mRVmkYp7bnDyKHd824Gp2Hb+fsrxrOX/ujxvWArT4kJDlSVwPhsHWbv
-         WhOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
-        b=cpH60SU+9uITlaHn6OfzmNmFmzXqjeDQfVLlEwVu9nwZVuTZZaZai6Szmr7zRghStP
-         YZvcV8rnJXQuYsqQVfrDHHoigisVfBsaXix1hohzQ2MpgX9INFO5SU0WiBy9jbFYxUYk
-         EBKetVJJu5owj683LAEX7h/VD/RdH9ZZzyzpOsbBJX9j8/Ry7NdcGSkzF5GhHvy7eYZh
-         oVIk5JxZXRsLJJ46uvcgsUqxeFRTZ/eu2CZmnEBUieornlrjA1Pc0xNATRyAGyuayWq/
-         u/9qW4knuj1be2PwDQeWBdkrX9SCQyGKFgtTpdNDLubjn79EiYVXi1U6PDAU/4b0m+OL
-         XlvA==
-X-Gm-Message-State: AOAM533NHH+0ZL+tHPUuKRsSHoNQb5oAdujU1FogA/pnAiuinQJkwhd3
-        ySLh8A6P6YJPr3hMuL/2WvSzyKpZRUrzd7KXkSrVgQ==
-X-Google-Smtp-Source: ABdhPJycsTuuO9WFxOwJr0uveWLDYX613Mw9CD4bctsoU/uYDmnrN/Izr6YTrrIN45yfo7Sw2Zt5lHunHYMWXjSffEI=
-X-Received: by 2002:a17:906:d8a1:: with SMTP id qc1mr5313759ejb.523.1612387411333;
- Wed, 03 Feb 2021 13:23:31 -0800 (PST)
+        with ESMTP id S232249AbhBCV6t (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 16:58:49 -0500
+Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBB9C061573;
+        Wed,  3 Feb 2021 13:58:08 -0800 (PST)
+Received: from martin by viti.kaiser.cx with local (Exim 4.89)
+        (envelope-from <martin@viti.kaiser.cx>)
+        id 1l7Q9t-0000kb-Rx; Wed, 03 Feb 2021 22:57:57 +0100
+Date:   Wed, 3 Feb 2021 22:57:57 +0100
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Android Kernel Team <kernel-team@android.com>
+Subject: Re: [PATCH v2 0/3] Make fw_devlink=on more forgiving
+Message-ID: <20210203215757.pnfvfny2x67phyd7@viti.kaiser.cx>
+References: <20210202043345.3778765-1-saravanak@google.com>
+ <20210202212231.g5tj3f7tv74gagm6@viti.kaiser.cx>
+ <CAGETcx_cS_Y-1Bw3tNhZRckEQO=yB8UDzNRr+Khs_X2ym7tnwA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-4-ben.widawsky@intel.com> <20210202181016.GD3708021@infradead.org>
- <20210202182418.3wyxnm6rqeoeclu2@intel.com> <20210203171534.GB4104698@infradead.org>
- <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
-In-Reply-To: <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 3 Feb 2021 13:23:31 -0800
-Message-ID: <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-To:     Ben Widawsky <ben.widawsky@intel.com>
-Cc:     Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        daniel.lll@alibaba-inc.com,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx_cS_Y-1Bw3tNhZRckEQO=yB8UDzNRr+Khs_X2ym7tnwA@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Sender: Martin Kaiser <martin@viti.kaiser.cx>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 3, 2021 at 9:23 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
->
-> On 21-02-03 17:15:34, Christoph Hellwig wrote:
-> > On Tue, Feb 02, 2021 at 10:24:18AM -0800, Ben Widawsky wrote:
-> > > > > +       /* Cap 4000h - CXL_CAP_CAP_ID_MEMDEV */
-> > > > > +       struct {
-> > > > > +               void __iomem *regs;
-> > > > > +       } mem;
-> > > >
-> > > > This style looks massively obsfucated.  For one the comments look like
-> > > > absolute gibberish, but also what is the point of all these anonymous
-> > > > structures?
-> > >
-> > > They're not anonymous, and their names are for the below register functions. The
-> > > comments are connected spec reference 'Cap XXXXh' to definitions in cxl.h. I can
-> > > articulate that if it helps.
-> >
-> > But why no simply a
-> >
-> >       void __iomem *mem_regs;
-> >
-> > field vs the extra struct?
-> >
-> > > The register space for CXL devices is a bit weird since it's all subdivided
-> > > under 1 BAR for now. To clearly distinguish over the different subregions, these
-> > > helpers exist. It's really easy to mess this up as the developer and I actually
-> > > would disagree that it makes debugging quite a bit easier. It also gets more
-> > > convoluted when you add the other 2 BARs which also each have their own
-> > > subregions.
-> > >
-> > > For example. if my mailbox function does:
-> > > cxl_read_status_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> > >
-> > > instead of:
-> > > cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> > >
-> > > It's easier to spot than:
-> > > readl(cxlm->regs + cxlm->status_offset + CXLDEV_MB_CAPS_OFFSET)
-> >
-> > Well, what I think would be the most obvious is:
-> >
-> > readl(cxlm->status_regs + CXLDEV_MB_CAPS_OFFSET);
-> >
->
-> Right, so you wrote the buggy version. Should be.
-> readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
->
-> Admittedly, "MB" for mailbox isn't super obvious. I think you've convinced me to
-> rename these register definitions
-> s/MB/MBOX.
->
-> I'd prefer to keep the helpers for now as I do find them helpful, and so far
-> nobody else who has touched the code has complained. If you feel strongly, I
-> will change it.
+Thus wrote Saravana Kannan (saravanak@google.com):
 
-After seeing the options, I think I'd prefer to not have to worry what
-extra magic is happening with cxl_read_mbox_reg32()
+> > With modules disabled, the kernel boots but probe fails for some
+> > (non-mainline) drivers in my tree.
 
-cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+> Thanks Martin!
 
-readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
+> > All of those drivers have a gpio in
+> > their device-tree node, such as
 
-The latter is both shorter and more idiomatic.
+> > my_driver {
+> >    gpio_test1 = <&gpio1 0 0>;
+> >    ...
+> > };
+
+> > with gpio1 from arch/arm/boot/dts/imx25.dtsi.
+
+> > The probe function calls
+
+> > of_get_named_gpio(np, "gpio_test1", 0);
+
+> > to get the gpio. This fails with -EINVAL.
+
+> And you didn't see this issue with the fsl,avic patch?
+
+No. With the fsl,avic patch in place, all drivers are probed correctly.
+
+> The property you are using is not a standard GPIO binding (-gpios,
+> gpio, gpios) and I'm not surprised it's not working.
+
+I know that I should be using the gpiod API as suggested by Geert.
+
+BTW is this definition ok? Could its driver be converted to using the
+gpiod api?
+
+rtc: rtc {
+   compatible = "moxa,moxart-rtc";
+   gpio-rtc-sclk = <&gpio 5 0>;
+...
 
 
->
-> > > > > +       /* 8.2.8.4.3 */
-> > > >
-> > > > ????
-> > > >
-> > >
-> > > I had been trying to be consistent with 'CXL2.0 - ' in front of all spec
-> > > reference. I obviously missed this one.
-> >
-> > FYI, I generally find section names much easier to find than section
-> > numbers.  Especially as the numbers change very frequently, some times
-> > even for very minor updates to the spec.  E.g. in NVMe the numbers might
-> > even change from NVMe 1.X to NVMe 1.Xa because an errata had to add
-> > a clarification as its own section.
->
-> Why not both?
->
-> I ran into this in fact going from version 0.7 to 1.0 of the spec. I did call
-> out the spec version to address this, but you're right. Section names can change
-> too in theory.
->
-> /*
->  * CXL 2.0 8.2.8.4.3
->  * Mailbox Capabilities Register
->  */
->
-> Too much?
+> The gpio1 is probably getting probe deferred and ends up running after
+> "my_driver".
 
-That seems like too many lines.
+I added a debug print in the probe function. It turned out that the
+driver for gpio1 is probed for the first time after my_driver.
 
-/* CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register */
+I removed the interrupt-controller property for gpio2 for testing. gpio2
+was then probed much earlier.
 
-...this looks ok.
+Best regards,
+Martin
