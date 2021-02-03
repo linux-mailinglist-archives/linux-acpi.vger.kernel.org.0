@@ -2,66 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4C030E413
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 21:32:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7DE30E4E3
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 22:24:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbhBCUbr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 15:31:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48858 "EHLO
+        id S231513AbhBCVYO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 16:24:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232013AbhBCUbm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 15:31:42 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0311BC0613ED
-        for <linux-acpi@vger.kernel.org>; Wed,  3 Feb 2021 12:31:01 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id t5so1197944eds.12
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Feb 2021 12:31:01 -0800 (PST)
+        with ESMTP id S231230AbhBCVYM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 16:24:12 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB10C061573
+        for <linux-acpi@vger.kernel.org>; Wed,  3 Feb 2021 13:23:32 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id lg21so1477561ejb.3
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Feb 2021 13:23:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GCeEh1pG9896/MM4fasuikkjXXaTHWUxAsa3KXwRezg=;
-        b=0La1d6qXruA5buPCLrkx5wbivEiT7/HFmGaUOllSjEMKIyQT9YVkp1RQEyMBYcFT2/
-         +Kqv/viUAlMZvMfoMaSpScFMhafTkNCzp07TbEq4BLcp04KfpEd1ziNwQVX0Fo7A8zJV
-         csKmRJkMMTBamkqcaMqmV6AV9LHxqpR4K354UTNIs41/nuBY0DFZ+9aX52TWwswXT021
-         w5MNoWWPkfRekOFqFP5H8xMSwU5k+xYvcrbB78E31fgGt7B3S/G+nTkTUHZvKbYen+7H
-         crT6Gxmq5B69swVwabSJtB9IA5JlUEtmWqc5gKHfQ9URxAxbHzgkL5QXKsK7fkRloi39
-         fCyg==
+        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
+        b=kxpyxImNyl0PD+X1iGOdvaWlfhCG1TIKsHTUd3YIbtmQGOQN1d0MCUUHfIff4tHdHo
+         4rkeo72QT5v52E7o4MSw6G5C9PFnkqsaxGiD2t6Z3g/nUDvrDKbVkRo0D9oUGce8xMd1
+         D9WDuYQE1t98gpIh3hjVGZlF/tNPEAhtns2hDwk/fUXSf38hcGas8HbkZcDAaRURLGKV
+         3RiAoKUv3nJWfMx/5VeciMGYvZKE2HYlJAAUd9sAwpDOwfKSbc1R0yNBFxbZNzr0+sYo
+         /MDlatcZ7OcQ7mRVmkYp7bnDyKHd824Gp2Hb+fsrxrOX/ujxvWArT4kJDlSVwPhsHWbv
+         WhOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GCeEh1pG9896/MM4fasuikkjXXaTHWUxAsa3KXwRezg=;
-        b=jrc71zDgnhViIEVYqMDm3qe/kkDjd3TV3eSngmMgWjyHKKM/LYNCqWn61GWBKY1+DO
-         sU5unZRAqVFp6RH1yL60aHP+SwJ3u5XWSe7PVJh0wJMt5i8O87HJuBcg9h1d+O9vRL0+
-         GicDIeFuMBiSfSg52lh4MXzSN0iOocXpVW4+IbYQ2R3Rj0QIjB15u9fF6ZW5WvsyVtR5
-         IkSKW6mUh65CGy3j5QwFR2R/k1YYtcylhjvvzPKtRGd8BEujpHOBouWMOQAttg9no0UT
-         iglqiGT97aKqMVoHeu/ZeKfHLXY/um1eI/vVv0sMPQ3eI25VCCxBzM7NSNEU4uolaVup
-         +y/Q==
-X-Gm-Message-State: AOAM533rPRkGAbYHNFx1lkGi2fRWdoZTQTrn4RsS8OVXQC/idf1KBg1d
-        PqTj2MLR7H3BvTTvmgZ4ZCIguD3n5ZMBlWgjOzZslw==
-X-Google-Smtp-Source: ABdhPJz5yQvL/w6WuDF2IqOxG58EKzPdmgtRbKd42tGScdcAdslPHYcRzyihZJRMmt2+98+SaW9Insr4XPjglnfKmFQ=
-X-Received: by 2002:a05:6402:3585:: with SMTP id y5mr4843766edc.97.1612384260671;
- Wed, 03 Feb 2021 12:31:00 -0800 (PST)
+        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
+        b=cpH60SU+9uITlaHn6OfzmNmFmzXqjeDQfVLlEwVu9nwZVuTZZaZai6Szmr7zRghStP
+         YZvcV8rnJXQuYsqQVfrDHHoigisVfBsaXix1hohzQ2MpgX9INFO5SU0WiBy9jbFYxUYk
+         EBKetVJJu5owj683LAEX7h/VD/RdH9ZZzyzpOsbBJX9j8/Ry7NdcGSkzF5GhHvy7eYZh
+         oVIk5JxZXRsLJJ46uvcgsUqxeFRTZ/eu2CZmnEBUieornlrjA1Pc0xNATRyAGyuayWq/
+         u/9qW4knuj1be2PwDQeWBdkrX9SCQyGKFgtTpdNDLubjn79EiYVXi1U6PDAU/4b0m+OL
+         XlvA==
+X-Gm-Message-State: AOAM533NHH+0ZL+tHPUuKRsSHoNQb5oAdujU1FogA/pnAiuinQJkwhd3
+        ySLh8A6P6YJPr3hMuL/2WvSzyKpZRUrzd7KXkSrVgQ==
+X-Google-Smtp-Source: ABdhPJycsTuuO9WFxOwJr0uveWLDYX613Mw9CD4bctsoU/uYDmnrN/Izr6YTrrIN45yfo7Sw2Zt5lHunHYMWXjSffEI=
+X-Received: by 2002:a17:906:d8a1:: with SMTP id qc1mr5313759ejb.523.1612387411333;
+ Wed, 03 Feb 2021 13:23:31 -0800 (PST)
 MIME-Version: 1.0
 References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-14-ben.widawsky@intel.com> <20210201182848.GL197521@fedora>
- <20210202235103.v36v3znh5tsi4g5x@intel.com> <CAPcyv4i3MMY=WExfvcPFYiJkHoM_UeZ63ORZqi0Vbm76JapS8A@mail.gmail.com>
- <20210203171610.2y2x4krijol5dvkk@intel.com> <YBroGrVd76p+BF0v@Konrads-MacBook-Pro.local>
-In-Reply-To: <YBroGrVd76p+BF0v@Konrads-MacBook-Pro.local>
+ <20210130002438.1872527-4-ben.widawsky@intel.com> <20210202181016.GD3708021@infradead.org>
+ <20210202182418.3wyxnm6rqeoeclu2@intel.com> <20210203171534.GB4104698@infradead.org>
+ <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
+In-Reply-To: <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 3 Feb 2021 12:31:00 -0800
-Message-ID: <CAPcyv4hMM9isho5d8wS=5vtP0NxE5KA0HrMp+Bx2PZhPDrrWsg@mail.gmail.com>
-Subject: Re: [PATCH 13/14] cxl/mem: Add limited Get Log command (0401h)
-To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org,
+Date:   Wed, 3 Feb 2021 13:23:31 -0800
+Message-ID: <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
+Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-nvdimm <linux-nvdimm@lists.01.org>,
         Linux PCI <linux-pci@vger.kernel.org>,
         Bjorn Helgaas <helgaas@kernel.org>,
         Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
         Ira Weiny <ira.weiny@intel.com>,
         Jon Masters <jcm@jonmasters.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -76,86 +75,101 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 3, 2021 at 10:16 AM Konrad Rzeszutek Wilk
-<konrad.wilk@oracle.com> wrote:
+On Wed, Feb 3, 2021 at 9:23 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> On Wed, Feb 03, 2021 at 09:16:10AM -0800, Ben Widawsky wrote:
-> > On 21-02-02 15:57:03, Dan Williams wrote:
-> > > On Tue, Feb 2, 2021 at 3:51 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+> On 21-02-03 17:15:34, Christoph Hellwig wrote:
+> > On Tue, Feb 02, 2021 at 10:24:18AM -0800, Ben Widawsky wrote:
+> > > > > +       /* Cap 4000h - CXL_CAP_CAP_ID_MEMDEV */
+> > > > > +       struct {
+> > > > > +               void __iomem *regs;
+> > > > > +       } mem;
 > > > >
-> > > > On 21-02-01 13:28:48, Konrad Rzeszutek Wilk wrote:
-> > > > > On Fri, Jan 29, 2021 at 04:24:37PM -0800, Ben Widawsky wrote:
-> > > > > > The Get Log command returns the actual log entries that are advertised
-> > > > > > via the Get Supported Logs command (0400h). CXL device logs are selected
-> > > > > > by UUID which is part of the CXL spec. Because the driver tries to
-> > > > > > sanitize what is sent to hardware, there becomes a need to restrict the
-> > > > > > types of logs which can be accessed by userspace. For example, the
-> > > > > > vendor specific log might only be consumable by proprietary, or offline
-> > > > > > applications, and therefore a good candidate for userspace.
-> > > > > >
-> > > > > > The current driver infrastructure does allow basic validation for all
-> > > > > > commands, but doesn't inspect any of the payload data. Along with Get
-> > > > > > Log support comes new infrastructure to add a hook for payload
-> > > > > > validation. This infrastructure is used to filter out the CEL UUID,
-> > > > > > which the userspace driver doesn't have business knowing, and taints on
-> > > > > > invalid UUIDs being sent to hardware.
-> > > > >
-> > > > > Perhaps a better option is to reject invalid UUIDs?
-> > > > >
-> > > > > And if you really really want to use invalid UUIDs then:
-> > > > >
-> > > > > 1) Make that code wrapped in CONFIG_CXL_DEBUG_THIS_IS_GOING_TO..?
-> > > > >
-> > > > > 2) Wrap it with lockdown code so that you can't do this at all
-> > > > >    when in LOCKDOWN_INTEGRITY or such?
-> > > > >
-> > > >
-> > > > The commit message needs update btw as CEL is allowed in the latest rev of the
-> > > > patches.
-> > > >
-> > > > We could potentially combine this with the now added (in a branch) CONFIG_RAW
-> > > > config option. Indeed I think that makes sense. Dan, thoughts?
+> > > > This style looks massively obsfucated.  For one the comments look like
+> > > > absolute gibberish, but also what is the point of all these anonymous
+> > > > structures?
 > > >
-> > > Yeah, unknown UUIDs blocking is the same risk as raw commands as a
-> > > vendor can trigger any behavior they want. A "CONFIG_RAW depends on
-> > > !CONFIG_INTEGRITY" policy sounds reasonable as well.
+> > > They're not anonymous, and their names are for the below register functions. The
+> > > comments are connected spec reference 'Cap XXXXh' to definitions in cxl.h. I can
+> > > articulate that if it helps.
 > >
-> > What about LOCKDOWN_NONE though? I think we need something runtime for this.
+> > But why no simply a
 > >
-> > Can we summarize the CONFIG options here?
+> >       void __iomem *mem_regs;
 > >
-> > CXL_MEM_INSECURE_DEBUG // no change
-> > CXL_MEM_RAW_COMMANDS // if !security_locked_down(LOCKDOWN_NONE)
+> > field vs the extra struct?
 > >
-> > bool cxl_unsafe()
+> > > The register space for CXL devices is a bit weird since it's all subdivided
+> > > under 1 BAR for now. To clearly distinguish over the different subregions, these
+> > > helpers exist. It's really easy to mess this up as the developer and I actually
+> > > would disagree that it makes debugging quite a bit easier. It also gets more
+> > > convoluted when you add the other 2 BARs which also each have their own
+> > > subregions.
+> > >
+> > > For example. if my mailbox function does:
+> > > cxl_read_status_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+> > >
+> > > instead of:
+> > > cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+> > >
+> > > It's easier to spot than:
+> > > readl(cxlm->regs + cxlm->status_offset + CXLDEV_MB_CAPS_OFFSET)
+> >
+> > Well, what I think would be the most obvious is:
+> >
+> > readl(cxlm->status_regs + CXLDEV_MB_CAPS_OFFSET);
+> >
 >
-> Would it be better if this inverted? Aka cxl_safe()..
-> ?
-> > {
-> > #ifndef CXL_MEM_RAW_COMMANDS
+> Right, so you wrote the buggy version. Should be.
+> readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
+>
+> Admittedly, "MB" for mailbox isn't super obvious. I think you've convinced me to
+> rename these register definitions
+> s/MB/MBOX.
+>
+> I'd prefer to keep the helpers for now as I do find them helpful, and so far
+> nobody else who has touched the code has complained. If you feel strongly, I
+> will change it.
 
-nit use IS_ENABLED() if this function lives in a C file, or provide
-whole alternate static inline versions in a header gated by ifdefs.
+After seeing the options, I think I'd prefer to not have to worry what
+extra magic is happening with cxl_read_mbox_reg32()
 
-> >       return false;
-> > #else
-> >       return !security_locked_down(LOCKDOWN_NONE);
->
-> :thumbsup:
->
-> (Naturally this would inverted if this was cxl_safe()).
->
->
-> > #endif
-> > }
-> >
-> > ---
-> >
-> > Did I get that right?
->
-> :nods:
+cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
 
-Looks good which means it's time to bikeshed the naming. I'd call it
-cxl_raw_allowed(). As "safety" isn't the only reason for blocking raw,
-it's also to corral the userspace api. I.e. things like enforcing
-security passphrase material through the Linux keys api.
+readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
+
+The latter is both shorter and more idiomatic.
+
+
+>
+> > > > > +       /* 8.2.8.4.3 */
+> > > >
+> > > > ????
+> > > >
+> > >
+> > > I had been trying to be consistent with 'CXL2.0 - ' in front of all spec
+> > > reference. I obviously missed this one.
+> >
+> > FYI, I generally find section names much easier to find than section
+> > numbers.  Especially as the numbers change very frequently, some times
+> > even for very minor updates to the spec.  E.g. in NVMe the numbers might
+> > even change from NVMe 1.X to NVMe 1.Xa because an errata had to add
+> > a clarification as its own section.
+>
+> Why not both?
+>
+> I ran into this in fact going from version 0.7 to 1.0 of the spec. I did call
+> out the spec version to address this, but you're right. Section names can change
+> too in theory.
+>
+> /*
+>  * CXL 2.0 8.2.8.4.3
+>  * Mailbox Capabilities Register
+>  */
+>
+> Too much?
+
+That seems like too many lines.
+
+/* CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register */
+
+...this looks ok.
