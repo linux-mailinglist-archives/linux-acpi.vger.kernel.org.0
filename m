@@ -2,84 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB55630DFEC
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 17:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2048930E0A2
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 18:13:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbhBCQmq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 11:42:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55816 "EHLO
+        id S230256AbhBCRNO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 12:13:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbhBCQmp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 11:42:45 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 827BDC061573;
-        Wed,  3 Feb 2021 08:42:05 -0800 (PST)
+        with ESMTP id S229902AbhBCRNM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 12:13:12 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EAD6C061573;
+        Wed,  3 Feb 2021 09:12:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=blj373H0bc+Fsmi6Ti/x/W0JiJ/lNNK0JSxAofHY8G8=; b=Thss449WfC0CdASo62EoNT2E6L
-        /yabn5ZR3OMkABIHmq9pRtaWEpewntBeCZupq02ZwxxPSwREGkW0t29VJ55VKWMj3PEWbiSDvg7Re
-        wx73NoMwNp+gg8Y1U3LyPaNFcBykMOhV4iaf+h8RRprW+iEghIuARlFyKXTdzjm0YobSho2GHhNRZ
-        zF0MXwn/gUDuoQlHiD6MxJPC4gAElsQ1RdlJPeXmoAblZV/qgomkvf6tz3vnBf4bzeAIDrzyG0ubW
-        j69X79k82uHlmZYaCr7QCxsIBWGunhrEfx6fHdpS+1prv7JNU1hhXt2TXp2MeYVo9fplmHoyC8I10
-        qOFDREFw==;
-Received: from [2601:1c0:6280:3f0::2a53]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1l7LE9-0002dG-4v; Wed, 03 Feb 2021 16:42:01 +0000
-Subject: Re: [PATCH] include: acpi: Correct spelling in the file acoutput.h is
- optimzation to optimization
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>, robert.moore@intel.com,
-        erik.kaneda@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-References: <20210203154437.15949-1-unixbhaskar@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <afd9b0da-c78f-6307-f30f-8e291f002d91@infradead.org>
-Date:   Wed, 3 Feb 2021 08:41:56 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=TOHrz9rJRmT1MZjmRcdSp7+GuY9P+OtZtUJvbJgCulo=; b=QlTPVhm61sGQuTcf3P0iNWT8ED
+        Bi2gkvv6DDeJQwV2HZj+zq53XZjee6QmF+jgW/E4anVOGeBwLE0OhGlE/INHWoFljCKhZx4kLuKFi
+        vBpPlOiPaIYrUSdcPkchYs5y8EocLYDkgBQi5zK2utgiNqo1gFusaNMlddnGX4lCKct1oIiIfQN0x
+        4FZFsAcm9c0hrwdS+WY55lmm+xjte1BQs5jszrftBaCW8zuTfPkpbQPL1wxnyHoTRZuCOgTwdKSQC
+        PmSjukh2Zy50HgX10fdq7MOFixROv7xKlGJkbVoqgE9rz6+csO3TxasqOuAu242s0FMgsIu5s/vvZ
+        pnxR5IZg==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1l7LhT-00HEZu-Qm; Wed, 03 Feb 2021 17:12:20 +0000
+Date:   Wed, 3 Feb 2021 17:12:19 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 02/14] cxl/mem: Map memory device registers
+Message-ID: <20210203171219.GA4104698@infradead.org>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-3-ben.widawsky@intel.com>
+ <20210202180441.GC3708021@infradead.org>
+ <20210202183151.7kwruvip7nshqsc4@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210203154437.15949-1-unixbhaskar@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210202183151.7kwruvip7nshqsc4@intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2/3/21 7:44 AM, Bhaskar Chowdhury wrote:
+On Tue, Feb 02, 2021 at 10:31:51AM -0800, Ben Widawsky wrote:
+> > > +		if (reg_type == CXL_REGLOC_RBI_MEMDEV) {
+> > > +			rc = 0;
+> > > +			cxlm = cxl_mem_create(pdev, reg_lo, reg_hi);
+> > > +			if (!cxlm)
+> > > +				rc = -ENODEV;
+> > > +			break;
+> > 
+> > And given that we're going to grow more types eventually, why not start
+> > out with a switch here?  Also why return the structure when nothing
+> > uses it?
 > 
-> s/optimzation/optimization/
+>  We've (Intel) already started working on the libnvdimm integration which does
+>  change this around a bit. In order to go with what's best tested though, I've
+>  chosen to use this as is for merge. Many different people not just in Intel
+>  have tested these codepaths. The resulting code moves the check on register
+>  type out of this function entirely.
 > 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+>  If you'd like me to make it a switch, I can, but it's going to be extracted
+>  later anyway.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
->  include/acpi/acoutput.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-> index c5d900c0ecda..1ba212372e79 100644
-> --- a/include/acpi/acoutput.h
-> +++ b/include/acpi/acoutput.h
-> @@ -362,7 +362,7 @@
->   *
->   * A less-safe version of the macros is provided for optional use if the
->   * compiler uses excessive CPU stack (for example, this may happen in the
-> - * debug case if code optimzation is disabled.)
-> + * debug case if code optimization is disabled.)
->   */
-> 
->  /* Exit trace helper macro */
-> --
-> 2.26.2
-> 
-
-
--- 
-~Randy
-
+This was just a suggestion.  No hard feelings, it's just that the code
+looks a little odd to me.
