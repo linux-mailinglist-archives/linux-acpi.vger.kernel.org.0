@@ -2,158 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A31D630E25B
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 19:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4D130E250
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 19:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbhBCSSm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 13:18:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbhBCSNv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 13:13:51 -0500
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F28CCC061223
-        for <linux-acpi@vger.kernel.org>; Wed,  3 Feb 2021 10:12:26 -0800 (PST)
-Received: by mail-io1-xd36.google.com with SMTP id u20so258226iot.9
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Feb 2021 10:12:26 -0800 (PST)
+        id S231740AbhBCSRF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 13:17:05 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:48782 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233016AbhBCSQ6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 13:16:58 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113IALCl121866;
+        Wed, 3 Feb 2021 18:15:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=g1beYCRtHQ+7eyet6gw/AH4AqA2dBKOVEjc/R55Ly5I=;
+ b=eV9ZKkhP/yV/MF/dRqr508suYDMFQEQeyM4zcBcl/rp/tjVgIogrzsPHeCH2nnbGiiiC
+ ZYqSzgx0fnm7lKMO9HdEvE26xlbCYB2CsSq6DRdFjLHi7H/ad6VssIoTwQSf5kc75wZM
+ TxvMc4IeUfpZSBVEvp5nQboNs4JQ/Rs2O15OezVTFYXIlnFnAAN0QInOockx5qTrRmmR
+ jYU87xLHZyFpJL4o+dGBj80EL84eDbw87C05JyTzeOt2Pk0KV2Dpt8LtAWx5LJrBw9bn
+ 5QIKZB4+v9bCCCDnZguXSSdbTxUPBuMxFHp4K9k5Qtdcl76BDTXOuGsXUmT4R7StPdpE GA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 36cxvr47na-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Feb 2021 18:15:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113IF2nG143446;
+        Wed, 3 Feb 2021 18:15:05 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2105.outbound.protection.outlook.com [104.47.55.105])
+        by aserp3020.oracle.com with ESMTP id 36dhc1gwu3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Feb 2021 18:15:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=P8LcgC33KTF6m3RCogoNKlJOiUcYZiDzudHIIUMFQM/IyFXJ1X7mw1samfpymXJKaXve3Bt7YnyWOy0NL/GDG6eXaZjWxsQguYRvb7hN45TaKSWh4YmVtyBmW4/0vAHarn0nbaTzA4ckLwv+57VR7uAJm3WGFWIGFFaqAqxyaON1gpK7hSPk6qB884OGA4sn4Ay6z5RO9TM8u1nPYUY2h4ox7cqk7vOzjABti51vabYUFOmMSo3RBoXy7vecVOFS2/P+yh0NYsYLu/UC7ee3Es6RTpfZjSxZFhMVT7zAIwws5/FDnprXlsbUtJI/0DppDNb6bu5G5WQ8QEIIu8SttA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g1beYCRtHQ+7eyet6gw/AH4AqA2dBKOVEjc/R55Ly5I=;
+ b=FpUcoM4lcKJH7dlAAjTEMflsMwDE6c+/jgfUu8x27bRrN+VWRbcmD4shFBJp6mMvwOkmjU3eNSrIDEKOQlDHY56uThL5zoWDYlDxRQczrlAWA95nLz++jgilxJARGr1e6x9TvCAlgRVipGFdz6etxZe6QomV1SFzaVhDEu9FR7PfpUUnpz9uilJDeG6+8+ArcV6rjyh5OF8kMGAQetI391gTvDWk1VKv36rlZp9oH+tzGmU3Cw/4nJfrj1aTIA7sbB38uMfqJ2ygsSysVu13ao9TndOxNQKBfikKMpqmJSzDlsYLFWMbG7SzuuknxIPCMwi9HCm3CH9xkux4zqy74g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=t4wenknjZ2bs5eKNUbWK97l2NFAOkxWA8p4z0taSinQ=;
-        b=bK/hwc7BdBaznbintn00c0zRwBKC2JVyZWt36DBGWZYS3p6BVpJeOJEEamHAM+6vyC
-         PXMgKamY4JH2XBuWrtRG8FAQpXZ0SLZ28VkyLw2OPhYx4rxDJ1ScO65tUPG+qdprJ9XJ
-         vV1RasCSNiAfnS8ol5pPlvaIVj8bQiMEHpw8M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=t4wenknjZ2bs5eKNUbWK97l2NFAOkxWA8p4z0taSinQ=;
-        b=QfD36oZCQoY5KXhHOlYdRLYyHlG1melUGi3wei625H0Rllc8x5PWyUkaMqE+0QVTsQ
-         X1U80ju3KXXxzkhnnLwohW/KsCowd1vmtbwgH2U4n9AuiDt7KBwR6+7BCWOmHDs9dwMg
-         vQSUN31/HRonoNxq+dJ4IkY5838tnTyOq2+wF4gK9sA+itk/RHPb7old2ksbe5pAYJHr
-         xDuRbzMfX1WGgQ9XBPQsPOjJ/MfhsEqMs41ZGCkxl7rND2KvRmBXuE+Egiw0huKomfzo
-         z80qAaHSXETv7/qPgu9fOucYzCD0wUilPSom5G3iuVGjy08hUDdqoLVF66ILTMAN6X5E
-         NG0Q==
-X-Gm-Message-State: AOAM531KAvIBZuJQ8Tu0j5r+oxrxQUjCY4EXflmwRi8kj7D2cLTFX2SO
-        dtJ5npgOIcEpAAaQCGgc0uqIJA==
-X-Google-Smtp-Source: ABdhPJzuni/KqIxziQLcVYre754B6JcsdqYKUpMJ3ElrpM0fP5ipHxD7+qBAafURTEbI1MVyvOBomg==
-X-Received: by 2002:a5e:a911:: with SMTP id c17mr2982344iod.20.1612375946517;
-        Wed, 03 Feb 2021 10:12:26 -0800 (PST)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id h21sm399684iob.30.2021.02.03.10.12.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Feb 2021 10:12:26 -0800 (PST)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     corbet@lwn.net, gregkh@linuxfoundation.org, peterz@infradead.org,
-        keescook@chromium.org, rafael@kernel.org, lenb@kernel.org,
-        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de
-Cc:     Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        devel@driverdev.osuosl.org
-Subject: [PATCH v3 7/7] kobject: convert uevent_seqnum to seqnum_ops
-Date:   Wed,  3 Feb 2021 11:12:03 -0700
-Message-Id: <3ddd122c266e8cb460542d852e9b703c6eef2141.1612314468.git.skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1612314468.git.skhan@linuxfoundation.org>
-References: <cover.1612314468.git.skhan@linuxfoundation.org>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g1beYCRtHQ+7eyet6gw/AH4AqA2dBKOVEjc/R55Ly5I=;
+ b=Nc56UhndAdCMa48kPj6ijlkdJFGud5Pd636oGV/TexDVdXXSD1NwpbjL975DpyAz1aFxW5M+8llgmyoV4toICpV9WMzv9I+aBNxA01Ak/jew4R2RoYcyS1ofus8SJhYX4zl4dZY7gK6WcYq2IlK9G2Osdis30TezVnbARbVsKK4=
+Authentication-Results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB3445.namprd10.prod.outlook.com (2603:10b6:a03:81::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.20; Wed, 3 Feb
+ 2021 18:14:59 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456%4]) with mapi id 15.20.3825.019; Wed, 3 Feb 2021
+ 18:14:59 +0000
+Date:   Wed, 3 Feb 2021 13:14:50 -0500
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 13/14] cxl/mem: Add limited Get Log command (0401h)
+Message-ID: <YBroGrVd76p+BF0v@Konrads-MacBook-Pro.local>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-14-ben.widawsky@intel.com>
+ <20210201182848.GL197521@fedora>
+ <20210202235103.v36v3znh5tsi4g5x@intel.com>
+ <CAPcyv4i3MMY=WExfvcPFYiJkHoM_UeZ63ORZqi0Vbm76JapS8A@mail.gmail.com>
+ <20210203171610.2y2x4krijol5dvkk@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210203171610.2y2x4krijol5dvkk@intel.com>
+X-Originating-IP: [138.3.200.57]
+X-ClientProxiedBy: CH2PR07CA0009.namprd07.prod.outlook.com
+ (2603:10b6:610:20::22) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Konrads-MacBook-Pro.local (138.3.200.57) by CH2PR07CA0009.namprd07.prod.outlook.com (2603:10b6:610:20::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.17 via Frontend Transport; Wed, 3 Feb 2021 18:14:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c6a8d3d7-aee9-48ce-6df2-08d8c86f9e11
+X-MS-TrafficTypeDiagnostic: BYAPR10MB3445:
+X-Microsoft-Antispam-PRVS: <BYAPR10MB344535FA43FBD61E277C2C9489B49@BYAPR10MB3445.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6QNx7EYGPFre2pyyIitD1VXx/8C4Ooc7rgqKUrno/+nbpgi4WzRGpsyPQdrtRM4R3a3UbcXBjAHxkbHXkjzb98r6cqaSvf/RkQ0G4pgvKcNWFkv7yUD1i6ZZYC5t7eAR4vBz2Yy0UsQryWdFraHJeZeg9oMsG08b36dG2/ecN23PrrYp1MXvfl00/PDxXBpcxcW3S61amJWKWUXqtO48XTCDYdfl+bDPyxF+Z1z4wFWrrdbLy6Ix0SWrJvVTWmXTpGulf2Y5anhEFoZiLT/hlyuCzBIWI5dGyNbCOq8o8eEz/LxUYsX2+QFWrs8xAgiDpFG1t7DYMjDz7dOTtPIzi9QlSnQk2Xi9E3/ui63fsIYcFIEMJWWzSp5hwT3FxJPE7OJMRgMEugfQEeHHd2x/Le61cLlt3MslI0W6UljkSMf1p/MMndqmHZ/IGvEKghJ4qLcRYPQrw4uPB8G/+Y0XdPIzUNdMn36EV47N7c/Oazp1WpKq403P6daNQC4wHpgn8MGSp7W1x+awf9ErziK9yiaistMHYdKuLjXDrNte79Ooh+Lp6JUOmdYoSP8oyLFa
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2999.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(39860400002)(346002)(376002)(366004)(396003)(6666004)(54906003)(55016002)(956004)(316002)(7696005)(52116002)(6506007)(7416002)(26005)(86362001)(66946007)(66476007)(8936002)(8676002)(186003)(16526019)(5660300002)(6916009)(2906002)(66556008)(83380400001)(4326008)(53546011)(9686003)(478600001)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?LbNa5+82uIdTO2xZJcLFbYGxcGebDkNJlRXe3Og7AIPFRKL9EaCNOXBiahRN?=
+ =?us-ascii?Q?BcPenfV6al/j+GVjFuB7ldjZDCBjJPF9+ZvyJ4XeU/P2vQBAVDRo7pXvI6Z3?=
+ =?us-ascii?Q?g3UVl6t1Yn/GvCZoi08i8ydN6M8Phe2xzVAu/Gq1YHnzlTGlBTe8Nzl6xPOG?=
+ =?us-ascii?Q?nL78JlaZnfSki7Xv6kyjK/6+TH6paymTmyAfCavcpC2t/w4HTeft18kDPfv1?=
+ =?us-ascii?Q?KTJaV4B4SCTWfLhsc2TnMIny6ZJeXaya/I1x2yDZh/N1SzAR1RC+GycI820M?=
+ =?us-ascii?Q?T39xcYXwtUpgZIW6yH335HcTg1bXZ6k5RJ7H+yahO2XJMq2tviNH8UUMSjl1?=
+ =?us-ascii?Q?KZfdDXp+wKmX5HJR9LY0QZ6ae550yklvFrykPIo80tIqA+DgxURNmCwVNZhV?=
+ =?us-ascii?Q?lJQZYqySSXDco5YKFM75xFBYPRbngKe8SmSzI0Shu/WbkmmnF1r1jLO9qlkk?=
+ =?us-ascii?Q?DcwOkDOKom3tjmBHy49MTirb54LoXSk/gFjpdHPEYnkEUXe12JXPsOw1F07A?=
+ =?us-ascii?Q?Ksvu0Rj0D7YZA2vtk+7Txk19I1VukwFWU33IH81SG93Sj0iRjvTuN63FJvTG?=
+ =?us-ascii?Q?K8rUnrbhtciqTBxq/K1dTFDUVFFlM6HXblAQGM4ayMNJQzu3WC4JHq6M828m?=
+ =?us-ascii?Q?pO2X1BWjrHTyvVMzc4JUIxhGebmHbbZIMzLhqg23B470WdQ3chgVh0FH5/QN?=
+ =?us-ascii?Q?BDYRsa3oX2jxqiD2FpIqzmcPXCsUxr6DW5jILfIsSSvTuWavv33X+yvnCIE+?=
+ =?us-ascii?Q?jQFqqigSTIUmp6Yq5Qts5/LHe9ARhAxLM+qZDdQvR9hGEvni3EmPrG36ygiZ?=
+ =?us-ascii?Q?Z1y1d6Xv0bWB+tfd4xuRkjOafHncqXg9HL8UBoaUhnh+XotHPCVFgS0HtJo+?=
+ =?us-ascii?Q?HjxM8B5Z1vV8NrFF7GFaaaS0150JUJbDE7Lg+eRbcXTyvUJRAy9J6vaAv/2w?=
+ =?us-ascii?Q?u2YvSJtT6HEr/k7+MCg0fu/Si0I7WHwLsJlB/a8wA3kKHds1rGfEFKXFbPt9?=
+ =?us-ascii?Q?MByT7JinJ3aTPiYdOw5kBJKs+L2N6f8yr36fLIhApYf4H48nPoS5m1M+pX0A?=
+ =?us-ascii?Q?XKPIeSli?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6a8d3d7-aee9-48ce-6df2-08d8c86f9e11
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2021 18:14:59.4051
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dTlK/NzN127osddV6eaOvBemrej7AiBA8zzaWPxBQuvQkOSnGhuzOyFMEHeZ8egotfRJsdcl1h4rFjAT35t/bQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3445
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102030108
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102030107
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Sequence Number api provides interfaces for unsigned atomic up counters
-leveraging atomic_t and atomic64_t ops underneath.
+On Wed, Feb 03, 2021 at 09:16:10AM -0800, Ben Widawsky wrote:
+> On 21-02-02 15:57:03, Dan Williams wrote:
+> > On Tue, Feb 2, 2021 at 3:51 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > >
+> > > On 21-02-01 13:28:48, Konrad Rzeszutek Wilk wrote:
+> > > > On Fri, Jan 29, 2021 at 04:24:37PM -0800, Ben Widawsky wrote:
+> > > > > The Get Log command returns the actual log entries that are advertised
+> > > > > via the Get Supported Logs command (0400h). CXL device logs are selected
+> > > > > by UUID which is part of the CXL spec. Because the driver tries to
+> > > > > sanitize what is sent to hardware, there becomes a need to restrict the
+> > > > > types of logs which can be accessed by userspace. For example, the
+> > > > > vendor specific log might only be consumable by proprietary, or offline
+> > > > > applications, and therefore a good candidate for userspace.
+> > > > >
+> > > > > The current driver infrastructure does allow basic validation for all
+> > > > > commands, but doesn't inspect any of the payload data. Along with Get
+> > > > > Log support comes new infrastructure to add a hook for payload
+> > > > > validation. This infrastructure is used to filter out the CEL UUID,
+> > > > > which the userspace driver doesn't have business knowing, and taints on
+> > > > > invalid UUIDs being sent to hardware.
+> > > >
+> > > > Perhaps a better option is to reject invalid UUIDs?
+> > > >
+> > > > And if you really really want to use invalid UUIDs then:
+> > > >
+> > > > 1) Make that code wrapped in CONFIG_CXL_DEBUG_THIS_IS_GOING_TO..?
+> > > >
+> > > > 2) Wrap it with lockdown code so that you can't do this at all
+> > > >    when in LOCKDOWN_INTEGRITY or such?
+> > > >
+> > >
+> > > The commit message needs update btw as CEL is allowed in the latest rev of the
+> > > patches.
+> > >
+> > > We could potentially combine this with the now added (in a branch) CONFIG_RAW
+> > > config option. Indeed I think that makes sense. Dan, thoughts?
+> > 
+> > Yeah, unknown UUIDs blocking is the same risk as raw commands as a
+> > vendor can trigger any behavior they want. A "CONFIG_RAW depends on
+> > !CONFIG_INTEGRITY" policy sounds reasonable as well.
+> 
+> What about LOCKDOWN_NONE though? I think we need something runtime for this.
+> 
+> Can we summarize the CONFIG options here?
+> 
+> CXL_MEM_INSECURE_DEBUG // no change
+> CXL_MEM_RAW_COMMANDS // if !security_locked_down(LOCKDOWN_NONE)
+> 
+> bool cxl_unsafe()
 
-Convert uevent_seqnum atomic counter to use seqnum_ops.
+Would it be better if this inverted? Aka cxl_safe()..
+?
+> {
+> #ifndef CXL_MEM_RAW_COMMANDS
+> 	return false;
+> #else
+> 	return !security_locked_down(LOCKDOWN_NONE);
 
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
----
- include/linux/kobject.h | 3 ++-
- kernel/ksysfs.c         | 3 ++-
- lib/kobject_uevent.c    | 9 ++++++---
- 3 files changed, 10 insertions(+), 5 deletions(-)
+:thumbsup:
 
-diff --git a/include/linux/kobject.h b/include/linux/kobject.h
-index ea30529fba08..8990e40344a2 100644
---- a/include/linux/kobject.h
-+++ b/include/linux/kobject.h
-@@ -27,6 +27,7 @@
- #include <linux/atomic.h>
- #include <linux/workqueue.h>
- #include <linux/uidgid.h>
-+#include <linux/seqnum_ops.h>
- 
- #define UEVENT_HELPER_PATH_LEN		256
- #define UEVENT_NUM_ENVP			64	/* number of env pointers */
-@@ -38,7 +39,7 @@ extern char uevent_helper[];
- #endif
- 
- /* counter to tag the uevent, read only except for the kobject core */
--extern u64 uevent_seqnum;
-+extern struct seqnum64 uevent_seqnum;
- 
- /*
-  * The actions here must match the index to the string array
-diff --git a/kernel/ksysfs.c b/kernel/ksysfs.c
-index 35859da8bd4f..15836f6e5998 100644
---- a/kernel/ksysfs.c
-+++ b/kernel/ksysfs.c
-@@ -17,6 +17,7 @@
- #include <linux/sched.h>
- #include <linux/capability.h>
- #include <linux/compiler.h>
-+#include <linux/seqnum_ops.h>
- 
- #include <linux/rcupdate.h>	/* rcu_expedited and rcu_normal */
- 
-@@ -31,7 +32,7 @@ static struct kobj_attribute _name##_attr = \
- static ssize_t uevent_seqnum_show(struct kobject *kobj,
- 				  struct kobj_attribute *attr, char *buf)
- {
--	return sprintf(buf, "%llu\n", (unsigned long long)uevent_seqnum);
-+	return sprintf(buf, "%llu\n", seqnum64_get(&uevent_seqnum));
- }
- KERNEL_ATTR_RO(uevent_seqnum);
- 
-diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
-index 7998affa45d4..3a7b2648f084 100644
---- a/lib/kobject_uevent.c
-+++ b/lib/kobject_uevent.c
-@@ -28,9 +28,10 @@
- #include <net/sock.h>
- #include <net/netlink.h>
- #include <net/net_namespace.h>
-+#include <linux/seqnum_ops.h>
- 
- 
--u64 uevent_seqnum;
-+struct seqnum64  uevent_seqnum;
- #ifdef CONFIG_UEVENT_HELPER
- char uevent_helper[UEVENT_HELPER_PATH_LEN] = CONFIG_UEVENT_HELPER_PATH;
- #endif
-@@ -584,7 +585,8 @@ int kobject_uevent_env(struct kobject *kobj, enum kobject_action action,
- 
- 	mutex_lock(&uevent_sock_mutex);
- 	/* we will send an event, so request a new sequence number */
--	retval = add_uevent_var(env, "SEQNUM=%llu", ++uevent_seqnum);
-+	retval = add_uevent_var(env, "SEQNUM=%llu",
-+				seqnum64_inc(&uevent_seqnum));
- 	if (retval) {
- 		mutex_unlock(&uevent_sock_mutex);
- 		goto exit;
-@@ -687,7 +689,8 @@ static int uevent_net_broadcast(struct sock *usk, struct sk_buff *skb,
- 	int ret;
- 
- 	/* bump and prepare sequence number */
--	ret = snprintf(buf, sizeof(buf), "SEQNUM=%llu", ++uevent_seqnum);
-+	ret = snprintf(buf, sizeof(buf), "SEQNUM=%llu",
-+			seqnum64_inc(&uevent_seqnum));
- 	if (ret < 0 || (size_t)ret >= sizeof(buf))
- 		return -ENOMEM;
- 	ret++;
--- 
-2.27.0
+(Naturally this would inverted if this was cxl_safe()).
+
+
+> #endif
+> }
+> 
+> ---
+> 
+> Did I get that right?
+
+:nods:
 
