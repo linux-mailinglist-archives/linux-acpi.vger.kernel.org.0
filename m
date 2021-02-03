@@ -2,119 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8755030D505
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 09:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F218030D576
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Feb 2021 09:41:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232644AbhBCIQm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Feb 2021 03:16:42 -0500
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:33114 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232632AbhBCIQl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Feb 2021 03:16:41 -0500
-Received: by mail-oi1-f169.google.com with SMTP id j25so25937448oii.0;
-        Wed, 03 Feb 2021 00:16:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OMNMC+xpp5BmBErZ7DTtHEEdPkb5Qun0a5vbRXVX3vY=;
-        b=POUgEegnMg7DMDQLrjEjgKdFHfrWjvwj8udpuPYIdEuwBzcLGEv0HtuWkrzYsb+pDp
-         tlN79z4zrt40hE1IYgDWuENhJCz918W/sH0mLMrSfxsLIUyLrgD1qG7lNqjED5724oJH
-         vek8NEL/52PkxUm4zmtpPvZ1hytLDkrzsE8QBafbdBtk5LcR1R7KSuiUicLK7lVTVNL3
-         9ciUS1rXYHwp0aUL0ZCSx2EtRteN8N4iEXFwIMqHnKFrgkY5ue9Y41RztEzChWmCYyFK
-         AaQJsrG42B8qWF9D7nvj1dNV7KbcqxxUlDs/6kXJ7qrhcdfn40soMnth7hUx5FcUNZuI
-         jXDQ==
-X-Gm-Message-State: AOAM532Rxdg1AKi+72YhT+dwmLpqXcsKy8bHewPPY+kqkcUr8KdovIZ4
-        gpUbObOwOqQHnYsxhXfickEFxdI87+QKKGIcF8k=
-X-Google-Smtp-Source: ABdhPJw59iItHayjaGX97phdW1sK3zjTtayzwJ1NUfqJOoKyyAHQO7+Dk/qcLkjM2SfB36dbgq0cCIFHKr1/YJuwhRk=
-X-Received: by 2002:aca:4d8d:: with SMTP id a135mr1200672oib.153.1612340160027;
- Wed, 03 Feb 2021 00:16:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20210202043345.3778765-1-saravanak@google.com>
- <20210202212231.g5tj3f7tv74gagm6@viti.kaiser.cx> <CAGETcx_cS_Y-1Bw3tNhZRckEQO=yB8UDzNRr+Khs_X2ym7tnwA@mail.gmail.com>
- <CAMuHMdWN4JA4w+6MUAc-ogRAE602G8KSgy+71dtx7QQ60t1XZQ@mail.gmail.com> <CAGETcx8Yai=q+sHiixcv=D=T9r0+X1GZ8LRBc98SX_omYVhavQ@mail.gmail.com>
-In-Reply-To: <CAGETcx8Yai=q+sHiixcv=D=T9r0+X1GZ8LRBc98SX_omYVhavQ@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 3 Feb 2021 09:15:48 +0100
-Message-ID: <CAMuHMdWyA3y1PYff5X9DoPaj0TREK3jFe_P+e+rNVb1K-kRDbA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Make fw_devlink=on more forgiving
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Martin Kaiser <martin@kaiser.cx>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Android Kernel Team <kernel-team@android.com>
+        id S232997AbhBCIkf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Feb 2021 03:40:35 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48040 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232978AbhBCIkH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Feb 2021 03:40:07 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 6B919AC9B;
+        Wed,  3 Feb 2021 08:39:25 +0000 (UTC)
+Message-ID: <1612341564.3640.14.camel@suse.cz>
+Subject: Re: [PATCH v2 1/1] x86,sched: On AMD EPYC set freq_max = max_boost
+ in schedutil invariant formula
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jon Grimm <Jon.Grimm@amd.com>,
+        Nathan Fontenot <Nathan.Fontenot@amd.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Suthikulpanit Suravee <Suravee.Suthikulpanit@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Michael Larabel <Michael@phoronix.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Wed, 03 Feb 2021 09:39:24 +0100
+In-Reply-To: <CAJZ5v0jsF-_8GzQgqZH10bf0oUTmALiT1kVcjDqYgGPqx9iKZg@mail.gmail.com>
+References: <20210122204038.3238-1-ggherdovich@suse.cz>
+         <20210122204038.3238-2-ggherdovich@suse.cz>
+         <CAJZ5v0hQ_r3th5upo-X5fNBG0tUNbLbhQN-cqmDd1FGwhGx4dg@mail.gmail.com>
+         <CAJZ5v0jsF-_8GzQgqZH10bf0oUTmALiT1kVcjDqYgGPqx9iKZg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+Hello,
 
-On Wed, Feb 3, 2021 at 9:11 AM Saravana Kannan <saravanak@google.com> wrote:
-> On Tue, Feb 2, 2021 at 11:55 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Tue, Feb 2, 2021 at 11:44 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > On Tue, Feb 2, 2021 at 1:22 PM Martin Kaiser <martin@kaiser.cx> wrote:
-> > > > Thus wrote Saravana Kannan (saravanak@google.com):
-> > > > All of those drivers have a gpio in
-> > > > their device-tree node, such as
-> > > >
-> > > > my_driver {
-> > > >    gpio_test1 = <&gpio1 0 0>;
-> > > >    ...
-> > > > };
-> > > >
-> > > > with gpio1 from arch/arm/boot/dts/imx25.dtsi.
-> > > >
-> > > > The probe function calls
-> > > >
-> > > > of_get_named_gpio(np, "gpio_test1", 0);
-> > > >
-> > > > to get the gpio. This fails with -EINVAL.
-> > >
-> > > And you didn't see this issue with the fsl,avic patch?
-> > >
-> > > The property you are using is not a standard GPIO binding (-gpios,
-> > > gpio, gpios) and I'm not surprised it's not working. The gpio1 is
-> > > probably getting probe deferred and ends up running after "my_driver".
-> >
-> > So my_driver doesn't support deferred probe, as of_get_named_gpio()
-> > returns -EINVAL instead of -EPROBE_DEFER?
-> > Converting my_driver from of_get_named_gpio() to the gpiod_*() API
-> > should at least make the driver support probe deferral, after which I
-> > expect it to start working again on reprobe?
->
-> The way I understood the API/example, you can't just change the code
-> and have it work. The DT itself isn't using standard bindings. And we
+both Rafael and Viresh make a similar remark: why adding a new "max_boost"
+variable, since "max_freq" is already available and could be used instead.
 
-Oh, right.
+Replying here to both.
 
-> can't make kernel changes that assume the DT has been changed to match
-> the code. So, the best we could do is have of_get_named_gpio() return
-> -EPROBE_DEFER if it doesn't find the GPIO -- assuming that doesn't
-> break other users. Or have this specific driver remap the -EINVAL to
-> -EPROBE_DEFER.
+On Tue, 2021-02-02 at 20:26 +0100, Rafael J. Wysocki wrote:
+> On Tue, Feb 2, 2021 at 7:59 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > 
+> > On Fri, Jan 22, 2021 at 9:47 PM Giovanni Gherdovich <ggherdovich@suse.cz> wrote:
+> > 
+> > [cut]
+> > > @@ -779,15 +829,25 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+> > >                     freq_table[valid_states-1].frequency / 1000)
+> > >                         continue;
+> > > 
+> > > +               freq = perf->states[i].core_frequency * 1000;
+> > >                 freq_table[valid_states].driver_data = i;
+> > > -               freq_table[valid_states].frequency =
+> > > -                   perf->states[i].core_frequency * 1000;
+> > > +               freq_table[valid_states].frequency = freq;
+> > > +
+> > > +               if (freq > max_freq)
+> > > +                       max_freq = freq;
+> > > +
+> > >                 valid_states++;
+> > >         }
+> > >         freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
+> > >         policy->freq_table = freq_table;
+> > >         perf->state = 0;
+> > > 
+> > > +       if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
+> > > +           amd_max_boost(max_freq, &max_boost)) {
+> > > +               policy->cpuinfo.max_boost = max_boost;
+> > 
+> > Why not to set max_freq to max_boost instead?
+> 
+> I mean, would setting the frequency in the last table entry to max_boost work?
+> 
+> Alternatively, one more (artificial) entry with the frequency equal to
+> max_boost could be added.
 
-The latter would hide real errors, too, and would cause futile reprobes.
+On Wed, 2021-02-03 at 11:34 +0530, Viresh Kumar wrote:
+> [cut]
+> 
+> On 22-01-21, 21:40, Giovanni Gherdovich wrote:
+> > diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+> > index 6931f0cdeb80..541f3db3f576 100644
+> > --- a/kernel/sched/cpufreq_schedutil.c
+> > +++ b/kernel/sched/cpufreq_schedutil.c
+> > @@ -159,8 +159,12 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
+> >  				  unsigned long util, unsigned long max)
+> >  {
+> >  	struct cpufreq_policy *policy = sg_policy->policy;
+> > -	unsigned int freq = arch_scale_freq_invariant() ?
+> > -				policy->cpuinfo.max_freq : policy->cur;
+> > +	unsigned int freq, max_freq;
+> > +
+> > +	max_freq = cpufreq_driver_has_max_boost() ?
+> > +			policy->cpuinfo.max_boost : policy->cpuinfo.max_freq;
+> 
+> Also, can't we update max_freq itself from the cpufreq driver? What
+> troubles will it cost ?
 
-Gr{oetje,eeting}s,
+I could add the max boost frequency to the frequency table (and
+policy->cpuinfo.max_freq would follow), yes, but that would trigger the
+following warning from acpi-cpufreq.c:
 
-                        Geert
+static void acpi_cpufreq_cpu_ready(struct cpufreq_policy *policy)
+{
+        struct acpi_processor_performance *perf = per_cpu_ptr(acpi_perf_data,
+                                                              policy->cpu);
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+        if (perf->states[0].core_frequency * 1000 != policy->cpuinfo.max_freq)
+                pr_warn(FW_WARN "P-state 0 is not max freq\n");
+}
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+so I thought that to stay out of troubles I'd supply a different variable,
+max_boost, to be used only in the schedutil formula. After schedutil
+figures out a desired next_freq then the usual comparison with the
+firmware-supplied frequency table could take place.
+
+Altering the frequency table seemed more invasive because once a freq value is
+in there, it's going to be actually requested by the driver to the platform. I
+only want my max_boost to stretch the range of schedutil's next_freq.
+
+On Tue, 2021-02-02 at 19:59 +0100, Rafael J. Wysocki wrote:
+> 
+> [cut]
+> Also notice that the static branch is global and the max_boost value
+> for different CPUs may be different, at least in theory.
+
+In theory yes, but I'm guarding the code with two conditions:
+
+* vendor is X86_VENDOR_AMD
+* cppc_get_perf_caps() returns success
+
+this identifies AMD EPYC cpus with model 7xx2 and later, where max_boost is
+the same on all cores. I may have added synchronization so that only one cpu
+sets the value, but I didn't in the interest of simplicity for an -rc patch
+(I'd have to consider hotplug, the maxcpus= command line param, ecc).
+
+
+Giovanni
