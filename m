@@ -2,47 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2FA430F410
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 14:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8381E30F430
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 14:53:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236335AbhBDNmn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Feb 2021 08:42:43 -0500
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:38469 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236407AbhBDNlY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 08:41:24 -0500
-Received: by mail-oi1-f174.google.com with SMTP id h6so3726847oie.5;
-        Thu, 04 Feb 2021 05:41:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=p0rPFw1h6YFddKGACdjtDmU63njD588yrFe74MomORc=;
-        b=k97M7S+vde8+8YaFotBh2RdNhOYR6zvRBQBe9o+pThy6H4mr5gGVBqt00TPWEgHLvj
-         GVXQe2hPS+HzZoUMvwhpTYiasqayBX6DougXOtVUVzp+IwOLlp1lk+OMMmj3zzcF4CVW
-         4fDZUI40ZP2ykLbu9qlqq0TI2uMuyXkLOd7vS0wbSe4lUunK2iQgcNZGWmgAKY98r9Lt
-         PPlN3368B6u2wFtMi2dbw3te8Zg0mMLp9I15BQ6OdRvsmql2XZZ4pFiLp7P00RyMCXfd
-         FaNTDZkTdCGtjmVr+nTrVH9tzoumuOw/8P8VtDBivLWSWJSa3tjvoJ+OjUZAffHTLxc6
-         wmUg==
-X-Gm-Message-State: AOAM5329nLn/5TjWHt5TOhkAVYMgFND9gvQYVes/uV7f7xx/sERjUMeJ
-        L27tLlya4GjxUhl0Arv4dKT9+K6l90rw3oy0XSY=
-X-Google-Smtp-Source: ABdhPJyhIhNKNYvZ2kTLhrRl8CqI8Pq4XuQrF06ZKm8ZdpfMgxS4PQpd5SAIyT5DYVNQ1PeWUJsRE96BPP6mn/mRYO4=
-X-Received: by 2002:aca:d14:: with SMTP id 20mr5312384oin.157.1612446042645;
- Thu, 04 Feb 2021 05:40:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20210203135321.12253-1-ggherdovich@suse.cz> <20210203135321.12253-2-ggherdovich@suse.cz>
- <CAJZ5v0g1SWRnV1QfZG3o+hvBg9akakhDMomGCFjwERyG2ENKww@mail.gmail.com>
- <5470319.60Xv9dOaFs@kreacher> <563fec57-6417-e875-1788-3773cbfb34be@phoronix.com>
-In-Reply-To: <563fec57-6417-e875-1788-3773cbfb34be@phoronix.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 4 Feb 2021 14:40:30 +0100
-Message-ID: <CAJZ5v0jzhVJ-8iVfhkFHBdJf1pYAMtC=1JhuTn14vWtZUwJoAg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] x86,sched: On AMD EPYC set freq_max = max_boost in
- schedutil invariant formula
-To:     Michael Larabel <Michael@phoronix.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S236323AbhBDNvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Feb 2021 08:51:12 -0500
+Received: from mx2.suse.de ([195.135.220.15]:32952 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236393AbhBDNuc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Feb 2021 08:50:32 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 65AF5AC97;
+        Thu,  4 Feb 2021 13:49:49 +0000 (UTC)
+Message-ID: <1612446586.7566.20.camel@suse.cz>
+Subject: Re: [PATCH v3 1/1] x86,sched: On AMD EPYC set freq_max = max_boost
+ in schedutil invariant formula
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
@@ -55,52 +33,89 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Pu Wen <puwen@hygon.cn>, Juri Lelli <juri.lelli@redhat.com>,
         Vincent Guittot <vincent.guittot@linaro.org>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        Michael Larabel <Michael@phoronix.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Thu, 04 Feb 2021 14:49:46 +0100
+In-Reply-To: <5470319.60Xv9dOaFs@kreacher>
+References: <20210203135321.12253-1-ggherdovich@suse.cz>
+         <20210203135321.12253-2-ggherdovich@suse.cz>
+         <CAJZ5v0g1SWRnV1QfZG3o+hvBg9akakhDMomGCFjwERyG2ENKww@mail.gmail.com>
+         <5470319.60Xv9dOaFs@kreacher>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 4, 2021 at 12:36 AM Michael Larabel <Michael@phoronix.com> wrote:
->
-> On 2/3/21 12:25 PM, Rafael J. Wysocki wrote:
-> > On Wednesday, February 3, 2021 3:11:37 PM CET Rafael J. Wysocki wrote:
-> >> On Wed, Feb 3, 2021 at 2:53 PM Giovanni Gherdovich <ggherdovich@suse.cz> wrote:
-> >> [cut]
-> >>
-> >>> Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD systems")
-> >>> Fixes: 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC")
-> >>> Reported-by: Michael Larabel <Michael@phoronix.com>
-> >>> Tested-by: Michael Larabel <Michael@phoronix.com>
-> >>> Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-> >>> ---
-> >>>   drivers/cpufreq/acpi-cpufreq.c   | 61 ++++++++++++++++++++++++++++++--
-> >>>   drivers/cpufreq/cpufreq.c        |  3 ++
-> >>>   include/linux/cpufreq.h          |  5 +++
-> >>>   kernel/sched/cpufreq_schedutil.c |  8 +++--
-> >> I don't really think that it is necessary to modify schedutil to
-> >> address this issue.
-> > So below is a prototype of an alternative fix for the issue at hand.
-> >
-> > I can't really test it here, because there's no _CPC in the ACPI tables of my
-> > test machines, so testing it would be appreciated.  However, AFAICS these
-> > machines are affected by the performance issue related to the scale-invariance
-> > when they are running acpi-cpufreq, so what we are doing here is not entirely
-> > sufficient.
->
->
-> I have benchmarks running on several Ryzen and EPYC systems with this
-> patch. The full batch of tests won't be done until tomorrow, but in
-> looking at the data so far from an AMD EPYC 7F72 2P server over the past
-> few hours, this patch does provide fairly comparable numbers to
-> Giovanni's patch. There were a few outliers so far but waiting to see
-> with the complete set of results. At the very least it's clear enough
-> already this new patch is at least an improvement over the current 5.11
-> upstream state with schedutil on AMD.
+On Wed, 2021-02-03 at 19:25 +0100, Rafael J. Wysocki wrote:
+> [cut]
+> 
+> So below is a prototype of an alternative fix for the issue at hand.
+> 
+> I can't really test it here, because there's no _CPC in the ACPI tables of my
+> test machines, so testing it would be appreciated.  However, AFAICS these
+> machines are affected by the performance issue related to the scale-invariance
+> when they are running acpi-cpufreq, so what we are doing here is not entirely
+> sufficient.
+> 
+> It looks like the scale-invariance code should ask the cpufreq driver about
+> the maximum frequency and note that cpufreq drivers may be changed on the
+> fly.
+> 
+> What the patch below does is to add an extra entry to the frequency table for
+> each CPU to represent the maximum "boost" frequency, so as to cause that
+> frequency to be used as cpuinfo.max_freq.
+> 
+> The reason why I think it is better to extend the frequency tables instead
+> of simply increasing the frequency for the "P0" entry is because the latter
+> may cause "turbo" frequency to be asked for less often.
+> 
+> ---
+>  drivers/cpufreq/acpi-cpufreq.c |  107 ++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 95 insertions(+), 12 deletions(-)
 
-Thanks for the feedback, much appreciated!
+Hello Rafael,
 
-Let me submit the patch properly, then.
+thanks for looking at this. Your patch is indeed cleaner than the one I proposed.
+
+Preliminary testing is favorable; more tests are running.
+
+Results from your patch are in the fourth column below; the performance from
+v5.10 looks restored.
+
+I'll follow up once the tests I queued are completed.
+
+Giovanni
+
+
+TEST        : Intel Open Image Denoise, www.openimagedenoise.org
+INVOCATION  : ./denoise -hdr memorial.pfm -out out.pfm -bench 200 -threads $NTHREADS
+CPU         : MODEL            : 2x AMD EPYC 7742
+              FREQUENCY TABLE  : P2: 1.50 GHz
+                                 P1: 2.00 GHz
+				 P0: 2.25 GHz
+              MAX BOOST        :     3.40 GHz
+
+Results: threads, msecs (ratio). Lower is better.
+
+               v5.10          v5.11-rc4   v5.11-rc4-ggherdov v5.11-rc6-rafael
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      1   1069.85 (1.00)   1071.84 (1.00)   1070.42 (1.00)   1069.12 (1.00)
+      2    542.24 (1.00)    544.40 (1.00)    544.48 (1.00)    540.81 (1.00)
+      4    278.00 (1.00)    278.44 (1.00)    277.72 (1.00)    277.79 (1.00)
+      8    149.81 (1.00)    149.61 (1.00)    149.87 (1.00)    149.51 (1.00)
+     16     79.01 (1.00)     79.31 (1.00)     78.94 (1.00)     79.02 (1.00)
+     24     58.01 (1.00)     58.51 (1.01)     58.15 (1.00)     57.84 (1.00)
+     32     46.58 (1.00)     48.30 (1.04)     46.66 (1.00)     46.70 (1.00)
+     48     37.29 (1.00)     51.29 (1.38)     37.27 (1.00)     38.10 (1.02)
+     64     34.01 (1.00)     49.59 (1.46)     33.71 (0.99)     34.51 (1.01)
+     80     31.09 (1.00)     44.27 (1.42)     31.33 (1.01)     31.11 (1.00)
+     96     28.56 (1.00)     40.82 (1.43)     28.47 (1.00)     28.65 (1.00)
+    112     28.09 (1.00)     40.06 (1.43)     28.63 (1.02)     28.38 (1.01)
+    120     28.73 (1.00)     39.78 (1.38)     28.14 (0.98)     28.16 (0.98)
+    128     28.93 (1.00)     39.60 (1.37)     29.38 (1.02)     28.55 (0.99)
