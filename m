@@ -2,420 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B57AA30FC5A
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 20:18:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F7030FC31
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 20:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239165AbhBDTOE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Feb 2021 14:14:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32160 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239209AbhBDShv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 13:37:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612463784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rFCB+eQV0Cz663cYe4lsN4DVwBDWcktodsnern4svBI=;
-        b=c+3X2NHchjGSws9CBm9PXHiMAxfPh0bvhuR2MMDNuszoZqbiV0dFqH985pA9k4UusLAi/a
-        Dn0kXwBFMBVpQyNvT5RI7xjYvZO7fDPatmZsrlkez5rlnH3InHA1j3K3gXCtOhDu2ROC5U
-        Ta91vrCdGApVFcj/br/RO7wnzpez4as=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-442-S8fwcQ9FNSy6AQ-cHy-9CA-1; Thu, 04 Feb 2021 13:36:23 -0500
-X-MC-Unique: S8fwcQ9FNSy6AQ-cHy-9CA-1
-Received: by mail-ed1-f72.google.com with SMTP id w23so3619924edr.15
-        for <linux-acpi@vger.kernel.org>; Thu, 04 Feb 2021 10:36:22 -0800 (PST)
+        id S239430AbhBDTFZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Feb 2021 14:05:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239532AbhBDTEc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 14:04:32 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 285C2C061786
+        for <linux-acpi@vger.kernel.org>; Thu,  4 Feb 2021 11:03:52 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id r2so4227193ybk.11
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Feb 2021 11:03:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8pFMSWYtOcx3mOzDSdCGPWAdMJDgzGkU83bZlEALqTo=;
+        b=vfEVvC1lYHn6Fj+zWqdky+ChL5ta8UEWXXK+vig24H5APqmBhB4mw53fJR4LAyRfpY
+         UiQaVeGt8rQJMu8H4AvmdLhhocepsS8iLD9kUA1hFMJxUWikkQxPL8GLK9bL/0xAHF8o
+         D+ZORW6p/sXmLD3S5sHj3bn0ew5FaEQzSeTfQ0Qwq9g9ywE8kDFa0G9VLwJGO8vuUiyp
+         55xdaaQszFePyj4dm9JWN8J/2Zt6/Anv5L/76YWypAGMhovrFFIcdq56JRrU1v80Wm4C
+         RQ2q5RNrDi6/KlwXoH7WPxLGRnCQ3CWZTzdA2OP2z4iY4W87tkvtwCwflD12jnP7oC77
+         zLEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rFCB+eQV0Cz663cYe4lsN4DVwBDWcktodsnern4svBI=;
-        b=JQH2LGH34GAnJs4d+GQaymljn+ljuS1gQcOatZ4BOFF5A/kgjYIebHoCcK8WNBu/vO
-         XwbGpCgRc1FiFlA4oAM0yGegUxQOSrsMOEjUK4k3d4HfsQiBUnWv0M1CKQBMHqCrDIcS
-         JqkG5q/bAMn25jBKzN2N8OteD8nodTf1WouFioBxVS2JWljWzyylocKEe29sAp4u63QE
-         +G0mPotEgB+edag04YLFh93OP3jyirq/tEgBanR8mxQFYeyBbloTRrAbLMFOSKSQtIsi
-         qlRZSy0Hx/Q1YuxqcH+q7uzK5yx5HDJ1XSqQxvkjPOBSK+LhIdnvJgFXWXhQrYmnVQfA
-         AimA==
-X-Gm-Message-State: AOAM533Sx3K4hvzHX7rFUOUst40GXFGOQBrehcDDrKXfPvyLFrI1mKMU
-        jdKMCBAqhOagNu6KqR4lfyL7b6l6b79kdmeFI2dvlSHr6Y2fLJV2q+TT6P5JUb3SNpxUrlte3vo
-        Xn282wBuWDklM/A1HXXx4Rg==
-X-Received: by 2002:a17:906:1f45:: with SMTP id d5mr484212ejk.76.1612463781735;
-        Thu, 04 Feb 2021 10:36:21 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw7M30qXzxnTymsFcvVhe9U1CWKFzgIz1xybWPX+bzJmLfecWsSnEYps5Icab6BhCMT2QZUIg==
-X-Received: by 2002:a17:906:1f45:: with SMTP id d5mr484197ejk.76.1612463781419;
-        Thu, 04 Feb 2021 10:36:21 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id lo26sm2815854ejb.106.2021.02.04.10.36.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Feb 2021 10:36:20 -0800 (PST)
-Subject: Re: [PATCH v3 5/5] ACPI: thermal: Clean up printing messages
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Joe Perches <joe@perches.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-References: <2367702.B5bJTmGzJm@kreacher> <1991501.dpTHplkurC@kreacher>
- <1961054.9MKZ8ejxOh@kreacher> <1775685.AT6DldZj4Y@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <0ca38ccc-eb45-f2eb-c264-d2669e9015f7@redhat.com>
-Date:   Thu, 4 Feb 2021 19:36:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8pFMSWYtOcx3mOzDSdCGPWAdMJDgzGkU83bZlEALqTo=;
+        b=U6LMJtgZrDnNPNI3CeF/tpe7QeqVgvN7rXhvkBFv0XlOHvzEi175XE6hMVkksvhWq7
+         dvT4Qle1s62YS6j1p0mujPgKvvrfzyewMWR0QLLQIUzLe96ofNZTpTjjGVse86wcOjXR
+         ZtK57X6D9efQTHBlJtKpjN/KS2ksDkDJSQoPN0WscSskuXmaEfxbPDHxYfjkw4andaia
+         FycORmZi23BIbOj0v5dFhijr+RrGFraZxY9Nzx3H9xZxJrfuzRXGOg/+F8acppyX9hhf
+         RgRjFIEeI/7MUrGGdAIe6EdzkjFiy+zpckYRN1EYVkDIonjZK3Mkolj0DtsG1ybyNMxT
+         FdHg==
+X-Gm-Message-State: AOAM530lIoSDpXv8XkNle7ElWqJnWvnLc0P8xhaejoei8RfkLm2YZ8jv
+        DKmdaKxFMOwKcIFIm+U8NXWIzHOJHTjkxrwdbcD1Ng==
+X-Google-Smtp-Source: ABdhPJzcGgzu8LZWzsJhcX66VRN4ZDnrbioj+FqeXow0ChEDW0z0f85UCmOn7Ept/b/Q+cyBQ0jTcYinD8ez1LgPdjU=
+X-Received: by 2002:a25:c683:: with SMTP id k125mr1179350ybf.32.1612465431205;
+ Thu, 04 Feb 2021 11:03:51 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1775685.AT6DldZj4Y@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210202043345.3778765-1-saravanak@google.com>
+ <20210202043345.3778765-3-saravanak@google.com> <CAJZ5v0g6t4kWaMrhj35G01_6t1rrOhOe8Vqa9bAanJDaE5+zCA@mail.gmail.com>
+ <CAGETcx-nYs2Ab+sxyvT7pixWTrzLYkr3GbaRv2m16vAcpBD-DQ@mail.gmail.com> <CAJZ5v0jeY3dFRCZr0h874q=dFQ7CvPy2XnemGQ6Zh5xB_Bu+ZQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jeY3dFRCZr0h874q=dFQ7CvPy2XnemGQ6Zh5xB_Bu+ZQ@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 4 Feb 2021 11:03:15 -0800
+Message-ID: <CAGETcx-B_--ZUFcbVmL7Y3KeG+Sq16hbaSR8eNk2+XNa_W7-Pg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] driver core: fw_devlink: Handle missing drivers
+ for optional suppliers
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Martin Kaiser <martin@kaiser.cx>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Cc: Android Kernel" <kernel-team@android.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thu, Feb 4, 2021 at 10:41 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Tue, Feb 2, 2021 at 8:47 PM Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > On Tue, Feb 2, 2021 at 6:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Tue, Feb 2, 2021 at 5:33 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > >
+>
+> [cut]
+>
+> > >
+> > > > + *
+> > > > + * This function requests fw_devlink to set itself up for a deferred probe
+> > > > + * retry. This allows fw_devlink to ignore device links it created to
+> > > > + * suppliers that'll never probe. This is necessary in case some of the
+> > > > + * suppliers are optional and their consumers can probe without them.
+> > > > + *
+> > > > + * Returns true if deferred probe retry is likely to make any difference.
+> > > > + */
+> > > > +bool fw_devlink_deferred_probe_retry(void)
+> > > > +{
+> > > > +       if (IS_ENABLED(CONFIG_MODULES))
+> > > > +               return false;
+> > >
+> > > To make the above more visible, I'd fold this function into the caller.
+> >
+> > I had written it this way because I'm thinking of adding a timeout
+> > heuristic for MODULES in here. I can move it to the caller if you feel
+> > strongly about it.
+>
+> Not really strongly, but then moving it back when you need doesn't
+> sound particularly troublesome to me. :-)
 
-On 2/3/21 7:49 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Replace the ACPI_DEBUG_PRINT() instances in thermal.c with
-> acpi_handle_debug() calls and modify the ACPI_THERMAL_TRIPS_EXCEPTION()
-> macro in there to use acpi_handle_info() internally,  which among other
-> things causes the excessive log level of the messages printed by it to
-> be increased.
-> 
-> Drop the _COMPONENT and ACPI_MODULE_NAME() definitions that are not
-> used any more from thermal.c, drop the no longer needed
-> ACPI_THERMAL_COMPONENT definition from the headers and update the
-> documentation accordingly.
-> 
-> While at it, add a pr_fmt() definition to thermal.c, drop the PREFIX
-> definition from there and replace some pr_warn() calls with pr_info()
-> or acpi_handle_info() to reduce the excessive log level and (in the
-> latter case) facilitate easier identification of the message source.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Ok, will move it. I'm also rewriting this patch. So we'll see where this lands.
 
-Thanks, patch looks good to me:
+>
+> > >
+> > > > +
+> > > > +       fw_devlink_def_probe_retry = true;
+> > > > +       return fw_devlink_get_flags() && !fw_devlink_is_permissive();
+> > > > +}
+> > > > +
+> > > >  /**
+> > > >   * fw_devlink_create_devlink - Create a device link from a consumer to fwnode
+> > > >   * @con - Consumer device for the device link
+> > > > diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> > > > index 9179825ff646..11325df2327f 100644
+> > > > --- a/drivers/base/dd.c
+> > > > +++ b/drivers/base/dd.c
+> > > > @@ -317,6 +317,11 @@ static int deferred_probe_initcall(void)
+> > > >         driver_deferred_probe_trigger();
+> > > >         /* Sort as many dependencies as possible before exiting initcalls */
+> > > >         flush_work(&deferred_probe_work);
+> > > > +
+> > > > +       if (fw_devlink_deferred_probe_retry()) {
+> > > > +               driver_deferred_probe_trigger();
+> > > > +               flush_work(&deferred_probe_work);
+> > > > +       }
+> > > >         initcalls_done = true;
+> > > >
+> > > >         /*
+> > > > --
+> > >
+> > > Overall, the "let's do nothing if modules are not enabled" approach is
+> > > a bit disappointing, because what if somebody builds all of the
+> > > drivers needed for boot in and enables modules anyway, for example to
+> > > allow USB drivers to be probed dynamically?
+> >
+> > Yeah, I'm disappointed too :( But I'm trying to get it to work for
+> > !MODULES so that we can enable fw_devlink=on by default at least for
+> > !MODULES to make sure drivers don't introduce more issues going
+> > forward. And then I plan to continue working on making it work
+> > correctly for MODULES case too.
+> >
+> > Getting fw_devlink=on to work perfectly for MODULES and !MODULES is
+> > not a problem at all. But it needs fixing a bunch of drivers (mostly
+> > simple fixes like setting the right flag, handling deferred probes
+> > correctly, etc), but I'm hitting a catch-22 here. I can't find the
+> > drivers without setting fw_devlink=on by default. But if I did that,
+> > it's going to break a bunch of boards.
+> >
+> > What's your thought on leaving fw_devlink=on by default on 5.12 and
+> > fixing drivers as issues are reported?
+>
+> If there are any issues known today that need to be addressed, I'd fix
+> them first and then try to enable fw_devlink=on maybe just for
+> !MODULES to start with.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Yeah, that's what I'm thinking of for now.
 
-Regards,
+> > If that's a no, do you have any other ideas on how to deal with this catch-22?
+>
+> Try to enable, fix issues as they show up in linux-next.  If there are
+> still outstanding issues before the next release, back off and try in
+> the next cycle.  Repeat.
 
-Hans
+If it's just dealing with outstanding issues that are reported, I'm
+hoping I can do that. The biggest headache right now is dealing with
+devices that have drivers that directly parse the fwnode AND still
+have a struct device. So the struct device remains unbound even if the
+driver has initialized the device.
 
+>
+> This doesn't sound particularly attractive, but I don't have any
+> better idea, sorry.
 
-> ---
-> 
-> v2 -> v3: Add R-by tag.
-> 
-> v1 -> v2: Changelog update.
-> 
-> ---
->  Documentation/firmware-guide/acpi/debug.rst |    1 
->  drivers/acpi/sysfs.c                        |    1 
->  drivers/acpi/thermal.c                      |   87 +++++++++++++---------------
->  include/acpi/acpi_drivers.h                 |    1 
->  4 files changed, 43 insertions(+), 47 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/thermal.c
-> +++ linux-pm/drivers/acpi/thermal.c
-> @@ -13,6 +13,8 @@
->   *          concepts of 'multiple limiters', upper/lower limits, etc.
->   */
->  
-> +#define pr_fmt(fmt) "ACPI: thermal: " fmt
-> +
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/dmi.h>
-> @@ -29,8 +31,6 @@
->  #include <linux/uaccess.h>
->  #include <linux/units.h>
->  
-> -#define PREFIX "ACPI: "
-> -
->  #define ACPI_THERMAL_CLASS		"thermal_zone"
->  #define ACPI_THERMAL_DEVICE_NAME	"Thermal Zone"
->  #define ACPI_THERMAL_NOTIFY_TEMPERATURE	0x80
-> @@ -43,9 +43,6 @@
->  #define ACPI_THERMAL_MAX_ACTIVE	10
->  #define ACPI_THERMAL_MAX_LIMIT_STR_LEN 65
->  
-> -#define _COMPONENT		ACPI_THERMAL_COMPONENT
-> -ACPI_MODULE_NAME("thermal");
-> -
->  MODULE_AUTHOR("Paul Diefenbaugh");
->  MODULE_DESCRIPTION("ACPI Thermal Zone Driver");
->  MODULE_LICENSE("GPL");
-> @@ -197,8 +194,9 @@ static int acpi_thermal_get_temperature(
->  		return -ENODEV;
->  
->  	tz->temperature = tmp;
-> -	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Temperature is %lu dK\n",
-> -			  tz->temperature));
-> +
-> +	acpi_handle_debug(tz->device->handle, "Temperature is %lu dK\n",
-> +			  tz->temperature);
->  
->  	return 0;
->  }
-> @@ -216,8 +214,8 @@ static int acpi_thermal_get_polling_freq
->  		return -ENODEV;
->  
->  	tz->polling_frequency = tmp;
-> -	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Polling frequency is %lu dS\n",
-> -			  tz->polling_frequency));
-> +	acpi_handle_debug(tz->device->handle, "Polling frequency is %lu dS\n",
-> +			  tz->polling_frequency);
->  
->  	return 0;
->  }
-> @@ -254,12 +252,12 @@ static int acpi_thermal_set_cooling_mode
->   * 2.TODO: Devices listed in _PSL, _ALx, _TZD may change.
->   *   We need to re-bind the cooling devices of a thermal zone when this occurs.
->   */
-> -#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, str)	\
-> +#define ACPI_THERMAL_TRIPS_EXCEPTION(flags, tz, str)	\
->  do {	\
->  	if (flags != ACPI_TRIPS_INIT)	\
-> -		ACPI_EXCEPTION((AE_INFO, AE_ERROR,	\
-> +		acpi_handle_info(tz->device->handle,	\
->  		"ACPI thermal trip point %s changed\n"	\
-> -		"Please send acpidump to linux-acpi@vger.kernel.org", str)); \
-> +		"Please report to linux-acpi@vger.kernel.org\n", str); \
->  } while (0)
->  
->  static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
-> @@ -283,17 +281,17 @@ static int acpi_thermal_trips_update(str
->  		 */
->  		if (ACPI_FAILURE(status)) {
->  			tz->trips.critical.flags.valid = 0;
-> -			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-> -					  "No critical threshold\n"));
-> +			acpi_handle_debug(tz->device->handle,
-> +					  "No critical threshold\n");
->  		} else if (tmp <= 2732) {
-> -			pr_warn(FW_BUG "Invalid critical threshold (%llu)\n",
-> +			pr_info(FW_BUG "Invalid critical threshold (%llu)\n",
->  				tmp);
->  			tz->trips.critical.flags.valid = 0;
->  		} else {
->  			tz->trips.critical.flags.valid = 1;
-> -			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-> +			acpi_handle_debug(tz->device->handle,
->  					  "Found critical threshold [%lu]\n",
-> -					  tz->trips.critical.temperature));
-> +					  tz->trips.critical.temperature);
->  		}
->  		if (tz->trips.critical.flags.valid == 1) {
->  			if (crt == -1) {
-> @@ -305,8 +303,8 @@ static int acpi_thermal_trips_update(str
->  				 * Allow override critical threshold
->  				 */
->  				if (crt_k > tz->trips.critical.temperature)
-> -					pr_warn(PREFIX "Critical threshold %d C\n",
-> -						crt);
-> +					pr_info("Critical threshold %d C\n", crt);
-> +
->  				tz->trips.critical.temperature = crt_k;
->  			}
->  		}
-> @@ -318,14 +316,14 @@ static int acpi_thermal_trips_update(str
->  				"_HOT", NULL, &tmp);
->  		if (ACPI_FAILURE(status)) {
->  			tz->trips.hot.flags.valid = 0;
-> -			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-> -					"No hot threshold\n"));
-> +			acpi_handle_debug(tz->device->handle,
-> +					  "No hot threshold\n");
->  		} else {
->  			tz->trips.hot.temperature = tmp;
->  			tz->trips.hot.flags.valid = 1;
-> -			ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-> -					"Found hot threshold [%lu]\n",
-> -					tz->trips.hot.temperature));
-> +			acpi_handle_debug(tz->device->handle,
-> +					  "Found hot threshold [%lu]\n",
-> +					  tz->trips.hot.temperature);
->  		}
->  	}
->  
-> @@ -378,7 +376,8 @@ static int acpi_thermal_trips_update(str
->  		status = acpi_evaluate_reference(tz->device->handle, "_PSL",
->  							NULL, &devices);
->  		if (ACPI_FAILURE(status)) {
-> -			pr_warn(PREFIX "Invalid passive threshold\n");
-> +			acpi_handle_info(tz->device->handle,
-> +					 "Invalid passive threshold\n");
->  			tz->trips.passive.flags.valid = 0;
->  		}
->  		else
-> @@ -388,12 +387,12 @@ static int acpi_thermal_trips_update(str
->  				sizeof(struct acpi_handle_list))) {
->  			memcpy(&tz->trips.passive.devices, &devices,
->  				sizeof(struct acpi_handle_list));
-> -			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-> +			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
->  		}
->  	}
->  	if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
->  		if (valid != tz->trips.passive.flags.valid)
-> -				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
-> +				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
->  	}
->  
->  	/* Active (optional) */
-> @@ -440,8 +439,8 @@ static int acpi_thermal_trips_update(str
->  			status = acpi_evaluate_reference(tz->device->handle,
->  						name, NULL, &devices);
->  			if (ACPI_FAILURE(status)) {
-> -				pr_warn(PREFIX "Invalid active%d threshold\n",
-> -					i);
-> +				acpi_handle_info(tz->device->handle,
-> +						 "Invalid active%d threshold\n", i);
->  				tz->trips.active[i].flags.valid = 0;
->  			}
->  			else
-> @@ -451,12 +450,12 @@ static int acpi_thermal_trips_update(str
->  					sizeof(struct acpi_handle_list))) {
->  				memcpy(&tz->trips.active[i].devices, &devices,
->  					sizeof(struct acpi_handle_list));
-> -				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-> +				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
->  			}
->  		}
->  		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
->  			if (valid != tz->trips.active[i].flags.valid)
-> -				ACPI_THERMAL_TRIPS_EXCEPTION(flag, "state");
-> +				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
->  
->  		if (!tz->trips.active[i].flags.valid)
->  			break;
-> @@ -469,7 +468,7 @@ static int acpi_thermal_trips_update(str
->  		if (ACPI_SUCCESS(status)
->  		    && memcmp(&tz->devices, &devices, sizeof(devices))) {
->  			tz->devices = devices;
-> -			ACPI_THERMAL_TRIPS_EXCEPTION(flag, "device");
-> +			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
->  		}
->  	}
->  
-> @@ -925,8 +924,8 @@ static void acpi_thermal_notify(struct a
->  						  dev_name(&device->dev), event, 0);
->  		break;
->  	default:
-> -		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
-> -				  "Unsupported event [0x%x]\n", event));
-> +		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-> +				  event);
->  		break;
->  	}
->  }
-> @@ -1074,7 +1073,7 @@ static int acpi_thermal_add(struct acpi_
->  	mutex_init(&tz->thermal_check_lock);
->  	INIT_WORK(&tz->thermal_check_work, acpi_thermal_check_fn);
->  
-> -	pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
-> +	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
->  		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
->  	goto end;
->  
-> @@ -1146,24 +1145,24 @@ static int acpi_thermal_resume(struct de
->  static int thermal_act(const struct dmi_system_id *d) {
->  
->  	if (act == 0) {
-> -		pr_notice(PREFIX "%s detected: "
-> -			  "disabling all active thermal trip points\n", d->ident);
-> +		pr_notice("%s detected: disabling all active thermal trip points\n",
-> +			  d->ident);
->  		act = -1;
->  	}
->  	return 0;
->  }
->  static int thermal_nocrt(const struct dmi_system_id *d) {
->  
-> -	pr_notice(PREFIX "%s detected: "
-> -		  "disabling all critical thermal trip point actions.\n", d->ident);
-> +	pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
-> +		  d->ident);
->  	nocrt = 1;
->  	return 0;
->  }
->  static int thermal_tzp(const struct dmi_system_id *d) {
->  
->  	if (tzp == 0) {
-> -		pr_notice(PREFIX "%s detected: "
-> -			  "enabling thermal zone polling\n", d->ident);
-> +		pr_notice("%s detected: enabling thermal zone polling\n",
-> +			  d->ident);
->  		tzp = 300;	/* 300 dS = 30 Seconds */
->  	}
->  	return 0;
-> @@ -1171,8 +1170,8 @@ static int thermal_tzp(const struct dmi_
->  static int thermal_psv(const struct dmi_system_id *d) {
->  
->  	if (psv == 0) {
-> -		pr_notice(PREFIX "%s detected: "
-> -			  "disabling all passive thermal trip points\n", d->ident);
-> +		pr_notice("%s detected: disabling all passive thermal trip points\n",
-> +			  d->ident);
->  		psv = -1;
->  	}
->  	return 0;
-> @@ -1225,7 +1224,7 @@ static int __init acpi_thermal_init(void
->  	dmi_check_system(thermal_dmi_table);
->  
->  	if (off) {
-> -		pr_notice(PREFIX "thermal control disabled\n");
-> +		pr_notice("thermal control disabled\n");
->  		return -ENODEV;
->  	}
->  
-> Index: linux-pm/Documentation/firmware-guide/acpi/debug.rst
-> ===================================================================
-> --- linux-pm.orig/Documentation/firmware-guide/acpi/debug.rst
-> +++ linux-pm/Documentation/firmware-guide/acpi/debug.rst
-> @@ -57,7 +57,6 @@ shows the supported mask values, current
->      ACPI_PCI_COMPONENT              0x00400000
->      ACPI_CONTAINER_COMPONENT        0x01000000
->      ACPI_SYSTEM_COMPONENT           0x02000000
-> -    ACPI_THERMAL_COMPONENT          0x04000000
->      ACPI_MEMORY_DEVICE_COMPONENT    0x08000000
->      ACPI_PROCESSOR_COMPONENT        0x20000000
->  
-> Index: linux-pm/drivers/acpi/sysfs.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/sysfs.c
-> +++ linux-pm/drivers/acpi/sysfs.c
-> @@ -57,7 +57,6 @@ static const struct acpi_dlayer acpi_deb
->  	ACPI_DEBUG_INIT(ACPI_PCI_COMPONENT),
->  	ACPI_DEBUG_INIT(ACPI_CONTAINER_COMPONENT),
->  	ACPI_DEBUG_INIT(ACPI_SYSTEM_COMPONENT),
-> -	ACPI_DEBUG_INIT(ACPI_THERMAL_COMPONENT),
->  	ACPI_DEBUG_INIT(ACPI_MEMORY_DEVICE_COMPONENT),
->  	ACPI_DEBUG_INIT(ACPI_PROCESSOR_COMPONENT),
->  };
-> Index: linux-pm/include/acpi/acpi_drivers.h
-> ===================================================================
-> --- linux-pm.orig/include/acpi/acpi_drivers.h
-> +++ linux-pm/include/acpi/acpi_drivers.h
-> @@ -20,7 +20,6 @@
->  #define ACPI_PCI_COMPONENT		0x00400000
->  #define ACPI_CONTAINER_COMPONENT	0x01000000
->  #define ACPI_SYSTEM_COMPONENT		0x02000000
-> -#define ACPI_THERMAL_COMPONENT		0x04000000
->  #define ACPI_MEMORY_DEVICE_COMPONENT	0x08000000
->  #define ACPI_PROCESSOR_COMPONENT	0x20000000
->  
-> 
-> 
-> 
+:'( Yeah, another approach I'm thinking of is to have a separate
+"strict mode" for fw_devlink=on or above. Where it'll try it's best
+till kernel late init and then fallback to permissive. But it's
+becoming a headache to deal with some corner cases.
 
+-Saravana
