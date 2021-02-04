@@ -2,90 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DFEB30EDCF
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 08:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2EB30EF7E
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 10:21:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234286AbhBDHxZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Feb 2021 02:53:25 -0500
-Received: from mga11.intel.com ([192.55.52.93]:24971 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231767AbhBDHxX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Feb 2021 02:53:23 -0500
-IronPort-SDR: jF2GEfHDDX3RMjBoYKOa5TpZzNHBME2T3rkcgpCJ7kT3KMjTNYUdCs7ebyK5JVDXXEnRreHr5S
- uu8TZdSHT88A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9884"; a="177685779"
-X-IronPort-AV: E=Sophos;i="5.79,400,1602572400"; 
-   d="scan'208";a="177685779"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2021 23:51:38 -0800
-IronPort-SDR: MiXbk0KILb5CmTFx5bx89jEXGyZNmR5Mpgtc41ir8AJSybK5Rb1o5bYnQzgHtDUvfTFREApeVv
- ro2IWBFdr2qQ==
-X-IronPort-AV: E=Sophos;i="5.79,400,1602572400"; 
-   d="scan'208";a="372296926"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2021 23:51:34 -0800
-Received: by lahna (sSMTP sendmail emulation); Thu, 04 Feb 2021 09:51:32 +0200
-Date:   Thu, 4 Feb 2021 09:51:31 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     linux-usb@vger.kernel.org
-Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Christian Kellner <christian@kellner.me>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] thunderbolt / ACPI: Add support for USB4 _OSC
-Message-ID: <20210204075131.GQ2542@lahna.fi.intel.com>
-References: <20210129083241.72497-1-mika.westerberg@linux.intel.com>
+        id S233705AbhBDJTz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Feb 2021 04:19:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40752 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233799AbhBDJTy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 04:19:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612430307;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qF2RHRLJSzWg3l+Fnd4fPAG6Xy9PgbFqFuHn4ZaX+3k=;
+        b=aHk64ldtFS9Q99HBE+/SdNDohPtPnVKO3boxHt9GeUZ9bTJ8gr/rrfhSo3jW2OXgUFziGe
+        O4g5EMz9ALctI5mSXz7MIIFE1KHlo9H50KWdSFXJRO5lJtjBtDQm//THfKQp3OM2BCVZ4u
+        1TG5Y0Vy1eF1CPp8cxqfuOkxeaDQ8W8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-523-10xLVROpMnC4_FDtwEHy1A-1; Thu, 04 Feb 2021 04:18:26 -0500
+X-MC-Unique: 10xLVROpMnC4_FDtwEHy1A-1
+Received: by mail-ej1-f71.google.com with SMTP id yd11so2170618ejb.9
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Feb 2021 01:18:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qF2RHRLJSzWg3l+Fnd4fPAG6Xy9PgbFqFuHn4ZaX+3k=;
+        b=SVAjKnNLLH+QYOGPKdMWqZuyasfGF7qmxZaWCuNj4ckwI3OQwHbLdWUXQfajSj86PS
+         4bvMT2uE80Ft1VoymHvwKWNG/w0uS/iOhgxn7jOdP+rUpKAMS0hxZFyD8tu81BMbHw+3
+         +BeYSpcnTxfrlt2Koem+f0cAHvP+l1cG+uijlMC9QFY9A7vs6Bsd6d3VFOOLU7NyYlDH
+         4DHR3SyUfi22Z+5KTrKiTiswHT5zzMb0pzR6ZPOMig4FfQ74ueI30Bt/AP75wORqGFHY
+         tOVT9YjHfiZjqk3iuGgQ1SgAJAFWrWCTdck+iJoKqzQBu5jnkDRLB2UdeG6N5IXdu3DN
+         upCg==
+X-Gm-Message-State: AOAM531EK+TzNcYRv4VAYc5KOOPR2IdNPxsagFv+XqiyYYuSawGX+RZL
+        caEMzNKB47z62Ngn7zxFcmttCYW5RUr3x6/ULgnANuWMv7ggkHrRARnDaeMf7UOg23pyEaadFl9
+        6ndUo1kNIhSsGqB1nzrbwmw==
+X-Received: by 2002:a05:6402:34c1:: with SMTP id w1mr7152489edc.147.1612430305033;
+        Thu, 04 Feb 2021 01:18:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyykVXT9oSm72NonBeZE72TJTdnE4L4pjtbYCQx0vFl9j2nHIYKkpyJEipTP5nihZ9Mx6OYng==
+X-Received: by 2002:a05:6402:34c1:: with SMTP id w1mr7152473edc.147.1612430304827;
+        Thu, 04 Feb 2021 01:18:24 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id z22sm2134416edb.88.2021.02.04.01.18.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Feb 2021 01:18:24 -0800 (PST)
+Subject: Re: [External] Re: [PATCH v9] platform/x86: thinkpad_acpi: Add
+ platform profile support
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     mgross@linux.intel.com, rjw@rjwysocki.net,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        hadess@hadess.net, njoshi1@lenovo.com
+References: <markpearson@lenovo.com>
+ <20210111162237.3469-1-markpearson@lenovo.com>
+ <39c453b5-c6f2-7e45-ee82-64344e800711@redhat.com>
+ <ab6d9113-2bc6-3c02-bc08-65a0aa217325@lenovo.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <48752174-26c3-fb83-ddf6-01bf2cafd1ab@redhat.com>
+Date:   Thu, 4 Feb 2021 10:18:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210129083241.72497-1-mika.westerberg@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <ab6d9113-2bc6-3c02-bc08-65a0aa217325@lenovo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 11:32:36AM +0300, Mika Westerberg wrote:
-> Hi all,
-> 
-> The just released ACPI 6.4 spec [1] adds a new _OSC method that is used to
-> negotiate OS support for native USB4 features such as PCIe tunneling. This
-> patch series adds Linux support for the new _OSC and modifies the
-> Thunderbolt/USB4 driver accordingly to enable/disable tunneling of
-> different protocols.
-> 
-> There is an additional setting in the firmware connection manager that
-> allows the BIOS to disable PCIe tunneling, so we add support for this and
-> also make the software connection manager to switch to this "nopcie"
-> security level when the _OSC does not allow PCIe tunneling.
-> 
-> This applies on top of thunderbolt.git/next.
-> 
-> [1] https://uefi.org/sites/default/files/resources/ACPI_Spec_6_4_Jan22.pdf
-> 
-> The previous version of the patch series can be found here:
-> 
->   https://lore.kernel.org/linux-usb/20210126155723.9388-1-mika.westerberg@linux.intel.com/
-> 
-> Changes from v1:
-> 
->   * Dropped patch 1/6. I already applied it to thunderbolt.git/fixes
->   * Added ACK from Yehezkel to TBT patches
->   * Updated changelog of patch 1/5 and fixed typos too
->   * Added Rafael's tag to patch 4/5.
-> 
-> Mario Limonciello (1):
->   ACPI: Execute platform _OSC also with query bit clear
-> 
-> Mika Westerberg (4):
->   thunderbolt: Add support for PCIe tunneling disabled (SL5)
->   thunderbolt: Allow disabling XDomain protocol
->   ACPI: Add support for native USB4 control _OSC
->   thunderbolt: Add support for native USB4 _OSC
+Hi,
 
-All applied to thunderbolt.git/next.
+On 2/3/21 3:46 PM, Mark Pearson wrote:
+> On 02/02/2021 09:49, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 1/11/21 5:22 PM, Mark Pearson wrote:
+>>> Add support to thinkpad_acpi for Lenovo platforms that have DYTC
+>>> version 5 support or newer to use the platform profile feature.
+>>>
+>>> This will allow users to determine and control the platform modes
+>>> between low-power, balanced operation and performance modes.
+>>>
+>>> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
+>>
+>> Now that the acpi/platform_profile changes have landed I have
+>> merged this patch (solving a trivial conflict caused by the
+>> keyboard_lang changes).
+>>
+>> Thank you for your patch, I've applied this patch to my review-hans 
+>> branch:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+>>
+>> Note it will show up in my review-hans branch once I've pushed my
+>> local branch there, which might take a while.
+>>
+>> Once I've run some tests on this branch the patches there will be
+>> added to the platform-drivers-x86/for-next branch and eventually
+>> will be included in the pdx86 pull-request to Linus for the next
+>> merge-window.
+>>
+> Thanks Hans - sounds great.
+> Let me know if you find any issues or need any extra tests running.
+
+So the build-bots have found 2 issues:
+
+1. Some symbols which are not exported need to be marked static (I will fix this myself,
+that is the easiest / fastest):
+
+drivers/platform/x86/thinkpad_acpi.c:10081:5: warning: no previous prototype for 'dytc_profile_get' [-Wmissing-prototypes]
+drivers/platform/x86/thinkpad_acpi.c:10095:5: warning: no previous prototype for 'dytc_cql_command' [-Wmissing-prototypes]
+drivers/platform/x86/thinkpad_acpi.c:10133:5: warning: no previous prototype for 'dytc_profile_set' [-Wmissing-prototypes]
+
+2. This is a bigger problem, this is the result of a random-config test-build and I'm
+pretty sure that the issue is that acpi_platform was build as a module while
+thinkpad_acpi was builtin and builtin code cannot rely on modules.
+
+drivers/platform/x86/thinkpad_acpi.c:10186: undefined reference to `platform_profile_notify'
+drivers/platform/x86/thinkpad_acpi.c:10226: undefined reference to `platform_profile_register'
+drivers/platform/x86/thinkpad_acpi.c:10246: undefined reference to `platform_profile_remove'
+
+There are 2 ways to solve this:
+
+1. Change
+
+#if IS_ENABLED(CONFIG_ACPI_PLATFORM_PROFILE)
+
+to:
+
+#if IS_REACHABLE(CONFIG_ACPI_PLATFORM_PROFILE)
+
+Which will disable the platform-profile support in acpi_thinkpad in the above scenario.
+
+or.
+
+2. Drop the #if IS_ENABLED(...) and add a
+
+        depends on ACPI_PLATFORM_PROFILE
+
+To the THINKPAD_ACPI Kconfig symbol.
+
+
+I personally think 2. would be slightly better as it ensures that platform-profile
+support is always available when thinkpad_acpi is build, hopefully leading to less
+confusing bug-reports about it sometimes not working.
+
+If you can let me know what you want, then I can fix this locally too and get
+the fix in place before the merge-window opens.
+
+Regards,
+
+Hans
+
