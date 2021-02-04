@@ -2,115 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE84330F48A
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 15:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5837F30F64F
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 16:30:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236623AbhBDOFN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Feb 2021 09:05:13 -0500
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:34338 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236581AbhBDOCs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 09:02:48 -0500
-Received: by mail-oi1-f181.google.com with SMTP id h192so3808131oib.1;
-        Thu, 04 Feb 2021 06:02:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AeTSTNxgLE2BT0GTudXgmFb4g9IjjW+lbLXDMlVfRik=;
-        b=TayjHr3xoIKT+tycHZA5L2VXO5R5KwW4ABcVHRuhzsTTWhVo5RFpIJtAgBAi0MrrXL
-         6VYj0Atyszn93pH08SAF1mERLAaAoU1ZmFv6SGmsMGlW88/8s8Br8gIUC0HMc0FUzySV
-         GvZwdpv+UB+h8ZsQYotxm/+J77HGIQoYNlJlJauhoYAxY527s0rNB01EX3LU+iirdAAS
-         +aZoVfFTBFWR/FBG2f7Zvvh/02GvhadZzxvAmRgi+fM3h4Zg5H19KyRyUNhe75H/SIRM
-         37ueKvjAgrBt/uBi/+xRpdgpfA/lPFO59E+qfSNs9SeXA5vRAUHx3yvVjrmNyznPCGmq
-         hFqQ==
-X-Gm-Message-State: AOAM531nxWUbs5tx1XeGvY5NGpCwiobZonpIyxfKpIsNqZqO68wXC414
-        8cGkRiStr94W5pQMOZuqOwW6vgS3jOEhlNCWq9U=
-X-Google-Smtp-Source: ABdhPJwIMkZ9crB5RzPfP0aiVhmh61qrbaAU2HVxqJSpznq2cpzmYfpLAgUbYTQO/oABbafz5fjdh/q7MscPh0Ye06E=
-X-Received: by 2002:aca:308a:: with SMTP id w132mr5018580oiw.69.1612447327733;
- Thu, 04 Feb 2021 06:02:07 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1612314468.git.skhan@linuxfoundation.org> <8d11eec80d6668065fb35a0b025c3614b67bf798.1612314468.git.skhan@linuxfoundation.org>
-In-Reply-To: <8d11eec80d6668065fb35a0b025c3614b67bf798.1612314468.git.skhan@linuxfoundation.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 4 Feb 2021 15:01:56 +0100
-Message-ID: <CAJZ5v0i8-HpSAk=HGOgVN1RTLup4Rh0WTt0H3LQh1EfuWE-e+w@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] drivers/acpi: convert seqno to use seqnum_ops
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
+        id S237336AbhBDPae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Feb 2021 10:30:34 -0500
+Received: from mga01.intel.com ([192.55.52.88]:24482 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237164AbhBDP3q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Feb 2021 10:29:46 -0500
+IronPort-SDR: bUN6V2kV8PHVnv6VaDvCBP+aKJeCFaRSGUr302Rh8UZTSW2ykZwjjy2iZEUewGr7E8pKgUE32C
+ nqxPGvyLbhJg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9885"; a="200252103"
+X-IronPort-AV: E=Sophos;i="5.79,401,1602572400"; 
+   d="scan'208";a="200252103"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2021 07:29:05 -0800
+IronPort-SDR: e/5p4pSuQmOb/MbMZ2Wp1tEb+Ne2uaNCe7q0PWUrRotDCKEL57esF7lmORz7DWpIeTm1AgiK/R
+ 1fiQGYbuvEGA==
+X-IronPort-AV: E=Sophos;i="5.79,401,1602572400"; 
+   d="scan'208";a="415207885"
+Received: from jguillor-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.14])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2021 07:29:03 -0800
+Date:   Thu, 4 Feb 2021 07:29:01 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-kselftest@vger.kernel.org, devel@driverdev.osuosl.org
-Content-Type: text/plain; charset="UTF-8"
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
+Message-ID: <20210204152901.pzjnyr64xlvo6yup@intel.com>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-4-ben.widawsky@intel.com>
+ <20210202181016.GD3708021@infradead.org>
+ <20210202182418.3wyxnm6rqeoeclu2@intel.com>
+ <20210203171534.GB4104698@infradead.org>
+ <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
+ <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
+ <20210204071646.GA122880@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210204071646.GA122880@infradead.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shuah,
+On 21-02-04 07:16:46, Christoph Hellwig wrote:
+> On Wed, Feb 03, 2021 at 01:23:31PM -0800, Dan Williams wrote:
+> > > I'd prefer to keep the helpers for now as I do find them helpful, and so far
+> > > nobody else who has touched the code has complained. If you feel strongly, I
+> > > will change it.
+> > 
+> > After seeing the options, I think I'd prefer to not have to worry what
+> > extra magic is happening with cxl_read_mbox_reg32()
+> > 
+> > cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
+> > 
+> > readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
+> > 
+> > The latter is both shorter and more idiomatic.
+> 
+> Same here.  That being said I know some driver maintainers like
+> wrappers, my real main irk was the macro magic to generate them.
 
-First off, please indicate the component in the subject, for example:
+I think the wrapper is often used as a means of trying to have cross OS
+compatibility to some degree. Just to be clear, that was *not* the purpose here.
 
-"ACPI: extlog: convert seqno to use seqnum_ops"
+Stating I disagree for posterity, I'll begin reworking this code and it will be
+changed for v2.
 
-On Wed, Feb 3, 2021 at 7:12 PM Shuah Khan <skhan@linuxfoundation.org> wrote:
->
-> Sequence Number api provides interfaces for unsigned atomic up counters
-> leveraging atomic_t and atomic64_t ops underneath.
->
-> Convert seqno atomic counter to use seqnum_ops.
-
-Apart from the above, it would be good to say why the change is an improvement.
-
-It looks like the rationale is that using struct seqnum32 would allow
-tools to easily detect the usage of sequence numbers, but is there
-anything else in this particular case?
-
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> ---
->  drivers/acpi/acpi_extlog.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index 72f1fb77abcd..16a4928645a1 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -12,6 +12,7 @@
->  #include <linux/ratelimit.h>
->  #include <linux/edac.h>
->  #include <linux/ras.h>
-> +#include <linux/seqnum_ops.h>
->  #include <asm/cpu.h>
->  #include <asm/mce.h>
->
-> @@ -93,8 +94,7 @@ static struct acpi_hest_generic_status *extlog_elog_entry_check(int cpu, int ban
->  static void __print_extlog_rcd(const char *pfx,
->                                struct acpi_hest_generic_status *estatus, int cpu)
->  {
-> -       static atomic_t seqno;
-> -       unsigned int curr_seqno;
-> +       static struct seqnum32 seqno;
->         char pfx_seq[64];
->
->         if (!pfx) {
-> @@ -103,8 +103,8 @@ static void __print_extlog_rcd(const char *pfx,
->                 else
->                         pfx = KERN_ERR;
->         }
-> -       curr_seqno = atomic_inc_return(&seqno);
-> -       snprintf(pfx_seq, sizeof(pfx_seq), "%s{%u}", pfx, curr_seqno);
-> +       snprintf(pfx_seq, sizeof(pfx_seq), "%s{%u}", pfx,
-> +                seqnum32_inc(&seqno));
->         printk("%s""Hardware error detected on CPU%d\n", pfx_seq, cpu);
->         cper_estatus_print(pfx_seq, estatus);
->  }
-> --
-> 2.27.0
->
+Thanks.
+Ben
