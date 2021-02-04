@@ -2,68 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC5BD30EF88
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 10:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7AC630F2F4
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Feb 2021 13:13:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233571AbhBDJVz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Feb 2021 04:21:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44682 "EHLO
+        id S235697AbhBDMMb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Feb 2021 07:12:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232478AbhBDJVw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 04:21:52 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F340C061573;
-        Thu,  4 Feb 2021 01:21:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=MIQB8t7kt6mqNl1Bn84T0udleZca2EnAi6Ix4VEe7UU=; b=Ju+atNzUB4pbSQUpXYsoUH6mdS
-        4yZRAnUcMYHcFVUlsCe+OaTvKgstwDY9MRqbxpqIaIWDedoHcx0IjrfsFzXU066i+a7had7WGFX/Q
-        DJVyHTOuDK+36bBvD1DkxbieQ5DBkhwCc4oMaWShWt3nXFq4AtNIFdyQKlZ399PZ+NHVnpGhaRPZy
-        PkrGX1x8EVLXCDb75ANO4ysv2iExZXla4J3SayMpoQv2ygSa9k+mlYlPyiemQ/KXs1xM4OziancWJ
-        KFn7FTc5jW3xbQ2Qlr49ZcMaeJFU1YnA8FxpA/9LWT0X5jDZrIOXhOjLhturLaUtS/pbMohdYLd8b
-        /1G4+GaQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1l7aoi-000eV4-QS; Thu, 04 Feb 2021 09:20:49 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AAA06301CC4;
-        Thu,  4 Feb 2021 10:20:45 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 920B7213D2E27; Thu,  4 Feb 2021 10:20:45 +0100 (CET)
-Date:   Thu, 4 Feb 2021 10:20:45 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     corbet@lwn.net, gregkh@linuxfoundation.org, keescook@chromium.org,
-        rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, devel@driverdev.osuosl.org
-Subject: Re: [PATCH v3 1/7] seqnum_ops: Introduce Sequence Number Ops
-Message-ID: <YBu8bRth+4wyvql/@hirez.programming.kicks-ass.net>
-References: <cover.1612314468.git.skhan@linuxfoundation.org>
- <23f6347a7bb9f902babe7351f71b23644035673d.1612314468.git.skhan@linuxfoundation.org>
+        with ESMTP id S235664AbhBDMMb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Feb 2021 07:12:31 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59BE0C061573
+        for <linux-acpi@vger.kernel.org>; Thu,  4 Feb 2021 04:11:50 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id p15so3194670wrq.8
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Feb 2021 04:11:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ps93g+h28Vy1vQGIzyREhfmg0kNhRDF3DzOZ7cTQ08Y=;
+        b=mPMvumYSfS0hbLc0g5TeRt8nFiaC8V1/KzHq21FVPJOwcLqR8/wDrgVnBL8ccMBdNN
+         SIAKHsS7iVaaTLnzIV3vzuwD9p1NZTiAYy+GGPY70KSqfQ9/bhXpUni7Bv8eNGC/SDyi
+         ivzxreTFpvNSwLL7vcPWG0NN1AtxCVianJpZr+nR/uOI70qX3BOhZdb8Nc1F7wykKYtD
+         tl4KwBK6CZr9nBzPWTEsweN1B8Z5pHPH3GbzjTY2m/cb9ZBbO7Q0oGAq0GiPOsL+dkBw
+         AX5XpohxrZtesOz/tOxpdHDcXEAqyW4ppEm3VHyMrbpWe7PrqTQsSrZwYjjoh/QexEUb
+         As7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ps93g+h28Vy1vQGIzyREhfmg0kNhRDF3DzOZ7cTQ08Y=;
+        b=XSdI+kgG5q+0uOJNPHE5BEQyRvjVWO6ssEzWyqjhNKJRnW2MsPUrGjVBd5qR/cRFwv
+         1nSfgmA0/u9zUkU2s+hIy629E0sPKrxYLszk6GvARLz8Ny72Ao0UZH99sLlswImqsGHz
+         RzzrgttvYMHV9jFypawaAmZE3TjGWLDTR1G9tvpzU/pwUikhgjCog0qTQgUPuTUi3kf1
+         7tj158nFFrY0Z1fDK9rVW7Ft76fHhk7ClL12kHDiQAexMWW806rfAAkwt3AAyiQzLTdO
+         fKoVHjeugClbdkb3fjJQ09m6NPacjdSdBb82fvnjmDNX4YgjwpumDv0Zkx+G0vFwBfD+
+         OCEQ==
+X-Gm-Message-State: AOAM5316geVwo7L5C/7jJghv8Ev8S7zLszG6UnJjintcPAWbY4qarI/n
+        lX3Z0K9jSnNRnnj280Wa6XcOq07RcEKzqx5TaRs=
+X-Google-Smtp-Source: ABdhPJzTfnF1IItLT+9Lur0YWpKqshIXNKaPYD3wu5Rla2d2ou2GbenokaMga54UKgYp/pKweuyupWhjJbs9TB5qE5M=
+X-Received: by 2002:a5d:4046:: with SMTP id w6mr8814506wrp.369.1612440709018;
+ Thu, 04 Feb 2021 04:11:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <23f6347a7bb9f902babe7351f71b23644035673d.1612314468.git.skhan@linuxfoundation.org>
+References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
+ <CAJZ5v0iapmc8ywuySwexwTagKr89Hj7TPXkAvd_HXMhdLoyyQQ@mail.gmail.com>
+ <1f0f7273-597e-cdf0-87d1-908e56c13133@linux.intel.com> <CA+GA0_v3JUWS3G3=R4XuQ=OW91cpwiBP1Rp=uzYOF8c9TUJ46w@mail.gmail.com>
+ <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
+ <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com> <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
+ <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com>
+ <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
+ <CA+GA0_vYdxFj_SPWgdkufo04VaOuWqcNTSck6gvnMfN07ZdO_Q@mail.gmail.com>
+ <CA+GA0_vKyJZSQZ9bA6_BSDeGfRZ_nz86gj2aVHaOoy1h57CMzA@mail.gmail.com>
+ <CA+GA0_u8NA90GmMSDO-Ejg-C2YEXCn8rnVZpk-_+eXcDm7XRpg@mail.gmail.com>
+ <CAJZ5v0hqHihRdad16Djo+R1ezjFHt2YffgDg59TYYKJSSjmA4Q@mail.gmail.com> <CA+GA0_s7atD4O_DP0NXwVUVvdia2NWwSEfW2Mcw-UoJ9effPvg@mail.gmail.com>
+In-Reply-To: <CA+GA0_s7atD4O_DP0NXwVUVvdia2NWwSEfW2Mcw-UoJ9effPvg@mail.gmail.com>
+From:   =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date:   Thu, 4 Feb 2021 13:11:21 +0100
+Message-ID: <CA+GA0_sZQXACjuzYYvrJq-vF-mmjaq82SJ=kifqo4Utv45s5Yg@mail.gmail.com>
+Subject: Re: Crash in acpi_ns_validate_handle triggered by soundwire on Linux 5.10
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 03, 2021 at 11:11:57AM -0700, Shuah Khan wrote:
-> +static inline u32 seqnum32_inc(struct seqnum32 *seq)
-> +{
-> +	atomic_t val = ATOMIC_INIT(seq->seqnum);
-> +
-> +	seq->seqnum = (u32) atomic_inc_return(&val);
-> +	if (seq->seqnum >= UINT_MAX)
-> +		pr_info("Sequence Number overflow %u detected\n",
-> +			seq->seqnum);
-> +	return seq->seqnum;
-> +}
+pon., 1 lut 2021 o 13:16 Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> nap=
+isa=C5=82(a):
+>
+> pon., 1 lut 2021 o 12:43 Rafael J. Wysocki <rafael@kernel.org> napisa=C5=
+=82(a):
+> >
+> > On Fri, Jan 29, 2021 at 9:03 PM Marcin =C5=9Alusarz <marcin.slusarz@gma=
+il.com> wrote:
+> > >
+> > > pt., 29 sty 2021 o 19:59 Marcin =C5=9Alusarz <marcin.slusarz@gmail.co=
+m> napisa=C5=82(a):
+> > > >
+> > > > czw., 28 sty 2021 o 15:32 Marcin =C5=9Alusarz <marcin.slusarz@gmail=
+.com> napisa=C5=82(a):
+> > > > >
+> > > > > czw., 28 sty 2021 o 13:39 Rafael J. Wysocki <rafael@kernel.org> n=
+apisa=C5=82(a):
+> > > > > > The only explanation for that I can think about (and which does=
+ not
+> > > > > > involve supernatural intervention so to speak) is a stack corru=
+ption
+> > > > > > occurring between these two calls in sdw_intel_acpi_cb().  IOW,
+> > > > > > something scribbles on the handle in the meantime, but ATM I ha=
+ve no
+> > > > > > idea what that can be.
+> > > > >
+> > > > > I tried KASAN but it didn't find anything and kernel actually boo=
+ted
+> > > > > successfully.
+> > > >
+> > > > I investigated this and it looks like a compiler bug (or something =
+nastier),
+> > > > but I can't find where exactly registers get corrupted because if I=
+ add printks
+> > > > the corruption seems on the printk side, but if I don't add them it=
+ seems
+> > > > the value gets corrupted earlier.
+> > > (...)
+> > > > I'm using gcc 10.2.1 from Debian testing.
+> > >
+> > > Someone on IRC, after hearing only that "gcc miscompiles the kernel",
+> > > suggested disabling CONFIG_STACKPROTECTOR_STRONG.
+> > > It helped indeed and it matches my observations, so it's quite likely=
+ it
+> > > is the culprit.
+> > >
+> > > What do we do now?
+> >
+> > Figure out why the stack protection kicks in, I suppose.
+> >
+> > The target object is not on the stack, so if the pointer to it is
+> > valid (we need to verify somehow that it is indeed), dereferencing it
+> > shouldn't cause the stack protection to trigger.
+>
+> Well, the problem is not that stack protector finds something, but
+> the feature itself corrupts some registers.
 
-What kind of broken garbage is that?
+I retract this statement.
+
+Originally I based it on this piece of code:
+   0xffffffff815781f0 <+35>:    mov    %r12,%rdx
+   0xffffffff815781f3 <+38>:    mov    $0xffffffff81eca4c0,%rsi
+   0xffffffff815781fa <+45>:    mov    $0xffffffff82146d46,%rdi
+   0xffffffff81578201 <+52>:    call   0xffffffff818909f1 <printk>
+   0xffffffff81578206 <+57>:    cmpb   $0xf,0x8(%r12)
+where crash is on the last line and I supposedly could see the message
+printed by printk with the correct value of %r12.
+However, after attaching kgdb+kgdboe (it's so much pain...) to the kernel
+I discovered that someting corrupts memory so much that the formatting
+string becomes "", which means that I don't actually see the output of prin=
+tk.
+
+So stack corruption from printk is rather unlikely and something else
+must be going on.
+
+Before I started messing with kgdb, I tried to bisect this issue - it point=
+ed at
+279c3393e2c113365c999f16cd096bcf3d34319e "mm: kmem: move
+memcg_kmem_bypass() calls to get_mem/obj_cgroup_from_current()",
+which is odd, because it's totally unrelated and doesn't even trigger
+recompilation of anything else. I can consistently reproduce the crash
+on this commit and can't on commit before. Reverting it on 5.10.11 is
+not possible, because it conflicts with changes that went in after this one=
+.
+
+acpi_ns_validate_handle is called hundreds (if not thousands) of times
+before it crashes, so I think it's unlikely that it is compiled incorrectly
+(and I spent many hours reading the assembly, comparing to what
+gcc 9 generates, diving into printk, etc).
+Something before it must be corrupting memory.
+
+Another thing that I noticed is that when I set breakpoints in kgdb
+on two functions (do_init_module and local_pci_probe) and just hit
+"continue" the kernel doesn't crash!
+
+I discovered it because I wanted to trace sdw_intel_acpi_scan /
+sdw_intel_acpi_cb to see where the memory is corrupted, but I can't
+set breakpoints on code in modules with kgdb :(, so when I tried
+to step into this code from module loading the crash disappeared.
+
+The first code I could trace where I see memory corruption is
+acpi_bus_get_device, which is called from sdw_intel_scan_controller.
+I suspect that sdw_intel_acpi_scan is doing this (which means that
+sdw_intel_acpi_cb -> acpi_evaluate_integer is likely to blame),
+but I don't have proof.
+
+This issue is driving me mad ;). Please help.
+
+Marcin
