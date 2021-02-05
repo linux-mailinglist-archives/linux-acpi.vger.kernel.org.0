@@ -2,22 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD0831056E
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 08:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B905310574
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 08:08:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbhBEHHM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 02:07:12 -0500
-Received: from mx2.suse.de ([195.135.220.15]:41348 "EHLO mx2.suse.de"
+        id S230486AbhBEHIZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 02:08:25 -0500
+Received: from mx2.suse.de ([195.135.220.15]:41556 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231230AbhBEHHI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Feb 2021 02:07:08 -0500
+        id S230516AbhBEHIU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Feb 2021 02:08:20 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 48858B038;
-        Fri,  5 Feb 2021 07:06:26 +0000 (UTC)
-Message-ID: <1612508785.19825.6.camel@suse.cz>
-Subject: Re: [PATCH v1 1/2] cpufreq: ACPI: Extend frequency tables to cover
- boost frequencies
+        by mx2.suse.de (Postfix) with ESMTP id 2D16EACBA;
+        Fri,  5 Feb 2021 07:07:38 +0000 (UTC)
+Message-ID: <1612508857.19825.7.camel@suse.cz>
+Subject: Re: [PATCH v1 2/2] cpufreq: ACPI: Update arch scale-invariance max
+ perf ratio if CPPC is not there
 From:   Giovanni Gherdovich <ggherdovich@suse.cz>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux PM <linux-pm@vger.kernel.org>
@@ -30,9 +30,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Michael Larabel <Michael@phoronix.com>,
         Juri Lelli <juri.lelli@redhat.com>,
         Vincent Guittot <vincent.guittot@linaro.org>
-Date:   Fri, 05 Feb 2021 08:06:25 +0100
-In-Reply-To: <8467867.3EdU9UaQ17@kreacher>
-References: <13690581.X0sz4iL7V8@kreacher> <8467867.3EdU9UaQ17@kreacher>
+Date:   Fri, 05 Feb 2021 08:07:37 +0100
+In-Reply-To: <9510730.kuOQ4KzHjt@kreacher>
+References: <13690581.X0sz4iL7V8@kreacher> <9510730.kuOQ4KzHjt@kreacher>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.26.6 
 Mime-Version: 1.0
@@ -41,65 +41,80 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2021-02-04 at 18:25 +0100, Rafael J. Wysocki wrote:
+On Thu, 2021-02-04 at 18:34 +0100, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> A severe performance regression on AMD EPYC processors when using
-> the schedutil scaling governor was discovered by Phoronix.com and
-> attributed to the following commits:
+> If the maximum performance level taken for computing the
+> arch_max_freq_ratio value used in the x86 scale-invariance code is
+> higher than the one corresponding to the cpuinfo.max_freq value
+> coming from the acpi_cpufreq driver, the scale-invariant utilization
+> falls below 100% even if the CPU runs at cpuinfo.max_freq or slightly
+> faster, which causes the schedutil governor to select a frequency
+> below cpuinfo.max_freq.  That frequency corresponds to a frequency
+> table entry below the maximum performance level necessary to get to
+> the "boost" range of CPU frequencies which prevents "boost"
+> frequencies from being used in some workloads.
 > 
->     41ea667227ba ("x86, sched: Calculate frequency invariance for
->     AMD systems")
+> While this issue is related to scale-invariance, it may be amplified
+> by commit db865272d9c4 ("cpufreq: Avoid configuring old governors as
+> default with intel_pstate") from the 5.10 development cycle which
+> made it extremely easy to default to schedutil even if the preferred
+> driver is acpi_cpufreq as long as intel_pstate is built too, because
+> the mere presence of the latter effectively removes the ondemand
+> governor from the defaults.  Distro kernels are likely to include
+> both intel_pstate and acpi_cpufreq on x86, so their users who cannot
+> use intel_pstate or choose to use acpi_cpufreq may easily be
+> affectecd by this issue.
 > 
->     976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P
->     for frequency invariance on AMD EPYC")
+> If CPPC is available, it can be used to address this issue by
+> extending the frequency tables created by acpi_cpufreq to cover the
+> entire available frequency range (including "boost" frequencies) for
+> each CPU, but if CPPC is not there, acpi_cpufreq has no idea what
+> the maximum "boost" frequency is and the frequency tables created by
+> it cannot be extended in a meaningful way, so in that case make it
+> ask the arch scale-invariance code to to use the "nominal" performance
+> level for CPU utilization scaling in order to avoid the issue at hand.
 > 
-> [snip]
-> 
-> Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD systems")
-> Fixes: 976df7e5730e ("x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC")
 > Fixes: db865272d9c4 ("cpufreq: Avoid configuring old governors as default with intel_pstate")
-> Link: https://www.phoronix.com/scan.php?page=article&item=linux511-amd-schedutil&num=1
-> Link: https://lore.kernel.org/linux-pm/20210203135321.12253-2-ggherdovich@suse.cz/
-> Reported-by: Michael Larabel <Michael@phoronix.com>
-> Diagnosed-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  drivers/cpufreq/acpi-cpufreq.c |  107 ++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 95 insertions(+), 12 deletions(-)
+>  arch/x86/kernel/smpboot.c      |    1 +
+>  drivers/cpufreq/acpi-cpufreq.c |    8 ++++++++
+>  2 files changed, 9 insertions(+)
 > 
 > Index: linux-pm/drivers/cpufreq/acpi-cpufreq.c
 > ===================================================================
 > --- linux-pm.orig/drivers/cpufreq/acpi-cpufreq.c
 > +++ linux-pm/drivers/cpufreq/acpi-cpufreq.c
-> [...]
+> @@ -806,6 +806,14 @@ static int acpi_cpufreq_cpu_init(struct
+>  		state_count++;
+>  		valid_states++;
+>  		data->first_perf_state = valid_states;
+> +	} else {
+> +		/*
+> +		 * If the maximum "boost" frequency is unknown, ask the arch
+> +		 * scale-invariance code to use the "nominal" performance for
+> +		 * CPU utilization scaling so as to prevent the schedutil
+> +		 * governor from selecting inadequate CPU frequencies.
+> +		 */
+> +		arch_set_max_freq_ratio(true);
+>  	}
+>  
+>  	freq_table = kcalloc(state_count, sizeof(*freq_table), GFP_KERNEL);
+> Index: linux-pm/arch/x86/kernel/smpboot.c
+> ===================================================================
+> --- linux-pm.orig/arch/x86/kernel/smpboot.c
+> +++ linux-pm/arch/x86/kernel/smpboot.c
+> @@ -1833,6 +1833,7 @@ void arch_set_max_freq_ratio(bool turbo_
+>  	arch_max_freq_ratio = turbo_disabled ? SCHED_CAPACITY_SCALE :
+>  					arch_turbo_freq_ratio;
+>  }
+> +EXPORT_SYMBOL_GPL(arch_set_max_freq_ratio);
+>  
+>  static bool turbo_disabled(void)
+>  {
 
-Tested-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Reviewed-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-
-Note there is also the Tested-by: Michael, from the other thread
-https://lore.kernel.org/lkml/5ea06dbe-255c-3d22-b9bd-6e627c5f94af@phoronix.com/
-
-I tested this patch with the "NASA Parallel Benchmarks" from [link below], the
-results confirms that the 5.10 performance is recovered:
-
-
-Ratios of completion times, lower is better (5.10 is the baseline)
-
-                              5.10     5.11-rc6 5.11-rc6-ggherdov 5.11-rc6-rafael
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Integer Sort              1.00        1.21        0.91           0.93
-    Embarrassingly Parallel   1.00        1.60        1.00           1.00
-    Discrete FFT              1.00        1.68        0.67           0.67
-
-
-    CPU     : MODEL            : 2x AMD EPYC 7742
-              FREQUENCY TABLE  : P2: 1.50 GHz
-                                 P1: 2.00 GHz
-                                 P0: 2.25 GHz
-              MAX BOOST        :     3.40 GHz
-
-[link] https://www.nas.nasa.gov/publications/npb.html
 
 Thanks,
 Giovanni
