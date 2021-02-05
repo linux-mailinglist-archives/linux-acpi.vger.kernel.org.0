@@ -2,79 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 554113115F6
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 23:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AF303115F9
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 23:55:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233150AbhBEWqn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 17:46:43 -0500
-Received: from mail-oo1-f52.google.com ([209.85.161.52]:38802 "EHLO
-        mail-oo1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbhBENGb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 08:06:31 -0500
-Received: by mail-oo1-f52.google.com with SMTP id y72so1584753ooa.5;
-        Fri, 05 Feb 2021 05:06:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zebLqAyquoHLSHUIiikHXZ2kyJyvLp0C6IWdVIP3/DY=;
-        b=rVkfciYGCGvLy3tOUuFsj1ucLDAMY/ALk44YYn0knLS4ax88oJFXFLwIbvTPRY1wXo
-         MIkBSGIbU/bl04Iu20yw2WRhtzlZYik5/tktu4wjVSkhh9M+oHQo2uC2YVbVYJQEVwnN
-         vEpveuoTsK75UUtXvrQZswI2Lsl5jHShhzgaVtUttd1dVsMG5AVAArPBMaA8UzwkxQGa
-         Uo5mCI1EtVtgw904uJRwunTRApozkbiUfHszDnH2uTAdx+zH/TtpU6Bj9r9aILC/xXj7
-         fYm84yfjMr6QWqMAK5fmFmgNuTp526wI3mDePMEyt3jigxA2zaVh2e1qZJApxKOto1WP
-         DGPw==
-X-Gm-Message-State: AOAM5318mPfWt2vl4uXgVKzNAn+yeqCvzFIONGXkp5EmRKZC4qK0eUUM
-        VpZhZqa8S1KyqYzYj/FumRLTtHNqJoTowqr9wu4=
-X-Google-Smtp-Source: ABdhPJx6NeTAwt85sUv2RX3A/gu3yohSf5WM8vovVK+5JVJXvAw3mZpKQhGcOvPxeXBgAbXd2TZ2FWfqFJJZxAu1BZw=
-X-Received: by 2002:a4a:9873:: with SMTP id z48mr3360258ooi.44.1612530350081;
- Fri, 05 Feb 2021 05:05:50 -0800 (PST)
+        id S233249AbhBEWrF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 17:47:05 -0500
+Received: from mga12.intel.com ([192.55.52.136]:60933 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229959AbhBEN2w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Feb 2021 08:28:52 -0500
+IronPort-SDR: bddQPWHzeoSAMSHsOqoxWeS/RdT8900zcMB6YvYOpHqkI72WAtuVnsB1vTmApN3vPfD9qvbHRd
+ SA16q4rA4zqw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9885"; a="160589439"
+X-IronPort-AV: E=Sophos;i="5.81,154,1610438400"; 
+   d="scan'208";a="160589439"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 05:24:56 -0800
+IronPort-SDR: exWrynaxi8nwsAbdPFhPyxc/U2dfzuhauTirkVS6W2IifPhiOPeSDsPekze/NI4HnzifAq77Ov
+ 12UU4uW5QArw==
+X-IronPort-AV: E=Sophos;i="5.81,154,1610438400"; 
+   d="scan'208";a="393862627"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 05:24:53 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 822D7205D2;
+        Fri,  5 Feb 2021 15:24:51 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1l816f-0005GE-9P; Fri, 05 Feb 2021 15:25:05 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media@vger.kernel.org
+Subject: [PATCH v10 1/7] ACPI: scan: Obtain device's desired enumeration power state
+Date:   Fri,  5 Feb 2021 15:24:59 +0200
+Message-Id: <20210205132505.20173-2-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
+References: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-References: <MWHPR21MB0863BA3D689DDEC3CA6BC262BFC91@MWHPR21MB0863.namprd21.prod.outlook.com>
-In-Reply-To: <MWHPR21MB0863BA3D689DDEC3CA6BC262BFC91@MWHPR21MB0863.namprd21.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 5 Feb 2021 14:05:36 +0100
-Message-ID: <CAJZ5v0jRgeAsyZXpm-XdL6GCKWk5=yVh1s4fZ3m0++NJK-gYBg@mail.gmail.com>
-Subject: Re: How can a userspace program tell if the system supports the ACPI
- S4 state (Suspend-to-Disk)?
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Dec 12, 2020 at 2:22 AM Dexuan Cui <decui@microsoft.com> wrote:
->
-> Hi all,
-> It looks like Linux can hibernate even if the system does not support the ACPI
-> S4 state, as long as the system can shut down, so "cat /sys/power/state"
-> always contains "disk", unless we specify the kernel parameter "nohibernate"
-> or we use LOCKDOWN_HIBERNATION.
->
-> In some scenarios IMO it can still be useful if the userspace is able to detect
-> if the ACPI S4 state is supported or not, e.g. when a Linux guest runs on
-> Hyper-V, Hyper-V uses the virtual ACPI S4 state as an indicator of the proper
-> support of the tool stack on the host, i.e. the guest is discouraged from
-> trying hibernation if the state is not supported.
->
-> I know we can check the S4 state by 'dmesg':
->
-> # dmesg |grep ACPI: | grep support
-> [    3.034134] ACPI: (supports S0 S4 S5)
->
-> But this method is unreliable because the kernel msg buffer can be filled
-> and overwritten. Is there any better method? If not, do you think if the
-> below patch is appropriate? Thanks!
+Store a device's desired enumeration power state in struct
+acpi_device_power during acpi_device object's initialisation.
 
-Sorry for the delay.
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+ drivers/acpi/scan.c     | 4 ++++
+ include/acpi/acpi_bus.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-If ACPI S4 is supported, /sys/power/disk will list "platform" as one
-of the options (and it will be the default one then).  Otherwise,
-"platform" is not present in /sys/power/disk, because ACPI is the only
-user of hibernation_ops.
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 1d7a02ee45e05..cdff32f297122 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -987,6 +987,7 @@ static void acpi_bus_init_power_state(struct acpi_device *device, int state)
+ 
+ static void acpi_bus_get_power_flags(struct acpi_device *device)
+ {
++	unsigned long long dse = ACPI_STATE_D0;
+ 	u32 i;
+ 
+ 	/* Presence of _PS0|_PR0 indicates 'power manageable' */
+@@ -1008,6 +1009,9 @@ static void acpi_bus_get_power_flags(struct acpi_device *device)
+ 	if (acpi_has_method(device->handle, "_DSW"))
+ 		device->power.flags.dsw_present = 1;
+ 
++	acpi_evaluate_integer(device->handle, "_DSE", NULL, &dse);
++	device->power.state_for_enumeration = dse;
++
+ 	/*
+ 	 * Enumerate supported power management states
+ 	 */
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 02a716a0af5d4..becfc9f57002b 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -276,6 +276,7 @@ struct acpi_device_power {
+ 	int state;		/* Current state */
+ 	struct acpi_device_power_flags flags;
+ 	struct acpi_device_power_state states[ACPI_D_STATE_COUNT];	/* Power states (D0-D3Cold) */
++	u8 state_for_enumeration; /* Maximum power state for enumeration */
+ };
+ 
+ /* Performance Management */
+-- 
+2.20.1
 
-HTH
