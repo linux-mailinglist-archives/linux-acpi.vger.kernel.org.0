@@ -2,154 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E66310BE5
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 14:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A739310EA8
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 18:29:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbhBENei (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 08:34:38 -0500
-Received: from mga09.intel.com ([134.134.136.24]:26783 "EHLO mga09.intel.com"
+        id S233331AbhBEPpi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 10:45:38 -0500
+Received: from mga17.intel.com ([192.55.52.151]:44434 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229986AbhBENcR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Feb 2021 08:32:17 -0500
-IronPort-SDR: G9HSbYOHf+zjsiFuHRdL+Ci5DUgBv9+0ButCcvbE8HE3aOrG2gLQRT1BUQMSiBCGNFFXUkC8KV
- mITvep/RDx2g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9885"; a="181578728"
-X-IronPort-AV: E=Sophos;i="5.81,154,1610438400"; 
-   d="scan'208";a="181578728"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 05:25:01 -0800
-IronPort-SDR: SVoxw9OfMZrC1wXygP9As+pPtInJSF7e03U1YzeFhiToz+fW9LiChSsdA7BMCqI6HNA7EralAs
- YfvjIXRMh0qg==
-X-IronPort-AV: E=Sophos;i="5.81,154,1610438400"; 
-   d="scan'208";a="357959766"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 05:24:58 -0800
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id B1680216F2;
-        Fri,  5 Feb 2021 15:24:51 +0200 (EET)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1l816f-0005GX-G0; Fri, 05 Feb 2021 15:25:05 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-Subject: [PATCH v10 7/7] at24: Support probing while off
-Date:   Fri,  5 Feb 2021 15:25:05 +0200
-Message-Id: <20210205132505.20173-8-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
-References: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
+        id S233293AbhBEPa2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Feb 2021 10:30:28 -0500
+IronPort-SDR: CQpyMXpvhloMPV9YnhO5ZJAcZTZTCrOqrn6DfzfUdkj3rMbwABTUwFNyJtY5XnI4YTC+iSfGJI
+ GjqrMx9MyVWw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9885"; a="161207378"
+X-IronPort-AV: E=Sophos;i="5.81,155,1610438400"; 
+   d="scan'208";a="161207378"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 08:19:12 -0800
+IronPort-SDR: vI6yDYYoX55QmM8S4GOE9030RMWx8Va+4uopWh1v0W10+ipUMXOR9zWIixyR3MgA17VIG9KaiR
+ eVgeFxlfACKQ==
+X-IronPort-AV: E=Sophos;i="5.81,155,1610438400"; 
+   d="scan'208";a="393923553"
+Received: from gjcomber-mobl.amr.corp.intel.com (HELO [10.255.228.165]) ([10.255.228.165])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 08:19:11 -0800
+Subject: Re: [PATCH] soundwire: intel: fix possible crash when no device is
+ detected (was Re: Crash in acpi_ns_validate_handle triggered by soundwire on
+ Linux 5.10)
+To:     =?UTF-8?Q?Marcin_=c5=9alusarz?= <marcin.slusarz@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>, Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        "Slusarz, Marcin" <marcin.slusarz@intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Len Brown <lenb@kernel.org>
+References: <CA+GA0_sPC3rp5K4qwZm-u+W1C=+2Y2p-dbF4DMdHkKaTpeKKkg@mail.gmail.com>
+ <CA+GA0_sCdowanpZmg==c+xVqqNxG5whLGsKHaCfSmpERBhqMzA@mail.gmail.com>
+ <1dc2639a-ecbc-c554-eaf6-930256dcda96@linux.intel.com>
+ <CA+GA0_sZm2pqOfA3LsNQowb930QS_g5CiCCGthzsS=vAjB9Rjg@mail.gmail.com>
+ <CAJZ5v0h+Kwn5u293QO+H2rfGx-ZMBr18tMCLB7jHKHWWRaovOw@mail.gmail.com>
+ <CAJZ5v0h8abkdrdN97RHouzxynPBFXBoAuMSb7Zy56+-sTXkPKQ@mail.gmail.com>
+ <CA+GA0_vYdxFj_SPWgdkufo04VaOuWqcNTSck6gvnMfN07ZdO_Q@mail.gmail.com>
+ <CA+GA0_vKyJZSQZ9bA6_BSDeGfRZ_nz86gj2aVHaOoy1h57CMzA@mail.gmail.com>
+ <CA+GA0_u8NA90GmMSDO-Ejg-C2YEXCn8rnVZpk-_+eXcDm7XRpg@mail.gmail.com>
+ <CAJZ5v0hqHihRdad16Djo+R1ezjFHt2YffgDg59TYYKJSSjmA4Q@mail.gmail.com>
+ <CA+GA0_s7atD4O_DP0NXwVUVvdia2NWwSEfW2Mcw-UoJ9effPvg@mail.gmail.com>
+ <CA+GA0_sZQXACjuzYYvrJq-vF-mmjaq82SJ=kifqo4Utv45s5Yg@mail.gmail.com>
+ <CA+GA0_vSA51NbyTDtW-2A4aCCp+xXN_BtJfPFAJesRYM0eo9WQ@mail.gmail.com>
+ <CA+GA0_sOQeQsaa1JFO3+ySqdLU6BNxrJRrHjqtheEuj60ZmwhA@mail.gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <a3f01a5d-d7a5-8280-4091-b2486b01a782@linux.intel.com>
+Date:   Fri, 5 Feb 2021 10:16:15 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+GA0_sOQeQsaa1JFO3+ySqdLU6BNxrJRrHjqtheEuj60ZmwhA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In certain use cases (where the chip is part of a camera module, and the
-camera module is wired together with a camera privacy LED), powering on
-the device during probe is undesirable. Add support for the at24 to
-execute probe while being powered off. For this to happen, a hint in form
-of a device property is required from the firmware.
+Thanks Marcin for the patch, much appreciated.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
----
- drivers/misc/eeprom/at24.c | 43 +++++++++++++++++++++++---------------
- 1 file changed, 26 insertions(+), 17 deletions(-)
+> acpi_walk_namespace can return success without executing our
+> callback which initializes info->handle.
+> If the random value in this structure is a valid address (which
+> is on the stack, so it's quite possible), then nothing bad will
+> happen, because:
+> sdw_intel_scan_controller
+>   -> acpi_bus_get_device
+>   -> acpi_get_device_data
+>   -> acpi_get_data_full
+>   -> acpi_ns_validate_handle
+> will reject this handle.
+> 
+> However, if the value from the stack doesn't point to a valid
+> address, we get this:
+> 
+> BUG: kernel NULL pointer dereference, address: 0000000000000050
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 926408b41270c..69a5e4023d9e1 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -595,6 +595,7 @@ static int at24_probe(struct i2c_client *client)
- 	bool i2c_fn_i2c, i2c_fn_block;
- 	unsigned int i, num_addresses;
- 	struct at24_data *at24;
-+	bool off_during_probe;
- 	struct regmap *regmap;
- 	bool writable;
- 	u8 test_byte;
-@@ -750,14 +751,16 @@ static int at24_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, at24);
- 
--	err = regulator_enable(at24->vcc_reg);
--	if (err) {
--		dev_err(dev, "Failed to enable vcc regulator\n");
--		return err;
--	}
-+	off_during_probe = acpi_dev_state_low_power(&client->dev);
-+	if (!off_during_probe) {
-+		err = regulator_enable(at24->vcc_reg);
-+		if (err) {
-+			dev_err(dev, "Failed to enable vcc regulator\n");
-+			return err;
-+		}
- 
--	/* enable runtime pm */
--	pm_runtime_set_active(dev);
-+		pm_runtime_set_active(dev);
-+	}
- 	pm_runtime_enable(dev);
- 
- 	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
-@@ -768,14 +771,17 @@ static int at24_probe(struct i2c_client *client)
- 	}
- 
- 	/*
--	 * Perform a one-byte test read to verify that the
--	 * chip is functional.
-+	 * Perform a one-byte test read to verify that the chip is functional,
-+	 * unless powering on the device is to be avoided during probe (i.e.
-+	 * it's powered off right now).
- 	 */
--	err = at24_read(at24, 0, &test_byte, 1);
--	if (err) {
--		pm_runtime_disable(dev);
--		regulator_disable(at24->vcc_reg);
--		return -ENODEV;
-+	if (!off_during_probe) {
-+		err = at24_read(at24, 0, &test_byte, 1);
-+		if (err) {
-+			pm_runtime_disable(dev);
-+			regulator_disable(at24->vcc_reg);
-+			return -ENODEV;
-+		}
- 	}
- 
- 	pm_runtime_idle(dev);
-@@ -795,9 +801,11 @@ static int at24_remove(struct i2c_client *client)
- 	struct at24_data *at24 = i2c_get_clientdata(client);
- 
- 	pm_runtime_disable(&client->dev);
--	if (!pm_runtime_status_suspended(&client->dev))
--		regulator_disable(at24->vcc_reg);
--	pm_runtime_set_suspended(&client->dev);
-+	if (!acpi_dev_state_low_power(&client->dev)) {
-+		if (!pm_runtime_status_suspended(&client->dev))
-+			regulator_disable(at24->vcc_reg);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
- 
- 	return 0;
- }
-@@ -834,6 +842,7 @@ static struct i2c_driver at24_driver = {
- 	.probe_new = at24_probe,
- 	.remove = at24_remove,
- 	.id_table = at24_ids,
-+	.flags = I2C_DRV_FL_ALLOW_LOW_POWER_PROBE,
- };
- 
- static int __init at24_init(void)
--- 
-2.20.1
+[...]
 
+> diff --git a/drivers/soundwire/intel_init.c b/drivers/soundwire/intel_init.c
+> index cabdadb09a1b..bc8520eb385e 100644
+> --- a/drivers/soundwire/intel_init.c
+> +++ b/drivers/soundwire/intel_init.c
+> @@ -405,11 +405,12 @@ int sdw_intel_acpi_scan(acpi_handle *parent_handle,
+>   {
+>       acpi_status status;
+> 
+> +    info->handle = NULL;
+>       status = acpi_walk_namespace(ACPI_TYPE_DEVICE,
+>                        parent_handle, 1,
+>                        sdw_intel_acpi_cb,
+>                        NULL, info, NULL);
+> -    if (ACPI_FAILURE(status))
+> +    if (ACPI_FAILURE(status) || info->handle == NULL)
+>           return -ENODEV;
+> 
+>       return sdw_intel_scan_controller(info);
+
+It does seem like a required code pattern if I look at I2C and SPI. I 
+had no idea. Maybe worth documenting?
+
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
