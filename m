@@ -2,95 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB94310B0D
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 13:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A11310B78
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Feb 2021 14:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231612AbhBEM0c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 07:26:32 -0500
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:39121 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231423AbhBEMYD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 07:24:03 -0500
-Received: by mail-ot1-f44.google.com with SMTP id d7so4421176otq.6;
-        Fri, 05 Feb 2021 04:23:48 -0800 (PST)
+        id S232437AbhBEM7Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 07:59:16 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:46496 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232203AbhBEM4a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 07:56:30 -0500
+Received: by mail-ot1-f54.google.com with SMTP id d1so6728803otl.13;
+        Fri, 05 Feb 2021 04:56:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1zbYJU7/7wruMhCCGProhaCLIU7PuY0G0RxvpsB363c=;
-        b=cP15nKYKNG9EXDemnLPQak7q4EJUuGr84OCuaNlTVQQzqJ0buBEx8+UXmrLCgY9gGh
-         ETMfyQlJKtz8eokPP2Iw5KnjptUr+qvTI9m/C6DnDeMnVzZG+RQpFhVnA1TRq7HidRr1
-         JkAVPRALRy655bZlNKT58u5u4IYiuc7UalRVVcdJNqv1xQfWG00t7k0/07Dvnbl7R19z
-         0wVZIAX3ZYip9zoVTFbONDfFuv1sq35VkKFGAH1d4lnG52bzAsIlw6vOYFfB1H1mhxhz
-         T0G2Ufnlu0hKuSpow5BqHcTCdr8aYf7DPu/IxbAPCdhWrEx8tabGnuegGIbzfWy4fpKt
-         NDmg==
-X-Gm-Message-State: AOAM531FxdE7X0xbfvadi55h+fGA7SnhIAkKLUltHMtzYKxFFrBXoYVM
-        ytuZPs6iHmqz+ufUly5rdvwAsuHsM0vgofhHp4s=
-X-Google-Smtp-Source: ABdhPJw4F8pFpU+jx5TAWNsID8WdOi1o6JhMIb8S5CjAvdnRX8CSDeoL3wu2eU1ot2znQdryTEIcUrewtJT361/YrvU=
-X-Received: by 2002:a9d:7a4a:: with SMTP id z10mr3300736otm.206.1612527802672;
- Fri, 05 Feb 2021 04:23:22 -0800 (PST)
+        bh=b6P/9Ii6q0eh8+US0PsAM8pD22tXSNYwoelUIBahN5k=;
+        b=Ares69F1UY3/F3JlWlrkhAsr4j+l7S37taYvsQPW43eq3o6y6cUDOgkwSA1Uz/GiTl
+         CAqrRyHqh0Eaf2/qONC0GFNE/wQ3xvlWClHHaCp2BNJsz0/Ra5jrSDaMM7flLv3IVtjh
+         vQC9NnKEmHxPAx0fFIEz0imnEDX4ISyO3xrDRj+tvL+dzmHM/reeWC2lQszcWjEUrNWu
+         dhkUidgWEiFYU+6k9pUyvxjPhqoCL/3daDiUWb8bf9mix0v/8iOLAeCeC7QHKcNNoMNk
+         Zj1EtvWB551/8dLoNmDAUXRHbaCUdLhGtAs9pkc4+7z2Xm7rWf0yrkzBNiWgRA9VN4wh
+         21+g==
+X-Gm-Message-State: AOAM530IkY96KU4vcQ8rNaANxQ67brqH7NPLcBnz2ir70Da+Ur1e+uXd
+        ljciNZmGx2uktSULkEpjiAy2sRMNlHSve6jCBbU=
+X-Google-Smtp-Source: ABdhPJxIA8R1yJapdbJUdG3/EKMUPegxp/+2S2dHN4TFHZjg+cDqGqF+bKHmPnIGQ3ZUYjmWwrM2nM8zIG+L2bky7qA=
+X-Received: by 2002:a9d:a2d:: with SMTP id 42mr1806386otg.321.1612529747597;
+ Fri, 05 Feb 2021 04:55:47 -0800 (PST)
 MIME-Version: 1.0
-References: <13690581.X0sz4iL7V8@kreacher> <9510730.kuOQ4KzHjt@kreacher> <YB0yYQl6T2fIQ+hw@hirez.programming.kicks-ass.net>
-In-Reply-To: <YB0yYQl6T2fIQ+hw@hirez.programming.kicks-ass.net>
+References: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com> <94a38a33-a949-3cce-d617-e1476912596e@huawei.com>
+In-Reply-To: <94a38a33-a949-3cce-d617-e1476912596e@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 5 Feb 2021 13:23:08 +0100
-Message-ID: <CAJZ5v0iY17AYbgfPoxKn27MiRZ_KR2iMZZVk6UNV38geec84sQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] cpufreq: ACPI: Update arch scale-invariance max
- perf ratio if CPPC is not there
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Michael Larabel <Michael@phoronix.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>
+Date:   Fri, 5 Feb 2021 13:55:33 +0100
+Message-ID: <CAJZ5v0hp49Jt6ZWMNUkEOmMST5eM60b8Nzz0wT4w1--zj-KPWw@mail.gmail.com>
+Subject: Re: [PATCH v5] ACPI / APEI: fix the regression of synchronous
+ external aborts occur in user-mode
+To:     tanxiaofei <tanxiaofei@huawei.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Tony Luck <tony.luck@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 5, 2021 at 12:59 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Tue, Jan 26, 2021 at 2:32 PM tanxiaofei <tanxiaofei@huawei.com> wrote:
 >
-> On Thu, Feb 04, 2021 at 06:34:32PM +0100, Rafael J. Wysocki wrote:
->
-> >  arch/x86/kernel/smpboot.c      |    1 +
-> >  drivers/cpufreq/acpi-cpufreq.c |    8 ++++++++
-> >  2 files changed, 9 insertions(+)
+> @James
+> Hi James, please help to review this patch. Thank you very much. :)
+
+James, Boris, any comments?
+
+> On 2020/12/10 20:09, Xiaofei Tan wrote:
+> > After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
+> > synchronise with APEI's irq work") applied, do_sea() return directly
+> > for user-mode if apei_claim_sea() handled any error record. Therefore,
+> > each error record reported by the user-mode SEA must be effectively
+> > processed in APEI GHES driver.
 > >
-> > Index: linux-pm/drivers/cpufreq/acpi-cpufreq.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/cpufreq/acpi-cpufreq.c
-> > +++ linux-pm/drivers/cpufreq/acpi-cpufreq.c
-> > @@ -806,6 +806,14 @@ static int acpi_cpufreq_cpu_init(struct
-> >               state_count++;
-> >               valid_states++;
-> >               data->first_perf_state = valid_states;
-> > +     } else {
-> > +             /*
-> > +              * If the maximum "boost" frequency is unknown, ask the arch
-> > +              * scale-invariance code to use the "nominal" performance for
-> > +              * CPU utilization scaling so as to prevent the schedutil
-> > +              * governor from selecting inadequate CPU frequencies.
-> > +              */
-> > +             arch_set_max_freq_ratio(true);
+> > Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
+> > Error Section, as it has nothing to do with SEA). It is not enough.
+> > Because ARM Processor Error could also be used for SEA in some hardware
+> > platforms, such as Kunpeng9xx series. We can't ask them to switch to
+> > use Memory Error Section for two reasons:
+> > 1)The server was delivered to customers, and it will introduce
+> > compatibility issue.
+> > 2)It make sense to use ARM Processor Error Section. Because either
+> > cache or memory errors could generate SEA when consumed by a processor.
+> >
+> > Do memory failure handling for ARM Processor Error Section just like
+> > for Memory Error Section.
+> >
+> > Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> > ---
+> > Changes since v4:
+> > - 1. Change the patch name from " ACPI / APEI: do memory failure on the
+> > physical address reported by ARM processor error section" to this
+> > more proper one.
+> > - 2. Add a comment in the code to tell why not filter out corrected
+> > error in an uncorrected section.
+> >
+> > Changes since v3:
+> > - Print unhandled error following James Morse's advice.
+> >
+> > Changes since v2:
+> > - Updated commit log
+> > ---
+> >  drivers/acpi/apei/ghes.c | 76 +++++++++++++++++++++++++++++++++++++-----------
+> >  1 file changed, 59 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > index fce7ade..0893968 100644
+> > --- a/drivers/acpi/apei/ghes.c
+> > +++ b/drivers/acpi/apei/ghes.c
+> > @@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
+> >       gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+> >  }
+> >
+> > -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> > -                                    int sev)
+> > +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+> >  {
+> >       unsigned long pfn;
+> > -     int flags = -1;
+> > -     int sec_sev = ghes_severity(gdata->error_severity);
+> > -     struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+> >
+> >       if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+> >               return false;
+> >
+> > -     if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+> > -             return false;
+> > -
+> > -     pfn = mem_err->physical_addr >> PAGE_SHIFT;
+> > +     pfn = PHYS_PFN(physical_addr);
+> >       if (!pfn_valid(pfn)) {
+> >               pr_warn_ratelimited(FW_WARN GHES_PFX
+> >               "Invalid address in generic error data: %#llx\n",
+> > -             mem_err->physical_addr);
+> > +             physical_addr);
+> >               return false;
 > >       }
 > >
-> >       freq_table = kcalloc(state_count, sizeof(*freq_table), GFP_KERNEL);
-> > Index: linux-pm/arch/x86/kernel/smpboot.c
-> > ===================================================================
-> > --- linux-pm.orig/arch/x86/kernel/smpboot.c
-> > +++ linux-pm/arch/x86/kernel/smpboot.c
-> > @@ -1833,6 +1833,7 @@ void arch_set_max_freq_ratio(bool turbo_
-> >       arch_max_freq_ratio = turbo_disabled ? SCHED_CAPACITY_SCALE :
-> >                                       arch_turbo_freq_ratio;
+> > +     memory_failure_queue(pfn, flags);
+> > +     return true;
+> > +}
+> > +
+> > +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> > +                                    int sev)
+> > +{
+> > +     int flags = -1;
+> > +     int sec_sev = ghes_severity(gdata->error_severity);
+> > +     struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+> > +
+> > +     if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+> > +             return false;
+> > +
+> >       /* iff following two events can be handled properly by now */
+> >       if (sec_sev == GHES_SEV_CORRECTED &&
+> >           (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+> > @@ -470,14 +477,51 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> >       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+> >               flags = 0;
+> >
+> > -     if (flags != -1) {
+> > -             memory_failure_queue(pfn, flags);
+> > -             return true;
+> > -     }
+> > +     if (flags != -1)
+> > +             return ghes_do_memory_failure(mem_err->physical_addr, flags);
+> >
+> >       return false;
 > >  }
-> > +EXPORT_SYMBOL_GPL(arch_set_max_freq_ratio);
+> >
+> > +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
+> > +{
+> > +     struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+> > +     struct cper_arm_err_info *err_info;
+> > +     bool queued = false;
+> > +     int sec_sev, i;
+> > +
+> > +     log_arm_hw_error(err);
+> > +
+> > +     sec_sev = ghes_severity(gdata->error_severity);
+> > +     if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
+> > +             return false;
+> > +
+> > +     err_info = (struct cper_arm_err_info *) (err + 1);
+> > +     for (i = 0; i < err->err_info_num; i++, err_info++) {
+> > +             bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
+> > +             bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+> > +
+> > +             /*
+> > +              * The field (err_info->error_info & BIT(26)) is fixed to set to
+> > +              * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
+> > +              * firmware won't mix corrected errors in an uncorrected section,
+> > +              * and don't filter out 'corrected' error here.
+> > +              */
+> > +             if (!is_cache || !has_pa) {
+> > +                     pr_warn_ratelimited(FW_WARN GHES_PFX
+> > +                     "Unhandled processor error type %s\n",
+> > +                     err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
+> > +                     cper_proc_error_type_strs[err_info->type] : "unknown error");
+> > +                     continue;
+> > +             }
+> > +
+> > +             if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
+> > +                     queued = true;
+> > +     }
+> > +
+> > +     return queued;
+> > +}
+> > +
+> >  /*
+> >   * PCIe AER errors need to be sent to the AER driver for reporting and
+> >   * recovery. The GHES severities map to the following AER severities and
+> > @@ -605,9 +649,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+> >                       ghes_handle_aer(gdata);
+> >               }
+> >               else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+> > -                     struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+> > -
+> > -                     log_arm_hw_error(err);
+> > +                     queued = ghes_handle_arm_hw_error(gdata, sev);
+> >               } else {
+> >                       void *err = acpi_hest_get_payload(gdata);
+> >
+> >
 >
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
-Thanks, I'm queuing up this lot for a post-rc7 late push.
