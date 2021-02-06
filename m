@@ -2,57 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D673119D1
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 04:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1951C311979
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 04:08:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbhBFDUl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 22:20:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41488 "EHLO
+        id S231253AbhBFDHd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 22:07:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231596AbhBFCuo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 21:50:44 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C19FC03C04F
-        for <linux-acpi@vger.kernel.org>; Fri,  5 Feb 2021 14:26:57 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id 134so8728569ybd.3
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Feb 2021 14:26:57 -0800 (PST)
+        with ESMTP id S231285AbhBFC6o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 21:58:44 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D118C061A86
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Feb 2021 18:45:58 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id r2so8669197ybk.11
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Feb 2021 18:45:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to:cc;
-        bh=b4KyYLVrTLECRx+jmWSgUnKVrTsTSqPSowT6HXuVPvs=;
-        b=OHW6wSTP29Ue99rfiI7cWlnG+iIdDrF/RFLn7uoMGaydP+0SO7iq4Wq4d3/eqO21ya
-         KLmXP2JX5TSvNzDYoK5EV6DL9JdJSYMFn/F1Hp7y6d44BhceOCszy5fv7mkcI/x3YxAh
-         xifCY/lhRuqpYU9xhi89Nys/lnLzdiyzix5IWrtJ/UWGBQrClmZRfFVt91VbD8X7eoQI
-         2Png0NqhsXQZ7vz6M4N1fZn/vcqGhrLWGbEWE5mv2GRT3g9PI82H9hTXw4D2uizG5j9B
-         ZxcCTRk1HSgG6v0SC8Wo+iqzvg2U5sjEO1EbK7JZfh6t3yDpITS6bKeEhMEzd8jVwfLv
-         0Egg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oeZT1Ar4/x7iejk6TCKZJw9nmldyPb7Q9CQuMN8dXaw=;
+        b=AFhS6ATY/Y9NYutPrE19KVJ8QEJaF2PGTuOgrz9Gy3OYD8T3nfEM6tCPc4DQDe+cmT
+         gGbLVifQsQtzUiF3X4dGA4SNwVI3LH7qwxl1vZhz3YR9Cp0qiGY/3jeh+rr5qm3r6IY7
+         7hxHxK00mdEOHcIzgnBPiTqPV6L0vljvrfDvcDix7+8XPR81Lvup9F+WfsCimBB6dz24
+         J+btxbs8E6J54C44KCAuZnUKGV86hdX+MuPzB7x2eyZrfnvisXKRD/0QNEtfhqDIpVGA
+         Umt5XZHpqcC8bLOtBUQYJkjuYUyDhcO+rJXg9bilCjQKjRIdxzmsD4JoNfGKr5VvY1w/
+         v/NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=b4KyYLVrTLECRx+jmWSgUnKVrTsTSqPSowT6HXuVPvs=;
-        b=f3NbrrDsnPIrW40GHfusojFmkQnmYx7yKcZ1LwR5cM2d/bjERinY25O6fPciHEd6Ky
-         HlUbg+wydXxcR8FbyfS9T5PeyuBv590awb+LTMfg261wHc/vK8USW2pDCZIHvfuJQW0V
-         KuJikq8C1fQsijTUMCaBH9nDADUDfT2I8fRgZSFKCFsaTUlI2gI6yClxT5hazgO5sY7t
-         V0Y0wiRV3GbwVb+61gpaPF2Ncme8g5bGjsSskkndtly2fMqOUId9gDNlqi8PfDKpjFs2
-         ubP9Vc5TbonbjV7WkAEn7MgWKxTPx8RYK/XaXDO1FC9Vix+6RimxR5D6NV3Qo4T+f0YG
-         C66A==
-X-Gm-Message-State: AOAM533Dp5NoI2Pqxn6iI9beQuA8gcze+ImXvBLdjnJm2r4kqMg5fRoz
-        LMKo7liYOHhcXRPsDIUMVkKcWXZEZTBxcU0=
-X-Google-Smtp-Source: ABdhPJw60eK9Ayb2Dfnm6izl3OAD/ZSexeT7MabEdfxzu+ks3+x2ogPf1BgHRmP6XVGyEvP6jtupQy7fiaM7V/g=
-Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:6d36:b798:55d7:f5c5])
- (user=saravanak job=sendgmr) by 2002:a25:1188:: with SMTP id
- 130mr9154088ybr.138.1612564016624; Fri, 05 Feb 2021 14:26:56 -0800 (PST)
-Date:   Fri,  5 Feb 2021 14:26:39 -0800
-In-Reply-To: <20210205222644.2357303-1-saravanak@google.com>
-Message-Id: <20210205222644.2357303-4-saravanak@google.com>
-Mime-Version: 1.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oeZT1Ar4/x7iejk6TCKZJw9nmldyPb7Q9CQuMN8dXaw=;
+        b=ts8xiFHockSSGWG7nCF+8NhfhfSAE4X3FTZ8Rzlg8cbtdJoI1mSM5y9BlX2twspd2b
+         wiJDMT6wVlfGaDlAos54kjifFDwPfcelbg6ugwwYkyat6VYaVB3gb8/nugsMZQlPmHge
+         MJKUKeuUp4FIEPTMinOIVUh4+VGcPx1s0rlwFpJ8lvxuBuFDeYgHaIgdGCyOWmeFIsJz
+         Z1PPhc9BG7tor+OGMzEpPeUpNjFTwI3DsXU3QhzFHULqXSAwpkZtTYIm1Ms2WB2quQE5
+         BQDuHe6o2aVjBefaE1N0+wa1a19I3+8T5OTNJY2jnoNeRwyzjLy8cZul+SKtaUIF+gU5
+         mWOw==
+X-Gm-Message-State: AOAM533gkPZz9qsCdtTBcS+u13sn4ec/ULKnTqYQfK5tU9WwilXwtfIk
+        q97ySJkxfNZglRdrvAHq9N/d7KFyjPpjxZ6HjjwrvA==
+X-Google-Smtp-Source: ABdhPJy11Z5i7gStQAF/aV2cWsIZWC4t0l/3YBj3YIJdn7KvpZm4nPNRQyA7a/+WGcaogoso5SndN/JmnOvk57r9ybc=
+X-Received: by 2002:a25:af0b:: with SMTP id a11mr4263580ybh.228.1612579557241;
+ Fri, 05 Feb 2021 18:45:57 -0800 (PST)
+MIME-Version: 1.0
 References: <20210205222644.2357303-1-saravanak@google.com>
-X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
-Subject: [PATCH v4 3/8] driver core: Add fw_devlink.strict kernel param
+In-Reply-To: <20210205222644.2357303-1-saravanak@google.com>
 From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 5 Feb 2021 18:45:21 -0800
+Message-ID: <CAGETcx_f7BEbkOFtw_6_4fMcgGOWkujbqXhDbDcNstOxgvcPfA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
 To:     Jonathan Corbet <corbet@lwn.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -66,87 +63,83 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         Frank Rowand <frowand.list@gmail.com>,
         Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Cc:     Saravana Kannan <saravanak@google.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        kernel-team@android.com
+        Android Kernel Team <kernel-team@android.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This param allows forcing all dependencies to be treated as mandatory.
-This will be useful for boards in which all optional dependencies like
-IOMMUs and DMAs need to be treated as mandatory dependencies.
+On Fri, Feb 5, 2021 at 2:26 PM Saravana Kannan <saravanak@google.com> wrote:
+>
+> There are a lot of devices/drivers where they never have a struct device
+> created for them or the driver initializes the hardware without ever
+> binding to the struct device.
+>
+> This series is intended to avoid any boot regressions due to such
+> devices/drivers when fw_devlink=on and also address the handling of
+> optional suppliers.
+>
+> Patch 1 and 2 addresses the issue of firmware nodes that look like
+> they'll have struct devices created for them, but will never actually
+> have struct devices added for them. For example, DT nodes with a
+> compatible property that don't have devices added for them.
+>
+> Patch 3 and 4 allow for handling optional DT bindings.
+>
+> Patch 5 sets up a generic API to handle drivers that never bind with
+> their devices.
+>
+> Patch 6 through 8 update different frameworks to use the new API.
+>
+> Thanks,
+> Saravana
+>
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- Documentation/admin-guide/kernel-parameters.txt |  5 +++++
- drivers/base/core.c                             | 12 ++++++++++++
- include/linux/fwnode.h                          |  1 +
- 3 files changed, 18 insertions(+)
+Forgot to add version history:
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a10b545c2070..692b63644133 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1433,6 +1433,11 @@
- 				to enforce probe and suspend/resume ordering.
- 			rpm --	Like "on", but also use to order runtime PM.
- 
-+	fw_devlink.strict=<bool>
-+			[KNL] Treat all inferred dependencies as mandatory
-+			dependencies. This only applies for fw_devlink=on|rpm.
-+			Format: <bool>
-+
- 	gamecon.map[2|3]=
- 			[HW,JOY] Multisystem joystick and NES/SNES/PSX pad
- 			support via parallel port (up to 5 devices per port)
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index c95b1daabac7..f466ab4f1c35 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1521,6 +1521,13 @@ static int __init fw_devlink_setup(char *arg)
- }
- early_param("fw_devlink", fw_devlink_setup);
- 
-+static bool fw_devlink_strict;
-+static int __init fw_devlink_strict_setup(char *arg)
-+{
-+	return strtobool(arg, &fw_devlink_strict);
-+}
-+early_param("fw_devlink.strict", fw_devlink_strict_setup);
-+
- u32 fw_devlink_get_flags(void)
- {
- 	return fw_devlink_flags;
-@@ -1531,6 +1538,11 @@ static bool fw_devlink_is_permissive(void)
- 	return fw_devlink_flags == FW_DEVLINK_FLAGS_PERMISSIVE;
- }
- 
-+bool fw_devlink_is_strict(void)
-+{
-+	return fw_devlink_strict && !fw_devlink_is_permissive();
-+}
-+
- static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
- {
- 	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 21082f11473f..d5caefe39d93 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -162,6 +162,7 @@ static inline void fwnode_init(struct fwnode_handle *fwnode,
- }
- 
- extern u32 fw_devlink_get_flags(void);
-+extern bool fw_devlink_is_strict(void);
- int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
- void fwnode_links_purge(struct fwnode_handle *fwnode);
- 
--- 
-2.30.0.478.g8a0d178c01-goog
+v1 -> v2:
+Patch 1: Added a flag to fwnodes that aren't devices.
+Patch 3: New patch to ise the flag set in patch 1 to not create bad links.
 
+v2 -> v3:
+- Patch 1: Added Rafael's Ack
+- New patches 3 and 4
+
+v3 -> v4:
+- No changes to patches 1-4.
+- New patches 5-8.
+
+-Saravana
+
+> Saravana Kannan (8):
+>   driver core: fw_devlink: Detect supplier devices that will never be
+>     added
+>   of: property: Don't add links to absent suppliers
+>   driver core: Add fw_devlink.strict kernel param
+>   of: property: Add fw_devlink support for optional properties
+>   driver core: fw_devlink: Handle suppliers that don't use driver core
+>   irqdomain: Mark fwnodes when their irqdomain is added/removed
+>   PM: domains: Mark fwnodes when their powerdomain is added/removed
+>   clk: Mark fwnodes when their clock provider is added/removed
+>
+>  .../admin-guide/kernel-parameters.txt         |  5 ++
+>  drivers/base/core.c                           | 58 ++++++++++++++++++-
+>  drivers/base/power/domain.c                   |  2 +
+>  drivers/clk/clk.c                             |  3 +
+>  drivers/of/property.c                         | 16 +++--
+>  include/linux/fwnode.h                        | 20 ++++++-
+>  kernel/irq/irqdomain.c                        |  2 +
+>  7 files changed, 98 insertions(+), 8 deletions(-)
+>
+> --
+> 2.30.0.478.g8a0d178c01-goog
+>
