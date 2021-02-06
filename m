@@ -2,114 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A943118F9
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 03:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9FF3118A3
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 03:44:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhBFCwJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 21:52:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        id S231487AbhBFCnC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 21:43:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbhBFCsj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 21:48:39 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CFD6C08EB30
-        for <linux-acpi@vger.kernel.org>; Fri,  5 Feb 2021 14:27:10 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id k7so8700952ybm.13
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Feb 2021 14:27:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to:cc;
-        bh=0bK1cCqgN588qufpQS/jjMkFLqvM+XaA6lencJh5Esw=;
-        b=pd0J5a0Gj6OJSYp7XH9+FNQHPBJdLZKzDSYwPK5u1ibnaAHv+7CWag8ijunOE9TunY
-         rfH4kJBJkTaXTV9oJb29EtaGVzAhamAsrUpD9WxBP9zdpVN+VSy75zOwQ8X3ZfAdhLMe
-         mDKrHkXJdOvKIScsXP0LwxtmU+0Z8CAngf3uWgzTxFHgVYCjuL8rAz4Vsox/6LUAxzW5
-         MRcdF+4usBPhWiIaGf4NAtDC1+btGYzFBfT9G0+ShzhkBywErl48rl5a4pOA+2aiWGVY
-         8M7h6tRlVXuW8kVZ+qFMkd2OawDjkeFzk26X1oEdg4TO44R/lohfBKQybn9mqBUar5JT
-         uqIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=0bK1cCqgN588qufpQS/jjMkFLqvM+XaA6lencJh5Esw=;
-        b=hnEmqVb0r8mJtRcgFFE86WgGZmg8OeNQVvNJEe6JfWg3rdbFd3m2JKWkXe16Z7Hih6
-         M9SGqQKvnT/OwpEktYAmQzcC7/E1OMNTtHUFa5lSUnQcfRDShhlF/y5p6QqQdcszS76J
-         6Tt9UdwQS0IGp/bOUStSCdbtrsPfvz6LiQD49oyxvU1fxTcTCPFF60SZSstPyLqbyAm6
-         A9fxoddteSKIGtXgFbSSQQzTridZgFziHyq44xIjKP3CKicygapMjWXG41SxGXUJ1Iah
-         ttyP+ixvb/MAqL32BarGfYfmhC9mFq1H/p5CN1mqHe5OKpI9h1vD/z7PLAbvlhIy1X0o
-         A6ug==
-X-Gm-Message-State: AOAM531yc5On0x4LRoi3Qp5Oc89EEuU37fBL4EzyV3eckxNHvoL0zoY0
-        aCpfdUT787hGNfDtOeMt+H4qrZ+7bz++ff0=
-X-Google-Smtp-Source: ABdhPJw99YDc8d0ycmQvA2pScnXjqnl/G4/xLF7whBdxq6B/zNO/ve0DpZDnU/PkkiSIcO/DWD8tNvRuJW0clJs=
-Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:6d36:b798:55d7:f5c5])
- (user=saravanak job=sendgmr) by 2002:a25:743:: with SMTP id
- 64mr8649867ybh.333.1612564029679; Fri, 05 Feb 2021 14:27:09 -0800 (PST)
-Date:   Fri,  5 Feb 2021 14:26:44 -0800
-In-Reply-To: <20210205222644.2357303-1-saravanak@google.com>
-Message-Id: <20210205222644.2357303-9-saravanak@google.com>
-Mime-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
-X-Mailer: git-send-email 2.30.0.478.g8a0d178c01-goog
-Subject: [PATCH v4 8/8] clk: Mark fwnodes when their clock provider is added/removed
-From:   Saravana Kannan <saravanak@google.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S230110AbhBFCil (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 21:38:41 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF03C03326A;
+        Fri,  5 Feb 2021 16:56:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=+ki+EFl/WrIsWbKRBevt5fPDWwKi1CJ9stHU3UVX1R8=; b=taOVumLO2GIni4YawGywwRtBYO
+        NchH7GPRkUu+oioh4zUnzQLz1qVqJkZ75Je3+xCAVPCj+DnJhio9GLXFGSgoQTTljwUxXYfqNBsLh
+        a0kad225Oieqhttojck6wzgP1Ihj7Ak+qRClGfXpMtH3texyGrv2TQViid/k13Rt4el2RXnMvUZhI
+        BJjMj/NRFASA8kJwcjyI+8Lj+OxoIqNs1v8poCvg8zhvTwNAAIFH+6SPzc708xECXUoACfwKqsZpX
+        dVOn3x1COqfbLDQqd8CLY+0xZVHptYXorlADw8Ml/Pl2P/sGGCvY+I49gjjrZreQGOZeLHbVcYXXE
+        lrJBG1WA==;
+Received: from [2601:1c0:6280:3f0::aec2]
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1l8Bu9-0005FZ-A1; Sat, 06 Feb 2021 00:56:53 +0000
+Subject: Re: [PATCH v10 3/7] Documentation: ACPI: Document _DSE object usage
+ for enum power state
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Saravana Kannan <saravanak@google.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media@vger.kernel.org
+References: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
+ <20210205132505.20173-4-sakari.ailus@linux.intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <4894ef52-71f5-c651-c45b-4788f0e24162@infradead.org>
+Date:   Fri, 5 Feb 2021 16:56:47 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <20210205132505.20173-4-sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This allows fw_devlink to recognize clock provider drivers that don't
-use the device-driver model to initialize the device. fw_devlink will
-use this information to make sure consumers of such clock providers
-aren't indefinitely blocked from probing, waiting for the power domain
-device to appear and bind to a driver.
+On 2/5/21 5:25 AM, Sakari Ailus wrote:
+> Document the use of the _DSE object for setting desirable power state
+> during probe.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+> ---
+>  Documentation/firmware-guide/acpi/index.rst   |  1 +
+>  .../firmware-guide/acpi/low-power-probe.rst   | 69 +++++++++++++++++++
+>  2 files changed, 70 insertions(+)
+>  create mode 100644 Documentation/firmware-guide/acpi/low-power-probe.rst
+> 
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/clk/clk.c | 3 +++
- 1 file changed, 3 insertions(+)
+> diff --git a/Documentation/firmware-guide/acpi/low-power-probe.rst b/Documentation/firmware-guide/acpi/low-power-probe.rst
+> new file mode 100644
+> index 0000000000000..b96804d959a6c
+> --- /dev/null
+> +++ b/Documentation/firmware-guide/acpi/low-power-probe.rst
+> @@ -0,0 +1,69 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +======================================
+> +Probing I²C devices in low power state
+> +======================================
+> +
+> +Introduction
+> +============
+> +
+> +In some cases it may be preferred to leave certain devices powered off for the
+> +entire system bootup if powering on these devices has adverse side effects,
+> +beyond just powering on the said device.
+> +
+> +How it works
+> +============
+>
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 8c1d04db990d..27ff90eacb1f 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4555,6 +4555,8 @@ int of_clk_add_provider(struct device_node *np,
- 	if (ret < 0)
- 		of_clk_del_provider(np);
- 
-+	fwnode_dev_initialized(&np->fwnode, true);
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(of_clk_add_provider);
-@@ -4672,6 +4674,7 @@ void of_clk_del_provider(struct device_node *np)
- 	list_for_each_entry(cp, &of_clk_providers, link) {
- 		if (cp->node == np) {
- 			list_del(&cp->link);
-+			fwnode_dev_initialized(&np->fwnode, false);
- 			of_node_put(cp->node);
- 			kfree(cp);
- 			break;
+Hi,
+
+Please don't use ============ underlines for all section levels.
+Here is what Documentation/doc-guide/sphinx.rst says:
+
+Specific guidelines for the kernel documentation
+------------------------------------------------
+
+Here are some specific guidelines for the kernel documentation:
+
+* Please don't go overboard with reStructuredText markup. Keep it
+  simple. For the most part the documentation should be plain text with
+  just enough consistency in formatting that it can be converted to
+  other formats.
+
+* Please keep the formatting changes minimal when converting existing
+  documentation to reStructuredText.
+
+* Also update the content, not just the formatting, when converting
+  documentation.
+
+* Please stick to this order of heading adornments:
+
+  1. ``=`` with overline for document title::
+
+       ==============
+       Document title
+       ==============
+
+  2. ``=`` for chapters::
+
+       Chapters
+       ========
+
+  3. ``-`` for sections::
+
+       Section
+       -------
+
+  4. ``~`` for subsections::
+
+       Subsection
+       ~~~~~~~~~~
+
+  Although RST doesn't mandate a specific order ("Rather than imposing a fixed
+  number and order of section title adornment styles, the order enforced will be
+  the order as encountered."), having the higher levels the same overall makes
+  it easier to follow the documents.
+
+
+
+thanks.
 -- 
-2.30.0.478.g8a0d178c01-goog
+~Randy
 
