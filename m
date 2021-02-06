@@ -2,144 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1951C311979
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 04:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EF3E3119DD
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Feb 2021 04:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbhBFDHd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Feb 2021 22:07:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42814 "EHLO
+        id S229742AbhBFDWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Feb 2021 22:22:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbhBFC6o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 21:58:44 -0500
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D118C061A86
-        for <linux-acpi@vger.kernel.org>; Fri,  5 Feb 2021 18:45:58 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id r2so8669197ybk.11
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Feb 2021 18:45:58 -0800 (PST)
+        with ESMTP id S229736AbhBFDMf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Feb 2021 22:12:35 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BE4C0613D6
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Feb 2021 19:11:53 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id o21so4472441pgn.12
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Feb 2021 19:11:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oeZT1Ar4/x7iejk6TCKZJw9nmldyPb7Q9CQuMN8dXaw=;
-        b=AFhS6ATY/Y9NYutPrE19KVJ8QEJaF2PGTuOgrz9Gy3OYD8T3nfEM6tCPc4DQDe+cmT
-         gGbLVifQsQtzUiF3X4dGA4SNwVI3LH7qwxl1vZhz3YR9Cp0qiGY/3jeh+rr5qm3r6IY7
-         7hxHxK00mdEOHcIzgnBPiTqPV6L0vljvrfDvcDix7+8XPR81Lvup9F+WfsCimBB6dz24
-         J+btxbs8E6J54C44KCAuZnUKGV86hdX+MuPzB7x2eyZrfnvisXKRD/0QNEtfhqDIpVGA
-         Umt5XZHpqcC8bLOtBUQYJkjuYUyDhcO+rJXg9bilCjQKjRIdxzmsD4JoNfGKr5VvY1w/
-         v/NQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=03Irav0Kn7d3PmwdWltq8yhVeaa7+Yo6U0jt6YgZEOM=;
+        b=DFmxgNlGvwe3ViCthiyT2nkSLaQNiDYG62IdcIyg60j76khiIWkG7ZL85g/T/7FKrU
+         OgrzGWOdftRv8IHcr0+PsU/nRTlgiC8Au4wV7DUkVkE9mtP/wAReUXv9qtUtxV3a7crt
+         8Ili36d2Ox8kFn/d1XX2mw2XaAaWF5VckKs4EIkTebWbOgDfZzt4tiLHbZSkIsEg6C1l
+         FS8z8PWGIAIWh6ISTUTF+C6vHzMxBihpLduERWDRf3sx1iCQu0WS+a1KiB61ZL3OnreY
+         9nbgDin9ULICHYmKKpMUikJ4PqhKYl5AIEWMejBekc/JGZNFhYlRs6d55dOA3LPjTQgZ
+         xLdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oeZT1Ar4/x7iejk6TCKZJw9nmldyPb7Q9CQuMN8dXaw=;
-        b=ts8xiFHockSSGWG7nCF+8NhfhfSAE4X3FTZ8Rzlg8cbtdJoI1mSM5y9BlX2twspd2b
-         wiJDMT6wVlfGaDlAos54kjifFDwPfcelbg6ugwwYkyat6VYaVB3gb8/nugsMZQlPmHge
-         MJKUKeuUp4FIEPTMinOIVUh4+VGcPx1s0rlwFpJ8lvxuBuFDeYgHaIgdGCyOWmeFIsJz
-         Z1PPhc9BG7tor+OGMzEpPeUpNjFTwI3DsXU3QhzFHULqXSAwpkZtTYIm1Ms2WB2quQE5
-         BQDuHe6o2aVjBefaE1N0+wa1a19I3+8T5OTNJY2jnoNeRwyzjLy8cZul+SKtaUIF+gU5
-         mWOw==
-X-Gm-Message-State: AOAM533gkPZz9qsCdtTBcS+u13sn4ec/ULKnTqYQfK5tU9WwilXwtfIk
-        q97ySJkxfNZglRdrvAHq9N/d7KFyjPpjxZ6HjjwrvA==
-X-Google-Smtp-Source: ABdhPJy11Z5i7gStQAF/aV2cWsIZWC4t0l/3YBj3YIJdn7KvpZm4nPNRQyA7a/+WGcaogoso5SndN/JmnOvk57r9ybc=
-X-Received: by 2002:a25:af0b:: with SMTP id a11mr4263580ybh.228.1612579557241;
- Fri, 05 Feb 2021 18:45:57 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=03Irav0Kn7d3PmwdWltq8yhVeaa7+Yo6U0jt6YgZEOM=;
+        b=bFTmC021aSkEOgxPvIDeRyp+b5bwl9L989Pe5JSpPNeAZ5ZD4lvOpfrw3jHJFSbBIC
+         /oM6tQjIeL1I0CaoXFBhr0I3yhWsJijgvt2QRVIZoHVXM2Vy20QwrbaAY+ytDVbHblsh
+         K99xTf+e80bvOGHGwmjbHuPpFouPozytphfA32uzQaP7xE3coG9hFIIqOCddjQokJyiS
+         8Nma3KVx7aYMrfO5LzISmLC7TLKT4w/b3FkoMNpi3LsR9gatAbsGK6T8vf1EagewEKOt
+         rZlOeui0b60E2nJjSBradJ3rLjtFWnzhorsHryGFuPwDs+Pn6mn35Nc4//2HD0VcPDyQ
+         nncg==
+X-Gm-Message-State: AOAM532PMXi/2vLSL3lWdjND1+rMzj1BsGv5Yff2jSjVwNNzYKu7rHPv
+        9FOBQGouIs76KDioC685L6Qggw==
+X-Google-Smtp-Source: ABdhPJwrsGW2P1pW+WkekABo8xTR+L+k0eCCXm8bQCwQQOAOFnKsiA1f6hb8gX5zfR74LatrZKR/7A==
+X-Received: by 2002:a62:5e44:0:b029:1a4:daae:e765 with SMTP id s65-20020a625e440000b02901a4daaee765mr7426181pfb.8.1612581113257;
+        Fri, 05 Feb 2021 19:11:53 -0800 (PST)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id cq2sm9725597pjb.55.2021.02.05.19.11.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 05 Feb 2021 19:11:52 -0800 (PST)
+Date:   Sat, 6 Feb 2021 11:11:46 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, lorenzo.pieralisi@arm.com,
+        kernel-hardening@lists.openwall.com, catalin.marinas@arm.com,
+        linux-acpi@vger.kernel.org, sudeep.holla@arm.com, will@kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] arm64/acpi: disallow writeable AML opregion
+ mapping for EFI code regions
+Message-ID: <20210206031145.GA27503@dragon>
+References: <20200626155832.2323789-1-ardb@kernel.org>
+ <20200626155832.2323789-3-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
-In-Reply-To: <20210205222644.2357303-1-saravanak@google.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 5 Feb 2021 18:45:21 -0800
-Message-ID: <CAGETcx_f7BEbkOFtw_6_4fMcgGOWkujbqXhDbDcNstOxgvcPfA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200626155832.2323789-3-ardb@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 5, 2021 at 2:26 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> There are a lot of devices/drivers where they never have a struct device
-> created for them or the driver initializes the hardware without ever
-> binding to the struct device.
->
-> This series is intended to avoid any boot regressions due to such
-> devices/drivers when fw_devlink=on and also address the handling of
-> optional suppliers.
->
-> Patch 1 and 2 addresses the issue of firmware nodes that look like
-> they'll have struct devices created for them, but will never actually
-> have struct devices added for them. For example, DT nodes with a
-> compatible property that don't have devices added for them.
->
-> Patch 3 and 4 allow for handling optional DT bindings.
->
-> Patch 5 sets up a generic API to handle drivers that never bind with
-> their devices.
->
-> Patch 6 through 8 update different frameworks to use the new API.
->
-> Thanks,
-> Saravana
->
+Hi Ard,
 
-Forgot to add version history:
+On Fri, Jun 26, 2020 at 05:58:32PM +0200, Ard Biesheuvel wrote:
+> Given that the contents of EFI runtime code and data regions are
+> provided by the firmware, as well as the DSDT, it is not unimaginable
+> that AML code exists today that accesses EFI runtime code regions using
+> a SystemMemory OpRegion. There is nothing fundamentally wrong with that,
+> but since we take great care to ensure that executable code is never
+> mapped writeable and executable at the same time, we should not permit
+> AML to create writable mapping.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-v1 -> v2:
-Patch 1: Added a flag to fwnodes that aren't devices.
-Patch 3: New patch to ise the flag set in patch 1 to not create bad links.
+I'm booting Lenovo Flex 5G laptop with ACPI, and seeing this change
+causes a memory abort[1] when upgrading ACPI tables via initrd[2].
+Dropping this change seems to fix the issue for me.  But does that
+looks like a correct fix to you?
 
-v2 -> v3:
-- Patch 1: Added Rafael's Ack
-- New patches 3 and 4
+Shawn
 
-v3 -> v4:
-- No changes to patches 1-4.
-- New patches 5-8.
+[1] https://fileserver.linaro.org/s/iDe9SaZeNNkyNxG
+[2] Documentation/admin-guide/acpi/initrd_table_override.rst
 
--Saravana
-
-> Saravana Kannan (8):
->   driver core: fw_devlink: Detect supplier devices that will never be
->     added
->   of: property: Don't add links to absent suppliers
->   driver core: Add fw_devlink.strict kernel param
->   of: property: Add fw_devlink support for optional properties
->   driver core: fw_devlink: Handle suppliers that don't use driver core
->   irqdomain: Mark fwnodes when their irqdomain is added/removed
->   PM: domains: Mark fwnodes when their powerdomain is added/removed
->   clk: Mark fwnodes when their clock provider is added/removed
->
->  .../admin-guide/kernel-parameters.txt         |  5 ++
->  drivers/base/core.c                           | 58 ++++++++++++++++++-
->  drivers/base/power/domain.c                   |  2 +
->  drivers/clk/clk.c                             |  3 +
->  drivers/of/property.c                         | 16 +++--
->  include/linux/fwnode.h                        | 20 ++++++-
->  kernel/irq/irqdomain.c                        |  2 +
->  7 files changed, 98 insertions(+), 8 deletions(-)
->
-> --
-> 2.30.0.478.g8a0d178c01-goog
->
+> ---
+>  arch/arm64/kernel/acpi.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+> index 01b861e225b0..455966401102 100644
+> --- a/arch/arm64/kernel/acpi.c
+> +++ b/arch/arm64/kernel/acpi.c
+> @@ -301,6 +301,15 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+>  			pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
+>  			return NULL;
+>  
+> +		case EFI_RUNTIME_SERVICES_CODE:
+> +			/*
+> +			 * This would be unusual, but not problematic per se,
+> +			 * as long as we take care not to create a writable
+> +			 * mapping for executable code.
+> +			 */
+> +			prot = PAGE_KERNEL_RO;
+> +			break;
+> +
+>  		case EFI_ACPI_RECLAIM_MEMORY:
+>  			/*
+>  			 * ACPI reclaim memory is used to pass firmware tables
+> -- 
+> 2.27.0
