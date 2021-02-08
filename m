@@ -2,107 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F50D3143E5
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 00:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 994163143F3
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 00:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbhBHXgR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Feb 2021 18:36:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47344 "EHLO
+        id S231289AbhBHXhi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Feb 2021 18:37:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbhBHXgO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 18:36:14 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D505C061788
-        for <linux-acpi@vger.kernel.org>; Mon,  8 Feb 2021 15:35:34 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id l8so3993298ybe.12
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Feb 2021 15:35:34 -0800 (PST)
+        with ESMTP id S231263AbhBHXh3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 18:37:29 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9013AC06178A
+        for <linux-acpi@vger.kernel.org>; Mon,  8 Feb 2021 15:36:49 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id y18so21247289edw.13
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Feb 2021 15:36:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8+WfYcK1+ZV8R23zYWi1zlMlBGGvpKMkA8UnDsJm1Oc=;
-        b=aq0w3Rjj+uR7KU5tlbnt8SRF9CFdEuy0AjgqgYqNKMir3fsFHUIThfxfnu6aqGB7eT
-         vs+u57fNuc/O7ZRw5aKGWiem1cEzcuXK+XxIdxgfxTBXHmTIQp3KZHyvYv3tdTODaAav
-         QoqPkDQGqZRxy0sKbdCT1rSSH9CVQWQGCrrH6bCFRUureuu+/e1sQxNUJJLoQ7V7oq1C
-         /4WafwSXw2fU1fJ/QJAqBNP3vkfOAwZW/LHSpQi4qMfFU4IM0iQKD94nDyXeN9KFJ9pM
-         RSovOiSyfkjD/d67bVKM0uYGDgggNUXN0564+kGokV4Qpic30xP48LDt4BmbI0KgTAsy
-         trcw==
+        bh=eGGcKAyTzmY7XmHqKjg37Fb2afx54tMCqzIlqIxaU7M=;
+        b=E5dDhWELy3490cipw2qXqX2bxpHoPiVzQRaR2X4dSFiRqOjLee56yC4S848SYQ7DHE
+         TdW2iX6wSAayi8M7TQ5MMi4LhfUPROW4AZ6ZZOqjJFTYTE5q5E4sV/GibnBSH8lySu0y
+         Uyvf6SQAxXS7uRrtKj3agOmXXQYr2c5xv+HgO5WxwAvRmw/+0NiQSSyWhVntPGknaeyA
+         2q042JtRZZZYrxE5qrQYldeSgOlG0x2U0IaHs3AwcLCd7L5nOVh3ATxC4Zkpls71QW8X
+         iF7cHXO4b5hDGaLJSd8+KCt2uoywgyj2XpoqdNsGqaqAxuWIKViVqb100OOjUtUyje0Z
+         k2DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8+WfYcK1+ZV8R23zYWi1zlMlBGGvpKMkA8UnDsJm1Oc=;
-        b=chww8jQ60uGVWIVGQ7D3ppnnVFuWKJkPliWfdDAoQxd9GrVdwju7fu/uaWYVOiHRvD
-         80uUvyN9RWAtSSNJDjMrGmSf9Lkh77HRdlROCO1n0bux4Ucws9uVYGKVCGN6Jy5+vObO
-         UPasrBHoqBPrI2a1rF3nxA7gtF/wT/GEhaxzqg5iHml+8WeiGRYJl88MQapzT19Pnsk0
-         I/msuC9UG7wB8IEDLMuVGdvLLzq9ANbRXRPTSuuqgwg9R/jYzscr58shvgS1TRywCVCn
-         cNhC69WCF3tRz9EyJR0rqErTOxYf5uOAMeVBipF1CSJCP7EXN1WM5/ZasM1X5Ce8YmYd
-         sf8Q==
-X-Gm-Message-State: AOAM532HmJjlzb4vi3gJPJzDOvt3Imfw+1RS6jFRYVFLgSsm0/mRmUw+
-        SS0+4bOXDaw5q/r8FYdsQRNVW5lOpK+0aa01Ra3Nuw==
-X-Google-Smtp-Source: ABdhPJxvfXuvovy4qYPt4qo+kIvhWQQydMERIf2YxT9yDyTigYeTY9JT7AKMlyJ6w7jOmvoinijXVeHNTqdDkwzfQ44=
-X-Received: by 2002:a25:aa43:: with SMTP id s61mr2791520ybi.32.1612827333706;
- Mon, 08 Feb 2021 15:35:33 -0800 (PST)
+        bh=eGGcKAyTzmY7XmHqKjg37Fb2afx54tMCqzIlqIxaU7M=;
+        b=K65oiEPKr4u0FQ3LjsAd9y2XkfF1OR8NaLKwl/8Eey4t9faSuvDwfTCdrzUqvxzsXn
+         13KBIojtNWiCHLAKn+8fj8UPTFBHFtGB8AuI3CufkpYmnRlCuEb6T4tioZrHSzHHPQo5
+         JPfBlWl5LDFsPVSZgfbZY0hgpIAT8+EJstt5JZnmHjRgXwIcuGMqS29yoYLs0P2KOpGh
+         nmS5hDIf1tBO8cthW4Kzem2+s9qMMFrevKeVMi8ae67DYZU/G53Qr5ECzyQy2COeS0U9
+         zaKgNmSsSLC+7HItM7V3Aj/AofoPV0MbXdho6D4auDF2u7K4fYstvqAYaF73DZPE9woD
+         I1CQ==
+X-Gm-Message-State: AOAM533NqhS4J8eZlU49mYmUfGItWqyTr7AFxG5aM/yOV+puNddcZYiJ
+        oqUQl598RTseHrlYEiE7XLoDp5ksLxJ+QC2XcI+itA==
+X-Google-Smtp-Source: ABdhPJy9ZjJZRXDvIzBmNSGdGKMoO79oPi5SonIYHgHcEcFwYmkhh/wOyEJYChGVMiInUvinect2p135EQFvnomUZL4=
+X-Received: by 2002:aa7:cd87:: with SMTP id x7mr20441251edv.210.1612827408336;
+ Mon, 08 Feb 2021 15:36:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
- <20210205222644.2357303-9-saravanak@google.com> <CAL_JsqJc8XRAL5Bj5LpH0M528K7ZL=wSqt8t=ibwjWutjCgB-Q@mail.gmail.com>
-In-Reply-To: <CAL_JsqJc8XRAL5Bj5LpH0M528K7ZL=wSqt8t=ibwjWutjCgB-Q@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 8 Feb 2021 15:34:57 -0800
-Message-ID: <CAGETcx9Ynzqx5vo+mqi9EGr+bVs8MBzO5sHhZiT+sB8Q_+7dPA@mail.gmail.com>
-Subject: Re: [PATCH v4 8/8] clk: Mark fwnodes when their clock provider is added/removed
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Android Kernel Team <kernel-team@android.com>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-9-ben.widawsky@intel.com> <CAPcyv4iPXqO5FL4_bmMQaSvmUm9FVrPv9yPJr3Q4DQWYf4t5hQ@mail.gmail.com>
+ <202102081406.CDE33FB8@keescook>
+In-Reply-To: <202102081406.CDE33FB8@keescook>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 8 Feb 2021 15:36:35 -0800
+Message-ID: <CAPcyv4ix=zmQdb5sFKN-9wOZFnitHN0sSwHZJgQeaEM+=6+W1w@mail.gmail.com>
+Subject: Re: [PATCH 08/14] taint: add taint for direct hardware access
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>, linux-cxl@vger.kernel.org,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        daniel.lll@alibaba-inc.com,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 8, 2021 at 7:39 AM Rob Herring <robh+dt@kernel.org> wrote:
+On Mon, Feb 8, 2021 at 2:09 PM Kees Cook <keescook@chromium.org> wrote:
 >
-> On Fri, Feb 5, 2021 at 4:27 PM Saravana Kannan <saravanak@google.com> wrote:
+> On Mon, Feb 08, 2021 at 02:00:33PM -0800, Dan Williams wrote:
+> > [ add Jon Corbet as I'd expect him to be Cc'd on anything that
+> > generically touches Documentation/ like this, and add Kees as the last
+> > person who added a taint (tag you're it) ]
 > >
-> > This allows fw_devlink to recognize clock provider drivers that don't
-> > use the device-driver model to initialize the device. fw_devlink will
-> > use this information to make sure consumers of such clock providers
-> > aren't indefinitely blocked from probing, waiting for the power domain
-> > device to appear and bind to a driver.
+> > Jon, Kees, are either of you willing to ack this concept?
+> >
+> > Top-posting to add more context for the below:
+> >
+> > This taint is proposed because it has implications for
+> > CONFIG_LOCK_DOWN_KERNEL among other things. These CXL devices
+> > implement memory like DDR would, but unlike DDR there are
+> > administrative / configuration commands that demand kernel
+> > coordination before they can be sent. The posture taken with this
+> > taint is "guilty until proven innocent" for commands that have yet to
+> > be explicitly allowed by the driver. This is different than NVME for
+> > example where an errant vendor-defined command could destroy data on
+> > the device, but there is no wider threat to system integrity. The
+> > taint allows a pressure release valve for any and all commands to be
+> > sent, but flagged with WARN_TAINT_ONCE if the driver has not
+> > explicitly enabled it on an allowed list of known-good / kernel
+> > coordinated commands.
+> >
+> > On Fri, Jan 29, 2021 at 4:25 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > >
+> > > For drivers that moderate access to the underlying hardware it is
+> > > sometimes desirable to allow userspace to bypass restrictions. Once
+> > > userspace has done this, the driver can no longer guarantee the sanctity
+> > > of either the OS or the hardware. When in this state, it is helpful for
+> > > kernel developers to be made aware (via this taint flag) of this fact
+> > > for subsequent bug reports.
+> > >
+> > > Example usage:
+> > > - Hardware xyzzy accepts 2 commands, waldo and fred.
+> > > - The xyzzy driver provides an interface for using waldo, but not fred.
+> > > - quux is convinced they really need the fred command.
+> > > - xyzzy driver allows quux to frob hardware to initiate fred.
+> > >   - kernel gets tainted.
+> > > - turns out fred command is borked, and scribbles over memory.
+> > > - developers laugh while closing quux's subsequent bug report.
 >
-> Don't we have cases that are a mixture? IOW, a subset of the clock
-> provider is initialized early, then the full driver takes over. You'd
-> want consumers that are not a driver to succeed, but drivers to defer
-> until the full driver is up.
+> But a taint flag only lasts for the current boot. If this is a drive, it
+> could still be compromised after reboot. It sounds like this taint is
+> really only for ephemeral things? "vendor shenanigans" is a pretty giant
+> scope ...
+>
 
-You probably just made a typo, but to clarify, this is about ignoring
-suppliers that never bind. So, in your case the clock device is the
-supplier.
+That is true. This is more about preventing an ecosystem / cottage
+industry of tooling built around bypassing the kernel. So the kernel
+complains loudly and hopefully prevents vendor tooling from
+propagating and instead directs that development effort back to the
+native tooling. However for the rare "I know what I'm doing" cases,
+this tainted kernel bypass lets some experimentation and debug happen,
+but the kernel is transparent that when the capability ships in
+production it needs to be a native implementation.
 
-To answer your question, consumer devices added after the full
-supplier driver takes over will still have device links created to the
-supplier clock device. But consumers added before the full driver
-takes over won't. So, nothing is worse off with fw_devlink=on and we
-get way more dependency tracking (device links) created than what we
-have today.
+So it's less, "the system integrity is compromised" and more like
+"you're bypassing the development process that ensures sanity for CXL
+implementations that may take down a system if implemented
+incorrectly". For example, NVME reset is a non-invent, CXL reset can
+be like surprise removing DDR DIMM.
 
--Saravana
+Should this be more tightly scoped to CXL? I had hoped to use this in
+other places in LIBNVDIMM, but I'm ok to lose some generality for the
+specific concerns that make CXL devices different than other PCI
+endpoints.
