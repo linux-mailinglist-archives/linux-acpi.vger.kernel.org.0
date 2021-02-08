@@ -2,86 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18075313A33
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Feb 2021 17:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5AA313B3A
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Feb 2021 18:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233395AbhBHQzx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Feb 2021 11:55:53 -0500
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:33330 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234489AbhBHQz0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 11:55:26 -0500
-Received: by mail-oi1-f173.google.com with SMTP id g84so2492855oib.0;
-        Mon, 08 Feb 2021 08:55:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KKJBvlRsPdZRwkChztnkpUkvrus3GI2EDM+AmFK5Q8g=;
-        b=lTOwI0jzdTpwxiyzIE8CWqHiPNILjcCUfNfaQS373u5NEiRxKc1UEc5V8NEGXHSitk
-         niym/B5jecvRmB1IWFUq60oiXxAX90mt+OLYSVMmBRa6MvquDMSzMkCA0gVOjWNv5daJ
-         ott0bD7s2bm3EkbPsmEx1EQdiugzEufmTP2DT3A0O4waw/CFG9pPXZ6uuYGs3v9k4vnT
-         b1Nb2ZH7VG1Z/kBHaW5cip2G4P4GKgQj4IvVU71Tg2ZO2twCsib9x9Xba/OutDNRMf6P
-         uGlCWcjb3X1+SRyI9sE9llPdGCeol9n/F6Q7dc8PoGqgLIb1PzB3Vn/Mn9ojmi/cdAcw
-         AFYQ==
-X-Gm-Message-State: AOAM531ANnE4ivBibVW5s+NjNW+yw+rak/N67F4dMWoCiRgWz1nbtu+4
-        Y+3V/Vvwx5I5o0hqbRXxJ5UoImPNwZrKIvJHCbI=
-X-Google-Smtp-Source: ABdhPJxqCWip3hrwxWqdYRtjj3wm7CbBzXkF42iWQtbas6twpBkCVBV++r2PQNyBllxuR7Ca6mtFQpRojgv2Oxyr7sw=
-X-Received: by 2002:aca:d14:: with SMTP id 20mr12305483oin.157.1612803284493;
- Mon, 08 Feb 2021 08:54:44 -0800 (PST)
+        id S231939AbhBHRnT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Feb 2021 12:43:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234958AbhBHRms (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 12:42:48 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCABC061793;
+        Mon,  8 Feb 2021 09:40:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=rSvUqI1XpEJ7iOVNKklLJYoFPByM1N15BVSh8fTJEs4=; b=YP5IJV54bH0CVu7bFAy4QFDd6
+        L/8EWZvKtF6hlcGGoWvEfzAGpUGMm+SB7k04JMz9qOyr5Rb16758zcs5ohXwJ+ozP6oE0CXcJLeJ7
+        XVs3JVcHjgmo3we123AbijWApG4b5ndwjDtF7SP+X+lPlpLLZS5Jw00qNIF/5nENMNLJ2YwNwdMQf
+        V09DaW714TEgEmrv61HaZFGtpTlYiTR4Nf5477cKFkxJR/R8xM1zRUGa1BYMbSF+w98BDf1/0lfFw
+        Q7Xk4dbu7+49dAItkuS05nCI3PhruFP9DWviRT4Efh5JXfa5UzpHTa/PRCNayz+x8o5g13j8c03bT
+        YuyjonbeA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40850)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1l9AWH-0002M7-MZ; Mon, 08 Feb 2021 17:40:17 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1l9AWD-0003FA-S0; Mon, 08 Feb 2021 17:40:13 +0000
+Date:   Mon, 8 Feb 2021 17:40:13 +0000
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        linux-acpi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux.cj@gmail.com, Jakub Kicinski <kuba@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-arm-kernel@lists.infradead.org,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [net-next PATCH v5 07/15] net: mdiobus: Introduce
+ fwnode_mdiobus_register_phy()
+Message-ID: <20210208174013.GN1463@shell.armlinux.org.uk>
+References: <20210208151244.16338-1-calvin.johnson@oss.nxp.com>
+ <20210208151244.16338-8-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
-References: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
- <20210205132505.20173-8-sakari.ailus@linux.intel.com> <CAMpxmJU7J9JBSwCN+GLDpuOL=iZ1PH=oZZuGiAyovuf2TQ=o9A@mail.gmail.com>
-In-Reply-To: <CAMpxmJU7J9JBSwCN+GLDpuOL=iZ1PH=oZZuGiAyovuf2TQ=o9A@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 8 Feb 2021 17:54:33 +0100
-Message-ID: <CAJZ5v0jUqtYDpBn-ezsftCrY=9iD3sAKhyyFf_+CMkthLnsZow@mail.gmail.com>
-Subject: Re: [PATCH v10 7/7] at24: Support probing while off
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210208151244.16338-8-calvin.johnson@oss.nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 8, 2021 at 5:44 PM Bartosz Golaszewski
-<bgolaszewski@baylibre.com> wrote:
->
-> On Fri, Feb 5, 2021 at 2:25 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > In certain use cases (where the chip is part of a camera module, and the
-> > camera module is wired together with a camera privacy LED), powering on
-> > the device during probe is undesirable. Add support for the at24 to
-> > execute probe while being powered off. For this to happen, a hint in form
-> > of a device property is required from the firmware.
-> >
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-> > ---
->
-> I'll ack this but I still claim that the name
-> acpi_dev_state_low_power() is super misleading for this use-case and
-> I've been saying that for 10 versions now with everyone just ignoring
-> my remarks. :/
+On Mon, Feb 08, 2021 at 08:42:36PM +0530, Calvin Johnson wrote:
+> +int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+> +				struct fwnode_handle *child, u32 addr)
+> +{
+> +	struct mii_timestamper *mii_ts;
 
-Well, the function in question simply checks if the current ACPI power
-state of the device is different from "full power", so its name
-appears to be quite adequate to me.
+If you initialise this to NULL...
 
-If the way in which it is used is confusing, though, I guess
-explaining what's going on would be welcome.
+> +	struct phy_device *phy;
+> +	bool is_c45 = false;
+> +	u32 phy_id;
+> +	int rc;
+> +
+> +	if (is_of_node(child)) {
+> +		mii_ts = of_find_mii_timestamper(to_of_node(child));
+> +		if (IS_ERR(mii_ts))
+> +			return PTR_ERR(mii_ts);
+> +	}
+> +
+> +	rc = fwnode_property_match_string(child, "compatible", "ethernet-phy-ieee802.3-c45");
+> +	if (rc >= 0)
+> +		is_c45 = true;
+> +
+> +	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
+> +		phy = get_phy_device(bus, addr, is_c45);
+> +	else
+> +		phy = phy_device_create(bus, addr, phy_id, 0, NULL);
+> +	if (IS_ERR(phy)) {
+> +		if (mii_ts && is_of_node(child))
 
-> Acked-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Then you don't need is_of_node() here.
+
+> +		/* phy->mii_ts may already be defined by the PHY driver. A
+> +		 * mii_timestamper probed via the device tree will still have
+> +		 * precedence.
+> +		 */
+> +		if (mii_ts)
+> +			phy->mii_ts = mii_ts;
+
+Should this be moved out of the if() case?
+
+I'm thinking of the future where we may end up adding mii timestamper
+support for ACPI.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
