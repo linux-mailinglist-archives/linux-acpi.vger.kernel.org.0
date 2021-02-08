@@ -2,135 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AEE0313971
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Feb 2021 17:30:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8C43139F1
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Feb 2021 17:46:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233841AbhBHQaC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Feb 2021 11:30:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
+        id S234485AbhBHQpY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Feb 2021 11:45:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234387AbhBHQ3k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 11:29:40 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED05BC061786;
-        Mon,  8 Feb 2021 08:28:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=wd3NQ7jvBJekE/Q3L0BhBL56hsU4rrZSvP5lEzeZjdQ=; b=gyYwk9jV5WbkAYSYTsOv5WiVB
-        viFcAotojHEvc8naHZ5pZw4qc22smB/hwFUhAbPxpS9JNfRhtZgXf1VYgbUFHkO7hBAmHX/aqqW9N
-        eFR34uk7+QT2j4nzDyE8NgqNSROLGyMinjmalsjwTlRKTK0YGH8tfnvYEnn2rB2p4x1Wj/r6sABJI
-        ZtJGYCsixRYaR8ZRFim+7K2ownflUlp0FjpxcyQ0LytPRUlXsW890TncOIysi9ltzQyOdo70ydkAL
-        LWNUVyN+xiZ2y/PknqLK6r5y5Pfp3SKLyIqMLaFzOYjZuJgfjAEWD/B/cfqvSfhG+wIwitiobo2LL
-        yxbaSx/xg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40832)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1l99Oq-0002GK-F2; Mon, 08 Feb 2021 16:28:32 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1l99Op-0003Bv-EX; Mon, 08 Feb 2021 16:28:31 +0000
-Date:   Mon, 8 Feb 2021 16:28:31 +0000
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-kernel@vger.kernel.org, linux.cj@gmail.com,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [net-next PATCH v5 15/15] net: dpaa2-mac: Add ACPI support for
- DPAA2 MAC driver
-Message-ID: <20210208162831.GM1463@shell.armlinux.org.uk>
-References: <20210208151244.16338-1-calvin.johnson@oss.nxp.com>
- <20210208151244.16338-16-calvin.johnson@oss.nxp.com>
+        with ESMTP id S233889AbhBHQpL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Feb 2021 11:45:11 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9CDC06178B
+        for <linux-acpi@vger.kernel.org>; Mon,  8 Feb 2021 08:44:29 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id w1so25836675ejf.11
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Feb 2021 08:44:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F5h9xONdIWO5O+NZW8RLLN3OmuA966870wfg1CztF70=;
+        b=GuFBMRbnPQ8pXKUdxj0VtNYSL300l5WkcePJdYmjXzfi7LGaVwJlT6ujKwJLw3kOq/
+         C/V/WcVNkp3pWAVyhNBXqtorF/P30JYsm4dBdwnxp50KmlP2HRTEOr/z4BMirtRJfwz9
+         19nMSlyffU0AfKRVDXw6wxPd5keybnQB9bQsjKphz4eP7dF+eVQrraIkDDRovjbFVlOy
+         Xk6O5m7sAv+fCLWPpRCzX2yNaq2trCh1JLV9bTt3cNJTjQ63yF/DgSY8W8BGDCkAJdse
+         BaTxgRiEoLjcs3C7EDhQDW45qEECjjUINMuKJOXySgEIeaIHKhR5uePUog0uldRTvgW6
+         8OAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F5h9xONdIWO5O+NZW8RLLN3OmuA966870wfg1CztF70=;
+        b=gSdYsn8DJ8ab5slvVX3a6/qQvGEog9tRqfh3CL4OwIZ6chBuS7KLlo9wba8RzgOqYP
+         snkSXTe21igBl0XEaBKzS8GnfzchXv8A3ID4oS53uJ1UggzchmMrElm+yBo1wPDiWgbM
+         qAMpUXdk2ojVKg1krE0dwHv/ZpfCx8UHIpqn3p+k7OMZ1rAFF6FfnwiVV6CI+Du2JI2f
+         j81r6XKke0fbZhR5F3nDNezZVZqAcbBYNATZTvJjcC8p4via+UpnJZNkXfKXFfn9SEo1
+         l1MzwzPRC82Qp7xjbAd4X7H5xvWyHzgfwGn157jULp0/S9YxyjJPqQv+JpiYuFm8L4BD
+         SNSQ==
+X-Gm-Message-State: AOAM5314MjtF9z0WYYdQLbT8zPtZUDNuKIRdP0UYJJ6iNV5LLUv+dnR0
+        2/XmlRjlD+FXOSzuvVnwWki1z/CyYgFmED/9PqAibn7egTateQ==
+X-Google-Smtp-Source: ABdhPJyKqV2vMeSrf8JQ+AtG+5a/mZmdZnTnaSiQz01HCyKyFWXKOg/sJgmNIlk0XZRVJK95ma4QX+ZTc/IXqh3MNsY=
+X-Received: by 2002:a17:906:8053:: with SMTP id x19mr17403771ejw.470.1612802668667;
+ Mon, 08 Feb 2021 08:44:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210208151244.16338-16-calvin.johnson@oss.nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+References: <20210205132505.20173-1-sakari.ailus@linux.intel.com> <20210205132505.20173-8-sakari.ailus@linux.intel.com>
+In-Reply-To: <20210205132505.20173-8-sakari.ailus@linux.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Mon, 8 Feb 2021 17:44:17 +0100
+Message-ID: <CAMpxmJU7J9JBSwCN+GLDpuOL=iZ1PH=oZZuGiAyovuf2TQ=o9A@mail.gmail.com>
+Subject: Re: [PATCH v10 7/7] at24: Support probing while off
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media <linux-media@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 08, 2021 at 08:42:44PM +0530, Calvin Johnson wrote:
-> Modify dpaa2_mac_connect() to support ACPI along with DT.
-> Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
-> DT or ACPI.
-> 
-> Replace of_get_phy_mode with fwnode_get_phy_mode to get
-> phy-mode for a dpmac_node.
-> 
-> Use helper function phylink_fwnode_phy_connect() to find phy_dev and
-> connect to mac->phylink.
-> 
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+On Fri, Feb 5, 2021 at 2:25 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> In certain use cases (where the chip is part of a camera module, and the
+> camera module is wired together with a camera privacy LED), powering on
+> the device during probe is undesirable. Add support for the at24 to
+> execute probe while being powered off. For this to happen, a hint in form
+> of a device property is required from the firmware.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+> ---
 
-I don't think this does the full job.
+I'll ack this but I still claim that the name
+acpi_dev_state_low_power() is super misleading for this use-case and
+I've been saying that for 10 versions now with everyone just ignoring
+my remarks. :/
 
->  static int dpaa2_pcs_create(struct dpaa2_mac *mac,
-> -			    struct device_node *dpmac_node, int id)
-> +			    struct fwnode_handle *dpmac_node,
-> +			    int id)
->  {
->  	struct mdio_device *mdiodev;
-> -	struct device_node *node;
-> +	struct fwnode_handle *node;
->  
-> -	node = of_parse_phandle(dpmac_node, "pcs-handle", 0);
-> -	if (!node) {
-> +	node = fwnode_find_reference(dpmac_node, "pcs-handle", 0);
-> +	if (IS_ERR(node)) {
->  		/* do not error out on old DTS files */
->  		netdev_warn(mac->net_dev, "pcs-handle node not found\n");
->  		return 0;
->  	}
->  
-> -	if (!of_device_is_available(node)) {
-> +	if (!of_device_is_available(to_of_node(node))) {
-
-If "node" is an ACPI node, then to_of_node() returns NULL, and
-of_device_is_available(NULL) is false. So, if we're using ACPI
-and we enter this path, we will always hit the error below:
-
->  		netdev_err(mac->net_dev, "pcs-handle node not available\n");
-> -		of_node_put(node);
-> +		of_node_put(to_of_node(node));
->  		return -ENODEV;
->  	}
-
-> @@ -306,7 +321,7 @@ int dpaa2_mac_connect(struct dpaa2_mac *mac)
->  	 * error out if the interface mode requests them and there is no PHY
->  	 * to act upon them
->  	 */
-> -	if (of_phy_is_fixed_link(dpmac_node) &&
-> +	if (of_phy_is_fixed_link(to_of_node(dpmac_node)) &&
-
-If "dpmac_node" is an ACPI node, to_of_node() will return NULL, and
-of_phy_is_fixed_link() will oops.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Acked-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
