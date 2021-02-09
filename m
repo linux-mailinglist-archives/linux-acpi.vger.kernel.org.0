@@ -2,93 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0E23158F1
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 22:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3334C3159C2
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 23:58:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbhBIVrP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Feb 2021 16:47:15 -0500
-Received: from sauhun.de ([88.99.104.3]:33320 "EHLO pokefinder.org"
+        id S233679AbhBIWy7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Feb 2021 17:54:59 -0500
+Received: from foss.arm.com ([217.140.110.172]:57414 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233684AbhBIVF7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Feb 2021 16:05:59 -0500
-Received: from localhost (p5486c396.dip0.t-ipconnect.de [84.134.195.150])
-        by pokefinder.org (Postfix) with ESMTPSA id 731632C04E4;
-        Tue,  9 Feb 2021 22:04:13 +0100 (CET)
-Date:   Tue, 9 Feb 2021 22:04:10 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH v10 2/7] i2c: Allow an ACPI driver to manage the device's
- power state during probe
-Message-ID: <20210209210410.GA2380@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@the-dreams.de>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-References: <20210205132505.20173-1-sakari.ailus@linux.intel.com>
- <20210205132505.20173-3-sakari.ailus@linux.intel.com>
+        id S234158AbhBIWhX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 9 Feb 2021 17:37:23 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30A251042;
+        Tue,  9 Feb 2021 10:15:43 -0800 (PST)
+Received: from [192.168.0.14] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3E9B3F73B;
+        Tue,  9 Feb 2021 10:15:29 -0800 (PST)
+Subject: Re: How can a userspace program tell if the system supports the ACPI
+ S4 state (Suspend-to-Disk)?
+To:     Dexuan Cui <decui@microsoft.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Leandro Pereira <Leandro.Pereira@microsoft.com>
+References: <MWHPR21MB0863BA3D689DDEC3CA6BC262BFC91@MWHPR21MB0863.namprd21.prod.outlook.com>
+ <CAJZ5v0jRgeAsyZXpm-XdL6GCKWk5=yVh1s4fZ3m0++NJK-gYBg@mail.gmail.com>
+ <MW2PR2101MB1787B5253CAA640F8B7D2860BFB29@MW2PR2101MB1787.namprd21.prod.outlook.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <204fa040-115e-552a-5fc1-5520f10bc402@arm.com>
+Date:   Tue, 9 Feb 2021 18:15:17 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
-Content-Disposition: inline
-In-Reply-To: <20210205132505.20173-3-sakari.ailus@linux.intel.com>
+In-Reply-To: <MW2PR2101MB1787B5253CAA640F8B7D2860BFB29@MW2PR2101MB1787.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Dexuan,
 
---cNdxnHkX5QqsyA0e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 05/02/2021 19:36, Dexuan Cui wrote:
+>> From: Rafael J. Wysocki <rafael@kernel.org>
+>> Sent: Friday, February 5, 2021 5:06 AM
+>> To: Dexuan Cui <decui@microsoft.com>
+>> Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> linux-hyperv@vger.kernel.org; Michael Kelley <mikelley@microsoft.com>
+>> Subject: Re: How can a userspace program tell if the system supports the ACPI
+>> S4 state (Suspend-to-Disk)?
+>>
+>> On Sat, Dec 12, 2020 at 2:22 AM Dexuan Cui <decui@microsoft.com> wrote:
+>>>
+>>> Hi all,
+>>> It looks like Linux can hibernate even if the system does not support the ACPI
+>>> S4 state, as long as the system can shut down, so "cat /sys/power/state"
+>>> always contains "disk", unless we specify the kernel parameter "nohibernate"
+>>> or we use LOCKDOWN_HIBERNATION.
+
+>>> In some scenarios IMO it can still be useful if the userspace is able to detect
+>>> if the ACPI S4 state is supported or not, e.g. when a Linux guest runs on
+>>> Hyper-V, Hyper-V uses the virtual ACPI S4 state as an indicator of the proper
+>>> support of the tool stack on the host, i.e. the guest is discouraged from
+>>> trying hibernation if the state is not supported.
+
+What goes wrong? This sounds like a funny way of signalling hypervisor policy.
 
 
-> + * @I2C_DRV_FL_ALLOW_LOW_POWER_PROBE: Let the ACPI driver manage the device's
-> + *				      power state during probe and remove
+>>> I know we can check the S4 state by 'dmesg':
+>>>
+>>> # dmesg |grep ACPI: | grep support
+>>> [    3.034134] ACPI: (supports S0 S4 S5)
+>>>
+>>> But this method is unreliable because the kernel msg buffer can be filled
+>>> and overwritten. Is there any better method? If not, do you think if the
+>>> below patch is appropriate? Thanks!
+>>
+>> Sorry for the delay.
+>>
+>> If ACPI S4 is supported, /sys/power/disk will list "platform" as one
+>> of the options (and it will be the default one then).  Otherwise,
+>> "platform" is not present in /sys/power/disk, because ACPI is the only
+>> user of hibernation_ops.
 
-Well, for the functional change, I am happy if the ACPI guys are happy.
-The only minor nit for me would be removing the "_FL" snipplet from the
-name of the define because I think it is clear enough that this is a
-flag. If you need to resend anyhow, maybe it is worth a thought. It is
-not a big issue, so anyway:
+> This works on x86. Thanks a lot!
+> 
+> BTW, does this also work on ARM64?
 
-Acked-by: Wolfram Sang <wsa@kernel.org>
+Not today. The S4/S5 stuff is part of 'ACPI_SYSTEM_POWER_STATES_SUPPORT', which arm64
+doesn't enable as it has a firmware mechanism that covers this on both DT and ACPI
+systems. That code is what calls hibernation_set_ops() to enable ACPI's platform mode.
 
-because I assume this will go in via the ACPI tree?
+Regardless: hibernate works fine. What does your hypervisor do that causes problems?
+(I think all we expect from firmware is it doesn't randomise the placement of the ACPI
+tables as they aren't necessarily part of the hibernate image)
 
 
---cNdxnHkX5QqsyA0e
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmAi+MYACgkQFA3kzBSg
-Kba6/xAAtMdyI3C2JF5zUtXQxsmy1dTtr0C3ypMSMTb22o36hVCD5m0MrEk1Ism2
-FTlAoKDK2RhPjsANQLuDg5GyktNmk0aNX1ucmromKdNfHHnJQcEtKWSDm0lVEyyy
-b5RJnv1Zu7zc+Xk5sHKnfidY6YyGXx+HwS8D+w5UNvcTf/dpyhZLIEvn6Dl8tU1E
-WRsrMgmXqDVjEUukEr/j/g+ZwqjMfSj1be9hl3yPp29i4qaSmgKygp2i3/4iOC3f
-IXMIV/pOEN/rMbRCYeTBBccmsH3u67xXV2XFjHs6G2mMQ7n8ydbpAZjtkcQDh4Df
-ZWBzAWdIhtDZBEZ0CiyzcgnSP6QGLtNGfHGUYjuq7Sg8ea7kP1Acm1WHhwXcdvgT
-ZCuNSw48Cc8KYTjpJ4amx6HHmhFs/JcOu+j+psGVg3B/s7L3A+uq6iX6vBKgRcQ6
-0MS8VT04R+F1Z1UaFlIbidQbp/se2PCaUs7182afHSWnESwtebZ0y2oKwWvnmC6F
-/TmC3maOf0a1bUyV6tbAZ6fY5H5zQue+pzhsBfIALgYGe9mQsHDU+W7yklmYTwP8
-jxquIbwNqtwaaG0BHiAnCmH2eRIyM/yDDl0RLKqD6m3HSEM3vJaeBS2adzjShXnp
-pekggUfypFw/gpc5axQAEHkoGST+/M8g9ekR2EZ8IYdQZc1SVz8=
-=10SL
------END PGP SIGNATURE-----
-
---cNdxnHkX5QqsyA0e--
+James
