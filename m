@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F03315975
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 23:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF33315978
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Feb 2021 23:32:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234013AbhBIW3P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Feb 2021 17:29:15 -0500
-Received: from mail-yb1-f181.google.com ([209.85.219.181]:44812 "EHLO
-        mail-yb1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234096AbhBIWOD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Feb 2021 17:14:03 -0500
-Received: by mail-yb1-f181.google.com with SMTP id r2so19723786ybk.11;
-        Tue, 09 Feb 2021 14:13:47 -0800 (PST)
+        id S234445AbhBIW3e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Feb 2021 17:29:34 -0500
+Received: from mail-yb1-f170.google.com ([209.85.219.170]:46679 "EHLO
+        mail-yb1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234153AbhBIWO6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Feb 2021 17:14:58 -0500
+Received: by mail-yb1-f170.google.com with SMTP id v123so19683765yba.13;
+        Tue, 09 Feb 2021 14:14:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
         bh=VE2EhdIByMacgmRTG1LkrJDJV8t/c6l+WLOiRcExhRk=;
-        b=P8wXqjrDeDo/u+ocFH/ssSayb70LQqtWWOspBYXQcaYmbmToZopaTHf8UltF/wEHPx
-         DL2lNeFGqzjMc+Gqz2VF/aSqGSUHF7Wqk0Nr0nI9li6PWLZQmI0DSmtYsjrP5gAHcUxt
-         cLC4CZbFd8Gatcp+hLpjoCEuRAJP9hK/FjhbCqD+oYWvE8eKcXvK1epCISkmazqDSjNO
-         wUv5dwqLgQvN8u9hrpIBFb5tPYyDAl0gOm+gz/V9JlI4pObgG8jR3Z/hqnFNBe3Z3hTd
-         10pnw5HwixOYTBw8JzPOKD7ANXbB5vXdeKPo2kAhYWxAIS1oN8zNIJB1NyU/2eWveUXk
-         doUg==
-X-Gm-Message-State: AOAM533ZyantgnKemp3v8sxPgizl4fdrveWTuoBCxsdga4CNEHXGCrkO
-        BjSYpLKiwpgjEYS2VGJsNcVgwD3T5A==
+        b=qFpNeAzzz/iTpJsGr3jnwc75oW9+B1H9yIdSyJtrYeSmGaI46AeKo9FBNuwE8D5J8V
+         VAurcXGglPhpChMv7Ednbl5Fjh5fKNBdCil8EtPNwYdy0bkcc3I3uMigrP7BGXMZxG+i
+         kToqqkLJ4wvE99uM1vYLpI4Ophez1ZWylBhADoLSiVrQpxjIZgImTeQbvuqDurFhOTMe
+         rp6TBj5SwV9hRhJLlSAkiYHimfAIf2Gpl2XqAosB1i5KTno5+mGMTHostM9JPpeQeXkx
+         d5sV8k2NYeTw/DC5bOFx4Rl1TnBAsgef3WbIu60P3R4nVbrcQ2mwT8VTct/elzxCqYmc
+         hCTA==
+X-Gm-Message-State: AOAM5310yxpPSBjo/xefTJjq0Q5eISwWlwqEWI3vkdKINGnWpyUrMcOu
+        b2ymY2hySqND9qKG0moZUS02xJOPgQ==
 X-Google-Smtp-Source: ABdhPJwOKR7aLyRiaGSdsTsdDouEbfAmDLNj7QHCR08u3CsoA27ruITo6RAAWtqCOIVCqMufvZQOmg==
 X-Received: by 2002:a9d:32f4:: with SMTP id u107mr11203135otb.308.1612905924777;
         Tue, 09 Feb 2021 13:25:24 -0800 (PST)
