@@ -2,41 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCED1316AAE
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 17:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD8E316B02
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 17:20:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbhBJQEn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Feb 2021 11:04:43 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2534 "EHLO
+        id S232268AbhBJQTH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Feb 2021 11:19:07 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2535 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231925AbhBJQEh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 11:04:37 -0500
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbPbw3NzSz67bth;
-        Thu, 11 Feb 2021 00:00:12 +0800 (CST)
+        with ESMTP id S232128AbhBJQS5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 11:18:57 -0500
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbPs169hdz67m5W;
+        Thu, 11 Feb 2021 00:11:33 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 10 Feb 2021 17:03:53 +0100
+ 15.1.2106.2; Wed, 10 Feb 2021 17:18:09 +0100
 Received: from localhost (10.47.67.2) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 10 Feb
- 2021 16:03:52 +0000
-Date:   Wed, 10 Feb 2021 16:02:52 +0000
+ 2021 16:18:07 +0000
+Date:   Wed, 10 Feb 2021 16:17:07 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Natu, Mahesh" <mahesh.natu@intel.com>
-CC:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Douglas, Chet R" <chet.r.douglas@intel.com>,
-        "Widawsky, Ben" <ben.widawsky@intel.com>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>
-Subject: Re: [RFC] ACPI Code First ECR: Generic Target
-Message-ID: <20210210160252.00003a31@Huawei.com>
-In-Reply-To: <BN6PR11MB17324DD5B5E3B96BD022D8BBF58D9@BN6PR11MB1732.namprd11.prod.outlook.com>
-References: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
-        <20210210112330.00003e74@Huawei.com>
-        <BN6PR11MB17324DD5B5E3B96BD022D8BBF58D9@BN6PR11MB1732.namprd11.prod.outlook.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
+        <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+        "Chris Browy" <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Jon Masters" <jcm@jonmasters.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v2 1/8] cxl/mem: Introduce a driver for CXL-2.0-Type-3
+ endpoints
+Message-ID: <20210210161707.000073ab@Huawei.com>
+In-Reply-To: <20210210000259.635748-2-ben.widawsky@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+        <20210210000259.635748-2-ben.widawsky@intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -50,183 +61,329 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 10 Feb 2021 15:18:38 +0000
-"Natu, Mahesh" <mahesh.natu@intel.com> wrote:
+On Tue, 9 Feb 2021 16:02:52 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
 
-> Hi Jonathan,
-Hi Mahesh,
+> From: Dan Williams <dan.j.williams@intel.com>
+> 
+> The CXL.mem protocol allows a device to act as a provider of "System
+> RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+> was attached to the typical CPU memory controller.
+> 
+> With the CXL-2.0 specification a PCI endpoint can implement a "Type-3"
+> device interface and give the operating system control over "Host
+> Managed Device Memory". See section 2.3 Type 3 CXL Device.
+> 
+> The memory range exported by the device may optionally be described by
+> the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+> provision persistent memory capacity from one, or more, CXL.mem devices.
+> 
+> A pre-requisite for Linux-managed memory-capacity provisioning is this
+> cxl_mem driver that can speak the mailbox protocol defined in section
+> 8.2.8.4 Mailbox Registers.
+> 
+> For now just land the initial driver boiler-plate and Documentation/
+> infrastructure.
+> 
+> Link: https://www.computeexpresslink.org/download-the-specification
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Acked-by: David Rientjes <rientjes@google.com> (v1)
 
-> 
-> First of all, it is a two-way problem because of the possibility of peer to peer traffic between root ports.
+A few trivial bits inline but nothing that I feel that strongly about.
+It is probably a good idea to add a note about generic dvsec code
+somewhere in this patch description (to avoid people raising it on
+future versions!)
 
-Good point.  So in that case it seems we need to be able to report characteristics between pairs
-of CXL ports (in generic terms 'boundaries' of the system where stuff might be connected later.)
-As such they need to be represented in topology as something that can be both
-a target and initiator (or a bridge to targets and initiators anyway).
+With the define of PCI_EXT_CAP_ID_DVSEC dropped (it's in the generic
+header already).
 
-> 
-> CDAT works very well for enumerable components with clean boundaries. It was not designed to handle Root complex objects. For example, it would have to account for CPU vendor specific coherent links between CPUs and at that point it starts looking like "HMAT".
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Agreed.  Clear distinction between what 'could' be done and what makes sense
-to do in CDAT.  It's definitely feels like the wrong solution here.
+> ---
+>  Documentation/driver-api/cxl/index.rst        | 12 ++++
+>  .../driver-api/cxl/memory-devices.rst         | 29 +++++++++
+>  Documentation/driver-api/index.rst            |  1 +
+>  drivers/Kconfig                               |  1 +
+>  drivers/Makefile                              |  1 +
+>  drivers/cxl/Kconfig                           | 35 +++++++++++
+>  drivers/cxl/Makefile                          |  4 ++
+>  drivers/cxl/mem.c                             | 63 +++++++++++++++++++
+>  drivers/cxl/pci.h                             | 18 ++++++
+>  include/linux/pci_ids.h                       |  1 +
+>  10 files changed, 165 insertions(+)
+>  create mode 100644 Documentation/driver-api/cxl/index.rst
+>  create mode 100644 Documentation/driver-api/cxl/memory-devices.rst
+>  create mode 100644 drivers/cxl/Kconfig
+>  create mode 100644 drivers/cxl/Makefile
+>  create mode 100644 drivers/cxl/mem.c
+>  create mode 100644 drivers/cxl/pci.h
+> 
+> diff --git a/Documentation/driver-api/cxl/index.rst b/Documentation/driver-api/cxl/index.rst
+> new file mode 100644
+> index 000000000000..036e49553542
+> --- /dev/null
+> +++ b/Documentation/driver-api/cxl/index.rst
+> @@ -0,0 +1,12 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +====================
+> +Compute Express Link
+> +====================
+> +
+> +.. toctree::
+> +   :maxdepth: 1
+> +
+> +   memory-devices
+> +
+> +.. only::  subproject and html
+> diff --git a/Documentation/driver-api/cxl/memory-devices.rst b/Documentation/driver-api/cxl/memory-devices.rst
+> new file mode 100644
+> index 000000000000..43177e700d62
+> --- /dev/null
+> +++ b/Documentation/driver-api/cxl/memory-devices.rst
+> @@ -0,0 +1,29 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +.. include:: <isonum.txt>
+> +
+> +===================================
+> +Compute Express Link Memory Devices
+> +===================================
+> +
+> +A Compute Express Link Memory Device is a CXL component that implements the
+> +CXL.mem protocol. It contains some amount of volatile memory, persistent memory,
+> +or both. It is enumerated as a PCI device for configuration and passing
+> +messages over an MMIO mailbox. Its contribution to the System Physical
+> +Address space is handled via HDM (Host Managed Device Memory) decoders
+> +that optionally define a device's contribution to an interleaved address
+> +range across multiple devices underneath a host-bridge or interleaved
+> +across host-bridges.
+> +
+> +Driver Infrastructure
+> +=====================
+> +
+> +This section covers the driver infrastructure for a CXL memory device.
+> +
+> +CXL Memory Device
+> +-----------------
+> +
+> +.. kernel-doc:: drivers/cxl/mem.c
+> +   :doc: cxl mem
+> +
+> +.. kernel-doc:: drivers/cxl/mem.c
+> +   :internal:
+> diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
+> index 2456d0a97ed8..d246a18fd78f 100644
+> --- a/Documentation/driver-api/index.rst
+> +++ b/Documentation/driver-api/index.rst
+> @@ -35,6 +35,7 @@ available subsections can be seen below.
+>     usb/index
+>     firewire
+>     pci/index
+> +   cxl/index
+>     spi
+>     i2c
+>     ipmb
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index dcecc9f6e33f..62c753a73651 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -6,6 +6,7 @@ menu "Device Drivers"
+>  source "drivers/amba/Kconfig"
+>  source "drivers/eisa/Kconfig"
+>  source "drivers/pci/Kconfig"
+> +source "drivers/cxl/Kconfig"
+>  source "drivers/pcmcia/Kconfig"
+>  source "drivers/rapidio/Kconfig"
+>  
+> diff --git a/drivers/Makefile b/drivers/Makefile
+> index fd11b9ac4cc3..678ea810410f 100644
+> --- a/drivers/Makefile
+> +++ b/drivers/Makefile
+> @@ -73,6 +73,7 @@ obj-$(CONFIG_NVM)		+= lightnvm/
+>  obj-y				+= base/ block/ misc/ mfd/ nfc/
+>  obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+>  obj-$(CONFIG_DAX)		+= dax/
+> +obj-$(CONFIG_CXL_BUS)		+= cxl/
+>  obj-$(CONFIG_DMA_SHARED_BUFFER) += dma-buf/
+>  obj-$(CONFIG_NUBUS)		+= nubus/
+>  obj-y				+= macintosh/
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> new file mode 100644
+> index 000000000000..9e80b311e928
+> --- /dev/null
+> +++ b/drivers/cxl/Kconfig
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +menuconfig CXL_BUS
+> +	tristate "CXL (Compute Express Link) Devices Support"
+> +	depends on PCI
+> +	help
+> +	  CXL is a bus that is electrically compatible with PCI Express, but
+> +	  layers three protocols on that signalling (CXL.io, CXL.cache, and
+> +	  CXL.mem). The CXL.cache protocol allows devices to hold cachelines
+> +	  locally, the CXL.mem protocol allows devices to be fully coherent
+> +	  memory targets, the CXL.io protocol is equivalent to PCI Express.
+> +	  Say 'y' to enable support for the configuration and management of
+> +	  devices supporting these protocols.
+> +
+> +if CXL_BUS
+> +
+> +config CXL_MEM
+> +	tristate "CXL.mem: Memory Devices"
+> +	help
+> +	  The CXL.mem protocol allows a device to act as a provider of
+> +	  "System RAM" and/or "Persistent Memory" that is fully coherent
+> +	  as if the memory was attached to the typical CPU memory
+> +	  controller.
+> +
+> +	  Say 'y/m' to enable a driver (named "cxl_mem.ko" when built as
+> +	  a module) that will attach to CXL.mem devices for
+> +	  configuration, provisioning, and health monitoring. This
+> +	  driver is required for dynamic provisioning of CXL.mem
+> +	  attached memory which is a prerequisite for persistent memory
+> +	  support. Typically volatile memory is mapped by platform
+> +	  firmware and included in the platform memory map, but in some
+> +	  cases the OS is responsible for mapping that memory. See
+> +	  Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
+> +
+> +	  If unsure say 'm'.
+> +endif
+> diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+> new file mode 100644
+> index 000000000000..4a30f7c3fc4a
+> --- /dev/null
+> +++ b/drivers/cxl/Makefile
+> @@ -0,0 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +obj-$(CONFIG_CXL_MEM) += cxl_mem.o
+> +
+> +cxl_mem-y := mem.o
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> new file mode 100644
+> index 000000000000..99a6571508df
+> --- /dev/null
+> +++ b/drivers/cxl/mem.c
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
+> +#include <linux/module.h>
+> +#include <linux/pci.h>
+> +#include <linux/io.h>
+> +#include "pci.h"
+> +
+> +static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> +{
+> +	int pos;
+> +
+> +	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
+> +	if (!pos)
+> +		return 0;
+> +
+> +	while (pos) {
+> +		u16 vendor, id;
+> +
+> +		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER1, &vendor);
+> +		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER2, &id);
+> +		if (vendor == PCI_DVSEC_VENDOR_ID_CXL && dvsec == id)
+> +			return pos;
+> +
+> +		pos = pci_find_next_ext_capability(pdev, pos,
+> +						   PCI_EXT_CAP_ID_DVSEC);
+> +	}
+> +
+> +	return 0;
 
-Jonathan
+Christopher Hellwig raised this in v1. 
 
-> 
-> Thank you,
-> Mahesh Natu
-> Datacenter Platform Architect
-> Intel Corporation
-> 
-> -----Original Message-----
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com> 
-> Sent: Wednesday, February 10, 2021 3:24 AM
-> To: Williams, Dan J <dan.j.williams@intel.com>
-> Cc: linux-cxl@vger.kernel.org; Linux ACPI <linux-acpi@vger.kernel.org>; Natu, Mahesh <mahesh.natu@intel.com>; Douglas, Chet R <chet.r.douglas@intel.com>; Widawsky, Ben <ben.widawsky@intel.com>; Verma, Vishal L <vishal.l.verma@intel.com>
-> Subject: Re: [RFC] ACPI Code First ECR: Generic Target
-> 
-> On Tue, 9 Feb 2021 19:55:05 -0800
-> Dan Williams <dan.j.williams@intel.com> wrote:
-> 
-> > While the platform BIOS is able to describe the performance 
-> > characteristics of CXL memory that is present at boot, it is unable to 
-> > statically enumerate the performance of CXL memory hot inserted 
-> > post-boot. The OS can enumerate most of the characteristics from link 
-> > registers and CDAT, but the performance from the CPU to the host 
-> > bridge, for example, is not enumerated by PCIE or CXL. Introduce an 
-> > ACPI mechanism for this purpose. Critically this is achieved with a 
-> > small tweak to how the existing Generic Initiator proximity domain is 
-> > utilized in the HMAT.  
-> 
-> Hi Dan,
-> 
-> Agree there is a hole here, but I think the proposed solution has some issues for backwards compatibility.
-> 
-> Just to clarify, I believe CDAT from root ports is sufficient for the other direction (GI on CXL, memory in host).  I wondered initially if this was a two way issue, but after a reread, I think that is fine with the root port providing CDAT or potentially treating the root port as a GI (though that runs into the same naming / representation issue as below and I think would need some clarifying text in UEFI GI description)
-> 
-> http://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.01.pdf
-> 
-> For the case you are dealing with here potentially we 'could' add something to CDAT as alternative to changing SRAT, but it would be more complex so your approach here makes more sense to me.
-> 
-> > 
-> > ---
-> > 
-> > # Title: Introduce a Generic Target for CXL
-> > 
-> > # Status: Draft
-> > 
-> > # Document: ACPI Specification 6.4
-> > 
-> > # License
-> > SPDX-License Identifier: CC-BY-4.0
-> > 
-> > # Submitter:
-> > * Sponsor: Dan Williams, Intel
-> > * Creators/Contributors:
-> >     * Mahesh Natu, Intel
-> >     * Chet Douglas, Intel
-> >     * Deepak Shivakumar, Intel
-> > 
-> > # Summary of the Change
-> > Introduce a "Generic Target" concept to the SRAT to describe the root 
-> > performance parameters in the path to dynamically discovered (outside 
-> > of ACPI enumeration) CXL memory target endpoints.
-> > 
-> > # Benefits of the Change
-> > Consider the case of a system with a set of CXL host bridges 
-> > (ACPI0016),  
-> 
-> Superficially feels like this new SRAT entry might reference the CXL 2.0 Root ports or the host bridge.
-> 
-> > and no devices attached at initial system power-on. In this scenario 
-> > platform firmware is unable to perform the end-to-end enumeration 
-> > necessary to populate SRAT and HMAT for the endpoints that may be 
-> > hot-inserted behind those bridges post power-on. The address-range is 
-> > unknown so SRAT can not be pre-populated, the performance is unknown 
-> > (no CDAT nor interleave configuration) so HMAT can not be pre-populated.
-> > 
-> > However, what is known to platform firmware that generates the SRAT 
-> > and HMAT is the performance characteristics of the path between CPU 
-> > and Generic Initiators to the CXL host bridge target. With either 
-> > CPU-to-Generic-Target, or Generic-Initiator-to-Generic-Target entries 
-> > in the HMAT the OS CXL subsystem can enumerate the remaining details 
-> > (PCIE link status, device CDAT, interleave configuration) to calculate 
-> > the bandwidth and latency of a dynamically discovered CXL memory target.  
-> 
-> I'm wondering if the term "generic target" is a good name.
-> Would something like "generic target bridge" be clearer?
-> The point being this isn't an actual target but a point along the way.
-> Mind you this is close to bike shedding.
-> 
-> As mentioned above, maybe "generic bridge" that can give us a node to hang data off for both, a) GI on CXL to host memory, and b) Initiator in host to CXL memory and hence give cleaner representation.
-> 
-> > 
-> > # Impact of the Change
-> > The existing Generic Initiator Affinity Structure (ACPI 6.4 Section
-> > 5.2.16.6) already contains all the fields necessary to enumerate a 
-> > generic target proximity domain. All that is missing is the 
-> > interpretation of that proximity domain optionally as a target 
-> > identifier in the HMAT.
-> > 
-> > Given that the OS still needs to dynamically enumerate and instantiate 
-> > the memory ranges behind the host bridge. The assumption is that 
-> > operating systems that do not support native CXL enumeration will 
-> > ignore this data in the HMAT, while CXL native enumeration aware 
-> > environments will use this fragment of the performance path to 
-> > calculate the performance characteristics.  
-> 
-> I don't think it is true that OS not supporting native CXL will ignore the data.
-> 
-> Linux will create a small amount of infrastructure to reflect them (more or less the same as a memoryless node) and also they will appear in places like access0 as a possible initiator of transactions.  It's small stuff, but I'd rather the impact on legacy was zero.
-> 
-> So my gut feeling here is we shouldn't reuse the generic initiator, but should invent something new.  Would look similar to GI, but with a different ID - to ensure legacy OS ignores it.
-> 
-> Unfortunately we can't just add a flag because backwards compatibility with old OS would mean it was ignored.  Hence I think this needs to be a new type.
-> 
-> If we define a new node type rather than extend GI, we need to be careful around the same issue with _PXM that we had when introducing Generic Initiators (not sure the protections on that made it back to stable) so might need to modify DSDT _PXM responses based on appropriate _OSC.
-> May well be fine but I'm not convinced yet.  Perhaps we need to say that using _PXM to place anything in a node defined only via this new means is not valid.
-> 
-> Jonathan
-> 
-> > 
-> > # References
-> > * Compute Express Link Specification v2.0, 
-> > <https://www.computeexpresslink.org/>
-> > 
-> > # Detailed Description of the Change
-> > 
-> > * Replace "Generic Initiator" with "Generic Initiator / Target" in all 
-> > locations except where an "initiator" or "target" is implied.
-> > Specifically 5.2.27.3 "Memory Proximity Domain Attributes Structure"
-> > need not replace occurrences of "generic initiator" in field: 
-> > "Proximity Domain for Attached Initiator". Additionally field: 
-> > "Proximity Domain for the Memory" must be renamed to "Proximity Domain 
-> > for the Memory / Generic Target" with a new description "Integer that 
-> > represents the memory / generic target proximity domain to which this memory belongs."
-> > 
-> > * Revise "5.2.16.6 Generic Initiator Affinity Structure" to make it
-> >   consistent with being referenced as either a target or initiator.
-> > 
-> >         * Description: (replace all text)
-> >   
-> >         > The Generic Initiator / Target Affinity Structure provides the
-> >         > association between a Generic Initiator and a Memory Proximity
-> >         > Domain, or another Generic Target Proximity Domain. The
-> >         > distinction as to whether this structure represents an
-> >         > Initiator, a Target, or both depends on how it is referenced
-> >         > in the HMAT. See Section 5.2.27.3 for details.    
-> >   
-> >         > Support of Generic Initiator / Target Affinity Structures by
-> >         > OSPM is optional, and the platform may query whether the OS
-> >         > supports it via the _OSC method. See Section 6.2.11.2.    
-> > 
-> >         * Architectural transactions: (append after current text)
-> >   
-> >         > If this proximity domain is referenced as a target then it
-> >         > supports all the transaction types inferred above.    
-> > 
-> >         * Other updates are simple Initiator => Initiator / Target
-> >           replacements.  
-> 
-> 
+https://lore.kernel.org/linux-pci/20201104201141.GA399378@bjorn-Precision-5520/
+
++CC Dave Jiang for update on that.
+
+This wants to move towards a generic helper.  We can do the deduplication
+later as Bjorn suggested.
+
+> +}
+> +
+> +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	int regloc;
+> +
+> +	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
+> +	if (!regloc) {
+> +		dev_err(dev, "register location dvsec not found\n");
+> +		return -ENXIO;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct pci_device_id cxl_mem_pci_tbl[] = {
+> +	/* PCI class code for CXL.mem Type-3 Devices */
+> +	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+> +	  PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF, 0xffffff, 0 },
+
+Having looked at this and thought 'thats a bit tricky to check'
+I did a quick grep and seems the kernel is split between this approach
+and people going with the mor readable c99 style initiators
+	.class = .. etc
+
+Personally I'd find the c99 approach easier to read. 
+
+> +	{ /* terminate list */ },
+> +};
+> +MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+> +
+> +static struct pci_driver cxl_mem_driver = {
+> +	.name			= KBUILD_MODNAME,
+> +	.id_table		= cxl_mem_pci_tbl,
+> +	.probe			= cxl_mem_probe,
+> +	.driver	= {
+> +		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+> +	},
+> +};
+> +
+> +MODULE_LICENSE("GPL v2");
+> +module_pci_driver(cxl_mem_driver);
+> diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> new file mode 100644
+> index 000000000000..f135b9f7bb21
+> --- /dev/null
+> +++ b/drivers/cxl/pci.h
+> @@ -0,0 +1,18 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
+> +#ifndef __CXL_PCI_H__
+> +#define __CXL_PCI_H__
+> +
+> +#define CXL_MEMORY_PROGIF	0x10
+> +
+> +/*
+> + * See section 8.1 Configuration Space Registers in the CXL 2.0
+> + * Specification
+> + */
+> +#define PCI_EXT_CAP_ID_DVSEC		0x23
+
+This is already in include/uapi/linux/pci_regs.h
+
+> +#define PCI_DVSEC_VENDOR_ID_CXL		0x1E98
+> +#define PCI_DVSEC_ID_CXL		0x0
+> +
+> +#define PCI_DVSEC_ID_CXL_REGLOC_OFFSET		0x8
+> +
+> +#endif /* __CXL_PCI_H__ */
+> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> index d8156a5dbee8..766260a9b247 100644
+> --- a/include/linux/pci_ids.h
+> +++ b/include/linux/pci_ids.h
+> @@ -51,6 +51,7 @@
+>  #define PCI_BASE_CLASS_MEMORY		0x05
+>  #define PCI_CLASS_MEMORY_RAM		0x0500
+>  #define PCI_CLASS_MEMORY_FLASH		0x0501
+> +#define PCI_CLASS_MEMORY_CXL		0x0502
+>  #define PCI_CLASS_MEMORY_OTHER		0x0580
+>  
+>  #define PCI_BASE_CLASS_BRIDGE		0x06
 
