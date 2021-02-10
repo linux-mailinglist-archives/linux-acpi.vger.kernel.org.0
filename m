@@ -2,159 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A9D3170B8
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 20:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0255317128
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 21:20:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbhBJTzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Feb 2021 14:55:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232574AbhBJTzV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 14:55:21 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800D8C06174A
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Feb 2021 11:54:41 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id f14so6309575ejc.8
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Feb 2021 11:54:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=r8ql4t5FN+DQ5z6SKaawhVvoEWWehqT+I1El6GCGVQ4=;
-        b=UZb6WVbTWSGdh6Bv8sJ0CZE9rE5T4V6FvNnZjV+yO5TAkRphM7kzZ4CnBzE+DtGp7T
-         KZ8+plW5edXC0gs6ASCzCyGGBR3vCrnphh8APG2ELadQqqAiM6B+WMcvnSehEoq6sNnR
-         J0nHzUDbHdZRZcZYKFCy1GsHkZMhkqgChpVYtn/C9TaUk4wW/raUMMFvoMwLNKNjY53p
-         tB8hJhtHR/KBTboYiE5NKWek/XIXfGesldItsTvDTnGbmz5y37Km1pbFiJzGF+Bm1P+E
-         BzZCe/NLem1n16h0IqP8PtixD6bbV9Z+ODchWMMICWSnZG844Zm9P0nm/K/1rPyxZkA9
-         kwHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=r8ql4t5FN+DQ5z6SKaawhVvoEWWehqT+I1El6GCGVQ4=;
-        b=ewZfOJA6eJ/sd7CqP8hOmyNnZ328QeieoDsVGXh05mV6ZddAkOIHH4/T+frez3vNrv
-         GijM13bWm5LZ2jEiQ9LlueELJMPnf6xBjVrF8+z7lwNAx6z+fE3kL3GxQ31rnyZ34DCK
-         Q6zonrq0apJllMh4qEmJIcyyDkXitYAtujC5J2ddqlyLkt4C/wKXcxzBXioMMFEPBUt6
-         a2OJMpaW7QXKp4HZp1/QEz/yqpKz3Q0GWum+JdREuvO/KGedc4GUXUFfi3zx+mR+Rr++
-         fMXUnGryElfBU9GX3MWjtEqXFo8nD6Svw3z7AGW9t2Ru9iZ22F72XvszsKGVGuAqhKy6
-         wN+Q==
-X-Gm-Message-State: AOAM531xMtdju0Ddv4XA8U/KB2ZnpfWc+O6nUsSQlsCTTaN0qMg84qfO
-        PWwF+UQtjibu3HBC04M2LD3WbH+y8Qsai/2g44Aucg==
-X-Google-Smtp-Source: ABdhPJyFlWbTp88uiBk8oj2jnks2vvVMZHRU5zQHaleujzXDGp2pVOAsUaO9gD/k4yZ6I0HiskQDvayp/pdzxo6NaBc=
-X-Received: by 2002:a17:906:57cd:: with SMTP id u13mr4661147ejr.341.1612986880263;
- Wed, 10 Feb 2021 11:54:40 -0800 (PST)
-MIME-Version: 1.0
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
- <20210210000259.635748-3-ben.widawsky@intel.com> <20210210174104.0000710a@Huawei.com>
- <20210210185319.chharluce2ly4cne@intel.com>
-In-Reply-To: <20210210185319.chharluce2ly4cne@intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 10 Feb 2021 11:54:29 -0800
-Message-ID: <CAPcyv4i4_6HLNpw7p-1PD9cePuMuPkvUfx0ROT8M0Y7ftxzYfg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
-To:     Ben Widawsky <ben.widawsky@intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S233355AbhBJUUJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Feb 2021 15:20:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44836 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232268AbhBJUUC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Feb 2021 15:20:02 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 5508E64EDA;
+        Wed, 10 Feb 2021 20:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612988362;
+        bh=ZwiqYsk3HyYV9gW5oNg5nLObl1K+lf3F4NsqZVrOyuc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=M6k3MVgzhCRBycPqDjiHYN/BdvxdgY5+bnFB/hL7vR/+OzrFhMW7NtQwzi2ipOs5K
+         12BeeLzG9NiQvc5qkpIHVoHMw3GP5a0ceEciIDZvaor971lpNRjejtp49ByiRufTl6
+         JRQ8MX8KcQRolQPAglSiJN75Vn96wazwLY+wk9yhxKhOLN+H9hCmKJrJDiZ1kbgk8z
+         2rAn2j+Xat+AATPkIuk57F3LvB7NhZH52MerAlsrSGDoFuDOwNUdUr5OQeatyWAveh
+         uqLB54K+Vpu0ZefXjQeVcEas6KLYu8pK0QIFn10eAXCpST4Y6zkHv7S7YBD8YZjNZf
+         NvWGYWoKyscdg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4A9FB609E2;
+        Wed, 10 Feb 2021 20:19:22 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v5.11-rc8
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0ikQ6D0V2c7xL0_jHm+UwiwqgRSSm=4fCqPkkApZe54Ow@mail.gmail.com>
+References: <CAJZ5v0ikQ6D0V2c7xL0_jHm+UwiwqgRSSm=4fCqPkkApZe54Ow@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0ikQ6D0V2c7xL0_jHm+UwiwqgRSSm=4fCqPkkApZe54Ow@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc8
+X-PR-Tracked-Commit-Id: fe0af09074bfeb46a35357e67635eefe33cdfc49
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a3961497bd9c7ca94212922a46729a9410568eb8
+Message-Id: <161298836224.25163.17920638099953713327.pr-tracker-bot@kernel.org>
+Date:   Wed, 10 Feb 2021 20:19:22 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 10, 2021 at 10:53 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
-[..]
-> > Christoph raised this in v1, and I agree with him that his would me more compact
-> > and readable as
-> >
-> >       struct range pmem_range;
-> >       struct range ram_range;
-> >
-> > The discussion seemed to get lost without getting resolved that I can see.
-> >
->
-> I had been waiting for Dan to chime in, since he authored it. I'll change it and
-> he can yell if he cares.
+The pull request you sent on Wed, 10 Feb 2021 18:45:22 +0100:
 
-No concerns from me.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.11-rc8
 
->
-> > > +
-> > > +   struct {
-> > > +           struct range range;
-> > > +   } ram;
-> >
-> > > +};
-> > > +
-> > > +#endif /* __CXL_H__ */
-> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > index 99a6571508df..0a868a15badc 100644
-> > > --- a/drivers/cxl/mem.c
-> > > +++ b/drivers/cxl/mem.c
-> >
-> >
-> > ...
-> >
-> > > +static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
-> > > +                            struct mbox_cmd *mbox_cmd)
-> > > +{
-> > > +   struct device *dev = &cxlm->pdev->dev;
-> > > +
-> > > +   dev_dbg(dev, "Mailbox command (opcode: %#x size: %zub) timed out\n",
-> > > +           mbox_cmd->opcode, mbox_cmd->size_in);
-> > > +
-> > > +   if (IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {
-> >
-> > Hmm.  Whilst I can see the advantage of this for debug, I'm not sure we want
-> > it upstream even under a rather evil looking CONFIG variable.
-> >
-> > Is there a bigger lock we can use to avoid chance of accidental enablement?
->
-> Any suggestions? I'm told this functionality was extremely valuable for NVDIMM,
-> though I haven't personally experienced it.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a3961497bd9c7ca94212922a46729a9410568eb8
 
-Yeah, there was no problem with the identical mechanism in LIBNVDIMM
-land. However, I notice that the useful feature for LIBNVDIMM is the
-option to dump all payloads. This one only fires on timeouts which is
-less useful. So I'd say fix it to dump all payloads on the argument
-that the safety mechanism was proven with the LIBNVDIMM precedent, or
-delete it altogether to maintain v5.12 momentum. Payload dumping can
-be added later.
+Thank you!
 
-[..]
-> > > diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> > > index e709ae8235e7..6267ca9ae683 100644
-> > > --- a/include/uapi/linux/pci_regs.h
-> > > +++ b/include/uapi/linux/pci_regs.h
-> > > @@ -1080,6 +1080,7 @@
-> > >
-> > >  /* Designated Vendor-Specific (DVSEC, PCI_EXT_CAP_ID_DVSEC) */
-> > >  #define PCI_DVSEC_HEADER1          0x4 /* Designated Vendor-Specific Header1 */
-> > > +#define PCI_DVSEC_HEADER1_LENGTH_MASK      0xFFF00000
-> >
-> > Seems sensible to add the revision mask as well.
-> > The vendor id currently read using a word read rather than dword, but perhaps
-> > neater to add that as well for completeness?
-> >
-> > Having said that, given Bjorn's comment on clashes and the fact he'd rather see
-> > this stuff defined in drivers and combined later (see review patch 1 and follow
-> > the link) perhaps this series should not touch this header at all.
->
-> I'm fine to move it back.
-
-Yeah, we're playing tennis now between Bjorn's and Christoph's
-comments, but I like Bjorn's suggestion of "deduplicate post merge"
-given the bloom of DVSEC infrastructure landing at the same time.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
