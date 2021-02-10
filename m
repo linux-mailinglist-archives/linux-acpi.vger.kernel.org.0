@@ -2,262 +2,395 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 422CF316C04
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 18:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41199316C39
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 18:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232614AbhBJRDr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Feb 2021 12:03:47 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:14568 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231810AbhBJRDp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 12:03:45 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B602411c80001>; Wed, 10 Feb 2021 09:03:04 -0800
-Received: from HKMAIL103.nvidia.com (10.18.16.12) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 10 Feb
- 2021 17:03:03 +0000
-Received: from HKMAIL102.nvidia.com (10.18.16.11) by HKMAIL103.nvidia.com
- (10.18.16.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 10 Feb
- 2021 17:02:28 +0000
-Received: from NAM04-CO1-obe.outbound.protection.outlook.com (104.47.45.57) by
- HKMAIL102.nvidia.com (10.18.16.11) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Wed, 10 Feb 2021 17:02:28 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AYAQVHaSU+s9ANk3MoScCU43WNQv+nZU3yz/p5RwIc+1IHZwBVRXYF+3IO64YAW4vZ4kpqEPIKM1vAqkfKTEN0Z4oMdXbC6Nz3XDEjUxEHmkle0J1wh4djbDrLizt5WSXMdQ7+Zs138emO4W2B2lcquDm+vd5ki83miXJGNKxfW3zJ9tX+qumz0iQHKmRFSaYoujB4ABWTNyDveasuA+qidwreaSggNuiAmVPHwzqUsELFbuFqXsOOFdBtqCAgzXBUcgqo721H8XYJhtWnwaDP94Ji9ryMxp7au4ZhNVZvLdvNA/pyeDys/zExJZQVqLiAF9hkQNTYbTtx4WSEYalA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E37qn+qMy+qVbVksx0bmpSipWTtEMxQKtPV7A6e7sDU=;
- b=ZT0l3bOyxUkWqkIBIR58mQ7yhGzXJE1HA8Xk833HrllYgc95W9+yvml1mb1NALo+DF7EOH3axrPtHrLCqXbCcOIm0m8gJY+JGkIv03A1nmyk3GOj+LFNWB7nLnuXKDFlTVKyYwAe8HjU6qrVAdd2an9MLSKXKmeAYcWTenC63lQryLDiOBy5THTyu+Gv08xgYBCoXOSPTTMfA3AjFFMkiHkPj5NcINEVx1wEEZHmoVNarTNBSVk+MBDDw1lQLHZac2b43nUYjIbWNULAM65agLPSJ4WhYNrdnIaVPvx7nwhkwKQ8mTdvWJmfeEYmBi9NESCHOCf5EkTEHfbAR5DYuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com (2603:10b6:207:4a::20)
- by BL0PR12MB4737.namprd12.prod.outlook.com (2603:10b6:208:8d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.20; Wed, 10 Feb
- 2021 17:02:25 +0000
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::70f2:ec2c:f43b:927a]) by BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::70f2:ec2c:f43b:927a%4]) with mapi id 15.20.3846.027; Wed, 10 Feb 2021
- 17:02:25 +0000
-From:   Vikram Sethi <vsethi@nvidia.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-CC:     "Natu, Mahesh" <mahesh.natu@intel.com>,
-        Chet R Douglas <chet.r.douglas@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        "Vishal L Verma" <vishal.l.verma@intel.com>
-Subject: RE: [RFC] ACPI Code First ECR: Generic Target
-Thread-Topic: [RFC] ACPI Code First ECR: Generic Target
-Thread-Index: AQHW/2DyadUHSm+TsEGosbjlKg4aSapRnLVw
-Date:   Wed, 10 Feb 2021 17:02:25 +0000
-Message-ID: <BL0PR12MB2532C769A507F8AB5B40D2BEBD8D9@BL0PR12MB2532.namprd12.prod.outlook.com>
-References: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
-In-Reply-To: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Enabled=True;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_SiteId=43083d15-7273-40c1-b7db-39efd9ccc17a;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Owner=vsethi@nvidia.com;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_SetDate=2021-02-10T17:02:23.5410193Z;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Name=Unrestricted;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_ActionId=e737b242-5b9e-410d-ab82-b76c3b9e5625;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Extended_MSFT_Method=Automatic
-authentication-results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=nvidia.com;
-x-originating-ip: [12.97.180.36]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5b93ab76-fff6-47c8-0a5c-08d8cde5a3fe
-x-ms-traffictypediagnostic: BL0PR12MB4737:
-x-microsoft-antispam-prvs: <BL0PR12MB4737C394D88E80B1DB0E1A29BD8D9@BL0PR12MB4737.namprd12.prod.outlook.com>
-x-header: ProcessedBy-CMR-outbound
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Jar+zVN9UDMSarOuGZUXMWJnDA8l8diOsmtMkCMAnYNz/cQlW14w0AGS7KSgV9x2Av7uwiRfWKLGjPq4WlcgOdYhYkET8dig1xoPEhc/h0scmCQG9gbm4sXx57ob0kzAVFASMD9doy81Y/sgxDCTJshUpEjKR0Y2QpNG6O15Mj7c5/zIuFvcEetycmaYWAFLTfub7pjf798Rg4fJAmiX71lUhXGBr/by/cjSsoxAJrFEaFOyW5ZZGKj6wGv6/eFkOHPHXpFx7c2fBVKt4R0tDviT075tckJTc/GFXPDGg5lVIniqXiKztLU5Jx7dzGYOcSNjY6pfxjORvJQBX1hkrh5N5i5Su2tvzU8bspe6XHZv9Ba7Pfi2H/K8FKULs4KPF5iDrSp66j6fISkTFeBRCRASFXzr5t5nibibzCRDyXxdAQkpw4sarpykOzgaHkZROgGXsoTmZhyAs6b70r+P3NA5uA7NsaeVnygVwjK6vwylpHsrCsaIP6MQWda1yxX6Y8Z/nY1EQkc3dMvoDSyJlIJxdB5RWxnWZ+sJdirLS6g2CjtRpVS6pjdPmljdOARd5zj2CZSij8tXbxXiFh5VcvwEcpEmy88tOxvDd/0HfPcY+SKKzlKxYKmKMXEQZkMKx1NSDFM3KmhJX1oligg7/w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2532.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(376002)(39860400002)(366004)(396003)(71200400001)(4326008)(8676002)(2906002)(66446008)(64756008)(66556008)(54906003)(66476007)(52536014)(6506007)(53546011)(33656002)(110136005)(76116006)(83380400001)(7696005)(478600001)(5660300002)(26005)(86362001)(8936002)(9686003)(66946007)(316002)(55016002)(186003)(41533002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?cnA0NEtUUE9zK0ZxS1hyRmNmUTU4UE5ZQjhNNzF2TmFVdVY3QkI1QzdLWnVF?=
- =?utf-8?B?eWFHbldERkJzR3o4dkJlZEpzRVNNQnhpdGVKUjhTUW1aWlNmdzY4WC81TG1p?=
- =?utf-8?B?ek51SStaNkxIdjN0VVBxMjQ2YW80MUxrV1NyaFIvamRST0o3ckRzQXkyajJ1?=
- =?utf-8?B?c3ZKVFRvM2lzSVcrcUNyckJxbnA0Znp6MURHRFNJQmg4T21WUy84eDBxTkhr?=
- =?utf-8?B?dHplUWx0Q0hoS3JOK3AzZ0hGZzVIRHBHNmIvS0tzNU5wVUlkTDROUXNjTlNa?=
- =?utf-8?B?R0QvY2hCcTBjSkdFd29EdFQwNGZwQUV3R2JMQUR2c21MbW5JQWRhNG9uZkpP?=
- =?utf-8?B?aThyN0J6ek9OUGFCQSt3S3FSdWpMcWlTY05EdWcxanl1U2lVT01RdG9iblNB?=
- =?utf-8?B?Ykx4VjZoTE1WK3BGUFEzczJoelpyUytDaGZQTzdTQ1BPQjlmZk00aHBGejhE?=
- =?utf-8?B?OTZyU3FtRTBMdHZUQ1R6WTJGVGZYOWxLTFhMTkJaemxQZnpNVkk0bG9NM3VS?=
- =?utf-8?B?cEVsTS9PSTFaVTk1Rm1FcGUvd0VEWXZIc2FEKy9FUnZ6RjZKSDFXWk5jTDQw?=
- =?utf-8?B?NEJSUCt2WDJNZU04djZUTllKM01iTUE4cEFURGlCNGU0VnNTZVZHaERoMHBa?=
- =?utf-8?B?NkV0azdJY0M2ZXFVZmM2QWxnYUtHdWRBZzN3WFpTRm1aajBxd05JajIrbW5m?=
- =?utf-8?B?eVJMUTUzdWxBR0ttSW5jYXYwOFlqbm5PcTRTNVRCdWc5Vk1CY2VsQjkxNkVk?=
- =?utf-8?B?d3RxOVp2Wlh0MTdmTGtxV25waTdHalk3M25RSnBYVUQxK0VsL3pEWURNcXBx?=
- =?utf-8?B?VE02YTByeDVNYmFYeHhyUjVkbVo3L2Q4VlgxSWhhYzZoRnE0eVVrY1MxMW0x?=
- =?utf-8?B?Ui8vdVdRRlkzUzlWWjFzWUpyNkxuSis1NkxaRHI2WjZjeFlHSUwwTEU4UFJ5?=
- =?utf-8?B?NVZrdXRkamp2ZkN0blp3d2swbTRoTnZaVkdHNGdPbkxWeG5HdW5WbXhtWTdL?=
- =?utf-8?B?YTBPYm1ZSU4wQTVkR2NpbWswdUlUM0l6VUg5YndCNEFlWWhKN1h2QjM1alFj?=
- =?utf-8?B?czVJdzl1WmVUc0JIS0ZWdFZzOTNnemwzU1BEQVM3MDJ3a1ROZzZEbFZKRjU3?=
- =?utf-8?B?VTEyT0JQNnJCdXd5d3ArUjNETk5wQnZvOFVtclVkNlYycXdvbE0wNVZteTJO?=
- =?utf-8?B?UlFPV1oyNXFGTmVwR3JKNzErSkZ2NWJMNDZQRSthK3lVL1ozaHlZc1dRQzRV?=
- =?utf-8?B?YkJwUDd6YnU2bXp4YmY4ZzM4Rm1zSTE2bGh6UU5oTnhycUtqY2o5d3BvUlRh?=
- =?utf-8?B?bVNMZWJ1eG1CekhTRGlWbkwrT0xaSkpoY2pmSmtMM1d0N0xDb1JLMDZNcVNY?=
- =?utf-8?B?Q2d4QnUrQkZHVVN6Z05neng0d2FPWU9IWG5vMjdYSHExUnpnT2ZOMmVGc3hE?=
- =?utf-8?B?V0E0bVJNeUJSRlpiM2ZkYms5U1dWZDRvcDdxU2JvYUYwRVlmaSthZXQvZjYx?=
- =?utf-8?B?YW1jenI3TUNTaFRDWHdkcTE0b1FBOTlKbzY2Y1RpSVZOdXptSC9sblhGeERh?=
- =?utf-8?B?N3B4SnBDczNUZk9sT0orY29JU2VGM1FDYVlHaXBZS2toWGZnTlMzTWFhSjJE?=
- =?utf-8?B?c2hsTUMzSTBHMnFmOStQVHhGMTh2aFd2NkZib0RnSzZscEw2VC91UlZ1RGdF?=
- =?utf-8?B?ZEh5SU9reE54eFp5VWFmY21tckEyRDJabjVoemZ1RlNPN3hBVDBWd1BHNkMx?=
- =?utf-8?Q?eLWbRnX2CFFG7fNOXJ9wtouK8ylKMhsnR4Y8iuD?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S232348AbhBJRNR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Feb 2021 12:13:17 -0500
+Received: from mga06.intel.com ([134.134.136.31]:9584 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232268AbhBJRND (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Feb 2021 12:13:03 -0500
+IronPort-SDR: T0i4wtMoxzMP5YiHqqMu357fK3czw/KExWKAg/uGBaf5ozLOFbLt9yTlxrRv1eMEy6lk4rfvdv
+ 2MM3ZJvQtfmA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9891"; a="243604330"
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="243604330"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 09:12:23 -0800
+IronPort-SDR: gMm2mKN0/k74lFJhL8nLbTGtoD+75+sv46htPaw+qKb6z0xRhC/u679/ij2sJVHKO+MScDoIpm
+ ypsg+9nfu30w==
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="362216728"
+Received: from lgrunes-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.135.4])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 09:12:22 -0800
+Date:   Wed, 10 Feb 2021 09:12:20 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v2 1/8] cxl/mem: Introduce a driver for CXL-2.0-Type-3
+ endpoints
+Message-ID: <20210210171220.67bncvfxqwg5wtu4@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+ <20210210000259.635748-2-ben.widawsky@intel.com>
+ <20210210161707.000073ab@Huawei.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2532.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b93ab76-fff6-47c8-0a5c-08d8cde5a3fe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2021 17:02:25.3975
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wcMqbpGYJT0AGPH44X+TfVNBXrcNNyu284U/Ze1o2b/1IspFI3a0tvIXE0LfAQwVDIknOxuGE/6ccjL/XCYKMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4737
-X-OriginatorOrg: Nvidia.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1612976584; bh=E37qn+qMy+qVbVksx0bmpSipWTtEMxQKtPV7A6e7sDU=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:From:To:
-         CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:References:
-         In-Reply-To:Accept-Language:Content-Language:X-MS-Has-Attach:
-         X-MS-TNEF-Correlator:msip_labels:authentication-results:
-         x-originating-ip:x-ms-publictraffictype:
-         x-ms-office365-filtering-correlation-id:x-ms-traffictypediagnostic:
-         x-microsoft-antispam-prvs:x-header:x-ms-oob-tlc-oobclassifiers:
-         x-ms-exchange-senderadcheck:x-microsoft-antispam:
-         x-microsoft-antispam-message-info:x-forefront-antispam-report:
-         x-ms-exchange-antispam-messagedata:x-ms-exchange-transport-forked:
-         Content-Type:Content-Transfer-Encoding:MIME-Version:
-         X-MS-Exchange-CrossTenant-AuthAs:
-         X-MS-Exchange-CrossTenant-AuthSource:
-         X-MS-Exchange-CrossTenant-Network-Message-Id:
-         X-MS-Exchange-CrossTenant-originalarrivaltime:
-         X-MS-Exchange-CrossTenant-fromentityheader:
-         X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-         X-MS-Exchange-CrossTenant-userprincipalname:
-         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-        b=Xbo4gCr8UJ6RUBkSyPvMqaWsAGHAjD4fU1O+As2bF9J7uSER5YBZF58iyIU/vyL1s
-         q9kljgbOHAiysY4gPOddvQlhW32NObXR0SC/kPPj9biGmOHoospPceFYQACVZJqcwh
-         6dc/Sxkk+1mGPLlMt+8orOAHFhX5QLppy917pagdLOcB/1lsBltIhrAWLHidLx1GSE
-         kMV8UJoXgZTILVy5yWvfE4FcwNbw75bPqSF+xApUU3hnbDZLRmzebzBv6kXsSxNE1x
-         4coyZQ+bYKRWd8f2gRAE2GRgWs/b+0DB513sd9YWWpB5MMogZR43lb+4riZPhD5OnK
-         GHNPrBf0iu0IA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210210161707.000073ab@Huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgRGFuLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IERhbiBXaWxs
-aWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBGZWJydWFy
-eSA5LCAyMDIxIDk6NTUgUE0NCj4gVG86IGxpbnV4LWN4bEB2Z2VyLmtlcm5lbC5vcmc7IExpbnV4
-IEFDUEkgPGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPg0KPiBDYzogTmF0dSwgTWFoZXNoIDxt
-YWhlc2gubmF0dUBpbnRlbC5jb20+OyBDaGV0IFIgRG91Z2xhcw0KPiA8Y2hldC5yLmRvdWdsYXNA
-aW50ZWwuY29tPjsgQmVuIFdpZGF3c2t5IDxiZW4ud2lkYXdza3lAaW50ZWwuY29tPjsgVmlzaGFs
-IEwNCj4gVmVybWEgPHZpc2hhbC5sLnZlcm1hQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1JGQ10g
-QUNQSSBDb2RlIEZpcnN0IEVDUjogR2VuZXJpYyBUYXJnZXQNCj4gDQo+IEV4dGVybmFsIGVtYWls
-OiBVc2UgY2F1dGlvbiBvcGVuaW5nIGxpbmtzIG9yIGF0dGFjaG1lbnRzDQo+IA0KPiANCj4gV2hp
-bGUgdGhlIHBsYXRmb3JtIEJJT1MgaXMgYWJsZSB0byBkZXNjcmliZSB0aGUgcGVyZm9ybWFuY2UN
-Cj4gY2hhcmFjdGVyaXN0aWNzIG9mIENYTCBtZW1vcnkgdGhhdCBpcyBwcmVzZW50IGF0IGJvb3Qs
-IGl0IGlzIHVuYWJsZSB0bw0KPiBzdGF0aWNhbGx5IGVudW1lcmF0ZSB0aGUgcGVyZm9ybWFuY2Ug
-b2YgQ1hMIG1lbW9yeSBob3QgaW5zZXJ0ZWQNCj4gcG9zdC1ib290LiBUaGUgT1MgY2FuIGVudW1l
-cmF0ZSBtb3N0IG9mIHRoZSBjaGFyYWN0ZXJpc3RpY3MgZnJvbSBsaW5rDQo+IHJlZ2lzdGVycyBh
-bmQgQ0RBVCwgYnV0IHRoZSBwZXJmb3JtYW5jZSBmcm9tIHRoZSBDUFUgdG8gdGhlIGhvc3QNCj4g
-YnJpZGdlLCBmb3IgZXhhbXBsZSwgaXMgbm90IGVudW1lcmF0ZWQgYnkgUENJRSBvciBDWEwuIElu
-dHJvZHVjZSBhbg0KPiBBQ1BJIG1lY2hhbmlzbSBmb3IgdGhpcyBwdXJwb3NlLiBDcml0aWNhbGx5
-IHRoaXMgaXMgYWNoaWV2ZWQgd2l0aCBhDQo+IHNtYWxsIHR3ZWFrIHRvIGhvdyB0aGUgZXhpc3Rp
-bmcgR2VuZXJpYyBJbml0aWF0b3IgcHJveGltaXR5IGRvbWFpbiBpcw0KPiB1dGlsaXplZCBpbiB0
-aGUgSE1BVC4NCj4gDQo+IC0tLQ0KPiANCj4gIyBUaXRsZTogSW50cm9kdWNlIGEgR2VuZXJpYyBU
-YXJnZXQgZm9yIENYTA0KPiANCj4gIyBTdGF0dXM6IERyYWZ0DQo+IA0KPiAjIERvY3VtZW50OiBB
-Q1BJIFNwZWNpZmljYXRpb24gNi40DQo+IA0KPiAjIExpY2Vuc2UNCj4gU1BEWC1MaWNlbnNlIElk
-ZW50aWZpZXI6IENDLUJZLTQuMA0KPiANCj4gIyBTdWJtaXR0ZXI6DQo+ICogU3BvbnNvcjogRGFu
-IFdpbGxpYW1zLCBJbnRlbA0KPiAqIENyZWF0b3JzL0NvbnRyaWJ1dG9yczoNCj4gICAgICogTWFo
-ZXNoIE5hdHUsIEludGVsDQo+ICAgICAqIENoZXQgRG91Z2xhcywgSW50ZWwNCj4gICAgICogRGVl
-cGFrIFNoaXZha3VtYXIsIEludGVsDQo+IA0KPiAjIFN1bW1hcnkgb2YgdGhlIENoYW5nZQ0KPiBJ
-bnRyb2R1Y2UgYSAiR2VuZXJpYyBUYXJnZXQiIGNvbmNlcHQgdG8gdGhlIFNSQVQgdG8gZGVzY3Jp
-YmUgdGhlIHJvb3QNCj4gcGVyZm9ybWFuY2UgcGFyYW1ldGVycyBpbiB0aGUgcGF0aCB0byBkeW5h
-bWljYWxseSBkaXNjb3ZlcmVkIChvdXRzaWRlIG9mDQo+IEFDUEkgZW51bWVyYXRpb24pIENYTCBt
-ZW1vcnkgdGFyZ2V0IGVuZHBvaW50cy4NCj4gDQo+ICMgQmVuZWZpdHMgb2YgdGhlIENoYW5nZQ0K
-PiBDb25zaWRlciB0aGUgY2FzZSBvZiBhIHN5c3RlbSB3aXRoIGEgc2V0IG9mIENYTCBob3N0IGJy
-aWRnZXMgKEFDUEkwMDE2KSwNCj4gYW5kIG5vIGRldmljZXMgYXR0YWNoZWQgYXQgaW5pdGlhbCBz
-eXN0ZW0gcG93ZXItb24uIEluIHRoaXMgc2NlbmFyaW8NCj4gcGxhdGZvcm0gZmlybXdhcmUgaXMg
-dW5hYmxlIHRvIHBlcmZvcm0gdGhlIGVuZC10by1lbmQgZW51bWVyYXRpb24NCj4gbmVjZXNzYXJ5
-IHRvIHBvcHVsYXRlIFNSQVQgYW5kIEhNQVQgZm9yIHRoZSBlbmRwb2ludHMgdGhhdCBtYXkgYmUN
-Cj4gaG90LWluc2VydGVkIGJlaGluZCB0aG9zZSBicmlkZ2VzIHBvc3QgcG93ZXItb24uIFRoZSBh
-ZGRyZXNzLXJhbmdlIGlzDQo+IHVua25vd24gc28gU1JBVCBjYW4gbm90IGJlIHByZS1wb3B1bGF0
-ZWQsIHRoZSBwZXJmb3JtYW5jZSBpcyB1bmtub3duIChubw0KPiBDREFUIG5vciBpbnRlcmxlYXZl
-IGNvbmZpZ3VyYXRpb24pIHNvIEhNQVQgY2FuIG5vdCBiZSBwcmUtcG9wdWxhdGVkLg0KPiANCj4g
-SG93ZXZlciwgd2hhdCBpcyBrbm93biB0byBwbGF0Zm9ybSBmaXJtd2FyZSB0aGF0IGdlbmVyYXRl
-cyB0aGUgU1JBVCBhbmQNCj4gSE1BVCBpcyB0aGUgcGVyZm9ybWFuY2UgY2hhcmFjdGVyaXN0aWNz
-IG9mIHRoZSBwYXRoIGJldHdlZW4gQ1BVIGFuZA0KPiBHZW5lcmljIEluaXRpYXRvcnMgdG8gdGhl
-IENYTCBob3N0IGJyaWRnZSB0YXJnZXQuIFdpdGggZWl0aGVyDQo+IENQVS10by1HZW5lcmljLVRh
-cmdldCwgb3IgR2VuZXJpYy1Jbml0aWF0b3ItdG8tR2VuZXJpYy1UYXJnZXQgZW50cmllcyBpbg0K
-PiB0aGUgSE1BVCB0aGUgT1MgQ1hMIHN1YnN5c3RlbSBjYW4gZW51bWVyYXRlIHRoZSByZW1haW5p
-bmcgZGV0YWlscyAoUENJRQ0KPiBsaW5rIHN0YXR1cywgZGV2aWNlIENEQVQsIGludGVybGVhdmUg
-Y29uZmlndXJhdGlvbikgdG8gY2FsY3VsYXRlIHRoZQ0KPiBiYW5kd2lkdGggYW5kIGxhdGVuY3kg
-b2YgYSBkeW5hbWljYWxseSBkaXNjb3ZlcmVkIENYTCBtZW1vcnkgdGFyZ2V0Lg0KPiANCldoYXQg
-aWYgdGhlcmUgaXMgYSBDWEwgc3dpdGNoIHdpdGggYSBHZW5lcmljIEluaXRpYXRvciBhbmQgQ1hM
-IHR5cGUgMyBtZW1vcnkNCndoaWNoIGNvdWxkIGJlIGhvdHBsdWdnZWQgaW4uIA0KSSBmb3JnZXQg
-aWYgdGhlIEdJIHRvIHR5cGUgMyBtZW1vcnkgcGF0aCBpcyBPTkxZIHRocm91Z2ggdGhlIGhvc3Qg
-YnJpZGdlIHRvZGF5IGluIDIuMCANCm9yIGFsc28gYWxsb3dlZCB0aHJvdWdoIHRoZSBzd2l0Y2gu
-IEluIGZ1dHVyZSB3ZSB3b3VsZCB3YW50IGl0IGFsbG93ZWQgdGhyb3VnaA0KdGhlIHN3aXRjaCBm
-b3Igc3VyZSwganVzdCBsaWtlIFBDSWUgcDJwLiANClNvIGhvdyB3b3VsZCB0aGUgc3dpdGNoIHJv
-dXRlIGxhdGVuY3kvQlcgYmUgZGlzY292ZXJlZD8NCkFsc28sIGFuIGV4YW1wbGUgd2l0aCBudW1i
-ZXJzIG9mIHdoYXQgd291bGQgYmUgaW4gSE1BVCBtYXkgaGVscCB1bmRlcnN0YW5kIHRoZSBjYXNl
-DQp3aGVyZSBldmVyeXRoaW5nIGlzIG9ubHkgY29ubmVjdGVkIHZpYSBob3N0IGJyaWRnZSBhbHNv
-LiANCg0KPiAjIEltcGFjdCBvZiB0aGUgQ2hhbmdlDQo+IFRoZSBleGlzdGluZyBHZW5lcmljIElu
-aXRpYXRvciBBZmZpbml0eSBTdHJ1Y3R1cmUgKEFDUEkgNi40IFNlY3Rpb24NCj4gNS4yLjE2LjYp
-IGFscmVhZHkgY29udGFpbnMgYWxsIHRoZSBmaWVsZHMgbmVjZXNzYXJ5IHRvIGVudW1lcmF0ZSBh
-DQo+IGdlbmVyaWMgdGFyZ2V0IHByb3hpbWl0eSBkb21haW4uIEFsbCB0aGF0IGlzIG1pc3Npbmcg
-aXMgdGhlDQo+IGludGVycHJldGF0aW9uIG9mIHRoYXQgcHJveGltaXR5IGRvbWFpbiBvcHRpb25h
-bGx5IGFzIGEgdGFyZ2V0DQo+IGlkZW50aWZpZXIgaW4gdGhlIEhNQVQuDQo+IA0KPiBHaXZlbiB0
-aGF0IHRoZSBPUyBzdGlsbCBuZWVkcyB0byBkeW5hbWljYWxseSBlbnVtZXJhdGUgYW5kIGluc3Rh
-bnRpYXRlDQo+IHRoZSBtZW1vcnkgcmFuZ2VzIGJlaGluZCB0aGUgaG9zdCBicmlkZ2UuIFRoZSBh
-c3N1bXB0aW9uIGlzIHRoYXQNCj4gb3BlcmF0aW5nIHN5c3RlbXMgdGhhdCBkbyBub3Qgc3VwcG9y
-dCBuYXRpdmUgQ1hMIGVudW1lcmF0aW9uIHdpbGwgaWdub3JlDQo+IHRoaXMgZGF0YSBpbiB0aGUg
-SE1BVCwgd2hpbGUgQ1hMIG5hdGl2ZSBlbnVtZXJhdGlvbiBhd2FyZSBlbnZpcm9ubWVudHMNCj4g
-d2lsbCB1c2UgdGhpcyBmcmFnbWVudCBvZiB0aGUgcGVyZm9ybWFuY2UgcGF0aCB0byBjYWxjdWxh
-dGUgdGhlDQo+IHBlcmZvcm1hbmNlIGNoYXJhY3RlcmlzdGljcy4NCj4gDQo+ICMgUmVmZXJlbmNl
-cw0KPiAqIENvbXB1dGUgRXhwcmVzcyBMaW5rIFNwZWNpZmljYXRpb24gdjIuMCwNCj4gPGh0dHBz
-Oi8vd3d3LmNvbXB1dGVleHByZXNzbGluay5vcmcvPg0KPiANCj4gIyBEZXRhaWxlZCBEZXNjcmlw
-dGlvbiBvZiB0aGUgQ2hhbmdlDQo+IA0KPiAqIFJlcGxhY2UgIkdlbmVyaWMgSW5pdGlhdG9yIiB3
-aXRoICJHZW5lcmljIEluaXRpYXRvciAvIFRhcmdldCIgaW4gYWxsDQo+IGxvY2F0aW9ucyBleGNl
-cHQgd2hlcmUgYW4gImluaXRpYXRvciIgb3IgInRhcmdldCIgaXMgaW1wbGllZC4NCj4gU3BlY2lm
-aWNhbGx5IDUuMi4yNy4zICJNZW1vcnkgUHJveGltaXR5IERvbWFpbiBBdHRyaWJ1dGVzIFN0cnVj
-dHVyZSINCj4gbmVlZCBub3QgcmVwbGFjZSBvY2N1cnJlbmNlcyBvZiAiZ2VuZXJpYyBpbml0aWF0
-b3IiIGluIGZpZWxkOiAiUHJveGltaXR5DQo+IERvbWFpbiBmb3IgQXR0YWNoZWQgSW5pdGlhdG9y
-Ii4gQWRkaXRpb25hbGx5IGZpZWxkOiAiUHJveGltaXR5IERvbWFpbg0KPiBmb3IgdGhlIE1lbW9y
-eSIgbXVzdCBiZSByZW5hbWVkIHRvICJQcm94aW1pdHkgRG9tYWluIGZvciB0aGUgTWVtb3J5IC8N
-Cj4gR2VuZXJpYyBUYXJnZXQiIHdpdGggYSBuZXcgZGVzY3JpcHRpb24gIkludGVnZXIgdGhhdCBy
-ZXByZXNlbnRzIHRoZQ0KPiBtZW1vcnkgLyBnZW5lcmljIHRhcmdldCBwcm94aW1pdHkgZG9tYWlu
-IHRvIHdoaWNoIHRoaXMgbWVtb3J5IGJlbG9uZ3MuIg0KPiANCj4gKiBSZXZpc2UgIjUuMi4xNi42
-IEdlbmVyaWMgSW5pdGlhdG9yIEFmZmluaXR5IFN0cnVjdHVyZSIgdG8gbWFrZSBpdA0KPiAgIGNv
-bnNpc3RlbnQgd2l0aCBiZWluZyByZWZlcmVuY2VkIGFzIGVpdGhlciBhIHRhcmdldCBvciBpbml0
-aWF0b3IuDQo+IA0KPiAgICAgICAgICogRGVzY3JpcHRpb246IChyZXBsYWNlIGFsbCB0ZXh0KQ0K
-PiANCj4gICAgICAgICA+IFRoZSBHZW5lcmljIEluaXRpYXRvciAvIFRhcmdldCBBZmZpbml0eSBT
-dHJ1Y3R1cmUgcHJvdmlkZXMgdGhlDQo+ICAgICAgICAgPiBhc3NvY2lhdGlvbiBiZXR3ZWVuIGEg
-R2VuZXJpYyBJbml0aWF0b3IgYW5kIGEgTWVtb3J5IFByb3hpbWl0eQ0KPiAgICAgICAgID4gRG9t
-YWluLCBvciBhbm90aGVyIEdlbmVyaWMgVGFyZ2V0IFByb3hpbWl0eSBEb21haW4uIFRoZQ0KPiAg
-ICAgICAgID4gZGlzdGluY3Rpb24gYXMgdG8gd2hldGhlciB0aGlzIHN0cnVjdHVyZSByZXByZXNl
-bnRzIGFuDQo+ICAgICAgICAgPiBJbml0aWF0b3IsIGEgVGFyZ2V0LCBvciBib3RoIGRlcGVuZHMg
-b24gaG93IGl0IGlzIHJlZmVyZW5jZWQNCj4gICAgICAgICA+IGluIHRoZSBITUFULiBTZWUgU2Vj
-dGlvbiA1LjIuMjcuMyBmb3IgZGV0YWlscy4NCj4gDQo+ICAgICAgICAgPiBTdXBwb3J0IG9mIEdl
-bmVyaWMgSW5pdGlhdG9yIC8gVGFyZ2V0IEFmZmluaXR5IFN0cnVjdHVyZXMgYnkNCj4gICAgICAg
-ICA+IE9TUE0gaXMgb3B0aW9uYWwsIGFuZCB0aGUgcGxhdGZvcm0gbWF5IHF1ZXJ5IHdoZXRoZXIg
-dGhlIE9TDQo+ICAgICAgICAgPiBzdXBwb3J0cyBpdCB2aWEgdGhlIF9PU0MgbWV0aG9kLiBTZWUg
-U2VjdGlvbiA2LjIuMTEuMi4NCj4gDQo+ICAgICAgICAgKiBBcmNoaXRlY3R1cmFsIHRyYW5zYWN0
-aW9uczogKGFwcGVuZCBhZnRlciBjdXJyZW50IHRleHQpDQo+IA0KPiAgICAgICAgID4gSWYgdGhp
-cyBwcm94aW1pdHkgZG9tYWluIGlzIHJlZmVyZW5jZWQgYXMgYSB0YXJnZXQgdGhlbiBpdA0KPiAg
-ICAgICAgID4gc3VwcG9ydHMgYWxsIHRoZSB0cmFuc2FjdGlvbiB0eXBlcyBpbmZlcnJlZCBhYm92
-ZS4NCj4gDQo+ICAgICAgICAgKiBPdGhlciB1cGRhdGVzIGFyZSBzaW1wbGUgSW5pdGlhdG9yID0+
-IEluaXRpYXRvciAvIFRhcmdldA0KPiAgICAgICAgICAgcmVwbGFjZW1lbnRzLg0K
+On 21-02-10 16:17:07, Jonathan Cameron wrote:
+> On Tue, 9 Feb 2021 16:02:52 -0800
+> Ben Widawsky <ben.widawsky@intel.com> wrote:
+> 
+> > From: Dan Williams <dan.j.williams@intel.com>
+> > 
+> > The CXL.mem protocol allows a device to act as a provider of "System
+> > RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+> > was attached to the typical CPU memory controller.
+> > 
+> > With the CXL-2.0 specification a PCI endpoint can implement a "Type-3"
+> > device interface and give the operating system control over "Host
+> > Managed Device Memory". See section 2.3 Type 3 CXL Device.
+> > 
+> > The memory range exported by the device may optionally be described by
+> > the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+> > provision persistent memory capacity from one, or more, CXL.mem devices.
+> > 
+> > A pre-requisite for Linux-managed memory-capacity provisioning is this
+> > cxl_mem driver that can speak the mailbox protocol defined in section
+> > 8.2.8.4 Mailbox Registers.
+> > 
+> > For now just land the initial driver boiler-plate and Documentation/
+> > infrastructure.
+> > 
+> > Link: https://www.computeexpresslink.org/download-the-specification
+> > Cc: Jonathan Corbet <corbet@lwn.net>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > Acked-by: David Rientjes <rientjes@google.com> (v1)
+> 
+> A few trivial bits inline but nothing that I feel that strongly about.
+> It is probably a good idea to add a note about generic dvsec code
+> somewhere in this patch description (to avoid people raising it on
+> future versions!)
+> 
+> With the define of PCI_EXT_CAP_ID_DVSEC dropped (it's in the generic
+> header already).
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> > ---
+> >  Documentation/driver-api/cxl/index.rst        | 12 ++++
+> >  .../driver-api/cxl/memory-devices.rst         | 29 +++++++++
+> >  Documentation/driver-api/index.rst            |  1 +
+> >  drivers/Kconfig                               |  1 +
+> >  drivers/Makefile                              |  1 +
+> >  drivers/cxl/Kconfig                           | 35 +++++++++++
+> >  drivers/cxl/Makefile                          |  4 ++
+> >  drivers/cxl/mem.c                             | 63 +++++++++++++++++++
+> >  drivers/cxl/pci.h                             | 18 ++++++
+> >  include/linux/pci_ids.h                       |  1 +
+> >  10 files changed, 165 insertions(+)
+> >  create mode 100644 Documentation/driver-api/cxl/index.rst
+> >  create mode 100644 Documentation/driver-api/cxl/memory-devices.rst
+> >  create mode 100644 drivers/cxl/Kconfig
+> >  create mode 100644 drivers/cxl/Makefile
+> >  create mode 100644 drivers/cxl/mem.c
+> >  create mode 100644 drivers/cxl/pci.h
+> > 
+> > diff --git a/Documentation/driver-api/cxl/index.rst b/Documentation/driver-api/cxl/index.rst
+> > new file mode 100644
+> > index 000000000000..036e49553542
+> > --- /dev/null
+> > +++ b/Documentation/driver-api/cxl/index.rst
+> > @@ -0,0 +1,12 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +
+> > +====================
+> > +Compute Express Link
+> > +====================
+> > +
+> > +.. toctree::
+> > +   :maxdepth: 1
+> > +
+> > +   memory-devices
+> > +
+> > +.. only::  subproject and html
+> > diff --git a/Documentation/driver-api/cxl/memory-devices.rst b/Documentation/driver-api/cxl/memory-devices.rst
+> > new file mode 100644
+> > index 000000000000..43177e700d62
+> > --- /dev/null
+> > +++ b/Documentation/driver-api/cxl/memory-devices.rst
+> > @@ -0,0 +1,29 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +.. include:: <isonum.txt>
+> > +
+> > +===================================
+> > +Compute Express Link Memory Devices
+> > +===================================
+> > +
+> > +A Compute Express Link Memory Device is a CXL component that implements the
+> > +CXL.mem protocol. It contains some amount of volatile memory, persistent memory,
+> > +or both. It is enumerated as a PCI device for configuration and passing
+> > +messages over an MMIO mailbox. Its contribution to the System Physical
+> > +Address space is handled via HDM (Host Managed Device Memory) decoders
+> > +that optionally define a device's contribution to an interleaved address
+> > +range across multiple devices underneath a host-bridge or interleaved
+> > +across host-bridges.
+> > +
+> > +Driver Infrastructure
+> > +=====================
+> > +
+> > +This section covers the driver infrastructure for a CXL memory device.
+> > +
+> > +CXL Memory Device
+> > +-----------------
+> > +
+> > +.. kernel-doc:: drivers/cxl/mem.c
+> > +   :doc: cxl mem
+> > +
+> > +.. kernel-doc:: drivers/cxl/mem.c
+> > +   :internal:
+> > diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
+> > index 2456d0a97ed8..d246a18fd78f 100644
+> > --- a/Documentation/driver-api/index.rst
+> > +++ b/Documentation/driver-api/index.rst
+> > @@ -35,6 +35,7 @@ available subsections can be seen below.
+> >     usb/index
+> >     firewire
+> >     pci/index
+> > +   cxl/index
+> >     spi
+> >     i2c
+> >     ipmb
+> > diff --git a/drivers/Kconfig b/drivers/Kconfig
+> > index dcecc9f6e33f..62c753a73651 100644
+> > --- a/drivers/Kconfig
+> > +++ b/drivers/Kconfig
+> > @@ -6,6 +6,7 @@ menu "Device Drivers"
+> >  source "drivers/amba/Kconfig"
+> >  source "drivers/eisa/Kconfig"
+> >  source "drivers/pci/Kconfig"
+> > +source "drivers/cxl/Kconfig"
+> >  source "drivers/pcmcia/Kconfig"
+> >  source "drivers/rapidio/Kconfig"
+> >  
+> > diff --git a/drivers/Makefile b/drivers/Makefile
+> > index fd11b9ac4cc3..678ea810410f 100644
+> > --- a/drivers/Makefile
+> > +++ b/drivers/Makefile
+> > @@ -73,6 +73,7 @@ obj-$(CONFIG_NVM)		+= lightnvm/
+> >  obj-y				+= base/ block/ misc/ mfd/ nfc/
+> >  obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+> >  obj-$(CONFIG_DAX)		+= dax/
+> > +obj-$(CONFIG_CXL_BUS)		+= cxl/
+> >  obj-$(CONFIG_DMA_SHARED_BUFFER) += dma-buf/
+> >  obj-$(CONFIG_NUBUS)		+= nubus/
+> >  obj-y				+= macintosh/
+> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> > new file mode 100644
+> > index 000000000000..9e80b311e928
+> > --- /dev/null
+> > +++ b/drivers/cxl/Kconfig
+> > @@ -0,0 +1,35 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only
+> > +menuconfig CXL_BUS
+> > +	tristate "CXL (Compute Express Link) Devices Support"
+> > +	depends on PCI
+> > +	help
+> > +	  CXL is a bus that is electrically compatible with PCI Express, but
+> > +	  layers three protocols on that signalling (CXL.io, CXL.cache, and
+> > +	  CXL.mem). The CXL.cache protocol allows devices to hold cachelines
+> > +	  locally, the CXL.mem protocol allows devices to be fully coherent
+> > +	  memory targets, the CXL.io protocol is equivalent to PCI Express.
+> > +	  Say 'y' to enable support for the configuration and management of
+> > +	  devices supporting these protocols.
+> > +
+> > +if CXL_BUS
+> > +
+> > +config CXL_MEM
+> > +	tristate "CXL.mem: Memory Devices"
+> > +	help
+> > +	  The CXL.mem protocol allows a device to act as a provider of
+> > +	  "System RAM" and/or "Persistent Memory" that is fully coherent
+> > +	  as if the memory was attached to the typical CPU memory
+> > +	  controller.
+> > +
+> > +	  Say 'y/m' to enable a driver (named "cxl_mem.ko" when built as
+> > +	  a module) that will attach to CXL.mem devices for
+> > +	  configuration, provisioning, and health monitoring. This
+> > +	  driver is required for dynamic provisioning of CXL.mem
+> > +	  attached memory which is a prerequisite for persistent memory
+> > +	  support. Typically volatile memory is mapped by platform
+> > +	  firmware and included in the platform memory map, but in some
+> > +	  cases the OS is responsible for mapping that memory. See
+> > +	  Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
+> > +
+> > +	  If unsure say 'm'.
+> > +endif
+> > diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+> > new file mode 100644
+> > index 000000000000..4a30f7c3fc4a
+> > --- /dev/null
+> > +++ b/drivers/cxl/Makefile
+> > @@ -0,0 +1,4 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +obj-$(CONFIG_CXL_MEM) += cxl_mem.o
+> > +
+> > +cxl_mem-y := mem.o
+> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > new file mode 100644
+> > index 000000000000..99a6571508df
+> > --- /dev/null
+> > +++ b/drivers/cxl/mem.c
+> > @@ -0,0 +1,63 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
+> > +#include <linux/module.h>
+> > +#include <linux/pci.h>
+> > +#include <linux/io.h>
+> > +#include "pci.h"
+> > +
+> > +static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
+> > +{
+> > +	int pos;
+> > +
+> > +	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
+> > +	if (!pos)
+> > +		return 0;
+> > +
+> > +	while (pos) {
+> > +		u16 vendor, id;
+> > +
+> > +		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER1, &vendor);
+> > +		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER2, &id);
+> > +		if (vendor == PCI_DVSEC_VENDOR_ID_CXL && dvsec == id)
+> > +			return pos;
+> > +
+> > +		pos = pci_find_next_ext_capability(pdev, pos,
+> > +						   PCI_EXT_CAP_ID_DVSEC);
+> > +	}
+> > +
+> > +	return 0;
+> 
+> Christopher Hellwig raised this in v1. 
+> 
+> https://lore.kernel.org/linux-pci/20201104201141.GA399378@bjorn-Precision-5520/
+> 
+> +CC Dave Jiang for update on that.
+> 
+> This wants to move towards a generic helper.  We can do the deduplication
+> later as Bjorn suggested.
+> 
+> > +}
+> > +
+> > +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > +{
+> > +	struct device *dev = &pdev->dev;
+> > +	int regloc;
+> > +
+> > +	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
+> > +	if (!regloc) {
+> > +		dev_err(dev, "register location dvsec not found\n");
+> > +		return -ENXIO;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct pci_device_id cxl_mem_pci_tbl[] = {
+> > +	/* PCI class code for CXL.mem Type-3 Devices */
+> > +	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+> > +	  PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF, 0xffffff, 0 },
+> 
+> Having looked at this and thought 'thats a bit tricky to check'
+> I did a quick grep and seems the kernel is split between this approach
+> and people going with the mor readable c99 style initiators
+> 	.class = .. etc
+> 
+> Personally I'd find the c99 approach easier to read. 
+> 
+
+Well, it's Dan's patch, but I did modify this last. I took a look around, and
+the best fit seems to me seems to be:
+-       { PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+-         PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF, 0xffffff, 0 },
++       { PCI_DEVICE_CLASS((PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF), ~0)},
+
+That work for you?
+
+> > +	{ /* terminate list */ },
+> > +};
+> > +MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+> > +
+> > +static struct pci_driver cxl_mem_driver = {
+> > +	.name			= KBUILD_MODNAME,
+> > +	.id_table		= cxl_mem_pci_tbl,
+> > +	.probe			= cxl_mem_probe,
+> > +	.driver	= {
+> > +		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+> > +	},
+> > +};
+> > +
+> > +MODULE_LICENSE("GPL v2");
+> > +module_pci_driver(cxl_mem_driver);
+> > diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+> > new file mode 100644
+> > index 000000000000..f135b9f7bb21
+> > --- /dev/null
+> > +++ b/drivers/cxl/pci.h
+> > @@ -0,0 +1,18 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
+> > +#ifndef __CXL_PCI_H__
+> > +#define __CXL_PCI_H__
+> > +
+> > +#define CXL_MEMORY_PROGIF	0x10
+> > +
+> > +/*
+> > + * See section 8.1 Configuration Space Registers in the CXL 2.0
+> > + * Specification
+> > + */
+> > +#define PCI_EXT_CAP_ID_DVSEC		0x23
+> 
+> This is already in include/uapi/linux/pci_regs.h
+> 
+> > +#define PCI_DVSEC_VENDOR_ID_CXL		0x1E98
+> > +#define PCI_DVSEC_ID_CXL		0x0
+> > +
+> > +#define PCI_DVSEC_ID_CXL_REGLOC_OFFSET		0x8
+> > +
+> > +#endif /* __CXL_PCI_H__ */
+> > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> > index d8156a5dbee8..766260a9b247 100644
+> > --- a/include/linux/pci_ids.h
+> > +++ b/include/linux/pci_ids.h
+> > @@ -51,6 +51,7 @@
+> >  #define PCI_BASE_CLASS_MEMORY		0x05
+> >  #define PCI_CLASS_MEMORY_RAM		0x0500
+> >  #define PCI_CLASS_MEMORY_FLASH		0x0501
+> > +#define PCI_CLASS_MEMORY_CXL		0x0502
+> >  #define PCI_CLASS_MEMORY_OTHER		0x0580
+> >  
+> >  #define PCI_BASE_CLASS_BRIDGE		0x06
+> 
