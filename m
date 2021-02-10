@@ -2,212 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 574F5316845
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 14:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9AF7316968
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 15:50:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbhBJNsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Feb 2021 08:48:55 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:45646 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbhBJNsz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 08:48:55 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_smtp) via UNIX with SMTP (IdeaSmtpServer 0.83.537)
- id e014fdd4acc97cd0; Wed, 10 Feb 2021 14:48:11 +0100
-Received: from kreacher.localnet (89-64-80-225.dynamic.chello.pl [89.64.80.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 9CB136608F8;
-        Wed, 10 Feb 2021 14:48:10 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S230245AbhBJOuC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Feb 2021 09:50:02 -0500
+Received: from mga11.intel.com ([192.55.52.93]:13533 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230028AbhBJOuC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Feb 2021 09:50:02 -0500
+IronPort-SDR: xvWYcWCc+ABBAU9n+CTk/O48wMYVAFUzmW+n7F3pc0Yl4eGj54ztMO1m+87BP6k5DXGwQdixpU
+ bqFZgeF+T9NA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9890"; a="178573131"
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="178573131"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 06:48:14 -0800
+IronPort-SDR: Fz0huz8BxvaKkQQkanZeVSu1UIU6Bo+Wu0wJVcXCJ0Pjnmyd43g1oBvY+jOVmOuS7MjfRsgyyo
+ 4lzoiv+3soVw==
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="436696420"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 06:48:12 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1l9qmo-003kft-6W; Wed, 10 Feb 2021 16:48:10 +0200
+Date:   Wed, 10 Feb 2021 16:48:10 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
         Calvin Johnson <calvin.johnson@oss.nxp.com>
-Subject: Re: [PATCH v1 7/7] ACPI: property: Allow counting a single value as an array of 1 element
-Date:   Wed, 10 Feb 2021 14:48:09 +0100
-Message-ID: <1946478.1QpZic6vku@kreacher>
-In-Reply-To: <3881654.NPl3a4M0kB@kreacher>
-References: <20210210114320.3478-1-andriy.shevchenko@linux.intel.com> <CAJZ5v0hx78JHnP5-5xFTPr0Rh9FvPCzAzTCyBaT6eLZ3Dd-mFA@mail.gmail.com> <3881654.NPl3a4M0kB@kreacher>
+Subject: Re: [PATCH v1 7/7] ACPI: property: Allow counting a single value as
+ an array of 1 element
+Message-ID: <YCPyKjO7XPBFAgbn@smile.fi.intel.com>
+References: <20210210114320.3478-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0hx78JHnP5-5xFTPr0Rh9FvPCzAzTCyBaT6eLZ3Dd-mFA@mail.gmail.com>
+ <3881654.NPl3a4M0kB@kreacher>
+ <1946478.1QpZic6vku@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrtddtgddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttddvnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepgfelheffhfetffelhfelteejffetteetgfetkeejvdfhfeeftdeufeevgeevieevnecukfhppeekledrieegrdektddrvddvheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdektddrvddvhedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghl
- rdhorhhgpdhrtghpthhtoheptggrlhhvihhnrdhjohhhnhhsohhnsehoshhsrdhngihprdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1946478.1QpZic6vku@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, February 10, 2021 2:31:48 PM CET Rafael J. Wysocki wrote:
-> On Wednesday, February 10, 2021 1:36:00 PM CET Rafael J. Wysocki wrote:
-> > On Wed, Feb 10, 2021 at 12:51 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > We allow to read the single value as a first element in the array.
-> > > Unfortunately the counting doesn't work in this case and we can't
-> > > call fwnode_property_count_*() API without getting an error.
-> > 
-> > It would be good to mention what the symptom of the issue is here.
-> > 
-> > > Modify acpi_data_prop_read() to always try the single value read
-> > > and thus allow counting the single value as an array of 1 element.
-> > >
-> > > Reported-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > This is a bug fix, so it should go in before the cleanups in this series IMO.
-> > 
-> > Also it looks like stable@vger material.
-> > 
-> > > ---
-> > >  drivers/acpi/property.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > > index 236316ee0e25..d6100585fceb 100644
-> > > --- a/drivers/acpi/property.c
-> > > +++ b/drivers/acpi/property.c
-> > > @@ -913,12 +913,14 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
-> > >         const union acpi_object *items;
-> > >         int ret;
-> > >
-> > > -       if (val && nval == 1) {
-> > > +       /* Try to read as a single value first */
-> > > +       if (!val || nval == 1) {
-> > >                 ret = acpi_data_prop_read_single(data, propname, proptype, val);
-> > 
-> > This returns -EINVAL if val is NULL.
-> > 
-> > >                 if (ret >= 0)
-> > > -                       return ret;
-> > > +                       return val ? ret : 1;
-> > 
-> > So val cannot be NULL here.
-> > 
-> > >         }
-> > >
-> > > +       /* It's not the single value, get an array instead */
-> > >         ret = acpi_data_get_property_array(data, propname, ACPI_TYPE_ANY, &obj);
-> > >         if (ret)
-> > >                 return ret;
-> > > --
-> > 
-> > To me, acpi_fwnode_property_read_string_array() needs to special-case
-> > val == NULL and nval == 0.
-> 
-> Well, scratch this.
-> 
-> Something like the patch below (untested) should be sufficient to address this
-> if I'm not mistaken.
+On Wed, Feb 10, 2021 at 02:48:09PM +0100, Rafael J. Wysocki wrote:
+> On Wednesday, February 10, 2021 2:31:48 PM CET Rafael J. Wysocki wrote:
+> > On Wednesday, February 10, 2021 1:36:00 PM CET Rafael J. Wysocki wrote:
+> > > On Wed, Feb 10, 2021 at 12:51 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
 
-Well, I am mistaken ->
+Rafael, thanks for the review, my answers below.
 
-> 
-> ---
->  drivers/acpi/property.c |   17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/property.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/property.c
-> +++ linux-pm/drivers/acpi/property.c
-> @@ -787,14 +787,14 @@ static int acpi_data_prop_read_single(co
->  	const union acpi_object *obj;
->  	int ret;
->  
-> -	if (!val)
-> -		return -EINVAL;
-> -
->  	if (proptype >= DEV_PROP_U8 && proptype <= DEV_PROP_U64) {
->  		ret = acpi_data_get_property(data, propname, ACPI_TYPE_INTEGER, &obj);
->  		if (ret)
->  			return ret;
->  
-> +		if (!val)
-> +			return 1;
-> +
->  		switch (proptype) {
->  		case DEV_PROP_U8:
->  			if (obj->integer.value > U8_MAX)
-> @@ -820,7 +820,8 @@ static int acpi_data_prop_read_single(co
->  		if (ret)
->  			return ret;
->  
-> -		*(char **)val = obj->string.pointer;
-> +		if (val)
-> +			*(char **)val = obj->string.pointer;
->  
->  		return 1;
->  	} else {
-> @@ -928,10 +929,16 @@ static int acpi_data_prop_read(const str
->  	const union acpi_object *items;
->  	int ret;
->  
-> -	if (val && nval == 1) {
-> +	if (nval == 1) {
+> > > > We allow to read the single value as a first element in the array.
+> > > > Unfortunately the counting doesn't work in this case and we can't
+> > > > call fwnode_property_count_*() API without getting an error.
+> > > 
+> > > It would be good to mention what the symptom of the issue is here.
 
--> because this would miss the nval == 0 case.
+fwnode_property_match_string() is not working as reported by Calvin.
 
-So appended again with this fixed.
+> > > > Modify acpi_data_prop_read() to always try the single value read
+> > > > and thus allow counting the single value as an array of 1 element.
+> > > >
+> > > > Reported-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > 
+> > > This is a bug fix, so it should go in before the cleanups in this series IMO.
 
----
- drivers/acpi/property.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+Seems it was never worked, hence neither Fixes tag nor...
 
-Index: linux-pm/drivers/acpi/property.c
-===================================================================
---- linux-pm.orig/drivers/acpi/property.c
-+++ linux-pm/drivers/acpi/property.c
-@@ -787,14 +787,14 @@ static int acpi_data_prop_read_single(co
- 	const union acpi_object *obj;
- 	int ret;
- 
--	if (!val)
--		return -EINVAL;
--
- 	if (proptype >= DEV_PROP_U8 && proptype <= DEV_PROP_U64) {
- 		ret = acpi_data_get_property(data, propname, ACPI_TYPE_INTEGER, &obj);
- 		if (ret)
- 			return ret;
- 
-+		if (!val)
-+			return 1;
-+
- 		switch (proptype) {
- 		case DEV_PROP_U8:
- 			if (obj->integer.value > U8_MAX)
-@@ -820,7 +820,8 @@ static int acpi_data_prop_read_single(co
- 		if (ret)
- 			return ret;
- 
--		*(char **)val = obj->string.pointer;
-+		if (val)
-+			*(char **)val = obj->string.pointer;
- 
- 		return 1;
- 	} else {
-@@ -928,10 +929,16 @@ static int acpi_data_prop_read(const str
- 	const union acpi_object *items;
- 	int ret;
- 
--	if (val && nval == 1) {
-+	if (nval <= 1) {
- 		ret = acpi_data_prop_read_single(data, propname, proptype, val);
- 		if (ret >= 0)
- 			return ret;
-+
-+		/*
-+		 * Reading this property as a single-value one failed, but its
-+		 * value may still be represented as one-element array, so
-+		 * continue.
-+		 */
- 	}
- 
- 	ret = acpi_data_get_property_array(data, propname, ACPI_TYPE_ANY, &obj);
+> > > Also it looks like stable@vger material.
 
+...Cc to stable@.
+
+> > > > -       if (val && nval == 1) {
+> > > > +       /* Try to read as a single value first */
+> > > > +       if (!val || nval == 1) {
+> > > >                 ret = acpi_data_prop_read_single(data, propname, proptype, val);
+> > > 
+> > > This returns -EINVAL if val is NULL.
+
+Nope. That's why it's a patch 7. Patch 6 solves this.
+
+> > > >                 if (ret >= 0)
+> > > > -                       return ret;
+> > > > +                       return val ? ret : 1;
+> > > 
+> > > So val cannot be NULL here.
+
+Why not? I have changed conditional.
+
+> > > >         }
+
+> > > To me, acpi_fwnode_property_read_string_array() needs to special-case
+> > > val == NULL and nval == 0.
+
+nval can be anything in the case of val==NULL. So far neither of your proposals
+conform this.
+
+
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
