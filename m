@@ -2,39 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED11316D23
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 18:46:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B77EB316D39
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Feb 2021 18:48:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233068AbhBJRqT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Feb 2021 12:46:19 -0500
-Received: from mail-wr1-f41.google.com ([209.85.221.41]:41955 "EHLO
-        mail-wr1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233058AbhBJRqQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 12:46:16 -0500
-Received: by mail-wr1-f41.google.com with SMTP id n6so3533920wrv.8;
-        Wed, 10 Feb 2021 09:46:00 -0800 (PST)
+        id S233150AbhBJRsM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Feb 2021 12:48:12 -0500
+Received: from mail-wr1-f52.google.com ([209.85.221.52]:40229 "EHLO
+        mail-wr1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233446AbhBJRr5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Feb 2021 12:47:57 -0500
+Received: by mail-wr1-f52.google.com with SMTP id v14so3541011wro.7;
+        Wed, 10 Feb 2021 09:47:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=zgBAojcyhJWbv1E+GzHMD8bBo3LM9waajJfrvw4DAmo=;
-        b=JGmhPqsE7S1VBBd9iXxMinRrSc9vrokOhDX7RxBRGkZpG1Rr57V5fLviYwPLOGn4H4
-         oPve/LOv1If7HaDbrfY8E1nvvpMHjc7//+0Csz9nqEA/J5lTnp7kOnJuJsSBdlQdJOE3
-         ss3AIeCaJ5XHpF5KN98ZhHAqfH41Njh4GcoNEWHhNc+87Y7TtSQuQ3wTGtItiSKx/R5V
-         L1AB9n4xqsYY7a2P/VWABKgGZQ5jroMkc54l4+Q/oWkTpOThEDst4CWDWrG/HPXWxb9V
-         h+C82oOs55bgQR1QFdInihTSxPYEQooIfWBLSXG3D59efT0EDWdPiJmJ8XFHe9t+Jgr8
-         rCzg==
-X-Gm-Message-State: AOAM533aDhODt/vlEVhVKRiYceZp657bQl6XSd7tDgOhIhl8GL7W9asP
-        Rx4TCbv1PzbEYv18vah13IJiVXtzuUyFmsq7uUtTi5TZZNk=
-X-Google-Smtp-Source: ABdhPJyziveJkAi3mG61RgtHSJANHb/BKK9fHYE5DRSIRzxvgHBFNrnIuzttYsDK5nSWqwfIgK1RBjO6FBSjwRasaNM=
-X-Received: by 2002:adf:e411:: with SMTP id g17mr4983803wrm.296.1612979134318;
- Wed, 10 Feb 2021 09:45:34 -0800 (PST)
+        bh=xS94Nmt7CZoKfe/ooNogCsxo74+nRHCXmzdXYf9v/zo=;
+        b=T96m2rqN4xv3nL0zaowVWqjOrNnHGa7Zy2eSJ4Tya0/S/SEVZ6hDkLZgIJOzUbFgTi
+         dM5lTBPvZJUDJz5m8LHCgehCzKZPeyL8b8i4/R08aNTKyBdvP9vQ4aG2vKw4Ln7ZK+Nb
+         63EJPZO+j0/35gL0JP0Dq3jDJg544B+6xszItK43Z9ydmkOiGiTo7SPJuGlSqbFQGN0u
+         sfFwUdoLtS8RjYYPL3+w9aKaQW3sCrJ/v1V7YkxmCQwHx9xgYfwVE8n6Ooj9KluUqw0+
+         aAUlTwU70/RbfOx5ebEcXkwgJ/Q9hAbdUBnMsMMrDQEg1Ji3yczPjvKmeZ/8qT0O/X5K
+         TV/A==
+X-Gm-Message-State: AOAM530l4cUqe4vbO5qiDSmw/eE+otMP85qq/y6qWCvU9DUXikyutxfT
+        zFcaSrh338M/fxdtRjgWInoMYx/tPczLnU2+sBQ=
+X-Google-Smtp-Source: ABdhPJygX1Cr8XmSICtNKIcQTAl+inc+NuAmMYpiUutZOsZfRcInJ6mA0q/Ex0blppw3kd4dipVPjcMUA2Fs31iGDSw=
+X-Received: by 2002:adf:f7c5:: with SMTP id a5mr4965509wrq.243.1612979235397;
+ Wed, 10 Feb 2021 09:47:15 -0800 (PST)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 10 Feb 2021 18:45:22 +0100
-Message-ID: <CAJZ5v0ikQ6D0V2c7xL0_jHm+UwiwqgRSSm=4fCqPkkApZe54Ow@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v5.11-rc8
+Date:   Wed, 10 Feb 2021 18:47:04 +0100
+Message-ID: <CAJZ5v0iEwAvR3EyQp0Qy=7ehQyufrUvMPR4CyCUdVd=qE-5OAg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.11-rc8
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
@@ -46,31 +47,35 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.11-rc8
+ pm-5.11-rc8
 
-with top-most commit fe0af09074bfeb46a35357e67635eefe33cdfc49
+with top-most commit d11a1d08a082a7dc0ada423d2b2e26e9b6f2525c
 
- Revert "ACPICA: Interpreter: fix memory leak by using existing buffer"
+ cpufreq: ACPI: Update arch scale-invariance max perf ratio if CPPC is not there
 
 on top of commit 92bf22614b21a2706f4993b278017e437f7785b3
 
  Linux 5.11-rc7
 
-to receive an ACPI fix for 5.11-rc8.
+to receive power management fixes for 5.11-rc8.
 
-This reverts a problematic ACPICA commit that changed the code to
-attempt to update memory regions which may be read-only on some
-systems (Ard Biesheuvel).
+These address a performance regression related to scale-invariance on
+x86 that may prevent turbo CPU frequencies from being used in certain
+workloads on systems using acpi-cpufreq as the CPU performance
+scaling driver and schedutil as the scaling governor.
 
 Thanks!
 
 
 ---------------
 
-Ard Biesheuvel (1):
-      Revert "ACPICA: Interpreter: fix memory leak by using existing buffer"
+Rafael J. Wysocki (2):
+      cpufreq: ACPI: Extend frequency tables to cover boost frequencies
+      cpufreq: ACPI: Update arch scale-invariance max perf ratio if
+CPPC is not there
 
 ---------------
 
- drivers/acpi/acpica/nsrepair2.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ arch/x86/kernel/smpboot.c      |   1 +
+ drivers/cpufreq/acpi-cpufreq.c | 115 ++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 104 insertions(+), 12 deletions(-)
