@@ -2,234 +2,306 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7D99318A24
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 13:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5579318B6F
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 14:05:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231583AbhBKMLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 07:11:31 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2548 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231687AbhBKMJZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 07:09:25 -0500
-Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbwGb5y6Pz67n7V;
-        Thu, 11 Feb 2021 20:01:59 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 11 Feb 2021 13:08:38 +0100
-Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
- 2021 12:08:36 +0000
-Date:   Thu, 11 Feb 2021 12:07:36 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
-        <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
-        "Chris Browy" <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Dan Williams" <dan.j.williams@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Jon Masters" <jcm@jonmasters.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH v2 7/8] cxl/mem: Add set of informational commands
-Message-ID: <20210211120736.00006778@Huawei.com>
-In-Reply-To: <20210210000259.635748-8-ben.widawsky@intel.com>
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
-        <20210210000259.635748-8-ben.widawsky@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S231578AbhBKNDz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 08:03:55 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:44262 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231635AbhBKNBh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 08:01:37 -0500
+Received: by mail-ot1-f44.google.com with SMTP id e5so4999676otb.11;
+        Thu, 11 Feb 2021 05:01:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QMFNyDV7DmfIVLEmKQYa9awS7YrY55WsSx5JuI5FbdM=;
+        b=K8Fi9JmP4ane2ru66Z4kGgUDBZ5rpo2KNZKbxEZ0u6xbmAq6YGe/Eq+pKKteL9GrbX
+         /gvq4l3w5RecZocamcu5TEYGWKLkEuEHDjiZJ5kaebhR0j8YQ7i3i1HwS5srTESbhI/3
+         +x8o2Ecf7MLKJs+0SRKPW2m4GtetUTTOTV/SgXf7oywg4TPiJpYXUarrmZc4eFrDqlMz
+         9cD3MzVH1uOKmEvzU/+MTpc4eL0a9jwgcZOun2xxGU81oKBuCyN8plTA+vco854eJXZ5
+         fbTp2xdYqebFYf1om0yb91hH7480OVle2WLQoa3WgDcJi3x7Hn9pEYkrJhQLthcD3eIH
+         SUEw==
+X-Gm-Message-State: AOAM533lr9AYd//vNHSeEoBsn+KDgQnXoVrAjtMXUHMcw7r6fhKNUp9I
+        D6hGwcAdVjAGGKJmo72o9NYmwU5MDfL98UWT8vk=
+X-Google-Smtp-Source: ABdhPJxZDiUEbHhrzo8aCY9HhP7XU37YsKe5rfbHE0/8zTtJXnv01AsivsknDjLGR8Mn+hMIyIy6+OlyuPE1NQkrSOk=
+X-Received: by 2002:a9d:77d6:: with SMTP id w22mr5641603otl.145.1613048454541;
+ Thu, 11 Feb 2021 05:00:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.31.44]
-X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20210205222644.2357303-1-saravanak@google.com>
+In-Reply-To: <20210205222644.2357303-1-saravanak@google.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 11 Feb 2021 14:00:43 +0100
+Message-ID: <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 9 Feb 2021 16:02:58 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
+Hi Saravana,
 
-> Add initial set of formal commands beyond basic identify and command
-> enumeration.
-> 
-> Of special note is the Get Log Command which is only specified to return
-> 2 log types, CEL and VENDOR_DEBUG. Given that VENDOR_DEBUG is already a
-> large catch all for vendor specific information there is no known reason
-> for devices to be implementing other log types. Unknown log types are
-> included in the "vendor passthrough shenanigans" safety regime like raw
-> commands and blocked by default.
+On Fri, Feb 5, 2021 at 11:26 PM Saravana Kannan <saravanak@google.com> wrote:
+> There are a lot of devices/drivers where they never have a struct device
+> created for them or the driver initializes the hardware without ever
+> binding to the struct device.
+>
+> This series is intended to avoid any boot regressions due to such
+> devices/drivers when fw_devlink=on and also address the handling of
+> optional suppliers.
+>
+> Patch 1 and 2 addresses the issue of firmware nodes that look like
+> they'll have struct devices created for them, but will never actually
+> have struct devices added for them. For example, DT nodes with a
+> compatible property that don't have devices added for them.
+>
+> Patch 3 and 4 allow for handling optional DT bindings.
+>
+> Patch 5 sets up a generic API to handle drivers that never bind with
+> their devices.
+>
+> Patch 6 through 8 update different frameworks to use the new API.
+>
+> Thanks,
+> Saravana
+>
+> Saravana Kannan (8):
+>   driver core: fw_devlink: Detect supplier devices that will never be
+>     added
+>   of: property: Don't add links to absent suppliers
+>   driver core: Add fw_devlink.strict kernel param
+>   of: property: Add fw_devlink support for optional properties
+>   driver core: fw_devlink: Handle suppliers that don't use driver core
+>   irqdomain: Mark fwnodes when their irqdomain is added/removed
+>   PM: domains: Mark fwnodes when their powerdomain is added/removed
+>   clk: Mark fwnodes when their clock provider is added/removed
 
-As mentioned in previous patch comments, the way that is worded in the spec
-suggests to me that what we might see if other specifications providing
-more UUIDs to define other 'standard' info.  Maybe something else was
-intended...   Still what you have done here makes sense to me.
+Thanks for your series, which is now part of driver-core-next.
+I gave driver-core-next + [1] a try on various Renesas boards.
+Test results are below.
+In general, the result looks much better than before.
 
-> 
-> Up to this point there has been no reason to inspect payload data.
-> Given the need to check the log type add a new "validate_payload"
-> operation to define a generic mechanism to restrict / filter commands.
-> 
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+[1] - https://lore.kernel.org/lkml/20210210114435.122242-1-tudor.ambarus@microchip.com/
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  1. R-Car Gen2 (Koelsch), R-Car Gen3 (Salvator-X(S), Ebisu).
 
-> ---
->  drivers/cxl/mem.c            | 55 +++++++++++++++++++++++++++++++++++-
->  include/uapi/linux/cxl_mem.h |  5 ++++
->  2 files changed, 59 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index e9aa6ca18d99..e8cc076b9f1b 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -44,12 +44,16 @@
->  enum opcode {
->  	CXL_MBOX_OP_INVALID		= 0x0000,
->  	CXL_MBOX_OP_RAW			= CXL_MBOX_OP_INVALID,
-> +	CXL_MBOX_OP_GET_FW_INFO		= 0x0200,
->  	CXL_MBOX_OP_ACTIVATE_FW		= 0x0202,
->  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	= 0x0400,
->  	CXL_MBOX_OP_GET_LOG		= 0x0401,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
-> +	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> +	CXL_MBOX_OP_GET_LSA		= 0x4102,
->  	CXL_MBOX_OP_SET_LSA		= 0x4103,
-> +	CXL_MBOX_OP_GET_HEALTH_INFO	= 0x4200,
->  	CXL_MBOX_OP_SET_SHUTDOWN_STATE	= 0x4204,
->  	CXL_MBOX_OP_SCAN_MEDIA		= 0x4304,
->  	CXL_MBOX_OP_GET_SCAN_MEDIA	= 0x4305,
-> @@ -118,6 +122,9 @@ static const uuid_t log_uuid[] = {
->  					0xd6, 0x07, 0x19, 0x40, 0x3d, 0x86)
->  };
->  
-> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *payload,
-> +			     size_t size);
-> +
->  /**
->   * struct cxl_mem_command - Driver representation of a memory device command
->   * @info: Command information as it exists for the UAPI
-> @@ -129,6 +136,10 @@ static const uuid_t log_uuid[] = {
->   *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
->   *    a direct mapping to hardware. They are implicitly always enabled.
->   *
-> + * @validate_payload: A function called after the command is validated but
-> + * before it's sent to the hardware. The primary purpose is to validate, or
-> + * fixup the actual payload.
-> + *
->   * The cxl_mem_command is the driver's internal representation of commands that
->   * are supported by the driver. Some of these commands may not be supported by
->   * the hardware. The driver will use @info to validate the fields passed in by
-> @@ -139,9 +150,12 @@ static const uuid_t log_uuid[] = {
->  struct cxl_mem_command {
->  	struct cxl_command_info info;
->  	enum opcode opcode;
-> +
-> +	int (*validate_payload)(struct cxl_mem *cxlm, void __user *payload,
-> +				size_t size);
->  };
->  
-> -#define CXL_CMD(_id, _flags, sin, sout)                                        \
-> +#define CXL_CMD_VALIDATE(_id, _flags, sin, sout, v)                            \
->  	[CXL_MEM_COMMAND_ID_##_id] = {                                         \
->  	.info =	{                                                              \
->  			.id = CXL_MEM_COMMAND_ID_##_id,                        \
-> @@ -150,8 +164,12 @@ struct cxl_mem_command {
->  			.size_out = sout,                                      \
->  		},                                                             \
->  	.opcode = CXL_MBOX_OP_##_id,                                           \
-> +	.validate_payload = v,                                                 \
->  	}
->  
-> +#define CXL_CMD(_id, _flags, sin, sout)                                        \
-> +	CXL_CMD_VALIDATE(_id, _flags, sin, sout, NULL)
-> +
->  /*
->   * This table defines the supported mailbox commands for the driver. This table
->   * is made up of a UAPI structure. Non-negative values as parameters in the
-> @@ -164,6 +182,11 @@ static struct cxl_mem_command mem_commands[] = {
->  	CXL_CMD(RAW, NONE, ~0, ~0),
->  #endif
->  	CXL_CMD(GET_SUPPORTED_LOGS, NONE, 0, ~0),
-> +	CXL_CMD(GET_FW_INFO, NONE, 0, 0x50),
-> +	CXL_CMD(GET_PARTITION_INFO, NONE, 0, 0x20),
-> +	CXL_CMD(GET_LSA, NONE, 0x8, ~0),
-> +	CXL_CMD(GET_HEALTH_INFO, NONE, 0, 0x12),
-> +	CXL_CMD_VALIDATE(GET_LOG, NONE, 0x18, ~0, validate_log_uuid),
->  };
->  
->  /*
-> @@ -492,6 +515,14 @@ static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
->  		mbox_cmd.payload_out = kvzalloc(cxlm->payload_size, GFP_KERNEL);
->  
->  	if (cmd->info.size_in) {
-> +		if (cmd->validate_payload) {
-> +			rc = cmd->validate_payload(cxlm,
-> +						   u64_to_user_ptr(in_payload),
-> +						   cmd->info.size_in);
-> +			if (rc)
-> +				goto out;
-> +		}
-> +
->  		mbox_cmd.payload_in = kvzalloc(cmd->info.size_in, GFP_KERNEL);
->  		if (!mbox_cmd.payload_in) {
->  			rc = -ENOMEM;
-> @@ -1124,6 +1155,28 @@ struct cxl_mbox_get_log {
->  	__le32 length;
->  } __packed;
->  
-> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *input,
-> +			     size_t size)
-> +{
-> +	struct cxl_mbox_get_log __user *get_log = input;
-> +	uuid_t payload_uuid;
-> +
-> +	if (copy_from_user(&payload_uuid, &get_log->uuid, sizeof(uuid_t)))
-> +		return -EFAULT;
-> +
-> +	if (uuid_equal(&payload_uuid, &log_uuid[CEL_UUID]))
-> +		return 0;
-> +	if (uuid_equal(&payload_uuid, &log_uuid[VENDOR_DEBUG_UUID]))
-> +		return 0;
-> +
-> +	/* All unspec'd logs shall taint */
-> +	if (WARN_ONCE(!cxl_mem_raw_command_allowed(CXL_MBOX_OP_RAW),
-> +		      "Unknown log UUID %pU used\n", &payload_uuid))
-> +		return -EPERM;
-> +
-> +	return 0;
-> +}
-> +
->  static int cxl_xfer_log(struct cxl_mem *cxlm, uuid_t *uuid, u32 size, u8 *out)
->  {
->  	u32 remaining = size;
-> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> index c5e75b9dad9d..ba4d3b4d6b7d 100644
-> --- a/include/uapi/linux/cxl_mem.h
-> +++ b/include/uapi/linux/cxl_mem.h
-> @@ -24,6 +24,11 @@
->  	___C(IDENTIFY, "Identify Command"),                               \
->  	___C(RAW, "Raw device command"),                                  \
->  	___C(GET_SUPPORTED_LOGS, "Get Supported Logs"),                   \
-> +	___C(GET_FW_INFO, "Get FW Info"),                                 \
-> +	___C(GET_PARTITION_INFO, "Get Partition Information"),            \
-> +	___C(GET_LSA, "Get Label Storage Area"),                          \
-> +	___C(GET_HEALTH_INFO, "Get Health Info"),                         \
-> +	___C(GET_LOG, "Get Log"),                                         \
->  	___C(MAX, "Last command")
->  
->  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+      - Commit 2dfc564bda4a31bc ("soc: renesas: rcar-sysc: Mark device
+        node OF_POPULATED after init") is no longer needed (but already
+        queued for v5.12 anyway)
 
+      - Some devices are reprobed, despite their drivers returning
+        a real error code, and not -EPROBE_DEFER:
+
+            renesas_wdt e6020000.watchdog: Watchdog blacklisted on r8a7791 ES1.*
+            (rwdt_probe() returns -ENODEV)
+
+            sh-pfc e6060000.pinctrl: pin GP_7_23 already requested by
+ee090000.pci; cannot claim for e6590000.usb
+            sh-pfc e6060000.pinctrl: pin-247 (e6590000.usb) status -22
+            sh-pfc e6060000.pinctrl: could not request pin 247
+(GP_7_23) from group usb0  on device sh-pfc
+            renesas_usbhs e6590000.usb: Error applying setting,
+reverse things back
+            renesas_usbhs: probe of e6590000.usb failed with error -22
+
+            rcar-pcie fe000000.pcie: host bridge /soc/pcie@fe000000 ranges:
+            rcar-pcie fe000000.pcie:       IO
+0x00fe100000..0x00fe1fffff -> 0x0000000000
+            rcar-pcie fe000000.pcie:      MEM
+0x00fe200000..0x00fe3fffff -> 0x00fe200000
+            rcar-pcie fe000000.pcie:      MEM
+0x0030000000..0x0037ffffff -> 0x0030000000
+            rcar-pcie fe000000.pcie:      MEM
+0x0038000000..0x003fffffff -> 0x0038000000
+            rcar-pcie fe000000.pcie:   IB MEM
+0x0040000000..0x00bfffffff -> 0x0040000000
+            rcar-pcie fe000000.pcie:   IB MEM
+0x0200000000..0x02ffffffff -> 0x0200000000
+            rcar-pcie fe000000.pcie: PCIe link down
+            (rcar_pcie_probe() returns -ENODEV)
+
+            xhci-hcd ee000000.usb: xHCI Host Controller
+            xhci-hcd ee000000.usb: new USB bus registered, assigned bus number 7
+            xhci-hcd ee000000.usb: Direct firmware load for
+r8a779x_usb3_v3.dlmem failed with error -2
+            xhci-hcd ee000000.usb: can't setup: -2
+            xhci-hcd ee000000.usb: USB bus 7 deregistered
+            xhci-hcd: probe of ee000000.usb failed with error -2
+
+      - The PCI reprobing leads to a memory leak, for which I've sent a fix
+        "[PATCH] PCI: Fix memory leak in pci_register_io_range()"
+        https://lore.kernel.org/linux-pci/20210202100332.829047-1-geert+renesas@glider.be/
+
+      - I2C on R-Car Gen3 does not seem to use DMA, according to
+        /sys/kernel/debug/dmaengine/summary:
+
+            -dma4chan0    | e66d8000.i2c:tx
+            -dma4chan1    | e66d8000.i2c:rx
+            -dma5chan0    | e6510000.i2c:tx
+
+      - Disabling CONFIG_IPMMU_VMSA (IOMMU) now works, good!
+
+           ignoring dependency for device, assuming no driver
+
+      - Disabling CONFIG_RCAR_DMAC works for most devices, except for
+        sound:
+
+            -rcar_sound ec500000.sound: probed
+
+             ALSA device list:
+            -  #0: rcar-sound
+            +  No soundcards found.
+
+            # cat  /sys/kernel/debug/devices_deferred
+            2-0010
+            sound
+            ec500000.sound
+
+            platform e6510000.i2c: Linked as a sync state only
+consumer to ec500000.sound
+            platform ec500000.sound: Linked as a consumer to e6060000.pinctrl
+            platform ec500000.sound: Linked as a consumer to
+e6150000.clock-controller
+            i2c 2-0010: Linked as a consumer to ec500000.sound
+            platform ec500000.sound: Linked as a consumer to 2-004f
+            cs2000-cp 2-004f: revision - C1
+            i2c-rcar e6510000.i2c: probed
+            i2c-rcar e6510000.i2c: Dropping the link to ec500000.sound
+            i2c 2-0010: probe deferral - supplier ec500000.sound not ready
+
+        With CONFIG_RCAR_DMAC=y, ec500000.sound is probed quite early.
+
+            arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts
+
+            ak4613: codec@10 {
+                    clocks = <&rcar_sound 3>;
+
+                    port {
+                            ak4613_endpoint: endpoint {
+                                    remote-endpoint = <&rsnd_endpoint0>;
+                            };
+                    };
+            };
+
+            sound_card: sound {
+                    dais = <&rsnd_port0     /* ak4613 */
+                            &rsnd_port1     /* HDMI0  */
+                            &rsnd_port2>;   /* HDMI1  */
+            };
+
+            rcar_sound: sound@ec500000 {
+                    ports {
+                            rsnd_port0: port@0 {
+                                    rsnd_endpoint0: endpoint {
+                                            remote-endpoint =
+<&ak4613_endpoint>;
+                                    }
+                            }
+                    }
+            };
+
+
+  2. SH/R-Mobile AG5 (kzm9g), APE6 (ape6evm), A1 (armadillo800-eva)
+
+      - "PATCH] soc: renesas: rmobile-sysc: Set OF_POPULATED and absorb
+        reset handling" is no longer needed
+        https://lore.kernel.org/linux-arm-kernel/20210205133319.1921108-1-geert+renesas@glider.be/
+
+      - On R-Mobile A1, I get a BUG and a memory leak:
+
+            BUG: spinlock bad magic on CPU#0, swapper/1
+             lock: lcdc0_device+0x10c/0x308, .magic: 00000000, .owner:
+<none>/-1, .owner_cpu: 0
+            CPU: 0 PID: 1 Comm: swapper Not tainted
+5.11.0-rc5-armadillo-00032-gf0a85c26907e #266
+            Hardware name: Generic R8A7740 (Flattened Device Tree)
+            [<c010c3c8>] (unwind_backtrace) from [<c010a49c>]
+(show_stack+0x10/0x14)
+            [<c010a49c>] (show_stack) from [<c0159534>]
+(do_raw_spin_lock+0x20/0x94)
+            [<c0159534>] (do_raw_spin_lock) from [<c04089d8>]
+(dev_pm_get_subsys_data+0x30/0xa0)
+            [<c04089d8>] (dev_pm_get_subsys_data) from [<c0413698>]
+(genpd_add_device+0x34/0x1c0)
+            [<c0413698>] (genpd_add_device) from [<c041389c>]
+(of_genpd_add_device+0x34/0x4c)
+            [<c041389c>] (of_genpd_add_device) from [<c0a1e9bc>]
+(board_staging_register_device+0xf8/0x118)
+            [<c0a1e9bc>] (board_staging_register_device) from
+[<c0a1ea00>] (board_staging_register_devices+0x24/0x28)
+            [<c0a1ea00>] (board_staging_register_devices) from
+[<c0a1ea30>] (runtime_board_check+0x2c/0x40)
+            [<c0a1ea30>] (runtime_board_check) from [<c0101fac>]
+(do_one_initcall+0xe0/0x278)
+            [<c0101fac>] (do_one_initcall) from [<c0a01034>]
+(kernel_init_freeable+0x174/0x1c0)
+            [<c0a01034>] (kernel_init_freeable) from [<c05fd568>]
+(kernel_init+0x8/0x118)
+            [<c05fd568>] (kernel_init) from [<c010011c>]
+(ret_from_fork+0x14/0x38)
+            Exception stack(0xc19c9fb0 to 0xc19c9ff8)
+            9fa0:                                     00000000
+00000000 00000000 00000000
+            9fc0: 00000000 00000000 00000000 00000000 00000000
+00000000 00000000 00000000
+            9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+
+            unreferenced object 0xc4134e00 (size 512):
+              comm "swapper", pid 1, jiffies 4294937296 (age 3541.930s)
+              hex dump (first 32 bytes):
+                00 4e 13 c4 00 4e 13 c4 ff ff ff 7f ff ff ff 7f
+.N...N..........
+                ff ff ff 7f 02 00 00 00 00 5f 13 c4 1c 4e 13 c4
+........._...N..
+              backtrace:
+                [<de1a3c34>] dev_pm_qos_constraints_allocate+0x10/0xcc
+                [<d21cf6e4>] dev_pm_qos_add_notifier+0x6c/0xd0
+                [<e04bbc90>] genpd_add_device+0x178/0x1c0
+                [<95067303>] of_genpd_add_device+0x34/0x4c
+                [<c334b97a>] board_staging_register_device+0xf8/0x118
+                [<01bd495a>] board_staging_register_devices+0x24/0x28
+                [<fb25a5d8>] runtime_board_check+0x2c/0x40
+                [<65aed679>] do_one_initcall+0xe0/0x278
+                [<97e3f4f7>] kernel_init_freeable+0x174/0x1c0
+                [<63c8fed0>] kernel_init+0x8/0x118
+                [<f704d96c>] ret_from_fork+0x14/0x38
+                [<00000000>] 0x0
+
+  3. RZ/A1 and RZ/A2: No issues.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
