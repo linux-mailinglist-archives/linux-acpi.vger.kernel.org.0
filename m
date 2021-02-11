@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4076031942B
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 21:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F11B319432
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 21:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230246AbhBKUSQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 15:18:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58444 "EHLO
+        id S231395AbhBKUTF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 15:19:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231425AbhBKUSB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 15:18:01 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF1EC061788;
-        Thu, 11 Feb 2021 12:17:20 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id l25so11990124eja.9;
-        Thu, 11 Feb 2021 12:17:20 -0800 (PST)
+        with ESMTP id S231728AbhBKUS2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 15:18:28 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F5CC06178A;
+        Thu, 11 Feb 2021 12:17:21 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id hs11so12043562ejc.1;
+        Thu, 11 Feb 2021 12:17:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fc2OT1cScZA8JM0hMwx8BqoVclia9O93ocGUXBkaHO4=;
-        b=GB24+9GxyTapQ+S8/IwOLYWbhKUorY5fIWYrXe5XjpzifNAoqyWLEjiff2C4QUOqmx
-         XGM7EaRjPO/EEGu2JReQKNxMlM3tpXlc4kiBNVZXCi+lpj/GPckg55k/dCXKsKw8ax2u
-         eE57s3vvP0jMaNvmZpZhRrkXZIL3yXrdYWBySU4Erv47VOHLqA6YmSOQhpoVyOiDQUq1
-         farPUsKLLXj1g2lT2UnYNWGS8MTiyWNAyrT/vrrd9Piojbw/d5YfPM2M2+rbNYg7fTZ4
-         724cy03ExmVaMXobbR7R5i0mJtBo9r0CVZBOkANjRlVePDEUb/f9bpxoDpFCn0EJ9xUx
-         iT6A==
+        bh=ChSb7jAu63yN2PTu1qjhx29H+AwyGHK2chc2roix8M4=;
+        b=Mn897Wfe4E/hMRE8oORZfFesshNO63+9mpn8tf4vKQC0vIcIlH9jL6qKZjICNuL18O
+         3wBXtTosTblidxjSQ0OG7Ev1q4zEThZUMOx12bQfb7UIv5YW9H2s/jeqnU4DASO++5lc
+         mkpGz60UM+v5bJVD7oG5JikfwH/TuD5twOST1+ig1ZEq/kob+Tqtu1EH+aw3qBd38cnx
+         HUxAOGeqQoTFxCHzIicY81uMcCCJqDfoImbXobGLabXaIliIoX9mPvxpD/XEcwLiNxHq
+         Us9uDPQ8JnUH3Noc4oTJkQpIMNCsOiWO+D+pM0BSCFTnwf4dFxcC5CwE+gvwGM9NSXze
+         /Zbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fc2OT1cScZA8JM0hMwx8BqoVclia9O93ocGUXBkaHO4=;
-        b=fK1UAoN/uXP31EulsTGWP5mPcU8HQD46x1xqp+FrNTOyxUiiL+pReqmGLG9sLLj58L
-         e7M24e7pDlYZas0HfzqQ+PkbADVphr5my30Fg0GIWN1f/pSKm+cy3LqrFz2PSHGimo9G
-         qYk4ogz3kTzs5QLfSAPDc5JaI90bA1krUMyvgbCF6YAxh6kl33j3wJMvcfwX+x//0goe
-         A6uY9BOT2vE97AvlsKbbDU+KQio7aCFXYB9Qb4Jz582xd1bHHCiCnBn/4IijiTPPGYyG
-         tG2q+GgsPtiTUrrD55QXrRvWhcAa466Ac4F9/KBoEZ/4rwsuIKz0qdycOv1ILtEvtlUa
-         n5jA==
-X-Gm-Message-State: AOAM5317pBZwFs1OVDsmUK4o04//6wm0p5E+TubWJ+wB6VyWPsrSncdp
-        pHPZMnNggP6uwz1I083lcvM=
-X-Google-Smtp-Source: ABdhPJwZs8PgysLkav93ywnokc6CaMzdG3wvxq/xM12TzDebxYgGhWQez4KsLxFjWDrfgdTU9X7NwQ==
-X-Received: by 2002:a17:906:149a:: with SMTP id x26mr10102837ejc.486.1613074639308;
-        Thu, 11 Feb 2021 12:17:19 -0800 (PST)
+        bh=ChSb7jAu63yN2PTu1qjhx29H+AwyGHK2chc2roix8M4=;
+        b=CXmiRU4H1B2Ty7emKm4TEYT12dcbCHJc7jSIfNnlmA5rgnBVKOj0AQkPvHRaeB/4R2
+         +C0LFPYyegjbs1baGIzSRHD+pL42VmR/olLRsv5ZweGl223VQi71OY6Q8Fup2VL2ehZI
+         Xw5Zxti1Z61FL5Jq5NchtGq2Evn2TLVbDhMVQUqjKtrxamtCLgXZERn/sYkMAVjcD5B2
+         n1M/W0cLEKbsxFzA/lPmYrIMdsN9jlUJtT5wwqj8Udvrty1ajJhfQM6KPhBo/DhG5OuM
+         WvWFbpT2alT4YiRkj37qCOqsWfDPoWzNrwTVV6Y7TvzqXwrYYezhkT2vqOYKsfM45+Jh
+         RQXA==
+X-Gm-Message-State: AOAM5316Vda16i31zDplcwLcGP8hqwkHbnkA+6rCU0zpddEUjA06WwD3
+        lfx24BiSEV3Tw8Xjyl3YakI=
+X-Google-Smtp-Source: ABdhPJwnjOw40nzNXFmuMaZv3zAs5SlEJtgIwmwLXT6pYbMygZ3WNxchPPmAs/omonfnrdAgMpRH2Q==
+X-Received: by 2002:a17:906:24ca:: with SMTP id f10mr9883900ejb.96.1613074640648;
+        Thu, 11 Feb 2021 12:17:20 -0800 (PST)
 Received: from xws.localdomain ([37.58.58.229])
-        by smtp.gmail.com with ESMTPSA id a1sm4938177edj.6.2021.02.11.12.17.18
+        by smtp.gmail.com with ESMTPSA id a1sm4938177edj.6.2021.02.11.12.17.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Feb 2021 12:17:18 -0800 (PST)
+        Thu, 11 Feb 2021 12:17:20 -0800 (PST)
 From:   Maximilian Luz <luzmaximilian@gmail.com>
 To:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>
@@ -57,9 +57,9 @@ Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/4] ACPI: platform: Add balanced-performance platform profile
-Date:   Thu, 11 Feb 2021 21:17:02 +0100
-Message-Id: <20210211201703.658240-4-luzmaximilian@gmail.com>
+Subject: [PATCH v2 4/4] platform/surface: Add platform profile driver
+Date:   Thu, 11 Feb 2021 21:17:03 +0100
+Message-Id: <20210211201703.658240-5-luzmaximilian@gmail.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210211201703.658240-1-luzmaximilian@gmail.com>
 References: <20210211201703.658240-1-luzmaximilian@gmail.com>
@@ -69,78 +69,280 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some devices, including most Microsoft Surface devices, have a platform
-profile somewhere inbetween balanced and performance. More specifically,
-adding this profile allows the following mapping on Surface devices:
+Add a driver to provide platform profile support on 5th- and later
+generation Microsoft Surface devices with a Surface System Aggregator
+Module. On those devices, the platform profile can be used to influence
+cooling behavior and power consumption.
 
-  Vendor Name           Platform Profile
-  ------------------------------------------
-  Battery Saver         low-power
-  Recommended           balanced
-  Better Performance    balanced-performance
-  Best Performance      performance
+For example, the default 'quiet' profile limits fan noise and in turn
+sacrifices performance of the discrete GPU found on Surface Books. Its
+full performance can only be unlocked on the 'performance' profile.
 
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- .../ABI/testing/sysfs-platform_profile         | 18 +++++++++++-------
- drivers/acpi/platform_profile.c                |  1 +
- include/linux/platform_profile.h               |  1 +
- 3 files changed, 13 insertions(+), 7 deletions(-)
+ MAINTAINERS                                   |   6 +
+ drivers/platform/surface/Kconfig              |  22 ++
+ drivers/platform/surface/Makefile             |   1 +
+ .../surface/surface_platform_profile.c        | 190 ++++++++++++++++++
+ 4 files changed, 219 insertions(+)
+ create mode 100644 drivers/platform/surface/surface_platform_profile.c
 
-diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
-index 9d6b89b66cca..dae9c8941905 100644
---- a/Documentation/ABI/testing/sysfs-platform_profile
-+++ b/Documentation/ABI/testing/sysfs-platform_profile
-@@ -5,13 +5,17 @@ Description:	This file contains a space-separated list of profiles supported for
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 000a82f59c76..a08d65f8f0df 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11811,6 +11811,12 @@ L:	platform-driver-x86@vger.kernel.org
+ S:	Maintained
+ F:	drivers/platform/surface/surface_hotplug.c
  
- 		Drivers must use the following standard profile-names:
++MICROSOFT SURFACE PLATFORM PROFILE DRIVER
++M:	Maximilian Luz <luzmaximilian@gmail.com>
++L:	platform-driver-x86@vger.kernel.org
++S:	Maintained
++F:	drivers/platform/surface/surface_platform_profile.c
++
+ MICROSOFT SURFACE PRO 3 BUTTON DRIVER
+ M:	Chen Yu <yu.c.chen@intel.com>
+ L:	platform-driver-x86@vger.kernel.org
+diff --git a/drivers/platform/surface/Kconfig b/drivers/platform/surface/Kconfig
+index 179b8c93d7fd..a045425026ae 100644
+--- a/drivers/platform/surface/Kconfig
++++ b/drivers/platform/surface/Kconfig
+@@ -132,6 +132,28 @@ config SURFACE_HOTPLUG
+ 	  Select M or Y here, if you want to (fully) support hot-plugging of
+ 	  dGPU devices on the Surface Book 2 and/or 3 during D3cold.
  
--		============	============================================
--		low-power	Low power consumption
--		cool		Cooler operation
--		quiet		Quieter operation
--		balanced	Balance between low power consumption and performance
--		performance	High performance operation
--		============	============================================
-+		====================	========================================
-+		low-power		Low power consumption
-+		cool			Cooler operation
-+		quiet			Quieter operation
-+		balanced		Balance between low power consumption
-+					and performance
-+		balanced-performance	Balance between performance and low
-+					power consumption with a slight bias
-+					towards performance
-+		performance		High performance operation
-+		====================	========================================
- 
- 		Userspace may expect drivers to offer more than one of these
- 		standard profile names.
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 4a59c5993bde..dd2fbf38e414 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -17,6 +17,7 @@ static const char * const profile_names[] = {
- 	[PLATFORM_PROFILE_COOL] = "cool",
- 	[PLATFORM_PROFILE_QUIET] = "quiet",
- 	[PLATFORM_PROFILE_BALANCED] = "balanced",
-+	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] = "balanced-performance",
- 	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
- };
- static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index b4794027e759..a6329003aee7 100644
---- a/include/linux/platform_profile.h
-+++ b/include/linux/platform_profile.h
-@@ -21,6 +21,7 @@ enum platform_profile_option {
- 	PLATFORM_PROFILE_COOL,
- 	PLATFORM_PROFILE_QUIET,
- 	PLATFORM_PROFILE_BALANCED,
-+	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
- 	PLATFORM_PROFILE_PERFORMANCE,
- 	PLATFORM_PROFILE_LAST, /*must always be last */
- };
++config SURFACE_PLATFORM_PROFILE
++	tristate "Surface Platform Profile Driver"
++	depends on SURFACE_AGGREGATOR_REGISTRY
++	select ACPI_PLATFORM_PROFILE
++	help
++	  Provides support for the ACPI platform profile on 5th- and later
++	  generation Microsoft Surface devices.
++
++	  More specifically, this driver provides ACPI platform profile support
++	  on Microsoft Surface devices with a Surface System Aggregator Module
++	  (SSAM) connected via the Surface Serial Hub (SSH / SAM-over-SSH). In
++	  other words, this driver provides platform profile support on the
++	  Surface Pro 5, Surface Book 2, Surface Laptop, Surface Laptop Go and
++	  later. On those devices, the platform profile can significantly
++	  influence cooling behavior, e.g. setting it to 'quiet' (default) or
++	  'low-power' can significantly limit performance of the discrete GPU on
++	  Surface Books, while in turn leading to lower power consumption and/or
++	  less fan noise.
++
++	  Select M or Y here, if you want to include ACPI platform profile
++	  support on the above mentioned devices.
++
+ config SURFACE_PRO3_BUTTON
+ 	tristate "Power/home/volume buttons driver for Microsoft Surface Pro 3/4 tablet"
+ 	depends on INPUT
+diff --git a/drivers/platform/surface/Makefile b/drivers/platform/surface/Makefile
+index 80035ee540bf..99372c427b73 100644
+--- a/drivers/platform/surface/Makefile
++++ b/drivers/platform/surface/Makefile
+@@ -13,4 +13,5 @@ obj-$(CONFIG_SURFACE_AGGREGATOR_CDEV)	+= surface_aggregator_cdev.o
+ obj-$(CONFIG_SURFACE_AGGREGATOR_REGISTRY) += surface_aggregator_registry.o
+ obj-$(CONFIG_SURFACE_GPE)		+= surface_gpe.o
+ obj-$(CONFIG_SURFACE_HOTPLUG)		+= surface_hotplug.o
++obj-$(CONFIG_SURFACE_PLATFORM_PROFILE)	+= surface_platform_profile.o
+ obj-$(CONFIG_SURFACE_PRO3_BUTTON)	+= surfacepro3_button.o
+diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
+new file mode 100644
+index 000000000000..0081b01a5b0f
+--- /dev/null
++++ b/drivers/platform/surface/surface_platform_profile.c
+@@ -0,0 +1,190 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Surface Platform Profile / Performance Mode driver for Surface System
++ * Aggregator Module (thermal subsystem).
++ *
++ * Copyright (C) 2021 Maximilian Luz <luzmaximilian@gmail.com>
++ */
++
++#include <asm/unaligned.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/platform_profile.h>
++#include <linux/types.h>
++
++#include <linux/surface_aggregator/device.h>
++
++enum ssam_tmp_profile {
++	SSAM_TMP_PROFILE_NORMAL             = 1,
++	SSAM_TMP_PROFILE_BATTERY_SAVER      = 2,
++	SSAM_TMP_PROFILE_BETTER_PERFORMANCE = 3,
++	SSAM_TMP_PROFILE_BEST_PERFORMANCE   = 4,
++};
++
++struct ssam_tmp_profile_info {
++	__le32 profile;
++	__le16 unknown1;
++	__le16 unknown2;
++} __packed;
++
++struct ssam_tmp_profile_device {
++	struct ssam_device *sdev;
++	struct platform_profile_handler handler;
++};
++
++static SSAM_DEFINE_SYNC_REQUEST_CL_R(__ssam_tmp_profile_get, struct ssam_tmp_profile_info, {
++	.target_category = SSAM_SSH_TC_TMP,
++	.command_id      = 0x02,
++});
++
++static SSAM_DEFINE_SYNC_REQUEST_CL_W(__ssam_tmp_profile_set, __le32, {
++	.target_category = SSAM_SSH_TC_TMP,
++	.command_id      = 0x03,
++});
++
++static int ssam_tmp_profile_get(struct ssam_device *sdev, enum ssam_tmp_profile *p)
++{
++	struct ssam_tmp_profile_info info;
++	int status;
++
++	status = ssam_retry(__ssam_tmp_profile_get, sdev, &info);
++	if (status < 0)
++		return status;
++
++	*p = le32_to_cpu(info.profile);
++	return 0;
++}
++
++static int ssam_tmp_profile_set(struct ssam_device *sdev, enum ssam_tmp_profile p)
++{
++	__le32 profile_le = cpu_to_le32(p);
++
++	return ssam_retry(__ssam_tmp_profile_set, sdev, &profile_le);
++}
++
++static int convert_ssam_to_profile(struct ssam_device *sdev, enum ssam_tmp_profile p)
++{
++	switch (p) {
++	case SSAM_TMP_PROFILE_NORMAL:
++		return PLATFORM_PROFILE_BALANCED;
++
++	case SSAM_TMP_PROFILE_BATTERY_SAVER:
++		return PLATFORM_PROFILE_LOW_POWER;
++
++	case SSAM_TMP_PROFILE_BETTER_PERFORMANCE:
++		return PLATFORM_PROFILE_BALANCED_PERFORMANCE;
++
++	case SSAM_TMP_PROFILE_BEST_PERFORMANCE:
++		return PLATFORM_PROFILE_PERFORMANCE;
++
++	default:
++		dev_err(&sdev->dev, "invalid performance profile: %d", p);
++		return -EINVAL;
++	}
++}
++
++static int convert_profile_to_ssam(struct ssam_device *sdev, enum platform_profile_option p)
++{
++	switch (p) {
++	case PLATFORM_PROFILE_LOW_POWER:
++		return SSAM_TMP_PROFILE_BATTERY_SAVER;
++
++	case PLATFORM_PROFILE_BALANCED:
++		return SSAM_TMP_PROFILE_NORMAL;
++
++	case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
++		return SSAM_TMP_PROFILE_BETTER_PERFORMANCE;
++
++	case PLATFORM_PROFILE_PERFORMANCE:
++		return SSAM_TMP_PROFILE_BEST_PERFORMANCE;
++
++	default:
++		/* This should have already been caught by platform_profile_store(). */
++		WARN(true, "unsupported platform profile");
++		return -EOPNOTSUPP;
++	}
++}
++
++static int ssam_platform_profile_get(struct platform_profile_handler *pprof,
++				     enum platform_profile_option *profile)
++{
++	struct ssam_tmp_profile_device *tpd;
++	enum ssam_tmp_profile tp;
++	int status;
++
++	tpd = container_of(pprof, struct ssam_tmp_profile_device, handler);
++
++	status = ssam_tmp_profile_get(tpd->sdev, &tp);
++	if (status)
++		return status;
++
++	status = convert_ssam_to_profile(tpd->sdev, tp);
++	if (status < 0)
++		return status;
++
++	*profile = status;
++	return 0;
++}
++
++static int ssam_platform_profile_set(struct platform_profile_handler *pprof,
++				     enum platform_profile_option profile)
++{
++	struct ssam_tmp_profile_device *tpd;
++	int tp;
++
++	tpd = container_of(pprof, struct ssam_tmp_profile_device, handler);
++
++	tp = convert_profile_to_ssam(tpd->sdev, profile);
++	if (tp < 0)
++		return tp;
++
++	return ssam_tmp_profile_set(tpd->sdev, tp);
++}
++
++static int surface_platform_profile_probe(struct ssam_device *sdev)
++{
++	struct ssam_tmp_profile_device *tpd;
++
++	tpd = devm_kzalloc(&sdev->dev, sizeof(*tpd), GFP_KERNEL);
++	if (!tpd)
++		return -ENOMEM;
++
++	tpd->sdev = sdev;
++
++	tpd->handler.profile_get = ssam_platform_profile_get;
++	tpd->handler.profile_set = ssam_platform_profile_set;
++
++	set_bit(PLATFORM_PROFILE_LOW_POWER, tpd->handler.choices);
++	set_bit(PLATFORM_PROFILE_BALANCED, tpd->handler.choices);
++	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, tpd->handler.choices);
++	set_bit(PLATFORM_PROFILE_PERFORMANCE, tpd->handler.choices);
++
++	platform_profile_register(&tpd->handler);
++	return 0;
++}
++
++static void surface_platform_profile_remove(struct ssam_device *sdev)
++{
++	platform_profile_remove();
++}
++
++static const struct ssam_device_id ssam_platform_profile_match[] = {
++	{ SSAM_SDEV(TMP, 0x01, 0x00, 0x01) },
++	{ },
++};
++MODULE_DEVICE_TABLE(ssam, ssam_platform_profile_match);
++
++static struct ssam_device_driver surface_platform_profile = {
++	.probe = surface_platform_profile_probe,
++	.remove = surface_platform_profile_remove,
++	.match_table = ssam_platform_profile_match,
++	.driver = {
++		.name = "surface_platform_profile",
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
++	},
++};
++module_ssam_device_driver(surface_platform_profile);
++
++MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
++MODULE_DESCRIPTION("Platform Profile Support for Surface System Aggregator Module");
++MODULE_LICENSE("GPL");
 -- 
 2.30.0
 
