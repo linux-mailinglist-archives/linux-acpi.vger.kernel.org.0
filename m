@@ -2,138 +2,313 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B52E318492
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 06:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9906931875E
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 10:49:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbhBKFVd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 00:21:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44540 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229499AbhBKFVc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 11 Feb 2021 00:21:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 29C7A64DE9;
-        Thu, 11 Feb 2021 05:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613020851;
-        bh=KdBGNzag/01kzofZT39hds+qMD7l9yoSaUDih1opjlI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fzYYioOelzFLe5ASclX6eHJGN7WoFZhlaJMK+ymsazIW579bo+vqgJ9uUx0QF44tO
-         qAM7+YrvJuiJ+qeZUBkqEKOH7zHarvQfuqFH7t3JbQII6cuCh9WLkCWGqrs2pbWALo
-         dIiTiCvSKaZRhbN0wwTNBD81DxAI4ylbXl4ZyQTtyl3bi685SXX8m3klblmA3MU8+j
-         1XAoVrOuFJ88Y1LuZL5MmPFjj5oVK61grGSxS2ijFmsOmb3Z5ZKqtiIx9VdWQgogdp
-         1CVhVYA8ReU1EfsDqAx8dJ5yJiGAhNqBYa3jNPlhxm4r0GIQvP6Lqoljo4W8MB6NAO
-         IRginZBttRRcg==
-Date:   Thu, 11 Feb 2021 10:50:47 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Marcin =?utf-8?Q?=C5=9Alusarz?= <marcin.slusarz@gmail.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        marcin.slusarz@intel.com, Takashi Iwai <tiwai@suse.de>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>
-Subject: Re: [PATCH 1/2] soundwire: intel: fix possible crash when no device
- is detected
-Message-ID: <20210211052047.GH2774@vkoul-mobl.Dlink>
-References: <a3f01a5d-d7a5-8280-4091-b2486b01a782@linux.intel.com>
- <20210208120104.204761-1-marcin.slusarz@gmail.com>
- <CAJZ5v0gftDzua87J0To87=Huer2q=_z=0Bj2q++OQAYNtPe86w@mail.gmail.com>
- <e6d3f589-fa9b-baee-8dba-6a7c09e50b83@linux.intel.com>
+        id S229580AbhBKJsc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 04:48:32 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2541 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230365AbhBKJoP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 04:44:15 -0500
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Dbs4y2tvTz67mWv;
+        Thu, 11 Feb 2021 17:38:26 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 11 Feb 2021 10:43:23 +0100
+Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
+ 2021 09:43:23 +0000
+Date:   Thu, 11 Feb 2021 09:42:22 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Natu, Mahesh" <mahesh.natu@intel.com>,
+        Chet R Douglas <chet.r.douglas@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        "Vishal L Verma" <vishal.l.verma@intel.com>
+Subject: Re: [RFC] ACPI Code First ECR: Generic Target
+Message-ID: <20210211094222.000048ae@Huawei.com>
+In-Reply-To: <CAPcyv4gOyPjVcBa_m6pvpVP+vamJ38G7ePos-2LP273y3ivJqg@mail.gmail.com>
+References: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
+        <20210210112330.00003e74@Huawei.com>
+        <CAPcyv4gOyPjVcBa_m6pvpVP+vamJ38G7ePos-2LP273y3ivJqg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e6d3f589-fa9b-baee-8dba-6a7c09e50b83@linux.intel.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.31.44]
+X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10-02-21, 17:15, Pierre-Louis Bossart wrote:
-> 
-> 
-> On 2/8/21 6:37 AM, Rafael J. Wysocki wrote:
-> > On Mon, Feb 8, 2021 at 1:01 PM Marcin Ślusarz <marcin.slusarz@gmail.com> wrote:
-> > > 
-> > > From: Marcin Ślusarz <marcin.slusarz@intel.com>
-> > > 
-> > > acpi_walk_namespace can return success without executing our
-> > > callback which initializes info->handle.
-> > > If the random value in this structure is a valid address (which
-> > > is on the stack, so it's quite possible), then nothing bad will
-> > > happen, because:
-> > > sdw_intel_scan_controller
-> > >   -> acpi_bus_get_device
-> > >   -> acpi_get_device_data
-> > >   -> acpi_get_data_full
-> > >   -> acpi_ns_validate_handle
-> > > will reject this handle.
-> > > 
-> > > However, if the value from the stack doesn't point to a valid
-> > > address, we get this:
-> > > 
-> > > BUG: kernel NULL pointer dereference, address: 0000000000000050
-> > > PGD 0 P4D 0
-> > > Oops: 0000 [#1] SMP NOPTI
-> > > CPU: 6 PID: 472 Comm: systemd-udevd Tainted: G        W         5.10.0-1-amd64 #1 Debian 5.10.4-1
-> > > Hardware name: HP HP Pavilion Laptop 15-cs3xxx/86E2, BIOS F.05 01/01/2020
-> > > RIP: 0010:acpi_ns_validate_handle+0x1a/0x23
-> > > Code: 00 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f c3 0f 1f 44 00 00 48 8d 57 ff 48 89 f8 48 83 fa fd 76 08 48 8b 05 0c b8 67 01 c3 <80> 7f 08 0f 74 02 31 c0 c3 0f 1f 44 00 00 48 8b 3d f6 b7 67 01 e8
-> > > RSP: 0000:ffffc388807c7b20 EFLAGS: 00010213
-> > > RAX: 0000000000000048 RBX: ffffc388807c7b70 RCX: 0000000000000000
-> > > RDX: 0000000000000047 RSI: 0000000000000246 RDI: 0000000000000048
-> > > RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-> > > R10: ffffffffc0f5f4d1 R11: ffffffff8f0cb268 R12: 0000000000001001
-> > > R13: ffffffff8e33b160 R14: 0000000000000048 R15: 0000000000000000
-> > > FS:  00007f24548288c0(0000) GS:ffff9f781fb80000(0000) knlGS:0000000000000000
-> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > CR2: 0000000000000050 CR3: 0000000106158004 CR4: 0000000000770ee0
-> > > PKRU: 55555554
-> > > Call Trace:
-> > >   acpi_get_data_full+0x4d/0x92
-> > >   acpi_bus_get_device+0x1f/0x40
-> > >   sdw_intel_acpi_scan+0x59/0x230 [soundwire_intel]
-> > >   ? strstr+0x22/0x60
-> > >   ? dmi_matches+0x76/0xe0
-> > >   snd_intel_dsp_driver_probe.cold+0xaf/0x163 [snd_intel_dspcfg]
-> > >   azx_probe+0x7a/0x970 [snd_hda_intel]
-> > >   local_pci_probe+0x42/0x80
-> > >   ? _cond_resched+0x16/0x40
-> > >   pci_device_probe+0xfd/0x1b0
-> > >   really_probe+0x205/0x460
-> > >   driver_probe_device+0xe1/0x150
-> > >   device_driver_attach+0xa1/0xb0
-> > >   __driver_attach+0x8a/0x150
-> > >   ? device_driver_attach+0xb0/0xb0
-> > >   ? device_driver_attach+0xb0/0xb0
-> > >   bus_for_each_dev+0x78/0xc0
-> > >   bus_add_driver+0x12b/0x1e0
-> > >   driver_register+0x8b/0xe0
-> > >   ? 0xffffffffc0f65000
-> > >   do_one_initcall+0x44/0x1d0
-> > >   ? do_init_module+0x23/0x250
-> > >   ? kmem_cache_alloc_trace+0xf5/0x200
-> > >   do_init_module+0x5c/0x250
-> > >   __do_sys_finit_module+0xb1/0x110
-> > >   do_syscall_64+0x33/0x80
-> > >   entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> > > 
-> > > CC: stable@vger.kernel.org
-> > > Signed-off-by: Marcin Ślusarz <marcin.slusarz@intel.com>
-> > > Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> > 
-> > Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Adding Vinod, Takashi, Mark and Jaroslav in CC: to make sure this patch does
-> not fall between the cracks.
-> 
-> This issue may impact all HDaudio platforms and this patch needs to reach
-> Linus' tree and 5.10-stable. Thanks!
+On Wed, 10 Feb 2021 08:24:51 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Applied, thanks.. I will send it up so that it is part of rc1 and gets
-added to stable too
+> On Wed, Feb 10, 2021 at 3:24 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Tue, 9 Feb 2021 19:55:05 -0800
+> > Dan Williams <dan.j.williams@intel.com> wrote:
+> >  
+> > > While the platform BIOS is able to describe the performance
+> > > characteristics of CXL memory that is present at boot, it is unable to
+> > > statically enumerate the performance of CXL memory hot inserted
+> > > post-boot. The OS can enumerate most of the characteristics from link
+> > > registers and CDAT, but the performance from the CPU to the host
+> > > bridge, for example, is not enumerated by PCIE or CXL. Introduce an
+> > > ACPI mechanism for this purpose. Critically this is achieved with a
+> > > small tweak to how the existing Generic Initiator proximity domain is
+> > > utilized in the HMAT.  
+> >
+> > Hi Dan,
+> >
+> > Agree there is a hole here, but I think the proposed solution has some
+> > issues for backwards compatibility.
+> >
+> > Just to clarify, I believe CDAT from root ports is sufficient for the
+> > other direction (GI on CXL, memory in host).  I wondered initially if
+> > this was a two way issue, but after a reread, I think that is fine
+> > with the root port providing CDAT or potentially treating the root
+> > port as a GI (though that runs into the same naming / representation issue
+> > as below and I think would need some clarifying text in UEFI GI description)
+> >
+> > http://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.01.pdf
+> >
+> > For the case you are dealing with here potentially we 'could' add something
+> > to CDAT as alternative to changing SRAT, but it would be more complex
+> > so your approach here makes more sense to me.  
+> 
+> CDAT seems the wrong mechanism because it identifies target
+> performance once you're at the front door of the device, not
+> performance relative to a given initiator.
 
--- 
-~Vinod
+I'd argue you could make CDAT a more symmetric representation, but it would
+end up replicating a lot of info already in HMAT.  Didn't say it was a good
+idea!
+
+> 
+> >  
+> > >
+> > > ---
+> > >
+> > > # Title: Introduce a Generic Target for CXL
+> > >
+> > > # Status: Draft
+> > >
+> > > # Document: ACPI Specification 6.4
+> > >
+> > > # License
+> > > SPDX-License Identifier: CC-BY-4.0
+> > >
+> > > # Submitter:
+> > > * Sponsor: Dan Williams, Intel
+> > > * Creators/Contributors:
+> > >     * Mahesh Natu, Intel
+> > >     * Chet Douglas, Intel
+> > >     * Deepak Shivakumar, Intel
+> > >
+> > > # Summary of the Change
+> > > Introduce a "Generic Target" concept to the SRAT to describe the root
+> > > performance parameters in the path to dynamically discovered (outside of
+> > > ACPI enumeration) CXL memory target endpoints.
+> > >
+> > > # Benefits of the Change
+> > > Consider the case of a system with a set of CXL host bridges (ACPI0016),  
+> >
+> > Superficially feels like this new SRAT entry might reference the CXL 2.0 Root
+> > ports or the host bridge.
+> >  
+> > > and no devices attached at initial system power-on. In this scenario
+> > > platform firmware is unable to perform the end-to-end enumeration
+> > > necessary to populate SRAT and HMAT for the endpoints that may be
+> > > hot-inserted behind those bridges post power-on. The address-range is
+> > > unknown so SRAT can not be pre-populated, the performance is unknown (no
+> > > CDAT nor interleave configuration) so HMAT can not be pre-populated.
+> > >
+> > > However, what is known to platform firmware that generates the SRAT and
+> > > HMAT is the performance characteristics of the path between CPU and
+> > > Generic Initiators to the CXL host bridge target. With either
+> > > CPU-to-Generic-Target, or Generic-Initiator-to-Generic-Target entries in
+> > > the HMAT the OS CXL subsystem can enumerate the remaining details (PCIE
+> > > link status, device CDAT, interleave configuration) to calculate the
+> > > bandwidth and latency of a dynamically discovered CXL memory target.  
+> >
+> > I'm wondering if the term "generic target" is a good name.
+> > Would something like "generic target bridge" be clearer?
+> > The point being this isn't an actual target but a point along the way.
+> > Mind you this is close to bike shedding.
+> >
+> > As mentioned above, maybe "generic bridge" that can give us a node to hang
+> > data off for both, a) GI on CXL to host memory, and b) Initiator in host to CXL memory
+> > and hence give cleaner representation.  
+> 
+> "Target" in the sense of its role in the HMAT. This is conceptually
+> not limited to bridges. Imagine a CXL endpoint that the BIOS lets the
+> OS map into the memory address space, but describes the performance in
+> HMAT.
+
+That's an odd situation that it sort of 'half' manages it in the BIOS.
+We probably need some supplementary additional docs around this topic
+as the OS would need to be aware of that possibility and explicitly check
+for it before doing its normal build based on CDAT + what you are proposing
+here.  Maybe code is enough but given this is cross OS stuff I'd argue
+it probably isn't.
+
+I guess could revisit this draft Uefi white paper perhaps and add a bunch
+of examples around this usecase https://github.com/hisilicon/acpi-numa-whitepaper
+
+> 
+> >  
+> > >
+> > > # Impact of the Change
+> > > The existing Generic Initiator Affinity Structure (ACPI 6.4 Section
+> > > 5.2.16.6) already contains all the fields necessary to enumerate a
+> > > generic target proximity domain. All that is missing is the
+> > > interpretation of that proximity domain optionally as a target
+> > > identifier in the HMAT.
+> > >
+> > > Given that the OS still needs to dynamically enumerate and instantiate
+> > > the memory ranges behind the host bridge. The assumption is that
+> > > operating systems that do not support native CXL enumeration will ignore
+> > > this data in the HMAT, while CXL native enumeration aware environments
+> > > will use this fragment of the performance path to calculate the
+> > > performance characteristics.  
+> >
+> > I don't think it is true that OS not supporting native CXL will ignore the
+> > data.  
+> 
+> True, I should have chosen more careful words like s/ignore/not
+> regress upon seeing/
+
+It's a sticky corner and I suspect likely to come up at in ACPI WG - what is
+being proposed here isn't backwards compatible, even if the impacts in Linux
+are small.  Mostly it's infrastructure bring up that won't get used
+(fallback lists and similar for a node which will never be specified in
+allocations) and some confusing userspace ABI (which is more than a little
+confusing already). 
+
+> 
+> >
+> > Linux will create a small amount of infrastructure to reflect them (more or
+> > less the same as a memoryless node) and also they will appear in places
+> > like access0 as a possible initiator of transactions.  It's small stuff,
+> > but I'd rather the impact on legacy was zero.  
+> 
+> I'm failing to see that small collision as fatal to the proposal. The
+> HMAT parsing had a significant bug for multiple kernel releases and no
+> one noticed. This quirk is minor in comparison.
+
+True, there is a lag in HMAT adoption - though for ACPI tables, not that long
+(only a couple of years :)
+
+> 
+> >
+> > So my gut feeling here is we shouldn't reuse the generic initiator, but
+> > should invent something new.  Would look similar to GI, but with a different
+> > ID - to ensure legacy OS ignores it.  
+> 
+> A new id introduces more problems than it solves. Set aside the ACPICA
+> thrash, it does not allow a clean identity mapping of a point in a
+> system topology being both initiator and target. The SRAT does not
+> need more data structures to convey this information. At most I would
+> advocate for an OSC bit for the OS to opt into allowing this new usage
+> in the HMAT, but that still feels like overkill absent a clear
+> regression in legacy environments.
+
+OSC for this case doesn't work. You can't necessarily evaluate it
+early enough in the boot - in Linux the node setup is before AML parsing
+comes up.  HMAT is evaluated a lot later, but SRAT is too early.  + in theory
+another OS is allowed to evaluate HMAT before OSC is available.
+ 
+> The fact that hardly anyone is
+> using HMAT (as indicated by the bug I mentioned) gives me confidence
+> that perfection is more "enemy of the good" than required here.
+
+How about taking this another way
+
+1) Assume that the costs of 'false' GI nodes on legacy system as a result
+   of this is minor - so just live with it.  (probably true, but as ever
+   need to confirm with other OS)
+
+2) Try to remove the cost of pointless infrastructure on 'aware' kernels.
+   Add a flag to the GI entry to say it's a bridge and not expected to,
+   in of itself, represent an initiator or a target.
+   In Linux we then don't create the node intrastructure etc or assign
+   any devices to have the non existent NUMA node.
+
+The information is still there to combine with device info (CDAT) etc
+and build what we eventually want in the way of a representation of
+the topology that Linux can use.
+
+Now we just have the 'small' problem of figuring out how actually implement
+hotplugging of NUMA nodes.
+
+Jonathan
+
+> 
+> >
+> > Unfortunately we can't just add a flag because backwards compatibility
+> > with old OS would mean it was ignored.  Hence I think this needs to be
+> > a new type.
+> >
+> > If we define a new node type rather than extend GI, we need to be careful
+> > around the same issue with _PXM that we had when introducing Generic
+> > Initiators (not sure the protections on that made it back to stable)
+> > so might need to modify DSDT _PXM responses based on appropriate _OSC.
+> > May well be fine but I'm not convinced yet.  Perhaps we need to say
+> > that using _PXM to place anything in a node defined only via this new means
+> > is not valid.
+> >
+> > Jonathan
+> >  
+> > >
+> > > # References
+> > > * Compute Express Link Specification v2.0,
+> > > <https://www.computeexpresslink.org/>
+> > >
+> > > # Detailed Description of the Change
+> > >
+> > > * Replace "Generic Initiator" with "Generic Initiator / Target" in all
+> > > locations except where an "initiator" or "target" is implied.
+> > > Specifically 5.2.27.3 "Memory Proximity Domain Attributes Structure"
+> > > need not replace occurrences of "generic initiator" in field: "Proximity
+> > > Domain for Attached Initiator". Additionally field: "Proximity Domain
+> > > for the Memory" must be renamed to "Proximity Domain for the Memory /
+> > > Generic Target" with a new description "Integer that represents the
+> > > memory / generic target proximity domain to which this memory belongs."
+> > >
+> > > * Revise "5.2.16.6 Generic Initiator Affinity Structure" to make it
+> > >   consistent with being referenced as either a target or initiator.
+> > >
+> > >         * Description: (replace all text)
+> > >  
+> > >         > The Generic Initiator / Target Affinity Structure provides the
+> > >         > association between a Generic Initiator and a Memory Proximity
+> > >         > Domain, or another Generic Target Proximity Domain. The
+> > >         > distinction as to whether this structure represents an
+> > >         > Initiator, a Target, or both depends on how it is referenced
+> > >         > in the HMAT. See Section 5.2.27.3 for details.  
+> > >  
+> > >         > Support of Generic Initiator / Target Affinity Structures by
+> > >         > OSPM is optional, and the platform may query whether the OS
+> > >         > supports it via the _OSC method. See Section 6.2.11.2.  
+> > >
+> > >         * Architectural transactions: (append after current text)
+> > >  
+> > >         > If this proximity domain is referenced as a target then it
+> > >         > supports all the transaction types inferred above.  
+> > >
+> > >         * Other updates are simple Initiator => Initiator / Target
+> > >           replacements.  
+> >
+> >  
+
