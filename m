@@ -2,181 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5738C31924A
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 19:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9462B3192D4
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 20:11:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbhBKSb4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 13:31:56 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:63290 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbhBKSar (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 13:30:47 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_smtp) via UNIX with SMTP (IdeaSmtpServer 0.83.537)
- id a112a8a4c721731e; Thu, 11 Feb 2021 19:30:03 +0100
-Received: from kreacher.localnet (89-64-80-250.dynamic.chello.pl [89.64.80.250])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id D9C46661037;
-        Thu, 11 Feb 2021 19:30:01 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH] ACPI: property: Fix fwnode string properties matching
-Date:   Thu, 11 Feb 2021 19:30:01 +0100
-Message-ID: <5831274.1ZjA0VymzF@kreacher>
+        id S229707AbhBKTLE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 14:11:04 -0500
+Received: from mail-oo1-f47.google.com ([209.85.161.47]:33694 "EHLO
+        mail-oo1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229617AbhBKTLD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 14:11:03 -0500
+Received: by mail-oo1-f47.google.com with SMTP id f1so1548235oou.0;
+        Thu, 11 Feb 2021 11:10:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mdFu/6VBkN1MAmN++f/coOk+OapMFzu+uHXVkMLYEfU=;
+        b=Lpl+XLR1M1PEEK0CdVRcqwu5mnQmdGNQYyvSC3YM/zLQnHBJSE5OUWFxXmuP4unysA
+         0bxWIATrqwAQbLA3RfIZn1R7xC5xTuad9XGrItjx4Us4H/b6QhQ99KpstalaVbFsH8Mm
+         D2CIPKSoIdWcSoSApEBnzq3YWu19WP07gfaKLSmtyxnd6+dNpon4g2krv5Ls+F3nvA1u
+         GKPZG4bLTGZSDmEc6J+GZg5mjtKEhyy/F+VHmeFyzWMldh4ArXoep/FuDU92pnB1QwlH
+         Si0Mj9SOaOKLXwJ8CrlnxPcT0qn+m9Kg1WAvNHSFzANe95YnzB9vUi8IQvwY01kxpTs3
+         ES8g==
+X-Gm-Message-State: AOAM5318uJ21MoKeKU59WUd/cysAzbJHopUnmKT16I4bl8hm2MXgdAEM
+        8ufp4HeQZZzG8j6I6WhQFAGXDNoXB+z0Y3uJn2g=
+X-Google-Smtp-Source: ABdhPJz9qDxkr9OfwolY9oYHRGcZmnyZ6TfMFdgsm5wh0yroMkTpmguutv7JTb4CFqLVP0+W6Eqlhz//Lt/YY+zskGY=
+X-Received: by 2002:a4a:3bcb:: with SMTP id s194mr6468762oos.1.1613070622766;
+ Thu, 11 Feb 2021 11:10:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrheelgdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtvdenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeevudefgfeguedtjedvhfetveegleduveeuvedvjeekleefhfduhfefheekffefveenucfkphepkeelrdeigedrkedtrddvhedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedtrddvhedtpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
- oheptggrlhhvihhnrdhjohhhnhhsohhnsehoshhsrdhngihprdgtohhmpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
+References: <20210210230800.30291-1-sakari.ailus@linux.intel.com> <20210210230800.30291-2-sakari.ailus@linux.intel.com>
+In-Reply-To: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 11 Feb 2021 20:10:11 +0100
+Message-ID: <CAJZ5v0haRrHv=dsy=6ZOrQcPEeFc6Lz6QAXTVGyWhYZxpHpEdA@mail.gmail.com>
+Subject: Re: [PATCH v11 1/7] ACPI: scan: Obtain device's desired enumeration
+ power state
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, Feb 11, 2021 at 12:08 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Store a device's desired enumeration power state in struct
+> acpi_device_power during acpi_device object's initialisation.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/acpi/scan.c     | 4 ++++
+>  include/acpi/acpi_bus.h | 1 +
+>  2 files changed, 5 insertions(+)
+>
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index a184529d8fa40..6a9b4a92c4f66 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -987,6 +987,7 @@ static void acpi_bus_init_power_state(struct acpi_device *device, int state)
+>
+>  static void acpi_bus_get_power_flags(struct acpi_device *device)
+>  {
+> +       unsigned long long dse = ACPI_STATE_D0;
+>         u32 i;
+>
+>         /* Presence of _PS0|_PR0 indicates 'power manageable' */
+> @@ -1008,6 +1009,9 @@ static void acpi_bus_get_power_flags(struct acpi_device *device)
+>         if (acpi_has_method(device->handle, "_DSW"))
+>                 device->power.flags.dsw_present = 1;
+>
+> +       acpi_evaluate_integer(device->handle, "_DSE", NULL, &dse);
 
-Property matching does not work for ACPI fwnodes if the value of the
-given property is not represented as a package in the _DSD package
-containing it.  For example, the "compatible" property in the _DSD
-below
+As a matter of notice, it is likely that this object will be called
+_DSC (Deepest State for Configuration) which better reflects its
+function.
 
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package () {"compatible", "ethernet-phy-ieee802.3-c45"}
-    }
-  })
+The ACPI ECR introducing it will be sent next week if all goes well.
 
-will not be found by fwnode_property_match_string(), because the ACPI
-code handling device properties does not regard the single value as a
-"list" in that case.
+Thanks!
 
-Namely, fwnode_property_match_string() invoked to match a given
-string property value first calls fwnode_property_read_string_array()
-with the last two arguments equal to NULL and 0, respectively, in
-order to count the items in the value of the given property, with the
-assumption that this value may be an array.  For ACPI fwnodes, that
-operation is carried out by acpi_node_prop_read() which calls
-acpi_data_prop_read() for this purpose.  However, when the return
-(val) pointer is NULL, that function only looks for a property whose
-value is a package without checking the single-value case at all.
-
-To fix that, make acpi_data_prop_read() check the single-value case
-regardless of the return pointer value if its return pointer argument
-is NULL and modify acpi_data_prop_read_single() handling that case to
-attempt to read the value of the property if the return pointer is
-NULL and return 1 if that succeeds.
-
-Fixes: 3708184afc77 ("device property: Move FW type specific functionality to FW specific files")
-Reported-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc: 4.13+ <stable@vger.kernel.org> # 4.13+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/property.c |   44 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 11 deletions(-)
-
-Index: linux-pm/drivers/acpi/property.c
-===================================================================
---- linux-pm.orig/drivers/acpi/property.c
-+++ linux-pm/drivers/acpi/property.c
-@@ -787,9 +787,6 @@ static int acpi_data_prop_read_single(co
- 	const union acpi_object *obj;
- 	int ret;
- 
--	if (!val)
--		return -EINVAL;
--
- 	if (proptype >= DEV_PROP_U8 && proptype <= DEV_PROP_U64) {
- 		ret = acpi_data_get_property(data, propname, ACPI_TYPE_INTEGER, &obj);
- 		if (ret)
-@@ -799,28 +796,43 @@ static int acpi_data_prop_read_single(co
- 		case DEV_PROP_U8:
- 			if (obj->integer.value > U8_MAX)
- 				return -EOVERFLOW;
--			*(u8 *)val = obj->integer.value;
-+
-+			if (val)
-+				*(u8 *)val = obj->integer.value;
-+
- 			break;
- 		case DEV_PROP_U16:
- 			if (obj->integer.value > U16_MAX)
- 				return -EOVERFLOW;
--			*(u16 *)val = obj->integer.value;
-+
-+			if (val)
-+				*(u16 *)val = obj->integer.value;
-+
- 			break;
- 		case DEV_PROP_U32:
- 			if (obj->integer.value > U32_MAX)
- 				return -EOVERFLOW;
--			*(u32 *)val = obj->integer.value;
-+
-+			if (val)
-+				*(u32 *)val = obj->integer.value;
-+
- 			break;
- 		default:
--			*(u64 *)val = obj->integer.value;
-+			if (val)
-+				*(u64 *)val = obj->integer.value;
-+
- 			break;
- 		}
-+
-+		if (!val)
-+			return 1;
- 	} else if (proptype == DEV_PROP_STRING) {
- 		ret = acpi_data_get_property(data, propname, ACPI_TYPE_STRING, &obj);
- 		if (ret)
- 			return ret;
- 
--		*(char **)val = obj->string.pointer;
-+		if (val)
-+			*(char **)val = obj->string.pointer;
- 
- 		return 1;
- 	} else {
-@@ -834,7 +846,7 @@ int acpi_dev_prop_read_single(struct acp
- {
- 	int ret;
- 
--	if (!adev)
-+	if (!adev || !val)
- 		return -EINVAL;
- 
- 	ret = acpi_data_prop_read_single(&adev->data, propname, proptype, val);
-@@ -928,10 +940,20 @@ static int acpi_data_prop_read(const str
- 	const union acpi_object *items;
- 	int ret;
- 
--	if (val && nval == 1) {
-+	if (nval == 1 || !val) {
- 		ret = acpi_data_prop_read_single(data, propname, proptype, val);
--		if (ret >= 0)
-+		/*
-+		 * The overflow error means that the property is there and it is
-+		 * single-value, but its type does not match, so return.
-+		 */
-+		if (ret >= 0 || ret == -EOVERFLOW)
- 			return ret;
-+
-+		/*
-+		 * Reading this property as a single-value one failed, but its
-+		 * value may still be represented as one-element array, so
-+		 * continue.
-+		 */
- 	}
- 
- 	ret = acpi_data_get_property_array(data, propname, ACPI_TYPE_ANY, &obj);
-
-
-
+> +       device->power.state_for_enumeration = dse;
+> +
+>         /*
+>          * Enumerate supported power management states
+>          */
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 02a716a0af5d4..becfc9f57002b 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -276,6 +276,7 @@ struct acpi_device_power {
+>         int state;              /* Current state */
+>         struct acpi_device_power_flags flags;
+>         struct acpi_device_power_state states[ACPI_D_STATE_COUNT];      /* Power states (D0-D3Cold) */
+> +       u8 state_for_enumeration; /* Maximum power state for enumeration */
+>  };
+>
+>  /* Performance Management */
+> --
+> 2.20.1
+>
