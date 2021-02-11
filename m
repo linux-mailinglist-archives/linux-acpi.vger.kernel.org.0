@@ -2,106 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCAA131903A
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 17:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C645A31904A
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 17:47:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231936AbhBKQm2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 11:42:28 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:35583 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbhBKQk1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 11:40:27 -0500
-Received: by mail-oi1-f178.google.com with SMTP id l3so6778181oii.2;
-        Thu, 11 Feb 2021 08:40:11 -0800 (PST)
+        id S231486AbhBKQqK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 11:46:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231954AbhBKQoJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 11:44:09 -0500
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20186C061786
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Feb 2021 08:43:28 -0800 (PST)
+Received: by mail-qt1-x82b.google.com with SMTP id c5so4625044qth.2
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Feb 2021 08:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=TnTqaJo6o1YbIsxOlUU5El2AYFoCRaTMv2k74gwpYCk=;
+        b=j7wENnRNfYfPWqF0G9QGfDUzZk153Z4UQUmIveNotABQDwPIRR70vxmq35a7doUKCZ
+         /HcvOQ86RpZiIANzXlYIfy+cAgGoUtdPhMADXIwhA2mdI+cZmuULVLbyvajkEAzTFDUD
+         HlQENYNoYVeOG5qtbcqxQm6f93n6rMe0lE2Q/7B1Q0BVTLr+Tv6TXhbb4QBf/RUGDOIL
+         jvNkGUYiXZOX9S7SYbN6U7aMi36Jvs+F6dKWmArqhvay3h5S4R8nxzeejQBYTIaCr8Lu
+         7ak3Pb8RxDoS2+C/OcgfbO/o40kFyaZsGykValmew5XF14xbnK46yn5yPxRz3jn4yz/o
+         OW0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8q2NiznoWVHuUMkmRhG9I02yDUgNpmTMAt3YoQyfIGk=;
-        b=RGLHmA221z8aU7u1IS1sRT8yqYqIJMDyvqois51hPWANv4R8/5f8t0SUtFkqqM6eaz
-         n7+sQ9TRINJMFq9C+S7DapFyzL/JbIUWQ3rf8G3jftUw9pwBozz+7vdwePQf2HV09xp9
-         xltSjFLp9grG2HobDHKMFU3vUGESdGToCREWE9aFIeoutP72Hc3eAB0J48nEHDQ7i4bJ
-         GiwRk6HxzI2A6lyeQ4Xp2vwQ0csDP5mXp1O/MqpvbofZznXOjK4hPpxzsWRE2E2Cw8L1
-         gbQ5fcV7pUirTH2Zak2GGui2v2bdXm/FEYSmVmsVEIMWz6U+HMVPOLH4WEfJlud4raqX
-         yUKw==
-X-Gm-Message-State: AOAM5334z8Lm7aGeMR7nZELnQOUvdIQzliaDjKOoEgY5xxPk6G3lOQe5
-        4a0wbt82usxum/k45o0pcO/Xql9s+VisfN51oR8=
-X-Google-Smtp-Source: ABdhPJzyQFbX0hSlRZwJpCaG0gnL07XQ4sZ9sbCMqGdf1PZ/ue9UJTn+QzFgmJlhxkJqET2zef5RWey55AhZUUOtyWc=
-X-Received: by 2002:aca:3d85:: with SMTP id k127mr3459892oia.157.1613061585919;
- Thu, 11 Feb 2021 08:39:45 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=TnTqaJo6o1YbIsxOlUU5El2AYFoCRaTMv2k74gwpYCk=;
+        b=PB36woIZpvuLvfRTZ1jLzs2mUifvf+x3cOJndYg5LRK0n0Hwtra7WrdV/kyj7eBFIZ
+         7lF1eo5H8f7WuJ+J+IZXjMqmC6Gi3fN4zw5xCOsEV+JaHxoXj0kJn6XntFaohKCnrdbq
+         yKY27q687tflWtKAsKfb+JPq6oWWWl8M8lKHIrX8ZWYvbBZbXYm3pFmPD7ir2FmQdIM7
+         bd/P0zbWxgy7YDnrr+6yIdAvTgRjIwFlzzeL9ioG+MqM4KAYr3Ym7SYDCfH+JG8kQr2R
+         /vFcEInCkJfCeYIKJQ8FS+1WmxTZXmzwXF2lnzVZa5aEtWwzs1ECOTpUPFUhXI2CeYz5
+         sEYQ==
+X-Gm-Message-State: AOAM5305BTdtw700X0UVH0F6vDINjXtYwZZ+CcojxfQ0Ov6ordGex3+k
+        JWSWB8G7asPkl9dtZj04LuXpkWxyEQiomGvNP7ckaQ==
+X-Google-Smtp-Source: ABdhPJyIzcNVaFrr0OmiD16y+FCSfW1u7IpTJXN6zk3LpMSJgVXwchFQE+2/kSNg4CVmCoH61WURtiFXXMwaao4ZUhM=
+X-Received: by 2002:ac8:59d6:: with SMTP id f22mr8369890qtf.230.1613061807236;
+ Thu, 11 Feb 2021 08:43:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20210210114320.3478-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0hx78JHnP5-5xFTPr0Rh9FvPCzAzTCyBaT6eLZ3Dd-mFA@mail.gmail.com>
- <3881654.NPl3a4M0kB@kreacher> <1946478.1QpZic6vku@kreacher>
- <YCPyKjO7XPBFAgbn@smile.fi.intel.com> <CAJZ5v0jq1+q3HKDEzgBUWtZY8H0kaiR=bNi1WUsdg3BTAyiPgw@mail.gmail.com>
- <YCP+xOuic5fPx+7i@smile.fi.intel.com> <CAJZ5v0iCe=GuauCVzLG83urBHghO0suabHcMg2Kw54XFjBqCbw@mail.gmail.com>
- <YCVQWgg6L5YcAXO1@smile.fi.intel.com>
-In-Reply-To: <YCVQWgg6L5YcAXO1@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 11 Feb 2021 17:39:34 +0100
-Message-ID: <CAJZ5v0juLyE=vCyw5_qZus3YC65kY=mOhrcb7OoWZQtZNnr_Ag@mail.gmail.com>
-Subject: Re: [PATCH v1 7/7] ACPI: property: Allow counting a single value as
- an array of 1 element
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+ <20210210000259.635748-6-ben.widawsky@intel.com> <MN2PR11MB36455574E25237635D3F9CC0888D9@MN2PR11MB3645.namprd11.prod.outlook.com>
+In-Reply-To: <MN2PR11MB36455574E25237635D3F9CC0888D9@MN2PR11MB3645.namprd11.prod.outlook.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 11 Feb 2021 08:43:16 -0800
+Message-ID: <CAPcyv4i9q8CaOehPDe2m7gSWVmRtSxX37G8+D8RdCgiL6jt1JA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/8] cxl/mem: Add a "RAW" send command
+To:     Ariel.Sibley@microchip.com
+Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        Sean V Kelley <sean.v.kelley@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 11, 2021 at 4:42 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Feb 10, 2021 at 7:27 AM <Ariel.Sibley@microchip.com> wrote:
 >
-> On Wed, Feb 10, 2021 at 04:44:34PM +0100, Rafael J. Wysocki wrote:
-> > On Wed, Feb 10, 2021 at 4:42 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Wed, Feb 10, 2021 at 04:01:16PM +0100, Rafael J. Wysocki wrote:
-> > > > On Wed, Feb 10, 2021 at 3:48 PM Andy Shevchenko
-> > > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > > On Wed, Feb 10, 2021 at 02:48:09PM +0100, Rafael J. Wysocki wrote:
-> > > > > > On Wednesday, February 10, 2021 2:31:48 PM CET Rafael J. Wysocki wrote:
-> > > > > > > On Wednesday, February 10, 2021 1:36:00 PM CET Rafael J. Wysocki wrote:
-> > > > > > > > On Wed, Feb 10, 2021 at 12:51 PM Andy Shevchenko
-> > > > > > > > <andriy.shevchenko@linux.intel.com> wrote:
->
-> ...
->
-> > > > > > > > > -       if (val && nval == 1) {
-> > > > > > > > > +       /* Try to read as a single value first */
-> > > > > > > > > +       if (!val || nval == 1) {
-> > > > > > > > >                 ret = acpi_data_prop_read_single(data, propname, proptype, val);
-> > > > > > > >
-> > > > > > > > This returns -EINVAL if val is NULL.
-> > > > >
-> > > > > Nope. That's why it's a patch 7. Patch 6 solves this.
-> > > >
-> > > > That's my point.  Patch 7 should be the first one in the series.
-> > >
-> > > Ah, okay. Since you want this let me rebase.
+> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> > index c4ba3aa0a05d..08eaa8e52083 100644
+> > --- a/drivers/cxl/Kconfig
+> > +++ b/drivers/cxl/Kconfig
+> > @@ -33,6 +33,24 @@ config CXL_MEM
 > >
-> > Thanks!
+> >           If unsure say 'm'.
+> >
+> > +config CXL_MEM_RAW_COMMANDS
+> > +       bool "RAW Command Interface for Memory Devices"
+> > +       depends on CXL_MEM
+> > +       help
+> > +         Enable CXL RAW command interface.
+> > +
+> > +         The CXL driver ioctl interface may assign a kernel ioctl comm=
+and
+> > +         number for each specification defined opcode. At any given po=
+int in
+> > +         time the number of opcodes that the specification defines and=
+ a device
+> > +         may implement may exceed the kernel's set of associated ioctl=
+ function
+> > +         numbers. The mismatch is either by omission, specification is=
+ too new,
+> > +         or by design. When prototyping new hardware, or developing /
+> > debugging
+> > +         the driver it is useful to be able to submit any possible com=
+mand to
+> > +         the hardware, even commands that may crash the kernel due to =
+their
+> > +         potential impact to memory currently in use by the kernel.
+> > +
+> > +         If developing CXL hardware or the driver say Y, otherwise say=
+ N.
 >
-> I started rebasing and realised that your approach has swapped the error codes,
-> i.e. if it's a single-value and it is, e.g., 16-bit wide, the u8 read will
-> return 1, while it has to return -EOVERFLOW.
+> Blocking RAW commands by default will prevent vendors from developing use=
+r space tools that utilize vendor specific commands. Vendors of CXL.mem dev=
+ices should take ownership of ensuring any vendor defined commands that cou=
+ld cause user data to be exposed or corrupted are disabled at the device le=
+vel for shipping configurations.
 
-Well, that's a bug in my patch.
+What follows is my personal opinion as a Linux kernel developer, not
+necessarily the opinion of my employer...
 
-I thought that you would reorder the series to put the fix into the
-front of it, but I didn't really mean to rebase it on top of my patch.
-Sorry for the confusion.
+Aside from the convention that new functionality is always default N
+it is the Linux distributor that decides the configuration. In an
+environment where the kernel is developing features like
+CONFIG_SECURITY_LOCKDOWN_LSM that limit the ability of the kernel to
+subvert platform features like secure boot, it is incumbent upon
+drivers to evaluate what they must do to protect platform integrity.
+See the ongoing tightening of /dev/mem like interfaces for an example
+of the shrinking ability of root to have unfettered access to all
+platform/hardware capabilities.
 
-However, not that you have started to do it apparently, let me post
-that patch properly with all of the issues addressed.
+CXL is unique in that it impacts "System RAM" resources and that it
+interleaves multiple devices. Compare this to NVME where the blast
+radius of misbehavior is contained to an endpoint and is behind an
+IOMMU. The larger impact to me increases the responsibility of CXL
+enabling to review system impacts and vendor specific functionality is
+typically unreviewable.
 
-> If you prefer, I can move two patches to the beginning, so one will be a good
-> prerequisite for this fix. And I'm still unsure about stable (Fixes tag is okay
-> to me), because the counting never worked from the day 1.
+There are 2 proposals I can see to improve the unreviewable problem.
+First, of course, get commands into the standard proper. One strawman
+proposal is to take the "Code First" process that seems to be working
+well for the ACPI and UEFI working groups and apply it to CXL command
+definitions. That vastly shortens the time between proposal and Linux
+enabling. The second proposal is to define a mechanism for de-facto
+standards to develop. That need I believe was the motivation for
+"designated vendor-specific" in the first instance? I.e. to share
+implementations across vendors pre-standardization.
 
-Well, the code has never worked as intended, so why don't we make
-"stable" work as intended too?
+So, allocate a public id for the command space, publish a public
+specification, and then send kernel patches. This was the process for
+accepting command sets outside of ACPI into the LIBNVDIMM subsystem.
+See drivers/acpi/nfit/nfit.h for the reference to the public command
+sets.
