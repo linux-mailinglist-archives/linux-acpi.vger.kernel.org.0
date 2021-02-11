@@ -2,138 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AADFF318F8C
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 17:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCAA131903A
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Feb 2021 17:43:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbhBKQIo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 11:08:44 -0500
-Received: from mga17.intel.com ([192.55.52.151]:8125 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231518AbhBKQGX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 11 Feb 2021 11:06:23 -0500
-IronPort-SDR: Me4tdqzlpicdY4pTb4E+5U7KGErt+88IMspaScAwP29nIZfrVLvLZcRMh4aMBCeuMbMkZLSAkN
- XIKA9++MsNmQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9892"; a="162016589"
-X-IronPort-AV: E=Sophos;i="5.81,170,1610438400"; 
-   d="scan'208";a="162016589"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2021 08:04:38 -0800
-IronPort-SDR: kQh2KysLd/vC5jPu93cDLmW2HWsnxnA1xndKMfK9uDSK6541kBYwVPYGyGzq2NHqFypOeB95A0
- PL7J7I7hj0MA==
-X-IronPort-AV: E=Sophos;i="5.81,170,1610438400"; 
-   d="scan'208";a="380716457"
-Received: from reknight-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.134.254])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2021 08:04:37 -0800
-Date:   Thu, 11 Feb 2021 08:04:36 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>
-Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
-Message-ID: <20210211160436.qbvgfzqng37erwae@intel.com>
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
- <20210210000259.635748-3-ben.widawsky@intel.com>
- <20210210174104.0000710a@Huawei.com>
- <20210210185319.chharluce2ly4cne@intel.com>
- <CAPcyv4i4_6HLNpw7p-1PD9cePuMuPkvUfx0ROT8M0Y7ftxzYfg@mail.gmail.com>
- <20210211100152.00000667@Huawei.com>
+        id S231936AbhBKQm2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 11:42:28 -0500
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:35583 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230191AbhBKQk1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 11:40:27 -0500
+Received: by mail-oi1-f178.google.com with SMTP id l3so6778181oii.2;
+        Thu, 11 Feb 2021 08:40:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8q2NiznoWVHuUMkmRhG9I02yDUgNpmTMAt3YoQyfIGk=;
+        b=RGLHmA221z8aU7u1IS1sRT8yqYqIJMDyvqois51hPWANv4R8/5f8t0SUtFkqqM6eaz
+         n7+sQ9TRINJMFq9C+S7DapFyzL/JbIUWQ3rf8G3jftUw9pwBozz+7vdwePQf2HV09xp9
+         xltSjFLp9grG2HobDHKMFU3vUGESdGToCREWE9aFIeoutP72Hc3eAB0J48nEHDQ7i4bJ
+         GiwRk6HxzI2A6lyeQ4Xp2vwQ0csDP5mXp1O/MqpvbofZznXOjK4hPpxzsWRE2E2Cw8L1
+         gbQ5fcV7pUirTH2Zak2GGui2v2bdXm/FEYSmVmsVEIMWz6U+HMVPOLH4WEfJlud4raqX
+         yUKw==
+X-Gm-Message-State: AOAM5334z8Lm7aGeMR7nZELnQOUvdIQzliaDjKOoEgY5xxPk6G3lOQe5
+        4a0wbt82usxum/k45o0pcO/Xql9s+VisfN51oR8=
+X-Google-Smtp-Source: ABdhPJzyQFbX0hSlRZwJpCaG0gnL07XQ4sZ9sbCMqGdf1PZ/ue9UJTn+QzFgmJlhxkJqET2zef5RWey55AhZUUOtyWc=
+X-Received: by 2002:aca:3d85:: with SMTP id k127mr3459892oia.157.1613061585919;
+ Thu, 11 Feb 2021 08:39:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210211100152.00000667@Huawei.com>
+References: <20210210114320.3478-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0hx78JHnP5-5xFTPr0Rh9FvPCzAzTCyBaT6eLZ3Dd-mFA@mail.gmail.com>
+ <3881654.NPl3a4M0kB@kreacher> <1946478.1QpZic6vku@kreacher>
+ <YCPyKjO7XPBFAgbn@smile.fi.intel.com> <CAJZ5v0jq1+q3HKDEzgBUWtZY8H0kaiR=bNi1WUsdg3BTAyiPgw@mail.gmail.com>
+ <YCP+xOuic5fPx+7i@smile.fi.intel.com> <CAJZ5v0iCe=GuauCVzLG83urBHghO0suabHcMg2Kw54XFjBqCbw@mail.gmail.com>
+ <YCVQWgg6L5YcAXO1@smile.fi.intel.com>
+In-Reply-To: <YCVQWgg6L5YcAXO1@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 11 Feb 2021 17:39:34 +0100
+Message-ID: <CAJZ5v0juLyE=vCyw5_qZus3YC65kY=mOhrcb7OoWZQtZNnr_Ag@mail.gmail.com>
+Subject: Re: [PATCH v1 7/7] ACPI: property: Allow counting a single value as
+ an array of 1 element
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-02-11 10:01:52, Jonathan Cameron wrote:
-> On Wed, 10 Feb 2021 11:54:29 -0800
-> Dan Williams <dan.j.williams@intel.com> wrote:
-> 
-> > > > ...
-> > > >  
-> > > > > +static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
-> > > > > +                            struct mbox_cmd *mbox_cmd)
-> > > > > +{
-> > > > > +   struct device *dev = &cxlm->pdev->dev;
-> > > > > +
-> > > > > +   dev_dbg(dev, "Mailbox command (opcode: %#x size: %zub) timed out\n",
-> > > > > +           mbox_cmd->opcode, mbox_cmd->size_in);
-> > > > > +
-> > > > > +   if (IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {  
-> > > >
-> > > > Hmm.  Whilst I can see the advantage of this for debug, I'm not sure we want
-> > > > it upstream even under a rather evil looking CONFIG variable.
-> > > >
-> > > > Is there a bigger lock we can use to avoid chance of accidental enablement?  
-> > >
-> > > Any suggestions? I'm told this functionality was extremely valuable for NVDIMM,
-> > > though I haven't personally experienced it.  
-> > 
-> > Yeah, there was no problem with the identical mechanism in LIBNVDIMM
-> > land. However, I notice that the useful feature for LIBNVDIMM is the
-> > option to dump all payloads. This one only fires on timeouts which is
-> > less useful. So I'd say fix it to dump all payloads on the argument
-> > that the safety mechanism was proven with the LIBNVDIMM precedent, or
-> > delete it altogether to maintain v5.12 momentum. Payload dumping can
-> > be added later.
-> 
-> I think I'd drop it for now - feels like a topic that needs more discussion.
-> 
-> Also, dumping this data to the kernel log isn't exactly elegant - particularly
-> if we dump a lot more of it.  Perhaps tracepoints?
-> 
-
-I'll drop it. It's also a small enough bit to add on for developers. When I post
-v3, I will add that bit on top as an RFC. My personal preference FWIW is to use
-debugfs to store the payload of the last executed command.
-
-We went with this because of the mechanism's provenance (libnvdimm)
-
-> > 
-> > [..]
-> > > > > diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> > > > > index e709ae8235e7..6267ca9ae683 100644
-> > > > > --- a/include/uapi/linux/pci_regs.h
-> > > > > +++ b/include/uapi/linux/pci_regs.h
-> > > > > @@ -1080,6 +1080,7 @@
+On Thu, Feb 11, 2021 at 4:42 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Wed, Feb 10, 2021 at 04:44:34PM +0100, Rafael J. Wysocki wrote:
+> > On Wed, Feb 10, 2021 at 4:42 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > > On Wed, Feb 10, 2021 at 04:01:16PM +0100, Rafael J. Wysocki wrote:
+> > > > On Wed, Feb 10, 2021 at 3:48 PM Andy Shevchenko
+> > > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > > On Wed, Feb 10, 2021 at 02:48:09PM +0100, Rafael J. Wysocki wrote:
+> > > > > > On Wednesday, February 10, 2021 2:31:48 PM CET Rafael J. Wysocki wrote:
+> > > > > > > On Wednesday, February 10, 2021 1:36:00 PM CET Rafael J. Wysocki wrote:
+> > > > > > > > On Wed, Feb 10, 2021 at 12:51 PM Andy Shevchenko
+> > > > > > > > <andriy.shevchenko@linux.intel.com> wrote:
+>
+> ...
+>
+> > > > > > > > > -       if (val && nval == 1) {
+> > > > > > > > > +       /* Try to read as a single value first */
+> > > > > > > > > +       if (!val || nval == 1) {
+> > > > > > > > >                 ret = acpi_data_prop_read_single(data, propname, proptype, val);
+> > > > > > > >
+> > > > > > > > This returns -EINVAL if val is NULL.
 > > > > >
-> > > > >  /* Designated Vendor-Specific (DVSEC, PCI_EXT_CAP_ID_DVSEC) */
-> > > > >  #define PCI_DVSEC_HEADER1          0x4 /* Designated Vendor-Specific Header1 */
-> > > > > +#define PCI_DVSEC_HEADER1_LENGTH_MASK      0xFFF00000  
+> > > > > Nope. That's why it's a patch 7. Patch 6 solves this.
 > > > >
-> > > > Seems sensible to add the revision mask as well.
-> > > > The vendor id currently read using a word read rather than dword, but perhaps
-> > > > neater to add that as well for completeness?
-> > > >
-> > > > Having said that, given Bjorn's comment on clashes and the fact he'd rather see
-> > > > this stuff defined in drivers and combined later (see review patch 1 and follow
-> > > > the link) perhaps this series should not touch this header at all.  
+> > > > That's my point.  Patch 7 should be the first one in the series.
 > > >
-> > > I'm fine to move it back.  
-> > 
-> > Yeah, we're playing tennis now between Bjorn's and Christoph's
-> > comments, but I like Bjorn's suggestion of "deduplicate post merge"
-> > given the bloom of DVSEC infrastructure landing at the same time.
-> I guess it may depend on timing of this.  Personally I think 5.12 may be too aggressive.
-> 
-> As long as Bjorn can take a DVSEC deduplication as an immutable branch then perhaps
-> during 5.13 this tree can sit on top of that.
-> 
-> Jonathan
-> 
-> 
+> > > Ah, okay. Since you want this let me rebase.
+> >
+> > Thanks!
+>
+> I started rebasing and realised that your approach has swapped the error codes,
+> i.e. if it's a single-value and it is, e.g., 16-bit wide, the u8 read will
+> return 1, while it has to return -EOVERFLOW.
+
+Well, that's a bug in my patch.
+
+I thought that you would reorder the series to put the fix into the
+front of it, but I didn't really mean to rebase it on top of my patch.
+Sorry for the confusion.
+
+However, not that you have started to do it apparently, let me post
+that patch properly with all of the issues addressed.
+
+> If you prefer, I can move two patches to the beginning, so one will be a good
+> prerequisite for this fix. And I'm still unsure about stable (Fixes tag is okay
+> to me), because the counting never worked from the day 1.
+
+Well, the code has never worked as intended, so why don't we make
+"stable" work as intended too?
