@@ -2,107 +2,367 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D3A0319E6A
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 13:34:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B77319FD3
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 14:26:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbhBLM2d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Feb 2021 07:28:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40098 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231576AbhBLM1x (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Feb 2021 07:27:53 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5482C061574
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Feb 2021 04:27:12 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id h26so12839704lfm.1
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Feb 2021 04:27:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=UWn+rHFAan/ANPtPozOJVkaHRnjfc/Lya2Pf10dpvvU=;
-        b=cuM8y0tVapdBE+5WS6skBCyQS76KsRGmf07HVjzvFqPSh0CqBLXalH3NB3FMpibYYJ
-         tShvMS6gzYNTAtV2Iab2lPFvQGE284T11FL/N32ZSBi5+F1wdhgoWQ6pZk3kjZBniwdR
-         X++1PtJyNglndBqKfQ76I23esWp6Q3t25kId5HkQGVdp6WXPbdyoGbvvVZEcOlu1hD6M
-         ZjFvbVuJJF8j/e/9wTT8YA4e2iLGlzEJQ9PZg4sBTUxuv+VVYVyzp+VGPoMlBB9Wx3Aj
-         k6PNr3aENa0rfnIv98KEW9pfA6ra/WCWy+X1z02Q1TBAfsH9m6xr9Nk5Lu0xSZzyKd00
-         Sfug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=UWn+rHFAan/ANPtPozOJVkaHRnjfc/Lya2Pf10dpvvU=;
-        b=OKaTX7GPqNKYYV3evTwKckz0yBJbk6faMArFoTkFb3rPKYrgxIkqC3kKnla/tj2DL6
-         Traf57N5oPTN/e2CO+E1DCR9OzTneEh4uKHe8LCzx48pFxx7RN05f5BCK1mkn8wcf5qn
-         Hogh+oelYP9tkX5lXQRHS7JMVe8P5TdgodjBmljkFu4pHKlIT8x15iq2F8wpHYfSJax4
-         9MImMT7wzEWtbNADe3hANODJnnqpGjXxoFbu0AmV6LbfRVYPbN8lglg+t9dQlADMdzDX
-         e3Z4kiutJwsTCwqMuz6ZsrJoXorrTHun/hrmnMmO2qnGX/98CpY+q+iaDllonkvjhWoS
-         67pw==
-X-Gm-Message-State: AOAM531c4XmOGQcEayBOKqlcf59oRJXTlN/VJclZyo9K2gIGTH29fjBL
-        9WS8woBOc4o88Y5Ib7dqq5GOQoggqIodhQ==
-X-Google-Smtp-Source: ABdhPJzSOvbFRvhristQ1/42KrVkKajRy4IVjFVyUAhBxgNuJxon+pN5Ah6CXXJ1D1Lf5/AuyOM9IA==
-X-Received: by 2002:a19:3806:: with SMTP id f6mr1516358lfa.242.1613132831191;
-        Fri, 12 Feb 2021 04:27:11 -0800 (PST)
-Received: from marcin-Lenovo-Z70-80.gdansk-morena.vectranet.pl (109241203030.gdansk.vectranet.pl. [109.241.203.30])
-        by smtp.gmail.com with ESMTPSA id c5sm262036lff.113.2021.02.12.04.27.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 04:27:10 -0800 (PST)
-From:   =?UTF-8?q?Marcin=20=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Erik Kaneda <erik.kaneda@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, marcin.slusarz@intel.com
-Subject: [PATCH] ACPICA: update documentation of acpi_walk_namespace
-Date:   Fri, 12 Feb 2021 13:27:03 +0100
-Message-Id: <20210212122703.272005-1-marcin.slusarz@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <CAJZ5v0jSqmpnbpahGBRSjddOecqA1f-9GfvNwjdV0pH7xQ3iVg@mail.gmail.com>
-References: <CAJZ5v0jSqmpnbpahGBRSjddOecqA1f-9GfvNwjdV0pH7xQ3iVg@mail.gmail.com>
+        id S231445AbhBLNZW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Feb 2021 08:25:22 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2559 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230356AbhBLNZP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Feb 2021 08:25:15 -0500
+Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DcYvf0qYCz67n7P;
+        Fri, 12 Feb 2021 21:17:50 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Fri, 12 Feb 2021 14:24:31 +0100
+Received: from localhost (10.47.28.230) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 12 Feb
+ 2021 13:24:30 +0000
+Date:   Fri, 12 Feb 2021 13:23:28 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
+        <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+        "Chris Browy" <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Jon Masters" <jcm@jonmasters.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
+Message-ID: <20210212132328.0000482f@Huawei.com>
+In-Reply-To: <20210211182741.yrojts2cdyoufsfl@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+        <20210210000259.635748-3-ben.widawsky@intel.com>
+        <20210210133252.000047af@Huawei.com>
+        <20210210150759.00005684@Huawei.com>
+        <20210210165557.7fuqbyr7e7zjoxaa@intel.com>
+        <20210210181605.ecbl3m5ep4rszpqs@intel.com>
+        <20210211095548.00000da7@Huawei.com>
+        <20210211182741.yrojts2cdyoufsfl@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.28.230]
+X-ClientProxiedBy: lhreml721-chm.china.huawei.com (10.201.108.72) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Marcin Ślusarz <marcin.slusarz@intel.com>
+On Thu, 11 Feb 2021 10:27:41 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
 
-Make the documentation match the code and add a note regarding
-the return values of the callback function and the walk to it.
+> On 21-02-11 09:55:48, Jonathan Cameron wrote:
+> > On Wed, 10 Feb 2021 10:16:05 -0800
+> > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> >   
+> > > On 21-02-10 08:55:57, Ben Widawsky wrote:  
+> > > > On 21-02-10 15:07:59, Jonathan Cameron wrote:    
+> > > > > On Wed, 10 Feb 2021 13:32:52 +0000
+> > > > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > > > >     
+> > > > > > On Tue, 9 Feb 2021 16:02:53 -0800
+> > > > > > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > > > > >     
+> > > > > > > Provide enough functionality to utilize the mailbox of a memory device.
+> > > > > > > The mailbox is used to interact with the firmware running on the memory
+> > > > > > > device. The flow is proven with one implemented command, "identify".
+> > > > > > > Because the class code has already told the driver this is a memory
+> > > > > > > device and the identify command is mandatory.
+> > > > > > > 
+> > > > > > > CXL devices contain an array of capabilities that describe the
+> > > > > > > interactions software can have with the device or firmware running on
+> > > > > > > the device. A CXL compliant device must implement the device status and
+> > > > > > > the mailbox capability. Additionally, a CXL compliant memory device must
+> > > > > > > implement the memory device capability. Each of the capabilities can
+> > > > > > > [will] provide an offset within the MMIO region for interacting with the
+> > > > > > > CXL device.
+> > > > > > > 
+> > > > > > > The capabilities tell the driver how to find and map the register space
+> > > > > > > for CXL Memory Devices. The registers are required to utilize the CXL
+> > > > > > > spec defined mailbox interface. The spec outlines two mailboxes, primary
+> > > > > > > and secondary. The secondary mailbox is earmarked for system firmware,
+> > > > > > > and not handled in this driver.
+> > > > > > > 
+> > > > > > > Primary mailboxes are capable of generating an interrupt when submitting
+> > > > > > > a background command. That implementation is saved for a later time.
+> > > > > > > 
+> > > > > > > Link: https://www.computeexpresslink.org/download-the-specification
+> > > > > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > > > > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>      
+> > > > > > 
+> > > > > > Hi Ben,
+> > > > > > 
+> > > > > >     
+> > > > > > > +/**
+> > > > > > > + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > > > > > + * @cxlm: The CXL memory device to communicate with.
+> > > > > > > + * @mbox_cmd: Command to send to the memory device.
+> > > > > > > + *
+> > > > > > > + * Context: Any context. Expects mbox_lock to be held.
+> > > > > > > + * Return: -ETIMEDOUT if timeout occurred waiting for completion. 0 on success.
+> > > > > > > + *         Caller should check the return code in @mbox_cmd to make sure it
+> > > > > > > + *         succeeded.      
+> > > > > > 
+> > > > > > cxl_xfer_log() doesn't check mbox_cmd->return_code and for my test it currently
+> > > > > > enters an infinite loop as a result.    
+> > > > 
+> > > > I meant to fix that.
+> > > >     
+> > > > > > 
+> > > > > > I haven't checked other paths, but to my mind it is not a good idea to require
+> > > > > > two levels of error checking - the example here proves how easy it is to forget
+> > > > > > one.    
+> > > > 
+> > > > Demonstrably, you're correct. I think it would be good to have a kernel only
+> > > > mbox command that does the error checking though. Let me type something up and
+> > > > see how it looks.    
+> > > 
+> > > Hi Jonathan. What do you think of this? The bit I'm on the fence about is if I
+> > > should validate output size too. I like the simplicity as it is, but it requires
+> > > every caller to possibly check output size, which is kind of the same problem
+> > > you're originally pointing out.  
+> > 
+> > The simplicity is good and this is pretty much what I expected you would end up with
+> > (always reassuring)
+> > 
+> > For the output, perhaps just add another parameter to the wrapper for minimum
+> > output length expected?
+> > 
+> > Now you mention the length question.  It does rather feel like there should also
+> > be some protection on memcpy_fromio() copying too much data if the hardware
+> > happens to return an unexpectedly long length.  Should never happen, but
+> > the hardening is worth adding anyway given it's easy to do.
+> > 
+> > Jonathan
+> >   
+> 
+> I like it.
+> 
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 2e199b05f686..58071a203212 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -293,7 +293,7 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
+>   * See __cxl_mem_mbox_send_cmd()
+>   */
+>  static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+> -				 size_t in_size, u8 *out)
+> +				 size_t in_size, u8 *out, size_t out_min_size)
 
-Signed-off-by: Marcin Ślusarz <marcin.slusarz@intel.com>
----
- drivers/acpi/acpica/nsxfeval.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+This is kind of the opposite of what I was expecting.  What I'm worried about is
+not so much that we receive at least enough data, but rather that we receive too much.
+Buggy hardware or potentially a spec change being most likely causes.
 
-diff --git a/drivers/acpi/acpica/nsxfeval.c b/drivers/acpi/acpica/nsxfeval.c
-index f9d059647cc5..7149c8f70a6e 100644
---- a/drivers/acpi/acpica/nsxfeval.c
-+++ b/drivers/acpi/acpica/nsxfeval.c
-@@ -532,8 +532,8 @@ static void acpi_ns_resolve_references(struct acpi_evaluate_info *info)
-  *              return_value        - Location where return value of
-  *                                    user_function is put if terminated early
-  *
-- * RETURNS      Return value from the user_function if terminated early.
-- *              Otherwise, returns NULL.
-+ * RETURNS      Returns status from the callback function if terminated early.
-+ *              Otherwise, returns a status of the walk, AE_OK if succeeded.
-  *
-  * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,
-  *              starting (and ending) at the object specified by start_handle.
-@@ -542,6 +542,11 @@ static void acpi_ns_resolve_references(struct acpi_evaluate_info *info)
-  *              a non-zero value, the search is terminated immediately and this
-  *              value is returned to the caller.
-  *
-+ *              Note that both the callback functions and the walk itself
-+ *              use overlapping return values (e.g. AE_OK), so user of this
-+ *              function can't rely only on the return value to tell if
-+ *              the callback function was called.
-+ *
-  *              The point of this procedure is to provide a generic namespace
-  *              walk routine that can be called from multiple places to
-  *              provide multiple services; the callback function(s) can be
--- 
-2.25.1
+So something like
+int __cxl_mem_mbox_send_cmd(struct cxl_mem..., struct mbox_cmd, u8 *out, size_t out_sz)
+//Or put the max size in the .size_out element of the command and make that inout rather
+//than just out direction.
+{
+	...
+	/* #8 */
+	if (out_len && mbox_cmd->payload_out) {
+		if (outlen > out_sz)
+			//or just copy what we can fit in payload_out and return that size.
+			return -E2BIG;
+		memcpy_fromio(mbox_cmd->payload_out, payload, out_len);
+	}
+
+	
+}
+
+Fine to also check the returned length is at least a minimum size.
+
+>  {
+>  	struct mbox_cmd mbox_cmd = {
+>  		.opcode = opcode,
+> @@ -303,6 +303,9 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+>  	};
+>  	int rc;
+>  
+> +	if (out_min_size > cxlm->payload_size)
+> +		return -E2BIG;
+> +
+>  	rc = cxl_mem_mbox_get(cxlm);
+>  	if (rc)
+>  		return rc;
+> @@ -316,6 +319,9 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+>  	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS)
+>  		return -ENXIO;
+>  
+> +	if (mbox_cmd.size_out < out_min_size)
+> +		return -ENODATA;
+> +
+>  	return mbox_cmd.size_out;
+>  }
+>  
+> @@ -505,15 +511,10 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
+>  	int rc;
+>  
+>  	rc = cxl_mem_mbox_send_cmd(cxlm, CXL_MBOX_OP_IDENTIFY, NULL, 0,
+> -				   (u8 *)&id);
+> +				   (u8 *)&id, sizeof(id));
+>  	if (rc < 0)
+>  		return rc;
+>  
+> -	if (rc < sizeof(id)) {
+> -		dev_err(&cxlm->pdev->dev, "Short identify data\n");
+> -		return -ENXIO;
+> -	}
+> -
+>  	/*
+>  	 * TODO: enumerate DPA map, as 'ram' and 'pmem' do not alias.
+>  	 * For now, only the capacity is exported in sysfs
+> 
+> 
+> >   
+> > > 
+> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > index 55c5f5a6023f..ad7b2077ab28 100644
+> > > --- a/drivers/cxl/mem.c
+> > > +++ b/drivers/cxl/mem.c
+> > > @@ -284,7 +284,7 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > >  }
+> > >  
+> > >  /**
+> > > - * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > + * __cxl_mem_mbox_send_cmd() - Execute a mailbox command
+> > >   * @cxlm: The CXL memory device to communicate with.
+> > >   * @mbox_cmd: Command to send to the memory device.
+> > >   *
+> > > @@ -296,7 +296,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > >   * This is a generic form of the CXL mailbox send command, thus the only I/O
+> > >   * operations used are cxl_read_mbox_reg(). Memory devices, and perhaps other
+> > >   * types of CXL devices may have further information available upon error
+> > > - * conditions.
+> > > + * conditions. Driver facilities wishing to send mailbox commands should use the
+> > > + * wrapper command.
+> > >   *
+> > >   * The CXL spec allows for up to two mailboxes. The intention is for the primary
+> > >   * mailbox to be OS controlled and the secondary mailbox to be used by system
+> > > @@ -304,8 +305,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > >   * not need to coordinate with each other. The driver only uses the primary
+> > >   * mailbox.
+> > >   */
+> > > -static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> > > -				 struct mbox_cmd *mbox_cmd)
+> > > +static int __cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> > > +				   struct mbox_cmd *mbox_cmd)
+> > >  {
+> > >  	void __iomem *payload = cxlm->mbox_regs + CXLDEV_MBOX_PAYLOAD_OFFSET;
+> > >  	u64 cmd_reg, status_reg;
+> > > @@ -469,6 +470,54 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
+> > >  	mutex_unlock(&cxlm->mbox_mutex);
+> > >  }
+> > >  
+> > > +/**
+> > > + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > + * @cxlm: The CXL memory device to communicate with.
+> > > + * @opcode: Opcode for the mailbox command.
+> > > + * @in: The input payload for the mailbox command.
+> > > + * @in_size: The length of the input payload
+> > > + * @out: Caller allocated buffer for the output.
+> > > + *
+> > > + * Context: Any context. Will acquire and release mbox_mutex.
+> > > + * Return:
+> > > + *  * %>=0	- Number of bytes returned in @out.
+> > > + *  * %-EBUSY	- Couldn't acquire exclusive mailbox access.
+> > > + *  * %-EFAULT	- Hardware error occurred.
+> > > + *  * %-ENXIO	- Command completed, but device reported an error.
+> > > + *
+> > > + * Mailbox commands may execute successfully yet the device itself reported an
+> > > + * error. While this distinction can be useful for commands from userspace, the
+> > > + * kernel will often only care when both are successful.
+> > > + *
+> > > + * See __cxl_mem_mbox_send_cmd()
+> > > + */
+> > > +static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+> > > +				 size_t in_size, u8 *out)
+> > > +{
+> > > +	struct mbox_cmd mbox_cmd = {
+> > > +		.opcode = opcode,
+> > > +		.payload_in = in,
+> > > +		.size_in = in_size,
+> > > +		.payload_out = out,
+> > > +	};
+> > > +	int rc;
+> > > +
+> > > +	rc = cxl_mem_mbox_get(cxlm);
+> > > +	if (rc)
+> > > +		return rc;
+> > > +
+> > > +	rc = __cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> > > +	cxl_mem_mbox_put(cxlm);
+> > > +	if (rc)
+> > > +		return rc;
+> > > +
+> > > +	/* TODO: Map return code to proper kernel style errno */
+> > > +	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS)
+> > > +		return -ENXIO;
+> > > +
+> > > +	return mbox_cmd.size_out;
+> > > +}
+> > > +
+> > >  /**
+> > >   * handle_mailbox_cmd_from_user() - Dispatch a mailbox command.
+> > >   * @cxlmd: The CXL memory device to communicate with.
+> > > @@ -1380,33 +1429,18 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
+> > >  		u8 poison_caps;
+> > >  		u8 qos_telemetry_caps;
+> > >  	} __packed id;
+> > > -	struct mbox_cmd mbox_cmd = {
+> > > -		.opcode = CXL_MBOX_OP_IDENTIFY,
+> > > -		.payload_out = &id,
+> > > -		.size_in = 0,
+> > > -	};
+> > >  	int rc;
+> > >  
+> > > -	/* Retrieve initial device memory map */
+> > > -	rc = cxl_mem_mbox_get(cxlm);
+> > > -	if (rc)
+> > > -		return rc;
+> > > -
+> > > -	rc = cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> > > -	cxl_mem_mbox_put(cxlm);
+> > > -	if (rc)
+> > > +	rc = cxl_mem_mbox_send_cmd(cxlm, CXL_MBOX_OP_IDENTIFY, NULL, 0,
+> > > +				   (u8 *)&id);
+> > > +	if (rc < 0)
+> > >  		return rc;
+> > >  
+> > > -	/* TODO: Handle retry or reset responses from firmware. */
+> > > -	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS) {
+> > > -		dev_err(&cxlm->pdev->dev, "Mailbox command failed (%d)\n",
+> > > -			mbox_cmd.return_code);
+> > > +	if (rc < sizeof(id)) {
+> > > +		dev_err(&cxlm->pdev->dev, "Short identify data\n",
+> > >  		return -ENXIO;
+> > >  	}
+> > >  
+> > > -	if (mbox_cmd.size_out != sizeof(id))
+> > > -		return -ENXIO;
+> > > -
+> > >  	/*
+> > >  	 * TODO: enumerate DPA map, as 'ram' and 'pmem' do not alias.
+> > >  	 * For now, only the capacity is exported in sysfs
+> > > 
+> > > 
+> > > [snip]
+> > >   
+> >   
 
