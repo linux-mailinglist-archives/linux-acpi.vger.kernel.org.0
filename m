@@ -2,281 +2,371 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C421E319751
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 01:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F24319886
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 04:02:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229912AbhBLAOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Feb 2021 19:14:52 -0500
-Received: from mga02.intel.com ([134.134.136.20]:34646 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229623AbhBLAOt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 11 Feb 2021 19:14:49 -0500
-IronPort-SDR: IEaxQQOM1sXiP3LQsx2qSMFwUXahqMh0Mu6VYc44QdRHz95+jRv3tsQY+G8Ol3y/1u2tUQZ5U3
- pHBhKkofJj0A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9892"; a="169468895"
-X-IronPort-AV: E=Sophos;i="5.81,172,1610438400"; 
-   d="scan'208";a="169468895"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2021 16:14:07 -0800
-IronPort-SDR: NMM7V7fjPKGAEAPwVBjiktAX37OOvBSEPbEZDv/1KYRzsne05zPdyXUBnmRyi2gQT8AOW4RYJe
- VQQO9nL872vA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,172,1610438400"; 
-   d="scan'208";a="589083290"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga005.fm.intel.com with ESMTP; 11 Feb 2021 16:14:07 -0800
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 11 Feb 2021 16:14:06 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2
- via Frontend Transport; Thu, 11 Feb 2021 16:14:06 -0800
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (104.47.38.58) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2106.2; Thu, 11 Feb 2021 16:14:05 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZAbhnfhhqqkNIXuBnsICmqzN2aQSFoNzM87nLB6+OrcN0LGdk9tS8ycckt1TD0v7zQ64f3jZl/FI88LH3ghi7MQzPkrb0g+/kF7H2VXLJc2HLVg5KcyIuonrN6hja2jS9qL6/d6dSgWIaOMFzKbYIgRZbngYIGgFMr2lE790s+tzR9GPvFLXH8F3aLhZDYvxHSlrhHKDwKRoz1hvGhddixNv8ew5ta02soMsCk4+vrN/ujAEe9eA1RTk9deanpj9yMLH+9PXVhYpUwBtF4O5nY/1ThosarG0JQjYl1JK0NVJ+waHNA1VGmH3XWrkzuDSlA/MwTxGVSFCSpvCcKCIpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NtXfGl2MNBsLba1tKbD99UkTy5YjshCNVvLQblh6P78=;
- b=XZAUIIcN3EvIi8C17rCC6NGiGkkqd/uoYWCnKCx3Yv/YeeplLRJbc21UxTLkISW5OUvTS4Ytz82/eIHJXQw4E6xITxmBnDq7xxmBqWydhT2I1nF7Jw4m+72iFMEBgawEulnsEf5lHF+mXW8jb2xhkx/aU0Bqw6/lSiqwYhebsfXxja3fCQ5pUVhagQvP33qDMMmU5RcZ8mZO2L3ep5lSX/uoRe4M+WO9QpDuQzpQ96e1E+z4sDPYpDffGM5HKiDXm7SLkiStjajbqoWAbheVQWIi/3peLhY14HnV/2fp/kG1o6LrCuBOxZLn7VuVGUeugVYvDhUwVdiWW1w7hfLuvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NtXfGl2MNBsLba1tKbD99UkTy5YjshCNVvLQblh6P78=;
- b=u+LlVQPxLRLFrfypQ7TKPTlTnc+mmIeeuMDFUe8bvKqtF5nCRdKDaQEypLLR8q+xHpppITPh7n4jKh2cZwrYCVKOM8ONC0+FA2ierwCsi/AfN5oBrn3idynjfclL93xBHLiZfhjormZpQE4DiXaoNVXDq02Y3oMW6U3ykqxzlm0=
-Received: from BN6PR11MB1732.namprd11.prod.outlook.com (2603:10b6:404:102::7)
- by BN6PR1101MB2177.namprd11.prod.outlook.com (2603:10b6:405:50::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.29; Fri, 12 Feb
- 2021 00:13:47 +0000
-Received: from BN6PR11MB1732.namprd11.prod.outlook.com
- ([fe80::b4a5:ccc6:a02d:ff93]) by BN6PR11MB1732.namprd11.prod.outlook.com
- ([fe80::b4a5:ccc6:a02d:ff93%8]) with mapi id 15.20.3846.026; Fri, 12 Feb 2021
- 00:13:47 +0000
-From:   "Natu, Mahesh" <mahesh.natu@intel.com>
-To:     Vikram Sethi <vsethi@nvidia.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-CC:     "Douglas, Chet R" <chet.r.douglas@intel.com>,
-        "Widawsky, Ben" <ben.widawsky@intel.com>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>
-Subject: RE: [RFC] ACPI Code First ECR: Generic Target
-Thread-Topic: [RFC] ACPI Code First ECR: Generic Target
-Thread-Index: AQHW/2CV8MYxCHenmEqoc630sTuQ+6pRnkGAgAIIeRA=
-Date:   Fri, 12 Feb 2021 00:13:47 +0000
-Message-ID: <BN6PR11MB17327A31146FCCC9503C3633F58B9@BN6PR11MB1732.namprd11.prod.outlook.com>
-References: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
- <BL0PR12MB2532C769A507F8AB5B40D2BEBD8D9@BL0PR12MB2532.namprd12.prod.outlook.com>
-In-Reply-To: <BL0PR12MB2532C769A507F8AB5B40D2BEBD8D9@BL0PR12MB2532.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Enabled=True;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_SiteId=43083d15-7273-40c1-b7db-39efd9ccc17a;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Owner=vsethi@nvidia.com;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_SetDate=2021-02-10T17:02:23.5410193Z;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Name=Unrestricted;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_ActionId=e737b242-5b9e-410d-ab82-b76c3b9e5625;
- MSIP_Label_6b558183-044c-4105-8d9c-cea02a2a3d86_Extended_MSFT_Method=Automatic
-dlp-version: 11.5.1.3
-dlp-product: dlpe-windows
-dlp-reaction: request-justification,no-action
-authentication-results: nvidia.com; dkim=none (message not signed)
- header.d=none;nvidia.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [12.215.39.18]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a3da1f31-b78c-43e9-2288-08d8ceeb114f
-x-ms-traffictypediagnostic: BN6PR1101MB2177:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR1101MB21776ED675B50C3A269769E4F58B9@BN6PR1101MB2177.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: snhQTTUee5n6qJGDrqb1Y7GzaTIvWtLJBU5hh/ezNQBP0QhsBRNxn3epaegy23sOECPjYYe9RpwwwWG7+gZWjnxFPlLJyt4497kajjGyvDcMcRQllQ/lfzU2LANCGqIshKtJ8Q33rrqQUuWfB5hs4vxWwA1QQRkl4on00mr3jt3EqQ8k5zMd/RaOl0bfx8oBsrjjGN5yn1m6DJvgTZQbrNlfE/yuUhtBPbRGV8HrdmwffqMtPhDpYsquiTfGJeZ5NzDa+KbMyPykMfgoxZAupIdMCucRuWkdlTJMurMcS/qTkspl6XabsvpmRPQJmqewzMP4sQ9yqi1Sp5Lc4poA3LpzDPi6bJiMWedUu82yb5NkjiKU9dRmX128xYp2kloBtdXW69X5kMdkyQD7WhksPS4SzRQXLKqyArELx2nuY4MwriW/yKly7KCOlDRZSSbiRGsHU0cbCGgL8gt63Td3nKYsuPjH9WaYX6yPzyQoL2lUn+4MGOp1Pup0paBXGT7FViVYKuih0QfxEOYYmiiSKpsiLWitoMZIG65Q0jU4z3JP/O99ysKQTWKP4gtMA8YJaWnKJZCKurxarIVenOCuSfykYS6L5tVGBmbev98XvR8s2HRipFZ8Vf5GhmBc/CDqvAIQVcKXaZTFU/28azgnAA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB1732.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(136003)(376002)(396003)(39860400002)(366004)(110136005)(66556008)(2906002)(4326008)(186003)(71200400001)(8676002)(7696005)(6506007)(52536014)(33656002)(8936002)(478600001)(53546011)(86362001)(316002)(9686003)(66946007)(5660300002)(26005)(66476007)(54906003)(66446008)(55016002)(76116006)(64756008)(83380400001)(41533002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?OXBzZkZQWEdyZVMreFhwakh5VDVjcVdGVno2YmNiODQyejM1cjJhb0FaMzZy?=
- =?utf-8?B?ajBQZDVmcWVJU0xEWVZDOGt6K1VSeXBHU2ZQY05saFoyVVBmTU1seGFjekhp?=
- =?utf-8?B?ZnhCYTFOWTB3aE9RR3JUNThLRDlWVjFzd3FLeko2TDBuR0htSEsybE9KMTBk?=
- =?utf-8?B?SW1RMFJBa0tscnFQbHg4T1BUWDYrWWI2bktTQ0hUcXFtK1VxaCsrQnB0Ui9Z?=
- =?utf-8?B?Z3JxbkVGNzRycDYzUWsxSnBJNkVwNXcrWWducTJWSHcya3JJK1VmWjBsSk1T?=
- =?utf-8?B?SUpVNVgwbkdRSlJyeHA1M1J6NUZLWHFPWU5Yb2h0R3Z1NitrcExMZUVzK0lQ?=
- =?utf-8?B?ZTFvZzVvbFg0OXF0UlBPQjQ4U21zaUxJd3IrNVB0YkhBV3d6QkJ2TFRabWRR?=
- =?utf-8?B?c21qVVA1dXFzaGFXRnArQ3FYQ1A2V3MxTHMvQ2FsZDk4Y3VJMmpBYjRYeXpn?=
- =?utf-8?B?dUp1ZFVUcy85NHNjdGNPWi9HVDRxVG1wR1kxdktkTmNQcE85cG5KUnNyRm1y?=
- =?utf-8?B?bGN2TXR5a2t2Vk8wZlc1dHVwcThIQXg3eVNMdnpUdDJhZ1o3MGdlL1lsZ0sx?=
- =?utf-8?B?eUNtUEZ6dTNwc0pUeC8xd2xTYWp0RVQzc0dTYWsyYlFYZDdvbHpHVnlDNFZ6?=
- =?utf-8?B?ZWcxTEQrVFNUT01mekR3MXhHWDc0WHQrb3FvQU16a25Wc3R0MlBkTnFVb3Iv?=
- =?utf-8?B?OFpGNHI5TmduTHJGeWsyVHdKNDI1USttMEErYkU0R3J3czJCQXpJbVdUazEy?=
- =?utf-8?B?WkFBSG44TWVJTERoRlBqVnlzR3NKdkxJMGRWaVZqcTRxVTJ3Vm9LVWlmaXZN?=
- =?utf-8?B?UCt4bUpYenFJRnpoT1JtVDFjL3d0bElNQWd0bno2M0lQdjh2R0FLZ2Z3T1Z3?=
- =?utf-8?B?QU5MWkJvODlLSzdpWnZhbi9CbkFLLy95dDNQMW02eG82NXorNjB1VG5BUnBO?=
- =?utf-8?B?bDNtRGphZnNoWXdBR1pncW82aE9SRW9EWU9MV2ljMGhIQXQ0ZzY4ZVlRY2E0?=
- =?utf-8?B?QVh0b0JHVVBoaExoV2FNRmtabGZ0RHl6NmJaTUlidzl6MnVub0Y5ZXdGb1Js?=
- =?utf-8?B?S3p0Um10cmRzVU5kdS9QMlpQbjgvN1JTSU9kKzM0N0RYU0lJcUZWZTJDTkNV?=
- =?utf-8?B?WmFRbE5EUHNEYnRjSExLQ0w0eEtyUGl4WGVMaUtKN05XNFM1eDRTTzEzby9L?=
- =?utf-8?B?ZXBVM0huM3cvU2Z0aERRTTREWjFRTUx6blJjTUtrZ2JwQmFOdlVNdEF3bDRj?=
- =?utf-8?B?WG5KbWQ2amM2d0xEUlo4ZU50d0ZtbFpBUEFER1ArS2pRSDNsMmRRdnJyOGlG?=
- =?utf-8?B?dk5oeUUzUTREZEIyU0hneFkrNEF4VVdFdUJlRzdZVG5LdGJYZ1hyUFp0eFNB?=
- =?utf-8?B?RTVoU3F3Zi92NkZxdDdvanVraUlOUjhWOTlnSlV0c2orbUxRUkxDNUJXblRz?=
- =?utf-8?B?MVY3dDNoL0xLeXQwc0RxemRWVkdXZkpneFo1QzQwWFY0MDRuVTljb0kwdW1y?=
- =?utf-8?B?MG1NSU5uQ0NHQ3ZrbXNpVkgrVW1ZRlZWRXA2emtucWJkZWNwa1VRUEIyWkQ0?=
- =?utf-8?B?RDROTElFVzJZTk1rZEVaUW85N3dlV2szcEJ1eURaRWVGMUd6L01PemF1U1ho?=
- =?utf-8?B?OSt3ZXh4eG1Sb09QN2p5ZVp3eGJrT0NZSThzUTJ3RlkydmZxUENqalVoMlRp?=
- =?utf-8?B?WG9oKzhtZlNVWmd0dFlwTW1nR2sxczFWTXp6dHhjMTRmdldMakRteXgyRlUw?=
- =?utf-8?Q?KwpzexMWAPBsLVyFnQ=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S230147AbhBLDCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Feb 2021 22:02:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230004AbhBLDBj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Feb 2021 22:01:39 -0500
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BEAC061793
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Feb 2021 19:00:31 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id i71so7716131ybg.7
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Feb 2021 19:00:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2YjH7EUH7e5dFZyK95JFbg4Mk0a2h8e9VHpnb/uN+f4=;
+        b=hrrZIRrCawC05z8ys0aGjWa1eOqkwmku4UHqTFr13ZSIA6fT+G2IvzKpKYh9K5dqwn
+         NIABQJjxAd28M3i8JvfkPjLBLQwPlGHAgBCTRoMjjkw7ZVxU+l7U68uX4Xm4dneE1KzF
+         Vthvf9SBlYUJa8qd4KE1Yplts1yOFoAUi8F+g0z31m5ckKC/LzJo5EcW4YIv6eCp3k51
+         nX1yU/6un0qh6l4Um5ikuPa98QpzhY0sgOgYLAseeWfyQ/ejxSsSWx4zVon9MqL/ofF1
+         Mlb+0a3lG5bWPnL31fTMQz52NB2wT3ptd77Zg2UC4PQDql2P4piYPqTCvzV9Li53IoTp
+         C7Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2YjH7EUH7e5dFZyK95JFbg4Mk0a2h8e9VHpnb/uN+f4=;
+        b=qaJwo8ipJarHrEHIcvqR0/Q17wNzvJbsyYJN5925B85UBJrnRKEbK2/0Vni86fRB+K
+         MX3q4JmPWjIQljfVjOXToB200Aa5mZBMIvyqVX1exXcdTKTwka3ZjnLnhP7wDaI/8+Ks
+         CvScbld1EQaPa5uPk9APdqmaJEEbTq4iMtN7Ke7ipDCagCpu/CYxneNrsyo9BrzCPvkH
+         trJKC3nEtOR9epv+3h29AE5trA67qrzRIiziOBykY45Srshyq+tyRG10l/TQ1GyYxr2v
+         lTMhqz6sgrcQp2lVr+LNDNON8ys+aPn1KbZXRE2q7IWQuHWt9ZcDAhi+MaCtZN+XK86U
+         afDg==
+X-Gm-Message-State: AOAM531l4Yqc0QjaRUZSwoC9EiPlBAg+1dmzhbHduUldeDHwrFnXo8kj
+        czW/TuSCD3lGgK7vlUUHxQbzjhEykoGQxEqNQM/Hng==
+X-Google-Smtp-Source: ABdhPJw6f1k6YLFcwH8KpWSdfwb1r7O3nU7PUBUXU5E04MP4wEtpHd6uo0Zyq5FVRz5Rb0wmmDnSAoGB1af2cA2rWx0=
+X-Received: by 2002:a25:cc89:: with SMTP id l131mr1299415ybf.346.1613098830159;
+ Thu, 11 Feb 2021 19:00:30 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB1732.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3da1f31-b78c-43e9-2288-08d8ceeb114f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Feb 2021 00:13:47.4451
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: r5HOc9N7ltZR2tWjDNhqBWCajuUR6r9O1RA+6CnRbFmCU/n7f41da8k39UzttpZ2ioQEbhhpGQAK/CZ9nB9a9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1101MB2177
-X-OriginatorOrg: intel.com
+References: <20210205222644.2357303-1-saravanak@google.com> <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+In-Reply-To: <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 11 Feb 2021 18:59:54 -0800
+Message-ID: <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-V2hhdCBpZiB0aGVyZSBpcyBhIENYTCBzd2l0Y2ggd2l0aCBhIEdlbmVyaWMgSW5pdGlhdG9yIGFu
-ZCBDWEwgdHlwZSAzIG1lbW9yeSB3aGljaCBjb3VsZCBiZSBob3RwbHVnZ2VkIGluLiANCkkgZm9y
-Z2V0IGlmIHRoZSBHSSB0byB0eXBlIDMgbWVtb3J5IHBhdGggaXMgT05MWSB0aHJvdWdoIHRoZSBo
-b3N0IGJyaWRnZSB0b2RheSBpbiAyLjAgb3IgYWxzbyBhbGxvd2VkIHRocm91Z2ggdGhlIHN3aXRj
-aC4gSW4gZnV0dXJlIHdlIHdvdWxkIHdhbnQgaXQgYWxsb3dlZCB0aHJvdWdoIHRoZSBzd2l0Y2gg
-Zm9yIHN1cmUsIGp1c3QgbGlrZSBQQ0llIHAycC4gDQpTbyBob3cgd291bGQgdGhlIHN3aXRjaCBy
-b3V0ZSBsYXRlbmN5L0JXIGJlIGRpc2NvdmVyZWQ/DQoNCg0KSW4gdGhlIGN1cnJlbnQgQ0RBVCBz
-cGVjLCBhIGNvaGVyZW50IHN3aXRjaCBpcyBtb2RlbGxlZCBhcyBoYXZpbmcgdHdvIG9yIG1vcmUg
-YmlkaXJlY3Rpb25hbCBwb3J0cyB0aGF0IGNhcnJ5IHRyYWZmaWMgYmV0d2VlbiBob3N0IENQVXMs
-IGNvaGVyZW50IGFjY2VsZXJhdG9ycywgYW5kIGNvaGVyZW50IG1lbW9yeSBkZXZpY2VzLiBTd2l0
-Y2ggQ0RBVCByZXR1cm5zIGxhdGVuY3kgYW5kIEJXIGJldHdlZW4gdmFyaW91cyBwb3J0IHBhaXJz
-IGFuZCBjYW4gZGVzY3JpYmUgd2hhdCB5b3UgYXJlIGxvb2tpbmcgZm9yLg0KDQoNCg0KVGhhbmsg
-eW91LA0KTWFoZXNoIE5hdHUNCkRhdGFjZW50ZXIgUGxhdGZvcm0gQXJjaGl0ZWN0DQpJbnRlbCBD
-b3Jwb3JhdGlvbg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogVmlrcmFtIFNl
-dGhpIDx2c2V0aGlAbnZpZGlhLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIEZlYnJ1YXJ5IDEwLCAy
-MDIxIDk6MDIgQU0NClRvOiBXaWxsaWFtcywgRGFuIEogPGRhbi5qLndpbGxpYW1zQGludGVsLmNv
-bT47IGxpbnV4LWN4bEB2Z2VyLmtlcm5lbC5vcmc7IExpbnV4IEFDUEkgPGxpbnV4LWFjcGlAdmdl
-ci5rZXJuZWwub3JnPg0KQ2M6IE5hdHUsIE1haGVzaCA8bWFoZXNoLm5hdHVAaW50ZWwuY29tPjsg
-RG91Z2xhcywgQ2hldCBSIDxjaGV0LnIuZG91Z2xhc0BpbnRlbC5jb20+OyBXaWRhd3NreSwgQmVu
-IDxiZW4ud2lkYXdza3lAaW50ZWwuY29tPjsgVmVybWEsIFZpc2hhbCBMIDx2aXNoYWwubC52ZXJt
-YUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSRTogW1JGQ10gQUNQSSBDb2RlIEZpcnN0IEVDUjogR2Vu
-ZXJpYyBUYXJnZXQNCg0KSGkgRGFuLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
-IEZyb206IERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPg0KPiBTZW50OiBU
-dWVzZGF5LCBGZWJydWFyeSA5LCAyMDIxIDk6NTUgUE0NCj4gVG86IGxpbnV4LWN4bEB2Z2VyLmtl
-cm5lbC5vcmc7IExpbnV4IEFDUEkgPGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPg0KPiBDYzog
-TmF0dSwgTWFoZXNoIDxtYWhlc2gubmF0dUBpbnRlbC5jb20+OyBDaGV0IFIgRG91Z2xhcyANCj4g
-PGNoZXQuci5kb3VnbGFzQGludGVsLmNvbT47IEJlbiBXaWRhd3NreSA8YmVuLndpZGF3c2t5QGlu
-dGVsLmNvbT47IA0KPiBWaXNoYWwgTCBWZXJtYSA8dmlzaGFsLmwudmVybWFAaW50ZWwuY29tPg0K
-PiBTdWJqZWN0OiBbUkZDXSBBQ1BJIENvZGUgRmlyc3QgRUNSOiBHZW5lcmljIFRhcmdldA0KPiAN
-Cj4gRXh0ZXJuYWwgZW1haWw6IFVzZSBjYXV0aW9uIG9wZW5pbmcgbGlua3Mgb3IgYXR0YWNobWVu
-dHMNCj4gDQo+IA0KPiBXaGlsZSB0aGUgcGxhdGZvcm0gQklPUyBpcyBhYmxlIHRvIGRlc2NyaWJl
-IHRoZSBwZXJmb3JtYW5jZSANCj4gY2hhcmFjdGVyaXN0aWNzIG9mIENYTCBtZW1vcnkgdGhhdCBp
-cyBwcmVzZW50IGF0IGJvb3QsIGl0IGlzIHVuYWJsZSB0byANCj4gc3RhdGljYWxseSBlbnVtZXJh
-dGUgdGhlIHBlcmZvcm1hbmNlIG9mIENYTCBtZW1vcnkgaG90IGluc2VydGVkIA0KPiBwb3N0LWJv
-b3QuIFRoZSBPUyBjYW4gZW51bWVyYXRlIG1vc3Qgb2YgdGhlIGNoYXJhY3RlcmlzdGljcyBmcm9t
-IGxpbmsgDQo+IHJlZ2lzdGVycyBhbmQgQ0RBVCwgYnV0IHRoZSBwZXJmb3JtYW5jZSBmcm9tIHRo
-ZSBDUFUgdG8gdGhlIGhvc3QgDQo+IGJyaWRnZSwgZm9yIGV4YW1wbGUsIGlzIG5vdCBlbnVtZXJh
-dGVkIGJ5IFBDSUUgb3IgQ1hMLiBJbnRyb2R1Y2UgYW4gDQo+IEFDUEkgbWVjaGFuaXNtIGZvciB0
-aGlzIHB1cnBvc2UuIENyaXRpY2FsbHkgdGhpcyBpcyBhY2hpZXZlZCB3aXRoIGEgDQo+IHNtYWxs
-IHR3ZWFrIHRvIGhvdyB0aGUgZXhpc3RpbmcgR2VuZXJpYyBJbml0aWF0b3IgcHJveGltaXR5IGRv
-bWFpbiBpcyANCj4gdXRpbGl6ZWQgaW4gdGhlIEhNQVQuDQo+IA0KPiAtLS0NCj4gDQo+ICMgVGl0
-bGU6IEludHJvZHVjZSBhIEdlbmVyaWMgVGFyZ2V0IGZvciBDWEwNCj4gDQo+ICMgU3RhdHVzOiBE
-cmFmdA0KPiANCj4gIyBEb2N1bWVudDogQUNQSSBTcGVjaWZpY2F0aW9uIDYuNA0KPiANCj4gIyBM
-aWNlbnNlDQo+IFNQRFgtTGljZW5zZSBJZGVudGlmaWVyOiBDQy1CWS00LjANCj4gDQo+ICMgU3Vi
-bWl0dGVyOg0KPiAqIFNwb25zb3I6IERhbiBXaWxsaWFtcywgSW50ZWwNCj4gKiBDcmVhdG9ycy9D
-b250cmlidXRvcnM6DQo+ICAgICAqIE1haGVzaCBOYXR1LCBJbnRlbA0KPiAgICAgKiBDaGV0IERv
-dWdsYXMsIEludGVsDQo+ICAgICAqIERlZXBhayBTaGl2YWt1bWFyLCBJbnRlbA0KPiANCj4gIyBT
-dW1tYXJ5IG9mIHRoZSBDaGFuZ2UNCj4gSW50cm9kdWNlIGEgIkdlbmVyaWMgVGFyZ2V0IiBjb25j
-ZXB0IHRvIHRoZSBTUkFUIHRvIGRlc2NyaWJlIHRoZSByb290IA0KPiBwZXJmb3JtYW5jZSBwYXJh
-bWV0ZXJzIGluIHRoZSBwYXRoIHRvIGR5bmFtaWNhbGx5IGRpc2NvdmVyZWQgKG91dHNpZGUgDQo+
-IG9mIEFDUEkgZW51bWVyYXRpb24pIENYTCBtZW1vcnkgdGFyZ2V0IGVuZHBvaW50cy4NCj4gDQo+
-ICMgQmVuZWZpdHMgb2YgdGhlIENoYW5nZQ0KPiBDb25zaWRlciB0aGUgY2FzZSBvZiBhIHN5c3Rl
-bSB3aXRoIGEgc2V0IG9mIENYTCBob3N0IGJyaWRnZXMgDQo+IChBQ1BJMDAxNiksIGFuZCBubyBk
-ZXZpY2VzIGF0dGFjaGVkIGF0IGluaXRpYWwgc3lzdGVtIHBvd2VyLW9uLiBJbiANCj4gdGhpcyBz
-Y2VuYXJpbyBwbGF0Zm9ybSBmaXJtd2FyZSBpcyB1bmFibGUgdG8gcGVyZm9ybSB0aGUgZW5kLXRv
-LWVuZCANCj4gZW51bWVyYXRpb24gbmVjZXNzYXJ5IHRvIHBvcHVsYXRlIFNSQVQgYW5kIEhNQVQg
-Zm9yIHRoZSBlbmRwb2ludHMgdGhhdCANCj4gbWF5IGJlIGhvdC1pbnNlcnRlZCBiZWhpbmQgdGhv
-c2UgYnJpZGdlcyBwb3N0IHBvd2VyLW9uLiBUaGUgDQo+IGFkZHJlc3MtcmFuZ2UgaXMgdW5rbm93
-biBzbyBTUkFUIGNhbiBub3QgYmUgcHJlLXBvcHVsYXRlZCwgdGhlIA0KPiBwZXJmb3JtYW5jZSBp
-cyB1bmtub3duIChubyBDREFUIG5vciBpbnRlcmxlYXZlIGNvbmZpZ3VyYXRpb24pIHNvIEhNQVQg
-Y2FuIG5vdCBiZSBwcmUtcG9wdWxhdGVkLg0KPiANCj4gSG93ZXZlciwgd2hhdCBpcyBrbm93biB0
-byBwbGF0Zm9ybSBmaXJtd2FyZSB0aGF0IGdlbmVyYXRlcyB0aGUgU1JBVCANCj4gYW5kIEhNQVQg
-aXMgdGhlIHBlcmZvcm1hbmNlIGNoYXJhY3RlcmlzdGljcyBvZiB0aGUgcGF0aCBiZXR3ZWVuIENQ
-VSANCj4gYW5kIEdlbmVyaWMgSW5pdGlhdG9ycyB0byB0aGUgQ1hMIGhvc3QgYnJpZGdlIHRhcmdl
-dC4gV2l0aCBlaXRoZXIgDQo+IENQVS10by1HZW5lcmljLVRhcmdldCwgb3IgR2VuZXJpYy1Jbml0
-aWF0b3ItdG8tR2VuZXJpYy1UYXJnZXQgZW50cmllcyANCj4gaW4gdGhlIEhNQVQgdGhlIE9TIENY
-TCBzdWJzeXN0ZW0gY2FuIGVudW1lcmF0ZSB0aGUgcmVtYWluaW5nIGRldGFpbHMgDQo+IChQQ0lF
-IGxpbmsgc3RhdHVzLCBkZXZpY2UgQ0RBVCwgaW50ZXJsZWF2ZSBjb25maWd1cmF0aW9uKSB0byBj
-YWxjdWxhdGUgDQo+IHRoZSBiYW5kd2lkdGggYW5kIGxhdGVuY3kgb2YgYSBkeW5hbWljYWxseSBk
-aXNjb3ZlcmVkIENYTCBtZW1vcnkgdGFyZ2V0Lg0KPiANCldoYXQgaWYgdGhlcmUgaXMgYSBDWEwg
-c3dpdGNoIHdpdGggYSBHZW5lcmljIEluaXRpYXRvciBhbmQgQ1hMIHR5cGUgMyBtZW1vcnkgd2hp
-Y2ggY291bGQgYmUgaG90cGx1Z2dlZCBpbi4gDQpJIGZvcmdldCBpZiB0aGUgR0kgdG8gdHlwZSAz
-IG1lbW9yeSBwYXRoIGlzIE9OTFkgdGhyb3VnaCB0aGUgaG9zdCBicmlkZ2UgdG9kYXkgaW4gMi4w
-IG9yIGFsc28gYWxsb3dlZCB0aHJvdWdoIHRoZSBzd2l0Y2guIEluIGZ1dHVyZSB3ZSB3b3VsZCB3
-YW50IGl0IGFsbG93ZWQgdGhyb3VnaCB0aGUgc3dpdGNoIGZvciBzdXJlLCBqdXN0IGxpa2UgUENJ
-ZSBwMnAuIA0KU28gaG93IHdvdWxkIHRoZSBzd2l0Y2ggcm91dGUgbGF0ZW5jeS9CVyBiZSBkaXNj
-b3ZlcmVkPw0KQWxzbywgYW4gZXhhbXBsZSB3aXRoIG51bWJlcnMgb2Ygd2hhdCB3b3VsZCBiZSBp
-biBITUFUIG1heSBoZWxwIHVuZGVyc3RhbmQgdGhlIGNhc2Ugd2hlcmUgZXZlcnl0aGluZyBpcyBv
-bmx5IGNvbm5lY3RlZCB2aWEgaG9zdCBicmlkZ2UgYWxzby4gDQoNCj4gIyBJbXBhY3Qgb2YgdGhl
-IENoYW5nZQ0KPiBUaGUgZXhpc3RpbmcgR2VuZXJpYyBJbml0aWF0b3IgQWZmaW5pdHkgU3RydWN0
-dXJlIChBQ1BJIDYuNCBTZWN0aW9uDQo+IDUuMi4xNi42KSBhbHJlYWR5IGNvbnRhaW5zIGFsbCB0
-aGUgZmllbGRzIG5lY2Vzc2FyeSB0byBlbnVtZXJhdGUgYSANCj4gZ2VuZXJpYyB0YXJnZXQgcHJv
-eGltaXR5IGRvbWFpbi4gQWxsIHRoYXQgaXMgbWlzc2luZyBpcyB0aGUgDQo+IGludGVycHJldGF0
-aW9uIG9mIHRoYXQgcHJveGltaXR5IGRvbWFpbiBvcHRpb25hbGx5IGFzIGEgdGFyZ2V0IA0KPiBp
-ZGVudGlmaWVyIGluIHRoZSBITUFULg0KPiANCj4gR2l2ZW4gdGhhdCB0aGUgT1Mgc3RpbGwgbmVl
-ZHMgdG8gZHluYW1pY2FsbHkgZW51bWVyYXRlIGFuZCBpbnN0YW50aWF0ZSANCj4gdGhlIG1lbW9y
-eSByYW5nZXMgYmVoaW5kIHRoZSBob3N0IGJyaWRnZS4gVGhlIGFzc3VtcHRpb24gaXMgdGhhdCAN
-Cj4gb3BlcmF0aW5nIHN5c3RlbXMgdGhhdCBkbyBub3Qgc3VwcG9ydCBuYXRpdmUgQ1hMIGVudW1l
-cmF0aW9uIHdpbGwgDQo+IGlnbm9yZSB0aGlzIGRhdGEgaW4gdGhlIEhNQVQsIHdoaWxlIENYTCBu
-YXRpdmUgZW51bWVyYXRpb24gYXdhcmUgDQo+IGVudmlyb25tZW50cyB3aWxsIHVzZSB0aGlzIGZy
-YWdtZW50IG9mIHRoZSBwZXJmb3JtYW5jZSBwYXRoIHRvIA0KPiBjYWxjdWxhdGUgdGhlIHBlcmZv
-cm1hbmNlIGNoYXJhY3RlcmlzdGljcy4NCj4gDQo+ICMgUmVmZXJlbmNlcw0KPiAqIENvbXB1dGUg
-RXhwcmVzcyBMaW5rIFNwZWNpZmljYXRpb24gdjIuMCwgDQo+IDxodHRwczovL3d3dy5jb21wdXRl
-ZXhwcmVzc2xpbmsub3JnLz4NCj4gDQo+ICMgRGV0YWlsZWQgRGVzY3JpcHRpb24gb2YgdGhlIENo
-YW5nZQ0KPiANCj4gKiBSZXBsYWNlICJHZW5lcmljIEluaXRpYXRvciIgd2l0aCAiR2VuZXJpYyBJ
-bml0aWF0b3IgLyBUYXJnZXQiIGluIGFsbCANCj4gbG9jYXRpb25zIGV4Y2VwdCB3aGVyZSBhbiAi
-aW5pdGlhdG9yIiBvciAidGFyZ2V0IiBpcyBpbXBsaWVkLg0KPiBTcGVjaWZpY2FsbHkgNS4yLjI3
-LjMgIk1lbW9yeSBQcm94aW1pdHkgRG9tYWluIEF0dHJpYnV0ZXMgU3RydWN0dXJlIg0KPiBuZWVk
-IG5vdCByZXBsYWNlIG9jY3VycmVuY2VzIG9mICJnZW5lcmljIGluaXRpYXRvciIgaW4gZmllbGQ6
-IA0KPiAiUHJveGltaXR5IERvbWFpbiBmb3IgQXR0YWNoZWQgSW5pdGlhdG9yIi4gQWRkaXRpb25h
-bGx5IGZpZWxkOiANCj4gIlByb3hpbWl0eSBEb21haW4gZm9yIHRoZSBNZW1vcnkiIG11c3QgYmUg
-cmVuYW1lZCB0byAiUHJveGltaXR5IERvbWFpbiANCj4gZm9yIHRoZSBNZW1vcnkgLyBHZW5lcmlj
-IFRhcmdldCIgd2l0aCBhIG5ldyBkZXNjcmlwdGlvbiAiSW50ZWdlciB0aGF0IA0KPiByZXByZXNl
-bnRzIHRoZSBtZW1vcnkgLyBnZW5lcmljIHRhcmdldCBwcm94aW1pdHkgZG9tYWluIHRvIHdoaWNo
-IHRoaXMgbWVtb3J5IGJlbG9uZ3MuIg0KPiANCj4gKiBSZXZpc2UgIjUuMi4xNi42IEdlbmVyaWMg
-SW5pdGlhdG9yIEFmZmluaXR5IFN0cnVjdHVyZSIgdG8gbWFrZSBpdA0KPiAgIGNvbnNpc3RlbnQg
-d2l0aCBiZWluZyByZWZlcmVuY2VkIGFzIGVpdGhlciBhIHRhcmdldCBvciBpbml0aWF0b3IuDQo+
-IA0KPiAgICAgICAgICogRGVzY3JpcHRpb246IChyZXBsYWNlIGFsbCB0ZXh0KQ0KPiANCj4gICAg
-ICAgICA+IFRoZSBHZW5lcmljIEluaXRpYXRvciAvIFRhcmdldCBBZmZpbml0eSBTdHJ1Y3R1cmUg
-cHJvdmlkZXMgdGhlDQo+ICAgICAgICAgPiBhc3NvY2lhdGlvbiBiZXR3ZWVuIGEgR2VuZXJpYyBJ
-bml0aWF0b3IgYW5kIGEgTWVtb3J5IFByb3hpbWl0eQ0KPiAgICAgICAgID4gRG9tYWluLCBvciBh
-bm90aGVyIEdlbmVyaWMgVGFyZ2V0IFByb3hpbWl0eSBEb21haW4uIFRoZQ0KPiAgICAgICAgID4g
-ZGlzdGluY3Rpb24gYXMgdG8gd2hldGhlciB0aGlzIHN0cnVjdHVyZSByZXByZXNlbnRzIGFuDQo+
-ICAgICAgICAgPiBJbml0aWF0b3IsIGEgVGFyZ2V0LCBvciBib3RoIGRlcGVuZHMgb24gaG93IGl0
-IGlzIHJlZmVyZW5jZWQNCj4gICAgICAgICA+IGluIHRoZSBITUFULiBTZWUgU2VjdGlvbiA1LjIu
-MjcuMyBmb3IgZGV0YWlscy4NCj4gDQo+ICAgICAgICAgPiBTdXBwb3J0IG9mIEdlbmVyaWMgSW5p
-dGlhdG9yIC8gVGFyZ2V0IEFmZmluaXR5IFN0cnVjdHVyZXMgYnkNCj4gICAgICAgICA+IE9TUE0g
-aXMgb3B0aW9uYWwsIGFuZCB0aGUgcGxhdGZvcm0gbWF5IHF1ZXJ5IHdoZXRoZXIgdGhlIE9TDQo+
-ICAgICAgICAgPiBzdXBwb3J0cyBpdCB2aWEgdGhlIF9PU0MgbWV0aG9kLiBTZWUgU2VjdGlvbiA2
-LjIuMTEuMi4NCj4gDQo+ICAgICAgICAgKiBBcmNoaXRlY3R1cmFsIHRyYW5zYWN0aW9uczogKGFw
-cGVuZCBhZnRlciBjdXJyZW50IHRleHQpDQo+IA0KPiAgICAgICAgID4gSWYgdGhpcyBwcm94aW1p
-dHkgZG9tYWluIGlzIHJlZmVyZW5jZWQgYXMgYSB0YXJnZXQgdGhlbiBpdA0KPiAgICAgICAgID4g
-c3VwcG9ydHMgYWxsIHRoZSB0cmFuc2FjdGlvbiB0eXBlcyBpbmZlcnJlZCBhYm92ZS4NCj4gDQo+
-ICAgICAgICAgKiBPdGhlciB1cGRhdGVzIGFyZSBzaW1wbGUgSW5pdGlhdG9yID0+IEluaXRpYXRv
-ciAvIFRhcmdldA0KPiAgICAgICAgICAgcmVwbGFjZW1lbnRzLg0K
+On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Fri, Feb 5, 2021 at 11:26 PM Saravana Kannan <saravanak@google.com> wrote:
+> > There are a lot of devices/drivers where they never have a struct device
+> > created for them or the driver initializes the hardware without ever
+> > binding to the struct device.
+> >
+> > This series is intended to avoid any boot regressions due to such
+> > devices/drivers when fw_devlink=on and also address the handling of
+> > optional suppliers.
+> >
+> > Patch 1 and 2 addresses the issue of firmware nodes that look like
+> > they'll have struct devices created for them, but will never actually
+> > have struct devices added for them. For example, DT nodes with a
+> > compatible property that don't have devices added for them.
+> >
+> > Patch 3 and 4 allow for handling optional DT bindings.
+> >
+> > Patch 5 sets up a generic API to handle drivers that never bind with
+> > their devices.
+> >
+> > Patch 6 through 8 update different frameworks to use the new API.
+> >
+> > Thanks,
+> > Saravana
+> >
+> > Saravana Kannan (8):
+> >   driver core: fw_devlink: Detect supplier devices that will never be
+> >     added
+> >   of: property: Don't add links to absent suppliers
+> >   driver core: Add fw_devlink.strict kernel param
+> >   of: property: Add fw_devlink support for optional properties
+> >   driver core: fw_devlink: Handle suppliers that don't use driver core
+> >   irqdomain: Mark fwnodes when their irqdomain is added/removed
+> >   PM: domains: Mark fwnodes when their powerdomain is added/removed
+> >   clk: Mark fwnodes when their clock provider is added/removed
+>
+> Thanks for your series, which is now part of driver-core-next.
+> I gave driver-core-next + [1] a try on various Renesas boards.
+
+Thanks!
+
+> Test results are below.
+> In general, the result looks much better than before.
+
+Ah, good to hear this.
+
+> [1] - https://lore.kernel.org/lkml/20210210114435.122242-1-tudor.ambarus@microchip.com/
+>
+>   1. R-Car Gen2 (Koelsch), R-Car Gen3 (Salvator-X(S), Ebisu).
+>
+>       - Commit 2dfc564bda4a31bc ("soc: renesas: rcar-sysc: Mark device
+>         node OF_POPULATED after init") is no longer needed (but already
+>         queued for v5.12 anyway)
+
+Rob doesn't like the proliferation of OF_POPULATED and we don't need
+it anymore, so maybe work it out with him? It's a balance between some
+wasted memory (struct device(s)) vs not proliferating OF_POPULATED.
+
+>       - Some devices are reprobed, despite their drivers returning
+>         a real error code, and not -EPROBE_DEFER:
+
+Sorry, it's not obvious from the logs below where "reprobing" is
+happening. Can you give more pointers please?
+
+Also, thinking more about this, the only way I could see this happen is:
+1. Device fails with error that's not -EPROBE_DEFER
+2. It somehow gets added to a device link (with AUTOPROBE_CONSUMER
+flag) where it's a consumer.
+3. The supplier probes and the device gets added to the deferred probe
+list again.
+
+But I can't see how this sequence can happen. Device links are created
+only when a device is added. And is the supplier isn't added yet, the
+consumer wouldn't have probed in the first place.
+
+Other than "annoying waste of time" is this causing any other problems?
+
+>             renesas_wdt e6020000.watchdog: Watchdog blacklisted on r8a7791 ES1.*
+>             (rwdt_probe() returns -ENODEV)
+>
+>             sh-pfc e6060000.pinctrl: pin GP_7_23 already requested by
+> ee090000.pci; cannot claim for e6590000.usb
+>             sh-pfc e6060000.pinctrl: pin-247 (e6590000.usb) status -22
+>             sh-pfc e6060000.pinctrl: could not request pin 247
+> (GP_7_23) from group usb0  on device sh-pfc
+>             renesas_usbhs e6590000.usb: Error applying setting,
+> reverse things back
+>             renesas_usbhs: probe of e6590000.usb failed with error -22
+>
+>             rcar-pcie fe000000.pcie: host bridge /soc/pcie@fe000000 ranges:
+>             rcar-pcie fe000000.pcie:       IO
+> 0x00fe100000..0x00fe1fffff -> 0x0000000000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x00fe200000..0x00fe3fffff -> 0x00fe200000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x0030000000..0x0037ffffff -> 0x0030000000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x0038000000..0x003fffffff -> 0x0038000000
+>             rcar-pcie fe000000.pcie:   IB MEM
+> 0x0040000000..0x00bfffffff -> 0x0040000000
+>             rcar-pcie fe000000.pcie:   IB MEM
+> 0x0200000000..0x02ffffffff -> 0x0200000000
+>             rcar-pcie fe000000.pcie: PCIe link down
+>             (rcar_pcie_probe() returns -ENODEV)
+>
+>             xhci-hcd ee000000.usb: xHCI Host Controller
+>             xhci-hcd ee000000.usb: new USB bus registered, assigned bus number 7
+>             xhci-hcd ee000000.usb: Direct firmware load for
+> r8a779x_usb3_v3.dlmem failed with error -2
+>             xhci-hcd ee000000.usb: can't setup: -2
+>             xhci-hcd ee000000.usb: USB bus 7 deregistered
+>             xhci-hcd: probe of ee000000.usb failed with error -2
+>
+>       - The PCI reprobing leads to a memory leak, for which I've sent a fix
+>         "[PATCH] PCI: Fix memory leak in pci_register_io_range()"
+>         https://lore.kernel.org/linux-pci/20210202100332.829047-1-geert+renesas@glider.be/
+
+Wrt PCI reprobing,
+1. Is this PCI never expected to probe, but it's being reattempted
+despite the NOT EPROBE_DEFER error? Or
+2. The PCI was deferred probe when it should have probed and then when
+it's finally reattemped and it could succeed, we are hitting this mem
+leak issue?
+
+I'm basically trying to distinguish between "this stuff should never
+be retried" vs "this/it's suppliers got probe deferred with
+fw_devlink=on vs but didn't get probe deferred with
+fw_devlink=permissive and that's causing issues"
+
+>       - I2C on R-Car Gen3 does not seem to use DMA, according to
+>         /sys/kernel/debug/dmaengine/summary:
+>
+>             -dma4chan0    | e66d8000.i2c:tx
+>             -dma4chan1    | e66d8000.i2c:rx
+>             -dma5chan0    | e6510000.i2c:tx
+
+I think I need more context on the problem before I can try to fix it.
+I'm also very unfamiliar with that file. With fw_devlink=permissive,
+I2C was using DMA? If so, the next step is to see if the I2C relative
+probe order with DMA is getting changed and if so, why.
+
+>       - Disabling CONFIG_IPMMU_VMSA (IOMMU) now works, good!
+>
+>            ignoring dependency for device, assuming no driver
+>
+>       - Disabling CONFIG_RCAR_DMAC works for most devices, except for
+>         sound:
+>
+>             -rcar_sound ec500000.sound: probed
+>
+>              ALSA device list:
+>             -  #0: rcar-sound
+>             +  No soundcards found.
+>
+>             # cat  /sys/kernel/debug/devices_deferred
+>             2-0010
+>             sound
+>             ec500000.sound
+>
+>             platform e6510000.i2c: Linked as a sync state only
+> consumer to ec500000.sound
+>             platform ec500000.sound: Linked as a consumer to e6060000.pinctrl
+>             platform ec500000.sound: Linked as a consumer to
+> e6150000.clock-controller
+>             i2c 2-0010: Linked as a consumer to ec500000.sound
+>             platform ec500000.sound: Linked as a consumer to 2-004f
+>             cs2000-cp 2-004f: revision - C1
+>             i2c-rcar e6510000.i2c: probed
+>             i2c-rcar e6510000.i2c: Dropping the link to ec500000.sound
+>             i2c 2-0010: probe deferral - supplier ec500000.sound not ready
+>
+>         With CONFIG_RCAR_DMAC=y, ec500000.sound is probed quite early.
+
+I saw your other reply, so I'll ignore this sound/DMA issue.
+
+>
+>             arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts
+>
+>             ak4613: codec@10 {
+>                     clocks = <&rcar_sound 3>;
+>
+>                     port {
+>                             ak4613_endpoint: endpoint {
+>                                     remote-endpoint = <&rsnd_endpoint0>;
+>                             };
+>                     };
+>             };
+>
+>             sound_card: sound {
+>                     dais = <&rsnd_port0     /* ak4613 */
+>                             &rsnd_port1     /* HDMI0  */
+>                             &rsnd_port2>;   /* HDMI1  */
+>             };
+>
+>             rcar_sound: sound@ec500000 {
+>                     ports {
+>                             rsnd_port0: port@0 {
+>                                     rsnd_endpoint0: endpoint {
+>                                             remote-endpoint =
+> <&ak4613_endpoint>;
+>                                     }
+>                             }
+>                     }
+>             };
+>
+>
+>   2. SH/R-Mobile AG5 (kzm9g), APE6 (ape6evm), A1 (armadillo800-eva)
+>
+>       - "PATCH] soc: renesas: rmobile-sysc: Set OF_POPULATED and absorb
+>         reset handling" is no longer needed
+>         https://lore.kernel.org/linux-arm-kernel/20210205133319.1921108-1-geert+renesas@glider.be/
+
+Good to see more evidence that this series is fixing things at a more
+generic level.
+
+>       - On R-Mobile A1, I get a BUG and a memory leak:
+>
+>             BUG: spinlock bad magic on CPU#0, swapper/1
+>              lock: lcdc0_device+0x10c/0x308, .magic: 00000000, .owner:
+> <none>/-1, .owner_cpu: 0
+>             CPU: 0 PID: 1 Comm: swapper Not tainted
+> 5.11.0-rc5-armadillo-00032-gf0a85c26907e #266
+>             Hardware name: Generic R8A7740 (Flattened Device Tree)
+>             [<c010c3c8>] (unwind_backtrace) from [<c010a49c>]
+> (show_stack+0x10/0x14)
+>             [<c010a49c>] (show_stack) from [<c0159534>]
+> (do_raw_spin_lock+0x20/0x94)
+>             [<c0159534>] (do_raw_spin_lock) from [<c04089d8>]
+> (dev_pm_get_subsys_data+0x30/0xa0)
+>             [<c04089d8>] (dev_pm_get_subsys_data) from [<c0413698>]
+> (genpd_add_device+0x34/0x1c0)
+>             [<c0413698>] (genpd_add_device) from [<c041389c>]
+> (of_genpd_add_device+0x34/0x4c)
+>             [<c041389c>] (of_genpd_add_device) from [<c0a1e9bc>]
+> (board_staging_register_device+0xf8/0x118)
+>             [<c0a1e9bc>] (board_staging_register_device) from
+> [<c0a1ea00>] (board_staging_register_devices+0x24/0x28)
+>             [<c0a1ea00>] (board_staging_register_devices) from
+> [<c0a1ea30>] (runtime_board_check+0x2c/0x40)
+>             [<c0a1ea30>] (runtime_board_check) from [<c0101fac>]
+> (do_one_initcall+0xe0/0x278)
+>             [<c0101fac>] (do_one_initcall) from [<c0a01034>]
+> (kernel_init_freeable+0x174/0x1c0)
+>             [<c0a01034>] (kernel_init_freeable) from [<c05fd568>]
+> (kernel_init+0x8/0x118)
+>             [<c05fd568>] (kernel_init) from [<c010011c>]
+> (ret_from_fork+0x14/0x38)
+>             Exception stack(0xc19c9fb0 to 0xc19c9ff8)
+>             9fa0:                                     00000000
+> 00000000 00000000 00000000
+>             9fc0: 00000000 00000000 00000000 00000000 00000000
+> 00000000 00000000 00000000
+>             9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+>
+>             unreferenced object 0xc4134e00 (size 512):
+>               comm "swapper", pid 1, jiffies 4294937296 (age 3541.930s)
+>               hex dump (first 32 bytes):
+>                 00 4e 13 c4 00 4e 13 c4 ff ff ff 7f ff ff ff 7f
+> .N...N..........
+>                 ff ff ff 7f 02 00 00 00 00 5f 13 c4 1c 4e 13 c4
+> ........._...N..
+>               backtrace:
+>                 [<de1a3c34>] dev_pm_qos_constraints_allocate+0x10/0xcc
+>                 [<d21cf6e4>] dev_pm_qos_add_notifier+0x6c/0xd0
+>                 [<e04bbc90>] genpd_add_device+0x178/0x1c0
+>                 [<95067303>] of_genpd_add_device+0x34/0x4c
+>                 [<c334b97a>] board_staging_register_device+0xf8/0x118
+>                 [<01bd495a>] board_staging_register_devices+0x24/0x28
+>                 [<fb25a5d8>] runtime_board_check+0x2c/0x40
+>                 [<65aed679>] do_one_initcall+0xe0/0x278
+>                 [<97e3f4f7>] kernel_init_freeable+0x174/0x1c0
+>                 [<63c8fed0>] kernel_init+0x8/0x118
+>                 [<f704d96c>] ret_from_fork+0x14/0x38
+>                 [<00000000>] 0x0
+
+Hmm... I looked at this in bits and pieces throughout the day. At
+least spent an hour looking at this. This doesn't make a lot of sense
+to me. I don't even touch anything in this code path AFAICT.  Are
+modules/kernel mixed up somehow? I need more info before I can help.
+Does reverting my pm domain change make any difference (assume it
+boots this far without it).
+
+>
+>   3. RZ/A1 and RZ/A2: No issues.
+
+Great!
+
+-Saravana
