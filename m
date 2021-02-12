@@ -2,52 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5B48319C37
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 11:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E350A319CA8
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 11:32:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbhBLJ7s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Feb 2021 04:59:48 -0500
-Received: from mga12.intel.com ([192.55.52.136]:53425 "EHLO mga12.intel.com"
+        id S230363AbhBLKah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Feb 2021 05:30:37 -0500
+Received: from mga03.intel.com ([134.134.136.65]:16175 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229844AbhBLJ7q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Feb 2021 04:59:46 -0500
-IronPort-SDR: AWMcEvOMA/KgUrvkMKedPrL1Ybs1rIgUjyAHDv9ah/U44UaUe/IlPmUApnnqhCO0xCAU7YpxEb
- lPNfLAIxRzSw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9892"; a="161532184"
+        id S229653AbhBLKag (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Feb 2021 05:30:36 -0500
+IronPort-SDR: lQIF3U+6oD7htNhN0ECriiXMTyLRJVQtK3PjYTLnhZ8fJ6jkbHLBuBtIVAHi7lrtaynZL3YfVw
+ Y+WdFtJc45DQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9892"; a="182463613"
 X-IronPort-AV: E=Sophos;i="5.81,173,1610438400"; 
-   d="scan'208";a="161532184"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 01:57:56 -0800
-IronPort-SDR: AvtK9ndARQGVy4E+Zh213bC+NiKFJ64EIdfF6Wult9Dfh6Irc1uq8KKw8/E6IhXHfYgeK9J0Xe
- 64lIR7lxGFBw==
+   d="scan'208";a="182463613"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 02:28:50 -0800
+IronPort-SDR: xMPymEm/e9YiMmihnEa5y2rtorDhIH6vzmGuFw0mnx8OWCamCc/cc+om/C7EASKmVNaAbxnsS3
+ YHzGRLsBHvBw==
 X-IronPort-AV: E=Sophos;i="5.81,173,1610438400"; 
-   d="scan'208";a="376284205"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 01:57:54 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 78F5E20345;
-        Fri, 12 Feb 2021 11:57:51 +0200 (EET)
-Date:   Fri, 12 Feb 2021 11:57:51 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+   d="scan'208";a="397927633"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 02:28:47 -0800
+Received: by lahna (sSMTP sendmail emulation); Fri, 12 Feb 2021 12:28:44 +0200
+Date:   Fri, 12 Feb 2021 12:28:44 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
 Subject: Re: [PATCH] ACPI: property: Fix fwnode string properties matching
-Message-ID: <20210212095751.GB3@paasikivi.fi.intel.com>
+Message-ID: <20210212102844.GN2542@lahna.fi.intel.com>
 References: <5831274.1ZjA0VymzF@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <5831274.1ZjA0VymzF@kreacher>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
-
-Hi Rafael,
 
 On Thu, Feb 11, 2021 at 07:30:01PM +0100, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
@@ -89,9 +85,4 @@ On Thu, Feb 11, 2021 at 07:30:01PM +0100, Rafael J. Wysocki wrote:
 > Cc: 4.13+ <stable@vger.kernel.org> # 4.13+
 > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Thanks for addressing this.
-
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
--- 
-Sakari Ailus
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
