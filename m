@@ -2,125 +2,325 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0995031A1C3
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 16:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F9331A21F
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Feb 2021 16:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232255AbhBLPen (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Feb 2021 10:34:43 -0500
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.2]:58162 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232270AbhBLPed (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Feb 2021 10:34:33 -0500
-Received: from [100.112.3.43] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-b.us-east-1.aws.symcld.net id 32/66-00973-1CE96206; Fri, 12 Feb 2021 15:29:05 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprPKsWRWlGSWpSXmKPExsWS8eIhj+7BeWo
-  JBlM6+C3eHJ/OZDH1QI3Fzodv2SyW7+tntLi8aw6bRfvG2awWnzsms1is3vOC2eLM6UusDpwe
-  705tYfPYOesuu8emVZ1sHvNOBnq833eVzWPL1XYWj8+b5ALYo1gz85LyKxJYM+7+WcNe8EWgo
-  vubQANjP28XIxeHkMB/Romvhw+zQzjPGSVOf1zF3MXIySEskCkxad5UMFtEoFqi8fwvVpAiZo
-  FLjBKvpq1lB0kICdhK3F9yHqyITUBbYsuWX2wgNi9Q/OPMVlYQm0VAVWLqtM8sILaoQLjE602
-  fGSFqBCVOznwCFucUsJO4smoWUxcjB9ACTYn1u/RBwswC4hK3nsxngrDlJba/nQO2SgLI/vHo
-  FjuEnSDR8+8R2wRGwVlIps5CmDQLyaRZSCYtYGRZxWiWVJSZnlGSm5iZo2toYKBraGika6BrZ
-  GSkl1ilm6RXWqybmlhcomuol1herFdcmZuck6KXl1qyiREYbykFDPd2MP55/UHvEKMkB5OSKO
-  +ZGWoJQnxJ+SmVGYnFGfFFpTmpxYcYZTg4lCR4VWcD5QSLUtNTK9Iyc4CxD5OW4OBREuHNmgu
-  U5i0uSMwtzkyHSJ1iVJQS590JkhAASWSU5sG1wdLNJUZZKWFeRgYGBiGegtSi3MwSVPlXjOIc
-  jErCvEfmAE3hycwrgZv+CmgxE9Dimi6wxSWJCCmpBqaiJQ31JTUCDCqfU9xfn/gnce6sUscxF
-  ZnWTbcWHPCNrZ8zmSlhGofSFMf2FxsZly45M0NhldmPTZIfQyZNNunqjQ5j+cRetGby1pQjx2
-  Z7npmwepkze/9/SQtjhramBYe5vns8s62QMZrkkS7az+ZycmKmF/PU6gd2b7TfTHTvfXYuU0Y
-  y913KvqPVSXUch32mxnz/+GNp7c4ONa9J0fPqeQ22zzjPW+xkwj3rl12lT5hegOkT+e1HOhZt
-  /ZejU1y55L5sh/pk75IZHIYbGZ9OY/+4wtTQ8HSDhI0nr/UPy4dzbzydKVXPHOF3TnV+fPORz
-  7XO/797xh59c+fxF1ulyq1litaLp0XVcuqI8CqxFGckGmoxFxUnAgCPf1JPsgMAAA==
-X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-31.tower-395.messagelabs.com!1613143745!262690!1
-X-Originating-IP: [104.232.225.12]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.60.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 28115 invoked from network); 12 Feb 2021 15:29:05 -0000
-Received: from unknown (HELO lenovo.com) (104.232.225.12)
-  by server-31.tower-395.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 12 Feb 2021 15:29:05 -0000
-Received: from reswpmail01.lenovo.com (unknown [10.62.32.20])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 0B0FDB4F202F52A5DBA3;
-        Fri, 12 Feb 2021 10:29:05 -0500 (EST)
-Received: from localhost.localdomain (10.46.53.63) by reswpmail01.lenovo.com
- (10.62.32.20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2106.2; Fri, 12 Feb
- 2021 10:28:27 -0500
-Subject: Re: [External] [PATCH v2 0/4] platform/surface: Add platform profile
- driver for Surface devices
-To:     Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC:     Mark Gross <mgross@linux.intel.com>, Len Brown <lenb@kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        <platform-driver-x86@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20210211201703.658240-1-luzmaximilian@gmail.com>
-From:   Mark Pearson <markpearson@lenovo.com>
-Message-ID: <5133800c-e7e4-034a-d646-de1411065fac@lenovo.com>
-Date:   Fri, 12 Feb 2021 10:29:01 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S229745AbhBLPzT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Feb 2021 10:55:19 -0500
+Received: from mga12.intel.com ([192.55.52.136]:8025 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229512AbhBLPzS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Feb 2021 10:55:18 -0500
+IronPort-SDR: DdcDcPzVbCi0TLLzQdad/idpN0woYGb0azSPwdpyplH94DHluMJp2rRe6kYRBnfcK+gMkv9evl
+ SQG5d+t+b76w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9893"; a="161576520"
+X-IronPort-AV: E=Sophos;i="5.81,174,1610438400"; 
+   d="scan'208";a="161576520"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 07:54:38 -0800
+IronPort-SDR: ua5ODGCeCiIyd188xVcwJvXjmN0ucGTZtobnydEpeFsnW38CpSKttJz/zUEdqu62gGlHsWL+cn
+ GNLoQHgHV0hA==
+X-IronPort-AV: E=Sophos;i="5.81,174,1610438400"; 
+   d="scan'208";a="381488777"
+Received: from smandal1-mobl2.amr.corp.intel.com (HELO intel.com) ([10.252.133.121])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2021 07:54:36 -0800
+Date:   Fri, 12 Feb 2021 07:54:35 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
+Message-ID: <20210212155435.wwmsuqom4qyymdq6@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+ <20210210000259.635748-3-ben.widawsky@intel.com>
+ <20210210133252.000047af@Huawei.com>
+ <20210210150759.00005684@Huawei.com>
+ <20210210165557.7fuqbyr7e7zjoxaa@intel.com>
+ <20210210181605.ecbl3m5ep4rszpqs@intel.com>
+ <20210211095548.00000da7@Huawei.com>
+ <20210211155529.agul56lcb33cta5s@intel.com>
+ <20210212132706.00006edc@Huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20210211201703.658240-1-luzmaximilian@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.46.53.63]
-X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
- reswpmail01.lenovo.com (10.62.32.20)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210212132706.00006edc@Huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/02/2021 15:16, Maximilian Luz wrote:
-> This series adds a driver to provide platform profile support on 5th-
-> and later generation Microsoft Surface devices with a Surface System
-> Aggregator Module. On those devices, the platform profile can be used to
-> influence cooling behavior and power consumption.
+On 21-02-12 13:27:06, Jonathan Cameron wrote:
+> On Thu, 11 Feb 2021 07:55:29 -0800
+> Ben Widawsky <ben.widawsky@intel.com> wrote:
 > 
-> To achieve this, a new platform profile is introduced: the
-> 'balanced-performance' profile.
+> > On 21-02-11 09:55:48, Jonathan Cameron wrote:
+> > > On Wed, 10 Feb 2021 10:16:05 -0800
+> > > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > >   
+> > > > On 21-02-10 08:55:57, Ben Widawsky wrote:  
+> > > > > On 21-02-10 15:07:59, Jonathan Cameron wrote:    
+> > > > > > On Wed, 10 Feb 2021 13:32:52 +0000
+> > > > > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > > > > >     
+> > > > > > > On Tue, 9 Feb 2021 16:02:53 -0800
+> > > > > > > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > > > > > >     
+> > > > > > > > Provide enough functionality to utilize the mailbox of a memory device.
+> > > > > > > > The mailbox is used to interact with the firmware running on the memory
+> > > > > > > > device. The flow is proven with one implemented command, "identify".
+> > > > > > > > Because the class code has already told the driver this is a memory
+> > > > > > > > device and the identify command is mandatory.
+> > > > > > > > 
+> > > > > > > > CXL devices contain an array of capabilities that describe the
+> > > > > > > > interactions software can have with the device or firmware running on
+> > > > > > > > the device. A CXL compliant device must implement the device status and
+> > > > > > > > the mailbox capability. Additionally, a CXL compliant memory device must
+> > > > > > > > implement the memory device capability. Each of the capabilities can
+> > > > > > > > [will] provide an offset within the MMIO region for interacting with the
+> > > > > > > > CXL device.
+> > > > > > > > 
+> > > > > > > > The capabilities tell the driver how to find and map the register space
+> > > > > > > > for CXL Memory Devices. The registers are required to utilize the CXL
+> > > > > > > > spec defined mailbox interface. The spec outlines two mailboxes, primary
+> > > > > > > > and secondary. The secondary mailbox is earmarked for system firmware,
+> > > > > > > > and not handled in this driver.
+> > > > > > > > 
+> > > > > > > > Primary mailboxes are capable of generating an interrupt when submitting
+> > > > > > > > a background command. That implementation is saved for a later time.
+> > > > > > > > 
+> > > > > > > > Link: https://www.computeexpresslink.org/download-the-specification
+> > > > > > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > > > > > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>      
+> > > > > > > 
+> > > > > > > Hi Ben,
+> > > > > > > 
+> > > > > > >     
+> > > > > > > > +/**
+> > > > > > > > + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > > > > > > + * @cxlm: The CXL memory device to communicate with.
+> > > > > > > > + * @mbox_cmd: Command to send to the memory device.
+> > > > > > > > + *
+> > > > > > > > + * Context: Any context. Expects mbox_lock to be held.
+> > > > > > > > + * Return: -ETIMEDOUT if timeout occurred waiting for completion. 0 on success.
+> > > > > > > > + *         Caller should check the return code in @mbox_cmd to make sure it
+> > > > > > > > + *         succeeded.      
+> > > > > > > 
+> > > > > > > cxl_xfer_log() doesn't check mbox_cmd->return_code and for my test it currently
+> > > > > > > enters an infinite loop as a result.    
+> > > > > 
+> > > > > I meant to fix that.
+> > > > >     
+> > > > > > > 
+> > > > > > > I haven't checked other paths, but to my mind it is not a good idea to require
+> > > > > > > two levels of error checking - the example here proves how easy it is to forget
+> > > > > > > one.    
+> > > > > 
+> > > > > Demonstrably, you're correct. I think it would be good to have a kernel only
+> > > > > mbox command that does the error checking though. Let me type something up and
+> > > > > see how it looks.    
+> > > > 
+> > > > Hi Jonathan. What do you think of this? The bit I'm on the fence about is if I
+> > > > should validate output size too. I like the simplicity as it is, but it requires
+> > > > every caller to possibly check output size, which is kind of the same problem
+> > > > you're originally pointing out.  
+> > > 
+> > > The simplicity is good and this is pretty much what I expected you would end up with
+> > > (always reassuring)
+> > > 
+> > > For the output, perhaps just add another parameter to the wrapper for minimum
+> > > output length expected?
+> > > 
+> > > Now you mention the length question.  It does rather feel like there should also
+> > > be some protection on memcpy_fromio() copying too much data if the hardware
+> > > happens to return an unexpectedly long length.  Should never happen, but
+> > > the hardening is worth adding anyway given it's easy to do.
+> > > 
+> > > Jonathan  
+> > 
+> > Some background because I forget what I've said previously... It's unfortunate
+> > that the spec maxes at 1M mailbox size but has enough bits in the length field
+> > to support 2M-1. I've made some requests to have this fixed, so maybe 3.0 won't
+> > be awkward like this.
 > 
-> In addition, a couple of fix-ups are performed:
-> - Hide CONFIG_ACPI_PLATFORM_PROFILE and change drivers so that it is
->   selected instead of depended on.
-> - Fix some references to documentation in a comment.
+> Agreed spec should be tighter here, but I'd argue over 1M indicates buggy hardware.
 > 
-> Note: This series (or more specifically "platform/surface: Add platform
-> profile driver") depends on the "platform/surface: Add Surface
-> Aggregator device registry" series.
+> > 
+> > I think it makes sense to do as you suggested. One question though, do you have
+> > an opinion on we return to the caller as the output payload size, do we cap it
+> > at 1M also, or are we honest?
+> > 
+> > -       if (out_len && mbox_cmd->payload_out)
+> > -               memcpy_fromio(mbox_cmd->payload_out, payload, out_len);
+> > +       if (out_len && mbox_cmd->payload_out) {
+> > +               size_t n = min_t(size_t, cxlm->payload_size, out_len);
+> > +               memcpy_fromio(mbox_cmd->payload_out, payload, n);
+> > +       }
 > 
-> Changes in v2:
->  - Introduce new 'balanced-performance' platform profile and change
->    profile mapping in driver.
->  - Perform some fix-ups for the ACPI platform profile implementation:
->    - Fix some references to documentation in a comment.
->    - Hide CONFIG_ACPI_PLATFORM_PROFILE
+> Ah, I read emails in wrong order.  What you have is what I expected and got
+> confused about in your other email.
 > 
-> Maximilian Luz (4):
->   ACPI: platform: Hide ACPI_PLATFORM_PROFILE option
->   ACPI: platform: Fix file references in comment
->   ACPI: platform: Add balanced-performance platform profile
->   platform/surface: Add platform profile driver
+> > 
+> > So...
+> > mbox_cmd->size_out = out_len;
+> > mbox_cmd->size_out = n;
 > 
->  .../ABI/testing/sysfs-platform_profile        |  18 +-
->  MAINTAINERS                                   |   6 +
->  drivers/acpi/Kconfig                          |  16 +-
->  drivers/acpi/platform_profile.c               |   1 +
->  drivers/platform/surface/Kconfig              |  22 ++
->  drivers/platform/surface/Makefile             |   1 +
->  .../surface/surface_platform_profile.c        | 190 ++++++++++++++++++
->  drivers/platform/x86/Kconfig                  |   4 +-
->  include/linux/platform_profile.h              |   6 +-
->  9 files changed, 237 insertions(+), 27 deletions(-)
->  create mode 100644 drivers/platform/surface/surface_platform_profile.c
+> Good question.  My gut says the second one.
+> Maybe it's worth a warning print to let us know something
+> unexpected happened.
 > 
-I looked through the patch series and it all looked good to me.
-Glad the platform profile implementation is getting used in more places :)
 
-Thanks
-Mark
+I also prefer 'n', It's unfortunate though if userspace hits this condition, it
+would have to scrape kernel logs to find out. Perhaps though userspace wouldn't
+ever really care.
+
+> > 
+> > 
+> > > 
+> > >   
+> > > > 
+> > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > > index 55c5f5a6023f..ad7b2077ab28 100644
+> > > > --- a/drivers/cxl/mem.c
+> > > > +++ b/drivers/cxl/mem.c
+> > > > @@ -284,7 +284,7 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > > >  }
+> > > >  
+> > > >  /**
+> > > > - * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > > + * __cxl_mem_mbox_send_cmd() - Execute a mailbox command
+> > > >   * @cxlm: The CXL memory device to communicate with.
+> > > >   * @mbox_cmd: Command to send to the memory device.
+> > > >   *
+> > > > @@ -296,7 +296,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > > >   * This is a generic form of the CXL mailbox send command, thus the only I/O
+> > > >   * operations used are cxl_read_mbox_reg(). Memory devices, and perhaps other
+> > > >   * types of CXL devices may have further information available upon error
+> > > > - * conditions.
+> > > > + * conditions. Driver facilities wishing to send mailbox commands should use the
+> > > > + * wrapper command.
+> > > >   *
+> > > >   * The CXL spec allows for up to two mailboxes. The intention is for the primary
+> > > >   * mailbox to be OS controlled and the secondary mailbox to be used by system
+> > > > @@ -304,8 +305,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+> > > >   * not need to coordinate with each other. The driver only uses the primary
+> > > >   * mailbox.
+> > > >   */
+> > > > -static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> > > > -				 struct mbox_cmd *mbox_cmd)
+> > > > +static int __cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> > > > +				   struct mbox_cmd *mbox_cmd)
+> > > >  {
+> > > >  	void __iomem *payload = cxlm->mbox_regs + CXLDEV_MBOX_PAYLOAD_OFFSET;
+> > > >  	u64 cmd_reg, status_reg;
+> > > > @@ -469,6 +470,54 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
+> > > >  	mutex_unlock(&cxlm->mbox_mutex);
+> > > >  }
+> > > >  
+> > > > +/**
+> > > > + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > > + * @cxlm: The CXL memory device to communicate with.
+> > > > + * @opcode: Opcode for the mailbox command.
+> > > > + * @in: The input payload for the mailbox command.
+> > > > + * @in_size: The length of the input payload
+> > > > + * @out: Caller allocated buffer for the output.
+> > > > + *
+> > > > + * Context: Any context. Will acquire and release mbox_mutex.
+> > > > + * Return:
+> > > > + *  * %>=0	- Number of bytes returned in @out.
+> > > > + *  * %-EBUSY	- Couldn't acquire exclusive mailbox access.
+> > > > + *  * %-EFAULT	- Hardware error occurred.
+> > > > + *  * %-ENXIO	- Command completed, but device reported an error.
+> > > > + *
+> > > > + * Mailbox commands may execute successfully yet the device itself reported an
+> > > > + * error. While this distinction can be useful for commands from userspace, the
+> > > > + * kernel will often only care when both are successful.
+> > > > + *
+> > > > + * See __cxl_mem_mbox_send_cmd()
+> > > > + */
+> > > > +static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+> > > > +				 size_t in_size, u8 *out)
+> > > > +{
+> > > > +	struct mbox_cmd mbox_cmd = {
+> > > > +		.opcode = opcode,
+> > > > +		.payload_in = in,
+> > > > +		.size_in = in_size,
+> > > > +		.payload_out = out,
+> > > > +	};
+> > > > +	int rc;
+> > > > +
+> > > > +	rc = cxl_mem_mbox_get(cxlm);
+> > > > +	if (rc)
+> > > > +		return rc;
+> > > > +
+> > > > +	rc = __cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> > > > +	cxl_mem_mbox_put(cxlm);
+> > > > +	if (rc)
+> > > > +		return rc;
+> > > > +
+> > > > +	/* TODO: Map return code to proper kernel style errno */
+> > > > +	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS)
+> > > > +		return -ENXIO;
+> > > > +
+> > > > +	return mbox_cmd.size_out;
+> > > > +}
+> > > > +
+> > > >  /**
+> > > >   * handle_mailbox_cmd_from_user() - Dispatch a mailbox command.
+> > > >   * @cxlmd: The CXL memory device to communicate with.
+> > > > @@ -1380,33 +1429,18 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
+> > > >  		u8 poison_caps;
+> > > >  		u8 qos_telemetry_caps;
+> > > >  	} __packed id;
+> > > > -	struct mbox_cmd mbox_cmd = {
+> > > > -		.opcode = CXL_MBOX_OP_IDENTIFY,
+> > > > -		.payload_out = &id,
+> > > > -		.size_in = 0,
+> > > > -	};
+> > > >  	int rc;
+> > > >  
+> > > > -	/* Retrieve initial device memory map */
+> > > > -	rc = cxl_mem_mbox_get(cxlm);
+> > > > -	if (rc)
+> > > > -		return rc;
+> > > > -
+> > > > -	rc = cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> > > > -	cxl_mem_mbox_put(cxlm);
+> > > > -	if (rc)
+> > > > +	rc = cxl_mem_mbox_send_cmd(cxlm, CXL_MBOX_OP_IDENTIFY, NULL, 0,
+> > > > +				   (u8 *)&id);
+> > > > +	if (rc < 0)
+> > > >  		return rc;
+> > > >  
+> > > > -	/* TODO: Handle retry or reset responses from firmware. */
+> > > > -	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS) {
+> > > > -		dev_err(&cxlm->pdev->dev, "Mailbox command failed (%d)\n",
+> > > > -			mbox_cmd.return_code);
+> > > > +	if (rc < sizeof(id)) {
+> > > > +		dev_err(&cxlm->pdev->dev, "Short identify data\n",
+> > > >  		return -ENXIO;
+> > > >  	}
+> > > >  
+> > > > -	if (mbox_cmd.size_out != sizeof(id))
+> > > > -		return -ENXIO;
+> > > > -
+> > > >  	/*
+> > > >  	 * TODO: enumerate DPA map, as 'ram' and 'pmem' do not alias.
+> > > >  	 * For now, only the capacity is exported in sysfs
+> > > > 
+> > > > 
+> > > > [snip]
+> > > >   
+> > >   
+> 
