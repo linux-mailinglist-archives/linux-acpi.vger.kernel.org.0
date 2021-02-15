@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F1431BC05
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 16:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF1E31BC13
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 16:17:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbhBOPOy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 10:14:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
+        id S230255AbhBOPRD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 10:17:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230031AbhBOPOl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 10:14:41 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C04C061756;
-        Mon, 15 Feb 2021 07:14:00 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id z7so3893077plk.7;
-        Mon, 15 Feb 2021 07:14:00 -0800 (PST)
+        with ESMTP id S229888AbhBOPQf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 10:16:35 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0BFC061574;
+        Mon, 15 Feb 2021 07:15:52 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id cv23so3895502pjb.5;
+        Mon, 15 Feb 2021 07:15:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MQBEYDbZLUspR4Cas4xHhX333Pehv/osTwNAcBMpXuY=;
-        b=CQUKDoIcRBpm4Oq6Kl/kj7pKKcYjjng52/6QuMBh7xu8ycEXXdPCjDoNHhNjaLzMAp
-         PpoZjlVPrAsNKPFc7EH5vPLJ+r3BNXYfqyK9QoNOCK3IjijK1pV9vFVX+liKR6InbW3j
-         N69n3pzqz0R8HCM1iSX2ek8LAg3dvWnRl+63/g1YPHuOMxzHsocmOPe3A41LPoBy7+k/
-         MZJkOGkscJQNG3eEKof4/HyYeekmPO7GAVOKWL30SKNu1Y2Fe8znWlpN2fzqLvYcrb1y
-         R0Cj0CuBEl2iw2QhUmqNqZ1sc21Ixmduw3FI9QDc8KcsMXgqT/3ffHiuY4Msf/eAIkv4
-         ZZhg==
+        bh=0rSXsWgkIPp9LcQforsSfMG6IosnkE2y+0kuGemcWec=;
+        b=dpuJndH3wLvC1smjtwpWiso7TjKO+CHXqm5me8ElygIzH7E2zcebDLGoIxFvsb7sFC
+         FBjKpDWWrsFAGy0zaTySceq2GNCbUmz94XAHzGfXYhsFVITqQkF1giOndmRTochCYsr2
+         k8xqGMZe8569vazxMC08vUNfc/iH7+MtKCQvwyUMu09u/E2+I9vy6op3iVd+3DAnzY19
+         +utxNRJW7Q+RQl8EcYOP4ZtmktDzmVsIFpIG+KGuyStvj4X4DErvq3HxqJM/KkpZwy9b
+         iy+C/MY2dbLil5jvy0mag5dOOW7ajf8SfJ3iCh0Iax3GF0lcg8W6oJy9xdqq51v5w8BR
+         xpfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MQBEYDbZLUspR4Cas4xHhX333Pehv/osTwNAcBMpXuY=;
-        b=Y114AlawLJCPG1/YkGByDzDUb26FHDJyajrs+kqXjDv1Vqgd0Tc98rFqI6lc2Vd1GX
-         CqLcqyA5BMvt+tupzroSqOACkdZMlr5JeKdviW4S60e6eCM/zHMB6aTDN/r7Oumk0K6m
-         JofW0uSKAkpOQQoJs+KLrbwYgic7ZIVyb3o8MLbdabVE5mjiW8+C1IHUdvIkC5vdwwHW
-         jd6DEVlWOs/E1ItVbmFalMa8NUEy1mVKdeJTwanxlbwSDqU6/8BIUMode+EqZNSAdAdG
-         BJlrWiDnPAEOfGj6W7K0wnZ9uQ//0I7KnJCAZgAkWfNTbJGuy+RK7J2LnVF8jggki1//
-         EufQ==
-X-Gm-Message-State: AOAM532sNuDatK2DReSjFSKLvvXy9WE+lJwE5ka1QnWqDrQcg/qT+cay
-        y3rJCNZJD75eXt8jb6j27AmDvw0mhy2/TKWqzHA=
-X-Google-Smtp-Source: ABdhPJwq/oqehvgAavm6DkE/AtYDGnrfyneBipOjVQogGyrbG7SqrPvRhcFT2I9yV3pXFKozt+yik6ovEYPQK33uQeY=
-X-Received: by 2002:a17:90a:1b23:: with SMTP id q32mr16968661pjq.181.1613402040270;
- Mon, 15 Feb 2021 07:14:00 -0800 (PST)
+        bh=0rSXsWgkIPp9LcQforsSfMG6IosnkE2y+0kuGemcWec=;
+        b=qSU6Fl+2w0E9O4aSqzjgXufzvnQQZqrEuSqr+5xEDzcTcy6o1frqVNH1db07Ow/BH0
+         qmsxocsxnOdfbwNMBu0kJdll5YKvhZV7jv1YnCsgJ3dwr+RjvVU5phg2Ef0foyn3je/i
+         u7Nj0E7b7RBTFnHIGIQrS0aLvE0itFX1E06eDQqQsIG+z9U+vFFpRX69vW7LwfsuwSLU
+         c1/MhUx40gC2erbSxF5J5w7PVOnKVn5IDF8J74ntT1Ypyon4Rt+cgBSoAMHroewdRAAk
+         caSXWea6taPWSoxJ8BPbUOnhXkUGhqCrMoG4OQuM0MEyMolmrZRGHBkZad0Swk0V60y6
+         LECA==
+X-Gm-Message-State: AOAM531zP5cgk6Qu4G7S8+tlRjIWSvDN6dAIiY1H1rnSoDXqyYkBHjXk
+        Q4W0qOKplGOBYPJgav888Ar+4b9vtnDuTKLrltM=
+X-Google-Smtp-Source: ABdhPJxwskZcsaaZiTXp5aWn51qO6stnRxwfBmOr2xwKBhAzDXV9MTODHcnk6/nIvbr/V7VXILKWYOWjTfSGE0EcuCA=
+X-Received: by 2002:a17:90a:4fc1:: with SMTP id q59mr17212917pjh.129.1613402152155;
+ Mon, 15 Feb 2021 07:15:52 -0800 (PST)
 MIME-Version: 1.0
 References: <20210208151244.16338-1-calvin.johnson@oss.nxp.com>
  <20210208151244.16338-16-calvin.johnson@oss.nxp.com> <20210208162831.GM1463@shell.armlinux.org.uk>
- <20210215123309.GA5067@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20210215123309.GA5067@lsv03152.swis.in-blr01.nxp.com>
+ <20210215123309.GA5067@lsv03152.swis.in-blr01.nxp.com> <CAHp75VcpR1uf-6me9-MiXzESP9gtE0=Oz5TaFj0E93C3w4=Fgg@mail.gmail.com>
+In-Reply-To: <CAHp75VcpR1uf-6me9-MiXzESP9gtE0=Oz5TaFj0E93C3w4=Fgg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 15 Feb 2021 17:13:44 +0200
-Message-ID: <CAHp75VcpR1uf-6me9-MiXzESP9gtE0=Oz5TaFj0E93C3w4=Fgg@mail.gmail.com>
+Date:   Mon, 15 Feb 2021 17:15:36 +0200
+Message-ID: <CAHp75Vfcpk_4OQDpk_rvySJbXAyzAubt-n=ckFzggdo9fKvJ4A@mail.gmail.com>
 Subject: Re: [net-next PATCH v5 15/15] net: dpaa2-mac: Add ACPI support for
  DPAA2 MAC driver
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
@@ -84,29 +84,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 15, 2021 at 2:33 PM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
-> On Mon, Feb 08, 2021 at 04:28:31PM +0000, Russell King - ARM Linux admin wrote:
-
-...
-
-> I think of_phy_is_fixed_link() needs to be fixed. I'll add below fix.
+On Mon, Feb 15, 2021 at 5:13 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> --- a/drivers/net/mdio/of_mdio.c
-> +++ b/drivers/net/mdio/of_mdio.c
-> @@ -439,6 +439,9 @@ bool of_phy_is_fixed_link(struct device_node *np)
->         int len, err;
->         const char *managed;
+> On Mon, Feb 15, 2021 at 2:33 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> > On Mon, Feb 08, 2021 at 04:28:31PM +0000, Russell King - ARM Linux admin wrote:
 >
-> +       if (!np)
-> +               return false;
+> ...
+>
+> > I think of_phy_is_fixed_link() needs to be fixed. I'll add below fix.
+> >
+> > --- a/drivers/net/mdio/of_mdio.c
+> > +++ b/drivers/net/mdio/of_mdio.c
+> > @@ -439,6 +439,9 @@ bool of_phy_is_fixed_link(struct device_node *np)
+> >         int len, err;
+> >         const char *managed;
+> >
+> > +       if (!np)
+> > +               return false;
+>
+> AFAICS this doesn't add anything: all of the of_* APIs should handle
+> OF nodes being NULL below.
+>
+> >         /* New binding */
+> >         dn = of_get_child_by_name(np, "fixed-link");
+> >         if (dn) {
 
-AFAICS this doesn't add anything: all of the of_* APIs should handle
-OF nodes being NULL below.
+Yes, of_get_next_child() and of_get_property() are NULL aware.
 
->         /* New binding */
->         dn = of_get_child_by_name(np, "fixed-link");
->         if (dn) {
+So, the check is redundant.
 
 -- 
 With Best Regards,
