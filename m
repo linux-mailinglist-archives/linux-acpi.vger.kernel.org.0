@@ -2,80 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E4F631BF8A
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 17:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BC3831C107
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 18:52:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbhBOQio (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 11:38:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:27156 "EHLO
+        id S232001AbhBORvx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 12:51:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:42421 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232085AbhBOQiE (ORCPT
+        by vger.kernel.org with ESMTP id S231551AbhBORvn (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Feb 2021 11:38:04 -0500
+        Mon, 15 Feb 2021 12:51:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613406992;
+        s=mimecast20190719; t=1613411415;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uFzj2rODJUK5q41Mv/Io7SL5b3FYccUSH7ggm3/NT4E=;
-        b=X30O2J6iEZVAk3aSzyyBqj867oHhOCjYRcwTf8zOOES0G5DrfamN9Lymv1JVp/nmseHv5p
-        BxsN3HjCz2dREM6sFLhRw/KYqZZZFSdNJJR37onEjzHZZEbkTu9gp2I6x/2Yd6+slpycog
-        yfbz/0eDtCjq8hgI+mtn/Io/QgkW6ck=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-203-tUDzl31kOTyu_EK3EGqbqg-1; Mon, 15 Feb 2021 11:36:31 -0500
-X-MC-Unique: tUDzl31kOTyu_EK3EGqbqg-1
-Received: by mail-ej1-f72.google.com with SMTP id jz15so4843889ejc.12
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 08:36:31 -0800 (PST)
+        bh=T+IX9Y+g0AiC0vHhEOs3UjpOm/krxaJYnx6TKqaAu6g=;
+        b=R+R3vv2l60LHSIbMECVe2T0PqaCJvrB3bPXoNdTl8bb0dlAjfCmyvFQ/qfduYLmtu0/S29
+        ybWnqP/oy4NeRVOUPIJCO/quK4X64gjZ/BlKAsrkHUH7gf740TdAImrzHOHxCj+ZSQg/1y
+        Y1GcLLMZ2EBYL2JDGlB7fDwH/JKxRRA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-310-9pRyfl6_MX6Qb7bubUgW0Q-1; Mon, 15 Feb 2021 12:50:12 -0500
+X-MC-Unique: 9pRyfl6_MX6Qb7bubUgW0Q-1
+Received: by mail-ed1-f70.google.com with SMTP id j10so5706765edv.5
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 09:50:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=uFzj2rODJUK5q41Mv/Io7SL5b3FYccUSH7ggm3/NT4E=;
-        b=hKXF/tOL2c1rxCHjKJ5dRHm7IcbxO+8TfFUxEFB991IoHmtoL19Xo1gsMe9/PoIAh3
-         JemuyoEScUEg7UjPYcjqC+asDvRVYo8E44Nx5HsOVJApv/zHPwcXKEfiJTBCXOywTWJz
-         6ugoYlyPaw+0g9bBMbL/GAUlFoBSObCaa3ZfdhqEPWX5oloAUorf4iSP5n/nKSbyTTDk
-         LWrwuMkAsLTcVGxjjUUIEGnwKluWdV14siihusMWhXXy9mXTXDRsieRQJWausZhBeHL0
-         AnSzgrUZk1V0NHhItYGBiFLu47ACxsXz905e/F41sN7DtrkipF7ElsilNdCipnX8rG8t
-         H+cg==
-X-Gm-Message-State: AOAM533L0lUXUkqs5kUdGn4BKfprbv9hw4BxjcOr/ey9s1xC8VZSUQ4z
-        jagYShGes+yTmVqZqP6zB2hM1OlHG4jrFOnC6FD7lwJbTQ1z/5fhpZnm3sSsJOrBDs7hIbwURGg
-        KuW5up/U1GGjEu66fj9+TWA==
-X-Received: by 2002:aa7:c991:: with SMTP id c17mr5863059edt.165.1613406989842;
-        Mon, 15 Feb 2021 08:36:29 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxIS+DGtIJOghH2LW7e+kP9zUs2GEvAi9MOuAwjCAR/nA1TCdrU9hpTofc967En7cCrT+RyWQ==
-X-Received: by 2002:aa7:c991:: with SMTP id c17mr5863039edt.165.1613406989699;
-        Mon, 15 Feb 2021 08:36:29 -0800 (PST)
+        bh=T+IX9Y+g0AiC0vHhEOs3UjpOm/krxaJYnx6TKqaAu6g=;
+        b=THx1Fo6VaB3Mw4VeQRAFGjGHi4klmzj26iMxQM46IYmqH9xn4izmQ3oZ8HblUxb5Fh
+         Djmd7ykZBshTuAMQOVL98ohr9uxan0FCCm6oVIQ+053cnHj5WCo1/3PEiNGSVWrOoFRG
+         GlJHpimdd22K/mHMetkZOB0Z8fzf/XHMAkjuBaTOIIaQ/F3ECYZxC+Kw0LwimUwdWBX6
+         ge0sTHhrs6iN04rq2SBcWD98HC6yMk5a8BgHH82M7L8iQu1TcRrYc428tepDoEWXX9pt
+         IHQpaM1k6+brBaiPWt434lTHoK3n03EcLzGTIk02OeisI8R8xFnxI7aQnBFBuIbYDJ/v
+         Obsg==
+X-Gm-Message-State: AOAM533+fw4iZ8gAGNpRS+UydkQq7Xi/ml8Zv2SNCfz4lv/STDItSEhb
+        yoPWKRpircXPWlyHwa0yW7BGI0CiGwnqgAZ60+EG/eA+5ApL0uiVmpnIb4REk31DbHoxjRtun/s
+        bFAxcVvYpLSbaIwvnlRAp9g==
+X-Received: by 2002:a17:907:210d:: with SMTP id qn13mr16394832ejb.377.1613411411642;
+        Mon, 15 Feb 2021 09:50:11 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzIlYmN8Khr9fY+uQZ2l4k0vXzWl0rrgka6XKDuklL2UniN41CQQGXIxNz2p9VZiehgdpcoYQ==
+X-Received: by 2002:a17:907:210d:: with SMTP id qn13mr16394819ejb.377.1613411411452;
+        Mon, 15 Feb 2021 09:50:11 -0800 (PST)
 Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id p16sm10478569edw.44.2021.02.15.08.36.28
+        by smtp.gmail.com with ESMTPSA id x17sm10738490edd.76.2021.02.15.09.50.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Feb 2021 08:36:29 -0800 (PST)
-Subject: Re: [PATCH v2 0/4] platform/surface: Add platform profile driver for
- Surface devices
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <mgross@linux.intel.com>,
+        Mon, 15 Feb 2021 09:50:11 -0800 (PST)
+Subject: Re: [PATCH 0/2] ACPICA: Fix a race in GenericSerialBus (I2C) and GPIO
+ handling
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Mark Pearson <markpearson@lenovo.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210211201703.658240-1-luzmaximilian@gmail.com>
- <898aa498-8256-d59f-9e72-0e1199b3a62a@redhat.com>
- <CAJZ5v0jGUgHsNaqLarf=YLwjtOe-mQB48LkOQLi7FcZyW1Qchg@mail.gmail.com>
- <510803ab-b5b8-ce2c-e956-5539874d00bf@redhat.com>
- <CAJZ5v0hBN2zTHj+KsAmdNWTL0e983CFE+LYBssJzUDOmdF7PPQ@mail.gmail.com>
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org
+References: <20201226142830.48818-1-hdegoede@redhat.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <8435cc87-d92f-e1c3-97c7-e2113e0ff3a9@redhat.com>
-Date:   Mon, 15 Feb 2021 17:36:28 +0100
+Message-ID: <ced43570-1e76-6f96-f9ab-83473b4adfb7@redhat.com>
+Date:   Mon, 15 Feb 2021 18:50:10 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hBN2zTHj+KsAmdNWTL0e983CFE+LYBssJzUDOmdF7PPQ@mail.gmail.com>
+In-Reply-To: <20201226142830.48818-1-hdegoede@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -85,65 +76,51 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 2/15/21 4:29 PM, Rafael J. Wysocki wrote:
-> On Mon, Feb 15, 2021 at 4:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 2/15/21 3:54 PM, Rafael J. Wysocki wrote:
->>> On Mon, Feb 15, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>>>
->>>> Hi,
->>>>
->>>> On 2/11/21 9:16 PM, Maximilian Luz wrote:
->>>>> This series adds a driver to provide platform profile support on 5th-
->>>>> and later generation Microsoft Surface devices with a Surface System
->>>>> Aggregator Module. On those devices, the platform profile can be used to
->>>>> influence cooling behavior and power consumption.
->>>>>
->>>>> To achieve this, a new platform profile is introduced: the
->>>>> 'balanced-performance' profile.
->>>>>
->>>>> In addition, a couple of fix-ups are performed:
->>>>> - Hide CONFIG_ACPI_PLATFORM_PROFILE and change drivers so that it is
->>>>>   selected instead of depended on.
->>>>> - Fix some references to documentation in a comment.
->>>>>
->>>>> Note: This series (or more specifically "platform/surface: Add platform
->>>>> profile driver") depends on the "platform/surface: Add Surface
->>>>> Aggregator device registry" series.
->>>>>
->>>>> Changes in v2:
->>>>>  - Introduce new 'balanced-performance' platform profile and change
->>>>>    profile mapping in driver.
->>>>>  - Perform some fix-ups for the ACPI platform profile implementation:
->>>>>    - Fix some references to documentation in a comment.
->>>>>    - Hide CONFIG_ACPI_PLATFORM_PROFILE
->>>>
->>>> Thanks, the entire series looks good to me, so for the series:
->>>>
->>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->>>>
->>>> Rafael, can you (once 5.12-rc1 is out) pick 1-3/4 and then provide a
->>>> stable branch for me to merge?
->>>
->>> Since [1-3/4] appear to be uncontroversial, so IMO it would be better
->>> to merge them during the merge window, so they are present in
->>> 5.12-rc1.
->>
->> So I just realized one problem with this plan, patch 1/4 depends
->> on (modifies) Kconfig bits which are only in my tree / my 5.12 pull-req
->> (which I send out earlier today).
+On 12/26/20 3:28 PM, Hans de Goede wrote:
+> Hi All,
 > 
-> That should be fine.
+> On one of my machines I noticed the following errors being logged:
 > 
-> I will be sending the first batch of pull requests tomorrow.  Then I
-> will wait for them to be merged and I will merge the mainline back at
-> that point.  The new patches will be applied on top of that merge, so
-> if your 5.12 material is included in it, they should build without
-> problems.
+> [   52.892807] i2c i2c-0: adapter quirk: no zero length (addr 0x0078, size 0, read)
+> [   52.893037] i2c i2c-0: i2c read 0 bytes from client@0x78 starting at reg 0x0 failed, error: -95
+> 
+> The second line is coming from the Linux I2C ACPI OpRegion handling and
+> after a bunch of debugging I've found out that there is a rather obvious
+> (once you see it) and nasty race condition in the handling of I2C and GPIO
+> opregions in acpi_ev_address_space_dispatch(). See the first patch in this
+> series (the second patch is a follow-up cleanup patch removing some code
+> duplication).
+> 
+> TBH I'm surprised that this issue has gone unnoticed as long as it has,
+> but I guess that it mostly leads to unreproducable sporadic problems
+> making it hard to debug and I got lucky that I had a machine where the
+> race seems to trigger about once every 20 seconds.
+> 
+> I know that ACPICA patches are normally merged through the ACPICA upstream
+> but given that this is a serious bug, I believe that in this case it might
+> be best to add the fix directly to Linux and then port it to ACPICA from
+> there.
 
-Ok, that sounds good to me.
+ping ?
+
+This was submitted 2 full months ago; and despite this:
+
+1. Fixing a serious bug in ACPICA
+2. The fix being pretty simple (and AFAICT obviously correct)
+
+This is still awaiting review upstream:
+https://github.com/acpica/acpica/pull/658
+
+I must say that it feels to me that the upstream ACPICA process is broken here.
+
+I submitted a pull-req for this, as requested and after that there has
+been zero progress.
+
+The pull-req even has a 26 day old "this looks good to me" comment from Erik,
+followed by silence... ?
+
+Rafael, can you please consider just directly picking these 2 fixes into
+your acpi branch, so that we can get this nasty race condition fixed ?
 
 Regards,
 
