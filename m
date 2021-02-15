@@ -2,206 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC9831B954
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 13:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2756931B968
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 13:39:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbhBOMeW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 07:34:22 -0500
-Received: from mail-am6eur05on2061.outbound.protection.outlook.com ([40.107.22.61]:46208
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229652AbhBOMeV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Feb 2021 07:34:21 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fJkr8el+tsK7+Kvkyfl3PCnwMdZCt6cJcXqkj8WdHKKVKpNJPr2ciWrg99Ag4alZz/8FCPP1BXtDv8T/lgtjTSd09IYj5TWnry0l6iObB/MCEVvsv8VYtyEjvRGDZRnZsFz4I7qn49cMAAX8t+4oOcV4JtMl16MukCev5+OjcfNezJzT2RBWfpMLT5LVPBkN1CLZOlruuyFLoQnrt7zba4y1FTSIyNFjXzBArvKEd5L7miu15SauYuYS/YQoxaysA7El/r6oO3QnzPzH5+Qpq/2NB+LhPgAeKk/dYYReFqHsTPddEte96vYfByoi3fAApyTVr7tGMB9RWaBzIWuSTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p26gYdlFWpDSUEZJiaReevvAvYAda7mxD2GRMVux/mY=;
- b=KC8wEqdoIX0zw23jAk0uf7dqQPyQjyfdNWxo5FN3cnc9n0gh9Amym/S3Y9flJR3njHoYGkqrwIi1JIoxAIEziKBlg9eauSgVmax1XvcdnoVu5pZUrL2vQY/4DG5TLSSZr/5gU74Rok05cCUsoBGPduTnR3zR1lfnRVvv0Jsc79rESCrVxGXzCyyFk8Ep8vTua4d7hTfj6KoLj3D6hd8Sz/mNMfNSBUaMQkch2NYQf+wY4VRblT0OSr2E5uKop+pJpAwUb2XRJ9uHd7gxixZmKdlXdRiKnbdtCZ/hluApe6lcr+X/WY3ODseKx06i5Wa8rOp71IalYcv6MG7OXk67XA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p26gYdlFWpDSUEZJiaReevvAvYAda7mxD2GRMVux/mY=;
- b=WOBi4o//M7dkvuk4NKgUjlME1rXoNntXj6LwInVaGBySvfqX5xvr5AY+UdC20krl9nrC/jDwQx1d+IqgeT+nvNnxH4UjChQFQ1tv0YmkItVmr2KJrSb4b8tIZFMB1wEdjsmucKM7ppoC5UD1ZxOQm49ZhHNnlw8jfo3iGegKYu0=
-Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
- header.d=none;armlinux.org.uk; dmarc=none action=none
- header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB4594.eurprd04.prod.outlook.com (2603:10a6:208:74::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.39; Mon, 15 Feb
- 2021 12:33:31 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42%6]) with mapi id 15.20.3846.042; Mon, 15 Feb 2021
- 12:33:31 +0000
-Date:   Mon, 15 Feb 2021 18:03:09 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-kernel@vger.kernel.org, linux.cj@gmail.com,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [net-next PATCH v5 15/15] net: dpaa2-mac: Add ACPI support for
- DPAA2 MAC driver
-Message-ID: <20210215123309.GA5067@lsv03152.swis.in-blr01.nxp.com>
-References: <20210208151244.16338-1-calvin.johnson@oss.nxp.com>
- <20210208151244.16338-16-calvin.johnson@oss.nxp.com>
- <20210208162831.GM1463@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210208162831.GM1463@shell.armlinux.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR04CA0167.apcprd04.prod.outlook.com (2603:1096:4::29)
- To AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+        id S230137AbhBOMjM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 07:39:12 -0500
+Received: from mail-oo1-f41.google.com ([209.85.161.41]:36915 "EHLO
+        mail-oo1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230101AbhBOMjK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 07:39:10 -0500
+Received: by mail-oo1-f41.google.com with SMTP id e17so1495390oow.4;
+        Mon, 15 Feb 2021 04:38:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YakQtSEFQoUcp92B7pBu7SXNAlj7zK9R9/BYJta3QcY=;
+        b=fYzbxOmHBPssdE8OpfNAVvZ3nwkzRi9LWYn9izc/3vUMrd9JZ8p7LCkghwoYcqPAlx
+         eokqIYxdKOagYeI6opI6H2zeaesDNM3N/VjHWTjHrKa39bouU0CN433W5wJjanxWZuG2
+         8AhqtSAIl7UUTFwpEdktYtl1H9myKKoCjNZWTvjYGmQfLndwRnJNtuU2I/Xs81V4eSH3
+         jOYhbzlmmhrU2qG+MO3UWLcIdBhBJzakASxvBFccF33L5aU82lSK78RAXxIG25toDC8T
+         /8QL8HfQmNuItwC2J5BxOFUpHAQ0KPeWDxDHx6PvPVPttUmQHDbsvSyZiE8RlEUL3GmN
+         ZTmQ==
+X-Gm-Message-State: AOAM532S1139ilrF6reLvhj065dwYkR+goL0YUZDverx1DeoRXhtUexg
+        DVJAzcaGXNZ4hKNmQE7vJ9ETuXyo3LhVfODmohY=
+X-Google-Smtp-Source: ABdhPJzsOaXkky53goutSDt4s3Qrndo6ZxhMZ+k2llX7tHWrnfhh68oTGJsqDIbrVVqlcPFpeGNGsoMWNtvUxybCm7w=
+X-Received: by 2002:a4a:3bcb:: with SMTP id s194mr10782339oos.1.1613392708214;
+ Mon, 15 Feb 2021 04:38:28 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR04CA0167.apcprd04.prod.outlook.com (2603:1096:4::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.27 via Frontend Transport; Mon, 15 Feb 2021 12:33:25 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 8e0fd77b-5d39-4869-6bc6-08d8d1ade730
-X-MS-TrafficTypeDiagnostic: AM0PR04MB4594:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB4594B3A0268C29779B19F4B9D2889@AM0PR04MB4594.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZRPXBpva7wf89nx54nC6uCFcaXoztZhJNq27ujclfrXxrgBN4qLGkjbZNX4CNWK8SrAnVhQzqsAczLcAiOyOILLveEkTuc7pxh2YWa2RoTY3oiamb3zxp4QfputWByJ3RSMHXzwH/O6Ctgw4vCM3HHFZlCS4B8MLNA98529nVRH9FNLjJsVc60NlHRClmbMWIMoU6q5CnJGN87sz/dU8JMMw0kyu13uSRZHubg0tXrkYrwnTXdYANTkzWTf0HEpu9ICqVzEej6z+Qli5yfASsQt24VTYvShptYGVgQNXh7dmDU7Rbab/TGHks+6LxyBEbu7+u5dccUT7f8XXVkwyATQj6Ky0bg5W+vx06cbunD1V1OoC99YmGlFMI93KkLT3S6PUByP8dYnXqlNYRFc++fv+a6WXpBU2SzaqjqBpQaBmAfoIQCLRT1eINOE4plk4C3sHzk0T91hE3BZ/LKBjiVO6cMNvjupwTErppUJdYFPTEJ9YlaJ8DH+npyTbIvz+COQlTIO7M7azN0mhGpqwUamkyz3PaIx5BUVrAKrp3NurwLlRQmK33LWJ65TwJ0RV7wLAlbG8m5i6583+2ulo8w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(39860400002)(376002)(366004)(136003)(8936002)(6506007)(7696005)(52116002)(55016002)(2906002)(8676002)(478600001)(956004)(6916009)(54906003)(44832011)(26005)(186003)(83380400001)(16526019)(4326008)(316002)(86362001)(5660300002)(1006002)(6666004)(66946007)(66476007)(7416002)(9686003)(66556008)(55236004)(33656002)(1076003)(110426009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?IEp49oU2V+uUbIYYHXucko43aHOVsXY/I8PDMUk8e00aZW4dCM0IxFmMurLN?=
- =?us-ascii?Q?W6Mq0W74klrFDhZ5ZqPzsGfqDhzSB9K3mnv1bc7efi5Jmq0uMIep469P3i9Z?=
- =?us-ascii?Q?p9jcr/k3rK/3Sbif601VZG1ubZzQhb8HVaDmpUNkY+tiR3PERwzLbTspwwWF?=
- =?us-ascii?Q?RR/D9Cqi/hbvot1Xeo8aJ4L9daEIrjnUrUzfbDF9pRk/XpoQuac5BIPmR6rk?=
- =?us-ascii?Q?O3acsYq9HfG9oxhyS0vEnwkvYNIZ7E/WbuvNQI1IE0aL9j/ZdPF9K64cF0YH?=
- =?us-ascii?Q?T4O5ziJNDcM4fT5UrOcD67HFrwVXvVjtf+67chaHlZVi/OfXqQWaW4jIEU6b?=
- =?us-ascii?Q?P/BQwugpQiQ3cWSwK3QtTpMLxiY77nA1xsxhKlQioFLXxYLx4oJdMvis6aom?=
- =?us-ascii?Q?4j2h+QwpbNr7LNTcUhkxfiqCKBfodaPhJPhYGf2X2YVEfXRA0NOsLJ6vk5PJ?=
- =?us-ascii?Q?1wtWUcaxyHYq9RNuoxZv+uvce96A0DWMW+7d3amkp7cJZDZC4xiQbZeKc0xU?=
- =?us-ascii?Q?NH/k5AI2wMbznZTsNMX/GWCeKIoFXQT9wD15W+SVFM3Fw1Ek7HQcti4Km8ZV?=
- =?us-ascii?Q?foae/x2ktGUYHuFZtyXC6Om3eYSdlnL7R4V/YBtRZ+rioaPVwpvvksTe1kVF?=
- =?us-ascii?Q?EAdE13tLnY/y9WFkNyHEJNtcEGDqP3T7hJCjmRywALnzHkUaV3g9eNQH8q8j?=
- =?us-ascii?Q?dELw3w/trWf9ey3IO4GZ03jBvlMV7Di7ceTr0EOESKZAGachmq0GMn637TJV?=
- =?us-ascii?Q?NOnzxu73+GMx50eq4PiJWw9HQpdOvJWf1gOutBHxpRFx/vpwGqBLdOfVUSdD?=
- =?us-ascii?Q?zb0bJwU+LWfkpghf/IpGEPvwqac4S6g2O1SFQ46busNLTgWufLgzRXU7Ic5D?=
- =?us-ascii?Q?n1/CqTGGLdS225IO1NXv9OEsAADGIZc78bSrS3UhaHT52TVw0nOkJJBkUm5S?=
- =?us-ascii?Q?vbH6o+YC4sjV5mLDD9zUJbrTvxIanloHqV1BATLKHsWM5iVijSA1P1tlcKZs?=
- =?us-ascii?Q?lwvIflIaiZ9oheqlW4VslQUhvxaEwCG/gjyTZBpsFXg12y4uetWQ3IHMXvws?=
- =?us-ascii?Q?80CnYNwksanC/9c2lDcxHlgNTBAGoJeuS4zcy2WOh3G9KfVtsw1Cz1MGFj57?=
- =?us-ascii?Q?LLPw8nifwALDecdHaS/1VkmFfJga9lG9JMRJLDsHCsQ+A81pPY7YSKys/SY7?=
- =?us-ascii?Q?gxlAHjRr+oGCKq/sE2fkKf4G6FVMa73Ka6uQdGWjX5ZUzX2DyOR+4U2idGDK?=
- =?us-ascii?Q?b6ss7phgGvWch0mbaTNsp0HeCUR1RbjWjW0/QGJXhvsrnykidtaU0q5DyqL6?=
- =?us-ascii?Q?mwBAxT18RVenIpFV+q0altuP?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e0fd77b-5d39-4869-6bc6-08d8d1ade730
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Feb 2021 12:33:31.4770
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wdps6zMvu7ta+6OKFQFzIjYtemtHdlaAp+hFYjKOpMRfHICOySkiLcQQLokhVhB7F38HpIXSdq+PKBUD+gazfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4594
+References: <20210205222644.2357303-1-saravanak@google.com>
+ <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com> <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
+In-Reply-To: <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 15 Feb 2021 13:38:16 +0100
+Message-ID: <CAMuHMdXduvBqjAqraXkEKErNJFyN6JNq5wqagc4yHHPpH5SPGQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 08, 2021 at 04:28:31PM +0000, Russell King - ARM Linux admin wrote:
-> On Mon, Feb 08, 2021 at 08:42:44PM +0530, Calvin Johnson wrote:
-> > Modify dpaa2_mac_connect() to support ACPI along with DT.
-> > Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
-> > DT or ACPI.
-> > 
-> > Replace of_get_phy_mode with fwnode_get_phy_mode to get
-> > phy-mode for a dpmac_node.
-> > 
-> > Use helper function phylink_fwnode_phy_connect() to find phy_dev and
-> > connect to mac->phylink.
-> > 
-> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> 
-> I don't think this does the full job.
-> 
-> >  static int dpaa2_pcs_create(struct dpaa2_mac *mac,
-> > -			    struct device_node *dpmac_node, int id)
-> > +			    struct fwnode_handle *dpmac_node,
-> > +			    int id)
-> >  {
-> >  	struct mdio_device *mdiodev;
-> > -	struct device_node *node;
-> > +	struct fwnode_handle *node;
-> >  
-> > -	node = of_parse_phandle(dpmac_node, "pcs-handle", 0);
-> > -	if (!node) {
-> > +	node = fwnode_find_reference(dpmac_node, "pcs-handle", 0);
-> > +	if (IS_ERR(node)) {
-> >  		/* do not error out on old DTS files */
-> >  		netdev_warn(mac->net_dev, "pcs-handle node not found\n");
-> >  		return 0;
-> >  	}
-> >  
-> > -	if (!of_device_is_available(node)) {
-> > +	if (!of_device_is_available(to_of_node(node))) {
-> 
-> If "node" is an ACPI node, then to_of_node() returns NULL, and
-> of_device_is_available(NULL) is false. So, if we're using ACPI
-> and we enter this path, we will always hit the error below:
-> 
-> >  		netdev_err(mac->net_dev, "pcs-handle node not available\n");
-> > -		of_node_put(node);
-> > +		of_node_put(to_of_node(node));
-> >  		return -ENODEV;
-> >  	}
-> 
-> > @@ -306,7 +321,7 @@ int dpaa2_mac_connect(struct dpaa2_mac *mac)
-> >  	 * error out if the interface mode requests them and there is no PHY
-> >  	 * to act upon them
-> >  	 */
-> > -	if (of_phy_is_fixed_link(dpmac_node) &&
-> > +	if (of_phy_is_fixed_link(to_of_node(dpmac_node)) &&
-> 
-> If "dpmac_node" is an ACPI node, to_of_node() will return NULL, and
-> of_phy_is_fixed_link() will oops.
+Hi Saravana,
 
-I think of_phy_is_fixed_link() needs to be fixed. I'll add below fix.
+On Fri, Feb 12, 2021 at 4:00 AM Saravana Kannan <saravanak@google.com> wrote:
+> On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >       - I2C on R-Car Gen3 does not seem to use DMA, according to
+> >         /sys/kernel/debug/dmaengine/summary:
+> >
+> >             -dma4chan0    | e66d8000.i2c:tx
+> >             -dma4chan1    | e66d8000.i2c:rx
+> >             -dma5chan0    | e6510000.i2c:tx
+>
+> I think I need more context on the problem before I can try to fix it.
+> I'm also very unfamiliar with that file. With fw_devlink=permissive,
+> I2C was using DMA? If so, the next step is to see if the I2C relative
+> probe order with DMA is getting changed and if so, why.
 
---- a/drivers/net/mdio/of_mdio.c
-+++ b/drivers/net/mdio/of_mdio.c
-@@ -439,6 +439,9 @@ bool of_phy_is_fixed_link(struct device_node *np)
-        int len, err;
-        const char *managed;
+More detailed log:
 
-+       if (!np)
-+               return false;
-+
-        /* New binding */
-        dn = of_get_child_by_name(np, "fixed-link");
-        if (dn) {
+    platform e66d8000.i2c: Linked as a consumer to e6150000.clock-controller
+    platform e66d8000.i2c: Linked as a sync state only consumer to e6055400.gpio
 
-Regards
-Calvin
+Why is e66d8000.i2c not linked as a consumer to e6700000.dma-controller?
+
+    platform e6700000.dma-controller: Linked as a consumer to
+e6150000.clock-controller
+    platform e66d8000.i2c: Added to deferred list
+    platform e6700000.dma-controller: Added to deferred list
+
+    bus: 'platform': driver_probe_device: matched device
+e6700000.dma-controller with driver rcar-dmac
+    bus: 'platform': really_probe: probing driver rcar-dmac with
+device e6700000.dma-controller
+    platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
+
+    bus: 'platform': driver_probe_device: matched device e66d8000.i2c
+with driver i2c-rcar
+    bus: 'platform': really_probe: probing driver i2c-rcar with device
+e66d8000.i2c
+
+I2C becomes available...
+
+    i2c-rcar e66d8000.i2c: request_channel failed for tx (-517)
+    [...]
+
+but DMA is not available yet, so the driver falls back to PIO.
+
+    driver: 'i2c-rcar': driver_bound: bound to device 'e66d8000.i2c'
+    bus: 'platform': really_probe: bound device e66d8000.i2c to driver i2c-rcar
+
+    platform e6700000.dma-controller: Retrying from deferred list
+    bus: 'platform': driver_probe_device: matched device
+e6700000.dma-controller with driver rcar-dmac
+    bus: 'platform': really_probe: probing driver rcar-dmac with
+device e6700000.dma-controller
+    platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
+    platform e6700000.dma-controller: Added to deferred list
+    platform e6700000.dma-controller: Retrying from deferred list
+    bus: 'platform': driver_probe_device: matched device
+e6700000.dma-controller with driver rcar-dmac
+    bus: 'platform': really_probe: probing driver rcar-dmac with
+device e6700000.dma-controller
+    driver: 'rcar-dmac': driver_bound: bound to device 'e6700000.dma-controller'
+    bus: 'platform': really_probe: bound device
+e6700000.dma-controller to driver rcar-dmac
+
+DMA becomes available.
+
+Here userspace is entered. /sys/kernel/debug/dmaengine/summary shows
+that the I2C controllers do not have DMA channels allocated, as the
+kernel has performed no more I2C transfers after DMA became available.
+
+Using i2cdetect shows that DMA is used, which is good:
+
+    i2c-rcar e66d8000.i2c: got DMA channel for rx
+
+With permissive devlinks, the clock controller consumers are not added
+to the deferred probing list, and probe order is slightly different.
+The I2C controllers are still probed before the DMA controllers.
+But DMA becomes available a bit earlier, before the probing of the last
+I2C slave driver.  Hence /sys/kernel/debug/dmaengine/summary shows that
+some I2C transfers did use DMA.
+
+So the real issue is that e66d8000.i2c not linked as a consumer to
+e6700000.dma-controller.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
