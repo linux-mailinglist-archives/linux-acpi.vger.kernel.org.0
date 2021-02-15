@@ -2,197 +2,251 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B42131C250
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 20:15:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8DB31C270
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 20:27:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbhBOTPR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 14:15:17 -0500
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:37960 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbhBOTPQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 14:15:16 -0500
-Received: by mail-ot1-f51.google.com with SMTP id e4so6976319ote.5;
-        Mon, 15 Feb 2021 11:14:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=00EmQHzX4sZufaQFF5R24gjltgDu0t0mr5R0bJKyjJo=;
-        b=mFmEui1h0/xYtIZVbpdi4Xj1lgnPJdLKtweQlFPja9BbDf07IJ0A1/8mmV9npdlTxN
-         Bb6P5fwvPACzy5BIHBgFlxQww+6yk2zv13ZdjK+6q2wbAApYhrwaw+5M4YLbcFQMXc++
-         fil67eOmMcYX1dpic9AnddlcLdjelFl3kRuvoA3APu/JMPQ3ebtmIeLEbKU0DwYOs734
-         PmSRLVMcrPajDDRq3TLkq9dXH0npION4PcjdVD/G5tParfu4qh96WdFrH91tqUSkcds4
-         +6cI/SpVruJG6qIFDZrTEKor5W2BxODRq7xxVun+JigsulGDeufcTP0HThesGoY2V4DF
-         nLKw==
-X-Gm-Message-State: AOAM531iK1U2cFM67ho5sWWTtqutsNaHkrif2SgFEsZuYfxDPPLeyYWO
-        jRfHz/bgeGOdgJT6n658BBaIpuCIGy8+7pXxC8g=
-X-Google-Smtp-Source: ABdhPJzk0DPRbPzCT7ELSyRaBgVkAid2pvZ+wAQ6LIA0uO2RD2Er+cFD8JhUb/hVfB/Sg5MEnGFzNwuaErXFLdRu5pw=
-X-Received: by 2002:a9d:a2d:: with SMTP id 42mr12759242otg.321.1613416474101;
- Mon, 15 Feb 2021 11:14:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20210211134008.38282-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0gzd0Xwd006P3PUutKcVRqLNxmREBB-QW85BRMBArbBVw@mail.gmail.com> <bf10026f-13bb-c1c6-2787-d8c9520f8401@redhat.com>
-In-Reply-To: <bf10026f-13bb-c1c6-2787-d8c9520f8401@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 15 Feb 2021 20:14:23 +0100
-Message-ID: <CAJZ5v0jwtkLP9K=3iUFNUU_wMSW8-OSfUZH8EtMa2SJUfnvZrw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/9] x86/platform: Remove SFI framework and users
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Sumit Gupta <sumitg@nvidia.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        devel@driverdev.osuosl.org, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S229991AbhBOTZd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 14:25:33 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:62620 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229981AbhBOTZc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 14:25:32 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_smtp) via UNIX with SMTP (IdeaSmtpServer 0.83.537)
+ id 472bc93a69a25bc3; Mon, 15 Feb 2021 20:24:48 +0100
+Received: from kreacher.localnet (89-64-82-54.dynamic.chello.pl [89.64.82.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id CB7A1661D7E;
+        Mon, 15 Feb 2021 20:24:46 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PM <linux-pm@vger.kernel.org>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Michael Larabel <Michael@phoronix.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
-        Mark Gross <mgross@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Mel Gorman <mgorman@techsingularity.net>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [RFT][PATCH v1] cpufreq: ACPI: Set cpuinfo.max_freq directly if max boost is known
+Date:   Mon, 15 Feb 2021 20:24:46 +0100
+Message-ID: <1974978.nRy8TqEeLZ@kreacher>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrieekgdduvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtvdenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeeiueevhfeigffhffevueekgedtleeitdfhffejleevtddvtdettedvfffffffhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekledrieegrdekvddrheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedvrdehgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgghhhvghrughovhhitghhsehsuhhsvgdrtgiipdhrtghpthhtohepofhitghhrggvlhesphhhohhrohhnihigrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggt
+ phhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhgpdhrtghpthhtohepmhhgohhrmhgrnhesthgvtghhshhinhhguhhlrghrihhthidrnhgvthdprhgtphhtthhopehjuhhrihdrlhgvlhhlihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvhhinhgtvghnthdrghhuihhtthhotheslhhinhgrrhhordhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 11, 2021 at 4:45 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 2/11/21 4:24 PM, Rafael J. Wysocki wrote:
-> > On Thu, Feb 11, 2021 at 2:50 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> >>
-> >> This is last part of Intel MID (SFI based) removal. We have no more users of it
-> >> in the kernel and since SFI has been marked Obsolete for a few years already,
-> >> Remove all the stuff altogether.
-> >>
-> >> Note, the more recent platforms (Intel Merrifield and Moorefield) still work as
-> >> long as they provide correct ACPI tables.
-> >>
-> >> The series requires two prerequisite branches to be pulled first, i.e.
-> >> - one form Rafael's PM tree (currently bleeding-edge)
-> >> - one form TIP tree (x86/platform), actually only one patch is needed from it
-> >>
-> >> Due to above it's convenient to proceed all of these via Rafael's PM tree,
-> >>
-> >> Note, atomisp change is tagged by Sakari on behalf of media tree maintainers.
-> >>
-> >> Andy Shevchenko (9):
-> >>   media: atomisp: Remove unused header
-> >>   cpufreq: sfi-cpufreq: Remove driver for deprecated firmware
-> >>   sfi: Remove framework for deprecated firmware
-> >>   x86/PCI: Get rid of custom x86 model comparison
-> >>   x86/PCI: Describe @reg for type1_access_ok()
-> >>   x86/platform/intel-mid: Get rid of intel_scu_ipc_legacy.h
-> >>   x86/platform/intel-mid: Drop unused __intel_mid_cpu_chip and Co.
-> >>   x86/platform/intel-mid: Remove unused header inclusion in intel-mid.h
-> >>   x86/platform/intel-mid: Update Copyright year and drop file names
-> >>
-> >>  Documentation/ABI/testing/sysfs-firmware-sfi  |  15 -
-> >>  Documentation/ABI/testing/sysfs-platform-kim  |   2 +-
-> >>  MAINTAINERS                                   |   7 -
-> >>  arch/x86/Kconfig                              |   7 +-
-> >>  arch/x86/include/asm/intel-mid.h              |  65 +--
-> >>  arch/x86/include/asm/intel_scu_ipc.h          |   2 -
-> >>  arch/x86/include/asm/intel_scu_ipc_legacy.h   |  74 ---
-> >>  arch/x86/include/asm/platform_sst_audio.h     |   2 -
-> >>  arch/x86/kernel/apic/io_apic.c                |   4 +-
-> >>  arch/x86/kernel/setup.c                       |   2 -
-> >>  arch/x86/pci/intel_mid_pci.c                  |  18 +-
-> >>  arch/x86/pci/mmconfig-shared.c                |   6 +-
-> >>  arch/x86/platform/Makefile                    |   1 -
-> >>  arch/x86/platform/intel-mid/Makefile          |   5 -
-> >>  .../platform/intel-mid/device_libs/Makefile   |  23 -
-> >>  .../intel-mid/device_libs/platform_bcm43xx.c  | 101 ----
-> >>  .../intel-mid/device_libs/platform_bma023.c   |  16 -
-> >>  .../intel-mid/device_libs/platform_bt.c       | 101 ----
-> >>  .../intel-mid/device_libs/platform_emc1403.c  |  39 --
-> >>  .../device_libs/platform_gpio_keys.c          |  81 ---
-> >>  .../intel-mid/device_libs/platform_lis331.c   |  37 --
-> >>  .../intel-mid/device_libs/platform_max7315.c  |  77 ---
-> >>  .../intel-mid/device_libs/platform_mpu3050.c  |  32 --
-> >>  .../device_libs/platform_mrfld_pinctrl.c      |  39 --
-> >>  .../device_libs/platform_mrfld_rtc.c          |  44 --
-> >>  .../intel-mid/device_libs/platform_mrfld_sd.c |  43 --
-> >>  .../device_libs/platform_mrfld_spidev.c       |  50 --
-> >>  .../device_libs/platform_pcal9555a.c          |  95 ----
-> >>  .../intel-mid/device_libs/platform_tc35876x.c |  42 --
-> >>  .../intel-mid/device_libs/platform_tca6416.c  |  53 --
-> >>  arch/x86/platform/intel-mid/intel-mid.c       |  27 +-
-> >>  arch/x86/platform/intel-mid/sfi.c             | 419 --------------
-> >>  arch/x86/platform/sfi/Makefile                |   2 -
-> >>  arch/x86/platform/sfi/sfi.c                   | 100 ----
-> >>  drivers/Makefile                              |   2 +-
-> >>  drivers/cpufreq/Kconfig.x86                   |  10 -
-> >>  drivers/cpufreq/Makefile                      |   1 -
-> >>  drivers/cpufreq/sfi-cpufreq.c                 | 127 -----
-> >>  drivers/platform/x86/intel_scu_pcidrv.c       |  22 +-
-> >>  drivers/sfi/Kconfig                           |  18 -
-> >>  drivers/sfi/Makefile                          |   4 -
-> >>  drivers/sfi/sfi_acpi.c                        | 214 -------
-> >>  drivers/sfi/sfi_core.c                        | 522 ------------------
-> >>  drivers/sfi/sfi_core.h                        |  81 ---
-> >>  .../atomisp/include/linux/atomisp_platform.h  |   1 -
-> >>  include/linux/sfi.h                           | 210 -------
-> >>  include/linux/sfi_acpi.h                      |  93 ----
-> >>  init/main.c                                   |   2 -
-> >>  48 files changed, 37 insertions(+), 2901 deletions(-)
-> >>  delete mode 100644 Documentation/ABI/testing/sysfs-firmware-sfi
-> >>  delete mode 100644 arch/x86/include/asm/intel_scu_ipc_legacy.h
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/Makefile
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_bcm43xx.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_bma023.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_bt.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_emc1403.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_gpio_keys.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_lis331.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_max7315.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_mpu3050.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_mrfld_pinctrl.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_mrfld_rtc.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_mrfld_sd.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_mrfld_spidev.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_pcal9555a.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_tc35876x.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/device_libs/platform_tca6416.c
-> >>  delete mode 100644 arch/x86/platform/intel-mid/sfi.c
-> >>  delete mode 100644 arch/x86/platform/sfi/Makefile
-> >>  delete mode 100644 arch/x86/platform/sfi/sfi.c
-> >>  delete mode 100644 drivers/cpufreq/sfi-cpufreq.c
-> >>  delete mode 100644 drivers/sfi/Kconfig
-> >>  delete mode 100644 drivers/sfi/Makefile
-> >>  delete mode 100644 drivers/sfi/sfi_acpi.c
-> >>  delete mode 100644 drivers/sfi/sfi_core.c
-> >>  delete mode 100644 drivers/sfi/sfi_core.h
-> >>  delete mode 100644 include/linux/sfi.h
-> >>  delete mode 100644 include/linux/sfi_acpi.h
-> >>
-> >> --
-> >
-> > All of this looks good to me, so I'm going to queue it up for 5.12
-> > unless there are objections against doing that.
->
-> That is fine by me (for the drivers/platform/x86 bits) :
->
-> Acked-by: Hans de Goede <hdegoede@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Commit 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover
+boost frequencies") attempted to address a performance issue involving
+acpi-cpufreq, the schedutil governor and scale-invariance on x86 by
+extending the frequency tables created by acpi-cpufreq to cover the
+entire range of "turbo" (or "boost") frequencies, but that caused
+frequencies reported via /proc/cpuinfo and the scaling_cur_freq
+attribute in sysfs to change which may confuse users and monitoring
+tools.
+
+For this reason, revert the part of commit 3c55e94c0ade adding the
+extra entry to the frequency table and use the observation that
+in principle cpuinfo.max_freq need not be equal to the maximum
+frequency listed in the frequency table for the given policy.
+
+Namely, modify cpufreq_frequency_table_cpuinfo() to allow cpufreq
+drivers to set their own cpuinfo.max_freq above that frequency and
+change  acpi-cpufreq to set cpuinfo.max_freq to the maximum boost
+frequency found via CPPC.
+
+This should be sufficient to let all of the cpufreq subsystem know
+the real maximum frequency of the CPU without changing frequency
+reporting.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=211305
+Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost frequencies")
+Reported-by: Matt McDonald <gardotd426@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+Michael, Giovanni,
+
+The fix for the EPYC performance regression that was merged into 5.11 introduced
+an undesirable side-effect by distorting the CPU frequency reporting via
+/proc/cpuinfo and scaling_cur_freq (see the BZ link above for details).
+
+The patch below is reported to address this problem and it should still allow
+schedutil to achieve desirable performance, because it simply sets
+cpuinfo.max_freq without extending the frequency table of the CPU.
+
+Please test this one and let me know if it adversely affects performance.
 
 Thanks!
 
-Applied as 5.12 material now.
+---
+ drivers/cpufreq/acpi-cpufreq.c |   62 ++++++++++-------------------------------
+ drivers/cpufreq/freq_table.c   |    8 ++++-
+ 2 files changed, 23 insertions(+), 47 deletions(-)
+
+Index: linux-pm/drivers/cpufreq/acpi-cpufreq.c
+===================================================================
+--- linux-pm.orig/drivers/cpufreq/acpi-cpufreq.c
++++ linux-pm/drivers/cpufreq/acpi-cpufreq.c
+@@ -54,7 +54,6 @@ struct acpi_cpufreq_data {
+ 	unsigned int resume;
+ 	unsigned int cpu_feature;
+ 	unsigned int acpi_perf_cpu;
+-	unsigned int first_perf_state;
+ 	cpumask_var_t freqdomain_cpus;
+ 	void (*cpu_freq_write)(struct acpi_pct_register *reg, u32 val);
+ 	u32 (*cpu_freq_read)(struct acpi_pct_register *reg);
+@@ -223,10 +222,10 @@ static unsigned extract_msr(struct cpufr
+ 
+ 	perf = to_perf_data(data);
+ 
+-	cpufreq_for_each_entry(pos, policy->freq_table + data->first_perf_state)
++	cpufreq_for_each_entry(pos, policy->freq_table)
+ 		if (msr == perf->states[pos->driver_data].status)
+ 			return pos->frequency;
+-	return policy->freq_table[data->first_perf_state].frequency;
++	return policy->freq_table[0].frequency;
+ }
+ 
+ static unsigned extract_freq(struct cpufreq_policy *policy, u32 val)
+@@ -365,7 +364,6 @@ static unsigned int get_cur_freq_on_cpu(
+ 	struct cpufreq_policy *policy;
+ 	unsigned int freq;
+ 	unsigned int cached_freq;
+-	unsigned int state;
+ 
+ 	pr_debug("%s (%d)\n", __func__, cpu);
+ 
+@@ -377,11 +375,7 @@ static unsigned int get_cur_freq_on_cpu(
+ 	if (unlikely(!data || !policy->freq_table))
+ 		return 0;
+ 
+-	state = to_perf_data(data)->state;
+-	if (state < data->first_perf_state)
+-		state = data->first_perf_state;
+-
+-	cached_freq = policy->freq_table[state].frequency;
++	cached_freq = policy->freq_table[to_perf_data(data)->state].frequency;
+ 	freq = extract_freq(policy, get_cur_val(cpumask_of(cpu), data));
+ 	if (freq != cached_freq) {
+ 		/*
+@@ -680,7 +674,6 @@ static int acpi_cpufreq_cpu_init(struct
+ 	struct cpuinfo_x86 *c = &cpu_data(cpu);
+ 	unsigned int valid_states = 0;
+ 	unsigned int result = 0;
+-	unsigned int state_count;
+ 	u64 max_boost_ratio;
+ 	unsigned int i;
+ #ifdef CONFIG_SMP
+@@ -795,28 +788,8 @@ static int acpi_cpufreq_cpu_init(struct
+ 		goto err_unreg;
+ 	}
+ 
+-	state_count = perf->state_count + 1;
+-
+-	max_boost_ratio = get_max_boost_ratio(cpu);
+-	if (max_boost_ratio) {
+-		/*
+-		 * Make a room for one more entry to represent the highest
+-		 * available "boost" frequency.
+-		 */
+-		state_count++;
+-		valid_states++;
+-		data->first_perf_state = valid_states;
+-	} else {
+-		/*
+-		 * If the maximum "boost" frequency is unknown, ask the arch
+-		 * scale-invariance code to use the "nominal" performance for
+-		 * CPU utilization scaling so as to prevent the schedutil
+-		 * governor from selecting inadequate CPU frequencies.
+-		 */
+-		arch_set_max_freq_ratio(true);
+-	}
+-
+-	freq_table = kcalloc(state_count, sizeof(*freq_table), GFP_KERNEL);
++	freq_table = kcalloc(perf->state_count + 1, sizeof(*freq_table),
++			     GFP_KERNEL);
+ 	if (!freq_table) {
+ 		result = -ENOMEM;
+ 		goto err_unreg;
+@@ -851,27 +824,25 @@ static int acpi_cpufreq_cpu_init(struct
+ 	}
+ 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
+ 
++	max_boost_ratio = get_max_boost_ratio(cpu);
+ 	if (max_boost_ratio) {
+-		unsigned int state = data->first_perf_state;
+-		unsigned int freq = freq_table[state].frequency;
++		unsigned int freq = freq_table[0].frequency;
+ 
+ 		/*
+ 		 * Because the loop above sorts the freq_table entries in the
+ 		 * descending order, freq is the maximum frequency in the table.
+ 		 * Assume that it corresponds to the CPPC nominal frequency and
+-		 * use it to populate the frequency field of the extra "boost"
+-		 * frequency entry.
++		 * use it to set cpuinfo.max_freq.
+ 		 */
+-		freq_table[0].frequency = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
++		policy->cpuinfo.max_freq = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
++	} else {
+ 		/*
+-		 * The purpose of the extra "boost" frequency entry is to make
+-		 * the rest of cpufreq aware of the real maximum frequency, but
+-		 * the way to request it is the same as for the first_perf_state
+-		 * entry that is expected to cover the entire range of "boost"
+-		 * frequencies of the CPU, so copy the driver_data value from
+-		 * that entry.
++		 * If the maximum "boost" frequency is unknown, ask the arch
++		 * scale-invariance code to use the "nominal" performance for
++		 * CPU utilization scaling so as to prevent the schedutil
++		 * governor from selecting inadequate CPU frequencies.
+ 		 */
+-		freq_table[0].driver_data = freq_table[state].driver_data;
++		arch_set_max_freq_ratio(true);
+ 	}
+ 
+ 	policy->freq_table = freq_table;
+@@ -947,8 +918,7 @@ static void acpi_cpufreq_cpu_ready(struc
+ {
+ 	struct acpi_processor_performance *perf = per_cpu_ptr(acpi_perf_data,
+ 							      policy->cpu);
+-	struct acpi_cpufreq_data *data = policy->driver_data;
+-	unsigned int freq = policy->freq_table[data->first_perf_state].frequency;
++	unsigned int freq = policy->freq_table[0].frequency;
+ 
+ 	if (perf->states[0].core_frequency * 1000 != freq)
+ 		pr_warn(FW_WARN "P-state 0 is not max freq\n");
+Index: linux-pm/drivers/cpufreq/freq_table.c
+===================================================================
+--- linux-pm.orig/drivers/cpufreq/freq_table.c
++++ linux-pm/drivers/cpufreq/freq_table.c
+@@ -52,7 +52,13 @@ int cpufreq_frequency_table_cpuinfo(stru
+ 	}
+ 
+ 	policy->min = policy->cpuinfo.min_freq = min_freq;
+-	policy->max = policy->cpuinfo.max_freq = max_freq;
++	policy->max = max_freq;
++	/*
++	 * If the driver has set its own cpuinfo.max_freq above max_freq, leave
++	 * it as is.
++	 */
++	if (policy->cpuinfo.max_freq < max_freq)
++		policy->max = policy->cpuinfo.max_freq = max_freq;
+ 
+ 	if (policy->min == ~0)
+ 		return -EINVAL;
+
+
+
