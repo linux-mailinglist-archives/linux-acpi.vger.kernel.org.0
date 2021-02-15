@@ -2,144 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3955831BC22
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 16:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3811431BC3C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 16:25:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbhBOPSC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 10:18:02 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:33653 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230362AbhBOPRT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 10:17:19 -0500
-Received: by mail-oi1-f170.google.com with SMTP id g84so8087251oib.0;
-        Mon, 15 Feb 2021 07:17:03 -0800 (PST)
+        id S230441AbhBOPYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 10:24:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20048 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230106AbhBOPYC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Feb 2021 10:24:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1613402552;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fJz8YgaK9JiINlO/a+xlVgWJntkGKx0HDC2HE+3srwg=;
+        b=DYpj5ujPAglcb12jtsN8mIGBU5CvF8SO3hLSLpupgp2devT9rTS7r27SjivakX0QQcLePn
+        Qqt+u3IN03jR+1kDMLlfksxtzUg40ebp64pcNt8MLi8flaEK5YNx8BEKTTf5wG9HEEvSty
+        Mj2nS2a6HOibj5f27qjjvZhYU0K7EWc=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-553-EU1IPDt_MgG0kGj0axTGiA-1; Mon, 15 Feb 2021 10:22:30 -0500
+X-MC-Unique: EU1IPDt_MgG0kGj0axTGiA-1
+Received: by mail-ed1-f71.google.com with SMTP id l23so5211580edt.23
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 07:22:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=C2sgcKj98aThSkMnimZCE29PrKW4uLBphZONfs+K+xs=;
-        b=GL8qVu/2QTBsfRdMoMIHvkUU4iUVXOha82kbYR9qN8Nf8b6gTPQhfUdHU0I1bwRlKF
-         t20BYYJwqe7QKtWoVUg5zw6yQxCxaodAYL9nBasg5lcRE7iv/YqxWm6CFFTiqfMi3Uf/
-         ZvtLMfDYV5uFmYmvRZVSug5JXOwZTTeLzgGkWA7pOWNRaJf3BX8dxq6ZEO7VDRwimhTE
-         i1TsszyPdRm7vAdOrYNR7SdlSX52bRePCYQ/G2DzLPIjxLJB0sQm6JqEKmZnvYt80aGz
-         0D57e8wDeSF+jOgJpDGx/sygdw8qf1edXmUNKVHJkeeL/WibEoVOvM3pUddlAE9eIyFg
-         fd3Q==
-X-Gm-Message-State: AOAM5326NBA5QrFmJN1zf2V8wLD4mUAsN9Peu3tTwRM6txwul3Cqdn1o
-        zxtKdnFNRt8qStDt33NUYzVGuUKMk7FiPBlhpUM=
-X-Google-Smtp-Source: ABdhPJwotWAB2xGmxfLxbGS5Z/LD74rUcKxjHXAATycJb1YqtCg3KBlKdm2uoXg7aAcGCZii1QJxuPu4F9CREIowcj4=
-X-Received: by 2002:aca:744:: with SMTP id 65mr8563823oih.153.1613402198301;
- Mon, 15 Feb 2021 07:16:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
- <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com> <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
-In-Reply-To: <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 15 Feb 2021 16:16:27 +0100
-Message-ID: <CAMuHMdWFp_teT5Lgxe6BOpOb4UMM2_4FrKJm-2C6kuCH2YUMrw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=fJz8YgaK9JiINlO/a+xlVgWJntkGKx0HDC2HE+3srwg=;
+        b=D4OErsJLXE3/Ww13dQbO4E9XjSOrWszfRuz+QuhTiHSCJJtipFVDz97IZsBsHGUrHu
+         M3oLQj1dwuewo3KsWbMZWcc4V+BstYH1CRYKjead+/BDLNfVgQn3NuRE8TolL0AiB8KA
+         Z4v4G+K8VRx6wSH8jmKeoB3uwvigAPb8lw7HR15unL6jmqJxFtjO3AOu3Yo1CBLDhQIX
+         0QlUHwgLObn7a3Twsgn3uTyHu1XTQ2uaXXCHiRklopOEk4Ai0fBYOQYbvXPVizVwtEoy
+         MrXqeA/U9nbUrM2kPjYAnpGqndCn4WB4hwErHtzAcLH163YVyB/QjzKbsvi4R+G3qNmf
+         yHzA==
+X-Gm-Message-State: AOAM533V9U72wgnWrftsLHYNNE5BU7/rZ4okf1UGeVYGyBAg/Xse6naH
+        nR3zNACYkb0ZiPtJpUNIjgI+gJ8ycefLxpPNfK2aXEremNKhA/EGGhwanW3YqrECiwzzQsgOBx0
+        PItBj4ED8HDIpXHvROJHO1Q==
+X-Received: by 2002:a17:906:4050:: with SMTP id y16mr1830498ejj.203.1613402549492;
+        Mon, 15 Feb 2021 07:22:29 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy+zjwVtuh7Fqdmsz92FGNGYl8ZNQsHVtJy7xb1/oGQop9MCGMwieZLXoXsr8wv3IpM9z9ZOQ==
+X-Received: by 2002:a17:906:4050:: with SMTP id y16mr1830452ejj.203.1613402549050;
+        Mon, 15 Feb 2021 07:22:29 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id op10sm1052452ejb.98.2021.02.15.07.22.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Feb 2021 07:22:28 -0800 (PST)
+Subject: Re: [PATCH v2 0/4] platform/surface: Add platform profile driver for
+ Surface devices
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Mark Gross <mgross@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210211201703.658240-1-luzmaximilian@gmail.com>
+ <898aa498-8256-d59f-9e72-0e1199b3a62a@redhat.com>
+ <CAJZ5v0jGUgHsNaqLarf=YLwjtOe-mQB48LkOQLi7FcZyW1Qchg@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <510803ab-b5b8-ce2c-e956-5539874d00bf@redhat.com>
+Date:   Mon, 15 Feb 2021 16:22:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAJZ5v0jGUgHsNaqLarf=YLwjtOe-mQB48LkOQLi7FcZyW1Qchg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+Hi,
 
-On Fri, Feb 12, 2021 at 4:00 AM Saravana Kannan <saravanak@google.com> wrote:
-> On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> >   1. R-Car Gen2 (Koelsch), R-Car Gen3 (Salvator-X(S), Ebisu).
-> >
-> >       - Commit 2dfc564bda4a31bc ("soc: renesas: rcar-sysc: Mark device
-> >         node OF_POPULATED after init") is no longer needed (but already
-> >         queued for v5.12 anyway)
->
-> Rob doesn't like the proliferation of OF_POPULATED and we don't need
-> it anymore, so maybe work it out with him? It's a balance between some
-> wasted memory (struct device(s)) vs not proliferating OF_POPULATED.
+On 2/15/21 3:54 PM, Rafael J. Wysocki wrote:
+> On Mon, Feb 15, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi,
+>>
+>> On 2/11/21 9:16 PM, Maximilian Luz wrote:
+>>> This series adds a driver to provide platform profile support on 5th-
+>>> and later generation Microsoft Surface devices with a Surface System
+>>> Aggregator Module. On those devices, the platform profile can be used to
+>>> influence cooling behavior and power consumption.
+>>>
+>>> To achieve this, a new platform profile is introduced: the
+>>> 'balanced-performance' profile.
+>>>
+>>> In addition, a couple of fix-ups are performed:
+>>> - Hide CONFIG_ACPI_PLATFORM_PROFILE and change drivers so that it is
+>>>   selected instead of depended on.
+>>> - Fix some references to documentation in a comment.
+>>>
+>>> Note: This series (or more specifically "platform/surface: Add platform
+>>> profile driver") depends on the "platform/surface: Add Surface
+>>> Aggregator device registry" series.
+>>>
+>>> Changes in v2:
+>>>  - Introduce new 'balanced-performance' platform profile and change
+>>>    profile mapping in driver.
+>>>  - Perform some fix-ups for the ACPI platform profile implementation:
+>>>    - Fix some references to documentation in a comment.
+>>>    - Hide CONFIG_ACPI_PLATFORM_PROFILE
+>>
+>> Thanks, the entire series looks good to me, so for the series:
+>>
+>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>>
+>> Rafael, can you (once 5.12-rc1 is out) pick 1-3/4 and then provide a
+>> stable branch for me to merge?
+> 
+> Since [1-3/4] appear to be uncontroversial, so IMO it would be better
+> to merge them during the merge window, so they are present in
+> 5.12-rc1.
 
-> >   2. SH/R-Mobile AG5 (kzm9g), APE6 (ape6evm), A1 (armadillo800-eva)
-> >
-> >       - "PATCH] soc: renesas: rmobile-sysc: Set OF_POPULATED and absorb
-> >         reset handling" is no longer needed
-> >         https://lore.kernel.org/linux-arm-kernel/20210205133319.1921108-1-geert+renesas@glider.be/
->
-> Good to see more evidence that this series is fixing things at a more
-> generic level.
+So I just realized one problem with this plan, patch 1/4 depends
+on (modifies) Kconfig bits which are only in my tree / my 5.12 pull-req
+(which I send out earlier today).
 
-I spoke too soon: if CONFIG_POWER_RESET_RMOBILE=n,
-booting fails again, as everything is waiting on the system controller,
-which never becomes available.
-Rcar-sysc doesn't suffer from this problem, cfr. above.
-Perhaps because the rmobile-sysc bindings use a hierarchical instead
-of a linear PM domain description, and thus consumers point to the
-children of the system controller node?
-Cfr. system-controller@e6180000 in arch/arm/boot/dts/r8a7740.dtsi.
+One option here would be for me pickup 1-3/4 and send a second
+pull-req during the merge-window, with your ack as these are
+touching files under drivers/acpi ?
 
-> >       - On R-Mobile A1, I get a BUG and a memory leak:
-> >
-> >             BUG: spinlock bad magic on CPU#0, swapper/1
-> >              lock: lcdc0_device+0x10c/0x308, .magic: 00000000, .owner:
-> > <none>/-1, .owner_cpu: 0
-> >             CPU: 0 PID: 1 Comm: swapper Not tainted
-> > 5.11.0-rc5-armadillo-00032-gf0a85c26907e #266
-> >             Hardware name: Generic R8A7740 (Flattened Device Tree)
-> >             [<c010c3c8>] (unwind_backtrace) from [<c010a49c>]
-> > (show_stack+0x10/0x14)
-> >             [<c010a49c>] (show_stack) from [<c0159534>]
-> > (do_raw_spin_lock+0x20/0x94)
-> >             [<c0159534>] (do_raw_spin_lock) from [<c04089d8>]
-> > (dev_pm_get_subsys_data+0x30/0xa0)
-> >             [<c04089d8>] (dev_pm_get_subsys_data) from [<c0413698>]
-> > (genpd_add_device+0x34/0x1c0)
-> >             [<c0413698>] (genpd_add_device) from [<c041389c>]
-> > (of_genpd_add_device+0x34/0x4c)
-> >             [<c041389c>] (of_genpd_add_device) from [<c0a1e9bc>]
-> > (board_staging_register_device+0xf8/0x118)
-> >             [<c0a1e9bc>] (board_staging_register_device) from
+Regards,
 
-This is indeed a pre-existing problem.
-of_genpd_add_device() is called before platform_device_register(),
-as it needs to attach the genpd before the device is probed.
-But the spinlock is only initialized when the device is registered.
-This was masked before due to an unrelated wait context check failure,
-which disabled any further spinlock checks, and exposed by fw_devlinks
-changing probe order.
-Patch sent.
-"[PATCH] staging: board: Fix uninitialized spinlock when attaching genpd"
-https://lore.kernel.org/r/20210215151405.2551143-1-geert+renesas@glider.be
+Hans
 
-
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
