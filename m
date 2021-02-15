@@ -2,164 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E06F331B556
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 07:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FDA231B7E5
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 12:21:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbhBOGCx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 01:02:53 -0500
-Received: from mail-eopbgr80049.outbound.protection.outlook.com ([40.107.8.49]:64580
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229569AbhBOGCx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Feb 2021 01:02:53 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S3aQ9GKOyCOxAKKaePrFUjkLnUo2FAOoIEsU1LiPwyb0bGBsQ2Iqpjpgl7gUAv7CQM3gY1pmrx+/Np0xB/tIBFYZVhZqqn88O5yEIOIn2gPD3bdwROKeUN1eopjWURVeQ7EwHVKE2SqJaieCcMWJ23SBROyL/rdy6yUo0NVXBsn96LIfYNBAYygVND31jExA84lVozlWUXwkYdP/o8QhFcQIaNntVKyewNf2VeiVePGpLwHv1r5Im5qP89upgFqjatgeFYyfFjhmsVvttrG3aAZ+S98AZA+GDkc+NC3T94hYbM673kXBjyDRcT+RREUWSsodhr0sKssxJRe+oosayQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gt0ZHm4qI06up/RdJ9rfzS2K5ODNGkSd6b2kj90ZkTU=;
- b=nQbh9BnCSUD4xS9mrRbOw4OzWf35Bxy/Ee0YesQ7B3wc8+Md/1v6Se4ZXUGHNrM/SimFIlxBuoLO9heq+yDosf9ZEnO8QUdn4MunvryXoc031pOxgqm/vd54mtz4PfSmS/oCWCo4UrxNKDnjHqaUiD76Wj9Hmn3aYAU2tr7rLq61fwozQd9CRoO06h7+9QEYItXBzfMzEkJmuUxlaNE75ZPBJ/I2Lb6CaJZTKu24SLiSQZtoycpJIMyObWc+amQcwLJewqEPVYzVTgP+o1erndRhnblv1k33gXqlQ5M6IRsgIddXxleZCAy02jLMWE7B28KZkOEtu4QDCMwB4gMF4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gt0ZHm4qI06up/RdJ9rfzS2K5ODNGkSd6b2kj90ZkTU=;
- b=T+YBvb2U9yzW+GVb/2ZM84aSsP+aOrWrV/RMyJAMXlwF6rA8PC+lXJG9ueCXA412ascmrrv4HnAMFxrmBTPrtGWzaVFYVqeqECoraO4L7jTJ5pnlS9j6rYHZZlBctQDIAutH/VN9ulM7LdUR5iXA34Rnyqto0xwOdngbFcKLA6c=
-Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
- header.d=none;armlinux.org.uk; dmarc=none action=none
- header.from=oss.nxp.com;
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
- by AM0PR04MB3953.eurprd04.prod.outlook.com (2603:10a6:208:5b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.26; Mon, 15 Feb
- 2021 06:02:03 +0000
-Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42]) by AM0PR04MB5636.eurprd04.prod.outlook.com
- ([fe80::e90e:b1d6:18a2:2d42%6]) with mapi id 15.20.3846.042; Mon, 15 Feb 2021
- 06:02:03 +0000
-Date:   Mon, 15 Feb 2021 11:31:42 +0530
-From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-kernel@vger.kernel.org, linux.cj@gmail.com,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [net-next PATCH v5 13/15] phylink: introduce
- phylink_fwnode_phy_connect()
-Message-ID: <20210215060142.GA21977@lsv03152.swis.in-blr01.nxp.com>
-References: <20210208151244.16338-1-calvin.johnson@oss.nxp.com>
- <20210208151244.16338-14-calvin.johnson@oss.nxp.com>
- <20210208153111.GK1463@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210208153111.GK1463@shell.armlinux.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [14.142.151.118]
-X-ClientProxiedBy: SG2PR01CA0132.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::36) To AM0PR04MB5636.eurprd04.prod.outlook.com
- (2603:10a6:208:130::22)
+        id S229936AbhBOLUb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 06:20:31 -0500
+Received: from mail-oi1-f173.google.com ([209.85.167.173]:39330 "EHLO
+        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229627AbhBOLUZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 06:20:25 -0500
+Received: by mail-oi1-f173.google.com with SMTP id l19so7380179oih.6;
+        Mon, 15 Feb 2021 03:20:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g+2l6KM1UP6n61yvg+ftleSaZOAPmTS96UBlT5bgVOw=;
+        b=EQX1VzOfpryADedahZgHDQ/na8KZ5NFdG8eGPrKMAjbAhkaibs/wx9FsgtbVTBrjh/
+         jFTxZYUORcw23zr8hRa6LVJBq9CRTVWOM2tQbcF3Oifqy9bPEfIOBLJKoLRpOz77xcad
+         YQ3PsgccOH96XkLEE3u8qvVEQum1CEeiq5VjZbxrS0eRdjQnz0ROIgptVGECQNHkGjHn
+         Kqw/PshVAswVrq0dktl3YuDwOARSvR9BAjoKR9r80tt74Ey9oEgJnQBf/hPspsPXFARM
+         GDYahSsuWANpZdTBuTDFLBwz24kO4g6Cdvv6tJHUnuM7UD9oXeRNb4XzPGrsDskAiNJA
+         0lLA==
+X-Gm-Message-State: AOAM5326cj/POgmd+sUbJmRp7UgbMeJFeqIosFN1FEAlLqLXZ5QXuWyB
+        3xGF4LAvNl1kxNBIZ9tFWzTmTkGaWBmuNdcJKOg=
+X-Google-Smtp-Source: ABdhPJzMI39m+KunbmWjRc0zXWvqEeHuECgd3ZsHjx+5rhHkVKdfXJ1QGr9mXD/zemLpBd0PNc0mqgI1Ax9YA4EUGXE=
+X-Received: by 2002:aca:d8c6:: with SMTP id p189mr8141707oig.54.1613387983592;
+ Mon, 15 Feb 2021 03:19:43 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR01CA0132.apcprd01.prod.exchangelabs.com (2603:1096:4:40::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.27 via Frontend Transport; Mon, 15 Feb 2021 06:01:57 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 6fd2010a-b121-4446-3074-08d8d177377f
-X-MS-TrafficTypeDiagnostic: AM0PR04MB3953:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB3953445F863A3055FA8AE8FED2889@AM0PR04MB3953.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1751;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: GVvqvKKqVywAN1sbXTB2uhbhZWEGdpXHeTwVZ8uQbBBJATGNSSY0UbWoY/fjo3HvkODHMTZ6WkgLTsPJCqwpCV7bVLBWmnBgdpiYw1Wdw03k7jOD47rd94m8LBNK3j4roti+QCzcTz+r4GWvf+p3jWPGIz4GFk6sPy3ejj4mKQW/YbV3KmbX5orv72VXb5WZ1ZPVNJgy1+Qdx4XKjBFRRiLE+nFh8xVm5u9qT1xOBf9BuNXKrEZoMB5EXvz1tZq+alUuUGwoIPHPbd19arV6rmjz/3g19wzo4P4vBJ5ekdJTTXbJ26JZP8bNTTJ6RmtrKIngA7lH117fVG4kmcAQkmBnghs+WqiXrXxyFVaBWNH9sBHT+tjPORTJh4Cw15Q34xNywndXYKhvqZoBoA5F42ywXAbJ+44iHZsFY3go8ZsrugH3DFe6Sh24jz8oOj3XYR2afcftyGEYk1XtneGuVBLcx+ifFujDnp90QPuK2doHkzaiFi7XV4TSiZgWchj9C8ShRkAYW5ZW+sERNN+rfLMLAayINUNZixtnnxFjjhFP9vseoAaE9LBe9LAe4N9l
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(136003)(366004)(376002)(39860400002)(33656002)(83380400001)(4326008)(54906003)(2906002)(55236004)(8936002)(55016002)(956004)(86362001)(6506007)(9686003)(316002)(16526019)(26005)(186003)(66476007)(66946007)(6916009)(7416002)(478600001)(66556008)(7696005)(6666004)(52116002)(44832011)(1006002)(1076003)(8676002)(5660300002)(110426009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?iVW0A35bTumNExxwm5qtZeA5MBqxLA0NGjBBRgoQu3rd68HqSARSOMV40eMq?=
- =?us-ascii?Q?TPyzwg7sca0b3Yxkgk6JLjFDhG4QrCdohLg2ZK/uYpwLqtYUHpDyGq0POebd?=
- =?us-ascii?Q?783djvtE7rrUL//F2bHEiejS9/fTtJUUoHnoUCb76R11CjeQ5D7njcDU9ken?=
- =?us-ascii?Q?Z5Wp39lUaWwG+PnDR4pTKWAJNyCB6HUfZYKj2WgiFSHUhyLU17z4KF+gmUZP?=
- =?us-ascii?Q?IkcwyMK08/NIX+8lkz7HPVx3+H9n4IromyLNXf5bPrDZMb924QPL/yELzicJ?=
- =?us-ascii?Q?7PsNAnIKOOZXKv5pu5/KyRgSNNQ6v15zO/9yrK6fQfgxfntKHWcdBJwBAPnu?=
- =?us-ascii?Q?B/XcXgZ6iQL9IdmIOxlZP1XwTM9jIu+Cjy1hHUrCD+hFsdGfNU+kbTGpCEl3?=
- =?us-ascii?Q?SyCtvEFSTUVKZwhMdN8YWFp7AUFW9C1E4wTdvu/4giSp/aKzTBLUwqUu1nAj?=
- =?us-ascii?Q?BPdWTJTHTwnksmCfxBtxHA+cHpG3nk2uc3Zz8ga0y2RZYpd7qV8TxFwrFM7c?=
- =?us-ascii?Q?7esvdoPS7wNhhgoGp/OxGmueOHgwDeuRTNXCjcfIgtUU9VPTA7nm+QzdJafY?=
- =?us-ascii?Q?223WCJXNd0HoPkcSOD0rFI9EfbLUIWtALKRONbhPXeEZWHcFE7sKzjMafU4P?=
- =?us-ascii?Q?grziIijiwY0TBMLX6/Argk0dL30IliyBAteY8Dsj3GiRriGLSU+idGqYCzN4?=
- =?us-ascii?Q?ueC+Xt2nJ/AE+P6FAt74p6+AuVFpkvneEggkDCNeE3xzaNAELclbnxQXf56R?=
- =?us-ascii?Q?MSiui9oq6/NuYVZrmOr6q8iuKnyRtmHyVyHBzKS7HHSh3eR+Hn4icq9ed1xs?=
- =?us-ascii?Q?ULZcoHi2of5uhi7vvwQtvoLIEws0PEWhuP4+/frhVFUw623SxcXp8pd74ffY?=
- =?us-ascii?Q?W3K1W7/q6zEBmZvgUwTt4txALgVRV4m8YYeA5FMPDUoC2HPLi4tPKc3MpxQO?=
- =?us-ascii?Q?YkfBI7z4yb1Mevnot3dOow06ZxTX6zmRKVmICTa2DViqsbEAwFdJMYNy+vE+?=
- =?us-ascii?Q?P8KTMQwYCKJ8b+/l0w/T1x2RUmdWm7qSZsPq2hdDdkrTyZ/R6y4ro3lPWUoP?=
- =?us-ascii?Q?Fx+ZtEkiC5zbjciX33wr4hse+pEMXY3Xhca6CsunEDLemnTr72Oy+y+iePA7?=
- =?us-ascii?Q?S/7f6UP3OedNlh47yhI63Z+QdXXKWYlJRe+idDej47BKGggxM9sTo7edMGZL?=
- =?us-ascii?Q?4jii1YTM7SiDHwtxsQcwagRXybPYEoxQT/p1KSVNl35XhE2WcWJufQsE37K7?=
- =?us-ascii?Q?7gA/QnhorUtSz09jNU2q8s+Z1gTW/SMW0Tdd8wDBn+cfXAQSnz+TnbFn+3BB?=
- =?us-ascii?Q?zptVyc5/ZDrLxG8UiORGt82OqF+0cGuRW0gGar197Ky9sQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fd2010a-b121-4446-3074-08d8d177377f
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Feb 2021 06:02:03.7829
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A0X/i7LfB4i7qu0WS/NcrUQRlEvSAfWzWYYtj4o/bDNWLOvAPex9P6bxsfFpoNBB4cWOVEkS6dLinE4soR/gbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB3953
+References: <20210205222644.2357303-1-saravanak@google.com> <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+In-Reply-To: <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 15 Feb 2021 12:19:32 +0100
+Message-ID: <CAMuHMdUi-_LJBB7fYB9ugpcj0J+FWXrqn2u44n7MemmvwiWQWw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 08, 2021 at 03:31:11PM +0000, Russell King - ARM Linux admin wrote:
-> On Mon, Feb 08, 2021 at 08:42:42PM +0530, Calvin Johnson wrote:
-> > +int phylink_fwnode_phy_connect(struct phylink *pl,
-> > +			       struct fwnode_handle *fwnode,
-> > +			       u32 flags)
-> > +{
-> > +	struct fwnode_handle *phy_fwnode;
-> > +	struct phy_device *phy_dev;
-> > +	int ret;
-> > +
-> > +	if (is_of_node(fwnode)) {
-> > +		/* Fixed links and 802.3z are handled without needing a PHY */
-> > +		if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
-> > +		    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
-> > +		     phy_interface_mode_is_8023z(pl->link_interface)))
-> > +			return 0;
-> 
-> This difference between ACPI and DT really needs to be described in the
-> commit description.
-> 
-> For example, why is it acceptable to have a PHY in fixed-link mode if
-> we're using ACPI, and not DT?
-> 
-> If we look at the phylink code, accepting a PHY when in fixed-link mode
-> is basically not supported... so why should ACPI allow this?
+On Thu, Feb 11, 2021 at 2:00 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Fri, Feb 5, 2021 at 11:26 PM Saravana Kannan <saravanak@google.com> wrote:
+> > There are a lot of devices/drivers where they never have a struct device
+> > created for them or the driver initializes the hardware without ever
+> > binding to the struct device.
+> >
+> > This series is intended to avoid any boot regressions due to such
+> > devices/drivers when fw_devlink=on and also address the handling of
+> > optional suppliers.
 
-DT and ACPI should handle fixed-link in similar manner. I'll remove the OF
-check.
+>       - Some devices are reprobed, despite their drivers returning
+>         a real error code, and not -EPROBE_DEFER:
+>
+>             renesas_wdt e6020000.watchdog: Watchdog blacklisted on r8a7791 ES1.*
+>             (rwdt_probe() returns -ENODEV)
+>
+>             sh-pfc e6060000.pinctrl: pin GP_7_23 already requested by
+> ee090000.pci; cannot claim for e6590000.usb
+>             sh-pfc e6060000.pinctrl: pin-247 (e6590000.usb) status -22
+>             sh-pfc e6060000.pinctrl: could not request pin 247
+> (GP_7_23) from group usb0  on device sh-pfc
+>             renesas_usbhs e6590000.usb: Error applying setting,
+> reverse things back
+>             renesas_usbhs: probe of e6590000.usb failed with error -22
+>
+>             rcar-pcie fe000000.pcie: host bridge /soc/pcie@fe000000 ranges:
+>             rcar-pcie fe000000.pcie:       IO
+> 0x00fe100000..0x00fe1fffff -> 0x0000000000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x00fe200000..0x00fe3fffff -> 0x00fe200000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x0030000000..0x0037ffffff -> 0x0030000000
+>             rcar-pcie fe000000.pcie:      MEM
+> 0x0038000000..0x003fffffff -> 0x0038000000
+>             rcar-pcie fe000000.pcie:   IB MEM
+> 0x0040000000..0x00bfffffff -> 0x0040000000
+>             rcar-pcie fe000000.pcie:   IB MEM
+> 0x0200000000..0x02ffffffff -> 0x0200000000
+>             rcar-pcie fe000000.pcie: PCIe link down
+>             (rcar_pcie_probe() returns -ENODEV)
+>
+>             xhci-hcd ee000000.usb: xHCI Host Controller
+>             xhci-hcd ee000000.usb: new USB bus registered, assigned bus number 7
+>             xhci-hcd ee000000.usb: Direct firmware load for
+> r8a779x_usb3_v3.dlmem failed with error -2
+>             xhci-hcd ee000000.usb: can't setup: -2
+>             xhci-hcd ee000000.usb: USB bus 7 deregistered
+>             xhci-hcd: probe of ee000000.usb failed with error -2
 
-Thanks
-Calvin
+Consumers are added to the deferred probe pending list before
+they are probed, but not removed on probe failure.
+Patch sent
+"[PATCH] driver core: Fix double failed probing with fw_devlink=on"
+https://lore.kernel.org/linux-renesas-soc/20210215111619.2385030-1-geert+renesas@glider.be/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
