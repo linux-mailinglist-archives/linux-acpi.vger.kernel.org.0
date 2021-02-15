@@ -2,100 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5543B31C179
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 19:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A0031C1D5
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 19:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230021AbhBOS0g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 13:26:36 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:45744 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbhBOS0d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 13:26:33 -0500
-Received: by mail-oi1-f170.google.com with SMTP id q186so4696791oig.12
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 10:26:17 -0800 (PST)
+        id S229890AbhBOSmx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 13:42:53 -0500
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:45231 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230194AbhBOSlq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 13:41:46 -0500
+Received: by mail-ot1-f51.google.com with SMTP id o12so6866613ote.12;
+        Mon, 15 Feb 2021 10:41:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BhK9Sy+sXj6zSCbmG0oRV4y2bv1YCu7KZPAcpn+xoFk=;
-        b=M7o6eZeguUvG6DP7ooy7IenGqRkYBKTM8t6wsDnVXBISuM31MUpqSlZbmu8u5eqlzk
-         kZp7SEau/aXXksLx1vQE6r8XahfPaHZbTuzc0Iv/zIWJBs6SqneD96SCecD46IKKYZi8
-         MulgUPfE15tur8caCJKI7khIfbh4PEGM97YJHyh+ALPNid20vlZeAfVrh2lj8YU+cXLA
-         sviRPeRwqE7v8KqwS53ic90nHiWxTCgKTW9X5T1tKmSoEIt74hiCapBp/GIvXBdRq2vZ
-         OCiH99Dxw/pcxiwZ1hNyf39Z2qaw4kTpbueRmDQJxnBoOC1eWV2tdo0GHUxOHniY1rnV
-         sR3Q==
-X-Gm-Message-State: AOAM5318zHnoN7bEDPwSi4aUd4iYrZEiy3bRV/aCaAOxA0XCECRR39IJ
-        QcPaFpOhA52Xd0yPI0yMiz3iYUM6qNBWRyltCzg=
-X-Google-Smtp-Source: ABdhPJyA9hQoFi7GJbIYTmjKiYN6IIx9g51D1ODRp8aZOM0bQl2kWW+Zn22yYEafwY6kjs/OOqj/oxZbobWZs/eSoSw=
-X-Received: by 2002:a05:6808:5cf:: with SMTP id d15mr129931oij.69.1613413552031;
- Mon, 15 Feb 2021 10:25:52 -0800 (PST)
+        bh=1thRV95wJ/MpkfVTwAdbwdXVYnPmmrkAJjd2JWQvcW8=;
+        b=ocvoieRckeACF8ehaHp0g/o2s66VCUO9HJEdhQ01uaoek10c8SsuVwzaPVTyma5I1l
+         6KAmLBGtSWyaDbwqw2f1/uJoVIlsF7v7Yn+M6SBKFylqni2neDTY7+Mvxagu1kg3Gy7f
+         PdBUjhDRVf87GGGVln/rC0JXgk5viC+y8B4q9Cn9rtSaSL0Ia58l6Fn5mgNWBFPriZDb
+         BxfCwcgsKRUdilbU9SLaskfBj8zUM7I/VCJtmvVbDDxZizHvjX7WtdZM06zbhB1FS9Lb
+         eZ/DbrDPKVy0AKNeWmB1/3bK95ncO3ECP9JO/ZY/GpTkMD9cOvlcoE6MfBUrTaDxTreu
+         Zvxg==
+X-Gm-Message-State: AOAM533IC7e4cCc+lS4MflcnFGqMlYFjRiby38j8cOHI9Cy6rc6CcRbg
+        6AYSvGghNYFV/oYJYf1Fx90KkDH+iGKKCxDJzE4=
+X-Google-Smtp-Source: ABdhPJxn5Pg4XVAXkOTIc6aa4yc3c4SD/zoDPjGVcJELh/vHc2M/eILH39JYsKXBIpFplDo/XP2Lr5BjzsGV+o9LLSo=
+X-Received: by 2002:a9d:a2d:: with SMTP id 42mr12672489otg.321.1613414464899;
+ Mon, 15 Feb 2021 10:41:04 -0800 (PST)
 MIME-Version: 1.0
-References: <20201226142830.48818-1-hdegoede@redhat.com> <ced43570-1e76-6f96-f9ab-83473b4adfb7@redhat.com>
-In-Reply-To: <ced43570-1e76-6f96-f9ab-83473b4adfb7@redhat.com>
+References: <20210211201703.658240-1-luzmaximilian@gmail.com>
+ <898aa498-8256-d59f-9e72-0e1199b3a62a@redhat.com> <CAJZ5v0jGUgHsNaqLarf=YLwjtOe-mQB48LkOQLi7FcZyW1Qchg@mail.gmail.com>
+ <510803ab-b5b8-ce2c-e956-5539874d00bf@redhat.com> <CAJZ5v0hBN2zTHj+KsAmdNWTL0e983CFE+LYBssJzUDOmdF7PPQ@mail.gmail.com>
+ <8435cc87-d92f-e1c3-97c7-e2113e0ff3a9@redhat.com>
+In-Reply-To: <8435cc87-d92f-e1c3-97c7-e2113e0ff3a9@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 15 Feb 2021 19:25:41 +0100
-Message-ID: <CAJZ5v0g2mhrw56aAjafYAsRnOWjZTATyHyfi57ekuQyGs6O-MA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] ACPICA: Fix a race in GenericSerialBus (I2C) and GPIO handling
+Date:   Mon, 15 Feb 2021 19:40:54 +0100
+Message-ID: <CAJZ5v0iEJjj6BQigVtXs5FWoaMOBszkUvfr=-PapAcf2g=9mAg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] platform/surface: Add platform profile driver for
+ Surface devices
 To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Mark Gross <mgross@linux.intel.com>,
         Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 15, 2021 at 6:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Mon, Feb 15, 2021 at 5:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
 > Hi,
 >
-> On 12/26/20 3:28 PM, Hans de Goede wrote:
-> > Hi All,
+> On 2/15/21 4:29 PM, Rafael J. Wysocki wrote:
+> > On Mon, Feb 15, 2021 at 4:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 2/15/21 3:54 PM, Rafael J. Wysocki wrote:
+> >>> On Mon, Feb 15, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>>
+> >>>> Hi,
+> >>>>
+> >>>> On 2/11/21 9:16 PM, Maximilian Luz wrote:
+> >>>>> This series adds a driver to provide platform profile support on 5th-
+> >>>>> and later generation Microsoft Surface devices with a Surface System
+> >>>>> Aggregator Module. On those devices, the platform profile can be used to
+> >>>>> influence cooling behavior and power consumption.
+> >>>>>
+> >>>>> To achieve this, a new platform profile is introduced: the
+> >>>>> 'balanced-performance' profile.
+> >>>>>
+> >>>>> In addition, a couple of fix-ups are performed:
+> >>>>> - Hide CONFIG_ACPI_PLATFORM_PROFILE and change drivers so that it is
+> >>>>>   selected instead of depended on.
+> >>>>> - Fix some references to documentation in a comment.
+> >>>>>
+> >>>>> Note: This series (or more specifically "platform/surface: Add platform
+> >>>>> profile driver") depends on the "platform/surface: Add Surface
+> >>>>> Aggregator device registry" series.
+> >>>>>
+> >>>>> Changes in v2:
+> >>>>>  - Introduce new 'balanced-performance' platform profile and change
+> >>>>>    profile mapping in driver.
+> >>>>>  - Perform some fix-ups for the ACPI platform profile implementation:
+> >>>>>    - Fix some references to documentation in a comment.
+> >>>>>    - Hide CONFIG_ACPI_PLATFORM_PROFILE
+> >>>>
+> >>>> Thanks, the entire series looks good to me, so for the series:
+> >>>>
+> >>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> >>>>
+> >>>> Rafael, can you (once 5.12-rc1 is out) pick 1-3/4 and then provide a
+> >>>> stable branch for me to merge?
+> >>>
+> >>> Since [1-3/4] appear to be uncontroversial, so IMO it would be better
+> >>> to merge them during the merge window, so they are present in
+> >>> 5.12-rc1.
+> >>
+> >> So I just realized one problem with this plan, patch 1/4 depends
+> >> on (modifies) Kconfig bits which are only in my tree / my 5.12 pull-req
+> >> (which I send out earlier today).
 > >
-> > On one of my machines I noticed the following errors being logged:
+> > That should be fine.
 > >
-> > [   52.892807] i2c i2c-0: adapter quirk: no zero length (addr 0x0078, size 0, read)
-> > [   52.893037] i2c i2c-0: i2c read 0 bytes from client@0x78 starting at reg 0x0 failed, error: -95
-> >
-> > The second line is coming from the Linux I2C ACPI OpRegion handling and
-> > after a bunch of debugging I've found out that there is a rather obvious
-> > (once you see it) and nasty race condition in the handling of I2C and GPIO
-> > opregions in acpi_ev_address_space_dispatch(). See the first patch in this
-> > series (the second patch is a follow-up cleanup patch removing some code
-> > duplication).
-> >
-> > TBH I'm surprised that this issue has gone unnoticed as long as it has,
-> > but I guess that it mostly leads to unreproducable sporadic problems
-> > making it hard to debug and I got lucky that I had a machine where the
-> > race seems to trigger about once every 20 seconds.
-> >
-> > I know that ACPICA patches are normally merged through the ACPICA upstream
-> > but given that this is a serious bug, I believe that in this case it might
-> > be best to add the fix directly to Linux and then port it to ACPICA from
-> > there.
+> > I will be sending the first batch of pull requests tomorrow.  Then I
+> > will wait for them to be merged and I will merge the mainline back at
+> > that point.  The new patches will be applied on top of that merge, so
+> > if your 5.12 material is included in it, they should build without
+> > problems.
 >
-> ping ?
->
-> This was submitted 2 full months ago; and despite this:
->
-> 1. Fixing a serious bug in ACPICA
-> 2. The fix being pretty simple (and AFAICT obviously correct)
->
-> This is still awaiting review upstream:
-> https://github.com/acpica/acpica/pull/658
->
-> I must say that it feels to me that the upstream ACPICA process is broken here.
->
-> I submitted a pull-req for this, as requested and after that there has
-> been zero progress.
->
-> The pull-req even has a 26 day old "this looks good to me" comment from Erik,
-> followed by silence... ?
->
-> Rafael, can you please consider just directly picking these 2 fixes into
-> your acpi branch, so that we can get this nasty race condition fixed ?
+> Ok, that sounds good to me.
 
-I will do that later this week, thanks!
+In fact, my pull requests are ready right now, so I will be sending
+them shortly, but that doesn\t change the subsequent steps.
