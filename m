@@ -2,234 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5BA531D075
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Feb 2021 19:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F7031D095
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Feb 2021 20:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231159AbhBPSui (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Feb 2021 13:50:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231128AbhBPSua (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Feb 2021 13:50:30 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2EFC06178B
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Feb 2021 10:49:07 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id p193so11440301yba.4
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Feb 2021 10:49:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ulqwXrQZpRrYT3IHT4CJ8bN5l6f9WiL4VvK05t2vkhU=;
-        b=GFVUZyY2+36xaWQOsBNcWeZvX9dgErqzir1orOVD41NTZeSKMP3B4a8JAZpGfpZNzN
-         7bXyMp1VBKh/kAFxyiGVdzGSA28wFoRfpMTz2roVpux4P7yqn6bWrY2qK82Ppkov5uAu
-         QUDkguqttvIFR+d3KCw1u52ojhCNVVQmY4DxpG/8ts2opf5bn67o4y7luRYhIOq2Pvlw
-         IvqSqfN5YIBG35KA0rfgWvZir4VWpbMA8m7NKzrc+hEQ4W99fQF8YRU4P7ukvmPeARfm
-         S0fkAUw88oh53rPVhsngwpmb43ayPtF8/Jb5qc2PUkdNqhbSgYiCedPXLmVT5cQJ805u
-         S1+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ulqwXrQZpRrYT3IHT4CJ8bN5l6f9WiL4VvK05t2vkhU=;
-        b=OQYBMIuvEcXPgrtBOJFNNPrns5JddnNwOnrMMqB+rFA3KQ99s8P3dw2dU+zfCmUfuC
-         xhrFUaRYcqPfImrFKfbNkZAxuQ2iX1W18j5/288zngP5P7LC5bifENT88kyQQmJbHu8E
-         3rbJ6ZhwYzu0s9W7pG9oyGRF9U5J7xWclX5BP36E17WbVoDaDWTVydky3okXN8md8kkE
-         o4ovcW//HS7yltxnlqMf/5oLXOwOaSw4q5NARjwBqwd2xkoAkAsy7F7CCJaI3hpFyz2f
-         lcijarLVq4klNVAjr1GMwQnJQgklzs1GnuTrhqIm3KGHN2NQzXzePOSljI8kLhqmLe+w
-         QJmA==
-X-Gm-Message-State: AOAM530QLBCllBTs4+3kMcXPknLhERtT0K0QtJVs7z4fZJl/+l8BzHHe
-        84UDNxxmzBKJgwAVxAZ1JLxpdmZV13bizzTekFzf8g==
-X-Google-Smtp-Source: ABdhPJy/W97Gt0DiNuOozzUVmxZ1k867IJaF8h5dqBDAKdPQOmZJZO6WvC505FeNpD/Kj6p1JVZxSHxHAj6xXqAAWDU=
-X-Received: by 2002:a05:6902:1025:: with SMTP id x5mr31500894ybt.96.1613501346147;
- Tue, 16 Feb 2021 10:49:06 -0800 (PST)
+        id S229787AbhBPTA3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Feb 2021 14:00:29 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2577 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229572AbhBPTA0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Feb 2021 14:00:26 -0500
+Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Dg9BM2Mxzz67nH6;
+        Wed, 17 Feb 2021 02:54:35 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Tue, 16 Feb 2021 19:59:44 +0100
+Received: from localhost (10.47.75.223) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 16 Feb
+ 2021 18:59:43 +0000
+Date:   Tue, 16 Feb 2021 18:58:37 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Natu, Mahesh" <mahesh.natu@intel.com>,
+        Chet R Douglas <chet.r.douglas@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        "Vishal L Verma" <vishal.l.verma@intel.com>
+Subject: Re: [RFC] ACPI Code First ECR: Generic Target
+Message-ID: <20210216185837.000030c7@Huawei.com>
+In-Reply-To: <CAPcyv4h=e_a-YD2pAzY5k8Qc-+EMeBNyfzLfpuC01Jey6_sQ5g@mail.gmail.com>
+References: <CAPcyv4gmd_cygXK0PpGkXmJLC3_ctEpRvpi5P-QcuXusFX5oNQ@mail.gmail.com>
+        <20210210112330.00003e74@Huawei.com>
+        <CAPcyv4gOyPjVcBa_m6pvpVP+vamJ38G7ePos-2LP273y3ivJqg@mail.gmail.com>
+        <20210211094222.000048ae@Huawei.com>
+        <CAPcyv4j0Wce-76OfgqTSkveukgDXB_p2VZZpgM8XjDFd+Q-0Ww@mail.gmail.com>
+        <20210212122438.00003621@Huawei.com>
+        <CAPcyv4j1axBsy4GdRxj4JhxRXtrK-U+ikxQ3xYKCa-z-a84XPQ@mail.gmail.com>
+        <20210216110643.000071f0@Huawei.com>
+        <CAPcyv4iv9kFLU7U9=VpYJZOiahUWJAZ_J_ZWCrGy1Lgqq+07kg@mail.gmail.com>
+        <20210216180634.00007178@Huawei.com>
+        <CAPcyv4h=e_a-YD2pAzY5k8Qc-+EMeBNyfzLfpuC01Jey6_sQ5g@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
- <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
- <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
- <CAMuHMdXduvBqjAqraXkEKErNJFyN6JNq5wqagc4yHHPpH5SPGQ@mail.gmail.com>
- <CAGETcx_4FGa-rzLp6bjXbm4F4R6H2W78+nM_kN=XPz5hswzANA@mail.gmail.com> <CAMuHMdVodauqBmLMxsfi0kQtAFT8ruJ36LJL9YuQgqwQNKwHHg@mail.gmail.com>
-In-Reply-To: <CAMuHMdVodauqBmLMxsfi0kQtAFT8ruJ36LJL9YuQgqwQNKwHHg@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 16 Feb 2021 10:48:30 -0800
-Message-ID: <CAGETcx_-yBvhXDPtOiKjenvx83oMNr32UvpMN0Dt-qz5ToXEbw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.75.223]
+X-ClientProxiedBy: lhreml717-chm.china.huawei.com (10.201.108.68) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 16, 2021 at 12:05 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Mon, Feb 15, 2021 at 10:27 PM Saravana Kannan <saravanak@google.com> wrote:
-> > On Mon, Feb 15, 2021 at 4:38 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > On Fri, Feb 12, 2021 at 4:00 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > >       - I2C on R-Car Gen3 does not seem to use DMA, according to
-> > > > >         /sys/kernel/debug/dmaengine/summary:
-> > > > >
-> > > > >             -dma4chan0    | e66d8000.i2c:tx
-> > > > >             -dma4chan1    | e66d8000.i2c:rx
-> > > > >             -dma5chan0    | e6510000.i2c:tx
+On Tue, 16 Feb 2021 10:22:28 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> On Tue, Feb 16, 2021 at 10:08 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Tue, 16 Feb 2021 08:29:01 -0800
+> > Dan Williams <dan.j.williams@intel.com> wrote:
+> >  
+> > > On Tue, Feb 16, 2021 at 3:08 AM Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote:
+> > > [..]  
+> > > > > Why does GI need anything more than acpi_map_pxm_to_node() to have a
+> > > > > node number assigned?  
 > > > >
-> > > > I think I need more context on the problem before I can try to fix it.
-> > > > I'm also very unfamiliar with that file. With fw_devlink=permissive,
-> > > > I2C was using DMA? If so, the next step is to see if the I2C relative
-> > > > probe order with DMA is getting changed and if so, why.
+> > > > It might have been possible (with limitations) to do it by making multiple
+> > > > proximity domains map to a single numa node, along with some additional
+> > > > functionality to allow it to retrieve the real node for aware drivers,
+> > > > but seeing as we already had the memoryless node infrastructure in place,
+> > > > it fitted more naturally into that scheme.  GI introduction to the
+> > > > ACPI spec, and indeed the kernel was originally driven by the needs of
+> > > > CCIX (before CXL was public) with CCIX's symmetric view of initiators
+> > > > (CPU or other) + a few other existing situations where we'd been
+> > > > papering over the topology for years and paying a cost in custom
+> > > > load balancing in drivers etc. That more symmetric view meant that the
+> > > > natural approach was to treat these as memoryless nodes.
+> > > >
+> > > > The full handling of nodes is needed to deal with situations like
+> > > > the following contrived setup. With a few interconnect
+> > > > links I haven't bothered drawing, there are existing systems where
+> > > > a portion of the topology looks like this:
+> > > >
+> > > >
+> > > >     RAM                              RAM             RAM
+> > > >      |                                |               |
+> > > >  --------        ---------        --------        --------
+> > > > | a      |      | b       |      | c      |      | d      |
+> > > > |   CPUs |------|  PCI RC |------| CPUs   |------|  CPUs  |
+> > > > |        |      |         |      |        |      |        |
+> > > >  --------        ---------        --------        --------
+> > > >                      |
+> > > >                   PCI EP
+> > > >
+> > > > We need the GI representation to allow an "aware" driver to understand
+> > > > that the PCI EP is equal distances from CPUs and RAM on (a) and (c),
+> > > > (and that using allocations from (d) is a a bad idea).  This would be
+> > > > the same as a driver running on an PCI RC attached to a memoryless
+> > > > CPU node (you would hope no one would build one of those, but I've seen
+> > > > them occasionally).  Such an aware driver carefully places both memory
+> > > > and processing threads / interrupts etc to balance the load.  
 > > >
-> > > More detailed log:
-> > >
-> > >     platform e66d8000.i2c: Linked as a consumer to e6150000.clock-controller
-> > >     platform e66d8000.i2c: Linked as a sync state only consumer to e6055400.gpio
-> > >
-> > > Why is e66d8000.i2c not linked as a consumer to e6700000.dma-controller?
+> > > That's an explanation for why GI exists, not an explanation for why a
+> > > GI needs to be anything more than translated to a Linux numa node
+> > > number and an api to lookup distance.  
 > >
-> > Because fw_devlink.strict=1 is not set and dma/iommu is considered an
-> > "optional"/"driver decides" dependency.
->
-> Oh, I thought dma/iommu were considered mandatory initially,
-> but dropped as dependencies in the late boot process?
-
-No, I didn't do that in case the drivers that didn't need the
-IOMMU/DMA were sensitive to probe order.
-
-My goal was for fw_devlink=on to not affect probe order for devices
-that currently don't need to defer probe. But see below...
-
->
+> > Why should a random driver need to know it needs to do something special?
 > >
-> > >     platform e6700000.dma-controller: Linked as a consumer to
-> > > e6150000.clock-controller
+> > Random drivers don't lookup distance, they just allocate memory based on their
+> > current numa_node. devm_kzalloc() does this under the hood (an optimization
+> > that rather took me by surprise at the time).
+> > Sure we could add a bunch of new infrastructure to solve that problem
+> > but why not use what is already there?
+> >  
+> > >  
+> > > >
+> > > > In pre GI days, can just drop (b) into (a or c) and not worry about it, but
+> > > > that comes with a large performance cost (20% plus on network throughput
+> > > > on some of our more crazy systems, due to it appearing that balancing
+> > > > memory load across (a) and (c) doesn't make sense).  Also, if we happened
+> > > > to drop it into (c) then once we run out of space on (c) we'll start
+> > > > using (d) which is a bad idea.
+> > > >
+> > > > With GI nodes, you need an unaware PCI driver to work well and they
+> > > > will use allocations linked to the particular NUMA node that are in.
+> > > > The kernel needs to know a reasonable place to shunt them to and in
+> > > > more complex topologies the zone list may not correspond to that of
+> > > > any other node.  
+> > >
+> > > The kernel "needs", no it doesn't. Look at the "target_node" handling
+> > > for PMEM. Those nodes are offline, the distance can be determined, and
+> > > only when they become memory does the node become online.  
 > >
-> > Is this the only supplier of dma-controller?
->
-> No, e6180000.system-controller is also a supplier.
->
-> > >     platform e66d8000.i2c: Added to deferred list
-> > >     platform e6700000.dma-controller: Added to deferred list
+> > Indeed, custom code for specific cases can work just fine (we've carried
+> > plenty of it in the past to get best performance from systems), but for GIs
+> > the intent was they would just work.  We don't want to have to go and change
+> > stuff in PCI drivers every time we plug a new card into such a system.
+> >  
 > > >
-> > >     bus: 'platform': driver_probe_device: matched device
-> > > e6700000.dma-controller with driver rcar-dmac
-> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
-> > > device e6700000.dma-controller
-> > >     platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
-> > >
-> > >     bus: 'platform': driver_probe_device: matched device e66d8000.i2c
-> > > with driver i2c-rcar
-> > >     bus: 'platform': really_probe: probing driver i2c-rcar with device
-> > > e66d8000.i2c
-> > >
-> > > I2C becomes available...
-> > >
-> > >     i2c-rcar e66d8000.i2c: request_channel failed for tx (-517)
-> > >     [...]
-> > >
-> > > but DMA is not available yet, so the driver falls back to PIO.
-> > >
-> > >     driver: 'i2c-rcar': driver_bound: bound to device 'e66d8000.i2c'
-> > >     bus: 'platform': really_probe: bound device e66d8000.i2c to driver i2c-rcar
-> > >
-> > >     platform e6700000.dma-controller: Retrying from deferred list
-> > >     bus: 'platform': driver_probe_device: matched device
-> > > e6700000.dma-controller with driver rcar-dmac
-> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
-> > > device e6700000.dma-controller
-> > >     platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
-> > >     platform e6700000.dma-controller: Added to deferred list
-> > >     platform e6700000.dma-controller: Retrying from deferred list
-> > >     bus: 'platform': driver_probe_device: matched device
-> > > e6700000.dma-controller with driver rcar-dmac
-> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
-> > > device e6700000.dma-controller
-> > >     driver: 'rcar-dmac': driver_bound: bound to device 'e6700000.dma-controller'
-> > >     bus: 'platform': really_probe: bound device
-> > > e6700000.dma-controller to driver rcar-dmac
-> > >
-> > > DMA becomes available.
-> > >
-> > > Here userspace is entered. /sys/kernel/debug/dmaengine/summary shows
-> > > that the I2C controllers do not have DMA channels allocated, as the
-> > > kernel has performed no more I2C transfers after DMA became available.
-> > >
-> > > Using i2cdetect shows that DMA is used, which is good:
-> > >
-> > >     i2c-rcar e66d8000.i2c: got DMA channel for rx
-> > >
-> > > With permissive devlinks, the clock controller consumers are not added
-> > > to the deferred probing list, and probe order is slightly different.
-> > > The I2C controllers are still probed before the DMA controllers.
-> > > But DMA becomes available a bit earlier, before the probing of the last
-> > > I2C slave driver.
+> > > The only point I can see GI needing anything more than the equivalent
+> > > of "target_node" is when the scheduler can submit jobs to GI
+> > > initiators like a CPU. Otherwise, GI is just a seed for a node number
+> > > plus numa distance.  
 > >
-> > This seems like a race? I'm guessing it's two different threads
-> > probing those two devices? And it just happens to work for
-> > "permissive" assuming the boot timing doesn't change?
+> > That would be true if Linux didn't already make heavy use of numa_node
+> > for driver allocations.  We could carry a parallel value of 'real_numa_node'
+> > or something like that, but you can't safely use numa_node without the
+> > node being online and zone lists present.
+> > Another way of looking at it is that zone list is a cache solving the
+> > question of where to allocate memory, which you could also solve using
+> > the node number and distances (at the cost of custom handling).
 > >
-> > > Hence /sys/kernel/debug/dmaengine/summary shows that
-> > > some I2C transfers did use DMA.
+> > It is of course advantageous to do cleverer things for particular drivers
+> > but the vast majority need to just work.
+> >  
+> > >  
+> > > >   In a CCIX world for example, a GI can sit between
+> > > > a pair of Home Agents with memory, and the host on the other side of
+> > > > them.  We had a lot of fun working through these cases back when drawing
+> > > > up the ACPI changes to support them. :)
+> > > >  
 > > >
-> > > So the real issue is that e66d8000.i2c not linked as a consumer to
-> > > e6700000.dma-controller.
+> > > Yes, I can imagine several interesting ACPI cases, but still
+> > > struggling to justify the GI zone list metadata.  
 > >
-> > That's because fw_devlink.strict=1 isn't set. If you need DMA to be
-> > treated as a mandatory supplier, you'll need to set the flag.
+> > It works. It solves the problem. It's very little extra code and it
+> > exercises zero paths not already exercised by memoryless nodes.
+> > We certainly wouldn't have invented something as complex as zone lists
+> > if we couldn't leverage what was there of course.
 > >
-> > Is fw_devlink=on really breaking anything here? It just seems like
-> > "permissive" got lucky with the timing and it could break at any point
-> > in the future. Thought?
->
-> I don't think there is a race.
+> > So I have the opposite view point. I can't see why the minor overhead
+> > of zone list metadata for GIs isn't a sensible choice vs cost of
+> > maintaining something entirely different.  This only changes with the
+> > intent to use them to represent something different.  
+> 
+> What I am missing is what zone-list metadata offers beyond just
+> assigning the device-numa-node to the closest online memory node, and
+> let the HMAT-sysfs representation enumerate the next level?
 
-Can you explain more please? This below makes it sound like DMA just
-sneaks in at the last minute.
+Zone list should not necessarily be the same as it is for the nearest node
+(as per the example above) so if you can't get memory in nearest node
+your second choice may well not be the nearest node's nearest node.
+How bad that is depends on the complexity of the topology.  In simple
+cases it can double the latency over the better choice.
 
-> > > The I2C controllers are still probed before the DMA controllers.
-> > > But DMA becomes available a bit earlier, before the probing of the last
-> > > I2C slave driver.
+> For
+> example, the persistent memory enabling assigns the closest online
+> memory node for the pmem device. That achieves the traditional
+> behavior of the device-driver allocating from "local" memory by
+> default. However the HMAT-sysfs representation indicates the numa node
+> that pmem represents itself were it to be online. So the question is
+> why does GI need more than that? To me a GI is "offline" in terms
+> Linux node representations because numactl can't target it,
 
->  fw_devlinks calling driver_deferred_probe_add()
-> on all consumers has a big impact on probe order.
+That's fair. It does exist in an intermediate world. Whether the
+internal representation of online vs offline should have anything much
+to do with numactl rather than whether than numactl being based on
+whether a node has online memory or CPUs isn't clear to me.
+It already has to distinguish whether a node has CPUs and / or memory
+so this isn't a huge conceptual extension.
 
-Ugh... yeah. That's the real issue. This is really a device links
-issue that fw_devlink is exposing. I already have a bunch of things in
-my TODO list to improve deferred probing and probe ordering. Since
-this is not causing boot issues (only DMA issue) with fw_devlink=on,
-can we treat this as not a blocking item for fw_devlink=on? Once I go
-through my TODO list, it should be fixed (by not changing probe
-ordering unnecessarily). And if not, I can help find out a different
-solution at that point.
+> "closest
+> online" is good enough for a GI device driver, 
 
-Also, if you have IOMMU drivers, then fw_devlink.strict is also
-another solution that's available. On a separate note (not a final
-fix), I was wondering if we should have a config for fw_devlink.strict
-default value and then have it selected when IOMMU drivers configs are
-enabled.
+So that's the point. Is it 'good enough'?  Maybe - in some cases.
 
--Saravana
+> but if userspace needs
+> the next level of detail of the performance properties that's what
+> HMEM sysfs is providing.
+
+sysfs is fine if you are doing userspace allocations or placement
+decisions. For GIs it can be relevant if you are using userspace drivers 
+(or partially userspace drivers). 
+
+In the GI case, from my point of view the sysfs stuff was a nice addition
+but not actually that useful.  The info in HMAT is useful, but too little
+of it was exposed.  What I don't yet have (due to lack of time), is a good
+set of examples that show more info is needed.  Maybe I'll get to that
+one day!
+
+Jonathan
