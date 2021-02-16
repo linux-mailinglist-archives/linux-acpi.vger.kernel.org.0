@@ -2,679 +2,234 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B80931D048
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Feb 2021 19:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BA531D075
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Feb 2021 19:51:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbhBPSfX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Feb 2021 13:35:23 -0500
-Received: from mga06.intel.com ([134.134.136.31]:18306 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229744AbhBPSfS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Feb 2021 13:35:18 -0500
-IronPort-SDR: F8CYzVgVqGPTCbY4hQ03n17d74heZD9OqlnYi8mU1yaq2fcO95fvp1MTMuE33iseH0B95ZW/Hs
- Yu0EcU/348PA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9897"; a="244454009"
-X-IronPort-AV: E=Sophos;i="5.81,184,1610438400"; 
-   d="scan'208";a="244454009"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 10:34:35 -0800
-IronPort-SDR: l39BdLkh9B8vMietA7INSkgCGPye1JQ9nbOgkFUFf27iV45jfYzvk3RusBPeALVtFjDm07PvHm
- SNMP0zyZb4QA==
-X-IronPort-AV: E=Sophos;i="5.81,184,1610438400"; 
-   d="scan'208";a="592301981"
-Received: from dlbingha-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.134.31])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 10:34:34 -0800
-Date:   Tue, 16 Feb 2021 10:34:32 -0800
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jon Masters <jcm@jonmasters.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "John Groves (jgroves)" <jgroves@micron.com>,
-        "Kelley, Sean V" <sean.v.kelley@intel.com>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v4 4/9] cxl/mem: Add basic IOCTL interface
-Message-ID: <20210216183432.lf2uj63uckogfad4@intel.com>
-References: <20210216014538.268106-1-ben.widawsky@intel.com>
- <20210216014538.268106-5-ben.widawsky@intel.com>
- <20210216152223.000009e8@Huawei.com>
- <20210216175314.ut2dn5ujayj57zp2@intel.com>
- <20210216182849.00002c8c@Huawei.com>
+        id S231159AbhBPSui (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Feb 2021 13:50:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231128AbhBPSua (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Feb 2021 13:50:30 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2EFC06178B
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Feb 2021 10:49:07 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id p193so11440301yba.4
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Feb 2021 10:49:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ulqwXrQZpRrYT3IHT4CJ8bN5l6f9WiL4VvK05t2vkhU=;
+        b=GFVUZyY2+36xaWQOsBNcWeZvX9dgErqzir1orOVD41NTZeSKMP3B4a8JAZpGfpZNzN
+         7bXyMp1VBKh/kAFxyiGVdzGSA28wFoRfpMTz2roVpux4P7yqn6bWrY2qK82Ppkov5uAu
+         QUDkguqttvIFR+d3KCw1u52ojhCNVVQmY4DxpG/8ts2opf5bn67o4y7luRYhIOq2Pvlw
+         IvqSqfN5YIBG35KA0rfgWvZir4VWpbMA8m7NKzrc+hEQ4W99fQF8YRU4P7ukvmPeARfm
+         S0fkAUw88oh53rPVhsngwpmb43ayPtF8/Jb5qc2PUkdNqhbSgYiCedPXLmVT5cQJ805u
+         S1+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ulqwXrQZpRrYT3IHT4CJ8bN5l6f9WiL4VvK05t2vkhU=;
+        b=OQYBMIuvEcXPgrtBOJFNNPrns5JddnNwOnrMMqB+rFA3KQ99s8P3dw2dU+zfCmUfuC
+         xhrFUaRYcqPfImrFKfbNkZAxuQ2iX1W18j5/288zngP5P7LC5bifENT88kyQQmJbHu8E
+         3rbJ6ZhwYzu0s9W7pG9oyGRF9U5J7xWclX5BP36E17WbVoDaDWTVydky3okXN8md8kkE
+         o4ovcW//HS7yltxnlqMf/5oLXOwOaSw4q5NARjwBqwd2xkoAkAsy7F7CCJaI3hpFyz2f
+         lcijarLVq4klNVAjr1GMwQnJQgklzs1GnuTrhqIm3KGHN2NQzXzePOSljI8kLhqmLe+w
+         QJmA==
+X-Gm-Message-State: AOAM530QLBCllBTs4+3kMcXPknLhERtT0K0QtJVs7z4fZJl/+l8BzHHe
+        84UDNxxmzBKJgwAVxAZ1JLxpdmZV13bizzTekFzf8g==
+X-Google-Smtp-Source: ABdhPJy/W97Gt0DiNuOozzUVmxZ1k867IJaF8h5dqBDAKdPQOmZJZO6WvC505FeNpD/Kj6p1JVZxSHxHAj6xXqAAWDU=
+X-Received: by 2002:a05:6902:1025:: with SMTP id x5mr31500894ybt.96.1613501346147;
+ Tue, 16 Feb 2021 10:49:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210216182849.00002c8c@Huawei.com>
+References: <20210205222644.2357303-1-saravanak@google.com>
+ <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
+ <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com>
+ <CAMuHMdXduvBqjAqraXkEKErNJFyN6JNq5wqagc4yHHPpH5SPGQ@mail.gmail.com>
+ <CAGETcx_4FGa-rzLp6bjXbm4F4R6H2W78+nM_kN=XPz5hswzANA@mail.gmail.com> <CAMuHMdVodauqBmLMxsfi0kQtAFT8ruJ36LJL9YuQgqwQNKwHHg@mail.gmail.com>
+In-Reply-To: <CAMuHMdVodauqBmLMxsfi0kQtAFT8ruJ36LJL9YuQgqwQNKwHHg@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 16 Feb 2021 10:48:30 -0800
+Message-ID: <CAGETcx_-yBvhXDPtOiKjenvx83oMNr32UvpMN0Dt-qz5ToXEbw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-02-16 18:28:49, Jonathan Cameron wrote:
-> On Tue, 16 Feb 2021 09:53:14 -0800
-> Ben Widawsky <ben.widawsky@intel.com> wrote:
-> 
-> > On 21-02-16 15:22:23, Jonathan Cameron wrote:
-> > > On Mon, 15 Feb 2021 17:45:33 -0800
-> > > Ben Widawsky <ben.widawsky@intel.com> wrote:
-> > >   
-> > > > Add a straightforward IOCTL that provides a mechanism for userspace to
-> > > > query the supported memory device commands. CXL commands as they appear
-> > > > to userspace are described as part of the UAPI kerneldoc. The command
-> > > > list returned via this IOCTL will contain the full set of commands that
-> > > > the driver supports, however, some of those commands may not be
-> > > > available for use by userspace.
-> > > > 
-> > > > Memory device commands first appear in the CXL 2.0 specification. They
-> > > > are submitted through a mailbox mechanism specified in the CXL 2.0
-> > > > specification.
-> > > > 
-> > > > The send command allows userspace to issue mailbox commands directly to
-> > > > the hardware. The list of available commands to send are the output of
-> > > > the query command. The driver verifies basic properties of the command
-> > > > and possibly inspect the input (or output) payload to determine whether
-> > > > or not the command is allowed (or might taint the kernel).
-> > > > 
-> > > > Reported-by: kernel test robot <lkp@intel.com> # bug in earlier revision
-> > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com> (v2)  
-> > > 
-> > > I may be missreading this but I think the logic to ensure commands
-> > > using a variable sized buffer have enough space is broken.
-> > > 
-> > > Jonathan
-> > >   
-> > > > ---
-> > > >  .clang-format                                 |   1 +
-> > > >  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
-> > > >  drivers/cxl/mem.c                             | 288 +++++++++++++++++-
-> > > >  include/uapi/linux/cxl_mem.h                  | 154 ++++++++++
-> > > >  4 files changed, 443 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 include/uapi/linux/cxl_mem.h
-> > > > 
-> > > > diff --git a/.clang-format b/.clang-format
-> > > > index 10dc5a9a61b3..3f11c8901b43 100644
-> > > > --- a/.clang-format
-> > > > +++ b/.clang-format
-> > > > @@ -109,6 +109,7 @@ ForEachMacros:
-> > > >    - 'css_for_each_child'
-> > > >    - 'css_for_each_descendant_post'
-> > > >    - 'css_for_each_descendant_pre'
-> > > > +  - 'cxl_for_each_cmd'
-> > > >    - 'device_for_each_child_node'
-> > > >    - 'dma_fence_chain_for_each'
-> > > >    - 'do_for_each_ftrace_op'
-> > > > diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > > index a4c75a28c839..6eb8e634664d 100644
-> > > > --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > > +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > > @@ -352,6 +352,7 @@ Code  Seq#    Include File                                           Comments
-> > > >                                                                       <mailto:michael.klein@puffin.lb.shuttle.de>
-> > > >  0xCC  00-0F  drivers/misc/ibmvmc.h                                   pseries VMC driver
-> > > >  0xCD  01     linux/reiserfs_fs.h
-> > > > +0xCE  01-02  uapi/linux/cxl_mem.h                                    Compute Express Link Memory Devices
-> > > >  0xCF  02     fs/cifs/ioctl.c
-> > > >  0xDB  00-0F  drivers/char/mwave/mwavepub.h
-> > > >  0xDD  00-3F                                                          ZFCP device driver see drivers/s390/scsi/
-> > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > index 410adb1bdffc..a4298cb1182d 100644
-> > > > --- a/drivers/cxl/mem.c
-> > > > +++ b/drivers/cxl/mem.c
-> > > > @@ -1,5 +1,6 @@
-> > > >  // SPDX-License-Identifier: GPL-2.0-only
-> > > >  /* Copyright(c) 2020 Intel Corporation. All rights reserved. */
-> > > > +#include <uapi/linux/cxl_mem.h>
-> > > >  #include <linux/module.h>
-> > > >  #include <linux/mutex.h>
-> > > >  #include <linux/cdev.h>
-> > > > @@ -40,6 +41,7 @@
-> > > >  #define CXL_MAILBOX_TIMEOUT_MS (2 * HZ)
-> > > >  
-> > > >  enum opcode {
-> > > > +	CXL_MBOX_OP_INVALID		= 0x0000,
-> > > >  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
-> > > >  	CXL_MBOX_OP_MAX			= 0x10000
-> > > >  };
-> > > > @@ -91,6 +93,49 @@ struct cxl_memdev {
-> > > >  static int cxl_mem_major;
-> > > >  static DEFINE_IDA(cxl_memdev_ida);
-> > > >  
-> > > > +/**
-> > > > + * struct cxl_mem_command - Driver representation of a memory device command
-> > > > + * @info: Command information as it exists for the UAPI
-> > > > + * @opcode: The actual bits used for the mailbox protocol
-> > > > + *
-> > > > + * The cxl_mem_command is the driver's internal representation of commands that
-> > > > + * are supported by the driver. Some of these commands may not be supported by
-> > > > + * the hardware. The driver will use @info to validate the fields passed in by
-> > > > + * the user then submit the @opcode to the hardware.
-> > > > + *
-> > > > + * See struct cxl_command_info.
-> > > > + */
-> > > > +struct cxl_mem_command {
-> > > > +	struct cxl_command_info info;
-> > > > +	enum opcode opcode;
-> > > > +};
-> > > > +
-> > > > +#define CXL_CMD(_id, sin, sout)                                                \
-> > > > +	[CXL_MEM_COMMAND_ID_##_id] = {                                         \
-> > > > +	.info =	{                                                              \
-> > > > +			.id = CXL_MEM_COMMAND_ID_##_id,                        \
-> > > > +			.size_in = sin,                                        \
-> > > > +			.size_out = sout,                                      \
-> > > > +		},                                                             \
-> > > > +	.opcode = CXL_MBOX_OP_##_id,                                           \
-> > > > +	}
-> > > > +
-> > > > +/*
-> > > > + * This table defines the supported mailbox commands for the driver. This table
-> > > > + * is made up of a UAPI structure. Non-negative values as parameters in the
-> > > > + * table will be validated against the user's input. For example, if size_in is
-> > > > + * 0, and the user passed in 1, it is an error.
-> > > > + */
-> > > > +static struct cxl_mem_command mem_commands[] = {
-> > > > +	CXL_CMD(IDENTIFY, 0, 0x43),
-> > > > +};
-> > > > +
-> > > > +#define cxl_for_each_cmd(cmd)                                                  \
-> > > > +	for ((cmd) = &mem_commands[0];                                         \
-> > > > +	     ((cmd) - mem_commands) < ARRAY_SIZE(mem_commands); (cmd)++)
-> > > > +
-> > > > +#define cxl_cmd_count ARRAY_SIZE(mem_commands)
-> > > > +
-> > > >  static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > > >  {
-> > > >  	const unsigned long start = jiffies;
-> > > > @@ -312,6 +357,247 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
-> > > >  	mutex_unlock(&cxlm->mbox_mutex);
-> > > >  }
-> > > >  
-> > > > +/**
-> > > > + * handle_mailbox_cmd_from_user() - Dispatch a mailbox command for userspace.
-> > > > + * @cxlm: The CXL memory device to communicate with.
-> > > > + * @cmd: The validated command.
-> > > > + * @in_payload: Pointer to userspace's input payload.
-> > > > + * @out_payload: Pointer to userspace's output payload.
-> > > > + * @size_out: (Input) Max payload size to copy out.
-> > > > + *            (Output) Payload size hardware generated.
-> > > > + * @retval: Hardware generated return code from the operation.
-> > > > + *
-> > > > + * Return:
-> > > > + *  * %0	- Mailbox transaction succeeded. This implies the mailbox
-> > > > + *  		  protocol completed successfully not that the operation itself
-> > > > + *  		  was successful.
-> > > > + *  * %-ENOMEM  - Couldn't allocate a bounce buffer.
-> > > > + *  * %-EFAULT	- Something happened with copy_to/from_user.
-> > > > + *  * %-EINTR	- Mailbox acquisition interrupted.
-> > > > + *  * %-*	- Transaction level failures.
-> > > > + *
-> > > > + * Creates the appropriate mailbox command and dispatches it on behalf of a
-> > > > + * userspace request. The input and output payloads are copied between
-> > > > + * userspace.
-> > > > + *
-> > > > + * See cxl_send_cmd().
-> > > > + */
-> > > > +static int handle_mailbox_cmd_from_user(struct cxl_mem *cxlm,
-> > > > +					const struct cxl_mem_command *cmd,
-> > > > +					u64 in_payload, u64 out_payload,
-> > > > +					s32 *size_out, u32 *retval)
-> > > > +{
-> > > > +	struct device *dev = &cxlm->pdev->dev;
-> > > > +	struct mbox_cmd mbox_cmd = {
-> > > > +		.opcode = cmd->opcode,
-> > > > +		.size_in = cmd->info.size_in,
-> > > > +	};
-> > > > +	int rc;
-> > > > +
-> > > > +	if (cmd->info.size_out) {
-> > > > +		mbox_cmd.payload_out = kvzalloc(cmd->info.size_out, GFP_KERNEL);
-> > > > +		if (!mbox_cmd.payload_out)
-> > > > +			return -ENOMEM;
-> > > > +	}
-> > > > +
-> > > > +	if (cmd->info.size_in) {
-> > > > +		mbox_cmd.payload_in = kvzalloc(cmd->info.size_in, GFP_KERNEL);
-> > > > +		if (!mbox_cmd.payload_in) {
-> > > > +			rc = -ENOMEM;
-> > > > +			goto out;
-> > > > +		}
-> > > > +
-> > > > +		if (copy_from_user(mbox_cmd.payload_in,
-> > > > +				   u64_to_user_ptr(in_payload),
-> > > > +				   cmd->info.size_in)) {
-> > > > +			rc = -EFAULT;
-> > > > +			goto out;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +	rc = cxl_mem_mbox_get(cxlm);
-> > > > +	if (rc)
-> > > > +		goto out;
-> > > > +
-> > > > +	dev_dbg(dev,
-> > > > +		"Submitting %s command for user\n"
-> > > > +		"\topcode: %x\n"
-> > > > +		"\tsize: %ub\n",
-> > > > +		cxl_command_names[cmd->info.id].name, mbox_cmd.opcode,
-> > > > +		cmd->info.size_in);
-> > > > +
-> > > > +	rc = __cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
-> > > > +	cxl_mem_mbox_put(cxlm);
-> > > > +	if (rc)
-> > > > +		goto out;
-> > > > +
-> > > > +	/*
-> > > > +	 * @size_out contains the max size that's allowed to be written back out
-> > > > +	 * to userspace. While the payload may have written more output than
-> > > > +	 * this it will have to be ignored.
-> > > > +	 */  
-> > > 
-> > > See below for why I don't think this works. The size of mbox_cmd.payload_out
-> > > seems to always be the size userspace specified, never the 1MB this code
-> > > is assuming.  So if the hardware returns more than userspace asks for you
-> > > have a buffer overrun.
-> > > 
-> > >   
-> > > > +	if (mbox_cmd.size_out) {
-> > > > +		if (copy_to_user(u64_to_user_ptr(out_payload),
-> > > > +				 mbox_cmd.payload_out, *size_out)) {
-> > > > +			rc = -EFAULT;
-> > > > +			goto out;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +	/*
-> > > > +	 * Reporting the actual size, even if it was greater than @size_out
-> > > > +	 * allows userspace to try the command again with a bigger buffer.
-> > > > +	 */
-> > > > +	*size_out = mbox_cmd.size_out;
-> > > > +	*retval = mbox_cmd.return_code;
-> > > > +
-> > > > +out:
-> > > > +	kvfree(mbox_cmd.payload_in);
-> > > > +	kvfree(mbox_cmd.payload_out);
-> > > > +	return rc;
-> > > > +}
-> > > > +
-> > > > +/**
-> > > > + * cxl_validate_cmd_from_user() - Check fields for CXL_MEM_SEND_COMMAND.
-> > > > + * @cxlm: &struct cxl_mem device whose mailbox will be used.
-> > > > + * @send_cmd: &struct cxl_send_command copied in from userspace.
-> > > > + * @out_cmd: Sanitized and populated &struct cxl_mem_command.
-> > > > + *
-> > > > + * Return:
-> > > > + *  * %0	- @out_cmd is ready to send.
-> > > > + *  * %-ENOTTY	- Invalid command specified.
-> > > > + *  * %-EINVAL	- Reserved fields or invalid values were used.
-> > > > + *  * %-ENOMEM	- Input or output buffer wasn't sized properly.
-> > > > + *
-> > > > + * The result of this command is a fully validated command in @out_cmd that is
-> > > > + * safe to send to the hardware.
-> > > > + *
-> > > > + * See handle_mailbox_cmd_from_user()
-> > > > + */
-> > > > +static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
-> > > > +				      const struct cxl_send_command *send_cmd,
-> > > > +				      struct cxl_mem_command *out_cmd)
-> > > > +{
-> > > > +	const struct cxl_command_info *info;
-> > > > +	struct cxl_mem_command *c;
-> > > > +
-> > > > +	if (send_cmd->id == 0 || send_cmd->id >= CXL_MEM_COMMAND_ID_MAX)
-> > > > +		return -ENOTTY;
-> > > > +
-> > > > +	/*
-> > > > +	 * The user can never specify an input payload larger than what hardware
-> > > > +	 * supports, but output can be arbitrarily large (simply write out as
-> > > > +	 * much data as the hardware provides).
-> > > > +	 */
-> > > > +	if (send_cmd->in.size > cxlm->payload_size)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	if (send_cmd->flags & ~CXL_MEM_COMMAND_FLAG_MASK)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	if (send_cmd->rsvd)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	if (send_cmd->in.rsvd || send_cmd->out.rsvd)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	/* Convert user's command into the internal representation */
-> > > > +	c = &mem_commands[send_cmd->id];
-> > > > +	info = &c->info;
-> > > > +
-> > > > +	/* Check the input buffer is the expected size */
-> > > > +	if (info->size_in >= 0 && info->size_in != send_cmd->in.size)
-> > > > +		return -ENOMEM;
-> > > > +
-> > > > +	/* Check the output buffer is at least large enough */
-> > > > +	if (info->size_out >= 0 && send_cmd->out.size < info->size_out)
-> > > > +		return -ENOMEM;
-> > > > +
-> > > > +	memcpy(out_cmd, c, sizeof(*c));
-> > > > +	out_cmd->info.size_in = send_cmd->in.size;
-> > > > +	out_cmd->info.size_out = send_cmd->out.size;
-> > > > +
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > > +static int cxl_query_cmd(struct cxl_memdev *cxlmd,
-> > > > +			 struct cxl_mem_query_commands __user *q)
-> > > > +{
-> > > > +	struct device *dev = &cxlmd->dev;
-> > > > +	struct cxl_mem_command *cmd;
-> > > > +	u32 n_commands;
-> > > > +	int j = 0;
-> > > > +
-> > > > +	dev_dbg(dev, "Query IOCTL\n");
-> > > > +
-> > > > +	if (get_user(n_commands, &q->n_commands))
-> > > > +		return -EFAULT;
-> > > > +
-> > > > +	/* returns the total number if 0 elements are requested. */
-> > > > +	if (n_commands == 0)
-> > > > +		return put_user(cxl_cmd_count, &q->n_commands);
-> > > > +
-> > > > +	/*
-> > > > +	 * otherwise, return max(n_commands, total commands) cxl_command_info
-> > > > +	 * structures.
-> > > > +	 */
-> > > > +	cxl_for_each_cmd(cmd) {
-> > > > +		const struct cxl_command_info *info = &cmd->info;
-> > > > +
-> > > > +		if (copy_to_user(&q->commands[j++], info, sizeof(*info)))
-> > > > +			return -EFAULT;
-> > > > +
-> > > > +		if (j == n_commands)
-> > > > +			break;
-> > > > +	}
-> > > > +
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > > +static int cxl_send_cmd(struct cxl_memdev *cxlmd,
-> > > > +			struct cxl_send_command __user *s)
-> > > > +{
-> > > > +	struct cxl_mem *cxlm = cxlmd->cxlm;
-> > > > +	struct device *dev = &cxlmd->dev;
-> > > > +	struct cxl_send_command send;
-> > > > +	struct cxl_mem_command c;
-> > > > +	int rc;
-> > > > +
-> > > > +	dev_dbg(dev, "Send IOCTL\n");
-> > > > +
-> > > > +	if (copy_from_user(&send, s, sizeof(send)))
-> > > > +		return -EFAULT;
-> > > > +
-> > > > +	rc = cxl_validate_cmd_from_user(cxlmd->cxlm, &send, &c);
-> > > > +	if (rc)
-> > > > +		return rc;  
-> > > 
-> > > Userspace will pass in send.out set to the size of it's available buffer.
-> > > Then cxl_validate_cmd_from_user() will fill
-> > > c.info.size_out with send.out.size
-> > >   
-> > > > +
-> > > > +	/* Prepare to handle a full payload for variable sized output */
-> > > > +	if (c.info.size_out < 0)  
-> > > 
-> > > So this check only works if userspace set the command to have variable size.
-> > > That's not what the docs below suggest should happen.
-> > >   
-> > 
-> > Another good catch. This bug was introduced after the last change was made. I
-> > still don't want to have a size_out as part of the mailbox command.
-> > 
-> > Validate should not alter the size_out field except in the case of RAW commands.
-> > 
-> > I believe this is the right fix, handle_mailbox_cmd_from_user() already will
-> > only copy_to the right number of byte, but your eyes on it are appreciated.
-> > 
-> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > index 237b956f0be0..4ca4f5afd9d2 100644
-> > --- a/drivers/cxl/mem.c
-> > +++ b/drivers/cxl/mem.c
-> > @@ -686,7 +686,11 @@ static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
-> > 
-> >         memcpy(out_cmd, c, sizeof(*c));
-> >         out_cmd->info.size_in = send_cmd->in.size;
-> > -       out_cmd->info.size_out = send_cmd->out.size;
-> > +       /*
-> > +        * XXX: out_cmd->info.size_out will be controlled by the driver, and the
-> > +        * specified number of bytes @send_cmd->out.size will be copied back out
-> > +        * to userspace.
-> > +        */
-> > 
-> >         return 0;
-> >  }
-> 
-> This deals with the buffer overflow being triggered from userspace.
-> 
-> I'm still nervous.  I really don't like assuming hardware will do the right
-> thing and never send us more data than we expect.
-> 
-> Given the check that it will fit in the target buffer is simple,
-> I'd prefer to harden it and know we can't have a problem.
-> 
-> Jonathan
+On Tue, Feb 16, 2021 at 12:05 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Mon, Feb 15, 2021 at 10:27 PM Saravana Kannan <saravanak@google.com> wrote:
+> > On Mon, Feb 15, 2021 at 4:38 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > On Fri, Feb 12, 2021 at 4:00 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > >       - I2C on R-Car Gen3 does not seem to use DMA, according to
+> > > > >         /sys/kernel/debug/dmaengine/summary:
+> > > > >
+> > > > >             -dma4chan0    | e66d8000.i2c:tx
+> > > > >             -dma4chan1    | e66d8000.i2c:rx
+> > > > >             -dma5chan0    | e6510000.i2c:tx
+> > > >
+> > > > I think I need more context on the problem before I can try to fix it.
+> > > > I'm also very unfamiliar with that file. With fw_devlink=permissive,
+> > > > I2C was using DMA? If so, the next step is to see if the I2C relative
+> > > > probe order with DMA is getting changed and if so, why.
+> > >
+> > > More detailed log:
+> > >
+> > >     platform e66d8000.i2c: Linked as a consumer to e6150000.clock-controller
+> > >     platform e66d8000.i2c: Linked as a sync state only consumer to e6055400.gpio
+> > >
+> > > Why is e66d8000.i2c not linked as a consumer to e6700000.dma-controller?
+> >
+> > Because fw_devlink.strict=1 is not set and dma/iommu is considered an
+> > "optional"/"driver decides" dependency.
+>
+> Oh, I thought dma/iommu were considered mandatory initially,
+> but dropped as dependencies in the late boot process?
 
-I'm working on hardening __cxl_mem_mbox_send_cmd now per your request. With
-that, I think this solves the issue, right?
+No, I didn't do that in case the drivers that didn't need the
+IOMMU/DMA were sensitive to probe order.
 
-> 
-> 
-> > 
-> > > > +		c.info.size_out = cxlm->payload_size;
-> > > > +
-> > > > +	rc = handle_mailbox_cmd_from_user(cxlm, &c, send.in.payload,
-> > > > +					  send.out.payload, &send.out.size,
-> > > > +					  &send.retval);
-> > > > +	if (rc)
-> > > > +		return rc;
-> > > > +
-> > > > +	return copy_to_user(s, &send, sizeof(send));
-> > > > +}
-> > > > +
-> > > > +static long __cxl_memdev_ioctl(struct cxl_memdev *cxlmd, unsigned int cmd,
-> > > > +			       unsigned long arg)
-> > > > +{
-> > > > +	switch (cmd) {
-> > > > +	case CXL_MEM_QUERY_COMMANDS:
-> > > > +		return cxl_query_cmd(cxlmd, (void __user *)arg);
-> > > > +	case CXL_MEM_SEND_COMMAND:
-> > > > +		return cxl_send_cmd(cxlmd, (void __user *)arg);
-> > > > +	default:
-> > > > +		return -ENOTTY;
-> > > > +	}
-> > > > +}
-> > > > +
-> > > >  static long cxl_memdev_ioctl(struct file *file, unsigned int cmd,
-> > > >  			     unsigned long arg)
-> > > >  {
-> > > > @@ -325,7 +611,7 @@ static long cxl_memdev_ioctl(struct file *file, unsigned int cmd,
-> > > >  	if (!percpu_ref_tryget_live(&cxlmd->ops_active))
-> > > >  		return -ENXIO;
-> > > >  
-> > > > -	/* TODO: ioctl body */
-> > > > +	rc = __cxl_memdev_ioctl(cxlmd, cmd, arg);
-> > > >  
-> > > >  	percpu_ref_put(&cxlmd->ops_active);
-> > > >  
-> > > > diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> > > > new file mode 100644
-> > > > index 000000000000..18cea908ad0b
-> > > > --- /dev/null
-> > > > +++ b/include/uapi/linux/cxl_mem.h
-> > > > @@ -0,0 +1,154 @@
-> > > > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > > > +/*
-> > > > + * CXL IOCTLs for Memory Devices
-> > > > + */
-> > > > +
-> > > > +#ifndef _UAPI_CXL_MEM_H_
-> > > > +#define _UAPI_CXL_MEM_H_
-> > > > +
-> > > > +#include <linux/types.h>
-> > > > +
-> > > > +/**
-> > > > + * DOC: UAPI
-> > > > + *
-> > > > + * Not all of all commands that the driver supports are always available for use
-> > > > + * by userspace. Userspace must check the results from the QUERY command in
-> > > > + * order to determine the live set of commands.
-> > > > + */
-> > > > +
-> > > > +#define CXL_MEM_QUERY_COMMANDS _IOR(0xCE, 1, struct cxl_mem_query_commands)
-> > > > +#define CXL_MEM_SEND_COMMAND _IOWR(0xCE, 2, struct cxl_send_command)
-> > > > +
-> > > > +#define CXL_CMDS                                                          \
-> > > > +	___C(INVALID, "Invalid Command"),                                 \
-> > > > +	___C(IDENTIFY, "Identify Command"),                               \
-> > > > +	___C(MAX, "invalid / last command")
-> > > > +
-> > > > +#define ___C(a, b) CXL_MEM_COMMAND_ID_##a
-> > > > +enum { CXL_CMDS };
-> > > > +
-> > > > +#undef ___C
-> > > > +#define ___C(a, b) { b }
-> > > > +static const struct {
-> > > > +	const char *name;
-> > > > +} cxl_command_names[] = { CXL_CMDS };
-> > > > +
-> > > > +/*
-> > > > + * Here's how this actually breaks out:
-> > > > + * cxl_command_names[] = {
-> > > > + *	[CXL_MEM_COMMAND_ID_INVALID] = { "Invalid Command" },
-> > > > + *	[CXL_MEM_COMMAND_ID_IDENTIFY] = { "Identify Command" },
-> > > > + *	...
-> > > > + *	[CXL_MEM_COMMAND_ID_MAX] = { "invalid / last command" },
-> > > > + * };
-> > > > + */  
-> > > 
-> > > Thanks, this is great.
-> > >   
-> > > > +
-> > > > +#undef ___C
-> > > > +
-> > > > +/**
-> > > > + * struct cxl_command_info - Command information returned from a query.
-> > > > + * @id: ID number for the command.
-> > > > + * @flags: Flags that specify command behavior.
-> > > > + * @size_in: Expected input size, or -1 if variable length.
-> > > > + * @size_out: Expected output size, or -1 if variable length.
-> > > > + *
-> > > > + * Represents a single command that is supported by both the driver and the
-> > > > + * hardware. This is returned as part of an array from the query ioctl. The
-> > > > + * following would be a command that takes a variable length input and returns 0
-> > > > + * bytes of output.
-> > > > + *
-> > > > + *  - @id = 10
-> > > > + *  - @flags = 0
-> > > > + *  - @size_in = -1
-> > > > + *  - @size_out = 0
-> > > > + *
-> > > > + * See struct cxl_mem_query_commands.
-> > > > + */
-> > > > +struct cxl_command_info {
-> > > > +	__u32 id;
-> > > > +
-> > > > +	__u32 flags;
-> > > > +#define CXL_MEM_COMMAND_FLAG_MASK GENMASK(0, 0)
-> > > > +
-> > > > +	__s32 size_in;
-> > > > +	__s32 size_out;
-> > > > +};
-> > > > +
-> > > > +/**
-> > > > + * struct cxl_mem_query_commands - Query supported commands.
-> > > > + * @n_commands: In/out parameter. When @n_commands is > 0, the driver will
-> > > > + *		return min(num_support_commands, n_commands). When @n_commands
-> > > > + *		is 0, driver will return the number of total supported commands.
-> > > > + * @rsvd: Reserved for future use.
-> > > > + * @commands: Output array of supported commands. This array must be allocated
-> > > > + *            by userspace to be at least min(num_support_commands, @n_commands)
-> > > > + *
-> > > > + * Allow userspace to query the available commands supported by both the driver,
-> > > > + * and the hardware. Commands that aren't supported by either the driver, or the
-> > > > + * hardware are not returned in the query.
-> > > > + *
-> > > > + * Examples:
-> > > > + *
-> > > > + *  - { .n_commands = 0 } // Get number of supported commands
-> > > > + *  - { .n_commands = 15, .commands = buf } // Return first 15 (or less)
-> > > > + *    supported commands
-> > > > + *
-> > > > + *  See struct cxl_command_info.
-> > > > + */
-> > > > +struct cxl_mem_query_commands {
-> > > > +	/*
-> > > > +	 * Input: Number of commands to return (space allocated by user)
-> > > > +	 * Output: Number of commands supported by the driver/hardware
-> > > > +	 *
-> > > > +	 * If n_commands is 0, kernel will only return number of commands and
-> > > > +	 * not try to populate commands[], thus allowing userspace to know how
-> > > > +	 * much space to allocate
-> > > > +	 */  
-> > > 
-> > > This is fairly well described in the docs above the structure.
-> > > Perhaps combine the two.
-> > >   
-> > > > +	__u32 n_commands;
-> > > > +	__u32 rsvd;
-> > > > +
-> > > > +	struct cxl_command_info __user commands[]; /* out: supported commands */
-> > > > +};
-> > > > +
-> > > > +/**
-> > > > + * struct cxl_send_command - Send a command to a memory device.
-> > > > + * @id: The command to send to the memory device. This must be one of the
-> > > > + *	commands returned by the query command.
-> > > > + * @flags: Flags for the command (input).
-> > > > + * @rsvd: Must be zero.
-> > > > + * @retval: Return value from the memory device (output).
-> > > > + * @in.size: Size of the payload to provide to the device (input).
-> > > > + * @in.rsvd: Must be zero.
-> > > > + * @in.payload: Pointer to memory for payload input, payload is little endian.
-> > > > + * @out.size: Size of the payload received from the device (input/output). This
-> > > > + *	      field is filled in by userspace to let the driver know how much
-> > > > + *	      space was allocated for output. It is populated by the driver to
-> > > > + *	      let userspace know how large the output payload actually was.
-> > > > + * @out.rsvd: Must be zero.
-> > > > + * @out.payload: Pointer to memory for payload output, payload is little endian.
-> > > > + *
-> > > > + * Mechanism for userspace to send a command to the hardware for processing. The
-> > > > + * driver will do basic validation on the command sizes. In some cases even the
-> > > > + * payload may be introspected. Userspace is required to allocate large enough
-> > > > + * buffers for size_out which can be variable length in certain situations.
-> > > > + */
-> > > > +struct cxl_send_command {
-> > > > +	__u32 id;
-> > > > +	__u32 flags;
-> > > > +	__u32 rsvd;
-> > > > +	__u32 retval;
-> > > > +
-> > > > +	struct {
-> > > > +		__s32 size;
-> > > > +		__u32 rsvd;
-> > > > +		__u64 payload;
-> > > > +	} in;
-> > > > +
-> > > > +	struct {
-> > > > +		__s32 size;
-> > > > +		__u32 rsvd;
-> > > > +		__u64 payload;
-> > > > +	} out;
-> > > > +};
-> > > > +
-> > > > +#endif  
-> > >   
-> 
+My goal was for fw_devlink=on to not affect probe order for devices
+that currently don't need to defer probe. But see below...
+
+>
+> >
+> > >     platform e6700000.dma-controller: Linked as a consumer to
+> > > e6150000.clock-controller
+> >
+> > Is this the only supplier of dma-controller?
+>
+> No, e6180000.system-controller is also a supplier.
+>
+> > >     platform e66d8000.i2c: Added to deferred list
+> > >     platform e6700000.dma-controller: Added to deferred list
+> > >
+> > >     bus: 'platform': driver_probe_device: matched device
+> > > e6700000.dma-controller with driver rcar-dmac
+> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
+> > > device e6700000.dma-controller
+> > >     platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
+> > >
+> > >     bus: 'platform': driver_probe_device: matched device e66d8000.i2c
+> > > with driver i2c-rcar
+> > >     bus: 'platform': really_probe: probing driver i2c-rcar with device
+> > > e66d8000.i2c
+> > >
+> > > I2C becomes available...
+> > >
+> > >     i2c-rcar e66d8000.i2c: request_channel failed for tx (-517)
+> > >     [...]
+> > >
+> > > but DMA is not available yet, so the driver falls back to PIO.
+> > >
+> > >     driver: 'i2c-rcar': driver_bound: bound to device 'e66d8000.i2c'
+> > >     bus: 'platform': really_probe: bound device e66d8000.i2c to driver i2c-rcar
+> > >
+> > >     platform e6700000.dma-controller: Retrying from deferred list
+> > >     bus: 'platform': driver_probe_device: matched device
+> > > e6700000.dma-controller with driver rcar-dmac
+> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
+> > > device e6700000.dma-controller
+> > >     platform e6700000.dma-controller: Driver rcar-dmac requests probe deferral
+> > >     platform e6700000.dma-controller: Added to deferred list
+> > >     platform e6700000.dma-controller: Retrying from deferred list
+> > >     bus: 'platform': driver_probe_device: matched device
+> > > e6700000.dma-controller with driver rcar-dmac
+> > >     bus: 'platform': really_probe: probing driver rcar-dmac with
+> > > device e6700000.dma-controller
+> > >     driver: 'rcar-dmac': driver_bound: bound to device 'e6700000.dma-controller'
+> > >     bus: 'platform': really_probe: bound device
+> > > e6700000.dma-controller to driver rcar-dmac
+> > >
+> > > DMA becomes available.
+> > >
+> > > Here userspace is entered. /sys/kernel/debug/dmaengine/summary shows
+> > > that the I2C controllers do not have DMA channels allocated, as the
+> > > kernel has performed no more I2C transfers after DMA became available.
+> > >
+> > > Using i2cdetect shows that DMA is used, which is good:
+> > >
+> > >     i2c-rcar e66d8000.i2c: got DMA channel for rx
+> > >
+> > > With permissive devlinks, the clock controller consumers are not added
+> > > to the deferred probing list, and probe order is slightly different.
+> > > The I2C controllers are still probed before the DMA controllers.
+> > > But DMA becomes available a bit earlier, before the probing of the last
+> > > I2C slave driver.
+> >
+> > This seems like a race? I'm guessing it's two different threads
+> > probing those two devices? And it just happens to work for
+> > "permissive" assuming the boot timing doesn't change?
+> >
+> > > Hence /sys/kernel/debug/dmaengine/summary shows that
+> > > some I2C transfers did use DMA.
+> > >
+> > > So the real issue is that e66d8000.i2c not linked as a consumer to
+> > > e6700000.dma-controller.
+> >
+> > That's because fw_devlink.strict=1 isn't set. If you need DMA to be
+> > treated as a mandatory supplier, you'll need to set the flag.
+> >
+> > Is fw_devlink=on really breaking anything here? It just seems like
+> > "permissive" got lucky with the timing and it could break at any point
+> > in the future. Thought?
+>
+> I don't think there is a race.
+
+Can you explain more please? This below makes it sound like DMA just
+sneaks in at the last minute.
+
+> > > The I2C controllers are still probed before the DMA controllers.
+> > > But DMA becomes available a bit earlier, before the probing of the last
+> > > I2C slave driver.
+
+>  fw_devlinks calling driver_deferred_probe_add()
+> on all consumers has a big impact on probe order.
+
+Ugh... yeah. That's the real issue. This is really a device links
+issue that fw_devlink is exposing. I already have a bunch of things in
+my TODO list to improve deferred probing and probe ordering. Since
+this is not causing boot issues (only DMA issue) with fw_devlink=on,
+can we treat this as not a blocking item for fw_devlink=on? Once I go
+through my TODO list, it should be fixed (by not changing probe
+ordering unnecessarily). And if not, I can help find out a different
+solution at that point.
+
+Also, if you have IOMMU drivers, then fw_devlink.strict is also
+another solution that's available. On a separate note (not a final
+fix), I was wondering if we should have a config for fw_devlink.strict
+default value and then have it selected when IOMMU drivers configs are
+enabled.
+
+-Saravana
