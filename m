@@ -2,180 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8F231C3D7
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Feb 2021 22:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E31C131C50F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Feb 2021 02:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbhBOV6U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Feb 2021 16:58:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbhBOV6S (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Feb 2021 16:58:18 -0500
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37941C061788
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 13:57:38 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id c131so3751231ybf.7
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Feb 2021 13:57:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6sRa/U5Kzs1JI5RnyoYklyv1NRbU9v8LrTPHarr/PE8=;
-        b=gJEho7HAFjs40VouEGob2eg5Oy9aEdcZUBjHihE6mZQzi6czZHwv0m73BpYkXKdo5q
-         68ZV+goSq9Fae1dld8Dj2zZYLuDTZktAzE0ZwFkpES3da8W1hs5RObUljgUwwZubEMQR
-         Ca4nrFf96n+Kq21fygN6AVWqtnC1b+1lh90Ad/OFDLwRqlp57eBni+kkmVmwYsQmfAjJ
-         NcDt4L5//G6ue+WDbsA4Z4M/o7lFxOzbQQJ4D6/zpk72I1HGrEAZGi0vXqowaDBLiSCa
-         tPx3s6gkUPD/Kyv6NGu1ljv+0hfUIqhnOIrU799/0jGVFl7RUVlE+Da+9mHdD+VFVUH6
-         Lj/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6sRa/U5Kzs1JI5RnyoYklyv1NRbU9v8LrTPHarr/PE8=;
-        b=CTpNudBol7qb8s2P63yyY6SK8Fv53loQouCVM/wXXxSx9F3TtpcM9NIQqIV2LSw+iy
-         tgPqhMd4ZMqAF0tfM0FSlPNR26QbMIgONyt80s11zEmGasW+GUiKvZ68gKW/xnknJfYg
-         19gkbhutdXw+AV8nXl2QRWUQRqROQugnJedhqNaN2w8Ssk9ryaTFTEeEiVR/0Ctdc851
-         t/SFhLkriyKtlnjo4tXqOMAQVZVZz72kyAk/6Cw4hAK9aCubZ3A2FHl12T7uXxNeJ51p
-         thXQaMRtk5h5jlh+RlABDaoU133aiIij3Ef6HGSMCZWlWAtr+xdTa6wFFyiYA5gPpSrT
-         6Q7w==
-X-Gm-Message-State: AOAM533XztWOdIcz6h6+39UtVkQXqKrusJgmBF9p93SsG0ZWD/ukd3T0
-        OlUVgm1k7LOC06qPfvi07g5reOgOHwUiNmCItob4+Q==
-X-Google-Smtp-Source: ABdhPJwKttGJ/WSxMO3AOYN0BMrFeAFmWmg7rlKUzB3nt2oaOmB07PQ56EVlNxhui2daNXPCPW1sMy0iGvA9c5ZrRD4=
-X-Received: by 2002:a25:aa43:: with SMTP id s61mr27067882ybi.32.1613426257227;
- Mon, 15 Feb 2021 13:57:37 -0800 (PST)
+        id S229807AbhBPBqn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Feb 2021 20:46:43 -0500
+Received: from mga07.intel.com ([134.134.136.100]:3276 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229738AbhBPBqj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Feb 2021 20:46:39 -0500
+IronPort-SDR: dED0JsYmcBm6xpTYWFS1GcF4Yj9tx290BOeJb8aBEx7WRRAexB+xPbQvdhJRq2qx8pqZ05xuwA
+ 4SHyNDTcxniQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="246852861"
+X-IronPort-AV: E=Sophos;i="5.81,182,1610438400"; 
+   d="scan'208";a="246852861"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2021 17:45:52 -0800
+IronPort-SDR: 9PVign37nfNU52NKuia6AhCdYK2u0RZGrtsu/svq+Remo8yFinhcFvds9lOA9kMwJRVZiRtaK+
+ nmsUj1YU0v4A==
+X-IronPort-AV: E=Sophos;i="5.81,182,1610438400"; 
+   d="scan'208";a="399296054"
+Received: from dlbingha-mobl1.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.31])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2021 17:45:52 -0800
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>
+Subject: [PATCH v4 0/9] CXL 2.0 Support
+Date:   Mon, 15 Feb 2021 17:45:29 -0800
+Message-Id: <20210216014538.268106-1-ben.widawsky@intel.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210205222644.2357303-1-saravanak@google.com>
- <CAMuHMdVL-1RKJ5u-HDVA4F4w_+8yGvQQuJQBcZMsdV4yXzzfcw@mail.gmail.com>
- <CAGETcx-668+uGigaOMcsvv00mo6o_eGPcH0YyD28OCVEyVbw+w@mail.gmail.com> <CAMuHMdWFp_teT5Lgxe6BOpOb4UMM2_4FrKJm-2C6kuCH2YUMrw@mail.gmail.com>
-In-Reply-To: <CAMuHMdWFp_teT5Lgxe6BOpOb4UMM2_4FrKJm-2C6kuCH2YUMrw@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 15 Feb 2021 13:57:00 -0800
-Message-ID: <CAGETcx9AZct4h0AdjbNzF5vjoYxT+M+zJ2ddsEN5SV9ALqV48A@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Make fw_devlink=on more forgiving
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Geert,
+# Changes since v3 [1]
 
-On Mon, Feb 15, 2021 at 7:16 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Fri, Feb 12, 2021 at 4:00 AM Saravana Kannan <saravanak@google.com> wrote:
-> > On Thu, Feb 11, 2021 at 5:00 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > >   1. R-Car Gen2 (Koelsch), R-Car Gen3 (Salvator-X(S), Ebisu).
-> > >
-> > >       - Commit 2dfc564bda4a31bc ("soc: renesas: rcar-sysc: Mark device
-> > >         node OF_POPULATED after init") is no longer needed (but already
-> > >         queued for v5.12 anyway)
-> >
-> > Rob doesn't like the proliferation of OF_POPULATED and we don't need
-> > it anymore, so maybe work it out with him? It's a balance between some
-> > wasted memory (struct device(s)) vs not proliferating OF_POPULATED.
->
-> > >   2. SH/R-Mobile AG5 (kzm9g), APE6 (ape6evm), A1 (armadillo800-eva)
-> > >
-> > >       - "PATCH] soc: renesas: rmobile-sysc: Set OF_POPULATED and absorb
-> > >         reset handling" is no longer needed
-> > >         https://lore.kernel.org/linux-arm-kernel/20210205133319.1921108-1-geert+renesas@glider.be/
-> >
-> > Good to see more evidence that this series is fixing things at a more
-> > generic level.
->
-> I spoke too soon: if CONFIG_POWER_RESET_RMOBILE=n,
-> booting fails again, as everything is waiting on the system controller,
-> which never becomes available.
-> Rcar-sysc doesn't suffer from this problem, cfr. above.
-> Perhaps because the rmobile-sysc bindings use a hierarchical instead
-> of a linear PM domain description, and thus consumers point to the
-> children of the system controller node?
-> Cfr. system-controller@e6180000 in arch/arm/boot/dts/r8a7740.dtsi.
+* Fix use of GET_SUPPORTED_LOGS (Ben)
+  * Reported by Dan
+* Rework userspace commands (Al, Dan)
+  * Don't get_user twice (Al)
+  * Don't pass __user @u to handle_mailbox_cmd_from_user()  (Dan)
+* Use void * in cxl_mem_mbox_send_cmd() (Dan)
+* Fix for 32b builds (Stephen, Randy, more)
+  * Include io-64-nonatomic-lo-hi.h in mem.c
+  * Use GENMASK_ULL where appropriate
 
-Ok, I see what's going on. The problem is that the "power domain"
-fwnode being registered is not the node that contains the "compatible"
-property and becomes a device. So this patch[1] is not helping here.
-Fix is to do something like this (to avoid using OF_POPULATED flag and
-breaking reset):
+---
 
-diff --git a/drivers/soc/renesas/rmobile-sysc.c
-b/drivers/soc/renesas/rmobile-sysc.c
-index 9046b8c933cb..b7e66139ef7d 100644
---- a/drivers/soc/renesas/rmobile-sysc.c
-+++ b/drivers/soc/renesas/rmobile-sysc.c
-@@ -344,6 +344,7 @@ static int __init rmobile_init_pm_domains(void)
-                        of_node_put(np);
-                        break;
-                }
-+               fwnode_dev_initialized(&np->fwnode, true);
-        }
+In addition to the mailing list, please feel free to use #cxl on oftc IRC for
+discussion.
 
-        put_special_pds();
+---
 
-Can you give it a shot?
+# Summary
 
-[1] - https://lore.kernel.org/lkml/20210205222644.2357303-8-saravanak@google.com/
+Introduce support for “type-3” memory devices defined in the Compute Express
+Link (CXL) 2.0 specification [2]. Specifically, these are the memory devices
+defined by section 8.2.8.5 of the CXL 2.0 spec. A reference implementation
+emulating these devices has been submitted to the QEMU mailing list [3] and is
+available on gitlab [4], but will move to a shared tree on kernel.org after
+initial acceptance. “Type-3” is a CXL device that acts as a memory expander for
+RAM or Persistent Memory. The device might be interleaved with other CXL devices
+in a given physical address range.
 
-> > >       - On R-Mobile A1, I get a BUG and a memory leak:
-> > >
-> > >             BUG: spinlock bad magic on CPU#0, swapper/1
-> > >              lock: lcdc0_device+0x10c/0x308, .magic: 00000000, .owner:
-> > > <none>/-1, .owner_cpu: 0
-> > >             CPU: 0 PID: 1 Comm: swapper Not tainted
-> > > 5.11.0-rc5-armadillo-00032-gf0a85c26907e #266
-> > >             Hardware name: Generic R8A7740 (Flattened Device Tree)
-> > >             [<c010c3c8>] (unwind_backtrace) from [<c010a49c>]
-> > > (show_stack+0x10/0x14)
-> > >             [<c010a49c>] (show_stack) from [<c0159534>]
-> > > (do_raw_spin_lock+0x20/0x94)
-> > >             [<c0159534>] (do_raw_spin_lock) from [<c04089d8>]
-> > > (dev_pm_get_subsys_data+0x30/0xa0)
-> > >             [<c04089d8>] (dev_pm_get_subsys_data) from [<c0413698>]
-> > > (genpd_add_device+0x34/0x1c0)
-> > >             [<c0413698>] (genpd_add_device) from [<c041389c>]
-> > > (of_genpd_add_device+0x34/0x4c)
-> > >             [<c041389c>] (of_genpd_add_device) from [<c0a1e9bc>]
-> > > (board_staging_register_device+0xf8/0x118)
-> > >             [<c0a1e9bc>] (board_staging_register_device) from
->
-> This is indeed a pre-existing problem.
-> of_genpd_add_device() is called before platform_device_register(),
-> as it needs to attach the genpd before the device is probed.
-> But the spinlock is only initialized when the device is registered.
-> This was masked before due to an unrelated wait context check failure,
-> which disabled any further spinlock checks, and exposed by fw_devlinks
-> changing probe order.
-> Patch sent.
-> "[PATCH] staging: board: Fix uninitialized spinlock when attaching genpd"
-> https://lore.kernel.org/r/20210215151405.2551143-1-geert+renesas@glider.be
->
+In addition to the core functionality of discovering the spec defined registers
+and resources, introduce a CXL device model that will be the foundation for
+translating CXL capabilities into existing Linux infrastructure for Persistent
+Memory and other memory devices. For now, this only includes support for the
+management command mailbox the surfacing of type-3 devices. These control
+devices fill the role of “DIMMs” / nmemX memory-devices in LIBNVDIMM terms.
 
-Great!
+## Userspace Interaction
 
-Thanks,
-Saravana
+Interaction with the driver and type-3 devices via the CXL drivers is introduced
+in this patch series and considered stable ABI. They include
+
+   * sysfs - Documentation/ABI/testing/sysfs-bus-cxl
+   * IOCTL - Documentation/driver-api/cxl/memory-devices.rst
+   * debugfs - Documentation/ABI/testing/debugfs-debug
+
+Work is in process to add support for CXL interactions to the ndctl project [5]
+
+### Development plans
+
+One of the unique challenges that CXL imposes on the Linux driver model is that
+it requires the operating system to perform physical address space management
+interleaved across devices and bridges. Whereas LIBNVDIMM handles a list of
+established static persistent memory address ranges (for example from the ACPI
+NFIT), CXL introduces hotplug and the concept of allocating address space to
+instantiate persistent memory ranges. This is similar to PCI in the sense that
+the platform establishes the MMIO range for PCI BARs to be allocated, but it is
+significantly complicated by the fact that a given device can optionally be
+interleaved with other devices and can participate in several interleave-sets at
+once. LIBNVDIMM handled something like this with the aliasing between PMEM and
+BLOCK-WINDOW mode, but CXL adds flexibility to alias DEVICE MEMORY through up to
+10 decoders per device.
+
+All of the above needs to be enabled with respect to PCI hotplug events on
+Type-3 memory device which needs hooks to determine if a given device is
+contributing to a "System RAM" address range that is unable to be unplugged. In
+other words CXL ties PCI hotplug to Memory Hotplug and PCI hotplug needs to be
+able to negotiate with memory hotplug.  In the medium term the implications of
+CXL hotplug vs ACPI SRAT/SLIT/HMAT need to be reconciled. One capability that
+seems to be needed is either the dynamic allocation of new memory nodes, or
+default initializing extra pgdat instances beyond what is enumerated in ACPI
+SRAT to accommodate hot-added CXL memory.
+
+Patches welcome, questions welcome as the development effort on the post v5.12
+capabilities proceeds.
+
+## Running in QEMU
+
+The incantation to get CXL support in QEMU [4] is considered unstable at this
+time. Future readers of this cover letter should verify if any changes are
+needed. For the novice QEMU user, the following can be copy/pasted into a
+working QEMU commandline. It is enough to make the simplest topology possible.
+The topology would consist of a single memory window, single type3 device,
+single root port, and single host bridge.
+
+    +-------------+
+    |   CXL PXB   |
+    |             |
+    |  +-------+  |<----------+
+    |  |CXL RP |  |           |
+    +--+-------+--+           v
+           |            +----------+
+           |            | "window" |
+           |            +----------+
+           v                  ^
+    +-------------+           |
+    |  CXL Type 3 |           |
+    |   Device    |<----------+
+    +-------------+
+
+// Memory backend for "window"
+-object memory-backend-file,id=cxl-mem1,share,mem-path=cxl-type3,size=512M
+
+// Memory backend for LSA
+-object memory-backend-file,id=cxl-mem1-lsa,share,mem-path=cxl-mem1-lsa,size=1K
+
+// Host Bridge
+-device pxb-cxl id=cxl.0,bus=pcie.0,bus_nr=52,uid=0 len-window-base=1,window-base[0]=0x4c0000000 memdev[0]=cxl-mem1
+
+// Single root port
+-device cxl rp,id=rp0,bus=cxl.0,addr=0.0,chassis=0,slot=0,memdev=cxl-mem1
+
+// Single type3 device
+-device cxl-type3,bus=rp0,memdev=cxl-mem1,id=cxl-pmem0,size=256M -device cxl-type3,bus=rp1,memdev=cxl-mem1,id=cxl-pmem1,size=256M,lsa=cxl-mem1-lsa
+
+---
+
+[1]: https://lore.kernel.org/linux-cxl/20210212222541.2123505-1-ben.widawsky@intel.com/
+[2]: https://www.computeexpresslink.org/](https://www.computeexpresslink.org/
+[3]: https://lore.kernel.org/qemu-devel/20210202005948.241655-1-ben.widawsky@intel.com/
+[4]: https://gitlab.com/bwidawsk/qemu/-/tree/cxl-2.0v4
+[5]: https://github.com/pmem/ndctl/tree/cxl-2.0v2
+
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
+Cc: linux-pci@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Chris Browy <cbrowy@avery-design.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jon Masters <jcm@jonmasters.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Rafael Wysocki <rafael.j.wysocki@intel.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: "John Groves (jgroves)" <jgroves@micron.com>
+Cc: "Kelley, Sean V" <sean.v.kelley@intel.com>
+
+---
+
+Ben Widawsky (7):
+  cxl/mem: Find device capabilities
+  cxl/mem: Add basic IOCTL interface
+  cxl/mem: Add a "RAW" send command
+  cxl/mem: Enable commands via CEL
+  cxl/mem: Add set of informational commands
+  MAINTAINERS: Add maintainers of the CXL driver
+  cxl/mem: Add payload dumping for debug
+
+Dan Williams (2):
+  cxl/mem: Introduce a driver for CXL-2.0-Type-3 endpoints
+  cxl/mem: Register CXL memX devices
+
+ .clang-format                                 |    1 +
+ Documentation/ABI/testing/sysfs-bus-cxl       |   26 +
+ Documentation/driver-api/cxl/index.rst        |   12 +
+ .../driver-api/cxl/memory-devices.rst         |   46 +
+ Documentation/driver-api/index.rst            |    1 +
+ .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+ MAINTAINERS                                   |   11 +
+ drivers/Kconfig                               |    1 +
+ drivers/Makefile                              |    1 +
+ drivers/cxl/Kconfig                           |   66 +
+ drivers/cxl/Makefile                          |    7 +
+ drivers/cxl/bus.c                             |   29 +
+ drivers/cxl/cxl.h                             |   93 +
+ drivers/cxl/mem.c                             | 1540 +++++++++++++++++
+ drivers/cxl/pci.h                             |   31 +
+ include/linux/pci_ids.h                       |    1 +
+ include/uapi/linux/cxl_mem.h                  |  170 ++
+ 17 files changed, 2037 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-cxl
+ create mode 100644 Documentation/driver-api/cxl/index.rst
+ create mode 100644 Documentation/driver-api/cxl/memory-devices.rst
+ create mode 100644 drivers/cxl/Kconfig
+ create mode 100644 drivers/cxl/Makefile
+ create mode 100644 drivers/cxl/bus.c
+ create mode 100644 drivers/cxl/cxl.h
+ create mode 100644 drivers/cxl/mem.c
+ create mode 100644 drivers/cxl/pci.h
+ create mode 100644 include/uapi/linux/cxl_mem.h
+
+-- 
+2.30.1
+
