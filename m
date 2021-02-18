@@ -2,55 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 925E131EC7E
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 17:49:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF92931EC81
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 17:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233483AbhBRQrk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Feb 2021 11:47:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53472 "EHLO
+        id S233401AbhBRQr7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Feb 2021 11:47:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbhBRPFE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Feb 2021 10:05:04 -0500
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B56EC061574;
-        Thu, 18 Feb 2021 07:04:18 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id z15so1475332pfc.3;
-        Thu, 18 Feb 2021 07:04:18 -0800 (PST)
+        with ESMTP id S231178AbhBRPJY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Feb 2021 10:09:24 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756EBC06178C;
+        Thu, 18 Feb 2021 07:08:22 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id z68so1336620pgz.0;
+        Thu, 18 Feb 2021 07:08:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=SCWX+UOWBBJn4LzW9Yj7QYHcJVlwVskIMygyEWiC3wA=;
-        b=ptTekISckA2jYFmD+CelhT4CRuY+9zmgwQo3vUOOSVTtYU+u8puIb5X6zY9O9vS4Qt
-         1MVrE0TXQvA7aPaTJMlSGwlJCmmU2FjesAbdk6HWoy+6ECmBtkwBHrWfLk340T+lqtUr
-         tdlpQjK67nm7aAClC/zNZtIW5TdxJTr0Nn3H3Zi5ilLW6kUonpRBd8U3ufddQMCY+XKw
-         1u0NzVmgKd2Dtg8j62nf7CIB933MdcHVI+wy0MJaTfX66TYJr4epBwbhuxQ7WDefLkeb
-         IzLkM4Wm9B9CfW/6kCUDReQYeXq3pXwpzi5DKlcM7ZnXDryILmtYSrRE05ziGFtkycuO
-         fPQw==
+        bh=egGZTevWS9XGPb3i0ABiHZIAsAw10Vof+gwW4ybtKxc=;
+        b=iyWwNGi8FIEgpgnK1hUDSXo6IG2oL2TsczdBEdFtsBa7jDTG1BlBAK2fVaggR4MaX1
+         JniomodCnubVGqED+0E7iEvBfSo7LPr9JgZidAJRdI7kOUJTZCojyYSU6kFBK1XZDugx
+         xpAflkmZYkAaTXC9CtgxIUza54Cbl0YbmMAdAsHQ2haIqEg4U4rXjFZXuH8VaXJ1WLpS
+         xWVitG1whZ4zqZ/ZOCzN9UoWp8B64a9BKPcREs65kgL6zwvf/Y4avz6c8cXTHkwBRm8u
+         EWWJxq8URmFkDr6zu6C+JbsHW2aUJmJ5jHnvb+kxWf20wqoBzbE1AtkG9kH6Kb0puIdv
+         PSPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=SCWX+UOWBBJn4LzW9Yj7QYHcJVlwVskIMygyEWiC3wA=;
-        b=AsFwABVPeEPUgOK9qEcxcvjpuI4U+Bpb6fMOpx8u8WAg6k2Rr4FAQSXGy3oT3ExNV4
-         1fX72lbpDw9lzkkrpE6muw+/ya8Ek/P3qcROA9rf31JAioBg9VpHvYLRuGABiBa3q6tD
-         iWi2EfRrFpAfSC+OTf0Q1bYaimyt9HjD9QyQWZaWvLvxGxm2BX0IPByNga0maHtow8pG
-         Z7Plf5qhdO3vJS789f+JbaoOLFwRZp4PSYjWNyqIAwsAiNAwx/1MdM9vGoCMqRirFDjN
-         uP3t7U3kKnLtRrYaPb0yDDI+7TXWfKmYqgY7LoHzwTB9wGaFut9SYUM6E0DyW0d63qAr
-         4G1g==
-X-Gm-Message-State: AOAM533f9iAsL51R3dDHoMfbGtX18vTj6LlteRERNl3QeAZGJ9ldCNTr
-        LuBz9OoP3iwslWqfNkM7hrQO8TAIGe34A1XGReM=
-X-Google-Smtp-Source: ABdhPJwG5zE0x+hjJvBnpEznOmm5sOnqdV/YjJZRzgbBogf8unojEji7hX1GRoH0IU+rEawkdJbKxqx0xsaizjPJhNE=
-X-Received: by 2002:a65:4c08:: with SMTP id u8mr4275873pgq.203.1613660658089;
- Thu, 18 Feb 2021 07:04:18 -0800 (PST)
+        bh=egGZTevWS9XGPb3i0ABiHZIAsAw10Vof+gwW4ybtKxc=;
+        b=OzpauNDZFrjy1BboBg5uwZkZOst3s5dIUjVuJf++8yi9tgJPSpT3tMQxa4IDfOw8Kc
+         Y5XtnaI9t8RC1yL9QUsDezR0qrYIXbt0210fikQrc7LqqwXgCcZRgKaCLUxGa2JEbU/l
+         7DPvH8NGdallbebFd/qJBpEbrVzvsoeOlbGlrquf+ZiSUcL1szmsFBvArMA4cxqwZ+71
+         HdL5zDcvX0Sx71dn6Zgvvx36y5uKFKHdTbd+8XPsCYHc7C5IxlMn+KEPOR4AdqEUInae
+         Sj04+VJQScu4MONpi45HKEE6kCPFSfbDNsjSlEpJ7jEwZaDO9ZAy94xPMZwbBGEbYCn6
+         DJtg==
+X-Gm-Message-State: AOAM531eQRtp6LGonQw7i7rMaL4hUewbHbysHc8lfJ0g9x2XvGYLWYAS
+        gW1ILa9wsdOKQ1LNcnd98g/afnP9qb1RqekbPRw=
+X-Google-Smtp-Source: ABdhPJwzKmQIscP5gMyNk11NE+OeO6zQZ+P+DxHQqm4nhVMVX9j973HwWzfReya7dq9I/BjChToqhmmtsF+tOC9vqmI=
+X-Received: by 2002:a65:4c08:: with SMTP id u8mr4291801pgq.203.1613660901928;
+ Thu, 18 Feb 2021 07:08:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20210218052654.28995-1-calvin.johnson@oss.nxp.com> <20210218052654.28995-16-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20210218052654.28995-16-calvin.johnson@oss.nxp.com>
+References: <20210218052654.28995-1-calvin.johnson@oss.nxp.com> <20210218052654.28995-11-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20210218052654.28995-11-calvin.johnson@oss.nxp.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 18 Feb 2021 17:04:02 +0200
-Message-ID: <CAHp75VdUs8_6_bK1-TS2Bi9vQvLJLsr8C+Y5xXF2_FJHsFKeFQ@mail.gmail.com>
-Subject: Re: [net-next PATCH v6 15/15] net: dpaa2-mac: Add ACPI support for
- DPAA2 MAC driver
+Date:   Thu, 18 Feb 2021 17:08:05 +0200
+Message-ID: <CAHp75VdpvTN2R-FTb81GnwvAr_eoprEhsOMx+akukaDNBrptsQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v6 10/15] net: mdio: Add ACPI support code for mdio
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
 Cc:     Grant Likely <grant.likely@arm.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -75,58 +74,31 @@ Cc:     Grant Likely <grant.likely@arm.com>,
         linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
         "linux.cj" <linux.cj@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 18, 2021 at 7:29 AM Calvin Johnson
+On Thu, Feb 18, 2021 at 7:28 AM Calvin Johnson
 <calvin.johnson@oss.nxp.com> wrote:
 >
-> Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
-> DT or ACPI.
->
-> Modify dpaa2_mac_get_if_mode() to get interface mode from dpmac_node
-> which is a fwnode.
->
-> Modify dpaa2_pcs_create() to create pcs from dpmac_node fwnode.
->
-> Modify dpaa2_mac_connect() to support ACPI along with DT.
+> Define acpi_mdiobus_register() to Register mii_bus and create PHYs for
+> each ACPI child node.
 
-...
+> +#include <linux/acpi.h>
+> +#include <linux/acpi_mdio.h>
 
-> +                       if (is_of_node(fwnode))
+Perhaps it's better to provide the headers that this file is direct
+user of, i.e.
+ bits.h
+ dev_printk.h
+ module.h
+ types.h
 
-Redundant check I think. If it's not an fwnode, the dpmacs is NULL and
-of_node_put() is NULL-aware.
-
-> +                               of_node_put(dpmacs);
-
-...
-
-> +       if (is_of_node(fwnode))
-> +               of_node_put(dpmacs);
-
-Ditto.
-
-...
-
->         mac->if_link_type = mac->attr.link_type;
-> -
-
-Do we need to remove this blank line?
-
-...
-
-> +       if (is_of_node(dpmac_node))
-> +               fwnode_handle_put(dpmac_node);
-
-> +       if (is_of_node(dpmac_node))
-> +               fwnode_handle_put(dpmac_node);
-
-Also not sure that you need a check in the above code excerpts.
+The rest seems fine because they are guaranteed to be included by
+acpi.h (IIUC about fwnode API and acpi_mdio includes MDIO PHY APIs).
 
 -- 
 With Best Regards,
