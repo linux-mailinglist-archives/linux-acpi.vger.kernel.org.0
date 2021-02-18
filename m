@@ -2,106 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF39631F32E
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Feb 2021 00:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3F631F320
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Feb 2021 00:34:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbhBRXuc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Feb 2021 18:50:32 -0500
-Received: from mga17.intel.com ([192.55.52.151]:26836 "EHLO mga17.intel.com"
+        id S229763AbhBRXd5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Feb 2021 18:33:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57732 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229656AbhBRXua (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Feb 2021 18:50:30 -0500
-IronPort-SDR: VN+xaZBqUv6dXGpZQVZG17LIK1ENouyOVocFntgmUKZVPpBFCH93UD7wQCt+He6+LOsiBsiq5N
- Mts1Z9lFXhVw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9899"; a="163462498"
-X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
-   d="scan'208";a="163462498"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2021 15:49:50 -0800
-IronPort-SDR: nFkoHG3HO5RG8A8XSl4qOqMdpNmI4Vpaev6UL1rdXhIvU9TDgsmfi+uhClQQ1DFka5DLykvkTv
- Jqh+7qN7uoMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
-   d="scan'208";a="367723367"
-Received: from sibelius.jf.intel.com ([10.54.75.166])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Feb 2021 15:49:49 -0800
-From:   Erik Kaneda <erik.kaneda@intel.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 2/2] ACPICA: Remove some code duplication from acpi_ev_address_space_dispatch
-Date:   Thu, 18 Feb 2021 15:17:08 -0800
-Message-Id: <20210218231708.1143640-3-erik.kaneda@intel.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210218231708.1143640-1-erik.kaneda@intel.com>
-References: <20210218231708.1143640-1-erik.kaneda@intel.com>
+        id S229577AbhBRXd4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Feb 2021 18:33:56 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B9DF864EB8;
+        Thu, 18 Feb 2021 23:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613691195;
+        bh=r8wYBiYSc8JSSVKz0juViq5OtE+nP++D7BABD8XUIy8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=sYS30CvjUMSK7xvw4uT46NXq3SlilX5C2MHK4KSfbX3JCszqLGQb5S6ZV8L4yyQM+
+         NKrANau0TZlIYgCc3cueJ1H1tC995BaeG9GObY1ufNWPUzKLciJ1ibnFkP8/UVwbHJ
+         Tldod2usSqdtowmwB+LhBDbMxKPYpWJr7sOOZ0Ja5uU/32b0DfN4Q1WiYg1wsxeHOu
+         kIaT+3LDFwyTxs+20R8Vh9RSDhUpEiAka7ehcMv3oESA51PnGgWkT3OUkCx4ojPzX+
+         nCUioPmWTPi5hu3ea3udPuYO53F3ZRZeB1LVmYKaIysJjDzBypH72aToD1phqC0iqE
+         8d4mQMuurLRvw==
+Date:   Thu, 18 Feb 2021 17:33:13 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Chen Lin <chen45464546@163.com>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, bhelgaas@google.com,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chen Lin <chen.lin5@zte.com.cn>
+Subject: Re: [PATCH] PCI: hotplug: Remove unused function pointer typedef
+ acpiphp_callback
+Message-ID: <20210218233313.GA1147787@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1613443120-4279-1-git-send-email-chen45464546@163.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Tue, Feb 16, 2021 at 10:38:40AM +0800, Chen Lin wrote:
+> From: Chen Lin <chen.lin5@zte.com.cn>
+> 
+> Remove the 'acpiphp_callback' typedef as it is not used.
+> 
+> Signed-off-by: Chen Lin <chen.lin5@zte.com.cn>
 
-ACPICA commit 383f50ff8cb7424ca16a6c0234f103b41d4a783e
+Applied to pci/hotplug for v5.12, thanks!
 
-The handling of the space_id == ACPI_ADR_SPACE_GSBUS and
-space_id == ACPI_ADR_SPACE_GPIO cases is almost identical,
-fold the 2 cases into 1 to remove some code duplication.
-
-Link: https://github.com/acpica/acpica/commit/383f50ff
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
----
- drivers/acpi/acpica/evregion.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-index 2a3c13e97555..4ef43c8ef5e7 100644
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -244,7 +244,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	 *      the previous Connection)
- 	 *   2) bit_width is the actual bit length of the field (number of pins)
- 	 */
--	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GSBUS) &&
-+	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GSBUS ||
-+	     region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) &&
- 	    context && field_obj) {
- 
- 		status =
-@@ -260,25 +261,11 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 		context->connection = field_obj->field.resource_buffer;
- 		context->length = field_obj->field.resource_length;
- 		context->access_length = field_obj->field.access_length;
--	}
--	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) &&
--	    context && field_obj) {
- 
--		status =
--		    acpi_os_acquire_mutex(context_mutex, ACPI_WAIT_FOREVER);
--		if (ACPI_FAILURE(status)) {
--			goto re_enter_interpreter;
-+		if (region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) {
-+			address = field_obj->field.pin_number_index;
-+			bit_width = field_obj->field.bit_length;
- 		}
--
--		context_locked = TRUE;
--
--		/* Get the Connection (resource_template) buffer */
--
--		context->connection = field_obj->field.resource_buffer;
--		context->length = field_obj->field.resource_length;
--		context->access_length = field_obj->field.access_length;
--		address = field_obj->field.pin_number_index;
--		bit_width = field_obj->field.bit_length;
- 	}
- 
- 	/* Call the handler */
--- 
-2.29.2
-
+> ---
+>  drivers/pci/hotplug/acpiphp.h |    3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/pci/hotplug/acpiphp.h b/drivers/pci/hotplug/acpiphp.h
+> index a2094c0..a74b274 100644
+> --- a/drivers/pci/hotplug/acpiphp.h
+> +++ b/drivers/pci/hotplug/acpiphp.h
+> @@ -176,9 +176,6 @@ struct acpiphp_attention_info
+>  int acpiphp_register_hotplug_slot(struct acpiphp_slot *slot, unsigned int sun);
+>  void acpiphp_unregister_hotplug_slot(struct acpiphp_slot *slot);
+>  
+> -/* acpiphp_glue.c */
+> -typedef int (*acpiphp_callback)(struct acpiphp_slot *slot, void *data);
+> -
+>  int acpiphp_enable_slot(struct acpiphp_slot *slot);
+>  int acpiphp_disable_slot(struct acpiphp_slot *slot);
+>  u8 acpiphp_get_power_status(struct acpiphp_slot *slot);
+> -- 
+> 1.7.9.5
+> 
+> 
