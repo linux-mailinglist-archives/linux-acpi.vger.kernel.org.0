@@ -2,16 +2,16 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AA2331E601
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 06:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2F831E594
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 06:33:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbhBRFv1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Feb 2021 00:51:27 -0500
-Received: from mail-eopbgr60040.outbound.protection.outlook.com ([40.107.6.40]:33610
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        id S229658AbhBRF3k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Feb 2021 00:29:40 -0500
+Received: from mail-eopbgr70047.outbound.protection.outlook.com ([40.107.7.47]:25319
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230407AbhBRFop (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Feb 2021 00:44:45 -0500
+        id S230223AbhBRF27 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Feb 2021 00:28:59 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
  b=cH/j2RuxoRea0ndiEeMMM1FbaJfUf0dxB7wssa0P8bN3XSUhNdYbOI2/CsjaaEeWnZsmdHOmkzBZZZFjWT2WeTOdojCbyqHjgI4DON5IJ4VVfgAOmS54IdgvGk+bkZEEIfMM5nOhZoakGUBTFbhLyCmcbGkO3sz6fE3e9riR9TGjaxVlQf6Y4EB2hnpvCOFPjn+H2hq3n0Fjf9p5jHhnqiz6my/X+/NzxxjgI3ZEStJYTQem6/jVG04fgVeP2HqrVRpDW72uhzmXUUDKfis81LuQPZ/o9BwxTJpxxOyojUseYgMPWui3iYoqkpHaIAssAmMvGoBiFWk9NEjW519nkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
