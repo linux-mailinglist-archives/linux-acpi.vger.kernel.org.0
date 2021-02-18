@@ -2,76 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A7DD31F00D
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 20:40:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E5EF31F32D
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Feb 2021 00:50:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232578AbhBRTjv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Feb 2021 14:39:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52320 "EHLO mail.kernel.org"
+        id S229598AbhBRXu1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Feb 2021 18:50:27 -0500
+Received: from mga17.intel.com ([192.55.52.151]:26827 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232474AbhBRTGD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Feb 2021 14:06:03 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 523DB64E79;
-        Thu, 18 Feb 2021 19:05:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613675122;
-        bh=R4gsCZgMwDgngZ9qyYmkJ+oFMXRTckcvHATUvxlt/JE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Whm2zE7EeuTvM69X4g8Gc7a/abB6P97YSfEeTZg9ybvSaTRqWfXdJbOZ6v/VY5Yk6
-         4WUVOuCtYUaznHCoL/LQCUEYFwhR0hOZPwqpWha5v573IpnZzSx3CUsSRfz2+XIaMq
-         BdkU3WQO/TIsAgvDRLAZaYPwUQn5Or0Ur/lR6lB8lnBS8wruUmuW08HpiYOpbtU0My
-         GvyZxikx/CPFHKsyfereJrXRfNjJYZvwe5OoxNn/kSUgvTfM2U4rxQUWiBlKdeqhsJ
-         AF1Ccg35n2kBgKX2wmugoQvkAMAgqjRG0nS47dggKjnUjz6dK8bDPGZ1VAOsTmGSU7
-         3GGicHzc/fmVw==
-Date:   Thu, 18 Feb 2021 11:05:20 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux.cj@gmail.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [net-next PATCH v6 02/15] net: phy: Introduce
- fwnode_mdio_find_device()
-Message-ID: <20210218110520.727d24b7@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20210218052654.28995-3-calvin.johnson@oss.nxp.com>
-References: <20210218052654.28995-1-calvin.johnson@oss.nxp.com>
-        <20210218052654.28995-3-calvin.johnson@oss.nxp.com>
+        id S229468AbhBRXu0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Feb 2021 18:50:26 -0500
+IronPort-SDR: HhNhxdLDRF4VWfA7K77cHAZ/MZ/gpGTe0s420scq8iY2iozeNh6NFZ/Hs5Mp1KgER4NkLWyyjh
+ RhTDDkuxlxvA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9899"; a="163462463"
+X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
+   d="scan'208";a="163462463"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2021 15:49:46 -0800
+IronPort-SDR: 9Oh8+PTK3mYQKl9FTw45YVchyVRkmJS22xmzSlXowtesOB0oUnzioB1iF058Ou79nYZdXvYbyh
+ gELGD5aET31g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
+   d="scan'208";a="367723348"
+Received: from sibelius.jf.intel.com ([10.54.75.166])
+  by fmsmga007.fm.intel.com with ESMTP; 18 Feb 2021 15:49:46 -0800
+From:   Erik Kaneda <erik.kaneda@intel.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 0/2] Hans's generic serial bus fix
+Date:   Thu, 18 Feb 2021 15:17:06 -0800
+Message-Id: <20210218231708.1143640-1-erik.kaneda@intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 18 Feb 2021 10:56:41 +0530 Calvin Johnson wrote:
-> +/**
-> + * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
-> + * @np: pointer to the mdio_device's fwnode
-> + *
-> + * If successful, returns a pointer to the mdio_device with the embedded
-> + * struct device refcount incremented by one, or NULL on failure.
-> + * The caller should call put_device() on the mdio_device after its use
-> + */
-> +struct mdio_device *fwnode_mdio_find_device(struct fwnode_handle *fwnode)
+Hi Hans and Rafael,
 
-drivers/net/phy/phy_device.c:2834: warning: Function parameter or member 'fwnode' not described in 'fwnode_mdio_find_device'
-drivers/net/phy/phy_device.c:2834: warning: Excess function parameter 'np' description in 'fwnode_mdio_find_device'
+Sorry about the late responses. I've accidentally dropped the ball on
+the comunication of this pull request. Bob has merged it now and here
+are the linux-ized versions of them.
+
+Rafael, if you haven't merged the patches, please consider taking
+these as it will keep things easier to maintain on my end..
+
+Thanks and apologies,
+Erik Kaneda
+
+
+Hans de Goede (2):
+  ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region
+    parameter handling
+  ACPICA: Remove some code duplication from
+    acpi_ev_address_space_dispatch
+
+ drivers/acpi/acpica/acobject.h  |  1 +
+ drivers/acpi/acpica/evhandler.c |  7 ++++
+ drivers/acpi/acpica/evregion.c  | 69 ++++++++++++++++++++-------------
+ drivers/acpi/acpica/evxfregn.c  |  2 +
+ 4 files changed, 53 insertions(+), 26 deletions(-)
+
+-- 
+2.29.2
+
