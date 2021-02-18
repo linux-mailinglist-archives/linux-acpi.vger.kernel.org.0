@@ -2,184 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F9131E952
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 12:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6E131EC78
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Feb 2021 17:49:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbhBRLvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Feb 2021 06:51:20 -0500
-Received: from mga14.intel.com ([192.55.52.115]:22459 "EHLO mga14.intel.com"
+        id S231184AbhBRQqE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 18 Feb 2021 11:46:04 -0500
+Received: from mx1.emlix.com ([136.243.223.33]:57412 "EHLO mx1.emlix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230428AbhBRKOL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Feb 2021 05:14:11 -0500
-IronPort-SDR: P0Nw3GViz5AaV+ETM7+zv7hJYUlF8gqitqCuE4mEZKkDs15QD8bP5EEiIesIvf7e1glMFlzRSJ
- k3cBDtxjcQfg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9898"; a="182665043"
-X-IronPort-AV: E=Sophos;i="5.81,186,1610438400"; 
-   d="scan'208";a="182665043"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2021 02:09:38 -0800
-IronPort-SDR: mard8TJbZeholjzD5Ca8t/YAk0s5CZ3dQ8iFWlFD68/n7L6Q7kgLNMLmDmQzW/ilTQggVzvbh8
- dd/TXXmXWwhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,186,1610438400"; 
-   d="scan'208";a="400430609"
-Received: from lkp-server02.sh.intel.com (HELO cd560a204411) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 18 Feb 2021 02:09:37 -0800
-Received: from kbuild by cd560a204411 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lCgFc-0009bC-CN; Thu, 18 Feb 2021 10:09:36 +0000
-Date:   Thu, 18 Feb 2021 18:09:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- c9756fcd3979ee48382b8e442bb0375bfa05291f
-Message-ID: <602e3cc6.MQhu9YenDQ+chS5K%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S233109AbhBRNJY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Feb 2021 08:09:24 -0500
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.emlix.com (Postfix) with ESMTPS id C54225FC20;
+        Thu, 18 Feb 2021 13:29:30 +0100 (CET)
+From:   Rolf Eike Beer <eb@emlix.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        linux-kbuild@vger.kernel.org
+Subject: [PATCH 1/2 RESEND] tools/thermal: tmon: simplify Makefile
+Date:   Thu, 18 Feb 2021 13:29:30 +0100
+Message-ID: <5568216.dqZi6GYWaa@devpool47>
+Organization: emlix GmbH
+In-Reply-To: <3551127.BzHy4GdJBa@devpool21>
+References: <3551127.BzHy4GdJBa@devpool21>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c9756fcd3979ee48382b8e442bb0375bfa05291f  Merge branch 'pm-cpufreq-fixes' into linux-next
-
-elapsed time: 725m
-
-configs tested: 121
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                        multi_v5_defconfig
-arm                            u300_defconfig
-powerpc                        icon_defconfig
-sh                          polaris_defconfig
-arm                            lart_defconfig
-powerpc                     rainier_defconfig
-arm                        cerfcube_defconfig
-arm                         lpc32xx_defconfig
-arm                         s3c2410_defconfig
-arm                          pxa3xx_defconfig
-m68k                       m5208evb_defconfig
-mips                      pic32mzda_defconfig
-sparc                       sparc64_defconfig
-powerpc                      katmai_defconfig
-powerpc                      acadia_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                        m5307c3_defconfig
-m68k                        m5407c3_defconfig
-arm                             rpc_defconfig
-sh                           sh2007_defconfig
-mips                           ip27_defconfig
-powerpc                 xes_mpc85xx_defconfig
-arc                         haps_hs_defconfig
-xtensa                           alldefconfig
-sh                     sh7710voipgw_defconfig
-powerpc                 mpc8315_rdb_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210216
-i386                 randconfig-a005-20210216
-i386                 randconfig-a002-20210216
-i386                 randconfig-a006-20210216
-i386                 randconfig-a001-20210216
-i386                 randconfig-a004-20210216
-x86_64               randconfig-a013-20210217
-x86_64               randconfig-a016-20210217
-x86_64               randconfig-a012-20210217
-x86_64               randconfig-a015-20210217
-x86_64               randconfig-a014-20210217
-x86_64               randconfig-a011-20210217
-i386                 randconfig-a016-20210216
-i386                 randconfig-a014-20210216
-i386                 randconfig-a012-20210216
-i386                 randconfig-a013-20210216
-i386                 randconfig-a011-20210216
-i386                 randconfig-a015-20210216
-i386                 randconfig-a016-20210217
-i386                 randconfig-a014-20210217
-i386                 randconfig-a012-20210217
-i386                 randconfig-a013-20210217
-i386                 randconfig-a011-20210217
-i386                 randconfig-a015-20210217
-x86_64               randconfig-a003-20210216
-x86_64               randconfig-a002-20210216
-x86_64               randconfig-a004-20210216
-x86_64               randconfig-a001-20210216
-x86_64               randconfig-a005-20210216
-x86_64               randconfig-a006-20210216
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a013-20210216
-x86_64               randconfig-a016-20210216
-x86_64               randconfig-a012-20210216
-x86_64               randconfig-a015-20210216
-x86_64               randconfig-a014-20210216
-x86_64               randconfig-a011-20210216
-x86_64               randconfig-a003-20210215
-x86_64               randconfig-a002-20210215
-x86_64               randconfig-a001-20210215
-x86_64               randconfig-a004-20210215
-x86_64               randconfig-a005-20210215
-x86_64               randconfig-a006-20210215
-
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ tools/thermal/tmon/Makefile | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/tools/thermal/tmon/Makefile b/tools/thermal/tmon/Makefile
+index 59e417ec3e13..36dc70497066 100644
+--- a/tools/thermal/tmon/Makefile
++++ b/tools/thermal/tmon/Makefile
+@@ -13,7 +13,6 @@ CC?= $(CROSS_COMPILE)gcc
+ PKG_CONFIG?= pkg-config
+ 
+ override CFLAGS+=-D VERSION=\"$(VERSION)\"
+-LDFLAGS+=
+ TARGET=tmon
+ 
+ INSTALL_PROGRAM=install -m 755 -p
+@@ -33,7 +32,6 @@ override CFLAGS += $(shell $(PKG_CONFIG) --cflags $(STATIC) panelw ncursesw 2> /
+ 		     $(PKG_CONFIG) --cflags $(STATIC) panel ncurses 2> /dev/null)
+ 
+ OBJS = tmon.o tui.o sysfs.o pid.o
+-OBJS +=
+ 
+ tmon: $(OBJS) Makefile tmon.h
+ 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS)  -o $(TARGET) $(TMON_LIBS)
+@@ -42,15 +40,13 @@ valgrind: tmon
+ 	 sudo valgrind -v --track-origins=yes --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./$(TARGET)  1> /dev/null
+ 
+ install:
+-	- mkdir -p $(INSTALL_ROOT)/$(BINDIR)
+-	- $(INSTALL_PROGRAM) "$(TARGET)" "$(INSTALL_ROOT)/$(BINDIR)/$(TARGET)"
++	- $(INSTALL_PROGRAM) -D "$(TARGET)" "$(INSTALL_ROOT)/$(BINDIR)/$(TARGET)"
+ 
+ uninstall:
+ 	$(DEL_FILE) "$(INSTALL_ROOT)/$(BINDIR)/$(TARGET)"
+ 
+ clean:
+-	find . -name "*.o" | xargs $(DEL_FILE)
+-	rm -f $(TARGET)
++	rm -f $(TARGET) $(OBJS)
+ 
+ dist:
+ 	git tag v$(VERSION)
+-- 
+2.30.0
+
+
+-- 
+Rolf Eike Beer, emlix GmbH, http://www.emlix.com
+Fon +49 551 30664-0, Fax +49 551 30664-11
+Gothaer Platz 3, 37083 Göttingen, Germany
+Sitz der Gesellschaft: Göttingen, Amtsgericht Göttingen HR B 3160
+Geschäftsführung: Heike Jordan, Dr. Uwe Kracke – Ust-IdNr.: DE 205 198 055
+
+emlix - smart embedded open source
+
+
+
