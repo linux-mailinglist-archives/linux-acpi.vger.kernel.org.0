@@ -2,50 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B361A320375
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Feb 2021 04:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63EC63204AC
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Feb 2021 10:25:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbhBTDLc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Feb 2021 22:11:32 -0500
-Received: from mail.mpcb.gov.in ([125.17.249.59]:26682 "EHLO
-        fortimail.email.mpcb.gov.in" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229819AbhBTDLb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 19 Feb 2021 22:11:31 -0500
-X-Greylist: delayed 71266 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Feb 2021 22:11:28 EST
-Received: from User (rain-197-185-102-182.rain.network [197.185.102.182])
-        (user=feedback.consent@mpcb.gov.in mech=LOGIN bits=0)
-        by fortimail.email.mpcb.gov.in  with ESMTP id 11J7ILlG031276-11J7ILlI031276;
-        Fri, 19 Feb 2021 12:48:23 +0530
-Message-Id: <202102190718.11J7ILlG031276-11J7ILlI031276@fortimail.email.mpcb.gov.in>
-Reply-To: <brightwayfinanceloan01@protonmail.com>
-From:   "Brightway Finance Loan" <brightwayfinanceloan@gmail.com>
-Subject: Apply for loan at 5% interest rate per year
-Date:   Fri, 19 Feb 2021 09:18:21 +0200
+        id S229542AbhBTJZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Feb 2021 04:25:17 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:12627 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229525AbhBTJZQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 20 Feb 2021 04:25:16 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DjNK04Q6Gz169bw;
+        Sat, 20 Feb 2021 17:23:00 +0800 (CST)
+Received: from [10.174.178.147] (10.174.178.147) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Sat, 20 Feb 2021 17:24:30 +0800
+Subject: Re: [PATCH v1 0/4] ACPI: PCI: Unify printing of messages
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+CC:     Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+References: <4822757.tvZ08WQ2Gl@kreacher>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <7de92ec8-3a15-6165-2384-15d301e7b568@huawei.com>
+Date:   Sat, 20 Feb 2021 17:24:31 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+In-Reply-To: <4822757.tvZ08WQ2Gl@kreacher>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-FEAS-Auth-User: feedback.consent@mpcb.gov.in
-X-FE-Policy-ID: 0:1:2:SYSTEM
-To:     unlisted-recipients:; (no To-header on input)
+X-Originating-IP: [10.174.178.147]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-BrightWay Finance offers Loans ranging from (R10, 000.00 - R60, 000,000.00). Loan duration is from 1 to 20 years (Maximum) No collateral,
-No ITC CHECK and Blacklisted are welcome. If you wish to apply kindly send your full names, ID number, 
-email address and cellphone number to brightwayfinanceloan01@protonmail.com
+On 2021/2/20 2:14, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> This series gets rid of ACPICA debugging from non-ACPICA code related to PCI
+> (patches [1-3/4]) and replaces direct printk() usage in pci_link.c with
+> pr_*() or acpi_handle_*().
+> 
+> Please refer to the patch changelogs for details.
 
+Looks good to me,
 
-Yours in Service,
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Jane Cooper
-MARKETING TEAM
-Tel No: +27(0)622541582
-BrightWay Finance Loan(PTY) LTD.
-brightwayfinanceloan01@protonmail.com
+Thanks
+Hanjun
