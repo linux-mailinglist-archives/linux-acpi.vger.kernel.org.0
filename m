@@ -2,193 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4AC932014B
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Feb 2021 23:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77965320254
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Feb 2021 01:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbhBSWUx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Feb 2021 17:20:53 -0500
-Received: from mga12.intel.com ([192.55.52.136]:3822 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229515AbhBSWUx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 19 Feb 2021 17:20:53 -0500
-IronPort-SDR: 31t5MkZPcATDe+5/2Ul2mgVW957nAtuLcx9ZrZz+7aScbsGtFrmCOx5tslOmiLK2ltCyZtPf/o
- GLKz+QHa9YPg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9900"; a="163130565"
-X-IronPort-AV: E=Sophos;i="5.81,191,1610438400"; 
-   d="scan'208";a="163130565"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2021 14:20:12 -0800
-IronPort-SDR: pC71vhmFU2tDf6B0FQIZQWZDEOAgWg6yfu5JluhbEiLNoSljw3CVzq0128QAxaKgBDvTaNghzf
- kIUWcTc0N00Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,191,1610438400"; 
-   d="scan'208";a="440443242"
-Received: from lkp-server02.sh.intel.com (HELO cd560a204411) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 19 Feb 2021 14:20:10 -0800
-Received: from kbuild by cd560a204411 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lDE89-000AfC-Fx; Fri, 19 Feb 2021 22:20:09 +0000
-Date:   Sat, 20 Feb 2021 06:19:55 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 8b72d3aa065ce33df4f042840078542b1e5d2c45
-Message-ID: <6030398b.B2E7yyx8RuCeVTwN%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
+        id S229842AbhBTA4l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Feb 2021 19:56:41 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:60360 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229658AbhBTA4k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Feb 2021 19:56:40 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11K0ngC0174660;
+        Sat, 20 Feb 2021 00:54:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=RYl3Y3X/AkFzOkcEi2tJufGb8xFZ+DOgq9HkaHQEUlI=;
+ b=OTdjfP0TuC3/li58Ae7/oj27jQg14F6qG/g/LMrDj1pETqDQ/7J/6USYrMevcP1CYjvi
+ A1uAw2g7PCFhKzLvEgkDKZeNd0dEd27pAj1R/DsBIooCxCaY7KfiEY0ZWeB1FpKXsGZq
+ sRyncJQ3UMAyJJJRk832Ls1+zF+xn3cenuIyw0XmTyz27J6HTBYlUxDiLBde1wKlzNBx
+ dhldId1c1ISRYgQ3HFCIzPYYHqg22o9qaELgDR8obwUHsPn15twvRc5t6yRpOrwu3aF1
+ /tDt8M5WmnfyGc5MIcxoJPNQpUaLNqikkD467ZrQDvXFFZzqHtkCu5Vppc3X6B4XsxSz rQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 36p66rb5m9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 20 Feb 2021 00:54:52 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11K0noZl079971;
+        Sat, 20 Feb 2021 00:54:52 GMT
+Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2055.outbound.protection.outlook.com [104.47.46.55])
+        by userp3020.oracle.com with ESMTP id 36prhwa7rr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 20 Feb 2021 00:54:52 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kdJGhe/R7k9Bt39ZfVTD6tFxOKtb3y5oicPbQsjs+37dMH41bDNmVj4n8EXLU5JCAK4Ipkt2aDhqf2vimDZyBQw9pNFatv4+dGed7qD5B/gqxUaTvGuFKKfUXH79arCXF2MBK7oCXLDwRfvwfxP42h4tHXGyA5WFS2JdjRvDx4BqvuzWHt41jtssAKYgde1jHSSwkOQS/E1J8ULJzvPlR1LU4LpsRPTfBARpA2A3yZHHubd7/TP+H9sZeHxMU5I4VnRtuSfw/QwKdydzJcSAjwvXSqfvQGBZGZOOHSIyvgXp9dB+P0fPlg5O4Ea/urhg3OfZDeCrzO1kQ+CdkLnm8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RYl3Y3X/AkFzOkcEi2tJufGb8xFZ+DOgq9HkaHQEUlI=;
+ b=DF0mamQhFt5ZnTFcPW32PbbHj37gQbO05XTCpaWhVsAwJs/rPRn11qNGKiskP18E5YLhYODp3FwyRmV8DoMowUmPobW+I/SYi643dxpZun+4gCjVVVhtVCOPTgZ2xm2EtoL7nKPoE3+tNzaqFxYysnj11dAkupUfJUgUNde8Bh7WYYLF56FKpdhP4j17Oe+tSnZdS4LTemSpaB45f6eSXKRn4M8oc/+tQpI78HaqvxKwHRHS18AF3hEFzwj8LB9mHlRuRKMfSgMW9f4mVVdklBIEiXeTAxseY58BYSKVgYfqulGSqMZ2XMH2qwlXLCzcSfeHCcbHO4OXOGKuiRABBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RYl3Y3X/AkFzOkcEi2tJufGb8xFZ+DOgq9HkaHQEUlI=;
+ b=vAIXRhMGGEAuVaX7/j/TVWJEn3UaDVZBsvRYEQ4ME2QI0ts0JLXG/H+rsLh59VSvS12ZZM+bqJU45EZpc7xqIvi/E2qVj4nsd2U2uaSmI4ALQ2xvlqFCKeThXflGos5BLrynkQfPpz9hF4hn5sNWMHEhoS87BKKzasdGBVtL6/0=
+Authentication-Results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB2551.namprd10.prod.outlook.com (2603:10b6:a02:b6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.27; Sat, 20 Feb
+ 2021 00:54:49 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456%4]) with mapi id 15.20.3846.039; Sat, 20 Feb 2021
+ 00:54:49 +0000
+Date:   Fri, 19 Feb 2021 19:54:44 -0500
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Jon Masters <jcm@jonmasters.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "John Groves (jgroves)" <jgroves@micron.com>,
+        "Kelley, Sean V" <sean.v.kelley@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v5 1/9] cxl/mem: Introduce a driver for CXL-2.0-Type-3
+ endpoints
+Message-ID: <YDBd1J98VJM0dLvE@Konrads-MacBook-Pro.local>
+References: <20210217040958.1354670-1-ben.widawsky@intel.com>
+ <20210217040958.1354670-2-ben.widawsky@intel.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210217040958.1354670-2-ben.widawsky@intel.com>
+X-Originating-IP: [209.6.208.110]
+X-ClientProxiedBy: SN4PR0501CA0034.namprd05.prod.outlook.com
+ (2603:10b6:803:40::47) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Konrads-MacBook-Pro.local (209.6.208.110) by SN4PR0501CA0034.namprd05.prod.outlook.com (2603:10b6:803:40::47) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.11 via Frontend Transport; Sat, 20 Feb 2021 00:54:46 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 65c47051-b1c3-4260-64a6-08d8d53a1fdc
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2551:
+X-Microsoft-Antispam-PRVS: <BYAPR10MB2551DDB86FC97148F322186089839@BYAPR10MB2551.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LYGRuwEWMWFelWojFbjLkQdlMgsm7yW20GMsCm70uwAtVzSciFM5Arzio9wcm+yotO2PBi6mCqX/T4K4AcnyXcqH/5WUyeDuEE2muqeRVXGhKwXnIyD8E7ThpSYAigqOorVJJ5lPBHeFsJQb5gl/SNPU54XGb9QD2oNOVOiJzylr8iR7PD5hXZilbkSKCoa2drWZ/Ssevb4U+zbFicVdLsFo+8YI2eFtPiGBKfbJIfQdXAFIk0QvTHe9G2ylxfaRMj4REpVxPIqQA1UdXKgebLK0pANRLlQu7q/umAKaAGGmoJ3Wmc8JeMQ/ZOEEt7MgTQCSpDhDpyzqyQDbXwhCsUNTge503wPqoz3lPM7uJKcHPPtqzpoM1rp7re66HyxDPyX1oqWv2wmd1uCNuCUDjZjprWJT41Z7HizaHj4BP0mcBI/aLw+gyFx2YawJ1wBmeilrQ+p8bhBcSPjVNEqsyWEcSJwA0l4ZpW7aOguyxaMWYGzfdvsBPsMDZDNb1fLsdaFVPz38erwU42LPAoeg41jYII0rGSaV4eCAKW8Ae/24srCl6oGU2GKhIvYcN57XUrucGaklIBaYjingFbOHbbhS/l9hiYHxBDe3pf1FG+g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2999.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(346002)(39860400002)(396003)(376002)(136003)(6506007)(26005)(5660300002)(4326008)(956004)(66946007)(16526019)(83380400001)(52116002)(7416002)(186003)(2906002)(8676002)(66476007)(8936002)(478600001)(316002)(7696005)(966005)(86362001)(66556008)(54906003)(9686003)(6916009)(55016002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?v1khhlDI+IQUVEaM598yURUL+0Gm6EU3rcoOMjQfRciaSNI1OZJjbnGCwmSc?=
+ =?us-ascii?Q?eVKWz6FgJDvzBxIFqui8evKNTY7uBinenwECmTRtopdKgU9zkQbFI3u12jSC?=
+ =?us-ascii?Q?EByQ3l4cdU+IsM+d96dGVAz3xO3v3IM6Ycox/6iJ9PJgL66TvIp46t9saRd1?=
+ =?us-ascii?Q?M0/kVkkXWXamRhDRf7nHm/qIMaPpXaE7RFiyw9LxSClsSx1Rg+EkPWH6h2sm?=
+ =?us-ascii?Q?dCIn5o6I9TLy7731bWGUKHe63DcdOtUz/IrTFf8ORELJ58Eiy8tVCa9nwY6A?=
+ =?us-ascii?Q?ru9G2I/iKHo9HNR1R/zPHyRxbt1IIJG75nkVrY8TQFaGcbMRG0AJImiZpyBb?=
+ =?us-ascii?Q?Dgbthx2ea8wM3zqM/j2hGwIf1xR5Q/oyRHmuPlPzmqca1Oa4Ae17Mc3c7ARO?=
+ =?us-ascii?Q?wcJAma3Nuhlag4EqcU3OnRvnofi7E4OlUF4F1kUPehM3rKZCnnQO2+ww8wqb?=
+ =?us-ascii?Q?J2cppZHMgXbwhOCpBwJEVQHWtCfxj5lH6JbWEVz5VAXEnkGyRe7sIVzGr7Pk?=
+ =?us-ascii?Q?KAJCvWjU9sI1BJ/buXVGvwZpT9bi/qiB+QnzBrEhDpEqem8ZrjMBG6gbUcjL?=
+ =?us-ascii?Q?AcNvH9kzurafvEqxmnp9hXEuAZjBqnf9547rd1BsimLINCEfm28SRmXHgYOe?=
+ =?us-ascii?Q?bSSC1MLD8pw8OickSMk8oFdDy7W+6sAcih/gPMwyv/PFbVGi6XNd0Quzh+5W?=
+ =?us-ascii?Q?N9uLVkLq0WQUbsrN0Z1mF9k5B0wrDucWi+YCtx8bBxmYnccgeTPn1wCy+uZ5?=
+ =?us-ascii?Q?/nLHWL+Gk2DP++hGXHVU/OA6LhneXxUslrcTA/8F37HZjd72AbpZZO+ivJLY?=
+ =?us-ascii?Q?SPkOd8J0lztehn6efxZ5eBMhRfUjwPhYTVOMeugvjR3Xvs2P8VxjRsrVd1X6?=
+ =?us-ascii?Q?NQu1jDwz2ub9tjMg1jbWRZRmt4L7yc+pOndsIZgxr+28NZH2I76nHqVk/+BK?=
+ =?us-ascii?Q?dGLKvUZbcEbwIQxagHHSNxK8LD2h1LonkkPNKMsinZsB7FyfEQJMq58Y9qhs?=
+ =?us-ascii?Q?euLamJiWbgGc+oJ5I+w1ABdwzHNY9CkSbPfB65048hil/6iLdkbEeiYmj95a?=
+ =?us-ascii?Q?XYwFmrs/TsEKrQ//qnfIE9tqoOjAMPXI7y7966ZT8AfM6+z0s1CSYgOIHcXk?=
+ =?us-ascii?Q?4KKd92NFJiD/mz6GzyEf/oQK7TUZcvH1GbA7+zJZwezUj/WYZZGzL29ZbL4r?=
+ =?us-ascii?Q?RlimhMLVrLhcgc4YAEiq6cOhfrZ/voFuMDgYMz6JZkvO7NWoEz4IGN6n8nn4?=
+ =?us-ascii?Q?VOcKFh0YzsEjZLsTOu3P1ZRrCDdGTlFdeR0fI8RvwVfyGudY8VYy+Uea0iY+?=
+ =?us-ascii?Q?V6awvuBmwZYDxL7PwRWGTJbb?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65c47051-b1c3-4260-64a6-08d8d53a1fdc
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2021 00:54:49.3771
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nPlCvED8JPGtSZXpQlMyEPzdhxr9z1MGHMtGu2hE+j7fWmGmaZTR5U47nhGCMNMwQs5lMvRXzo5c17vWp0wOWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB2551
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9900 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102200002
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9900 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 spamscore=0 mlxscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102200002
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 8b72d3aa065ce33df4f042840078542b1e5d2c45  Merge branches 'pm-cpufreq-fixes' and 'pm-opp-fixes' into linux-next
+On Tue, Feb 16, 2021 at 08:09:50PM -0800, Ben Widawsky wrote:
+> From: Dan Williams <dan.j.williams@intel.com>
+> 
+> The CXL.mem protocol allows a device to act as a provider of "System
+> RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+> was attached to the typical CPU memory controller.
+> 
+> With the CXL-2.0 specification a PCI endpoint can implement a "Type-3"
+> device interface and give the operating system control over "Host
+> Managed Device Memory". See section 2.3 Type 3 CXL Device.
+> 
+> The memory range exported by the device may optionally be described by
+> the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+> provision persistent memory capacity from one, or more, CXL.mem devices.
+> 
+> A pre-requisite for Linux-managed memory-capacity provisioning is this
+> cxl_mem driver that can speak the mailbox protocol defined in section
+> 8.2.8.4 Mailbox Registers.
+> 
+> For now just land the initial driver boiler-plate and Documentation/
+> infrastructure.
+> 
+> Link: https://www.computeexpresslink.org/download-the-specification
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Acked-by: David Rientjes <rientjes@google.com> (v1)
+Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 
-elapsed time: 723m
-
-configs tested: 130
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      cm5200_defconfig
-mips                       rbtx49xx_defconfig
-powerpc                     stx_gp3_defconfig
-sh                           se7780_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                     sequoia_defconfig
-ia64                             alldefconfig
-sh                             espt_defconfig
-arm                          pcm027_defconfig
-mips                      pistachio_defconfig
-arm                  colibri_pxa270_defconfig
-sh                            migor_defconfig
-arm                          pxa910_defconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                  storcenter_defconfig
-mips                       bmips_be_defconfig
-arm                            u300_defconfig
-powerpc                  iss476-smp_defconfig
-arm                        spear3xx_defconfig
-powerpc                   motionpro_defconfig
-arm                             pxa_defconfig
-sh                          polaris_defconfig
-arm                         at91_dt_defconfig
-sh                        edosk7760_defconfig
-powerpc                 mpc834x_mds_defconfig
-arm                         bcm2835_defconfig
-arm                         s5pv210_defconfig
-powerpc                 canyonlands_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                      ppc44x_defconfig
-mips                         rt305x_defconfig
-arm                       omap2plus_defconfig
-powerpc                    amigaone_defconfig
-sparc64                          alldefconfig
-mips                          rb532_defconfig
-mips                           jazz_defconfig
-powerpc                 mpc832x_mds_defconfig
-powerpc                     sbc8548_defconfig
-arm                         hackkit_defconfig
-powerpc                    adder875_defconfig
-sh                           se7724_defconfig
-arm                           stm32_defconfig
-arm                          imote2_defconfig
-xtensa                         virt_defconfig
-arm                           corgi_defconfig
-m68k                        mvme16x_defconfig
-sh                   sh7770_generic_defconfig
-arm                            hisi_defconfig
-ia64                            zx1_defconfig
-sh                                  defconfig
-mips                     cu1830-neo_defconfig
-sparc                               defconfig
-arc                         haps_hs_defconfig
-powerpc                       ppc64_defconfig
-sh                          rsk7201_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210219
-i386                 randconfig-a003-20210219
-i386                 randconfig-a002-20210219
-i386                 randconfig-a004-20210219
-i386                 randconfig-a001-20210219
-i386                 randconfig-a006-20210219
-x86_64               randconfig-a012-20210219
-x86_64               randconfig-a016-20210219
-x86_64               randconfig-a013-20210219
-x86_64               randconfig-a015-20210219
-x86_64               randconfig-a011-20210219
-x86_64               randconfig-a014-20210219
-i386                 randconfig-a016-20210219
-i386                 randconfig-a012-20210219
-i386                 randconfig-a014-20210219
-i386                 randconfig-a013-20210219
-i386                 randconfig-a011-20210219
-i386                 randconfig-a015-20210219
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20210219
-x86_64               randconfig-a001-20210219
-x86_64               randconfig-a004-20210219
-x86_64               randconfig-a002-20210219
-x86_64               randconfig-a005-20210219
-x86_64               randconfig-a006-20210219
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Albeit you may want to modify 2020 to 2021 in the Copyright sections.
