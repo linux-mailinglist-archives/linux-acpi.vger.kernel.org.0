@@ -2,60 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA343208E8
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Feb 2021 07:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D2D6320963
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Feb 2021 10:29:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231722AbhBUGAP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 Feb 2021 01:00:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47448 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231660AbhBUGAK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 21 Feb 2021 01:00:10 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id CAEC564F06;
-        Sun, 21 Feb 2021 05:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613887169;
-        bh=9ei5iHGbv8TJb4GlXiTSbfmjpyMB5LnuZI5CuZgB4Lc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=FqW5iSxy6ZnxUnPSR9GSDfrLLDDcCn0dYxMxyOUBvQ68wvMxclnVIybadUBMYWq6W
-         gmFxkAkiAMi58L/ftHJYrGaoQoGZ3YTtHvATB06Q2s2TgP2eIj0xFFL64Qs4nv4jLv
-         jO/yBiPlknEbmnH5llOku9XGp3P07B2w7ZCIDYEF1M/ZPYjEehx2ID4HB88eByrWr9
-         EB9lmjLO7ICIbyC/BmZkv6AuIkt7kTFczb32V7Ow/Rtw1j7CnxA49vebwaHGvEUyhH
-         BInAFiwuDOWi8admGeF1i3R75FB6TvbfgyadNOZ/U1fjEGmqw4ODKOyxEwldJtAH4r
-         5IOIhM5z4o4ww==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id BC47060A44;
-        Sun, 21 Feb 2021 05:59:29 +0000 (UTC)
-Subject: Re: [GIT PULL] PNP updates for v5.12-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0jJqO0FVHptaE27ovFese3wFbwQyKDYdiJB621kYg5U2g@mail.gmail.com>
-References: <CAJZ5v0jJqO0FVHptaE27ovFese3wFbwQyKDYdiJB621kYg5U2g@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0jJqO0FVHptaE27ovFese3wFbwQyKDYdiJB621kYg5U2g@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pnp-5.12-rc1
-X-PR-Tracked-Commit-Id: 96228223933bf5ac920f93862c82449ec28247c0
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 55f62bc873477dae2c45bbbc30b86cf3e0982f3b
-Message-Id: <161388716976.9286.16945048915554481061.pr-tracker-bot@kernel.org>
-Date:   Sun, 21 Feb 2021 05:59:29 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S229886AbhBUJ3L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 Feb 2021 04:29:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229879AbhBUJ3J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Feb 2021 04:29:09 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C23BC061786
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Feb 2021 01:28:28 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id l12so17963076edt.3
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Feb 2021 01:28:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=hVx4R0LCu7GKRJsl6uL4wCkfb4SoG1mXiNRh6B4fnqo=;
+        b=qhsxlAb64pVyFmwdR8+G99ZVvHczrpzGUK4cH7UG9vxDw/wtqEHALuJGXkrSIwiG/W
+         7D9Lw5HSCD6+ROEyhEGovHvEP85m2uZbJYW0YIprGiRQJsm1WoOGNegnT37/i/UxJdm3
+         hrKgt5ZcJh2nQJYVfle8h4LamJ4KQVa0wuy76mGCYVgFjWWLCB49YbSR+joItlx1gaXy
+         tS4bOdZp0DJnnH+An//XKT/V4rwfm4vVRJdj6WhVgvd+UNgwyoU/8WKcIBskQ3hzXQM4
+         U6pS38D3e3kunifsRSaK56rvMAr5aivKyl5rMHiYEipefipaEPvzcDLJ9g0T0Y2xB/JS
+         x/jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=hVx4R0LCu7GKRJsl6uL4wCkfb4SoG1mXiNRh6B4fnqo=;
+        b=ISRA6STxc0IO1W/6tnTZSp5jnlQvP3sUNQS0REO5p+Rr/Z7/zKXLFo1D//2MgPvT+m
+         R/PkuDoVMIJrKqeDmyc8RKOCd7wCyeVgKSrvJ5nbTojSPYKN+kqCK4V0di6BQZLz1v7J
+         8zf2orOifQ2ga6q/a+/M4lV7Ec594nkASvikgScxo1uf3BiPXtgZjK5jYn/qmWzxviHR
+         1CK2sYEf8hhk/Lr27iTWGSunWDD2lm+Jwcsfn1R0cWRwhWnkDf1L1xFr6m7+ciSpnZrP
+         a8MYtOiWQRBi+6tZzJRDn8bl/J5xLWFXXCAUK2gc/DDLBIW59zZxBfz/36jczboOvfFt
+         /7OA==
+X-Gm-Message-State: AOAM531hU+4dqvvls8EOkfFnz/acGicqCCrcrn/4wTdXiytgZ0Gatea1
+        +A8bowE+gLAi0T3W16e/kU+8/YD+daKv4Nx2CY0=
+X-Google-Smtp-Source: ABdhPJyDZ3ajrH3t+jeIBaW79JK4U1KYSPWymYQvbTTDZF0/NELh3ZblNaEHWQ4EcAMDiv2+DfRAJvqMZt+yvDxlL0Y=
+X-Received: by 2002:aa7:de8f:: with SMTP id j15mr17578228edv.268.1613899707242;
+ Sun, 21 Feb 2021 01:28:27 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a55:894e:0:b029:cd:a0e3:a590 with HTTP; Sun, 21 Feb 2021
+ 01:28:26 -0800 (PST)
+Reply-To: msjilmike100@gmail.com
+From:   Jillrita Mike <mercylinao2015@gmail.com>
+Date:   Sun, 21 Feb 2021 10:28:26 +0100
+Message-ID: <CAHrjpBT2go6J2Yd8iuvjJ97LzLdD2HjN3R8mrTUzBDBKTugiVQ@mail.gmail.com>
+Subject: CONGRATULATION FOLLOW UP YOUR WINNING COMPANSETION FUND FROM UNITED NATION.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Mon, 15 Feb 2021 19:47:14 +0100:
+Greeting Dearest,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pnp-5.12-rc1
+This to inform you about the current economic meltdown world wide
+compensation by United Nation new president (UN) and Economic
+Community of West Africa State (ECOWAS) Organization in which you are
+one of them to receive this compensation valued of US$7.3M and is on
+transit right now, though I was unable to reach you early yesterday.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/55f62bc873477dae2c45bbbc30b86cf3e0982f3b
+Now contact the delivery Agent. musa diawara because your package is
+with him and he misplace your delivery home address, so reconfirm your
+delivery address stated bellow.
 
-Thank you!
+Your Name::::::::::::::
+Your Address ::::::::::::::::
+Your Country/ City:::::::
+Your Telephone No::::::
+Your Int'l airport and a copy of your ID :::::::::
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Here is his contact info's
+Agent. musa diawara
+contact  e-mail (diawara_musalawfirm@outlook.fr)
+
+Best Regards,
+DR. Amed musa
+Director DHL Company burkina faso Republic
