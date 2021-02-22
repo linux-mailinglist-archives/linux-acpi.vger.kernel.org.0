@@ -2,131 +2,335 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8551322018
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Feb 2021 20:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B84322231
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Feb 2021 23:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233097AbhBVT0r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Feb 2021 14:26:47 -0500
-Received: from mail-ot1-f46.google.com ([209.85.210.46]:45137 "EHLO
-        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233055AbhBVTYX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Feb 2021 14:24:23 -0500
-Received: by mail-ot1-f46.google.com with SMTP id l16so4120981oti.12
-        for <linux-acpi@vger.kernel.org>; Mon, 22 Feb 2021 11:23:49 -0800 (PST)
+        id S230399AbhBVWg3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Feb 2021 17:36:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230184AbhBVWg2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Feb 2021 17:36:28 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 944C9C061574;
+        Mon, 22 Feb 2021 14:35:48 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id v15so20720551wrx.4;
+        Mon, 22 Feb 2021 14:35:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=hO/iiMeUtUrubEhMSPfy/Z384ysScoWYaqMvzBAHZRM=;
+        b=mkygltqJ9S5V+2B2+aiZ6ePGb8849nQJyMcN/4bNV2P8CT1tdB+tJ5pjgjl9FK3ba3
+         /dmck+OCcbHjhvwkZff5Vss1zpjWi8DOtSnmnbGqZXC3yal8J65yTlvtnWi1lgGDYUY8
+         pTtEU3ovSjnsmCVyIq3qAd1UOmtt6jcuJtkbSlvVYSDPLiUBn8JAAnLmd7db7HHYwp8Q
+         XoZq1Ik1X8TpiJSipcfWDLHSOCKMWP+lGpbt3+BucYMU4IDtY82+LZK9kZPTxbTUQUOK
+         WVyb0kUcKyUwxBje3KPW4Te4bVSh3xnJYdT2GbaE9R9/g7kGHsoskUSrAUPxSQ1VR/BH
+         7Adw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=WGU+EXSBMzVJ5NM2/uaIymSrAgURedcr/UA05jK5yyU=;
-        b=kzDn/Sy6OZpgLX/kG7pwUxqmNQk7KCkf4XecW6fO2KB9CXs7dbmrj73pc5VRq5/udS
-         F5FM1F0PUvY4uo9d8lnAQmhvRZJI0sgopEnvOUha03F/6FA5WD2NIAlN+kV7Z+TtAIkh
-         zqzIxWdj5wl/bUD38GvC+3S3TrH8X144cD6sNFb3gCI75nFSo02hh0Yi+j+rrtKmIUbp
-         /3fMcTwbIYjw1YZVUhEYqBA/tk37Lg4ZQXPIWvs2wbGeM0Ipyr8KNf6DIDgdnPHXXKxk
-         rWx+ylpADQaxiE49/VssC7+/w5Zyaz73DHywvoGX/NExHxTOfDkB+L5tM6N9/NbxXkVn
-         8PaQ==
-X-Gm-Message-State: AOAM533ybdYv6G2GRkaydCbvt6nxoyKfmmdrhs1F7tsRn+w7O4199rpq
-        MJx+Os1mR3flu5P8VnU+17H0eQqLUxqpsx7Hcc4VrINKfp8=
-X-Google-Smtp-Source: ABdhPJz7n6lNyZ4eHsxs1rKf5GbAShulGK5eyJQaWmtEF9ZkX/4zKnZOYvOXT904QHCH0uhZYW+mvOfcKh0wXkAaHP4=
-X-Received: by 2002:a05:6830:2466:: with SMTP id x38mr17547298otr.206.1614021804066;
- Mon, 22 Feb 2021 11:23:24 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=hO/iiMeUtUrubEhMSPfy/Z384ysScoWYaqMvzBAHZRM=;
+        b=hKYSymTTphh/+CsyMH1tOhU7KxbM5ijZGRuAO/wqJfHXR3vldGgNb2YdMWBg/Bv5UZ
+         xQwyJUUlPZF6WxfTVxae1nsG9Zt/Ra4GJ979hy+oLsxrllc3zM1Ui9fdW4lChtziVazc
+         LxHLcYjOIhjtvZ+Ng6UQHaL/vnI1BdmPQUXLQYFF6//CJaZlC9mbrPnmUtHr2g2U5fE3
+         cHSu87ihhg7RyyaIbSn48DszmkJCMvvw/JvJvC44Q7Uq0kHjkDOIRgP3BEqiKhX7hzFU
+         zrIAvaxKn7uafjaC5ZlV750buwtFTGoXZDPhbG1pVZGBYavzMNbF/PZGYGvRDEmXMpPY
+         kYww==
+X-Gm-Message-State: AOAM533gUXX4v5DNcmKJkf5beD6UfcLEFC3Vctnk6LRM/nUX8HtS30wr
+        usouYr3wDaf+k5l7fgn5UnQ=
+X-Google-Smtp-Source: ABdhPJyKJkn/vXuQKygH8ksuLlO5olbE5JT8c5cUqia3cOcUj5toK65Vo7TeqIm0oheh2ALxhiSNfA==
+X-Received: by 2002:adf:9031:: with SMTP id h46mr23789637wrh.19.1614033347140;
+        Mon, 22 Feb 2021 14:35:47 -0800 (PST)
+Received: from [192.168.1.211] ([2.31.224.123])
+        by smtp.gmail.com with ESMTPSA id r64sm632232wma.33.2021.02.22.14.35.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Feb 2021 14:35:46 -0800 (PST)
+Subject: Re: [PATCH v3 5/6] platform/x86: Add intel_skl_int3472 driver
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Tomasz Figa <tfiga@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        kieran.bingham+renesas@ideasonboard.com,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>, me@fabwu.ch,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@acpica.org
+References: <20210222130735.1313443-1-djrscally@gmail.com>
+ <20210222130735.1313443-6-djrscally@gmail.com>
+ <CAHp75Vd2Dc2Poq7VNRXRT-0VjkYdEFY2WKpz8fWpAQViQRO4jA@mail.gmail.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <534849f6-c7b5-19b0-a09f-cd410cde93bd@gmail.com>
+Date:   Mon, 22 Feb 2021 22:35:44 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 Feb 2021 20:23:13 +0100
-Message-ID: <CAJZ5v0j90nrRG0wP3ARzjgMw8E=VZPQSX7d+SP6K-0oV0vT50w@mail.gmail.com>
-Subject: [RFC] ACPI Code First ECR: _DSC (Deepest State for Configuration)
-To:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAHp75Vd2Dc2Poq7VNRXRT-0VjkYdEFY2WKpz8fWpAQViQRO4jA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some systems there are devices that should better be left in their
-current power state before attempting to bind drivers to them in order
-to avoid some undesirable side effects of turning the power on (e.g.
-blinking a privacy LED of a camera that may confuse the user to
-believe that the camera sensor is in use while in fact the camera is
-only being probed by a driver).
+Hi Andy - thanks for comments!
 
-To support this use case, define a new device PM object called _DSC
-(Deepest State for Configuration) returning the deepest D-state the
-device can be in before evaluating its _CRS, _PRS and _SRS configuration
-objects.
+On 22/02/2021 14:58, Andy Shevchenko wrote:
+> On Mon, Feb 22, 2021 at 3:12 PM Daniel Scally <djrscally@gmail.com> wrote:
+>> ACPI devices with _HID INT3472 are currently matched to the tps68470
+>> driver, however this does not cover all situations in which that _HID
+>> occurs. We've encountered three possibilities:
+>>
+>> 1. On Chrome OS devices, an ACPI device with _HID INT3472 (representing
+>> a physical TPS68470 device) that requires a GPIO and OpRegion driver
+>> 2. On devices designed for Windows, an ACPI device with _HID INT3472
+>> (again representing a physical TPS68470 device) which requires GPIO,
+>> Clock and Regulator drivers.
+>> 3. On other devices designed for Windows, an ACPI device with _HID
+>> INT3472 which does **not** represent a physical TPS68470, and is instead
+>> used as a dummy device to group some system GPIO lines which are meant
+>> to be consumed by the sensor that is dependent on this entry.
+>>
+>> This commit adds a new module, registering a platform driver to deal
+>> with the 3rd scenario plus an i2c driver to deal with #1 and #2, by
+>> querying the CLDB buffer found against INT3472 entries to determine
+>> which is most appropriate.
+> Can you split CLK parts (and maybe regulators as well) to something
+> like intel_skl_int3472_clk.c?
 
-# Title: Introduce _DSC (Deepest State for Configuration)
 
-# Status: Draft
+Sure, no problem
 
-# Document: ACPI Specification 6.4
-
-# License
-SPDX-License Identifier: CC-BY-4.0
-
-# Submitter:
-* Sponsor: Rafael J. Wysocki, Intel
-* Creators/Contributors:
-    * Rafael J. Wysocki, Intel
-    * Sakari Ailus, Intel
-
-# Summary of the Change
-Introduce a new device PM object called _DSC (Deepest State for Configuration)
-returning the deepest D-state the device can be in before evaluating its _CRS,
-_PRS and _SRS configuration objects.
-
-# Benefits of the Change
-It will allow OSPMs to avoid putting devices into D0 in order to check and set
-their resources if _DSC is present and its return value is greater than 0.  In
-particular, if _DSC returns 4 (assuming that _PR3 is present for the given
-device), the device can remain in D3cold during driver probe and the driver
-should be able to gather all of the information needed by it to operate the
-device without changing its power state.
-
-# Impact of the Change
-Enable certain device power management optimizations.
-
-# References
-Support running driver's probe for a device powered off
-<https://lore.kernel.org/linux-acpi/20210210230800.30291-1-sakari.ailus@linux.intel.com/T/#m24e9f51119cbe6eb39f31c097ea3941d00a0baeb>
-
-# Detailed Description of the Change
-
-* Add a new row to Table 7.3 Device Power Management Child Objects:
-
-> _DSC    Object that evaluates to the device's deepest power state for configuration.
-
-* Add new Section 7.3.27:
-
-> 7.3.27. _DSC (Deepest State for Configuration)
 >
->This optional object evaluates to an integer that conveys to OSPM the deepest
->D-state the device can be in before evaluating the \_CRS, \_PRS and \_SRS
->configuration objects for it.
+>> +#include <linux/acpi.h>
+>> +#include <linux/i2c.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/slab.h>
+>> +               dev_err(&adev->dev, "%s object is not an ACPI buffer\n", id);
+> Perhaps acpi_handle_err() et al. instead of dev_*(&adev->dev, ...)
+> where it's applicable?
+
+
+Ah - yes, ok, thanks. TIL those exist
+
+>> +       if (obj->buffer.length > sizeof(*cldb)) {
+>> +               dev_err(&adev->dev, "The CLDB buffer is too large\n");
+>> +               ret = -EINVAL;
+> ENOSPC? ENOMEM?
+
+
+I still think EINVAL actually, as in this case the problem isn't that
+space couldn't be allocated but that the buffer in the SSDB is larger
+than I expect it to be, which means the definition of it has changed /
+this device isn't actually supported.
+
+>> +       ret = platform_driver_register(&int3472_discrete);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       ret = i2c_register_driver(THIS_MODULE, &int3472_tps68470);
+>> +       if (ret)
+>> +               platform_driver_unregister(&int3472_discrete);
+> Not a fan of the above, but let's see what others will say...
+
+
+Yeah; happy to discuss this more if needed.
+
+>> +#include <linux/clk-provider.h>
+> This is definitely not for *.h. (Not all C files needed this)
 >
->If \_DSC is present and the current power state of the device is not deeper
->than the one represented by its return value, the device's \_CRS, \_PRS (if
->present) and \_SRS (if present) configuration objects (see :ref:`device-configuration-objects`)
->can be safely evaluated without putting the device into D0.
+>> +#include <linux/gpio/machine.h>
+> Ditto.
 >
->Therefore, when present, the \_DSC object allows the OSPM to optimize device
->power management by avoiding an unnecessary change to device power state that
->would be otherwise made before evaluating configuration objects for the device.
+>> +#include <linux/regulator/driver.h>
+>> +#include <linux/regulator/machine.h>
+> Ditto.
+
+
+Yep; I'll move them to *_clk.c and *_regulator.c files.
+
+>> +static int skl_int3472_clk_prepare(struct clk_hw *hw)
+>> +{
+>> +       struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+>> +
+>> +       gpiod_set_value(clk->ena_gpio, 1);
+>> +       if (clk->led_gpio)
+> Make it optional and drop this check. Same for other places of use of this GPIO.
+
+
+Oops, of course, thanks
+
+>> +static int skl_int3472_clk_enable(struct clk_hw *hw)
+>> +{
+>> +       /*
+>> +        * We're just turning a GPIO on to enable, which operation has the
+>> +        * potential to sleep. Given enable cannot sleep, but prepare can,
+>> +        * we toggle the GPIO in prepare instead. Thus, nothing to do here.
+>> +        */
+> Missed . and / or  () in some words? (Describing callbacks, personally
+> I use the form "->callback()" in such cases)
+
+
+OK, I'll fix the comment to match that style.
+
+
+>> +static unsigned int skl_int3472_get_clk_frequency(struct int3472_discrete_device *int3472)
+>> +{
+>> +       union acpi_object *obj;
+>>
+>> +       unsigned int ret = 0;
+> unsigned for ret is unusual. Looking into the code, first of all it
+> doesn't need this assignment; second, it probably can gain a better
+> name: "frequency"?
+
+
+Yep ok, I'll rename to freq/frequency
+
+>> +       if (!IS_ERR_OR_NULL(sensor_config) && sensor_config->function_maps) {
+> Hmm...
 >
->**Arguments:**
+> Would
 >
->  None
+> if (IS_ERR_OR_NULL(sensor_config))
+>   return 0;
 >
->**Return Value:**
+> if (!_maps)
+>   return 0;
 >
->  An Integer representing the deepest D-state the device can be in during
->  configuration. If OSPM has not indicated that it supports \_PR3 through the OSPM
->  Platform-Wide Capabilities (see :ref:`platform-wide-ospm-capabilities`), then
->  the value "3" corresponds to D3. If it has indicated \_PR3 support, the value
->  "3" represents D3hot and the value "4" represents D3cold.
+> with respective comments working here?
+
+
+No, because the absence of either sensor_config or
+sensor_config->function_maps is not a failure mode. We only need to
+provide sensor_configs for some platforms, and function_maps for even
+fewer. So if that check is false, the rest of the function should still
+execute.
+
+>> +static int skl_int3472_register_clock(struct int3472_discrete_device *int3472)
+>> +{
+>> +       struct clk_init_data init = {
+>> +               .ops = &skl_int3472_clock_ops,
+>> +               .flags = CLK_GET_RATE_NOCACHE,
+>> +       };
+>> +       int ret = 0;
+>> +
+>> +       init.name = kasprintf(GFP_KERNEL, "%s-clk",
+>> +                             acpi_dev_name(int3472->adev));
+> devm_*() ? Or is the lifetime different?
+
+
+No it's not; I'll use devm_*(), thanks
+
+>> +       sensor_config = int3472->sensor_config;
+>> +       if (IS_ERR_OR_NULL(sensor_config)) {
+>> +               dev_err(int3472->dev, "No sensor module config\n");
+>> +               return PTR_ERR(sensor_config);
+> NULL -> 0. Is it okay?
+
+
+Ah, no it's not - good catch thank you.
+
+>> +       if (ares->type != ACPI_RESOURCE_TYPE_GPIO ||
+>> +           ares->data.gpio.connection_type != ACPI_RESOURCE_GPIO_TYPE_IO)
+>> +               return 1; /* Deliberately positive so parsing continues */
+> I don't like to lose control over ACPI_RESOURCE_TYPE_GPIO, i.e.
+> spreading it over kernel code (yes, I know about one existing TS
+> case).
+> Consider to provide a helper in analogue to acpi_gpio_get_irq_resource().
+
+
+Sure, but I probably name it acpi_gpio_is_io_resource() - a function
+named "get" which returns a bool seems a bit funny to me.
+
+>> +       if (ret < 0 && ret != -EPROBE_DEFER)
+>> +               dev_err(int3472->dev, err_msg);
+> dev_err_probe() will make the above conditional go away. And you may even do...
+
+
+Ah-ha - thought that must exist but couldn't find it - thank you.
+
+>> +       if (int3472->clock.ena_gpio) {
+> Not sure you need this here.
+
+
+We haven't seen a device that lacks a clock enable GPIO it's true, but
+since all the other kinds seem optional it didn't seem impossible that
+that one is optional too. I can remove if you prefer and we can just
+deal with it when we encounter one like that though?
+
+>> +       /* Max num GPIOs we've seen plus a terminator */
+>> +       int3472 = kzalloc(struct_size(int3472, gpios.table,
+>> +                         INT3472_MAX_SENSOR_GPIOS + 1), GFP_KERNEL);
+> Wonder of you can use devm_*() APIs in this function.
+
+
+Yeah I can, I'll switch to that.
+
+
+>> +int skl_int3472_discrete_remove(struct platform_device *pdev)
+>> +{
+>> +       struct int3472_discrete_device *int3472 = platform_get_drvdata(pdev);
+>> +       if (int3472->gpios.dev_id)
+>> +               gpiod_remove_lookup_table(&int3472->gpios);
+> gpiod_remove_lookup_table() is now NULL-aware.
+> But in any case I guess you don't need the above check.
+
+
+Sorry; forgot to call out that I didn't follow that suggestion;
+int3472->gpios is a _struct_ rather than a pointer, so &int3472->gpios
+won't be NULL, even if I haven't filled anything in to there yet because
+it failed before it got to that point. So, not sure that it quite works
+there.
+
 >
->  The \_DSC return value must represent a D-state that is supported by the
->  device.  In particular, "4" (D3cold) can be returned only if \_PR3 is present.
+>> +       if (!IS_ERR(int3472->regulator.rdev))
+>> +               regulator_unregister(int3472->regulator.rdev);
+> Shouldn't it be the pointer to the regulator itself?
+int3472->regulator is type struct int3472_gpio_regulator, the .rdev is
+the normal regulator_dev
+
+
 >
->  \_DSC must return the same integer each time it is evaluated.
->
->  The \_DSC return value must not represent a D-state shallower then the one
->  resulting from turning ON all of the power resources listed by \_PRE (if
->  present) and evaluating \_PSE (if present).
+>> +       if (!IS_ERR(int3472->clock.clk))
+> If you get it optional, you won't need this additional check.
+
+
+Yes - here it will definitely work; thanks, I'll add that patch
+
+>> +       ret = skl_int3472_fill_cldb(adev, &cldb);
+>> +       if (!ret && cldb.control_logic_type != 2) {
+>> +               dev_err(&client->dev, "Unsupported control logic type %u\n",
+>> +                       cldb.control_logic_type);
+>> +               return -EINVAL;
+>> +       }
+>> +
+>> +       if (ret)
+>> +               cldb_present = false;
+> if (ret)
+>   ...
+> else if (...)  {
+>   ...
+>   return ...;
+> }
+
+
+Oh yeah...now you point that out I have no idea what I was thinking there...
+
