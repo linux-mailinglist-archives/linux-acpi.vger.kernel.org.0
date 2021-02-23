@@ -2,60 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2DF3229BE
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 12:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892633229D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 13:01:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232475AbhBWLxs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Feb 2021 06:53:48 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:49930 "EHLO mail.JVPinto.com"
+        id S232604AbhBWLzs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Feb 2021 06:55:48 -0500
+Received: from mga05.intel.com ([192.55.52.43]:65336 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232495AbhBWLxB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:53:01 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:13 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:51:59 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:12 +0000
+        id S232486AbhBWLxr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:53:47 -0500
+IronPort-SDR: 8tSXin3+bco3R6WqXZmtAAelM+UCHjqQWHo6Sd/7fkZcYySpA2glvdZnB+MJbQSEZlSoLAOVF4
+ E6BIPzR8dFjA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9903"; a="269731710"
+X-IronPort-AV: E=Sophos;i="5.81,199,1610438400"; 
+   d="scan'208";a="269731710"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2021 03:51:57 -0800
+IronPort-SDR: Z70yGT6vdj9FcaJm+eGuAEr7cnH9rluhBMbEuaRkYtkcqDy20YufmC+J7K+6Vv6pANkx+Nkgc8
+ h9AgGEW+84DQ==
+X-IronPort-AV: E=Sophos;i="5.81,199,1610438400"; 
+   d="scan'208";a="380457690"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2021 03:51:55 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lEWEL-007Ndn-9s; Tue, 23 Feb 2021 13:51:53 +0200
+Date:   Tue, 23 Feb 2021 13:51:53 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yang Li <yang.lee@linux.alibaba.com>
+Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add missing IRQF_ONESHOT
+Message-ID: <YDTsWR/kXhd96ICI@smile.fi.intel.com>
+References: <1614069358-50943-1-git-send-email-yang.lee@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <a979b4e3f4df4cf8baf7c5db5d0603cc@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1614069358-50943-1-git-send-email-yang.lee@linux.alibaba.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+On Tue, Feb 23, 2021 at 04:35:58PM +0800, Yang Li wrote:
+> fixed the following coccicheck:
+> ./drivers/gpio/gpiolib-acpi.c:176:7-27: ERROR: Threaded IRQ with no
+> primary handler requested without IRQF_ONESHOT
+> 
+> Make sure threaded IRQs without a primary handler are always request
+> with IRQF_ONESHOT
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index e37a57d..86efa2d 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -174,7 +174,7 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
+>  	int ret, value;
+>  
+>  	ret = request_threaded_irq(event->irq, NULL, event->handler,
+> -				   event->irqflags, "ACPI:Event", event);
+> +				   event->irqflags | IRQF_ONESHOT, "ACPI:Event", event);
+>  	if (ret) {
+>  		dev_err(acpi_gpio->chip->parent,
+>  			"Failed to setup interrupt handler for %d\n",
+> -- 
+> 1.8.3.1
+> 
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Regards,
-Ms. Reem.
+
