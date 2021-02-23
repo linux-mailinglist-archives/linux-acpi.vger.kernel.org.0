@@ -2,67 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B3B322CAF
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 15:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F9A4323173
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 20:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbhBWOqj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Feb 2021 09:46:39 -0500
-Received: from mail-oo1-f44.google.com ([209.85.161.44]:37962 "EHLO
-        mail-oo1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbhBWOqi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Feb 2021 09:46:38 -0500
-Received: by mail-oo1-f44.google.com with SMTP id f26so3895687oog.5;
-        Tue, 23 Feb 2021 06:46:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/wlqU5gFpV97zZnVyyRZleFZ9BWrIgZ2Rdcv8uzTHfM=;
-        b=izqpbqAQoHWERsUlLgCvQl2ltizRssvGosn5JHs3fxCkK7IDsw9/DMyw0d0l+lmpMU
-         ZTDZ6k/4WOfqEH9v6uCGixbuQy9Kc61HGZhiUwERnOUFLILzHpf616PVOG09qjL3rIbL
-         qSPyRZ5y+oADul1PhQL7kcBz5EzrociapohB0wT9NrJscoPHa5qxhbw2evkyWbUK1Exb
-         qBr/bYm+gB+T7pYo2LC1Kq0gzow67HGKmHkxKJG3elg15m+IHGqfnlxXepXnTQdJj2In
-         xvd662pRlgmJ9slqqptGRrsNTIFVfB5QcezsoVZJno7yKDmz5wVArlh+f7DnihoZv3AX
-         MQpA==
-X-Gm-Message-State: AOAM532w6MDpFTGdxvMCy1KWQV6bSuoGd79OvuJEGPnsryCv1rKFphzE
-        znuReNSTbRdoHEY6Ut0khKiR//LQaPjg0NVx79GSBqCW
-X-Google-Smtp-Source: ABdhPJwfbF7b/OCPMJaoTlBR5XDAWd6jhh1U74IHQx1E+yIxafmNB1Y0yypJR+U1IIrawU8zOKzF7Veu7yaSNnskD5E=
-X-Received: by 2002:a4a:3bcb:: with SMTP id s194mr20310533oos.1.1614091557912;
- Tue, 23 Feb 2021 06:45:57 -0800 (PST)
+        id S233988AbhBWTdV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 23 Feb 2021 14:33:21 -0500
+Received: from mga09.intel.com ([134.134.136.24]:39422 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233954AbhBWTdU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Feb 2021 14:33:20 -0500
+IronPort-SDR: t5mlXov26QGofHhbi5dW6U1a9S2Vt04xZTyDRggvFabOCJQROJIKrj39oQgZwOv/7gcPyuQJq1
+ vzVFfWgXHdXQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9904"; a="185039188"
+X-IronPort-AV: E=Sophos;i="5.81,200,1610438400"; 
+   d="scan'208";a="185039188"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2021 11:32:38 -0800
+IronPort-SDR: jiCJmiMzgVQD1IYy3BRdRasT6qcgZeE0faiDmCw/LtvasEeAVmOqewZgXn4jKyvouLxF3LUQAB
+ yJwGBvq1RQoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,200,1610438400"; 
+   d="scan'208";a="431065712"
+Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
+  by FMSMGA003.fm.intel.com with ESMTP; 23 Feb 2021 11:32:37 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 23 Feb 2021 11:32:37 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 23 Feb 2021 11:32:37 -0800
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2106.002;
+ Tue, 23 Feb 2021 11:32:37 -0800
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Aili Yao <yaoaili@kingsoft.com>
+CC:     Borislav Petkov <bp@alien8.de>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "yangfeng1@kingsoft.com" <yangfeng1@kingsoft.com>
+Subject: RE: [PATCH v2] Dump cper error table in mce_panic
+Thread-Topic: [PATCH v2] Dump cper error table in mce_panic
+Thread-Index: AQHW9W1UcvZJLq301kWjYofz6/0Q7Ko9Rv/QgCjd3ICAACSCsA==
+Date:   Tue, 23 Feb 2021 19:32:37 +0000
+Message-ID: <434eba7a568a4b9f8eb7ee11a5c8b04f@intel.com>
+References: <20201104065057.40442-1-yaoaili126@163.com>
+        <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
+        <20201118124538.GI7472@zn.tnic>
+        <20201119134057.37ca2c19.yaoaili@kingsoft.com>
+        <20201119174508.GE3769@zn.tnic>
+        <20201120172235.620eb826.yaoaili@kingsoft.com>  <20201120102422.GA712@zn.tnic>
+        <20210128200128.6f022993.yaoaili@kingsoft.com>
+        <e9645a3ff93e46d4aabdf7dd45bfc4d7@intel.com>
+ <20210223171809.7df62b08@alex-virtual-machine>
+In-Reply-To: <20210223171809.7df62b08@alex-virtual-machine>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [10.1.200.100]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <5138173.kHyPcihzTF@kreacher> <10245832.OiMb8u2cOm@kreacher> <0faea0bd-107b-5c4c-5324-e0cd5e5cfba4@huawei.com>
-In-Reply-To: <0faea0bd-107b-5c4c-5324-e0cd5e5cfba4@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 23 Feb 2021 15:45:46 +0100
-Message-ID: <CAJZ5v0i01rX0b-=dDJEdGsK2=6D3tXbC_wdOByTF_mJ0ggTPJQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/4] ACPI: processor: Get rid of ACPICA message printing
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 23, 2021 at 12:31 PM Hanjun Guo <guohanjun@huawei.com> wrote:
+> I am not smart enough to get the point. I have paid a lot of time for this patch, 
+> I need an result even it doesn't work. so i like the reply like this:
 >
-> On 2021/2/23 2:59, Rafael J. Wysocki wrote:
-> > Index: linux-pm/drivers/acpi/processor_idle.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/processor_idle.c
-> > +++ linux-pm/drivers/acpi/processor_idle.c
->
-> In this file, function acpi_processor_cstate_first_run_checks()
-> has a wrong pr_notice():
->
-> pr_notice("ACPI: processor limited to max C-state %d\n",
->                 max_cstate);
->
-> Since we have pr_fmt() for this file, "ACPI:" is duplicate,
-> we'd better cleanup this as below:
->
-> pr_notice("processor limited to max C-state %d\n", max_cstate);
+> 1. this patch is meaningless, and should be rejected.   
+> 2. this issue is real, but we need other methond, not this patch.
+> 3. the patch need to improve.
 
-Thanks for pointing this out, I'll make this change when applying the patch.
+I don't want to say that the patch is meaningless ... it may be useful to you
+in your environment to help sort out machine checks due to h/w issues vs.
+programming errors in the machine check recovery code.
+
+But I don't think it is generally useful in the upstream code.
+
+-Tony
