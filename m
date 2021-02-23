@@ -2,59 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50FA23229AB
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 12:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2DF3229BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Feb 2021 12:54:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232326AbhBWLvO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Feb 2021 06:51:14 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12200 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232217AbhBWLvN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Feb 2021 06:51:13 -0500
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DlHPV4GyfzlNJW;
-        Tue, 23 Feb 2021 19:48:30 +0800 (CST)
-Received: from [10.174.178.147] (10.174.178.147) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 23 Feb 2021 19:50:25 +0800
-Subject: Re: [PATCH v1 0/4] ACPI: Get rid of ACPICA message printing from core
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-CC:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <5138173.kHyPcihzTF@kreacher>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <daadf47e-dac2-93a8-3070-9e9cbc0dae50@huawei.com>
-Date:   Tue, 23 Feb 2021 19:50:25 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S232475AbhBWLxs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Feb 2021 06:53:48 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:49930 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232495AbhBWLxB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:53:01 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:13 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:51:59 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:12 +0000
 MIME-Version: 1.0
-In-Reply-To: <5138173.kHyPcihzTF@kreacher>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
+Content-Type: text/plain; charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.147]
-X-CFilter-Loop: Reflected
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <a979b4e3f4df4cf8baf7c5db5d0603cc@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/2/23 2:57, Rafael J. Wysocki wrote:
-> Hi All,
-> 
-> This series replaces ACPI_DEBUG_PRINT() and ACPI_EXCEPTION() in the ACPI
-> processor driver and sysfs code and drops definitions of related symbols
-> that are not used for anything meaningful any more.
-> 
-> Please refer to the patch changelogs for details.
+Hello,
 
-Except patch 1/4, others are looking good to me. some
-legacy printk(PRIFIX ...) are still there, but we can
-clean up them later.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Feel feel to add my review tag with minor issue addressed.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-Thanks
-Hanjun
+Regards,
+Ms. Reem.
