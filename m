@@ -2,118 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D4B6323A6A
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 11:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C718A324109
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 17:05:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234718AbhBXKVJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Feb 2021 05:21:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58590 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbhBXKVG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Feb 2021 05:21:06 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0C9C06174A;
-        Wed, 24 Feb 2021 02:20:25 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id v1so1325509wrd.6;
-        Wed, 24 Feb 2021 02:20:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=+ynFYq7eMGJx1ln+zWV+b0o9T/BW44U3HpTLuEIXEk4=;
-        b=gVKwmps2YnnodY5iuPpamwE87ADKZx3WagV/HVFdp48iAk8XKWQKGiE4GnZUjCIbA1
-         ajN2Kgjt/0T8bUxPm/xy3wqPOlgpagzfQoXrDWRYFlkddJH9yCMMfrPxdt7+cr3CO1yN
-         WxSCjeK9sIl3dk1LcxsaQuL2p+D8MxDNL2LjvjH1DwKoxFQ7LYfmkbYH8aStnJNLNJHf
-         M8bzLOToMI6fdSkCTRVeKHSg8ZDAiS+HjbA9NptzWYvnKvrAj2Qgn2b8OqBqFdxU4UKU
-         qqrcYhVyzvgsMUtKiigu8FcPhByLH9+lgpPC5BN00J6XtJ15JRhPhpXrKkpRTWxa2R6q
-         iW6A==
+        id S233463AbhBXPhb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Feb 2021 10:37:31 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:41533 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235807AbhBXOOL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Feb 2021 09:14:11 -0500
+Received: by mail-ot1-f45.google.com with SMTP id s107so2229618otb.8;
+        Wed, 24 Feb 2021 06:13:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=+ynFYq7eMGJx1ln+zWV+b0o9T/BW44U3HpTLuEIXEk4=;
-        b=YluFOCGeEHGAuOF8Ax3rkwPnGrI43HIDUI9lJWtt9kTaXauXL1iQF3B9Vh0pDSLc54
-         vcujbN4J3UxUxIobnZlJzQ6lUDkGNE395HmdLzKMK7Ent75S4cICKqguaO6AM8KYbuk9
-         gkkcJnoxkUlLQdOC5GSYaiot+AudIdPtefpb3HXekfGlkUOm/1gQhH35/3a8XzVEX47O
-         iUvZZjTv0fnMmQ6PujDUlB1RhsgNoBXz4685SR57UcNdMZo5nb9hG+aRQVL6MSNNuNt4
-         JsdiHca8F4kesm72MZOF6Zg+JCv6S73MaF1Lk5EygddKa4DVvTuCcauC/JfeIlNp8kA6
-         ykgw==
-X-Gm-Message-State: AOAM533X8Uo2sQtlBItoED8/bjm4/IRKUReCBedTK44/3s6Myll4gxhA
-        bSpvoiemsAmZejCtM75byK0=
-X-Google-Smtp-Source: ABdhPJxyz7gcbh1gakgOpaIkF6ifM7VuSjfCg5KjKbVjLf5UVR1vPE/QJelLB3m3OXr8qA8tTfbJoA==
-X-Received: by 2002:adf:bc01:: with SMTP id s1mr1122726wrg.240.1614162023821;
-        Wed, 24 Feb 2021 02:20:23 -0800 (PST)
-Received: from [192.168.1.211] ([2.31.224.123])
-        by smtp.gmail.com with ESMTPSA id o129sm2117043wme.21.2021.02.24.02.20.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Feb 2021 02:20:23 -0800 (PST)
-Subject: Re: [PATCH v3 5/6] platform/x86: Add intel_skl_int3472 driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Tomasz Figa <tfiga@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        andy.shevchenko@linux.intel.com,
-        kieran.bingham+renesas@ideasonboard.com,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>, me@fabwu.ch,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        devel@acpica.org
-References: <20210222130735.1313443-1-djrscally@gmail.com>
- <20210222130735.1313443-6-djrscally@gmail.com>
- <YDVfyt2d2Nhsa7l3@pendragon.ideasonboard.com>
- <1360fc85-3f39-1dce-eee9-c4e76c2087ae@gmail.com>
- <YDYmv0PpSndAlnDC@pendragon.ideasonboard.com>
- <CAHp75VcKUjnwh4fi-mofooBuBYiqXjXOspU4twKg6-Lfvzf=QA@mail.gmail.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <fff9d990-53b0-0bdb-5127-5d118bfd7e13@gmail.com>
-Date:   Wed, 24 Feb 2021 10:20:22 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h2j1OQcC6pRu4C41Nua1+DvIa5S64jnvnHsOlfkQ42c=;
+        b=aAnhsL8N4SYAXxg0/PzkuAK3iqnRK22E+15zEMwVfZEerBCUbM7OojH5bhJdp20Yx6
+         rSZkr4ANrvDIROVLK+Ah0TbnAPHxXOYlWpKfKugEsH80I3FWDebpbu7Awlkn8EYj+P7L
+         hMt7U+Yn+uXfK1Y6H/vDG0A2QIf5yK0mIq1KM1h6mbnpEt+VcA61WzET9G15NHPxRG/E
+         7uiIsmz0POhJy7yqBn2+DHyf5ZXliEs1nEAEFtzXjLmsw2owOA0VLAKLTJVbxJh19tcM
+         a27ZFPtRVmHUNWNHwMroM+k9dlJAyHtEfq3yUj7aZXfDMjQeHBDdgHeLYpAkH4cTwRtD
+         EhSw==
+X-Gm-Message-State: AOAM5311TqekiOAQM4S6LLiphFjAz4wG+D5PlH+wYnXZ5tpVECRBMQ+F
+        9KPASTV2d17uyvz+QOUJBa+Of4nBEn/YYu5YO0E=
+X-Google-Smtp-Source: ABdhPJwvdZOlEtOKLC0PNT9kUvhCQfrphgGal8P+NdAQdhH5NsOW12uNdq36+aQScRQqmeJ1yorxtFSKbOD58QmUBr8=
+X-Received: by 2002:a9d:22a5:: with SMTP id y34mr20919807ota.321.1614176009175;
+ Wed, 24 Feb 2021 06:13:29 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcKUjnwh4fi-mofooBuBYiqXjXOspU4twKg6-Lfvzf=QA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20210211201703.658240-1-luzmaximilian@gmail.com>
+ <898aa498-8256-d59f-9e72-0e1199b3a62a@redhat.com> <CAJZ5v0jGUgHsNaqLarf=YLwjtOe-mQB48LkOQLi7FcZyW1Qchg@mail.gmail.com>
+ <510803ab-b5b8-ce2c-e956-5539874d00bf@redhat.com> <CAJZ5v0hBN2zTHj+KsAmdNWTL0e983CFE+LYBssJzUDOmdF7PPQ@mail.gmail.com>
+ <8435cc87-d92f-e1c3-97c7-e2113e0ff3a9@redhat.com>
+In-Reply-To: <8435cc87-d92f-e1c3-97c7-e2113e0ff3a9@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 24 Feb 2021 15:13:18 +0100
+Message-ID: <CAJZ5v0jH3FZD4g0k50kEGWTbAPuEvCog+RxeYeHRumyZzeEPhA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] platform/surface: Add platform profile driver for
+ Surface devices
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Mark Gross <mgross@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy, Laurent
+On Mon, Feb 15, 2021 at 5:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 2/15/21 4:29 PM, Rafael J. Wysocki wrote:
+> > On Mon, Feb 15, 2021 at 4:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 2/15/21 3:54 PM, Rafael J. Wysocki wrote:
+> >>> On Mon, Feb 15, 2021 at 3:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>>
+> >>>> Hi,
+> >>>>
+> >>>> On 2/11/21 9:16 PM, Maximilian Luz wrote:
+> >>>>> This series adds a driver to provide platform profile support on 5th-
+> >>>>> and later generation Microsoft Surface devices with a Surface System
+> >>>>> Aggregator Module. On those devices, the platform profile can be used to
+> >>>>> influence cooling behavior and power consumption.
+> >>>>>
+> >>>>> To achieve this, a new platform profile is introduced: the
+> >>>>> 'balanced-performance' profile.
+> >>>>>
+> >>>>> In addition, a couple of fix-ups are performed:
+> >>>>> - Hide CONFIG_ACPI_PLATFORM_PROFILE and change drivers so that it is
+> >>>>>   selected instead of depended on.
+> >>>>> - Fix some references to documentation in a comment.
+> >>>>>
+> >>>>> Note: This series (or more specifically "platform/surface: Add platform
+> >>>>> profile driver") depends on the "platform/surface: Add Surface
+> >>>>> Aggregator device registry" series.
+> >>>>>
+> >>>>> Changes in v2:
+> >>>>>  - Introduce new 'balanced-performance' platform profile and change
+> >>>>>    profile mapping in driver.
+> >>>>>  - Perform some fix-ups for the ACPI platform profile implementation:
+> >>>>>    - Fix some references to documentation in a comment.
+> >>>>>    - Hide CONFIG_ACPI_PLATFORM_PROFILE
+> >>>>
+> >>>> Thanks, the entire series looks good to me, so for the series:
+> >>>>
+> >>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> >>>>
+> >>>> Rafael, can you (once 5.12-rc1 is out) pick 1-3/4 and then provide a
+> >>>> stable branch for me to merge?
+> >>>
+> >>> Since [1-3/4] appear to be uncontroversial, so IMO it would be better
+> >>> to merge them during the merge window, so they are present in
+> >>> 5.12-rc1.
+> >>
+> >> So I just realized one problem with this plan, patch 1/4 depends
+> >> on (modifies) Kconfig bits which are only in my tree / my 5.12 pull-req
+> >> (which I send out earlier today).
+> >
+> > That should be fine.
+> >
+> > I will be sending the first batch of pull requests tomorrow.  Then I
+> > will wait for them to be merged and I will merge the mainline back at
+> > that point.  The new patches will be applied on top of that merge, so
+> > if your 5.12 material is included in it, they should build without
+> > problems.
+>
+> Ok, that sounds good to me.
 
-On 24/02/2021 10:18, Andy Shevchenko wrote:
-> On Wed, Feb 24, 2021 at 12:16 PM Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
->> On Tue, Feb 23, 2021 at 10:36:18PM +0000, Daniel Scally wrote:
->>> On 23/02/2021 20:04, Laurent Pinchart wrote:
-> ...
->
->>>>> +  get_device(&int3472->sensor->dev);
->>>> I see no corresponding put_device(), am I missing something ? I'm also
->>>> not sure why this is needed.
->>> The put is acpi_dev_put() in skl_int3472_discrete_remove(); there seems
->>> to be no acpi_dev_get() for some reason. We use the sensor acpi_device
->>> to get the clock frequency, and to fetch the sensor module string, so I
->>> thought it ought to hold a reference on those grounds.
->> Shouldn't acpi_dev_get_dependent_dev() increase the reference count
->> then, instead of doing it manually here ?
-> That's what I expected as well.
-> We have plenty of acpi_dev_get_*() and they do increase the reference
-> counter one way or the other.
->
-Okedokey, I'll move the get() to that function and drop it from here.
+The [1-3/4] have just been applied (as 5.12-rc material), thanks!
