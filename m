@@ -2,157 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC08B3243E0
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 19:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E352A3243F9
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 19:48:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233136AbhBXSm3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Feb 2021 13:42:29 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:47084 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbhBXSm2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Feb 2021 13:42:28 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_smtp) via UNIX with SMTP (IdeaSmtpServer 0.83.537)
- id ea52b9e47c7a2361; Wed, 24 Feb 2021 19:41:46 +0100
-Received: from kreacher.localnet (89-64-80-80.dynamic.chello.pl [89.64.80.80])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 6B73066152E;
-        Wed, 24 Feb 2021 19:41:45 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Platform Driver <platform-driver-x86@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Chen Yu <yu.c.chen@intel.com>
-Subject: [PATCH v1] platform: x86: ACPI: Get rid of ACPICA message printing
-Date:   Wed, 24 Feb 2021 19:41:44 +0100
-Message-ID: <2074665.VPHYfYaQb6@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrkeejgdduudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtvdenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeevudefgfeguedtjedvhfetveegleduveeuvedvjeekleefhfduhfefheekffefveenucfkphepkeelrdeigedrkedtrdektdenucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepihhnvghtpeekledrieegrdektddrkedtpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtohepphhlrghtfhhorhhmqdgurhhivhgvrhdqgiekieesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehguhhohhgrnhhjuhhnsehhuhgrfigvihdrtghomhdprhgtphhtthhopehhuggvghhovgguvges
- rhgvughhrghtrdgtohhmpdhrtghpthhtohephihurdgtrdgthhgvnhesihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+        id S230494AbhBXSrK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Feb 2021 13:47:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34172 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233204AbhBXSrI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Feb 2021 13:47:08 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 2326C64F0D;
+        Wed, 24 Feb 2021 18:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614192388;
+        bh=FrQixc8e3rZo/OEW1ahxLjAM38zkv7Y4pqS9ZqgfZlM=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=AhW6kbqKV/lbu583tecQWjEh+TLQ/wQej38W/Fb/QxRVhKVri+y3rNvURqyAppquP
+         QHT7UZlq0YAzxNqmWZVZxKMRCGrvBIa5tSp+N1pE4vvYm2gxYCjCgFxS6jwh4SX0y0
+         We6v6WnT3cqBIv9JcItV2yBCGOPw4jlPQHHQU8/8j4hbdgqQ9pw7sKifn7AnBdRaTc
+         lOpmbZAez5jtqYXViUH/v8DcQJ7V72XLBPmwOuZNoqAGCSsYKeDLE880DXpwABg1GV
+         6yoKyWK15Rl52sOghGFr4h8MM3TP9Ke0yhdlfL99Nq6MpdOLaKkpqOFoHDH9SY3lec
+         jCCOY8Ofiz4zw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 0665F60176;
+        Wed, 24 Feb 2021 18:46:28 +0000 (UTC)
+Subject: Re: [GIT PULL] Compute Express Linux (CXL) for v5.12-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAPcyv4gsXbi6Cc71wW5hob8mGuupXKkL5tHLRaZkdLZ1oAuK8Q@mail.gmail.com>
+References: <CAPcyv4gsXbi6Cc71wW5hob8mGuupXKkL5tHLRaZkdLZ1oAuK8Q@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-cxl.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAPcyv4gsXbi6Cc71wW5hob8mGuupXKkL5tHLRaZkdLZ1oAuK8Q@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/cxl-for-5.12
+X-PR-Tracked-Commit-Id: 88ff5d466c0250259818f3153dbdc4af1f8615dd
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 825d1508750c0cad13e5da564d47a6d59c7612d6
+Message-Id: <161419238797.20610.4661050005924774981.pr-tracker-bot@kernel.org>
+Date:   Wed, 24 Feb 2021 18:46:27 +0000
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The pull request you sent on Tue, 23 Feb 2021 20:05:36 -0800:
 
-A few x86 platform drivers use ACPI_DEBUG_PRINT() or ACPI_EXCEPTION()
-for printing messages, but that is questionable, because those macros
-belong to ACPICA and they should not be used elsewhere.  In addition,
-ACPI_DEBUG_PRINT() requires special enabling to allow it to actually
-print the message, which is a nuisance, and the _COMPONENT symbol
-generally needed for that is not defined in any of the files in
-question.
+> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/cxl-for-5.12
 
-For this reason, replace the ACPI_DEBUG_PRINT() in lg-laptop.c with
-pr_debug() and the one in xo15-ebook.c with acpi_handle_debug()
-(with the additional benefit that the source object can be identified
-more easily after this change), and replace the ACPI_EXCEPTION() in
-acer-wmi.c with pr_warn().
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/825d1508750c0cad13e5da564d47a6d59c7612d6
 
-Also drop the ACPI_MODULE_NAME() definitions that are only used by
-the ACPICA message printing macros from those files and from wmi.c
-and surfacepro3_button.c (while at it).
+Thank you!
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/platform/surface/surfacepro3_button.c |    2 --
- drivers/platform/x86/acer-wmi.c               |    4 ++--
- drivers/platform/x86/lg-laptop.c              |    2 +-
- drivers/platform/x86/wmi.c                    |    1 -
- drivers/platform/x86/xo15-ebook.c             |    6 ++----
- 5 files changed, 5 insertions(+), 10 deletions(-)
-
-Index: linux-pm/drivers/platform/x86/lg-laptop.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/lg-laptop.c
-+++ linux-pm/drivers/platform/x86/lg-laptop.c
-@@ -678,7 +678,7 @@ static int __init acpi_init(void)
- 
- 	result = acpi_bus_register_driver(&acpi_driver);
- 	if (result < 0) {
--		ACPI_DEBUG_PRINT((ACPI_DB_ERROR, "Error registering driver\n"));
-+		pr_debug("Error registering driver\n");
- 		return -ENODEV;
- 	}
- 
-Index: linux-pm/drivers/platform/x86/xo15-ebook.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/xo15-ebook.c
-+++ linux-pm/drivers/platform/x86/xo15-ebook.c
-@@ -26,8 +26,6 @@
- #define XO15_EBOOK_HID			"XO15EBK"
- #define XO15_EBOOK_DEVICE_NAME		"EBook Switch"
- 
--ACPI_MODULE_NAME(MODULE_NAME);
--
- MODULE_DESCRIPTION("OLPC XO-1.5 ebook switch driver");
- MODULE_LICENSE("GPL");
- 
-@@ -66,8 +64,8 @@ static void ebook_switch_notify(struct a
- 		ebook_send_state(device);
- 		break;
- 	default:
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "Unsupported event [0x%x]\n", event));
-+		acpi_handle_debug(device->handle,
-+				  "Unsupported event [0x%x]\n", event);
- 		break;
- 	}
- }
-Index: linux-pm/drivers/platform/x86/acer-wmi.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/acer-wmi.c
-+++ linux-pm/drivers/platform/x86/acer-wmi.c
-@@ -30,7 +30,6 @@
- #include <linux/input/sparse-keymap.h>
- #include <acpi/video.h>
- 
--ACPI_MODULE_NAME(KBUILD_MODNAME);
- MODULE_AUTHOR("Carlos Corbacho");
- MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
- MODULE_LICENSE("GPL");
-@@ -1605,7 +1604,8 @@ static void acer_kbd_dock_get_initial_st
- 
- 	status = wmi_evaluate_method(WMID_GUID3, 0, 0x2, &input_buf, &output_buf);
- 	if (ACPI_FAILURE(status)) {
--		ACPI_EXCEPTION((AE_INFO, status, "Error getting keyboard-dock initial status"));
-+		pr_warn("Error getting keyboard-dock initial status: %s\n",
-+			acpi_format_exception(status));
- 		return;
- 	}
- 
-Index: linux-pm/drivers/platform/surface/surfacepro3_button.c
-===================================================================
---- linux-pm.orig/drivers/platform/surface/surfacepro3_button.c
-+++ linux-pm/drivers/platform/surface/surfacepro3_button.c
-@@ -40,8 +40,6 @@ static const guid_t MSHW0040_DSM_UUID =
- #define SURFACE_BUTTON_NOTIFY_PRESS_VOLUME_DOWN		0xc2
- #define SURFACE_BUTTON_NOTIFY_RELEASE_VOLUME_DOWN	0xc3
- 
--ACPI_MODULE_NAME("surface pro 3 button");
--
- MODULE_AUTHOR("Chen Yu");
- MODULE_DESCRIPTION("Surface Pro3 Button Driver");
- MODULE_LICENSE("GPL v2");
-Index: linux-pm/drivers/platform/x86/wmi.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/wmi.c
-+++ linux-pm/drivers/platform/x86/wmi.c
-@@ -32,7 +32,6 @@
- #include <linux/fs.h>
- #include <uapi/linux/wmi.h>
- 
--ACPI_MODULE_NAME("wmi");
- MODULE_AUTHOR("Carlos Corbacho");
- MODULE_DESCRIPTION("ACPI-WMI Mapping Driver");
- MODULE_LICENSE("GPL");
-
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
