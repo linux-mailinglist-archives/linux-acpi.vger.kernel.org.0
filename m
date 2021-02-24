@@ -2,94 +2,278 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AAD323A0C
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 10:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D03323A48
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Feb 2021 11:15:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234881AbhBXJ6C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Feb 2021 04:58:02 -0500
-Received: from mail.kingsoft.com ([114.255.44.146]:45292 "EHLO
-        mail.kingsoft.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234829AbhBXJ52 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Feb 2021 04:57:28 -0500
-X-AuditID: 0a580157-f39ff7000005df43-0a-60361c8fe966
-Received: from mail.kingsoft.com (localhost [10.88.1.32])
-        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client did not present a certificate)
-        by mail.kingsoft.com (SMG-1-NODE-87) with SMTP id 4F.E4.57155.F8C16306; Wed, 24 Feb 2021 17:29:51 +0800 (HKT)
-Received: from alex-virtual-machine (172.16.253.254) by KSBJMAIL2.kingsoft.cn
- (10.88.1.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Wed, 24 Feb
- 2021 17:56:33 +0800
-Date:   Wed, 24 Feb 2021 17:56:32 +0800
-From:   Aili Yao <yaoaili@kingsoft.com>
-To:     "Luck, Tony" <tony.luck@intel.com>
-CC:     Borislav Petkov <bp@alien8.de>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "yangfeng1@kingsoft.com" <yangfeng1@kingsoft.com>
-Subject: Re: [PATCH v2] Dump cper error table in mce_panic
-Message-ID: <20210224175632.5d99abcc@alex-virtual-machine>
-In-Reply-To: <434eba7a568a4b9f8eb7ee11a5c8b04f@intel.com>
-References: <20201104065057.40442-1-yaoaili126@163.com>
-        <20201117175804.39bbbdc3.yaoaili@kingsoft.com>
-        <20201118124538.GI7472@zn.tnic>
-        <20201119134057.37ca2c19.yaoaili@kingsoft.com>
-        <20201119174508.GE3769@zn.tnic>
-        <20201120172235.620eb826.yaoaili@kingsoft.com>
-        <20201120102422.GA712@zn.tnic>
-        <20210128200128.6f022993.yaoaili@kingsoft.com>
-        <e9645a3ff93e46d4aabdf7dd45bfc4d7@intel.com>
-        <20210223171809.7df62b08@alex-virtual-machine>
-        <434eba7a568a4b9f8eb7ee11a5c8b04f@intel.com>
-Organization: kingsoft
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+        id S234826AbhBXKPJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Feb 2021 05:15:09 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:47854 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234330AbhBXKOw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Feb 2021 05:14:52 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 563F08A1;
+        Wed, 24 Feb 2021 11:13:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1614161627;
+        bh=BM8lOGuRvoLTKyEJ7u9bZfJwft8BAQN1ZTU/JoK82Y4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dY6wVGSDtsePY5LZgV4p+1Ii6l/pNQaRuF9lxnQfZML3TAxm+F6qX3MvgsjIGU92d
+         NdjsSsLQZjhPvMig+iEtD5LwMySQxAICQ5H/YW5gcRRWYx2lSpB/YwVBGVPHWoyTgH
+         7Ir1ve4d3WyeOGiKQ3osP7qjf4jek+4gMU3pm0pQ=
+Date:   Wed, 24 Feb 2021 12:13:19 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     tfiga@chromium.org, sakari.ailus@linux.intel.com,
+        rajmohan.mani@intel.com, rjw@rjwysocki.net, lenb@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        andy.shevchenko@linux.intel.com,
+        kieran.bingham+renesas@ideasonboard.com, hdegoede@redhat.com,
+        mgross@linux.intel.com, luzmaximilian@gmail.com,
+        robert.moore@intel.com, erik.kaneda@intel.com, me@fabwu.ch,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org
+Subject: Re: [PATCH v3 5/6] platform/x86: Add intel_skl_int3472 driver
+Message-ID: <YDYmv0PpSndAlnDC@pendragon.ideasonboard.com>
+References: <20210222130735.1313443-1-djrscally@gmail.com>
+ <20210222130735.1313443-6-djrscally@gmail.com>
+ <YDVfyt2d2Nhsa7l3@pendragon.ideasonboard.com>
+ <1360fc85-3f39-1dce-eee9-c4e76c2087ae@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.16.253.254]
-X-ClientProxiedBy: KSBJMAIL1.kingsoft.cn (10.88.1.31) To KSBJMAIL2.kingsoft.cn
- (10.88.1.32)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRmVeSWpSXmKPExsXCFcGooNsvY5Zg8GGfssXnDf/YLO7vW85k
-        sfPhWzaL5fv6GS0unGpgsjhz+hKrxZsL91gc2D2+t/axeKyZt4bRY/Gel0wem1Z1snlsudrO
-        4vF5k1wAWxSXTUpqTmZZapG+XQJXRsuLb6wF89grnh2YxNrAeJi1i5GDQ0LARGLNG6EuRi4O
-        IYHpTBITryxjhHBeMUpcm3SLvYuRk4NFQFWi4+U2VhCbDcjedW8WmC0ioCZxafEDZpAGZoEL
-        TBLLZv5lAUkIC1hJPN3wBszmBbIvNu4DG8QpYCnx+Ow3dogN75klFp1YBZbgFxCT6L3ynwnE
-        lhCwl2jbsogRollQ4uTMJ2CDmAV0JE6sOsYMYctLbH87B8wWElCUOLzkFztEr5LEke4ZbBB2
-        rMSyea9YJzAKz0IyahaSUbOQjFrAyLyKkaU4N91wEyMkMsJ3MM5r+qh3iJGJg/EQowQHs5II
-        7+Z/pglCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeQO3mSQICaQnlqRmp6YWpBbBZJk4OKUamBYU
-        Fex9+9nXeqVu8zblyJqXjZN/1h1f4iV8cdrfHVf1tni53mFZdYrTd+6k2DDvNx/DTm3b/9xj
-        6qeFS3mDv1T22k++s+OExZs6F60krQ0iVe8WXG6761VvfJ1L7fbfCaIfxbYWOZ9YZ7xBzPb4
-        3HcrTuYtmx5Uu5s9pWvdL+FUlYhzKze9t4qp3jy3bN1WS5lva7VyLf27uatqyhufnZZTS8hO
-        0PXmmPOm76P2JaUpNdw/Tm162XY3P5br1Ic5E0UWNDM/3RlfYLTH/Bs/+8bTWo3/7bZscFi8
-        xsSoqP7ZxlWuj/+LGixWmXj9wvrkyiopOYemgkmTFr7jXTeLS/Zg2Yown99zdAtPsZqxF6Qq
-        sRRnJBpqMRcVJwIAaRl+D/sCAAA=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1360fc85-3f39-1dce-eee9-c4e76c2087ae@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 23 Feb 2021 19:32:37 +0000
-"Luck, Tony" <tony.luck@intel.com> wrote:
+Hi Daniel,
 
-> > I am not smart enough to get the point. I have paid a lot of time for this patch, 
-> > I need an result even it doesn't work. so i like the reply like this:
+On Tue, Feb 23, 2021 at 10:36:18PM +0000, Daniel Scally wrote:
+> On 23/02/2021 20:04, Laurent Pinchart wrote:
+> >> +
+> >> +/*
+> >> + * Here follows platform specific mapping information that we can pass to
+> >> + * the functions mapping resources to the sensors. Where the sensors have
+> >> + * a power enable pin defined in DSDT we need to provide a supply name so
+> >> + * the sensor drivers can find the regulator. The device name will be derived
+> >> + * from the sensor's ACPI device within the code. Optionally, we can provide a
+> >> + * NULL terminated array of function name mappings to deal with any platform
+> >> + * specific deviations from the documented behaviour of GPIOs.
+> >> + *
+> >> + * Map a GPIO function name to NULL to prevent the driver from mapping that
+> >> + * GPIO at all.
+> >> + */
+> >> +
+> >> +static const struct int3472_gpio_function_remap ov2680_gpio_function_remaps[] = {
+> >> +	{ "reset", NULL },
+> >> +	{ "powerdown", "reset" },
+> >> +	{ }
+> >> +};
+> >> +
+> >> +static struct int3472_sensor_config int3472_sensor_configs[] = {
 > >
-> > 1. this patch is meaningless, and should be rejected.   
-> > 2. this issue is real, but we need other methond, not this patch.
-> > 3. the patch need to improve.  
+> > This should be static const (and there will be some fallout due to that,
+> > as skl_int3472_register_regulator() modifies the supply_map, so I think
+> > you'll have a copy of supply_map in int3472_discrete_device).
 > 
-> I don't want to say that the patch is meaningless ... it may be useful to you
-> in your environment to help sort out machine checks due to h/w issues vs.
-> programming errors in the machine check recovery code.
+> Ack to all of the constness; you mentioned that last time too - not sure
+> how I missed doing those! I think I can just having a local struct
+> regulator_consumer_supply in skl_int3472_register_regulator and fill it
+> from int3472->sensor_config.supply_map
 > 
-> But I don't think it is generally useful in the upstream code.
+> >> +static unsigned int skl_int3472_get_clk_frequency(struct int3472_discrete_device *int3472)
+> >> +{
+> >> +	union acpi_object *obj;
+> >> +	unsigned int ret = 0;
+> >> +
+> >> +	obj = skl_int3472_get_acpi_buffer(int3472->sensor, "SSDB");
+> >> +	if (IS_ERR(obj))
+> >> +		return 0; /* report rate as 0 on error */
+> >> +
+> >> +	if (obj->buffer.length < CIO2_SENSOR_SSDB_MCLKSPEED_OFFSET + sizeof(u32)) {
+> >
+> > Should we define an ssdb structure instead of peeking into the buffer
+> > with an offset ?
+> 
+> I thought about that, but in the end decided it didn't seem worth
+> defining the whole SSDB structure just to use one field. Particularly
+> since we use it in cio2-bridge already, so if we're going to do that it
+> really ought to just live in a header that's included in both - and that
+> seemed even less worthwhile.
+> 
+> I don't have a strong feeling though, so if you think it's better to
+> define the struct I'm happy to.
 
-Got it.
-Another thing I want to say is that when mca_cfg.tolerant is set to 3, this NMI handling will
-also panic the system in some case, but it seems there is not a big influence though.
+If the structure is available already, sharing it in a common header
+would be best I think, but that's not a blocker. It can be done on top
+of this series.
 
-Thanks
-Aili Yao  
+> >> +static unsigned long skl_int3472_clk_recalc_rate(struct clk_hw *hw,
+> >> +						 unsigned long parent_rate)
+> >> +{
+> >> +	struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+> >> +	struct int3472_discrete_device *int3472 = to_int3472_device(clk);
+> >> +
+> >> +	return int3472->clock.frequency;
+> >
+> > Maybe just
+> >
+> > 	struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+> >
+> > 	return clk->frequency;
+> 
+> Oops, of course.
+> 
+> >> +static int skl_int3472_register_regulator(struct int3472_discrete_device *int3472,
+> >> +					  struct acpi_resource *ares)
+> >> +{
+> >> +	char *path = ares->data.gpio.resource_source.string_ptr;
+> >> +	struct int3472_sensor_config *sensor_config;
+> >> +	struct regulator_init_data init_data = { };
+> >> +	struct regulator_config cfg = { };
+> >> +	int ret;
+> >> +
+> >> +	sensor_config = int3472->sensor_config;
+> >> +	if (IS_ERR_OR_NULL(sensor_config)) {
+> >> +		dev_err(int3472->dev, "No sensor module config\n");
+> >> +		return PTR_ERR(sensor_config);
+> >> +	}
+> >> +
+> >> +	if (!sensor_config->supply_map.supply) {
+> >> +		dev_err(int3472->dev, "No supply name defined\n");
+> >> +		return -ENODEV;
+> >> +	}
+> >> +
+> >> +	init_data.constraints.valid_ops_mask = REGULATOR_CHANGE_STATUS;
+> >> +	init_data.num_consumer_supplies = 1;
+> >> +	sensor_config->supply_map.dev_name = int3472->sensor_name;
+> >> +	init_data.consumer_supplies = &sensor_config->supply_map;
+> >> +
+> >> +	snprintf(int3472->regulator.regulator_name,
+> >> +		 sizeof(int3472->regulator.regulator_name), "%s-regulator",
+> >> +		 acpi_dev_name(int3472->adev));
+> >> +	snprintf(int3472->regulator.supply_name,
+> >> +		 GPIO_REGULATOR_SUPPLY_NAME_LENGTH, "supply-0");
+> >> +
+> >> +	int3472->regulator.rdesc = INT3472_REGULATOR(
+> >> +						int3472->regulator.regulator_name,
+> >> +						int3472->regulator.supply_name,
+> >> +						&int3472_gpio_regulator_ops);
+> >> +
+> >> +	int3472->regulator.gpio = acpi_get_gpiod(path,
+> >> +						 ares->data.gpio.pin_table[0],
+> >> +						 "int3472,regulator");
+> >> +	if (IS_ERR(int3472->regulator.gpio)) {
+> >> +		dev_err(int3472->dev, "Failed to get regulator GPIO lines\n");
+> >
+> > s/lines/line/ (sorry, it was a typo in my review of v2)
+> 
+> No problem!
+> 
+> >> +static int skl_int3472_parse_crs(struct int3472_discrete_device *int3472)
+> >> +{
+> >> +	struct list_head resource_list;
+> >> +	int ret;
+> >> +
+> >> +	INIT_LIST_HEAD(&resource_list);
+> >> +
+> >> +	int3472->sensor_config = skl_int3472_get_sensor_module_config(int3472);
+> >
+> > I have forgotten some of the context I'm afraid :-/ Are there valid use
+> > cases for not checking for an error here, or should we do so and drop
+> > the error checks in other functions above ?
+> 
+> Not all platforms need a sensor_config; only those which have either a
+> regulator pin or need a GPIO function to be remapped; the rest will do
+> without it.
+> 
+> So, we need to not check for an error here because the absence of a
+> sensor_config isn't necessarily an error, we won't know till later.
+> 
+> >> +int skl_int3472_discrete_probe(struct platform_device *pdev)
+> >> +{
+> >> +	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
+> >> +	struct int3472_discrete_device *int3472;
+> >> +	struct int3472_cldb cldb;
+> >> +	int ret;
+> >> +
+> >> +	ret = skl_int3472_fill_cldb(adev, &cldb);
+> >> +	if (ret) {
+> >> +		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	if (cldb.control_logic_type != 1) {
+> >> +		dev_err(&pdev->dev, "Unsupported control logic type %u\n",
+> >> +			cldb.control_logic_type);
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	/* Max num GPIOs we've seen plus a terminator */
+> >> +	int3472 = kzalloc(struct_size(int3472, gpios.table,
+> >> +			  INT3472_MAX_SENSOR_GPIOS + 1), GFP_KERNEL);
+> >> +	if (!int3472)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	int3472->adev = adev;
+> >> +	int3472->dev = &pdev->dev;
+> >> +	platform_set_drvdata(pdev, int3472);
+> >> +
+> >> +	int3472->sensor = acpi_dev_get_dependent_dev(adev);
+> >> +	if (IS_ERR_OR_NULL(int3472->sensor)) {
+> >> +		dev_err(&pdev->dev,
+> >> +			"INT3472 seems to have no dependents.\n");
+> >> +		ret = -ENODEV;
+> >> +		goto err_free_int3472;
+> >> +	}
+> >> +	get_device(&int3472->sensor->dev);
+> >
+> > I see no corresponding put_device(), am I missing something ? I'm also
+> > not sure why this is needed.
+> 
+> The put is acpi_dev_put() in skl_int3472_discrete_remove(); there seems
+> to be no acpi_dev_get() for some reason. We use the sensor acpi_device
+> to get the clock frequency, and to fetch the sensor module string, so I
+> thought it ought to hold a reference on those grounds.
 
+Shouldn't acpi_dev_get_dependent_dev() increase the reference count
+then, instead of doing it manually here ?
+
+> >> diff --git a/drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c b/drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
+> >> new file mode 100644
+> >> index 000000000000..d0d2391e263f
+> >> --- /dev/null
+> >> +++ b/drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
+> >> @@ -0,0 +1,113 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +/* Author: Dan Scally <djrscally@gmail.com> */
+> >> +
+> >> +#include <linux/i2c.h>
+> >> +#include <linux/mfd/core.h>
+> >> +#include <linux/mfd/tps68470.h>
+> >> +#include <linux/platform_device.h>
+> >> +#include <linux/regmap.h>
+> >> +
+> >> +#include "intel_skl_int3472_common.h"
+> >> +
+> >> +static const struct mfd_cell tps68470_c[] = {
+> >> +	{ .name = "tps68470-gpio" },
+> >> +	{ .name = "tps68470_pmic_opregion" },
+> >> +};
+> >> +
+> >> +static const struct mfd_cell tps68470_w[] = {
+> >
+> > Maybe more explicit names than _c and _w could be nice ?
+> 
+> _chrome and _windows was in my mind - sound ok?
+
+As Andy mentioned, _cros is better, and _windows_ or _win both work for
+me.
+
+-- 
+Regards,
+
+Laurent Pinchart
