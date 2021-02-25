@@ -2,197 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B51B63249EF
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 06:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16534324B25
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 08:22:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbhBYFG5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Feb 2021 00:06:57 -0500
-Received: from mga01.intel.com ([192.55.52.88]:57064 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229445AbhBYFGz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Feb 2021 00:06:55 -0500
-IronPort-SDR: 8bPvbzd9hRILz5ArYVIDjmSxf+5WF9hxpoHRByGkBzejTZlDIL8613gkppUindUb2Q/mVgAQis
- S3HxQDMITtQQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9905"; a="204896167"
-X-IronPort-AV: E=Sophos;i="5.81,203,1610438400"; 
-   d="scan'208";a="204896167"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2021 21:06:14 -0800
-IronPort-SDR: J6oNWdpzBIsWGrrGo7qs+37JCED0mk2Rs/NwLPM2TsQAk4T9SK/J+aWxphS7l06VB3Z1UsLu77
- kaemGNdJnhhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,203,1610438400"; 
-   d="scan'208";a="367261224"
-Received: from lkp-server01.sh.intel.com (HELO 16660e54978b) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 24 Feb 2021 21:06:12 -0800
-Received: from kbuild by 16660e54978b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lF8qp-0002VX-Vd; Thu, 25 Feb 2021 05:06:11 +0000
-Date:   Thu, 25 Feb 2021 13:05:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- aa22459146987c639004f1fe5a30fe95743c1a1c
-Message-ID: <60373024.wiSJ29Hw53lVyzbJ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229722AbhBYHUY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Feb 2021 02:20:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229561AbhBYHUW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Feb 2021 02:20:22 -0500
+Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com [IPv6:2607:f8b0:4864:20::c44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB34EC061574
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Feb 2021 23:19:41 -0800 (PST)
+Received: by mail-oo1-xc44.google.com with SMTP id e17so1143985oow.4
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Feb 2021 23:19:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=akfTnOxzWS22Za8MFo+4CQLJRW/O2jbL7VfLD2NNJB8=;
+        b=LFaX1gd5a/ArrvspZ6PJfJskBKUe7wUOhp0PtYcuErS/TaVon7i+t6cRiEd2E7yTxV
+         LBxRhTulNAe+OW0wsPzjDFPpwKyooBnqruYeBCDbypDsxa/MN/N9X8jopIloqXVKnTXy
+         +2Dcm0ychbi2KkgrVD2rjdBWckS0QZv20BIZHQ8aUHQD+2bFRu52V0JERdukUGkKSjwS
+         KxWqhyM8kHZBlkndK+TYker3Nlpnai3RJvPYzFpemqrN52mKh4shAT6gt1hwNErbobnL
+         7u8JrawePJbNg0v/IbMfjk36O8Sj0peL34ppztW1T2bhdI6SvnmfdeI1QzsOVXt3iLMA
+         00DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=akfTnOxzWS22Za8MFo+4CQLJRW/O2jbL7VfLD2NNJB8=;
+        b=MugWXYNegCtx9xZoNPgmhwDLXUQDS+EeKjWawFp/tZx4cmjUnBFitM9xzhn2Lp0qzC
+         NmnSCNQogpPBjcEk/Fv9D9gSNHDt2OKXU78P/VDfyrODEIYh5HL237PajCIx6Lg9xrtw
+         ZEwSCUQpis3eIgp6pt8WBP1lfVN0U88DYVjWJLahN+aEYtOCfO7wN8vkvaa4FgbDLoa4
+         hlM1ByG1thYBbd+WR8IW36sckedy014bZZe/1GG0IQd3OnhFVc/Oeg87c9qM78mP16bT
+         vQ1EJ/a2lkdkDnXelPB9+cKgNqswQAKsWUQstYWdRRMiKyWcXMG1HpW0IMN0vLplcdZj
+         GSlA==
+X-Gm-Message-State: AOAM532QJa/L1ehph3/A4vlibMGodEgpDbgtf1gGMX6CAQaKIfOT3b/V
+        i2Of2KpD04wCXo4eDa59pA+0f7GKvg8xFXx42Mk=
+X-Google-Smtp-Source: ABdhPJzzapflQQMPhMMXksbftS4Oh/3lU3w3ZEiS05GGqyuaRyQ7GeX+vUYCEOCYu/P1shly/jzW5lfkdW40msLte2Y=
+X-Received: by 2002:a4a:2f4b:: with SMTP id p72mr1280490oop.27.1614237580244;
+ Wed, 24 Feb 2021 23:19:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Reply-To: elodieantoin568744@yahoo.com
+Sender: marriammichel85@gmail.com
+Received: by 2002:ac9:27c4:0:0:0:0:0 with HTTP; Wed, 24 Feb 2021 23:19:39
+ -0800 (PST)
+From:   Mrs Elodie Antoine <eodieantoine@gmail.com>
+Date:   Wed, 24 Feb 2021 23:19:39 -0800
+X-Google-Sender-Auth: pUXibuB6r-tKmP-j1nN0jIyncbw
+Message-ID: <CALu+k40PVJihOgDpa8rk8d3yi8ZXHinqkE7KjLrmEYTktMrEBg@mail.gmail.com>
+Subject: Greetings from Mrs Elodie Antoine,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: aa22459146987c639004f1fe5a30fe95743c1a1c  Merge branches 'acpi-platform' and 'acpi-tables' into linux-next
+CAN I TRUST YOU WITH  THIS (US$4.5 Million Dollars) FOR CHARITY WORKS,
 
-elapsed time: 728m
+Calvary Greetings in the name of the LORD Almighty and Our LORD JESUS
+CHRIST the giver of every good thing. Good day,i know this letter will
+definitely come to you as a huge surprise, but I implore you to take
+the time to go through it carefully as the decision you make will go
+off a long way to determine my future and continued existence. I am
+Mrs Elodie Antoine
+aging widow of 59 years old suffering from long time illness. I have
+some funds I inherited from my late husband,
 
-configs tested: 134
-configs skipped: 2
+The sum of (US$4.5 Million Dollars) and I needed a very honest and God
+fearing  who can withdraw this money then use the funds for Charity
+works. I WISH TO GIVE THIS FUNDS TO YOU FOR CHARITY WORKS. I found
+your email address from the internet after honest prayers  to the LORD
+to bring me a helper and i decided to contact you if you may be
+willing and interested to handle these trust funds in good faith
+before anything happens to me.
+I accept this decision because I do not have any child who will
+inherit this money after I die. I want your urgent reply to me so that
+I will give you the deposit receipt which the  COMPANY issued to me as
+next of kin for immediate transfer of the money to your account in
+your country, to start the good work of God, I want you to use the
+15/percent of the total amount to help yourself in doing the project.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                     tqm5200_defconfig
-mips                         db1xxx_defconfig
-arm                          pcm027_defconfig
-ia64                            zx1_defconfig
-sh                            migor_defconfig
-powerpc                     ppa8548_defconfig
-xtensa                generic_kc705_defconfig
-sh                          urquell_defconfig
-arm                         s3c6400_defconfig
-arm                        magician_defconfig
-mips                        bcm47xx_defconfig
-sh                            shmin_defconfig
-arm                        clps711x_defconfig
-arm                          moxart_defconfig
-powerpc                     skiroot_defconfig
-arm                      jornada720_defconfig
-nios2                            allyesconfig
-arc                        nsim_700_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-powerpc                     stx_gp3_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-powerpc                      cm5200_defconfig
-arm                         s3c2410_defconfig
-arc                        nsimosci_defconfig
-powerpc                    adder875_defconfig
-sh                            titan_defconfig
-sparc                       sparc64_defconfig
-arm                             ezx_defconfig
-sh                          rsk7201_defconfig
-arm                           corgi_defconfig
-mips                           ip27_defconfig
-arm                           u8500_defconfig
-mips                        jmr3927_defconfig
-powerpc                      acadia_defconfig
-mips                  decstation_64_defconfig
-sh                           se7750_defconfig
-m68k                       m5475evb_defconfig
-arm                           sama5_defconfig
-nios2                               defconfig
-mips                            ar7_defconfig
-arm                        multi_v7_defconfig
-sh                           se7780_defconfig
-sh                               allmodconfig
-parisc                generic-64bit_defconfig
-arm                           tegra_defconfig
-xtensa                              defconfig
-arm                         cm_x300_defconfig
-powerpc                    ge_imp3a_defconfig
-arm                             mxs_defconfig
-arm                            mmp2_defconfig
-arm                          lpd270_defconfig
-mips                           ci20_defconfig
-arm                      tct_hammer_defconfig
-c6x                                 defconfig
-powerpc                     taishan_defconfig
-powerpc                       eiger_defconfig
-powerpc                     mpc83xx_defconfig
-mips                           ip28_defconfig
-arc                        vdk_hs38_defconfig
-mips                         tb0219_defconfig
-arm                        realview_defconfig
-mips                 decstation_r4k_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210223
-i386                 randconfig-a006-20210223
-i386                 randconfig-a004-20210223
-i386                 randconfig-a003-20210223
-i386                 randconfig-a001-20210223
-i386                 randconfig-a002-20210223
-x86_64               randconfig-a015-20210223
-x86_64               randconfig-a011-20210223
-x86_64               randconfig-a012-20210223
-x86_64               randconfig-a016-20210223
-x86_64               randconfig-a014-20210223
-x86_64               randconfig-a013-20210223
-i386                 randconfig-a013-20210223
-i386                 randconfig-a012-20210223
-i386                 randconfig-a011-20210223
-i386                 randconfig-a014-20210223
-i386                 randconfig-a016-20210223
-i386                 randconfig-a015-20210223
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+I am desperately in keen need of assistance and I have summoned up
+courage to contact you for this task, you must not fail me and the
+millions of the poor people in our todays WORLD. This is no stolen
+money and there are no dangers involved,100% RISK FREE with full legal
+proof. Please if you would be able to use the funds for the Charity
+works kindly let me know immediately.I will appreciate your utmost
+confidentiality and trust in this matter to accomplish my heart
+desire, as I don't want anything that will jeopardize my last wish. I
+want you to take 15 percent of the total money for your personal use
+while 85% of the money will go to charity.I will appreciate your
+utmost confidentiality and trust in this matter to accomplish my heart
+desire, as I don't want anything that will jeopardize my last wish.
 
-clang tested configs:
-x86_64               randconfig-a001-20210223
-x86_64               randconfig-a002-20210223
-x86_64               randconfig-a003-20210223
-x86_64               randconfig-a005-20210223
-x86_64               randconfig-a006-20210223
-x86_64               randconfig-a004-20210223
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+kindly respond for further details
+
+Thanks and God bless you,
+
+Mrs Elodie Antoine
