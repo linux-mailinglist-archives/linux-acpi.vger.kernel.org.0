@@ -2,66 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 435913251FA
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 16:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 708BA325396
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 17:35:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbhBYPIr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Feb 2021 10:08:47 -0500
-Received: from mga09.intel.com ([134.134.136.24]:30880 "EHLO mga09.intel.com"
+        id S231721AbhBYQfZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Feb 2021 11:35:25 -0500
+Received: from mga14.intel.com ([192.55.52.115]:15707 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230166AbhBYPIe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Feb 2021 10:08:34 -0500
-IronPort-SDR: hsQFVcoLI27OjOjt8uaYYa/llSKirjCGWhv+I9x5T4dhj5Pz2589dSHu9LWnE2Tp5fwMMd2yV+
- XB1qexRQJfFA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9905"; a="185679076"
+        id S229566AbhBYQfZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Feb 2021 11:35:25 -0500
+IronPort-SDR: 5zZprOLL8FNecS1zquve5t9wNLj3onEzYV0+Ih49Rad9JsNEj1VZOLgs7S5B5rFAUnDeeth6Ht
+ vQ3A0nWXjRDg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9906"; a="184880950"
 X-IronPort-AV: E=Sophos;i="5.81,206,1610438400"; 
-   d="scan'208";a="185679076"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2021 07:06:43 -0800
-IronPort-SDR: SOv2HaqhEGEtFQUkLc6tuMoLrqzmYVpZ3NtE8G1HueEITGgabUIAGpVCSZK2KzWrblm5ROpM6F
- mI30XGEDO10A==
+   d="scan'208";a="184880950"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2021 08:33:37 -0800
+IronPort-SDR: rWMGcMXbtewIeX9E5koaAOJeIlnkNv4lmTPCvdgaPffxuQXV3YO/PRWA+gsC3BbceZ3Lv2xK2k
+ i/yzKAIRjyfw==
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,206,1610438400"; 
-   d="scan'208";a="442611084"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2021 07:06:41 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lFIDv-0082r4-8f; Thu, 25 Feb 2021 17:06:39 +0200
-Date:   Thu, 25 Feb 2021 17:06:39 +0200
+   d="scan'208";a="594150866"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 25 Feb 2021 08:33:34 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E3A9C11F; Thu, 25 Feb 2021 18:33:33 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Yang Li <yang.lee@linux.alibaba.com>
-Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Add missing IRQF_ONESHOT
-Message-ID: <YDe8/2toCGEH2Mf1@smile.fi.intel.com>
-References: <1614069358-50943-1-git-send-email-yang.lee@linux.alibaba.com>
- <YDTsWR/kXhd96ICI@smile.fi.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 0/3] gpio: pca953x: Better quirk for Intel Galileo Gen 2
+Date:   Thu, 25 Feb 2021 18:33:17 +0200
+Message-Id: <20210225163320.71267-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YDTsWR/kXhd96ICI@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 23, 2021 at 01:51:53PM +0200, Andy Shevchenko wrote:
-> On Tue, Feb 23, 2021 at 04:35:58PM +0800, Yang Li wrote:
-> > fixed the following coccicheck:
-> > ./drivers/gpio/gpiolib-acpi.c:176:7-27: ERROR: Threaded IRQ with no
-> > primary handler requested without IRQF_ONESHOT
-> > 
-> > Make sure threaded IRQs without a primary handler are always request
-> > with IRQF_ONESHOT
-> 
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+It appears that after commit to the gpio-dwapb driver the quirk for Intel
+Galileo Gen 2 stopped working. I tried a few approaches but none of them
+worked besides the fact that they copy like a ~10% of the gpiolib-acpi
+functionality.
 
-Bart, I guess I will collect this in my branch and send you a PR.
-I have more fixes to that file anyway.
+Instead I decided to come back to a mix of v1 [1] of the initial series
+(the v3 has been applied) and Mika's suggestion about using gpio_to_desc()
+API.
+
+Unfortunately it requires to have a quirk in the core, but in comparison
+to v1 it much less intrusive and doesn't use any predefined numbers.
+
+I would like to create an immutable branch and send TWIMC (GPIO and ACPI
+subsystems I guess). This is material for v5.12-rcX.
+
+[1]: https://lore.kernel.org/linux-gpio/20200520211916.25727-1-andriy.shevchenko@linux.intel.com/
+
+Andy Shevchenko (3):
+  gpiolib: acpi: Add ACPI_GPIO_QUIRK_ABSOLUTE_NUMBER quirk
+  gpiolib: acpi: Allow to find GpioInt() resource by name and index
+  gpio: pca953x: Set IRQ type when handle Intel Galileo Gen 2
+
+ drivers/gpio/gpio-pca953x.c   | 78 +++++++++++------------------------
+ drivers/gpio/gpiolib-acpi.c   | 19 ++++++---
+ include/linux/acpi.h          | 10 ++++-
+ include/linux/gpio/consumer.h |  2 +
+ 4 files changed, 47 insertions(+), 62 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.0
 
