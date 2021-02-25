@@ -2,39 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB4D325169
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 15:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B16DD32516D
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Feb 2021 15:21:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbhBYOS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Feb 2021 09:18:29 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:13378 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231414AbhBYOS3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Feb 2021 09:18:29 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DmZZx32Dhz7q8b;
-        Thu, 25 Feb 2021 22:16:09 +0800 (CST)
+        id S230371AbhBYOTt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Feb 2021 09:19:49 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:12579 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229507AbhBYOTr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Feb 2021 09:19:47 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DmZbc2dQxzMdvS;
+        Thu, 25 Feb 2021 22:16:44 +0800 (CST)
 Received: from [10.174.178.147] (10.174.178.147) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 25 Feb 2021 22:17:40 +0800
-Subject: Re: [PATCH v1 1/4] ACPI: processor: Get rid of ACPICA message
- printing
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <5138173.kHyPcihzTF@kreacher> <10245832.OiMb8u2cOm@kreacher>
- <0faea0bd-107b-5c4c-5324-e0cd5e5cfba4@huawei.com>
- <CAJZ5v0i01rX0b-=dDJEdGsK2=6D3tXbC_wdOByTF_mJ0ggTPJQ@mail.gmail.com>
- <CAJZ5v0hwouj_1KpZ_RrC3r50RxngvinBBJVgNhQkwA3bw0oXag@mail.gmail.com>
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 25 Feb 2021 22:18:41 +0800
+Subject: Re: [PATCH v1] ACPI: processor: idle: Drop extra prefix from
+ pr_notice()
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+References: <1888725.8kdNXL6VX8@kreacher>
 From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <816edceb-983b-03d7-4a96-d325658417fd@huawei.com>
-Date:   Thu, 25 Feb 2021 22:17:40 +0800
+Message-ID: <e70654da-0593-c238-e600-f9be41cc68c8@huawei.com>
+Date:   Thu, 25 Feb 2021 22:18:42 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hwouj_1KpZ_RrC3r50RxngvinBBJVgNhQkwA3bw0oXag@mail.gmail.com>
+In-Reply-To: <1888725.8kdNXL6VX8@kreacher>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -44,34 +40,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/2/25 2:06, Rafael J. Wysocki wrote:
-> On Tue, Feb 23, 2021 at 3:45 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->>
->> On Tue, Feb 23, 2021 at 12:31 PM Hanjun Guo <guohanjun@huawei.com> wrote:
->>>
->>> On 2021/2/23 2:59, Rafael J. Wysocki wrote:
->>>> Index: linux-pm/drivers/acpi/processor_idle.c
->>>> ===================================================================
->>>> --- linux-pm.orig/drivers/acpi/processor_idle.c
->>>> +++ linux-pm/drivers/acpi/processor_idle.c
->>>
->>> In this file, function acpi_processor_cstate_first_run_checks()
->>> has a wrong pr_notice():
->>>
->>> pr_notice("ACPI: processor limited to max C-state %d\n",
->>>                  max_cstate);
->>>
->>> Since we have pr_fmt() for this file, "ACPI:" is duplicate,
->>> we'd better cleanup this as below:
->>>
->>> pr_notice("processor limited to max C-state %d\n", max_cstate);
->>
->> Thanks for pointing this out, I'll make this change when applying the patch.
+On 2021/2/25 2:37, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Actually, this issue is not strictly related to the patch here, so I'm
-> going to send a separate patch to fix it.
+> Drop "ACPI: " from the pr_noitice() instance in
+> acpi_processor_cstate_first_run_checks(), because pr_fmt() causes
+> that prefix to be added to the message already.
+> 
+> Reported-by: Hanjun Guo <guohanjun@huawei.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>   drivers/acpi/processor_idle.c |    4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/processor_idle.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/processor_idle.c
+> +++ linux-pm/drivers/acpi/processor_idle.c
+> @@ -780,8 +780,8 @@ static inline void acpi_processor_cstate
+>   	dmi_check_system(processor_power_dmi_table);
+>   	max_cstate = acpi_processor_cstate_check(max_cstate);
+>   	if (max_cstate < ACPI_C_STATES_MAX)
+> -		pr_notice("ACPI: processor limited to max C-state %d\n",
+> -			  max_cstate);
+> +		pr_notice("processor limited to max C-state %d\n", max_cstate);
+> +
+>   	first_run++;
+>   
+>   	if (nocst)
 
-Make sense to me as well.
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
 Thanks
 Hanjun
