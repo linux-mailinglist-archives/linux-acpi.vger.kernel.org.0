@@ -2,100 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55CDC326065
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Feb 2021 10:46:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25BCB3261A4
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Feb 2021 12:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230444AbhBZJou (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Feb 2021 04:44:50 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13092 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230406AbhBZJoX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Feb 2021 04:44:23 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Dn4S81Wj2z16D0R;
-        Fri, 26 Feb 2021 17:42:00 +0800 (CST)
-Received: from [127.0.0.1] (10.40.188.87) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.498.0; Fri, 26 Feb 2021
- 17:43:27 +0800
-Subject: Re: [PATCH v12 10/10] iommu/arm-smmu-v3: Add stall support for
- platform devices
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20210127154322.3959196-1-jean-philippe@linaro.org>
- <20210127154322.3959196-11-jean-philippe@linaro.org>
- <8adc79cc-7afb-dfe8-4f7b-07fa6dc5b905@hisilicon.com>
- <YBfij71tyYvh8LhB@myrica>
-CC:     <joro@8bytes.org>, <will@kernel.org>, <vivek.gautam@arm.com>,
-        <guohanjun@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <zhangfei.gao@linaro.org>, <lenb@kernel.org>,
-        <devicetree@vger.kernel.org>, <kevin.tian@intel.com>,
-        <robh+dt@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <rjw@rjwysocki.net>, <iommu@lists.linux-foundation.org>,
-        <sudeep.holla@arm.com>, <robin.murphy@arm.com>,
-        <linux-accelerators@lists.ozlabs.org>
-From:   Zhou Wang <wangzhou1@hisilicon.com>
-Message-ID: <fabffd28-7497-2758-c2bf-9d31aa562085@hisilicon.com>
-Date:   Fri, 26 Feb 2021 17:43:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S229990AbhBZK6f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Feb 2021 05:58:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229556AbhBZK6d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Feb 2021 05:58:33 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C32C06174A;
+        Fri, 26 Feb 2021 02:57:53 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id t9so5770294pjl.5;
+        Fri, 26 Feb 2021 02:57:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EpfHHnCLi9iPuaB4OGPWMTLPFj9UeNNtDCviBs376xc=;
+        b=jZgixpWvGPjT5HjoD9Rd0j1Kh5l1dz/YQqqDtfPMT8NEeEhiy/jpEFYktybpvQ+TT5
+         TO+PM4fzWy1Xxf7T3hdnGeKGzS8LBcXlqoXE0XeDg5v5o0ISpcE6Fjz+kelax6rZGP/p
+         UGzjhY5UTYibDNW8VkFPR34Bw3Cy/P7FrpqP1baQPVcHF/Ud8H/wdxR5gHqIbLtFAZ+M
+         bfncN2NIgxWIT2Eghl4rJWdfxYlBXyGBhUr7qt1PCMxHWE7tsunlCjP75gEWEDDt/o/q
+         2Ql3W8mmWCQH9KVs45R86EPD71e5DgHoSLRF0p0MIaolHGYdzAHau5BLztE/ycLzfjLt
+         CusQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EpfHHnCLi9iPuaB4OGPWMTLPFj9UeNNtDCviBs376xc=;
+        b=W4X9zw+6en/AoxPcjGw9Z3AEJDKSNA4m6qEDU6eHR67/FBQxGp2vqANoALAPROWniR
+         5ejJ82EnHhQovhjmosb4+LBzXXHzayQ/FTV1cJf4J8Zsc2upn0P0zGx0MW+SyHJmHoQV
+         hEKYB7DJ7q4SpwAxVRdUkXZHFAdwDv7S2lcO2I/drH4nKCvRwACkUTjSEdWrdWdLmNIU
+         VY9GdIuPRAOwtLyfED7JFZcROtLxVgjbv/0z9kZ1VflTQw1QgCd24c7p98OmEV+fTg6U
+         vOSXrL3yiKl8V6eJ28pC5HiZeTv2Ohecp0gEK9LXJXJhF7KdEl8YHeLk1AAzrCJTnLW/
+         hytA==
+X-Gm-Message-State: AOAM533vR1EjAx/58AeoyxLuvDYnTC3cXUWaI6C+mlDGMEzfQtaNfaQc
+        OvDs7Qhr0imqIROFbKeqxLNprsjg4GUKGnxTr9w=
+X-Google-Smtp-Source: ABdhPJx+Hg4T6GvTNVL4bu0uHoGoTpne0ZfecBn9XtQ9Zc4z6j6s84PnSVUTkGV7R/GbdUskQDstsiCIQbjjeDdKcYY=
+X-Received: by 2002:a17:90a:db49:: with SMTP id u9mr2956161pjx.181.1614337073187;
+ Fri, 26 Feb 2021 02:57:53 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <YBfij71tyYvh8LhB@myrica>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.188.87]
-X-CFilter-Loop: Reflected
+References: <20210226033919.8871-1-shawn.guo@linaro.org> <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
+ <20210226093925.GA24428@dragon>
+In-Reply-To: <20210226093925.GA24428@dragon>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 26 Feb 2021 12:57:37 +0200
+Message-ID: <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/2/1 19:14, Jean-Philippe Brucker wrote:
-> Hi Zhou,
-> 
-> On Mon, Feb 01, 2021 at 09:18:42AM +0800, Zhou Wang wrote:
->>> @@ -1033,8 +1076,7 @@ int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain, int ssid,
->>>  			FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid) |
->>>  			CTXDESC_CD_0_V;
->>>  
->>> -		/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
->>> -		if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
->>> +		if (smmu_domain->stall_enabled)
->>
->> Could we add ssid checking here? like: if (smmu_domain->stall_enabled && ssid).
->> The reason is if not CD.S will also be set when ssid is 0, which is not needed.
-> 
-> Some drivers may want to get stall events on SSID 0:
-> https://lore.kernel.org/kvm/20210125090402.1429-1-lushenming@huawei.com/#t
-> 
-> Are you seeing an issue with stall events on ssid 0?  Normally there
-> shouldn't be any fault on this context, but if they happen and no handler
-> is registered, the SMMU driver will just abort them and report them like a
-> non-stall event.
+On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+>
+> On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
+> > On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+> > >
+> > > Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
+> > > not working.  That's because the GpioInt number of TSC2 node in ACPI
+> > > table is simply wrong, and the number even exceeds the maximum GPIO
+> > > lines.  As the touchpad works fine with Windows on the same machine,
+> > > presumably this is something Windows-ism.  Although it's obviously
+> > > a specification violation, believe of that Microsoft will fix this in
+> > > the near future is not really realistic.
+> > >
+> > > It adds the support of overriding broken GPIO number in ACPI table
+> > > on particular machines, which are matched using DMI info.  Such
+> > > mechanism for fixing up broken firmware and ACPI table is not uncommon
+> > > in kernel.  And hopefully it can be useful for other machines that get
+> > > broken GPIO number coded in ACPI table.
+> >
+> > Thanks for the report and patch.
+> >
+> > First of all, have you reported the issue to Lenovo? At least they
+> > will know that they did wrong.
+>
+> Yes, we are reporting this to Lenovo, but to be honest, we are not sure
+> how much they will care about it, as they are shipping the laptop with
+> Windows only.
+>
+> > Second, is it possible to have somewhere output of `acpidump -o
+> > flex5g.dat` (the flex5g.dat file)?
+>
+> https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
+>
+> > And as Mika said once to one of mine patches "since you know the
+> > number ahead there is no need to pollute GPIO ACPI library core with
+> > this quirk". But in any case I would like to see the ACPI tables
+> > first.
+>
+> Oh, so you had something similar already?  Could you point me to the
+> patch and discussion?
 
-Hi Jean,
+Similar, but might be not the same:
+ - patches in the upstream [1] (v3 applied), discussion [2]
+ - new version with some additional fixes [3]
 
-I notice that there is problem. In my case, I expect that CD0 is for kernel
-and other CDs are for user space. Normally there shouldn't be any fault in
-kernel, however, we have RAS case which is for some reason there may has
-invalid address access from hardware device.
+[1]: ba8c90c61847 ("gpio: pca953x: Override IRQ for one of the
+expanders on Galileo Gen 2")
+[2]: https://lore.kernel.org/linux-gpio/20200520211916.25727-1-andriy.shevchenko@linux.intel.com/T/#u
+[3]: https://lore.kernel.org/linux-gpio/20210225163320.71267-1-andriy.shevchenko@linux.intel.com/T/#u
 
-So at least there are two different address access failures: 1. hardware RAS problem;
-2. software fault fail(e.g. kill process when doing DMA). Handlings for these
-two are different: for 1, we should reset hardware device; for 2, stop related
-DMA is enough.
 
-Currently if SMMU returns the same signal(by SMMU resume abort), master device
-driver can not tell these two kinds of cases.
 
-From the basic concept, if a CD is used for kernel, its S bit should not be set.
-How about we add iommu domain check here too, if DMA domain we do not set S bit for
-CD0, if unmanaged domain we set S bit for all CDs?
 
-Thanks,
-Zhou
 
-> 
-> Thanks,
-> Jean
-> 
-> .
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
