@@ -2,144 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D58326593
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Feb 2021 17:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A008D326B50
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Feb 2021 04:20:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbhBZQat (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Feb 2021 11:30:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49282 "EHLO
+        id S229946AbhB0DUe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Feb 2021 22:20:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbhBZQat (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Feb 2021 11:30:49 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75E8C061574
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Feb 2021 08:30:00 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id m1so8347530wml.2
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Feb 2021 08:30:00 -0800 (PST)
+        with ESMTP id S229745AbhB0DUc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Feb 2021 22:20:32 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B15CC061756
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Feb 2021 19:19:52 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id d12so4989999pfo.7
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Feb 2021 19:19:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=YseGCzjDY6Y9V6UnbishTzBOzoHsbNnd9gsiT/rD4RA=;
-        b=tQLe1JHOEXTleWsdIuaOOPFqSVPu3mCeA6TcjLifl2wxU/KM4XGpZX8Yx0dCAHaW6d
-         mHtO5yeUCHv5fMJyKep3uAP8VRbo+AdHxyHU2nu2qrLU9zy83N57wRuJ9nvfuGbNsf1y
-         t3JncbHK4lR5phiBL8itjkJ0H5JhbuqwVFBf2z0jPSvxspjx1oU6V0a+l4QTveikN+vb
-         xxOoPYCFylLaPPwTTYRLg6ySIpLZbeQ+/AnNdVXf+9eBX7Aq52he62+DQQDDLb1z5n3t
-         Sc55bZX3Lj7xktY12gN9f4AAwH14wmJW9bb/7X23mqX4EeJGpeplhVSs8fjYrDliYMU4
-         gSAA==
+         :content-disposition:in-reply-to:user-agent;
+        bh=96LdUz1OtaaIygWHxO7H9gQAOCVGM05dMV+72gzMXsY=;
+        b=dm2nY6Qok+AHKh10EUZHshjkJ2KxietKlYDoEAKbVy52U0/0mTzKeDcwlNdtzq+3Uj
+         IG8oQDnpqjaimBQ4xFKHZLesaN2YOLBPC9yYizzk6KUXGdXwGeAzmW6jDutATvoUaSPI
+         orG5oB6fvILv9daB/GakqEaX89xJpTDctAmIq+4774Dy2t1Hk+SOEYtUbuvwQ/29SWDh
+         C58z9Bo1hzRm6UAxHZkD+caQxaSkJ3FgqkTonQRsbmd/tRDMKCpXiIyFCjD3ldN6gdUi
+         gVTbbgRxBmo/VQovt6TGZv9JbDSlahJkpqT4PAHYpT57jJJocJGuyUfLTtykJVr9UZTZ
+         VwFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=YseGCzjDY6Y9V6UnbishTzBOzoHsbNnd9gsiT/rD4RA=;
-        b=BxsLFANSdfvHFV7g9eDd5RwjFrSe4IVcxqoUmDDibBcKOOdBGYoFuYn79bMSfc1rHV
-         TgCxG5nJCTnP1rAWmM7obA9B689BYKSf39Q3R6GcJ/FQqmv++wY7C6DAGRoRUaIMZrBw
-         rMaz+H0WXpVpBzd/NpnQx1fqbr4lAVXLR8VyvBJ2mJEsuw2zB3ybjD+0kgF7eOybVT/a
-         0Uh3y7ik+m1ImhbICWxi8SwM+0MJarTtiDhZ7xjhytUjjqli6Qwrw9V1c1Q88wVGRKtu
-         Vsdty3eKuq26n4iGTCDfYtXQTsCI/vNF8X5pJ7gwK1D6AyY235svgOsM5ulNcBCA7cgp
-         XAOA==
-X-Gm-Message-State: AOAM533hG9q4XnWukgLPBbz6FUwuFqu6S1tlnybjMAR7wj4+7z/mh/LZ
-        DKcUAv2PHXY5YRrj1gNzw7ML6w==
-X-Google-Smtp-Source: ABdhPJznohOy8DU3GAcT3VQqrhXcbpg1fj10haa/AaOP7FATIiWNhrtlU7CTl34ihXGj7Pt2jEU/zw==
-X-Received: by 2002:a1c:9a47:: with SMTP id c68mr3610043wme.63.1614356999337;
-        Fri, 26 Feb 2021 08:29:59 -0800 (PST)
-Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id m11sm1326750wrz.40.2021.02.26.08.29.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 08:29:58 -0800 (PST)
-Date:   Fri, 26 Feb 2021 17:29:38 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Zhou Wang <wangzhou1@hisilicon.com>
-Cc:     joro@8bytes.org, will@kernel.org, vivek.gautam@arm.com,
-        guohanjun@huawei.com, linux-acpi@vger.kernel.org,
-        zhangfei.gao@linaro.org, lenb@kernel.org,
-        devicetree@vger.kernel.org, kevin.tian@intel.com,
-        robh+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
-        rjw@rjwysocki.net, iommu@lists.linux-foundation.org,
-        sudeep.holla@arm.com, robin.murphy@arm.com,
-        linux-accelerators@lists.ozlabs.org
-Subject: Re: [PATCH v12 10/10] iommu/arm-smmu-v3: Add stall support for
- platform devices
-Message-ID: <YDkh8qR7csPB68sC@myrica>
-References: <20210127154322.3959196-1-jean-philippe@linaro.org>
- <20210127154322.3959196-11-jean-philippe@linaro.org>
- <8adc79cc-7afb-dfe8-4f7b-07fa6dc5b905@hisilicon.com>
- <YBfij71tyYvh8LhB@myrica>
- <fabffd28-7497-2758-c2bf-9d31aa562085@hisilicon.com>
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=96LdUz1OtaaIygWHxO7H9gQAOCVGM05dMV+72gzMXsY=;
+        b=WyDHrzl8iPZ+bbAmouIbfoy+DJKwENRMKXdo1vuwUzb/JiYS/XXaIvA8HEYZVxedgB
+         g1DVgFDszY+ThRT8j0yE+9GhWmf8+VHmZVCe0tYF4u+JIi8KS8aG5qh3udbCbbJ1D6rb
+         ygJKFSQIVbqdETj0g4S8tVwkBLcRoT3HnUgYpzQXYwauvrTyBjPNcHphwC6gaH0deYnT
+         SsBf/GIygkcTmGSJXyCh4rgJRt8f80lfq2thrx6A6MlCPEy6RmUCGZ4zbjHBfPrc4E7R
+         SofuXtgzOKwzeycnXYX14cFBWWVgvmrwZ4mRVRY8EjODQpLgAI+zMWa3PIGwJsaF65k6
+         hQ0Q==
+X-Gm-Message-State: AOAM530ZTKHfRqeAGBnarOUxBn582Wco3vdsaoZkoOUyj4+vHm7b8Yjv
+        Kdvqs/WfHtOYYCiNR9CZLrqLYQ==
+X-Google-Smtp-Source: ABdhPJzl9oZjeq6dlcubkralpaIjNLcFuiIZgdYfLJaBGbz3Z6yLl8kCtF+G8NA44HwbC0FHIl6e0w==
+X-Received: by 2002:a65:5a0a:: with SMTP id y10mr5518078pgs.285.1614395991691;
+        Fri, 26 Feb 2021 19:19:51 -0800 (PST)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id 190sm10987285pfv.155.2021.02.26.19.19.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 26 Feb 2021 19:19:51 -0800 (PST)
+Date:   Sat, 27 Feb 2021 11:19:45 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+Message-ID: <20210227031944.GB24428@dragon>
+References: <20210226033919.8871-1-shawn.guo@linaro.org>
+ <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
+ <20210226093925.GA24428@dragon>
+ <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+ <YDjZOU+VMWasjzUb@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fabffd28-7497-2758-c2bf-9d31aa562085@hisilicon.com>
+In-Reply-To: <YDjZOU+VMWasjzUb@smile.fi.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Zhou,
-
-On Fri, Feb 26, 2021 at 05:43:27PM +0800, Zhou Wang wrote:
-> On 2021/2/1 19:14, Jean-Philippe Brucker wrote:
-> > Hi Zhou,
-> > 
-> > On Mon, Feb 01, 2021 at 09:18:42AM +0800, Zhou Wang wrote:
-> >>> @@ -1033,8 +1076,7 @@ int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain, int ssid,
-> >>>  			FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid) |
-> >>>  			CTXDESC_CD_0_V;
-> >>>  
-> >>> -		/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
-> >>> -		if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
-> >>> +		if (smmu_domain->stall_enabled)
-> >>
-> >> Could we add ssid checking here? like: if (smmu_domain->stall_enabled && ssid).
-> >> The reason is if not CD.S will also be set when ssid is 0, which is not needed.
-> > 
-> > Some drivers may want to get stall events on SSID 0:
-> > https://lore.kernel.org/kvm/20210125090402.1429-1-lushenming@huawei.com/#t
-> > 
-> > Are you seeing an issue with stall events on ssid 0?  Normally there
-> > shouldn't be any fault on this context, but if they happen and no handler
-> > is registered, the SMMU driver will just abort them and report them like a
-> > non-stall event.
+On Fri, Feb 26, 2021 at 01:19:21PM +0200, Andy Shevchenko wrote:
+> On Fri, Feb 26, 2021 at 12:57:37PM +0200, Andy Shevchenko wrote:
+> > On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+> > > On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
+> > > > On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+> > > > > Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
+> > > > > not working.  That's because the GpioInt number of TSC2 node in ACPI
+> > > > > table is simply wrong, and the number even exceeds the maximum GPIO
+> > > > > lines.  As the touchpad works fine with Windows on the same machine,
+> > > > > presumably this is something Windows-ism.  Although it's obviously
+> > > > > a specification violation, believe of that Microsoft will fix this in
+> > > > > the near future is not really realistic.
+> > > > >
+> > > > > It adds the support of overriding broken GPIO number in ACPI table
+> > > > > on particular machines, which are matched using DMI info.  Such
+> > > > > mechanism for fixing up broken firmware and ACPI table is not uncommon
+> > > > > in kernel.  And hopefully it can be useful for other machines that get
+> > > > > broken GPIO number coded in ACPI table.
+> > > >
+> > > > Thanks for the report and patch.
+> > > >
+> > > > First of all, have you reported the issue to Lenovo? At least they
+> > > > will know that they did wrong.
+> > >
+> > > Yes, we are reporting this to Lenovo, but to be honest, we are not sure
+> > > how much they will care about it, as they are shipping the laptop with
+> > > Windows only.
+> > >
+> > > > Second, is it possible to have somewhere output of `acpidump -o
+> > > > flex5g.dat` (the flex5g.dat file)?
+> > >
+> > > https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
 > 
-> Hi Jean,
-> 
-> I notice that there is problem. In my case, I expect that CD0 is for kernel
-> and other CDs are for user space. Normally there shouldn't be any fault in
-> kernel, however, we have RAS case which is for some reason there may has
-> invalid address access from hardware device.
-> 
-> So at least there are two different address access failures: 1. hardware RAS problem;
-> 2. software fault fail(e.g. kill process when doing DMA). Handlings for these
-> two are different: for 1, we should reset hardware device; for 2, stop related
-> DMA is enough.
+> Looking into DSDT I think the problem is much worse. First of all there are
+> many cases where pins like 0x140, 0x1c0, etc are being used. On top of that
+> there is no GPIO driver in the upstream (as far as I can see by HID, perhaps
+> there is a driver but for different HID. And I see that GPIO device consumes a
+> lot of Interrupts from GIC as well (it's ARM platfrom as far as I understand).
 
-Right, and in case 2 there should be no report printed since it can be
-triggered by user, while you probably want to be loud in case 1.
+Yes, it's a laptop built on Qualcomm Snapdragon SC8180X SoC.  The GPIO
+driver is generic for all Snapdragon SoCs, and has been available in
+upstream for many years (for DT though). It can be found as the gpio_chip
+implementation in MSM pinctrl driver [1].  The SC8180X specific part can
+be found as pinctrl-sc8180x.c [2], and it's already working for DT boot.
+The only missing piece is to add "QCOM040D" as the acpi_device_id to
+support ACPI boot, and it will be submitted after 5.12-rc1 comes out.
 
-> Currently if SMMU returns the same signal(by SMMU resume abort), master device
-> driver can not tell these two kinds of cases.
+> Looking at the Microsoft brain damaged way of understanding GPIOs and hardware
+> [1], I am afraid you really want to have a specific GPIO driver for this. So,
+> for now until we have better picture of what's going on, NAK to this patch.
 
-This part I don't understand. So the SMMU sends a RESUME(abort) command,
-and then the master reports the DMA error to the device driver, which
-cannot differentiate 1 from 2?  (I guess there is no SSID in this report?)
-But how does disabling stall change this?  The invalid DMA access will
-still be aborted by the SMMU.
+Thanks for the pointer to Microsoft document.  On Snapdragon, we have
+only one GPIO instance that accommodates all GPIO pins, so I'm not sure
+that Microsoft GPIOs mapping layer is relevant here at all.
 
-Hypothetically, would it work if all stall events that could not be
-handled went to the device driver?  Those reports would contain the SSID
-(or lack thereof), so you could reset the device in case 1 and ignore case
-2. Though resetting the device in the middle of a stalled transaction
-probably comes with its own set of problems.
+Please take a look at the GPIO driver, and feel free to let me know if
+you need any further information to understand what's going on.
 
-> From the basic concept, if a CD is used for kernel, its S bit should not be set.
-> How about we add iommu domain check here too, if DMA domain we do not set S bit for
-> CD0, if unmanaged domain we set S bit for all CDs?
+Shawn
 
-I think disabling stall for CD0 of a DMA domain makes sense in general,
-even though I don't really understand how that fixes your issue. But
-someone might come up with a good use-case for receiving stall events on
-DMA mappings, so I'm wondering whether the alternative solution where we
-report unhandled stall events to the device driver would also work for
-you.
 
-Thanks,
-Jean
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-msm.c#n713
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-sc8180x.c
