@@ -2,185 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BD4326FFF
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Feb 2021 02:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF2F0327387
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Feb 2021 18:13:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230079AbhB1Bs4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Feb 2021 20:48:56 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:37360 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbhB1Bs4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Feb 2021 20:48:56 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11S1jE5J157296;
-        Sun, 28 Feb 2021 01:48:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=JRCG3BWxZVhuS9n46tYU+6TTJsKzBBEdKYKlrw9u8Y0=;
- b=QGHXtHIJrArjI+NPlkRr1EUU7Zth721PmlH8D1D/kxSV172xWxKr6yIku/Bhp8Sdd8LH
- IhVVU9vy0JnTEeUjGJ2rh5qapjmyynyVn9nUFJGa1iHIEGdw6T82ecvkhwY4TXghE/Oc
- 5lWKak74sjeFupApI/88Erln9EfNCyYkbj4gJnJ5b7oWmCDDQqwm5HAOICG3tevMAyzK
- zcS62qM9DuzA11VQsmFuO02KLfQsZXSK3Zd7Yo3usd6gpHmGB2FSn3OvBtGPHQfG+E7b
- xLSYPsFx1ztvyxomtxFJrgG1y4l3QuPYX7uy9DEEHkaMCrAIRgnZn0hKQnf55yjO9fiF hw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 36ye1m12e2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 28 Feb 2021 01:48:05 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11S1kL11142170;
-        Sun, 28 Feb 2021 01:48:04 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
-        by userp3020.oracle.com with ESMTP id 36yyup2177-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 28 Feb 2021 01:48:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VIAih/CfMpllZplrB2mlRB4v74bNQKFnBjaxYWUmjhPj/t4R45tSNNEDZeEbw9e0AAiqKZTFqZSJSxE/crPSIW2ppsDQMv8e54OsudvcMsXB8YW6RYNQDDNwXKLqeiXq9kcO0aNHox2LiYDv4RsD9jG55gzvbkL8bY09w/dK5gmCtEpk9EKgwouN/puAgJZ+N6Ts4pre8QNvf2tLUtRx1PrzcJqoAJPwP90Ae3csNT9ub+MttncRq0c2v/P1RMba8G+cIoBpfVv3xQxV78GESy7fmVr3hqFsQpXi5cUdo8qncvghlQE9Gc+djvILkJ8blpOU/6+LoZqR807soHO3vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JRCG3BWxZVhuS9n46tYU+6TTJsKzBBEdKYKlrw9u8Y0=;
- b=fKHYYbxdpxah3dvwFu2JTMyh0BKw6p+Rsf9ww541ikxmUkMNrZJI2/A6WrK4Vm9N+JbrqiJlq8e1e4BgLZwisPhZ7PzrweDrF4PeSxdewJy9WxGIGbKx7X2ru3x/NC0fDTdWOhuxbpPBsbtF7BikwKGtlnGjvg3k4jIQ5+yppdwNoBkHy7TVu37FnRJvdc+HLB+ZpJQjUMM/EvFyOkpBf6gYZEoaVgIj7iTQDcQcnHXd3kU7p84bm/cgdez0pzXWIkz/87VoYpLmCDz1e08Cmwd6myf/dhPpliZlBo+BdlgODXMb4SjEYLqOcIsE72bAeZ6QCIqbizfF6HYewEbfiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        id S231298AbhB1RMn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Feb 2021 12:12:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230461AbhB1RMj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Feb 2021 12:12:39 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10048C06174A;
+        Sun, 28 Feb 2021 09:11:58 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id g5so23843438ejt.2;
+        Sun, 28 Feb 2021 09:11:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JRCG3BWxZVhuS9n46tYU+6TTJsKzBBEdKYKlrw9u8Y0=;
- b=fQUvBqvTuBrh+8yRT63Uq0gYBfVZF0YjeLy5OK+0vsnzxBJPF6hpWZ9MLay4cg6DwnoIky9/+uYwgjX2ZKjKZ057kVKPua+QcDGrKBfQjEAtvD4J+V4W48xgGMGzbj160ryT0xsIV/QYLdIvMuI0rd1Z+0qTvPlSaXjP2pAVJkw=
-Received: from BYAPR10MB3288.namprd10.prod.outlook.com (2603:10b6:a03:156::21)
- by BY5PR10MB4226.namprd10.prod.outlook.com (2603:10b6:a03:210::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.23; Sun, 28 Feb
- 2021 01:48:02 +0000
-Received: from BYAPR10MB3288.namprd10.prod.outlook.com
- ([fe80::f489:4e25:63e0:c721]) by BYAPR10MB3288.namprd10.prod.outlook.com
- ([fe80::f489:4e25:63e0:c721%7]) with mapi id 15.20.3890.025; Sun, 28 Feb 2021
- 01:48:02 +0000
-Subject: Re: [PATCH v1] xen: ACPI: Get rid of ACPICA message printing
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        xen-devel@lists.xenproject.org,
-        Konrad Wilk <konrad.wilk@oracle.com>
-References: <1709720.Zl72FGBfpD@kreacher>
-From:   Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Message-ID: <eaeba4a0-7bb9-7b17-9ba6-49921f6e834c@oracle.com>
-Date:   Sat, 27 Feb 2021 20:47:57 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
-In-Reply-To: <1709720.Zl72FGBfpD@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [138.3.200.62]
-X-ClientProxiedBy: SJ0PR13CA0083.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::28) To BYAPR10MB3288.namprd10.prod.outlook.com
- (2603:10b6:a03:156::21)
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dfQ46OGWItLgoKPUR/Czwfd0qqTUSj25+jf5yrElG/4=;
+        b=GzeA/aDB2UBhnNVhm++I/Jk3Up7Sjll8FWko6UUVrR8GbwUj6tdWvj7U7T3p1JnaWE
+         tuDT5n8KyfWwgonEFcDAlbP9Wnm/lzI5ynLZd5zXrmZLcqy0e5qJFV+Ury6tgPUdhcIC
+         ZnUpySrUVv3A0oExsLsVOkNej6wDTO/NVed1e1lRxfeovoJIixufVCuML3LKRgEXHaK6
+         AQIpA41ncR2vIctG/YIpRBR7PPh4Vs9caRlig7rCLuPUPKUXlteysI6kNYwN/3Yc//ci
+         tD2NQsug/MYd9mQ+dWSVvw0ZV+w1YK/V6hQL8df04yN35+nWGaht76tutf0kiQ1Fxgq5
+         E6Vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dfQ46OGWItLgoKPUR/Czwfd0qqTUSj25+jf5yrElG/4=;
+        b=DFk3PQk4Tg5+x/JyUn1GIB9WRKbs4ZjvCjYZr9JKO8621MT6/JMbxVEVcdDoUwHVL+
+         For3KnKO03QZ25kxJo4JrfZHSkIeuz8ttxAxFkjgF2q6WYdlaegFsyL7pwebxMCJOuh/
+         NrMre9pjnYhb6I4oOeQe6UNOpaC6IPz2m13QnfLeVZ2YZGlmr1DYxmPi+bvVPkKasB7e
+         u9RBjICZzwxg7kg714yWmesb+O+Rtbcpc99VRzJxNj+AhqwCvcU1kFYQqrqosKdGeMu3
+         qv1KRTCKEbd/EDeY1ITs68EsyfQGwPqrqB4AdfJhZ2zoof+PofoZAtTFpktFx3ZcE2nA
+         XTjg==
+X-Gm-Message-State: AOAM5304vRkhWj/qH8naxa3syBxpk1crx5yAp/FsV3b7mRkxQxwuuOcN
+        4SYwXjH8z05UBhk34i8rBvOfdoP18tGg
+X-Google-Smtp-Source: ABdhPJw5sLbCUCcgxkhNvC6IgO3vmNaTgOeasYPBEho60Poa4WNRXoZ/cPiXNkLCHgbgyBJUziViqw==
+X-Received: by 2002:a17:906:acb:: with SMTP id z11mr3855755ejf.193.1614532316774;
+        Sun, 28 Feb 2021 09:11:56 -0800 (PST)
+Received: from localhost.localdomain ([46.53.249.223])
+        by smtp.gmail.com with ESMTPSA id fw3sm6654338ejb.82.2021.02.28.09.11.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Feb 2021 09:11:56 -0800 (PST)
+Date:   Sun, 28 Feb 2021 20:11:54 +0300
+From:   Alexey Dobriyan <adobriyan@gmail.com>
+To:     torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, linux-arch@vger.kernel.org
+Subject: [PATCH 12/11] pragma once: scripted treewide conversion
+Message-ID: <YDvO2kmidKZaK26j@localhost.localdomain>
+References: <YDvLYzsGu+l1pQ2y@localhost.localdomain>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.74.98.190] (138.3.200.62) by SJ0PR13CA0083.namprd13.prod.outlook.com (2603:10b6:a03:2c4::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.9 via Frontend Transport; Sun, 28 Feb 2021 01:48:01 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4aa07595-649b-4024-faf7-08d8db8ae258
-X-MS-TrafficTypeDiagnostic: BY5PR10MB4226:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR10MB4226A07E40ECF615230B45458A9B9@BY5PR10MB4226.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vqRZVxewTk1FwRwQvVF1b6YNt99L2SOFwK3C5U0YiMpBuSDeuPt9kc+YWJIWf2AASho+9K64OajT/aKWJSDrCfzSFewmqGBT0NDAMJUDFEv0HA27IQA5rRx0fLamvaOEsBHeOfnAQnVWTeYVtAz8u/G4mQ66PK49K6HM8AcBJQMvQ4BK57AHX/viq8cvLjoM9+PaWCjk+QPkNNVxZTXwItfFnyXEmaUGCgjuXg0pW1Fy97uZmqV6Tj3JNlUTmMAB69EBbuQ4ZK3GweNkecyo5/zat23eLWj09cHjjNKfLalNQtsOj4ZHugJICZYVot1yMNCSRJqK0XXn9wioo8YFnRkGW/hcXuyXnfwyWPXYXfHQjWTAJnZatAlRLMZOCSQ+CVNb7ADwBUpNg0R9eMD+TvOvbl0u7UZZo2uYCi1so8J0bEZd+C7YWSpsdhRzlvNpLoehlx47cOazyd9VhrGvEjgNmGThROr1ulkUD/bn5aqx2ikm6DdcgRnB2iWqBFPBcJcRq5j1Aj7U7zJinoBBcNKbThkd24X2i0nCV3v5YZXiLHtV/S7FLrTQRQFKJi6LnQXsDBj2G390Dmp585p+RSrvPCDA8UvgRfzXlMifqC/+pUCA0hnoDii+Kt6/0Op8EUze0DGN6nje3iZqwCRY0A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3288.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(39860400002)(366004)(136003)(396003)(346002)(53546011)(66946007)(86362001)(31696002)(478600001)(107886003)(5660300002)(4326008)(6666004)(66476007)(15650500001)(6486002)(31686004)(66556008)(8676002)(16526019)(2906002)(16576012)(186003)(316002)(8936002)(83380400001)(110136005)(956004)(44832011)(54906003)(2616005)(36756003)(26005)(26583001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?V3VaZzNEeGRYYjlNQTVHZzRrbTVtTk5kMkdXODAwSFE2dzRQZ0N3TFNWNVV1?=
- =?utf-8?B?dlRETUZHQytjblUwOUNhV2lHQ0gwYjFjMjNSdDM4OXhGRUZqaS9HQUR3Z09T?=
- =?utf-8?B?NU5EZ20wMTFPb2Rla0Jsd1phWEZidExNa3JkOVc1ZTNLUGRyQWlhZHhpd0d6?=
- =?utf-8?B?VDZ4Qk9GMElyWlRKbEFqWFllMFl3blZiMW5wYnU2eW40Y1J6Njh2UmRnSW1s?=
- =?utf-8?B?K0haZzQ1WmI4dHk2L1lHclpUN2Nhak1ydVFQZ2dnTExvdkJiS2Z5TTFrMUtB?=
- =?utf-8?B?alFkRDhPV2Fad3hqanRTbkE3Rnkwdm45L0FycFZJUnd1UytOWGlSTEFuWmxT?=
- =?utf-8?B?dU5PWDRVRlMzMDNRYno2L09BYXJ3R2lHLytBbUkzT2tQRkpsdkZ0NmF6c01U?=
- =?utf-8?B?YTYvc2xjenY0azNIMlZueEQ5YlNvMTA3VEQ1R1p2NHdrKzhVM2VBM2lzK0gx?=
- =?utf-8?B?SCtVbVBKRlU5clYrVHpJa0ltZ0ZVd2hjdFVNWWlXS0NZdEVSdmFoVkJkOWsz?=
- =?utf-8?B?NDdoUEV1YlNud1E4T0pEMUZVY2VlYk5PUzhNRWlOdE1iMWVNU05LWE01VTFu?=
- =?utf-8?B?a0dpeXBTaWtnTTdNSCtwaGo1NjM5UE9uR0xiTXN5MW51OEhiNk9kMXBDaWov?=
- =?utf-8?B?dXFySVlBSExZV0NZVTJrZ0lzeDlGTWdrZHhBTU95eGR4ckRRb0I1YmE3MThC?=
- =?utf-8?B?T2hFbkRwTEZwbm5WWG1KQjgwQjVoU1V6d2dDRDlZNW1ES0RMb0FCQXNFWEk2?=
- =?utf-8?B?WFdtcG53M0lTN3BJbXJRQXB2L0hZOS9PdnZ6cmVPQ3pnMXN4WWM2WGJnUEd5?=
- =?utf-8?B?cHJjNWQ4aFJuWGtTa2VYWkxvWWlOZFl0a3RBQjVNNVdXZ1NwZ0NmWnFwVzVD?=
- =?utf-8?B?cHhWR25oc2dDVXZtcU9jaHBDM2pWSWgyVFBINEZ1MzVTdjVUamhaemhvUG9I?=
- =?utf-8?B?c3d6dTNwbERWemw4U0dDK01ObWNXNjg2Nzc2Y2pIZldIVE1nT0szTTZja0RF?=
- =?utf-8?B?S0NmUW9pZXNNS0RFYkF6TjFOV1g4QU1rR0ttcDQrZENOaFFHRXhJdWFFMC9Y?=
- =?utf-8?B?Y2dZV0kxYVhWM2NSTEQxOXhVV2dpeGF3Ly95ZTE5bWpjeTUybGtFSFhSN1lh?=
- =?utf-8?B?TEhIdWt6ZTBUdkx4VkEvSDRTb2hCaW5WZzRnL01URGFpc01PLzl6UkpRL2k4?=
- =?utf-8?B?SUZTTGh6a0FsR0wrR2c2K0lzWEZWWTY4elNjL3dqSU9Hd2FPNWh6OVFCNDZ6?=
- =?utf-8?B?S0pqRzhyVUN6a0RncjIvNXEvOW9GV0ZnZklkTnN3dWhncjMwMERxZjNsem9h?=
- =?utf-8?B?QUVTUHdIQmxHcUNGeFdVWWppUDk1K0pUajFQUDlySldrZDdUci9lNFdCSitH?=
- =?utf-8?B?dU9UYTExa1QrSWdEM1pjV2hwZDhrVTRrcFhsbGNvRnQ4cklEZ1d4YzBhS0Er?=
- =?utf-8?B?dDVtWFZjY2FMTEVSN0tGQUkrL0o5RWhOL21YZjZqeHpPZkVuRkpyZTFHd0NQ?=
- =?utf-8?B?bkhOTnllNjh4M285VGZVWXNCNDduWUR2V1BoU282emZ2NFFlY1NFUXpMdVln?=
- =?utf-8?B?V0hHaEZoeFlsSkM0YmloOWJXb05lTlBrUkV5OG44UjhuSndJRjhDbStzV3pP?=
- =?utf-8?B?VzNub0FLeGhma2pvNGFBMmIvMitEWU1IQTZxTWV3UVUzSmhYaUwvMks4ZmZF?=
- =?utf-8?B?cWZLTUttWnZxRURQa0NVR3hOdEpoWnBlL1hNVVROdHQrVkVHVE03bFFkT0xJ?=
- =?utf-8?Q?lfNr4eOAUDYbTArF72TrhAuxmMTIu/83/AMBCLM?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4aa07595-649b-4024-faf7-08d8db8ae258
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3288.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2021 01:48:02.5335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5XG48lgiocDWM4bpDfiLyWTk/MGDVwOlREfw8n5OKRZ9Kv7JkgMRjX5i0m2lGjgar5a1YFqFXN4KgZ9rzxU+AZvcxk2Fd8wOILAZP/QdERg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4226
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9908 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102280010
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9908 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
- mlxlogscore=999 impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0
- mlxscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102280010
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YDvLYzsGu+l1pQ2y@localhost.localdomain>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+[  Bcc a lot of lists so that people understand what's this is all         ]
+[  about without creating uber-cc-thread.                                  ]
+[  Apologies if I missed your subsystem                                    ]
+[  Please see [PATCH 11/11: pragma once: conversion script (in Python 2)]  ]
 
-On 2/24/21 1:47 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> The ACPI_DEBUG_PRINT() macro is used in a few places in
-> xen-acpi-cpuhotplug.c and xen-acpi-memhotplug.c for printing debug
-> messages, but that is questionable, because that macro belongs to
-> ACPICA and it should not be used elsewhere.  In addition,
-> ACPI_DEBUG_PRINT() requires special enabling to allow it to actually
-> print the message and the _COMPONENT symbol generally needed for
-> that is not defined in any of the files in question.
->
-> For this reason, replace all of the ACPI_DEBUG_PRINT() instances in
-> the Xen code with acpi_handle_debug() (with the additional benefit
-> that the source object can be identified more easily after this
-> change) and drop the ACPI_MODULE_NAME() definitions that are only
-> used by the ACPICA message printing macros from that code.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/xen/xen-acpi-cpuhotplug.c |   12 +++++-------
->  drivers/xen/xen-acpi-memhotplug.c |   16 +++++++---------
+Hi, Linus.
+
+Please run the script below from top-level directory, it will convert
+most kernel headers to #pragma once directive advancing them into
+21-st century.
+
+The advantages are:
+
+* less LOC
+
+	18087 files changed, 18878 insertions(+), 99804 deletions(-)
+	= -81 kLOC (give or take)
+
+* less mental tax on developers forced to name things which aren't even
+  real code
+
+* less junk in preprocessor hashtables and editors/IDEs autocompletion
+  lists
+
+There are two bit exceptions: UAPI headers and ACPICA.
+Given ubiquity of #pragma once, I personally think even these subsystems
+should be converted in the future.
+
+Compile tested on alpha, arc, arm, arm64, h8300, ia64, m68k, microblaze,
+mips, nios2, parisc, powerpc, riscv, s390, sh, sparc, um-i386, um-x86_64,
+i386, x86_64, xtensa (allnoconfig, all defconfigs, allmodconfig with or
+without SMP/DEBUG_KERNEL + misc stuff).
+
+Not compile tested on csky, hexagon, nds32, openrisc. 
+
+Love,
+	Alexey
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
 
 
-As I was building with this patch I (re-)discovered that since 2013 it depends on BROKEN (commit 76fc253723add). Despite commit message there saying that it's a temporary patch it seems to me by now that it's more than that.
 
+#!/bin/sh -x
+find . -type f -name '*.h' -print	|\
+LC_ALL=C sort				|\
+sed -e 's#^./##g'			|\
+xargs ./scripts/pragma-once.py
 
-And clearly noone tried to build these files since at least 2015 because memhotplug file doesn't compile due to commit cfafae940381207.
-
-
-While this is easily fixable the question is whether we want to keep these files. Obviously noone cares about this functionality.
-
-
--boris
-
+find . -type d -name 'uapi' | xargs git checkout -f
+git checkout -f arch/alpha/include/asm/cmpxchg.h
+git checkout -f arch/arm/mach-imx/hardware.h
+git checkout -f arch/arm/mach-ixp4xx/include/mach/hardware.h
+git checkout -f arch/arm/mach-sa1100/include/mach/hardware.h
+git checkout -f arch/mips/include/asm/mips-cps.h
+git checkout -f arch/x86/boot/boot.h
+git checkout -f arch/x86/boot/ctype.h
+git checkout -f arch/x86/include/asm/cpufeatures.h
+git checkout -f arch/x86/include/asm/disabled-features.h
+git checkout -f arch/x86/include/asm/required-features.h
+git checkout -f arch/x86/include/asm/vmxfeatures.h
+git checkout -f arch/x86/include/asm/vvar.h
+git checkout -f drivers/acpi/acpica/
+git checkout -f drivers/gpu/drm/amd/pm/inc/vega10_ppsmc.h
+git checkout -f drivers/gpu/drm/amd/pm/powerplay/ppsmc.h
+git checkout -f drivers/input/misc/yealink.h
+git checkout -f drivers/media/usb/dvb-usb-v2/mxl111sf-demod.h
+git checkout -f drivers/media/usb/dvb-usb-v2/mxl111sf-tuner.h
+git checkout -f drivers/pcmcia/yenta_socket.h
+git checkout -f drivers/staging/rtl8723bs/include/hal_com_h2c.h
+git checkout -f include/linux/acpi.h
+git checkout -f include/linux/bitops.h
+git checkout -f include/linux/compiler_types.h
+git checkout -f include/linux/device.h
+git checkout -f include/linux/kbuild.h
+git checkout -f include/linux/libfdt_env.h
+git checkout -f include/linux/local_lock.h
+git checkout -f include/linux/spinlock.h
+git checkout -f include/linux/spinlock_api_smp.h
+git checkout -f include/linux/spinlock_types.h
+git checkout -f include/linux/tracepoint.h
+git checkout -f mm/gup_test.h
+git checkout -f net/batman-adv/main.h
+git checkout -f scripts/dtc/
+git checkout -f tools/include/linux/bitops.h
+git checkout -f tools/include/linux/compiler.h
+git checkout -f tools/testing/selftests/clone3/clone3_selftests.h
+git checkout -f tools/testing/selftests/futex/include/atomic.h
+git checkout -f tools/testing/selftests/futex/include/futextest.h
+git checkout -f tools/testing/selftests/futex/include/logging.h
+git checkout -f tools/testing/selftests/kselftest.h
+git checkout -f tools/testing/selftests/kselftest_harness.h
+git checkout -f tools/testing/selftests/pidfd/pidfd.h
+git checkout -f tools/testing/selftests/x86/helpers.h
