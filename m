@@ -2,197 +2,246 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D354328369
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Mar 2021 17:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE59B328DF5
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Mar 2021 20:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237718AbhCAQS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Mar 2021 11:18:29 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:40938 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237668AbhCAQRr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Mar 2021 11:17:47 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 121GFf1G104821;
-        Mon, 1 Mar 2021 16:16:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=eJLtvPdTzSz6fWxMQvTZRoSvMTzT7uQH+PWL/40YmZc=;
- b=ZFsz8O+dukBYjrP60ld86sAGCKa6LY6rOe0xtNp4pm1u42T7lTkCVQQkdVhJXo4OLp9C
- CXPrq7eUfZzrlvKpk9dpL5lM4edgoEGPXQfEfnHYqHAksAxhSU126oK5dETxLcABcYQw
- iS56Ww4PPMImRUAQCk9rh9EenUXeZSQm1fvIQ6y5Vl4NR0zERdmCb6tXC/rxHb6Z4w54
- 2JnJv4CrDBeYFEVs3q+6S9Ma00RH02uGO/sbU7z8VNQf5BjGO1BhxD/y+cZKCf3C2evw
- y/1vug1kJSEZ5quIbXKPB6wVpaFiBJx49osBPbqH0VIxpGXjyzYxWDGEhdd8KDTLnDwX /w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 36yeqmveb7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Mar 2021 16:16:42 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 121GEv2d037659;
-        Mon, 1 Mar 2021 16:16:41 GMT
-Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2055.outbound.protection.outlook.com [104.47.46.55])
-        by aserp3030.oracle.com with ESMTP id 36yynmxxrw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Mar 2021 16:16:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oEzshJiZcOV33AGdbLjp8MnEeJ56Jis/t68tGhyLW0ALghTZGEz+l21IK1Z2v1nCKtuY7UwDClVnFWbWXzrVCczs/tHRMZFG/IQ11trw7z/7J27eGRYjpVz3fISpfiOMVxKmZVxRDzjQAFo53olm/vN/e4bWNUpjI8RABpcJqGuhc0K+ty1rx/vYzAoy17ZdXV40UyraQpg9YdFpjmW4v8Hw5IR/gVNpFIEQ34YjDAGGPOLs0jIQnwKLG2f8wT47wvnBktyWZrcyxoXyo5JI1md7FNIsUs2fPWpVPcb6X+0GXqkHNyN4jwT/iPO41tvVMRwt92cCG8EKbTeYhcQJ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eJLtvPdTzSz6fWxMQvTZRoSvMTzT7uQH+PWL/40YmZc=;
- b=F2qGVkdqW8s2JcP+D/gOo5rGIXEhnhFj+yqFNK/ugMno1fQT7iB2yFNZcFfGG6W8dcovDNnAGRszcmZ3b0Q/H7N9eUzi7igHzNPur83l+50u3535Gvyib0f/ts+Z/G8zpvjaqMCMOu8Rn0qnlzdtn0F4QMoU5Vb9iu86Aofh8yrQbJuu05fByJ06PAmLFfURXzuJh8x2zBVafIcgCTKCipk8hGCqOf66j9EatU4yNxu7WXiHvXUymw/msMrDTbE6jAzno3oxGATP9r3ZcalARuzUhjAyTwg5ffbUHEihHzcbpcq5WVDdu8rgj6ZNVokjpGSDMJNwhdV0yES9Adn3xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eJLtvPdTzSz6fWxMQvTZRoSvMTzT7uQH+PWL/40YmZc=;
- b=inq4BtgnySmG75oTAf/GyCVclZhZbsum+IMRidugBF/KQuqrbOJbuys3dBS2ANpheeCpVVv0lZBK5J6MatCtLyqjd43R4ZeicUTXiZ5i7wLG/1cxCRMp0Jd3QBYVFxJhccHePF88TWh5fONNV7btnqjYZ4YSKlOnUM/Lzm1UnbM=
-Received: from BYAPR10MB3288.namprd10.prod.outlook.com (2603:10b6:a03:156::21)
- by BYAPR10MB3526.namprd10.prod.outlook.com (2603:10b6:a03:11c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.20; Mon, 1 Mar
- 2021 16:16:39 +0000
-Received: from BYAPR10MB3288.namprd10.prod.outlook.com
- ([fe80::f489:4e25:63e0:c721]) by BYAPR10MB3288.namprd10.prod.outlook.com
- ([fe80::f489:4e25:63e0:c721%7]) with mapi id 15.20.3890.028; Mon, 1 Mar 2021
- 16:16:39 +0000
+        id S241394AbhCATV0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Mar 2021 14:21:26 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48572 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235768AbhCATSz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Mar 2021 14:18:55 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1614626287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=3j/0D9ZA7ezAtEP4Nk3+f0xENC++ECPVLz2dgRTsCxI=;
+        b=r1srcnqfeZUiQ0xnlWVjFCTUVG4ZpnVmnB2gjAkhAjdEf+FPeRl4xZQT9zSl80nS50IY95
+        liuwzkMBhoLK+WLikoku4/ZC03NEOaYPwZNXl5lEwsH0pwlAkM7n1NPNJGpOvDKMBGpFKP
+        e8FDvOHsUgwj7WG4qSh5WrEHX0yApmM=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 010B4AF35;
+        Mon,  1 Mar 2021 19:18:07 +0000 (UTC)
 Subject: Re: [PATCH v1] xen: ACPI: Get rid of ACPICA message printing
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
+To:     Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Stefano Stabellini <sstabellini@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
         xen-devel@lists.xenproject.org,
         Konrad Wilk <konrad.wilk@oracle.com>
 References: <1709720.Zl72FGBfpD@kreacher>
  <eaeba4a0-7bb9-7b17-9ba6-49921f6e834c@oracle.com>
  <CAJZ5v0jr5Mxs9NYBz1ot8O+6dKYbfAo=cJqSVAOnrFEqUNwuTA@mail.gmail.com>
-From:   Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Message-ID: <7c313ae8-6f3a-1281-a88a-1393e54f26a1@oracle.com>
-Date:   Mon, 1 Mar 2021 11:16:35 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
-In-Reply-To: <CAJZ5v0jr5Mxs9NYBz1ot8O+6dKYbfAo=cJqSVAOnrFEqUNwuTA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [73.249.50.119]
-X-ClientProxiedBy: BYAPR04CA0016.namprd04.prod.outlook.com
- (2603:10b6:a03:40::29) To BYAPR10MB3288.namprd10.prod.outlook.com
- (2603:10b6:a03:156::21)
+ <7c313ae8-6f3a-1281-a88a-1393e54f26a1@oracle.com>
+From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Message-ID: <afc7b1af-4d12-fb06-9212-b828f4426073@suse.com>
+Date:   Mon, 1 Mar 2021 20:18:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.104] (73.249.50.119) by BYAPR04CA0016.namprd04.prod.outlook.com (2603:10b6:a03:40::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.20 via Frontend Transport; Mon, 1 Mar 2021 16:16:38 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 24553bd6-2f32-42bd-19eb-08d8dccd64e7
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3526:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR10MB35260896AFBCADB41CC156F68A9A9@BYAPR10MB3526.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gEsC8dA+FfjwXI7lIw3Mp9cUcAFpchjnb8UBzwc8wcVGEOOfITp7iWf9xbyKJ/ZYqs6XayYkBwR060tMHP1T3m4tCmKwKtic6kBDm0e+rI1xQapbPGcFGvNRn7cc4AUMqUpmas9s4D9SPQmNi4OtALFz9oAr8nDBShhmwBqsutIHYXFzXzUY2tAxv/6aSGKuvjhKMjVH4HSLAMuwHzKMhCbbxJuOVgSY13lVNVjgRxTkfthIb2QhhkAXaVBGskkwhEFeJH3nS6mG2pTOOQaXnYxp6YZdILnlU3qwZ77zRvYkN+m09QXekBRRN3v26tXCDwvCGMMbW92h6x7Trniv1NZa0vItTltVYrNXlZiysPob9fhSaklJPvddEHpBfu18bncjJPUWq7qE5flaglfLL0URG9g8eUxmkBMBWtthM4+6nJRfEz9MELqm8lWTyqS5F4mW57A5es6qDBaMQnmbBa1rnx0phQCkSmrMMc1d5WtfEpQYvW1nauLcyC3RNJrrDVPGtZIkPi6Ge2pozkfoADdXbgKQiVCbKpJXiLg0wxBPAHIR5auouc0jLlrdnYXz0FRHpU8z+A2pNBkf812ua4LHPv3KMRwxZt0kyuyxWDOCEntOa15U1TxSXZvY6koPt1GMRloEg6ydX35vOeK0Rg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3288.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(366004)(376002)(39860400002)(396003)(136003)(186003)(53546011)(4326008)(16576012)(107886003)(66946007)(66556008)(86362001)(66476007)(316002)(83380400001)(31696002)(478600001)(26005)(2906002)(16526019)(6916009)(5660300002)(15650500001)(8676002)(6486002)(36756003)(54906003)(956004)(44832011)(8936002)(31686004)(6666004)(2616005)(26583001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?WE5wV2JORDNYajh5MVpCc0RBc1JCNzZZekk0TmJudlA4eUpNOWthb0w4WWlL?=
- =?utf-8?B?QVZpclMzSDd6dWFjVTdRaVlrcFA2dkVsRy9WY1p2YVdSNEtONHNqQ0dqUCtj?=
- =?utf-8?B?eGg3R01pMllZbVYrdWFqMUJsSFc3bU9tTzZZWG15VmVta1d0L3Y4SFQwTjRB?=
- =?utf-8?B?ZXFRbHFzR3lJRUpjUm96b05mbHBZREw0VGZ3L2xpVDBpVnNYd1VXMk9kT1RD?=
- =?utf-8?B?TDJXNy80RXVkZkxvVXFXajRGMzFyTHlTWWRtT01reDhlUmFMa09IZG1sdU10?=
- =?utf-8?B?S1c3WlFCL2pHd0tJTEJMdUhWT1NDT0I2WnJVbnJsQkJndUtjYkN6ZFpUY3Ar?=
- =?utf-8?B?SDl0R1k3UlU4d2J2SGlkUllRVHdIZVVwZ2NIN3BFSW9pS0MwSEJHbS9LRlBs?=
- =?utf-8?B?UERqREtwNDNMT2JCK0ptRitaWWdaT0lSV25CdEZEbEk1YXFTOGd1alFwbmI2?=
- =?utf-8?B?RTUwM3duQ3RXUkFkVnlXUkZWUnp4am1TTm5VVE1UeExnUG9BRGcrVC9veGxu?=
- =?utf-8?B?cnZDZVQ2OTFBS2tHL29LZVdqWUlsYmNJQ1dCM0lKMEx5cml5dEtuNWpOZ00y?=
- =?utf-8?B?WUJqc2NVNVFjYmhndUZnMFRIKzNzVXI3WWZjQWdQWURxbDlZSmYyVnlqOU8z?=
- =?utf-8?B?TzJ1Q3NDZjRUR2QxM3oyUFdMblVNMHNQdlljMzJkQWhrYjAzc2lreUV0ZWY4?=
- =?utf-8?B?cjZCMVNHTUp0b1NqQkJiVkUwSjVXblpRelRiQkc4N0RSUUxoRVdveVNNeWJv?=
- =?utf-8?B?MHNvYnVvRVhFL0pjRmdMakRDejgrOE5qK2w2enJVdHhUclg0Q3Y4d0RyQ0RL?=
- =?utf-8?B?QmJOd3lRdjFvcXdYMzFOcjRnZ3pyZm5ya2ZmZExPN0FxSFV3d1U5MWpVMzZl?=
- =?utf-8?B?d1FJQ0daZFZIaUFKbGtXd0dqL25uTmtPcWpGNlpBVTBuRitpaFZ3azlZaHNy?=
- =?utf-8?B?S2JuL2Q0clRZSnFLa3Q1bkJtZUIydUN3MmoycURXVzlNM3RieVRwS2JyR01N?=
- =?utf-8?B?SjNDbzhFdHpyUDVwZjQwckZKbkdmNHlRa3BsVEkvSjVEb3ZGVW54dzhaSHB4?=
- =?utf-8?B?cTVNRmh0SzlPQjkwM1lXd3Y1VHNwTDZqTDg3TTl2OFpybktNVk5yUUhjWFhm?=
- =?utf-8?B?Q2I0dFhtMVVsWjE3b0hYZXUwSGk3cEQvTFJyVitkbUlCMUFRUlVtT1ZRaFJV?=
- =?utf-8?B?K1lEa0RmWXRmczBiTlFhNFNJbFpxRHhhMXNhSi9oSW5IVDFCZkt6dG56ZlZN?=
- =?utf-8?B?ZWpBSlc1OUJzWGpHN0NTdVN1Z2hHL2VEdlZFMURXUm96M0pRUFpTalVKZXRo?=
- =?utf-8?B?UW5KRFdTR1gxckVOUTBMSVFXMHhUYzBSMjBHc2RreUFMdDRxWjlMUDRiVTFL?=
- =?utf-8?B?WkFkNWdGUWQ5aEtXR05BUzg1NUZQWHkvWHV1dk50VTJqdU8ySW0zVUJacmVF?=
- =?utf-8?B?MUpZQ2djZHR5NXhaWmFlTGZ4cVFvMkdLcmhLNFNVNDlmaWVOZXVDQ0o1V29r?=
- =?utf-8?B?L2x0enhScURKdGR3WWN0OVBDUDBRbXprOU54SGlNZkVDbU1NZU5PZHRyeGR1?=
- =?utf-8?B?MVp0SU1xdFZlVmowZVlTdEV5Q25tdEhScjE5Nnc3dHVGRGxkZFlVQzNqL1hi?=
- =?utf-8?B?TzZXWWphblN1NkttcTNjcGdWYnpGSy9xTmlBVnA4OEsrc2thaVlJMS9DZzFH?=
- =?utf-8?B?YkVFai9Uc2ZnUG5BejRlTjhZbi81clBxL0tVY2J0VHQ1TEIrTlZqWDRucUNt?=
- =?utf-8?Q?KTWfZdi64inM4kC0mS4dKQUn5LUnTo0PY9iLvFe?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24553bd6-2f32-42bd-19eb-08d8dccd64e7
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3288.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2021 16:16:39.4407
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SBOTVokuHgyBLRJJx8HtIsnEkcpkXXiZLhIpZnAWv+xjTPPRDFgKnvMmbFFdSQHgeMGYyuWGvg7f7eSnG/xU9ZQfzqnvpOg1B6Bzp81mUBo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3526
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9910 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
- bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103010134
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9910 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1011
- priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103010134
+In-Reply-To: <7c313ae8-6f3a-1281-a88a-1393e54f26a1@oracle.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="Y6WqBR9s8HPASVufSY807FC9ROBrepWk0"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--Y6WqBR9s8HPASVufSY807FC9ROBrepWk0
+Content-Type: multipart/mixed; boundary="IMu2UHGcUE6GoRXxvT3hkijSEV94m109Z";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux ACPI <linux-acpi@vger.kernel.org>, LKML
+ <linux-kernel@vger.kernel.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ xen-devel@lists.xenproject.org, Konrad Wilk <konrad.wilk@oracle.com>
+Message-ID: <afc7b1af-4d12-fb06-9212-b828f4426073@suse.com>
+Subject: Re: [PATCH v1] xen: ACPI: Get rid of ACPICA message printing
+References: <1709720.Zl72FGBfpD@kreacher>
+ <eaeba4a0-7bb9-7b17-9ba6-49921f6e834c@oracle.com>
+ <CAJZ5v0jr5Mxs9NYBz1ot8O+6dKYbfAo=cJqSVAOnrFEqUNwuTA@mail.gmail.com>
+ <7c313ae8-6f3a-1281-a88a-1393e54f26a1@oracle.com>
+In-Reply-To: <7c313ae8-6f3a-1281-a88a-1393e54f26a1@oracle.com>
 
-On 3/1/21 9:11 AM, Rafael J. Wysocki wrote:
-> On Sun, Feb 28, 2021 at 2:49 AM Boris Ostrovsky
-> <boris.ostrovsky@oracle.com> wrote:
->>
->> On 2/24/21 1:47 PM, Rafael J. Wysocki wrote:
->>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+--IMu2UHGcUE6GoRXxvT3hkijSEV94m109Z
+Content-Type: multipart/mixed;
+ boundary="------------2E3C1A1D1E83919451AF1165"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------2E3C1A1D1E83919451AF1165
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+On 01.03.21 17:16, Boris Ostrovsky wrote:
+>=20
+> On 3/1/21 9:11 AM, Rafael J. Wysocki wrote:
+>> On Sun, Feb 28, 2021 at 2:49 AM Boris Ostrovsky
+>> <boris.ostrovsky@oracle.com> wrote:
 >>>
->>> The ACPI_DEBUG_PRINT() macro is used in a few places in
->>> xen-acpi-cpuhotplug.c and xen-acpi-memhotplug.c for printing debug
->>> messages, but that is questionable, because that macro belongs to
->>> ACPICA and it should not be used elsewhere.  In addition,
->>> ACPI_DEBUG_PRINT() requires special enabling to allow it to actually
->>> print the message and the _COMPONENT symbol generally needed for
->>> that is not defined in any of the files in question.
+>>> On 2/24/21 1:47 PM, Rafael J. Wysocki wrote:
+>>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>>
+>>>> The ACPI_DEBUG_PRINT() macro is used in a few places in
+>>>> xen-acpi-cpuhotplug.c and xen-acpi-memhotplug.c for printing debug
+>>>> messages, but that is questionable, because that macro belongs to
+>>>> ACPICA and it should not be used elsewhere.  In addition,
+>>>> ACPI_DEBUG_PRINT() requires special enabling to allow it to actually=
+
+>>>> print the message and the _COMPONENT symbol generally needed for
+>>>> that is not defined in any of the files in question.
+>>>>
+>>>> For this reason, replace all of the ACPI_DEBUG_PRINT() instances in
+>>>> the Xen code with acpi_handle_debug() (with the additional benefit
+>>>> that the source object can be identified more easily after this
+>>>> change) and drop the ACPI_MODULE_NAME() definitions that are only
+>>>> used by the ACPICA message printing macros from that code.
+>>>>
+>>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>> ---
+>>>>   drivers/xen/xen-acpi-cpuhotplug.c |   12 +++++-------
+>>>>   drivers/xen/xen-acpi-memhotplug.c |   16 +++++++---------
 >>>
->>> For this reason, replace all of the ACPI_DEBUG_PRINT() instances in
->>> the Xen code with acpi_handle_debug() (with the additional benefit
->>> that the source object can be identified more easily after this
->>> change) and drop the ACPI_MODULE_NAME() definitions that are only
->>> used by the ACPICA message printing macros from that code.
+>>> As I was building with this patch I (re-)discovered that since 2013 i=
+t depends on BROKEN (commit 76fc253723add). Despite commit message there =
+saying that it's a temporary patch it seems to me by now that it's more t=
+han that.
 >>>
->>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> ---
->>>  drivers/xen/xen-acpi-cpuhotplug.c |   12 +++++-------
->>>  drivers/xen/xen-acpi-memhotplug.c |   16 +++++++---------
+>>>
+>>> And clearly noone tried to build these files since at least 2015 beca=
+use memhotplug file doesn't compile due to commit cfafae940381207.
+>>>
+>>>
+>>> While this is easily fixable the question is whether we want to keep =
+these files. Obviously noone cares about this functionality.
+>> Well, I would be for dropping them.
 >>
->> As I was building with this patch I (re-)discovered that since 2013 it depends on BROKEN (commit 76fc253723add). Despite commit message there saying that it's a temporary patch it seems to me by now that it's more than that.
->>
->>
->> And clearly noone tried to build these files since at least 2015 because memhotplug file doesn't compile due to commit cfafae940381207.
->>
->>
->> While this is easily fixable the question is whether we want to keep these files. Obviously noone cares about this functionality.
-> Well, I would be for dropping them.
->
-> Do you want me to send a patch to do that?
+>> Do you want me to send a patch to do that?
+>=20
+>=20
+> Yes, if you don't mind (but let's give this a few days for people to ha=
+ve a chance to comment).
+
+I'm fine with removing those files.
 
 
-Yes, if you don't mind (but let's give this a few days for people to have a chance to comment).
+Juergen
 
+--------------2E3C1A1D1E83919451AF1165
+Content-Type: application/pgp-keys;
+ name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+ filename="OpenPGP_0xB0DE9DD628BF132F.asc"
 
--boris
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
+xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOBy=
+cWx
+w3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJvedYm8O=
+f8Z
+d621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y=
+9bf
+IhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xq=
+G7/
+377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR=
+3Jv
+c3MgPGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsEFgIDA=
+QIe
+AQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4FUGNQH2lvWAUy+dnyT=
+hpw
+dtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3TyevpB0CA3dbBQp0OW0fgCetToGIQrg0=
+MbD
+1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u+6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbv=
+oPH
+Z8SlM4KWm8rG+lIkGurqqu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v=
+5QL
++qHI3EIPtyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVyZ=
+2Vu
+IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJCAcDAgEGFQgCC=
+QoL
+BBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4RF7HoZhPVPogNVbC4YA6lW7Dr=
+Wf0
+teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz78X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC=
+/nu
+AFVGy+67q2DH8As3KPu0344TBDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0Lh=
+ITT
+d9jLzdDad1pQSToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLm=
+XBK
+7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkMnQfvUewRz=
+80h
+SnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMBAgAjBQJTjHDXAhsDBwsJC=
+AcD
+AgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJn=
+FOX
+gMLdBQgBlVPO3/D9R8LtF9DBAFPNhlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1=
+jnD
+kfJZr6jrbjgyoZHiw/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0=
+N51
+N5JfVRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwPOoE+l=
+otu
+fe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK/1xMI3/+8jbO0tsn1=
+tqS
+EUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuZGU+wsB5BBMBAgAjBQJTjHDrA=
+hsD
+BwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3=
+g3O
+ZUEBmDHVVbqMtzwlmNC4k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5=
+dM7
+wRqzgJpJwK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu5=
+D+j
+LRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzBTNh30FVKK1Evm=
+V2x
+AKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37IoN1EblHI//x/e2AaIHpzK5h88N=
+Eaw
+QsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpW=
+nHI
+s98ndPUDpnoxWQugJ6MpMncr0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZR=
+wgn
+BC5mVM6JjQ5xDk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNV=
+bVF
+LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mmwe0icXKLk=
+pEd
+IXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0Iv3OOImwTEe4co3c1mwARA=
+QAB
+wsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMvQ/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEw=
+Tbe
+8YFsw2V/Buv6Z4Mysln3nQK5ZadD534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1=
+vJz
+Q1fOU8lYFpZXTXIHb+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8=
+VGi
+wXvTyJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqcsuylW=
+svi
+uGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5BjR/i1DG86lem3iBDX=
+zXs
+ZDn8R38=3D
+=3D2wuH
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------2E3C1A1D1E83919451AF1165--
+
+--IMu2UHGcUE6GoRXxvT3hkijSEV94m109Z--
+
+--Y6WqBR9s8HPASVufSY807FC9ROBrepWk0
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmA9Pe4FAwAAAAAACgkQsN6d1ii/Ey/X
+Xwf/T5pILtrP2Vss5K6gmbbQFUxpMalP1uWUEX87zmFAKMOaiivPnoqmUw6FAyS88slClsPNlwOf
+kXPGM2fx4EbVWbinGHHm8LZlWQZLKVeJSGbieq+mKSnbnq5XIkksC1VHjfD8D3/tEmSSvSVfuYuo
+PYja1K2LFCdQtAtzi0VXqqUTttDNLiJT6oTtsiJHvAoE1CXTdBiVZju0UrTLKIVbJpxccooRgVCR
+/XT3SBsWrnb15J1JyApNIMtJ/P36In17JunTv8U7UcOjC1liH94XvXOQsrO+XzxJNFSW1Dz2Q3Mm
+zSXwdlv1I9IYl414ZVdzJ2U+UAxW1zv/TmEusYJtbQ==
+=baql
+-----END PGP SIGNATURE-----
+
+--Y6WqBR9s8HPASVufSY807FC9ROBrepWk0--
