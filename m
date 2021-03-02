@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C63E832B43B
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:54:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D08BA32B43E
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:59:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344510AbhCCEvJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 23:51:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41454 "EHLO mail.kernel.org"
+        id S1353056AbhCCEy0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 23:54:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42850 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350225AbhCBMC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Mar 2021 07:02:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B40E864F30;
-        Tue,  2 Mar 2021 11:56:12 +0000 (UTC)
+        id S1443583AbhCBMLd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Mar 2021 07:11:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CB06664F66;
+        Tue,  2 Mar 2021 11:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686173;
-        bh=pVIwKAspgyJt2FBp8cPs/jLLOal13i9dDZwz8jPKy3Q=;
+        s=k20201202; t=1614686238;
+        bh=brsIHbGK+t0iectQ9jFDYy16xRr1mKyJQI5/xH1IKgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rvyEWOUe0Lvvm1oF/OOoYbdkwvjrPnuZCR1m9eV2LfwVtJyIlQSqHRdGdc3FFqEA5
-         br3OxnzjuBSPFHujXF6bk9Ln+0MmME+KoLkOI+rjCdnD/hHcw4FevJD3bfDl6gzeWo
-         zO3I2EoBTm7YARxnQzLG/9zBdr53+btvcZaDuNA4CqVLVUVLqei2BWtthnpjO0Mwzy
-         0C2vI+I6wdsm9oDwfwayAPPSytUO/OgjvgOtmA9Y37YYF88HCiYvVrgdeaXmBZrKL/
-         XfGiJa295WGebFFC9/Cpm2LwngfPQCgr7LsgMh8PlnoBDEyneh4qCNZ24DVCB0eqTy
-         /LFl9OzxfiSjA==
+        b=YVdZA3HB1kx/AGSAUrJydPKecfz2DbhaOC/dWvAdKZHe4Dl28A3jVV+5agjjOPLHK
+         AvSPwrqFed3CX+NJTQp9GcH4VNDPuc5HGVvEBJZAZAu8CITB7ddr4Oyh8/YfAYci2Z
+         ugm5Sx25CbFi8Lvqbndzctanyp9joefJHI3Q1p42+MupOtq739vO23u3mob3YQsi7G
+         rkk5EoBJaDsEtF7cktXrG3F+OQ4FqG2LihQyY5uo+zQYV/OjWO1kB7iIJwz4t9SHQJ
+         wDbR6KIdJBK49iALqj8CiCm/MdEwRfOynUY8BC/V4ueLgi9ad32qVZTc7MU0kP86Ai
+         y0W4Xcb8bPHVA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
@@ -31,12 +31,12 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.11 29/52] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
-Date:   Tue,  2 Mar 2021 06:55:10 -0500
-Message-Id: <20210302115534.61800-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 25/47] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
+Date:   Tue,  2 Mar 2021 06:56:24 -0500
+Message-Id: <20210302115646.62291-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115534.61800-1-sashal@kernel.org>
-References: <20210302115534.61800-1-sashal@kernel.org>
+In-Reply-To: <20210302115646.62291-1-sashal@kernel.org>
+References: <20210302115646.62291-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -144,10 +144,10 @@ index 5884eba047f7..3438dc187efb 100644
  	handler_obj->address_space.handler_flags = flags;
  	handler_obj->address_space.region_list = NULL;
 diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-index a8a4c8c9b9ef..7701ae67e091 100644
+index 738d4b231f34..980efc9bd5ee 100644
 --- a/drivers/acpi/acpica/evregion.c
 +++ b/drivers/acpi/acpica/evregion.c
-@@ -112,6 +112,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -111,6 +111,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	union acpi_operand_object *region_obj2;
  	void *region_context = NULL;
  	struct acpi_connection_info *context;
@@ -156,7 +156,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  	acpi_physical_address address;
  
  	ACPI_FUNCTION_TRACE(ev_address_space_dispatch);
-@@ -136,6 +138,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -135,6 +137,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	}
  
  	context = handler_desc->address_space.context;
@@ -165,7 +165,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  
  	/*
  	 * It may be the case that the region has never been initialized.
-@@ -204,6 +208,23 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -203,6 +207,23 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	handler = handler_desc->address_space.handler;
  	address = (region_obj->region.address + region_offset);
  
@@ -189,7 +189,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  	/*
  	 * Special handling for generic_serial_bus and general_purpose_io:
  	 * There are three extra parameters that must be passed to the
-@@ -212,6 +233,11 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -211,6 +232,11 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	 *   2) Length of the above buffer
  	 *   3) Actual access length from the access_as() op
  	 *
@@ -201,7 +201,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  	 * In addition, for general_purpose_io, the Address and bit_width fields
  	 * are defined as follows:
  	 *   1) Address is the pin number index of the field (bit offset from
-@@ -221,6 +247,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -220,6 +246,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GSBUS) &&
  	    context && field_obj) {
  
@@ -216,7 +216,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  		/* Get the Connection (resource_template) buffer */
  
  		context->connection = field_obj->field.resource_buffer;
-@@ -230,6 +264,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -229,6 +263,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) &&
  	    context && field_obj) {
  
@@ -231,7 +231,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  		/* Get the Connection (resource_template) buffer */
  
  		context->connection = field_obj->field.resource_buffer;
-@@ -239,28 +281,15 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -238,28 +280,15 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  		bit_width = field_obj->field.bit_length;
  	}
  
@@ -264,7 +264,7 @@ index a8a4c8c9b9ef..7701ae67e091 100644
  	if (ACPI_FAILURE(status)) {
  		ACPI_EXCEPTION((AE_INFO, status, "Returned by Handler for [%s]",
  				acpi_ut_get_region_name(region_obj->region.
-@@ -277,6 +306,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+@@ -276,6 +305,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
  		}
  	}
  
