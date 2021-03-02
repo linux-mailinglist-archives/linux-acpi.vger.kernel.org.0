@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D08BA32B43E
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 814A032B444
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 06:00:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353056AbhCCEy0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 23:54:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42850 "EHLO mail.kernel.org"
+        id S1353010AbhCCE4h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 23:56:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39010 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1443583AbhCBMLd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Mar 2021 07:11:33 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CB06664F66;
-        Tue,  2 Mar 2021 11:57:17 +0000 (UTC)
+        id S1448003AbhCBNyj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Mar 2021 08:54:39 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 92F7C64F8F;
+        Tue,  2 Mar 2021 11:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686238;
-        bh=brsIHbGK+t0iectQ9jFDYy16xRr1mKyJQI5/xH1IKgA=;
+        s=k20201202; t=1614686293;
+        bh=avu/wHJwQk3SxYRJtAs0aM9ch/ucK/66o3cMo9Q8Gz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YVdZA3HB1kx/AGSAUrJydPKecfz2DbhaOC/dWvAdKZHe4Dl28A3jVV+5agjjOPLHK
-         AvSPwrqFed3CX+NJTQp9GcH4VNDPuc5HGVvEBJZAZAu8CITB7ddr4Oyh8/YfAYci2Z
-         ugm5Sx25CbFi8Lvqbndzctanyp9joefJHI3Q1p42+MupOtq739vO23u3mob3YQsi7G
-         rkk5EoBJaDsEtF7cktXrG3F+OQ4FqG2LihQyY5uo+zQYV/OjWO1kB7iIJwz4t9SHQJ
-         wDbR6KIdJBK49iALqj8CiCm/MdEwRfOynUY8BC/V4ueLgi9ad32qVZTc7MU0kP86Ai
-         y0W4Xcb8bPHVA==
+        b=YUsPVMDPhqwNqQcWW/oY8YnEo5YEU6UObfcyg2HFjTorcka5UCT+wm2rWnO5IgAYh
+         imqbCCB7fc8DQ4RaaT6D56hQWR1oCKNE5lcf4Et/I9sOAORepa4KGdxVZ7aRpf93Ja
+         JLib/9e0IJKzf+vLhP86vaVepDDbnxA57oxKtbwdUPjmbqH7hpu691knMvLUimGCY9
+         uBerrz6AsW7nXgTmm2ZT76as1eTmGlRz7fRW94JrpWhIZMva2R5lvOpRe5Y+Hyr3us
+         q9aZVDk+DSktKWZkQ0hvpY1bIYB2gcT/8fT8OnYAMzQ5QbqMNZYFAUL2wKuAuw7pLC
+         AobySAUYDirGA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
@@ -31,12 +31,12 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.10 25/47] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
-Date:   Tue,  2 Mar 2021 06:56:24 -0500
-Message-Id: <20210302115646.62291-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 18/33] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
+Date:   Tue,  2 Mar 2021 06:57:34 -0500
+Message-Id: <20210302115749.62653-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115646.62291-1-sashal@kernel.org>
-References: <20210302115646.62291-1-sashal@kernel.org>
+In-Reply-To: <20210302115749.62653-1-sashal@kernel.org>
+References: <20210302115749.62653-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -114,10 +114,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  4 files changed, 57 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/acpi/acpica/acobject.h b/drivers/acpi/acpica/acobject.h
-index 9f0219a8cb98..dd7efafcb103 100644
+index 8def0e3d690f..b0b9bb31c336 100644
 --- a/drivers/acpi/acpica/acobject.h
 +++ b/drivers/acpi/acpica/acobject.h
-@@ -284,6 +284,7 @@ struct acpi_object_addr_handler {
+@@ -283,6 +283,7 @@ struct acpi_object_addr_handler {
  	acpi_adr_space_handler handler;
  	struct acpi_namespace_node *node;	/* Parent device */
  	void *context;
@@ -126,7 +126,7 @@ index 9f0219a8cb98..dd7efafcb103 100644
  	union acpi_operand_object *region_list;	/* Regions using this handler */
  	union acpi_operand_object *next;
 diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
-index 5884eba047f7..3438dc187efb 100644
+index 3ef4e27995f0..78550f5004c9 100644
 --- a/drivers/acpi/acpica/evhandler.c
 +++ b/drivers/acpi/acpica/evhandler.c
 @@ -489,6 +489,13 @@ acpi_ev_install_space_handler(struct acpi_namespace_node *node,
@@ -144,7 +144,7 @@ index 5884eba047f7..3438dc187efb 100644
  	handler_obj->address_space.handler_flags = flags;
  	handler_obj->address_space.region_list = NULL;
 diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-index 738d4b231f34..980efc9bd5ee 100644
+index 45dc797df05d..50782033012b 100644
 --- a/drivers/acpi/acpica/evregion.c
 +++ b/drivers/acpi/acpica/evregion.c
 @@ -111,6 +111,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
@@ -273,7 +273,7 @@ index 738d4b231f34..980efc9bd5ee 100644
  	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
  		/*
 diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index da97fd0c6b51..3bb06f17a18b 100644
+index 47265b073e6f..6e0d2a98c4ad 100644
 --- a/drivers/acpi/acpica/evxfregn.c
 +++ b/drivers/acpi/acpica/evxfregn.c
 @@ -201,6 +201,8 @@ acpi_remove_address_space_handler(acpi_handle device,
