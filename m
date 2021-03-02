@@ -2,151 +2,335 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31BCC32B43F
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5040432B440
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 06:00:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353064AbhCCEyz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 23:54:55 -0500
-Received: from mga04.intel.com ([192.55.52.120]:28234 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350685AbhCBMXb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Mar 2021 07:23:31 -0500
-IronPort-SDR: 178IsVga0rbNAJ9jzCHiDL90xCqDStKbo6IBjGTmJpVTyh9ROyQyUXi4tivfpshAZKf2RHbMrP
- 7FtHi+Pqy8Eg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="184358985"
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="184358985"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 04:21:28 -0800
-IronPort-SDR: uElB7C+qz7NzFA4Ca9Y93eJ+gdGGpwoEfVqCanWoLOz1VjHoww6HX/HnSnX7neIBs683UrirCR
- LlSvT0VCJo8w==
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="506307518"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 04:21:26 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lH41j-009NUH-Hi; Tue, 02 Mar 2021 14:21:23 +0200
-Date:   Tue, 2 Mar 2021 14:21:23 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
- ACPI table
-Message-ID: <YD4twyAGvDDOCv+n@smile.fi.intel.com>
-References: <20210226033919.8871-1-shawn.guo@linaro.org>
- <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
- <20210226093925.GA24428@dragon>
- <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
- <YDjZOU+VMWasjzUb@smile.fi.intel.com>
- <20210227031944.GB24428@dragon>
- <YDzbQqHspfvpYS7Z@smile.fi.intel.com>
- <20210302002725.GE24428@dragon>
+        id S236879AbhCCEzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 23:55:23 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:12671 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1578142AbhCBNOe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Mar 2021 08:14:34 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Dqbq64ZTxzlQx8;
+        Tue,  2 Mar 2021 20:22:10 +0800 (CST)
+Received: from [10.174.184.42] (10.174.184.42) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 2 Mar 2021 20:24:06 +0800
+Subject: Re: [PATCH v13 07/10] iommu/arm-smmu-v3: Maintain a SID->device
+ structure
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        <joro@8bytes.org>, <will@kernel.org>
+References: <20210302092644.2553014-1-jean-philippe@linaro.org>
+ <20210302092644.2553014-8-jean-philippe@linaro.org>
+CC:     <lorenzo.pieralisi@arm.com>, <robh+dt@kernel.org>,
+        <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <robin.murphy@arm.com>,
+        <Jonathan.Cameron@huawei.com>, <eric.auger@redhat.com>,
+        <iommu@lists.linux-foundation.org>, <devicetree@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-accelerators@lists.ozlabs.org>, <baolu.lu@linux.intel.com>,
+        <jacob.jun.pan@linux.intel.com>, <kevin.tian@intel.com>,
+        <vdumpa@nvidia.com>, <zhangfei.gao@linaro.org>,
+        <shameerali.kolothum.thodi@huawei.com>, <vivek.gautam@arm.com>,
+        <wangzhou1@hisilicon.com>
+From:   Keqian Zhu <zhukeqian1@huawei.com>
+Message-ID: <b683c66f-68e7-4174-74a5-2ea7c44f54ac@huawei.com>
+Date:   Tue, 2 Mar 2021 20:24:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210302002725.GE24428@dragon>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20210302092644.2553014-8-jean-philippe@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.184.42]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 02, 2021 at 08:27:26AM +0800, Shawn Guo wrote:
-> On Mon, Mar 01, 2021 at 02:17:06PM +0200, Andy Shevchenko wrote:
-> > On Sat, Feb 27, 2021 at 11:19:45AM +0800, Shawn Guo wrote:
-> > > On Fri, Feb 26, 2021 at 01:19:21PM +0200, Andy Shevchenko wrote:
-> > > > On Fri, Feb 26, 2021 at 12:57:37PM +0200, Andy Shevchenko wrote:
-> > > > > On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
-> > > > > > On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
-> > > > > > > On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
-> > > > > > > > Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
-> > > > > > > > not working.  That's because the GpioInt number of TSC2 node in ACPI
-> > > > > > > > table is simply wrong, and the number even exceeds the maximum GPIO
-> > > > > > > > lines.  As the touchpad works fine with Windows on the same machine,
-> > > > > > > > presumably this is something Windows-ism.  Although it's obviously
-> > > > > > > > a specification violation, believe of that Microsoft will fix this in
-> > > > > > > > the near future is not really realistic.
-> > > > > > > >
-> > > > > > > > It adds the support of overriding broken GPIO number in ACPI table
-> > > > > > > > on particular machines, which are matched using DMI info.  Such
-> > > > > > > > mechanism for fixing up broken firmware and ACPI table is not uncommon
-> > > > > > > > in kernel.  And hopefully it can be useful for other machines that get
-> > > > > > > > broken GPIO number coded in ACPI table.
-> > > > > > >
-> > > > > > > Thanks for the report and patch.
-> > > > > > >
-> > > > > > > First of all, have you reported the issue to Lenovo? At least they
-> > > > > > > will know that they did wrong.
-> > > > > >
-> > > > > > Yes, we are reporting this to Lenovo, but to be honest, we are not sure
-> > > > > > how much they will care about it, as they are shipping the laptop with
-> > > > > > Windows only.
-> > > > > >
-> > > > > > > Second, is it possible to have somewhere output of `acpidump -o
-> > > > > > > flex5g.dat` (the flex5g.dat file)?
-> > > > > >
-> > > > > > https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
-> > > > 
-> > > > Looking into DSDT I think the problem is much worse. First of all there are
-> > > > many cases where pins like 0x140, 0x1c0, etc are being used. On top of that
-> > > > there is no GPIO driver in the upstream (as far as I can see by HID, perhaps
-> > > > there is a driver but for different HID. And I see that GPIO device consumes a
-> > > > lot of Interrupts from GIC as well (it's ARM platfrom as far as I understand).
-> > > 
-> > > Yes, it's a laptop built on Qualcomm Snapdragon SC8180X SoC.  The GPIO
-> > > driver is generic for all Snapdragon SoCs, and has been available in
-> > > upstream for many years (for DT though). It can be found as the gpio_chip
-> > > implementation in MSM pinctrl driver [1].  The SC8180X specific part can
-> > > be found as pinctrl-sc8180x.c [2], and it's already working for DT boot.
-> > > The only missing piece is to add "QCOM040D" as the acpi_device_id to
-> > > support ACPI boot, and it will be submitted after 5.12-rc1 comes out.
-> > > 
-> > > > Looking at the Microsoft brain damaged way of understanding GPIOs and hardware
-> > > > [1], I am afraid you really want to have a specific GPIO driver for this. So,
-> > > > for now until we have better picture of what's going on, NAK to this patch.
-> > > 
-> > > Thanks for the pointer to Microsoft document.  On Snapdragon, we have
-> > > only one GPIO instance that accommodates all GPIO pins, so I'm not sure
-> > > that Microsoft GPIOs mapping layer is relevant here at all.
-> > > 
-> > > Please take a look at the GPIO driver, and feel free to let me know if
-> > > you need any further information to understand what's going on.
-> > 
-> > Yes, I looked into the driver and see that it has 3 blocks of GPIOs (we call
-> > them communities, but in the driver the term 'tiles' is used) AFAIU (correct me
-> > if I'm wrong). And who knows how many banks in each of them.
+Hi Jean,
+
+Reviewed-by: Keqian Zhu <zhukeqian1@huawei.com>
+
+On 2021/3/2 17:26, Jean-Philippe Brucker wrote:
+> When handling faults from the event or PRI queue, we need to find the
+> struct device associated with a SID. Add a rb_tree to keep track of
+> SIDs.
 > 
-> I'm not sure that the 3 'tiles' means 3 blocks of GPIOs.  Maybe, @Bjorn
-> can help clarify.  But the ACPI table shows that there is only 'GIO0'
-> with 'QCOM040D' HID.
-
-Yeah, I already got that ACPI there is screwed up...
-
-> > I'm afraid that MS does on his way and not yours.
-> > 
-> > Can we have TRM for GPIO IP used there and any evidence / document from
-> > firmware team about the implementation of the GPIO numbering in the ACPI
-> > (at Intel we have so called BIOS Writers Guide that is given to the customers
-> > where such info can be found)?
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  13 +-
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 157 ++++++++++++++++----
+>  2 files changed, 140 insertions(+), 30 deletions(-)
 > 
-> Unfortunately, I do not have the access to any sort of these documents.
-> But I looped in Jeffrey who is part of Qualcomm kernel/firmware team,
-> and should be able to help clarify GPIO numbering in the ACPI table.
-
-Thanks! Will wait for new information then.
-
-> > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-msm.c#n713
-> > > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-sc8180x.c
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> index f985817c967a..7b15b7580c6e 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> @@ -639,6 +639,15 @@ struct arm_smmu_device {
+>  
+>  	/* IOMMU core code handle */
+>  	struct iommu_device		iommu;
+> +
+> +	struct rb_root			streams;
+> +	struct mutex			streams_mutex;
+> +};
+> +
+> +struct arm_smmu_stream {
+> +	u32				id;
+> +	struct arm_smmu_master		*master;
+> +	struct rb_node			node;
+>  };
+>  
+>  /* SMMU private data for each master */
+> @@ -647,8 +656,8 @@ struct arm_smmu_master {
+>  	struct device			*dev;
+>  	struct arm_smmu_domain		*domain;
+>  	struct list_head		domain_head;
+> -	u32				*sids;
+> -	unsigned int			num_sids;
+> +	struct arm_smmu_stream		*streams;
+> +	unsigned int			num_streams;
+>  	bool				ats_enabled;
+>  	bool				sva_enabled;
+>  	struct list_head		bonds;
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> index 7edce914c45e..d148bb6d4289 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> @@ -909,8 +909,8 @@ static void arm_smmu_sync_cd(struct arm_smmu_domain *smmu_domain,
+>  
+>  	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
+>  	list_for_each_entry(master, &smmu_domain->devices, domain_head) {
+> -		for (i = 0; i < master->num_sids; i++) {
+> -			cmd.cfgi.sid = master->sids[i];
+> +		for (i = 0; i < master->num_streams; i++) {
+> +			cmd.cfgi.sid = master->streams[i].id;
+>  			arm_smmu_cmdq_batch_add(smmu, &cmds, &cmd);
+>  		}
+>  	}
+> @@ -1355,6 +1355,28 @@ static int arm_smmu_init_l2_strtab(struct arm_smmu_device *smmu, u32 sid)
+>  	return 0;
+>  }
+>  
+> +/* smmu->streams_mutex must be held */
+> +__maybe_unused
+> +static struct arm_smmu_master *
+> +arm_smmu_find_master(struct arm_smmu_device *smmu, u32 sid)
+> +{
+> +	struct rb_node *node;
+> +	struct arm_smmu_stream *stream;
+> +
+> +	node = smmu->streams.rb_node;
+> +	while (node) {
+> +		stream = rb_entry(node, struct arm_smmu_stream, node);
+> +		if (stream->id < sid)
+> +			node = node->rb_right;
+> +		else if (stream->id > sid)
+> +			node = node->rb_left;
+> +		else
+> +			return stream->master;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+>  /* IRQ and event handlers */
+>  static irqreturn_t arm_smmu_evtq_thread(int irq, void *dev)
+>  {
+> @@ -1588,8 +1610,8 @@ static int arm_smmu_atc_inv_master(struct arm_smmu_master *master)
+>  
+>  	arm_smmu_atc_inv_to_cmd(0, 0, 0, &cmd);
+>  
+> -	for (i = 0; i < master->num_sids; i++) {
+> -		cmd.atc.sid = master->sids[i];
+> +	for (i = 0; i < master->num_streams; i++) {
+> +		cmd.atc.sid = master->streams[i].id;
+>  		arm_smmu_cmdq_issue_cmd(master->smmu, &cmd);
+>  	}
+>  
+> @@ -1632,8 +1654,8 @@ int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain, int ssid,
+>  		if (!master->ats_enabled)
+>  			continue;
+>  
+> -		for (i = 0; i < master->num_sids; i++) {
+> -			cmd.atc.sid = master->sids[i];
+> +		for (i = 0; i < master->num_streams; i++) {
+> +			cmd.atc.sid = master->streams[i].id;
+>  			arm_smmu_cmdq_batch_add(smmu_domain->smmu, &cmds, &cmd);
+>  		}
+>  	}
+> @@ -2065,13 +2087,13 @@ static void arm_smmu_install_ste_for_dev(struct arm_smmu_master *master)
+>  	int i, j;
+>  	struct arm_smmu_device *smmu = master->smmu;
+>  
+> -	for (i = 0; i < master->num_sids; ++i) {
+> -		u32 sid = master->sids[i];
+> +	for (i = 0; i < master->num_streams; ++i) {
+> +		u32 sid = master->streams[i].id;
+>  		__le64 *step = arm_smmu_get_step_for_sid(smmu, sid);
+>  
+>  		/* Bridged PCI devices may end up with duplicated IDs */
+>  		for (j = 0; j < i; j++)
+> -			if (master->sids[j] == sid)
+> +			if (master->streams[j].id == sid)
+>  				break;
+>  		if (j < i)
+>  			continue;
+> @@ -2345,11 +2367,101 @@ static bool arm_smmu_sid_in_range(struct arm_smmu_device *smmu, u32 sid)
+>  	return sid < limit;
+>  }
+>  
+> +static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
+> +				  struct arm_smmu_master *master)
+> +{
+> +	int i;
+> +	int ret = 0;
+> +	struct arm_smmu_stream *new_stream, *cur_stream;
+> +	struct rb_node **new_node, *parent_node = NULL;
+> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+> +
+> +	master->streams = kcalloc(fwspec->num_ids, sizeof(*master->streams),
+> +				  GFP_KERNEL);
+> +	if (!master->streams)
+> +		return -ENOMEM;
+> +	master->num_streams = fwspec->num_ids;
+> +
+> +	mutex_lock(&smmu->streams_mutex);
+> +	for (i = 0; i < fwspec->num_ids; i++) {
+> +		u32 sid = fwspec->ids[i];
+> +
+> +		new_stream = &master->streams[i];
+> +		new_stream->id = sid;
+> +		new_stream->master = master;
+> +
+> +		/*
+> +		 * Check the SIDs are in range of the SMMU and our stream table
+> +		 */
+> +		if (!arm_smmu_sid_in_range(smmu, sid)) {
+> +			ret = -ERANGE;
+> +			break;
+> +		}
+> +
+> +		/* Ensure l2 strtab is initialised */
+> +		if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB) {
+> +			ret = arm_smmu_init_l2_strtab(smmu, sid);
+> +			if (ret)
+> +				break;
+> +		}
+> +
+> +		/* Insert into SID tree */
+> +		new_node = &(smmu->streams.rb_node);
+> +		while (*new_node) {
+> +			cur_stream = rb_entry(*new_node, struct arm_smmu_stream,
+> +					      node);
+> +			parent_node = *new_node;
+> +			if (cur_stream->id > new_stream->id) {
+> +				new_node = &((*new_node)->rb_left);
+> +			} else if (cur_stream->id < new_stream->id) {
+> +				new_node = &((*new_node)->rb_right);
+> +			} else {
+> +				dev_warn(master->dev,
+> +					 "stream %u already in tree\n",
+> +					 cur_stream->id);
+> +				ret = -EINVAL;
+> +				break;
+> +			}
+> +		}
+> +		if (ret)
+> +			break;
+> +
+> +		rb_link_node(&new_stream->node, parent_node, new_node);
+> +		rb_insert_color(&new_stream->node, &smmu->streams);
+> +	}
+> +
+> +	if (ret) {
+> +		for (i--; i >= 0; i--)
+> +			rb_erase(&master->streams[i].node, &smmu->streams);
+> +		kfree(master->streams);
+> +	}
+> +	mutex_unlock(&smmu->streams_mutex);
+> +
+> +	return ret;
+> +}
+> +
+> +static void arm_smmu_remove_master(struct arm_smmu_master *master)
+> +{
+> +	int i;
+> +	struct arm_smmu_device *smmu = master->smmu;
+> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+> +
+> +	if (!smmu || !master->streams)
+> +		return;
+> +
+> +	mutex_lock(&smmu->streams_mutex);
+> +	for (i = 0; i < fwspec->num_ids; i++)
+> +		rb_erase(&master->streams[i].node, &smmu->streams);
+> +	mutex_unlock(&smmu->streams_mutex);
+> +
+> +	kfree(master->streams);
+> +}
+> +
+>  static struct iommu_ops arm_smmu_ops;
+>  
+>  static struct iommu_device *arm_smmu_probe_device(struct device *dev)
+>  {
+> -	int i, ret;
+> +	int ret;
+>  	struct arm_smmu_device *smmu;
+>  	struct arm_smmu_master *master;
+>  	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> @@ -2370,27 +2482,12 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
+>  
+>  	master->dev = dev;
+>  	master->smmu = smmu;
+> -	master->sids = fwspec->ids;
+> -	master->num_sids = fwspec->num_ids;
+>  	INIT_LIST_HEAD(&master->bonds);
+>  	dev_iommu_priv_set(dev, master);
+>  
+> -	/* Check the SIDs are in range of the SMMU and our stream table */
+> -	for (i = 0; i < master->num_sids; i++) {
+> -		u32 sid = master->sids[i];
+> -
+> -		if (!arm_smmu_sid_in_range(smmu, sid)) {
+> -			ret = -ERANGE;
+> -			goto err_free_master;
+> -		}
+> -
+> -		/* Ensure l2 strtab is initialised */
+> -		if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB) {
+> -			ret = arm_smmu_init_l2_strtab(smmu, sid);
+> -			if (ret)
+> -				goto err_free_master;
+> -		}
+> -	}
+> +	ret = arm_smmu_insert_master(smmu, master);
+> +	if (ret)
+> +		goto err_free_master;
+>  
+>  	device_property_read_u32(dev, "pasid-num-bits", &master->ssid_bits);
+>  	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
+> @@ -2429,6 +2526,7 @@ static void arm_smmu_release_device(struct device *dev)
+>  	WARN_ON(arm_smmu_master_sva_enabled(master));
+>  	arm_smmu_detach_dev(master);
+>  	arm_smmu_disable_pasid(master);
+> +	arm_smmu_remove_master(master);
+>  	kfree(master);
+>  	iommu_fwspec_free(dev);
+>  }
+> @@ -2852,6 +2950,9 @@ static int arm_smmu_init_structures(struct arm_smmu_device *smmu)
+>  {
+>  	int ret;
+>  
+> +	mutex_init(&smmu->streams_mutex);
+> +	smmu->streams = RB_ROOT;
+> +
+>  	ret = arm_smmu_init_queues(smmu);
+>  	if (ret)
+>  		return ret;
+> 
