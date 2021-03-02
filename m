@@ -2,164 +2,381 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC0332A4BE
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Mar 2021 16:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9721032A4BF
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Mar 2021 16:47:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240111AbhCBLNX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 06:13:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377071AbhCBApe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Mar 2021 19:45:34 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99A4C061788
-        for <linux-acpi@vger.kernel.org>; Mon,  1 Mar 2021 16:44:53 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id q20so12676550pfu.8
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Mar 2021 16:44:53 -0800 (PST)
+        id S240465AbhCBLNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 06:13:35 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:46552 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240567AbhCBBWY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Mar 2021 20:22:24 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1221Krhl043880;
+        Tue, 2 Mar 2021 01:20:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
+ cc : references : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=4WToiToDYmFCBhzKiH2QynmKkoQW4ghWpFW0pHAY0ec=;
+ b=Ldg3L9tJkIIIuxKTpkml61fhFTcpGstJ06lk+5DajCHrCf+5xiQr8xnUu50jUSrL4HEm
+ h17T9bKjznwCsTCM4hQpzJ/U9QEkiAr4JZGAz7/Z/4LvcnrQz+hukfk/WQ0tnbIULdSD
+ vdpMk/yT9E+QRQV1xoIk43lpvmoL32uytctQbe/LoKn2q4DOBsegABNz9JrpUR3Qu1MJ
+ iwZVf1iDGtWkIkx9GrOMYgJqGyu/T1bOhuWzr6loFwga9hcPuFmkLxynU5Fnbh4rnYSg
+ LkcmEaFyw5h3nE+1d/RHkcyQ0rcyHRPM72DO60kvWpUs/NBVmPibyOijnkQqcMlt7Q7z +A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 36ydgr5vac-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 02 Mar 2021 01:20:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1221KUkM160140;
+        Tue, 2 Mar 2021 01:20:53 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
+        by userp3020.oracle.com with ESMTP id 36yyurayef-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 02 Mar 2021 01:20:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SV9MuYO9sj8bzk0KbcmYDyxvvJwtlArPDGU6gk0BSZ3rxkyRb23E+Ezrit5XkkSvwrCASaAA8b88NDB9xSqa4cDUoVnY8RUjQurtuKyyL3m1tJkj8IihKKZfWX4F8wLoPDfc24deHbKAbOoXrJYTLCoXEAm6BrFx+iqLiLd3ZIiWfz/vT2V+V6qyjT5INT8/ok0EOmLGspKzF5eesdjU0fQ0Ep3uyDwKn89ukYJx6LB+qLnyJnfNj3hnXz/Y6u4Fs6faIt1iKqFsUCyG8cqDg7o5ATjF7a8NE3R/TywIJ+hwaQkOoCDoWSfNyYqWk8gk41Ne7oNveICLaSU/hXLHMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4WToiToDYmFCBhzKiH2QynmKkoQW4ghWpFW0pHAY0ec=;
+ b=XSNvWKMEqKIHbJ7cKuafKlpUwdbieC/nnAK2kWy3cIL9poNcAxGxJYstw0WolcqUEaVlTAgeZucDlsXRPwJXWqPJVYtqSIprjOIVUyzUqB5FBHFUnnpm/bX9uj+oxqLL2/yYD2mKoU+EjCbwMhnHsp7ngYCFmAA4eiKxWNPZRV4XELm0TD3/l39EyN6P9zl0+Zwqsxr0YpcIqoabXabLJJwyMgljm8AjYXwZQwkn0Eyk1L+aCratmQvCkZsamwzdoyg4AKCWOPfMnkaqHUkGtek+lZx75qCnY72cl/AORKrhH2vvANwifE0Ux5/slRfuuba/lhzpSeClCbkYVGVLIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=39RX2YE4NXwbxTEMtPuIacM6Gof41YukFLFpW3m9oBI=;
-        b=YgR7FX+4ACXbwxkoqvkDW5uCOYJ690pOqAAaK1bJXHWxkt5pJ8+kK7zFes7PXSFT/l
-         4Zx3I3S5UZmNXmb6ABMssVAf0bwV9DZeG0qyPlzQPTLKmkzT7V5ekIMcC3hISSH72Xq4
-         vGViPPnQTl+Q0+HSQKJJ1Zp2p0o1uvOBnCxlyjxRR0BiDxSuJ3Q/6gp7UUaquNG6PG5Z
-         A02hfxV1Fhaxr/iQD5KC/xUy/jN3u/iH4jOY+2ByUoAFkINjCnQBwsQnp5zkyT3p2wq5
-         OuhaxTNf/RndxkmIAXk5f4Dl/lgr27DC9OU2rOx3x2/zdfaSqsoyYC8103fRBG2ZxIx3
-         P6Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=39RX2YE4NXwbxTEMtPuIacM6Gof41YukFLFpW3m9oBI=;
-        b=KbF/r7ilQoxRvSqHmlXjn7GwLfCGsY625UfGODXAXWB90pQZrOcibCdlGgdlD9UIPv
-         BFSmKID2gaBpkhgcRSMu288Eedj7i15nL9LahzXCgvhX5HlfwXXSRaig7EQ0z4hHmiIP
-         arhRgk7YEyBfKgKKoiL2FqOjIaJViP1cjaoj8+iyh930rVU9OqQRS/4g9xVlyAEZe72U
-         cTpbxKnx156chBmyzcvUjGN3DjBOeoUQ72DJY1j1xf5F56KITIfqvOOUvZ1Dq+nOB9k8
-         +236DyeG6drvzPRBPisA2BHKKRd1VCatIWhFDDXr0iLT9dndLfyZ8sLVtrG7AHxha3ZD
-         AH3w==
-X-Gm-Message-State: AOAM5338Q3UK+Irs3/ZJKOjI08YQNy8a3ZXkkFOYuLmPdk8r1q3IXkBA
-        XMk2TxlFycFVfvOBqtcWJbP3Ag==
-X-Google-Smtp-Source: ABdhPJzt2/UYkyu0GiyWPXLQFW8tzLr86iEp21k+9n54aauH5+FHIw1+2jGFHSlV1h3RqD4VIpA1ow==
-X-Received: by 2002:a63:d451:: with SMTP id i17mr733709pgj.391.1614645893181;
-        Mon, 01 Mar 2021 16:44:53 -0800 (PST)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id cv3sm680211pjb.9.2021.03.01.16.44.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 01 Mar 2021 16:44:52 -0800 (PST)
-Date:   Tue, 2 Mar 2021 08:44:47 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
- ACPI table
-Message-ID: <20210302004446.GF24428@dragon>
-References: <20210226033919.8871-1-shawn.guo@linaro.org>
- <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
- <20210226093925.GA24428@dragon>
- <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
- <20210227034641.GC24428@dragon>
- <YDzb5llywkzbGEF+@smile.fi.intel.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4WToiToDYmFCBhzKiH2QynmKkoQW4ghWpFW0pHAY0ec=;
+ b=mMGgItmZJcf59DGYwHC2P+ynpk1ElRBsj5sQ3ppovP1r/ajzkCgm6IwtLbN/2wkFGbWJWxiDDEvL1sOW+UI1akpFQfv/kj9Yy5aBqZxu8gf8LlhbzBpa8vfmoRogaj8wKtPLoa4KzRsyMFsXbG4wwLFG4Tez0asKQyl3urCXVFg=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=oracle.com;
+Received: from DM6PR10MB3851.namprd10.prod.outlook.com (2603:10b6:5:1fb::17)
+ by DM6PR10MB2985.namprd10.prod.outlook.com (2603:10b6:5:71::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19; Tue, 2 Mar
+ 2021 01:20:50 +0000
+Received: from DM6PR10MB3851.namprd10.prod.outlook.com
+ ([fe80::5c53:869:7452:46da]) by DM6PR10MB3851.namprd10.prod.outlook.com
+ ([fe80::5c53:869:7452:46da%3]) with mapi id 15.20.3890.029; Tue, 2 Mar 2021
+ 01:20:50 +0000
+Subject: Re: [PATCH] mm, kasan: don't poison boot memory
+From:   George Kennedy <george.kennedy@oracle.com>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     David Hildenbrand <david@redhat.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Konrad Rzeszutek Wilk <konrad@darnok.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Alexander Potapenko <glider@google.com>,
+        Marco Elver <elver@google.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Branislav Rankov <Branislav.Rankov@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dhaval Giani <dhaval.giani@oracle.com>, robert.moore@intel.com,
+        erik.kaneda@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org
+References: <9b7251d1-7b90-db4f-fa5e-80165e1cbb4b@oracle.com>
+ <20210225085300.GB1854360@linux.ibm.com>
+ <9973d0e2-e28b-3f8a-5f5d-9d142080d141@oracle.com>
+ <20210225145700.GC1854360@linux.ibm.com>
+ <bb444ddb-d60d-114f-c2fe-64e5fb34102d@oracle.com>
+ <20210225160706.GD1854360@linux.ibm.com>
+ <6000e7fd-bf8b-b9b0-066d-23661da8a51d@oracle.com>
+ <dc5e007c-9223-b03b-1c58-28d2712ec352@oracle.com>
+ <20210226111730.GL1854360@linux.ibm.com>
+ <e9e2f1a3-80f2-1b3e-6ffd-8004fe41c485@oracle.com>
+ <YDvcH7IY8hV4u2Zh@linux.ibm.com>
+ <083c2bfd-12dd-f3c3-5004-fb1e3fb6493c@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <a8864397-83e8-61f7-4b9a-33716eca6cf8@oracle.com>
+Date:   Mon, 1 Mar 2021 20:20:45 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+In-Reply-To: <083c2bfd-12dd-f3c3-5004-fb1e3fb6493c@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [108.26.147.230]
+X-ClientProxiedBy: CY4PR06CA0071.namprd06.prod.outlook.com
+ (2603:10b6:903:13d::33) To DM6PR10MB3851.namprd10.prod.outlook.com
+ (2603:10b6:5:1fb::17)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YDzb5llywkzbGEF+@smile.fi.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.246] (108.26.147.230) by CY4PR06CA0071.namprd06.prod.outlook.com (2603:10b6:903:13d::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19 via Frontend Transport; Tue, 2 Mar 2021 01:20:47 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 67987aa4-181a-4449-816d-08d8dd196a1e
+X-MS-TrafficTypeDiagnostic: DM6PR10MB2985:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR10MB29856374DFB988BD2CF42F8FE6999@DM6PR10MB2985.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: IXTz5xiEwlEGkETTANgnCC8WMXEPI59gzjrfzji82Tx//SF4Y7cvjyR+4Y0fMUwrDijgBdniQaU+/SKU+jN5esQlvlyNDRYdIKhPJLzwGxNVwzntwqTqE2a9Xofb2cLd1mTlHEIYBmKa2fluZYYlAjXb9DHzh6H3G30nGtJestj6btTvwyhbiO+S0Oy72bIUoN2FzaOzYDkR0S50KsPrGelw+xNo9P2cBIM1eMubGU2nenGLtF3vy3+yRVf8K3VSSpbAB/2I9Odi6Sxng4IWq9yH1xrEWZLXu11BXYwVSBhdrgMNTOKPJjER8i4EF5fgswkCWht/qERluD2/GwpY/H7wJfsgHyFK7gWklJBHdN5oM4BzNiXOHjTfM8cqpnjBQbC0PSHq4J1bRGAAs7xkr1kFYB1FJrZGr1LFUEysuNkVdDAiKyLmH+rPJgXuV7BQk+tDC8ym5CseR+zkdgDxEjGApNnwKweVnAvRLM+qUfjVjpeH7JVGQvTA59KTvCNhssctJErmVwgfviDSr00pLHKVPDbSF+ABAvywrdBA1gvxhuJpJqm2STqX32pUHRlIgb17mBOJyv0aQ2crmIXbKVIPVNTmzN89mx7yCelrUzY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB3851.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(396003)(346002)(39860400002)(366004)(376002)(31686004)(8936002)(66476007)(36756003)(66946007)(86362001)(4326008)(66556008)(7416002)(5660300002)(186003)(16526019)(26005)(2906002)(16576012)(8676002)(2616005)(316002)(36916002)(31696002)(6916009)(956004)(44832011)(6486002)(54906003)(478600001)(53546011)(83380400001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?aUQvN0kzU2xpMkF1azN6TlZQc3FzTGptU3VmY1U3NFZSZnBpMVFXcVp5S21M?=
+ =?utf-8?B?ZUVIZlhMcGpXS1lFaGRIL25KcUtLT05Td0hhdk44cVJGUVErYTR1bUNsL2kv?=
+ =?utf-8?B?VzN4cDluOU1EYlRUanBLQ29LMjM0UjArS2hoaE96TWE4dXZodm15Sit1WlFF?=
+ =?utf-8?B?TERUcTJGRmlCSkYxbytNL0ZNY0UzMnkwdVNybGtCWHFXY29iUFAyMFBRTk8y?=
+ =?utf-8?B?N2c1VUpQazJHMFhMcGdOUk93dFBqSVJwTWdFTTMwQkhqMnRrMndQYnp4SWs1?=
+ =?utf-8?B?bmlaY3BWRUtNNWplTVRPd20xL0k3MmoxdXBEN1RUWHZQRTVRRUpuUDNaQk14?=
+ =?utf-8?B?eERsdmJHd0p5S2ZJaGV3MDBkS1RrQytZZFE2dUlIVml0aG50Zzg4Tm84Slh0?=
+ =?utf-8?B?RC9YWTFRWFg0dVQ2ekVkMjVrWXdqQ2JhTlhKWVozZTlpSGxmVnMvYitkSU5Q?=
+ =?utf-8?B?NUlnZEtacEg0TzhWSWR3SVNzdUsvUUJNK2oxZjBtazBOaW1sQkpGdWtOOGIv?=
+ =?utf-8?B?cEhLZWxGTlU4SmZZdWZZVWt1K0srWlpXRWhhSk1LdmtTQjEwb0NwcU9JZitE?=
+ =?utf-8?B?VFdjc2EzbVRDVlRoYlo1dlhlWW4zcisyQTBXaUlyZHNTNkU3K1ZoY21xOXQ1?=
+ =?utf-8?B?Qm1wY09jTGkvMEhDeENiclhaUjM2dzlhS2ZvRGM2OENlcFpNYnpub05UQ3ZY?=
+ =?utf-8?B?TTlabEZFTURQZXJWQnN6N21BbWxVS1VOdHRGU21IMVVsV3hZemVqRi85SHlK?=
+ =?utf-8?B?bGJpRkQvam1SK2VkbVNnWENVMGMxWVBjVjJlRDRwUURYWEpXblUyeVdXMktz?=
+ =?utf-8?B?MWZrRjlXaHIzc2xUSlNTblJzeDRSTUtyaW5oV0tFVWt0L1QrQ2N2NG5uNGY4?=
+ =?utf-8?B?S05PN0l2NDdhR21rblErbzNvQjVKem52R1hMRDlxdnBGQ2NyS2F0OFZZQVNs?=
+ =?utf-8?B?NXhKYlgxSGtFRW1IQ0FWRko0YkJNeXdEb3RqdlY0V3RMMEF5eGU1bTQ1VVQv?=
+ =?utf-8?B?dHpZKzNYMGF6TmlyeUwxNytjdmhBV2plVEpOM1V4akpWRlRHQU02ZEJlRnU3?=
+ =?utf-8?B?aXVJNkduZXVMd0lGdkVWaDd0L1IxVjNoaTBQeW94a1Z3TVFIeStTbXhacCtH?=
+ =?utf-8?B?Sys0YmZCS1h2V2R1Q1cvcUZTUFBSUUVpSkxGb0Urb2RLTlJBT1VXOWNCNzJO?=
+ =?utf-8?B?NFppWWhYRmliOW9DdEU4TGNtUXF6UEdsWGRSNGFQUUNhMTJCWGp6U1J4S3hv?=
+ =?utf-8?B?bHBrR1lhZFptNi9aRmdGeGozTEk1cWVVbFdQRU4zWnppZm8yN3hqbC9hV1g0?=
+ =?utf-8?B?eUFMcnFxS0tXTUdpc3NwRmJzTitpSVdxc2h3cisrclpvOXlabUdYbnIwTU4v?=
+ =?utf-8?B?bUJIVkNkbW8zL01DVmxNcFl5alpFRUYzTjFBNlRzd1RuZVlTTm8vSWdiR01F?=
+ =?utf-8?B?Wjg0UmVwZGUrRHBFOTdTbzgvS0F1c2ZsOUlmNEZtcDJGby9KQUhIUjFZUFJE?=
+ =?utf-8?B?VUhEY2o4b0VkNlNZSVZCa09jVFFNTExiaXNwOVprWGhwaVVMdzZRdFFRSUJU?=
+ =?utf-8?B?cVI1QkFJUzZmVDYwUTROaGdZSldxMFhCMmFVWGFNcWZzcXZWUmRxS1loVDc3?=
+ =?utf-8?B?QXMvYkZsYmtpMWtDR3Y5YWlWUlc5K0dXK212SlNDT05Sc2kxM3lmbE5ldmJC?=
+ =?utf-8?B?OTZwai8yamlzc1RPWDVYaUV5aW1KNW1udTExTTM5UjBOa3hHdmZPVzZzdExj?=
+ =?utf-8?Q?SHi75xSRYrJZiuRB+G/0HEPa1wY86rIOvmP/NFj?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67987aa4-181a-4449-816d-08d8dd196a1e
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB3851.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2021 01:20:50.5455
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z5dTcPUDXf2niMlPBQHO+jIQoqrtpbDNwXElML40oebn/6EIZJ8/LDVxUQWAVfwf3i21HMUjQ5nCuCm1eOvR+em1Rfvsk9eFQIdIbMKM8ls=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB2985
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9910 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103020006
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9910 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ impostorscore=0 clxscore=1015 suspectscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103020006
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+ Jeffrey
 
-On Mon, Mar 01, 2021 at 02:19:50PM +0200, Andy Shevchenko wrote:
-> On Sat, Feb 27, 2021 at 11:46:42AM +0800, Shawn Guo wrote:
-> > On Fri, Feb 26, 2021 at 12:57:37PM +0200, Andy Shevchenko wrote:
-> > > On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
-> > > >
-> > > > On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
-> > > > > On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
-> > > > > >
-> > > > > > Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
-> > > > > > not working.  That's because the GpioInt number of TSC2 node in ACPI
-> > > > > > table is simply wrong, and the number even exceeds the maximum GPIO
-> > > > > > lines.  As the touchpad works fine with Windows on the same machine,
-> > > > > > presumably this is something Windows-ism.  Although it's obviously
-> > > > > > a specification violation, believe of that Microsoft will fix this in
-> > > > > > the near future is not really realistic.
-> > > > > >
-> > > > > > It adds the support of overriding broken GPIO number in ACPI table
-> > > > > > on particular machines, which are matched using DMI info.  Such
-> > > > > > mechanism for fixing up broken firmware and ACPI table is not uncommon
-> > > > > > in kernel.  And hopefully it can be useful for other machines that get
-> > > > > > broken GPIO number coded in ACPI table.
-> > > > >
-> > > > > Thanks for the report and patch.
-> > > > >
-> > > > > First of all, have you reported the issue to Lenovo? At least they
-> > > > > will know that they did wrong.
-> > > >
-> > > > Yes, we are reporting this to Lenovo, but to be honest, we are not sure
-> > > > how much they will care about it, as they are shipping the laptop with
-> > > > Windows only.
-> > > >
-> > > > > Second, is it possible to have somewhere output of `acpidump -o
-> > > > > flex5g.dat` (the flex5g.dat file)?
-> > > >
-> > > > https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
-> > > >
-> > > > > And as Mika said once to one of mine patches "since you know the
-> > > > > number ahead there is no need to pollute GPIO ACPI library core with
-> > > > > this quirk". But in any case I would like to see the ACPI tables
-> > > > > first.
-> > > >
-> > > > Oh, so you had something similar already?  Could you point me to the
-> > > > patch and discussion?
-> > > 
-> > > Similar, but might be not the same:
-> > >  - patches in the upstream [1] (v3 applied), discussion [2]
-> > >  - new version with some additional fixes [3]
-> > 
-> > Thanks for all the pointers.  It looks to me that it's the same problem
-> > - the GPIO number in ACPI table is broken and needs an override from
-> > kernel.
-> 
-> Not exactly. On Galileo Gen 2 platform it's broken in understandable way.
-> In your case it's different and I'm not sure at all that's considered "broken"
-> in the MS' eyes.
 
-At least, I was told by Jeffrey that MS admits this is something needs
-to be fixed in the future.
+On 3/1/2021 9:29 AM, George Kennedy wrote:
+>
+>
+> On 2/28/2021 1:08 PM, Mike Rapoport wrote:
+>> On Fri, Feb 26, 2021 at 11:16:06AM -0500, George Kennedy wrote:
+>>> On 2/26/2021 6:17 AM, Mike Rapoport wrote:
+>>>> Hi George,
+>>>>
+>>>> On Thu, Feb 25, 2021 at 08:19:18PM -0500, George Kennedy wrote:
+>>>>> Not sure if it's the right thing to do, but added
+>>>>> "acpi_tb_find_table_address()" to return the physical address of a 
+>>>>> table to
+>>>>> use with memblock_reserve().
+>>>>>
+>>>>> virt_to_phys(table) does not seem to return the physical address 
+>>>>> for the
+>>>>> iBFT table (it would be nice if struct acpi_table_header also had a
+>>>>> "address" element for the physical address of the table).
+>>>> virt_to_phys() does not work that early because then it is mapped with
+>>>> early_memremap()  which uses different virtual to physical scheme.
+>>>>
+>>>> I'd say that acpi_tb_find_table_address() makes sense if we'd like to
+>>>> reserve ACPI tables outside of drivers/acpi.
+>>>>
+>>>> But probably we should simply reserve all the tables during
+>>>> acpi_table_init() so that any table that firmware put in the normal 
+>>>> memory
+>>>> will be surely reserved.
+>>>>> Ran 10 successful boots with the above without failure.
+>>>> That's good news indeed :)
+>>> Wondering if we could do something like this instead (trying to keep 
+>>> changes
+>>> minimal). Just do the memblock_reserve() for all the standard tables.
+>> I think something like this should work, but I'm not an ACPI expert 
+>> to say
+>> if this the best way to reserve the tables.
+> Adding ACPI maintainers to the CC list.
+>>> diff --git a/drivers/acpi/acpica/tbinstal.c 
+>>> b/drivers/acpi/acpica/tbinstal.c
+>>> index 0bb15ad..830f82c 100644
+>>> --- a/drivers/acpi/acpica/tbinstal.c
+>>> +++ b/drivers/acpi/acpica/tbinstal.c
+>>> @@ -7,6 +7,7 @@
+>>>    *
+>>> *****************************************************************************/ 
+>>>
+>>>
+>>> +#include <linux/memblock.h>
+>>>   #include <acpi/acpi.h>
+>>>   #include "accommon.h"
+>>>   #include "actables.h"
+>>> @@ -14,6 +15,23 @@
+>>>   #define _COMPONENT          ACPI_TABLES
+>>>   ACPI_MODULE_NAME("tbinstal")
+>>>
+>>> +void
+>>> +acpi_tb_reserve_standard_table(acpi_physical_address address,
+>>> +               struct acpi_table_header *header)
+>>> +{
+>>> +    struct acpi_table_header local_header;
+>>> +
+>>> +    if ((ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) ||
+>>> +        (ACPI_VALIDATE_RSDP_SIG(header->signature))) {
+>>> +        return;
+>>> +    }
+>>> +    /* Standard ACPI table with full common header */
+>>> +
+>>> +    memcpy(&local_header, header, sizeof(struct acpi_table_header));
+>>> +
+>>> +    memblock_reserve(address, PAGE_ALIGN(local_header.length));
+>>> +}
+>>> +
+>>>   /******************************************************************************* 
+>>>
+>>>    *
+>>>    * FUNCTION:    acpi_tb_install_table_with_override
+>>> @@ -58,6 +76,9 @@
+>>>                         new_table_desc->flags,
+>>>                         new_table_desc->pointer);
+>>>
+>>> + acpi_tb_reserve_standard_table(new_table_desc->address,
+>>> +                   new_table_desc->pointer);
+>>> +
+>>>       acpi_tb_print_table_header(new_table_desc->address,
+>>>                      new_table_desc->pointer);
+>>>
+>>> There should be no harm in doing the memblock_reserve() for all the 
+>>> standard
+>>> tables, right?
+>> It should be ok to memblock_reserve() all the tables very early as 
+>> long as
+>> we don't run out of static entries in memblock.reserved.
+>>
+>> We just need to make sure the tables are reserved before memblock
+>> allocations are possible, so we'd still need to move 
+>> acpi_table_init() in
+>> x86::setup_arch() before e820__memblock_setup().
+>> Not sure how early ACPI is initialized on arm64.
+>
+> Thanks Mike. Will try to move the memblock_reserves() before 
+> e820__memblock_setup().
 
-> 
-> > So I think what we need is a generic solution to a problem
-> > not uncommon.  Rather than asking all different drivers to resolve the
-> > same problem all over the kernel, I believe GPIO ACPI library is just
-> > the right place.
-> > 
-> > Looking at your platform and problem, I realise that to be a generic
-> > solution, my patch needs an additional device identification matching,
-> > as one GPIO number that is broken for one device could be correct for
-> > another.  I will improve it, so that your problem can be resolved by
-> > simply adding a new entry to acpi_gpio_pin_override_table[].
-> 
-> Before any steps further I really want to see more information about that IP
-> and how firmware applied the numbering scheme.
+Hi Mike,
 
-Deduced by those working GPIO numbers in ACPI table and how Linux kernel
-is working, I think the GPIO is numbered without any bank thing.  All
-available pins are just numbered linearly, and every pin can be
-configured in GPIO mode.
+Moved acpi_table_init() in x86::setup_arch() before 
+e820__memblock_setup() as you suggested.
 
-> 
-> If it's confidential, you may sent any insights privately.
+Ran 10 boots with the following without error.
 
-Unfortunately, all those documents are confidential to me as well.
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 740f3bdb..3b1dd24 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1047,6 +1047,7 @@ void __init setup_arch(char **cmdline_p)
+      cleanup_highmap();
 
-Shawn
+      memblock_set_current_limit(ISA_END_ADDRESS);
++    acpi_boot_table_init();
+      e820__memblock_setup();
+
+      /*
+@@ -1140,8 +1141,6 @@ void __init setup_arch(char **cmdline_p)
+      /*
+       * Parse the ACPI tables for possible boot-time SMP configuration.
+       */
+-    acpi_boot_table_init();
+-
+      early_acpi_boot_init();
+
+      initmem_init();
+diff --git a/drivers/acpi/acpica/tbinstal.c b/drivers/acpi/acpica/tbinstal.c
+index 0bb15ad..7830109 100644
+--- a/drivers/acpi/acpica/tbinstal.c
++++ b/drivers/acpi/acpica/tbinstal.c
+@@ -7,6 +7,7 @@
+   *
+*****************************************************************************/
+
++#include <linux/memblock.h>
+  #include <acpi/acpi.h>
+  #include "accommon.h"
+  #include "actables.h"
+@@ -16,6 +17,33 @@
+
+  /*******************************************************************************
+   *
++ * FUNCTION:    acpi_tb_reserve_standard_table
++ *
++ * PARAMETERS:  address             - Table physical address
++ *              header              - Table header
++ *
++ * RETURN:      None
++ *
++ * DESCRIPTION: To avoid an acpi table page from being "stolen" by the 
+buddy
++ *              allocator run memblock_reserve() on all the standard 
+acpi tables.
++ *
++ 
+******************************************************************************/
++void
++acpi_tb_reserve_standard_table(acpi_physical_address address,
++               struct acpi_table_header *header)
++{
++    if ((ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) ||
++        (ACPI_VALIDATE_RSDP_SIG(header->signature)))
++        return;
++
++    if (header->length > PAGE_SIZE) /* same check as in acpi_map() */
++        return;
++
++    memblock_reserve(address, PAGE_ALIGN(header->length));
++}
++
++/*******************************************************************************
++ *
+   * FUNCTION:    acpi_tb_install_table_with_override
+   *
+   * PARAMETERS:  new_table_desc          - New table descriptor to install
+@@ -58,6 +86,9 @@
+                        new_table_desc->flags,
+                        new_table_desc->pointer);
+
++    acpi_tb_reserve_standard_table(new_table_desc->address,
++                   new_table_desc->pointer);
++
+      acpi_tb_print_table_header(new_table_desc->address,
+                     new_table_desc->pointer);
+
+George
+
+>
+> George
+>>> Ran 10 boots with the above without failure.
+>>>
+>>> George
+>
+
