@@ -2,289 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 814A032B444
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 06:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31BCC32B43F
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:59:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353010AbhCCE4h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 23:56:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39010 "EHLO mail.kernel.org"
+        id S1353064AbhCCEyz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 23:54:55 -0500
+Received: from mga04.intel.com ([192.55.52.120]:28234 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1448003AbhCBNyj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Mar 2021 08:54:39 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 92F7C64F8F;
-        Tue,  2 Mar 2021 11:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686293;
-        bh=avu/wHJwQk3SxYRJtAs0aM9ch/ucK/66o3cMo9Q8Gz4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YUsPVMDPhqwNqQcWW/oY8YnEo5YEU6UObfcyg2HFjTorcka5UCT+wm2rWnO5IgAYh
-         imqbCCB7fc8DQ4RaaT6D56hQWR1oCKNE5lcf4Et/I9sOAORepa4KGdxVZ7aRpf93Ja
-         JLib/9e0IJKzf+vLhP86vaVepDDbnxA57oxKtbwdUPjmbqH7hpu691knMvLUimGCY9
-         uBerrz6AsW7nXgTmm2ZT76as1eTmGlRz7fRW94JrpWhIZMva2R5lvOpRe5Y+Hyr3us
-         q9aZVDk+DSktKWZkQ0hvpY1bIYB2gcT/8fT8OnYAMzQ5QbqMNZYFAUL2wKuAuw7pLC
-         AobySAUYDirGA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.4 18/33] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
-Date:   Tue,  2 Mar 2021 06:57:34 -0500
-Message-Id: <20210302115749.62653-18-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115749.62653-1-sashal@kernel.org>
-References: <20210302115749.62653-1-sashal@kernel.org>
+        id S1350685AbhCBMXb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Mar 2021 07:23:31 -0500
+IronPort-SDR: 178IsVga0rbNAJ9jzCHiDL90xCqDStKbo6IBjGTmJpVTyh9ROyQyUXi4tivfpshAZKf2RHbMrP
+ 7FtHi+Pqy8Eg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="184358985"
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="184358985"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 04:21:28 -0800
+IronPort-SDR: uElB7C+qz7NzFA4Ca9Y93eJ+gdGGpwoEfVqCanWoLOz1VjHoww6HX/HnSnX7neIBs683UrirCR
+ LlSvT0VCJo8w==
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="506307518"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 04:21:26 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lH41j-009NUH-Hi; Tue, 02 Mar 2021 14:21:23 +0200
+Date:   Tue, 2 Mar 2021 14:21:23 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+Message-ID: <YD4twyAGvDDOCv+n@smile.fi.intel.com>
+References: <20210226033919.8871-1-shawn.guo@linaro.org>
+ <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
+ <20210226093925.GA24428@dragon>
+ <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+ <YDjZOU+VMWasjzUb@smile.fi.intel.com>
+ <20210227031944.GB24428@dragon>
+ <YDzbQqHspfvpYS7Z@smile.fi.intel.com>
+ <20210302002725.GE24428@dragon>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210302002725.GE24428@dragon>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Tue, Mar 02, 2021 at 08:27:26AM +0800, Shawn Guo wrote:
+> On Mon, Mar 01, 2021 at 02:17:06PM +0200, Andy Shevchenko wrote:
+> > On Sat, Feb 27, 2021 at 11:19:45AM +0800, Shawn Guo wrote:
+> > > On Fri, Feb 26, 2021 at 01:19:21PM +0200, Andy Shevchenko wrote:
+> > > > On Fri, Feb 26, 2021 at 12:57:37PM +0200, Andy Shevchenko wrote:
+> > > > > On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+> > > > > > On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
+> > > > > > > On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+> > > > > > > > Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
+> > > > > > > > not working.  That's because the GpioInt number of TSC2 node in ACPI
+> > > > > > > > table is simply wrong, and the number even exceeds the maximum GPIO
+> > > > > > > > lines.  As the touchpad works fine with Windows on the same machine,
+> > > > > > > > presumably this is something Windows-ism.  Although it's obviously
+> > > > > > > > a specification violation, believe of that Microsoft will fix this in
+> > > > > > > > the near future is not really realistic.
+> > > > > > > >
+> > > > > > > > It adds the support of overriding broken GPIO number in ACPI table
+> > > > > > > > on particular machines, which are matched using DMI info.  Such
+> > > > > > > > mechanism for fixing up broken firmware and ACPI table is not uncommon
+> > > > > > > > in kernel.  And hopefully it can be useful for other machines that get
+> > > > > > > > broken GPIO number coded in ACPI table.
+> > > > > > >
+> > > > > > > Thanks for the report and patch.
+> > > > > > >
+> > > > > > > First of all, have you reported the issue to Lenovo? At least they
+> > > > > > > will know that they did wrong.
+> > > > > >
+> > > > > > Yes, we are reporting this to Lenovo, but to be honest, we are not sure
+> > > > > > how much they will care about it, as they are shipping the laptop with
+> > > > > > Windows only.
+> > > > > >
+> > > > > > > Second, is it possible to have somewhere output of `acpidump -o
+> > > > > > > flex5g.dat` (the flex5g.dat file)?
+> > > > > >
+> > > > > > https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
+> > > > 
+> > > > Looking into DSDT I think the problem is much worse. First of all there are
+> > > > many cases where pins like 0x140, 0x1c0, etc are being used. On top of that
+> > > > there is no GPIO driver in the upstream (as far as I can see by HID, perhaps
+> > > > there is a driver but for different HID. And I see that GPIO device consumes a
+> > > > lot of Interrupts from GIC as well (it's ARM platfrom as far as I understand).
+> > > 
+> > > Yes, it's a laptop built on Qualcomm Snapdragon SC8180X SoC.  The GPIO
+> > > driver is generic for all Snapdragon SoCs, and has been available in
+> > > upstream for many years (for DT though). It can be found as the gpio_chip
+> > > implementation in MSM pinctrl driver [1].  The SC8180X specific part can
+> > > be found as pinctrl-sc8180x.c [2], and it's already working for DT boot.
+> > > The only missing piece is to add "QCOM040D" as the acpi_device_id to
+> > > support ACPI boot, and it will be submitted after 5.12-rc1 comes out.
+> > > 
+> > > > Looking at the Microsoft brain damaged way of understanding GPIOs and hardware
+> > > > [1], I am afraid you really want to have a specific GPIO driver for this. So,
+> > > > for now until we have better picture of what's going on, NAK to this patch.
+> > > 
+> > > Thanks for the pointer to Microsoft document.  On Snapdragon, we have
+> > > only one GPIO instance that accommodates all GPIO pins, so I'm not sure
+> > > that Microsoft GPIOs mapping layer is relevant here at all.
+> > > 
+> > > Please take a look at the GPIO driver, and feel free to let me know if
+> > > you need any further information to understand what's going on.
+> > 
+> > Yes, I looked into the driver and see that it has 3 blocks of GPIOs (we call
+> > them communities, but in the driver the term 'tiles' is used) AFAIU (correct me
+> > if I'm wrong). And who knows how many banks in each of them.
+> 
+> I'm not sure that the 3 'tiles' means 3 blocks of GPIOs.  Maybe, @Bjorn
+> can help clarify.  But the ACPI table shows that there is only 'GIO0'
+> with 'QCOM040D' HID.
 
-[ Upstream commit c27f3d011b08540e68233cf56274fdc34bebb9b5 ]
+Yeah, I already got that ACPI there is screwed up...
 
-ACPICA commit c9e0116952363b0fa815143dca7e9a2eb4fefa61
+> > I'm afraid that MS does on his way and not yours.
+> > 
+> > Can we have TRM for GPIO IP used there and any evidence / document from
+> > firmware team about the implementation of the GPIO numbering in the ACPI
+> > (at Intel we have so called BIOS Writers Guide that is given to the customers
+> > where such info can be found)?
+> 
+> Unfortunately, I do not have the access to any sort of these documents.
+> But I looped in Jeffrey who is part of Qualcomm kernel/firmware team,
+> and should be able to help clarify GPIO numbering in the ACPI table.
 
-The handling of the generic_serial_bus (I2C) and GPIO op_regions in
-acpi_ev_address_space_dispatch() passes a number of extra parameters
-to the address-space handler through the address-space Context pointer
-(instead of using more function parameters).
+Thanks! Will wait for new information then.
 
-The Context is shared between threads, so if multiple threads try to
-call the handler for the same address-space at the same time, then
-a second thread could change the parameters of a first thread while
-the handler is running for the first thread.
+> > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-msm.c#n713
+> > > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-sc8180x.c
 
-An example of this race hitting is the Lenovo Yoga Tablet2 1015L,
-where there are both attrib_bytes accesses and attrib_byte accesses
-to the same address-space. The attrib_bytes access stores the number
-of bytes to transfer in Context->access_length. Where as for the
-attrib_byte access the number of bytes to transfer is always 1 and
-field_obj->Field.access_length is unused (so 0). Both types of
-accesses racing from different threads leads to the following problem:
-
- 1. Thread a. starts an attrib_bytes access, stores a non 0 value
-    from field_obj->Field.access_length in Context->access_length
-
- 2. Thread b. starts an attrib_byte access, stores 0 in
-    Context->access_length
-
- 3. Thread a. calls i2c_acpi_space_handler() (under Linux). Which
-    sees that the access-type is ACPI_GSB_ACCESS_ATTRIB_MULTIBYTE
-    and calls acpi_gsb_i2c_read_bytes(..., Context->access_length)
-
- 4. At this point Context->access_length is 0 (set by thread b.)
-
-rather then the field_obj->Field.access_length value from thread a.
-This 0 length reads leads to the following errors being logged:
-
- i2c i2c-0: adapter quirk: no zero length (addr 0x0078, size 0, read)
- i2c i2c-0: i2c read 0 bytes from client@0x78 starting at reg 0x0 failed, error: -95
-
-Note this is just an example of the problems which this race can cause.
-
-There are likely many more (sporadic) problems caused by this race.
-
-This commit adds a new context_mutex to struct acpi_object_addr_handler
-and makes acpi_ev_address_space_dispatch() take that mutex when
-using the shared Context to pass extra parameters to an address-space
-handler, fixing this race.
-
-Note the new mutex must be taken *after* exiting the interpreter,
-therefor the existing acpi_ex_exit_interpreter() call is moved to above
-the code which stores the extra parameters in the Context.
-
-Link: https://github.com/acpica/acpica/commit/c9e01169
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/acpica/acobject.h  |  1 +
- drivers/acpi/acpica/evhandler.c |  7 ++++
- drivers/acpi/acpica/evregion.c  | 64 ++++++++++++++++++++++++---------
- drivers/acpi/acpica/evxfregn.c  |  2 ++
- 4 files changed, 57 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/acpi/acpica/acobject.h b/drivers/acpi/acpica/acobject.h
-index 8def0e3d690f..b0b9bb31c336 100644
---- a/drivers/acpi/acpica/acobject.h
-+++ b/drivers/acpi/acpica/acobject.h
-@@ -283,6 +283,7 @@ struct acpi_object_addr_handler {
- 	acpi_adr_space_handler handler;
- 	struct acpi_namespace_node *node;	/* Parent device */
- 	void *context;
-+	acpi_mutex context_mutex;
- 	acpi_adr_space_setup setup;
- 	union acpi_operand_object *region_list;	/* Regions using this handler */
- 	union acpi_operand_object *next;
-diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
-index 3ef4e27995f0..78550f5004c9 100644
---- a/drivers/acpi/acpica/evhandler.c
-+++ b/drivers/acpi/acpica/evhandler.c
-@@ -489,6 +489,13 @@ acpi_ev_install_space_handler(struct acpi_namespace_node *node,
- 
- 	/* Init handler obj */
- 
-+	status =
-+	    acpi_os_create_mutex(&handler_obj->address_space.context_mutex);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_ut_remove_reference(handler_obj);
-+		goto unlock_and_exit;
-+	}
-+
- 	handler_obj->address_space.space_id = (u8)space_id;
- 	handler_obj->address_space.handler_flags = flags;
- 	handler_obj->address_space.region_list = NULL;
-diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-index 45dc797df05d..50782033012b 100644
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -111,6 +111,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	union acpi_operand_object *region_obj2;
- 	void *region_context = NULL;
- 	struct acpi_connection_info *context;
-+	acpi_mutex context_mutex;
-+	u8 context_locked;
- 	acpi_physical_address address;
- 
- 	ACPI_FUNCTION_TRACE(ev_address_space_dispatch);
-@@ -135,6 +137,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	}
- 
- 	context = handler_desc->address_space.context;
-+	context_mutex = handler_desc->address_space.context_mutex;
-+	context_locked = FALSE;
- 
- 	/*
- 	 * It may be the case that the region has never been initialized.
-@@ -203,6 +207,23 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	handler = handler_desc->address_space.handler;
- 	address = (region_obj->region.address + region_offset);
- 
-+	ACPI_DEBUG_PRINT((ACPI_DB_OPREGION,
-+			  "Handler %p (@%p) Address %8.8X%8.8X [%s]\n",
-+			  &region_obj->region.handler->address_space, handler,
-+			  ACPI_FORMAT_UINT64(address),
-+			  acpi_ut_get_region_name(region_obj->region.
-+						  space_id)));
-+
-+	if (!(handler_desc->address_space.handler_flags &
-+	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
-+		/*
-+		 * For handlers other than the default (supplied) handlers, we must
-+		 * exit the interpreter because the handler *might* block -- we don't
-+		 * know what it will do, so we can't hold the lock on the interpreter.
-+		 */
-+		acpi_ex_exit_interpreter();
-+	}
-+
- 	/*
- 	 * Special handling for generic_serial_bus and general_purpose_io:
- 	 * There are three extra parameters that must be passed to the
-@@ -211,6 +232,11 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	 *   2) Length of the above buffer
- 	 *   3) Actual access length from the access_as() op
- 	 *
-+	 * Since we pass these extra parameters via the context, which is
-+	 * shared between threads, we must lock the context to avoid these
-+	 * parameters being changed from another thread before the handler
-+	 * has completed running.
-+	 *
- 	 * In addition, for general_purpose_io, the Address and bit_width fields
- 	 * are defined as follows:
- 	 *   1) Address is the pin number index of the field (bit offset from
-@@ -220,6 +246,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GSBUS) &&
- 	    context && field_obj) {
- 
-+		status =
-+		    acpi_os_acquire_mutex(context_mutex, ACPI_WAIT_FOREVER);
-+		if (ACPI_FAILURE(status)) {
-+			goto re_enter_interpreter;
-+		}
-+
-+		context_locked = TRUE;
-+
- 		/* Get the Connection (resource_template) buffer */
- 
- 		context->connection = field_obj->field.resource_buffer;
-@@ -229,6 +263,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) &&
- 	    context && field_obj) {
- 
-+		status =
-+		    acpi_os_acquire_mutex(context_mutex, ACPI_WAIT_FOREVER);
-+		if (ACPI_FAILURE(status)) {
-+			goto re_enter_interpreter;
-+		}
-+
-+		context_locked = TRUE;
-+
- 		/* Get the Connection (resource_template) buffer */
- 
- 		context->connection = field_obj->field.resource_buffer;
-@@ -238,28 +280,15 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 		bit_width = field_obj->field.bit_length;
- 	}
- 
--	ACPI_DEBUG_PRINT((ACPI_DB_OPREGION,
--			  "Handler %p (@%p) Address %8.8X%8.8X [%s]\n",
--			  &region_obj->region.handler->address_space, handler,
--			  ACPI_FORMAT_UINT64(address),
--			  acpi_ut_get_region_name(region_obj->region.
--						  space_id)));
--
--	if (!(handler_desc->address_space.handler_flags &
--	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
--		/*
--		 * For handlers other than the default (supplied) handlers, we must
--		 * exit the interpreter because the handler *might* block -- we don't
--		 * know what it will do, so we can't hold the lock on the interpreter.
--		 */
--		acpi_ex_exit_interpreter();
--	}
--
- 	/* Call the handler */
- 
- 	status = handler(function, address, bit_width, value, context,
- 			 region_obj2->extra.region_context);
- 
-+	if (context_locked) {
-+		acpi_os_release_mutex(context_mutex);
-+	}
-+
- 	if (ACPI_FAILURE(status)) {
- 		ACPI_EXCEPTION((AE_INFO, status, "Returned by Handler for [%s]",
- 				acpi_ut_get_region_name(region_obj->region.
-@@ -276,6 +305,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 		}
- 	}
- 
-+re_enter_interpreter:
- 	if (!(handler_desc->address_space.handler_flags &
- 	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
- 		/*
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index 47265b073e6f..6e0d2a98c4ad 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -201,6 +201,8 @@ acpi_remove_address_space_handler(acpi_handle device,
- 
- 			/* Now we can delete the handler object */
- 
-+			acpi_os_release_mutex(handler_obj->address_space.
-+					      context_mutex);
- 			acpi_ut_remove_reference(handler_obj);
- 			goto unlock_and_exit;
- 		}
 -- 
-2.30.1
+With Best Regards,
+Andy Shevchenko
+
 
