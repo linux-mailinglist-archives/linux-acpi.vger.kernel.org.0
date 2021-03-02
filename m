@@ -2,227 +2,289 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B1E32A4D5
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Mar 2021 16:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C63E832B43B
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 05:54:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1446552AbhCBLSU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 06:18:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46006 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380848AbhCBKpL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Mar 2021 05:45:11 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE012C061788;
-        Tue,  2 Mar 2021 02:44:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=/q+RIdKN1LdajCwadS8XdJgE0yGcOCCHDjF8uy/Zjd0=; b=S7z3H9Rn85JuD+MdFyxrbbCcAD
-        jCXZWlLbl8MXwNC6hkZoLgBiV4/07BttpjiqqjQOGJa4GePPzHF44x36TXAxv8PP/0zYwHLcl5tD6
-        UsPxwdBxvmNQg9yAPsJ6FxwF49BYuTaxYWnM0nynl+4S8R1//vszFKmFR7+QZy6STkiZQHbebUUUa
-        RdlN7VfFDLPZoTluCaDtRmAPRSgBzSaTKI/tQnwEu97ebRWglaydCVNr6sLINpgfQPfNZ7MtmY5O+
-        EAx4uhfV45j8nompMHNxVgZCMdq7AVyBXDcSJKYeWVSUCghJpegEPnbNEKwqzhSrzMeGVYFgabPKV
-        E8DQIDmA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lH2Uu-00GxYY-9R; Tue, 02 Mar 2021 10:43:25 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id F335E30011C;
-        Tue,  2 Mar 2021 11:43:14 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DC9872027C1AA; Tue,  2 Mar 2021 11:43:14 +0100 (CET)
-Date:   Tue, 2 Mar 2021 11:43:14 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Barry Song <song.bao.hua@hisilicon.com>
-Cc:     tim.c.chen@linux.intel.com, catalin.marinas@arm.com,
-        will@kernel.org, rjw@rjwysocki.net, vincent.guittot@linaro.org,
-        bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
-        lenb@kernel.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
-        bsegall@google.com, mgorman@suse.de, msys.mizuma@gmail.com,
-        valentin.schneider@arm.com, gregkh@linuxfoundation.org,
-        jonathan.cameron@huawei.com, juri.lelli@redhat.com,
-        mark.rutland@arm.com, sudeep.holla@arm.com,
-        aubrey.li@linux.intel.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        x86@kernel.org, xuwei5@huawei.com, prime.zeng@hisilicon.com,
-        guodong.xu@linaro.org, yangyicong@huawei.com,
-        liguozhu@hisilicon.com, linuxarm@openeuler.org, hpa@zytor.com
-Subject: Re: [RFC PATCH v4 2/3] scheduler: add scheduler level for clusters
-Message-ID: <YD4WwrlVNwlSj/Zn@hirez.programming.kicks-ass.net>
-References: <20210301225940.16728-1-song.bao.hua@hisilicon.com>
- <20210301225940.16728-3-song.bao.hua@hisilicon.com>
+        id S1344510AbhCCEvJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Mar 2021 23:51:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41454 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1350225AbhCBMC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Mar 2021 07:02:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B40E864F30;
+        Tue,  2 Mar 2021 11:56:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614686173;
+        bh=pVIwKAspgyJt2FBp8cPs/jLLOal13i9dDZwz8jPKy3Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rvyEWOUe0Lvvm1oF/OOoYbdkwvjrPnuZCR1m9eV2LfwVtJyIlQSqHRdGdc3FFqEA5
+         br3OxnzjuBSPFHujXF6bk9Ln+0MmME+KoLkOI+rjCdnD/hHcw4FevJD3bfDl6gzeWo
+         zO3I2EoBTm7YARxnQzLG/9zBdr53+btvcZaDuNA4CqVLVUVLqei2BWtthnpjO0Mwzy
+         0C2vI+I6wdsm9oDwfwayAPPSytUO/OgjvgOtmA9Y37YYF88HCiYvVrgdeaXmBZrKL/
+         XfGiJa295WGebFFC9/Cpm2LwngfPQCgr7LsgMh8PlnoBDEyneh4qCNZ24DVCB0eqTy
+         /LFl9OzxfiSjA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Subject: [PATCH AUTOSEL 5.11 29/52] ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling
+Date:   Tue,  2 Mar 2021 06:55:10 -0500
+Message-Id: <20210302115534.61800-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210302115534.61800-1-sashal@kernel.org>
+References: <20210302115534.61800-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210301225940.16728-3-song.bao.hua@hisilicon.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 02, 2021 at 11:59:39AM +1300, Barry Song wrote:
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 88a2e2b..d805e59 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -7797,6 +7797,16 @@ int sched_cpu_activate(unsigned int cpu)
->  	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
->  		static_branch_inc_cpuslocked(&sched_smt_present);
->  #endif
-> +
-> +#ifdef CONFIG_SCHED_CLUSTER
-> +	/*
-> +	 * When going up, increment the number of cluster cpus with
-> +	 * cluster present.
-> +	 */
-> +	if (cpumask_weight(cpu_cluster_mask(cpu)) > 1)
-> +		static_branch_inc_cpuslocked(&sched_cluster_present);
-> +#endif
-> +
->  	set_cpu_active(cpu, true);
->  
->  	if (sched_smp_initialized) {
-> @@ -7873,6 +7883,14 @@ int sched_cpu_deactivate(unsigned int cpu)
->  		static_branch_dec_cpuslocked(&sched_smt_present);
->  #endif
->  
-> +#ifdef CONFIG_SCHED_CLUSTER
-> +	/*
-> +	 * When going down, decrement the number of cpus with cluster present.
-> +	 */
-> +	if (cpumask_weight(cpu_cluster_mask(cpu)) > 1)
-> +		static_branch_dec_cpuslocked(&sched_cluster_present);
-> +#endif
-> +
->  	if (!sched_smp_initialized)
->  		return 0;
+From: Hans de Goede <hdegoede@redhat.com>
 
-I don't think that's correct. IIUC this will mean the
-sched_cluster_present thing will be enabled on anything with SMT (very
-much including x86 big cores after the next patch).
+[ Upstream commit c27f3d011b08540e68233cf56274fdc34bebb9b5 ]
 
-I'm thinking that at the very least you should check a CLS domain
-exists, but that might be hard at this point, because the sched domains
-haven't been build yet.
+ACPICA commit c9e0116952363b0fa815143dca7e9a2eb4fefa61
 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 8a8bd7b..3db7b07 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -6009,6 +6009,11 @@ static inline int __select_idle_cpu(int cpu)
->  	return -1;
->  }
->  
-> +#ifdef CONFIG_SCHED_CLUSTER
-> +DEFINE_STATIC_KEY_FALSE(sched_cluster_present);
-> +EXPORT_SYMBOL_GPL(sched_cluster_present);
+The handling of the generic_serial_bus (I2C) and GPIO op_regions in
+acpi_ev_address_space_dispatch() passes a number of extra parameters
+to the address-space handler through the address-space Context pointer
+(instead of using more function parameters).
 
-I really rather think this shouldn't be exported
+The Context is shared between threads, so if multiple threads try to
+call the handler for the same address-space at the same time, then
+a second thread could change the parameters of a first thread while
+the handler is running for the first thread.
 
-> +#endif
-> +
->  #ifdef CONFIG_SCHED_SMT
->  DEFINE_STATIC_KEY_FALSE(sched_smt_present);
->  EXPORT_SYMBOL_GPL(sched_smt_present);
+An example of this race hitting is the Lenovo Yoga Tablet2 1015L,
+where there are both attrib_bytes accesses and attrib_byte accesses
+to the same address-space. The attrib_bytes access stores the number
+of bytes to transfer in Context->access_length. Where as for the
+attrib_byte access the number of bytes to transfer is always 1 and
+field_obj->Field.access_length is unused (so 0). Both types of
+accesses racing from different threads leads to the following problem:
 
-This is a KVM wart, it needs to know because mitigation crap.
+ 1. Thread a. starts an attrib_bytes access, stores a non 0 value
+    from field_obj->Field.access_length in Context->access_length
 
-> @@ -6116,6 +6121,26 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
->  
->  #endif /* CONFIG_SCHED_SMT */
->  
-> +static inline int _select_idle_cpu(bool smt, struct task_struct *p, int target, struct cpumask *cpus, int *idle_cpu, int *nr)
-> +{
-> +	int cpu, i;
-> +
-> +	for_each_cpu_wrap(cpu, cpus, target) {
-> +		if (smt) {
-> +			i = select_idle_core(p, cpu, cpus, idle_cpu);
-> +		} else {
-> +			if (!--*nr)
-> +				return -1;
-> +			i = __select_idle_cpu(cpu);
-> +		} 
-> +
-> +		if ((unsigned int)i < nr_cpumask_bits)
-> +			return i;
-> +	}
-> +
-> +	return -1;
-> +}
-> +
->  /*
->   * Scan the LLC domain for idle CPUs; this is dynamically regulated by
->   * comparing the average scan cost (tracked in sd->avg_scan_cost) against the
-> @@ -6124,7 +6149,7 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
->  static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
->  {
->  	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
-> -	int i, cpu, idle_cpu = -1, nr = INT_MAX;
-> +	int i, idle_cpu = -1, nr = INT_MAX;
->  	bool smt = test_idle_cores(target, false);
->  	int this = smp_processor_id();
->  	struct sched_domain *this_sd;
-> @@ -6134,7 +6159,12 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
->  	if (!this_sd)
->  		return -1;
->  
-> -	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
-> +	if (!sched_cluster_active())
-> +		cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
-> +#ifdef CONFIG_SCHED_CLUSTER
-> +	if (sched_cluster_active())
-> +		cpumask_and(cpus, cpu_cluster_mask(target), p->cpus_ptr);
-> +#endif
->  
->  	if (sched_feat(SIS_PROP) && !smt) {
->  		u64 avg_cost, avg_idle, span_avg;
-> @@ -6155,24 +6185,32 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
->  		time = cpu_clock(this);
->  	}
->  
-> -	for_each_cpu_wrap(cpu, cpus, target) {
-> -		if (smt) {
-> -			i = select_idle_core(p, cpu, cpus, &idle_cpu);
-> -			if ((unsigned int)i < nr_cpumask_bits)
-> -				return i;
-> +	/* scan cluster before scanning the whole llc */
-> +#ifdef CONFIG_SCHED_CLUSTER
-> +	if (sched_cluster_active()) {
-> +		i = _select_idle_cpu(smt, p, target, cpus, &idle_cpu, &nr);
-> +		if ((unsigned int) i < nr_cpumask_bits) {
-> +			idle_cpu = i;
-> +			goto done;
-> +		} else if (nr <= 0)
-> +			return -1;
->  
-> -		} else {
-> -			if (!--nr)
-> -				return -1;
-> -			idle_cpu = __select_idle_cpu(cpu);
-> -			if ((unsigned int)idle_cpu < nr_cpumask_bits)
-> -				break;
-> -		}
-> +		cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
-> +		cpumask_andnot(cpus, cpus, cpu_cluster_mask(target));
->  	}
-> +#endif
-> +
-> +	i = _select_idle_cpu(smt, p, target, cpus, &idle_cpu, &nr);
-> +	if ((unsigned int) i < nr_cpumask_bits) {
-> +		idle_cpu = i;
-> +		goto done;
-> +	} else if (nr <= 0)
-> +		return -1;
->  
->  	if (smt)
->  		set_idle_cores(this, false);
->  
-> +done:
->  	if (sched_feat(SIS_PROP) && !smt) {
->  		time = cpu_clock(this) - time;
->  		update_avg(&this_sd->avg_scan_cost, time);
+ 2. Thread b. starts an attrib_byte access, stores 0 in
+    Context->access_length
 
-And this is just horrific :-(
+ 3. Thread a. calls i2c_acpi_space_handler() (under Linux). Which
+    sees that the access-type is ACPI_GSB_ACCESS_ATTRIB_MULTIBYTE
+    and calls acpi_gsb_i2c_read_bytes(..., Context->access_length)
+
+ 4. At this point Context->access_length is 0 (set by thread b.)
+
+rather then the field_obj->Field.access_length value from thread a.
+This 0 length reads leads to the following errors being logged:
+
+ i2c i2c-0: adapter quirk: no zero length (addr 0x0078, size 0, read)
+ i2c i2c-0: i2c read 0 bytes from client@0x78 starting at reg 0x0 failed, error: -95
+
+Note this is just an example of the problems which this race can cause.
+
+There are likely many more (sporadic) problems caused by this race.
+
+This commit adds a new context_mutex to struct acpi_object_addr_handler
+and makes acpi_ev_address_space_dispatch() take that mutex when
+using the shared Context to pass extra parameters to an address-space
+handler, fixing this race.
+
+Note the new mutex must be taken *after* exiting the interpreter,
+therefor the existing acpi_ex_exit_interpreter() call is moved to above
+the code which stores the extra parameters in the Context.
+
+Link: https://github.com/acpica/acpica/commit/c9e01169
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpica/acobject.h  |  1 +
+ drivers/acpi/acpica/evhandler.c |  7 ++++
+ drivers/acpi/acpica/evregion.c  | 64 ++++++++++++++++++++++++---------
+ drivers/acpi/acpica/evxfregn.c  |  2 ++
+ 4 files changed, 57 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/acpi/acpica/acobject.h b/drivers/acpi/acpica/acobject.h
+index 9f0219a8cb98..dd7efafcb103 100644
+--- a/drivers/acpi/acpica/acobject.h
++++ b/drivers/acpi/acpica/acobject.h
+@@ -284,6 +284,7 @@ struct acpi_object_addr_handler {
+ 	acpi_adr_space_handler handler;
+ 	struct acpi_namespace_node *node;	/* Parent device */
+ 	void *context;
++	acpi_mutex context_mutex;
+ 	acpi_adr_space_setup setup;
+ 	union acpi_operand_object *region_list;	/* Regions using this handler */
+ 	union acpi_operand_object *next;
+diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
+index 5884eba047f7..3438dc187efb 100644
+--- a/drivers/acpi/acpica/evhandler.c
++++ b/drivers/acpi/acpica/evhandler.c
+@@ -489,6 +489,13 @@ acpi_ev_install_space_handler(struct acpi_namespace_node *node,
+ 
+ 	/* Init handler obj */
+ 
++	status =
++	    acpi_os_create_mutex(&handler_obj->address_space.context_mutex);
++	if (ACPI_FAILURE(status)) {
++		acpi_ut_remove_reference(handler_obj);
++		goto unlock_and_exit;
++	}
++
+ 	handler_obj->address_space.space_id = (u8)space_id;
+ 	handler_obj->address_space.handler_flags = flags;
+ 	handler_obj->address_space.region_list = NULL;
+diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
+index a8a4c8c9b9ef..7701ae67e091 100644
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -112,6 +112,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	union acpi_operand_object *region_obj2;
+ 	void *region_context = NULL;
+ 	struct acpi_connection_info *context;
++	acpi_mutex context_mutex;
++	u8 context_locked;
+ 	acpi_physical_address address;
+ 
+ 	ACPI_FUNCTION_TRACE(ev_address_space_dispatch);
+@@ -136,6 +138,8 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	}
+ 
+ 	context = handler_desc->address_space.context;
++	context_mutex = handler_desc->address_space.context_mutex;
++	context_locked = FALSE;
+ 
+ 	/*
+ 	 * It may be the case that the region has never been initialized.
+@@ -204,6 +208,23 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	handler = handler_desc->address_space.handler;
+ 	address = (region_obj->region.address + region_offset);
+ 
++	ACPI_DEBUG_PRINT((ACPI_DB_OPREGION,
++			  "Handler %p (@%p) Address %8.8X%8.8X [%s]\n",
++			  &region_obj->region.handler->address_space, handler,
++			  ACPI_FORMAT_UINT64(address),
++			  acpi_ut_get_region_name(region_obj->region.
++						  space_id)));
++
++	if (!(handler_desc->address_space.handler_flags &
++	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
++		/*
++		 * For handlers other than the default (supplied) handlers, we must
++		 * exit the interpreter because the handler *might* block -- we don't
++		 * know what it will do, so we can't hold the lock on the interpreter.
++		 */
++		acpi_ex_exit_interpreter();
++	}
++
+ 	/*
+ 	 * Special handling for generic_serial_bus and general_purpose_io:
+ 	 * There are three extra parameters that must be passed to the
+@@ -212,6 +233,11 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	 *   2) Length of the above buffer
+ 	 *   3) Actual access length from the access_as() op
+ 	 *
++	 * Since we pass these extra parameters via the context, which is
++	 * shared between threads, we must lock the context to avoid these
++	 * parameters being changed from another thread before the handler
++	 * has completed running.
++	 *
+ 	 * In addition, for general_purpose_io, the Address and bit_width fields
+ 	 * are defined as follows:
+ 	 *   1) Address is the pin number index of the field (bit offset from
+@@ -221,6 +247,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GSBUS) &&
+ 	    context && field_obj) {
+ 
++		status =
++		    acpi_os_acquire_mutex(context_mutex, ACPI_WAIT_FOREVER);
++		if (ACPI_FAILURE(status)) {
++			goto re_enter_interpreter;
++		}
++
++		context_locked = TRUE;
++
+ 		/* Get the Connection (resource_template) buffer */
+ 
+ 		context->connection = field_obj->field.resource_buffer;
+@@ -230,6 +264,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 	if ((region_obj->region.space_id == ACPI_ADR_SPACE_GPIO) &&
+ 	    context && field_obj) {
+ 
++		status =
++		    acpi_os_acquire_mutex(context_mutex, ACPI_WAIT_FOREVER);
++		if (ACPI_FAILURE(status)) {
++			goto re_enter_interpreter;
++		}
++
++		context_locked = TRUE;
++
+ 		/* Get the Connection (resource_template) buffer */
+ 
+ 		context->connection = field_obj->field.resource_buffer;
+@@ -239,28 +281,15 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 		bit_width = field_obj->field.bit_length;
+ 	}
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_OPREGION,
+-			  "Handler %p (@%p) Address %8.8X%8.8X [%s]\n",
+-			  &region_obj->region.handler->address_space, handler,
+-			  ACPI_FORMAT_UINT64(address),
+-			  acpi_ut_get_region_name(region_obj->region.
+-						  space_id)));
+-
+-	if (!(handler_desc->address_space.handler_flags &
+-	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
+-		/*
+-		 * For handlers other than the default (supplied) handlers, we must
+-		 * exit the interpreter because the handler *might* block -- we don't
+-		 * know what it will do, so we can't hold the lock on the interpreter.
+-		 */
+-		acpi_ex_exit_interpreter();
+-	}
+-
+ 	/* Call the handler */
+ 
+ 	status = handler(function, address, bit_width, value, context,
+ 			 region_obj2->extra.region_context);
+ 
++	if (context_locked) {
++		acpi_os_release_mutex(context_mutex);
++	}
++
+ 	if (ACPI_FAILURE(status)) {
+ 		ACPI_EXCEPTION((AE_INFO, status, "Returned by Handler for [%s]",
+ 				acpi_ut_get_region_name(region_obj->region.
+@@ -277,6 +306,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 		}
+ 	}
+ 
++re_enter_interpreter:
+ 	if (!(handler_desc->address_space.handler_flags &
+ 	      ACPI_ADDR_HANDLER_DEFAULT_INSTALLED)) {
+ 		/*
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index da97fd0c6b51..3bb06f17a18b 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -201,6 +201,8 @@ acpi_remove_address_space_handler(acpi_handle device,
+ 
+ 			/* Now we can delete the handler object */
+ 
++			acpi_os_release_mutex(handler_obj->address_space.
++					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
+ 		}
+-- 
+2.30.1
+
