@@ -2,726 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6803332B454
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Mar 2021 06:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD9C32C422
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 01:52:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353139AbhCCE6Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Mar 2021 23:58:25 -0500
-Received: from mga14.intel.com ([192.55.52.115]:8307 "EHLO mga14.intel.com"
+        id S1356724AbhCDALa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Mar 2021 19:11:30 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:14067 "EHLO m42-2.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231887AbhCBX7y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Mar 2021 18:59:54 -0500
-IronPort-SDR: 1BL0xZQRkDOD4wKrn8I8oaslWtyehatl0la2dEF9fxuHroyCK8zXDgBeu8Y1bpqEvKPWjK6Bds
- g9DpAlxOs4qw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="186378639"
-X-IronPort-AV: E=Sophos;i="5.81,218,1610438400"; 
-   d="scan'208";a="186378639"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 15:57:42 -0800
-IronPort-SDR: S0atkEhHe5QVcK/OxbPKNZW/z5LfE0FY6XFO2CehcbNjKAsohSRyQXxhW3q44ygYAAz1Quy7B/
- f4DtrSfSaMtA==
-X-IronPort-AV: E=Sophos;i="5.81,218,1610438400"; 
-   d="scan'208";a="369148566"
-Received: from jacob-builder.jf.intel.com (HELO jacob-builder) ([10.7.199.155])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 15:57:42 -0800
-Date:   Tue, 2 Mar 2021 15:59:57 -0800
-From:   Jacob Pan <jacob.jun.pan@linux.intel.com>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     joro@8bytes.org, will@kernel.org, lorenzo.pieralisi@arm.com,
-        robh+dt@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robin.murphy@arm.com,
-        Jonathan.Cameron@huawei.com, eric.auger@redhat.com,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        kevin.tian@intel.com, vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com,
-        jacob.jun.pan@linux.intel.com, "Raj, Ashok" <ashok.raj@intel.com>
-Subject: Re: [PATCH v13 06/10] iommu: Add a page fault handler
-Message-ID: <20210302155957.620db372@jacob-builder>
-In-Reply-To: <20210302092644.2553014-7-jean-philippe@linaro.org>
-References: <20210302092644.2553014-1-jean-philippe@linaro.org>
-        <20210302092644.2553014-7-jean-philippe@linaro.org>
-Organization: OTC
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S234789AbhCCFE0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Mar 2021 00:04:26 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614747802; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=DgHG6UchEqSuAHgA1YD7PCkIm0DL6U3dowHnKc88aKA=; b=UDtRIfhlFmvhWZJ5VxXRv9q97vl+VmDSpVrgywa1A46ADQn/6Er1F8jinvRpzwjj/b4WPVRs
+ Czzyt/pSY+R5em8Q/HOHikuO7wHvGnSBSNg8xEjvvQN3WRevzNBjClr7x+lAaxaFpC0NpKkC
+ ycoGYa9hG0zNa2Lg1TnQPBBFyIM=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyJkOWYwNyIsICJsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 603f187cc008ffc73a20c718 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 03 Mar 2021 05:02:52
+ GMT
+Sender: jhugo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9D42EC43463; Wed,  3 Mar 2021 05:02:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jhugo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B7C57C433C6;
+        Wed,  3 Mar 2021 05:02:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B7C57C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Shawn Guo <shawn.guo@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+References: <20210226033919.8871-1-shawn.guo@linaro.org>
+ <CAHp75Vcb=NO9OWjSpBeVC4c+9=aXE=yiDWVBwLD1DnzwdgFD6Q@mail.gmail.com>
+ <20210226093925.GA24428@dragon>
+ <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+ <YDjZOU+VMWasjzUb@smile.fi.intel.com> <20210227031944.GB24428@dragon>
+ <YDzbQqHspfvpYS7Z@smile.fi.intel.com> <20210302002725.GE24428@dragon>
+ <YD4twyAGvDDOCv+n@smile.fi.intel.com>
+From:   Jeffrey Hugo <jhugo@codeaurora.org>
+Message-ID: <abbfcdfa-c287-3828-ed6f-bc1e1f13c6b2@codeaurora.org>
+Date:   Tue, 2 Mar 2021 22:02:49 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <YD4twyAGvDDOCv+n@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean-Philippe,
-
-A few comments from the p.o.v of converting VT-d to this framework. Mostly
-about potential optimization. I think VT-d SVA code will be able to use this
-work.
-+Ashok provided many insight.
-
-FWIW,
-Reviewed-by:Jacob Pan <jacob.jun.pan@linux.intel.com>
-
-On Tue,  2 Mar 2021 10:26:42 +0100, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
-
-> Some systems allow devices to handle I/O Page Faults in the core mm. For
-> example systems implementing the PCIe PRI extension or Arm SMMU stall
-> model. Infrastructure for reporting these recoverable page faults was
-> added to the IOMMU core by commit 0c830e6b3282 ("iommu: Introduce device
-> fault report API"). Add a page fault handler for host SVA.
+On 3/2/2021 5:21 AM, Andy Shevchenko wrote:
+> On Tue, Mar 02, 2021 at 08:27:26AM +0800, Shawn Guo wrote:
+>> On Mon, Mar 01, 2021 at 02:17:06PM +0200, Andy Shevchenko wrote:
+>>> On Sat, Feb 27, 2021 at 11:19:45AM +0800, Shawn Guo wrote:
+>>>> On Fri, Feb 26, 2021 at 01:19:21PM +0200, Andy Shevchenko wrote:
+>>>>> On Fri, Feb 26, 2021 at 12:57:37PM +0200, Andy Shevchenko wrote:
+>>>>>> On Fri, Feb 26, 2021 at 11:39 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+>>>>>>> On Fri, Feb 26, 2021 at 11:12:07AM +0200, Andy Shevchenko wrote:
+>>>>>>>> On Fri, Feb 26, 2021 at 5:42 AM Shawn Guo <shawn.guo@linaro.org> wrote:
+>>>>>>>>> Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
+>>>>>>>>> not working.  That's because the GpioInt number of TSC2 node in ACPI
+>>>>>>>>> table is simply wrong, and the number even exceeds the maximum GPIO
+>>>>>>>>> lines.  As the touchpad works fine with Windows on the same machine,
+>>>>>>>>> presumably this is something Windows-ism.  Although it's obviously
+>>>>>>>>> a specification violation, believe of that Microsoft will fix this in
+>>>>>>>>> the near future is not really realistic.
+>>>>>>>>>
+>>>>>>>>> It adds the support of overriding broken GPIO number in ACPI table
+>>>>>>>>> on particular machines, which are matched using DMI info.  Such
+>>>>>>>>> mechanism for fixing up broken firmware and ACPI table is not uncommon
+>>>>>>>>> in kernel.  And hopefully it can be useful for other machines that get
+>>>>>>>>> broken GPIO number coded in ACPI table.
+>>>>>>>>
+>>>>>>>> Thanks for the report and patch.
+>>>>>>>>
+>>>>>>>> First of all, have you reported the issue to Lenovo? At least they
+>>>>>>>> will know that they did wrong.
+>>>>>>>
+>>>>>>> Yes, we are reporting this to Lenovo, but to be honest, we are not sure
+>>>>>>> how much they will care about it, as they are shipping the laptop with
+>>>>>>> Windows only.
+>>>>>>>
+>>>>>>>> Second, is it possible to have somewhere output of `acpidump -o
+>>>>>>>> flex5g.dat` (the flex5g.dat file)?
+>>>>>>>
+>>>>>>> https://raw.githubusercontent.com/aarch64-laptops/build/master/misc/lenovo-flex-5g/dsdt.dsl
+>>>>>
+>>>>> Looking into DSDT I think the problem is much worse. First of all there are
+>>>>> many cases where pins like 0x140, 0x1c0, etc are being used. On top of that
+>>>>> there is no GPIO driver in the upstream (as far as I can see by HID, perhaps
+>>>>> there is a driver but for different HID. And I see that GPIO device consumes a
+>>>>> lot of Interrupts from GIC as well (it's ARM platfrom as far as I understand).
+>>>>
+>>>> Yes, it's a laptop built on Qualcomm Snapdragon SC8180X SoC.  The GPIO
+>>>> driver is generic for all Snapdragon SoCs, and has been available in
+>>>> upstream for many years (for DT though). It can be found as the gpio_chip
+>>>> implementation in MSM pinctrl driver [1].  The SC8180X specific part can
+>>>> be found as pinctrl-sc8180x.c [2], and it's already working for DT boot.
+>>>> The only missing piece is to add "QCOM040D" as the acpi_device_id to
+>>>> support ACPI boot, and it will be submitted after 5.12-rc1 comes out.
+>>>>
+>>>>> Looking at the Microsoft brain damaged way of understanding GPIOs and hardware
+>>>>> [1], I am afraid you really want to have a specific GPIO driver for this. So,
+>>>>> for now until we have better picture of what's going on, NAK to this patch.
+>>>>
+>>>> Thanks for the pointer to Microsoft document.  On Snapdragon, we have
+>>>> only one GPIO instance that accommodates all GPIO pins, so I'm not sure
+>>>> that Microsoft GPIOs mapping layer is relevant here at all.
+>>>>
+>>>> Please take a look at the GPIO driver, and feel free to let me know if
+>>>> you need any further information to understand what's going on.
+>>>
+>>> Yes, I looked into the driver and see that it has 3 blocks of GPIOs (we call
+>>> them communities, but in the driver the term 'tiles' is used) AFAIU (correct me
+>>> if I'm wrong). And who knows how many banks in each of them.
+>>
+>> I'm not sure that the 3 'tiles' means 3 blocks of GPIOs.  Maybe, @Bjorn
+>> can help clarify.  But the ACPI table shows that there is only 'GIO0'
+>> with 'QCOM040D' HID.
 > 
-> IOMMU driver can now instantiate several fault workqueues and link them
-> to IOPF-capable devices. Drivers can choose between a single global
-> workqueue, one per IOMMU device, one per low-level fault queue, one per
-> domain, etc.
+> Yeah, I already got that ACPI there is screwed up...
 > 
-> When it receives a fault event, most commonly in an IRQ handler, the
-> IOMMU driver reports the fault using iommu_report_device_fault(), which
-> calls the registered handler. The page fault handler then calls the mm
-> fault handler, and reports either success or failure with
-> iommu_page_response(). After the handler succeeds, the hardware retries
-> the access.
+>>> I'm afraid that MS does on his way and not yours.
+>>>
+>>> Can we have TRM for GPIO IP used there and any evidence / document from
+>>> firmware team about the implementation of the GPIO numbering in the ACPI
+>>> (at Intel we have so called BIOS Writers Guide that is given to the customers
+>>> where such info can be found)?
+>>
+>> Unfortunately, I do not have the access to any sort of these documents.
+>> But I looped in Jeffrey who is part of Qualcomm kernel/firmware team,
+>> and should be able to help clarify GPIO numbering in the ACPI table.
 > 
-> The iopf_param pointer could be embedded into iommu_fault_param. But
-> putting iopf_param into the iommu_param structure allows us not to care
-> about ordering between calls to iopf_queue_add_device() and
-> iommu_register_device_fault_handler().
+> Thanks! Will wait for new information then.
+
+Sorry, just joining the thread now.  Hopefully I'm addressing everything 
+targeted at me.
+
+I used to do kernel work on MSMs, then kernel work on server CPUs, but 
+now I do kernel work on AI accelerators.  Never was on the firmware 
+team, but I have a lot of contacts in those areas.  On my own time, I 
+support Linux on the Qualcomm laptops.
+
+Its not MS that needs to fix things (although there is plenty of things 
+I could point to that MS could fix), its the Qualcomm Windows FW folks. 
+  They have told me a while ago they were planning on fixing this issue 
+on some future chipset, but apparently that hasn't happened yet.  Sadly, 
+once these laptops ship, they are in a frozen maintenance mode.
+
+In my opinion, MS has allowed Qualcomm to get away with doing bad things 
+in ACPI on the Qualcomm laptops.  The ACPI is not a true hardware 
+description that is OS agnostic as it should be, and probably violates 
+the spec in many ways.  Instead, the ACPI is written against the Windows 
+drivers, and has a lot of OS driver crap pushed into it.
+
+The GPIO description is one such thing.
+
+As I understand it, any particular SoC will have a number of GPIOs 
+supported by the TLMM.  0 - N.  Linux understands this.  However, in the 
+ACPI of the Qualcomm Windows laptops, you will likely find atleast one 
+GPIO number which exceeds this N.  These are "virtual" GPIOs, and are a 
+construct of the Windows Qualcomm TLMM driver and how it interfaces with 
+the frameworks within Windows.
+
+Some GPIO lines can be configured as wakeup sources by routing them to a 
+specific hardware block in the SoC (which block it is varies from SoC to 
+SoC).  Windows has a specific weird way of handling this which requires 
+a unique "GPIO chip" to handle.  GPIO chips in Windows contain 32 GPIOs, 
+so for each wakeup GPIO, the TLMM driver creates a GPIO chip 
+(essentially creating 32 GPIOs), and assigns the added GPIOs numbers 
+which exceed N.  The TLMM driver has an internal mapping of which 
+virtual GPIO number corresponds to which real GPIO.
+
+So, ACPI says that some peripheral has GPIO N+X, which is not a real 
+GPIO.  That peripheral goes and requests that GPIO, which gets routed to 
+the TLMM driver, and the TLMM driver translates that number to the real 
+GPIO, and provides the reference back to the peripheral, while also 
+setting up the special wakeup hardware.
+
+So, N+1 is the first supported wakup GPIO, N+1+32 is the next one, then 
+N+1+32+32, and so on.
+
+I see how this creates a nice mess for running Linux on these laptops, 
+but I don't have a good idea how to work around it.  Per SoC, you'd need 
+to know the mapping and translate it for ACPI when running the Windows 
+version of the FW (yes most Qualcomm MSMs have OS specific firmware), 
+but reject such gpio numbers when running other firmware, or I guess on 
+different targets.
+
 > 
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
->  drivers/iommu/Makefile        |   1 +
->  drivers/iommu/iommu-sva-lib.h |  53 ++++
->  include/linux/iommu.h         |   2 +
->  drivers/iommu/io-pgfault.c    | 461 ++++++++++++++++++++++++++++++++++
->  4 files changed, 517 insertions(+)
->  create mode 100644 drivers/iommu/io-pgfault.c
+>>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-msm.c#n713
+>>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/qcom/pinctrl-sc8180x.c
 > 
-> diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
-> index 61bd30cd8369..60fafc23dee6 100644
-> --- a/drivers/iommu/Makefile
-> +++ b/drivers/iommu/Makefile
-> @@ -28,3 +28,4 @@ obj-$(CONFIG_S390_IOMMU) += s390-iommu.o
->  obj-$(CONFIG_HYPERV_IOMMU) += hyperv-iommu.o
->  obj-$(CONFIG_VIRTIO_IOMMU) += virtio-iommu.o
->  obj-$(CONFIG_IOMMU_SVA_LIB) += iommu-sva-lib.o
-> +obj-$(CONFIG_IOMMU_SVA_LIB) += io-pgfault.o
-> diff --git a/drivers/iommu/iommu-sva-lib.h b/drivers/iommu/iommu-sva-lib.h
-> index b40990aef3fd..031155010ca8 100644
-> --- a/drivers/iommu/iommu-sva-lib.h
-> +++ b/drivers/iommu/iommu-sva-lib.h
-> @@ -12,4 +12,57 @@ int iommu_sva_alloc_pasid(struct mm_struct *mm,
-> ioasid_t min, ioasid_t max); void iommu_sva_free_pasid(struct mm_struct
-> *mm); struct mm_struct *iommu_sva_find(ioasid_t pasid);
->  
-> +/* I/O Page fault */
-> +struct device;
-> +struct iommu_fault;
-> +struct iopf_queue;
-> +
-> +#ifdef CONFIG_IOMMU_SVA_LIB
-> +int iommu_queue_iopf(struct iommu_fault *fault, void *cookie);
-> +
-> +int iopf_queue_add_device(struct iopf_queue *queue, struct device *dev);
-> +int iopf_queue_remove_device(struct iopf_queue *queue,
-> +			     struct device *dev);
-> +int iopf_queue_flush_dev(struct device *dev);
-> +struct iopf_queue *iopf_queue_alloc(const char *name);
-> +void iopf_queue_free(struct iopf_queue *queue);
-> +int iopf_queue_discard_partial(struct iopf_queue *queue);
-> +
-> +#else /* CONFIG_IOMMU_SVA_LIB */
-> +static inline int iommu_queue_iopf(struct iommu_fault *fault, void
-> *cookie) +{
-> +	return -ENODEV;
-> +}
-> +
-> +static inline int iopf_queue_add_device(struct iopf_queue *queue,
-> +					struct device *dev)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +static inline int iopf_queue_remove_device(struct iopf_queue *queue,
-> +					   struct device *dev)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +static inline int iopf_queue_flush_dev(struct device *dev)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +static inline struct iopf_queue *iopf_queue_alloc(const char *name)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline void iopf_queue_free(struct iopf_queue *queue)
-> +{
-> +}
-> +
-> +static inline int iopf_queue_discard_partial(struct iopf_queue *queue)
-> +{
-> +	return -ENODEV;
-> +}
-> +#endif /* CONFIG_IOMMU_SVA_LIB */
->  #endif /* _IOMMU_SVA_LIB_H */
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 45c4eb372f56..86d688c4418f 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -367,6 +367,7 @@ struct iommu_fault_param {
->   * struct dev_iommu - Collection of per-device IOMMU data
->   *
->   * @fault_param: IOMMU detected device fault reporting data
-> + * @iopf_param:	 I/O Page Fault queue and data
->   * @fwspec:	 IOMMU fwspec data
->   * @iommu_dev:	 IOMMU device this device is linked to
->   * @priv:	 IOMMU Driver private data
-> @@ -377,6 +378,7 @@ struct iommu_fault_param {
->  struct dev_iommu {
->  	struct mutex lock;
->  	struct iommu_fault_param	*fault_param;
-> +	struct iopf_device_param	*iopf_param;
->  	struct iommu_fwspec		*fwspec;
->  	struct iommu_device		*iommu_dev;
->  	void				*priv;
-> diff --git a/drivers/iommu/io-pgfault.c b/drivers/iommu/io-pgfault.c
-> new file mode 100644
-> index 000000000000..1df8c1dcae77
-> --- /dev/null
-> +++ b/drivers/iommu/io-pgfault.c
-> @@ -0,0 +1,461 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Handle device page faults
-> + *
-> + * Copyright (C) 2020 ARM Ltd.
-> + */
-> +
-> +#include <linux/iommu.h>
-> +#include <linux/list.h>
-> +#include <linux/sched/mm.h>
-> +#include <linux/slab.h>
-> +#include <linux/workqueue.h>
-> +
-> +#include "iommu-sva-lib.h"
-> +
-> +/**
-> + * struct iopf_queue - IO Page Fault queue
-> + * @wq: the fault workqueue
-> + * @devices: devices attached to this queue
-> + * @lock: protects the device list
-> + */
-> +struct iopf_queue {
-> +	struct workqueue_struct		*wq;
-> +	struct list_head		devices;
-> +	struct mutex			lock;
-> +};
-> +
-> +/**
-> + * struct iopf_device_param - IO Page Fault data attached to a device
-> + * @dev: the device that owns this param
-> + * @queue: IOPF queue
-> + * @queue_list: index into queue->devices
-> + * @partial: faults that are part of a Page Request Group for which the
-> last
-> + *           request hasn't been submitted yet.
-> + */
-> +struct iopf_device_param {
-> +	struct device			*dev;
-> +	struct iopf_queue		*queue;
-> +	struct list_head		queue_list;
-> +	struct list_head		partial;
-> +};
-> +
-> +struct iopf_fault {
-> +	struct iommu_fault		fault;
-> +	struct list_head		list;
-> +};
-> +
-> +struct iopf_group {
-> +	struct iopf_fault		last_fault;
-> +	struct list_head		faults;
-> +	struct work_struct		work;
-> +	struct device			*dev;
-> +};
-> +
-> +static int iopf_complete_group(struct device *dev, struct iopf_fault
-> *iopf,
-> +			       enum iommu_page_response_code status)
-> +{
-> +	struct iommu_page_response resp = {
-> +		.version		= IOMMU_PAGE_RESP_VERSION_1,
-> +		.pasid			= iopf->fault.prm.pasid,
-> +		.grpid			= iopf->fault.prm.grpid,
-> +		.code			= status,
-> +	};
-> +
-> +	if ((iopf->fault.prm.flags &
-> IOMMU_FAULT_PAGE_REQUEST_PASID_VALID) &&
-> +	    (iopf->fault.prm.flags &
-> IOMMU_FAULT_PAGE_RESPONSE_NEEDS_PASID))
-> +		resp.flags = IOMMU_PAGE_RESP_PASID_VALID;
-> +
-> +	return iommu_page_response(dev, &resp);
-> +}
-> +
-> +static enum iommu_page_response_code
-> +iopf_handle_single(struct iopf_fault *iopf)
-> +{
-> +	vm_fault_t ret;
-> +	struct mm_struct *mm;
-> +	struct vm_area_struct *vma;
-> +	unsigned int access_flags = 0;
-> +	unsigned int fault_flags = FAULT_FLAG_REMOTE;
-> +	struct iommu_fault_page_request *prm = &iopf->fault.prm;
-> +	enum iommu_page_response_code status = IOMMU_PAGE_RESP_INVALID;
-> +
-> +	if (!(prm->flags & IOMMU_FAULT_PAGE_REQUEST_PASID_VALID))
-> +		return status;
-> +
-> +	mm = iommu_sva_find(prm->pasid);
-> +	if (IS_ERR_OR_NULL(mm))
-> +		return status;
-> +
-> +	mmap_read_lock(mm);
-> +
-> +	vma = find_extend_vma(mm, prm->addr);
-> +	if (!vma)
-> +		/* Unmapped area */
-> +		goto out_put_mm;
-> +
-> +	if (prm->perm & IOMMU_FAULT_PERM_READ)
-> +		access_flags |= VM_READ;
-> +
-> +	if (prm->perm & IOMMU_FAULT_PERM_WRITE) {
-> +		access_flags |= VM_WRITE;
-> +		fault_flags |= FAULT_FLAG_WRITE;
-> +	}
-> +
-> +	if (prm->perm & IOMMU_FAULT_PERM_EXEC) {
-> +		access_flags |= VM_EXEC;
-> +		fault_flags |= FAULT_FLAG_INSTRUCTION;
-> +	}
-> +
-> +	if (!(prm->perm & IOMMU_FAULT_PERM_PRIV))
-> +		fault_flags |= FAULT_FLAG_USER;
-> +
-> +	if (access_flags & ~vma->vm_flags)
-> +		/* Access fault */
-> +		goto out_put_mm;
-> +
-> +	ret = handle_mm_fault(vma, prm->addr, fault_flags, NULL);
-> +	status = ret & VM_FAULT_ERROR ? IOMMU_PAGE_RESP_INVALID :
-> +		IOMMU_PAGE_RESP_SUCCESS;
-> +
-> +out_put_mm:
-> +	mmap_read_unlock(mm);
-> +	mmput(mm);
-> +
-> +	return status;
-> +}
-> +
-> +static void iopf_handle_group(struct work_struct *work)
-> +{
-> +	struct iopf_group *group;
-> +	struct iopf_fault *iopf, *next;
-> +	enum iommu_page_response_code status = IOMMU_PAGE_RESP_SUCCESS;
-> +
-> +	group = container_of(work, struct iopf_group, work);
-> +
-> +	list_for_each_entry_safe(iopf, next, &group->faults, list) {
-> +		/*
-> +		 * For the moment, errors are sticky: don't handle
-> subsequent
-> +		 * faults in the group if there is an error.
-> +		 */
-> +		if (status == IOMMU_PAGE_RESP_SUCCESS)
-> +			status = iopf_handle_single(iopf);
-> +
-> +		if (!(iopf->fault.prm.flags &
-> +		      IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE))
-> +			kfree(iopf);
-> +	}
-> +
-> +	iopf_complete_group(group->dev, &group->last_fault, status);
-> +	kfree(group);
-> +}
-> +
-> +/**
-> + * iommu_queue_iopf - IO Page Fault handler
-> + * @fault: fault event
-> + * @cookie: struct device, passed to iommu_register_device_fault_handler.
-> + *
-> + * Add a fault to the device workqueue, to be handled by mm.
-> + *
-> + * This module doesn't handle PCI PASID Stop Marker; IOMMU drivers must
-> discard
-> + * them before reporting faults. A PASID Stop Marker (LRW = 0b100)
-> doesn't
-> + * expect a response. It may be generated when disabling a PASID
-> (issuing a
-> + * PASID stop request) by some PCI devices.
-> + *
-> + * The PASID stop request is issued by the device driver before
-> unbind(). Once
-> + * it completes, no page request is generated for this PASID anymore and
-> + * outstanding ones have been pushed to the IOMMU (as per PCIe 4.0r1.0 -
-> 6.20.1
-> + * and 10.4.1.2 - Managing PASID TLP Prefix Usage). Some PCI devices
-> will wait
-> + * for all outstanding page requests to come back with a response before
-> + * completing the PASID stop request. Others do not wait for page
-> responses, and
-> + * instead issue this Stop Marker that tells us when the PASID can be
-> + * reallocated.
-> + *
-> + * It is safe to discard the Stop Marker because it is an optimization.
-> + * a. Page requests, which are posted requests, have been flushed to the
-> IOMMU
-> + *    when the stop request completes.
-> + * b. The IOMMU driver flushes all fault queues on unbind() before
-> freeing the
-> + *    PASID.
-> + *
-> + * So even though the Stop Marker might be issued by the device *after*
-> the stop
-> + * request completes, outstanding faults will have been dealt with by
-> the time
-> + * the PASID is freed.
-> + *
-> + * Return: 0 on success and <0 on error.
-> + */
-> +int iommu_queue_iopf(struct iommu_fault *fault, void *cookie)
-> +{
-> +	int ret;
-> +	struct iopf_group *group;
-> +	struct iopf_fault *iopf, *next;
-> +	struct iopf_device_param *iopf_param;
-> +
-> +	struct device *dev = cookie;
-> +	struct dev_iommu *param = dev->iommu;
-> +
-> +	lockdep_assert_held(&param->lock);
-> +
-> +	if (fault->type != IOMMU_FAULT_PAGE_REQ)
-> +		/* Not a recoverable page fault */
-> +		return -EOPNOTSUPP;
-> +
-> +	/*
-> +	 * As long as we're holding param->lock, the queue can't be
-> unlinked
-> +	 * from the device and therefore cannot disappear.
-> +	 */
-> +	iopf_param = param->iopf_param;
-> +	if (!iopf_param)
-> +		return -ENODEV;
-> +
-> +	if (!(fault->prm.flags & IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE)) {
-> +		iopf = kzalloc(sizeof(*iopf), GFP_KERNEL);
-> +		if (!iopf)
-> +			return -ENOMEM;
-> +
-> +		iopf->fault = *fault;
-> +
-> +		/* Non-last request of a group. Postpone until the last
-> one */
-Would be nice to have an option here to allow non-deferred handle_mm_fault.
-Some devices may have a large group.
-
-FYI, VT-d also needs to send page response before the last one (LPIG).
-"A Page Group Response Descriptor is issued by software in response to a
-page request with data or a page request (with or without data) that
-indicated that it was the last request in a group."
-
-But I think we deal with that when we convert. Perhaps just treat the
-request with data as LPIG.
-
-Also adding a trace event would be nice, similar to CPU page fault.
-> +		list_add(&iopf->list, &iopf_param->partial);
-> +
-> +		return 0;
-> +	}
-> +
-> +	group = kzalloc(sizeof(*group), GFP_KERNEL);
-> +	if (!group) {
-> +		/*
-> +		 * The caller will send a response to the hardware. But
-> we do
-> +		 * need to clean up before leaving, otherwise partial
-> faults
-> +		 * will be stuck.
-> +		 */
-> +		ret = -ENOMEM;
-> +		goto cleanup_partial;
-> +	}
-> +
-> +	group->dev = dev;
-> +	group->last_fault.fault = *fault;
-> +	INIT_LIST_HEAD(&group->faults);
-> +	list_add(&group->last_fault.list, &group->faults);
-> +	INIT_WORK(&group->work, iopf_handle_group);
-> +
-> +	/* See if we have partial faults for this group */
-> +	list_for_each_entry_safe(iopf, next, &iopf_param->partial, list)
-> {
-> +		if (iopf->fault.prm.grpid == fault->prm.grpid)
-Just curious, the iopf handler is registered per arm_smmu_master dev. Is
-the namespace of group ID also within an arm_smmu_master? Can one
-arm_smmu_master support multiple devices?
-
-For VT-d, group ID is per PCI device.
-
-> +			/* Insert *before* the last fault */
-> +			list_move(&iopf->list, &group->faults);
-> +	}
-> +
-This is fine with devices supports small number of outstanding PRQs.
-VT-d is setting the limit to 32. But the incoming DSA device will support
-512.
-
-So if we pre-sort IOPF by group ID and put them in a per group list, would
-it be faster? I mean once the LPIG comes in, we just need to search the
-list of groups instead of all partial faults. I am not against what is done
-here, just exploring optimization.
-
-> +	queue_work(iopf_param->queue->wq, &group->work);
-> +	return 0;
-> +
-> +cleanup_partial:
-> +	list_for_each_entry_safe(iopf, next, &iopf_param->partial, list)
-> {
-> +		if (iopf->fault.prm.grpid == fault->prm.grpid) {
-> +			list_del(&iopf->list);
-> +			kfree(iopf);
-> +		}
-> +	}
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_queue_iopf);
-> +
-> +/**
-> + * iopf_queue_flush_dev - Ensure that all queued faults have been
-> processed
-> + * @dev: the endpoint whose faults need to be flushed.
-> + *
-> + * The IOMMU driver calls this before releasing a PASID, to ensure that
-> all
-> + * pending faults for this PASID have been handled, and won't hit the
-> address
-> + * space of the next process that uses this PASID. The driver must make
-> sure
-> + * that no new fault is added to the queue. In particular it must flush
-> its
-> + * low-level queue before calling this function.
-> + *
-> + * Return: 0 on success and <0 on error.
-> + */
-> +int iopf_queue_flush_dev(struct device *dev)
-> +{
-> +	int ret = 0;
-> +	struct iopf_device_param *iopf_param;
-> +	struct dev_iommu *param = dev->iommu;
-> +
-> +	if (!param)
-> +		return -ENODEV;
-> +
-> +	mutex_lock(&param->lock);
-> +	iopf_param = param->iopf_param;
-> +	if (iopf_param)
-> +		flush_workqueue(iopf_param->queue->wq);
-> +	else
-> +		ret = -ENODEV;
-> +	mutex_unlock(&param->lock);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_flush_dev);
-> +
-> +/**
-> + * iopf_queue_discard_partial - Remove all pending partial fault
-> + * @queue: the queue whose partial faults need to be discarded
-> + *
-> + * When the hardware queue overflows, last page faults in a group may
-> have been
-> + * lost and the IOMMU driver calls this to discard all partial faults.
-> The
-> + * driver shouldn't be adding new faults to this queue concurrently.
-> + *
-> + * Return: 0 on success and <0 on error.
-> + */
-> +int iopf_queue_discard_partial(struct iopf_queue *queue)
-> +{
-> +	struct iopf_fault *iopf, *next;
-> +	struct iopf_device_param *iopf_param;
-> +
-> +	if (!queue)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&queue->lock);
-> +	list_for_each_entry(iopf_param, &queue->devices, queue_list) {
-> +		list_for_each_entry_safe(iopf, next,
-> &iopf_param->partial,
-> +					 list) {
-> +			list_del(&iopf->list);
-> +			kfree(iopf);
-> +		}
-> +	}
-> +	mutex_unlock(&queue->lock);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_discard_partial);
-> +
-> +/**
-> + * iopf_queue_add_device - Add producer to the fault queue
-> + * @queue: IOPF queue
-> + * @dev: device to add
-> + *
-> + * Return: 0 on success and <0 on error.
-> + */
-> +int iopf_queue_add_device(struct iopf_queue *queue, struct device *dev)
-> +{
-> +	int ret = -EBUSY;
-> +	struct iopf_device_param *iopf_param;
-> +	struct dev_iommu *param = dev->iommu;
-> +
-> +	if (!param)
-> +		return -ENODEV;
-> +
-> +	iopf_param = kzalloc(sizeof(*iopf_param), GFP_KERNEL);
-> +	if (!iopf_param)
-> +		return -ENOMEM;
-> +
-> +	INIT_LIST_HEAD(&iopf_param->partial);
-> +	iopf_param->queue = queue;
-> +	iopf_param->dev = dev;
-> +
-> +	mutex_lock(&queue->lock);
-> +	mutex_lock(&param->lock);
-> +	if (!param->iopf_param) {
-> +		list_add(&iopf_param->queue_list, &queue->devices);
-> +		param->iopf_param = iopf_param;
-> +		ret = 0;
-> +	}
-> +	mutex_unlock(&param->lock);
-> +	mutex_unlock(&queue->lock);
-> +
-> +	if (ret)
-> +		kfree(iopf_param);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_add_device);
-> +
-> +/**
-> + * iopf_queue_remove_device - Remove producer from fault queue
-> + * @queue: IOPF queue
-> + * @dev: device to remove
-> + *
-> + * Caller makes sure that no more faults are reported for this device.
-> + *
-> + * Return: 0 on success and <0 on error.
-> + */
-> +int iopf_queue_remove_device(struct iopf_queue *queue, struct device
-> *dev) +{
-> +	int ret = -EINVAL;
-> +	struct iopf_fault *iopf, *next;
-> +	struct iopf_device_param *iopf_param;
-> +	struct dev_iommu *param = dev->iommu;
-> +
-> +	if (!param || !queue)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&queue->lock);
-> +	mutex_lock(&param->lock);
-> +	iopf_param = param->iopf_param;
-> +	if (iopf_param && iopf_param->queue == queue) {
-> +		list_del(&iopf_param->queue_list);
-> +		param->iopf_param = NULL;
-> +		ret = 0;
-> +	}
-> +	mutex_unlock(&param->lock);
-> +	mutex_unlock(&queue->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Just in case some faults are still stuck */
-> +	list_for_each_entry_safe(iopf, next, &iopf_param->partial, list)
-> +		kfree(iopf);
-> +
-> +	kfree(iopf_param);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_remove_device);
-> +
-> +/**
-> + * iopf_queue_alloc - Allocate and initialize a fault queue
-> + * @name: a unique string identifying the queue (for workqueue)
-> + *
-> + * Return: the queue on success and NULL on error.
-> + */
-> +struct iopf_queue *iopf_queue_alloc(const char *name)
-> +{
-> +	struct iopf_queue *queue;
-> +
-> +	queue = kzalloc(sizeof(*queue), GFP_KERNEL);
-> +	if (!queue)
-> +		return NULL;
-> +
-> +	/*
-> +	 * The WQ is unordered because the low-level handler enqueues
-> faults by
-> +	 * group. PRI requests within a group have to be ordered, but
-> once
-> +	 * that's dealt with, the high-level function can handle groups
-> out of
-> +	 * order.
-> +	 */
-> +	queue->wq = alloc_workqueue("iopf_queue/%s", WQ_UNBOUND, 0,
-> name);
-> +	if (!queue->wq) {
-> +		kfree(queue);
-> +		return NULL;
-> +	}
-> +
-> +	INIT_LIST_HEAD(&queue->devices);
-> +	mutex_init(&queue->lock);
-> +
-> +	return queue;
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_alloc);
-> +
-> +/**
-> + * iopf_queue_free - Free IOPF queue
-> + * @queue: queue to free
-> + *
-> + * Counterpart to iopf_queue_alloc(). The driver must not be queuing
-> faults or
-> + * adding/removing devices on this queue anymore.
-> + */
-> +void iopf_queue_free(struct iopf_queue *queue)
-> +{
-> +	struct iopf_device_param *iopf_param, *next;
-> +
-> +	if (!queue)
-> +		return;
-> +
-> +	list_for_each_entry_safe(iopf_param, next, &queue->devices,
-> queue_list)
-> +		iopf_queue_remove_device(queue, iopf_param->dev);
-> +
-> +	destroy_workqueue(queue->wq);
-> +	kfree(queue);
-> +}
-> +EXPORT_SYMBOL_GPL(iopf_queue_free);
 
 
-Thanks,
-
-Jacob
+-- 
+Jeffrey Hugo
+Qualcomm Technologies, Inc. is a member of the
+Code Aurora Forum, a Linux Foundation Collaborative Project.
