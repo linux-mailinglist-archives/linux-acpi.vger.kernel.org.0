@@ -2,105 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 301FF32C433
+	by mail.lfdr.de (Postfix) with ESMTP id 7C08032C434
 	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 01:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382391AbhCDALo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Mar 2021 19:11:44 -0500
-Received: from mga18.intel.com ([134.134.136.126]:57467 "EHLO mga18.intel.com"
+        id S1382438AbhCDALq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Mar 2021 19:11:46 -0500
+Received: from mga02.intel.com ([134.134.136.20]:21192 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357260AbhCCKtM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:49:12 -0500
-IronPort-SDR: ITl52kVMyquAggf4WUUYMQpDS3cejhGJHYNBAINoQzq0+HOgoOhwzie/6JLQ0VxLBBLn9MGOJl
- cVFDde6GzP9g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="174791953"
+        id S1357324AbhCCKtZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Mar 2021 05:49:25 -0500
+IronPort-SDR: uPPcHaxKRlcAtN+qt2JEdlzIzU0ym/EMNXERgUkCpTRzp6QjZIDthl7pNRVFUKJrMVJWpG7+/6
+ Ut6bWMspZ2zQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="174277732"
 X-IronPort-AV: E=Sophos;i="5.81,219,1610438400"; 
-   d="scan'208";a="174791953"
+   d="scan'208";a="174277732"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 01:35:12 -0800
-IronPort-SDR: YBDaTUXqLyRMtmbMNfaclOX5T6CSs+tGX7QJIdiXXZnPQmzKRJWkAuJY/gZ4+xL9g14llWXUk1
- 0jeTK56el7Zw==
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 01:42:33 -0800
+IronPort-SDR: 1a8Zp68hzl1fLUUysrZRL9nl1/vboccfQ8WKiaLQOJvR0N7DyN8WQYBAuup/pbpay3+bkK1qYv
+ KS+YnBCrk+gw==
 X-IronPort-AV: E=Sophos;i="5.81,219,1610438400"; 
-   d="scan'208";a="445184452"
+   d="scan'208";a="445185719"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 01:35:11 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 01:42:31 -0800
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lHNuO-009bZz-Kp; Wed, 03 Mar 2021 11:35:08 +0200
-Date:   Wed, 3 Mar 2021 11:35:08 +0200
+        id 1lHO1U-009beC-E8; Wed, 03 Mar 2021 11:42:28 +0200
+Date:   Wed, 3 Mar 2021 11:42:28 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v1 4/4] gpiolib: Reuse device's fwnode to create IRQ
- domain
-Message-ID: <YD9YTGnFbmcnJKsR@smile.fi.intel.com>
-References: <20210302153451.50593-1-andriy.shevchenko@linux.intel.com>
- <20210302153451.50593-4-andriy.shevchenko@linux.intel.com>
- <CACRpkdYjs7y=YMoQmFc2iXoMEtSAk7S+zYsz1Y=yPYw=97T+Nw@mail.gmail.com>
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+Message-ID: <YD9aBB0a3V4OhTCV@smile.fi.intel.com>
+References: <20210226093925.GA24428@dragon>
+ <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+ <YDjZOU+VMWasjzUb@smile.fi.intel.com>
+ <20210227031944.GB24428@dragon>
+ <YDzbQqHspfvpYS7Z@smile.fi.intel.com>
+ <20210302002725.GE24428@dragon>
+ <YD4twyAGvDDOCv+n@smile.fi.intel.com>
+ <abbfcdfa-c287-3828-ed6f-bc1e1f13c6b2@codeaurora.org>
+ <YD9DnWC4ht7AYjb/@smile.fi.intel.com>
+ <20210303084508.GA17424@dragon>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkdYjs7y=YMoQmFc2iXoMEtSAk7S+zYsz1Y=yPYw=97T+Nw@mail.gmail.com>
+In-Reply-To: <20210303084508.GA17424@dragon>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 03, 2021 at 10:22:02AM +0100, Linus Walleij wrote:
-> On Tue, Mar 2, 2021 at 4:35 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Mar 03, 2021 at 04:45:09PM +0800, Shawn Guo wrote:
+> On Wed, Mar 03, 2021 at 10:06:53AM +0200, Andy Shevchenko wrote:
+> > Since the mapping of those wake IRQs is totally platform specific, it needs a
+> > platform driver. On above mentioned x86 platforms we have a one you may take as
+> > an example (good or bad it's another story):
+> > drivers/platform/x86/intel_int0002_vgpio.c.
+> > 
+> > I think you will need something like this somewhere in ARM platform
+> > infrastructure in the Linux kernel.
 > 
-> > When IRQ domain is created for an ACPI case, the name of it becomes unknown-%d
-> > since for now it utilizes of_node member only and doesn't consider fwnode case.
-> > Convert IRQ domain creation code to utilize fwnode instead.
-> >
-> > Before/After the change on Intel Galileo Gen 2 with two GPIO (IRQ) controllers:
-> >
-> >   unknown-1     ==>     \_SB.PCI0.GIP0.GPO
-> >   unknown-2     ==>     \_SB.NIO3
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Well, you have the Virtual GPIO controller defined in ACPI as device
+> "INT0002", but we do not have such a thing.  I'm not sure it makes much
+> sense to create a baseless driver.
+
+It has similarities and differences. In your case you need to have somewhere
+some piece of the code that will do proper things, but it shouldn't be GPIO
+ACPI layer.
+
+> > That said, I don't see that those numbers are "broken", they have their own
+> > meaning and specific mapping to the real GPIOs and it's so platform specific,
+> > that we can't treat it as a quirk.
 > 
-> This first part seems to do what you want,
+> Those numbers have their own meaning only for Windows.  It's OS specific
+> rather than platform specific.
 
-...
+Platform is a combination of hardware, PCB and uC firmwares. AFAIU that
+platform was never designed for use in Linux, correct? So, it is not the same
+as any other platform on the same SoC.
 
-> But this:
-> 
-> > @@ -1504,15 +1497,14 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
-> >                         return ret;
-> >         } else {
-> >                 /* Some drivers provide custom irqdomain ops */
-> > -               if (gc->irq.domain_ops)
-> > -                       ops = gc->irq.domain_ops;
-> > -
-> > -               if (!ops)
-> > -                       ops = &gpiochip_domain_ops;
-> > -               gc->irq.domain = irq_domain_add_simple(np,
-> > -                       gc->ngpio,
-> > -                       gc->irq.first,
-> > -                       ops, gc);
-> > +               ops = gc->irq.domain_ops ?: &gpiochip_domain_ops;
-> > +               if (gc->irq.first)
-> > +                       gc->irq.domain = irq_domain_create_legacy(fwnode, gc->ngpio,
-> > +                                                                 gc->irq.first, 0,
-> > +                                                                 ops, gc);
-> > +               else
-> > +                       gc->irq.domain = irq_domain_create_linear(fwnode, gc->ngpio,
-> > +                                                                 ops, gc);
-> 
-> This looks like a refactoring and reimplementation of irq_domain_add_simple()?
+> Snapdragon platform manual has explicit
+> numbering of every single GPIO pin.  Those broken numbers in ACPI table
+> violate the hardware specification and are *broken* to Linux which
+> implements GPIO driver properly.
 
-If you named it as irq_domain_create_simple(), then yes, but the problem is
-that we don't have irq_domain_create_simple() API right now.
-
-> Why, and should it rather be a separate patch?
-
-Nope.
+No, they are not broken. They have a specific (Windows way) meaning. There is
+no quirk implied.
 
 -- 
 With Best Regards,
