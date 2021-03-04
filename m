@@ -2,130 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B13732D5F8
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 16:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAA032D680
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 16:26:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233342AbhCDPF4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Mar 2021 10:05:56 -0500
-Received: from mga05.intel.com ([192.55.52.43]:45930 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233350AbhCDPFh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Mar 2021 10:05:37 -0500
-IronPort-SDR: oZyi+NMoAx+zvYk8X6advUO4g9T1DBuLhf8V/KgTR++dhLZjpL+9ADrEt0MyIN0EIX+gG1sFrB
- akVp5HNGwXXg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9913"; a="272434366"
-X-IronPort-AV: E=Sophos;i="5.81,222,1610438400"; 
-   d="scan'208";a="272434366"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2021 07:02:41 -0800
-IronPort-SDR: T/lljRT6flKnT97E8+POoH1NlqQ9wNUlEhehBgu0CEOct+sHAS1Mv+QX2iIs8WS42UpR6ow5wK
- vTx3CzSS04UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,222,1610438400"; 
-   d="scan'208";a="374579029"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 04 Mar 2021 07:02:38 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8FF7E29E; Thu,  4 Mar 2021 17:02:38 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     Marc Zyngier <maz@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH v2 5/5] gpiolib: Reuse device's fwnode to create IRQ domain
-Date:   Thu,  4 Mar 2021 17:02:15 +0200
-Message-Id: <20210304150215.80652-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210304150215.80652-1-andriy.shevchenko@linux.intel.com>
-References: <20210304150215.80652-1-andriy.shevchenko@linux.intel.com>
+        id S232192AbhCDPYE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Mar 2021 10:24:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25150 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232276AbhCDPXy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Mar 2021 10:23:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614871348;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=flHvEj8UDJKQ3YikBZFm0lGJDaKdu4G9T3daMyGyBjA=;
+        b=HHsBLt2TcYyv/xAL9roqNhAnuYIB0TInpOEOF+MdemaJMOMuVZLSkYaHI4IRNM85FNwJec
+        jvc1j6QBE2M/dqWZnMXWMUgp3laqadqg8zDPebU1P5YgqPTJ71T7oN3llOSvzRrppeq5aC
+        SWsipfDi8xacDqJ5dSIXepUwx1wU2Xs=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-322-vE6t1vjaP4OuoJUTLzlQdw-1; Thu, 04 Mar 2021 10:22:26 -0500
+X-MC-Unique: vE6t1vjaP4OuoJUTLzlQdw-1
+Received: by mail-ej1-f71.google.com with SMTP id gb19so12303876ejc.11
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Mar 2021 07:22:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=flHvEj8UDJKQ3YikBZFm0lGJDaKdu4G9T3daMyGyBjA=;
+        b=gQRV4v0J9LDJ7ZQK8i/6N1YEjyISt9UcYELAt+8iBacYOzze3YaB7tz/MQwmMtrlA1
+         s63S3Q7lnzQRRjmS2APiGpAegYb48UpHCdZ3gjpmheUzwDksBn8G2m2puAmxCXV4aL1F
+         RENplSpYnygM7l568paS3N0LIX1I6vnoLuTPto59QSIiXUw0Z5B/Mt9qiOACh+K0EvNd
+         R2g5hTMLdDt/06OmplW3nR8HgQF0/j1VKS7hcT6ZWMYAd5u5NlZj9NY/2SKLEnexnv2x
+         VGS/rAEmCFaJUP/hpzPv13FbIbRGNSfhywXvV/JK1rcZPORJgO6F/pW7lZC+xvaZGpVg
+         9Y6A==
+X-Gm-Message-State: AOAM531h44MTAi3Dya+3f9kQJmtVglDGg2S05J6zEgRqVDaNlqikTUfl
+        I0vwNXjpshGFoa0YvICTzggAbkOWd6wi0MhsGaA/GsLEpbKb94HBaFcyEPMHtK8GwyrnWnTZKLy
+        /SL50AbJEJIhTOXvd9g//0uprO8oaYaH8iAclcA5bt1SFtqzZk84OrvXOc5wmDz6+XzYkSecuiA
+        ==
+X-Received: by 2002:a05:6402:402:: with SMTP id q2mr4962997edv.116.1614871345051;
+        Thu, 04 Mar 2021 07:22:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJz+oTro4A0KstYDWVv397tK7fqCTLkSo3LrcO+Daz6slkR5RYC2pUzagFANCAr8Eo4c57dnvQ==
+X-Received: by 2002:a05:6402:402:: with SMTP id q2mr4962981edv.116.1614871344909;
+        Thu, 04 Mar 2021 07:22:24 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id d3sm20257737edp.43.2021.03.04.07.22.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Mar 2021 07:22:22 -0800 (PST)
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi <linux-acpi@vger.kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Subject: Meaning / use of acpi_driver.class and acpi_device_class() fields ?
+Message-ID: <15858590-7be3-67d0-ccca-a55f20a7873a@redhat.com>
+Date:   Thu, 4 Mar 2021 16:22:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When IRQ domain is created for an ACPI case, the name of it becomes unknown-%d
-since for now it utilizes of_node member only and doesn't consider fwnode case.
-Convert IRQ domain creation code to utilize fwnode instead.
+Hi Rafael,
 
-Before/After the change on Intel Galileo Gen 2 with two GPIO (IRQ) controllers:
+While reviewing a new acpi-driver:
+https://patchwork.kernel.org/project/platform-driver-x86/patch/CAFysUkSztjJpSjKA92a=3j3Nj7vfQy5TCsiJtNmfjegxLBvFSA@mail.gmail.com/
 
-  unknown-1	==>	\_SB.PCI0.GIP0.GPO
-  unknown-2	==>	\_SB.NIO3
+I was wondering what the meaning / use of the acpi_driver.class and
+acpi_device_class() fields is and if these should be set to anything
+specific ?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/gpio/gpiolib.c | 28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+I did a quick grep and most drivers seem to set this to a string describing
+the driver / to the driver-name and they seem to set the 2 fields to the
+exact same value. But some drivers also use different values for
+acpi_driver.class and acpi_device_class() ?
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 6827736ba05c..254d59b088fe 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1457,9 +1457,9 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
- 				struct lock_class_key *lock_key,
- 				struct lock_class_key *request_key)
- {
-+	struct fwnode_handle *fwnode = dev_fwnode(&gc->gpiodev->dev);
- 	struct irq_chip *irqchip = gc->irq.chip;
--	const struct irq_domain_ops *ops = NULL;
--	struct device_node *np;
-+	const struct irq_domain_ops *ops;
- 	unsigned int type;
- 	unsigned int i;
- 
-@@ -1471,7 +1471,6 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
- 		return -EINVAL;
- 	}
- 
--	np = gc->gpiodev->dev.of_node;
- 	type = gc->irq.default_type;
- 
- 	/*
-@@ -1479,16 +1478,10 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
- 	 * used to configure the interrupts, as you may end up with
- 	 * conflicting triggers. Tell the user, and reset to NONE.
- 	 */
--	if (WARN(np && type != IRQ_TYPE_NONE,
--		 "%s: Ignoring %u default trigger\n", np->full_name, type))
-+	if (WARN(fwnode && type != IRQ_TYPE_NONE,
-+		 "%pfw: Ignoring %u default trigger\n", fwnode, type))
- 		type = IRQ_TYPE_NONE;
- 
--	if (has_acpi_companion(gc->parent) && type != IRQ_TYPE_NONE) {
--		acpi_handle_warn(ACPI_HANDLE(gc->parent),
--				 "Ignoring %u default trigger\n", type);
--		type = IRQ_TYPE_NONE;
--	}
--
- 	if (gc->to_irq)
- 		chip_warn(gc, "to_irq is redefined in %s and you shouldn't rely on it\n", __func__);
- 
-@@ -1504,15 +1497,10 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
- 			return ret;
- 	} else {
- 		/* Some drivers provide custom irqdomain ops */
--		if (gc->irq.domain_ops)
--			ops = gc->irq.domain_ops;
--
--		if (!ops)
--			ops = &gpiochip_domain_ops;
--		gc->irq.domain = irq_domain_add_simple(np,
--			gc->ngpio,
--			gc->irq.first,
--			ops, gc);
-+		ops = gc->irq.domain_ops ?: &gpiochip_domain_ops;
-+		gc->irq.domain = irq_domain_create_simple(fwnode, gc->ngpio,
-+								  gc->irq.first,
-+								  ops, gc);
- 		if (!gc->irq.domain)
- 			return -EINVAL;
- 	}
--- 
-2.30.1
+Regards,
+
+Hans
 
