@@ -2,212 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBCBC32C445
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 01:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1D9132CCE7
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 07:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1388577AbhCDAMN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Mar 2021 19:12:13 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:33198 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1387982AbhCCUJt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Mar 2021 15:09:49 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 123K55KY170308;
-        Wed, 3 Mar 2021 20:08:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : content-type : mime-version;
- s=corp-2020-01-29; bh=irl0Wmw77dUcKBbs9ktNXRLfC/1vMgA+MscayiqGvsI=;
- b=be8AnYvBwwuFiQygB34ldLGM0ucGZn7Wr3JwS6EcvXa2bh8mbBPPJbaJ0Y+brJeIIVz8
- et50xHPX3ODLFMEcFqjGXtzI11iDT9iwr52MnCnK/Agt/OJcxR54Rwef4FLUFVrlBRmz
- 32x7acc+/Z88hwFTJ0Pnyjef2NOh7bHiLMti83zLdWF+KP11XXAPFByi3tHa9U2Yj4mz
- zQidSg83KO+Kb/O0WEY3kOVueuqJz+lnQkfn4RtLR0FGr3UNpQEp3SCw9E+m6yOubj0h
- jWlOWK8dAV5mQ1oqKhcXn3dgD/gNJ423PkxtsBiDEjTyQyi8RLeIBCa11qJqMChPGMMI jQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 36yeqn4rmg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Mar 2021 20:08:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 123K6c5V148193;
-        Wed, 3 Mar 2021 20:08:58 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
-        by userp3020.oracle.com with ESMTP id 36yyutwte5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Mar 2021 20:08:57 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FArvrqW18J3kWQGQ3zyxoGXL8g9zSf5VAKAnR62cXvKCPlKgKLIksjxI1UWxUKL+98LxK/M+7B62fktpuJmIxkKXbKUdaJ+o0/gNBfGJnjtpj4L2Rd8FlxooPL1Jbg2p6chTNnXCdyPnNALZJZEfKQISQuTGtREYwaTZbN+b/rJkjH1hd0M5vfaiYz7JNoKyF+2Gy/3opDX4ces59T7/PhE5sF1rZaibAZWSUltXtLzsGrKMBrRLql4pzFIK9ySwlN0tyr+HKYMTMvbB+JV2GJonGUHYqk0TgBofVjdgjYdg4Ti8KQPmpLMBhhdaAYMYoOiWGkajv0iXY5WrpHyrhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=irl0Wmw77dUcKBbs9ktNXRLfC/1vMgA+MscayiqGvsI=;
- b=dYSNNJd799AQK6PN/GLkRGGxOOURNEemCxphatW+i4uhzgnox9f9rsRgLPlw2c3Nz6EhBGAAsmEonTxKust/gU44hRbIuBYWHI/OnxBOHLrM5JCvJ4mVKiCOjQHXwlHA1ovMvoTyMtCSUHJe7vMuPN4bQq3wTLF8FU8pC8I9T2AU3Psyfk+rSuTGly2puNRPoT15LcGznZDj+FudKKSX17X1JcQhx4Oriorx2lDdf8B3R93593KnREurIujkVTE1enPA5LwmmFEetx6XKxIACe83b/jHLhR4AYbtDVcB7W/eboxpJePnCwwkvS4RmD9ghmjsZRI58ogoCqPoi0ZF0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        id S235316AbhCDGiY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Mar 2021 01:38:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45914 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235306AbhCDGiA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Mar 2021 01:38:00 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA519C061756
+        for <linux-acpi@vger.kernel.org>; Wed,  3 Mar 2021 22:37:19 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id kx1so82751pjb.3
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Mar 2021 22:37:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=irl0Wmw77dUcKBbs9ktNXRLfC/1vMgA+MscayiqGvsI=;
- b=bRYXAmhOts8C6Jx3KoEMdVE0YVN6kAygw1JetdicT/ztSXQ1w1JJ1uMGeOPLP0blBrQVWa5C5hRbOu1FaNYHYXIK3k+Vno4sak5HHAZas8hRHeaWVDfrh39LO5M9DW1q3voVeINUEv/G9tk1I5HaPFwqnd2TyVZdFr8ilo4R1VE=
-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
-Received: from DM6PR10MB3851.namprd10.prod.outlook.com (2603:10b6:5:1fb::17)
- by DM6PR10MB3436.namprd10.prod.outlook.com (2603:10b6:5:63::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.23; Wed, 3 Mar
- 2021 20:08:56 +0000
-Received: from DM6PR10MB3851.namprd10.prod.outlook.com
- ([fe80::5c53:869:7452:46da]) by DM6PR10MB3851.namprd10.prod.outlook.com
- ([fe80::5c53:869:7452:46da%3]) with mapi id 15.20.3890.029; Wed, 3 Mar 2021
- 20:08:56 +0000
-From:   George Kennedy <george.kennedy@oracle.com>
-To:     robert.moore@intel.com, erik.kaneda@intel.com,
-        rafael.j.wysocki@intel.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, rppt@linux.ibm.com,
-        konrad.wilk@oracle.com, dan.carpenter@oracle.com,
-        dhaval.giani@oracle.com
-Cc:     george.kennedy@oracle.com
-Subject: [PATCH 1/1] ACPI: fix acpi table use after free
-Date:   Wed,  3 Mar 2021 15:09:20 -0500
-Message-Id: <1614802160-29362-1-git-send-email-george.kennedy@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-Content-Type: text/plain
-X-Originating-IP: [209.17.40.46]
-X-ClientProxiedBy: SN6PR01CA0019.prod.exchangelabs.com (2603:10b6:805:b6::32)
- To DM6PR10MB3851.namprd10.prod.outlook.com (2603:10b6:5:1fb::17)
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=DcBwSRYXwJgh73TAHGnFm4EDcUGNqvcxJAKsIbZgreY=;
+        b=St5xIRnflDz/K+jN2ygevVUdjx/uGuut94oNGw0svvyhspYOOk1Vt0ZfdS4MpwPvqo
+         noVforIO9Bh0Fs6VoCvdQJi7kJrnj7pOU8/7c5jvQjajZx/cpif2YA9r2heDcIGd4FXn
+         q4cg7LtYHdNO94y3Hl3KizP8t9mKCLPm3o/MfT/LobHE4pv6bxpK4KsQuskcb/yZkCkx
+         fvqa6xkNTgNF/L3Bbtyu/sFtfcV4dCS8YItxp8Ol10KzRkx5HlirpacYOoOcxO0+8v9t
+         vssSyIDQtK58bOeTWSejORuhaXBRQWquRVmhQxAEDfWOzHH616fMUEq/7HSC8v7v6cgg
+         ZFWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=DcBwSRYXwJgh73TAHGnFm4EDcUGNqvcxJAKsIbZgreY=;
+        b=fkEsX+YiZurQLmQzT8ZiCIlpWbPZt2N+ps+tmZMAJ61jBcEgBZdlgTwJPe9ZZkr+Jw
+         XDqVAdW0Lr7MdHnnxND/eGj8LZXB7ezFOv+5JF3R27mb46QUmZ7X24/nKOo/cmx/cKe2
+         js+EeuNgcUv1EsIm5AwzzUKGQpfAIDFLZKj6hM6kDLemRno3/BRMR4qEsnmlZjV+m8sH
+         qZ5rzOQwne7ygrfYNHfwEYvAbMJBq3kFCP/boJmg425Yf6/voIxYxU8bzHS1k5FAjLfs
+         R9AleAGUwYzHlaZZTwikx1XuM/IO6lBm0rt+sl7DUspIavGUNa6nsWnbTxW3tuNfHIAy
+         PxDQ==
+X-Gm-Message-State: AOAM531x78+lH3ksC5XCipey342y6DxvvlLY61866UMu8tuVAogpnf1H
+        MPXATJYO0b2+2gjz+zEfIx0a8A==
+X-Google-Smtp-Source: ABdhPJxYvDMRvNIVVUpHDhVH2zFVimjOWMbu8V6B7Pvx4Ez+nmm/+HVSHqEFj28W9qYQ+CnSXeSDhA==
+X-Received: by 2002:a17:902:a412:b029:e5:d7dd:9e41 with SMTP id p18-20020a170902a412b02900e5d7dd9e41mr2655188plq.78.1614839839141;
+        Wed, 03 Mar 2021 22:37:19 -0800 (PST)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id 67sm27421739pfw.92.2021.03.03.22.37.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 03 Mar 2021 22:37:18 -0800 (PST)
+Date:   Thu, 4 Mar 2021 14:37:12 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
+ ACPI table
+Message-ID: <20210304063711.GF17424@dragon>
+References: <CAHp75Vc6xYv+197SOrSefQHD2h4Xy_N20gQajW4uF2PU=sJfLg@mail.gmail.com>
+ <YDjZOU+VMWasjzUb@smile.fi.intel.com>
+ <20210227031944.GB24428@dragon>
+ <YDzbQqHspfvpYS7Z@smile.fi.intel.com>
+ <20210302002725.GE24428@dragon>
+ <YD4twyAGvDDOCv+n@smile.fi.intel.com>
+ <abbfcdfa-c287-3828-ed6f-bc1e1f13c6b2@codeaurora.org>
+ <20210303094300.GB17424@dragon>
+ <41593c7e-368b-cfb8-b24a-2e4dca48b465@codeaurora.org>
+ <YD+yBmPrKm1n8Tjm@builder.lan>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from dhcp-10-152-35-102.usdhcp.oraclecorp.com.com (209.17.40.46) by SN6PR01CA0019.prod.exchangelabs.com (2603:10b6:805:b6::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Wed, 3 Mar 2021 20:08:54 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fd3aaa83-d220-44b8-eb00-08d8de802ca6
-X-MS-TrafficTypeDiagnostic: DM6PR10MB3436:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR10MB3436F892D5AC7542EC8F0A4EE6989@DM6PR10MB3436.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1824;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Ddqy/hQ/q2aySQREiOb53H+AZwfDCwYBAM/cwl4iekCxjFz9GnBswiSXMWsnBNrn1WUeyvhTGqzI8Ppc7r1TC6ASuThvtXmcFARE6YSjp440HLQpDcjKt71Z1IYNH/nfDLU+KvlI8000vO1HI1Kzp7iLQaAZbzl+xh9XNy1jQQqJ3jXa0XOrRD+VUtYRSpkPKvnPZ7UmpSOSUdlQg1dbRsX7KtXmUfGqr6zomOgH3FCwMsgMy2WrhMeCCKgCPqTyQWwuF9G+AoZM97nYY5iKdSQYSII3244vSPgGVfbOBERyI+bQRY8ODPwDMTvHj2vGWQgW0pswfP0wIE7CgQ5GGKTjLAvWE8xncj86STuDSdsFMH9CWuRhIDf+vxA3YYu4Q23mqKKF2BsKoz14r5BHwtuBY2tJYWcstgTVFOoW8GkhPvO++BdlBvUENMunm97QtYXT4WL/jLVa7yzwonnfOjXU7lsr6CTjnTVIhgSW9TkUd4YctuATor9RjG4WpTBh6ohyhLO+p5fIbPbHIZcXVI2n9EhEYqatlI0pGEhd4BcRI++Lsa4VtcsTIpVOqExd
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB3851.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(376002)(396003)(366004)(136003)(346002)(6512007)(6636002)(186003)(921005)(478600001)(2616005)(6486002)(52116002)(44832011)(66946007)(956004)(36756003)(26005)(66556008)(83380400001)(4326008)(66476007)(6666004)(16526019)(2906002)(5660300002)(86362001)(8676002)(107886003)(6506007)(8936002)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?/uRxzvEzuoCfGkaLGJMr3mmmP9oedMNK8q3LSsrU1vdbiOMqCTmYI1/Dg20y?=
- =?us-ascii?Q?TSc1rhA4idvZgmxr3bwzQqBMwpNs4wlX/REkDekZnYLZIqkQL1rl6txGqnN3?=
- =?us-ascii?Q?kSnE7X+atTWoMlNSgOOMCnnLHMgTkayd9Y4RDjJClATZw2V7CjFDaSqXjlc7?=
- =?us-ascii?Q?uyg6cHRzAutd6es8Ko693wkdwBIQ2rBkeIkIg+fQZOsVoPh8ZPWs5CKvwA64?=
- =?us-ascii?Q?f5c0V7aUxRlg4vtsuA4TjzuMjpEKvQTntT5w5vNtpniwXpuI3GWadM3ZwVHV?=
- =?us-ascii?Q?kTf8x39blhMIoUoNW3YcOTA3Uj4slvn1tc6TBh/8CBnz0moiWSRiM8Qe4CYW?=
- =?us-ascii?Q?BDeMczg7k3GIpVmnzq4epm+y7FBfTTXGhQ0sywBNDAoENt8wOH62dYmn069L?=
- =?us-ascii?Q?B9eP5MsmwfGrhuv1H+XnKE60IcZH0lYaQAGWUmHEVBGvLKRGQr101Aua+DqC?=
- =?us-ascii?Q?pdhwwt27QPfPFqTAERxr7EbjEr1zcOg6YdBy3CgHYXwCPoz4D569bo6sRPpI?=
- =?us-ascii?Q?fMdMqO4F5Tj+JavG7BfwgmdtyYjXV+K6lyzH/BxXD6CCw3WK38l6pJO4NJbA?=
- =?us-ascii?Q?nSdI/J9dPekgmXGlXIdmnSNTBCrhJWE0MTU3MVIFvKMr9t8mwooPJHkRv/oL?=
- =?us-ascii?Q?/J/8Lnyd3KF7kqr+DkKvMo+bMDlcRM/3BAOq3gxMHSprQWvqAPhZJ5bM6iCr?=
- =?us-ascii?Q?t6saS+o9ie0dzInIohHD37FDhCTrig+Wkgvu1Ic7vqZQ9/9sZqvnKaVYqXIe?=
- =?us-ascii?Q?WUbUPOs6dXjkGVAGIedL/kdsum5MEjdcaG8ud4xUBneVeL0VD8rAQp6ePyiw?=
- =?us-ascii?Q?nUoNBmMUI8pH32qmOC/rbHk2Z6dJYktxhlDACu0lM0bnbgibkcNd9nFUGCXd?=
- =?us-ascii?Q?7wh8e135iAcBiPCuc3DwjnI2f3UoSUHRA5w0WewBfQ6evecdqydFpWRHEYIn?=
- =?us-ascii?Q?pMqRiXwGL3h3k7jmQ+pLPiVSPriBXI4zP9lOP+CR72uGzBQ4cgYalhxWrser?=
- =?us-ascii?Q?thvSHJ34N1No7ZNVTGzA9G7PXTpLiXvnDQl+w/ZaPwLPdvwUlD9j4iKZdOeE?=
- =?us-ascii?Q?c6rH7x5cw19hcK5Y/BgkMjewT1HRV8knS8TikyxtBb7iUogs6KwDfOCegf+3?=
- =?us-ascii?Q?MLdiRkkDf1Xu5JRzhw60Oej3r5ipustFEWG2Aypb6eR+Kcmuyw+/wywuwMJU?=
- =?us-ascii?Q?9su8AU6yJmssLeHxdNZEHZUQJtkaxly9fn7A3FKCKsOPMA0KpS7VObzV+kvq?=
- =?us-ascii?Q?wyNYdAmi/A+TmTazNn2LKSF1XGn73oXmExYprdLUi5HrQKa2eyZoXK4EDis+?=
- =?us-ascii?Q?yRH9tnz3K0INcjKgxjzhCjVq?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd3aaa83-d220-44b8-eb00-08d8de802ca6
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB3851.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2021 20:08:56.0641
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NXh+CWKhXvzuSyTU0Ej9FvcvqjxVadrxJvGHX1MO/Q8saR6KatLjDzDje6+Fr+oSprncV2FYZZ8jMjImv+zujIDw5bGZfElTv+h8Q7xh+Sw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3436
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9912 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103030142
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9912 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1011
- priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103030142
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YD+yBmPrKm1n8Tjm@builder.lan>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since commit 7fef431be9c9 ("mm/page_alloc: place pages to tail
-in __free_pages_core()") the following use after free occurs
-intermittently when acpi tables are accessed.
+On Wed, Mar 03, 2021 at 09:57:58AM -0600, Bjorn Andersson wrote:
+> On Wed 03 Mar 09:10 CST 2021, Jeffrey Hugo wrote:
+> 
+> > On 3/3/2021 2:43 AM, Shawn Guo wrote:
+> > > On Tue, Mar 02, 2021 at 10:02:49PM -0700, Jeffrey Hugo wrote:
+> > > > Sorry, just joining the thread now.  Hopefully I'm addressing everything
+> > > > targeted at me.
+> > > > 
+> > > > I used to do kernel work on MSMs, then kernel work on server CPUs, but now I
+> > > > do kernel work on AI accelerators.  Never was on the firmware team, but I
+> > > > have a lot of contacts in those areas.  On my own time, I support Linux on
+> > > > the Qualcomm laptops.
+> > > > 
+> > > > Its not MS that needs to fix things (although there is plenty of things I
+> > > > could point to that MS could fix), its the Qualcomm Windows FW folks.  They
+> > > > have told me a while ago they were planning on fixing this issue on some
+> > > > future chipset, but apparently that hasn't happened yet.  Sadly, once these
+> > > > laptops ship, they are in a frozen maintenance mode.
+> > > > 
+> > > > In my opinion, MS has allowed Qualcomm to get away with doing bad things in
+> > > > ACPI on the Qualcomm laptops.  The ACPI is not a true hardware description
+> > > > that is OS agnostic as it should be, and probably violates the spec in many
+> > > > ways.  Instead, the ACPI is written against the Windows drivers, and has a
+> > > > lot of OS driver crap pushed into it.
+> > > > 
+> > > > The GPIO description is one such thing.
+> > > > 
+> > > > As I understand it, any particular SoC will have a number of GPIOs supported
+> > > > by the TLMM.  0 - N.  Linux understands this.  However, in the ACPI of the
+> > > > Qualcomm Windows laptops, you will likely find atleast one GPIO number which
+> > > > exceeds this N.  These are "virtual" GPIOs, and are a construct of the
+> > > > Windows Qualcomm TLMM driver and how it interfaces with the frameworks
+> > > > within Windows.
+> > > > 
+> > > > Some GPIO lines can be configured as wakeup sources by routing them to a
+> > > > specific hardware block in the SoC (which block it is varies from SoC to
+> > > > SoC).  Windows has a specific weird way of handling this which requires a
+> > > > unique "GPIO chip" to handle.  GPIO chips in Windows contain 32 GPIOs, so
+> > > > for each wakeup GPIO, the TLMM driver creates a GPIO chip (essentially
+> > > > creating 32 GPIOs), and assigns the added GPIOs numbers which exceed N.  The
+> > > > TLMM driver has an internal mapping of which virtual GPIO number corresponds
+> > > > to which real GPIO.
+> > > > 
+> > > > So, ACPI says that some peripheral has GPIO N+X, which is not a real GPIO.
+> > > > That peripheral goes and requests that GPIO, which gets routed to the TLMM
+> > > > driver, and the TLMM driver translates that number to the real GPIO, and
+> > > > provides the reference back to the peripheral, while also setting up the
+> > > > special wakeup hardware.
+> > > > 
+> > > > So, N+1 is the first supported wakup GPIO, N+1+32 is the next one, then
+> > > > N+1+32+32, and so on.
+> > > 
+> > > Jeffrey,
+> > > 
+> > > Thanks so much for these great information!
+> > > 
+> > > May I ask a bit more about how the virtual number N+1+32*n maps back to
+> > > the real number (R)?  For example of touchpad GPIO on Flex 5G, I think
+> > > we have:
+> > > 
+> > >    N+1+32*n = 0x0280
+> > >    N = 191
+> 
+> There's 190 GPIOs on SC8180x, but then the math doesn't add up to a
+> whole number...
 
-BUG: KASAN: use-after-free in ibft_init+0x134/0xc49
-Read of size 4 at addr ffff8880be453004 by task swapper/0/1
-CPU: 3 PID: 1 Comm: swapper/0 Not tainted 5.12.0-rc1-7a7fd0d #1
-Call Trace:
- dump_stack+0xf6/0x158
- print_address_description.constprop.9+0x41/0x60
- kasan_report.cold.14+0x7b/0xd4
- __asan_report_load_n_noabort+0xf/0x20
- ibft_init+0x134/0xc49
- do_one_initcall+0xc4/0x3e0
- kernel_init_freeable+0x5af/0x66b
- kernel_init+0x16/0x1d0
- ret_from_fork+0x22/0x30
+In pinctrl-sc8180x driver you wrote, it has sc8180x_pinctrl.ngpios = 191.
+Which one of you should I listen to :)
 
-ACPI tables mapped via kmap() do not have their mapped pages
-reserved and the pages can be "stolen" by the buddy allocator.
-Use memblock_reserve() to reserve all the ACPI table pages.
+BTW, if you read this number from DTS, I already sent you a series to
+fix them.
 
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
----
- arch/x86/kernel/setup.c        | 3 +--
- drivers/acpi/acpica/tbinstal.c | 4 ++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+https://lore.kernel.org/linux-gpio/20210303033106.549-1-shawn.guo@linaro.org/
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index d883176..97deea3 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1046,6 +1046,7 @@ void __init setup_arch(char **cmdline_p)
- 	cleanup_highmap();
- 
- 	memblock_set_current_limit(ISA_END_ADDRESS);
-+	acpi_boot_table_init();
- 	e820__memblock_setup();
- 
- 	/*
-@@ -1139,8 +1140,6 @@ void __init setup_arch(char **cmdline_p)
- 	/*
- 	 * Parse the ACPI tables for possible boot-time SMP configuration.
- 	 */
--	acpi_boot_table_init();
--
- 	early_acpi_boot_init();
- 
- 	initmem_init();
-diff --git a/drivers/acpi/acpica/tbinstal.c b/drivers/acpi/acpica/tbinstal.c
-index 8d1e5b5..4e32b22 100644
---- a/drivers/acpi/acpica/tbinstal.c
-+++ b/drivers/acpi/acpica/tbinstal.c
-@@ -8,6 +8,7 @@
-  *****************************************************************************/
- 
- #include <acpi/acpi.h>
-+#include <linux/memblock.h>
- #include "accommon.h"
- #include "actables.h"
- 
-@@ -58,6 +59,9 @@
- 				      new_table_desc->flags,
- 				      new_table_desc->pointer);
- 
-+	memblock_reserve(new_table_desc->address,
-+			 PAGE_ALIGN(new_table_desc->pointer->length));
-+
- 	acpi_tb_print_table_header(new_table_desc->address,
- 				   new_table_desc->pointer);
- 
--- 
-1.8.3.1
+> 
+> > >    R = 24
+> > > 
+> > > If my math not bad, n = 14.  How does 14 map to 24?
+> > 
+> > 
+> > So, if this was 845, the wakeup hardware would be the PDC.  Only a specific
+> > number of GPIOs are routed to the PDC.  When the TLMM is powered off in
+> > suspend, the PDC pays attention to the GPIOs that are routed to it, and are
+> > configured in the PDC as wakeup sources.  When the GPIO is asserted, the
+> > signal to the TLMM gets lost, but the PDC catches it.  The PDC will kick the
+> > CPU/SoC out of suspend, and then once the wakup process is complete, replay
+> > the GPIO so that the TLMM has the signal.
+> > 
+> 
+> SC8180x has the same hardware design.
+> 
+> > In your example, 14 would be the 14th GPIO that is routed to the PDC. You
+> > would need SoC hardware documentation to know the mapping from PDC line 14
+> > to GPIO line X.  This is going to be SoC specific, so 845 documentation is
+> > not going to help you for SC8XXX.
+> > 
+> > Chances are, you are going to need to get this documentation from Qualcomm
+> > (I don't know if its in IPCatalog or not), and put SoC specific lookup
+> > tables in the TLMM driver.
+> > 
+> 
+> I added the table in the driver, see sc8180x_pdc_map[], and it has gpio
+> 14 at position 7, with the 14th entry being gpio 38 - which seems like
+> an unlikely change from the reference schematics.
 
+As it's clear that the real GPIO number is 24, and the only possible map
+in sc8180x_pdc_map[] is:
+
+	{ .gpio = 24, wakeirq = 37 }
+
+So we need to understand how 14 turns to 37.
+
+Shawn
