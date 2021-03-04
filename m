@@ -2,156 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7511C32CDC4
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 08:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D01E932CE1E
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 09:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232739AbhCDHih (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Mar 2021 02:38:37 -0500
-Received: from mga03.intel.com ([134.134.136.65]:52834 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232523AbhCDHiO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Mar 2021 02:38:14 -0500
-IronPort-SDR: kWSpRjDOsOtaligobzucmoBXn1PQbEI9g2y44e4ocapDQUCuoyexa6KwcIZwOI+uEJLqSP33wI
- 82+Sus1mCOmw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9912"; a="187416699"
-X-IronPort-AV: E=Sophos;i="5.81,222,1610438400"; 
-   d="scan'208";a="187416699"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 23:37:17 -0800
-IronPort-SDR: UQ3204rotDGKE8nL/XzMzWrttMkk8WrSD4qiem0WAdKmzn0uonWc3UWhziVrI4DZImCWuG+0GM
- zb0QA1+tjqYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,222,1610438400"; 
-   d="scan'208";a="400469883"
-Received: from lkp-server02.sh.intel.com (HELO 2482ff9f8ac0) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 03 Mar 2021 23:37:15 -0800
-Received: from kbuild by 2482ff9f8ac0 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lHiXr-00025e-8U; Thu, 04 Mar 2021 07:37:15 +0000
-Date:   Thu, 04 Mar 2021 15:36:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 2f2defdc442de857134919fc517d0b9ee7df17df
-Message-ID: <60408e15.+FGYqfhm+mxjf+t1%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S235897AbhCDIHZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Mar 2021 03:07:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36788 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235970AbhCDIHN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Mar 2021 03:07:13 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF180C061762
+        for <linux-acpi@vger.kernel.org>; Thu,  4 Mar 2021 00:06:20 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id b1so30909972lfb.7
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Mar 2021 00:06:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xhWBUgqe/0B8aWSBIXErOIoObcIFR5qF3dYFs5KNKag=;
+        b=Q/8FIlfJhpDigw0JCabQmUyD6otiO8c7tobvJhzbqIC7XhhCO898BD1IiN835UivRn
+         ko+MaLdDs6Uq4NM0VF6kiKuN4SMdplo+Z4slOU6pqvgMMxxWlPyhrSLDE9cAjv+gx2XE
+         mT8Q1h2bQiUAE389ft+aW/FRvsSk3yOcbMyK75XWRgxDQoWphDPJbeBNyD74J29TJSQT
+         VC8UI+eWZNiHUiqOPjrYb33OZd3wZYRIygzN6yvAwUNufEweF54jEQXARFyui69bkGxg
+         T+Yo4Fsm/4RP0J/a5q3VggDhnmgT4F8HEo8EEo9BSIg4NgCcxTQ18oDJm5keAf/eFJDQ
+         XL+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xhWBUgqe/0B8aWSBIXErOIoObcIFR5qF3dYFs5KNKag=;
+        b=oCZDAinntMm6Q9UsCfThxi/6T1gpQWf08BR6c7PZX250xP6Q5RyS3LyMG4CaR4xjXC
+         bjUSjiYubT3rfYnWl3r6O59C5QIj8rHjHgAPbRhSNT/m0+ToBOFG+WjHdtRTK0yw9+KB
+         2EsajzhCHNRsKgxzpmlvxqmVaLmxPuC3HKv8j1xMdxSVQGP0SEJnDYWAWunzoCJMtMRg
+         GtlJlHgiF2eA2ws5Fn9++5Xq4NKSKuaUuL4/vaB8o2YPLTE4HcuybFkNMBlnODnn85xO
+         D/hu8oEB4QnOzIq2oK2auAiyhQfpntyeI0mK/6j++3W4jOkj4QVnURTcjb2aFVj8kVai
+         +Ujw==
+X-Gm-Message-State: AOAM533Y6xiMRuyy1irpsd8FgG9YmK13wR8I9Mpo4u7Q3ADYj4URJIkW
+        xNPBjcsk5iZshZoozI1R9t2RlsS/1nDaH6CWwVxQTINnAoNuH9zH
+X-Google-Smtp-Source: ABdhPJzLTVA9gdRENm5ldKEbbb30Qq4mQjQpTBWVD6msTYk9Yb3g81iBN/tBzprb/oLKQXiHSMAMOa8AXyzr9kWiIyo=
+X-Received: by 2002:ac2:4d95:: with SMTP id g21mr1693734lfe.29.1614845179473;
+ Thu, 04 Mar 2021 00:06:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20210302153451.50593-1-andriy.shevchenko@linux.intel.com>
+ <20210302153451.50593-4-andriy.shevchenko@linux.intel.com>
+ <CACRpkdYjs7y=YMoQmFc2iXoMEtSAk7S+zYsz1Y=yPYw=97T+Nw@mail.gmail.com> <YD9YTGnFbmcnJKsR@smile.fi.intel.com>
+In-Reply-To: <YD9YTGnFbmcnJKsR@smile.fi.intel.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 4 Mar 2021 09:06:08 +0100
+Message-ID: <CACRpkdYEd+zv36Ghet2WxNavV=1-RkR06c3OxBEoxCqXoAY3Zg@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] gpiolib: Reuse device's fwnode to create IRQ domain
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 2f2defdc442de857134919fc517d0b9ee7df17df  Merge branch 'acpi-bus' into bleeding-edge
+On Wed, Mar 3, 2021 at 10:35 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Wed, Mar 03, 2021 at 10:22:02AM +0100, Linus Walleij wrote:
 
-elapsed time: 725m
+> > But this:
+> >
+> > > @@ -1504,15 +1497,14 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
+> > >                         return ret;
+> > >         } else {
+> > >                 /* Some drivers provide custom irqdomain ops */
+> > > -               if (gc->irq.domain_ops)
+> > > -                       ops = gc->irq.domain_ops;
+> > > -
+> > > -               if (!ops)
+> > > -                       ops = &gpiochip_domain_ops;
+> > > -               gc->irq.domain = irq_domain_add_simple(np,
+> > > -                       gc->ngpio,
+> > > -                       gc->irq.first,
+> > > -                       ops, gc);
+> > > +               ops = gc->irq.domain_ops ?: &gpiochip_domain_ops;
+> > > +               if (gc->irq.first)
+> > > +                       gc->irq.domain = irq_domain_create_legacy(fwnode, gc->ngpio,
+> > > +                                                                 gc->irq.first, 0,
+> > > +                                                                 ops, gc);
+> > > +               else
+> > > +                       gc->irq.domain = irq_domain_create_linear(fwnode, gc->ngpio,
+> > > +                                                                 ops, gc);
+> >
+> > This looks like a refactoring and reimplementation of irq_domain_add_simple()?
+>
+> If you named it as irq_domain_create_simple(), then yes, but the problem is
+> that we don't have irq_domain_create_simple() API right now.
+>
+> > Why, and should it rather be a separate patch?
+>
+> Nope.
 
-configs tested: 93
-configs skipped: 2
+OK I looked closer at irq_domain_add_simple(), and what it does different
+is to call irq_alloc_descs() for all lines if using sparse IRQs and then
+associate them. irq_domain_create_linear|legacy() does not allocate IRQ
+descriptors because it assumes something like DT or ACPI will do that
+on-demand when drivers request IRQs.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This may be dangerous because some old platforms do not resolve IRQs
+at runtime and you will get NULL pointer exceptions.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                             pxa_defconfig
-powerpc                 xes_mpc85xx_defconfig
-arm                            dove_defconfig
-sh                           se7780_defconfig
-powerpc                      chrp32_defconfig
-mips                     loongson1b_defconfig
-ia64                                defconfig
-powerpc                     tqm8540_defconfig
-arm                       spear13xx_defconfig
-mips                     cu1830-neo_defconfig
-powerpc                     tqm5200_defconfig
-mips                          rm200_defconfig
-arm64                            alldefconfig
-arm                        oxnas_v6_defconfig
-arm                            zeus_defconfig
-mips                        bcm47xx_defconfig
-powerpc                     ppa8548_defconfig
-m68k                        stmark2_defconfig
-sh                          rsk7201_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210303
-i386                 randconfig-a003-20210303
-i386                 randconfig-a002-20210303
-i386                 randconfig-a004-20210303
-i386                 randconfig-a006-20210303
-i386                 randconfig-a001-20210303
-x86_64               randconfig-a013-20210303
-x86_64               randconfig-a016-20210303
-x86_64               randconfig-a015-20210303
-x86_64               randconfig-a014-20210303
-x86_64               randconfig-a012-20210303
-x86_64               randconfig-a011-20210303
-i386                 randconfig-a016-20210303
-i386                 randconfig-a012-20210303
-i386                 randconfig-a014-20210303
-i386                 randconfig-a013-20210303
-i386                 randconfig-a011-20210303
-i386                 randconfig-a015-20210303
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+We then need to make sure all callers do what is done in e.g.
+drivers/gpio/gpio-omap.c in the #ifdef CONFIG_ARCH_OMAP1 clause:
+they need to be augmented to call irq_alloc_descs() explicitly,
+and I don't think all of them do it as nicely for us as OMAP1.
 
-clang tested configs:
-x86_64               randconfig-a006-20210303
-x86_64               randconfig-a001-20210303
-x86_64               randconfig-a004-20210303
-x86_64               randconfig-a002-20210303
-x86_64               randconfig-a005-20210303
-x86_64               randconfig-a003-20210303
+I might be overly cautious though, however that is why this code
+uses irq_domain_add_simple(), came in commit
+commit 2854d167cc545d0642277bf8b77f972a91146fc6
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Yours,
+Linus Walleij
