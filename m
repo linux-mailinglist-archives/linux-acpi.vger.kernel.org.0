@@ -2,219 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA1A32D490
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 14:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24DBB32D50E
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 15:15:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241568AbhCDNuL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Mar 2021 08:50:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241567AbhCDNt5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Mar 2021 08:49:57 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3CDC061574;
-        Thu,  4 Mar 2021 05:49:17 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id m1so9756961wml.2;
-        Thu, 04 Mar 2021 05:49:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=3+SX3U1VXxjbBb3AFkilt3hNXMs9Ccf8nN8eBgzxjZU=;
-        b=CvZl9GQ1BZZAyv6izOJnS5InuxmDYt4uJJVB1al7+eRTagi8Hp3agEdzup8pVHR/sf
-         o3Vni2I3nVEYqJ9YTi40pEy9V8Qptwls9CmdNMGLfHZP3vRLsuO6SyliaChK2n/BroJ/
-         vncTY+vrj7cP8TGVeX56PYMc+KRVuD0mDbdi32PasHZq96URRUPwfpRJAxt4xNKtUcjE
-         L7h7mihpJrDKOBwbVJVb6hB4brAiB2kKcow05wFQaVPl/InxsPVWCLuW9mPGJx4BrGRQ
-         Sq6ZzZ+PEZzUPqHEw/BmBp3Qh/Up+uqFI0XmQhw1n4Pm7juaFRc+T9hQw8SRbNT6xCD0
-         Pdww==
+        id S236828AbhCDONj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Mar 2021 09:13:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:41498 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240653AbhCDONH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Mar 2021 09:13:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614867102;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Senccpuc1TTEJq53wRUPtgfA6m7/zD3KJgdxFYTizkY=;
+        b=e6J0XQnw5AbA7FRcezH1FvFn90q1Z3j2DlhpFHse2NLKHIv5j86LJSAiAWWJOk3JtytW6m
+        2fur3S+bijon5BFqmXc/RkWCTRSGr8D9JO4BqRxJz/uiGXW3h6S9PrmeX9rPg3tHoCkrzB
+        r5gMO9xmI/EMawCj7xK3xaSDw0lGIz8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-210-ZulZ8PhuMj6XaZ8xe9Oc7Q-1; Thu, 04 Mar 2021 09:11:40 -0500
+X-MC-Unique: ZulZ8PhuMj6XaZ8xe9Oc7Q-1
+Received: by mail-ej1-f70.google.com with SMTP id 3so12212863ejx.17
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Mar 2021 06:11:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=3+SX3U1VXxjbBb3AFkilt3hNXMs9Ccf8nN8eBgzxjZU=;
-        b=U+srqDIEHIpNVpqkUoQcFWptfkSYbwDL4FcAiUR6T3Yl3T7ess5Lwc7794IyA1pfIC
-         EX/aoPlfBU1lEV8qqyBjomYBYw3FFc9iEVW9loqXLAmVyGuPg9pqsUM9c0yFVFldpTEb
-         vRpxdeHUoi/fXSjtK4RIqCLsyV6jRYT1zqVPY1DOuXssOIaBF3QqF4mqh/sp6CLl7A/d
-         YuEhRGNmxoMwR/BVKFs0C/7f4XW9CffvFh3s/kWFdARn5FsXSCi9SBUgWoQKOjHMkY6r
-         VM0Btzyg0BK2g1y30bXFUsCnDb1zZTj2GV20QCCdjmVkCT8YWQz28xAQ3CChi113j4nG
-         K1eQ==
-X-Gm-Message-State: AOAM531CqOLKPu/USiAj1VwGmGblCJ9HSgXaViA8Sun0xSAU4HFKGZTE
-        39CxaWJXyW9LIKaNGVGzBu8=
-X-Google-Smtp-Source: ABdhPJyRx+2m1kvS4rKn8ipRK5BYpQzYTY5VuQm9zqKGv70JdXH343ORRDLD6NwYhwkDbuBwDpb87A==
-X-Received: by 2002:a05:600c:47d7:: with SMTP id l23mr4105259wmo.155.1614865756142;
-        Thu, 04 Mar 2021 05:49:16 -0800 (PST)
-Received: from [192.168.1.211] ([2.26.187.30])
-        by smtp.gmail.com with ESMTPSA id l15sm10022214wmh.21.2021.03.04.05.49.14
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Senccpuc1TTEJq53wRUPtgfA6m7/zD3KJgdxFYTizkY=;
+        b=sNmw2wYndhPyJtYt4C0oyw+0TE3JwwNjsK9D5esdxU12WZCBrJP53XAaB9AU06I3JR
+         XYjxblKHGQbopSGZz7kMZuwObaiExEB6dclhAK5guQB2RZLKgcEZKaQWCSR5Nq+EgZQx
+         Ye01VGvcb9WFBiHcaojCywTIWpUEt1c5yc5/79uu6njUApEzItGWkxQQ4SuE5WKFGVWr
+         M9UysYgJvrdFi05attr6uGqnjOOgzO/QlJAAMjUDdR3u288VmKteAFKscXBoPDEeG87J
+         h32+KxVlAwSQOtke4chf2xiPMW9Y05qSAaQGUL0VgAvNIkEONqMwNt0RXQEY1pDe5pCx
+         t36g==
+X-Gm-Message-State: AOAM533zwRRLhWNQ19LbhrUNAnMTzYBQWA/DF70V1QeNus712i3L8+ZP
+        4SeMjJaL31y96mAWKI9DYJ70lP4tsOIgxHVJjUXf3Rvx1lhUSxbIAP8yivJWwpNpa8LHgNDTUgm
+        oKju0XeaADzFxSQ9sCBbMeQ==
+X-Received: by 2002:a17:906:1fd2:: with SMTP id e18mr4621049ejt.49.1614867099431;
+        Thu, 04 Mar 2021 06:11:39 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzLk6KLql7nlw9YimuS3xza8Ashn9e8ZbujmQsfr6ZM2rBNv06qhUySS/NFIdc1O1ZtOfCgew==
+X-Received: by 2002:a17:906:1fd2:: with SMTP id e18mr4621027ejt.49.1614867099230;
+        Thu, 04 Mar 2021 06:11:39 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id a12sm11065943edx.91.2021.03.04.06.11.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Mar 2021 05:49:15 -0800 (PST)
-Subject: Re: [PATCH v3 0/6] Introduce intel_skl_int3472 module
-To:     Hans de Goede <hdegoede@redhat.com>, tfiga@chromium.org,
-        sakari.ailus@linux.intel.com, rajmohan.mani@intel.com,
-        rjw@rjwysocki.net, lenb@kernel.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org
-Cc:     andriy.shevchenko@linux.intel.com,
-        kieran.bingham+renesas@ideasonboard.com,
-        laurent.pinchart@ideasonboard.com, mgross@linux.intel.com,
-        luzmaximilian@gmail.com, robert.moore@intel.com,
-        erik.kaneda@intel.com, me@fabwu.ch, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        devel@acpica.org
-References: <20210222130735.1313443-1-djrscally@gmail.com>
- <fd2fbee6-e620-a594-8377-d2f22131af29@redhat.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <5d336f50-5f25-fce2-04eb-5ad450c9cd5b@gmail.com>
-Date:   Thu, 4 Mar 2021 13:49:14 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Thu, 04 Mar 2021 06:11:38 -0800 (PST)
+Subject: Re: [PATCH v1] platform: x86: ACPI: Get rid of ACPICA message
+ printing
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Chen Yu <yu.c.chen@intel.com>
+References: <2074665.VPHYfYaQb6@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <77955b4c-eca1-afe9-5fbc-ceddc39cb397@redhat.com>
+Date:   Thu, 4 Mar 2021 15:11:38 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <fd2fbee6-e620-a594-8377-d2f22131af29@redhat.com>
+In-Reply-To: <2074665.VPHYfYaQb6@kreacher>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans
+Hi,
 
-On 04/03/2021 13:37, Hans de Goede wrote:
-> Hi,
->
-> On 2/22/21 2:07 PM, Daniel Scally wrote:
->> v1 for this series was originally 14-18 of this series:
->> https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
->>
->> v2 was here:
->> https://lore.kernel.org/platform-driver-x86/20210118003428.568892-1-djrscally@gmail.com/
->>
->> Series level changelog:
->>
->> 	- Dropped the patch moving acpi_lpss_dep() to utils since it's not used
->> 	in acpi_dev_get_dependent_dev() anymore.
->> 	- Replaced it with a patch extending acpi_walk_dep_device_list() to be
->> 	able to apply a given callback against each device in acpi_dep_list
->> 	- Dropped the patch creating acpi_i2c_dev_name() and simply open coded
->> 	that functionality.
->>
->> This has been tested on a number of devices, but currently **not** on a device
->> designed for ChromeOS, which we ideally need to do to ensure no regression
->> caused by replacing the tps68470 MFD driver. Sakari / Tomasz, is there any way
->> you could help with that? Unfortunately, I don't have a device to test it on
->> myself.
->>
->> Original cover letter: 
->>
->> At the moment in the kernel the ACPI _HID INT3472 is taken by the tps68470
->> MFD driver, but that driver can only handle some of the cases of that _HID
->> that we see. There are at least these three possibilities:
->>
->> 1. INT3472 devices that provide GPIOs through the usual framework and run
->>    power and clocks through an operation region; this is the situation that
->>    the current module handles and is seen on ChromeOS devices
->> 2. INT3472 devices that provide GPIOs, plus clocks and regulators that are
->>    meant to be driven through the usual frameworks, usually seen on devices
->>    designed to run Windows
->> 3. INT3472 devices that don't actually represent a physical tps68470, but
->>    are being used as a convenient way of grouping a bunch of system GPIO
->>    lines that are intended to enable power and clocks for sensors which
->>    are called out as dependent on them. Also seen on devices designed to
->>    run Windows.
->>
->> This series introduces a new module which registers:
->>
->> 1. An i2c driver that determines which scenario (#1 or #2) applies to the
->>    machine and registers platform devices to be bound to GPIO, OpRegion,
->>    clock and regulator drivers as appropriate.
->> 2. A platform driver that binds to the dummy INT3472 devices described in
->>    #3
->>
->> The platform driver for the dummy device registers the GPIO lines that
->> enable the clocks and regulators to the sensors via those frameworks so
->> that sensor drivers can consume them in the usual fashion. The existing
->> GPIO and OpRegion tps68470 drivers will work with the i2c driver that's
->> registered. Clock and regulator drivers are available but have not so far been
->> tested, so aren't part of this series.
->>
->> The existing mfd/tps68470.c driver being thus superseded, it is removed.
-> Thank you for this patch series. Since there have already been a whole
-> bunch of review-comments, I've not taken a detailed look at this yet.
+On 2/24/21 7:41 PM, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> A few x86 platform drivers use ACPI_DEBUG_PRINT() or ACPI_EXCEPTION()
+> for printing messages, but that is questionable, because those macros
+> belong to ACPICA and they should not be used elsewhere.  In addition,
+> ACPI_DEBUG_PRINT() requires special enabling to allow it to actually
+> print the message, which is a nuisance, and the _COMPONENT symbol
+> generally needed for that is not defined in any of the files in
+> question.
+> 
+> For this reason, replace the ACPI_DEBUG_PRINT() in lg-laptop.c with
+> pr_debug() and the one in xo15-ebook.c with acpi_handle_debug()
+> (with the additional benefit that the source object can be identified
+> more easily after this change), and replace the ACPI_EXCEPTION() in
+> acer-wmi.c with pr_warn().
+> 
+> Also drop the ACPI_MODULE_NAME() definitions that are only used by
+> the ACPICA message printing macros from those files and from wmi.c
+> and surfacepro3_button.c (while at it).
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Thank you.
+
+I've merged this into my review-hans branch now, minus the
+acer-wmi.c changes because a similar patch was already merged for those.
+
+Regards,
+
+Hans
 
 
-No problem, I'm hoping to do a v3 over the weekend anyway.
 
+> ---
+>  drivers/platform/surface/surfacepro3_button.c |    2 --
+>  drivers/platform/x86/acer-wmi.c               |    4 ++--
+>  drivers/platform/x86/lg-laptop.c              |    2 +-
+>  drivers/platform/x86/wmi.c                    |    1 -
+>  drivers/platform/x86/xo15-ebook.c             |    6 ++----
+>  5 files changed, 5 insertions(+), 10 deletions(-)
+> 
+> Index: linux-pm/drivers/platform/x86/lg-laptop.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/lg-laptop.c
+> +++ linux-pm/drivers/platform/x86/lg-laptop.c
+> @@ -678,7 +678,7 @@ static int __init acpi_init(void)
+>  
+>  	result = acpi_bus_register_driver(&acpi_driver);
+>  	if (result < 0) {
+> -		ACPI_DEBUG_PRINT((ACPI_DB_ERROR, "Error registering driver\n"));
+> +		pr_debug("Error registering driver\n");
+>  		return -ENODEV;
+>  	}
+>  
+> Index: linux-pm/drivers/platform/x86/xo15-ebook.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/xo15-ebook.c
+> +++ linux-pm/drivers/platform/x86/xo15-ebook.c
+> @@ -26,8 +26,6 @@
+>  #define XO15_EBOOK_HID			"XO15EBK"
+>  #define XO15_EBOOK_DEVICE_NAME		"EBook Switch"
+>  
+> -ACPI_MODULE_NAME(MODULE_NAME);
+> -
+>  MODULE_DESCRIPTION("OLPC XO-1.5 ebook switch driver");
+>  MODULE_LICENSE("GPL");
+>  
+> @@ -66,8 +64,8 @@ static void ebook_switch_notify(struct a
+>  		ebook_send_state(device);
+>  		break;
+>  	default:
+> -		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+> -				  "Unsupported event [0x%x]\n", event));
+> +		acpi_handle_debug(device->handle,
+> +				  "Unsupported event [0x%x]\n", event);
+>  		break;
+>  	}
+>  }
+> Index: linux-pm/drivers/platform/x86/acer-wmi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/acer-wmi.c
+> +++ linux-pm/drivers/platform/x86/acer-wmi.c
+> @@ -30,7 +30,6 @@
+>  #include <linux/input/sparse-keymap.h>
+>  #include <acpi/video.h>
+>  
+> -ACPI_MODULE_NAME(KBUILD_MODNAME);
+>  MODULE_AUTHOR("Carlos Corbacho");
+>  MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
+>  MODULE_LICENSE("GPL");
+> @@ -1605,7 +1604,8 @@ static void acer_kbd_dock_get_initial_st
+>  
+>  	status = wmi_evaluate_method(WMID_GUID3, 0, 0x2, &input_buf, &output_buf);
+>  	if (ACPI_FAILURE(status)) {
+> -		ACPI_EXCEPTION((AE_INFO, status, "Error getting keyboard-dock initial status"));
+> +		pr_warn("Error getting keyboard-dock initial status: %s\n",
+> +			acpi_format_exception(status));
+>  		return;
+>  	}
+>  
+> Index: linux-pm/drivers/platform/surface/surfacepro3_button.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/surface/surfacepro3_button.c
+> +++ linux-pm/drivers/platform/surface/surfacepro3_button.c
+> @@ -40,8 +40,6 @@ static const guid_t MSHW0040_DSM_UUID =
+>  #define SURFACE_BUTTON_NOTIFY_PRESS_VOLUME_DOWN		0xc2
+>  #define SURFACE_BUTTON_NOTIFY_RELEASE_VOLUME_DOWN	0xc3
+>  
+> -ACPI_MODULE_NAME("surface pro 3 button");
+> -
+>  MODULE_AUTHOR("Chen Yu");
+>  MODULE_DESCRIPTION("Surface Pro3 Button Driver");
+>  MODULE_LICENSE("GPL v2");
+> Index: linux-pm/drivers/platform/x86/wmi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/wmi.c
+> +++ linux-pm/drivers/platform/x86/wmi.c
+> @@ -32,7 +32,6 @@
+>  #include <linux/fs.h>
+>  #include <uapi/linux/wmi.h>
+>  
+> -ACPI_MODULE_NAME("wmi");
+>  MODULE_AUTHOR("Carlos Corbacho");
+>  MODULE_DESCRIPTION("ACPI-WMI Mapping Driver");
+>  MODULE_LICENSE("GPL");
+> 
+> 
+> 
 
-> I do wonder if you have thought about how this series should be merged?
-> This series is spread over quite a few subsytems and since there are
-> various interdependencies in the patches it is probably best if it gets
-> merged in its entirety through a single tree.
->
-> I guess that merging though either Rafael's (drivers/acpi) tree or
-> Lee's (drivers/mfd) tree makes the most sense.
->
-> As drivers/platform/x86 maintainer I'm happy with whatever solution
-> works for the other subsystem maintainers.
-
-
-I also think it's a good idea to go through a single tree, and my plan
-was to raise that probably after the next review round or so, but I
-hadn't gotten as far as thinking about whos tree it should be or
-anything yet. To be honest I'm not sure what factors dictate which
-choice is best in that regard; handling complex git merges is a bit
-outside my experience.
-
->
-> Regards,
->
-> Hans
->
->
->
->
->> Thanks
->> Dan
->>
->> Daniel Scally (6):
->>   ACPI: scan: Extend acpi_walk_dep_device_list()
->>   ACPI: scan: Add function to fetch dependent of acpi device
->>   i2c: core: Add a format macro for I2C device names
->>   gpiolib: acpi: Export acpi_get_gpiod()
->>   platform/x86: Add intel_skl_int3472 driver
->>   mfd: tps68470: Remove tps68470 MFD driver
->>
->>  MAINTAINERS                                   |   5 +
->>  drivers/acpi/ec.c                             |   2 +-
->>  drivers/acpi/pmic/Kconfig                     |   2 +-
->>  drivers/acpi/pmic/intel_pmic_chtdc_ti.c       |   2 +-
->>  drivers/acpi/scan.c                           |  92 ++-
->>  drivers/gpio/Kconfig                          |   2 +-
->>  drivers/gpio/gpiolib-acpi.c                   |  38 +-
->>  drivers/i2c/i2c-core-acpi.c                   |   2 +-
->>  drivers/i2c/i2c-core-base.c                   |   4 +-
->>  drivers/mfd/Kconfig                           |  18 -
->>  drivers/mfd/Makefile                          |   1 -
->>  drivers/mfd/tps68470.c                        |  97 ---
->>  drivers/platform/surface/surface3_power.c     |   2 +-
->>  drivers/platform/x86/Kconfig                  |   2 +
->>  drivers/platform/x86/Makefile                 |   1 +
->>  drivers/platform/x86/intel-int3472/Kconfig    |  31 +
->>  drivers/platform/x86/intel-int3472/Makefile   |   4 +
->>  .../intel-int3472/intel_skl_int3472_common.c  | 106 ++++
->>  .../intel-int3472/intel_skl_int3472_common.h  | 110 ++++
->>  .../intel_skl_int3472_discrete.c              | 592 ++++++++++++++++++
->>  .../intel_skl_int3472_tps68470.c              | 113 ++++
->>  include/acpi/acpi_bus.h                       |   8 +
->>  include/linux/acpi.h                          |   4 +-
->>  include/linux/gpio/consumer.h                 |   7 +
->>  include/linux/i2c.h                           |   3 +
->>  25 files changed, 1100 insertions(+), 148 deletions(-)
->>  delete mode 100644 drivers/mfd/tps68470.c
->>  create mode 100644 drivers/platform/x86/intel-int3472/Kconfig
->>  create mode 100644 drivers/platform/x86/intel-int3472/Makefile
->>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.c
->>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.h
->>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_discrete.c
->>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
->>
