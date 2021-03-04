@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BE132DB04
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 21:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2510432DAF8
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Mar 2021 21:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237971AbhCDUQV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Mar 2021 15:16:21 -0500
-Received: from mga07.intel.com ([134.134.136.100]:17133 "EHLO mga07.intel.com"
+        id S237425AbhCDUPU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Mar 2021 15:15:20 -0500
+Received: from mga01.intel.com ([192.55.52.88]:6975 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237483AbhCDUQK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Mar 2021 15:16:10 -0500
-IronPort-SDR: FJ/WzgRQoDv+2VzFgA/E46hdQvXw3ZEDiTyOMkfKUrz6wZ7hkZ/VSdOnuQQO17gZ0WH2BBmg6h
- AgaAyTtj2BJg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9913"; a="251537524"
+        id S231734AbhCDUOt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Mar 2021 15:14:49 -0500
+IronPort-SDR: pmSfc2n60SSZetXu5lhD3mMRzc7XgTFFf7JhPMjwKHu9qsuFsjpZrvQO2ktQ/Gm6+hMa4844F7
+ jkICx3PHUT1g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9913"; a="207217334"
 X-IronPort-AV: E=Sophos;i="5.81,223,1610438400"; 
-   d="scan'208";a="251537524"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2021 12:13:03 -0800
-IronPort-SDR: jDvoZbqh1YyXX2x7kCfpMk0WbIt+wBeQ6z8VNiOjeUQAf47LnitebRNrPQqO08piskAjNBZe16
- dYtnP1XBW/YA==
+   d="scan'208";a="207217334"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2021 12:13:03 -0800
+IronPort-SDR: vnRBuhcgY1/n8X16CGB2tqmuUMhu5j4qSZynT7Q+4kaAYs3mq6wjEIvTJni88B1feN1uyn3l72
+ CTc2xY5aC1vA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,223,1610438400"; 
-   d="scan'208";a="518783505"
+   d="scan'208";a="406981974"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 04 Mar 2021 12:13:00 -0800
+  by orsmga007.jf.intel.com with ESMTP; 04 Mar 2021 12:13:00 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 9009F29E; Thu,  4 Mar 2021 22:13:00 +0200 (EET)
+        id A52C83C1; Thu,  4 Mar 2021 22:13:00 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -37,9 +37,9 @@ Cc:     Marc Zyngier <maz@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH v3 3/5] gpiolib: Move of_node operations to gpiolib-of and correct fwnode use
-Date:   Thu,  4 Mar 2021 22:12:51 +0200
-Message-Id: <20210304201253.14652-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 4/5] gpiolib: Introduce acpi_gpio_dev_init() and call it from core
+Date:   Thu,  4 Mar 2021 22:12:52 +0200
+Message-Id: <20210304201253.14652-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210304201253.14652-1-andriy.shevchenko@linux.intel.com>
 References: <20210304201253.14652-1-andriy.shevchenko@linux.intel.com>
@@ -49,74 +49,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The initial value of the OF node based on presence of parent, but
-at the same time this operation somehow appeared separately from others
-that handle the OF case. On the other hand there is no need to assign
-dev->fwnode in the OF case if code properly retrieves fwnode, i.e.
-via dev_fwnode() helper.
-
-Amend gpiolib.c and gpiolib-of.c code in order to group OF operations.
+In the ACPI case we may use the firmware node in the similar way
+as it's done for OF case. We may use that fwnode for other purposes
+in the future.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/gpio/gpiolib-of.c | 6 ++++--
- drivers/gpio/gpiolib.c    | 9 ++++-----
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/gpio/gpiolib-acpi.c | 7 +++++++
+ drivers/gpio/gpiolib-acpi.h | 4 ++++
+ drivers/gpio/gpiolib.c      | 1 +
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index baf0153b7bca..bbcc7c073f63 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -1042,11 +1042,13 @@ void of_gpiochip_remove(struct gpio_chip *chip)
- 
- void of_gpio_dev_init(struct gpio_chip *gc, struct gpio_device *gdev)
- {
-+	/* Set default OF node to parent's one if present */
-+	if (gc->parent)
-+		gdev->dev.of_node = gc->parent->of_node;
-+
- 	/* If the gpiochip has an assigned OF node this takes precedence */
- 	if (gc->of_node)
- 		gdev->dev.of_node = gc->of_node;
- 	else
- 		gc->of_node = gdev->dev.of_node;
--	if (gdev->dev.of_node)
--		gdev->dev.fwnode = of_fwnode_handle(gdev->dev.of_node);
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 1aacd2a5a1fd..21750be9c489 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1291,6 +1291,13 @@ void acpi_gpiochip_remove(struct gpio_chip *chip)
+ 	kfree(acpi_gpio);
  }
+ 
++void acpi_gpio_dev_init(struct gpio_chip *gc, struct gpio_device *gdev)
++{
++	/* Set default fwnode to parent's one if present */
++	if (gc->parent)
++		ACPI_COMPANION_SET(&gdev->dev, ACPI_COMPANION(gc->parent));
++}
++
+ static int acpi_gpio_package_count(const union acpi_object *obj)
+ {
+ 	const union acpi_object *element = obj->package.elements;
+diff --git a/drivers/gpio/gpiolib-acpi.h b/drivers/gpio/gpiolib-acpi.h
+index e2edb632b2cc..e476558d9471 100644
+--- a/drivers/gpio/gpiolib-acpi.h
++++ b/drivers/gpio/gpiolib-acpi.h
+@@ -36,6 +36,8 @@ struct acpi_gpio_info {
+ void acpi_gpiochip_add(struct gpio_chip *chip);
+ void acpi_gpiochip_remove(struct gpio_chip *chip);
+ 
++void acpi_gpio_dev_init(struct gpio_chip *gc, struct gpio_device *gdev);
++
+ void acpi_gpiochip_request_interrupts(struct gpio_chip *chip);
+ void acpi_gpiochip_free_interrupts(struct gpio_chip *chip);
+ 
+@@ -58,6 +60,8 @@ int acpi_gpio_count(struct device *dev, const char *con_id);
+ static inline void acpi_gpiochip_add(struct gpio_chip *chip) { }
+ static inline void acpi_gpiochip_remove(struct gpio_chip *chip) { }
+ 
++static inline void acpi_gpio_dev_init(struct gpio_chip *gc, struct gpio_device *gdev) { }
++
+ static inline void
+ acpi_gpiochip_request_interrupts(struct gpio_chip *chip) { }
+ 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 083d7e1c7cde..2a3d562eb8c1 100644
+index 2a3d562eb8c1..46ab1ce67ba0 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -585,12 +585,9 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	if (!gdev)
- 		return -ENOMEM;
- 	gdev->dev.bus = &gpio_bus_type;
-+	gdev->dev.parent = gc->parent;
- 	gdev->chip = gc;
+@@ -590,6 +590,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
  	gc->gpiodev = gdev;
--	if (gc->parent) {
--		gdev->dev.parent = gc->parent;
--		gdev->dev.of_node = gc->parent->of_node;
--	}
  
  	of_gpio_dev_init(gc, gdev);
++	acpi_gpio_dev_init(gc, gdev);
  
-@@ -4212,11 +4209,13 @@ EXPORT_SYMBOL_GPL(gpiod_put_array);
- 
- static int gpio_bus_match(struct device *dev, struct device_driver *drv)
- {
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
-+
- 	/*
- 	 * Only match if the fwnode doesn't already have a proper struct device
- 	 * created for it.
- 	 */
--	if (dev->fwnode && dev->fwnode->dev != dev)
-+	if (fwnode && fwnode->dev != dev)
- 		return 0;
- 	return 1;
- }
+ 	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
+ 	if (gdev->id < 0) {
 -- 
 2.30.1
 
