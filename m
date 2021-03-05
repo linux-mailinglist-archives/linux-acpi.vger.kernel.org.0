@@ -2,67 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B5332F287
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 19:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0971632F315
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 19:45:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229465AbhCES3C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Mar 2021 13:29:02 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:44036 "EHLO
+        id S230126AbhCESpM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Mar 2021 13:45:12 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:63644 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbhCES2f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Mar 2021 13:28:35 -0500
+        with ESMTP id S230051AbhCESoo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Mar 2021 13:44:44 -0500
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 0.83.537)
- id 0bb24afc64953fb6; Fri, 5 Mar 2021 19:28:33 +0100
+ id de62d34a7a55f328; Fri, 5 Mar 2021 19:44:42 +0100
 Received: from kreacher.localnet (89-64-81-9.dynamic.chello.pl [89.64.81.9])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 3A712663A29;
-        Fri,  5 Mar 2021 19:28:32 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id D678C663EA1;
+        Fri,  5 Mar 2021 19:44:40 +0100 (CET)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH] i2c: i2c-scmi: Drop unused ACPI_MODULE_NAME definition
-Date:   Fri, 05 Mar 2021 19:28:30 +0100
-Message-ID: <6660750.UgobAMfxrE@kreacher>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Subject: [PATCH v1 0/4] ACPI: New helper for warning messages and replacing ACPI_EXCEPTION()
+Date:   Fri, 05 Mar 2021 19:39:31 +0100
+Message-ID: <2775419.haJ69vZeI0@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddtiedguddtgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttddvnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvedufefggeeutdejvdfhteevgeeludevueevvdejkeelfefhudfhfeehkefffeevnecukfhppeekledrieegrdekuddrleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdekuddrledphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdhivdgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddtiedguddtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttddvnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvedufefggeeutdejvdfhteevgeeludevueevvdejkeelfefhudfhfeehkefffeevnecukfhppeekledrieegrdekuddrleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdekuddrledphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepjhhitgdvfeeskhgvrhhnvghlrdhorhhgpdhrtghpthht
+ oheplhgrrhhssehmvghtrghfohhordguvgdprhgtphhtthhopehpmhgvvghrfiesphhmvggvrhifrdhnvghtpdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjuggvlhhvrghrvgesshhushgvrdgtohhmpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvghtpdhrtghpthhtoheplhhinhhugidqhhifmhhonhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi All,
 
-The ACPI_MODULE_NAME() definition is only used by the message
-printing macros from ACPICA that are not used by the code in
-question, so it is redundant.  Drop it.
+The purpose of this series is to get rid of the remaining (questionable)
+usage of ACPI_EXCEPTION() outside ACPICA.
 
-No functional impact.
+The first patch is a tiny cleanup of the ACPI processor driver, but it is
+depended on by the second one which in turn is depended on by the last two.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/i2c/busses/i2c-scmi.c |    2 --
- 1 file changed, 2 deletions(-)
+The second patch introduces a new helper function for logging messages
+regarding ACPI object evaluation failures and makes some code under
+drivers/acpi/ use it.
 
-Index: linux-pm/drivers/i2c/busses/i2c-scmi.c
-===================================================================
---- linux-pm.orig/drivers/i2c/busses/i2c-scmi.c
-+++ linux-pm/drivers/i2c/busses/i2c-scmi.c
-@@ -18,8 +18,6 @@
- /* SMBUS HID definition as supported by Microsoft Windows */
- #define ACPI_SMBUS_MS_HID		"SMB0001"
- 
--ACPI_MODULE_NAME("smbus_cmi");
--
- struct smbus_methods_t {
- 	char *mt_info;
- 	char *mt_sbr;
+The other two patches use the new helper to get rid of ACPI_EXCEPTION()
+and the related definitions from the acpi-als and acpi_power_meter drivers.
+
+Please see the patch changelogs for details.
+
+Thanks!
 
 
 
