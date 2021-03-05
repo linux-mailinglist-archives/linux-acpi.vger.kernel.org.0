@@ -2,325 +2,351 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A70A32E7B7
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 13:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C12532E954
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 13:33:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbhCEMMw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Mar 2021 07:12:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29784 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229679AbhCEMMh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Mar 2021 07:12:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1614946356;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fAyYqTnDcpVAR0ieZCi/gAvDdjFh5X9B67vvBIY5fbE=;
-        b=cligTNqT9tzZiKPu5RR7PFy/+Ckqn67+8WzN507uMLnS9WXjVKU5bGlvVDfXJ+s5k2rWj9
-        vEJmrVAuV/c+SD5GyyxoZ2a3Nisthpsl7HPfDyGkGxFuFhYc77Ojs7/VKXpIxzkaFsEZhs
-        42AdmWXfykftKERON3EEsHoV7QibYMA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-122-ezwlI5LlNnqomoXJfp0ITQ-1; Fri, 05 Mar 2021 07:12:35 -0500
-X-MC-Unique: ezwlI5LlNnqomoXJfp0ITQ-1
-Received: by mail-ej1-f72.google.com with SMTP id v19so763108ejc.12
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Mar 2021 04:12:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=fAyYqTnDcpVAR0ieZCi/gAvDdjFh5X9B67vvBIY5fbE=;
-        b=I0pFKmq2miAaro2Qzu7MK7yYXQ+Es1fXjW3zumSadFdOJ9D11Zxhql8yjs+pMa7gXO
-         YhUwqaKkUHKgIrIYuJbAJH1a8houqicBE+M11Nhj2vSjY7JFx36WOj+Se4fodQKtagRA
-         ww9ITM0t+qJVXoOo1as28GcxqxP5VHZkJDRWkINYZLEYG9WjB4WxgWthkU7ML57ExxHF
-         UeAe2rbVkWD2ljibYlXp+FcgcK7aQ9ATsIVMFc4sK/6EMKC4ZN08NjxK+bJVLNYT2tZ6
-         dRm/s6b7zXljxi5UA8DAuW1szL0vl45mPoGweG5SowlGeZjgkLWhAIfslaC8HXkV4TA6
-         u96A==
-X-Gm-Message-State: AOAM5336ocl67QwJxSM8Y9OiUla51owhLKPPTZOpWDTDcADLCFPO9UR7
-        peIo3ddn9KtLDqCl/7MIoSg4pVlXl0m8BKSczh/a+b7q+mPHrVdMBmjKFGpINvyT9WHMWGHCl7f
-        qSdv9oForz3FltnFfJ46uhw==
-X-Received: by 2002:a17:906:3c50:: with SMTP id i16mr1981549ejg.175.1614946353880;
-        Fri, 05 Mar 2021 04:12:33 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyLhqfbJ7vZPyUnZjyzDZeBLLaS0g9cjwHbi7VZ8TDQW2908sdhTjGMqgtkN70DP1HkZwW+7A==
-X-Received: by 2002:a17:906:3c50:: with SMTP id i16mr1981536ejg.175.1614946353691;
-        Fri, 05 Mar 2021 04:12:33 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id f21sm1394287ejw.124.2021.03.05.04.12.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Mar 2021 04:12:33 -0800 (PST)
-Subject: Re: [PATCH] gpiolib: acpi: support override broken GPIO number in
- ACPI table
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        id S230452AbhCEMcU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Mar 2021 07:32:20 -0500
+Received: from mga01.intel.com ([192.55.52.88]:43068 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232416AbhCEMbt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Mar 2021 07:31:49 -0500
+IronPort-SDR: qRy7HYMHZKMz3wUhCc6l4VRbAfDGFMnRv2+FijcgSq/yl3Azt5dyYOd5+UgnpRfj5M5V9TKl9U
+ HlE3TggdZpDQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9913"; a="207374485"
+X-IronPort-AV: E=Sophos;i="5.81,224,1610438400"; 
+   d="scan'208";a="207374485"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2021 04:31:07 -0800
+IronPort-SDR: Ai3SvDvIGfcsu33J3pM4V3RXVt4yjNGoZg3UTANoQHic+fx9KuitSDXDt8UWDIYl9afAqqVHIZ
+ g1X6LmIY/Evg==
+X-IronPort-AV: E=Sophos;i="5.81,224,1610438400"; 
+   d="scan'208";a="436588132"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2021 04:31:05 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lI9bi-00A7WL-7F; Fri, 05 Mar 2021 14:31:02 +0200
+Date:   Fri, 5 Mar 2021 14:31:02 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     kernel test robot <lkp@intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Marc Zyngier <maz@kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-References: <20210226033919.8871-1-shawn.guo@linaro.org>
- <YD9bQXBD+9k3Lf/4@smile.fi.intel.com>
- <2ed0d4dc-2756-9a55-3f54-1377732e35fc@redhat.com>
- <20210305011429.GH17424@dragon>
- <f7aa417e-42b5-0c42-6f59-7311b060384f@redhat.com>
- <20210305112614.GK17424@dragon>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <669fad34-6367-81e7-c324-6d12e2387493@redhat.com>
-Date:   Fri, 5 Mar 2021 13:12:32 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [BUILD REGRESSION] LAST PATCH: gpiolib: Reuse device's fwnode to
+ create IRQ domain
+Message-ID: <YEIkhnfEMINzlZHH@smile.fi.intel.com>
+References: <6041a2ff.18V+4AiVF2xWzVE+%lkp@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210305112614.GK17424@dragon>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6041a2ff.18V+4AiVF2xWzVE+%lkp@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 3/5/21 12:26 PM, Shawn Guo wrote:
-> On Fri, Mar 05, 2021 at 10:10:50AM +0100, Hans de Goede wrote:
->>> So we reach a consensus that this is not the right solution for Lenovo
->>> Flex 5G. But what about for Andy's Galileo Gen 2 case, where the GPIO
->>> number in ACPI is truly broken?
->>
->> Well if the ACPI table truely simply has a wrong number in it, like in
->> this case, then we clearly need a workaround.
->>
->>>   ba8c90c61847 ("gpio: pca953x: Override IRQ for one of the expanders on Galileo Gen 2")
->>
->> And we have one in place, so I'm not sure what the question is?
->>
->> I guess the question is of your generic GPIO renumber patch would not
->> be a better answer to that ?
->>
->> IMHO no, we want to keep quirks out of the core as much as possible,
->> for example the code which Andy added a quirk to is build as a module
->> in the generic Fedora distro kernel, so for most users the code will
->> not be loaded into memory. Where as if we add it to the core it would
->> use up extra memory for everyone.
+On Fri, Mar 05, 2021 at 11:18:23AM +0800, kernel test robot wrote:
+> url:    https://github.com/0day-ci/linux/commits/Andy-Shevchenko/gpiolib-switch-to-fwnode-in-the-core/20210304-230747
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git e749df1bbd23f4472082210650514548d8a39e9b
 > 
-> Fair point. I did not really think of it, because there is already
-> gpiolib_acpi_quirks[] in core code.  And on the other side, if there are
-> more drivers need such workaround, having each of these drivers copy the
-> same code is not ideal either.
-> 
->>
->> Also if, in the future, we were to ever add a generic GPIO renumber quirk
->> mechanism to the core, then your code would need more work. Because to be
->> truely generic it would need to remap one gpiochip-name:pin-number on
->> another gpiochip-name:pin-number pair. There might very well be a case
->> with multiple gpiochips with pin number 32 being referenced in the DSDT
->> and where we need to remap one of those 32-s to a different number
->> (or possibly even to a different chip + number).
-> 
-> Yeah, I had already have v2 of my patch, just did not post it as the
-> overall direction is not agreed on.  I attach it here for discussion.
-> I think with the GPIO consumer specified, it should be good enough to
-> locate the broken GPIO number that needs override.  If gpiochip is
-> wrong, that means "\\_SB.GIO0" of GpioInt needs an override.  That's
-> a different issue.
-
-Not really it is still pointing to a wrong pin, the full identifier
-for a pin in linux (see the userspace iocontrol interface also) is
-<gpio-chip-name> + <index> so if we add support for remapping we should
-add support for specifying the full pair. But your new approach with
-the consumer is also interesting.
-
-Maybe a generic override mechanism should use the following
-inputs (indexing into the override map) and outputs:
-
-In: consumer-dev-name + consumer-gpio-pin-name (e.g. "power", etc.)
-Out: gpio-chip-name> + index + flags
-
-That would also work in cases where GPIOs are just completely missing
-from the DSDTs.
-
-And to circle back to Andy's point about the current fix for his
-case requiring duplicating lots of gpiolib-acpi code.
-
-Maybe we need a gpiod_get_with_lookup_table() or some such
-where the driver doing the gpiod_get call can specify a lookup
-table to do the overriding of the broken DSDT.
-
-I think we should even be able to make this non ACPI specific
-this way.
-
-This will allow drivers to avoid having to code all
-the lookup code themselves, while still pushing the
-responsibility of actually maintaining the lookup-overrides
-inside the individual drivers.
-
-Regards,
-
-Hans
-
-
-
-
-
-> 
-> GpioInt (Level, ActiveLow, ExclusiveAndWake, PullUp, 0x0000,
->     "\\_SB.GIO0", 0x00, ResourceConsumer, ,
->     )
->     {   // Pin list
-> 	0x0280
->     }
-> 
-> Shawn
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
 > 
 > 
-> [PATCH v2] gpiolib: acpi: support override broken GPIO number in ACPI
+> Error/Warning in current branch:
 > 
-> Running kernel with ACPI on Lenovo Flex 5G laptop, touchpad is just
-> not working.  That's because the GpioInt number of TCPD node in ACPI
-> table is simply wrong, and the number even exceeds the maximum GPIO
-> lines.  As the touchpad works fine with Windows on the same machine,
-> presumably this is something Windows-ism.  Although it's obviously
-> a specification violation, believe of that Microsoft will fix this in
-> the near future is not really realistic.
+> drivers/gpio/gpiolib.c:3672:24: warning: passing argument 1 of 'is_acpi_node' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+> drivers/gpio/gpiolib.c:3675:24: warning: passing argument 1 of 'is_acpi_node' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+> drivers/gpio/gpiolib.c:3686:24: error: passing 'const struct fwnode_handle *' to parameter of type 'struct fwnode_handle *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+> drivers/gpio/gpiolib.c:3686:24: warning: passing argument 1 of 'is_acpi_node' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+
+Yeah, yeah. The fix should be in Rafael's tree.
+
+Rafael, can you submit it as material for v5.12-rcX, please?
+
+> Error/Warning ids grouped by kconfigs:
 > 
-> It adds the support of overriding broken GPIO number in ACPI table
-> on particular machines, which are matched using DMI info.  Such
-> mechanism for fixing up broken firmware and ACPI table is not uncommon
-> in kernel.  And hopefully it can be useful for other machines that get
-> broken GPIO number coded in ACPI table.
+> gcc_recent_errors
+> |-- alpha-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- alpha-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arc-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arc-randconfig-r016-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arc-randconfig-r026-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arc-randconfig-s031-20210304
+> |   |-- drivers-gpio-gpiolib.c:sparse:sparse:incorrect-type-in-argument-(different-modifiers)-expected-struct-fwnode_handle-fwnode-got-struct-fwnode_handle-const-fwnode
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-colibri_pxa270_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-imx_v4_v5_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-randconfig-c003-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-randconfig-p002-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-randconfig-r022-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- arm-randconfig-r025-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- h8300-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- h8300-randconfig-r016-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- h8300-randconfig-s031-20210304
+> |   |-- drivers-gpio-gpiolib.c:sparse:sparse:incorrect-type-in-argument-(different-modifiers)-expected-struct-fwnode_handle-fwnode-got-struct-fwnode_handle-const-fwnode
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- m68k-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- m68k-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- m68k-randconfig-m031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- m68k-randconfig-r005-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- microblaze-randconfig-m031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- microblaze-randconfig-r011-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- microblaze-randconfig-r015-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- microblaze-randconfig-r025-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- microblaze-randconfig-s032-20210304
+> |   |-- drivers-gpio-gpiolib.c:sparse:sparse:incorrect-type-in-argument-(different-modifiers)-expected-struct-fwnode_handle-fwnode-got-struct-fwnode_handle-const-fwnode
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- mips-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- mips-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- mips-cu1830-neo_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- mips-randconfig-m031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- mips-randconfig-r024-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nds32-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nds32-randconfig-m031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nds32-randconfig-r024-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nds32-randconfig-r031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nds32-randconfig-r035-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nios2-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nios2-randconfig-r013-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- nios2-randconfig-r023-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- openrisc-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- openrisc-allnoconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- parisc-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- parisc-randconfig-r031-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- parisc-randconfig-r036-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- powerpc-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- powerpc-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- powerpc-stx_gp3_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- powerpc64-randconfig-r032-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- powerpc64-randconfig-r033-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-nommu_k210_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-nommu_k210_sdcard_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- riscv-randconfig-r002-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- s390-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- s390-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- s390-randconfig-p001-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- s390-randconfig-s032-20210304
+> |   |-- drivers-gpio-gpiolib.c:sparse:sparse:incorrect-type-in-argument-(different-modifiers)-expected-struct-fwnode_handle-fwnode-got-struct-fwnode_handle-const-fwnode
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sh-allmodconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sh-magicpanelr2_defconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sh-randconfig-r013-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sh-randconfig-r034-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sparc-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sparc-randconfig-r003-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- sparc64-randconfig-r033-20210304
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> |-- xtensa-allyesconfig
+> |   `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
+> `-- xtensa-randconfig-s032-20210304
+>     |-- drivers-gpio-gpiolib.c:sparse:sparse:incorrect-type-in-argument-(different-modifiers)-expected-struct-fwnode_handle-fwnode-got-struct-fwnode_handle-const-fwnode
+>     `-- drivers-gpio-gpiolib.c:warning:passing-argument-of-is_acpi_node-discards-const-qualifier-from-pointer-target-type
 > 
-> The signature of acpi_get_gpiod() gets updated to pass over acpi_device
-> pointer of consumer device, so that the broken pin can be matched
-> precisely with consumer fwnode name.
+> clang_recent_errors
+> `-- arm64-randconfig-r022-20210304
+>     `-- drivers-gpio-gpiolib.c:error:passing-const-struct-fwnode_handle-to-parameter-of-type-struct-fwnode_handle-discards-qualifiers-Werror-Wincompatible-pointer-types-discards-qualifiers
 > 
-> Changes for v2:
-> - Match broken pin with additional consumer fwnode name comparison.
+> elapsed time: 720m
 > 
-> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> configs tested: 111
+> configs skipped: 2
+> 
+> gcc tested configs:
+> arm                                 defconfig
+> arm64                            allyesconfig
+> arm                              allyesconfig
+> arm                              allmodconfig
+> arm64                               defconfig
+> sh                 kfr2r09-romimage_defconfig
+> xtensa                    xip_kc705_defconfig
+> powerpc                    mvme5100_defconfig
+> m68k                        m5307c3_defconfig
+> sh                ecovec24-romimage_defconfig
+> sparc64                          alldefconfig
+> arm                            dove_defconfig
+> arm                       multi_v4t_defconfig
+> openrisc                         alldefconfig
+> sh                               j2_defconfig
+> m68k                            mac_defconfig
+> powerpc                       maple_defconfig
+> mips                     cu1830-neo_defconfig
+> powerpc                 linkstation_defconfig
+> x86_64                              defconfig
+> arm                  colibri_pxa270_defconfig
+> xtensa                           alldefconfig
+> powerpc                     tqm5200_defconfig
+> openrisc                            defconfig
+> sh                           se7712_defconfig
+> mips                          ath79_defconfig
+> arm                           viper_defconfig
+> arm                       imx_v4_v5_defconfig
+> xtensa                       common_defconfig
+> powerpc                     stx_gp3_defconfig
+> sh                        edosk7705_defconfig
+> sh                     magicpanelr2_defconfig
+> ia64                        generic_defconfig
+> riscv             nommu_k210_sdcard_defconfig
+> mips                      maltasmvp_defconfig
+> xtensa                           allyesconfig
+> powerpc                     pseries_defconfig
+> h8300                               defconfig
+> riscv                          rv32_defconfig
+> powerpc                  iss476-smp_defconfig
+> arm                    vt8500_v6_v7_defconfig
+> sh                           se7750_defconfig
+> sh                          polaris_defconfig
+> powerpc                        fsp2_defconfig
+> ia64                             allmodconfig
+> ia64                                defconfig
+> ia64                             allyesconfig
+> m68k                             allmodconfig
+> m68k                                defconfig
+> m68k                             allyesconfig
+> nios2                               defconfig
+> arc                              allyesconfig
+> nds32                             allnoconfig
+> nds32                               defconfig
+> nios2                            allyesconfig
+> csky                                defconfig
+> alpha                               defconfig
+> alpha                            allyesconfig
+> h8300                            allyesconfig
+> arc                                 defconfig
+> sh                               allmodconfig
+> parisc                              defconfig
+> s390                             allyesconfig
+> s390                             allmodconfig
+> parisc                           allyesconfig
+> s390                                defconfig
+> i386                             allyesconfig
+> sparc                            allyesconfig
+> sparc                               defconfig
+> i386                               tinyconfig
+> i386                                defconfig
+> mips                             allyesconfig
+> mips                             allmodconfig
+> powerpc                          allyesconfig
+> powerpc                          allmodconfig
+> powerpc                           allnoconfig
+> x86_64               randconfig-a006-20210304
+> x86_64               randconfig-a001-20210304
+> x86_64               randconfig-a004-20210304
+> x86_64               randconfig-a005-20210304
+> x86_64               randconfig-a002-20210304
+> x86_64               randconfig-a003-20210304
+> i386                 randconfig-a005-20210304
+> i386                 randconfig-a003-20210304
+> i386                 randconfig-a002-20210304
+> i386                 randconfig-a004-20210304
+> i386                 randconfig-a006-20210304
+> i386                 randconfig-a001-20210304
+> i386                 randconfig-a016-20210304
+> i386                 randconfig-a012-20210304
+> i386                 randconfig-a013-20210304
+> i386                 randconfig-a014-20210304
+> i386                 randconfig-a011-20210304
+> i386                 randconfig-a015-20210304
+> riscv                    nommu_k210_defconfig
+> riscv                            allyesconfig
+> riscv                    nommu_virt_defconfig
+> riscv                             allnoconfig
+> riscv                               defconfig
+> riscv                            allmodconfig
+> x86_64                           allyesconfig
+> x86_64                    rhel-7.6-kselftests
+> x86_64                               rhel-8.3
+> x86_64                      rhel-8.3-kbuiltin
+> x86_64                                  kexec
+> 
+> clang tested configs:
+> x86_64               randconfig-a013-20210304
+> x86_64               randconfig-a016-20210304
+> x86_64               randconfig-a015-20210304
+> x86_64               randconfig-a014-20210304
+> x86_64               randconfig-a012-20210304
+> x86_64               randconfig-a011-20210304
+> 
 > ---
->  drivers/gpio/gpiolib-acpi.c | 79 +++++++++++++++++++++++++++++++++++--
->  1 file changed, 76 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index e37a57d0a2f0..fed045d64a26 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -93,6 +93,72 @@ static DEFINE_MUTEX(acpi_gpio_deferred_req_irqs_lock);
->  static LIST_HEAD(acpi_gpio_deferred_req_irqs_list);
->  static bool acpi_gpio_deferred_req_irqs_done;
->  
-> +struct acpi_gpio_pin_fixup {
-> +	const char *consumer;
-> +	int pin_broken;
-> +	int pin_correct;
-> +};
-> +
-> +struct acpi_gpio_pin_override {
-> +	const struct acpi_gpio_pin_fixup *fixups;
-> +	int num;
-> +};
-> +
-> +static const struct acpi_gpio_pin_fixup lenovo_flex_5g_fixups[] = {
-> +	{
-> +		/* GpioInt of Touchpad */
-> +		.consumer = "\\_SB.I2C8.TCPD",
-> +		.pin_broken = 0x0280,
-> +		.pin_correct = 0x0018,
-> +	},
-> +};
-> +
-> +static const struct acpi_gpio_pin_override lenovo_flex_5g_override = {
-> +	.fixups = lenovo_flex_5g_fixups,
-> +	.num = ARRAY_SIZE(lenovo_flex_5g_fixups),
-> +};
-> +
-> +static const struct dmi_system_id acpi_gpio_pin_override_table[] = {
-> +	{
-> +		.ident = "Lenovo Flex 5G",
-> +		.matches = {
-> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Flex 5G 14Q8CX05"),
-> +		},
-> +		.driver_data = (void *)&lenovo_flex_5g_override,
-> +	},
-> +	{ } /* terminator */
-> +};
-> +
-> +static int acpi_gpio_pin_override(struct acpi_device *adev, int pin)
-> +{
-> +	const struct acpi_gpio_pin_override *override;
-> +	const struct dmi_system_id *system_id;
-> +	char *fwname;
-> +	int ret = pin;
-> +	int i;
-> +
-> +	system_id = dmi_first_match(acpi_gpio_pin_override_table);
-> +	if (!system_id)
-> +		return ret;
-> +
-> +	fwname = kasprintf(GFP_KERNEL, "%pfwf", &adev->fwnode);
-> +	override = system_id->driver_data;
-> +
-> +	for (i = 0; i < override->num; i++) {
-> +		const struct acpi_gpio_pin_fixup *f = &override->fixups[i];
-> +
-> +		if (!strcmp(f->consumer, fwname) && pin == f->pin_broken) {
-> +			ret = f->pin_correct;
-> +			goto done;
-> +		}
-> +	}
-> +
-> +done:
-> +	kfree(fwname);
-> +	return ret;
-> +}
-> +
->  static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
->  {
->  	if (!gc->parent)
-> @@ -103,6 +169,7 @@ static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
->  
->  /**
->   * acpi_get_gpiod() - Translate ACPI GPIO pin to GPIO descriptor usable with GPIO API
-> + * @adev:	ACPI device that consumes the GPIO
->   * @path:	ACPI GPIO controller full path name, (e.g. "\\_SB.GPO1")
->   * @pin:	ACPI GPIO pin number (0-based, controller-relative)
->   *
-> @@ -111,7 +178,8 @@ static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
->   * controller does not have GPIO chip registered at the moment. This is to
->   * support probe deferral.
->   */
-> -static struct gpio_desc *acpi_get_gpiod(char *path, int pin)
-> +static struct gpio_desc *acpi_get_gpiod(struct acpi_device *adev,
-> +					char *path, int pin)
->  {
->  	struct gpio_chip *chip;
->  	acpi_handle handle;
-> @@ -125,7 +193,11 @@ static struct gpio_desc *acpi_get_gpiod(char *path, int pin)
->  	if (!chip)
->  		return ERR_PTR(-EPROBE_DEFER);
->  
-> -	return gpiochip_get_desc(chip, pin);
-> +	/*
-> +	 * Give it a chance to correct the broken GPIO pin number in ACPI
-> +	 * table of particular machines.
-> +	 */
-> +	return gpiochip_get_desc(chip, acpi_gpio_pin_override(adev, pin));
->  }
->  
->  static irqreturn_t acpi_gpio_irq_handler(int irq, void *data)
-> @@ -689,7 +761,8 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
->  		if (pin_index >= agpio->pin_table_length)
->  			return 1;
->  
-> -		lookup->desc = acpi_get_gpiod(agpio->resource_source.string_ptr,
-> +		lookup->desc = acpi_get_gpiod(lookup->info.adev,
-> +					      agpio->resource_source.string_ptr,
->  					      agpio->pin_table[pin_index]);
->  		lookup->info.pin_config = agpio->pin_config;
->  		lookup->info.debounce = agpio->debounce_timeout;
-> 
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
