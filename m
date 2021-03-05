@@ -2,203 +2,313 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B654232F4CE
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 21:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B5732F59D
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Mar 2021 22:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbhCEUz6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Mar 2021 15:55:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32868 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbhCEUzk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Mar 2021 15:55:40 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CCCC06175F;
-        Fri,  5 Mar 2021 12:55:39 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id p1so4497894edy.2;
-        Fri, 05 Mar 2021 12:55:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=thrXrLjLF5z/SKJCD+pGwIOuWV3vLVJ4ZtDl+1J1x0k=;
-        b=BvlOojU3y4cr6Tr29mW2pAJL7JS7bRcYr9Wca1Z5mhWKgyWeoXFAxXUwmqSDJBXVVt
-         8QsQj05UKy9jLOYjQ7nJdsALDUYYnOmkID5zpIlYNyAzvkpT69URsdh3k14NV1bV3UDc
-         HOZURVMYYDFQb2cZ6ldiBAnE7yCwUzqocXCX2z+dL0R0Fz6BnmnsNSfPKkfSDAi3ek1+
-         uYrkuKva3lOI3fsaBGy3S3JizhhFl9xeZIENUhe7RLgn1DDnipoBAqquwEnLu0yxerov
-         H6N9x1tXDu1wy1HoZu2UEV+zHZcxp49ZDm+oQz5hy+yVtu+4VIu1bXEKRHo+VwuFKkn4
-         WoQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=thrXrLjLF5z/SKJCD+pGwIOuWV3vLVJ4ZtDl+1J1x0k=;
-        b=hW7S0KooH9HixcfJK97kBm39GCoTDO2nv8vflsb0WdLQBj6JzStxJIdigW9SelU0fP
-         vZYUQB2AfBO0EkzdH3hmPn1SrRKlpMqfAOgPnBFycXYWEW1/dodCfPctG1yyoXevOJI2
-         3VVDSUEqK+kO3sD32IbiymWQdedxRQJqNuJmiLJ6U/JLCf8QVD+EfQAVtanFc1xMh8oX
-         SNzXBcrMezxxlGrvkXHYEm4CCasnfFLEedP2GOaYR0VXj74eLvVlyhoEljLl+nU6zvzF
-         TGc5/UDcDAceyVGwhrO8Tc/UFOGYKHiEvJJBufoiHAJcW6BqbBjWjAZ680INyvzkv0Ek
-         x+gA==
-X-Gm-Message-State: AOAM530mq4AksaM2tu/Dndd7JPeka/760AaCjRPEOa8XRvU/zAc0VLin
-        /dT06Mz4NsyodXxxlzZ9vP30fizQWPlyIVvEjC0=
-X-Google-Smtp-Source: ABdhPJwUmXRp2xC9V4m4xZU4Jww/9AMAY3nxS9fB2d/LVjXF1qyegYzTj9deji0ITt3n2M7Ooin0mJ5IVdMUx4CsLZA=
-X-Received: by 2002:aa7:d74d:: with SMTP id a13mr1111123eds.199.1614977738465;
- Fri, 05 Mar 2021 12:55:38 -0800 (PST)
+        id S229591AbhCEV5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Mar 2021 16:57:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57188 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229493AbhCEV5u (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Mar 2021 16:57:50 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 477D0650A8;
+        Fri,  5 Mar 2021 21:57:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614981470;
+        bh=Aj0cFvIyz7NQcACEFdepojn3t06iDgfxmYBrnBVP67U=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eHiu5fHqQyZFvUxNqh5sWVMaDYQ89eJPH43cuBFseS+MNOfkq6/uCo7z/tyqHt5ZV
+         2CdqT6dydGQdvG67wTrszafQMJISXg8gSv7+mNERY3jtwQF+LlY/KkxrzXp5Ba75vO
+         DaxyvpeZkVJ4Dln8IvmPI+IPKtplJz1Ck1NK3ROgPojNCLan1IqCJUz1RZ8FiDMAvo
+         sC3DrQy97FksVY13wjRP3CtguFCxao33QXQOr8QQ+sX25FI0FcgN4g0fZ1QvC/HrXi
+         Fk3Poc6DBehy0Kj08Bx5ypxdhHaejai06cDnfBD8Q6jTXayr5eIoDdOg7RvYwn4Jui
+         X1LIY+0QJvUJw==
+Date:   Fri, 5 Mar 2021 15:57:49 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Vidya Sagar <vidyas@nvidia.com>
+Cc:     bhelgaas@google.com, lorenzo.pieralisi@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, andrew.murray@arm.com, treding@nvidia.com,
+        jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kthota@nvidia.com,
+        mmaddireddy@nvidia.com, sagar.tv@gmail.com,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+Subject: Re: [PATCH V3 2/2] PCI: Add MCFG quirks for Tegra194 host controllers
+Message-ID: <20210305215749.GA1117765@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20210209031744.26474-1-weidongcui@gmail.com> <MWHPR11MB1599D81078925FFD128E954EF0989@MWHPR11MB1599.namprd11.prod.outlook.com>
- <BYAPR11MB325658379DB73F6EEDD6C76F87979@BYAPR11MB3256.namprd11.prod.outlook.com>
- <CADFYyO73g8LkgwZv4m5N2bXq0XcZru4m9+K0uudCLmcp7yewpQ@mail.gmail.com>
- <BYAPR11MB3256FD804E3F3CE584B6D3B387979@BYAPR11MB3256.namprd11.prod.outlook.com>
- <BYAPR11MB3256B80EC10AF4965083CCD087969@BYAPR11MB3256.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB3256B80EC10AF4965083CCD087969@BYAPR11MB3256.namprd11.prod.outlook.com>
-Reply-To: weidongcui@gmail.com
-From:   Weidong Cui <weidongcui@gmail.com>
-Date:   Fri, 5 Mar 2021 12:55:26 -0800
-Message-ID: <CADFYyO5B2Mf50+gu6Dr7W3y9hGh9P2wOjyiYqJwLKcX_2pX8QA@mail.gmail.com>
-Subject: Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces
- only when ACPI_PCI_CONFIGURED is defined
-To:     "Moore, Robert" <robert.moore@intel.com>
-Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Xinyang Ge <aegiryy@gmail.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200110191500.9538-3-vidyas@nvidia.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 5, 2021 at 12:46 PM Moore, Robert <robert.moore@intel.com> wrote:
->
-> After giving this some thought, I think we can #define ACPI_PCI_CONFIGURED in the global configuration file (I think it is acconfig.h) - and document why and when it should be removed.
-> Bob
+[+cc Krzysztof for .bus_shift below]
 
-Hi Bob,
+This is [2/2] but I don't see a [1/2].  Is there something missing?
 
-Thank you very much for your new suggestion!  Let me make sure I understand it.
+On Sat, Jan 11, 2020 at 12:45:00AM +0530, Vidya Sagar wrote:
+> The PCIe controller in Tegra194 SoC is not completely ECAM-compliant.
+> With the current hardware design limitations in place, ECAM can be enabled
+> only for one controller (C5 controller to be precise) with bus numbers
+> starting from 160 instead of 0. A different approach is taken to avoid this
+> abnormal way of enabling ECAM for just one controller but to enable
+> configuration space access for all the other controllers. In this approach,
+> ops are added through MCFG quirk mechanism which access the configuration
+> spaces by dynamically programming iATU (internal AddressTranslation Unit)
+> to generate respective configuration accesses just like the way it is
+> done in DesignWare core sub-system.
 
-1. We should move the following define from aclinux.h to acconfig.h.
+Is this a published erratum in the device?  The purpose of specs is so
+we can run existing code on new platforms without having to add quirks
+like this, so I'm looking for some acknowledgement that this is an
+issue that will be fixed in future designs.
 
-#ifdef CONFIG_PCI
-#define ACPI_PCI_CONFIGURED
-#endif
+Ideally this would be a URL to published errata, and we would include
+the text or a synopsis here in the commit log.
 
-2. We should add a comment there to "document why and when it should
-be removed".
-I don't really know "why and when" since I'm not an expert on ACPI (we
-were just trying
-to fix a bug :-)).
+> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> Reported-by: kbuild test robot <lkp@intel.com>
 
-Thanks!
-Weidong
+What is this "Reported-by" telling me?  Normally this would be a
+person who could supply more information about a defect we're fixing
+and might be able to test the fix.
 
-> -----Original Message-----
-> From: Moore, Robert <robert.moore@intel.com>
-> Sent: Thursday, March 04, 2021 9:37 AM
-> To: weidongcui@gmail.com
-> Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org
-> Subject: [Devel] Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is defined
->
->
->
-> -----Original Message-----
-> From: Weidong Cui <weidongcui@gmail.com>
-> Sent: Thursday, March 04, 2021 9:06 AM
-> To: Moore, Robert <robert.moore@intel.com>
-> Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; Len Brown <lenb@kernel.org>
-> Subject: Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is defined
->
-> > Well, I don't like the fact that PCI_CONFIGURED would have to be defined by each current host:
-> >
-> > > +#ifdef ACPI_PCI_CONFIGURED
-> >
-> > I would rather the logic be reversed:
-> >
-> > > +#ifdef ACPI_PCI_NOT_CONFIGURED
->
-> Thank you for the comments, Erik and Bob!
->
-> ACPI_PCI_CONFIGURED is defined in aclinux.h (see below) and used in several places in evhandler.c and exregion.c.
-> I'm not sure why we want to introduce ACPI_PCI_NOT_CONFIGURED.  Bob, I don't understand your concerns about "have to be defined by each current host".  Can you please shed some light on it?
->
-> It is required in aclinux.h, and thus it is required in every host-dependent configuration file (acfreebsd.h, acmacosx.h, acnetbsd.h, achaiku.h, etc.) I would rather not force these host-specific header files to change.
-> Bob
->
->
-> #ifdef CONFIG_PCI
-> #define ACPI_PCI_CONFIGURED
-> #endif
->
-> > -----Original Message-----
-> > From: Kaneda, Erik <erik.kaneda@intel.com>
-> > Sent: Wednesday, March 03, 2021 10:29 AM
-> > To: Weidong Cui <weidongcui@gmail.com>; Moore, Robert
-> > <robert.moore@intel.com>; Wysocki, Rafael J
-> > <rafael.j.wysocki@intel.com>
-> > Cc: Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org;
-> > devel@acpica.org; linux-kernel@vger.kernel.org; Len Brown
-> > <lenb@kernel.org>
-> > Subject: RE: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in
-> > acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is
-> > defined
-> >
-> > This looks good to me. Bob, do you have any comments?
-> >
-> > Erik
-> >
-> > > -----Original Message-----
-> > > From: Weidong Cui <weidongcui@gmail.com>
-> > > Sent: Monday, February 8, 2021 7:18 PM
-> > > To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
-> > > <erik.kaneda@intel.com>; Wysocki, Rafael J
-> > > <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>
-> > > Cc: Weidong Cui <weidongcui@gmail.com>; Xinyang Ge
-> > > <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org;
-> > > linux- kernel@vger.kernel.org
-> > > Subject: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in
-> > > acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is
-> > > defined
-> > >
-> > > Signed-off-by: Weidong Cui <weidongcui@gmail.com>
-> > > Signed-off-by: Xinyang Ge <aegiryy@gmail.com>
-> > > ---
-> > >  drivers/acpi/acpica/evhandler.c | 2 ++
-> > >  include/acpi/acconfig.h         | 4 ++++
-> > >  2 files changed, 6 insertions(+)
-> > >
-> > > diff --git a/drivers/acpi/acpica/evhandler.c
-> > > b/drivers/acpi/acpica/evhandler.c index 5884eba04..4c25ad433 100644
-> > > --- a/drivers/acpi/acpica/evhandler.c
-> > > +++ b/drivers/acpi/acpica/evhandler.c
-> > > @@ -26,7 +26,9 @@ acpi_ev_install_handler(acpi_handle obj_handle,
-> > >  u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
-> > >       ACPI_ADR_SPACE_SYSTEM_MEMORY,
-> > >       ACPI_ADR_SPACE_SYSTEM_IO,
-> > > +#ifdef ACPI_PCI_CONFIGURED
-> > >       ACPI_ADR_SPACE_PCI_CONFIG,
-> > > +#endif
-> > >       ACPI_ADR_SPACE_DATA_TABLE
-> > >  };
-> > >
-> > > diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h index
-> > > a225eff49..790999028 100644
-> > > --- a/include/acpi/acconfig.h
-> > > +++ b/include/acpi/acconfig.h
-> > > @@ -162,7 +162,11 @@
-> > >  /* Maximum space_ids for Operation Regions */
-> > >
-> > >  #define ACPI_MAX_ADDRESS_SPACE          255
-> > > +#ifdef ACPI_PCI_CONFIGURED
-> > >  #define ACPI_NUM_DEFAULT_SPACES         4
-> > > +#else
-> > > +#define ACPI_NUM_DEFAULT_SPACES         3
-> > > +#endif
-> > >
-> > >  /* Array sizes.  Used for range checking also */
-> > >
-> > > --
-> > > 2.24.3 (Apple Git-128)
-> >
-> _______________________________________________
-> Devel mailing list -- devel@acpica.org
-> To unsubscribe send an email to devel-leave@acpica.org %(web_page_url)slistinfo%(cgiext)s/%(_internal_name)s
+> ---
+> V3:
+> * Removed MCFG address hardcoding in pci_mcfg.c file
+> * Started using 'dbi_base' for accessing root port's own config space
+> * and using 'config_base' for accessing config space of downstream hierarchy
+> 
+> V2:
+> * Fixed build issues reported by kbuild test bot
+
+Ah, I see this is probably where the "Reported-by" came from.  To me,
+it would make sense to add the tag if the commit *only* fixes the
+build problem so it's obvious what the robot reported.
+
+But here, the build fix got squashed in before merging, so it's more
+like a general review comment and I think the robot's response on the
+mailing list is probably enough.
+
+>  drivers/acpi/pci_mcfg.c                    |   7 ++
+>  drivers/pci/controller/dwc/Kconfig         |   3 +-
+>  drivers/pci/controller/dwc/Makefile        |   2 +-
+>  drivers/pci/controller/dwc/pcie-tegra194.c | 102 +++++++++++++++++++++
+>  include/linux/pci-ecam.h                   |   1 +
+>  5 files changed, 113 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+> index 6b347d9920cc..707181408173 100644
+> --- a/drivers/acpi/pci_mcfg.c
+> +++ b/drivers/acpi/pci_mcfg.c
+> @@ -116,6 +116,13 @@ static struct mcfg_fixup mcfg_quirks[] = {
+>  	THUNDER_ECAM_QUIRK(2, 12),
+>  	THUNDER_ECAM_QUIRK(2, 13),
+>  
+> +	{ "NVIDIA", "TEGRA194", 1, 0, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +	{ "NVIDIA", "TEGRA194", 1, 1, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +	{ "NVIDIA", "TEGRA194", 1, 2, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +	{ "NVIDIA", "TEGRA194", 1, 3, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +	{ "NVIDIA", "TEGRA194", 1, 4, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +	{ "NVIDIA", "TEGRA194", 1, 5, MCFG_BUS_ANY, &tegra194_pcie_ops},
+> +
+>  #define XGENE_V1_ECAM_MCFG(rev, seg) \
+>  	{"APM   ", "XGENE   ", rev, seg, MCFG_BUS_ANY, \
+>  		&xgene_v1_pcie_ecam_ops }
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> index 0830dfcfa43a..f5b9e75aceed 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -255,7 +255,8 @@ config PCIE_TEGRA194
+>  	select PHY_TEGRA194_P2U
+>  	help
+>  	  Say Y here if you want support for DesignWare core based PCIe host
+> -	  controller found in NVIDIA Tegra194 SoC.
+> +	  controller found in NVIDIA Tegra194 SoC. ACPI platforms with Tegra194
+> +	  don't need to enable this.
+>  
+>  config PCIE_UNIPHIER
+>  	bool "Socionext UniPhier PCIe controllers"
+> diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
+> index 8a637cfcf6e9..76a6c52b8500 100644
+> --- a/drivers/pci/controller/dwc/Makefile
+> +++ b/drivers/pci/controller/dwc/Makefile
+> @@ -17,7 +17,6 @@ obj-$(CONFIG_PCIE_INTEL_GW) += pcie-intel-gw.o
+>  obj-$(CONFIG_PCIE_KIRIN) += pcie-kirin.o
+>  obj-$(CONFIG_PCIE_HISI_STB) += pcie-histb.o
+>  obj-$(CONFIG_PCI_MESON) += pci-meson.o
+> -obj-$(CONFIG_PCIE_TEGRA194) += pcie-tegra194.o
+>  obj-$(CONFIG_PCIE_UNIPHIER) += pcie-uniphier.o
+>  
+>  # The following drivers are for devices that use the generic ACPI
+> @@ -33,4 +32,5 @@ obj-$(CONFIG_PCIE_UNIPHIER) += pcie-uniphier.o
+>  ifdef CONFIG_PCI
+>  obj-$(CONFIG_ARM64) += pcie-al.o
+>  obj-$(CONFIG_ARM64) += pcie-hisi.o
+> +obj-$(CONFIG_ARM64) += pcie-tegra194.o
+>  endif
+> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+> index cbe95f0ea0ca..660f55caa8be 100644
+> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
+> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+> @@ -21,6 +21,8 @@
+>  #include <linux/of_irq.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/pci.h>
+> +#include <linux/pci-acpi.h>
+> +#include <linux/pci-ecam.h>
+>  #include <linux/phy/phy.h>
+>  #include <linux/pinctrl/consumer.h>
+>  #include <linux/platform_device.h>
+> @@ -285,6 +287,103 @@ struct tegra_pcie_dw {
+>  	struct dentry *debugfs;
+>  };
+>  
+> +#if defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS)
+> +struct tegra194_pcie_acpi  {
+> +	void __iomem *config_base;
+> +	void __iomem *iatu_base;
+> +	void __iomem *dbi_base;
+> +};
+> +
+> +static int tegra194_acpi_init(struct pci_config_window *cfg)
+> +{
+> +	struct device *dev = cfg->parent;
+> +	struct tegra194_pcie_acpi *pcie;
+
+"pcie" doesn't seem like the best name for this since everywhere else
+in this driver, "pcie" is a "struct tegra_pcie_dw *".  Maybe "mcfg"
+or similar?
+
+With some rename of tegra194_pcie_acpi along the same lines, since it
+really isn't ACPI-specific.  It's just that the ACPI MCFG table
+happens to be the way to discover the ECAM address space.
+
+> +	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+> +	if (!pcie)
+> +		return -ENOMEM;
+> +
+> +	pcie->config_base = cfg->win;
+> +	pcie->iatu_base = cfg->win + SZ_256K;
+> +	pcie->dbi_base = cfg->win + SZ_512K;
+> +	cfg->priv = pcie;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline void atu_reg_write(struct tegra194_pcie_acpi *pcie, int index,
+> +				 u32 val, u32 reg)
+
+"inline" is pointless, I think, since this isn't a performance path
+and the compiler will probably inline it by itself.
+
+> +{
+> +	u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
+> +
+> +	writel(val, pcie->iatu_base + offset + reg);
+> +}
+> +
+> +static void program_outbound_atu(struct tegra194_pcie_acpi *pcie, int index,
+> +				 int type, u64 cpu_addr, u64 pci_addr, u64 size)
+> +{
+> +	atu_reg_write(pcie, index, lower_32_bits(cpu_addr),
+> +		      PCIE_ATU_LOWER_BASE);
+> +	atu_reg_write(pcie, index, upper_32_bits(cpu_addr),
+> +		      PCIE_ATU_UPPER_BASE);
+> +	atu_reg_write(pcie, index, lower_32_bits(pci_addr),
+> +		      PCIE_ATU_LOWER_TARGET);
+> +	atu_reg_write(pcie, index, lower_32_bits(cpu_addr + size - 1),
+> +		      PCIE_ATU_LIMIT);
+> +	atu_reg_write(pcie, index, upper_32_bits(pci_addr),
+> +		      PCIE_ATU_UPPER_TARGET);
+> +	atu_reg_write(pcie, index, type, PCIE_ATU_CR1);
+> +	atu_reg_write(pcie, index, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
+> +}
+> +
+> +static void __iomem *tegra194_map_bus(struct pci_bus *bus,
+> +				      unsigned int devfn, int where)
+> +{
+> +	struct pci_config_window *cfg = bus->sysdata;
+> +	struct tegra194_pcie_acpi *pcie = cfg->priv;
+> +	u32 busdev;
+> +	int type;
+> +
+> +	if (bus->number < cfg->busr.start || bus->number > cfg->busr.end)
+> +		return NULL;
+> +
+> +	if (bus->number == cfg->busr.start) {
+> +		if (PCI_SLOT(devfn) == 0)
+> +			return pcie->dbi_base + where;
+> +		else
+> +			return NULL;
+> +	}
+> +
+> +	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+> +		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+> +
+> +	if (bus->parent->number == cfg->busr.start) {
+> +		if (PCI_SLOT(devfn) == 0)
+> +			type = PCIE_ATU_TYPE_CFG0;
+> +		else
+> +			return NULL;
+> +	} else {
+> +		type = PCIE_ATU_TYPE_CFG1;
+> +	}
+> +
+> +	program_outbound_atu(pcie, PCIE_ATU_REGION_INDEX0, type,
+> +			     cfg->res.start, busdev, SZ_256K);
+
+I don't see a PCIE_ATU_REGION_INDEX0 definition.  Maybe that's what's
+in the [1/2] patch?  I guess there's some way to be sure this ATU
+isn't used for other purposes?
+
+> +	return (void __iomem *)(pcie->config_base + where);
+
+Isn't the type correct even without the cast, same as above for
+"pcie->dbi_base + where"?
+
+> +}
+> +
+> +struct pci_ecam_ops tegra194_pcie_ops = {
+> +	.bus_shift	= 20,
+
+I think e7708f5b10e2 ("PCI: Unify ECAM constants in native PCI Express
+drivers") means you don't need this .bus_shift.
+
+> +	.init		= tegra194_acpi_init,
+> +	.pci_ops	= {
+> +		.map_bus	= tegra194_map_bus,
+> +		.read		= pci_generic_config_read,
+> +		.write		= pci_generic_config_write,
+> +	}
+> +};
+> +#endif /* defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS) */
+> +
+> +#ifdef CONFIG_PCIE_TEGRA194
+> +
+>  static inline struct tegra_pcie_dw *to_tegra_pcie(struct dw_pcie *pci)
+>  {
+>  	return container_of(pci, struct tegra_pcie_dw, pci);
+> @@ -1728,3 +1827,6 @@ MODULE_DEVICE_TABLE(of, tegra_pcie_dw_of_match);
+>  MODULE_AUTHOR("Vidya Sagar <vidyas@nvidia.com>");
+>  MODULE_DESCRIPTION("NVIDIA PCIe host controller driver");
+>  MODULE_LICENSE("GPL v2");
+> +
+> +#endif /* CONFIG_PCIE_TEGRA194 */
+> +
+> diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
+> index a73164c85e78..6156140dcbb6 100644
+> --- a/include/linux/pci-ecam.h
+> +++ b/include/linux/pci-ecam.h
+> @@ -57,6 +57,7 @@ extern struct pci_ecam_ops pci_thunder_ecam_ops; /* Cavium ThunderX 1.x */
+>  extern struct pci_ecam_ops xgene_v1_pcie_ecam_ops; /* APM X-Gene PCIe v1 */
+>  extern struct pci_ecam_ops xgene_v2_pcie_ecam_ops; /* APM X-Gene PCIe v2.x */
+>  extern struct pci_ecam_ops al_pcie_ops; /* Amazon Annapurna Labs PCIe */
+> +extern struct pci_ecam_ops tegra194_pcie_ops; /* Tegra194 PCIe */
+>  #endif
+>  
+>  #ifdef CONFIG_PCI_HOST_COMMON
+> -- 
+> 2.17.1
+> 
