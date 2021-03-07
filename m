@@ -2,87 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC2832FB38
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Mar 2021 15:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1574832FE4D
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Mar 2021 02:19:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230249AbhCFOin (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 Mar 2021 09:38:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35086 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230477AbhCFOiR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 6 Mar 2021 09:38:17 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9909F64EBD;
-        Sat,  6 Mar 2021 14:38:15 +0000 (UTC)
-Date:   Sat, 6 Mar 2021 14:38:12 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v1 3/4] IIO: acpi-als: Get rid of ACPICA message
- printing
-Message-ID: <20210306143812.4da7b32e@archlinux>
-In-Reply-To: <6250192.e2TqKytQZN@kreacher>
-References: <2775419.haJ69vZeI0@kreacher>
-        <6250192.e2TqKytQZN@kreacher>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S230056AbhCGBSS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 6 Mar 2021 20:18:18 -0500
+Received: from mail-qt1-f172.google.com ([209.85.160.172]:43156 "EHLO
+        mail-qt1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230053AbhCGBSF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Mar 2021 20:18:05 -0500
+Received: by mail-qt1-f172.google.com with SMTP id l14so2185207qtr.10;
+        Sat, 06 Mar 2021 17:18:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=L2b25z/IaYQj4qXr6EBnNHfy1oGsb8L5IXw+1eFrXEk=;
+        b=XTP4IOcwoXIxOSTQuW0ZpPuIVWmZ4lK7dEAy7BAWlIYo+5RZ7a5JHlorIozbMKTplE
+         HEZfAiOxi8OV17vlKSQc7YZQ6hc/4eYL5CrQ3kH4sZyb4cWA+7CqH9uQniugvrjM3nWP
+         SyFBUW1nNPVCFK5P2PEKeXhEKL859bDNeqWWXPNA7EE4d/JZYZZl54t++07zkPb8Ib72
+         gu4tbCR26nV2hNKuwjb1g+YZOrkpAj+1v+hlqHggzVgCsxLp+mlWDJPw8TVab63owwOY
+         B02ehUIQ8JzY9+Hr8XND4kHi6HgkfCiylkDbF/kpkJ6NxYjGYqnaZVoANuA4EWUY9PP7
+         M3PA==
+X-Gm-Message-State: AOAM531R8x4dUFUgkS/K8e7Cqmiu2NqDHbuy6Dh2DqGfZbvLnrhjSPen
+        FMgvI4bnggoh78sMBwKPg/k+KoARMrJsZYEW
+X-Google-Smtp-Source: ABdhPJy5UpugTBIUvUPYV+bKOYYknMsymvxTPXUqPw3z+eGIJp30YlXptyA+8RfSAwhv2ay9u7DmGQ==
+X-Received: by 2002:ac8:b4b:: with SMTP id m11mr15714636qti.254.1615079884953;
+        Sat, 06 Mar 2021 17:18:04 -0800 (PST)
+Received: from rocinante ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id r67sm4799808qkd.93.2021.03.06.17.18.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Mar 2021 17:18:04 -0800 (PST)
+Date:   Sun, 7 Mar 2021 02:18:01 +0100
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     chakravarthikulkarni <chakravarthikulkarni2021@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: acpiphp:  Fixed coding style
+Message-ID: <YEQpyWPgAI8az5gO@rocinante>
+References: <20210301072145.19018-1-chakravarthikulkarni2021@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210301072145.19018-1-chakravarthikulkarni2021@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 05 Mar 2021 19:42:29 +0100
-"Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+Hi,
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Use acpi_evaluation_failure_warn() introduced previously instead of
-> the ACPICA-specific ACPI_EXCEPTION() macro to log warning messages
-> regarding ACPI object evaluation failures and drop the
-> ACPI_MODULE_NAME() definition only used by the ACPICA message
-> printing macro.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Thank you for sending the patch over.  Few suggestions below.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+There seem to be an extra space in the subject line.
 
-> ---
->  drivers/iio/light/acpi-als.c |    4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> Index: linux-pm/drivers/iio/light/acpi-als.c
-> ===================================================================
-> --- linux-pm.orig/drivers/iio/light/acpi-als.c
-> +++ linux-pm/drivers/iio/light/acpi-als.c
-> @@ -26,8 +26,6 @@
->  #define ACPI_ALS_DEVICE_NAME		"acpi-als"
->  #define ACPI_ALS_NOTIFY_ILLUMINANCE	0x80
->  
-> -ACPI_MODULE_NAME("acpi-als");
-> -
->  /*
->   * So far, there's only one channel in here, but the specification for
->   * ACPI0008 says there can be more to what the block can report. Like
-> @@ -91,7 +89,7 @@ static int acpi_als_read_value(struct ac
->  				       &temp_val);
->  
->  	if (ACPI_FAILURE(status)) {
-> -		ACPI_EXCEPTION((AE_INFO, status, "Error reading ALS %s", prop));
-> +		acpi_evaluation_failure_warn(als->device->handle, prop, status);
->  		return -EIO;
->  	}
->  
-> 
-> 
-> 
+> In this commit fixed coding style for braces and comments.
 
+Where these coding style changes suggested by a tool?  For example, was it
+something like checkpatch.pl?  If so, then it would be prudent to
+mention that the script found these for future reference.
+
+[...]
+> -	struct list_head funcs;		/* one slot may have different
+> -					   objects (i.e. for each function) */
+> +	struct list_head funcs;		/* one slot may have different */
+> +					/* objects (i.e. for each function) */
+[...]
+
+Above would be a single line commit that has been made to with within
+the line length rules, as otherwise the line would be too long.
+
+This is not necessarily something that we ought to fix, see for example:
+  https://elixir.bootlin.com/linux/v5.11.3/source/include/linux/pci.h
+
+[...]
+> -struct acpiphp_attention_info
+> -{
+> +struct acpiphp_attention_info {
+>  	int (*set_attn)(struct hotplug_slot *slot, u8 status);
+>  	int (*get_attn)(struct hotplug_slot *slot, u8 *status);
+>  	struct module *owner;
+[...]
+
+Nice catch!
+
+Generally, you would also need to your full name when providing your
+"Signed-off-by:" following the style that has been widely accepted.  See
+git log for how it would normally look like, and also have a look at the
+following for some general guidance on how to submit patches:
+
+  https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+
+Krzysztof
