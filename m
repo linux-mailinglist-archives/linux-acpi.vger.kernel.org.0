@@ -2,203 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C468330207
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Mar 2021 15:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC1B33049E
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Mar 2021 21:40:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbhCGOXM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 Mar 2021 09:23:12 -0500
-Received: from mga11.intel.com ([192.55.52.93]:19604 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229757AbhCGOWv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 7 Mar 2021 09:22:51 -0500
-IronPort-SDR: QXFx4bURNfGhlpzkY00FgbDz0cJv/bO6am2kGSCEXe0+FTY97S0oolfhXtMi9WljwIE/o4zj9S
- 0KBBI7RMsNBQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9916"; a="184531032"
-X-IronPort-AV: E=Sophos;i="5.81,230,1610438400"; 
-   d="scan'208";a="184531032"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2021 06:22:51 -0800
-IronPort-SDR: gIWYoReKf6pdxmmgJUy0onQpT1UwsXXFHd5YXIhy5LScWtErvIgcUAT2zii6O/Jzj7RufZPkrF
- HsRL/7+90Hng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,230,1610438400"; 
-   d="scan'208";a="402504422"
-Received: from lkp-server01.sh.intel.com (HELO 3e992a48ca98) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 07 Mar 2021 06:22:49 -0800
-Received: from kbuild by 3e992a48ca98 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lIuIy-0000R7-PN; Sun, 07 Mar 2021 14:22:48 +0000
-Date:   Sun, 07 Mar 2021 22:22:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 5c476073a9df062a501edf9ea7b11ccc53c27bf7
-Message-ID: <6044e18e.bJjTnUBj+uJ5MB4v%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S232922AbhCGUkN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 Mar 2021 15:40:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231732AbhCGUjg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Mar 2021 15:39:36 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76BCC06174A;
+        Sun,  7 Mar 2021 12:39:35 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id kr3-20020a17090b4903b02900c096fc01deso1928791pjb.4;
+        Sun, 07 Mar 2021 12:39:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ksneqLZ9zvuj+Q9Pi6/GCANghUOfFQNIq6D+RQ8519s=;
+        b=gsBwdgKy0qJ/sWj2BknIzEzST332yyHdoW5xYOtq9fWcfHflnhmaGhq2v6q3a4IYmj
+         4m0L+gBQsxS6lqDfeq7qXVpJa/1xFLnOtrpduuYufDMwijEVDsiVCTrifmiuqRHxy4D7
+         hLPkAgOp1xjPHPBPLFjlvyGFa7ikTYDXjMVWzPUK/5feTbTPDv+eJWQhQcsrNEjHQIp6
+         xh2gqgD09F6/3L4HXirWiqukMjWmlgiMFw0TDgmAeTr9NHY8yVNQyppk+HAKOREQHwFZ
+         79dWlj2kWlC85Y2y3L72bZ8CmWcgy+y7cDQG3rf24DBn73gv54r1lQ9diZdY+lzLWWdG
+         BNDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ksneqLZ9zvuj+Q9Pi6/GCANghUOfFQNIq6D+RQ8519s=;
+        b=sAzzl0ww9gGcTOGzkzgfrv8fsGsVOCkwWkZrsKcPyhU0rrthrEe2vBR2UTi/9MrNEt
+         LuVFOKYGkJ9fbRZIxblBd+l4Veyaq1FFARG9qwX8pl5DzJLLv5pRvBoql++5f0eprRVf
+         kl60x419A8GBrul7HnUvk2RqWoUvDPX2s5GK7z5RU8YbSSp4vZsq49jOj2dDKkNmNxin
+         cW8Lgr7jAxqSdVgSW6yNN9rZMkrdjmqGdHw7Hzb1jv5AXyXyiHHqnkYaJp4rUvj21S/O
+         yjQm6ajHlTF0MUR3CVSrXTA6TKUVKSz2cUdDcSnWHCSa2J4TNC5+sP5Z+pTaEQ/NXIUF
+         uMfg==
+X-Gm-Message-State: AOAM531vpV+zKi/10qhzhHJdy0XPeUo6h/Qq3O0wGIYtDzkDoxOE5K7n
+        AV0MWNrsVgoPEpZHI3vvEy3TQk77hVSeepgGMCw=
+X-Google-Smtp-Source: ABdhPJxlj04alWLqhDKdUE58NU9W7umO8MwZXqbfilTz4/eiKjejZ6M4QMIuwTi82BfFMcr9ywapb7y/aJ9mm6zMO+c=
+X-Received: by 2002:a17:902:d2c1:b029:e5:ccfe:1e93 with SMTP id
+ n1-20020a170902d2c1b02900e5ccfe1e93mr17949404plc.0.1615149575234; Sun, 07 Mar
+ 2021 12:39:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20210222130735.1313443-1-djrscally@gmail.com> <20210222130735.1313443-2-djrscally@gmail.com>
+ <CAHp75VfPuDjt=ZfHkwErF7_6Ks6wpqXO8mtq-2KjV+mU_PXFtg@mail.gmail.com> <615bad5e-6e68-43c9-dd0b-f26d2832d52f@gmail.com>
+In-Reply-To: <615bad5e-6e68-43c9-dd0b-f26d2832d52f@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 7 Mar 2021 22:39:18 +0200
+Message-ID: <CAHp75Vc2iwvh1RiYmQDPSvgNvGT_gBcGTK67F+MhWgXyoxqn0A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] ACPI: scan: Extend acpi_walk_dep_device_list()
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        kieran.bingham+renesas@ideasonboard.com,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>, me@fabwu.ch,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 5c476073a9df062a501edf9ea7b11ccc53c27bf7  Merge branches 'acpi-drivers' and 'acpi-bus' into linux-next
+On Sun, Mar 7, 2021 at 3:36 PM Daniel Scally <djrscally@gmail.com> wrote:
+> On 22/02/2021 13:34, Andy Shevchenko wrote:
+> > On Mon, Feb 22, 2021 at 3:12 PM Daniel Scally <djrscally@gmail.com> wrote:
+> >> The acpi_walk_dep_device_list() is not as generalisable as its name
+> >> implies, serving only to decrement the dependency count for each
+> >> dependent device of the input. Extend the function to instead accept
+> >> a callback which can be applied to all the dependencies in acpi_dep_list.
+> >> Replace all existing calls to the function with calls to a wrapper, passing
+> >> a callback that applies the same dependency reduction.
+> > The code looks okay to me, if it was the initial idea, feel free to add
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>
+>
+> Thank you!
+>
+>
+> >> + */
+> >> +void acpi_dev_flag_dependency_met(acpi_handle handle)
+> >> +{
+> > Since it's acpi_dev_* namespace, perhaps it should take struct acpi_device here?
+>
+>
+> I can do this, but I avoided it because in most of the uses in the
+> kernel currently there's no struct acpi_device, they're just passing
+> ACPI_HANDLE(dev) instead, so I'd need to get the adev with
+> ACPI_COMPANION() in each place. It didn't seem worth it...but happy to
+> do it if you'd prefer it that way?
 
-elapsed time: 721m
+I see, let Rafael decide then. I'm not pushing here.
 
-configs tested: 140
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                        sh7763rdp_defconfig
-powerpc                          g5_defconfig
-xtensa                    smp_lx200_defconfig
-csky                             alldefconfig
-arm                         orion5x_defconfig
-powerpc                      pasemi_defconfig
-arc                              allyesconfig
-powerpc                    klondike_defconfig
-sh                            titan_defconfig
-arm                       aspeed_g4_defconfig
-mips                      malta_kvm_defconfig
-arm                         lubbock_defconfig
-mips                            e55_defconfig
-powerpc                      ppc44x_defconfig
-powerpc                    ge_imp3a_defconfig
-arm                         hackkit_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arc                         haps_hs_defconfig
-powerpc                      arches_defconfig
-sh                          rsk7264_defconfig
-arm                         bcm2835_defconfig
-mips                     decstation_defconfig
-powerpc                 mpc8560_ads_defconfig
-arm                          pcm027_defconfig
-arm                          lpd270_defconfig
-riscv                    nommu_k210_defconfig
-sparc                            allyesconfig
-mips                        maltaup_defconfig
-sh                        sh7785lcr_defconfig
-mips                  maltasmvp_eva_defconfig
-powerpc                     ep8248e_defconfig
-powerpc                     sbc8548_defconfig
-parisc                generic-32bit_defconfig
-powerpc                     tqm8555_defconfig
-sh                          r7780mp_defconfig
-powerpc                      bamboo_defconfig
-parisc                generic-64bit_defconfig
-arc                           tb10x_defconfig
-ia64                                defconfig
-sparc                       sparc64_defconfig
-mips                           ci20_defconfig
-s390                       zfcpdump_defconfig
-mips                     cu1000-neo_defconfig
-arm                        keystone_defconfig
-sh                           se7705_defconfig
-nios2                            alldefconfig
-sh                   sh7724_generic_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                            q40_defconfig
-mips                           rs90_defconfig
-arm                          pxa3xx_defconfig
-arc                      axs103_smp_defconfig
-mips                  decstation_64_defconfig
-powerpc                     tqm8560_defconfig
-microblaze                          defconfig
-mips                         tb0287_defconfig
-powerpc                     tqm8541_defconfig
-sh                          landisk_defconfig
-mips                       rbtx49xx_defconfig
-arm                       versatile_defconfig
-arm                          pxa910_defconfig
-mips                 decstation_r4k_defconfig
-mips                         tb0219_defconfig
-powerpc                     redwood_defconfig
-m68k                          sun3x_defconfig
-sh                        apsh4ad0a_defconfig
-arm                        shmobile_defconfig
-sh                           se7724_defconfig
-powerpc                       holly_defconfig
-powerpc                          allmodconfig
-ia64                             allyesconfig
-ia64                             allmodconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210307
-i386                 randconfig-a003-20210307
-i386                 randconfig-a002-20210307
-i386                 randconfig-a004-20210307
-i386                 randconfig-a006-20210307
-i386                 randconfig-a001-20210307
-x86_64               randconfig-a013-20210307
-x86_64               randconfig-a016-20210307
-x86_64               randconfig-a015-20210307
-x86_64               randconfig-a014-20210307
-x86_64               randconfig-a012-20210307
-x86_64               randconfig-a011-20210307
-i386                 randconfig-a016-20210307
-i386                 randconfig-a012-20210307
-i386                 randconfig-a013-20210307
-i386                 randconfig-a011-20210307
-i386                 randconfig-a015-20210307
-i386                 randconfig-a014-20210307
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a006-20210307
-x86_64               randconfig-a001-20210307
-x86_64               randconfig-a004-20210307
-x86_64               randconfig-a005-20210307
-x86_64               randconfig-a002-20210307
-x86_64               randconfig-a003-20210307
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+With Best Regards,
+Andy Shevchenko
