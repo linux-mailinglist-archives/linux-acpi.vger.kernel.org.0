@@ -2,116 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC1B33049E
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Mar 2021 21:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB1633053A
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Mar 2021 00:55:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232922AbhCGUkN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 Mar 2021 15:40:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
+        id S233308AbhCGXyn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 Mar 2021 18:54:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbhCGUjg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Mar 2021 15:39:36 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76BCC06174A;
-        Sun,  7 Mar 2021 12:39:35 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id kr3-20020a17090b4903b02900c096fc01deso1928791pjb.4;
-        Sun, 07 Mar 2021 12:39:35 -0800 (PST)
+        with ESMTP id S231894AbhCGXyS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Mar 2021 18:54:18 -0500
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31964C06174A;
+        Sun,  7 Mar 2021 15:54:18 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id l7so6062204pfd.3;
+        Sun, 07 Mar 2021 15:54:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ksneqLZ9zvuj+Q9Pi6/GCANghUOfFQNIq6D+RQ8519s=;
-        b=gsBwdgKy0qJ/sWj2BknIzEzST332yyHdoW5xYOtq9fWcfHflnhmaGhq2v6q3a4IYmj
-         4m0L+gBQsxS6lqDfeq7qXVpJa/1xFLnOtrpduuYufDMwijEVDsiVCTrifmiuqRHxy4D7
-         hLPkAgOp1xjPHPBPLFjlvyGFa7ikTYDXjMVWzPUK/5feTbTPDv+eJWQhQcsrNEjHQIp6
-         xh2gqgD09F6/3L4HXirWiqukMjWmlgiMFw0TDgmAeTr9NHY8yVNQyppk+HAKOREQHwFZ
-         79dWlj2kWlC85Y2y3L72bZ8CmWcgy+y7cDQG3rf24DBn73gv54r1lQ9diZdY+lzLWWdG
-         BNDg==
+        h=from:to:cc:subject:date:message-id;
+        bh=8R7+UaAKzntZZEV87N+admABCX8PPQ5Cic70DpQyEY0=;
+        b=cvbo2oY/11KlR6OFS2NCBxNr3WyqdE/7yJGqyU4BRTSafcUADTHpQJDeqQpnapgddH
+         xyjsg+6NNCJsmPIZWsS/5Un1Jp5sZ63+Knel1fcM+j+d157ofWQid1dZ4Z//XRwcBKNK
+         IfDgLFChCtBYj+YXZlq3WpW1uYidj1MCoxlsC5lmoiKtaMR8Tsm/CPxPJkm3o5BMvlYV
+         KU/z/kb2xqnAJzW04QGDm+SWVvG8gA2y9aJ0oTxI7qFup3wPRsSmmGMMQN4As3+uN84h
+         iZ5ylwK3dW41KCe9JjjfPCVRfpqoc8n3Wy/cfxiNFUgzsHA9gq5ZcwMTysXGVXUCLdS+
+         iMrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ksneqLZ9zvuj+Q9Pi6/GCANghUOfFQNIq6D+RQ8519s=;
-        b=sAzzl0ww9gGcTOGzkzgfrv8fsGsVOCkwWkZrsKcPyhU0rrthrEe2vBR2UTi/9MrNEt
-         LuVFOKYGkJ9fbRZIxblBd+l4Veyaq1FFARG9qwX8pl5DzJLLv5pRvBoql++5f0eprRVf
-         kl60x419A8GBrul7HnUvk2RqWoUvDPX2s5GK7z5RU8YbSSp4vZsq49jOj2dDKkNmNxin
-         cW8Lgr7jAxqSdVgSW6yNN9rZMkrdjmqGdHw7Hzb1jv5AXyXyiHHqnkYaJp4rUvj21S/O
-         yjQm6ajHlTF0MUR3CVSrXTA6TKUVKSz2cUdDcSnWHCSa2J4TNC5+sP5Z+pTaEQ/NXIUF
-         uMfg==
-X-Gm-Message-State: AOAM531vpV+zKi/10qhzhHJdy0XPeUo6h/Qq3O0wGIYtDzkDoxOE5K7n
-        AV0MWNrsVgoPEpZHI3vvEy3TQk77hVSeepgGMCw=
-X-Google-Smtp-Source: ABdhPJxlj04alWLqhDKdUE58NU9W7umO8MwZXqbfilTz4/eiKjejZ6M4QMIuwTi82BfFMcr9ywapb7y/aJ9mm6zMO+c=
-X-Received: by 2002:a17:902:d2c1:b029:e5:ccfe:1e93 with SMTP id
- n1-20020a170902d2c1b02900e5ccfe1e93mr17949404plc.0.1615149575234; Sun, 07 Mar
- 2021 12:39:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20210222130735.1313443-1-djrscally@gmail.com> <20210222130735.1313443-2-djrscally@gmail.com>
- <CAHp75VfPuDjt=ZfHkwErF7_6Ks6wpqXO8mtq-2KjV+mU_PXFtg@mail.gmail.com> <615bad5e-6e68-43c9-dd0b-f26d2832d52f@gmail.com>
-In-Reply-To: <615bad5e-6e68-43c9-dd0b-f26d2832d52f@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 7 Mar 2021 22:39:18 +0200
-Message-ID: <CAHp75Vc2iwvh1RiYmQDPSvgNvGT_gBcGTK67F+MhWgXyoxqn0A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] ACPI: scan: Extend acpi_walk_dep_device_list()
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8R7+UaAKzntZZEV87N+admABCX8PPQ5Cic70DpQyEY0=;
+        b=MBrQvAXY1S6EWolLcL3seVK92WW+7Te8sGmWAf7VbrjEK3XiRQdQEm8KUM1XJgNqqd
+         6A2FrdRqU8RFmnKuFs7ilHqK2ITGRZRIcsDb66yW9yMOH0XASVt7R+ghnq9j2o5zm1oh
+         Vj5NFZJiTS3k/41gF7AhnhHo59cOvVLgFVd+DG3h6pVPnihPuyWA0fCvnAqMnyXJiK/b
+         6qNHQbDV+v4IqE+2KxidhghV6p5/G1PGmBl7ycfG1cXIMjq6jrO0EpmjuD+yZjGb8EDk
+         Fa3diYXzVwNHXUzhTiPKJBzo7zKovGJNo0jSo7TIrqlmvcSbt5Fdt6NuaeD4j4+NzQTl
+         f3qg==
+X-Gm-Message-State: AOAM533A1PmIWeHDhAPPG4/YjhlfFYQ1Q849Oaol89+PDRFmbclxAWqc
+        Q9i5b1OcOcYTROOZhi30jKg=
+X-Google-Smtp-Source: ABdhPJzQoofHXfA0wxyZK4TDRjzHoMT4QilWOaQ8yg8rd9QR9iJHRM2lZFHRwjdNuMY0wCx84VPXjA==
+X-Received: by 2002:a62:a108:0:b029:1c1:119b:8713 with SMTP id b8-20020a62a1080000b02901c1119b8713mr18843469pff.74.1615161257796;
+        Sun, 07 Mar 2021 15:54:17 -0800 (PST)
+Received: from rayare.domain.name ([106.51.141.71])
+        by smtp.googlemail.com with ESMTPSA id t10sm8542099pjf.30.2021.03.07.15.54.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Mar 2021 15:54:17 -0800 (PST)
+From:   chakravarthikulkarni <chakravarthikulkarni2021@gmail.com>
+Cc:     chakravarthikulkarni2021@gmail.com,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        kieran.bingham+renesas@ideasonboard.com,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>, me@fabwu.ch,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI: acpiphp: Fixed coding style of open braces and comments
+Date:   Mon,  8 Mar 2021 05:24:01 +0530
+Message-Id: <20210307235401.2011-1-chakravarthikulkarni2021@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 7, 2021 at 3:36 PM Daniel Scally <djrscally@gmail.com> wrote:
-> On 22/02/2021 13:34, Andy Shevchenko wrote:
-> > On Mon, Feb 22, 2021 at 3:12 PM Daniel Scally <djrscally@gmail.com> wrote:
-> >> The acpi_walk_dep_device_list() is not as generalisable as its name
-> >> implies, serving only to decrement the dependency count for each
-> >> dependent device of the input. Extend the function to instead accept
-> >> a callback which can be applied to all the dependencies in acpi_dep_list.
-> >> Replace all existing calls to the function with calls to a wrapper, passing
-> >> a callback that applies the same dependency reduction.
-> > The code looks okay to me, if it was the initial idea, feel free to add
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->
->
-> Thank you!
->
->
-> >> + */
-> >> +void acpi_dev_flag_dependency_met(acpi_handle handle)
-> >> +{
-> > Since it's acpi_dev_* namespace, perhaps it should take struct acpi_device here?
->
->
-> I can do this, but I avoided it because in most of the uses in the
-> kernel currently there's no struct acpi_device, they're just passing
-> ACPI_HANDLE(dev) instead, so I'd need to get the adev with
-> ACPI_COMPANION() in each place. It didn't seem worth it...but happy to
-> do it if you'd prefer it that way?
+Fixed WARNING and ERROR message provided by ./checkpatch.pl scripts.
 
-I see, let Rafael decide then. I'm not pushing here.
+Signed-off-by: chakravarthi kulkarni <chakravarthikulkarni2021@gmail.com>
+---
+ drivers/pci/hotplug/acpiphp.h | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/pci/hotplug/acpiphp.h b/drivers/pci/hotplug/acpiphp.h
+index a74b274a8c45..e0964600a78f 100644
+--- a/drivers/pci/hotplug/acpiphp.h
++++ b/drivers/pci/hotplug/acpiphp.h
+@@ -80,8 +80,8 @@ struct acpiphp_bridge {
+ struct acpiphp_slot {
+ 	struct list_head node;
+ 	struct pci_bus *bus;
+-	struct list_head funcs;		/* one slot may have different
+-					   objects (i.e. for each function) */
++	struct list_head funcs;		/* one slot may have different */
++					/* objects (i.e. for each function) */
+ 	struct slot *slot;
+ 
+ 	u8		device;		/* pci device# */
+@@ -148,8 +148,7 @@ static inline struct acpiphp_root_context *to_acpiphp_root_context(struct acpi_h
+  * ACPI has no generic method of setting/getting attention status
+  * this allows for device specific driver registration
+  */
+-struct acpiphp_attention_info
+-{
++struct acpiphp_attention_info {
+ 	int (*set_attn)(struct hotplug_slot *slot, u8 status);
+ 	int (*get_attn)(struct hotplug_slot *slot, u8 *status);
+ 	struct module *owner;
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+
