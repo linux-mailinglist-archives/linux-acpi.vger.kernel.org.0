@@ -2,121 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2808F33117F
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Mar 2021 15:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53551331275
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Mar 2021 16:45:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231246AbhCHO6T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Mar 2021 09:58:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34970 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbhCHO5w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Mar 2021 09:57:52 -0500
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF05EC06174A;
-        Mon,  8 Mar 2021 06:57:51 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id ga23-20020a17090b0397b02900c0b81bbcd4so3118845pjb.0;
-        Mon, 08 Mar 2021 06:57:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1v0ao3b2/Ux4Trc+2qyo6Snq2zmvaCA06fjB7BxQBtk=;
-        b=UN2m03gJoZakMr0gOlQjQr5POq2Jz4sA0ztlFhKdsp4HXOGelbToq5jKRqnI3v7zjc
-         TVRSriUUvtKcFRhvvKGNdcmkwyI/o3i5ZzMytKZaF1m7DznLjrZ8iJCqLWYmgJnjuV3L
-         mTQArkXhtOCZxDqQEGN7AxVsZTZL4ah2L8Uh9Cp1OrQQgVe2fpmMYPzG0w/sfLvv96yO
-         56x52+9LalsUGPXMQ9bwE7fM/f7ybD/qobWl3ryinOVUrWnrQnoaHThwxojB8VgJ0h2D
-         BdFrVGbwBMi/tCtYP27qFCuVTn6pG64SMtEwJEcOSie7MTdvPvfR5V5OmFVncRm1i4R9
-         xB0w==
+        id S229740AbhCHPpY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Mar 2021 10:45:24 -0500
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:43707 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229829AbhCHPpX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Mar 2021 10:45:23 -0500
+Received: by mail-ot1-f46.google.com with SMTP id v12so9572523ott.10;
+        Mon, 08 Mar 2021 07:45:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1v0ao3b2/Ux4Trc+2qyo6Snq2zmvaCA06fjB7BxQBtk=;
-        b=dVva7WWv86XP5l8ZxqUZbzAghRfrGXm7Z2QYpQ+SQjUE7P3l+tS2h2Za6Bqc5Bzstn
-         V5bXhnTul7Y6duQuFjj0d7uV+raZVB4H89pqgmD8lz3d6bIlwsawmDdjNqkFoqLDmZ4C
-         XBm7XP7xnPrV3GijBNmMhwkuJ2Bzx3vE+T/24JpgL4efZgLh4eiHMSsFN6EmArO9IiKu
-         MfbKZ/XFrywC98xJmcAA330ATCpGILuOGKgwCbmzMNCB40lvxXfy3ayqAH3kLajEV3gq
-         9TXO89rIBvUR01Kq+BK+8KBKk6tGZS3WNn0GHpHgPMhkbkVQfd3K+1jfG3V7x34Q43lf
-         9YxA==
-X-Gm-Message-State: AOAM530GSInHEGhMA+wZ7MYoYderLV5/8vFLUVxpGJ4tPvDKSmginjPh
-        0aC47mlhFdtxIPmFSOH/fUU37LMGHrmyxLIkOVs=
-X-Google-Smtp-Source: ABdhPJwWLAcn/zCc7JnKH0rPVVA2UFQqpno+iYzLW3XAAZ6juSRPbxlixiAKwoAOG82N4Y3z+Z9QJAbVtiVxxrJMbRk=
-X-Received: by 2002:a17:902:70c7:b029:e3:71cf:33d2 with SMTP id
- l7-20020a17090270c7b02900e371cf33d2mr21445892plt.21.1615215471340; Mon, 08
- Mar 2021 06:57:51 -0800 (PST)
+        bh=mbsT3/Ouni6Vb8m0SK7QpZ24XnBIwdODUDVR1OBNjiQ=;
+        b=U+ZWC1eKnbbsrZdMotLrIujg6APWVI89ngEuYnHIIkNokj+upzR2POx/LY1jlJyvb9
+         aVFUzVXGnOwIOvG0I7DG49gElIhRAWMGx9PO7yligRjIOENkTJdWkovypGGKBuMYzmdC
+         ZZlUQLazT5HLT0SdHjDVzn788RIGIz4yPB2NnU4jPyyba6PGbvoTdpqPwvzBCiZq+Phy
+         yZYmoiyNHy1Hqb5sP6SRvmfOPW5fTv7uFlUKWxlqRil4JwcSUz69jM7ZSC5q3+NCENio
+         Ex/X5obHfGhIIWYZ9eIqENaqewcuDB8DXkiIm9vdpuVIhlnFEkEpKMtbrvo1U8cXQ/Co
+         cixQ==
+X-Gm-Message-State: AOAM532grdNzwD+nperLfnMN8xtQx1qdMX/rGo5oJDlh77KM/VjO4pxH
+        HyvkmQBdMY89i8LJUyfW3mripsKOpzluGaei4ac5Z/yk49E=
+X-Google-Smtp-Source: ABdhPJyYRGPWxgE1CdRhcwvN59TkRBBYu/cz9uZ2p7vV3ktihFVU1XAMr9A7W3yNtRhrv5M+i/rFQDQrAZWoYS3O4Sg=
+X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr9783834otr.321.1615218322615;
+ Mon, 08 Mar 2021 07:45:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20210218052654.28995-1-calvin.johnson@oss.nxp.com>
- <20210218052654.28995-11-calvin.johnson@oss.nxp.com> <CAHp75VdpvTN2R-FTb81GnwvAr_eoprEhsOMx+akukaDNBrptsQ@mail.gmail.com>
- <20210308140936.GA2740@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20210308140936.GA2740@lsv03152.swis.in-blr01.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Mar 2021 16:57:35 +0200
-Message-ID: <CAHp75Vc2OtScGFhCL7QiRsakrQAZYE6Wz-0qzmz5uB63cjieQw@mail.gmail.com>
-Subject: Re: [net-next PATCH v6 10/15] net: mdio: Add ACPI support code for mdio
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
+References: <20210222130735.1313443-1-djrscally@gmail.com> <20210222130735.1313443-2-djrscally@gmail.com>
+ <CAHp75VfPuDjt=ZfHkwErF7_6Ks6wpqXO8mtq-2KjV+mU_PXFtg@mail.gmail.com>
+ <615bad5e-6e68-43c9-dd0b-f26d2832d52f@gmail.com> <CAHp75Vc2iwvh1RiYmQDPSvgNvGT_gBcGTK67F+MhWgXyoxqn0A@mail.gmail.com>
+ <CAJZ5v0ijOhT3PVm6-gqnqycE-YZhD00dGbtK1UEV5nfrOF5Obw@mail.gmail.com> <YEYtME2AxpXBq6iF@smile.fi.intel.com>
+In-Reply-To: <YEYtME2AxpXBq6iF@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 8 Mar 2021 16:45:07 +0100
+Message-ID: <CAJZ5v0i+suMNWhUc=v0pnpabS-Ew-CMeSH945JB0YKnQAbi4Wg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] ACPI: scan: Extend acpi_walk_dep_device_list()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>, me@fabwu.ch,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "linux.cj" <linux.cj@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 8, 2021 at 4:11 PM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
-> On Thu, Feb 18, 2021 at 05:08:05PM +0200, Andy Shevchenko wrote:
-> > On Thu, Feb 18, 2021 at 7:28 AM Calvin Johnson
-> > <calvin.johnson@oss.nxp.com> wrote:
-
-> > > Define acpi_mdiobus_register() to Register mii_bus and create PHYs for
-> > > each ACPI child node.
-> >
-> > > +#include <linux/acpi.h>
-> > > +#include <linux/acpi_mdio.h>
-> >
-> > Perhaps it's better to provide the headers that this file is direct
-> > user of, i.e.
-> >  bits.h
-> >  dev_printk.h
+On Mon, Mar 8, 2021 at 2:57 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> Looks like device.h needs to be used instead of dev_printk.h. Please
-> let me know if you've a different opinion.
-
-I don't see the user of device.h. dev_printk.h is definitely in use here...
-Do you see a user for device.h? Which line in your code requires it?
-
-It might be that I don't see something quite obvious...
-
-> >  module.h
-> >  types.h
+> On Mon, Mar 08, 2021 at 02:36:27PM +0100, Rafael J. Wysocki wrote:
+> > On Sun, Mar 7, 2021 at 9:39 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Sun, Mar 7, 2021 at 3:36 PM Daniel Scally <djrscally@gmail.com> wrote:
+> > > > On 22/02/2021 13:34, Andy Shevchenko wrote:
+> > > > > On Mon, Feb 22, 2021 at 3:12 PM Daniel Scally <djrscally@gmail.com> wrote:
+> > > > >> The acpi_walk_dep_device_list() is not as generalisable as its name
+> > > > >> implies, serving only to decrement the dependency count for each
+> > > > >> dependent device of the input. Extend the function to instead accept
+> > > > >> a callback which can be applied to all the dependencies in acpi_dep_list.
+> > > > >> Replace all existing calls to the function with calls to a wrapper, passing
+> > > > >> a callback that applies the same dependency reduction.
+> > > > > The code looks okay to me, if it was the initial idea, feel free to add
+> > > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>
+> ...
+>
+> > > > >> +void acpi_dev_flag_dependency_met(acpi_handle handle)
+>
+> > > > > Since it's acpi_dev_* namespace, perhaps it should take struct acpi_device here?
+> > > >
+> > > > I can do this, but I avoided it because in most of the uses in the
+> > > > kernel currently there's no struct acpi_device, they're just passing
+> > > > ACPI_HANDLE(dev) instead, so I'd need to get the adev with
+> > > > ACPI_COMPANION() in each place. It didn't seem worth it...
 > >
-> > The rest seems fine because they are guaranteed to be included by
-> > acpi.h (IIUC about fwnode API and acpi_mdio includes MDIO PHY APIs).
+> > It may not even be possible sometimes, because that function may be
+> > called before creating all of the struct acpi_device objects (like in
+> > the case of deferred enumeration).
+> >
+> > > > but happy to
+> > > > do it if you'd prefer it that way?
+> > >
+> > > I see, let Rafael decide then. I'm not pushing here.
+> >
+> > Well, it's a matter of correctness.
+>
+> Looking at your above comment it is indeed. Thanks for clarification!
 
+Well, actually, the struct device for the object passed to this
+function should be there already, because otherwise it wouldn't make
+sense to update the list.  So my comment above is not really
+applicable to this particular device and the function could take a
+struct acpi_device pointer argument.  Sorry for the confusion.
 
+> But should we have acpi_dev_*() namespace for this function if it takes handle?
 
--- 
-With Best Regards,
-Andy Shevchenko
+It takes a device object handle.
+
+Anyway, as per the above, it can take a struct acpi_device pointer
+argument in which case the "acpi_dev_" prefix should be fine.
+
+> For time being nothing better than following comes to my mind:
+>
+> __acpi_dev_flag_dependency_met() => __acpi_flag_device_dependency_met()
+> acpi_dev_flag_dependency_met() => acpi_flag_device_dependency_met()
+
+The above said, the name is somewhat confusing overall IMV.
+
+Something like acpi_dev_clear_dependencies() might be better.
+
+So lets make it something like
+
+void acpi_dev_clear_dependencies(struct acpi_device *supplier);
