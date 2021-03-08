@@ -2,85 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1126331770
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Mar 2021 20:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC55331781
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Mar 2021 20:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231571AbhCHThS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Mar 2021 14:37:18 -0500
-Received: from mga05.intel.com ([192.55.52.43]:49835 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231556AbhCHTg7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 8 Mar 2021 14:36:59 -0500
-IronPort-SDR: u5Rqsf8rmZcyopYdOQ2eSq2/pU61Sdk++TWsWFfrz4lXV/0/uYDglnhlFN2wIe1SqpYrhcUzd/
- z8XdOySOUnKQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9917"; a="273121247"
-X-IronPort-AV: E=Sophos;i="5.81,233,1610438400"; 
-   d="scan'208";a="273121247"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2021 11:36:59 -0800
-IronPort-SDR: r/fPpzFDexipQ3qbIF2/fhhMhywaaHnqBtW3RzysJoSvubAzJUL/6CtBmWIylLJVFO2LKIF4Mo
- NcBXSLF/gOXA==
-X-IronPort-AV: E=Sophos;i="5.81,233,1610438400"; 
-   d="scan'208";a="437601268"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2021 11:36:55 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lJLgS-00Atf7-35; Mon, 08 Mar 2021 21:36:52 +0200
-Date:   Mon, 8 Mar 2021 21:36:52 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v3 0/5] gpiolib: switch to fwnode in the core
-Message-ID: <YEZ81OraApPIu8d9@smile.fi.intel.com>
-References: <20210304201253.14652-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0gR=gN2ROo9JSOGHokw5imscMBwDERni8X83p0eWt634w@mail.gmail.com>
- <CAMpxmJUQ3r0YCeQvPq=SW57w-5BLtoTO1_bv=2uw6CX_1-EXcQ@mail.gmail.com>
- <CAJZ5v0h7zUMU9DMofa3fhop9fYY6UJQ6Nm3xBOmG48bcmLCj3w@mail.gmail.com>
- <CAMpxmJXa2Qxznss3c79Zf-PzsX=SY6WOJorAMvS-UxKoViKP_w@mail.gmail.com>
+        id S231359AbhCHTno (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Mar 2021 14:43:44 -0500
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:44540 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231254AbhCHTnb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Mar 2021 14:43:31 -0500
+Received: by mail-ot1-f50.google.com with SMTP id f33so10373331otf.11;
+        Mon, 08 Mar 2021 11:43:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0HNv84JQX4/NDOa1VknCFUJOHmOgLmHruHi0GFdspBM=;
+        b=aeBM5iYD7UaH2PeOSmAluyCqdVqfp0FOH2A6edyaTIH4RIlDVfrzStdJQFgNE+AHPt
+         Qiiy78tgplaMDuzXx0HcfjoRw4gj9RhV7L/pwxeeC8GydtjoIQJn2NU9F9IRi6mIi8bJ
+         G5elkeP2PheybFfgf9g3VUWLGtB9AG4I6huO+HesiPZ57Q8LN/qDmmfj4UWPOdl+GtVB
+         bgw6IM6DdYevtfT7W6rdaM9S03vcHom5fiYMv3OWIFOjZhS/lTer1Ynsk9SgoXoXJRsV
+         fZC1gZyaRdcGpTArn3cAznIUj9Wczi5qDfF+f/Vx+Ao4fhgqIXQfFA8cipjK4HCrkXil
+         l9vg==
+X-Gm-Message-State: AOAM530YeTYXN5Sq/pqSZoVVKQGHea3TSCNONgUoK7qGmpofVFtiWHMq
+        V/oLNI5bJkpGRkJo9MBrZbPz/M6ES3jUxcl/4PKR1U0xAdY=
+X-Google-Smtp-Source: ABdhPJzL6lY/qcC5OhuUgViwDJUUZATGQDB3Js0xiIq7lQ4DaLMY3aCTs4rH9So5NyhbrV8nc3COFSmyA3td9hidQFA=
+X-Received: by 2002:a05:6830:1057:: with SMTP id b23mr21869147otp.206.1615232610761;
+ Mon, 08 Mar 2021 11:43:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMpxmJXa2Qxznss3c79Zf-PzsX=SY6WOJorAMvS-UxKoViKP_w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210308193146.65585-1-andriy.shevchenko@linux.intel.com> <20210308193146.65585-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210308193146.65585-2-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 8 Mar 2021 20:43:19 +0100
+Message-ID: <CAJZ5v0gpNzyBDKfBXoBYskUXs15GrZAe-E2vzhSEu2Nrj7wa7g@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] gpiolib: Fold conditionals into simple ternary operator
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 08, 2021 at 08:29:27PM +0100, Bartosz Golaszewski wrote:
-> On Mon, Mar 8, 2021 at 8:26 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > On Mon, Mar 8, 2021 at 8:23 PM Bartosz Golaszewski
-> > <bgolaszewski@baylibre.com> wrote:
+On Mon, Mar 8, 2021 at 8:33 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> It's quite spread code to initialize IRQ domain options.
+> Let's fold it into a simple oneliner.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> v4: new patch (see changelog of previous one)
+>  drivers/gpio/gpiolib.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index afee48e7dd41..8c5ce377accc 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -1458,7 +1458,7 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
+>  {
+>         struct fwnode_handle *fwnode = dev_fwnode(&gc->gpiodev->dev);
+>         struct irq_chip *irqchip = gc->irq.chip;
+> -       const struct irq_domain_ops *ops = NULL;
+> +       const struct irq_domain_ops *ops;
 
-...
+It looks like the ops local var is redundant.
 
-> > My impression was that Andy wanted me to take them.
-> >
-> > However, if you'd rather take care of them yourself, there you go!
-> >
-> > I'll drop them now and assume that they will be routed through the GPIO tree.
-> >
-> > Thanks!
-> 
-> They touch a lot of core GPIO code and are likely to conflict if any
-> other changes show up this release cycle. I'd rather take them through
-> the usual channel. Thanks!
+>         unsigned int type;
+>         unsigned int i;
+>
+> @@ -1496,11 +1496,7 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
+>                         return ret;
+>         } else {
+>                 /* Some drivers provide custom irqdomain ops */
+> -               if (gc->irq.domain_ops)
+> -                       ops = gc->irq.domain_ops;
+> -
+> -               if (!ops)
+> -                       ops = &gpiochip_domain_ops;
+> +               ops = gc->irq.domain_ops ?: &gpiochip_domain_ops;
+>                 gc->irq.domain = irq_domain_create_simple(fwnode,
+>                         gc->ngpio,
+>                         gc->irq.first,
 
-Since now we have v4 based on Rafael's bleeding-edge, what do you want me to
-do? Resend a v5 with all patches included?
+Because this can be
 
+gc->irq.domain = irq_domain_add_simple(np,
+                        gc->ngpio,
+                        gc->irq.first,
+                        gc->irq.domain_ops ?: &gpiochip_domain_ops,
+                        gc);
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+(modulo white space / formatting) and this is the only place where ops
+is used in this function.
