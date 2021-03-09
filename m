@@ -2,56 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B92E1332C31
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Mar 2021 17:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B39C0332C5E
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Mar 2021 17:42:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231324AbhCIQfn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Mar 2021 11:35:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
+        id S229790AbhCIQlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Mar 2021 11:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230319AbhCIQfM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Mar 2021 11:35:12 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58AA1C061760
-        for <linux-acpi@vger.kernel.org>; Tue,  9 Mar 2021 08:35:12 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id i26so9834872ljn.1
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Mar 2021 08:35:12 -0800 (PST)
+        with ESMTP id S230478AbhCIQlO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Mar 2021 11:41:14 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6384CC06174A;
+        Tue,  9 Mar 2021 08:41:14 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id n9so8182256pgi.7;
+        Tue, 09 Mar 2021 08:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MPh3fYrpynT8qqoQI9nObnRXX03m69XX0kkoxFbQtug=;
-        b=GN41IGu42t9gXi3ED2C8ne+gWDPFIl3Cz+zhDgMErK/I8nl0dGuUEVs/SOVXHoc9Oe
-         ilKTLAhuugELeyAiW1l7FwDwfoafn8RPjAlAQhZ2l6o/ZwZsSBLL7iOi20PgRZRw16rn
-         zKT7aEBeaKpc5NwhEGaXJHg9+xQe2yJ3WMLdeKBKjNY0ecbISMGm4+UsVsBtN+9zbyAC
-         1GTmuw3QVL1jWa8r409pZCvBeVAeiPTmtIhmdtVk0hhFgyMIrpnQ824GfENt38eoogfl
-         QBtR1A3uCoHEQkvKOGVKhz3FGPwmdcvg0irrgkrAXnE7tQ0LRRfabW5cEhPNALjc1guq
-         RSAw==
+        bh=9w9armafDUBK5NoKB1+EVQ/HgT2OaGmEDCQKvuRthT8=;
+        b=rT0PG1glqZMgjBbM/qJdxLPs1QVsSh/3fGOrD/fmUJtBDPMuhe/86Ox/1KWHNulI+/
+         hqZ6DAWdpkj1qWmYSn3rcqQt5yplYv2EpFTO/wZW7VFAtodCObpWHnC/v9Y+jxy3P6ac
+         XwLEMtvVOK1gLYl1Olr8E46SUx6akpZ7lxcI1sw+x9jy6xcahHmL43akGY++fbDCD3l6
+         7yRU5Ow7tRuBkeNYeSuzImlZSGoaglMo4utU9fm51mSLiAjJVBS/MNfTkh07kBSeTmyJ
+         abosnxrDsAsPx9X/KzDObd+92QtAOXYQ3Vsa8fAQEsWZr5zcmv5Yfdgr9yGWRE+a5o10
+         VbaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MPh3fYrpynT8qqoQI9nObnRXX03m69XX0kkoxFbQtug=;
-        b=ehcquWPFGFg28aafS8fHjzmk1QhvTMikdMic7cZBmfRLILFN2BEw8nXKJoentkQbTA
-         d/AelTFx5TENEc71w09z3QSS6lzsgaVSYgzWX9q+OPMznQXpS9md2TtarJb2JSYiCXof
-         d9RVYKFL0gw04XI+WphpTNvY+YTH88arufF8SYEYoTzIaE/quW1WsWkJG0nZHPXqb56Z
-         6mjyvtV/xVCN8SVoBfvxD70Xw9pdy+g07ltqAQXGnP/XzqFzXqxxDPsdybxeyRIuGLuR
-         qGOeDEsXEDLRy0UmrVWRMPx2CDPRY0Z1emUKgPKugqWbb5N1LYdCmlsV0jV1B0l+G/uD
-         ri4Q==
-X-Gm-Message-State: AOAM5304tRwK1X9ifItcrxAMRbMgj6b8DgjKWQgAPaUcncs3wz54mvAg
-        iVa+nWphJ6xOueTnQYjhCarlGx5WB2AzolGKGrDM6kbc9vWFIPw8
-X-Google-Smtp-Source: ABdhPJwx+vgRcYzzK5JGSjQMsz6ywP+zUvsGmW7juH6Hhh85o5Hv3QjRB3wk0V6V/HIy9NeuR+ZZD90xGrXYfnhHYpA=
-X-Received: by 2002:a05:651c:103a:: with SMTP id w26mr14919558ljm.273.1615307710918;
- Tue, 09 Mar 2021 08:35:10 -0800 (PST)
+        bh=9w9armafDUBK5NoKB1+EVQ/HgT2OaGmEDCQKvuRthT8=;
+        b=EbCyxtbUN5O4+8kWsnLRwR/EcqehR6O2JNTsH3O/D9JLdi51cUlxg/vXUB57c+y5HB
+         Qg76n4vLG5fe7/gAkUywXUMPF1R2Jw2lOgdED6eqzs0A/c6lVS7PBlv0y5881CLRKEY2
+         i/v5f+dsrbX8f5ektjXPw4SwIq38FhmU0Gl0+icIlcNwbqIhVKT521Jj6cGT14dVelmO
+         Xd6JOsfn4TQof6bTQu13CP/sfQbQ8PIWZYm8JajbPYHMMtXZwNML1+Yzh6SzbBW330Es
+         Y7X8gnABGA+xnBPBdZJwrIAZ5tkw4fe14ZoxkqSxrPOM/qNgw+qeS6MTuJBFrKxy94ci
+         rUlQ==
+X-Gm-Message-State: AOAM532Jkx8QPpYcP8++cU+xU5jNTeBHDbJZ23PlywVTZlQTnJqn2qnM
+        Kvky3ntH9osJDDQvNpo8NzLehZEXYnIIUJu9Y/o=
+X-Google-Smtp-Source: ABdhPJxhPfwcYUHrxmRw1vliEm20Q1K4Ft9kTiR2vaXYlaqx9DdfEwFv3exQSJuZNgADW1jYEN/dqjW3mKx1Etmie9Q=
+X-Received: by 2002:a63:ce15:: with SMTP id y21mr26062604pgf.4.1615308073908;
+ Tue, 09 Mar 2021 08:41:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20210308194535.66394-1-andriy.shevchenko@linux.intel.com> <20210308194535.66394-6-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210308194535.66394-6-andriy.shevchenko@linux.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 9 Mar 2021 17:34:59 +0100
-Message-ID: <CACRpkdZmE2wCfhJsdCaVaaJbVDtvgReogVgx9_fpG=0YRS-U+Q@mail.gmail.com>
-Subject: Re: [PATCH v5 5/6] gpiolib: Reuse device's fwnode to create IRQ domain
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+References: <20210308194535.66394-1-andriy.shevchenko@linux.intel.com>
+ <20210308194535.66394-2-andriy.shevchenko@linux.intel.com> <CACRpkdZO7TPcz6p8Gfavqd1SboCt7ZXwFa4+4TuWNTZuoXZqgg@mail.gmail.com>
+In-Reply-To: <CACRpkdZO7TPcz6p8Gfavqd1SboCt7ZXwFa4+4TuWNTZuoXZqgg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 9 Mar 2021 18:40:57 +0200
+Message-ID: <CAHp75Vcjz7-QUYCAiss_WOb9vK_he8bFH51685wAhoo-=BYBEQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/6] irqdomain: Introduce irq_domain_create_simple() API
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
@@ -66,25 +68,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 8, 2021 at 8:45 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Tue, Mar 9, 2021 at 6:36 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> On Mon, Mar 8, 2021 at 8:45 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+>
+> > Linus Walleij pointed out that ird_domain_add_simple() gained
+> > additional functionality and can't be anymore replaced with
+> > a simple conditional. In preparation to upgrade GPIO library
+> > to use fwnode, introduce irq_domain_create_simple() API which is
+> > functional equivalent to the existing irq_domain_add_simple(),
+> > but takes a pointer to the struct fwnode_handle as a parameter.
+> >
+> > While at it, amend documentation to mention irq_domain_create_*()
+> > functions where it makes sense.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Acked-by: Marc Zyngier <maz@kernel.org>
+>
+> Excellent work Andy!
 
-> When IRQ domain is created for an ACPI case, the name of it becomes unknown-%d
-> since for now it utilizes of_node member only and doesn't consider fwnode case.
-> Convert IRQ domain creation code to utilize fwnode instead.
->
-> Before/After the change on Intel Galileo Gen 2 with two GPIO (IRQ) controllers:
->
->   unknown-1     ==>     \_SB.PCI0.GIP0.GPO
->   unknown-2     ==>     \_SB.NIO3
->
-> Due to the nature of this change we may also deduplicate the WARN():s
-> because in either case (DT or ACPI) the fwnode will be set correctly
-> and %pfw is an equivalent to what the current code prints as a prefix.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Thanks!
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>
+> I suggest Bartosz just apply this with the rest to the GPIO tree.
 
-Yours,
-Linus Walleij
+Yes, that's the idea.
+
+-- 
+With Best Regards,
+Andy Shevchenko
