@@ -2,73 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A40603343AE
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Mar 2021 17:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EEE3334643
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Mar 2021 19:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233424AbhCJQvF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Mar 2021 11:51:05 -0500
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:46135 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232481AbhCJQur (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Mar 2021 11:50:47 -0500
-Received: by mail-ot1-f49.google.com with SMTP id r24so9936754otq.13;
-        Wed, 10 Mar 2021 08:50:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R6oolcrYeb0Yyin4lnT3+FTu+4DQx6lMstBt7PUzwi0=;
-        b=q3T5jhpDRW0arpOr+B2pBpKJ+vNombSvom2iHmPDIOzHaAsXgB8hsd8/tkd2ULCeUv
-         1ST9bqHDeWL6GRqoiEKRHLP8KyQ37mjs6cCBW4BdUwQ2KiC3gqmRWL8E9QQmEzOi8gg/
-         SdbBBi0B+QG7XDjQluu4MfLBKmV8qC1c3fWZJhKO65sA4je0+gNtZUmfPff8LnCpGAIT
-         vOnNKmdvMTnSJptjZbMGjdnDRXIKWcEnm79/CqOlsxJD9HwEwok/GqAjvRJlfo7+IFOu
-         7z8qLoBW/IxmgGN8bXu3xcPMy7nCYDj4fO/doBDlinTznFk0V7XRpZcOPRKBpbI3YDwj
-         kH1g==
-X-Gm-Message-State: AOAM530ygL5p/evcAU3aHkoFrMLdV5QrFPOUTh6CONQqca3lxhQWuAiP
-        QPN+r5ks4PO+QhrbuObjkKFdbmZ8M5gWnoi5CLI=
-X-Google-Smtp-Source: ABdhPJxlV/2wigpev0dSrTzB8wJqeftxRW6Co9lMLbSVPFiscoQ+P0Nnu5Je7p/f5rT4/q41GbjFbv0o9/cGohCEUyU=
-X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr3331388otr.321.1615395047082;
- Wed, 10 Mar 2021 08:50:47 -0800 (PST)
+        id S232065AbhCJSHz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Mar 2021 13:07:55 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2678 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229851AbhCJSHh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Mar 2021 13:07:37 -0500
+Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Dwfz0157Rz67qlf;
+        Thu, 11 Mar 2021 02:01:32 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 10 Mar 2021 19:07:30 +0100
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2106.2; Wed, 10 Mar 2021 18:07:29 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>
+CC:     Chris Browy <cbrowy@avery-design.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        <linux-acpi@vger.kernel.org>, <alison.schofield@intel.com>,
+        <vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 0/2] PCI Data Object Exchange support + CXL CDAT
+Date:   Thu, 11 Mar 2021 02:03:04 +0800
+Message-ID: <20210310180306.1588376-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-References: <6660750.UgobAMfxrE@kreacher> <CAJZ5v0gCobMbDGt80exScjpGgjnbo+5kMtB6qsx1wfOf6QyiJQ@mail.gmail.com>
- <20210310160851.GA331077@ninjato>
-In-Reply-To: <20210310160851.GA331077@ninjato>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 10 Mar 2021 17:50:36 +0100
-Message-ID: <CAJZ5v0iOsPuNkmmH2cWY=u6C_1stkPKhUtbYM4DYvwt=EYtNAA@mail.gmail.com>
-Subject: Re: [PATCH] i2c: i2c-scmi: Drop unused ACPI_MODULE_NAME definition
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.123.41.22]
+X-ClientProxiedBy: lhreml703-chm.china.huawei.com (10.201.108.52) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 10, 2021 at 5:08 PM Wolfram Sang <wsa@kernel.org> wrote:
->
-> On Wed, Mar 10, 2021 at 03:47:10PM +0100, Rafael J. Wysocki wrote:
-> > On Fri, Mar 5, 2021 at 7:29 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> > >
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > The ACPI_MODULE_NAME() definition is only used by the message
-> > > printing macros from ACPICA that are not used by the code in
-> > > question, so it is redundant.  Drop it.
-> > >
-> > > No functional impact.
-> > >
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > If there are no concerns regarding this, I'll queue it up for 5.13 in
-> > the ACPI tree, thanks!
->
-> I'd prefer the I2C tree a tad to avoid conflicts. Any reason for the
-> ACPI tree?
+Series first introduces generic support for DOE mailboxes as defined
+in the ECN to the PCI 5.0 specification available from the PCI SIG [0]
 
-There are some patches doing this type of a cleanup in the ACPI tree,
-but this is the only reason, so please route it through the i2c tree
-if that is preferred.
+A user is then introduced in the form of the table access protocol defined
+in the CXL 2.0 specification [1] used to access the
+Coherent Device Attribtue Table (CDAT) defined in [2]
+
+Various open questions in the individual patches.
+
+All testing conducted against QEMU emulation of a CXL type 3 device
+in conjunction with DOE mailbox patches [3, 4]
+
+[0] https://pcisig.com/specifications
+[1] https://www.computeexpresslink.org/download-the-specification
+[2] https://uefi.org/node/4093
+[3] https://lore.kernel.org/qemu-devel/20210202005948.241655-1-ben.widawsky@intel.com/
+[4] https://lore.kernel.org/qemu-devel/1612900760-7361-1-git-send-email-cbrowy@avery-design.com/
+
+Jonathan Cameron (2):
+  PCI/doe: Initial support PCI Data Object Exchange
+  cxl/mem: Add CDAT table reading from DOE
+
+ drivers/cxl/cdat.h            |  79 ++++++++++
+ drivers/cxl/cxl.h             |  13 ++
+ drivers/cxl/mem.c             | 253 +++++++++++++++++++++++++++++-
+ drivers/pci/pcie/Kconfig      |   8 +
+ drivers/pci/pcie/Makefile     |   1 +
+ drivers/pci/pcie/doe.c        | 284 ++++++++++++++++++++++++++++++++++
+ include/linux/pcie-doe.h      |  35 +++++
+ include/uapi/linux/pci_regs.h |  29 +++-
+ 8 files changed, 700 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/cxl/cdat.h
+ create mode 100644 drivers/pci/pcie/doe.c
+ create mode 100644 include/linux/pcie-doe.h
+
+-- 
+2.19.1
+
