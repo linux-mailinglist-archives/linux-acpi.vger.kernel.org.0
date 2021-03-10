@@ -2,82 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F36E53340AB
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Mar 2021 15:48:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD11F334286
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Mar 2021 17:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbhCJOrz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Mar 2021 09:47:55 -0500
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:36227 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230504AbhCJOrY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Mar 2021 09:47:24 -0500
-Received: by mail-oi1-f172.google.com with SMTP id o22so9589972oic.3;
-        Wed, 10 Mar 2021 06:47:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KR63xup1k4PJb8KNmYLKgjwXDpZ4ipRCKUM4kSkYyi8=;
-        b=mM1IBmnQkBDkLEFBtvU8Okxhuo5NFDVouRDY+I7C4lTe4a5P+eObECs1hp/1hZtQDt
-         5Y4bq5mslfXKaBkH7o9M96I1z9aMYAUcf6sNP+O5Fj8xDfabYa0x1oN+i3RwcFw8RawY
-         Jhfo4mRKaeSDO842XEkR7mSWzwxgksJIk6lhYki7/oLzEDUgjT3qOdA6p1+3XhxU4pT7
-         GSdzYTxWoXfadu1+Wfp66ZXjlqDSANlsHzz8fAYRmUOeGDldvUdmKtV9i96Xvi16cYT4
-         oBOrDP8k1fL8YME5MAKd52R3tDj49bq+9ZDT80B9fytcKZLH/bIlPwKb5FD1rCVNluq0
-         C+Nw==
-X-Gm-Message-State: AOAM532yypi/iEfs0BINV+NgWS2EWJ7UM97w0vFU1GGGcdDPGkFAYs8t
-        YXiq5cbBjZCM8lCzCAx5x6KBAtLo2cKNG9IT/NA=
-X-Google-Smtp-Source: ABdhPJyEUvHcOSGifBU1dnl0FGZw93ukHd0HEV0KSaNqrrCQUZumlcUDlyyyumpEzIVheDUezqBGU35Kp6eCCEU6sho=
-X-Received: by 2002:aca:3d85:: with SMTP id k127mr2693041oia.157.1615387644307;
- Wed, 10 Mar 2021 06:47:24 -0800 (PST)
-MIME-Version: 1.0
-References: <6660750.UgobAMfxrE@kreacher>
-In-Reply-To: <6660750.UgobAMfxrE@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 10 Mar 2021 15:47:10 +0100
-Message-ID: <CAJZ5v0gCobMbDGt80exScjpGgjnbo+5kMtB6qsx1wfOf6QyiJQ@mail.gmail.com>
-Subject: Re: [PATCH] i2c: i2c-scmi: Drop unused ACPI_MODULE_NAME definition
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
+        id S233061AbhCJQJX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Mar 2021 11:09:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58576 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231816AbhCJQI6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Mar 2021 11:08:58 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C12CD64F02;
+        Wed, 10 Mar 2021 16:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615392538;
+        bh=Ow/CgKkE/PJ+8hOp5NJf/Xonmpc0AENmeHEZXVudxf8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BKH2QpYz/iP8qF4/rkQqvys4jBM6BxAGJysnaKXo8lmUsnSK7uyPr+2oly22VsfXf
+         sTmX89b+PEG5mIhoK/teQ+B/7kXkpnIbtKBpCjXyi5D+glZJ1ICrsmnKay77Pok94X
+         59+TPSm6iR690cu4LdhGZlGTPpUrRXXc4deVotJJoDecdoD8GtWd6mRyYyJjXYbKhR
+         yi+x3K/8fG33ETPhz8wyhQl4BcLOgIQW/Tg3dSSoHPVqank7rfemmJNd7hd31To1bl
+         G4mbfALiB+wOS149g0vQea40h0E0ipcsOKXO6d9HrVcvauSCe1ssCEc7uWzAuAMaif
+         D9IoQDr4iP7CQ==
+Date:   Wed, 10 Mar 2021 17:08:51 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] i2c: i2c-scmi: Drop unused ACPI_MODULE_NAME definition
+Message-ID: <20210310160851.GA331077@ninjato>
+References: <6660750.UgobAMfxrE@kreacher>
+ <CAJZ5v0gCobMbDGt80exScjpGgjnbo+5kMtB6qsx1wfOf6QyiJQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HcAYCG3uE/tztfnV"
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gCobMbDGt80exScjpGgjnbo+5kMtB6qsx1wfOf6QyiJQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 5, 2021 at 7:29 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> The ACPI_MODULE_NAME() definition is only used by the message
-> printing macros from ACPICA that are not used by the code in
-> question, so it is redundant.  Drop it.
->
-> No functional impact.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-If there are no concerns regarding this, I'll queue it up for 5.13 in
-the ACPI tree, thanks!
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  drivers/i2c/busses/i2c-scmi.c |    2 --
->  1 file changed, 2 deletions(-)
->
-> Index: linux-pm/drivers/i2c/busses/i2c-scmi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/i2c/busses/i2c-scmi.c
-> +++ linux-pm/drivers/i2c/busses/i2c-scmi.c
-> @@ -18,8 +18,6 @@
->  /* SMBUS HID definition as supported by Microsoft Windows */
->  #define ACPI_SMBUS_MS_HID              "SMB0001"
->
-> -ACPI_MODULE_NAME("smbus_cmi");
-> -
->  struct smbus_methods_t {
->         char *mt_info;
->         char *mt_sbr;
->
->
->
+On Wed, Mar 10, 2021 at 03:47:10PM +0100, Rafael J. Wysocki wrote:
+> On Fri, Mar 5, 2021 at 7:29 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrot=
+e:
+> >
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The ACPI_MODULE_NAME() definition is only used by the message
+> > printing macros from ACPICA that are not used by the code in
+> > question, so it is redundant.  Drop it.
+> >
+> > No functional impact.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> If there are no concerns regarding this, I'll queue it up for 5.13 in
+> the ACPI tree, thanks!
+
+I'd prefer the I2C tree a tad to avoid conflicts. Any reason for the
+ACPI tree?
+
+
+--HcAYCG3uE/tztfnV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmBI7w8ACgkQFA3kzBSg
+Kba+gQ/7B6Ia7moxCI0lBWcGBWMpcnSzTXJIZtoonghrWryWNJTlJ7yYyVzJKPDz
+ddelDKPX2dtiKquTZwWRq/21aJL0PSt3sPb7LnI1ykcy/Ipe2Nbgj2OhviRuJqtb
+nX++egBWiyqC4qySeSmVdSnyIXo+F7L2elNs6AbCZLKeWjzT5gFo7HpzMnsrNMyO
+j3dXCecCq/DCrZan2jHUAkplbW3V+OBPLQ90HE8R02U692LN2cP2nvGmr++01pnh
+OeFt4pJkguT2BV0S4Je2FiprNBMDkurwSVlrYdrbroJdZNsGd0CRFvQuloO//BGq
+lA+tQUZ35/vSs7QsbGjXGJRQWf8pUmAOwBPyBtEQMI7pJ33OK9sPG5uShVtAL9Zn
+EMA9y8/aS0Q6kjP1jqwMzEa7W4shVhgK4ExjtWSO8Fku94IRnH5eBd0qYI0U5ELZ
+lpfPigQTLnxduq/hC6Q0skx1kj4SRVAYT3dS6Dy+575sXuV7dE1HGGmkZuq/tmH2
+n+bYvTsaJT2dE/J0AST9JCw0FvwziPsIB5nesc8cL9eGP+PXM3jdE87fS5vaJ8Mb
+qk1ZCOCocNeqHPbkZOD+6VxA0ge3blRvo9GBF2R9SLyFQS7OzubMuNJTSOJ/VHf1
+SEuymiMXzjCq9yGz82cYwSQXNV2DrtsfvUiDkGYlCdI2Z9OBlRo=
+=5s3T
+-----END PGP SIGNATURE-----
+
+--HcAYCG3uE/tztfnV--
