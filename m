@@ -2,161 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E034332FC5
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Mar 2021 21:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3DC3334D9
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Mar 2021 06:24:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231690AbhCIUUE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Mar 2021 15:20:04 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:10684 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231768AbhCIUTg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Mar 2021 15:19:36 -0500
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 129KEMmm145065;
-        Tue, 9 Mar 2021 15:19:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=aS1Aa9fTZPc17/c+7pqDOz2pDumYV23TjqmU+LSMAOo=;
- b=l1HCX84DeDgONbHKAiKDvthvg1br726HpMhKQ26VclKhgoGaBj0/oaKCpB1EqLGYj9pA
- 78JN6jUNR1Y1LDguDXOaaGVJmliy1GSC1S9r82I6eebftQOHXk8aREzEIsRFZNoHGSQu
- 8UzWHPul9qyoITPDwxMoUBULvasv06r8dCVzSc6RvAR+lBAUA0PDKRGA8LOnsASugtKS
- V0gqqW17aIQSMWweo6wSCJMpChsD1MZwTWp/c7Ag3frWCd9WjZTBOOmuoyT8EdsJB5zP
- 57MdXVn48yNyHygw7zftAQ1gsbRfM6R/jCeXgBaau50ay0l+uKpWdwFiix29pJ2F6TAI MQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 376fvm83n5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 Mar 2021 15:19:23 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 129KEYCU145985;
-        Tue, 9 Mar 2021 15:17:27 -0500
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 376fvm837k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 Mar 2021 15:17:26 -0500
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-        by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 129K7vW6026055;
-        Tue, 9 Mar 2021 20:16:33 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma06fra.de.ibm.com with ESMTP id 3768n606pm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 Mar 2021 20:16:33 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 129KGVgu46268922
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 9 Mar 2021 20:16:31 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id ED0AC11C04C;
-        Tue,  9 Mar 2021 20:16:30 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A1F1E11C052;
-        Tue,  9 Mar 2021 20:16:26 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.23.212])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Tue,  9 Mar 2021 20:16:26 +0000 (GMT)
-Date:   Tue, 9 Mar 2021 22:16:23 +0200
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     George Kennedy <george.kennedy@oracle.com>,
-        David Hildenbrand <david@redhat.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Dhaval Giani <dhaval.giani@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 1/1] ACPI: fix acpi table use after free
-Message-ID: <YEfXl38hFc0jSsXm@linux.ibm.com>
-References: <1614802160-29362-1-git-send-email-george.kennedy@oracle.com>
- <CAJZ5v0j3=82x1hV9SCdinJQPkDXmJd9BFoqvNxNHSb6iS8PHVQ@mail.gmail.com>
- <9c3bc1b2-bb8d-194d-6faf-e4d7d346dc9b@oracle.com>
- <CAJZ5v0j8udd0R6A1wwpNvZL5Dr1pRcdiZr2if5y50o7OkHOMqg@mail.gmail.com>
- <YESEymRQ2/F7xJGt@linux.ibm.com>
- <YEe2SAESEaEak+HB@linux.ibm.com>
- <CAJZ5v0hAQo7+3bthoC8K7n7qyhQFMuOd8U3BhZWSREjPmq0-7w@mail.gmail.com>
+        id S229784AbhCJFYF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Mar 2021 00:24:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54288 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229490AbhCJFXl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Mar 2021 00:23:41 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2C9C061760
+        for <linux-acpi@vger.kernel.org>; Tue,  9 Mar 2021 21:23:40 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id mz6-20020a17090b3786b02900c16cb41d63so6836819pjb.2
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Mar 2021 21:23:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kzNfsTKHRqikZKDJpk3ZLLd8WdOKtskH70hYikTl5M4=;
+        b=lYvgYuHQ+43IDf50Nw1EmBSIyL7fXfv4Nr3KnquWOQck0aXiXI0d4TTDuMmJ5K/8ls
+         gT2RRp5DI35ogBnizM4GiIE/LF4cTmFh9/3vyHwU/OaX8HMhGlxkAVxy1T54sBYbTy7o
+         uPcjlLO8QPgoLl/3mh2tZyVwEkY3TqgtZYFMvOiF+IXDX10DQzE5Qm4rRrG+evkDYR+q
+         2Dgt9UNJ1m59MfPiMwGxHFxKJrR1bR1r0I6NU0W7JkXfXOPBXpbb9xfuWTzx4qTy/U4z
+         g7lQ27S/9Ae58/q69oDcKy25XqJmIBTx0/sR3R8JjbDF/+LL7c620nyyEirBH4a9Tzl4
+         0kVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kzNfsTKHRqikZKDJpk3ZLLd8WdOKtskH70hYikTl5M4=;
+        b=BV8ETUtYQK+FndXzVW82fzmTTwVhRtXBh5xmult+fjz9U/d1WUfrl89PuKBSvfcUUB
+         VT/ohZUJlqdPytjiTHLlkJvf+Wr3cXDY0Bn1KNM5f7lbhn5kPzDbMfa7ohWIbHGSeIbA
+         Ot7cBS8F9z6uiXxi0oQ7kAf8UTQMuwf+m4OhGgaQcdQvkktg8H7O7Ger88Pgw5dcdCTo
+         mNyLd/m2SPlRNxUVsHcUuPrJVWS9RLKARGA+DxII9YdbtzpoYzmhB23qCangD2e1pmqD
+         B9i6caW9UtKUnLAqmGkt2Jccx9KoPQc+J28VB91yy3gptHqCGjw3YE0Iwy22hK5ZMRuM
+         uU6g==
+X-Gm-Message-State: AOAM531RzqMFNf1wbDf7vbJS3laFjSX7Y8zD03K0cfRrPbpQc5XPMYdO
+        NX7xhTk1Iz8amGhc8cMTJjNAIFCnTSsDVw==
+X-Google-Smtp-Source: ABdhPJzuL00Zp+tBMXN7pBV0GvYvFgNsl98h+A5+Yaf3P8yLznthV781A8esUxFwRezpcnDhfzruig==
+X-Received: by 2002:a17:902:b08b:b029:e4:deb:69a9 with SMTP id p11-20020a170902b08bb02900e40deb69a9mr1241127plr.35.1615353820285;
+        Tue, 09 Mar 2021 21:23:40 -0800 (PST)
+Received: from localhost ([122.171.124.15])
+        by smtp.gmail.com with ESMTPSA id u9sm14776075pgc.59.2021.03.09.21.23.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 09 Mar 2021 21:23:39 -0800 (PST)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Ben Segall <bsegall@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Will Deacon <will@kernel.org>
+Cc:     linux-pm@vger.kernel.org,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V6 0/4] cpufreq: cppc: Add support for frequency invariance
+Date:   Wed, 10 Mar 2021 10:53:22 +0530
+Message-Id: <cover.1615351622.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.25.0.rc1.19.g042ed3e048af
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hAQo7+3bthoC8K7n7qyhQFMuOd8U3BhZWSREjPmq0-7w@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-09_15:2021-03-09,2021-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- bulkscore=0 mlxscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090096
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 09, 2021 at 07:29:51PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Mar 9, 2021 at 6:54 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
-> >
-> > On Sun, Mar 07, 2021 at 09:46:22AM +0200, Mike Rapoport wrote:
-> > > Hello Rafael,
-> > >
-> > > On Fri, Mar 05, 2021 at 02:30:07PM +0100, Rafael J. Wysocki wrote:
-> > > > On Fri, Mar 5, 2021 at 12:14 AM George Kennedy <george.kennedy@oracle.com> wrote:
-> > > >
-> > > > > The ibft table, for example, is mapped in via acpi_map() and kmap(). The
-> > > > > page for the ibft table is not reserved, so it can end up on the freelist.
-> > > >
-> > > > You appear to be saying that it is not sufficient to kmap() a page in
-> > > > order to use it safely.  It is also necessary to reserve it upfront,
-> > > > for example with the help of memblock_reserve().  Is that correct?  If
-> > > > so, is there an alternative way to reserve a page frame?
-> > >
-> > > Like David said in the other reply, if a BIOS does not mark the memory that
-> > > contains an ACPI table as used (e.g. reserved or ACPI data), we need to
-> > > make sure the kernel knows that such memory is in use and an early call to
-> > > memblock_reserve() is exactly what we need here.
-> > > George had this issue with iBFT, but in general this could be any table
-> > > that a buggy BIOS forgot to mark as ACPI data.
-> >
-> > BTW, I wonder is there a fundamental reason to use ioremap() to access ACPI
-> > tables at all?
-> > In the end, they reside in RAM and, apparently, they live at the same DIMM
-> > as neighboring "normal memory" so why cannot we just map them normally as
-> > read-only not executable?
-> 
-> This may be NVS memory (depending on the configuration of the system)
-> which isn't "normal" RAM AFAICS.
+Hello,
 
-Hmm, according to the description of "ACPI NVS" in ACPI 6.3
+CPPC cpufreq driver is used for ARM servers and this patch series tries
+to provide counter-based frequency invariance support for them in the
+absence for architecture specific counters (like AMUs).
 
-	ACPI NVS Memory. This range of addresses is in use or reserved by
-			 the system and must not be used by the operating
-			 system. This range is required to be saved and
- 			 restored across an NVS sleep.
+This is tested by:
+- Vincent Guittot on ThunderX2.
+- Ionela Voinescu on Juno R2.
+- /me with hacks on Hikey, as I don't have access to the right hardware.
 
-it behaves more like "normal" RAM rather than actual non-volatile storage.
+This is based of 5.12-rc2. I will merge these via the arm-cpufreq tree
+directly.
 
-There are other places in ACPI text that imply that "ACPI NVS" is actually
-RAM, it's just reserved by the firmware.
+Changes since V5:
+- New patch to rename freq_scale to arch_freq_scale (Will Deacon).
+- Separate patch to export arch_freq_scale and helpers (Will Deacon).
+- Some improvements in the last patch like commit log, moving more stuff
+  to policy init, new fie_disabled flag, etc. (Ionela Voinescu).
+- Added Reviewed/Acked/Tested-by tags.
 
-And judging by the example below both "ACPI data" and "ACPI NVS" live in
-the very same DIMM as "usable" RAM.
+Changes since V4:
+- Move some code to policy specific initialization for cppc driver.
+- Initialize kthread specific stuff only once in cppc driver.
+- Added a kerneldoc comment in cppc driver and improved changelog as
+  well.
 
-[    0.000000] BIOS-e820: [mem 0x0000000029931000-0x0000000029932fff] usable
-[    0.000000] BIOS-e820: [mem 0x0000000029933000-0x000000002993afff] ACPI data
-[    0.000000] BIOS-e820: [mem 0x000000002993b000-0x000000002993bfff] ACPI NVS
-[    0.000000] BIOS-e820: [mem 0x000000002993c000-0x0000000029940fff] ACPI data
-[    0.000000] BIOS-e820: [mem 0x0000000029941000-0x0000000029944fff] usable
+Changes since V3:
+- rebuild_sched_domains_energy() stuff moved from arm64 to drivers/base.
+- Added Reviewed/Tested-by Ionela for the first patch.
+- Remove unused max_freq field from structure in cppc driver.
+- s/cppc_f_i/cppc_freq_inv.
+- Fix an per-cpu access, there was a bug in earlier version.
+- Create a single kthread which can run on any CPU and takes care of
+  work from all the CPUs.
+- Do the whole FIE thing under a new CONFIG option for cppc driver.
+- Few minor improvements.
 
-Unfortunately, both UEFI and ACPI standards are very vague about the
-meaning of "ACPI NVS" so there may be systems that use real non-volatile
-storage for it...
+Changes since V2:
+- Not sending as an RFC anymore.
+- Several renames, reordering of code in 1/2 based on Ionela's comments.
+- Several rebase changes for 2/2.
+- The freq_scale calculations are optimized a bit.
+- Better overall commenting and commit logs.
 
+Changes since V1:
+- The interface for setting the callbacks is improved, so different
+  parts looking to provide their callbacks don't need to think about
+  each other.
+
+- Moved to per-cpu storage for storing the callback related data, AMU
+  counters have higher priority with this.
+
+--
+Viresh
+
+Viresh Kumar (4):
+  arch_topology: Rename freq_scale as arch_freq_scale
+  arch_topology: Allow multiple entities to provide sched_freq_tick()
+    callback
+  arch_topology: Export arch_freq_scale and helpers
+  cpufreq: CPPC: Add support for frequency invariance
+
+ arch/arm64/include/asm/topology.h |  10 +-
+ arch/arm64/kernel/topology.c      | 109 +++++--------
+ drivers/base/arch_topology.c      |  89 ++++++++++-
+ drivers/cpufreq/Kconfig.arm       |  10 ++
+ drivers/cpufreq/cppc_cpufreq.c    | 245 ++++++++++++++++++++++++++++--
+ include/linux/arch_topology.h     |  19 ++-
+ kernel/sched/core.c               |   1 +
+ 7 files changed, 385 insertions(+), 98 deletions(-)
+
+
+base-commit: a38fd8748464831584a19438cbb3082b5a2dab15
 -- 
-Sincerely yours,
-Mike.
+2.25.0.rc1.19.g042ed3e048af
+
