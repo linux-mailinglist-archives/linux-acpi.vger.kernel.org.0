@@ -2,281 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F080F337234
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 13:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1CAD3377F2
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 16:37:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232987AbhCKMPE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Mar 2021 07:15:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58648 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232912AbhCKMOy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Mar 2021 07:14:54 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A85C061574;
-        Thu, 11 Mar 2021 04:14:54 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id bt4so3373342pjb.5;
-        Thu, 11 Mar 2021 04:14:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=W3eIr7G6gKn2AUO8oRDytYNMU3Kbx5BTjDGWEWAk2yk=;
-        b=MY9Kw7kO61zaFCKakmSwfxtI42skpfQRZoDLZ8LLoKW1KOkXoqNUu7q4DrOHH3oHzA
-         kFxoeATmjQAd4OZY0yUvWGiqcezlKrkFtrWiyeDUpzHhKHK3p6d9zV9PORuYEd+LvGZD
-         lNPkvBxR0vM1bCEbrjViXqU+X7k4ZANrFvg44r66kmtDSFLM5ykuj0lraKwNb1H0/XqM
-         +22qNbp1j3MB5DLLj4CWtwf1Xa9yHwibCMVr+OKfznLqxvcAjwFIEtEtrlsGQsVuulUe
-         rNsUWhWOpNRvR9RZaS4SfQIkAhYvQE8sIgC/aZozRlvUQ8/QuqG++j28Tb9SsH8neGmG
-         5y/w==
+        id S234260AbhCKPhG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Mar 2021 10:37:06 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:40356 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233999AbhCKPgn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Mar 2021 10:36:43 -0500
+Received: by mail-ot1-f44.google.com with SMTP id b8so1836559oti.7;
+        Thu, 11 Mar 2021 07:36:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=W3eIr7G6gKn2AUO8oRDytYNMU3Kbx5BTjDGWEWAk2yk=;
-        b=MZvWbXWjxRNXfoCjZzKLe/toCw7p4sa2wc8fq7N3J/Pk8tlovH/BqAjzmTpTE7ap1O
-         kLvs7xFCApG5gvZaCOJWE6RlJucPKex3SyG209NjyVpOvK2ay1njunqqLwj6pxOKuIxK
-         nyLtzh4wW+73DNzkk/0x7c2dEKg4HhkKMRuN/DoTRVB4EFK2hCU4mvNFe2QNKtk6KpRy
-         1zNs81fDjO+oHBBdrRSZkm9HSk1g+p9hUjWMY0SaLSIgramzQ/+DNiTexspAHwJMmhxW
-         LY/X/VQVkluiEgre0zbhC1BkiXyNyIcFWqO8N021aDnsCVUvgKrv/U0Q8IM8G3a7yIz5
-         UFaw==
-X-Gm-Message-State: AOAM531TZCU/Ti5DOC+sDHi/+wp8MzhPfke4++9PF0umPqA1QPTgABCB
-        l8g0U27iy4LYpctl8kRW5otZSbpEUQST6IEjATM=
-X-Google-Smtp-Source: ABdhPJwIOTgpiMOskUx83n5/FxNMwXWnll1qmUAvBzDYz23FJ3Cc2kvM5DGugk9LXcwF1NqQX3ndwp9ncR4Lj1ldNA0=
-X-Received: by 2002:a17:902:bf0c:b029:e6:2875:aa60 with SMTP id
- bi12-20020a170902bf0cb02900e62875aa60mr7782772plb.17.1615464893431; Thu, 11
- Mar 2021 04:14:53 -0800 (PST)
+        bh=uwY2wNfbKjFx3CHjkfJmwtEhpX43qQBYMFJEAlc1V6Y=;
+        b=XXnKNKfBz/oGRjGobvylNzC/GU7wzusjw0SN8vvpKl6slnbhF2tlxk1zpi5kdCNjQq
+         9BafInAw9PPFoVGTGmqMD+3ssh0OUOxFzBaVeoGTDUPbj7MAkuU2bSZkpGcnUtSbpodw
+         xV6SRP3w2xRGimTW6YtXfkEg+tGi/xMpIqaIISFjyAZfxk/cXRb7ikTscP8xta2OhUGy
+         JiN0tO1xIL3sSU8CpHFvZR5Ap05qZy5TygsSOniTLmWv46I6EKMzVgXsIhQYKmwFeDwl
+         ZmnXWzMk/NmX1Vf6MLH3ZeFc69UJ9fWVjO5pP4ncKfkFIix1SLZfjSTTMYpAA3QIIEPu
+         2uxg==
+X-Gm-Message-State: AOAM530z+JKe7lt8y8YXjCrGEN79xDdBX5zQUluK/SdGUDKD3dFNWnVt
+        ffjtT6D2w/cVl81Dz/R2HLDmdw7Mtnmtd3q/IJY=
+X-Google-Smtp-Source: ABdhPJwUt9Q6ZZJCSQpdeTp+0T+zFZMHpiXszgp78Tff9vWJiX7Jv6h8C2PFGGBuNvCTnbBuhQIm8qTvykxW277eA5o=
+X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr7541034otr.321.1615477002714;
+ Thu, 11 Mar 2021 07:36:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20210311062011.8054-1-calvin.johnson@oss.nxp.com> <20210311062011.8054-12-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20210311062011.8054-12-calvin.johnson@oss.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 11 Mar 2021 14:14:37 +0200
-Message-ID: <CAHp75VcDzMGgQDWeqR7hxnHXmfobR-CbwcmuMoE57ZMwvNQQ3Q@mail.gmail.com>
-Subject: Re: [net-next PATCH v7 11/16] net: mdio: Add ACPI support code for mdio
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
+References: <1614802160-29362-1-git-send-email-george.kennedy@oracle.com>
+ <CAJZ5v0j3=82x1hV9SCdinJQPkDXmJd9BFoqvNxNHSb6iS8PHVQ@mail.gmail.com>
+ <9c3bc1b2-bb8d-194d-6faf-e4d7d346dc9b@oracle.com> <CAJZ5v0j8udd0R6A1wwpNvZL5Dr1pRcdiZr2if5y50o7OkHOMqg@mail.gmail.com>
+ <1ae44491-4404-6873-4ee6-6cf58c1ae6fb@redhat.com> <CAJZ5v0gC+60n0-UkMw8h5JPBc6grQtD1ambSOCAHV2HLm886yQ@mail.gmail.com>
+ <CAJZ5v0g_ztenDY-ER6A0fKD-ZHhLfF3zQdRYYxQb5jSXudd8xQ@mail.gmail.com>
+ <e8593eae-40b8-bc9a-78db-529d28d2be88@redhat.com> <YEkgP0G94uQBGDa9@linux.ibm.com>
+ <0d05364c-4881-d78a-9721-bd15f5eb822b@redhat.com>
+In-Reply-To: <0d05364c-4881-d78a-9721-bd15f5eb822b@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 11 Mar 2021 16:36:31 +0100
+Message-ID: <CAJZ5v0jOpNJrOt5xn-1YkSB9Q15NZS2cxmsGKAU945YNbs+hOw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI: fix acpi table use after free
+To:     David Hildenbrand <david@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        George Kennedy <george.kennedy@oracle.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Dhaval Giani <dhaval.giani@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Michal Hocko <mhocko@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 11, 2021 at 8:22 AM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
+On Wed, Mar 10, 2021 at 8:47 PM David Hildenbrand <david@redhat.com> wrote:
 >
-> Define acpi_mdiobus_register() to Register mii_bus and create PHYs for
-> each ACPI child node.
->
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> ---
->
-> Changes in v7:
-> - Include headers directly used in acpi_mdio.c
->
-> Changes in v6:
-> - use GENMASK() and ACPI_COMPANION_SET()
-> - some cleanup
-> - remove unwanted header inclusion
->
-> Changes in v5:
-> - add missing MODULE_LICENSE()
-> - replace fwnode_get_id() with OF and ACPI function calls
->
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
->
->  MAINTAINERS                  |  1 +
->  drivers/net/mdio/Kconfig     |  7 +++++
->  drivers/net/mdio/Makefile    |  1 +
->  drivers/net/mdio/acpi_mdio.c | 56 ++++++++++++++++++++++++++++++++++++
->  include/linux/acpi_mdio.h    | 25 ++++++++++++++++
->  5 files changed, 90 insertions(+)
->  create mode 100644 drivers/net/mdio/acpi_mdio.c
->  create mode 100644 include/linux/acpi_mdio.h
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 146de41d2656..051377b7fa94 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6680,6 +6680,7 @@ F:        Documentation/devicetree/bindings/net/mdio*
->  F:     Documentation/devicetree/bindings/net/qca,ar803x.yaml
->  F:     Documentation/networking/phy.rst
->  F:     drivers/net/mdio/
-> +F:     drivers/net/mdio/acpi_mdio.c
->  F:     drivers/net/mdio/fwnode_mdio.c
->  F:     drivers/net/mdio/of_mdio.c
->  F:     drivers/net/pcs/
-> diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
-> index 2d5bf5ccffb5..fc8c787b448f 100644
-> --- a/drivers/net/mdio/Kconfig
-> +++ b/drivers/net/mdio/Kconfig
-> @@ -36,6 +36,13 @@ config OF_MDIO
->         help
->           OpenFirmware MDIO bus (Ethernet PHY) accessors
->
-> +config ACPI_MDIO
-> +       def_tristate PHYLIB
+> >>>>> The same could be reproduced via zone shuffling with a little luck.
+> >>>>
+> >>>> But nobody does that in practice.
+> >>>>
+> >>
+> >> Dan will most certainly object. And I don't know what makes you speak in
+> >> absolute words here.
+> >>
+> >>>> This would be relatively straightforward to address if ACPICA was not
+> >>>> involved in it, but unfortunately that's not the case.
+> >>>>
+> >>>> Changing this part of ACPICA is risky, because such changes may affect
+> >>>> other OSes using it, so that requires some serious consideration.
+> >>>> Alternatively, the previous memory allocation order in Linux could be
+> >>>> restored.
+> >>>
+> >>> Of course, long-term this needs to be addressed in the ACPI
+> >>> initialization code, because it clearly is not robust enough, but in
+> >>> the meantime there's practical breakage observable in the field, so
+> >>> what can be done about that?
+> >>
+> >> *joke* enable zone shuffling.
+> >>
+> >> No seriously, fix the latent BUG. What again is problematic about excluding
+> >> these pages from the page allcoator, for example, via memblock_reserve()?
+> >>
+> >> @Mike?
+> >
+> > There is some care that should be taken to make sure we get the order
+> > right, but I don't see a fundamental issue here.
 
-> +       depends on ACPI
-> +       depends on PHYLIB
+Me neither.
 
-Same issue, they are no-ops.
+> > If I understand correctly, Rafael's concern is about changing the parts of
+> > ACPICA that should be OS agnostic, so I think we just need another place to
+> > call memblock_reserve() rather than acpi_tb_install_table_with_override().
 
-I guess you have to surround OF and ACPI and FWNODE variants by
+Something like this.
 
-if PHYLIB
-...
-endif
+There is also the problem that memblock_reserve() needs to be called
+for all of the tables early enough, which will require some reordering
+of the early init code.
 
-This will be an equivalent to depends on PHYLIB
+> > Since the reservation should be done early in x86::setup_arch() (and
+> > probably in arm64::setup_arch()) we might just have a function that parses
+> > table headers and reserves them, similarly to how we parse the tables
+> > during KASLR setup.
 
-and put this into Makefile
+Right.
 
-ifneq ($(CONFIG_ACPI),)
-obj-$(CONFIG_PHYLIB) += acpi_mdio.o
-endif
-
-This will give you the rest, i.e. default PHYLIB + depends on ACPI
-
-Similar for OF
-
-> +       help
-> +         ACPI MDIO bus (Ethernet PHY) accessors
-> +
->  if MDIO_BUS
 >
->  config MDIO_DEVRES
-> diff --git a/drivers/net/mdio/Makefile b/drivers/net/mdio/Makefile
-> index ea5390e2ef84..e8b739a3df1c 100644
-> --- a/drivers/net/mdio/Makefile
-> +++ b/drivers/net/mdio/Makefile
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for Linux MDIO bus drivers
+> FWIW, something like below would hide our latent BUG again properly (lol).
+> But I guess I don't have to express how ugly and wrong that is. Not to mention
+> what happens if memblock decides to allocate that memory area earlier
+> for some other user (including CMA, ...).
+
+Fair enough.
+
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 3e4b29ee2b1e..ec71b7c63dbe 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1566,6 +1566,21 @@ void __free_pages_core(struct page *page, unsigned int order)
 >
-> +obj-$(CONFIG_ACPI_MDIO)                += acpi_mdio.o
->  obj-$(CONFIG_FWNODE_MDIO)      += fwnode_mdio.o
->  obj-$(CONFIG_OF_MDIO)          += of_mdio.o
+>          atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
 >
-> diff --git a/drivers/net/mdio/acpi_mdio.c b/drivers/net/mdio/acpi_mdio.c
-> new file mode 100644
-> index 000000000000..60a86e3fc246
-> --- /dev/null
-> +++ b/drivers/net/mdio/acpi_mdio.c
-> @@ -0,0 +1,56 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ACPI helpers for the MDIO (Ethernet PHY) API
-> + *
-> + * This file provides helper functions for extracting PHY device information
-> + * out of the ACPI ASL and using it to populate an mii_bus.
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/acpi_mdio.h>
-> +#include <linux/bits.h>
-> +#include <linux/dev_printk.h>
-> +#include <linux/fwnode_mdio.h>
-> +#include <linux/module.h>
-> +#include <linux/types.h>
-> +
-> +MODULE_AUTHOR("Calvin Johnson <calvin.johnson@oss.nxp.com>");
-> +MODULE_LICENSE("GPL");
-> +
-> +/**
-> + * acpi_mdiobus_register - Register mii_bus and create PHYs from the ACPI ASL.
-> + * @mdio: pointer to mii_bus structure
-> + * @fwnode: pointer to fwnode of MDIO bus.
-> + *
-> + * This function registers the mii_bus structure and registers a phy_device
-> + * for each child node of @fwnode.
-> + */
-> +int acpi_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode)
-> +{
-> +       struct fwnode_handle *child;
-> +       u32 addr;
-> +       int ret;
-> +
-> +       /* Mask out all PHYs from auto probing. */
-> +       mdio->phy_mask = GENMASK(31, 0);
-> +       ret = mdiobus_register(mdio);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ACPI_COMPANION_SET(&mdio->dev, to_acpi_device_node(fwnode));
-> +
-> +       /* Loop over the child nodes and register a phy_device for each PHY */
-> +       fwnode_for_each_child_node(fwnode, child) {
-> +               ret = acpi_get_local_address(ACPI_HANDLE_FWNODE(child), &addr);
-> +               if (ret || addr >= PHY_MAX_ADDR)
-> +                       continue;
-> +
-> +               ret = fwnode_mdiobus_register_phy(mdio, child, addr);
-> +               if (ret == -ENODEV)
-> +                       dev_err(&mdio->dev,
-> +                               "MDIO device at address %d is missing.\n",
-> +                               addr);
-> +       }
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL(acpi_mdiobus_register);
-> diff --git a/include/linux/acpi_mdio.h b/include/linux/acpi_mdio.h
-> new file mode 100644
-> index 000000000000..748d261fe2f9
-> --- /dev/null
-> +++ b/include/linux/acpi_mdio.h
-> @@ -0,0 +1,25 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * ACPI helper for the MDIO (Ethernet PHY) API
-> + */
-> +
-> +#ifndef __LINUX_ACPI_MDIO_H
-> +#define __LINUX_ACPI_MDIO_H
-> +
-> +#include <linux/phy.h>
-> +
-> +#if IS_ENABLED(CONFIG_ACPI_MDIO)
-> +int acpi_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode);
-> +#else /* CONFIG_ACPI_MDIO */
-> +static inline int acpi_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode)
-> +{
 > +       /*
-> +        * Fall back to mdiobus_register() function to register a bus.
-> +        * This way, we don't have to keep compat bits around in drivers.
+> +        * BUG ALERT: x86-64 ACPI code has latent BUGs where ACPI tables
+> +        * that must not get allocated/modified will get exposed to the buddy
+> +        * as free pages; anybody can allocate and use them once in the free
+> +        * lists.
+> +        *
+> +        * Instead of fixing the BUG, revert the change to the
+> +        * freeing/allocation order during boot that revealed it and cross
+> +        * fingers that everything will be fine.
 > +        */
+> +       if (system_state < SYSTEM_RUNNING) {
+> +               __free_pages_ok(page, order, FPI_NONE);
+> +               return;
+> +       }
 > +
-> +       return mdiobus_register(mdio);
-> +}
-> +#endif
-> +
-> +#endif /* __LINUX_ACPI_MDIO_H */
-> --
-> 2.17.1
+>          /*
+>           * Bypass PCP and place fresh pages right to the tail, primarily
+>           * relevant for memory onlining.
 >
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+>
+> --
