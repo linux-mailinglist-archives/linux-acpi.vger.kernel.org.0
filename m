@@ -2,199 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C55DF336C82
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 07:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20411336DBB
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 09:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231402AbhCKGwF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Mar 2021 01:52:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45786 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231340AbhCKGve (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Mar 2021 01:51:34 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C97C061761
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Mar 2021 22:51:34 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id m9so20647018ybk.8
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Mar 2021 22:51:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/TWjmkYOsjWxuSvsZczTiKRCUZs8/TXiLhq6HTYxrkc=;
-        b=ZiX9Rg7lAbNihf5ARUd3fj7zUcwh3LumoEDPAk5Ai99apA62qWW2GkHJk6efyfiEy7
-         coJVlTQ102RjumLiZAw6DPjna6+4gPzHFKWtY5g+xILHxGYvd6jDQPDP5QtdTlQD/Hc9
-         ik5KFF9f83yCTuTTdV2f8XqHJ6sJIrr/hnF6DlsiO+xBdbFU+FaYxKUTgWWqQ2fFmQqt
-         eZEkduD+GIm6/za07O/KG2PEyO/LxQHG0B1W632QMeeJXb5cYOQ2FRa+nfD+UdCXcCvn
-         N3naoX+/jUCKauItbzKRwv5w5FelkgvfUjxo6FypJWGjGHvc72A44VN4Nq0XUONe9PV+
-         4C3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/TWjmkYOsjWxuSvsZczTiKRCUZs8/TXiLhq6HTYxrkc=;
-        b=ecSiqs5VW250m5iCbZx7MXyXk5RYr91+qYnvPGZJjFtBCmZUTnebWmMyAtl+VhbJoI
-         xUohqqmD2NpEt0FEfnH7QtIxkOrKP0EsPu8SlryDTQlegT++1iom8HAW9VPR4mk3WFIm
-         RUnDgX8FeEwTltsrqJLVoDyQc8QKnimqe0gnnYy4YFQm5+ZC4oKH8x6qLzTgc3zuh4IF
-         uqVZkZrZnUxkyP9kNc8NekGZXxeLHyZV9v8boYaFdxrWeo9xwcMl/ioO/u59N2ZBetXg
-         r5H07A0ER3HRxTQU7xyQQ+ozbvJshnPipJJWfmIL8DepsDOwhs41MPuwuPWmEGRhgErH
-         RDpA==
-X-Gm-Message-State: AOAM533W0quoE0ul60Url9IctARwXNeeRRKbltAFMoK8SHLnOL99atNa
-        5v5DW0ijcwymjJdHmXcJUTjqW6tQd5VVfO2DgE24ew==
-X-Google-Smtp-Source: ABdhPJyeMMYfKt7AqgiPS4WR08oFWWbtn89mOZetlzxKAEFqnCJiyg8wlDXKmHktl0o6G3gFpBAeEwo1DQv7jjqj8so=
-X-Received: by 2002:a25:aa43:: with SMTP id s61mr10180775ybi.32.1615445492980;
- Wed, 10 Mar 2021 22:51:32 -0800 (PST)
+        id S229830AbhCKIZN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Mar 2021 03:25:13 -0500
+Received: from mga01.intel.com ([192.55.52.88]:49141 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230289AbhCKIZK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 11 Mar 2021 03:25:10 -0500
+IronPort-SDR: cuXYmVmzo89iPHPWwSEKp41iY1CvDQAM8QlPfvAdfuQj4Py2As37wgm6KzKBjbqiK9SSvjpeHj
+ se4WWNJ8J4fw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9919"; a="208452863"
+X-IronPort-AV: E=Sophos;i="5.81,239,1610438400"; 
+   d="scan'208";a="208452863"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2021 00:25:10 -0800
+IronPort-SDR: AkynqY7WYNcU+yGW8lQOBCIkWqsuOWj2cxHX0Qcnv5cSfLREbVCUSIcNA2eOZJlt4vOvy3yX5I
+ jq1duGqnpFLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,239,1610438400"; 
+   d="scan'208";a="509954418"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 11 Mar 2021 00:25:09 -0800
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Add entry for the software nodes
+Date:   Thu, 11 Mar 2021 11:25:21 +0300
+Message-Id: <20210311082521.39342-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210311062011.8054-1-calvin.johnson@oss.nxp.com> <20210311062011.8054-3-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20210311062011.8054-3-calvin.johnson@oss.nxp.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Wed, 10 Mar 2021 22:50:57 -0800
-Message-ID: <CAGETcx87Upc701NZstiDx8Px1o9b+s4ANpbG0AP5bjC8DxMMrg@mail.gmail.com>
-Subject: Re: [net-next PATCH v7 02/16] net: phy: Introduce fwnode_mdio_find_device()
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Grant Likely <grant.likely@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
-        Jon <jon@solid-run.com>, Randy Dunlap <rdunlap@infradead.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 10, 2021 at 10:21 PM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
->
-> Define fwnode_mdio_find_device() to get a pointer to the
-> mdio_device from fwnode passed to the function.
->
-> Refactor of_mdio_find_device() to use fwnode_mdio_find_device().
->
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> ---
->
-> Changes in v7:
-> - correct fwnode_mdio_find_device() description
->
-> Changes in v6:
-> - fix warning for function parameter of fwnode_mdio_find_device()
->
-> Changes in v5: None
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
->
->  drivers/net/mdio/of_mdio.c   | 11 +----------
->  drivers/net/phy/phy_device.c | 23 +++++++++++++++++++++++
->  include/linux/phy.h          |  6 ++++++
->  3 files changed, 30 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
-> index ea9d5855fb52..d5e0970b2561 100644
-> --- a/drivers/net/mdio/of_mdio.c
-> +++ b/drivers/net/mdio/of_mdio.c
-> @@ -347,16 +347,7 @@ EXPORT_SYMBOL(of_mdiobus_register);
->   */
->  struct mdio_device *of_mdio_find_device(struct device_node *np)
->  {
-> -       struct device *d;
-> -
-> -       if (!np)
-> -               return NULL;
-> -
-> -       d = bus_find_device_by_of_node(&mdio_bus_type, np);
-> -       if (!d)
-> -               return NULL;
-> -
-> -       return to_mdio_device(d);
-> +       return fwnode_mdio_find_device(of_fwnode_handle(np));
->  }
->  EXPORT_SYMBOL(of_mdio_find_device);
->
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index cc38e326405a..daabb17bba00 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -2819,6 +2819,29 @@ static bool phy_drv_supports_irq(struct phy_driver *phydrv)
->         return phydrv->config_intr && phydrv->handle_interrupt;
->  }
->
-> +/**
-> + * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
-> + * @fwnode: pointer to the mdio_device's fwnode
-> + *
-> + * If successful, returns a pointer to the mdio_device with the embedded
-> + * struct device refcount incremented by one, or NULL on failure.
-> + * The caller should call put_device() on the mdio_device after its use.
-> + */
-> +struct mdio_device *fwnode_mdio_find_device(struct fwnode_handle *fwnode)
-> +{
-> +       struct device *d;
-> +
-> +       if (!fwnode)
-> +               return NULL;
-> +
-> +       d = bus_find_device_by_fwnode(&mdio_bus_type, fwnode);
+Making Andy and myself (Heikki) the designated reviewers of
+the thing. The software node mailing list shall be
+linux-acpi@vger.kernel.org for now.
 
-Sorry about the late review, but can you look into using
-get_dev_from_fwnode()? As long as you aren't registering two devices
-for the same fwnode, it's an O(1) operation instead of having to loop
-through a list of devices in a bus. You can check the returned
-device's bus type if you aren't sure about not registering two devices
-with the same fw_node and then fall back to this looping.
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
--Saravana
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f032f45bc9512..a76b6c926004e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16616,6 +16616,13 @@ F:	drivers/firmware/arm_sdei.c
+ F:	include/linux/arm_sdei.h
+ F:	include/uapi/linux/arm_sdei.h
+ 
++SOFTWARE NODES
++R:	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
++R:	Heikki Krogerus <heikki.krogerus@linux.intel.com>
++L:	linux-acpi@vger.kernel.org
++S:	Maintained
++F:	drivers/base/swnode.c
++
+ SOFTWARE RAID (Multiple Disks) SUPPORT
+ M:	Song Liu <song@kernel.org>
+ L:	linux-raid@vger.kernel.org
+-- 
+2.30.1
 
-> +       if (!d)
-> +               return NULL;
-> +
-> +       return to_mdio_device(d);
-> +}
-> +EXPORT_SYMBOL(fwnode_mdio_find_device);
-> +
->  /**
->   * phy_probe - probe and init a PHY device
->   * @dev: device to probe and init
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 1a12e4436b5b..f5eb1e3981a1 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -1366,11 +1366,17 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, u32 phy_id,
->                                      bool is_c45,
->                                      struct phy_c45_device_ids *c45_ids);
->  #if IS_ENABLED(CONFIG_PHYLIB)
-> +struct mdio_device *fwnode_mdio_find_device(struct fwnode_handle *fwnode);
->  struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45);
->  int phy_device_register(struct phy_device *phy);
->  void phy_device_free(struct phy_device *phydev);
->  #else
->  static inline
-> +struct mdio_device *fwnode_mdio_find_device(struct fwnode_handle *fwnode)
-> +{
-> +       return 0;
-> +}
-> +static inline
->  struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
->  {
->         return NULL;
-> --
-> 2.17.1
->
