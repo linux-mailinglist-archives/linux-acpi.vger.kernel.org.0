@@ -2,157 +2,221 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CAD3377F2
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 16:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D270337A37
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Mar 2021 18:00:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234260AbhCKPhG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Mar 2021 10:37:06 -0500
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:40356 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233999AbhCKPgn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Mar 2021 10:36:43 -0500
-Received: by mail-ot1-f44.google.com with SMTP id b8so1836559oti.7;
-        Thu, 11 Mar 2021 07:36:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uwY2wNfbKjFx3CHjkfJmwtEhpX43qQBYMFJEAlc1V6Y=;
-        b=XXnKNKfBz/oGRjGobvylNzC/GU7wzusjw0SN8vvpKl6slnbhF2tlxk1zpi5kdCNjQq
-         9BafInAw9PPFoVGTGmqMD+3ssh0OUOxFzBaVeoGTDUPbj7MAkuU2bSZkpGcnUtSbpodw
-         xV6SRP3w2xRGimTW6YtXfkEg+tGi/xMpIqaIISFjyAZfxk/cXRb7ikTscP8xta2OhUGy
-         JiN0tO1xIL3sSU8CpHFvZR5Ap05qZy5TygsSOniTLmWv46I6EKMzVgXsIhQYKmwFeDwl
-         ZmnXWzMk/NmX1Vf6MLH3ZeFc69UJ9fWVjO5pP4ncKfkFIix1SLZfjSTTMYpAA3QIIEPu
-         2uxg==
-X-Gm-Message-State: AOAM530z+JKe7lt8y8YXjCrGEN79xDdBX5zQUluK/SdGUDKD3dFNWnVt
-        ffjtT6D2w/cVl81Dz/R2HLDmdw7Mtnmtd3q/IJY=
-X-Google-Smtp-Source: ABdhPJwUt9Q6ZZJCSQpdeTp+0T+zFZMHpiXszgp78Tff9vWJiX7Jv6h8C2PFGGBuNvCTnbBuhQIm8qTvykxW277eA5o=
-X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr7541034otr.321.1615477002714;
- Thu, 11 Mar 2021 07:36:42 -0800 (PST)
-MIME-Version: 1.0
-References: <1614802160-29362-1-git-send-email-george.kennedy@oracle.com>
- <CAJZ5v0j3=82x1hV9SCdinJQPkDXmJd9BFoqvNxNHSb6iS8PHVQ@mail.gmail.com>
- <9c3bc1b2-bb8d-194d-6faf-e4d7d346dc9b@oracle.com> <CAJZ5v0j8udd0R6A1wwpNvZL5Dr1pRcdiZr2if5y50o7OkHOMqg@mail.gmail.com>
- <1ae44491-4404-6873-4ee6-6cf58c1ae6fb@redhat.com> <CAJZ5v0gC+60n0-UkMw8h5JPBc6grQtD1ambSOCAHV2HLm886yQ@mail.gmail.com>
- <CAJZ5v0g_ztenDY-ER6A0fKD-ZHhLfF3zQdRYYxQb5jSXudd8xQ@mail.gmail.com>
- <e8593eae-40b8-bc9a-78db-529d28d2be88@redhat.com> <YEkgP0G94uQBGDa9@linux.ibm.com>
- <0d05364c-4881-d78a-9721-bd15f5eb822b@redhat.com>
-In-Reply-To: <0d05364c-4881-d78a-9721-bd15f5eb822b@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 11 Mar 2021 16:36:31 +0100
-Message-ID: <CAJZ5v0jOpNJrOt5xn-1YkSB9Q15NZS2cxmsGKAU945YNbs+hOw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: fix acpi table use after free
-To:     David Hildenbrand <david@redhat.com>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        George Kennedy <george.kennedy@oracle.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
+        id S229796AbhCKQ73 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Mar 2021 11:59:29 -0500
+Received: from mail-vi1eur05on2059.outbound.protection.outlook.com ([40.107.21.59]:32160
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229777AbhCKQ7G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 11 Mar 2021 11:59:06 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lH2xR99AjdHut7RRI6fa4Z2UCrZt7l/LPEBUgHS9K7v+aUHKViJ3/5wtALXJzJp93xLRouluObktorjJO6zAmw699PXlAZg6XEnDwG2xrB1DzpGt++J9wIVDXlrWGFe15Z9tYewDbxU7y+7568Knd/zTk7SCs7mvJ3BRnOP/KVwf0BSBJVu3IVksU7ne8JkCIzKuBWQXabIRlnQEM527vLN7tsugAJRzaCl4jCmIgO08GT6Q9ortqz0ga5I++zg/TgSwB0oTfrrcAlmMwIckETG77u3kfoppcY9l/d2A8SwxHyT02P2EZuHYEolsvCMcQxkCoijKBihvOYa5rbXNhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=30owklYDPw6/B3081fpd+SyKPNneVzz3HHlLP+tXRjQ=;
+ b=FDit8e2MTmEGEuY1lbuEom50WbBUTDD/fWrxoMPTzylijnCYlReBjMOlIDucKz7bZuog3BZ8o0MTUeemFNuuKV65GccQUVpiIu8GfCgj0hmkFMdq2rlgifeiwbJ9w+4MEn9ZN4nji4UqG6UCQxOkBT1b1k9CoV57VCNwAFRoTxw10QkWIs/CIIXkcnujIbbbCT1pchg3yHEmFsrY/ENtDGxBuloSxzuyWKaVA1ajItxdMCYvK+K66AceztVyvJ09oBToLiXn3lVECvzJMzMk/UXBCxq5q97u2w09Vl4sToQMhlfrNQUe79T1nOijs9Bl48A9QljIeLkdthDCjBiiPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=30owklYDPw6/B3081fpd+SyKPNneVzz3HHlLP+tXRjQ=;
+ b=eAo4qMlYjkSbHVmq9qeiIaEzfWb+zyZaRbT4lzWooYEcniSxk3wWOlB3/E6nGnd6MRS4VoBeg6vWnwHLKhVejd+VYubPY2e+ia+Gs/sHWFKkhmVo9KNn95IPQhe7FIpu4y/A1fnYAUBqlL2xTpucNBVj4oyny77O6gq7NT5Rr6Q=
+Authentication-Results: google.com; dkim=none (message not signed)
+ header.d=none;google.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB6964.eurprd04.prod.outlook.com (2603:10a6:208:18a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Thu, 11 Mar
+ 2021 16:59:03 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::1cd:7101:5570:cd79]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::1cd:7101:5570:cd79%7]) with mapi id 15.20.3912.027; Thu, 11 Mar 2021
+ 16:59:03 +0000
+Date:   Thu, 11 Mar 2021 22:28:42 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, Randy Dunlap <rdunlap@infradead.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Dhaval Giani <dhaval.giani@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [net-next PATCH v7 02/16] net: phy: Introduce
+ fwnode_mdio_find_device()
+Message-ID: <20210311165842.GA5031@lsv03152.swis.in-blr01.nxp.com>
+References: <20210311062011.8054-1-calvin.johnson@oss.nxp.com>
+ <20210311062011.8054-3-calvin.johnson@oss.nxp.com>
+ <CAGETcx87Upc701NZstiDx8Px1o9b+s4ANpbG0AP5bjC8DxMMrg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx87Upc701NZstiDx8Px1o9b+s4ANpbG0AP5bjC8DxMMrg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [14.142.151.118]
+X-ClientProxiedBy: HK2PR04CA0081.apcprd04.prod.outlook.com
+ (2603:1096:202:15::25) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by HK2PR04CA0081.apcprd04.prod.outlook.com (2603:1096:202:15::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Thu, 11 Mar 2021 16:58:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 9c3fcf88-92e7-4c4e-3c26-08d8e4aef8c5
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6964:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB6964C4A5ACC4D21AE18E3126D2909@AM0PR04MB6964.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: f79K+yUci+CnbiF5dLWoDngffz/27hQmVDhmCIql7+LliWej5+CCT0P5BOMN7tLB8OS9w0J5CkDFS6jMpgTO8L/aakx4FNro6tSYH46mO2LawHPb9OY4i3fMF4wwgB4iVsgeL6dGUHEbz5g6iX0pql6Ghlb8qTNo5iYZdY+blXnOcCsQLFX+hzE8Sn1Ni9Ee6u8H/6oxSj3BOpZyCqnxKOVGjvPn4I4zIgDRvofn2WLeMOv9+w9v+7NGXrCn8Z9az4X2cM89kTdm+8yucaXoaloz7fr4ZTzJFzKKxwZX9jLya/x6xrcHGozKSgdYOHCKMsGzbPGUrmeIMhnMCwWZU1Z0fwv+4UkNzTfAB+pTDoFXIrKp3noM1hTa91C5w6pcLfDYG/BpAppPXqWguIzDqzGmM9sYGLG+SEuEQm1o8FK1fCYvs90kUB5ZCZwuJ93qOuvmo+AaBvz0Ce55+XNGfhEVvRrztliy5G3p3XLwKRVfyz+szI16Ue8kjur6fcC3OtF1rkeuaLUGesqIfOIdZMY1L01sjVdfpVeBmGzsmpw6aPosCcfL61mSSKhiZIQKB/Idqk5uNad/V/3GX5FzFg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(376002)(346002)(366004)(396003)(54906003)(478600001)(316002)(8676002)(53546011)(6506007)(66476007)(66946007)(6666004)(86362001)(26005)(7696005)(33656002)(52116002)(8936002)(66556008)(4326008)(44832011)(55236004)(186003)(83380400001)(2906002)(6916009)(1076003)(7416002)(16526019)(1006002)(956004)(9686003)(55016002)(5660300002)(110426009);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?AGQulN+g9iAgME6fcs/ftEg6QH6PSwBqsx3jXzVcKVF3wwHeX+j6hWIi0/yv?=
+ =?us-ascii?Q?FwCDmoD9hEaPIE2Ck9pXEtXFaRBBrhj5WkGBaAHNeDwi8BdkVTp03c25CUSN?=
+ =?us-ascii?Q?bVBTGdeTUFyzDbqck3CoK6/h+1ys1hUL66/FzbD1khLEhwRxV4zsBJrk1yHt?=
+ =?us-ascii?Q?3wNrH1wFDdZgaLutq25d8T5YN8iGrc1zDyqZJ+LUoweOfFyUaHJW6OVQZwJt?=
+ =?us-ascii?Q?azamQs1mBRO3Kiu6p/JLXHNCSu76zjJ1F+/kyZPGOZECQc6+iZb/DhBJ1mqg?=
+ =?us-ascii?Q?hlkViUJ/A+KkBJ+Ht9kXCnMQCH3JrHO8JfhlhpRwyo6l/U1qilS8Hq4aPfj5?=
+ =?us-ascii?Q?jiibtAu6jJNs3/1b1EekVczzXc410MhNegXHzUxIGKvVNSu0Zim5aXORltL+?=
+ =?us-ascii?Q?HNG0rU1B4chjdTc6O1EozTtq6nM0HTx4g/+O96pIrN/UCqDIC8Hc6kgZh9rm?=
+ =?us-ascii?Q?febhnk/CxMpSeI3b/iRpQJadlm1bPgiJt4DphLN5bFDxVmULtlokSyUUePfR?=
+ =?us-ascii?Q?0sLPEHQ61scJP/HNsTBQm5W9Q67AdfpaWpzB1VNucL3oSXozUJC2H6K+zPhq?=
+ =?us-ascii?Q?rd6Su1Y2uqngTDN5lQ4wGzFiYj7SDXThz6m5g+V6B1W+c+rd+WdUMMcKp1w2?=
+ =?us-ascii?Q?V7pi21im+vnQg842u3iBaXGTl58AI3rIH1SBzMNaNYpryR8yS53sixI1d8xy?=
+ =?us-ascii?Q?U9/tfoeY7JKgR5Z8EqeR5Rr10CTI1Cb0o3BaO4dBa73doU/bwlLv5fjLx9wG?=
+ =?us-ascii?Q?OO7RkjrCCKOXICTvlxZClpdjf9BO9sm6K+mj1IjeBcWtewWZbNC7srJKA4Ib?=
+ =?us-ascii?Q?i4aoLVMS2gvvBwUG+tIMjC0WdOlLCGsMYMaF9yg0Q1D6NVyzTJsrxknYczOi?=
+ =?us-ascii?Q?nJ9NsJNWodHur6oBsG7On2d54hctvQfTI9n+FWAcqfEH0lZUkoYbOAiSbEk1?=
+ =?us-ascii?Q?kOTVbUs9ojkSVXb/sJvt+pWSA6BhsOi27uB2onvdSDGpUcRxfYPCX7Wc7jgC?=
+ =?us-ascii?Q?mo83qwUnlCLLuhTd1LA/wngGSj+g4BbGBZo6aPEcR3IOvGHRyf4TP3PT+Ofj?=
+ =?us-ascii?Q?yBeJBY9P7406cadlw3UYE4mEAvti3PCm9HHxg1Cr3RbjSR2M22/qG8jrXBaG?=
+ =?us-ascii?Q?CSygUISaswZR6YGNULyLcOzKIpjnt6S2wK7ch06WJCrquvmR7Y5EXybgfK8E?=
+ =?us-ascii?Q?K/KQ7vXngyl0Jea1XjZVfKMnDnVRuBHW//SzUI973eHichVlVUlxhvh5Sicj?=
+ =?us-ascii?Q?Ff+yFLBkvKyPzwAYzhDKp3b1l5BuVX+Bu5z3tdcNW5gy+QqA54AHPqLwQEp+?=
+ =?us-ascii?Q?qg8gtqG6mWa9A4HAslUBWsKr?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c3fcf88-92e7-4c4e-3c26-08d8e4aef8c5
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2021 16:59:02.9049
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FudVrajInlxEoNbmFvgKN84mm3UJKKyskUpSrrX/gytE8Engd++Xneqj322g9HO8hwYv7IHfYQpCFW5xzJMkVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6964
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 10, 2021 at 8:47 PM David Hildenbrand <david@redhat.com> wrote:
->
-> >>>>> The same could be reproduced via zone shuffling with a little luck.
-> >>>>
-> >>>> But nobody does that in practice.
-> >>>>
-> >>
-> >> Dan will most certainly object. And I don't know what makes you speak in
-> >> absolute words here.
-> >>
-> >>>> This would be relatively straightforward to address if ACPICA was not
-> >>>> involved in it, but unfortunately that's not the case.
-> >>>>
-> >>>> Changing this part of ACPICA is risky, because such changes may affect
-> >>>> other OSes using it, so that requires some serious consideration.
-> >>>> Alternatively, the previous memory allocation order in Linux could be
-> >>>> restored.
-> >>>
-> >>> Of course, long-term this needs to be addressed in the ACPI
-> >>> initialization code, because it clearly is not robust enough, but in
-> >>> the meantime there's practical breakage observable in the field, so
-> >>> what can be done about that?
-> >>
-> >> *joke* enable zone shuffling.
-> >>
-> >> No seriously, fix the latent BUG. What again is problematic about excluding
-> >> these pages from the page allcoator, for example, via memblock_reserve()?
-> >>
-> >> @Mike?
+On Wed, Mar 10, 2021 at 10:50:57PM -0800, Saravana Kannan wrote:
+> On Wed, Mar 10, 2021 at 10:21 PM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
 > >
-> > There is some care that should be taken to make sure we get the order
-> > right, but I don't see a fundamental issue here.
+> > Define fwnode_mdio_find_device() to get a pointer to the
+> > mdio_device from fwnode passed to the function.
+> >
+> > Refactor of_mdio_find_device() to use fwnode_mdio_find_device().
+> >
+> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> > ---
+> >
+> > Changes in v7:
+> > - correct fwnode_mdio_find_device() description
+> >
+> > Changes in v6:
+> > - fix warning for function parameter of fwnode_mdio_find_device()
+> >
+> > Changes in v5: None
+> > Changes in v4: None
+> > Changes in v3: None
+> > Changes in v2: None
+> >
+> >  drivers/net/mdio/of_mdio.c   | 11 +----------
+> >  drivers/net/phy/phy_device.c | 23 +++++++++++++++++++++++
+> >  include/linux/phy.h          |  6 ++++++
+> >  3 files changed, 30 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+> > index ea9d5855fb52..d5e0970b2561 100644
+> > --- a/drivers/net/mdio/of_mdio.c
+> > +++ b/drivers/net/mdio/of_mdio.c
+> > @@ -347,16 +347,7 @@ EXPORT_SYMBOL(of_mdiobus_register);
+> >   */
+> >  struct mdio_device *of_mdio_find_device(struct device_node *np)
+> >  {
+> > -       struct device *d;
+> > -
+> > -       if (!np)
+> > -               return NULL;
+> > -
+> > -       d = bus_find_device_by_of_node(&mdio_bus_type, np);
+> > -       if (!d)
+> > -               return NULL;
+> > -
+> > -       return to_mdio_device(d);
+> > +       return fwnode_mdio_find_device(of_fwnode_handle(np));
+> >  }
+> >  EXPORT_SYMBOL(of_mdio_find_device);
+> >
+> > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> > index cc38e326405a..daabb17bba00 100644
+> > --- a/drivers/net/phy/phy_device.c
+> > +++ b/drivers/net/phy/phy_device.c
+> > @@ -2819,6 +2819,29 @@ static bool phy_drv_supports_irq(struct phy_driver *phydrv)
+> >         return phydrv->config_intr && phydrv->handle_interrupt;
+> >  }
+> >
+> > +/**
+> > + * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
+> > + * @fwnode: pointer to the mdio_device's fwnode
+> > + *
+> > + * If successful, returns a pointer to the mdio_device with the embedded
+> > + * struct device refcount incremented by one, or NULL on failure.
+> > + * The caller should call put_device() on the mdio_device after its use.
+> > + */
+> > +struct mdio_device *fwnode_mdio_find_device(struct fwnode_handle *fwnode)
+> > +{
+> > +       struct device *d;
+> > +
+> > +       if (!fwnode)
+> > +               return NULL;
+> > +
+> > +       d = bus_find_device_by_fwnode(&mdio_bus_type, fwnode);
+> 
+> Sorry about the late review, but can you look into using
+> get_dev_from_fwnode()? As long as you aren't registering two devices
+> for the same fwnode, it's an O(1) operation instead of having to loop
+> through a list of devices in a bus. You can check the returned
+> device's bus type if you aren't sure about not registering two devices
+> with the same fw_node and then fall back to this looping.
 
-Me neither.
+I think it is better to keep it simple and clear with
+bus_find_device_by_fwnode() instead of the additional code that comes
+with get_dev_from_fwnode() until it has clear advantage over the former.
 
-> > If I understand correctly, Rafael's concern is about changing the parts of
-> > ACPICA that should be OS agnostic, so I think we just need another place to
-> > call memblock_reserve() rather than acpi_tb_install_table_with_override().
-
-Something like this.
-
-There is also the problem that memblock_reserve() needs to be called
-for all of the tables early enough, which will require some reordering
-of the early init code.
-
-> > Since the reservation should be done early in x86::setup_arch() (and
-> > probably in arm64::setup_arch()) we might just have a function that parses
-> > table headers and reserves them, similarly to how we parse the tables
-> > during KASLR setup.
-
-Right.
-
->
-> FWIW, something like below would hide our latent BUG again properly (lol).
-> But I guess I don't have to express how ugly and wrong that is. Not to mention
-> what happens if memblock decides to allocate that memory area earlier
-> for some other user (including CMA, ...).
-
-Fair enough.
-
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 3e4b29ee2b1e..ec71b7c63dbe 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1566,6 +1566,21 @@ void __free_pages_core(struct page *page, unsigned int order)
->
->          atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
->
-> +       /*
-> +        * BUG ALERT: x86-64 ACPI code has latent BUGs where ACPI tables
-> +        * that must not get allocated/modified will get exposed to the buddy
-> +        * as free pages; anybody can allocate and use them once in the free
-> +        * lists.
-> +        *
-> +        * Instead of fixing the BUG, revert the change to the
-> +        * freeing/allocation order during boot that revealed it and cross
-> +        * fingers that everything will be fine.
-> +        */
-> +       if (system_state < SYSTEM_RUNNING) {
-> +               __free_pages_ok(page, order, FPI_NONE);
-> +               return;
-> +       }
-> +
->          /*
->           * Bypass PCP and place fresh pages right to the tail, primarily
->           * relevant for memory onlining.
->
->
-> --
+regards
+Calvin
