@@ -2,124 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E68B1338EFB
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Mar 2021 14:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA0233929F
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Mar 2021 17:02:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbhCLNl3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Mar 2021 08:41:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbhCLNlA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Mar 2021 08:41:00 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172B1C061763
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Mar 2021 05:41:00 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id bm21so53425537ejb.4
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Mar 2021 05:40:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SlkfLw8Neaaz5YToNxw3zyE/AeBfKZ9Au+54DNTf9Hg=;
-        b=GRlQoI0IO2icO5oP/pQqgiELU7s2k4QaUbN89SPnVCX4EFGKK/xS7bHZaBeSCtYn+x
-         LB7rIUXyM9eUVBqyooCCqKlDe/oplETynuBc0/gZgDMYZ1Auq+yxGJEvEYuh/VdpivN4
-         S3S+I8544E7KYIw1/57UnsGPUWq+R9A+bCfFB0tDS5oDSs9CMgr+HvmSjPLUsCPEgiAc
-         ccSBLkzKfpv6+QhsRnaQnGDC367d7tJSPtlj5CR26TjytMmSI4wOY9+vNb7SImAG/QOm
-         sZzgP284Dz1oWV/RyGldeAWdCRYeO1TjFHhhps295Xss4Hzht8XMMuNjABIsGkrchzql
-         fA6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SlkfLw8Neaaz5YToNxw3zyE/AeBfKZ9Au+54DNTf9Hg=;
-        b=Fd9weVJQhOkyVDHH2OxBN2m0u+nwVfjnUTN6CMsXBhRAR5AyWrkzU3P9Gu8V+4RsMH
-         f/DoY8ZPMiDyhT7QcP7pvSiQdc4CwYg8b12fqXdTUCMFBWGxYpWNE6AfC69QqJomfTQ1
-         Ow6Fs2IXI7n5Bi3qyAab21veY2/0TwglE6NtCGmGURbxqJp3hWoz2Y0h7tZ0cpZ+VFX3
-         1vQlBOicHRmQim2RCpm/0/PuaKZSnwN1/TITtaA9MRKDwxexIfFoKICws+fzp5ksXNNB
-         IKuuImdmbqHhk58PWihYr0+TMinmRFX31gP+pFYWgOHrRHnAmbSHH7oWIg4arp+/1yGo
-         OCgw==
-X-Gm-Message-State: AOAM5321qbg4PPPNz7tX93W3b/Z8uBz6/aMZl9yYaqpuVpMMGocifkG8
-        fSSSYIM/mfKz6CoKoIc89mtJ2COmhyLu36H5/W2zpw==
-X-Google-Smtp-Source: ABdhPJwtm4v97kPrzdnQxf0mV2PkLS8sJs5nBVfE1CL3gYBJyAzifajJbvTYVgx2t203x80Jo1LjyBsd0Q/Fgg/CuYk=
-X-Received: by 2002:a17:906:c0c8:: with SMTP id bn8mr8450077ejb.445.1615556458708;
- Fri, 12 Mar 2021 05:40:58 -0800 (PST)
+        id S229728AbhCLQBn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Mar 2021 11:01:43 -0500
+Received: from mga12.intel.com ([192.55.52.136]:16773 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232009AbhCLQBa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Mar 2021 11:01:30 -0500
+IronPort-SDR: LeW9whgosBf0qQFByb5/5WDhptHrUuHON8Ux4WjU3dbHLq3ZS4sHRGPJh3NXjx1hk3emkrP6YT
+ 0S8vwucqNftQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9921"; a="168122734"
+X-IronPort-AV: E=Sophos;i="5.81,244,1610438400"; 
+   d="scan'208";a="168122734"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2021 08:01:30 -0800
+IronPort-SDR: +tYUtikwOqGLdg82cqaEX8bTBOwucBY2wIOKMx+sFsGc6zzPprZtjk32u/r1xQ4Fypfvi8Nmfs
+ M9LOCJS+5ARA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,244,1610438400"; 
+   d="scan'208";a="603969354"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 12 Mar 2021 08:01:28 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id CBAF92AF; Fri, 12 Mar 2021 18:01:40 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ACPI: scan: Use unique number for instance_no
+Date:   Fri, 12 Mar 2021 18:01:37 +0200
+Message-Id: <20210312160137.19463-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210309093736.67925-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210309093736.67925-1-andriy.shevchenko@linux.intel.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Fri, 12 Mar 2021 14:40:47 +0100
-Message-ID: <CAMpxmJW=z+jX3grh+KuikEo0hwPNqz0JQDEyfGLsFzF8A8+f2w@mail.gmail.com>
-Subject: Re: [PATCH v6 0/6] gpiolib: switch to fwnode in the core
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-doc <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 9, 2021 at 10:37 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> GPIO library uses of_node and fwnode in the core in non-unified way.
-> The series cleans this up and improves IRQ domain creation for non-OF cases
-> where currently the names of the domain are 'unknown'.
->
-> This has been tested on Intel Galileo Gen 2.
->
-> It touches GPIO core parts and it's expected that the series is routed via
-> GPIO tree.
->
-> In v6:
-> - added tag to the patch 5 (Rafael)
-> - dropped ops temporary variable (Rafael)
->
-> In v5:
-> - same as v4 + v3 (patches 1-4/5) in order to route via GPIO tree (Bart)
->
-> In v4:
-> - based on Rafael's bleeding-edge
-> - split the rest to two patches (Rafael)
-> - elaborate WARN() deduplication in the commit message (Rafael)
->
-> In v3:
-> - fixed subtle bug in gpiod_count
-> - made irq_domain_add_simple() static inline (Marc)
->
-> In v2:
-> - added a new patch due to functionality in irq_comain_add_simple() (Linus)
-> - tagged patches 2-4 (Linus)
-> - Cc'ed to Rafael
->
-> Andy Shevchenko (6):
->   irqdomain: Introduce irq_domain_create_simple() API
->   gpiolib: Unify the checks on fwnode type
->   gpiolib: Move of_node operations to gpiolib-of and correct fwnode use
->   gpiolib: Introduce acpi_gpio_dev_init() and call it from core
->   gpiolib: Reuse device's fwnode to create IRQ domain
->   gpiolib: Fold conditionals into a simple ternary operator
->
->  Documentation/core-api/irq/irq-domain.rst | 22 ++++----
->  drivers/gpio/gpiolib-acpi.c               |  7 +++
->  drivers/gpio/gpiolib-acpi.h               |  4 ++
->  drivers/gpio/gpiolib-of.c                 |  6 ++-
->  drivers/gpio/gpiolib.c                    | 62 +++++++++--------------
->  include/linux/irqdomain.h                 | 19 +++++--
->  kernel/irq/irqdomain.c                    | 20 ++++----
->  7 files changed, 75 insertions(+), 65 deletions(-)
->
-> --
-> 2.30.1
->
+Current mechanism of incrementing and decrementing plain integer
+to get a next free instance_no when creating an ACPI device is fragile.
 
-Series applied, thanks!
+In case of hot plug event or namespace removal of the device instances
+with the low numbers the plain integer counter can't cover the gaps
+and become desynchronized with real state of affairs. If during next
+hot plug event or namespace injection the new instances of
+the devices need to be instantiated, the counter may mistakenly point
+to the existing instance_no and kernel will complain:
+"sysfs: cannot create duplicate filename '/bus/acpi/devices/XXXX1234:02'"
 
-Bartosz
+Replace plain integer approach by using IDA framework.
+
+Fixes: e49bd2dd5a50 ("ACPI: use PNPID:instance_no as bus_id of ACPI device")
+Fixes: ca9dc8d42b30 ("ACPI / scan: Fix acpi_bus_id_list bookkeeping")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/internal.h |  4 ++-
+ drivers/acpi/scan.c     | 55 +++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 53 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index e6a5d997241c..6fee4f71ba1c 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -9,6 +9,8 @@
+ #ifndef _ACPI_INTERNAL_H_
+ #define _ACPI_INTERNAL_H_
+ 
++#include <linux/idr.h>
++
+ #define PREFIX "ACPI: "
+ 
+ int early_acpi_osi_init(void);
+@@ -98,7 +100,7 @@ extern struct list_head acpi_bus_id_list;
+ 
+ struct acpi_device_bus_id {
+ 	const char *bus_id;
+-	unsigned int instance_no;
++	struct ida no;
+ 	struct list_head node;
+ };
+ 
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index a184529d8fa4..a118a58f7dad 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -468,9 +468,27 @@ static void acpi_device_release(struct device *dev)
+ 	kfree(acpi_dev);
+ }
+ 
++static int acpi_device_get_instance_no(struct acpi_device *device)
++{
++	const char *p;
++	int result;
++	int error;
++
++	p = strrchr(dev_name(&device->dev), ':');
++	if (!p)
++		return -ENODATA;
++
++	error = kstrtoint(p + 1, 16, &result);
++	if (error)
++		return error;
++
++	return result;
++}
++
+ static void acpi_device_del(struct acpi_device *device)
+ {
+ 	struct acpi_device_bus_id *acpi_device_bus_id;
++	int result;
+ 
+ 	mutex_lock(&acpi_device_lock);
+ 	if (device->parent)
+@@ -479,9 +497,13 @@ static void acpi_device_del(struct acpi_device *device)
+ 	list_for_each_entry(acpi_device_bus_id, &acpi_bus_id_list, node)
+ 		if (!strcmp(acpi_device_bus_id->bus_id,
+ 			    acpi_device_hid(device))) {
+-			if (acpi_device_bus_id->instance_no > 0)
+-				acpi_device_bus_id->instance_no--;
+-			else {
++			result = acpi_device_get_instance_no(device);
++			if (result < 0)
++				dev_warn(&device->dev, "Can't get instance no\n");
++			else
++				ida_simple_remove(&acpi_device_bus_id->no, result);
++
++			if (ida_is_empty(&acpi_device_bus_id->no)) {
+ 				list_del(&acpi_device_bus_id->node);
+ 				kfree_const(acpi_device_bus_id->bus_id);
+ 				kfree(acpi_device_bus_id);
+@@ -631,6 +653,19 @@ static struct acpi_device_bus_id *acpi_device_bus_id_match(const char *dev_id)
+ 	return NULL;
+ }
+ 
++static int acpi_device_set_name(struct acpi_device *device,
++				struct acpi_device_bus_id *acpi_device_bus_id)
++{
++	int result;
++
++	result = ida_simple_get(&acpi_device_bus_id->no, 0, 255, GFP_KERNEL);
++	if (result < 0)
++		return result;
++
++	dev_set_name(&device->dev, "%s:%02x", acpi_device_bus_id->bus_id, result);
++	return 0;
++}
++
+ int acpi_device_add(struct acpi_device *device,
+ 		    void (*release)(struct device *))
+ {
+@@ -665,7 +700,9 @@ int acpi_device_add(struct acpi_device *device,
+ 
+ 	acpi_device_bus_id = acpi_device_bus_id_match(acpi_device_hid(device));
+ 	if (acpi_device_bus_id) {
+-		acpi_device_bus_id->instance_no++;
++		result = acpi_device_set_name(device, acpi_device_bus_id);
++		if (result < 0)
++			goto err_unlock;
+ 	} else {
+ 		acpi_device_bus_id = kzalloc(sizeof(*acpi_device_bus_id),
+ 					     GFP_KERNEL);
+@@ -681,9 +718,17 @@ int acpi_device_add(struct acpi_device *device,
+ 			goto err_unlock;
+ 		}
+ 
++		ida_init(&acpi_device_bus_id->no);
++
++		result = acpi_device_set_name(device, acpi_device_bus_id);
++		if (result < 0) {
++			ida_destroy(&acpi_device_bus_id->no);
++			kfree(acpi_device_bus_id);
++			goto err_unlock;
++		}
++
+ 		list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
+ 	}
+-	dev_set_name(&device->dev, "%s:%02x", acpi_device_bus_id->bus_id, acpi_device_bus_id->instance_no);
+ 
+ 	if (device->parent)
+ 		list_add_tail(&device->node, &device->parent->children);
+-- 
+2.30.1
+
