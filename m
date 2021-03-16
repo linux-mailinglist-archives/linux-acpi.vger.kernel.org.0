@@ -2,97 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5DB33DD43
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Mar 2021 20:19:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6246033DD36
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Mar 2021 20:18:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236607AbhCPTTH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Mar 2021 15:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
+        id S236556AbhCPTSA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Mar 2021 15:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236657AbhCPTS5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Mar 2021 15:18:57 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F195AC061756
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Mar 2021 12:18:56 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id d191so158722wmd.2
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Mar 2021 12:18:56 -0700 (PDT)
+        with ESMTP id S236531AbhCPTRf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Mar 2021 15:17:35 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366ADC06174A
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Mar 2021 12:17:23 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id w18so22916248edc.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Mar 2021 12:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=t5nF/sXmMcwkw/ixJn1wgxDWeReE+TQab+n6/wXS1U0=;
-        b=oaMK9nYnTAZy6ym3HYBmsqWuTVnMYutZ/U+My/vKZTXWBNQa3kUp/CciNiv42oBJY0
-         sz/3nwTqT77ad0BK6/aNftjxGpd+x5BnQ08enNqXaOj6sYNydPxIwAdUYSmBMMdHknaJ
-         3lTnRODxiPkto6n3IX3caXRjSWSazO2ZyYuFTmm2Z8jGfNqMpX2X4pzRd4+2GzuiV3at
-         le5h53LvdTcx4ZjtnQNcJlulO36rZ/2LAjIsCcNWdtBEiPFwHj30zOJ9APBb0G7Xy2g9
-         V3t8uyrFrYicbRxD3jwfVfuIs4jbNaFzW7lHPH02gBcOy9b2DQZMVtEbZKfz0FBvkYvI
-         3hlA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=yJC45Mn+RzMch54aRopaf8f4RskUe/2ksYXX6JxgcXQ=;
+        b=YOPUQaYu61zNCEW0I+0VuGWO+jZ62N18lasnJhhq8o6+iiKFEp81+bfzEpT+OqjUgd
+         6cerNAFAA/uu4CteS1WQ6L3IgnqlVZwoDtfYAtfxR9xGPdrdNnuXux8fHctjnVFTpMYQ
+         gIYFau0JEJGmtVSLYofnl7zDMbxVjmrpemoU+viB43FH0mYKC47dNA5WeBc93Z/L6FB7
+         M4djVFkpVgCs6I1BFXb6bZMcomTthdDmJkJxBf6Buq06raHBgINJ1Tg69iVv8OTsGIOe
+         5ydS/tloN2nzi++WPGP+IWNMPT42Wjpp32gF8RjHMMGLr9Yz+A9g8fP4FZ3VKzCWxYAZ
+         bJpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=t5nF/sXmMcwkw/ixJn1wgxDWeReE+TQab+n6/wXS1U0=;
-        b=rjKC1oqr8H+q5KOC7aV0TTYTUETGmAV9pekMZU6T/LrLTIzJfUhsj/BeabYqiDIPNw
-         ltufcFZSbjw5BBtiPuVv30eYeAKteffDSwBor+YDtoV5y+Vv+x10uel9da9OhqaBq3O0
-         0Yo5jAwXCBPUTrC6/d9Bi9zVY9GmLZf3fYhl/urYnpYjKpb1oNMgO2gAJYsDUWq5GDxC
-         edb465Bx/RWSFnSapiKzZK11n3Fb+xsUw4Pxkbm3l6niZSN2ee3V2ar268XDDbJQBsR/
-         fl/xelnrAblMbhDEkIsVfI9dPebXxo0HolYW+eWGXLsaw6QWdp3a6KBDoGdOBRzE2qSk
-         DYaA==
-X-Gm-Message-State: AOAM530ndk6p5pMsW/UnKrByBjsqlFC8bgXPClmNx/K2IGJ96/VN0H/b
-        9i6JzFoZONrpj0TQz8r5dl6m8Q==
-X-Google-Smtp-Source: ABdhPJwrnc/yoYhLqyVbf/ctwV9VfvVZmgZLZUJT5ACgoolGvh6o3uWH6IcGtVOst4Ix4VaYd5EPVQ==
-X-Received: by 2002:a05:600c:198c:: with SMTP id t12mr308127wmq.183.1615922335734;
-        Tue, 16 Mar 2021 12:18:55 -0700 (PDT)
-Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id p12sm22690438wrx.28.2021.03.16.12.18.54
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yJC45Mn+RzMch54aRopaf8f4RskUe/2ksYXX6JxgcXQ=;
+        b=nmmq8BrcCW7mpRCyArmjw8hbEOhXk0VmEl9es/PJQXRkMtupnZYM9DoXgfZZUcEOF8
+         CbQxsRnLNSLHNunJLqT6RPeLnkisXsEKTdKWSUr/XraJqCFOmE7gAp0QGUg5XTHeIv/F
+         bKzXdfNCKBvS86SZ0PPHSekWz5Obr3rTQWDwJGbyfSPJfgsb8yZeX/ix/qGzHyv3GVmB
+         NY2+vo97mMlBgECyQ+I07rSePzGa2rgD1SlCculCRO4YNQrEvedd0dBWIgS2LEKNu70o
+         Kvo7WdVXqFcSadHP+izSQGrUl5DbUGMuNw65w42kVnZWA70tLXCTflEPMp6Q93d2yKET
+         +4yw==
+X-Gm-Message-State: AOAM53322m23vGxkG1D95Q67+yw2XQudN7aZnI6q23ZZm8ZwZioStLS/
+        Ft5nLR5Sicey+k2sddLK4sXVoA==
+X-Google-Smtp-Source: ABdhPJx3nc9W89NaX4LY5YY+hb8Y5rL7nTk4bzJZK45Hjhw7No1srHgvS4l5fnzAg1n6yI/g+XSKkA==
+X-Received: by 2002:aa7:de11:: with SMTP id h17mr4925753edv.83.1615922241789;
+        Tue, 16 Mar 2021 12:17:21 -0700 (PDT)
+Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id lx6sm10006261ejb.64.2021.03.16.12.17.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Mar 2021 12:18:55 -0700 (PDT)
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
-Cc:     will@kernel.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org,
-        virtualization@lists.linux-foundation.org, eric.auger@redhat.com,
-        sebastien.boeuf@intel.com, robin.murphy@arm.com,
-        kevin.tian@intel.com, lorenzo.pieralisi@arm.com,
-        jean-philippe@linaro.org
-Subject: [PATCH 3/3] iommu/virtio: Enable x86 support
-Date:   Tue, 16 Mar 2021 20:16:54 +0100
-Message-Id: <20210316191652.3401335-4-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210316191652.3401335-1-jean-philippe@linaro.org>
-References: <20210316191652.3401335-1-jean-philippe@linaro.org>
+        Tue, 16 Mar 2021 12:17:21 -0700 (PDT)
+Date:   Tue, 16 Mar 2021 19:17:19 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux.cj@gmail.com, netdev@vger.kernel.org,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [net-next PATCH v7 04/16] of: mdio: Refactor of_phy_find_device()
+Message-ID: <20210316191719.d7nxgywwhczo7tyg@holly.lan>
+References: <20210311062011.8054-1-calvin.johnson@oss.nxp.com>
+ <20210311062011.8054-5-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210311062011.8054-5-calvin.johnson@oss.nxp.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With the VIOT support in place, x86 platforms can now use the
-virtio-iommu.
+On Thu, Mar 11, 2021 at 11:49:59AM +0530, Calvin Johnson wrote:
+> Refactor of_phy_find_device() to use fwnode_phy_find_device().
+> 
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
 
-The arm64 Kconfig selects IOMMU_DMA, while x86 IOMMU drivers select it
-themselves.
+This patch series is provoking depmod dependency cycles for me and
+it bisected down to this patch (although I think later patches in
+the series add further cycles).
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
- drivers/iommu/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The problems emerge when running modules_install either directly or
+indirectly via packaging rules such as bindeb-pkg.
 
-diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index 2819b5c8ec30..ccca83ef2f06 100644
---- a/drivers/iommu/Kconfig
-+++ b/drivers/iommu/Kconfig
-@@ -400,8 +400,9 @@ config HYPERV_IOMMU
- config VIRTIO_IOMMU
- 	tristate "Virtio IOMMU driver"
- 	depends on VIRTIO
--	depends on ARM64
-+	depends on (ARM64 || X86)
- 	select IOMMU_API
-+	select IOMMU_DMA if X86
- 	select INTERVAL_TREE
- 	select ACPI_VIOT if ACPI
- 	help
--- 
-2.30.2
+~~~
+make -j16 INSTALL_MOD_PATH=$PWD/modules modules_install
+...
+  INSTALL sound/usb/misc/snd-ua101.ko
+  INSTALL sound/usb/snd-usb-audio.ko
+  INSTALL sound/usb/snd-usbmidi-lib.ko
+  INSTALL sound/xen/snd_xen_front.ko
+  DEPMOD  5.12.0-rc3-00009-g1fda33bf463d
+depmod: ERROR: Cycle detected: fwnode_mdio -> of_mdio -> fwnode_mdio
+depmod: ERROR: Found 2 modules in dependency cycles!
+~~~
 
+Kconfig can be found here:
+https://gist.github.com/daniel-thompson/6a7d224f3d3950ffa3f63f979b636474
+
+This Kconfig file is for a highly modular kernel derived from the Debian
+5.10 arm64 kernel config. I was not able to reproduce using the defconfig
+kernel for arm64.
+
+
+Daniel.
+
+
+> ---
+> 
+> Changes in v7: None
+> Changes in v6: None
+> Changes in v5: None
+> Changes in v4: None
+> Changes in v3: None
+> Changes in v2: None
+> 
+>  drivers/net/mdio/of_mdio.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+> index d5e0970b2561..b5e0b5b22f1a 100644
+> --- a/drivers/net/mdio/of_mdio.c
+> +++ b/drivers/net/mdio/of_mdio.c
+> @@ -360,18 +360,7 @@ EXPORT_SYMBOL(of_mdio_find_device);
+>   */
+>  struct phy_device *of_phy_find_device(struct device_node *phy_np)
+>  {
+> -	struct mdio_device *mdiodev;
+> -
+> -	mdiodev = of_mdio_find_device(phy_np);
+> -	if (!mdiodev)
+> -		return NULL;
+> -
+> -	if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY)
+> -		return to_phy_device(&mdiodev->dev);
+> -
+> -	put_device(&mdiodev->dev);
+> -
+> -	return NULL;
+> +	return fwnode_phy_find_device(of_fwnode_handle(phy_np));
+>  }
+>  EXPORT_SYMBOL(of_phy_find_device);
+>  
