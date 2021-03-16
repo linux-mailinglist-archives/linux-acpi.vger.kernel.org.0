@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B88B133D838
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Mar 2021 16:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1589833D84F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Mar 2021 16:54:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238203AbhCPPwR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Mar 2021 11:52:17 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:51386 "EHLO
+        id S238218AbhCPPyY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Mar 2021 11:54:24 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:46946 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbhCPPvp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Mar 2021 11:51:45 -0400
+        with ESMTP id S238225AbhCPPyG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Mar 2021 11:54:06 -0400
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.3)
- id c874691c4fc46822; Tue, 16 Mar 2021 16:51:42 +0100
+ id e5d6e2e5c90b9b90; Tue, 16 Mar 2021 16:54:04 +0100
 Received: from kreacher.localnet (89-64-82-37.dynamic.chello.pl [89.64.82.37])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 40065668CF6;
-        Tue, 16 Mar 2021 16:51:41 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 9861F668CF6;
+        Tue, 16 Mar 2021 16:54:03 +0100 (CET)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: [PATCH] PCI: PM: Do not read power state in pci_enable_device_flags()
-Date:   Tue, 16 Mar 2021 16:51:40 +0100
-Message-ID: <3219454.74lMxhSOWB@kreacher>
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Chen Yu <yu.c.chen@intel.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ionela Voinescu <ionela.voinescu@arm.com>
+Subject: [PATCH] ACPI: CPPC: Add emtpy stubs of functions for CONFIG_ACPI_CPPC_LIB unset
+Date:   Tue, 16 Mar 2021 16:54:03 +0100
+Message-ID: <538668936.KFQZekuijD@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudefvddgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtvdenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeeiueevhfeigffhffevueekgedtleeitdfhffejleevtddvtdettedvfffffffhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekledrieegrdekvddrfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedvrdefjedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhiimhgrgihimhhilhhirghnsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
- qdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudefvddgkeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtvdenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeevudefgfeguedtjedvhfetveegleduveeuvedvjeekleefhfduhfefheekffefveenucfkphepkeelrdeigedrkedvrdefjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdekvddrfeejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeihuhdrtgdr
+ tghhvghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepvhhirhgvshhhrdhkuhhmrghrsehlihhnrghrohdrohhrghdprhgtphhtthhopehiohhnvghlrgdrvhhoihhnvghstghusegrrhhmrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -43,69 +43,95 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-It should not be necessary to update the current_state field of
-struct pci_dev in pci_enable_device_flags() before calling
-do_pci_enable_device() for the device, because none of the
-code between that point and the pci_set_power_state() call in
-do_pci_enable_device() invoked later depends on it.
+For convenience, add empty stubs of library functions defined in
+cppc_acpi.c for the CONFIG_ACPI_CPPC_LIB unset case.
 
-Moreover, doing that is actively harmful in some cases.  For example,
-if the given PCI device depends on an ACPI power resource whose _STA
-method initially returns 0 ("off"), but the config space of the PCI
-device is accessible and the power state retrieved from the
-PCI_PM_CTRL register is D0, the current_state field in the struct
-pci_dev representing that device will get out of sync with the
-power.state of its ACPI companion object and that will lead to
-power management issues going forward.
+Because one of them needs to return CPUFREQ_ETERNAL, include
+linux/cpufreq.h into the CPPC library header file and drop the
+direct inclusion of it from cppc_acpi.c.
 
-To avoid such issues it is better to leave the current_state value
-as is until it is changed to PCI_D0 by do_pci_enable_device() as
-appropriate.  However, the power state of the device is not changed
-to PCI_D0 if it is already enabled when pci_enable_device_flags()
-gets called for it, so update its current_state in that case, but
-use pci_update_current_state() covering platform PM too for that.
-
-Link: https://lore.kernel.org/lkml/20210314000439.3138941-1-luzmaximilian@gmail.com/
-Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
-Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
+ drivers/acpi/cppc_acpi.c |    1 -
+ include/acpi/cppc_acpi.h |   40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
 
-Max, I've added a T-by from you even though the patch is slightly different
-from what you have tested, but the difference shouldn't matter for your case.
-
----
- drivers/pci/pci.c |   16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
-
-Index: linux-pm/drivers/pci/pci.c
+Index: linux-pm/include/acpi/cppc_acpi.h
 ===================================================================
---- linux-pm.orig/drivers/pci/pci.c
-+++ linux-pm/drivers/pci/pci.c
-@@ -1870,20 +1870,10 @@ static int pci_enable_device_flags(struc
- 	int err;
- 	int i, bars = 0;
+--- linux-pm.orig/include/acpi/cppc_acpi.h
++++ linux-pm/include/acpi/cppc_acpi.h
+@@ -11,6 +11,7 @@
+ #define _CPPC_ACPI_H
  
--	/*
--	 * Power state could be unknown at this point, either due to a fresh
--	 * boot or a device removal call.  So get the current power state
--	 * so that things like MSI message writing will behave as expected
--	 * (e.g. if the device really is in D0 at enable time).
--	 */
--	if (dev->pm_cap) {
--		u16 pmcsr;
--		pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
--		dev->current_state = (pmcsr & PCI_PM_CTRL_STATE_MASK);
--	}
--
--	if (atomic_inc_return(&dev->enable_cnt) > 1)
-+	if (atomic_inc_return(&dev->enable_cnt) > 1) {
-+		pci_update_current_state(dev, dev->current_state);
- 		return 0;		/* already enabled */
-+	}
+ #include <linux/acpi.h>
++#include <linux/cpufreq.h>
+ #include <linux/types.h>
  
- 	bridge = pci_upstream_bridge(dev);
- 	if (bridge)
+ #include <acpi/pcc.h>
+@@ -132,6 +133,7 @@ struct cppc_cpudata {
+ 	cpumask_var_t shared_cpu_map;
+ };
+ 
++#ifdef CONFIG_ACPI_CPPC_LIB
+ extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+ extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+ extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+@@ -142,5 +144,43 @@ extern unsigned int cppc_get_transition_
+ extern bool cpc_ffh_supported(void);
+ extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+ extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
++#else /* !CONFIG_ACPI_CPPC_LIB */
++static inline int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
++{
++	return -ENOTSUPP;
++}
++static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
++{
++	return -ENOTSUPP;
++}
++static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
++{
++	return -ENOTSUPP;
++}
++static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
++{
++	return -ENOTSUPP;
++}
++static inline bool acpi_cpc_valid(void)
++{
++	return false;
++}
++static inline unsigned int cppc_get_transition_latency(int cpu)
++{
++	return CPUFREQ_ETERNAL;
++}
++static inline bool cpc_ffh_supported(void)
++{
++	return false;
++}
++static inline int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val)
++{
++	return -ENOTSUPP;
++}
++static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
++{
++	return -ENOTSUPP;
++}
++#endif /* !CONFIG_ACPI_CPPC_LIB */
+ 
+ #endif /* _CPPC_ACPI_H*/
+Index: linux-pm/drivers/acpi/cppc_acpi.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/cppc_acpi.c
++++ linux-pm/drivers/acpi/cppc_acpi.c
+@@ -33,7 +33,6 @@
+ 
+ #define pr_fmt(fmt)	"ACPI CPPC: " fmt
+ 
+-#include <linux/cpufreq.h>
+ #include <linux/delay.h>
+ #include <linux/iopoll.h>
+ #include <linux/ktime.h>
 
 
 
