@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2277E33E477
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Mar 2021 02:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D19033E506
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Mar 2021 02:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbhCQA75 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Mar 2021 20:59:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34872 "EHLO mail.kernel.org"
+        id S229814AbhCQBAe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Mar 2021 21:00:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40814 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232266AbhCQA7F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Mar 2021 20:59:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 774C664FBD;
-        Wed, 17 Mar 2021 00:59:02 +0000 (UTC)
+        id S231607AbhCQA7d (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 16 Mar 2021 20:59:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B42B764FA5;
+        Wed, 17 Mar 2021 00:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615942743;
-        bh=x/d2VF/3A3poxqsgLamUeBQ3qhEg9TOMAM6esh+e0qY=;
+        s=k20201202; t=1615942772;
+        bh=sdD4i8whrLRHixwaDFmWa2G1KZpuZnNUZRwWqsqmb08=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WI4xWOtyhIr3nnfmI3/Q7pUkYpYbcfAg5ReRBeBVpMrd00mdqGqVxgk6TNyk8nds+
-         13+Hng06c2XeFtlrmZxzZInXNvZD+AGLH4JMzx1Imr/ZeQ/1/Bgy0CCrCH8qDFhezf
-         tMeZgQ1sqvcsGw2VlkuuEdRezVYOXqo2EK+MUL/KonLLyQqD0ULBvwHFfTU+srF3yR
-         wBDbGN3iIDAbXY9nb+sxuMw6GkL8Dx44w+t0z2ScCcwzE/EaqjdJpyYGGYa+biMLN6
-         yqCfusU1qR10oJ5AhVbEVPBytAQZZv3w0waf8NArKEv+ytEwfVWbilY9I3bOVGILSY
-         xtsholnlNZ+4Q==
+        b=DLGWMLZgc8MJVOkaBOW+zBDrT/eqRfKRG3x9RFSbp1l3i4XX3X1L/swuqdHry/BIS
+         A2m/qY8Zg4SR0xTehoWrc0wDNM4BA9ez3WTZlLhlt2zAG2bWi79JJu1XdMuqAJHPEf
+         B0ROWcAoXACVspnSbfj5wp6FOvQBAdY4MeNA1ZfArGPcbVX73jEnx4VUILdWCibiGb
+         pjbyAisuFbXziJnI4LQfoWAnRze30iW2fhoPCE730cHbIgvdd+T72SOo8YHK1E4iAh
+         VttPQQEdVTR21qCYoXgWhKSAJGrgH1xwdiHv9hh/UU1wtUGi85jxSMQfGV/wCL6QFx
+         HLRkF2RYxfs9Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Yang Li <yang.lee@linux.alibaba.com>,
@@ -30,12 +30,12 @@ Cc:     Yang Li <yang.lee@linux.alibaba.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 10/23] gpiolib: acpi: Add missing IRQF_ONESHOT
-Date:   Tue, 16 Mar 2021 20:58:36 -0400
-Message-Id: <20210317005850.726479-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 09/21] gpiolib: acpi: Add missing IRQF_ONESHOT
+Date:   Tue, 16 Mar 2021 20:59:08 -0400
+Message-Id: <20210317005920.726931-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210317005850.726479-1-sashal@kernel.org>
-References: <20210317005850.726479-1-sashal@kernel.org>
+In-Reply-To: <20210317005920.726931-1-sashal@kernel.org>
+References: <20210317005920.726931-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 18f5973b9697..4ad34c6803ad 100644
+index 7c06f4541c5d..ab5de5196080 100644
 --- a/drivers/gpio/gpiolib-acpi.c
 +++ b/drivers/gpio/gpiolib-acpi.c
-@@ -177,7 +177,7 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
+@@ -234,7 +234,7 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
  	int ret, value;
  
  	ret = request_threaded_irq(event->irq, NULL, event->handler,
