@@ -2,157 +2,314 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B1533FCAF
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 02:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 084D334003D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 08:26:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbhCRBaf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Mar 2021 21:30:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbhCRBaf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Mar 2021 21:30:35 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8684CC06174A
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Mar 2021 18:30:34 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id w18so4642546edc.0
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Mar 2021 18:30:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Xw7oYSjjp9oS+nwtaFUBwvJyGYHFUWxpmI1ewSADgIw=;
-        b=BZrGew9/oWoJA2obgfBVdQagf+0A5ehE894LTII2q8NytJOasNPw01gCoODT8Auvpm
-         C5y9r0O3DSTT3dwDuObSXaYWkJJN+9RROyZ5vO0BeOhokrvimFnJT1AXw9aaRt1HE9RE
-         WxnEDrGqSu4icUPLmIB7l/7+O2QtwHjJm4XzElaAomC8Nd8SuzVwDiTM3zM8uSMZcksE
-         vX5v0ark5Cublx+wxqlgP4a+pSWjIwiKoxfNccWMPaXYGiW3BTQzP5gIBpFgZfFAZx+2
-         lZqI6494e15c6Fu90bLlUuGGrURf3MK5J0wnelSWH4lPHK6M+rD+iuWIYhQDODr+aMD9
-         4hlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Xw7oYSjjp9oS+nwtaFUBwvJyGYHFUWxpmI1ewSADgIw=;
-        b=XBfDx7A3V0dUKKLF9pZS4MQ/Fqx+u/yVMpJtJR1ZAOmr7GptFprfcn+vhi1oph/TCd
-         tuIoWQGAwJ/Wp9B9ILGGAB6ICz6y2TzHQ16nogHE30LYaAFqM3qpBCmxSEaHIoBs5YFv
-         41OWt0YZpry5MA5jAQiEuuY8PJ03SdcqKdAN6zxZ/owmGmDgGSREjyPOOnM/YT2F1QyD
-         8cI4weLrEaZf5GTf5Lqml3BpzrEvmfgSzDZYnAPvme7xQc5pJl+FuC6yZP/yhWnZ+UB/
-         JCIDbnd0E6y6uxtwnwVxTQ8y1/J1nSq2JY4ovvVUO1JfF3SxRwNv/t2UCZUuTv5vj/m+
-         61hw==
-X-Gm-Message-State: AOAM533+wu0kfxkWbdpMjvp1BKvHYlNjdXy69ZRkFQSRco2UQZu2u90g
-        JX3ppJnCmAP/ahMQgpC3fkU9B/xm4J5+G/a5M5tPxA==
-X-Google-Smtp-Source: ABdhPJx1mCZ8Hl5YSv0C5/KWJ35gquENslnXEiug6CmPW+mNiqmJODmAUbzLLiwIDYTp+495NS7WR/bwk+B28+IHcjU=
-X-Received: by 2002:aa7:cd0e:: with SMTP id b14mr640087edw.354.1616031033201;
- Wed, 17 Mar 2021 18:30:33 -0700 (PDT)
+        id S229717AbhCRH0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Mar 2021 03:26:18 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:3370 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229643AbhCRH0F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Mar 2021 03:26:05 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12I74Grw127826;
+        Thu, 18 Mar 2021 03:25:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=39qE1+Q9YzejXDldNd7bWv8SQaFFWVJAWhnKLQRTtI8=;
+ b=GX4LClXA0ladm+7Zp3/YQgVdxdogk5l8+nwharDDDrFZluObJ6KqVwOtS/S1+Fia8Y+U
+ F2a79++zmvqJFKW3rLF7vC1cXQFrWirdV5yI6WWAAdg9a84ZtJFsF8GeC+SFk1QSG5gz
+ ICktmgQo0k/x2f98I/jY5/snnEK+xUH0K80MIQ7ITFfdrBk5msiatxX0TqmEh3Cw/bRK
+ GUw/3JjLST9YuBlzLIfTLbLeC+ipmp4OqoMTpa40zjVIpqKHCfAYYNFpnMe7zJwe2E7J
+ AZFJEMkwrmXUsPAVWPm0XVFTPv/Mq4oDCHYzBPQwgDJPhgK08eHvWZMSJW1yRSFLRdZn BA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 37c10229g6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 Mar 2021 03:25:51 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12I74h8U129969;
+        Thu, 18 Mar 2021 03:25:50 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 37c10229fc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 Mar 2021 03:25:50 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+        by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12I7M0tc009886;
+        Thu, 18 Mar 2021 07:25:47 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma05fra.de.ibm.com with ESMTP id 378n18acpn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 Mar 2021 07:25:47 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12I7PS9q28639632
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 18 Mar 2021 07:25:28 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 49DBC4C046;
+        Thu, 18 Mar 2021 07:25:45 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1EB6B4C040;
+        Thu, 18 Mar 2021 07:25:43 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.165.64])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu, 18 Mar 2021 07:25:42 +0000 (GMT)
+Date:   Thu, 18 Mar 2021 09:25:40 +0200
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        George Kennedy <george.kennedy@oracle.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Dhaval Giani <dhaval.giani@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 1/1] ACPI: fix acpi table use after free
+Message-ID: <YFMAdIVn2hpTHfBq@linux.ibm.com>
+References: <CAJZ5v0j3=82x1hV9SCdinJQPkDXmJd9BFoqvNxNHSb6iS8PHVQ@mail.gmail.com>
+ <YE5dJ6U3nPWsXY4D@linux.ibm.com>
+ <CAJZ5v0g1H6hCVbAAFajhn0AYRMU4GkZOqggOB6LVdgFx_vfwOA@mail.gmail.com>
+ <3236337.DtqTXxM43S@kreacher>
 MIME-Version: 1.0
-References: <20210310180306.1588376-1-Jonathan.Cameron@huawei.com>
- <20210310180306.1588376-2-Jonathan.Cameron@huawei.com> <CAPcyv4gG-==Vj9w3d7=gRRSPaoD5eZHZZ2hAA0h3c07eMT_x1A@mail.gmail.com>
- <20210316162952.00001ab7@Huawei.com> <CAPcyv4h6hHCuO=0vHbPz2m4qw6-0=wW9swBrWimBsz6_GJu4Aw@mail.gmail.com>
- <6F0B8DDD-E661-40C8-839B-1B77998EFF23@avery-design.com>
-In-Reply-To: <6F0B8DDD-E661-40C8-839B-1B77998EFF23@avery-design.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 17 Mar 2021 18:30:26 -0700
-Message-ID: <CAPcyv4hJG08RaksW3jH_Q5ASqpzX5MtfNFcLqMxAH5jwTidk=w@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] PCI/doe: Initial support PCI Data Object Exchange
-To:     Chris Browy <cbrowy@avery-design.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        "Weiny, Ira" <ira.weiny@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3236337.DtqTXxM43S@kreacher>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-18_02:2021-03-17,2021-03-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 impostorscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103180052
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Btw your mailer does something odd with the "In-Reply-To:" field, I
-need to fix it up manually to include your address.
+On Wed, Mar 17, 2021 at 09:14:37PM +0100, Rafael J. Wysocki wrote:
+> On Monday, March 15, 2021 5:19:29 PM CET Rafael J. Wysocki wrote:
+> > On Sun, Mar 14, 2021 at 8:00 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
+> > >
+> > > On Thu, Mar 11, 2021 at 04:36:31PM +0100, Rafael J. Wysocki wrote:
+> > > > On Wed, Mar 10, 2021 at 8:47 PM David Hildenbrand <david@redhat.com> wrote:
+> > > > > >
+> > > > > > There is some care that should be taken to make sure we get the order
+> > > > > > right, but I don't see a fundamental issue here.
+> > > >
+> > > > Me neither.
+> > > >
+> > > > > > If I understand correctly, Rafael's concern is about changing the parts of
+> > > > > > ACPICA that should be OS agnostic, so I think we just need another place to
+> > > > > > call memblock_reserve() rather than acpi_tb_install_table_with_override().
+> > > >
+> > > > Something like this.
+> > > >
+> > > > There is also the problem that memblock_reserve() needs to be called
+> > > > for all of the tables early enough, which will require some reordering
+> > > > of the early init code.
+> > > >
+> > > > > > Since the reservation should be done early in x86::setup_arch() (and
+> > > > > > probably in arm64::setup_arch()) we might just have a function that parses
+> > > > > > table headers and reserves them, similarly to how we parse the tables
+> > > > > > during KASLR setup.
+> > > >
+> > > > Right.
+> > >
+> > > I've looked at it a bit more and we do something like the patch below that
+> > > nearly duplicates acpi_tb_parse_root_table() which is not very nice.
+> > 
+> > It looks to me that the code need not be duplicated (see below).
+> > 
+> > > Besides, reserving ACPI tables early and then calling acpi_table_init()
+> > > (and acpi_tb_parse_root_table() again would mean doing the dance with
+> > > early_memremap() twice for no good reason.
+> > 
+> > That'd be simply inefficient which is kind of acceptable to me to start with.
+> > 
+> > And I changing the ACPICA code can be avoided at least initially, it
+> > by itself would be a good enough reason.
+> > 
+> > > I believe the most effective way to deal with this would be to have a
+> > > function that does parsing, reservation and installs the tables supplied by
+> > > the firmware which can be called really early and then another function
+> > > that overrides tables if needed a some later point.
+> > 
+> > I agree that this should be the direction to go into.
+> 
+> So maybe something like the patch below?
+> 
+> I'm not sure if acpi_boot_table_prepare() gets called early enough, though.
 
-On Tue, Mar 16, 2021 at 4:28 PM Chris Browy <cbrowy@avery-design.com> wrote=
-:
->
-> Please address and clarify 2 queries below...
->
->
-> > On Mar 16, 2021, at 2:14 PM, Dan Williams <dan.j.williams@intel.com> wr=
-ote:
-> >
-> > On Tue, Mar 16, 2021 at 9:31 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> >>
-> >> On Mon, 15 Mar 2021 12:45:49 -0700
-> >> Dan Williams <dan.j.williams@intel.com> wrote:
-> >>
-> >>> Hey Jonathan, happy to see this, some comments below...
-> >>
-> >> Hi Dan,
-> >>
-> >> Thanks for taking a look!
-> >>
-> >>>
-> >>> On Wed, Mar 10, 2021 at 10:08 AM Jonathan Cameron
-> >>> <Jonathan.Cameron@huawei.com> wrote:
-> >>>>
-> >>>> Introduced in an ECN to the PCI 5.0, DOE provides a config space
-> >>>> based mailbox with standard protocol discovery.  Each mailbox
-> >>>> is accessed through a DOE PCIE Extended Capability.
-> >>>>
-> >>>> A device may have 1 or more DOE mailboxes, each of which is allowed
-> >>>> to support any number of protocols (some DOE protocols
-> >>>> specifications apply additional restrictions).  A given protocol
-> >>>> may be supported on more than one DOE mailbox on a given function.
-> >>>
-> >>> Are all those protocol instances shared?
-> >>> I'm trying to mental model
-> >>> whether, for example, an auxiliary driver instance could be loaded pe=
-r
-> >>> DOE mailbox, or if there would need to be coordination of a given
-> >>> protocol no matter how many DOE mailboxes on that device implemented
-> >>> that protocol.
-> >>
-> >> Just to check I've understood corectly, you mean multiple instances of=
- same
-> >> protocol across different DOE mailboxes on a given device?
-> >>
-> >
-> > Right.
->
-> Could you confirm this case for clarity?  A CXL device may have multiple =
-VF/PF.
-> For example, PF=3D0 could have one or more DOE instances for CDAT protoco=
-l.
-> The driver will scan PF=3D0 for all DOE instances and finding one or more=
- of CDAT
-> protocol will combine/manage them.  I had not considered multiple CDAT ta=
-bles
-> for single PF.  For CXL devices with multiple PF=E2=80=99s the same proce=
-ss would be
-> carried out on PF=3D1-N.
+To be 100% safe it should be called before e820__memblock_setup(). It is
+possible to call memblock_reserve() at any time, even before the actual
+memory is detected as long as all reservations fit into the static array
+that currently has 128 entries on x86.
 
-This patch has nothing to do with CXL. This is a general discussion of
-how a PCIE device implements a DOE mailbox or set of mailboxes. The
-DOE definition is PF-only afaics from the DOE specification.
+As e820__memblock_setup() essentially enables memblock allocations,
+theoretically the memory occupied by ACPI tables can be allocated even in
+x86::setup_arch() unless it is reserved before e820__memblock_setup().
 
-The CXL specification only says that a device can implement a CDAT per
-DOE capability instance, so the CXL spec does not limit the number of
-DOE instances to 1, but I can't think of a practical reason to support
-more than one.
+> Also this still may not play well with initrd-based table overrides. Erik, do
+> you have any insights here?
+> 
+> And ia64 needs to be updated too.
 
-[..]
-> >>> https://cfp.osfc.io/media/osfc2020/submissions/ECQ88N/resources/An_op=
-en_source_SPDM_implementation_for_secure_devi_kmIgAQe.pdf
-> >>
-> >> Nice!  Looking at CMA / IDE emulation was on my todo list and that loo=
-ks like
-> >> it might make that job a lot easier.
->
-> Would it be useful to integrate the openspdm=E2=80=99s SpdmResponderEmu.c=
- onto the QEMU=E2=80=99s CXL Type3 Device=E2=80=99s
-> DOE backend for CMA/IDE testing?  Doesn=E2=80=99t look hard to do.
+I think arm64 as well.
 
-Yes, I do think it would be useful.
+> ---
+>  arch/x86/kernel/acpi/boot.c |   12 +++++++++---
+>  arch/x86/kernel/setup.c     |    3 +++
+>  drivers/acpi/tables.c       |   24 +++++++++++++++++++++---
+>  include/linux/acpi.h        |    9 +++++++--
+>  4 files changed, 40 insertions(+), 8 deletions(-)
+> 
+> Index: linux-pm/arch/x86/kernel/acpi/boot.c
+> ===================================================================
+> --- linux-pm.orig/arch/x86/kernel/acpi/boot.c
+> +++ linux-pm/arch/x86/kernel/acpi/boot.c
+> @@ -1541,7 +1541,7 @@ static const struct dmi_system_id acpi_d
+>   *	...
+>   */
+>  
+> -void __init acpi_boot_table_init(void)
+> +void __init acpi_boot_table_prepare(void)
+>  {
+>  	dmi_check_system(acpi_dmi_table);
+>  
+> @@ -1554,10 +1554,16 @@ void __init acpi_boot_table_init(void)
+>  	/*
+>  	 * Initialize the ACPI boot-time table parser.
+>  	 */
+> -	if (acpi_table_init()) {
+> +	if (acpi_table_prepare())
+>  		disable_acpi();
+> +}
+> +
+> +void __init acpi_boot_table_init(void)
+> +{
+> +	if (acpi_disabled)
+>  		return;
+> -	}
+> +
+> +	acpi_table_init();
+>  
+>  	acpi_table_parse(ACPI_SIG_BOOT, acpi_parse_sbf);
+>  
+> Index: linux-pm/arch/x86/kernel/setup.c
+> ===================================================================
+> --- linux-pm.orig/arch/x86/kernel/setup.c
+> +++ linux-pm/arch/x86/kernel/setup.c
+> @@ -1070,6 +1070,9 @@ void __init setup_arch(char **cmdline_p)
+>  	/* preallocate 4k for mptable mpc */
+>  	e820__memblock_alloc_reserved_mpc_new();
+>  
+> +	/* Look for ACPI tables and reserve memory occupied by them. */
+> +	acpi_boot_table_prepare();
+> +
+>  #ifdef CONFIG_X86_CHECK_BIOS_CORRUPTION
+>  	setup_bios_corruption_check();
+>  #endif
+> Index: linux-pm/include/linux/acpi.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/acpi.h
+> +++ linux-pm/include/linux/acpi.h
+> @@ -222,11 +222,13 @@ void __iomem *__acpi_map_table(unsigned
+>  void __acpi_unmap_table(void __iomem *map, unsigned long size);
+>  int early_acpi_boot_init(void);
+>  int acpi_boot_init (void);
+> +void acpi_boot_table_prepare (void);
+>  void acpi_boot_table_init (void);
+
+Not related to this patch, but it feels to me like there are too many
+acpi_boot_something() :)
+
+>  int acpi_mps_check (void);
+>  int acpi_numa_init (void);
+>  
+> -int acpi_table_init (void);
+> +int acpi_table_prepare (void);
+> +void acpi_table_init (void);
+>  int acpi_table_parse(char *id, acpi_tbl_table_handler handler);
+>  int __init acpi_table_parse_entries(char *id, unsigned long table_size,
+>  			      int entry_id,
+> @@ -814,9 +816,12 @@ static inline int acpi_boot_init(void)
+>  	return 0;
+>  }
+>  
+> +static inline void acpi_boot_table_prepare(void)
+> +{
+> +}
+> +
+>  static inline void acpi_boot_table_init(void)
+>  {
+> -	return;
+>  }
+>  
+>  static inline int acpi_mps_check(void)
+> Index: linux-pm/drivers/acpi/tables.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/tables.c
+> +++ linux-pm/drivers/acpi/tables.c
+> @@ -788,9 +788,10 @@ acpi_status acpi_os_table_override(struc
+>   * result: sdt_entry[] is initialized
+>   */
+>  
+> -int __init acpi_table_init(void)
+> +int __init acpi_table_prepare(void)
+>  {
+>  	acpi_status status;
+> +	int i;
+>  
+>  	if (acpi_verify_table_checksum) {
+>  		pr_info("Early table checksum verification enabled\n");
+> @@ -803,12 +804,29 @@ int __init acpi_table_init(void)
+>  	status = acpi_initialize_tables(initial_tables, ACPI_MAX_TABLES, 0);
+>  	if (ACPI_FAILURE(status))
+>  		return -EINVAL;
+> -	acpi_table_initrd_scan();
+>  
+> -	check_multiple_madt();
+> +	for (i = 0; i < ACPI_MAX_TABLES; i++) {
+> +		struct acpi_table_desc *table_desc = &initial_tables[i];
+> +
+> +		if (!table_desc->address || !table_desc->length)
+> +			break;
+> +
+> +		pr_info("Reserving %4s table memory at [0x%llx - 0x%llx]\n",
+> +			table_desc->signature.ascii, table_desc->address,
+> +			table_desc->address + table_desc->length - 1);
+> +
+> +		memblock_reserve(table_desc->address, table_desc->length);
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> +void __init acpi_table_init(void)
+> +{
+> +	acpi_table_initrd_scan();
+> +	check_multiple_madt();
+> +}
+> +
+>  static int __init acpi_parse_apic_instance(char *str)
+>  {
+>  	if (!str)
+> 
+> 
+> 
+
+-- 
+Sincerely yours,
+Mike.
