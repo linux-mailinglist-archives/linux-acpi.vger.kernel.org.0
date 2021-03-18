@@ -2,115 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A07DF340917
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 16:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25671340C2E
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 18:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbhCRPnG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Mar 2021 11:43:06 -0400
-Received: from mail-ot1-f46.google.com ([209.85.210.46]:34424 "EHLO
-        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231841AbhCRPmd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Mar 2021 11:42:33 -0400
-Received: by mail-ot1-f46.google.com with SMTP id k14-20020a9d7dce0000b02901b866632f29so5613276otn.1;
-        Thu, 18 Mar 2021 08:42:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MSzbL7q7UOHy8XukE1pAVuaN95+QmKI6ybgop91aXbk=;
-        b=ANlYDidrioCB7tNaBCxDGmIfMCsD0wenZXnpauJoKeC9QqLP+C7GNMjwfc4Yk/pgjG
-         eH1D8f5dlZNdlJOpGkQQrUcPBV2Eidf15Fdy+PFTDyZ+Bzl+ohO3hfNgpciC999dq420
-         qhd9ITxX8+vE7cO0irjs6Jg3uNiAs5m45dQiDKTkgxEetekpO8qp1PN6t903AjASggcw
-         LG2A3RXLH4QOdNFbdhtkoSeNzMXLq3sFI6hJhbnKyBMg2lX+nMyLoG12BTmVipY2yIUH
-         1jy7cS/TzPNhsepEfHf5A2XEBE2TYqIqsEB6BWaX+qpw9MCumF5hVBdv+fdJ0zKDNSAG
-         bPrw==
-X-Gm-Message-State: AOAM532SxSD3enol9/kMd2aGZgIopvLi36M+m2M9YFfdkIBjyDmjiFXE
-        tE8cxCwBMixKvnHq3GZ6Fa0rhwnBkic6ar0QhGM=
-X-Google-Smtp-Source: ABdhPJw9CbqKs+8q9CJPeZk/eqMne0374o6AJM6grGChTntRlJqy7ruxZhdfrwTKhrfgAYU8cT2aiydfv+IKHBoN0VQ=
-X-Received: by 2002:a05:6830:20d2:: with SMTP id z18mr5393994otq.260.1616082153103;
- Thu, 18 Mar 2021 08:42:33 -0700 (PDT)
+        id S229958AbhCRRxK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Mar 2021 13:53:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:37063 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229734AbhCRRxB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 18 Mar 2021 13:53:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1616089980;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uruINJSWaWFLlku1MQ1qt468Ob8HB9qLPxmAmX6H9nc=;
+        b=hGczqCXRG9demSmTE8hnBPyD00MKI0vk/7jlfNhRCR6+XHjCckJrvpK1POvRNiMMUaeE1Y
+        Soty8Y99czWjMpfc4kNKp8POrMEYZOtdZ+Is5oj/QXSTAKhrjq16E1ZTrDkNefMyvxYi7O
+        AEXs48ij70hWd7HIzeKU63mU8NoSMv0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-46-HNdaGIRbPOiZUUxEWpstlA-1; Thu, 18 Mar 2021 13:52:56 -0400
+X-MC-Unique: HNdaGIRbPOiZUUxEWpstlA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B072A81431C;
+        Thu, 18 Mar 2021 17:52:54 +0000 (UTC)
+Received: from [10.36.112.6] (ovpn-112-6.ams2.redhat.com [10.36.112.6])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 70BB95D9C6;
+        Thu, 18 Mar 2021 17:52:46 +0000 (UTC)
+Subject: Re: [PATCH 1/3] ACPICA: iASL: Add definitions for the VIOT table
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        sebastien.boeuf@intel.com, robin.murphy@arm.com,
+        kevin.tian@intel.com, lorenzo.pieralisi@arm.com
+References: <20210316191652.3401335-1-jean-philippe@linaro.org>
+ <20210316191652.3401335-2-jean-philippe@linaro.org>
+From:   Auger Eric <eric.auger@redhat.com>
+Message-ID: <83d8f573-0a96-5869-2c22-249bf2db7399@redhat.com>
+Date:   Thu, 18 Mar 2021 18:52:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-References: <CAJZ5v0j3=82x1hV9SCdinJQPkDXmJd9BFoqvNxNHSb6iS8PHVQ@mail.gmail.com>
- <YE5dJ6U3nPWsXY4D@linux.ibm.com> <CAJZ5v0g1H6hCVbAAFajhn0AYRMU4GkZOqggOB6LVdgFx_vfwOA@mail.gmail.com>
- <3236337.DtqTXxM43S@kreacher> <bad1ea33-1a6e-bd4d-b795-fbc51ac6ecca@oracle.com>
-In-Reply-To: <bad1ea33-1a6e-bd4d-b795-fbc51ac6ecca@oracle.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 18 Mar 2021 16:42:21 +0100
-Message-ID: <CAJZ5v0g81pE6S_bYV_ECvvzifEUFznWUOVcC8X5v-MQb4-th_g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: fix acpi table use after free
-To:     George Kennedy <george.kennedy@oracle.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Dhaval Giani <dhaval.giani@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210316191652.3401335-2-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 17, 2021 at 11:28 PM George Kennedy
-<george.kennedy@oracle.com> wrote:
->
->
->
-> On 3/17/2021 4:14 PM, Rafael J. Wysocki wrote:
-> > On Monday, March 15, 2021 5:19:29 PM CET Rafael J. Wysocki wrote:
-> >> On Sun, Mar 14, 2021 at 8:00 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
-> >>> On Thu, Mar 11, 2021 at 04:36:31PM +0100, Rafael J. Wysocki wrote:
-> >>>> On Wed, Mar 10, 2021 at 8:47 PM David Hildenbrand <david@redhat.com> wrote:
-> >>>>>> There is some care that should be taken to make sure we get the order
-> >>>>>> right, but I don't see a fundamental issue here.
-> >>>> Me neither.
-> >>>>
-> >>>>>> If I understand correctly, Rafael's concern is about changing the parts of
-> >>>>>> ACPICA that should be OS agnostic, so I think we just need another place to
-> >>>>>> call memblock_reserve() rather than acpi_tb_install_table_with_override().
-> >>>> Something like this.
-> >>>>
-> >>>> There is also the problem that memblock_reserve() needs to be called
-> >>>> for all of the tables early enough, which will require some reordering
-> >>>> of the early init code.
-> >>>>
-> >>>>>> Since the reservation should be done early in x86::setup_arch() (and
-> >>>>>> probably in arm64::setup_arch()) we might just have a function that parses
-> >>>>>> table headers and reserves them, similarly to how we parse the tables
-> >>>>>> during KASLR setup.
-> >>>> Right.
-> >>> I've looked at it a bit more and we do something like the patch below that
-> >>> nearly duplicates acpi_tb_parse_root_table() which is not very nice.
-> >> It looks to me that the code need not be duplicated (see below).
-> >>
-> >>> Besides, reserving ACPI tables early and then calling acpi_table_init()
-> >>> (and acpi_tb_parse_root_table() again would mean doing the dance with
-> >>> early_memremap() twice for no good reason.
-> >> That'd be simply inefficient which is kind of acceptable to me to start with.
-> >>
-> >> And I changing the ACPICA code can be avoided at least initially, it
-> >> by itself would be a good enough reason.
-> >>
-> >>> I believe the most effective way to deal with this would be to have a
-> >>> function that does parsing, reservation and installs the tables supplied by
-> >>> the firmware which can be called really early and then another function
-> >>> that overrides tables if needed a some later point.
-> >> I agree that this should be the direction to go into.
-> > So maybe something like the patch below?
->
-> Do you want me to try it out in the failing setup?
+Hi Jean,
 
-Yes, please!
+On 3/16/21 8:16 PM, Jean-Philippe Brucker wrote:
+> Just here for reference, don't merge!
+> 
+> The actual commits will be pulled from the next ACPICA release.
+> I squashed the three relevant commits:
+> 
+> ACPICA commit fc4e33319c1ee08f20f5c44853dd8426643f6dfd
+> ACPICA commit 2197e354fb5dcafaddd2016ffeb0620e5bc3d5e2
+> ACPICA commit 856a96fdf4b51b2b8da17529df0255e6f51f1b5b
+> 
+> Link: https://github.com/acpica/acpica/commit/fc4e3331
+> Link: https://github.com/acpica/acpica/commit/2197e354
+> Link: https://github.com/acpica/acpica/commit/856a96fd
+> Signed-off-by: Bob Moore <robert.moore@intel.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  include/acpi/actbl3.h | 67 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 67 insertions(+)
+> 
+> diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
+> index df5f4b27f3aa..09d15898e9a8 100644
+> --- a/include/acpi/actbl3.h
+> +++ b/include/acpi/actbl3.h
+> @@ -33,6 +33,7 @@
+>  #define ACPI_SIG_TCPA           "TCPA"	/* Trusted Computing Platform Alliance table */
+>  #define ACPI_SIG_TPM2           "TPM2"	/* Trusted Platform Module 2.0 H/W interface table */
+>  #define ACPI_SIG_UEFI           "UEFI"	/* Uefi Boot Optimization Table */
+> +#define ACPI_SIG_VIOT           "VIOT"	/* Virtual I/O Translation Table */
+>  #define ACPI_SIG_WAET           "WAET"	/* Windows ACPI Emulated devices Table */
+>  #define ACPI_SIG_WDAT           "WDAT"	/* Watchdog Action Table */
+>  #define ACPI_SIG_WDDT           "WDDT"	/* Watchdog Timer Description Table */
+> @@ -483,6 +484,72 @@ struct acpi_table_uefi {
+>  	u16 data_offset;	/* Offset of remaining data in table */
+>  };
+>  
+> +/*******************************************************************************
+> + *
+> + * VIOT - Virtual I/O Translation Table
+> + *        Version 1
+For other tables I see
+Conforms to ../.. Shouldn't we have such section too
+> + *
+> + ******************************************************************************/
+> +
+> +struct acpi_table_viot {
+> +	struct acpi_table_header header;	/* Common ACPI table header */
+> +	u16 node_count;
+> +	u16 node_offset;
+> +	u8 reserved[8];
+> +};
+> +
+> +/* VIOT subtable header */
+> +
+> +struct acpi_viot_header {
+> +	u8 type;
+> +	u8 reserved;
+> +	u16 length;
+> +};
+> +
+> +/* Values for Type field above */
+> +
+> +enum acpi_viot_node_type {
+> +	ACPI_VIOT_NODE_PCI_RANGE = 0x01,
+> +	ACPI_VIOT_NODE_MMIO = 0x02,
+> +	ACPI_VIOT_NODE_VIRTIO_IOMMU_PCI = 0x03,
+> +	ACPI_VIOT_NODE_VIRTIO_IOMMU_MMIO = 0x04,
+> +	ACPI_VIOT_RESERVED = 0x05
+> +};
+> +
+> +/* VIOT subtables */
+> +
+> +struct acpi_viot_pci_range {
+> +	struct acpi_viot_header header;
+> +	u32 endpoint_start;
+> +	u16 segment_start;
+> +	u16 segment_end;
+> +	u16 bdf_start;
+> +	u16 bdf_end;
+> +	u16 output_node;
+> +	u8 reserved[6];
+> +};
+> +
+> +struct acpi_viot_mmio {
+> +	struct acpi_viot_header header;
+> +	u32 endpoint;
+> +	u64 base_address;
+> +	u16 output_node;
+> +	u8 reserved[6];
+> +};
+> +
+> +struct acpi_viot_virtio_iommu_pci {
+> +	struct acpi_viot_header header;
+> +	u16 segment;
+> +	u16 bdf;
+> +	u8 reserved[8];
+> +};
+> +
+> +struct acpi_viot_virtio_iommu_mmio {
+> +	struct acpi_viot_header header;
+> +	u8 reserved[4];
+> +	u64 base_address;
+> +};
+> +
+>  /*******************************************************************************
+>   *
+>   * WAET - Windows ACPI Emulated devices Table
+> 
+
+Besides
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Thanks
+
+Eric
+
