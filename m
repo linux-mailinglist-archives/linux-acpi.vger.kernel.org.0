@@ -2,147 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6179933FC36
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 01:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B1533FCAF
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 02:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbhCRA0Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Mar 2021 20:26:16 -0400
-Received: from mail-eopbgr680077.outbound.protection.outlook.com ([40.107.68.77]:19077
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229898AbhCRAZ4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Mar 2021 20:25:56 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DDTRLvEvzbSUQJOK5Ul+iflQ3+8f1oyWyhbOz836AS/NNMMcBTjd9lj3UEy4wUpdse7tLXHorKZiY3xxvCsr9sQTHkveFqy32p+R8J/zmbrCI+yvhSe3ZP9a1uoCy/9VcicrQ5gwOy1jkl/s/ET3Pbj6G7jeMEEQ9xb2PGe8Wxu7H89g7JBjscoohKq1oVzvICGss0espSWdGrJpJIOlSy3maZyQ2XwQKov8ZCMeIvKM4hD4yBzsR7qtnxMuGyuTjQv/R73umN5JSCBbTu82raGF7foSIdcw6Ls2BCK4Cl3pjXN1JSQcGXTFAV0QNlTOaoSRP/Ffba5wi8uu/kYYMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZHOdsLutLeX3JfUXLmTv+ny7fTWfYCZ8Yaf6/lT0LTQ=;
- b=SQ5SEFrDn/8fklfBT8McNdppAWNUsiOC0Yd33WgbqqOnqJtJgFSf9CiaFLS5RDgpFzX9xuYtLjMk1kBmczcWqFiQAmg6g5r1Xz+IRH5yRl4Ti5G3MDkjS0Q6nMhZdbkZXv79NuBNlq+iV0QeXRGR8C7aXJozWkXxGa27m12RfG23UxHHzAlQ2sKcSkvm14bGRX7iLic5v6fI3EPr/T89VEY0x3JUaQ2Vj5DkRQe77wBVSI4dx7LKARbfFOO8BU6qon4ijn4KdnZMVwf8LkgAIMPqMx1+6jDKR+USB6HIHJ0c3aeln22DKFXXfcKP7g1A0nq+l4QAjvJLxs7AYNBGHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZHOdsLutLeX3JfUXLmTv+ny7fTWfYCZ8Yaf6/lT0LTQ=;
- b=p5Ljjs1kbjP/nSOf1xiucuEW8fquVfOkHXN/l2GfnzBPh0TgSTou/2jVGmHS1coGWOTlBJY81/GF7u0s793ra2g80yAzo0Ptcog+NJIzn3CIB5YhKFw1/iai/jvExaTzF+Waa+FM6ivVDAvFj2FJSGHj3JrgLenBcJarZc3TLbDY76btpksCVGCH5GKOqm97BTYzL8oSNysU/pdHNO/BqBfnb+16SbZ+Hj0c5Thi/13q7twB2fcrYlJ+I22B5Oll4DMa1HvHvRoPtMkeZE5tr0bz5kaCp5LfdWKlkPWESM0ojCT7QjEfqpA4fzGbZlVdS2TRdw7eEeUQUb+94VA60A==
-Received: from BY5PR12MB3764.namprd12.prod.outlook.com (2603:10b6:a03:1ac::17)
- by BY5PR12MB4869.namprd12.prod.outlook.com (2603:10b6:a03:1d9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.31; Thu, 18 Mar
- 2021 00:25:48 +0000
-Received: from BY5PR12MB3764.namprd12.prod.outlook.com
- ([fe80::11bb:b39e:3f42:d2af]) by BY5PR12MB3764.namprd12.prod.outlook.com
- ([fe80::11bb:b39e:3f42:d2af%7]) with mapi id 15.20.3933.032; Thu, 18 Mar 2021
- 00:25:48 +0000
-From:   Krishna Reddy <vdumpa@nvidia.com>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "will@kernel.org" <will@kernel.org>
-CC:     "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "eric.auger@redhat.com" <eric.auger@redhat.com>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-accelerators@lists.ozlabs.org" 
-        <linux-accelerators@lists.ozlabs.org>,
-        "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-        "jacob.jun.pan@linux.intel.com" <jacob.jun.pan@linux.intel.com>,
-        "kevin.tian@intel.com" <kevin.tian@intel.com>,
-        "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
-        "shameerali.kolothum.thodi@huawei.com" 
-        <shameerali.kolothum.thodi@huawei.com>,
-        "vivek.gautam@arm.com" <vivek.gautam@arm.com>,
-        "zhukeqian1@huawei.com" <zhukeqian1@huawei.com>,
-        "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
-        Yu-Huan Hsu <YHsu@nvidia.com>,
-        Bryan Huntsman <bhuntsman@nvidia.com>,
-        Sachin Nikam <Snikam@nvidia.com>,
-        Pritesh Raithatha <praithatha@nvidia.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Vikram Sethi <vsethi@nvidia.com>,
-        Terje Bergstrom <tbergstrom@nvidia.com>
-Subject: RE: [PATCH v13 00/10] iommu: I/O page faults for SMMUv3
-Thread-Topic: [PATCH v13 00/10] iommu: I/O page faults for SMMUv3
-Thread-Index: AQHXD0drlTdxumYxFk+ZFSU15kg2EqqI+WNw
-Date:   Thu, 18 Mar 2021 00:25:48 +0000
-Message-ID: <BY5PR12MB3764F891751224804232725AB3699@BY5PR12MB3764.namprd12.prod.outlook.com>
-References: <20210302092644.2553014-1-jean-philippe@linaro.org>
-In-Reply-To: <20210302092644.2553014-1-jean-philippe@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: linaro.org; dkim=none (message not signed)
- header.d=none;linaro.org; dmarc=none action=none header.from=nvidia.com;
-x-originating-ip: [216.228.112.22]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 73015e1f-e84b-4fb4-fb1f-08d8e9a460f9
-x-ms-traffictypediagnostic: BY5PR12MB4869:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BY5PR12MB4869E84D6D5B475B0DA60AC6B3699@BY5PR12MB4869.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5516;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: PvgZc90fBJz51fyw9reG5N579j0W+oEVlHMhXylkUEFIB/kOSWGt2QhHv1MdTVwv7B+1K7vOmRNJIwemfzSQE9yZ1U0hAjKBwOPiVwbvru7bIzlkWWl1tVBFijbVmknC2rySRVxZyQOIe/Za96x05mRkTbr367aQnulvlGdJOzlzzYnWwU5L2NxDW917Rxjx2mbhmutyEjGTqOHh3h3q/Yh8C2Y7Dn1gSpYNZ1pdkWIDOfbhcASEqUXNzPRpvbprh+wCdI3t6mkslUgASO543lzGRHZGXkiyaLvzkjDSETadKkv9fVNQfMnuwMkKkklJbS0kN8XiyaxDjZx+ZLIYmhwhe4l6fpOIAQvm+T8evwVqqYI0+FaTGQhmy8RxS/PwuWRoqdU7O3ig3jq1VxRFXOJioonEa1vhiXyXQr+gSj0E+5nHUzSyL3qZm8Gdrm1zHOi9hHzwVBDrZENgSml5CKlTH1cVQG/G376iuwK9w1c+PwHnTUXjqOHRvvGGyGjH7A5kiB7djDFFNMA87A7KPn1vTn3wB03qsBg2/twAaxcgpOKancJf6b9ygJXe/p3Ka8CngVe3OtNMdh4MempWYStmTHIOxI3nv6WKIUvuwW23rLStk/fRrKwmCp8XCjaf
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB3764.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(396003)(136003)(376002)(346002)(7416002)(5660300002)(2906002)(55016002)(83380400001)(71200400001)(186003)(4326008)(8676002)(9686003)(478600001)(33656002)(558084003)(86362001)(110136005)(316002)(26005)(7696005)(66476007)(66556008)(76116006)(66946007)(107886003)(6506007)(8936002)(54906003)(52536014)(38100700001)(64756008)(66446008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?umGjHxGPPjoF6fW95E59yn+CmKmOoq4S7F5Ao+5OX1ddiD3He1eaMa4Sn//m?=
- =?us-ascii?Q?QYl7VlpqzfxePCwHFgR+c7+OBW2ke9YC2i9vU6W0frLQX2NwRM30mjejjtKV?=
- =?us-ascii?Q?vazwzD+m0isi6H8/I58sJlTKCYP/6fFdnKma+7Jbvp1Cpa0chuRi85GJQJ1j?=
- =?us-ascii?Q?c8Qfea/DP7Evj6zBcCWHpiXLcmoKhJuHFgZWHbE+yftmKojKJL7MmINQzqk6?=
- =?us-ascii?Q?GlJXDHsxCEh/sT+zfVB2R9CHddZvF+ST3Tv4rk4tBERv+Bq3cciw0Fd2yIp/?=
- =?us-ascii?Q?uzhSImG8yvYBuUNWa3OuQBTbd7Smffv57FKCYK3kpAD3RwO8mNW20FmVmICl?=
- =?us-ascii?Q?e5pfQDln+A6J4sr9Re9Vv/xQUepDSlZKXmzXX+T5fKkEdp4Ub69irDPAZu4v?=
- =?us-ascii?Q?lz6ZEyBGFvgS9x9/sC2JH6GZ3/xttTxL5upKxD/bSn2KLYQ86T+owgYPO+zg?=
- =?us-ascii?Q?SZZ8nQu8wAv2XO+HJ6qCGkhx0KJ3eV8Qn5od/yjkX6z3q08Vsyeh73IpRpyt?=
- =?us-ascii?Q?+jdnxdFSPrads1AmdLxJUPDRqIuhz/QAf7H9yFVd5pbwSPyoRR4t1kNuTOFi?=
- =?us-ascii?Q?D1fK3OlrgF6EqLqQOPVXuYDHBksCv2lbGtEL+ygyECQKhXgULF9fyu8PU+o1?=
- =?us-ascii?Q?tPsgimcBcgKmkmcwAcSPTz6lNB+1joHJcFkzMI1+ff3NEzCVoJUhy5f0R8HI?=
- =?us-ascii?Q?/MVjaHJ2oDj/3Sd6q0iR3XdTZDLM1d9sAH2AzIXjgdN+y/EjjAxakeN46qiX?=
- =?us-ascii?Q?vm8cm+Q+CGLSu5dJQsYHbtKLARNRvY3BKFctFbTtP3Wv9+DaflFLOH/2MN3M?=
- =?us-ascii?Q?ae7J7Hg0lD8NYLj0tqTge+vgDAgxaiFoytUM67YWJH3Oej+lX5a1AtPWUxrg?=
- =?us-ascii?Q?WwbxSVHdxqD5OypkDb2SD+ZyoV808LnfBbL79jAgpTINyzq0/1AjLPwOaJWv?=
- =?us-ascii?Q?1HXg/ZpCmgeg6LZPt5VfkNYeHlkpSJJx5+xGqbpgBnbtcbX1/B8c3XrxzUhL?=
- =?us-ascii?Q?Go6VsnxS2J3Ez2iNIcFe4pMws4vIPhD/Yyjxtro1uQda/p6N2UBSDx1q1iap?=
- =?us-ascii?Q?DPgIv4g6Cy/B2l1Yw6q1ZRTeh2OlXYZdfH7V9O3xOx3Q6/r3mxfalWY5hKW6?=
- =?us-ascii?Q?d15u3aYBPulkKIOZpJGlMo1NU8n0FmY1AzzyHVIoq8ZATRM9X1pZhnhHDnTk?=
- =?us-ascii?Q?71zqbwxC74m39jVPNCgzWiazYBaiIcRA14EQI0SNLUCIMzg7bXnFpnIyrA2U?=
- =?us-ascii?Q?fZsc3CVwwPV1NqplSdZ2cLfESZkAfiD9ly6BKiuVg9eP3KAx8v3TXsWvzRGN?=
- =?us-ascii?Q?rSxcVaKgRRzx4tKK68qtdV59?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S229472AbhCRBaf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Mar 2021 21:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229512AbhCRBaf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Mar 2021 21:30:35 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8684CC06174A
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Mar 2021 18:30:34 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id w18so4642546edc.0
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Mar 2021 18:30:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Xw7oYSjjp9oS+nwtaFUBwvJyGYHFUWxpmI1ewSADgIw=;
+        b=BZrGew9/oWoJA2obgfBVdQagf+0A5ehE894LTII2q8NytJOasNPw01gCoODT8Auvpm
+         C5y9r0O3DSTT3dwDuObSXaYWkJJN+9RROyZ5vO0BeOhokrvimFnJT1AXw9aaRt1HE9RE
+         WxnEDrGqSu4icUPLmIB7l/7+O2QtwHjJm4XzElaAomC8Nd8SuzVwDiTM3zM8uSMZcksE
+         vX5v0ark5Cublx+wxqlgP4a+pSWjIwiKoxfNccWMPaXYGiW3BTQzP5gIBpFgZfFAZx+2
+         lZqI6494e15c6Fu90bLlUuGGrURf3MK5J0wnelSWH4lPHK6M+rD+iuWIYhQDODr+aMD9
+         4hlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Xw7oYSjjp9oS+nwtaFUBwvJyGYHFUWxpmI1ewSADgIw=;
+        b=XBfDx7A3V0dUKKLF9pZS4MQ/Fqx+u/yVMpJtJR1ZAOmr7GptFprfcn+vhi1oph/TCd
+         tuIoWQGAwJ/Wp9B9ILGGAB6ICz6y2TzHQ16nogHE30LYaAFqM3qpBCmxSEaHIoBs5YFv
+         41OWt0YZpry5MA5jAQiEuuY8PJ03SdcqKdAN6zxZ/owmGmDgGSREjyPOOnM/YT2F1QyD
+         8cI4weLrEaZf5GTf5Lqml3BpzrEvmfgSzDZYnAPvme7xQc5pJl+FuC6yZP/yhWnZ+UB/
+         JCIDbnd0E6y6uxtwnwVxTQ8y1/J1nSq2JY4ovvVUO1JfF3SxRwNv/t2UCZUuTv5vj/m+
+         61hw==
+X-Gm-Message-State: AOAM533+wu0kfxkWbdpMjvp1BKvHYlNjdXy69ZRkFQSRco2UQZu2u90g
+        JX3ppJnCmAP/ahMQgpC3fkU9B/xm4J5+G/a5M5tPxA==
+X-Google-Smtp-Source: ABdhPJx1mCZ8Hl5YSv0C5/KWJ35gquENslnXEiug6CmPW+mNiqmJODmAUbzLLiwIDYTp+495NS7WR/bwk+B28+IHcjU=
+X-Received: by 2002:aa7:cd0e:: with SMTP id b14mr640087edw.354.1616031033201;
+ Wed, 17 Mar 2021 18:30:33 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB3764.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73015e1f-e84b-4fb4-fb1f-08d8e9a460f9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2021 00:25:48.0211
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pC5lM2x0MYQ2nQGaz0lydUhpUhU3K/u57z55PI0gnv/9bIXDIgScmBfCwXhtoI6r8lyS52tyKQuFjllQWABLZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4869
+References: <20210310180306.1588376-1-Jonathan.Cameron@huawei.com>
+ <20210310180306.1588376-2-Jonathan.Cameron@huawei.com> <CAPcyv4gG-==Vj9w3d7=gRRSPaoD5eZHZZ2hAA0h3c07eMT_x1A@mail.gmail.com>
+ <20210316162952.00001ab7@Huawei.com> <CAPcyv4h6hHCuO=0vHbPz2m4qw6-0=wW9swBrWimBsz6_GJu4Aw@mail.gmail.com>
+ <6F0B8DDD-E661-40C8-839B-1B77998EFF23@avery-design.com>
+In-Reply-To: <6F0B8DDD-E661-40C8-839B-1B77998EFF23@avery-design.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 17 Mar 2021 18:30:26 -0700
+Message-ID: <CAPcyv4hJG08RaksW3jH_Q5ASqpzX5MtfNFcLqMxAH5jwTidk=w@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] PCI/doe: Initial support PCI Data Object Exchange
+To:     Chris Browy <cbrowy@avery-design.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Tested-by: Krishna Reddy <vdumpa@nvidia.com>
+Btw your mailer does something odd with the "In-Reply-To:" field, I
+need to fix it up manually to include your address.
 
-Validated v13 patches in context of nested translations validation for NVMe=
- PCIe device assigned to Guest VM.
-V12 patches(v13 is yet to be tested) has been tested for SVA functionality =
-on Native OS and is functional.=20
+On Tue, Mar 16, 2021 at 4:28 PM Chris Browy <cbrowy@avery-design.com> wrote=
+:
+>
+> Please address and clarify 2 queries below...
+>
+>
+> > On Mar 16, 2021, at 2:14 PM, Dan Williams <dan.j.williams@intel.com> wr=
+ote:
+> >
+> > On Tue, Mar 16, 2021 at 9:31 AM Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
+> >>
+> >> On Mon, 15 Mar 2021 12:45:49 -0700
+> >> Dan Williams <dan.j.williams@intel.com> wrote:
+> >>
+> >>> Hey Jonathan, happy to see this, some comments below...
+> >>
+> >> Hi Dan,
+> >>
+> >> Thanks for taking a look!
+> >>
+> >>>
+> >>> On Wed, Mar 10, 2021 at 10:08 AM Jonathan Cameron
+> >>> <Jonathan.Cameron@huawei.com> wrote:
+> >>>>
+> >>>> Introduced in an ECN to the PCI 5.0, DOE provides a config space
+> >>>> based mailbox with standard protocol discovery.  Each mailbox
+> >>>> is accessed through a DOE PCIE Extended Capability.
+> >>>>
+> >>>> A device may have 1 or more DOE mailboxes, each of which is allowed
+> >>>> to support any number of protocols (some DOE protocols
+> >>>> specifications apply additional restrictions).  A given protocol
+> >>>> may be supported on more than one DOE mailbox on a given function.
+> >>>
+> >>> Are all those protocol instances shared?
+> >>> I'm trying to mental model
+> >>> whether, for example, an auxiliary driver instance could be loaded pe=
+r
+> >>> DOE mailbox, or if there would need to be coordination of a given
+> >>> protocol no matter how many DOE mailboxes on that device implemented
+> >>> that protocol.
+> >>
+> >> Just to check I've understood corectly, you mean multiple instances of=
+ same
+> >> protocol across different DOE mailboxes on a given device?
+> >>
+> >
+> > Right.
+>
+> Could you confirm this case for clarity?  A CXL device may have multiple =
+VF/PF.
+> For example, PF=3D0 could have one or more DOE instances for CDAT protoco=
+l.
+> The driver will scan PF=3D0 for all DOE instances and finding one or more=
+ of CDAT
+> protocol will combine/manage them.  I had not considered multiple CDAT ta=
+bles
+> for single PF.  For CXL devices with multiple PF=E2=80=99s the same proce=
+ss would be
+> carried out on PF=3D1-N.
 
--KR
+This patch has nothing to do with CXL. This is a general discussion of
+how a PCIE device implements a DOE mailbox or set of mailboxes. The
+DOE definition is PF-only afaics from the DOE specification.
 
+The CXL specification only says that a device can implement a CDAT per
+DOE capability instance, so the CXL spec does not limit the number of
+DOE instances to 1, but I can't think of a practical reason to support
+more than one.
+
+[..]
+> >>> https://cfp.osfc.io/media/osfc2020/submissions/ECQ88N/resources/An_op=
+en_source_SPDM_implementation_for_secure_devi_kmIgAQe.pdf
+> >>
+> >> Nice!  Looking at CMA / IDE emulation was on my todo list and that loo=
+ks like
+> >> it might make that job a lot easier.
+>
+> Would it be useful to integrate the openspdm=E2=80=99s SpdmResponderEmu.c=
+ onto the QEMU=E2=80=99s CXL Type3 Device=E2=80=99s
+> DOE backend for CMA/IDE testing?  Doesn=E2=80=99t look hard to do.
+
+Yes, I do think it would be useful.
