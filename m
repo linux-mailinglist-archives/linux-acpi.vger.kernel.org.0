@@ -2,65 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA86A342548
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Mar 2021 19:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AD0434254E
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Mar 2021 19:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbhCSSvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Mar 2021 14:51:19 -0400
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:46713 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbhCSSvM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Mar 2021 14:51:12 -0400
-Received: by mail-ot1-f47.google.com with SMTP id 68-20020a9d0f4a0000b02901b663e6258dso9468789ott.13;
-        Fri, 19 Mar 2021 11:51:12 -0700 (PDT)
+        id S230063AbhCSSyF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Mar 2021 14:54:05 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:44630 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229956AbhCSSxw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Mar 2021 14:53:52 -0400
+Received: by mail-ot1-f44.google.com with SMTP id y19-20020a0568301d93b02901b9f88a238eso9473219oti.11;
+        Fri, 19 Mar 2021 11:53:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=29ZEanNYNzIk58a8Y3Rva+TVwajoUYncNK5jliynVQM=;
-        b=XY+pCl9ta03hk0d+mx8f1e7SOpSJdXVvb6l6+zAvQ9SXH3efZvBovxNebSx68Bg4fM
-         ASynPrxRckQsGLaM89csWor+tYVaEXmdXiVTuZtp6frCv3K0rlyslaw0jBOMz8T+rjUb
-         kWKQXPh0lwijUDDX8axFj9ffWoxRv2yrUqf+hrUEtTZJBtuU9qPjMcw5BPJtcjRvsne7
-         c2BfooQOgGbwwPsgxqQx4RqdIXsfL62MMnFvE8I8OYXYyEkm0YFUBWr6oD+mE6lC4Ccy
-         qTKTSwso0eyAqwyD/OY5bET8zrCGg/9wmEcEJ6oRhzwnJepizfYehiZ17IrGFoC1TWk1
-         iI6w==
-X-Gm-Message-State: AOAM532xMQxLXd9ILGCP6x4nctQyw6xN3LqXkyvwryd5syBDH77Le8bV
-        n12umDAkEh7r48WAF8Hou21sbY/Ob7Oj9R7ovcQ=
-X-Google-Smtp-Source: ABdhPJz6cZGHWn7lejUkF5f78hrcjvURmosbcxZ2eeIEDki84Urf4wI1sn5ogAhmO1vtEP+hgkvT0td5PAS/r8lgrIw=
-X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr2244474otr.321.1616179872125;
- Fri, 19 Mar 2021 11:51:12 -0700 (PDT)
+        bh=lSfZo+OL3h9++SEiG+mrCiK5ZCq1/nFoZ4zdT/1Zs7s=;
+        b=CgyvLQ6fNWMcEw0Ne+D80YpoJly9pDDvIXIIplq4G78do7wxEqvLHyPupXNAVh1mZ5
+         2uWondAYGdp5yAasStyQLGzl0aMAOSpS00fx0T8Tm5jhYGUZD9tCnsvdtUuX0YwgWfhH
+         XHVX0b3pbxsOgsTVeYT5Eg8tyXpskXsT4ceT334Ukw8naUe5KLDU5qLcIkTDCwq3dMeC
+         gcqrBoV+6yhOsnpjrnPgkvflUTqEIqe5+hopeE4+mOHTh+BKeBy2Tfn1hXkjVyK/6LLR
+         gbopxp+edf6nKoiGkfYUwW/ZhQdiamPiVqS+7CIDwNGiV64SZA4Adfv+t7yeZxAcG0fk
+         nX1Q==
+X-Gm-Message-State: AOAM5331mxH5Iy4FQx/c/rmzR6hWHBtVWqrQb+94LV0YqpaNS0kKeoBh
+        PLLV80i5KSXED9hLKJzcNwwIbqD84UWCsIVomsQ=
+X-Google-Smtp-Source: ABdhPJyZpXjIAhejBCf9YSSjkZjx3d0dP0mxrMGqTl4H3x513BdYGHBulfFLdWRauiFZmL6DmpxqD38oqWNFpKYAUMY=
+X-Received: by 2002:a9d:4811:: with SMTP id c17mr2266158otf.206.1616180031721;
+ Fri, 19 Mar 2021 11:53:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210319183234.23629-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210319183234.23629-1-andriy.shevchenko@linux.intel.com>
+References: <20210312032430.13664-1-chris.chiu@canonical.com>
+ <20210313102545.GB11435@duo.ucw.cz> <CAJZ5v0g7pEMA-QTonuVgMVmFCcHwnTtYYCaw7mVertPfhHNt8w@mail.gmail.com>
+ <20210319184828.GA5022@amd>
+In-Reply-To: <20210319184828.GA5022@amd>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 19 Mar 2021 19:51:00 +0100
-Message-ID: <CAJZ5v0jihmos4gza_+0MzGsUfxJJ-5LGBOURVebdGsE_RuPhFA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ACPI: scan: Use unique number for instance_no
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+Date:   Fri, 19 Mar 2021 19:53:40 +0100
+Message-ID: <CAJZ5v0ihOVEFvcLLPmXGQ7aj91+BLpJQm12HE=pLpHKbDv-9jA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Add missing callback back for Sony VPCEH3U1E
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, chris.chiu@canonical.com,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 19, 2021 at 7:33 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Fri, Mar 19, 2021 at 7:48 PM Pavel Machek <pavel@ucw.cz> wrote:
 >
-> Current mechanism of incrementing and decrementing plain integer
-> to get a next free instance_no when creating an ACPI device is buggy.
+> On Fri 2021-03-19 17:44:32, Rafael J. Wysocki wrote:
+> > On Sat, Mar 13, 2021 at 11:27 AM Pavel Machek <pavel@ucw.cz> wrote:
+> > >
+> > > On Fri 2021-03-12 11:24:30, chris.chiu@canonical.com wrote:
+> > > > From: Chris Chiu <chris.chiu@canonical.com>
+> > > >
+> > > > The .callback of the quirk for Sony VPCEH3U1E was unintetionally
+> > > > removed by the commit 25417185e9b5 ("ACPI: video: Add DMI quirk
+> > > > for GIGABYTE GB-BXBT-2807"). Add it back to make sure the quirk
+> > > > for Sony VPCEH3U1E works as expected.
+> > > >
+> > > > Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+> > > > Reported-by: Pavel Machek <pavel@ucw.cz>
+> > >
+> > > Thanks for doing this.
+> > >
+> > > Reviewed-by: Pavel Machek (CIP) <pavel@denx.de>
+> >
+> > Applied as 5.12-rc5 material, thanks!
 >
-> The simple integer and operations line increment and decrement
-> on top of it can't cover the possible gaps during run time. The
-> arbitrary instantiation and elimination of the devices is racy
+> Commit 25417185e9b5 made it into stable, so this one should be Cc:
+> stable as well. Sorry for noticing that late.
 
-But it isn't racy AFAICS.  It always happens under acpi_device_lock().
+Well, do you know which -stable series it went into?
 
-> and after a couple of iterations with unequal amount of devices
-> being added and removed we may reproduce a bug:
+I've added a "Cc: stable" tag to this one, but it most likely doesn't
+cover all of them.
