@@ -2,178 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B830A34162A
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Mar 2021 07:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC37341633
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Mar 2021 08:00:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234009AbhCSG5b convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 19 Mar 2021 02:57:31 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2714 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233946AbhCSG5R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Mar 2021 02:57:17 -0400
-Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4F1vg545PMz680hd;
-        Fri, 19 Mar 2021 14:50:57 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 19 Mar 2021 07:57:12 +0100
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Fri, 19 Mar 2021 06:57:11 +0000
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.013;
- Fri, 19 Mar 2021 14:57:09 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     "tim.c.chen@linux.intel.com" <tim.c.chen@linux.intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>,
-        "msys.mizuma@gmail.com" <msys.mizuma@gmail.com>,
-        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>, "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "guodong.xu@linaro.org" <guodong.xu@linaro.org>,
-        yangyicong <yangyicong@huawei.com>,
-        "Liguozhu (Kenneth)" <liguozhu@hisilicon.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "hpa@zytor.com" <hpa@zytor.com>
-Subject: RE: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within a
- die
-Thread-Topic: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within a
- die
-Thread-Index: AQHXHHeQcl1lHq1u7kWPO6cWrdJxq6qKVPyAgACJR5A=
-Date:   Fri, 19 Mar 2021 06:57:08 +0000
-Message-ID: <eb48302277f3436eb9899032e6b0bf1c@hisilicon.com>
-References: <20210319041618.14316-1-song.bao.hua@hisilicon.com>
- <20210319041618.14316-2-song.bao.hua@hisilicon.com>
- <YFRGIedW1fUlnmi+@kroah.com>
-In-Reply-To: <YFRGIedW1fUlnmi+@kroah.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.203.211]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S233902AbhCSG7j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Mar 2021 02:59:39 -0400
+Received: from mga12.intel.com ([192.55.52.136]:57305 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234099AbhCSG7Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 19 Mar 2021 02:59:16 -0400
+IronPort-SDR: YAkIBbiYKOnCgdag+KDbgPtmOdDZKTR1zaAnYdsXL9U034WFyY27TiFhJ1vvpR3o0k1AKSlaFl
+ LCULfrtGajdw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9927"; a="169140601"
+X-IronPort-AV: E=Sophos;i="5.81,261,1610438400"; 
+   d="scan'208";a="169140601"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2021 23:59:15 -0700
+IronPort-SDR: nI8JWn/gbxSX+d6d0g0ftyqZZb0qLoeN4UykS5/wZhUbFI3Irtp25phZR6dHPkUF/GWTF9xW9r
+ 1+SGr28ayihA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,261,1610438400"; 
+   d="scan'208";a="374858657"
+Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 18 Mar 2021 23:59:13 -0700
+Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lN96H-0001eN-4U; Fri, 19 Mar 2021 06:59:13 +0000
+Date:   Fri, 19 Mar 2021 14:58:41 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 1d06e15a1e4072f063de489f8dd7ca6a5eb35f8c
+Message-ID: <60544ba1.fInI7JfX29iDbECE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 1d06e15a1e4072f063de489f8dd7ca6a5eb35f8c  Merge branch 'pm-cpufreq' into bleeding-edge
 
+elapsed time: 726m
 
-> -----Original Message-----
-> From: Greg KH [mailto:gregkh@linuxfoundation.org]
-> Sent: Friday, March 19, 2021 7:35 PM
-> To: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
-> Cc: tim.c.chen@linux.intel.com; catalin.marinas@arm.com; will@kernel.org;
-> rjw@rjwysocki.net; vincent.guittot@linaro.org; bp@alien8.de;
-> tglx@linutronix.de; mingo@redhat.com; lenb@kernel.org; peterz@infradead.org;
-> dietmar.eggemann@arm.com; rostedt@goodmis.org; bsegall@google.com;
-> mgorman@suse.de; msys.mizuma@gmail.com; valentin.schneider@arm.com; Jonathan
-> Cameron <jonathan.cameron@huawei.com>; juri.lelli@redhat.com;
-> mark.rutland@arm.com; sudeep.holla@arm.com; aubrey.li@linux.intel.com;
-> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
-> linux-acpi@vger.kernel.org; x86@kernel.org; xuwei (O) <xuwei5@huawei.com>;
-> Zengtao (B) <prime.zeng@hisilicon.com>; guodong.xu@linaro.org; yangyicong
-> <yangyicong@huawei.com>; Liguozhu (Kenneth) <liguozhu@hisilicon.com>;
-> linuxarm@openeuler.org; hpa@zytor.com
-> Subject: Re: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within
-> a die
-> 
-> On Fri, Mar 19, 2021 at 05:16:15PM +1300, Barry Song wrote:
-> > diff --git a/Documentation/admin-guide/cputopology.rst
-> b/Documentation/admin-guide/cputopology.rst
-> > index b90dafc..f9d3745 100644
-> > --- a/Documentation/admin-guide/cputopology.rst
-> > +++ b/Documentation/admin-guide/cputopology.rst
-> > @@ -24,6 +24,12 @@ core_id:
-> >  	identifier (rather than the kernel's).  The actual value is
-> >  	architecture and platform dependent.
-> >
-> > +cluster_id:
-> > +
-> > +	the Cluster ID of cpuX.  Typically it is the hardware platform's
-> > +	identifier (rather than the kernel's).  The actual value is
-> > +	architecture and platform dependent.
-> > +
-> >  book_id:
-> >
-> >  	the book ID of cpuX. Typically it is the hardware platform's
-> > @@ -56,6 +62,14 @@ package_cpus_list:
-> >  	human-readable list of CPUs sharing the same physical_package_id.
-> >  	(deprecated name: "core_siblings_list")
-> >
-> > +cluster_cpus:
-> > +
-> > +	internal kernel map of CPUs within the same cluster.
-> > +
-> > +cluster_cpus_list:
-> > +
-> > +	human-readable list of CPUs within the same cluster.
-> > +
-> >  die_cpus:
-> >
-> >  	internal kernel map of CPUs within the same die.
-> 
-> Why are these sysfs files in this file, and not in a Documentation/ABI/
-> file which can be correctly parsed and shown to userspace?
+configs tested: 94
+configs skipped: 2
 
-Well. Those ABIs have been there for much a long time. It is like:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-[root@ceph1 topology]# ls
-core_id  core_siblings  core_siblings_list  physical_package_id thread_siblings  thread_siblings_list
-[root@ceph1 topology]# pwd
-/sys/devices/system/cpu/cpu100/topology
-[root@ceph1 topology]# cat core_siblings_list
-64-127
-[root@ceph1 topology]#
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+arc                          axs101_defconfig
+sh                                  defconfig
+ia64                        generic_defconfig
+m68k                        mvme147_defconfig
+arm                    vt8500_v6_v7_defconfig
+powerpc                       maple_defconfig
+powerpc                    adder875_defconfig
+sh                          kfr2r09_defconfig
+arm                         lpc32xx_defconfig
+s390                             alldefconfig
+sh                   sh7724_generic_defconfig
+mips                malta_qemu_32r6_defconfig
+mips                          rb532_defconfig
+sh                           se7721_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                      tqm8xx_defconfig
+arm                         socfpga_defconfig
+mips                          ath79_defconfig
+xtensa                  cadence_csp_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210318
+i386                 randconfig-a005-20210318
+i386                 randconfig-a003-20210318
+i386                 randconfig-a002-20210318
+i386                 randconfig-a006-20210318
+i386                 randconfig-a004-20210318
+x86_64               randconfig-a011-20210318
+x86_64               randconfig-a016-20210318
+x86_64               randconfig-a013-20210318
+x86_64               randconfig-a015-20210318
+x86_64               randconfig-a014-20210318
+x86_64               randconfig-a012-20210318
+i386                 randconfig-a013-20210318
+i386                 randconfig-a016-20210318
+i386                 randconfig-a011-20210318
+i386                 randconfig-a014-20210318
+i386                 randconfig-a015-20210318
+i386                 randconfig-a012-20210318
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-> 
-> Any chance you can fix that up here as well?
+clang tested configs:
+x86_64               randconfig-a006-20210318
+x86_64               randconfig-a001-20210318
+x86_64               randconfig-a005-20210318
+x86_64               randconfig-a002-20210318
+x86_64               randconfig-a003-20210318
+x86_64               randconfig-a004-20210318
 
-Yes. we will send a separate patch to address this, which won't
-be in this patchset. This patchset will base on that one.
-
-> 
-> Also note that "list" is not something that goes in sysfs, sysfs is "one
-> value per file", and a list is not "one value".  How do you prevent
-> overflowing the buffer of the sysfs file if you have a "list"?
-> 
-
-At a glance, the list is using "-" rather than a real list
-[root@ceph1 topology]# cat core_siblings_list
-64-127
-
-Anyway, I will take a look if it has any chance to overflow.
-
-> thanks,
-> 
-> greg k-h
-
-Thanks
-Barry
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
