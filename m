@@ -2,194 +2,221 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3784340E65
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Mar 2021 20:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB73534141A
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Mar 2021 05:24:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbhCRTh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Mar 2021 15:37:27 -0400
-Received: from foss.arm.com ([217.140.110.172]:47522 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230008AbhCRTg7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Mar 2021 15:36:59 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD7F8ED1;
-        Thu, 18 Mar 2021 12:36:58 -0700 (PDT)
-Received: from [10.57.50.37] (unknown [10.57.50.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F39423F70D;
-        Thu, 18 Mar 2021 12:36:56 -0700 (PDT)
-Subject: Re: [PATCH 2/3] ACPI: Add driver for the VIOT table
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
-Cc:     kevin.tian@intel.com, virtualization@lists.linux-foundation.org,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        sebastien.boeuf@intel.com, will@kernel.org
-References: <20210316191652.3401335-1-jean-philippe@linaro.org>
- <20210316191652.3401335-3-jean-philippe@linaro.org>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <2f081b8f-98e2-2ce1-6be6-bb81aab8e153@arm.com>
-Date:   Thu, 18 Mar 2021 19:36:50 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S233533AbhCSEXq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Mar 2021 00:23:46 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:13203 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229447AbhCSEXJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Mar 2021 00:23:09 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F1rKd3fhwzmZbk;
+        Fri, 19 Mar 2021 12:20:37 +0800 (CST)
+Received: from SWX921481.china.huawei.com (10.126.203.211) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 19 Mar 2021 12:22:54 +0800
+From:   Barry Song <song.bao.hua@hisilicon.com>
+To:     <tim.c.chen@linux.intel.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <rjw@rjwysocki.net>,
+        <vincent.guittot@linaro.org>, <bp@alien8.de>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <lenb@kernel.org>, <peterz@infradead.org>,
+        <dietmar.eggemann@arm.com>, <rostedt@goodmis.org>,
+        <bsegall@google.com>, <mgorman@suse.de>
+CC:     <msys.mizuma@gmail.com>, <valentin.schneider@arm.com>,
+        <gregkh@linuxfoundation.org>, <jonathan.cameron@huawei.com>,
+        <juri.lelli@redhat.com>, <mark.rutland@arm.com>,
+        <sudeep.holla@arm.com>, <aubrey.li@linux.intel.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <x86@kernel.org>, <xuwei5@huawei.com>, <prime.zeng@hisilicon.com>,
+        <guodong.xu@linaro.org>, <yangyicong@huawei.com>,
+        <liguozhu@hisilicon.com>, <linuxarm@openeuler.org>,
+        <hpa@zytor.com>, Barry Song <song.bao.hua@hisilicon.com>
+Subject: [RFC PATCH v5 0/4] scheduler: expose the topology of clusters and add cluster scheduler 
+Date:   Fri, 19 Mar 2021 17:16:14 +1300
+Message-ID: <20210319041618.14316-1-song.bao.hua@hisilicon.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20210316191652.3401335-3-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.126.203.211]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021-03-16 19:16, Jean-Philippe Brucker wrote:
-> The ACPI Virtual I/O Translation Table describes topology of
-> para-virtual platforms. For now it describes the relation between
-> virtio-iommu and the endpoints it manages. Supporting that requires
-> three steps:
-> 
-> (1) acpi_viot_init(): parse the VIOT table, build a list of endpoints
->      and vIOMMUs.
-> 
-> (2) acpi_viot_set_iommu_ops(): when the vIOMMU driver is loaded and the
->      device probed, register it to the VIOT driver. This step is required
->      because unlike similar drivers, VIOT doesn't create the vIOMMU
->      device.
+ARM64 server chip Kunpeng 920 has 6 or 8 clusters in each NUMA node, and each
+cluster has 4 cpus. All clusters share L3 cache data while each cluster has
+local L3 tag. On the other hand, each cluster will share some internal system
+bus. This means cache is much more affine inside one cluster than across
+clusters.
 
-Note that you're basically the same as the DT case in this regard, so 
-I'd expect things to be closer to that pattern than to that of IORT.
+    +-----------------------------------+                          +---------+
+    |  +------+    +------+            +---------------------------+         |
+    |  | CPU0 |    | cpu1 |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   +----+    L3     |         |         |
+    |  +------+    +------+   cluster   |    |    tag    |         |         |
+    |  | CPU2 |    | CPU3 |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |         |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             +--------------------------+         |
+    |  |      |    |      |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   |    |    L3     |         |         |
+    |  +------+    +------+             +----+    tag    |         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |   L3    |
+                                                                   |   data  |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             +----+    L3     |         |         |
+    |                                   |    |    tag    |         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |  |      |    |      |            ++    +-----------+         |         |
+    |  +------+    +------+            |---------------------------+         |
+    +-----------------------------------|                          |         |
+    +-----------------------------------|                          |         |
+    |  +------+    +------+            +---------------------------+         |
+    |  |      |    |      |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   +----+    L3     |         |         |
+    |  +------+    +------+             |    |    tag    |         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |         |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             +--------------------------+         |
+    |  |      |    |      |             |   +-----------+          |         |
+    |  +------+    +------+             |   |           |          |         |
 
-[...]
-> @@ -1506,12 +1507,17 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
->   {
->   	const struct iommu_ops *iommu;
->   	u64 dma_addr = 0, size = 0;
-> +	int ret;
->   
->   	if (attr == DEV_DMA_NOT_SUPPORTED) {
->   		set_dma_ops(dev, &dma_dummy_ops);
->   		return 0;
->   	}
->   
-> +	ret = acpi_viot_dma_setup(dev, attr);
-> +	if (ret)
-> +		return ret > 0 ? 0 : ret;
 
-I think things could do with a fair bit of refactoring here. Ideally we 
-want to process a possible _DMA method (acpi_dma_get_range()) regardless 
-of which flavour of IOMMU table might be present, and the amount of 
-duplication we fork into at this point is unfortunate.
+There is a similar need for clustering in x86.  Some x86 cores could share L2 caches
+that is similar to the cluster in Kupeng 920 (e.g. on Jacobsville there are 6 clusters
+of 4 Atom cores, each cluster sharing a separate L2, and 24 cores sharing L3).  
 
-> +
->   	iort_dma_setup(dev, &dma_addr, &size);
+Having a sched_domain for clusters will bring two aspects of improvement:
+1. spreading unrelated tasks among clusters, which decreases the contention of resources
+and improve the throughput.
+unrelated tasks might be put randomly without cluster sched_domain:
++-------------------+            +-----------------+
+| +----+   +----+   |            |                 |
+| |task|   |task|   |            |                 |
+| |1   |   |2   |   |            |                 |
+| +----+   +----+   |            |                 |
+|                   |            |                 |
+|       cluster1    |            |     cluster2    |
++-------------------+            +-----------------+
 
-For starters I think most of that should be dragged out to this level 
-here - it's really only the {rc,nc}_dma_get_range() bit that deserves to 
-be the IORT-specific call.
+but with cluster sched_domain, they are likely to spread due to LB:
++-------------------+            +-----------------+
+| +----+            |            | +----+          |
+| |task|            |            | |task|          |
+| |1   |            |            | |2   |          |
+| +----+            |            | +----+          |
+|                   |            |                 |
+|       cluster1    |            |     cluster2    |
++-------------------+            +-----------------+
 
->   	iommu = iort_iommu_configure_id(dev, input_id);
+2. gathering related tasks within a cluster, which improves the cache affinity of tasks
+talking with each other.
+Without cluster sched_domain, related tasks might be put randomly. In case task1-8 have
+relationship as below:
+Task1 wakes up task4
+Task2 wakes up task5
+Task3 wakes up task6
+Task4 wakes up task7
+With the tuning of select_idle_cpu() to scan local cluster first, those tasks might
+get a chance to be gathered like:
++---------------------------+    +----------------------+
+| +----+        +-----+     |    | +----+      +-----+  |
+| |task|        |task |     |    | |task|      |task |  |
+| |1   |        | 4   |     |    | |2   |      |5    |  |
+| +----+        +-----+     |    | +----+      +-----+  |
+|                           |    |                      |
+|       cluster1            |    |     cluster2         |
+|                           |    |                      |
+|                           |    |                      |
+| +-----+       +------+    |    | +-----+     +------+ |
+| |task |       | task |    |    | |task |     |task  | |
+| |3    |       |  6   |    |    | |4    |     |8     | |
+| +-----+       +------+    |    | +-----+     +------+ |
++---------------------------+    +----------------------+
+Otherwise, the result might be:
++---------------------------+    +----------------------+
+| +----+        +-----+     |    | +----+      +-----+  |
+| |task|        |task |     |    | |task|      |task |  |
+| |1   |        | 2   |     |    | |5   |      |6    |  |
+| +----+        +-----+     |    | +----+      +-----+  |
+|                           |    |                      |
+|       cluster1            |    |     cluster2         |
+|                           |    |                      |
+|                           |    |                      |
+| +-----+       +------+    |    | +-----+     +------+ |
+| |task |       | task |    |    | |task |     |task  | |
+| |3    |       |  4   |    |    | |7    |     |8     | |
+| +-----+       +------+    |    | +-----+     +------+ |
++---------------------------+    +----------------------+
 
-Similarly, it feels like it's only the table scan part in the middle of 
-that that needs dispatching between IORT/VIOT, and its head and tail 
-pulled out into a common path.
+-v5:
+  * split "add scheduler level for clusters" into two patches to evaluate the
+    impact of spreading and gathering separately;
+  * add a tracepoint of select_idle_cpu for debug purpose; add bcc script in
+    commit log;
+  * add cluster_id = -1 in reset_cpu_topology()
+  * rebased to tip/sched/core
 
-[...]
-> +static const struct iommu_ops *viot_iommu_setup(struct device *dev)
-> +{
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> +	struct viot_iommu *viommu = NULL;
-> +	struct viot_endpoint *ep;
-> +	u32 epid;
-> +	int ret;
-> +
-> +	/* Already translated? */
-> +	if (fwspec && fwspec->ops)
-> +		return NULL;
-> +
-> +	mutex_lock(&viommus_lock);
-> +	list_for_each_entry(ep, &viot_endpoints, list) {
-> +		if (viot_device_match(dev, &ep->dev_id, &epid)) {
-> +			epid += ep->endpoint_id;
-> +			viommu = ep->viommu;
-> +			break;
-> +		}
-> +	}
-> +	mutex_unlock(&viommus_lock);
-> +	if (!viommu)
-> +		return NULL;
-> +
-> +	/* We're not translating ourself */
-> +	if (viot_device_match(dev, &viommu->dev_id, &epid))
-> +		return NULL;
-> +
-> +	/*
-> +	 * If we found a PCI range managed by the viommu, we're the one that has
-> +	 * to request ACS.
-> +	 */
-> +	if (dev_is_pci(dev))
-> +		pci_request_acs();
-> +
-> +	if (!viommu->ops || WARN_ON(!viommu->dev))
-> +		return ERR_PTR(-EPROBE_DEFER);
+-v4:
+  * rebased to tip/sched/core with the latest unified code of select_idle_cpu
+  * added Tim's patch for x86 Jacobsville
+  * also added benchmark data of spreading unrelated tasks
+  * avoided the iteration of sched_domain by moving to static_key(addressing
+    Vincent's comment
+  * used acpi_cpu_id for acpi_find_processor_node(addressing Masa's comment)
 
-Can you create (or look up) a viommu->fwnode when initially parsing the 
-VIOT to represent the IOMMU devices to wait for, such that the 
-viot_device_match() lookup can resolve to that and let you fall into the 
-standard iommu_ops_from_fwnode() path? That's what I mean about 
-following the DT pattern - I guess it might need a bit of trickery to 
-rewrite things if iommu_device_register() eventually turns up with a new 
-fwnode, so I doubt we can get away without *some* kind of private 
-interface between virtio-iommu and VIOT, but it would be nice for the 
-common(ish) DMA paths to stay as unaware of the specifics as possible.
+Barry Song (2):
+  scheduler: add scheduler level for clusters
+  scheduler: scan idle cpu in cluster before scanning the whole llc
 
-> +
-> +	ret = iommu_fwspec_init(dev, viommu->dev->fwnode, viommu->ops);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	iommu_fwspec_add_ids(dev, &epid, 1);
-> +
-> +	/*
-> +	 * If we have reason to believe the IOMMU driver missed the initial
-> +	 * add_device callback for dev, replay it to get things in order.
-> +	 */
-> +	if (dev->bus && !device_iommu_mapped(dev))
-> +		iommu_probe_device(dev);
-> +
-> +	return viommu->ops;
-> +}
-> +
-> +/**
-> + * acpi_viot_dma_setup - Configure DMA for an endpoint described in VIOT
-> + * @dev: the endpoint
-> + * @attr: coherency property of the endpoint
-> + *
-> + * Setup the DMA and IOMMU ops for an endpoint described by the VIOT table.
-> + *
-> + * Return:
-> + * * 0 - @dev doesn't match any VIOT node
-> + * * 1 - ops for @dev were successfully installed
-> + * * -EPROBE_DEFER - ops for @dev aren't yet available
-> + */
-> +int acpi_viot_dma_setup(struct device *dev, enum dev_dma_attr attr)
-> +{
-> +	const struct iommu_ops *iommu_ops = viot_iommu_setup(dev);
-> +
-> +	if (IS_ERR_OR_NULL(iommu_ops)) {
-> +		int ret = PTR_ERR(iommu_ops);
-> +
-> +		if (ret == -EPROBE_DEFER || ret == 0)
-> +			return ret;
-> +		dev_err(dev, "error %d while setting up virt IOMMU\n", ret);
-> +		return 0;
-> +	}
-> +
-> +#ifdef CONFIG_ARCH_HAS_SETUP_DMA_OPS
-> +	arch_setup_dma_ops(dev, 0, ~0ULL, iommu_ops, attr == DEV_DMA_COHERENT);
-> +#else
-> +	iommu_setup_dma_ops(dev, 0, ~0ULL);
-> +#endif
+Jonathan Cameron (1):
+  topology: Represent clusters of CPUs within a die
 
-Duplicating all of this feels particularly wrong... :(
+Tim Chen (1):
+  scheduler: Add cluster scheduler level for x86
 
-Robin.
+ Documentation/admin-guide/cputopology.rst | 26 +++++++++++--
+ arch/arm64/Kconfig                        |  7 ++++
+ arch/arm64/kernel/topology.c              |  2 +
+ arch/x86/Kconfig                          |  8 ++++
+ arch/x86/include/asm/smp.h                |  7 ++++
+ arch/x86/include/asm/topology.h           |  1 +
+ arch/x86/kernel/cpu/cacheinfo.c           |  1 +
+ arch/x86/kernel/cpu/common.c              |  3 ++
+ arch/x86/kernel/smpboot.c                 | 43 ++++++++++++++++++++-
+ drivers/acpi/pptt.c                       | 63 +++++++++++++++++++++++++++++++
+ drivers/base/arch_topology.c              | 15 ++++++++
+ drivers/base/topology.c                   | 10 +++++
+ include/linux/acpi.h                      |  5 +++
+ include/linux/arch_topology.h             |  5 +++
+ include/linux/sched/cluster.h             | 19 ++++++++++
+ include/linux/sched/topology.h            |  7 ++++
+ include/linux/topology.h                  | 13 +++++++
+ include/trace/events/sched.h              | 22 +++++++++++
+ kernel/sched/core.c                       | 20 ++++++++++
+ kernel/sched/fair.c                       | 36 +++++++++++++++++-
+ kernel/sched/sched.h                      |  1 +
+ kernel/sched/topology.c                   |  5 +++
+ 22 files changed, 313 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/sched/cluster.h
 
-> +	return 1;
-> +}
+-- 
+1.8.3.1
+
