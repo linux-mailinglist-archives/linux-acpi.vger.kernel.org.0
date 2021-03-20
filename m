@@ -2,61 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A07CA34294E
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Mar 2021 01:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6C70342ADA
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Mar 2021 06:31:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbhCTAJi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Mar 2021 20:09:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49888 "EHLO mail.kernel.org"
+        id S229817AbhCTFYr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Mar 2021 01:24:47 -0400
+Received: from mga14.intel.com ([192.55.52.115]:48498 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229600AbhCTAJV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 19 Mar 2021 20:09:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id C68F661985;
-        Sat, 20 Mar 2021 00:09:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616198960;
-        bh=X3KkZJibrm2jPx6QahvwC+ddxtn55XQ6lo/Pq6uL8P4=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=PvnZrQW/u9rObZtvHAMOosuagXWKI+c0YAzfrdYmzweIeDpEs9xuQm8xeWOUaEnIY
-         svDzNuDRIHtcrimG0MGpz/RIWMghA6BXoo43z3QKYTQ1uoqUji1bubDkXuVHh6XRXV
-         WGK0tFy9+mxePV1OIIr67bzekzpp7Mvplj7POIscPsRWETUCtmEj0a8z4vB0TkXvgm
-         /dNLpb06UZLfpYdEiq+CDYqgLgx+h27kVyqg6PFqSfpM9/yG00ccNGa7DidFMu/wA7
-         60VAi2e5wX1KaGu4G7/RLjBkOPwr/40WtSM7ptGvqdWy8BfzPlQLzx+LO11p2FIVED
-         o4tjxsEXEpGhQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id C0348626EC;
-        Sat, 20 Mar 2021 00:09:20 +0000 (UTC)
-Subject: Re: [GIT PULL] Power management fixes for v5.12-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hES51MM9J5nM+An_ON-rxRJ5s_9KCa9n7Fe9nWFziLeA@mail.gmail.com>
-References: <CAJZ5v0hES51MM9J5nM+An_ON-rxRJ5s_9KCa9n7Fe9nWFziLeA@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hES51MM9J5nM+An_ON-rxRJ5s_9KCa9n7Fe9nWFziLeA@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.12-rc4
-X-PR-Tracked-Commit-Id: 49cb71a77ce760f20487c38f891aa3132bef782e
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ec85720933863015b1c26bc19cf4e044da139bc5
-Message-Id: <161619896078.24257.12391413078492854789.pr-tracker-bot@kernel.org>
-Date:   Sat, 20 Mar 2021 00:09:20 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S229583AbhCTFYF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 20 Mar 2021 01:24:05 -0400
+IronPort-SDR: Ci4mCw2aOOTq6cv/dP+LMN462XU/Npo9UkNoZ77WNwgDnQRk2rcsBjqKTuWS8/8TwtbGMAz8nH
+ FqknHA59bdzQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9928"; a="189390168"
+X-IronPort-AV: E=Sophos;i="5.81,263,1610438400"; 
+   d="scan'208";a="189390168"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2021 22:24:05 -0700
+IronPort-SDR: 1eWxtw/TGRQsWxMRldtkTTaxbXE3OCeG78P6HgwIiOAtn2Ja7PAUAg0DfS+JDD3pUmXr44/k6n
+ +jp6BcB5//Cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,263,1610438400"; 
+   d="scan'208";a="440335447"
+Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 19 Mar 2021 22:24:03 -0700
+Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lNU5i-0002Mr-S0; Sat, 20 Mar 2021 05:24:02 +0000
+Date:   Sat, 20 Mar 2021 13:23:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ d2e6cdcbaeb304fff490aa7e0fd814e3bbeb0b6a
+Message-ID: <605586e9.DRaeL5h7iBbvMZpn%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 19 Mar 2021 16:58:00 +0100:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: d2e6cdcbaeb304fff490aa7e0fd814e3bbeb0b6a  Merge branch 'acpi-misc' into bleeding-edge
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.12-rc4
+elapsed time: 727m
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ec85720933863015b1c26bc19cf4e044da139bc5
+configs tested: 94
+configs skipped: 2
 
-Thank you!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+s390                          debug_defconfig
+sh                        sh7763rdp_defconfig
+arm                            pleb_defconfig
+arm                        vexpress_defconfig
+arm                        trizeps4_defconfig
+m68k                        mvme16x_defconfig
+mips                          malta_defconfig
+sparc                       sparc64_defconfig
+powerpc                     tqm8560_defconfig
+s390                                defconfig
+sh                          landisk_defconfig
+parisc                           alldefconfig
+arc                      axs103_smp_defconfig
+powerpc                      pmac32_defconfig
+sh                   rts7751r2dplus_defconfig
+mips                        workpad_defconfig
+arm                         axm55xx_defconfig
+arm64                            alldefconfig
+arm                        neponset_defconfig
+mips                      maltaaprp_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210318
+i386                 randconfig-a005-20210318
+i386                 randconfig-a003-20210318
+i386                 randconfig-a002-20210318
+i386                 randconfig-a006-20210318
+i386                 randconfig-a004-20210318
+x86_64               randconfig-a011-20210318
+x86_64               randconfig-a016-20210318
+x86_64               randconfig-a013-20210318
+x86_64               randconfig-a015-20210318
+x86_64               randconfig-a014-20210318
+x86_64               randconfig-a012-20210318
+i386                 randconfig-a013-20210318
+i386                 randconfig-a016-20210318
+i386                 randconfig-a011-20210318
+i386                 randconfig-a014-20210318
+i386                 randconfig-a015-20210318
+i386                 randconfig-a012-20210318
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a006-20210318
+x86_64               randconfig-a001-20210318
+x86_64               randconfig-a005-20210318
+x86_64               randconfig-a002-20210318
+x86_64               randconfig-a003-20210318
+x86_64               randconfig-a004-20210318
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
