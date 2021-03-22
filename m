@@ -2,136 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56996343E13
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 11:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E025343EA7
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 11:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230181AbhCVKgY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Mar 2021 06:36:24 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:3375 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbhCVKgO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 06:36:14 -0400
-Received: from dggeml405-hub.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4F3rSf6bpLz5fxY;
-        Mon, 22 Mar 2021 18:33:38 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggeml405-hub.china.huawei.com (10.3.17.49) with Microsoft SMTP Server (TLS)
- id 14.3.498.0; Mon, 22 Mar 2021 18:36:07 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 22 Mar 2021 18:36:06 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2106.013; Mon, 22 Mar 2021 10:36:04 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "robert.moore@intel.com" <robert.moore@intel.com>
-CC:     Linuxarm <linuxarm@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: RE: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
-Thread-Topic: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
-Thread-Index: AQHWvm1dfTBTih8pMEKAOph+J6BTAKqQitWg
-Date:   Mon, 22 Mar 2021 10:36:04 +0000
-Message-ID: <b7a2424941214b33803e34ba3e532440@huawei.com>
-References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
- <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
-In-Reply-To: <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.24.237]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S230314AbhCVK6e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Mar 2021 06:58:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58552 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230448AbhCVK6J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 22 Mar 2021 06:58:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C1D9761931;
+        Mon, 22 Mar 2021 10:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616410689;
+        bh=D6etE+5ZjccFIlpT9IufI3R6p4hC1yihNdzOnUUrLqw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hbXWGIPHRU2BW1goVDukx98kZO8FW1mDVOBE3/yG9MRxnbfIAVtOODvl4/k8QZAxx
+         0602wWOjw4SlM3OBt/97z/8pSm9fpfr6zdmluYPTi9zUrRctqGgIaD7o1plV+nQuUj
+         X+u6ix8IxvsnzmGBik3hdWRSir/uspc2vhlJi/5StLYP2Gg0W+P6qK4lww4GMYhJLl
+         9fZhVBqQ4ZDtKTLYmOSuFPc2IzgVIgAKezhhgsPI50c3s8W49TlojM0CNw5mIhEO5F
+         Hatm0HRZHGx1pLi+6tAonS3cGk+2nNKI0VwQ7dIw6HAagK3/10zC52dTlSzk7yyCon
+         cK8ox7ZRKcn/w==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] acpi: avoid -Wempty-body warnings
+Date:   Mon, 22 Mar 2021 11:58:00 +0100
+Message-Id: <20210322105805.1498602-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-WytdDQoNCkhpIEVyaWssDQoNCkFzIHRoaXMgaXMgbm93IGp1c3QgbWVyZ2VkIGlubyBhY3BpY2Et
-bWFzdGVyIGFuZCBiYXNlZCBvbiB0aGUgZGlzY3Vzc2lvbiB3ZSBoYWQgaGVyZSwNCg0KaHR0cHM6
-Ly9naXRodWIuY29tL2FjcGljYS9hY3BpY2EvcHVsbC82MzgNCg0KSSBoYWQgYSBkaXNjdXNzaW9u
-IHdpdGggQVJNIGZvbGtzKExvcmVuem8pIGluIHRoZSBsaW5hcm8tb3Blbi1kaXNjdXNzaW9ucyBj
-YWxsIGFuZA0KY2FuIGNvbmZpcm0gdGhhdCB0aGUgSU9SVCBSZXZpc2lvbiBFIGlzIG5vdCB0aGUg
-ZmluYWwgc3BlY2lmaWNhdGlvbiBhbmQgaGFzIHNvbWUgaXNzdWVzDQp3aGljaCBpcyBub3cgY29y
-cmVjdGVkIGluIHRoZSBsYXRlc3QgRS5iIHJldmlzaW9uWzFdLiBBbHNvIHRoZXJlIGFyZSBubyBj
-dXJyZW50IHVzZXJzDQpmb3IgdGhlIFJldiBFIGFuZCBpdCBtYXkgbm90IGJlIGEgZ29vZCBpZGVh
-IHRvIHB1c2ggdGhpcyB2ZXJzaW9uIGludG8gdGhlIExpbnV4IGtlcm5lbA0Kb3IgZWxzZXdoZXJl
-Lg0KDQpTbyBjb3VsZCB5b3UgcGxlYXNlIHJldmVydCB0aGUgbWVyZ2UgYW5kIEkgYW0gcGxhbm5p
-bmcgdG8gd29yayBvbiB0aGUgRS5iIHNvb24uDQpQbGVhc2UgbGV0IG1lIGtub3cgaWYgSSBuZWVk
-IHRvIGV4cGxpY2l0bHkgc2VuZCBhIHJldmVydCBwdWxsIHJlcXVlc3Qgb3Igbm90Lg0KDQpUaGFu
-a3MsDQpTaGFtZWVyDQoNCjEuIGh0dHBzOi8vZGV2ZWxvcGVyLmFybS5jb20vZG9jdW1lbnRhdGlv
-bi9kZW4wMDQ5L2xhdGVzdC8NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9t
-OiBpb21tdSBbbWFpbHRvOmlvbW11LWJvdW5jZXNAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmdd
-IE9uIEJlaGFsZiBPZg0KPiBTaGFtZWVyIEtvbG90aHVtDQo+IFNlbnQ6IDE5IE5vdmVtYmVyIDIw
-MjAgMTI6MTINCj4gVG86IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGlu
-dXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24u
-b3JnOyBkZXZlbEBhY3BpY2Eub3JnDQo+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNv
-bT47IHN0ZXZlbi5wcmljZUBhcm0uY29tOyBHdW9oYW5qdW4NCj4gKEhhbmp1biBHdW8pIDxndW9o
-YW5qdW5AaHVhd2VpLmNvbT47IFNhbWkuTXVqYXdhckBhcm0uY29tOw0KPiByb2Jpbi5tdXJwaHlA
-YXJtLmNvbTsgd2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT4NCj4gU3ViamVj
-dDogW1JGQyBQQVRDSCB2MiAxLzhdIEFDUElDQTogSU9SVDogVXBkYXRlIGZvciByZXZpc2lvbiBF
-DQo+IA0KPiBJT1JUIHJldmlzaW9uIEUgY29udGFpbnMgYSBmZXcgYWRkaXRpb25zIGxpa2UsDQo+
-IMKgIMKgIC1BZGRlZCBhbiBpZGVudGlmaWVyIGZpZWxkIGluIHRoZSBub2RlIGRlc2NyaXB0b3Jz
-IHRvIGFpZCB0YWJsZQ0KPiDCoCDCoCDCoGNyb3NzLXJlZmVyZW5jaW5nLg0KPiDCoCDCoCAtSW50
-cm9kdWNlZCB0aGUgUmVzZXJ2ZWQgTWVtb3J5IFJhbmdlKFJNUikgbm9kZS4gVGhpcyBpcyB1c2Vk
-DQo+ICDCoCDCoCB0byBkZXNjcmliZSBtZW1vcnkgcmFuZ2VzIHRoYXQgYXJlIHVzZWQgYnkgZW5k
-cG9pbnRzIGFuZCByZXF1aXJlcw0KPiAgwqAgwqAgYSB1bml0eSBtYXBwaW5nIGluIFNNTVUuDQo+
-ICAgICAtSW50cm9kdWNlZCBhIGZsYWcgaW4gdGhlIFJDIG5vZGUgdG8gZXhwcmVzcyBzdXBwb3J0
-IGZvciBQUkkuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBTaGFtZWVyIEtvbG90aHVtIDxzaGFtZWVy
-YWxpLmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+DQo+IC0tLQ0KPiAgaW5jbHVkZS9hY3BpL2Fj
-dGJsMi5oIHwgMjUgKysrKysrKysrKysrKysrKysrKy0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQs
-IDE5IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5j
-bHVkZS9hY3BpL2FjdGJsMi5oIGIvaW5jbHVkZS9hY3BpL2FjdGJsMi5oIGluZGV4DQo+IGVjNjY3
-NzljYjE5My4uMjc0ZmNlN2I1YzAxIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2FjcGkvYWN0Ymwy
-LmgNCj4gKysrIGIvaW5jbHVkZS9hY3BpL2FjdGJsMi5oDQo+IEBAIC02OCw3ICs2OCw3IEBADQo+
-ICAgKiBJT1JUIC0gSU8gUmVtYXBwaW5nIFRhYmxlDQo+ICAgKg0KPiAgICogQ29uZm9ybXMgdG8g
-IklPIFJlbWFwcGluZyBUYWJsZSBTeXN0ZW0gU29mdHdhcmUgb24gQVJNIFBsYXRmb3JtcyIsDQo+
-IC0gKiBEb2N1bWVudCBudW1iZXI6IEFSTSBERU4gMDA0OUQsIE1hcmNoIDIwMTgNCj4gKyAqIERv
-Y3VtZW50IG51bWJlcjogQVJNIERFTiAwMDQ5RSwgSnVuZSAyMDIwDQo+ICAgKg0KPiANCj4gKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKg0KPiAqKioqKioqKioqKioqKi8NCj4gDQo+IEBAIC04Niw3ICs4Niw4IEBAIHN0cnVjdCBh
-Y3BpX2lvcnRfbm9kZSB7DQo+ICAJdTggdHlwZTsNCj4gIAl1MTYgbGVuZ3RoOw0KPiAgCXU4IHJl
-dmlzaW9uOw0KPiAtCXUzMiByZXNlcnZlZDsNCj4gKwl1MTYgcmVzZXJ2ZWQ7DQo+ICsJdTE2IGlk
-ZW50aWZpZXI7DQo+ICAJdTMyIG1hcHBpbmdfY291bnQ7DQo+ICAJdTMyIG1hcHBpbmdfb2Zmc2V0
-Ow0KPiAgCWNoYXIgbm9kZV9kYXRhWzFdOw0KPiBAQCAtMTAwLDcgKzEwMSw4IEBAIGVudW0gYWNw
-aV9pb3J0X25vZGVfdHlwZSB7DQo+ICAJQUNQSV9JT1JUX05PREVfUENJX1JPT1RfQ09NUExFWCA9
-IDB4MDIsDQo+ICAJQUNQSV9JT1JUX05PREVfU01NVSA9IDB4MDMsDQo+ICAJQUNQSV9JT1JUX05P
-REVfU01NVV9WMyA9IDB4MDQsDQo+IC0JQUNQSV9JT1JUX05PREVfUE1DRyA9IDB4MDUNCj4gKwlB
-Q1BJX0lPUlRfTk9ERV9QTUNHID0gMHgwNSwNCj4gKwlBQ1BJX0lPUlRfTk9ERV9STVIgPSAweDA2
-LA0KPiAgfTsNCj4gDQo+ICBzdHJ1Y3QgYWNwaV9pb3J0X2lkX21hcHBpbmcgew0KPiBAQCAtMTY3
-LDEwICsxNjksMTAgQEAgc3RydWN0IGFjcGlfaW9ydF9yb290X2NvbXBsZXggew0KPiAgCXU4IHJl
-c2VydmVkWzNdOwkJLyogUmVzZXJ2ZWQsIG11c3QgYmUgemVybyAqLw0KPiAgfTsNCj4gDQo+IC0v
-KiBWYWx1ZXMgZm9yIGF0c19hdHRyaWJ1dGUgZmllbGQgYWJvdmUgKi8NCj4gKy8qIE1hc2tzIGZv
-ciBhdHNfYXR0cmlidXRlIGZpZWxkIGFib3ZlICovDQo+IA0KPiAtI2RlZmluZSBBQ1BJX0lPUlRf
-QVRTX1NVUFBPUlRFRCAgICAgICAgIDB4MDAwMDAwMDEJLyogVGhlIHJvb3QNCj4gY29tcGxleCBz
-dXBwb3J0cyBBVFMgKi8NCj4gLSNkZWZpbmUgQUNQSV9JT1JUX0FUU19VTlNVUFBPUlRFRCAgICAg
-ICAweDAwMDAwMDAwCS8qIFRoZSByb290DQo+IGNvbXBsZXggZG9lc24ndCBzdXBwb3J0IEFUUyAq
-Lw0KPiArI2RlZmluZSBBQ1BJX0lPUlRfQVRTX1NVUFBPUlRFRCAgICAgICAgICgxKQkvKiBUaGUg
-cm9vdCBjb21wbGV4DQo+IHN1cHBvcnRzIEFUUyAqLw0KPiArI2RlZmluZSBBQ1BJX0lPUlRfUFJJ
-X1NVUFBPUlRFRCAgICAgICAgICgxPDwxKQkvKiBUaGUgcm9vdCBjb21wbGV4DQo+IHN1cHBvcnRz
-IFBSSSAqLw0KPiANCj4gIHN0cnVjdCBhY3BpX2lvcnRfc21tdSB7DQo+ICAJdTY0IGJhc2VfYWRk
-cmVzczsJLyogU01NVSBiYXNlIGFkZHJlc3MgKi8NCj4gQEAgLTI0MSw2ICsyNDMsMTcgQEAgc3Ry
-dWN0IGFjcGlfaW9ydF9wbWNnIHsNCj4gIAl1NjQgcGFnZTFfYmFzZV9hZGRyZXNzOw0KPiAgfTsN
-Cj4gDQo+ICtzdHJ1Y3QgYWNwaV9pb3J0X3JtciB7DQo+ICsJdTMyIHJtcl9jb3VudDsNCj4gKwl1
-MzIgcm1yX29mZnNldDsNCj4gK307DQo+ICsNCj4gK3N0cnVjdCBhY3BpX2lvcnRfcm1yX2Rlc2Mg
-ew0KPiArCXU2NCBiYXNlX2FkZHJlc3M7DQo+ICsJdTY0IGxlbmd0aDsNCj4gKwl1MzIgcmVzZXJ2
-ZWQ7DQo+ICt9Ow0KPiArDQo+IA0KPiAvKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQo+ICoqKioqKioqKioqKioqKioNCj4gICAq
-DQo+ICAgKiBJVlJTIC0gSS9PIFZpcnR1YWxpemF0aW9uIFJlcG9ydGluZyBTdHJ1Y3R1cmUNCj4g
-LS0NCj4gMi4xNy4xDQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXw0KPiBpb21tdSBtYWlsaW5nIGxpc3QNCj4gaW9tbXVAbGlzdHMubGludXgtZm91
-bmRhdGlvbi5vcmcNCj4gaHR0cHM6Ly9saXN0cy5saW51eGZvdW5kYXRpb24ub3JnL21haWxtYW4v
-bGlzdGluZm8vaW9tbXUNCg==
+From: Arnd Bergmann <arnd@arndb.de>
+
+The acpi drivers produce a number of avoidable warnings for empty macros
+when building with 'make W=1':
+
+drivers/acpi/acpi_processor.c: In function 'acpi_processor_errata_piix4':
+drivers/acpi/acpi_processor.c:133:95: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+  133 |                                   "Bus master activity detection (BM-IDE) erratum enabled\n"));
+      |                                                                                               ^
+drivers/acpi/acpi_processor.c:136:82: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+  136 |                                   "Type-F DMA livelock erratum (C3 disabled)\n"));
+      |                                                                                  ^
+drivers/acpi/acpi_processor.c: In function 'acpi_processor_get_info':
+drivers/acpi/acpi_processor.c:251:77: error: suggest braces around empty body in an 'else' statement [-Werror=empty-body]
+  251 |                                   "No bus mastering arbitration control\n"));
+      |                                                                             ^
+drivers/acpi/processor_pdc.c: In function 'acpi_processor_eval_pdc':
+drivers/acpi/processor_pdc.c:136:79: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+  136 |                     "Could not evaluate _PDC, using legacy perf. control.\n"));
+      |                                                                               ^
+
+I tried making these call no_printk() instead, which would add proper
+format string checking, but that turned out to be a rather invasive
+change, so just shut up the warning by turning the macros into empty
+"do {} while (0)" statements.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ include/acpi/acoutput.h | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
+index 1538a6853822..b5484ef31f27 100644
+--- a/include/acpi/acoutput.h
++++ b/include/acpi/acoutput.h
+@@ -433,23 +433,23 @@
+  * This is the non-debug case -- make everything go away,
+  * leaving no executable debug code!
+  */
+-#define ACPI_DEBUG_PRINT(pl)
+-#define ACPI_DEBUG_PRINT_RAW(pl)
+-#define ACPI_DEBUG_EXEC(a)
+-#define ACPI_DEBUG_ONLY_MEMBERS(a)
+-#define ACPI_FUNCTION_NAME(a)
+-#define ACPI_FUNCTION_TRACE(a)
+-#define ACPI_FUNCTION_TRACE_PTR(a, b)
+-#define ACPI_FUNCTION_TRACE_U32(a, b)
+-#define ACPI_FUNCTION_TRACE_STR(a, b)
+-#define ACPI_FUNCTION_ENTRY()
+-#define ACPI_DUMP_STACK_ENTRY(a)
+-#define ACPI_DUMP_OPERANDS(a, b, c)
+-#define ACPI_DUMP_ENTRY(a, b)
+-#define ACPI_DUMP_PATHNAME(a, b, c, d)
+-#define ACPI_DUMP_BUFFER(a, b)
++#define ACPI_DEBUG_PRINT(pl)			do { } while (0)
++#define ACPI_DEBUG_PRINT_RAW(pl)		do { } while (0)
++#define ACPI_DEBUG_EXEC(a)			do { } while (0)
++#define ACPI_DEBUG_ONLY_MEMBERS(a)		do { } while (0)
++#define ACPI_FUNCTION_NAME(a)			do { } while (0)
++#define ACPI_FUNCTION_TRACE(a)			do { } while (0)
++#define ACPI_FUNCTION_TRACE_PTR(a, b)		do { } while (0)
++#define ACPI_FUNCTION_TRACE_U32(a, b)		do { } while (0)
++#define ACPI_FUNCTION_TRACE_STR(a, b)		do { } while (0)
++#define ACPI_FUNCTION_ENTRY()			do { } while (0)
++#define ACPI_DUMP_STACK_ENTRY(a)		do { } while (0)
++#define ACPI_DUMP_OPERANDS(a, b, c)		do { } while (0)
++#define ACPI_DUMP_ENTRY(a, b)			do { } while (0)
++#define ACPI_DUMP_PATHNAME(a, b, c, d)		do { } while (0)
++#define ACPI_DUMP_BUFFER(a, b)			do { } while (0)
+ #define ACPI_IS_DEBUG_ENABLED(level, component) 0
+-#define ACPI_TRACE_POINT(a, b, c, d)
++#define ACPI_TRACE_POINT(a, b, c, d)		do { } while (0)
+ 
+ /* Return macros must have a return statement at the minimum */
+ 
+-- 
+2.29.2
+
