@@ -2,93 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0081B34375E
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 04:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56996343E13
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 11:36:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229941AbhCVDZL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 Mar 2021 23:25:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbhCVDYx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Mar 2021 23:24:53 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF78FC061762
-        for <linux-acpi@vger.kernel.org>; Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id w8so7632178pjf.4
-        for <linux-acpi@vger.kernel.org>; Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=0OxWtGufCgAe0XbTGNWWjUrTicDtwtzOE+UdLLql1Jw=;
-        b=YoYpoDncERnCl23zDdx/vuysDA3ATAoE9TocP6isvskZKkqJEuDADYwNV9nm7FWMEb
-         7VVwBZiIKS2BAf4uE0FvMYabolFwG64gRVzT66CYsqXDoyFhZpheH44T3oz6TLpRrFOp
-         JJi9eBRxlVCHq/VEeNieCywFZ+/j0O0LwQADuve0Z1sDVjhNZ+kKaVsBd8A5QLd9G32U
-         gA5YDtkaOG38QqAq5mUnrSUMR6OnfVFVvU6uAP+C4msfEiSiEmRDBoj9qFKMGR9QYGmG
-         t1EztxFvegh2M5GeN8IqG8j6Sokyqit36e2D6tTN4j1JwF0xgnvHjn+BlTPt8BjYlMvt
-         tzrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=0OxWtGufCgAe0XbTGNWWjUrTicDtwtzOE+UdLLql1Jw=;
-        b=iZ/TQJLUgp2/bznBtDAT0KrVyYcjA5MK007rPO8xcBFHi5ZbmeLKbVwPMESdZu436y
-         8TH1+4d2sw1pcJWHzv7FWrdkmOQNmdi4eL0vsNfC0wIky7Bke8ns8S28fENd5FPKARRv
-         UCyyribNtd0AwQ+K3rDN97/6BZg3zLs9y9s5rTamYRMwA9GXKPjCaqAo908cMYFiH1Av
-         oggXagqAmcPvr+EvlH0MMPOeof3092vvx9voYQhjIbttAIhZz/JfiE92387dRHmFfev0
-         req195PTV9q1TbqBp1IHJ9BjccEve/JEAAmIwPYeR4izTSkA3aEYRWDG9/yjZ9CjUH+c
-         4V0w==
-X-Gm-Message-State: AOAM531TJqI8bb+aZm0l2ch+T0MdX4eQ1qQnblFukU52kAiOahhYEqVh
-        E9C48wKSS6vO86ntiST6DgZqDA==
-X-Google-Smtp-Source: ABdhPJxW1bQ3tLiqoJxUAzpwfz76tolklxGNNiRiyecHaYs/raCJ7Hw61stj8ANiFApVqPEyvXsaUw==
-X-Received: by 2002:a17:90a:458b:: with SMTP id v11mr10575612pjg.189.1616383492308;
-        Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
-Received: from localhost ([122.172.6.13])
-        by smtp.gmail.com with ESMTPSA id f17sm4945038pgj.86.2021.03.21.20.24.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Mar 2021 20:24:51 -0700 (PDT)
-Date:   Mon, 22 Mar 2021 08:54:49 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V6 4/4] cpufreq: CPPC: Add support for frequency
- invariance
-Message-ID: <20210322032449.eqx7wbltzfq5o66f@vireshk-i7>
-References: <cover.1615351622.git.viresh.kumar@linaro.org>
- <19fbb10acaaceaa25671c973b9eb6f170015de00.1615351622.git.viresh.kumar@linaro.org>
- <CAJZ5v0i-D+3gcL5UuRP6aW_V6NCe_eZ2qt6d8A1wYa8nw_2f0g@mail.gmail.com>
+        id S230181AbhCVKgY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Mar 2021 06:36:24 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:3375 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230179AbhCVKgO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 06:36:14 -0400
+Received: from dggeml405-hub.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4F3rSf6bpLz5fxY;
+        Mon, 22 Mar 2021 18:33:38 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggeml405-hub.china.huawei.com (10.3.17.49) with Microsoft SMTP Server (TLS)
+ id 14.3.498.0; Mon, 22 Mar 2021 18:36:07 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 22 Mar 2021 18:36:06 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2106.013; Mon, 22 Mar 2021 10:36:04 +0000
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        "robert.moore@intel.com" <robert.moore@intel.com>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
+Thread-Topic: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
+Thread-Index: AQHWvm1dfTBTih8pMEKAOph+J6BTAKqQitWg
+Date:   Mon, 22 Mar 2021 10:36:04 +0000
+Message-ID: <b7a2424941214b33803e34ba3e532440@huawei.com>
+References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
+ <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.24.237]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i-D+3gcL5UuRP6aW_V6NCe_eZ2qt6d8A1wYa8nw_2f0g@mail.gmail.com>
-User-Agent: NeoMutt/20180716-391-311a52
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 19-03-21, 17:20, Rafael J. Wysocki wrote:
-> Sorry for the delay.
-> 
-> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-
-Thanks.
-
-> and I'm assuming that either you or the sched guys will take care of it.
-
-Yeah, I have already queued this up.
-
--- 
-viresh
+WytdDQoNCkhpIEVyaWssDQoNCkFzIHRoaXMgaXMgbm93IGp1c3QgbWVyZ2VkIGlubyBhY3BpY2Et
+bWFzdGVyIGFuZCBiYXNlZCBvbiB0aGUgZGlzY3Vzc2lvbiB3ZSBoYWQgaGVyZSwNCg0KaHR0cHM6
+Ly9naXRodWIuY29tL2FjcGljYS9hY3BpY2EvcHVsbC82MzgNCg0KSSBoYWQgYSBkaXNjdXNzaW9u
+IHdpdGggQVJNIGZvbGtzKExvcmVuem8pIGluIHRoZSBsaW5hcm8tb3Blbi1kaXNjdXNzaW9ucyBj
+YWxsIGFuZA0KY2FuIGNvbmZpcm0gdGhhdCB0aGUgSU9SVCBSZXZpc2lvbiBFIGlzIG5vdCB0aGUg
+ZmluYWwgc3BlY2lmaWNhdGlvbiBhbmQgaGFzIHNvbWUgaXNzdWVzDQp3aGljaCBpcyBub3cgY29y
+cmVjdGVkIGluIHRoZSBsYXRlc3QgRS5iIHJldmlzaW9uWzFdLiBBbHNvIHRoZXJlIGFyZSBubyBj
+dXJyZW50IHVzZXJzDQpmb3IgdGhlIFJldiBFIGFuZCBpdCBtYXkgbm90IGJlIGEgZ29vZCBpZGVh
+IHRvIHB1c2ggdGhpcyB2ZXJzaW9uIGludG8gdGhlIExpbnV4IGtlcm5lbA0Kb3IgZWxzZXdoZXJl
+Lg0KDQpTbyBjb3VsZCB5b3UgcGxlYXNlIHJldmVydCB0aGUgbWVyZ2UgYW5kIEkgYW0gcGxhbm5p
+bmcgdG8gd29yayBvbiB0aGUgRS5iIHNvb24uDQpQbGVhc2UgbGV0IG1lIGtub3cgaWYgSSBuZWVk
+IHRvIGV4cGxpY2l0bHkgc2VuZCBhIHJldmVydCBwdWxsIHJlcXVlc3Qgb3Igbm90Lg0KDQpUaGFu
+a3MsDQpTaGFtZWVyDQoNCjEuIGh0dHBzOi8vZGV2ZWxvcGVyLmFybS5jb20vZG9jdW1lbnRhdGlv
+bi9kZW4wMDQ5L2xhdGVzdC8NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9t
+OiBpb21tdSBbbWFpbHRvOmlvbW11LWJvdW5jZXNAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmdd
+IE9uIEJlaGFsZiBPZg0KPiBTaGFtZWVyIEtvbG90aHVtDQo+IFNlbnQ6IDE5IE5vdmVtYmVyIDIw
+MjAgMTI6MTINCj4gVG86IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGlu
+dXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24u
+b3JnOyBkZXZlbEBhY3BpY2Eub3JnDQo+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNv
+bT47IHN0ZXZlbi5wcmljZUBhcm0uY29tOyBHdW9oYW5qdW4NCj4gKEhhbmp1biBHdW8pIDxndW9o
+YW5qdW5AaHVhd2VpLmNvbT47IFNhbWkuTXVqYXdhckBhcm0uY29tOw0KPiByb2Jpbi5tdXJwaHlA
+YXJtLmNvbTsgd2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT4NCj4gU3ViamVj
+dDogW1JGQyBQQVRDSCB2MiAxLzhdIEFDUElDQTogSU9SVDogVXBkYXRlIGZvciByZXZpc2lvbiBF
+DQo+IA0KPiBJT1JUIHJldmlzaW9uIEUgY29udGFpbnMgYSBmZXcgYWRkaXRpb25zIGxpa2UsDQo+
+IMKgIMKgIC1BZGRlZCBhbiBpZGVudGlmaWVyIGZpZWxkIGluIHRoZSBub2RlIGRlc2NyaXB0b3Jz
+IHRvIGFpZCB0YWJsZQ0KPiDCoCDCoCDCoGNyb3NzLXJlZmVyZW5jaW5nLg0KPiDCoCDCoCAtSW50
+cm9kdWNlZCB0aGUgUmVzZXJ2ZWQgTWVtb3J5IFJhbmdlKFJNUikgbm9kZS4gVGhpcyBpcyB1c2Vk
+DQo+ICDCoCDCoCB0byBkZXNjcmliZSBtZW1vcnkgcmFuZ2VzIHRoYXQgYXJlIHVzZWQgYnkgZW5k
+cG9pbnRzIGFuZCByZXF1aXJlcw0KPiAgwqAgwqAgYSB1bml0eSBtYXBwaW5nIGluIFNNTVUuDQo+
+ICAgICAtSW50cm9kdWNlZCBhIGZsYWcgaW4gdGhlIFJDIG5vZGUgdG8gZXhwcmVzcyBzdXBwb3J0
+IGZvciBQUkkuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBTaGFtZWVyIEtvbG90aHVtIDxzaGFtZWVy
+YWxpLmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+DQo+IC0tLQ0KPiAgaW5jbHVkZS9hY3BpL2Fj
+dGJsMi5oIHwgMjUgKysrKysrKysrKysrKysrKysrKy0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDE5IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5j
+bHVkZS9hY3BpL2FjdGJsMi5oIGIvaW5jbHVkZS9hY3BpL2FjdGJsMi5oIGluZGV4DQo+IGVjNjY3
+NzljYjE5My4uMjc0ZmNlN2I1YzAxIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2FjcGkvYWN0Ymwy
+LmgNCj4gKysrIGIvaW5jbHVkZS9hY3BpL2FjdGJsMi5oDQo+IEBAIC02OCw3ICs2OCw3IEBADQo+
+ICAgKiBJT1JUIC0gSU8gUmVtYXBwaW5nIFRhYmxlDQo+ICAgKg0KPiAgICogQ29uZm9ybXMgdG8g
+IklPIFJlbWFwcGluZyBUYWJsZSBTeXN0ZW0gU29mdHdhcmUgb24gQVJNIFBsYXRmb3JtcyIsDQo+
+IC0gKiBEb2N1bWVudCBudW1iZXI6IEFSTSBERU4gMDA0OUQsIE1hcmNoIDIwMTgNCj4gKyAqIERv
+Y3VtZW50IG51bWJlcjogQVJNIERFTiAwMDQ5RSwgSnVuZSAyMDIwDQo+ICAgKg0KPiANCj4gKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKg0KPiAqKioqKioqKioqKioqKi8NCj4gDQo+IEBAIC04Niw3ICs4Niw4IEBAIHN0cnVjdCBh
+Y3BpX2lvcnRfbm9kZSB7DQo+ICAJdTggdHlwZTsNCj4gIAl1MTYgbGVuZ3RoOw0KPiAgCXU4IHJl
+dmlzaW9uOw0KPiAtCXUzMiByZXNlcnZlZDsNCj4gKwl1MTYgcmVzZXJ2ZWQ7DQo+ICsJdTE2IGlk
+ZW50aWZpZXI7DQo+ICAJdTMyIG1hcHBpbmdfY291bnQ7DQo+ICAJdTMyIG1hcHBpbmdfb2Zmc2V0
+Ow0KPiAgCWNoYXIgbm9kZV9kYXRhWzFdOw0KPiBAQCAtMTAwLDcgKzEwMSw4IEBAIGVudW0gYWNw
+aV9pb3J0X25vZGVfdHlwZSB7DQo+ICAJQUNQSV9JT1JUX05PREVfUENJX1JPT1RfQ09NUExFWCA9
+IDB4MDIsDQo+ICAJQUNQSV9JT1JUX05PREVfU01NVSA9IDB4MDMsDQo+ICAJQUNQSV9JT1JUX05P
+REVfU01NVV9WMyA9IDB4MDQsDQo+IC0JQUNQSV9JT1JUX05PREVfUE1DRyA9IDB4MDUNCj4gKwlB
+Q1BJX0lPUlRfTk9ERV9QTUNHID0gMHgwNSwNCj4gKwlBQ1BJX0lPUlRfTk9ERV9STVIgPSAweDA2
+LA0KPiAgfTsNCj4gDQo+ICBzdHJ1Y3QgYWNwaV9pb3J0X2lkX21hcHBpbmcgew0KPiBAQCAtMTY3
+LDEwICsxNjksMTAgQEAgc3RydWN0IGFjcGlfaW9ydF9yb290X2NvbXBsZXggew0KPiAgCXU4IHJl
+c2VydmVkWzNdOwkJLyogUmVzZXJ2ZWQsIG11c3QgYmUgemVybyAqLw0KPiAgfTsNCj4gDQo+IC0v
+KiBWYWx1ZXMgZm9yIGF0c19hdHRyaWJ1dGUgZmllbGQgYWJvdmUgKi8NCj4gKy8qIE1hc2tzIGZv
+ciBhdHNfYXR0cmlidXRlIGZpZWxkIGFib3ZlICovDQo+IA0KPiAtI2RlZmluZSBBQ1BJX0lPUlRf
+QVRTX1NVUFBPUlRFRCAgICAgICAgIDB4MDAwMDAwMDEJLyogVGhlIHJvb3QNCj4gY29tcGxleCBz
+dXBwb3J0cyBBVFMgKi8NCj4gLSNkZWZpbmUgQUNQSV9JT1JUX0FUU19VTlNVUFBPUlRFRCAgICAg
+ICAweDAwMDAwMDAwCS8qIFRoZSByb290DQo+IGNvbXBsZXggZG9lc24ndCBzdXBwb3J0IEFUUyAq
+Lw0KPiArI2RlZmluZSBBQ1BJX0lPUlRfQVRTX1NVUFBPUlRFRCAgICAgICAgICgxKQkvKiBUaGUg
+cm9vdCBjb21wbGV4DQo+IHN1cHBvcnRzIEFUUyAqLw0KPiArI2RlZmluZSBBQ1BJX0lPUlRfUFJJ
+X1NVUFBPUlRFRCAgICAgICAgICgxPDwxKQkvKiBUaGUgcm9vdCBjb21wbGV4DQo+IHN1cHBvcnRz
+IFBSSSAqLw0KPiANCj4gIHN0cnVjdCBhY3BpX2lvcnRfc21tdSB7DQo+ICAJdTY0IGJhc2VfYWRk
+cmVzczsJLyogU01NVSBiYXNlIGFkZHJlc3MgKi8NCj4gQEAgLTI0MSw2ICsyNDMsMTcgQEAgc3Ry
+dWN0IGFjcGlfaW9ydF9wbWNnIHsNCj4gIAl1NjQgcGFnZTFfYmFzZV9hZGRyZXNzOw0KPiAgfTsN
+Cj4gDQo+ICtzdHJ1Y3QgYWNwaV9pb3J0X3JtciB7DQo+ICsJdTMyIHJtcl9jb3VudDsNCj4gKwl1
+MzIgcm1yX29mZnNldDsNCj4gK307DQo+ICsNCj4gK3N0cnVjdCBhY3BpX2lvcnRfcm1yX2Rlc2Mg
+ew0KPiArCXU2NCBiYXNlX2FkZHJlc3M7DQo+ICsJdTY0IGxlbmd0aDsNCj4gKwl1MzIgcmVzZXJ2
+ZWQ7DQo+ICt9Ow0KPiArDQo+IA0KPiAvKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQo+ICoqKioqKioqKioqKioqKioNCj4gICAq
+DQo+ICAgKiBJVlJTIC0gSS9PIFZpcnR1YWxpemF0aW9uIFJlcG9ydGluZyBTdHJ1Y3R1cmUNCj4g
+LS0NCj4gMi4xNy4xDQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXw0KPiBpb21tdSBtYWlsaW5nIGxpc3QNCj4gaW9tbXVAbGlzdHMubGludXgtZm91
+bmRhdGlvbi5vcmcNCj4gaHR0cHM6Ly9saXN0cy5saW51eGZvdW5kYXRpb24ub3JnL21haWxtYW4v
+bGlzdGluZm8vaW9tbXUNCg==
