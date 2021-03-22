@@ -2,69 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5EE3436BB
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 03:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0081B34375E
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 04:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbhCVCn6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 Mar 2021 22:43:58 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:14119 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbhCVCnt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Mar 2021 22:43:49 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F3f0G3krZz19Gm7;
-        Mon, 22 Mar 2021 10:41:50 +0800 (CST)
-Received: from [10.174.177.87] (10.174.177.87) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 22 Mar 2021 10:43:37 +0800
-Subject: Re: [PATCH] pci: fix memory leak when virtio pci hotplug
-To:     Zhiqiang Liu <liuzhiqiang26@huawei.com>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <bhelgaas@google.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, linfeilong <linfeilong@huawei.com>
-References: <c48998b7-5308-e196-66b5-905fc8c4edc4@huawei.com>
-From:   Wu Bo <wubo40@huawei.com>
-Message-ID: <768d4a60-7442-fbdd-9c00-cc927a54d340@huawei.com>
-Date:   Mon, 22 Mar 2021 10:43:37 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+        id S229941AbhCVDZL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 Mar 2021 23:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229904AbhCVDYx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Mar 2021 23:24:53 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF78FC061762
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id w8so7632178pjf.4
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=0OxWtGufCgAe0XbTGNWWjUrTicDtwtzOE+UdLLql1Jw=;
+        b=YoYpoDncERnCl23zDdx/vuysDA3ATAoE9TocP6isvskZKkqJEuDADYwNV9nm7FWMEb
+         7VVwBZiIKS2BAf4uE0FvMYabolFwG64gRVzT66CYsqXDoyFhZpheH44T3oz6TLpRrFOp
+         JJi9eBRxlVCHq/VEeNieCywFZ+/j0O0LwQADuve0Z1sDVjhNZ+kKaVsBd8A5QLd9G32U
+         gA5YDtkaOG38QqAq5mUnrSUMR6OnfVFVvU6uAP+C4msfEiSiEmRDBoj9qFKMGR9QYGmG
+         t1EztxFvegh2M5GeN8IqG8j6Sokyqit36e2D6tTN4j1JwF0xgnvHjn+BlTPt8BjYlMvt
+         tzrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=0OxWtGufCgAe0XbTGNWWjUrTicDtwtzOE+UdLLql1Jw=;
+        b=iZ/TQJLUgp2/bznBtDAT0KrVyYcjA5MK007rPO8xcBFHi5ZbmeLKbVwPMESdZu436y
+         8TH1+4d2sw1pcJWHzv7FWrdkmOQNmdi4eL0vsNfC0wIky7Bke8ns8S28fENd5FPKARRv
+         UCyyribNtd0AwQ+K3rDN97/6BZg3zLs9y9s5rTamYRMwA9GXKPjCaqAo908cMYFiH1Av
+         oggXagqAmcPvr+EvlH0MMPOeof3092vvx9voYQhjIbttAIhZz/JfiE92387dRHmFfev0
+         req195PTV9q1TbqBp1IHJ9BjccEve/JEAAmIwPYeR4izTSkA3aEYRWDG9/yjZ9CjUH+c
+         4V0w==
+X-Gm-Message-State: AOAM531TJqI8bb+aZm0l2ch+T0MdX4eQ1qQnblFukU52kAiOahhYEqVh
+        E9C48wKSS6vO86ntiST6DgZqDA==
+X-Google-Smtp-Source: ABdhPJxW1bQ3tLiqoJxUAzpwfz76tolklxGNNiRiyecHaYs/raCJ7Hw61stj8ANiFApVqPEyvXsaUw==
+X-Received: by 2002:a17:90a:458b:: with SMTP id v11mr10575612pjg.189.1616383492308;
+        Sun, 21 Mar 2021 20:24:52 -0700 (PDT)
+Received: from localhost ([122.172.6.13])
+        by smtp.gmail.com with ESMTPSA id f17sm4945038pgj.86.2021.03.21.20.24.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 21 Mar 2021 20:24:51 -0700 (PDT)
+Date:   Mon, 22 Mar 2021 08:54:49 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V6 4/4] cpufreq: CPPC: Add support for frequency
+ invariance
+Message-ID: <20210322032449.eqx7wbltzfq5o66f@vireshk-i7>
+References: <cover.1615351622.git.viresh.kumar@linaro.org>
+ <19fbb10acaaceaa25671c973b9eb6f170015de00.1615351622.git.viresh.kumar@linaro.org>
+ <CAJZ5v0i-D+3gcL5UuRP6aW_V6NCe_eZ2qt6d8A1wYa8nw_2f0g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <c48998b7-5308-e196-66b5-905fc8c4edc4@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.87]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0i-D+3gcL5UuRP6aW_V6NCe_eZ2qt6d8A1wYa8nw_2f0g@mail.gmail.com>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/3/21 23:29, Zhiqiang Liu wrote:
-> From: Feilong Lin <linfeilong@huawei.com>
+On 19-03-21, 17:20, Rafael J. Wysocki wrote:
+> Sorry for the delay.
 > 
-> Repeated hot-plugging of pci devices for a virtual
-> machine driven by virtio, we found that there is a
-> leak in kmalloc-4k, which was confirmed as the memory
-> of the pci_device structure. Then we found out that
-> it was missing pci_dev_put() after pci_get_slot() in
-> enable_slot() of acpiphp_glue.c.
-> 
-> Signed-off-by: Feilong Lin <linfeilong@huawei.com>
-> Reviewed-by: Zhiqiang Liu <liuzhiqiang26@huawei.com>
-> ---
->   drivers/pci/hotplug/acpiphp_glue.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 3365c93abf0e..f031302ad401 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -533,6 +533,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->   			slot->flags &= ~SLOT_ENABLED;
->   			continue;
->   		}
-> +		pci_dev_put(dev);
->   	}
->   }
-> 
-Reviewed-by: Wu Bo <wubo40@huawei.com>
+> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+
+Thanks.
+
+> and I'm assuming that either you or the sched guys will take care of it.
+
+Yeah, I have already queued this up.
+
+-- 
+viresh
