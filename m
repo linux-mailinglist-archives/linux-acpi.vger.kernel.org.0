@@ -2,133 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 712A13445B4
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 14:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C047534475B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 15:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbhCVN1s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Mar 2021 09:27:48 -0400
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:45845 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbhCVN1j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 09:27:39 -0400
-Received: by mail-ot1-f49.google.com with SMTP id f73-20020a9d03cf0000b02901b4d889bce0so15873924otf.12;
-        Mon, 22 Mar 2021 06:27:38 -0700 (PDT)
+        id S229972AbhCVOdS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Mar 2021 10:33:18 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:45707 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230494AbhCVOdN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 10:33:13 -0400
+Received: by mail-ot1-f45.google.com with SMTP id f73-20020a9d03cf0000b02901b4d889bce0so16099029otf.12;
+        Mon, 22 Mar 2021 07:33:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=x7NLjzCmdc7lqJFi0FRfh6j8DYgTAI55Gdto//+9wfc=;
-        b=bQEZUFzsnn7oZSlfiqd0oUo1Q1iFV/OZqdAmJXOeheDb6pXOm8RV/GPXsL7A5MWuN6
-         qyLYpsqOS44mGl+huZ97hPa953tEL1XxtajDhUone9UkftHCUYAw2wdd9F9odyohAsW7
-         0H/pxtxUXmm39W7U4iRcV6TudEsBf2olOQJ8BF42vBmjkyEqH/ZrDSXMt/wnUItgE8Nd
-         ooO1Fc4JoXEfPIr8K749u5CH2+YZn6dmIm/OoCzvD1E2a9vx3SFyaCY0u8BXZBfgfE1k
-         d22/yNu7lGHFCAgLHhDCU/G1aFDFEK6HGZB/V3hYpehValFUQ/tgS1cXD2Y8SCXo2yJL
-         HpTQ==
-X-Gm-Message-State: AOAM533HMhuvZ5Oa8vrQq9Gx+AYF9wcpiFo1pEzUH6paehqJClcczHsl
-        uNbFt5WZf773WBLnNfowTxxSz2EdvK+EIs/FFMM=
-X-Google-Smtp-Source: ABdhPJwoZAbuzFvJN4AM4LX7CnRAX3/NRAdpDKl5lAPXhxKPAOZcq+So6bIupxyrfvzrZJd0xZ/j8HVZpcO3HoDgHCk=
-X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr12036047otr.321.1616419658585;
- Mon, 22 Mar 2021 06:27:38 -0700 (PDT)
+        bh=tdNjLAFkKExyySktCu7V5Bpz2cnyF7BEvssvzh+7BTo=;
+        b=cx7fy9+H1Y4XBo0UIHXufE+9Znzedi5tZRFBVZ+VltucEbGIHDrsenB4E+SDvyRL2y
+         K9GyKeAPSFB5IIfaQEd+MRAU4b71JCHIWp6YmIBs/P/aG9OpwXObsmVEhuKVY/84GwtG
+         qtYXrWdvhUAqNUglIwApUMhR67NY8vVZQXyeJVJSK4C+IdmQ2a7sEp0TQkXfIG4XNOXI
+         7oqZVEWhW7w1kyLPYqg2WijKL2+Lw3gY5X8zXqqMIdwaKZlbZfk/k4dNV8ozOswJQ3w0
+         e10qkWmCNiRJ+ztSXWye5F8M1BVTE3V2VpKXfp3taxpxORaUHwP5QsLWnVUdNQhZJbhG
+         xG7g==
+X-Gm-Message-State: AOAM532uiv+bW9VobhArHgxu73MHhpDICKpDbiTLAdLNZkZfVfA7wdxU
+        MOPouJWn51iEq89R6/VxdtlEGQA0s18PMbMuHhw=
+X-Google-Smtp-Source: ABdhPJzkJoMaAR9z6HBKHF/TbDPxYzvAs7IoZZ69mFl3/xeSpEaCq/3dEr0P7DpmqDnhQnVarA9hGPOVdV3gBE4ynSA=
+X-Received: by 2002:a9d:4811:: with SMTP id c17mr233186otf.206.1616423593071;
+ Mon, 22 Mar 2021 07:33:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210322105805.1498602-1-arnd@kernel.org>
-In-Reply-To: <20210322105805.1498602-1-arnd@kernel.org>
+References: <3219454.74lMxhSOWB@kreacher>
+In-Reply-To: <3219454.74lMxhSOWB@kreacher>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 Mar 2021 14:27:23 +0100
-Message-ID: <CAJZ5v0jbKmkWxV0CFpQ+3q5GOJVVx5QfzLVu-Mvo-subYdjuPA@mail.gmail.com>
-Subject: Re: [PATCH] acpi: avoid -Wempty-body warnings
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Robert Moore <robert.moore@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Mon, 22 Mar 2021 15:32:58 +0100
+Message-ID: <CAJZ5v0gkhfRRGLpqLN555O7RG3jmScfxTTAzz6AgFrOoh42e=g@mail.gmail.com>
+Subject: Re: [PATCH] PCI: PM: Do not read power state in pci_enable_device_flags()
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 11:59 AM Arnd Bergmann <arnd@kernel.org> wrote:
+On Tue, Mar 16, 2021 at 4:52 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 >
-> From: Arnd Bergmann <arnd@arndb.de>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> The acpi drivers produce a number of avoidable warnings for empty macros
-> when building with 'make W=1':
+> It should not be necessary to update the current_state field of
+> struct pci_dev in pci_enable_device_flags() before calling
+> do_pci_enable_device() for the device, because none of the
+> code between that point and the pci_set_power_state() call in
+> do_pci_enable_device() invoked later depends on it.
 >
-> drivers/acpi/acpi_processor.c: In function 'acpi_processor_errata_piix4':
-> drivers/acpi/acpi_processor.c:133:95: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
->   133 |                                   "Bus master activity detection (BM-IDE) erratum enabled\n"));
->       |                                                                                               ^
-> drivers/acpi/acpi_processor.c:136:82: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
->   136 |                                   "Type-F DMA livelock erratum (C3 disabled)\n"));
->       |                                                                                  ^
-> drivers/acpi/acpi_processor.c: In function 'acpi_processor_get_info':
-> drivers/acpi/acpi_processor.c:251:77: error: suggest braces around empty body in an 'else' statement [-Werror=empty-body]
->   251 |                                   "No bus mastering arbitration control\n"));
->       |                                                                             ^
-> drivers/acpi/processor_pdc.c: In function 'acpi_processor_eval_pdc':
-> drivers/acpi/processor_pdc.c:136:79: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
->   136 |                     "Could not evaluate _PDC, using legacy perf. control.\n"));
->       |                                                                               ^
+> Moreover, doing that is actively harmful in some cases.  For example,
+> if the given PCI device depends on an ACPI power resource whose _STA
+> method initially returns 0 ("off"), but the config space of the PCI
+> device is accessible and the power state retrieved from the
+> PCI_PM_CTRL register is D0, the current_state field in the struct
+> pci_dev representing that device will get out of sync with the
+> power.state of its ACPI companion object and that will lead to
+> power management issues going forward.
 >
-> I tried making these call no_printk() instead, which would add proper
-> format string checking, but that turned out to be a rather invasive
-> change, so just shut up the warning by turning the macros into empty
-> "do {} while (0)" statements.
+> To avoid such issues it is better to leave the current_state value
+> as is until it is changed to PCI_D0 by do_pci_enable_device() as
+> appropriate.  However, the power state of the device is not changed
+> to PCI_D0 if it is already enabled when pci_enable_device_flags()
+> gets called for it, so update its current_state in that case, but
+> use pci_update_current_state() covering platform PM too for that.
+>
+> Link: https://lore.kernel.org/lkml/20210314000439.3138941-1-luzmaximilian@gmail.com/
+> Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
+> Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-This is part of ACPICA, so handing it to Erik and Bob.
+Bjorn, can I take this, or do you want to take care of it yourself?
 
-
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  include/acpi/acoutput.h | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
 >
-> diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-> index 1538a6853822..b5484ef31f27 100644
-> --- a/include/acpi/acoutput.h
-> +++ b/include/acpi/acoutput.h
-> @@ -433,23 +433,23 @@
->   * This is the non-debug case -- make everything go away,
->   * leaving no executable debug code!
->   */
-> -#define ACPI_DEBUG_PRINT(pl)
-> -#define ACPI_DEBUG_PRINT_RAW(pl)
-> -#define ACPI_DEBUG_EXEC(a)
-> -#define ACPI_DEBUG_ONLY_MEMBERS(a)
-> -#define ACPI_FUNCTION_NAME(a)
-> -#define ACPI_FUNCTION_TRACE(a)
-> -#define ACPI_FUNCTION_TRACE_PTR(a, b)
-> -#define ACPI_FUNCTION_TRACE_U32(a, b)
-> -#define ACPI_FUNCTION_TRACE_STR(a, b)
-> -#define ACPI_FUNCTION_ENTRY()
-> -#define ACPI_DUMP_STACK_ENTRY(a)
-> -#define ACPI_DUMP_OPERANDS(a, b, c)
-> -#define ACPI_DUMP_ENTRY(a, b)
-> -#define ACPI_DUMP_PATHNAME(a, b, c, d)
-> -#define ACPI_DUMP_BUFFER(a, b)
-> +#define ACPI_DEBUG_PRINT(pl)                   do { } while (0)
-> +#define ACPI_DEBUG_PRINT_RAW(pl)               do { } while (0)
-> +#define ACPI_DEBUG_EXEC(a)                     do { } while (0)
-> +#define ACPI_DEBUG_ONLY_MEMBERS(a)             do { } while (0)
-> +#define ACPI_FUNCTION_NAME(a)                  do { } while (0)
-> +#define ACPI_FUNCTION_TRACE(a)                 do { } while (0)
-> +#define ACPI_FUNCTION_TRACE_PTR(a, b)          do { } while (0)
-> +#define ACPI_FUNCTION_TRACE_U32(a, b)          do { } while (0)
-> +#define ACPI_FUNCTION_TRACE_STR(a, b)          do { } while (0)
-> +#define ACPI_FUNCTION_ENTRY()                  do { } while (0)
-> +#define ACPI_DUMP_STACK_ENTRY(a)               do { } while (0)
-> +#define ACPI_DUMP_OPERANDS(a, b, c)            do { } while (0)
-> +#define ACPI_DUMP_ENTRY(a, b)                  do { } while (0)
-> +#define ACPI_DUMP_PATHNAME(a, b, c, d)         do { } while (0)
-> +#define ACPI_DUMP_BUFFER(a, b)                 do { } while (0)
->  #define ACPI_IS_DEBUG_ENABLED(level, component) 0
-> -#define ACPI_TRACE_POINT(a, b, c, d)
-> +#define ACPI_TRACE_POINT(a, b, c, d)           do { } while (0)
+> Max, I've added a T-by from you even though the patch is slightly different
+> from what you have tested, but the difference shouldn't matter for your case.
 >
->  /* Return macros must have a return statement at the minimum */
+> ---
+>  drivers/pci/pci.c |   16 +++-------------
+>  1 file changed, 3 insertions(+), 13 deletions(-)
 >
-> --
-> 2.29.2
+> Index: linux-pm/drivers/pci/pci.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci.c
+> +++ linux-pm/drivers/pci/pci.c
+> @@ -1870,20 +1870,10 @@ static int pci_enable_device_flags(struc
+>         int err;
+>         int i, bars = 0;
+>
+> -       /*
+> -        * Power state could be unknown at this point, either due to a fresh
+> -        * boot or a device removal call.  So get the current power state
+> -        * so that things like MSI message writing will behave as expected
+> -        * (e.g. if the device really is in D0 at enable time).
+> -        */
+> -       if (dev->pm_cap) {
+> -               u16 pmcsr;
+> -               pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+> -               dev->current_state = (pmcsr & PCI_PM_CTRL_STATE_MASK);
+> -       }
+> -
+> -       if (atomic_inc_return(&dev->enable_cnt) > 1)
+> +       if (atomic_inc_return(&dev->enable_cnt) > 1) {
+> +               pci_update_current_state(dev, dev->current_state);
+>                 return 0;               /* already enabled */
+> +       }
+>
+>         bridge = pci_upstream_bridge(dev);
+>         if (bridge)
+>
+>
 >
