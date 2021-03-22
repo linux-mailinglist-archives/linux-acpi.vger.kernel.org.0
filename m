@@ -2,119 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E025343EA7
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 11:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EB134432B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 13:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbhCVK6e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Mar 2021 06:58:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58552 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230448AbhCVK6J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 22 Mar 2021 06:58:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C1D9761931;
-        Mon, 22 Mar 2021 10:58:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616410689;
-        bh=D6etE+5ZjccFIlpT9IufI3R6p4hC1yihNdzOnUUrLqw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=hbXWGIPHRU2BW1goVDukx98kZO8FW1mDVOBE3/yG9MRxnbfIAVtOODvl4/k8QZAxx
-         0602wWOjw4SlM3OBt/97z/8pSm9fpfr6zdmluYPTi9zUrRctqGgIaD7o1plV+nQuUj
-         X+u6ix8IxvsnzmGBik3hdWRSir/uspc2vhlJi/5StLYP2Gg0W+P6qK4lww4GMYhJLl
-         9fZhVBqQ4ZDtKTLYmOSuFPc2IzgVIgAKezhhgsPI50c3s8W49TlojM0CNw5mIhEO5F
-         Hatm0HRZHGx1pLi+6tAonS3cGk+2nNKI0VwQ7dIw6HAagK3/10zC52dTlSzk7yyCon
-         cK8ox7ZRKcn/w==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] acpi: avoid -Wempty-body warnings
-Date:   Mon, 22 Mar 2021 11:58:00 +0100
-Message-Id: <20210322105805.1498602-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        id S231828AbhCVMs5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Mar 2021 08:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232295AbhCVMmL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 08:42:11 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4A7C061756
+        for <linux-acpi@vger.kernel.org>; Mon, 22 Mar 2021 05:42:11 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id a1so20868690ljp.2
+        for <linux-acpi@vger.kernel.org>; Mon, 22 Mar 2021 05:42:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Tim9PBVuVi0TH58nfyNz8afp9pqyyITLZZbnoqVhySk=;
+        b=Nhnpq40hG2sJsIXz9OX+tqD9B/HrOvlhJYw3U/wDOGoEU50xmcVvfxjq56kNIj8Xhy
+         q6l73eSPTST2N/fvHHGu3/zqbtABhEGlplhqVg1JDXAIOgM7Lxu7fR+7tyV/glFtxkx+
+         RVQuvW8rLbuBeaxKk1mtElAqQ3qQGojgqvDRm8WACGIVV4o2B7ND/THnJgcvBJCjBVKJ
+         nT63a1deWRtNG9iDiFj7XGu11ZsewJ1Ajtg3bdmm5M9K5Jjvile0JEiPMkvyZIiuvl7l
+         UoUIqeNCL8hE1XogSa81bnfwwMg7nj/Sq9Yx+/XU8UWgpMPul1uopVziNVgIVKjsjAKi
+         PF5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Tim9PBVuVi0TH58nfyNz8afp9pqyyITLZZbnoqVhySk=;
+        b=XyiGTiZMIj/dop+xWvkk64Oy4IwoT0uOYLi908R9UOaBIUrTqiVQulfXOFNDhLKTw5
+         4ZjVvqq8U5z5K1XIZxFRK12Ui0f+JdLPSTCMR8p+JSPjj9PKkewZeoxVsesRDY6yRQjU
+         oE4nuvwAem9fWSePESojqLTCIEPfsGIUb+GwOGOcNoVWIG9QgPKbQxv1c2rPk9q6t4RD
+         z++30i7/6s97kMs1Ob37Nay1zl4N0J/Pg9Rs8vPCvvxV/a2RtHXxr2M87NtQxudKaNnH
+         vdc7R4VDVWxJPsSPYFZ3t+1aSc4nnddihRx5B+AQthgIYRN6fpUrN4rwNIEp6zMdyjd9
+         qqkQ==
+X-Gm-Message-State: AOAM533dzOY1QkV3ys9meaae/ZwttByuqG1x08jW+YnryB/zI2gYl8um
+        hKvRNEVBrK83ieM2evMPogv8cBpMt91kq2nwWJZMDA==
+X-Google-Smtp-Source: ABdhPJxiC9YVrWbysWHTKGkL3LjLkBt+soQ7jHlCqIdG5AefbiECeJhDjmS9c69MNLddHsbYsZAjkjktd9OJIorUvIU=
+X-Received: by 2002:a05:651c:103a:: with SMTP id w26mr9528236ljm.273.1616416929564;
+ Mon, 22 Mar 2021 05:42:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1614120685-7452-1-git-send-email-Asmaa@mellanox.com>
+ <1614120685-7452-2-git-send-email-Asmaa@mellanox.com> <CH2PR12MB38958655696585998CFDF67BD7919@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB38958655696585998CFDF67BD7919@CH2PR12MB3895.namprd12.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 22 Mar 2021 13:41:58 +0100
+Message-ID: <CACRpkdYVBCByG-g8jCrzdQMwdQ_7Vm0_adtVyGFzUiJJWAeNPg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] gpio: Support interrupts in gpio-mlxbf2.c
+To:     Asmaa Mnebhi <asmaa@nvidia.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, Mar 10, 2021 at 9:38 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-The acpi drivers produce a number of avoidable warnings for empty macros
-when building with 'make W=1':
+> > That's fine, the hardware description model (I guess in your case
+> > ACPI) should take care of that.
+> >
+> We cannot really pass it through the ACPI table because the ACPI
+> table is common to all BlueField-2 boards. And each board may have
+> a different GPIO pin associated with a particular function. This is
+> why we use ACPI properties instead of GpioInt(). So that the
+> bootloader can change the GPIO pin value based on the board
+> id detected at boot time.
+(...)
+> Yes. It would belong in the ACPI table if we had a different ACPI
+> table for each board. But unfortunately that is not the case.
 
-drivers/acpi/acpi_processor.c: In function 'acpi_processor_errata_piix4':
-drivers/acpi/acpi_processor.c:133:95: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-  133 |                                   "Bus master activity detection (BM-IDE) erratum enabled\n"));
-      |                                                                                               ^
-drivers/acpi/acpi_processor.c:136:82: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-  136 |                                   "Type-F DMA livelock erratum (C3 disabled)\n"));
-      |                                                                                  ^
-drivers/acpi/acpi_processor.c: In function 'acpi_processor_get_info':
-drivers/acpi/acpi_processor.c:251:77: error: suggest braces around empty body in an 'else' statement [-Werror=empty-body]
-  251 |                                   "No bus mastering arbitration control\n"));
-      |                                                                             ^
-drivers/acpi/processor_pdc.c: In function 'acpi_processor_eval_pdc':
-drivers/acpi/processor_pdc.c:136:79: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-  136 |                     "Could not evaluate _PDC, using legacy perf. control.\n"));
-      |                                                                               ^
+You have to agree with Andy about all ACPI details.
 
-I tried making these call no_printk() instead, which would add proper
-format string checking, but that turned out to be a rather invasive
-change, so just shut up the warning by turning the macros into empty
-"do {} while (0)" statements.
+Andy is the ACPI GPIO maintainer and we cannot merge
+a patch with any kind of ACPI support without his ACK,
+so hash it out as he wants it. The only people on the
+planet that can make me think otherwise is if Rafael
+Wysocki and Mika Westerberg say something else,
+which is *extremely* unlikely.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- include/acpi/acoutput.h | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+If you need to do workarounds because of broken ACPI
+tables, you need to convince the ACPI maintainers that
+there is no way you can fix these tables so it needs
+to be fixed in the kernel. It is not something for the
+GPIO maintainers to decide.
 
-diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-index 1538a6853822..b5484ef31f27 100644
---- a/include/acpi/acoutput.h
-+++ b/include/acpi/acoutput.h
-@@ -433,23 +433,23 @@
-  * This is the non-debug case -- make everything go away,
-  * leaving no executable debug code!
-  */
--#define ACPI_DEBUG_PRINT(pl)
--#define ACPI_DEBUG_PRINT_RAW(pl)
--#define ACPI_DEBUG_EXEC(a)
--#define ACPI_DEBUG_ONLY_MEMBERS(a)
--#define ACPI_FUNCTION_NAME(a)
--#define ACPI_FUNCTION_TRACE(a)
--#define ACPI_FUNCTION_TRACE_PTR(a, b)
--#define ACPI_FUNCTION_TRACE_U32(a, b)
--#define ACPI_FUNCTION_TRACE_STR(a, b)
--#define ACPI_FUNCTION_ENTRY()
--#define ACPI_DUMP_STACK_ENTRY(a)
--#define ACPI_DUMP_OPERANDS(a, b, c)
--#define ACPI_DUMP_ENTRY(a, b)
--#define ACPI_DUMP_PATHNAME(a, b, c, d)
--#define ACPI_DUMP_BUFFER(a, b)
-+#define ACPI_DEBUG_PRINT(pl)			do { } while (0)
-+#define ACPI_DEBUG_PRINT_RAW(pl)		do { } while (0)
-+#define ACPI_DEBUG_EXEC(a)			do { } while (0)
-+#define ACPI_DEBUG_ONLY_MEMBERS(a)		do { } while (0)
-+#define ACPI_FUNCTION_NAME(a)			do { } while (0)
-+#define ACPI_FUNCTION_TRACE(a)			do { } while (0)
-+#define ACPI_FUNCTION_TRACE_PTR(a, b)		do { } while (0)
-+#define ACPI_FUNCTION_TRACE_U32(a, b)		do { } while (0)
-+#define ACPI_FUNCTION_TRACE_STR(a, b)		do { } while (0)
-+#define ACPI_FUNCTION_ENTRY()			do { } while (0)
-+#define ACPI_DUMP_STACK_ENTRY(a)		do { } while (0)
-+#define ACPI_DUMP_OPERANDS(a, b, c)		do { } while (0)
-+#define ACPI_DUMP_ENTRY(a, b)			do { } while (0)
-+#define ACPI_DUMP_PATHNAME(a, b, c, d)		do { } while (0)
-+#define ACPI_DUMP_BUFFER(a, b)			do { } while (0)
- #define ACPI_IS_DEBUG_ENABLED(level, component) 0
--#define ACPI_TRACE_POINT(a, b, c, d)
-+#define ACPI_TRACE_POINT(a, b, c, d)		do { } while (0)
- 
- /* Return macros must have a return statement at the minimum */
- 
--- 
-2.29.2
+To continue that argument please mail these people in
+the MAINTAINERS file, Andy and Mika Westerberg and have
+a discussion with the kernel ACPI community:
 
+ACPI
+M:      "Rafael J. Wysocki" <rjw@rjwysocki.net>
+M:      Len Brown <lenb@kernel.org>
+L:      linux-acpi@vger.kernel.org
+
+Yours,
+Linus Walleij
