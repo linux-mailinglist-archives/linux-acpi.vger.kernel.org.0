@@ -2,122 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C047534475B
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 15:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DD734484E
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Mar 2021 15:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbhCVOdS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Mar 2021 10:33:18 -0400
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:45707 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230494AbhCVOdN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 10:33:13 -0400
-Received: by mail-ot1-f45.google.com with SMTP id f73-20020a9d03cf0000b02901b4d889bce0so16099029otf.12;
-        Mon, 22 Mar 2021 07:33:13 -0700 (PDT)
+        id S230407AbhCVO4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Mar 2021 10:56:15 -0400
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:42920 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230051AbhCVOzx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Mar 2021 10:55:53 -0400
+Received: by mail-oi1-f169.google.com with SMTP id n140so13327094oig.9;
+        Mon, 22 Mar 2021 07:55:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tdNjLAFkKExyySktCu7V5Bpz2cnyF7BEvssvzh+7BTo=;
-        b=cx7fy9+H1Y4XBo0UIHXufE+9Znzedi5tZRFBVZ+VltucEbGIHDrsenB4E+SDvyRL2y
-         K9GyKeAPSFB5IIfaQEd+MRAU4b71JCHIWp6YmIBs/P/aG9OpwXObsmVEhuKVY/84GwtG
-         qtYXrWdvhUAqNUglIwApUMhR67NY8vVZQXyeJVJSK4C+IdmQ2a7sEp0TQkXfIG4XNOXI
-         7oqZVEWhW7w1kyLPYqg2WijKL2+Lw3gY5X8zXqqMIdwaKZlbZfk/k4dNV8ozOswJQ3w0
-         e10qkWmCNiRJ+ztSXWye5F8M1BVTE3V2VpKXfp3taxpxORaUHwP5QsLWnVUdNQhZJbhG
-         xG7g==
-X-Gm-Message-State: AOAM532uiv+bW9VobhArHgxu73MHhpDICKpDbiTLAdLNZkZfVfA7wdxU
-        MOPouJWn51iEq89R6/VxdtlEGQA0s18PMbMuHhw=
-X-Google-Smtp-Source: ABdhPJzkJoMaAR9z6HBKHF/TbDPxYzvAs7IoZZ69mFl3/xeSpEaCq/3dEr0P7DpmqDnhQnVarA9hGPOVdV3gBE4ynSA=
-X-Received: by 2002:a9d:4811:: with SMTP id c17mr233186otf.206.1616423593071;
- Mon, 22 Mar 2021 07:33:13 -0700 (PDT)
+        bh=mxhecs8h6ZrGlDWUuj5bDqeQpBWOSi4ONB8w9TpH/nY=;
+        b=bTl7KE37QWKnnihc3hv82c58FPyDKb+fDyFe2xRTFS2VbtHN9yBDtGEStYqWQYxvMH
+         wtI9mySX0yO1n/v8Km6yrQGIWpe2UjDEZ84LljDw5HAY+c/CEnwHn3VXylKumUGog4LG
+         2sjFToHptXzT7A8MWAzrGKWYbKBv9bpHP7G71kwutklcShCfFnCkPpolfp2AotjZLr++
+         ONnLdaj3W0pptEAGsZ7O6VN5FL6I+ZatG+NRq5BszxUDGczuOjm38+Tak3aQcrE3C9kz
+         G0lD9uqtH59Xq5ZrjClTXI6S08LDtRlfPR6OgqGBpmSJvRK6n/BbnJvrNdu0BeV1ndKD
+         GtsA==
+X-Gm-Message-State: AOAM532g8Ja0/XlDtJQKNHvUjBSRiNDcT4mQzH4o5dGT2DWYPi8aUIC1
+        bB3jha9DJyiOnnEAEIXJJTquI84bSxfqkXletgw=
+X-Google-Smtp-Source: ABdhPJw66pk6+5GZDef3lvjkVkTy9aKd9QT2qIUf/6D9x/U9xW7Bye/wZJ/B+qC1gl98yq1sdqo0XWdbe8FLkDEWJr0=
+X-Received: by 2002:a05:6808:24b:: with SMTP id m11mr56488oie.157.1616424952837;
+ Mon, 22 Mar 2021 07:55:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <3219454.74lMxhSOWB@kreacher>
-In-Reply-To: <3219454.74lMxhSOWB@kreacher>
+References: <20210319192109.40041-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210319192109.40041-1-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 Mar 2021 15:32:58 +0100
-Message-ID: <CAJZ5v0gkhfRRGLpqLN555O7RG3jmScfxTTAzz6AgFrOoh42e=g@mail.gmail.com>
-Subject: Re: [PATCH] PCI: PM: Do not read power state in pci_enable_device_flags()
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
+Date:   Mon, 22 Mar 2021 15:55:37 +0100
+Message-ID: <CAJZ5v0gcqKiXKzEj6u7vq_1Y9pYBdSGA6yT3q6JPVgW4djSiaQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] ACPI: scan: Use unique number for instance_no
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 16, 2021 at 4:52 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Fri, Mar 19, 2021 at 8:21 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> The decrementation of acpi_device_bus_id->instance_no
+> in acpi_device_del() is incorrect, because it may cause
+> a duplicate instance number to be allocated next time
+> a device with the same acpi_device_bus_id is added.
 >
-> It should not be necessary to update the current_state field of
-> struct pci_dev in pci_enable_device_flags() before calling
-> do_pci_enable_device() for the device, because none of the
-> code between that point and the pci_set_power_state() call in
-> do_pci_enable_device() invoked later depends on it.
+> Replace above mentioned approach by using IDA framework.
 >
-> Moreover, doing that is actively harmful in some cases.  For example,
-> if the given PCI device depends on an ACPI power resource whose _STA
-> method initially returns 0 ("off"), but the config space of the PCI
-> device is accessible and the power state retrieved from the
-> PCI_PM_CTRL register is D0, the current_state field in the struct
-> pci_dev representing that device will get out of sync with the
-> power.state of its ACPI companion object and that will lead to
-> power management issues going forward.
->
-> To avoid such issues it is better to leave the current_state value
-> as is until it is changed to PCI_D0 by do_pci_enable_device() as
-> appropriate.  However, the power state of the device is not changed
-> to PCI_D0 if it is already enabled when pci_enable_device_flags()
-> gets called for it, so update its current_state in that case, but
-> use pci_update_current_state() covering platform PM too for that.
->
-> Link: https://lore.kernel.org/lkml/20210314000439.3138941-1-luzmaximilian@gmail.com/
-> Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Bjorn, can I take this, or do you want to take care of it yourself?
-
+> Fixes: e49bd2dd5a50 ("ACPI: use PNPID:instance_no as bus_id of ACPI device")
+> Fixes: ca9dc8d42b30 ("ACPI / scan: Fix acpi_bus_id_list bookkeeping")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
+> v3: rewrote commit message once again as proposed by Rafael in v1
+>  drivers/acpi/internal.h |  4 +++-
+>  drivers/acpi/scan.c     | 32 +++++++++++++++++++++++++++-----
+>  include/acpi/acpi_bus.h |  1 +
+>  3 files changed, 31 insertions(+), 6 deletions(-)
 >
-> Max, I've added a T-by from you even though the patch is slightly different
-> from what you have tested, but the difference shouldn't matter for your case.
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index e6a5d997241c..417eb768d710 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -9,6 +9,8 @@
+>  #ifndef _ACPI_INTERNAL_H_
+>  #define _ACPI_INTERNAL_H_
 >
-> ---
->  drivers/pci/pci.c |   16 +++-------------
->  1 file changed, 3 insertions(+), 13 deletions(-)
+> +#include <linux/idr.h>
+> +
+>  #define PREFIX "ACPI: "
 >
-> Index: linux-pm/drivers/pci/pci.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci.c
-> +++ linux-pm/drivers/pci/pci.c
-> @@ -1870,20 +1870,10 @@ static int pci_enable_device_flags(struc
->         int err;
->         int i, bars = 0;
+>  int early_acpi_osi_init(void);
+> @@ -98,7 +100,7 @@ extern struct list_head acpi_bus_id_list;
 >
-> -       /*
-> -        * Power state could be unknown at this point, either due to a fresh
-> -        * boot or a device removal call.  So get the current power state
-> -        * so that things like MSI message writing will behave as expected
-> -        * (e.g. if the device really is in D0 at enable time).
-> -        */
-> -       if (dev->pm_cap) {
-> -               u16 pmcsr;
-> -               pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
-> -               dev->current_state = (pmcsr & PCI_PM_CTRL_STATE_MASK);
-> -       }
-> -
-> -       if (atomic_inc_return(&dev->enable_cnt) > 1)
-> +       if (atomic_inc_return(&dev->enable_cnt) > 1) {
-> +               pci_update_current_state(dev, dev->current_state);
->                 return 0;               /* already enabled */
-> +       }
+>  struct acpi_device_bus_id {
+>         const char *bus_id;
+> -       unsigned int instance_no;
+> +       struct ida instance_ida;
+>         struct list_head node;
+>  };
 >
->         bridge = pci_upstream_bridge(dev);
->         if (bridge)
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index a184529d8fa4..4b445b169ad4 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -479,9 +479,8 @@ static void acpi_device_del(struct acpi_device *device)
+>         list_for_each_entry(acpi_device_bus_id, &acpi_bus_id_list, node)
+>                 if (!strcmp(acpi_device_bus_id->bus_id,
+>                             acpi_device_hid(device))) {
+> -                       if (acpi_device_bus_id->instance_no > 0)
+> -                               acpi_device_bus_id->instance_no--;
+> -                       else {
+> +                       ida_simple_remove(&acpi_device_bus_id->instance_ida, device->pnp.instance_no);
+> +                       if (ida_is_empty(&acpi_device_bus_id->instance_ida)) {
+>                                 list_del(&acpi_device_bus_id->node);
+>                                 kfree_const(acpi_device_bus_id->bus_id);
+>                                 kfree(acpi_device_bus_id);
+> @@ -631,6 +630,20 @@ static struct acpi_device_bus_id *acpi_device_bus_id_match(const char *dev_id)
+>         return NULL;
+>  }
 >
->
->
+> +static int acpi_device_set_name(struct acpi_device *device,
+> +                               struct acpi_device_bus_id *acpi_device_bus_id)
+> +{
+> +       int result;
+> +
+> +       result = ida_simple_get(&acpi_device_bus_id->instance_ida, 0, 255, GFP_KERNEL);
+
+This is ida_alloc_range(ida, start, (end) - 1, gfp), so I think it
+should be 256 above, instead of 255.
+
+While at it, though, there can be more than 256 CPU devices easily on
+contemporary systems, so I would use a greater number here.  Maybe
+4096 and define a symbol for it?
