@@ -2,145 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBF93479FA
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Mar 2021 14:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6397347C7D
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Mar 2021 16:23:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235668AbhCXNy3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Mar 2021 09:54:29 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:34744 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235459AbhCXNy1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Mar 2021 09:54:27 -0400
-Received: by mail-ot1-f53.google.com with SMTP id k14-20020a9d7dce0000b02901b866632f29so23081809otn.1
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Mar 2021 06:54:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JvxTQpbMDkDS2fnwFO+0hE7NRXVaf9XdJGVoaV3HFuw=;
-        b=ZzH8f9M9mYl+Gn5WjqSweFKMY6d1F5l9AHJZM2o71OQwXN8mew2TO3nuFm5N+T62kQ
-         btuz9iGyV46B0tyC/VtXHIgIY0FZ1AmT2x7nM/of3+IKjYExlEhXRu5cl+sKXscsQmcF
-         JIEHxp61YGkBo+x+WvGF5aeO0xv8ne7IfWalpcUkbW8iWPScaLIaZBxoDgWTcPQU1Rmu
-         JX8nwR+RBPytEFk/HMw9Ap18+wqwVkmD0bdDUdlG1u8tZldbgYTA0raZYWYJdRMU+ox4
-         kezWSS9hyaClQn0tFPoDQ4x5v78Bv/D9yAfDDQkT4em18PcAtgURvRAycGc8ewLpZNKE
-         oGNQ==
-X-Gm-Message-State: AOAM531nmtof2D/1ljtVe6AxzsgrbZTToaPobjbIQ2tVQ95GmtHVmSzw
-        VUKZmqO3mc/u2HugKYwwqlND2ex0HO+p75oXT/w=
-X-Google-Smtp-Source: ABdhPJxVOEYbRr/a8OdPFO3CQRQeA8S1DubCxVAeE5JrcQdVqEaUmpoujYk30At7Sp4jCIaSUNazNkKpL2jx94Yle18=
-X-Received: by 2002:a05:6830:20d2:: with SMTP id z18mr3310314otq.260.1616594067366;
- Wed, 24 Mar 2021 06:54:27 -0700 (PDT)
+        id S236565AbhCXPXZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Mar 2021 11:23:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57205 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236644AbhCXPW7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Mar 2021 11:22:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1616599379;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=9vmQn4NIrUk8xJdGGejNzI5lmYgeNFGUq43EqQoEUhA=;
+        b=J0+nJEAbPhqkWU3c7dGWTs6imgT/NPwyAnWC7uqct2+OOhk1nZzq3h1SXN4O+gLuHysJ1U
+        0gO88eoEcJWwNAkTlgado8lT97g8xGw4LJgf03bqn4xX0jhwDBUqS3u5D/3lS1nRAtw+wr
+        m/AnpEP2RcRDmWMZn5EcRxWCCmFVm4Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-172-7gABUynXOzW75-OE2il27A-1; Wed, 24 Mar 2021 11:22:54 -0400
+X-MC-Unique: 7gABUynXOzW75-OE2il27A-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CF57884D97;
+        Wed, 24 Mar 2021 15:22:24 +0000 (UTC)
+Received: from vitty.brq.redhat.com (unknown [10.40.195.59])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C49E6E169;
+        Wed, 24 Mar 2021 15:22:20 +0000 (UTC)
+From:   Vitaly Kuznetsov <vkuznets@redhat.com>
+To:     linux-acpi@vger.kernel.org, x86@kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Al Stone <ahs3@redhat.com>, Zhang Rui <rui.zhang@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: processor: Fix CPU0 wakeup in acpi_idle_play_dead()
+Date:   Wed, 24 Mar 2021 16:22:19 +0100
+Message-Id: <20210324152219.1456012-1-vkuznets@redhat.com>
 MIME-Version: 1.0
-References: <20210323212033.2033633-1-erik.kaneda@intel.com>
-In-Reply-To: <20210323212033.2033633-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 24 Mar 2021 14:54:16 +0100
-Message-ID: <CAJZ5v0izYKBQiTHNj6bn89t-PVCQOBAN9m0E0vJmqdgn+LjB6w@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Always create namespace nodes using acpi_ns_create_node()
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Kees Cook <keescook@chromium.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Bob Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 23, 2021 at 10:52 PM Erik Kaneda <erik.kaneda@intel.com> wrote:
->
-> From: Vegard Nossum <vegard.nossum@oracle.com>
->
-> ACPICA commit 29da9a2a3f5b2c60420893e5c6309a0586d7a329
->
-> ACPI is allocating an object using kmalloc(), but then frees it
-> using kmem_cache_free(<"Acpi-Namespace" kmem_cache>).
->
-> This is wrong and can lead to boot failures manifesting like this:
->
->     hpet0: 3 comparators, 64-bit 100.000000 MHz counter
->     clocksource: Switched to clocksource tsc-early
->     BUG: unable to handle page fault for address: 000000003ffe0018
->     #PF: supervisor read access in kernel mode
->     #PF: error_code(0x0000) - not-present page
->     PGD 0 P4D 0
->     Oops: 0000 [#1] SMP PTI
->     CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.6.0+ #211
->     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-> Ubuntu-1.8.2-1ubuntu1 04/01/2014
->     RIP: 0010:kmem_cache_alloc+0x70/0x1d0
->     Code: 00 00 4c 8b 45 00 65 49 8b 50 08 65 4c 03 05 6f cc e7 7e 4d 8b
-> 20 4d 85 e4 0f 84 3d 01 00 00 8b 45 20 48 8b 7d 00 48 8d 4a 01 <49> 8b
->    1c 04 4c 89 e0 65 48 0f c7 0f 0f 94 c0 84 c0 74 c5 8b 45 20
->     RSP: 0000:ffffc90000013df8 EFLAGS: 00010206
->     RAX: 0000000000000018 RBX: ffffffff81c49200 RCX: 0000000000000002
->     RDX: 0000000000000001 RSI: 0000000000000dc0 RDI: 000000000002b300
->     RBP: ffff88803e403d00 R08: ffff88803ec2b300 R09: 0000000000000001
->     R10: 0000000000000dc0 R11: 0000000000000006 R12: 000000003ffe0000
->     R13: ffffffff8110a583 R14: 0000000000000dc0 R15: ffffffff81c49a80
->     FS:  0000000000000000(0000) GS:ffff88803ec00000(0000)
-> knlGS:0000000000000000
->     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     CR2: 000000003ffe0018 CR3: 0000000001c0a001 CR4: 00000000003606f0
->     DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->     DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->     Call Trace:
->      __trace_define_field+0x33/0xa0
->      event_trace_init+0xeb/0x2b4
->      tracer_init_tracefs+0x60/0x195
->      ? register_tracer+0x1e7/0x1e7
->      do_one_initcall+0x74/0x160
->      kernel_init_freeable+0x190/0x1f0
->      ? rest_init+0x9a/0x9a
->      kernel_init+0x5/0xf6
->      ret_from_fork+0x35/0x40
->     CR2: 000000003ffe0018
->     ---[ end trace 707efa023f2ee960 ]---
->     RIP: 0010:kmem_cache_alloc+0x70/0x1d0
->
-> Bisection leads to unrelated changes in slab; Vlastimil Babka
-> suggests an unrelated layout or slab merge change merely exposed
-> the underlying bug.
->
-> Link:
-> https://lore.kernel.org/lkml/4dc93ff8-f86e-f4c9-ebeb-6d3153a78d03@oracle.com/
-> Link:
-> https://lore.kernel.org/r/a1461e21-c744-767d-6dfc-6641fd3e3ce2@siemens.com
-> Debugged-by: Vlastimil Babka <vbabka@suse.cz>
-> Debugged-by: Kees Cook <keescook@chromium.org>
-> Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
-> Fixes: f79c8e4136eac37255ead8875593ae33a2c16d20 ("ACPICA: Namespace:
-> simplify creation of the initial/default namespace")
->
-> Link: https://github.com/acpica/acpica/commit/29da9a2a
-> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-> Signed-off-by: Bob Moore <robert.moore@intel.com>
-> Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-> ---
->  drivers/acpi/acpica/nsaccess.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/nsaccess.c b/drivers/acpi/acpica/nsaccess.c
-> index 3f045b5953b2..a0c1a665dfc1 100644
-> --- a/drivers/acpi/acpica/nsaccess.c
-> +++ b/drivers/acpi/acpica/nsaccess.c
-> @@ -99,13 +99,12 @@ acpi_status acpi_ns_root_initialize(void)
->                  * just create and link the new node(s) here.
->                  */
->                 new_node =
-> -                   ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_namespace_node));
-> +                   acpi_ns_create_node(*ACPI_CAST_PTR(u32, init_val->name));
->                 if (!new_node) {
->                         status = AE_NO_MEMORY;
->                         goto unlock_and_exit;
->                 }
->
-> -               ACPI_COPY_NAMESEG(new_node->name.ascii, init_val->name);
->                 new_node->descriptor_type = ACPI_DESC_TYPE_NAMED;
->                 new_node->type = init_val->type;
->
-> --
+Commit 496121c02127 ("ACPI: processor: idle: Allow probing on platforms
+with one ACPI C-state") broke CPU0 hotplug on certain systems, e.g.
+I'm observing the following on AWS Nitro (e.g r5b.xlarge but other
+instance types are affected as well):
 
-Applied as 5.12-rc material, thanks!
+ # echo 0 > /sys/devices/system/cpu/cpu0/online
+ # echo 1 > /sys/devices/system/cpu/cpu0/online
+ <10 seconds delay>
+ -bash: echo: write error: Input/output error
+
+In fact, the above mentioned commit only revealed the problem and did
+not introduce it. On x86, to wakeup CPU an NMI is being used and
+hlt_play_dead()/mwait_play_dead() loops are prepared to handle it:
+
+	/*
+	 * If NMI wants to wake up CPU0, start CPU0.
+	 */
+	if (wakeup_cpu0())
+		start_cpu0();
+
+cpuidle_play_dead() -> acpi_idle_play_dead() (which is now being called on
+systems where it wasn't called before the above mentioned commit) serves
+the same purpose but it doesn't have a path for CPU0. What happens now on
+wakeup is:
+- NMI is sent to CPU0
+- wakeup_cpu0_nmi() works as expected
+- we get back to while (1) loop in acpi_idle_play_dead()
+- safe_halt() puts CPU0 to sleep again.
+
+The straightforward/minimal fix is add the special handling for CPU0 on x86
+and that's what the patch is doing.
+
+Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+ arch/x86/include/asm/smp.h    | 1 +
+ arch/x86/kernel/smpboot.c     | 2 +-
+ drivers/acpi/processor_idle.c | 7 +++++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index c0538f82c9a2..57ef2094af93 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -132,6 +132,7 @@ void native_play_dead(void);
+ void play_dead_common(void);
+ void wbinvd_on_cpu(int cpu);
+ int wbinvd_on_all_cpus(void);
++bool wakeup_cpu0(void);
+ 
+ void native_smp_send_reschedule(int cpu);
+ void native_send_call_func_ipi(const struct cpumask *mask);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 02813a7f3a7c..f877150a91da 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1659,7 +1659,7 @@ void play_dead_common(void)
+ 	local_irq_disable();
+ }
+ 
+-static bool wakeup_cpu0(void)
++bool wakeup_cpu0(void)
+ {
+ 	if (smp_processor_id() == 0 && enable_start_cpu0)
+ 		return true;
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index d93e400940a3..eb1101b16c08 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -29,6 +29,7 @@
+  */
+ #ifdef CONFIG_X86
+ #include <asm/apic.h>
++#include <asm/cpu.h>
+ #endif
+ 
+ #define _COMPONENT              ACPI_PROCESSOR_COMPONENT
+@@ -541,6 +542,12 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+ 			wait_for_freeze();
+ 		} else
+ 			return -ENODEV;
++
++#ifdef CONFIG_X86
++		/* If NMI wants to wake up CPU0, start CPU0. */
++		if (wakeup_cpu0())
++			start_cpu0();
++#endif
+ 	}
+ 
+ 	/* Never reached */
+-- 
+2.30.2
+
