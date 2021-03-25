@@ -2,199 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDADF348684
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 02:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36249348686
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 02:46:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233499AbhCYBnY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Mar 2021 21:43:24 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:14463 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232757AbhCYBnU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Mar 2021 21:43:20 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F5SW02pPBzwQl0;
-        Thu, 25 Mar 2021 09:41:16 +0800 (CST)
-Received: from [127.0.0.1] (10.40.192.162) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.498.0; Thu, 25 Mar 2021
- 09:43:15 +0800
-Subject: Re: [PATCH] ACPI: AC: fix some errors and warnings reported by
- checkpatch.pl
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-References: <1616504247-48744-1-git-send-email-tanxiaofei@huawei.com>
- <CAJZ5v0jKBXuvuhMiLCRJKhk9Ctbmh6mTcRqSh-_WnwHVZ0PabQ@mail.gmail.com>
- <3d663f6a-69d7-56db-fa4d-593c7e7857f8@huawei.com>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        <linuxarm@openeuler.org>
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-Message-ID: <853d8b8d-11bd-389c-a07c-36d5cf5f2733@huawei.com>
-Date:   Thu, 25 Mar 2021 09:43:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S235597AbhCYBpe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Mar 2021 21:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55460 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235609AbhCYBpE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Mar 2021 21:45:04 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E503C06174A;
+        Wed, 24 Mar 2021 18:45:04 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id kt15so273601ejb.12;
+        Wed, 24 Mar 2021 18:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=UFKtpzNTUw0dZnmqUKCddBhitT5Nzt1XRd2rQyF5h/A=;
+        b=StxL8O/JXAprzxFi/JoWeK6y6WR4zWuPSyMoTcJggPhfE1B9XvOlK7K/VuvD/4p87H
+         fgp6JyfXU2IIqLOa1pZ5ZhBIm86FXscuw8qbufCnI/6jKXAoVRxQDo/vDg//hXcszo6v
+         /YyuxCttia/vK/CBlpra+SpOu4viuAeSCGe9ccpYwutatH+1PRr030zPFDpxDcrJYam+
+         NkPOe2ZuZes2FbDBCxfaM5akiBBS5wjFDXSieW0/YDTQhyu+TmS905RZzC5L1lmlsb4B
+         UD1U7OYlYW5MV5Iyzebr07wM+8NfCmL/IIcKLS0OVrkeVAGVjpboRMKc8Q+2i0yph6AU
+         cUWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=UFKtpzNTUw0dZnmqUKCddBhitT5Nzt1XRd2rQyF5h/A=;
+        b=O1NFx+pE/cKmT9GmC3zuijqprVTbsI1nlPYGYfFszL+vD4g6esa0FoBwP644EVf9Hr
+         Rmf5x45JaHoqAxGM3xbeVU17H6t8YQCCPamyVph1SYsL+llOUhCOeWEgl2ov8M+Dl2pE
+         oPnH2ER49aQl7wDvT1BemwhseoxXk6fez2/CigZ9gLyyNnVsfYiGjGk1vStgTSJimDww
+         oq5mmDw2Etj4Q1cRU+ucr1q2l3myZCdxXjXfUw+5ot26vHXHjU6ypR6EgWPyawvHBDJj
+         zsb7hn2Y2jtu2kQQi6/BE3l6JEeKgRFYlADnRL0mu5t4A+67+7Sqisgsj7Lvq9JKJ9AH
+         UfLA==
+X-Gm-Message-State: AOAM533vsvgDSrlY/ycD+1XoEFHbaK9tt2Ml5qzOYH6WCKdB9bGFijCD
+        C+OH5I6++0UmXWJhiCJx1W6kdjpJ1qIQeF9hVjE=
+X-Google-Smtp-Source: ABdhPJyQbgFaw+TFMYupQqo+/aqax3pYOmC2+EiGYI6eAR1yOda786c4U1Je/qAIiPGqDL7x+/LZ/7CBbu/BfI8mrYQ=
+X-Received: by 2002:a17:906:6044:: with SMTP id p4mr6832160ejj.82.1616636703059;
+ Wed, 24 Mar 2021 18:45:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <3d663f6a-69d7-56db-fa4d-593c7e7857f8@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.40.192.162]
-X-CFilter-Loop: Reflected
+References: <20210209031744.26474-1-weidongcui@gmail.com> <MWHPR11MB1599D81078925FFD128E954EF0989@MWHPR11MB1599.namprd11.prod.outlook.com>
+ <BYAPR11MB325658379DB73F6EEDD6C76F87979@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <CADFYyO73g8LkgwZv4m5N2bXq0XcZru4m9+K0uudCLmcp7yewpQ@mail.gmail.com>
+ <BYAPR11MB3256FD804E3F3CE584B6D3B387979@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <BYAPR11MB3256B80EC10AF4965083CCD087969@BYAPR11MB3256.namprd11.prod.outlook.com>
+ <CADFYyO5B2Mf50+gu6Dr7W3y9hGh9P2wOjyiYqJwLKcX_2pX8QA@mail.gmail.com>
+In-Reply-To: <CADFYyO5B2Mf50+gu6Dr7W3y9hGh9P2wOjyiYqJwLKcX_2pX8QA@mail.gmail.com>
+Reply-To: weidongcui@gmail.com
+From:   Weidong Cui <weidongcui@gmail.com>
+Date:   Wed, 24 Mar 2021 18:44:52 -0700
+Message-ID: <CADFYyO6JwZvS6SAy5+QF65X0pQvpT2Hse+mnC9L8ronb-TieTA@mail.gmail.com>
+Subject: Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces
+ only when ACPI_PCI_CONFIGURED is defined
+To:     "Moore, Robert" <robert.moore@intel.com>
+Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Xinyang Ge <aegiryy@gmail.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
-BTW, there is still one warning left reported by checkpatch.pl in this 
-file. The cause of the warning is that it contains an special character 
-'$'. Does it have any special purpose? If no, i can fix it in the new 
-version, too. thanks.
+Hi Bob and Erik,
 
-WARNING: CVS style keyword markers, these will _not_ be updated
-#3: FILE: drivers/acpi/ac.c:3:
-+ *  acpi_ac.c - ACPI AC Adapter Driver ($Revision: 27 $)
+> Hi Bob,
+>
+> Thank you very much for your new suggestion!  Let me make sure I understand it.
+>
+> 1. We should move the following define from aclinux.h to acconfig.h.
+>
+> #ifdef CONFIG_PCI
+> #define ACPI_PCI_CONFIGURED
+> #endif
+>
+> 2. We should add a comment there to "document why and when it should
+> be removed".
+> I don't really know "why and when" since I'm not an expert on ACPI (we
+> were just trying
+> to fix a bug :-)).
+>
+> Thanks!
+> Weidong
 
-On 2021/3/25 9:26, Xiaofei Tan wrote:
-> Hi Rafael，
->
-> On 2021/3/24 23:57, Rafael J. Wysocki wrote:
->> On Tue, Mar 23, 2021 at 2:01 PM Xiaofei Tan <tanxiaofei@huawei.com>
->> wrote:
->>>
->>> Fix some errors and warnings reported by checkpatch.pl, including
->>> following five types:
->>
->> Well, they are coding style issues rather than errors.
->>
->
-> Right, i could change the description.
->
->>> ERROR: "foo * bar" should be "foo *bar"
->>> ERROR: code indent should use tabs where possible
->>> WARNING: Block comments use a trailing */ on a separate line
->>> WARNING: braces {} are not necessary for single statement blocks
->>> WARNING: void function return statements are not generally useful
->>>
->>> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
->>> ---
->>>  drivers/acpi/ac.c | 32 +++++++++++++-------------------
->>>  1 file changed, 13 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
->>> index b86ee6e..07987854 100644
->>> --- a/drivers/acpi/ac.c
->>> +++ b/drivers/acpi/ac.c
->>> @@ -78,17 +78,16 @@ static struct acpi_driver acpi_ac_driver = {
->>>  struct acpi_ac {
->>>         struct power_supply *charger;
->>>         struct power_supply_desc charger_desc;
->>> -       struct acpi_device * device;
->>> +       struct acpi_device *device;
->>>         unsigned long long state;
->>>         struct notifier_block battery_nb;
->>>  };
->>>
->>>  #define to_acpi_ac(x) power_supply_get_drvdata(x)
->>>
->>> -/*
->>> --------------------------------------------------------------------------
->>>
->>> -                               AC Adapter Management
->>> -
->>> --------------------------------------------------------------------------
->>> */
->>> -
->>> +/*
->>> + * AC Adapter Management
->>> + */
->>
->> Please use the /* ... */ (one-line) comment format here and below for
->> comments that aren't longer than one line.
->>
->
-> Sure.
->
->>>  static int acpi_ac_get_state(struct acpi_ac *ac)
->>>  {
->>>         acpi_status status = AE_OK;
->>> @@ -109,9 +108,9 @@ static int acpi_ac_get_state(struct acpi_ac *ac)
->>>         return 0;
->>>  }
->>>
->>> -/*
->>> --------------------------------------------------------------------------
->>>
->>> -                            sysfs I/F
->>> -
->>> --------------------------------------------------------------------------
->>> */
->>> +/*
->>> + * sysfs I/F
->>> + */
->>>  static int get_ac_property(struct power_supply *psy,
->>>                            enum power_supply_property psp,
->>>                            union power_supply_propval *val)
->>> @@ -138,10 +137,9 @@ static enum power_supply_property ac_props[] = {
->>>         POWER_SUPPLY_PROP_ONLINE,
->>>  };
->>>
->>> -/*
->>> --------------------------------------------------------------------------
->>>
->>> -                                   Driver Model
->>> -
->>> --------------------------------------------------------------------------
->>> */
->>> -
->>> +/*
->>> + * Driver Model
->>> + */
->>>  static void acpi_ac_notify(struct acpi_device *device, u32 event)
->>>  {
->>>         struct acpi_ac *ac = acpi_driver_data(device);
->>> @@ -174,8 +172,6 @@ static void acpi_ac_notify(struct acpi_device
->>> *device, u32 event)
->>>                 acpi_notifier_call_chain(device, event, (u32)
->>> ac->state);
->>>                 kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
->>>         }
->>> -
->>> -       return;
->>>  }
->>>
->>>  static int acpi_ac_battery_notify(struct notifier_block *nb,
->>> @@ -282,9 +278,8 @@ static int acpi_ac_add(struct acpi_device *device)
->>>         ac->battery_nb.notifier_call = acpi_ac_battery_notify;
->>>         register_acpi_notifier(&ac->battery_nb);
->>>  end:
->>> -       if (result) {
->>> +       if (result)
->>>                 kfree(ac);
->>> -       }
->>>
->>>         return result;
->>>  }
->>> @@ -293,7 +288,7 @@ static int acpi_ac_add(struct acpi_device *device)
->>>  static int acpi_ac_resume(struct device *dev)
->>>  {
->>>         struct acpi_ac *ac;
->>> -       unsigned old_state;
->>> +       unsigned int old_state;
->>>
->>>         if (!dev)
->>>                 return -EINVAL;
->>> @@ -352,9 +347,8 @@ static int __init acpi_ac_init(void)
->>>         }
->>>
->>>         result = acpi_bus_register_driver(&acpi_ac_driver);
->>> -       if (result < 0) {
->>> +       if (result < 0)
->>>                 return -ENODEV;
->>> -       }
->>>
->>>         return 0;
->>>  }
->>> --
->>
->> .
->>
+Hi Bob and Erik,
 
+I would like to ping you about my two questions above.  Can you please
+advise on how I should proceed?
+
+Thanks!
+Weidong
+
+>
+> > -----Original Message-----
+> > From: Moore, Robert <robert.moore@intel.com>
+> > Sent: Thursday, March 04, 2021 9:37 AM
+> > To: weidongcui@gmail.com
+> > Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org
+> > Subject: [Devel] Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is defined
+> >
+> >
+> >
+> > -----Original Message-----
+> > From: Weidong Cui <weidongcui@gmail.com>
+> > Sent: Thursday, March 04, 2021 9:06 AM
+> > To: Moore, Robert <robert.moore@intel.com>
+> > Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; Len Brown <lenb@kernel.org>
+> > Subject: Re: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is defined
+> >
+> > > Well, I don't like the fact that PCI_CONFIGURED would have to be defined by each current host:
+> > >
+> > > > +#ifdef ACPI_PCI_CONFIGURED
+> > >
+> > > I would rather the logic be reversed:
+> > >
+> > > > +#ifdef ACPI_PCI_NOT_CONFIGURED
+> >
+> > Thank you for the comments, Erik and Bob!
+> >
+> > ACPI_PCI_CONFIGURED is defined in aclinux.h (see below) and used in several places in evhandler.c and exregion.c.
+> > I'm not sure why we want to introduce ACPI_PCI_NOT_CONFIGURED.  Bob, I don't understand your concerns about "have to be defined by each current host".  Can you please shed some light on it?
+> >
+> > It is required in aclinux.h, and thus it is required in every host-dependent configuration file (acfreebsd.h, acmacosx.h, acnetbsd.h, achaiku.h, etc.) I would rather not force these host-specific header files to change.
+> > Bob
+> >
+> >
+> > #ifdef CONFIG_PCI
+> > #define ACPI_PCI_CONFIGURED
+> > #endif
+> >
+> > > -----Original Message-----
+> > > From: Kaneda, Erik <erik.kaneda@intel.com>
+> > > Sent: Wednesday, March 03, 2021 10:29 AM
+> > > To: Weidong Cui <weidongcui@gmail.com>; Moore, Robert
+> > > <robert.moore@intel.com>; Wysocki, Rafael J
+> > > <rafael.j.wysocki@intel.com>
+> > > Cc: Xinyang Ge <aegiryy@gmail.com>; linux-acpi@vger.kernel.org;
+> > > devel@acpica.org; linux-kernel@vger.kernel.org; Len Brown
+> > > <lenb@kernel.org>
+> > > Subject: RE: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in
+> > > acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is
+> > > defined
+> > >
+> > > This looks good to me. Bob, do you have any comments?
+> > >
+> > > Erik
+> > >
+> > > > -----Original Message-----
+> > > > From: Weidong Cui <weidongcui@gmail.com>
+> > > > Sent: Monday, February 8, 2021 7:18 PM
+> > > > To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
+> > > > <erik.kaneda@intel.com>; Wysocki, Rafael J
+> > > > <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>
+> > > > Cc: Weidong Cui <weidongcui@gmail.com>; Xinyang Ge
+> > > > <aegiryy@gmail.com>; linux-acpi@vger.kernel.org; devel@acpica.org;
+> > > > linux- kernel@vger.kernel.org
+> > > > Subject: [PATCH] Enable ACPI_ADR_SPACE_PCI_CONFIG in
+> > > > acpi_gbl_default_address_spaces only when ACPI_PCI_CONFIGURED is
+> > > > defined
+> > > >
+> > > > Signed-off-by: Weidong Cui <weidongcui@gmail.com>
+> > > > Signed-off-by: Xinyang Ge <aegiryy@gmail.com>
+> > > > ---
+> > > >  drivers/acpi/acpica/evhandler.c | 2 ++
+> > > >  include/acpi/acconfig.h         | 4 ++++
+> > > >  2 files changed, 6 insertions(+)
+> > > >
+> > > > diff --git a/drivers/acpi/acpica/evhandler.c
+> > > > b/drivers/acpi/acpica/evhandler.c index 5884eba04..4c25ad433 100644
+> > > > --- a/drivers/acpi/acpica/evhandler.c
+> > > > +++ b/drivers/acpi/acpica/evhandler.c
+> > > > @@ -26,7 +26,9 @@ acpi_ev_install_handler(acpi_handle obj_handle,
+> > > >  u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
+> > > >       ACPI_ADR_SPACE_SYSTEM_MEMORY,
+> > > >       ACPI_ADR_SPACE_SYSTEM_IO,
+> > > > +#ifdef ACPI_PCI_CONFIGURED
+> > > >       ACPI_ADR_SPACE_PCI_CONFIG,
+> > > > +#endif
+> > > >       ACPI_ADR_SPACE_DATA_TABLE
+> > > >  };
+> > > >
+> > > > diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h index
+> > > > a225eff49..790999028 100644
+> > > > --- a/include/acpi/acconfig.h
+> > > > +++ b/include/acpi/acconfig.h
+> > > > @@ -162,7 +162,11 @@
+> > > >  /* Maximum space_ids for Operation Regions */
+> > > >
+> > > >  #define ACPI_MAX_ADDRESS_SPACE          255
+> > > > +#ifdef ACPI_PCI_CONFIGURED
+> > > >  #define ACPI_NUM_DEFAULT_SPACES         4
+> > > > +#else
+> > > > +#define ACPI_NUM_DEFAULT_SPACES         3
+> > > > +#endif
+> > > >
+> > > >  /* Array sizes.  Used for range checking also */
+> > > >
+> > > > --
+> > > > 2.24.3 (Apple Git-128)
+> > >
+> > _______________________________________________
+> > Devel mailing list -- devel@acpica.org
+> > To unsubscribe send an email to devel-leave@acpica.org %(web_page_url)slistinfo%(cgiext)s/%(_internal_name)s
