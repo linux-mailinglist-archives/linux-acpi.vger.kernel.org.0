@@ -2,95 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 039A2349627
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 16:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D2A234980C
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 18:31:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbhCYPzS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Mar 2021 11:55:18 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:3386 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbhCYPy7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 11:54:59 -0400
-Received: from DGGEML402-HUB.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4F5qP32fMvz5hBt;
-        Thu, 25 Mar 2021 23:52:23 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- DGGEML402-HUB.china.huawei.com (10.3.17.38) with Microsoft SMTP Server (TLS)
- id 14.3.498.0; Thu, 25 Mar 2021 23:54:55 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 25 Mar 2021 23:54:54 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2106.013; Thu, 25 Mar 2021 15:54:52 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Jon Nettleton <jon@solid-run.com>,
-        "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: RE: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
-Thread-Topic: [RFC PATCH v2 1/8] ACPICA: IORT: Update for revision E
-Thread-Index: AQHWvm1dfTBTih8pMEKAOph+J6BTAKqQitWggAQXOICAAP9lgA==
-Date:   Thu, 25 Mar 2021 15:54:51 +0000
-Message-ID: <acfab98e75434a59910cf56336c54ba2@huawei.com>
-References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
- <20201119121150.3316-2-shameerali.kolothum.thodi@huawei.com>
- <b7a2424941214b33803e34ba3e532440@huawei.com>
- <CABdtJHtZPyWpXN9JZbgdu=HswreTc2o2pRhrwHFzQJqz-kFSBw@mail.gmail.com>
-In-Reply-To: <CABdtJHtZPyWpXN9JZbgdu=HswreTc2o2pRhrwHFzQJqz-kFSBw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.26.249]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S229670AbhCYRah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Mar 2021 13:30:37 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:41746 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229836AbhCYRaZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 13:30:25 -0400
+Received: by mail-oi1-f178.google.com with SMTP id z15so2898121oic.8;
+        Thu, 25 Mar 2021 10:30:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MClPgIyJWfzB8v7uHNHe9wccdA+LIzruu+7HvqWMVsk=;
+        b=UkwNXC3itudIhbppfev4oZtlF9EiPQdppo8rTHO83N3bI0Nz4TgOPQL1KWG99Y+xGW
+         iEly2M9rbf001bYYpdE9jY3RWexmzAtOuKV7DNj4vGrk9f6AfQ24HDC71bhvDSgzOo0M
+         f3c+RS455jHD5eDLARckoeCKUZvnCVnwBuMyRPh+NKOOuHNJ0oOU6sFCd5uDNlc4AvHO
+         PsbZWML8vLtWqEcyFqbix+gU9yJPYiKjSYXHHArL5AQYxQ/Nd/UdRlr2ZJmiooZ3aLx6
+         5JCBspGJxJrwVwvD2HylHhTAeNMgfJOv2aAgEKSnD8dVAbLFFPEHb4+78iFLLuF0eO5y
+         vNfg==
+X-Gm-Message-State: AOAM530jJ6s/ZZfKjVWA4/ZeFMg0SFKKpDYNYkxg3J1uGlFv6b4lEjyj
+        SInb75eR+UeuQw/+HGMR7XNRTa0q4bjpzjkEzlJRBYrA
+X-Google-Smtp-Source: ABdhPJxE/C6eSPVaf4dimAwiP+yujmKc/6HUQkkVJAv4EIoqxpsA/VZIQFj8Yw/bmnJ0HCb7cdnS9sPLknm+8tN0ODM=
+X-Received: by 2002:aca:c4c5:: with SMTP id u188mr7020325oif.71.1616693425185;
+ Thu, 25 Mar 2021 10:30:25 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+References: <20210325075144.180030-1-wangxiongfeng2@huawei.com> <20210325075144.180030-3-wangxiongfeng2@huawei.com>
+In-Reply-To: <20210325075144.180030-3-wangxiongfeng2@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 25 Mar 2021 18:30:14 +0100
+Message-ID: <CAJZ5v0hgsuv8NwuhtK4CrdjPT_VMz1Dp4bDeYtEQs3qeJN_Uhg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] PCI/AER: Correct function names in the header
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, ruscur@russell.cc,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uIE5ldHRsZXRvbiBb
-bWFpbHRvOmpvbkBzb2xpZC1ydW4uY29tXQ0KPiBTZW50OiAyNSBNYXJjaCAyMDIxIDA4OjQwDQo+
-IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2Rp
-QGh1YXdlaS5jb20+DQo+IENjOiBlcmlrLmthbmVkYUBpbnRlbC5jb207IGxpbnV4LWFybS1rZXJu
-ZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsNCj4gbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGlv
-bW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnOw0KPiBkZXZlbEBhY3BpY2Eub3JnOyBMb3Jl
-bnpvIFBpZXJhbGlzaSA8bG9yZW56by5waWVyYWxpc2lAYXJtLmNvbT47DQo+IHJvYmVydC5tb29y
-ZUBpbnRlbC5jb207IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsNCj4gc3RldmVuLnBy
-aWNlQGFybS5jb207IEd1b2hhbmp1biAoSGFuanVuIEd1bykgPGd1b2hhbmp1bkBodWF3ZWkuY29t
-PjsNCj4gU2FtaS5NdWphd2FyQGFybS5jb207IHJvYmluLm11cnBoeUBhcm0uY29tOyB3YW5naHVp
-cWlhbmcNCj4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1JGQyBQ
-QVRDSCB2MiAxLzhdIEFDUElDQTogSU9SVDogVXBkYXRlIGZvciByZXZpc2lvbiBFDQoNClsuLi5d
-DQoNCj4gV2VsbCBpdCB3YXMgYSByZWxlYXNlZCByZXZpc2lvbiwgYWx0aG91Z2ggaXQgd2FzIGZv
-dW5kIHRvIGhhdmUgaXNzdWVzLg0KPiBDdXJyZW50bHkNCj4gSG9uZXlDb21iIFN5c3RlbXMgUmVh
-ZHkgY2VydGlmaWVkIGZpcm13YXJlIGRvZXMgaW5jbHVkZSBzdXBwb3J0IGZvciB0aGlzDQo+IHRh
-YmxlLA0KPiBhbHRob3VnaCBpbmNvbXBsZXRlLiAgV2l0aG91dCBhZ3JlZW1lbnQgb24gbWFpbmxp
-bmUgc3VwcG9ydCBJIGFtIGZpbmUgdG8NCj4gdXBkYXRlDQo+IHRvIHRoZSBsYXRlc3Qgc3BlYyBi
-dW1wLg0KDQpPay4gU29ycnkgZGlkbuKAmXQga25vdyB0aGF0IHlvdSBhbHJlYWR5IGhhZCBhIGZp
-cm13YXJlIHdpdGggdGhhdCByZXZpc2lvbi4NClRoYW5rcyBmb3IgYWdyZWVpbmcgdG8gdXBkYXRl
-IHRvIGxhdGVzdC4NCg0KPiA+DQo+ID4gU28gY291bGQgeW91IHBsZWFzZSByZXZlcnQgdGhlIG1l
-cmdlIGFuZCBJIGFtIHBsYW5uaW5nIHRvIHdvcmsgb24gdGhlIEUuYg0KPiBzb29uLg0KPiA+IFBs
-ZWFzZSBsZXQgbWUga25vdyBpZiBJIG5lZWQgdG8gZXhwbGljaXRseSBzZW5kIGEgcmV2ZXJ0IHB1
-bGwgcmVxdWVzdCBvciBub3QuDQo+IA0KPiBDYW4geW91IHBsZWFzZSBDQy4gbWUgb24geW91ciBu
-ZXh0IHJlbGVhc2UuICBJIHdhcyBwbGFubmluZyBvbiBzcGVuZGluZyB0aW1lDQo+IG9uIHRoaXMg
-cmVnYXJkbGVzcy4gIEkgYWxyZWFkeSBoYXZlIGEgcGF0Y2hzZXQgZm9yIHRoZSBmc2wtbWMtYnVz
-IGRyaXZlciB0aGF0DQo+IG5lZWRzIHRvIGNoYW5nZSBpbiBvcmRlciB0byBmdW5jdGlvbiBwcm9w
-ZXJseSB3aXRoIFJNUiBzdXBwb3J0Lg0KDQpTdXJlLiBXaWxsIENDIHlvdS4NCg0KSGkgQWxsLA0K
-DQpJIGhhdmUgc2VuZCBwdWxsIHJlcXVlc3RzIHRvIGFjcGljYSBnaXQgZm9yIHJldmVydGluZyBy
-ZXYgRSBhbmQgdG8gdXBkYXRlIGl0IHdpdGggRS5iLA0KDQpodHRwczovL2dpdGh1Yi5jb20vYWNw
-aWNhL2FjcGljYS9wdWxsLzY4Mg0KDQpQbGVhc2UgdGFrZSBhIGxvb2sgYW5kIGxldCBtZSBrbm93
-Lg0KDQpUaGFua3MsDQpTaGFtZWVyDQo=
+On Thu, Mar 25, 2021 at 8:50 AM Xiongfeng Wang
+<wangxiongfeng2@huawei.com> wrote:
+>
+> Fixes the following W=1 kernel build warning(s):
+>
+>  drivers/pci/pcie/aer.c:138: warning: expecting prototype for enable_ercr_checking(). Prototype was for enable_ecrc_checking() instead
+>  drivers/pci/pcie/aer.c:162: warning: expecting prototype for disable_ercr_checking(). Prototype was for disable_ecrc_checking() instead
+>  drivers/pci/pcie/aer.c:1450: warning: expecting prototype for aer_service_init(). Prototype was for pcie_aer_init() instead
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+
+The subject is somewhat inaccurate, because you're fixing function
+names in kerneldoc comments.
+
+If you say "a header", people may think that this is about a header file.
+
+> ---
+>  drivers/pci/pcie/aer.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index ba22388342d1..ec943cee5ecc 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -129,7 +129,7 @@ static const char * const ecrc_policy_str[] = {
+>  };
+>
+>  /**
+> - * enable_ercr_checking - enable PCIe ECRC checking for a device
+> + * enable_ecrc_checking - enable PCIe ECRC checking for a device
+>   * @dev: the PCI device
+>   *
+>   * Returns 0 on success, or negative on failure.
+> @@ -153,7 +153,7 @@ static int enable_ecrc_checking(struct pci_dev *dev)
+>  }
+>
+>  /**
+> - * disable_ercr_checking - disables PCIe ECRC checking for a device
+> + * disable_ecrc_checking - disables PCIe ECRC checking for a device
+>   * @dev: the PCI device
+>   *
+>   * Returns 0 on success, or negative on failure.
+> @@ -1442,7 +1442,7 @@ static struct pcie_port_service_driver aerdriver = {
+>  };
+>
+>  /**
+> - * aer_service_init - register AER root service driver
+> + * pcie_aer_init - register AER root service driver
+>   *
+>   * Invoked when AER root service driver is loaded.
+>   */
+> --
+> 2.20.1
+>
