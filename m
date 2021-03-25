@@ -2,63 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48274348A72
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 08:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 409F9348B5B
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Mar 2021 09:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbhCYHu2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Mar 2021 03:50:28 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:14873 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbhCYHuV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 03:50:21 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4F5cfT1D0Hz9sdP;
-        Thu, 25 Mar 2021 15:48:17 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 25 Mar 2021 15:50:09 +0800
-From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
-To:     <bhelgaas@google.com>, <rjw@rjwysocki.net>, <ruscur@russell.cc>
-CC:     <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <wangxiongfeng2@huawei.com>
-Subject: [PATCH 4/4] PCI/ATS: Correct pci_max_pasids() function name in header
-Date:   Thu, 25 Mar 2021 15:51:44 +0800
-Message-ID: <20210325075144.180030-5-wangxiongfeng2@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210325075144.180030-1-wangxiongfeng2@huawei.com>
-References: <20210325075144.180030-1-wangxiongfeng2@huawei.com>
+        id S229576AbhCYIQn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Mar 2021 04:16:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54648 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229676AbhCYIQY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 04:16:24 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FE4C06174A;
+        Thu, 25 Mar 2021 01:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=/exH9O9awcWsxCz7+eapTVCjP1xnjzd++2TmK3g0wUA=; b=mza4LLBSMR5tgg00tK6/RqwQry
+        EAWd+m3DmQ5LsHRZKpQcVroIj4hHPKMXZeiDU6H8WaOSWgA3Px6N+76itUWRjbryxa4/LU5SIjTi4
+        kvOAg5i2hzYGoVV88qRszX0+ZYbQV2Oj460JUXXQc/Nf4PqndcOxoEzXahqHyolGihggvuIyBmkjc
+        vdRP9Kv8oS1sskhHLDQ7mVC4ucvxbxolI7CPsrMYx3Ud13XsNnHJHs9F7CaRYGF9XinZCMZrBb6eO
+        XWEvbq7mPzOiPd92WTnq8e0rKsrRKASUqwZ71WJTXp8wY5EldPpCxwS8yjlommcB3dE2wgohUPhsp
+        vQJgoTpQ==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lPL9n-00CWsM-Ov; Thu, 25 Mar 2021 08:16:05 +0000
+Date:   Thu, 25 Mar 2021 08:15:55 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        ben.widawsky@intel.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/8] cxl/mem: Introduce 'struct cxl_regs'
+Message-ID: <20210325081555.GA2983117@infradead.org>
+References: <161662142382.1723715.5934723983022398253.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <161662143530.1723715.15800475088422813585.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161662143530.1723715.15800475088422813585.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+On Wed, Mar 24, 2021 at 02:30:35PM -0700, Dan Williams wrote:
+> In preparation for common register mapping facility, introduce a generic
+> container, 'struct cxl_regs', for CXL device register and later
+> component register block base pointers. Some CXL device types implement
+> both.
 
- drivers/pci/ats.c:490: warning: expecting prototype for pci_max_pasid(). Prototype was for pci_max_pasids() instead
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
----
- drivers/pci/ats.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index 0d3719407b8b..6d7d64939f82 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -480,7 +480,7 @@ EXPORT_SYMBOL_GPL(pci_pasid_features);
- #define PASID_NUMBER_SHIFT	8
- #define PASID_NUMBER_MASK	(0x1f << PASID_NUMBER_SHIFT)
- /**
-- * pci_max_pasid - Get maximum number of PASIDs supported by device
-+ * pci_max_pasids - Get maximum number of PASIDs supported by device
-  * @pdev: PCI device structure
-  *
-  * Returns negative value when PASID capability is not present.
--- 
-2.20.1
-
+The code looks like complete gibberish to me with a struct of a union of
+a struct declaring members in a macro.  This needs a much more detailed
+explanation and rationale.
