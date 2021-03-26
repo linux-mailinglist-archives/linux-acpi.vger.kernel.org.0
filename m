@@ -2,88 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51757349DA3
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Mar 2021 01:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F16AF349E4B
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Mar 2021 01:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbhCZAVl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Mar 2021 20:21:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38038 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbhCZAVi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 20:21:38 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B21C06174A;
-        Thu, 25 Mar 2021 17:21:36 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id c6so3168732qtc.1;
-        Thu, 25 Mar 2021 17:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kZP7LCr6VFQMI1nlD6D3G/vs5KL0ERu/J6Ru13m29K0=;
-        b=ttFi+KWZgUPlYtGrdoYKATIk26OpABOssyChmT8ceJps9SccZkwv/xojr++WSmhIx9
-         XY/mIdo2KMnBy+sATKnfjFDjR/coF0a6cIcmaxzS9N0Tm7ZPUXebJUZrMyimR0pi9kpr
-         Ybxo96gl8L0cT5hUgBKT63j3rXljgPdUGqsPq/P8grOtWxnwjMfMj87UylOb2f9PTDa7
-         8FKtGhT7BbX6XEraIJRuIBWeLIyLjgkI2XulaBT3Hict3d23bd7iWTjr82AFthwOnMpG
-         ntjudQFpavuMAvHVNI9M2MjYlCJU5ztF1bpMFIL1bAtjR9TOvpDpw1OEKJEn+6dKRqPQ
-         CKsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kZP7LCr6VFQMI1nlD6D3G/vs5KL0ERu/J6Ru13m29K0=;
-        b=BBzCYkYlsRws3Cd0G+7MZDfPvSnVcvipMxTYtSg27yk5vzFNVc8TzRBpixpxguPbNl
-         O3PRoLsmmaaQQyi+FKd5lbXu6GVjrSmMEqF4J8zy9QHtyy0IULAbH9eilnEt0oEyEVDD
-         D3F0c7mquac059ZE8vmCoXbvbK6XJN6XPmSb+weiRjfpndALc6Mkkiy05rT6sLqtsps3
-         iN/dHWjQRVSUvgGTUWJBXGonr4Ox+v8jAB9qxk0SFvzjxoummqsZ0KJNsqsnBcN4JYaR
-         W+BSAgmnpF0elMuvKxaoOMcUn/BIvwStCF6XM2dSUcqF9O+QwvN1E3JVVo2j5FnFrJ65
-         ePqg==
-X-Gm-Message-State: AOAM532YP+GOBCLVFhta9pTPa2r6w2E9/4UPNFV7CMESdLsFhOT58zRB
-        M5+nXmD08YwEM86SdK7zfZM=
-X-Google-Smtp-Source: ABdhPJxcbdhKCAphIIz27zZAygifOWwj5YXoJTYJa2MVFlbCvmHuElrAfdYX4+I8VJlXSbHxi1/IeA==
-X-Received: by 2002:ac8:698f:: with SMTP id o15mr10551740qtq.39.1616718095835;
-        Thu, 25 Mar 2021 17:21:35 -0700 (PDT)
-Received: from localhost.localdomain ([37.19.198.107])
-        by smtp.gmail.com with ESMTPSA id t24sm4777234qto.23.2021.03.25.17.21.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Mar 2021 17:21:35 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     robert.moore@intel.com, erik.kaneda@intel.com,
-        rafael.j.wysocki@intel.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] ACPICA: Fix a typo
-Date:   Fri, 26 Mar 2021 05:49:22 +0530
-Message-Id: <20210326001922.4767-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        id S230013AbhCZA7F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Mar 2021 20:59:05 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:14904 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229933AbhCZA6i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 20:58:38 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4F63TG0hWkzkfrd;
+        Fri, 26 Mar 2021 08:56:50 +0800 (CST)
+Received: from [10.174.177.160] (10.174.177.160) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 26 Mar 2021 08:58:25 +0800
+Subject: Re: [PATCH 2/4] PCI/AER: Correct function names in the header
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <ruscur@russell.cc>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210325075144.180030-1-wangxiongfeng2@huawei.com>
+ <20210325075144.180030-3-wangxiongfeng2@huawei.com>
+ <CAJZ5v0hgsuv8NwuhtK4CrdjPT_VMz1Dp4bDeYtEQs3qeJN_Uhg@mail.gmail.com>
+From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Message-ID: <39a66394-cd74-ebff-7447-cb9fa51d8db4@huawei.com>
+Date:   Fri, 26 Mar 2021 08:58:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hgsuv8NwuhtK4CrdjPT_VMz1Dp4bDeYtEQs3qeJN_Uhg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.160]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Rafael,
 
-s/optimzation/optimization/
+On 2021/3/26 1:30, Rafael J. Wysocki wrote:
+> On Thu, Mar 25, 2021 at 8:50 AM Xiongfeng Wang
+> <wangxiongfeng2@huawei.com> wrote:
+>>
+>> Fixes the following W=1 kernel build warning(s):
+>>
+>>  drivers/pci/pcie/aer.c:138: warning: expecting prototype for enable_ercr_checking(). Prototype was for enable_ecrc_checking() instead
+>>  drivers/pci/pcie/aer.c:162: warning: expecting prototype for disable_ercr_checking(). Prototype was for disable_ecrc_checking() instead
+>>  drivers/pci/pcie/aer.c:1450: warning: expecting prototype for aer_service_init(). Prototype was for pcie_aer_init() instead
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+> 
+> The subject is somewhat inaccurate, because you're fixing function
+> names in kerneldoc comments.
+> 
+> If you say "a header", people may think that this is about a header file.
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- include/acpi/acoutput.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks a lot ! I will change it in the next version.
 
-diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-index 1538a6853822..1b4c45815695 100644
---- a/include/acpi/acoutput.h
-+++ b/include/acpi/acoutput.h
-@@ -362,7 +362,7 @@
-  *
-  * A less-safe version of the macros is provided for optional use if the
-  * compiler uses excessive CPU stack (for example, this may happen in the
-- * debug case if code optimzation is disabled.)
-+ * debug case if code optimization is disabled.)
-  */
+Thanks,
+Xiongfeng
 
- /* Exit trace helper macro */
---
-2.26.2
-
+> 
+>> ---
+>>  drivers/pci/pcie/aer.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index ba22388342d1..ec943cee5ecc 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -129,7 +129,7 @@ static const char * const ecrc_policy_str[] = {
+>>  };
+>>
+>>  /**
+>> - * enable_ercr_checking - enable PCIe ECRC checking for a device
+>> + * enable_ecrc_checking - enable PCIe ECRC checking for a device
+>>   * @dev: the PCI device
+>>   *
+>>   * Returns 0 on success, or negative on failure.
+>> @@ -153,7 +153,7 @@ static int enable_ecrc_checking(struct pci_dev *dev)
+>>  }
+>>
+>>  /**
+>> - * disable_ercr_checking - disables PCIe ECRC checking for a device
+>> + * disable_ecrc_checking - disables PCIe ECRC checking for a device
+>>   * @dev: the PCI device
+>>   *
+>>   * Returns 0 on success, or negative on failure.
+>> @@ -1442,7 +1442,7 @@ static struct pcie_port_service_driver aerdriver = {
+>>  };
+>>
+>>  /**
+>> - * aer_service_init - register AER root service driver
+>> + * pcie_aer_init - register AER root service driver
+>>   *
+>>   * Invoked when AER root service driver is loaded.
+>>   */
+>> --
+>> 2.20.1
+>>
+> .
+> 
