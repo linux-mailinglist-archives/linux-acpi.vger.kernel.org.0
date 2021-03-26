@@ -2,109 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F16AF349E4B
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Mar 2021 01:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C269349E6A
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Mar 2021 02:08:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbhCZA7F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Mar 2021 20:59:05 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:14904 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbhCZA6i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 20:58:38 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4F63TG0hWkzkfrd;
-        Fri, 26 Mar 2021 08:56:50 +0800 (CST)
-Received: from [10.174.177.160] (10.174.177.160) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 26 Mar 2021 08:58:25 +0800
-Subject: Re: [PATCH 2/4] PCI/AER: Correct function names in the header
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <ruscur@russell.cc>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S230027AbhCZBHl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Mar 2021 21:07:41 -0400
+Received: from mail-lf1-f49.google.com ([209.85.167.49]:34306 "EHLO
+        mail-lf1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229962AbhCZBH2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Mar 2021 21:07:28 -0400
+Received: by mail-lf1-f49.google.com with SMTP id i26so5262280lfl.1;
+        Thu, 25 Mar 2021 18:07:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9eLjWVT8hPiDtc1t+jEPlM4wV/caxcgGLiKcEJS4Ka8=;
+        b=lT/qYEZVwCpBKpmj1psLipDJaWzGnZienRtEQ76KE+mYMsbU7vk+ImJ7XDF9HhpCD9
+         HMPdzyUPa9eYc0Vo+er2ULvVQ+5oHeipPUgcOs8rJgH3YpNPQKIz4uYQ2iq85CB3OUzI
+         aXJr9+TDyLflot0BCi5nK5xJEK/wlxPv+Lb6rX+0qheAWlFzCKFSdXxRdqJ3vrHp87mh
+         XTuRdUjULr9//NY7Iz414TlScpxRrrYiNr4KNLVXi9iLdaqCrBw0BLEY5RPzu8uUo7Ni
+         PRx4WBSEsgOykJvvfy3Yy0HspLM8Z0lZUpA6W1Woak6SWhdtaD1/fqkvoGpTMMMq6QBL
+         kidg==
+X-Gm-Message-State: AOAM532WpwvG8zgryH70zjK6DvimPECds0qWBewGMf50FF/vr+RD/xWU
+        WLTBOORZDbBpMzk0NI2hILw=
+X-Google-Smtp-Source: ABdhPJxDqg8f8Sh3Q7LZP8/jDuT/gYmz27wVS9UDMznUpXBeFTFs0zt4yr/qTUJYO5Ad4QZBDSk/4A==
+X-Received: by 2002:ac2:4883:: with SMTP id x3mr6344687lfc.419.1616720847133;
+        Thu, 25 Mar 2021 18:07:27 -0700 (PDT)
+Received: from rocinante ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id l12sm696423lfc.248.2021.03.25.18.07.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Mar 2021 18:07:26 -0700 (PDT)
+Date:   Fri, 26 Mar 2021 02:07:25 +0100
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc:     bhelgaas@google.com, rjw@rjwysocki.net, ruscur@russell.cc,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] PCI: Correct function names in the header
+Message-ID: <YF0zzabwhiKYRq/f@rocinante>
 References: <20210325075144.180030-1-wangxiongfeng2@huawei.com>
- <20210325075144.180030-3-wangxiongfeng2@huawei.com>
- <CAJZ5v0hgsuv8NwuhtK4CrdjPT_VMz1Dp4bDeYtEQs3qeJN_Uhg@mail.gmail.com>
-From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Message-ID: <39a66394-cd74-ebff-7447-cb9fa51d8db4@huawei.com>
-Date:   Fri, 26 Mar 2021 08:58:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hgsuv8NwuhtK4CrdjPT_VMz1Dp4bDeYtEQs3qeJN_Uhg@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.160]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210325075144.180030-1-wangxiongfeng2@huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi,
 
-On 2021/3/26 1:30, Rafael J. Wysocki wrote:
-> On Thu, Mar 25, 2021 at 8:50 AM Xiongfeng Wang
-> <wangxiongfeng2@huawei.com> wrote:
->>
->> Fixes the following W=1 kernel build warning(s):
->>
->>  drivers/pci/pcie/aer.c:138: warning: expecting prototype for enable_ercr_checking(). Prototype was for enable_ecrc_checking() instead
->>  drivers/pci/pcie/aer.c:162: warning: expecting prototype for disable_ercr_checking(). Prototype was for disable_ecrc_checking() instead
->>  drivers/pci/pcie/aer.c:1450: warning: expecting prototype for aer_service_init(). Prototype was for pcie_aer_init() instead
->>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-> 
-> The subject is somewhat inaccurate, because you're fixing function
-> names in kerneldoc comments.
-> 
-> If you say "a header", people may think that this is about a header file.
+[...]
+>   PCI: acpi_pcihp: Correct acpi_pci_check_ejectable() function name in
+>     the header
+>   PCI/AER: Correct function names in the header
+>   PCI/PME: Correct pcie_pme_init() function name in the header
+>   PCI/ATS: Correct pci_max_pasids() function name in header
+[...]
 
-Thanks a lot ! I will change it in the next version.
+All of this has already been fixed in the following series:
 
-Thanks,
-Xiongfeng
+  https://lore.kernel.org/linux-pci/20210311001724.423356-1-kw@linux.com/
 
-> 
->> ---
->>  drivers/pci/pcie/aer.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
->> index ba22388342d1..ec943cee5ecc 100644
->> --- a/drivers/pci/pcie/aer.c
->> +++ b/drivers/pci/pcie/aer.c
->> @@ -129,7 +129,7 @@ static const char * const ecrc_policy_str[] = {
->>  };
->>
->>  /**
->> - * enable_ercr_checking - enable PCIe ECRC checking for a device
->> + * enable_ecrc_checking - enable PCIe ECRC checking for a device
->>   * @dev: the PCI device
->>   *
->>   * Returns 0 on success, or negative on failure.
->> @@ -153,7 +153,7 @@ static int enable_ecrc_checking(struct pci_dev *dev)
->>  }
->>
->>  /**
->> - * disable_ercr_checking - disables PCIe ECRC checking for a device
->> + * disable_ecrc_checking - disables PCIe ECRC checking for a device
->>   * @dev: the PCI device
->>   *
->>   * Returns 0 on success, or negative on failure.
->> @@ -1442,7 +1442,7 @@ static struct pcie_port_service_driver aerdriver = {
->>  };
->>
->>  /**
->> - * aer_service_init - register AER root service driver
->> + * pcie_aer_init - register AER root service driver
->>   *
->>   * Invoked when AER root service driver is loaded.
->>   */
->> --
->> 2.20.1
->>
-> .
-> 
+Krzysztof
