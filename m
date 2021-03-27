@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF8234B9D5
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Mar 2021 23:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DCDC34B9DC
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Mar 2021 23:21:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbhC0WUm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Mar 2021 18:20:42 -0400
-Received: from mga14.intel.com ([192.55.52.115]:65376 "EHLO mga14.intel.com"
+        id S231255AbhC0WUn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Mar 2021 18:20:43 -0400
+Received: from mga03.intel.com ([134.134.136.65]:17399 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231195AbhC0WUU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Mar 2021 18:20:20 -0400
-IronPort-SDR: Q7Ero3yrRke3CGQyaRc7UAtqiJhfTfddVO3lbdCc7cuR/xNSU7w8StPBvJnwadObDS7jBtXHZv
- MNi6m0VqI6hQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9936"; a="190792953"
+        id S230487AbhC0WUV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 27 Mar 2021 18:20:21 -0400
+IronPort-SDR: jk0J+ETNiFr24/iBYFTzMup16JU+HRFbSmfBDJmZo9vZEZ9l4TVOXdUmwBC3AOBiQO/C6uRR9I
+ hfK+CoDrw8NQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9936"; a="191370247"
 X-IronPort-AV: E=Sophos;i="5.81,284,1610438400"; 
-   d="scan'208";a="190792953"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2021 15:20:20 -0700
-IronPort-SDR: LhG7xf+BuoyNl4R4hy8jxmugAsxSSOE8VsQgak4lujKzEqWNii4HddQ+TONzEADfJsGOn9JkMi
- MO7VYCMrzlUg==
+   d="scan'208";a="191370247"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2021 15:20:20 -0700
+IronPort-SDR: 0fvhwCC9+0j/t7nQJoBLlVBy4I8mEvnIy94rHmIXlyeQntd0Fz5xnnF/GbbQSAzeDhyMwCMRAv
+ 8NXPr6RGJsRw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,284,1610438400"; 
-   d="scan'208";a="605906453"
+   d="scan'208";a="515505908"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Mar 2021 15:20:17 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 27 Mar 2021 15:20:17 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 0B0D9CDD; Sun, 28 Mar 2021 00:20:28 +0200 (EET)
+        id 143DB10B0; Sun, 28 Mar 2021 00:20:28 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -40,9 +40,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tianshu Qiu <tian.shu.qiu@intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH v1 6/8] software node: Simplify swnode_register() a bit
-Date:   Sun, 28 Mar 2021 00:20:10 +0200
-Message-Id: <20210327222012.54103-6-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 7/8] software node: Introduce SOFTWARE_NODE_REFERENCE() helper macro
+Date:   Sun, 28 Mar 2021 00:20:11 +0200
+Message-Id: <20210327222012.54103-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210327222012.54103-1-andriy.shevchenko@linux.intel.com>
 References: <20210327222012.54103-1-andriy.shevchenko@linux.intel.com>
@@ -52,52 +52,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-By introducing two temporary variables simplify swnode_register() a bit.
-No functional change intended.
+This is useful to assign software node reference with arguments
+in a common way. Moreover, we have already couple of users that
+may be converted. And by the fact, one of them is moved right here
+to use the helper.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/base/swnode.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/base/test/property-entry-test.c | 11 ++---------
+ include/linux/property.h                | 13 ++++++++-----
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index ae53c48f84b1..1e81aaf5f6a1 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -894,6 +894,8 @@ static struct fwnode_handle *
- swnode_register(const struct software_node *node, struct swnode *parent,
- 		unsigned int allocated)
- {
-+	struct ida *ids = parent ? &parent->child_ids : &swnode_root_ids;
-+	struct kobject *kobj_parent = parent ? &parent->kobj : NULL;
- 	struct swnode *swnode;
- 	int ret;
+diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/property-entry-test.c
+index abe03315180f..c2e455d46ffd 100644
+--- a/drivers/base/test/property-entry-test.c
++++ b/drivers/base/test/property-entry-test.c
+@@ -370,15 +370,8 @@ static void pe_test_reference(struct kunit *test)
+ 	};
  
-@@ -901,8 +903,7 @@ swnode_register(const struct software_node *node, struct swnode *parent,
- 	if (!swnode)
- 		return ERR_PTR(-ENOMEM);
+ 	static const struct software_node_ref_args refs[] = {
+-		{
+-			.node = &nodes[0],
+-			.nargs = 0,
+-		},
+-		{
+-			.node = &nodes[1],
+-			.nargs = 2,
+-			.args = { 3, 4 },
+-		},
++		SOFTWARE_NODE_REFERENCE(&nodes[0]),
++		SOFTWARE_NODE_REFERENCE(&nodes[1], 3, 4),
+ 	};
  
--	ret = ida_simple_get(parent ? &parent->child_ids : &swnode_root_ids,
--			     0, 0, GFP_KERNEL);
-+	ret = ida_simple_get(ids, 0, 0, GFP_KERNEL);
- 	if (ret < 0) {
- 		kfree(swnode);
- 		return ERR_PTR(ret);
-@@ -920,12 +921,10 @@ swnode_register(const struct software_node *node, struct swnode *parent,
+ 	const struct property_entry entries[] = {
+diff --git a/include/linux/property.h b/include/linux/property.h
+index dd4687b56239..0d876316e61d 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -254,6 +254,13 @@ struct software_node_ref_args {
+ 	u64 args[NR_FWNODE_REFERENCE_ARGS];
+ };
  
- 	if (node->name)
- 		ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
--					   parent ? &parent->kobj : NULL,
--					   "%s", node->name);
-+					   kobj_parent, "%s", node->name);
- 	else
- 		ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
--					   parent ? &parent->kobj : NULL,
--					   "node%d", swnode->id);
-+					   kobj_parent, "node%d", swnode->id);
- 	if (ret) {
- 		kobject_put(&swnode->kobj);
- 		return ERR_PTR(ret);
++#define SOFTWARE_NODE_REFERENCE(_ref_, ...)			\
++(const struct software_node_ref_args) {				\
++	.node = _ref_,						\
++	.nargs = ARRAY_SIZE(((u64[]){ 0, ##__VA_ARGS__ })) - 1,	\
++	.args = { __VA_ARGS__ },				\
++}
++
+ /**
+  * struct property_entry - "Built-in" device property representation.
+  * @name: Name of the property.
+@@ -362,11 +369,7 @@ struct property_entry {
+ 	.name = _name_,							\
+ 	.length = sizeof(struct software_node_ref_args),		\
+ 	.type = DEV_PROP_REF,						\
+-	{ .pointer = &(const struct software_node_ref_args) {		\
+-		.node = _ref_,						\
+-		.nargs = ARRAY_SIZE(((u64[]){ 0, ##__VA_ARGS__ })) - 1,	\
+-		.args = { __VA_ARGS__ },				\
+-	} },								\
++	{ .pointer = &SOFTWARE_NODE_REFERENCE(_ref_, ##__VA_ARGS__), },	\
+ }
+ 
+ struct property_entry *
 -- 
 2.30.2
 
