@@ -2,84 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E42634BC79
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Mar 2021 15:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334F334BDE1
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Mar 2021 20:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbhC1NCa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 Mar 2021 09:02:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53148 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229543AbhC1NC2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 28 Mar 2021 09:02:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 446516186A;
-        Sun, 28 Mar 2021 13:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1616936547;
-        bh=5i4jugDvs90F+iFZ+7J6N2DF93Rc5dBsxwcqjs6tLTc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nj0R/QZV7zvE4JFVtr4DPDcuRCCM6y2ekZPxJVggQT4BLoGBFR8KJDT2b+lwjLPzU
-         azeVVrjV/7xn0I47ttdQdzN7mFNDnxSFalpn25oWVWFRsuClpLuNsi+q/MLEw3/qMe
-         rUD8RXvKNTN5+XAgt/+CXWXxuREw/yf4Aou9JxgI=
-Date:   Sun, 28 Mar 2021 15:02:24 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v1 3/8] software node: Show properties and their values
- in sysfs
-Message-ID: <YGB+YMh1MsQao3zS@kroah.com>
-References: <20210327222012.54103-1-andriy.shevchenko@linux.intel.com>
- <20210327222012.54103-3-andriy.shevchenko@linux.intel.com>
- <YGAmB2Nwph6pArXc@kroah.com>
- <CAHp75VfFzqpdR+6p9vQww-ujQcw3L-V_N7ezUTGhcRmvwvqMZg@mail.gmail.com>
+        id S231331AbhC1SH2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Mar 2021 14:07:28 -0400
+Received: from mail.hanoi.gov.vn ([113.160.32.33]:31610 "EHLO
+        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229647AbhC1SHR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Mar 2021 14:07:17 -0400
+X-Greylist: delayed 474 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Mar 2021 14:07:01 EDT
+Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 30259EC3D8;
+        Mon, 29 Mar 2021 00:57:51 +0700 (+07)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
+        s=default; t=1616954272;
+        bh=FuW10Z6fSdeNlf/0u/BQ1jcwkjYBw0uHUPQgn0LGo7I=; h=Date:From:To;
+        b=R9blPfqJCHUsZAyZxsyyryS61fl4krmBjYKWM6eGGwB8ZdbTBVPL1mmKOmZXMqNlA
+         7CEqA0MXgUAy+X4oK/wthh4vC9Xoov1Ce8tjf/qJvnL7KGsGNVg9ic0krGeHrdNzGM
+         5cIEKsz0emmHL/izbEfCtadst3HYllOJWdonlm5o=
+X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
+Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 50FCBEC3DD;
+        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
+Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
+        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
+        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
+Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
+        by mail.hanoi.gov.vn (Postfix) with ESMTPS id 02AFC7F41B42;
+        Mon, 29 Mar 2021 00:57:44 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hanoi.gov.vn (Postfix) with ESMTP id 08FE47F41B5D;
+        Mon, 29 Mar 2021 00:57:41 +0700 (+07)
+Received: from mail.hanoi.gov.vn ([127.0.0.1])
+        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 1D3oZsOAVsx3; Mon, 29 Mar 2021 00:57:36 +0700 (+07)
+Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
+        by mail.hanoi.gov.vn (Postfix) with ESMTP id 478CE7F41B59;
+        Mon, 29 Mar 2021 00:57:33 +0700 (+07)
+Date:   Mon, 29 Mar 2021 00:57:33 +0700 (ICT)
+From:   Mackenzie Scott <ttptqd_thanhoai@hanoi.gov.vn>
+Reply-To: Mackenzie Scott <propack@propck.net>
+Message-ID: <354204758.25920932.1616954253215.JavaMail.zimbra@hanoi.gov.vn>
+Subject: Congratulations ($ 100,800,000.00)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VfFzqpdR+6p9vQww-ujQcw3L-V_N7ezUTGhcRmvwvqMZg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [185.107.80.217]
+X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
+Thread-Index: ao/APhyKX+JH1nE2Rn/kAmnh2LEgkw==
+Thread-Topic: Congratulations ($ 100,800,000.00)
+To:     undisclosed-recipients:;
+X-TM-AS-GCONF: 00
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 28, 2021 at 03:56:26PM +0300, Andy Shevchenko wrote:
-> On Sun, Mar 28, 2021 at 9:47 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Mar 28, 2021 at 12:20:07AM +0200, Andy Shevchenko wrote:
-> > > It's very convenient to see what properties and their values
-> > > are currently being assigned in the registered software nodes.
-> > >
-> > > Show properties and their values in sysfs.
-> 
-> ...
-> 
-> > > +             for (i = 0; i < prop->length / sizeof(u8); i++)
-> > > +                     len += sysfs_emit_at(buf, len, "%u,", ((u8 *)pointer)[i]);
-> >
-> > No, sysfs is "one value per file", and that is not what you are showing
-> > here at all :(
-> 
-> It is following: it's a "one value" for property in question,
-> 
-> As we may read in [1]: "...so it is socially acceptable to express an
-> array of values of the same type."
-> 
-> And here is exactly the case: *values of the same type*.
 
-So what is it going to look like exactly?  And what tool is going to be
-there to parse this mess?  Who is going to to use it?
 
-Arrays of data are not "one value".
-
-thanks,
-
-greg k-h
+Hello,i&#39;m Mackenzie Scott,Ex-wife of Amazon founder i&#39;m donating $4 billion to charities,individuals,universities across the Globe from my divorce funds,i&#39;m donating part of it to provide immediate support to people suffering economically during the COVID-19 pandemic,i have a donation worth $100,800,000.00 Dollars for you,you can contact me for more information if you&#39;re interested.
