@@ -2,77 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47ADD34D057
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 14:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB8234D066
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 14:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbhC2MsU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Mar 2021 08:48:20 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:39442 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231258AbhC2MsS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 08:48:18 -0400
-Received: by mail-ot1-f53.google.com with SMTP id h6-20020a0568300346b02901b71a850ab4so12133521ote.6;
-        Mon, 29 Mar 2021 05:48:18 -0700 (PDT)
+        id S231502AbhC2Mu2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 08:50:28 -0400
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:36824 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231238AbhC2MuX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 08:50:23 -0400
+Received: by mail-ot1-f50.google.com with SMTP id g8-20020a9d6c480000b02901b65ca2432cso12142376otq.3;
+        Mon, 29 Mar 2021 05:50:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2/qRvSZnocrUkJIjUj3RIeK2bv6WeJu2zPlnvgABVUs=;
-        b=En8d3DFEBB20JOcs19dsetZjgt64wz2vlhMc7Q/QWDAN4fn/qNpro9yisx3LQ/Z8cc
-         uzs1n1P+BgxuJJlO1cxXsnNQcp4XQUOAJLqk5hzuu0bWwdVPvzexeJZn/wmVdWC9I8DV
-         pPnDqjseekTb8Mc5z8oCYn0C0VQmaNNAVDvJn95t1AwvQncD28YEdSJ0gD4vfn8TLj74
-         OTHEYqtmaikvBJZk2FkLOZReohn5SqdwseKWkja4F8fcm0pTF1fVhEGDYcKnJGxCLf/M
-         lGPyIRt1H9iwRoe8Wc95f/pLOO2zaW3Z3cEZZbYERgwAtx9zxJ6Wx76oCxg7k5CZkdVU
-         5wHg==
-X-Gm-Message-State: AOAM532d4zh/APz5XrAqYtq7ZF12YIBQsX06ziGFrDxwSFNrbW1vSPG4
-        ZRe4oH/uQBILjsH7Prb5nvaO1zUBaGWroxN4fwwjf30B
-X-Google-Smtp-Source: ABdhPJwkgJLl49WQ4DxYiQVIcNf/J/OnassAwchwhv0O0Rs+I5HMhr+pP4QpbTC0BN/6y8NIvD6p8GS/V8ODT7ZoALA=
-X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr23083606otr.321.1617022098413;
- Mon, 29 Mar 2021 05:48:18 -0700 (PDT)
+        bh=br2tK1trYV4Jvbr3eTgWM2JDYY7hp12me+F3CgBMdrA=;
+        b=WlOKAKWAD1t30AIC64LCiFY1BwIIzb9fXU48yC3SQhKZB71X9gfvfevHIOOMwzXpV+
+         qN899qFjtXv44uF/vwWiPA+lc84YaSYtTMoJgk+q6cz8DOINloYEDNaAH5MW4yY52GlW
+         7FL9c/EbJPyiibYvEqI9d4MDTbxl7FD4uhvkmCUE4RyI3IrCY6HKH3LhXSctf6ixFY06
+         QayThEMNol8u/JlwGB7NmeydUuGh0Sjjry5R7wAM3XIX9Zrish8W0eUEuOvo3EaUVr/I
+         F+jUklpoRiTU5SEmtKroX0A8BKhG1UkItTJPFAjt8h/BJEQd803MFXLEGxiKqapx8C1b
+         +FfQ==
+X-Gm-Message-State: AOAM533YEynOecuLKLsDh2UezyHJV+R2iXTUI1CVoJrdI+xqLg3G2T2q
+        efthYBZyY/hrD9JJdllyehZMVvut4X96yfEqZEs=
+X-Google-Smtp-Source: ABdhPJyJTrglwRj2zltNzATMDclxPvxrsMLnZATq/gbKpWmce0C83JluLrG5v0kceaqH+WKTiJ5e3hauxUXLybLMCP0=
+X-Received: by 2002:a05:6830:20d2:: with SMTP id z18mr22296906otq.260.1617022222927;
+ Mon, 29 Mar 2021 05:50:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210326001922.4767-1-unixbhaskar@gmail.com>
-In-Reply-To: <20210326001922.4767-1-unixbhaskar@gmail.com>
+References: <1616846904-25719-1-git-send-email-tanxiaofei@huawei.com>
+In-Reply-To: <1616846904-25719-1-git-send-email-tanxiaofei@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 29 Mar 2021 14:48:03 +0200
-Message-ID: <CAJZ5v0izUkL=7NSFuefNYcqdq2vSxseDCCLKUTOZGC82WjJNPg@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Fix a typo
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+Date:   Mon, 29 Mar 2021 14:50:08 +0200
+Message-ID: <CAJZ5v0i=RPyvWfVuGQ0nWf_0QRw70=qZd6j85CTPWaaWPa_5KQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] acpi: fix some coding style issues
+To:     Xiaofei Tan <tanxiaofei@huawei.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>
+        Linux PCI <linux-pci@vger.kernel.org>, linuxarm@openeuler.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 26, 2021 at 1:22 AM Bhaskar Chowdhury <unixbhaskar@gmail.com> wrote:
+On Sat, Mar 27, 2021 at 1:11 PM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
 >
+> Fix some coding style issues reported by checkpatch.pl.
+> Only cleanup and no function changes.
 >
-> s/optimzation/optimization/
+> Differences from v2 to v3:
+> - Remove the modifications that may cause function change.
 >
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-> ---
->  include/acpi/acoutput.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Differences from v1 to v2:
+> - Add subsystem and module name in the name of patch 05/15.
+> - Change to use more proper module name for some patch names.
 >
-> diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-> index 1538a6853822..1b4c45815695 100644
-> --- a/include/acpi/acoutput.h
-> +++ b/include/acpi/acoutput.h
-> @@ -362,7 +362,7 @@
->   *
->   * A less-safe version of the macros is provided for optional use if the
->   * compiler uses excessive CPU stack (for example, this may happen in the
-> - * debug case if code optimzation is disabled.)
-> + * debug case if code optimization is disabled.)
->   */
+> Xiaofei Tan (12):
+>   ACPI: APD: fix a block comment align issue
+>   ACPI: processor: fix some coding style issues
+>   ACPI: ipmi: remove useless return statement for void function
+>   ACPI: LPSS: add a missed blank line after declarations
+>   ACPI: acpi_pad: add a missed blank line after declarations
+>   ACPI: battery: fix some coding style issues
+>   ACPI: button: fix some coding style issues
+>   ACPI: CPPC: fix some coding style issues
+>   ACPI: custom_method: fix a coding style issue
+>   ACPI: PM: add a missed blank line after declarations
+>   ACPI: sysfs: fix some coding style issues
+>   ACPI: dock: fix some coding style issues
 >
->  /* Exit trace helper macro */
+>  drivers/acpi/acpi_apd.c       |  8 ++---
+>  drivers/acpi/acpi_ipmi.c      |  1 -
+>  drivers/acpi/acpi_lpss.c      |  2 ++
+>  drivers/acpi/acpi_pad.c       |  4 +++
+>  drivers/acpi/acpi_processor.c | 18 +++--------
+>  drivers/acpi/battery.c        | 63 ++++++++++++++++++++------------------
+>  drivers/acpi/button.c         |  9 ++----
+>  drivers/acpi/cppc_acpi.c      | 71 ++++++++++++++++++++++---------------------
+>  drivers/acpi/custom_method.c  |  2 +-
+>  drivers/acpi/device_pm.c      |  3 ++
+>  drivers/acpi/device_sysfs.c   | 15 ++++++---
+>  drivers/acpi/dock.c           |  7 +++--
+>  12 files changed, 106 insertions(+), 97 deletions(-)
+>
 > --
 
-Erik, could you pick up this patch, please?  It is simple enough IMV ...
+Can you please stop sending new versions of this for a while?
+
+You've sent three of them over the last weekend and honestly I haven't
+had a chance to look at the first one even.
