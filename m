@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9D034D363
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 17:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5801D34D368
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 17:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbhC2PMQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Mar 2021 11:12:16 -0400
-Received: from mga17.intel.com ([192.55.52.151]:23742 "EHLO mga17.intel.com"
+        id S230213AbhC2PMR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 11:12:17 -0400
+Received: from mga11.intel.com ([192.55.52.93]:47554 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230475AbhC2PMC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S230482AbhC2PMC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Mon, 29 Mar 2021 11:12:02 -0400
-IronPort-SDR: ppj+xSqRv6wfjh3RM+HzwkxPkWu0s0ZG2AhtfPNshQjTDacJWsspEmDdjzKaWy8e8qk/2z5QMv
- JoJCopAatKgw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9938"; a="171582221"
+IronPort-SDR: rdkX5hPtM7PDPUGKdX6XvEprGIoDYeYNh6ndvaJp+IkZa7ul/cDIDj5Gn2MONzRBeBOUXBdDCU
+ GA2zTPZEYE3Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9938"; a="188300278"
 X-IronPort-AV: E=Sophos;i="5.81,288,1610438400"; 
-   d="scan'208";a="171582221"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2021 08:12:01 -0700
-IronPort-SDR: mqFNJXh7sI/3nSCz0WXPLJ5IbRgwJ/VXVjGJKaCURHVGFXf1iDcpcNWxRvTh+rHNakJOG6tLla
- H3ic8gZQIJAQ==
+   d="scan'208";a="188300278"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2021 08:12:01 -0700
+IronPort-SDR: ZPRg0QQkeKRY1DVFuSYZ2NCp2b4sHnVvQ1cdHpw7gtTBAmG76oFQGDAX5FeEBvDQ/xE9FvdtaL
+ x1Z3s9QD/0Mw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,288,1610438400"; 
-   d="scan'208";a="444809902"
+   d="scan'208";a="437926748"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 29 Mar 2021 08:11:58 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 29 Mar 2021 08:11:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 23DF01AD; Mon, 29 Mar 2021 18:12:13 +0300 (EEST)
+        id 2FAA21CB; Mon, 29 Mar 2021 18:12:13 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -40,9 +40,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tianshu Qiu <tian.shu.qiu@intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH v2 4/6] software node: Imply kobj_to_swnode() to be no-op
-Date:   Mon, 29 Mar 2021 18:12:05 +0300
-Message-Id: <20210329151207.36619-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 5/6] software node: Introduce SOFTWARE_NODE_REFERENCE() helper macro
+Date:   Mon, 29 Mar 2021 18:12:06 +0300
+Message-Id: <20210329151207.36619-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210329151207.36619-1-andriy.shevchenko@linux.intel.com>
 References: <20210329151207.36619-1-andriy.shevchenko@linux.intel.com>
@@ -52,38 +52,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since we don't use structure field layout randomization
-the manual shuffling can affect some macros, in particular
-kobj_to_swnode(), which becomes a no-op when kobj member
-is the first one in the struct swnode.
-
-Bloat-o-meter statistics for swnode.o:
-
-  add/remove: 0/0 grow/shrink: 2/10 up/down: 9/-100 (-91)
-  Total: Before=7217, After=7126, chg -1.26%
+This is useful to assign software node reference with arguments
+in a common way. Moreover, we have already couple of users that
+may be converted. And by the fact, one of them is moved right here
+to use the helper.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
-v2: added the object file name against which bloat-o-meter was run (Greg)
- drivers/base/swnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: no changes
+ drivers/base/test/property-entry-test.c | 11 ++---------
+ include/linux/property.h                | 13 ++++++++-----
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index db982859171e..e83028e11f50 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -12,10 +12,10 @@
- #include <linux/slab.h>
+diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/property-entry-test.c
+index abe03315180f..c2e455d46ffd 100644
+--- a/drivers/base/test/property-entry-test.c
++++ b/drivers/base/test/property-entry-test.c
+@@ -370,15 +370,8 @@ static void pe_test_reference(struct kunit *test)
+ 	};
  
- struct swnode {
--	int id;
- 	struct kobject kobj;
- 	struct fwnode_handle fwnode;
- 	const struct software_node *node;
-+	int id;
+ 	static const struct software_node_ref_args refs[] = {
+-		{
+-			.node = &nodes[0],
+-			.nargs = 0,
+-		},
+-		{
+-			.node = &nodes[1],
+-			.nargs = 2,
+-			.args = { 3, 4 },
+-		},
++		SOFTWARE_NODE_REFERENCE(&nodes[0]),
++		SOFTWARE_NODE_REFERENCE(&nodes[1], 3, 4),
+ 	};
  
- 	/* hierarchy */
- 	struct ida child_ids;
+ 	const struct property_entry entries[] = {
+diff --git a/include/linux/property.h b/include/linux/property.h
+index dd4687b56239..0d876316e61d 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -254,6 +254,13 @@ struct software_node_ref_args {
+ 	u64 args[NR_FWNODE_REFERENCE_ARGS];
+ };
+ 
++#define SOFTWARE_NODE_REFERENCE(_ref_, ...)			\
++(const struct software_node_ref_args) {				\
++	.node = _ref_,						\
++	.nargs = ARRAY_SIZE(((u64[]){ 0, ##__VA_ARGS__ })) - 1,	\
++	.args = { __VA_ARGS__ },				\
++}
++
+ /**
+  * struct property_entry - "Built-in" device property representation.
+  * @name: Name of the property.
+@@ -362,11 +369,7 @@ struct property_entry {
+ 	.name = _name_,							\
+ 	.length = sizeof(struct software_node_ref_args),		\
+ 	.type = DEV_PROP_REF,						\
+-	{ .pointer = &(const struct software_node_ref_args) {		\
+-		.node = _ref_,						\
+-		.nargs = ARRAY_SIZE(((u64[]){ 0, ##__VA_ARGS__ })) - 1,	\
+-		.args = { __VA_ARGS__ },				\
+-	} },								\
++	{ .pointer = &SOFTWARE_NODE_REFERENCE(_ref_, ##__VA_ARGS__), },	\
+ }
+ 
+ struct property_entry *
 -- 
 2.30.2
 
