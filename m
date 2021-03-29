@@ -2,77 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD49834D919
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 22:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A33634D96C
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 23:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbhC2Ui1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Mar 2021 16:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
+        id S230406AbhC2VHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 17:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbhC2Uh5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 16:37:57 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D10EC061574;
-        Mon, 29 Mar 2021 13:37:57 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id o16so14180730wrn.0;
-        Mon, 29 Mar 2021 13:37:57 -0700 (PDT)
+        with ESMTP id S231314AbhC2VHC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 17:07:02 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E20C061574;
+        Mon, 29 Mar 2021 14:07:01 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id t5-20020a1c77050000b029010e62cea9deso7329268wmi.0;
+        Mon, 29 Mar 2021 14:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=Aem0mmjc+m+1Ls4c4+9Q57HeLTfug6e9XtREoWGla0s=;
-        b=Yyz6cO6mfdJ4gTm/q/IIRn+Gd9fo6a0YRZUwTtMq4g0ykMc312Ut403N0L/wIqKGmv
-         towoVO/GPQNCSCpJKtLguC/+QRRMz7J4T8F78TyeFbzQWiohay7whG+PPzrrX7rQrNrg
-         A1IdGgVh+6vl/hbC41SOby1zjIPRFyBw9sGF0zjc1yUkyt0ga9GlSLGsSFoFagGxKAlY
-         0A9zc0fzEBcPjLRbSq9D4aQDe7sP4dHsVrMSHw0qWx+GZg/15SUoCJnatic6Qy2iB6vP
-         y5k5d4/Lbu/KRZMLjwFqXMHqh0g0IAGQtBD+RCpmK14s1pOqibGV+17LEb7JBSKgFCl2
-         4fMA==
+        bh=wymBNLQAb/qlX8skiczhdYWHj6Aq/qxq8MM3GFnILNk=;
+        b=QVOE8LnKESKbPxunJ6fQ9EXEX+saGlPLvUljMlASbWCVGt5Z5v5JJ/1XrJ1SwqhLwj
+         BVf10Wz+LCPJn/fexc0jfYp1j+HoH9+7Mlz030SCb/GGeZnwG0S8Ih12G3YEXMGoOi6t
+         OWa6ClmRZTt+dAsNnC2Pwv/f/QUPamz/35uxAhubNGzPgDMyVFmHeJ8MQopcy5o1KNL5
+         8pOawJu36repMumXomXPTuVvHbxFISk82GfRNNJT5ATjbScIMChU03DHyNnMdniDy+5W
+         6a1V2OrDdNN/qyhNJt76EIaqWJdlVanuGEmTHoFajZkWaaYl08Z6w+Cykqpu58WYSckT
+         LI9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding
          :content-language;
-        bh=Aem0mmjc+m+1Ls4c4+9Q57HeLTfug6e9XtREoWGla0s=;
-        b=APKcnnQT+tzpHl+rkhT7sfBpqLWfc57hN2jwm75kJSqUqgBxgSeB8DtejKb6bPJPZr
-         NaMFg002Zg8mb9HA7Dw2y90fjrSW8JOVRSCxYOx1pZHiBhfrn1mTV/7hqG0CN9cJrtEv
-         MndubQgLkr2KW1LPMmWU5wDFxKPCVINDeKH+WYcZsVFspcLFEcbFWWtwHr/C6nKkmrJx
-         mDLhVhTro/diTfIAHCDOxnBLNC3WO4R4s6u2wB8o6cxFbqrh3Xnb69uTeVx2MPeYSL4P
-         zMgfOL6JoFlVIKa6iJha69F39oGnc6v4D32ikRFToY4bkju1rpIsNrdkxoCsgBbsK4iT
-         yZgA==
-X-Gm-Message-State: AOAM530ZaiENetfr1Af+wT16DCey8QH83HKp79EZ92I/6ZKIbXBGmzcG
-        3OLj909T9GBKgxi5lz8c60g=
-X-Google-Smtp-Source: ABdhPJwbk6wDCyr/7t4h+Ru2dj6hjTiJekgD5rahNgY9nQO/QhGp2GU31eI13ujvkwBWaxDTybvuSg==
-X-Received: by 2002:adf:b313:: with SMTP id j19mr29717540wrd.188.1617050275883;
-        Mon, 29 Mar 2021 13:37:55 -0700 (PDT)
+        bh=wymBNLQAb/qlX8skiczhdYWHj6Aq/qxq8MM3GFnILNk=;
+        b=c2UUIGfm0wTOCnoKFXUHqJCnNxn+31bduI7rdWW60dVJugWYABxixXLKvdvoV9uJCt
+         0C7S99ihA7/8Yz7BrZhvSus3zvxAehSpx1JvjnUKhtH/GEZBiDsUHqvIWENje1d+j7ye
+         DEuaGhJReRTExIEfdPoorD0niNwh9S8Yg9j43Y5ipHneq+O//Ejar2bn40JbhqxWmQoC
+         aYU+Jio2/UnKaq7FQFgcYiU9XIU9leeRGn4e/AGrG94N/9xNt/t4SVwHK7QaINZyf496
+         UvQtUnTDilEDElhwcTP3boOSi3ShhIkcPlez2C+HJ7xvcmwaVQKNLmLrCwUFHAdINh2o
+         dDZA==
+X-Gm-Message-State: AOAM533byK9GlQDXpXY0DKt1RYdLoCQefHzvjh095/Xb/dRv/qdTPM9t
+        Oogo9L4m/3XS5iGxZanfeRz7Ri6WqBU=
+X-Google-Smtp-Source: ABdhPJzrCb3hXadhWOgxbjhl5szV15i9EJFpYsUh+E3AMNwO/aTgKe+zuY5tAvDd6aIFy++rKE6Qog==
+X-Received: by 2002:a05:600c:2145:: with SMTP id v5mr790346wml.65.1617052020546;
+        Mon, 29 Mar 2021 14:07:00 -0700 (PDT)
 Received: from [192.168.1.211] ([91.110.20.103])
-        by smtp.gmail.com with ESMTPSA id u63sm545862wmg.24.2021.03.29.13.37.54
+        by smtp.gmail.com with ESMTPSA id a15sm21389883wrr.53.2021.03.29.14.06.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Mar 2021 13:37:55 -0700 (PDT)
-Subject: Re: [PATCH v3 0/6] Introduce intel_skl_int3472 module
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>, tfiga@chromium.org,
-        sakari.ailus@linux.intel.com, rajmohan.mani@intel.com,
-        rjw@rjwysocki.net, lenb@kernel.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
-        kieran.bingham+renesas@ideasonboard.com,
-        laurent.pinchart@ideasonboard.com, mgross@linux.intel.com,
-        luzmaximilian@gmail.com, robert.moore@intel.com,
-        erik.kaneda@intel.com, me@fabwu.ch, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        devel@acpica.org
-References: <20210222130735.1313443-1-djrscally@gmail.com>
- <fd2fbee6-e620-a594-8377-d2f22131af29@redhat.com>
- <5d336f50-5f25-fce2-04eb-5ad450c9cd5b@gmail.com>
- <YGHsWNXha0i1OwCN@smile.fi.intel.com>
+        Mon, 29 Mar 2021 14:07:00 -0700 (PDT)
+Subject: Re: [PATCH v2 3/6] software node: Deduplicate code in
+ fwnode_create_software_node()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+References: <20210329151207.36619-1-andriy.shevchenko@linux.intel.com>
+ <20210329151207.36619-3-andriy.shevchenko@linux.intel.com>
 From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <5bc96e11-ab7a-d084-900b-9b8fdc4a4e72@gmail.com>
-Date:   Mon, 29 Mar 2021 21:37:53 +0100
+Message-ID: <4e922df6-4c87-9a95-538c-dc777ebaccab@gmail.com>
+Date:   Mon, 29 Mar 2021 22:06:59 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <YGHsWNXha0i1OwCN@smile.fi.intel.com>
+In-Reply-To: <20210329151207.36619-3-andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -82,31 +79,46 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Andy
 
-On 29/03/2021 16:03, Andy Shevchenko wrote:
-> On Thu, Mar 04, 2021 at 01:49:14PM +0000, Daniel Scally wrote:
->> On 04/03/2021 13:37, Hans de Goede wrote:
->>> On 2/22/21 2:07 PM, Daniel Scally wrote:
-> ...
+On 29/03/2021 16:12, Andy Shevchenko wrote:
+> Deduplicate conditional and assignment in fwnode_create_software_node(),
+> i.e. parent is checked in two out of three cases and parent software node
+> is assigned by to_swnode() call.
 >
->>>> The existing mfd/tps68470.c driver being thus superseded, it is removed.
->>> Thank you for this patch series. Since there have already been a whole
->>> bunch of review-comments, I've not taken a detailed look at this yet.
->> No problem, I'm hoping to do a v3 over the weekend anyway.
-> Do you mean v4?
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 
-Oops, I do indeed.
+Reviewed-by: Daniel Scally <djrscally@gmail.com>
 
-
-> I'm just wondering if you need any help.
-
-
-Thanks - I don't think so; I've just not been working on it very much
-lately. I got sidetracked with a sensor driver [1] that was pretty fun,
-so I've been focused on that instead. I'm just finishing up a v2 for
-that, and then I'll come back to this.
-
-
-[1]
-https://lore.kernel.org/linux-media/20210312103239.279523-2-djrscally@gmail.com/
-
+> ---
+> v2: no changes
+>  drivers/base/swnode.c | 17 ++++++++---------
+>  1 file changed, 8 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 19aa44bc2628..db982859171e 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -973,15 +973,14 @@ fwnode_create_software_node(const struct property_entry *properties,
+>  {
+>  	struct fwnode_handle *fwnode;
+>  	struct software_node *node;
+> -	struct swnode *p = NULL;
+> -
+> -	if (parent) {
+> -		if (IS_ERR(parent))
+> -			return ERR_CAST(parent);
+> -		if (!is_software_node(parent))
+> -			return ERR_PTR(-EINVAL);
+> -		p = to_swnode(parent);
+> -	}
+> +	struct swnode *p;
+> +
+> +	if (IS_ERR(parent))
+> +		return ERR_CAST(parent);
+> +
+> +	p = to_swnode(parent);
+> +	if (parent && !p)
+> +		return ERR_PTR(-EINVAL);
+>  
+>  	node = software_node_alloc(properties);
+>  	if (IS_ERR(node))
