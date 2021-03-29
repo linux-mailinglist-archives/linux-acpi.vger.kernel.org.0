@@ -2,123 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9312334CDA6
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 12:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47ADD34D057
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 14:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232070AbhC2KJe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 29 Mar 2021 06:09:34 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:22682 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232473AbhC2KJZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 29 Mar 2021 06:09:25 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-88-4yJ4TLFFOSu6qY5lPx_EXg-1; Mon, 29 Mar 2021 11:09:14 +0100
-X-MC-Unique: 4yJ4TLFFOSu6qY5lPx_EXg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Mon, 29 Mar 2021 11:09:13 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Mon, 29 Mar 2021 11:09:13 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Xiaofei Tan' <tanxiaofei@huawei.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rui.zhang@intel.com" <rui.zhang@intel.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
-Subject: RE: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
- __packed
-Thread-Topic: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
- __packed
-Thread-Index: AQHXIt3reusKxfb1K0qiX/864DlgraqavWWQ
-Date:   Mon, 29 Mar 2021 10:09:13 +0000
-Message-ID: <6df04be78e544e17b3b57f159312541f@AcuMS.aculab.com>
-References: <1616831193-17920-1-git-send-email-tanxiaofei@huawei.com>
- <1616831193-17920-5-git-send-email-tanxiaofei@huawei.com>
-In-Reply-To: <1616831193-17920-5-git-send-email-tanxiaofei@huawei.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S231267AbhC2MsU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 08:48:20 -0400
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:39442 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231258AbhC2MsS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 08:48:18 -0400
+Received: by mail-ot1-f53.google.com with SMTP id h6-20020a0568300346b02901b71a850ab4so12133521ote.6;
+        Mon, 29 Mar 2021 05:48:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2/qRvSZnocrUkJIjUj3RIeK2bv6WeJu2zPlnvgABVUs=;
+        b=En8d3DFEBB20JOcs19dsetZjgt64wz2vlhMc7Q/QWDAN4fn/qNpro9yisx3LQ/Z8cc
+         uzs1n1P+BgxuJJlO1cxXsnNQcp4XQUOAJLqk5hzuu0bWwdVPvzexeJZn/wmVdWC9I8DV
+         pPnDqjseekTb8Mc5z8oCYn0C0VQmaNNAVDvJn95t1AwvQncD28YEdSJ0gD4vfn8TLj74
+         OTHEYqtmaikvBJZk2FkLOZReohn5SqdwseKWkja4F8fcm0pTF1fVhEGDYcKnJGxCLf/M
+         lGPyIRt1H9iwRoe8Wc95f/pLOO2zaW3Z3cEZZbYERgwAtx9zxJ6Wx76oCxg7k5CZkdVU
+         5wHg==
+X-Gm-Message-State: AOAM532d4zh/APz5XrAqYtq7ZF12YIBQsX06ziGFrDxwSFNrbW1vSPG4
+        ZRe4oH/uQBILjsH7Prb5nvaO1zUBaGWroxN4fwwjf30B
+X-Google-Smtp-Source: ABdhPJwkgJLl49WQ4DxYiQVIcNf/J/OnassAwchwhv0O0Rs+I5HMhr+pP4QpbTC0BN/6y8NIvD6p8GS/V8ODT7ZoALA=
+X-Received: by 2002:a05:6830:1e03:: with SMTP id s3mr23083606otr.321.1617022098413;
+ Mon, 29 Mar 2021 05:48:18 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+References: <20210326001922.4767-1-unixbhaskar@gmail.com>
+In-Reply-To: <20210326001922.4767-1-unixbhaskar@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 29 Mar 2021 14:48:03 +0200
+Message-ID: <CAJZ5v0izUkL=7NSFuefNYcqdq2vSxseDCCLKUTOZGC82WjJNPg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Fix a typo
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Xiaofei Tan
-> Sent: 27 March 2021 07:46
-> 
-> Replace __attribute__((packed)) by __packed following the
-> advice of checkpatch.pl.
-> 
-> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+On Fri, Mar 26, 2021 at 1:22 AM Bhaskar Chowdhury <unixbhaskar@gmail.com> wrote:
+>
+>
+> s/optimzation/optimization/
+>
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 > ---
->  drivers/acpi/acpi_fpdt.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
-> index a89a806..690a88a 100644
-> --- a/drivers/acpi/acpi_fpdt.c
-> +++ b/drivers/acpi/acpi_fpdt.c
-> @@ -53,7 +53,7 @@ struct resume_performance_record {
->  	u32 resume_count;
->  	u64 resume_prev;
->  	u64 resume_avg;
-> -} __attribute__((packed));
-> +} __packed;
-> 
->  struct boot_performance_record {
->  	struct fpdt_record_header header;
-> @@ -63,13 +63,13 @@ struct boot_performance_record {
->  	u64 bootloader_launch;
->  	u64 exitbootservice_start;
->  	u64 exitbootservice_end;
-> -} __attribute__((packed));
-> +} __packed;
-> 
->  struct suspend_performance_record {
->  	struct fpdt_record_header header;
->  	u64 suspend_start;
->  	u64 suspend_end;
-> -} __attribute__((packed));
-> +} __packed;
+>  include/acpi/acoutput.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
+> index 1538a6853822..1b4c45815695 100644
+> --- a/include/acpi/acoutput.h
+> +++ b/include/acpi/acoutput.h
+> @@ -362,7 +362,7 @@
+>   *
+>   * A less-safe version of the macros is provided for optional use if the
+>   * compiler uses excessive CPU stack (for example, this may happen in the
+> - * debug case if code optimzation is disabled.)
+> + * debug case if code optimization is disabled.)
+>   */
+>
+>  /* Exit trace helper macro */
+> --
 
-My standard question about 'packed' is whether it is actually needed.
-It should only be used if the structures might be misaligned in memory.
-If the only problem is that a 64bit item needs to be 32bit aligned
-then a suitable type should be used for those specific fields.
-
-Those all look very dubious - the standard header isn't packed
-so everything must eb assumed to be at least 32bit aligned.
-
-There are also other sub-structures that contain 64bit values.
-These don't contain padding - but that requires 64bit alignement.
-
-The only problematic structure is the last one - which would have
-a 32bit pad after the header.
-Is this even right given than there are explicit alignment pads
-in some of the other structures.
-
-If 64bit alignment isn't guaranteed then a '64bit aligned to 32bit'
-type should be used for the u64 fields.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+Erik, could you pick up this patch, please?  It is simple enough IMV ...
