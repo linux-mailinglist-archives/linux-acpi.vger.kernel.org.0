@@ -2,131 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0874E34D2EB
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 16:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66DC434D340
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Mar 2021 17:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbhC2O4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Mar 2021 10:56:15 -0400
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:44656 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230226AbhC2O4L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 10:56:11 -0400
-Received: by mail-oi1-f176.google.com with SMTP id a8so13300191oic.11
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Mar 2021 07:56:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7+YLExpP4/+zIobSzTzQvC3+svRv8JeONZwBROeP1FA=;
-        b=Fhzx+HJWqb6tkHlaNeM7RWScutKC+0Wyw6F6qQp5Cv4otvX+O85rWzBDpbGmViuLpu
-         +zKFvDaZ3DjM+2FUD0uIZIXvi06aFlVdnLhF/3RVC+s5394jCiwFoo9P/l7NKjnkc5vS
-         BjYBPc3xUv70tR6zQJ9f0XkuA5AIISB/76hspTkVCATOcdzlczSAcqBZdSOQ1lwgXvQ4
-         ADSPmayF1yhXA6zj97//IjwvXls3g7/67Hi0bFYrCIQzZf39vwfDo7vuKK6buAu/Sl8u
-         eM7AE3LXWnIji0GQ3qeCHqgpb/I/aGdPUtWjPCIvt6brJtO6h2nIC0J6aeqYyM+pmvno
-         HOtQ==
-X-Gm-Message-State: AOAM531Jtjz1ULcS+kDUSVWsZZ3ZJj+PAZ3Gzt5EqRRwkFrjbLh5/LRe
-        NlICn75sM5TcC/vxZelfgSzS+iQqdNBcPpu9Aig=
-X-Google-Smtp-Source: ABdhPJwi2kLsYokoOjTQGqB7Gb9HhcMNTsQCW5AamXZ2oJ6szujOj767Sj4ZCeuasrOWRm+3c41T03/ysUVhnaBuT+g=
-X-Received: by 2002:aca:5fc3:: with SMTP id t186mr18071530oib.69.1617029771355;
- Mon, 29 Mar 2021 07:56:11 -0700 (PDT)
+        id S230226AbhC2PEQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 11:04:16 -0400
+Received: from mga02.intel.com ([134.134.136.20]:40984 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229711AbhC2PEE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 29 Mar 2021 11:04:04 -0400
+IronPort-SDR: hCpRzlmiI/2TGJVQ5HQe3QGk8rtq0ERUc++YX6ZS8lt89hR3D7Dab8mpKbjf5U9pB8H0D7sRaU
+ 2Q3N9b5xa0Lg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9938"; a="178694879"
+X-IronPort-AV: E=Sophos;i="5.81,288,1610438400"; 
+   d="scan'208";a="178694879"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2021 08:04:02 -0700
+IronPort-SDR: M4gkVW7u/AgypQOBXEwIVeagAuv7wqNZGsC6WKfkjdTrFQWMSX/O65nYfA2mMSx6rwNhPXDKFm
+ N5c9qreGZmnQ==
+X-IronPort-AV: E=Sophos;i="5.81,288,1610438400"; 
+   d="scan'208";a="376458095"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2021 08:03:56 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lQtQm-00H3Eu-RE; Mon, 29 Mar 2021 18:03:52 +0300
+Date:   Mon, 29 Mar 2021 18:03:52 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, tfiga@chromium.org,
+        sakari.ailus@linux.intel.com, rajmohan.mani@intel.com,
+        rjw@rjwysocki.net, lenb@kernel.org,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, wsa@kernel.org, lee.jones@linaro.org,
+        kieran.bingham+renesas@ideasonboard.com,
+        laurent.pinchart@ideasonboard.com, mgross@linux.intel.com,
+        luzmaximilian@gmail.com, robert.moore@intel.com,
+        erik.kaneda@intel.com, me@fabwu.ch, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        devel@acpica.org
+Subject: Re: [PATCH v3 0/6] Introduce intel_skl_int3472 module
+Message-ID: <YGHsWNXha0i1OwCN@smile.fi.intel.com>
+References: <20210222130735.1313443-1-djrscally@gmail.com>
+ <fd2fbee6-e620-a594-8377-d2f22131af29@redhat.com>
+ <5d336f50-5f25-fce2-04eb-5ad450c9cd5b@gmail.com>
 MIME-Version: 1.0
-References: <20210328112000.12502-1-hdegoede@redhat.com> <20210328112000.12502-2-hdegoede@redhat.com>
- <11743876.O9o76ZdvQC@kreacher> <299640b0-2448-3c46-a7b8-54d11d1d18c7@redhat.com>
-In-Reply-To: <299640b0-2448-3c46-a7b8-54d11d1d18c7@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 29 Mar 2021 16:56:00 +0200
-Message-ID: <CAJZ5v0i7eLkW8ydn5qcqJaRLZ32mhsmP1=qvsNaFTsH_=36ZVg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: scan: Fix _STA getting called on devices with
- unmet dependencies
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5d336f50-5f25-fce2-04eb-5ad450c9cd5b@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 29, 2021 at 4:46 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 3/29/21 3:39 PM, Rafael J. Wysocki wrote:
-> > On Sunday, March 28, 2021 1:20:00 PM CEST Hans de Goede wrote:
-> >> Commit 71da201f38df ("ACPI: scan: Defer enumeration of devices with
-> >> _DEP lists") dropped the following 2 lines from acpi_init_device_object():
-> >>
-> >>      /* Assume there are unmet deps until acpi_device_dep_initialize() runs */
-> >>      device->dep_unmet = 1;
-> >>
-> >> Leaving the initial value of dep_unmet at the 0 from the kzalloc(). This
-> >> causes the acpi_bus_get_status() call in acpi_add_single_object() to
-> >> actually call _STA, even though there maybe unmet deps, leading to errors
-> >> like these:
-> >>
-> >> [    0.123579] ACPI Error: No handler for Region [ECRM] (00000000ba9edc4c)
-> >>                [GenericSerialBus] (20170831/evregion-166)
-> >> [    0.123601] ACPI Error: Region GenericSerialBus (ID=9) has no handler
-> >>                (20170831/exfldio-299)
-> >> [    0.123618] ACPI Error: Method parse/execution failed
-> >>                \_SB.I2C1.BAT1._STA, AE_NOT_EXIST (20170831/psparse-550)
-> >>
-> >> Fix this by moving the acpi_scan_dep_init() call done for devices added
-> >> during the second pass done by acpi_bus_scan() to inside
-> >> acpi_add_single_object(), so that dep_unmet is properly initialized
-> >> before the acpi_bus_get_status() call.
-> >
-> > I wonder why the change below can't be made instead.
-> >
-> > The behavior would be closer to the original then AFAICS.
->
-> Right the behavior would be closer to the code before the 2 fase scan
-> rework. But just actually making sure we have the right value in unmet_dep
-> a tiny bit earlier seems cleaner to me.
->
-> Note that the one acpi_add_single_object() call which actually sets the
-> new init_dep parameter to true and the previous place of calling
-> acpi_scan_dep_init() are very close together, here is the code before
-> this patch:
->
->         acpi_add_single_object(&device, handle, type, sta, !check_dep);
->         if (!device)
->                 return AE_CTRL_DEPTH;
->
->         acpi_scan_init_hotplug(device);
->         if (!check_dep)
->                 acpi_scan_dep_init();
->
-> So we are only doing the acpi_scan_dep_init() call a tiny bit earlier
-> and wrt which locks are being held when it gets called no changes are
-> made since it is still called as part of the call-graph below
-> acpi_bus_check_add(), I explicitly checked the locking situation because
-> that was my one worry with this patch.
->
-> And this new approach also has the advantage of not setting dep_unmet=1
-> (and never clearing it) for devices instantiated through:
->
-> acpi_bus_register_early_device()
-> acpi_bus_scan_fixed()
-> acpi_add_power_resource()
->
-> IOW while looking into fixing the regression of the errors being logged
-> again I tried to do a cleaner fix then last time.
->
-> With that said if you prefer the version you suggest let me know and I'll
-> post a single v2 patch doing things that way.
+On Thu, Mar 04, 2021 at 01:49:14PM +0000, Daniel Scally wrote:
+> On 04/03/2021 13:37, Hans de Goede wrote:
+> > On 2/22/21 2:07 PM, Daniel Scally wrote:
 
-I'd prefer to do the simple fix at this stage of the development
-cycle, so yes, please.
+...
 
-I agree that it would be better to initialize dep_unmet properly in
-acpi_add_single_object(), but I'd do that a bit differently.
+> >> The existing mfd/tps68470.c driver being thus superseded, it is removed.
+> > Thank you for this patch series. Since there have already been a whole
+> > bunch of review-comments, I've not taken a detailed look at this yet.
+> 
+> No problem, I'm hoping to do a v3 over the weekend anyway.
 
-> If you want to go with your suggestion, shall I then add a dep_unmet=0
-> statement to the 3 mentioned functions which leave it at 1 when going back
-> to the old way of handling this ?
+Do you mean v4?
 
-No, I'll take care of this separately.
+I'm just wondering if you need any help.
 
-Cheers!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
