@@ -2,64 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58C6D34DBD6
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 00:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEA534DBFE
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 00:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232603AbhC2Way (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Mar 2021 18:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35988 "EHLO
+        id S231897AbhC2Wjf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Mar 2021 18:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233017AbhC2W2m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 18:28:42 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC571C061762
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Mar 2021 15:28:40 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id o2so5115965plg.1
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Mar 2021 15:28:40 -0700 (PDT)
+        with ESMTP id S231631AbhC2WjD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Mar 2021 18:39:03 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C81FC061762
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Mar 2021 15:39:03 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id h20so5132292plr.4
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Mar 2021 15:39:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=platinasystems-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=kt+/KTchiEi7SRqxK7aMCZQW49hw+aThg0jidlExq98=;
-        b=ocKHuknkTZQapF1WDbAn1TWfDJaR5ZTel7mCd7cibf5uC1qRCJmVd4u/QXjzrjKqsh
-         oCWpQYn6DQWzqoqtv4HHf4ZYc5KynWzxHYq4FGTfSUlkMBZgSAMI/ZLsrTYz8YJfKi4b
-         3QMTHMAtl3r3DmUqiyTpwX4UAzKyoFOIvPUZDeNJT9IzSMS6sFt461Fn/ZruCWBEEKxd
-         xFq7SN2VP3pAbG2fv86Z9E4EhIA+F2T0yEEUaHDjvBd2IOY4G4Yf9pImC4HP35onPO8E
-         Aud5Ntf1mwG5n8hhHkal34O7bRIfEDHT79BRBGW2TdDrj6sFqUqFf5aQoyts9tpz/EbS
-         wrXQ==
+        b=oR3NzwyZzBfo9kEnzyV5vBSb2VSgssDHyQsvopt2CAWVjo4x0SC37sfkune2S2xnwE
+         L3Jd51xuuJetASuuHItNskLXdViv4w/XUt33e34X8PniD6yzh2FcN6qICSAZXlu3HEAi
+         vz3GiIVy8yWp0VzE4uuioxX6VR9jpJLVtXaj2lbvPVnSx7gn0ML3EXwiOiiyh8VarrHG
+         C7Oc4BbaOoJ8l4tSxuQf7wLKv/XHnofQWNZOD0ubZ8Jy16q5fCcTFWkh84NdLUYoWWi4
+         91IMVzaganWxJWZySiRxdHUpa9d5rmlPD7/QrtdVKlP/JOaNPaoL3kX5bYCieuqUz9K3
+         /vXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=kt+/KTchiEi7SRqxK7aMCZQW49hw+aThg0jidlExq98=;
-        b=RviUISvkojMF/gfkeveh4VfRjAKDzXobeOiKPxa95sxSYj6uQ+Am2t8wMcC3frN+6w
-         zHxL9V8lvnjd1bCx86BLHK4Pc5l/BHtRs96uSR2kXEUb9rOoDWPWAr7M360s/qhQdR6B
-         tYMwawaaMhNg+PeDRBsT9D2mRs241csTDWX4BPwtcV1z2cACae3COTEv3Bmt1bwpSIAZ
-         S61/WvYBzZf5e47guJqEeH/6XdfFIMFQkkQjK0NlJLlqjuuYGkByuQASiBhwHYGNysEx
-         AyIKB0OUb7bvrWG5FtvGPnS6HMFEyQ5MUWqmaXXApSgp4Xu6d+C9LJfdyLNXh//ttv2h
-         mpJA==
-X-Gm-Message-State: AOAM533wNofNm4HPvR/ZOBh5NhE8ihW9TI+qt/d2w1/wkS/0ZMxMZhV2
-        13hRNHxhZ3p6FIF6IiRX//R1Mw==
-X-Google-Smtp-Source: ABdhPJy+3aWfSpuTEdzR0B7tL/coaRg0KPWE/TpKpnNu2lMP9sMuzAPlvEBgStFqOi4E5RrLvjKVSg==
-X-Received: by 2002:a17:90a:5103:: with SMTP id t3mr1281366pjh.68.1617056920127;
-        Mon, 29 Mar 2021 15:28:40 -0700 (PDT)
+        b=ZHLGaOXzByGXS0YJT9ojMVMnTAihP/j4USusHcz8nHuADVerUcfUYSE1xTL1F3wb76
+         Iipco0ej4/n4FZM9mn7NIbVOvEWsBp4xosxfpXvyQX2BbM5/V0n+J9zsntKsavhqfRp8
+         eZZFvIAdp8YuyoMDLu5wD0TnTuHkqCIl7s132MX1NwB1utgxIWs6phz2hN7RIqPIf20d
+         rOWsW+4MUa/Ga1rc+MLHg0f2HTHcepjmqUwfpOHAjtittSDcA7XhqaN17koO7/TEhHBp
+         hQt2kCgEaHzNEEaKYInq51YOmZBWfvN8loFXF+QHVsi8Yzu/eMVPaIRgl0X5tyji8qz8
+         Z+jA==
+X-Gm-Message-State: AOAM533wZ9e7nkfKfVwDQ6W21FsZIZ/eKXsW906drp21kTY9UJ3mBh8n
+        gS80JLtg39BpiOtp6rdFdEpGow==
+X-Google-Smtp-Source: ABdhPJxgrTMdNaXnmufpECMBW46sGGnkKIdnNAEAp7UrCVwOznH1fdKc35SbsUFWwkKbxChVqMR/Rw==
+X-Received: by 2002:a17:90a:5d8f:: with SMTP id t15mr1293430pji.28.1617057542658;
+        Mon, 29 Mar 2021 15:39:02 -0700 (PDT)
 Received: from localhost.localdomain ([207.53.255.56])
-        by smtp.gmail.com with ESMTPSA id d2sm577652pjx.42.2021.03.29.15.28.38
+        by smtp.gmail.com with ESMTPSA id y23sm18229857pfo.50.2021.03.29.15.39.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Mar 2021 15:28:39 -0700 (PDT)
+        Mon, 29 Mar 2021 15:39:02 -0700 (PDT)
 From:   Kevin Paul Herbert <kph@platinasystems.com>
 To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.orgrnel.org,
+        devicetree@vger.kernel.org,
         Tom Grennan <tgrennan@platinasystems.com>,
         linux-kernel@vger.kernel.org,
         Kevin Paul Herbert <kph@platinasystems.com>
 Subject: [PATCH] nvmem: Change to unified property interface
-Date:   Mon, 29 Mar 2021 15:28:19 -0700
-Message-Id: <20210329222819.2849637-1-kph@platinasystems.com>
+Date:   Mon, 29 Mar 2021 15:38:27 -0700
+Message-Id: <20210329223827.2851916-1-kph@platinasystems.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
