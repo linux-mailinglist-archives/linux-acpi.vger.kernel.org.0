@@ -2,86 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9C134EF34
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 19:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F6FB34F131
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 20:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232307AbhC3RSf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Mar 2021 13:18:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbhC3RSQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Mar 2021 13:18:16 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49F3C061574
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Mar 2021 10:18:15 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id b2-20020a7bc2420000b029010be1081172so8837585wmj.1
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Mar 2021 10:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=wv5s2hFIUo2gKQ4gDxjTXneaufMswuUrX5PqppLDZlw=;
-        b=seDS3AbA2YxPNbqBPGSiqi1kOqb8GqtxtF3q5yGUPHMl1LYormxa50YHLOoSgwqCDW
-         5d6MoW+Pws1fvmGJqeXGtRh+udchEEFs0PXDaL+xsUI3W2PRpkxMMPcg3sr1EHiDYOJQ
-         EA23RAX+U3yXZ65A3V6zan94Pho1p3fVlmwrVbF7LAQ9ua0EcVcxCTWE2Et65UYpX45O
-         Zd5wznq/kir0bQmALsIbGIcMeJbRm9e0tWOY/vSjITj429wVOiULFcgCRU8G/r16D96I
-         BjWkLOry9XIGmTIz4QIkexKAzhE7SrJloVxD7zET0HsPEGAw4JTdwMlyQpcZ0Jkkyr/z
-         SH4Q==
+        id S232918AbhC3SrI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Mar 2021 14:47:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53304 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232833AbhC3Sq7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Mar 2021 14:46:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1617130018;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dd+NH6XoCe8f6Y3SHS+9Svib5nLjFTSlcTDbRi+JJAc=;
+        b=W7iULPqN5YueOkNZDtWLCv4Ekinynl0ik1+w3vC7XvHDgsK97Vhr4rcLPpYU70Rli1kMSh
+        mXQR81gn8cfj6vEKhumnEAXSAClfQRlDS5q3KoODuArQqmi+ulVA4XBMzAyYalGhpg1cDF
+        //A7Uj+omQ7CUYguvwxkUSSDa7tM2bA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-405-kSNHCAfiOTmoVNfesZgiRA-1; Tue, 30 Mar 2021 14:46:57 -0400
+X-MC-Unique: kSNHCAfiOTmoVNfesZgiRA-1
+Received: by mail-ej1-f71.google.com with SMTP id h14so7548806ejg.7
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Mar 2021 11:46:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wv5s2hFIUo2gKQ4gDxjTXneaufMswuUrX5PqppLDZlw=;
-        b=cCDB3ntDMAa1sYbbKnAdMODA2eHtIatYgId1ZmmVygQuNdadODmXEagvaHbk2jl8yn
-         9m347KyVSNvs8AGHptwZ2hEdTasK8ZgrNmUFk/IkdrrM+ORv2qNatfO05fFwYccRSVz2
-         VnjQGfJ01ZtBA1DUWXyEoSuxJab+s78rx1W1kW9UevTFTVONOHX8M/1iY1xd2BYyprhi
-         Y0fxgiS8wota+jEHVaQeWjmiqXYF8MDi3fbs1Ctncifz5GMgwzAl31KLVzj5E6geWcyg
-         OXxR7e/QZP6tfEtVOLGbZghaHM4DPL+IosGfIcOta4wt3+mMVqsjO6oh4YY1PWmXVz6F
-         /aWQ==
-X-Gm-Message-State: AOAM530Y8cbcZZU6YjZlpVJqtUmAZbnK/5t9dQJrY0b1/ELLDkCGAmM3
-        3VZFUfe2zCebNRVRM834vUnVdw==
-X-Google-Smtp-Source: ABdhPJxWMhf+gc+wpTtm59XgeUZsbWjnVM7+DjvkPDd2IW2QmwXRwSkIh4AEvc7E/VkGQxzV/6eMNw==
-X-Received: by 2002:a7b:c848:: with SMTP id c8mr5130672wml.97.1617124694446;
-        Tue, 30 Mar 2021 10:18:14 -0700 (PDT)
-Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id a6sm6542927wmm.0.2021.03.30.10.18.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 10:18:13 -0700 (PDT)
-Date:   Tue, 30 Mar 2021 19:17:55 +0200
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     joro@8bytes.org, will@kernel.org
-Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
-        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com
-Subject: Re: [PATCH v13 00/10] iommu: I/O page faults for SMMUv3
-Message-ID: <YGNdQ863Mohizx7A@myrica>
-References: <20210302092644.2553014-1-jean-philippe@linaro.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dd+NH6XoCe8f6Y3SHS+9Svib5nLjFTSlcTDbRi+JJAc=;
+        b=lHFjyVjV7vUfk/HQsKJS5NLrv5brSKjWKvRk9tu14Wz5eD19TAES5IQxCNa8FpMh98
+         r3QIvZHNPL3jWZN8Il58sOP69DTsyI0o8X2Uhzy+wjSJjIYl1HfZkNqFzpG2jSzcWbgp
+         SxBHcmFy57P4mTU9v5QuwcYklVK6GyjmkbYC6WLp9hlMr8Hw0oZhQ2osNAlSmytWNz4S
+         3MoMXchxIcyZJ8gFo+9QlEOv/dOCNfn7NnJDynyNSA0kno8wi0gXDOJFT5+dvP4t7dOZ
+         BMgBDk5YktxsxtW5lLZTihB+3ImrLDcCpwdmeDhuWcvBzxl5JtTyCVE6q+RKDrVnqOa/
+         YnEw==
+X-Gm-Message-State: AOAM530m2JeD1fWs0T95EnYeQ9XWhWOCtWdYLGs5chlXYWpM553QdCSG
+        u2cfKYVuetZzOugSe8Ep9iksZ1JumHQnX+UCuqQvC05XQSbhFQmnG88A+w6BAzX+P/LPNoRMH0h
+        wsJAHLMaVtiVw5bku+gHuHk7RL/16wurt0W4pWNr07hr7I/go+SrqpG+41c0pDBXYshBJ6ZiZgw
+        ==
+X-Received: by 2002:a17:906:3e89:: with SMTP id a9mr33446053ejj.405.1617130012746;
+        Tue, 30 Mar 2021 11:46:52 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzqvXkz37G+wsDT1sitTTMxpjxlbuDnbFrDsc9GhwCLTjXtJI4lf58Lvt9hmQ3+6DQr8tt02A==
+X-Received: by 2002:a17:906:3e89:: with SMTP id a9mr33446036ejj.405.1617130012505;
+        Tue, 30 Mar 2021 11:46:52 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id r25sm11899609edv.78.2021.03.30.11.46.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Mar 2021 11:46:52 -0700 (PDT)
+Subject: Re: [PATCH v2] ACPI: scan: Fix _STA getting called on devices with
+ unmet dependencies
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org
+References: <20210329154649.16056-1-hdegoede@redhat.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <5d87fe5b-c88f-e774-f60b-9cb3752092f6@redhat.com>
+Date:   Tue, 30 Mar 2021 20:46:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210302092644.2553014-1-jean-philippe@linaro.org>
+In-Reply-To: <20210329154649.16056-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Will, Joerg,
+Hi Rafael,
 
-On Tue, Mar 02, 2021 at 10:26:36AM +0100, Jean-Philippe Brucker wrote:
-> Add stall support to the SMMUv3 driver, along with a common I/O Page
-> Fault handler.
+On 3/29/21 5:46 PM, Hans de Goede wrote:
+> Commit 71da201f38df ("ACPI: scan: Defer enumeration of devices with
+> _DEP lists") dropped the following 2 lines from acpi_init_device_object():
+> 
+> 	/* Assume there are unmet deps until acpi_device_dep_initialize() runs */
+> 	device->dep_unmet = 1;
+> 
+> Leaving the initial value of dep_unmet at the 0 from the kzalloc(). This
+> causes the acpi_bus_get_status() call in acpi_add_single_object() to
+> actually call _STA, even though there maybe unmet deps, leading to errors
+> like these:
+> 
+> [    0.123579] ACPI Error: No handler for Region [ECRM] (00000000ba9edc4c)
+>                [GenericSerialBus] (20170831/evregion-166)
+> [    0.123601] ACPI Error: Region GenericSerialBus (ID=9) has no handler
+>                (20170831/exfldio-299)
+> [    0.123618] ACPI Error: Method parse/execution failed
+>                \_SB.I2C1.BAT1._STA, AE_NOT_EXIST (20170831/psparse-550)
+> 
+> Fix this by re-adding the dep_unmet = 1 initialization to
+> acpi_init_device_object() and modifying acpi_bus_check_add() to make sure
+> that dep_unmet always gets setup there, overriding the initial 1 value.
+> 
+> This re-fixes the issue initially fixed by
+> commit 63347db0affa ("ACPI / scan: Use acpi_bus_get_status() to initialize
+> ACPI_TYPE_DEVICE devs"), which introduced the removed
+> "device->dep_unmet = 1;" statement.
+> 
+> This issue was noticed; and the fix tested on a Dell Venue 10 Pro 5055.
+> 
+> Fixes: 71da201f38df ("ACPI: scan: Defer enumeration of devices with _DEP lists")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-I only have review/ack tags and one assert_lockdep to add to this series.
-Should I send a v14 now or wait a little longer?  Just making sure we can
-get at least patches 1-6 in v5.13.
+Self-nack, sorry, I know you already merged this, but I hope you can still replace
+it, as this is broken. It causes dep_unmet to never reach 0 for devices with deps
+because it is missing this:
 
-Thanks,
-Jean
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1910,6 +1910,8 @@ static void acpi_scan_dep_init(struct acpi_device *adev)
+ {
+ 	struct acpi_dep_data *dep;
+ 
++	adev->dep_unmet = 0;
++
+ 	mutex_lock(&acpi_dep_list_lock);
+ 
+ 	list_for_each_entry(dep, &acpi_dep_list, node) {
+
+So now acpi_scan_dep_init() starts with 1 dep and then adds the actual
+number of deps on top.
+
+I'll send a v3 fixing this as soon as I've tested it.
+
+(I should have noticed the battery reporting was gone with v2, but
+I only checked that the errors were gone from dmesg...)
+
+Let me know if you want a follow-up patch fixing this instead.
+
+Regards,
+
+Hans
+
+
+
+
+
+
+
+> ---
+>  drivers/acpi/scan.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 1584c9e463bd..aca4edc8fe6b 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1647,6 +1647,8 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
+>  	device_initialize(&device->dev);
+>  	dev_set_uevent_suppress(&device->dev, true);
+>  	acpi_init_coherency(device);
+> +	/* Assume there are unmet deps to start with. */
+> +	device->dep_unmet = 1;
+>  }
+>  
+>  void acpi_device_add_finalize(struct acpi_device *device)
+> @@ -1957,7 +1959,13 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
+>  		return AE_CTRL_DEPTH;
+>  
+>  	acpi_scan_init_hotplug(device);
+> -	if (!check_dep)
+> +	/*
+> +	 * If check_dep is true at this point, the device has no dependencies,
+> +	 * or the creation of the device object would have been postponed above.
+> +	 */
+> +	if (check_dep)
+> +		device->dep_unmet = 0;
+> +	else
+>  		acpi_scan_dep_init(device);
+>  
+>  out:
+> 
 
