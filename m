@@ -2,131 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0410634EDC1
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 18:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8456134EEC1
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Mar 2021 19:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbhC3Q1Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Mar 2021 12:27:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42940 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231998AbhC3Q04 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Mar 2021 12:26:56 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D196C061762
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Mar 2021 09:26:56 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id w8so18058304ybt.3
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Mar 2021 09:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=E84xiuP96qdI7CJTKEoKUbx5Tud8k1cz/vlbjHEw4u0=;
-        b=NhyyBx3rsxS/8TIMF2Ga2ndhdkfALclaVvdMgUn9VzeEDA9vjUxsU0hrmepA76TfLt
-         u0X4694RTY7cucG2E7Ff8cg8WyEZtc72CatSnkWj4BIkSv+WQ56l3wybCFVpC7oO8/aY
-         n7JuOd68AJouHOTeOvP+UeSvFZ0DzJGOerJU8QYdsQ3N1WYHN/oNfRba5OmHqlCHvH3X
-         O+u1FJyU6EET1HxP051/l4PrUVO0W7xz7dyvd7Eu54lhSOAPhAsK3Kb11A1ssyc9J65P
-         MH/b7aHeZJaLunKWbnTsmaRedKpwTDaFc9GgNUVHXYtTbKTaLcBqisSEGID/TuBZAjHG
-         wbPw==
+        id S232533AbhC3RAz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Mar 2021 13:00:55 -0400
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:46728 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231650AbhC3RAr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Mar 2021 13:00:47 -0400
+Received: by mail-ot1-f47.google.com with SMTP id 68-20020a9d0f4a0000b02901b663e6258dso16193092ott.13;
+        Tue, 30 Mar 2021 10:00:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=E84xiuP96qdI7CJTKEoKUbx5Tud8k1cz/vlbjHEw4u0=;
-        b=ORqvSGe4FuIovh1nVWpaMDSkcDR9EJO/H+CQNZzA/z/YmwJLk2bE0+uaLQtn+bExga
-         ZkLRo6OGFSD3u6xUP9zW+4nRSTgMg0j5em42rjsuwlF64CvkvSAwEA8IeX5X5e4IW9FR
-         3H1p2BF0tWTCspryW43FXoEMLFIxg9CZUp3PxzcIU0kPFpUTr542uh6gissP+6bp243t
-         S0S6In7xMGiWZ5QPri/zJPLeo2AkzPIJ07w/EjgzL5P0BofP0nb7RWhPGUiBoxRGhitq
-         MknK4z+i0U78MglD6qW/iulzkTZUarqJqdyJC/d3csYXlfMReSUA88z2LM2aQW1BmoGE
-         EPAQ==
-X-Gm-Message-State: AOAM5304sjkPkgwWVbFVqkk98wMECAIP7f1zGkL9/yohVcFJXlKZpOhg
-        ApXGCzm/bIFh9z+7GonN/2c0xurKVgqYgI2v1CMcLA==
-X-Google-Smtp-Source: ABdhPJzRju2GzsjyNoiA4fXciYHN4xAXYF+zjvtaWtSDSt0ofrTYQWng9+AP3dlitSrOgxr9jUO9qbtBbt2EI9ZSqHM=
-X-Received: by 2002:a25:d3cf:: with SMTP id e198mr45556943ybf.228.1617121615342;
- Tue, 30 Mar 2021 09:26:55 -0700 (PDT)
+        bh=GrRt3u7iqTFYKYQM2kMqnl4TPPvQxpiAG7TTBqlqQcY=;
+        b=SUvdubfcuobp6viiZFjLvFggNNsSllcy6DzV0ka1Ep+I000Q52ZOKzBEGpUXd5RH5C
+         wXsCCXDc9Esu40/RaTBhpC0BvK5Cc2KtETE6ows1X6LntO4wsqN8oey4ff1+TeX4e1ef
+         RsRxGgkOrjO551hPt+Qfu8SkJcHFF37z6BGzwXHvXc6wLC8dGPSfIimfwrT++O9lLQ71
+         HJno3G6zns7h+YhHRPbUjCw+OX523ZoHgESpfgvnKs0Z2Q4ipV4hWLdUUSQZmbGC36B8
+         KGT/XFWYPKr6qdKoudHHnGLbqDSkONI+Zm2T7Wongyn+4A9RWyO0t1niiArQIipGDZDM
+         1lhw==
+X-Gm-Message-State: AOAM5319S6u/OwUz0vTPPcatNsf7P3PRS2AmsBwdNc8n4UcK2z8GOuov
+        iO0M9eMr1Xc1KNMkxHmPIFYkqPhFNeovnvC055c=
+X-Google-Smtp-Source: ABdhPJz+lW82gZmQ0GMHD4FdEDFEY51f8BcLrLAWfgu86kEPKK44Q3AH1fe7Dl5zN+oDsSjCsVO2M430UPrtd5vx+BA=
+X-Received: by 2002:a05:6830:20d2:: with SMTP id z18mr27637560otq.260.1617123646616;
+ Tue, 30 Mar 2021 10:00:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210205222644.2357303-9-saravanak@google.com>
- <20210210114435.122242-1-tudor.ambarus@microchip.com> <20210330154222.GA5411@roeck-us.net>
-In-Reply-To: <20210330154222.GA5411@roeck-us.net>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 30 Mar 2021 09:26:19 -0700
-Message-ID: <CAGETcx_k2dAHRWn4914s32KSdJ=WLDe6DeD50V2kvR+2dUPrMw@mail.gmail.com>
-Subject: Re: [PATCH] clk: Mark fwnodes when their clock provider is added
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Brown, Len" <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Android Kernel Team <kernel-team@android.com>
+References: <1616831193-17920-1-git-send-email-tanxiaofei@huawei.com>
+ <1616831193-17920-5-git-send-email-tanxiaofei@huawei.com> <6df04be78e544e17b3b57f159312541f@AcuMS.aculab.com>
+ <34dd3de8-644d-6e44-965a-0991b7027cae@huawei.com> <b5ad5909f3fb14b46d6ff0f81c10e42507a60c74.camel@intel.com>
+ <af3fd5adb62dcac93f2ff4ea7b6aff74d0106ac5.camel@intel.com> <6df8e01e2e9e4906be5ceaea72c61c0f@AcuMS.aculab.com>
+In-Reply-To: <6df8e01e2e9e4906be5ceaea72c61c0f@AcuMS.aculab.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 30 Mar 2021 19:00:31 +0200
+Message-ID: <CAJZ5v0hz8dadumTTDbe6+xyNBMhkTLq6C60U+=Ec44WxL2Jdxw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by __packed
+To:     David Laight <David.Laight@aculab.com>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 30, 2021 at 8:42 AM Guenter Roeck <linux@roeck-us.net> wrote:
+On Tue, Mar 30, 2021 at 10:15 AM David Laight <David.Laight@aculab.com> wrote:
 >
-> On Wed, Feb 10, 2021 at 01:44:34PM +0200, Tudor Ambarus wrote:
-> > This is a follow-up for:
-> > commit 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
+> From: Zhang Rui
+> > Sent: 30 March 2021 09:00
+> > To: Xiaofei Tan <tanxiaofei@huawei.com>; David Laight <David.Laight@ACULAB.COM>; rjw@rjwysocki.net;
+> > lenb@kernel.org; bhelgaas@google.com
+> > Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-pci@vger.kernel.org;
+> > linuxarm@openeuler.org
+> > Subject: Re: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by __packed
 > >
-> > The above commit updated the deprecated of_clk_add_provider(),
-> > but missed to update the preferred of_clk_add_hw_provider().
-> > Update it now.
+> > On Tue, 2021-03-30 at 15:31 +0800, Zhang Rui wrote:
+> > > On Tue, 2021-03-30 at 10:23 +0800, Xiaofei Tan wrote:
+> > > > Hi David,
+> > > >
+> > > > On 2021/3/29 18:09, David Laight wrote:
+> > > > > From: Xiaofei Tan
+> > > > > > Sent: 27 March 2021 07:46
+> > > > > >
+> > > > > > Replace __attribute__((packed)) by __packed following the
+> > > > > > advice of checkpatch.pl.
+> > > > > >
+> > > > > > Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> > > > > > ---
+> > > > > >  drivers/acpi/acpi_fpdt.c | 6 +++---
+> > > > > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > > > > >
+> > > > > > diff --git a/drivers/acpi/acpi_fpdt.c
+> > > > > > b/drivers/acpi/acpi_fpdt.c
+> > > > > > index a89a806..690a88a 100644
+> > > > > > --- a/drivers/acpi/acpi_fpdt.c
+> > > > > > +++ b/drivers/acpi/acpi_fpdt.c
+> > > > > > @@ -53,7 +53,7 @@ struct resume_performance_record {
+> > > > > >       u32 resume_count;
+> > > > > >       u64 resume_prev;
+> > > > > >       u64 resume_avg;
+> > > > > > -} __attribute__((packed));
+> > > > > > +} __packed;
+> > > > > >
+> > > > > >  struct boot_performance_record {
+> > > > > >       struct fpdt_record_header header;
+> > > > > > @@ -63,13 +63,13 @@ struct boot_performance_record {
+> > > > > >       u64 bootloader_launch;
+> > > > > >       u64 exitbootservice_start;
+> > > > > >       u64 exitbootservice_end;
+> > > > > > -} __attribute__((packed));
+> > > > > > +} __packed;
+> > > > > >
+> > > > > >  struct suspend_performance_record {
+> > > > > >       struct fpdt_record_header header;
+> > > > > >       u64 suspend_start;
+> > > > > >       u64 suspend_end;
+> > > > > > -} __attribute__((packed));
+> > > > > > +} __packed;
+> > > > >
+> > > > > My standard question about 'packed' is whether it is actually
+> > > > > needed.
+> > > > > It should only be used if the structures might be misaligned in
+> > > > > memory.
+> > > > > If the only problem is that a 64bit item needs to be 32bit
+> > > > > aligned
+> > > > > then a suitable type should be used for those specific fields.
+> > > > >
+> > > > > Those all look very dubious - the standard header isn't packed
+> > > > > so everything must eb assumed to be at least 32bit aligned.
+> > > > >
+> > > > > There are also other sub-structures that contain 64bit values.
+> > > > > These don't contain padding - but that requires 64bit alignement.
+> > > > >
+> > > > > The only problematic structure is the last one - which would have
+> > > > > a 32bit pad after the header.
+> > > > > Is this even right given than there are explicit alignment pads
+> > > > > in some of the other structures.
+> > > > >
+> > > > > If 64bit alignment isn't guaranteed then a '64bit aligned to
+> > > > > 32bit'
+> > > > > type should be used for the u64 fields.
+> > > > >
+> > > >
+> > > > Yes, some of them has been aligned already, then nothing changed
+> > > > when
+> > > > add this "packed ". Maybe the purpose of the original author is
+> > > > for
+> > > > extension, and can tell others that this struct need be packed.
+> > > >
+> > >
+> > > The patch is upstreamed recently but it was made long time ago.
+> > > I think the original problem is that one of the address, probably the
+> > > suspend_performance record, is not 64bit aligned, thus we can not
+> > > read
+> > > the proper content of suspend_start and suspend_end, mapped from
+> > > physical memory.
+> > >
+> > > I will try to find a machine to reproduce the problem with all
+> > > __attribute__((packed)) removed to double confirm this.
+> > >
 > >
-> > Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> > Reviewed-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/clk/clk.c | 2 ++
-> >  1 file changed, 2 insertions(+)
+> > So here is the problem, without __attribute__((packed))
 > >
-> > diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> > index 27ff90eacb1f..9370e4dfecae 100644
-> > --- a/drivers/clk/clk.c
-> > +++ b/drivers/clk/clk.c
-> > @@ -4594,6 +4594,8 @@ int of_clk_add_hw_provider(struct device_node *np,
-> >       if (ret < 0)
-> >               of_clk_del_provider(np);
+> > [    0.858442] suspend_record: 0xffffaad500175020
+> > /sys/firmware/acpi/fpdt/suspend/suspend_end_ns:addr:
+> > 0xffffaad500175030, 15998179292659843072
+> > /sys/firmware/acpi/fpdt/suspend/suspend_start_ns:addr:
+> > 0xffffaad500175028, 0
 > >
-> > +     fwnode_dev_initialized(&np->fwnode, true);
-> > +
+> > suspend_record is mapped to 0xffffaad500175020, and it is combined with
+> > one 32bit header and two 64bit fields (suspend_start and suspend_end),
+> > this is how it is located in physical memory.
+> > So the addresses of the two 64bit fields are actually not 64bit
+> > aligned.
+> >
+> > David,
+> > Is this the "a 64bit item needs to be 32bit aligned" problem you
+> > referred?
+> > If yes, what is the proper fix? should I used two 32bits for each of
+> > the field instead?
 >
-> This causes a crash when booting raspi2 images in qemu.
+> Define something like:
+> typedef u64 __attribute__((aligned(4))) u64_align32;
+> and then use it for the 64bit structure members.
 >
-> [   22.123618] Unable to handle kernel NULL pointer dereference at virtual address 00000028
-> [   22.123830] pgd = (ptrval)
-> [   22.123992] [00000028] *pgd=00000000
-> [   22.124579] Internal error: Oops: 5 [#1] SMP ARM
-> ...
-> [   22.141624] [<c0a2f4d8>] (of_clk_add_hw_provider) from [<c0a2f54c>] (devm_of_clk_add_hw_provider+0x48/0x80)
-> [   22.141819] [<c0a2f54c>] (devm_of_clk_add_hw_provider) from [<c0a43ad8>] (raspberrypi_clk_probe+0x25c/0x384)
-> [   22.141976] [<c0a43ad8>] (raspberrypi_clk_probe) from [<c0c18da0>] (platform_probe+0x5c/0xb8)
-> [   22.142114] [<c0c18da0>] (platform_probe) from [<c0c16654>] (really_probe+0xf0/0x39c)
-> [   22.142246] [<c0c16654>] (really_probe) from [<c0c16968>] (driver_probe_device+0x68/0xc0)
-> [   22.142377] [<c0c16968>] (driver_probe_device) from [<c0c14834>] (bus_for_each_drv+0x84/0xc8)...
+> There doesn't seem to be a standard type name for it - although
+> it is used in several places.
 >
-> np can (and will) be NULL here. See of_clk_set_defaults().
+> I'm not entirely sure but is ACPI always LE?
 
-Thanks for the report. It was reported earlier by Marek and there's a
-discussion going on about it in the thread.
+Yes.
 
--Saravana
+> (is it even x86 only??)
+
+No.
