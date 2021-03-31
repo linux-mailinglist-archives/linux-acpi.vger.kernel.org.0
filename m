@@ -2,86 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DE193508D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Mar 2021 23:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4169350A2E
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 00:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232319AbhCaVIu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Mar 2021 17:08:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53378 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232207AbhCaVIr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 31 Mar 2021 17:08:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7C54561056;
-        Wed, 31 Mar 2021 21:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617224926;
-        bh=YCB+fX2HMscEE/1zf6bDbsOvsLoFXezcqPV+qdKPTKA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=B0F1phdgR2YSmzO5+/n6msLT2yJhy0ACKFiND7siEwJDmGwygr4JTCLabo3cnaoHE
-         x50dLB8lMDXFXwm3g6pCPCvUhER58aquGK9BVhvJC4bAbipjD3ZyNd2FHSE+63EsDu
-         iALnOdq3x6PzT3n5LPxy6a9NrT6E5KtIbfEje1IqABLIxxPGoG67fNymVR3vVbbKH0
-         jTIpUWhGu9CQN2dkhQRP1hG0zw4NWsuPdXGhXYWarSk3YPBmWvxnKiUtjd69hsWp9L
-         3BTeYwbVdKFlXJHADpFJSmvGPuzrhyEwKFptpt5pfPQ6E8hcKoEzZq1qtSkz/5rNuK
-         swt5gjnHtXOeQ==
-Date:   Wed, 31 Mar 2021 16:08:45 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        David Box <david.e.box@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-Subject: Re: [PATCH] PCI: ACPI: PM: Fix debug message in
- acpi_pci_set_power_state()
-Message-ID: <20210331210845.GA1422864@bjorn-Precision-5520>
+        id S229624AbhCaW0k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Mar 2021 18:26:40 -0400
+Received: from sender4-of-o53.zoho.com ([136.143.188.53]:21385 "EHLO
+        sender4-of-o53.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229497AbhCaW0O (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Mar 2021 18:26:14 -0400
+X-Greylist: delayed 903 seconds by postgrey-1.27 at vger.kernel.org; Wed, 31 Mar 2021 18:26:14 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1617228663; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=OfuQO4ZWcJiSj1BIStNZMUEENOCZPqJM8o1U6/irGVS+9JiwGxM8LJ9JOkdvY9eRQIMFRh5O3cWM9B+9H8MRRIEL6MHdwZHdBC+4W1xbpzljm6quD9okVJJ+S9vmiFfuO0qQlYR8YSNeMxNgJWDNnBUHlvPv0gRis6KPEtwb2GU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1617228663; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=mIj2ubKyNk1AbgGfcv8nvb+y5MC92I8zGuwTQ28EZRA=; 
+        b=czqgYAOS9tHI55e5v5y02Ks0i2vNeDLdSAFOuxz/DvmHwCVZ6u2t+qDmxBlOjUu0DU1umN/sHeLLMKRvwKrkbnBc+we61/+v536ND6GXcTkpirl466OTQ+50tWitT4LVd2TMSz59SXMDew/7UztmVLUa5OBmUwUnOKf0wh7JIcE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=anirudhrb.com;
+        spf=pass  smtp.mailfrom=mail@anirudhrb.com;
+        dmarc=pass header.from=<mail@anirudhrb.com> header.from=<mail@anirudhrb.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1617228663;
+        s=zoho; d=anirudhrb.com; i=mail@anirudhrb.com;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=mIj2ubKyNk1AbgGfcv8nvb+y5MC92I8zGuwTQ28EZRA=;
+        b=TAjeW+Sv34kA6vWwySaXztudfM/lBGGf0iTs74pf4CEPnddwCr77ktoJOEIigE7T
+        E1ZIOMc9v4n9kCidyEreCdqqOWwjSJg5yQFxKOv9PiitDisxYGekq4OzA4Bju01ho7a
+        b6CaV3Daq6iRfPflscKlIAc7r3HX9WvpzxfEG+Jg=
+Received: from localhost.localdomain (106.51.106.225 [106.51.106.225]) by mx.zohomail.com
+        with SMTPS id 1617228661119881.9075492888667; Wed, 31 Mar 2021 15:11:01 -0700 (PDT)
+From:   Anirudh Rayabharam <mail@anirudhrb.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     Anirudh Rayabharam <mail@anirudhrb.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: fix build warning in processor_idle.c
+Date:   Thu,  1 Apr 2021 03:40:25 +0530
+Message-Id: <20210331221025.31891-1-mail@anirudhrb.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4319486.LvFx2qVVIh@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 25, 2021 at 07:57:51PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> If PCI_D3cold is passed to acpi_pci_set_power_state() as the second
-> argument and there is no ACPI D3cold support for the given device,
-> the debug message printed by that function will state that the
-> device power state has been changed to D3cold, while in fact it
-> will be D3hot, because acpi_device_set_power() falls back to D3hot
-> automatically if D3cold is not supported without returning an error.
-> 
-> To address this issue, modify the debug message in question to print
-> the current power state of the target PCI device's ACPI companion
-> instead of printing the target power state which may not reflect
-> the real final power state of the device.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+GCC shows the following warning during build:
 
-Applied with Krzysztof's reviewed-by to pci/pm for v5.13, thanks!
+drivers/acpi/processor_idle.c: In function ‘acpi_idle_play_dead’:
+drivers/acpi/processor_idle.c:542:15: warning: extra tokens at end
+of #ifdef directive
 
-Let me know if you have nearby or related changes that you'd rather
-take via your tree.
+Fix by replacing "ifdef" with "if".
 
-> ---
->  drivers/pci/pci-acpi.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Index: linux-pm/drivers/pci/pci-acpi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-acpi.c
-> +++ linux-pm/drivers/pci/pci-acpi.c
-> @@ -1021,7 +1021,7 @@ static int acpi_pci_set_power_state(stru
->  
->  	if (!error)
->  		pci_dbg(dev, "power state changed by ACPI to %s\n",
-> -			 acpi_power_state_string(state_conv[state]));
-> +		        acpi_power_state_string(adev->power.state));
->  
->  	return error;
->  }
-> 
-> 
-> 
+Signed-off-by: Anirudh Rayabharam <mail@anirudhrb.com>
+---
+ drivers/acpi/processor_idle.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 19fb28a8005b..0925b1477230 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -539,7 +539,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+ 		} else
+ 			return -ENODEV;
+ 
+-#ifdef defined(CONFIG_X86) && defined(CONFIG_HOTPLUG_CPU)
++#if defined(CONFIG_X86) && defined(CONFIG_HOTPLUG_CPU)
+ 		/* If NMI wants to wake up CPU0, start CPU0. */
+ 		if (wakeup_cpu0())
+ 			start_cpu0();
+-- 
+2.26.2
+
