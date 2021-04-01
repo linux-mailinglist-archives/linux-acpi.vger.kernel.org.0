@@ -2,75 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B8F3513E4
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 12:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF8A3517D3
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 19:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233629AbhDAKqi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Apr 2021 06:46:38 -0400
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:38444 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232565AbhDAKqR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Apr 2021 06:46:17 -0400
-Received: by mail-ot1-f49.google.com with SMTP id w21-20020a9d63950000b02901ce7b8c45b4so1714342otk.5;
-        Thu, 01 Apr 2021 03:46:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o87MMBtEyXrLDI+UXXVN/kLAY/ixo6UgJV9nJTpzby0=;
-        b=n+PniYApmaTxqx1KRPtmEpK71o7hU89EQOFNHod08o6h4syknXKlrO74O8yqG4iH2z
-         bEfEqMSmveENP4dKb1JcevEswChDc9pG6AKN/ZR3AGaAVzRGwW7E5yf5fFn+Y5irHw99
-         l/nUanCr+Gaw7Kc6tDTH2k6Emh547b2yyiuxD9PnyyGJjxRFillvGVgVpMfC5qcFIJLv
-         /fVjo9toufQELotfLLjy2xTuIOCJJyuOqv47dPCL29GN5LRm6t5nYgNKgCFF6mwkYCrv
-         Z0bMm/1p0gpx5Jc5rVqy3Cv4xl8QWPlSeXkubSSuJHWdCBA7xSdRVGt7mrsy7KHiX0aG
-         NaIA==
-X-Gm-Message-State: AOAM530o2SFLgAqLw1GO8KnIctn/3smsNlBGD/VQYoL0Z4FzpNlSbYqw
-        bCnXQtAVFyiQQELwztewFfZYsgnwDufvYbABsJnXm+tb
-X-Google-Smtp-Source: ABdhPJy35DDwAq+peQ/etkj5pBR3XohD0I+EXiJaupWlcMzeaTf9KWgxaFEZwnqZqOJFIH6z2AIFVAmajpUx8DQfUQw=
-X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr5757449otb.260.1617273976398;
- Thu, 01 Apr 2021 03:46:16 -0700 (PDT)
+        id S234393AbhDARmu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Apr 2021 13:42:50 -0400
+Received: from mga01.intel.com ([192.55.52.88]:46951 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234759AbhDARjo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 1 Apr 2021 13:39:44 -0400
+IronPort-SDR: +LmthehJ1PLZRvDXjJyW8F8GO6VjqneIUKxIXwZ2ueD4sPW0DJ9MqAtRIgximA6k+IHBfbWCG1
+ lw3hRpaltkbw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9941"; a="212511861"
+X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
+   d="scan'208";a="212511861"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2021 07:31:04 -0700
+IronPort-SDR: rBUmT0zYTZoXy45GsDdBfMPzKc/L60oJswgxrTXJX4YVzRDMUnwFaW1LhZp4wcQC5hjtZnfHgy
+ A6pu1u1ZYGfw==
+X-IronPort-AV: E=Sophos;i="5.81,296,1610438400"; 
+   d="scan'208";a="384864735"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2021 07:31:03 -0700
+Subject: [PATCH v2 4/8] cxl/core: Refactor CXL register lookup for bridge
+ reuse
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, ben.widawsky@intel.com,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 01 Apr 2021 07:31:03 -0700
+Message-ID: <161728746354.2474040.14531317270409827157.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <161728744224.2474040.12854720917440712854.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <161728744224.2474040.12854720917440712854.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-References: <4319486.LvFx2qVVIh@kreacher> <20210331210845.GA1422864@bjorn-Precision-5520>
-In-Reply-To: <20210331210845.GA1422864@bjorn-Precision-5520>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 1 Apr 2021 12:46:03 +0200
-Message-ID: <CAJZ5v0jksMw4Cmo_u4cU_6ii5_4R5xfytLzpF282tfkv__nF_w@mail.gmail.com>
-Subject: Re: [PATCH] PCI: ACPI: PM: Fix debug message in acpi_pci_set_power_state()
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        David Box <david.e.box@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 31, 2021 at 11:09 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Thu, Mar 25, 2021 at 07:57:51PM +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > If PCI_D3cold is passed to acpi_pci_set_power_state() as the second
-> > argument and there is no ACPI D3cold support for the given device,
-> > the debug message printed by that function will state that the
-> > device power state has been changed to D3cold, while in fact it
-> > will be D3hot, because acpi_device_set_power() falls back to D3hot
-> > automatically if D3cold is not supported without returning an error.
-> >
-> > To address this issue, modify the debug message in question to print
-> > the current power state of the target PCI device's ACPI companion
-> > instead of printing the target power state which may not reflect
-> > the real final power state of the device.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Applied with Krzysztof's reviewed-by to pci/pm for v5.13, thanks!
->
-> Let me know if you have nearby or related changes that you'd rather
-> take via your tree.
+While CXL Memory Device endpoints locate the CXL MMIO registers in a PCI
+BAR, CXL root bridges have their MMIO base address described by platform
+firmware. Refactor the existing register lookup into a generic facility
+for endpoints and bridges to share.
 
-I don't have any, thank you!
+Reviewed-by: Ben Widawsky <ben.widawsky@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/cxl/core.c |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ drivers/cxl/cxl.h  |    3 +++
+ drivers/cxl/mem.c  |   50 +++++-----------------------------------------
+ 3 files changed, 65 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/cxl/core.c b/drivers/cxl/core.c
+index 7f8d2034038a..2ab467ef9909 100644
+--- a/drivers/cxl/core.c
++++ b/drivers/cxl/core.c
+@@ -1,7 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++/* Copyright(c) 2020-2021 Intel Corporation. All rights reserved. */
+ #include <linux/device.h>
+ #include <linux/module.h>
++#include "cxl.h"
+ 
+ /**
+  * DOC: cxl core
+@@ -10,6 +11,60 @@
+  * point for cross-device interleave coordination through cxl ports.
+  */
+ 
++/*
++ * cxl_setup_device_regs() - Detect CXL Device register blocks
++ * @dev: Host device of the @base mapping
++ * @base: mapping of CXL 2.0 8.2.8 CXL Device Register Interface
++ */
++void cxl_setup_device_regs(struct device *dev, void __iomem *base,
++			   struct cxl_device_regs *regs)
++{
++	int cap, cap_count;
++	u64 cap_array;
++
++	*regs = (struct cxl_device_regs) { 0 };
++
++	cap_array = readq(base + CXLDEV_CAP_ARRAY_OFFSET);
++	if (FIELD_GET(CXLDEV_CAP_ARRAY_ID_MASK, cap_array) !=
++	    CXLDEV_CAP_ARRAY_CAP_ID)
++		return;
++
++	cap_count = FIELD_GET(CXLDEV_CAP_ARRAY_COUNT_MASK, cap_array);
++
++	for (cap = 1; cap <= cap_count; cap++) {
++		void __iomem *register_block;
++		u32 offset;
++		u16 cap_id;
++
++		cap_id = FIELD_GET(CXLDEV_CAP_HDR_CAP_ID_MASK,
++				   readl(base + cap * 0x10));
++		offset = readl(base + cap * 0x10 + 0x4);
++		register_block = base + offset;
++
++		switch (cap_id) {
++		case CXLDEV_CAP_CAP_ID_DEVICE_STATUS:
++			dev_dbg(dev, "found Status capability (0x%x)\n", offset);
++			regs->status = register_block;
++			break;
++		case CXLDEV_CAP_CAP_ID_PRIMARY_MAILBOX:
++			dev_dbg(dev, "found Mailbox capability (0x%x)\n", offset);
++			regs->mbox = register_block;
++			break;
++		case CXLDEV_CAP_CAP_ID_SECONDARY_MAILBOX:
++			dev_dbg(dev, "found Secondary Mailbox capability (0x%x)\n", offset);
++			break;
++		case CXLDEV_CAP_CAP_ID_MEMDEV:
++			dev_dbg(dev, "found Memory Device capability (0x%x)\n", offset);
++			regs->memdev = register_block;
++			break;
++		default:
++			dev_dbg(dev, "Unknown cap ID: %d (0x%x)\n", cap_id, offset);
++			break;
++		}
++	}
++}
++EXPORT_SYMBOL_GPL(cxl_setup_device_regs);
++
+ struct bus_type cxl_bus_type = {
+ 	.name = "cxl",
+ };
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 37325e504fb7..cbd29650c4e2 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -67,5 +67,8 @@ struct cxl_regs {
+ 	};
+ };
+ 
++void cxl_setup_device_regs(struct device *dev, void __iomem *base,
++			   struct cxl_device_regs *regs);
++
+ extern struct bus_type cxl_bus_type;
+ #endif /* __CXL_H__ */
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index 6951243d128e..ee55abfa147e 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -865,53 +865,15 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode,
+ static int cxl_mem_setup_regs(struct cxl_mem *cxlm)
+ {
+ 	struct device *dev = &cxlm->pdev->dev;
+-	int cap, cap_count;
+-	u64 cap_array;
++	struct cxl_regs *regs = &cxlm->regs;
+ 
+-	cap_array = readq(cxlm->base + CXLDEV_CAP_ARRAY_OFFSET);
+-	if (FIELD_GET(CXLDEV_CAP_ARRAY_ID_MASK, cap_array) !=
+-	    CXLDEV_CAP_ARRAY_CAP_ID)
+-		return -ENODEV;
+-
+-	cap_count = FIELD_GET(CXLDEV_CAP_ARRAY_COUNT_MASK, cap_array);
+-
+-	for (cap = 1; cap <= cap_count; cap++) {
+-		void __iomem *register_block;
+-		u32 offset;
+-		u16 cap_id;
+-
+-		cap_id = FIELD_GET(CXLDEV_CAP_HDR_CAP_ID_MASK,
+-				   readl(cxlm->base + cap * 0x10));
+-		offset = readl(cxlm->base + cap * 0x10 + 0x4);
+-		register_block = cxlm->base + offset;
+-
+-		switch (cap_id) {
+-		case CXLDEV_CAP_CAP_ID_DEVICE_STATUS:
+-			dev_dbg(dev, "found Status capability (0x%x)\n", offset);
+-			cxlm->regs.status = register_block;
+-			break;
+-		case CXLDEV_CAP_CAP_ID_PRIMARY_MAILBOX:
+-			dev_dbg(dev, "found Mailbox capability (0x%x)\n", offset);
+-			cxlm->regs.mbox = register_block;
+-			break;
+-		case CXLDEV_CAP_CAP_ID_SECONDARY_MAILBOX:
+-			dev_dbg(dev, "found Secondary Mailbox capability (0x%x)\n", offset);
+-			break;
+-		case CXLDEV_CAP_CAP_ID_MEMDEV:
+-			dev_dbg(dev, "found Memory Device capability (0x%x)\n", offset);
+-			cxlm->regs.memdev = register_block;
+-			break;
+-		default:
+-			dev_dbg(dev, "Unknown cap ID: %d (0x%x)\n", cap_id, offset);
+-			break;
+-		}
+-	}
++	cxl_setup_device_regs(dev, cxlm->base, &regs->device_regs);
+ 
+-	if (!cxlm->regs.status || !cxlm->regs.mbox || !cxlm->regs.memdev) {
++	if (!regs->status || !regs->mbox || !regs->memdev) {
+ 		dev_err(dev, "registers not found: %s%s%s\n",
+-			!cxlm->regs.status ? "status " : "",
+-			!cxlm->regs.mbox ? "mbox " : "",
+-			!cxlm->regs.memdev ? "memdev" : "");
++			!regs->status ? "status " : "",
++			!regs->mbox ? "mbox " : "",
++			!regs->memdev ? "memdev" : "");
+ 		return -ENXIO;
+ 	}
+ 
+
