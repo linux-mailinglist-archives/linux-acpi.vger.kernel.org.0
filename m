@@ -2,107 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F03753517CF
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 19:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232F23517D5
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 19:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbhDARmt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Apr 2021 13:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57142 "EHLO
+        id S235481AbhDARmv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Apr 2021 13:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234397AbhDARhF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Apr 2021 13:37:05 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB2DC02D561
-        for <linux-acpi@vger.kernel.org>; Thu,  1 Apr 2021 08:48:23 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id j7so2311135wrd.1
-        for <linux-acpi@vger.kernel.org>; Thu, 01 Apr 2021 08:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Pua2Ae+rON0ZlDGkY5ERFS3L6AfCPNmqgc0wotIPcEI=;
-        b=AQvPYJQL0dmJB8IZi8mOx5ajxcUoc5TP5FrCan7PcbU1GTN0XGGjNban28AqG/S1eT
-         OudspSuh2Y3yKLRQat1UH9wPkhK7kK1V4/Nse8fGfuXTANeCQz/6GNyEkkuQ892jAlBN
-         uLktlNmlJ+cpmtV+v1kZNPG9+f9Je/j0w4TkbAnbKuaTJsEudCj75aijL+6mht/qNUdC
-         N3MdPwLKorkokFBX8FVIOAgztR5GGcUSmgB+MNc9zvwZOzl3Fl/HJ+GVNCrbohS5mLLd
-         zQV/qSheXVl+YDvYbKfJ9D0XLZOoNDYB9n3zFvZmrgJ75fH8m/Xm/ZvqRNEWYW1jeHdB
-         Vz1Q==
+        with ESMTP id S234942AbhDARl1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Apr 2021 13:41:27 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB44AC0319DA;
+        Thu,  1 Apr 2021 10:29:50 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id t23-20020a0568301e37b02901b65ab30024so2807917otr.4;
+        Thu, 01 Apr 2021 10:29:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Pua2Ae+rON0ZlDGkY5ERFS3L6AfCPNmqgc0wotIPcEI=;
-        b=FIfqx07644vMDvAuUt5Mb2raXgs0P/Z9/UVZEUy5ld/LPKkuOh2WewMltXWY/z6ZFw
-         ISx4boAyJclCmzW1Se5kXQgpUJjfn4bHbOeUMMHIFb9OhJnYrUOvi/HagYBEo1EKqfq2
-         sn2mWMNjCrJCNjZWUgTu/G4sTv8k/8ZtVdg0DWO+NIORVC1r0+vGPx4KKZ0DoK6Hshkb
-         04EAo3hjwGomTKi+sj5xQ99keH40XqQ7IQmcl5MSyW+JRC/Dz6lHhuBo80JUBEfxffQD
-         x406yuNXUz2dzU4X9mPzzblfekwpPB2mibEtk8AajFPuE+IK5gSDpcilCMruEf2xvxDI
-         S20w==
-X-Gm-Message-State: AOAM530Jy7PrU/iHkMbdtQyW98lm+mzNvS6FMCpC7g8vKByn9x65GH8P
-        ZdLvccyzNZOOqghYh0kyED8vqg==
-X-Google-Smtp-Source: ABdhPJyrIah1qqCxNJvBbipg66vyVTPCXXhRfRjwHTQ1aqsgM2ee8hefPg9PttDsuRkr/f0yUE7kcA==
-X-Received: by 2002:adf:d1c5:: with SMTP id b5mr10474358wrd.126.1617292102724;
-        Thu, 01 Apr 2021 08:48:22 -0700 (PDT)
-Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id y8sm8722505wmi.46.2021.04.01.08.48.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 08:48:22 -0700 (PDT)
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     joro@8bytes.org, will@kernel.org
-Cc:     lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
-        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v14 09/10] ACPI/IORT: Enable stall support for platform devices
-Date:   Thu,  1 Apr 2021 17:47:18 +0200
-Message-Id: <20210401154718.307519-10-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210401154718.307519-1-jean-philippe@linaro.org>
-References: <20210401154718.307519-1-jean-philippe@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h/Y0TLuXldSxTdiqZd7pJGoS1WrwZ+szrP8juLbRVoE=;
+        b=hkd7Wgr66M1x3TUeOgNtvPYD41ItceMUGmm+DHR2TWouNeWTt67Cns2aAymq6g1XmO
+         n5V4nJoAEbaoimndwP7DHBygrmjKWwCb4mbPR1UYov3TV7o1naepBdQsZc+dkQYBgMRu
+         58TPsNL9QBkh1DJDdAZYCiPpCizXN1FUwJkSWJlHrFBriMCSEwfB4R3rCF37l1YKpeM5
+         rqkAywyqa1eekp5AphuzGVgc9p9/p9BwRliJX9NQXBiZTu0HdLgp4+hzWSICCYrCmQkK
+         w3+GwpFTOlkk5JD1pEdMP7LlyYrEp457kNnmPwX1wCDt2Xr/5d0jo5WOu8sHxUx3tHyP
+         4P7Q==
+X-Gm-Message-State: AOAM5303bpa38PgLut9l40K6wVo/yiQ02waGCsdaas0px6qgO35shlsP
+        roCFROnmnp7Didz9y/VaOl3p92wp8SSAgeGnqcs=
+X-Google-Smtp-Source: ABdhPJxB+a85xzGa1aBcrm1XeVIq1EGWAh8fIgqpKk8CzFKZH4xWv4cuKYRlQXuKB+REgIX3kbXuq7r8gsu4V4bQt6c=
+X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr7147365otb.260.1617298188698;
+ Thu, 01 Apr 2021 10:29:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <e0d626837e577e60f226b8bbf354bd8cbb1fe40a.camel@intel.com>
+ <20210331172210.GA1397554@bjorn-Precision-5520> <100f5a45dae14c77b341b7f1c5ea1db0@AcuMS.aculab.com>
+ <CAJZ5v0jJ2XDYSwqP3AyKuUvuxhwuNwvk3Z=xwtAL3hG5uYGG-Q@mail.gmail.com> <a0ec3dbdffc145ac909089048e552eb6@AcuMS.aculab.com>
+In-Reply-To: <a0ec3dbdffc145ac909089048e552eb6@AcuMS.aculab.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 1 Apr 2021 19:29:37 +0200
+Message-ID: <CAJZ5v0h0XMkrYYyOLd8bDcngxnei7VbAh=cYWA4Sy3qm2b69iQ@mail.gmail.com>
+Subject: Re: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by __packed
+To:     David Laight <David.Laight@aculab.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Copy the "Stall supported" bit, that tells whether a named component
-supports stall, into the dma-can-stall device property.
+On Thu, Apr 1, 2021 at 4:23 PM David Laight <David.Laight@aculab.com> wrote:
+>
+> From: Rafael J. Wysocki
+> > Sent: 01 April 2021 14:50
+> ...
+> > So what exactly is wrong with using "packed"?  It is way easier to
+> > understand for a casual reader of the code.
+>
+> Because it is usually wrong!
+>
+> If I have:
+>         struct foo {
+>                 u64 val;
+>         } __packed;
+>
+> And then have:
+> u64 bar(struct foo *foo)
+> {
+>         return foo->val;
+> }
+>
+> The on some cpu the compiler has to generate the equivalent of:
+>         u8 *x = (void *)&foo->val;
+>         return x[0] | x[1] << 8 | x[2] << 16 | x[3] << 24 | x[4] << 32 | x[5] << 40 | x[6] << 48 | x[7] << 56;
+>
+> If you can guarantee that the structure is 32bit aligned
+> then it can generate the simpler:
+>         u32 *x = (void *)&foo->val;
+>         return x[0] | x[1] << 32;
+>
+> (Yes I've missed out the 64-bit casts)
+>
+> This is why you should almost never use __packed.
+>
+> There are historic structures with 64 bit items on 4 byte boundaries
+> (and 32 bit values on 2 byte boundaries).
+> Typically most of the fields are shorter so can be read directly
+> (although they might need a byte-swapping load).
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
- drivers/acpi/arm64/iort.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The possible overhead impact is clear to me, but I really don't like
+the "local" typedef idea.
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 3912a1f6058e..0828f70cb782 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -968,13 +968,15 @@ static int iort_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
- static void iort_named_component_init(struct device *dev,
- 				      struct acpi_iort_node *node)
- {
--	struct property_entry props[2] = {};
-+	struct property_entry props[3] = {};
- 	struct acpi_iort_named_component *nc;
- 
- 	nc = (struct acpi_iort_named_component *)node->node_data;
- 	props[0] = PROPERTY_ENTRY_U32("pasid-num-bits",
- 				      FIELD_GET(ACPI_IORT_NC_PASID_BITS,
- 						nc->node_flags));
-+	if (nc->node_flags & ACPI_IORT_NC_STALL_SUPPORTED)
-+		props[1] = PROPERTY_ENTRY_BOOL("dma-can-stall");
- 
- 	if (device_add_properties(dev, props))
- 		dev_warn(dev, "Could not add device properties\n");
--- 
-2.31.1
+It at least would need to be accompanied by a comment explaining why
+it is there and why using it is better than using __packed and why
+this needs to be defined locally and not in some generic header file.
 
+Also, the FPDT code is just one function that parses the entire table
+and there is no object passing between functions in it etc, so is
+__packed still problematic in there?
