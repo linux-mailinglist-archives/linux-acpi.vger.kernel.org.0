@@ -2,64 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3855C351155
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 10:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E955635115C
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 11:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233662AbhDAI6D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Apr 2021 04:58:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43166 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233650AbhDAI6A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 1 Apr 2021 04:58:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CBF966023B;
-        Thu,  1 Apr 2021 08:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617267480;
-        bh=qO5GnDQBxqX1f7x9zAi73eBzkaFPHd3HL6PpBB85bdk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OMfEcbl8tYPuX5WDV/d/OgcbQ4JUHkcqvauo65fQCWGZLSdEOyJdCKSebhVJ5N139
-         /fRmtaxVbip3YDuWsFYMDKtqOs4Xd6epo3gS2N5xpJGPgHVdEmamYy7AzcvpXEosP2
-         qaAd6IDmnhCg0n7BzRjeM+uRDfm+lbEw99nW4yPoCwBO0cqaESOj+V5MerHHeW8TwP
-         w/xULX4IvKezvZLKNY9Q++cRvNJE/SGXScv/NODcscd25v0fvpY8fZHzqK5YpQ/PLl
-         VRd1Aqr7RG76L5N8GCV0LhxcM4vdJWBwAMaTWReNAjFSSH9L/gNBndS5BG4l0MiV54
-         I1y0PfrhuBuIw==
-Date:   Thu, 1 Apr 2021 09:57:52 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     joro@8bytes.org, lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
-        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com
-Subject: Re: [PATCH v13 00/10] iommu: I/O page faults for SMMUv3
-Message-ID: <20210401085752.GA8781@willie-the-truck>
-References: <20210302092644.2553014-1-jean-philippe@linaro.org>
- <YGNdQ863Mohizx7A@myrica>
+        id S233637AbhDAI7j convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 1 Apr 2021 04:59:39 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:60315 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233654AbhDAI7S (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Apr 2021 04:59:18 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-23-DwDWuciBMfWbUbYNbOM4gQ-1; Thu, 01 Apr 2021 09:59:13 +0100
+X-MC-Unique: DwDWuciBMfWbUbYNbOM4gQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Thu, 1 Apr 2021 09:59:12 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.012; Thu, 1 Apr 2021 09:59:12 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Bjorn Helgaas' <helgaas@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>
+CC:     Xiaofei Tan <tanxiaofei@huawei.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
+Subject: RE: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
+ __packed
+Thread-Topic: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
+ __packed
+Thread-Index: AQHXJlJheusKxfb1K0qiX/864DlgraqfWwQw
+Date:   Thu, 1 Apr 2021 08:59:12 +0000
+Message-ID: <100f5a45dae14c77b341b7f1c5ea1db0@AcuMS.aculab.com>
+References: <e0d626837e577e60f226b8bbf354bd8cbb1fe40a.camel@intel.com>
+ <20210331172210.GA1397554@bjorn-Precision-5520>
+In-Reply-To: <20210331172210.GA1397554@bjorn-Precision-5520>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YGNdQ863Mohizx7A@myrica>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 30, 2021 at 07:17:55PM +0200, Jean-Philippe Brucker wrote:
-> On Tue, Mar 02, 2021 at 10:26:36AM +0100, Jean-Philippe Brucker wrote:
-> > Add stall support to the SMMUv3 driver, along with a common I/O Page
-> > Fault handler.
+From: Bjorn Helgaas
+> Sent: 31 March 2021 18:22
 > 
-> I only have review/ack tags and one assert_lockdep to add to this series.
-> Should I send a v14 now or wait a little longer?  Just making sure we can
-> get at least patches 1-6 in v5.13.
+> On Wed, Mar 31, 2021 at 11:55:08PM +0800, Zhang Rui wrote:
+> > ...
+> 
+> > From e18c942855e2f51e814d057fff4dd951cd0d0907 Mon Sep 17 00:00:00 2001
+> > From: Zhang Rui <rui.zhang@intel.com>
+> > Date: Wed, 31 Mar 2021 20:34:13 +0800
+> > Subject: [PATCH] ACPI: tables: FPDT: Fix 64bit alignment issue
+> >
+> > Some of the 64bit items in FPDT table may be 32bit aligned.
+> > Using __attribute__((packed)) is not needed in this case, fixing it by
+> > allowing 32bit alignment for these 64bit items.
+> 
+> 1) Can you please add a spec reference for this?  I think it's ACPI
+>    v6.3, sec 5.2.23.5, or something close to that.
+> 
+> 2) The exact layout in memory is prescribed by the spec.  I think
+>    that's basically what "packed" accomplishes.  I don't understand
+>    why using "aligned" would be preferable.  Using "aligned" means
+>    things can be at different offsets depending on the starting
+>    address of the structure.  We always want the identical layout, no
+>    matter what the starting address is.
 
-Easiest thing is probably to send a v14 containing just the patches
-targetting v5.13, so that Joerg can queue them up.
+Both 'packed' and 'aligned(4)' remove any structure alignment
+padding before 64bit items that aren't on an 8 byte boundary.
+(Because everything else in the structures is naturally aligned.)
 
-Will
+The difference is significant on cpu that don't support misaligned
+addresses.
+Assuming that the structure is always on a 4n byte boundary
+(which the ACPI spec probably requires) accesses to the 32-bit
+fields are always ok.
+It is only 64-bit fields that must be accessed as two 32-bit
+memory cycles, not all the fields using multiple single byte
+cycles.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
