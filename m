@@ -2,65 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C83F351A03
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 20:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 562F2351DC4
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Apr 2021 20:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236170AbhDAR5g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Apr 2021 13:57:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57204 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236641AbhDARzA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 1 Apr 2021 13:55:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9D9EF613BC;
-        Thu,  1 Apr 2021 17:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617297309;
-        bh=Ph9+lnZtIzSHhSU0K6hxMEjAX5FATLhumPexdh/21YE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ri+XLAtbo6oc/14qf6Nc6kPi+TD8uNByUFcX9gAWNIrqfgTCdfJl62m0qAureFoaL
-         vQsb20+HbosVH32lv0CWBjvCmH+4LFWlfr/Ew1I7yi4nqfA5VH+jLvv7MdhXQUc7TN
-         n8QrOpYaXLw/Y5MbKHhSF+31FYlygg8xNhSz48Hycir/Pzebgu2afUkQdg2iq/nJe6
-         92SaK/Y1oz8iCxjc6OS3EftTfhpde626t0I0Y/u22Wv4aOevCEyP7JrGivO7Xq/X55
-         OtqVoeUtTnYozo22/PNi9ALkon1ZN/S+BWzGPLe3cPH7ldlB23iV6KBzmLPiZMsGb3
-         /I/HrkcR1fqIQ==
-Date:   Thu, 1 Apr 2021 18:15:02 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     joro@8bytes.org, lorenzo.pieralisi@arm.com, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
-        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com
-Subject: Re: [PATCH v14 00/10] iommu: I/O page faults for SMMUv3
-Message-ID: <20210401171501.GC9447@willie-the-truck>
-References: <20210401154718.307519-1-jean-philippe@linaro.org>
+        id S235407AbhDASbz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Apr 2021 14:31:55 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:43504 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238091AbhDASYT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Apr 2021 14:24:19 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-121-k3M7_sOBMMSUMd0vtI6_sg-1; Thu, 01 Apr 2021 15:23:18 +0100
+X-MC-Unique: k3M7_sOBMMSUMd0vtI6_sg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Thu, 1 Apr 2021 15:23:17 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.012; Thu, 1 Apr 2021 15:23:17 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'Rafael J. Wysocki'" <rafael@kernel.org>
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>
+Subject: RE: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
+ __packed
+Thread-Topic: [PATCH v2 04/15] ACPI: table: replace __attribute__((packed)) by
+ __packed
+Thread-Index: AQHXJlJheusKxfb1K0qiX/864DlgraqfWwQwgABDWwCAABZkEA==
+Date:   Thu, 1 Apr 2021 14:23:17 +0000
+Message-ID: <a0ec3dbdffc145ac909089048e552eb6@AcuMS.aculab.com>
+References: <e0d626837e577e60f226b8bbf354bd8cbb1fe40a.camel@intel.com>
+ <20210331172210.GA1397554@bjorn-Precision-5520>
+ <100f5a45dae14c77b341b7f1c5ea1db0@AcuMS.aculab.com>
+ <CAJZ5v0jJ2XDYSwqP3AyKuUvuxhwuNwvk3Z=xwtAL3hG5uYGG-Q@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jJ2XDYSwqP3AyKuUvuxhwuNwvk3Z=xwtAL3hG5uYGG-Q@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210401154718.307519-1-jean-philippe@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 01, 2021 at 05:47:09PM +0200, Jean-Philippe Brucker wrote:
-> Add stall support to the SMMUv3 driver, along with a common I/O Page
-> Fault handler.
-> 
-> Since [v13] I added review and ack tags (Thanks!), and a lockdep_assert.
-> It would be good to have all of it in v5.13, since patch 10 introduces
-> the first user for the IOPF interface from patch 6.  But if that's not
-> possible, please pick patches 1-6 so the Vt-d driver can start using
-> them.
+RnJvbTogUmFmYWVsIEouIFd5c29ja2kNCj4gU2VudDogMDEgQXByaWwgMjAyMSAxNDo1MA0KLi4u
+DQo+IFNvIHdoYXQgZXhhY3RseSBpcyB3cm9uZyB3aXRoIHVzaW5nICJwYWNrZWQiPyAgSXQgaXMg
+d2F5IGVhc2llciB0bw0KPiB1bmRlcnN0YW5kIGZvciBhIGNhc3VhbCByZWFkZXIgb2YgdGhlIGNv
+ZGUuDQoNCkJlY2F1c2UgaXQgaXMgdXN1YWxseSB3cm9uZyENCg0KSWYgSSBoYXZlOg0KCXN0cnVj
+dCBmb28gew0KCQl1NjQgdmFsOw0KCX0gX19wYWNrZWQ7DQoNCkFuZCB0aGVuIGhhdmU6DQp1NjQg
+YmFyKHN0cnVjdCBmb28gKmZvbykNCnsNCglyZXR1cm4gZm9vLT52YWw7DQp9DQoNClRoZSBvbiBz
+b21lIGNwdSB0aGUgY29tcGlsZXIgaGFzIHRvIGdlbmVyYXRlIHRoZSBlcXVpdmFsZW50IG9mOg0K
+CXU4ICp4ID0gKHZvaWQgKikmZm9vLT52YWw7DQoJcmV0dXJuIHhbMF0gfCB4WzFdIDw8IDggfCB4
+WzJdIDw8IDE2IHwgeFszXSA8PCAyNCB8IHhbNF0gPDwgMzIgfCB4WzVdIDw8IDQwIHwgeFs2XSA8
+PCA0OCB8IHhbN10gPDwgNTY7DQoNCklmIHlvdSBjYW4gZ3VhcmFudGVlIHRoYXQgdGhlIHN0cnVj
+dHVyZSBpcyAzMmJpdCBhbGlnbmVkDQp0aGVuIGl0IGNhbiBnZW5lcmF0ZSB0aGUgc2ltcGxlcjoN
+Cgl1MzIgKnggPSAodm9pZCAqKSZmb28tPnZhbDsNCglyZXR1cm4geFswXSB8IHhbMV0gPDwgMzI7
+DQoNCihZZXMgSSd2ZSBtaXNzZWQgb3V0IHRoZSA2NC1iaXQgY2FzdHMpDQoNClRoaXMgaXMgd2h5
+IHlvdSBzaG91bGQgYWxtb3N0IG5ldmVyIHVzZSBfX3BhY2tlZC4NCg0KVGhlcmUgYXJlIGhpc3Rv
+cmljIHN0cnVjdHVyZXMgd2l0aCA2NCBiaXQgaXRlbXMgb24gNCBieXRlIGJvdW5kYXJpZXMNCihh
+bmQgMzIgYml0IHZhbHVlcyBvbiAyIGJ5dGUgYm91bmRhcmllcykuDQpUeXBpY2FsbHkgbW9zdCBv
+ZiB0aGUgZmllbGRzIGFyZSBzaG9ydGVyIHNvIGNhbiBiZSByZWFkIGRpcmVjdGx5DQooYWx0aG91
+Z2ggdGhleSBtaWdodCBuZWVkIGEgYnl0ZS1zd2FwcGluZyBsb2FkKS4NCg0KCURhdmlkDQoNCi0N
+ClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBN
+aWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxl
+cykNCg==
 
-Patches 1-7 look good to me, but I'm not convinced about the utility of
-stalling faults so I'd prefer the later patches to come along with a
-real user.
-
-Will
