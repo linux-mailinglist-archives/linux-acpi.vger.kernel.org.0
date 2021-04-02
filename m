@@ -2,147 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C873525DF
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Apr 2021 05:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F394352D5E
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Apr 2021 18:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234197AbhDBDzm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Apr 2021 23:55:42 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:48790 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234314AbhDBDzm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 1 Apr 2021 23:55:42 -0400
-Received: from localhost.localdomain.localdomain (unknown [10.40.54.95])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Cx6cm1lWZgv4oDAA--.7461S2;
-        Fri, 02 Apr 2021 11:55:33 +0800 (CST)
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPICA: Events: support fixed pcie wake event
-Date:   Thu,  1 Apr 2021 23:55:33 -0400
-Message-Id: <1617335733-5942-1-git-send-email-lvjianmin@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9Cx6cm1lWZgv4oDAA--.7461S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXF47GF47AFy3KrW5Ww15urg_yoWrGF13pF
-        yq93ySkrW7tF429rsrK3WUua45Way8Cr9rKrs7W347ZF4UCF1rXF4UKF15AFZ8Awsxua1I
-        ya4qy345Gay5AFJanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU90b7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4
-        vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvE
-        ncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I
-        8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xS
-        Y4AK6svPMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14
-        v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-        17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-        IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1U
-        MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-        VFxhVjvjDU0xZFpf9x07bY0PhUUUUU=
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+        id S236442AbhDBQEX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Apr 2021 12:04:23 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:42564 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235659AbhDBQEW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Apr 2021 12:04:22 -0400
+Received: by mail-ot1-f49.google.com with SMTP id c24-20020a9d6c980000b02902662e210895so4816192otr.9;
+        Fri, 02 Apr 2021 09:04:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=PrQRLRn2ct06WLsFZJjMQX1v2JVaCYrntTHiGrGlQe0=;
+        b=LV60RRc0nS/KyGQ42f9T1bA4pDemjQ/1Oy4LTOVee8+zaPo1B+76qz32uW32/7gWBI
+         ZDkZn413DgSpz9sKt0eur7Ao5yWj3ebRygJZddy7tIqslbOUxPZ0tmxP+kMiU+r2t5B1
+         uLb8GK+sLni/8XlbG0lx/pfDWA1BHfXkrdVoYh5dxvFYkZS0U10jP8M4EntLUQemLy/3
+         PPVbBtEEon2mm6n317i/m41HKr+8NUD0yKLxodaHXy+nb50GbKGD5d2cWArspXhTsSIK
+         5snpG8UMq5w4ATxSXuZmikeiKSJhIx4lIfStPyLOYSmI5R1lIuBh4MsbWgezQzj4z8B8
+         mFUQ==
+X-Gm-Message-State: AOAM533Buexzeel2K5YyYZ+74S9K+hCYpWUBOcu8dOmztDGIXm22deIL
+        thZKjYETw9mZ2Skv0p4pEWI+/d7kYF4u1dugIhA=
+X-Google-Smtp-Source: ABdhPJwajwbSju3nIDlrmi/53fbf5nGKmee539O3yCQChTyV0VBBs9D/eD27xqT7ji/mNTB2NxZKOiT2cYrny/Pe1ns=
+X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr11111584otb.260.1617379460876;
+ Fri, 02 Apr 2021 09:04:20 -0700 (PDT)
+MIME-Version: 1.0
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 2 Apr 2021 18:04:09 +0200
+Message-ID: <CAJZ5v0i0xTJfQuS5QK1Mkc-wkBAf1F4ga=tuNLrp9uHcQPUKNw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.12-rc6
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some chipsets support fixed pcie wake event which is
-defined in the PM1 block(related description can be found
-in 4.8.3.1.1 PM1 Status Registers, 4.8.3.2.1 PM1 Control
-Registers and 5.2.9 Fixed ACPI Description Table (FADT)),
-such as LS7A1000 of Loongson company, so we add code to
-handle it.
+Hi Linus,
 
-ACPI spec link:
-https://uefi.org/sites/default/files/resources/ACPI_6_3_May16.pdf
+Please pull from the tag
 
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
----
- drivers/acpi/acpica/evevent.c  |  8 ++++++--
- drivers/acpi/acpica/hwsleep.c  | 12 ++++++++++++
- drivers/acpi/acpica/utglobal.c |  4 ++++
- include/acpi/actypes.h         |  3 ++-
- 4 files changed, 24 insertions(+), 3 deletions(-)
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.12-rc6
 
-diff --git a/drivers/acpi/acpica/evevent.c b/drivers/acpi/acpica/evevent.c
-index 35385148fedb..08ba368beb2d 100644
---- a/drivers/acpi/acpica/evevent.c
-+++ b/drivers/acpi/acpica/evevent.c
-@@ -185,6 +185,10 @@ u32 acpi_ev_fixed_event_detect(void)
- 		return (int_status);
- 	}
- 
-+	if (fixed_enable & ACPI_BITMASK_PCIEXP_WAKE_DISABLE)
-+		fixed_enable &= ~ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
-+	else
-+		fixed_enable |= ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
- 	ACPI_DEBUG_PRINT((ACPI_DB_INTERRUPTS,
- 			  "Fixed Event Block: Enable %08X Status %08X\n",
- 			  fixed_enable, fixed_status));
-@@ -250,8 +254,8 @@ static u32 acpi_ev_fixed_event_dispatch(u32 event)
- 	if (!acpi_gbl_fixed_event_handlers[event].handler) {
- 		(void)acpi_write_bit_register(acpi_gbl_fixed_event_info[event].
- 					      enable_register_id,
--					      ACPI_DISABLE_EVENT);
--
-+						event == ACPI_EVENT_PCIE_WAKE ?
-+						ACPI_ENABLE_EVENT : ACPI_DISABLE_EVENT);
- 		ACPI_ERROR((AE_INFO,
- 			    "No installed handler for fixed event - %s (%u), disabling",
- 			    acpi_ut_get_event_name(event), event));
-diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
-index 14baa13bf848..7e7ea4c2e914 100644
---- a/drivers/acpi/acpica/hwsleep.c
-+++ b/drivers/acpi/acpica/hwsleep.c
-@@ -312,6 +312,18 @@ acpi_status acpi_hw_legacy_wake(u8 sleep_state)
- 				    [ACPI_EVENT_SLEEP_BUTTON].
- 				    status_register_id, ACPI_CLEAR_STATUS);
- 
-+	/* Enable pcie wake event if support */
-+	if ((acpi_gbl_FADT.flags & ACPI_FADT_PCI_EXPRESS_WAKE)) {
-+		(void)
-+		acpi_write_bit_register(acpi_gbl_fixed_event_info
-+				[ACPI_EVENT_PCIE_WAKE].
-+				enable_register_id, ACPI_DISABLE_EVENT);
-+		(void)
-+		acpi_write_bit_register(acpi_gbl_fixed_event_info
-+				[ACPI_EVENT_PCIE_WAKE].
-+				status_register_id, ACPI_CLEAR_STATUS);
-+	}
-+
- 	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
- 	return_ACPI_STATUS(status);
- }
-diff --git a/drivers/acpi/acpica/utglobal.c b/drivers/acpi/acpica/utglobal.c
-index 59a48371a7bc..68baf16d8a02 100644
---- a/drivers/acpi/acpica/utglobal.c
-+++ b/drivers/acpi/acpica/utglobal.c
-@@ -186,6 +186,10 @@ struct acpi_fixed_event_info acpi_gbl_fixed_event_info[ACPI_NUM_FIXED_EVENTS] =
- 					ACPI_BITREG_RT_CLOCK_ENABLE,
- 					ACPI_BITMASK_RT_CLOCK_STATUS,
- 					ACPI_BITMASK_RT_CLOCK_ENABLE},
-+	/* ACPI_EVENT_PCIE_WAKE		*/ {ACPI_BITREG_PCIEXP_WAKE_STATUS,
-+					ACPI_BITREG_PCIEXP_WAKE_DISABLE,
-+					ACPI_BITMASK_PCIEXP_WAKE_STATUS,
-+					ACPI_BITMASK_PCIEXP_WAKE_DISABLE},
- };
- #endif				/* !ACPI_REDUCED_HARDWARE */
- 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 92c71dfce0d5..0b6c72033487 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -714,7 +714,8 @@ typedef u32 acpi_event_type;
- #define ACPI_EVENT_POWER_BUTTON         2
- #define ACPI_EVENT_SLEEP_BUTTON         3
- #define ACPI_EVENT_RTC                  4
--#define ACPI_EVENT_MAX                  4
-+#define ACPI_EVENT_PCIE_WAKE            5
-+#define ACPI_EVENT_MAX                  5
- #define ACPI_NUM_FIXED_EVENTS           ACPI_EVENT_MAX + 1
- 
- /*
--- 
-2.27.0
+with top-most commit 91463ebff32d3e6fc71134784ae6aa91402bfe3d
 
+ Merge branches 'acpi-tables' and 'acpi-scan'
+
+on top of commit a5e13c6df0e41702d2b2c77c8ad41677ebb065b3
+
+ Linux 5.12-rc5
+
+to receive ACPI fixes for 5.12-rc6.
+
+These fix an ACPI tables management issue, an issue related to the
+ACPI enumeration of devices and CPU wakeup in the ACPI processor
+driver.
+
+Specifics:
+
+ - Ensure that the memory occupied by ACPI tables on x86 will always
+   be reserved to prevent it from being allocated for other purposes
+   which was possible in some cases (Rafael Wysocki).
+
+ - Fix the ACPI device enumeration code to prevent it from attempting
+   to evaluate the _STA control method for devices with unmet
+   dependencies which is likely to fail (Hans de Goede).
+
+ - Fix the handling of CPU0 wakeup in the ACPI processor driver to
+   prevent CPU0 online failures from occurring (Vitaly Kuznetsov).
+
+Thanks!
+
+
+---------------
+
+Hans de Goede (1):
+      ACPI: scan: Fix _STA getting called on devices with unmet dependencies
+
+Rafael J. Wysocki (1):
+      ACPI: tables: x86: Reserve memory occupied by ACPI tables
+
+Vitaly Kuznetsov (1):
+      ACPI: processor: Fix CPU0 wakeup in acpi_idle_play_dead()
+
+---------------
+
+ arch/x86/include/asm/smp.h    |  1 +
+ arch/x86/kernel/acpi/boot.c   | 25 ++++++++++++-------------
+ arch/x86/kernel/setup.c       |  8 +++-----
+ arch/x86/kernel/smpboot.c     |  2 +-
+ drivers/acpi/processor_idle.c |  7 +++++++
+ drivers/acpi/scan.c           | 12 +++++++++++-
+ drivers/acpi/tables.c         | 42 +++++++++++++++++++++++++++++++++++++++---
+ include/linux/acpi.h          |  9 ++++++++-
+ 8 files changed, 82 insertions(+), 24 deletions(-)
