@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6ED352F00
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Apr 2021 20:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 769A8352F02
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Apr 2021 20:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231160AbhDBSOZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Apr 2021 14:14:25 -0400
-Received: from mga09.intel.com ([134.134.136.24]:33925 "EHLO mga09.intel.com"
+        id S234275AbhDBSQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Apr 2021 14:16:27 -0400
+Received: from mga18.intel.com ([134.134.136.126]:56090 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229553AbhDBSOZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Apr 2021 14:14:25 -0400
-IronPort-SDR: TbJvnhgZzzeYEbEiWIEf3nPXu0R7tM142vYDjsI5dv+VHs9+kPEyhFifTP14HcgV0mey/u5jgA
- f79QgceihGcg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9942"; a="192618411"
+        id S231406AbhDBSQ1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Apr 2021 14:16:27 -0400
+IronPort-SDR: /UY3rCDSU1TIPpds8WUOnlzCb+6pcY/Y1px0igz/RIzPl8YXRGty3M902VPhkuhjj6tz2dHwh6
+ +2j1ZICKN14w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9942"; a="180043120"
 X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
-   d="scan'208";a="192618411"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 11:14:23 -0700
-IronPort-SDR: yfwH1boSOqBYCjorz72RchoXUMXON4isp4KzLaL4bqd9USlaRmo0xQ426ixwrqATKZrBbAFcmv
- TczkoPZPXYqg==
+   d="scan'208";a="180043120"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 11:16:25 -0700
+IronPort-SDR: E9D5nghHO25Ra5z1Y/MYY9/N+2Q4ocRMDq321Gc8m5yW1sD3guQ9oXCN/1+UKMTZI4mNZBYU/f
+ 0IJ36XMHqKJw==
 X-IronPort-AV: E=Sophos;i="5.81,300,1610438400"; 
-   d="scan'208";a="456511596"
+   d="scan'208";a="596821250"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 11:14:22 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2021 11:16:23 -0700
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lSOJH-000cJd-Aj; Fri, 02 Apr 2021 21:14:19 +0300
-Date:   Fri, 2 Apr 2021 21:14:19 +0300
+        id 1lSOLE-000cL9-Ow; Fri, 02 Apr 2021 21:16:20 +0300
+Date:   Fri, 2 Apr 2021 21:16:20 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -36,40 +36,64 @@ Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
 Subject: Re: [PATCH] gpiolib: acpi: Add quirk to ignore EC wakeups on Dell
  Venue 10 Pro 5055
-Message-ID: <YGde+w35hC7bM7Hr@smile.fi.intel.com>
+Message-ID: <YGdfdPn7FMfHXYOC@smile.fi.intel.com>
 References: <20210401162740.4602-1-hdegoede@redhat.com>
- <YGYKbXDu1QlYCXew@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YGYKbXDu1QlYCXew@smile.fi.intel.com>
+In-Reply-To: <20210401162740.4602-1-hdegoede@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 01, 2021 at 09:01:17PM +0300, Andy Shevchenko wrote:
-> On Thu, Apr 01, 2021 at 06:27:40PM +0200, Hans de Goede wrote:
-> > Like some other Bay and Cherry Trail SoC based devices the Dell Venue
-> > 10 Pro 5055 has an embedded-controller which uses ACPI GPIO events to
-> > report events instead of using the standard ACPI EC interface for this.
-> > 
-> > The EC interrupt is only used to report battery-level changes and
-> > it keeps doing this while the system is suspended, causing the system
-> > to not stay suspended.
-> > 
-> > Add an ignore-wake quirk for the GPIO pin used by the EC to fix the
-> > spurious wakeups from suspend.
+On Thu, Apr 01, 2021 at 06:27:40PM +0200, Hans de Goede wrote:
+> Like some other Bay and Cherry Trail SoC based devices the Dell Venue
+> 10 Pro 5055 has an embedded-controller which uses ACPI GPIO events to
+> report events instead of using the standard ACPI EC interface for this.
 > 
-> Fine by me,
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> The EC interrupt is only used to report battery-level changes and
+> it keeps doing this while the system is suspended, causing the system
+> to not stay suspended.
 > 
-> I have sent my PR to Bart few days ago and today he applied it.
-> So, since I'm not expecting much going on in this cycle, I assume
-> it's okay to go directly to Bart's tree.
+> Add an ignore-wake quirk for the GPIO pin used by the EC to fix the
+> spurious wakeups from suspend.
 
-Bart, nevermind, I'll take it thru my tree. It seems we have two and perhaps
-even three patches, so it will be easier to handle together.
+Pushed to my review and testing queue, thanks!
+
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 1aacd2a5a1fd..174839f3772f 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1438,6 +1438,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+>  			.no_edge_events_on_boot = true,
+>  		},
+>  	},
+> +	{
+> +		/*
+> +		 * The Dell Venue 10 Pro 5055, with Bay Trail SoC + TI PMIC uses an
+> +		 * external embedded-controller connected via I2C + an ACPI GPIO
+> +		 * event handler on INT33FFC:02 pin 12, causing spurious wakeups.
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "Venue 10 Pro 5055"),
+> +		},
+> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> +			.ignore_wake = "INT33FC:02@12",
+> +		},
+> +	},
+>  	{
+>  		/*
+>  		 * HP X2 10 models with Cherry Trail SoC + TI PMIC use an
+> -- 
+> 2.30.2
+> 
 
 -- 
 With Best Regards,
