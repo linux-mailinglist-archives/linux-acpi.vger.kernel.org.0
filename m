@@ -2,61 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4CB7353152
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Apr 2021 00:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 382733546EA
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Apr 2021 21:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235538AbhDBWon (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Apr 2021 18:44:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50224 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235567AbhDBWom (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Apr 2021 18:44:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id D9E7861184;
-        Fri,  2 Apr 2021 22:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617403480;
-        bh=rkDhXU156TQPnbeRmlP99Zm0oznIao1oF2mfY2kUCbw=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=SHjJVmIf748KI5RKZRUScMKuMwKtVqP1YQZsc8NU7UiUXpR8i4ayHzvOCxnCTg+QQ
-         4+uB6QyryFOjjbAzuQIdXFj8IVQZcmeO+i5dH8iFej++NwoP7StV/6Dki4254iZsrb
-         r5nuBovSq/sTmiJyrmY630xa/f7jJWxddwOUNqHId5nIVWq+EK3KTY0kDOyV7BTIo6
-         rZHf8daQMTO/Q8qCgL9igE9PDAaLXYgb+CyvjMse/54MpZj8oJowVY0nOtg1mTv5E9
-         i2Q276m/7QGFg2X6m43OQePUxtnTZWWWGqe60aFlH3ytO3raDNdYOG6YygEDZvLBzG
-         FLvkVWSO6yBFA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D23BF609D2;
-        Fri,  2 Apr 2021 22:44:40 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v5.12-rc6
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0i0xTJfQuS5QK1Mkc-wkBAf1F4ga=tuNLrp9uHcQPUKNw@mail.gmail.com>
-References: <CAJZ5v0i0xTJfQuS5QK1Mkc-wkBAf1F4ga=tuNLrp9uHcQPUKNw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0i0xTJfQuS5QK1Mkc-wkBAf1F4ga=tuNLrp9uHcQPUKNw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.12-rc6
-X-PR-Tracked-Commit-Id: 91463ebff32d3e6fc71134784ae6aa91402bfe3d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0a84c2e440f74cbb2064084cc7ff4f74f5565ba7
-Message-Id: <161740348085.31502.7898647118295775851.pr-tracker-bot@kernel.org>
-Date:   Fri, 02 Apr 2021 22:44:40 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>
+        id S237050AbhDETA7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Apr 2021 15:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236950AbhDETA4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Apr 2021 15:00:56 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E48CC061756;
+        Mon,  5 Apr 2021 12:00:49 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id b9so3866707wrs.1;
+        Mon, 05 Apr 2021 12:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
+        b=FjqMu9NXjhUzstA6r2Oh4SWHBMaqkOPYloiDoIvoALOfmc+tJ2GyYukGVMc1I0B1Vz
+         0EexyjITORwFcv0AfOn/GPRFmGlMaAjLzqYxL7vXBkxfu7ADVzM8hT4h/2I5rzTmUbW3
+         j2/Xj02bjTZSjxlo2YPbZkWTx4YVLuvX7aTrqFVXA8a28Qx4xfC8QFjCojl92m+pyIpw
+         H5tDvbdv6ITnoTqQheCkrLltm9EHp46lEJ6Np4yG96ZuQG7HWHkdXsEiEPojaHMD+p4C
+         STBsYb4kKw4VqWuZFivmir5+4dQJkyMCDY+JjYFfD6ZHdzp7jtT5dAWsPS+x5Haew/sI
+         JbjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
+        b=XEPjbVuMbiKg8CChbVB8fU0N7rnqX0Cdk9ZtllE8L+fmNq+TCI7E6Rus1F2mAgQKYc
+         2BN8Obn5n2UQvwuokjdklXhztrDWsEk7flvVArkzhjLDxcoCSMoj6Clk2Kd+2CD8kmtk
+         XsdGRW704o1mHBwnI6sok583HoWyTY4RpCrgRjtZ4VfXKelG0hWyCFnKFkx+YHk2BY+b
+         YOm6tRdrxzS2eRFoct4MgZZwfexMbq8UYHW8dRK2AU34j4UK9COxoLPgQu3zh9mEwux8
+         EP/DDxn0KE4FtwV0UoIdzveJGuBu3mwVflgyqfletzk7WzJ1z1AzIExdf6qh0363F5X8
+         tQsg==
+X-Gm-Message-State: AOAM531yl5WB9nyhfLul0Qmhl/qkMflfXqvDBiogeWI/0fhiwENhGzEu
+        b+5NR1krYlDAPQO+dtf2pS3521bFzN4=
+X-Google-Smtp-Source: ABdhPJwFpYBVs5PM5qKrzY5cdDw7U9RKRFutGrnZ6yH1VHDr0mwz/kXgr/MPNQXTDPFXmvrrhwdUOw==
+X-Received: by 2002:a5d:61c7:: with SMTP id q7mr11641197wrv.215.1617649248376;
+        Mon, 05 Apr 2021 12:00:48 -0700 (PDT)
+Received: from [192.168.1.152] ([102.64.185.200])
+        by smtp.gmail.com with ESMTPSA id d123sm469856wmd.26.2021.04.05.12.00.45
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Mon, 05 Apr 2021 12:00:47 -0700 (PDT)
+Message-ID: <606b5e5f.1c69fb81.22fa9.13f1@mx.google.com>
+From:   Vanina curt <atiglokomi3@gmail.com>
+X-Google-Original-From: Vanina curt
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: HI,
+To:     Recipients <Vanina@vger.kernel.org>
+Date:   Mon, 05 Apr 2021 19:00:42 +0000
+Reply-To: curtisvani9008@gmail.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 2 Apr 2021 18:04:09 +0200:
-
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.12-rc6
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0a84c2e440f74cbb2064084cc7ff4f74f5565ba7
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+How are you? I'm Vanina. I picked interest in you and I would like to know =
+more about you and establish relationship with you. i will wait for your re=
+sponse. thank you.
