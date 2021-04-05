@@ -2,67 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 382733546EA
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Apr 2021 21:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34CB235484B
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Apr 2021 23:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237050AbhDETA7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Apr 2021 15:00:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236950AbhDETA4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Apr 2021 15:00:56 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E48CC061756;
-        Mon,  5 Apr 2021 12:00:49 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id b9so3866707wrs.1;
-        Mon, 05 Apr 2021 12:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
-        b=FjqMu9NXjhUzstA6r2Oh4SWHBMaqkOPYloiDoIvoALOfmc+tJ2GyYukGVMc1I0B1Vz
-         0EexyjITORwFcv0AfOn/GPRFmGlMaAjLzqYxL7vXBkxfu7ADVzM8hT4h/2I5rzTmUbW3
-         j2/Xj02bjTZSjxlo2YPbZkWTx4YVLuvX7aTrqFVXA8a28Qx4xfC8QFjCojl92m+pyIpw
-         H5tDvbdv6ITnoTqQheCkrLltm9EHp46lEJ6Np4yG96ZuQG7HWHkdXsEiEPojaHMD+p4C
-         STBsYb4kKw4VqWuZFivmir5+4dQJkyMCDY+JjYFfD6ZHdzp7jtT5dAWsPS+x5Haew/sI
-         JbjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
-        b=XEPjbVuMbiKg8CChbVB8fU0N7rnqX0Cdk9ZtllE8L+fmNq+TCI7E6Rus1F2mAgQKYc
-         2BN8Obn5n2UQvwuokjdklXhztrDWsEk7flvVArkzhjLDxcoCSMoj6Clk2Kd+2CD8kmtk
-         XsdGRW704o1mHBwnI6sok583HoWyTY4RpCrgRjtZ4VfXKelG0hWyCFnKFkx+YHk2BY+b
-         YOm6tRdrxzS2eRFoct4MgZZwfexMbq8UYHW8dRK2AU34j4UK9COxoLPgQu3zh9mEwux8
-         EP/DDxn0KE4FtwV0UoIdzveJGuBu3mwVflgyqfletzk7WzJ1z1AzIExdf6qh0363F5X8
-         tQsg==
-X-Gm-Message-State: AOAM531yl5WB9nyhfLul0Qmhl/qkMflfXqvDBiogeWI/0fhiwENhGzEu
-        b+5NR1krYlDAPQO+dtf2pS3521bFzN4=
-X-Google-Smtp-Source: ABdhPJwFpYBVs5PM5qKrzY5cdDw7U9RKRFutGrnZ6yH1VHDr0mwz/kXgr/MPNQXTDPFXmvrrhwdUOw==
-X-Received: by 2002:a5d:61c7:: with SMTP id q7mr11641197wrv.215.1617649248376;
-        Mon, 05 Apr 2021 12:00:48 -0700 (PDT)
-Received: from [192.168.1.152] ([102.64.185.200])
-        by smtp.gmail.com with ESMTPSA id d123sm469856wmd.26.2021.04.05.12.00.45
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 05 Apr 2021 12:00:47 -0700 (PDT)
-Message-ID: <606b5e5f.1c69fb81.22fa9.13f1@mx.google.com>
-From:   Vanina curt <atiglokomi3@gmail.com>
-X-Google-Original-From: Vanina curt
-Content-Type: text/plain; charset="iso-8859-1"
+        id S241740AbhDEVuH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Apr 2021 17:50:07 -0400
+Received: from mga01.intel.com ([192.55.52.88]:26874 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241688AbhDEVuF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Apr 2021 17:50:05 -0400
+IronPort-SDR: IPSetev/C9/pKn0CTekh/qbdkvffa6GRfoAD6FBSvrua1frmcsI7reBbp6OxuJZ1K/yqM63PFV
+ V39y+6PN1EuQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9945"; a="213278750"
+X-IronPort-AV: E=Sophos;i="5.81,307,1610438400"; 
+   d="scan'208";a="213278750"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2021 14:49:58 -0700
+IronPort-SDR: nULLDJ6T4h8Jr8rwOP1NU4D1LVqnq8BQmUNIIGQr/6V/ElLuUoInx9VOqe67aIzAcMHiPEFEW8
+ tr7Y6KzUH4aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,307,1610438400"; 
+   d="scan'208";a="380673574"
+Received: from sibelius.jf.intel.com ([10.54.75.166])
+  by orsmga006.jf.intel.com with ESMTP; 05 Apr 2021 14:49:58 -0700
+From:   Erik Kaneda <erik.kaneda@intel.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 00/22] ACPICA release 20210331 (ACPI 6.4 support)
+Date:   Mon,  5 Apr 2021 14:14:48 -0700
+Message-Id: <20210405211510.484603-1-erik.kaneda@intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: HI,
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Mon, 05 Apr 2021 19:00:42 +0000
-Reply-To: curtisvani9008@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-How are you? I'm Vanina. I picked interest in you and I would like to know =
-more about you and establish relationship with you. i will wait for your re=
-sponse. thank you.
+This series contains the Linux-ized patches of ACPICA version 20210331.
+This release implements changes to implement the ACPI 6.4 specification
+as well as several new tables defined outside of the ACPI specification.
+
+This patch set is also available here:
+
+https://github.com/SchmErik/linux/tree/20210331
+
+Alexander Monakov (1):
+  ACPICA: Add parsing for IVRS IVHD 40h and device entry F0h
+
+Ben Widawsky (1):
+  ACPICA: CXL 2.0: CEDT: Add new CEDT table
+
+Bob Moore (8):
+  ACPICA: ACPI 6.4: NFIT: add Location Cookie field
+  ACPICA: ACPI 6.4: HMAT: add new fields/flags
+  ACPICA: ACPI 6.4: Add new flags in SRAT
+  ACPICA: ACPI 6.4: PMTT: add new fields/structures
+  ACPICA: ACPI 6.4: add CSI2Bus resource template
+  ACPICA: iASL: Add support for CEDT table
+  ACPICA: iASL: Decode subtable type field for VIOT
+  ACPICA: Update version to 20210331
+
+Colin Ian King (1):
+  ACPICA: Tree-wide: fix various typos and spelling mistakes
+
+Erik Kaneda (8):
+  ACPICA: ACPI 6.4: Add new predefined objects _BPC, _BPS, and _BPT
+  ACPICA: ACPI 6.4: add USB4 capabilities UUID
+  ACPICA: ACPI 6.4: add CXL ACPI device ID and _CBR object
+  ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Structure
+  ACPICA: ACPI 6.4: PCCT: add support for subtable type 5
+  ACPICA: ACPI 6.4: PPTT: add new version of subtable type 1
+  ACPICA: ACPI 6.4: add SDEV secure access components
+  ACPICA: ACPI 6.4: add support for PHAT table
+
+Jean-Philippe Brucker (2):
+  ACPICA: iASL: Add definitions for the VIOT table
+  ACPICA: acpisrc: Add missing conversion for VIOT support
+
+Shameer Kolothum (1):
+  ACPICA: IORT: Updates for revision E.b
+
+ drivers/acpi/acpica/acpredef.h    |  15 ++
+ drivers/acpi/acpica/acresrc.h     |   4 +
+ drivers/acpi/acpica/acutils.h     |   1 +
+ drivers/acpi/acpica/amlresrc.h    |  19 ++-
+ drivers/acpi/acpica/rscalc.c      |   4 +-
+ drivers/acpi/acpica/rsdump.c      |   8 +
+ drivers/acpi/acpica/rsdumpinfo.c  |  26 ++++
+ drivers/acpi/acpica/rsinfo.c      |   6 +-
+ drivers/acpi/acpica/rslist.c      |   9 +-
+ drivers/acpi/acpica/rsmisc.c      |  19 +++
+ drivers/acpi/acpica/rsserial.c    |  75 ++++++++++
+ drivers/acpi/acpica/utresdecode.c |  10 +-
+ drivers/acpi/acpica/utresrc.c     |   1 +
+ include/acpi/acoutput.h           |   2 +-
+ include/acpi/acpixf.h             |   2 +-
+ include/acpi/acrestyp.h           |   9 +-
+ include/acpi/actbl1.h             |  54 ++++++-
+ include/acpi/actbl2.h             | 240 ++++++++++++++++++++++++++----
+ include/acpi/actbl3.h             |  70 ++++++++-
+ include/acpi/acuuid.h             |   1 +
+ include/acpi/platform/acgcc.h     |   2 +-
+ tools/power/acpi/common/cmfsize.c |   2 +-
+ 22 files changed, 536 insertions(+), 43 deletions(-)
+
+-- 
+2.29.2
+
