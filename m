@@ -2,82 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AFD53557C8
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Apr 2021 17:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB926355841
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Apr 2021 17:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229838AbhDFP3U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Apr 2021 11:29:20 -0400
-Received: from foss.arm.com ([217.140.110.172]:44650 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229648AbhDFP3U (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 6 Apr 2021 11:29:20 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F045E1FB;
-        Tue,  6 Apr 2021 08:29:11 -0700 (PDT)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC6EF3F792;
-        Tue,  6 Apr 2021 08:29:08 -0700 (PDT)
-Date:   Tue, 6 Apr 2021 16:29:03 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     joro@8bytes.org, will@kernel.org, robh+dt@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, Jonathan.Cameron@huawei.com,
-        eric.auger@redhat.com, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-accelerators@lists.ozlabs.org, baolu.lu@linux.intel.com,
-        jacob.jun.pan@linux.intel.com, kevin.tian@intel.com,
-        vdumpa@nvidia.com, zhangfei.gao@linaro.org,
-        shameerali.kolothum.thodi@huawei.com, vivek.gautam@arm.com,
-        zhukeqian1@huawei.com, wangzhou1@hisilicon.com
-Subject: Re: [PATCH v14 09/10] ACPI/IORT: Enable stall support for platform
- devices
-Message-ID: <20210406152903.GA28301@lpieralisi>
-References: <20210401154718.307519-1-jean-philippe@linaro.org>
- <20210401154718.307519-10-jean-philippe@linaro.org>
+        id S244119AbhDFPjd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Apr 2021 11:39:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:36938 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1345991AbhDFPj1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Apr 2021 11:39:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1617723558;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dEwvW3Eu7pp0GjhQTtqchn8FzoztUJpOnaMjs0hwKdE=;
+        b=U8FHvawG2GoHI5el1RYrZ3aUrzZEW0rHkDmkjKE9+NbN79mxSXV9BUA4RRGdwAJmkJ+cMX
+        PiaIzf2L7VNXtM47FPIT4xPHi9rajFASJq3gdjn8s+Brt4LpZ0R/OJ113RLQzQsig1Qa4d
+        FI3OQZhIxf0RW252NslgjEoyqwLSFGk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-102-z0sT-jCzP6CQ1Nzc4VG89A-1; Tue, 06 Apr 2021 11:39:16 -0400
+X-MC-Unique: z0sT-jCzP6CQ1Nzc4VG89A-1
+Received: by mail-ed1-f72.google.com with SMTP id j18so10577681edv.6
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Apr 2021 08:39:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=dEwvW3Eu7pp0GjhQTtqchn8FzoztUJpOnaMjs0hwKdE=;
+        b=PZsViUmtWmOdf3QnElbtNdTwbPWlRAAQI2EIMVznxbb284f0XOL9vfrrQvsGFB5g6q
+         EFS6Kfi/FGKrqV3XT1jwDwP3jBts+Yo3ojHEnKkFioYZDTzv3FcDrhW6Zw5A0F5AR+fj
+         DZDN49SgTRxwVP3kR7GTEL8fzMXfgTGYVJJESKEtLASzALwJ0KJMapZg5x1c3Jm8SWa3
+         hwKwxtaQHMFc1/ItYZZ1uj1FXN2nRMU/2hZnUAY/WO7g9KWRBgH+6mc9WpsRj5MmniCo
+         K1O9qoHZEguf+dbSqy68eYhf6o/yp+IXcmBNELx494iLOvO5WSg7OhKPxBqI0+C+93qC
+         K0ww==
+X-Gm-Message-State: AOAM530gQthp28HpmoNzOsyfVSfICWqgJA8Z40UyUs4UkDc/xkx4tnua
+        k6sIuLthgBP4iDToHGlW1Mmf86kM6pqqMSybf2e/pfow+EftYKcWJFqBUTyrN5owXMSM3h0J0Mt
+        Jhka+MXRbKqwXpU1YGe2t9w==
+X-Received: by 2002:a05:6402:17d5:: with SMTP id s21mr38566133edy.65.1617723554916;
+        Tue, 06 Apr 2021 08:39:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx0VARjuvs04vccawlabe0DP2bRNkNi4WV2ROTlXgyJy2mWSPrbeLpM8tDa5z5RnwfxIKQDrQ==
+X-Received: by 2002:a05:6402:17d5:: with SMTP id s21mr38566114edy.65.1617723554723;
+        Tue, 06 Apr 2021 08:39:14 -0700 (PDT)
+Received: from vitty.brq.redhat.com (g-server-2.ign.cz. [91.219.240.2])
+        by smtp.gmail.com with ESMTPSA id hz24sm6380209ejc.119.2021.04.06.08.39.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Apr 2021 08:39:14 -0700 (PDT)
+From:   Vitaly Kuznetsov <vkuznets@redhat.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Stable <stable@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] ACPI: processor: Fix build when CONFIG_ACPI_PROCESSOR=m
+In-Reply-To: <CAJZ5v0ixuM0HfVrrn47+vmTaBq8RS9b3nyKbbTr9qKQps_buYg@mail.gmail.com>
+References: <20210406140005.554402-1-vkuznets@redhat.com>
+ <CAJZ5v0ixuM0HfVrrn47+vmTaBq8RS9b3nyKbbTr9qKQps_buYg@mail.gmail.com>
+Date:   Tue, 06 Apr 2021 17:39:13 +0200
+Message-ID: <87h7kjcti6.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210401154718.307519-10-jean-philippe@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 01, 2021 at 05:47:18PM +0200, Jean-Philippe Brucker wrote:
-> Copy the "Stall supported" bit, that tells whether a named component
-> supports stall, into the dma-can-stall device property.
-> 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
->  drivers/acpi/arm64/iort.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+"Rafael J. Wysocki" <rafael@kernel.org> writes:
 
-Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> On Tue, Apr 6, 2021 at 4:01 PM Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+>>
+>> Commit 8cdddd182bd7 ("ACPI: processor: Fix CPU0 wakeup in
+>> acpi_idle_play_dead()") tried to fix CPU0 hotplug breakage by copying
+>> wakeup_cpu0() + start_cpu0() logic from hlt_play_dead()//mwait_play_dead()
+>> into acpi_idle_play_dead(). The problem is that these functions are not
+>> exported to modules so when CONFIG_ACPI_PROCESSOR=m build fails.
+>>
+>> The issue could've been fixed by exporting both wakeup_cpu0()/start_cpu0()
+>> (the later from assembly) but it seems putting the whole pattern into a
+>> new function and exporting it instead is better.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Fixes: 8cdddd182bd7 ("CPI: processor: Fix CPU0 wakeup in acpi_idle_play_dead()")
+>> Cc: <stable@vger.kernel.org> # 5.10+
+>> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+>> ---
+>> Changes since v1:
+>> - Rename wakeup_cpu0() to cond_wakeup_cpu0() and fold wakeup_cpu0() in
+>>  as it has no other users [Rafael J. Wysocki]
+>> ---
+>>  arch/x86/include/asm/smp.h    |  2 +-
+>>  arch/x86/kernel/smpboot.c     | 24 ++++++++++--------------
+>>  drivers/acpi/processor_idle.c |  4 +---
+>>  3 files changed, 12 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+>> index 57ef2094af93..630ff08532be 100644
+>> --- a/arch/x86/include/asm/smp.h
+>> +++ b/arch/x86/include/asm/smp.h
+>> @@ -132,7 +132,7 @@ void native_play_dead(void);
+>>  void play_dead_common(void);
+>>  void wbinvd_on_cpu(int cpu);
+>>  int wbinvd_on_all_cpus(void);
+>> -bool wakeup_cpu0(void);
+>> +void cond_wakeup_cpu0(void);
+>>
+>>  void native_smp_send_reschedule(int cpu);
+>>  void native_send_call_func_ipi(const struct cpumask *mask);
+>> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+>> index f877150a91da..147f1bba9736 100644
+>> --- a/arch/x86/kernel/smpboot.c
+>> +++ b/arch/x86/kernel/smpboot.c
+>> @@ -1659,13 +1659,15 @@ void play_dead_common(void)
+>>         local_irq_disable();
+>>  }
+>>
+>> -bool wakeup_cpu0(void)
+>> +/*
+>> + * If NMI wants to wake up CPU0, start CPU0.
+>> + */
+>
+> Hasn't checkpatch.pl complained about this?
+>
 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 3912a1f6058e..0828f70cb782 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -968,13 +968,15 @@ static int iort_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
->  static void iort_named_component_init(struct device *dev,
->  				      struct acpi_iort_node *node)
->  {
-> -	struct property_entry props[2] = {};
-> +	struct property_entry props[3] = {};
->  	struct acpi_iort_named_component *nc;
->  
->  	nc = (struct acpi_iort_named_component *)node->node_data;
->  	props[0] = PROPERTY_ENTRY_U32("pasid-num-bits",
->  				      FIELD_GET(ACPI_IORT_NC_PASID_BITS,
->  						nc->node_flags));
-> +	if (nc->node_flags & ACPI_IORT_NC_STALL_SUPPORTED)
-> +		props[1] = PROPERTY_ENTRY_BOOL("dma-can-stall");
->  
->  	if (device_add_properties(dev, props))
->  		dev_warn(dev, "Could not add device properties\n");
-> -- 
-> 2.31.1
-> 
+No, it didn't.
+
+> A proper kerneldoc would be something like:
+>
+> /**
+>  * cond_wakeup_cpu0 - Wake up CPU0 if needed.
+>  *
+>  * If NMI wants to wake up CPU0, start CPU0.
+>  */
+
+Yea, I didn't do that partly because of my laziness but partly because
+I don't see much usage of this format in arch/x86/kernel/[smpboot.c]. I
+can certainly do v3 if it's prefered.
+
+>
+>> +void cond_wakeup_cpu0(void)
+>>  {
+>>         if (smp_processor_id() == 0 && enable_start_cpu0)
+>> -               return true;
+>> -
+>> -       return false;
+>> +               start_cpu0();
+>>  }
+>> +EXPORT_SYMBOL_GPL(cond_wakeup_cpu0);
+>>
+>>  /*
+>>   * We need to flush the caches before going to sleep, lest we have
+>> @@ -1734,11 +1736,8 @@ static inline void mwait_play_dead(void)
+>>                 __monitor(mwait_ptr, 0, 0);
+>>                 mb();
+>>                 __mwait(eax, 0);
+>> -               /*
+>> -                * If NMI wants to wake up CPU0, start CPU0.
+>> -                */
+>> -               if (wakeup_cpu0())
+>> -                       start_cpu0();
+>> +
+>> +               cond_wakeup_cpu0();
+>>         }
+>>  }
+>>
+>> @@ -1749,11 +1748,8 @@ void hlt_play_dead(void)
+>>
+>>         while (1) {
+>>                 native_halt();
+>> -               /*
+>> -                * If NMI wants to wake up CPU0, start CPU0.
+>> -                */
+>> -               if (wakeup_cpu0())
+>> -                       start_cpu0();
+>> +
+>> +               cond_wakeup_cpu0();
+>>         }
+>>  }
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index 768a6b4d2368..4e2d76b8b697 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -544,9 +544,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+>>                         return -ENODEV;
+>>
+>>  #if defined(CONFIG_X86) && defined(CONFIG_HOTPLUG_CPU)
+>> -               /* If NMI wants to wake up CPU0, start CPU0. */
+>> -               if (wakeup_cpu0())
+>> -                       start_cpu0();
+>> +               cond_wakeup_cpu0();
+>>  #endif
+>>         }
+>>
+>> --
+>> 2.30.2
+>>
+>
+
+-- 
+Vitaly
+
