@@ -2,99 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F54A355889
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Apr 2021 17:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4DF355896
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Apr 2021 17:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233426AbhDFPv0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Apr 2021 11:51:26 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2770 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346059AbhDFPv0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Apr 2021 11:51:26 -0400
-Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FFBhM5Kk1z687Q5;
-        Tue,  6 Apr 2021 23:46:11 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 6 Apr 2021 17:51:16 +0200
-Received: from [10.210.166.136] (10.210.166.136) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 6 Apr 2021 16:51:15 +0100
-To:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From:   John Garry <john.garry@huawei.com>
-Subject: [bug report] Memory leak from acpi_ev_install_space_handler()
-Message-ID: <845f6ef8-d2a7-e491-8405-9526e4ba277a@huawei.com>
-Date:   Tue, 6 Apr 2021 16:48:47 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S234353AbhDFP44 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Apr 2021 11:56:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48463 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232363AbhDFP4z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Apr 2021 11:56:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1617724607;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=B9TSushbKcbys7h4GTYrIoqJijCxN8pA8C0KkTcK0xE=;
+        b=Ix4IG9wcohWC6PrYmbvu31pWVDV+GXEpn4rOBRusDSKx+XbI3c+d1J916BmwDmTe7VcmFc
+        zXHIhf5mZyp/OB4Tz4UEj76WYrJmsTpqhsmBgPD6fCG/IO+WABcQs/y1qV+OEb+9ShE1wx
+        rneDtnqxUwTWasTN6a0wkr5sjOa6O2A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-527-TnwDKGxmM8GK-Cio77yizg-1; Tue, 06 Apr 2021 11:56:45 -0400
+X-MC-Unique: TnwDKGxmM8GK-Cio77yizg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D2EDF190A7A0;
+        Tue,  6 Apr 2021 15:56:43 +0000 (UTC)
+Received: from vitty.brq.redhat.com (unknown [10.40.194.34])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B8B76062F;
+        Tue,  6 Apr 2021 15:56:40 +0000 (UTC)
+From:   Vitaly Kuznetsov <vkuznets@redhat.com>
+To:     linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     x86@kernel.org, Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3] ACPI: processor: Fix build when CONFIG_ACPI_PROCESSOR=m
+Date:   Tue,  6 Apr 2021 17:56:40 +0200
+Message-Id: <20210406155640.564341-1-vkuznets@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.210.166.136]
-X-ClientProxiedBy: lhreml711-chm.china.huawei.com (10.201.108.62) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi guys,
+Commit 8cdddd182bd7 ("ACPI: processor: Fix CPU0 wakeup in
+acpi_idle_play_dead()") tried to fix CPU0 hotplug breakage by copying
+wakeup_cpu0() + start_cpu0() logic from hlt_play_dead()//mwait_play_dead()
+into acpi_idle_play_dead(). The problem is that these functions are not
+exported to modules so when CONFIG_ACPI_PROCESSOR=m build fails.
 
-On next-20210406, I enabled CONFIG_DEBUG_KMEMLEAK and
-CONFIG_DEBUG_TEST_DRIVER_REMOVE for my arm64 system, and see this:
+The issue could've been fixed by exporting both wakeup_cpu0()/start_cpu0()
+(the later from assembly) but it seems putting the whole pattern into a
+new function and exporting it instead is better.
 
-root@debian:/home/john# more /sys/kernel/debug/kmemleak
-unreferenced object 0xffff202803c11f00 (size 128):
-comm "swapper/0", pid 1, jiffies 4294894325 (age 337.524s)
-hex dump (first 32 bytes):
-00 00 00 00 02 00 00 00 08 1f c1 03 28 20 ff ff............( ..
-08 1f c1 03 28 20 ff ff 00 00 00 00 00 00 00 00....( ..........
-backtrace:
-[<00000000670a0938>] slab_post_alloc_hook+0x9c/0x2f8
-[<00000000a3f47b39>] kmem_cache_alloc+0x198/0x2a8
-[<000000002bdba864>] acpi_os_create_semaphore+0x54/0xe0
-[<00000000bcd513fe>] acpi_ev_install_space_handler+0x24c/0x300
-[<0000000002e116e2>] acpi_install_address_space_handler+0x64/0xb0
-[<00000000ba00abc5>] i2c_acpi_install_space_handler+0xd4/0x138
-[<000000008da42058>] i2c_register_adapter+0x368/0x910
-[<00000000c03f7142>] i2c_add_adapter+0x9c/0x100
-[<0000000000ba2fcf>] i2c_add_numbered_adapter+0x44/0x58
-[<000000007df22d67>] i2c_dw_probe_master+0x68c/0x900
-[<00000000682dfc98>] dw_i2c_plat_probe+0x460/0x640
-[<00000000ad2dd3ee>] platform_probe+0x8c/0x108
-[<00000000dd183e3f>] really_probe+0x190/0x670
-[<0000000066017341>] driver_probe_device+0x8c/0xf8
-[<00000000c441e843>] device_driver_attach+0x9c/0xa8
-[<00000000f91dc709>] __driver_attach+0x88/0x138
-unreferenced object 0xffff00280452c100 (size 128):
-comm "swapper/0", pid 1, jiffies 4294894558 (age 336.604s)
-hex dump (first 32 bytes):
-00 00 00 00 02 00 00 00 08 c1 52 04 28 00 ff ff..........R.(...
-08 c1 52 04 28 00 ff ff 00 00 00 00 00 00 00 00..R.(...........
-backtrace:
-[<00000000670a0938>] slab_post_alloc_hook+0x9c/0x2f8
-[<00000000a3f47b39>] kmem_cache_alloc+0x198/0x2a8
-[<000000002bdba864>] acpi_os_create_semaphore+0x54/0xe0
-[<00000000bcd513fe>] acpi_ev_install_space_handler+0x24c/0x300
-[<0000000002e116e2>] acpi_install_address_space_handler+0x64/0xb0
-[<00000000988d4f61>] acpi_gpiochip_add+0x20c/0x4a0
-[<0000000073d4faab>] gpiochip_add_data_with_key+0xd10/0x1680
-[<000000001d50b98a>] devm_gpiochip_add_data_with_key+0x30/0x78
-[<00000000fc3e7eaf>] dwapb_gpio_probe+0x828/0xb28
-[<00000000ad2dd3ee>] platform_probe+0x8c/0x108
-[<00000000dd183e3f>] really_probe+0x190/0x670
-[<0000000066017341>] driver_probe_device+0x8c/0xf8
-[<00000000c441e843>] device_driver_attach+0x9c/0xa8
-[<00000000f91dc709>] __driver_attach+0x88/0x138
-[<00000000d330caed>] bus_for_each_dev+0xec/0x160
-[<00000000eebc5f04>] driver_attach+0x34/0x48
-root@debian:/home/john#
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 8cdddd182bd7 ("CPI: processor: Fix CPU0 wakeup in acpi_idle_play_dead()")
+Cc: <stable@vger.kernel.org> # 5.10+
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+Changes since v2:
+- Use proper kerneldoc format [Rafael J. Wysocki]
+---
+ arch/x86/include/asm/smp.h    |  2 +-
+ arch/x86/kernel/smpboot.c     | 26 ++++++++++++--------------
+ drivers/acpi/processor_idle.c |  4 +---
+ 3 files changed, 14 insertions(+), 18 deletions(-)
 
-Thanks,
-John
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 57ef2094af93..630ff08532be 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -132,7 +132,7 @@ void native_play_dead(void);
+ void play_dead_common(void);
+ void wbinvd_on_cpu(int cpu);
+ int wbinvd_on_all_cpus(void);
+-bool wakeup_cpu0(void);
++void cond_wakeup_cpu0(void);
+ 
+ void native_smp_send_reschedule(int cpu);
+ void native_send_call_func_ipi(const struct cpumask *mask);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index f877150a91da..16703c35a944 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1659,13 +1659,17 @@ void play_dead_common(void)
+ 	local_irq_disable();
+ }
+ 
+-bool wakeup_cpu0(void)
++/**
++ * cond_wakeup_cpu0 - Wake up CPU0 if needed.
++ *
++ * If NMI wants to wake up CPU0, start CPU0.
++ */
++void cond_wakeup_cpu0(void)
+ {
+ 	if (smp_processor_id() == 0 && enable_start_cpu0)
+-		return true;
+-
+-	return false;
++		start_cpu0();
+ }
++EXPORT_SYMBOL_GPL(cond_wakeup_cpu0);
+ 
+ /*
+  * We need to flush the caches before going to sleep, lest we have
+@@ -1734,11 +1738,8 @@ static inline void mwait_play_dead(void)
+ 		__monitor(mwait_ptr, 0, 0);
+ 		mb();
+ 		__mwait(eax, 0);
+-		/*
+-		 * If NMI wants to wake up CPU0, start CPU0.
+-		 */
+-		if (wakeup_cpu0())
+-			start_cpu0();
++
++		cond_wakeup_cpu0();
+ 	}
+ }
+ 
+@@ -1749,11 +1750,8 @@ void hlt_play_dead(void)
+ 
+ 	while (1) {
+ 		native_halt();
+-		/*
+-		 * If NMI wants to wake up CPU0, start CPU0.
+-		 */
+-		if (wakeup_cpu0())
+-			start_cpu0();
++
++		cond_wakeup_cpu0();
+ 	}
+ }
+ 
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 768a6b4d2368..4e2d76b8b697 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -544,9 +544,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+ 			return -ENODEV;
+ 
+ #if defined(CONFIG_X86) && defined(CONFIG_HOTPLUG_CPU)
+-		/* If NMI wants to wake up CPU0, start CPU0. */
+-		if (wakeup_cpu0())
+-			start_cpu0();
++		cond_wakeup_cpu0();
+ #endif
+ 	}
+ 
+-- 
+2.30.2
+
