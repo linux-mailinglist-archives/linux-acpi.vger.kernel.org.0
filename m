@@ -2,38 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81B17355E66
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 00:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFADF355E70
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 00:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243419AbhDFWFX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Apr 2021 18:05:23 -0400
-Received: from mga17.intel.com ([192.55.52.151]:51781 "EHLO mga17.intel.com"
+        id S243481AbhDFWFg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Apr 2021 18:05:36 -0400
+Received: from mga12.intel.com ([192.55.52.136]:54928 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242361AbhDFWFT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 6 Apr 2021 18:05:19 -0400
-IronPort-SDR: WiHmcdmtoh4tFZrG0BVk6SC4ULIvPe18HstGCPK9Vo0XIbQRNXglOgIp3eA/5YZ/XVc2m67Nxd
- 0sgX8iYJ8rCw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9946"; a="173244343"
+        id S243376AbhDFWFa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 6 Apr 2021 18:05:30 -0400
+IronPort-SDR: YbOqHHY3a4nDcrDnT2iqy5aixKLpX/uJ0dzTc7zu4ZqXNylePE+er+FlQTnAy2p1KtZAkDB7FU
+ w3DkV45qLFDg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9946"; a="172640467"
 X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="173244343"
+   d="scan'208";a="172640467"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2021 15:05:10 -0700
-IronPort-SDR: qz5ZXxdNt9QFpNnnDotwZlVTe3Omf0GPkWoJYd3/MIyR3huDfIn5M0lmneAqLrG2QzWMbNu49D
- +C22Uez7HXYQ==
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2021 15:05:10 -0700
+IronPort-SDR: uV5iHovWg/FosKOT2Ht6aHqiC4GlpDbVOSMmYBp4F//nF72YuzLIePe5Q4CUlBWVvhaDFSOG2M
+ FsBZ9PvRmQyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="379581749"
+   d="scan'208";a="379581752"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by orsmga003.jf.intel.com with ESMTP; 06 Apr 2021 15:05:08 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+Cc:     Ben Widawsky <ben@bwidawsk.net>,
+        Ben Widawsky <ben.widawsky@intel.com>,
         Bob Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v2 13/22] ACPICA: iASL: Add definitions for the VIOT table
-Date:   Tue,  6 Apr 2021 14:30:19 -0700
-Message-Id: <20210406213028.718796-14-erik.kaneda@intel.com>
+Subject: [PATCH v2 14/22] ACPICA: CXL 2.0: CEDT: Add new CEDT table
+Date:   Tue,  6 Apr 2021 14:30:20 -0700
+Message-Id: <20210406213028.718796-15-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210406213028.718796-1-erik.kaneda@intel.com>
 References: <20210406213028.718796-1-erik.kaneda@intel.com>
@@ -43,53 +44,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Ben Widawsky <ben@bwidawsk.net>
 
-ACPICA commit fc4e33319c1ee08f20f5c44853dd8426643f6dfd
+ACPICA commit 0b03aa8ebd7a5b2b9407893f123ee587af45926f
 
-Add definitions for the VIOT table and its subtables.
+This sets up all of the boilerplate without actually doing anything.
 
-Link: https://github.com/acpica/acpica/commit/fc4e3331
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Link: https://github.com/acpica/acpica/commit/0b03aa8e
+Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+Signed-off-by: Ben Widawsky <ben@bwidawsk.net>
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 ---
- include/acpi/actbl3.h | 66 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+ include/acpi/actbl1.h | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-index bf61a70deb22..e9bd7ce65f7c 100644
---- a/include/acpi/actbl3.h
-+++ b/include/acpi/actbl3.h
-@@ -33,6 +33,7 @@
- #define ACPI_SIG_TCPA           "TCPA"	/* Trusted Computing Platform Alliance table */
- #define ACPI_SIG_TPM2           "TPM2"	/* Trusted Platform Module 2.0 H/W interface table */
- #define ACPI_SIG_UEFI           "UEFI"	/* Uefi Boot Optimization Table */
-+#define ACPI_SIG_VIOT           "VIOT"	/* Virtual I/O Translation Table */
- #define ACPI_SIG_WAET           "WAET"	/* Windows ACPI Emulated devices Table */
- #define ACPI_SIG_WDAT           "WDAT"	/* Watchdog Action Table */
- #define ACPI_SIG_WDDT           "WDDT"	/* Watchdog Timer Description Table */
-@@ -484,6 +485,71 @@ struct acpi_table_uefi {
- 	u16 data_offset;	/* Offset of remaining data in table */
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 2ee7eeea783b..7b286766e810 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -28,6 +28,7 @@
+ #define ACPI_SIG_BERT           "BERT"	/* Boot Error Record Table */
+ #define ACPI_SIG_BGRT           "BGRT"	/* Boot Graphics Resource Table */
+ #define ACPI_SIG_BOOT           "BOOT"	/* Simple Boot Flag Table */
++#define ACPI_SIG_CEDT           "CEDT"	/* CXL Early Discovery Table */
+ #define ACPI_SIG_CPEP           "CPEP"	/* Corrected Platform Error Polling table */
+ #define ACPI_SIG_CSRT           "CSRT"	/* Core System Resource Table */
+ #define ACPI_SIG_DBG2           "DBG2"	/* Debug Port table type 2 */
+@@ -301,6 +302,48 @@ struct acpi_table_boot {
+ 	u8 reserved[3];
  };
  
 +/*******************************************************************************
 + *
-+ * VIOT - Virtual I/O Translation Table
++ * CEDT - CXL Early Discovery Table
 + *        Version 1
++ *
++ * Conforms to the "CXL Early Discovery Table" (CXL 2.0)
 + *
 + ******************************************************************************/
 +
-+struct acpi_table_viot {
++struct acpi_table_cedt {
 +	struct acpi_table_header header;	/* Common ACPI table header */
-+	u16 node_count;
-+	u16 node_offset;
-+	u8 reserved[8];
 +};
 +
-+/* VIOT subtable header */
++/* CEDT subtable header (Performance Record Structure) */
 +
-+struct acpi_viot_header {
++struct acpi_cedt_header {
 +	u8 type;
 +	u8 reserved;
 +	u16 length;
@@ -97,50 +98,28 @@ index bf61a70deb22..e9bd7ce65f7c 100644
 +
 +/* Values for Type field above */
 +
-+enum acpi_viot_node_type {
-+	ACPI_VIOT_NODE_PCI_RANGE = 0x01,
-+	ACPI_VIOT_NODE_MMIO = 0x02,
-+	ACPI_VIOT_NODE_VIRTIO_IOMMU_PCI = 0x03,
-+	ACPI_VIOT_NODE_VIRTIO_IOMMU_MMIO = 0x04,
++enum acpi_cedt_type {
++	ACPI_CEDT_TYPE_CHBS = 0,
 +};
 +
-+/* VIOT subtables */
++/*
++ * CEDT subtables
++ */
 +
-+struct acpi_viot_pci_range {
-+	ACPI_VIOT_HEADER header;
-+	u32 endpoint_start;
-+	u16 segment_start;
-+	u16 segment_end;
-+	u16 bdf_start;
-+	u16 bdf_end;
-+	u16 output_node;
-+	u8 reserved[6];
-+};
++/* 0: CXL Host Bridge Structure */
 +
-+struct acpi_viot_mmio {
-+	ACPI_VIOT_HEADER header;
-+	u32 endpoint;
-+	u64 base_address;
-+	u16 output_node;
-+	u8 reserved[6];
-+};
-+
-+struct acpi_viot_virtio_iommu_pci {
-+	ACPI_VIOT_HEADER header;
-+	u16 segment;
-+	u16 bdf;
-+	u8 reserved[8];
-+};
-+
-+struct acpi_viot_virtio_iommu_mmio {
-+	ACPI_VIOT_HEADER header;
-+	u8 reserved[4];
-+	u64 base_address;
++struct acpi_cedt_chbs {
++	ACPI_CEDT_HEADER header;
++	u32 uid;
++	u32 cxl_version;
++	u32 reserved;
++	u64 base;
++	u64 length;
 +};
 +
  /*******************************************************************************
   *
-  * WAET - Windows ACPI Emulated devices Table
+  * CPEP - Corrected Platform Error Polling table (ACPI 4.0)
 -- 
 2.29.2
 
