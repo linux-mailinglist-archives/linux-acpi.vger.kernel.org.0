@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EED355E6B
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 00:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3FC355E73
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 00:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243468AbhDFWFb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Apr 2021 18:05:31 -0400
-Received: from mga17.intel.com ([192.55.52.151]:51785 "EHLO mga17.intel.com"
+        id S240292AbhDFWFu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Apr 2021 18:05:50 -0400
+Received: from mga12.intel.com ([192.55.52.136]:54928 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243391AbhDFWFV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 6 Apr 2021 18:05:21 -0400
-IronPort-SDR: XsZcWh4R4FPUt+9F3rmjYjssNQ5F8HvjI+C3j13Wo99SB5PwQgYcUeqKXu4uy8koDIRIMH4tKK
- dsJePFDfjlGQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9946"; a="173244345"
+        id S243477AbhDFWFg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 6 Apr 2021 18:05:36 -0400
+IronPort-SDR: b5GW0lBfeBYSnPULgjJD5Lz23v3iC7Gsp7asM3CgAe000ENnu6KEu1RTuubufBkIEb5W9CZKKm
+ iiXn9ukBLvPg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9946"; a="172640470"
 X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="173244345"
+   d="scan'208";a="172640470"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2021 15:05:10 -0700
-IronPort-SDR: yrMQInZiuW7ubPej9Qkjgm0TSYfinqqen44Li+Nlb8CCjOu5vjxuF2XzyTI0EKd8mbelSZB/1h
- Fy+8Uk8T1zJg==
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2021 15:05:10 -0700
+IronPort-SDR: U2FIVSwkfzF4PI1X3jpnn13ZCtUOT6CC1OGL8fJimQBXm+t8Ot0ONbJOUH2BoxCrJ0npnFzuQA
+ s5gfuzppiEWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="379581765"
+   d="scan'208";a="379581769"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by orsmga003.jf.intel.com with ESMTP; 06 Apr 2021 15:05:09 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
@@ -30,9 +30,9 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Cc:     Bob Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v2 18/22] ACPICA: iASL: Add support for CEDT table
-Date:   Tue,  6 Apr 2021 14:30:24 -0700
-Message-Id: <20210406213028.718796-19-erik.kaneda@intel.com>
+Subject: [PATCH v2 19/22] ACPICA: iASL: Decode subtable type field for VIOT
+Date:   Tue,  6 Apr 2021 14:30:25 -0700
+Message-Id: <20210406213028.718796-20-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210406213028.718796-1-erik.kaneda@intel.com>
 References: <20210406213028.718796-1-erik.kaneda@intel.com>
@@ -44,38 +44,29 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bob Moore <robert.moore@intel.com>
 
-Also, update the CEDT template.
+For the table disassembler, decode the subtable type field to a descriptive string.
 
-ACPICA commit 1e6dded267b13c4aa0c3e16de0fa89d3b9c880e9
+ACPICA commit 2197e354fb5dcafaddd2016ffeb0620e5bc3d5e2
 
-Link: https://github.com/acpica/acpica/commit/1e6dded2
+Link: https://github.com/acpica/acpica/commit/2197e354
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 ---
- include/acpi/actbl1.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/acpi/actbl3.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 7b286766e810..ce59903c2695 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -327,6 +327,7 @@ struct acpi_cedt_header {
- 
- enum acpi_cedt_type {
- 	ACPI_CEDT_TYPE_CHBS = 0,
-+	ACPI_CEDT_TYPE_RESERVED = 1
+diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
+index e9bd7ce65f7c..c0e68331f1fc 100644
+--- a/include/acpi/actbl3.h
++++ b/include/acpi/actbl3.h
+@@ -514,6 +514,7 @@ enum acpi_viot_node_type {
+ 	ACPI_VIOT_NODE_MMIO = 0x02,
+ 	ACPI_VIOT_NODE_VIRTIO_IOMMU_PCI = 0x03,
+ 	ACPI_VIOT_NODE_VIRTIO_IOMMU_MMIO = 0x04,
++	ACPI_VIOT_RESERVED = 0x05
  };
  
- /*
-@@ -336,7 +337,7 @@ enum acpi_cedt_type {
- /* 0: CXL Host Bridge Structure */
- 
- struct acpi_cedt_chbs {
--	ACPI_CEDT_HEADER header;
-+	struct acpi_cedt_header header;
- 	u32 uid;
- 	u32 cxl_version;
- 	u32 reserved;
+ /* VIOT subtables */
 -- 
 2.29.2
 
