@@ -2,164 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE627356EC2
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 16:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1292356F1B
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 16:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245157AbhDGOeQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Apr 2021 10:34:16 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:42118 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352977AbhDGOeD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 10:34:03 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.3)
- id ebc5461653ed92d7; Wed, 7 Apr 2021 16:33:53 +0200
-Received: from kreacher.localnet (89-64-81-116.dynamic.chello.pl [89.64.81.116])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 69565669203;
-        Wed,  7 Apr 2021 16:33:52 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH v1 5/5] ACPI: scan: Call acpi_get_object_info() from acpi_set_pnp_ids()
-Date:   Wed, 07 Apr 2021 16:33:38 +0200
-Message-ID: <2137295.iZASKD2KPV@kreacher>
-In-Reply-To: <2192169.ElGaqSPkdT@kreacher>
+        id S1345264AbhDGOqa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Apr 2021 10:46:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30187 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244998AbhDGOq2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 10:46:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1617806778;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mg+fAs8HiCSf9usDBnxdCzvZm/dqxv2o27VRQ8dpGpE=;
+        b=jPKzwiE/9AoSGrNd6RS6OlZy9VUmoO3MiNoeuBRWjLsQ+vNITic18iddsbp42livXzPLHo
+        p1Pc7bJNBdgyFQeDatDNH8efOGixIhiZmVVV2L1PS9QCoPCjGo2ANNIB6CfCkUarzS6jxd
+        wbmegmsLEDUPPfXB0/4LjcupsH2YUuM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-209-gDW4DfkzNLapO_dRws_m8Q-1; Wed, 07 Apr 2021 10:46:16 -0400
+X-MC-Unique: gDW4DfkzNLapO_dRws_m8Q-1
+Received: by mail-ej1-f69.google.com with SMTP id zn19so3093228ejb.14
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Apr 2021 07:46:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mg+fAs8HiCSf9usDBnxdCzvZm/dqxv2o27VRQ8dpGpE=;
+        b=bIdsby+DzBoDloK46W6shhOF9iWeuL9Gz0yqVDIQnT1WB5dzMwnRaxZEEPM7EwQI1D
+         SPLL0i71+lKchvb0fiLzrVRWty7y2NT5PvFcK5lEPpaiIX5u/j6iXrAvtZn6mImXVy+D
+         C5uTvUT7ONNVA29nwJczhp7Gsm1MbOYszw1zkDjPReZpVR0NdDWhZpR9lK8TOCTPDF+c
+         jL5tFaNfGyTM36e3xN6JXMGvX5BpVre9P8ViuQ2hgv8du/o/cW3E9zB39JYx1UMW+XQD
+         feaPIQSb7h5STXzosxdsVtR07Q7dOjVKUWS4xFbKKogFOW9bFPSI9Cw+uqxRWbotAMxE
+         9ZHw==
+X-Gm-Message-State: AOAM530W9bSXF5zGiU02rAnu61p2y8bcu8vermbbQXafG9+BsJC4kS2T
+        yCiCb37xPr4pTA8x3sHbDewuk7t3q+hsDYtet1sH6Wm2xi9OdhCpmpm9khQ6DzM5ON72O/y9KRW
+        kz+saWHw9OnLBCJjLYKRJow==
+X-Received: by 2002:a17:907:628a:: with SMTP id nd10mr4143793ejc.326.1617806775283;
+        Wed, 07 Apr 2021 07:46:15 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzHhBqm26Mm7YFhs88gM9OOeiQCRSbPAmpao8DVnIAjK0sCenydd7fdhGuJ2WWq8h5whHoFsw==
+X-Received: by 2002:a17:907:628a:: with SMTP id nd10mr4143783ejc.326.1617806775169;
+        Wed, 07 Apr 2021 07:46:15 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id x17sm12698028ejd.68.2021.04.07.07.46.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Apr 2021 07:46:14 -0700 (PDT)
+Subject: Re: [PATCH v1 0/5] ACPI: scan: acpi_bus_check_add() simplifications
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
 References: <2192169.ElGaqSPkdT@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <c50d3bc1-e40c-a66d-35fe-823a1398989d@redhat.com>
+Date:   Wed, 7 Apr 2021 16:46:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.81.116
-X-CLIENT-HOSTNAME: 89-64-81-116.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudejjedgjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvjeelgffhiedukedtleekkedvudfggefhgfegjefgueekjeelvefggfdvledutdenucfkphepkeelrdeigedrkedurdduudeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedurdduudeipdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
+In-Reply-To: <2192169.ElGaqSPkdT@kreacher>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-Notice that it is not necessary to call acpi_get_object_info() from
-acpi_add_single_object() in order to pass the pointer returned by it
-to acpi_init_device_object() and from there to acpi_set_pnp_ids().
+On 4/7/21 4:27 PM, Rafael J. Wysocki wrote:
+> Hi,
+> 
+> This series simplifies acpi_bus_check_add() and related code.
+> 
+> It mostly is not expected to alter functionality, except for patch [4/5] that
+> unifies the handling of device and processor objects.
+> 
+> Please refer to the patch changelogs for details.
 
-It is more straightforward to call acpi_get_object_info() from
-acpi_set_pnp_ids() and avoid unnecessary pointer passing, so change
-the code accordingly.
+Thanks, the entire series looks good to me:
 
-No intentional functional impact.
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/internal.h |    2 +-
- drivers/acpi/power.c    |    2 +-
- drivers/acpi/scan.c     |   21 +++++++++------------
- 3 files changed, 11 insertions(+), 14 deletions(-)
+Regards,
 
-Index: linux-pm/drivers/acpi/scan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -1307,8 +1307,9 @@ static bool acpi_object_is_system_bus(ac
- }
- 
- static void acpi_set_pnp_ids(acpi_handle handle, struct acpi_device_pnp *pnp,
--				int device_type, struct acpi_device_info *info)
-+			     int device_type)
- {
-+	struct acpi_device_info *info = NULL;
- 	struct acpi_pnp_device_id_list *cid_list;
- 	int i;
- 
-@@ -1319,6 +1320,7 @@ static void acpi_set_pnp_ids(acpi_handle
- 			break;
- 		}
- 
-+		acpi_get_object_info(handle, &info);
- 		if (!info) {
- 			pr_err(PREFIX "%s: Error reading device info\n",
- 					__func__);
-@@ -1344,6 +1346,8 @@ static void acpi_set_pnp_ids(acpi_handle
- 		if (info->valid & ACPI_VALID_CLS)
- 			acpi_add_id(pnp, info->class_code.string);
- 
-+		kfree(info);
-+
- 		/*
- 		 * Some devices don't reliably have _HIDs & _CIDs, so add
- 		 * synthetic HIDs to make sure drivers can find them.
-@@ -1649,7 +1653,7 @@ static bool acpi_device_enumeration_by_p
- }
- 
- void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
--			     int type, struct acpi_device_info *info)
-+			     int type)
- {
- 	INIT_LIST_HEAD(&device->pnp.ids);
- 	device->device_type = type;
-@@ -1658,7 +1662,7 @@ void acpi_init_device_object(struct acpi
- 	fwnode_init(&device->fwnode, &acpi_device_fwnode_ops);
- 	acpi_set_device_status(device, ACPI_STA_DEFAULT);
- 	acpi_device_get_busid(device);
--	acpi_set_pnp_ids(handle, &device->pnp, type, info);
-+	acpi_set_pnp_ids(handle, &device->pnp, type);
- 	acpi_init_properties(device);
- 	acpi_bus_get_flags(device);
- 	device->flags.match_driver = false;
-@@ -1688,21 +1692,14 @@ static void acpi_scan_init_status(struct
- static int acpi_add_single_object(struct acpi_device **child,
- 				  acpi_handle handle, int type)
- {
--	struct acpi_device_info *info = NULL;
- 	struct acpi_device *device;
- 	int result;
- 
--	if (type == ACPI_BUS_TYPE_DEVICE && handle != ACPI_ROOT_OBJECT)
--		acpi_get_object_info(handle, &info);
--
- 	device = kzalloc(sizeof(struct acpi_device), GFP_KERNEL);
--	if (!device) {
--		kfree(info);
-+	if (!device)
- 		return -ENOMEM;
--	}
- 
--	acpi_init_device_object(device, handle, type, info);
--	kfree(info);
-+	acpi_init_device_object(device, handle, type);
- 	/*
- 	 * Getting the status is delayed till here so that we can call
- 	 * acpi_bus_get_status() and use its quirk handling.  Note that
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -109,7 +109,7 @@ struct acpi_device_bus_id {
- int acpi_device_add(struct acpi_device *device,
- 		    void (*release)(struct device *));
- void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
--			     int type, struct acpi_device_info *info);
-+			     int type);
- int acpi_device_setup_files(struct acpi_device *dev);
- void acpi_device_remove_files(struct acpi_device *dev);
- void acpi_device_add_finalize(struct acpi_device *device);
-Index: linux-pm/drivers/acpi/power.c
-===================================================================
---- linux-pm.orig/drivers/acpi/power.c
-+++ linux-pm/drivers/acpi/power.c
-@@ -925,7 +925,7 @@ int acpi_add_power_resource(acpi_handle
- 		return -ENOMEM;
- 
- 	device = &resource->device;
--	acpi_init_device_object(device, handle, ACPI_BUS_TYPE_POWER, NULL);
-+	acpi_init_device_object(device, handle, ACPI_BUS_TYPE_POWER);
- 	mutex_init(&resource->resource_lock);
- 	INIT_LIST_HEAD(&resource->list_node);
- 	INIT_LIST_HEAD(&resource->dependents);
-
-
+Hans
 
