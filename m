@@ -2,165 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E380F3572B5
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 19:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F8A3572D8
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 19:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354621AbhDGRGd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Apr 2021 13:06:33 -0400
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:46048 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354588AbhDGRG1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 13:06:27 -0400
-Received: by mail-ot1-f41.google.com with SMTP id 91-20020a9d08640000b0290237d9c40382so18730766oty.12;
-        Wed, 07 Apr 2021 10:06:17 -0700 (PDT)
+        id S1354667AbhDGRML (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Apr 2021 13:12:11 -0400
+Received: from mail-oi1-f174.google.com ([209.85.167.174]:33296 "EHLO
+        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235711AbhDGRMK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 13:12:10 -0400
+Received: by mail-oi1-f174.google.com with SMTP id w70so19545857oie.0
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Apr 2021 10:12:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=abnQRkdJvp2BPIa2wpxV2nwwLsa1/aF4RGi27RRL+2M=;
-        b=kSu6+mb1EnRqHaiQyIfq6p+xPeurnN/oYfIQ5wyLJX2kJNHzGui1w4936WBjrNSqJJ
-         NsaDHxpo2lTpITa+6AOY4jiQLNOB5sOjYaxq+wLVT0vXUQQ2AkdoeLZayMT+sxWcGcIc
-         x5b/XXMyWwVp6FQuC0orW4BfK21SMqv67l9nB2kWhv66G43x9h+qkjL3j0ZblthcGKcb
-         xB2XZVgUh8oBXMRrAfkqc/4HHomZhYcR1q8tQs19izoCJ0NewbLUErWayc+SSm+SG/IW
-         ttTk7NZ5ONJ4AtAiIpq5ZTLogFJQuH0hIXT352McRmL5DeWHPkkf2mfnJUBPksgnxqO1
-         xX5Q==
-X-Gm-Message-State: AOAM532+ZP2LUWJGhMjhfvQ2ShiRQjBtWjLBwML78SS0CK4YwzWe02T8
-        wUnCsXHuvnBUgEf1QRcNWW1CkK2IZmKLN78paVg=
-X-Google-Smtp-Source: ABdhPJzCYFheOkHMIqBHjQXvEhsxnEDPLw9Y4mxOzFMKycSTj9M7XrhE/ivVZC6UEsO9Nyggo/LRjbivWc0B0LkQaBI=
-X-Received: by 2002:a9d:4811:: with SMTP id c17mr3947200otf.206.1617815176928;
- Wed, 07 Apr 2021 10:06:16 -0700 (PDT)
+        bh=eoRSxI+sWKsXSLYqhnx0GoEZg3FdxK88yTnDJBoR40c=;
+        b=Kpy8Th/bZpOGdx4ijJ/PYouXgJ6tMTjNJXriXNzTqRKmgFzGDGZw/AGVyHYLHN1Qxc
+         V0rmV32KqVSdKqFB5vyLqMoGrUQpQAJlHCwrtuq7kQz0qdauwg9GMvgxER+xXHqaN2eN
+         dC9fbVq83TePD7swNmHoRABdUcn7jroqBbG0ElaBJ8jbCJCtzHuYvH0bdLNnHJUklX0u
+         i5a6RBYA2DNa7nNIQLjTqCe5iXLFQqyryThQvVj6h36SefySi6Ck05xdyevcD+eFxLZv
+         jCWlH/w3FnkYqDwCVygRuKBcjpWu6qTOft5uPoIy4dpMYPaV0zw/yXCHCD4BoOTnRERK
+         w0yw==
+X-Gm-Message-State: AOAM533S9kBP5+HSoosfUsiohy682TJMEtRshwqc448qkcCrNNmCq5vw
+        WnpZ1kHyswXwDsEEvgsxIc/sFKpSjF8xzm6MwTv7MWrG
+X-Google-Smtp-Source: ABdhPJw/nD9+D2gfyQbA83gG1X3CgaZHoJgtorOuVP+o86k7K2XPLGTl2Kf7gai66l2nUcObNhhroog+zAKsmSHFxEk=
+X-Received: by 2002:aca:c4c5:: with SMTP id u188mr2992031oif.71.1617815520412;
+ Wed, 07 Apr 2021 10:12:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210406155640.564341-1-vkuznets@redhat.com>
-In-Reply-To: <20210406155640.564341-1-vkuznets@redhat.com>
+References: <20210406213028.718796-1-erik.kaneda@intel.com>
+In-Reply-To: <20210406213028.718796-1-erik.kaneda@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 7 Apr 2021 19:06:05 +0200
-Message-ID: <CAJZ5v0gqSEzkja-eAOvWEFs=HLv=046sj=g03ukVFhDF0xUdTg@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: processor: Fix build when CONFIG_ACPI_PROCESSOR=m
-To:     Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Stable <stable@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 7 Apr 2021 19:11:49 +0200
+Message-ID: <CAJZ5v0janTWJ1Q4CeAyuxM5QOn3nuqkQey2n9yWyabpR-LX42A@mail.gmail.com>
+Subject: Re: [PATCH v2 00/22] ACPICA release 20210331 (ACPI 6.4 support)
+To:     Erik Kaneda <erik.kaneda@intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 6, 2021 at 5:56 PM Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+On Wed, Apr 7, 2021 at 12:05 AM Erik Kaneda <erik.kaneda@intel.com> wrote:
 >
-> Commit 8cdddd182bd7 ("ACPI: processor: Fix CPU0 wakeup in
-> acpi_idle_play_dead()") tried to fix CPU0 hotplug breakage by copying
-> wakeup_cpu0() + start_cpu0() logic from hlt_play_dead()//mwait_play_dead()
-> into acpi_idle_play_dead(). The problem is that these functions are not
-> exported to modules so when CONFIG_ACPI_PROCESSOR=m build fails.
+> This series contains the Linux-ized patches of ACPICA version 20210331.
+> This release implements changes to implement the ACPI 6.4 specification
+> as well as several new tables defined outside of the ACPI specification.
 >
-> The issue could've been fixed by exporting both wakeup_cpu0()/start_cpu0()
-> (the later from assembly) but it seems putting the whole pattern into a
-> new function and exporting it instead is better.
+> v2: fix build issue stemming modified NFIT structure
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 8cdddd182bd7 ("CPI: processor: Fix CPU0 wakeup in acpi_idle_play_dead()")
-> Cc: <stable@vger.kernel.org> # 5.10+
-> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+> This patch set is also available here:
+>
+> https://github.com/SchmErik/linux/tree/20210331
+>
+>
+> Alexander Monakov (1):
+>   ACPICA: Add parsing for IVRS IVHD 40h and device entry F0h
+>
+> Ben Widawsky (1):
+>   ACPICA: CXL 2.0: CEDT: Add new CEDT table
+>
+> Bob Moore (8):
+>   ACPICA: ACPI 6.4: NFIT: add Location Cookie field
+>   ACPICA: ACPI 6.4: HMAT: add new fields/flags
+>   ACPICA: ACPI 6.4: Add new flags in SRAT
+>   ACPICA: ACPI 6.4: PMTT: add new fields/structures
+>   ACPICA: ACPI 6.4: add CSI2Bus resource template
+>   ACPICA: iASL: Add support for CEDT table
+>   ACPICA: iASL: Decode subtable type field for VIOT
+>   ACPICA: Update version to 20210331
+>
+> Colin Ian King (1):
+>   ACPICA: Tree-wide: fix various typos and spelling mistakes
+>
+> Erik Kaneda (8):
+>   ACPICA: ACPI 6.4: Add new predefined objects _BPC, _BPS, and _BPT
+>   ACPICA: ACPI 6.4: add USB4 capabilities UUID
+>   ACPICA: ACPI 6.4: add CXL ACPI device ID and _CBR object
+>   ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Structure
+>   ACPICA: ACPI 6.4: PCCT: add support for subtable type 5
+>   ACPICA: ACPI 6.4: PPTT: add new version of subtable type 1
+>   ACPICA: ACPI 6.4: add SDEV secure access components
+>   ACPICA: ACPI 6.4: add support for PHAT table
+>
+> Jean-Philippe Brucker (2):
+>   ACPICA: iASL: Add definitions for the VIOT table
+>   ACPICA: acpisrc: Add missing conversion for VIOT support
+>
+> Shameer Kolothum (1):
+>   ACPICA: IORT: Updates for revision E.b
 
-Applied as 5.12-rc material, thanks!
-
-> ---
-> Changes since v2:
-> - Use proper kerneldoc format [Rafael J. Wysocki]
-> ---
->  arch/x86/include/asm/smp.h    |  2 +-
->  arch/x86/kernel/smpboot.c     | 26 ++++++++++++--------------
->  drivers/acpi/processor_idle.c |  4 +---
->  3 files changed, 14 insertions(+), 18 deletions(-)
->
-> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-> index 57ef2094af93..630ff08532be 100644
-> --- a/arch/x86/include/asm/smp.h
-> +++ b/arch/x86/include/asm/smp.h
-> @@ -132,7 +132,7 @@ void native_play_dead(void);
->  void play_dead_common(void);
->  void wbinvd_on_cpu(int cpu);
->  int wbinvd_on_all_cpus(void);
-> -bool wakeup_cpu0(void);
-> +void cond_wakeup_cpu0(void);
->
->  void native_smp_send_reschedule(int cpu);
->  void native_send_call_func_ipi(const struct cpumask *mask);
-> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-> index f877150a91da..16703c35a944 100644
-> --- a/arch/x86/kernel/smpboot.c
-> +++ b/arch/x86/kernel/smpboot.c
-> @@ -1659,13 +1659,17 @@ void play_dead_common(void)
->         local_irq_disable();
->  }
->
-> -bool wakeup_cpu0(void)
-> +/**
-> + * cond_wakeup_cpu0 - Wake up CPU0 if needed.
-> + *
-> + * If NMI wants to wake up CPU0, start CPU0.
-> + */
-> +void cond_wakeup_cpu0(void)
->  {
->         if (smp_processor_id() == 0 && enable_start_cpu0)
-> -               return true;
-> -
-> -       return false;
-> +               start_cpu0();
->  }
-> +EXPORT_SYMBOL_GPL(cond_wakeup_cpu0);
->
->  /*
->   * We need to flush the caches before going to sleep, lest we have
-> @@ -1734,11 +1738,8 @@ static inline void mwait_play_dead(void)
->                 __monitor(mwait_ptr, 0, 0);
->                 mb();
->                 __mwait(eax, 0);
-> -               /*
-> -                * If NMI wants to wake up CPU0, start CPU0.
-> -                */
-> -               if (wakeup_cpu0())
-> -                       start_cpu0();
-> +
-> +               cond_wakeup_cpu0();
->         }
->  }
->
-> @@ -1749,11 +1750,8 @@ void hlt_play_dead(void)
->
->         while (1) {
->                 native_halt();
-> -               /*
-> -                * If NMI wants to wake up CPU0, start CPU0.
-> -                */
-> -               if (wakeup_cpu0())
-> -                       start_cpu0();
-> +
-> +               cond_wakeup_cpu0();
->         }
->  }
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 768a6b4d2368..4e2d76b8b697 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -544,9 +544,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
->                         return -ENODEV;
->
->  #if defined(CONFIG_X86) && defined(CONFIG_HOTPLUG_CPU)
-> -               /* If NMI wants to wake up CPU0, start CPU0. */
-> -               if (wakeup_cpu0())
-> -                       start_cpu0();
-> +               cond_wakeup_cpu0();
->  #endif
->         }
->
-> --
-> 2.30.2
->
+All applied as 5.13 material, thank you!
