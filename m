@@ -2,95 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F8A3572D8
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 19:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDA23572DC
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Apr 2021 19:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354667AbhDGRML (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Apr 2021 13:12:11 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:33296 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235711AbhDGRMK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 13:12:10 -0400
-Received: by mail-oi1-f174.google.com with SMTP id w70so19545857oie.0
-        for <linux-acpi@vger.kernel.org>; Wed, 07 Apr 2021 10:12:00 -0700 (PDT)
+        id S1347904AbhDGRNh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Apr 2021 13:13:37 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:41767 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343631AbhDGRNf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Apr 2021 13:13:35 -0400
+Received: by mail-oi1-f178.google.com with SMTP id z15so19462936oic.8
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Apr 2021 10:13:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eoRSxI+sWKsXSLYqhnx0GoEZg3FdxK88yTnDJBoR40c=;
-        b=Kpy8Th/bZpOGdx4ijJ/PYouXgJ6tMTjNJXriXNzTqRKmgFzGDGZw/AGVyHYLHN1Qxc
-         V0rmV32KqVSdKqFB5vyLqMoGrUQpQAJlHCwrtuq7kQz0qdauwg9GMvgxER+xXHqaN2eN
-         dC9fbVq83TePD7swNmHoRABdUcn7jroqBbG0ElaBJ8jbCJCtzHuYvH0bdLNnHJUklX0u
-         i5a6RBYA2DNa7nNIQLjTqCe5iXLFQqyryThQvVj6h36SefySi6Ck05xdyevcD+eFxLZv
-         jCWlH/w3FnkYqDwCVygRuKBcjpWu6qTOft5uPoIy4dpMYPaV0zw/yXCHCD4BoOTnRERK
-         w0yw==
-X-Gm-Message-State: AOAM533S9kBP5+HSoosfUsiohy682TJMEtRshwqc448qkcCrNNmCq5vw
-        WnpZ1kHyswXwDsEEvgsxIc/sFKpSjF8xzm6MwTv7MWrG
-X-Google-Smtp-Source: ABdhPJw/nD9+D2gfyQbA83gG1X3CgaZHoJgtorOuVP+o86k7K2XPLGTl2Kf7gai66l2nUcObNhhroog+zAKsmSHFxEk=
-X-Received: by 2002:aca:c4c5:: with SMTP id u188mr2992031oif.71.1617815520412;
- Wed, 07 Apr 2021 10:12:00 -0700 (PDT)
+        bh=mhogcI3e2a0s0TpHg1uoICzncg9zexl4RCRVjjXhp/0=;
+        b=J4LHSxssBvY2uOnvEGv+mNKNIAThNQ24jjOnSMYPZcZnP8HI2PXj/iBf4zQ7IIB15C
+         6uv3YUgwh0MG+ifgKBoumypbyFJcC06MfTh6b0vzyyoADITcw+nOyPPW0AtidA/A//4Y
+         iWMPo2MXWb0ocHSncqdQGFMYqxgwS+FAWtdMqZGRknAbTZ42Y7QVamQ+pQ6fygeQ2b+s
+         EFrWRod7aVq+FG808sSqNuQ+7l5YH6VKDVYW61R+4b4E7hJknTSexT711kkZbxhgQmPh
+         SiAEiTLu0nlO9habhsH4AH0QqmoxVqG7U72c8yh+F1tvJ8lnVKwfeFbtK9uijYdXYiA8
+         ObsA==
+X-Gm-Message-State: AOAM53364KlprbyVl3WsNXiN2kPh5MPeDAO5FGVdqEs1qwbOeVxAeZLw
+        JmTpFEKhT1ezkBJuoBBx8QiJNNFz0gM9yA7NhUA=
+X-Google-Smtp-Source: ABdhPJxBuwo60giwH76t01hOXqtUegHgOCZkDLEtaF+sKOJ4fN31d81+tgJ6rzVXSJ6QGjfrE3V8WJwy8GssTYjLi3s=
+X-Received: by 2002:a05:6808:24b:: with SMTP id m11mr3003358oie.157.1617815604553;
+ Wed, 07 Apr 2021 10:13:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210406213028.718796-1-erik.kaneda@intel.com>
-In-Reply-To: <20210406213028.718796-1-erik.kaneda@intel.com>
+References: <20210406211653.182338-1-hdegoede@redhat.com>
+In-Reply-To: <20210406211653.182338-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 7 Apr 2021 19:11:49 +0200
-Message-ID: <CAJZ5v0janTWJ1Q4CeAyuxM5QOn3nuqkQey2n9yWyabpR-LX42A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/22] ACPICA release 20210331 (ACPI 6.4 support)
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+Date:   Wed, 7 Apr 2021 19:13:13 +0200
+Message-ID: <CAJZ5v0h6=_U+_=G8YL5rA701pTLGfyg4PmBudc3tFRKG=Wxh4A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: utils: Add acpi_reduced_hardware() helper
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 7, 2021 at 12:05 AM Erik Kaneda <erik.kaneda@intel.com> wrote:
+On Tue, Apr 6, 2021 at 11:17 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> This series contains the Linux-ized patches of ACPICA version 20210331.
-> This release implements changes to implement the ACPI 6.4 specification
-> as well as several new tables defined outside of the ACPI specification.
+> Add a getter for the acpi_gbl_reduced_hardware variable so that modules
+> can check if they are running on an ACPI reduced-hw platform or not.
 >
-> v2: fix build issue stemming modified NFIT structure
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/utils.c    | 11 +++++++++++
+>  include/acpi/acpi_bus.h |  1 +
+>  include/linux/acpi.h    |  5 +++++
+>  3 files changed, 17 insertions(+)
 >
-> This patch set is also available here:
+> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+> index 682edd913b3b..4cb061d3169a 100644
+> --- a/drivers/acpi/utils.c
+> +++ b/drivers/acpi/utils.c
+> @@ -872,6 +872,17 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
+>  }
+>  EXPORT_SYMBOL(acpi_dev_get_first_match_dev);
 >
-> https://github.com/SchmErik/linux/tree/20210331
->
->
-> Alexander Monakov (1):
->   ACPICA: Add parsing for IVRS IVHD 40h and device entry F0h
->
-> Ben Widawsky (1):
->   ACPICA: CXL 2.0: CEDT: Add new CEDT table
->
-> Bob Moore (8):
->   ACPICA: ACPI 6.4: NFIT: add Location Cookie field
->   ACPICA: ACPI 6.4: HMAT: add new fields/flags
->   ACPICA: ACPI 6.4: Add new flags in SRAT
->   ACPICA: ACPI 6.4: PMTT: add new fields/structures
->   ACPICA: ACPI 6.4: add CSI2Bus resource template
->   ACPICA: iASL: Add support for CEDT table
->   ACPICA: iASL: Decode subtable type field for VIOT
->   ACPICA: Update version to 20210331
->
-> Colin Ian King (1):
->   ACPICA: Tree-wide: fix various typos and spelling mistakes
->
-> Erik Kaneda (8):
->   ACPICA: ACPI 6.4: Add new predefined objects _BPC, _BPS, and _BPT
->   ACPICA: ACPI 6.4: add USB4 capabilities UUID
->   ACPICA: ACPI 6.4: add CXL ACPI device ID and _CBR object
->   ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Structure
->   ACPICA: ACPI 6.4: PCCT: add support for subtable type 5
->   ACPICA: ACPI 6.4: PPTT: add new version of subtable type 1
->   ACPICA: ACPI 6.4: add SDEV secure access components
->   ACPICA: ACPI 6.4: add support for PHAT table
->
-> Jean-Philippe Brucker (2):
->   ACPICA: iASL: Add definitions for the VIOT table
->   ACPICA: acpisrc: Add missing conversion for VIOT support
->
-> Shameer Kolothum (1):
->   ACPICA: IORT: Updates for revision E.b
+> +/**
+> + * acpi_reduced_hardware - Return if this is an ACPI-reduced-hw machine
+> + *
+> + * Return true when running on an ACPI-reduced-hw machine, false otherwise.
+> + */
+> +bool acpi_reduced_hardware(void)
+> +{
+> +       return acpi_gbl_reduced_hardware;
+> +}
+> +EXPORT_SYMBOL(acpi_reduced_hardware);
 
-All applied as 5.13 material, thank you!
+EXPORT_SYMBOL_GPL()?
+
+> +
+>  /*
+>   * acpi_backlight= handling, this is done here rather then in video_detect.c
+>   * because __setup cannot be used in modules.
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index f28b097c658f..d631cb52283e 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -78,6 +78,7 @@ acpi_evaluate_dsm_typed(acpi_handle handle, const guid_t *guid, u64 rev,
+>
+>  bool acpi_dev_found(const char *hid);
+>  bool acpi_dev_present(const char *hid, const char *uid, s64 hrv);
+> +bool acpi_reduced_hardware(void);
+>
+>  #ifdef CONFIG_ACPI
+>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 3bdcfc4401b7..e2e6db8313c8 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -748,6 +748,11 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
+>         return NULL;
+>  }
+>
+> +static inline bool acpi_reduced_hardware(void)
+> +{
+> +       return false;
+> +}
+> +
+>  static inline void acpi_dev_put(struct acpi_device *adev) {}
+>
+>  static inline bool is_acpi_node(const struct fwnode_handle *fwnode)
+> --
+> 2.30.2
+>
