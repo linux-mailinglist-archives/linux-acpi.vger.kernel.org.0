@@ -2,97 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C15ED358804
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Apr 2021 17:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C1D35880C
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Apr 2021 17:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232059AbhDHPSn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Apr 2021 11:18:43 -0400
-Received: from mga18.intel.com ([134.134.136.126]:12959 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231863AbhDHPSn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 8 Apr 2021 11:18:43 -0400
-IronPort-SDR: uwv3zUhJX8P/oJJYaY1fyYfdA+SaE6ZTMb9um9Nyd+wTFY8RIPojpvv54Gr5CrV6fERwGWDfOB
- zSig7IAo363w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9948"; a="181100255"
-X-IronPort-AV: E=Sophos;i="5.82,206,1613462400"; 
-   d="scan'208";a="181100255"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2021 08:18:27 -0700
-IronPort-SDR: CN0TnCj9/GfHpXe0J91ryrKNLjRxO8VDVphFqV0GVR6NMENKY/CdBbEIcBbIIOP4v9cbAPMMPi
- wiXr70/7gf5w==
-X-IronPort-AV: E=Sophos;i="5.82,206,1613462400"; 
-   d="scan'208";a="397121016"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2021 08:18:24 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lUWQH-002Jst-EX; Thu, 08 Apr 2021 18:18:21 +0300
-Date:   Thu, 8 Apr 2021 18:18:21 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH v2 1/6] software node: Free resources explicitly when
- swnode_register() fails
-Message-ID: <YG8evZfHNyBmTJu7@smile.fi.intel.com>
-References: <20210329151207.36619-1-andriy.shevchenko@linux.intel.com>
- <YGRXmOMfCTxy31Rj@kuha.fi.intel.com>
- <CAJZ5v0jJCYD9+j57-CL-OqiZKL7bBQ7NetcewE_37wODOG_Jkg@mail.gmail.com>
- <YG8YSPHMBbBJadvp@smile.fi.intel.com>
- <CAJZ5v0j0XpD6mbaCxAjBARsiScSG2T0v_2m8NdrnoQVmsqDDXQ@mail.gmail.com>
+        id S232011AbhDHPTO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Apr 2021 11:19:14 -0400
+Received: from mail-oo1-f46.google.com ([209.85.161.46]:46624 "EHLO
+        mail-oo1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232119AbhDHPTI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Apr 2021 11:19:08 -0400
+Received: by mail-oo1-f46.google.com with SMTP id 125-20020a4a1a830000b02901b6a144a417so578695oof.13;
+        Thu, 08 Apr 2021 08:18:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NBesEj2fSrr43l9kt9D4AtU33PrnTTnDZIAdB81qk+I=;
+        b=B3qsHKK2TooeVj9GZujny0vQo3dEiZ/gZz3nC9nzTfA6UVO6gZ+yKe6uHvv4EnvwyD
+         gXdSTrIN5WEjyTM7Rx9DMFPyiyXoG47kyeB9nSdSri2Vmhh5Qn5mUTMDMvjVtWxswdLS
+         kG46vCHxPRuJMcl3aYlWoE8vaLTIv/5WmuAIxKz2r1BjjqlcCfKiilA44AYKcCfv80Ns
+         m1lFtL2avxe/f0SysLxToEi/mtD07ueJY6dvxwqHv4dsQV8ohzfSQ1OFLHZIAKz4l/LH
+         RGuJtcXcG66IbKMf1X1FYhupa2lQzwWWq4S1I5+usuK6H8nd14b2poTzmVJysOwxe3Rg
+         P7MQ==
+X-Gm-Message-State: AOAM531OQMHU5I+jptwEeTjSZYhLCiW+r5B/oKeo2Y2rNUmVExmSpxQH
+        Pix5H/ZsoI6D55sLx/lNEJiEetLujcAkQG9ltPG1l7HF
+X-Google-Smtp-Source: ABdhPJwVEMJhK8+sgSmB9cm72hb4M6W0oHnJovlQTNy7RP187o2yTsTnPnRWXrah2/JAZTIkhMHC1ggeWpqDECdKj+o=
+X-Received: by 2002:a4a:d48b:: with SMTP id o11mr7919111oos.2.1617895137220;
+ Thu, 08 Apr 2021 08:18:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j0XpD6mbaCxAjBARsiScSG2T0v_2m8NdrnoQVmsqDDXQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <b411af88-5049-a1c6-83ac-d104a1f429be@huawei.com>
+In-Reply-To: <b411af88-5049-a1c6-83ac-d104a1f429be@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 8 Apr 2021 17:18:46 +0200
+Message-ID: <CAJZ5v0j2a803ye6KYzM9dZ_inCTqiwmN7UvAdYeynk+A9F97Fg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI / hotplug / PCI: fix memory leak in enable_slot()
+To:     Zhiqiang Liu <liuzhiqiang26@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linfeilong <linfeilong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 08, 2021 at 05:04:32PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Apr 8, 2021 at 4:50 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Apr 08, 2021 at 04:15:37PM +0200, Rafael J. Wysocki wrote:
-> > > On Wed, Mar 31, 2021 at 1:06 PM Heikki Krogerus
-> > > <heikki.krogerus@linux.intel.com> wrote:
-> > > >
-> > > > On Mon, Mar 29, 2021 at 06:12:02PM +0300, Andy Shevchenko wrote:
-> > > > > Currently we have a slightly twisted logic in swnode_register().
-> > > > > It frees resources that it doesn't allocate on error path and
-> > > > > in once case it relies on the ->release() implementation.
-> > > > >
-> > > > > Untwist the logic by freeing resources explicitly when swnode_register()
-> > > > > fails. Currently it happens only in fwnode_create_software_node().
-> > > > >
-> > > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > >
-> > > > It all looks OK to me. FWIW, for the whole series:
-> > > >
-> > > > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > >
-> > > Whole series applied (with some minor changelog edits) as 5.13 material, thanks!
-> >
-> > It seems Greg applied it already. Was it dropped there?
-> 
-> Did he?
-> 
-> OK, so please let me know if it's still there in the Greg's tree.
+On Thu, Mar 25, 2021 at 8:27 AM Zhiqiang Liu <liuzhiqiang26@huawei.com> wrote:
+>
+> From: Feilong Lin <linfeilong@huawei.com>
+>
+> In enable_slot() in drivers/pci/hotplug/acpiphp_glue.c, if pci_get_slot()
+> will return NULL, we will do not set SLOT_ENABLED flag of slot. if one
+> device is found by calling pci_get_slot(), its reference count will be
+> increased. In this case, we did not call pci_dev_put() to decrement the
+> its reference count, the memory of the device (struct pci_dev type) will
+> leak.
+>
+> Fix it by calling pci_dev_put() to decrement its reference count after that
+> pci_get_slot() returns a PCI device.
+>
+> Signed-off-by: Feilong Lin <linfeilong@huawei.com>
+> Signed-off-by: Zhiqiang Liu <liuzhiqiang26@huawei.com>
+> --
+> v2: rewrite subject and commit log as suggested by Bjorn Helgaas.
 
-Here [1] what I see. Seems still there.
+The fix is correct AFAICS, so
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git/commit/?h=driver-core-next&id=6e11b376fd74356e32d842be588e12dc9bf6e197
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Bjorn, has this been applied already?  If not, do you want me to take
+it or are you going to queue it up yourself?
 
-
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index 3365c93abf0e..f031302ad401 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -533,6 +533,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>                         slot->flags &= ~SLOT_ENABLED;
+>                         continue;
+>                 }
+> +               pci_dev_put(dev);
+>         }
+>  }
+>
+> --
+> 2.19.1
+>
