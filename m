@@ -2,223 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C485735AB96
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Apr 2021 09:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160D735AD96
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Apr 2021 15:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233606AbhDJHKR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Apr 2021 03:10:17 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:16560 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbhDJHKQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Apr 2021 03:10:16 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FHR0H5L6qz17Qw7;
-        Sat, 10 Apr 2021 15:07:43 +0800 (CST)
-Received: from [127.0.0.1] (10.40.192.162) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.498.0; Sat, 10 Apr 2021
- 15:09:48 +0800
-Subject: Re: [PATCH v5] ACPI / APEI: fix the regression of synchronous
- external aborts occur in user-mode
-To:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>
-References: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
- <94a38a33-a949-3cce-d617-e1476912596e@huawei.com>
- <CAJZ5v0hp49Jt6ZWMNUkEOmMST5eM60b8Nzz0wT4w1--zj-KPWw@mail.gmail.com>
-CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S234733AbhDJN3i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Apr 2021 09:29:38 -0400
+Received: from fgw23-7.mail.saunalahti.fi ([62.142.5.84]:32971 "EHLO
+        fgw23-7.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234091AbhDJN3h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 10 Apr 2021 09:29:37 -0400
+X-Greylist: delayed 963 seconds by postgrey-1.27 at vger.kernel.org; Sat, 10 Apr 2021 09:29:37 EDT
+Received: from localhost (88-115-248-186.elisa-laajakaista.fi [88.115.248.186])
+        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+        id 83156157-99fe-11eb-8ccd-005056bdfda7;
+        Sat, 10 Apr 2021 16:13:16 +0300 (EEST)
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-Message-ID: <3648791f-f9c5-858f-cf6e-e5954fad8019@huawei.com>
-Date:   Sat, 10 Apr 2021 15:09:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>
+Subject: [PATCH v1 1/1] ACPI: utils: Document for_each_acpi_dev_match() macro
+Date:   Sat, 10 Apr 2021 16:13:04 +0300
+Message-Id: <20210410131304.1858623-1-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hp49Jt6ZWMNUkEOmMST5eM60b8Nzz0wT4w1--zj-KPWw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.192.162]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi James, Boris
+The macro requires to call acpi_dev_put() on each iteration.
+Due to this it doesn't tolerate sudden disappearence of the devices.
 
-a friendly ping..
-any comments for this ?
+Document all these nuances to prevent users blindly call it without
+understanding the possible issues.
 
-On 2021/2/5 20:55, Rafael J. Wysocki wrote:
-> On Tue, Jan 26, 2021 at 2:32 PM tanxiaofei <tanxiaofei@huawei.com> wrote:
->>
->> @James
->> Hi James, please help to review this patch. Thank you very much. :)
->
-> James, Boris, any comments?
->
->> On 2020/12/10 20:09, Xiaofei Tan wrote:
->>> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
->>> synchronise with APEI's irq work") applied, do_sea() return directly
->>> for user-mode if apei_claim_sea() handled any error record. Therefore,
->>> each error record reported by the user-mode SEA must be effectively
->>> processed in APEI GHES driver.
->>>
->>> Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
->>> Error Section, as it has nothing to do with SEA). It is not enough.
->>> Because ARM Processor Error could also be used for SEA in some hardware
->>> platforms, such as Kunpeng9xx series. We can't ask them to switch to
->>> use Memory Error Section for two reasons:
->>> 1)The server was delivered to customers, and it will introduce
->>> compatibility issue.
->>> 2)It make sense to use ARM Processor Error Section. Because either
->>> cache or memory errors could generate SEA when consumed by a processor.
->>>
->>> Do memory failure handling for ARM Processor Error Section just like
->>> for Memory Error Section.
->>>
->>> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
->>> ---
->>> Changes since v4:
->>> - 1. Change the patch name from " ACPI / APEI: do memory failure on the
->>> physical address reported by ARM processor error section" to this
->>> more proper one.
->>> - 2. Add a comment in the code to tell why not filter out corrected
->>> error in an uncorrected section.
->>>
->>> Changes since v3:
->>> - Print unhandled error following James Morse's advice.
->>>
->>> Changes since v2:
->>> - Updated commit log
->>> ---
->>>  drivers/acpi/apei/ghes.c | 76 +++++++++++++++++++++++++++++++++++++-----------
->>>  1 file changed, 59 insertions(+), 17 deletions(-)
->>>
->>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->>> index fce7ade..0893968 100644
->>> --- a/drivers/acpi/apei/ghes.c
->>> +++ b/drivers/acpi/apei/ghes.c
->>> @@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
->>>       gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
->>>  }
->>>
->>> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>> -                                    int sev)
->>> +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>>  {
->>>       unsigned long pfn;
->>> -     int flags = -1;
->>> -     int sec_sev = ghes_severity(gdata->error_severity);
->>> -     struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
->>>
->>>       if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->>>               return false;
->>>
->>> -     if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
->>> -             return false;
->>> -
->>> -     pfn = mem_err->physical_addr >> PAGE_SHIFT;
->>> +     pfn = PHYS_PFN(physical_addr);
->>>       if (!pfn_valid(pfn)) {
->>>               pr_warn_ratelimited(FW_WARN GHES_PFX
->>>               "Invalid address in generic error data: %#llx\n",
->>> -             mem_err->physical_addr);
->>> +             physical_addr);
->>>               return false;
->>>       }
->>>
->>> +     memory_failure_queue(pfn, flags);
->>> +     return true;
->>> +}
->>> +
->>> +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>> +                                    int sev)
->>> +{
->>> +     int flags = -1;
->>> +     int sec_sev = ghes_severity(gdata->error_severity);
->>> +     struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
->>> +
->>> +     if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
->>> +             return false;
->>> +
->>>       /* iff following two events can be handled properly by now */
->>>       if (sec_sev == GHES_SEV_CORRECTED &&
->>>           (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->>> @@ -470,14 +477,51 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>>       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->>>               flags = 0;
->>>
->>> -     if (flags != -1) {
->>> -             memory_failure_queue(pfn, flags);
->>> -             return true;
->>> -     }
->>> +     if (flags != -1)
->>> +             return ghes_do_memory_failure(mem_err->physical_addr, flags);
->>>
->>>       return false;
->>>  }
->>>
->>> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
->>> +{
->>> +     struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->>> +     struct cper_arm_err_info *err_info;
->>> +     bool queued = false;
->>> +     int sec_sev, i;
->>> +
->>> +     log_arm_hw_error(err);
->>> +
->>> +     sec_sev = ghes_severity(gdata->error_severity);
->>> +     if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
->>> +             return false;
->>> +
->>> +     err_info = (struct cper_arm_err_info *) (err + 1);
->>> +     for (i = 0; i < err->err_info_num; i++, err_info++) {
->>> +             bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
->>> +             bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
->>> +
->>> +             /*
->>> +              * The field (err_info->error_info & BIT(26)) is fixed to set to
->>> +              * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
->>> +              * firmware won't mix corrected errors in an uncorrected section,
->>> +              * and don't filter out 'corrected' error here.
->>> +              */
->>> +             if (!is_cache || !has_pa) {
->>> +                     pr_warn_ratelimited(FW_WARN GHES_PFX
->>> +                     "Unhandled processor error type %s\n",
->>> +                     err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
->>> +                     cper_proc_error_type_strs[err_info->type] : "unknown error");
->>> +                     continue;
->>> +             }
->>> +
->>> +             if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
->>> +                     queued = true;
->>> +     }
->>> +
->>> +     return queued;
->>> +}
->>> +
->>>  /*
->>>   * PCIe AER errors need to be sent to the AER driver for reporting and
->>>   * recovery. The GHES severities map to the following AER severities and
->>> @@ -605,9 +649,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->>>                       ghes_handle_aer(gdata);
->>>               }
->>>               else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
->>> -                     struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->>> -
->>> -                     log_arm_hw_error(err);
->>> +                     queued = ghes_handle_arm_hw_error(gdata, sev);
->>>               } else {
->>>                       void *err = acpi_hest_get_payload(gdata);
->>>
->>>
->>
->
-> .
->
+While at it, add the note to the acpi_dev_get_next_match_dev() and
+advertise acpi_dev_put() instead of put_device() in the whole family
+of the helper functions.
+
+Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
+Cc: Daniel Scally <djrscally@gmail.com>
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+ drivers/acpi/utils.c    | 12 ++++++++----
+ include/acpi/acpi_bus.h | 13 +++++++++++++
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index f1aff4dab476..3f3171e9aef5 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -811,7 +811,7 @@ static int acpi_dev_match_cb(struct device *dev, const void *data)
+  * Note that if the device is pluggable, it may since have disappeared.
+  *
+  * Note that unlike acpi_dev_found() this function checks the status
+- * of the device. So for devices which are present in the dsdt, but
++ * of the device. So for devices which are present in the DSDT, but
+  * which are disabled (their _STA callback returns 0) this function
+  * will return false.
+  *
+@@ -838,7 +838,7 @@ EXPORT_SYMBOL(acpi_dev_present);
+ 
+ /**
+  * acpi_dev_get_next_match_dev - Return the next match of ACPI device
+- * @adev: Pointer to the previous acpi_device matching this @hid, @uid and @hrv
++ * @adev: Pointer to the previous ACPI device matching this @hid, @uid and @hrv
+  * @hid: Hardware ID of the device.
+  * @uid: Unique ID of the device, pass NULL to not check _UID
+  * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
+@@ -846,7 +846,11 @@ EXPORT_SYMBOL(acpi_dev_present);
+  * Return the next match of ACPI device if another matching device was present
+  * at the moment of invocation, or NULL otherwise.
+  *
+- * The caller is responsible to call put_device() on the returned device.
++ * Note, the function does not tolerate the sudden disappearance of @adev, e.g.
++ * in the case of hotplug event. That said, caller should ensure that this will
++ * never happen.
++ *
++ * The caller is responsible to call acpi_dev_put() on the returned device.
+  *
+  * See additional information in acpi_dev_present() as well.
+  */
+@@ -875,7 +879,7 @@ EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
+  * Return the first match of ACPI device if a matching device was present
+  * at the moment of invocation, or NULL otherwise.
+  *
+- * The caller is responsible to call put_device() on the returned device.
++ * The caller is responsible to call acpi_dev_put() on the returned device.
+  *
+  * See additional information in acpi_dev_present() as well.
+  */
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index f28b097c658f..834b7a1f7405 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -689,6 +689,19 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
+ struct acpi_device *
+ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
+ 
++/**
++ * for_each_acpi_dev_match - iterate over ACPI devices that matching the criteria
++ * @adev: pointer to the matching ACPI device, NULL at the end of the loop
++ * @hid: Hardware ID of the device.
++ * @uid: Unique ID of the device, pass NULL to not check _UID
++ * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
++ *
++ * The caller is responsible to call acpi_dev_put() on the returned device.
++ *
++ * Due to above requirement there is a window that may invalidate @adev and
++ * next iteration will use a dangling pointer, e.g. in the case of hotplug
++ * event. That said, caller should ensure that this will never happen.
++ */
+ #define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
+ 	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
+ 	     adev;							\
+-- 
+2.31.1
 
