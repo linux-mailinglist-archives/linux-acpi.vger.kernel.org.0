@@ -2,62 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 343D635A77E
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Apr 2021 21:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B8735AA8B
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Apr 2021 05:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234412AbhDIT7o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Apr 2021 15:59:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37360 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234449AbhDIT7n (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 9 Apr 2021 15:59:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 287CC61041;
-        Fri,  9 Apr 2021 19:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617998370;
-        bh=npXF1Qaz0j0RJC2c9EBMUOTu6euRpJjriL/xwCaLRLg=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=Si8cHjtL78lTrc62v1AUE+MssYBH0kLn2zmNL5PfcOkxehxPQqPv7h40HpWjAPB01
-         +3XWZ4f4Qb9L91e5pfdZz1YDxeHzHqYFbBeCyQ/GpoD6IDJ9ER6wrHtpZ6W8avufok
-         WxiSK1dDPtUMO5m+QM2pC3Ob3+4CO4dcb9XKSAeQasJeagKXzlxK4ocR1uBMJ0AM+E
-         552WAPPf65Ml7OV5lI028g8v7lN3ilFOSHJaqTaVzrqujgi02I8H8UKnXSpfndGzBY
-         QHv2Nl5uoMAnfC+LZJFjeH73/X7jljQo+iAnZC8y990jbCzwj09Tak6T8XTlao7n8I
-         kmB2c5exQVxVA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 219A760A2A;
-        Fri,  9 Apr 2021 19:59:30 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fix for v5.12-rc7
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0ii5+k8j-9LwGxjHnJZ5ru3UNSLP=Z_BoE4pOWZN0nTyQ@mail.gmail.com>
-References: <CAJZ5v0ii5+k8j-9LwGxjHnJZ5ru3UNSLP=Z_BoE4pOWZN0nTyQ@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0ii5+k8j-9LwGxjHnJZ5ru3UNSLP=Z_BoE4pOWZN0nTyQ@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.12-rc7
-X-PR-Tracked-Commit-Id: fa26d0c778b432d3d9814ea82552e813b33eeb5c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ccd6c35c72c771616c37d1978e02a982da0678ef
-Message-Id: <161799837013.7895.1785409507519991680.pr-tracker-bot@kernel.org>
-Date:   Fri, 09 Apr 2021 19:59:30 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>
+        id S231933AbhDJDmh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Apr 2021 23:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59412 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231737AbhDJDmg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Apr 2021 23:42:36 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B13C061762
+        for <linux-acpi@vger.kernel.org>; Fri,  9 Apr 2021 20:42:22 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id s17so8736014ljc.5
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Apr 2021 20:42:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Z6IAck4KlAvg3StzH9Z1mFfGgpB6C62ToldiXwhnItE=;
+        b=va9jJbpdV5jyKbPGGCUIbiRlxRNTEhFjnsm3dkQ5/SrA2TR8AL5kPM+p3SKZTKftyh
+         Nld/MU6CeMBuKghuPH3sbtIAm8A4iQjLwIYX+eCFMghZuIqQhLRik9IWWQ9xc9SLIuK/
+         xffJbIrX5f0jPdaMjqllr0YrpNqzsfTuOf2J1nau5cwsyCSmbWHWQeOB+Pxla8DX8FiR
+         CmbtQl+SP+ypZPTx/EVjUEB/aTo8/RhF5Y4XjgcUAeQZ68OuAefuoZ4SIUAB6gTFO+Lf
+         PN5G28dZkZ5cyjGNzw0ywMgt9ABIpnWOWY4vv1HSTJJGGssZfMPPiP0AYvcL4vwIeQea
+         LkMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Z6IAck4KlAvg3StzH9Z1mFfGgpB6C62ToldiXwhnItE=;
+        b=VCAjU218pK4pxEDo9HYXdiTNBQ2bZpFNm3FyHhKTV3PDOZIz42+IdA+xnhnptdpUF4
+         r//AKAAoOhrEZSjq+luQVmOXd+ErSGRrrNvfnYBfyThQoTo0Fw3P3MRD6BEQckMjP2BL
+         qfpSkRQJRlSk1oxYq1SqpUBL9Bj6x0E4qYxeI8a+9fZC3mmsZhk31EYcZS/a/QpVB4I3
+         UssgfzGZq7g17IYPGYalCUIhRDAX1OIuSksrl98XNlPyq5bso7lEhcI8pHXCLB0cO+Y3
+         WUYqcKZefPIo2RvalQR23+l47nssVQYIF3o5EZqyCa3z+IlrHr1EcLagLXRv3OqlSAdg
+         /+vQ==
+X-Gm-Message-State: AOAM53207RwzMKoKZdLEDHwj11L4hR+i8CmRrPtH/H/MrMJChlkroUFs
+        jbDABQwiEiKukNzvPJqd05qOyFDuT7KG+LFG9EI=
+X-Google-Smtp-Source: ABdhPJxKVN8XSi0w8vmpEqHC3R6s4/n4pxqVBUelPgcT5aWa+/IeC2gTVDPSteVP7nYcVr3Qh2Nd0+IotdKZb+KL73U=
+X-Received: by 2002:a2e:87d5:: with SMTP id v21mr10913347ljj.195.1618026140785;
+ Fri, 09 Apr 2021 20:42:20 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ac2:597b:0:0:0:0:0 with HTTP; Fri, 9 Apr 2021 20:42:20 -0700 (PDT)
+Reply-To: mrschantal6@gmail.com
+From:   mrs chantal <mrschantalaiii@gmail.com>
+Date:   Sat, 10 Apr 2021 05:42:20 +0200
+Message-ID: <CAD3qccBpc=bbiTodV6C8m+H+negfYsLOmxDUL=Yms5Hkxnd__Q@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 9 Apr 2021 17:44:47 +0200:
-
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.12-rc7
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ccd6c35c72c771616c37d1978e02a982da0678ef
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Greetings
+You have been compensated with the sum of 8 million US dollar in the
+united nation, the payment will be issue into ATM visa card and send
+to you from the santander bank of Spain.Your sincere co-operation is
+anticipated and I will furnish you with the details and procedures,
+upon receipt of your response to this email address  (
+mrschantal6@gmail.com)
+Thanks sincerely
+Mrs Chanta
