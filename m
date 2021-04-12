@@ -2,93 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B36C35CF90
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Apr 2021 19:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B477135CFC2
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Apr 2021 19:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240558AbhDLRii (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Apr 2021 13:38:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45174 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238649AbhDLRii (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Apr 2021 13:38:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618249099;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=HvxCWWDp+tM/I1EuiT9miErirEPrFUQybDt2tk/71To=;
-        b=VQ+RC++a3t4BbK1kGi50FVAw6G6qXY9x81y1rFBdTNTofUx/rKlWvPm+osTI0eWYZkpmMd
-        bO/HbHJGm4O75pMEFUvUAykz3rynaYvgZMgwd7ZdHhnRt8fyeunKHN49o9P/urvCha/+zb
-        U23ybnU8MjBKbYHJKzuHVgbTlV4Bhw4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-522-bfL4nalOPjKRIVdxUa0dUQ-1; Mon, 12 Apr 2021 13:38:17 -0400
-X-MC-Unique: bfL4nalOPjKRIVdxUa0dUQ-1
-Received: by mail-ed1-f72.google.com with SMTP id l11so3627353edb.2
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Apr 2021 10:38:17 -0700 (PDT)
+        id S244729AbhDLRsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Apr 2021 13:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244664AbhDLRsN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Apr 2021 13:48:13 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83298C061574;
+        Mon, 12 Apr 2021 10:47:55 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id n38so9680908pfv.2;
+        Mon, 12 Apr 2021 10:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DgnMLW54yYGnPtnA18TLaPuXsRrPLh79PL0NZM2fdPQ=;
+        b=Be+gUYKbpdhT4uDF8LSr5fHUGrNeSx+aTJfi1LpNdnx3CA+O0j0yuRFQn5hopywj/z
+         4/sCz0bdE96p4OiNSc+Qq3PdmvMPvenv6+tixlU7+FSUPBpx2oHIGFoXDWzGCcf5EQ3D
+         pRTZ95C/RkQFIbvAbhEB05EFzU+oB2fSqKwGFBEDoUOtOdxQz28nz6TwQ6PjtvcO1ldI
+         APJ9Uy2Y0roe2ZUmJrJ3L/6qgwObttfX1+uzfFm3QY18lDiVxUHXH1OQhOpTpJi+SAjZ
+         3pCsjbeeVgdiCtNZ+OlZ7cyG+igkop/b68lhqlD9UO9VzAOmq9OZjiMFtDQU87TOhsbE
+         HRkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=HvxCWWDp+tM/I1EuiT9miErirEPrFUQybDt2tk/71To=;
-        b=ae+a1jjvjSsVSXqHh+D7uR4UTRS0uL4KGJs7Mjt9tC7LFzovOfzwDufYSCymxGI9Ou
-         7sraqRL5wgWt+NdiuApLzavVVYXzSd85oOXRaBYGN9yvvZdOakejTjNMwHdzxTg3ZqwY
-         lrZTOlNw2nJS1iCpNf2fdGx6Zs4EAfA7Uy3pgjj9keKeBZtigDneJep/4FB13369lk5d
-         UbQwJNOFYodcml9YtR1NQ2LT9UEkX4CT6xMjpEfEKnon7IWwhiQ5uNQ3sRA4Tdw30wQA
-         VK0y8agJsZi1NAd8Lv7jEqsllhf0aenY0MxN8hTG1UKDDEUZmKUe4XtAeQ4fmjiJdeL7
-         IuYA==
-X-Gm-Message-State: AOAM532ow9VSrELNzoZInRwRV4DxOMnBh6eTcv76cGivc/rLTvMT69Es
-        Z80FfmEb3XcCX3H9lCV3WT1n8GDMIh7feTJdde0T9IfIAUxiRaeCjj4PvH0pkDVDalKVCPEtfs5
-        +/UNNZNSUCtqnwLK5UqGjCFsIZ/jiXJgbjZST+0jM2iYLlQE3PrPewn3Fpb00WhQ1jknnnxsWZw
-        ==
-X-Received: by 2002:a17:906:1e8e:: with SMTP id e14mr28758526ejj.399.1618249096147;
-        Mon, 12 Apr 2021 10:38:16 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz1p06avQLGBnMn5oOT51kvohbsCgHtHOnbdZ5D99aNcjxjMp6XbJj2hlFe2WJ5nR8V/FnT1A==
-X-Received: by 2002:a17:906:1e8e:: with SMTP id e14mr28758512ejj.399.1618249095959;
-        Mon, 12 Apr 2021 10:38:15 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id x9sm7265206edv.22.2021.04.12.10.38.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Apr 2021 10:38:15 -0700 (PDT)
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi <linux-acpi@vger.kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: [5.12 regression] DSDT overriding from initrd no longer works
-Message-ID: <7d941a3c-bced-09cf-27a1-b61f0d20ef4c@redhat.com>
-Date:   Mon, 12 Apr 2021 19:38:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DgnMLW54yYGnPtnA18TLaPuXsRrPLh79PL0NZM2fdPQ=;
+        b=KluN4/euxfSWqVCnEK05XzZoeBe9VZpalwY+g233FjjJ/uNvl8zJ8/RtThU9pB8+bW
+         uUvtRSKt3o86ijcWfDwvCbCySDCVJUR8CcyqT3nZYZNzU6dxQoBPLCWkIovg0yBI0hZZ
+         5/N/QENpDYgQu1JKx7+IaQBdZu4RmLJksL1KegIhLFsbKDqlETgcXxQsHWYVhkVIm4Gj
+         Dci2O2FRSD+gZ3zzwRZg5P00W9J5aZRALm3PrIQ8fK6rCBx15VVwvdQqPIsCnSO7U/cJ
+         wXekrDpiS6YZFxxCy4tAVq0rA7GubE0/+UkKFAOii0ZmgsfgOOAo2RjPYUEQOscC5RM1
+         U+Iw==
+X-Gm-Message-State: AOAM531VNQr0+8l6a5FU6TGd3x0OmfSqjb/BQxhUgvYjRBkdmCuRVBBU
+        EMNGK7KY163rvpypBg0LxCuAkKGjT3szja8PY7A=
+X-Google-Smtp-Source: ABdhPJyoSw2Vf91WbKVp/GOwf/dOiztGtKwfq/0OXFArxK89COKnoHklpij+YWCB0SnEzEG8ygf+b+MBcSHwijK7dX4=
+X-Received: by 2002:a62:e50f:0:b029:214:8e4a:ae46 with SMTP id
+ n15-20020a62e50f0000b02902148e4aae46mr26154827pff.73.1618249674955; Mon, 12
+ Apr 2021 10:47:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210410134718.1942273-1-andy.shevchenko@gmail.com> <CAJZ5v0jQ=UU8FgFFF_ht_v1dZwhp-32wi_QNaZuf6vBaORU41w@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jQ=UU8FgFFF_ht_v1dZwhp-32wi_QNaZuf6vBaORU41w@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 12 Apr 2021 20:47:38 +0300
+Message-ID: <CAHp75VeW7w-tX96B8Gh=E1meTHLzuocqaM2MTLyokc5hETVj7A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] ACPI: bus: Introduce acpi_dev_get() and reuse it
+ in ACPI code
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Dwaipayan Ray <dwaipayanray1@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Mon, Apr 12, 2021 at 8:32 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> On Sat, Apr 10, 2021 at 3:47 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 
-Sorry about the timing of reporting this regression.
+...
 
-I just noticed that overriding the DSDT (*) from the initrd will not work in 5.12,
-this is caused by:
+> >  static void get_acpi_device(void *dev)
+> >  {
+> > -       if (dev)
+> > -               get_device(&((struct acpi_device *)dev)->dev);
+> > +       acpi_dev_get(dev);
+>
+> I would do
+>
+> if (dev)
+>     acpi_dev_get(dev);
+>
+> here.
 
-commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
+Hmm... I don't see a point. acpi_dev_get() guaranteed to perform this check.
 
-This makes the initial acpi_locate_initial_tables() call happen earlier
-then before, but the acpi_table_upgrade) call in arch/x86/kernel/setup.c is
-not moved up, so the tables in the initrd are now only parsed and saved
-after the initial ACPI table scanning has already been done.
+> >  }
 
-I guess fixing this might be as easy as moving the acpi_table_upgrade) call
-higher in arch/x86/kernel/setup.c but I'm not sure if that is save to do.
 
-I've several devices with ACPI tables which are so broken that they need
-an override. I've reverted the commit from my personal tree for now which
-avoids the regression.
+> > +static inline void acpi_dev_get(struct acpi_device *adev)
+> > +{
+> > +       if (adev)
+> > +               get_device(&adev->dev);
+>
+> And I would drop the adev check from here (because the code calling it
+> may be running with wrong assumptions if adev is NULL).  Or it should
+> return adev and the caller should be held responsible for checking it
+> against NULL (if they care).
 
-Regards,
+But this follows the get_device() / put_device() logic. Personally I
+don't think this is a good idea to deviate. Note the
+acpi_bus_get_acpi_device() / acpi_bus_put_acpi_device() as well.
 
-Hans
+> > +}
 
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
