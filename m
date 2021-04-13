@@ -2,115 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F25FD35E5AC
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 19:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB1635E639
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 20:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbhDMRyR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 13:54:17 -0400
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:35638 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231235AbhDMRyR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 13:54:17 -0400
-Received: by mail-ot1-f44.google.com with SMTP id v24-20020a9d69d80000b02901b9aec33371so16910202oto.2;
-        Tue, 13 Apr 2021 10:53:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4ZAoDkrR42DaMFPAXYSwp4F1d1CFF/3apQEZeTX5xO4=;
-        b=g+Ntzh3UyzcEe5T/BQF2HQxxCHV3LYelAICaRWuBWqBW5/b7bpFf4Ad+zmS6c7hIw6
-         K7uMQ5KsxQhVaPEYzhm/ZPRC37K7QoRAiUUUKe3CuqL5w5tlbm1iSD8m/ADjFRnV7yWu
-         jWsvR10jcHYk6bNlE/SecomXi7ZkuBNqiS/1OJtE6FfWEkS6aEvRR8tOHWLBCjLWciHZ
-         65WgOi3KO5+onS+0hSJLVMhYIJKPi+1VZ1TZP+iEC35rK7git0z+AQGsm4KwpAmvTpAP
-         01fUmx6dD8N1+iyTJR2p1FYUcXAzlJrLHrajtm4N9gdZy6h6vcYf6uCZmUAs8uy8gqm9
-         3D9A==
-X-Gm-Message-State: AOAM530vfijMVrcQcc7EI/ulRS7ZflIBbSmN3Pn7W9KPrzFd9aPDo6Q7
-        yBx9oyU5qjsNlpeaHSs4uEPxg+DHqp8mEq1QGng=
-X-Google-Smtp-Source: ABdhPJwWioBmb0kiRyTRIBrrGZrxVitvcdnynaqpvKueWlIFsIK2+hVxNJbd3BqNEE3WEQ0QYlmmb5GKr+9a04IMB1A=
-X-Received: by 2002:a9d:6951:: with SMTP id p17mr16507793oto.206.1618336437080;
- Tue, 13 Apr 2021 10:53:57 -0700 (PDT)
+        id S1347627AbhDMSXZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 14:23:25 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2848 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345963AbhDMSXZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 14:23:25 -0400
+Received: from fraeml705-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FKYk30Yhhz688qy;
+        Wed, 14 Apr 2021 02:17:47 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml705-chm.china.huawei.com (10.206.15.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Tue, 13 Apr 2021 20:23:02 +0200
+Received: from localhost (10.47.93.73) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 13 Apr
+ 2021 19:23:01 +0100
+Date:   Tue, 13 Apr 2021 19:21:35 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>,
+        <linux-acpi@vger.kernel.org>, <alison.schofield@intel.com>,
+        <vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+        <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
+Subject: Re: [RFC PATCH v2 1/4] PCI: Add vendor define ID for the PCI SIG
+Message-ID: <20210413192135.000024de@Huawei.com>
+In-Reply-To: <20210413163448.GA2240386@bjorn-Precision-5520>
+References: <20210413160159.935663-2-Jonathan.Cameron@huawei.com>
+        <20210413163448.GA2240386@bjorn-Precision-5520>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <11752259.O9o76ZdvQC@kreacher> <dea11d82-4fe5-ac23-585c-a1f74e076ca7@redhat.com>
-In-Reply-To: <dea11d82-4fe5-ac23-585c-a1f74e076ca7@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 13 Apr 2021 19:53:46 +0200
-Message-ID: <CAJZ5v0hHJYT6kSxoH-v7QQ7oOh=OgQXDpNB7BW7rPwrc0L3SOQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: x86: Call acpi_boot_table_init() after acpi_table_upgrade()
-To:     David Hildenbrand <david@redhat.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        George Kennedy <george.kennedy@oracle.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        x86 Maintainers <x86@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.93.73]
+X-ClientProxiedBy: lhreml713-chm.china.huawei.com (10.201.108.64) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 13, 2021 at 7:43 PM David Hildenbrand <david@redhat.com> wrote:
->
-> On 13.04.21 16:01, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by
-> > ACPI tables") attempted to address an issue with reserving the memory
-> > occupied by ACPI tables, but it broke the initrd-based table override
-> > mechanism relied on by multiple users.
-> >
-> > To restore the initrd-based ACPI table override functionality, move
-> > the acpi_boot_table_init() invocation in setup_arch() on x86 after
-> > the acpi_table_upgrade() one.
-> >
-> > Fixes: 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
-> > Reported-by: Hans de Goede <hdegoede@redhat.com>
-> > Tested-by: Hans de Goede <hdegoede@redhat.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, 13 Apr 2021 11:34:48 -0500
+Bjorn Helgaas <helgaas@kernel.org> wrote:
+
+> On Wed, Apr 14, 2021 at 12:01:56AM +0800, Jonathan Cameron wrote:
+> > This ID is used in DOE headers to identify protocols that are
+> > defined within the PCI Express Base Specification.  
+> 
+> Can you please include the specific spec citation here?
+
+Will make sure to add to cover leter for next version but for now, 
+
+Table 7-x2: Data Object Exchange ECN
+(first column lists the Vendor ID for the protocols)
+
+Available on the PCI SIG spec downloads page.
+It also exists in various other places in the 5.0 spec, but I'm
+not sure if any are software visible (e.g. VDMs)
+
+Jonathan
+
+
+> 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > ---
-> >
-> > George, can you please check if this reintroduces the issue addressed by
-> > the above commit for you?
-> >
-> > ---
-> >   arch/x86/kernel/setup.c |    5 ++---
-> >   1 file changed, 2 insertions(+), 3 deletions(-)
-> >
-> > Index: linux-pm/arch/x86/kernel/setup.c
-> > ===================================================================
-> > --- linux-pm.orig/arch/x86/kernel/setup.c
-> > +++ linux-pm/arch/x86/kernel/setup.c
-> > @@ -1045,9 +1045,6 @@ void __init setup_arch(char **cmdline_p)
-> >
-> >       cleanup_highmap();
-> >
-> > -     /* Look for ACPI tables and reserve memory occupied by them. */
-> > -     acpi_boot_table_init();
-> > -
-> >       memblock_set_current_limit(ISA_END_ADDRESS);
-> >       e820__memblock_setup();
-> >
-> > @@ -1132,6 +1129,8 @@ void __init setup_arch(char **cmdline_p)
-> >       reserve_initrd();
-> >
-> >       acpi_table_upgrade();
-> > +     /* Look for ACPI tables and reserve memory occupied by them. */
-> > +     acpi_boot_table_init();
-> >
-> >       vsmp_init();
->
-> This is fairly late; especially, it's after actual allocations -- see
-> e820__memblock_alloc_reserved_mpc_new().
->
-> Can't the table upgrade mechanism fix up when adjusting something?
+> > Since V1: New Patch
+> > 
+> >  include/linux/pci_ids.h | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> > index a76ccb697bef..2c0459c23331 100644
+> > --- a/include/linux/pci_ids.h
+> > +++ b/include/linux/pci_ids.h
+> > @@ -149,6 +149,7 @@
+> >  #define PCI_CLASS_OTHERS		0xff
+> >  
+> >  /* Vendors and devices.  Sort key: vendor first, device next. */
+> > +#define PCI_VENDOR_ID_PCI_SIG		0x0001
+> >  
+> >  #define PCI_VENDOR_ID_LOONGSON		0x0014
+> >  
+> > -- 
+> > 2.19.1
+> >   
 
-Not at this point of the cycle I'm afraid.
-
-> Some details on what actually breaks would be helpful.
-
-Generally speaking, the table overrides that come from the initrd are
-not taken into account if acpi_boot_table_init() runs before
-acpi_table_upgrade() and the latter cannot run before
-reserve_initrd().
-
-Honestly, I'm not sure how much effort it would take to untangle this ATM.
