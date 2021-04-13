@@ -2,179 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A0535DCAD
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 12:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AC535DCD7
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 12:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236793AbhDMKqK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 06:46:10 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2841 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237151AbhDMKqJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 06:46:09 -0400
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FKMXC44g5z688L2;
-        Tue, 13 Apr 2021 18:38:35 +0800 (CST)
-Received: from lhreml719-chm.china.huawei.com (10.201.108.70) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 13 Apr 2021 12:45:48 +0200
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml719-chm.china.huawei.com (10.201.108.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2106.2; Tue, 13 Apr 2021 11:45:46 +0100
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2106.013;
- Tue, 13 Apr 2021 18:45:44 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Morten Rasmussen <morten.rasmussen@arm.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>
-CC:     "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "tiantao (H)" <tiantao6@hisilicon.com>,
-        "Guodong Xu" <guodong.xu@linaro.org>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters and
- add cluster scheduler
-Thread-Topic: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters
- and add cluster scheduler
-Thread-Index: AQHW5/wlPZ7BCMS2PUiSVVUiYd0GPqojTioAgI99GlA=
-Date:   Tue, 13 Apr 2021 10:45:44 +0000
-Message-ID: <9201b56a29dd4dacb7d9fcbf307ca5ff@hisilicon.com>
-References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
- <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
- <20210108151241.GA47324@e123083-lin>
- <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
- <20210111092811.GB47324@e123083-lin>
- <4fdc781e-7385-2ae6-d9c9-3ec165f473c4@arm.com>
-In-Reply-To: <4fdc781e-7385-2ae6-d9c9-3ec165f473c4@arm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.201.93]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S237365AbhDMKxW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 06:53:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32478 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236800AbhDMKxV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Apr 2021 06:53:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618311181;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=kj7lvzFyv6+soUbGmIPaXzHpGiYRP68pXRKg78qGEEw=;
+        b=GgAa4ERPCE49CrhEqI9ESiuEpl6QGcMvt19Q4QQEz7tBk3rzS1yQDWQBGHnfpwpcqylS3Y
+        U23wAEhqasHa/7Hyy1XiXNJiIAEcfOb0phrK9tcMSbokxxICQtvu2Qwu+oxwxaJ6YuIYsk
+        I+2hozX8rEXHbzWWw4jztIecxK1Cpfc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-241-FGXPauZsPPeMXtduRniL1w-1; Tue, 13 Apr 2021 06:52:57 -0400
+X-MC-Unique: FGXPauZsPPeMXtduRniL1w-1
+Received: by mail-ej1-f70.google.com with SMTP id lb4so2693263ejb.21
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Apr 2021 03:52:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=kj7lvzFyv6+soUbGmIPaXzHpGiYRP68pXRKg78qGEEw=;
+        b=EfAx4UOimJN66JfTfHj9yFKYRIUEcKqwce75J/quwD/nh0CYFreSjbavWLFybCGltQ
+         KuMgEEc8xn4JUZ4t3WhmCAObKN8fioWWPb7XrMKEP/TI1tL8oDR1M8czXfTVlv9jM5Yb
+         /nPw/HbMlLRv443jr1nZEuq2RUkIUfrWE+pnwpduG9z6kJ1sXcj8Ks2En4GjvbLkI4kB
+         NPU1EaK35DDKjnVLVRDPcb2JlGUEYL0t3a7w/GJEuf5MJrlxyfHYgxOrtOEt/9lWiCg0
+         qeNiMlMqg1JlyU0eUoEoScDIPLKCcYd4t3+XcbxNcZNjT8CScumITXzlqMMdYDBRqJSG
+         /W2w==
+X-Gm-Message-State: AOAM531REMAftQIC17VMRJ01/QpmoDaJtqpcSu6JRa4d7vk3EkATT5+C
+        ywOu/rJqLlTbrAX43eY4kExJ3LMEnIYli2/0wOReyBH9a4Xy/jWamlslrA/qHEZNegY3Wuc0ODk
+        sfp3DJeHk+0F8zx1LBZlz722PaJKi4R1bSvVVs5IcpCha4q9qmiFvuF1auvL5G8zqvjZIkzgwsw
+        ==
+X-Received: by 2002:a17:907:d15:: with SMTP id gn21mr30671544ejc.337.1618311176484;
+        Tue, 13 Apr 2021 03:52:56 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzNgvMicoZwqFfctctsUgvWv1qrXZ9w6grGt7AZCf6oiKZRqE352pQAWsR+He7lXCt9mNITWQ==
+X-Received: by 2002:a17:907:d15:: with SMTP id gn21mr30671524ejc.337.1618311176213;
+        Tue, 13 Apr 2021 03:52:56 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id w5sm387284ejc.84.2021.04.13.03.52.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Apr 2021 03:52:55 -0700 (PDT)
+Subject: Re: [5.12 regression] DSDT overriding from initrd no longer works
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+References: <7d941a3c-bced-09cf-27a1-b61f0d20ef4c@redhat.com>
+ <CAJZ5v0iLSbfRH9A3EMUTrY5=vPdp=uVOF2XQnWkAbko9NjPqJg@mail.gmail.com>
+ <CAJZ5v0gOMZbyD5r+bCL9vD6_NrFz0nAq+eY2QDtxOY4DfsXG6w@mail.gmail.com>
+ <273d3ea7-aa74-6556-7fef-fb65b620bc95@redhat.com>
+ <CAJZ5v0i=Ahxjnx_K1M+BPDdR-3_v8aBTPVFRg3s+bG9OeaEiwQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <73e67801-0e76-ae64-4e7e-cdb142b5a37a@redhat.com>
+Date:   Tue, 13 Apr 2021 12:52:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAJZ5v0i=Ahxjnx_K1M+BPDdR-3_v8aBTPVFRg3s+bG9OeaEiwQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGlldG1hciBFZ2dlbWFu
-biBbbWFpbHRvOmRpZXRtYXIuZWdnZW1hbm5AYXJtLmNvbV0NCj4gU2VudDogV2VkbmVzZGF5LCBK
-YW51YXJ5IDEzLCAyMDIxIDEyOjAwIEFNDQo+IFRvOiBNb3J0ZW4gUmFzbXVzc2VuIDxtb3J0ZW4u
-cmFzbXVzc2VuQGFybS5jb20+OyBUaW0gQ2hlbg0KPiA8dGltLmMuY2hlbkBsaW51eC5pbnRlbC5j
-b20+DQo+IENjOiBTb25nIEJhbyBIdWEgKEJhcnJ5IFNvbmcpIDxzb25nLmJhby5odWFAaGlzaWxp
-Y29uLmNvbT47DQo+IHZhbGVudGluLnNjaG5laWRlckBhcm0uY29tOyBjYXRhbGluLm1hcmluYXNA
-YXJtLmNvbTsgd2lsbEBrZXJuZWwub3JnOw0KPiByandAcmp3eXNvY2tpLm5ldDsgdmluY2VudC5n
-dWl0dG90QGxpbmFyby5vcmc7IGxlbmJAa2VybmVsLm9yZzsNCj4gZ3JlZ2toQGxpbnV4Zm91bmRh
-dGlvbi5vcmc7IEpvbmF0aGFuIENhbWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47
-DQo+IG1pbmdvQHJlZGhhdC5jb207IHBldGVyekBpbmZyYWRlYWQub3JnOyBqdXJpLmxlbGxpQHJl
-ZGhhdC5jb207DQo+IHJvc3RlZHRAZ29vZG1pcy5vcmc7IGJzZWdhbGxAZ29vZ2xlLmNvbTsgbWdv
-cm1hbkBzdXNlLmRlOw0KPiBtYXJrLnJ1dGxhbmRAYXJtLmNvbTsgc3VkZWVwLmhvbGxhQGFybS5j
-b207IGF1YnJleS5saUBsaW51eC5pbnRlbC5jb207DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gbGludXgtYWNw
-aUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4YXJtQG9wZW5ldWxlci5vcmc7IHh1d2VpIChPKQ0KPiA8
-eHV3ZWk1QGh1YXdlaS5jb20+OyBaZW5ndGFvIChCKSA8cHJpbWUuemVuZ0BoaXNpbGljb24uY29t
-PjsgdGlhbnRhbyAoSCkNCj4gPHRpYW50YW82QGhpc2lsaWNvbi5jb20+DQo+IFN1YmplY3Q6IFJl
-OiBbUkZDIFBBVENIIHYzIDAvMl0gc2NoZWR1bGVyOiBleHBvc2UgdGhlIHRvcG9sb2d5IG9mIGNs
-dXN0ZXJzIGFuZA0KPiBhZGQgY2x1c3RlciBzY2hlZHVsZXINCj4gDQo+IE9uIDExLzAxLzIwMjEg
-MTA6MjgsIE1vcnRlbiBSYXNtdXNzZW4gd3JvdGU6DQo+ID4gT24gRnJpLCBKYW4gMDgsIDIwMjEg
-YXQgMTI6MjI6NDFQTSAtMDgwMCwgVGltIENoZW4gd3JvdGU6DQo+ID4+DQo+ID4+DQo+ID4+IE9u
-IDEvOC8yMSA3OjEyIEFNLCBNb3J0ZW4gUmFzbXVzc2VuIHdyb3RlOg0KPiA+Pj4gT24gVGh1LCBK
-YW4gMDcsIDIwMjEgYXQgMDM6MTY6NDdQTSAtMDgwMCwgVGltIENoZW4gd3JvdGU6DQo+ID4+Pj4g
-T24gMS82LzIxIDEyOjMwIEFNLCBCYXJyeSBTb25nIHdyb3RlOg0KPiANCj4gWy4uLl0NCj4gDQo+
-ID4+IEkgdGhpbmsgaXQgaXMgZ29pbmcgdG8gZGVwZW5kIG9uIHRoZSB3b3JrbG9hZC4gIElmIHRo
-ZXJlIGFyZSBkZXBlbmRlbnQNCj4gPj4gdGFza3MgdGhhdCBjb21tdW5pY2F0ZSB3aXRoIG9uZSBh
-bm90aGVyLCBwdXR0aW5nIHRoZW0gdG9nZXRoZXINCj4gPj4gaW4gdGhlIHNhbWUgY2x1c3RlciB3
-aWxsIGJlIHRoZSByaWdodCB0aGluZyB0byBkbyB0byByZWR1Y2UgY29tbXVuaWNhdGlvbg0KPiA+
-PiBjb3N0cy4gIE9uIHRoZSBvdGhlciBoYW5kLCBpZiB0aGUgdGFza3MgYXJlIGluZGVwZW5kZW50
-LCBwdXR0aW5nIHRoZW0gdG9nZXRoZXINCj4gb24gdGhlIHNhbWUgY2x1c3Rlcg0KPiA+PiB3aWxs
-IGluY3JlYXNlIHJlc291cmNlIGNvbnRlbnRpb24gYW5kIHNwcmVhZGluZyB0aGVtIG91dCB3aWxs
-IGJlIGJldHRlci4NCj4gPg0KPiA+IEFncmVlLiBUaGF0IGlzIGV4YWN0bHkgd2hlcmUgSSdtIGNv
-bWluZyBmcm9tLiBUaGlzIGlzIGFsbCBhYm91dCB0aGUgdGFzaw0KPiA+IHBsYWNlbWVudCBwb2xp
-Y3kuIFdlIGdlbmVyYWxseSB0ZW5kIHRvIHNwcmVhZCB0YXNrcyB0byBhdm9pZCByZXNvdXJjZQ0K
-PiA+IGNvbnRlbnRpb24sIFNNVCBhbmQgY2FjaGVzLCB3aGljaCBzZWVtcyB0byBiZSB3aGF0IHlv
-dSBhcmUgcHJvcG9zaW5nIHRvDQo+ID4gZXh0ZW5kLiBJIHRoaW5rIHRoYXQgbWFrZXMgc2Vuc2Ug
-Z2l2ZW4gaXQgY2FuIHByb2R1Y2Ugc2lnbmlmaWNhbnQNCj4gPiBiZW5lZml0cy4NCj4gPg0KPiA+
-Pg0KPiA+PiBBbnkgdGhvdWdodHMgb24gd2hhdCBpcyB0aGUgcmlnaHQgY2x1c3RlcmluZyAidGFn
-IiB0byB1c2UgdG8gY2x1bXANCj4gPj4gcmVsYXRlZCB0YXNrcyB0b2dldGhlcj8NCj4gPj4gQ2dy
-b3VwPyBQaWQ/IFRhc2tzIHdpdGggc2FtZSBtbT8NCj4gPg0KPiA+IEkgdGhpbmsgdGhpcyBpcyB0
-aGUgcmVhbCBxdWVzdGlvbi4gSSB0aGluayB0aGUgY2xvc2VzdCB0aGluZyB3ZSBoYXZlIGF0DQo+
-ID4gdGhlIG1vbWVudCBpcyB0aGUgd2FrZWUvd2FrZXIgZmxpcCBoZXVyaXN0aWMuIFRoaXMgc2Vl
-bXMgdG8gYmUgcmVsYXRlZC4NCj4gPiBQZXJoYXBzIHRoZSB3YWtlX2FmZmluZSB0cmlja3MgY2Fu
-IHNlcnZlIGFzIHN0YXJ0aW5nIHBvaW50Pw0KPiANCj4gd2FrZV93aWRlKCkgc3dpdGNoZXMgYmV0
-d2VlbiBwYWNraW5nIChzZWxlY3RfaWRsZV9zaWJsaW5nKCksIGxsY19zaXplDQo+IENQVXMpIGFu
-ZCBzcHJlYWRpbmcgKGZpbmRfaWRsZXN0X2NwdSgpLCBhbGwgQ1BVcykuDQo+IA0KPiBBRkFJQ1Ms
-IHNpbmNlIG5vbmUgb2YgdGhlIHNjaGVkIGRvbWFpbnMgc2V0IFNEX0JBTEFOQ0VfV0FLRSwgY3Vy
-cmVudGx5DQo+IGFsbCB3YWtldXBzIGFyZSAobGxjLSlwYWNrZWQuDQo+IA0KPiAgc2VsZWN0X3Rh
-c2tfcnFfZmFpcigpDQo+IA0KPiAgICBmb3JfZWFjaF9kb21haW4oY3B1LCB0bXApDQo+IA0KPiAg
-ICAgIGlmICh0bXAtPmZsYWdzICYgc2RfZmxhZykNCj4gICAgICAgIHNkID0gdG1wOw0KPiANCj4g
-DQo+IEluIGNhc2Ugd2Ugd291bGQgbGlrZSB0byBmdXJ0aGVyIGRpc3Rpbmd1aXNoIGJldHdlZW4g
-bGxjLXBhY2tpbmcgYW5kDQo+IGV2ZW4gbmFycm93ZXIgKGNsdXN0ZXIgb3IgTUMtTDIpLXBhY2tp
-bmcsIHdlIHdvdWxkIGludHJvZHVjZSBhIDIuIGxldmVsDQo+IHBhY2tpbmcgdnMuIHNwcmVhZGlu
-ZyBoZXVyaXN0aWMgZnVydGhlciBkb3duIGluIHNpcygpLg0KPiANCj4gSU1ITywgQmFycnkncyBj
-dXJyZW50IGltcGxlbWVudGF0aW9uIGRvZXNuJ3QgZG8gdGhpcyByaWdodCBub3cuIEluc3RlYWQN
-Cj4gaGUncyB0cnlpbmcgdG8gcGFjayBvbiBjbHVzdGVyIGZpcnN0IGFuZCBpZiBub3Qgc3VjY2Vz
-c2Z1bCBsb29rIGZ1cnRoZXINCj4gYW1vbmcgdGhlIHJlbWFpbmluZyBsbGMgQ1BVcyBmb3IgYW4g
-aWRsZSBDUFUuDQoNClJpZ2h0IG5vdyBpbiB0aGUgbWFpbiBjYXNlcyBvZiB1c2luZyB3YWtlX2Fm
-ZmluZSB0byBhY2hpZXZlDQpiZXR0ZXIgcGVyZm9ybWFuY2UsIHByb2Nlc3NlcyBhcmUgYWN0dWFs
-bHkgYm91bmQgd2l0aGluIG9uZQ0KbnVtYSB3aGljaCBpcyBhbHNvIGEgTExDIGluIGt1bnBlbmc5
-MjAuIA0KDQpQcm9iYWJseSBMTEM9TlVNQSBpcyBhbHNvIHRydWUgZm9yIFg4NiBKYWNvYnN2aWxs
-ZSwgVGltPw0KDQpTbyBvbmUgcG9zc2libGUgd2F5IHRvIHByZXRlbmQgYSAyLWxldmVsIHBhY2tp
-bmcgbWlnaHQgYmU6DQppZiB0aGUgYWZmaW5pdHkgY3B1c2V0IG9mIHdha2VyIGFuZCB3YWtlciBh
-cmUgYm90aCBzdWJzZXQNCm9mIG9uZSBzYW1lIExMQywgd2UgdG90YWxseSB1c2UgY2x1c3RlciBh
-cyB0aGUgZmFjdG9yIHRvDQpkZXRlcm1pbmUgcGFja2luZyBvciBub3QgYW5kIGlnbm9yZSBMTEMu
-DQoNCkkgaGF2ZW4ndCByZWFsbHkgZG9uZSB0aGlzLCBidXQgdGhlIGJlbG93IGNvZGUgY2FuIG1h
-a2UgdGhlDQpzYW1lIHJlc3VsdCBieSBmb3JjaW5nIGxsY19pZD1jbHVzdGVyX2lkOg0KDQpkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm02NC9rZXJuZWwvdG9wb2xvZ3kuYyBiL2FyY2gvYXJtNjQva2VybmVs
-L3RvcG9sb2d5LmMNCmluZGV4IGQ3MmViOGQuLjNkNzgwOTcgMTAwNjQ0DQotLS0gYS9hcmNoL2Fy
-bTY0L2tlcm5lbC90b3BvbG9neS5jDQorKysgYi9hcmNoL2FybTY0L2tlcm5lbC90b3BvbG9neS5j
-DQpAQCAtMTA3LDcgKzEwNyw3IEBAIGludCBfX2luaXQgcGFyc2VfYWNwaV90b3BvbG9neSh2b2lk
-KQ0KICAgICAgICAgICAgICAgIGNwdV90b3BvbG9neVtjcHVdLmNsdXN0ZXJfaWQgPSB0b3BvbG9n
-eV9pZDsNCiAgICAgICAgICAgICAgICB0b3BvbG9neV9pZCA9IGZpbmRfYWNwaV9jcHVfdG9wb2xv
-Z3lfcGFja2FnZShjcHUpOw0KICAgICAgICAgICAgICAgIGNwdV90b3BvbG9neVtjcHVdLnBhY2th
-Z2VfaWQgPSB0b3BvbG9neV9pZDsNCi0NCisjaWYgMA0KICAgICAgICAgICAgICAgIGkgPSBhY3Bp
-X2ZpbmRfbGFzdF9jYWNoZV9sZXZlbChjcHUpOw0KDQogICAgICAgICAgICAgICAgaWYgKGkgPiAw
-KSB7DQpAQCAtMTE5LDggKzExOSwxMSBAQCBpbnQgX19pbml0IHBhcnNlX2FjcGlfdG9wb2xvZ3ko
-dm9pZCkNCiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChjYWNoZV9pZCA+IDApDQogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIGNwdV90b3BvbG9neVtjcHVdLmxsY19pZCA9IGNhY2hl
-X2lkOw0KICAgICAgICAgICAgICAgIH0NCi0gICAgICAgfQ0KKyNlbHNlDQorICAgICAgICAgICAg
-ICAgY3B1X3RvcG9sb2d5W2NwdV0ubGxjX2lkID0gY3B1X3RvcG9sb2d5W2NwdV0uY2x1c3Rlcl9p
-ZDsNCisjZW5kaWYNCg0KKyAgICAgICB9DQogICAgICAgIHJldHVybiAwOw0KIH0NCiAjZW5kaWYN
-Cg0KV2l0aCB0aGlzLCBJIGhhdmUgc2VlbiBzb21lIG1ham9yIGltcHJvdmVtZW50IGluIGhhY2ti
-ZW5jaCBlc3BlY2lhbGx5DQpmb3IgbW9ub2dhbW91cyBjb21tdW5pY2F0aW9uIG1vZGVsIChmZHNf
-bnVtPTEsIG9uZSBzZW5kZXIgZm9yIG9uZQ0KcmVjZWl2ZXIpOg0KbnVtYWN0bCAtTiAwIGhhY2ti
-ZW5jaCAtcCAtVCAtbCAyMDAwMDAgLWYgMSAtZyAkMQ0KDQpJIGhhdmUgdGVzdGVkIC1nKGdyb3Vw
-X251bXMpIDYsIDEyLCAxOCwgMjQsIDI4LCAzMiwNCkZvciBlYWNoIGRpZmZlcmVudCBnLCBJIHJh
-biAyMCB0aW1lcyBhbmQgZ290IHRoZQ0KYXZlcmFnZSB2YWx1ZS4gVGhlIHJlc3VsdCBpcyBhcyBi
-ZWxvdzoNCg0KZz0gICAgNiAgICAgIDEyICAgIDE4ICAgICAgMjQgICAgMjggICAgIDMyDQp3L28g
-MS4zMjQzIDEuNjc0MSAxLjc1NjAgMS45MDM2IDIuMDI2MiAyLjE4MjYNCncvICAxLjEzMTQgMS4x
-ODY0IDEuNDQ5NCAxLjYxNTkgMS45MDc4IDIuMTI0OQ0KDQpVc2luZyB0b3AgLUggYW5kIGhpdCAi
-ZiIgdG8gc2hvdyBjcHUgb2YgZWFjaCB0aHJlYWQsDQpJIGFtIHNlZWluZyB0aGUgdHdvIHRocmVh
-ZHMgaW4gb25lIGdyb3VwIGFyZSBsaWtlbHkNCnRvIHJ1biBpbiBhIGNsdXN0ZXIuIFRoYXQncyB3
-aHkgdGhlIGhhY2tiZW5jaCBsYXRlbmN5DQppcyBkZWNyZWFzaW5nIG11Y2guDQoNClRoYW5rcw0K
-QmFycnkNCg==
+Hi Rafael,
+
+On 4/13/21 11:35 AM, Rafael J. Wysocki wrote:
+> On Mon, Apr 12, 2021 at 8:53 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi,
+>>
+>> On 4/12/21 8:11 PM, Rafael J. Wysocki wrote:
+>>> On Mon, Apr 12, 2021 at 8:01 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>>>>
+>>>> On Mon, Apr 12, 2021 at 7:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>>>
+>>>>> Hi Rafael,
+>>>>>
+>>>>> Sorry about the timing of reporting this regression.
+>>>>
+>>>> Oh well.
+>>>>
+>>>>> I just noticed that overriding the DSDT (*) from the initrd will not work in 5.12,
+>>>>> this is caused by:
+>>>>>
+>>>>> commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
+>>>>>
+>>>>> This makes the initial acpi_locate_initial_tables() call happen earlier
+>>>>> then before, but the acpi_table_upgrade) call in arch/x86/kernel/setup.c is
+>>>>> not moved up, so the tables in the initrd are now only parsed and saved
+>>>>> after the initial ACPI table scanning has already been done.
+>>>>>
+>>>>> I guess fixing this might be as easy as moving the acpi_table_upgrade) call
+>>>>> higher in arch/x86/kernel/setup.c but I'm not sure if that is save to do.
+>>>>
+>>>> Why do you think it may not be safe?
+>>>
+>>> OK, so it won't work in some cases, because acpi_table_upgrade() needs
+>>> to be called after reserve_initrd(),
+>>
+>> Right I notice it was sitting right after reserve_initrd() which made me think
+>> that it probably needed to be after that. Sorry I should have mentioned that
+>> in my original email.
+>>
+>>> so I guess the commit above will
+>>> need to be reverted.
+>>
+>> One possible solution which I was wondering about is to modify
+>> acpi_table_initrd_scan() to have it call acpi_tb_override_table()
+>> instead of acpi_install_table() for existing tables using the matching
+>> logic from acpi_table_initrd_override(). But I'm not sure when the
+>> parsing of the DSDT is done. If acpi_table_initrd_scan() runs before
+>> the first parsing of the DSDT is done then I think that that should work.
+>>
+>> This might be more 5.13 material though and for 5.12 a revert is
+>> probably best.
+> 
+> The attached change should make it work again, though.  Can you please verify?
+
+I can confirm that the attached change fixes things, thank you.
+
+>> I also just remembered that at least the Intel audio folks rely on
+>> DSDT overrides to get some (prototype) boards in their CI to work.
+> 
+> But they haven't complained so far.
+
+Weird, I'll drop them an email with you in the Cc.
+
+Regards,
+
+Hans
+
