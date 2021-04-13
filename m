@@ -2,95 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FBF935E0BD
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 16:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ECBB35E0FB
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 16:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231873AbhDMOB0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 10:01:26 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:64576 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231625AbhDMOBX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 10:01:23 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.5)
- id ff1bc5df57536676; Tue, 13 Apr 2021 16:01:01 +0200
-Received: from kreacher.localnet (89-64-80-138.dynamic.chello.pl [89.64.80.138])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 95DAD6692AB;
-        Tue, 13 Apr 2021 16:01:00 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        George Kennedy <george.kennedy@oracle.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        x86 Maintainers <x86@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH] ACPI: x86: Call acpi_boot_table_init() after acpi_table_upgrade()
-Date:   Tue, 13 Apr 2021 16:01:00 +0200
-Message-ID: <11752259.O9o76ZdvQC@kreacher>
+        id S244804AbhDMOJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 10:09:53 -0400
+Received: from mga14.intel.com ([192.55.52.115]:6188 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231313AbhDMOJt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Apr 2021 10:09:49 -0400
+IronPort-SDR: Mn+8/BqSEp97mazIEevCbscL/LVS2xueP6LnANHMUFothPlNZizhSxkuL5Z2cpx8sMIYOMzFaz
+ k58yud7QxmXg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9953"; a="193982586"
+X-IronPort-AV: E=Sophos;i="5.82,219,1613462400"; 
+   d="scan'208";a="193982586"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2021 07:09:24 -0700
+IronPort-SDR: pXMK/UrgOtexN5LuGm7CrPTdSnHOV6i827NOH9aPx0juJi99JXRmCm+HQvnbA5K+RjSlwiUfVg
+ dsJsrlu8mK6g==
+X-IronPort-AV: E=Sophos;i="5.82,219,1613462400"; 
+   d="scan'208";a="600359213"
+Received: from damilitx-mobl1.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.165])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2021 07:09:23 -0700
+From:   Ben Widawsky <ben.widawsky@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     Ben Widawsky <ben.widawsky@intel.com>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        dan.j.williams@intel.com, linux-kernel@vger.kernel.org
+Subject: [PATCH] cxl/mem: Add media provisioning required commands
+Date:   Tue, 13 Apr 2021 07:09:07 -0700
+Message-Id: <20210413140907.534404-1-ben.widawsky@intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.80.138
-X-CLIENT-HOSTNAME: 89-64-80-138.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudekledgjeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdeigedrkedtrddufeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedtrddufeekpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgvohhrghgvrdhkvghnnhgvugihsehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhmpdhrtghp
- thhtoheprhhpphhtsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Some of the commands have already been defined for the support of RAW
+commands (to be blocked). Unlike their usage in the RAW interface, when
+used through the supported interface, they will be coordinated and
+marshalled along with other commands being issued by userspace and the
+driver itself. That coordination will be added later.
 
-Commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by
-ACPI tables") attempted to address an issue with reserving the memory
-occupied by ACPI tables, but it broke the initrd-based table override
-mechanism relied on by multiple users.
+The list of commands was determined based on the learnings from
+libnvdimm and this list is provided directly from Dan.
 
-To restore the initrd-based ACPI table override functionality, move
-the acpi_boot_table_init() invocation in setup_arch() on x86 after
-the acpi_table_upgrade() one.
-
-Fixes: 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Recommended-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 ---
+ drivers/cxl/mem.c            | 19 +++++++++++++++++++
+ include/uapi/linux/cxl_mem.h | 12 ++++++++++++
+ 2 files changed, 31 insertions(+)
 
-George, can you please check if this reintroduces the issue addressed by
-the above commit for you?
-
----
- arch/x86/kernel/setup.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-Index: linux-pm/arch/x86/kernel/setup.c
-===================================================================
---- linux-pm.orig/arch/x86/kernel/setup.c
-+++ linux-pm/arch/x86/kernel/setup.c
-@@ -1045,9 +1045,6 @@ void __init setup_arch(char **cmdline_p)
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index e915e3743b76..e3306aa560cf 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -50,7 +50,14 @@ enum opcode {
+ 	CXL_MBOX_OP_GET_LSA		= 0x4102,
+ 	CXL_MBOX_OP_SET_LSA		= 0x4103,
+ 	CXL_MBOX_OP_GET_HEALTH_INFO	= 0x4200,
++	CXL_MBOX_OP_GET_ALERT_CONFIG	= 0x4201,
++	CXL_MBOX_OP_SET_ALERT_CONFIG	= 0x4202,
++	CXL_MBOX_OP_GET_SHUTDOWN_STATE	= 0x4203,
+ 	CXL_MBOX_OP_SET_SHUTDOWN_STATE	= 0x4204,
++	CXL_MBOX_OP_GET_POISON		= 0x4300,
++	CXL_MBOX_OP_INJECT_POISON	= 0x4301,
++	CXL_MBOX_OP_CLEAR_POISON	= 0x4302,
++	CXL_MBOX_OP_GET_SCAN_MEDIA_CAPS	= 0x4303,
+ 	CXL_MBOX_OP_SCAN_MEDIA		= 0x4304,
+ 	CXL_MBOX_OP_GET_SCAN_MEDIA	= 0x4305,
+ 	CXL_MBOX_OP_MAX			= 0x10000
+@@ -158,6 +165,18 @@ static struct cxl_mem_command mem_commands[CXL_MEM_COMMAND_ID_MAX] = {
+ 	CXL_CMD(GET_LSA, 0x8, ~0, 0),
+ 	CXL_CMD(GET_HEALTH_INFO, 0, 0x12, 0),
+ 	CXL_CMD(GET_LOG, 0x18, ~0, CXL_CMD_FLAG_FORCE_ENABLE),
++	CXL_CMD(SET_PARTITION_INFO, 0x0a, 0, 0),
++	CXL_CMD(SET_LSA, ~0, 0, 0),
++	CXL_CMD(GET_ALERT_CONFIG, 0, 0x10, 0),
++	CXL_CMD(SET_ALERT_CONFIG, 0xc, 0, 0),
++	CXL_CMD(GET_SHUTDOWN_STATE, 0, 0x1, 0),
++	CXL_CMD(SET_SHUTDOWN_STATE, 0x1, 0, 0),
++	CXL_CMD(GET_POISON, 0x10, ~0, 0),
++	CXL_CMD(INJECT_POISON, 0x8, 0, 0),
++	CXL_CMD(CLEAR_POISON, 0x48, 0, 0),
++	CXL_CMD(GET_SCAN_MEDIA_CAPS, 0x10, 0x4, 0),
++	CXL_CMD(SCAN_MEDIA, 0x11, 0, 0),
++	CXL_CMD(GET_SCAN_MEDIA, 0, ~0, 0),
+ };
  
- 	cleanup_highmap();
+ /*
+diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+index 3155382dfc9b..f6e8a005b113 100644
+--- a/include/uapi/linux/cxl_mem.h
++++ b/include/uapi/linux/cxl_mem.h
+@@ -29,6 +29,18 @@
+ 	___C(GET_LSA, "Get Label Storage Area"),                          \
+ 	___C(GET_HEALTH_INFO, "Get Health Info"),                         \
+ 	___C(GET_LOG, "Get Log"),                                         \
++	___C(SET_PARTITION_INFO, "Set Partition Information"),            \
++	___C(SET_LSA, "Set Label Storage Area"),                          \
++	___C(GET_ALERT_CONFIG, "Get Alert Configuration"),                \
++	___C(SET_ALERT_CONFIG, "Set Alert Configuration"),                \
++	___C(GET_SHUTDOWN_STATE, "Get Shutdown State"),                   \
++	___C(SET_SHUTDOWN_STATE, "Set Shutdown State"),                   \
++	___C(GET_POISON, "Get Poison List"),                              \
++	___C(INJECT_POISON, "Inject Poison"),                             \
++	___C(CLEAR_POISON, "Clear Poison"),                               \
++	___C(GET_SCAN_MEDIA_CAPS, "Get Scan Media Capabilities"),         \
++	___C(SCAN_MEDIA, "Scan Media"),                                   \
++	___C(GET_SCAN_MEDIA, "Get Scan Media Results"),                   \
+ 	___C(MAX, "invalid / last command")
  
--	/* Look for ACPI tables and reserve memory occupied by them. */
--	acpi_boot_table_init();
--
- 	memblock_set_current_limit(ISA_END_ADDRESS);
- 	e820__memblock_setup();
- 
-@@ -1132,6 +1129,8 @@ void __init setup_arch(char **cmdline_p)
- 	reserve_initrd();
- 
- 	acpi_table_upgrade();
-+	/* Look for ACPI tables and reserve memory occupied by them. */
-+	acpi_boot_table_init();
- 
- 	vsmp_init();
- 
-
-
+ #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+-- 
+2.31.1
 
