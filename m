@@ -2,71 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C88B35D3DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 01:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A042235D7D2
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 08:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242154AbhDLXVV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Apr 2021 19:21:21 -0400
-Received: from fgw22-7.mail.saunalahti.fi ([62.142.5.83]:36692 "EHLO
-        fgw22-7.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344065AbhDLXVU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Apr 2021 19:21:20 -0400
-Received: from localhost (88-115-248-186.elisa-laajakaista.fi [88.115.248.186])
-        by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-        id be0ecccb-9be5-11eb-88cb-005056bdf889;
-        Tue, 13 Apr 2021 02:21:00 +0300 (EEST)
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2 2/2] ACPI: utils: Capitalize abbreviations in the comments
-Date:   Tue, 13 Apr 2021 02:20:52 +0300
-Message-Id: <20210412232052.2162107-2-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210412232052.2162107-1-andy.shevchenko@gmail.com>
-References: <20210412232052.2162107-1-andy.shevchenko@gmail.com>
+        id S1344920AbhDMGOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 02:14:51 -0400
+Received: from mga07.intel.com ([134.134.136.100]:36986 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1344906AbhDMGOj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Apr 2021 02:14:39 -0400
+IronPort-SDR: 5K+PvqH2I4pzEnBnAKccq8KJIDT9RDoRtcrPswdSNx1QW9ov+py8uP6lNsb4+mweHYRZK6til9
+ irvtl32pMU7A==
+X-IronPort-AV: E=McAfee;i="6200,9189,9952"; a="258323169"
+X-IronPort-AV: E=Sophos;i="5.82,218,1613462400"; 
+   d="scan'208";a="258323169"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2021 23:14:20 -0700
+IronPort-SDR: tH3IoRxzj6ECWJWOYsTDGO0VtHEnzq15e6xdZwYjvfqY2EMW9IcderjNwynrayWh3OhXbf5FqC
+ HeLkjat/rAdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,218,1613462400"; 
+   d="scan'208";a="450267853"
+Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 12 Apr 2021 23:14:18 -0700
+Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lWCJV-0000rS-Kr; Tue, 13 Apr 2021 06:14:17 +0000
+Date:   Tue, 13 Apr 2021 14:14:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ bca172fee41f4efa5357ea8e70e5d57f4191798c
+Message-ID: <607536b8.cRKpwrfMvcEGurIm%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The DSDT and ACPI should be capitalized.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: bca172fee41f4efa5357ea8e70e5d57f4191798c  Merge branch 'acpi-scan' into bleeding-edge
 
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+elapsed time: 724m
+
+configs tested: 99
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                         tb0219_defconfig
+mips                           mtx1_defconfig
+m68k                       m5249evb_defconfig
+mips                          malta_defconfig
+arm                          pxa168_defconfig
+arc                          axs103_defconfig
+arm                           sama5_defconfig
+sh                        edosk7760_defconfig
+sparc64                             defconfig
+powerpc                     tqm8548_defconfig
+powerpc                        cell_defconfig
+sh                          rsk7201_defconfig
+powerpc                     powernv_defconfig
+sh                          r7785rp_defconfig
+powerpc                      arches_defconfig
+powerpc                      makalu_defconfig
+powerpc                     mpc5200_defconfig
+arm                       mainstone_defconfig
+powerpc                     ep8248e_defconfig
+mips                        maltaup_defconfig
+arm                           sunxi_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210412
+i386                 randconfig-a001-20210412
+i386                 randconfig-a006-20210412
+i386                 randconfig-a005-20210412
+i386                 randconfig-a004-20210412
+i386                 randconfig-a002-20210412
+x86_64               randconfig-a014-20210412
+x86_64               randconfig-a015-20210412
+x86_64               randconfig-a011-20210412
+x86_64               randconfig-a013-20210412
+x86_64               randconfig-a012-20210412
+x86_64               randconfig-a016-20210412
+i386                 randconfig-a015-20210412
+i386                 randconfig-a014-20210412
+i386                 randconfig-a013-20210412
+i386                 randconfig-a012-20210412
+i386                 randconfig-a016-20210412
+i386                 randconfig-a011-20210412
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a003-20210412
+x86_64               randconfig-a002-20210412
+x86_64               randconfig-a001-20210412
+x86_64               randconfig-a005-20210412
+x86_64               randconfig-a006-20210412
+x86_64               randconfig-a004-20210412
+
 ---
-v2: split from patch 1 as per Rafael's request
- drivers/acpi/utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-index 60e46efc1bc8..3b54b8fd7396 100644
---- a/drivers/acpi/utils.c
-+++ b/drivers/acpi/utils.c
-@@ -811,7 +811,7 @@ static int acpi_dev_match_cb(struct device *dev, const void *data)
-  * Note that if the device is pluggable, it may since have disappeared.
-  *
-  * Note that unlike acpi_dev_found() this function checks the status
-- * of the device. So for devices which are present in the dsdt, but
-+ * of the device. So for devices which are present in the DSDT, but
-  * which are disabled (their _STA callback returns 0) this function
-  * will return false.
-  *
-@@ -838,7 +838,7 @@ EXPORT_SYMBOL(acpi_dev_present);
- 
- /**
-  * acpi_dev_get_next_match_dev - Return the next match of ACPI device
-- * @adev: Pointer to the previous acpi_device matching this @hid, @uid and @hrv
-+ * @adev: Pointer to the previous ACPI device matching this @hid, @uid and @hrv
-  * @hid: Hardware ID of the device.
-  * @uid: Unique ID of the device, pass NULL to not check _UID
-  * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
--- 
-2.31.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
