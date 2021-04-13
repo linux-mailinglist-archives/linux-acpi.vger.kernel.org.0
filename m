@@ -2,977 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE7B35E744
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 21:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBAC035E84A
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 23:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348086AbhDMTtt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 15:49:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348070AbhDMTtt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Apr 2021 15:49:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 81E79613C4;
-        Tue, 13 Apr 2021 19:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618343368;
-        bh=JJT5vOFNTp/xUmdJFf5vR/zYOuKZeamIlBnJgDwdQoM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=BrE8Yr8IB6PIVRUBUaMqufbgqLcUIZEunUCuy0zjEgMOhK9wc4SSZS0hvpGcnkzT3
-         3roWYbx+wWe/CpH111gmqliRnWeWqRE7cYM7UKLfrFvoNaI0EW5vVcVWTUmhETOjJY
-         7dTToMR6YjtFfMMZ8dWlJYDOpgHTLfxvxQexRmfCxznRsEWOhFhg+LWBCuC/Fh5++9
-         rHvV12Hc4OfzZy/y4/mcAqFBz8wc8p0huhHj99ceCybUmCymFxFNlzhaEGs2LcpRoJ
-         ydPvBYAI/nQpzcVhgxVtShHemmr6TpbrWX4V0HE9+wWn/0FuTiYqG94uJceN9dO9d/
-         KFNaY4i1RAl8Q==
-Date:   Tue, 13 Apr 2021 14:49:27 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        linux-acpi@vger.kernel.org, alison.schofield@intel.com,
-        vishal.l.verma@intel.com, ira.weiny@intel.com, linuxarm@huawei.com,
-        Fangjian <f.fangjian@huawei.com>
-Subject: Re: [RFC PATCH v2 2/4] PCI/doe: Initial support PCI Data Object
- Exchange
-Message-ID: <20210413194927.GA2241331@bjorn-Precision-5520>
+        id S231778AbhDMV24 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 17:28:56 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:60568 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229892AbhDMV2z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 17:28:55 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13DL99eM115740;
+        Tue, 13 Apr 2021 21:28:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=vrI9h3AQGqM5K+zo8FhFAP836TgFhBqKGW4Ctv1BXCA=;
+ b=f6fmQrE+aHCfL1ruDhV9N8QJSyz6cgrp78y2neUmTeXCE+ha4yNqo9mdDuOtJX9hZmpo
+ UgKByCPiUG7K7nXe3Ofck2/6A5ezQWqDXzsn/mq77GNKj/bZjjZtrqQk1fosfi+BlRRI
+ JKtxawsFb3AJjni48OdworEwKQKRl9dsWr4KPjilAE7OVS3RJZmeH/GkdsqmwLSzylmb
+ Q/bDfiVw+dev14whno1BP288Y9mXhEK8zrbIF2vw3gr4VwW5jf6rET4IGrasmOAv0sxx
+ a5xXyOQp7Q3q1vngf43C/HiQKMyA3bo2nRmKuar2CtxGxNiAlLN/4ZQv6MwVOJXFDMza eQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 37u4nngfss-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 13 Apr 2021 21:28:26 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13DLGU67093752;
+        Tue, 13 Apr 2021 21:28:25 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2109.outbound.protection.outlook.com [104.47.55.109])
+        by aserp3030.oracle.com with ESMTP id 37unkq3777-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 13 Apr 2021 21:28:25 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a3glfYNYTjpKqkJG/9MxAuZKqPuwk+aIMJilUcZR03C8p8d80D49jhSHlOIbhjGggi/XfT41ETCvsiS61/pFOujwoUeT0r+FVFURcumH0Hi5GQFJRzRXHsqPrqFDSA9Bxo8TOd+KHEV3a/GJPMdt76sIeTJPXdMVzBFzA/1p9hC0E6mA9bJqK8QcH+lFIM1dqWlKyO5qyFTs/Gq1GFJS1D3d+Srh0uo846furpLtTsDD5t860LPvEI45hhNrRLQpvdy6Z/Ne4d7RvMDL3sdONnYZKM/LKix97lQdz7c54MDiF/Yh8AQJ/cXf7FNX5UL3zfgSP6TTf+5yjCb8o1wE5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vrI9h3AQGqM5K+zo8FhFAP836TgFhBqKGW4Ctv1BXCA=;
+ b=QS3pvFyEzXYnL7zafZaWWSYlYXjqEP688s6Nh8OKo5Aq9e3PTOxBfN5zbAVYL9l5RzCiEMHacGitYiD6yecAbTXRV5Y1+LUrMDCrVdLgZgKOgF5Ih0YvRZY7wQk1qEipf1fgc1RfwiTam86oYqnYp8toAANnkUVyovW2V6X6pThnHzHIw3b3pphgQwCFYlEBRs69DToxpuxlPFR216CI5Mr9X7FpUvZQ8jWcoPRbIyW6MifFXdYJhh72jB/+AI0/eaDTX+yskn5Emyhx+WTY8xZ/o1O0VlAAhVoo9MexqBApXiby0hNWUXT8wAgYm6at3vXC4u/yB0B8NmF5TPA1XA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vrI9h3AQGqM5K+zo8FhFAP836TgFhBqKGW4Ctv1BXCA=;
+ b=kmSrjfqQqJtOJ8NDCla+TNh4zULbU625oUyqzi48oqtoO/f9//lA+DU7qIe2GHsN3Klzhq4b8Bo2OcOO1Gxxr0vOHW/ky5Wz6/SbkZjSpmbIkVge7Cotm0p5HvWjbz03jn1ubRlDZ7iXI7+dmN7IySx99brdV7Eg6QlWedoCMqo=
+Received: from DM6PR10MB3851.namprd10.prod.outlook.com (2603:10b6:5:1fb::17)
+ by DM6PR10MB3436.namprd10.prod.outlook.com (2603:10b6:5:63::28) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.21; Tue, 13 Apr
+ 2021 21:28:23 +0000
+Received: from DM6PR10MB3851.namprd10.prod.outlook.com
+ ([fe80::e490:f9ff:f8f3:c1e6]) by DM6PR10MB3851.namprd10.prod.outlook.com
+ ([fe80::e490:f9ff:f8f3:c1e6%7]) with mapi id 15.20.4020.023; Tue, 13 Apr 2021
+ 21:28:23 +0000
+Subject: Re: [PATCH] ACPI: x86: Call acpi_boot_table_init() after
+ acpi_table_upgrade()
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        x86 Maintainers <x86@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Dhaval Giani <dhaval.giani@oracle.com>
+References: <11752259.O9o76ZdvQC@kreacher>
+From:   George Kennedy <george.kennedy@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <a3865ef0-6185-fdab-ffbe-8f5884e73486@oracle.com>
+Date:   Tue, 13 Apr 2021 17:28:19 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
+In-Reply-To: <11752259.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [108.26.147.230]
+X-ClientProxiedBy: SA0PR11CA0181.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::6) To DM6PR10MB3851.namprd10.prod.outlook.com
+ (2603:10b6:5:1fb::17)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210413160159.935663-3-Jonathan.Cameron@huawei.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.246] (108.26.147.230) by SA0PR11CA0181.namprd11.prod.outlook.com (2603:10b6:806:1bc::6) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.17 via Frontend Transport; Tue, 13 Apr 2021 21:28:22 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 222eb53d-4a82-4b21-7d19-08d8fec310de
+X-MS-TrafficTypeDiagnostic: DM6PR10MB3436:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR10MB34360B86CCDA8185132FE5BFE64F9@DM6PR10MB3436.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QV3JASN1xhI30IMPCK5M4fk//GaukJynV3aoQSt+jb/ohGLdvItS/iyAJvEDvXxGX/3QbykVmXXS2gduwxaDDvQ5eeClNyv2TGEQKZPpqslF7z6WaoXczgVQse3e69XIKwrWkvxcFobJn7qpZzMQ+PzoKXvWVkj4S2emunGwqKLfsbPS8eHg1kY2VzqKy6LKE0+GF/U2RJ9lPdnjBONzR9QdiuITzMO+wSw0Qino8K7a9ea2fk1z5yPWIw+leFNdTeYLwPuO1WVFPkjgca31xttlEPcDzotUjVDRsH9AEvtylzyosUn0wxLXEiewPBCHCGAfRLISH4TV+fUeqneVH/U7hbL2u8bGk6cmLQn278H7WwlrGFgh7xnATUQC2CNmyDkIJwltFOcKO60Uk4SxyCwpl7GpAVzgVuk1bN8Pdr0KclZU1GSw6Evd1H8rKG5htvqnNLNBL3tIbtZeEB9x8q4XkM/YY2vjHUWcIjxEesWoGUX7lG3ujicF+Ud2j6hER879pcpfIjMAWkg2SHcSjhrWggUaLwgV2cdVNBXLg5ghzeLQT0QisHTsDVDi7KHBwb9llY1QDq4G97gqn8P1UembXol8mdjsukGeB05KfDNvYJ+fOkEk+keOn+Id1p+RDfDXPrJHf4hD4mNRu7pQbRSUJh+idN5e54tR1hcIN8mxx2a5DUvG4LuMWhp0ZFQY
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB3851.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(346002)(396003)(366004)(39860400002)(956004)(2616005)(66476007)(316002)(5660300002)(66556008)(66946007)(4326008)(107886003)(44832011)(6486002)(53546011)(36916002)(8676002)(26005)(38100700002)(2906002)(186003)(8936002)(478600001)(31686004)(83380400001)(16576012)(54906003)(6666004)(86362001)(31696002)(16526019)(36756003)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?c21MTDZaRXltS0RKWGJXMjNoSVhIVzVKN3I5UFVKd1BrS0xyNFUrMEZia0lq?=
+ =?utf-8?B?U0Jja3NZTjI1VDhnK2lQUXNNYktSRWZKdVE2M2tBUWtlalNZMEhGOXNsMGd0?=
+ =?utf-8?B?RURaSG5XVjRQaXdTM1krYW5TRVpndkR3NytSaHVpajMvUkVNNThFMFZlZ0VP?=
+ =?utf-8?B?VGxUOTdvakU5d21yS3ZCaWF0Vk1zV2pvUlNFRTZRbkxqUFI0bjhMekMxL2hJ?=
+ =?utf-8?B?YTIwODAvSGhRdjVEd3BHT0dJeGNDMFRPWW4rampxNjZYZEFyQWp3OGJKUWQw?=
+ =?utf-8?B?aWxWcTdoODZwSHhTWFVhOC9OK0pjenJ1V2c1NUpmNW42QnEzQlh4blkxRUx6?=
+ =?utf-8?B?ZkprN3YzRDJQT1h5Qk4vaFRsY2dwb1RJdmFWMlhBTXo2WE8rOTVkR1Z2VWxu?=
+ =?utf-8?B?U0FFQ3BQOEFiZGRBRTIzQjk1ajg4eVBqaS81b3ZQS0JMSjkxYVYrWGk0ZTlj?=
+ =?utf-8?B?TFR0QXEvcDRweURpTmsrbnN0cEJ3K3kzdm1XYXVWK3RHOGlHcnJ4c2xDWk9n?=
+ =?utf-8?B?V1kxNWZPM0tRVXRzL0gyYi9xeitNcVRqcVZzVlBQT2R2TVJQeWhjU2R0bWha?=
+ =?utf-8?B?ejJZdmRxNDNyRXNWRHBqbmlTaFFoTlhkRkl1ZVBwa3QrVlF4RkN2L0dSL25H?=
+ =?utf-8?B?Rjl3WTZmRzJqbnhrWVRxUkVUTGY0L2Q4aXdJMlB3Y3VhTHJwQTJ0ZnRQVkZS?=
+ =?utf-8?B?Uk9GbWJjcGppL3UxMkY0NE1lZlU5dEJnYXFTUGpZUFp1RHB5Tm9uK0s3VE54?=
+ =?utf-8?B?YkpjSjJPOVF0SjBBRzc4M3oyOCt5ZWVWaEZKR3Q5dHJmSEZ1VUdUbHZuNzBL?=
+ =?utf-8?B?U2FhMGVGYnRtSml2UTNXcTBRc3k3eDE1VTBUaG5hblV5Zi9veS9iT3FUYVM0?=
+ =?utf-8?B?aDNPWjJkSWJ2QkdNMXlCbUZMUHYrdGhTSGVERzF0SlZxYnErZjl5aWRvVmNJ?=
+ =?utf-8?B?V3dlS3VhV3hhMnNsM29wKzJjRkt6aHFUcmUwdTlvUVpRR0VRMzRoR1VvQzNk?=
+ =?utf-8?B?eFIwN0s2WlN6aEZkdjNhMDZ6MjFaaFhMYmsyVnQ3a20vRE92dEpZWm9vTFln?=
+ =?utf-8?B?cVlTay9FRTRSaDdWenAzVXlXTTkwZkM4cU9pUXp3Z3J5ZWtUNVFtVGZVTnVB?=
+ =?utf-8?B?VHJLSERYRGYwaHVhTG50Wk96c2Q5dnp2OGZhcnVjTTRYd2Uza3FmNmRGaEVM?=
+ =?utf-8?B?bmdmSTFWaVFpUTkraTBzcEQySkk4blFKQjUzRkFJeUJiRGh4M3JBR1E3SzF2?=
+ =?utf-8?B?QWgrZWo2S01jT1p5MnRZdlZuTkJiTnZNRmJvbWJqaFhVRWRReXVCdmJWY09J?=
+ =?utf-8?B?TVFtakFzWVcwbCtIQnZ1L014TENXaTBMeGIxNlN3S1lrbW43cHZBaVRWejAv?=
+ =?utf-8?B?bmdYVjdEeDJVK0RWZkMxdXBHL3YxVjVEd0ZZR1pvc0lva2ZZVVBMcElIdzNU?=
+ =?utf-8?B?cXZHdW51azJGazFHZDhDT1VkUm1ISUhYK3ZwRDM5VnVyWEtWdjE5Ti80NVNz?=
+ =?utf-8?B?OFJwYWxXOW40ZkhOMUZHdmk3UUwyMndEMytORytSZ1ZQQXZzeGpxYW9tTGJt?=
+ =?utf-8?B?Q05TMFNndWo0ZWxDd0dxVUJjZW9vMmd2T2ZyM0FlV3ljVVhQMVFGMkQxZFhs?=
+ =?utf-8?B?S0JjWThBUjFiQ241ZXRRek9vWFQ1N0h3amhUYXZBUk1DMVNkVzFzNkMxMnV3?=
+ =?utf-8?B?VE9WVllwSXY5cmw2NWM4bllhbGhrMVh6V1FJYjRObC9TbFVQNy94THZrUGE0?=
+ =?utf-8?Q?cUZjqDBBR41hlGC6cDcKS//LA9Pkc7WNmFEAR6w?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 222eb53d-4a82-4b21-7d19-08d8fec310de
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB3851.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2021 21:28:22.9198
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XaIw0xRrumRqXJS8O6XpTF6uEuKX9bsJn0pKAyKAQn3xMvgv83vBA/0EujuZZvoryKueFeDmykaIqiHQvvHNGC+E/xZ+5hgtT1v/T6rBTIw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3436
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 phishscore=0 malwarescore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104130141
+X-Proofpoint-ORIG-GUID: DRl2Pr4kf_gkEowCSNBmmndjuo2D58xJ
+X-Proofpoint-GUID: DRl2Pr4kf_gkEowCSNBmmndjuo2D58xJ
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
+ clxscore=1011 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104130141
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-To match subject line history:
 
-  PCI/DOE: Add Data Object Exchange support
 
-On Wed, Apr 14, 2021 at 12:01:57AM +0800, Jonathan Cameron wrote:
-> Introduced in a PCI ECN [1], DOE provides a config space
-> based mailbox with standard protocol discovery.  Each mailbox
-> is accessed through a DOE PCIE Extended Capability.
-
-s/PCIE//
-
-I don't think DOE depends on anything specific to PCIe.
-
-> A device may have 1 or more DOE mailboxes, each of which is allowed
-> to support any number of protocols (some DOE protocols
-
-s/DOE protocols/DOE protocol/
-
-> specifications apply additional restrictions).  A given protocol
-> may be supported on more than one DOE mailbox on a given function.
-> 
-> If a driver wishes to access any number of DOE instances / protocols
-> it makes a single call to pcie_doe_register_all() which will find
-> available DOEs, create the required infrastructure and cache the
-> protocols they support.  pcie_doe_find() can then retrieve a
-> pointer to an appropriate DOE instance.
-
-Maybe mention the run-time interface (pcie_doe_sync()) here as well.
-Can we make that name more descriptive?  It'd be nice to include a
-verb.
-
-I think we should globally s/pcie/pci/ in filenames, struct,
-interfaces, config option, etc.
-
-> Testing conducted against QEMU using:
-> 
-> https://lore.kernel.org/qemu-devel/1612900760-7361-1-git-send-email-cbrowy@avery-design.com/
-> + fix for interrupt flag mentioned in that thread and a whole load
-> of hacks to exercise error paths etc.
-> 
-> [1] https://members.pcisig.com/wg/PCI-SIG/document/14143
-
-Can you please include the title and data of approval here?  The URL
-is useless except to PCI-SIG members, and the URL is likely to become
-stale eventually even to them.
-
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 4/13/2021 10:01 AM, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by
+> ACPI tables") attempted to address an issue with reserving the memory
+> occupied by ACPI tables, but it broke the initrd-based table override
+> mechanism relied on by multiple users.
+>
+> To restore the initrd-based ACPI table override functionality, move
+> the acpi_boot_table_init() invocation in setup_arch() on x86 after
+> the acpi_table_upgrade() one.
+>
+> Fixes: 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
+> Reported-by: Hans de Goede <hdegoede@redhat.com>
+> Tested-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
-> 
-> Thanks to Dan Williams for reviewing v1.
-> Note code has changed a lot, so I may well have missed stuff in this
-> log. Details on approaches to the DOE serialization discussed in
-> the cover letter.
-> 
-> Changes since v1:
-> Major stuff:
-> * Rework the registration of DOE. DOE instances are added to a list in
->   the struct pci_dev. A single call to pcie_doe_register_all() finds
->   all DOEs present on a device and caches which protocols they support.
->   The lifetime of these can then all be managed alongside the
->   struct pci_dev avoiding need for reference counting etc whilst allowing
->   a driver not to care if different protocols are using the same DOE
->   instance, or different ones. The driver issues a call to
->   pcie_doe_find() to get a pointer to the first appropriate DOE.
->   Note, a side effect of minimizing impact of this on struct pci_dev
->   is that we can't build DOE support as a module.
-> * Instead of serializing on a mutex, move to a more complex state machine
->   based scheme in which the DOE config space registers are only
->   accessed from a single delayed work item. The state machine uses
->   two states for normal operation, IDLE and WAITING. Two states also
->   exist for ABORT to indicate if it was called in response to error,
->   or at startup. Interrupts result in mod_delayed_work()
->   to force an immediate check on the status register.
->   Message queuing is implemented with a list of tasks and kicking
->   the state machine work item as needed.
-> * Decide, inside the core DOE code, whether to poll based
->   on if the MSI/MSIX interrupts are enabled and the DOE
->   instance advertises an interrupt.
-> * Define a struct pcie_doe_exchange to encapsulate header info
->   with payloads etc. Specific fields used for VID and protocol +
->   lengths so the DOE header can be constructed inside the DOE
->   functions rather than relying on callers to do that.
-> * Don't hide away devm_ stuff in calls that don't make it obvious.
-> 
-> Minor stuff:
-> * pcie_doe_init() and pcie_doe_register separation to cover the
->   bits that can fail in register() and the bits that can't in init()
-> * Many typos
-> * Rename cap_offset field to cap
-> * Use new PCI_VENDOR_ID_PCI_SIG define to avoid open coding the
->   value
-> * Add defines for timeouts etc.
-> * Missing EXPORT_SYMBOL_GPL() added to allow DOE access from
->   modules.
-> 
->  drivers/pci/pcie/Kconfig      |   8 +
->  drivers/pci/pcie/Makefile     |   1 +
->  drivers/pci/pcie/doe.c        | 590 ++++++++++++++++++++++++++++++++++
+>
+> George, can you please check if this reintroduces the issue addressed by
+> the above commit for you?
 
-I'd move this up to drivers/pci/ since I don't think there's any
-actual PCIe dependency.
+Will do.
 
->  include/linux/pci.h           |   3 +
->  include/linux/pcie-doe.h      |  85 +++++
+George
 
->  include/uapi/linux/pci_regs.h |  29 +-
->  6 files changed, 715 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pcie/Kconfig b/drivers/pci/pcie/Kconfig
-> index 45a2ef702b45..1b566d08bfef 100644
-> --- a/drivers/pci/pcie/Kconfig
-> +++ b/drivers/pci/pcie/Kconfig
-> @@ -142,3 +142,11 @@ config PCIE_EDR
->  	  the PCI Firmware Specification r3.2.  Enable this if you want to
->  	  support hybrid DPC model which uses both firmware and OS to
->  	  implement DPC.
-> +
-> +config PCIE_DOE
-> +       bool
-> +       help
-> +         This enables library support PCI Data Object Exchange capability.
-> +         DOE provides a simple mailbox in PCI express config space that is
-> +         used by a number of different protocols.
-> +         It is defined in the Data Object Exchange ECN to PCI 5.0.
+>
+> ---
+>   arch/x86/kernel/setup.c |    5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> Index: linux-pm/arch/x86/kernel/setup.c
+> ===================================================================
+> --- linux-pm.orig/arch/x86/kernel/setup.c
+> +++ linux-pm/arch/x86/kernel/setup.c
+> @@ -1045,9 +1045,6 @@ void __init setup_arch(char **cmdline_p)
+>   
+>   	cleanup_highmap();
+>   
+> -	/* Look for ACPI tables and reserve memory occupied by them. */
+> -	acpi_boot_table_init();
+> -
+>   	memblock_set_current_limit(ISA_END_ADDRESS);
+>   	e820__memblock_setup();
+>   
+> @@ -1132,6 +1129,8 @@ void __init setup_arch(char **cmdline_p)
+>   	reserve_initrd();
+>   
+>   	acpi_table_upgrade();
+> +	/* Look for ACPI tables and reserve memory occupied by them. */
+> +	acpi_boot_table_init();
+>   
+>   	vsmp_init();
+>   
+>
+>
+>
 
-s/support PCI/support for the PCI/
-s/PCI express/PCI/
-
-> diff --git a/drivers/pci/pcie/Makefile b/drivers/pci/pcie/Makefile
-> index b2980db88cc0..801fdd5fbfc1 100644
-> --- a/drivers/pci/pcie/Makefile
-> +++ b/drivers/pci/pcie/Makefile
-> @@ -13,3 +13,4 @@ obj-$(CONFIG_PCIE_PME)		+= pme.o
->  obj-$(CONFIG_PCIE_DPC)		+= dpc.o
->  obj-$(CONFIG_PCIE_PTM)		+= ptm.o
->  obj-$(CONFIG_PCIE_EDR)		+= edr.o
-> +obj-$(CONFIG_PCIE_DOE)		+= doe.o
-> diff --git a/drivers/pci/pcie/doe.c b/drivers/pci/pcie/doe.c
-> new file mode 100644
-> index 000000000000..b8a27c744d09
-> --- /dev/null
-> +++ b/drivers/pci/pcie/doe.c
-> @@ -0,0 +1,590 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Data Object Exchange ECN
-> + * https://members.pcisig.com/wg/PCI-SIG/document/14143
-> + *
-> + * Copyright (C) 2021 Huawei
-> + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/jiffies.h>
-> +#include <linux/list.h>
-> +#include <linux/mutex.h>
-> +#include <linux/pci.h>
-> +#include <linux/pcie-doe.h>
-> +#include <linux/workqueue.h>
-> +
-> +#define PCI_DOE_PROTOCOL_DISCOVERY 0
-> +
-> +#define PCI_DOE_BUSY_MAX_RETRIES 16
-> +#define PCI_DOE_POLL_INTERVAL (HZ / 128)
-> +
-> +/* Timeout of 1 second from 6.xx.1 ECN - Data Object Exchange */
-
-Unfortunate that the ECN has two 6.xx.1 sections and no 6.xx.2
-section ;)  I think this is from the second 6.xx.1 section, i.e., the
-one that *should* have been 6.xx.2.
-
-> +#define PCI_DOE_TIMEOUT HZ
-> +
-> +static irqreturn_t pcie_doe_irq(int irq, void *data)
-> +{
-> +	struct pcie_doe *doe = data;
-> +	struct pci_dev *pdev = doe->pdev;
-> +	u32 val;
-> +
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +	if (FIELD_GET(PCI_DOE_STATUS_INT_STATUS, val)) {
-> +		pci_write_config_dword(pdev, doe->cap + PCI_DOE_STATUS, val);
-> +		mod_delayed_work(system_wq, &doe->statemachine, 0);
-> +		return IRQ_HANDLED;
-> +	}
-> +	/* Leave the error case to be handled outside irq */
-> +	if (FIELD_GET(PCI_DOE_STATUS_ERROR, val)) {
-> +		mod_delayed_work(system_wq, &doe->statemachine, 0);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	return IRQ_NONE;
-> +}
-> +
-> +/*
-> + * Only call when safe to directly access the DOE, either because no tasks
-> + * yet queued, or called from doe_statemachine_work() which has exclusive
-> + * access to the DOE config space.
-> + */
-> +static void pcie_doe_abort_start(struct pcie_doe *doe)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_CTRL,
-> +			       PCI_DOE_CTRL_ABORT);
-> +
-> +	doe->timeout_jiffies = jiffies + HZ;
-> +	schedule_delayed_work(&doe->statemachine, HZ);
-> +}
-> +
-> +static int pcie_doe_send_req(struct pcie_doe *doe, struct pcie_doe_exchange *ex)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +	u32 val;
-> +	int i;
-> +
-> +	/*
-> +	 * Check the DOE busy bit is not set.
-> +	 * If it is set, this could indicate someone other than Linux is
-> +	 * using the mailbox.
-
-Rewrap to fill 80 columns (or add blank line if you want two
-paragraphs).  What are the possibilities other than Linux?  Do you
-envision user-space usage?  Is there a denial-of-service attack here
-if that other user leaves the busy bit set?
-
-> +	 */
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +	if (FIELD_GET(PCI_DOE_STATUS_BUSY, val))
-> +		return -EBUSY;
-> +
-> +	if (FIELD_GET(PCI_DOE_STATUS_ERROR, val))
-> +		return -EIO;
-> +
-> +	/* Write DOE Header */
-> +	val = FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_1_VID, ex->vid) |
-> +		FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, ex->protocol);
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_WRITE, val);
-> +	/* Length is 2 DW of header + length of payload in DW */
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_WRITE,
-> +			       FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_2_LENGTH,
-> +					  2 + ex->request_pl_sz / 4));
-> +	for (i = 0; i < ex->request_pl_sz / 4; i++)
-> +		pci_write_config_dword(pdev, doe->cap + PCI_DOE_WRITE,
-> +				       ex->request_pl[i]);
-> +
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_CTRL, PCI_DOE_CTRL_GO);
-> +	/* Request is sent - now wait for poll or irq */
-> +	return 0;
-> +}
-> +
-> +static int pcie_doe_recv_resp(struct pcie_doe *doe, struct pcie_doe_exchange *ex)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +	size_t length;
-> +	u32 val;
-> +	int i;
-> +
-> +	/* Read the first two dwords to get the length and protocol */
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ, &val);
-> +	if ((FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val) != ex->vid) ||
-> +	    (FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val) != ex->protocol)) {
-> +		dev_err(&pdev->dev, "Expected [VID, Protocol] = [%x, %x], got [%x, %x]\n",
-
-pci_err() (one more below)
-
-> +			ex->vid, ex->protocol,
-> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val),
-> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val));
-> +		return -EIO;
-> +	}
-> +
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ, &val);
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
-> +
-> +	length = FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_2_LENGTH, val);
-> +	if (length > SZ_1M)
-> +		return -EIO;
-> +
-> +	/* Read the rest of the response payload */
-> +	for (i = 0; i < min(length, ex->response_pl_sz / 4); i++) {
-> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ,
-> +				      &ex->response_pl[i]);
-> +		pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
-> +	}
-> +
-> +	/* Flush excess length */
-> +	for (; i < length; i++) {
-> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ, &val);
-> +		pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
-> +	}
-> +	/* Final error check to pick up on any since Data Object Ready */
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +	if (FIELD_GET(PCI_DOE_STATUS_ERROR, val))
-> +		return -EIO;
-> +
-> +	return min(length, ex->response_pl_sz / 4) * 4;
-> +}
-> +
-> +static void pcie_doe_task_complete(void *private)
-> +{
-> +	complete(private);
-> +}
-> +
-> +/**
-> + * struct pcie_doe_task - description of a query / response task
-> + * @h: Head to add it to the list of outstanding tasks.
-> + * @ex: The info details of the task to be done.
-> + * @rv: Return value.  Length of received response or error.
-> + * @cb: Callback for completion of task.
-> + * @private: Private data passed to callback on completion.
-
-Some doc has terminating periods, some doesn't.
-
-> + */
-> +struct pcie_doe_task {
-> +	struct list_head h;
-> +	struct pcie_doe_exchange *ex;
-> +	int rv;
-> +	void (*cb)(void *private);
-> +	void *private;
-> +};
-> +
-> +/**
-> + * pcie_doe_sync() - Send a request, then wait for and receive response.
-> + * @doe: DOE mailbox state structure
-> + * @ex: Description of the buffers and vid, type used in this
-> + *      request/response pair
-
-s/vid/Vendor ID/ (I think?)
-
-> + * Excess data will be discarded.
-> + *
-> + * Return: payload in bytes on success, < 0 on error
-> + */
-> +int pcie_doe_sync(struct pcie_doe *doe, struct pcie_doe_exchange *ex)
-> +{
-> +	struct pcie_doe_task task;
-> +	DECLARE_COMPLETION_ONSTACK(c);
-> +	bool only_task;
-
-list_empty() actually returns "int".
-
-> +	/* DOE requests must be a whole number of DW */
-> +	if (ex->request_pl_sz % sizeof(u32))
-> +		return -EINVAL;
-> +
-> +	task.ex = ex;
-> +	task.cb = pcie_doe_task_complete;
-> +	task.private = &c;
-> +
-> +	mutex_lock(&doe->tasks_lock);
-> +	if (doe->dead) {
-> +		mutex_unlock(&doe->tasks_lock);
-> +		return -EIO;
-> +	}
-> +	only_task = list_empty(&doe->tasks);
-> +	list_add_tail(&task.h, &doe->tasks);
-> +	if (only_task)
-> +		schedule_delayed_work(&doe->statemachine, 0);
-> +	mutex_unlock(&doe->tasks_lock);
-> +	wait_for_completion(&c);
-> +
-> +	return task.rv;
-> +}
-> +
-> +static void doe_statemachine_work(struct work_struct *work)
-> +{
-> +	struct delayed_work *w = to_delayed_work(work);
-> +	struct pcie_doe *doe = container_of(w, struct pcie_doe, statemachine);
-> +	struct pci_dev *pdev = doe->pdev;
-> +	struct pcie_doe_task *task;
-> +	bool abort;
-> +	u32 val;
-> +	int rc;
-> +
-> +	mutex_lock(&doe->tasks_lock);
-> +	task = list_first_entry_or_null(&doe->tasks, struct pcie_doe_task, h);
-> +	abort = doe->abort;
-> +	doe->abort = false;
-> +	mutex_unlock(&doe->tasks_lock);
-> +
-> +	if (abort) {
-> +		/*
-> +		 * Currently only used during init - care needed if we want to generally
-> +		 * expose pcie_doe_abort() as it would impact queries in flight.
-
-Wrap to fit in 80 columns (more below).
-
-> +		 */
-> +		WARN_ON(task);
-> +		doe->state = DOE_WAIT_ABORT;
-> +		pcie_doe_abort_start(doe);
-> +		return;
-> +	}
-> +
-> +	switch (doe->state) {
-> +	case DOE_IDLE:
-> +		if (task == NULL)
-> +			return;
-> +
-> +		/* Nothing currently in flight so queue a task */
-> +		rc = pcie_doe_send_req(doe, task->ex);
-> +		/*
-> +		 * The specification does not provide any guidance on how long some other
-> +		 * entity could keep the DOE busy, so try for 1 second then fail.
-> +		 * Busy handling is best effort only, because there is not way of avoiding
-> +		 * racing against another user of the DOE.
-
-s/not way/no way/
-
-> +		 */
-> +		if (rc == -EBUSY) {
-> +			doe->busy_retries++;
-> +			if (doe->busy_retries == PCI_DOE_BUSY_MAX_RETRIES) {
-> +				/* Long enough, fail this request */
-> +				doe->busy_retries = 0;
-> +				goto busy;
-> +			}
-> +			schedule_delayed_work(w, HZ / PCI_DOE_BUSY_MAX_RETRIES);
-> +			return;
-> +		}
-> +		if (rc)
-> +			goto abort;
-> +		doe->busy_retries = 0;
-> +
-> +		doe->state = DOE_WAIT_RESP;
-> +		doe->timeout_jiffies = jiffies + HZ;
-> +		/* Now poll or wait for IRQ with timeout */
-
-Capitalize "IRQ" elsewhere to match this usage.
-
-> +		if (doe->irq > 0)
-> +			schedule_delayed_work(w, PCI_DOE_TIMEOUT);
-> +		else
-> +			schedule_delayed_work(w, PCI_DOE_POLL_INTERVAL);
-> +		return;
-> +
-> +	case DOE_WAIT_RESP:
-> +		/* Not possible to get here with NULL task */
-> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +		if (FIELD_GET(PCI_DOE_STATUS_ERROR, val)) {
-> +			rc = -EIO;
-> +			goto abort;
-> +		}
-> +
-> +		if (!FIELD_GET(PCI_DOE_STATUS_DATA_OBJECT_READY, val)) {
-> +			/* If not yet at timeout reschedule otherwise abort */
-> +			if (time_after(jiffies, doe->timeout_jiffies)) {
-> +				rc = -ETIMEDOUT;
-> +				goto abort;
-> +			}
-> +			schedule_delayed_work(w, PCI_DOE_POLL_INTERVAL);
-> +			return;
-> +		}
-> +
-> +		rc  = pcie_doe_recv_resp(doe, task->ex);
-> +		if (rc < 0)
-> +			goto abort;
-> +
-> +		doe->state = DOE_IDLE;
-> +
-> +		mutex_lock(&doe->tasks_lock);
-> +		list_del(&task->h);
-> +		if (!list_empty(&doe->tasks))
-> +			schedule_delayed_work(w, 0);
-> +		mutex_unlock(&doe->tasks_lock);
-> +
-> +		/* Set the return value to the length of received payload */
-> +		task->rv = rc;
-> +		task->cb(task->private);
-> +		return;
-> +
-> +	case DOE_WAIT_ABORT:
-> +	case DOE_WAIT_ABORT_ON_ERR:
-> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +
-> +		if (!FIELD_GET(PCI_DOE_STATUS_ERROR, val) &&
-> +		    !FIELD_GET(PCI_DOE_STATUS_BUSY, val)) {
-> +			/* Back to normal state - carry on */
-> +			mutex_lock(&doe->tasks_lock);
-> +			if (!list_empty(&doe->tasks))
-> +				schedule_delayed_work(w, 0);
-> +			mutex_unlock(&doe->tasks_lock);
-> +
-> +			/* For deliberately triggered abort, someone is waiting */
-> +			if (doe->state == DOE_WAIT_ABORT)
-> +				complete(&doe->abort_c);
-> +			doe->state = DOE_IDLE;
-> +
-> +			return;
-> +		}
-> +		if (time_after(jiffies, doe->timeout_jiffies)) {
-> +			struct pcie_doe_task *t, *n;
-> +
-> +			/* We are dead - abort all queued tasks */
-> +			dev_err(&pdev->dev, "DOE ABORT timed out\n");
-> +			mutex_lock(&doe->tasks_lock);
-> +			doe->dead = true;
-> +			list_for_each_entry_safe(t, n, &doe->tasks, h) {
-> +				t->rv = -EIO;
-> +				t->cb(t->private);
-> +				list_del(&t->h);
-> +			}
-> +
-> +			mutex_unlock(&doe->tasks_lock);
-> +			if (doe->state == DOE_WAIT_ABORT)
-> +				complete(&doe->abort_c);
-> +		}
-> +		return;
-> +	}
-> +
-> +abort:
-> +	pcie_doe_abort_start(doe);
-> +	doe->state = DOE_WAIT_ABORT_ON_ERR;
-> +busy:
-> +	mutex_lock(&doe->tasks_lock);
-> +	list_del(&task->h);
-> +	mutex_unlock(&doe->tasks_lock);
-> +
-> +	task->rv = rc;
-> +	task->cb(task->private);
-> +	/* If we got here via busy, and the queue isn't empty then we need to go again */
-> +	if (doe->state == DOE_IDLE) {
-> +		mutex_lock(&doe->tasks_lock);
-> +		if (!list_empty(&doe->tasks))
-> +			schedule_delayed_work(w, 0);
-> +		mutex_unlock(&doe->tasks_lock);
-> +	}
-> +}
-> +
-> +static int pcie_doe_discovery(struct pcie_doe *doe, u8 *index, u16 *vid,
-> +			      u8 *protocol)
-> +{
-> +	u32 request_pl = FIELD_PREP(PCI_DOE_DATA_OBJECT_DISC_REQ_3_INDEX, *index);
-> +	u32 response_pl;
-> +	struct pcie_doe_exchange ex = {
-> +		.vid = PCI_VENDOR_ID_PCI_SIG,
-> +		.protocol = PCI_DOE_PROTOCOL_DISCOVERY,
-> +		.request_pl = &request_pl,
-> +		.request_pl_sz = sizeof(request_pl),
-> +		.response_pl = &response_pl,
-> +		.response_pl_sz = sizeof(response_pl),
-> +	};
-> +	int ret;
-> +
-> +	ret = pcie_doe_sync(doe, &ex);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ret != sizeof(response_pl))
-> +		return -EIO;
-> +
-> +	*vid = FIELD_GET(PCI_DOE_DATA_OBJECT_DISC_RSP_3_VID, response_pl);
-> +	*protocol = FIELD_GET(PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL, response_pl);
-> +	*index = FIELD_GET(PCI_DOE_DATA_OBJECT_DISC_RSP_3_NEXT_INDEX, response_pl);
-> +
-> +	return 0;
-> +}
-> +
-> +static int pcie_doe_cache_protocols(struct pcie_doe *doe)
-> +{
-> +	u8 index = 0;
-> +	int rc;
-> +
-> +	/* Discovery protocol must always be supported and must report itself */
-> +	doe->num_prots = 1;
-> +	doe->prots = kzalloc(sizeof(*doe->prots) * doe->num_prots, GFP_KERNEL);
-> +	if (doe->prots == NULL)
-> +		return -ENOMEM;
-> +
-> +	do {
-> +		struct pcie_doe_prot *prot, *prot_new;
-> +
-> +		prot = &doe->prots[doe->num_prots - 1];
-> +		rc = pcie_doe_discovery(doe, &index, &prot->vid, &prot->type);
-> +		if (rc)
-> +			goto free_prots;
-> +
-> +		if (index) {
-> +			prot_new = krealloc(doe->prots,
-> +					    sizeof(*doe->prots) * doe->num_prots,
-> +					    GFP_KERNEL);
-> +			if (prot_new == NULL) {
-> +				rc = -ENOMEM;
-> +				goto free_prots;
-> +			}
-> +			doe->prots = prot_new;
-> +			doe->num_prots++;
-> +		}
-> +	} while (index);
-> +
-> +	return 0;
-> +
-> +free_prots:
-> +	kfree(doe->prots);
-> +	return rc;
-> +}
-> +
-> +static void pcie_doe_init(struct pcie_doe *doe, struct pci_dev *pdev, int doe_offset)
-> +{
-> +	mutex_init(&doe->tasks_lock);
-> +	init_completion(&doe->abort_c);
-> +	doe->cap = doe_offset;
-> +	doe->pdev = pdev;
-> +	INIT_LIST_HEAD(&doe->tasks);
-> +	INIT_DELAYED_WORK(&doe->statemachine, doe_statemachine_work);
-> +}
-> +
-> +static int pcie_doe_abort(struct pcie_doe *doe)
-> +{
-> +	reinit_completion(&doe->abort_c);
-> +	mutex_lock(&doe->tasks_lock);
-> +	doe->abort = true;
-> +	mutex_unlock(&doe->tasks_lock);
-> +	schedule_delayed_work(&doe->statemachine, 0);
-> +	wait_for_completion(&doe->abort_c);
-> +
-> +	if (doe->dead)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static int pcie_doe_register(struct pcie_doe *doe)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +	bool poll = !pci_dev_msi_enabled(pdev);
-> +	int rc, irq;
-> +	u32 val;
-> +
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_CAP, &val);
-> +
-> +	if (!poll && FIELD_GET(PCI_DOE_CAP_INT, val)) {
-> +		irq = pci_irq_vector(pdev, FIELD_GET(PCI_DOE_CAP_IRQ, val));
-> +		if (irq < 0)
-> +			return irq;
-> +
-> +		rc = request_irq(irq, pcie_doe_irq, 0, "DOE", doe);
-> +		if (rc)
-> +			return rc;
-> +
-> +		doe->irq = irq;
-> +		pci_write_config_dword(pdev, doe->cap + PCI_DOE_CTRL,
-> +				       FIELD_PREP(PCI_DOE_CTRL_INT_EN, 1));
-> +	}
-> +
-> +	/* Reset the mailbox by issuing an abort */
-> +	rc = pcie_doe_abort(doe);
-> +	if (rc)
-> +		goto err_free_irqs;
-> +
-> +	return 0;
-> +
-> +err_free_irqs:
-> +	if (doe->irq > 0)
-> +		free_irq(doe->irq, doe);
-> +
-> +	return rc;
-> +}
-> +
-> +static void pcie_doe_unregister(struct pcie_doe *doe)
-> +{
-> +	if (doe->irq > 0)
-> +		free_irq(doe->irq, doe);
-> +}
-> +
-> +void pcie_doe_unregister_all(struct pci_dev *pdev)
-> +{
-> +	struct pcie_doe *doe, *next;
-> +
-> +	list_for_each_entry_safe(doe, next, &pdev->doe_list, h) {
-> +		/* First halt the state machine */
-> +		cancel_delayed_work_sync(&doe->statemachine);
-> +		kfree(doe->prots);
-> +		pcie_doe_unregister(doe);
-> +		kfree(doe);
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(pcie_doe_unregister_all);
-> +
-> +/**
-> + * pcie_doe_register_all() - Find and register all DOE mailboxes
-> + * @pdev: PCI device whose DOE mailboxes we are finding.
-> + *
-> + * Will locate any DOE mailboxes present on the device and cache the
-> + * protocols so that pcie_doe_find() can be used to retrieve a suitable DOE
-> + * instance.
-> + * DOE mailboxes are available until pcie_doe_unregister_all()
-> + * is called.
-> + *
-> + * RETURNS: 0 on success, < 0 on error
-
-Different styles, pick one:
-
- * Return: payload in bytes on success, < 0 on error
- * RETURNS: 0 on success, < 0 on error
- * RETURNS: Pointer to DOE instance, or NULL if no suitable instance available.
-
-> + */
-> +int pcie_doe_register_all(struct pci_dev *pdev)
-> +{
-> +	struct pcie_doe *doe;
-> +	int pos = 0;
-> +	int rc;
-> +
-> +	INIT_LIST_HEAD(&pdev->doe_list);
-> +
-> +	/* Walk the DOE extended capabilities and add to per pci_dev list */
-> +	while (true) {
-> +
-> +		pos = pci_find_next_ext_capability(pdev, pos, PCI_EXT_CAP_ID_DOE);
-> +		if (!pos)
-> +			return 0;
-> +
-> +		doe = kzalloc(sizeof(*doe), GFP_KERNEL);
-> +		if (!doe) {
-> +			rc = -ENOMEM;
-> +			goto free_does;
-> +		}
-> +
-> +		pcie_doe_init(doe, pdev, pos);
-> +		rc = pcie_doe_register(doe);
-> +		if (rc) {
-> +			kfree(doe);
-> +			goto free_does;
-> +		}
-> +
-> +		rc = pcie_doe_cache_protocols(doe);
-> +		if (rc) {
-> +			pcie_doe_unregister(doe);
-> +			kfree(doe);
-> +			goto free_does;
-> +		}
-> +
-> +		list_add(&doe->h, &pdev->doe_list);
-> +	}
-> +
-> +free_does:
-> +	pcie_doe_unregister_all(pdev);
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(pcie_doe_register_all);
-> +
-> +/**
-> + * pcie_doe_find() - Find the first DOE instance that supports a given protocol
-> + * @pdev: Device on which to find the DOE instance.
-> + * @vid: Vendor ID.
-> + * @type: Specific protocol for this vendor.
-> + *
-> + * RETURNS: Pointer to DOE instance, or NULL if no suitable instance available.
-> + */
-> +struct pcie_doe *pcie_doe_find(struct pci_dev *pdev, u16 vid, u8 type)
-> +{
-> +	struct pcie_doe *doe;
-> +	int i;
-> +
-> +	list_for_each_entry(doe, &pdev->doe_list, h) {
-> +		for (i = 0; i < doe->num_prots; i++)
-> +			if ((doe->prots[i].vid == vid) &&
-> +			    (doe->prots[i].type == type))
-> +				return doe;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(pcie_doe_find);
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 86c799c97b77..5d958a63e8c7 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -332,6 +332,9 @@ struct pci_dev {
->  #ifdef CONFIG_PCIEPORTBUS
->  	struct rcec_ea	*rcec_ea;	/* RCEC cached endpoint association */
->  	struct pci_dev  *rcec;          /* Associated RCEC device */
-> +#endif
-> +#ifdef CONFIG_PCIE_DOE
-> +	struct list_head doe_list;	/* Data Object Exchange mailboxes */
->  #endif
->  	u8		pcie_cap;	/* PCIe capability offset */
->  	u8		msi_cap;	/* MSI capability offset */
-> diff --git a/include/linux/pcie-doe.h b/include/linux/pcie-doe.h
-> new file mode 100644
-> index 000000000000..794d6f090779
-> --- /dev/null
-> +++ b/include/linux/pcie-doe.h
-> @@ -0,0 +1,85 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Data Object Exchange was added to the PCI spec as an ECN to 5.0.
-> + *
-> + * Copyright (C) 2021 Huawei
-> + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> + */
-> +
-> +#include <linux/completion.h>
-> +#include <linux/list.h>
-> +#include <linux/mutex.h>
-> +
-> +#ifndef LINUX_PCIE_DOE_H
-> +#define LINUX_PCIE_DOE_H
-> +
-> +struct pcie_doe_prot {
-> +	u16 vid;
-> +	u8 type;
-> +};
-> +
-> +struct workqueue_struct;
-> +
-> +enum pcie_doe_state {
-> +	DOE_IDLE,
-> +	DOE_WAIT_RESP,
-> +	DOE_WAIT_ABORT,
-> +	DOE_WAIT_ABORT_ON_ERR,
-> +};
-> +
-> +struct pcie_doe_exchange {
-> +	u16 vid;
-> +	u8 protocol;
-> +	u32 *request_pl;
-> +	size_t request_pl_sz;
-> +	u32 *response_pl;
-> +	size_t response_pl_sz;
-> +};
-> +
-> +/**
-> + * struct pcie_doe - State to support use of DOE mailbox
-> + * @cap: Config space offset to base of DOE capability.
-> + * @pdev: PCI device that hosts this DOE.
-> + * @abort_c: Completion used for initial abort handling.
-> + * @irq: Interrupt used for signaling DOE ready or abort.
-> + * @prots: Cache of identifiers for protocols supported.
-> + * @num_prots: Size of prots cache.
-> + * @h: Used for DOE instance lifetime management.
-> + * @wq: Workqueue used to handle state machine and polling / timeouts
-> + * @tasks: List of task in flight + pending.
-> + * @tasks_lock: Protect the tasks list.
-> + * @statemachine: Work item for the DOE statemachine
-> + * @state: Current state of this DOE.
-> + * @timeout_jiffies: 1 second after GO set.
-> + * @busy_retries: Count of retry attempts
-> + * @abort: Request a manual abort (e.g. on init)
-> + * @dead: Used to mark a DOE for which an ABORT has timed out.
-> + *        Further messages will immediately be aborted with error.
-> + */
-> +struct pcie_doe {
-> +	int cap;
-> +	struct pci_dev *pdev;
-> +	struct completion abort_c;
-> +	int irq;
-> +	struct pcie_doe_prot *prots;
-> +	int num_prots;
-> +	struct list_head h;
-> +
-> +	struct workqueue_struct *wq;
-> +	struct list_head tasks;
-> +	struct mutex tasks_lock;
-> +	struct delayed_work statemachine;
-> +	enum pcie_doe_state state;
-> +	unsigned long timeout_jiffies;
-> +	unsigned int busy_retries;
-> +	bool abort;
-> +	bool dead;
-
-Slight preference for "unsigned int abort:1" in a struct:
-https://lore.kernel.org/r/CA+55aFzKQ6Pj18TB8p4Yr0M4t+S+BsiHH=BJNmn=76-NcjTj-g@mail.gmail.com/
-
-> +};
-> +
-> +int pcie_doe_register_all(struct pci_dev *pdev);
-> +void pcie_doe_unregister_all(struct pci_dev *pdev);
-> +struct pcie_doe *pcie_doe_find(struct pci_dev *pdev, u16 vid, u8 type);
-> +
-> +int pcie_doe_sync(struct pcie_doe *doe, struct pcie_doe_exchange *ex);
-> +
-> +#endif
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> index e709ae8235e7..4d8a5fee2cdf 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -730,7 +730,8 @@
->  #define PCI_EXT_CAP_ID_DVSEC	0x23	/* Designated Vendor-Specific */
->  #define PCI_EXT_CAP_ID_DLF	0x25	/* Data Link Feature */
->  #define PCI_EXT_CAP_ID_PL_16GT	0x26	/* Physical Layer 16.0 GT/s */
-> -#define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_PL_16GT
-> +#define PCI_EXT_CAP_ID_DOE	0x2E	/* Data Object Exchange */
-> +#define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_DOE
->  
->  #define PCI_EXT_CAP_DSN_SIZEOF	12
->  #define PCI_EXT_CAP_MCAST_ENDPOINT_SIZEOF 40
-> @@ -1092,4 +1093,30 @@
->  #define  PCI_PL_16GT_LE_CTRL_USP_TX_PRESET_MASK		0x000000F0
->  #define  PCI_PL_16GT_LE_CTRL_USP_TX_PRESET_SHIFT	4
->  
-> +/* Data Object Exchange */
-> +#define PCI_DOE_CAP		0x04	/* DOE Capabilities Register */
-> +#define  PCI_DOE_CAP_INT			0x00000001  /* Interrupt Support */
-> +#define  PCI_DOE_CAP_IRQ			0x00000ffe  /* Interrupt Message Number */
-> +#define PCI_DOE_CTRL		0x08	/* DOE Control Register */
-> +#define  PCI_DOE_CTRL_ABORT			0x00000001  /* DOE Abort */
-> +#define  PCI_DOE_CTRL_INT_EN			0x00000002  /* DOE Interrupt Enable */
-> +#define  PCI_DOE_CTRL_GO			0x80000000  /* DOE Go */
-> +#define PCI_DOE_STATUS		0x0C	/* DOE Status Register */
-> +#define  PCI_DOE_STATUS_BUSY			0x00000001  /* DOE Busy */
-> +#define  PCI_DOE_STATUS_INT_STATUS		0x00000002  /* DOE Interrupt Status */
-> +#define  PCI_DOE_STATUS_ERROR			0x00000004  /* DOE Error */
-> +#define  PCI_DOE_STATUS_DATA_OBJECT_READY	0x80000000  /* Data Object Ready */
-> +#define PCI_DOE_WRITE		0x10	/* DOE Write Data Mailbox Register */
-> +#define PCI_DOE_READ		0x14	/* DOE Read Data Mailbox Register */
-> +
-> +/* DOE Data Object - note not actually registers */
-> +#define PCI_DOE_DATA_OBJECT_HEADER_1_VID	0x0000FFFF
-> +#define PCI_DOE_DATA_OBJECT_HEADER_1_TYPE	0x00FF0000
-> +#define PCI_DOE_DATA_OBJECT_HEADER_2_LENGTH	0x0003FFFF
-> +
-> +#define PCI_DOE_DATA_OBJECT_DISC_REQ_3_INDEX	0x000000FF
-> +#define PCI_DOE_DATA_OBJECT_DISC_RSP_3_VID	0x0000FFFF
-> +#define PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL	0x00FF0000
-> +#define PCI_DOE_DATA_OBJECT_DISC_RSP_3_NEXT_INDEX 0xFF000000
-
-This file is a mix, but the consensus is lower-case in hex.  I'd leave
-PCI_EXT_CAP_ID_DOE as-is to match the local context and use
-lower-case consistently in this hunk.
-
->  #endif /* LINUX_PCI_REGS_H */
-> -- 
-> 2.19.1
-> 
