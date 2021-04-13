@@ -2,95 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2585635E692
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 20:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F4735E6BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 21:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347983AbhDMSj1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 14:39:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54976 "EHLO mail.kernel.org"
+        id S240161AbhDMTBF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 15:01:05 -0400
+Received: from mga05.intel.com ([192.55.52.43]:34357 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347975AbhDMSjK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Apr 2021 14:39:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A07AD613C7;
-        Tue, 13 Apr 2021 18:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618339130;
-        bh=ZzZvh+8hqbrZC/s++4ql+SYt7zdY1s/EX+w4MxcPS6s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ZXvxxtbKnWHHOu9sSwQuukRgWl/ILhFeyNn3T5tw5fzlHD44uBzOrxfuT0wU37BP/
-         1XAMCQ14zD+cmWWBl5i+S1FECs4c39giyl5frvgUO5uEBtMkUg91fB6HHgV0FAD71Y
-         lUmoHf4lXu7zq67zrZgH0LLo4e/1c8cKcvn0r0cv92JeDui0NNi9rlUaLznEPjNa8p
-         StxqAqQeBZBY4/TLnzVZYqPvhz5M79g9sUequTGDw0zZutl+BGyGOo1Jpw0Bh677cc
-         jkzazGjD0BbuzHbTooWvXRgOLu2dGeJyfOKyDRNVyKZasKJry/bEb9o4JJrDVEc56q
-         4dscHz5CGtZcw==
-Date:   Tue, 13 Apr 2021 13:38:49 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        linux-acpi@vger.kernel.org, alison.schofield@intel.com,
-        vishal.l.verma@intel.com, ira.weiny@intel.com, linuxarm@huawei.com,
-        Fangjian <f.fangjian@huawei.com>
-Subject: Re: [RFC PATCH v2 1/4] PCI: Add vendor define ID for the PCI SIG
-Message-ID: <20210413183849.GA2253107@bjorn-Precision-5520>
+        id S230397AbhDMTBE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 13 Apr 2021 15:01:04 -0400
+IronPort-SDR: S4Oy7l2ID2WDCBasHKZHaUkg3XwYVfIUGih/wbF16bgGrRpuJ+7m+i+HAoj76KknRwGbIYxrMW
+ zOwTeaprXisw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9953"; a="279791308"
+X-IronPort-AV: E=Sophos;i="5.82,220,1613462400"; 
+   d="scan'208";a="279791308"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2021 12:00:35 -0700
+IronPort-SDR: YEYZ9PrUFNIeD52/0lbNqFpdYVSE/a+PNNIjh2WVNCHXLUZfot91z4rJjSy1FXquDjx8EX3LFd
+ RrTQi7kdgTyg==
+X-IronPort-AV: E=Sophos;i="5.82,220,1613462400"; 
+   d="scan'208";a="443533651"
+Received: from schen9-mobl.amr.corp.intel.com ([10.209.18.184])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2021 12:00:34 -0700
+Subject: Re: [RFC PATCH v3 0/2] scheduler: expose the topology of clusters and
+ add cluster scheduler
+To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Morten Rasmussen <morten.rasmussen@arm.com>
+Cc:     "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "bsegall@google.com" <bsegall@google.com>,
+        "mgorman@suse.de" <mgorman@suse.de>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
+        "xuwei (O)" <xuwei5@huawei.com>,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>,
+        "tiantao (H)" <tiantao6@hisilicon.com>,
+        Guodong Xu <guodong.xu@linaro.org>,
+        yangyicong <yangyicong@huawei.com>
+References: <20210106083026.40444-1-song.bao.hua@hisilicon.com>
+ <737932c9-846a-0a6b-08b8-e2d2d95b67ce@linux.intel.com>
+ <20210108151241.GA47324@e123083-lin>
+ <99c07bdf-02d1-153a-bd1e-2f4200cc67c5@linux.intel.com>
+ <20210111092811.GB47324@e123083-lin>
+ <4fdc781e-7385-2ae6-d9c9-3ec165f473c4@arm.com>
+ <9201b56a29dd4dacb7d9fcbf307ca5ff@hisilicon.com>
+From:   Tim Chen <tim.c.chen@linux.intel.com>
+Message-ID: <6e067798-5585-5169-38fc-77e173831af5@linux.intel.com>
+Date:   Tue, 13 Apr 2021 12:00:27 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210413192135.000024de@Huawei.com>
+In-Reply-To: <9201b56a29dd4dacb7d9fcbf307ca5ff@hisilicon.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 13, 2021 at 07:21:35PM +0100, Jonathan Cameron wrote:
-> On Tue, 13 Apr 2021 11:34:48 -0500
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> 
-> > On Wed, Apr 14, 2021 at 12:01:56AM +0800, Jonathan Cameron wrote:
-> > > This ID is used in DOE headers to identify protocols that are
-> > > defined within the PCI Express Base Specification.  
-> > 
-> > Can you please include the specific spec citation here?
-> 
-> Will make sure to add to cover leter for next version but for now, 
-> 
-> Table 7-x2: Data Object Exchange ECN
-> (first column lists the Vendor ID for the protocols)
 
-I wish the SIG would formally define this Vendor ID instead of just
-starting to use it, but this is better than nothing.
 
-Please put this in the log for this commit, since the cover letter may
-not be merged and isn't directly connected to this commit.
+On 4/13/21 3:45 AM, Song Bao Hua (Barry Song) wrote:
+> 
+> 
+>
+> Right now in the main cases of using wake_affine to achieve
+> better performance, processes are actually bound within one
+> numa which is also a LLC in kunpeng920. 
+> 
+> Probably LLC=NUMA is also true for X86 Jacobsville, Tim?
 
-> Available on the PCI SIG spec downloads page.
-> It also exists in various other places in the 5.0 spec, but I'm
-> not sure if any are software visible (e.g. VDMs)
-> 
-> Jonathan
-> 
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > > Since V1: New Patch
-> > > 
-> > >  include/linux/pci_ids.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> > > index a76ccb697bef..2c0459c23331 100644
-> > > --- a/include/linux/pci_ids.h
-> > > +++ b/include/linux/pci_ids.h
-> > > @@ -149,6 +149,7 @@
-> > >  #define PCI_CLASS_OTHERS		0xff
-> > >  
-> > >  /* Vendors and devices.  Sort key: vendor first, device next. */
-> > > +#define PCI_VENDOR_ID_PCI_SIG		0x0001
-> > >  
-> > >  #define PCI_VENDOR_ID_LOONGSON		0x0014
-> > >  
-> > > -- 
-> > > 2.19.1
-> > >   
-> 
+In general for x86, LLC is partitioned at the sub-numa cluster level.  
+LLC could be divided between sub-numa cluster within a NUMA node.
+That said, for Jacobsville, we don't have sub-numa clusters
+so LLC=NUMA is true for that platform. 
+
+Tim
