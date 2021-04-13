@@ -2,259 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2836535D82B
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 08:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6352435DB5C
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Apr 2021 11:36:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244945AbhDMGl4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Apr 2021 02:41:56 -0400
-Received: from gusto.metanet.ch ([80.74.154.155]:59979 "EHLO gusto.metanet.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244929AbhDMGlw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Apr 2021 02:41:52 -0400
-X-Greylist: delayed 388 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Apr 2021 02:41:52 EDT
-Received: from localhost (localhost [127.0.0.1]) by gusto.metanet.ch (Postfix) with ESMTPSA id 6553B4F00FCF;
-        Tue, 13 Apr 2021 08:35:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fabwu.ch; s=default;
-        t=1618295703; bh=iotXkIv2YJ/3k9E4Li4H919pO46t2zI3WfkmxCkGTaY=;
-        h=From:To:Subject;
-        b=ztyA+qspkNC7f6xjuJPbST3gOIG58nwIBvhzG+SRfPwgcwZj2PUr22zpM5Ve5hADW
-         3bEheDBgN3BTWcV6tvoLqvAE63FXBJff0I/ICxWvbNpnKAONp1/Ifi0+xxDegKn+RZ
-         VrLOYpY3q8q5LxY2AgrrlGkQnWgin9ub0UAHNflc=
-Authentication-Results: gusto.metanet.ch;
-        spf=pass (sender IP is 2001:67c:10ec:574f:8000::55) smtp.mailfrom=me@fabwu.ch smtp.helo=localhost
-Received-SPF: pass (gusto.metanet.ch: connection is authenticated)
-From:   =?UTF-8?q?Fabian=20W=C3=BCthrich?= <me@fabwu.ch>
-To:     linux-media@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Cc:     Jacopo Mondi <jacopo@jmondi.org>, Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Dan Scally <djrscally@gmail.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?q?Fabian=20W=C3=BCthrich?= <me@fabwu.ch>
-Subject: [PATCH v2] ipu3-cio2: Parse sensor orientation and rotation
-Date:   Tue, 13 Apr 2021 08:34:35 +0200
-Message-Id: <20210413063435.18111-1-me@fabwu.ch>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <2090a4ab-bb07-140a-f794-764f18969854@fabwu.ch>
-References: <2090a4ab-bb07-140a-f794-764f18969854@fabwu.ch>
+        id S229589AbhDMJgV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Apr 2021 05:36:21 -0400
+Received: from mail-oo1-f45.google.com ([209.85.161.45]:38441 "EHLO
+        mail-oo1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229446AbhDMJgU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Apr 2021 05:36:20 -0400
+Received: by mail-oo1-f45.google.com with SMTP id y23-20020a4ade170000b02901e6250b3be6so1199948oot.5
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Apr 2021 02:36:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eIg5o9ripbpko5Q3BIHhp8Gr7ZkG78VbbgSlQpkzJY8=;
+        b=foNh4G3TOR+PDLTMepnipkBLc/yJpDA6mmvHaUQw4/lX1TzKEIQeazDn/fxBdJmWzB
+         Rb0FbwpU0XMKbQX4hzgerMCLCxMNKQ01+Y4Ffa2X/cIAUuS6sn9e/kTe9asC/0Uhp4Ul
+         BjWY2XWKo/K8uAJ8hNZ4gnulSL6BAwJQc5Ki86xk7usrQ95lHuvntsbyE616P3ZMGqdw
+         4Z2eU6MSOzXxoPv5dD9SPgn5fVrmCN55J0D/n0QiGuWt0JDZ/14U4nxirpaZvT54ScOK
+         Oi8Ho4nDuusYXFzjWFpGVTIakXcq35fUJ/ctKlEM9XOSSG+nyM7sA/FN1YtsX3MuAjjZ
+         8cmQ==
+X-Gm-Message-State: AOAM533Khanm2/eF47ot4anufvtGFO8TMRqE7RViIoT1yCNtKXjWPrYm
+        t9unzJtxL147GuKrw90V6x3dOBFVYaeOOAE1wuE=
+X-Google-Smtp-Source: ABdhPJxGQC15YZr7YtZeIyoBou6X73FBZJejmRyXq2SeLevSTxJwqWWGF+IdO92hnwVySA0l3MA5agiRYPAxQcg2Q2k=
+X-Received: by 2002:a4a:d48b:: with SMTP id o11mr26121710oos.2.1618306560678;
+ Tue, 13 Apr 2021 02:36:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <7d941a3c-bced-09cf-27a1-b61f0d20ef4c@redhat.com>
+ <CAJZ5v0iLSbfRH9A3EMUTrY5=vPdp=uVOF2XQnWkAbko9NjPqJg@mail.gmail.com>
+ <CAJZ5v0gOMZbyD5r+bCL9vD6_NrFz0nAq+eY2QDtxOY4DfsXG6w@mail.gmail.com> <273d3ea7-aa74-6556-7fef-fb65b620bc95@redhat.com>
+In-Reply-To: <273d3ea7-aa74-6556-7fef-fb65b620bc95@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 13 Apr 2021 11:35:48 +0200
+Message-ID: <CAJZ5v0i=Ahxjnx_K1M+BPDdR-3_v8aBTPVFRg3s+bG9OeaEiwQ@mail.gmail.com>
+Subject: Re: [5.12 regression] DSDT overriding from initrd no longer works
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="000000000000b0005705bfd75bd9"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The sensor orientation is read from the _PLC ACPI buffer and converted
-to a v4l2 format.
+--000000000000b0005705bfd75bd9
+Content-Type: text/plain; charset="UTF-8"
 
-See https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
-page 351 for a definition of the Panel property.
+On Mon, Apr 12, 2021 at 8:53 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 4/12/21 8:11 PM, Rafael J. Wysocki wrote:
+> > On Mon, Apr 12, 2021 at 8:01 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>
+> >> On Mon, Apr 12, 2021 at 7:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>
+> >>> Hi Rafael,
+> >>>
+> >>> Sorry about the timing of reporting this regression.
+> >>
+> >> Oh well.
+> >>
+> >>> I just noticed that overriding the DSDT (*) from the initrd will not work in 5.12,
+> >>> this is caused by:
+> >>>
+> >>> commit 1a1c130ab757 ("ACPI: tables: x86: Reserve memory occupied by ACPI tables")
+> >>>
+> >>> This makes the initial acpi_locate_initial_tables() call happen earlier
+> >>> then before, but the acpi_table_upgrade) call in arch/x86/kernel/setup.c is
+> >>> not moved up, so the tables in the initrd are now only parsed and saved
+> >>> after the initial ACPI table scanning has already been done.
+> >>>
+> >>> I guess fixing this might be as easy as moving the acpi_table_upgrade) call
+> >>> higher in arch/x86/kernel/setup.c but I'm not sure if that is save to do.
+> >>
+> >> Why do you think it may not be safe?
+> >
+> > OK, so it won't work in some cases, because acpi_table_upgrade() needs
+> > to be called after reserve_initrd(),
+>
+> Right I notice it was sitting right after reserve_initrd() which made me think
+> that it probably needed to be after that. Sorry I should have mentioned that
+> in my original email.
+>
+> > so I guess the commit above will
+> > need to be reverted.
+>
+> One possible solution which I was wondering about is to modify
+> acpi_table_initrd_scan() to have it call acpi_tb_override_table()
+> instead of acpi_install_table() for existing tables using the matching
+> logic from acpi_table_initrd_override(). But I'm not sure when the
+> parsing of the DSDT is done. If acpi_table_initrd_scan() runs before
+> the first parsing of the DSDT is done then I think that that should work.
+>
+> This might be more 5.13 material though and for 5.12 a revert is
+> probably best.
 
-The sensor rotation is read from the SSDB ACPI buffer and converted into
-degrees.
+The attached change should make it work again, though.  Can you please verify?
 
-Signed-off-by: Fabian Wüthrich <me@fabwu.ch>
-Reviewed-by: Daniel Scally <djrscally@gmail.com>
----
-Changes in v2:
-  - Move ACPI PLD constants to ACPI headers
-  - Fix dev_properties size
+> I also just remembered that at least the Intel audio folks rely on
+> DSDT overrides to get some (prototype) boards in their CI to work.
 
- drivers/media/pci/intel/ipu3/cio2-bridge.c | 60 ++++++++++++++++++++--
- drivers/media/pci/intel/ipu3/cio2-bridge.h |  9 +++-
- include/acpi/acbuffer.h                    |  9 ++++
- 3 files changed, 73 insertions(+), 5 deletions(-)
+But they haven't complained so far.
 
-diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-index c2199042d3db..926141e9a516 100644
---- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-+++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-@@ -29,6 +29,7 @@ static const struct cio2_sensor_config cio2_supported_sensors[] = {
- static const struct cio2_property_names prop_names = {
- 	.clock_frequency = "clock-frequency",
- 	.rotation = "rotation",
-+	.orientation = "orientation",
- 	.bus_type = "bus-type",
- 	.data_lanes = "data-lanes",
- 	.remote_endpoint = "remote-endpoint",
-@@ -72,11 +73,51 @@ static int cio2_bridge_read_acpi_buffer(struct acpi_device *adev, char *id,
- 	return ret;
- }
- 
-+static u32 cio2_bridge_parse_rotation(struct cio2_sensor *sensor)
-+{
-+	switch (sensor->ssdb.degree) {
-+	case CIO2_SENSOR_ROTATION_NORMAL:
-+		return 0;
-+	case CIO2_SENSOR_ROTATION_INVERTED:
-+		return 180;
-+	default:
-+		dev_warn(&sensor->adev->dev,
-+			 "Unknown rotation %d. Assume 0 degree rotation\n",
-+			 sensor->ssdb.degree);
-+		return 0;
-+	}
-+}
-+
-+static enum v4l2_fwnode_orientation cio2_bridge_parse_orientation(struct cio2_sensor *sensor)
-+{
-+	switch (sensor->pld->panel) {
-+	case ACPI_PLD_PANEL_FRONT:
-+		return V4L2_FWNODE_ORIENTATION_FRONT;
-+	case ACPI_PLD_PANEL_BACK:
-+		return V4L2_FWNODE_ORIENTATION_BACK;
-+	case ACPI_PLD_PANEL_TOP:
-+	case ACPI_PLD_PANEL_LEFT:
-+	case ACPI_PLD_PANEL_RIGHT:
-+	case ACPI_PLD_PANEL_UNKNOWN:
-+		return V4L2_FWNODE_ORIENTATION_EXTERNAL;
-+	default:
-+		dev_warn(&sensor->adev->dev, "Unknown _PLD panel value %d\n",
-+			 sensor->pld->panel);
-+		return V4L2_FWNODE_ORIENTATION_EXTERNAL;
-+	}
-+}
-+
- static void cio2_bridge_create_fwnode_properties(
- 	struct cio2_sensor *sensor,
- 	struct cio2_bridge *bridge,
- 	const struct cio2_sensor_config *cfg)
- {
-+	u32 rotation;
-+	enum v4l2_fwnode_orientation orientation;
-+
-+	rotation = cio2_bridge_parse_rotation(sensor);
-+	orientation = cio2_bridge_parse_orientation(sensor);
-+
- 	sensor->prop_names = prop_names;
- 
- 	sensor->local_ref[0].node = &sensor->swnodes[SWNODE_CIO2_ENDPOINT];
-@@ -85,9 +126,12 @@ static void cio2_bridge_create_fwnode_properties(
- 	sensor->dev_properties[0] = PROPERTY_ENTRY_U32(
- 					sensor->prop_names.clock_frequency,
- 					sensor->ssdb.mclkspeed);
--	sensor->dev_properties[1] = PROPERTY_ENTRY_U8(
-+	sensor->dev_properties[1] = PROPERTY_ENTRY_U32(
- 					sensor->prop_names.rotation,
--					sensor->ssdb.degree);
-+					rotation);
-+	sensor->dev_properties[2] = PROPERTY_ENTRY_U32(
-+					sensor->prop_names.orientation,
-+					orientation);
- 
- 	sensor->ep_properties[0] = PROPERTY_ENTRY_U32(
- 					sensor->prop_names.bus_type,
-@@ -159,6 +203,7 @@ static void cio2_bridge_unregister_sensors(struct cio2_bridge *bridge)
- 	for (i = 0; i < bridge->n_sensors; i++) {
- 		sensor = &bridge->sensors[i];
- 		software_node_unregister_nodes(sensor->swnodes);
-+		ACPI_FREE(sensor->pld);
- 		acpi_dev_put(sensor->adev);
- 	}
- }
-@@ -170,6 +215,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 	struct fwnode_handle *fwnode;
- 	struct cio2_sensor *sensor;
- 	struct acpi_device *adev;
-+	acpi_status status;
- 	int ret;
- 
- 	for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-@@ -193,11 +239,15 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 		if (ret)
- 			goto err_put_adev;
- 
-+		status = acpi_get_physical_device_location(adev->handle, &sensor->pld);
-+		if (ACPI_FAILURE(status))
-+			goto err_put_adev;
-+
- 		if (sensor->ssdb.lanes > CIO2_MAX_LANES) {
- 			dev_err(&adev->dev,
- 				"Number of lanes in SSDB is invalid\n");
- 			ret = -EINVAL;
--			goto err_put_adev;
-+			goto err_free_pld;
- 		}
- 
- 		cio2_bridge_create_fwnode_properties(sensor, bridge, cfg);
-@@ -205,7 +255,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 
- 		ret = software_node_register_nodes(sensor->swnodes);
- 		if (ret)
--			goto err_put_adev;
-+			goto err_free_pld;
- 
- 		fwnode = software_node_fwnode(&sensor->swnodes[
- 						      SWNODE_SENSOR_HID]);
-@@ -226,6 +276,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 
- err_free_swnodes:
- 	software_node_unregister_nodes(sensor->swnodes);
-+err_free_pld:
-+	ACPI_FREE(sensor->pld);
- err_put_adev:
- 	acpi_dev_put(sensor->adev);
- err_out:
-diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.h b/drivers/media/pci/intel/ipu3/cio2-bridge.h
-index dd0ffcafa489..202c7d494f7a 100644
---- a/drivers/media/pci/intel/ipu3/cio2-bridge.h
-+++ b/drivers/media/pci/intel/ipu3/cio2-bridge.h
-@@ -12,6 +12,10 @@
- #define CIO2_MAX_LANES				4
- #define MAX_NUM_LINK_FREQS			3
- 
-+/* Values are educated guesses as we don't have a spec */
-+#define CIO2_SENSOR_ROTATION_NORMAL		0
-+#define CIO2_SENSOR_ROTATION_INVERTED		1
-+
- #define CIO2_SENSOR_CONFIG(_HID, _NR, ...)	\
- 	(const struct cio2_sensor_config) {	\
- 		.hid = _HID,			\
-@@ -80,6 +84,7 @@ struct cio2_sensor_ssdb {
- struct cio2_property_names {
- 	char clock_frequency[16];
- 	char rotation[9];
-+	char orientation[12];
- 	char bus_type[9];
- 	char data_lanes[11];
- 	char remote_endpoint[16];
-@@ -106,9 +111,11 @@ struct cio2_sensor {
- 	struct cio2_node_names node_names;
- 
- 	struct cio2_sensor_ssdb ssdb;
-+	struct acpi_pld_info *pld;
-+
- 	struct cio2_property_names prop_names;
- 	struct property_entry ep_properties[5];
--	struct property_entry dev_properties[3];
-+	struct property_entry dev_properties[4];
- 	struct property_entry cio2_properties[3];
- 	struct software_node_ref_args local_ref[1];
- 	struct software_node_ref_args remote_ref[1];
-diff --git a/include/acpi/acbuffer.h b/include/acpi/acbuffer.h
-index 18197c16149f..d42e82a82852 100644
---- a/include/acpi/acbuffer.h
-+++ b/include/acpi/acbuffer.h
-@@ -207,4 +207,13 @@ struct acpi_pld_info {
- #define ACPI_PLD_GET_HORIZ_OFFSET(dword)        ACPI_GET_BITS (dword, 16, ACPI_16BIT_MASK)
- #define ACPI_PLD_SET_HORIZ_OFFSET(dword,value)  ACPI_SET_BITS (dword, 16, ACPI_16BIT_MASK, value)	/* Offset 128+16=144, Len 16 */
- 
-+/* Panel position defined in _PLD section of ACPI Specification 6.3 */
-+#define ACPI_PLD_PANEL_TOP			0
-+#define ACPI_PLD_PANEL_BOTTOM			1
-+#define ACPI_PLD_PANEL_LEFT			2
-+#define ACPI_PLD_PANEL_RIGHT			3
-+#define ACPI_PLD_PANEL_FRONT			4
-+#define ACPI_PLD_PANEL_BACK			5
-+#define ACPI_PLD_PANEL_UNKNOWN			6
-+
- #endif				/* ACBUFFER_H */
--- 
-2.31.1
+--000000000000b0005705bfd75bd9
+Content-Type: text/x-patch; charset="US-ASCII"; name="acpi-x86-ordering.patch"
+Content-Disposition: attachment; filename="acpi-x86-ordering.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_knftwlhs0>
+X-Attachment-Id: f_knftwlhs0
 
+LS0tCiBhcmNoL3g4Ni9rZXJuZWwvc2V0dXAuYyB8ICAgIDUgKystLS0KIDEgZmlsZSBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpJbmRleDogbGludXgtcG0vYXJjaC94
+ODYva2VybmVsL3NldHVwLmMKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PQotLS0gbGludXgtcG0ub3JpZy9hcmNoL3g4Ni9r
+ZXJuZWwvc2V0dXAuYworKysgbGludXgtcG0vYXJjaC94ODYva2VybmVsL3NldHVwLmMKQEAgLTEw
+NDUsOSArMTA0NSw2IEBAIHZvaWQgX19pbml0IHNldHVwX2FyY2goY2hhciAqKmNtZGxpbmVfcCkK
+IAogCWNsZWFudXBfaGlnaG1hcCgpOwogCi0JLyogTG9vayBmb3IgQUNQSSB0YWJsZXMgYW5kIHJl
+c2VydmUgbWVtb3J5IG9jY3VwaWVkIGJ5IHRoZW0uICovCi0JYWNwaV9ib290X3RhYmxlX2luaXQo
+KTsKLQogCW1lbWJsb2NrX3NldF9jdXJyZW50X2xpbWl0KElTQV9FTkRfQUREUkVTUyk7CiAJZTgy
+MF9fbWVtYmxvY2tfc2V0dXAoKTsKIApAQCAtMTEzMiw2ICsxMTI5LDggQEAgdm9pZCBfX2luaXQg
+c2V0dXBfYXJjaChjaGFyICoqY21kbGluZV9wKQogCXJlc2VydmVfaW5pdHJkKCk7CiAKIAlhY3Bp
+X3RhYmxlX3VwZ3JhZGUoKTsKKwkvKiBMb29rIGZvciBBQ1BJIHRhYmxlcyBhbmQgcmVzZXJ2ZSBt
+ZW1vcnkgb2NjdXBpZWQgYnkgdGhlbS4gKi8KKwlhY3BpX2Jvb3RfdGFibGVfaW5pdCgpOwogCiAJ
+dnNtcF9pbml0KCk7CiAK
+--000000000000b0005705bfd75bd9--
