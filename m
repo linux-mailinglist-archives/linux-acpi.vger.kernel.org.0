@@ -2,79 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C593A35F410
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Apr 2021 14:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0843D35F596
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Apr 2021 16:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233070AbhDNMjp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Apr 2021 08:39:45 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2855 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347201AbhDNMjl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Apr 2021 08:39:41 -0400
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FL22x4pRgz68B8f;
-        Wed, 14 Apr 2021 20:34:01 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 14 Apr 2021 14:39:18 +0200
-Received: from localhost (10.52.122.47) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Wed, 14 Apr
- 2021 13:39:17 +0100
-Date:   Wed, 14 Apr 2021 13:37:50 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <ira.weiny@intel.com>,
-        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-        <dan.j.williams@intel.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] cxl/mem: Clarify UAPI documentation
-Message-ID: <20210414133750.000042b1@Huawei.com>
-In-Reply-To: <20210413143247.546256-1-ben.widawsky@intel.com>
-References: <20210413143247.546256-1-ben.widawsky@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1351683AbhDNNv3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 14 Apr 2021 09:51:29 -0400
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:36601 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349187AbhDNNvZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Apr 2021 09:51:25 -0400
+Received: by mail-oi1-f176.google.com with SMTP id c16so20666667oib.3;
+        Wed, 14 Apr 2021 06:51:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=wBROHEdqHjbHn2xOAzD9zl5G4PP8Iw0t5oCeREsbRUI=;
+        b=F2D6psmUzXXC1AdCBajhfRvsnbwY7cIDXsB1Y3274pR9nLpR9203y6zEZ3tLFlZMr2
+         9BYsg4Ubsqu/yXblNfO99k1JiyNvMCqksp3BqbTOQ/Vm2KdFaOU2JfDJlsKuVLmyJaSd
+         A6kyQD8Fd9JkL9OifZ88alXyJLSx2stiyjLvra/1tZAY7g7RFv3J6TuWp2DQG8PXXCJq
+         coCiscT2+NiLVayvYjlfKH8Lrk+CS2YAL+cZebcd/LHB4+QSd8YoUFExsQexgFQbpV0C
+         /0Fc+02oGpHYkH5WmKXBQhrpZi8G88vKskfp0BvTg7/w7dASfnJfiV1Trpf3eJAC7w1+
+         FB3A==
+X-Gm-Message-State: AOAM5323I084gmIbVzV0c5T9bIb1+iiT9DdDAiRe3k75kVPsM1A+2sjo
+        QWWJqi0FA8LTK/A68nATNMT95J8r5ik8Q6GNk4E=
+X-Google-Smtp-Source: ABdhPJyhYaDnUaYnzBxw8igmmnt23AyoMpasJJWHn8h31YSoD28txunXdSxgxZg0g8G7IlVS4hI/flsMyB1LxHSZP2c=
+X-Received: by 2002:aca:5fc3:: with SMTP id t186mr2337394oib.69.1618408264317;
+ Wed, 14 Apr 2021 06:51:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.122.47]
-X-ClientProxiedBy: lhreml701-chm.china.huawei.com (10.201.108.50) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20210413063435.18111-1-me@fabwu.ch> <20210414083022.25453-1-me@fabwu.ch>
+ <20210414083022.25453-2-me@fabwu.ch>
+In-Reply-To: <20210414083022.25453-2-me@fabwu.ch>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 14 Apr 2021 15:50:53 +0200
+Message-ID: <CAJZ5v0ich7DA47ybP552MJJg6-TkShnJyGcrz0PpWYETHHREHQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] ACPI: Add _PLD panel positions
+To:     =?UTF-8?Q?Fabian_W=C3=BCthrich?= <me@fabwu.ch>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Cc:     Linux Media Mailing List <linux-media@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Dan Scally <djrscally@gmail.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 13 Apr 2021 07:32:47 -0700
-Ben Widawsky <ben.widawsky@intel.com> wrote:
+On Wed, Apr 14, 2021 at 10:30 AM Fabian Wüthrich <me@fabwu.ch> wrote:
+>
+> The ACPI specification v6.3 defines the panel positions in chapter 6.1.8
+> "_PLD (Physical Location of Device)"
+>
+> Signed-off-by: Fabian Wüthrich <me@fabwu.ch>
+> Reviewed-by: Daniel Scally <djrscally@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+This is ACPICA material.
 
-Sensible update.
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Erik, can you pick up this one, please?
 
 > ---
->  include/uapi/linux/cxl_mem.h | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> index f6e8a005b113..8dd516ddb098 100644
-> --- a/include/uapi/linux/cxl_mem.h
-> +++ b/include/uapi/linux/cxl_mem.h
-> @@ -81,6 +81,13 @@ static const struct {
->   *  - @size_in = -1
->   *  - @size_out = 0
->   *
-> + * Commands which have a variable length input likely have a minimum length.
-> + * This is not enforced by the UAPI, and therefore might look like the command
-> + * succeeded when sending too small of an input payload. Caution should be taken
-> + * by checking the @cxl_send_command.retval for such cases. For commands with a
-> + * variable length output, the caller is free to consume as little or as much as
-> + * they want.
-> + *
->   * See struct cxl_mem_query_commands.
->   */
->  struct cxl_command_info {
-
+>  include/acpi/acbuffer.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/include/acpi/acbuffer.h b/include/acpi/acbuffer.h
+> index 18197c16149f..d42e82a82852 100644
+> --- a/include/acpi/acbuffer.h
+> +++ b/include/acpi/acbuffer.h
+> @@ -207,4 +207,13 @@ struct acpi_pld_info {
+>  #define ACPI_PLD_GET_HORIZ_OFFSET(dword)        ACPI_GET_BITS (dword, 16, ACPI_16BIT_MASK)
+>  #define ACPI_PLD_SET_HORIZ_OFFSET(dword,value)  ACPI_SET_BITS (dword, 16, ACPI_16BIT_MASK, value)      /* Offset 128+16=144, Len 16 */
+>
+> +/* Panel position defined in _PLD section of ACPI Specification 6.3 */
+> +#define ACPI_PLD_PANEL_TOP                     0
+> +#define ACPI_PLD_PANEL_BOTTOM                  1
+> +#define ACPI_PLD_PANEL_LEFT                    2
+> +#define ACPI_PLD_PANEL_RIGHT                   3
+> +#define ACPI_PLD_PANEL_FRONT                   4
+> +#define ACPI_PLD_PANEL_BACK                    5
+> +#define ACPI_PLD_PANEL_UNKNOWN                 6
+> +
+>  #endif                         /* ACBUFFER_H */
+> --
+> 2.31.1
+>
