@@ -2,347 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8CC360D89
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 17:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D72360E7D
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 17:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbhDOPD3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Apr 2021 11:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
+        id S233821AbhDOPQH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Apr 2021 11:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235397AbhDOPBM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Apr 2021 11:01:12 -0400
+        with ESMTP id S236435AbhDOPO6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Apr 2021 11:14:58 -0400
 Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE52C061574
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Apr 2021 08:00:44 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id mh2so15783172ejb.8
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Apr 2021 08:00:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D45C061574
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Apr 2021 08:14:35 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id u17so37430990ejk.2
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Apr 2021 08:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eXenppMlRDUQ3XdUE6tp7seWuh83v/wLWPDlePTYdvs=;
-        b=zFqtXN64INKdW9Wp27smv397vK6c+sxT6p8RXlfTxilSGWMk0lFvnhiU26e07+pIUB
-         hcc1oQGLMYDGMv2uqKc5a4h+LCVInU16GWEYmM0UB/DYOorY+Gr6w1zhW0UyYG/F5tIL
-         FMumVsOyrYxS39j5JsTUwnTakDG/Oh4Oqo2cx49z19e6BfVkXAoPY2vngcWVnZ8xfg9c
-         A6ULc0sYXeyw7eT1Lebnm657vKjuivkZnGf7k/hpnqCjcQDEK8EpkFSdnWYD8RMYvnjI
-         ZcRBMijcslm925/ak9wkfidh5qTzaJcyGTrFYEXKq2C7AE1WxmWN5XlGQ4TrSUgtIEHa
-         0OrQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=jqtDHjyGp8glZULp1bf2Fq7JNPjH6B0xPTqIRRY0Vf8=;
+        b=Su9JjJ2DVw939t0pkGaDodcmBB0LfGVIA7EqtWYA+JDZL6IUJt9WzpYd+TVbmfGDve
+         Xkc9Qc/sx3wCD57Q8wezmrLxxOmL+TuVAH5BzBdSAOAeC1i+T5aZpMHxTD2QThxvDVtN
+         FAXHpjYdJCn861GPL+yEilgLS3Jpz2bN2Uk/ZDt2SYqWMxe9ar88zoEGdxu1bhEKppM9
+         8bqqS4l6VToBIZ1oCDVBICa4D4T/EfL52whwC2FwHEqT4YXTGol3Qdeegdf4qo7UdEF3
+         qdcRJRUXT9fzTVuPEiT10aLKkglzTkWbDr3WULjFvShmtcHyMv6QCIok0VlZ+ZjXgidt
+         gsEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eXenppMlRDUQ3XdUE6tp7seWuh83v/wLWPDlePTYdvs=;
-        b=S3OsMQK74wHriCBr3pYtBlDYOsfyptcCr0+W1aZpuaLa5SDsd8TldvZZ9p/hFLqbQO
-         HdyDG7SeyEpXikp5EBnFPjY3W2xrCg+34rnKtNBxY3jA2y65ZwqXbh9/Hn3Y4z9yUNwO
-         WyGuowvTv/gOeTuYiWPoNXPLOgjxsKAv6tBTA6a3bzFsjR64LJvpr8oCmZBDJq3g9lo+
-         l4UL/ZxHcvEDfN31bVjb6GkMw0O8wzhmWAG82t5vZMvQTekebYBemivzrOx8811qMuyF
-         HyA/R4KCdsWOwW+fSPF92LhT9IlK56KPLItvNVeYx/SpbvcV19UoigOSFvLcXerMLOd+
-         yKOw==
-X-Gm-Message-State: AOAM531RUVSugZx/iK6pMGtLXqKeSW9UlWv1P10ayzNOQ0To6BNrcWIj
-        tXMCWp1o7H5sQsLkUPmVYc32cDwd5m1ATNNGLmPBvzr097WwLQ==
-X-Google-Smtp-Source: ABdhPJwKcD6cFbBQ45jvvBX/yt9qT0Adavqea2M2F5q+zROXwVwkprD4+BjXKKV4lspmITb/ruX30pXWP4W6s0zYNI4=
-X-Received: by 2002:a17:906:4fcd:: with SMTP id i13mr3830424ejw.341.1618498843483;
- Thu, 15 Apr 2021 08:00:43 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=jqtDHjyGp8glZULp1bf2Fq7JNPjH6B0xPTqIRRY0Vf8=;
+        b=eFXFEDz9j4HtQkTa0g1zRzHjm7FKQH3vBXbj+ScQ/u8zohZNLJqcYWf2JBtfkplo5x
+         42G2l9p02bNHBI03WKjeIMoNFtb4IItQCK4nBAVaLn6gkgf7jx1B4ccBely9gaDN1wrD
+         roYckl4l16bfcPnXsZrW6yFwzQJ3p77XAyvIK3/Pm4O74vHyVbldVJJD2cTkeCmWyDP+
+         z5WWPF61RE+5TFQrm/g0imv+adtWmtVuEzJjtAZb6wGe7zZd+rGBvqif0fBp8yP9DqkG
+         IuyGlEwEJLhpaBvqaYhP+neK615lzd64TZ5pYFXpMSygPmhi062HpPx8WpgG5B9LrGm4
+         QgyA==
+X-Gm-Message-State: AOAM531xFK+i++Cm38idtAd4MhgSMfqGuSTfSFAovEEc50oGOSuZMyg1
+        WJP6UFqZmbGVTCJ1HONZQ7mnog==
+X-Google-Smtp-Source: ABdhPJzHQ/B5VFA6RKe5yV0g+kYRtxE0OHiWFPsrsA4mNSUD1awk9FIgvIDi9Gm/28MC3cEU5uG19A==
+X-Received: by 2002:a17:906:6dd9:: with SMTP id j25mr3863285ejt.507.1618499673911;
+        Thu, 15 Apr 2021 08:14:33 -0700 (PDT)
+Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id m5sm2783111edi.52.2021.04.15.08.14.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Apr 2021 08:14:33 -0700 (PDT)
+Date:   Thu, 15 Apr 2021 17:14:13 +0200
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org,
+        mst@redhat.com, will@kernel.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com
+Subject: Re: [PATCH 3/3] iommu/virtio: Enable x86 support
+Message-ID: <YHhYRQlDdCLfmDnf@myrica>
+References: <20210316191652.3401335-1-jean-philippe@linaro.org>
+ <20210316191652.3401335-4-jean-philippe@linaro.org>
+ <2d57860b-8a1c-f345-1105-62680c003fb5@arm.com>
 MIME-Version: 1.0
-References: <161728744224.2474040.12854720917440712854.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161728746928.2474040.8309331256371634167.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20210406183232.00003189@Huawei.com>
-In-Reply-To: <20210406183232.00003189@Huawei.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 15 Apr 2021 08:00:00 -0700
-Message-ID: <CAPcyv4jvhc6wgne4r_zgJzB3PgSHgMtHrnsRCvx=F8JxPKfBCw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] cxl/acpi: Introduce ACPI0017 driver and cxl_root
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Weiny, Ira" <ira.weiny@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d57860b-8a1c-f345-1105-62680c003fb5@arm.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 6, 2021 at 10:47 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Thu, 1 Apr 2021 07:31:09 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
->
-> > While CXL builds upon the PCI software model for dynamic enumeration and
-> > control, a static platform component is required to bootstrap the CXL
-> > memory layout. In addition to identifying the host bridges ACPI is
-> > responsible for enumerating the CXL memory space that can be addressed
-> > by decoders. This is similar to the requirement for ACPI to publish
-> > resources reported by _CRS for PCI host bridges.
-> >
-> > Introduce the cxl_root object as an abstract "port" into the CXL.mem
-> > address space described by HDM decoders identified by the ACPI
-> > CEDT.CHBS.
-> >
-> > For now just establish the initial boilerplate and sysfs attributes, to
-> > be followed by enumeration of the ports within the host bridge.
-> >
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->
-> A few minor comments inline.
->
-> > ---
-> >  drivers/cxl/Kconfig  |   14 ++
-> >  drivers/cxl/Makefile |    2
-> >  drivers/cxl/acpi.c   |   39 ++++++
-> >  drivers/cxl/core.c   |  349 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  drivers/cxl/cxl.h    |   64 +++++++++
-> >  5 files changed, 468 insertions(+)
-> >  create mode 100644 drivers/cxl/acpi.c
-> >
-> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> > index 97dc4d751651..fb282af84afd 100644
-> > --- a/drivers/cxl/Kconfig
-> > +++ b/drivers/cxl/Kconfig
-> > @@ -50,4 +50,18 @@ config CXL_MEM_RAW_COMMANDS
-> >         potential impact to memory currently in use by the kernel.
-> >
-> >         If developing CXL hardware or the driver say Y, otherwise say N.
-> > +
-> > +config CXL_ACPI
-> > +     tristate "CXL ACPI: Platform Support"
-> > +     depends on ACPI
-> > +     help
-> > +       Enable support for host managed device memory (HDM) resources
-> > +       published by a platform's ACPI CXL memory layout description.
-> > +       See Chapter 9.14.1 CXL Early Discovery Table (CEDT) in the CXL
-> > +       2.0 specification. The CXL core consumes these resource to
-> > +       publish port and address_space objects used to map regions
-> > +       that represent System RAM, or Persistent Memory regions to be
-> > +       managed by LIBNVDIMM.
-> > +
-> > +       If unsure say 'm'.
-> >  endif
-> > diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
-> > index 3808e39dd31f..f429ca6b59d9 100644
-> > --- a/drivers/cxl/Makefile
-> > +++ b/drivers/cxl/Makefile
-> > @@ -1,7 +1,9 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  obj-$(CONFIG_CXL_BUS) += cxl_core.o
-> >  obj-$(CONFIG_CXL_MEM) += cxl_mem.o
-> > +obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
-> >
-> >  ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CXL
-> >  cxl_core-y := core.o
-> >  cxl_mem-y := mem.o
-> > +cxl_acpi-y := acpi.o
-> > diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> > new file mode 100644
-> > index 000000000000..d54c2d5de730
-> > --- /dev/null
-> > +++ b/drivers/cxl/acpi.c
-> > @@ -0,0 +1,39 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/* Copyright(c) 2021 Intel Corporation. All rights reserved. */
-> > +#include <linux/platform_device.h>
-> > +#include <linux/module.h>
-> > +#include <linux/device.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/acpi.h>
->
-> swap acpi.h that for mod_devicetable.h unless this is going to
-> need acpi.h later for something else.
+On Thu, Mar 18, 2021 at 11:43:38AM +0000, Robin Murphy wrote:
+> On 2021-03-16 19:16, Jean-Philippe Brucker wrote:
+> > With the VIOT support in place, x86 platforms can now use the
+> > virtio-iommu.
+> > 
+> > The arm64 Kconfig selects IOMMU_DMA, while x86 IOMMU drivers select it
+> > themselves.
+> 
+> Actually, now that both AMD and Intel are converted over, maybe it's finally
+> time to punt that to x86 arch code to match arm64?
 
-It will need it after patch7, so I'll just leave it as is for now.
+x86 also has CONFIG_HYPERV_IOMMU that doesn't use IOMMU_DMA, and might not
+want to pull in dma-iommu.o + iova.o (don't know if they care about guest
+size). There also is the old gart driver, but that doesn't select
+IOMMU_SUPPORT. 
 
-[..]
-> > +static struct cxl_root *cxl_root_alloc(struct device *parent,
-> > +                                    struct cxl_address_space *cxl_space,
-> > +                                    int nr_spaces)
-> > +{
-> > +     struct cxl_root *cxl_root;
-> > +     struct cxl_port *port;
-> > +     struct device *dev;
-> > +     int rc;
-> > +
-> > +     cxl_root = kzalloc(struct_size(cxl_root, address_space, nr_spaces),
-> > +                        GFP_KERNEL);
-> > +     if (!cxl_root)
-> > +             return ERR_PTR(-ENOMEM);
-> > +
-> > +     memcpy(cxl_root->address_space, cxl_space,
-> > +            flex_array_size(cxl_root, address_space, nr_spaces));
-> > +     cxl_root->nr_spaces = nr_spaces;
-> > +
-> > +     rc = ida_alloc(&cxl_port_ida, GFP_KERNEL);
-> > +     if (rc < 0)
-> > +             goto err;
-> > +     port = &cxl_root->port;
-> > +     port->id = rc;
-> > +
-> > +     /*
-> > +      * Root does not have a cxl_port as its parent and it does not
-> > +      * have any corresponding component registers it is only a
->
-> have any corresponding component registers; it is only a
-> .. or you could use two sentences
-
-Sure.
-
->
-> > +      * logical anchor to the first level of actual ports that decode
-> > +      * the root address spaces.
-> > +      */
-> > +     port->port_host = parent;
-> > +     port->target_id = -1;
-> > +     port->component_regs_phys = -1;
-> > +
-> > +     dev = &port->dev;
-> > +     device_initialize(dev);
-> > +     device_set_pm_not_required(dev);
-> > +     dev->parent = parent;
-> > +     dev->bus = &cxl_bus_type;
-> > +     dev->type = &cxl_root_type;
-> > +
-> > +     return cxl_root;
-> > +
-> > +err:
-> > +     kfree(cxl_root);
-> > +     return ERR_PTR(rc);
-> > +}
-> > +
-> > +static struct cxl_address_space_dev *
-> > +cxl_address_space_dev_alloc(struct device *parent,
-> > +                         struct cxl_address_space *space)
-> > +{
-> > +     struct cxl_address_space_dev *cxl_asd;
-> > +     struct resource *res;
-> > +     struct device *dev;
-> > +     int rc;
-> > +
-> > +     cxl_asd = kzalloc(sizeof(*cxl_asd), GFP_KERNEL);
-> > +     if (!cxl_asd)
-> > +             return ERR_PTR(-ENOMEM);
-> > +
-> > +     res = &cxl_asd->res;
-> > +     res->name = "CXL Address Space";
-> > +     res->start = space->range.start;
-> > +     res->end = space->range.end;
-> > +     res->flags = IORESOURCE_MEM;
-> > +
-> > +     rc = insert_resource(&iomem_resource, res);
-> > +     if (rc)
-> > +             goto err;
-> > +
-> > +     cxl_asd->address_space = space;
-> > +     dev = &cxl_asd->dev;
-> > +     device_initialize(dev);
-> > +     device_set_pm_not_required(dev);
-> > +     dev->parent = parent;
-> > +     dev->type = &cxl_address_space_type;
-> > +
-> > +     return cxl_asd;
-> > +
-> > +err:
-> > +     kfree(cxl_asd);
-> > +     return ERR_PTR(rc);
-> > +}
-> > +
-> > +static int cxl_address_space_dev_add(struct device *host,
-> > +                                  struct cxl_address_space_dev *cxl_asd,
-> > +                                  int id)
-> > +{
-> > +     struct device *dev = &cxl_asd->dev;
-> > +     int rc;
-> > +
-> > +     rc = dev_set_name(dev, "address_space%d", id);
-> > +     if (rc)
-> > +             goto err;
-> > +
-> > +     rc = device_add(dev);
-> > +     if (rc)
-> > +             goto err;
-> > +
-> > +     dev_dbg(host, "%s: register %s\n", dev_name(dev->parent),
-> > +             dev_name(dev));
-> > +
-> > +     return devm_add_action_or_reset(host, unregister_dev, dev);
-> > +
-> > +err:
-> > +     put_device(dev);
-> This is unusual. The error handling is undoing something this function
-> wasn't responsible for.  See below for suggested resolution.
->
-> > +     return rc;
-> > +}
-> > +
-> > +struct cxl_root *devm_cxl_add_root(struct device *host,
-> > +                                struct cxl_address_space *cxl_space,
-> > +                                int nr_spaces)
-> > +{
-> > +     struct cxl_root *cxl_root;
-> > +     struct cxl_port *port;
-> > +     struct device *dev;
-> > +     int i, rc;
-> > +
-> > +     cxl_root = cxl_root_alloc(host, cxl_space, nr_spaces);
-> > +     if (IS_ERR(cxl_root))
-> > +             return cxl_root;
-> > +
-> > +     port = &cxl_root->port;
-> > +     dev = &port->dev;
-> > +     rc = dev_set_name(dev, "root%d", port->id);
-> > +     if (rc)
-> > +             goto err;
-> > +
-> > +     rc = device_add(dev);
-> > +     if (rc)
-> > +             goto err;
-> > +
-> > +     rc = devm_add_action_or_reset(host, unregister_dev, dev);
-> > +     if (rc)
-> > +             return ERR_PTR(rc);
-> > +
-> > +     for (i = 0; i < nr_spaces; i++) {
-> > +             struct cxl_address_space *space = &cxl_root->address_space[i];
-> > +             struct cxl_address_space_dev *cxl_asd;
-> > +
-> > +             if (!range_len(&space->range))
-> > +                     continue;
-> > +
-> > +             cxl_asd = cxl_address_space_dev_alloc(dev, space);
-> > +             if (IS_ERR(cxl_asd))
-> > +                     return ERR_CAST(cxl_asd);
-> > +
->
-> Nothing is done between the dev_alloc() and the dev_add()
-> and this is currently in the odd position of doing put_device() in the
-> error path of *dev_add() when it wasn't responsible for getting the
-> reference it is putting, dev_alloc() did that.
-
-No, you missed the back and forth that Jason and I had about proper
-device initialization flows:
-
-https://lore.kernel.org/linux-cxl/161714738634.2168142.10860201861152789544.stgit@dwillia2-desk3.amr.corp.intel.com/
-
-The put_device() is not undoing the dev_alloc(), it is undoing the
-dev_alloc() + follow on allocations. Specifically it undoes the
-dev_set_name() allocation. That is why the alloc and the add are split
-into explicit code paths where the recovery shifts from alloc-unwind
-to put_device().
-
-> That suggests to me that we can clean up the oddity by just combining
-> cxl_address_space_dev_alloc() and cxl_adress_space_dev_add() into one
->
-> alloc_and_add() function (with a better name)
-
-It's not an oddity and alloc_and_add() is an anti-pattern that leads to bugs.
-
->
-> > +             rc = cxl_address_space_dev_add(host, cxl_asd, i);
->
-> Lifetime management here seems overly complex.   Why not use host for both
-> the alloc and add() devm calls?  I guess there is a good reason
-> though so good to have a comment here saying what it is.
-
-I'll add a kernel-doc to cxl_address_space_dev_add() to clarify what
-is happening here.
+Thanks,
+Jean
