@@ -2,256 +2,266 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 286DA35FFB7
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 03:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC10A360188
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 07:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbhDOBs7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Apr 2021 21:48:59 -0400
-Received: from mga03.intel.com ([134.134.136.65]:49422 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229458AbhDOBs6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Apr 2021 21:48:58 -0400
-IronPort-SDR: YQ0o1LqE5tXR5GSPsjYd2Ze9Ki8AxXfjNbN8gocLEitPGvBGWMuAVFYdi0dXhWXSG8YQytoQDb
- gbpxi9Uv+0JQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9954"; a="194796938"
-X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; 
-   d="scan'208";a="194796938"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2021 18:48:36 -0700
-IronPort-SDR: A6E8cr4GjLHdjpUAYN3q5tPxpKK+aPwgVJJsW7lrsaj32f3pehLI5Au4xU0mhe6PR7oMRXqEsJ
- H3h/Au+B944Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; 
-   d="scan'208";a="424991557"
-Received: from lkp-server02.sh.intel.com (HELO fa9c8fcc3464) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 14 Apr 2021 18:48:34 -0700
-Received: from kbuild by fa9c8fcc3464 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lWr7P-0000Z3-Lq; Thu, 15 Apr 2021 01:48:31 +0000
-Date:   Thu, 15 Apr 2021 09:48:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- a5b1c231c4a84cae19849db076b8a56ffbc8a079
-Message-ID: <60779b60.kwysEistnLZUV/r6%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229922AbhDOFVy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Apr 2021 01:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhDOFVw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Apr 2021 01:21:52 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4536AC061574
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Apr 2021 22:21:27 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id l4so34857826ejc.10
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Apr 2021 22:21:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yfHpVPgTxoCb2Y8HlsquPo4Y9DrlaYo1kZmF94VXk9g=;
+        b=LXXLMqN91EHunpLCu7HVsmlVUG/34MyNVDrXjCBRS9736Y2tjgx8x5winXvUs+zXj3
+         rwJ2uqJvK+Ob9ZnzAq6SV8qDx560IxhxYHiKKDTjSCc3HhCjcN06qslXMvmQviI9D39N
+         gzmgaCj3t58bChjcG6ShEnLdx9HdOE7gzP8smWqB08wTMDb1tokv7X41knp4J6lxAD1q
+         lTsSC2ry2mqH679hBxf+j+QML696u6DHJQvTYAP5DUsW4HeR7hBbdPePcYsnw9SJn8CU
+         Fd3XWLdEtnwU8nuPNXFOlApKcKsPG2hhNPfLIqc3yJXU/guySXKE4vlF7vRSJ1aR18Jz
+         M8cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yfHpVPgTxoCb2Y8HlsquPo4Y9DrlaYo1kZmF94VXk9g=;
+        b=ldgQ91o75gBIqFyuhQAFAd1YOwhgRyiG0vWyK296G5N9hgWFgUEvASvxLBgoLA7zrf
+         fbxVZiEf1TjsnMK21lfBU7NRwTodbaDx7pJAaOdU9i+4cLuopTT2Jl3mc7/Mv3RwleLU
+         099PgRWI30oMeVodqaE6+5bVt8Jdj2Z3gkLIo08c60dRXY8TGtAkKxNc4H9rP8b1a6al
+         c9X7SjfMLAYbvwdjYWN2z0eo5lPRVQQ9BY2muSyEKdslCbRJNJ3ARtv59UyAGPeh6mNs
+         wZf2QFQVsbvSihfPSF/YNCvXMExZSmUtKK71F/OnCZSbMncvvFNeHE0dH4rMHyEMY/3r
+         dJVA==
+X-Gm-Message-State: AOAM530yCQznvYpd2niylh4uLOOYh3/tuwTLo865DFCuV0wdx3q4gmPJ
+        68Fgpfl/NJgVNca/mQLXwVE8sF+KIm7qrSbMETCnxA==
+X-Google-Smtp-Source: ABdhPJwBKg5W4y/Mf5LNN3YaLgfsq6e9XlkPVLczLmK+QZIR3hWfVS2xvwGTnxXu7rmqfj/yjLTszCzhcNe5KyBvip4=
+X-Received: by 2002:a17:906:ef2:: with SMTP id x18mr1581794eji.323.1618464085912;
+ Wed, 14 Apr 2021 22:21:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <CAPcyv4hAc=DERr1z8kr=V01+NSi74f-kSfMAdeArLmVb112_Dw@mail.gmail.com>
+ <20210414011448.GA2266325@bjorn-Precision-5520>
+In-Reply-To: <20210414011448.GA2266325@bjorn-Precision-5520>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 14 Apr 2021 22:21:14 -0700
+Message-ID: <CAPcyv4iu8D-hJoujLXw8a4myS7trOE1FcUhESLB_imGMECVfrg@mail.gmail.com>
+Subject: Re: [PATCH v2 7/8] cxl/port: Introduce cxl_port objects
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: a5b1c231c4a84cae19849db076b8a56ffbc8a079  Merge branches 'acpi-scan' and 'acpi-utils' into linux-next
+On Tue, Apr 13, 2021 at 6:15 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Thu, Apr 08, 2021 at 07:13:38PM -0700, Dan Williams wrote:
+> > Hi Bjorn, thanks for taking a look.
+> >
+> > On Thu, Apr 8, 2021 at 3:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > >
+> > > [+cc Greg, Rafael, Matthew: device model questions]
+> > >
+> > > Hi Dan,
+> > >
+> > > On Thu, Apr 01, 2021 at 07:31:20AM -0700, Dan Williams wrote:
+> > > > Once the cxl_root is established then other ports in the hierarchy can
+> > > > be attached. The cxl_port object, unlike cxl_root that is associated
+> > > > with host bridges, is associated with PCIE Root Ports or PCIE Switch
+> > > > Ports. Add cxl_port instances for all PCIE Root Ports in an ACPI0016
+> > > > host bridge.
+>
+> Incidentally, "PCIe" is the abbreviation used in the PCIe specs, so I
+> try to use that instead of "PCIE" in drivers/pci/.
 
-elapsed time: 723m
+Noted.
 
-configs tested: 193
-configs skipped: 3
+>
+> > > I'm not a device model expert, but I'm not sure about adding a new
+> > > /sys/bus/cxl/devices hierarchy.  I'm under the impression that CXL
+> > > devices will be enumerated by the PCI core as PCIe devices.
+> >
+> > Yes, PCIe is involved, but mostly only for the CXL.io slow path
+> > (configuration and provisioning via mailbox) when we're talking about
+> > memory expander devices (CXL calls these Type-3). So-called "Type-3"
+> > support is the primary driver of this infrastructure.
+> >
+> > You might be thinking of CXL accelerator devices that will look like
+> > plain PCIe devices that happen to participate in the CPU cache
+> > hierarchy (CXL calls these Type-1). There will also be accelerator
+> > devices that want to share coherent memory with the system (CXL calls
+> > these Type-2).
+>
+> IIUC all these CXL devices will be enumerated by the PCI core.  They
+> seem to have regular PCI BARs (separate from the HDM stuff), so the
+> PCI core will presumably manage address allocation for them.  It looks
+> like Function Level Reset and hotplug are supposed to use the regular
+> PCIe code.  I guess this will all be visible via lspci just like
+> regular PCI devices, right?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Yes. the CXL.io protocol is synonymous with PCIe. Hotplug is native
+PCIe hotplug to negotiate getting the card online and offline.
+Although, for offline an additional constraint is to deny removal
+whenever the card has active pages in the page allocator. Similar to
+what happens today for ACPI memory hotplug where the OS can say "nope,
+there's still active pages in the range you asked to eject".
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-i386                             allyesconfig
-mips                           ip28_defconfig
-arm                           corgi_defconfig
-powerpc                     asp8347_defconfig
-ia64                        generic_defconfig
-arm                       versatile_defconfig
-arc                     nsimosci_hs_defconfig
-m68k                          sun3x_defconfig
-mips                    maltaup_xpa_defconfig
-powerpc                     mpc83xx_defconfig
-ia64                         bigsur_defconfig
-arc                        vdk_hs38_defconfig
-sparc                            alldefconfig
-powerpc                 mpc8272_ads_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                      cm5200_defconfig
-mips                        maltaup_defconfig
-xtensa                    smp_lx200_defconfig
-mips                           rs90_defconfig
-powerpc                       maple_defconfig
-arm                          ep93xx_defconfig
-mips                            e55_defconfig
-ia64                      gensparse_defconfig
-mips                           gcw0_defconfig
-sh                           se7724_defconfig
-powerpc                      obs600_defconfig
-arm                            mmp2_defconfig
-arc                        nsim_700_defconfig
-sh                          urquell_defconfig
-arm                       cns3420vb_defconfig
-powerpc                          g5_defconfig
-arm                         palmz72_defconfig
-sh                          rsk7269_defconfig
-mips                        bcm47xx_defconfig
-sh                        sh7757lcr_defconfig
-powerpc                        icon_defconfig
-powerpc                 mpc8315_rdb_defconfig
-mips                         tb0287_defconfig
-arm                          pxa3xx_defconfig
-sh                           se7722_defconfig
-powerpc                     ep8248e_defconfig
-nds32                            alldefconfig
-arm                         socfpga_defconfig
-sparc64                             defconfig
-powerpc                        warp_defconfig
-mips                        nlm_xlr_defconfig
-h8300                       h8s-sim_defconfig
-powerpc                       ebony_defconfig
-s390                             allyesconfig
-powerpc                      ppc6xx_defconfig
-mips                          rb532_defconfig
-sh                        sh7785lcr_defconfig
-sh                         ap325rxa_defconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-arm                         s3c2410_defconfig
-sh                          rsk7264_defconfig
-powerpc               mpc834x_itxgp_defconfig
-arm                        spear6xx_defconfig
-mips                      bmips_stb_defconfig
-mips                          malta_defconfig
-arm                            zeus_defconfig
-mips                     cu1830-neo_defconfig
-arm                          gemini_defconfig
-microblaze                          defconfig
-riscv                          rv32_defconfig
-m68k                             allmodconfig
-arm                           h3600_defconfig
-powerpc                 mpc837x_mds_defconfig
-xtensa                              defconfig
-sh                   rts7751r2dplus_defconfig
-arm                      jornada720_defconfig
-mips                         bigsur_defconfig
-arm                         vf610m4_defconfig
-powerpc                     tqm8548_defconfig
-powerpc                      ppc44x_defconfig
-alpha                            alldefconfig
-powerpc                   currituck_defconfig
-mips                          ath25_defconfig
-mips                            gpr_defconfig
-mips                           ci20_defconfig
-powerpc                 mpc836x_rdk_defconfig
-powerpc                    sam440ep_defconfig
-sh                          rsk7203_defconfig
-sh                            hp6xx_defconfig
-arm                         s3c6400_defconfig
-arm                          pcm027_defconfig
-arm                            mps2_defconfig
-arm                          simpad_defconfig
-powerpc64                           defconfig
-powerpc                      arches_defconfig
-h8300                            alldefconfig
-powerpc                 mpc837x_rdb_defconfig
-arm                         axm55xx_defconfig
-m68k                       m5475evb_defconfig
-mips                     decstation_defconfig
-openrisc                  or1klitex_defconfig
-powerpc                      ppc64e_defconfig
-arm                          badge4_defconfig
-arm                         at91_dt_defconfig
-arm                        realview_defconfig
-m68k                       m5275evb_defconfig
-arc                           tb10x_defconfig
-arc                          axs101_defconfig
-mips                           xway_defconfig
-sh                   secureedge5410_defconfig
-alpha                               defconfig
-powerpc                   motionpro_defconfig
-m68k                          hp300_defconfig
-sh                          landisk_defconfig
-mips                     loongson1b_defconfig
-powerpc                      acadia_defconfig
-powerpc                 mpc834x_itx_defconfig
-m68k                            q40_defconfig
-m68k                       m5249evb_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                         ps3_defconfig
-powerpc                       eiger_defconfig
-powerpc                     mpc512x_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210414
-i386                 randconfig-a006-20210414
-i386                 randconfig-a001-20210414
-i386                 randconfig-a005-20210414
-i386                 randconfig-a004-20210414
-i386                 randconfig-a002-20210414
-x86_64               randconfig-a014-20210414
-x86_64               randconfig-a015-20210414
-x86_64               randconfig-a011-20210414
-x86_64               randconfig-a013-20210414
-x86_64               randconfig-a012-20210414
-x86_64               randconfig-a016-20210414
-i386                 randconfig-a015-20210414
-i386                 randconfig-a014-20210414
-i386                 randconfig-a013-20210414
-i386                 randconfig-a012-20210414
-i386                 randconfig-a016-20210414
-i386                 randconfig-a011-20210414
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+FLR has no effect on CXL.cache or CXL.mem state, only CXL.io.
 
-clang tested configs:
-x86_64               randconfig-a003-20210414
-x86_64               randconfig-a002-20210414
-x86_64               randconfig-a005-20210414
-x86_64               randconfig-a001-20210414
-x86_64               randconfig-a006-20210414
-x86_64               randconfig-a004-20210414
+> > The infrastructure being proposed here is primarily for the memory
+> > expander (Type-3) device case where the PCI sysfs hierarchy is wholly
+> > unsuited for modeling it. A single CXL memory region device may span
+> > multiple endpoints, switches, and host bridges. It poses similar
+> > stress to an OS device model as RAID where there is a driver for the
+> > component contributors to an upper level device / driver that exposes
+> > the RAID Volume (CXL memory region interleave set). The CXL memory
+> > decode space (HDM: Host Managed Device Memory) is independent of the
+> > PCIe MMIO BAR space.
+>
+> It looks like you add a cxl_port for each ACPI0016 device and every
+> PCIe Root Port below it.  So I guess the upper level spanning is at a
+> higher level than cxl_port?
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+A memory interleave can span any level of the hierarchy. It can be
+across host bridges at the top level, but also incorporate a leaf
+device at the bottom of a CXL switch hierarchy. There will be a
+cxl_port instance for each side of each link.
+
+> > That's where the /sys/bus/cxl hierarchy is needed, to manage the HDM
+> > space across the CXL topology in a way that is foreign to PCIE (HDM
+> > Decoder hierarchy).
+>
+> When we do FLR on the PCIe device, what happens to these CXL clients?
+> Do they care?  Are they notified?  Do they need to do anything before
+> or after the FLR?
+
+Per CXL Spec:
+
+"FLR has no effect on the CXL.cache and CXL.mem protocol. Any
+CXL.cache and CXL.mem related control registers including CXL DVSEC
+structures and state held by the CXL device are not affected by FLR.
+The memory controller hosting the HDM is not reset by FLR."
+
+> What about hotplug?  Spec says it leverages PCIe hotplug, but it looks
+> like maybe this all requires ACPI hotplug (acpiphp) for adding
+> ACPI0017 devices and notifying of hot remove requests?  If it uses
+> PCIe native hotplug (pciehp), what connects the CXL side to the PCI
+> side?
+
+No ACPI hotplug is not involved. ACPI0017 is essentially just a dummy
+anchor device to hang the interleave set coordination. The connect
+from native hotplug to CXL is the cxl_mem driver. When that it detects
+a new device it walks the cxl_port hierarchy to see if one is a parent
+of this endpoint. Then it registers its HDM decoders with the CXL core
+and the CXL core can online it as a standalone interneleave set or
+consolidate it with others to make a wider set. For persistent memory
+there is on-device metadata to recall whether this device was part of
+a set previously. For volatile-only devices it would need to rely on
+some policy to decide if devices are immediately onlined standalone,
+or wait for an administrator to configure them.
+
+> I guess the HDM address space management is entirely outside the scope
+> of PCI -- the address space is not described by the CXL host bridge
+> _CRS and not described by CXL endpoint BARs?
+
+Correct.
+
+> Where *is* it described
+> and who manages and allocates it?
+
+ACPI0017 will communicate a set of address spaces that the CXL core
+can allocate interleave sets.
+
+>  I guess any transaction routing
+> through the CXL fabric for HDM space is also completely outside the
+> scope of PCI -- we don't need to worry about managing PCI-to-PCI
+> bridge windows, for instance?
+
+Correct. For example a PCIe switch could disable all I/O space and
+Memory (MMIO) space, but still decode Host-managed Device Memory (HDM)
+space.
+
+> Is there a cxl_register_driver() or something?  I assume there will be
+> drivers that need to manage CXL devices?  Or will they use
+> pci_register_driver() and search for a CXL capability?
+
+A bit of both. The cxl_mem driver does pci_register_driver(), but for
+ports there will be a driver on the CXL bus for that component
+capability. Both endpoints and switches will produce cxl_port
+instances to be connected / driven by a core driver and coordinated
+with a root level driver for address space and interleave management.
+
+> > > Doesn't that mean we will have one struct device in the pci_dev,
+> > > and another one in the cxl_port?
+> >
+> > Yes, that is the proposal.
+>
+> > The superfluous power/ issue can be cleaned up with
+> > device_set_pm_not_required().
+>
+> Thanks, we might be able to use that for portdrv.  I added it to my
+> list to investigate.
+>
+> > What are the other problems this poses, because in other areas this
+> > ability to subdivide a device's functionality into sub-drivers is a
+> > useful organization principle?
+>
+> Well, I'm thinking about things like enumeration, hotplug, reset,
+> resource management (BARs, bridge windows, etc), interrupts, power
+> management (suspend, resume, etc), and error reporting.  These are all
+> things that PCIe defines on a per-Function basis and seem kind of hard
+> to cleanly subdivide.
+
+Right, I'm hoping like FLR there is little need to coordinate PCI /
+CXL.io operations with CXL.mem operations, or that once a PCI driver
+registers some CXL capabilities it never needs to look back. The only
+hook that violates this so far is NAKing device removal when CXL.mem
+for that device is busy.
+
+> > So much so that several device writer teams came together to create
+> > the auxiliary-bus for the purpose of allowing sub-drivers to be
+> > carved off for independent functionality similar to the portdrv
+> > organization.
+>
+> Is "auxiliary-bus" a specific thing?  I'm not familiar with it but
+> again I'd like to read up on it in case it has ideas we could
+> leverage.
+
+auxiliary-bus is not a specific thing, it's a generic way for any
+driver to register a custom device for a sub-driver to drive. One of
+the primary examples are PCI Ethernet drivers exporting RDMA device
+interfaces for common RDMA functionality. So you could have multiple
+generations of Ethernet devices all producing a common RDMA interface
+and rather than have an equivalent RDMA driver per generation just
+create a shared common one that attaches to all the different baseline
+Ethernet implementations.
+
+See:
+
+Documentation/driver-api/auxiliary_bus.rst
+
+That document is still a bit too generic, and I have an item on my
+backlog to flesh it out with more practical guidelines.
+
+> Sub-drivers *is* an issue for PCI in general, although mostly I think
+> it tends to be historical devices where people made the design mistake
+> of putting several unrelated pieces of functionality in the same PCI
+> function, so I don't think PCI has good infrastructure for doing that.
+
+Auxiliary-bus might help especially if those unrelated pieces have
+been duplicated across multiple different device implementations.
+Aux-bus might clean up the driver model for those pieces.
