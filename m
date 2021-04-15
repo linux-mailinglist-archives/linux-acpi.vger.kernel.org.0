@@ -2,165 +2,239 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 792AB360461
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 10:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35973360600
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Apr 2021 11:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231664AbhDOIg2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Apr 2021 04:36:28 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:57206 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230090AbhDOIg1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 15 Apr 2021 04:36:27 -0400
-Received: from localhost.localdomain (unknown [10.40.54.95])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxr+_n+ndg9zsIAA--.1292S3;
-        Thu, 15 Apr 2021 16:35:56 +0800 (CST)
-Subject: Re: [PATCH] ACPICA: Events: support fixed pcie wake event
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-References: <1617278736-7400-1-git-send-email-lvjianmin@loongson.cn>
- <BYAPR11MB3256C7F3C17D14C1DF544430877B9@BYAPR11MB3256.namprd11.prod.outlook.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <4385b7c8-5f3b-99a5-e584-660e4555ec3b@loongson.cn>
-Date:   Thu, 15 Apr 2021 04:35:51 -0400
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S231979AbhDOJjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Apr 2021 05:39:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:41855 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229537AbhDOJjv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 15 Apr 2021 05:39:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618479568;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OYfUyG4SfAr00Lsm1KqY9DuAuxzdrP7zVBgWh191mM8=;
+        b=eCcX7ndtygo1wixE3DrjnOeByMzs+jFGfqVwYypz5pktL83kOTh65xY9AAZw0V/lHRIdms
+        gBrsC83Y/EoIHJURYLb3/Fz50gpVv6zPZ4ZgP0CqevPOFqTtbvi3Vc4lQb1OKl9nMDIIA2
+        Zmd12paV6iTfV3B943eHEXNKQwzETPs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-507-DWNGSzP_PSKcJiIMK28M_w-1; Thu, 15 Apr 2021 05:39:26 -0400
+X-MC-Unique: DWNGSzP_PSKcJiIMK28M_w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CF26A6D246;
+        Thu, 15 Apr 2021 09:39:24 +0000 (UTC)
+Received: from [10.36.114.81] (ovpn-114-81.ams2.redhat.com [10.36.114.81])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id F267A1A874;
+        Thu, 15 Apr 2021 09:39:20 +0000 (UTC)
+Subject: Re: [RFC PATCH v2 2/8] ACPI/IORT: Add support for RMR node parsing
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, devel@acpica.org
+Cc:     linuxarm@huawei.com, steven.price@arm.com, guohanjun@huawei.com,
+        Sami.Mujawar@arm.com, robin.murphy@arm.com, wanghuiqiang@huawei.com
+References: <20201119121150.3316-1-shameerali.kolothum.thodi@huawei.com>
+ <20201119121150.3316-3-shameerali.kolothum.thodi@huawei.com>
+From:   Auger Eric <eric.auger@redhat.com>
+Message-ID: <a64025cd-3312-9621-1771-8e0430220ed8@redhat.com>
+Date:   Thu, 15 Apr 2021 11:39:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <BYAPR11MB3256C7F3C17D14C1DF544430877B9@BYAPR11MB3256.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf9Dxr+_n+ndg9zsIAA--.1292S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFyrAF1xAry8XFyrXF15XFb_yoWrCw4DpF
-        9I9aySkr4UtF4I9anrtw1UuFyYgay8Cry7CF4qg347ZF4DCr1rWF4qgF1DGFZ8Cwsxua1I
-        ya4DKFyUKay5XFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvYb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
-        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l
-        c2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-        8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWU
-        twCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-        0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AK
-        xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07
-        j04E_UUUUU=
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+In-Reply-To: <20201119121150.3316-3-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Bob
+Hi Shameer,
+On 11/19/20 1:11 PM, Shameer Kolothum wrote:
+> Add support for parsing RMR node information from ACPI.
+> Find associated stream ids and smmu node info from the
+> RMR node and populate a linked list with RMR memory
+> descriptors.
+> 
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>  drivers/acpi/arm64/iort.c | 122 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 121 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 9929ff50c0c0..a9705aa35028 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -40,6 +40,25 @@ struct iort_fwnode {
+>  static LIST_HEAD(iort_fwnode_list);
+>  static DEFINE_SPINLOCK(iort_fwnode_lock);
+>  
+> +struct iort_rmr_id {
+> +	u32  sid;
+> +	struct acpi_iort_node *smmu;
+> +};
+> +
+> +/*
+> + * One entry for IORT RMR.
+> + */
+> +struct iort_rmr_entry {
+> +	struct list_head list;
+> +
+> +	unsigned int rmr_ids_num;
+> +	struct iort_rmr_id *rmr_ids;
+> +
+> +	struct acpi_iort_rmr_desc *rmr_desc;
+> +};
+> +
+> +static LIST_HEAD(iort_rmr_list);         /* list of RMR regions from ACPI */
+> +
+>  /**
+>   * iort_set_fwnode() - Create iort_fwnode and use it to register
+>   *		       iommu data in the iort_fwnode_list
+> @@ -393,7 +412,8 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+>  		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
+>  		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
+>  		    node->type == ACPI_IORT_NODE_SMMU_V3 ||
+> -		    node->type == ACPI_IORT_NODE_PMCG) {
+> +		    node->type == ACPI_IORT_NODE_PMCG ||
+> +		    node->type == ACPI_IORT_NODE_RMR) {
+>  			*id_out = map->output_base;
+>  			return parent;
+>  		}
+> @@ -1647,6 +1667,103 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
+>  #else
+>  static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
+>  #endif
+> +static int iort_rmr_desc_valid(struct acpi_iort_rmr_desc *desc)
+> +{
+> +	struct iort_rmr_entry *e;
+> +	u64 end, start = desc->base_address, length = desc->length;
+> +
+> +	if (!IS_ALIGNED(start, SZ_64K) || !IS_ALIGNED(length, SZ_64K))
+> +		return -EINVAL;
+> +
+> +	end = start + length - 1;
+> +
+> +	/* Check for address overlap */
+I don't get this check. What is the problem if you attach the same range
+to different stream ids. Shouldn't you check there is no overlap for the
+same sid?
 
-Thanks for your reply!
 
-I have submitted V2 in which related description in ACPI spec are added, 
-please review it.
-
-
-See V2 at:
-
-https://lore.kernel.org/linux-acpi/1617335733-5942-1-git-send-email-lvjianmin@loongson.cn/T/#u
-
-Thanks sincerely!
-
-On 04/01/2021 04:56 PM, Moore, Robert wrote:
-> Can you send/point us to the spec that this change is based upon?
-> Thanks,
-> Bob
->
->
-> -----Original Message-----
-> From: Jianmin Lv <lvjianmin@loongson.cn>
-> Sent: Thursday, April 01, 2021 5:06 AM
-> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; lvjianmin <lvjianmin@loongson.cn>
-> Subject: [PATCH] ACPICA: Events: support fixed pcie wake event
->
-> From: lvjianmin <lvjianmin@loongson.cn>
->
-> Some chipsets support fixed pcie wake event which is defined in the PM1 block, such as LS7A1000 of Loongson company, so we add code to handle it.
->
-> Signed-off-by: lvjianmin <lvjianmin@loongson.cn>
->
-> diff --git a/drivers/acpi/acpica/evevent.c b/drivers/acpi/acpica/evevent.c index 35385148fedb..08ba368beb2d 100644
-> --- a/drivers/acpi/acpica/evevent.c
-> +++ b/drivers/acpi/acpica/evevent.c
-> @@ -185,6 +185,10 @@ u32 acpi_ev_fixed_event_detect(void)
->   		return (int_status);
->   	}
->   
-> +	if (fixed_enable & ACPI_BITMASK_PCIEXP_WAKE_DISABLE)
-> +		fixed_enable &= ~ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
-> +	else
-> +		fixed_enable |= ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
->   	ACPI_DEBUG_PRINT((ACPI_DB_INTERRUPTS,
->   			  "Fixed Event Block: Enable %08X Status %08X\n",
->   			  fixed_enable, fixed_status));
-> @@ -250,8 +254,8 @@ static u32 acpi_ev_fixed_event_dispatch(u32 event)
->   	if (!acpi_gbl_fixed_event_handlers[event].handler) {
->   		(void)acpi_write_bit_register(acpi_gbl_fixed_event_info[event].
->   					      enable_register_id,
-> -					      ACPI_DISABLE_EVENT);
-> -
-> +						event == ACPI_EVENT_PCIE_WAKE ?
-> +						ACPI_ENABLE_EVENT : ACPI_DISABLE_EVENT);
->   		ACPI_ERROR((AE_INFO,
->   			    "No installed handler for fixed event - %s (%u), disabling",
->   			    acpi_ut_get_event_name(event), event)); diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c index 14baa13bf848..7e7ea4c2e914 100644
-> --- a/drivers/acpi/acpica/hwsleep.c
-> +++ b/drivers/acpi/acpica/hwsleep.c
-> @@ -312,6 +312,18 @@ acpi_status acpi_hw_legacy_wake(u8 sleep_state)
->   				    [ACPI_EVENT_SLEEP_BUTTON].
->   				    status_register_id, ACPI_CLEAR_STATUS);
->   
-> +	/* Enable pcie wake event if support */
-> +	if ((acpi_gbl_FADT.flags & ACPI_FADT_PCI_EXPRESS_WAKE)) {
-> +		(void)
-> +		acpi_write_bit_register(acpi_gbl_fixed_event_info
-> +				[ACPI_EVENT_PCIE_WAKE].
-> +				enable_register_id, ACPI_DISABLE_EVENT);
-> +		(void)
-> +		acpi_write_bit_register(acpi_gbl_fixed_event_info
-> +				[ACPI_EVENT_PCIE_WAKE].
-> +				status_register_id, ACPI_CLEAR_STATUS);
+> +	list_for_each_entry(e, &iort_rmr_list, list) {
+> +		u64 e_start = e->rmr_desc->base_address;
+> +		u64 e_end = e_start + e->rmr_desc->length - 1;
+> +
+> +		if (start <= e_end && end >= e_start)
+> +			return -EINVAL;
 > +	}
 > +
->   	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
->   	return_ACPI_STATUS(status);
->   }
-> diff --git a/drivers/acpi/acpica/utglobal.c b/drivers/acpi/acpica/utglobal.c index 59a48371a7bc..68baf16d8a02 100644
-> --- a/drivers/acpi/acpica/utglobal.c
-> +++ b/drivers/acpi/acpica/utglobal.c
-> @@ -186,6 +186,10 @@ struct acpi_fixed_event_info acpi_gbl_fixed_event_info[ACPI_NUM_FIXED_EVENTS] =
->   					ACPI_BITREG_RT_CLOCK_ENABLE,
->   					ACPI_BITMASK_RT_CLOCK_STATUS,
->   					ACPI_BITMASK_RT_CLOCK_ENABLE},
-> +	/* ACPI_EVENT_PCIE_WAKE		*/ {ACPI_BITREG_PCIEXP_WAKE_STATUS,
-> +					ACPI_BITREG_PCIEXP_WAKE_DISABLE,
-> +					ACPI_BITMASK_PCIEXP_WAKE_STATUS,
-> +					ACPI_BITMASK_PCIEXP_WAKE_DISABLE},
->   };
->   #endif				/* !ACPI_REDUCED_HARDWARE */
->   
-> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h index 92c71dfce0d5..0b6c72033487 100644
-> --- a/include/acpi/actypes.h
-> +++ b/include/acpi/actypes.h
-> @@ -714,7 +714,8 @@ typedef u32 acpi_event_type;
->   #define ACPI_EVENT_POWER_BUTTON         2
->   #define ACPI_EVENT_SLEEP_BUTTON         3
->   #define ACPI_EVENT_RTC                  4
-> -#define ACPI_EVENT_MAX                  4
-> +#define ACPI_EVENT_PCIE_WAKE            5
-> +#define ACPI_EVENT_MAX                  5
->   #define ACPI_NUM_FIXED_EVENTS           ACPI_EVENT_MAX + 1
->   
->   /*
-> --
-> 2.27.0
+> +	return 0;
+> +}
+> +
+> +static int __init iort_parse_rmr(struct acpi_iort_node *iort_node)
+> +{
+> +	struct iort_rmr_id *rmr_ids, *ids;
+> +	struct iort_rmr_entry *e;
+> +	struct acpi_iort_rmr *rmr;
+> +	struct acpi_iort_rmr_desc *rmr_desc;
+> +	u32 map_count = iort_node->mapping_count;
+> +	int i, ret = 0, desc_count = 0;
+> +
+> +	if (iort_node->type != ACPI_IORT_NODE_RMR)
+> +		return 0;
+> +
+> +	if (!iort_node->mapping_offset || !map_count) {
+> +		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
+> +		       iort_node);
+> +		return -EINVAL;
+> +	}
+> +
+> +	rmr_ids = kmalloc(sizeof(*rmr_ids) * map_count, GFP_KERNEL);
+> +	if (!rmr_ids)
+> +		return -ENOMEM;
+> +
+> +	/* Retrieve associated smmu and stream id */
+> +	ids = rmr_ids;
+nit: do you need both rmr_ids and ids?
+> +	for (i = 0; i < map_count; i++, ids++) {
+> +		ids->smmu = iort_node_get_id(iort_node, &ids->sid, i);
+> +		if (!ids->smmu) {
+> +			pr_err(FW_BUG "Invalid SMMU reference, skipping RMR node %p\n",
+> +			       iort_node);
+> +			ret = -EINVAL;
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	/* Retrieve RMR data */
+> +	rmr = (struct acpi_iort_rmr *)iort_node->node_data;
+> +	if (!rmr->rmr_offset || !rmr->rmr_count) {
+> +		pr_err(FW_BUG "Invalid RMR descriptor array, skipping RMR node %p\n",
+> +		       iort_node);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, iort_node,
+> +				rmr->rmr_offset);
+> +
+> +	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
+> +		ret = iort_rmr_desc_valid(rmr_desc);
+> +		if (ret) {
+> +			pr_err(FW_BUG "Invalid RMR descriptor[%d] for node %p, skipping...\n",
+> +			       i, iort_node);
+> +			goto out;
+so I understand you skip the whole node and not just that rmr desc,
+otherwise you would continue. so in that case don't you need to free
+both rmr_ids and already allocated 'e'?
+> +		}
+> +
+> +		e = kmalloc(sizeof(*e), GFP_KERNEL);
+> +		if (!e) {
+> +			ret = -ENOMEM;
+> +			goto out;
+> +		}
+> +
+> +		e->rmr_ids_num = map_count;
+> +		e->rmr_ids = rmr_ids;
+> +		e->rmr_desc = rmr_desc;
+> +
+> +		list_add_tail(&e->list, &iort_rmr_list);
+> +		desc_count++;
+> +	}
+> +
+> +	return 0;
+> +
+> +out:
+> +	if (!desc_count)
+don't you want to test ret instead? see comment above. + free allocated ''e'
+> +		kfree(rmr_ids);
+> +	return ret;
+> +}
+>  
+>  static void __init iort_init_platform_devices(void)
+>  {
+> @@ -1676,6 +1793,9 @@ static void __init iort_init_platform_devices(void)
+>  
+>  		iort_enable_acs(iort_node);
+>  
+> +		if (iort_table->revision == 1)
+> +			iort_parse_rmr(iort_node);
+> +
+>  		ops = iort_get_dev_cfg(iort_node);
+>  		if (ops) {
+>  			fwnode = acpi_alloc_fwnode_static();
+> 
+Thanks
+
+Eric
 
