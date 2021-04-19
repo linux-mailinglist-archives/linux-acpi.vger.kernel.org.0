@@ -2,84 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A56103628B8
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Apr 2021 21:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7992363CD7
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Apr 2021 09:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243695AbhDPTgY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Apr 2021 15:36:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35080 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235029AbhDPTgW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 16 Apr 2021 15:36:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B348F613B4;
-        Fri, 16 Apr 2021 19:35:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618601757;
-        bh=6nsEld/AHz4O3V/FKZ7eZE/3Z4jHZfTnVOsQzEoVmqg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ShJQH/ttUPnvDeFENN/fYbcliDcNW0ltqfXcBNZR03iyBqiUkzSJdyydh/ucrgHsX
-         V1JflqEgdN597Kkj4fknxjhvEighrLaFI5zAjq1G+t0mF+NzotuM/iZayFMO58yq7r
-         EAuAUC/lXReWCducjwlBxEE3taFe3zwOuOzUOxLshx2W2WFFk3lse7Dd0uTJW4SlY1
-         euMplf+CQXaWuEtLq2Xr9sd3bP/44hiFUl3exV9lJgi5Y3kJFWchu9j0uQtdH0LX8x
-         FzzMZ7iz7asrNfOB+5Y8TDlSNQC6m/9J3ccwjN0Q6eppQ3ibfYJcfEoi+PMAN1rgKG
-         HrzftFEpORahQ==
-Date:   Fri, 16 Apr 2021 14:35:55 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     chakravarthikulkarni <chakravarthikulkarni2021@gmail.com>
-Cc:     linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-Subject: Re: [PATCH] PCI: acpiphp:  Fixed coding style
-Message-ID: <20210416193555.GA2747805@bjorn-Precision-5520>
+        id S237877AbhDSHkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Apr 2021 03:40:23 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:34021 "EHLO
+        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237745AbhDSHkX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 19 Apr 2021 03:40:23 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 8CC9A1D63;
+        Mon, 19 Apr 2021 03:39:53 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Mon, 19 Apr 2021 03:39:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=4TNX38GKjiMISnXJe
+        hbOyzFj86uT++qqyWJOG2EEdm4=; b=piSVexebXxu2+Z0GY/jTQgWT0zor8i0C9
+        LTDwT08/6hzARb0GFhiu7C42noYjxIfW9eU8Y5vOG4A1U7eNIvGTqEckqRXsz5Wk
+        m3cJm2L5Mlx6ZJhl8VPbfnyE8tiLbvYdQpOY3RRGpbZeNsW5iya/kQuM5kO1FZWB
+        NrX23QTmmI0i7oEcf0QTyL57U3aAVXpZ6hKAhUbCxEKUVE93lGw49ym2m+ctN0bn
+        jWSz/lsEu1eO2//Bkg5EyPfxty7bFbKGN18WxEFNneLnVwJeq8FzkPkeGhdoSPWS
+        BcFqFfLwEqMJIDU+ixlazJiib1zbSl6qbN4S/w7QsqKynd3U6Jpfw==
+X-ME-Sender: <xms:yDN9YKM_uZOPG49u4SO3mniE5G-XKj7Jr_uy65wGxTu6LQfFJk5DIg>
+    <xme:yDN9YD2UI8eZ4Sm6ygIFir7FlPE2Yt3_nXsfEPJKu2YHkw0EN7S9ObauwvS0AfM7_
+    UUcwnHG1N7pbjZyv2s>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvddtfedgudekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpedfnfhukhgvucff
+    rdculfhonhgvshdfuceolhhukhgvsehljhhonhgvshdruggvvheqnecuggftrfgrthhtvg
+    hrnheplefflefhledthfdtveeugfevueeukeegteeigfeihffgjedvtedvueevtdfhvdek
+    necukfhppeduudeirddvhedurdduleefrdduleeinecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheplhhukhgvsehljhhonhgvshdruggvvh
+X-ME-Proxy: <xmx:yDN9YJGsv7LZJVwV80NB2zRCTQ9bqYwZq1eda24W6VsPc1OzJvJysg>
+    <xmx:yDN9YI7NPJKZYuONxqodo5umOr0rhA3tVJS663kxmoOmk6Ocdy-NVg>
+    <xmx:yDN9YHsnmWAyy8e8xZP5kouFsNBYNlvWkvcx6KTqvHfNmiFzUFIiAQ>
+    <xmx:yTN9YNfxukxZiRhQa9I_-ccg1e9c_7U4gNP1XARGcU7B2gEN9CBNFg>
+Received: from fedora.. (unknown [116.251.193.196])
+        by mail.messagingengine.com (Postfix) with ESMTPA id E9A4C24005C;
+        Mon, 19 Apr 2021 03:39:49 -0400 (EDT)
+From:   "Luke D. Jones" <luke@ljones.dev>
+To:     rjw@rjwysocki.net
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luke D Jones <luke@ljones.dev>
+Subject: [PATCH 1/3] ACPI: video: use native backlight for GA401/GA502/GA503
+Date:   Mon, 19 Apr 2021 19:39:17 +1200
+Message-Id: <20210419073917.157722-1-luke@ljones.dev>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210301072145.19018-1-chakravarthikulkarni2021@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 01, 2021 at 12:51:45PM +0530, chakravarthikulkarni wrote:
-> In this commit fixed coding style for braces and comments.
-> 
-> Signed-off-by: chakravarthikulkarni <chakravarthikulkarni2021@gmail.com>
+From: Luke D Jones <luke@ljones.dev>
 
-Applied to pci/hotplug for v5.13, thanks!
+Force backlight control in these models to use the native interface
+at /sys/class/backlight/amdgpu_bl0.
 
-I dropped the comment change because it's really one comment that
-should remain connected, so it doesn't seem like an improvement to me
-to add comment start/stop in the middle.
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+---
+ drivers/acpi/video_detect.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-> ---
->  drivers/pci/hotplug/acpiphp.h | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/hotplug/acpiphp.h b/drivers/pci/hotplug/acpiphp.h
-> index a74b274a8c45..e0964600a78f 100644
-> --- a/drivers/pci/hotplug/acpiphp.h
-> +++ b/drivers/pci/hotplug/acpiphp.h
-> @@ -80,8 +80,8 @@ struct acpiphp_bridge {
->  struct acpiphp_slot {
->  	struct list_head node;
->  	struct pci_bus *bus;
-> -	struct list_head funcs;		/* one slot may have different
-> -					   objects (i.e. for each function) */
-> +	struct list_head funcs;		/* one slot may have different */
-> +					/* objects (i.e. for each function) */
->  	struct slot *slot;
->  
->  	u8		device;		/* pci device# */
-> @@ -148,8 +148,7 @@ static inline struct acpiphp_root_context *to_acpiphp_root_context(struct acpi_h
->   * ACPI has no generic method of setting/getting attention status
->   * this allows for device specific driver registration
->   */
-> -struct acpiphp_attention_info
-> -{
-> +struct acpiphp_attention_info {
->  	int (*set_attn)(struct hotplug_slot *slot, u8 status);
->  	int (*get_attn)(struct hotplug_slot *slot, u8 *status);
->  	struct module *owner;
-> -- 
-> 2.17.1
-> 
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 811d298637cb..bae08bd98817 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -384,6 +384,30 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_BOARD_NAME, "BA51_MV"),
+ 		},
+ 	},
++	{
++	.callback = video_detect_force_native,
++	.ident = "ASUSTeK COMPUTER INC. GA401",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "GA401"),
++		},
++	},
++	{
++	.callback = video_detect_force_native,
++	.ident = "ASUSTeK COMPUTER INC. GA502",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "GA502"),
++		},
++	},
++	{
++	.callback = video_detect_force_native,
++	.ident = "ASUSTeK COMPUTER INC. GA503",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "GA503"),
++		},
++	},
+ 
+ 	/*
+ 	 * Desktops which falsely report a backlight and which our heuristics
+-- 
+2.31.1
+
