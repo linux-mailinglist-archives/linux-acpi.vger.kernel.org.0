@@ -2,248 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03378365DEF
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 18:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC428365EA6
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 19:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232913AbhDTQyK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 12:54:10 -0400
-Received: from mail-dm6nam11on2073.outbound.protection.outlook.com ([40.107.223.73]:29057
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232767AbhDTQyJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 20 Apr 2021 12:54:09 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RDBUXu1wZEnoTPqEc8Yc8CL1eSFCBPeoZJcwcp/eKj3RLSj2scm8+tCVJXJ186qyFtoWNjfO04xCwJtpk6xUtMg4bxXlqKbFRlAzpS2iN0Og1xn19aOY+wDaEk0qRzxmbbzwAqLORpe0fScMWnDjspNZYw/d6dmgymk92sMGJ31IDhgGwbTbkV/ugwvuXfYs4LYHUY8ARxWGFxgYkuLn8QWcElFhFXkut65W7c6uF01azVaya4H6yKl7/d3jnItxxJaAv9v97U6oNiIHqrYr22S6C9x+y8Y1bHUE7+68qaQVoV+xKXuINFZkPHP1c6QT+37LfgujeS8qZA1c1z4dFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hNEvkgXO8CbUJOxXWeOaSbj3Qdu4f+4OMtm3jDwxNio=;
- b=KWpLmtdZ5ySRLlx8ty0CwxeAeMtPaEw2wXPWPot5zMtuWf+pbmk39Ju8HRkd19LeJ6Wo8Y0tBUTMfXdOcHCFYfkP7k7jDFCiE+lYpk999cmFQSFaS0M13v3qe3edFKez3pQw0VVZ5rP3688EKDfdrMZ/LkJEZDXnMYkzF5zz2cOWoIQtQthiwkWlBZ5Iocb0443T0hrufOVVGH6cFmI2hGRa3j8SSCmzFsbfIVgrgV8QzGJ9tA12dvJGOPqQVdDSBcgzSfh1vCTbcwVKNn6aBED6prriGkjl2tk59hXAzdkRwFDLn77x5VIp/1tmHSRG7pep01ptAQfFr+9okoL5PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hNEvkgXO8CbUJOxXWeOaSbj3Qdu4f+4OMtm3jDwxNio=;
- b=NAFG5+Co1UeD5f0YkWJtDkB8RdNXVCjSkWqSWCp/BY6RskqaIc5yMf8ijAb/jTnn5mQ4RuWy03L/DtgZqrjlJA3XNFRCaExpv8/2CzLLs0Q6+MyDOjYi85mnubDaj7eT869wdQ0Por/hXBxbaroNf6rXztdKs/oSSIlwkwoe+znkC+/0rj3SW0XHk3Q1uHPZy3+NQrC08AP7jBfEiEHQbDQUUWHPMCDKEUediSEPC8uEMjZyN77f3ltDyVtdFo2E7W9tjOEZRTxPFf+I3W84wzFL6/MgctBVm72kL4W2sgOdgwmnGF4sT2jmhMUliEhoJ0M54Qrqo6OruZmwhFD4Lw==
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com (2603:10b6:207:4a::20)
- by MN2PR12MB4437.namprd12.prod.outlook.com (2603:10b6:208:26f::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.20; Tue, 20 Apr
- 2021 16:53:36 +0000
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::5105:e8df:9631:bf0f]) by BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::5105:e8df:9631:bf0f%5]) with mapi id 15.20.4042.024; Tue, 20 Apr 2021
- 16:53:36 +0000
-From:   Vikram Sethi <vsethi@nvidia.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>
-CC:     "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+        id S233469AbhDTRcs convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 20 Apr 2021 13:32:48 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2892 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233245AbhDTRcr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 13:32:47 -0400
+Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FPrG006Sfz6wjTm;
+        Wed, 21 Apr 2021 01:26:48 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 20 Apr 2021 19:32:14 +0200
+Received: from localhost (10.52.127.46) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 20 Apr
+ 2021 18:32:13 +0100
+Date:   Tue, 20 Apr 2021 18:30:44 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Vikram Sethi <vsethi@nvidia.com>
+CC:     Dan Williams <dan.j.williams@intel.com>,
+        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "Natu, Mahesh" <mahesh.natu@intel.com>,
         "Douglas, Chet R" <chet.r.douglas@intel.com>,
         "Verma, Vishal L" <vishal.l.verma@intel.com>,
         "Widawsky, Ben" <ben.widawsky@intel.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        "Samer El-Haj-Mahmoud" <Samer.El-Haj-Mahmoud@arm.com>,
         Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
         Lorenzo Pieralisi <Lorenzo.Pieralisi@arm.com>,
         Mark Hairgrove <mhairgrove@nvidia.com>
-Subject: RE: [ACPI Code First ECN v2]: Generic Port, performace data for
+Subject: Re: [ACPI Code First ECN v2]: Generic Port, performace data for
  hotplug memory
-Thread-Topic: [ACPI Code First ECN v2]: Generic Port, performace data for
- hotplug memory
-Thread-Index: AQHXLcst0OqV1gbZbka3uZ3UykiE86q3on2wgAUp/wCAAAz9sIAAEWOAgABBrACAAIIQgA==
-Date:   Tue, 20 Apr 2021 16:53:36 +0000
-Message-ID: <BL0PR12MB25323D058297AD200277FBCFBD489@BL0PR12MB2532.namprd12.prod.outlook.com>
+Message-ID: <20210420183044.0000172d@Huawei.com>
+In-Reply-To: <BL0PR12MB25323D058297AD200277FBCFBD489@BL0PR12MB2532.namprd12.prod.outlook.com>
 References: <e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com>
         <BL0PR12MB25321D18363AD50ACC7A2643BD499@BL0PR12MB2532.namprd12.prod.outlook.com>
         <CAPcyv4jztOGShTF+pVSMAtGeK4giHvC3mGNa5bC0pXz=2ZcrJw@mail.gmail.com>
         <BL0PR12MB2532D6AD41E6CF4F3252EE59BD489@BL0PR12MB2532.namprd12.prod.outlook.com>
         <CAPcyv4jMQbHYQssaDDDQFEbOR1v14VUnejcSwOP9VGUnZSsCKw@mail.gmail.com>
- <20210420100342.00000253@Huawei.com>
-In-Reply-To: <20210420100342.00000253@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: Huawei.com; dkim=none (message not signed)
- header.d=none;Huawei.com; dmarc=none action=none header.from=nvidia.com;
-x-originating-ip: [12.97.180.36]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ee9e0a1b-1e48-4445-dcdc-08d9041cd763
-x-ms-traffictypediagnostic: MN2PR12MB4437:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR12MB4437A786FFDBFCA0BAD60E89BD489@MN2PR12MB4437.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 97Jh4hCBWYVaZU01HK/FAjCI6nXVhS20XaHhWraYhI8ZdofAVPzTP3wn8TQdhXYKOFnuXscFTSCleGOfXIyfNRc2kupH3iWLNLPDYMBkjX3rxH1e+n+1OXQUaJd9xWZepL9ar/bjELsKFJFmRxRLa9SUvqzzx5KmXcf94AO5Pb1eFQ7kHtBzJUK8KTObptmnnt40yOCGV+X1Vt0lS2P3IHtLMcfHYATjzI9i+dT/FPHAXlFIfqQeRPWBTWOk0qV/hL2A+0dZRWfMIab2xuJyWx6+30UotZyJPr2UGu8u3SCibOHnMIj+aU3UsqAP5gZpy4q5HQgDtvcfSY6WGzOcE5c0GGXNLOG0Z8xwQ9H1ub6XZ9Rpqrv9VM+nfe1yptwQm/1VQvJwam5PsfcGU7jMcEi0Km7nsOyj6Op612L3bgpwmt6kAYM0NpDFiMbzEv2ZJFWtjuSK42AKvqSPPJvp6TwNHhuS+7gqPW469Afq1Yzi8XDN71hMUfyri5ErAoEuxsL56OsM6fHMtIKOoVsDauN3oeQGbcdJgK8GfeUmUhOLIokYi1ipVSNntdPz4pKhIovBvxK+oWJYAlWMEl69agt1bEFQS/0R50XKYEEzP7/2r71eKPMyUzRZCLOcchn0Rcc2VrLFbkLRbxaL6WxnlA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2532.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(366004)(376002)(346002)(136003)(8676002)(76116006)(478600001)(66946007)(110136005)(54906003)(316002)(8936002)(66446008)(66556008)(52536014)(5660300002)(71200400001)(86362001)(64756008)(66476007)(83380400001)(33656002)(186003)(7416002)(122000001)(7696005)(6506007)(53546011)(107886003)(38100700002)(4326008)(26005)(2906002)(9686003)(55016002)(41533002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?V01vYUZwMDVyMHpNSlo0YytaRjFmZ2xwNXRQSmtjYlgzeUh5eU1EOEIwZm90?=
- =?utf-8?B?aGVsWEJEekRldXgxcEdkcU12VEo0NU1NeW1HQUowZDVReVNlRlBhK1RwR3lC?=
- =?utf-8?B?VmpuTk9TT1NrOC9iSzVyZzFpb3loRkhUS2x6L1YyRHhLMWorNUg3bHpDeVZ1?=
- =?utf-8?B?WS9kMWR2d2hCY0JBaUdVZnNoemJSa0U3ZVdiZ1lNMVh2UTVvYVlTVVNJSWVV?=
- =?utf-8?B?bUVCWDRub0tENDhxTjhBT21tdGc1VDBLV3l0b2hkajNrVTA3dHJmWG1BMm91?=
- =?utf-8?B?SXg1ZkdIKzhrZWNSdXNoNHh0QmVlWUVZdkF2SEVZbkJUbW5pWlp3dFZtSjI3?=
- =?utf-8?B?ajNNTXJlWFltZGg1YkJFNEhraGFVakkrRVhEUFVpNEIxSis4czIvM3o1RUd4?=
- =?utf-8?B?RlY3R0NPd2s1RXdJNTZLUlhtSzhPMUp3bTFYakM5TzZKM1dTM2Y1eU1kd0RI?=
- =?utf-8?B?TWZqSjltZVFDSnIxcm1ZTW5WMDNRZ0VIU0tGamswbmJqYnFTdk1tMTJHMGJY?=
- =?utf-8?B?WVVPSU82eTc3SkpOQ1NNTlpLMU5yMkZCcmxLNXBKNGtqb1JQZUp3WlFneXd6?=
- =?utf-8?B?OXRIZlc3dm42ZXFLblhYcjJDM1JPVExHUFkxN2VBanlpSEs4R2RoeFcxV3ZK?=
- =?utf-8?B?cWJaUnFraVNUQmthbXA3RURBT0RqQUdnaTFVZWlLS1VuenVoMDJaY3dZWFRG?=
- =?utf-8?B?Tkd6a0NXaEpyenpEKzJTQVgwY1FPU29vdGdERzN5WU0xVXp1UVpZVlhiLzVs?=
- =?utf-8?B?NS9xUC9SUXVlOE1UUW81Mk1rRTJBWkpVYjZYMXBOODdETzFFMkE2azEzcUpQ?=
- =?utf-8?B?WEtnOW12QU9wUkhOaUJpVnZYQ1V6bExnaGozWURuVDRCUkFNNzZaZDZ6bzZR?=
- =?utf-8?B?UmlRUW0zOWFVMC9IUHN4QWEwTXZWRDQ5cXV0b3Z4aVBNQmFjMVVrZ2pBUXhH?=
- =?utf-8?B?YkxZZEFVS3pBUC9WODgrbmd4TEd2Q2hhZVAyMWRtYlRzQUdzYldrdm9yRWll?=
- =?utf-8?B?UmNhcTV4VEQwV1hiQi9tODEyUVNiZkVBK25kWkVEc21VRlFsbmtLWWh1NGpz?=
- =?utf-8?B?cFFXWjZJTXBLQTZzdWRtOVZSeGRVcXh0TjFLenhKUWtIT09wU3hyZW1HN3k3?=
- =?utf-8?B?QmtjZUVwTEhsNGw0dmIrUmQ0aHZJb0t5Z3Y2UEVWVnJ3OVhYa2lMazA1bk5B?=
- =?utf-8?B?QTRkMXVrTnRBSU1pdVZZZ2ZIVjdJdDZML0JzRHRrejFvL3IwWnEyWFZ6aDlk?=
- =?utf-8?B?ditHY3A3Q3BkbE5Td2lna0VkelZMNkljL0tiWHRmR09DTzdubHVZSlFmOHVY?=
- =?utf-8?B?dmVWUDNDWlkxaVNqZ3FZV3ZKUXJTbkxvb2NVSW5lb1pJL1dKbG1iak1nTnZv?=
- =?utf-8?B?U05PeFVNcjJraSszMmFSazFBVUh3Vlpha05od0tmQzV5TVl2TzBWVW9tZEtl?=
- =?utf-8?B?NThPSnFLRlRvN0U4K2lEak9nZElSQXlnRjNFSUFwTDIrM2hjQ3dMaDc3Zjd3?=
- =?utf-8?B?YjEreGdXUTJYRmJBeEVtQnRpTUR0cGl0L2d0cEJ2YzhmUXlvdzV3RVM2OVVI?=
- =?utf-8?B?NnVvbSt3Q2NFUEphRjZkU0hUK25IZkFBOVNEaWo0VlNEYnhhNjQwcmQ2QktZ?=
- =?utf-8?B?NDdvaDYrMWRBcXUzMytLZ2FsS09ncDBIem96elAyL2VIRjQ1M1NoNXhXRDVl?=
- =?utf-8?B?WmxmLytzSW00eEZWVGZWdFBPYzhFQnhIWlU4SDliY3o0Sy9aT2VQMXQ1ZEcz?=
- =?utf-8?Q?fBjDXy74Tr70tH5jAQaBtPhC/6pLS+qo9VTr3eI?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        <20210420100342.00000253@Huawei.com>
+        <BL0PR12MB25323D058297AD200277FBCFBD489@BL0PR12MB2532.namprd12.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2532.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee9e0a1b-1e48-4445-dcdc-08d9041cd763
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2021 16:53:36.7408
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /jqcYNvkzgeWjGAprWJSBYyrTFNqlM2eal47kHEs5BQRmIBjRPoLTtOstZKjn+3dHbIo8qQYiQBQK2iKUEvaZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4437
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.52.127.46]
+X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uYXRoYW4gQ2FtZXJv
-biA8Sm9uYXRoYW4uQ2FtZXJvbkBIdWF3ZWkuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBBcHJpbCAy
-MCwgMjAyMSA0OjA0IEFNDQo+IFRvOiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVs
-LmNvbT4NCj4gQ2M6IFZpa3JhbSBTZXRoaSA8dnNldGhpQG52aWRpYS5jb20+OyBsaW51eC1jeGxA
-dmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IE5hdHUsIE1h
-aGVzaCA8bWFoZXNoLm5hdHVAaW50ZWwuY29tPjsgRG91Z2xhcywgQ2hldCBSDQo+IDxjaGV0LnIu
-ZG91Z2xhc0BpbnRlbC5jb20+OyBWZXJtYSwgVmlzaGFsIEwgPHZpc2hhbC5sLnZlcm1hQGludGVs
-LmNvbT47DQo+IFdpZGF3c2t5LCBCZW4gPGJlbi53aWRhd3NreUBpbnRlbC5jb20+OyBTYW1lciBF
-bC1IYWotTWFobW91ZCA8U2FtZXIuRWwtDQo+IEhhai1NYWhtb3VkQGFybS5jb20+OyBUaGFudSBS
-YW5nYXJhamFuIDxUaGFudS5SYW5nYXJhamFuQGFybS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbQUNQ
-SSBDb2RlIEZpcnN0IEVDTiB2Ml06IEdlbmVyaWMgUG9ydCwgcGVyZm9ybWFjZSBkYXRhIGZvciBo
-b3RwbHVnDQo+IG1lbW9yeQ0KPiANCj4gRXh0ZXJuYWwgZW1haWw6IFVzZSBjYXV0aW9uIG9wZW5p
-bmcgbGlua3Mgb3IgYXR0YWNobWVudHMNCj4gDQo+IA0KPiBPbiBNb24sIDE5IEFwciAyMDIxIDIy
-OjA4OjM5IC0wNzAwDQo+IERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPiB3
-cm90ZToNCj4gDQo+ID4gT24gTW9uLCBBcHIgMTksIDIwMjEgYXQgOToyMiBQTSBWaWtyYW0gU2V0
-aGkgPHZzZXRoaUBudmlkaWEuY29tPiB3cm90ZToNCj4gPiA+DQo+ID4gPiA+IEZyb206IERhbiBX
-aWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPg0KPiA+ID4gPiBPbiBNb24sIEFwciAx
-OSwgMjAyMSBhdCAzOjU2IFBNIFZpa3JhbSBTZXRoaSA8dnNldGhpQG52aWRpYS5jb20+IHdyb3Rl
-Og0KPiA+ID4gPiBbLi5dDQo+ID4gPiA+ID4gPiAqIFJlcGxhY2UgYWxsIGluc3RhbmNlcyBvZiAi
-SW5pdGlhdG9yIiB3aXRoICJJbml0aWF0b3IgLyBQb3J0IiBpbiAiVGFibGUNCj4gPiA+ID4gPiA+
-ICAgNS41OSBGbGFncyAtIEdlbmVyaWMgSW5pdGlhdG9yIEFmZmluaXR5IFN0cnVjdHVyZSIsIGlu
-Y2x1ZGluZyB0aGUNCj4gPiA+ID4gPiA+ICAgdGFibGUgbmFtZS4NCj4gPiA+ID4gPg0KPiA+ID4g
-PiA+IEkgd2FudGVkIHRvIGRpc2N1c3MgdGhlIGltcGxpY2F0aW9ucyBvZiBhIENYTCBob3N0IGJy
-aWRnZSBpbXBsZW1lbnRhdGlvbg0KPiB0aGF0DQo+ID4gPiA+ID4gZG9lcyBub3Qgc2V0IHRoZSAi
-QXJjaGl0ZWN0dXJhbCBUcmFuc2FjdGlvbnMiIGJpdC9mbGFnIGluIHRoZSBhZm9yZW1lbnRpb25l
-ZA0KPiA+ID4gPiA+IEZsYWdzIGluIFRhYmxlIDUuNTkuDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBT
-aW5jZSB0aGUga2VybmVsIHdvdWxkIGJlIGV4cGVjdGluZyBhbGwgIlN5c3RlbSBSQU0iIHRvIGhh
-dmUgZXF1aXZhbGVudA0KPiA+ID4gPiA+IEZ1bmN0aW9uYWwgcHJvcGVydGllcywgaWYgSERNIGNh
-bm5vdCBoYXZlIGFsbCB0aGUgc2FtZSBmdW5jdGlvbmFsaXR5LCB0aGVuDQo+IGluDQo+ID4gPiA+
-ID4gdGhlIGFic2VuY2Ugb2YgSVNBIHNwZWNpZmljIEFDUEkgdGFibGVzIGNsYXJpZnlpbmcgd2hh
-dCBhcmNoaXRlY3R1cmFsIGZlYXR1cmUNCj4gaXNuJ3QNCj4gPiA+ID4gPiBzdXBwb3J0ZWQsIHRo
-ZSBrZXJuZWwgbWF5IGJlIGZvcmNlZCB0byBub3Qgb25saW5lIHRoZSBIRE0gbWVtb3J5IGFzDQo+
-IHN5c3RlbQ0KPiA+ID4gPiA+IFJBTS4gSWYgdGhlcmUgaXMgbW9yZSBncmFudWxhciBleHByZXNz
-aW9uIG9mIHdoYXQgZmVhdHVyZXMgYXJlIGxhY2tpbmcgaW4gYQ0KPiBJU0ENCj4gPiA+ID4gPiBT
-cGVjaWZpYyB0YWJsZSAoZWcgTWVtb3J5IFRhZ2dpbmcvTWVtb3J5IFByb3RlY3Rpb24ga2V5cyBu
-b3QNCj4gc3VwcG9ydGVkKSwNCj4gPiA+ID4gPiB0aGUga2VybmVsIGNvdWxkIGNob29zZSB0byBu
-b3QgZW5hYmxlIHRoYXQgZmVhdHVyZSBpbiBhbGwgb2Ygc3lzdGVtIFJBTSAoaWYNCj4gPiA+ID4g
-PiBkaXNjcmVwYW5jeSBkaXNjb3ZlcmVkIGF0IGJvb3QpLCBidXQgc3RpbGwgb25saW5lIHRoZSBI
-RE0gYXMgU3lzdGVtIFJBTS4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFRvIHRoYXQgZW5kLCBpdCBt
-YXkgYmUgdXNlZnVsIHRvIGNsYXJpZnkgdGhpcyB0byBob3N0IHZlbmRvcnMgYnkgd2F5IG9mIGFu
-DQo+ID4gPiA+ID4gSW1wbGVtZW50YXRpb24gbm90ZSAoaWRlYWxseSBpbiB0aGUgQ1hMIHNwZWNp
-ZmljYXRpb24pLiBTb21ldGhpbmcgbGlrZToNCj4gPiA+ID4gPiAiQ1hMIGhvc3RzIGFyZSBlbmNv
-dXJhZ2VkIHRvIHN1cHBvcnQgYWxsIGFyY2hpdGVjdHVyYWwgZmVhdHVyZXMgaW4gSERNDQo+ID4g
-PiA+ID4gYXMgdGhleSBkbyBpbiBDUFUgYXR0YWNoZWQgbWVtb3J5IHRvIGF2b2lkIGVpdGhlciB0
-aGUgbWVtb3J5IGZyb20NCj4gPiA+ID4gPiBiZWluZyBvbmxpbmVkIGFzIFN5c3RlbSBSQU0sIG9y
-IHRoZSBhcmNoaXRlY3R1cmFsIGZlYXR1cmUgYmVpbmcgZGlzYWJsZWQuDQo+ID4gPiA+ID4gSG9z
-dHMgbXVzdCBpbmRpY2F0ZSBhcmNoaXRlY3R1cmFsIHBhcml0eSBmb3IgSERNIGluIEFDUEkgU1JB
-VA0KPiA+ID4gPiA+IOKAnEdlbmVyaWMgUG9ydOKAnSBmbGFncyDigJxBcmNoaXRlY3R1cmFsIHRy
-YW5zYWN0aW9uc+KAnSBiaXQgYnkgc2V0dGluZyBpdCB0byAxLg0KPiA+ID4gPiA+IEEgcG9ydCB0
-aGF0IHNldHMgdGhpcyBiaXQgdG8gMCB3aWxsIG5lZWQgSVNBIHNwZWNpZmljIHdheXMvQUNQSSB0
-YWJsZXMgdG8NCj4gPiA+ID4gPiBkZXNjcmliZSB3aGljaCBzcGVjaWZpYyBJU0EgZmVhdHVyZXMg
-d291bGQgbm90IHdvcmsgaW4gSERNLCBzbyBhbiBPUw0KPiA+ID4gPiA+IGNvdWxkIGRpc2FibGUg
-dGhhdCBtZW1vcnkgb3IgdGhhdCBmZWF0dXJlLiINCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFRob3Vn
-aHRzPw0KPiA+ID4gPg0KPiA+ID4gPiBUaGUgcHJvYmxlbSwgYXMgeW91IGtub3csIGlzIHRoYXQg
-dGhvc2UgZmVhdHVyZXMgYXJlIGFscmVhZHkgZGVmaW5lZA0KPiA+ID4gPiB3aXRob3V0IHRob3Nl
-ICJJU0Egc3BlY2lmaWMgd2F5cyAvIEFDUEkgdGFibGVzIi4gSSB0aGluayBpdCBzaW1wbHkNCj4g
-PiA+ID4gbXVzdCBiZSB0aGUgY2FzZSB0aGF0IHRoZSBvbmx5IGFnZW50IGluIHRoZSBzeXN0ZW0g
-dGhhdCBpcyBhd2FyZSBvZg0KPiA+ID4gPiB0aGUgaW50ZXJzZWN0aW9uIG9mIGNhcGFiaWxpdGll
-cyBiZXR3ZWVuIElTQSBhbmQgQ1hMIChwbGF0Zm9ybQ0KPiA+ID4gPiBmaXJtd2FyZSkgbXVzdCBt
-aXRpZ2F0ZSB0aGUgY29uZmxpY3QuIEkuZS4gc28gdGhhdCB0aGUgQ1hMDQo+ID4gPiA+IGluZnJh
-c3RydWN0dXJlIG5lZWQgbm90IHdvcnJ5IGFib3V0IElTQSBmZWF0dXJlIGNhcGFiaWxpdHkgYW5k
-IHZpY2UNCj4gPiA+ID4gdmVyc2EuIFRvIG1lLCB0aGlzIGxvb2tzIGxpa2UgYSBwbGF0Zm9ybSBm
-aXJtd2FyZSBwcmUtYm9vdA0KPiA+ID4gPiBjb25maWd1cmF0aW9uIG1lbnUgLyBzd2l0Y2ggdGhh
-dCB0dXJucyBvZmYgQ1hMIChkZWNsaW5lcyB0byBwdWJsaXNoDQo+ID4gPiA+IEFDUEkwMDE2IGRl
-dmljZXMpIGlmIGluY29tcGF0aWJsZSBJU0EgZmVhdHVyZSAiWCIgaXMgZW5hYmxlZCwgb3IgdGhl
-DQo+ID4gPiA+IHJldmVyc2UgdHVybnMgb2ZmIElTQSBmZWF0dXJlICJYIiBpZiBDWEwgaXMgZW5h
-YmxlZC4gSW4gb3RoZXIgd29yZHMsDQo+ID4gPiA+IHRoZSBjb25mbGljdCBuZWVkcyB0byBiZSBy
-ZXNvbHZlZCBiZWZvcmUgdGhlIE9TIGJvb3RzLCBzZXR0aW5nIHRoaXMNCj4gPiA+ID4gYml0IHRv
-IDAgaXMgbm90IGEgdmlhYmxlIG9wdGlvbiBmb3IgbWl0aWdhdGluZyB0aGUgY29uZmxpY3QgYmVj
-YXVzZQ0KPiA+ID4gPiB0aGVyZSBpcyBubyByZXF1aXJlbWVudCBmb3IgdGhlIE9TIHRvIGV2ZW4g
-bG9vayBhdCB0aGlzIGZsYWcuDQo+ID4gPg0KPiA+ID4gTGVhdmluZyBpdCB0byBGaXJtd2FyZSBp
-cyBlYXNpZXIgZm9yIHRoZSBPUywgYnV0IGNvdWxkIGJlIGEgY291cGxlDQo+ID4gPiBvZiBpc3N1
-ZXMgd2l0aCB0aGF0Og0KPiA+ID4gUGxhdGZvcm0gZmlybXdhcmUgbWF5IG5vdCBoYXZlIGEgd2F5
-IG9mIGRpc2FibGluZyBJU0EgZmVhdHVyZQ0KPiA+ID4gaWYgaXQgaXMgZGlyZWN0bHkgdmlzaWJs
-ZSB0byB0aGUgT1MgdmlhIENQVSBJRCByZWdpc3RlcnMsIGFuZCB0aGUNCj4gPiA+IHJlZ2lzdGVy
-cyBjYW4ndCBiZSB0cmFwcGVkIHRvIHNvbWUgRlcgYW5kIHZhbHVlcyBhZGp1c3RlZA0KPiA+ID4g
-b24gYWNjZXNzDQo+ID4gPiBQbGF0Zm9ybSBGaXJtd2FyZSBtYXkgbm90IGtub3cgaWYgdGhlIE9T
-IHN1cHBvcnRzIGEgc3BlY2lmaWMNCj4gPiA+IEZlYXR1cmUgKGNvZGUgbWF5IG5vdCBleGlzdCBv
-ciBub3QgZGVmYXVsdCBvcHRpb24gZXRjKSBzbyBpdA0KPiA+ID4gbWF5IGJlIHByZW1hdHVyZS9z
-dWJvcHRpbWFsIHRvIGRpc2FibGUgQ1hMIGhvc3RicmlkZ2UNCj4gPiA+IGFsdG9nZXRoZXIuIEFs
-dGhvdWdoIEkgc3VwcG9zZSBhIFVFRkkgdmFyaWFibGUgdHlwZSBrbm9iDQo+ID4gPiBjb3VsZCBi
-ZSBhZGp1c3RlZCBpbiB0aGlzIGNhc2UgYW5kIHRha2UgZWZmZWN0IG9uIHJlYm9vdC4NCj4gPiA+
-DQo+ID4gPiBBbHNvLCBmb3Igc29tZSAqZnV0dXJlKiBJU0EgZmVhdHVyZXMgd2hlcmUgaXQgbWF5
-IGJlIHBvc3NpYmxlIGFuZA0KPiA+ID4gcHJhY3RpY2FsIHRvIGRlZmluZSBJU0EgZmVhdHVyZSBz
-dXBwb3J0IGRpc2NvdmVyeSBwZXIgTlVNQQ0KPiA+ID4gbm9kZS9hZGRyZXNzIHJhbmdlIHcvIEFD
-UEkgKHByaW9yIHRvIHVzZXJzcGFjZSBBQkkgYmVpbmcgc2V0KSwNCj4gPiA+IHRoZSBwbGF0Zm9y
-bSB3b3VsZCB3YW50IHRvIGVuYWJsZSB0aGUgQ1hMIGhvc3QgYnJpZGdlIGFuZCBsZWF2ZQ0KPiA+
-ID4gc2VsZWN0aXZlIGVuYWJsZW1lbnQgb2YgdGhlIGZlYXR1cmUgdG8gdGhlIE9TLiBZZXMsIHRo
-aXMgaXMgbWVzc3kNCj4gPiA+IGFuZCBiZXN0IGF2b2lkZWQsIGJ1dCBpdCBtYXkgbWFrZSBzZW5z
-ZSBkZXBlbmRpbmcgb24gSVNBDQo+ID4gPiBmZWF0dXJlIGFuZCBob3cgbWVzc3kgaXQgbWFrZXMg
-dXNlciBzcGFjZS4gSSdtIHBlcnNvbmFsbHkNCj4gPiA+IG5vdCBpbiBmYXZvciBvZiB0aGlzIGxh
-dHRlciBvcHRpb24sIGJ1dCBJJ20gdG9sZCB0aGlzIHdhcyBkaXNjdXNzZWQNCj4gPiA+IGluIG90
-aGVyIENvaGVyZW50IGludGVyY29ubmVjdCBmb3J1bXMgYW5kIGNob3NlbiBhcyBhIHBhdGgNCj4g
-PiA+IGZvcndhcmQuDQo+ID4NCj4gPiBJIHRoaW5rIGl0J3MgcmVhc29uYWJsZSBmb3IgbmV3IHN0
-dWZmIHRvIGRlZmluZSBfT1NDIG9yIG90aGVyIG9wdC1pbg0KPiA+IHJlcXVpcmVtZW50cyB0byBh
-bGxvdyB0aGUgT1MgdG8gbWFuYWdlIElTQSB2cyBDWEwgY29uZmxpY3QgcG9saWN5LiBGb3INCj4g
-PiBleGlzdGluZyBjb25mbGljdHMgdGhlIG9ubHkgcmVsaWFibGUgbWVjaGFuaXNtIGlzIGRlY2xp
-bmUgdG8gcHVibGlzaA0KPiA+IEFDUEkwMDE2IGlmIHBsYXRmb3JtIGZpcm13YXJlIGNhbiBlbnVt
-ZXJhdGUgYW4gSVNBIGZlYXR1cmUgdGhhdCBpdCBpcw0KPiA+IG5vdCBzdXBwb3J0ZWQgb24gQ1hM
-LiBTbyBJIHRoaW5rIHRoZSBwcm9wb3NhbCBoZXJlIGlzIGEgcmVjb21tZW5kYXRpb24NCj4gPiBm
-b3IgcGxhdGZvcm0gZmlybXdhcmUgaW1wbGVtZW50YXRpb25zIHRoYXQgdGhleSBhcmUgcmVzcG9u
-c2libGUgZm9yDQo+ID4gdGhpcyBjb25mbGljdCByZXNvbHV0aW9uIHVubGVzcyAvIHVudGlsIG90
-aGVyIG1lY2hhbmlzbXMgYXJyaXZlLg0KPiANCj4gQWdyZWVkIHdpdGggb25lIGFkZGl0aW9uLiAg
-SXQgc2hvdWxkIGJlIHBvc3NpYmxlIHRvIHJldHJvZml0IG5lZ290aWF0aW9uDQo+IGZvciBleGlz
-dGluZyBmZWF0dXJlcyBhcyB3ZWxsLiBEZWZhdWx0IHBvbGljeSBzaG91bGQgYmUgdGhhdCBpdCdz
-IGZpcm13YXJlJ3MNCj4gcHJvYmxlbSBidXQgaWYgdGhlIE9TIHVzZXMgX09TQyB0byBuZWdvdGlh
-dGUgc29tZXRoaW5nIGVsc2UgdGhlbiBpdCBtYXkNCj4gYmUgcG9zc2libGUgdG8gYmUgbW9yZSBm
-bGV4aWJsZS4gQXMgbG9uZyBhcyB0aGUgZGVmYXVsdCBpcyBzYWZlLCByZWxheGluZw0KPiB0aGF0
-IGNhbiBoYXBwZW4gb25jZSBtZWNoYW5pc21zIGFyZSBkZWZpbmVkLiAgVGhlIGFjdHVhbCBkZWNp
-c2lvbiBvbg0KPiB3aGV0aGVyIHRvIGVuYWJsZSBBQ1BJMDAxNiBjYW4gZm9yIGV4YW1wbGUgYmUg
-cHVzaGVkIGludG8gQU1MIGNvZGUuDQo+IA0KDQpSZWxheGF0aW9ucyBjb3VsZCBoYXBwZW4gb25s
-eSB3aGVuIEFCSSB0byB1c2Vyc3BhY2UgaXNuJ3QgYWxyZWFkeSBzZXQNCmFuZCBpbiB1c2UgdGhv
-dWdoLCBubz8NCg0KV2hhdCBhYm91dCBDb2hlcmVudCBkZXZpY2UgbWVtb3J5IGluIHR5cGUgMiBk
-ZXZpY2VzPyBUaGF0IGlzIG5vdCBFRkkNCmNvbnZlbnRpb25hbCBtZW1vcnkgYnV0IG9uY2Ugc29t
-ZSBwYXJ0IGhhcyBiZWVuIG9ubGluZWQgYnkgYSBkcml2ZXIgYnkNCmNhbGxpbmcgc29tZXRoaW5n
-IGxpa2UgYWRkX21lbW9yeV9kcml2ZXJfbWFuYWdlZCwgdGhhdCBwYXJ0IHNob3VsZCANCmhhdmUg
-YWxsIHRoZSBwcm9wZXJ0aWVzIG9mIFN5c3RlbSBSQU0gYXMgd2VsbC4gTm90IGNsZWFyIHRoYXQg
-UGxhdGZvcm0NCmZpcm13YXJlIHdvdWxkIGtub3cgaWYgYSBkcml2ZXIgaW50ZW50cyB0byBvbmxp
-bmUgc29tZSBvciBhbGwgb2YgdGhhdA0KbWVtb3J5LiANCg==
+On Tue, 20 Apr 2021 16:53:36 +0000
+Vikram Sethi <vsethi@nvidia.com> wrote:
+
+> > -----Original Message-----
+> > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > Sent: Tuesday, April 20, 2021 4:04 AM
+> > To: Dan Williams <dan.j.williams@intel.com>
+> > Cc: Vikram Sethi <vsethi@nvidia.com>; linux-cxl@vger.kernel.org; linux-
+> > acpi@vger.kernel.org; Natu, Mahesh <mahesh.natu@intel.com>; Douglas, Chet R
+> > <chet.r.douglas@intel.com>; Verma, Vishal L <vishal.l.verma@intel.com>;
+> > Widawsky, Ben <ben.widawsky@intel.com>; Samer El-Haj-Mahmoud <Samer.El-
+> > Haj-Mahmoud@arm.com>; Thanu Rangarajan <Thanu.Rangarajan@arm.com>
+> > Subject: Re: [ACPI Code First ECN v2]: Generic Port, performace data for hotplug
+> > memory
+> > 
+> > External email: Use caution opening links or attachments
+> > 
+> > 
+> > On Mon, 19 Apr 2021 22:08:39 -0700
+> > Dan Williams <dan.j.williams@intel.com> wrote:
+> >   
+> > > On Mon, Apr 19, 2021 at 9:22 PM Vikram Sethi <vsethi@nvidia.com> wrote:  
+> > > >  
+> > > > > From: Dan Williams <dan.j.williams@intel.com>
+> > > > > On Mon, Apr 19, 2021 at 3:56 PM Vikram Sethi <vsethi@nvidia.com> wrote:
+> > > > > [..]  
+> > > > > > > * Replace all instances of "Initiator" with "Initiator / Port" in "Table
+> > > > > > >   5.59 Flags - Generic Initiator Affinity Structure", including the
+> > > > > > >   table name.  
+> > > > > >
+> > > > > > I wanted to discuss the implications of a CXL host bridge implementation  
+> > that  
+> > > > > > does not set the "Architectural Transactions" bit/flag in the aforementioned
+> > > > > > Flags in Table 5.59.
+> > > > > >
+> > > > > > Since the kernel would be expecting all "System RAM" to have equivalent
+> > > > > > Functional properties, if HDM cannot have all the same functionality, then  
+> > in  
+> > > > > > the absence of ISA specific ACPI tables clarifying what architectural feature  
+> > isn't  
+> > > > > > supported, the kernel may be forced to not online the HDM memory as  
+> > system  
+> > > > > > RAM. If there is more granular expression of what features are lacking in a  
+> > ISA  
+> > > > > > Specific table (eg Memory Tagging/Memory Protection keys not  
+> > supported),  
+> > > > > > the kernel could choose to not enable that feature in all of system RAM (if
+> > > > > > discrepancy discovered at boot), but still online the HDM as System RAM.
+> > > > > >
+> > > > > > To that end, it may be useful to clarify this to host vendors by way of an
+> > > > > > Implementation note (ideally in the CXL specification). Something like:
+> > > > > > "CXL hosts are encouraged to support all architectural features in HDM
+> > > > > > as they do in CPU attached memory to avoid either the memory from
+> > > > > > being onlined as System RAM, or the architectural feature being disabled.
+> > > > > > Hosts must indicate architectural parity for HDM in ACPI SRAT
+> > > > > > “Generic Port” flags “Architectural transactions” bit by setting it to 1.
+> > > > > > A port that sets this bit to 0 will need ISA specific ways/ACPI tables to
+> > > > > > describe which specific ISA features would not work in HDM, so an OS
+> > > > > > could disable that memory or that feature."
+> > > > > >
+> > > > > > Thoughts?  
+> > > > >
+> > > > > The problem, as you know, is that those features are already defined
+> > > > > without those "ISA specific ways / ACPI tables". I think it simply
+> > > > > must be the case that the only agent in the system that is aware of
+> > > > > the intersection of capabilities between ISA and CXL (platform
+> > > > > firmware) must mitigate the conflict. I.e. so that the CXL
+> > > > > infrastructure need not worry about ISA feature capability and vice
+> > > > > versa. To me, this looks like a platform firmware pre-boot
+> > > > > configuration menu / switch that turns off CXL (declines to publish
+> > > > > ACPI0016 devices) if incompatible ISA feature "X" is enabled, or the
+> > > > > reverse turns off ISA feature "X" if CXL is enabled. In other words,
+> > > > > the conflict needs to be resolved before the OS boots, setting this
+> > > > > bit to 0 is not a viable option for mitigating the conflict because
+> > > > > there is no requirement for the OS to even look at this flag.  
+> > > >
+> > > > Leaving it to Firmware is easier for the OS, but could be a couple
+> > > > of issues with that:
+> > > > Platform firmware may not have a way of disabling ISA feature
+> > > > if it is directly visible to the OS via CPU ID registers, and the
+> > > > registers can't be trapped to some FW and values adjusted
+> > > > on access
+> > > > Platform Firmware may not know if the OS supports a specific
+> > > > Feature (code may not exist or not default option etc) so it
+> > > > may be premature/suboptimal to disable CXL hostbridge
+> > > > altogether. Although I suppose a UEFI variable type knob
+> > > > could be adjusted in this case and take effect on reboot.
+> > > >
+> > > > Also, for some *future* ISA features where it may be possible and
+> > > > practical to define ISA feature support discovery per NUMA
+> > > > node/address range w/ ACPI (prior to userspace ABI being set),
+> > > > the platform would want to enable the CXL host bridge and leave
+> > > > selective enablement of the feature to the OS. Yes, this is messy
+> > > > and best avoided, but it may make sense depending on ISA
+> > > > feature and how messy it makes user space. I'm personally
+> > > > not in favor of this latter option, but I'm told this was discussed
+> > > > in other Coherent interconnect forums and chosen as a path
+> > > > forward.  
+> > >
+> > > I think it's reasonable for new stuff to define _OSC or other opt-in
+> > > requirements to allow the OS to manage ISA vs CXL conflict policy. For
+> > > existing conflicts the only reliable mechanism is decline to publish
+> > > ACPI0016 if platform firmware can enumerate an ISA feature that it is
+> > > not supported on CXL. So I think the proposal here is a recommendation
+> > > for platform firmware implementations that they are responsible for
+> > > this conflict resolution unless / until other mechanisms arrive.  
+> > 
+> > Agreed with one addition.  It should be possible to retrofit negotiation
+> > for existing features as well. Default policy should be that it's firmware's
+> > problem but if the OS uses _OSC to negotiate something else then it may
+> > be possible to be more flexible. As long as the default is safe, relaxing
+> > that can happen once mechanisms are defined.  The actual decision on
+> > whether to enable ACPI0016 can for example be pushed into AML code.
+> >   
+> 
+> Relaxations could happen only when ABI to userspace isn't already set
+> and in use though, no?
+
+Indeed, though here we are talking about relaxing from:
+- Firmware prevents the enabling of a feature (ISA feature or CXL) to...
+- OS negotiates with the firmware to say it knows more (via some new method)
+  and hence does want the feature enabled.
+
+So userspace ABI doesn't change, things simply become available that were
+previously not on this particular system (because firmware had to hide them)
+
+> 
+> What about Coherent device memory in type 2 devices? That is not EFI
+> conventional memory but once some part has been onlined by a driver by
+> calling something like add_memory_driver_managed, that part should 
+> have all the properties of System RAM as well. Not clear that Platform
+> firmware would know if a driver intents to online some or all of that
+> memory. 
+
+Type 2 devices are a pain to talk about in any remotely general fashion,
+but it's certainly possible that their drivers might do something
+different after negotiating with the firmware for permission to do so.
+As you say though, firmware can't know if a driver intends to online that
+memory, so as the potential is there, the safe option is not expose that
+device at all (I think we'll fairly quickly develop a way to make this work
+given alternative is turn lots of things off :)
+
+My guess is it would be system wide.  So taking example of Memory tagging:
+If the platform doesn't support that feature for all CXL attached memory
+found (or potentially hotplugged), today it has to turn it off, or
+refuse to expose connected CXL devices (it sets ACPI0016 _STA to say it's
+not there or something like that).
+
+If later, we get some new mechanism that allows the OS to handle this
+mismatch, it can use _OSC or similar to tell the firmware it can handle
+this case.  The firmware can then report the ACPI0016 as present.
+
+The AML stuff is similar to the _OSC related _PXM manipulation that let
+us safely introduce Generic Initiators - there we rely on the _OSC being
+called before and _PXM calls are made and have the _PXM results change
+dependent on result of that _OSC negotiation of capabilities.
+
+Jonathan
