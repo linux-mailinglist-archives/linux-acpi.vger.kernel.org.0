@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5748736555A
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 11:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2537136555E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 11:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231300AbhDTJ33 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 05:29:29 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:16607 "EHLO
+        id S231364AbhDTJ3e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Apr 2021 05:29:34 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:16608 "EHLO
         szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbhDTJ33 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 05:29:29 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FPdbv2TP3z19M25;
-        Tue, 20 Apr 2021 17:26:35 +0800 (CST)
+        with ESMTP id S231325AbhDTJ3e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 05:29:34 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FPdc02yFRz19Ln5;
+        Tue, 20 Apr 2021 17:26:40 +0800 (CST)
 Received: from A2006125610.china.huawei.com (10.47.83.26) by
  DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 20 Apr 2021 17:28:45 +0800
+ 14.3.498.0; Tue, 20 Apr 2021 17:28:51 +0800
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
@@ -25,9 +25,9 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
         <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
         <jon@solid-run.com>, <eric.auger@redhat.com>
-Subject: [PATCH v3 07/10] iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
-Date:   Tue, 20 Apr 2021 10:27:48 +0200
-Message-ID: <20210420082751.1829-8-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v3 08/10] iommu/arm-smmu-v3: Reserve any RMR regions associated with a dev
+Date:   Tue, 20 Apr 2021 10:27:49 +0200
+Message-ID: <20210420082751.1829-9-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
 References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
@@ -40,83 +40,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Check if there is any RMR info associated with the devices behind
-the SMMUv3 and if any, install bypass STEs for them. This is to
-keep any ongoing traffic associated with these devices alive
-when we enable/reset SMMUv3 during probe().
+Get RMR regions associated with a dev reserved so that there is
+a unity mapping for them in SMMU.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 35 +++++++++++++++++++++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  2 ++
- 2 files changed, 37 insertions(+)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 190285812182..14e9c7034c04 100644
+index 14e9c7034c04..8bacedf7bb34 100644
 --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
 +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3530,6 +3530,37 @@ static void __iomem *arm_smmu_ioremap(struct device *dev, resource_size_t start,
- 	return devm_ioremap_resource(dev, &res);
+@@ -2531,6 +2531,34 @@ static int arm_smmu_of_xlate(struct device *dev, struct of_phandle_args *args)
+ 	return iommu_fwspec_add_ids(dev, args->args, 1);
  }
  
-+static void arm_smmu_rmr_install_bypass_ste(struct arm_smmu_device *smmu)
++static bool arm_smmu_dev_has_rmr(struct arm_smmu_master *master,
++				 struct iommu_rmr *e)
 +{
-+	struct iommu_rmr *e;
-+	int ret;
++	int i;
 +
-+	/*
-+	 * Since, we don't have a mechanism to differentiate the RMR
-+	 * SIDs that has an ongoing live stream, install bypass STEs
-+	 * for all the reported ones. 
-+	 */
-+	list_for_each_entry(e, &smmu->rmr_list, list) {
-+		__le64 *step;
++	for (i = 0; i < master->num_sids; i++) {
++		if (e->sid == master->sids[i])
++			return true;
++	}
 +
-+		ret = arm_smmu_init_sid_strtab(smmu, e->sid);
-+		if (ret) {
-+			dev_err(smmu->dev, "RMR bypass(0x%x) failed\n",
-+				e->sid);
++	return false;
++}
++
++static void arm_smmu_rmr_get_resv_regions(struct device *dev,
++					  struct list_head *head)
++{
++	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
++	struct arm_smmu_device *smmu = master->smmu;
++	struct iommu_rmr *rmr;
++
++	list_for_each_entry(rmr, &smmu->rmr_list, list) {
++		if (!arm_smmu_dev_has_rmr(master, rmr))
 +			continue;
-+		}
 +
-+		step = arm_smmu_get_step_for_sid(smmu, e->sid);
-+		arm_smmu_write_strtab_ent(NULL, e->sid, step, true);
++		iommu_dma_get_rmr_resv_regions(dev, rmr, head);
 +	}
 +}
 +
-+static int arm_smmu_get_rmr(struct arm_smmu_device *smmu)
-+{
-+	INIT_LIST_HEAD(&smmu->rmr_list);
-+	return iommu_dma_get_rmrs(dev_fwnode(smmu->dev), &smmu->rmr_list);
-+}
-+
- static int arm_smmu_device_probe(struct platform_device *pdev)
+ static void arm_smmu_get_resv_regions(struct device *dev,
+ 				      struct list_head *head)
  {
- 	int irq, ret;
-@@ -3613,6 +3644,10 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
- 	/* Record our private device structure */
- 	platform_set_drvdata(pdev, smmu);
+@@ -2545,6 +2573,7 @@ static void arm_smmu_get_resv_regions(struct device *dev,
+ 	list_add_tail(&region->list, head);
  
-+	/* Check for RMRs and install bypass STEs if any */
-+	if (!arm_smmu_get_rmr(smmu))
-+		arm_smmu_rmr_install_bypass_ste(smmu);
-+
- 	/* Reset the device */
- 	ret = arm_smmu_device_reset(smmu, bypass);
- 	if (ret)
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index f985817c967a..e210fa81538a 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -639,6 +639,8 @@ struct arm_smmu_device {
+ 	iommu_dma_get_resv_regions(dev, head);
++	arm_smmu_rmr_get_resv_regions(dev, head);
+ }
  
- 	/* IOMMU core code handle */
- 	struct iommu_device		iommu;
-+
-+	struct list_head		rmr_list;
- };
- 
- /* SMMU private data for each master */
+ static bool arm_smmu_dev_has_feature(struct device *dev,
 -- 
 2.17.1
 
