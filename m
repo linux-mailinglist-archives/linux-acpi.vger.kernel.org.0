@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0C3365A31
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 15:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77C4365B0F
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 16:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232373AbhDTNdo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 09:33:44 -0400
-Received: from mga17.intel.com ([192.55.52.151]:47471 "EHLO mga17.intel.com"
+        id S232084AbhDTOTq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Apr 2021 10:19:46 -0400
+Received: from mga07.intel.com ([134.134.136.100]:54014 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232327AbhDTNdl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 20 Apr 2021 09:33:41 -0400
-IronPort-SDR: 0Llc/WQ47Uy3oLZsqf+qSJD0ytbVnD1qTUhAiz2WxhIJ0iHSBanvanaTzGD1ziF8krXzVh2qId
- kyUvb8BkP9jw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9960"; a="175611690"
+        id S231422AbhDTOTq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 20 Apr 2021 10:19:46 -0400
+IronPort-SDR: 3vM3Sv8dllHBZP3DCJ5boJWpmrAY9AlUbPnTKuTeKInRYjCsZZAxEeWCKW9AddGIb3L6dM3n0R
+ 5QfRI5mnH11g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9960"; a="259469618"
 X-IronPort-AV: E=Sophos;i="5.82,237,1613462400"; 
-   d="gz'50?scan'50,208,50";a="175611690"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2021 06:33:10 -0700
-IronPort-SDR: +h2rA6VmyLXKrfPJ7csm/OW2LPsV9+sFSe3qYbJgRsXL4bH5TZmH2rOXxItWSTpx0qihKu4jmW
- /0GuVs1m8Fqw==
+   d="gz'50?scan'50,208,50";a="259469618"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2021 07:19:14 -0700
+IronPort-SDR: 4N3AP7Ym2T8x7HXy2Kg6Ly0FPqqoG0demcAhQCFWt3i/vnSnSsKhZTNoFJwBo09s82w/sUml/p
+ vkFMqWAVN0yg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,237,1613462400"; 
-   d="gz'50?scan'50,208,50";a="445512951"
+   d="gz'50?scan'50,208,50";a="401011101"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 20 Apr 2021 06:33:06 -0700
+  by orsmga002.jf.intel.com with ESMTP; 20 Apr 2021 07:19:11 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lYqUz-0002Uh-UP; Tue, 20 Apr 2021 13:33:05 +0000
-Date:   Tue, 20 Apr 2021 21:32:29 +0800
+        id 1lYrDa-0002Xn-Bi; Tue, 20 Apr 2021 14:19:10 +0000
+Date:   Tue, 20 Apr 2021 22:18:28 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
         linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -37,30 +37,30 @@ Cc:     kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
         linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
         robin.murphy@arm.com, wanghuiqiang@huawei.com,
         guohanjun@huawei.com, steven.price@arm.com
-Subject: Re: [PATCH v3 04/10] iommu/dma: Add a helper function to reserve
- RMRs for IOMMU drivers
-Message-ID: <202104202144.kAXc2ZHR-lkp@intel.com>
-References: <20210420082751.1829-5-shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH v3 10/10] iommu/arm-smmu: Reserve any RMR regions
+ associated with a dev
+Message-ID: <202104202234.oz3LNQtv-lkp@intel.com>
+References: <20210420082751.1829-11-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ibTvN161/egqYuK8"
+Content-Type: multipart/mixed; boundary="AqsLC8rIMeq19msA"
 Content-Disposition: inline
-In-Reply-To: <20210420082751.1829-5-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20210420082751.1829-11-shameerali.kolothum.thodi@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---ibTvN161/egqYuK8
+--AqsLC8rIMeq19msA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Shameer,
 
-Thank you for the patch! Perhaps something to improve:
+I love your patch! Yet something to improve:
 
-[auto build test WARNING on pm/linux-next]
-[also build test WARNING on arm/for-next soc/for-next arm64/for-next/core linus/master v5.12-rc8]
+[auto build test ERROR on pm/linux-next]
+[also build test ERROR on arm/for-next soc/for-next arm64/for-next/core linus/master v5.12-rc8]
 [cannot apply to iommu/next xlnx/master next-20210420]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
@@ -75,47 +75,64 @@ reproduce (this is a W=1 build):
         chmod +x ~/bin/make.cross
         # install arm cross compiling tool for clang build
         # apt-get install binutils-arm-linux-gnueabi
-        # https://github.com/0day-ci/linux/commit/2501962e423895e2e4f126ff5998b226f4803186
+        # https://github.com/0day-ci/linux/commit/ea2019c2969e4e8f6ec2b0dc2d492f0d05f36cd9
         git remote add linux-review https://github.com/0day-ci/linux
         git fetch --no-tags linux-review Shameer-Kolothum/ACPI-IORT-Support-for-IORT-RMR-node/20210420-173125
-        git checkout 2501962e423895e2e4f126ff5998b226f4803186
+        git checkout ea2019c2969e4e8f6ec2b0dc2d492f0d05f36cd9
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 ARCH=arm 
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
    In file included from drivers/iommu/arm/arm-smmu/arm-smmu.c:24:
->> include/linux/dma-iommu.h:94:71: warning: declaration of 'struct iommu_rmr' will not be visible outside of this function [-Wvisibility]
+   include/linux/dma-iommu.h:94:71: warning: declaration of 'struct iommu_rmr' will not be visible outside of this function [-Wvisibility]
    static void iommu_dma_get_rmr_resv_regions(struct device *dev, struct iommu_rmr *rmr,
                                                                          ^
    include/linux/dma-iommu.h:100:1: error: expected identifier or '('
    {
    ^
-   1 warning and 1 error generated.
+>> drivers/iommu/arm/arm-smmu/arm-smmu.c:1622:39: error: incompatible pointer types passing 'struct iommu_rmr *' to parameter of type 'struct iommu_rmr *' [-Werror,-Wincompatible-pointer-types]
+                   iommu_dma_get_rmr_resv_regions(dev, rmr, head);
+                                                       ^~~
+   include/linux/dma-iommu.h:94:82: note: passing argument to parameter 'rmr' here
+   static void iommu_dma_get_rmr_resv_regions(struct device *dev, struct iommu_rmr *rmr,
+                                                                                    ^
+   1 warning and 2 errors generated.
 
 
-vim +94 include/linux/dma-iommu.h
+vim +1622 drivers/iommu/arm/arm-smmu/arm-smmu.c
 
-    93	
-  > 94	static void iommu_dma_get_rmr_resv_regions(struct device *dev, struct iommu_rmr *rmr,
-    95						   struct list_head *list)
-    96	{
-    97	}
-    98	
+  1609	
+  1610	static void arm_smmu_rmr_get_resv_regions(struct device *dev,
+  1611						  struct list_head *head)
+  1612	{
+  1613		struct arm_smmu_master_cfg *cfg = dev_iommu_priv_get(dev);
+  1614		struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+  1615		struct arm_smmu_device *smmu = cfg->smmu;
+  1616		struct iommu_rmr *rmr;
+  1617	
+  1618		list_for_each_entry(rmr, &smmu->rmr_list, list) {
+  1619			if (!arm_smmu_dev_has_rmr(cfg, fwspec, rmr))
+  1620				continue;
+  1621	
+> 1622			iommu_dma_get_rmr_resv_regions(dev, rmr, head);
+  1623		}
+  1624	}
+  1625	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---ibTvN161/egqYuK8
+--AqsLC8rIMeq19msA
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICCvQfmAAAy5jb25maWcAjDxdd9u2ku/9FTrpy70Pt7XkjyS7xw8gCUqoSAIBQEn2C49q
+H4sICGHbfmAAAy5jb25maWcAjDxdd9u2ku/9FTrpy70Pt7XkjyS7xw8gCUqoSAIBQEn2C49q
 M6m3tpUry2nz73cG/AJA0GnPbm81MwAGg8F8gv75p59n5PV0eNqfHu72j4/fZ1/q5/q4P9X3
 s88Pj/X/zhI+K7ie0YTpX4A4e3h+/fvX/fFpdvnLfPHL2X+Odx9m6/r4XD/O4sPz54cvrzD6
 4fD8088/xbxI2bKK42pDpWK8qDTd6et3d4/75y+zb/XxBehm8/Nfzn45m/3ry8Ppf379Ff79
@@ -583,4 +600,4 @@ ClyU5HNhRA8Zn+/6V8wuWZ/lWsIWx6ocRDvEfcEuDQ7USgF7LhZNMg1U22SbVNkxqGK9pZlU
 R/Qve/yrv29Wma6zgn5fwGdYnIWgFE3NsIaZJiZT0xQ25kkG9hgW11m6nPC99Vhsclcynsxy
 w4f/Dy3qS2WXggEA
 
---ibTvN161/egqYuK8--
+--AqsLC8rIMeq19msA--
