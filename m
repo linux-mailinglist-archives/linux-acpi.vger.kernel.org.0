@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBB92364F76
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 02:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED05364F78
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 02:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbhDTA04 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Apr 2021 20:26:56 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:16604 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232135AbhDTA0w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Apr 2021 20:26:52 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FPPYp5Rrjz19LtT;
-        Tue, 20 Apr 2021 08:23:58 +0800 (CST)
+        id S232135AbhDTA1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Apr 2021 20:27:02 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:17016 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232656AbhDTA1C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Apr 2021 20:27:02 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FPPYG6wX6zPrjD;
+        Tue, 20 Apr 2021 08:23:30 +0800 (CST)
 Received: from SWX921481.china.huawei.com (10.126.200.79) by
  DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 20 Apr 2021 08:26:13 +0800
+ 14.3.498.0; Tue, 20 Apr 2021 08:26:20 +0800
 From:   Barry Song <song.bao.hua@hisilicon.com>
 To:     <tim.c.chen@linux.intel.com>, <catalin.marinas@arm.com>,
         <will@kernel.org>, <rjw@rjwysocki.net>,
@@ -34,9 +34,9 @@ CC:     <msys.mizuma@gmail.com>, <valentin.schneider@arm.com>,
         <guodong.xu@linaro.org>, <yangyicong@huawei.com>,
         <liguozhu@hisilicon.com>, <linuxarm@openeuler.org>,
         <hpa@zytor.com>, Barry Song <song.bao.hua@hisilicon.com>
-Subject: [RFC PATCH v6 3/4] scheduler: scan idle cpu in cluster for tasks within one LLC
-Date:   Tue, 20 Apr 2021 12:18:43 +1200
-Message-ID: <20210420001844.9116-4-song.bao.hua@hisilicon.com>
+Subject: [RFC PATCH v6 4/4] scheduler: Add cluster scheduler level for x86
+Date:   Tue, 20 Apr 2021 12:18:44 +1200
+Message-ID: <20210420001844.9116-5-song.bao.hua@hisilicon.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20210420001844.9116-1-song.bao.hua@hisilicon.com>
 References: <20210420001844.9116-1-song.bao.hua@hisilicon.com>
@@ -49,375 +49,253 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On kunpeng920, cpus within one cluster can communicate wit each other
-much faster than cpus across different clusters. A simple hackbench
-can prove that.
-hackbench running on 4 cpus in single one cluster and 4 cpus in
-different clusters shows a large contrast:
-(1) within a cluster:
-root@ubuntu:~# taskset -c 0,1,2,3 hackbench -p -T -l 20000 -g 1
-Running in threaded mode with 1 groups using 40 file descriptors each
-(== 40 tasks)
-Each sender will pass 20000 messages of 100 bytes
-Time: 4.285
+From: Tim Chen <tim.c.chen@linux.intel.com>
 
-(2) across clusters:
-root@ubuntu:~# taskset -c 0,4,8,12 hackbench -p -T -l 20000 -g 1
-Running in threaded mode with 1 groups using 40 file descriptors each
-(== 40 tasks)
-Each sender will pass 20000 messages of 100 bytes
-Time: 5.524
+There are x86 CPU architectures (e.g. Jacobsville) where L2 cahce
+is shared among a cluster of cores instead of being exclusive
+to one single core.
 
-This inspires us to change the wake_affine path to scan cluster to pack
-the related tasks. Ideally, a two-level packing vs. spreading heuristic
-could be introduced to distinguish between llc-packing and even narrower
-(cluster or MC-L2)-packing. But this way would be quite trivial. So this
-patch begins from those tasks running in same LLC. This is actually quite
-common in real use cases when tasks are bound in a NUMA.
+To prevent oversubscription of L2 cache, load should be
+balanced between such L2 clusters, especially for tasks with
+no shared data.
 
-If users use "numactl -N 0" to bind tasks, this patch will scan cluster
-rather than llc to select idle cpu. A hackbench running with some groups
-of monogamous sender-receiver model shows a major improvement.
+Also with cluster scheduling policy where tasks are woken up
+in the same L2 cluster, we will benefit from keeping tasks
+related to each other and likely sharing data in the same L2
+cluster.
 
-To evaluate the performance impact to related tasks talking with each
-other, we run the below hackbench with different -g parameter from 6
-to 32 in a NUMA node with 24 cores, for each different g, we run the
-command 20 times and get the average time:
-$ numactl -N 0 hackbench -p -T -l 1000000 -f 1 -g $1
-As -f is set to 1, this means all threads are talking with each other
-monogamously.
+Add CPU masks of CPUs sharing the L2 cache so we can build such
+L2 cluster scheduler domain.
 
-hackbench will report the time which is needed to complete a certain number
-of messages transmissions between a certain number of tasks, for example:
-$ numactl -N 0 hackbench -p -T -l 1000000 -f 1 -g 6
-Running in threaded mode with 6 groups using 2 file descriptors each (== 12 tasks)
-Each sender will pass 1000000 messages of 100 bytes
-
-The below is the result of hackbench:
-g                =    6      12      18     24    28    32
-w/o                 1.2474 1.5635 1.5133 1.4796 1.6177 1.7898
-w/domain            1.1458 1.3309 1.3416 1.4990 1.9212 2.3411
-w/domain+affine     0.9500 1.0728 1.1756 1.2201 1.4166 1.5464
-
-w/o: without any change
-w/domain: added cluster domain without changing wake_affine
-w/domain+affine: added cluster domain, changed wake_affine
-
-while g=6, if we use top -H to show the cpus which tasks are running on,
-we can easily find couples are running in same CCL.
-
+Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
 ---
  -v6:
-  * emulated a two-level spreading/packing heuristic by only scanning cluster
-    in wake_affine path for tasks running in same LLC(also NUMA).
+  * added topology_cluster_cpumask() for x86, code provided by Tim.
 
-    This partially addressed Dietmar's comment in RFC v3:
-    "In case we would like to further distinguish between llc-packing and
-     even narrower (cluster or MC-L2)-packing, we would introduce a 2. level
-     packing vs. spreading heuristic further down in sis().
-   
-     IMHO, Barry's current implementation doesn't do this right now. Instead
-     he's trying to pack on cluster first and if not successful look further
-     among the remaining llc CPUs for an idle CPU."
+ arch/x86/Kconfig                |  8 ++++++++
+ arch/x86/include/asm/smp.h      |  7 +++++++
+ arch/x86/include/asm/topology.h |  2 ++
+ arch/x86/kernel/cpu/cacheinfo.c |  1 +
+ arch/x86/kernel/cpu/common.c    |  3 +++
+ arch/x86/kernel/smpboot.c       | 43 ++++++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 63 insertions(+), 1 deletion(-)
 
-  * adjusted the hackbench parameter to make relatively low and high load.
-    previous patchsets with "-f 10" ran under an extremely high load with
-    hundreds of threads, which seems not real use cases.
-
-    This also addressed Vincent's question in RFC v4:
-    "In particular, I'm still not convinced that the modification of the wakeup
-    path is the root of the hackbench improvement; especially with g=14 where
-    there should not be much idle CPUs with 14*40 tasks on at most 32 CPUs."
-
- block/blk-mq.c                 |  2 +-
- include/linux/sched/topology.h |  5 +++--
- kernel/sched/core.c            |  9 +++++---
- kernel/sched/fair.c            | 47 +++++++++++++++++++++++++-----------------
- kernel/sched/sched.h           |  3 +++
- kernel/sched/topology.c        | 12 +++++++++++
- 6 files changed, 53 insertions(+), 25 deletions(-)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index d4d7c1c..1418981 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -611,7 +611,7 @@ static inline bool blk_mq_complete_need_ipi(struct request *rq)
- 	/* same CPU or cache domain?  Complete locally */
- 	if (cpu == rq->mq_ctx->cpu ||
- 	    (!test_bit(QUEUE_FLAG_SAME_FORCE, &rq->q->queue_flags) &&
--	     cpus_share_cache(cpu, rq->mq_ctx->cpu)))
-+	     cpus_share_cache(cpu, rq->mq_ctx->cpu, 0)))
- 		return false;
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2792879..d597de2 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1002,6 +1002,14 @@ config NR_CPUS
+ 	  This is purely to save memory: each supported CPU adds about 8KB
+ 	  to the kernel image.
  
- 	/* don't try to IPI to an offline CPU */
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 846fcac..d63d6b8 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -176,7 +176,8 @@ extern void partition_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
- cpumask_var_t *alloc_sched_domains(unsigned int ndoms);
- void free_sched_domains(cpumask_var_t doms[], unsigned int ndoms);
- 
--bool cpus_share_cache(int this_cpu, int that_cpu);
-+/* return true if cpus share cluster(while cluster=1) or llc cache */
-+bool cpus_share_cache(int this_cpu, int that_cpu, int cluster);
- 
- typedef const struct cpumask *(*sched_domain_mask_f)(int cpu);
- typedef int (*sched_domain_flags_f)(void);
-@@ -225,7 +226,7 @@ struct sched_domain_topology_level {
- {
- }
- 
--static inline bool cpus_share_cache(int this_cpu, int that_cpu)
-+static inline bool cpus_share_cache(int this_cpu, int that_cpu, int cluster)
- {
- 	return true;
- }
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 30c300c..c74812a 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3126,9 +3126,12 @@ void wake_up_if_idle(int cpu)
- 	rcu_read_unlock();
- }
- 
--bool cpus_share_cache(int this_cpu, int that_cpu)
-+bool cpus_share_cache(int this_cpu, int that_cpu, int cluster)
- {
--	return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
-+	if (cluster)
-+		return per_cpu(sd_cluster_id, this_cpu) == per_cpu(sd_cluster_id, that_cpu);
-+	else
-+		return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
- }
- 
- static inline bool ttwu_queue_cond(int cpu, int wake_flags)
-@@ -3144,7 +3147,7 @@ static inline bool ttwu_queue_cond(int cpu, int wake_flags)
- 	 * If the CPU does not share cache, then queue the task on the
- 	 * remote rqs wakelist to avoid accessing remote data.
- 	 */
--	if (!cpus_share_cache(smp_processor_id(), cpu))
-+	if (!cpus_share_cache(smp_processor_id(), cpu, 0))
- 		return true;
- 
- 	/*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a327746..69a1704 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -718,7 +718,7 @@ static u64 sched_vslice(struct cfs_rq *cfs_rq, struct sched_entity *se)
- #include "pelt.h"
- #ifdef CONFIG_SMP
- 
--static int select_idle_sibling(struct task_struct *p, int prev_cpu, int cpu);
-+static int select_idle_sibling(struct task_struct *p, int prev_cpu, int cpu, int cluster);
- static unsigned long task_h_load(struct task_struct *p);
- static unsigned long capacity_of(int cpu);
- 
-@@ -5786,11 +5786,12 @@ static void record_wakee(struct task_struct *p)
-  * whatever is irrelevant, spread criteria is apparent partner count exceeds
-  * socket size.
-  */
--static int wake_wide(struct task_struct *p)
-+static int wake_wide(struct task_struct *p, int cluster)
- {
- 	unsigned int master = current->wakee_flips;
- 	unsigned int slave = p->wakee_flips;
--	int factor = __this_cpu_read(sd_llc_size);
-+	int factor = cluster ? __this_cpu_read(sd_cluster_size) :
-+		__this_cpu_read(sd_llc_size);
- 
- 	if (master < slave)
- 		swap(master, slave);
-@@ -5812,7 +5813,7 @@ static int wake_wide(struct task_struct *p)
-  *			  for the overloaded case.
-  */
- static int
--wake_affine_idle(int this_cpu, int prev_cpu, int sync)
-+wake_affine_idle(int this_cpu, int prev_cpu, int sync, int cluster)
- {
- 	/*
- 	 * If this_cpu is idle, it implies the wakeup is from interrupt
-@@ -5826,7 +5827,7 @@ static int wake_wide(struct task_struct *p)
- 	 * a cpufreq perspective, it's better to have higher utilisation
- 	 * on one CPU.
- 	 */
--	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
-+	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu, cluster))
- 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
- 
- 	if (sync && cpu_rq(this_cpu)->nr_running == 1)
-@@ -5882,12 +5883,12 @@ static int wake_wide(struct task_struct *p)
- }
- 
- static int wake_affine(struct sched_domain *sd, struct task_struct *p,
--		       int this_cpu, int prev_cpu, int sync)
-+		       int this_cpu, int prev_cpu, int sync, int cluster)
- {
- 	int target = nr_cpumask_bits;
- 
- 	if (sched_feat(WA_IDLE))
--		target = wake_affine_idle(this_cpu, prev_cpu, sync);
-+		target = wake_affine_idle(this_cpu, prev_cpu, sync, cluster);
- 
- 	if (sched_feat(WA_WEIGHT) && target == nr_cpumask_bits)
- 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
-@@ -6139,7 +6140,8 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
-  * comparing the average scan cost (tracked in sd->avg_scan_cost) against the
-  * average idle time for this rq (as found in rq->avg_idle).
-  */
--static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
-+static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target,
-+	int cluster)
- {
- 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
- 	int i, cpu, idle_cpu = -1, nr = INT_MAX;
-@@ -6154,7 +6156,8 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 
- 	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
- 
--	if (sched_feat(SIS_PROP) && !smt) {
-+	/* cluster is usually quite small like 4, no need SIS_PROP */
-+	if (sched_feat(SIS_PROP) && !smt && !cluster) {
- 		u64 avg_cost, avg_idle, span_avg;
- 
- 		/*
-@@ -6191,7 +6194,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 	if (smt)
- 		set_idle_cores(this, false);
- 
--	if (sched_feat(SIS_PROP) && !smt) {
-+	if (sched_feat(SIS_PROP) && !smt && !cluster) {
- 		time = cpu_clock(this) - time;
- 		update_avg(&this_sd->avg_scan_cost, time);
- 	}
-@@ -6244,7 +6247,7 @@ static inline bool asym_fits_capacity(int task_util, int cpu)
- /*
-  * Try and locate an idle core/thread in the LLC cache domain.
-  */
--static int select_idle_sibling(struct task_struct *p, int prev, int target)
-+static int select_idle_sibling(struct task_struct *p, int prev, int target, int cluster)
- {
- 	struct sched_domain *sd;
- 	unsigned long task_util;
-@@ -6266,7 +6269,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	/*
- 	 * If the previous CPU is cache affine and idle, don't be stupid:
- 	 */
--	if (prev != target && cpus_share_cache(prev, target) &&
-+	if (prev != target && cpus_share_cache(prev, target, cluster) &&
- 	    (available_idle_cpu(prev) || sched_idle_cpu(prev)) &&
- 	    asym_fits_capacity(task_util, prev))
- 		return prev;
-@@ -6289,7 +6292,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	recent_used_cpu = p->recent_used_cpu;
- 	if (recent_used_cpu != prev &&
- 	    recent_used_cpu != target &&
--	    cpus_share_cache(recent_used_cpu, target) &&
-+	    cpus_share_cache(recent_used_cpu, target, cluster) &&
- 	    (available_idle_cpu(recent_used_cpu) || sched_idle_cpu(recent_used_cpu)) &&
- 	    cpumask_test_cpu(p->recent_used_cpu, p->cpus_ptr) &&
- 	    asym_fits_capacity(task_util, recent_used_cpu)) {
-@@ -6321,11 +6324,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 		}
- 	}
- 
--	sd = rcu_dereference(per_cpu(sd_llc, target));
-+	sd = cluster ? rcu_dereference(per_cpu(sd_cluster, target)) :
-+			rcu_dereference(per_cpu(sd_llc, target));
- 	if (!sd)
- 		return target;
--
--	i = select_idle_cpu(p, sd, target);
-+	i = select_idle_cpu(p, sd, target, cluster);
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
- 
-@@ -6745,6 +6748,12 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 	int want_affine = 0;
- 	/* SD_flags and WF_flags share the first nibble */
- 	int sd_flag = wake_flags & 0xF;
-+	/*
-+	 * if cpu and prev_cpu share LLC, consider cluster sibling rather
-+	 * than llc. this is typically true while tasks are bound within
-+	 * one numa
-+	 */
-+	int cluster = sched_cluster_active() && cpus_share_cache(cpu, prev_cpu, 0);
- 
- 	if (wake_flags & WF_TTWU) {
- 		record_wakee(p);
-@@ -6756,7 +6765,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 			new_cpu = prev_cpu;
- 		}
- 
--		want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
-+		want_affine = !wake_wide(p, cluster) && cpumask_test_cpu(cpu, p->cpus_ptr);
- 	}
- 
- 	rcu_read_lock();
-@@ -6768,7 +6777,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 		if (want_affine && (tmp->flags & SD_WAKE_AFFINE) &&
- 		    cpumask_test_cpu(prev_cpu, sched_domain_span(tmp))) {
- 			if (cpu != prev_cpu)
--				new_cpu = wake_affine(tmp, p, cpu, prev_cpu, sync);
-+				new_cpu = wake_affine(tmp, p, cpu, prev_cpu, sync, cluster);
- 
- 			sd = NULL; /* Prefer wake_affine over balance flags */
- 			break;
-@@ -6785,7 +6794,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 		new_cpu = find_idlest_cpu(sd, p, cpu, prev_cpu, sd_flag);
- 	} else if (wake_flags & WF_TTWU) { /* XXX always ? */
- 		/* Fast path */
--		new_cpu = select_idle_sibling(p, prev_cpu, new_cpu);
-+		new_cpu = select_idle_sibling(p, prev_cpu, new_cpu, cluster);
- 
- 		if (want_affine)
- 			current->recent_used_cpu = cpu;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 4e938ba..b4b7d95 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1487,6 +1487,9 @@ static inline struct sched_domain *lowest_flag_domain(int cpu, int flag)
- DECLARE_PER_CPU(struct sched_domain __rcu *, sd_llc);
- DECLARE_PER_CPU(int, sd_llc_size);
- DECLARE_PER_CPU(int, sd_llc_id);
-+DECLARE_PER_CPU(struct sched_domain __rcu *, sd_cluster);
-+DECLARE_PER_CPU(int, sd_cluster_size);
-+DECLARE_PER_CPU(int, sd_cluster_id);
- DECLARE_PER_CPU(struct sched_domain_shared __rcu *, sd_llc_shared);
- DECLARE_PER_CPU(struct sched_domain __rcu *, sd_numa);
- DECLARE_PER_CPU(struct sched_domain __rcu *, sd_asym_packing);
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 829ac9d..28a2032 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -644,6 +644,9 @@ static void destroy_sched_domains(struct sched_domain *sd)
- DEFINE_PER_CPU(struct sched_domain __rcu *, sd_llc);
- DEFINE_PER_CPU(int, sd_llc_size);
- DEFINE_PER_CPU(int, sd_llc_id);
-+DEFINE_PER_CPU(struct sched_domain __rcu *, sd_cluster);
-+DEFINE_PER_CPU(int, sd_cluster_size);
-+DEFINE_PER_CPU(int, sd_cluster_id);
- DEFINE_PER_CPU(struct sched_domain_shared __rcu *, sd_llc_shared);
- DEFINE_PER_CPU(struct sched_domain __rcu *, sd_numa);
- DEFINE_PER_CPU(struct sched_domain __rcu *, sd_asym_packing);
-@@ -657,6 +660,15 @@ static void update_top_cache_domain(int cpu)
- 	int id = cpu;
- 	int size = 1;
- 
-+	sd = highest_flag_domain(cpu, SD_SHARE_CLS_RESOURCES);
-+	if (sd) {
-+		id = cpumask_first(sched_domain_span(sd));
-+		size = cpumask_weight(sched_domain_span(sd));
-+	}
-+	rcu_assign_pointer(per_cpu(sd_cluster, cpu), sd);
-+	per_cpu(sd_cluster_size, cpu) = size;
-+	per_cpu(sd_cluster_id, cpu) = id;
++config SCHED_CLUSTER
++	bool "Cluster scheduler support"
++	default n
++	help
++	 Cluster scheduler support improves the CPU scheduler's decision
++	 making when dealing with machines that have clusters of CPUs
++	 sharing L2 cache. If unsure say N here.
 +
- 	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
- 	if (sd) {
- 		id = cpumask_first(sched_domain_span(sd));
+ config SCHED_SMT
+ 	def_bool y if SMP
+ 
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index c0538f8..9cbc4ae 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -16,7 +16,9 @@
+ DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_die_map);
+ /* cpus sharing the last level cache: */
+ DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_llc_shared_map);
++DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_l2c_shared_map);
+ DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_llc_id);
++DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_l2c_id);
+ DECLARE_PER_CPU_READ_MOSTLY(int, cpu_number);
+ 
+ static inline struct cpumask *cpu_llc_shared_mask(int cpu)
+@@ -24,6 +26,11 @@ static inline struct cpumask *cpu_llc_shared_mask(int cpu)
+ 	return per_cpu(cpu_llc_shared_map, cpu);
+ }
+ 
++static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
++{
++	return per_cpu(cpu_l2c_shared_map, cpu);
++}
++
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_cpu_to_apicid);
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u32, x86_cpu_to_acpiid);
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_bios_cpu_apicid);
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 9239399..800fa48 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -103,6 +103,7 @@ static inline void setup_node_to_cpumask_map(void) { }
+ #include <asm-generic/topology.h>
+ 
+ extern const struct cpumask *cpu_coregroup_mask(int cpu);
++extern const struct cpumask *cpu_clustergroup_mask(int cpu);
+ 
+ #define topology_logical_package_id(cpu)	(cpu_data(cpu).logical_proc_id)
+ #define topology_physical_package_id(cpu)	(cpu_data(cpu).phys_proc_id)
+@@ -114,6 +115,7 @@ static inline void setup_node_to_cpumask_map(void) { }
+ 
+ #ifdef CONFIG_SMP
+ #define topology_die_cpumask(cpu)		(per_cpu(cpu_die_map, cpu))
++#define topology_cluster_cpumask(cpu)		(cpu_clustergroup_mask(cpu))
+ #define topology_core_cpumask(cpu)		(per_cpu(cpu_core_map, cpu))
+ #define topology_sibling_cpumask(cpu)		(per_cpu(cpu_sibling_map, cpu))
+ 
+diff --git a/arch/x86/kernel/cpu/cacheinfo.c b/arch/x86/kernel/cpu/cacheinfo.c
+index 3ca9be4..0d03a71 100644
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -846,6 +846,7 @@ void init_intel_cacheinfo(struct cpuinfo_x86 *c)
+ 		l2 = new_l2;
+ #ifdef CONFIG_SMP
+ 		per_cpu(cpu_llc_id, cpu) = l2_id;
++		per_cpu(cpu_l2c_id, cpu) = l2_id;
+ #endif
+ 	}
+ 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ab640ab..0ba282d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -78,6 +78,9 @@
+ /* Last level cache ID of each logical CPU */
+ DEFINE_PER_CPU_READ_MOSTLY(u16, cpu_llc_id) = BAD_APICID;
+ 
++/* L2 cache ID of each logical CPU */
++DEFINE_PER_CPU_READ_MOSTLY(u16, cpu_l2c_id) = BAD_APICID;
++
+ /* correctly size the local cpu masks */
+ void __init setup_cpu_local_masks(void)
+ {
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 02813a7..c85ffa8 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -101,6 +101,8 @@
+ 
+ DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_llc_shared_map);
+ 
++DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_l2c_shared_map);
++
+ /* Per CPU bogomips and other parameters */
+ DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
+ EXPORT_PER_CPU_SYMBOL(cpu_info);
+@@ -501,6 +503,21 @@ static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+ 	return topology_sane(c, o, "llc");
+ }
+ 
++static bool match_l2c(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
++{
++	int cpu1 = c->cpu_index, cpu2 = o->cpu_index;
++
++	/* Do not match if we do not have a valid APICID for cpu: */
++	if (per_cpu(cpu_l2c_id, cpu1) == BAD_APICID)
++		return false;
++
++	/* Do not match if L2 cache id does not match: */
++	if (per_cpu(cpu_l2c_id, cpu1) != per_cpu(cpu_l2c_id, cpu2))
++		return false;
++
++	return topology_sane(c, o, "l2c");
++}
++
+ /*
+  * Unlike the other levels, we do not enforce keeping a
+  * multicore group inside a NUMA node.  If this happens, we will
+@@ -522,7 +539,7 @@ static bool match_die(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+ }
+ 
+ 
+-#if defined(CONFIG_SCHED_SMT) || defined(CONFIG_SCHED_MC)
++#if defined(CONFIG_SCHED_SMT) || defined(CONFIG_SCHED_CLUSTER) || defined(CONFIG_SCHED_MC)
+ static inline int x86_sched_itmt_flags(void)
+ {
+ 	return sysctl_sched_itmt_enabled ? SD_ASYM_PACKING : 0;
+@@ -540,12 +557,21 @@ static int x86_smt_flags(void)
+ 	return cpu_smt_flags() | x86_sched_itmt_flags();
+ }
+ #endif
++#ifdef CONFIG_SCHED_CLUSTER
++static int x86_cluster_flags(void)
++{
++	return cpu_cluster_flags() | x86_sched_itmt_flags();
++}
++#endif
+ #endif
+ 
+ static struct sched_domain_topology_level x86_numa_in_package_topology[] = {
+ #ifdef CONFIG_SCHED_SMT
+ 	{ cpu_smt_mask, x86_smt_flags, SD_INIT_NAME(SMT) },
+ #endif
++#ifdef CONFIG_SCHED_CLUSTER
++	{ cpu_clustergroup_mask, x86_cluster_flags, SD_INIT_NAME(CLS) },
++#endif
+ #ifdef CONFIG_SCHED_MC
+ 	{ cpu_coregroup_mask, x86_core_flags, SD_INIT_NAME(MC) },
+ #endif
+@@ -556,6 +582,9 @@ static int x86_smt_flags(void)
+ #ifdef CONFIG_SCHED_SMT
+ 	{ cpu_smt_mask, x86_smt_flags, SD_INIT_NAME(SMT) },
+ #endif
++#ifdef CONFIG_SCHED_CLUSTER
++	{ cpu_clustergroup_mask, x86_cluster_flags, SD_INIT_NAME(CLS) },
++#endif
+ #ifdef CONFIG_SCHED_MC
+ 	{ cpu_coregroup_mask, x86_core_flags, SD_INIT_NAME(MC) },
+ #endif
+@@ -583,6 +612,7 @@ void set_cpu_sibling_map(int cpu)
+ 	if (!has_mp) {
+ 		cpumask_set_cpu(cpu, topology_sibling_cpumask(cpu));
+ 		cpumask_set_cpu(cpu, cpu_llc_shared_mask(cpu));
++		cpumask_set_cpu(cpu, cpu_l2c_shared_mask(cpu));
+ 		cpumask_set_cpu(cpu, topology_core_cpumask(cpu));
+ 		cpumask_set_cpu(cpu, topology_die_cpumask(cpu));
+ 		c->booted_cores = 1;
+@@ -598,6 +628,8 @@ void set_cpu_sibling_map(int cpu)
+ 		if ((i == cpu) || (has_mp && match_llc(c, o)))
+ 			link_mask(cpu_llc_shared_mask, cpu, i);
+ 
++		if ((i == cpu) || (has_mp && match_l2c(c, o)))
++			link_mask(cpu_l2c_shared_mask, cpu, i);
+ 	}
+ 
+ 	/*
+@@ -649,6 +681,11 @@ const struct cpumask *cpu_coregroup_mask(int cpu)
+ 	return cpu_llc_shared_mask(cpu);
+ }
+ 
++const struct cpumask *cpu_clustergroup_mask(int cpu)
++{
++	return cpu_l2c_shared_mask(cpu);
++}
++
+ static void impress_friends(void)
+ {
+ 	int cpu;
+@@ -1332,6 +1369,7 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
+ 		zalloc_cpumask_var(&per_cpu(cpu_core_map, i), GFP_KERNEL);
+ 		zalloc_cpumask_var(&per_cpu(cpu_die_map, i), GFP_KERNEL);
+ 		zalloc_cpumask_var(&per_cpu(cpu_llc_shared_map, i), GFP_KERNEL);
++		zalloc_cpumask_var(&per_cpu(cpu_l2c_shared_map, i), GFP_KERNEL);
+ 	}
+ 
+ 	/*
+@@ -1556,7 +1594,10 @@ static void remove_siblinginfo(int cpu)
+ 		cpumask_clear_cpu(cpu, topology_sibling_cpumask(sibling));
+ 	for_each_cpu(sibling, cpu_llc_shared_mask(cpu))
+ 		cpumask_clear_cpu(cpu, cpu_llc_shared_mask(sibling));
++	for_each_cpu(sibling, cpu_l2c_shared_mask(cpu))
++		cpumask_clear_cpu(cpu, cpu_l2c_shared_mask(sibling));
+ 	cpumask_clear(cpu_llc_shared_mask(cpu));
++	cpumask_clear(cpu_l2c_shared_mask(cpu));
+ 	cpumask_clear(topology_sibling_cpumask(cpu));
+ 	cpumask_clear(topology_core_cpumask(cpu));
+ 	cpumask_clear(topology_die_cpumask(cpu));
 -- 
 1.8.3.1
 
