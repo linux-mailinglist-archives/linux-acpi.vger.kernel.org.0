@@ -2,270 +2,246 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 628A7364DEB
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 00:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DFBA364F70
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 02:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbhDSW4S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Apr 2021 18:56:18 -0400
-Received: from mail-bn8nam11on2049.outbound.protection.outlook.com ([40.107.236.49]:32992
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229723AbhDSW4R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 19 Apr 2021 18:56:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F/0CpuIrQou6REnxYXKs7npvuvQlfL1gWyKlHuE1gVYSORueaZZGP4tg+lc/O3+8MsT0xHHCOTi10A/xHxE/f0ozwsPUTcNfA1ANxQ3m5DAVyMwdjapbI8ODSulyfToMXkM3eDMp+6pxf6V4EvIjEUkAwM0poDG6ScPUvUzx5PeI+/bokm69uTBdCnZXhN5gbret4pKUh/CrIf1jqRP6olGtlcOGf3orhuf5mrvCNopexxCsCxw35pMlVaXpvUQoGxuIF2qpHhMJoPZH8ZyMNKLuinETOEyer4mETijdpN0YKryzk9Yujc6lPTe1XNV7dHcrbQiB+0ZCq0ozDViOSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EWpu43a6px105GIUaNH2HUnqBN/LkWZbFVRrPjYXGTg=;
- b=iMhSssmtCDa8q3GjsyEsNj9NU8yEcLrIx34PKb6rVm60z0pJdOLnJyu4mLNzfuKsDu6HZNOYbmFtxou/K877U+hMrwNH4apgFz+iulaoYoPi2uLt0tk2YQFbzzHCxEElDUaL7vcY3Wxqymr5zSz4BwLv27WmU9FC9KHJUFKp4vcvA3rhLSKkUVFilhPBuXND1aMCn+NA33QHK05dToyL0ihaw7t8bcPjs39CK7ae5BiXihcu3kzJNtUY4ddxJiEft5XvcH13pkV3uyS6EamoMBCeypW/O+OiY80/6vOVxkXqwTpRrhATTFHfsmBFA4wMutLJJnYbLPzIn9Qw381y2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EWpu43a6px105GIUaNH2HUnqBN/LkWZbFVRrPjYXGTg=;
- b=PdAZgAnwt0MC/DJD78xNuKoZLZVdYtWKtler3H3W9NAIygUxUVRnfQvmIwpuuBPiQTXoUsMWcVOonr3osfcWFGatm6SlVlsPrBM1ErFg4Sd3gfPwZ6AuJaLC1SAOoG/6T/zhui9qavA6dMP8QBqS4qnMHg34GEYqYpkTYSdkMp7D+mN+mQOiTbI4PJtObJtB1DrsInVoq4hYy9ILpCxc3zzy+vOFKOIv2B4WZeIAA7Q8v9m7OxPQP5qJU13QkY76D3QvZaZJcSdQUaF2ZPOyLRPMzA+m2NsgmhwV9Uo6qNi3t1Ucxz4YVNKSey4jf+yU1MSdxIPX8zrKqopy2zEpdA==
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com (2603:10b6:207:4a::20)
- by MN2PR12MB4517.namprd12.prod.outlook.com (2603:10b6:208:267::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Mon, 19 Apr
- 2021 22:55:43 +0000
-Received: from BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::5105:e8df:9631:bf0f]) by BL0PR12MB2532.namprd12.prod.outlook.com
- ([fe80::5105:e8df:9631:bf0f%5]) with mapi id 15.20.4042.024; Mon, 19 Apr 2021
- 22:55:43 +0000
-From:   Vikram Sethi <vsethi@nvidia.com>
-To:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-CC:     "Natu, Mahesh" <mahesh.natu@intel.com>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "Douglas, Chet R" <chet.r.douglas@intel.com>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>,
-        "Widawsky, Ben" <ben.widawsky@intel.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        Thanu Rangarajan <Thanu.Rangarajan@arm.com>
-Subject: RE: [ACPI Code First ECN v2]: Generic Port, performace data for
- hotplug memory
-Thread-Topic: [ACPI Code First ECN v2]: Generic Port, performace data for
- hotplug memory
-Thread-Index: AQHXLcst0OqV1gbZbka3uZ3UykiE86q3on2w
-Date:   Mon, 19 Apr 2021 22:55:43 +0000
-Message-ID: <BL0PR12MB25321D18363AD50ACC7A2643BD499@BL0PR12MB2532.namprd12.prod.outlook.com>
-References: <e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com>
-In-Reply-To: <e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=nvidia.com;
-x-originating-ip: [12.97.180.36]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a91c3bc0-38bc-49bc-a1ce-08d90386432b
-x-ms-traffictypediagnostic: MN2PR12MB4517:
-x-microsoft-antispam-prvs: <MN2PR12MB4517762941960843EC6D9269BD499@MN2PR12MB4517.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VOiIZ7Zce7Kmpfm61XhsNAIe4+4ZdVXWE46JB/0j/l5D1KcaYmfMGXtm2Gnp+lX6O8kf16YfLCcAEu92a5uJX0JitK/Pi/W3TFYRTZzx3/X8vTRZUQxHlZ2aZg8BtLo/6lyvhTWSzs4Cx5tf++tAPGKnOIn/grrx1nH9nY/khTF7RrRTNTovaKFLR3/Rhq7TgTNeVqgNXag4ijb5BuyRAewbjeHo+sp46p1y/R2gHKyTF5hkwInh+cY0gQyBBI7wHFDHts/uWvsathN+Ls61BYgTyPWQz+1MnpzzL8FRahR9lX9po0t9WPZuupX210q7Yi1fVldCmsWmCM4Ryymk2q+wDxtbGms7k9u54vEkBJkF14DDVTTJBii33QdKJKkHhwZplm3At1XratdihpnFpAXeGNANjKHtLEq7qILgZy6FMBZfxyh3IC4guKw7ohCkPWOPv6pnu9MKpBMsnq/O0nm5zK5jFvM6AugUdKulR3+Wl0c8KD5McotdULetCG6pKjbjFEZDSgiu7p4926Mxe+jOg8tWG20eEQ74mh831bKDT4MwhXOI7LFijkZBkpGmrAlojHUaSPVlBqXsSMkqI9a2q4thBg1S1TGBm9kx4hS6aUdxrqvBuXYCPRa6q+9QnVPsUjakH23ljl7zWlT+kxZB2sbVa4VCN+Dnqcp3xEFOEQSm6tU8hSDXTKMaMXMsjSZiq5mYM5LPbAq3wvqNO5RigEKbQhLU2f7pwX83pAA=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2532.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(39860400002)(396003)(366004)(136003)(71200400001)(26005)(4326008)(54906003)(52536014)(122000001)(186003)(38100700002)(33656002)(8936002)(8676002)(2906002)(7696005)(478600001)(55016002)(64756008)(110136005)(6506007)(316002)(9686003)(66446008)(5660300002)(66946007)(66476007)(86362001)(83380400001)(7416002)(76116006)(66556008)(41533002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?VU9FV2dBb0U3NnpVSk0xWHF0MldkRHYrYUZCTFRTUVlLRHFOVUhyY1dEN3NF?=
- =?utf-8?B?M09lMmNYMFM2bE92QTcvTWFlRTNTcEZrbThtNUppUHlFK25VYmdzME9FYUtG?=
- =?utf-8?B?L1p0UmQ5VzVzeDkxUWRGUjgvRmhCY1VEaFVwcllRU0dnTno0NDR6Wk1wTmdR?=
- =?utf-8?B?WlhFTXNWQ0NlcGVXbXdESk9jc2Vuc0FBZmRtQmZqNVhwOFhpL1dqT2NLbndS?=
- =?utf-8?B?VWpabXBaOG84aWdTMVg0TmVVM2g3ejNNejNhRXc0RXRGeGVKblNPTFQzWFJS?=
- =?utf-8?B?UTdndEVjbUhDbEg1T0k0VGlaaHIzLzNqcEw2VWZhVncwdWhwSHRDams0Mkh6?=
- =?utf-8?B?Y3A3My9FVHp4OHVrWnV1U2ZYSDZYL0ZVc1cvWFcvZ1N0Z0VFZ0doYnN5emV1?=
- =?utf-8?B?dWk3VEpoM29GL3V2VzNnOFZLZGJnZFkyZlJyRm5LSmxZWUZhdVJWWjJiM0pl?=
- =?utf-8?B?MUhEb3Rrb3BNRjFJanlIR0x4YjJCVU5ZUTFEaEFLTTRGa21pamkyNjYyZUhC?=
- =?utf-8?B?TGg3WkgrK2JVMnRPazA5ejNmUWV1UDBFNjdQOGNqSUpkV1lDWElZaE9ldGNY?=
- =?utf-8?B?MXNpRENwb0N1L3Bkd0I3TmZZVStrU3FZNXFxaUI0Ty9SL2VRa0dwQ3hnNFFs?=
- =?utf-8?B?Q1BCUVFydkFCUytoZ05vOVFVRHluYml2L0tiVEdtWnRHYlVmYjJXYkltb3pK?=
- =?utf-8?B?NExrVytRUWE1Rm1za0RJWHdtSWN4L2JWbmZObTlrd1FSWERSS1BuYmROM3Jq?=
- =?utf-8?B?aFlYTDZ2WHNZK21mVTBKTGZCSjVZUmplcXZvbGFlY3FreGh5OVhHOE9nNDh0?=
- =?utf-8?B?THNSeTQ3UWZraGp5ZmdJNlJmZUYvSnFJSFZ5Y0xRUFA3RlpMT05jUmxHcnlo?=
- =?utf-8?B?RDhxc3Zwc0lvSTk3MTZlRlZzZ0g1cU1tS3F1RnhISFFweUdSZ0lpWFFZS1lx?=
- =?utf-8?B?TStucXZNelBBWjJPZERtalV5ZXZNNGhnZFFHZ0lYRnVsV1RHZEpVbUdLWGQ5?=
- =?utf-8?B?Z3BTZWVVMGplNXBzVU0yYjA3N0NLUjVaYmNPbHBtdmxWSTNqYWRZYWd5MW1a?=
- =?utf-8?B?WXV4WHAzckU2QlZ5ejRSSElJbGZ1QUEvQ0dXRU1DZHhRbXJ6UGptRGNjU0Fp?=
- =?utf-8?B?MFE0NSsyMk04RlplV2xxaXlnbWE5QWFlVURiVnd0dFhzMmNFLzFRNHdTcnpY?=
- =?utf-8?B?VWlrM1djMEovQjlRc2FXdTFmcnhEMndFaFVYMEFpZjF6Mi8wYnpiTUh6WlZP?=
- =?utf-8?B?WHVOK3NnVEZrZVdpb1RiMG1KdGwzTXQwMWFrYythVDd4RkpTenlqQk1nU0pw?=
- =?utf-8?B?cEJsYzJYWXRRS2hFZHRGV0dTcnNkaENHaVNJZTE2MGlrbnd3K0VRemkvZksr?=
- =?utf-8?B?Sjh6OGxUNmZPaWQ5c09KWTVkb1pONDhIVUcyL2tGdDlRU0MyK1FsWDNjZ2Mx?=
- =?utf-8?B?V0hwVVd5Q2RRU1h0Q2RMOWxWMGpIV1REOVFnQjJ0L3FFUmVXMlFjOFVVZVdH?=
- =?utf-8?B?dXhtTVBscFY0RlNuQzR5Z1dtUXprZ3lDNTgvR3lTTEpCWW9NNUROQUxjdElJ?=
- =?utf-8?B?N3I0VjE1dmljd3BxQkQ1dzVNT0F4RXFPcU9yTXZ4QkJIU2ZHZ1lMNXNZZy9m?=
- =?utf-8?B?MjNpUzBuVHZMcGVvVzJrWEJrSzZhdDlkYmRhN1hvM2d5eUJiN1VBNTdueE95?=
- =?utf-8?B?L2VBTHVqWWQvK0YzZVVKeHJEQ0ZCVnNBVWowUnIzNGdtRlMwelV6VFpyNkZO?=
- =?utf-8?Q?NUeNAFZ+DCg1OvhU5l3/1vQ+SV4l5e9N6aVlbR1?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S229880AbhDTA0d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Apr 2021 20:26:33 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:16136 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229758AbhDTA0c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Apr 2021 20:26:32 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FPPXj076pzmdWf;
+        Tue, 20 Apr 2021 08:23:01 +0800 (CST)
+Received: from SWX921481.china.huawei.com (10.126.200.79) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 20 Apr 2021 08:25:52 +0800
+From:   Barry Song <song.bao.hua@hisilicon.com>
+To:     <tim.c.chen@linux.intel.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <rjw@rjwysocki.net>,
+        <vincent.guittot@linaro.org>, <bp@alien8.de>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <lenb@kernel.org>, <peterz@infradead.org>,
+        <dietmar.eggemann@arm.com>, <rostedt@goodmis.org>,
+        <bsegall@google.com>, <mgorman@suse.de>
+CC:     <msys.mizuma@gmail.com>, <valentin.schneider@arm.com>,
+        <gregkh@linuxfoundation.org>, <jonathan.cameron@huawei.com>,
+        <juri.lelli@redhat.com>, <mark.rutland@arm.com>,
+        <sudeep.holla@arm.com>, <aubrey.li@linux.intel.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <x86@kernel.org>, <xuwei5@huawei.com>, <prime.zeng@hisilicon.com>,
+        <guodong.xu@linaro.org>, <yangyicong@huawei.com>,
+        <liguozhu@hisilicon.com>, <linuxarm@openeuler.org>,
+        <hpa@zytor.com>, Barry Song <song.bao.hua@hisilicon.com>
+Subject: [RFC PATCH v6 0/4] scheduler: expose the topology of clusters and add cluster scheduler
+Date:   Tue, 20 Apr 2021 12:18:40 +1200
+Message-ID: <20210420001844.9116-1-song.bao.hua@hisilicon.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2532.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a91c3bc0-38bc-49bc-a1ce-08d90386432b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Apr 2021 22:55:43.4611
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mSfr2Y3vpOghXk1PX8FZpbvaS8sxNY56QIySQlEVyzTaihL2CttTiY7IH1FJJ2Nat9Ny8+lSXgBe9SIcM2fqIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4517
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.126.200.79]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgRGFuLCANCj4gRnJvbTogV2lsbGlhbXMsIERhbiBKIDxkYW4uai53aWxsaWFtc0BpbnRlbC5j
-b20+DQo+IFdoaWxlIHRoZSBwbGF0Zm9ybSBCSU9TIGlzIGFibGUgdG8gZGVzY3JpYmUgdGhlIHBl
-cmZvcm1hbmNlDQo+IGNoYXJhY3RlcmlzdGljcyBvZiBDWEwgbWVtb3J5IHRoYXQgaXMgcHJlc2Vu
-dCBhdCBib290LCBpdCBpcyB1bmFibGUgdG8NCj4gc3RhdGljYWxseSBlbnVtZXJhdGUgdGhlIHBl
-cmZvcm1hbmNlIG9mIENYTCBtZW1vcnkgaG90IGluc2VydGVkDQo+IHBvc3QtYm9vdC4gVGhlIE9T
-IGNhbiBlbnVtZXJhdGUgbW9zdCBvZiB0aGUgY2hhcmFjdGVyaXN0aWNzIGZyb20gbGluaw0KPiBy
-ZWdpc3RlcnMgYW5kIENEQVQsIGJ1dCB0aGUgcGVyZm9ybWFuY2UgZnJvbSB0aGUgQ1BVIHRvIHRo
-ZSBob3N0DQo+IGJyaWRnZSwgZm9yIGV4YW1wbGUsIGlzIG5vdCBlbnVtZXJhdGVkIGJ5IFBDSUUg
-b3IgQ1hMLiBJbnRyb2R1Y2UgYW4NCj4gQUNQSSBtZWNoYW5pc20gZm9yIHRoaXMgcHVycG9zZS4N
-Cj4gDQo+IC0tLQ0KPiANCj4gIyBUaXRsZTogSW50cm9kdWNlIGEgR2VuZXJpYyBQb3J0IGZvciBo
-b3RwbHVnIG1lbW9yeSBidXNlcyBsaWtlIENYTA0KPiANCj4gIyBTdGF0dXM6IERyYWZ0IHYyDQo+
-IA0KPiAjIERvY3VtZW50OiBBQ1BJIFNwZWNpZmljYXRpb24gNi40DQo+IA0KPiAjIExpY2Vuc2UN
-Cj4gU1BEWC1MaWNlbnNlIElkZW50aWZpZXI6IENDLUJZLTQuMA0KPiANCj4gIyBTdWJtaXR0ZXI6
-DQo+ICogU3BvbnNvcjogRGFuIFdpbGxpYW1zLCBJbnRlbA0KPiAqIENyZWF0b3JzL0NvbnRyaWJ1
-dG9yczoNCj4gICAgICogTWFoZXNoIE5hdHUsIEludGVsDQo+ICAgICAqIENoZXQgRG91Z2xhcywg
-SW50ZWwNCj4gICAgICogRGVlcGFrIFNoaXZha3VtYXIsIEludGVsDQo+ICAgICAqIEpvbmF0aGFu
-IENhbWVyb24sIEh1YXdlaQ0KPiANCj4gIyBDaGFuZ2VzIHNpbmNlIHYxDQo+ICAgKiBSZW5hbWUg
-R2VuZXJpYyBUYXJnZXQgdG8gR2VuZXJpYyBQb3J0IGFuZCBtYWtlIGEgbmV3IGRpc3RpbmN0IFNS
-QVQNCj4gICAgIHR5cGUgaW5kZXBlbmRlbnQgb2YgR2VuZXJpYyBJbml0aWF0b3IgKEpvbmF0aGFu
-KQ0KPiAgICogQ2xhcmlmeSB0aGF0IHRoaXMgbmV3ICJQb3J0IiBjb25jZXB0IGlzIG5vdCBsaW1p
-dGVkIHRvIENYTC4gSXQgaXMgYQ0KPiAgICAgZ2VuZXJpYyB3YXkgdG8gZGVzY3JpYmUgdGhlIHBl
-cmZvcm1hbmNlIG9mIHN0YXRpYyBwYXRocyB0bw0KPiAgICAgZHluYW1pY2FsbHkgYWRkZWQgc3lz
-dGVtIG1lbW9yeSAoTWFoZXNoKQ0KPiANCj4gIyBTdW1tYXJ5IG9mIHRoZSBDaGFuZ2UNCj4gSW50
-cm9kdWNlIGEgbmV3ICJHZW5lcmljIFBvcnQiIHR5cGUgdG8gdGhlIFNSQVQgdG8gZGVzY3JpYmUg
-dGhlDQo+IHBlcmZvcm1hbmNlIGZyb20gQ1BVIGFuZCBvdGhlciBpbml0aWF0b3IgZG9tYWlucyB0
-byB0aGUgcm9vdCBvZiBhIENYTA0KPiB0b3BvbG9neSwgb3IgYW55IG90aGVyIHRvcG9sb2d5IHRo
-YXQgbWlnaHQgZHluYW1pY2FsbHkgYWRkIHN5c3RlbSBtZW1vcnkNCj4gYmVoaW5kIHRoZSAiUG9y
-dCIuIFRoaXMgaXMgaW4gc3VwcG9ydCBvZiwgYnV0IG5vdCBsaW1pdGVkIHRvLCB0aGUgT1MNCj4g
-YmVpbmcgYWJsZSB0byBlbnVtZXJhdGUgdGhlIHBlcmZvcm1hbmNlIHRvcG9sb2d5IGZvciBkeW5h
-bWljYWxseSBhZGRlZCAvDQo+IGRpc2NvdmVyZWQgQ1hMIE1lbW9yeSBEZXZpY2UgZW5kcG9pbnRz
-Lg0KPiANCj4gIyBCZW5lZml0cyBvZiB0aGUgQ2hhbmdlDQo+IENvbnNpZGVyIHRoZSBjYXNlIG9m
-IGEgc3lzdGVtIHdpdGggYSBzZXQgb2YgQ1hMIEhvc3QgQnJpZGdlcyAoQUNQSTAwMTYpLA0KPiBh
-bmQgc29tZSBlbmRwb2ludHMgYXR0YWNoZWQgYXQgYm9vdC4gSW4gdGhhdCBzY2VuYXJpbyB0aGUg
-cGxhdGZvcm0NCj4gZmlybXdhcmUgaXMgYWJsZSB0byBlbnVtZXJhdGUgdGhvc2UgZGV2aWNlcywg
-ZW51bWVyYXRlIGFuZCBtYXAgQ1hMDQo+IG1lbW9yeSBpbnRvIHRoZSBzeXN0ZW0gcGh5c2ljYWwg
-bWVtb3J5IGFkZHJlc3Mgc3BhY2UsIGFuZCBnZW5lcmF0ZSB0aGUNCj4gdHlwaWNhbCBzdGF0aWMg
-U1JBVC9TTElUL0hNQVQgc2V0IG9mIHRhYmxlcyBkZXNjcmliaW5nIENYTCBhdHRhY2hlZA0KPiBt
-ZW1vcnkuIE5vdywgY29uc2lkZXIgdGhlIGNhc2Ugd2hlcmUgZGV2aWNlcyBhcmUgZHluYW1pY2Fs
-bHkgYWRkZWQgYW5kDQo+IGVudW1lcmF0ZWQgcG9zdCBib290LCBpLmUuIHBvc3QgZ2VuZXJhdGlv
-biBvZiB0aGUgc3RhdGljIG1lbW9yeSB0YWJsZXMuDQo+IEluIHRoaXMgc2NlbmFyaW8gcGxhdGZv
-cm0gZmlybXdhcmUgaXMgdW5hYmxlIHRvIHBlcmZvcm0gdGhlIGVuZC10by1lbmQNCj4gZW51bWVy
-YXRpb24gbmVjZXNzYXJ5IHRvIHBvcHVsYXRlIFNSQVQgYW5kIEhNQVQgZm9yIHRoZSBlbmRwb2lu
-dHMgdGhhdA0KPiBtYXkgYmUgaG90LWluc2VydGVkIGJlaGluZCB0aG9zZSBicmlkZ2VzIHBvc3Qg
-cG93ZXItb24uIFRoZQ0KPiBhZGRyZXNzLXJhbmdlIGlzIHVua25vd24gc28gU1JBVCBjYW4gbm90
-IGJlIHByZS1wb3B1bGF0ZWQgaW4gdGhlIHR5cGljYWwNCj4gd2F5IHRoYXQgaG90cGx1ZyBzeXN0
-ZW0gbWVtb3J5IGlzIGVudW1lcmF0ZWQuIEV2ZW4gaWYgYSBzdGF0aWMgYWRkcmVzcw0KPiByYW5n
-ZSB3YXMgc2V0IGFzaWRlIGZvciBmdXR1cmUgaG90cGx1ZyB0aGUgcGVyZm9ybWFuY2UgaXMgdW5r
-bm93biAobm8NCj4gQ0RBVCBub3IgaW50ZXJsZWF2ZSBjb25maWd1cmF0aW9uKSBzbyBITUFUIGNh
-biBub3QgYmUgcHJlLXBvcHVsYXRlZC4NCj4gDQo+IEhvd2V2ZXIsIHdoYXQgaXMga25vd24gdG8g
-cGxhdGZvcm0gZmlybXdhcmUgdGhhdCBnZW5lcmF0ZXMgdGhlDQo+IFNSQVQvU0xJVC9ITUFUIGFu
-ZCBpcyB0aGUgcGVyZm9ybWFuY2UgY2hhcmFjdGVyaXN0aWNzIG9mIHRoZSBwYXRoDQo+IGJldHdl
-ZW4gQ1BVIGFuZCBHZW5lcmljIEluaXRpYXRvcnMgdG8gdGhlIEdlbmVyaWMgUG9ydCAoZS5nLiBD
-WEwgSG9zdA0KPiBCcmlkZ2UpLiBXaXRoIHRoZSBhZGRpdGlvbiBvZiBhIEdlbmVyaWMgUG9ydCBw
-cm94aW1pdHkgZG9tYWluIHRvIHRoZQ0KPiBTUkFUIHRoZW4gdGhlIFNMSVQgYW5kIEhNQVQgY2Fu
-IGVudW1lcmF0ZSB0aGUgcGxhdGZvcm0tc3RhdGljIGNvbXBvbmVudA0KPiBvZiBhIGdpdmVuIGVk
-Z2UgaW4gdGhlIHBsYXRmb3JtLXBlcmZvcm1hbmNlIHRvcG9sb2d5IGdyYXBoLiBJdCBlbmFibGVz
-DQo+IHRoZSBPUyB0byBidWlsZCBvdXQgYSBwZXJmb3JtYW5jZSBtYXBwaW5nIGZvciBzeXN0ZW0g
-bWVtb3J5IGFkZHJlc3MNCj4gcmFuZ2VzIGR5bmFtaWNhbGx5IGRpc2NvdmVyZWQsIG9yIHByb3Zp
-c2lvbmVkLCBiZWhpbmQgYSBHZW5lcmljIFBvcnQuDQo+IFRoZSBPUyBtYXBwaW5nIHRha2VzIGlu
-dG8gYWNjb3VudCB0aGUgR2VuZXJpYyBQb3J0IHBlcmZvcm1hbmNlIChhcw0KPiBlaXRoZXIgYW4g
-aW5pdGlhdG9yIG9yIGEgdGFyZ2V0KSwgdGhlIGludGVybGVhdmUgY29uZmlndXJhdGlvbiwgYW5k
-IHRoZQ0KPiBidXMgZW51bWVyYWJsZSBwZXJmb3JtYW5jZSBjaGFyYWN0ZXJpc3RpY3MgKGxpbmsg
-bGF0ZW5jeSwgYmFuZHdpZHRoLA0KPiBzd2l0Y2ggdHJhdmVyc2FscykgdG8gc3VwcGxlbWVudCB0
-aGUgc3RhdGljIEhNQVQgZGF0YSBlbnVtZXJhdGVkIGF0DQo+IGJvb3QuDQo+IA0KPiAjIEltcGFj
-dCBvZiB0aGUgQ2hhbmdlDQo+IEEgbmV3IFNSQVQgdHlwZSByZXF1aXJlcyBub24tY29uZm9ybWlu
-ZyBzeXN0ZW0gc29mdHdhcmUgdG8gaWdub3JlIHRoZQ0KPiBuZXcgdHlwZSBpbiB0aGUgU1JBVCwg
-aWdub3JlIGFueSBjb29yZGluYXRlIGluIHRoZSBTTElUIHRoYXQgaW5jbHVkZXMNCj4gdGhlIGFz
-c29jaWF0ZWQgcG9ydCdzIHByb3hpbWl0eSBkb21haW4sIGFuZCBpZ25vcmUgYW55IGNvb3JkaW5h
-dGUgaW4gdGhlDQo+IEhNQVQgdGhhdCBpbmNsdWRlcyB0aGUgcG9ydCdzIHByb3hpbWl0eSBkb21h
-aW4gYXMgZWl0aGVyIGFuIGluaXRpYXRvciBvcg0KPiBhIHRhcmdldC4NCj4gDQo+IEluIGNvbnRy
-YXN0LCBjb25mb3JtaW5nIHN5c3RlbSBzb2Z0d2FyZSBuZWVkIG9ubHkgY29uc3VsdCB0aGUgR2Vu
-ZXJpYw0KPiBQb3J0IGRhdGEgdG8gb3B0aW9uYWxseSBleHRlbmQgdGhlIGVudW1lcmF0aW9uIGFu
-ZCBkaXN0aW5ndWlzaCBQb3J0DQo+IGF0dGFjaGVkIGluaXRpYXRvcnMgYW5kIG1lbW9yeSB0YXJn
-ZXRzIGZyb20gdGhlIGV4aXN0aW5nIHNldCBvZg0KPiBlbnVtZXJhdGVkIHByb3hpbWl0eSBkb21h
-aW5zLg0KPiANCj4gQSBjb25mb3JtaW5nIGltcGxlbWVudGF0aW9uIGFsc28gaGFzIHRoZSBvcHRp
-b24gdG8gaWdub3JlIHRoZSBHZW5lcmljIFBvcnQNCj4gY29udHJpYnV0aW9uIHRvIHRoZSBwZXJm
-b3JtYW5jZSwNCj4gDQo+IGluIGVpdGhlciBhIHJvdywgb3IgY29sICB0byBiZSBjb25zaWRlcmVk
-IGJ5IHN5c3RlbSBzb2Z0d2FyZSB0aGF0IHBhcnNlcw0KPiBTUkFULCBTTElULCBhbmQgSE1BVC4g
-R2l2ZW4gdGhhdCB0aGUgT1Mgc3RpbGwgbmVlZHMgdG8gZHluYW1pY2FsbHkNCj4gZW51bWVyYXRl
-IGFuZCBpbnN0YW50aWF0ZSB0aGUgbWVtb3J5IHJhbmdlcyBhbmQgaW5pdGlhdG9ycyBiZWhpbmQg
-dGhlDQo+IEdlbmVyaWMgUG9ydC4gVGhlIGFzc3VtcHRpb24gaXMgdGhhdCBvcGVyYXRpbmcgc3lz
-dGVtcyB0aGF0IGRvIG5vdA0KPiBzdXBwb3J0IG5hdGl2ZSBDWEwgZW51bWVyYXRpb24gd2lsbCBp
-Z25vcmUgdGhpcyBkYXRhIGluIHRoZSBITUFULCB3aGlsZQ0KPiBDWEwgbmF0aXZlIGVudW1lcmF0
-aW9uIGF3YXJlIGVudmlyb25tZW50cyB3aWxsIHVzZSB0aGlzIGZyYWdtZW50IG9mIHRoZQ0KPiBw
-ZXJmb3JtYW5jZSBwYXRoIHRvIGNhbGN1bGF0ZSB0aGUgcGVyZm9ybWFuY2UgY2hhcmFjdGVyaXN0
-aWNzLg0KPiANCj4gIyBSZWZlcmVuY2VzDQo+ICogQ29tcHV0ZSBFeHByZXNzIExpbmsgU3BlY2lm
-aWNhdGlvbiB2Mi4wLA0KPiA8aHR0cHM6Ly93d3cuY29tcHV0ZWV4cHJlc3NsaW5rLm9yZy8+DQo+
-IA0KPiAjIERldGFpbGVkIERlc2NyaXB0aW9uIG9mIHRoZSBDaGFuZ2UNCj4gDQo+ICogU2VjdGlv
-biA1LjIuMTYgU3lzdGVtIFJlc291cmNlIEFmZmluaXR5IFRhYmxlIChTUkFUKSBhZGQgYW5vdGhl
-cg0KPiAgIGJ1bGxldCBmb3IgR2VuZXJpYyBQb3J0czoNCj4gDQo+ICAgICAgICAgKiBnZW5lcmlj
-IHBvcnRzIChlLmcuIGhvc3QgYnJpZGdlcyB0aGF0IGNhbiBkeW5hbWljYWxseSBkaXNjb3Zlcg0K
-PiAgICAgICAgICAgbmV3IGluaXRpYXRvcnMgYW5kIGluc3RhbnRpYXRlIG5ldyBtZW1vcnkgcmFu
-Z2UgdGFyZ2V0cykNCj4gDQo+ICogQWRkIG5ldyBzZWN0aW9uIDUuMi4xNi43IEdlbmVyaWMgUG9y
-dCBBZmZpbml0eSBTdHJ1Y3R1cmU6DQo+ICAgVGhlIEdlbmVyaWMgUG9ydCBBZmZpbml0eSBTdHJ1
-Y3R1cmUgcHJvdmlkZXMgYW4gYXNzb2NpYXRpb24gYmV0d2VlbiBhDQo+ICAgcHJveGltaXR5IGRv
-bWFpbiBudW1iZXIgYW5kIGEgZGV2aWNlIGhhbmRsZSByZXByZXNlbnRpbmcgYSBHZW5lcmljDQo+
-ICAgUG9ydCAoZS5nLiBDWEwgSG9zdCBCcmlkZ2UsIG9yIHNpbWlsYXIgZGV2aWNlIHRoYXQgaG9z
-dHMgYSBkeW5hbWljDQo+ICAgdG9wb2xvZ3kgb2YgbWVtb3J5IHJhbmdlcyBhbmQvb3IgaW5pdGlh
-dG9ycykuDQo+IA0KPiAgIFN1cHBvcnQgb2YgR2VuZXJpYyBQb3J0IEFmZmluaXR5IFN0cnVjdHVy
-ZXMgYnkgYW4gT1NQTSBpcyBvcHRpb25hbC4NCj4gDQo+ICogQWRkIGEgdGFibGUgZGVzY3JpYmlu
-ZyB0aGUgR2VuZXJpYyBQb3J0IEFmZmluaXR5IFN0cnVjdHVyZSAoVGFibGUNCj4gICA1Lnh4KToN
-Cj4gDQo+IA0KPiB8IEZpZWxkICB8IEJ5dGUgTGVuZ3RoIHwgQnl0ZSBPZmZzZXQgfCBEZXNjcmlw
-dGlvbiAgICAgICAgICAgICAgICAgIHwNCj4gfCA6LS0tLS0gfCA6LS0tICAgICAgICB8IDotLS0g
-ICAgICAgIHwgOi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSB8DQo+IHwgVHlwZSAgIHwgMSAg
-ICAgICAgICAgfCAwICAgICAgICAgICB8IDYgR2VuZXJpYyBQb3J0IFN0cnVjdHVyZSAgICAgfA0K
-PiB8IExlbmd0aCB8IDEgICAgICAgICAgIHwgMSAgICAgICAgICAgfCAzMiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwNCj4gfCBSZXNlcnZlZCB8IDEgICAgICAgICB8IDIgICAgICAgICAgIHwg
-UmVzZXJ2ZWQgYW5kIG11c3QgYmUgemVybyAgICB8DQo+IHwgRGV2aWNlIEhhbmRsZSBUeXBlIHwg
-MSB8IDMgfCBEZXZpY2UgSGFuZGxlIFR5cGU6IFNlZSA1LjIuMTYuNiBHZW5lcmljIEluaXRpYXRv
-cg0KPiBBZmZpbml0eSBTdHJ1Y3R1cmUgZm9yIHRoZSBwb3NzaWJsZSBkZXZpY2UgaGFuZGxlIHR5
-cGVzIGFuZCB0aGVpciBmb3JtYXQuIHwNCj4gfCBQcm94aW1pdHkgRG9tYWluIHwgNCB8IDQgfCBU
-aGUgcHJveGltaXR5IGRvbWFpbiB0byBpZGVudGlmeSB0aGUgcGVyZm9ybWFuY2Ugb2YNCj4gdGhp
-cyBwb3J0IGluIHRoZSBITUFULiB8DQo+IHwgRGV2aWNlIEhhbmRsZSB8IDE2ICAgfCA4ICAgICAg
-ICAgICB8IERldmljZSBIYW5kbGUgb2YgdGhlIEdlbmVyaWMgUG9ydCwgc2VlIFRhYmxlDQo+IDUu
-NTcgYW5kIDUuNTggZm9yIGEgZGVzY3JpcHRpb24gb2YgdGhpcyBmaWVsZC4gfA0KPiB8IEZsYWdz
-ICB8IDQgICAgICAgICAgIHwgMjQgICAgICAgICAgfCBTZWUgdGFibGUgNS41OSBmb3IgYSBkZXNj
-cmlwdGlvbiBvZiB0aGlzIGZpZWxkLiB8DQo+IHwgUmVzZXJ2ZWQgfCA0ICAgICAgICAgfCAyOCAg
-ICAgICAgICB8IFJlc2VydmVkIGFuZCBtdXN0IGJlIHplcm8uICAgfA0KPiANCj4gKiBSZXBsYWNl
-IGFsbCBpbnN0YW5jZXMgb2YgIkluaXRpYXRvciIgd2l0aCAiSW5pdGlhdG9yIC8gUG9ydCIgaW4g
-IlRhYmxlDQo+ICAgNS41OSBGbGFncyAtIEdlbmVyaWMgSW5pdGlhdG9yIEFmZmluaXR5IFN0cnVj
-dHVyZSIsIGluY2x1ZGluZyB0aGUNCj4gICB0YWJsZSBuYW1lLg0KDQpJIHdhbnRlZCB0byBkaXNj
-dXNzIHRoZSBpbXBsaWNhdGlvbnMgb2YgYSBDWEwgaG9zdCBicmlkZ2UgaW1wbGVtZW50YXRpb24g
-dGhhdCANCmRvZXMgbm90IHNldCB0aGUgIkFyY2hpdGVjdHVyYWwgVHJhbnNhY3Rpb25zIiBiaXQv
-ZmxhZyBpbiB0aGUgYWZvcmVtZW50aW9uZWQgDQpGbGFncyBpbiBUYWJsZSA1LjU5Lg0KDQpTaW5j
-ZSB0aGUga2VybmVsIHdvdWxkIGJlIGV4cGVjdGluZyBhbGwgIlN5c3RlbSBSQU0iIHRvIGhhdmUg
-ZXF1aXZhbGVudCANCkZ1bmN0aW9uYWwgcHJvcGVydGllcywgaWYgSERNIGNhbm5vdCBoYXZlIGFs
-bCB0aGUgc2FtZSBmdW5jdGlvbmFsaXR5LCB0aGVuIGluDQp0aGUgYWJzZW5jZSBvZiBJU0Egc3Bl
-Y2lmaWMgQUNQSSB0YWJsZXMgY2xhcmlmeWluZyB3aGF0IGFyY2hpdGVjdHVyYWwgZmVhdHVyZSBp
-c24ndA0Kc3VwcG9ydGVkLCB0aGUga2VybmVsIG1heSBiZSBmb3JjZWQgdG8gbm90IG9ubGluZSB0
-aGUgSERNIG1lbW9yeSBhcyBzeXN0ZW0gDQpSQU0uIElmIHRoZXJlIGlzIG1vcmUgZ3JhbnVsYXIg
-ZXhwcmVzc2lvbiBvZiB3aGF0IGZlYXR1cmVzIGFyZSBsYWNraW5nIGluIGEgSVNBDQpTcGVjaWZp
-YyB0YWJsZSAoZWcgTWVtb3J5IFRhZ2dpbmcvTWVtb3J5IFByb3RlY3Rpb24ga2V5cyBub3Qgc3Vw
-cG9ydGVkKSwNCnRoZSBrZXJuZWwgY291bGQgY2hvb3NlIHRvIG5vdCBlbmFibGUgdGhhdCBmZWF0
-dXJlIGluIGFsbCBvZiBzeXN0ZW0gUkFNIChpZiANCmRpc2NyZXBhbmN5IGRpc2NvdmVyZWQgYXQg
-Ym9vdCksIGJ1dCBzdGlsbCBvbmxpbmUgdGhlIEhETSBhcyBTeXN0ZW0gUkFNLg0KDQpUbyB0aGF0
-IGVuZCwgaXQgbWF5IGJlIHVzZWZ1bCB0byBjbGFyaWZ5IHRoaXMgdG8gaG9zdCB2ZW5kb3JzIGJ5
-IHdheSBvZiBhbiANCkltcGxlbWVudGF0aW9uIG5vdGUgKGlkZWFsbHkgaW4gdGhlIENYTCBzcGVj
-aWZpY2F0aW9uKS4gU29tZXRoaW5nIGxpa2U6DQoiQ1hMIGhvc3RzIGFyZSBlbmNvdXJhZ2VkIHRv
-IHN1cHBvcnQgYWxsIGFyY2hpdGVjdHVyYWwgZmVhdHVyZXMgaW4gSERNIA0KYXMgdGhleSBkbyBp
-biBDUFUgYXR0YWNoZWQgbWVtb3J5IHRvIGF2b2lkIGVpdGhlciB0aGUgbWVtb3J5IGZyb20gDQpi
-ZWluZyBvbmxpbmVkIGFzIFN5c3RlbSBSQU0sIG9yIHRoZSBhcmNoaXRlY3R1cmFsIGZlYXR1cmUg
-YmVpbmcgZGlzYWJsZWQuIA0KSG9zdHMgbXVzdCBpbmRpY2F0ZSBhcmNoaXRlY3R1cmFsIHBhcml0
-eSBmb3IgSERNIGluIEFDUEkgU1JBVCANCuKAnEdlbmVyaWMgUG9ydOKAnSBmbGFncyDigJxBcmNo
-aXRlY3R1cmFsIHRyYW5zYWN0aW9uc+KAnSBiaXQgYnkgc2V0dGluZyBpdCB0byAxLiANCkEgcG9y
-dCB0aGF0IHNldHMgdGhpcyBiaXQgdG8gMCB3aWxsIG5lZWQgSVNBIHNwZWNpZmljIHdheXMvQUNQ
-SSB0YWJsZXMgdG8gDQpkZXNjcmliZSB3aGljaCBzcGVjaWZpYyBJU0EgZmVhdHVyZXMgd291bGQg
-bm90IHdvcmsgaW4gSERNLCBzbyBhbiBPUyANCmNvdWxkIGRpc2FibGUgdGhhdCBtZW1vcnkgb3Ig
-dGhhdCBmZWF0dXJlLiINCg0KVGhvdWdodHM/DQoNClRoYW5rcywNClZpa3JhbQ0K
+ARM64 server chip Kunpeng 920 has 6 or 8 clusters in each NUMA node, and each
+cluster has 4 cpus. All clusters share L3 cache data while each cluster has
+local L3 tag. On the other hand, each cluster will share some internal system
+bus. This means cache is much more affine inside one cluster than across
+clusters.
+
+    +-----------------------------------+                          +---------+
+    |  +------+    +------+            +---------------------------+         |
+    |  | CPU0 |    | cpu1 |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   +----+    L3     |         |         |
+    |  +------+    +------+   cluster   |    |    tag    |         |         |
+    |  | CPU2 |    | CPU3 |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |         |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             +--------------------------+         |
+    |  |      |    |      |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   |    |    L3     |         |         |
+    |  +------+    +------+             +----+    tag    |         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |   L3    |
+                                                                   |   data  |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             +----+    L3     |         |         |
+    |                                   |    |    tag    |         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |  |      |    |      |            ++    +-----------+         |         |
+    |  +------+    +------+            |---------------------------+         |
+    +-----------------------------------|                          |         |
+    +-----------------------------------|                          |         |
+    |  +------+    +------+            +---------------------------+         |
+    |  |      |    |      |             |    +-----------+         |         |
+    |  +------+    +------+             |    |           |         |         |
+    |                                   +----+    L3     |         |         |
+    |  +------+    +------+             |    |    tag    |         |         |
+    |  |      |    |      |             |    |           |         |         |
+    |  +------+    +------+             |    +-----------+         |         |
+    |                                   |                          |         |
+    +-----------------------------------+                          |         |
+    +-----------------------------------+                          |         |
+    |  +------+    +------+             +--------------------------+         |
+    |  |      |    |      |             |   +-----------+          |         |
+    |  +------+    +------+             |   |           |          |         |
+
+
+There is a similar need for clustering in x86.  Some x86 cores could share L2 caches
+that is similar to the cluster in Kupeng 920 (e.g. on Jacobsville there are 6 clusters
+of 4 Atom cores, each cluster sharing a separate L2, and 24 cores sharing L3).  
+
+Having a sched_domain for clusters will bring two aspects of improvement:
+1. spreading unrelated tasks among clusters, which decreases the contention of resources
+and improve the throughput.
+unrelated tasks might be put randomly without cluster sched_domain:
++-------------------+            +-----------------+
+| +----+   +----+   |            |                 |
+| |task|   |task|   |            |                 |
+| |1   |   |2   |   |            |                 |
+| +----+   +----+   |            |                 |
+|                   |            |                 |
+|       cluster1    |            |     cluster2    |
++-------------------+            +-----------------+
+
+but with cluster sched_domain, they are likely to spread due to LB:
++-------------------+            +-----------------+
+| +----+            |            | +----+          |
+| |task|            |            | |task|          |
+| |1   |            |            | |2   |          |
+| +----+            |            | +----+          |
+|                   |            |                 |
+|       cluster1    |            |     cluster2    |
++-------------------+            +-----------------+
+
+2. gathering related tasks within a cluster, which improves the cache affinity of tasks
+talking with each other.
+Without cluster sched_domain, related tasks might be put randomly. In case task1-8 have
+relationship as below:
+Task1 talks with task5
+Task2 talks with task6
+Task3 talks with task7
+Task4 talks with task8
+With the tuning of select_idle_cpu() to scan local cluster first, those tasks might
+get a chance to be gathered like:
++---------------------------+    +----------------------+
+| +----+        +-----+     |    | +----+      +-----+  |
+| |task|        |task |     |    | |task|      |task |  |
+| |1   |        | 5   |     |    | |3   |      |7    |  |
+| +----+        +-----+     |    | +----+      +-----+  |
+|                           |    |                      |
+|       cluster1            |    |     cluster2         |
+|                           |    |                      |
+|                           |    |                      |
+| +-----+       +------+    |    | +-----+     +------+ |
+| |task |       | task |    |    | |task |     |task  | |
+| |2    |       |  6   |    |    | |4    |     |8     | |
+| +-----+       +------+    |    | +-----+     +------+ |
++---------------------------+    +----------------------+
+Otherwise, the result might be:
++---------------------------+    +----------------------+
+| +----+        +-----+     |    | +----+      +-----+  |
+| |task|        |task |     |    | |task|      |task |  |
+| |1   |        | 2   |     |    | |5   |      |6    |  |
+| +----+        +-----+     |    | +----+      +-----+  |
+|                           |    |                      |
+|       cluster1            |    |     cluster2         |
+|                           |    |                      |
+|                           |    |                      |
+| +-----+       +------+    |    | +-----+     +------+ |
+| |task |       | task |    |    | |task |     |task  | |
+| |3    |       |  4   |    |    | |7    |     |8     | |
+| +-----+       +------+    |    | +-----+     +------+ |
++---------------------------+    +----------------------+
+
+-v6:
+  * added topology_cluster_cpumask() for x86, code provided by Tim.
+
+  * emulated a two-level spreading/packing heuristic by only scanning cluster
+    in wake_affine path for tasks running in same LLC(also NUMA).
+
+    This partially addressed Dietmar's comment in RFC v3:
+    "In case we would like to further distinguish between llc-packing and
+     even narrower (cluster or MC-L2)-packing, we would introduce a 2. level
+     packing vs. spreading heuristic further down in sis().
+   
+     IMHO, Barry's current implementation doesn't do this right now. Instead
+     he's trying to pack on cluster first and if not successful look further
+     among the remaining llc CPUs for an idle CPU."
+
+  * adjusted the hackbench parameter to make relatively low and high load.
+    previous patchsets with "-f 10" ran under an extremely high load with
+    hundreds of threads, which seems not real use cases.
+
+    This also addressed Vincent's question in RFC v4:
+    "In particular, I'm still not convinced that the modification of the wakeup
+    path is the root of the hackbench improvement; especially with g=14 where
+    there should not be much idle CPUs with 14*40 tasks on at most 32 CPUs."
+
+-v5:
+  * split "add scheduler level for clusters" into two patches to evaluate the
+    impact of spreading and gathering separately;
+  * add a tracepoint of select_idle_cpu for debug purpose; add bcc script in
+    commit log;
+  * add cluster_id = -1 in reset_cpu_topology()
+  * rebased to tip/sched/core
+
+-v4:
+  * rebased to tip/sched/core with the latest unified code of select_idle_cpu
+  * added Tim's patch for x86 Jacobsville
+  * also added benchmark data of spreading unrelated tasks
+  * avoided the iteration of sched_domain by moving to static_key(addressing
+    Vincent's comment
+  * used acpi_cpu_id for acpi_find_processor_node(addressing Masa's comment)
+
+Barry Song (2):
+  scheduler: add scheduler level for clusters
+  scheduler: scan idle cpu in cluster for tasks within one LLC
+
+Jonathan Cameron (1):
+  topology: Represent clusters of CPUs within a die
+
+Tim Chen (1):
+  scheduler: Add cluster scheduler level for x86
+
+ Documentation/admin-guide/cputopology.rst | 26 +++++++++++--
+ arch/arm64/Kconfig                        |  7 ++++
+ arch/arm64/kernel/topology.c              |  2 +
+ arch/x86/Kconfig                          |  8 ++++
+ arch/x86/include/asm/smp.h                |  7 ++++
+ arch/x86/include/asm/topology.h           |  2 +
+ arch/x86/kernel/cpu/cacheinfo.c           |  1 +
+ arch/x86/kernel/cpu/common.c              |  3 ++
+ arch/x86/kernel/smpboot.c                 | 43 ++++++++++++++++++++-
+ block/blk-mq.c                            |  2 +-
+ drivers/acpi/pptt.c                       | 63 +++++++++++++++++++++++++++++++
+ drivers/base/arch_topology.c              | 15 ++++++++
+ drivers/base/topology.c                   | 10 +++++
+ include/linux/acpi.h                      |  5 +++
+ include/linux/arch_topology.h             |  5 +++
+ include/linux/sched/cluster.h             | 19 ++++++++++
+ include/linux/sched/sd_flags.h            |  9 +++++
+ include/linux/sched/topology.h            | 12 +++++-
+ include/linux/topology.h                  | 13 +++++++
+ kernel/sched/core.c                       | 29 ++++++++++++--
+ kernel/sched/fair.c                       | 51 +++++++++++++++----------
+ kernel/sched/sched.h                      |  4 ++
+ kernel/sched/topology.c                   | 18 +++++++++
+ 23 files changed, 324 insertions(+), 30 deletions(-)
+ create mode 100644 include/linux/sched/cluster.h
+
+-- 
+1.8.3.1
+
