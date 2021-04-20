@@ -2,106 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7FF365562
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 11:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AEA13654C1
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Apr 2021 11:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbhDTJ3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 05:29:47 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:16143 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbhDTJ3q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 05:29:46 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FPdbS6mRpzpZTX;
-        Tue, 20 Apr 2021 17:26:12 +0800 (CST)
-Received: from A2006125610.china.huawei.com (10.47.83.26) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 20 Apr 2021 17:29:03 +0800
-From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
-CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
-        <joro@8bytes.org>, <robin.murphy@arm.com>,
-        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
-        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
-        <jon@solid-run.com>, <eric.auger@redhat.com>
-Subject: [PATCH v3 10/10] iommu/arm-smmu: Reserve any RMR regions associated with a dev
-Date:   Tue, 20 Apr 2021 10:27:51 +0200
-Message-ID: <20210420082751.1829-11-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
-In-Reply-To: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
-References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
+        id S230090AbhDTJGs convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 20 Apr 2021 05:06:48 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2888 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231287AbhDTJFo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 05:05:44 -0400
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FPd0y21dmz70gMr;
+        Tue, 20 Apr 2021 16:59:46 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 20 Apr 2021 11:05:11 +0200
+Received: from localhost (10.52.127.46) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 20 Apr
+ 2021 10:05:10 +0100
+Date:   Tue, 20 Apr 2021 10:03:42 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     Vikram Sethi <vsethi@nvidia.com>,
+        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Natu, Mahesh" <mahesh.natu@intel.com>,
+        "Douglas, Chet R" <chet.r.douglas@intel.com>,
+        "Verma, Vishal L" <vishal.l.verma@intel.com>,
+        "Widawsky, Ben" <ben.widawsky@intel.com>,
+        "Samer El-Haj-Mahmoud" <Samer.El-Haj-Mahmoud@arm.com>,
+        Thanu Rangarajan <Thanu.Rangarajan@arm.com>
+Subject: Re: [ACPI Code First ECN v2]: Generic Port, performace data for
+ hotplug memory
+Message-ID: <20210420100342.00000253@Huawei.com>
+In-Reply-To: <CAPcyv4jMQbHYQssaDDDQFEbOR1v14VUnejcSwOP9VGUnZSsCKw@mail.gmail.com>
+References: <e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com>
+        <BL0PR12MB25321D18363AD50ACC7A2643BD499@BL0PR12MB2532.namprd12.prod.outlook.com>
+        <CAPcyv4jztOGShTF+pVSMAtGeK4giHvC3mGNa5bC0pXz=2ZcrJw@mail.gmail.com>
+        <BL0PR12MB2532D6AD41E6CF4F3252EE59BD489@BL0PR12MB2532.namprd12.prod.outlook.com>
+        <CAPcyv4jMQbHYQssaDDDQFEbOR1v14VUnejcSwOP9VGUnZSsCKw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.47.83.26]
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.52.127.46]
+X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jon Nettleton <jon@solid-run.com>
+On Mon, 19 Apr 2021 22:08:39 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Get RMR regions associated with a dev reserved so that there is
-a unity mapping for them in SMMU.
+> On Mon, Apr 19, 2021 at 9:22 PM Vikram Sethi <vsethi@nvidia.com> wrote:
+> >  
+> > > From: Dan Williams <dan.j.williams@intel.com>
+> > > On Mon, Apr 19, 2021 at 3:56 PM Vikram Sethi <vsethi@nvidia.com> wrote:
+> > > [..]  
+> > > > > * Replace all instances of "Initiator" with "Initiator / Port" in "Table
+> > > > >   5.59 Flags - Generic Initiator Affinity Structure", including the
+> > > > >   table name.  
+> > > >
+> > > > I wanted to discuss the implications of a CXL host bridge implementation that
+> > > > does not set the "Architectural Transactions" bit/flag in the aforementioned
+> > > > Flags in Table 5.59.
+> > > >
+> > > > Since the kernel would be expecting all "System RAM" to have equivalent
+> > > > Functional properties, if HDM cannot have all the same functionality, then in
+> > > > the absence of ISA specific ACPI tables clarifying what architectural feature isn't
+> > > > supported, the kernel may be forced to not online the HDM memory as system
+> > > > RAM. If there is more granular expression of what features are lacking in a ISA
+> > > > Specific table (eg Memory Tagging/Memory Protection keys not supported),
+> > > > the kernel could choose to not enable that feature in all of system RAM (if
+> > > > discrepancy discovered at boot), but still online the HDM as System RAM.
+> > > >
+> > > > To that end, it may be useful to clarify this to host vendors by way of an
+> > > > Implementation note (ideally in the CXL specification). Something like:
+> > > > "CXL hosts are encouraged to support all architectural features in HDM
+> > > > as they do in CPU attached memory to avoid either the memory from
+> > > > being onlined as System RAM, or the architectural feature being disabled.
+> > > > Hosts must indicate architectural parity for HDM in ACPI SRAT
+> > > > “Generic Port” flags “Architectural transactions” bit by setting it to 1.
+> > > > A port that sets this bit to 0 will need ISA specific ways/ACPI tables to
+> > > > describe which specific ISA features would not work in HDM, so an OS
+> > > > could disable that memory or that feature."
+> > > >
+> > > > Thoughts?  
+> > >
+> > > The problem, as you know, is that those features are already defined
+> > > without those "ISA specific ways / ACPI tables". I think it simply
+> > > must be the case that the only agent in the system that is aware of
+> > > the intersection of capabilities between ISA and CXL (platform
+> > > firmware) must mitigate the conflict. I.e. so that the CXL
+> > > infrastructure need not worry about ISA feature capability and vice
+> > > versa. To me, this looks like a platform firmware pre-boot
+> > > configuration menu / switch that turns off CXL (declines to publish
+> > > ACPI0016 devices) if incompatible ISA feature "X" is enabled, or the
+> > > reverse turns off ISA feature "X" if CXL is enabled. In other words,
+> > > the conflict needs to be resolved before the OS boots, setting this
+> > > bit to 0 is not a viable option for mitigating the conflict because
+> > > there is no requirement for the OS to even look at this flag.  
+> >
+> > Leaving it to Firmware is easier for the OS, but could be a couple
+> > of issues with that:
+> > Platform firmware may not have a way of disabling ISA feature
+> > if it is directly visible to the OS via CPU ID registers, and the
+> > registers can't be trapped to some FW and values adjusted
+> > on access
+> > Platform Firmware may not know if the OS supports a specific
+> > Feature (code may not exist or not default option etc) so it
+> > may be premature/suboptimal to disable CXL hostbridge
+> > altogether. Although I suppose a UEFI variable type knob
+> > could be adjusted in this case and take effect on reboot.
+> >
+> > Also, for some *future* ISA features where it may be possible and
+> > practical to define ISA feature support discovery per NUMA
+> > node/address range w/ ACPI (prior to userspace ABI being set),
+> > the platform would want to enable the CXL host bridge and leave
+> > selective enablement of the feature to the OS. Yes, this is messy
+> > and best avoided, but it may make sense depending on ISA
+> > feature and how messy it makes user space. I'm personally
+> > not in favor of this latter option, but I'm told this was discussed
+> > in other Coherent interconnect forums and chosen as a path
+> > forward.  
+> 
+> I think it's reasonable for new stuff to define _OSC or other opt-in
+> requirements to allow the OS to manage ISA vs CXL conflict policy. For
+> existing conflicts the only reliable mechanism is decline to publish
+> ACPI0016 if platform firmware can enumerate an ISA feature that it is
+> not supported on CXL. So I think the proposal here is a recommendation
+> for platform firmware implementations that they are responsible for
+> this conflict resolution unless / until other mechanisms arrive.
 
-Signed-off-by: Jon Nettleton <jon@solid-run.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
- drivers/iommu/arm/arm-smmu/arm-smmu.c | 33 +++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Agreed with one addition.  It should be possible to retrofit negotiation
+for existing features as well. Default policy should be that it's firmware's
+problem but if the OS uses _OSC to negotiate something else then it may
+be possible to be more flexible. As long as the default is safe, relaxing
+that can happen once mechanisms are defined.  The actual decision on
+whether to enable ACPI0016 can for example be pushed into AML code.
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 4d2f91626d87..8cbe8b98e8f0 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -1591,6 +1591,38 @@ static int arm_smmu_of_xlate(struct device *dev, struct of_phandle_args *args)
- 	return iommu_fwspec_add_ids(dev, &fwid, 1);
- }
- 
-+static bool arm_smmu_dev_has_rmr(struct arm_smmu_master_cfg *cfg,
-+				 struct iommu_fwspec *fwspec,
-+				 struct iommu_rmr *e)
-+{
-+	struct arm_smmu_device *smmu = cfg->smmu;
-+	struct arm_smmu_smr *smrs = smmu->smrs;
-+	int i, idx;
-+
-+	for_each_cfg_sme(cfg, fwspec, i, idx) {
-+		if (e->sid == smrs[idx].id)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void arm_smmu_rmr_get_resv_regions(struct device *dev,
-+					  struct list_head *head)
-+{
-+	struct arm_smmu_master_cfg *cfg = dev_iommu_priv_get(dev);
-+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-+	struct arm_smmu_device *smmu = cfg->smmu;
-+	struct iommu_rmr *rmr;
-+
-+	list_for_each_entry(rmr, &smmu->rmr_list, list) {
-+		if (!arm_smmu_dev_has_rmr(cfg, fwspec, rmr))
-+			continue;
-+
-+		iommu_dma_get_rmr_resv_regions(dev, rmr, head);
-+	}
-+}
-+
- static void arm_smmu_get_resv_regions(struct device *dev,
- 				      struct list_head *head)
- {
-@@ -1605,6 +1637,7 @@ static void arm_smmu_get_resv_regions(struct device *dev,
- 	list_add_tail(&region->list, head);
- 
- 	iommu_dma_get_resv_regions(dev, head);
-+	arm_smmu_rmr_get_resv_regions(dev, head);
- }
- 
- static int arm_smmu_def_domain_type(struct device *dev)
--- 
-2.17.1
+
 
