@@ -2,164 +2,416 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B4B366411
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 05:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B9FE36643B
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 06:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234743AbhDUD1d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 23:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234730AbhDUD13 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 23:27:29 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F895C06174A;
-        Tue, 20 Apr 2021 20:26:56 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id v6so13318713oiv.3;
-        Tue, 20 Apr 2021 20:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=MWK09kw+cZABiUewyDvRKqcNr5Wzfd1T9if6kGy1ACU=;
-        b=ptMZMIkRBfbvDMtNiL/47XyoIRY0/jim8ZQBu+A/J93zDBYnxub/u8Wbel9O2EDqqr
-         dzCKJktHtZRAgvf+KbqCaGkj8KW9htgeKKwN44cxgZULx+uwcY5O8oV8PymAASNdi4K5
-         +Q+gTTtJyAj/DTb0ZejoV+cOlaHyN2NEjYMGrvtJmyZMqZ+mn/kB0yEeN0Mk8gJz9QoX
-         L5RRXWtDo8jWyWJ49Ga+a+QYN4HitC+k0lifY0jU5unzcm/iSC8NzqMVbU5hBlvT4Mlb
-         JIRrdVCgX4OwZCb1eUibJodHdLt6b+I9KwRUO3OSI8k+dMl6zomSkhKoI4oefCcv7MEL
-         j8lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=MWK09kw+cZABiUewyDvRKqcNr5Wzfd1T9if6kGy1ACU=;
-        b=c5OccDrmpypBLC+w6cniE05gHJC28sLBDu9ZK/QmREPjFCKJqaeLH7945ankRB4XhW
-         dv1N22bLMDTdRNn4X9OaFK9GvV7HMoWuF5ll69udwPLMkQVv/EUqi+tsC6O35b/+yKyg
-         L7ppj+9cmHn8XNDKVgxHHrYTRnYUajI/VfS8X4hExlduOkgbO+/w5z39AsJhRJf8SilS
-         wqPVpAF1F25T2ct9mAwXCBl+w7f5aeSkbICsds2zNhmI0AtncHLiT/NhsqgeZbJ3EORJ
-         7bfjd3iP5nXReByOVu6D7BR8nbDHvuOgrQZ8gcEMxHPs3WUK+TkvOGdvdjFi1mtzNKOO
-         ToaA==
-X-Gm-Message-State: AOAM5325JBBkWeAmc2H4IhDaLGGSK/gmEjtQI/EYM41i69bllaKAC3+z
-        apkTW4GiVUmq6cS5XF6mgmQ=
-X-Google-Smtp-Source: ABdhPJzBGPf2Jx0aPwkboV3X5V/3IZLEVS9eZVQ3647srnUE4TdLpLSWoZ0pSjT5NFquSXI0fjb7bA==
-X-Received: by 2002:aca:d90a:: with SMTP id q10mr5421443oig.63.1618975615856;
-        Tue, 20 Apr 2021 20:26:55 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d7sm245312oib.49.2021.04.20.20.26.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 20 Apr 2021 20:26:55 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 20 Apr 2021 20:26:53 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>
-Cc:     corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org,
-        khilman@kernel.org, ulf.hansson@linaro.org, len.brown@intel.com,
-        lenb@kernel.org, pavel@ucw.cz, mturquette@baylibre.com,
-        sboyd@kernel.org, robh+dt@kernel.org, frowand.list@gmail.com,
-        maz@kernel.org, tglx@linutronix.de, saravanak@google.com,
-        nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        m.szyprowski@samsung.com, geert@linux-m68k.org,
-        kernel-team@android.com
-Subject: Re: [PATCH] clk: Mark fwnodes when their clock provider is added
-Message-ID: <20210421032653.GA179924@roeck-us.net>
-References: <20210205222644.2357303-9-saravanak@google.com>
- <20210210114435.122242-1-tudor.ambarus@microchip.com>
- <20210210114435.122242-2-tudor.ambarus@microchip.com>
+        id S230516AbhDUEGl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 21 Apr 2021 00:06:41 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:3404 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230390AbhDUEGk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Apr 2021 00:06:40 -0400
+Received: from dggeme712-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FQ6N815lbz5r4G;
+        Wed, 21 Apr 2021 12:03:04 +0800 (CST)
+Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
+ dggeme712-chm.china.huawei.com (10.1.199.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Wed, 21 Apr 2021 12:06:03 +0800
+Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
+ dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2176.012;
+ Wed, 21 Apr 2021 12:06:03 +0800
+From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "tiantao (H)" <tiantao6@hisilicon.com>
+CC:     "tim.c.chen@linux.intel.com" <tim.c.chen@linux.intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "bsegall@google.com" <bsegall@google.com>,
+        "mgorman@suse.de" <mgorman@suse.de>,
+        "msys.mizuma@gmail.com" <msys.mizuma@gmail.com>,
+        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
+        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>, "xuwei (O)" <xuwei5@huawei.com>,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>,
+        "guodong.xu@linaro.org" <guodong.xu@linaro.org>,
+        yangyicong <yangyicong@huawei.com>,
+        "Liguozhu (Kenneth)" <liguozhu@hisilicon.com>,
+        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
+        "hpa@zytor.com" <hpa@zytor.com>
+Subject: RE: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within a
+ die
+Thread-Topic: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within a
+ die
+Thread-Index: AQHXHHeQcl1lHq1u7kWPO6cWrdJxq6qKVPyAgACJR5D//6lPAIAAByuAgDJgJ6CAAZz6gA==
+Date:   Wed, 21 Apr 2021 04:06:03 +0000
+Message-ID: <be2755fd4f1447cb97c4de04eb378a0b@hisilicon.com>
+References: <20210319041618.14316-1-song.bao.hua@hisilicon.com>
+ <20210319041618.14316-2-song.bao.hua@hisilicon.com>
+ <YFRGIedW1fUlnmi+@kroah.com> <eb48302277f3436eb9899032e6b0bf1c@hisilicon.com>
+ <20210319093616.00001879@Huawei.com> <YFR2kwakbcGiI37w@kroah.com> 
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.200.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210210114435.122242-2-tudor.ambarus@microchip.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On Wed, Feb 10, 2021 at 01:44:35PM +0200, Tudor Ambarus wrote:
-> This is a follow-up for:
-> commit 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
+
+> -----Original Message-----
+> From: Song Bao Hua (Barry Song)
+> Sent: Tuesday, April 20, 2021 3:24 PM
+> To: 'Greg KH' <gregkh@linuxfoundation.org>; Jonathan Cameron
+> <jonathan.cameron@huawei.com>
+> Cc: tim.c.chen@linux.intel.com; catalin.marinas@arm.com; will@kernel.org;
+> rjw@rjwysocki.net; vincent.guittot@linaro.org; bp@alien8.de;
+> tglx@linutronix.de; mingo@redhat.com; lenb@kernel.org; peterz@infradead.org;
+> dietmar.eggemann@arm.com; rostedt@goodmis.org; bsegall@google.com;
+> mgorman@suse.de; msys.mizuma@gmail.com; valentin.schneider@arm.com;
+> juri.lelli@redhat.com; mark.rutland@arm.com; sudeep.holla@arm.com;
+> aubrey.li@linux.intel.com; linux-arm-kernel@lists.infradead.org;
+> linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; x86@kernel.org;
+> xuwei (O) <xuwei5@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>;
+> guodong.xu@linaro.org; yangyicong <yangyicong@huawei.com>; Liguozhu (Kenneth)
+> <liguozhu@hisilicon.com>; linuxarm@openeuler.org; hpa@zytor.com; tiantao (H)
+> <tiantao6@hisilicon.com>
+> Subject: RE: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within
+> a die
 > 
-> The above commit updated the deprecated of_clk_add_provider(),
-> but missed to update the preferred of_clk_add_hw_provider().
-> Update it now.
 > 
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> 
+> > -----Original Message-----
+> > From: Greg KH [mailto:gregkh@linuxfoundation.org]
+> > Sent: Friday, March 19, 2021 11:02 PM
+> > To: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Cc: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>;
+> > tim.c.chen@linux.intel.com; catalin.marinas@arm.com; will@kernel.org;
+> > rjw@rjwysocki.net; vincent.guittot@linaro.org; bp@alien8.de;
+> > tglx@linutronix.de; mingo@redhat.com; lenb@kernel.org;
+> peterz@infradead.org;
+> > dietmar.eggemann@arm.com; rostedt@goodmis.org; bsegall@google.com;
+> > mgorman@suse.de; msys.mizuma@gmail.com; valentin.schneider@arm.com;
+> > juri.lelli@redhat.com; mark.rutland@arm.com; sudeep.holla@arm.com;
+> > aubrey.li@linux.intel.com; linux-arm-kernel@lists.infradead.org;
+> > linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; x86@kernel.org;
+> > xuwei (O) <xuwei5@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>;
+> > guodong.xu@linaro.org; yangyicong <yangyicong@huawei.com>; Liguozhu
+> (Kenneth)
+> > <liguozhu@hisilicon.com>; linuxarm@openeuler.org; hpa@zytor.com
+> > Subject: Re: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs within
+> > a die
+> >
+> > On Fri, Mar 19, 2021 at 09:36:16AM +0000, Jonathan Cameron wrote:
+> > > On Fri, 19 Mar 2021 06:57:08 +0000
+> > > "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com> wrote:
+> > >
+> > > > > -----Original Message-----
+> > > > > From: Greg KH [mailto:gregkh@linuxfoundation.org]
+> > > > > Sent: Friday, March 19, 2021 7:35 PM
+> > > > > To: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
+> > > > > Cc: tim.c.chen@linux.intel.com; catalin.marinas@arm.com;
+> > will@kernel.org;
+> > > > > rjw@rjwysocki.net; vincent.guittot@linaro.org; bp@alien8.de;
+> > > > > tglx@linutronix.de; mingo@redhat.com; lenb@kernel.org;
+> > peterz@infradead.org;
+> > > > > dietmar.eggemann@arm.com; rostedt@goodmis.org; bsegall@google.com;
+> > > > > mgorman@suse.de; msys.mizuma@gmail.com; valentin.schneider@arm.com;
+> > Jonathan
+> > > > > Cameron <jonathan.cameron@huawei.com>; juri.lelli@redhat.com;
+> > > > > mark.rutland@arm.com; sudeep.holla@arm.com; aubrey.li@linux.intel.com;
+> > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+> > > > > linux-acpi@vger.kernel.org; x86@kernel.org; xuwei (O)
+> > <xuwei5@huawei.com>;
+> > > > > Zengtao (B) <prime.zeng@hisilicon.com>; guodong.xu@linaro.org;
+> > yangyicong
+> > > > > <yangyicong@huawei.com>; Liguozhu (Kenneth) <liguozhu@hisilicon.com>;
+> > > > > linuxarm@openeuler.org; hpa@zytor.com
+> > > > > Subject: Re: [RFC PATCH v5 1/4] topology: Represent clusters of CPUs
+> within
+> > > > > a die
+> > > > >
+> > > > > On Fri, Mar 19, 2021 at 05:16:15PM +1300, Barry Song wrote:
+> > > > > > diff --git a/Documentation/admin-guide/cputopology.rst
+> > > > > b/Documentation/admin-guide/cputopology.rst
+> > > > > > index b90dafc..f9d3745 100644
+> > > > > > --- a/Documentation/admin-guide/cputopology.rst
+> > > > > > +++ b/Documentation/admin-guide/cputopology.rst
+> > > > > > @@ -24,6 +24,12 @@ core_id:
+> > > > > >  	identifier (rather than the kernel's).  The actual value is
+> > > > > >  	architecture and platform dependent.
+> > > > > >
+> > > > > > +cluster_id:
+> > > > > > +
+> > > > > > +	the Cluster ID of cpuX.  Typically it is the hardware platform's
+> > > > > > +	identifier (rather than the kernel's).  The actual value is
+> > > > > > +	architecture and platform dependent.
+> > > > > > +
+> > > > > >  book_id:
+> > > > > >
+> > > > > >  	the book ID of cpuX. Typically it is the hardware platform's
+> > > > > > @@ -56,6 +62,14 @@ package_cpus_list:
+> > > > > >  	human-readable list of CPUs sharing the same physical_package_id.
+> > > > > >  	(deprecated name: "core_siblings_list")
+> > > > > >
+> > > > > > +cluster_cpus:
+> > > > > > +
+> > > > > > +	internal kernel map of CPUs within the same cluster.
+> > > > > > +
+> > > > > > +cluster_cpus_list:
+> > > > > > +
+> > > > > > +	human-readable list of CPUs within the same cluster.
+> > > > > > +
+> > > > > >  die_cpus:
+> > > > > >
+> > > > > >  	internal kernel map of CPUs within the same die.
+> > > > >
+> > > > > Why are these sysfs files in this file, and not in a Documentation/ABI/
+> > > > > file which can be correctly parsed and shown to userspace?
+> > > >
+> > > > Well. Those ABIs have been there for much a long time. It is like:
+> > > >
+> > > > [root@ceph1 topology]# ls
+> > > > core_id  core_siblings  core_siblings_list  physical_package_id
+> > thread_siblings  thread_siblings_list
+> > > > [root@ceph1 topology]# pwd
+> > > > /sys/devices/system/cpu/cpu100/topology
+> > > > [root@ceph1 topology]# cat core_siblings_list
+> > > > 64-127
+> > > > [root@ceph1 topology]#
+> > > >
+> > > > >
+> > > > > Any chance you can fix that up here as well?
+> > > >
+> > > > Yes. we will send a separate patch to address this, which won't
+> > > > be in this patchset. This patchset will base on that one.
+> > > >
+> > > > >
+> > > > > Also note that "list" is not something that goes in sysfs, sysfs is
+> "one
+> > > > > value per file", and a list is not "one value".  How do you prevent
+> > > > > overflowing the buffer of the sysfs file if you have a "list"?
+> > > > >
+> > > >
+> > > > At a glance, the list is using "-" rather than a real list
+> > > > [root@ceph1 topology]# cat core_siblings_list
+> > > > 64-127
+> > > >
+> > > > Anyway, I will take a look if it has any chance to overflow.
+> > >
+> > > It could in theory be alternate CPUs as comma separated list.
+> > > So it's would get interesting around 500-1000 cpus (guessing).
+> > >
+> > > Hopefully no one has that crazy a cpu numbering scheme but it's possible
+> > > (note that cluster is fine for this, but I guess it might eventually
+> > > happen for core-siblings list (cpus within a package).
+> > >
+> > > Shouldn't crash or anything like that but might terminate early.
+> >
+> > We have a broken sysfs api already for listing LED numbers that has had
+> > to be worked around in the past, please do not create a new one with
+> > that same problem, we should learn from them :)
+> 
+> Another place I am seeing a cpu list is in numa topology:
+> /sys/devices/system/node/nodex/cpulist.
+> 
+> But the code has a BUILD_BUG_ON to guard the pagebuf:
+> 
+> static ssize_t node_read_cpumap(struct device *dev, bool list, char *buf)
+> {
+> 	ssize_t n;
+> 	cpumask_var_t mask;
+> 	struct node *node_dev = to_node(dev);
+> 
+> 	/* 2008/04/07: buf currently PAGE_SIZE, need 9 chars per 32 bits. */
+> 	BUILD_BUG_ON((NR_CPUS/32 * 9) > (PAGE_SIZE-1));
+> 
+> 	if (!alloc_cpumask_var(&mask, GFP_KERNEL))
+> 		return 0;
+> 
+> 	cpumask_and(mask, cpumask_of_node(node_dev->dev.id), cpu_online_mask);
+> 	n = cpumap_print_to_pagebuf(list, buf, mask);
+> 	free_cpumask_var(mask);
+> 
+> 	return n;
+> }
+> 
+> For lists in cpu topology, I haven't seen this while I believe we need it.
+> Or am I missing something?
 
-This patch still causes a crash when booting a raspi2 image in linux-next.
+I would prefer we send two patches as a series
+"clarify and cleanup CPU and NUMA topology ABIs" with a cover
+letter and the below one as 1/2. 2/2 would be the patch moving
+the place of cpu topology ABI doc.
 
-[   21.456500] Unable to handle kernel NULL pointer dereference at virtual address 00000028
-[   21.456750] pgd = (ptrval)
-[   21.456927] [00000028] *pgd=00000000
-[   21.457567] Internal error: Oops: 5 [#1] SMP ARM
-[   21.457882] Modules linked in:
-[   21.458077] CPU: 0 PID: 77 Comm: kworker/u8:10 Not tainted 5.12.0-rc8-next-20210420 #1
-[   21.458291] Hardware name: BCM2835
-[   21.458525] Workqueue: events_unbound deferred_probe_work_func
-[   21.458997] PC is at of_clk_add_hw_provider+0xbc/0xe8
-[   21.459176] LR is at of_clk_add_hw_provider+0xa8/0xe8
-...
-[   21.477603] [<c0a32aec>] (of_clk_add_hw_provider) from [<c0a32b60>] (devm_of_clk_add_hw_provider+0x48/0x80)
-[   21.477861] [<c0a32b60>] (devm_of_clk_add_hw_provider) from [<c0a471e4>] (raspberrypi_clk_probe+0x260/0x388)
-[   21.478087] [<c0a471e4>] (raspberrypi_clk_probe) from [<c0c1c4d0>] (platform_probe+0x5c/0xb8)
-[   21.478287] [<c0c1c4d0>] (platform_probe) from [<c0c19d84>] (really_probe+0xf0/0x39c)
-[   21.478471] [<c0c19d84>] (really_probe) from [<c0c1a098>] (driver_probe_device+0x68/0xc0)
-[   21.478659] [<c0c1a098>] (driver_probe_device) from [<c0c17f54>] (bus_for_each_drv+0x84/0xc8)
-[   21.478860] [<c0c17f54>] (bus_for_each_drv) from [<c0c19c20>] (__device_attach+0xec/0x158)
-[   21.479050] [<c0c19c20>] (__device_attach) from [<c0c18de8>] (bus_probe_device+0x88/0x90)
-[   21.479236] [<c0c18de8>] (bus_probe_device) from [<c0c16a68>] (device_add+0x398/0x8ac)
-[   21.479421] [<c0c16a68>] (device_add) from [<c0c1c1b4>] (platform_device_add+0xf0/0x200)
-[   21.479607] [<c0c1c1b4>] (platform_device_add) from [<c0c1ccc0>] (platform_device_register_full+0xd0/0x110)
-[   21.479836] [<c0c1ccc0>] (platform_device_register_full) from [<c104c130>] (rpi_firmware_probe+0x1a4/0x20c)
-[   21.480061] [<c104c130>] (rpi_firmware_probe) from [<c0c1c4d0>] (platform_probe+0x5c/0xb8)
-[   21.480255] [<c0c1c4d0>] (platform_probe) from [<c0c19d84>] (really_probe+0xf0/0x39c)
-[   21.480437] [<c0c19d84>] (really_probe) from [<c0c1a098>] (driver_probe_device+0x68/0xc0)
-[   21.480626] [<c0c1a098>] (driver_probe_device) from [<c0c17f54>] (bus_for_each_drv+0x84/0xc8)
-[   21.480829] [<c0c17f54>] (bus_for_each_drv) from [<c0c19c20>] (__device_attach+0xec/0x158)
-[   21.481018] [<c0c19c20>] (__device_attach) from [<c0c18de8>] (bus_probe_device+0x88/0x90)
-[   21.481205] [<c0c18de8>] (bus_probe_device) from [<c0c192bc>] (deferred_probe_work_func+0x8c/0xbc)
-[   21.481413] [<c0c192bc>] (deferred_probe_work_func) from [<c036802c>] (process_one_work+0x268/0x798)
-[   21.481624] [<c036802c>] (process_one_work) from [<c0368774>] (worker_thread+0x218/0x4f4)
-[   21.481822] [<c0368774>] (worker_thread) from [<c0370f28>] (kthread+0x140/0x174)
-[   21.481999] [<c0370f28>] (kthread) from [<c030017c>] (ret_from_fork+0x14/0x38)
-[   21.482185] Exception stack(0xc42b7fb0 to 0xc42b7ff8)
+From b32c0c00a187d4fe4c49d54d30650b0cacb2c351 Mon Sep 17 00:00:00 2001
+From: Tian Tao <tiantao6@hisilicon.com>
+Date: Wed, 21 Apr 2021 14:36:11 +1200
+Subject: [PATCH 1/2] CPU, NUMA topology ABIs: clarify the overflow issue of sysfs
+ pagebuf
 
-Updated bisect log is attached.
+Both numa node and cpu use cpu bitmap like 3,ffffffff to expose hardware
+topology. When cpu number is large, the page buffer of sysfs will over-
+flow. This doesn't really happen nowadays as the maximum NR_CPUS is 8196
+for X86_64 and 4096 for ARM64 since 8196 * 9 / 32 = 2305 is still smaller
+than 4KB page size.
+So the existing BUILD_BUG_ON() in drivers/base/node.c is pretty much
+preventing future problems similar with Y2K when hardware gets more
+and more CPUs.
+On the other hand, it should be more sensible to move the guard to common
+code which can protect both cpu and numa:
+/sys/devices/system/cpu/cpu0/topology/die_cpus etc.
+/sys/devices/system/node/node0/cpumap etc.
 
-Guenter
+Topology bitmap mask strings shouldn't be larger than PAGE_SIZE as
+lstopo and numactl depend on them. But other ABIs exposing cpu lists
+are not really used by common applications, so this patch also marks
+those lists could be trimmed as there is no any guarantee those lists
+are always less than PAGE_SIZE especially a list could be like this:
+0, 3, 5, 7, 9, 11... etc.
 
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
 ---
-# bad: [50b8b1d699ac313c0a07a3c185ffb23aecab8abb] Add linux-next specific files for 20210419
-# good: [bf05bf16c76bb44ab5156223e1e58e26dfe30a88] Linux 5.12-rc8
-git bisect start 'HEAD' 'v5.12-rc8'
-# good: [c4bb91fc07e59241cde97f913d7a2fbedc248f0d] Merge remote-tracking branch 'crypto/master'
-git bisect good c4bb91fc07e59241cde97f913d7a2fbedc248f0d
-# good: [f15bbf170b40b48a43ed7076ce9f8ac9380e5752] Merge remote-tracking branch 'edac/edac-for-next'
-git bisect good f15bbf170b40b48a43ed7076ce9f8ac9380e5752
-# bad: [550a78090dcc4061e191312a757a127f0b6e6323] Merge remote-tracking branch 'vfio/next'
-git bisect bad 550a78090dcc4061e191312a757a127f0b6e6323
-# bad: [9f074d2a7bf49b2c9e1609703757b18de7611aef] Merge remote-tracking branch 'usb/usb-next'
-git bisect bad 9f074d2a7bf49b2c9e1609703757b18de7611aef
-# good: [855b2fdb7c543c94e7623e6ad0b492f04a5317db] Merge remote-tracking branch 'percpu/for-next'
-git bisect good 855b2fdb7c543c94e7623e6ad0b492f04a5317db
-# good: [1d08ed588c6a85a35a24c82eb4cf0807ec2b366a] usbip: vudc: fix missing unlock on error in usbip_sockfd_store()
-git bisect good 1d08ed588c6a85a35a24c82eb4cf0807ec2b366a
-# good: [1b7ce8fab5fd0c406dbf165b12d44b301decf589] Merge remote-tracking branch 'ipmi/for-next'
-git bisect good 1b7ce8fab5fd0c406dbf165b12d44b301decf589
-# good: [fe8e488058c47e9a8a2c85321f7198a0a17b0131] dt-bindings: usb: mtk-xhci: add wakeup interrupt
-git bisect good fe8e488058c47e9a8a2c85321f7198a0a17b0131
-# bad: [3c652132ce9052e626bf509932fcacfebed1ccb4] platform-msi: fix kernel-doc warnings
-git bisect bad 3c652132ce9052e626bf509932fcacfebed1ccb4
-# bad: [7f2fac70b729d68a34e5eba8d1fb68eb69b05169] device property: Add test cases for fwnode_property_count_*() APIs
-git bisect bad 7f2fac70b729d68a34e5eba8d1fb68eb69b05169
-# good: [38f087de8947700d3b06d3d1594490e0f611c5d1] devtmpfs: fix placement of complete() call
-git bisect good 38f087de8947700d3b06d3d1594490e0f611c5d1
-# good: [b6f617df4fa936c1ab1831c2b23563f6c1add6c4] driver core: Update device link status properly for device_bind_driver()
-git bisect good b6f617df4fa936c1ab1831c2b23563f6c1add6c4
-# bad: [6579c8d97ad7fc5671ee60234f3b8388abee5f77] clk: Mark fwnodes when their clock provider is added
-git bisect bad 6579c8d97ad7fc5671ee60234f3b8388abee5f77
-# good: [ea718c699055c8566eb64432388a04974c43b2ea] Revert "Revert "driver core: Set fw_devlink=on by default""
-git bisect good ea718c699055c8566eb64432388a04974c43b2ea
-# first bad commit: [6579c8d97ad7fc5671ee60234f3b8388abee5f77] clk: Mark fwnodes when their clock provider is added
+ Documentation/ABI/stable/sysfs-devices-node |  5 ++++-
+ Documentation/admin-guide/cputopology.rst   | 15 +++++++++++++++
+ drivers/base/node.c                         |  3 ---
+ include/linux/cpumask.h                     |  6 ++++++
+ 4 files changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+index 484fc04bcc25..9832a17b2b15 100644
+--- a/Documentation/ABI/stable/sysfs-devices-node
++++ b/Documentation/ABI/stable/sysfs-devices-node
+@@ -47,7 +47,10 @@ What:		/sys/devices/system/node/nodeX/cpulist
+ Date:		October 2002
+ Contact:	Linux Memory Management list <linux-mm@kvack.org>
+ Description:
+-		The CPUs associated to the node.
++		The CPUs associated to the node. The format is like 0-3,
++		8-11, 12-13. The maximum size is PAGE_SIZE, so the tail
++		of the string will be trimmed while its size is larger
++		than PAGE_SIZE.
+ 
+ What:		/sys/devices/system/node/nodeX/meminfo
+ Date:		October 2002
+diff --git a/Documentation/admin-guide/cputopology.rst b/Documentation/admin-guide/cputopology.rst
+index b90dafcc8237..8fac776a5ffa 100644
+--- a/Documentation/admin-guide/cputopology.rst
++++ b/Documentation/admin-guide/cputopology.rst
+@@ -44,6 +44,9 @@ core_cpus:
+ core_cpus_list:
+ 
+ 	human-readable list of CPUs within the same core.
++	The format is like 0-3, 8-11, 12-13. The maximum size is PAGE_SIZE,
++	so the tail of the string will be trimmed while its size is larger
++	than PAGE_SIZE.
+ 	(deprecated name: "thread_siblings_list");
+ 
+ package_cpus:
+@@ -54,6 +57,9 @@ package_cpus:
+ package_cpus_list:
+ 
+ 	human-readable list of CPUs sharing the same physical_package_id.
++	The format is like 0-3, 8-11, 12-13. The maximum size is PAGE_SIZE,
++	so the tail of the string will be trimmed while its size is larger
++	than PAGE_SIZE.
+ 	(deprecated name: "core_siblings_list")
+ 
+ die_cpus:
+@@ -63,6 +69,9 @@ die_cpus:
+ die_cpus_list:
+ 
+ 	human-readable list of CPUs within the same die.
++	The format is like 0-3, 8-11, 12-13. The maximum size is PAGE_SIZE,
++	so the tail of the string will be trimmed while its size is larger
++	than PAGE_SIZE.
+ 
+ book_siblings:
+ 
+@@ -73,6 +82,9 @@ book_siblings_list:
+ 
+ 	human-readable list of cpuX's hardware threads within the same
+ 	book_id.
++	The format is like 0-3, 8-11, 12-13. The maximum size is PAGE_SIZE,
++	so the tail of the string will be trimmed while its size is larger
++	than PAGE_SIZE.
+ 
+ drawer_siblings:
+ 
+@@ -83,6 +95,9 @@ drawer_siblings_list:
+ 
+ 	human-readable list of cpuX's hardware threads within the same
+ 	drawer_id.
++	The format is like 0-3, 8-11, 12-13. The maximum size is PAGE_SIZE,
++	so the tail of the string will be trimmed while its size is larger
++	than PAGE_SIZE.
+ 
+ Architecture-neutral, drivers/base/topology.c, exports these attributes.
+ However, the book and drawer related sysfs files will only be created if
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index f449dbb2c746..50324d06bcd5 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -33,9 +33,6 @@ static ssize_t node_read_cpumap(struct device *dev, bool list, char *buf)
+ 	cpumask_var_t mask;
+ 	struct node *node_dev = to_node(dev);
+ 
+-	/* 2008/04/07: buf currently PAGE_SIZE, need 9 chars per 32 bits. */
+-	BUILD_BUG_ON((NR_CPUS/32 * 9) > (PAGE_SIZE-1));
+-
+ 	if (!alloc_cpumask_var(&mask, GFP_KERNEL))
+ 		return 0;
+ 
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index 383684e30f12..81f145e0c742 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -12,6 +12,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/atomic.h>
+ #include <linux/bug.h>
++#include <asm/page.h>
+ 
+ /* Don't assign or return these: may not be this big! */
+ typedef struct cpumask { DECLARE_BITMAP(bits, NR_CPUS); } cpumask_t;
+@@ -924,6 +925,11 @@ static inline const struct cpumask *get_cpu_mask(unsigned int cpu)
+ static inline ssize_t
+ cpumap_print_to_pagebuf(bool list, char *buf, const struct cpumask *mask)
+ {
++	/*
++	 * 32bits requires 9bytes: "ff,ffffffff", thus, too many CPUs will
++	 * cause the overflow of sysfs pagebuf
++	 */
++	BUILD_BUG_ON((NR_CPUS/32 * 9) > (PAGE_SIZE-1));
+ 	return bitmap_print_to_pagebuf(list, buf, cpumask_bits(mask),
+ 				      nr_cpu_ids);
+ }
+-- 
+2.25.1
+
+Thanks
+Barry
