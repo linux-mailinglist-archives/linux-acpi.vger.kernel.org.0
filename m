@@ -2,84 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B9D367067
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 18:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF5C33670A4
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 18:53:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244294AbhDUQoD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Apr 2021 12:44:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53678 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241939AbhDUQoC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Apr 2021 12:44:02 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5F9861450;
-        Wed, 21 Apr 2021 16:43:28 +0000 (UTC)
-Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=why.lan)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <maz@kernel.org>)
-        id 1lZFwk-008jPD-UV; Wed, 21 Apr 2021 17:43:27 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-Cc:     dann frazier <dann.frazier@canonical.com>,
-        Fu Wei <wefu@redhat.com>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-team@android.com
-Subject: [PATCH 2/2] ACPI: irq: Prevent unregistering of GIC SGIs
-Date:   Wed, 21 Apr 2021 17:43:17 +0100
-Message-Id: <20210421164317.1718831-3-maz@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210421164317.1718831-1-maz@kernel.org>
-References: <20210421164317.1718831-1-maz@kernel.org>
+        id S241257AbhDUQxn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Apr 2021 12:53:43 -0400
+Received: from mail-oo1-f43.google.com ([209.85.161.43]:38858 "EHLO
+        mail-oo1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235436AbhDUQxn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Apr 2021 12:53:43 -0400
+Received: by mail-oo1-f43.google.com with SMTP id p12-20020a4a2f0c0000b02901ecdbb16887so2422138oop.5;
+        Wed, 21 Apr 2021 09:53:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+WcdVAWw1wrE0hCoQ+UXML3T7kI52AZNB5+mZJ4YXyA=;
+        b=cQ4bRpTUkpKMKuk/SZmMkvkZhovg70ur5KulEFMV9YTnrLMa9eL8QJATDNtikdem0H
+         VTOd8ICaIePVrtuR3sl4gRUohr+xfsk9+5zxq3jn4Rz7FSoMPJfMivkDuL1AgE/4qdDo
+         VHysH4Nn4kCxs7tPHEkJjJU/sCdlq+p/JpxoQgzEAlufMHuBJBa+w5iJ1FyiDqF3R08s
+         aF3GAgJzG9XGzUUcEs74CY2B1zaS+Un1WiFYaYxEFmUWjjIwln+Gy/L/mSV5YbBzduBF
+         4zS/h8l0gouaY80wUg1u1zq35oSllGGgCPTCvfDk3vZlsngD+ELnU0Cctq+Wtf+SLx9f
+         V7HQ==
+X-Gm-Message-State: AOAM5322bKVvbDQxPXPU4IwtMXw4OE6AxvKX5AAZwN64WmsKABfIYOuu
+        9XYiIssSw+McSI2yCqtIneQUUJYG4dedl+D038U=
+X-Google-Smtp-Source: ABdhPJxSq8Z7Oay74Ci2aElVdYLnRCXpGGB0j1dzlozKhf7iQegxeIuo8msIODvBqfSxPh1mcqBZT4r7aiHGlWtKT74=
+X-Received: by 2002:a4a:d781:: with SMTP id c1mr21492266oou.44.1619023989913;
+ Wed, 21 Apr 2021 09:53:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 62.31.163.78
-X-SA-Exim-Rcpt-To: lorenzo.pieralisi@arm.com, sudeep.holla@arm.com, guohanjun@huawei.com, dann.frazier@canonical.com, wefu@redhat.com, lenb@kernel.org, rjw@rjwysocki.net, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kernel-team@android.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+References: <20210415143758.1962567-1-colin.king@canonical.com>
+In-Reply-To: <20210415143758.1962567-1-colin.king@canonical.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 21 Apr 2021 18:52:58 +0200
+Message-ID: <CAJZ5v0gogVAEZRP7AoiHhEiYcDtjsUoAUUACSpUcWBEc_qhSSw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: remove redundant assignment to variable rc
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When using ACPI on arm64, which implies the GIC IRQ model, no
-table should ever provide a GSI number in the range [0:15],
-as these are reserved for IPIs.
+On Thu, Apr 15, 2021 at 4:38 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable rc is being assigned a value that is never read,
+> the assignment is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/acpi/apei/einj.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index 133156759551..328e8aeece6c 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -725,7 +725,6 @@ static int __init einj_init(void)
+>                 goto err_release;
+>         }
+>
+> -       rc = -ENOMEM;
+>         einj_param = einj_get_parameter_address();
+>         if ((param_extension || acpi5) && einj_param) {
+>                 debugfs_create_x32("flags", S_IRUSR | S_IWUSR, einj_debug_dir,
+> --
 
-However, drivers tend to call acpi_unregister_gsi() with any
-random GSI number provided by half baked tables, which results
-in an exploding kernel when its IPIs have been unconfigured.
-
-In order to catch this, check for the silly case early, warn
-that something is going wrong and avoid the above disaster.
-
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- drivers/acpi/irq.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index e209081d644b..c68e694fca26 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -75,8 +75,12 @@ void acpi_unregister_gsi(u32 gsi)
- {
- 	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
- 							DOMAIN_BUS_ANY);
--	int irq = irq_find_mapping(d, gsi);
-+	int irq;
- 
-+	if (WARN_ON(acpi_irq_model == ACPI_IRQ_MODEL_GIC && gsi < 16))
-+		return;
-+
-+	irq = irq_find_mapping(d, gsi);
- 	irq_dispose_mapping(irq);
- }
- EXPORT_SYMBOL_GPL(acpi_unregister_gsi);
--- 
-2.29.2
-
+Applied as 5.13 material, thanks!
