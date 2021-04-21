@@ -2,154 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1B8366228
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 00:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B4B366411
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 05:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234158AbhDTWcP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Apr 2021 18:32:15 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2893 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233964AbhDTWcN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 18:32:13 -0400
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FPys56N8Nz68BVB;
-        Wed, 21 Apr 2021 06:24:09 +0800 (CST)
-Received: from lhreml718-chm.china.huawei.com (10.201.108.69) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 21 Apr 2021 00:31:39 +0200
-Received: from dggemi761-chm.china.huawei.com (10.1.198.147) by
- lhreml718-chm.china.huawei.com (10.201.108.69) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Tue, 20 Apr 2021 23:31:38 +0100
-Received: from dggemi761-chm.china.huawei.com ([10.9.49.202]) by
- dggemi761-chm.china.huawei.com ([10.9.49.202]) with mapi id 15.01.2176.012;
- Wed, 21 Apr 2021 06:31:36 +0800
-From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-To:     Tim Chen <tim.c.chen@linux.intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>
-CC:     "msys.mizuma@gmail.com" <msys.mizuma@gmail.com>,
-        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>, "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "guodong.xu@linaro.org" <guodong.xu@linaro.org>,
-        yangyicong <yangyicong@huawei.com>,
-        "Liguozhu (Kenneth)" <liguozhu@hisilicon.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "hpa@zytor.com" <hpa@zytor.com>
-Subject: RE: [RFC PATCH v5 4/4] scheduler: Add cluster scheduler level for x86
-Thread-Topic: [RFC PATCH v5 4/4] scheduler: Add cluster scheduler level for
- x86
-Thread-Index: AQHXNhNyntgmOcGglU+2M2SQGIS0vaq993vQ
-Date:   Tue, 20 Apr 2021 22:31:36 +0000
-Message-ID: <28ce8c4b8fc347ed9565a2ccac44a39b@hisilicon.com>
-References: <20210319041618.14316-1-song.bao.hua@hisilicon.com>
- <20210319041618.14316-5-song.bao.hua@hisilicon.com>
- <110234d1-22ce-8a9a-eabb-c15ac29a5dcd@linux.intel.com>
- <67cc380019fd40d88d7a493b6cbc0852@hisilicon.com>
- <422b5d06-ec0e-f064-32fe-15df5b2957dd@linux.intel.com>
-In-Reply-To: <422b5d06-ec0e-f064-32fe-15df5b2957dd@linux.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.201.57]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S234743AbhDUD1d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Apr 2021 23:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234730AbhDUD13 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Apr 2021 23:27:29 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F895C06174A;
+        Tue, 20 Apr 2021 20:26:56 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id v6so13318713oiv.3;
+        Tue, 20 Apr 2021 20:26:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=MWK09kw+cZABiUewyDvRKqcNr5Wzfd1T9if6kGy1ACU=;
+        b=ptMZMIkRBfbvDMtNiL/47XyoIRY0/jim8ZQBu+A/J93zDBYnxub/u8Wbel9O2EDqqr
+         dzCKJktHtZRAgvf+KbqCaGkj8KW9htgeKKwN44cxgZULx+uwcY5O8oV8PymAASNdi4K5
+         +Q+gTTtJyAj/DTb0ZejoV+cOlaHyN2NEjYMGrvtJmyZMqZ+mn/kB0yEeN0Mk8gJz9QoX
+         L5RRXWtDo8jWyWJ49Ga+a+QYN4HitC+k0lifY0jU5unzcm/iSC8NzqMVbU5hBlvT4Mlb
+         JIRrdVCgX4OwZCb1eUibJodHdLt6b+I9KwRUO3OSI8k+dMl6zomSkhKoI4oefCcv7MEL
+         j8lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=MWK09kw+cZABiUewyDvRKqcNr5Wzfd1T9if6kGy1ACU=;
+        b=c5OccDrmpypBLC+w6cniE05gHJC28sLBDu9ZK/QmREPjFCKJqaeLH7945ankRB4XhW
+         dv1N22bLMDTdRNn4X9OaFK9GvV7HMoWuF5ll69udwPLMkQVv/EUqi+tsC6O35b/+yKyg
+         L7ppj+9cmHn8XNDKVgxHHrYTRnYUajI/VfS8X4hExlduOkgbO+/w5z39AsJhRJf8SilS
+         wqPVpAF1F25T2ct9mAwXCBl+w7f5aeSkbICsds2zNhmI0AtncHLiT/NhsqgeZbJ3EORJ
+         7bfjd3iP5nXReByOVu6D7BR8nbDHvuOgrQZ8gcEMxHPs3WUK+TkvOGdvdjFi1mtzNKOO
+         ToaA==
+X-Gm-Message-State: AOAM5325JBBkWeAmc2H4IhDaLGGSK/gmEjtQI/EYM41i69bllaKAC3+z
+        apkTW4GiVUmq6cS5XF6mgmQ=
+X-Google-Smtp-Source: ABdhPJzBGPf2Jx0aPwkboV3X5V/3IZLEVS9eZVQ3647srnUE4TdLpLSWoZ0pSjT5NFquSXI0fjb7bA==
+X-Received: by 2002:aca:d90a:: with SMTP id q10mr5421443oig.63.1618975615856;
+        Tue, 20 Apr 2021 20:26:55 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d7sm245312oib.49.2021.04.20.20.26.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 20 Apr 2021 20:26:55 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 20 Apr 2021 20:26:53 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>
+Cc:     corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org,
+        khilman@kernel.org, ulf.hansson@linaro.org, len.brown@intel.com,
+        lenb@kernel.org, pavel@ucw.cz, mturquette@baylibre.com,
+        sboyd@kernel.org, robh+dt@kernel.org, frowand.list@gmail.com,
+        maz@kernel.org, tglx@linutronix.de, saravanak@google.com,
+        nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        m.szyprowski@samsung.com, geert@linux-m68k.org,
+        kernel-team@android.com
+Subject: Re: [PATCH] clk: Mark fwnodes when their clock provider is added
+Message-ID: <20210421032653.GA179924@roeck-us.net>
+References: <20210205222644.2357303-9-saravanak@google.com>
+ <20210210114435.122242-1-tudor.ambarus@microchip.com>
+ <20210210114435.122242-2-tudor.ambarus@microchip.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210210114435.122242-2-tudor.ambarus@microchip.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGltIENoZW4gW21haWx0
-bzp0aW0uYy5jaGVuQGxpbnV4LmludGVsLmNvbV0NCj4gU2VudDogV2VkbmVzZGF5LCBBcHJpbCAy
-MSwgMjAyMSA2OjMyIEFNDQo+IFRvOiBTb25nIEJhbyBIdWEgKEJhcnJ5IFNvbmcpIDxzb25nLmJh
-by5odWFAaGlzaWxpY29uLmNvbT47DQo+IGNhdGFsaW4ubWFyaW5hc0Bhcm0uY29tOyB3aWxsQGtl
-cm5lbC5vcmc7IHJqd0Byand5c29ja2kubmV0Ow0KPiB2aW5jZW50Lmd1aXR0b3RAbGluYXJvLm9y
-ZzsgYnBAYWxpZW44LmRlOyB0Z2x4QGxpbnV0cm9uaXguZGU7DQo+IG1pbmdvQHJlZGhhdC5jb207
-IGxlbmJAa2VybmVsLm9yZzsgcGV0ZXJ6QGluZnJhZGVhZC5vcmc7DQo+IGRpZXRtYXIuZWdnZW1h
-bm5AYXJtLmNvbTsgcm9zdGVkdEBnb29kbWlzLm9yZzsgYnNlZ2FsbEBnb29nbGUuY29tOw0KPiBt
-Z29ybWFuQHN1c2UuZGUNCj4gQ2M6IG1zeXMubWl6dW1hQGdtYWlsLmNvbTsgdmFsZW50aW4uc2No
-bmVpZGVyQGFybS5jb207DQo+IGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnOyBKb25hdGhhbiBD
-YW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+Ow0KPiBqdXJpLmxlbGxpQHJlZGhh
-dC5jb207IG1hcmsucnV0bGFuZEBhcm0uY29tOyBzdWRlZXAuaG9sbGFAYXJtLmNvbTsNCj4gYXVi
-cmV5LmxpQGxpbnV4LmludGVsLmNvbTsgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQu
-b3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBsaW51eC1hY3BpQHZnZXIua2Vy
-bmVsLm9yZzsgeDg2QGtlcm5lbC5vcmc7DQo+IHh1d2VpIChPKSA8eHV3ZWk1QGh1YXdlaS5jb20+
-OyBaZW5ndGFvIChCKSA8cHJpbWUuemVuZ0BoaXNpbGljb24uY29tPjsNCj4gZ3VvZG9uZy54dUBs
-aW5hcm8ub3JnOyB5YW5neWljb25nIDx5YW5neWljb25nQGh1YXdlaS5jb20+OyBMaWd1b3podSAo
-S2VubmV0aCkNCj4gPGxpZ3Vvemh1QGhpc2lsaWNvbi5jb20+OyBsaW51eGFybUBvcGVuZXVsZXIu
-b3JnOyBocGFAenl0b3IuY29tDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIHY1IDQvNF0gc2No
-ZWR1bGVyOiBBZGQgY2x1c3RlciBzY2hlZHVsZXIgbGV2ZWwgZm9yIHg4Ng0KPiANCj4gDQo+IA0K
-PiBPbiAzLzIzLzIxIDQ6MjEgUE0sIFNvbmcgQmFvIEh1YSAoQmFycnkgU29uZykgd3JvdGU6DQo+
-IA0KPiA+Pg0KPiA+PiBPbiAzLzE4LzIxIDk6MTYgUE0sIEJhcnJ5IFNvbmcgd3JvdGU6DQo+ID4+
-PiBGcm9tOiBUaW0gQ2hlbiA8dGltLmMuY2hlbkBsaW51eC5pbnRlbC5jb20+DQo+ID4+Pg0KPiA+
-Pj4gVGhlcmUgYXJlIHg4NiBDUFUgYXJjaGl0ZWN0dXJlcyAoZS5nLiBKYWNvYnN2aWxsZSkgd2hl
-cmUgTDIgY2FoY2UNCj4gPj4+IGlzIHNoYXJlZCBhbW9uZyBhIGNsdXN0ZXIgb2YgY29yZXMgaW5z
-dGVhZCBvZiBiZWluZyBleGNsdXNpdmUNCj4gPj4+IHRvIG9uZSBzaW5nbGUgY29yZS4NCj4gPj4+
-DQo+ID4+PiBUbyBwcmV2ZW50IG92ZXJzdWJzY3JpcHRpb24gb2YgTDIgY2FjaGUsIGxvYWQgc2hv
-dWxkIGJlDQo+ID4+PiBiYWxhbmNlZCBiZXR3ZWVuIHN1Y2ggTDIgY2x1c3RlcnMsIGVzcGVjaWFs
-bHkgZm9yIHRhc2tzIHdpdGgNCj4gPj4+IG5vIHNoYXJlZCBkYXRhLg0KPiA+Pj4NCj4gPj4+IEFs
-c28gd2l0aCBjbHVzdGVyIHNjaGVkdWxpbmcgcG9saWN5IHdoZXJlIHRhc2tzIGFyZSB3b2tlbiB1
-cA0KPiA+Pj4gaW4gdGhlIHNhbWUgTDIgY2x1c3Rlciwgd2Ugd2lsbCBiZW5lZml0IGZyb20ga2Vl
-cGluZyB0YXNrcw0KPiA+Pj4gcmVsYXRlZCB0byBlYWNoIG90aGVyIGFuZCBsaWtlbHkgc2hhcmlu
-ZyBkYXRhIGluIHRoZSBzYW1lIEwyDQo+ID4+PiBjbHVzdGVyLg0KPiA+Pj4NCj4gPj4+IEFkZCBD
-UFUgbWFza3Mgb2YgQ1BVcyBzaGFyaW5nIHRoZSBMMiBjYWNoZSBzbyB3ZSBjYW4gYnVpbGQgc3Vj
-aA0KPiA+Pj4gTDIgY2x1c3RlciBzY2hlZHVsZXIgZG9tYWluLg0KPiA+Pj4NCj4gPj4+IFNpZ25l
-ZC1vZmYtYnk6IFRpbSBDaGVuIDx0aW0uYy5jaGVuQGxpbnV4LmludGVsLmNvbT4NCj4gPj4+IFNp
-Z25lZC1vZmYtYnk6IEJhcnJ5IFNvbmcgPHNvbmcuYmFvLmh1YUBoaXNpbGljb24uY29tPg0KPiA+
-Pg0KPiA+Pg0KPiA+PiBCYXJyeSwNCj4gPj4NCj4gPj4gQ2FuIHlvdSBhbHNvIGFkZCB0aGlzIGNo
-dW5rIHRvIHRoZSBwYXRjaC4NCj4gPj4gVGhhbmtzLg0KPiA+DQo+ID4gU3VyZSwgVGltLCBUaGFu
-a3MuIEknbGwgcHV0IHRoYXQgaW50byBwYXRjaCA0LzQgaW4gdjYuDQo+ID4NCj4gDQo+IEJhcnJ5
-LA0KPiANCj4gVGhpcyBjaHVuayB3aWxsIGFsc28gbmVlZCB0byBiZSBhZGRlZCB0byByZXR1cm4g
-Y2x1c3RlciBpZCBmb3IgeDg2Lg0KPiBQbGVhc2UgYWRkIGl0IGluIHlvdXIgbmV4dCByZXYuDQoN
-Clllcy4gVGhhbmtzLiBJJ2xsIHB1dCB0aGlzIGluIGVpdGhlciBSRkMgdjcgb3IgUGF0Y2ggdjEu
-DQoNCkZvciBzcHJlYWRpbmcgcGF0aCwgdGhpbmdzIGFyZSBtdWNoIGVhc2llciwgdGhvdWdoIHBh
-Y2tpbmcgcGF0aCBpcyANCnF1aXRlIHRyaWNreS4gQnV0IEl0IHNlZW1zIFJGQyB2NiBoYXMgYmVl
-biBxdWl0ZSBjbG9zZSB0byB3aGF0IHdlIHdhbnQNCnRvIGFjaGlldmUgdG8gcGFjayByZWxhdGVk
-IHRhc2tzIGJ5IHNjYW5uaW5nIGNsdXN0ZXIgZm9yIHRhc2tzIHdpdGhpbg0Kc2FtZSBOVU1BOg0K
-aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC8yMDIxMDQyMDAwMTg0NC45MTE2LTEtc29uZy5i
-YW8uaHVhQGhpc2lsaWNvbi5jb20vDQoNCklmIGNvdXBsZXMgaGF2ZSBiZWVuIGFscmVhZHkgaW4g
-c2FtZSBMTEMobnVtYSksIHNjYW5uaW5nIGNsdXN0ZXJzIHdpbGwNCmdhdGhlciB0aGVtIGZ1cnRo
-ZXIuIElmIHRoZXkgYXJlIHJ1bm5pbmcgaW4gZGlmZmVyZW50IE5VTUEgbm9kZXMsIHRoZQ0Kb3Jp
-Z2luYWwgc2Nhbm5pbmcgTExDIHdpbGwgbW92ZSB0aGVtIHRvIHRoZSBzYW1lIG5vZGUsIGFmdGVy
-IHRoYXQsDQpzY2FubmluZyBjbHVzdGVyIG1pZ2h0IHB1dCB0aGVtIGNsb3NlciB0byBlYWNoIG90
-aGVyLg0KDQppdCBzZWVtcyBpdCBpcyBraW5kIG9mIHRoZSB0d28tbGV2ZWwgcGFja2luZyBEaWV0
-bWFyIGhhcyBzdWdnZXN0ZWQuDQoNClNvIHBlcmhhcHMgd2Ugd29uJ3QgaGF2ZSBSRkMgdjcsIEkg
-d2lsbCBwcm9iYWJseSBzZW5kIHBhdGNoIHYxIGFmdGVyd2FyZHMuDQoNCj4gDQo+IFRoYW5rcy4N
-Cj4gDQo+IFRpbQ0KPiANCj4gLS0tDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYvaW5jbHVk
-ZS9hc20vdG9wb2xvZ3kuaA0KPiBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3RvcG9sb2d5LmgNCj4g
-aW5kZXggODAwZmE0OGM5ZmNkLi4yNTQ4ZDgyNGYxMDMgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2
-L2luY2x1ZGUvYXNtL3RvcG9sb2d5LmgNCj4gKysrIGIvYXJjaC94ODYvaW5jbHVkZS9hc20vdG9w
-b2xvZ3kuaA0KPiBAQCAtMTA5LDYgKzEwOSw3IEBAIGV4dGVybiBjb25zdCBzdHJ1Y3QgY3B1bWFz
-ayAqY3B1X2NsdXN0ZXJncm91cF9tYXNrKGludCBjcHUpOw0KPiAgI2RlZmluZSB0b3BvbG9neV9w
-aHlzaWNhbF9wYWNrYWdlX2lkKGNwdSkJKGNwdV9kYXRhKGNwdSkucGh5c19wcm9jX2lkKQ0KPiAg
-I2RlZmluZSB0b3BvbG9neV9sb2dpY2FsX2RpZV9pZChjcHUpCQkoY3B1X2RhdGEoY3B1KS5sb2dp
-Y2FsX2RpZV9pZCkNCj4gICNkZWZpbmUgdG9wb2xvZ3lfZGllX2lkKGNwdSkJCQkoY3B1X2RhdGEo
-Y3B1KS5jcHVfZGllX2lkKQ0KPiArI2RlZmluZSB0b3BvbG9neV9jbHVzdGVyX2lkKGNwdSkJCShw
-ZXJfY3B1KGNwdV9sMmNfaWQsIGNwdSkpDQo+ICAjZGVmaW5lIHRvcG9sb2d5X2NvcmVfaWQoY3B1
-KQkJCShjcHVfZGF0YShjcHUpLmNwdV9jb3JlX2lkKQ0KPiANCj4gIGV4dGVybiB1bnNpZ25lZCBp
-bnQgX19tYXhfZGllX3Blcl9wYWNrYWdlOw0KDQpUaGFua3MNCkJhcnJ5DQoNCg==
+Hi,
+
+On Wed, Feb 10, 2021 at 01:44:35PM +0200, Tudor Ambarus wrote:
+> This is a follow-up for:
+> commit 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
+> 
+> The above commit updated the deprecated of_clk_add_provider(),
+> but missed to update the preferred of_clk_add_hw_provider().
+> Update it now.
+> 
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+
+This patch still causes a crash when booting a raspi2 image in linux-next.
+
+[   21.456500] Unable to handle kernel NULL pointer dereference at virtual address 00000028
+[   21.456750] pgd = (ptrval)
+[   21.456927] [00000028] *pgd=00000000
+[   21.457567] Internal error: Oops: 5 [#1] SMP ARM
+[   21.457882] Modules linked in:
+[   21.458077] CPU: 0 PID: 77 Comm: kworker/u8:10 Not tainted 5.12.0-rc8-next-20210420 #1
+[   21.458291] Hardware name: BCM2835
+[   21.458525] Workqueue: events_unbound deferred_probe_work_func
+[   21.458997] PC is at of_clk_add_hw_provider+0xbc/0xe8
+[   21.459176] LR is at of_clk_add_hw_provider+0xa8/0xe8
+...
+[   21.477603] [<c0a32aec>] (of_clk_add_hw_provider) from [<c0a32b60>] (devm_of_clk_add_hw_provider+0x48/0x80)
+[   21.477861] [<c0a32b60>] (devm_of_clk_add_hw_provider) from [<c0a471e4>] (raspberrypi_clk_probe+0x260/0x388)
+[   21.478087] [<c0a471e4>] (raspberrypi_clk_probe) from [<c0c1c4d0>] (platform_probe+0x5c/0xb8)
+[   21.478287] [<c0c1c4d0>] (platform_probe) from [<c0c19d84>] (really_probe+0xf0/0x39c)
+[   21.478471] [<c0c19d84>] (really_probe) from [<c0c1a098>] (driver_probe_device+0x68/0xc0)
+[   21.478659] [<c0c1a098>] (driver_probe_device) from [<c0c17f54>] (bus_for_each_drv+0x84/0xc8)
+[   21.478860] [<c0c17f54>] (bus_for_each_drv) from [<c0c19c20>] (__device_attach+0xec/0x158)
+[   21.479050] [<c0c19c20>] (__device_attach) from [<c0c18de8>] (bus_probe_device+0x88/0x90)
+[   21.479236] [<c0c18de8>] (bus_probe_device) from [<c0c16a68>] (device_add+0x398/0x8ac)
+[   21.479421] [<c0c16a68>] (device_add) from [<c0c1c1b4>] (platform_device_add+0xf0/0x200)
+[   21.479607] [<c0c1c1b4>] (platform_device_add) from [<c0c1ccc0>] (platform_device_register_full+0xd0/0x110)
+[   21.479836] [<c0c1ccc0>] (platform_device_register_full) from [<c104c130>] (rpi_firmware_probe+0x1a4/0x20c)
+[   21.480061] [<c104c130>] (rpi_firmware_probe) from [<c0c1c4d0>] (platform_probe+0x5c/0xb8)
+[   21.480255] [<c0c1c4d0>] (platform_probe) from [<c0c19d84>] (really_probe+0xf0/0x39c)
+[   21.480437] [<c0c19d84>] (really_probe) from [<c0c1a098>] (driver_probe_device+0x68/0xc0)
+[   21.480626] [<c0c1a098>] (driver_probe_device) from [<c0c17f54>] (bus_for_each_drv+0x84/0xc8)
+[   21.480829] [<c0c17f54>] (bus_for_each_drv) from [<c0c19c20>] (__device_attach+0xec/0x158)
+[   21.481018] [<c0c19c20>] (__device_attach) from [<c0c18de8>] (bus_probe_device+0x88/0x90)
+[   21.481205] [<c0c18de8>] (bus_probe_device) from [<c0c192bc>] (deferred_probe_work_func+0x8c/0xbc)
+[   21.481413] [<c0c192bc>] (deferred_probe_work_func) from [<c036802c>] (process_one_work+0x268/0x798)
+[   21.481624] [<c036802c>] (process_one_work) from [<c0368774>] (worker_thread+0x218/0x4f4)
+[   21.481822] [<c0368774>] (worker_thread) from [<c0370f28>] (kthread+0x140/0x174)
+[   21.481999] [<c0370f28>] (kthread) from [<c030017c>] (ret_from_fork+0x14/0x38)
+[   21.482185] Exception stack(0xc42b7fb0 to 0xc42b7ff8)
+
+Updated bisect log is attached.
+
+Guenter
+
+---
+# bad: [50b8b1d699ac313c0a07a3c185ffb23aecab8abb] Add linux-next specific files for 20210419
+# good: [bf05bf16c76bb44ab5156223e1e58e26dfe30a88] Linux 5.12-rc8
+git bisect start 'HEAD' 'v5.12-rc8'
+# good: [c4bb91fc07e59241cde97f913d7a2fbedc248f0d] Merge remote-tracking branch 'crypto/master'
+git bisect good c4bb91fc07e59241cde97f913d7a2fbedc248f0d
+# good: [f15bbf170b40b48a43ed7076ce9f8ac9380e5752] Merge remote-tracking branch 'edac/edac-for-next'
+git bisect good f15bbf170b40b48a43ed7076ce9f8ac9380e5752
+# bad: [550a78090dcc4061e191312a757a127f0b6e6323] Merge remote-tracking branch 'vfio/next'
+git bisect bad 550a78090dcc4061e191312a757a127f0b6e6323
+# bad: [9f074d2a7bf49b2c9e1609703757b18de7611aef] Merge remote-tracking branch 'usb/usb-next'
+git bisect bad 9f074d2a7bf49b2c9e1609703757b18de7611aef
+# good: [855b2fdb7c543c94e7623e6ad0b492f04a5317db] Merge remote-tracking branch 'percpu/for-next'
+git bisect good 855b2fdb7c543c94e7623e6ad0b492f04a5317db
+# good: [1d08ed588c6a85a35a24c82eb4cf0807ec2b366a] usbip: vudc: fix missing unlock on error in usbip_sockfd_store()
+git bisect good 1d08ed588c6a85a35a24c82eb4cf0807ec2b366a
+# good: [1b7ce8fab5fd0c406dbf165b12d44b301decf589] Merge remote-tracking branch 'ipmi/for-next'
+git bisect good 1b7ce8fab5fd0c406dbf165b12d44b301decf589
+# good: [fe8e488058c47e9a8a2c85321f7198a0a17b0131] dt-bindings: usb: mtk-xhci: add wakeup interrupt
+git bisect good fe8e488058c47e9a8a2c85321f7198a0a17b0131
+# bad: [3c652132ce9052e626bf509932fcacfebed1ccb4] platform-msi: fix kernel-doc warnings
+git bisect bad 3c652132ce9052e626bf509932fcacfebed1ccb4
+# bad: [7f2fac70b729d68a34e5eba8d1fb68eb69b05169] device property: Add test cases for fwnode_property_count_*() APIs
+git bisect bad 7f2fac70b729d68a34e5eba8d1fb68eb69b05169
+# good: [38f087de8947700d3b06d3d1594490e0f611c5d1] devtmpfs: fix placement of complete() call
+git bisect good 38f087de8947700d3b06d3d1594490e0f611c5d1
+# good: [b6f617df4fa936c1ab1831c2b23563f6c1add6c4] driver core: Update device link status properly for device_bind_driver()
+git bisect good b6f617df4fa936c1ab1831c2b23563f6c1add6c4
+# bad: [6579c8d97ad7fc5671ee60234f3b8388abee5f77] clk: Mark fwnodes when their clock provider is added
+git bisect bad 6579c8d97ad7fc5671ee60234f3b8388abee5f77
+# good: [ea718c699055c8566eb64432388a04974c43b2ea] Revert "Revert "driver core: Set fw_devlink=on by default""
+git bisect good ea718c699055c8566eb64432388a04974c43b2ea
+# first bad commit: [6579c8d97ad7fc5671ee60234f3b8388abee5f77] clk: Mark fwnodes when their clock provider is added
