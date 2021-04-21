@@ -2,90 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F3D36721B
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 19:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C38367242
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Apr 2021 20:09:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235709AbhDUR6L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Apr 2021 13:58:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35976 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235658AbhDUR6L (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Apr 2021 13:58:11 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 919E16141C;
-        Wed, 21 Apr 2021 17:57:37 +0000 (UTC)
-Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=wait-a-minute.misterjones.org)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <maz@kernel.org>)
-        id 1lZH6V-008kJm-39; Wed, 21 Apr 2021 18:57:35 +0100
-Date:   Wed, 21 Apr 2021 18:57:34 +0100
-Message-ID: <87sg3jsepd.wl-maz@kernel.org>
-From:   Marc Zyngier <maz@kernel.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>
+        id S241716AbhDUSKX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Apr 2021 14:10:23 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34533 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241276AbhDUSKX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Apr 2021 14:10:23 -0400
+Received: from mail-il1-f197.google.com ([209.85.166.197])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <dann.frazier@canonical.com>)
+        id 1lZHIK-0000dM-IX
+        for linux-acpi@vger.kernel.org; Wed, 21 Apr 2021 18:09:48 +0000
+Received: by mail-il1-f197.google.com with SMTP id x7-20020a056e021ca7b029016344dffb7bso16643549ill.2
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Apr 2021 11:09:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=hWjwHxIOFRhofmysaApLRpmaeSuY0CQj1n7uMTgnl5Y=;
+        b=cFAFaChLuzuGAZa0BXhde9/wmfKmlnp/0UPK15XzQ7oJWJ7oNn0ATwU1pOc2TGhYwk
+         Jg7dSa7z3eykMKfK7v/IAVTn0eUTV8gGLVT+AsDZi4VL5ckhKrssD77rzeTlGBD/WwdW
+         w1T5CncjWCthFhiQERSh5hsPO0eigkAVTx9/vzKeVD7swWFxycPOa2rpdGLYAz+wwcRf
+         0nLRBTu/OTV0tyX1PXQrjwOevVMV7jCDUdM/NzlfhscU3KJwVqqA4W0mhmYRT29ag2q3
+         rCaqVsb2964uh4pH1fd9wX5GFNuFv9vqRTXvlzdu8qy0nBoXgCpUnQVVatrcfTKem+3k
+         CfoQ==
+X-Gm-Message-State: AOAM533GJvNW44Jngss0JKald/RFYAy9gZxUKoPk9EwCWtuuMwOHjT4G
+        rKuIFq82ntDelP6pbcjWoCPPhx+1IzspE3kH9AYUcY9GOA/dje7Z/ecZe1u5Rs2ILb1GebShgoR
+        BiDNNINsGn3pQVwNr16CXiqOaqWvdFEUKzyAd6uM=
+X-Received: by 2002:a05:6e02:2197:: with SMTP id j23mr27636506ila.269.1619028587540;
+        Wed, 21 Apr 2021 11:09:47 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwM+ERtaD+oau8p0ZRaMWgHV0MRuEys8xEYJcvbu541bBxY8/j4v6fYjRX2Gxi/8+mUU2hyQQ==
+X-Received: by 2002:a05:6e02:2197:: with SMTP id j23mr27636486ila.269.1619028587247;
+        Wed, 21 Apr 2021 11:09:47 -0700 (PDT)
+Received: from xps13.dannf (c-71-56-235-36.hsd1.co.comcast.net. [71.56.235.36])
+        by smtp.gmail.com with ESMTPSA id x18sm81998ior.10.2021.04.21.11.09.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Apr 2021 11:09:46 -0700 (PDT)
+Date:   Wed, 21 Apr 2021 12:09:44 -0600
+From:   dann frazier <dann.frazier@canonical.com>
+To:     Marc Zyngier <maz@kernel.org>
 Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        dann frazier <dann.frazier@canonical.com>,
-        Fu Wei <wefu@redhat.com>, Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>, Fu Wei <wefu@redhat.com>,
+        Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-team@android.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] ACPI: GTDT: Don't corrupt interrupt mappings on watchdow probe failure
-In-Reply-To: <20210421172056.n2yoggo5epqwdhtc@bogus>
+        linux-kernel@vger.kernel.org, kernel-team@android.com
+Subject: Re: [PATCH 0/2] arm64: ACPI GTDT watchdog fixes
+Message-ID: <YIBqaPiLCrqc9f/c@xps13.dannf>
 References: <20210421164317.1718831-1-maz@kernel.org>
-        <20210421164317.1718831-2-maz@kernel.org>
-        <20210421172056.n2yoggo5epqwdhtc@bogus>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 62.31.163.78
-X-SA-Exim-Rcpt-To: sudeep.holla@arm.com, lorenzo.pieralisi@arm.com, guohanjun@huawei.com, dann.frazier@canonical.com, wefu@redhat.com, lenb@kernel.org, rjw@rjwysocki.net, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kernel-team@android.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210421164317.1718831-1-maz@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 21 Apr 2021 18:20:56 +0100,
-Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Wed, Apr 21, 2021 at 05:43:15PM +0100, Marc Zyngier wrote:
+> Dann recently reported that his ThunderX machine failed to boot since
+> 64b499d8df40 ("irqchip/gic-v3: Configure SGIs as standard
+> interrupts"), with a not so pretty crash while trying to send an IPI.
 > 
-> (with stable email fixed, but may need separate posting anyways)
+> It turned out to be caused by a mix of broken firmware and a buggy
+> GTDT watchdog driver. Both have forever been buggy, but the above
+> commit revealed that the error handling path of the driver was
+> probably the worse part of it all.
 > 
-> On Wed, Apr 21, 2021 at 05:43:16PM +0100, Marc Zyngier wrote:
-> > When failing the driver probe because of invalid firmware properties,
-> > the GTDT driver unmaps the interrupt that it mapped earlier.
-> > 
-> > However, it never checks whether the mapping of the interrupt actially
-> > succeeded. Even more, should the firmware report an illegal interrupt
-> > number that overlaps with the GIC SGI range, this can result in an
-> > IPI being unmapped, and subsequent fireworks (as reported by Dann
-> > Frazier).
-> > 
-> > Rework the driver to have a slightly saner behaviour and actually
-> > check whether the interrupt has been mapped before unmapping things.
-> > 
-> > Reported-by: dann frazier <dann.frazier@canonical.com>
-> > Fixes: ca9ae5ec4ef0 ("acpi/arm64: Add SBSA Generic Watchdog support in GTDT driver")
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Link: https://lore.kernel.org/r/YH87dtTfwYgavusz@xps13.dannf
-> > Cc: stable@vgerlkernel.org
->                 ^^^
+> Anyway, this short series has two goals:
+> - handle broken firmware in a less broken way
+> - make sure that the route cause of the problem can be identified
+>   quickly
 > 
-> I thought I messed up while replying with my fat fingers, but here is the
-> culprit. I got mail delivery failure to my reply, thought I will let you
-> know as it may be difficult to notice this when using git send-email.
+> Thanks,
+> 
+> 	M.
+> 
+> Marc Zyngier (2):
+>   ACPI: GTDT: Don't corrupt interrupt mappings on watchdow probe failure
+>   ACPI: irq: Prevent unregistering of GIC SGIs
+> 
+>  drivers/acpi/arm64/gtdt.c | 10 ++++++----
+>  drivers/acpi/irq.c        |  6 +++++-
+>  2 files changed, 11 insertions(+), 5 deletions(-)
 
-I'm definitely the one with very fat fingers. I'll fix the patch in my
-tree.
+For the series:
 
-Thanks for the heads up,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Tested-by: dann frazier <dann.frazier@canonical.com>
