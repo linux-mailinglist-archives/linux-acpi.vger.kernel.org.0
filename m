@@ -2,76 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A48B43688AF
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Apr 2021 23:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9335C3688B5
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Apr 2021 23:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237092AbhDVVkw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Apr 2021 17:40:52 -0400
-Received: from mga06.intel.com ([134.134.136.31]:64973 "EHLO mga06.intel.com"
+        id S237070AbhDVVrw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Apr 2021 17:47:52 -0400
+Received: from mga05.intel.com ([192.55.52.43]:1514 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237132AbhDVVkw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Apr 2021 17:40:52 -0400
-IronPort-SDR: WtHpImADdHjVFsJWzoAnhtWg3nZfeoUoKMtTMNupHm1X5dldNL7PyWrsl33/yBGhbREl3ssf5T
- wTrEjnp4ImOA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9962"; a="257284552"
+        id S235977AbhDVVrv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 22 Apr 2021 17:47:51 -0400
+IronPort-SDR: cQjrM/f+uLMWloLseWQGiakuo8FZ0ORNLGzQXxt32i1QA6XBCtJZBlJGVUHVVvUXDo1hl7nXWp
+ sdwMKhM7Sc+g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9962"; a="281306569"
 X-IronPort-AV: E=Sophos;i="5.82,243,1613462400"; 
-   d="scan'208";a="257284552"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2021 14:40:15 -0700
-IronPort-SDR: dH98Ev7/CSipN/hR9XXSmLaap3kK5m8LPpTHT5x5mGbednv2QsDFStVMFXb+dzO/dQg6Fl9/h2
- Y1Whr4zSjmnA==
+   d="scan'208";a="281306569"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2021 14:47:16 -0700
+IronPort-SDR: qaoU98k/mhRZoQ1fRosIOisWuC5+QkRFINfykCIsfg670jutDn024bnoGUHyLMG6SqJCwdbSLb
+ 9LkPHOlIgvLA==
 X-IronPort-AV: E=Sophos;i="5.82,243,1613462400"; 
-   d="scan'208";a="401985061"
+   d="scan'208";a="455965113"
 Received: from eassadia-mobl1.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.254.4.68])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2021 14:40:14 -0700
-Subject: Re: [PATCH 1/3] ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup
- Mailbox Structure
-To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        Borislav Petkov <bp@alien8.de>
-Cc:     "Hansen, Dave" <dave.hansen@intel.com>,
-        Rafael J Wysocki <rjw@rjwysocki.net>,
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2021 14:47:15 -0700
+From:   Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+To:     Rafael J Wysocki <rjw@rjwysocki.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H . Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Len Brown <lenb@kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>
-References: <20210422192442.706906-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210422192442.706906-2-sathyanarayanan.kuppuswamy@linux.intel.com>
- <98a81d5c-251b-bdb1-f5e4-5925de93f0d7@intel.com>
- <8928afc9-ab59-62f3-45b5-a6d26d96d90e@linux.intel.com>
- <20210422195543.GF7021@zn.tnic>
- <MWHPR11MB1599BAA9352B8C67B5EB9373F0469@MWHPR11MB1599.namprd11.prod.outlook.com>
-From:   "Kuppuswamy, Sathyanarayanan" 
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <895dc0f0-bd5d-937f-aecb-a5c8c768c7e7@linux.intel.com>
-Date:   Thu, 22 Apr 2021 14:40:14 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Subject: [PATCH v2 0/3] Add multiprocessor wake-up support
+Date:   Thu, 22 Apr 2021 14:47:05 -0700
+Message-Id: <20210422214708.716164-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <MWHPR11MB1599BAA9352B8C67B5EB9373F0469@MWHPR11MB1599.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Add multiprocessor wakeup support using MADT ACPI table for x86
+platforms. It uses mailbox based mechanism to wake up the APs. You
+can get more details about the ACPI table and mailbox protocol in
+Guest-Host-Communication Interface (GHCI) for Intel Trust Domain
+Extensions (Intel TDX) specification document (sec 4.1)
 
+https://software.intel.com/content/dam/develop/external/us/en/documents/intel-tdx-guest-hypervisor-communication-interface.pdf
 
-On 4/22/21 1:51 PM, Kaneda, Erik wrote:
->> This is not how this works - when Erik/Bob merge it,*then*  they add
->> their SOB. Right now it should have only your SOB.
-> Sorry about that. The script to format the ACPICA upstream to Linux ACPICA automatically adds signed off-by tags from me and Bob to the patch. This would work if we go through the normal process of running the Linux script after we do an ACPICA release. We decided to submit this earlier to meet Sathya's deadline.
-> 
-> Sathya, Please drop these lines from this patch and the SVKL patch.
+Changes since v1:
+ * Removed signoff from Rob and Erik.
 
-Will remove it.
+Kuppuswamy Sathyanarayanan (3):
+  ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Mailbox Structure
+  ACPI/table: Print MADT Wake table information
+  x86/acpi, x86/boot: Add multiprocessor wake-up support
+
+ arch/x86/include/asm/apic.h     |  3 ++
+ arch/x86/kernel/acpi/boot.c     | 56 +++++++++++++++++++++++++++++++++
+ arch/x86/kernel/apic/probe_32.c |  8 +++++
+ arch/x86/kernel/apic/probe_64.c |  8 +++++
+ drivers/acpi/tables.c           | 11 +++++++
+ include/acpi/actbl2.h           | 14 +++++++++
+ 6 files changed, 100 insertions(+)
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.25.1
+
