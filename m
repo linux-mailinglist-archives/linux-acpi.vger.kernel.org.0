@@ -2,159 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89304368ACD
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 04:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E71B369188
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 13:57:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236468AbhDWB40 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Apr 2021 21:56:26 -0400
-Received: from mga02.intel.com ([134.134.136.20]:19896 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236141AbhDWB40 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Apr 2021 21:56:26 -0400
-IronPort-SDR: wDeU4bvVXjTNvWRx8qpYqPIJe7VOsc6Ik/xivxyQUMDq2n1MjIiBl8R2wq0fbjpnM3zmUuQhb8
- riBdRmiFrYpw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9962"; a="183132578"
-X-IronPort-AV: E=Sophos;i="5.82,244,1613462400"; 
-   d="scan'208";a="183132578"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2021 18:55:50 -0700
-IronPort-SDR: 1U74NBZ4Qs6fnYuQz9QjZJS44FrL0tGp8De7xs3R6A+GPS73SHioUJ/5MoFK5vlLMnWsROT2v2
- jHRxnRFVqiSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,244,1613462400"; 
-   d="scan'208";a="453442702"
-Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 22 Apr 2021 18:55:49 -0700
-Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lZl2q-0004Si-Ii; Fri, 23 Apr 2021 01:55:48 +0000
-Date:   Fri, 23 Apr 2021 09:55:24 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 07ca763aa24938bc9d16edae9174df3edfe20ef0
-Message-ID: <6082290c.8tE3XiqQkHFyfVke%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S230482AbhDWL5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Apr 2021 07:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230243AbhDWL5d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Apr 2021 07:57:33 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED39C061574
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:55 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id p6so41451080wrn.9
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8OCtTdC5nBJa7AZmDlmzklJ0KIvQRoRufXj59YXg9RM=;
+        b=xxpjzNJRvJDMbMoE0tNn6IDo2ICmCTLmNrSFUy+DyLjclCsJ50hEk67FvEk9pf255W
+         46kYA9cB+trAycZz8VQ52YcEBz1JuKw9L0As/Us439uqUy+lhb6ugdX6gQzVrEEbqKSB
+         3/3F/MUMk1RFaiCzi3joPgc4cdcoDV2Kv/cP13xT/VN+2nd7GJJf6VZQ77lMknn5Jvx/
+         nAqYXlV8EnOuwrN3BrGgd2/btDTxVd1OLXGJXVl40lIBiowFxSC9ZrWQgYTlzjOr8rvy
+         OmsM0uV5OJoaOuWp4izzgx4yX9URzryVAyAwd4UduiR+q/cZJzQKGz4Xwrw6KzMG/14I
+         NXZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8OCtTdC5nBJa7AZmDlmzklJ0KIvQRoRufXj59YXg9RM=;
+        b=ecmQigZBCUKhvb15vVxO3Am8Je+cDREMrq2fe0BlMmiOAKd9Eo6vN1eZOuwve7QsXQ
+         8RHfJVrhmWf8UEHaqxIHxjJlmM99WqiqESvtZ8iQQeTtlODwU4PgFx63zMfG/kGgJ94x
+         Uw81LNrKke/R7AOzz69909Ymb8gc11fZlcIbXi/xaoznY+NINUqUncfiutp4dRoDn9WT
+         CLQpRI+5FtvDPleroot/Z8qH1xm0g1EAlB9bwfEBCkNxJXdH32vl1mTBWcDNZWa+wCwO
+         TQbydC1dxdVvl31XsE7blgAkkvGwhc6dGVBjvTgfQCk/i7I+aYdBKlpc2XL+srC88+Jk
+         AnIg==
+X-Gm-Message-State: AOAM532m42kgm75jAGp+jWFHCG/0emWhW4q+DLK094OZonYBxzVPaO4j
+        31ScvHa+XymVkn0LEGGoBmTbEw==
+X-Google-Smtp-Source: ABdhPJyPpRSQxeHrMpv6L9ZEKawoGl7i7qyluCOrnXzXwS5te0ECEeIqx0XP2UAqECduDHkazD4q7A==
+X-Received: by 2002:adf:f88f:: with SMTP id u15mr4264902wrp.368.1619179013954;
+        Fri, 23 Apr 2021 04:56:53 -0700 (PDT)
+Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id g9sm7485195wmh.21.2021.04.23.04.56.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Apr 2021 04:56:53 -0700 (PDT)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, robin.murphy@arm.com,
+        kevin.tian@intel.com, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com,
+        jean-philippe@linaro.org
+Subject: [PATCH v2 0/6] Add support for ACPI VIOT
+Date:   Fri, 23 Apr 2021 13:38:31 +0200
+Message-Id: <20210423113836.3974972-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 07ca763aa24938bc9d16edae9174df3edfe20ef0  Merge branch 'pm-sleep' into bleeding-edge
+Add a driver for the ACPI VIOT table, which provides topology
+information for para-virtual platforms. Enable virtio-iommu on
+non-devicetree platforms, including x86.
 
-elapsed time: 724m
+Since v1 [1]:
+* The VIOT header definitions have been picked for v5.13
+* Share more code with IORT. Patches 1 and 2 extract the common code
+  from IORT.
+* Simplify the VIOT driver. Use the existing fwnode infrastructure
+  instead of adding hooks to the IOMMU driver.
 
-configs tested: 96
-configs skipped: 2
+You can find a QEMU implementation at [2], with extra support for
+testing all VIOT nodes including MMIO-based endpoints and IOMMU. This
+series, based on linux-next, is at [3]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+[1] https://lore.kernel.org/linux-iommu/20210316191652.3401335-1-jean-philippe@linaro.org/
+[2] https://jpbrucker.net/git/qemu/log/?h=virtio-iommu/acpi
+[3] https://jpbrucker.net/git/linux/log/?h=virtio-iommu/acpi
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-riscv                            allyesconfig
-arm                      footbridge_defconfig
-h8300                    h8300h-sim_defconfig
-xtensa                              defconfig
-powerpc                  iss476-smp_defconfig
-powerpc                       maple_defconfig
-arm                       aspeed_g5_defconfig
-m68k                       m5275evb_defconfig
-xtensa                  audio_kc705_defconfig
-arc                     nsimosci_hs_defconfig
-sh                          kfr2r09_defconfig
-sh                        sh7763rdp_defconfig
-csky                             alldefconfig
-powerpc                     kmeter1_defconfig
-powerpc                         ps3_defconfig
-mips                            ar7_defconfig
-arm                           stm32_defconfig
-s390                             alldefconfig
-ia64                         bigsur_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20210421
-x86_64               randconfig-a002-20210421
-x86_64               randconfig-a001-20210421
-x86_64               randconfig-a005-20210421
-x86_64               randconfig-a006-20210421
-x86_64               randconfig-a003-20210421
-i386                 randconfig-a005-20210421
-i386                 randconfig-a002-20210421
-i386                 randconfig-a001-20210421
-i386                 randconfig-a006-20210421
-i386                 randconfig-a004-20210421
-i386                 randconfig-a003-20210421
-i386                 randconfig-a012-20210421
-i386                 randconfig-a014-20210421
-i386                 randconfig-a011-20210421
-i386                 randconfig-a013-20210421
-i386                 randconfig-a015-20210421
-i386                 randconfig-a016-20210421
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+Jean-Philippe Brucker (6):
+  ACPI: arm64: Move DMA setup operations out of IORT
+  ACPI: Move IOMMU setup code out of IORT
+  ACPI: Add driver for the VIOT table
+  iommu/dma: Pass address limit rather than size to
+    iommu_setup_dma_ops()
+  iommu/dma: Simplify calls to iommu_setup_dma_ops()
+  iommu/virtio: Enable x86 support
 
-clang tested configs:
-x86_64               randconfig-a015-20210421
-x86_64               randconfig-a016-20210421
-x86_64               randconfig-a011-20210421
-x86_64               randconfig-a014-20210421
-x86_64               randconfig-a013-20210421
-x86_64               randconfig-a012-20210421
+ drivers/acpi/Kconfig         |   3 +
+ drivers/iommu/Kconfig        |   4 +-
+ drivers/acpi/Makefile        |   2 +
+ drivers/acpi/arm64/Makefile  |   1 +
+ include/acpi/acpi_bus.h      |   3 +
+ include/linux/acpi.h         |   3 +
+ include/linux/acpi_iort.h    |  14 +-
+ include/linux/acpi_viot.h    |  19 ++
+ include/linux/dma-iommu.h    |   4 +-
+ arch/arm64/mm/dma-mapping.c  |   2 +-
+ drivers/acpi/arm64/dma.c     |  50 +++++
+ drivers/acpi/arm64/iort.c    | 129 ++-----------
+ drivers/acpi/bus.c           |   2 +
+ drivers/acpi/scan.c          |  60 +++++-
+ drivers/acpi/viot.c          | 350 +++++++++++++++++++++++++++++++++++
+ drivers/iommu/amd/iommu.c    |   9 +-
+ drivers/iommu/dma-iommu.c    |  17 +-
+ drivers/iommu/intel/iommu.c  |  10 +-
+ drivers/iommu/virtio-iommu.c |   8 +
+ MAINTAINERS                  |   8 +
+ 20 files changed, 548 insertions(+), 150 deletions(-)
+ create mode 100644 include/linux/acpi_viot.h
+ create mode 100644 drivers/acpi/arm64/dma.c
+ create mode 100644 drivers/acpi/viot.c
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+2.31.1
+
