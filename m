@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 127FC369187
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 13:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF318369189
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 13:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230376AbhDWL5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Apr 2021 07:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36702 "EHLO
+        id S231394AbhDWL5f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Apr 2021 07:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbhDWL5c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Apr 2021 07:57:32 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433F2C06174A
-        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:56 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id y124-20020a1c32820000b029010c93864955so1059126wmy.5
-        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:56 -0700 (PDT)
+        with ESMTP id S229957AbhDWL5d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Apr 2021 07:57:33 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FEC9C06174A
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:57 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id h4so39078459wrt.12
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 04:56:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FsRbQGwgPPyTX9wed12qTQDvSstkWFdppnOjxRuHqVc=;
-        b=ejY8PdllvGtau5SI84NlsFbQ/jOjJ60UTzOvs0UchL/+TFV03CkbyL8XNmfd/WRviN
-         sRhV1ivb/6t70ipJzwGH3V2nwgvr2CC7e65EfkzCyG0Hd/t59p2UrA7/2X6oAiCYawVn
-         osUbAydpApJ0S8TUhbVaV9JAPFB3T9Iv2eFi6NcuYwt9i4qFBrUBHaxcRtHf1YD8sh53
-         ftWVMzYGg/42zGxpp8e+PeFOxEAFSJdB902bFsF4XH6MyC7wj3RiFQQSQfEvQZxqnort
-         4HWeT9xiHnW4C0KFMeiyhR38PuYOylfhgT6e5JTFMsnvSVz4wKDW1kxw/rFG9cuOr51P
-         gVAQ==
+        bh=Ie4nU0t6j2jprvM9FCKa2FLyckkjG0nBrisc3oCcJ1E=;
+        b=sU0Q7m9tGwOgNNpYZsyMA4AWC/G9d1n7reOR5ld1HR77B1kAaSWUx097X6V2NQF2DS
+         ws+AhvuXIcq5mlYDgb8obdVEtJoJPZyl7okZnsmFYsPiceTtk0Gsj4S2/IUV3D1ShI87
+         3fqK4uGwNKKzw03o/1dnK9BC+Ic5DC/2BIiU5jKBvE3Vxeaf4GdZWOJFxcjG11SBZptl
+         J49tJE6QbcEYU5iCC655gLoIeED2grAAyvjCTkIQ9PJhzZscxl0R73Vv+LixfuXit4cq
+         lb61A3kHz+x421dW3pFjO+lr3/oEOBJiy9246tp6bR4oJRIZpWjFRpYuEGB00nFTtQC5
+         ofTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FsRbQGwgPPyTX9wed12qTQDvSstkWFdppnOjxRuHqVc=;
-        b=P0F67RbY4dxnRddb4xdF6Dz0yG08swkPQvBcfA1rKDjfIoHqPhTOPDlodL12Vw4CQZ
-         0HmBSEbQHanzXw9xdd3spqIUscGFyCJo/UhHkzynnsxs5ueH6svgUzcIT7kJ6qhiC3dB
-         V2Dm48JJiHVdWoJYKaiH2tGUGM9USJxYxImAY34v9TOt3dZLmJq/lFAmIWOAsPxurabV
-         J2oLgdESJlg8UQMCcgyVgR5TRZFA9VfL+IiHASmr0wpNa6MSQUXvPgBWNZTd4Ne5PMko
-         wB0zOspjOwy5ZfACTSpvLJNgweleznzamFc4Y/bwFtzv/HUq+Y1syzfOWChNYzKq62U1
-         ZEww==
-X-Gm-Message-State: AOAM530Qe68coNvwLD7CpbLJZCKZuzPomVs4mRgiOtCekp37K2XCs6qi
-        vrqM6urzZBcxhNMsZxHbNzSdhQ==
-X-Google-Smtp-Source: ABdhPJwFxm4cppgkEw1zzbXnamtX6GQwV4iOsj4o89kuGJEKVh1cwAkLGBz3rTZhiTvkNtcuHciiKA==
-X-Received: by 2002:a05:600c:3796:: with SMTP id o22mr5082783wmr.139.1619179014941;
-        Fri, 23 Apr 2021 04:56:54 -0700 (PDT)
+        bh=Ie4nU0t6j2jprvM9FCKa2FLyckkjG0nBrisc3oCcJ1E=;
+        b=G/wUKPNQl2hMZnkLuZlCT4Qxkp6cdcuE9yPZPXl0d72tpHTUHlzBAz5qnIb+tnpLua
+         af+ykwAv2xCxf5ybd5k5zIKBhECmt1X8XTp+G8tM3SFOYFqVEIF065gBgPXzzsyATm4A
+         Ozcaa4EdT76t/33fHz8FlbzDMNBdbu1zYNyNUI1lpECx4w0lYdHmp29cZ7ly+1C4KN3U
+         eTZFaTevhmGkIXbMQxoDlBZwFZXH0n4X/+BQinJLfXXinm/zia93WloK5F24rTtyiDt4
+         JVrU6g/pSsA+Nga8Df0NY7RV4uAt0EGRURMxmrIoiAEf2XBxsgKTsQvRMBJ/Jhpc7r7e
+         nbBA==
+X-Gm-Message-State: AOAM533Z0hBXRkDJ3iEylsdl7lOxL+L7GSVWHXKyVFwMUHRVjnn0IFKw
+        iBWl/we0yxhMPtAZ7gFg1VTtbw==
+X-Google-Smtp-Source: ABdhPJyQkR9m00EDkp3Rh2Xq1RE8rUtI+3n89qfQVHyycvwuqU1MdsadQRK9RFCCdEV8AMOZfs65Ag==
+X-Received: by 2002:a5d:6a84:: with SMTP id s4mr4338553wru.92.1619179015909;
+        Fri, 23 Apr 2021 04:56:55 -0700 (PDT)
 Received: from localhost.localdomain ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id g9sm7485195wmh.21.2021.04.23.04.56.54
+        by smtp.gmail.com with ESMTPSA id g9sm7485195wmh.21.2021.04.23.04.56.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Apr 2021 04:56:54 -0700 (PDT)
+        Fri, 23 Apr 2021 04:56:55 -0700 (PDT)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
 Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
@@ -58,9 +58,9 @@ Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
         kevin.tian@intel.com, lorenzo.pieralisi@arm.com,
         guohanjun@huawei.com, sudeep.holla@arm.com,
         jean-philippe@linaro.org
-Subject: [PATCH v2 1/6] ACPI: arm64: Move DMA setup operations out of IORT
-Date:   Fri, 23 Apr 2021 13:38:32 +0200
-Message-Id: <20210423113836.3974972-2-jean-philippe@linaro.org>
+Subject: [PATCH v2 2/6] ACPI: Move IOMMU setup code out of IORT
+Date:   Fri, 23 Apr 2021 13:38:33 +0200
+Message-Id: <20210423113836.3974972-3-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210423113836.3974972-1-jean-philippe@linaro.org>
 References: <20210423113836.3974972-1-jean-philippe@linaro.org>
@@ -70,210 +70,275 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Extract generic DMA setup code out of IORT, so it can be reused by VIOT.
-Keep it in drivers/acpi/arm64 for now, since it could break x86
-platforms that haven't run this code so far, if they have invalid
-tables.
+Some of the IOMMU setup code in IORT is fairly generic and can be reused
+by VIOT. Extract it from IORT.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- drivers/acpi/arm64/Makefile |  1 +
- include/linux/acpi.h        |  3 +++
- include/linux/acpi_iort.h   |  6 ++---
- drivers/acpi/arm64/dma.c    | 50 ++++++++++++++++++++++++++++++++++
- drivers/acpi/arm64/iort.c   | 54 ++++++-------------------------------
- drivers/acpi/scan.c         |  2 +-
- 6 files changed, 66 insertions(+), 50 deletions(-)
- create mode 100644 drivers/acpi/arm64/dma.c
+ include/acpi/acpi_bus.h   |  3 ++
+ include/linux/acpi_iort.h |  8 ++---
+ drivers/acpi/arm64/iort.c | 75 +++++----------------------------------
+ drivers/acpi/scan.c       | 55 +++++++++++++++++++++++++++-
+ 4 files changed, 69 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-index 6ff50f4ed947..66acbe77f46e 100644
---- a/drivers/acpi/arm64/Makefile
-+++ b/drivers/acpi/arm64/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_ACPI_IORT) 	+= iort.o
- obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
-+obj-y				+= dma.o
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index c60745f657e9..7aaa9559cc19 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -259,9 +259,12 @@ void acpi_numa_x2apic_affinity_init(struct acpi_srat_x2apic_cpu_affinity *pa);
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 3a82faac5767..41f092a269f6 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -588,6 +588,9 @@ struct acpi_pci_root {
  
- #ifdef CONFIG_ARM64
- void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
-+void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size);
- #else
- static inline void
- acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
-+static inline void
-+acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size) { }
- #endif
- 
- int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
+ bool acpi_dma_supported(struct acpi_device *adev);
+ enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev);
++int acpi_iommu_fwspec_init(struct device *dev, u32 id,
++			   struct fwnode_handle *fwnode,
++			   const struct iommu_ops *ops);
+ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
+ 		       u64 *size);
+ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
 diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-index 1a12baa58e40..f7f054833afd 100644
+index f7f054833afd..f1f0842a2cb2 100644
 --- a/include/linux/acpi_iort.h
 +++ b/include/linux/acpi_iort.h
-@@ -34,7 +34,7 @@ struct irq_domain *iort_get_device_domain(struct device *dev, u32 id,
- void acpi_configure_pmsi_domain(struct device *dev);
+@@ -35,8 +35,7 @@ void acpi_configure_pmsi_domain(struct device *dev);
  int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id);
  /* IOMMU interface */
--void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
-+int iort_dma_get_ranges(struct device *dev, u64 *size);
- const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
- 						const u32 *id_in);
+ int iort_dma_get_ranges(struct device *dev, u64 *size);
+-const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+-						const u32 *id_in);
++int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
  int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
-@@ -48,8 +48,8 @@ static inline struct irq_domain *iort_get_device_domain(
- { return NULL; }
- static inline void acpi_configure_pmsi_domain(struct device *dev) { }
+ phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
+ #else
+@@ -50,9 +49,8 @@ static inline void acpi_configure_pmsi_domain(struct device *dev) { }
  /* IOMMU interface */
--static inline void iort_dma_setup(struct device *dev, u64 *dma_addr,
--				  u64 *size) { }
-+static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
+ static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
+ { return -ENODEV; }
+-static inline const struct iommu_ops *iort_iommu_configure_id(
+-				      struct device *dev, const u32 *id_in)
+-{ return NULL; }
++static inline int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
 +{ return -ENODEV; }
- static inline const struct iommu_ops *iort_iommu_configure_id(
- 				      struct device *dev, const u32 *id_in)
- { return NULL; }
-diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
-new file mode 100644
-index 000000000000..f16739ad3cc0
---- /dev/null
-+++ b/drivers/acpi/arm64/dma.c
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <linux/acpi.h>
-+#include <linux/acpi_iort.h>
-+#include <linux/device.h>
-+#include <linux/dma-direct.h>
-+
-+void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
-+{
-+	int ret;
-+	u64 end, mask;
-+	u64 dmaaddr = 0, size = 0, offset = 0;
-+
-+	/*
-+	 * If @dev is expected to be DMA-capable then the bus code that created
-+	 * it should have initialised its dma_mask pointer by this point. For
-+	 * now, we'll continue the legacy behaviour of coercing it to the
-+	 * coherent mask if not, but we'll no longer do so quietly.
-+	 */
-+	if (!dev->dma_mask) {
-+		dev_warn(dev, "DMA mask not set\n");
-+		dev->dma_mask = &dev->coherent_dma_mask;
-+	}
-+
-+	if (dev->coherent_dma_mask)
-+		size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
-+	else
-+		size = 1ULL << 32;
-+
-+	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
-+	if (ret == -ENODEV)
-+		ret = iort_dma_get_ranges(dev, &size);
-+	if (!ret) {
-+		/*
-+		 * Limit coherent and dma mask based on size retrieved from
-+		 * firmware.
-+		 */
-+		end = dmaaddr + size - 1;
-+		mask = DMA_BIT_MASK(ilog2(end) + 1);
-+		dev->bus_dma_limit = end;
-+		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
-+		*dev->dma_mask = min(*dev->dma_mask, mask);
-+	}
-+
-+	*dma_addr = dmaaddr;
-+	*dma_size = size;
-+
-+	ret = dma_direct_set_offset(dev, dmaaddr + offset, dmaaddr, size);
-+
-+	dev_dbg(dev, "dma_offset(%#08llx)%s\n", offset, ret ? " failed!" : "");
-+}
+ static inline
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+ { return 0; }
 diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 3912a1f6058e..a940be1cf2af 100644
+index a940be1cf2af..b5b021e064b6 100644
 --- a/drivers/acpi/arm64/iort.c
 +++ b/drivers/acpi/arm64/iort.c
-@@ -1144,56 +1144,18 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
+@@ -806,23 +806,6 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
+ 	return NULL;
  }
  
+-static inline const struct iommu_ops *iort_fwspec_iommu_ops(struct device *dev)
+-{
+-	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+-
+-	return (fwspec && fwspec->ops) ? fwspec->ops : NULL;
+-}
+-
+-static inline int iort_add_device_replay(struct device *dev)
+-{
+-	int err = 0;
+-
+-	if (dev->bus && !device_iommu_mapped(dev))
+-		err = iommu_probe_device(dev);
+-
+-	return err;
+-}
+-
  /**
-- * iort_dma_setup() - Set-up device DMA parameters.
-+ * iort_dma_get_ranges() - Look up DMA addressing limit for the device
-+ * @dev: device to lookup
-+ * @size: DMA range size result pointer
-  *
-- * @dev: device to configure
-- * @dma_addr: device DMA address result pointer
-- * @dma_size: DMA range size result pointer
-+ * Return: 0 on success, an error otherwise.
-  */
--void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
-+int iort_dma_get_ranges(struct device *dev, u64 *size)
- {
--	u64 end, mask, dmaaddr = 0, size = 0, offset = 0;
--	int ret;
--
--	/*
--	 * If @dev is expected to be DMA-capable then the bus code that created
--	 * it should have initialised its dma_mask pointer by this point. For
--	 * now, we'll continue the legacy behaviour of coercing it to the
--	 * coherent mask if not, but we'll no longer do so quietly.
--	 */
--	if (!dev->dma_mask) {
--		dev_warn(dev, "DMA mask not set\n");
--		dev->dma_mask = &dev->coherent_dma_mask;
--	}
--
--	if (dev->coherent_dma_mask)
--		size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
-+	if (dev_is_pci(dev))
-+		return rc_dma_get_range(dev, size);
- 	else
--		size = 1ULL << 32;
--
--	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
--	if (ret == -ENODEV)
--		ret = dev_is_pci(dev) ? rc_dma_get_range(dev, &size)
--				      : nc_dma_get_range(dev, &size);
--
--	if (!ret) {
--		/*
--		 * Limit coherent and dma mask based on size retrieved from
--		 * firmware.
--		 */
--		end = dmaaddr + size - 1;
--		mask = DMA_BIT_MASK(ilog2(end) + 1);
--		dev->bus_dma_limit = end;
--		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
--		*dev->dma_mask = min(*dev->dma_mask, mask);
--	}
--
--	*dma_addr = dmaaddr;
--	*dma_size = size;
--
--	ret = dma_direct_set_offset(dev, dmaaddr + offset, dmaaddr, size);
--
--	dev_dbg(dev, "dma_offset(%#08llx)%s\n", offset, ret ? " failed!" : "");
-+		return nc_dma_get_range(dev, size);
+  * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+  * @dev: Device from iommu_get_resv_regions()
+@@ -900,18 +883,6 @@ static inline bool iort_iommu_driver_enabled(u8 type)
+ 	}
  }
  
- static void __init acpi_iort_register_irq(int hwirq, const char *name,
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index bc973fbd70b2..e166916eb9db 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1536,7 +1536,7 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
- 		return 0;
+-static int arm_smmu_iort_xlate(struct device *dev, u32 streamid,
+-			       struct fwnode_handle *fwnode,
+-			       const struct iommu_ops *ops)
+-{
+-	int ret = iommu_fwspec_init(dev, fwnode, ops);
+-
+-	if (!ret)
+-		ret = iommu_fwspec_add_ids(dev, &streamid, 1);
+-
+-	return ret;
+-}
+-
+ static bool iort_pci_rc_supports_ats(struct acpi_iort_node *node)
+ {
+ 	struct acpi_iort_root_complex *pci_rc;
+@@ -946,7 +917,7 @@ static int iort_iommu_xlate(struct device *dev, struct acpi_iort_node *node,
+ 		return iort_iommu_driver_enabled(node->type) ?
+ 		       -EPROBE_DEFER : -ENODEV;
+ 
+-	return arm_smmu_iort_xlate(dev, streamid, iort_fwnode, ops);
++	return acpi_iommu_fwspec_init(dev, streamid, iort_fwnode, ops);
+ }
+ 
+ struct iort_pci_alias_info {
+@@ -1020,24 +991,14 @@ static int iort_nc_iommu_map_id(struct device *dev,
+  * @dev: device to configure
+  * @id_in: optional input id const value pointer
+  *
+- * Returns: iommu_ops pointer on configuration success
+- *          NULL on configuration failure
++ * Returns: 0 on success, <0 on failure
+  */
+-const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+-						const u32 *id_in)
++int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
+ {
+ 	struct acpi_iort_node *node;
+-	const struct iommu_ops *ops;
++	const struct iommu_ops *ops = NULL;
+ 	int err = -ENODEV;
+ 
+-	/*
+-	 * If we already translated the fwspec there
+-	 * is nothing left to do, return the iommu_ops.
+-	 */
+-	ops = iort_fwspec_iommu_ops(dev);
+-	if (ops)
+-		return ops;
+-
+ 	if (dev_is_pci(dev)) {
+ 		struct iommu_fwspec *fwspec;
+ 		struct pci_bus *bus = to_pci_dev(dev)->bus;
+@@ -1046,7 +1007,7 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 		node = iort_scan_node(ACPI_IORT_NODE_PCI_ROOT_COMPLEX,
+ 				      iort_match_node_callback, &bus->dev);
+ 		if (!node)
+-			return NULL;
++			return -ENODEV;
+ 
+ 		info.node = node;
+ 		err = pci_for_each_dma_alias(to_pci_dev(dev),
+@@ -1059,7 +1020,7 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 		node = iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
+ 				      iort_match_node_callback, dev);
+ 		if (!node)
+-			return NULL;
++			return -ENODEV;
+ 
+ 		err = id_in ? iort_nc_iommu_map_id(dev, node, id_in) :
+ 			      iort_nc_iommu_map(dev, node);
+@@ -1068,32 +1029,14 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+ 			iort_named_component_init(dev, node);
  	}
  
--	iort_dma_setup(dev, &dma_addr, &size);
-+	acpi_arch_dma_setup(dev, &dma_addr, &size);
+-	/*
+-	 * If we have reason to believe the IOMMU driver missed the initial
+-	 * add_device callback for dev, replay it to get things in order.
+-	 */
+-	if (!err) {
+-		ops = iort_fwspec_iommu_ops(dev);
+-		err = iort_add_device_replay(dev);
+-	}
+-
+-	/* Ignore all other errors apart from EPROBE_DEFER */
+-	if (err == -EPROBE_DEFER) {
+-		ops = ERR_PTR(err);
+-	} else if (err) {
+-		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
+-		ops = NULL;
+-	}
+-
+-	return ops;
++	return err;
+ }
  
- 	iommu = iort_iommu_configure_id(dev, input_id);
+ #else
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+ { return 0; }
+-const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+-						const u32 *input_id)
+-{ return NULL; }
++int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
++{ return -ENODEV; }
+ #endif
+ 
+ static int nc_dma_get_range(struct device *dev, u64 *size)
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index e166916eb9db..5924421075f6 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -9,6 +9,7 @@
+ #include <linux/kernel.h>
+ #include <linux/acpi.h>
+ #include <linux/acpi_iort.h>
++#include <linux/iommu.h>
+ #include <linux/signal.h>
+ #include <linux/kthread.h>
+ #include <linux/dmi.h>
+@@ -1519,6 +1520,58 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
+ 	return ret >= 0 ? 0 : ret;
+ }
+ 
++int acpi_iommu_fwspec_init(struct device *dev, u32 id,
++			   struct fwnode_handle *fwnode,
++			   const struct iommu_ops *ops)
++{
++	int ret = iommu_fwspec_init(dev, fwnode, ops);
++
++	if (!ret)
++		ret = iommu_fwspec_add_ids(dev, &id, 1);
++
++	return ret;
++}
++
++static inline const struct iommu_ops *acpi_iommu_fwspec_ops(struct device *dev)
++{
++	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
++
++	return fwspec ? fwspec->ops : NULL;
++}
++
++static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
++						       const u32 *id_in)
++{
++	int err;
++	const struct iommu_ops *ops;
++
++	/*
++	 * If we already translated the fwspec there is nothing left to do,
++	 * return the iommu_ops.
++	 */
++	ops = acpi_iommu_fwspec_ops(dev);
++	if (ops)
++		return ops;
++
++	err = iort_iommu_configure_id(dev, id_in);
++
++	/*
++	 * If we have reason to believe the IOMMU driver missed the initial
++	 * add_device callback for dev, replay it to get things in order.
++	 */
++	if (!err && dev->bus && !device_iommu_mapped(dev))
++		err = iommu_probe_device(dev);
++
++	/* Ignore all other errors apart from EPROBE_DEFER */
++	if (err == -EPROBE_DEFER) {
++		return ERR_PTR(err);
++	} else if (err) {
++		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
++		return NULL;
++	}
++	return acpi_iommu_fwspec_ops(dev);
++}
++
+ /**
+  * acpi_dma_configure_id - Set-up DMA configuration for the device.
+  * @dev: The pointer to the device
+@@ -1538,7 +1591,7 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
+ 
+ 	acpi_arch_dma_setup(dev, &dma_addr, &size);
+ 
+-	iommu = iort_iommu_configure_id(dev, input_id);
++	iommu = acpi_iommu_configure_id(dev, input_id);
  	if (PTR_ERR(iommu) == -EPROBE_DEFER)
+ 		return -EPROBE_DEFER;
+ 
 -- 
 2.31.1
 
