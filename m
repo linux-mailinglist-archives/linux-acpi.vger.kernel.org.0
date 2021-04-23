@@ -2,62 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D49C3695B1
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 17:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D5E369628
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Apr 2021 17:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbhDWPKn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Apr 2021 11:10:43 -0400
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:37641 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbhDWPKk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Apr 2021 11:10:40 -0400
-Received: by mail-ot1-f43.google.com with SMTP id c8-20020a9d78480000b0290289e9d1b7bcso31506943otm.4
-        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 08:10:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Bd2URP2YFvsns0l2svtkyc4x2P2AiP7e9zstEgfra7Y=;
-        b=o3DNMzP471HhGQyy+R7BtWoaUFZ3QOCDq9OnHbjsii60OpkJe+GtusJK+xySDVlWsv
-         JTLKvUVT+SiAhoC1Ddm0yS8N7UcU1mkBFfGb3sBfjk60DvQhxXco0gtXjMY1sf3jMYmP
-         5Dv+zZBho9+/s87w0AnKurzGOA/sFWMrZuo05SShqFJ27cK+IC5AqLvA2k1yLa7ibvXE
-         2jnQCeZ7AZcF8ysZLgWNcfUI07tWHRdQ2HPKWO40tUc9JmIjatVuXdPOaRhXE3jnqgY4
-         33EOb+ffIxrlfpYNtJjy4wTuxgMq+zAokny8hfQAhl8VmxIzRYk4XCKBzEyLhImtLFiw
-         tHPw==
-X-Gm-Message-State: AOAM533lIyvLSuCOjYETvwDBxMpxUZP5bFIICoD9CU+HTsqUJDGagJdf
-        CsMAHWFg1D23qNZAieQy/gCPekE7tjgPbIgAh8g=
-X-Google-Smtp-Source: ABdhPJwvdhpoaZTfubYu8ps9vQYmZGRUFK0OsKne5ZhRqqj69P2/s3el6xufIxHxKt3rR7bBY4FIdSrMMTia/Zdj660=
-X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr3776784otb.260.1619190603943;
- Fri, 23 Apr 2021 08:10:03 -0700 (PDT)
+        id S231857AbhDWP27 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Apr 2021 11:28:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:40406 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230330AbhDWP26 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 23 Apr 2021 11:28:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619191702;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=IE04CqF9RHUsW0AvlcDxMmLQRo8yrNxWZ072sc2mrCs=;
+        b=G+afSFlAhg71HDOgK4TR8Gv4t9NGY7xvrUHeyNopvbTPEuhqFOhdInY+lsjx2hlEqisCKa
+        DIiqpXQCr+wLu+cv3aSWG1ctg4yReghbj+wIiwAS1AZBRt2jeVDWqS7lyt4zcOErNb0RiM
+        vq/T2SJtsnhGzthhIVxziu2hBcyCdSo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-602-Y46JNLW4MHCKAMUX7F3uOw-1; Fri, 23 Apr 2021 11:28:20 -0400
+X-MC-Unique: Y46JNLW4MHCKAMUX7F3uOw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 748671922960
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 15:28:19 +0000 (UTC)
+Received: from redhatnow.users.ipa.redhat.com (ovpn-112-207.phx2.redhat.com [10.3.112.207])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B2B160BD8
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Apr 2021 15:28:19 +0000 (UTC)
+From:   Mark Langsdorf <mlangsdo@redhat.com>
+To:     linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: custom_method: fix potential use-after-free issue
+Date:   Fri, 23 Apr 2021 10:28:17 -0500
+Message-Id: <20210423152818.97077-1-mlangsdo@redhat.com>
 MIME-Version: 1.0
-References: <59aad467-3526-b764-3310-456f8d14e651@redhat.com>
-In-Reply-To: <59aad467-3526-b764-3310-456f8d14e651@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 23 Apr 2021 17:09:53 +0200
-Message-ID: <CAJZ5v0jJzbZOz9OQnRz9FcNmxwaU2iaeMuZCw32TdNXD38iFmg@mail.gmail.com>
-Subject: Re: Suspicious kfree at the end of cm_write
-To:     Mark Langsdorf <mlangsdo@redhat.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 23, 2021 at 4:38 PM Mark Langsdorf <mlangsdo@redhat.com> wrote:
->
-> commit 03d1571d added an unconditional kfree() to the end of cm_write()
-> in drivers/acpi/custom_method.c. I've been reviewing commits after the
-> unm issue, and I think this code is wrong. If cm_write() is called with
-> *ppos = 0 and count < table.length, the buf is kzalloc'd and immediately
-> free'd. On subsequent calls to cm_write(), if cumulative count equals
-> table.length, then the current contents of buf are passed to
-> acpi_install_method. In the extremely unlikely case that buf has been
-> reallocated and overwritten with a different but valid ACPI method, then
-> some method other than the intended method could be installed. I'm not
-> sure that this is a security issue but I don't think this code is correct.
+In cm_write(), buf is always freed when reaching the end of the
+function.  If the requested count is less than table.length, the
+allocated buffer will be freed but subsequent calls to cm_write() will
+still try to access it.
 
-The current code is not correct, so good catch!
+Remove the unconditional kfree(buf) at the end of the function and
+set the buf to NULL in the -EINVAL error path to match the rest of
+function.
 
-If I'm not mistaken, it will lead to use-after-free on a subsequent
-call to cm_write() it the current one does not write the entire
-buffer.
+Fixes: 03d1571d9513 ("ACPI: custom_method: fix memory leaks")
+Signed-off-by: Mark Langsdorf <mlangsdo@redhat.com>
+---
+ drivers/acpi/custom_method.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index 443fdf62dd22..8844f895f9be 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -55,6 +55,7 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
+ 	    (*ppos + count < count) ||
+ 	    (count > uncopied_bytes)) {
+ 		kfree(buf);
++		buf = NULL;
+ 		return -EINVAL;
+ 	}
+ 
+@@ -76,7 +77,6 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
+ 		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
+ 	}
+ 
+-	kfree(buf);
+ 	return count;
+ }
+ 
+-- 
+2.26.3
+
