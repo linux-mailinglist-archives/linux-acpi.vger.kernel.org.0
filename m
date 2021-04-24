@@ -2,184 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE22836A2D2
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Apr 2021 21:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E5336A2FD
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Apr 2021 22:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232708AbhDXTnq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Apr 2021 15:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
+        id S234040AbhDXUig (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Apr 2021 16:38:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231814AbhDXTno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Apr 2021 15:43:44 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B265EC061574;
-        Sat, 24 Apr 2021 12:43:05 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id h14-20020a17090aea8eb02901553e1cc649so815639pjz.0;
-        Sat, 24 Apr 2021 12:43:05 -0700 (PDT)
+        with ESMTP id S232546AbhDXUif (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Apr 2021 16:38:35 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB74C061574
+        for <linux-acpi@vger.kernel.org>; Sat, 24 Apr 2021 13:37:55 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id u20so20845866qku.10
+        for <linux-acpi@vger.kernel.org>; Sat, 24 Apr 2021 13:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mime-version:content-disposition;
-        bh=Eoyv3XG1ZYXEWoIOV6LUW5hDQHt2KxAWCkkKAqqPJAY=;
-        b=CbXXAtAOVudmb5LcFoq3EFLwMI263EnPJykUMS6SNaZrMh8pptLwCWFxqpjUte7ff7
-         bc6DdT614r5tXTDUAMLvlSOwUf8OkZNiJ/BeC8gUp4U8V4pHAmuWKtMcApgSzMF6qwPt
-         Uu8NUdhAxLMpp7XhgBdwNYtGbuKBYv3swL8RfG4OfNSwZgj4nqs4CbN+J1fnBDGUAaGx
-         LVTFqAB0bgXkFel3/4M8ZUylKrfWG2Ex/DJl7JkaNc3NFp4bXuEUoex7VvQRDKJbSbXA
-         MeWb7PSzHIJQxyv3Umg9FW7At2oUv3QOnBY9AmgqAfi6V/k6GpCdJviY403mkbB7/FUp
-         SaJA==
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=oW6fHo0XgbJMHm3nIz/zivLoyUK1+fsOgv+m//0Lr+Y=;
+        b=j0jrGV9wWym3LHmXjyrGGAtHD+EPv6neXK4ZppbMcTIH1eCJUMTCIRM+y+pFFgoc+f
+         uTBTKdZBkxlJ6CgH+KvKiObz61bGSzWDNz0JHysAtKftkTPEwCB0Tgiv8y+C2GsrXw80
+         r9jxh9kK0hsVvhrdfsRlCFmC7TnOqeCLNWaG/7zgFTBH7Ikj0gKBn+vdCpIVsL2K3FSd
+         4LkEI4d/Oyg/Nk7yUmjDTQxbnaCMMQg9w6+APcM5fpOGn8EuLfnaXsyqTwgAcxlLLC+U
+         6/gSXh65lEvtNQJVp3U4unwP8tE0ggewPyYoSoAGpDrTtIu628A+h1vKoZf8fbmColM3
+         AJ8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition;
-        bh=Eoyv3XG1ZYXEWoIOV6LUW5hDQHt2KxAWCkkKAqqPJAY=;
-        b=Dg5ectWlwYfG8vyxGiyP/tt2mdQct++AE7R3JfHnWwXhKPflyvG7UP+rYhg2m8m0WQ
-         E5zwqdQEis7GUcQLGk8jyAvhJPl/t75hKhfJO5c8PZYpfHIHeGuwwaYWPjTm1XPPBCVX
-         56lTV9XX7sP4FLMCD8ma81t8vJwx1MWjCG5L8SBlyqZJuFXmVzWBTHbK9DOlasYLPbgq
-         wbudKq0+9Cz+yJU8iy35gpkAG5k2PnUpXIBXDYK10yRAM8vlmX7/2VHhHiHyANqe/8Pq
-         p6p70eEohVqZK0/87xDL7esJ60F/Qa9YyuyS6RPFtkB/NAejxnNwm4zst0aZCDGnTjoA
-         rsKw==
-X-Gm-Message-State: AOAM531NSwHdnjjYsUvmoBoHYZwMDQk58IUd88nOoVpuOwylIwX0B41J
-        bXT8MNLHlTIDmLTVndcR10X5JzFwYk0GGk6j
-X-Google-Smtp-Source: ABdhPJzBw2E2Zkoqa8O0arEZVQ4U9ON+3Rt1poxgjpgfDwTquFvhv0YZPRwwbcpO4tG7rkR4LvgW3w==
-X-Received: by 2002:a17:902:dac9:b029:eb:732:d914 with SMTP id q9-20020a170902dac9b02900eb0732d914mr10122606plx.85.1619293385028;
-        Sat, 24 Apr 2021 12:43:05 -0700 (PDT)
-Received: from localhost ([122.172.37.94])
-        by smtp.gmail.com with ESMTPSA id u18sm7572146pfm.4.2021.04.24.12.43.03
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :mime-version:content-transfer-encoding:date:message-id;
+        bh=oW6fHo0XgbJMHm3nIz/zivLoyUK1+fsOgv+m//0Lr+Y=;
+        b=Vm9/4d4P3my0V5VT88mdCfon5QNURCbe76aztbWXL/Rv/bgG6c5HHeM9oSdfrzdgNf
+         N8aoAl8gh7+R55gpTKgfRWazyBUOg+1pcRA22z669tXemiuOusqTJX4reTYxMJalBUtd
+         WIOGBJBSllKrwf50VUWMNkeK5kbziJwVIWyDstIak980YBzNxXZnEraJv/kLblqrIbUp
+         d6qXT8ZoAmuSwQs8Tl9UGHdMouSK0QciHwKqh/wy9azjmbo7HCT3OFfNRxab/1NEZmUl
+         dduwrsptOJLXPa8RdOYk61zNzgL7GyltVezofy7WIiCS1hxlM5yCt94AaTdJsSPMfgvd
+         ohhg==
+X-Gm-Message-State: AOAM531gE/JF8OwgeM3B5Y2TN5yy/6G3nxtxjb1FVnIV61LQM0X1qIbP
+        U4MJxT7vU3xHlWDudcjjH/lf3A==
+X-Google-Smtp-Source: ABdhPJyVq9Ibxe7BudPyDHcP2LR9YC3NDUzbDZpdyYnX8y8nb6U346ejzgVct+TFFz2/NUhwEnU9Iw==
+X-Received: by 2002:a37:b807:: with SMTP id i7mr10172017qkf.126.1619296674918;
+        Sat, 24 Apr 2021 13:37:54 -0700 (PDT)
+Received: from turing-police ([2601:5c0:c380:d61::359])
+        by smtp.gmail.com with ESMTPSA id a30sm7417609qtn.4.2021.04.24.13.37.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Apr 2021 12:43:04 -0700 (PDT)
-Date:   Sun, 25 Apr 2021 01:13:01 +0530
-From:   Anupama K Patil <anupamakpatil123@gmail.com>
-To:     Jaroslav Kysela <perex@perex.cz>,
+        Sat, 24 Apr 2021 13:37:54 -0700 (PDT)
+Sender: Valdis Kletnieks <valdis@vt.edu>
+From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     Anupama K Patil <anupamakpatil123@gmail.com>
+Cc:     Jaroslav Kysela <perex@perex.cz>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         skhan@linuxfoundation.org, bkkarthik@pesu.pes.edu,
         gregkh@linuxfoundation.org, kernelnewbies@kernelnewbies.org
-Subject: [PATCH] drivers: pnp: proc.c: Handle errors while attaching devices
-Message-ID: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qw4iz6cfhv4x3sq7"
-Content-Disposition: inline
+Subject: Re: [PATCH] drivers: pnp: proc.c: Handle errors while attaching devices
+In-Reply-To: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
+References: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1619296672_197072P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 24 Apr 2021 16:37:52 -0400
+Message-ID: <437247.1619296672@turing-police>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
---qw4iz6cfhv4x3sq7
+--==_Exmh_1619296672_197072P
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-isapnp_proc_init() does not look at the return value from
-isapnp_proc_attach_device(). Check for this return value in
-isapnp_proc_detach_device().
+On Sun, 25 Apr 2021 01:13:01 +0530, Anupama K Patil said:
+> Changed sprintf() to the kernel-space function scnprintf() as it returns
+> the actual number of bytes written.
 
-Cleanup in isapnp_proc_detach_device and
-isapnp_proc_detach_bus() for cleanup.
+> +	if (!bus->procdir) {
+> +		scnprintf(name, 16, "%02x", bus->number);
 
-Changed sprintf() to the kernel-space function scnprintf() as it returns
-the actual number of bytes written.
+> +	scnprintf(name, 16, "%02x", dev->number);
 
-Removed unnecessary variables de, e of type 'struct proc_dir_entry' to
-save memory.
+Why do this when you don't *use* the number of bytes written, but instead ignore
+the value returned?
 
-Suggested-by: Shuah Khan <skhan@linuxfoundation.org>
-Co-developed-by: B K Karthik <bkkarthik@pesu.pes.edu>
-Signed-off-by: B K Karthik <bkkarthik@pesu.pes.edu>
-Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
----
- drivers/pnp/isapnp/proc.c | 40 +++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-index 785a796430fa..46ebc24175b7 100644
---- a/drivers/pnp/isapnp/proc.c
-+++ b/drivers/pnp/isapnp/proc.c
-@@ -54,34 +54,54 @@ static const struct proc_ops isapnp_proc_bus_proc_ops =
-=3D {
- 	.proc_read	=3D isapnp_proc_bus_read,
- };
-=20
-+static int isapnp_proc_detach_device(struct pnp_dev *dev)
-+{
-+	proc_remove(dev->procent);
-+	dev->procent =3D NULL;
-+	return 0;
-+}
-+
-+static int isapnp_proc_detach_bus(struct pnp_card *bus)
-+{
-+	proc_remove(bus->procdir);
-+	return 0;
-+}
-+
- static int isapnp_proc_attach_device(struct pnp_dev *dev)
- {
- 	struct pnp_card *bus =3D dev->card;
--	struct proc_dir_entry *de, *e;
- 	char name[16];
-=20
--	if (!(de =3D bus->procdir)) {
--		sprintf(name, "%02x", bus->number);
--		de =3D bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
--		if (!de)
-+	if (!bus->procdir) {
-+		scnprintf(name, 16, "%02x", bus->number);
-+		bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
-+		if (!bus->procdir)
- 			return -ENOMEM;
- 	}
--	sprintf(name, "%02x", dev->number);
--	e =3D dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, de,
-+	scnprintf(name, 16, "%02x", dev->number);
-+	dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, bus->procdir,
- 					    &isapnp_proc_bus_proc_ops, dev);
--	if (!e)
-+	if (!dev->procent) {
-+		isapnp_proc_detach_bus(bus);
- 		return -ENOMEM;
--	proc_set_size(e, 256);
-+	}
-+	proc_set_size(dev->procent, 256);
- 	return 0;
- }
-=20
- int __init isapnp_proc_init(void)
- {
- 	struct pnp_dev *dev;
-+	int dev_attach;
-=20
- 	isapnp_proc_bus_dir =3D proc_mkdir("bus/isapnp", NULL);
- 	protocol_for_each_dev(&isapnp_protocol, dev) {
--		isapnp_proc_attach_device(dev);
-+		dev_attach =3D isapnp_proc_attach_device(dev);
-+		if (!dev_attach) {
-+			pr_info("procfs: pnp: Unable to attach the device, not enough memory");
-+			isapnp_proc_detach_device(dev);
-+			return -ENOMEM;
-+		}
- 	}
- 	return 0;
- }
---=20
-2.25.1
+For bonus points:  Given the %02x format, under what conditions can it
+return a value other than 2?
 
 
---qw4iz6cfhv4x3sq7
-Content-Type: application/pgp-signature; name="signature.asc"
+--==_Exmh_1619296672_197072P
+Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
 
-iQGzBAEBCgAdFiEEDSQZGCDcREXgcOjQtGmOOZV75b4FAmCEdMAACgkQtGmOOZV7
-5b5rYQv8DcfmujcVa4Pr/2j8qdR7cglKcWf8wD5DJzufBdxhKF64RpkQFtpHFfbS
-yb1X0KXHY+LonQgM994qYdnGA9zrBG5xihlhc9LtTjGqG3FTovVix1DveLX6GrXs
-9fmlEkGA8+Hn+rFbTfP6iJQBIGa3ifqqAWLVKbYPrA+9aox3b7HGDnzOvb6GhDAU
-vKEjRBFaPjSSHVsfiRnKCZJ0QW/oWvy0kMprR8bBa/pj8iSXD9qy4izut+ZVPs60
-JIe2YfGaitBlkhIU4Em0qgtJaACq4Ai6Kmb2x/gjQ3nupGzEoIe4XLVJKmggqdnX
-ccSBPJDT1KxPtYjI7Z2jqvh1G8wIb4YgtSB3oDgY+N+qFdBnrBveGItRBD4C8QPd
-80MFliKByEKy2v+ggnNweiznGp3Q1VVzvKySgdiKQz1rmUF3cLO2T84mm7TUYMNM
-w73W0XKpRiqeuALqqKfCGV7fpFIHzjQgmX5vpwps+hY4xjgPnl+gg9bjOWviAHIb
-6kKRsZYT
-=x6jQ
+iQIVAwUBYISBoAdmEQWDXROgAQKzRA/+PJmouXYYzm0CMp+Zv8IbUmPXbjIeNsij
+fiE4Qr0KeYkEoKquUxfeEPkSZ5UBDPajAgsbcwSO8dJtmzaD8+MPMPyNkDkNE7i6
+vvIWfuernYrS5JLYIGx1Vg4bUAOodSOUIQSfkO8U2U1I4sQ4JBLQC54ea1vL+G2O
+lgjNKsRtBW5o61ouJrW2kGGMzhdN179nIYNF7WspXB9twJClP+vVqk2h0fgtgu7H
+SZ+bEF3Z+kMam/gHjbl2Y5N0+Ji5LX/SuXxb6rlq6l3Btb2Mj77LNt2FnK5OpDsp
+K9Cdo5uLZu5cdJq7QDfLUgWf2WbIuUe/902VENkXLOOYQsnZhdVkMy3matZStpQW
+Ovl57yuPj8T/3d4zvLhOTSlXUDobUvjOEZHZZEprNyd3ET20btsT1Ouv6/RgPwiu
+Wg0/5EeTeV0E4cIrFgDSN7miIwpdiBtgQtvVGEuxwMF3gn0VJV7EMG2ISl70H15y
+/eED5Z6PVDXx6fZYdxLmN9kJS/9wqpQzfyoRS34BM0GJhT6xZ1WfcADmZqPt3GbH
+mtKzG1CQGxOqyr5BfH0K348+fm+HHpM6uZPIBYYgaMoAerMhLJHlmLWzaHovZEmg
+xY3HbW/e7f82C32nkjjsvc6tFfwnCcst66vEPJ11UniXvv/3FW/xON8avRq8YaTf
+osmvFBapi/s=
+=c7CK
 -----END PGP SIGNATURE-----
 
---qw4iz6cfhv4x3sq7--
+--==_Exmh_1619296672_197072P--
