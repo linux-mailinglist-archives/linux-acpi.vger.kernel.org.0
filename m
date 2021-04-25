@@ -2,112 +2,222 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E5336A2FD
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Apr 2021 22:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3680C36A3D3
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 Apr 2021 03:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234040AbhDXUig (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Apr 2021 16:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232546AbhDXUif (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Apr 2021 16:38:35 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB74C061574
-        for <linux-acpi@vger.kernel.org>; Sat, 24 Apr 2021 13:37:55 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id u20so20845866qku.10
-        for <linux-acpi@vger.kernel.org>; Sat, 24 Apr 2021 13:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vt-edu.20150623.gappssmtp.com; s=20150623;
-        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
-         :content-transfer-encoding:date:message-id;
-        bh=oW6fHo0XgbJMHm3nIz/zivLoyUK1+fsOgv+m//0Lr+Y=;
-        b=j0jrGV9wWym3LHmXjyrGGAtHD+EPv6neXK4ZppbMcTIH1eCJUMTCIRM+y+pFFgoc+f
-         uTBTKdZBkxlJ6CgH+KvKiObz61bGSzWDNz0JHysAtKftkTPEwCB0Tgiv8y+C2GsrXw80
-         r9jxh9kK0hsVvhrdfsRlCFmC7TnOqeCLNWaG/7zgFTBH7Ikj0gKBn+vdCpIVsL2K3FSd
-         4LkEI4d/Oyg/Nk7yUmjDTQxbnaCMMQg9w6+APcM5fpOGn8EuLfnaXsyqTwgAcxlLLC+U
-         6/gSXh65lEvtNQJVp3U4unwP8tE0ggewPyYoSoAGpDrTtIu628A+h1vKoZf8fbmColM3
-         AJ8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
-         :mime-version:content-transfer-encoding:date:message-id;
-        bh=oW6fHo0XgbJMHm3nIz/zivLoyUK1+fsOgv+m//0Lr+Y=;
-        b=Vm9/4d4P3my0V5VT88mdCfon5QNURCbe76aztbWXL/Rv/bgG6c5HHeM9oSdfrzdgNf
-         N8aoAl8gh7+R55gpTKgfRWazyBUOg+1pcRA22z669tXemiuOusqTJX4reTYxMJalBUtd
-         WIOGBJBSllKrwf50VUWMNkeK5kbziJwVIWyDstIak980YBzNxXZnEraJv/kLblqrIbUp
-         d6qXT8ZoAmuSwQs8Tl9UGHdMouSK0QciHwKqh/wy9azjmbo7HCT3OFfNRxab/1NEZmUl
-         dduwrsptOJLXPa8RdOYk61zNzgL7GyltVezofy7WIiCS1hxlM5yCt94AaTdJsSPMfgvd
-         ohhg==
-X-Gm-Message-State: AOAM531gE/JF8OwgeM3B5Y2TN5yy/6G3nxtxjb1FVnIV61LQM0X1qIbP
-        U4MJxT7vU3xHlWDudcjjH/lf3A==
-X-Google-Smtp-Source: ABdhPJyVq9Ibxe7BudPyDHcP2LR9YC3NDUzbDZpdyYnX8y8nb6U346ejzgVct+TFFz2/NUhwEnU9Iw==
-X-Received: by 2002:a37:b807:: with SMTP id i7mr10172017qkf.126.1619296674918;
-        Sat, 24 Apr 2021 13:37:54 -0700 (PDT)
-Received: from turing-police ([2601:5c0:c380:d61::359])
-        by smtp.gmail.com with ESMTPSA id a30sm7417609qtn.4.2021.04.24.13.37.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Apr 2021 13:37:54 -0700 (PDT)
-Sender: Valdis Kletnieks <valdis@vt.edu>
-From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
-X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
-X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+        id S229770AbhDYBGz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Apr 2021 21:06:55 -0400
+Received: from mail-40133.protonmail.ch ([185.70.40.133]:45457 "EHLO
+        mail-40133.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229723AbhDYBGz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Apr 2021 21:06:55 -0400
+Date:   Sun, 25 Apr 2021 01:06:06 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1619312774;
+        bh=H1qMUcszeVpiIb8uqcXaGdv2ktJ1dJmxagIhRMHp9e0=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=hJ60eizsVk6CxSGemow6q0kUrB+SAbCTu1mB3sUPcw4fE0fVIvAIbdaIp9LmzgXEw
+         xFLFwXeB9DeueCg8q7PD8JUvJwBPwYf36AhNbziGeAOfsnr4z5O4gmqyj+XhpTu146
+         msKywUuN/1RUhL+H6mKlBW4B26DeldTFAG2KhJ5s=
 To:     Anupama K Patil <anupamakpatil123@gmail.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Cc:     Jaroslav Kysela <perex@perex.cz>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        skhan@linuxfoundation.org, bkkarthik@pesu.pes.edu,
-        gregkh@linuxfoundation.org, kernelnewbies@kernelnewbies.org
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+        "bkkarthik@pesu.pes.edu" <bkkarthik@pesu.pes.edu>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "kernelnewbies@kernelnewbies.org" <kernelnewbies@kernelnewbies.org>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
 Subject: Re: [PATCH] drivers: pnp: proc.c: Handle errors while attaching devices
+Message-ID: <CSBw5RbPfjHIC-pzsVOv-S6X9ir8mhLYp3cP3P6UizGPb-wc-OUBfXFXvAPr7fISCC2Bo_r1hHsoltEEEK7VXi8UyTNHc51lH_att8eNZqk=@protonmail.com>
 In-Reply-To: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
 References: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
-Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="==_Exmh_1619296672_197072P";
-         micalg=pgp-sha1; protocol="application/pgp-signature"
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 24 Apr 2021 16:37:52 -0400
-Message-ID: <437247.1619296672@turing-police>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---==_Exmh_1619296672_197072P
-Content-Type: text/plain; charset=us-ascii
+Hi
 
-On Sun, 25 Apr 2021 01:13:01 +0530, Anupama K Patil said:
+
+2021. =C3=A1prilis 24., szombat 21:43 keltez=C3=A9ssel, Anupama K Patil =
+=C3=ADrta:
+
+> isapnp_proc_init() does not look at the return value from
+> isapnp_proc_attach_device(). Check for this return value in
+> isapnp_proc_detach_device().
+>
+> Cleanup in isapnp_proc_detach_device and
+> isapnp_proc_detach_bus() for cleanup.
+>
 > Changed sprintf() to the kernel-space function scnprintf() as it returns
 > the actual number of bytes written.
+>
+> Removed unnecessary variables de, e of type 'struct proc_dir_entry' to
+> save memory.
+>
+> Suggested-by: Shuah Khan <skhan@linuxfoundation.org>
+> Co-developed-by: B K Karthik <bkkarthik@pesu.pes.edu>
+> Signed-off-by: B K Karthik <bkkarthik@pesu.pes.edu>
+> Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
+> ---
+>  drivers/pnp/isapnp/proc.c | 40 +++++++++++++++++++++++++++++----------
+>  1 file changed, 30 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
+> index 785a796430fa..46ebc24175b7 100644
+> --- a/drivers/pnp/isapnp/proc.c
+> +++ b/drivers/pnp/isapnp/proc.c
+> @@ -54,34 +54,54 @@ static const struct proc_ops isapnp_proc_bus_proc_ops=
+ =3D {
+>  =09.proc_read=09=3D isapnp_proc_bus_read,
+>  };
+>
+> +static int isapnp_proc_detach_device(struct pnp_dev *dev)
+> +{
+> +=09proc_remove(dev->procent);
+> +=09dev->procent =3D NULL;
+> +=09return 0;
+> +}
+> +
+> +static int isapnp_proc_detach_bus(struct pnp_card *bus)
+> +{
+> +=09proc_remove(bus->procdir);
 
-> +	if (!bus->procdir) {
-> +		scnprintf(name, 16, "%02x", bus->number);
-
-> +	scnprintf(name, 16, "%02x", dev->number);
-
-Why do this when you don't *use* the number of bytes written, but instead ignore
-the value returned?
-
-For bonus points:  Given the %02x format, under what conditions can it
-return a value other than 2?
+Is there any reason for not setting `bus->procdir` to `NULL`
+similarly to the previous function?
 
 
---==_Exmh_1619296672_197072P
-Content-Type: application/pgp-signature
+> +=09return 0;
+> +}
+> +
 
------BEGIN PGP SIGNATURE-----
-Comment: Exmh version 2.9.0 11/07/2018
+Is there any reason why the previous two functions return something? It doe=
+sn't
+seem to be necessary.
 
-iQIVAwUBYISBoAdmEQWDXROgAQKzRA/+PJmouXYYzm0CMp+Zv8IbUmPXbjIeNsij
-fiE4Qr0KeYkEoKquUxfeEPkSZ5UBDPajAgsbcwSO8dJtmzaD8+MPMPyNkDkNE7i6
-vvIWfuernYrS5JLYIGx1Vg4bUAOodSOUIQSfkO8U2U1I4sQ4JBLQC54ea1vL+G2O
-lgjNKsRtBW5o61ouJrW2kGGMzhdN179nIYNF7WspXB9twJClP+vVqk2h0fgtgu7H
-SZ+bEF3Z+kMam/gHjbl2Y5N0+Ji5LX/SuXxb6rlq6l3Btb2Mj77LNt2FnK5OpDsp
-K9Cdo5uLZu5cdJq7QDfLUgWf2WbIuUe/902VENkXLOOYQsnZhdVkMy3matZStpQW
-Ovl57yuPj8T/3d4zvLhOTSlXUDobUvjOEZHZZEprNyd3ET20btsT1Ouv6/RgPwiu
-Wg0/5EeTeV0E4cIrFgDSN7miIwpdiBtgQtvVGEuxwMF3gn0VJV7EMG2ISl70H15y
-/eED5Z6PVDXx6fZYdxLmN9kJS/9wqpQzfyoRS34BM0GJhT6xZ1WfcADmZqPt3GbH
-mtKzG1CQGxOqyr5BfH0K348+fm+HHpM6uZPIBYYgaMoAerMhLJHlmLWzaHovZEmg
-xY3HbW/e7f82C32nkjjsvc6tFfwnCcst66vEPJ11UniXvv/3FW/xON8avRq8YaTf
-osmvFBapi/s=
-=c7CK
------END PGP SIGNATURE-----
 
---==_Exmh_1619296672_197072P--
+>  static int isapnp_proc_attach_device(struct pnp_dev *dev)
+>  {
+>  =09struct pnp_card *bus =3D dev->card;
+> -=09struct proc_dir_entry *de, *e;
+>  =09char name[16];
+>
+> -=09if (!(de =3D bus->procdir)) {
+> -=09=09sprintf(name, "%02x", bus->number);
+> -=09=09de =3D bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
+> -=09=09if (!de)
+> +=09if (!bus->procdir) {
+> +=09=09scnprintf(name, 16, "%02x", bus->number);
+
+I think `sizeof(name)` would be preferable to hard-coding 16.
+
+
+> +=09=09bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
+> +=09=09if (!bus->procdir)
+>  =09=09=09return -ENOMEM;
+>  =09}
+> -=09sprintf(name, "%02x", dev->number);
+> -=09e =3D dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, de,
+> +=09scnprintf(name, 16, "%02x", dev->number);
+
+Here as well.
+
+
+> +=09dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, bus->procd=
+ir,
+>  =09=09=09=09=09    &isapnp_proc_bus_proc_ops, dev);
+
+Please align the continuation properly.
+
+
+> -=09if (!e)
+> +=09if (!dev->procent) {
+> +=09=09isapnp_proc_detach_bus(bus);
+
+I'm not sure if this should be here. If I'm not mistaken, the code
+creates a procfs directory for a bus when it first sees a `pnp_dev` from th=
+at bus.
+This call removes the whole directory for the bus, and with that, the files=
+ of
+those `pnp_dev`s which were successfully created earlier.
+
+
+>  =09=09return -ENOMEM;
+> -=09proc_set_size(e, 256);
+> +=09}
+> +=09proc_set_size(dev->procent, 256);
+>  =09return 0;
+>  }
+>
+>  int __init isapnp_proc_init(void)
+>  {
+>  =09struct pnp_dev *dev;
+> +=09int dev_attach;
+>
+>  =09isapnp_proc_bus_dir =3D proc_mkdir("bus/isapnp", NULL);
+
+You could add a check to see if this `proc_mkdir()` call succeeds, and
+possibly return early if it does not.
+
+
+>  =09protocol_for_each_dev(&isapnp_protocol, dev) {
+> -=09=09isapnp_proc_attach_device(dev);
+> +=09=09dev_attach =3D isapnp_proc_attach_device(dev);
+> +=09=09if (!dev_attach) {
+
+`isapnp_proc_attach_device()` returns 0 on success, so the condition should=
+ be inverted.
+And maybe `err` or something like that would be a better name than `dev_att=
+ach`.
+
+
+> +=09=09=09pr_info("procfs: pnp: Unable to attach the device, not enough m=
+emory");
+
+If I'm not mistaken, allocation failures are logged, so this is probably no=
+t needed.
+
+
+> +=09=09=09isapnp_proc_detach_device(dev);
+
+I'm also not sure if this is needed here. If `isapnp_proc_attach_device()` =
+returns
+an error, then `dev->procdir` could not have been "created". In other words=
+,
+if the execution reaches this point, `proc_create_data()` could not have su=
+cceeded
+because either it had not yet been called or it had failed.
+
+
+> +=09=09=09return -ENOMEM;
+
+It is usually preferable to return the error code you receive. E.g.:
+
+  err =3D isapnp_proc_attach_device(...);
+  if (err) {
+    ...
+    return err;
+  }
+
+
+> +=09=09}
+>  =09}
+>  =09return 0;
+>  }
+> --
+> 2.25.1
+>
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
