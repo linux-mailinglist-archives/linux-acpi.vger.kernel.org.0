@@ -2,221 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E5D36AAB0
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 04:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD57236ABB3
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 06:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231800AbhDZCke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Apr 2021 22:40:34 -0400
-Received: from mga07.intel.com ([134.134.136.100]:49066 "EHLO mga07.intel.com"
+        id S229506AbhDZE5q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Apr 2021 00:57:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42740 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231794AbhDZCkd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 25 Apr 2021 22:40:33 -0400
-IronPort-SDR: DrsbHU/ctHBQjNKbPxeimDgJbWA4/e3lKm4JOJaTYIdc4Udkp2Oo+FJYiKTkRjtOvnWVZGxdUH
- KyXwBl0aVtyg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9965"; a="260224237"
-X-IronPort-AV: E=Sophos;i="5.82,251,1613462400"; 
-   d="scan'208";a="260224237"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:52 -0700
-IronPort-SDR: kdjsDGx2eWXlfhQKimzCDSIvB6iybzEkOjSN4Vk2ov7ORJqujAATD+qxx2MJqxOcGTKTb6DuRr
- 46yJThgPHsWQ==
-X-IronPort-AV: E=Sophos;i="5.82,251,1613462400"; 
-   d="scan'208";a="454081403"
-Received: from angelata-mobl.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.254.34.149])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:51 -0700
-From:   Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-To:     Rafael J Wysocki <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Andi Kleen <ak@linux.intel.com>
-Subject: [PATCH v3 3/3] x86/acpi, x86/boot: Add multiprocessor wake-up support
-Date:   Sun, 25 Apr 2021 19:39:41 -0700
-Message-Id: <20210426023941.729334-4-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210426023941.729334-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20210426023941.729334-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+        id S229469AbhDZE5q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Apr 2021 00:57:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9E3C861360;
+        Mon, 26 Apr 2021 04:57:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619413025;
+        bh=oF5wTcVUbe3ITjsBTum2WMqyBNYZSs4s3HRFniDzF6I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gI1tY4u0dkEsqk7lL/9IJ+cSkvkBf7k+buPby21z5W+FJ88Et37I0dl4f3EPUDuY2
+         yUbkiFZeXThhswjtaYrhM3GhJZuhODBqpQ33pGgjIWsnRWU6BB0jDXATgA+ks7Rk/Q
+         Pk6P+qxevkaCaY5eUpvP5PHH/RAtH2v+1pUqDXJ9ncyXzDS8dAG0V8UXyVscg6iblp
+         Ed28Bx219ANuJYhPvfmhHL3V+WOU8tHXD4YwNmsBBKJSK/7r4WPO4YtPvjLmVi/G6k
+         uTd7IDE1oVNhReVEKp/m8xpI7v30iRsQRMcsVimJOmXHSJGhQ1iMRvYlKPJAcknDRi
+         HMlgwGB1eeCyA==
+Date:   Mon, 26 Apr 2021 07:57:01 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     Anupama K Patil <anupamakpatil123@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Adam <developer@arusty.dev>, bkkarthik@pesu.pes.edu,
+        gregkh@linuxfoundation.org, kernelnewbies@kernelnewbies.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] drivers: pnp: proc.c: Removed unnecessary varibles
+Message-ID: <YIZIHR0ZQPXFkOH1@unreal>
+References: <20210422180322.7wlyg63kv3n2k6id@ubuntu>
+ <ea09f455-a00f-a13d-29d8-e3f9790dba56@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ea09f455-a00f-a13d-29d8-e3f9790dba56@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As per ACPI specification r6.4, sec 5.2.12.19, a new sub
-structure – multiprocessor wake-up structure - is added to the
-ACPI Multiple APIC Description Table (MADT) to describe the
-information of the mailbox. If a platform firmware produces the
-multiprocessor wake-up structure, then OS may use this new
-mailbox-based mechanism to wake up the APs.
+On Fri, Apr 23, 2021 at 03:08:03PM -0600, Shuah Khan wrote:
+> On 4/22/21 12:03 PM, Anupama K Patil wrote:
+> > de, e are two variables of the type 'struct proc_dir_entry'
+> > which can be removed to save memory. This also fixes a coding style
+> > issue reported by checkpatch where we are suggested to make assignment
+> > outside the if statement.
+> > 
+> 
+> Sounds like a reasonable change.
 
-Add ACPI MADT wake table parsing support for x86 platform and if
-MADT wake table is present, update apic->wakeup_secondary_cpu with
-new API which uses MADT wake mailbox to wake-up CPU.
+It is unclear how much changes to ISA code are welcomed.
+According to the Wikipedia, even Windows Vista disabled ISA PnP by default.
+https://en.wikipedia.org/wiki/Legacy_Plug_and_Play#Specifications
 
-Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
----
- arch/x86/include/asm/apic.h |  3 ++
- arch/x86/kernel/acpi/boot.c | 79 +++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/apic/apic.c |  8 ++++
- 3 files changed, 90 insertions(+)
+> 
+> > Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
+> > ---
+> >   drivers/pnp/isapnp/proc.c | 13 ++++++-------
+> >   1 file changed, 6 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
+> > index 785a796430fa..1ae458c02656 100644
+> > --- a/drivers/pnp/isapnp/proc.c
+> > +++ b/drivers/pnp/isapnp/proc.c
+> > @@ -57,21 +57,20 @@ static const struct proc_ops isapnp_proc_bus_proc_ops = {
+> >   static int isapnp_proc_attach_device(struct pnp_dev *dev)
+> >   {
+> >   	struct pnp_card *bus = dev->card;
+> > -	struct proc_dir_entry *de, *e;
+> >   	char name[16];
+> > -	if (!(de = bus->procdir)) {
+> > +	if (!bus->procdir) {
+> >   		sprintf(name, "%02x", bus->number);
+> 
+> It would make sense to change this to scnprintf()
+> 
+> > -		de = bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
+> > -		if (!de)
+> > +		bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
+> > +		if (!bus->procdir)
+> >   			return -ENOMEM;
+> >   	}
+> >   	sprintf(name, "%02x", dev->number);
+> 
+> It would make sense to change this to scnprintf()
+> 
+> > -	e = dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, de,
+> > +	dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, bus->procdir,
+> >   					    &isapnp_proc_bus_proc_ops, dev);
+> > -	if (!e)
+> > +	if (!dev->procent)
+> >   		return -ENOMEM;
+> 
+> Shouldn't the procdir be deleted when proc_create_data() fails?
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 412b51e059c8..3e94e1f402ea 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -487,6 +487,9 @@ static inline unsigned int read_apic_id(void)
- 	return apic->get_apic_id(reg);
- }
- 
-+typedef int (*wakeup_cpu_handler)(int apicid, unsigned long start_eip);
-+extern void acpi_wake_cpu_handler_update(wakeup_cpu_handler handler);
-+
- extern int default_apic_id_valid(u32 apicid);
- extern int default_acpi_madt_oem_check(char *, char *);
- extern void default_setup_apic_routing(void);
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 14cd3186dc77..fce2aa7d718f 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -65,6 +65,9 @@ int acpi_fix_pin2_polarity __initdata;
- static u64 acpi_lapic_addr __initdata = APIC_DEFAULT_PHYS_BASE;
- #endif
- 
-+static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
-+static u64 acpi_mp_wake_mailbox_paddr;
-+
- #ifdef CONFIG_X86_IO_APIC
- /*
-  * Locks related to IOAPIC hotplug
-@@ -329,6 +332,52 @@ acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const unsigned long e
- 	return 0;
- }
- 
-+static void acpi_mp_wake_mailbox_init(void)
-+{
-+	if (acpi_mp_wake_mailbox)
-+		return;
-+
-+	acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
-+			sizeof(*acpi_mp_wake_mailbox), MEMREMAP_WB);
-+}
-+
-+static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
-+{
-+	u8 timeout = 0xFF;
-+
-+	acpi_mp_wake_mailbox_init();
-+
-+	if (!acpi_mp_wake_mailbox)
-+		return -EINVAL;
-+
-+	/*
-+	 * Mailbox memory is shared between firmware and OS. Firmware will
-+	 * listen on mailbox command address, and once it receives the wakeup
-+	 * command, CPU associated with the given apicid will be booted. So,
-+	 * the value of apic_id and wakeup_vector has to be set before updating
-+	 * the wakeup command. So use WRITE_ONCE to let the compiler know about
-+	 * it and preserve the order of writes.
-+	 */
-+	WRITE_ONCE(acpi_mp_wake_mailbox->apic_id, apicid);
-+	WRITE_ONCE(acpi_mp_wake_mailbox->wakeup_vector, start_ip);
-+	WRITE_ONCE(acpi_mp_wake_mailbox->command, ACPI_MP_WAKE_COMMAND_WAKEUP);
-+
-+	/*
-+	 * After writing wakeup command, wait for maximum timeout of 0xFF
-+	 * for firmware to reset the command address back zero to indicate
-+	 * the successful reception of command.
-+	 * NOTE: 255 as timeout value is decided based on our experiments.
-+	 *
-+	 * XXX: Change the timeout once ACPI specification comes up with
-+	 *      standard maximum timeout value.
-+	 */
-+	while (READ_ONCE(acpi_mp_wake_mailbox->command) && timeout--)
-+		cpu_relax();
-+
-+	/* If timedout, return error */
-+	return timeout ? 0 : -EIO;
-+}
-+
- #endif				/*CONFIG_X86_LOCAL_APIC */
- 
- #ifdef CONFIG_X86_IO_APIC
-@@ -1086,6 +1135,30 @@ static int __init acpi_parse_madt_lapic_entries(void)
- 	}
- 	return 0;
- }
-+
-+static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
-+				      const unsigned long end)
-+{
-+	struct acpi_madt_multiproc_wakeup *mp_wake;
-+
-+	if (acpi_mp_wake_mailbox)
-+		return -EINVAL;
-+
-+	if (!IS_ENABLED(CONFIG_SMP))
-+		return -ENODEV;
-+
-+	mp_wake = (struct acpi_madt_multiproc_wakeup *) header;
-+	if (BAD_MADT_ENTRY(mp_wake, end))
-+		return -EINVAL;
-+
-+	acpi_table_print_madt_entry(&header->common);
-+
-+	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
-+
-+	acpi_wake_cpu_handler_update(acpi_wakeup_cpu);
-+
-+	return 0;
-+}
- #endif				/* CONFIG_X86_LOCAL_APIC */
- 
- #ifdef	CONFIG_X86_IO_APIC
-@@ -1284,6 +1357,12 @@ static void __init acpi_process_madt(void)
- 
- 				smp_found_config = 1;
- 			}
-+
-+			/*
-+			 * Parse MADT MP Wake entry.
-+			 */
-+			acpi_table_parse_madt(ACPI_MADT_TYPE_MULTIPROC_WAKEUP,
-+					      acpi_parse_mp_wake, 1);
- 		}
- 		if (error == -EINVAL) {
- 			/*
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 4f26700f314d..f1b90a4b89e8 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2554,6 +2554,14 @@ u32 x86_msi_msg_get_destid(struct msi_msg *msg, bool extid)
- }
- EXPORT_SYMBOL_GPL(x86_msi_msg_get_destid);
- 
-+void __init acpi_wake_cpu_handler_update(wakeup_cpu_handler handler)
-+{
-+	struct apic **drv;
-+
-+	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++)
-+		(*drv)->wakeup_secondary_cpu = handler;
-+}
-+
- /*
-  * Override the generic EOI implementation with an optimized version.
-  * Only called during early boot when only one CPU is active and with
--- 
-2.25.1
+It needs but only if proc_mkdir() was called in this function.
 
+Thanks
+
+> 
+> > -	proc_set_size(e, 256);
+> > +	proc_set_size(dev->procent, 256);
+> >   	return 0;
+> >   }
+> > 
+> 
+> Note that isapnp_proc_init() doesn't check isapnp_proc_attach_device()
+> return and handle errors and cleanup.
+> 
+> thanks,
+> -- Shuah
+> 
+> 
+> 
+> _______________________________________________
+> Kernelnewbies mailing list
+> Kernelnewbies@kernelnewbies.org
+> https://lists.kernelnewbies.org/mailman/listinfo/kernelnewbies
