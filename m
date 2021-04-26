@@ -2,74 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C55136B8E8
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 20:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C473236BBD6
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Apr 2021 00:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234146AbhDZS3Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Apr 2021 14:29:16 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:36375 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233842AbhDZS3Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Apr 2021 14:29:16 -0400
-Received: by mail-oi1-f174.google.com with SMTP id i26so2006969oii.3;
-        Mon, 26 Apr 2021 11:28:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=lhhDnDrz7SxH0vtjl7AEWE9DYDGK7xa0xu0uNkl5/jE=;
-        b=aekE8oXbP3ACq0ifp/EB6ivwW7+tIfQUD0+J8BulFJ9Vpia1uUQxEMTvxa7KTl15AJ
-         13R5pg3VQWbM8tsyHbxtbVSia5A9O3xA/qtBMtS9Ih1MvGYeH1hH19W9IDGtkBrwMv2M
-         tYZb/axqd1EHskQKi2QNj94RwSxy9qoogAPqBh6mJBv2XVvJP94wtzFywl8dXaedKGc/
-         y6dW3yquhJ5o02ITv31rVxjxfpSlwLZxXqZXNNmFYXQPQ+TC9E3XSoGHQ9wJTNsSxmH7
-         Lg65kIS2QYYDhbN0fGPHwWq8vS5oblLjK1tCKoa4hTt7J0NJAqeIlgmuYBvY8df5pqmE
-         SCjQ==
-X-Gm-Message-State: AOAM531PevLUMofZR9i99M6WUPa/Eo6JZLBsEkY4Bn3kdJnTf8H5vl9T
-        HrC+y65B87HCcueYzz5wQV9BvBvhnrRLALHMg3khLj2Kyu0=
-X-Google-Smtp-Source: ABdhPJwX5NzD1AEtUsJa2nVt/hDV8fJssFQOIkpi5kxLvt+F9Gn8TwdrQhJmR06DYgrfHit3N6DYp0mKxc296Zr973g=
-X-Received: by 2002:a54:4501:: with SMTP id l1mr257436oil.157.1619461714383;
- Mon, 26 Apr 2021 11:28:34 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 26 Apr 2021 20:28:23 +0200
-Message-ID: <CAJZ5v0hrpjNW8ZHULfkTsLMVyti-0H7gFgSySPwXsQMpTEf8nA@mail.gmail.com>
-Subject: [GIT PULL] Device properties updates for v5.13-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S235823AbhDZWwN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Apr 2021 18:52:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41964 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233919AbhDZWwJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Apr 2021 18:52:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 8AED261185;
+        Mon, 26 Apr 2021 22:51:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619477487;
+        bh=hZtA61Bv53WKexRZLYj3O1Uo2iI+j7O7Jsfn7MqQ8ew=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=IEDMd1sxDm5862IDXDyfxKqqKSvdBfHhnji0LufiQCxjk8r1OP0CRbf6MYDRV5jhJ
+         X3l3Iv8r+37FVZg6X1PJ9gMVN6c9ciYJn/WFNBxPD2kZEp7+2N19F0zhOab9OLJ/TJ
+         ja2irXA9fJHFS1e6KL1si9O1Nl7HcyP2r0yUqMax8ylTcIc8mKOBrBGfyJQSsfp3LS
+         rukOr1CP37+ts+ea2jxQvr8S4+etpuVGJvBHvNaAD8PQDdFKUw5zv6ymwYVo8w36Ci
+         lirOLUEpZJeZzLB85WLn9chQ0T2UqLma7LWjAvMgR/BBjy9K2/P0opWdjUrxmVwlRE
+         Jl5lExjsnuKQw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8393A609B0;
+        Mon, 26 Apr 2021 22:51:27 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI updates for v5.13-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0jdRxPj-tJaxbOYHXk505NoG1EefSJUmtgso9KGAm3rzg@mail.gmail.com>
+References: <CAJZ5v0jdRxPj-tJaxbOYHXk505NoG1EefSJUmtgso9KGAm3rzg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0jdRxPj-tJaxbOYHXk505NoG1EefSJUmtgso9KGAm3rzg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc1
+X-PR-Tracked-Commit-Id: b6237f61fc9ca79b8771a4fa412d2c630c9f8d2b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: d8f9176b4ece17e831306072678cd9ae49688cf5
+Message-Id: <161947748753.6408.4745043706520347761.pr-tracker-bot@kernel.org>
+Date:   Mon, 26 Apr 2021 22:51:27 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Mon, 26 Apr 2021 20:24:55 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc1
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- devprop-5.13-rc1
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/d8f9176b4ece17e831306072678cd9ae49688cf5
 
-with top-most commit 46b37c6e4b072d1440e82558aadd5b678627fec6
+Thank you!
 
- MAINTAINERS: Add entry for the software nodes
-
-on top of commit 1e28eed17697bcf343c6743f0028cc3b5dd88bf0
-
- Linux 5.12-rc3
-
-to receive device properties framework update for 5.13-rc1.
-
-This adds a MAINTAINERS entry for software nodes core code (Heikki
-Krogerus).
-
-Thanks!
-
-
----------------
-
-Heikki Krogerus (1):
-      MAINTAINERS: Add entry for the software nodes
-
----------------
-
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
