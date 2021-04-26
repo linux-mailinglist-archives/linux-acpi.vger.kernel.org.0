@@ -2,42 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5387236B2A8
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 14:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41B336B37D
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 14:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbhDZMB6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Apr 2021 08:01:58 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:37618 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231550AbhDZMB5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Apr 2021 08:01:57 -0400
-Received: by mail-ot1-f42.google.com with SMTP id c8-20020a9d78480000b0290289e9d1b7bcso37753726otm.4;
-        Mon, 26 Apr 2021 05:01:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LxIyZImAjQiKb779pF2r0agNe8VB6ArmqFWX32Kk7RQ=;
-        b=g9Lu9eXecQp41pTWulDd0EQ2If0lWJqXtqTQudGJU8JblIZNbRWo7Wp/G8F8uG/qkK
-         rtF0087Iix+BCCyjueTCpJHihmwS2gLQK9LqfI6VIymfNuGFKxpAjxoiXzbaeWuKuMtn
-         H82yDjzcfvyHUpCL4FgYaNbTvGMS1qFvDkJa1Ds5iQLaKi/gUwrPZkjJ+S/0Kgl7fcml
-         knXHgmRGX9Ga0aKfMdcOFxihqg+lNhiTYUdt0iT0hmqISj8w2jK0r2Dlsy0rhB+n9C3m
-         FVtEsAa0/WpGvjdlOYwwNMQ2zVbuvLApQQWgy9OiCnSfrGNjjm47o0KPNtbVqXCGAM13
-         g0uA==
-X-Gm-Message-State: AOAM532vpY0mMbUWGmKPlIldQ1hR/vIuzRIqB3/9T134UmxGqynq2H33
-        SJwgCzGUwXj8O2zg+yb/mT7F/Sl+g/4rKBHq/8g=
-X-Google-Smtp-Source: ABdhPJydX+PqSQ6N7W5WWSg0dAngJ4Psu2SduGfyCPpLs36pyCJue6ExqSiASIYQpVrKVzUuDwEF7jEN91qwbA+wOXo=
-X-Received: by 2002:a05:6830:2458:: with SMTP id x24mr3478004otr.206.1619438473197;
- Mon, 26 Apr 2021 05:01:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210422180322.7wlyg63kv3n2k6id@ubuntu> <ea09f455-a00f-a13d-29d8-e3f9790dba56@linuxfoundation.org>
- <YIZIHR0ZQPXFkOH1@unreal>
-In-Reply-To: <YIZIHR0ZQPXFkOH1@unreal>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 26 Apr 2021 14:00:58 +0200
-Message-ID: <CAJZ5v0gRv-1qYiN8EXx12iOiJvX7ORzqQfHvtWDnZLtpg6Aijg@mail.gmail.com>
-Subject: Re: [PATCH] drivers: pnp: proc.c: Removed unnecessary varibles
-To:     Leon Romanovsky <leon@kernel.org>
+        id S232364AbhDZMvZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Apr 2021 08:51:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33542 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232107AbhDZMvY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Apr 2021 08:51:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 887DE61263;
+        Mon, 26 Apr 2021 12:50:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619441443;
+        bh=+UIfj82Eja1iaPvUFhsFHLNdYK0D3biGGwRTghZsyp8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c1K9TR0r8XbPqxD5ER8f7KjbXX/krszkrTt3MFjHqoX6D1NRXw1rtJBw+vGiI88Xx
+         Sv/pmrFaIbZw/OtP72As92Wih+VpuzjGmesriUA0J1EyY5ha+DHkA2BpdZOU5zD5rb
+         nFUgAoBbovrDU2xvkzKSZttzUPKiw7tZhFRk+PBk/ZTxRSWKYaB3FQSfBhU9ZSEHnJ
+         ynpy3Y2q7LYqg8LM1Yh3/AlERpxYGIEJT/MMZdoWaGUi1KXfttZo42z6wdBQhZR+hc
+         CnNWjBEViDmyy0bGa5d5a7+j2Ln0zkg66UcYS7ncTkFePsrb+6Ib8Yat3C3m2S5xV/
+         8k81I3mK1A+uw==
+Date:   Mon, 26 Apr 2021 15:50:39 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Shuah Khan <skhan@linuxfoundation.org>,
         Anupama K Patil <anupamakpatil123@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
@@ -48,33 +36,46 @@ Cc:     Shuah Khan <skhan@linuxfoundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         kernelnewbies@kernelnewbies.org,
         linux-kernel-mentees@lists.linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] drivers: pnp: proc.c: Removed unnecessary varibles
+Message-ID: <YIa3H6kGFXiqWRtg@unreal>
+References: <20210422180322.7wlyg63kv3n2k6id@ubuntu>
+ <ea09f455-a00f-a13d-29d8-e3f9790dba56@linuxfoundation.org>
+ <YIZIHR0ZQPXFkOH1@unreal>
+ <CAJZ5v0gRv-1qYiN8EXx12iOiJvX7ORzqQfHvtWDnZLtpg6Aijg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gRv-1qYiN8EXx12iOiJvX7ORzqQfHvtWDnZLtpg6Aijg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 6:57 AM Leon Romanovsky <leon@kernel.org> wrote:
->
-> On Fri, Apr 23, 2021 at 03:08:03PM -0600, Shuah Khan wrote:
-> > On 4/22/21 12:03 PM, Anupama K Patil wrote:
-> > > de, e are two variables of the type 'struct proc_dir_entry'
-> > > which can be removed to save memory. This also fixes a coding style
-> > > issue reported by checkpatch where we are suggested to make assignment
-> > > outside the if statement.
-> > >
+On Mon, Apr 26, 2021 at 02:00:58PM +0200, Rafael J. Wysocki wrote:
+> On Mon, Apr 26, 2021 at 6:57 AM Leon Romanovsky <leon@kernel.org> wrote:
 > >
-> > Sounds like a reasonable change.
->
-> It is unclear how much changes to ISA code are welcomed.
+> > On Fri, Apr 23, 2021 at 03:08:03PM -0600, Shuah Khan wrote:
+> > > On 4/22/21 12:03 PM, Anupama K Patil wrote:
+> > > > de, e are two variables of the type 'struct proc_dir_entry'
+> > > > which can be removed to save memory. This also fixes a coding style
+> > > > issue reported by checkpatch where we are suggested to make assignment
+> > > > outside the if statement.
+> > > >
+> > >
+> > > Sounds like a reasonable change.
+> >
+> > It is unclear how much changes to ISA code are welcomed.
+> 
+> Real fixes and obvious cleanups are, not much more than that.
 
-Real fixes and obvious cleanups are, not much more than that.
+While first part is easy to determine, the second one is more blurry.
 
-> According to the Wikipedia, even Windows Vista disabled ISA PnP by default.
-> https://en.wikipedia.org/wiki/Legacy_Plug_and_Play#Specifications
-
-It is indeed unclear how many systems with this interface still run
-Linux, but as long as the code is in the tree, there's nothing wrong
-with attempting to improve it.  There's no assurance that all such
-patches will be applied, though.
-
-Thanks!
+> 
+> > According to the Wikipedia, even Windows Vista disabled ISA PnP by default.
+> > https://en.wikipedia.org/wiki/Legacy_Plug_and_Play#Specifications
+> 
+> It is indeed unclear how many systems with this interface still run
+> Linux, but as long as the code is in the tree, there's nothing wrong
+> with attempting to improve it.  There's no assurance that all such
+> patches will be applied, though.
+> 
+> Thanks!
