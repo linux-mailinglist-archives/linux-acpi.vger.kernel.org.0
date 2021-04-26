@@ -2,158 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C23E36ABB6
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 07:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D7DD36AC7E
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 08:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbhDZFEq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Apr 2021 01:04:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45824 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229469AbhDZFEq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Apr 2021 01:04:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B9A461041;
-        Mon, 26 Apr 2021 05:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619413445;
-        bh=vg9FrcX7fnnWjsfj1DWNcHuEm791l4biO7dyo7VTsiE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eDNlisuUpVO+CIGUlB4GMvm0jmG7xYLgNg+6EJGgaIMCdiMVgYwjYabyLPCaI2NPM
-         4fZ/OqTdlgo22CPWGrDDNTH5YmR/vuMPYZ5yb0L/TP+/qnsAyDqZC+CgZvXLtZT3D8
-         7x08pUB+wzpZif4Ez2L5HfaiWt9h8Wpht7R0tTh2axPkfhNQjJ1aKOP+daCpKIyN3Q
-         RVGFd0aWLEHXMCmuu0Rjvd1/UY6534/nZOJsPe6e4ldlR/Ho0eXMcIJBmAUrGJnVir
-         l+Jugm0ALwpq/kicXz5QONFaQRbQ+nzVAw8c+7ynloB7yi1DD9Y09bmaBUGEHtrVp6
-         IAiiKu5oUy8aA==
-Date:   Mon, 26 Apr 2021 08:04:02 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Anupama K Patil <anupamakpatil123@gmail.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        skhan@linuxfoundation.org, bkkarthik@pesu.pes.edu,
-        gregkh@linuxfoundation.org, kernelnewbies@kernelnewbies.org
-Subject: Re: [PATCH] drivers: pnp: proc.c: Handle errors while attaching
- devices
-Message-ID: <YIZJwkux0ghJ8k9d@unreal>
-References: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
+        id S231907AbhDZG5M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Apr 2021 02:57:12 -0400
+Received: from esa.microchip.iphmx.com ([68.232.153.233]:23292 "EHLO
+        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231616AbhDZG5L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Apr 2021 02:57:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1619420190; x=1650956190;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uhDMDx6U8lKJACDDMg5wJ1xGShyMkk8ZFuePWaxHS1A=;
+  b=I4NZFXczk40EQQ/Nhzl1I86VCKQr30BOqZ7Yd6HdL+tmHgFqi2S4iRg2
+   Jdd1ubPhMpCigXqHdGxDpi95Dt6UPX04yu6gw/7Du3wv0HGvfEbFQdaaW
+   J95xJALTAQD3GzuxkUJ2j42dAITlaXIVllyioECvofvpzIUbCl0tH8+c+
+   mFCBR/mopW+CTS+8a3sluYkQtDlqBeDoy1qHwUVxU7UUlgvS8FxgXpdgO
+   0shaefzdjS5nTI1O8PXVyPF0FTuGy5aNjSAyacu1QALLLqz5kywUMd36X
+   RzA6FcDQRJiZjV3E/8eqdLAcUKkqLfG1dH6DlnY+OugJsGRZ8KfQ4xvz5
+   w==;
+IronPort-SDR: eQx0XRS0qdgNtEscfcMgNylm24Yn6OdQCsMYQ/JM+r0a2OLPJWPoIAGuTJkX2E7JJ4azYberSY
+ pTbQTH3KHNSQBuPHfR3uiIZ0ECAkZsAOLTnDm1rUpmG16AOf/oXI1Cs3iuuhuXANXlgHO5C2LI
+ qGON2LKbum09IQQUT62FJeOo5mxoQKMiFq7fDViWaZXqT9uTgxAsu6vSJGOwb9Zm72sova0vMf
+ 5qecgKuyfyeYMMhpsZway34KiQkqBgdq2xm881kQvgLvvktY53qH52eq/Au5msKIZ0Q2KCbK5l
+ kCs=
+X-IronPort-AV: E=Sophos;i="5.82,251,1613458800"; 
+   d="scan'208";a="118343164"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 25 Apr 2021 23:56:27 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Sun, 25 Apr 2021 23:56:27 -0700
+Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2176.2 via Frontend Transport; Sun, 25 Apr 2021 23:56:20 -0700
+From:   Tudor Ambarus <tudor.ambarus@microchip.com>
+To:     <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+        <mturquette@baylibre.com>, <sboyd@kernel.org>, <nsaenz@kernel.org>,
+        <maxime@cerno.tech>, <khilman@kernel.org>,
+        <ulf.hansson@linaro.org>, <len.brown@intel.com>, <pavel@ucw.cz>,
+        <robh+dt@kernel.org>, <frowand.list@gmail.com>, <maz@kernel.org>,
+        <tglx@linutronix.de>, <saravanak@google.com>,
+        <geert@linux-m68k.org>, <nsaenzjulienne@suse.de>,
+        <linux@roeck-us.net>, <guillaume.tucker@collabora.com>
+CC:     <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <corbet@lwn.net>, <nicolas.ferre@microchip.com>,
+        <claudiu.beznea@microchip.com>, <linux-doc@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <kernel-team@android.com>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH v2] clk: Skip clk provider registration when np is NULL
+Date:   Mon, 26 Apr 2021 09:56:18 +0300
+Message-ID: <20210426065618.588144-1-tudor.ambarus@microchip.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210424194301.jmsqpycvsm7izbk3@ubuntu>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Apr 25, 2021 at 01:13:01AM +0530, Anupama K Patil wrote:
-> isapnp_proc_init() does not look at the return value from
-> isapnp_proc_attach_device(). Check for this return value in
-> isapnp_proc_detach_device().
->=20
-> Cleanup in isapnp_proc_detach_device and
-> isapnp_proc_detach_bus() for cleanup.
->=20
-> Changed sprintf() to the kernel-space function scnprintf() as it returns
-> the actual number of bytes written.
->=20
-> Removed unnecessary variables de, e of type 'struct proc_dir_entry' to
-> save memory.
+commit 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
+revealed that clk/bcm/clk-raspberrypi.c driver calls
+devm_of_clk_add_hw_provider(), with a NULL dev->of_node, which resulted in a
+NULL pointer dereference in of_clk_add_hw_provider() when calling
+fwnode_dev_initialized().
 
-What exactly do you fix for such an old code?
+Returning 0 is reducing the if conditions in driver code and is being
+consistent with the CONFIG_OF=n inline stub that returns 0 when CONFIG_OF
+is disabled. The downside is that drivers will maybe register clkdev lookups
+when they don't need to and waste some memory.
 
->=20
-> Suggested-by: Shuah Khan <skhan@linuxfoundation.org>
-> Co-developed-by: B K Karthik <bkkarthik@pesu.pes.edu>
-> Signed-off-by: B K Karthik <bkkarthik@pesu.pes.edu>
-> Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
-> ---
->  drivers/pnp/isapnp/proc.c | 40 +++++++++++++++++++++++++++++----------
->  1 file changed, 30 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-> index 785a796430fa..46ebc24175b7 100644
-> --- a/drivers/pnp/isapnp/proc.c
-> +++ b/drivers/pnp/isapnp/proc.c
-> @@ -54,34 +54,54 @@ static const struct proc_ops isapnp_proc_bus_proc_ops=
- =3D {
->  	.proc_read	=3D isapnp_proc_bus_read,
->  };
-> =20
-> +static int isapnp_proc_detach_device(struct pnp_dev *dev)
-> +{
-> +	proc_remove(dev->procent);
-> +	dev->procent =3D NULL;
-> +	return 0;
-> +}
-> +
-> +static int isapnp_proc_detach_bus(struct pnp_card *bus)
-> +{
-> +	proc_remove(bus->procdir);
-> +	return 0;
-> +}
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Fixes: 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
+Fixes: 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+---
+v2:
+- s/return 0;/return; in void of_clk_del_provider()
+- add second fixes tag and Stephen's R-b tag
+The opinions on whether to return an error or zero were split. Returning 0
+and skipping the logic was considered safer as we don't know for sure if
+other drivers are affected. See:
+https://lore.kernel.org/lkml/d24bebc5-0f78-021f-293f-e58defa32531@samsung.com/
+https://lore.kernel.org/lkml/20210423171335.262316-1-tudor.ambarus@microchip.com/
 
-Please don't add one line functions that are called only once and have
-return value that no one care about it.
+ drivers/clk/clk.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Thanks
-
-> +
->  static int isapnp_proc_attach_device(struct pnp_dev *dev)
->  {
->  	struct pnp_card *bus =3D dev->card;
-> -	struct proc_dir_entry *de, *e;
->  	char name[16];
-> =20
-> -	if (!(de =3D bus->procdir)) {
-> -		sprintf(name, "%02x", bus->number);
-> -		de =3D bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
-> -		if (!de)
-> +	if (!bus->procdir) {
-> +		scnprintf(name, 16, "%02x", bus->number);
-> +		bus->procdir =3D proc_mkdir(name, isapnp_proc_bus_dir);
-> +		if (!bus->procdir)
->  			return -ENOMEM;
->  	}
-> -	sprintf(name, "%02x", dev->number);
-> -	e =3D dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, de,
-> +	scnprintf(name, 16, "%02x", dev->number);
-> +	dev->procent =3D proc_create_data(name, S_IFREG | S_IRUGO, bus->procdir,
->  					    &isapnp_proc_bus_proc_ops, dev);
-> -	if (!e)
-> +	if (!dev->procent) {
-> +		isapnp_proc_detach_bus(bus);
->  		return -ENOMEM;
-> -	proc_set_size(e, 256);
-> +	}
-> +	proc_set_size(dev->procent, 256);
->  	return 0;
->  }
-> =20
->  int __init isapnp_proc_init(void)
->  {
->  	struct pnp_dev *dev;
-> +	int dev_attach;
-> =20
->  	isapnp_proc_bus_dir =3D proc_mkdir("bus/isapnp", NULL);
->  	protocol_for_each_dev(&isapnp_protocol, dev) {
-> -		isapnp_proc_attach_device(dev);
-> +		dev_attach =3D isapnp_proc_attach_device(dev);
-> +		if (!dev_attach) {
-> +			pr_info("procfs: pnp: Unable to attach the device, not enough memory"=
-);
-> +			isapnp_proc_detach_device(dev);
-> +			return -ENOMEM;
-> +		}
->  	}
->  	return 0;
->  }
-> --=20
-> 2.25.1
->=20
-
-
-
-> _______________________________________________
-> Kernelnewbies mailing list
-> Kernelnewbies@kernelnewbies.org
-> https://lists.kernelnewbies.org/mailman/listinfo/kernelnewbies
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index a3b30f7de2ef..b47460b40d14 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4552,6 +4552,9 @@ int of_clk_add_provider(struct device_node *np,
+ 	struct of_clk_provider *cp;
+ 	int ret;
+ 
++	if (!np)
++		return 0;
++
+ 	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
+ 	if (!cp)
+ 		return -ENOMEM;
+@@ -4591,6 +4594,9 @@ int of_clk_add_hw_provider(struct device_node *np,
+ 	struct of_clk_provider *cp;
+ 	int ret;
+ 
++	if (!np)
++		return 0;
++
+ 	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
+ 	if (!cp)
+ 		return -ENOMEM;
+@@ -4688,6 +4694,9 @@ void of_clk_del_provider(struct device_node *np)
+ {
+ 	struct of_clk_provider *cp;
+ 
++	if (!np)
++		return;
++
+ 	mutex_lock(&of_clk_mutex);
+ 	list_for_each_entry(cp, &of_clk_providers, link) {
+ 		if (cp->node == np) {
+-- 
+2.25.1
 
