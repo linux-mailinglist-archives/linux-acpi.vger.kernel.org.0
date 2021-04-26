@@ -2,28 +2,28 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 851A436AAAE
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 04:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E5D36AAB0
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Apr 2021 04:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbhDZCkc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Apr 2021 22:40:32 -0400
+        id S231800AbhDZCke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Apr 2021 22:40:34 -0400
 Received: from mga07.intel.com ([134.134.136.100]:49066 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231782AbhDZCkc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 25 Apr 2021 22:40:32 -0400
-IronPort-SDR: +M/ClXIvrwS1Hwe/YWNH3z+vH87MfBXYqHIs2boR5frfOKnsRzBx8Pu+8IXpYvQ5uF5BBqeJTZ
- Y6fkYx3HmrRQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9965"; a="260224234"
+        id S231794AbhDZCkd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 25 Apr 2021 22:40:33 -0400
+IronPort-SDR: DrsbHU/ctHBQjNKbPxeimDgJbWA4/e3lKm4JOJaTYIdc4Udkp2Oo+FJYiKTkRjtOvnWVZGxdUH
+ KyXwBl0aVtyg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9965"; a="260224237"
 X-IronPort-AV: E=Sophos;i="5.82,251,1613462400"; 
-   d="scan'208";a="260224234"
+   d="scan'208";a="260224237"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:51 -0700
-IronPort-SDR: j5RPKbBeWX/ha9cj5BvI5f3wCiaMIhf+bTo2brYEaTlzKwRWQt11hz3sTn2Bms+NNk7g23/QA1
- luG5Em/7eHTw==
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:52 -0700
+IronPort-SDR: kdjsDGx2eWXlfhQKimzCDSIvB6iybzEkOjSN4Vk2ov7ORJqujAATD+qxx2MJqxOcGTKTb6DuRr
+ 46yJThgPHsWQ==
 X-IronPort-AV: E=Sophos;i="5.82,251,1613462400"; 
-   d="scan'208";a="454081400"
+   d="scan'208";a="454081403"
 Received: from angelata-mobl.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.254.34.149])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:50 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2021 19:39:51 -0700
 From:   Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>
 To:     Rafael J Wysocki <rjw@rjwysocki.net>,
@@ -37,51 +37,186 @@ Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
         linux-kernel@vger.kernel.org, x86@kernel.org,
         Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v3 2/3] ACPI/table: Print MADT Wake table information
-Date:   Sun, 25 Apr 2021 19:39:40 -0700
-Message-Id: <20210426023941.729334-3-sathyanarayanan.kuppuswamy@linux.intel.com>
+        Sean Christopherson <sean.j.christopherson@intel.com>,
+        Andi Kleen <ak@linux.intel.com>
+Subject: [PATCH v3 3/3] x86/acpi, x86/boot: Add multiprocessor wake-up support
+Date:   Sun, 25 Apr 2021 19:39:41 -0700
+Message-Id: <20210426023941.729334-4-sathyanarayanan.kuppuswamy@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210426023941.729334-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 References: <20210426023941.729334-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When MADT is parsed, print MADT Wake table information as
-debug message. It will be useful to debug CPU boot issues
-related to MADT wake table.
+As per ACPI specification r6.4, sec 5.2.12.19, a new sub
+structure – multiprocessor wake-up structure - is added to the
+ACPI Multiple APIC Description Table (MADT) to describe the
+information of the mailbox. If a platform firmware produces the
+multiprocessor wake-up structure, then OS may use this new
+mailbox-based mechanism to wake up the APs.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add ACPI MADT wake table parsing support for x86 platform and if
+MADT wake table is present, update apic->wakeup_secondary_cpu with
+new API which uses MADT wake mailbox to wake-up CPU.
+
+Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
 ---
- drivers/acpi/tables.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/include/asm/apic.h |  3 ++
+ arch/x86/kernel/acpi/boot.c | 79 +++++++++++++++++++++++++++++++++++++
+ arch/x86/kernel/apic/apic.c |  8 ++++
+ 3 files changed, 90 insertions(+)
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index 9d581045acff..206df4ad8b2b 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -207,6 +207,17 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
- 		}
- 		break;
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 412b51e059c8..3e94e1f402ea 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -487,6 +487,9 @@ static inline unsigned int read_apic_id(void)
+ 	return apic->get_apic_id(reg);
+ }
  
-+	case ACPI_MADT_TYPE_MULTIPROC_WAKEUP:
-+		{
-+			struct acpi_madt_multiproc_wakeup *p;
++typedef int (*wakeup_cpu_handler)(int apicid, unsigned long start_eip);
++extern void acpi_wake_cpu_handler_update(wakeup_cpu_handler handler);
 +
-+			p = (struct acpi_madt_multiproc_wakeup *) header;
+ extern int default_apic_id_valid(u32 apicid);
+ extern int default_acpi_madt_oem_check(char *, char *);
+ extern void default_setup_apic_routing(void);
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 14cd3186dc77..fce2aa7d718f 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -65,6 +65,9 @@ int acpi_fix_pin2_polarity __initdata;
+ static u64 acpi_lapic_addr __initdata = APIC_DEFAULT_PHYS_BASE;
+ #endif
+ 
++static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
++static u64 acpi_mp_wake_mailbox_paddr;
 +
-+			pr_debug("MP Wake (Mailbox version[%d] base_address[%llx])\n",
-+				 p->mailbox_version, p->base_address);
-+		}
-+		break;
+ #ifdef CONFIG_X86_IO_APIC
+ /*
+  * Locks related to IOAPIC hotplug
+@@ -329,6 +332,52 @@ acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const unsigned long e
+ 	return 0;
+ }
+ 
++static void acpi_mp_wake_mailbox_init(void)
++{
++	if (acpi_mp_wake_mailbox)
++		return;
 +
- 	default:
- 		pr_warn("Found unsupported MADT entry (type = 0x%x)\n",
- 			header->type);
++	acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
++			sizeof(*acpi_mp_wake_mailbox), MEMREMAP_WB);
++}
++
++static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
++{
++	u8 timeout = 0xFF;
++
++	acpi_mp_wake_mailbox_init();
++
++	if (!acpi_mp_wake_mailbox)
++		return -EINVAL;
++
++	/*
++	 * Mailbox memory is shared between firmware and OS. Firmware will
++	 * listen on mailbox command address, and once it receives the wakeup
++	 * command, CPU associated with the given apicid will be booted. So,
++	 * the value of apic_id and wakeup_vector has to be set before updating
++	 * the wakeup command. So use WRITE_ONCE to let the compiler know about
++	 * it and preserve the order of writes.
++	 */
++	WRITE_ONCE(acpi_mp_wake_mailbox->apic_id, apicid);
++	WRITE_ONCE(acpi_mp_wake_mailbox->wakeup_vector, start_ip);
++	WRITE_ONCE(acpi_mp_wake_mailbox->command, ACPI_MP_WAKE_COMMAND_WAKEUP);
++
++	/*
++	 * After writing wakeup command, wait for maximum timeout of 0xFF
++	 * for firmware to reset the command address back zero to indicate
++	 * the successful reception of command.
++	 * NOTE: 255 as timeout value is decided based on our experiments.
++	 *
++	 * XXX: Change the timeout once ACPI specification comes up with
++	 *      standard maximum timeout value.
++	 */
++	while (READ_ONCE(acpi_mp_wake_mailbox->command) && timeout--)
++		cpu_relax();
++
++	/* If timedout, return error */
++	return timeout ? 0 : -EIO;
++}
++
+ #endif				/*CONFIG_X86_LOCAL_APIC */
+ 
+ #ifdef CONFIG_X86_IO_APIC
+@@ -1086,6 +1135,30 @@ static int __init acpi_parse_madt_lapic_entries(void)
+ 	}
+ 	return 0;
+ }
++
++static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
++				      const unsigned long end)
++{
++	struct acpi_madt_multiproc_wakeup *mp_wake;
++
++	if (acpi_mp_wake_mailbox)
++		return -EINVAL;
++
++	if (!IS_ENABLED(CONFIG_SMP))
++		return -ENODEV;
++
++	mp_wake = (struct acpi_madt_multiproc_wakeup *) header;
++	if (BAD_MADT_ENTRY(mp_wake, end))
++		return -EINVAL;
++
++	acpi_table_print_madt_entry(&header->common);
++
++	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
++
++	acpi_wake_cpu_handler_update(acpi_wakeup_cpu);
++
++	return 0;
++}
+ #endif				/* CONFIG_X86_LOCAL_APIC */
+ 
+ #ifdef	CONFIG_X86_IO_APIC
+@@ -1284,6 +1357,12 @@ static void __init acpi_process_madt(void)
+ 
+ 				smp_found_config = 1;
+ 			}
++
++			/*
++			 * Parse MADT MP Wake entry.
++			 */
++			acpi_table_parse_madt(ACPI_MADT_TYPE_MULTIPROC_WAKEUP,
++					      acpi_parse_mp_wake, 1);
+ 		}
+ 		if (error == -EINVAL) {
+ 			/*
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 4f26700f314d..f1b90a4b89e8 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2554,6 +2554,14 @@ u32 x86_msi_msg_get_destid(struct msi_msg *msg, bool extid)
+ }
+ EXPORT_SYMBOL_GPL(x86_msi_msg_get_destid);
+ 
++void __init acpi_wake_cpu_handler_update(wakeup_cpu_handler handler)
++{
++	struct apic **drv;
++
++	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++)
++		(*drv)->wakeup_secondary_cpu = handler;
++}
++
+ /*
+  * Override the generic EOI implementation with an optimized version.
+  * Only called during early boot when only one CPU is active and with
 -- 
 2.25.1
 
