@@ -2,77 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9C736C822
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Apr 2021 16:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A9536CB57
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Apr 2021 20:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236943AbhD0O6X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Apr 2021 10:58:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33210 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236173AbhD0O6X (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 27 Apr 2021 10:58:23 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7C49760FDB;
-        Tue, 27 Apr 2021 14:57:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619535459;
-        bh=IC/cBF67bAQkQJea+wXRX+PkxeJ9br/yn1UuwM/SBRQ=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=jmNiLztt2E/Vn/QBmGbMJbeK8FfWWYI438idwUCHKmX9ijedQvc9V4V0DVdXk8wQT
-         n890w17w8y2p+hwT6SDAv2S3ZQgvbS1SX4kPI5h5oOzw7FUgI0WjNd1zAA9FhPCjyB
-         U6wibuNGaypvDnXv4tOzlU+VO8yHUiWUyzUPTXgm8su0SbI6+5IjCJVfh8gpMdmPgl
-         0GSteCRoQnfSHqWyPvhTW35Z2RqngYPh9AvS7fdBr3h/JRsFHN4Oilj1u9fAOBDaem
-         wIqNygkCji+fROnI4BCiLFPI/VjKKMt/5n62Ub8+PsWPAAhihL1jD+leLlBEITVwtG
-         0V4Wpu1pEcwvA==
-Message-ID: <19c1c262382d73dbf3ec37b7651c5ab05253e0f9.camel@kernel.org>
-Subject: Re: [PATCH v2] clk: Skip clk provider registration when np is NULL
-From:   nicolas saenz julienne <nsaenz@kernel.org>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        mturquette@baylibre.com, sboyd@kernel.org, maxime@cerno.tech,
-        khilman@kernel.org, ulf.hansson@linaro.org, len.brown@intel.com,
-        pavel@ucw.cz, robh+dt@kernel.org, frowand.list@gmail.com,
-        maz@kernel.org, tglx@linutronix.de, saravanak@google.com,
-        geert@linux-m68k.org, nsaenzjulienne@suse.de, linux@roeck-us.net,
-        guillaume.tucker@collabora.com
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, nicolas.ferre@microchip.com,
-        claudiu.beznea@microchip.com, linux-doc@vger.kernel.org,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, kernel-team@android.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Date:   Tue, 27 Apr 2021 16:57:30 +0200
-In-Reply-To: <20210426065618.588144-1-tudor.ambarus@microchip.com>
-References: <20210426065618.588144-1-tudor.ambarus@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.0 (3.40.0-1.fc34) 
+        id S238607AbhD0SzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Apr 2021 14:55:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:25823 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236889AbhD0SzW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 27 Apr 2021 14:55:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619549678;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=SEt3Zizca67SuoXjsRTLcir+vAvjzN+U+jVjcjuIJKQ=;
+        b=h6lYiwg1XZ3eld9LH2EqQmVkGlGP1EP1o4vQ39e5cXD5j5+/fTYf+QyttENHctaVgh6pEq
+        OJMbR8XuNi21KFlXxTSasODu6IFMjJ2CrVoskUsWTq6PZBXgf3qNwHHgTJZrOi89ijKPXi
+        8s5ShyogibvKg/CUQdfBjmBiHO4rJP4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-567-06PqNkX5OcWGa8q3X8VnOg-1; Tue, 27 Apr 2021 14:54:36 -0400
+X-MC-Unique: 06PqNkX5OcWGa8q3X8VnOg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7451A8014C1
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Apr 2021 18:54:35 +0000 (UTC)
+Received: from redhatnow.users.ipa.redhat.com (ovpn-113-173.phx2.redhat.com [10.3.113.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A0C719714
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Apr 2021 18:54:35 +0000 (UTC)
+From:   Mark Langsdorf <mlangsdo@redhat.com>
+To:     linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: custom_method: fix a possible memory leak
+Date:   Tue, 27 Apr 2021 13:54:33 -0500
+Message-Id: <20210427185434.34885-1-mlangsdo@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2021-04-26 at 09:56 +0300, Tudor Ambarus wrote:
-> commit 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
-> revealed that clk/bcm/clk-raspberrypi.c driver calls
-> devm_of_clk_add_hw_provider(), with a NULL dev->of_node, which resulted in a
-> NULL pointer dereference in of_clk_add_hw_provider() when calling
-> fwnode_dev_initialized().
-> 
-> Returning 0 is reducing the if conditions in driver code and is being
-> consistent with the CONFIG_OF=n inline stub that returns 0 when CONFIG_OF
-> is disabled. The downside is that drivers will maybe register clkdev lookups
-> when they don't need to and waste some memory.
-> 
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Fixes: 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
-> Fixes: 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-> ---
+In cm_write(), if the 'buf' is allocated memory but not fully consumed,
+it is possible to reallocate the buffer without freeing it by passing
+'*ppos' as 0 on a subsequent call.
 
-Reviewed-by: Nicolas Saenz Julienne <nsaenz@kernel.org>
+Add an explicit kfree() before kzalloc() to prevent the possible memory
+leak.
 
-Regards,
-Nicolas
+Fixes: 526b4af47f44 ("ACPI: Split out custom_method functionality into an own driver")
+Signed-off-by: Mark Langsdorf <mlangsdo@redhat.com>
+---
+ drivers/acpi/custom_method.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index 443fdf62dd22..6dc96f2cef1d 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -42,6 +42,8 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
+ 				   sizeof(struct acpi_table_header)))
+ 			return -EFAULT;
+ 		uncopied_bytes = max_size = table.length;
++		/* make sure the buf is not allocated */
++		kfree(buf);
+ 		buf = kzalloc(max_size, GFP_KERNEL);
+ 		if (!buf)
+ 			return -ENOMEM;
+-- 
+2.26.3
 
