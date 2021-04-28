@@ -2,75 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A9536CB57
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Apr 2021 20:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0911C36D3CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Apr 2021 10:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238607AbhD0SzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Apr 2021 14:55:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:25823 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236889AbhD0SzW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 27 Apr 2021 14:55:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1619549678;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=SEt3Zizca67SuoXjsRTLcir+vAvjzN+U+jVjcjuIJKQ=;
-        b=h6lYiwg1XZ3eld9LH2EqQmVkGlGP1EP1o4vQ39e5cXD5j5+/fTYf+QyttENHctaVgh6pEq
-        OJMbR8XuNi21KFlXxTSasODu6IFMjJ2CrVoskUsWTq6PZBXgf3qNwHHgTJZrOi89ijKPXi
-        8s5ShyogibvKg/CUQdfBjmBiHO4rJP4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-567-06PqNkX5OcWGa8q3X8VnOg-1; Tue, 27 Apr 2021 14:54:36 -0400
-X-MC-Unique: 06PqNkX5OcWGa8q3X8VnOg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S236343AbhD1IT7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Apr 2021 04:19:59 -0400
+Received: from 8bytes.org ([81.169.241.247]:36524 "EHLO theia.8bytes.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237166AbhD1IT7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 28 Apr 2021 04:19:59 -0400
+Received: from cap.home.8bytes.org (p5b0069de.dip0.t-ipconnect.de [91.0.105.222])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7451A8014C1
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Apr 2021 18:54:35 +0000 (UTC)
-Received: from redhatnow.users.ipa.redhat.com (ovpn-113-173.phx2.redhat.com [10.3.113.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A0C719714
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Apr 2021 18:54:35 +0000 (UTC)
-From:   Mark Langsdorf <mlangsdo@redhat.com>
-To:     linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: custom_method: fix a possible memory leak
-Date:   Tue, 27 Apr 2021 13:54:33 -0500
-Message-Id: <20210427185434.34885-1-mlangsdo@redhat.com>
+        by theia.8bytes.org (Postfix) with ESMTPSA id 6287C295;
+        Wed, 28 Apr 2021 10:18:59 +0200 (CEST)
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>, rjw@rjwysocki.net,
+        Len Brown <lenb@kernel.org>
+Cc:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Joerg Roedel <jroedel@suse.de>
+Subject: [RFC PATCH] PCI/APCI: Move acpi_pci_osc_support() check to negotiation phase
+Date:   Wed, 28 Apr 2021 10:18:57 +0200
+Message-Id: <20210428081857.10322-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In cm_write(), if the 'buf' is allocated memory but not fully consumed,
-it is possible to reallocate the buffer without freeing it by passing
-'*ppos' as 0 on a subsequent call.
+From: Joerg Roedel <jroedel@suse.de>
 
-Add an explicit kfree() before kzalloc() to prevent the possible memory
-leak.
+The acpi_pci_osc_support() does an _OSC query with _OSC supported set
+to what the OS supports but a zero _OSC control value. This is
+problematic on some platforms where the firmware allows to configure
+whether DPC is under OS or Firmware control.
 
-Fixes: 526b4af47f44 ("ACPI: Split out custom_method functionality into an own driver")
-Signed-off-by: Mark Langsdorf <mlangsdo@redhat.com>
+When DPC is configured to be under OS control these platforms will
+issue a warning in the firmware log that the OS does not support DPC.
+
+Avoid an _OSC query with _OSC control set to zero by moving the
+supported check into the acpi_pci_osc_control_set() path. This is
+still early enough to fail as nothing before that depends on the
+results of acpi_pci_osc_support().
+
+As a result the acpi_pci_osc_support() function can be removed and
+acpi_pci_query_osc() be simplified because it no longer called with a
+NULL pointer for *control.
+
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- drivers/acpi/custom_method.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/pci_root.c | 50 ++++++++++++++++-------------------------
+ 1 file changed, 19 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-index 443fdf62dd22..6dc96f2cef1d 100644
---- a/drivers/acpi/custom_method.c
-+++ b/drivers/acpi/custom_method.c
-@@ -42,6 +42,8 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
- 				   sizeof(struct acpi_table_header)))
- 			return -EFAULT;
- 		uncopied_bytes = max_size = table.length;
-+		/* make sure the buf is not allocated */
-+		kfree(buf);
- 		buf = kzalloc(max_size, GFP_KERNEL);
- 		if (!buf)
- 			return -ENOMEM;
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index dcd593766a64..530ecf4970b1 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -199,16 +199,11 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
+ 
+ 	support &= OSC_PCI_SUPPORT_MASKS;
+ 	support |= root->osc_support_set;
++	*control &= OSC_PCI_CONTROL_MASKS;
+ 
+ 	capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
+ 	capbuf[OSC_SUPPORT_DWORD] = support;
+-	if (control) {
+-		*control &= OSC_PCI_CONTROL_MASKS;
+-		capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
+-	} else {
+-		/* Run _OSC query only with existing controls. */
+-		capbuf[OSC_CONTROL_DWORD] = root->osc_control_set;
+-	}
++	capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
+ 
+ 	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
+ 	if (ACPI_SUCCESS(status)) {
+@@ -219,11 +214,6 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
+ 	return status;
+ }
+ 
+-static acpi_status acpi_pci_osc_support(struct acpi_pci_root *root, u32 flags)
+-{
+-	return acpi_pci_query_osc(root, flags, NULL);
+-}
+-
+ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+ {
+ 	struct acpi_pci_root *root;
+@@ -346,7 +336,8 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
+  * _OSC bits the BIOS has granted control of, but its contents are meaningless
+  * on failure.
+  **/
+-static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
++static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32
++					    *mask, u32 req, u32 support)
+ {
+ 	struct acpi_pci_root *root;
+ 	acpi_status status;
+@@ -370,7 +361,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
+ 
+ 	/* Need to check the available controls bits before requesting them. */
+ 	while (*mask) {
+-		status = acpi_pci_query_osc(root, root->osc_support_set, mask);
++		status = acpi_pci_query_osc(root, support, mask);
+ 		if (ACPI_FAILURE(status))
+ 			return status;
+ 		if (ctrl == *mask)
+@@ -433,18 +424,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 		support |= OSC_PCI_EDR_SUPPORT;
+ 
+ 	decode_osc_support(root, "OS supports", support);
+-	status = acpi_pci_osc_support(root, support);
+-	if (ACPI_FAILURE(status)) {
+-		*no_aspm = 1;
+-
+-		/* _OSC is optional for PCI host bridges */
+-		if ((status == AE_NOT_FOUND) && !is_pcie)
+-			return;
+-
+-		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+-			 acpi_format_exception(status));
+-		return;
+-	}
+ 
+ 	if (pcie_ports_disabled) {
+ 		dev_info(&device->dev, "PCIe port services disabled; not requesting _OSC control\n");
+@@ -483,7 +462,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 
+ 	requested = control;
+ 	status = acpi_pci_osc_control_set(handle, &control,
+-					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL);
++					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL,
++					  support);
+ 	if (ACPI_SUCCESS(status)) {
+ 		decode_osc_control(root, "OS now controls", control);
+ 		if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
+@@ -496,10 +476,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 			*no_aspm = 1;
+ 		}
+ 	} else {
+-		decode_osc_control(root, "OS requested", requested);
+-		decode_osc_control(root, "platform willing to grant", control);
+-		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+-			acpi_format_exception(status));
++		/* Platform wants to control PCIe features */
++		root->osc_support_set = 0;
+ 
+ 		/*
+ 		 * We want to disable ASPM here, but aspm_disabled
+@@ -509,6 +487,16 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 		 * root scan.
+ 		 */
+ 		*no_aspm = 1;
++
++		/* _OSC is optional for PCI host bridges */
++		if ((status == AE_NOT_FOUND) && !is_pcie)
++			return;
++
++		decode_osc_control(root, "OS requested", requested);
++		decode_osc_control(root, "platform willing to grant", control);
++		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
++			acpi_format_exception(status));
++
+ 	}
+ }
+ 
 -- 
-2.26.3
+2.31.1
 
