@@ -2,153 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E1236DD6A
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Apr 2021 18:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030AE36DDF2
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Apr 2021 19:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241259AbhD1QsT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Apr 2021 12:48:19 -0400
-Received: from foss.arm.com ([217.140.110.172]:47970 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241219AbhD1QsS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Apr 2021 12:48:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E2BDED1;
-        Wed, 28 Apr 2021 09:47:33 -0700 (PDT)
-Received: from [192.168.178.6] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA11F3F694;
-        Wed, 28 Apr 2021 09:47:27 -0700 (PDT)
-Subject: Re: [RFC PATCH v6 3/4] scheduler: scan idle cpu in cluster for tasks
- within one LLC
-To:     Vincent Guittot <vincent.guittot@linaro.org>,
-        "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-Cc:     "tim.c.chen@linux.intel.com" <tim.c.chen@linux.intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>,
-        "msys.mizuma@gmail.com" <msys.mizuma@gmail.com>,
-        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>, "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "guodong.xu@linaro.org" <guodong.xu@linaro.org>,
-        yangyicong <yangyicong@huawei.com>,
-        "Liguozhu (Kenneth)" <liguozhu@hisilicon.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "hpa@zytor.com" <hpa@zytor.com>
-References: <20210420001844.9116-1-song.bao.hua@hisilicon.com>
- <20210420001844.9116-4-song.bao.hua@hisilicon.com>
- <80f489f9-8c88-95d8-8241-f0cfd2c2ac66@arm.com>
- <b42c762a287b4360bfa3179a5c7c3e8c@hisilicon.com>
- <CAKfTPtC51eO2mAuW6mHQ-SdznAtfDL3D4UOs4HmnXaPOOCN_cA@mail.gmail.com>
-From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
-Message-ID: <8b5277d9-e367-566d-6bd1-44ac78d21d3f@arm.com>
-Date:   Wed, 28 Apr 2021 18:47:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S241503AbhD1RNi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Apr 2021 13:13:38 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:46913 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236856AbhD1RNi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Apr 2021 13:13:38 -0400
+Received: by mail-ot1-f45.google.com with SMTP id d3-20020a9d29030000b029027e8019067fso57124902otb.13;
+        Wed, 28 Apr 2021 10:12:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gwBsMZjQrdBeAvFqjLZ8N/H0W29YinbtR6he8HHKExo=;
+        b=SxtikG5GkgB3NI0MKE28g6HnC9J2R4AxSAKbm9qJUu/uyQLyZMahoHDNCI+WMm9gDh
+         mms5EM9cHmIJ7PpMJ6T3rsHIRPVRkO4rnWP3/rDPwn94QvWO+iKWg1lCgBBd1RNYCUwV
+         m2FPm8roUuErHryZOzBvWdLWCtmOKJ++2NTfaWw+DytZf3OlcQOinWIqpTPogEjqL4fQ
+         9tK46uQeJFmy55ulzdBA0TyBFAycWd+PTcUb9bgeC6RaXq51Ddsdv5vuWsFntMZEa31q
+         8bHsMdNxzixoxFiTmdUtWef0OqiLHeDkBKEA3iL1lSz6WcvXZ5Tdm6nkgwJ4EGX4pj9w
+         TVPg==
+X-Gm-Message-State: AOAM532gSrWINiill8WjRDq4I855yqgg2Hbqhf/pF0owynmBsJCj9Qts
+        RqL41xZaxuDnwGewW7+ltjnuJj/frrDlHYMhgaA=
+X-Google-Smtp-Source: ABdhPJy0IkzcQIURbfJMwbrLJqU+1qmGGghbHLLtYLFgJRgdOP/zTnh50uNBLY+gYq3MfWfBnn+n7RvtAg3y6w5hDcQ=
+X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr24636567otb.260.1619629972930;
+ Wed, 28 Apr 2021 10:12:52 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAKfTPtC51eO2mAuW6mHQ-SdznAtfDL3D4UOs4HmnXaPOOCN_cA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210424143935.69487-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210424143935.69487-1-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 28 Apr 2021 19:12:41 +0200
+Message-ID: <CAJZ5v0jLZUn7V=7mHRR17=SuOwxP4LAH755gEhzSERNyNq3HNw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Documentation: firmware-guide: gpio-properties:
+ Add note to SPI CS case
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 28/04/2021 15:04, Vincent Guittot wrote:
-> On Wed, 28 Apr 2021 at 11:51, Song Bao Hua (Barry Song)
-> <song.bao.hua@hisilicon.com> wrote:
->>
->>> -----Original Message-----
->>> From: Dietmar Eggemann [mailto:dietmar.eggemann@arm.com]
+On Sat, Apr 24, 2021 at 4:39 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Historically ACPI has no means of the GPIO polarity and thus
+> the SPISerialBus() resource defines it on the per-chip basis.
+> In order to avoid an ambiguity, the GPIO polarity is considered
+> being always Active High.
+>
+> Add note about this to the respective documentation file.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  Documentation/firmware-guide/acpi/gpio-properties.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> index 4e264c16ddff..df4b711053ee 100644
+> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
+> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> @@ -99,6 +99,12 @@ native::
+>        }
+>    }
+>
+> +Note, that historically ACPI has no means of the GPIO polarity and thus
+> +the SPISerialBus() resource defines it on the per-chip basis. In order
+> +to avoid a chain of negations, the GPIO polarity is considered being
+> +Active High. Even for the cases when _DSD() is involved (see the example
+> +above) the GPIO CS polarity must be defined Active High to avoid ambiguity.
+> +
+>  Other supported properties
+>  ==========================
+>
+> --
 
-[...]
-
->>> On 20/04/2021 02:18, Barry Song wrote:
-
-[...]
-
->> I am really confused. The whole code has only checked if wake_flags
->> has WF_TTWU, it has never checked if sd_domain has SD_BALANCE_WAKE flag.
-> 
-> look at :
-> #define WF_TTWU     0x08 /* Wakeup;            maps to SD_BALANCE_WAKE */
-> 
-> so  when wake_wide return false, we use the wake_affine mecanism but
-> if it's false then we fllback to default mode which looks for:
-> if (tmp->flags & sd_flag)
-> 
-> This means looking for SD_BALANCE_WAKE which is never set
-> 
-> so sd will stay NULL and you will end up calling select_idle_sibling anyway
-> 
->>
->> static int
->> select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
->> {
->>         ...
->>
->>         if (wake_flags & WF_TTWU) {
->>                 record_wakee(p);
->>
->>                 if (sched_energy_enabled()) {
->>                         new_cpu = find_energy_efficient_cpu(p, prev_cpu);
->>                         if (new_cpu >= 0)
->>                                 return new_cpu;
->>                         new_cpu = prev_cpu;
->>                 }
->>
->>                 want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
->>         }
->> }
->>
->> And try_to_wake_up() has always set WF_TTWU:
->> static int
->> try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
->> {
->>         cpu = select_task_rq(p, p->wake_cpu, wake_flags | WF_TTWU);
->>         ...
->> }
->>
->> So the change in wake_wide will actually affect the value of want_affine.
->> And I did also see code entered slow path during my benchmark.
-
-Yes, this is happening but IMHO not for wakeups. Check wake_flags for
-the tasks which go through `slow path` on your machine. They should have
-WF_EXEC or WF_FORK, not WF_TTWU (& WF_SYNC).
-
->> One issue I mentioned during linaro open discussion is that
->> since I have moved to use cluster size to decide the value
->> of wake_wide, relatively less tasks will make wake_wide()
->> decide to go to slow path, thus, tasks begin to spread to
->> other NUMA,  but actually llc_size might be able to contain
->> those tasks. So a possible model might be:
->> static int wake_wide(struct task_struct *p)
->> {
->>         tasksize < cluster : scan cluster
->>         tasksize > llc      : slow path
->>         tasksize > cluster && tasksize < llc: scan llc
->> }
->>
->> thoughts?
-
-Like Vincent explained, the return value of wake_wide() doesn't matter.
-For wakeups you always end up in sis().
-
-[...]
+Applied as 5.13-rc material, thanks!
