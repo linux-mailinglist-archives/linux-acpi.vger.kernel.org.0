@@ -2,107 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A25D8372C9E
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 May 2021 16:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B15372CA3
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 May 2021 17:00:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231326AbhEDPAx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 May 2021 11:00:53 -0400
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:36849 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbhEDPAw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 May 2021 11:00:52 -0400
-Received: by mail-oi1-f172.google.com with SMTP id i26so9034324oii.3;
-        Tue, 04 May 2021 07:59:57 -0700 (PDT)
+        id S231638AbhEDPBq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 May 2021 11:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231607AbhEDPBq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 May 2021 11:01:46 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFCEC06174A
+        for <linux-acpi@vger.kernel.org>; Tue,  4 May 2021 08:00:51 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id f24so13664548ejc.6
+        for <linux-acpi@vger.kernel.org>; Tue, 04 May 2021 08:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=mA+7flTfvFD+Y2LLEaQlR8RXQa0DdDmjTntjiGWz1oI=;
+        b=TZWmdMbtjew4xhiSW93zlbg/ydnJS2lHqww7kuN69n9omCbt1nqaQGPmuHWROB/ZA+
+         KU9w/f0hQGSxRQ2yQu5OaQjw9xUqxrwYre7xuiDx6S3mN06WB8LwkuKZWvDeyJkfMoOL
+         3Rlig8Pbe+2FVCExYZyGDr2cBcO0HLBSEy8PTqTC6qbPkga9XtOzW2ov1cqWIdZCzxkn
+         0NdjK93+1Dy/SPhEvhj5j+3/1GR4nmVMBD32Z1wSAd2EyXx8wWI8F8ORwa8mi7GhIDd6
+         2GY9xm+I5l9Y+4FDGiOJglfjEpSoOUuBC0515FMx3xxBmPgyLkyiyKfgs4JGASj/9NZp
+         pq6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4xIW9Dposi9feXZy+NswqWTr7NRg3bMeiOam5FB0lac=;
-        b=PVU3shzpRgbnGcRKm4gJHqR76nsCXbA+Gu4DUBIGEQUvr7RFR8Q22iY9okUoiEYAYI
-         IxDboVP1Uz7t7bwGW/Nmjhkl5G/a+x4m42e64fbpZQF+uFR1EiXEG/1T+iuIvhur6Khk
-         7ClKI4BDf54HBa48coQspLudJ/RRGdLYkgquVPdVXShRgXVfmiXNbZHVw/oI7waO8bol
-         JsQvKNIPzwzd9M+ynfR2qb6rS/d5GWtWVoMEEBYN5yivR3yiCG+wStEdy1v6jdCLDSv0
-         3Wl7wPurerkMdI3C2dNYCxdIe9mpaPnjNx79R+Z5xNPQEhCHiHne94ZmNH+dBrtckLmv
-         Dt3w==
-X-Gm-Message-State: AOAM530d6IfBo/QvpQ1Q2avatwnw0GCKMQ6VSepgnFIZ+wg/v0LGIwm+
-        5tTsrAE/3LQZDuIqkmEWXFh0jc4hFkP0/nKDS6E=
-X-Google-Smtp-Source: ABdhPJzlzoXQOO/OKh9uMlX2vlCUCMlznw6gXq0gZEM4wygvcplu2+GYc9ugX0LFxWrPKwR+ZP9CupBCtnLcu8cFpMo=
-X-Received: by 2002:aca:5fc3:: with SMTP id t186mr17401333oib.69.1620140397577;
- Tue, 04 May 2021 07:59:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=mA+7flTfvFD+Y2LLEaQlR8RXQa0DdDmjTntjiGWz1oI=;
+        b=lDvVtjJCj9LlBC5dFOlvqexhWgdgHny8abtsvS3ZfppQy1+/6N3ZOdD/5UfZxCf4xO
+         D6Qtzt3l2JI9gAIHaj91taAHZprkIQ2+Le3foUQ8dqoZTiX0qYL5YMTke9sQ7n2Npj1A
+         Bz1WX5/9pc7T1S5BQ+Fm7Jw9/i5zl+ZFDKM1xi9l9ZXdS3ZcxdWQf5INwDeMGKTe8O4c
+         e0S/DR8lmOIQZkP6cWE4P9FWZaV3dwgbhEi/Q7IsIeCexAgKerQsDgcTWTXSIUT3whjZ
+         ijJyXp5T9CmUyQ2veMCzAc3NB0YVGgEuOI+WNS5+dPCxPg1A5U1/qRGBRUnw/JXQu4ys
+         ZrrA==
+X-Gm-Message-State: AOAM532JC5ngAobb+NOBswZG2S1Vdo4h3NLmEiBUAPrGBKkVeN2xmeYx
+        CIfX12G40axa9wPwor/u9kRSsOoYaBef/xi3+j0=
+X-Google-Smtp-Source: ABdhPJxr37QY8f/Oi3o1c2rmwDEndoo5kGIc4tsTktR2qgWHDTD7CaVNyrC9kA0suzEHsEwZ/ufCfjVriBnfy5tSq2w=
+X-Received: by 2002:a17:906:63d2:: with SMTP id u18mr14945579ejk.186.1620140450060;
+ Tue, 04 May 2021 08:00:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210502172326.2060025-1-keescook@chromium.org> <YI+CHjLBg/ob6ei4@kroah.com>
-In-Reply-To: <YI+CHjLBg/ob6ei4@kroah.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 4 May 2021 16:59:40 +0200
-Message-ID: <CAJZ5v0hohYm319Geqeb4xgJd+mn+G-Y6oWj2j_JifyaccMsh7Q@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ACPI: custom_method: fix memory leaks"
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Kees Cook <keescook@chromium.org>, Wenwen Wang <wenwen@cs.uga.edu>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mark Langsdorf <mlangsdo@redhat.com>
+Received: by 2002:a54:35d0:0:0:0:0:0 with HTTP; Tue, 4 May 2021 08:00:49 -0700 (PDT)
+Reply-To: lia2ahil2@gmail.com
+From:   lia ahil <jeanlamp6@gmail.com>
+Date:   Tue, 4 May 2021 17:00:49 +0200
+Message-ID: <CAJA2FWQ+bv0DMPRZrMPWRiT1Mmxr9ZNNsxpdCx9dLhUC5t1CGg@mail.gmail.com>
+Subject: Guten Abend,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 3, 2021 at 6:55 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sun, May 02, 2021 at 10:23:26AM -0700, Kees Cook wrote:
-> > This reverts commit 03d1571d9513369c17e6848476763ebbd10ec2cb.
-> >
-> > While /sys/kernel/debug/acpi/custom_method is already a privileged-only
-> > API providing proxied arbitrary write access to kernel memory[1][2],
-> > with existing race conditions[3] in buffer allocation and use that could
-> > lead to memory leaks and use-after-free conditions, the above commit
-> > appears to accidentally make the use-after-free conditions even easier
-> > to accomplish. ("buf" is a global variable and prior kfree()s would set
-> > buf back to NULL.)
-> >
-> > This entire interface needs to be reworked (if not entirely removed).
-> >
-> > [1] https://lore.kernel.org/lkml/20110222193250.GA23913@outflux.net/
-> > [2] https://lore.kernel.org/lkml/201906221659.B618D83@keescook/
-> > [3] https://lore.kernel.org/lkml/20170109231323.GA89642@beast/
-> >
-> > Cc: Wenwen Wang <wenwen@cs.uga.edu>
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/acpi/custom_method.c | 5 +----
-> >  1 file changed, 1 insertion(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-> > index 7b54dc95d36b..36d95a02cd30 100644
-> > --- a/drivers/acpi/custom_method.c
-> > +++ b/drivers/acpi/custom_method.c
-> > @@ -53,10 +53,8 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
-> >       if ((*ppos > max_size) ||
-> >           (*ppos + count > max_size) ||
-> >           (*ppos + count < count) ||
-> > -         (count > uncopied_bytes)) {
-> > -             kfree(buf);
-> > +         (count > uncopied_bytes))
-> >               return -EINVAL;
-> > -     }
-> >
-> >       if (copy_from_user(buf + (*ppos), user_buf, count)) {
-> >               kfree(buf);
-> > @@ -76,7 +74,6 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
-> >               add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
-> >       }
-> >
-> > -     kfree(buf);
-> >       return count;
-> >  }
-> >
-> > --
->
-> Thanks for the revert, I'll queue it up on my larger "umn.edu reverts"
-> branch that I'll be sending out for review in a day or so.
+Guten Abend,
 
-This will conflict with the material that I'm going to push on
-Thursday that includes the two commits mentioned by Mark elsewhere in
-this thread.
+Mein Name ist Frau Lia Ahil und ich schreibe Ihnen, um zu best=C3=A4tigen,
+ob Sie meine vorherige Mail erhalten haben.
+
+Hast du meine Nachricht erhalten?,
+Frau lia,
