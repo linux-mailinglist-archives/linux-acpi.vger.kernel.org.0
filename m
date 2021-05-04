@@ -2,59 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CFC9372CB8
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 May 2021 17:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50DB3372CF6
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 May 2021 17:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbhEDPHZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 May 2021 11:07:25 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:33507 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbhEDPHZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 May 2021 11:07:25 -0400
-Received: by mail-oi1-f181.google.com with SMTP id t8so9089883oij.0;
-        Tue, 04 May 2021 08:06:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZoAjfrltSVyzvHATSeL3gfPA6CxQb+8qG4ggVE86NF4=;
-        b=pW1VPaG0RvrooohH5oP+KMyJzW4ZcmLxQvKJCYKQQHs6osToay/4x39O9qOswENULW
-         yiIjBYtq+M6L0m1NSYmAy0wV+sZsFEJzRijDg8TUtkLzcH9/1WuJ+ucTPjvpyykzdldY
-         oP6HAvk3rppuIUf3vcI0Ga3ZkSTtqJLzPn8twIpJnpMpEVYcV92Md91m4c56J/2NDCaF
-         WDj4t8o58fL/j+5XF1pXvqlaWAtHu+F50jlNYii/KZiqsoMsoxa+P+Ityv6omWiU3D7a
-         4NF+O3qjOp7gPs4zYvZB5l/mqtzO2dpNppKywZhGagrZt6+XfJmmSwlcGYrKEUIyGt5B
-         FECg==
-X-Gm-Message-State: AOAM531jhgC3/C7v5/8IOMHtOzTVfMRqDnWmJrWQEQR7F/dukIUKi14Y
-        X3fLw1z20Z0oS9ccGODgbcMw9A8gAlXFnEEV244=
-X-Google-Smtp-Source: ABdhPJwVsXKxb3GOizSOvfMCjDGsNHTB3bqdiC6ZUtdfFWJdsnaPFHeqKA75hPeaVxAyaYI8wOgsXoF7XIrl9NTEgxQ=
-X-Received: by 2002:aca:5fc3:: with SMTP id t186mr17430830oib.69.1620140787763;
- Tue, 04 May 2021 08:06:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210502172326.2060025-1-keescook@chromium.org>
- <0fefece0-f8a1-6ee1-114f-0a2bb412b986@redhat.com> <YJAN/nwldJKwTV/V@kroah.com>
-In-Reply-To: <YJAN/nwldJKwTV/V@kroah.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 4 May 2021 17:06:10 +0200
-Message-ID: <CAJZ5v0ioc1t62C68g7twcJRQixiB2uxCpcW3QFu6Rpwu15jUzw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ACPI: custom_method: fix memory leaks"
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Mark Langsdorf <mlangsdo@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Wenwen Wang <wenwen@cs.uga.edu>,
+        id S230212AbhEDPcj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 May 2021 11:32:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59894 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230193AbhEDPci (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 4 May 2021 11:32:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D39B610FA;
+        Tue,  4 May 2021 15:31:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1620142303;
+        bh=oKmsd9bot90Pfy//TFn+A9MEIZp+so+1aFWQQcmfOsA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mf49REO47RdZ+qg74EScE2J991TdYrQklg/imZPFsn2659v6c/dV6/U0arj29aAKJ
+         eyjX72WkpfY5w3HeCesfmfRSVWmai+oyI+XpvLeD6nxy6dLORctu8R0zexxiuiJM6M
+         hl2byM0dl5WMqBG06W3q0CR7ZzapjySmvV+vNKjA=
+Date:   Tue, 4 May 2021 17:31:40 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>, Wenwen Wang <wenwen@cs.uga.edu>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mark Langsdorf <mlangsdo@redhat.com>
+Subject: Re: [PATCH] Revert "ACPI: custom_method: fix memory leaks"
+Message-ID: <YJFo3GGxaEX037V4@kroah.com>
+References: <20210502172326.2060025-1-keescook@chromium.org>
+ <YI+CHjLBg/ob6ei4@kroah.com>
+ <CAJZ5v0hohYm319Geqeb4xgJd+mn+G-Y6oWj2j_JifyaccMsh7Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0hohYm319Geqeb4xgJd+mn+G-Y6oWj2j_JifyaccMsh7Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 3, 2021 at 4:51 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, May 03, 2021 at 08:17:14AM -0500, Mark Langsdorf wrote:
-> > In 5/2/21 12:23 PM, Kees Cook wrote:
+On Tue, May 04, 2021 at 04:59:40PM +0200, Rafael J. Wysocki wrote:
+> On Mon, May 3, 2021 at 6:55 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Sun, May 02, 2021 at 10:23:26AM -0700, Kees Cook wrote:
 > > > This reverts commit 03d1571d9513369c17e6848476763ebbd10ec2cb.
 > > >
 > > > While /sys/kernel/debug/acpi/custom_method is already a privileged-only
@@ -74,24 +66,44 @@ On Mon, May 3, 2021 at 4:51 PM Greg Kroah-Hartman
 > > > Cc: Wenwen Wang <wenwen@cs.uga.edu>
 > > > Signed-off-by: Kees Cook <keescook@chromium.org>
 > > > ---
+> > >  drivers/acpi/custom_method.c | 5 +----
+> > >  1 file changed, 1 insertion(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+> > > index 7b54dc95d36b..36d95a02cd30 100644
+> > > --- a/drivers/acpi/custom_method.c
+> > > +++ b/drivers/acpi/custom_method.c
+> > > @@ -53,10 +53,8 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+> > >       if ((*ppos > max_size) ||
+> > >           (*ppos + count > max_size) ||
+> > >           (*ppos + count < count) ||
+> > > -         (count > uncopied_bytes)) {
+> > > -             kfree(buf);
+> > > +         (count > uncopied_bytes))
+> > >               return -EINVAL;
+> > > -     }
+> > >
+> > >       if (copy_from_user(buf + (*ppos), user_buf, count)) {
+> > >               kfree(buf);
+> > > @@ -76,7 +74,6 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+> > >               add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
+> > >       }
+> > >
+> > > -     kfree(buf);
+> > >       return count;
+> > >  }
+> > >
+> > > --
 > >
-> > I have two patches submitted to linux-acpi to fix the most obvious bugs in
-> > the current driver.  I don't think that just reverting this patch in its
-> > entirety is a good solution: it still leaves the buf allocated in -EINVAL,
-> > as well as the weird case where a not fully consumed buffer can be
-> > reallocated without being freed on a subsequent call.
-> >
-> > https://lore.kernel.org/linux-acpi/20210427185434.34885-1-mlangsdo@redhat.com/
-> >
-> > https://lore.kernel.org/linux-acpi/20210423152818.97077-1-mlangsdo@redhat.com/
-> >
-> > I support rewriting this driver in its entirety, but reverting one bad patch
-> > to leave it in a different buggy state is less than ideal.
->
-> It's buggy now, and root-only, so it's a low bar at the moment :)
+> > Thanks for the revert, I'll queue it up on my larger "umn.edu reverts"
+> > branch that I'll be sending out for review in a day or so.
+> 
+> This will conflict with the material that I'm going to push on
+> Thursday that includes the two commits mentioned by Mark elsewhere in
+> this thread.
 
-So dropping it completely may be a better choice.
+I'll drop this from my patch series now that you all have this covered.
 
-IMO let's let the Mark's commits go in now and we'll see later.
+thanks!
 
-Thanks!
+greg k-h
