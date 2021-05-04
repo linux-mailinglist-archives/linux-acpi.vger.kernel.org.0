@@ -2,109 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF07A371FC4
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 May 2021 20:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32ACD3727C1
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 May 2021 11:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbhECSgr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 May 2021 14:36:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49172 "EHLO
+        id S230141AbhEDJFa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 May 2021 05:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbhECSgq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 May 2021 14:36:46 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A6FC061761
-        for <linux-acpi@vger.kernel.org>; Mon,  3 May 2021 11:35:53 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id y30so4289816pgl.7
-        for <linux-acpi@vger.kernel.org>; Mon, 03 May 2021 11:35:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=HxkYrK3zW8etQ6PavENL/qB+P2FEj6XtVcSQW8y4HEM=;
-        b=XQ6WDjz+frkLf8fxTaVGb2OA9y3p4t8ocHwkPgkWTfruNYYw3Hx4X9VY2WtAkpcwl0
-         +jYdaCFS0euQgPwLdfA9E7NaVd4x/HAXVRykLngV3rOjAVW6fiAo4ukcAnH8uUWgv/ot
-         hcA5wUkf5QQy0odr3Y7nxZM68CtqLhzQLm5To=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=HxkYrK3zW8etQ6PavENL/qB+P2FEj6XtVcSQW8y4HEM=;
-        b=SEjEPPsBa/D0qDG7w8DRnWibDbMB5ftDUvEaWjLBYd880QHlb/vnGvIvtfXZf3r4v4
-         iBjJqIDRkQb2hWSA6Od2sIAbbndSeZtnGbM8zp3LF55Rj9tSq3yogvPx7knNuT05uYjb
-         WCPNcAGgF1ymPLsJ32jS/AzYTtBH6OftttPaG20UpbY5v+KCHnX9ORP9NlJ2zlHQM9mH
-         wFQmQ+2vARh88+B3Y9A30Wf3M8KkBBzJNtkrMOaWxHUK6nQ48J0TwChqcahDytzr5pY7
-         CEZAl399aDKF9rB3MBX4rHQu6bbNKkxj5mxdpiwZXwbo/U26lxEAzo4NL2eOpk3CszxJ
-         XD/A==
-X-Gm-Message-State: AOAM532SV4qRnyq2TA4+IwRLxnN+Ci3hQ8lCaE7lKjsTu+9JOgG40Q5p
-        9zcxZyRvuhI1mow4eYLhar1ZKRuJNzVOhQ==
-X-Google-Smtp-Source: ABdhPJxnPMU6N16yM5pqUnVfmEQkDrOnx4CcthbHsM/Cg4Di10L9lud2wbf1i+PuRFuXzvcEzHVWTw==
-X-Received: by 2002:a63:1214:: with SMTP id h20mr19466340pgl.207.1620066952679;
-        Mon, 03 May 2021 11:35:52 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id mg11sm9973114pjb.24.2021.05.03.11.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 May 2021 11:35:51 -0700 (PDT)
-Date:   Mon, 3 May 2021 11:35:50 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Mark Langsdorf <mlangsdo@redhat.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Wenwen Wang <wenwen@cs.uga.edu>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] Revert "ACPI: custom_method: fix memory leaks"
-Message-ID: <202105031134.A0E51D73@keescook>
-References: <20210502172326.2060025-1-keescook@chromium.org>
- <0fefece0-f8a1-6ee1-114f-0a2bb412b986@redhat.com>
+        with ESMTP id S230130AbhEDJF3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 May 2021 05:05:29 -0400
+Received: from gofer.mess.org (gofer.mess.org [IPv6:2a02:8011:d000:212::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E7DC061574;
+        Tue,  4 May 2021 02:04:00 -0700 (PDT)
+Received: by gofer.mess.org (Postfix, from userid 1000)
+        id BCC38C645F; Tue,  4 May 2021 10:03:58 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mess.org; s=2020;
+        t=1620119038; bh=EU8m/i/aDn4a1obGPTuutqZXKT0XejSop5WCsofK7+8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=diC3HZ5+3cqoNkwOTBfBXnNvH3M90GYCezwXrvR37rWPTOTAsTtLPvwXtGwOUPEWO
+         zzgzdNVhyCkIP5Jo+KirsxX4w7A3MenvDnGcZuS2jFpMBWmN7JTrg8AB9FF+8htay4
+         cVis3XroUUezJ6iikRTRGGUsysJhGPlmb6yjpTTMpa5kQx0PDrvXxzJHStzHbzbFCX
+         DnZ3xZvL0GyuBbwNLGG7y10kPO5DQhaTd3xYgRW0qjP9QMJCc5O2sV36YRae+iVHWj
+         ljUYbBtIp6Kiu8btvyFr0aVdQM8sD+lyJfpmdYtC2Uw8DGkdHCqbYZ/EGM1xJ5eiYp
+         yiBQBEwCFfMBQ==
+Date:   Tue, 4 May 2021 10:03:58 +0100
+From:   Sean Young <sean@mess.org>
+To:     Chris McCrae <chrismccraeworks@gmail.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: Asus PN62S vs PN50 - ITE8708
+Message-ID: <20210504090358.GA26800@gofer.mess.org>
+References: <CAN2W0iNOsa6GYK28Vz=DmkyjY72H_bq=8EUkzFuy0_p9ZVms4A@mail.gmail.com>
+ <20210503092005.GB14939@gofer.mess.org>
+ <CAN2W0iME8VCdP=KdcH8PW7ZfEOdQJicKWQmE675-h3cd2=D1cA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0fefece0-f8a1-6ee1-114f-0a2bb412b986@redhat.com>
+In-Reply-To: <CAN2W0iME8VCdP=KdcH8PW7ZfEOdQJicKWQmE675-h3cd2=D1cA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 03, 2021 at 08:17:14AM -0500, Mark Langsdorf wrote:
-> In 5/2/21 12:23 PM, Kees Cook wrote:
-> > This reverts commit 03d1571d9513369c17e6848476763ebbd10ec2cb.
-> > 
-> > While /sys/kernel/debug/acpi/custom_method is already a privileged-only
-> > API providing proxied arbitrary write access to kernel memory[1][2],
-> > with existing race conditions[3] in buffer allocation and use that could
-> > lead to memory leaks and use-after-free conditions, the above commit
-> > appears to accidentally make the use-after-free conditions even easier
-> > to accomplish. ("buf" is a global variable and prior kfree()s would set
-> > buf back to NULL.)
-> > 
-> > This entire interface needs to be reworked (if not entirely removed).
-> > 
-> > [1] https://lore.kernel.org/lkml/20110222193250.GA23913@outflux.net/
-> > [2] https://lore.kernel.org/lkml/201906221659.B618D83@keescook/
-> > [3] https://lore.kernel.org/lkml/20170109231323.GA89642@beast/
-> > 
-> > Cc: Wenwen Wang <wenwen@cs.uga.edu>
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> 
-> I have two patches submitted to linux-acpi to fix the most obvious bugs in
-> the current driver.  I don't think that just reverting this patch in its
-> entirety is a good solution: it still leaves the buf allocated in -EINVAL,
-> as well as the weird case where a not fully consumed buffer can be
-> reallocated without being freed on a subsequent call.
-> 
-> https://lore.kernel.org/linux-acpi/20210427185434.34885-1-mlangsdo@redhat.com/
-> 
-> https://lore.kernel.org/linux-acpi/20210423152818.97077-1-mlangsdo@redhat.com/
-> 
-> I support rewriting this driver in its entirety, but reverting one bad patch
-> to leave it in a different buggy state is less than ideal.
+Hi Chris,
 
-Thanks for working on that! It'd be nice if there was a lock held for
-the duration of the "open", then all the concurrency races would go
-away. But, I haven't spent a lot of time looking since it's root-only
-and already blocked by lockdown, etc.
+On Mon, May 03, 2021 at 11:44:04AM -0400, Chris McCrae wrote:
+> Thanks for answering the call Sean.
+> 
+> On Mon, 3 May 2021 at 05:20, Sean Young <sean@mess.org> wrote:
+> >
+> > Hi Chris,
+> >
+> > On Fri, Apr 30, 2021 at 07:37:10PM -0400, Chris McCrae wrote:
+> > > Recently acquired an Asus PN62S (Intel) as a media centre frontend
+> > > (currently testing with Xubuntu 20.04 and a 5.10 kernel, and the most
+> > > current BIOS available).  Having an integrated IR was part of the
+> > > selling features.  However, getting it to be recognized by my system
+> > > has become a challenge that I am getting obsessed with.  There's very
+> > > little to find online on this device that is current, but there has
+> > > been some recent conversation on this list about the same device, on a
+> > > related machine, the PN50 (AMD).  I'm hoping that the knowledge here
+> > > may lead to a solution for my issue.
+> > >
+> > > I can provide more detail on request, but at the moment I am focusing
+> > > on the DSDT as a possible suspect.  I do not have the 16 byte issue
+> > > that the PN50 experiences.  Mine is defined as 8 bytes, which is
+> > > compatible with the ite-cir driver.  My issue is that there appears to
+> > > be no attempt to bind the device to the driver (but it is visible in
+> > > lsmod)... no messages about the driver in dmesg at all.  My thought is
+> > > that the definition of the device in DSDT may somehow give it enough
+> > > information (ITE8708) to know the driver could be needed, but not the
+> > > correct information to make it work.
+> > >
+> > > An earlier message provided only part of the device definition in DSDT
+> > > for the PN50.  I would like to be able to see the full definition for
+> > > it from the PN50, to see if anything is significantly different.
+> > > Ideally, if I had the full DSDT as a starting point, I could compare
+> > > other areas such as motherboard resources.
+> >
+> > It would be great if we could see the entries for the IR device in your
+> > DSDT. There is a guide here https://wiki.archlinux.org/title/DSDT on
+> > how to do that.
+> >
+> Here the full device from the DSDT:
+> 
+>             Device (CR00)
+>             {
+>                 Name (_ADR, Zero)  // _ADR: Address
+>                 Name (VBAN, 0x0680)
+>                 Name (VIRQ, 0x0A)
+>                 Name (UIDN, Zero)
+>                 Name (_HID, EisaId ("ITE8708"))  // _HID: Hardware ID
+>                 Method (_UID, 0, NotSerialized)  // _UID: Unique ID
+>                 {
+>                     Return (UIDN) /* \_SB_.PCI0.CR00.UIDN */
+>                 }
+> 
+>                 Method (_STA, 0, Serialized)  // _STA: Status
+>                 {
+>                     If ((CIRE == Zero))
+>                     {
+>                         Return (Zero)
+>                     }
+>                     Return (0x0F)
+>                 }
+> 
+>                 Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
+>                 {
+>                     Name (BUF0, ResourceTemplate ()
+>                     {
+>                         IO (Decode16,
+>                             0x0000,             // Range Minimum
+>                             0x0000,             // Range Maximum
+>                             0x01,               // Alignment
+>                             0x08,               // Length
+>                             _Y10)
+>                         IRQNoFlags (_Y11)
+>                             {}
+>                         DMA (Compatibility, NotBusMaster, Transfer8, )
+>                             {}
+>                     })
+>                     CreateWordField (BUF0,
+> \_SB.PCI0.CR00._CRS._Y10._MIN, IOPL)  // _MIN: Minimum Base Address
+>                     CreateWordField (BUF0,
+> \_SB.PCI0.CR00._CRS._Y10._MAX, IOPH)  // _MAX: Maximum Base Address
+>                     CreateWordField (BUF0,
+> \_SB.PCI0.CR00._CRS._Y11._INT, IRQ)  // _INT: Interrupts
+>                     IOPL = VBAN /* \_SB_.PCI0.CR00.VBAN */
+>                     IOPH = VBAN /* \_SB_.PCI0.CR00.VBAN */
+>                     IRQ = (One << VIRQ) /* \_SB_.PCI0.CR00.VIRQ */
+>                     Return (BUF0) /* \_SB_.PCI0.CR00._CRS.BUF0 */
+>                 }
+>             }
 
--- 
-Kees Cook
+Hmm this is not really telling us everything yet. Would you mind sending
+on the entire dmesg please?
+
+> > Thanks
+> >
+> > Sean
+> 
+> I've been using the latest ACPI Spec (6.3) to better comprehend the
+> macros, and what they should produce.  Running the DSDT through
+> acpiexec for \_SB.PCI0.CR00._CRS gives:
+> 
+> - execute \_SB.PCI0.CR00._CRS
+> Evaluating \_SB.PCI0.CR00._CRS
+> 0x1 Outstanding allocations after evaluation of \_SB.PCI0.CR00._CRS
+> Evaluation of \_SB.PCI0.CR00._CRS returned object 0x562c4e9a9c90,
+> external buffer length 28
+> [Buffer] Length 10 =   0000: 47 01 80 06 80 06 01 08 22 00 04 2A 00 00
+> 79 00  // G......."..*..y.
+> 
+> I'm still a little unclear on the first byte (47) and the last two (79
+> 00), generated presumably by ResourceTemplate(), but the rest seem to
+> match the expected results based on the inputs.  Aside from the
+> obvious difference in the address range length compared to the PN50's
+> BUF0, which seems to be the PN50's problem, the definition of BUF0 is
+> consistent.  I've even recompiled the DSDT with a length of 0x10 just
+> to see if that made a difference, and it doesn't.  Still no sign of
+> the driver in dmesg.  Although it would be nice to see the full CR00
+> definition for the PN50, it seems less likely that the problem lies
+> here.
+> 
+> I've tried various acpi kernel debugging settings, but easily get
+> swamped with output.  Is there a process path somewhere that can be
+> followed to understand how the device goes through the ACPI process
+> and eventually gets picked up by the kernel?  I still feel like the
+> problem precedes the kernel's involvement.  The kernel obviously has
+> some degree of awareness of the DSDT entry, because I can find :
+> 
+> /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/ITE8708:00/
+> 
+> The status is correct (0x0F), but under the physical_node, I have no
+> 'resources' entry.  Should there be one?  I have a 'resource' file,
+> but it only returns zeroes.
+
+This does _sound_ like an acpi issue, I've cc'ed linux-acpi@vger.kernel.org.
+
+> And instead of being linked to ite_cir (which is showing in lsmod, but
+> not used by anything), the driver ->
+> ../../../bus/pci/drivers/skl_uncore
+> 
+> To me, that seems like it's processing what it has been presented, but
+> I've been wrong before.  I'm open for directions on where to
+> investigate next.
+
+This is not something I can help with, I'm afraid.
+
+Thanks,
+
+Sean
