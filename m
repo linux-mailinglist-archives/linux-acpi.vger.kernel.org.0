@@ -2,141 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5758373B37
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 May 2021 14:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1282373C0D
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 May 2021 15:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232580AbhEEMbD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 May 2021 08:31:03 -0400
-Received: from foss.arm.com ([217.140.110.172]:43808 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231633AbhEEMbD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 5 May 2021 08:31:03 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE4D231B;
-        Wed,  5 May 2021 05:30:06 -0700 (PDT)
-Received: from [192.168.178.6] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 394AA3F70D;
-        Wed,  5 May 2021 05:30:00 -0700 (PDT)
-Subject: Re: [RFC PATCH v6 3/4] scheduler: scan idle cpu in cluster for tasks
- within one LLC
-To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>
-Cc:     "tim.c.chen@linux.intel.com" <tim.c.chen@linux.intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "bsegall@google.com" <bsegall@google.com>,
-        "mgorman@suse.de" <mgorman@suse.de>,
-        "msys.mizuma@gmail.com" <msys.mizuma@gmail.com>,
-        "valentin.schneider@arm.com" <valentin.schneider@arm.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "aubrey.li@linux.intel.com" <aubrey.li@linux.intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>, "xuwei (O)" <xuwei5@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "guodong.xu@linaro.org" <guodong.xu@linaro.org>,
-        yangyicong <yangyicong@huawei.com>,
-        "Liguozhu (Kenneth)" <liguozhu@hisilicon.com>,
-        "linuxarm@openeuler.org" <linuxarm@openeuler.org>,
-        "hpa@zytor.com" <hpa@zytor.com>
-References: <20210420001844.9116-1-song.bao.hua@hisilicon.com>
- <20210420001844.9116-4-song.bao.hua@hisilicon.com>
- <80f489f9-8c88-95d8-8241-f0cfd2c2ac66@arm.com>
- <b42c762a287b4360bfa3179a5c7c3e8c@hisilicon.com>
- <CAKfTPtC51eO2mAuW6mHQ-SdznAtfDL3D4UOs4HmnXaPOOCN_cA@mail.gmail.com>
- <8b5277d9-e367-566d-6bd1-44ac78d21d3f@arm.com>
- <185746c4d02a485ca8f3509439328b26@hisilicon.com>
- <d31a65af-d1d5-5fd1-276c-d2318cdba078@arm.com>
- <4d1f063504b1420c9f836d1f1a7f8e77@hisilicon.com>
-From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
-Message-ID: <142c7192-cde8-6dbe-bb9d-f0fce21ec959@arm.com>
-Date:   Wed, 5 May 2021 14:29:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S233302AbhEENMw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 May 2021 09:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230208AbhEENMw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 May 2021 09:12:52 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CF0C061574
+        for <linux-acpi@vger.kernel.org>; Wed,  5 May 2021 06:11:55 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id i26so2131199oii.3
+        for <linux-acpi@vger.kernel.org>; Wed, 05 May 2021 06:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OWL3R/wvp79X5sMQgGYKT2VaRT3usJagJyJ8LLwCBRc=;
+        b=YEKNUVNGjcNZcPeTxKUu3L9ieWS5OYMjeFVM/Iv4aZH+waVxukEYe9obPkcrt+hNKc
+         4CbnLMBhTNyKjtzDfocKAdW3Qk5EIsae4ZsdPtpgnkEiG3PhtVKyJAkbRDpRTaKKNbeE
+         2GXz/9RSTXrZk2xlEc1dk4nVGK6QGEBj2Avy4ZpTVpcR0ovtQFoTwMjSDRKyo0KGQ1Vy
+         6mGiz2/wyIaqGmiaMIYQ736kd2vs+CAwROqzO1t1Y4zCHl6An6thJxp0x0QxGUs8teb6
+         LJmHbMH0RmdssEhJV7jOuh0Q7AuI+ijpFAOy+2QxRCOsIuReJcNGj0zASGKBh6SRz3GP
+         1aTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OWL3R/wvp79X5sMQgGYKT2VaRT3usJagJyJ8LLwCBRc=;
+        b=m5ZQmTSaBU6ZE+VF1hgKyKMCmM/7TVaVvB6UKjRyr92KgckVGGlLZTFAsqjO/XAUF3
+         0fPtgtJaT6wCDIt4IS1xr/HfdsjNxUsio797CVpD2eb+uyxIDYhm4l1T4l+D/PykXHGE
+         nQD5T0CzZ756H49FPge9zyFk1O8hO9ZABCKDSBWlwzjM5Ytu2Nrc0RffUmUMEDypzLBh
+         4NnvKyyMmkaZtB5wHo32kM0s7fNjczGTpxLvq1nJiAOeSHcwTtkh5nSknP9uLqdgnJKh
+         iXfnZXE7jS0Vc/OS6LwuA37PvWmvcxqJh4Cq61zuixNANBf7wcILNdUwMb24P0rRv+hg
+         lmOw==
+X-Gm-Message-State: AOAM532EDvbUlEmMLBRPKhulvPyii8F+rLejCM4k265voSgNh79ywe1y
+        hK0Nv6tPcTbzNIrI6TxztCtCX/bYEh1IrivINmw=
+X-Google-Smtp-Source: ABdhPJztzUDmHalSN8/7tcMO2/PyPxSYfsnh3OwAMTzs8F6HtjLhgkdAVxMxilL+vymgNpAZ4siQxjJSV8DOxu+hD1c=
+X-Received: by 2002:a05:6808:68a:: with SMTP id k10mr21052843oig.120.1620220314538;
+ Wed, 05 May 2021 06:11:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <4d1f063504b1420c9f836d1f1a7f8e77@hisilicon.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210504221140.593002-1-alexander.deucher@amd.com>
+ <BYAPR12MB2693F7109BC8E7EF9F672A16E25A9@BYAPR12MB2693.namprd12.prod.outlook.com>
+ <22c1b9a9-8167-5e4f-6ff7-278c386cc423@redhat.com>
+In-Reply-To: <22c1b9a9-8167-5e4f-6ff7-278c386cc423@redhat.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 5 May 2021 09:11:43 -0400
+Message-ID: <CADnq5_POX7j1_BDh24uQ=gFfJU43TQW49Q32LUoisqg3hW8t+A@mail.gmail.com>
+Subject: Re: [PATCH] platform/x86: Add missing LPS0 functions for AMD
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Liang, Prike" <Prike.Liang@amd.com>,
+        "S-k, Shyam-sundar" <Shyam-sundar.S-k@amd.com>,
+        Marcin Bachry <hegel666@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03/05/2021 13:35, Song Bao Hua (Barry Song) wrote:
+On Wed, May 5, 2021 at 9:10 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 5/5/21 12:33 AM, Limonciello, Mario wrote:
+> > [AMD Public Use]
+> >
+> >> Subject: [PATCH] platform/x86: Add missing LPS0 functions for AMD
+> >
+> > Rafael might be willing to fix it up on commit, but if you end up needing to re-spin
+> > I think technically this subsystem prefix to match other stuff committed to this file
+> > should be:
+> >
+> > "ACPI: PM: s2idle:"
+>
+> Ack, please get the subject next right time. I was about the put this in a folder
+> with patches to apply to the pdx86 kernel tree once 5.13-rc1 is out, but this
+> should not go upstream through the pdx86 tree at all.
 
-[...]
+Do you want me to resend with the corrected subject?  What tree does
+this need to go through?
 
->> From: Song Bao Hua (Barry Song)
+Alex
 
-[...]
-
->>> From: Dietmar Eggemann [mailto:dietmar.eggemann@arm.com]
-
-[...]
-
->>> On 29/04/2021 00:41, Song Bao Hua (Barry Song) wrote:
->>>>
->>>>
->>>>> -----Original Message-----
->>>>> From: Dietmar Eggemann [mailto:dietmar.eggemann@arm.com]
->>>
->>> [...]
->>>
->>>>>>>> From: Dietmar Eggemann [mailto:dietmar.eggemann@arm.com]
->>>>>
->>>>> [...]
->>>>>
->>>>>>>> On 20/04/2021 02:18, Barry Song wrote:
-
-[...]
-
-> 
-> On the other hand, according to "sched: Implement smarter wake-affine logic"
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=62470419
-> 
-> Proper factor in wake_wide is mainly beneficial of 1:n tasks like postgresql/pgbench.
-> So using the smaller cluster size as factor might help make wake_affine false so
-> improve pgbench.
-> 
-> From the commit log, while clients =  2*cpus, the commit made the biggest
-> improvement. In my case, It should be clients=48 for a machine whose LLC
-> size is 24.
-> 
-> In Linux, I created a 240MB database and ran "pgbench -c 48 -S -T 20 pgbench"
-> under two different scenarios:
-> 1. page cache always hit, so no real I/O for database read
-> 2. echo 3 > /proc/sys/vm/drop_caches
-> 
-> For case 1, using cluster_size and using llc_size will result in similar
-> tps= ~108000, all of 24 cpus have 100% cpu utilization.
-> 
-> For case 2, using llc_size still shows better performance.
-> 
-> tps for each test round(cluster size as factor in wake_wide):
-> 1398.450887 1275.020401 1632.542437 1412.241627 1611.095692 1381.354294 1539.877146
-> avg tps = 1464
-> 
-> tps for each test round(llc size as factor in wake_wide):
-> 1718.402983 1443.169823 1502.353823 1607.415861 1597.396924 1745.651814 1876.802168
-> avg tps = 1641  (+12%)
-> 
-> so it seems using cluster_size as factor in "slave >= factor && master >= slave *
-> factor" isn't a good choice for my machine at least.
-
-So SD size = 4 (instead of 24) seems to be too small for `-c 48`.
-
-Just curious, have you seen the benefit of using wake wide on SD size =
-24 (LLC) compared to not using it at all?
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+> >
+> >>
+> >> These are supposedly not required for AMD platforms,
+> >> but at least some HP laptops seem to require it to
+> >> properly turn off the keyboard backlight.
+> >>
+> >> Based on a patch from Marcin Bachry <hegel666@gmail.com>.
+> >>
+> >> Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
+> >> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> >> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> >> Cc: Marcin Bachry <hegel666@gmail.com>
+> >> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> >> ---
+> >>
+> >> Dropping patch 2/2 for now.  This patch fixes several
+> >> systems and doesn't appear to cause any issues.
+> >>
+> >>  drivers/acpi/x86/s2idle.c | 4 ++++
+> >>  1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> >> index 2b69536cdccb..2d7ddb8a8cb6 100644
+> >> --- a/drivers/acpi/x86/s2idle.c
+> >> +++ b/drivers/acpi/x86/s2idle.c
+> >> @@ -42,6 +42,8 @@ static const struct acpi_device_id lps0_device_ids[] = {
+> >>
+> >>  /* AMD */
+> >>  #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-
+> >> 932122d37721"
+> >> +#define ACPI_LPS0_ENTRY_AMD         2
+> >> +#define ACPI_LPS0_EXIT_AMD          3
+> >>  #define ACPI_LPS0_SCREEN_OFF_AMD    4
+> >>  #define ACPI_LPS0_SCREEN_ON_AMD     5
+> >>
+> >> @@ -408,6 +410,7 @@ int acpi_s2idle_prepare_late(void)
+> >>
+> >>      if (acpi_s2idle_vendor_amd()) {
+> >>              acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD);
+> >> +            acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD);
+> >>      } else {
+> >>              acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
+> >>              acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+> >> @@ -422,6 +425,7 @@ void acpi_s2idle_restore_early(void)
+> >>              return;
+> >>
+> >>      if (acpi_s2idle_vendor_amd()) {
+> >> +            acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD);
+> >>              acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD);
+> >>      } else {
+> >>              acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+> >> --
+> >> 2.30.2
+> >
+>
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
