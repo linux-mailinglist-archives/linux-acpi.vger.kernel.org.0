@@ -2,87 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C05B8375414
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 14:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E513737565D
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 17:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbhEFMuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 May 2021 08:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbhEFMuU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 May 2021 08:50:20 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED8CC061574;
-        Thu,  6 May 2021 05:49:22 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id 10so5189720pfl.1;
-        Thu, 06 May 2021 05:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=15GKIU/VxVFZXf36o9Yrp20X9pUI530VMRJk1YXWiwQ=;
-        b=WaPLP2+sW2dXb3g0PkjwtlmmNygtk1fmVSauKRC6BdLAn9Xh2YifmDoyXppx0ENOBU
-         FCUUHd5cZOpnVGFtG7oCtF5y1UVMaCoD8AlZ1DZgdXbpW5NIvyBgjHOxZ/oGQOc0OgZY
-         78bFr6UfsJjYuY/E2oGbc89HD36tBIPzQECtcGnhFVjXXlTRVWkSUY63sgj7xDYDAS7T
-         vWgmLUUva2oFYNJJl74E1NdF1Flyjww4udb31qO3nDM4+vZPIWhWWebg1YCLUNFpZ67z
-         C5ZK1s4P6bHYis1UgBJcuIjI027b7jLo5YayW+1fQ/SfWf05Z79FWfSsrobOSRDyJy0L
-         qt2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=15GKIU/VxVFZXf36o9Yrp20X9pUI530VMRJk1YXWiwQ=;
-        b=f0CMWUAoIgMLuPB3L8FXGYminxXCBAyAi9VdoDIsTy+RfnPjPNWaNf95OfaiI3JqLL
-         ZbXNX0MW8TBCf7apVaSEEEEudLrD70zDs/aiugMBb6qHMEU47fIIu8prkKKMJpL1shFk
-         ScAH2KidUXEUQYgbCHDq1o3YBQQ4+BC25SQQugCAcKZ4QHduRtAlIb5uF8ZVsugqlOZA
-         X/Pix/xPz0AkbIfdKuGaf5Xs8/zcPBZPRFhQBcz8xytCprt0034TA+tYQJeBVkhQPjAx
-         VQ/m1A4jokzPdKqh8y5LIc18d/rdJ6eOHMF5TLIC1UFhOjVW4gdJy7YEip5DRELRw0C3
-         /yVg==
-X-Gm-Message-State: AOAM533/gOIz8ntHptdxipElZOpRBCabr1Tibj39BjxlfkAH1UI5bIN4
-        3aysJ2SqDclvSrH/AMKxD6fAKBdRpnWu+kPjcr0=
-X-Google-Smtp-Source: ABdhPJxIZt9y1cqlh0eCQWAF6Siwalsz3UBUCaUrJylH/fSA2f8rMHcHPF/3bZbYrx4yCnXKaDPlfQ==
-X-Received: by 2002:a63:7e13:: with SMTP id z19mr4114613pgc.184.1620305361551;
-        Thu, 06 May 2021 05:49:21 -0700 (PDT)
-Received: from localhost.localdomain (host-219-71-67-82.dynamic.kbtelecom.net. [219.71.67.82])
-        by smtp.gmail.com with ESMTPSA id t12sm1991313pjw.51.2021.05.06.05.49.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 May 2021 05:49:21 -0700 (PDT)
-From:   Wei Ming Chen <jj251510319013@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        Wei Ming Chen <jj251510319013@gmail.com>
-Subject: [PATCH] ACPICA: Use fallthrough pseudo-keyword
-Date:   Thu,  6 May 2021 20:49:12 +0800
-Message-Id: <20210506124912.7725-1-jj251510319013@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        id S235003AbhEFPSU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 May 2021 11:18:20 -0400
+Received: from foss.arm.com ([217.140.110.172]:35834 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234888AbhEFPST (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 6 May 2021 11:18:19 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B63731B;
+        Thu,  6 May 2021 08:17:18 -0700 (PDT)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C72573F718;
+        Thu,  6 May 2021 08:17:16 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v3 09/10] iommu/arm-smmu: Get associated RMR info and
+ install bypass SMR
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        robin.murphy@arm.com, wanghuiqiang@huawei.com,
+        guohanjun@huawei.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com
+References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
+ <20210420082751.1829-10-shameerali.kolothum.thodi@huawei.com>
+Message-ID: <501cd986-7f9c-9aa7-b4e9-f2ef98fb7a95@arm.com>
+Date:   Thu, 6 May 2021 16:17:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <20210420082751.1829-10-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Replace /* FALLTHROUGH */ comment with pseudo-keyword macro fallthrough[1]
+On 20/04/2021 09:27, Shameer Kolothum wrote:
+> From: Jon Nettleton <jon@solid-run.com>
+> 
+> Check if there is any RMR info associated with the devices behind
+> the SMMU and if any, install bypass SMRs for them. This is to
+> keep any ongoing traffic associated with these devices alive
+> when we enable/reset SMMU during probe().
+> 
+> Signed-off-by: Jon Nettleton <jon@solid-run.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>   drivers/iommu/arm/arm-smmu/arm-smmu.c | 42 +++++++++++++++++++++++++++
+>   drivers/iommu/arm/arm-smmu/arm-smmu.h |  2 ++
+>   2 files changed, 44 insertions(+)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> index d8c6bfde6a61..4d2f91626d87 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> @@ -2102,6 +2102,43 @@ err_reset_platform_ops: __maybe_unused;
+>   	return err;
+>   }
+>   
+> +static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
+> +{
+> +	struct iommu_rmr *e;
+> +	int i, cnt = 0;
+> +	u32 smr;
+> +
+> +	for (i = 0; i < smmu->num_mapping_groups; i++) {
+> +		smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
+> +		if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
+> +			continue;
+> +
+> +		list_for_each_entry(e, &smmu->rmr_list, list) {
+> +			if (FIELD_GET(ARM_SMMU_SMR_ID, smr) != e->sid)
+> +				continue;
+> +
+> +			smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
+> +			smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
+> +			smmu->smrs[i].valid = true;
+> +
+> +			smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
+> +			smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
+> +			smmu->s2crs[i].cbndx = 0xff;
+> +
+> +			cnt++;
+> +		}
+> +	}
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+If I understand this correctly - this is looking at the current
+(hardware) configuration of the SMMU and attempting to preserve any
+bypass SMRs. However from what I can tell it suffers from the following
+two problems:
 
-Signed-off-by: Wei Ming Chen <jj251510319013@gmail.com>
----
- drivers/acpi/acpica/utprint.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  (a) Only the ID of the SMR is being checked, not the MASK. So if the
+firmware has setup an SMR matching a number of streams this will break.
 
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index e37d612e8db5..0b511434b80b 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
- 		case 'X':
- 
- 			type |= ACPI_FORMAT_UPPER;
--			/* FALLTHROUGH */
-+			fallthrough;
- 
- 		case 'x':
- 
--- 
-2.25.1
+  (b) The SMMU might not be enabled at all (CLIENTPD==1) or bypass
+enabled for unmatched streams (USFCFG==0).
 
+Certainly in my test setup case (b) applies and so this doesn't work.
+Perhaps something like the below would work better? (It works in the
+case of the SMMU not enabled - I've not tested case (a)).
+
+Steve
+
+----8<----
+static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
+{
+	struct iommu_rmr *e;
+	int i, cnt = 0;
+	u32 smr;
+	u32 reg;
+
+	reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sCR0);
+
+	if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
+		/*
+		 * SMMU is already enabled and disallowing bypass, so preserve
+		 * the existing SMRs
+		 */
+		for (i = 0; i < smmu->num_mapping_groups; i++) {
+			smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
+			if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
+				continue;
+			smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
+			smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
+			smmu->smrs[i].valid = true;
+		}
+	}
+
+	list_for_each_entry(e, &smmu->rmr_list, list) {
+		u32 sid = e->sid;
+
+		i = arm_smmu_find_sme(smmu, sid, ~0);
+		if (i < 0)
+			continue;
+		if (smmu->s2crs[i].count == 0) {
+			smmu->smrs[i].id = sid;
+			smmu->smrs[i].mask = ~0;
+			smmu->smrs[i].valid = true;
+		}
+		smmu->s2crs[i].count++;
+		smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
+		smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
+		smmu->s2crs[i].cbndx = 0xff;
+
+		cnt++;
+	}
+
+	if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
+		/* Remove the valid bit for unused SMRs */
+		for (i = 0; i < smmu->num_mapping_groups; i++) {
+			if (smmu->s2crs[i].count == 0)
+				smmu->smrs[i].valid = false;
+		}
+	}
+
+	dev_notice(smmu->dev, "\tpreserved %d boot mapping%s\n", cnt,
+		   cnt == 1 ? "" : "s");
+}
