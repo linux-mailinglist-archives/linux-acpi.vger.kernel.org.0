@@ -2,165 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E513737565D
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 17:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD303757AA
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 17:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235003AbhEFPSU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 May 2021 11:18:20 -0400
-Received: from foss.arm.com ([217.140.110.172]:35834 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234888AbhEFPST (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 May 2021 11:18:19 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B63731B;
-        Thu,  6 May 2021 08:17:18 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C72573F718;
-        Thu,  6 May 2021 08:17:16 -0700 (PDT)
-From:   Steven Price <steven.price@arm.com>
-Subject: Re: [PATCH v3 09/10] iommu/arm-smmu: Get associated RMR info and
- install bypass SMR
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        robin.murphy@arm.com, wanghuiqiang@huawei.com,
-        guohanjun@huawei.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com
-References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
- <20210420082751.1829-10-shameerali.kolothum.thodi@huawei.com>
-Message-ID: <501cd986-7f9c-9aa7-b4e9-f2ef98fb7a95@arm.com>
-Date:   Thu, 6 May 2021 16:17:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S235341AbhEFPkz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 May 2021 11:40:55 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:42905 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235755AbhEFPki (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 May 2021 11:40:38 -0400
+Received: by mail-oi1-f181.google.com with SMTP id v24so5860919oiv.9;
+        Thu, 06 May 2021 08:39:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=sdjQ0pJ/CZ8t7dbJVu4aunJF6Pe/uNssbk7mGeRm9Qc=;
+        b=XvG+MdzxTOBEjnSaHDdEIrddGqikdrmxoSpjPs8R+0/HYDSxIJ0MlIowNtLRvSqzoz
+         0oxG810botw6uMDNcZwnAy7zQsLCSARBcN5W2zx5IDMtt/EXzcmYu3zEhdzc3gPv+Yua
+         bCBszPqX2DTI/oiggUld3HAyhcdvQiFd/Ec3p5VuFgs5I+98dv66wFk0KEVrJVMAUBbv
+         TCIsL7VGTnE8CUPZDhkuE/BKz9v4zBfz8WMu34LSCQfP6YqZ15EwJ44hwfh3wCySlb59
+         VxPyRteMpr3Ke0LB3qeAGlxZbaSWNAE2ptcJYd9zZTxiYxnft8B+pTL6ncIrKOffrBpw
+         Z9Gw==
+X-Gm-Message-State: AOAM5334vSi3FDOybhniUn7GS9R6uQ8QexfeiwylhXIAttfAuAVvyTMW
+        82s1iUTXBVp2zK8hqJBy2aHZuNR9yBuIeRWu3XpAlP7Sv1s=
+X-Google-Smtp-Source: ABdhPJyL2IddCEkm8O1kz510+fbDkAwQL7i4c9S254ThXXAQl0anHxWLSslGGI+frvYlcT+aVdOTbfbsQecZEoavQu8=
+X-Received: by 2002:aca:bc89:: with SMTP id m131mr3672209oif.71.1620315579236;
+ Thu, 06 May 2021 08:39:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210420082751.1829-10-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 6 May 2021 17:39:28 +0200
+Message-ID: <CAJZ5v0hLfXuUNRw2B48S7mQK5bnsZFFKQfqf5mCncMnak6uXYw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.13-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20/04/2021 09:27, Shameer Kolothum wrote:
-> From: Jon Nettleton <jon@solid-run.com>
-> 
-> Check if there is any RMR info associated with the devices behind
-> the SMMU and if any, install bypass SMRs for them. This is to
-> keep any ongoing traffic associated with these devices alive
-> when we enable/reset SMMU during probe().
-> 
-> Signed-off-by: Jon Nettleton <jon@solid-run.com>
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->   drivers/iommu/arm/arm-smmu/arm-smmu.c | 42 +++++++++++++++++++++++++++
->   drivers/iommu/arm/arm-smmu/arm-smmu.h |  2 ++
->   2 files changed, 44 insertions(+)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> index d8c6bfde6a61..4d2f91626d87 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> @@ -2102,6 +2102,43 @@ err_reset_platform_ops: __maybe_unused;
->   	return err;
->   }
->   
-> +static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
-> +{
-> +	struct iommu_rmr *e;
-> +	int i, cnt = 0;
-> +	u32 smr;
-> +
-> +	for (i = 0; i < smmu->num_mapping_groups; i++) {
-> +		smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
-> +		if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
-> +			continue;
-> +
-> +		list_for_each_entry(e, &smmu->rmr_list, list) {
-> +			if (FIELD_GET(ARM_SMMU_SMR_ID, smr) != e->sid)
-> +				continue;
-> +
-> +			smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
-> +			smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
-> +			smmu->smrs[i].valid = true;
-> +
-> +			smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
-> +			smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
-> +			smmu->s2crs[i].cbndx = 0xff;
-> +
-> +			cnt++;
-> +		}
-> +	}
+Hi Linus,
 
-If I understand this correctly - this is looking at the current
-(hardware) configuration of the SMMU and attempting to preserve any
-bypass SMRs. However from what I can tell it suffers from the following
-two problems:
+Please pull from the tag
 
-  (a) Only the ID of the SMR is being checked, not the MASK. So if the
-firmware has setup an SMR matching a number of streams this will break.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.13-rc1-2
 
-  (b) The SMMU might not be enabled at all (CLIENTPD==1) or bypass
-enabled for unmatched streams (USFCFG==0).
+with top-most commit 3da53c754502acf74d4d9ba8ac23fc356e6c3d0f
 
-Certainly in my test setup case (b) applies and so this doesn't work.
-Perhaps something like the below would work better? (It works in the
-case of the SMMU not enabled - I've not tested case (a)).
+ Merge branches 'acpi-pm' and 'acpi-docs'
 
-Steve
+on top of commit d8f9176b4ece17e831306072678cd9ae49688cf5
 
-----8<----
-static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
-{
-	struct iommu_rmr *e;
-	int i, cnt = 0;
-	u32 smr;
-	u32 reg;
+ Merge tag 'acpi-5.13-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-	reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sCR0);
+to receive ACPI fixes for 5.13-rc1.
 
-	if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
-		/*
-		 * SMMU is already enabled and disallowing bypass, so preserve
-		 * the existing SMRs
-		 */
-		for (i = 0; i < smmu->num_mapping_groups; i++) {
-			smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
-			if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
-				continue;
-			smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
-			smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
-			smmu->smrs[i].valid = true;
-		}
-	}
+These revert one recent commit that turned out to be problematic,
+address two issues in the ACPI "custom method" interface and
+update GPIO properties documentation.
 
-	list_for_each_entry(e, &smmu->rmr_list, list) {
-		u32 sid = e->sid;
+Specifics:
 
-		i = arm_smmu_find_sme(smmu, sid, ~0);
-		if (i < 0)
-			continue;
-		if (smmu->s2crs[i].count == 0) {
-			smmu->smrs[i].id = sid;
-			smmu->smrs[i].mask = ~0;
-			smmu->smrs[i].valid = true;
-		}
-		smmu->s2crs[i].count++;
-		smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
-		smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
-		smmu->s2crs[i].cbndx = 0xff;
+ - Revent recent commit related to the handling of ACPI power
+   resources during initialization, because it turned out to cause
+   problems to occur on some systems (Rafael Wysocki).
 
-		cnt++;
-	}
+ - Fix potential use-after-free and potential memory leak in the
+   ACPI "custom method" debugfs interface (Mark Langsdorf).
 
-	if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
-		/* Remove the valid bit for unused SMRs */
-		for (i = 0; i < smmu->num_mapping_groups; i++) {
-			if (smmu->s2crs[i].count == 0)
-				smmu->smrs[i].valid = false;
-		}
-	}
+ - Update ACPI GPIO properties documentation to cover assumptions
+   regarding GPIO polarity (Andy Shevchenko).
 
-	dev_notice(smmu->dev, "\tpreserved %d boot mapping%s\n", cnt,
-		   cnt == 1 ? "" : "s");
-}
+Thanks!
+
+
+---------------
+
+Andy Shevchenko (1):
+      Documentation: firmware-guide: gpio-properties: Add note to SPI CS case
+
+Mark Langsdorf (2):
+      ACPI: custom_method: fix potential use-after-free issue
+      ACPI: custom_method: fix a possible memory leak
+
+Rafael J. Wysocki (1):
+      Revert "ACPI: scan: Turn off unused power resources during initialization"
+
+---------------
+
+ Documentation/firmware-guide/acpi/gpio-properties.rst | 6 ++++++
+ drivers/acpi/custom_method.c                          | 4 +++-
+ drivers/acpi/internal.h                               | 1 -
+ drivers/acpi/power.c                                  | 2 +-
+ drivers/acpi/scan.c                                   | 2 --
+ drivers/acpi/sleep.h                                  | 1 +
+ 6 files changed, 11 insertions(+), 5 deletions(-)
