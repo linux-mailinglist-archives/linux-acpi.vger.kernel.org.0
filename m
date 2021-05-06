@@ -2,61 +2,263 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A44F63759D4
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA26375D08
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 23:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236400AbhEFR61 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 May 2021 13:58:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40238 "EHLO mail.kernel.org"
+        id S230231AbhEFWAe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 May 2021 18:00:34 -0400
+Received: from mga01.intel.com ([192.55.52.88]:54248 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236338AbhEFR61 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 May 2021 13:58:27 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id A676E61107;
-        Thu,  6 May 2021 17:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620323848;
-        bh=IPvO7dCuUjYWMyqUlLSXScbwv5j5I53rPPMwvXJHZkw=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=chqOxWl7Cl3sXXN3TayfyWRc5M4uuLFIbXEOHkmTLgDrWcz36R7r68uufXAxGdZTJ
-         jm/HWuSSqQHoLvDk5EedZtT10sYCPkzCoitM+9l4ZyxIM37FdHFQMPHEtYe70fw5tj
-         Q0bZLnHpm5xcPqT4RKTg1c8sy+H/dp8m+OG2UAorXLqgqC/qPabslim1eeItWrAj6g
-         VfbhkTsF9FKW4HmmjkOqhgVb627jLaHRooYtnFdw+DPeCvSEzHsAEymeubhJRbw0Ou
-         Q2GIG67PFjBmv2x+6qkjIQwCEMzy81mAfwXPDfB9kFhADqYdP9D5i3INpW4LyBywze
-         QI41BSuU9WTfQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9F6B3609AC;
-        Thu,  6 May 2021 17:57:28 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v5.13-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hLfXuUNRw2B48S7mQK5bnsZFFKQfqf5mCncMnak6uXYw@mail.gmail.com>
-References: <CAJZ5v0hLfXuUNRw2B48S7mQK5bnsZFFKQfqf5mCncMnak6uXYw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hLfXuUNRw2B48S7mQK5bnsZFFKQfqf5mCncMnak6uXYw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc1-2
-X-PR-Tracked-Commit-Id: 3da53c754502acf74d4d9ba8ac23fc356e6c3d0f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 164e64adc246dd4239ab644dff86241d17cef218
-Message-Id: <162032384864.1989.1740026520389167319.pr-tracker-bot@kernel.org>
-Date:   Thu, 06 May 2021 17:57:28 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S229894AbhEFWAd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 6 May 2021 18:00:33 -0400
+IronPort-SDR: dWO6Edr+qrmtgvEybk2Pm74c8JiJr3NopPUwZAvpWjHdLrYABL6YUVcEaRdqvF1+SGGxBT595L
+ hSxgee0bcXjQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9976"; a="219478071"
+X-IronPort-AV: E=Sophos;i="5.82,279,1613462400"; 
+   d="scan'208";a="219478071"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2021 14:59:34 -0700
+IronPort-SDR: 8YyvleQwpQmBmS5PbD+A1+kfPx3sWCxKlrBGBXuua/6KQvOSjTpnMiLE364l2QxvaMz9Bsjf2l
+ rZzPeMJW792A==
+X-IronPort-AV: E=Sophos;i="5.82,279,1613462400"; 
+   d="scan'208";a="434594966"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2021 14:59:34 -0700
+Date:   Thu, 6 May 2021 14:59:34 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>,
+        linux-acpi@vger.kernel.org, alison.schofield@intel.com,
+        vishal.l.verma@intel.com, linuxarm@huawei.com,
+        Fangjian <f.fangjian@huawei.com>
+Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
+Message-ID: <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
+References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
+ <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Thu, 6 May 2021 17:39:28 +0200:
+On Tue, Apr 20, 2021 at 12:54:49AM +0800, Jonathan Cameron wrote:
+> +
+> +static int pci_doe_send_req(struct pci_doe *doe, struct pci_doe_exchange *ex)
+> +{
+> +	struct pci_dev *pdev = doe->pdev;
+> +	u32 val;
+> +	int i;
+> +
+> +	/*
+> +	 * Check the DOE busy bit is not set. If it is set, this could indicate
+> +	 * someone other than Linux (e.g. firmware) is using the mailbox. Note
+> +	 * it is expected that firmware and OS will negotiate access rights via
+> +	 * an, as yet to be defined method.
+> +	 */
+> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
+> +	if (FIELD_GET(PCI_DOE_STATUS_BUSY, val))
+> +		return -EBUSY;
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc1-2
+In discussion with Dan we believe that user space could also be issuing
+commands and would potentially cause us to be locked out.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/164e64adc246dd4239ab644dff86241d17cef218
+We agree that firmware should be out of the way here and if it is blocking
+the OS there is not much we can do about it.
 
-Thank you!
+However, if user space is using the mailbox we need to synchronize with them
+via pci_cfg_access_[try]lock().  This should avoid this EBUSY condition.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+[snip]
+
+> +
+> +static int pci_doe_recv_resp(struct pci_doe *doe, struct pci_doe_exchange *ex)
+> +{
+> +	struct pci_dev *pdev = doe->pdev;
+> +	size_t length;
+> +	u32 val;
+> +	int i;
+> +
+> +	/* Read the first two dwords to get the length and protocol */
+> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ, &val);
+> +	if ((FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val) != ex->vid) ||
+> +	    (FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val) != ex->protocol)) {
+> +		pci_err(pdev,
+> +			"Expected [VID, Protocol] = [%x, %x], got [%x, %x]\n",
+> +			ex->vid, ex->protocol,
+> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val),
+> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val));
+> +		return -EIO;
+> +	}
+> +
+> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
+
+I'm quite unfamiliar with the spec here: but it seems like this needs to be
+done before the above if statement indicate we got the value?
+
+[snip]
+
+> +
+> +static void doe_statemachine_work(struct work_struct *work)
+> +{
+> +	struct delayed_work *w = to_delayed_work(work);
+> +	struct pci_doe *doe = container_of(w, struct pci_doe, statemachine);
+> +	struct pci_dev *pdev = doe->pdev;
+> +	struct pci_doe_task *task;
+> +	bool abort;
+> +	u32 val;
+> +	int rc;
+> +
+> +	mutex_lock(&doe->tasks_lock);
+> +	task = list_first_entry_or_null(&doe->tasks, struct pci_doe_task, h);
+> +	abort = doe->abort;
+> +	doe->abort = false;
+> +	mutex_unlock(&doe->tasks_lock);
+> +
+> +	if (abort) {
+> +		/*
+> +		 * Currently only used during init - care needed if we want to
+> +		 * generally expose pci_doe_abort() as it would impact queries
+> +		 * in flight.
+> +		 */
+> +		WARN_ON(task);
+> +		doe->state = DOE_WAIT_ABORT;
+> +		pci_doe_abort_start(doe);
+> +		return;
+> +	}
+> +
+> +	switch (doe->state) {
+> +	case DOE_IDLE:
+> +		if (task == NULL)
+> +			return;
+> +
+> +		/* Nothing currently in flight so queue a task */
+> +		rc = pci_doe_send_req(doe, task->ex);
+> +		/*
+> +		 * The specification does not provide any guidance on how long
+> +		 * some other entity could keep the DOE busy, so try for 1
+> +		 * second then fail. Busy handling is best effort only, because
+> +		 * there is no way of avoiding racing against another user of
+> +		 * the DOE.
+> +		 */
+> +		if (rc == -EBUSY) {
+> +			doe->busy_retries++;
+> +			if (doe->busy_retries == PCI_DOE_BUSY_MAX_RETRIES) {
+> +				/* Long enough, fail this request */
+> +				doe->busy_retries = 0;
+> +				goto err_busy;
+
+With the addition of pci_cfg_access_[try]lock():
+
+Should we have some sort of WARN_ON() here to indicate that the system is
+behaving badly?
+
+[snip]
+
+> +	case DOE_WAIT_ABORT:
+> +	case DOE_WAIT_ABORT_ON_ERR:
+> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
+> +
+> +		if (!FIELD_GET(PCI_DOE_STATUS_ERROR, val) &&
+> +		    !FIELD_GET(PCI_DOE_STATUS_BUSY, val)) {
+> +			/* Back to normal state - carry on */
+> +			mutex_lock(&doe->tasks_lock);
+> +			if (!list_empty(&doe->tasks))
+> +				schedule_delayed_work(w, 0);
+> +			mutex_unlock(&doe->tasks_lock);
+> +
+> +			/*
+> +			 * For deliberately triggered abort, someone is
+> +			 * waiting.
+> +			 */
+> +			if (doe->state == DOE_WAIT_ABORT)
+> +				complete(&doe->abort_c);
+> +			doe->state = DOE_IDLE;
+> +
+> +			return;
+> +		}
+> +		if (time_after(jiffies, doe->timeout_jiffies)) {
+> +			struct pci_doe_task *t, *n;
+> +
+> +			/* We are dead - abort all queued tasks */
+> +			pci_err(pdev, "DOE ABORT timed out\n");
+> +			mutex_lock(&doe->tasks_lock);
+> +			doe->dead = true;
+> +			list_for_each_entry_safe(t, n, &doe->tasks, h) {
+> +				t->rv = -EIO;
+> +				t->cb(t->private);
+> +				list_del(&t->h);
+> +			}
+> +
+> +			mutex_unlock(&doe->tasks_lock);
+> +			if (doe->state == DOE_WAIT_ABORT)
+> +				complete(&doe->abort_c);
+> +		}
+> +		return;
+> +	}
+> +
+> +err_abort:
+> +	pci_doe_abort_start(doe);
+> +	doe->state = DOE_WAIT_ABORT_ON_ERR;
+
+Should this be before pci_doe_abort_start() to ensure that state is set when
+the statemachine runs?
+
+[snip]
+
+> +
+> +/**
+> + * struct pci_doe - State to support use of DOE mailbox
+> + * @cap: Config space offset to base of DOE capability.
+> + * @pdev: PCI device that hosts this DOE.
+> + * @abort_c: Completion used for initial abort handling.
+> + * @irq: Interrupt used for signaling DOE ready or abort.
+> + * @prots: Cache of identifiers for protocols supported.
+> + * @num_prots: Size of prots cache.
+> + * @h: Used for DOE instance lifetime management.
+> + * @wq: Workqueue used to handle state machine and polling / timeouts.
+> + * @tasks: List of task in flight + pending.
+> + * @tasks_lock: Protect the tasks list.
+
+This protects more than just the task list.  It appears to protect abort and
+dead as well.  I'm not sure if it is worth mentioning but...
+
+> + * @statemachine: Work item for the DOE state machine.
+> + * @state: Current state of this DOE.
+> + * @timeout_jiffies: 1 second after GO set.
+> + * @busy_retries: Count of retry attempts.
+> + * @abort: Request a manual abort (e.g. on init).
+> + * @dead: Used to mark a DOE for which an ABORT has timed out. Further messages
+> + *        will immediately be aborted with error.
+> + */
+> +struct pci_doe {
+> +	int cap;
+> +	struct pci_dev *pdev;
+> +	struct completion abort_c;
+> +	int irq;
+> +	struct pci_doe_prot *prots;
+> +	int num_prots;
+> +	struct list_head h;
+> +
+> +	struct workqueue_struct *wq;
+> +	struct list_head tasks;
+> +	struct mutex tasks_lock;
+> +	struct delayed_work statemachine;
+> +	enum pci_doe_state state;
+> +	unsigned long timeout_jiffies;
+> +	unsigned int busy_retries;
+> +	unsigned int abort:1;
+> +	unsigned int dead:1;
+> +};
+
+[snip]
+
+Ira
+
