@@ -2,263 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA26375D08
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 May 2021 23:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A30375E85
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 03:47:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbhEFWAe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 May 2021 18:00:34 -0400
-Received: from mga01.intel.com ([192.55.52.88]:54248 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229894AbhEFWAd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 May 2021 18:00:33 -0400
-IronPort-SDR: dWO6Edr+qrmtgvEybk2Pm74c8JiJr3NopPUwZAvpWjHdLrYABL6YUVcEaRdqvF1+SGGxBT595L
- hSxgee0bcXjQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9976"; a="219478071"
-X-IronPort-AV: E=Sophos;i="5.82,279,1613462400"; 
-   d="scan'208";a="219478071"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2021 14:59:34 -0700
-IronPort-SDR: 8YyvleQwpQmBmS5PbD+A1+kfPx3sWCxKlrBGBXuua/6KQvOSjTpnMiLE364l2QxvaMz9Bsjf2l
- rZzPeMJW792A==
-X-IronPort-AV: E=Sophos;i="5.82,279,1613462400"; 
-   d="scan'208";a="434594966"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2021 14:59:34 -0700
-Date:   Thu, 6 May 2021 14:59:34 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        linux-acpi@vger.kernel.org, alison.schofield@intel.com,
-        vishal.l.verma@intel.com, linuxarm@huawei.com,
-        Fangjian <f.fangjian@huawei.com>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-Message-ID: <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
- <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
+        id S234059AbhEGBsd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 May 2021 21:48:33 -0400
+Received: from usmail.montage-tech.com ([12.176.92.53]:59569 "EHLO
+        usmail.montage-tech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234033AbhEGBsd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 May 2021 21:48:33 -0400
+X-MDAV-Result: clean
+X-MDAV-Processed: usmail.montage-tech.com, Thu, 06 May 2021 18:47:33 -0700
+Received: from shmail.montage-tech.com by usmail.montage-tech.com with ESMTP id md5001005625861.msg; 
+        Thu, 06 May 2021 18:47:33 -0700
+X-Spam-Processed: usmail.montage-tech.com, Thu, 06 May 2021 18:47:33 -0700
+        (not processed: message from trusted or authenticated source)
+X-MDArrival-Date: Thu, 06 May 2021 18:47:33 -0700
+X-Return-Path: prvs=17616916e5=david.dai@montage-tech.com
+X-Envelope-From: david.dai@montage-tech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=montage-tech.com;
+        s=MDaemon; t=1620352046; x=1620956846;
+        i=david.dai@montage-tech.com; q=dns/txt; h=From:To:Cc:Subject:
+        Date:Message-ID:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Thread-Index:Content-Language; bh=L3Un
+        rB+anJNjNP/B1rxssibRE0awsbP+NwB9L6IFo2k=; b=gbvXeSxwzs54aZW3uBQ/
+        JNOb1fDWUk6O5mSQpneTaPvtJL4JUXT2vZ8wWjbh4JHruIrbkDfJI0OBRlQKvsL7
+        3Oov8AKnKm5H8iC7fK26zhCAfdM6N/ty8AXuYsDpSDSPeh+HvO5GFsie0qyupm6+
+        0nwFEiw+i9cQuQx0bbBZ97g=
+X-MDAV-Result: clean
+X-MDAV-Processed: shmail.montage-tech.com, Fri, 07 May 2021 09:47:26 +0800
+Received: from cn021pc868 by shmail.montage-tech.com with ESMTPSA id pp5001016722846.msg; 
+        Fri, 07 May 2021 09:47:25 +0800
+X-Spam-Processed: shmail.montage-tech.com, Fri, 07 May 2021 09:47:25 +0800
+        (not processed: message from trusted or authenticated source)
+From:   "Dai WeiBin \(David Dai\)" <david.dai@montage-tech.com>
+To:     "'Ben Widawsky'" <ben.widawsky@intel.com>
+Cc:     <linux-cxl@vger.kernel.org>,
+        "'Linux ACPI'" <linux-acpi@vger.kernel.org>,
+        "'Dan Williams'" <dan.j.williams@intel.com>
+Subject: CXL HDM alignment
+Date:   Fri, 7 May 2021 09:43:47 +0800
+Message-ID: <003501d742e2$6c331c50$449954f0$@montage-tech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AddC3+pLppO5NLuURmKWLV+pdj+tUw==
+Content-Language: zh-cn
+X-MDCFSigsAdded: montage-tech.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 20, 2021 at 12:54:49AM +0800, Jonathan Cameron wrote:
-> +
-> +static int pci_doe_send_req(struct pci_doe *doe, struct pci_doe_exchange *ex)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +	u32 val;
-> +	int i;
-> +
-> +	/*
-> +	 * Check the DOE busy bit is not set. If it is set, this could indicate
-> +	 * someone other than Linux (e.g. firmware) is using the mailbox. Note
-> +	 * it is expected that firmware and OS will negotiate access rights via
-> +	 * an, as yet to be defined method.
-> +	 */
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +	if (FIELD_GET(PCI_DOE_STATUS_BUSY, val))
-> +		return -EBUSY;
+Hi Ben,
 
-In discussion with Dan we believe that user space could also be issuing
-commands and would potentially cause us to be locked out.
+I am sorry to disturb you for consulting you a question, my question is =
+how I can make CXL HDM 1G-size alignment, CXL specification defines HDM =
+is 256M alignment.
+From my understanding, BIOS will allocate HPA and build ACPI SRAT for =
+CXL HDM, do we have any method to tell OS or BIOS to align HDM with 1G =
+size?
 
-We agree that firmware should be out of the way here and if it is blocking
-the OS there is not much we can do about it.
+I don't sure whether we can configure BIOS address allocation, but hope =
+any your suggestion and help!
 
-However, if user space is using the mailbox we need to synchronize with them
-via pci_cfg_access_[try]lock().  This should avoid this EBUSY condition.
+Thanks,
+David
 
-[snip]
 
-> +
-> +static int pci_doe_recv_resp(struct pci_doe *doe, struct pci_doe_exchange *ex)
-> +{
-> +	struct pci_dev *pdev = doe->pdev;
-> +	size_t length;
-> +	u32 val;
-> +	int i;
-> +
-> +	/* Read the first two dwords to get the length and protocol */
-> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_READ, &val);
-> +	if ((FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val) != ex->vid) ||
-> +	    (FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val) != ex->protocol)) {
-> +		pci_err(pdev,
-> +			"Expected [VID, Protocol] = [%x, %x], got [%x, %x]\n",
-> +			ex->vid, ex->protocol,
-> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, val),
-> +			FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, val));
-> +		return -EIO;
-> +	}
-> +
-> +	pci_write_config_dword(pdev, doe->cap + PCI_DOE_READ, 0);
-
-I'm quite unfamiliar with the spec here: but it seems like this needs to be
-done before the above if statement indicate we got the value?
-
-[snip]
-
-> +
-> +static void doe_statemachine_work(struct work_struct *work)
-> +{
-> +	struct delayed_work *w = to_delayed_work(work);
-> +	struct pci_doe *doe = container_of(w, struct pci_doe, statemachine);
-> +	struct pci_dev *pdev = doe->pdev;
-> +	struct pci_doe_task *task;
-> +	bool abort;
-> +	u32 val;
-> +	int rc;
-> +
-> +	mutex_lock(&doe->tasks_lock);
-> +	task = list_first_entry_or_null(&doe->tasks, struct pci_doe_task, h);
-> +	abort = doe->abort;
-> +	doe->abort = false;
-> +	mutex_unlock(&doe->tasks_lock);
-> +
-> +	if (abort) {
-> +		/*
-> +		 * Currently only used during init - care needed if we want to
-> +		 * generally expose pci_doe_abort() as it would impact queries
-> +		 * in flight.
-> +		 */
-> +		WARN_ON(task);
-> +		doe->state = DOE_WAIT_ABORT;
-> +		pci_doe_abort_start(doe);
-> +		return;
-> +	}
-> +
-> +	switch (doe->state) {
-> +	case DOE_IDLE:
-> +		if (task == NULL)
-> +			return;
-> +
-> +		/* Nothing currently in flight so queue a task */
-> +		rc = pci_doe_send_req(doe, task->ex);
-> +		/*
-> +		 * The specification does not provide any guidance on how long
-> +		 * some other entity could keep the DOE busy, so try for 1
-> +		 * second then fail. Busy handling is best effort only, because
-> +		 * there is no way of avoiding racing against another user of
-> +		 * the DOE.
-> +		 */
-> +		if (rc == -EBUSY) {
-> +			doe->busy_retries++;
-> +			if (doe->busy_retries == PCI_DOE_BUSY_MAX_RETRIES) {
-> +				/* Long enough, fail this request */
-> +				doe->busy_retries = 0;
-> +				goto err_busy;
-
-With the addition of pci_cfg_access_[try]lock():
-
-Should we have some sort of WARN_ON() here to indicate that the system is
-behaving badly?
-
-[snip]
-
-> +	case DOE_WAIT_ABORT:
-> +	case DOE_WAIT_ABORT_ON_ERR:
-> +		pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> +
-> +		if (!FIELD_GET(PCI_DOE_STATUS_ERROR, val) &&
-> +		    !FIELD_GET(PCI_DOE_STATUS_BUSY, val)) {
-> +			/* Back to normal state - carry on */
-> +			mutex_lock(&doe->tasks_lock);
-> +			if (!list_empty(&doe->tasks))
-> +				schedule_delayed_work(w, 0);
-> +			mutex_unlock(&doe->tasks_lock);
-> +
-> +			/*
-> +			 * For deliberately triggered abort, someone is
-> +			 * waiting.
-> +			 */
-> +			if (doe->state == DOE_WAIT_ABORT)
-> +				complete(&doe->abort_c);
-> +			doe->state = DOE_IDLE;
-> +
-> +			return;
-> +		}
-> +		if (time_after(jiffies, doe->timeout_jiffies)) {
-> +			struct pci_doe_task *t, *n;
-> +
-> +			/* We are dead - abort all queued tasks */
-> +			pci_err(pdev, "DOE ABORT timed out\n");
-> +			mutex_lock(&doe->tasks_lock);
-> +			doe->dead = true;
-> +			list_for_each_entry_safe(t, n, &doe->tasks, h) {
-> +				t->rv = -EIO;
-> +				t->cb(t->private);
-> +				list_del(&t->h);
-> +			}
-> +
-> +			mutex_unlock(&doe->tasks_lock);
-> +			if (doe->state == DOE_WAIT_ABORT)
-> +				complete(&doe->abort_c);
-> +		}
-> +		return;
-> +	}
-> +
-> +err_abort:
-> +	pci_doe_abort_start(doe);
-> +	doe->state = DOE_WAIT_ABORT_ON_ERR;
-
-Should this be before pci_doe_abort_start() to ensure that state is set when
-the statemachine runs?
-
-[snip]
-
-> +
-> +/**
-> + * struct pci_doe - State to support use of DOE mailbox
-> + * @cap: Config space offset to base of DOE capability.
-> + * @pdev: PCI device that hosts this DOE.
-> + * @abort_c: Completion used for initial abort handling.
-> + * @irq: Interrupt used for signaling DOE ready or abort.
-> + * @prots: Cache of identifiers for protocols supported.
-> + * @num_prots: Size of prots cache.
-> + * @h: Used for DOE instance lifetime management.
-> + * @wq: Workqueue used to handle state machine and polling / timeouts.
-> + * @tasks: List of task in flight + pending.
-> + * @tasks_lock: Protect the tasks list.
-
-This protects more than just the task list.  It appears to protect abort and
-dead as well.  I'm not sure if it is worth mentioning but...
-
-> + * @statemachine: Work item for the DOE state machine.
-> + * @state: Current state of this DOE.
-> + * @timeout_jiffies: 1 second after GO set.
-> + * @busy_retries: Count of retry attempts.
-> + * @abort: Request a manual abort (e.g. on init).
-> + * @dead: Used to mark a DOE for which an ABORT has timed out. Further messages
-> + *        will immediately be aborted with error.
-> + */
-> +struct pci_doe {
-> +	int cap;
-> +	struct pci_dev *pdev;
-> +	struct completion abort_c;
-> +	int irq;
-> +	struct pci_doe_prot *prots;
-> +	int num_prots;
-> +	struct list_head h;
-> +
-> +	struct workqueue_struct *wq;
-> +	struct list_head tasks;
-> +	struct mutex tasks_lock;
-> +	struct delayed_work statemachine;
-> +	enum pci_doe_state state;
-> +	unsigned long timeout_jiffies;
-> +	unsigned int busy_retries;
-> +	unsigned int abort:1;
-> +	unsigned int dead:1;
-> +};
-
-[snip]
-
-Ira
 
