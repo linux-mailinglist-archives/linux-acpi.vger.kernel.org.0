@@ -2,40 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10479376321
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 11:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BCA37633F
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 12:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236591AbhEGJxr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 May 2021 05:53:47 -0400
-Received: from foss.arm.com ([217.140.110.172]:52862 "EHLO foss.arm.com"
+        id S230131AbhEGKDD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 May 2021 06:03:03 -0400
+Received: from foss.arm.com ([217.140.110.172]:53296 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236569AbhEGJxq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 7 May 2021 05:53:46 -0400
+        id S235423AbhEGKCr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 May 2021 06:02:47 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E87AE106F;
-        Fri,  7 May 2021 02:52:46 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4E0D113E;
+        Fri,  7 May 2021 03:01:39 -0700 (PDT)
 Received: from [10.57.59.124] (unknown [10.57.59.124])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B85233F718;
-        Fri,  7 May 2021 02:52:44 -0700 (PDT)
-Subject: Re: [PATCH v3 09/10] iommu/arm-smmu: Get associated RMR info and
- install bypass SMR
-To:     Steven Price <steven.price@arm.com>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B0163F718;
+        Fri,  7 May 2021 03:01:37 -0700 (PDT)
+Subject: Re: [PATCH v3 08/10] iommu/arm-smmu-v3: Reserve any RMR regions
+ associated with a dev
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
         linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
         iommu@lists.linux-foundation.org
 Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
         wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        Sami.Mujawar@arm.com, jon@solid-run.com, eric.auger@redhat.com
+        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com
 References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
- <20210420082751.1829-10-shameerali.kolothum.thodi@huawei.com>
- <501cd986-7f9c-9aa7-b4e9-f2ef98fb7a95@arm.com>
+ <20210420082751.1829-9-shameerali.kolothum.thodi@huawei.com>
 From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <8c7dad26-b286-3974-9316-78ce1129ebe3@arm.com>
-Date:   Fri, 7 May 2021 10:52:39 +0100
+Message-ID: <7ec85477-9c02-17de-9620-f0b153adcc82@arm.com>
+Date:   Fri, 7 May 2021 11:01:36 +0100
 User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <501cd986-7f9c-9aa7-b4e9-f2ef98fb7a95@arm.com>
+In-Reply-To: <20210420082751.1829-9-shameerali.kolothum.thodi@huawei.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
@@ -43,139 +42,67 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 2021-05-06 16:17, Steven Price wrote:
-> On 20/04/2021 09:27, Shameer Kolothum wrote:
->> From: Jon Nettleton <jon@solid-run.com>
->>
->> Check if there is any RMR info associated with the devices behind
->> the SMMU and if any, install bypass SMRs for them. This is to
->> keep any ongoing traffic associated with these devices alive
->> when we enable/reset SMMU during probe().
->>
->> Signed-off-by: Jon Nettleton <jon@solid-run.com>
->> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
->> ---
->>   drivers/iommu/arm/arm-smmu/arm-smmu.c | 42 +++++++++++++++++++++++++++
->>   drivers/iommu/arm/arm-smmu/arm-smmu.h |  2 ++
->>   2 files changed, 44 insertions(+)
->>
->> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c 
->> b/drivers/iommu/arm/arm-smmu/arm-smmu.c
->> index d8c6bfde6a61..4d2f91626d87 100644
->> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
->> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
->> @@ -2102,6 +2102,43 @@ err_reset_platform_ops: __maybe_unused;
->>       return err;
->>   }
->> +static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device 
->> *smmu)
->> +{
->> +    struct iommu_rmr *e;
->> +    int i, cnt = 0;
->> +    u32 smr;
->> +
->> +    for (i = 0; i < smmu->num_mapping_groups; i++) {
->> +        smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
->> +        if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
->> +            continue;
->> +
->> +        list_for_each_entry(e, &smmu->rmr_list, list) {
->> +            if (FIELD_GET(ARM_SMMU_SMR_ID, smr) != e->sid)
->> +                continue;
->> +
->> +            smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
->> +            smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
->> +            smmu->smrs[i].valid = true;
->> +
->> +            smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
->> +            smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
->> +            smmu->s2crs[i].cbndx = 0xff;
->> +
->> +            cnt++;
->> +        }
->> +    }
+On 2021-04-20 09:27, Shameer Kolothum wrote:
+> Get RMR regions associated with a dev reserved so that there is
+> a unity mapping for them in SMMU.
 > 
-> If I understand this correctly - this is looking at the current
-> (hardware) configuration of the SMMU and attempting to preserve any
-> bypass SMRs. However from what I can tell it suffers from the following
-> two problems:
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
 > 
->   (a) Only the ID of the SMR is being checked, not the MASK. So if the
-> firmware has setup an SMR matching a number of streams this will break.
-> 
->   (b) The SMMU might not be enabled at all (CLIENTPD==1) or bypass
-> enabled for unmatched streams (USFCFG==0).
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> index 14e9c7034c04..8bacedf7bb34 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> @@ -2531,6 +2531,34 @@ static int arm_smmu_of_xlate(struct device *dev, struct of_phandle_args *args)
+>   	return iommu_fwspec_add_ids(dev, args->args, 1);
+>   }
+>   
+> +static bool arm_smmu_dev_has_rmr(struct arm_smmu_master *master,
+> +				 struct iommu_rmr *e)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < master->num_sids; i++) {
+> +		if (e->sid == master->sids[i])
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static void arm_smmu_rmr_get_resv_regions(struct device *dev,
+> +					  struct list_head *head)
+> +{
+> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> +	struct arm_smmu_device *smmu = master->smmu;
+> +	struct iommu_rmr *rmr;
+> +
+> +	list_for_each_entry(rmr, &smmu->rmr_list, list) {
+> +		if (!arm_smmu_dev_has_rmr(master, rmr))
+> +			continue;
+> +
+> +		iommu_dma_get_rmr_resv_regions(dev, rmr, head);
+> +	}
+> +}
+> +
 
-Yes, trying to infer anything from the current SMMU hardware state is 
-bogus - consider what you might find left over after a kexec, for 
-instance. The *only* way to detect the presence and applicability of 
-RMRs is to look at the actual RMR nodes in the IORT.
-
-Ignore what we let the Qualcomm ACPI bootloader hack do - that whole 
-implementation is "special".
+TBH I wouldn't have thought we need a driver-specific hook for this, or 
+is it too painful to correlate fwspec->iommu_fwnode back to the relevant 
+IORT node generically?
 
 Robin.
 
-> Certainly in my test setup case (b) applies and so this doesn't work.
-> Perhaps something like the below would work better? (It works in the
-> case of the SMMU not enabled - I've not tested case (a)).
+>   static void arm_smmu_get_resv_regions(struct device *dev,
+>   				      struct list_head *head)
+>   {
+> @@ -2545,6 +2573,7 @@ static void arm_smmu_get_resv_regions(struct device *dev,
+>   	list_add_tail(&region->list, head);
+>   
+>   	iommu_dma_get_resv_regions(dev, head);
+> +	arm_smmu_rmr_get_resv_regions(dev, head);
+>   }
+>   
+>   static bool arm_smmu_dev_has_feature(struct device *dev,
 > 
-> Steve
-> 
-> ----8<----
-> static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
-> {
->      struct iommu_rmr *e;
->      int i, cnt = 0;
->      u32 smr;
->      u32 reg;
-> 
->      reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sCR0);
-> 
->      if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
->          /*
->           * SMMU is already enabled and disallowing bypass, so preserve
->           * the existing SMRs
->           */
->          for (i = 0; i < smmu->num_mapping_groups; i++) {
->              smr = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(i));
->              if (!FIELD_GET(ARM_SMMU_SMR_VALID, smr))
->                  continue;
->              smmu->smrs[i].id = FIELD_GET(ARM_SMMU_SMR_ID, smr);
->              smmu->smrs[i].mask = FIELD_GET(ARM_SMMU_SMR_MASK, smr);
->              smmu->smrs[i].valid = true;
->          }
->      }
-> 
->      list_for_each_entry(e, &smmu->rmr_list, list) {
->          u32 sid = e->sid;
-> 
->          i = arm_smmu_find_sme(smmu, sid, ~0);
->          if (i < 0)
->              continue;
->          if (smmu->s2crs[i].count == 0) {
->              smmu->smrs[i].id = sid;
->              smmu->smrs[i].mask = ~0;
->              smmu->smrs[i].valid = true;
->          }
->          smmu->s2crs[i].count++;
->          smmu->s2crs[i].type = S2CR_TYPE_BYPASS;
->          smmu->s2crs[i].privcfg = S2CR_PRIVCFG_DEFAULT;
->          smmu->s2crs[i].cbndx = 0xff;
-> 
->          cnt++;
->      }
-> 
->      if ((reg & ARM_SMMU_sCR0_USFCFG) && !(reg & ARM_SMMU_sCR0_CLIENTPD)) {
->          /* Remove the valid bit for unused SMRs */
->          for (i = 0; i < smmu->num_mapping_groups; i++) {
->              if (smmu->s2crs[i].count == 0)
->                  smmu->smrs[i].valid = false;
->          }
->      }
-> 
->      dev_notice(smmu->dev, "\tpreserved %d boot mapping%s\n", cnt,
->             cnt == 1 ? "" : "s");
-> }
