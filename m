@@ -2,152 +2,296 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D9F1375F06
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 05:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C6F376130
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 09:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbhEGDMm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 May 2021 23:12:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47428 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbhEGDMl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 May 2021 23:12:41 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C6EC061574
-        for <linux-acpi@vger.kernel.org>; Thu,  6 May 2021 20:11:42 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id p12so9747242ljg.1
-        for <linux-acpi@vger.kernel.org>; Thu, 06 May 2021 20:11:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=6b3rwkaT+yulJoVppL8OpzlcaZY3Q/wrU3tKkCsSBnQ=;
-        b=As8j2PlwW3igHwNlqOjj0QbliWX2TL2kI6JcPh7Edyy0MJMT94cJyf7iNWjZGj27z4
-         /cdo7Te8QVBNPdSn53scAOfSJqju+DZL/NyxsVubXle/i+0SOBhktyxXASL7rz5OSlAZ
-         if5o4S1vLUL/fUrV3K7zcS7q+QtLsZ52atxMB3UoyzvsZztrIVqk78UE1FdJYxYvFOBQ
-         5d5C+4krcVwptGMOjsk7a0TVbIcVnoyDJsXOipl5927QNMkRiR3tsho94w5usW88pzFq
-         CF3tp4pCsngCmtSSdkmV0JpvFE7F7Vq4zHWWy0ZkxXWpcnjQLhS4MtEXRYDnz1E7dCP+
-         vpTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=6b3rwkaT+yulJoVppL8OpzlcaZY3Q/wrU3tKkCsSBnQ=;
-        b=Tjq1zRaaMpJyda8O1N7uX210aKIGbkiVMMiZMk5d0jYzFKcey136p7aydvk5S4N/Z/
-         NC6BakLIU9DXx8JyXq+R6Ak5+7WagJn+O72RSB43CfGtx76x49vrpZuw4PyTcyvX0miO
-         uAI8us9uw3VjrOz5caQ71/SBkfkU5BELjQnSKRn2ukYHzcH8tZu60fmQX3gKYTEh0uUH
-         mwBsE85uC8EoiQwKcwgoBlJuxxEtGG0P6gPmkoA+sZNTjePik5SVDbDRzts/3Pp056Ik
-         qUIsnpt2xP5RlpWpKf+u772oKgk+mvacfNQgGoE9AB899m9IlGMXpOQQVWD5lylSPR5U
-         Lg6w==
-X-Gm-Message-State: AOAM532SK6bRLzj7Z8skvB5XxHhETEUs8myEXBBfuIfDodZaNMBLntya
-        RIw+q192uO8Zg5ammDT5h/QjZM+YwH6VtSPZM/k+/WIfv4Cxaw==
-X-Google-Smtp-Source: ABdhPJw+voiXuM29E/dKFPmkgQMJK28p8btNNr7A2mVhiVTxNU79bq3AUJWpTCw15otnO5/9nsww0i2ByUHgzWA68KQ=
-X-Received: by 2002:a2e:1608:: with SMTP id w8mr5923743ljd.506.1620357100433;
- Thu, 06 May 2021 20:11:40 -0700 (PDT)
+        id S229849AbhEGHey (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 May 2021 03:34:54 -0400
+Received: from mga12.intel.com ([192.55.52.136]:54866 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235147AbhEGHeu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 May 2021 03:34:50 -0400
+IronPort-SDR: reJpF6bJ/FcGIeR0oMVhvlCsY8ZE6tN9gb5SHHZjACM4Ni8BSLnGu9pf3moEeGSltKwSs6XHW2
+ KyaNZehGt6MQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9976"; a="178235222"
+X-IronPort-AV: E=Sophos;i="5.82,280,1613462400"; 
+   d="scan'208";a="178235222"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2021 00:33:50 -0700
+IronPort-SDR: m5C36Ec0x+duB6JPI7kJ5dUlT3jsn2I+KnojciCs80pCrvDZF4rlkrnxz01gHElv3dy2k2oz29
+ KUyHKkUN7F5A==
+X-IronPort-AV: E=Sophos;i="5.82,280,1613462400"; 
+   d="scan'208";a="434792851"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2021 00:33:50 -0700
+Subject: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     rafael.j.wysocki@intel.com
+Cc:     Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Yi Zhang <yi.zhang@redhat.com>, Yi Zhang <yi.zhang@redhat.com>,
+        nvdimm@lists.linux.dev, linux-nvdimm@lists.01.org,
+        linux-acpi@vger.kernel.org
+Date:   Fri, 07 May 2021 00:33:50 -0700
+Message-ID: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-From:   Chris McCrae <chrismccraeworks@gmail.com>
-Date:   Thu, 6 May 2021 23:11:29 -0400
-Message-ID: <CAN2W0iOnPRqX_=vT1BgrRtXHQK0x3am68OuHqSvpzLt4j=JtRA@mail.gmail.com>
-Subject: Asus PN62S - CIR ITE8708 device definition in DSDT
-To:     linux-acpi@vger.kernel.org
-Cc:     Sean Young <sean@mess.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
+Address (SPA) Range Structure". The presence of that new field is
+indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
+firmware implementations omit the flag and maintain the original size of
+the structure.
 
-This message stems from a longer conversation started in linux-media.
-I thought I'd shorten that story, and just get more to the point.
-After a couple weeks of investigating, and a steep learning curve,
-I've decided my issue is the definition of the integrated CIR in DSDT.
-As originally written, the kernel does not correctly detect this
-device, and the correct driver does not bind.  It creates folders in
-/sys, but the device gets connected to skl_uncore.  Setting pci=noacpi
-allowed the driver to connect properly, but obviously opened the door
-for other issues.
+Update the implementation to check that flag to determine the size
+rather than the ACPI 6.4 compliant definition of 'struct
+acpi_nfit_system_address' from the Linux ACPICA definitions.
 
-By changing _ADR from Zero to any other number (I've tested 0x01 to
-0x0F, and they all work), the driver is properly loaded.  Booting from
-a custom DSDT solves my problem.  However, I'd like to help other
-people avoid this problem altogether by providing this fix to Asus,
-which will hopefully make it into a future revision.  So this leads me
-to why I'm posting here, asking people who know far more about this
-than I do:
+Update the test infrastructure for the new expectations as well, i.e.
+continue to emulate the ACPI 6.3 definition of that structure.
 
-1.  While this fix seems to solve the problem, is it possible that
-_ADR should be Zero, and something else has the wrong address?  PCI
-bridge, PNP, motherboard resources ... these are all areas my
-debugging took me, and my understanding of these inner workings is
-still not solid enough for me to confidently say the device is wrong,
-and everything else is fine.  Are there other areas to
-check/test/debug?  I could just tell Asus that this works for me and
-let them figure out if it's the right fix, but since I've come this
-far, part of me wants to be sure this is the correct solution, and
-understand why.
+Without this fix the kernel fails to validate 'SPA' structures and this
+leads to a crash in nfit_get_smbios_id() since that routine assumes that
+SPAs are valid if it finds valid SMBIOS tables.
 
-2.  This seems much less likely, but Is it possible that DSDT is fine,
-and something on the kernel side has an issue?  I was never able to
-trace when the kernel gets the data and makes the driver decision ...
-too many kernel options, not enough buffer space :-(
+    BUG: unable to handle page fault for address: ffffffffffffffa8
+    [..]
+    Call Trace:
+     skx_get_nvdimm_info+0x56/0x130 [skx_edac]
+     skx_get_dimm_config+0x1f5/0x213 [skx_edac]
+     skx_register_mci+0x132/0x1c0 [skx_edac]
 
-3.  Is there a practical way to provide a technical issue like this to
-Asus?  I could try the basic support email address, but I don't know
-if something like this would get passed on correctly, or ignored.
-Since people here have likely encountered this sort of thing before, a
-more direct approach might be known.  Maybe someone here works for
-Asus ... in which case you'll be happy to know my PII motherboard
-(P2L97) still works if I need Windows 98 for anything :-)
+Cc: Bob Moore <robert.moore@intel.com>
+Cc: Erik Kaneda <erik.kaneda@intel.com>
+Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
 
-I can provide lots more info if needed.  Thanks.
+Rafael, I can take this through nvdimm.git after -rc1, but if you are
+sending any fixes to Linus based on your merge baseline between now and
+Monday, please pick up this one.
 
-Chris
+ drivers/acpi/nfit/core.c         |   15 ++++++++++----
+ tools/testing/nvdimm/test/nfit.c |   42 +++++++++++++++++++++++---------------
+ 2 files changed, 36 insertions(+), 21 deletions(-)
 
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 958aaac869e8..23d9a09d7060 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -686,6 +686,13 @@ int nfit_spa_type(struct acpi_nfit_system_address *spa)
+ 	return -1;
+ }
+ 
++static size_t sizeof_spa(struct acpi_nfit_system_address *spa)
++{
++	if (spa->flags & ACPI_NFIT_LOCATION_COOKIE_VALID)
++		return sizeof(*spa);
++	return sizeof(*spa) - 8;
++}
++
+ static bool add_spa(struct acpi_nfit_desc *acpi_desc,
+ 		struct nfit_table_prev *prev,
+ 		struct acpi_nfit_system_address *spa)
+@@ -693,22 +700,22 @@ static bool add_spa(struct acpi_nfit_desc *acpi_desc,
+ 	struct device *dev = acpi_desc->dev;
+ 	struct nfit_spa *nfit_spa;
+ 
+-	if (spa->header.length != sizeof(*spa))
++	if (spa->header.length != sizeof_spa(spa))
+ 		return false;
+ 
+ 	list_for_each_entry(nfit_spa, &prev->spas, list) {
+-		if (memcmp(nfit_spa->spa, spa, sizeof(*spa)) == 0) {
++		if (memcmp(nfit_spa->spa, spa, sizeof_spa(spa)) == 0) {
+ 			list_move_tail(&nfit_spa->list, &acpi_desc->spas);
+ 			return true;
+ 		}
+ 	}
+ 
+-	nfit_spa = devm_kzalloc(dev, sizeof(*nfit_spa) + sizeof(*spa),
++	nfit_spa = devm_kzalloc(dev, sizeof(*nfit_spa) + sizeof_spa(spa),
+ 			GFP_KERNEL);
+ 	if (!nfit_spa)
+ 		return false;
+ 	INIT_LIST_HEAD(&nfit_spa->list);
+-	memcpy(nfit_spa->spa, spa, sizeof(*spa));
++	memcpy(nfit_spa->spa, spa, sizeof_spa(spa));
+ 	list_add_tail(&nfit_spa->list, &acpi_desc->spas);
+ 	dev_dbg(dev, "spa index: %d type: %s\n",
+ 			spa->range_index,
+diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
+index 9b185bf82da8..54f367cbadae 100644
+--- a/tools/testing/nvdimm/test/nfit.c
++++ b/tools/testing/nvdimm/test/nfit.c
+@@ -1871,9 +1871,16 @@ static void smart_init(struct nfit_test *t)
+ 	}
+ }
+ 
++static size_t sizeof_spa(struct acpi_nfit_system_address *spa)
++{
++	/* until spa location cookie support is added... */
++	return sizeof(*spa) - 8;
++}
++
+ static int nfit_test0_alloc(struct nfit_test *t)
+ {
+-	size_t nfit_size = sizeof(struct acpi_nfit_system_address) * NUM_SPA
++	struct acpi_nfit_system_address *spa = NULL;
++	size_t nfit_size = sizeof_spa(spa) * NUM_SPA
+ 			+ sizeof(struct acpi_nfit_memory_map) * NUM_MEM
+ 			+ sizeof(struct acpi_nfit_control_region) * NUM_DCR
+ 			+ offsetof(struct acpi_nfit_control_region,
+@@ -1937,7 +1944,8 @@ static int nfit_test0_alloc(struct nfit_test *t)
+ 
+ static int nfit_test1_alloc(struct nfit_test *t)
+ {
+-	size_t nfit_size = sizeof(struct acpi_nfit_system_address) * 2
++	struct acpi_nfit_system_address *spa = NULL;
++	size_t nfit_size = sizeof_spa(spa) * 2
+ 		+ sizeof(struct acpi_nfit_memory_map) * 2
+ 		+ offsetof(struct acpi_nfit_control_region, window_size) * 2;
+ 	int i;
+@@ -2000,7 +2008,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	 */
+ 	spa = nfit_buf;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
+ 	spa->range_index = 0+1;
+ 	spa->address = t->spa_set_dma[0];
+@@ -2014,7 +2022,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
+ 	spa->range_index = 1+1;
+ 	spa->address = t->spa_set_dma[1];
+@@ -2024,7 +2032,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa2 (dcr0) dimm0 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
+ 	spa->range_index = 2+1;
+ 	spa->address = t->dcr_dma[0];
+@@ -2034,7 +2042,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa3 (dcr1) dimm1 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
+ 	spa->range_index = 3+1;
+ 	spa->address = t->dcr_dma[1];
+@@ -2044,7 +2052,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa4 (dcr2) dimm2 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
+ 	spa->range_index = 4+1;
+ 	spa->address = t->dcr_dma[2];
+@@ -2054,7 +2062,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa5 (dcr3) dimm3 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
+ 	spa->range_index = 5+1;
+ 	spa->address = t->dcr_dma[3];
+@@ -2064,7 +2072,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa6 (bdw for dcr0) dimm0 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
+ 	spa->range_index = 6+1;
+ 	spa->address = t->dimm_dma[0];
+@@ -2074,7 +2082,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa7 (bdw for dcr1) dimm1 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
+ 	spa->range_index = 7+1;
+ 	spa->address = t->dimm_dma[1];
+@@ -2084,7 +2092,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa8 (bdw for dcr2) dimm2 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
+ 	spa->range_index = 8+1;
+ 	spa->address = t->dimm_dma[2];
+@@ -2094,7 +2102,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 	/* spa9 (bdw for dcr3) dimm3 */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
+ 	spa->range_index = 9+1;
+ 	spa->address = t->dimm_dma[3];
+@@ -2581,7 +2589,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 		/* spa10 (dcr4) dimm4 */
+ 		spa = nfit_buf + offset;
+ 		spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-		spa->header.length = sizeof(*spa);
++		spa->header.length = sizeof_spa(spa);
+ 		memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
+ 		spa->range_index = 10+1;
+ 		spa->address = t->dcr_dma[4];
+@@ -2595,7 +2603,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 		 */
+ 		spa = nfit_buf + offset;
+ 		spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-		spa->header.length = sizeof(*spa);
++		spa->header.length = sizeof_spa(spa);
+ 		memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
+ 		spa->range_index = 11+1;
+ 		spa->address = t->spa_set_dma[2];
+@@ -2605,7 +2613,7 @@ static void nfit_test0_setup(struct nfit_test *t)
+ 		/* spa12 (bdw for dcr4) dimm4 */
+ 		spa = nfit_buf + offset;
+ 		spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-		spa->header.length = sizeof(*spa);
++		spa->header.length = sizeof_spa(spa);
+ 		memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
+ 		spa->range_index = 12+1;
+ 		spa->address = t->dimm_dma[4];
+@@ -2739,7 +2747,7 @@ static void nfit_test1_setup(struct nfit_test *t)
+ 	/* spa0 (flat range with no bdw aliasing) */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
+ 	spa->range_index = 0+1;
+ 	spa->address = t->spa_set_dma[0];
+@@ -2749,7 +2757,7 @@ static void nfit_test1_setup(struct nfit_test *t)
+ 	/* virtual cd region */
+ 	spa = nfit_buf + offset;
+ 	spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
+-	spa->header.length = sizeof(*spa);
++	spa->header.length = sizeof_spa(spa);
+ 	memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_VCD), 16);
+ 	spa->range_index = 0;
+ 	spa->address = t->spa_set_dma[1];
 
-    Device (CR00)
-    {
-        Name (_ADR, Zero)  // _ADR: Address
-        Name (VBAN, 0x0680)
-        Name (VIRQ, 0x0A)
-        Name (UIDN, Zero)
-        Name (_HID, EisaId ("ITE8708"))  // _HID: Hardware ID
-        Method (_UID, 0, NotSerialized)  // _UID: Unique ID
-        {
-            Return (UIDN) /* \_SB_.PCI0.CR00.UIDN */
-        }
-
-        Method (_STA, 0, Serialized)  // _STA: Status
-        {
-            If ((CIRE == Zero))
-            {
-                Return (Zero)
-            }
-
-            Return (0x0F)
-        }
-
-        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
-        {
-            Name (BUF0, ResourceTemplate ()
-            {
-                IO (Decode16,
-                    0x0000,             // Range Minimum
-                    0x0000,             // Range Maximum
-                    0x01,               // Alignment
-                    0x08,               // Length
-                    _Y10)
-                IRQNoFlags (_Y11)
-                    {}
-                DMA (Compatibility, NotBusMaster, Transfer8, )
-                    {}
-            })
-            CreateWordField (BUF0, \_SB.PCI0.CR00._CRS._Y10._MIN,
-IOPL)  // _MIN: Minimum Base Address
-            CreateWordField (BUF0, \_SB.PCI0.CR00._CRS._Y10._MAX,
-IOPH)  // _MAX: Maximum Base Address
-            CreateWordField (BUF0, \_SB.PCI0.CR00._CRS._Y11._INT, IRQ)
- // _INT: Interrupts
-            IOPL = VBAN /* \_SB_.PCI0.CR00.VBAN */
-            IOPH = VBAN /* \_SB_.PCI0.CR00.VBAN */
-            IRQ = (One << VIRQ) /* \_SB_.PCI0.CR00.VIRQ */
-            Return (BUF0) /* \_SB_.PCI0.CR00._CRS.BUF0 */
-        }
-    }
