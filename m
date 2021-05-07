@@ -2,114 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE045376D1A
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 May 2021 01:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 625FA376D2E
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 May 2021 01:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhEGXDH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 May 2021 19:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGXDG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 May 2021 19:03:06 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A992BC061761
-        for <linux-acpi@vger.kernel.org>; Fri,  7 May 2021 16:02:05 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id zg3so15877249ejb.8
-        for <linux-acpi@vger.kernel.org>; Fri, 07 May 2021 16:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Cysv76arNz3MFs69VgX48DEkoN+9KVfkGC6lPIgs6LE=;
-        b=g8Uua7ZkJUkGmrfi9VOU8KXTzma6Sz/ha6C4zc2aV/dvLPFPBuro4R1QQHIupXI1K3
-         Nq0ofBpyKFYN+zfIgJzSfNoYSchacVQcM/LzruoFvtv+dVO+PufL97znHHXj2rf1+cIB
-         wapM++MV9+XseRUEnb9GC8DcT6lgUQ9j3nAVnLFScuw/sJ3+jM0WSbwmjR9pXsbpvjEF
-         eYE9gaXgPB0JVWi7ZW1iLMhAEJ+Icu8UmkixAEjfU4q2PGCAgLJdlGzxNd4aYczL0NWq
-         9edVVRwc5zWREXezpVsrimURLVLQ4MkNiyoNvaWBs3MhYSnGuNGRgEvL9o+vC7/bG4i0
-         cVzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Cysv76arNz3MFs69VgX48DEkoN+9KVfkGC6lPIgs6LE=;
-        b=ePvKtRQVNdWOgUJMFCTc4Vrk9qh5FsvHcbn0W4++dNqeu63r25NuCYMHKeIoPeTe5U
-         qGONJffio1YkmgK5D4W0rAzqLmC+cmTpqYjmdABTURd6RqE6Ept0xntLXXrv3pvkRv5Z
-         zUfYSMxuc0V1n+PErAZS4L3QrdfJ21X1ySIbLiaJ9pIMUPzVjOIQbQ2XNbiyuJk2BKad
-         Uc6BsTItyay4bG17nIcAu2l7/AEKOVQbxkmEeCawVLfIBlpRpPKWYhKDiNQO6Emt3Cq4
-         5C3vFwoD5bk2n5kWyjs5AJQpYu/RTEGdt4dUNKCxb1/8qQHvc26g0PSeMnnCCLuTU+lc
-         PYGg==
-X-Gm-Message-State: AOAM533tRpbgGjVPF7wLPpl4Y7HWaNlMzKDB10coQzAlXZ2izCbDVnCS
-        fFBDeoIrbFt0BftKtLV5Ht3D0nqBSSJHwco5ANltQw==
-X-Google-Smtp-Source: ABdhPJx0vlXi8joVqX/bKq6BizKlwHJaiCJq3xBs6gTLXhtM3osxEcKR8qoOa8bY8Rty55XhIwEh7d0ppVWIj9mVfww=
-X-Received: by 2002:a17:906:33da:: with SMTP id w26mr12947744eja.472.1620428524398;
- Fri, 07 May 2021 16:02:04 -0700 (PDT)
+        id S230103AbhEGXLR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 May 2021 19:11:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40888 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230083AbhEGXLP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 May 2021 19:11:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F8ED6147F;
+        Fri,  7 May 2021 23:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620429015;
+        bh=lQ/DXz8whGATwK5S38i5+uNShDs0+C7PD1gQbx0Ub7I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eXsu2wjhuksxMlgmYmCkI/j1g7AIEGu1KzfpawvrCh6KjI1rSkTIZvmSCaU07ajnm
+         S/XKuJY8FptPs4qRdrfmBjA0YKYq/HiFIB5RG+7kNagsh61Kv1AmsenI8JmDvga5hD
+         S5S7ObtoBStaOowdq9wIPUf4JBFNShDUA7DJkK8z4H5mTqVYi//hDLBBXiCD+peis7
+         0yGvUXQIpB0fKQ0EsK8Jj7ECoJfLdp7IfHPna6PPzLliphxhybrWMpScEuiIamKxbh
+         jI6wHDhbD4fylwtZ+VJhrNPZiP+LBKiOl6Ww7Quj/J8dKm4R3JuoncbBGHR+tS8Ss3
+         OM2/mGl6vSp5A==
+Date:   Fri, 7 May 2021 18:10:13 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>,
+        linux-acpi@vger.kernel.org, alison.schofield@intel.com,
+        vishal.l.verma@intel.com, ira.weiny@intel.com, linuxarm@huawei.com,
+        Fangjian <f.fangjian@huawei.com>
+Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
+Message-ID: <20210507231013.GA1548806@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com>
- <CAPcyv4jUdebFQvrhi0yzNyZ1wwzeGDpf6T34m=bfL593s-PEcA@mail.gmail.com> <CAJZ5v0g_q7ceyLmmVzhAyruFd4CxSJj+JdigFURPoHNwG_DRyw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g_q7ceyLmmVzhAyruFd4CxSJj+JdigFURPoHNwG_DRyw@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 7 May 2021 16:01:53 -0700
-Message-ID: <CAPcyv4hVLc0hpZ5ft-XQ7a4OMrYbH=Y6t_tUbiteKcR4G0NT+A@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Yi Zhang <yi.zhang@redhat.com>, nvdimm@lists.linux.dev,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 7, 2021 at 7:49 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, May 7, 2021 at 4:12 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > On Fri, May 7, 2021 at 2:47 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > Hi Dan,
-> > >
-> > > On Fri, May 7, 2021 at 9:33 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > >
-> > > > ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
-> > > > Address (SPA) Range Structure". The presence of that new field is
-> > > > indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
-> > > > firmware implementations omit the flag and maintain the original size of
-> > > > the structure.
-> > > >
-> > > > Update the implementation to check that flag to determine the size
-> > > > rather than the ACPI 6.4 compliant definition of 'struct
-> > > > acpi_nfit_system_address' from the Linux ACPICA definitions.
-> > > >
-> > > > Update the test infrastructure for the new expectations as well, i.e.
-> > > > continue to emulate the ACPI 6.3 definition of that structure.
-> > > >
-> > > > Without this fix the kernel fails to validate 'SPA' structures and this
-> > > > leads to a crash in nfit_get_smbios_id() since that routine assumes that
-> > > > SPAs are valid if it finds valid SMBIOS tables.
-> > > >
-> > > >     BUG: unable to handle page fault for address: ffffffffffffffa8
-> > > >     [..]
-> > > >     Call Trace:
-> > > >      skx_get_nvdimm_info+0x56/0x130 [skx_edac]
-> > > >      skx_get_dimm_config+0x1f5/0x213 [skx_edac]
-> > > >      skx_register_mci+0x132/0x1c0 [skx_edac]
-> > > >
-> > > > Cc: Bob Moore <robert.moore@intel.com>
-> > > > Cc: Erik Kaneda <erik.kaneda@intel.com>
-> > > > Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
-> > >
-> > > Do you want me to apply this (as the commit being fixed went in
-> > > through the ACPI tree)?
-> >
-> > Yes, I would need to wait for a signed tag so if you're sending urgent
-> > fixes in the next few days please take this one, otherwise I'll circle
-> > back next week after -rc1.
->
-> I'll be doing my next push after -rc1 either, so I guess it doesn't
-> matter time-wise.
+s/doe/DOE/ in subject.
 
-Ok, I got it, thanks for the offer.
+On Tue, Apr 20, 2021 at 12:54:49AM +0800, Jonathan Cameron wrote:
+> Introduced in a PCI ECN [1], DOE provides a config space
+> based mailbox with standard protocol discovery.  Each mailbox
+> is accessed through a DOE Extended Capability.
+> 
+> A device may have 1 or more DOE mailboxes, each of which is allowed
+> to support any number of protocols (some DOE protocol
+> specifications apply additional restrictions).  A given protocol
+> may be supported on more than one DOE mailbox on a given function.
+> 
+> If a driver wishes to access any number of DOE instances / protocols
+> it makes a single call to pcie_doe_register_all() which will find
+> available DOEs, create the required infrastructure and cache the
+> protocols they support.  pcie_doe_find() can then retrieve a
+> pointer to an appropriate DOE instance.
+> 
+> A synchronous interface is provided in pcie_doe_exchange_sync() to
+> perform a single query / response exchange.
+
+Re-wrap above (and commit logs of other patches) to fill 75 columns.
+
+s/pcie_doe_register_all/pci_doe_register_all/
+s/pcie_doe_find/pci_doe_find/
+s/pcie_doe_exchange_sync/pci_doe_exchange_sync/
+
+> +config PCI_DOE
+> +	bool
+> +	help
+> +	  This enables library support for the PCI Data Object Exchange
+> +	  capability. DOE provides a simple mailbox in PCI config space that is
+> +	  used by a number of different protocols.
+> +	  DOE is defined in the Data Object Exchange ECN to PCI 5.0.
+
+"ECN to the PCIe r5.0 spec."
+
+"PCI 5.0" sounds like a conventional PCI spec.
+
+> + * pci_doe_exchange_sync() - Send a request, then wait for and receive response.
+> + * @doe: DOE mailbox state structure.
+> + * @ex: Description of the buffers and Vendor ID + type used in this
+> + *      request/response pair,
+
+s/,/./
+
+(Or omit the periods altogether on these function and parameter
+one-liners, as most of drivers/pci does.  Most of these descriptions
+aren't sentences anyway, I think it's fine that they're unterminated.)
+
+> +static void pci_doe_init(struct pci_doe *doe, struct pci_dev *pdev, int doe_offset)
+
+Indent to fit in 80 columns like the rest of drivers/pci/.
+
+> +static int pci_doe_register(struct pci_doe *doe)
+> +{
+> +	struct pci_dev *pdev = doe->pdev;
+> +	bool poll = !pci_dev_msi_enabled(pdev);
+> +	int rc, irq;
+> +	u32 val;
+> +
+> +	pci_read_config_dword(pdev, doe->cap + PCI_DOE_CAP, &val);
+> +
+> +	if (!poll && FIELD_GET(PCI_DOE_CAP_INT, val)) {
+> +		irq = pci_irq_vector(pdev, FIELD_GET(PCI_DOE_CAP_IRQ, val));
+> +		if (irq < 0)
+> +			return irq;
+> +
+> +		rc = request_irq(irq, pci_doe_irq, 0, "DOE", doe);
+
+I expect there may be many devices with DOE.  Do you want some
+device identification here?  E.g., on my system I see things like this
+in /proc/interrupts:
+
+  dmar0
+  nvme0q0
+  snd_hda_intel:card0
+  ahci[0000:00:17.0]
+
+> +++ b/include/linux/pci-doe.h
+> @@ -0,0 +1,85 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Data Object Exchange was added to the PCI spec as an ECN to 5.0.
+
+"... was added as an ECN to the PCIe r5.0 spec."
