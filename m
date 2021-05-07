@@ -2,168 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C80EA376D08
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 May 2021 00:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE045376D1A
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 May 2021 01:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbhEGWxF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 May 2021 18:53:05 -0400
-Received: from mga05.intel.com ([192.55.52.43]:33183 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230099AbhEGWxE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 7 May 2021 18:53:04 -0400
-IronPort-SDR: 7RDnDXHSQcdh0tofuQsEkU/IN5kxPnej1jCVYWxv0/RDTWo/Jf6A+YpwMDaY8wSwM24eT/1G8Q
- mYZBmyjBLaHw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9977"; a="284290023"
-X-IronPort-AV: E=Sophos;i="5.82,282,1613462400"; 
-   d="scan'208";a="284290023"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2021 15:52:04 -0700
-IronPort-SDR: FeJlpeY3CRjRO5ViQBB6nJ6Cd1Q2PdnSs3BBGVDNM0nOq006Aw8R3EpHvIiX9aRpl2zFD4+Nrl
- vRd4ZPVTICBg==
-X-IronPort-AV: E=Sophos;i="5.82,282,1613462400"; 
-   d="scan'208";a="459953572"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2021 15:52:04 -0700
-Subject: [PATCH 8/8] cxl/acpi: Add module parameters to stand in for ACPI
- tables
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     linux-cxl@vger.kernel.org
-Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Date:   Fri, 07 May 2021 15:52:03 -0700
-Message-ID: <162042792370.1202325.11876776878497740843.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <162042787450.1202325.5718541949681409566.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <162042787450.1202325.5718541949681409566.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+        id S229812AbhEGXDH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 May 2021 19:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGXDG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 May 2021 19:03:06 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A992BC061761
+        for <linux-acpi@vger.kernel.org>; Fri,  7 May 2021 16:02:05 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id zg3so15877249ejb.8
+        for <linux-acpi@vger.kernel.org>; Fri, 07 May 2021 16:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Cysv76arNz3MFs69VgX48DEkoN+9KVfkGC6lPIgs6LE=;
+        b=g8Uua7ZkJUkGmrfi9VOU8KXTzma6Sz/ha6C4zc2aV/dvLPFPBuro4R1QQHIupXI1K3
+         Nq0ofBpyKFYN+zfIgJzSfNoYSchacVQcM/LzruoFvtv+dVO+PufL97znHHXj2rf1+cIB
+         wapM++MV9+XseRUEnb9GC8DcT6lgUQ9j3nAVnLFScuw/sJ3+jM0WSbwmjR9pXsbpvjEF
+         eYE9gaXgPB0JVWi7ZW1iLMhAEJ+Icu8UmkixAEjfU4q2PGCAgLJdlGzxNd4aYczL0NWq
+         9edVVRwc5zWREXezpVsrimURLVLQ4MkNiyoNvaWBs3MhYSnGuNGRgEvL9o+vC7/bG4i0
+         cVzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Cysv76arNz3MFs69VgX48DEkoN+9KVfkGC6lPIgs6LE=;
+        b=ePvKtRQVNdWOgUJMFCTc4Vrk9qh5FsvHcbn0W4++dNqeu63r25NuCYMHKeIoPeTe5U
+         qGONJffio1YkmgK5D4W0rAzqLmC+cmTpqYjmdABTURd6RqE6Ept0xntLXXrv3pvkRv5Z
+         zUfYSMxuc0V1n+PErAZS4L3QrdfJ21X1ySIbLiaJ9pIMUPzVjOIQbQ2XNbiyuJk2BKad
+         Uc6BsTItyay4bG17nIcAu2l7/AEKOVQbxkmEeCawVLfIBlpRpPKWYhKDiNQO6Emt3Cq4
+         5C3vFwoD5bk2n5kWyjs5AJQpYu/RTEGdt4dUNKCxb1/8qQHvc26g0PSeMnnCCLuTU+lc
+         PYGg==
+X-Gm-Message-State: AOAM533tRpbgGjVPF7wLPpl4Y7HWaNlMzKDB10coQzAlXZ2izCbDVnCS
+        fFBDeoIrbFt0BftKtLV5Ht3D0nqBSSJHwco5ANltQw==
+X-Google-Smtp-Source: ABdhPJx0vlXi8joVqX/bKq6BizKlwHJaiCJq3xBs6gTLXhtM3osxEcKR8qoOa8bY8Rty55XhIwEh7d0ppVWIj9mVfww=
+X-Received: by 2002:a17:906:33da:: with SMTP id w26mr12947744eja.472.1620428524398;
+ Fri, 07 May 2021 16:02:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com>
+ <CAPcyv4jUdebFQvrhi0yzNyZ1wwzeGDpf6T34m=bfL593s-PEcA@mail.gmail.com> <CAJZ5v0g_q7ceyLmmVzhAyruFd4CxSJj+JdigFURPoHNwG_DRyw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0g_q7ceyLmmVzhAyruFd4CxSJj+JdigFURPoHNwG_DRyw@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 7 May 2021 16:01:53 -0700
+Message-ID: <CAPcyv4hVLc0hpZ5ft-XQ7a4OMrYbH=Y6t_tUbiteKcR4G0NT+A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Yi Zhang <yi.zhang@redhat.com>, nvdimm@lists.linux.dev,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[debug / to-be-replaced / not-for-upstream]
+On Fri, May 7, 2021 at 7:49 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Fri, May 7, 2021 at 4:12 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > On Fri, May 7, 2021 at 2:47 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > Hi Dan,
+> > >
+> > > On Fri, May 7, 2021 at 9:33 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > >
+> > > > ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
+> > > > Address (SPA) Range Structure". The presence of that new field is
+> > > > indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
+> > > > firmware implementations omit the flag and maintain the original size of
+> > > > the structure.
+> > > >
+> > > > Update the implementation to check that flag to determine the size
+> > > > rather than the ACPI 6.4 compliant definition of 'struct
+> > > > acpi_nfit_system_address' from the Linux ACPICA definitions.
+> > > >
+> > > > Update the test infrastructure for the new expectations as well, i.e.
+> > > > continue to emulate the ACPI 6.3 definition of that structure.
+> > > >
+> > > > Without this fix the kernel fails to validate 'SPA' structures and this
+> > > > leads to a crash in nfit_get_smbios_id() since that routine assumes that
+> > > > SPAs are valid if it finds valid SMBIOS tables.
+> > > >
+> > > >     BUG: unable to handle page fault for address: ffffffffffffffa8
+> > > >     [..]
+> > > >     Call Trace:
+> > > >      skx_get_nvdimm_info+0x56/0x130 [skx_edac]
+> > > >      skx_get_dimm_config+0x1f5/0x213 [skx_edac]
+> > > >      skx_register_mci+0x132/0x1c0 [skx_edac]
+> > > >
+> > > > Cc: Bob Moore <robert.moore@intel.com>
+> > > > Cc: Erik Kaneda <erik.kaneda@intel.com>
+> > > > Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
+> > >
+> > > Do you want me to apply this (as the commit being fixed went in
+> > > through the ACPI tree)?
+> >
+> > Yes, I would need to wait for a signed tag so if you're sending urgent
+> > fixes in the next few days please take this one, otherwise I'll circle
+> > back next week after -rc1.
+>
+> I'll be doing my next push after -rc1 either, so I guess it doesn't
+> matter time-wise.
 
-Given ACPICA support is needed before drivers can integrate ACPI
-functionality add some module parameters as proxies.
----
- drivers/cxl/acpi.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 79 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index bc2a35ae880b..2a48a728f3e0 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -4,10 +4,84 @@
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
-+#include <linux/range.h>
- #include <linux/acpi.h>
- #include <linux/pci.h>
- #include "cxl.h"
- 
-+/*
-+ * TODO: Replace all of the below module parameters with ACPI CXL
-+ * resource descriptions once ACPICA makes them available.
-+ */
-+static unsigned long chbcr[4];
-+module_param_named(chbcr0, chbcr[0], ulong, 0400);
-+module_param_named(chbcr1, chbcr[1], ulong, 0400);
-+module_param_named(chbcr2, chbcr[2], ulong, 0400);
-+module_param_named(chbcr3, chbcr[3], ulong, 0400);
-+
-+/* TODO: cross-bridge interleave */
-+static struct cxl_address_space cxl_space[] = {
-+	[0] = { .range = { 0, -1 }, .targets = 0x1, },
-+	[1] = { .range = { 0, -1 }, .targets = 0x1, },
-+	[2] = { .range = { 0, -1 }, .targets = 0x1, },
-+	[3] = { .range = { 0, -1 }, .targets = 0x1, },
-+};
-+
-+static int set_range(const char *val, const struct kernel_param *kp)
-+{
-+	unsigned long long size, base;
-+	struct cxl_address_space *space;
-+	unsigned long flags;
-+	char *p;
-+	int rc;
-+
-+	size = memparse(val, &p);
-+	if (*p != '@')
-+		return -EINVAL;
-+
-+	base = memparse(p + 1, &p);
-+	if (*p != ':')
-+		return -EINVAL;
-+
-+	rc = kstrtoul(p + 1, 0, &flags);
-+	if (rc)
-+		return rc;
-+	if (!flags || flags > CXL_ADDRSPACE_MASK)
-+		return rc;
-+
-+	space = kp->arg;
-+	*space = (struct cxl_address_space) {
-+		.range = {
-+			.start = base,
-+			.end = base + size - 1,
-+		},
-+		.flags = flags,
-+	};
-+
-+	return 0;
-+}
-+
-+static int get_range(char *buf, const struct kernel_param *kp)
-+{
-+	struct cxl_address_space *space = kp->arg;
-+
-+	if (!range_len(&space->range))
-+		return -EINVAL;
-+
-+	return sysfs_emit(buf, "%#llx@%#llx :%s%s%s%s\n",
-+			  (unsigned long long)range_len(&space->range),
-+			  (unsigned long long)space->range.start,
-+			  space->flags & CXL_ADDRSPACE_RAM ? " ram" : "",
-+			  space->flags & CXL_ADDRSPACE_PMEM ? " pmem" : "",
-+			  space->flags & CXL_ADDRSPACE_TYPE2 ? " type2" : "",
-+			  space->flags & CXL_ADDRSPACE_TYPE3 ? " type3" : "");
-+}
-+
-+module_param_call(range0, set_range, get_range, &cxl_space[0], 0400);
-+module_param_call(range1, set_range, get_range, &cxl_space[1], 0400);
-+module_param_call(range2, set_range, get_range, &cxl_space[2], 0400);
-+module_param_call(range3, set_range, get_range, &cxl_space[3], 0400);
-+
- static int match_ACPI0016(struct device *dev, const void *host)
- {
- 	struct acpi_device *adev = to_acpi_device(dev);
-@@ -67,13 +141,16 @@ static int cxl_acpi_register_ports(struct device *dev, struct acpi_device *root,
- 				   struct cxl_port *port, int idx)
- {
- 	struct acpi_pci_root *pci_root = acpi_pci_find_root(root->handle);
-+	resource_size_t chbcr_base = ~0ULL;
- 	struct cxl_walk_context ctx;
- 
- 	if (!pci_root)
- 		return -ENXIO;
- 
- 	/* TODO: fold in CEDT.CHBS retrieval */
--	port = devm_cxl_add_port(dev, port, &root->dev, idx, ~0ULL);
-+	if (idx < ARRAY_SIZE(chbcr))
-+		chbcr_base = chbcr[idx];
-+	port = devm_cxl_add_port(dev, port, &root->dev, idx, chbcr_base);
- 	if (IS_ERR(port))
- 		return PTR_ERR(port);
- 	dev_dbg(dev, "%s: register: %s\n", dev_name(&root->dev),
-@@ -99,7 +176,7 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 	struct cxl_root *cxl_root;
- 	int rc, i = 0;
- 
--	cxl_root = devm_cxl_add_root(dev, NULL, 0);
-+	cxl_root = devm_cxl_add_root(dev, cxl_space, ARRAY_SIZE(cxl_space));
- 	if (IS_ERR(cxl_root))
- 		return PTR_ERR(cxl_root);
- 	dev_dbg(dev, "register: %s\n", dev_name(&cxl_root->port.dev));
-
+Ok, I got it, thanks for the offer.
