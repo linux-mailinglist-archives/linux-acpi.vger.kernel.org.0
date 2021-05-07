@@ -2,107 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84BCA37633F
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 12:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3B83764B1
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 May 2021 13:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbhEGKDD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 May 2021 06:03:03 -0400
-Received: from foss.arm.com ([217.140.110.172]:53296 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235423AbhEGKCr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 7 May 2021 06:02:47 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4E0D113E;
-        Fri,  7 May 2021 03:01:39 -0700 (PDT)
-Received: from [10.57.59.124] (unknown [10.57.59.124])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B0163F718;
-        Fri,  7 May 2021 03:01:37 -0700 (PDT)
-Subject: Re: [PATCH v3 08/10] iommu/arm-smmu-v3: Reserve any RMR regions
- associated with a dev
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com
-References: <20210420082751.1829-1-shameerali.kolothum.thodi@huawei.com>
- <20210420082751.1829-9-shameerali.kolothum.thodi@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <7ec85477-9c02-17de-9620-f0b153adcc82@arm.com>
-Date:   Fri, 7 May 2021 11:01:36 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S232151AbhEGLyE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 May 2021 07:54:04 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:52252 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230412AbhEGLyE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 May 2021 07:54:04 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 7065D1C0B76; Fri,  7 May 2021 13:53:03 +0200 (CEST)
+Date:   Fri, 7 May 2021 13:53:02 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Paul Menzel <paulepanter@users.sourceforge.net>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@denx.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: bme680_i2c: Make bme680_acpi_match depend on
+ CONFIG_ACPI
+Message-ID: <20210507115302.GA20751@amd>
+References: <20210504174019.2134652-1-linux@roeck-us.net>
+ <CAHp75Vd-iTkA5Y6tEHtfcqLxxmHaaU8nLQSL7eWb-gaa-c8AJg@mail.gmail.com>
+ <8f8b6f33-4308-bfda-2238-9a54e19c3f9f@roeck-us.net>
+ <20210505093235.00007c38@Huawei.com>
+ <20210505093438.00005238@Huawei.com>
+ <CAHp75VezSD_TcbQ_OBZXPo-szTr-qwOT9oU+7h7W6nk65ZLBhA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210420082751.1829-9-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
+Content-Disposition: inline
+In-Reply-To: <CAHp75VezSD_TcbQ_OBZXPo-szTr-qwOT9oU+7h7W6nk65ZLBhA@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021-04-20 09:27, Shameer Kolothum wrote:
-> Get RMR regions associated with a dev reserved so that there is
-> a unity mapping for them in SMMU.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 14e9c7034c04..8bacedf7bb34 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -2531,6 +2531,34 @@ static int arm_smmu_of_xlate(struct device *dev, struct of_phandle_args *args)
->   	return iommu_fwspec_add_ids(dev, args->args, 1);
->   }
->   
-> +static bool arm_smmu_dev_has_rmr(struct arm_smmu_master *master,
-> +				 struct iommu_rmr *e)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < master->num_sids; i++) {
-> +		if (e->sid == master->sids[i])
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static void arm_smmu_rmr_get_resv_regions(struct device *dev,
-> +					  struct list_head *head)
-> +{
-> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> +	struct arm_smmu_device *smmu = master->smmu;
-> +	struct iommu_rmr *rmr;
-> +
-> +	list_for_each_entry(rmr, &smmu->rmr_list, list) {
-> +		if (!arm_smmu_dev_has_rmr(master, rmr))
-> +			continue;
-> +
-> +		iommu_dma_get_rmr_resv_regions(dev, rmr, head);
-> +	}
-> +}
-> +
 
-TBH I wouldn't have thought we need a driver-specific hook for this, or 
-is it too painful to correlate fwspec->iommu_fwnode back to the relevant 
-IORT node generically?
+--sdtB3X0nJg68CQEu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Robin.
+Hi!
+On Wed 2021-05-05 16:22:07, Andy Shevchenko wrote:
+> On Wed, May 5, 2021 at 11:36 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> > On Wed, 5 May 2021 09:32:35 +0100
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > > On Tue, 4 May 2021 11:00:52 -0700
+> > > Guenter Roeck <linux@roeck-us.net> wrote:
+>=20
+> +Cc: Paul (I hope you are related to coreboot somehow and can
+> communicate this further), Pavel and Jacek (LED subsystem suffered
+> with this as well), Hans, Rafael and linux-acpi@
 
->   static void arm_smmu_get_resv_regions(struct device *dev,
->   				      struct list_head *head)
->   {
-> @@ -2545,6 +2573,7 @@ static void arm_smmu_get_resv_regions(struct device *dev,
->   	list_add_tail(&region->list, head);
->   
->   	iommu_dma_get_resv_regions(dev, head);
-> +	arm_smmu_rmr_get_resv_regions(dev, head);
->   }
->   
->   static bool arm_smmu_dev_has_feature(struct device *dev,
-> 
+Thanks for Cc. I prefer @ucw.cz address for the LED work.
+
+> > > Dropping the ones we are fairly sure are spurious is even better!
+> >
+> > If I get bored I'll just do a scrub of all the instances of this that
+> > you haven't already cleaned up.  It's worth noting that we do
+> > know some highly suspicious looking entries are out there in the wild.
+>=20
+> I have counted ~60 users of acpi_device_id in IIO. Brief looking at
+> the IDs themselves rings an alarm about half of them.
+
+As far as I can tell, this means asking "is this real ID or did you
+just invent it" at patch submission. Okay...
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--sdtB3X0nJg68CQEu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmCVKh4ACgkQMOfwapXb+vJBQwCfSfvfA+ps5soco8nk8PpfuIwM
+NOAAn213eI5AaFWPZd77hSIYq4qpARxm
+=WbSs
+-----END PGP SIGNATURE-----
+
+--sdtB3X0nJg68CQEu--
