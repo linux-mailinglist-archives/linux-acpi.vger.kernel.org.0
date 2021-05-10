@@ -2,122 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B0237983D
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 22:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4322379900
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 23:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbhEJUVz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 May 2021 16:21:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43348 "EHLO mail.kernel.org"
+        id S232326AbhEJVQn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 May 2021 17:16:43 -0400
+Received: from mga14.intel.com ([192.55.52.115]:45546 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229566AbhEJUVx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 May 2021 16:21:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 94A36613C4;
-        Mon, 10 May 2021 20:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620678048;
-        bh=NnI6Jar/M7IdxLtxsAWt4IwLrWaSY6o6+asG73lwypk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=p2hJI9M83cDG45oqbIlVUmrDpuGSgTqB+rZgiTLQy5ADDbE7geoZmjUIYljGm50RU
-         9gd5JGSGKWBoSz8eqe/8nso7itp0CL1VLUdZVpFJbtUwUsRTRWMTfTYgZwfNxxllNc
-         StwmKEjeAsTcOFbJvKO0TQRH86N2tlNuoBX98XpgLV5KDfPYLIkssGqez7lQ/dLqn8
-         t4vUQ4KtvWWxucZOLo1aQfy+YnSFI8f0XUkPTGjnt4IwpYdznHXj9I2TWF7VUoLaNT
-         bFRwIZy6GyhzjWr8KCS63nd6m8DxWLwP9kJ2mbA7EkhKyFYVTD5Tso8Vb90VC/NTsi
-         9DANZXpaUwlDA==
-Date:   Mon, 10 May 2021 13:20:39 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>
-Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
-        mturquette@baylibre.com, sboyd@kernel.org, nsaenz@kernel.org,
-        maxime@cerno.tech, khilman@kernel.org, ulf.hansson@linaro.org,
-        len.brown@intel.com, pavel@ucw.cz, robh+dt@kernel.org,
-        frowand.list@gmail.com, maz@kernel.org, tglx@linutronix.de,
-        saravanak@google.com, geert@linux-m68k.org, nsaenzjulienne@suse.de,
-        linux@roeck-us.net, guillaume.tucker@collabora.com,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, nicolas.ferre@microchip.com,
-        claudiu.beznea@microchip.com, linux-doc@vger.kernel.org,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, kernel-team@android.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH v2] clk: Skip clk provider registration when np is NULL
-Message-ID: <YJmVlwu4swD1upym@archlinux-ax161>
-References: <20210426065618.588144-1-tudor.ambarus@microchip.com>
+        id S231513AbhEJVQl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 May 2021 17:16:41 -0400
+IronPort-SDR: ecENmbDRyXll9+PZnfYA0vsBspDsd4YXYtWsegyLRC9K4T3VcpgVPE1MkEcUQmmwB4XTiKAgFi
+ Z8tumezBIeog==
+X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="198967440"
+X-IronPort-AV: E=Sophos;i="5.82,288,1613462400"; 
+   d="scan'208";a="198967440"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 14:15:33 -0700
+IronPort-SDR: 58WND2tgoU/dRxyOi3LBPnEIt1gw3O3ZPDFupLGoKUvC1YHpM0pz7dkmtZ3OAIKRKL03mFCBQb
+ KcS663lLOZfA==
+X-IronPort-AV: E=Sophos;i="5.82,288,1613462400"; 
+   d="scan'208";a="609240214"
+Received: from kcmorris-mobl1.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.213.165.53])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 14:15:31 -0700
+Subject: Re: [PATCH v3 3/3] x86/acpi, x86/boot: Add multiprocessor wake-up
+ support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>
+Cc:     Rafael J Wysocki <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Sean Christopherson <sean.j.christopherson@intel.com>
+References: <20210426023941.729334-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210426023941.729334-4-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <97e14cdc-ea98-18b8-0c89-db52440a7716@linux.intel.com>
+ <CAJZ5v0gsqyXSr+Kw603333PZ=gnsBizNhyLAcu588OChEHT=AQ@mail.gmail.com>
+ <4fa40e7a-bcb2-db0f-8dc5-28728b14377d@linux.intel.com>
+ <20210510172237.GU4032392@tassilo.jf.intel.com>
+ <CAJZ5v0iFsBWwXhqtLbTMicBSFme0HCvg+2xgtMgpkFMupk_Rkw@mail.gmail.com>
+From:   "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Message-ID: <bc14b461-6431-c5ce-7117-854af8454900@linux.intel.com>
+Date:   Mon, 10 May 2021 14:15:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210426065618.588144-1-tudor.ambarus@microchip.com>
+In-Reply-To: <CAJZ5v0iFsBWwXhqtLbTMicBSFme0HCvg+2xgtMgpkFMupk_Rkw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 09:56:18AM +0300, Tudor Ambarus wrote:
-> commit 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
-> revealed that clk/bcm/clk-raspberrypi.c driver calls
-> devm_of_clk_add_hw_provider(), with a NULL dev->of_node, which resulted in a
-> NULL pointer dereference in of_clk_add_hw_provider() when calling
-> fwnode_dev_initialized().
-> 
-> Returning 0 is reducing the if conditions in driver code and is being
-> consistent with the CONFIG_OF=n inline stub that returns 0 when CONFIG_OF
-> is disabled. The downside is that drivers will maybe register clkdev lookups
-> when they don't need to and waste some memory.
-> 
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Fixes: 6579c8d97ad7 ("clk: Mark fwnodes when their clock provider is added")
-> Fixes: 3c9ea42802a1 ("clk: Mark fwnodes when their clock provider is added/removed")
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 
-Tested-by: Nathan Chancellor <nathan@kernel.org>
 
-> ---
-> v2:
-> - s/return 0;/return; in void of_clk_del_provider()
-> - add second fixes tag and Stephen's R-b tag
-> The opinions on whether to return an error or zero were split. Returning 0
-> and skipping the logic was considered safer as we don't know for sure if
-> other drivers are affected. See:
-> https://lore.kernel.org/lkml/d24bebc5-0f78-021f-293f-e58defa32531@samsung.com/
-> https://lore.kernel.org/lkml/20210423171335.262316-1-tudor.ambarus@microchip.com/
-> 
->  drivers/clk/clk.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index a3b30f7de2ef..b47460b40d14 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -4552,6 +4552,9 @@ int of_clk_add_provider(struct device_node *np,
->  	struct of_clk_provider *cp;
->  	int ret;
->  
-> +	if (!np)
-> +		return 0;
-> +
->  	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
->  	if (!cp)
->  		return -ENOMEM;
-> @@ -4591,6 +4594,9 @@ int of_clk_add_hw_provider(struct device_node *np,
->  	struct of_clk_provider *cp;
->  	int ret;
->  
-> +	if (!np)
-> +		return 0;
-> +
->  	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
->  	if (!cp)
->  		return -ENOMEM;
-> @@ -4688,6 +4694,9 @@ void of_clk_del_provider(struct device_node *np)
->  {
->  	struct of_clk_provider *cp;
->  
-> +	if (!np)
-> +		return;
-> +
->  	mutex_lock(&of_clk_mutex);
->  	list_for_each_entry(cp, &of_clk_providers, link) {
->  		if (cp->node == np) {
-> -- 
-> 2.25.1
-> 
+On 5/10/21 10:24 AM, Rafael J. Wysocki wrote:
+> The wakeup function can return an error when it is called for the
+> second time on the same CPU.
+
+To do this, we can only maintain the wakeup status of the CPUs. Can
+you check whether following physid_mask based status maintenance is
+acceptable?
+
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -67,6 +67,7 @@ static u64 acpi_lapic_addr __initdata = APIC_DEFAULT_PHYS_BASE;
+
+  static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
+  static u64 acpi_mp_wake_mailbox_paddr;
++static physid_mask_t apic_id_wakemap = PHYSID_MASK_NONE;
+
+  #ifdef CONFIG_X86_IO_APIC
+  /*
+@@ -347,6 +348,13 @@ static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
+
+         acpi_mp_wake_mailbox_init();
+
++       /* Check if the given CPU (apicid) is already awake */
++       if (physid_isset(apicid, apic_id_wakemap)) {
++               pr_err("APIC ID %x is already awake, so failed to wakeup\n",
++                               apicid);
++               return -EINVAL;
++       }
++
+         if (!acpi_mp_wake_mailbox)
+                 return -EINVAL;
+
+@@ -374,8 +382,18 @@ static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
+         while (READ_ONCE(acpi_mp_wake_mailbox->command) && timeout--)
+                 cpu_relax();
+
+-       /* If timedout, return error */
+-       return timeout ? 0 : -EIO;
++       if (timeout) {
++               /*
++                * If the CPU wakeup process is successful, store the
++                * status in apic_id_wakemap to prevent re-wakeup
++                * requests.
++                */
++               physid_set(apicid, apic_id_wakemap);
++               return 0;
++       }
++
++       /* If timed out (timeout == 0), return error */
++       return -EIO;
+  }
+
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
