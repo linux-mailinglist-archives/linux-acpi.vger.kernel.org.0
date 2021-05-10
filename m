@@ -2,176 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD1637905F
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 16:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3E0379017
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 16:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234160AbhEJOMw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 May 2021 10:12:52 -0400
-Received: from mga02.intel.com ([134.134.136.20]:10136 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232704AbhEJOKv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 May 2021 10:10:51 -0400
-IronPort-SDR: kYNFAjg4gnCARMVKlJ76rgY+T62B1JBwGVvBvbfLqMhzCrTbNR+rCutVm6fKszn1xjS67Rx7mE
- mpRlvOz2dvoA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="186336215"
-X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="186336215"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:59:10 -0700
-IronPort-SDR: Qy/oHL1TVOSlrsImmiNyCrMpER4rTXwU0Pno6idTgppirj9JU+/P1Jsnee9iJFAVaqPjh45wbP
- Q6huqACZHsnQ==
-X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="436153200"
-Received: from chuquanc-mobl1.ccr.corp.intel.com ([10.255.30.18])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:59:05 -0700
-Message-ID: <bd4d1d94a4497a4c7407ede70eeae566ac343f23.camel@intel.com>
-Subject: Re: [PATCH] Revert "ACPI: power: Turn off unused power resources
- unconditionally"
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Shujun Wang <wsj20369@163.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Box <david.e.box@linux.intel.com>
-Date:   Mon, 10 May 2021 21:59:03 +0800
-In-Reply-To: <CAJZ5v0i8RnOg2HgEmLze7d3rYvofVDFDQORMOigNc0vEhLW16Q@mail.gmail.com>
-References: <20210430124224.6383-1-wsj20369@163.com>
-         <0e480ceabe4d42d79bf49a1989c0f95f@intel.com>
-         <CAJZ5v0i8RnOg2HgEmLze7d3rYvofVDFDQORMOigNc0vEhLW16Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S239104AbhEJOD7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 May 2021 10:03:59 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:37919 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235412AbhEJOBt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 May 2021 10:01:49 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 14AAD5807B2;
+        Mon, 10 May 2021 10:00:38 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Mon, 10 May 2021 10:00:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=fwXudyHn8IUNsmfHA12W5pUxFzr
+        IcUsJJs6niPOOwGc=; b=gQh6u0zhPsG//1fbjCgHH3SUq5OZEixVi+ckcNcOvNr
+        8f8S6u6OqczboxIeZQzxpdw3AUy1t45vyyuSQKDA1+yJJEqv0Na0yFB8YXQoxGQa
+        A5mz/uekXLKQlXSBVpDzZgWHaTwxLQ8cfd/84Seg6MJA86M+DwrG/rxkfmjHnsDx
+        Vsn+We4G3Oh5Yvv4HNwlluWEHPMQsGoYqOZqIpzyUGPfcSXaDfcxgaoBasafO20O
+        Nia4uZb9+lsHdBKwEogjjnykkTJJzKThWOeq3e2hyjT/F/nLvkiGpnFJ0uMYCJ5w
+        yhbph4b45d/9JdizeckN5aTq6WAACtGxOiZQK1Svtuw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=fwXudy
+        Hn8IUNsmfHA12W5pUxFzrIcUsJJs6niPOOwGc=; b=FkYLunR8+bNyojGntZzlTv
+        lNhoU5Ih8GFYdgqBiM9GEeBgkR7PC0rd49vKxgNK2oVHYiwvnJ0pFHee6wyNEefG
+        07iyoKlPp2/47lNX2/0a3w6XYC3Muan3VrHn9DIyh2AJDD/sq19lwcD+nClmgOGW
+        3kjTJut/WH9S1nO20R6vTeVSVeiFhLK/oh1ul5trEQZynTCu46HI2dcf9dXPVKk9
+        sOjDpOdiQFUH6B6gq1Emr8rDL+S3scV3gAHdetS1J2hIDO0dgu0hscWNc8fHxaey
+        25F3JvGPZJisNAQmAtq62YqH7TCAIzVvBqJwx8rI9Oyho2YDtxrFPxf1S0VsKOTA
+        ==
+X-ME-Sender: <xms:hDyZYCqZ48w__j-3J2DdcFFyCNO8Px1wZAdweI2vgyXQ5g_1A_avfw>
+    <xme:hDyZYAoPMp-2hhXE5dIuFZVKJLDFR-LeVjsu56BtdhTJGnUi8Md4Pqb1pnf9Vqqdn
+    t02Gw-Ku9S6gnwxX4I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdegkedgjedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeevffdtteetgfdttdekueefgedttddtueeugeekgeetffeuteffjeduieehhfek
+    tdenucfkphepvdegrdduieelrddvtddrvdehheenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:hDyZYHO7a0I2ObO3iNQCJFMynfyvzQSxH3x8A4ShPc13xjvG6wh63A>
+    <xmx:hDyZYB6OL9_iqJiCXEkFvw1uMnu0UHjkSyxn6Irx0qOidEFWAmkwbA>
+    <xmx:hDyZYB472gSq8MYTawlNh6oofIzwaZQvJxltEegElvbnNVF17UiCaA>
+    <xmx:hjyZYNFuZhUi4dOrdPamnliiTh3owe6Tf-ewK9C2k9SXGvHlGfVlTg>
+Received: from localhost (unknown [24.169.20.255])
+        by mail.messagingengine.com (Postfix) with ESMTPA;
+        Mon, 10 May 2021 10:00:35 -0400 (EDT)
+Date:   Mon, 10 May 2021 10:00:34 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
+Message-ID: <YJk8gkMlk8dtaEsz@erythro.dev.benboeckel.internal>
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+ <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+ <20210510135518.305cc03d@coco.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210510135518.305cc03d@coco.lan>
+User-Agent: Mutt/2.0.5 (2021-01-21)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2021-05-10 at 14:13 +0200, Rafael J. Wysocki wrote:
-> On Mon, May 10, 2021 at 8:37 AM Zhang, Rui <rui.zhang@intel.com>
-> wrote:
-> > 
-> > Hi, Shujun,
-> > 
-> > I'm experiencing similar problem, and it should be a BIOS problem,
-> 
-> Right, and I confused things.  Sorry about that.
-> 
-> If commit 7e4fdeafa61f2b653f ("ACPI: power: Turn off unused power
-> resources unconditionally") causes problems to happen, this means
-> that
-> the platform firmware implementation doesn't follow the ACPI
-> specification.
-> 
-> > which can be fixed by a customized DSDT.
-> > Can you please attach the full acpidump output on this machine? I
-> > just want to make sure if it is the same problem.
-> 
-> Yes, please.
-> 
-> Rui, can you create a BZ for this please and can you both attach
-> dmidecode output from the affected systems?
-> 
-> I don't want to revert this commit completely, so the default
-> behavior
-> is spec-compliant, but there can be a DMI-based blacklist for systems
-> having problems with it.
-> 
-Done.
-https://bugzilla.kernel.org/show_bug.cgi?id=213019
+On Mon, May 10, 2021 at 13:55:18 +0200, Mauro Carvalho Chehab wrote:
+>     $ git grep "CPU 0 has been" Documentation/RCU/
+>       Documentation/RCU/Design/Data-Structures/Data-Structures.rst:| #. CPU 0 has been in dyntick-idle mode for quite some time. When it   |
+>       Documentation/RCU/Design/Data-Structures/Data-Structures.rst:|    notices that CPU 0 has been in dyntick idle mode, which qualifies  |
 
-Shujun,
-can you please attach the acpidump and dmidecode output in this bug
-report?
+The kernel documentation uses hard line wraps, so such a naive grep is
+going to always fail unless such line wraps are taken into account. Not
+saying this isn't an improvement in and of itself, but smarter searching
+strategies are likely needed anyways.
 
-thanks,
-rui
-
-> > > -----Original Message-----
-> > > From: Shujun Wang <wsj20369@163.com>
-> > > Sent: Friday, April 30, 2021 8:42 PM
-> > > To: rjw@rjwysocki.net; lenb@kernel.org; 
-> > > linux-acpi@vger.kernel.org; linux-
-> > > kernel@vger.kernel.org
-> > > Cc: Shujun Wang <wsj20369@163.com>
-> > > Subject: [PATCH] Revert "ACPI: power: Turn off unused power
-> > > resources
-> > > unconditionally"
-> > > 
-> > > This reverts commit 7e4fdeafa61f2b653fcf9678f09935e55756aed2.
-> > > It may cause some NVMe device probes to fail, and the system may
-> > > get stuck
-> > > when using an NVMe device as the root filesystem.
-> > > 
-> > > In the function nvme_pci_enable(struct nvme_dev *dev), as shown
-> > > below,
-> > > readl(NVME_REG_CSTS) always returns -1 with the commit, which
-> > > results in
-> > > the probe failed.
-> > > 
-> > >   if (readl(dev->bar + NVME_REG_CSTS) == -1) {
-> > >       result = -ENODEV;
-> > >       goto disable;
-> > >   }
-> > > 
-> > > dmesg:
-> > >   [    1.106280] nvme 0000:04:00.0: platform quirk: setting
-> > > simple suspend
-> > >   [    1.109111] nvme nvme0: pci function 0000:04:00.0
-> > >   [    1.113066] nvme 0000:04:00.0: enabling device (0000 ->
-> > > 0002)
-> > >   [    1.121040] nvme nvme0: Removing after probe failure status:
-> > > -19
-> > > 
-> > > lspci:
-> > >   Non-Volatile memory controller: KIOXIA Corporation Device 0001
-> > > 
-> > > device uevent:
-> > >   DRIVER=nvme
-> > >   PCI_CLASS=10802
-> > >   PCI_ID=1E0F:0001
-> > >   PCI_SUBSYS_ID=1E0F:0001
-> > >   PCI_SLOT_NAME=0000:04:00.0
-> > >   MODALIAS=pci:v00001E0Fd00000001sv00001E0Fsd00000001bc01sc08i02
-> > > 
-> > > This patch was tested in Lenovo Thinkpad X1.
-> > > 
-> > > Signed-off-by: Shujun Wang <wsj20369@163.com>
-> > > ---
-> > >  drivers/acpi/power.c | 11 ++++++++++-
-> > >  1 file changed, 10 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c index
-> > > 56102eaaa2da..8bf10abeb2e0 100644
-> > > --- a/drivers/acpi/power.c
-> > > +++ b/drivers/acpi/power.c
-> > > @@ -1004,9 +1004,18 @@ void
-> > > acpi_turn_off_unused_power_resources(void)
-> > >       mutex_lock(&power_resource_list_lock);
-> > > 
-> > >       list_for_each_entry_reverse(resource,
-> > > &acpi_power_resource_list,
-> > > list_node) {
-> > > +             int result, state;
-> > > +
-> > >               mutex_lock(&resource->resource_lock);
-> > > 
-> > > -             if (!resource->ref_count) {
-> > > +             result = acpi_power_get_state(resource-
-> > > >device.handle,
-> > > &state);
-> > > +             if (result) {
-> > > +                     mutex_unlock(&resource->resource_lock);
-> > > +                     continue;
-> > > +             }
-> > > +
-> > > +             if (state == ACPI_POWER_RESOURCE_STATE_ON
-> > > +                 && !resource->ref_count) {
-> > >                       dev_info(&resource->device.dev, "Turning
-> > > OFF\n");
-> > >                       __acpi_power_off(resource);
-> > >               }
-> > > --
-> > > 2.25.1
-
+--Ben
