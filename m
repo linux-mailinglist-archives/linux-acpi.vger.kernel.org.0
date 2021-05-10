@@ -2,85 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D963794F1
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 19:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C961C3794FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 May 2021 19:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232356AbhEJRFz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 May 2021 13:05:55 -0400
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:39767 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232240AbhEJRFc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 May 2021 13:05:32 -0400
-Received: by mail-ot1-f41.google.com with SMTP id d25-20020a0568300459b02902f886f7dd43so1626762otc.6;
-        Mon, 10 May 2021 10:04:27 -0700 (PDT)
+        id S231434AbhEJRHS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 May 2021 13:07:18 -0400
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:40737 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231190AbhEJRHR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 May 2021 13:07:17 -0400
+Received: by mail-ot1-f43.google.com with SMTP id t4-20020a05683014c4b02902ed26dd7a60so4916699otq.7;
+        Mon, 10 May 2021 10:06:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Xl40YY+UwmSdCEgMPbdm3QhhBzG29tkagPo5lF6lVJo=;
-        b=Y+fT1O5nbFKwneruCBEYTmli7uj1O7O0yfWxq9uQjw9I1WxTtLj/YLMcg2e3z3tbaQ
-         kfrFN+h/WOkYSLOOzZHO2mL9exWCrNo2KFi4KXUQSt6wfnUncSGzfihlslmgx8Mkiy6a
-         i4t6JRkMSTcJ5w7baw0PgmCoyul/zBxXpqlElHS9b/m4SZA/QlTGD0VLfgQUoALoTmzs
-         R6HpnmjvRcUJq0/BIFsFxulBkYj/us02hoxJsWs8OMR5jMR2dd19YDRkfYDOcgyqdMDc
-         HTnBaT1NtUsMFuPNwtaZsqFA4B2uA1+JboRkWS5A0lEE4yRm/MPLVjbPzlF0L4QSACrW
-         Q3EQ==
-X-Gm-Message-State: AOAM5332qe37xkUWBUBbj6QPLM9dmAiP2rymUS/d74wdVsRn50MVlcbC
-        fZQ+ItYTUGE0LkBj/3XLcJHYIAxOF/Rq1nPGH7Y6A39P
-X-Google-Smtp-Source: ABdhPJxzgKL8nTsWIc40ErSnfp5DyWliOhM0nTQ1BzEHKT4msTNjiCn2yiQ2dwjPpUTGyhyDC/TVBPvXdsy+/1VNcX4=
-X-Received: by 2002:a05:6830:55b:: with SMTP id l27mr21934250otb.260.1620666267231;
- Mon, 10 May 2021 10:04:27 -0700 (PDT)
+        bh=h9Y41nhmPOPBNqykP2dYU1c45pvJNiEXKTzaxOZu5Kw=;
+        b=ch/ZgthLF01epyu3TNz7zZLNEwMdbhRUk313+H+SIxklWVGNdQsJGvnnsF++1FC6lQ
+         /tXEkgItGKQ2rDYxVKPvDAx8w4wWjCvFoBuJaXRY9b7zGqry+GXLSbhQgDjGPgE9L8rV
+         aKepmf1feGCi7hTAkwFwAxz44NOnygzl2Ib/iNUbZmx0Tw9+01jPiLMQ8oh+0aDvtd85
+         oKY5VNCspUOYExK2L3G4jKfRmRgDEKmAAg/1iEgEnFaPdRV7ylc4QQaw/C0Z56NDP3Ks
+         nRLYyjcUyz9kTfAcazCxGwoDVciT9d6dUT08RFhE35J3mDvHKBVZT+/wKF42UX0Jui1d
+         t+nA==
+X-Gm-Message-State: AOAM531octmHWu0cDaRACBMrrbl+5mtRcl6fPc4ugVEqP3h9YYvvLBfT
+        QcG8rlHJTTs4vrh97iNVRBta2bq9gu6EkgmpK9s=
+X-Google-Smtp-Source: ABdhPJwXO1Jw0S4KQ/r/4CDdG06ee9HkhBEDrEUr3U13N8JuX70ha4RZNP2j2SuBwqJfzk5ake1vcXx10Au8gE+5XOU=
+X-Received: by 2002:a9d:5a7:: with SMTP id 36mr22420958otd.321.1620666372712;
+ Mon, 10 May 2021 10:06:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <63bf4e87eb42fa3fff2cd87eb605ebcc01f4b2f7.1620458525.git.christophe.jaillet@wanadoo.fr>
- <YJkkjI6+k34ZoQ69@smile.fi.intel.com>
-In-Reply-To: <YJkkjI6+k34ZoQ69@smile.fi.intel.com>
+References: <20210506124912.7725-1-jj251510319013@gmail.com>
+In-Reply-To: <20210506124912.7725-1-jj251510319013@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 10 May 2021 19:04:16 +0200
-Message-ID: <CAJZ5v0jNG54Y4LYCFjqh2UKWXLswJFfKMxjrpPpGoSjNnEPibg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: scan: Fix a memory leak in an error handling path
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+Date:   Mon, 10 May 2021 19:06:01 +0200
+Message-ID: <CAJZ5v0hNXrh04yP3JA0OuvKx9v6b+BKROfX03RZYTC2-m4zkRg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Use fallthrough pseudo-keyword
+To:     Wei Ming Chen <jj251510319013@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Robert Moore <robert.moore@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 10, 2021 at 3:17 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, May 6, 2021 at 2:49 PM Wei Ming Chen <jj251510319013@gmail.com> wrote:
 >
-> On Sat, May 08, 2021 at 09:23:09AM +0200, Christophe JAILLET wrote:
-> > If 'acpi_device_set_name()' fails, we must free
-> > 'acpi_device_bus_id->bus_id' or there is a (potential) memory leak.
+> Replace /* FALLTHROUGH */ comment with pseudo-keyword macro fallthrough[1]
 >
-> Good catch!
-> I guess I have lost it somewhere in the middle of developing the mentioned fix.
+> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 >
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Wei Ming Chen <jj251510319013@gmail.com>
+> ---
+>  drivers/acpi/acpica/utprint.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Thanks!
+> diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+> index e37d612e8db5..0b511434b80b 100644
+> --- a/drivers/acpi/acpica/utprint.c
+> +++ b/drivers/acpi/acpica/utprint.c
+> @@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
+>                 case 'X':
 >
-> > Fixes: eb50aaf960e3 ("ACPI: scan: Use unique number for instance_no")
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> >  drivers/acpi/scan.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > index a22778e880c2..651a431e2bbf 100644
-> > --- a/drivers/acpi/scan.c
-> > +++ b/drivers/acpi/scan.c
-> > @@ -700,6 +700,7 @@ int acpi_device_add(struct acpi_device *device,
-> >
-> >               result = acpi_device_set_name(device, acpi_device_bus_id);
-> >               if (result) {
-> > +                     kfree_const(acpi_device_bus_id->bus_id);
-> >                       kfree(acpi_device_bus_id);
-> >                       goto err_unlock;
-> >               }
-> > --
+>                         type |= ACPI_FORMAT_UPPER;
+> -                       /* FALLTHROUGH */
+> +                       fallthrough;
+>
+>                 case 'x':
+>
+> --
 
-Applied as 5.13-rc material, thanks!
+This is ACPICA material, so I'm leaving it to Erik and Bob.
+
+Thanks!
