@@ -2,54 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFB0237BE18
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 15:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D95F37BE3D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 15:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbhELNWU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 May 2021 09:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231301AbhELNWR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 09:22:17 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49037C06174A;
-        Wed, 12 May 2021 06:21:09 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id t193so5637907pgb.4;
-        Wed, 12 May 2021 06:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=E8bUaAxpXLY2QB2VPh39+KFFYLAxLz4vhlgqgr82JJ4=;
-        b=UgQ0vGI4da5Chky6EiBBj5ZlOhBOQ6iUSC0FNtm8oTe1BQ/ith1TDt4s0g46rS8Weg
-         4E2zvzl49qbQIACWP3ssNi/nLv7MpsiGV+SM0feUEYi8kz3YZ5GRsBHN160FVy4BGqQY
-         jbeodhLFXPfC0yEMIPKRyRBFXLzP7hkj0E8UBlX7e08ukApnhVTSeOjysI6qGaX3fDrq
-         WCjo7fcTCC039rbvGl4DvIb3tyuY8HpDPavV6DvlIi058XjnKa7uR6bNXgZ712ODvJ+e
-         g8l1Ad9AkyiC/BDpr7292H9qOXaesYPzuj/lMCnRIh9pr/5gOodfWwSPVVTu//REwXR/
-         L36g==
+        id S230285AbhELNcP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 May 2021 09:32:15 -0400
+Received: from mail-oo1-f43.google.com ([209.85.161.43]:40711 "EHLO
+        mail-oo1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230037AbhELNcP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 09:32:15 -0400
+Received: by mail-oo1-f43.google.com with SMTP id o202-20020a4a2cd30000b02901fcaada0306so4939737ooo.7;
+        Wed, 12 May 2021 06:31:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=E8bUaAxpXLY2QB2VPh39+KFFYLAxLz4vhlgqgr82JJ4=;
-        b=RUDjQEMoZ/NL1aQxAvFAIXyRSlNL5h3e7STCLzRLp9x8lSqOpa5TelcYqVbl8/CxUD
-         DOtCnsfdexI2Z5fHzZne41mMV+woW3yL7ZJ9pOJRsiOtrPOVpTRJcMHtTOtbcF2V8Kuc
-         ArgIlswqUpR1lC+AUpFH2iJK0rRocldlSgczTjQ451K29yBaZLRL8lxj3PpT4KSclq4F
-         4zO/ykx2k08fDsFwNbk6lq/lYydQAt6ivSn4qjw/DPoLVHN1EZmfjqyLPAeCFfO3h2Pf
-         jskZA6MW73BfPjK0TFbd+fk1qnZkuAiMM7w2mhAZcNdYLLYXh34tDETyAYg/4i6einEe
-         YlDg==
-X-Gm-Message-State: AOAM531K7cSE0amq+pZcVN4WI/FnRbuQdggw0Ab19KFWWFqaP4J647eG
-        mdwTZoZWiww7Lbj7geRM0S5eFZXwQCqqD17OVEY=
-X-Google-Smtp-Source: ABdhPJzfQxtg66lXX6PQLTL6wMZd6zn4UTXujqUaWSmIPQodRMHqlxbLtBWI6ROhr8cf2kaBoQaSQ8Wng9Uypx7o/wk=
-X-Received: by 2002:a62:528e:0:b029:1f5:c5ee:a487 with SMTP id
- g136-20020a62528e0000b02901f5c5eea487mr34828839pfb.7.1620825668718; Wed, 12
- May 2021 06:21:08 -0700 (PDT)
+        bh=Earb0h7LmgkDcDO+p8DvBRPukWlVbl3Ymk5O1jQsyfk=;
+        b=gxlB/Kp29Zg/7Xa4eKnj/4m5gq4K5zUUDAcybXqbXdnlTvxKbVgKq8K2evW6v8vpa/
+         HOOQQNq2yW91BL5XgzRMp16bD6SqiaOV4urBEMXF2Rjmwt2eLvOyCJboSTwxXnuS3ITw
+         yHVg/w+ZyQjDYU59vdJFSJmlbEMRYX05csAjTpDvqBeW7jBVcCEl8GYz5pTGcWeKFwjZ
+         y3Q/KJKmJ/8w4s2BWJxB0MYeuhh7gPds7BlvLBJa96HuZe8/YbNcqSrMiC9+0k9auFDZ
+         6u9VSq67A5JvuHe3bJsLBPSV++x8sNXIu1EFcI0K0b0hCNfbUy3p/7vz66m13uCDV9lc
+         R0Ag==
+X-Gm-Message-State: AOAM533srbuYqTm4Xf9ho8DF/J60D9jDuM/JqAJMHwOvm2KuxGdgYp0S
+        EHKlzfGh3O9J5yefy7PQWj27fAV240VaWqLKcXA=
+X-Google-Smtp-Source: ABdhPJyXgDCh+HnlgZYWoSLSAG5tI5MY9pQTc/NOMATggQyo646KGA4TN988CjiFE9IwM4Ec+Txn7f/NA4UMBCPjmu4=
+X-Received: by 2002:a4a:ab83:: with SMTP id m3mr14281130oon.2.1620826266665;
+ Wed, 12 May 2021 06:31:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210512125523.55215-1-hdegoede@redhat.com> <20210512125523.55215-2-hdegoede@redhat.com>
 In-Reply-To: <20210512125523.55215-2-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 12 May 2021 16:20:51 +0300
-Message-ID: <CAHp75VehYx5Bn_dJ1vps1N-aEX2vF3AKUS0xMwBK=o6ZyFJxVQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 12 May 2021 15:30:55 +0200
+Message-ID: <CAJZ5v0iTFHAWC1HC3aSbFF-GpcgSmHzqapE+YT+PGdBjH6OELQ@mail.gmail.com>
 Subject: Re: [PATCH 1/1] platform/x86: intel_int0002_vgpio: Only call
  enable_irq_wake() when using s2idle
 To:     Hans de Goede <hdegoede@redhat.com>
@@ -63,7 +48,7 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 12, 2021 at 3:55 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, May 12, 2021 at 2:56 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
 > Commit 871f1f2bcb01 ("platform/x86: intel_int0002_vgpio: Only implement
 > irq_set_wake on Bay Trail") stopped passing irq_set_wake requests on to
@@ -92,24 +77,20 @@ On Wed, May 12, 2021 at 3:55 PM Hans de Goede <hdegoede@redhat.com> wrote:
 > enable_irq_wake(parent_irq) call till system-suspend time and protecting
 > it with a !pm_suspend_via_firmware() check so that we still do not call
 > it on devices using firmware-based (S3) suspend such as the Asus E202SA.
-
+>
 > Note rather then adding #ifdef CONFIG_PM_SLEEP, this commit simply adds
 > a "depends on PM_SLEEP" to the Kconfig since this drivers whole purpose
 > is to deal with wakeup events, so using it without CONFIG_PM_SLEEP makes
 > no sense.
-
-I like the new approach.
-One remark (or two :) is to the PM SLEEP thingy. Can we add a separate
-line for "depends on", so it will be easier to maintain in case we
-need to amend it somehow? Another one is to amend a helpline to
-reflect that the driver is dealing solely with wake events (I haven't
-checked the current text, so it might be already enforced).
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
+>
 > Cc: Maxim Mikityanskiy <maxtram95@gmail.com>
 > Fixes: 871f1f2bcb01 ("platform/x86: intel_int0002_vgpio: Only implement irq_set_wake on Bay Trail")
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+
+Makes sense to me.
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
 > ---
 >  drivers/platform/x86/Kconfig               |  2 +-
 >  drivers/platform/x86/intel_int0002_vgpio.c | 80 +++++++++++++++-------
@@ -292,8 +273,3 @@ Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > --
 > 2.31.1
 >
-
-
--- 
-With Best Regards,
-Andy Shevchenko
